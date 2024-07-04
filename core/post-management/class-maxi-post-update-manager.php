@@ -5,8 +5,6 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-media.php';
-
 $core_classes = [
     'class-maxi-local-fonts',
     'class-maxi-style-cards',

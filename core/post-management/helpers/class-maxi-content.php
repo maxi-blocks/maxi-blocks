@@ -5,9 +5,12 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+require_once MAXI_PLUGIN_DIR_PATH . 'core/post-management/helpers/class-maxi-media.php';
+
 class MaxiBlocks_Content_Processor
 {
     private static ?self $instance = null;
+    private static ?MaxiBlocks_Media_Processor $media_processor = null;
 
     private int $max_execution_time;
 
@@ -16,6 +19,8 @@ class MaxiBlocks_Content_Processor
         if (null === self::$instance) {
             self::$instance = new self();
         }
+
+        self::$media_processor = MaxiBlocks_Media_Processor::get_instance();
     }
 
     public static function get_instance(): self
@@ -34,7 +39,7 @@ class MaxiBlocks_Content_Processor
      */
     public function get_updated_post_content(string $post_content, bool $new_blocks = false): string
     {
-        $updated_post_content = MaxiBlocks_Media::add_media($post_content);
+        $updated_post_content = self::$media_processor->add_media($post_content);
 
         if($new_blocks) {
             // Get all blocks from post content

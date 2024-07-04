@@ -80,7 +80,7 @@ const ArrowTriangle = props => (
 
 const slotNameContext = createContext();
 
-const positionToPlacement = (position) => {
+const positionToPlacement = position => {
 	const [x, y, z] = position.split(' ');
 
 	if (['top', 'bottom'].includes(x)) {
@@ -306,6 +306,7 @@ const Popover = (
 		strategy,
 		placement: normalizedPlacementFromProps,
 		middleware,
+		transform: false,
 		whileElementsMounted: (...args) =>
 			autoUpdate(...args, {
 				ancestorScroll: false,

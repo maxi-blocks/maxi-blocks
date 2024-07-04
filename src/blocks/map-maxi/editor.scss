@@ -157,3 +157,10 @@
 		}
 	}
 }
+
+.maxi-map-markers-control {
+	.maxi-default-styles-control:not(.maxi-button-default-styles)
+		.maxi-default-styles-control__button {
+		width: 18.5%;
+	}
+}

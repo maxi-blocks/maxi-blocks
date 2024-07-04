@@ -13,12 +13,6 @@ function get_custom_formats_styles(
 
     if (is_array($custom_formats)) {
         foreach ($custom_formats as $key => $val) {
-            $key = str_replace(
-                'u002d',
-                '-',
-                $key
-            );
-
             $response[$target . ' .' . $key] = [
                 'typography' => get_typography_styles([
                     'obj' => $val,

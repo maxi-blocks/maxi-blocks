@@ -124,12 +124,12 @@ if (!class_exists('MaxiBlocks_List_Item_Maxi_Block')):
             );
             $link_styles = array_merge(
                 get_link_styles(
-                    get_group_attributes($props, 'link'),
+                    get_group_attributes($props, 'link', false, '', false, false),
                     ' a ' . $content_class,
                     $block_style,
                 ),
                 get_link_styles(
-                    get_group_attributes($props, 'link'),
+                    get_group_attributes($props, 'link', false, '', false, false),
                     $content_class . ' a',
                     $block_style,
                 ),

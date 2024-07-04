@@ -381,7 +381,6 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          */
         public static function replace_post_content($args, $assoc_args)
         {
-            $start_time = microtime(true);
             $post_id = $args[0];
 
             $content_source = isset($args[1]) ? $args[1] : null;
@@ -393,9 +392,6 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             $content = self::get_content($content_source);
 
             self::update_post_content($post_id, $content, $assoc_args);
-            $end_time = microtime(true);
-            $execution_time = $end_time - $start_time;
-            WP_CLI::success('Execution time: ' . $execution_time . ' seconds.');
         }
 
         private static function update_post_content(int $post_id, string $content, array $assoc_args): void

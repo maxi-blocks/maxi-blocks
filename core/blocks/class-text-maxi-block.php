@@ -596,6 +596,18 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'attributes' => $props
                     ]) ?? 'px';
 
+                $height_num = get_last_breakpoint_attribute([
+                    'target' => 'list-marker-height',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                    ]) ?? 0;
+
+                $height_unit = get_last_breakpoint_attribute([
+                    'target' => 'list-marker-height-unit',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                    ]) ?? 'px';
+
                 $text_position = get_last_breakpoint_attribute([
                     'target' => 'list-text-position',
                     'breakpoint' => $breakpoint,
@@ -629,33 +641,54 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'attributes' => $props
                     ]) ?? 'px';
 
-                $response[$breakpoint] = [];
-                if($type_of_list === 'ul'
-                && $list_style === 'custom'
-                && $list_style_custom
+                $vertical_offset_marker_num = get_last_breakpoint_attribute([
+                    'target' => 'list-marker-vertical-offset',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                    ]) ?? 0;
+                $vertical_offset_marker_unit = get_last_breakpoint_attribute([
+                    'target' => 'list-marker-vertical-offset-unit',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                    ]) ?? 'px';
+
+                if($type_of_list === 'ul' && $list_style === 'custom' && $list_style_custom
                 && strpos($list_style_custom, '</svg>') !== false) {
-                    $response[$breakpoint]['width'] = $size_num . $size_unit;
+                    $response_list_size[$breakpoint]['width'] = $size_num . $size_unit;
+                    if(!is_null($height_num) && !is_null($height_unit)) {
+                        $response_list_size[$breakpoint]['height'] = $height_num . $height_unit;
+                        if($text_position === 'middle') {
+                            $response_list_size[$breakpoint]['top'] = 'calc('.$height_num . $height_unit.' / 2 + '.$height_unit.')';
+                        }
+                    }
                 } else {
-                    $response[$breakpoint]['font-size'] = $size_num . $size_unit;
+                    $response_list_size[$breakpoint]['font-size'] = $size_num . $size_unit;
                 }
 
-                if($is_rtl) {
-                    $response[$breakpoint]['right'] = $marker_position;
-                } else {
-                    $response[$breakpoint]['left'] = $marker_position;
+                $response_list_size[$breakpoint]['line-height'] = $line_height_marker_num . (
+                    $line_height_marker_unit !== '-' ?
+                    $line_height_marker_unit : ''
+                );
+
+                if($vertical_offset_marker_num) {
+                    $response_list_size[$breakpoint]['transform'] = 'translateY('.$vertical_offset_marker_num . $vertical_offset_marker_unit.')';
                 }
+
+                $response_list_size[$breakpoint][$is_rtl ? 'right' : 'left'] = $marker_position;
 
                 if($list_style_position === 'outside' && $list_style !== 'custom') {
-                    $response[$breakpoint]['width'] = '1em';
-                    $response[$breakpoint]['margin-left'] = '-1em';
+                    $response_list_size[$breakpoint]['width'] = '1em';
+                    $response_list_size[$breakpoint][$is_rtl ? 'margin-right' : 'margin-left'] = '-1em';
                 } elseif($list_style_position === 'outside' && $list_style === 'custom') {
-                    $response[$breakpoint]['margin-left'] = '-'.$size_num . $size_unit;
+                    $response_list_size[$breakpoint][$is_rtl ? 'margin-right' : 'margin-left'] = '-'.$size_num . $size_unit;
                 }
 
                 if($list_style_position === 'inside') {
-                    $response[$breakpoint]['padding-left'] = $indent_marker_sum;
-                } else {
-                    $response[$breakpoint]['text-indent'] = $indent_marker_sum;
+                    $response_list_size[$breakpoint][$is_rtl ? 'margin-left' : 'margin-right'] = $indent_marker_sum;
+                }
+
+                if($text_position) {
+                    $response_list_size[$breakpoint]['vertical-align'] = $text_position;
                 }
             }
 

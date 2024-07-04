@@ -23,5 +23,5 @@
 	"eslint.alwaysShowStatus": true,
 	"prettier.tabWidth": 4,
 	"php-cs-fixer.rules": "@PSR2",
-	"cSpell.words": ["maxiblocks", "typesense", "wpdb"]
+	"cSpell.words": ["maxiblocks", "minifier", "typesense", "wpdb"]
 }

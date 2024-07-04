@@ -46,7 +46,7 @@ class MaxiBlocks_Block_Info_Updater
 
             $styles = $this->get_block_styles($block_instance, $block, $context);
             $fonts = json_encode($this->get_block_fonts($block_name, $props));
-            $frontend_styles = frontend_style_generator($styles, $unique_id);
+            $frontend_styles = process_css(frontend_style_generator($styles, $unique_id));
             $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
 
             $this->update_block_info($unique_id, $block_name, $props, $custom_meta, $frontend_styles, $fonts);

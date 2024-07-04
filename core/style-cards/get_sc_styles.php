@@ -654,5 +654,5 @@ function get_sc_styles($raw_style_card, $gutenberg_blocks_status, $is_backend = 
         }
     }
 
-    return $response;
+    return process_css($response);
 }

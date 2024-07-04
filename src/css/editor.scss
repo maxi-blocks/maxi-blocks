@@ -26,7 +26,7 @@
 	}
 
 	&__content {
-		overflow-y: clip;
+		//	overflow-y: clip;
 		// Removing background-color which this class has in FSE editor
 		// to make the iframe look good with small breakpoints
 		background-color: transparent !important;

@@ -134,13 +134,13 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				className='maxi-wrapper-block-inserter'
 				noArrow
 				animate={false}
-				position='bottom center'
 				focusOnMount={false}
 				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
 				__unstableSlotName='block-toolbar'
 				useAnimationFrame
 				observeBlockPosition={clientId}
 				dataclientid={clientId}
+				position='bottom center'
 				placement='bottom'
 			>
 				{Object.keys(blockHierarchy).length > 1 && (

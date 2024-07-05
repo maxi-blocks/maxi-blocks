@@ -1480,6 +1480,10 @@ class MaxiBlocks_DynamicContent
             $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $field_name_to_taxonomy[$dc_field]);
         }
 
+        if(in_array($dc_field, $this->get_custom_taxonomies())) {
+            $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $dc_field);
+        }
+
         return $post_data;
     }
 

@@ -113,9 +113,6 @@ const getDCOptions = async (
 			select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
 		]);
 
-		console.log('customPostTypes', customPostTypes);
-		console.log('customTaxonomies', customTaxonomies);
-
 		customPostTypesCache = customPostTypes;
 		customTaxonomiesCache = customTaxonomies;
 	}
@@ -130,8 +127,6 @@ const getDCOptions = async (
 		isCustomPostType,
 		isCustomTaxonomy
 	);
-
-	console.log('data', data);
 
 	if (!data) {
 		return null;

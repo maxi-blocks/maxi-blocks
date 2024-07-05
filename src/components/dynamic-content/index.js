@@ -319,9 +319,6 @@ const DynamicContent = props => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
 
-	console.log('field', field);
-	console.log('isCustomTaxonomyField', isCustomTaxonomyField);
-
 	return (
 		<div className={classes}>
 			<ToggleSwitch

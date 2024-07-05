@@ -175,8 +175,6 @@ const getCustomPostTypeFields = (contentType, type) => {
 	// TODO: refactor possibly by filtering post/page fields
 	const fields = [];
 
-	console.log('getCustomPostTypeFields', contentType, type);
-
 	const addField = (label, value) => {
 		fields.push({
 			label: __(label, 'maxi-blocks'),
@@ -190,7 +188,6 @@ const getCustomPostTypeFields = (contentType, type) => {
 	}
 
 	const postType = select('core').getPostType(type);
-	console.log(postType.taxonomies)
 
 	if (contentType === 'image') {
 		if (postType.supports.thumbnail) {

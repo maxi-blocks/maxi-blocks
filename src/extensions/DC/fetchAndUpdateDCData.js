@@ -29,6 +29,7 @@ const fetchAndUpdateDCData = async (
 	contentType,
 	clientId
 ) => {
+	console.log('fetchAndUpdateDCData');
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 	const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
@@ -57,6 +58,7 @@ const fetchAndUpdateDCData = async (
 			{ ...dynamicContent, ...synchronizedAttributes },
 			contextLoop
 		);
+		console.log('lastDynamicContentProps', lastDynamicContentProps);
 		const newLinkSettings = await getDCNewLinkSettings(
 			attributes,
 			lastDynamicContentProps,
@@ -75,6 +77,8 @@ const fetchAndUpdateDCData = async (
 				clientId
 			);
 			newContent = decodeEntities(newContent);
+
+			console.log('newContent', newContent);
 
 			const newContainsHTML =
 				linkTarget === field &&

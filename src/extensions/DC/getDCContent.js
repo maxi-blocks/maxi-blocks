@@ -83,6 +83,7 @@ const getDCContent = async (dataRequest, clientId) => {
 		'product_tags',
 		'product_categories',
 	].includes(type);
+
 	if (
 		renderedFields.includes(field) &&
 		!isNil(data[field]?.rendered) &&
@@ -132,16 +133,20 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = await handleParentField(contentValue, type);
 	}
 
-	if (
-		['tags', 'categories', 'product_tags', 'product_categories'].includes(
-			field
-		)
-	) {
+	const isCustomTaxonomyField = [
+		...customTaxonomies,
+		'tags',
+		'categories',
+		'product_tags',
+		'product_categories',
+	].includes(field);
+
+	if (isCustomTaxonomyField && !isNil(contentValue) && !isEmpty(contentValue)) {
 		contentValue = await getTaxonomyContent(
 			contentValue,
 			delimiterContent,
 			linkTarget === field,
-			nameDictionary[field]
+			nameDictionary[field] || field
 		);
 	}
 

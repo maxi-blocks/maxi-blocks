@@ -175,6 +175,8 @@ const getCustomPostTypeFields = (contentType, type) => {
 	// TODO: refactor possibly by filtering post/page fields
 	const fields = [];
 
+	console.log('getCustomPostTypeFields', contentType, type);
+
 	const addField = (label, value) => {
 		fields.push({
 			label: __(label, 'maxi-blocks'),
@@ -188,6 +190,7 @@ const getCustomPostTypeFields = (contentType, type) => {
 	}
 
 	const postType = select('core').getPostType(type);
+	console.log(postType.taxonomies)
 
 	if (contentType === 'image') {
 		if (postType.supports.thumbnail) {
@@ -214,14 +217,17 @@ const getCustomPostTypeFields = (contentType, type) => {
 	if (postType.supports.author) {
 		addField('Author', 'author');
 	}
-	postType.taxonomies.forEach(taxonomy => {
+	if(postType?.taxonomies) postType.taxonomies.forEach(taxonomy => {
 		if (taxonomy === 'category') {
 			addField('Categories', 'categories');
 		} else if (taxonomy === 'post_tag') {
 			addField('Tags', 'tags');
 		} else {
 			// Capitalize the first letter of the taxonomy
-			const label = taxonomy.charAt(0).toUpperCase() + taxonomy.slice(1);
+			const label = taxonomy
+			.split('-')
+			.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(' ');
 			addField(label, taxonomy);
 		}
 	});

@@ -210,8 +210,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 				  taxonomyData[taxonomy] = termIds;
 				}
 
-				console.log('taxonomyData', taxonomyData);
-
 				const templateEntity = {
 					id: 10000,
 					date: '2024-04-02T12:20:15',
@@ -275,7 +273,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 				}
 
 				if (entity) {
-					console.log('entity', entity);
 					if (!entity.categories || entity.categories.length === 0) {
 						entity.categories = categoriesIds;
 					}

@@ -309,10 +309,7 @@ const DynamicContent = props => {
 	).getCustomTaxonomies();
 
 	useEffect(() => {
-		setIsCustomTaxonomyField(
-			customTaxonomies.includes(field)
-		);
-
+		setIsCustomTaxonomyField(customTaxonomies.includes(field));
 	}, [field, type]);
 
 	useEffect(() => {
@@ -676,7 +673,8 @@ const DynamicContent = props => {
 							)}
 							{(['tags', 'categories'].includes(field) ||
 								(source === 'acf' &&
-									acfFieldType === 'checkbox') || isCustomTaxonomyField) &&
+									acfFieldType === 'checkbox') ||
+								isCustomTaxonomyField) &&
 								!error && (
 									<>
 										<SelectControl

@@ -107,7 +107,12 @@ const getDCOptions = async (
 	isCL = false,
 	{ 'cl-status': clStatus } = {}
 ) => {
-	if (!customPostTypesCache || !customTaxonomiesCache || customPostTypesCache.length === 0 || customTaxonomiesCache.length === 0) {
+	if (
+		!customPostTypesCache ||
+		!customTaxonomiesCache ||
+		customPostTypesCache.length === 0 ||
+		customTaxonomiesCache.length === 0
+	) {
 		const [customPostTypes, customTaxonomies] = await Promise.all([
 			select('maxiBlocks/dynamic-content').getCustomPostTypes(),
 			select('maxiBlocks/dynamic-content').getCustomTaxonomies(),

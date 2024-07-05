@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -29,7 +29,6 @@ const fetchAndUpdateDCData = async (
 	contentType,
 	clientId
 ) => {
-	console.log('fetchAndUpdateDCData');
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 	const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
@@ -58,7 +57,6 @@ const fetchAndUpdateDCData = async (
 			{ ...dynamicContent, ...synchronizedAttributes },
 			contextLoop
 		);
-		console.log('lastDynamicContentProps', lastDynamicContentProps);
 		const newLinkSettings = await getDCNewLinkSettings(
 			attributes,
 			lastDynamicContentProps,
@@ -78,11 +76,14 @@ const fetchAndUpdateDCData = async (
 			);
 			newContent = decodeEntities(newContent);
 
-			console.log('newContent', newContent);
+			const customTaxonomies = select(
+				'maxiBlocks/dynamic-content'
+			).getCustomTaxonomies();
 
 			const newContainsHTML =
 				linkTarget === field &&
-				inlineLinkFields.includes(field) &&
+				(inlineLinkFields.includes(field) ||
+					customTaxonomies.includes(field)) &&
 				!isNil(newContent);
 			if (!newContainsHTML) {
 				newContent = sanitizeDCContent(newContent);

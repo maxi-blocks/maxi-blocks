@@ -125,12 +125,24 @@ export const getLinkTargets = (type, field) => {
 	const targets = [];
 
 	targets.push({
-		label: 'Selected entity',
+		label: __('Selected entity', 'maxi-blocks'),
 		value: 'entity',
 	});
 
 	targets.push(...linkTypesOptions[type]);
 	targets.push(...linkFieldsOptions[field]);
+
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+
+	if (customTaxonomies.includes(field)) {
+		const capitalizedField = field.charAt(0).toUpperCase() + field.slice(1);
+		targets.push({
+			label: capitalizedField + ' ' + __('links', 'maxi-blocks'),
+			value: field,
+		});
+	}
 
 	return targets;
 };
@@ -214,20 +226,21 @@ const getCustomPostTypeFields = (contentType, type) => {
 	if (postType.supports.author) {
 		addField('Author', 'author');
 	}
-	if(postType?.taxonomies) postType.taxonomies.forEach(taxonomy => {
-		if (taxonomy === 'category') {
-			addField('Categories', 'categories');
-		} else if (taxonomy === 'post_tag') {
-			addField('Tags', 'tags');
-		} else {
-			// Capitalize the first letter of the taxonomy
-			const label = taxonomy
-			.split('-')
-			.map(word => word.charAt(0).toUpperCase() + word.slice(1))
-			.join(' ');
-			addField(label, taxonomy);
-		}
-	});
+	if (postType?.taxonomies)
+		postType.taxonomies.forEach(taxonomy => {
+			if (taxonomy === 'category') {
+				addField('Categories', 'categories');
+			} else if (taxonomy === 'post_tag') {
+				addField('Tags', 'tags');
+			} else {
+				// Capitalize the first letter of the taxonomy
+				const label = taxonomy
+					.split('-')
+					.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+					.join(' ');
+				addField(label, taxonomy);
+			}
+		});
 	if (postType.supports.comments) {
 		addField('Comments', 'comments');
 	}

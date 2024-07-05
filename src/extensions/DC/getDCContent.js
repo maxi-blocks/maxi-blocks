@@ -77,15 +77,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	let contentValue;
 
 	if (source === 'acf') {
-		console.log('source === acf');
-		console.log('relation', relation);
-		console.log('isEmpty(data)', isEmpty(data));
 		contentValue = await getACFFieldContent(field, data.id);
-		console.log('contentValue', contentValue);
-		console.log(
-			'getACFContentByType(contentValue, acfFieldType, dataRequest);',
-			getACFContentByType(contentValue, acfFieldType, dataRequest)
-		);
 		return getACFContentByType(contentValue, acfFieldType, dataRequest);
 	}
 

@@ -35,7 +35,11 @@ const getDCLink = async (dataRequest, clientId) => {
 		return getCartUrl();
 	}
 
-	if (inlineLinkFields.includes(linkTarget)) {
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+
+	if (inlineLinkFields.includes(linkTarget) || customTaxonomies.includes(linkTarget)) {
 		return 'Multiple Links';
 	}
 

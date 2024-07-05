@@ -17,7 +17,7 @@ jobs:
                   cache-name: cache-node-modules
               with:
                   # npm cache files are stored in `~/.npm` on Linux/macOS
-                   # to clear the cache, change `v1.2` for any other random number, github will destroy
+                  # to clear the cache, change `v1.2` for any other random number, github will destroy
                   # the old cache within 7 days 👌
                   # Note: don't change the `actions/setup-node@v1` or any other dependency version by error
                   path: ~/.npm
@@ -38,3 +38,37 @@ jobs:
               run: git checkout package-lock.json
             - name: Running the tests
               run: npm test
+    unit-php:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 2
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.0'
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16.x'
+            - name: Cache Composer packages
+              uses: actions/cache@v3
+              with:
+                  path: ~/.composer/cache
+                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-
+            - name: Cache npm packages
+              uses: actions/cache@v3
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
+            - name: Install Composer dependencies
+              run: composer install --prefer-dist --no-progress
+            - name: Install Node.js dependencies
+              run: npm install --legacy-peer-deps
+            - name: Run PHP Unit Tests
+              run: npm run test:php

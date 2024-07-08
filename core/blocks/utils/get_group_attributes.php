@@ -3,7 +3,7 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_is_valid.php';
 
 function json_file_to_array($item, $is_hover)
 {
-    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $item . ($is_hover ? 'Hover' : '') . '.json';
+    $file_path = MAXI_PLUGIN_DIR_PATH . 'group-attributes/' . $item . ($is_hover ? 'Hover' : '') . '.json';
 
     global $wp_filesystem;
     if (empty($wp_filesystem)) {
@@ -18,7 +18,7 @@ function json_file_to_array($item, $is_hover)
         }
     }
 
-    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $item . '.json';
+    $file_path = MAXI_PLUGIN_DIR_PATH . 'group-attributes/' . $item . '.json';
     if (file_exists($file_path)) {
         $file_contents = $wp_filesystem->get_contents($file_path);
         if ($file_contents) {

@@ -11,6 +11,7 @@ const { resolve } = require('path');
 const { sync: glob } = require('fast-glob');
 const Dotenv = require('dotenv-webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { exec } = require('child_process');
 
 // Check if ANALYZE is set to true
 const isAnalyze = process.env.ANALYZE === 'true';
@@ -36,6 +37,33 @@ glob(resolveNormalized(__dirname, 'js/*')).forEach(file => {
 		jsFiles[name] = resolveNormalized(__dirname, 'js', file);
 	}
 });
+
+class GenerateBlocksJsonPlugin {
+	apply(compiler) {
+		let hasRun = false;
+		compiler.hooks.afterEmit.tap('GenerateBlocksJsonPlugin', _ => {
+			if (!hasRun) {
+				this.runScript();
+				hasRun = true;
+			}
+		});
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	runScript() {
+		// eslint-disable-next-line no-console
+		console.log('Running block-json-abstract script...');
+		exec('npm run update-blocks-json', (error, stdout, stderr) => {
+			if (error) {
+				console.error(`exec error: ${error}`);
+				return;
+			}
+			// eslint-disable-next-line no-console
+			console.log(`stdout: ${stdout}`);
+			console.error(`stderr: ${stderr}`);
+		});
+	}
+}
 
 const scriptsConfig = {
 	mode: defaultConfig.mode,
@@ -85,7 +113,11 @@ const blocksConfig = {
 		...(isAnalyze
 			? [new BundleAnalyzerPlugin({ analyzerPort: 'auto' })]
 			: []),
+		new GenerateBlocksJsonPlugin(),
 	],
+	watchOptions: {
+		ignored: /node_modules/,
+	},
 };
 
 module.exports = [blocksConfig, scriptsConfig];

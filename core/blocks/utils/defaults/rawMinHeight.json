@@ -1,9 +1,0 @@
-{
-  "min-height-unit": {
-    "type": "string",
-    "default": "px"
-  },
-  "min-height": {
-    "type": "string"
-  }
-}

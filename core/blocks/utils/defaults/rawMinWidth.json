@@ -1,9 +1,0 @@
-{
-  "min-width-unit": {
-    "type": "string",
-    "default": "px"
-  },
-  "min-width": {
-    "type": "string"
-  }
-}

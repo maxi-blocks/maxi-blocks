@@ -90,6 +90,7 @@
 		"@wordpress/env": "latest",
 		"@wordpress/jest-preset-default": "latest",
 		"@wordpress/scripts": "latest",
+		"chokidar": "latest",
 		"css-minimizer-webpack-plugin": "latest",
 		"dotenv-webpack": "latest",
 		"enzyme": "latest",
@@ -103,8 +104,7 @@
 		"eslint-plugin-react-hooks": "latest",
 		"jest-canvas-mock": "latest",
 		"minify-css-string": "latest",
-		"prettier": "latest",
-		"webpack-bundle-analyzer": "latest"
+		"prettier": "latest"
 	},
 	"browserslist": {
 		"production": [

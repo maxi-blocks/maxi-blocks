@@ -18,6 +18,16 @@ import { find, isEmpty, isEqual } from 'lodash';
 let customPostTypesCache = null;
 let customTaxonomiesCache = null;
 
+const fetchCustomPostTypesAndTaxonomies = async () => {
+	const [customPostTypes, customTaxonomies] = await Promise.all([
+		select('maxiBlocks/dynamic-content').getCustomPostTypes(),
+		select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
+	]);
+
+	customPostTypesCache = customPostTypes;
+	customTaxonomiesCache = customTaxonomies;
+};
+
 const clearCustomCache = () => {
 	customPostTypesCache = null;
 	customTaxonomiesCache = null;
@@ -107,14 +117,13 @@ const getDCOptions = async (
 	isCL = false,
 	{ 'cl-status': clStatus } = {}
 ) => {
-	if (!customPostTypesCache || !customTaxonomiesCache) {
-		const [customPostTypes, customTaxonomies] = await Promise.all([
-			select('maxiBlocks/dynamic-content').getCustomPostTypes(),
-			select('maxiBlocks/dynamic-content').getCustomTaxonomies(),
-		]);
-
-		customPostTypesCache = customPostTypes;
-		customTaxonomiesCache = customTaxonomies;
+	if (
+		!customPostTypesCache ||
+		!customTaxonomiesCache ||
+		customPostTypesCache.length === 0 ||
+		customTaxonomiesCache.length === 0
+	) {
+		await fetchCustomPostTypesAndTaxonomies();
 	}
 
 	const isCustomPostType = customPostTypesCache.includes(type);

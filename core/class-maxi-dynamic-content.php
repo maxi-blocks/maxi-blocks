@@ -840,7 +840,7 @@ class MaxiBlocks_DynamicContent
             $response = 'No content found';
         }
 
-        if ($dc_link_status && in_array($dc_link_target, ['categories', 'tags'])) {
+        if ($dc_link_status && in_array($dc_link_target, array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
             $content = preg_replace('/<a[^>]+class="maxi-link-wrapper"[^>]*>/', '', $content, 1);
             $content = str_replace('$text-to-replace', $response, $content);
 
@@ -1332,6 +1332,9 @@ class MaxiBlocks_DynamicContent
             case 'tags':
                 return get_term_link($item);
             default:
+                if(in_array($field, $this->get_custom_taxonomies())) {
+                    return get_term_link($item);
+                }
                 return '';
         }
     }
@@ -1375,7 +1378,6 @@ class MaxiBlocks_DynamicContent
         }
 
         $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
-
         $taxonomy_content = [];
 
         foreach ($taxonomy_list as $taxonomy_item) {
@@ -1478,6 +1480,10 @@ class MaxiBlocks_DynamicContent
             ];
 
             $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $field_name_to_taxonomy[$dc_field]);
+        }
+
+        if(in_array($dc_field, $this->get_custom_taxonomies())) {
+            $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $dc_field);
         }
 
         return $post_data;

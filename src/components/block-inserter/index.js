@@ -330,12 +330,12 @@ const InterBlockInserter = forwardRef((props, ref) => {
 			className='maxi-inter-blocks-inserter'
 			noArrow
 			animate={false}
+			position='bottom center'
 			focusOnMount={false}
 			__unstableSlotName='block-toolbar'
 			observeBlockPosition={clientId}
 			dataclientid={clientId}
 			useAnimationFrame
-			position='bottom center'
 		>
 			<Inserter
 				key={`maxi-inter-blocks-inserter__content-${clientId}`}

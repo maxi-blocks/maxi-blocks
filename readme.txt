@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,7 +59,7 @@ Design websites that stand out, save time doing it.
 
 ## Who It's For 👥
 **MaxiBlocks is suitable for:**
-     
+
 - WordPress developers seeking efficient design tools
 - Designers transitioning to WordPress
 - Beginners looking to create professional sites without coding
@@ -76,7 +76,7 @@ Design websites that stand out, save time doing it.
 "Gutenberg fun and powerful customization? Yes, please!" - MeditatingSurgeon
 
 [Read more stories](https://maxiblocks.com/love/)
-	 
+
 ## Ready to transform your WordPress design process? 🚀
 
 **Install MaxiBlocks for free and start creating designer websites today.**

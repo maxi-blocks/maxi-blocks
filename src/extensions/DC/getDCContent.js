@@ -21,6 +21,7 @@ import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
 import getACFContentByType from './getACFContentByType';
 import { getCartContent, getProductsContent } from './getWCContent';
+import { getACFOptions } from '../../components/dynamic-content/acf-settings-control/utils';
 
 /**
  * External dependencies
@@ -40,13 +41,25 @@ const handleParentField = async (contentValue, type) => {
 
 const getDCContent = async (dataRequest, clientId) => {
 	const data = await getDCEntity(dataRequest, clientId);
+
+	const { source, relation, field } = dataRequest;
+
+	if (relation === 'current' && isEmpty(data)) {
+		if (source === 'acf') {
+			if (field) {
+				return capitalize(field) + __(': example value', 'maxi-blocks');
+			} else {
+				return __('ACF: example value', 'maxi-blocks');
+			}
+		}
+		return (
+			capitalize(dataRequest.field) + __(': example value', 'maxi-blocks')
+		);
+	}
 	if (!data) return null;
 
 	const {
-		source,
-		relation,
 		type,
-		field,
 		limit,
 		delimiterContent,
 		customDate,
@@ -68,10 +81,6 @@ const getDCContent = async (dataRequest, clientId) => {
 		return getACFContentByType(contentValue, acfFieldType, dataRequest);
 	}
 
-	if (relation === 'current' && isEmpty(data)) {
-		return `${capitalize(field)}: example ${field}`;
-	}
-
 	const customTaxonomies = select(
 		'maxiBlocks/dynamic-content'
 	).getCustomTaxonomies();
@@ -83,6 +92,7 @@ const getDCContent = async (dataRequest, clientId) => {
 		'product_tags',
 		'product_categories',
 	].includes(type);
+
 	if (
 		renderedFields.includes(field) &&
 		!isNil(data[field]?.rendered) &&
@@ -132,16 +142,24 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = await handleParentField(contentValue, type);
 	}
 
+	const isCustomTaxonomyField = [
+		...customTaxonomies,
+		'tags',
+		'categories',
+		'product_tags',
+		'product_categories',
+	].includes(field);
+
 	if (
-		['tags', 'categories', 'product_tags', 'product_categories'].includes(
-			field
-		)
+		isCustomTaxonomyField &&
+		!isNil(contentValue) &&
+		!isEmpty(contentValue)
 	) {
 		contentValue = await getTaxonomyContent(
 			contentValue,
 			delimiterContent,
 			linkTarget === field,
-			nameDictionary[field]
+			nameDictionary[field] || field
 		);
 	}
 

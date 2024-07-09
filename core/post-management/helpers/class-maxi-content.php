@@ -190,18 +190,40 @@ class MaxiBlocks_Content_Processor
      */
     public function prepare_content($content)
     {
-        $pattern = '/<!-- wp:maxi-blocks\/\$?[a-zA-Z-]+ (.*?) -->/';
-        if (preg_match_all($pattern, $content, $block_matches)) {
+        $block_pattern = '/<!-- wp:maxi-blocks\/\$?[a-zA-Z-]+ (.*?) -->/';
+
+        if (preg_match_all($block_pattern, $content, $block_matches)) {
             foreach ($block_matches[1] as $block_content) {
+                // e.g. "background-svg-SVGElement":"\u003csvg fill=\u0022#ff4a17\u0022...
                 $attribute_pattern = '/"([^"]+)":\s*"([^"]+)"/';
+
+                // e.g. "custom-formats":{"maxi-text-block__custom-format\u002d\u002d0"...
+                $key_pattern = '/"([^"]+)"\s*:/';
+
+                $replacements = [];
+
                 if (preg_match_all($attribute_pattern, $block_content, $matches)) {
                     foreach ($matches[2] as $match) {
-                        $decoded = json_encode($match);
-                        $decoded = substr($decoded, 1, -1);
-                        if ($decoded) {
-                            $content = str_replace($match, $decoded, $content);
+                        $encoded_value = addslashes($match);
+
+                        if ($encoded_value) {
+                            $replacements[$match] = $encoded_value;
                         }
                     }
+                }
+
+                if (preg_match_all($key_pattern, $block_content, $matches)) {
+                    foreach ($matches[1] as $match) {
+                        $encoded_key = addslashes($match);
+
+                        if ($encoded_key) {
+                            $replacements[$match] = $encoded_key;
+                        }
+                    }
+                }
+
+                foreach ($replacements as $original => $encoded) {
+                    $content = str_replace($original, $encoded, $content);
                 }
             }
         }

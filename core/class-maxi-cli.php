@@ -433,6 +433,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * : The post type of the post. Default is 'post'.
          *
          * ## EXAMPLES
+         * wp maxiblocks create-post "Post Title" # and then select attachment from media library
          * wp maxiblocks create-post "Post Title" /path/to/content.txt
          * wp maxiblocks create-post "Post Title" 456  # where 456 is an attachment ID
          * wp maxiblocks create-post "Post Title" --post_type=page

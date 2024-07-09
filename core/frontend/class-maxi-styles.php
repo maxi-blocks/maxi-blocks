@@ -344,6 +344,10 @@ class MaxiBlocks_Styles
     public function process_content_frontend(): void
     {
         $post_id = self::$style_utils->get_id();
+        if(!$post_id) {
+            return;
+        }
+
         $content_meta_fonts = $this->get_content_meta_fonts_frontend($post_id, 'maxi-blocks-styles');
 
         if ($content_meta_fonts['meta'] !== null) {

@@ -45,7 +45,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 'import-page-set' => 'import_page_set',
                 'replace-post-content' => 'replace_post_content',
                 'create-post' => 'create_post',
-                'update-post-styles' => 'update_post_styles',
+                'reload-post-styles' => 'reload_post_styles',
             ];
 
             foreach ($commands as $command => $method) {
@@ -74,7 +74,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         }
 
         /**
-         * Set style card for MaxiBlocks.
+         * Set active style card.
          *
          * ## OPTIONS
          *
@@ -83,6 +83,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *
          * ## EXAMPLES
          *
+         *     wp maxiblocks set-style-card StyleCardName
          *     wp maxiblocks set-style-card "Style Card Name"
          */
         public static function set_style_card($args)
@@ -164,7 +165,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         }
 
         /**
-         * Lists style cards using Typesense PHP.
+         * Lists all available from library style cards to set.
          *
          * ## OPTIONS
          *
@@ -260,7 +261,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         }
 
         /**
-         * Get the current style card.
+         * Get active style card name.
          *
          * ## EXAMPLES
          *
@@ -456,7 +457,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         }
 
         /**
-         * Updates the block styles for a post.
+         * Recalculates all block styles for a post. This command is useful if styles for post is broken or not working as expected.
          *
          * ## OPTIONS
          *
@@ -465,9 +466,9 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *
          * ## EXAMPLES
          *
-         *    wp maxiblocks update-post-styles 123
+         *    wp maxiblocks reload-post-styles 123
          */
-        public static function update_post_styles($args)
+        public static function reload_post_styles($args)
         {
             $post_id = $args[0];
 

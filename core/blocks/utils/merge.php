@@ -29,3 +29,15 @@ function merge_with(&$array1, $array2, $callback = null)
 
     return $array1;
 }
+
+/**
+ * Merges the given arrays recursively without a callback.
+ *
+ * @param array $array1 The first array to merge.
+ * @param array $array2 The second array to merge.
+ * @return array The merged array.
+ */
+function merge($array1, $array2)
+{
+    return merge_with($array1, $array2);
+}

@@ -42,7 +42,7 @@ class MaxiBlocks_Block_Info_Updater
             $props = $block_instance->get_block_attributes($block['attrs']);
             $unique_id = $props['uniqueID'];
 
-            $context = array_merge($this->create_context($block_name, $props, $inner_blocks), $context);
+            $context = array_merge($context, $this->create_context($block_name, $props, $inner_blocks));
 
             $styles = $this->get_block_styles($block_instance, $block, $context);
             $fonts = json_encode($this->get_block_fonts($block_name, $props));

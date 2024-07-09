@@ -1,3 +1,12 @@
+_Updates 9 Jul 2024_
+MaxiBlocks v1.9.1
+* Update: Added support for more Dynamic Content options for Custom Post Types.
+* Update: Improved SEO score for patterns with Interaction Builder effects.
+* Update: Optimized speed for Number Counter and Video frontend scripts.
+* Update: Enhancements to Dynamic Content and Content Loop speed on backend.
+* Fix: Resolved Search Maxi block's search icon bug when trying to replace it.
+* Fix: Pagination and hiding repeated elements for Content Loop when using WooCommerce products.
+
 _Updates 21 Jun 2024_
 MaxiBlocks v1.9.0
 * Fix: Resolved an issue where a single Image block or Icon block within a Group block would incorrectly disappear on frontend when using the Context Loop.
@@ -165,7 +174,7 @@ MaxiBlocks V1.5.8
 * Update: Unify Context Loop settings placement in Block Sidebar for all blocks.
 * Update: Change deprecated 'position' prop to 'placement' (removes a WordPress warning in the console).
 * Update: Remove redundant 'Search' button for Link settings in Toolbar.
-* Fix: Woo relation by category/tag in Editing Experience (EE).
+* Fix: WooCommerce relation by category/tag in Editing Experience (EE).
 * Fix: Dynamic Content link when changing Context Loop settings.
 * Fix: Dynamic Content link for Icon, Group, Columns.
 * Fix: Margin indicator overlapping.

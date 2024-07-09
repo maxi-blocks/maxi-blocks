@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,7 +59,7 @@ Design websites that stand out, save time doing it.
 
 ## Who It's For 👥
 **MaxiBlocks is suitable for:**
-     
+
 - WordPress developers seeking efficient design tools
 - Designers transitioning to WordPress
 - Beginners looking to create professional sites without coding
@@ -76,7 +76,7 @@ Design websites that stand out, save time doing it.
 "Gutenberg fun and powerful customization? Yes, please!" - MeditatingSurgeon
 
 [Read more stories](https://maxiblocks.com/love/)
-	 
+
 ## Ready to transform your WordPress design process? 🚀
 
 **Install MaxiBlocks for free and start creating designer websites today.**
@@ -172,6 +172,15 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 9 Jul 2024_
+MaxiBlocks v1.9.1
+* Update: Added support for more Dynamic Content options for Custom Post Types.
+* Update: Improved SEO score for patterns with Interaction Builder effects.
+* Update: Optimized speed for Number Counter and Video frontend scripts.
+* Update: Enhancements to Dynamic Content and Content Loop speed on backend.
+* Fix: Resolved Search Maxi block's search icon bug when trying to replace it.
+* Fix: Pagination and hiding repeated elements for Content Loop when using WooCommerce products.
+
 _Updates 21 Jun 2024_
 MaxiBlocks v1.9.0
 * Fix: Resolved an issue where a single Image block or Icon block within a Group block would incorrectly disappear on frontend when using the Context Loop.
@@ -183,18 +192,6 @@ MaxiBlocks v1.8.9
 * Update: Strengthened the plugin's security measures to protect your site against potential PHP vulnerabilities.
 * Fix: Corrected default Style Card style generation on the first plugin installation.
 * Fix: Resolved backend and frontend issues related to Dynamic Content when displaying posts filtered by author.
-
-_Updates 11 Jun 2024_
-MaxiBlocks v1.8.8
-* Update: Improved compatibility with the future MaxiBlocks theme, ensuring better integration and performance enhancements for upcoming theme updates.
-* Update: Default Style Card now has Navigation and Link hover styles enabled by default for new installations, providing a more user-friendly experience right out of the box.
-* Update: Enhancements to Patterns and Template UI for MaxiBlocks items, offering a more intuitive design process and improved usability.
-* Fix: Enabled the use of empty groups and columns for backgrounds without hiding them, allowing designers more flexibility in creating complex layouts without visual artefacts.
-* Fix: Corrected a broken icon for Footer patterns 103, 104, 105, ensuring all footer elements display correctly.
-* Fix: Resolved pagination issues for Blog patterns 12 and 24, ensuring smooth navigation and accurate content display across multiple pages.
-* Fix: Made Style Cards responsive for font size and line height adjustments, ensuring consistent and adaptive text presentation across different devices and screen sizes.
-* Fix: Ensured MaxiBlocks compatibility with the Editor Template menu, facilitating a straightforward workflow and preventing potential conflicts when using templates.
-* Fix: Addressed various PHP warnings when using the Site Editor, improving overall stability and providing a cleaner development environment for users.
 
 == Upgrade Notice ==
 

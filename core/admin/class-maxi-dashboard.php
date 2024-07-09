@@ -41,6 +41,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'maxi_admin_scripts_styles',
             ]);
+
+            add_action('maxi_blocks_db_tables_created', [$this, 'update_settings_on_install']);
+        }
+
+        public function update_settings_on_install()
+        {
+            update_option('bunny_fonts', true);
         }
 
         public function maxi_get_menu_icon_base64()
@@ -485,36 +492,23 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
             $content .= $this->generate_item_header(__('Fonts and files', 'maxi-blocks'), false);
 
-
-            $description = '<h4>'.__('Use bunny.net fonts', 'maxi-blocks').'</h4>';
-            $description .= '<p>'.__('Use bunny.net CDN to serve fonts. GDPR compliant analogue to Google fonts', 'maxi-blocks').'</p>';
+            $description = '<h4>'.__('Use Bunny Fonts', 'maxi-blocks').'</h4>';
+            $description .= '<p>'.__('Bunny Fonts: Privacy-friendly, GDPR compliant. Global CDN for fast loading. Wide selection of fonts available.', 'maxi-blocks').'</p>';
+            $description .= '<p>'.__('Google Fonts: Extensive font selection. Potential privacy concerns when using Google\'s CDN.', 'maxi-blocks').'</p>';
             $content .= $this->generate_setting($description, 'bunny_fonts');
 
-            $description =
-                '<h4>' .
-                __('Serve Google/Bunny fonts locally', 'maxi-blocks') .
-                '</h4>';
-            $description .=
-                '<p>' .
-                __(
-                    'Local storage: Download, store and serve font files from a WordPress directory on your site. This method blocks Google’s tracking for web visitors. It can improve or degrade performance, depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space.',
-                    'maxi-blocks',
-                ) .
-                '</p>';
-            $description .=
-                '<p>' .
-                __(
-                    'Google servers: Serve Google font files directly from Google’s servers. It may impact
-            privacy (GDPR) if a web visitor’s IP address is revealed to Google.',
-                    'maxi-blocks',
-                );
-            $description .=
-                '<i> ' . __('(Default)', 'maxi-blocks') . '</i></p>';
-            $content .= $this->generate_setting(
-                $description,
-                'local_fonts',
-                $this->local_fonts_upload(),
-            );
+            if (get_option('bunny_fonts')) {
+                $description = '<h4>'.__('Serve Bunny Fonts locally', 'maxi-blocks').'</h4>';
+                $description .= '<p>'.__('Serve Bunny Fonts from CDN: Fastest option. Uses external CDN. No local storage required.', 'maxi-blocks').'</p>';
+                $description .= '<p>'.__('Serve Bunny Fonts locally: Privacy-focused. May impact server performance. Requires local storage.', 'maxi-blocks').'</p>';
+                $content .= $this->generate_setting($description, 'local_fonts');
+            } else {
+                $description = '<h4>'.__('Serve Google Fonts locally', 'maxi-blocks').'</h4>';
+                $description .= '<p>'.__('Serve from Google CDN: Fastest option. Uses Google\'s CDN. Potential privacy (GDPR) implications.', 'maxi-blocks').'</p>';
+                $description .= '<p>'.__('Serve Google Fonts locally: Blocks Google tracking. May impact server performance. Requires local storage.', 'maxi-blocks').'</p>';
+                $content .= $this->generate_setting($description, 'local_fonts');
+            }
+
             if ($font_uploads_dir_size > 0) {
                 $content .=
                     '<p>' .
@@ -1156,7 +1150,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     add_option($setting_name, $setting_args['default']);
                 }
             }
-
         }
 
         public function get_folder_size($folder)

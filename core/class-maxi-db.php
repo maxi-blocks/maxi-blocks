@@ -55,6 +55,7 @@ if (!class_exists('MaxiBlocks_DB')):
             if (!$tables_created && version_compare(MAXI_PLUGIN_VERSION, '1.3.1', '>')) {
                 // Call your function to create/update tables
                 $this->add_maxi_tables();
+                do_action('maxi_blocks_db_tables_created');
 
                 // Mark that tables were created for this version
                 update_option("maxi_plugin_db_tables_created", true);

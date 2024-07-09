@@ -565,7 +565,9 @@ html[dir='rtl'] {
 /**
 * Hide scrollbar in iframe editor #3574
 */
-body[maxi-blocks-responsive] {
+body[maxi-blocks-responsive='m'],
+body[maxi-blocks-responsive='s'],
+body[maxi-blocks-responsive='xs'] {
 	&::-webkit-scrollbar {
 		width: 0;
 	}

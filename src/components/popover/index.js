@@ -152,7 +152,6 @@ const Popover = (
 		resize = false,
 		__unstableObserveElement,
 		__unstableSlotName = SLOT_NAME,
-		key = '',
 		...contentProps
 	},
 	forwardedRef

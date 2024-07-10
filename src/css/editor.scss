@@ -455,6 +455,7 @@ body {
 	}
 	.maxi-blocks-pattern-preview-grid {
 		aspect-ratio: inherit !important;
+		min-height: auto !important;
 		&__card {
 			height: auto !important;
 		}

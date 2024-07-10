@@ -235,10 +235,6 @@
 					&[aria-expanded='true'] {
 						background-color: #eaf2f6;
 
-						&::after {
-							height: 2px;
-						}
-
 						.toolbar-item__icon {
 							ellipse,
 							circle,

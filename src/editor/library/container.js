@@ -1083,7 +1083,7 @@ const LibraryContainer = props => {
 							{type === 'search-icon' && (
 								<SearchBox
 									submit={__('Find', 'maxi-blocks')}
-									defaultRefinement='search'
+									defaultRefinement= {prefix === 'close-' ? 'close' : 'search'}
 									autoFocus
 									searchAsYouType
 									reset='X'

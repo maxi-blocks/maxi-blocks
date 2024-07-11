@@ -25,7 +25,8 @@
 			background: #fff;
 			letter-spacing: 0;
 
-			&__content {
+			&__content,
+			> div.components-flex {
 				margin: 0 0 0 8px;
 			}
 			&__title {
@@ -50,7 +51,8 @@
 * RTL
 *******************************/
 html[dir='rtl'] {
-	.block-editor-block-card__content {
+	.block-editor-block-card__content,
+	.block-editor-block-card > div.components-flex {
 		margin-right: 8px !important;
 		margin-left: 0 !important;
 	}

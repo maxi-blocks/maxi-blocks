@@ -189,25 +189,35 @@ const getDCEntity = async (dataRequest, clientId) => {
 				);
 
 				const tagsIds = tags ? tags.map(tag => tag.id) : [];
-
-				const postType = select('core').getPostType(type);
-				const taxonomies = postType.taxonomies;
-
-				const customTaxonomies = taxonomies.filter(
-				  taxonomy => !['category', 'post_tag'].includes(taxonomy)
-				);
-
 				const taxonomyData = {};
 
-				for (const taxonomy of customTaxonomies) {
-				  const terms = await resolveSelect('core').getEntityRecords(
-					'taxonomy',
-					taxonomy,
-					{ per_page: 2 }
-				  );
+				try {
+					const postType = select('core').getPostType(type);
+					if (postType) {
+						const taxonomies = postType?.taxonomies;
 
-				  const termIds = terms ? terms.map(term => term.id) : [];
-				  taxonomyData[taxonomy] = termIds;
+						if (taxonomies) {
+							const customTaxonomies = taxonomies.filter(
+								taxonomy =>
+									!['category', 'post_tag'].includes(taxonomy)
+							);
+
+							for (const taxonomy of customTaxonomies) {
+								const terms = await resolveSelect(
+									'core'
+								).getEntityRecords('taxonomy', taxonomy, {
+									per_page: 2,
+								});
+
+								const termIds = terms
+									? terms.map(term => term.id)
+									: [];
+								taxonomyData[taxonomy] = termIds;
+							}
+						}
+					}
+				} catch (error) {
+					// silent error
 				}
 
 				const templateEntity = {
@@ -311,14 +321,12 @@ const getDCEntity = async (dataRequest, clientId) => {
 			}
 		}
 
-		if(!isFSE) return (
-			resolveSelect('core').getEditedEntityRecord(
+		if (!isFSE)
+			return await resolveSelect('core').getEditedEntityRecord(
 				getKind(type),
 				nameDictionary[type] ?? type,
 				select('core/editor').getCurrentPostId()
-			)
-		);
-
+			);
 	}
 	if (
 		['tags', 'categories', 'product_categories', 'product_tags'].includes(

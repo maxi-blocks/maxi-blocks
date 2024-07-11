@@ -167,7 +167,8 @@ const ResponsiveSelector = props => {
 		// Ensure the editor wrapper has the Maxi responsive attribute
 		const editorWrapper =
 			document.querySelector('.edit-post-visual-editor') ||
-			document.querySelector('.edit-site-visual-editor');
+			document.querySelector('.edit-site-visual-editor') ||
+			document.querySelector('.editor-visual-editor');
 
 		[editorWrapper, getSiteEditorIframeBody()].forEach(wrapper => {
 			if (
@@ -306,7 +307,8 @@ const ResponsiveSelector = props => {
 
 			const editorWrapper =
 				document.querySelector('.edit-post-visual-editor') ||
-				document.querySelector('.edit-site-visual-editor');
+				document.querySelector('.edit-site-visual-editor') ||
+				document.querySelector('.editor-visual-editor');
 
 			editorWrapper.setAttribute('maxi-blocks-responsive', maxiValue);
 			editorWrapper.removeAttribute('maxi-blocks-responsive-width');

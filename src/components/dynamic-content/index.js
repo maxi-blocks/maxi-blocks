@@ -208,7 +208,7 @@ const DynamicContent = props => {
 					}));
 					setPostAuthorOptions(authorOptions);
 
-					if (!author) {
+					if (contentType !== 'image' && !author) {
 						const { id } = await resolveSelect(
 							'core'
 						).getCurrentUser();

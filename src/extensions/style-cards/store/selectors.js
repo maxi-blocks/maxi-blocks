@@ -82,7 +82,7 @@ const navigationObject = {
 		'text-indent-unit-general': 'px',
 		'overwrite-mobile': false,
 		'always-show-mobile': false,
-		'show-mobile-down-from': 767,
+		'show-mobile-down-from': 1024,
 		'remove-hover-underline': false,
 		'padding-top-general': 5,
 		'padding-top-xxl': 10,

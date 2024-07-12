@@ -263,7 +263,7 @@ export const getPageFonts = (onlyBackend = false) => {
 				response = mergeDeep(
 					getAllFonts(
 						typography,
-						false,
+						'custom-formats',
 						false,
 						textLevel,
 						blockStyle,
@@ -271,7 +271,7 @@ export const getPageFonts = (onlyBackend = false) => {
 					),
 					getAllFonts(
 						typographyHover,
-						false,
+						'custom-formats',
 						true,
 						textLevel,
 						blockStyle,
@@ -281,7 +281,7 @@ export const getPageFonts = (onlyBackend = false) => {
 			else
 				response = getAllFonts(
 					typography,
-					false,
+					'custom-formats',
 					false,
 					textLevel,
 					blockStyle,

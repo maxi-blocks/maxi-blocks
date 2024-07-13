@@ -104,7 +104,6 @@ const blocksConfig = {
 		fallback: { ...defaultConfig.resolve.fallback, https: false },
 		alias: {
 			...defaultConfig.resolve.alias,
-			'react/jsx-runtime': 'react/jsx-runtime.js',
 		},
 	},
 	plugins: [

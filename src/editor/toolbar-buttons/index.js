@@ -75,7 +75,8 @@ wp.domReady(() => {
 		const parentNode =
 			document.querySelector('.edit-post-header__toolbar') ||
 			document.querySelector('.edit-site-header__toolbar') ||
-			document.querySelector('.edit-site-header-edit-mode');
+			document.querySelector('.edit-site-header-edit-mode') ||
+			document.querySelector('.editor-header__toolbar');
 
 		// Insert Maxi buttons on Gutenberg topbar
 		if (!maxiToolbar && parentNode) {

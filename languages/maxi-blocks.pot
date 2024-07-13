@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.8.9\n"
+"Project-Id-Version: MaxiBlocks 1.9.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-20T13:59:43+00:00\n"
+"POT-Creation-Date: 2024-07-09T09:43:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -617,12 +617,12 @@ msgstr ""
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:824
-#: core/class-maxi-dynamic-content.php:1577
+#: core/class-maxi-dynamic-content.php:827
+#: core/class-maxi-dynamic-content.php:1586
 msgid "author"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:827
+#: core/class-maxi-dynamic-content.php:830
 msgid "date"
 msgstr ""
 
@@ -875,7 +875,7 @@ msgstr ""
 #: src/blocks/video-maxi/components/video-control/index.js:155
 #: src/components/background-control/imageLayer.js:121
 #: src/components/divider-control/index.js:158
-#: src/components/dynamic-content/index.js:164
+#: src/components/dynamic-content/index.js:165
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
 #: src/components/typography-control/index.js:937
@@ -1922,8 +1922,8 @@ msgstr ""
 
 #: build/4114.js:1
 #: src/blocks/text-maxi/components/list-options-control/index.js:832
-#: src/components/context-loop/index.js:322
-#: src/components/dynamic-content/index.js:329
+#: src/components/context-loop/index.js:338
+#: src/components/dynamic-content/index.js:355
 msgid "Source"
 msgstr ""
 
@@ -2109,7 +2109,7 @@ msgstr ""
 
 #: build/4858.js:1
 #: build/6199.js:1
-#: src/components/toolbar/components/link/index.js:112
+#: src/components/toolbar/components/link/index.js:116
 #: src/components/toolbar/components/text-link/index.js:301
 #: src/components/typography-control/index.js:90
 #: src/extensions/DC/constants.js:221
@@ -2121,13 +2121,13 @@ msgstr ""
 
 #: build/4858.js:1
 #: build/6199.js:1
-#: src/components/toolbar/components/link/index.js:125
+#: src/components/toolbar/components/link/index.js:129
 msgid "Use dynamic content link"
 msgstr ""
 
 #: build/4858.js:1
 #: build/6199.js:1
-#: src/components/toolbar/components/link/index.js:169
+#: src/components/toolbar/components/link/index.js:173
 msgid "Link target"
 msgstr ""
 
@@ -3297,7 +3297,7 @@ msgstr ""
 #: src/blocks/image-maxi/edit.js:457
 #: src/blocks/image-maxi/edit.js:559
 #: src/blocks/image-maxi/edit.js:620
-#: src/extensions/DC/utils.js:146
+#: src/extensions/DC/utils.js:154
 msgid "No content found"
 msgstr ""
 
@@ -3494,7 +3494,7 @@ msgstr ""
 #: src/components/aspect-ratio-control/index.js:47
 #: src/components/background-control/imageLayer.js:109
 #: src/components/background-control/imageLayer.js:301
-#: src/components/dynamic-content/index.js:167
+#: src/components/dynamic-content/index.js:168
 #: src/components/image-alt-control/index.js:58
 msgid "Custom"
 msgstr ""
@@ -3797,8 +3797,8 @@ msgid "none"
 msgstr ""
 
 #: src/components/clip-path-control/index.js:368
-#: src/components/context-loop/index.js:355
-#: src/components/dynamic-content/index.js:364
+#: src/components/context-loop/index.js:371
+#: src/components/dynamic-content/index.js:390
 msgid "Type"
 msgstr ""
 
@@ -3860,82 +3860,82 @@ msgstr ""
 msgid "Pallet box colour %s"
 msgstr ""
 
-#: src/components/context-loop/index.js:281
+#: src/components/context-loop/index.js:297
 msgid "Use context loop"
 msgstr ""
 
-#: src/components/context-loop/index.js:305
+#: src/components/context-loop/index.js:321
 msgid "Stop accumulator inheritance"
 msgstr ""
 
-#: src/components/context-loop/index.js:384
-#: src/components/dynamic-content/index.js:396
+#: src/components/context-loop/index.js:400
+#: src/components/dynamic-content/index.js:422
 msgid "This type is empty"
 msgstr ""
 
-#: src/components/context-loop/index.js:389
-#: src/components/dynamic-content/index.js:402
+#: src/components/context-loop/index.js:405
+#: src/components/dynamic-content/index.js:428
 msgid "Relation"
 msgstr ""
 
-#: src/components/context-loop/index.js:412
-#: src/components/dynamic-content/index.js:433
+#: src/components/context-loop/index.js:426
+#: src/components/dynamic-content/index.js:459
 msgid "Author id"
 msgstr ""
 
-#: src/components/context-loop/index.js:467
-#: src/components/dynamic-content/index.js:495
+#: src/components/context-loop/index.js:481
+#: src/components/dynamic-content/index.js:521
 msgid "Order by"
 msgstr ""
 
-#: src/components/context-loop/index.js:489
-#: src/components/dynamic-content/index.js:518
+#: src/components/context-loop/index.js:503
+#: src/components/dynamic-content/index.js:544
 #: src/components/flex-settings-control/index.js:115
 msgid "Order"
 msgstr ""
 
-#: src/components/context-loop/index.js:515
-#: src/components/dynamic-content/index.js:545
+#: src/components/context-loop/index.js:529
+#: src/components/dynamic-content/index.js:571
 msgid "Accumulator"
 msgstr ""
 
-#: src/components/context-loop/index.js:540
+#: src/components/context-loop/index.js:554
 msgid "Enable for grandchildren blocks"
 msgstr ""
 
-#: src/components/context-loop/index.js:555
+#: src/components/context-loop/index.js:569
 msgid "Pagination"
 msgstr ""
 
-#: src/components/context-loop/index.js:570
+#: src/components/context-loop/index.js:584
 msgid "Items per page"
 msgstr ""
 
-#: src/components/context-loop/index.js:596
+#: src/components/context-loop/index.js:610
 msgid "Items total: show all"
 msgstr ""
 
-#: src/components/context-loop/index.js:610
+#: src/components/context-loop/index.js:624
 msgid "Items total"
 msgstr ""
 
-#: src/components/context-loop/index.js:641
+#: src/components/context-loop/index.js:655
 msgid "Text for previous link"
 msgstr ""
 
-#: src/components/context-loop/index.js:655
+#: src/components/context-loop/index.js:669
 msgid "Text for next link"
 msgstr ""
 
-#: src/components/context-loop/index.js:668
+#: src/components/context-loop/index.js:682
 msgid "Show page list (1, 2, 3, …)"
 msgstr ""
 
-#: src/components/context-loop/index.js:700
+#: src/components/context-loop/index.js:714
 msgid "Pagination hover"
 msgstr ""
 
-#: src/components/context-loop/index.js:751
+#: src/components/context-loop/index.js:765
 msgid "Pagination current"
 msgstr ""
 
@@ -5196,39 +5196,39 @@ msgstr ""
 msgid "d.m.Y t"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:165
+#: src/components/dynamic-content/index.js:166
 msgid "Comma"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:166
+#: src/components/dynamic-content/index.js:167
 msgid "Semicolon"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:296
+#: src/components/dynamic-content/index.js:322
 msgid "Use dynamic content"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:317
+#: src/components/dynamic-content/index.js:343
 msgid "Hide if no content found on frontend"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:580
+#: src/components/dynamic-content/index.js:606
 msgid "Field"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:604
+#: src/components/dynamic-content/index.js:630
 msgid "Character limit"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:654
+#: src/components/dynamic-content/index.js:681
 msgid "Delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:682
+#: src/components/dynamic-content/index.js:709
 msgid "Custom delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:699
+#: src/components/dynamic-content/index.js:726
 msgid "Image accumulator"
 msgstr ""
 
@@ -6427,7 +6427,7 @@ msgid "Get by id"
 msgstr ""
 
 #: src/extensions/DC/constants.js:104
-#: src/extensions/DC/utils.js:345
+#: src/extensions/DC/utils.js:361
 msgid "Get by tag"
 msgstr ""
 
@@ -6448,12 +6448,12 @@ msgstr ""
 
 #: src/extensions/DC/constants.js:113
 #: src/extensions/DC/constants.js:121
-#: src/extensions/DC/utils.js:327
+#: src/extensions/DC/utils.js:343
 msgid "Get alphabetical"
 msgstr ""
 
 #: src/extensions/DC/constants.js:114
-#: src/extensions/DC/utils.js:333
+#: src/extensions/DC/utils.js:349
 msgid "Get by author"
 msgstr ""
 
@@ -6675,40 +6675,46 @@ msgstr ""
 msgid "ACF"
 msgstr ""
 
-#: src/extensions/DC/getDCContent.js:135
+#: src/extensions/DC/getDCContent.js:33
+#: src/extensions/DC/getDCContent.js:39
 msgid "No parent"
 msgstr ""
 
-#: src/extensions/DC/getDCMedia.js:43
-msgid "Error fetching media, try to add Featured Image to the product you want to show"
+#: src/extensions/DC/getDCContent.js:50
+#: src/extensions/DC/getDCContent.js:56
+msgid ": example value"
 msgstr ""
 
-#: src/extensions/DC/getDCMedia.js:52
-msgid "Error fetching media, check if it exists in the Media Library"
-msgstr ""
-
-#: src/extensions/DC/getDCMedia.js:60
-msgid "Error fetching media, try to add Featured Image to the post you want to show"
+#: src/extensions/DC/getDCContent.js:52
+msgid "ACF: example value"
 msgstr ""
 
 #: src/extensions/DC/getTypes.js:52
 msgid "All archives"
 msgstr ""
 
-#: src/extensions/DC/utils.js:306
+#: src/extensions/DC/utils.js:128
+msgid "Selected entity"
+msgstr ""
+
+#: src/extensions/DC/utils.js:142
+msgid "links"
+msgstr ""
+
+#: src/extensions/DC/utils.js:322
 msgid "Archive type's name"
 msgstr ""
 
-#: src/extensions/DC/utils.js:339
+#: src/extensions/DC/utils.js:355
 msgid "Get by category"
 msgstr ""
 
-#: src/extensions/DC/utils.js:372
-#: src/extensions/DC/utils.js:392
+#: src/extensions/DC/utils.js:388
+#: src/extensions/DC/utils.js:408
 msgid "Get the current item's data"
 msgstr ""
 
-#: src/extensions/DC/utils.js:382
+#: src/extensions/DC/utils.js:398
 msgid "Get the current archive's posts"
 msgstr ""
 

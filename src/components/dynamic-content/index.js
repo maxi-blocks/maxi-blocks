@@ -9,7 +9,7 @@ import {
 	useMemo,
 	useState,
 } from '@wordpress/element';
-import { resolveSelect, useSelect } from '@wordpress/data';
+import { resolveSelect, useSelect, select } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -89,6 +89,7 @@ const DynamicContent = props => {
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 	const [postTypesOptions, setPostTypesOptions] = useState(null);
+	const [isCustomTaxonomyField, setIsCustomTaxonomyField] = useState(false);
 
 	const { relationTypes, orderTypes, limitTypes } = useSelect(select => {
 		const { getRelationTypes, getOrderTypes, getLimitTypes } = select(
@@ -207,7 +208,7 @@ const DynamicContent = props => {
 					}));
 					setPostAuthorOptions(authorOptions);
 
-					if (!author) {
+					if (contentType !== 'image' && !author) {
 						const { id } = await resolveSelect(
 							'core'
 						).getCurrentUser();
@@ -302,6 +303,14 @@ const DynamicContent = props => {
 			});
 		}
 	}, []);
+
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+
+	useEffect(() => {
+		setIsCustomTaxonomyField(customTaxonomies.includes(field));
+	}, [field, type]);
 
 	useEffect(() => {
 		fetchDcData().catch(console.error);
@@ -664,7 +673,8 @@ const DynamicContent = props => {
 							)}
 							{(['tags', 'categories'].includes(field) ||
 								(source === 'acf' &&
-									acfFieldType === 'checkbox')) &&
+									acfFieldType === 'checkbox') ||
+								isCustomTaxonomyField) &&
 								!error && (
 									<>
 										<SelectControl

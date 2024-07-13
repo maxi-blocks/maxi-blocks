@@ -305,6 +305,7 @@ const Popover = (
 		strategy,
 		placement: normalizedPlacementFromProps,
 		middleware,
+		transform: false,
 		whileElementsMounted: (...args) =>
 			autoUpdate(...args, {
 				ancestorScroll: false,

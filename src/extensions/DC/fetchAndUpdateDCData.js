@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -76,9 +76,14 @@ const fetchAndUpdateDCData = async (
 			);
 			newContent = decodeEntities(newContent);
 
+			const customTaxonomies = select(
+				'maxiBlocks/dynamic-content'
+			).getCustomTaxonomies();
+
 			const newContainsHTML =
 				linkTarget === field &&
-				inlineLinkFields.includes(field) &&
+				(inlineLinkFields.includes(field) ||
+					customTaxonomies.includes(field)) &&
 				!isNil(newContent);
 			if (!newContainsHTML) {
 				newContent = sanitizeDCContent(newContent);

@@ -234,11 +234,6 @@
 					&:hover,
 					&[aria-expanded='true'] {
 						background-color: #eaf2f6;
-
-						&::after {
-							height: 2px;
-						}
-
 						.toolbar-item__icon {
 							ellipse,
 							circle,
@@ -247,6 +242,50 @@
 							polyline,
 							path {
 								fill: var(--maxi-secondary-color);
+							}
+						}
+					}
+
+					&:focus,
+					&:visited {
+						box-shadow: none;
+						outline: 0;
+					}
+				}
+
+				&__underline,
+				&__strikethrough,
+				&__subscript,
+				&__superscript {
+					width: 100%;
+					height: 100%;
+					padding: 0;
+					transition: 0.3s;
+					border-radius: 0;
+
+					&::after {
+						content: '';
+						display: block;
+						background-color: var(--maxi-secondary-color);
+						height: 0;
+						position: absolute;
+						bottom: -1px;
+						left: -1px;
+						right: -1px;
+						transition: 0.2s;
+					}
+
+					&:hover,
+					&[aria-expanded='true'] {
+						background-color: #eaf2f6;
+						.toolbar-item__icon {
+							ellipse,
+							circle,
+							line,
+							rect,
+							polyline,
+							path {
+								stroke: var(--maxi-secondary-color);
 							}
 						}
 					}

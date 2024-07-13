@@ -177,3 +177,15 @@ html[dir='rtl'] {
 		direction: ltr;
 	}
 }
+
+/*******************************
+* Fix WordPress 6.6 double scrollbar issue
+*******************************/
+
+body.maxi-blocks--active.branch-6-6:not(.site-editor-php) {
+	.editor-visual-editor {
+		> .components-resizable-box__container.editor-resizable-editor {
+			height: auto !important;
+		}
+	}
+}

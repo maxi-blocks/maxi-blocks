@@ -3,11 +3,8 @@
 /**
  * Function to get all fonts based on various attributes.
  *
- * This function accepts several parameters to determine which fonts to get,
- * then it gets them recursively if needed. It returns the result as an associative array.
- *
  * @param array $attr The attributes to base the font selection on.
- * @param bool|string $recursive_key The key to search for recursively in the attributes array. If false, no recursive search is performed.
+ * @param bool|string $recursive_key The key to search for recursively in the attributes array.
  * @param bool $is_hover Whether the function should get hover fonts.
  * @param string $text_level The level of text for which to get the fonts. Default is 'p'.
  * @param string $block_style The style of block for which to get the fonts. Default is 'light'.
@@ -17,70 +14,77 @@
  */
 function get_all_fonts($attr, $recursive_key = false, $is_hover = false, $text_level = 'p', $block_style = 'light', $only_backend = false)
 {
-
-    $result = []; // Initialize result array.
-
-    // Define the different breakpoints for the fonts.
+    $result = [];
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-    // Define the recursive function to get all fonts.
     $get_all_fonts_recursively = function ($obj) use ($breakpoints, $is_hover, $text_level, $only_backend, $recursive_key, $block_style, &$result, &$get_all_fonts_recursively) {
+        $properties_to_check = [
+            'font-family',
+            'font-weight',
+            'font-style',
+            'cl-pagination-font-family',
+            'cl-pagination-font-weight',
+            'cl-pagination-font-style',
+        ];
 
-        // Loop through each breakpoint.
         foreach ($breakpoints as $breakpoint) {
+            $final_font_name = null;
+            $final_font_weight = null;
+            $final_font_style = null;
 
-            // Retrieve font name, weight, and style for the current breakpoint.
-            $font_name = isset($obj["font-family-{$breakpoint}"]) ? $obj["font-family-{$breakpoint}"] : null;
-            $font_weight = isset($obj["font-weight-{$breakpoint}"]) ? $obj["font-weight-{$breakpoint}"] : null;
-            $font_style = isset($obj["font-style-{$breakpoint}"]) ? $obj["font-style-{$breakpoint}"] : null;
+            foreach ($properties_to_check as $base_property) {
+                $property = "{$base_property}-{$breakpoint}";
+                $value = isset($obj[$property]) ? $obj[$property] : null;
 
-            // Process font properties if any property is set or the breakpoint is 'general'.
-            if ($font_name || $font_weight || $font_style || $breakpoint === 'general') {
+                if ($value || $breakpoint === 'general') {
+                    $final_property_name = strpos($base_property, 'cl-pagination') !== false
+                        ? str_replace("-{$breakpoint}", '', $base_property)
+                        : $base_property;
 
-                // Define final font name, weight, and style, with fallback defaults.
-                $final_font_name = $font_name ?? "sc_font_{$block_style}_{$text_level}";
-                $final_font_weight = $font_weight ?? '400';
-                $final_font_style = $font_style ?? 'normal';
-
-                // If the font already exists in the result, merge the new font weight and style with the existing one.
-                if (isset($result[$final_font_name])) {
-                    $current_font_weight = $result[$final_font_name]['weight'];
-                    $current_font_style = $result[$final_font_name]['style'];
-
-                    if ($current_font_weight && !strpos($current_font_weight, (string)$final_font_weight)) {
-                        $final_font_weight = "{$current_font_weight},{$final_font_weight}";
+                    if (strpos($base_property, 'font-family') !== false) {
+                        $final_value = $value ?? (strpos($final_property_name, 'pagination') !== false
+                            ? null
+                            : "sc_font_{$block_style}_{$text_level}");
+                        $final_font_name = $final_value;
+                    } elseif (strpos($base_property, 'font-weight') !== false) {
+                        $final_value = $value ?? '400';
+                        $final_font_weight = $final_value;
+                    } elseif (strpos($base_property, 'font-style') !== false) {
+                        $final_value = $value ?? 'normal';
+                        $final_font_style = $final_value;
                     }
 
-                    if ($current_font_style && !strpos($current_font_style, $final_font_style)) {
-                        $final_font_style = "{$current_font_style},{$final_font_style}";
+                    if ($final_font_name) {
+                        if (!isset($result[$final_font_name])) {
+                            $result[$final_font_name] = [
+                                'weight' => null,
+                                'style' => null,
+                            ];
+                        }
+
+                        if ($final_font_weight) {
+                            $result[$final_font_name]['weight'] = $final_font_weight;
+                        }
+
+                        if ($final_font_style) {
+                            $result[$final_font_name]['style'] = $final_font_style;
+                        }
                     }
                 }
-
-                // Add or update the font in the result array.
-                $result[$final_font_name] = [
-                    'weight' => $final_font_weight,
-                    'style' => $final_font_style
-                ];
             }
         }
 
-        // Perform recursive search if needed.
+        // Perform recursive search if needed
         foreach ($obj as $key => $val) {
-            if (isset($val) && is_string($recursive_key) && strpos($key, $recursive_key) !== false) {
-                $recursive_fonts = [];
+            if (isset($val) && is_array($val) && is_string($recursive_key) && strpos($key, $recursive_key) !== false) {
                 foreach ($val as $recursive_val) {
-                    $recursive_fonts = array_merge($recursive_fonts, $recursive_val);
+                    $get_all_fonts_recursively($recursive_val);
                 }
-
-                // Call the recursive function with the recursive fonts.
-                $get_all_fonts_recursively($recursive_fonts);
             }
         }
     };
 
-    // Call the recursive function with the given attributes.
     $get_all_fonts_recursively($attr);
 
-    // Return the result array.
     return $result;
 }

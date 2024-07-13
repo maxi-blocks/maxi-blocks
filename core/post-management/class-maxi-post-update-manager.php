@@ -127,11 +127,13 @@ class MaxiBlocks_Post_Update_Manager
     /**
      * Updates the post content of an imported post and add styles to the blocks.
      */
-    public function process_imported_post(WP_Post $post): WP_Post
+    public function process_imported_post(array $post): array
     {
-        $updated_post_content = self::$content_processor->get_updated_post_content($post->post_content, true);
-        self::$block_info_updater->update_post_blocks_styles($updated_post_content);
-        $post->post_content = $updated_post_content;
+        if(isset($post['post_content']) && has_blocks($post['post_content'])) {
+            $updated_post_content = self::$content_processor->get_updated_post_content($post['post_content'], true);
+            self::$block_info_updater->update_post_blocks_styles($updated_post_content);
+            $post['post_content'] = $updated_post_content;
+        }
         return $post;
     }
 }

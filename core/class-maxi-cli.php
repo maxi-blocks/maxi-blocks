@@ -309,54 +309,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         public static function import_page_set($args, $assoc_args)
         {
             $page_set_path = $args[0];
-            $page_set_path = self::get_file_path($page_set_path);
-            self::run_import_command($page_set_path);
-        }
-
-        private static function get_file_path(string $source): string
-        {
-            if (is_numeric($source)) {
-                $file_path = get_attached_file($source);
-                if (!$file_path) {
-                    WP_CLI::error('Invalid attachment ID or unable to get file path.');
-                }
-                return $file_path;
-            }
-            return $source;
-        }
-
-        private static function run_import_command(string $file_path): void
-        {
-            $import_command = 'wp import ' . $file_path . ' --authors=skip';
-            $descriptor_spec = array(
-                0 => array("pipe", "r"),
-                1 => array("pipe", "w"),
-                2 => array("pipe", "w")
-            );
-
-            $process = proc_open($import_command, $descriptor_spec, $pipes, null, null);
-
-            if (is_resource($process)) {
-                self::process_import_output($pipes);
-                proc_close($process);
-            }
-        }
-
-        private static function process_import_output(array $pipes): void
-        {
-            while ($s = fgets($pipes[1])) {
-                if (strpos($s, 'Success') !== false) {
-                    $s = trim(str_replace('Success:', '', $s));
-                    WP_CLI::success($s);
-                } elseif (strpos($s, 'Error') !== false) {
-                    $s = trim(str_replace('Error:', '', $s));
-                    WP_CLI::error($s);
-                } else {
-                    WP_CLI::log($s);
-                }
-            }
-            fclose($pipes[1]);
-            fclose($pipes[2]);
+            WP_CLI::runcommand('import ' . $page_set_path . ' --authors=skip');
         }
 
         /**

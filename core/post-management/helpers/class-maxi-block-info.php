@@ -37,7 +37,7 @@ class MaxiBlocks_Block_Info_Updater
         $block_name = $block['blockName'];
         $inner_blocks = $block['innerBlocks'];
 
-        if($block_name && strpos($block_name, 'maxi-blocks') !== false) {
+        if($block_name && strpos($block_name, 'maxi-blocks') !== false && $block['attrs']) {
             $block_instance = self::$block_factory->create_block($block_name);
             $props = $block_instance->get_block_attributes($block['attrs']);
             $unique_id = $props['uniqueID'];

@@ -104,7 +104,8 @@
 		"eslint-plugin-react-hooks": "latest",
 		"jest-canvas-mock": "latest",
 		"minify-css-string": "latest",
-		"prettier": "latest"
+		"prettier": "latest",
+		"puppeteer": "latest"
 	},
 	"browserslist": {
 		"production": [

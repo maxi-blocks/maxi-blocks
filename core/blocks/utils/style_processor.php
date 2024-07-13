@@ -96,8 +96,8 @@ function get_selectors_css($selectors, $attributes)
     }
 
     // Extract values from attributes
-    $bg_layers = isset($attributes['background-layers']) ? $attributes['background-layers'] : array();
-    $bg_layers_hover = isset($attributes['background-layers-hover']) ? $attributes['background-layers-hover'] : array();
+    $bg_layers = isset($attributes['background-layers']) ? $attributes['background-layers'] : [];
+    $bg_layers_hover = isset($attributes['background-layers-hover']) ? $attributes['background-layers-hover'] : [];
     $block_background_hover_status = isset($attributes['block-background-status-hover']) ? $attributes['block-background-status-hover'] : false;
 
     // Merge selectors and generated background layers selectors
@@ -366,7 +366,7 @@ function deepMergeArrays($arr1, $arr2)
 
 function style_processor($obj, $data, $props)
 {
-    $selectors = $data['customCss']['selectors'] ?? null;
+    $selectors = $data['customCss']['selectors'] ?? [];
     $transition_selectors = array_merge(
         !empty($data['transition']) ? $data['transition'] : (new StylesDefaults())->transitionDefault,
         ['transform' => get_transform_transition_data($selectors, $props)],

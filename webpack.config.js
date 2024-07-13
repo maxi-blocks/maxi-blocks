@@ -41,8 +41,8 @@ glob(resolveNormalized(__dirname, 'js/*')).forEach(file => {
 class GenerateBlocksJsonPlugin {
 	apply(compiler) {
 		let hasRun = false;
-		compiler.hooks.afterEmit.tap('GenerateBlocksJsonPlugin', _ => {
-			if (!hasRun) {
+		compiler.hooks.done.tap('GenerateBlocksJsonPlugin', stats => {
+			if (!hasRun && !stats.hasErrors()) {
 				this.runScript();
 				hasRun = true;
 			}
@@ -51,8 +51,6 @@ class GenerateBlocksJsonPlugin {
 
 	// eslint-disable-next-line class-methods-use-this
 	runScript() {
-		// eslint-disable-next-line no-console
-		console.log('Running block-json-abstract script...');
 		exec('npm run update-blocks-json', (error, stdout, stderr) => {
 			if (error) {
 				console.error(`exec error: ${error}`);

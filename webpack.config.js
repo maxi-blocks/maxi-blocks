@@ -39,24 +39,25 @@ glob(resolveNormalized(__dirname, 'js/*')).forEach(file => {
 });
 
 class GenerateBlocksJsonPlugin {
+	constructor() {
+		this.hasRun = false;
+	}
+
 	apply(compiler) {
-		let hasRun = false;
 		compiler.hooks.done.tap('GenerateBlocksJsonPlugin', stats => {
-			if (!hasRun && !stats.hasErrors()) {
+			if (!stats.hasErrors() && !this.hasRun) {
 				this.runScript();
-				hasRun = true;
+				this.hasRun = true;
 			}
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	runScript() {
 		exec('npm run update-blocks-json', (error, stdout, stderr) => {
 			if (error) {
 				console.error(`exec error: ${error}`);
 				return;
 			}
-			// eslint-disable-next-line no-console
 			console.log(`stdout: ${stdout}`);
 			console.error(`stderr: ${stderr}`);
 		});

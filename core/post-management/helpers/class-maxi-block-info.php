@@ -221,6 +221,73 @@ class MaxiBlocks_Block_Info_Updater
             $response = get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend);
         }
 
+        foreach ($response as $font_name => $font_data) {
+            $font_weight = $font_data['weight'] ?? '400';
+            $font_style = $font_data['style'] ?? null;
+
+            $font_weight_arr = [];
+            $font_data_new = [];
+
+            if (is_array($font_weight)) {
+                $response[$font_name]['weight'] = implode(',', array_unique($font_weight));
+                $font_weight_arr = $font_weight;
+            } elseif (is_string($font_weight)) {
+                $font_weight_arr = array_filter(array_unique(explode(',', $font_weight)), function ($weight) {
+                    return !empty($weight);
+                });
+                $font_data_new = array_merge($font_data, ['weight' => implode(',', $font_weight_arr)]);
+                $response[$font_name]['weight'] = implode(',', $font_weight_arr);
+            } else {
+                $font_weight_arr = [$font_weight];
+                $font_data_new = array_merge($font_data, ['weight' => $font_weight]);
+            }
+
+            $font_data_new = array_merge($font_data_new, ['display' => 'swap']);
+
+            $font_style_arr = [];
+
+            if (is_array($font_style) && !empty($font_style)) {
+                $response[$font_name]['style'] = implode(',', array_unique($font_style));
+            } elseif (is_string($font_style)) {
+                $font_style_arr = array_filter(array_unique(explode(',', $font_style)), function ($style) {
+                    return !empty($style);
+                });
+
+                $response[$font_name]['style'] = implode(',', $font_style_arr);
+            } else {
+                $font_style_arr = ['normal'];
+            }
+
+            if (empty($font_data_new['style'])) {
+                unset($font_data_new['style']);
+            }
+
+            $font_files = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . '/core/post-management/fonts.json'), true);
+            if (empty($font_files)) {
+                return null;
+            }
+
+            $get_weight_file = function ($weight, $style) {
+                return $style === 'italic' ? (($weight === '400') ? 'italic' : $weight . 'italic') : $weight;
+            };
+
+            foreach ($font_weight_arr as $weight) {
+                foreach ($font_style_arr as $current_font_style) {
+                    $weight_file = $get_weight_file($weight, $current_font_style);
+                    if (!array_key_exists($weight_file, $font_files)) {
+                        $weight_file = '400';
+                        $new_font_weight_arr = array_filter(array_unique($font_weight_arr), function ($value) use ($weight) {
+                            return $value !== $weight;
+                        });
+
+                        $new_font_weight_arr[] = $weight_file;
+                        $new_font_weight = implode(',', array_unique($new_font_weight_arr));
+                        $response[$font_name]['weight'] = $new_font_weight;
+                    }
+                }
+            }
+        }
+
         return $response;
     }
 

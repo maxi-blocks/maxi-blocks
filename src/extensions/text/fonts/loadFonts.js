@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-// import { __ } from '@wordpress/i18n';
 import { dispatch, resolveSelect, select } from '@wordpress/data';
 
 /**
@@ -71,39 +70,18 @@ const getFontUrl = async (fontName, fontData) => {
 	return url;
 };
 
-// const getFontUrl = async (fontName, fontData) => {
-// 	const maxiSettings = await resolveSelect(
-// 		'maxiBlocks'
-// 	).receiveMaxiSettings();
-
-// 	const apiRoute = maxiSettings?.bunny_fonts
-// 		? 'https://fonts.bunny.net'
-// 		: 'https://fonts.googleapis.com';
-// 	let url = `${apiRoute}/css?family=${fontName}`;
-
-// 	const weight = fontData?.weight ?? '400';
-// 	let style = fontData?.style ?? '';
-
-// 	if (style === 'normal') style = '';
-
-// 	url += `:${weight}${style}`;
-
-// 	Object.entries(fontData).forEach(([key, value]) => {
-// 		if (key === 'weight' || key === 'style') return;
-
-// 		url += `&${key}=${value}`;
-// 	});
-
-// 	return url;
-// };
-
 const getFontElement = (fontName, fontDataNew, url) => {
 	const style = document.createElement('link');
 	style.rel = 'stylesheet';
 	style.href = url;
 	style.type = 'text/css';
 	style.media = 'all';
-	const id = `font-${fontName}+${fontDataNew.weight}+${fontDataNew.style}`;
+
+	const normalizeFontName = name => name.toLowerCase().replace(' ', '-');
+
+	const id = `font-${normalizeFontName(fontName)}+${fontDataNew.weight}+${
+		fontDataNew.style
+	}`;
 	style.id = id;
 
 	return style;

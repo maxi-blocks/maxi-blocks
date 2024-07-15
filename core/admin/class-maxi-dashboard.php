@@ -501,12 +501,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $description = '<h4>'.__('Serve Bunny Fonts locally', 'maxi-blocks').'</h4>';
                 $description .= '<p>'.__('Serve Bunny Fonts from CDN: Fastest option. Uses external CDN. No local storage required.', 'maxi-blocks').'</p>';
                 $description .= '<p>'.__('Serve Bunny Fonts locally: Privacy-focused. May impact server performance. Requires local storage.', 'maxi-blocks').'</p>';
-                $content .= $this->generate_setting($description, 'local_fonts');
+                $content .= $this->generate_setting($description, 'local_fonts', $this->local_fonts_upload());
             } else {
                 $description = '<h4>'.__('Serve Google Fonts locally', 'maxi-blocks').'</h4>';
                 $description .= '<p>'.__('Serve from Google CDN: Fastest option. Uses Google\'s CDN. Potential privacy (GDPR) implications.', 'maxi-blocks').'</p>';
                 $description .= '<p>'.__('Serve Google Fonts locally: Blocks Google tracking. May impact server performance. Requires local storage.', 'maxi-blocks').'</p>';
-                $content .= $this->generate_setting($description, 'local_fonts');
+                $content .= $this->generate_setting($description, 'local_fonts', $this->local_fonts_upload());
             }
 
             if ($font_uploads_dir_size > 0) {

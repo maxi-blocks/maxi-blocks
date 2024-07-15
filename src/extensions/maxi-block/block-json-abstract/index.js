@@ -79,7 +79,7 @@ const blockJsonAbstracter = async () => {
 		const blockName = maxiBlock.name.replace('maxi-blocks/', '');
 
 		// Get the block.json file path
-		let blockFolderPath = path.join(`build/blocks/${blockName}`);
+		let blockFolderPath = path.join(`src/blocks/${blockName}`);
 		const blockFile = 'block.json';
 		let blockPath = path.join(blockFolderPath, blockFile);
 

@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -172,6 +172,15 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 15 Jul 2024_
+MaxiBlocks v1.9.2
+* Update: Added compatibility with WordPress 6.6.
+* Fix: Resolved an issue where custom fonts failed to load on the frontend when only custom fonts were used on the page.
+* Fix: Adjusted the default search state for the Search block's close icon to display the appropriate icons consistently.
+* Fix: Enabled the mobile navigation menu background by default for improved user experience.
+* Fix: Addressed inconsistencies in the Text block's toolbar icons for a more cohesive interface.
+* Fix: Incorporated bottom-gap and mobile navigation options into Style Cards from the Style Cards Library by default for enhanced functionality.
+
 _Updates 9 Jul 2024_
 MaxiBlocks v1.9.1
 * Update: Added support for more Dynamic Content options for Custom Post Types.
@@ -184,14 +193,6 @@ MaxiBlocks v1.9.1
 _Updates 21 Jun 2024_
 MaxiBlocks v1.9.0
 * Fix: Resolved an issue where a single Image block or Icon block within a Group block would incorrectly disappear on frontend when using the Context Loop.
-
-_Updates 20 Jun 2024_
-MaxiBlocks v1.8.9
-* Update: Added Dynamic Content and Context Loop support for Background Image.
-* Update: Optimized PHP code for faster execution and improved overall plugin performance.
-* Update: Strengthened the plugin's security measures to protect your site against potential PHP vulnerabilities.
-* Fix: Corrected default Style Card style generation on the first plugin installation.
-* Fix: Resolved backend and frontend issues related to Dynamic Content when displaying posts filtered by author.
 
 == Upgrade Notice ==
 

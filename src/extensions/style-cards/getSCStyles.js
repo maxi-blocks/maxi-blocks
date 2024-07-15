@@ -556,6 +556,8 @@ const getWPNativeStyles = ({
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block)`,
 					level === 'p' &&
+						`${prefix} ${secondPrefix} .maxi-${style} .wp-block-comments  div:not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block)`,
+					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form textarea`,
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form p:not(.form-submit) input`,
@@ -580,6 +582,12 @@ const getWPNativeStyles = ({
 				].join(', ');
 
 				addedResponse += `${selectors} {${sentences?.join(' ')}}`;
+
+				// fix for .has-small-font-size
+				if (level === 'p') {
+					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .wp-block-comments div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block).has-small-font-size {font-size: inherit !important;}`;
+					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .wp-block-comments div:not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block).has-small-font-size {font-size: inherit !important;}`;
+				}
 
 				// In case the level is paragraph, we add the same styles for lists
 				if (level === 'p')

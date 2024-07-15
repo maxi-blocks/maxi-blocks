@@ -41,22 +41,16 @@ const RawHTML = forwardRef((props, ref) => {
 		return parsedContent;
 	}
 
-	if (Array.isArray(parsedContent)) {
-		// Map over the array and process each element
-		return parsedContent.map((content, index) => {
-			const {
-				type: nodeType,
-				props: { 'data-item': dataItem, className },
-			} = content;
+	const {
+		type: nodeType,
+		props: { 'data-item': dataItem, className },
+	} = parsedContent;
 
-			const refTarget = getNodeOnDOM({ nodeType, className, dataItem });
+	const refTarget = getNodeOnDOM({ nodeType, className, dataItem });
 
-			// Pass the ref to the first element only
-			if (ref && refTarget && index === 0) ref(refTarget);
+	if (ref && refTarget) ref(refTarget);
 
-			return content;
-		});
-	}
+	return parsedContent;
 });
 
 export default RawHTML;

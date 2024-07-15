@@ -192,7 +192,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 				const taxonomyData = {};
 
 				try {
-					const postType = select('core').getPostType(type);
+					const postType = type === 'posts' ? select('core').getPostType('post') : select('core').getPostType(type);
 					if (postType) {
 						const taxonomies = postType?.taxonomies;
 
@@ -257,14 +257,14 @@ const getDCEntity = async (dataRequest, clientId) => {
 						_acf_changed: true,
 						footnotes: 'Footnotes: Example footnotes.',
 					},
-					categories: categoriesIds,
-					tags: tagsIds,
 					generated_slug: 'example-post',
 					acf: {
 						custom_field: 'Field: example custom field',
 					},
 					description: 'Description: example description.',
 					count: 100,
+					...(categoriesIds.length > 0 && { categories: categoriesIds }),
+					...(tagsIds.length > 0 && { tags: tagsIds }),
 					...taxonomyData,
 				};
 
@@ -283,10 +283,10 @@ const getDCEntity = async (dataRequest, clientId) => {
 				}
 
 				if (entity) {
-					if (!entity.categories || entity.categories.length === 0) {
+					if (!entity.categories || entity.categories.length === 0 && categoriesIds.length > 0) {
 						entity.categories = categoriesIds;
 					}
-					if (!entity.tags || entity.tags.length === 0) {
+					if (!entity.tags || entity.tags.length === 0 && tagsIds.length > 0) {
 						entity.tags = tagsIds;
 					}
 					if (!entity.title) {
@@ -308,8 +308,10 @@ const getDCEntity = async (dataRequest, clientId) => {
 						entity.count = templateEntity.count;
 					}
 
+
 					return entity;
 				}
+
 				return templateEntity;
 			}
 			if (currentTemplateType.includes('taxonomy')) {

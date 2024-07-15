@@ -13,33 +13,32 @@ const getGroupAttributes = (
 ) => {
 	if (!target) return null;
 
-	const response = {
-		...(isHover && {
-			...getGroupAttributes(attributes, target, false, prefix, cleaned),
-		}),
+	const response = {};
+
+	if (isHover) {
+		Object.assign(
+			response,
+			getGroupAttributes(attributes, target, false, prefix, cleaned)
+		);
+	}
+
+	const processTarget = el => {
+		const defaultAttributes =
+			defaults[`${el}${isHover ? 'Hover' : ''}`] || defaults[el];
+		if (defaultAttributes) {
+			Object.keys(defaultAttributes).forEach(key => {
+				if (getIsValid(attributes[`${prefix}${key}`], cleaned)) {
+					response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
+				}
+			});
+		}
 	};
 
 	if (typeof target === 'string') {
-		const defaultAttributes =
-			defaults[`${target}${isHover ? 'Hover' : ''}`] || defaults[target];
-
-		if (defaultAttributes)
-			Object?.keys(defaultAttributes)?.forEach(key => {
-				if (getIsValid(attributes[`${prefix}${key}`], cleaned))
-					response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
-			});
-	} else
-		target.forEach(el => {
-			const defaultAttributes =
-				defaults[`${el}${isHover ? 'Hover' : ''}`] || defaults[el];
-
-			if (defaultAttributes)
-				Object.keys(defaultAttributes).forEach(key => {
-					if (getIsValid(attributes[`${prefix}${key}`], cleaned))
-						response[`${prefix}${key}`] =
-							attributes[`${prefix}${key}`];
-				});
-		});
+		processTarget(target);
+	} else {
+		target.forEach(el => processTarget(el));
+	}
 
 	return response;
 };

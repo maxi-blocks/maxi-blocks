@@ -156,23 +156,23 @@ const ContextLoop = props => {
 		orderTypes.includes(type) && orderRelations.includes(relation);
 
 	const changeProps = (params, alwaysSaveCLStatus = false) => {
-		const hasChangesToSave = Object.entries(contextLoop).some(
-			([key, val]) => {
-				if (alwaysSaveCLStatus && key === 'cl-status') return true;
+		let hasChangesToSave = false;
 
-				if (!(key in params)) return false;
-
-				return params[key] !== val;
+		for (const [key, val] of Object.entries(contextLoop)) {
+			if (
+				(alwaysSaveCLStatus && key === 'cl-status') ||
+				(key in params && params[key] !== val)
+			) {
+				hasChangesToSave = true;
+				break;
 			}
-		);
+		}
 
 		if (hasChangesToSave) onChange(params);
 	};
 
-	const fetchDcData = useCallback(async () => {
-		// TODO: check if this code is necessary
-		// On init, get post author options and set current user as default
-		if (!postAuthorOptions) {
+	useEffect(() => {
+		const fetchPostAuthorOptions = async () => {
 			const authors = await resolveSelect('core').getUsers({
 				who: 'authors',
 			});
@@ -188,9 +188,14 @@ const ContextLoop = props => {
 
 				changeProps({ 'cl-author': id });
 			}
-		}
+		};
 
-		// Sets new content
+		if (!postAuthorOptions) {
+			fetchPostAuthorOptions();
+		}
+	}, []);
+
+	const fetchDcData = useCallback(async () => {
 		if (status && isTypeHasRelations) {
 			const dataRequest = {
 				type,
@@ -216,11 +221,22 @@ const ContextLoop = props => {
 				if (
 					!isNil(newPostIdOptions) &&
 					!isEqual(postIdOptions, newPostIdOptions)
-				)
+				) {
 					setPostIdOptions(newPostIdOptions);
+				}
 			}
 		}
-	});
+	}, [
+		status,
+		isTypeHasRelations,
+		type,
+		id,
+		field,
+		postIdOptions,
+		relation,
+		author,
+		contentType,
+	]);
 
 	const selectedBlockClientId = useSelect(
 		select => select('core/block-editor').getSelectedBlockClientId(),
@@ -390,9 +406,7 @@ const ContextLoop = props => {
 									value={relation}
 									options={currentRelationOptions}
 									onChange={value =>
-										changeProps({
-											'cl-relation': value,
-										})
+										changeProps({ 'cl-relation': value })
 									}
 									onReset={() =>
 										changeProps({

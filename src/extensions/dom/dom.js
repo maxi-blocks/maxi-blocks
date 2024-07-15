@@ -48,6 +48,7 @@ wp.domReady(() => {
 
 	const changeSiteEditorWidth = (width = '') => {
 		document.querySelector('.edit-site-visual-editor').style.width = width;
+		document.querySelector('.editor-visual-editor ').style.width = width;
 	};
 
 	const templatePartResizeObserver = new ResizeObserver(entries => {
@@ -200,12 +201,25 @@ wp.domReady(() => {
 			// Need to add 'maxi-blocks--active' class to the FSE iframe body
 			// because gutenberg is filtering the iframe classList
 			// https://github.com/WordPress/gutenberg/blob/trunk/packages/block-editor/src/components/iframe/index.js#L213-L220
-			if (
-				siteEditorIframeBody &&
-				!siteEditorIframeBody.classList.contains('maxi-blocks--active')
-			)
-				siteEditorIframeBody.classList.add('maxi-blocks--active');
+			if (siteEditorIframeBody) {
+				// Add 'maxi-blocks--active' class if not already present
+				if (
+					!siteEditorIframeBody.classList.contains(
+						'maxi-blocks--active'
+					)
+				) {
+					siteEditorIframeBody.classList.add('maxi-blocks--active');
+				}
 
+				// Get the 'branch-' class from the page's body
+				const branchClass =
+					document.body.className.match(/\bbranch-\S+/);
+
+				if (branchClass && !siteEditorIframeBody.classList.contains(branchClass[0])) {
+					// Add the 'branch-' class to siteEditorIframeBody.classList
+					siteEditorIframeBody.classList.add(branchClass[0]);
+				}
+			}
 			if ((getIsTemplatesListOpened() || id !== currentId) && isSCLoaded)
 				isSCLoaded = false;
 
@@ -225,9 +239,13 @@ wp.domReady(() => {
 			}
 
 			if (getIsTemplatePart()) {
-				const resizableBox = document.querySelector(
-					'.edit-site-visual-editor .components-resizable-box__container'
-				);
+				const resizableBox =
+					document.querySelector(
+						'.edit-site-visual-editor .components-resizable-box__container'
+					) ||
+					document.querySelector(
+						'.editor-visual-editor .components-resizable-box__container'
+					);
 				const isTemplatesListOpened = getIsTemplatesListOpened();
 
 				if (

@@ -729,8 +729,8 @@ class MaxiBlocks_DynamicContent
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
 
-            if (empty($post)) {
-                return $content;
+            if (empty($post) || $this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+                return '';
             }
             if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
                 $link = $post->add_to_cart_url();
@@ -738,6 +738,9 @@ class MaxiBlocks_DynamicContent
                 $link = get_permalink($post->get_id());
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
+            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+                return '';
+            }
             $link = wc_get_cart_url();
         } else {
             if (empty($post)) {
@@ -826,8 +829,11 @@ class MaxiBlocks_DynamicContent
             } elseif (is_date()) {
                 $response = __('date', 'maxi-blocks');
             } else {
-                $response = get_queried_object()->taxonomy;
-                $response = preg_replace('/^post_/', '', $response);
+                $queried_object = get_queried_object();
+                if ($queried_object !== null && isset($queried_object->taxonomy)) {
+                    $response = $queried_object->taxonomy;
+                    $response = preg_replace('/^post_/', '', $response);
+                }
             }
 
         }
@@ -837,7 +843,7 @@ class MaxiBlocks_DynamicContent
             $response = 'No content found';
         }
 
-        if ($dc_link_status && in_array($dc_link_target, ['categories', 'tags'])) {
+        if ($dc_link_status && in_array($dc_link_target, array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
             $content = preg_replace('/<a[^>]+class="maxi-link-wrapper"[^>]*>/', '', $content, 1);
             $content = str_replace('$text-to-replace', $response, $content);
 
@@ -1147,9 +1153,9 @@ class MaxiBlocks_DynamicContent
                     return null;
                 }
 
+                $args['limit'] = 1;
                 $products = wc_get_products($args);
-
-                return end($products);
+                return !empty($products) ? $products[0] : null;
             }
 
             $query = new WP_Query($args);
@@ -1329,6 +1335,9 @@ class MaxiBlocks_DynamicContent
             case 'tags':
                 return get_term_link($item);
             default:
+                if(in_array($field, $this->get_custom_taxonomies())) {
+                    return get_term_link($item);
+                }
                 return '';
         }
     }
@@ -1372,7 +1381,6 @@ class MaxiBlocks_DynamicContent
         }
 
         $taxonomy_list = wp_get_post_terms($post_id, $taxonomy);
-
         $taxonomy_content = [];
 
         foreach ($taxonomy_list as $taxonomy_item) {
@@ -1475,6 +1483,10 @@ class MaxiBlocks_DynamicContent
             ];
 
             $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $field_name_to_taxonomy[$dc_field]);
+        }
+
+        if(in_array($dc_field, $this->get_custom_taxonomies())) {
+            $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $dc_field);
         }
 
         return $post_data;

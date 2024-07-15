@@ -105,6 +105,10 @@ const Link = props => {
 		}
 	}, [selectedDCType, dcField, dcLinkStatus]);
 
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+
 	return (
 		<div className='toolbar-item toolbar-item__link'>
 			<ToolbarPopover
@@ -163,7 +167,7 @@ const Link = props => {
 									}}
 								/>
 								{(multipleLinksTypes.includes(selectedDCType) ||
-									linkFields.includes(dcField)) &&
+									linkFields.includes(dcField) || customTaxonomies.includes(dcField)) &&
 									dcLinkStatus && (
 										<SelectControl
 											label={__(

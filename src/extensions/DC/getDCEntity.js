@@ -127,15 +127,15 @@ const getDCEntity = async (dataRequest, clientId) => {
 			getKind(type),
 			nameDictionary[type] ?? type,
 			{
-				per_page: accumulator + 1,
-				hide_empty: false,
+				per_page: 1,
 				order,
 				orderby: getDCOrder(relation, orderBy),
+				offset: accumulator,
 				...(relationKeyForId && { [relationKeyForId]: id }),
 			}
 		);
 
-		return entities?.at(-1);
+		return entities?.slice(-1)[0];
 	}
 
 	if (type === 'settings') {
@@ -189,6 +189,37 @@ const getDCEntity = async (dataRequest, clientId) => {
 				);
 
 				const tagsIds = tags ? tags.map(tag => tag.id) : [];
+				const taxonomyData = {};
+
+				try {
+					const postType = type === 'posts' ? select('core').getPostType('post') : select('core').getPostType(type);
+					if (postType) {
+						const taxonomies = postType?.taxonomies;
+
+						if (taxonomies) {
+							const customTaxonomies = taxonomies.filter(
+								taxonomy =>
+									!['category', 'post_tag'].includes(taxonomy)
+							);
+
+							for (const taxonomy of customTaxonomies) {
+								const terms = await resolveSelect(
+									'core'
+								).getEntityRecords('taxonomy', taxonomy, {
+									per_page: 2,
+								});
+
+								const termIds = terms
+									? terms.map(term => term.id)
+									: [];
+								taxonomyData[taxonomy] = termIds;
+							}
+						}
+					}
+				} catch (error) {
+					// silent error
+				}
+
 				const templateEntity = {
 					id: 10000,
 					date: '2024-04-02T12:20:15',
@@ -226,29 +257,36 @@ const getDCEntity = async (dataRequest, clientId) => {
 						_acf_changed: true,
 						footnotes: 'Footnotes: Example footnotes.',
 					},
-					categories: categoriesIds,
-					tags: tagsIds,
 					generated_slug: 'example-post',
 					acf: {
 						custom_field: 'Field: example custom field',
 					},
 					description: 'Description: example description.',
 					count: 100,
+					...(categoriesIds.length > 0 && { categories: categoriesIds }),
+					...(tagsIds.length > 0 && { tags: tagsIds }),
+					...taxonomyData,
 				};
-				const entity = await resolveSelect('core').getEntityRecord(
-					getKind(type),
-					nameDictionary[type] ?? type,
-					id,
-					{
-						per_page: 1,
-					}
-				);
+
+				let entity = null;
+				try {
+					entity = await resolveSelect('core').getEntityRecord(
+						getKind(type),
+						nameDictionary[type] ?? type,
+						id,
+						{
+							per_page: 1,
+						}
+					);
+				} catch (error) {
+					// Handle the error silently
+				}
 
 				if (entity) {
-					if (!entity.categories || entity.categories.length === 0) {
+					if (!entity.categories || entity.categories.length === 0 && categoriesIds.length > 0) {
 						entity.categories = categoriesIds;
 					}
-					if (!entity.tags || entity.tags.length === 0) {
+					if (!entity.tags || entity.tags.length === 0 && tagsIds.length > 0) {
 						entity.tags = tagsIds;
 					}
 					if (!entity.title) {
@@ -270,8 +308,10 @@ const getDCEntity = async (dataRequest, clientId) => {
 						entity.count = templateEntity.count;
 					}
 
+
 					return entity;
 				}
+
 				return templateEntity;
 			}
 			if (currentTemplateType.includes('taxonomy')) {
@@ -282,13 +322,13 @@ const getDCEntity = async (dataRequest, clientId) => {
 				if (taxonomy) return taxonomy;
 			}
 		}
-		return (
-			resolveSelect('core').getEditedEntityRecord(
+
+		if (!isFSE)
+			return await resolveSelect('core').getEditedEntityRecord(
 				getKind(type),
 				nameDictionary[type] ?? type,
 				select('core/editor').getCurrentPostId()
-			) ?? {}
-		);
+			);
 	}
 	if (
 		['tags', 'categories', 'product_categories', 'product_tags'].includes(
@@ -305,7 +345,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 			}
 		);
 
-		return termsEntity[0];
+		return termsEntity?.[0];
 	}
 
 	const existingPost = await resolveSelect('core').getEntityRecords(

@@ -14,16 +14,17 @@ const actions = {
 			...ignoredPostTypes,
 		]);
 
-		const customPostTypes = allPostTypes
-			.filter(postType => !excludedTypes.has(postType.slug))
-			.map(postType => postType.slug);
+		const customPostTypes = [];
+		const customLimitTypes = [];
 
-		const customLimitTypes = allPostTypes
-			.filter(
-				postType =>
-					postType.supports.editor || postType.supports.excerpt
-			)
-			.map(postType => postType.slug);
+		allPostTypes.forEach(postType => {
+			if (!excludedTypes.has(postType.slug)) {
+				customPostTypes.push(postType.slug);
+			}
+			if (postType.supports.editor || postType.supports.excerpt) {
+				customLimitTypes.push(postType.slug);
+			}
+		});
 
 		return {
 			type: 'LOAD_CUSTOM_POST_TYPES',

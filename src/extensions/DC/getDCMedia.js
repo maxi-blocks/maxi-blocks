@@ -18,82 +18,57 @@ import { isNil } from 'lodash';
 
 const getAvatar = user => {
 	const { avatar_urls: avatarUrls } = user;
-
 	if (!avatarUrls) return null;
 
-	const sizes = Object.keys(avatarUrls);
-
-	// Get the largest size
-	const size = Math.max(...sizes.map(Number));
-
-	return {
-		url: avatarUrls[size],
-	};
+	const size = Math.max(...Object.keys(avatarUrls).map(Number));
+	return { url: avatarUrls[size] };
 };
 
 const getMediaById = async (id, type) => {
 	const { getMedia } = resolveSelect('core');
 
-	let media;
 	try {
-		media = await getMedia(id);
+		const media = await getMedia(id);
+		if (isNil(media)) return null;
+
+		return {
+			id,
+			url: media.source_url,
+			caption: media.caption?.rendered,
+		};
 	} catch {
-		if (type === 'products') {
-			console.error(
-				__(
-					'Error fetching media, try to add Featured Image to the product you want to show',
-					'maxi-blocks'
-				)
-			);
-			return null;
-		}
-		if (type === 'media') {
-			console.error(
-				__(
-					'Error fetching media, check if it exists in the Media Library',
-					'maxi-blocks'
-				)
-			);
-			return null;
-		}
 		console.error(
 			__(
-				'Error fetching media, try to add Featured Image to the post you want to show',
+				`Error fetching media. ${
+					type === 'products'
+						? 'Try adding a Featured Image to the product you want to show.'
+						: type === 'media'
+						? 'Check if it exists in the Media Library.'
+						: 'Try adding a Featured Image to the post you want to show.'
+				}`,
 				'maxi-blocks'
 			)
 		);
 		return null;
 	}
-
-	if (isNil(media)) return null;
-
-	return {
-		id,
-		url: media.source_url,
-		caption: media.caption?.rendered,
-	};
 };
 
 const getDCMedia = async (dataRequest, clientId) => {
 	const data = await getDCEntity(dataRequest, clientId);
-
 	if (!data) return null;
 
 	const { field, source, type } = dataRequest;
-	let id;
 
 	if (source === 'acf') {
 		const image = await getACFFieldContent(field, data.id);
+		if (!image) return null;
 
-		if (image?.return_format === 'url') {
-			return {
-				url: image.value,
-			};
+		if (image.return_format === 'url') {
+			return { url: image.value };
 		}
-		if (image?.return_format === 'id') {
+		if (image.return_format === 'id') {
 			return getMediaById(image.value, type);
 		}
-
 		return image.value;
 	}
 
@@ -104,12 +79,11 @@ const getDCMedia = async (dataRequest, clientId) => {
 	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
 		const { author: authorId } = data;
 		const { getUser } = resolveSelect('core');
-
 		const author = await getUser(authorId);
-
 		return getAvatar(author);
 	}
 
+	let id;
 	if (type === 'products') {
 		id = await getProductsContent(dataRequest, data);
 	} else {

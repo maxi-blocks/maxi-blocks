@@ -16,10 +16,17 @@
 .interface-interface-skeleton {
 	&__sidebar {
 		overflow-x: hidden;
-		scrollbar-gutter: stable;
+		.interface-complementary-area__fill {
+			position: relative !important;
+			width: auto !important;
+			.editor-sidebar {
+				min-width: 295px;
+			}
+		}
 	}
 
 	&__content {
+		//	overflow-y: clip;
 		// Removing background-color which this class has in FSE editor
 		// to make the iframe look good with small breakpoints
 		background-color: transparent !important;
@@ -63,7 +70,8 @@ h2.gx_error {
 * Editor settings
 ******************/
 .edit-post-visual-editor,
-.edit-site-visual-editor {
+.edit-site-visual-editor,
+.editor-visual-editor {
 	i {
 		font-style: normal;
 	}
@@ -440,14 +448,22 @@ svg path#styleCardBoat_b,
 * FSE previews
 *******************************/
 
-body .maxi-blocks-pattern-preview {
-	transform: none !important;
-	aspect-ratio: inherit !important;
-}
-body .maxi-blocks-pattern-preview-grid {
-	aspect-ratio: inherit !important;
-	&__card {
-		height: auto !important;
+body {
+	.maxi-blocks-pattern-preview {
+		transform: none !important;
+		aspect-ratio: inherit !important;
+	}
+	.maxi-blocks-pattern-preview-grid {
+		aspect-ratio: inherit !important;
+		min-height: auto !important;
+		&__card {
+			height: auto !important;
+		}
+	}
+
+	.block-editor-block-preview__content:has(.maxi-blocks-pattern-preview) {
+		transform: none !important;
+		aspect-ratio: inherit !important;
 	}
 }
 
@@ -550,7 +566,7 @@ html[dir='rtl'] {
 /**
 * Hide scrollbar in iframe editor #3574
 */
-body[maxi-blocks-responsive] {
+body[maxi-blocks-responsive]:not(.branch-6-6) {
 	&::-webkit-scrollbar {
 		width: 0;
 	}

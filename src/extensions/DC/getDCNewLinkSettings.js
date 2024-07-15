@@ -21,26 +21,24 @@ const getDCNewLinkSettings = async (
 	clientId
 ) => {
 	const { linkStatus, postTaxonomyLinksStatus } = dynamicContentProps;
-
 	const newLinkSettings = { ...attributes.linkSettings };
 	let updateLinkSettings = false;
+
 	const dcLink = await getDCLink(dynamicContentProps, clientId);
 	const isSameLink = dcLink === newLinkSettings.url;
 
 	if (!!postTaxonomyLinksStatus !== !!newLinkSettings.disabled) {
 		newLinkSettings.disabled = postTaxonomyLinksStatus;
-
 		updateLinkSettings = true;
 	}
+
 	if (!isSameLink && linkStatus && !isNil(dcLink)) {
 		newLinkSettings.url = dcLink;
 		newLinkSettings.title = dcLink;
-
 		updateLinkSettings = true;
 	} else if (isSameLink && !linkStatus) {
 		newLinkSettings.url = null;
 		newLinkSettings.title = null;
-
 		updateLinkSettings = true;
 	}
 

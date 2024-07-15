@@ -10,11 +10,8 @@ import { camelCase, isFunction, isNil } from 'lodash';
 
 const getDCValues = (dynamicContent, contextLoop) => {
 	const getDefaultDCValue = (target, obj) => {
-		if (isFunction(attributeDefaults?.[target])) {
-			return attributeDefaults?.[target](obj);
-		}
-
-		return attributeDefaults?.[target];
+		const defaultValue = attributeDefaults?.[target];
+		return isFunction(defaultValue) ? defaultValue(obj) : defaultValue;
 	};
 
 	const getDCValue = (target, obj) => {
@@ -23,22 +20,21 @@ const getDCValues = (dynamicContent, contextLoop) => {
 		const dcValue = dynamicContent[`dc-${target}`];
 		const contextLoopValue = contextLoop?.[`cl-${target}`];
 
-		if (target === 'status')
+		if (target === 'status') {
 			return dcValue ?? getDefaultDCValue(target, obj);
+		}
 
-		if (!isNil(dcValue)) return dcValue;
-
-		if (contextLoopStatus && contextLoopValue) return contextLoopValue;
-
-		return getDefaultDCValue(target, obj);
+		return !isNil(dcValue)
+			? dcValue
+			: contextLoopStatus && contextLoopValue
+			? contextLoopValue
+			: getDefaultDCValue(target, obj);
 	};
 
 	return Object.keys(dynamicContent).reduce((acc, key) => {
 		const target = key.replace('dc-', '');
 		const value = getDCValue(target, acc);
-		const newKey = camelCase(target);
-
-		acc[newKey] = value;
+		acc[camelCase(target)] = value;
 		return acc;
 	}, {});
 };

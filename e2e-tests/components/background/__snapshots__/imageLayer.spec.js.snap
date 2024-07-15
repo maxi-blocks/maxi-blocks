@@ -132,7 +132,6 @@ exports[`BackgroundControl Check Background image layer hover 1`] = `
     "background-image-wrapper-width-unit-xs": "em",
     "background-image-wrapper-width-xl": 50,
     "background-image-wrapper-width-xs": 25,
-    "dc-author": 1,
     "display-general": "block",
     "id": 1,
     "isHover": false,

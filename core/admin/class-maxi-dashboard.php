@@ -492,12 +492,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
             $content .= $this->generate_item_header(__('Fonts and files', 'maxi-blocks'), false);
 
-            $description = '<h4>'.__('Use Bunny Fonts', 'maxi-blocks').'</h4>';
+            $use_bunny_fonts = get_option('bunny_fonts');
+            $font_provider_label = $use_bunny_fonts ? 'Bunny Fonts' : 'Google Fonts';
+
+            $description = '<h4>'.__('Use Bunny Fonts (You are using: ' . $font_provider_label . ')', 'maxi-blocks').'</h4>';
             $description .= '<p>'.__('Bunny Fonts: Privacy-friendly, GDPR compliant. Global CDN for fast loading. Wide selection of fonts available.', 'maxi-blocks').'</p>';
             $description .= '<p>'.__('Google Fonts: Extensive font selection. Potential privacy concerns when using Google\'s CDN.', 'maxi-blocks').'</p>';
             $content .= $this->generate_setting($description, 'bunny_fonts');
 
-            if (get_option('bunny_fonts')) {
+            if ($use_bunny_fonts) {
                 $description = '<h4>'.__('Serve Bunny Fonts locally', 'maxi-blocks').'</h4>';
                 $description .= '<p>'.__('Serve Bunny Fonts from CDN: Fastest option. Uses external CDN. No local storage required.', 'maxi-blocks').'</p>';
                 $description .= '<p>'.__('Serve Bunny Fonts locally: Privacy-focused. May impact server performance. Requires local storage.', 'maxi-blocks').'</p>';

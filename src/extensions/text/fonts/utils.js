@@ -11,7 +11,7 @@ import { isEmpty, isString, cloneDeep, isObject } from 'lodash';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../../styles';
+import { getAttributeKey, getGroupAttributes } from '../../styles';
 import { getCustomFormatValue } from '../formats';
 import { goThroughMaxiBlocks } from '../../maxi-block';
 
@@ -23,7 +23,8 @@ export const getAllFonts = (
 	isHover = false,
 	textLevel = 'p',
 	blockStyle = 'light',
-	onlyBackend = false
+	onlyBackend = false,
+	prefixes = ['']
 ) => {
 	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
 	const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
@@ -32,94 +33,97 @@ export const getAllFonts = (
 
 	const getAllFontsRecursively = obj => {
 		breakpoints.forEach(breakpoint => {
-			const propertiesToCheck = [
-				'font-family',
-				'font-weight',
-				'font-style',
-				// Add new font property bases here
-				'cl-pagination-font-family',
-				'cl-pagination-font-weight',
-				'cl-pagination-font-style',
-			];
+			prefixes.forEach(prefix => {
+				const propertiesToCheck = [
+					'font-family',
+					'font-weight',
+					'font-style',
+				];
 
-			let finalFontName = null;
-			let finalFontWeight = null;
-			let finalFontStyle = null;
+				let finalFontName = null;
+				let finalFontWeight = null;
+				let finalFontStyle = null;
 
-			propertiesToCheck.forEach(baseProperty => {
-				const property = `${baseProperty}-${breakpoint}`;
-				const value = obj[property];
+				propertiesToCheck.forEach(baseProperty => {
+					const property = getAttributeKey(
+						baseProperty,
+						isHover,
+						prefix,
+						breakpoint
+					);
+					const value = obj[property];
 
-				if (value || breakpoint === 'general') {
-					const finalPropertyName = baseProperty.includes(
-						'cl-pagination'
-					)
-						? baseProperty.replace(`-${breakpoint}`, '')
-						: baseProperty;
-					let finalValue;
+					if (value || breakpoint === 'general') {
+						const finalPropertyName = baseProperty.includes(
+							'cl-pagination'
+						)
+							? baseProperty.replace(`-${breakpoint}`, '')
+							: baseProperty;
+						let finalValue;
 
-					if (baseProperty.includes('font-family')) {
-						finalValue =
-							value ??
-							getCustomFormatValue({
-								typography: { ...obj },
-								prop: 'font-family',
-								breakpoint,
-								isHover,
-								textLevel,
-								avoidSC: onlyBackend,
-								styleCard,
-							}) ??
-							(finalPropertyName.includes('pagination')
-								? undefined
-								: `sc_font_${blockStyle}_${textLevel}`);
-						finalFontName = finalValue;
-					} else if (baseProperty.includes('font-weight')) {
-						finalValue =
-							value ??
-							getCustomFormatValue({
-								typography: { ...obj },
-								prop: 'font-weight',
-								breakpoint,
-								isHover,
-								textLevel,
-								avoidSC: onlyBackend,
-								styleCard,
-							})?.toString();
-						finalFontWeight = finalValue;
-					} else if (baseProperty.includes('font-style')) {
-						finalValue =
-							value ??
-							getCustomFormatValue({
-								typography: { ...obj },
-								prop: 'font-style',
-								breakpoint,
-								isHover,
-								textLevel,
-								avoidSC: onlyBackend,
-								styleCard,
-							});
-						finalFontStyle = finalValue;
+						if (baseProperty.includes('font-family')) {
+							finalValue =
+								value ??
+								getCustomFormatValue({
+									typography: { ...obj },
+									prop: 'font-family',
+									breakpoint,
+									isHover,
+									textLevel,
+									avoidSC: onlyBackend,
+									styleCard,
+								}) ??
+								(finalPropertyName.includes('pagination')
+									? undefined
+									: `sc_font_${blockStyle}_${textLevel}`);
+							finalFontName = finalValue;
+						} else if (baseProperty.includes('font-weight')) {
+							finalValue =
+								value ??
+								getCustomFormatValue({
+									typography: { ...obj },
+									prop: 'font-weight',
+									breakpoint,
+									isHover,
+									textLevel,
+									avoidSC: onlyBackend,
+									styleCard,
+								})?.toString();
+							finalFontWeight = finalValue;
+						} else if (baseProperty.includes('font-style')) {
+							finalValue =
+								value ??
+								getCustomFormatValue({
+									typography: { ...obj },
+									prop: 'font-style',
+									breakpoint,
+									isHover,
+									textLevel,
+									avoidSC: onlyBackend,
+									styleCard,
+								});
+							finalFontStyle = finalValue;
+						}
+
+						// Update the result object if we have a final font name
+						if (finalFontName) {
+							if (!result[finalFontName]) {
+								result[finalFontName] = {
+									weight: undefined,
+									style: undefined,
+								};
+							}
+
+							if (finalFontWeight) {
+								result[finalFontName].weight = finalFontWeight;
+							}
+
+							if (finalFontStyle) {
+								result[finalFontName].style = finalFontStyle;
+							}
+						}
 					}
-
-					// Update the result object if we have a final font name
-					if (finalFontName) {
-						if (!result[finalFontName]) {
-							result[finalFontName] = {
-								weight: undefined,
-								style: undefined,
-							};
-						}
-
-						if (finalFontWeight) {
-							result[finalFontName].weight = finalFontWeight;
-						}
-
-						if (finalFontStyle) {
-							result[finalFontName].style = finalFontStyle;
-						}
-					}
-				}
+				});
 			});
 		});
 
@@ -177,6 +181,9 @@ export const getPageFonts = (onlyBackend = false) => {
 		'maxi-blocks/text-maxi',
 		'maxi-blocks/list-item-maxi',
 		'maxi-blocks/image-maxi',
+		'maxi-blocks/accordion-maxi',
+		'maxi-blocks/search-maxi',
+		'maxi-blocks/map-maxi',
 		'maxi-blocks/row-maxi', // Pagination
 		'maxi-blocks/column-maxi', // Pagination
 		'maxi-blocks/group-maxi', // Pagination
@@ -193,6 +200,7 @@ export const getPageFonts = (onlyBackend = false) => {
 			let typographyHover = {};
 			let textLevel = attributes?.textLevel || 'p';
 			const { blockStyle } = attributes;
+			const prefixes = [''];
 
 			switch (name) {
 				case 'maxi-blocks/number-counter-maxi':
@@ -210,35 +218,8 @@ export const getPageFonts = (onlyBackend = false) => {
 					textLevel = 'button';
 					break;
 				case 'maxi-blocks/row-maxi':
-					typography = {
-						...getGroupAttributes(
-							attributes,
-							'typography',
-							false,
-							'cl-pagination-'
-						),
-					};
-					break;
 				case 'maxi-blocks/column-maxi':
-					typography = {
-						...getGroupAttributes(
-							attributes,
-							'typography',
-							false,
-							'cl-pagination-'
-						),
-					};
-					break;
 				case 'maxi-blocks/group-maxi':
-					typography = {
-						...getGroupAttributes(
-							attributes,
-							'typography',
-							false,
-							'cl-pagination-'
-						),
-					};
-					break;
 				case 'maxi-blocks/container-maxi':
 					typography = {
 						...getGroupAttributes(
@@ -248,6 +229,75 @@ export const getPageFonts = (onlyBackend = false) => {
 							'cl-pagination-'
 						),
 					};
+					prefixes.push('cl-pagination-');
+					break;
+				case 'maxi-blocks/map-maxi':
+					typography = {
+						...getGroupAttributes(attributes, 'typography'),
+						...getGroupAttributes(
+							attributes,
+							'typography',
+							false,
+							'description-'
+						),
+					};
+					prefixes.push('description-');
+					break;
+				case 'maxi-blocks/accordion-maxi':
+					typography = {
+						...getGroupAttributes(
+							attributes,
+							'typography',
+							false,
+							'title-'
+						),
+						...getGroupAttributes(
+							attributes,
+							'typography',
+							false,
+							'active-title-'
+						),
+					};
+					typographyHover = {
+						...getGroupAttributes(
+							attributes,
+							'typographyHover',
+							false,
+							'title-'
+						),
+					};
+					prefixes.push(...['title-', 'active-title-']);
+					break;
+				case 'maxi-blocks/search-maxi':
+					typography = {
+						...getGroupAttributes(
+							attributes,
+							'typography',
+							false,
+							'button-'
+						),
+						...getGroupAttributes(
+							attributes,
+							'typography',
+							false,
+							'input-'
+						),
+					};
+					typographyHover = {
+						...getGroupAttributes(
+							attributes,
+							'typographyHover',
+							false,
+							'button-'
+						),
+						...getGroupAttributes(
+							attributes,
+							'typographyHover',
+							false,
+							'input-'
+						),
+					};
+					prefixes.push('button-', 'input-');
 					break;
 				default:
 					typography = {
@@ -259,7 +309,12 @@ export const getPageFonts = (onlyBackend = false) => {
 					break;
 			}
 
-			if (typographyHover?.['typography-status-hover'])
+			if (
+				prefixes.some(
+					prefix =>
+						typographyHover?.[`${prefix}typography-status-hover`]
+				)
+			)
 				response = mergeDeep(
 					getAllFonts(
 						typography,
@@ -267,7 +322,8 @@ export const getPageFonts = (onlyBackend = false) => {
 						false,
 						textLevel,
 						blockStyle,
-						onlyBackend
+						onlyBackend,
+						prefixes
 					),
 					getAllFonts(
 						typographyHover,
@@ -275,7 +331,8 @@ export const getPageFonts = (onlyBackend = false) => {
 						true,
 						textLevel,
 						blockStyle,
-						onlyBackend
+						onlyBackend,
+						prefixes
 					)
 				);
 			else
@@ -285,7 +342,8 @@ export const getPageFonts = (onlyBackend = false) => {
 					false,
 					textLevel,
 					blockStyle,
-					onlyBackend
+					onlyBackend,
+					prefixes
 				);
 
 			mergedResponse = mergeDeep(

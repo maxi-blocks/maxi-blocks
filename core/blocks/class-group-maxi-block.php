@@ -133,12 +133,21 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                 )
             );
 
+			$pagination_styles = !empty($props['cl-pagination']) ? [
+                ' .maxi-pagination' => get_pagination_styles($props),
+                ' .maxi-pagination a' => get_pagination_links_styles($props),
+                ' .maxi-pagination .maxi-pagination__pages > span' => get_pagination_links_styles($props),
+                ' .maxi-pagination a:hover' => get_pagination_colours($props, 'hover'),
+                ' .maxi-pagination .maxi-pagination__pages > span.maxi-pagination__link--current' => get_pagination_colours($props, 'current'),
+            ] : [];
+
             $styles_obj = array_merge_recursive(
                 $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $arrow_styles,
-                $arrow_hover_styles
+                $arrow_hover_styles,
+                $pagination_styles
             );
 
             $response = [

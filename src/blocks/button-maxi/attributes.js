@@ -21,6 +21,10 @@ const attributes = {
 	buttonContent: {
 		type: 'string',
 	},
+	widthHeightRatio: {
+		type: 'number',
+		default: 1,
+	},
 	...attributesData.icon,
 	...attributesData.iconBackground,
 	...attributesData.iconHover,

@@ -113,7 +113,7 @@ const getWrapperObjectHover = props => {
 	return response;
 };
 
-const getNormalObject = (props, iconWidthHeightRatio) => {
+const getNormalObject = (props) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -149,7 +149,7 @@ const getNormalObject = (props, iconWidthHeightRatio) => {
 		...getSVGWidthStyles({
 			obj: getGroupAttributes(props, 'svg'),
 			prefix: 'svg-',
-			iconWidthHeightRatio,
+			iconWidthHeightRatio: props.widthHeightRatio,
 		}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
@@ -209,7 +209,7 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getStyles = (props, iconWidthHeightRatio) => {
+const getStyles = props => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {
@@ -217,10 +217,7 @@ const getStyles = (props, iconWidthHeightRatio) => {
 			{
 				'': getWrapperObject(props),
 				':hover': getWrapperObjectHover(props),
-				' .maxi-svg-icon-block__icon': getNormalObject(
-					props,
-					iconWidthHeightRatio
-				),
+				' .maxi-svg-icon-block__icon': getNormalObject(props),
 				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
 				...getSVGStyles({
 					obj: {

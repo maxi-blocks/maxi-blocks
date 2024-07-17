@@ -30,6 +30,10 @@ const attributes = {
 	},
 	altTitle: { type: 'string' },
 	altDescription: { type: 'string' },
+	widthHeightRatio: {
+		type: 'number',
+		default: 1,
+	},
 	...attributesData.svg,
 	...attributesData.svgHover,
 	...{

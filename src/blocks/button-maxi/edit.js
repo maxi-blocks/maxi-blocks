@@ -74,18 +74,31 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const { scValues } = this.state;
 
-		return getStyles(
-			attributes,
-			scValues,
-			getSVGWidthHeightRatio(
-				this.blockRef.current?.querySelector(
-					'.maxi-button-block__icon svg'
-				)
-			)
-		);
+		return getStyles(attributes, scValues);
+	}
+
+	updateSVGWidthHeightRatio() {
+		getSVGWidthHeightRatio(
+			'.maxi-button-block__icon svg',
+			this.blockRef
+		).then(newWidthHeightRatio => {
+			if (
+				newWidthHeightRatio !== this.props.attributes.widthHeightRatio
+			) {
+				this.props.maxiSetAttributes({
+					widthHeightRatio: newWidthHeightRatio,
+				});
+			}
+		});
+	}
+
+	maxiBlockDidMount() {
+		this.updateSVGWidthHeightRatio();
 	}
 
 	maxiBlockDidUpdate() {
+		this.updateSVGWidthHeightRatio();
+
 		// Ensures white-space is applied from Maxi and not with inline styles
 		Array.from(this.blockRef.current.children[0].children).forEach(el => {
 			if (el.style.whiteSpace) el.style.whiteSpace = null;

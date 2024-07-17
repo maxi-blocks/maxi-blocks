@@ -78,6 +78,10 @@
     "buttonContent": {
       "type": "string"
     },
+    "widthHeightRatio": {
+      "type": "number",
+      "default": 1
+    },
     "svgType": {
       "type": "string"
     },

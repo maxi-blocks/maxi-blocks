@@ -91,6 +91,10 @@
     "altDescription": {
       "type": "string"
     },
+    "widthHeightRatio": {
+      "type": "number",
+      "default": 1
+    },
     "svg-fill-palette-status": {
       "type": "boolean",
       "default": true

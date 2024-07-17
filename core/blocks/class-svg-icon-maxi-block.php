@@ -64,13 +64,10 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            // TODO: get the correct value
-            $icon_width_height_ratio = false;
-
             $styles_obj = [
                 '' => self::get_wrapper_object($props),
                 ':hover' => self::get_hover_wrapper_object($props),
-                ' .maxi-svg-icon-block__icon' => self::get_normal_object($props, $icon_width_height_ratio),
+                ' .maxi-svg-icon-block__icon' => self::get_normal_object($props),
                 ' .maxi-svg-icon-block__icon:hover' => self::get_hover_object($props),
             ];
 
@@ -173,7 +170,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             return $response;
         }
 
-        public static function get_normal_object($props, $icon_width_height_ratio)
+        public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
 
@@ -210,7 +207,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                 get_svg_width_styles([
                     'obj' => get_group_attributes($props, 'svg'),
                     'prefix' => 'svg-',
-                    'icon_width_height_ratio' => $icon_width_height_ratio
+                    'icon_width_height_ratio' => $props['widthHeightRatio']
                 ]),
                 get_background_styles(
                     array_merge(

@@ -70,7 +70,7 @@ const getFontUrl = async (fontName, fontData) => {
 	return url;
 };
 
-const getFontElement = (fontName, fontDataNew, url) => {
+const getFontElement = (fontName, fontData, url) => {
 	const style = document.createElement('link');
 	style.rel = 'stylesheet';
 	style.href = url;
@@ -79,9 +79,9 @@ const getFontElement = (fontName, fontDataNew, url) => {
 
 	const normalizeFontName = name => name.toLowerCase().replace(' ', '-');
 
-	const id = `font-${normalizeFontName(fontName)}+${fontDataNew.weight}+${
-		fontDataNew.style
-	}`;
+	const id = `maxi-blocks-styles-font-${normalizeFontName(fontName)}-${
+		fontData.weight
+	}-${fontData.style}`;
 	style.id = id;
 
 	return style;

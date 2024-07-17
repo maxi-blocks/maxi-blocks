@@ -495,7 +495,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $use_bunny_fonts = get_option('bunny_fonts');
             $font_provider_label = $use_bunny_fonts ? 'Bunny Fonts' : 'Google Fonts';
 
-            $description = '<h4>'.__('Use Bunny Fonts (You are using: ' . $font_provider_label . ')', 'maxi-blocks').'</h4>';
+            $description = '<h4>'.__('Use Bunny Fonts', 'maxi-blocks').'</h4>';
+            $description .= '<p>'.__('You are currently using: ' . $font_provider_label).'</p>';
             $description .= '<p>'.__('Bunny Fonts: Privacy-friendly, GDPR compliant. Global CDN for fast loading. Wide selection of fonts available.', 'maxi-blocks').'</p>';
             $description .= '<p>'.__('Google Fonts: Extensive font selection. Potential privacy concerns when using Google\'s CDN.', 'maxi-blocks').'</p>';
             $content .= $this->generate_setting($description, 'bunny_fonts');

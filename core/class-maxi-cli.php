@@ -297,11 +297,16 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         }
 
         /**
-         * Import a page set.
+         * Import a page set. Wrapper for WP CLI import command.
          *
          * ## OPTIONS
          * <page_set_path>
-         * : Path to valid WXR files for importing or attachment ID. If not provided, you will be prompted to select an attachment.
+         * : Path to valid WXR files for importing.
+         *
+         * [--authors=<authors>]
+         * : How the author mapping should be handled. Options are 'create' (default), 'mapping.csv', or 'skip'. The 'create' option will create any non-existent users from the WXR file. The 'mapping.csv' option will read author
+         * mapping associations from a CSV, or create a CSV for editing if the file path doesn't exist. The CSV requires two columns, and a header row like "old_user_login,new_user_login". The
+         * 'skip' option will skip any author mapping.
          *
          * ## EXAMPLES
          *   wp maxiblocks import-page-set /path/to/page-set.xml
@@ -309,7 +314,8 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         public static function import_page_set($args, $assoc_args)
         {
             $page_set_path = $args[0];
-            WP_CLI::runcommand('import ' . $page_set_path . ' --authors=skip');
+            $authors = isset($assoc_args['authors']) ? $assoc_args['authors'] : 'create';
+            WP_CLI::runcommand('import ' . $page_set_path . ' --authors=' . $authors);
         }
 
         /**

@@ -94,6 +94,8 @@ const ImageCropControl = props => {
 		setInputState(getInputState());
 	});
 
+	console.log('input state', inputState);
+
 	const ajaxurl = wp.ajax.settings.url;
 
 	const getScale = () => {
@@ -133,6 +135,7 @@ const ImageCropControl = props => {
 		) {
 			const data = new FormData();
 			data.append('old_media_src', cropOptions.image.source_url);
+			console.log('delete file', cropOptions.image.source_url);
 
 			fetch(
 				`${
@@ -162,6 +165,7 @@ const ImageCropControl = props => {
 		data.append('dst_w', getWidth() * getScale());
 		data.append('dst_h', getHeight() * getScale());
 
+		console.log('cropper', data);
 		fetch(
 			`${
 				window.location.origin + ajaxurl

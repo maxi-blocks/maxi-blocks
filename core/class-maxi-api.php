@@ -113,6 +113,13 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/get-font-url', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_maxi_blocks_font_url'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
             register_rest_route($this->namespace, '/style-card', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_sc_string'],
@@ -668,6 +675,17 @@ if (!class_exists('MaxiBlocks_API')):
                     $response_body
                 );
             }
+        }
+
+        public function get_maxi_blocks_font_url()
+        {
+            if (get_option('local_fonts')) {
+                $font_url = wp_upload_dir()['baseurl'] . '/maxi/fonts/' . '$fontName' . '/style.css';
+            } else {
+                $font_url = 'https://fonts.googleapis.com/css2?family=$fontName:$fontData&display=swap';
+            }
+
+            return wp_json_encode($font_url);
         }
 
         public function get_maxi_blocks_current_style_cards()

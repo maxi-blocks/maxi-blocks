@@ -171,24 +171,14 @@ class MaxiBlocks_Local_Fonts
             return rtrim($font_url, ':') . '&display=swap';
         }
 
-        $font_weight = $this->getFontWeight($font_data);
-        $font_style = $this->getFontStyle($font_data);
+        $font_weight = $font_data['fontWeight'] ?? $font_data['weight'] ?? false;
+        $font_style = $font_data['fontStyle'] ?? $font_data['style'] ?? false;
 
         $font_url .= $this->buildFontStyleString($font_style);
         $font_url .= $this->buildFontWeightString($font_weight, $font_style);
         $font_url .= '&display=swap';
 
         return $font_url;
-    }
-
-    private function getFontWeight($font_data)
-    {
-        return $font_data['fontWeight'] ?? $font_data['weight'] ?? false;
-    }
-
-    private function getFontStyle($font_data)
-    {
-        return $font_data['fontStyle'] ?? $font_data['style'] ?? false;
     }
 
     private function buildFontStyleString($font_style)

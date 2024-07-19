@@ -70,5 +70,11 @@ jobs:
               run: composer install --prefer-dist --no-progress
             - name: Install Node.js dependencies
               run: npm install --legacy-peer-deps
+            - name: Create .env file
+              run: |
+                  touch .env
+                  echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
+                  echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
+                  echo "REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}" >> .env
             - name: Run PHP Unit Tests
               run: npm run test:php

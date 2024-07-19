@@ -30,8 +30,17 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: 16.x
+            - name: Cache Composer packages
+              uses: actions/cache@v3
+              with:
+                  path: ~/.composer/cache
+                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-
             - name: Install dependencies
               run: npm install --legacy-peer-deps
+            - name: Install Composer dependencies
+              run: composer install --prefer-dist --no-progress
             - name: Create .env file
               run: |
                   touch .env

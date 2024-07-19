@@ -5,7 +5,7 @@ import getBoxShadowStyles from '../getBoxShadowStyles';
  */
 import valuesInAllResponsiveAndWithCustomColor from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Box_Shadow_Styles_Test__test_get_correct_box_shadow_styles_with_values_in_all_responsive_and_with_custom_color__1.json';
 import differentColorsBasedOnPalette from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Box_Shadow_Styles_Test__test_returns_box_shadow_object_with_different_colors_based_on_palette__1.json';
-import defaultStylesForIB from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Box_Shadow_Styles_Test__test_returns_box_shadow_default_styles_for_IB__1.json';
+import defaultStylesForIB from '../../../../../core/blocks/style-helpers/tests/__snapshots__/Get_Box_Shadow_Styles_Test__test_returns_box_shadow_default_styles_for_ib__1.json';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 4)

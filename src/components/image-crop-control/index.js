@@ -133,8 +133,6 @@ const ImageCropControl = props => {
 		) {
 			const data = new FormData();
 			data.append('old_media_src', cropOptions.image.source_url);
-			console.log('delete file', cropOptions.image.source_url);
-			console.log(data);
 
 			fetch(
 				`${

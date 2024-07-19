@@ -46,8 +46,6 @@ class MaxiBlocks_ImageCrop
         }
 
         if (isset($_POST['old_media_src'])) {//phpcs:ignore
-            error_log('maxi_add_custom_image_size');
-            error_log('$old_media_src: '. $_POST['old_media_src']);
             $this->validate_and_delete_old_file($_POST['old_media_src']);//phpcs:ignore
         }
 
@@ -73,13 +71,10 @@ class MaxiBlocks_ImageCrop
         if (!current_user_can('edit_posts')) {
             wp_die(__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
         }
-        error_log('delete_old_file');
-        error_log('$old_media_path: '. $old_media_path);
 
         $uploads_dir = wp_upload_dir()['basedir'];
 
         if (strpos($old_media_path, $uploads_dir) !== 0) {
-            error_log('Delete old file: invalid file path.');
             wp_die(__('Delete old file: invalid file path', 'maxi-blocks'));
         }
         wp_delete_file($old_media_path);
@@ -120,10 +115,7 @@ class MaxiBlocks_ImageCrop
             wp_die(__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
         }
         if (isset($_POST['old_media_src'])) {//phpcs:ignore
-            error_log('maxi_remove_custom_image_size');
-            error_log('$old_media_src: '. $_POST['old_media_src']);
             $this->validate_and_delete_old_file($_POST['old_media_src']);//phpcs:ignore
-
             global $wp_filesystem;
             WP_Filesystem();
         }
@@ -138,8 +130,6 @@ class MaxiBlocks_ImageCrop
 
         // Check if it's a number
         if (is_numeric($old_media)) {
-            // If it's a number, it's likely an image ID, so we ignore it
-            error_log('Ignoring numeric old_media_src: ' . $old_media);
             return;
         }
 
@@ -164,15 +154,11 @@ class MaxiBlocks_ImageCrop
 
             // Check if the file extension is in the whitelist
             if (!in_array($extension, $allowed_extensions)) {
-                error_log('Invalid file extension: ' . $extension);
                 return;
             }
 
             // Pass the normalized file path to delete_old_file
             $this->delete_old_file($old_media_path);
-        } else {
-            // If it's not a valid URL, we log an error
-            error_log('Invalid URL in old_media_src: ' . $old_media);
         }
     }
 }

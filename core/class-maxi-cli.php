@@ -297,7 +297,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         }
 
         /**
-         * Import a page set. Wrapper for WP CLI import command.
+         * Imports a page set. Wrapper for WP CLI import command.
          *
          * ## OPTIONS
          * <page_set_path>

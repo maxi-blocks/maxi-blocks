@@ -41,8 +41,19 @@ class MaxiBlocks_ImageCrop
 
     public function maxi_add_custom_image_size()
     {
+        if (!current_user_can('edit_posts')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
+        }
+
         if (isset($_POST['old_media_src'])) {//phpcs:ignore
             $old_media = esc_url_raw($_POST['old_media_src']);//phpcs:ignore
+            $old_media = sanitize_file_name($old_media);
+            $uploads_dir = wp_upload_dir()['basedir'];
+            $old_media_path = realpath(ABSPATH . $old_media);
+
+            if (strpos($old_media_path, $uploads_dir) !== 0) {
+                wp_die(__('Invalid file path.', 'maxi-blocks'));
+            }
             $this->delete_old_file($old_media);
         }
 
@@ -65,8 +76,20 @@ class MaxiBlocks_ImageCrop
 
     private function delete_old_file($old_media)
     {
-        $old_media = str_replace(get_site_url() . '/', '', $old_media);
-        wp_delete_file(ABSPATH . $old_media);
+        if (! current_user_can('edit_posts')) {
+            wp_die('You do not have sufficient permissions to access this page.');
+        }
+
+        $old_media = sanitize_file_name($old_media);
+
+        $uploads_dir = wp_upload_dir()['basedir'];
+        $old_media_path = realpath(ABSPATH . $old_media);
+
+        if (strpos($old_media_path, $uploads_dir) !== 0) {
+            wp_die(__('Invalid file path.', 'maxi-blocks'));
+        }
+
+        wp_delete_file($old_media_path);
     }
 
     private function upload_new_file($new_media)
@@ -99,6 +122,9 @@ class MaxiBlocks_ImageCrop
 
     public function maxi_remove_custom_image_size()
     {
+        if (!current_user_can('edit_posts')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
+        }
         if (isset($_POST['old_media_src'])) {//phpcs:ignore
             $old_media = esc_url_raw($_POST['old_media_src']);//phpcs:ignore
             $this->delete_old_file($old_media);

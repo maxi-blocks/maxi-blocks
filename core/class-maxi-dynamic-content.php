@@ -591,9 +591,9 @@ class MaxiBlocks_DynamicContent
             self::$custom_data = $this->get_dc_cl($unique_id);
         } elseif (self::$custom_data === null) {
 
-            if (class_exists('MaxiBlocks_Styles')) {
-                $styles = new MaxiBlocks_Styles();
-                self::$custom_data = $styles->custom_meta('dynamic_content', $is_template);
+            if (class_exists('MaxiBlocks_Custom_Data_Processor')) {
+                $custom_data_processor = MaxiBlocks_Custom_Data_Processor::get_instance();
+                self::$custom_data = $custom_data_processor->custom_meta('dynamic_content', $is_template);
             } else {
                 self::$custom_data = [];
             }

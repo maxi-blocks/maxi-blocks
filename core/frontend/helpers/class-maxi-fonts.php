@@ -8,12 +8,8 @@ class MaxiBlocks_Fonts_Processor
 {
     private static ?self $instance = null;
     private bool $use_local_fonts;
+    private bool $use_bunny_fonts;
     private array $fonts_to_load = [];
-
-    private function __construct()
-    {
-        $this->use_local_fonts = (bool) get_option('local_fonts');
-    }
 
     public static function register(): void
     {
@@ -34,6 +30,8 @@ class MaxiBlocks_Fonts_Processor
             return;
         }
 
+        $this->update_options();
+
         $fonts = $this->normalize_fonts($fonts);
         $name = $this->normalize_name($name);
 
@@ -49,6 +47,12 @@ class MaxiBlocks_Fonts_Processor
 
         $this->enqueue_collected_fonts();
         $this->add_preload_filter();
+    }
+
+    private function update_options(): void
+    {
+        $this->use_local_fonts = (bool) get_option('local_fonts');
+        $this->use_bunny_fonts = (bool) get_option('bunny_fonts');
     }
 
     private function normalize_fonts(array $fonts): array
@@ -151,11 +155,13 @@ class MaxiBlocks_Fonts_Processor
 
     private function get_font_url(string $font): string
     {
+        $url_prefix = $this->use_bunny_fonts ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
+
         if ($this->use_local_fonts) {
             $font_name_sanitized = str_replace(' ', '', strtolower($font));
             return wp_upload_dir()['baseurl'] . '/maxi/fonts/' . $font_name_sanitized . '/style.css';
         }
-        return "https://fonts.googleapis.com/css2?family=$font" . ($this->use_local_fonts ? '' : ':');
+        return $url_prefix . "/css2?family=$font" . ($this->use_local_fonts ? '' : ':');
     }
 
     private function enqueue_font_style(string $font, string $font_url, string $name, string $font_weight = '', string $font_style = ''): void

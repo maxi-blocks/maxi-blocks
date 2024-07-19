@@ -10,64 +10,70 @@ import { isEmpty, uniq } from 'lodash';
 
 const fontsOnPage = {};
 
-const getFontUrl = async (fontName, fontData) => {
-	const maxiSettings = await resolveSelect(
-		'maxiBlocks'
-	).receiveMaxiSettings();
+const buildFontStyleString = fontStyle => {
+	return fontStyle === 'italic' ? 'ital,' : '';
+};
 
-	const apiRoute = maxiSettings?.bunny_fonts
-		? 'https://fonts.bunny.net'
-		: 'https://fonts.googleapis.com';
-	let url = `${apiRoute}/css2?family=${fontName}:`;
+const normalizeWeights = fontWeight => {
+	const weights = Array.isArray(fontWeight)
+		? fontWeight
+		: fontWeight.split(',');
+	const res = Array.from(new Set(weights));
+	return res.sort((a, b) => a - b);
+};
 
-	if (Object.keys(fontData).length > 0) {
-		let fontWeight = fontData?.weight;
-		const fontStyle = fontData?.style;
-
-		if (Array.isArray(fontWeight)) {
-			fontWeight = [...new Set(fontWeight)].join(',');
-		}
-
+const getMultipleWeightsString = (weights, fontStyle) => {
+	let result = 'wght@';
+	weights.forEach(weight => {
 		if (fontStyle === 'italic') {
-			url += 'ital,';
-		}
-
-		if (fontWeight.includes(',')) {
-			const fontWeightArr = [...new Set(fontWeight.split(','))].sort(
-				(a, b) => a - b
-			);
-			url += 'wght@';
-			if (fontStyle === 'italic') {
-				for (const fw of fontWeightArr) {
-					url += `0,${fw};`;
-				}
-				for (const fw of fontWeightArr) {
-					url += `1,${fw};`;
-				}
-			} else {
-				for (const fw of fontWeightArr) {
-					url += `${fw};`;
-				}
-			}
-			url = url.slice(0, -1); // Remove trailing semicolon
-		} else if (fontWeight) {
-			if (fontStyle === 'italic') {
-				url += `wght@0,${fontWeight};1,${fontWeight}`;
-			} else {
-				url += `wght@${fontWeight}`;
-			}
-		} else if (fontStyle === 'italic') {
-			url += 'wght@0,400;1,400';
+			result += `0,${weight};1,${weight};`;
 		} else {
-			url += 'wght@400';
+			result += `${weight};`;
 		}
+	});
+	return result.slice(0, -1);
+};
 
-		url += '&display=swap';
-	} else {
-		url += 'display=swap';
+const getSingleWeightString = (weight, fontStyle) => {
+	if (fontStyle === 'italic') {
+		return `wght@0,${weight};1,${weight}`;
+	}
+	return `wght@${weight}`;
+};
+
+const getDefaultWeightString = fontStyle => {
+	return fontStyle === 'italic' ? 'wght@0,400;1,400' : 'wght@400';
+};
+
+const buildFontWeightString = (fontWeight, fontStyle) => {
+	if (!fontWeight) {
+		return getDefaultWeightString(fontStyle);
 	}
 
-	return url;
+	const weights = normalizeWeights(fontWeight);
+
+	if (weights.length > 1) {
+		return getMultipleWeightsString(weights, fontStyle);
+	}
+
+	return getSingleWeightString(weights[0], fontStyle);
+};
+
+const getFontUrl = async (fontName, fontData) => {
+	let fontUrl = await resolveSelect('maxiBlocks/text').getFontUrl(
+		fontName,
+		fontData
+	);
+	fontUrl = fontUrl.replace(/\$fontName/, fontName);
+
+	if (!fontData || Object.keys(fontData).length === 0) {
+		return fontUrl.replace(/:$/, '');
+	}
+
+	let fontDataString = buildFontStyleString(fontData.style);
+	fontDataString += buildFontWeightString(fontData.weight, fontData.style);
+
+	return fontUrl.replace(/\$fontData/, fontDataString);
 };
 
 const getFontElement = (fontName, fontData, url) => {

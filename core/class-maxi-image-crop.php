@@ -68,30 +68,21 @@ class MaxiBlocks_ImageCrop
         die();
     }
 
-    private function delete_old_file($old_media)
+    private function delete_old_file($old_media_path)
     {
         if (!current_user_can('edit_posts')) {
             wp_die(__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
         }
         error_log('delete_old_file');
-        error_log('$old_media: '. $old_media);
-
-        $uploads_dir = wp_upload_dir()['basedir'];
-        $old_media_path = str_replace(get_site_url() . '/', '', $old_media);
-
-        error_log('$uploads_dir: '. $uploads_dir);
-
-        // Convert $old_media_path to an absolute path
-        $old_media_path = ABSPATH . $old_media_path;
         error_log('$old_media_path: '. $old_media_path);
 
+        $uploads_dir = wp_upload_dir()['basedir'];
 
         if (strpos($old_media_path, $uploads_dir) !== 0) {
             error_log('Delete old file: invalid file path.');
             wp_die(__('Delete old file: invalid file path', 'maxi-blocks'));
         }
         wp_delete_file($old_media_path);
-
     }
 
     private function upload_new_file($new_media)
@@ -157,12 +148,31 @@ class MaxiBlocks_ImageCrop
 
         // Check if it's a valid URL
         if (filter_var($old_media, FILTER_VALIDATE_URL) !== false) {
-            // If it's a valid URL, we pass it to delete_old_file
-            $this->delete_old_file($old_media);
+            // If it's a valid URL, we proceed with validation and deletion
+
+            // Get the file path from the URL
+            $old_media_path = str_replace(site_url(), ABSPATH, $old_media);
+
+            // Normalize the file path
+            $old_media_path = wp_normalize_path($old_media_path);
+
+            // Get the file extension
+            $extension = strtolower(pathinfo($old_media_path, PATHINFO_EXTENSION));
+
+            // Whitelist of allowed image extensions
+            $allowed_extensions = array('jpg', 'jpeg', 'png', 'gif', 'webp');
+
+            // Check if the file extension is in the whitelist
+            if (!in_array($extension, $allowed_extensions)) {
+                error_log('Invalid file extension: ' . $extension);
+                return;
+            }
+
+            // Pass the normalized file path to delete_old_file
+            $this->delete_old_file($old_media_path);
         } else {
             // If it's not a valid URL, we log an error
             error_log('Invalid URL in old_media_src: ' . $old_media);
         }
     }
-
 }

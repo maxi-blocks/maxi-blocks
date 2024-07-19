@@ -4,7 +4,7 @@ Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaa
 Tags: block, blocks, gutenberg blocks, page builder, template library
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 8.0
 Stable tag: 1.9.3
 License: GPLv2 or later
@@ -172,6 +172,12 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 19 Jul 2024_
+MaxiBlocks v1.9.3
+* Security: Fixed arbitrary file deletion vulnerability for Authenticated (Subscriber+) (CVE-2024-6885). Thanks to Lucio Sá for the responsible disclosure.
+* Fix: Resolved a PHP notice that appeared during image uploads in the cropping interface.
+* Fix: Addressed a JavaScript error that occurred in the template parts editor.
+
 _Updates 15 Jul 2024_
 MaxiBlocks v1.9.2
 * Update: Added compatibility with WordPress 6.6.
@@ -189,10 +195,6 @@ MaxiBlocks v1.9.1
 * Update: Enhancements to Dynamic Content and Content Loop speed on backend.
 * Fix: Resolved Search Maxi block's search icon bug when trying to replace it.
 * Fix: Pagination and hiding repeated elements for Content Loop when using WooCommerce products.
-
-_Updates 21 Jun 2024_
-MaxiBlocks v1.9.0
-* Fix: Resolved an issue where a single Image block or Icon block within a Group block would incorrectly disappear on frontend when using the Context Loop.
 
 == Upgrade Notice ==
 

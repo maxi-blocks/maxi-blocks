@@ -1,3 +1,9 @@
+_Updates 19 Jul 2024_
+MaxiBlocks v1.9.3
+* Security: Fixed arbitrary file deletion vulnerability for Authenticated (Subscriber+) (CVE-2024-6885). Thanks to Lucio Sá for the responsible disclosure.
+* Fix: Resolved a PHP notice that appeared during image uploads in the cropping interface.
+* Fix: Addressed a JavaScript error that occurred in the template parts editor.
+
 _Updates 15 Jul 2024_
 MaxiBlocks v1.9.2
 * Update: Added compatibility with WordPress 6.6.

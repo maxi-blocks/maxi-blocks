@@ -47,8 +47,19 @@ wp.domReady(() => {
 		});
 
 	const changeSiteEditorWidth = (width = '') => {
-		document.querySelector('.edit-site-visual-editor').style.width = width;
-		document.querySelector('.editor-visual-editor ').style.width = width;
+		const editSiteVisualEditor = document.querySelector(
+			'.edit-site-visual-editor'
+		);
+		if (editSiteVisualEditor) {
+			editSiteVisualEditor.style.width = width;
+		}
+
+		const editorVisualEditor = document.querySelector(
+			'.editor-visual-editor'
+		);
+		if (editorVisualEditor) {
+			editorVisualEditor.style.width = width || '';
+		}
 	};
 
 	const templatePartResizeObserver = new ResizeObserver(entries => {
@@ -215,7 +226,10 @@ wp.domReady(() => {
 				const branchClass =
 					document.body.className.match(/\bbranch-\S+/);
 
-				if (branchClass && !siteEditorIframeBody.classList.contains(branchClass[0])) {
+				if (
+					branchClass &&
+					!siteEditorIframeBody.classList.contains(branchClass[0])
+				) {
 					// Add the 'branch-' class to siteEditorIframeBody.classList
 					siteEditorIframeBody.classList.add(branchClass[0]);
 				}

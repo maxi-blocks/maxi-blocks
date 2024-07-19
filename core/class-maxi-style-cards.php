@@ -298,7 +298,7 @@ class MaxiBlocks_StyleCards
             $text_level_values = (object) $default_values[$text_level];
         }
 
-        $font = $text_level_values->{'font-family-general'};
+        $font = $text_level_values->{'font-family-general'} ?? null;
 
         /**
          * Button case has an exception for font-family. If it's empty, it will use the

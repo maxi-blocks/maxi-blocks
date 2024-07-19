@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.9.1\n"
+"Project-Id-Version: MaxiBlocks 1.9.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-09T09:43:23+00:00\n"
+"POT-Creation-Date: 2024-07-19T12:12:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -618,12 +618,22 @@ msgid "Outline your business operations, share the origins of your venture, deta
 msgstr ""
 
 #: core/class-maxi-dynamic-content.php:827
-#: core/class-maxi-dynamic-content.php:1586
+#: core/class-maxi-dynamic-content.php:1589
 msgid "author"
 msgstr ""
 
 #: core/class-maxi-dynamic-content.php:830
 msgid "date"
+msgstr ""
+
+#: core/class-maxi-image-crop.php:45
+#: core/class-maxi-image-crop.php:72
+#: core/class-maxi-image-crop.php:115
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: core/class-maxi-image-crop.php:78
+msgid "Delete old file: invalid file path"
 msgstr ""
 
 #. translators: %1$s: database type, %2$s: required version, %3$s: link URL
@@ -1698,39 +1708,39 @@ msgstr ""
 
 #: build/3899.js:1
 #: src/editor/library/container.js:387
-#: src/editor/library/container.js:1239
+#: src/editor/library/container.js:1519
 msgid "Clear filters"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:931
-#: src/editor/library/container.js:1050
-#: src/editor/library/container.js:1063
+#: src/editor/library/container.js:1209
+#: src/editor/library/container.js:1328
+#: src/editor/library/container.js:1341
 msgid "All icons"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:941
-#: src/editor/library/container.js:975
-#: src/editor/library/container.js:986
-#: src/editor/library/container.js:995
-#: src/editor/library/container.js:1074
-#: src/editor/library/container.js:1085
+#: src/editor/library/container.js:1219
+#: src/editor/library/container.js:1253
+#: src/editor/library/container.js:1264
+#: src/editor/library/container.js:1273
+#: src/editor/library/container.js:1352
+#: src/editor/library/container.js:1363
 msgid "Find"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:878
+#: src/editor/library/container.js:1156
 msgid "Tablet / iPad simulator | Viewport 768px x 1024px"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:887
+#: src/editor/library/container.js:1165
 msgid "Mobile / iPhone simulator | Viewport 390px x 844px"
 msgstr ""
 
 #: build/3899.js:1
-#: src/editor/library/container.js:850
+#: src/editor/library/container.js:1128
 msgid "Swap stock images for placeholders to save disk space"
 msgstr ""
 
@@ -2263,8 +2273,8 @@ msgstr ""
 #: build/7759.js:1
 #: src/editor/library/modal.js:84
 #: src/editor/library/toolbar.js:402
-#: src/editor/responsive-selector/index.js:471
-#: src/editor/responsive-selector/index.js:478
+#: src/editor/responsive-selector/index.js:473
+#: src/editor/responsive-selector/index.js:480
 msgid "Template library"
 msgstr ""
 
@@ -2372,7 +2382,7 @@ msgstr ""
 #: build/7759.js:1
 #: src/components/toolbar/components/help/index.js:48
 #: src/editor/library/toolbar.js:576
-#: src/editor/responsive-selector/index.js:489
+#: src/editor/responsive-selector/index.js:491
 msgid "Help"
 msgstr ""
 

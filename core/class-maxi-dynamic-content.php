@@ -828,8 +828,11 @@ class MaxiBlocks_DynamicContent
             } elseif (is_date()) {
                 $response = __('date', 'maxi-blocks');
             } else {
-                $response = get_queried_object()->taxonomy;
-                $response = preg_replace('/^post_/', '', $response);
+                $queried_object = get_queried_object();
+                if ($queried_object !== null && isset($queried_object->taxonomy)) {
+                    $response = $queried_object->taxonomy;
+                    $response = preg_replace('/^post_/', '', $response);
+                }
             }
 
         }

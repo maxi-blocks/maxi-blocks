@@ -1,3 +1,18 @@
+_Updates 19 Jul 2024_
+MaxiBlocks v1.9.3
+* Security: Fixed arbitrary file deletion vulnerability for Authenticated (Subscriber+) (CVE-2024-6885). Thanks to Lucio Sá for the responsible disclosure.
+* Fix: Resolved a PHP notice that appeared during image uploads in the cropping interface.
+* Fix: Addressed a JavaScript error that occurred in the template parts editor.
+
+_Updates 15 Jul 2024_
+MaxiBlocks v1.9.2
+* Update: Added compatibility with WordPress 6.6.
+* Fix: Resolved an issue where custom fonts failed to load on the frontend when only custom fonts were used on the page.
+* Fix: Adjusted the default search state for the Search block's close icon to display the appropriate icons consistently.
+* Fix: Enabled the mobile navigation menu background by default for improved user experience.
+* Fix: Addressed inconsistencies in the Text block's toolbar icons for a more cohesive interface.
+* Fix: Incorporated bottom-gap and mobile navigation options into Style Cards from the Style Cards Library by default for enhanced functionality.
+
 _Updates 9 Jul 2024_
 MaxiBlocks v1.9.1
 * Update: Added support for more Dynamic Content options for Custom Post Types.

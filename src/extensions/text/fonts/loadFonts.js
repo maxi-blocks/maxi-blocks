@@ -66,7 +66,11 @@ const getFontUrl = async (fontName, fontData) => {
 	);
 	fontUrl = fontUrl.replace(/\$fontName/, fontName);
 
-	if (!fontData || Object.keys(fontData).length === 0) {
+	if (
+		!fontData ||
+		Object.keys(fontData).length === 0 ||
+		!fontUrl.includes('$fontData')
+	) {
 		return fontUrl.replace(/:$/, '');
 	}
 

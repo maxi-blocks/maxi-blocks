@@ -47,13 +47,13 @@ jobs:
                   echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
                   echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
                   echo "REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}" >> .env
-            - name: Build
-              run: npm run build
-            - name: reset package-lock.json
-              run: git checkout package-lock.json
             - name: Install WordPress
               run: |
                   chmod -R 767 ./
                   npm run wp-env start
+            - name: Build
+              run: npm run build
+            - name: reset package-lock.json
+              run: git checkout package-lock.json
             - name: Running the tests
               run: npm run test:e2e

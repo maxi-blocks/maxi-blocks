@@ -4,7 +4,7 @@
 const path = require('path');
 const { writeFile, readFile } = require('fs').promises;
 const { existsSync, mkdirSync } = require('fs');
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 const { createURL } = require('@wordpress/e2e-test-utils');
 
 const BLOCKS_WITHOUT_JSON_FILE = ['maxi-cloud'];

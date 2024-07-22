@@ -41,6 +41,10 @@ jobs:
               run: npm install --legacy-peer-deps
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress
+            - name: Install Puppeteer dependencies
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y libgbm-dev
             - name: Create .env file
               run: |
                   touch .env

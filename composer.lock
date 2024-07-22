@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba023cbe434ff5bcb000965fac463a16",
+    "content-hash": "76f9e552853b0dee4a97b2cf49767f9d",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -3565,6 +3565,38 @@
                 "source": "https://github.com/sebastianbergmann/version/tree/master"
             },
             "time": "2016-10-03T07:35:21+00:00"
+        },
+        {
+            "name": "sebkay/wp-unit-test-stubs",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SebKay/wp-unit-test-stubs.git",
+                "reference": "b0799733118a6567470b3ee107fbb8b00b8cfa5f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SebKay/wp-unit-test-stubs/zipball/b0799733118a6567470b3ee107fbb8b00b8cfa5f",
+                "reference": "b0799733118a6567470b3ee107fbb8b00b8cfa5f",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Seb Kay",
+                    "email": "seb@fhoke.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/SebKay/wp-unit-test-stubs/issues",
+                "source": "https://github.com/SebKay/wp-unit-test-stubs/tree/1.0.0"
+            },
+            "abandoned": true,
+            "time": "2021-06-23T14:31:42+00:00"
         },
         {
             "name": "spatie/phpunit-snapshot-assertions",

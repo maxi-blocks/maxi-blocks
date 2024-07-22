@@ -285,13 +285,13 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
 
         private static function find_current_style_card($style_cards)
         {
-            foreach ($style_cards as $style_card) {
-                if ($style_card['selected']) {
-                    return $style_card;
+            if (is_array($style_cards) && !empty($style_cards)) {
+                foreach ($style_cards as $style_card) {
+                    if (array_key_exists('selected', $style_card) && $style_card['selected']) {
+                        return $style_card;
+                    }
                 }
-            }
-            if(is_array($style_cards) && count($style_cards) === 1) {
-                return $style_cards[0];
+                return reset($style_cards);
             }
             return null;
         }

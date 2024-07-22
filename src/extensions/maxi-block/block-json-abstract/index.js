@@ -35,7 +35,7 @@ const blockJsonAbstracter = async () => {
 
 	// New post
 	await page.goto(createURL('wp-admin/post-new.php'));
-	await page.waitForTimeout(1000);
+	await new Promise(resolve => setTimeout(resolve, 1000));
 
 	// Get `maxi-blocks` blocks
 	const maxiBlocks = JSON.parse(

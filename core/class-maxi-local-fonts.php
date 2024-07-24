@@ -20,6 +20,12 @@ class MaxiBlocks_Local_Fonts
         }
     }
 
+    public static function get_instance()
+    {
+        self::register();
+        return self::$instance;
+    }
+
     /**
      * Variables
      */
@@ -303,69 +309,8 @@ class MaxiBlocks_Local_Fonts
         }
 
         foreach ($all_urls as $font_name => $font_url) {
-            if (strpos($font_name, 'sc_font') !== false) {
-                $split_font = explode('_', str_replace('sc_font_', '', $font_name));
-                $block_style = $split_font[0];
-                $text_level = $split_font[1];
-                $breakpoint = $split_font[2];
-
-                if (class_exists('MaxiBlocks_StyleCards')) {
-                    $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts(
-                        $block_style,
-                        $text_level,
-                        $breakpoint
-                    );
-
-                    @[$font_name] = $sc_fonts;
-                }
-            }
-
-            $font_name_sanitized = str_replace(' ', '', strtolower($font_name));
-
+            $this->upload_css_file($font_name, $font_url);
             $all_fonts_names[] = $font_name_sanitized;
-
-            $font_uploads_dir = $this->fontsUploadDir . '/' . $font_name_sanitized;
-            wp_mkdir_p($font_uploads_dir);
-
-            $font_url_dir = wp_upload_dir()['baseurl'] . '/maxi/fonts/' . $font_name_sanitized;
-
-            if (!preg_match('/wght@.*?400/', $font_url)) {
-                // Add '400;' before the weight value
-                $font_url = preg_replace('/(wght@)/', '${1}400;', $font_url);
-            }
-
-            $response = wp_remote_get($font_url);
-            $css_file = wp_remote_retrieve_body($response);
-
-            preg_match_all('/url\((.*?)\)/s', $css_file, $urls);
-
-            if (!is_array($urls) || empty($urls)) {
-                return false;
-            }
-
-            $font_files = $urls[1];
-            $new_font_files = [];
-
-            foreach ($font_files as $file_path) {
-                $font_response = wp_remote_get($file_path);
-                $font_body = wp_remote_retrieve_body($font_response);
-                $file_name = basename($file_path);
-                $new_file_path = $font_uploads_dir . '/' . $file_name;
-
-                $new_font_files[] = $font_url_dir . '/' . $file_name;
-
-                if (!$wp_filesystem->exists($new_file_path)) {
-                    $wp_filesystem->put_contents($new_file_path, $font_body);
-                }
-            }
-
-            $new_css_file = str_replace($font_files, $new_font_files, $css_file);
-
-            $new_css_file = str_replace('}', 'font-display: swap; }', $new_css_file);
-
-            $new_css_file = $this->minimizeFontCss($new_css_file);
-
-            $wp_filesystem->put_contents($font_uploads_dir . '/style.css', $new_css_file);
         }
 
         // remove not used fonts directories
@@ -379,6 +324,78 @@ class MaxiBlocks_Local_Fonts
                 $wp_filesystem->delete($directory, true);
             }
         }
+    }
+
+    public function upload_css_file($font_name, $font_url)
+    {
+        global $wp_filesystem;
+
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
+        if (strpos($font_name, 'sc_font') !== false) {
+            $split_font = explode('_', str_replace('sc_font_', '', $font_name));
+            $block_style = $split_font[0];
+            $text_level = $split_font[1];
+            $breakpoint = $split_font[2];
+
+            if (class_exists('MaxiBlocks_StyleCards')) {
+                $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts(
+                    $block_style,
+                    $text_level,
+                    $breakpoint
+                );
+
+                @[$font_name] = $sc_fonts;
+            }
+        }
+
+        $font_name_sanitized = str_replace(' ', '', strtolower($font_name));
+
+        $font_uploads_dir = $this->fontsUploadDir . '/' . $font_name_sanitized;
+        wp_mkdir_p($font_uploads_dir);
+
+        $font_url_dir = wp_upload_dir()['baseurl'] . '/maxi/fonts/' . $font_name_sanitized;
+
+        if (!preg_match('/wght@.*?400/', $font_url)) {
+            // Add '400;' before the weight value
+            $font_url = preg_replace('/(wght@)/', '${1}400;', $font_url);
+        }
+
+        $response = wp_remote_get($font_url);
+        $css_file = wp_remote_retrieve_body($response);
+
+        preg_match_all('/url\((.*?)\)/s', $css_file, $urls);
+
+        if (!is_array($urls) || empty($urls)) {
+            return false;
+        }
+
+        $font_files = $urls[1];
+        $new_font_files = [];
+
+        foreach ($font_files as $file_path) {
+            $font_response = wp_remote_get($file_path);
+            $font_body = wp_remote_retrieve_body($font_response);
+            $file_name = basename($file_path);
+            $new_file_path = $font_uploads_dir . '/' . $file_name;
+
+            $new_font_files[] = $font_url_dir . '/' . $file_name;
+
+            if (!$wp_filesystem->exists($new_file_path)) {
+                $wp_filesystem->put_contents($new_file_path, $font_body);
+            }
+        }
+
+        $new_css_file = str_replace($font_files, $new_font_files, $css_file);
+
+        $new_css_file = str_replace('}', 'font-display: swap; }', $new_css_file);
+
+        $new_css_file = $this->minimizeFontCss($new_css_file);
+
+        $wp_filesystem->put_contents($font_uploads_dir . '/style.css', $new_css_file);
     }
 
 

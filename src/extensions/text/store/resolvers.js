@@ -9,7 +9,7 @@ const resolvers = {
 		async ({ dispatch }) => {
 			const fontUrl = JSON.parse(
 				await apiFetch({
-					path: '/maxi-blocks/v1.0/get-font-url',
+					path: `/maxi-blocks/v1.0/get-font-url/${fontName}`,
 					method: 'GET',
 				})
 			);

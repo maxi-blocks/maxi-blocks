@@ -113,9 +113,16 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
-            register_rest_route($this->namespace, '/get-font-url', [
+            register_rest_route($this->namespace, '/get-font-url/(?P<font_name>[\w\s]+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_font_url'],
+                'args' => [
+                    'font_name' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
                 },
@@ -677,12 +684,20 @@ if (!class_exists('MaxiBlocks_API')):
             }
         }
 
-        public function get_maxi_blocks_font_url()
+        public function get_maxi_blocks_font_url($request)
         {
+            $api_url = get_option('bunny_fonts') ? 'https://bunny.net' : 'https://fonts.googleapis.com';
             if (get_option('local_fonts')) {
-                $font_url = wp_upload_dir()['baseurl'] . '/maxi/fonts/' . '$fontName' . '/style.css';
+                $font_name_sanitized = str_replace(' ', '', strtolower($request['font_name']));
+                $font_path = '/maxi/fonts/' . $font_name_sanitized . '/style.css';
+                $font_file = wp_upload_dir()['basedir'] . $font_path;
+                $font_url = wp_upload_dir()['baseurl'] . $font_path;
+                if (!file_exists($font_file)) {
+                    $url = $api_url . '/css2?family=' . $request['font_name'] . '&display=swap';
+                    MaxiBlocks_Local_Fonts::get_instance()->upload_css_file($request['font_name'], $url);
+                }
             } else {
-                $font_url = 'https://fonts.googleapis.com/css2?family=$fontName:$fontData&display=swap';
+                $font_url = $api_url . '/css2?family=' . $fontName . ':$fontData&display=swap';
             }
 
             return wp_json_encode($font_url);

@@ -60,11 +60,10 @@ const buildFontWeightString = (fontWeight, fontStyle) => {
 };
 
 const getFontUrl = async (fontName, fontData) => {
-	let fontUrl = await resolveSelect('maxiBlocks/text').getFontUrl(
+	const fontUrl = await resolveSelect('maxiBlocks/text').getFontUrl(
 		fontName,
 		fontData
 	);
-	fontUrl = fontUrl.replace(/\$fontName/, fontName);
 
 	if (
 		!fontData ||

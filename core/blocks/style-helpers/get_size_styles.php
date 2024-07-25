@@ -104,7 +104,10 @@ function get_size_styles($obj, $block_name = null, $prefix = '')
                     'attributes' => $obj,
                 ]);
 
-                $auto = $prefix === 'number-counter-' && $target === 'width' && isset($obj['number-counter-circle-status'])
+                $auto = $prefix === 'number-counter-'
+                    && $target === 'width'
+                    && isset($obj['number-counter-circle-status'])
+                    && $obj['number-counter-circle-status']
                     ? 'auto'
                     : (get_last_breakpoint_attribute([
                         'target' => $prefix . $target . '-auto',

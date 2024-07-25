@@ -197,8 +197,16 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                     get_group_attributes($props, 'size', false, 'number-counter-'),
                     get_group_attributes($props, 'numberCounter')
                 ),
-                (new self())->get_block_name()
+                (new self())->get_block_name(),
+                'number-counter-'
             );
+
+
+            foreach ($size as $key => $value) {
+                if (strpos($key, 'min-width') !== false && !$value) {
+                    $size[$key] = $props['number-counter-font-size'] * (strlen($end_count_value) - 1);
+                }
+            }
 
             $block_style = $props['blockStyle'];
 

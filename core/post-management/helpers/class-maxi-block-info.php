@@ -184,6 +184,13 @@ class MaxiBlocks_Block_Info_Updater
             'maxi-blocks/text-maxi',
             'maxi-blocks/list-item-maxi',
             'maxi-blocks/image-maxi',
+            'maxi-blocks/accordion-maxi',
+            'maxi-blocks/search-maxi',
+            'maxi-blocks/map-maxi',
+            'maxi-blocks/row-maxi',
+            'maxi-blocks/column-maxi',
+            'maxi-blocks/group-maxi',
+            'maxi-blocks/container-maxi',
         ];
 
         if(!in_array($block_name, $blocks_with_fonts)) {
@@ -196,6 +203,7 @@ class MaxiBlocks_Block_Info_Updater
         $typography_hover = [];
         $text_level = isset($props['textLevel']) ? $props['textLevel'] : 'p';
         $block_style = $props['blockStyle'] ?? 'light';
+        $prefixes = [''];
 
         switch ($block_name) {
             case 'maxi-blocks/number-counter-maxi':
@@ -206,24 +214,59 @@ class MaxiBlocks_Block_Info_Updater
                 $typography_hover = get_group_attributes($props, 'typographyHover');
                 $text_level = 'button';
                 break;
+            case 'maxi-blocks/row-maxi':
+            case 'maxi-blocks/column-maxi':
+            case 'maxi-blocks/group-maxi':
+            case 'maxi-blocks/container-maxi':
+                $typography = get_group_attributes($props, 'typography', false, 'cl-pagination-');
+                $prefixes[] = 'cl-pagination-';
+                break;
+            case 'maxi-blocks/map-maxi':
+                $typography = array_merge(
+                    get_group_attributes($props, 'typography'),
+                    get_group_attributes($props, 'typography', false, 'description-')
+                );
+                $prefixes[] = 'description-';
+                break;
+            case 'maxi-blocks/accordion-maxi':
+                $typography = array_merge(
+                    get_group_attributes($props, 'typography', false, 'title-'),
+                    get_group_attributes($props, 'typography', false, 'active-title-')
+                );
+                $typography_hover = get_group_attributes($props, 'typographyHover', false, 'title-');
+                $prefixes = array_merge($prefixes, ['title-', 'active-title-']);
+                break;
+            case 'maxi-blocks/search-maxi':
+                $typography = array_merge(
+                    get_group_attributes($props, 'typography', false, 'button-'),
+                    get_group_attributes($props, 'typography', false, 'input-')
+                );
+                $typography_hover = array_merge(
+                    get_group_attributes($props, 'typographyHover', false, 'button-'),
+                    get_group_attributes($props, 'typographyHover', false, 'input-')
+                );
+                $prefixes = array_merge($prefixes, ['button-', 'input-']);
+                break;
             default:
                 $typography = get_group_attributes($props, 'typography');
                 $typography_hover = get_group_attributes($props, 'typographyHover');
                 break;
         }
 
-        if (isset($typography_hover['typography-status-hover'])) {
-            $response = array_merge_recursive(
-                get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend),
-                get_all_fonts($typography_hover, 'custom-formats', true, $text_level, $block_style, $only_backend)
-            );
-        } else {
-            $response = get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend);
+        foreach ($prefixes as $prefix) {
+            if (!empty($typography_hover["{$prefix}typography-status-hover"])) {
+                $response = array_merge_recursive(
+                    get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend, $prefixes),
+                    get_all_fonts($typography_hover, 'custom-formats', true, $text_level, $block_style, $only_backend, $prefixes)
+                );
+            } else {
+                $response = get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend, $prefixes);
+            }
         }
 
         foreach ($response as $font_name => $font_data) {
             $font_weight = $font_data['weight'] ?? '400';
-            $font_style = $font_data['style'] ?? null;
+            $font_style = $font_data['style'] ?? 'normal';
 
             $font_weight_arr = [];
             $font_data_new = [];
@@ -267,14 +310,16 @@ class MaxiBlocks_Block_Info_Updater
                 return null;
             }
 
+            $font_files_content = isset($font_files[$font_name]['files']) ? $font_files[$font_name]['files'] : null;
+
             $get_weight_file = function ($weight, $style) {
-                return $style === 'italic' ? (($weight === '400') ? 'italic' : $weight . 'italic') : $weight;
+                return $style === 'italic' ? (($weight === '400' ? '' : $weight) . 'italic') : $weight;
             };
 
             foreach ($font_weight_arr as $weight) {
                 foreach ($font_style_arr as $current_font_style) {
                     $weight_file = $get_weight_file($weight, $current_font_style);
-                    if (!array_key_exists($weight_file, $font_files)) {
+                    if (!array_key_exists($weight_file, $font_files_content)) {
                         $weight_file = '400';
                         $new_font_weight_arr = array_filter(array_unique($font_weight_arr), function ($value) use ($weight) {
                             return $value !== $weight;
@@ -516,7 +561,9 @@ class MaxiBlocks_Block_Info_Updater
                         break;
                     case 'slider':
                         $unique_custom_data = ['slider'=> true];
-
+                        break;
+                    case 'numberCounter':
+                        $unique_custom_data = get_group_attributes($attributes, 'numberCounter');
                         break;
                     default:
                         $unique_custom_data = [];
@@ -544,11 +591,11 @@ class MaxiBlocks_Block_Info_Updater
 
         // TODO: It may connect to the API to centralize the default values there
         return (object) [
-            'xs' => 480,
-            's' => 767,
-            'm' => 1024,
-            'l' => 1366,
             'xl' => 1920,
+            'l' => 1366,
+            'm' => 1024,
+            's' => 767,
+            'xs' => 480,
         ];
     }
 }

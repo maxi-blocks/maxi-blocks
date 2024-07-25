@@ -43,6 +43,11 @@ if (!class_exists('MaxiBlocks_Core')):
             add_filter('body_class', [$this, 'maxi_blocks_body_class'], 99);
             add_filter('admin_body_class', [$this, 'maxi_blocks_body_class'], 99);
 
+            // Add fonts for the editor
+            add_action('enqueue_block_editor_assets', function () {
+                wp_enqueue_style('maxi-blocks-editor-font', 'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+            });
+
             // Add All Images - Maxi Images filter to the media library
             add_action('wp_enqueue_media', function () {
                 if (term_exists('maxi-image', 'maxi-image-type')) {

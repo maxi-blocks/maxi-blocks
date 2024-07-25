@@ -36,6 +36,19 @@ const getRandomEntity = (entities, clientId) => {
 	return entities[randomEntityIndexes[clientId]];
 };
 
+const getPostBySlug = async slug => {
+	const posts = await select('core').getEntityRecords('postType', 'post', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (posts && posts.length > 0) {
+		return posts[0];
+	}
+
+	return null;
+};
+
 const getDCEntity = async (dataRequest, clientId) => {
 	const {
 		type,
@@ -118,6 +131,16 @@ const getDCEntity = async (dataRequest, clientId) => {
 		);
 	}
 
+
+	if (relation === 'current' && type === 'posts') {
+		const currentTemplateType = getCurrentTemplateSlug();
+		if (currentTemplateType.includes('single-post-')) {
+			const postSlug = currentTemplateType.replace('single-post-', '');
+			const post = await getPostBySlug(postSlug);
+			if (post) return post;
+		}
+	}
+
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
 
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
@@ -192,7 +215,10 @@ const getDCEntity = async (dataRequest, clientId) => {
 				const taxonomyData = {};
 
 				try {
-					const postType = type === 'posts' ? select('core').getPostType('post') : select('core').getPostType(type);
+					const postType =
+						type === 'posts'
+							? select('core').getPostType('post')
+							: select('core').getPostType(type);
 					if (postType) {
 						const taxonomies = postType?.taxonomies;
 
@@ -263,7 +289,9 @@ const getDCEntity = async (dataRequest, clientId) => {
 					},
 					description: 'Description: example description.',
 					count: 100,
-					...(categoriesIds.length > 0 && { categories: categoriesIds }),
+					...(categoriesIds.length > 0 && {
+						categories: categoriesIds,
+					}),
 					...(tagsIds.length > 0 && { tags: tagsIds }),
 					...taxonomyData,
 				};
@@ -283,10 +311,17 @@ const getDCEntity = async (dataRequest, clientId) => {
 				}
 
 				if (entity) {
-					if (!entity.categories || entity.categories.length === 0 && categoriesIds.length > 0) {
+					if (
+						!entity.categories ||
+						(entity.categories.length === 0 &&
+							categoriesIds.length > 0)
+					) {
 						entity.categories = categoriesIds;
 					}
-					if (!entity.tags || entity.tags.length === 0 && tagsIds.length > 0) {
+					if (
+						!entity.tags ||
+						(entity.tags.length === 0 && tagsIds.length > 0)
+					) {
 						entity.tags = tagsIds;
 					}
 					if (!entity.title) {
@@ -307,7 +342,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 					if (!entity?.count) {
 						entity.count = templateEntity.count;
 					}
-
 
 					return entity;
 				}

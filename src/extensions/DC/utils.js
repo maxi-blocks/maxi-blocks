@@ -58,7 +58,8 @@ const showCurrent = (type, currentTemplateType) => {
 		currentTemplateType.includes(type)
 	)
 		return true;
-	if (currentTemplateType.includes('single-post') && type === 'posts') return true;
+	if (currentTemplateType.includes('single-post') && type === 'posts')
+		return true;
 
 	return false;
 };
@@ -318,7 +319,10 @@ export const getFields = (contentType, type) => {
 
 	const isFSE = select('core/edit-site') !== undefined;
 	if (isFSE) {
-		if (showCurrent(type, getCurrentTemplateSlug())) {
+		if (
+			contentType !== 'image' &&
+			showCurrent(type, getCurrentTemplateSlug())
+		) {
 			const newItem = {
 				label: __("Archive type's name", 'maxi-blocks'),
 				value: 'archive-type',

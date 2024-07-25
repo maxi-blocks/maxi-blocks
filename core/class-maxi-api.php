@@ -686,18 +686,19 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function get_maxi_blocks_font_url($request)
         {
+            $font_name = $request['font_name'];
             $api_url = get_option('bunny_fonts') ? 'https://bunny.net' : 'https://fonts.googleapis.com';
             if (get_option('local_fonts')) {
-                $font_name_sanitized = str_replace(' ', '', strtolower($request['font_name']));
+                $font_name_sanitized = str_replace(' ', '', strtolower($font_name));
                 $font_path = '/maxi/fonts/' . $font_name_sanitized . '/style.css';
                 $font_file = wp_upload_dir()['basedir'] . $font_path;
                 $font_url = wp_upload_dir()['baseurl'] . $font_path;
                 if (!file_exists($font_file)) {
-                    $url = $api_url . '/css2?family=' . $request['font_name'] . '&display=swap';
-                    MaxiBlocks_Local_Fonts::get_instance()->upload_css_file($request['font_name'], $url);
+                    $url = $api_url . '/css2?family=' . $font_name . '&display=swap';
+                    MaxiBlocks_Local_Fonts::get_instance()->upload_css_file($font_name, $url);
                 }
             } else {
-                $font_url = $api_url . '/css2?family=' . $fontName . ':$fontData&display=swap';
+                $font_url = $api_url . '/css2?family=' . $font_name . ':$fontData&display=swap';
             }
 
             return wp_json_encode($font_url);

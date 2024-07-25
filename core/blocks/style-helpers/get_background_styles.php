@@ -13,9 +13,14 @@ function get_color_background_object($args)
     $background_color_property = $args['background_color_property'] ?? 'background-color';
     $props = $args;
 
+    $hover_status = $props[$prefix . 'background-status-hover'] ?? null;
     $is_active = $sc_values['hover-background-color-global'] ?? false;
     $affect_all = $sc_values['hover-background-color-all'] ?? false;
     $global_hover_status = $is_active && $affect_all;
+
+    if($is_hover && !is_null($hover_status) && !$hover_status && !$global_hover_status) {
+        return [];
+    }
 
     $response = [
         'label' => 'Background Color',
@@ -52,7 +57,7 @@ function get_color_background_object($args)
     if (!$palette_status && !empty($color)) {
         $response[$breakpoint][$background_color_property] = $color;
     } elseif ($palette_status && ($palette_color || $palette_opacity)) {
-        if ($is_button && (!$is_hover || $global_hover_status)) {
+        if ($is_button && (!$is_hover || $hover_status || $global_hover_status)) {
             $response[$breakpoint]['background'] = get_color_rgba_string(
                 $palette_sc_status
                     ? [

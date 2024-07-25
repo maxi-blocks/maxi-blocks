@@ -46,22 +46,26 @@ function get_default_attribute($prop, $block_name = null)
     foreach ($blocks as $block) {
         $block_json_path = MAXI_PLUGIN_DIR_PATH . "build/blocks/" . $block . "/block.json";
 
-        if (file_exists($block_json_path)) {
-            $block_json = $wp_filesystem->get_contents($block_json_path);
-            if (!$block_json) {
-                continue;
-            }
+        if (!file_exists($block_json_path)) {
+            throw new Error(
+                'Missing block.json file for ' . $block . ' block. Run `npm update-blocks-json` to generate it.'
+            );
+        }
 
-            $block_data = json_decode($block_json, true);
-            $block_defaults = $block_data['attributes'];
+        $block_json = $wp_filesystem->get_contents($block_json_path);
+        if (!$block_json) {
+            continue;
+        }
 
-            if (array_key_exists($prop, $block_defaults) && isset($block_defaults[$prop]['default'])) {
-                $response = $block_defaults[$prop]['default'];
-            }
+        $block_data = json_decode($block_json, true);
+        $block_defaults = $block_data['attributes'];
 
-            if (isset($response)) {
-                return $response;
-            }
+        if (array_key_exists($prop, $block_defaults) && isset($block_defaults[$prop]['default'])) {
+            $response = $block_defaults[$prop]['default'];
+        }
+
+        if (isset($response)) {
+            return $response;
         }
     }
 

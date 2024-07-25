@@ -5,7 +5,9 @@ function get_block_attributes($block_name)
     $path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $block_name . '/block.json';
 
     if (!file_exists($path)) {
-        return [];
+        throw new Error(
+            'Missing block.json file for ' . $block_name . ' block. Run `npm update-blocks-json` to generate it.'
+        );
     }
 
     global $wp_filesystem;

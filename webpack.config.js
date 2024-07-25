@@ -46,20 +46,26 @@ class GenerateBlocksJsonPlugin {
 	apply(compiler) {
 		compiler.hooks.done.tap('GenerateBlocksJsonPlugin', stats => {
 			if (!stats.hasErrors() && !this.hasRun) {
-				this.runScript();
+				this.runScript(compiler);
 				this.hasRun = true;
 			}
 		});
 	}
 
-	runScript() {
+	runScript(compiler) {
 		exec('npm run update-blocks-json', (error, stdout, stderr) => {
 			if (error) {
 				console.error(`exec error: ${error}`);
+				console.error(`stderr: ${stderr}`);
+				compiler.hooks.compilation.tap('GenerateBlocksJsonPlugin', compilation => {
+					compilation.errors.push(new Error('Failed to generate blocks.json'));
+				});
 				return;
 			}
 			console.log(`stdout: ${stdout}`);
-			console.error(`stderr: ${stderr}`);
+			if (stderr) {
+				console.error(`stderr: ${stderr}`);
+			}
 		});
 	}
 }

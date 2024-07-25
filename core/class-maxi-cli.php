@@ -39,7 +39,9 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             }
 
             $commands = [
+                'load-style-card' => 'load_style_card',
                 'set-style-card' => 'set_style_card',
+                'reset-style-card' => 'reset_style_card',
                 'list-style-cards' => 'list_style_cards',
                 'get-current-style-card' => 'get_current_style_card',
                 'import-page-set' => 'import_page_set',
@@ -74,19 +76,19 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         }
 
         /**
-         * Set active style card.
+         * Load style card from library.
          *
          * ## OPTIONS
          *
          * <name>
-         * : The name of the style card to set. View all style cards names with `wp maxiblocks list-style-cards`.
+         * : The name of the style card to load. View all style cards names with `wp maxiblocks list-style-cards`.
          *
          * ## EXAMPLES
          *
-         *     wp maxiblocks set-style-card StyleCardName
-         *     wp maxiblocks set-style-card "Style Card Name"
+         *     wp maxiblocks load-style-card StyleCardName
+         *     wp maxiblocks load-style-card "Style Card Name"
          */
-        public static function set_style_card($args)
+        public static function load_style_card($args)
         {
             [$post_title] = $args;
 
@@ -97,11 +99,134 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                     return;
                 }
 
-                self::update_style_card($style_card);
-                WP_CLI::success('Style card set successfully.');
+                $sc_code = json_decode($style_card['sc_code'], true);
+                $sc_code['gutenberg_blocks_status'] = true;
+                self::add_or_update_style_card($sc_code);
+
+                WP_CLI::success('Style card loaded successfully.');
+                WP_CLI::confirm('Do you want to set this style card as active?');
+                WP_CLI::runcommand('maxiblocks set-style-card ' . $sc_code['name']);
             } catch (Exception $e) {
-                WP_CLI::error('Error setting style card: ' . $e->getMessage());
+                WP_CLI::error('Error loading style card: ' . $e->getMessage());
             }
+        }
+
+        /**
+         * Set active style card from current style cards.
+         *
+         * ## OPTIONS
+         *
+         * [<key_or_name>]
+         * : The key or name of the style card to set. If not provided, a list will be displayed for selection.
+         *
+         * ## EXAMPLES
+         *
+         *     wp maxiblocks set-style-card
+         *     wp maxiblocks set-style-card sc_maxi
+         *     wp maxiblocks set-style-card StyleCardName
+         *     wp maxiblocks set-style-card "Style Card Name"
+         */
+        public static function set_style_card($args)
+        {
+            $style_cards = json_decode(self::$maxi_api->get_maxi_blocks_current_style_cards(), true);
+
+            if(count($style_cards) <= 1) {
+                WP_CLI::warning('No style cards to set. Use `wp maxiblocks load-style-card <name>` to load a style card from the library.');
+                return;
+            }
+
+            if (empty($args)) {
+                $identifier = self::display_and_select_style_cards($style_cards);
+            } else {
+                $identifier = $args[0];
+            }
+
+            $selected_card = self::get_style_card($style_cards, $identifier);
+
+            if (!$selected_card) {
+                WP_CLI::error('Style card not found.');
+                return;
+            }
+
+            self::set_selected_style_card($style_cards, $selected_card);
+            WP_CLI::success('Style card set successfully.');
+        }
+
+        /**
+         * Displays available style cards and allows the user to select one.
+         *
+         * @returns key of the selected style card
+         */
+        private static function display_and_select_style_cards(array $style_cards): string
+        {
+            WP_CLI::line('Available style cards:');
+            $options = [];
+            $i = 1;
+            foreach ($style_cards as $key => $card) {
+                $options[$i] = $key;
+                WP_CLI::line(sprintf('%d. %s', $i, $card['name']));
+                $i++;
+            }
+
+            $choice = (int) readline('Enter the number of the style card you want to set: ');
+
+            if (!isset($options[$choice])) {
+                WP_CLI::warning('Invalid selection. Please try again.');
+                return self::display_and_select_style_cards($style_cards);
+            }
+
+            return $options[$choice];
+        }
+
+        /**
+         * Checks if style card exists by key or name
+         *
+         * @returns style card if found, null otherwise
+         */
+        private static function get_style_card(array $style_cards, string $identifier): ?array
+        {
+            foreach ($style_cards as $key => $card) {
+                if ($key === $identifier || strtolower($card['name']) === strtolower($identifier)) {
+                    return $card;
+                }
+            }
+            return null;
+        }
+
+        private static function set_selected_style_card(array $style_cards, array $selected_card): void
+        {
+            foreach ($style_cards as $key => $card) {
+                $style_cards[$key]['selected'] = false;
+                $style_cards[$key]['status'] = '';
+            }
+
+            $selected_key = self::get_style_card_key($selected_card['name']);
+            $style_cards[$selected_key]['selected'] = true;
+            $style_cards[$selected_key]['status'] = 'active';
+
+            self::$maxi_api->set_maxi_blocks_current_style_cards(['styleCards' => json_encode($style_cards)], false);
+
+            $sc_code = $style_cards[$selected_key];
+            $var_sc = get_sc_variables_object($sc_code, null, true);
+            $var_sc_string = create_sc_style_string($var_sc);
+            $sc_styles = get_sc_styles($var_sc, $sc_code['gutenberg_blocks_status']);
+
+            self::$maxi_api->post_maxi_blocks_sc_string([
+                'sc_variables' => $var_sc_string,
+                'sc_styles' => $sc_styles,
+                'update' => true,
+            ]);
+        }
+
+        /**
+         * Transforms style card name to key
+         */
+        private static function get_style_card_key($name)
+        {
+            if($name === 'Maxi (Default)') {
+                return 'sc_maxi';
+            }
+            return 'sc_' . strtolower($name);
         }
 
         private static function find_style_card($post_title)
@@ -128,40 +253,37 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             return null;
         }
 
-        private static function update_style_card($style_card)
-        {
-            $sc_code = json_decode($style_card['sc_code'], true);
-            $sc_code['status'] = 'active';
-            $sc_code['selected'] = true;
-            $sc_code['gutenberg_blocks_status'] = true;
-
-            $var_sc = get_sc_variables_object($sc_code, null, true);
-            $var_sc_string = create_sc_style_string($var_sc);
-            $sc_styles = get_sc_styles($var_sc, $sc_code['gutenberg_blocks_status']);
-
-            $style_cards = self::get_updated_style_cards($sc_code);
-
-            self::$maxi_api->set_maxi_blocks_current_style_cards(['styleCards' => json_encode($style_cards)], false);
-            self::$maxi_api->post_maxi_blocks_sc_string([
-                'sc_variables' => $var_sc_string,
-                'sc_styles' => $sc_styles,
-                'update' => true,
-            ]);
-        }
-
-        private static function get_updated_style_cards($sc_code)
+        private static function add_or_update_style_card(array $sc_code): void
         {
             $style_cards = json_decode(self::$maxi_api->get_maxi_blocks_current_style_cards(), true);
-
-            foreach ($style_cards as $key => $value) {
-                $style_cards[$key]['status'] = '';
-                $style_cards[$key]['selected'] = false;
-            }
-
-            $style_cards_key = 'sc_' . strtolower($sc_code['name']);
+            $style_cards_key = self::get_style_card_key($sc_code['name']);
             $style_cards[$style_cards_key] = $sc_code;
 
-            return $style_cards;
+            self::$maxi_api->set_maxi_blocks_current_style_cards(['styleCards' => json_encode($style_cards)], false);
+        }
+
+        /**
+         * Reset style card to default.
+         *
+         * ## EXAMPLES
+         *
+         *     wp maxiblocks reset-style-card
+         */
+        public static function reset_style_card()
+        {
+            WP_CLI::confirm('Are you sure you want to reset the style card to default? This action cannot be undone.');
+
+            try {
+                $response = self::$maxi_api->reset_maxi_blocks_style_cards();
+
+                if ($response) {
+                    WP_CLI::success('Style card has been reset to default successfully.');
+                } else {
+                    WP_CLI::error('Failed to reset style card. Please try again.');
+                }
+            } catch (Exception $e) {
+                WP_CLI::error('Error resetting style card: ' . $e->getMessage());
+            }
         }
 
         /**

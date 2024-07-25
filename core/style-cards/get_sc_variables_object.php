@@ -151,7 +151,7 @@ function get_sc_variables_object($style_cards, $raw_active_sc_colour = null, $cl
                                 } else {
                                     // Padding
                                     $unit_setting = "{$setting}-unit";
-                                    $unit_value = $obj["{$unit_setting}-{$breakpoint}"];
+                                    $unit_value = isset($obj["{$unit_setting}-{$breakpoint}"]) ? $obj["{$unit_setting}-{$breakpoint}"] : null;
                                     if ($unit_value) {
                                         $response["--maxi-{$style}-{$element}-{$setting}-{$breakpoint}"] = $value . $unit_value;
                                     } else {

@@ -105,7 +105,7 @@ class MaxiBlocks_StyleCards
         // Include the default SC string from the specified path
         require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
 
-        $wpdb->insert("{$wpdb->prefix}maxi_blocks_general", array(
+        $wpdb->replace("{$wpdb->prefix}maxi_blocks_general", array(
             'id' => 'sc_string',
             'object' => serialize($default_sc_string),
         ));

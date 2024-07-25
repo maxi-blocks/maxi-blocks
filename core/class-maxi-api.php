@@ -722,28 +722,19 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
             $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
 
-            if (class_exists('MaxiBlocks_StyleCards')) {
-                $default_style_card = MaxiBlocks_StyleCards::get_default_style_card();
-            } else {
-                return false;
-            } // Should return an error
+            if (!class_exists('MaxiBlocks_StyleCards')) {
+                return false; // Should return an error
+            }
+
+            $style_cards_instance = MaxiBlocks_StyleCards::get_instance();
+            $default_style_card = $style_cards_instance->get_default_style_card();
 
             $response = $wpdb->replace($table_name, [
                 'id' => 'style_cards_current',
                 'object' => $default_style_card,
             ]);
 
-            $wpdb->delete(
-                "{$wpdb->prefix}maxi_blocks_general",
-                array(
-                    'id' => 'sc_string'
-                )
-            );
-
-            if (class_exists('MaxiBlocks_StyleCards')) {
-                $maxi_blocks_style_cards = new MaxiBlocks_StyleCards();
-                $maxi_blocks_style_cards->add_default_maxi_blocks_sc_string();
-            }
+            $style_cards_instance->add_default_maxi_blocks_sc_string();
 
             return $this->get_api_response($response);
         }

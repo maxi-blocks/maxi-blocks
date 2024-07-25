@@ -8,8 +8,6 @@ import { dispatch, resolveSelect, select } from '@wordpress/data';
  */
 import { isEmpty, uniq } from 'lodash';
 
-const fontsOnPage = {};
-
 const getFontUrl = async (fontName, fontData) => {
 	const maxiSettings = await resolveSelect(
 		'maxiBlocks'
@@ -70,6 +68,14 @@ const getFontUrl = async (fontName, fontData) => {
 	return url;
 };
 
+const getFontID = (fontName, fontData) => {
+	const normalizeFontName = name => name.toLowerCase().replace(' ', '-');
+
+	return `maxi-blocks-styles-font-${normalizeFontName(fontName)}-${
+		fontData.weight
+	}-${fontData.style}`;
+};
+
 const getFontElement = (fontName, fontData, url) => {
 	const style = document.createElement('link');
 	style.rel = 'stylesheet';
@@ -77,12 +83,7 @@ const getFontElement = (fontName, fontData, url) => {
 	style.type = 'text/css';
 	style.media = 'all';
 
-	const normalizeFontName = name => name.toLowerCase().replace(' ', '-');
-
-	const id = `maxi-blocks-styles-font-${normalizeFontName(fontName)}-${
-		fontData.weight
-	}-${fontData.style}`;
-	style.id = id;
+	style.id = getFontID(fontName, fontData);
 
 	return style;
 };
@@ -151,20 +152,12 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 			if (isEmpty(fontFiles)) return;
 
 			const loadBackendFont = async fontName => {
-				if (!fontsOnPage[fontName])
-					fontsOnPage[fontName] = {
-						weights: new Set(),
-						styles: new Set(),
-					};
-
 				if (
-					fontsOnPage[fontName].weights.has(fontDataNew.weight) &&
-					fontsOnPage[fontName].styles.has(fontDataNew.style)
+					target.head.querySelector(
+						`#${getFontID(fontName, fontDataNew)}`
+					) !== null
 				)
 					return;
-
-				fontsOnPage[fontName].weights.add(fontDataNew.weight);
-				fontsOnPage[fontName].styles.add(fontDataNew.style);
 
 				const url = await getFontUrl(fontName, fontDataNew);
 

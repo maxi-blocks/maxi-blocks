@@ -319,7 +319,7 @@ class MaxiBlocks_Block_Info_Updater
             foreach ($font_weight_arr as $weight) {
                 foreach ($font_style_arr as $current_font_style) {
                     $weight_file = $get_weight_file($weight, $current_font_style);
-                    if (!array_key_exists($weight_file, $font_files_content)) {
+                    if (is_array($font_files_content) && !array_key_exists($weight_file, $font_files_content)) {
                         $weight_file = '400';
                         $new_font_weight_arr = array_filter(array_unique($font_weight_arr), function ($value) use ($weight) {
                             return $value !== $weight;

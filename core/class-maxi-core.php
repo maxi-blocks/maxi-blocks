@@ -45,7 +45,7 @@ if (!class_exists('MaxiBlocks_Core')):
 
             // Add fonts for the editor
             add_action('enqueue_block_editor_assets', function () {
-                wp_enqueue_style('maxi-blocks-editor-font', 'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+                wp_enqueue_style('maxi-blocks-editor-font', esc_url(MAXI_PLUGIN_URL_PATH) . 'font/style.css');
             });
 
             // Add All Images - Maxi Images filter to the media library

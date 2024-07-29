@@ -49,6 +49,45 @@ const getPostBySlug = async slug => {
 	return null;
 };
 
+const getAuthorBySlug = async slug => {
+	const users = await select('core').getEntityRecords('root', 'user', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (users && users.length > 0) {
+		return users[0];
+	}
+
+	return null;
+};
+
+const getCategoryBySlug = async slug => {
+	const categories = await select('core').getEntityRecords('taxonomy', 'category', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (categories && categories.length > 0) {
+		return categories[0];
+	}
+
+	return null;
+};
+
+const getTagBySlug = async slug => {
+	const tags = await select('core').getEntityRecords('taxonomy', 'post_tag', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (tags && tags.length > 0) {
+		return tags[0];
+	}
+
+	return null;
+};
+
 const getDCEntity = async (dataRequest, clientId) => {
 	const {
 		type,
@@ -132,12 +171,24 @@ const getDCEntity = async (dataRequest, clientId) => {
 	}
 
 
-	if (relation === 'current' && type === 'posts') {
+	if (relation === 'current') {
 		const currentTemplateType = getCurrentTemplateSlug();
-		if (currentTemplateType.includes('single-post-')) {
+		if (currentTemplateType.includes('single-post-') && type === 'posts') {
 			const postSlug = currentTemplateType.replace('single-post-', '');
 			const post = await getPostBySlug(postSlug);
 			if (post) return post;
+		} else if (currentTemplateType.includes('author-') && type === 'users') {
+			const authorSlug = currentTemplateType.replace('author-', '');
+			const author = await getAuthorBySlug(authorSlug);
+			if (author) return author;
+		} else if (currentTemplateType.includes('category-') && type === 'categories') {
+			const categorySlug = currentTemplateType.replace('category-', '');
+			const category = await getCategoryBySlug(categorySlug);
+			if (category) return category;
+		} else if (currentTemplateType.includes('tag-') && type === 'tags') {
+			const tagSlug = currentTemplateType.replace('tag-', '');
+			const tag = await getTagBySlug(tagSlug);
+			if (tag) return tag;
 		}
 	}
 

@@ -88,6 +88,19 @@ const getTagBySlug = async slug => {
 	return null;
 };
 
+const getProductBySlug = async slug => {
+	const products = await select('core').getEntityRecords('postType', 'product', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (products && products.length > 0) {
+		return products[0];
+	}
+
+	return null;
+};
+
 const getDCEntity = async (dataRequest, clientId) => {
 	const {
 		type,
@@ -189,6 +202,10 @@ const getDCEntity = async (dataRequest, clientId) => {
 			const tagSlug = currentTemplateType.replace('tag-', '');
 			const tag = await getTagBySlug(tagSlug);
 			if (tag) return tag;
+		} else if (currentTemplateType.includes('single-product-') && type === 'products') {
+			const productSlug = currentTemplateType.replace('single-product-', '');
+			const product = await getProductBySlug(productSlug);
+			if (product) return product;
 		}
 	}
 

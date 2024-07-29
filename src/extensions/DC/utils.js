@@ -38,8 +38,7 @@ const showCurrent = (type, currentTemplateType) => {
 		'single',
 		'page',
 	];
-	console.log('currentTemplateType', currentTemplateType);
-	console.log('type', type);
+
 	if (
 		allowedTemplateTypesCurrent.includes(currentTemplateType) &&
 		type.includes(currentTemplateType)
@@ -71,6 +70,9 @@ const showCurrent = (type, currentTemplateType) => {
 		return true;
 	// for specific tag templates
 	if (currentTemplateType.includes('tag-') && type === 'tags')
+		return true;
+	// for specific woo products templates
+	if (currentTemplateType.includes('single-product') && type === 'products')
 		return true;
 
 	return false;

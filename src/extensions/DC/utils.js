@@ -38,6 +38,8 @@ const showCurrent = (type, currentTemplateType) => {
 		'single',
 		'page',
 	];
+	console.log('currentTemplateType', currentTemplateType);
+	console.log('type', type);
 	if (
 		allowedTemplateTypesCurrent.includes(currentTemplateType) &&
 		type.includes(currentTemplateType)
@@ -58,7 +60,11 @@ const showCurrent = (type, currentTemplateType) => {
 		currentTemplateType.includes(type)
 	)
 		return true;
+		// for specific single post templates
 	if (currentTemplateType.includes('single-post') && type === 'posts')
+		return true;
+			// for specific author templates
+	if (currentTemplateType.includes('author-') && type === 'users')
 		return true;
 
 	return false;

@@ -32,7 +32,7 @@ const getTypes = (
 		})
 		.filter(
 			type =>
-				type.value !== 'wp_font_family' && type.value !== 'wp_font_face'
+				type.value !== 'wp_font_family' && type.value !== 'wp_font_face' && type.value !== 'wp_global_styles'
 		);
 	const customTaxonomies = select('maxiBlocks/dynamic-content')
 		.getCustomTaxonomies()

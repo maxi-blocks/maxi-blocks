@@ -1,13 +1,92 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { dispatch, select } from '@wordpress/data';
+import { dispatch, resolveSelect, select } from '@wordpress/data';
 
 /**
  * External dependencies
  */
 import { isEmpty, uniq } from 'lodash';
+
+const getFontUrl = async (fontName, fontData) => {
+	const maxiSettings = await resolveSelect(
+		'maxiBlocks'
+	).receiveMaxiSettings();
+
+	const apiRoute = maxiSettings?.bunny_fonts
+		? 'https://fonts.bunny.net'
+		: 'https://fonts.googleapis.com';
+	let url = `${apiRoute}/css2?family=${fontName}:`;
+
+	if (Object.keys(fontData).length > 0) {
+		let fontWeight = fontData?.weight;
+		const fontStyle = fontData?.style;
+
+		if (Array.isArray(fontWeight)) {
+			fontWeight = [...new Set(fontWeight)].join(',');
+		}
+
+		if (fontStyle === 'italic') {
+			url += 'ital,';
+		}
+
+		if (fontWeight.includes(',')) {
+			const fontWeightArr = [...new Set(fontWeight.split(','))].sort(
+				(a, b) => a - b
+			);
+			url += 'wght@';
+			if (fontStyle === 'italic') {
+				for (const fw of fontWeightArr) {
+					url += `0,${fw};`;
+				}
+				for (const fw of fontWeightArr) {
+					url += `1,${fw};`;
+				}
+			} else {
+				for (const fw of fontWeightArr) {
+					url += `${fw};`;
+				}
+			}
+			url = url.slice(0, -1); // Remove trailing semicolon
+		} else if (fontWeight) {
+			if (fontStyle === 'italic') {
+				url += `wght@0,${fontWeight};1,${fontWeight}`;
+			} else {
+				url += `wght@${fontWeight}`;
+			}
+		} else if (fontStyle === 'italic') {
+			url += 'wght@0,400;1,400';
+		} else {
+			url += 'wght@400';
+		}
+
+		url += '&display=swap';
+	} else {
+		url += 'display=swap';
+	}
+
+	return url;
+};
+
+const getFontID = (fontName, fontData) => {
+	const normalizeFontName = name => name.toLowerCase().replace(' ', '-');
+
+	return `maxi-blocks-styles-font-${normalizeFontName(fontName)}-${
+		fontData.weight
+	}-${fontData.style}`;
+};
+
+const getFontElement = (fontName, fontData, url) => {
+	const style = document.createElement('link');
+	style.rel = 'stylesheet';
+	style.href = url;
+	style.type = 'text/css';
+	style.media = 'all';
+
+	style.id = getFontID(fontName, fontData);
+
+	return style;
+};
 
 /**
  * Loads the font on background using JS FontFace API
@@ -72,32 +151,21 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 
 			if (isEmpty(fontFiles)) return;
 
-			const loadBackendFont = url => {
-				// Need to ensure the fontName contains quotes when it has space in the string.
-				// Also seems FF is more strict than Chrome, so need to ensure the fontName is
-				// ready depending the browser.
-				const isFirefox =
-					navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+			const loadBackendFont = async fontName => {
+				if (
+					target.head.querySelector(
+						`#${getFontID(fontName, fontDataNew)}`
+					) !== null
+				)
+					return;
 
-				const cleanFontName = (
-					fontName.includes(' ') && isFirefox
-						? `'${fontName}'`
-						: fontName
-				).replaceAll("''", "'");
+				const url = await getFontUrl(fontName, fontDataNew);
 
-				const fontLoad = new FontFace(
-					cleanFontName,
-					`url(${url})`,
-					fontDataNew
-				);
-				fontLoad.load().then(() => {
-					target.fonts.add(fontLoad);
-				});
-				fontLoad.loaded.catch(err => {
-					console.error(
-						__(`Font hasn't been able to download: ${err}`)
-					);
-				});
+				const styleElement = getFontElement(fontName, fontDataNew, url);
+
+				if (target.getElementById(styleElement.id)) return;
+
+				target.head.appendChild(styleElement);
 			};
 
 			const getWeightFile = (weight, style) =>
@@ -141,7 +209,7 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 								...{ weight: getWeight(weightFile) },
 							};
 
-							loadBackendFont(variant[1]);
+							loadBackendFont(fontName);
 						}
 					});
 				});

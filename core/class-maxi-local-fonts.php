@@ -299,6 +299,11 @@ class MaxiBlocks_Local_Fonts
         return $font_css;
     }
 
+    public function sanitize_font_name($font_name)
+    {
+        return str_replace(' ', '', strtolower($font_name));
+    }
+
     public function upload_css_files($all_urls)
     {
         global $wp_filesystem;
@@ -309,7 +314,8 @@ class MaxiBlocks_Local_Fonts
         }
 
         foreach ($all_urls as $font_name => $font_url) {
-            $this->upload_css_file($font_name, $font_url);
+            $font_name_sanitized = sanitize_font_name($font_name);
+            $this->upload_css_file($font_name_sanitized, $font_url);
             $all_fonts_names[] = $font_name_sanitized;
         }
 
@@ -352,12 +358,10 @@ class MaxiBlocks_Local_Fonts
             }
         }
 
-        $font_name_sanitized = str_replace(' ', '', strtolower($font_name));
-
-        $font_uploads_dir = $this->fonts_upload_dir . '/' . $font_name_sanitized;
+        $font_uploads_dir = $this->fonts_upload_dir . '/' . $font_name;
         wp_mkdir_p($font_uploads_dir);
 
-        $font_url_dir = wp_upload_dir()['baseurl'] . '/maxi/fonts/' . $font_name_sanitized;
+        $font_url_dir = wp_upload_dir()['baseurl'] . '/maxi/fonts/' . $font_name;
 
         if (!preg_match('/wght@.*?400/', $font_url)) {
             // Add '400;' before the weight value

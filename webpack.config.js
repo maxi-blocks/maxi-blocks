@@ -57,10 +57,8 @@ class GenerateBlocksJsonPlugin {
 			if (error) {
 				console.error(`exec error: ${error}`);
 				console.error(`stderr: ${stderr}`);
-				compiler.hooks.compilation.tap('GenerateBlocksJsonPlugin', compilation => {
-					compilation.errors.push(new Error('Failed to generate blocks.json'));
-				});
-				return;
+				// Exit the process with a non-zero status code
+				process.exit(1);
 			}
 			console.log(`stdout: ${stdout}`);
 			if (stderr) {

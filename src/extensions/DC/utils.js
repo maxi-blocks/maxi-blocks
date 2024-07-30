@@ -41,6 +41,7 @@ const showCurrent = (type, currentTemplateType) => {
 		'single',
 		'page',
 	];
+
 	if (
 		allowedTemplateTypesCurrent.includes(currentTemplateType) &&
 		type.includes(currentTemplateType)
@@ -60,6 +61,21 @@ const showCurrent = (type, currentTemplateType) => {
 		currentTemplateType.includes('single-') &&
 		currentTemplateType.includes(type)
 	)
+		return true;
+	// for specific single post templates
+	if (currentTemplateType.includes('single-post-') && type === 'posts')
+		return true;
+	// for specific author templates
+	if (currentTemplateType.includes('author-') && type === 'users')
+		return true;
+	// for specific category templates
+	if (currentTemplateType.includes('category-') && type === 'categories')
+		return true;
+	// for specific tag templates
+	if (currentTemplateType.includes('tag-') && type === 'tags')
+		return true;
+	// for specific woo products templates
+	if (currentTemplateType.includes('single-product') && type === 'products')
 		return true;
 
 	return false;
@@ -320,7 +336,10 @@ export const getFields = (contentType, type) => {
 
 	const isFSE = select('core/edit-site') !== undefined;
 	if (isFSE) {
-		if (showCurrent(type, getCurrentTemplateSlug())) {
+		if (
+			contentType !== 'image' &&
+			showCurrent(type, getCurrentTemplateSlug())
+		) {
 			const newItem = {
 				label: __("Archive type's name", 'maxi-blocks'),
 				value: 'archive-type',

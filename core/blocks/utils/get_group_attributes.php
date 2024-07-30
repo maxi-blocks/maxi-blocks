@@ -3,7 +3,23 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_is_valid.php';
 
 function json_file_to_array($item, $is_hover)
 {
-    $file_path = MAXI_PLUGIN_DIR_PATH . 'group-attributes/' . $item . ($is_hover ? 'Hover' : '') . '.json';
+    static $cache = [];
+    $cache_key = $item . ($is_hover ? 'Hover' : '');
+
+    $file_path = MAXI_PLUGIN_DIR_PATH . 'group-attributes/' . $cache_key . '.json';
+    if (!file_exists($file_path) && !$is_hover) {
+        $file_path = MAXI_PLUGIN_DIR_PATH . 'group-attributes/' . $item . '.json';
+    }
+
+    if (!file_exists($file_path)) {
+        return null;
+    }
+
+    $file_mtime = filemtime($file_path);
+
+    if (isset($cache[$cache_key]) && $cache[$cache_key]['mtime'] === $file_mtime) {
+        return $cache[$cache_key]['data'];
+    }
 
     global $wp_filesystem;
     if (empty($wp_filesystem)) {
@@ -11,22 +27,18 @@ function json_file_to_array($item, $is_hover)
         WP_Filesystem();
     }
 
-    if (file_exists($file_path)) {
-        $file_contents = $wp_filesystem->get_contents($file_path);
-        if ($file_contents) {
-            return json_decode($file_contents, true);
-        }
+    $file_contents = $wp_filesystem->get_contents($file_path);
+    if (!$file_contents) {
+        return null;
     }
 
-    $file_path = MAXI_PLUGIN_DIR_PATH . 'group-attributes/' . $item . '.json';
-    if (file_exists($file_path)) {
-        $file_contents = $wp_filesystem->get_contents($file_path);
-        if ($file_contents) {
-            return json_decode($file_contents, true);
-        }
-    }
+    $result = json_decode($file_contents, true);
+    $cache[$cache_key] = [
+        'mtime' => $file_mtime,
+        'data' => $result
+    ];
 
-    return null;
+    return $result;
 }
 
 

@@ -3,71 +3,59 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_block_attributes.php'
 
 function get_default_attribute($prop, $block_name = null)
 {
-    $response = null;
+    static $cache = [];
 
-    // TODO: in case there's no block_name, we can't access the unique block attributes
-    // so we need to get the default attributes from the block.json file, maybe merging
-    // and combining all together
     if ($block_name) {
-        $response = get_block_attributes($block_name)[$prop] ?? null;
-
-        return $response;
+        if (!isset($cache[$block_name])) {
+            $cache[$block_name] = get_block_attributes($block_name);
+        }
+        return $cache[$block_name][$prop] ?? null;
     }
 
-    // TODO: set block data support
+    static $all_blocks_cache = null;
+    static $blocks_last_modified = null;
 
     $blocks = [
-        'accordion-maxi',
-        'container-maxi',
-        'image-maxi',
-        'row-maxi',
-        'svg-icon-maxi',
-        'button-maxi',
-        'map-maxi',
-        'search-maxi',
-        'text-maxi',
-        'list-item-maxi',
-        'divider-maxi',
-        'number-counter-maxi',
-        'slide-maxi',
-        'video-maxi',
-        'column-maxi',
-        'group-maxi',
-        'pane-maxi',
-        'slider-maxi',
+        'accordion-maxi', 'container-maxi', 'image-maxi', 'row-maxi',
+        'svg-icon-maxi', 'button-maxi', 'map-maxi', 'search-maxi',
+        'text-maxi', 'list-item-maxi', 'divider-maxi', 'number-counter-maxi',
+        'slide-maxi', 'video-maxi', 'column-maxi', 'group-maxi',
+        'pane-maxi', 'slider-maxi',
     ];
 
-    global $wp_filesystem;
-    if (empty($wp_filesystem)) {
-        require_once ABSPATH . '/wp-admin/includes/file.php';
-        WP_Filesystem();
+    $current_last_modified = max(array_map(function ($block) {
+        $path = MAXI_PLUGIN_DIR_PATH . "build/blocks/" . $block . "/block.json";
+        return file_exists($path) ? filemtime($path) : 0;
+    }, $blocks));
+
+    if ($all_blocks_cache === null || $blocks_last_modified !== $current_last_modified) {
+        $all_blocks_cache = [];
+        $blocks_last_modified = $current_last_modified;
+
+        global $wp_filesystem;
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . '/wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
+        foreach ($blocks as $block) {
+            $block_json_path = MAXI_PLUGIN_DIR_PATH . "build/blocks/" . $block . "/block.json";
+
+            if (!file_exists($block_json_path)) {
+                throw new Error(
+                    'Missing block.json file for ' . $block . ' block. Run `npm update-blocks-json` to generate it.'
+                );
+            }
+
+            $block_json = $wp_filesystem->get_contents($block_json_path);
+            if (!$block_json) {
+                continue;
+            }
+
+            $block_data = json_decode($block_json, true);
+            $all_blocks_cache = array_merge($all_blocks_cache, $block_data['attributes']);
+        }
     }
 
-    foreach ($blocks as $block) {
-        $block_json_path = MAXI_PLUGIN_DIR_PATH . "build/blocks/" . $block . "/block.json";
-
-        if (!file_exists($block_json_path)) {
-            throw new Error(
-                'Missing block.json file for ' . $block . ' block. Run `npm update-blocks-json` to generate it.'
-            );
-        }
-
-        $block_json = $wp_filesystem->get_contents($block_json_path);
-        if (!$block_json) {
-            continue;
-        }
-
-        $block_data = json_decode($block_json, true);
-        $block_defaults = $block_data['attributes'];
-
-        if (array_key_exists($prop, $block_defaults) && isset($block_defaults[$prop]['default'])) {
-            $response = $block_defaults[$prop]['default'];
-        }
-
-        if (isset($response)) {
-            return $response;
-        }
-    }
-
-    return $response;
+    return $all_blocks_cache[$prop]['default'] ?? null;
 }

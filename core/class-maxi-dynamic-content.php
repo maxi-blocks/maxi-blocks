@@ -729,7 +729,7 @@ class MaxiBlocks_DynamicContent
             }
         } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
 
-            if (empty($post) || $this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+            if (empty($post) || (isset($attributes['dc-id']) && $this->is_repeated_post($attributes['dc-id'], $dc_accumulator))) {
                 return '';
             }
             if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {

@@ -687,7 +687,7 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_font_url($request)
         {
             $font_name = $request['font_name'];
-            $api_url = get_option('bunny_fonts') ? 'https://bunny.net' : 'https://fonts.googleapis.com';
+            $api_url = get_option('bunny_fonts') ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
             if (get_option('local_fonts')) {
                 $font_name_sanitized = str_replace(' ', '', strtolower($font_name));
                 $font_path = '/maxi/fonts/' . $font_name_sanitized . '/style.css';

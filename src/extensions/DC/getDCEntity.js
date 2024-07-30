@@ -36,6 +36,71 @@ const getRandomEntity = (entities, clientId) => {
 	return entities[randomEntityIndexes[clientId]];
 };
 
+const getPostBySlug = async slug => {
+	const posts = await select('core').getEntityRecords('postType', 'post', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (posts && posts.length > 0) {
+		return posts[0];
+	}
+
+	return null;
+};
+
+const getAuthorBySlug = async slug => {
+	const users = await select('core').getEntityRecords('root', 'user', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (users && users.length > 0) {
+		return users[0];
+	}
+
+	return null;
+};
+
+const getCategoryBySlug = async slug => {
+	const categories = await select('core').getEntityRecords('taxonomy', 'category', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (categories && categories.length > 0) {
+		return categories[0];
+	}
+
+	return null;
+};
+
+const getTagBySlug = async slug => {
+	const tags = await select('core').getEntityRecords('taxonomy', 'post_tag', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (tags && tags.length > 0) {
+		return tags[0];
+	}
+
+	return null;
+};
+
+const getProductBySlug = async slug => {
+	const products = await select('core').getEntityRecords('postType', 'product', {
+		slug: slug,
+		per_page: 1,
+	});
+
+	if (products && products.length > 0) {
+		return products[0];
+	}
+
+	return null;
+};
+
 const getDCEntity = async (dataRequest, clientId) => {
 	const {
 		type,
@@ -118,6 +183,32 @@ const getDCEntity = async (dataRequest, clientId) => {
 		);
 	}
 
+
+	if (relation === 'current') {
+		const currentTemplateType = getCurrentTemplateSlug();
+		if (currentTemplateType.includes('single-post-') && type === 'posts') {
+			const postSlug = currentTemplateType.replace('single-post-', '');
+			const post = await getPostBySlug(postSlug);
+			if (post) return post;
+		} else if (currentTemplateType.includes('author-') && type === 'users') {
+			const authorSlug = currentTemplateType.replace('author-', '');
+			const author = await getAuthorBySlug(authorSlug);
+			if (author) return author;
+		} else if (currentTemplateType.includes('category-') && type === 'categories') {
+			const categorySlug = currentTemplateType.replace('category-', '');
+			const category = await getCategoryBySlug(categorySlug);
+			if (category) return category;
+		} else if (currentTemplateType.includes('tag-') && type === 'tags') {
+			const tagSlug = currentTemplateType.replace('tag-', '');
+			const tag = await getTagBySlug(tagSlug);
+			if (tag) return tag;
+		} else if (currentTemplateType.includes('single-product-') && type === 'products') {
+			const productSlug = currentTemplateType.replace('single-product-', '');
+			const product = await getProductBySlug(productSlug);
+			if (product) return product;
+		}
+	}
+
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
 
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
@@ -192,7 +283,10 @@ const getDCEntity = async (dataRequest, clientId) => {
 				const taxonomyData = {};
 
 				try {
-					const postType = type === 'posts' ? select('core').getPostType('post') : select('core').getPostType(type);
+					const postType =
+						type === 'posts'
+							? select('core').getPostType('post')
+							: select('core').getPostType(type);
 					if (postType) {
 						const taxonomies = postType?.taxonomies;
 
@@ -263,7 +357,9 @@ const getDCEntity = async (dataRequest, clientId) => {
 					},
 					description: 'Description: example description.',
 					count: 100,
-					...(categoriesIds.length > 0 && { categories: categoriesIds }),
+					...(categoriesIds.length > 0 && {
+						categories: categoriesIds,
+					}),
 					...(tagsIds.length > 0 && { tags: tagsIds }),
 					...taxonomyData,
 				};
@@ -283,10 +379,17 @@ const getDCEntity = async (dataRequest, clientId) => {
 				}
 
 				if (entity) {
-					if (!entity.categories || entity.categories.length === 0 && categoriesIds.length > 0) {
+					if (
+						!entity.categories ||
+						(entity.categories.length === 0 &&
+							categoriesIds.length > 0)
+					) {
 						entity.categories = categoriesIds;
 					}
-					if (!entity.tags || entity.tags.length === 0 && tagsIds.length > 0) {
+					if (
+						!entity.tags ||
+						(entity.tags.length === 0 && tagsIds.length > 0)
+					) {
 						entity.tags = tagsIds;
 					}
 					if (!entity.title) {
@@ -307,7 +410,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 					if (!entity?.count) {
 						entity.count = templateEntity.count;
 					}
-
 
 					return entity;
 				}

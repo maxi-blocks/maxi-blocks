@@ -29,6 +29,9 @@ import { isEmpty, isNumber, invert } from 'lodash';
 import DOMPurify from 'dompurify';
 
 const showCurrent = (type, currentTemplateType) => {
+	if (!type || !currentTemplateType) {
+		return false;
+	}
 	const allowedTemplateTypesCurrent = [
 		'category',
 		'tag',

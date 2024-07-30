@@ -12,6 +12,7 @@ const { sync: glob } = require('fast-glob');
 const Dotenv = require('dotenv-webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { exec } = require('child_process');
+const JsonMinimizerPlugin = require('json-minimizer-webpack-plugin');
 
 // Check if ANALYZE is set to true
 const isAnalyze = process.env.ANALYZE === 'true';
@@ -100,6 +101,7 @@ const blocksConfig = {
 				},
 			}),
 			...defaultConfig.optimization.minimizer,
+			new JsonMinimizerPlugin(),
 		],
 	},
 	resolve: {

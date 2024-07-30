@@ -314,7 +314,7 @@ class MaxiBlocks_Local_Fonts
         }
 
         foreach ($all_urls as $font_name => $font_url) {
-            $font_name_sanitized = sanitize_font_name($font_name);
+            $font_name_sanitized = $this->sanitize_font_name($font_name);
             $this->upload_css_file($font_name_sanitized, $font_url);
             $all_fonts_names[] = $font_name_sanitized;
         }

@@ -701,7 +701,7 @@ if (!class_exists('MaxiBlocks_API')):
                 $font_url = $api_url . '/css2?family=' . $font_name . ':$fontData&display=swap';
             }
 
-            return wp_json_encode($font_url);
+            return $font_url;
         }
 
         public function get_maxi_blocks_current_style_cards()

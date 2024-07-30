@@ -167,82 +167,67 @@ class MaxiBlocks_Local_Fonts
 
     public function generateFontURL($font_url, $font_data)
     {
-        if (empty($font_data)) {
-            return rtrim($font_url, ':') . '&display=swap';
+        if (!empty($font_data)) {
+            // For legacy reasons font data is saved both as 'weight' ('style') and 'fontWeight' ('fontStyle')
+            // See https://github.com/maxi-blocks/maxi-blocks/pull/4305#discussion_r1098988152
+            $font_weight = array_key_exists('fontWeight', $font_data)
+                ? $font_data['fontWeight']
+                : (array_key_exists('weight', $font_data)
+                    ? $font_data['weight']
+                    : false);
+            $font_style = array_key_exists('fontStyle', $font_data)
+                ? $font_data['fontStyle']
+                : (array_key_exists('style', $font_data)
+                    ? $font_data['style']
+                    : false);
+
+            if (is_array($font_weight)) {
+                $font_weight = implode(',', array_unique($font_weight));
+            }
+
+            if ($font_style === 'italic') {
+                $font_url .= 'ital,';
+            }
+
+            if (strpos($font_weight, ',') !== false) {
+                $font_weight_arr = array_unique(explode(',', $font_weight));
+                sort($font_weight_arr);
+                $font_url .= 'wght@';
+                if ($font_style === 'italic') {
+                    foreach ($font_weight_arr as $fw) {
+                        $font_url .= '0,' . $fw . ';';
+                    }
+                    foreach ($font_weight_arr as $fw) {
+                        $font_url .= '1,' . $fw . ';';
+                    }
+                } else {
+                    foreach ($font_weight_arr as $fw) {
+                        $font_url .= $fw . ';';
+                    }
+                }
+                $font_url = rtrim($font_url, ';');
+            } elseif ($font_weight) {
+                if ($font_style === 'italic') {
+                    $font_url .=
+                        'wght@0,' . $font_weight . ';1,' . $font_weight;
+                } else {
+                    $font_url .= 'wght@' . $font_weight;
+                }
+            } else {
+                if ($font_style === 'italic') {
+                    $font_url .= 'wght@0,400;1,400';
+                } else {
+                    $font_url .= 'wght@400';
+                }
+            }
+
+            $font_url .= '&display=swap';
+        } else {
+            $font_url .= 'display=swap';
+            $font_url = rtrim($font_url, ':');
         }
-
-        $font_weight = $this->getFontWeight($font_data);
-        $font_style = $this->getFontStyle($font_data);
-
-        $font_url .= $this->buildFontStyleString($font_style);
-        $font_url .= $this->buildFontWeightString($font_weight, $font_style);
-        $font_url .= '&display=swap';
 
         return $font_url;
-    }
-
-    private function getFontWeight($font_data)
-    {
-        return $font_data['fontWeight'] ?? $font_data['weight'] ?? false;
-    }
-
-    private function getFontStyle($font_data)
-    {
-        return $font_data['fontStyle'] ?? $font_data['style'] ?? false;
-    }
-
-    private function buildFontStyleString($font_style)
-    {
-        return $font_style === 'italic' ? 'ital,' : '';
-    }
-
-    private function buildFontWeightString($font_weight, $font_style)
-    {
-        if (!$font_weight) {
-            return $this->getDefaultWeightString($font_style);
-        }
-
-        $weights = $this->normalizeWeights($font_weight);
-
-        if (count($weights) > 1) {
-            return $this->getMultipleWeightsString($weights, $font_style);
-        }
-
-        return $this->getSingleWeightString($weights[0], $font_style);
-    }
-
-    private function normalizeWeights($font_weight)
-    {
-        $weights = is_array($font_weight) ? $font_weight : explode(',', $font_weight);
-        $weights = array_unique($weights);
-        sort($weights);
-        return $weights;
-    }
-
-    private function getMultipleWeightsString($weights, $font_style)
-    {
-        $result = 'wght@';
-        foreach ($weights as $weight) {
-            if ($font_style === 'italic') {
-                $result .= "0,$weight;1,$weight;";
-            } else {
-                $result .= "$weight;";
-            }
-        }
-        return rtrim($result, ';');
-    }
-
-    private function getSingleWeightString($weight, $font_style)
-    {
-        if ($font_style === 'italic') {
-            return "wght@0,$weight;1,$weight";
-        }
-        return "wght@$weight";
-    }
-
-    private function getDefaultWeightString($font_style)
-    {
-        return $font_style === 'italic' ? 'wght@0,400;1,400' : 'wght@400';
     }
 
     public function constructFontURLs($all_fonts)
@@ -277,9 +262,7 @@ class MaxiBlocks_Local_Fonts
 
             $font_name_sanitized = str_replace(' ', '+', $font_name);
 
-            $use_bunny_fonts = (bool) get_option('bunny_fonts');
-            $font_api_url = $use_bunny_fonts ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
-            $font_url = $font_api_url . "/css2?family=$font_name_sanitized:";
+            $font_url = "https://fonts.googleapis.com/css2?family=$font_name_sanitized:";
 
             $response[$font_name] = $this->generateFontURL(
                 $font_url,

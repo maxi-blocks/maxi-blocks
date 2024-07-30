@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.9.3\n"
+"Project-Id-Version: MaxiBlocks 1.9.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-19T12:12:27+00:00\n"
+"POT-Creation-Date: 2024-07-30T15:23:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -32,38 +32,38 @@ msgstr ""
 msgid "https://maxiblocks.com/go/plugin-author"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:108
+#: core/admin/class-maxi-dashboard.php:115
 msgid "Validating..."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:109
+#: core/admin/class-maxi-dashboard.php:116
 msgid "Please add your API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:110
+#: core/admin/class-maxi-dashboard.php:117
 msgid "Invalid API Key, please check your key and try again"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:111
+#: core/admin/class-maxi-dashboard.php:118
 msgid "Referer not allowed, please allow your domain for that key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:112
+#: core/admin/class-maxi-dashboard.php:119
 msgid "Only alphabet, number, \"_\", \"$\", \".\", \"[\", and \"]\" are allowed in the API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:113
+#: core/admin/class-maxi-dashboard.php:120
 msgid "Error validating API Key, please try again later"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:161
-#: core/admin/class-maxi-dashboard.php:202
+#: core/admin/class-maxi-dashboard.php:168
+#: core/admin/class-maxi-dashboard.php:209
 msgid "Start"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:169
-#: core/admin/class-maxi-dashboard.php:170
-#: core/admin/class-maxi-dashboard.php:206
+#: core/admin/class-maxi-dashboard.php:176
+#: core/admin/class-maxi-dashboard.php:177
+#: core/admin/class-maxi-dashboard.php:213
 #: build/1772.js:1
 #: build/1846.js:1
 #: build/2447.js:1
@@ -106,514 +106,532 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:180
-#: core/admin/class-maxi-dashboard.php:181
-#: core/admin/class-maxi-dashboard.php:210
+#: core/admin/class-maxi-dashboard.php:187
+#: core/admin/class-maxi-dashboard.php:188
+#: core/admin/class-maxi-dashboard.php:217
 msgid "Maxi AI"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:189
-#: core/admin/class-maxi-dashboard.php:190
-#: core/admin/class-maxi-dashboard.php:214
+#: core/admin/class-maxi-dashboard.php:196
+#: core/admin/class-maxi-dashboard.php:197
+#: core/admin/class-maxi-dashboard.php:221
 msgid "Pro library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:232
+#: core/admin/class-maxi-dashboard.php:239
 msgid "MaxiBlocks Logo"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:297
+#: core/admin/class-maxi-dashboard.php:304
 msgid "Hello, "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:299
+#: core/admin/class-maxi-dashboard.php:306
 msgid "Hello, friend"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:305
+#: core/admin/class-maxi-dashboard.php:312
 msgid "Future-proof your web design with the modern page builder that blends simplicity and power"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:312
+#: core/admin/class-maxi-dashboard.php:319
 msgid "MaxiBlocks is a no-code visual page builder that can create responsive, fast-loading webpages using an integrated design library."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:319
+#: core/admin/class-maxi-dashboard.php:326
 msgid "You can choose from over 1,800 patterns, 100 page templates, and 13,400 SVG icons to kickstart page building and bring your creative vision to life."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:326
+#: core/admin/class-maxi-dashboard.php:333
 msgid "No locked blocks"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:330
+#: core/admin/class-maxi-dashboard.php:337
 msgid "We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:337
+#: core/admin/class-maxi-dashboard.php:344
 msgid "Goodbye license keys"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:341
+#: core/admin/class-maxi-dashboard.php:348
 msgid "Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:348
+#: core/admin/class-maxi-dashboard.php:355
 msgid "Packed with free goodies"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:352
+#: core/admin/class-maxi-dashboard.php:359
 msgid "Get started with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. Just open a page and start building."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:359
+#: core/admin/class-maxi-dashboard.php:366
 msgid "Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:366
+#: core/admin/class-maxi-dashboard.php:373
 msgid "Go next-level with pro templates"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:373
+#: core/admin/class-maxi-dashboard.php:380
 msgid "If you're loving MaxiBlocks and want to support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1700 production-ready Pro templates."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:380
+#: core/admin/class-maxi-dashboard.php:387
 msgid "It’s like having a dedicated professional designer crafting unique designs exclusively for you."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:387
+#: core/admin/class-maxi-dashboard.php:394
 msgid "Our experienced team has created thousands of responsive designs using Maxi, so we know what works. Tap into a huge designer-made asset library that can literally double your output."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:394
+#: core/admin/class-maxi-dashboard.php:401
 msgid "Copy, remix, and learn as you go - it's all possible with MaxiBlocks."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:406
+#: core/admin/class-maxi-dashboard.php:413
 msgid "News and stories for creators."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:407
+#: core/admin/class-maxi-dashboard.php:414
 msgid "Read the blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:412
+#: core/admin/class-maxi-dashboard.php:419
 msgid "Get a summary of stories you missed."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:413
+#: core/admin/class-maxi-dashboard.php:420
 msgid "Notify me"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:418
+#: core/admin/class-maxi-dashboard.php:425
 msgid "Your thoughts can inspire others."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:419
+#: core/admin/class-maxi-dashboard.php:426
 msgid "Give a quick review"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:441
+#: core/admin/class-maxi-dashboard.php:448
 msgid "Successfully done"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:445
+#: core/admin/class-maxi-dashboard.php:452
 msgid "Editor preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:449
+#: core/admin/class-maxi-dashboard.php:456
 msgid "Hide interface tooltips"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:453
+#: core/admin/class-maxi-dashboard.php:460
 msgid "Hide tooltips on mouse-hover."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:457
-#: core/admin/class-maxi-dashboard.php:536
+#: core/admin/class-maxi-dashboard.php:464
+#: core/admin/class-maxi-dashboard.php:539
 #: build/4490.js:1
 #: src/editor/style-cards/maxiStyleCardsEditor.js:571
 msgid "Save changes"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:462
+#: core/admin/class-maxi-dashboard.php:469
 msgid "Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:464
+#: core/admin/class-maxi-dashboard.php:471
 msgid "Create Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:465
+#: core/admin/class-maxi-dashboard.php:472
 msgid "To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:466
+#: core/admin/class-maxi-dashboard.php:473
 msgid "To create an API key, you will need to do the following:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:468
+#: core/admin/class-maxi-dashboard.php:475
 msgid "Create a Google Cloud Platform account, if you don’t already have one."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:469
+#: core/admin/class-maxi-dashboard.php:476
 msgid "Create a new Google Cloud Platform project."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:470
+#: core/admin/class-maxi-dashboard.php:477
 msgid "Enable Google Maps Platform APIs."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:471
+#: core/admin/class-maxi-dashboard.php:478
 msgid "Generate an API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:473
+#: core/admin/class-maxi-dashboard.php:480
 msgid "To make this process easy, launch"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:475
+#: core/admin/class-maxi-dashboard.php:482
 msgid "Google Maps API Quickstart"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:477
+#: core/admin/class-maxi-dashboard.php:484
 msgid "which will handle the setup of your account and generate the API key that you can insert below."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:479
+#: core/admin/class-maxi-dashboard.php:486
 msgid "Insert Google Maps API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:486
+#: core/admin/class-maxi-dashboard.php:493
 msgid "Fonts and files"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:490
-msgid "Serve Google fonts locally"
+#: core/admin/class-maxi-dashboard.php:498
+msgid "Use Bunny Fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:494
-msgid "Local storage: Download, store and serve font files from a WordPress directory on your site. This method blocks Google’s tracking for web visitors. It can improve or degrade performance, depending on hosting quality or resource usage. Please test and monitor carefully. Unused font files are removed periodically to conserve space."
+#: core/admin/class-maxi-dashboard.php:500
+msgid "Bunny Fonts: Privacy-friendly, GDPR compliant. Global CDN for fast loading. Wide selection of fonts available."
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:501
-msgid ""
-"Google servers: Serve Google font files directly from Google’s servers. It may impact\n"
-"            privacy (GDPR) if a web visitor’s IP address is revealed to Google."
+msgid "Google Fonts: Extensive font selection. Potential privacy concerns when using Google's CDN."
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:505
+msgid "Serve Bunny Fonts locally"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:506
+msgid "Serve Bunny Fonts from CDN: Fastest option. Uses external CDN. No local storage required."
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:507
-msgid "(Default)"
+msgid "Serve Bunny Fonts locally: Privacy-focused. May impact server performance. Requires local storage."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:516
-msgid "Size of the local fonts:"
+#: core/admin/class-maxi-dashboard.php:510
+msgid "Serve Google Fonts locally"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:511
+msgid "Serve from Google CDN: Fastest option. Uses Google's CDN. Potential privacy (GDPR) implications."
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:512
+msgid "Serve Google Fonts locally: Blocks Google tracking. May impact server performance. Requires local storage."
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:519
+msgid "Size of the local fonts:"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:522
 msgid "MB"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:526
+#: core/admin/class-maxi-dashboard.php:529
 msgid "Remove local fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:542
+#: core/admin/class-maxi-dashboard.php:545
 msgid "Documentation & support"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:546
+#: core/admin/class-maxi-dashboard.php:549
 msgid "Read the "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:549
+#: core/admin/class-maxi-dashboard.php:552
 msgid "help center documentation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:552
+#: core/admin/class-maxi-dashboard.php:555
 msgid " for self-service."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:558
+#: core/admin/class-maxi-dashboard.php:561
 msgid "Troubleshooting"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:562
+#: core/admin/class-maxi-dashboard.php:565
 msgid "Site health info report"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:566
+#: core/admin/class-maxi-dashboard.php:569
 msgid "The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:573
+#: core/admin/class-maxi-dashboard.php:576
 msgid "Go to site health info"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:579
+#: core/admin/class-maxi-dashboard.php:582
 msgid "Experimental preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:581
+#: core/admin/class-maxi-dashboard.php:584
 msgid "Enable settings indicators"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:582
+#: core/admin/class-maxi-dashboard.php:585
 msgid "Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:591
+#: core/admin/class-maxi-dashboard.php:594
 msgid "Template library and Style Cards"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:595
+#: core/admin/class-maxi-dashboard.php:598
 msgid "Even the best designers use page templates to save time. The trick is to change styles without wasting hours choosing colours and fonts. You need a shortcut. You need a Style Card."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:603
+#: core/admin/class-maxi-dashboard.php:606
 msgid "Style Cards change 15 design elements in sync. It works like this:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:611
+#: core/admin/class-maxi-dashboard.php:614
 msgid "Choose your favourite Style Card from 100 shown in the library."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:618
+#: core/admin/class-maxi-dashboard.php:621
 msgid "Browse the template library to find a good page or pattern."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:625
+#: core/admin/class-maxi-dashboard.php:628
 msgid "Insert and watch how templates instantly match your chosen style."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:635
+#: core/admin/class-maxi-dashboard.php:638
 msgid "MaxiBlocks is free and open source"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:639
+#: core/admin/class-maxi-dashboard.php:642
 msgid "Whatever you create with MaxiBlocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don’t forget to share your pages with the hashtag"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:646
+#: core/admin/class-maxi-dashboard.php:649
 msgid "#maxiblocks"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:650
+#: core/admin/class-maxi-dashboard.php:653
 msgid " - We’re dying to see what you create. "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:658
+#: core/admin/class-maxi-dashboard.php:661
 msgid "Our next goal is to launch the MaxiBlocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:665
+#: core/admin/class-maxi-dashboard.php:668
 msgid "Learn more about MaxiBlocks Pro."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:677
-#: core/admin/class-maxi-dashboard.php:782
+#: core/admin/class-maxi-dashboard.php:680
+#: core/admin/class-maxi-dashboard.php:785
 msgid "Roadmap"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:681
+#: core/admin/class-maxi-dashboard.php:684
 msgid "There’s a grand plan and we need your help. Share your suggestions or vote on what to build next. "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:688
+#: core/admin/class-maxi-dashboard.php:691
 msgid "See what's planned in the roadmap."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:714
+#: core/admin/class-maxi-dashboard.php:717
 msgid "Thousands of premium templates to work faster"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:715
+#: core/admin/class-maxi-dashboard.php:718
 msgid "Unlimited downloads. Unlimited sites. No feature lock-in."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:716
+#: core/admin/class-maxi-dashboard.php:719
 msgid "Find inspiration, or add variety to your designs. Boost your productivity and grow your audience. Join our community of creators who love to build fast, beautiful, responsive websites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:717
+#: core/admin/class-maxi-dashboard.php:720
 msgid "Let’s create something amazing with Maxi"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:719
+#: core/admin/class-maxi-dashboard.php:722
 msgid "Sign up"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:720
+#: core/admin/class-maxi-dashboard.php:723
 msgid "Already have an account? "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:729
+#: core/admin/class-maxi-dashboard.php:732
 msgid "help desk"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:730
+#: core/admin/class-maxi-dashboard.php:733
 msgid "pro library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:731
+#: core/admin/class-maxi-dashboard.php:734
 msgid "demo library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:732
+#: core/admin/class-maxi-dashboard.php:735
 msgid "youtube"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:733
-#: core/admin/class-maxi-dashboard.php:781
+#: core/admin/class-maxi-dashboard.php:736
+#: core/admin/class-maxi-dashboard.php:784
 msgid "maxiblocks.com"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:734
+#: core/admin/class-maxi-dashboard.php:737
 msgid "twitter"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:735
+#: core/admin/class-maxi-dashboard.php:738
 msgid "discord community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:736
+#: core/admin/class-maxi-dashboard.php:739
 msgid "roadmap"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:743
+#: core/admin/class-maxi-dashboard.php:746
 msgid "Hi "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:746
+#: core/admin/class-maxi-dashboard.php:749
 msgid "[username]"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:752
+#: core/admin/class-maxi-dashboard.php:755
 msgid "You're signed in. Pro library is connected."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:753
+#: core/admin/class-maxi-dashboard.php:756
 msgid "Browse for templates"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:757
+#: core/admin/class-maxi-dashboard.php:760
 msgid "-  Create a new page to launch the editing experience"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:764
+#: core/admin/class-maxi-dashboard.php:767
 msgid "-  Open master toolbar from the square MaxiBlocks launcher icon"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:771
+#: core/admin/class-maxi-dashboard.php:774
 msgid "-  Choose \"Template library\" and select the blue \"Pro\" tab to start browsing"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:777
+#: core/admin/class-maxi-dashboard.php:780
 msgid "Support links"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:779
+#: core/admin/class-maxi-dashboard.php:782
 msgid "Help desk"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:780
+#: core/admin/class-maxi-dashboard.php:783
 msgid "YouTube"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:784
+#: core/admin/class-maxi-dashboard.php:787
 msgid "Community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:786
+#: core/admin/class-maxi-dashboard.php:789
 msgid "Twitter"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:787
+#: core/admin/class-maxi-dashboard.php:790
 msgid "Discord community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:798
+#: core/admin/class-maxi-dashboard.php:801
 msgid "Integrations"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:800
+#: core/admin/class-maxi-dashboard.php:803
 msgid "Insert OpenAI API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:803
+#: core/admin/class-maxi-dashboard.php:806
 msgid "ChatGPT AI Model"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:816
+#: core/admin/class-maxi-dashboard.php:819
 msgid "Website identity"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:819
+#: core/admin/class-maxi-dashboard.php:822
 msgid "Tell us about your site"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:820
+#: core/admin/class-maxi-dashboard.php:823
 msgid ""
 "What is the primary goal of your website? (e.g. shopping platform, offering\n"
 "\t\t\t\tservices, showcasing work, journaling)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:823
+#: core/admin/class-maxi-dashboard.php:826
 msgid "Example: Hairdresser, Plumber, Marketing agency"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:827
+#: core/admin/class-maxi-dashboard.php:830
 msgid "Who is your target audience?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:828
+#: core/admin/class-maxi-dashboard.php:831
 msgid "Group of people you want to connect with or offer services to."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:830
+#: core/admin/class-maxi-dashboard.php:833
 msgid "Example: Ladies who need haircuts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:834
+#: core/admin/class-maxi-dashboard.php:837
 msgid "What is the goal of the website?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:835
-#: core/admin/class-maxi-dashboard.php:842
+#: core/admin/class-maxi-dashboard.php:838
+#: core/admin/class-maxi-dashboard.php:845
 msgid "Enter as many as you like. Separate with commas."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:837
-#: core/admin/class-maxi-dashboard.php:858
+#: core/admin/class-maxi-dashboard.php:840
+#: core/admin/class-maxi-dashboard.php:861
 msgid "Example: Get bookings, write a blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:841
+#: core/admin/class-maxi-dashboard.php:844
 msgid "What services do you offer?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:844
+#: core/admin/class-maxi-dashboard.php:847
 msgid "Example: Hair cuts, blow dries, beard shave"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:848
+#: core/admin/class-maxi-dashboard.php:851
 msgid "What is your website or business name?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:849
+#: core/admin/class-maxi-dashboard.php:852
 msgid "The name will be used for writing content. Optional. Takes WordPress Site Title by default"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:851
+#: core/admin/class-maxi-dashboard.php:854
 msgid "Example: Mary's fabulous hair studio"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:855
+#: core/admin/class-maxi-dashboard.php:858
 msgid "Anything else we should know?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:856
+#: core/admin/class-maxi-dashboard.php:859
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
@@ -2089,7 +2107,7 @@ msgstr ""
 
 #: build/4490.js:1
 #: src/editor/style-cards/maxiStyleCardsEditor.js:603
-msgid "Affect Gutenberg native blocks inside MaxiBlocks"
+msgid "Style core blocks within Maxi containers"
 msgstr ""
 
 #: build/4490.js:1
@@ -3307,7 +3325,7 @@ msgstr ""
 #: src/blocks/image-maxi/edit.js:457
 #: src/blocks/image-maxi/edit.js:559
 #: src/blocks/image-maxi/edit.js:620
-#: src/extensions/DC/utils.js:154
+#: src/extensions/DC/utils.js:173
 msgid "No content found"
 msgstr ""
 
@@ -6437,7 +6455,7 @@ msgid "Get by id"
 msgstr ""
 
 #: src/extensions/DC/constants.js:104
-#: src/extensions/DC/utils.js:361
+#: src/extensions/DC/utils.js:383
 msgid "Get by tag"
 msgstr ""
 
@@ -6458,12 +6476,12 @@ msgstr ""
 
 #: src/extensions/DC/constants.js:113
 #: src/extensions/DC/constants.js:121
-#: src/extensions/DC/utils.js:343
+#: src/extensions/DC/utils.js:365
 msgid "Get alphabetical"
 msgstr ""
 
 #: src/extensions/DC/constants.js:114
-#: src/extensions/DC/utils.js:349
+#: src/extensions/DC/utils.js:371
 msgid "Get by author"
 msgstr ""
 
@@ -6703,28 +6721,28 @@ msgstr ""
 msgid "All archives"
 msgstr ""
 
-#: src/extensions/DC/utils.js:128
+#: src/extensions/DC/utils.js:147
 msgid "Selected entity"
 msgstr ""
 
-#: src/extensions/DC/utils.js:142
+#: src/extensions/DC/utils.js:161
 msgid "links"
 msgstr ""
 
-#: src/extensions/DC/utils.js:322
+#: src/extensions/DC/utils.js:344
 msgid "Archive type's name"
 msgstr ""
 
-#: src/extensions/DC/utils.js:355
+#: src/extensions/DC/utils.js:377
 msgid "Get by category"
 msgstr ""
 
-#: src/extensions/DC/utils.js:388
-#: src/extensions/DC/utils.js:408
+#: src/extensions/DC/utils.js:410
+#: src/extensions/DC/utils.js:430
 msgid "Get the current item's data"
 msgstr ""
 
-#: src/extensions/DC/utils.js:398
+#: src/extensions/DC/utils.js:420
 msgid "Get the current archive's posts"
 msgstr ""
 
@@ -6732,7 +6750,7 @@ msgstr ""
 msgid "Unable to get the preview device type. The required method is not available."
 msgstr ""
 
-#: src/extensions/maxi-block/maxiBlockComponent.js:1118
+#: src/extensions/maxi-block/maxiBlockComponent.js:1122
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 

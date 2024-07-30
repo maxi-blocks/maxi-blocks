@@ -585,8 +585,6 @@ class MaxiBlocks_Styles
         }
 
         $use_local_fonts = (bool) get_option('local_fonts');
-        $use_bunny_fonts = (bool) get_option('bunny_fonts');
-        $font_api_url = $use_bunny_fonts ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
 
         $loaded_fonts = [];
 
@@ -626,7 +624,7 @@ class MaxiBlocks_Styles
                             $font_name_sanitized .
                             '/style.css';
                     } else {
-                        $font_url = $font_api_url . "/css2?family=$font:";
+                        $font_url = "https://fonts.googleapis.com/css2?family=$font:";
                     }
 
                     if (!$use_local_fonts) {
@@ -681,7 +679,7 @@ class MaxiBlocks_Styles
                             $font_name_sanitized .
                             '/style.css';
                     } else {
-                        $font_url = $font_api_url . "/css2?family=$font";
+                        $font_url = "https://fonts.googleapis.com/css2?family=$font";
                     }
 
 

@@ -24,32 +24,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
         private static $instance;
 
         /**
-         * Array of all the block classes in MaxiBlocks.
-         *
-         * @var array
-         */
-        private $blocks_classes = [
-            'Group_Maxi_Block',
-            'Container_Maxi_Block',
-            'Row_Maxi_Block',
-            'Column_Maxi_Block',
-            'Accordion_Maxi_Block',
-            'Pane_Maxi_Block',
-            'Button_Maxi_Block',
-            'Divider_Maxi_Block',
-            'Image_Maxi_Block',
-            'SVG_Icon_Maxi_Block',
-            'Text_Maxi_Block',
-            'Video_Maxi_Block',
-            'Number_Counter_Maxi_Block',
-            'Search_Maxi_Block',
-            'Map_Maxi_Block',
-            'Slide_Maxi_Block',
-            'Slider_Maxi_Block',
-        ];
-
-
-        /**
          * Registers the plugin.
          */
         public static function register()
@@ -64,8 +38,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
          */
         public function __construct()
         {
-            $this->include_block_classes(); // Includes all block classes.
-
             // Enqueue blocks styles and scripts
             add_action('init', [$this, 'enqueue_blocks_assets']);
 
@@ -86,19 +58,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 add_filter("render_block", [$this, "maxi_add_sc_native_blocks"], 10, 3);
             }
 
-        }
-
-        /**
-         * Includes all the block classes.
-         */
-        private function include_block_classes()
-        {
-            foreach ($this->blocks_classes as $class) {
-                $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-' . strtolower(str_replace('_', '-', $class)) . '.php';
-                if (file_exists($file_path)) {
-                    require_once $file_path;
-                }
-            }
         }
 
         public function enqueue_blocks_assets()
@@ -148,25 +107,22 @@ if (!class_exists('MaxiBlocks_Blocks')):
          */
         public function register_blocks()
         {
-            foreach ($this->blocks_classes as $class) {
-                $full_class_name = 'MaxiBlocks_' . $class;
-                if (class_exists($full_class_name)) {
-                    call_user_func([$full_class_name, 'register']);
-                }
-            }
+            require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-maxi-block-factory.php';
+            $block_factory = MaxiBlocks_BlockFactory::get_instance();
+            $block_factory->create_all_blocks();
         }
 
         public function maxi_add_image_taxonomy()
         {
             $labels = array(
-            'name'              => __('Maxi Images', 'max-blocks'),
-            'singular_name'     => __('maxi-image-type', 'max-blocks'),
-            'search_items'      => __('Search Maxi Images', 'max-blocks'),
-            'all_items'         => __('All Maxi Images', 'max-blocks'),
-            'edit_item'         => __('Edit Maxi Image', 'max-blocks'),
-            'update_item'       => __('Update Maxi Image', 'max-blocks'),
-            'add_new_item'      => __('Add New Maxi Image', 'max-blocks'),
-            'new_item_name'     => __('New Maxi Image Name', 'max-blocks'),
+            'name'              => __('Maxi Images', 'maxi-blocks'),
+            'singular_name'     => __('maxi-image-type', 'maxi-blocks'),
+            'search_items'      => __('Search Maxi Images', 'maxi-blocks'),
+            'all_items'         => __('All Maxi Images', 'maxi-blocks'),
+            'edit_item'         => __('Edit Maxi Image', 'maxi-blocks'),
+            'update_item'       => __('Update Maxi Image', 'maxi-blocks'),
+            'add_new_item'      => __('Add New Maxi Image', 'maxi-blocks'),
+            'new_item_name'     => __('New Maxi Image Name', 'maxi-blocks'),
         );
 
             $args = array(
@@ -189,12 +145,12 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
         public function maxi_add_image_taxonomy_term()
         {
-            if (!term_exists(__('Maxi Image', 'max-blocks'), 'maxi-image-type')) {
+            if (!term_exists(__('Maxi Image', 'maxi-blocks'), 'maxi-image-type')) {
                 wp_insert_term(
-                    __('Maxi Image', 'max-blocks'),
+                    __('Maxi Image', 'maxi-blocks'),
                     'maxi-image-type',
                     array(
-                      'description' => __('Images added by MaxiBlocks plugin', 'max-blocks'),
+                      'description' => __('Images added by MaxiBlocks plugin', 'maxi-blocks'),
                       'slug'        => 'maxi-image'
                     )
                 );

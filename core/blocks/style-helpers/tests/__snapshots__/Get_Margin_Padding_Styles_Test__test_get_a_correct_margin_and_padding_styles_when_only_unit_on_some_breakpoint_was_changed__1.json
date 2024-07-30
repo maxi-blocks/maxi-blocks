@@ -1,0 +1,17 @@
+{
+	"general": {
+		"margin-top": "11em"
+	},
+	"xxl": {
+		"margin-top": "11px"
+	},
+	"xl": {
+		"margin-top": "11em"
+	},
+	"l": {},
+	"m": {
+		"margin-top": "11%"
+	},
+	"s": {},
+	"xs": {}
+}

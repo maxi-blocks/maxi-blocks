@@ -72,10 +72,31 @@ class edit extends MaxiBlockComponent {
 		return this.props.attributes.openFirstTime;
 	}
 
+	updateSVGWidthHeightRatio() {
+		getSVGWidthHeightRatio('.maxi-svg-icon-block__icon svg', this.blockRef).then(
+			newWidthHeightRatio => {
+				if (
+					newWidthHeightRatio !==
+					this.props.attributes.widthHeightRatio
+				) {
+					this.props.maxiSetAttributes({
+						widthHeightRatio: newWidthHeightRatio,
+					});
+				}
+			}
+		);
+	}
+
+	maxiBlockDidMount() {
+		this.updateSVGWidthHeightRatio();
+	}
+
 	maxiBlockDidUpdate(prevProps) {
 		const { updateBlockAttributes } = dispatch('core/block-editor');
 		const svgCode = this.props.attributes.content;
 		const blockId = this.props.attributes.uniqueID;
+
+		this.updateSVGWidthHeightRatio();
 
 		if (svgCode) {
 			const svgInsideIds = uniq(
@@ -177,14 +198,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(
-			this.props.attributes,
-			getSVGWidthHeightRatio(
-				this.blockRef.current?.querySelector(
-					'.maxi-svg-icon-block__icon svg'
-				)
-			)
-		);
+		return getStyles(this.props.attributes);
 	}
 
 	state = {

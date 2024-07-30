@@ -1,6 +1,7 @@
 <?php
 
-function get_value($key, $prefix, $obj, $is_hover, $breakpoint) {
+function get_value($key, $prefix, $obj, $is_hover, $breakpoint)
+{
     return is_null($breakpoint)
         ? get_attributes_value([
             'target' => $prefix . $key,
@@ -15,7 +16,8 @@ function get_value($key, $prefix, $obj, $is_hover, $breakpoint) {
         ]);
 }
 
-function get_palette_attributes($args) {
+function get_palette_attributes($args)
+{
     $obj = $args['obj'];
     $prefix = $args['prefix'] ?? '';
     $breakpoint = $args['breakpoint'] ?? null;
@@ -29,5 +31,3 @@ function get_palette_attributes($args) {
         'color' => get_value('color', $prefix, $obj, $is_hover, $breakpoint),
     ];
 }
-
-?>

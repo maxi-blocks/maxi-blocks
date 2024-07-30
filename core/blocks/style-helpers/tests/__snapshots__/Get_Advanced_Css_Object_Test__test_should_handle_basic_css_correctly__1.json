@@ -1,0 +1,16 @@
+{
+    " .maxi-block-button": {
+        "advancedCss": {
+            "general": {
+                "css": "color: yellow;"
+            }
+        }
+    },
+    "": {
+        "advancedCss": {
+            "general": {
+                "css": "background: red;"
+            }
+        }
+    }
+}

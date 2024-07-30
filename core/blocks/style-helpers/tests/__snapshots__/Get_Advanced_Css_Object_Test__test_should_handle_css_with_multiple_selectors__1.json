@@ -1,0 +1,23 @@
+{
+    " .maxi-block-button": {
+        "advancedCss": {
+            "general": {
+                "css": "color: red;"
+            }
+        }
+    },
+    " .maxi-block-button:hover": {
+        "advancedCss": {
+            "general": {
+                "css": "color: red;"
+            }
+        }
+    },
+    "": {
+        "advancedCss": {
+            "general": {
+                "css": "background: green;"
+            }
+        }
+    }
+}

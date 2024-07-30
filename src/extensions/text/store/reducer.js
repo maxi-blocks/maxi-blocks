@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import fonts from '../fonts/fonts';
+import fonts from '../../../../core/post-management/fonts.json';
 
 /**
  * External dependencies

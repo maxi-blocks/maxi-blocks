@@ -1,0 +1,33 @@
+{
+    "iconSize": {
+        "label": "Icon size",
+        "general": {
+            "height": "12%",
+            "width": "36%"
+        },
+        "xxl": {
+            "height": "12%",
+            "width": "36%"
+        },
+        "xl": {
+            "height": "12%",
+            "width": "36%"
+        },
+        "l": {
+            "height": "32%",
+            "width": "32%"
+        },
+        "m": {
+            "height": "16%",
+            "width": "36%"
+        },
+        "s": {
+            "height": "16%",
+            "width": "36%"
+        },
+        "xs": {
+            "height": "16%",
+            "width": "36%"
+        }
+    }
+}

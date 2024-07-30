@@ -62,6 +62,11 @@ if (!class_exists('MaxiBlocks_Block')):
         protected $block_custom_css = [];
 
         /**
+         * Block transition
+         */
+        protected $block_transition = [];
+
+        /**
          * Block sc props
          */
         protected $block_sc_props = [];
@@ -230,13 +235,13 @@ if (!class_exists('MaxiBlocks_Block')):
             'linkSettings' => [
                 'type' => 'object',
             ],
-			// Required to render backcground DC
-			'background-layers' => [
-				'type' => 'array',
-			],
-			'background-layers-hover' => [
-				'type' => 'array',
-			],
+            // Required to render background DC
+            'background-layers' => [
+                'type' => 'array',
+            ],
+            'background-layers-hover' => [
+                'type' => 'array',
+            ],
         ];
 
         /**
@@ -299,14 +304,10 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function render_block($attributes, $content, $block)
         {
-
-
             // If the block should be dynamic, use MaxiBlocks_DynamicContent
             if (in_array($this->block_name, $this->dynamic_blocks)) {
-
                 $dynamic_content = new MaxiBlocks_DynamicContent($this->block_name, $attributes, $content);
-                $dc_content = $dynamic_content->render_dc($attributes, $content, $block);
-                return $dc_content;
+                return $dynamic_content->render_dc($attributes, $content, $block);
             }
 
             // If not, proceed with the regular render logic
@@ -362,6 +363,14 @@ if (!class_exists('MaxiBlocks_Block')):
 
         public function get_block_attributes($props)
         {
+            $default_attributes = get_block_attributes($this->block_name);
+
+            foreach (array_keys($default_attributes) as $key) {
+                if (isset($default_attributes[$key])) {
+                    $props[$key] = $props[$key] ?? $default_attributes[$key];
+                }
+            }
+
             return $this->block->prepare_attributes_for_render($props);
         }
 
@@ -378,6 +387,34 @@ if (!class_exists('MaxiBlocks_Block')):
             return $this->block_custom_css = (!empty($this->block_custom_css) ? $this->block_custom_css : $this->get_block_metadata()['customCss'] ?? []);
 
         }
+
+        /**
+         * Get block transition.
+         *
+         * Retrieves the transition properties from the block metadata.
+         *
+         * @return array The transition properties for the block.
+         */
+        public function get_block_transition()
+        {
+            return $this->block_transition = (!empty($this->block_transition) ? $this->block_transition : $this->get_block_metadata()['transition'] ?? []);
+        }
+
+        /**
+         * Get block data.
+         *
+         * Retrieves the block data, including custom CSS and transition properties.
+         *
+         * @return array The block data.
+         */
+        public function get_block_data()
+        {
+            return [
+                'customCss' => $this->get_block_custom_css(),
+                'transition' => $this->get_block_transition(),
+            ];
+        }
+
 
 
         /**
@@ -416,6 +453,17 @@ if (!class_exists('MaxiBlocks_Block')):
             return $this->block_sc_vars = MaxiBlocks_StyleCards::get_style_cards_values($sc_props, $block_style, $sc_entry);
         }
 
+        /**
+         * Get block styles.
+         * This method is intended to be overridden by the child class.
+         *
+         * @param array $props The block properties.
+         * @param array $data The block data (custom CSS and transition properties).
+         */
+        public function get_styles($props, $data)
+        {
+
+        }
     }
 
 endif;

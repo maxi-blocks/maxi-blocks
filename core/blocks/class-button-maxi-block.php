@@ -59,74 +59,19 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_values)
+        public function get_styles($props, $data, $sc_values = null)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            // transition
-            $defaults = new StylesDefaults();
-            $transition_default = $defaults->transitionDefault;
-
-            $button_wrapper_class = ' .maxi-button-block';
-            $button_class = $button_wrapper_class . '__button';
-            $icon_class = $button_wrapper_class . '__icon';
-            $content_class = $button_wrapper_class . '__content';
-            $prefix = 'button-';
-
-            $transition = array_merge($transition_default, [
-                'block' => [
-                    'typography' => [
-                        'title' => 'Typography',
-                        'target' => $content_class,
-                        'property' => false,
-                        'hover_prop' => 'typography-status-hover',
-                    ],
-                    'button background' => [
-                        'title' => 'Button background',
-                        'target' => $button_class,
-                        'property' => 'background',
-                        'hover_prop' => $prefix . 'background-status-hover',
-                    ],
-                    'border' => [
-                        'title' => 'Border',
-                        'target' => $button_class,
-                        'property' => ['border', 'border-radius'],
-                        'hover_prop' => $prefix . 'border-status-hover',
-                    ],
-                    'box shadow' => [
-                        'title' => 'Box shadow',
-                        'target' => $button_class,
-                        'property' => 'box-shadow',
-                        'hover_prop' => $prefix . 'box-shadow-status-hover',
-                    ],
-                ]
-            ]);
-
-            // Call the create_icon_transitions function and merge its results into the 'block' array
-            $icon_transitions = create_icon_transitions([
-                'target' => ' ' . $icon_class,
-                'prefix' => 'icon-',
-                'title_prefix' => 'icon',
-            ]);
-
-            $transition['block'] = array_merge($transition['block'], $icon_transitions);
-
-            $data = [
-                'customCss' => $customCss,
-                'transition' => $transition,
-            ];
-
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_wrapper_object($props),
-                    ':hover' => self::get_hover_wrapper_object($props),
-                    ' .maxi-button-block__button' => self::get_normal_object($props),
-                    ' .maxi-button-block__content'=> self::get_content_object($props),
-                    // Hover
-                    ' .maxi-button-block__button:hover' => self::get_hover_object($props, $sc_values),
-                    ' .maxi-button-block__content:hover' => self::get_hover_content_object($props, $sc_values),
-                ],
+                '' => self::get_wrapper_object($props),
+                ':hover' => self::get_hover_wrapper_object($props),
+                ' .maxi-button-block__button' => self::get_normal_object($props),
+                ' .maxi-button-block__content'=> self::get_content_object($props),
+                // Hover
+                ' .maxi-button-block__button:hover' => self::get_hover_object($props, $sc_values),
+                ' .maxi-button-block__content:hover' => self::get_hover_content_object($props, $sc_values),
             ];
 
             $button_icon_styles = get_button_icon_styles([
@@ -135,20 +80,16 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'target' => '.maxi-button-block__icon',
                 'wrapper_target' => '.maxi-button-block__button',
                 'is_hover' => false,
-                // 'prefix' => 'icon-',
-                // 'icon_width_height_ratio' = $icon_width_height_ratio,
+                'icon_width_height_ratio' => $props['widthHeightRatio'],
             ]);
-
-
 
             $button_icon_hover_styles = get_button_icon_styles([
                 'obj' => $props,
                 'block_style' => $block_style,
                 'target' => '.maxi-button-block__icon',
                 'wrapper_target' => '.maxi-button-block__button',
-                // 'icon_width_height_ratio' = $icon_width_height_ratio,
+                'icon_width_height_ratio' => $props['widthHeightRatio'],
                 'is_hover' => true,
-                // 'prefix' => 'icon-',
             ]);
 
             $icon_styles = array_merge(
@@ -156,16 +97,52 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 $button_icon_hover_styles
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
-                $icon_styles
+            $background_styles = get_block_background_styles(
+                array_merge(
+                    get_group_attributes($props, [
+                        'blockBackground',
+                        'border',
+                        'borderWidth',
+                        'borderRadius',
+                    ]),
+                    [
+                        'block_style' => $block_style,
+                    ]
+                )
+            );
+            $background_hover_styles = get_block_background_styles(
+                array_merge(
+                    get_group_attributes(
+                        $props,
+                        [
+                            'blockBackground',
+                            'border',
+                            'borderWidth',
+                            'borderRadius',
+                        ],
+                        true
+                    ),
+                    [
+                        'block_style' => $block_style,
+                        'is_hover' => true,
+                    ]
+                )
             );
 
-            $response = style_processor(
+            $styles_obj = array_merge_recursive(
                 $styles_obj,
-                $data,
-                $props,
+                $icon_styles,
+                $background_styles,
+                $background_hover_styles,
             );
+
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }
@@ -173,6 +150,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
         public static function get_wrapper_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
@@ -190,20 +168,21 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                     'boxShadow' => get_box_shadow_styles(array(
                         'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
-                    'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
-                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
+                    'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
+                    'size' => get_size_styles(get_group_attributes($props, 'size'), $block_name),
+                    'flex' => get_flex_styles(get_group_attributes($props, 'flex')),
                     'margin' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'margin'),
                     ]),
                     'padding' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'padding'),
                     ]),
-                    'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
-                    'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
-                    'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
-                    'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
+                    'display' => get_display_styles(get_group_attributes($props, 'display')),
+                    'position' => get_position_styles(get_group_attributes($props, 'position')),
+                    'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),
+                    'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
                 ];
 
             return $response;
@@ -226,7 +205,8 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                         ...get_group_attributes($props, 'boxShadow', true)
                     ],
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name()
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -243,9 +223,9 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
             $prefix = 'button-';
 
             $response = [
-                'size' => get_size_styles(array_merge(get_group_attributes($props, 'size', false, $prefix)), $prefix),
+                'size' => get_size_styles(get_group_attributes($props, 'size', false, $prefix), (new self())->get_block_name(), $prefix),
                 'border' => get_border_styles(array(
-                    'obj' => array_merge(
+                    'obj' =>
                         get_group_attributes(
                             $props,
                             array(
@@ -255,8 +235,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                             ),
                             false,
                             $prefix
-                        )
-                    ),
+                        ),
                     'block_style' => $block_style,
                     'prefix' => $prefix,
                 )),
@@ -264,6 +243,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                     'obj' => array_merge(get_group_attributes($props, 'boxShadow', false, $prefix)),
                     'block_style' => $block_style,
                     'prefix' => $prefix,
+                    'block_name' => (new self())->get_block_name()
                 )),
                 'textAlignment' => get_alignment_text_styles(get_group_attributes($props, 'textAlignment')),
                 'margin' => get_margin_padding_styles([
@@ -316,6 +296,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                     'is_hover' => true,
                     'block_style' => $block_style,
                     'prefix' => $prefix,
+                    'block_name' => (new self())->get_block_name()
                 ]) : null,
             ];
 
@@ -352,7 +333,8 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'typography' => get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $block_style,
-                    'text_level' => 'button'
+                    'text_level' => 'button',
+                    'block_name' => (new self())->get_block_name(),
                 ]),
             ];
 
@@ -371,6 +353,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                     'is_hover' => true,
                     'normal_typography' => get_group_attributes($props, 'typography'),
                     'sc_values' => $sc_values,
+                    'block_name' => (new self())->get_block_name(),
                 ]),
             ];
 

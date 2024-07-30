@@ -11,6 +11,7 @@ const { resolve } = require('path');
 const { sync: glob } = require('fast-glob');
 const Dotenv = require('dotenv-webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { exec } = require('child_process');
 
 // Check if ANALYZE is set to true
 const isAnalyze = process.env.ANALYZE === 'true';
@@ -36,6 +37,38 @@ glob(resolveNormalized(__dirname, 'js/*')).forEach(file => {
 		jsFiles[name] = resolveNormalized(__dirname, 'js', file);
 	}
 });
+
+class GenerateBlocksJsonPlugin {
+	constructor() {
+		this.hasRun = false;
+	}
+
+	apply(compiler) {
+		compiler.hooks.done.tap('GenerateBlocksJsonPlugin', stats => {
+			if (!stats.hasErrors() && !this.hasRun) {
+				this.runScript(compiler);
+				this.hasRun = true;
+			}
+		});
+	}
+
+	runScript(compiler) {
+		exec('npm run update-blocks-json', (error, stdout, stderr) => {
+			if (error) {
+				console.error(`exec error: ${error}`);
+				console.error(`stderr: ${stderr}`);
+				compiler.hooks.compilation.tap('GenerateBlocksJsonPlugin', compilation => {
+					compilation.errors.push(new Error('Failed to generate blocks.json'));
+				});
+				return;
+			}
+			console.log(`stdout: ${stdout}`);
+			if (stderr) {
+				console.error(`stderr: ${stderr}`);
+			}
+		});
+	}
+}
 
 const scriptsConfig = {
 	mode: defaultConfig.mode,
@@ -84,7 +117,11 @@ const blocksConfig = {
 		...(isAnalyze
 			? [new BundleAnalyzerPlugin({ analyzerPort: 'auto' })]
 			: []),
+		new GenerateBlocksJsonPlugin(),
 	],
+	watchOptions: {
+		ignored: /node_modules/,
+	},
 };
 
 module.exports = [blocksConfig, scriptsConfig];

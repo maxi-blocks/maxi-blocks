@@ -3,12 +3,12 @@
 exports[`getSizeStyles Get a correct size styles 1`] = `
 {
   "general": {
-    "height": "4px",
-    "max-height": "3px",
-    "max-width": "2px",
-    "min-height": "1px",
-    "min-width": "2px",
-    "width": "1px",
+    "height": "3px",
+    "max-height": "2px",
+    "max-width": "3px",
+    "min-height": "4px",
+    "min-width": "1px",
+    "width": "4px",
   },
   "l": {
     "height": "1px",
@@ -64,12 +64,13 @@ exports[`getSizeStyles Get a correct size styles 1`] = `
 exports[`getSizeStyles Get a correct size styles with force aspect ratio 1`] = `
 {
   "general": {
-    "height": "4px",
-    "max-height": "3px",
-    "max-width": "2px",
-    "min-height": "1px",
-    "min-width": "2px",
-    "width": "1px",
+    "aspect-ratio": 1,
+    "height": "auto !important",
+    "max-height": "2px",
+    "max-width": "3px",
+    "min-height": "4px",
+    "min-width": "1px",
+    "width": "4px",
   },
   "l": {
     "aspect-ratio": 1,
@@ -156,7 +157,7 @@ exports[`getSizeStyles Get a correct size styles with full width 1`] = `
 exports[`getSizeStyles Get a correct size styles with full width 2 1`] = `
 {
   "general": {
-    "min-width": "100%",
+    "min-width": "initial",
   },
   "l": {
     "min-width": "100%",
@@ -171,7 +172,7 @@ exports[`getSizeStyles Get a correct size styles with full width 2 1`] = `
     "min-width": "initial",
   },
   "xs": {
-    "min-width": "0px",
+    "min-width": "initial",
   },
   "xxl": {
     "min-width": "100%",
@@ -188,39 +189,21 @@ exports[`getSizeStyles Get a correct size styles with full width 3 1`] = `
     "min-width": "100%",
   },
   "l": {
-    "height": "4px",
-    "max-height": "3px",
-    "min-height": "1px",
     "min-width": "100%",
   },
   "m": {
-    "height": "4px",
-    "max-height": "3px",
-    "min-height": "1px",
     "min-width": "100%",
   },
   "s": {
-    "height": "4px",
-    "max-height": "3px",
-    "min-height": "1px",
     "min-width": "100%",
   },
   "xl": {
-    "height": "4px",
-    "max-height": "3px",
-    "min-height": "1px",
     "min-width": "100%",
   },
   "xs": {
-    "height": "4px",
-    "max-height": "3px",
-    "min-height": "1px",
     "min-width": "100%",
   },
   "xxl": {
-    "height": "4px",
-    "max-height": "3px",
-    "min-height": "1px",
     "min-width": "100%",
   },
 }
@@ -230,12 +213,11 @@ exports[`getSizeStyles Get a correct size styles with full width responsive 1`] 
 {
   "general": {
     "height": "4px",
-    "max-height": "3px",
-    "min-height": "1px",
+    "max-height": "2px",
+    "min-height": "4px",
     "min-width": "100%",
   },
   "l": {
-    "height": "4px",
     "max-height": "2px",
     "max-width": "2px",
     "min-height": "1px",
@@ -243,7 +225,6 @@ exports[`getSizeStyles Get a correct size styles with full width responsive 1`] 
     "width": "fit-content",
   },
   "m": {
-    "height": "4px",
     "max-height": "1px",
     "min-height": "2px",
     "min-width": "100%",
@@ -257,7 +238,6 @@ exports[`getSizeStyles Get a correct size styles with full width responsive 1`] 
     "width": "fit-content",
   },
   "xl": {
-    "height": "4px",
     "max-height": "2px",
     "min-height": "4px",
     "min-width": "100%",
@@ -283,24 +263,22 @@ exports[`getSizeStyles Get a correct size styles with full width responsive 2 1`
 {
   "general": {
     "height": "4px",
-    "max-height": "3px",
-    "max-width": "2px",
-    "min-height": "1px",
-    "min-width": "2px",
+    "max-height": "2px",
+    "max-width": "3px",
+    "min-height": "4px",
+    "min-width": "1px",
     "width": "fit-content",
   },
   "l": {
-    "height": "4px",
     "max-height": "2px",
     "min-height": "1px",
     "min-width": "100%",
   },
   "m": {
-    "height": "4px",
     "max-height": "1px",
     "max-width": "2px",
     "min-height": "2px",
-    "min-width": "3px",
+    "min-width": "initial",
     "width": "fit-content",
   },
   "s": {
@@ -310,7 +288,6 @@ exports[`getSizeStyles Get a correct size styles with full width responsive 2 1`
     "min-width": "100%",
   },
   "xl": {
-    "height": "4px",
     "max-height": "2px",
     "max-width": "3px",
     "min-height": "4px",
@@ -338,14 +315,13 @@ exports[`getSizeStyles Get a correct size styles with width fit content 1`] = `
 {
   "general": {
     "height": "4px",
-    "max-height": "3px",
-    "max-width": "2px",
-    "min-height": "1px",
-    "min-width": "2px",
+    "max-height": "2px",
+    "max-width": "3px",
+    "min-height": "4px",
+    "min-width": "1px",
     "width": "fit-content",
   },
   "l": {
-    "height": "4px",
     "max-height": "2px",
     "max-width": "2px",
     "min-height": "1px",
@@ -353,7 +329,6 @@ exports[`getSizeStyles Get a correct size styles with width fit content 1`] = `
     "width": "fit-content",
   },
   "m": {
-    "height": "4px",
     "max-height": "1px",
     "max-width": "2px",
     "min-height": "2px",
@@ -369,7 +344,6 @@ exports[`getSizeStyles Get a correct size styles with width fit content 1`] = `
     "width": "fit-content",
   },
   "xl": {
-    "height": "4px",
     "max-height": "2px",
     "max-width": "3px",
     "min-height": "4px",

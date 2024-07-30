@@ -59,66 +59,14 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            // transition
-            $defaults = new StylesDefaults();
-            $transition_default = $defaults->transitionDefault;
-
-            $transition = array_merge($transition_default, [
-                'block' => [
-                    'header line' => [
-                        'title' => 'Header line',
-                        'target' => ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__line',
-                        'hoverProp' => 'header-line-status-hover',
-                        'limitless' => true,
-                    ],
-                    'content line' => [
-                        'title' => 'Content line',
-                        'target' => ' > .maxi-pane-block > .maxi-pane-block__content-wrapper > .maxi-pane-block__line-container .maxi-pane-block__line',
-                        'hoverProp' => 'content-line-status-hover',
-                        'limitless' => true,
-                    ],
-                    'pane title' => [
-                        'title' => 'Pane title',
-                        'target' => ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__title',
-                        'property' => false,
-                        'hoverProp' => [
-                            'title-typography-status-hover',
-                            'title-typography-status-active',
-                        ],
-                    ],
-                    'pane title background' => [
-                        'title' => 'Pane title background',
-                        'target' => ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__header-content',
-                        'property' => 'background-color',
-                        'hoverProp' => 'title-background-status-hover',
-                    ]
-                ]
-            ]);
-
-            // Call the create_icon_transitions function and merge its results into the 'block' array
-            $icon_transitions = create_icon_transitions([
-                'target' => ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon',
-                'prefix' => 'icon-',
-                'title_prefix' => 'icon',
-            ]);
-
-            $transition['block'] = array_merge($transition['block'], $icon_transitions);
-
-            $data = [
-                'customCss' => $customCss,
-                'transition' => $transition,
-            ];
-
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
             ];
 
             $background_styles = get_block_background_styles(
@@ -155,23 +103,20 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                 $uniqueID
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $icon_styles
             );
 
-            $styles_obj[$uniqueID.' .maxi-pane-block[data-accordion="$uniqueID"]'] = array_merge(
-                self::get_pane_header_object($props),
-                self::get_pane_content_object($props),
-            );
-
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor($styles_obj, $data, $props),
+                "{$uniqueID} .maxi-pane-block[data-accordion='{$uniqueID}']" =>  style_processor(array_merge(
+                    self::get_pane_header_object($props),
+                    self::get_pane_content_object($props),
+                ), $data, $props),
+            ];
 
             return $response;
         }
@@ -179,6 +124,7 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
         public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
@@ -190,23 +136,24 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                         ))),
                         'block_style' => $block_style,
                     )),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                    'size' => get_size_styles(get_group_attributes($props, 'size'), $block_name),
                     'boxShadow' => get_box_shadow_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
+                        'obj' => get_group_attributes($props, 'boxShadow'),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
-                    'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
-                    'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
-                    'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
-                    'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
-                    'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
+                    'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
+                    'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
+                    'position' => get_position_styles(get_group_attributes($props, 'position')),
+                    'display' => get_display_styles(get_group_attributes($props, 'display')),
+                    'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),
                     'margin' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'margin'),
                     ]),
                     'padding' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'padding'),
                     ]),
-                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
+                    'flex' => get_flex_styles(get_group_attributes($props, 'flex')),
                 ];
 
             return $response;
@@ -229,7 +176,8 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                         ...get_group_attributes($props, 'boxShadow', true)
                     ],
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -328,7 +276,8 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                 'prefix' => $prefix,
                 'block_style' => $props['blockStyle'],
                 'textLevel' => $props['titleLevel'],
-                ];
+                'block_name' => (new self())->get_block_name(),
+            ];
             $typography_styles_obj['obj'] = $accordion_title_attrs;
 
             if($is_hover) {

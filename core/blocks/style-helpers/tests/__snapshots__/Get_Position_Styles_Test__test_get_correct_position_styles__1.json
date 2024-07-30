@@ -1,0 +1,51 @@
+{
+    "general": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "xxl": {
+        "position": "absolute",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "xl": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "l": {
+        "position": "absolute",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "m": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "s": {
+        "position": "absolute",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "xs": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    }
+}

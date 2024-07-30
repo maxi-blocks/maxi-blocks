@@ -59,22 +59,16 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            $data = [
-                'customCss' => $customCss,
-            ];
-
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_wrapper_object($props),
-                    ':hover' => self::get_hover_wrapper_object($props),
-                    ':hover .maxi-number-counter__box' => self::get_hover_box_object($props),
-                    ' .maxi-number-counter__box'=> self::get_box_object($props),
-                ],
+                '' => self::get_wrapper_object($props),
+                ':hover' => self::get_hover_wrapper_object($props),
+                ':hover .maxi-number-counter__box' => self::get_hover_box_object($props),
+                ' .maxi-number-counter__box'=> self::get_box_object($props),
             ];
 
             $number_counter_styles = get_number_counter_styles(get_group_attributes($props, 'numberCounter'), '.maxi-number-counter__box', $block_style);
@@ -109,18 +103,20 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $number_counter_styles,
                 $background_styles,
                 $background_hover_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }
@@ -128,6 +124,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
         public static function get_wrapper_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response = [
                 'alignment' => get_alignment_flex_styles(get_group_attributes($props, 'alignment')),
@@ -152,9 +149,10 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                 ]),
                 'boxShadow' => get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow'),
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => $block_name,
                 ]),
-                'size' => get_size_styles(get_group_attributes($props, 'size')),
+                'size' => get_size_styles(get_group_attributes($props, 'size'), $block_name),
                 'flex' => get_flex_styles(get_group_attributes($props, 'flex'))
             ];
 
@@ -173,14 +171,15 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                                     'borderWidth',
                                     'borderRadius'
                                 ], true),
-                                'isHover' => true,
+                                'is_hover' => true,
                                 'block_style' => $block_style
                             ]) : null,
                 'boxShadow' => isset($props['box-shadow-status-hover']) ?
                                get_box_shadow_styles([
                                    'obj' => get_group_attributes($props, 'boxShadow', true),
-                                   'isHover' => true,
-                                   'block_style' => $block_style
+                                   'is_hover' => true,
+                                   'block_style' => $block_style,
+                                   'block_name' => (new self())->get_block_name(),
                                ]) : null,
                 'opacity' => isset($props['opacity-status-hover']) ?
                              get_opacity_styles(get_group_attributes($props, 'opacity', true), true) : null
@@ -193,14 +192,21 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
         {
             $end_count_value = ceil(($props['number-counter-end'] * 360) / 100);
 
-            $size = array_merge(
-                get_size_styles(
+            $size = get_size_styles(
+                array_merge(
                     get_group_attributes($props, 'size', false, 'number-counter-'),
-                    'number-counter-'
+                    get_group_attributes($props, 'numberCounter')
                 ),
-                get_group_attributes($props, 'numberCounter')
+                (new self())->get_block_name(),
+                'number-counter-'
             );
 
+
+            foreach ($size as $key => $value) {
+                if (strpos($key, 'min-width') !== false && !$value) {
+                    $size[$key] = $props['number-counter-font-size'] * (strlen($end_count_value) - 1);
+                }
+            }
 
             $block_style = $props['blockStyle'];
 
@@ -223,7 +229,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                         'number-counter-'
                     ),
                     'prefix' => 'number-counter-',
-        ]),
+                 ]),
                 'boxShadow' => get_box_shadow_styles([
                     'obj' => get_group_attributes(
                         $props,
@@ -233,7 +239,8 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                     ),
                     'block_style' => $block_style,
                     'prefix' => 'number-counter-',
-        ]),
+                    'block_name' => (new self())->get_block_name(),
+                ]),
                 'border' => get_border_styles([
                     'obj' => get_group_attributes(
                         $props,
@@ -243,7 +250,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                     ),
                     'block_style' => $block_style,
                     'prefix' => 'number-counter-',
-        ]),
+                ]),
             ];
 
             return $response;
@@ -262,7 +269,7 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                                     true,
                                     'number-counter-'
                                 ),
-                                'isHover' => true,
+                                'is_hover' => true,
                                 'block_style' => $block_style,
                                 'prefix' => 'number-counter-',
                             ]) : null,
@@ -274,10 +281,12 @@ if (!class_exists('MaxiBlocks_Number_Counter_Maxi_Block')):
                                        true,
                                        'number-counter-'
                                    ),
-                                   'isHover' => true,
+                                   'is_hover' => true,
                                    'block_style' => $block_style,
                                    'prefix' => 'number-counter-',
-                       ]) : null,
+                                   'block_name' => (new self())->get_block_name(),
+                                   ])
+                                : null,
             ];
 
             return $response;

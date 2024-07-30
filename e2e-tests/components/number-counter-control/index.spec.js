@@ -31,6 +31,7 @@ describe('NumberCounterControl', () => {
 		const animation = await accordionPanel.$(
 			'.maxi-number-counter-control__start-animation .maxi-base-control__field select'
 		);
+		await page.waitForTimeout(5000);
 
 		await animation.select('view-scroll');
 

@@ -1,0 +1,44 @@
+{
+    "": {
+        "transition": {
+            "general": {
+                "transition": "border 0.9s 0.2s ease-out, border-radius 0.9s 0.2s ease-out, top 0.9s 0.2s ease-out, left 0.9s 0.2s ease-out, box-shadow 0.3s 0s ease"
+            }
+        }
+    },
+    ":hover": {
+        "transition": {
+            "general": {
+                "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease, box-shadow 0.3s 0s ease"
+            }
+        }
+    },
+    " > .maxi-background-displayer": {
+        "transition": {
+            "general": {
+                "transition": "border 0.9s 0.2s ease-out, border-radius 0.9s 0.2s ease-out, top 0.9s 0.2s ease-out, left 0.9s 0.2s ease-out"
+            }
+        }
+    },
+    " > .maxi-background-displayer:hover": {
+        "transition": {
+            "general": {
+                "transition": "border 0.3s 0s ease, border-radius 0.3s 0s ease, top 0.3s 0s ease, left 0.3s 0s ease"
+            }
+        }
+    },
+    " > .maxi-background-displayer > div": {
+        "transition": {
+            "general": {
+                "transition": "all 0s 0s"
+            }
+        }
+    },
+    " > .maxi-background-displayer > div > svg": {
+        "transition": {
+            "general": {
+                "transition": "all 0s 0s"
+            }
+        }
+    }
+}

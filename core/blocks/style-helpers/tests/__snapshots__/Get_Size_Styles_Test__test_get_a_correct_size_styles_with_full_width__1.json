@@ -1,0 +1,23 @@
+{
+    "general": {
+        "min-width": "100%"
+    },
+    "xxl": {
+        "min-width": "100%"
+    },
+    "xl": {
+        "min-width": "100%"
+    },
+    "l": {
+        "min-width": "initial"
+    },
+    "m": {
+        "min-width": "initial"
+    },
+    "s": {
+        "min-width": "initial"
+    },
+    "xs": {
+        "min-width": "initial"
+    }
+}

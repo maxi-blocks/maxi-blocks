@@ -1,0 +1,16 @@
+{
+    " p": {
+        "advancedCss": {
+            "general": {
+                "css": "text-align: center;"
+            }
+        }
+    },
+    "": {
+        "advancedCss": {
+            "general": {
+                "css": "background: yellow;"
+            }
+        }
+    }
+}

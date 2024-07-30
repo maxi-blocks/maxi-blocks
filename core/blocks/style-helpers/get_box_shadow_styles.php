@@ -9,6 +9,7 @@ function get_box_shadow_styles($params)
     $block_style = $params['block_style'];
     $for_clip_path = isset($params['for_clip_path']) ? $params['for_clip_path'] : false;
     $is_IB = isset($params['is_IB']) ? $params['is_IB'] : false;
+    $block_name = isset($params['block_name']) ? $params['block_name'] : null;
 
     $response = [];
 
@@ -17,7 +18,7 @@ function get_box_shadow_styles($params)
     foreach ($breakpoints as $breakpoint) {
         $box_shadow_string = '';
 
-        $get_value = function ($target) use ($obj, $is_hover, $prefix, $breakpoint) {
+        $get_value = function ($target) use ($obj, $is_hover, $prefix, $breakpoint, $block_name) {
             $value = get_attributes_value([
                 'target' => $target,
                 'props' => $obj,
@@ -28,7 +29,7 @@ function get_box_shadow_styles($params)
 
             $default_value =
                 $breakpoint === 'general' ?
-                    get_default_attribute($prefix . 'box-shadow-' . $target . '-' . $breakpoint)
+                    get_default_attribute($prefix . 'box-shadow-' . $target . '-' . $breakpoint, $block_name)
                     : get_last_breakpoint_attribute([
                         'target' => $prefix . 'box-shadow-' . $target,
                         'breakpoint' => get_prev_breakpoint($breakpoint),
@@ -119,9 +120,9 @@ function get_box_shadow_styles($params)
         if ($is_not_default && $drop_shadow) {
             $blur_value = is_numeric($blur) ? round($blur / 3) : round($default_blur / 3);
 
-            $box_shadow_string .= ($horizontal_value || 0) . ($horizontal_unit || 'px') . ' ';
-            $box_shadow_string .= ($vertical_value || 0) . ($vertical_unit || 'px') . ' ';
-            $box_shadow_string .= ($blur_value || 0) . ($blur_unit || 'px') . ' ';
+            $box_shadow_string .= ($horizontal_value ?? 0) . ($horizontal_unit ?? 'px') . ' ';
+            $box_shadow_string .= ($vertical_value ?? 0) . ($vertical_unit ?? 'px') . ' ';
+            $box_shadow_string .= ($blur_value ?? 0) . ($blur_unit ?? 'px') . ' ';
             $box_shadow_string .= $color ?? $default_color;
 
             if (!($for_clip_path && !$clip_path_exists)) {

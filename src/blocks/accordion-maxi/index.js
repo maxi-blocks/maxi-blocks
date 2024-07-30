@@ -8,7 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
  * Block dependencies
  */
 import metadata from './block.json';
-import { customCss } from './data';
+import { customCss, transition } from './data';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
@@ -42,4 +42,5 @@ registerBlockType(metadata, {
 		selectors: customCss.selectors,
 	}),
 	customCss,
+	transition,
 });

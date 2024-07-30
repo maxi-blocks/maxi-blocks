@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<phpunit
+	bootstrap="bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+>
+	<testsuites>
+		<testsuite name="testing">
+			<directory suffix="_test.php">core/blocks/style-helpers/tests/</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

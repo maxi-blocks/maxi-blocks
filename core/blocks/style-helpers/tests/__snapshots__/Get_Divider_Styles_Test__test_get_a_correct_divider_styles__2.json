@@ -1,0 +1,38 @@
+{
+    "label": "Divider",
+    "general": {
+        "flex-direction": "row",
+        "align-items": "flex-end",
+        "justify-content": "flex-start"
+    },
+    "xxl": {
+        "flex-direction": "row",
+        "align-items": "flex-end",
+        "justify-content": "flex-start"
+    },
+    "xl": {
+        "flex-direction": "row",
+        "align-items": "flex-end",
+        "justify-content": "flex-start"
+    },
+    "l": {
+        "flex-direction": "row",
+        "align-items": "flex-start",
+        "justify-content": "center"
+    },
+    "m": {
+        "flex-direction": "row",
+        "align-items": "flex-start",
+        "justify-content": "center"
+    },
+    "s": {
+        "flex-direction": "row",
+        "align-items": "center",
+        "justify-content": "flex-start"
+    },
+    "xs": {
+        "flex-direction": "row",
+        "align-items": "center",
+        "justify-content": "flex-start"
+    }
+}

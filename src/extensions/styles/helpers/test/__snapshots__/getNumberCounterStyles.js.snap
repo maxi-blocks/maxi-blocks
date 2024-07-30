@@ -67,7 +67,7 @@ exports[`getNumberCounterStyles Returns correct styles 1`] = `
   " .maxi-number-counter__box .maxi-number-counter__box__text tspan": {
     "numberCounterSup": {
       "general": {
-        "font-size": "26.666666666666668px",
+        "font-size": "26.67px",
       },
       "label": "Number Counter",
     },

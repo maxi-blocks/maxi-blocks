@@ -29,15 +29,15 @@ exports[`getBorderStyles Ensures 0 is accepted on responsive stages 1`] = `
 exports[`getBorderStyles Return a border styles object based on Button Maxi 1`] = `
 {
   "general": {
-    "border-bottom-left-radius": "10px",
-    "border-bottom-right-radius": "10px",
+    "border-bottom-left-radius": "100px",
+    "border-bottom-right-radius": "100px",
     "border-bottom-width": "20px",
-    "border-color": "var(--maxi-light-button-border-color,rgba(var(--maxi-light-color-2,242,249,253),1))",
-    "border-left-width": "20px",
-    "border-right-width": "20px",
+    "border-color": "rgba(197,26,209,0.46)",
+    "border-left-width": "90px",
+    "border-right-width": "90px",
     "border-style": "solid",
-    "border-top-left-radius": "10px",
-    "border-top-right-radius": "10px",
+    "border-top-left-radius": "100px",
+    "border-top-right-radius": "100px",
     "border-top-width": "20px",
   },
   "l": {
@@ -134,16 +134,16 @@ exports[`getBorderStyles Return a border styles object based on Button Maxi with
 exports[`getBorderStyles Return a border styles object with hover options 1`] = `
 {
   "general": {
-    "border-bottom-left-radius": "0px",
-    "border-bottom-right-radius": "0px",
-    "border-bottom-width": "20px",
+    "border-bottom-left-radius": "50px",
+    "border-bottom-right-radius": "50px",
+    "border-bottom-width": "30px",
     "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0.31)",
-    "border-left-width": "20px",
+    "border-left-width": "1px",
     "border-right-width": "20px",
     "border-style": "dashed",
-    "border-top-left-radius": "0px",
-    "border-top-right-radius": "0px",
-    "border-top-width": "20px",
+    "border-top-left-radius": "50px",
+    "border-top-right-radius": "50px",
+    "border-top-width": "1px",
   },
   "l": {
     "border-bottom-width": "0px",
@@ -202,12 +202,12 @@ exports[`getBorderStyles Return an IB border styles when border-style - none 1`]
 exports[`getBorderStyles Return border styles object with all the settings 1`] = `
 {
   "general": {
-    "border-bottom-width": "2px",
+    "border-bottom-width": "3px",
     "border-color": "rgba(var(--maxi-light-color-2,242,249,253),1)",
-    "border-left-width": "2px",
+    "border-left-width": "1px",
     "border-right-width": "2px",
     "border-style": "solid",
-    "border-top-width": "2px",
+    "border-top-width": "1px",
   },
   "l": {
     "border-bottom-width": "0px",

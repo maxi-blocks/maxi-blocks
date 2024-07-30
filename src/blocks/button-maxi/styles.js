@@ -252,7 +252,7 @@ const getHoverContentObject = (props, scValues) => {
 	return response;
 };
 
-const getStyles = (props, scValues, iconWidthHeightRatio) => {
+const getStyles = (props, scValues) => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {
@@ -276,7 +276,7 @@ const getStyles = (props, scValues, iconWidthHeightRatio) => {
 					blockStyle,
 					target: '.maxi-button-block__icon',
 					wrapperTarget: '.maxi-button-block__button',
-					iconWidthHeightRatio,
+					iconWidthHeightRatio: props.widthHeightRatio,
 				}),
 				// Hover
 				' .maxi-button-block__button:hover': getHoverObject(
@@ -301,7 +301,7 @@ const getStyles = (props, scValues, iconWidthHeightRatio) => {
 					isHover: true,
 					target: '.maxi-button-block__icon',
 					wrapperTarget: '.maxi-button-block__button',
-					iconWidthHeightRatio,
+					iconWidthHeightRatio: props.widthHeightRatio,
 				}),
 			},
 			data,

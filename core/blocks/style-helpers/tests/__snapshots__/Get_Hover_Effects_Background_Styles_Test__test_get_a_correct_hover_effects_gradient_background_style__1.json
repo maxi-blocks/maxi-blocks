@@ -1,0 +1,27 @@
+{
+	"general": {},
+	"background": {
+		"label": "Background gradient",
+		"general": {
+			"background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)"
+		},
+		"xxl": {
+			"background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)"
+		},
+		"xl": {
+			"background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)"
+		},
+		"l": {
+			"background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)"
+		},
+		"m": {
+			"background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)"
+		},
+		"s": {
+			"background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)"
+		},
+		"xs": {
+			"background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)"
+		}
+	}
+}

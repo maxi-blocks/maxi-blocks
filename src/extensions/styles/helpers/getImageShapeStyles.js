@@ -6,7 +6,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * External dependencies
  */
-import { isEmpty, isNumber } from 'lodash';
+import { isEmpty, isNumber, round } from 'lodash';
 
 /**
  * Internal dependencies
@@ -65,9 +65,10 @@ const getImageShapeStyles = (
 				(breakpoint === 'general' && ignoreGeneralOmit) ||
 				!(scale === 100 && omitTransformScale)
 			)
-				transformString += `scale(${
-					calculationNumbers[0] / calculationNumbers[1]
-				}) `;
+				transformString += `scale(${round(
+					calculationNumbers[0] / calculationNumbers[1],
+					4
+				)}) `;
 		}
 
 		if (isNumber(rotate)) {

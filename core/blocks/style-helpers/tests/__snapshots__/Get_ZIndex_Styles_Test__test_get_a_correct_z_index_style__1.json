@@ -1,0 +1,23 @@
+{
+    "general": {
+        "z-index": 1
+    },
+    "xxl": {
+        "z-index": 2
+    },
+    "xl": {
+        "z-index": 3
+    },
+    "l": {
+        "z-index": 4
+    },
+    "m": {
+        "z-index": 5
+    },
+    "s": {
+        "z-index": 6
+    },
+    "xs": {
+        "z-index": 7
+    }
+}

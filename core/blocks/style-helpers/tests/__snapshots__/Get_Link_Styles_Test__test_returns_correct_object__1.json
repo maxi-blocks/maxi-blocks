@@ -1,0 +1,252 @@
+{
+    " p.maxi-text-block__content a": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:hover": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:active": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:active span": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:visited": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:visited span": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))"
+            }
+        }
+    },
+    ".block-editor-block-list__block  p.maxi-text-block__content a:visited": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))"
+            }
+        }
+    },
+    ".block-editor-block-list__block  p.maxi-text-block__content a:visited:hover": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:visited:hover": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            }
+        }
+    },
+    " p.maxi-text-block__content a:visited:hover span": {
+        "link": {
+            "general": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xxl": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xl": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "l": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "m": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "s": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            },
+            "xs": {
+                "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4,255,74,23),0.2))"
+            }
+        }
+    }
+}

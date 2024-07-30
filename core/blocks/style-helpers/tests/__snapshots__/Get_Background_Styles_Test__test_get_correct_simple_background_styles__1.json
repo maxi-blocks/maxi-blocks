@@ -1,0 +1,26 @@
+{
+    "background": {
+        "label": "Background gradient",
+        "general": {
+            "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.39)"
+        },
+        "xxl": {
+            "background-color": "rgba(var(--maxi-light-color-2,242,249,253),0.39)"
+        },
+        "xl": {
+            "background-color": "rgba(var(--maxi-light-color-1,255,255,255),0.39)"
+        },
+        "l": {
+            "background": "linear-gradient(135deg,rgba(6,147,227,0.29) 0%,rgba(73,131,156,0.29) 39%,rgba(155,81,224,0.29) 100%)"
+        },
+        "m": {
+            "background-color": "rgba(var(--maxi-light-color-4,255,74,23),0.39)"
+        },
+        "s": {
+            "background-color": "rgba(43,43,179,0.39)"
+        },
+        "xs": {
+            "background": "linear-gradient(135deg,rgba(6,147,227,0.29) 0%,rgba(73,131,156,0.29) 39%,rgba(102,186,223,0.29) 67%,rgba(155,81,224,0.29) 100%)"
+        }
+    }
+}

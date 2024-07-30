@@ -19,7 +19,7 @@ import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import transforms from './transforms';
-import { customCss, scProps } from './data';
+import { customCss, scProps, transition } from './data';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 
@@ -62,5 +62,6 @@ registerBlockType(metadata, {
 		migrators: [listBrMigrator, listItemMigrator],
 	}),
 	customCss,
+	transition,
 	scProps,
 });

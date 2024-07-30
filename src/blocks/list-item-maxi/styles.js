@@ -176,7 +176,6 @@ const getStyles = props => {
 				...getCustomFormatsStyles(
 					' .maxi-list-item-block__content',
 					props['custom-formats'],
-					false,
 					{ ...getGroupAttributes(props, 'typography') },
 					undefined,
 					props.blockStyle,
@@ -186,11 +185,11 @@ const getStyles = props => {
 				...getCustomFormatsStyles(
 					':hover .maxi-list-item-block__content',
 					props['custom-formats-hover'],
-					true,
 					getGroupAttributes(props, [
 						'typography',
 						'typographyHover',
 					]),
+					undefined,
 					props.blockStyle,
 					true,
 					'maxi-blocks/list-item-maxi'

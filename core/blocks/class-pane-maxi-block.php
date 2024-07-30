@@ -59,26 +59,20 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            $data = [
-                'customCss' => $customCss,
-            ];
-
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                    ' .maxi-pane-block__header' => self::get_normal_styles($props, 'header-'),
-                    ' .maxi-pane-block__content' => self::get_normal_styles($props, 'content-'),
-                    '[aria-expanded] .maxi-pane-block__header:hover' => self::get_hover_styles($props, 'header-'),
-                    '[aria-expanded] .maxi-pane-block__content:hover' => self::get_hover_styles($props, 'content-'),
-                    '[aria-expanded="true"] .maxi-pane-block__header' => self::get_active_styles($props, 'header-'),
-                    '[aria-expanded="true"] .maxi-pane-block__content' => self::get_active_styles($props, 'content-'),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
+                ' .maxi-pane-block__header' => self::get_normal_styles($props, 'header-'),
+                ' .maxi-pane-block__content' => self::get_normal_styles($props, 'content-'),
+                '[aria-expanded] .maxi-pane-block__header:hover' => self::get_hover_styles($props, 'header-'),
+                '[aria-expanded] .maxi-pane-block__content:hover' => self::get_hover_styles($props, 'content-'),
+                '[aria-expanded="true"] .maxi-pane-block__header' => self::get_active_styles($props, 'header-'),
+                '[aria-expanded="true"] .maxi-pane-block__content' => self::get_active_styles($props, 'content-'),
             ];
 
             $background_styles = get_block_background_styles(
@@ -111,17 +105,19 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }
@@ -129,6 +125,7 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
         public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
@@ -140,10 +137,11 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                         ))),
                         'block_style' => $block_style,
                     )),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size')), $block_name),
                     'boxShadow' => get_box_shadow_styles(array(
                         'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
                     'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
                     'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
@@ -179,7 +177,8 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                         ...get_group_attributes($props, 'boxShadow', true)
                     ],
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -192,6 +191,8 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
 
         public static function get_normal_styles($props, $prefix)
         {
+            $block_name = (new self())->get_block_name();
+
             $response = array(
                 ...get_background_styles(
                     array_merge(
@@ -221,13 +222,15 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                 ),
                 'size' => get_size_styles(
                     get_group_attributes($props, 'size', false, $prefix),
+                    $block_name,
                     $prefix
                 ),
                 'boxShadow' => get_box_shadow_styles(
                     array(
                         'obj' => get_group_attributes($props, 'boxShadow', false, $prefix),
                         'block_style' => $props['blockStyle'],
-                        'prefix' => $prefix
+                        'prefix' => $prefix,
+                        'block_name' => $block_name,
                     )
                 ),
                 'padding' => get_margin_padding_styles(
@@ -256,7 +259,8 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                     'obj' => get_group_attributes($props, 'boxShadow', true),
                     'is_hover' => true,
                     'block_style' => $block_style,
-                    'prefix' => $prefix
+                    'prefix' => $prefix,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
             ];
 
@@ -294,7 +298,8 @@ if (!class_exists('MaxiBlocks_Pane_Maxi_Block')):
                 'boxShadow' => array_key_exists('box-shadow-status-active', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', true),
                     'block_style' => $block_style,
-                    'prefix' => $prefix
+                    'prefix' => $prefix,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
             ];
 

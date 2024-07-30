@@ -1,0 +1,5 @@
+{
+    "general": {
+        "box-shadow": "0px 0px 0px 0px rgba(var(--maxi-light-color-8,150,176,203),1)"
+    }
+}

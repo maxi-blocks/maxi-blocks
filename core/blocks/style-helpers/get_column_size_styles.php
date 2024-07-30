@@ -44,7 +44,7 @@ function get_column_num($columns_size, $unique_id, $breakpoint)
     return count($result) > 0 ? count($result[0]) : null;
 }
 
-function get_column_size_styles($obj, $row_gap_props, $unique_id)
+function get_column_size_styles($obj, $row_gap_props, $unique_id = null)
 {
     $response = [];
 
@@ -69,17 +69,17 @@ function get_column_size_styles($obj, $row_gap_props, $unique_id)
             ];
         } elseif (is_numeric($column_size) || is_numeric($row_gap_props["column-gap-$breakpoint"])) {
             $column_num = get_column_num(
-                $row_gap_props['column_size'],
+                $row_gap_props['column_size'] ?? null,
                 $unique_id,
                 $breakpoint
             );
 
             $gap_num = $column_num - 1;
-            $gap = (get_last_breakpoint_attribute([
+            $gap = is_numeric($column_num) && $column_num != 0 ? (get_last_breakpoint_attribute([
                 'target' => 'column-gap',
                 'breakpoint' => $breakpoint,
                 'attributes' => $row_gap_props,
-            ]) * $gap_num) / $column_num;
+            ]) * $gap_num) / $column_num : 0;
             $gap_unit = get_last_breakpoint_attribute([
                 'target' => 'column-gap-unit',
                 'breakpoint' => $breakpoint,

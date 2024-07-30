@@ -1,0 +1,11 @@
+{
+    "m": {
+        "transform": "scale(0.5) "
+    },
+    "s": {
+        "transform": "scale(1) "
+    },
+    "xs": {
+        "transform": "scale(1) "
+    }
+}

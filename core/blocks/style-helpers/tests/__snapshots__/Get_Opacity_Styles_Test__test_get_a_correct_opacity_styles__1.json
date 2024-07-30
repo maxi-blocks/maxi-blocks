@@ -1,0 +1,23 @@
+{
+    "general": {
+        "opacity": 1
+    },
+    "xxl": {
+        "opacity": 0.56
+    },
+    "xl": {
+        "opacity": 0.77
+    },
+    "l": {
+        "opacity": 0.95
+    },
+    "m": {
+        "opacity": 0.85
+    },
+    "s": {
+        "opacity": 0.66
+    },
+    "xs": {
+        "opacity": 0.99
+    }
+}

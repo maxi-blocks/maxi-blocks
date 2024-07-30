@@ -7,13 +7,13 @@ function get_custom_css($obj, $category, $index)
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     foreach ($breakpoints as $breakpoint) {
-        $customCssValue = get_last_breakpoint_attribute(array(
+        $custom_css_value = get_last_breakpoint_attribute(array(
             'target' => 'custom-css',
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ));
 
-        $value = $customCssValue[$category][$index] ?? null;
+        $value = $custom_css_value[$category][$index] ?? null;
 
         if ($value) {
             $response[$breakpoint] = [

@@ -94,9 +94,9 @@ function get_text_styles($obj, $block_style)
 
     foreach ($breakpoints as $breakpoint) {
         $response[$breakpoint] = [
-            ...(!isset($obj["number-counter-title-font-size-{$breakpoint}"]) ? [] : ['font-size' => "{$obj["number-counter-title-font-size-{$breakpoint}"]}px"]),
-            ...(!isset($obj["font-family-{$breakpoint}"]) ? [] : ['font-family' => $obj["font-family-{$breakpoint}"]]),
-            ...(!isset($obj["font-weight-{$breakpoint}"]) ? [] : ['font-weight' => $obj["font-weight-{$breakpoint}"]]),
+            ...(isset($obj["number-counter-title-font-size-{$breakpoint}"]) ? ['font-size' => "{$obj["number-counter-title-font-size-{$breakpoint}"]}px"] : []),
+            ...(isset($obj["font-family-{$breakpoint}"]) ? ['font-family' => $obj["font-family-{$breakpoint}"]] : []),
+            ...(isset($obj["font-weight-{$breakpoint}"]) ? ['font-weight' => $obj["font-weight-{$breakpoint}"]] : []),
             'color' => $get_color($breakpoint)
         ];
     }

@@ -59,7 +59,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
@@ -67,38 +67,32 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 
             $img_tag = $svg_element === '' || !$svg_element ? 'img' : 'svg';
 
-            $data = [
-                'customCss' => $customCss,
-            ];
-
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_wrapper_object($props),
-                    ' .maxi-block__resizer--overflow' => array_merge(
-                        self::get_image_overflow($props),
-                        ['border' => get_border_styles([
-                            'obj' => get_group_attributes($props, [
-                                'borderRadius',
-                            ]),
-                            'block_style' => $block_style,
-                        ])]
-                    ),
-                    ':hover' => self::get_hover_wrapper_object($props),
-                    ' .maxi-image-block-wrapper' => array_merge(
-                        self::get_image_wrapper_object($props),
-                        self::get_clip_path_drop_shadow_object($props),
-                    ),
-                    " .maxi-image-block-wrapper $img_tag" => self::get_image_object($props),
-                    ":hover .maxi-image-block-wrapper $img_tag" => self::get_hover_image_object($props),
-                    ':hover .maxi-image-block-wrapper' => self::get_clip_path_drop_shadow_object($props, true),
-                    ' .maxi-image-block__image' => self::get_image_shape_object('svg', $props),
-                    ' .maxi-image-block__image:hover' => self::get_image_shape_object('svg', $props),
-                    ' .maxi-image-block__image pattern image' => self::get_image_shape_object('image', $props),
-                    ' figcaption' => self::get_figcaption_object($props),
-                    ' .maxi-hover-details .maxi-hover-details__content h4' => self::get_hover_effect_title_text_object($props),
-                    ' .maxi-hover-details .maxi-hover-details__content p' => self::get_hover_effect_content_text_object($props),
-                    ' .maxi-hover-details' => self::get_hover_effect_details_box_object($props),
-                ],
+                '' => self::get_wrapper_object($props),
+                ' .maxi-block__resizer--overflow' => array_merge(
+                    self::get_image_overflow($props),
+                    ['border' => get_border_styles([
+                        'obj' => get_group_attributes($props, [
+                            'borderRadius',
+                        ]),
+                        'block_style' => $block_style,
+                    ])]
+                ),
+                ':hover' => self::get_hover_wrapper_object($props),
+                ' .maxi-image-block-wrapper' => array_merge(
+                    self::get_image_wrapper_object($props),
+                    self::get_clip_path_drop_shadow_object($props),
+                ),
+                " .maxi-image-block-wrapper $img_tag" => self::get_image_object($props),
+                ":hover .maxi-image-block-wrapper $img_tag" => self::get_hover_image_object($props),
+                ':hover .maxi-image-block-wrapper' => self::get_clip_path_drop_shadow_object($props, true),
+                ' .maxi-image-block__image' => self::get_image_shape_object('svg', $props),
+                ' .maxi-image-block__image:hover' => self::get_image_shape_object('svg', $props),
+                ' .maxi-image-block__image pattern image' => self::get_image_shape_object('image', $props),
+                ' figcaption' => self::get_figcaption_object($props),
+                ' .maxi-hover-details .maxi-hover-details__content h4' => self::get_hover_effect_title_text_object($props),
+                ' .maxi-hover-details .maxi-hover-details__content p' => self::get_hover_effect_content_text_object($props),
+                ' .maxi-hover-details' => self::get_hover_effect_details_box_object($props),
             ];
 
             $background_styles = get_block_background_styles(
@@ -133,18 +127,18 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             $custom_formats_styles = get_custom_formats_styles(
                 ' .maxi-image-block__caption',
                 $props['custom-formats'] ?? [],
-                $block_style,
                 get_group_attributes($props, 'typography'),
                 'p',
-                false,
+                $block_style,
+                (new self())->get_block_name(),
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
-                ' .maxi-image-block__caption',
+                ':hover .maxi-image-block__caption',
                 $props['custom-formats'] ?? [],
-                $block_style,
-                get_group_attributes($props, 'typography'),
+                get_group_attributes($props, 'typographyHover'),
                 'p',
-                true,
+                $block_style,
+                (new self())->get_block_name(),
             );
             $link_styles = array_merge(
                 get_link_styles(
@@ -159,8 +153,8 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $custom_formats_styles,
@@ -168,11 +162,13 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 $link_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }
@@ -180,6 +176,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
         public static function get_wrapper_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
@@ -194,6 +191,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'boxShadow' => get_box_shadow_styles(array(
                         'obj' => get_group_attributes($props, 'boxShadow'),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
                     'margin' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'margin'),
@@ -205,7 +203,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'position' => get_position_styles(get_group_attributes($props, 'position')),
                     'display' => get_display_styles(get_group_attributes($props, 'display')),
                     'alignment' => get_alignment_flex_styles(get_group_attributes($props, 'alignment')),
-                    'size' => get_size_styles(get_group_attributes($props, 'size')), $fit_parent_size,
+                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'), ['fitParentSize' => $props['fitParentSize'] ?? false]), $block_name),
                     'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
                     'flex' => get_flex_styles(get_group_attributes($props, 'flex')),
                 ];
@@ -226,7 +224,8 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 'boxShadow' => array_key_exists('box-shadow-status-hover', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', true),
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -273,11 +272,12 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             );
 
             $response['size'] = get_size_styles(
-                get_group_attributes($props, 'size')
+                get_group_attributes($props, 'size'),
+                (new self())->get_block_name()
             );
 
             if (isset($props['imageRatio']) && $props['imageRatio']) {
-                $response = array_merge($response, get_aspect_ratio($props['imageRatio']) ?? []);
+                $response = array_merge($response, get_aspect_ratio($props['imageRatio'] ?? [], $props['imageRatioCustom']) ?? []);
             }
 
             return $response;
@@ -292,6 +292,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'obj' => get_group_attributes($props, 'hoverTitleTypography'),
                     'prefix' => 'hover-title-',
                     'block_style' => $props['blockStyle'],
+                    'block_name' => (new self())->get_block_name(),
                 ]);
             }
 
@@ -307,6 +308,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'obj' => get_group_attributes($props, 'hoverContentTypography'),
                     'prefix' => 'hover-content-',
                     'block_style' => $props['blockStyle'],
+                    'block_name' => (new self())->get_block_name(),
                 ]);
             }
 
@@ -380,7 +382,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'target' => 'object-size',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props,
-                ]) : get_default_attribute('object-size-general');
+                ]) : get_default_attribute('object-size-general', (new self())->get_block_name());
                 $size = round($object_size * 100, 2);
                 $displacement_coefficient = 100 - $size;
 
@@ -425,8 +427,8 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
         {
             $fit_parent_size = $props['fitParentSize'] ?? false;
             $image_ratio = $props['imageRatio'];
-			$image_ratio_custom = $props['imageRatioCustom'];
-            $img_width = $props['imgWidth'];
+            $image_ratio_custom = $props['imageRatioCustom'];
+            $img_width = $props['img-width-general'] ?? null;
             $use_init_size = $props['useInitSize'] ?? false;
             $media_width = $props['mediaWidth'];
             $is_first_on_hierarchy = $props['isFirstOnHierarchy'];
@@ -451,6 +453,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     ),
                     'block_style' => $props['blockStyle'],
                     'prefix' => 'image-',
+                    'block_name' => (new self())->get_block_name(),
                 ]),
             ];
 
@@ -462,6 +465,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 
             $response['size'] = get_size_styles(
                 get_group_attributes($props, 'size', false, 'image-'),
+                (new self())->get_block_name(),
                 'image-'
             );
 
@@ -470,11 +474,11 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             ]);
 
             if ($img_width && !$fit_parent_size) {
-                $response['imgWidth'] = [
-                    'general' => [
-                        'width' => !$use_init_size ? "$img_width%" : $media_width . "px",
-                    ],
-                ];
+                $response['imgWidth'] = get_img_width_styles(
+                    get_group_attributes($props, 'width', false, 'img-'),
+                    $use_init_size,
+                    $media_width
+                );
             }
 
             if (!$is_first_on_hierarchy) {
@@ -512,6 +516,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'is_hover' => true,
                     'block_style' => $props['blockStyle'],
                     'prefix' => 'image-',
+                    'block_name' => (new self())->get_block_name(),
                 ]);
             }
 
@@ -542,6 +547,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'block_style' => $props['blockStyle'],
                     'prefix' => 'image-',
                     'forClipPath' => true,
+                    'block_name' => (new self())->get_block_name(),
                 ]);
             }
 
@@ -557,6 +563,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                     'block_style' => $props['blockStyle'],
                     'prefix' => 'image-',
                     'for_clip_path' => true,
+                    'block_name' => (new self())->get_block_name(),
                 ]);
             }
 
@@ -571,6 +578,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 $response['typography'] = get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $props['blockStyle'],
+                    'block_name' => (new self())->get_block_name(),
                 ]);
             }
 
@@ -578,7 +586,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
                 get_group_attributes($props, 'textAlignment')
             );
 
-            if ($props['imgWidth']) {
+            if (isset($props['imgWidth']) && $props['imgWidth']) {
                 $response['imgWidth'] = ['general' => ['width' => $props['imgWidth'] . '%']];
             }
 
@@ -616,7 +624,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             $response = [];
 
             if (isset($props['SVGElement']) && $props['SVGElement']) {
-                $response['transform'] = get_image_shape_styles(get_group_attributes($props, 'imageShape'), $target);
+                $response['transform'] = get_image_shape_styles($target, get_group_attributes($props, 'imageShape'));
             }
 
             if (isset($props['clipPath']) && $props['clipPath']) {
@@ -624,7 +632,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             }
 
             if ($target === 'svg' && isset($props['imageRatio']) && $props['imageRatio']) {
-                $response = array_merge($response, get_aspect_ratio($props['imageRatio']) ?? []);
+                $response = array_merge($response, get_aspect_ratio($props['imageRatio'], $props['imageRatioCustom']) ?? []);
             }
 
             return $response;

@@ -1,0 +1,30 @@
+{
+    "general": {
+        "overflow-x": "auto",
+        "overflow-y": "clip"
+    },
+    "xxl": {
+        "overflow-x": "hidden",
+        "overflow-y": "visible"
+    },
+    "xl": {
+        "overflow-x": "auto",
+        "overflow-y": "clip"
+    },
+    "l": {
+        "overflow-x": "clip",
+        "overflow-y": "auto"
+    },
+    "m": {
+        "overflow-x": "scroll",
+        "overflow-y": "scroll"
+    },
+    "s": {
+        "overflow-x": "auto",
+        "overflow-y": "auto"
+    },
+    "xs": {
+        "overflow-x": "visible",
+        "overflow-y": "visible"
+    }
+}

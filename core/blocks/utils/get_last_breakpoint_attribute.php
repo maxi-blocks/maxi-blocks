@@ -53,7 +53,6 @@ function get_last_breakpoint_attribute(
         ]);
 
         if ($attr_filter($base_breakpoint_attr)) {
-
             return $base_breakpoint_attr;
         }
     }

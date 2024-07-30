@@ -59,25 +59,16 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            $data = [
-                'customCss' => $customCss,
-            ];
-
-            // TODO: get the correct value
-            $icon_width_height_ratio = false;
-
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_wrapper_object($props),
-                    ':hover' => self::get_hover_wrapper_object($props),
-                    ' .maxi-svg-icon-block__icon' => self::get_normal_object($props, $icon_width_height_ratio),
-                    ' .maxi-svg-icon-block__icon:hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_wrapper_object($props),
+                ':hover' => self::get_hover_wrapper_object($props),
+                ' .maxi-svg-icon-block__icon' => self::get_normal_object($props),
+                ' .maxi-svg-icon-block__icon:hover' => self::get_hover_object($props),
             ];
 
             $svg_styles = get_svg_styles([
@@ -93,17 +84,19 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             ]) : [];
 
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $svg_styles,
                 $svg_hover_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }
@@ -112,7 +105,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
         public static function get_wrapper_object($props)
         {
             $block_style = $props['blockStyle'];
-
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
@@ -127,9 +120,10 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                     'boxShadow' => get_box_shadow_styles(array(
                         'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
                     'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size')), $block_name),
                     'margin' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'margin'),
                     ]),
@@ -164,7 +158,8 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                         ...get_group_attributes($props, 'boxShadow', true)
                     ],
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -175,7 +170,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
             return $response;
         }
 
-        public static function get_normal_object($props, $icon_width_height_ratio)
+        public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
 
@@ -183,7 +178,8 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                 'box_shadow' => get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', false, 'svg-'),
                     'block_style' => $block_style,
-                    'prefix' => 'svg-'
+                    'prefix' => 'svg-',
+                    'block_name' => (new self())->get_block_name(),
                 ]),
                 'padding' => get_margin_padding_styles([
                     'obj' => get_group_attributes($props, 'margin', false, 'svg-'),
@@ -211,7 +207,7 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                 get_svg_width_styles([
                     'obj' => get_group_attributes($props, 'svg'),
                     'prefix' => 'svg-',
-                    'iconWidthHeightRatio' => $icon_width_height_ratio
+                    'icon_width_height_ratio' => $props['widthHeightRatio']
                 ]),
                 get_background_styles(
                     array_merge(
@@ -244,15 +240,16 @@ if (!class_exists('MaxiBlocks_SVG_Icon_Maxi_Block')):
                         true,
                         'svg-'
                     ),
-                    'isHover' => true,
+                    'is_hover' => true,
                     'block_style' => $block_style,
                     'prefix' => 'svg-'
                 ]) : null,
                 'boxShadow' => ($props['svg-box-shadow-status-hover']) ? get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', true, 'svg-'),
-                    'isHover' => true,
+                    'is_hover' => true,
                     'block_style' => $block_style,
-                    'prefix' => 'svg-'
+                    'prefix' => 'svg-',
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null
             ];
 

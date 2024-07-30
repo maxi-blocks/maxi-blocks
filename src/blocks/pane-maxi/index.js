@@ -15,7 +15,7 @@ import metadata from './block.json';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
-import { customCss } from './data';
+import { customCss, transition } from './data';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 
@@ -50,4 +50,5 @@ registerBlockType(metadata, {
 		selectors: customCss.selectors,
 	}),
 	customCss,
+	transition,
 });

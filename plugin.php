@@ -223,6 +223,7 @@ function maxi_links_control($rel, $link)
 {
     return false;
 }
+
 add_filter('wp_targeted_link_rel', 'maxi_links_control', 10, 2);
 add_action('wp_ajax_maxi_get_option', 'maxi_get_option', 9, 1);
 
@@ -254,10 +255,27 @@ if (class_exists('MaxiBlocks_Blocks')) {
 //======================================================================
 // MaxiBlocks Styles
 //======================================================================
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-styles.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-styles.php';
 if (class_exists('MaxiBlocks_Styles')) {
     MaxiBlocks_Styles::register();
 }
+
+//======================================================================
+// MaxiBlocks Styles Legacy
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/frontend/class-maxi-styles-legacy.php';
+if (class_exists('MaxiBlocks_Styles_Legacy')) {
+    MaxiBlocks_Styles_Legacy::register();
+}
+
+//======================================================================
+// MaxiBlocks Post Update Manager
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/post-management/class-maxi-post-update-manager.php';
+if (class_exists('MaxiBlocks_Post_Update_Manager')) {
+    MaxiBlocks_Post_Update_Manager::register();
+}
+
 
 //======================================================================
 // MaxiBlocks Style Cards
@@ -305,4 +323,12 @@ if (class_exists('MaxiBlocks_Dashboard')) {
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-dynamic-content.php';
 if (class_exists('MaxiBlocks_DynamicContent')) {
     MaxiBlocks_DynamicContent::register();
+}
+
+//======================================================================
+// MaxiBlocks CLI
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-cli.php';
+if (class_exists('MaxiBlocks_CLI')) {
+    add_action('plugins_loaded', array( 'MaxiBlocks_CLI', 'register' ));
 }

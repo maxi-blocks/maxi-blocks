@@ -5,6 +5,8 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/styles_defaults.php';
+
 /**
  * Generate CSS selectors for background layers.
  *
@@ -94,8 +96,8 @@ function get_selectors_css($selectors, $attributes)
     }
 
     // Extract values from attributes
-    $bg_layers = isset($attributes['background-layers']) ? $attributes['background-layers'] : array();
-    $bg_layers_hover = isset($attributes['background-layers-hover']) ? $attributes['background-layers-hover'] : array();
+    $bg_layers = isset($attributes['background-layers']) ? $attributes['background-layers'] : [];
+    $bg_layers_hover = isset($attributes['background-layers-hover']) ? $attributes['background-layers-hover'] : [];
     $block_background_hover_status = isset($attributes['block-background-status-hover']) ? $attributes['block-background-status-hover'] : false;
 
     // Merge selectors and generated background layers selectors
@@ -157,10 +159,10 @@ function repeated_breakpoint_cleaner($obj)
         }
 
         foreach ($obj[$breakpoint] as $key => $val) {
-            // Define the previous breakpoint
-            $prev_breakpoint = ($breakpoint !== 'xl' && $breakpoint !== 'general') ? $breakpoints[$i + 1] : 'general';
+            $prev_breakpoint = ($breakpoint !== 'xl')
+                ? $breakpoints[$i + 1] ?? null
+                : 'general';
 
-            // If the property is the same as in the previous breakpoint, remove it
             if (isset($obj[$prev_breakpoint][$key]) && $obj[$prev_breakpoint][$key] === $val) {
                 unset($response[$breakpoint][$key]);
             }
@@ -294,7 +296,7 @@ function style_cleaner($styles)
         $styles[$target] = $val;
 
         // Clean breakpoint repeated values
-        foreach ($val as $type_key => $type_val) {
+        foreach ($styles[$target] as $type_key => $type_val) {
             // If the type has more than one breakpoint, clean the repeated values
             if (count(array_keys($type_val)) > 1) {
                 $styles[$target][$type_key] = repeated_breakpoint_cleaner($type_val);
@@ -302,7 +304,7 @@ function style_cleaner($styles)
         }
 
         // Clean non-necessary breakpoint values when is same than general
-        foreach ($val as $type_key => $type_val) {
+        foreach ($styles[$target] as $type_key => $type_val) {
             // If the type has more than one breakpoint, clean the non-necessary values
             if (count(array_keys($type_val)) > 1) {
                 $styles[$target][$type_key] = general_breakpoint_cleaner($type_val);
@@ -316,12 +318,12 @@ function style_cleaner($styles)
 
             // If the non-hover target exists, clean the hover values
             if(isset($styles[$normal_key])) {
-                $styles[$target] = hover_styles_cleaner($styles[$normal_key], $val);
+                $styles[$target] = hover_styles_cleaner($styles[$normal_key], $styles[$target]);
             }
         }
 
         // Clean empty breakpoints
-        foreach ($val as $type_key => $type_val) {
+        foreach ($styles[$target] as $type_key => $type_val) {
             foreach ($type_val as $breakpoint => $breakpoint_val) {
                 // If the breakpoint is empty, remove it from the styles
                 if (!is_array($breakpoint_val) || empty($breakpoint_val)) {
@@ -347,115 +349,8 @@ function style_cleaner($styles)
     return $styles;
 }
 
-/**
- * Get the unique keys from both 'background hover' and 'background'.
- *
- * @param array $bg_layers_selectors An associative array with 'background hover' and 'background' as keys.
- *
- * @return array Unique keys from both 'background hover' and 'background'.
- */
-function get_bg_layers_selectors_keys($bg_layers_selectors)
-{
-    if (!is_array($bg_layers_selectors)) {
-        return [];
-    }
 
-    $hover_keys = array_keys($bg_layers_selectors['background hover'] ?? []);
-    $background_keys = array_keys($bg_layers_selectors['background'] ?? []);
-
-    return array_unique(array_merge($hover_keys, $background_keys));
-}
-
-
-/**
- * Retrieve the appropriate key based on a provided key.
- *
- * @param string $key The original key to transform.
- *
- * @return string The transformed key.
- */
-function get_key($key)
-{
-    switch ($key) {
-        case 'background-displayer':
-            // Exception for background wrapper, as it existed before with the label 'background'
-            return 'background';
-        default:
-            return $key;
-    }
-}
-
-/**
- * Transform selectors based on the given selectors and attributes.
- *
- * @param array $selectors An associative array containing selectors.
- * @param array $attributes An associative array containing attributes.
- *
- * @return array The transformed selectors.
- */
-function get_transform_selectors($selectors, $attributes = [])
-{
-    $bg_layers = isset($attributes['background-layers']) ? $attributes['background-layers'] : [];
-    $bg_layers_hover = isset($attributes['background-layers-hover']) ? $attributes['background-layers-hover'] : [];
-
-    $bg_layers_selectors = get_bg_layers_selectors_css(
-        array_merge($bg_layers, $bg_layers_hover),
-        false,
-        false
-    );
-
-    $result = [];
-
-    if (!empty($selectors)) {
-        foreach ($selectors as $key => $obj) {
-            $result[$key] = array_reduce(
-                ['normal', 'hover'],
-                function ($acc, $type) use ($obj, $key) {
-                    return array_merge($acc, [
-                        $type => array_merge($obj[$type], ['label' => $key])
-                    ]);
-                },
-                []
-            );
-        }
-    }
-
-    foreach (get_bg_layers_selectors_keys($bg_layers_selectors) as $key) {
-        $bg_layer_selectors = isset($bg_layers_selectors['background'][$key]) ? $bg_layers_selectors['background'][$key] : null;
-        $bg_layer_hover_selectors = isset($bg_layers_selectors['background hover'][$key]) ? $bg_layers_selectors['background hover'][$key] : null;
-
-        if (!empty($bg_layer_selectors) || !empty($bg_layer_hover_selectors)) {
-            $result[get_key($key)] = array_filter(
-                [
-                    'normal' => $bg_layer_selectors,
-                    'hover' => $bg_layer_hover_selectors,
-                ],
-                function ($value) {
-                    return !empty($value);
-                }
-            );
-        }
-    }
-
-    return $result;
-}
-
-function array_merge_recursive_with($arr1, $arr2, $customizer)
-{
-    $merged = $arr1;
-
-    foreach ($arr2 as $key => $value) {
-        // If key exists in both arrays and is an array in both
-        if (isset($arr1[$key]) && is_array($arr1[$key]) && is_array($arr2[$key])) {
-            $merged[$key] = $customizer($arr1[$key], $arr2[$key]);
-        } else {
-            $merged[$key] = $value;
-        }
-    }
-
-    return $merged;
-}
-
+// TODO: check if it can be replaced with `merge_with`
 function deepMergeArrays($arr1, $arr2)
 {
     foreach ($arr2 as $key => $value) {
@@ -471,33 +366,23 @@ function deepMergeArrays($arr1, $arr2)
 
 function style_processor($obj, $data, $props)
 {
-
-
-    $selectors = $data['customCss']['selectors'] ?? null;
-    $transition_selectors = $data['transition'] ?? null;
+    $selectors = $data['customCss']['selectors'] ?? [];
+    $transition_selectors = array_merge(
+        !empty($data['transition']) ? $data['transition'] : (new StylesDefaults())->transitionDefault,
+        ['transform' => get_transform_transition_data($selectors, $props)],
+    );
 
     $styles = $obj;
 
     $transition_object = get_transition_styles($props, $transition_selectors);
     if (!empty($transition_object)) {
-        foreach ($styles as $key => &$value) {
-            if (is_array($value)) {
-                $value = deepMergeArrays($value, $transition_object);
-            }
-        }
-
-        unset($value);  // Unset reference to avoid unexpected behavior
+        $styles = deepMergeArrays($styles, $transition_object);
     }
 
     $advanced_css_object = get_advanced_css_object($props);
     if(!empty($advanced_css_object)) {
-        foreach ($styles as $key => &$value) {
-            if (is_array($value)) {
-                $value = deepMergeArrays($value, $advanced_css_object);
-            }
-        }
+        $styles = deepMergeArrays($styles, $advanced_css_object);
     }
-
 
     // Process custom styles if they exist
     $new_css_selectors = get_selectors_css($selectors, $props);
@@ -506,13 +391,7 @@ function style_processor($obj, $data, $props)
     if (!empty($new_css_selectors)) {
         $custom_css_object = get_custom_css_object($new_css_selectors, $props);
         if (!empty($custom_css_object)) {
-            foreach ($styles as $key => &$value) {
-                if (is_array($value)) {
-                    $value = deepMergeArrays($value, $custom_css_object);
-                }
-            }
-
-            unset($value);  // Unset reference to avoid unexpected behavior
+            $styles = deepMergeArrays($styles, $custom_css_object);
         }
     }
     if (!empty($new_transform_selectors)) {
@@ -520,32 +399,22 @@ function style_processor($obj, $data, $props)
 
         if (!empty($transform_object)) {
             $is_transform_string = function ($string) {
-                return is_string($string) && in_array($string, array('rotate', 'scale', 'translate'));
+                return is_string($string) && array_reduce(['rotate', 'scale', 'translate'], function ($carry, $word) use ($string) {
+                    return $carry || strpos($string, $word) !== false;
+                }, false);
             };
 
             $merge_callback = function ($obj_value, $src_value) use ($is_transform_string) {
                 if ($is_transform_string($obj_value) && $is_transform_string($src_value)) {
                     return $obj_value . ' ' . $src_value;
                 }
+                return null;
             };
 
-
-
-            //array_merge_recursive_with($styles, $transform_object, $merge_callback);
-            // $styles = deepMergeArrays($styles, $transform_object);
-
-            foreach ($styles as $key => &$value) {
-                if (is_array($value)) {
-                    $value = deepMergeArrays($value, $transform_object);
-                }
-            }
-
-            unset($value);  // Unset reference to avoid unexpected behavior
+            merge_with($styles, $transform_object, $merge_callback);
 
         }
     }
-
-
 
     return style_cleaner($styles);
 }

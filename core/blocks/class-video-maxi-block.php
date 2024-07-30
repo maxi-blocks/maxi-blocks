@@ -59,23 +59,17 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $player_type = $props['playerType'];
 
-            $data = [
-                'customCss' => $customCss,
-            ];
-
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                    ' .maxi-video-block__popup-wrapper' => self::get_lightbox_object($props),
-                    ' .maxi-video-block__overlay-background' => self::get_overlay_background_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
+                ' .maxi-video-block__popup-wrapper' => self::get_lightbox_object($props),
+                ' .maxi-video-block__overlay-background' => self::get_overlay_background_object($props),
             ];
 
             if (isset($props['overlay-background-status-hover']) && $props['overlay-background-status-hover']) {
@@ -142,18 +136,20 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                 self::get_icon_object('close-', $props),
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $icon_object,
             );
 
-            $video_response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $video_response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             $popup_styles_obj = [
                 "popup-$uniqueID" => array_merge(
@@ -180,12 +176,14 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
         public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
                     'boxShadow' => get_box_shadow_styles(array(
                         'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
                     'border' => get_border_styles(array(
                         'obj' => array_merge(get_group_attributes($props, array(
@@ -204,7 +202,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
                     'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
                     'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size')), $block_name),
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
                     'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
                 ];
@@ -225,7 +223,8 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                 'boxShadow' => array_key_exists('box-shadow-status-hover', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', true),
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -264,6 +263,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
             $response = [
                 'size' => get_size_styles(
                     get_group_attributes($props, 'size', false, $prefix),
+                    (new self())->get_block_name(),
                     $prefix
                 ),
                 'opacity' => get_opacity_styles(
@@ -276,7 +276,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
             return $response;
         }
 
-        public static function get_overlay_background_object($props, $isHover = false)
+        public static function get_overlay_background_object($props, $is_hover = false)
         {
             $response = get_background_styles(
                 array_merge(
@@ -284,7 +284,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     [
                         'prefix' => 'overlay-',
                         'block_style' => $props['blockStyle'],
-                        'isHover' => $isHover,
+                        'is_hover' => $is_hover,
                     ]
                 )
             );
@@ -295,9 +295,9 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
         public static function get_aspect_ratio_styles($props, $isPopup = false)
         {
             $videoRatio = $props['videoRatio'];
-			$videoRatioCustom = $props['videoRatioCustom'];
+            $videoRatioCustom = $props['videoRatioCustom'];
             $popupRatio = $props['popupRatio'];
-			$popupRatioCustom = $props['popupRatioCustom'];
+            $popupRatioCustom = $props['popupRatioCustom'];
 
             $response = [];
 
@@ -356,13 +356,19 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
         {
             $iconHoverStatus = $obj[$prefix . 'icon-status-hover'] ?? false;
 
-            $response = [
+            $response = array_merge([
                 " .maxi-video-block__{$prefix}button svg" => get_icon_size($obj, false, $prefix),
                 " .maxi-video-block__{$prefix}button svg path" => get_icon_path_styles($obj, false, $prefix),
                 " .maxi-video-block__{$prefix}button" => [
                     'icon' => get_icon_styles($obj, $obj['blockStyle'], false, false, $prefix),
                 ],
-            ];
+            ], get_svg_styles([
+                'obj' => $obj,
+                'target' => " .maxi-video-block__{$prefix}button",
+                'block_style' => $obj['blockStyle'],
+                'prefix' => $prefix,
+                'use_icon_color' => true,
+            ]));
 
             if(strpos($prefix, 'close-') !== false) {
                 $response[ " .maxi-video-block__{$prefix}button"] = array_merge(
@@ -378,8 +384,8 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     'target' => ":hover .maxi-video-block__{$prefix}button",
                     'block_style' => $obj['blockStyle'],
                     'prefix' => "{$prefix}icon-",
-                    'useIconColor' => true,
-                    'isHover' => true,
+                    'use_icon_color' => true,
+                    'is_hover' => true,
                 ]);
                 $response = array_merge(
                     $response,
@@ -401,7 +407,7 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                     'block_style' => $obj['blockStyle'],
                     'prefix' => "{$prefix}icon-",
                     'useIconColor' => true,
-                    'isHover' => true,
+                    'is_hover' => true,
                 ]);
                 $response = array_merge(
                     $response,
@@ -419,13 +425,13 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
             return $response;
         }
 
-        public static function get_video_styles($props, $isHover = false)
+        public static function get_video_styles($props, $is_hover = false)
         {
-            $videoPrefix = 'video-';
+            $video_prefix = 'video-';
 
             $response = [];
 
-            if((!$isHover || (isset($props[$videoPrefix . 'border-status-hover']) && $props[$videoPrefix . 'border-status-hover']))) {
+            if((!$is_hover || (isset($props[$video_prefix . 'border-status-hover']) && $props[$video_prefix . 'border-status-hover']))) {
                 $response = array_merge(
                     $response,
                     [
@@ -433,18 +439,18 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                             'obj' => get_group_attributes(
                                 $props,
                                 ['border', 'borderWidth', 'borderRadius'],
-                                $isHover,
-                                $videoPrefix
+                                $is_hover,
+                                $video_prefix
                             ),
                             'block_style' => $props['blockStyle'],
-                            'prefix' => $videoPrefix,
-                            'isHover' => $isHover,
+                            'prefix' => $video_prefix,
+                            'is_hover' => $is_hover,
                         ]),
                     ]
                 );
             }
 
-            if((!$isHover || (isset($props[$videoPrefix . 'box-shadow-status-hover']) && $props[$videoPrefix . 'box-shadow-status-hover']))) {
+            if((!$is_hover || (isset($props[$video_prefix . 'box-shadow-status-hover']) && $props[$video_prefix . 'box-shadow-status-hover']))) {
                 $response = array_merge(
                     $response,
                     [
@@ -452,28 +458,30 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
                             'obj' => get_group_attributes(
                                 $props,
                                 'boxShadow',
-                                $isHover,
-                                $videoPrefix
+                                $is_hover,
+                                $video_prefix
                             ),
                             'block_style' => $props['blockStyle'],
-                            'prefix' => $videoPrefix,
-                            'isHover' => $isHover,
+                            'prefix' => $video_prefix,
+                            'is_hover' => $is_hover,
+                            'block_name' => (new self())->get_block_name(),
                         ]),
                     ]
                 );
             }
 
-            if(!$isHover) {
+            if(!$is_hover) {
                 $response = array_merge(
                     $response,
                     [
                         'padding' => get_margin_padding_styles([
-                            'obj' => get_group_attributes($props, 'padding', false, $videoPrefix),
-                            'prefix' => $videoPrefix,
+                            'obj' => get_group_attributes($props, 'padding', false, $video_prefix),
+                            'prefix' => $video_prefix,
                         ]),
                         'size' => get_size_styles(
-                            get_group_attributes($props, 'size', false, $videoPrefix),
-                            $videoPrefix
+                            get_group_attributes($props, 'size', false, $video_prefix),
+                            (new self())->get_block_name(),
+                            $video_prefix
                         ),
                     ]
                 );

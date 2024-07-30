@@ -41,32 +41,47 @@ function get_video_layers($unique_id, $bg_layers)
 
 function get_scroll_effects($unique_id, $scroll)
 {
-    if (!isset($scroll) || empty($scroll)) {
-        return null;
+    $available_scroll_types = [];
+
+    foreach ($scroll as $key => $value) {
+        if(str_ends_with($key, '-status-general') && $value) {
+            $parts = explode('-', $key);
+            $available_scroll_types[] = $parts[1];
+        }
     }
 
-    $response = array_filter($scroll, function ($key) use ($scroll) {
-        return strpos($key, '-status-') !== false &&
-               strpos($key, 'reverse') === false &&
-               strpos($key, 'preview') === false &&
-               $scroll[$key];
-    }, ARRAY_FILTER_USE_KEY);
+    $available_scroll_types = array_unique($available_scroll_types);
+    $response = [];
+
+    foreach ($scroll as $key => $value) {
+        $scroll_type = array_filter($available_scroll_types, function ($type) use ($key) {
+            return strpos($key, "-{$type}-") !== false;
+        });
+
+        if (empty($scroll_type)) {
+            continue;
+        }
+
+        $scroll_type = reset($scroll_type); // Get the first matched type
+
+        if (!isset($response[$scroll_type])) {
+            $response[$scroll_type] = [];
+        }
+        $response[$scroll_type][$key] = $value;
+    }
 
     if (empty($response)) {
         return null;
     }
 
-    return [$unique_id => $response];
+    $response['scroll_effects'] = true;
+    return $response;
 }
+
 
 function get_has_video($unique_id, $bg_layers)
 {
     return !empty(get_video_layers($unique_id, $bg_layers));
-}
-
-function get_has_scroll_effects($unique_id, $scroll)
-{
-    return !empty(get_scroll_effects($unique_id, $scroll));
 }
 
 function split_value_and_unit($val)

@@ -59,16 +59,11 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
             return self::$instance;
         }
 
-        public function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
 
-            $data = [
-                'customCss' => $customCss,
-            ];
-
-
-            $slideStyles = style_processor(
+            $slide_styles = style_processor(
                 array(
                     '' => self::get_normal_object($props),
                     ':hover' => self::get_hover_object($props)
@@ -84,10 +79,10 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
             );
 
             $response = array(
-                $uniqueID => $slideStyles,
+                $uniqueID => $slide_styles,
                 // On frontend styles are applied by id of the block,
                 // this makes clones of the block have the same style as the block, while having different id
-                $uniqueID . '-clone' => $slideStyles
+                $uniqueID . '-clone' => $slide_styles
             );
 
             return $response;
@@ -98,7 +93,8 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
             $response = array(
                 'boxShadow' => get_box_shadow_styles(array(
                     'obj' => get_group_attributes($props, 'boxShadow'),
-                    'block_style' => $props['blockStyle']
+                    'block_style' => $props['blockStyle'],
+                    'block_name' => (new self())->get_block_name(),
                 )),
                 'border' => get_border_styles(array(
                     'obj' => get_group_attributes($props, array('border', 'borderWidth', 'borderRadius')),
@@ -113,7 +109,7 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
                 'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
                 'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
                 'display' => get_display_styles(get_group_attributes($props, 'display')),
-                'size' => get_size_styles(get_group_attributes($props, 'size')),
+                'size' => get_size_styles(get_group_attributes($props, 'size'), (new self())->get_block_name()),
                 'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),
                 'flex' => get_flex_styles(get_group_attributes($props, 'flex'))
             );
@@ -132,7 +128,8 @@ if (!class_exists('MaxiBlocks_Slide_Maxi_Block')):
                 'boxShadow' => !empty($props['box-shadow-status-hover']) ? get_box_shadow_styles(array(
                     'obj' => get_group_attributes($props, 'boxShadow', true),
                     'is_hover' => true,
-                    'block_style' => $props['blockStyle']
+                    'block_style' => $props['blockStyle'],
+                    'block_name' => (new self())->get_block_name()
                 )) : null,
             );
 

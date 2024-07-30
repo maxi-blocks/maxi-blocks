@@ -60,9 +60,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             return self::$instance;
         }
 
-        public static function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data, $sc_props = null, $context = [])
         {
-
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $is_list = $props['isList'];
@@ -70,66 +69,36 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $type_of_list = $props['typeOfList'];
             $element = $is_list ? $type_of_list : $text_level;
             $is_rtl = is_rtl();
-
-
-            // transition
-            $defaults = new StylesDefaults();
-            $transition_default_canvas = $defaults->transitionDefault['canvas'];
-
-            $block_class = ' .maxi-text-block';
-            $content_class = $block_class . '__content';
-            $link_class = $block_class . '--link';
-
-            $transition = [
-                'canvas' => array_merge($transition_default_canvas, [
-                    'typography' => [
-                        'title' => 'Typography',
-                        'target' => [$content_class, $content_class . ' li', $content_class . ' ol'],
-                        'property' => false,
-                        'hoverProp' => 'typography-status-hover',
-                    ],
-                    'link' => [
-                        'title' => 'Link',
-                        'target' => [$link_class, $link_class . ' span'],
-                        'property' => 'color',
-                    ],
-                ]),
-            ];
-
-            $data = [
-                'customCss' => $customCss,
-                'transition' => $transition,
-            ];
+            $list_items_length = $props['isList'] ? $context['list_items_length'] : 0;
 
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
             ];
 
             if($is_list) {
-                $styles_obj[$uniqueID] = array_merge(
-                    $styles_obj[$uniqueID],
+                $styles_obj = array_merge(
+                    $styles_obj,
                     [
-                        " $element.maxi-text-block__content" => self::get_list_object(
-                            array_merge($props, [$is_rtl => $is_rtl])
+                        " $element" => self::get_list_object(
+                            array_merge($props, [$is_rtl => $is_rtl]),
+                            $list_items_length
                         ),
-                        " $element.maxi-text-block__content li" => array_merge(
+                        " $element li" => array_merge(
                             self::get_typography_object($props),
                             self::get_list_item_object($props),
                         ),
-                        " $element.maxi-text-block__content li:not(:first-child)" =>
+                        " $element li:not(:first-child)" =>
                             self::get_list_paragraph_object($props),
-                        " $element.maxi-text-block__content li:hover" =>
+                        " $element li:hover" =>
                             self::get_typography_hover_object($props),
-                        " $element.maxi-text-block__content li::before" =>
+                        " $element li .maxi-list-item-block__content::before" =>
                             self::get_marker_object(array_merge($props, [$is_rtl => $is_rtl])),
                     ]
                 );
             } else {
-                $styles_obj[$uniqueID] = array_merge(
-                    $styles_obj[$uniqueID],
+                $styles_obj = array_merge(
+                    $styles_obj,
                     [
                         " $element.maxi-text-block__content" => self::get_typography_object($props, $is_list),
                         " $element.maxi-text-block__content:hover" => self::get_typography_hover_object($props),
@@ -171,20 +140,20 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                         ? ' .maxi-text-block__content'
                         : ' .maxi-text-block__content li',
                 $props['custom-formats'] ?? [],
-                $block_style,
                 get_group_attributes($props, 'typography'),
                 $text_level,
-                false,
+                $block_style,
+                (new self())->get_block_name(),
             );
             $hover_custom_formats_styles = get_custom_formats_styles(
                 !$is_list
                 ? ':hover .maxi-text-block__content'
                 : ':hover .maxi-text-block__content li',
                 $props['custom-formats'] ?? [],
-                $block_style,
                 get_group_attributes($props, 'typography'),
                 $text_level,
-                true,
+                $block_style,
+                (new self())->get_block_name(),
             );
             $link_styles = array_merge(
                 get_link_styles(
@@ -199,8 +168,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 ),
             );
 
-            $styles_obj[$uniqueID] = array_merge(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 $custom_formats_styles,
@@ -208,11 +177,13 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                 $link_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }
@@ -220,36 +191,39 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
-            $response =
-                [
-                    'border' => get_border_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, array(
-                            'border',
-                            'borderWidth',
-                            'borderRadius',
-                        ))),
-                        'block_style' => $block_style,
-                    )),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
-                    'boxShadow' => get_box_shadow_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
-                        'block_style' => $block_style,
-                    )),
-                    'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
-                    'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
-                    'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
-                    'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
-                    'margin' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'margin'),
-                    ]),
-                    'padding' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'padding'),
-                    ]),
-                    "textAlignment" => get_alignment_text_styles(get_group_attributes($props, 'textAlignment')),
-                    'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
-                    'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
-                ];
+            $response = [
+                'border' => get_border_styles(array(
+                    'obj' => array_merge(get_group_attributes($props, array(
+                        'border',
+                        'borderWidth',
+                        'borderRadius',
+                    ))),
+                    'block_style' => $block_style,
+                )),
+                'size' => get_size_styles(get_group_attributes($props, 'size'), $block_name),
+                'boxShadow' => get_box_shadow_styles(array(
+                    'obj' => get_group_attributes($props, 'boxShadow'),
+                    'block_style' => $block_style,
+                    'block_name' => $block_name,
+                )),
+                'opacity' => get_opacity_styles(get_group_attributes($props, 'opacity')),
+                'zIndex' => get_zindex_styles(get_group_attributes($props, 'zIndex')),
+                'position' => get_position_styles(get_group_attributes($props, 'position')),
+                'display' => get_display_styles(get_group_attributes($props, 'display')),
+                'margin' => get_margin_padding_styles([
+                    'obj' => get_group_attributes($props, 'margin'),
+                ]),
+                'padding' => get_margin_padding_styles([
+                    'obj' => get_group_attributes($props, 'padding'),
+                ]),
+                'overflow' => get_overflow_styles(get_group_attributes($props, 'overflow')),
+                'flex' => get_flex_styles(get_group_attributes($props, 'flex')),
+            ];
+            if(!$props['isList']) {
+                $response['textAlignment'] = get_alignment_text_styles(get_group_attributes($props, 'textAlignment'));
+            }
 
             return $response;
         }
@@ -271,7 +245,8 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                         ...get_group_attributes($props, 'boxShadow', true)
                     ],
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
@@ -285,10 +260,12 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         public static function get_typography_object($props)
         {
             $response = [
-            'typography' => get_typography_styles([
+                'typography' => get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography'),
                     'block_style' => $props['blockStyle'],
-                    'text_level' => $props['textLevel']
+                    'text_level' => $props['textLevel'],
+                    'disable_bottom_gap' => $props['isList'],
+                    'block_name' => (new self())->get_block_name(),
                 ])
             ];
 
@@ -298,49 +275,52 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
         public static function get_typography_hover_object($props)
         {
             $response = [
-            'typography' => get_typography_styles([
+                'typography' => get_typography_styles([
                     'obj' => get_group_attributes($props, 'typography', true),
                     'is_hover' => true,
                     'block_style' => $props['blockStyle'],
                     'text_level' => $props['textLevel'],
                     'normal_typography' => get_group_attributes($props, 'typography'),
+                    'block_name' => (new self())->get_block_name(),
                 ])
             ];
 
             return $response;
         }
 
-        public static function get_list_object($props)
+        public static function get_list_object($props, $list_items_length)
         {
-            $listStyle = $props['listStyle'] ?? false;
-            $listStart = $props['listStart'] ?? false;
-            $listReversed = $props['listReversed'] ?? false;
-
+            $list_style = $props['listStyle'] ?? false;
+            $list_start = $props['listStart'] ?? false;
+            $list_reversed = $props['listReversed'] ?? false;
 
             $content = $props['content'];
 
-            $counterReset = null;
-            if (is_int($listStart)) {
-                $counterReset =
-                    $listStart < 0 &&
-                    (in_array($listStyle, ['decimal', 'details']) || !$listStyle)
-                        ? $listStart
+            $counter_reset = null;
+            if (is_int($list_start)) {
+                $counter_reset =
+                    $list_start < 0 &&
+                    (in_array($list_style, ['decimal', 'details']) || !$list_style)
+                        ? $list_start
                         : 0;
-                $counterReset += $listStart > 0 ? $listStart : 0;
-                $counterReset +=
-                    $listReversed && parse($content).length ? parse($content).length : 1;
-                $counterReset += $listReversed ? 1 : -1;
-                $counterReset -= 1;
-            } elseif ($listReversed) {
-                $counterReset = parse($content).length ? parse($content).length + 1 : 2;
+                $counter_reset += $list_start > 0 ? $list_start : 0;
+                if($list_reversed) {
+                    $counter_reset += $list_items_length;
+                } else {
+                    $counter_reset += 1;
+                }
+                $counter_reset += $list_reversed ? 1 : -1;
+                $counter_reset -= 1;
+            } elseif ($list_reversed) {
+                $counter_reset = $list_items_length + 1 ?? 2;
             } else {
-                $counterReset = 0;
+                $counter_reset = 0;
             }
 
             $response = [
                 'listStart' => [
                     'general' => [
-                        'counter-reset' => "li $counterReset"
+                        'counter-reset' => "li $counter_reset"
                     ]
                 ],
                 'listGap' => [],
@@ -350,79 +330,79 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
             foreach ($breakpoints as $breakpoint) {
-                $isRTL = ($props['isRTL'] ?? false) ||
+                $is_rtl = ($props['isRTL'] ?? false) ||
                 (get_last_breakpoint_attribute([
                     'target' => 'text-direction',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]) === 'rtl' ? true : false);
 
-                $gapNum = get_last_breakpoint_attribute([
+                $gap_num = get_last_breakpoint_attribute([
                     'target' => 'list-gap',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
-                $gapUnit = get_last_breakpoint_attribute([
+                $gap_unit = get_last_breakpoint_attribute([
                     'target' => 'list-gap-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
 
-                $listStylePosition = get_last_breakpoint_attribute([
+                $list_style_position = get_last_breakpoint_attribute([
                     'target' => 'list-style-position',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
 
-                $sizeNum = get_last_breakpoint_attribute([
+                $size_num = get_last_breakpoint_attribute([
                     'target' => 'list-marker-size',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 0;
-                $sizeUnit = get_last_breakpoint_attribute([
+                ]) ?? 0;
+                $size_unit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-size-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 'px';
+                ]) ?? 'px';
 
-                $indentMarkerNum = get_last_breakpoint_attribute([
+                $indent_marker_num = get_last_breakpoint_attribute([
                     'target' => 'list-marker-indent',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 0;
-                $indentMarkerUnit = get_last_breakpoint_attribute([
+                ]) ?? 0;
+                $indent_marker_unit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-indent-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
-                ]) || 'px';
+                ]) ?? 'px';
 
-                $indentMarkerSum = $indentMarkerNum + $indentMarkerUnit;
+                $indent_marker_sum = $indent_marker_num . $indent_marker_unit;
 
-                $padding =
-                    $listStylePosition === 'inside'
-                        ? $gapNum + $gapUnit
-                        : "calc($gapNum + $gapUnit + $sizeNum + $sizeUnit + $indentMarkerSum)";
+                $padding = $list_style_position === 'inside'
+                    ? $gap_num . $gap_unit
+                    : 'calc('.$gap_num . $gap_unit.' + '.$size_num . $size_unit.' + '.$indent_marker_sum.')';
 
-                if (!is_null($gapNum) && !is_null($gapUnit)) {
+
+                if (!is_null($gap_num) && !is_null($gap_unit)) {
                     $response['listGap'][$breakpoint] = [
-                        "padding-" . ($isRTL ? 'right' : 'left') => $padding
+                        "padding-" . ($is_rtl ? 'right' : 'left') => $padding
                     ];
                 }
 
-                $bottomGapNum = get_last_breakpoint_attribute([
+                $bottom_gap_num = get_last_breakpoint_attribute([
                     'target' => 'bottom-gap',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
-                $bottomGapUnit = get_last_breakpoint_attribute([
+                $bottom_gap_unit = get_last_breakpoint_attribute([
                     'target' => 'bottom-gap-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                 ]);
 
-                if (!is_null($bottomGapNum) && !is_null($bottomGapUnit)) {
+                if (!is_null($bottom_gap_num) && !is_null($bottom_gap_unit)) {
                     $response['bottomGap'][$breakpoint] = [
-                        'margin-bottom' => $bottomGapNum . $bottomGapUnit
+                        'margin-bottom' => $bottom_gap_num . $bottom_gap_unit
                     ];
                 }
             }
@@ -432,21 +412,19 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_list_item_object($props)
         {
-
-
-            $listReversed = $props['listReversed'] ?? false;
-
-
+            $list_reversed = $props['listReversed'] ?? false;
 
             $response = [];
 
-            if ($listReversed) {
+            if ($list_reversed) {
                 $response['listReversed'] = [
                     'general' => [
                         'counter-increment' => 'li -1'
                     ]
                 ];
             }
+
+            $response['textAlignment'] = get_alignment_text_styles(get_group_attributes($props, 'textAlignment'));
 
             $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -519,7 +497,6 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
         public static function get_marker_object($props)
         {
-
             $response = [];
             $list_style = $props['listStyle'] ?? false;
             $type_of_list = $props['typeOfList'] ?? false;
@@ -575,19 +552,18 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
             if ($list_style && $type_of_list === 'ul') {
                 $general_list_style = [];
 
-                if($list_style === 'custom' && $list_style_custom && is_link($list_style_custom)) {
-                    $general_list_style['content'] = "url('".$list_style_custom."')";
-                } elseif ($list_style_custom && strpos($list_style_custom, '</svg>') !== false) {
-                    $general_list_style['content'] = "url(\"data:image/svg+xml,".self::get_svg_list_style($list_style_custom)."\")";
-                } elseif (!is_link($list_style_custom) && !strpos($list_style_custom, '</svg>')) {
-                    $general_list_style['content'] = "\"".$list_style_custom."\"";
+                if($list_style === 'custom' && $list_style_custom) {
+                    if(is_link($list_style_custom)) {
+                        $general_list_style['content'] = "url('".$list_style_custom."')";
+                    } elseif (strpos($list_style_custom, '</svg>') !== false) {
+                        $general_list_style['content'] = "url(\"data:image/svg+xml,".self::get_svg_list_style($list_style_custom)."\")";
+                    } elseif (!strpos($list_style_custom, '</svg>')) {
+                        $general_list_style['content'] = "\"".$list_style_custom."\"";
+                    }
                 }
 
                 $response['listContent']['general'] = $general_list_style;
-
             }
-
-
 
             $response_list_size = [];
 
@@ -616,6 +592,18 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
 
                 $size_unit = get_last_breakpoint_attribute([
                     'target' => 'list-marker-size-unit',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                    ]) ?? 'px';
+
+                $height_num = get_last_breakpoint_attribute([
+                    'target' => 'list-marker-height',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                    ]) ?? 0;
+
+                $height_unit = get_last_breakpoint_attribute([
+                    'target' => 'list-marker-height-unit',
                     'breakpoint' => $breakpoint,
                     'attributes' => $props
                     ]) ?? 'px';
@@ -653,33 +641,54 @@ if (!class_exists('MaxiBlocks_Text_Maxi_Block')):
                     'attributes' => $props
                     ]) ?? 'px';
 
-                $response[$breakpoint] = [];
-                if($type_of_list === 'ul'
-                && $list_style === 'custom'
-                && $list_style_custom
+                $vertical_offset_marker_num = get_last_breakpoint_attribute([
+                    'target' => 'list-marker-vertical-offset',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                    ]) ?? 0;
+                $vertical_offset_marker_unit = get_last_breakpoint_attribute([
+                    'target' => 'list-marker-vertical-offset-unit',
+                    'breakpoint' => $breakpoint,
+                    'attributes' => $props
+                    ]) ?? 'px';
+
+                if($type_of_list === 'ul' && $list_style === 'custom' && $list_style_custom
                 && strpos($list_style_custom, '</svg>') !== false) {
-                    $response[$breakpoint]['width'] = $size_num . $size_unit;
+                    $response_list_size[$breakpoint]['width'] = $size_num . $size_unit;
+                    if(!is_null($height_num) && !is_null($height_unit)) {
+                        $response_list_size[$breakpoint]['height'] = $height_num . $height_unit;
+                        if($text_position === 'middle') {
+                            $response_list_size[$breakpoint]['top'] = 'calc('.$height_num . $height_unit.' / 2 + '.$height_unit.')';
+                        }
+                    }
                 } else {
-                    $response[$breakpoint]['font-size'] = $size_num . $size_unit;
+                    $response_list_size[$breakpoint]['font-size'] = $size_num . $size_unit;
                 }
 
-                if($is_rtl) {
-                    $response[$breakpoint]['right'] = $marker_position;
-                } else {
-                    $response[$breakpoint]['left'] = $marker_position;
+                $response_list_size[$breakpoint]['line-height'] = $line_height_marker_num . (
+                    $line_height_marker_unit !== '-' ?
+                    $line_height_marker_unit : ''
+                );
+
+                if($vertical_offset_marker_num) {
+                    $response_list_size[$breakpoint]['transform'] = 'translateY('.$vertical_offset_marker_num . $vertical_offset_marker_unit.')';
                 }
+
+                $response_list_size[$breakpoint][$is_rtl ? 'right' : 'left'] = $marker_position;
 
                 if($list_style_position === 'outside' && $list_style !== 'custom') {
-                    $response[$breakpoint]['width'] = '1em';
-                    $response[$breakpoint]['margin-left'] = '-1em';
+                    $response_list_size[$breakpoint]['width'] = '1em';
+                    $response_list_size[$breakpoint][$is_rtl ? 'margin-right' : 'margin-left'] = '-1em';
                 } elseif($list_style_position === 'outside' && $list_style === 'custom') {
-                    $response[$breakpoint]['margin-left'] = '-'.$size_num . $size_unit;
+                    $response_list_size[$breakpoint][$is_rtl ? 'margin-right' : 'margin-left'] = '-'.$size_num . $size_unit;
                 }
 
                 if($list_style_position === 'inside') {
-                    $response[$breakpoint]['padding-left'] = $indent_marker_sum;
-                } else {
-                    $response[$breakpoint]['text-indent'] = $indent_marker_sum;
+                    $response_list_size[$breakpoint][$is_rtl ? 'margin-left' : 'margin-right'] = $indent_marker_sum;
+                }
+
+                if($text_position) {
+                    $response_list_size[$breakpoint]['vertical-align'] = $text_position;
                 }
             }
 

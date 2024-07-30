@@ -59,22 +59,15 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
             return self::$instance;
         }
 
-        public function get_styles($props, $customCss, $sc_props)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
             $arrow_icon_hover_status = $props['navigation-arrow-both-icon-status-hover'];
 
-
-            $data = [
-                'customCss' => $customCss,
-            ];
-
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_normal_object($props),
-                    ':hover' => self::get_hover_object($props),
-                ],
+                '' => self::get_normal_object($props),
+                ':hover' => self::get_hover_object($props),
             ];
 
             $background_styles = get_block_background_styles(array_merge(
@@ -87,8 +80,8 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
                 ['is_hover' => true, 'block_style' => $block_style]
             ));
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
                 self::get_dots_icon_object($props),
@@ -97,11 +90,13 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
             );
 
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props
+                ),
+            ];
 
 
             return $response;
@@ -109,6 +104,8 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
 
         public static function get_normal_object($props)
         {
+            $block_name = (new self())->get_block_name();
+
             $response = [
                 'boxShadow' => get_box_shadow_styles([
                     'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
@@ -118,7 +115,7 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
                     'obj' => array_merge(get_group_attributes($props, ['border', 'borderWidth', 'borderRadius'])),
                     'block_style' => $props['blockStyle'],
                 ]),
-                'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                'size' => get_size_styles(array_merge(get_group_attributes($props, 'size')), $block_name),
                 'margin' => get_margin_padding_styles([
                     'obj' => array_merge(get_group_attributes($props, 'margin')),
                 ]),
@@ -155,7 +152,8 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
                             get_group_attributes($props, 'boxShadow', true)
                         ),
                         'is_hover' => true,
-                        'block_style' => $props['blockStyle']
+                        'block_style' => $props['blockStyle'],
+                        'block_name' => (new self())->get_block_name(),
                     ))
             );
 
@@ -198,7 +196,8 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
                             get_group_attributes($props, 'iconBoxShadow', false, $prefix)
                         ),
                         'prefix' => $iconPrefix,
-                        'block_style' => $props['blockStyle']
+                        'block_style' => $props['blockStyle'],
+                        'block_name' => (new self())->get_block_name(),
                     )) : null,
                 'border' =>
                     array_key_exists($iconPrefix . 'status-border', $props) ?
@@ -383,7 +382,7 @@ if (!class_exists('MaxiBlocks_Slider_Maxi_Block')):
         public static function get_icon_object($props, $prefix, $target, $is_hover = false)
         {
             $hover_flag = $is_hover ? ':hover' : '';
-            $full_target = $target . $hover_flag;
+            $full_target = ' ' . $target . $hover_flag;
             $is_active = strpos($prefix, 'active') !== false;
 
             $response = array_merge(

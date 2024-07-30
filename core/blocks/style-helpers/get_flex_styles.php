@@ -1,79 +1,79 @@
 <?php
-function get_flex_styles(array $obj)
+function get_flex_styles(array $obj, string $prefix = '')
 {
     $response = [];
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     foreach ($breakpoints as $breakpoint) {
         $flex_basis = get_last_breakpoint_attribute([
-            'target' => 'flex-basis',
+            'target' => "{$prefix}flex-basis",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
         if (isset($flex_basis) && !in_array($flex_basis, ['content', 'max-content', 'min-content', 'fit-content'])) {
             $flex_basis = $flex_basis . get_last_breakpoint_attribute([
-                    'target' => 'flex-basis-unit',
+                    'target' => "{$prefix}flex-basis-unit",
                     'breakpoint' => $breakpoint,
                     'attributes' => $obj,
                 ]);
         }
 
         $flex_grow = get_last_breakpoint_attribute([
-            'target' => 'flex-grow',
+            'target' => "{$prefix}flex-grow",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
 
         $flex_shrink = get_last_breakpoint_attribute([
-            'target' => 'flex-shrink',
+            'target' => "{$prefix}flex-shrink",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
 
         $flex_wrap = get_last_breakpoint_attribute([
-            'target' => 'flex-wrap',
+            'target' => "{$prefix}flex-wrap",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
 
         $flex_order = get_last_breakpoint_attribute([
-            'target' => 'order',
+            'target' => "{$prefix}order",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
 
         $justify_content = get_last_breakpoint_attribute([
-            'target' => 'justify-content',
+            'target' => "{$prefix}justify-content",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
 
         $flex_direction = get_last_breakpoint_attribute([
-            'target' => 'flex-direction',
+            'target' => "{$prefix}flex-direction",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
 
         $align_items = get_last_breakpoint_attribute([
-            'target' => 'align-items',
+            'target' => "{$prefix}align-items",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
 
         $align_content = get_last_breakpoint_attribute([
-            'target' => 'align-content',
+            'target' => "{$prefix}align-content",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
 
         $row_gap_props = get_last_breakpoint_attribute([
-            'target' => 'row-gap',
+            'target' => "{$prefix}row-gap",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
 
         $column_gap = get_last_breakpoint_attribute([
-            'target' => 'column-gap',
+            'target' => "{$prefix}column-gap",
             'breakpoint' => $breakpoint,
             'attributes' => $obj,
         ]);
@@ -101,10 +101,10 @@ function get_flex_styles(array $obj)
             $response[$breakpoint]['align-content'] = $align_content;
         }
         if (isset($row_gap_props)) {
-            $response[$breakpoint]['row-gap'] = ($row_gap_props ?? '') . get_last_breakpoint_attribute([ 'target' => 'row-gap-unit', 'breakpoint' => $breakpoint, 'attributes' => $obj]);
+            $response[$breakpoint]['row-gap'] = ($row_gap_props ?? '') . get_last_breakpoint_attribute([ 'target' => "{$prefix}row-gap-unit", 'breakpoint' => $breakpoint, 'attributes' => $obj]);
         }
         if (isset($column_gap)) {
-            $response[$breakpoint]['column-gap'] = ($column_gap ?? '') . get_last_breakpoint_attribute([ 'target' => 'column-gap-unit', 'breakpoint' => $breakpoint, 'attributes' => $obj]);
+            $response[$breakpoint]['column-gap'] = ($column_gap ?? '') . get_last_breakpoint_attribute([ 'target' => "{$prefix}column-gap-unit", 'breakpoint' => $breakpoint, 'attributes' => $obj]);
         }
 
         if (empty($response[$breakpoint])) {

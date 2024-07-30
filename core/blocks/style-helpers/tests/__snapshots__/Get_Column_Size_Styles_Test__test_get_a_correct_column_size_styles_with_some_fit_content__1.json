@@ -1,0 +1,30 @@
+{
+    "general": {
+        "width": "calc(3% - 0px)",
+        "flex-basis": "calc(3% - 0px)"
+    },
+    "xxl": {
+        "width": "calc(2% - 0px)",
+        "flex-basis": "calc(2% - 0px)"
+    },
+    "xl": {
+        "width": "calc(3% - 0px)",
+        "flex-basis": "calc(3% - 0px)"
+    },
+    "l": {
+        "width": "fit-content",
+        "flex-basis": "fit-content"
+    },
+    "m": {
+        "width": "fit-content",
+        "flex-basis": "fit-content"
+    },
+    "s": {
+        "width": "fit-content",
+        "flex-basis": "fit-content"
+    },
+    "xs": {
+        "width": "fit-content",
+        "flex-basis": "fit-content"
+    }
+}

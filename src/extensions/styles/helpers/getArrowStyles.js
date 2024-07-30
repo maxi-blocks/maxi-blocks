@@ -10,7 +10,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
 /**
  * External dependencies
  */
-import { isNil, isEmpty, isNumber } from 'lodash';
+import { floor, isEmpty, isNil, isNumber } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -51,7 +51,9 @@ export const getArrowObject = props => {
 
 		if (arrowSide === 'top') {
 			response[breakpoint].left = `${arrowPosition}%`;
-			response[breakpoint].top = `-${(Math.sqrt(2) * arrowWidth) / 2}px`;
+			response[breakpoint].top = `-${Math.floor(
+				(Math.sqrt(2) * arrowWidth) / 2
+			)}px`;
 		}
 
 		if (arrowSide === 'right') {

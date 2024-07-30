@@ -1,0 +1,33 @@
+{
+    "iconSize": {
+        "label": "Icon size",
+        "general": {
+            "height": "32px",
+            "width": "32px"
+        },
+        "xxl": {
+            "height": "32px",
+            "width": "32px"
+        },
+        "xl": {
+            "height": "32px",
+            "width": "32px"
+        },
+        "l": {
+            "height": "32px",
+            "width": "32px"
+        },
+        "m": {
+            "height": "12em",
+            "width": "12em"
+        },
+        "s": {
+            "height": "12em",
+            "width": "12em"
+        },
+        "xs": {
+            "height": "12em",
+            "width": "12em"
+        }
+    }
+}

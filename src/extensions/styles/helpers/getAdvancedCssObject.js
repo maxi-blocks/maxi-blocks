@@ -39,7 +39,6 @@ const setAdvancedCss = (obj, selector, breakpoint, css) => {
 	}
 };
 
-// TODO: ensure helper has correct php alternative
 const getAdvancedCssObject = obj => {
 	const response = {};
 

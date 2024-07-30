@@ -1,0 +1,59 @@
+{
+    "": {
+        "transform": {
+            "general": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+                "transform-origin": "0% 0% "
+            },
+            "xxl": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+                "transform-origin": "0% 0% "
+            },
+            "xl": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+                "transform-origin": "0% 0% "
+            },
+            "l": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+                "transform-origin": "0% 0% "
+            },
+            "m": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+                "transform-origin": "0% 0% "
+            },
+            "s": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+                "transform-origin": "0% 0% "
+            },
+            "xs": {
+                "transform": "scaleY(2) translateX(-20%) translateY(-10%) ",
+                "transform-origin": "0% 0% "
+            }
+        }
+    },
+    ":hover": {
+        "transform": {
+            "general": {
+                "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) "
+            },
+            "xxl": {
+                "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) "
+            },
+            "xl": {
+                "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) "
+            },
+            "l": {
+                "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) "
+            },
+            "m": {
+                "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) "
+            },
+            "s": {
+                "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) "
+            },
+            "xs": {
+                "transform": "scaleX(2) translateX(20%) translateY(10%) rotateZ(90deg) "
+            }
+        }
+    }
+}

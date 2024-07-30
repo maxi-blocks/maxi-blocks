@@ -1,0 +1,23 @@
+{
+    "general": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-3,155,155,155),0.5))"
+    },
+    "xxl": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-3,155,155,155),0.5))"
+    },
+    "xl": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-3,155,155,155),0.5))"
+    },
+    "l": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-3,155,155,155),0.5))"
+    },
+    "m": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-3,155,155,155),0.5))"
+    },
+    "s": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-3,155,155,155),0.5))"
+    },
+    "xs": {
+        "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-3,155,155,155),0.5))"
+    }
+}

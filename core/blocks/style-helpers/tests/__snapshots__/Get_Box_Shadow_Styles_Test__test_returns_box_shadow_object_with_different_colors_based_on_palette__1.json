@@ -1,0 +1,8 @@
+{
+    "general": {
+        "box-shadow": "1px 2px 3px 4px rgba(var(--maxi-light-color-4,255,74,23),1)"
+    },
+    "l": {
+        "box-shadow": "1px 2px 3px 4px rgba(var(--maxi-light-color-2,242,249,253),0.2)"
+    }
+}

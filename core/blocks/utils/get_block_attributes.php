@@ -5,7 +5,9 @@ function get_block_attributes($block_name)
     $path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $block_name . '/block.json';
 
     if (!file_exists($path)) {
-        return null;
+        throw new Error(
+            'Missing block.json file for ' . $block_name . ' block. Run `npm update-blocks-json` to generate it.'
+        );
     }
 
     global $wp_filesystem;
@@ -22,7 +24,7 @@ function get_block_attributes($block_name)
     $block = json_decode($file_contents, true);
 
     if (!isset($block['attributes'])) {
-        return null;
+        return [];
     }
 
     $attributes = $block['attributes'];
@@ -33,6 +35,8 @@ function get_block_attributes($block_name)
             $response[$key] = $attribute['default'];
         }
     }
+
+    $response = array_merge($response);
 
     return $response;
 }

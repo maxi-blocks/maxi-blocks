@@ -3,7 +3,8 @@
 exports[`getOverflowStyles Get a correct overflow styles 1`] = `
 {
   "general": {
-    "overflow-y": "hidden",
+    "overflow-x": "auto",
+    "overflow-y": "clip",
   },
   "l": {
     "overflow-x": "clip",
@@ -32,26 +33,6 @@ exports[`getOverflowStyles Get a correct overflow styles 1`] = `
 }
 `;
 
-exports[`getOverflowStyles Get a correct overflow styles when all values visible 1`] = `
-{
-  "general": {},
-  "l": {},
-  "m": {},
-  "s": {},
-  "xl": {},
-  "xs": {},
-  "xxl": {},
-}
-`;
+exports[`getOverflowStyles Get a correct overflow styles when all values visible 1`] = `{}`;
 
-exports[`getOverflowStyles Get a correct overflow styles with default values 1`] = `
-{
-  "general": {},
-  "l": {},
-  "m": {},
-  "s": {},
-  "xl": {},
-  "xs": {},
-  "xxl": {},
-}
-`;
+exports[`getOverflowStyles Get a correct overflow styles with default values 1`] = `{}`;

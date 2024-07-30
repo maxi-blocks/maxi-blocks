@@ -1,0 +1,18 @@
+{
+    " .maxi-block-button": {
+        "advancedCss": {
+            "general": {
+                "css": "background: white;"
+            },
+            "xxl": {
+                "css": "font-size: 24px;"
+            },
+            "m": {
+                "css": "font-size: 18px;"
+            },
+            "s": {
+                "css": "font-size: 16px;"
+            }
+        }
+    }
+}

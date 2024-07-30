@@ -16,15 +16,9 @@ function get_clip_path_styles($params)
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     foreach ($breakpoints as $breakpoint) {
-        $current_clip_path =  get_last_breakpoint_attribute([
-        'target' => 'clip-path',
-        'breakpoint' => $breakpoint,
-        'attributes' => $obj,
-        'is_hover' => $is_hover,
-    ]);
+        $current_clip_path = get_attribute_value('clip-path', $obj, $is_hover, $breakpoint);
 
-        $omit_clip_path = $omit_clip_path ? $current_clip_path === 'none' : false;
-
+        $omit_clip_path = $omit_clip_path ? (!$current_clip_path || $current_clip_path === 'none') : false;
         if ($omit_clip_path) {
             continue;
         }

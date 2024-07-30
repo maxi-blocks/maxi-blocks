@@ -59,19 +59,15 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
             return self::$instance;
         }
 
-        public function get_styles($props, $customCss)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $blockStyle = $props['blockStyle'];
+            $block_name = $this->get_block_name();
 
-            $data = [
-                'customCss' => $customCss,
-            ];
-
-
-            $response = array(
+            $response = [
                 $uniqueID => style_processor(
-                    array(
+                    [
                         '' => self::get_normal_object($props),
                         ':hover' => self::get_hover_object($props),
                         ' .maxi-map-block__popup__content__title' => self::get_popup_typography_styles($props, true),
@@ -83,6 +79,7 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
                                         'obj' => get_group_attributes($props, 'boxShadow', false, 'popup-'),
                                         'block_style' => $blockStyle,
                                         'prefix' => 'popup-',
+                                        'block_name' => $block_name,
                                     )
                                 )
                             ),
@@ -120,11 +117,11 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
                                 'block_style' => $blockStyle,
                             )
                         ),
-                    ),
+                    ],
                     $data,
                     $props
                 )
-            );
+            ];
 
             return $response;
         }
@@ -132,7 +129,6 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
 
         public static function get_normal_object($props)
         {
-
             $blockStyle = $props['blockStyle'];
 
             $response = array(
@@ -148,7 +144,7 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
                         'block_style' => $blockStyle,
                     )
                 ),
-                'size' => get_size_styles(get_group_attributes($props, 'size')),
+                'size' => get_size_styles(get_group_attributes($props, 'size'), (new self())->get_block_name()),
                 'margin' => get_margin_padding_styles(
                     array(
                         'obj' => get_group_attributes($props, 'margin'),
@@ -186,6 +182,7 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
                         'obj' => array_merge(get_group_attributes($props, 'boxShadow', true)),
                         'is_hover' => true,
                         'block_style' => $blockStyle,
+                        'block_name' => (new self())->get_block_name(),
                     )) : null,
                 'opacity' => isset($props['opacity-status-hover']) ?
                     get_opacity_styles(array_merge(get_group_attributes($props, 'opacity', true)), true) : null,
@@ -210,6 +207,7 @@ if (!class_exists('MaxiBlocks_Map_Maxi_Block')):
                         'block_style' => $blockStyle,
                         'prefix' => $prefix,
                         'text_level' => $textLevel,
+                        'block_name' => (new self())->get_block_name(),
                     )
                 )
             );

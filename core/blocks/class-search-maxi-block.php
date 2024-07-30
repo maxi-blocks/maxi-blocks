@@ -59,16 +59,11 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
             return self::$instance;
         }
 
-        public function get_styles($props, $customCss)
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
 
-            $data = [
-                'customCss' => $customCss,
-            ];
-
-
-            $styles_obj = array(
+            $styles_obj = [
                 '' => self::get_normal_object($props),
                 ' .maxi-search-block__input' => self::get_search_input_styles($props),
                 ' .maxi-search-block__input::placeholder' => self::get_search_input_placeholder_styles($props),
@@ -78,17 +73,19 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
                 ':hover' => self::get_hover_object($props),
                 ' .maxi-search-block__input:hover' => self::get_search_input_styles($props, true),
                 ' .maxi-search-block__button:hover' => self::get_search_button_styles($props, true),
-            );
+            ];
 
             $styles_obj = array_merge($styles_obj, self::get_search_button_icon_styles($props));
 
-            $button_hover = array(' .maxi-search-block__button:hover .maxi-search-block__button__content' => self::get_search_button_content_styles($props, true));
+            $button_hover = [
+                ' .maxi-search-block__button:hover .maxi-search-block__button__content' => self::get_search_button_content_styles($props, true)
+            ];
 
             $styles_obj = array_merge($styles_obj, $button_hover);
 
-            $response = array(
+            $response = [
                 $uniqueID => style_processor($styles_obj, $data, $props)
-            );
+            ];
 
             return $response;
         }
@@ -109,10 +106,11 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
                 'padding' => get_margin_padding_styles(array(
                     'obj' => array_merge(get_group_attributes($props, 'padding')),
                 )),
-                'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                'size' => get_size_styles(array_merge(get_group_attributes($props, 'size')), (new self())->get_block_name()),
                 'boxShadow' => get_box_shadow_styles(array(
                     'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
                     'block_style' => $blockStyle,
+                    'block_name' => (new self())->get_block_name(),
                 )),
                 'opacity' => get_opacity_styles(array_merge(get_group_attributes($props, 'opacity'))),
                 'zIndex' => get_zindex_styles(array_merge(get_group_attributes($props, 'zIndex'))),
@@ -146,6 +144,7 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
                             'obj' => array_merge(get_group_attributes($props, 'boxShadow', true)),
                             'is_hover' => true,
                             'block_style' => $blockStyle,
+                            'block_name' => (new self())->get_block_name(),
                         )
                     )
                     : null,
@@ -239,6 +238,7 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
                     'is_hover' => $isHover,
                     'block_style' => $blockStyle,
                     'prefix' => $buttonPrefix,
+                    'block_name' => (new self())->get_block_name(),
                 ))
             );
 
@@ -275,6 +275,7 @@ if (!class_exists('MaxiBlocks_Search_Maxi_Block')):
                         'block_style' => $blockStyle,
                         'is_hover' => $isHover,
                         'prefix' => $inputPrefix,
+                        'block_name' => (new self())->get_block_name(),
                     ))
                 )
             );

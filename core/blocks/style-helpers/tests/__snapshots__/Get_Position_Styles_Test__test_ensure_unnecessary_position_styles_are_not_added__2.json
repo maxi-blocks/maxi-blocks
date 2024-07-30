@@ -1,0 +1,39 @@
+{
+    "general": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "xxl": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "xl": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "l": {
+        "position": "relative",
+        "top": "1px",
+        "right": "2em",
+        "bottom": "3vw",
+        "left": "4%"
+    },
+    "m": {
+        "position": "inherit"
+    },
+    "s": {
+        "position": "inherit"
+    },
+    "xs": {
+        "position": "inherit"
+    }
+}

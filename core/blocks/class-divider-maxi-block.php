@@ -58,23 +58,17 @@ if (!class_exists('MaxiBlocks_Divider_Maxi_Block')):
         {
             return self::$instance;
         }
-        
-        public static function get_styles($props, $customCss, $sc_props)
+
+        public function get_styles($props, $data)
         {
             $uniqueID = $props['uniqueID'];
             $block_style = $props['blockStyle'];
 
-            $data = [
-                'customCss' => $customCss,
-            ];
-
             $styles_obj = [
-                $uniqueID => [
-                    '' => self::get_wrapper_object($props),
-                    ':hover' => self::get_hover_wrapper_object($props),
-                    ' hr.maxi-divider-block__divider:hover' => self::get_hover_object($props),
-                    ' hr.maxi-divider-block__divider' => self::get_divider_object($props),
-                ],
+                '' => self::get_wrapper_object($props),
+                ':hover' => self::get_hover_wrapper_object($props),
+                ' hr.maxi-divider-block__divider:hover' => self::get_hover_object($props),
+                ' hr.maxi-divider-block__divider' => self::get_divider_object($props),
             ];
 
             $background_styles = get_block_background_styles(
@@ -107,17 +101,19 @@ if (!class_exists('MaxiBlocks_Divider_Maxi_Block')):
                 )
             );
 
-            $styles_obj[$uniqueID] = array_merge_recursive(
-                $styles_obj[$uniqueID],
+            $styles_obj = array_merge_recursive(
+                $styles_obj,
                 $background_styles,
                 $background_hover_styles,
             );
 
-            $response = style_processor(
-                $styles_obj,
-                $data,
-                $props,
-            );
+            $response = [
+                $uniqueID => style_processor(
+                    $styles_obj,
+                    $data,
+                    $props,
+                ),
+            ];
 
             return $response;
         }
@@ -125,6 +121,7 @@ if (!class_exists('MaxiBlocks_Divider_Maxi_Block')):
         public static function get_wrapper_object($props)
         {
             $block_style = $props['blockStyle'];
+            $block_name = (new self())->get_block_name();
 
             $response =
                 [
@@ -139,8 +136,9 @@ if (!class_exists('MaxiBlocks_Divider_Maxi_Block')):
                     'boxShadow' => get_box_shadow_styles(array(
                         'obj' => get_group_attributes($props, 'boxShadow'),
                         'block_style' => $block_style,
+                        'block_name' => $block_name,
                     )),
-                    'size' => get_size_styles(get_group_attributes($props, 'size')),
+                    'size' => get_size_styles(get_group_attributes($props, 'size'), $block_name),
                     'margin' => get_margin_padding_styles([
                         'obj' => get_group_attributes($props, 'margin'),
                     ]),
@@ -172,30 +170,32 @@ if (!class_exists('MaxiBlocks_Divider_Maxi_Block')):
                 'boxShadow' => array_key_exists('box-shadow-status-hover', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
                     'obj' => get_group_attributes($props, 'boxShadow', true),
                     'is_hover' => true,
-                    'block_style' => $block_style
+                    'block_style' => $block_style,
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
                 'opacity' => array_key_exists('opacity-status-hover', $props) && $props['opacity-status-hover'] ? get_opacity_styles(
                     get_group_attributes($props, 'opacity', true),
                     true
                 ) : null,
             ];
-        
+
             return $response;
         }
-        
+
         public static function get_divider_object($props)
         {
             $block_style = $props['blockStyle'];
-    
+
             $response = [
                 'boxShadow' => get_box_shadow_styles(array(
                     'obj' => get_group_attributes($props, 'boxShadow', false, 'divider-'),
                     'block_style' => $block_style,
                     'prefix' => 'divider-',
+                    'block_name' => (new self())->get_block_name(),
                 )),
                 'divider' => get_divider_styles(get_group_attributes($props, 'divider'), 'line', $block_style),
             ];
-    
+
             return $response;
         }
 
@@ -209,6 +209,7 @@ if (!class_exists('MaxiBlocks_Divider_Maxi_Block')):
                     'is_hover' => true,
                     'block_style' => $block_style,
                     'prefix' => 'divider-',
+                    'block_name' => (new self())->get_block_name(),
                 ]) : null,
             ];
 

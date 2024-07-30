@@ -127,8 +127,8 @@ function get_divider_styles($obj, $target, $block_style, $is_hover = false, $pre
                 ];
 
                 if (!is_null($divider_line_weight)) {
-                    $style["border-$position_vertical-width"] = "$divider_line_weight$divider_line_weight_unit";
-                    $style['width'] = "$divider_line_weight$divider_line_weight_unit";
+                    $styles["border-$position_vertical-width"] = "$divider_line_weight$divider_line_weight_unit";
+                    $styles['width'] = "$divider_line_weight$divider_line_weight_unit";
                 }
                 if (!is_null($divider_size)) {
                     $styles['height'] = "$divider_size%";

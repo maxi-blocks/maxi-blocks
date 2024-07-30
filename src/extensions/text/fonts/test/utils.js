@@ -48,10 +48,6 @@ describe('getAllFonts', () => {
 				weight: '600',
 				style: 'italic',
 			},
-			Roboto: {
-				weight: '400',
-				style: 'normal',
-			},
 		});
 	});
 
@@ -83,8 +79,8 @@ describe('getAllFonts', () => {
 				style: undefined,
 			},
 			Roboto: {
-				weight: '400',
-				style: 'normal',
+				weight: undefined,
+				style: undefined,
 			},
 		});
 	});
@@ -105,10 +101,6 @@ describe('getAllFonts', () => {
 				style: 'normal',
 			},
 			Oswald: {
-				weight: '400',
-				style: 'normal',
-			},
-			Roboto: {
 				weight: '400',
 				style: 'normal',
 			},

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.9.2\n"
+"Project-Id-Version: MaxiBlocks 1.9.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-15T10:42:13+00:00\n"
+"POT-Creation-Date: 2024-07-19T12:12:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: maxi-blocks\n"
@@ -624,6 +624,16 @@ msgstr ""
 
 #: core/class-maxi-dynamic-content.php:830
 msgid "date"
+msgstr ""
+
+#: core/class-maxi-image-crop.php:45
+#: core/class-maxi-image-crop.php:72
+#: core/class-maxi-image-crop.php:115
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: core/class-maxi-image-crop.php:78
+msgid "Delete old file: invalid file path"
 msgstr ""
 
 #. translators: %1$s: database type, %2$s: required version, %3$s: link URL

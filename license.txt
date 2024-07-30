@@ -32,6 +32,31 @@ Video Maxi - YT https://www.youtube.com/iframe_api, https://www.youtube.com/embe
 
 Video Maxi - Default video https://www.youtube.com/watch?v=ScMzIvxBSi4
 
+Bunny Fonts: Drop-in replacement for Google Fonts
+URL Source: https://fonts.bunny.net/
+
+What personal data do you collect?
+When using Bunny Fonts, no personal data or logs are stored. All the requests are processed completely anonymously.
+
+Are Bunny Fonts compatible with Google Fonts?
+Yes! Bunny Fonts were designed as a privacy-friendly drop-in replacement for Google Fonts holding the same API format.
+
+Can I use Bunny Fonts commercially?
+All fonts in the collection are fully open source, meaning you can use them without any fees in any of your products & projects. For information on licensing, you can check the details page for each of the fonts.
+
+Where can I use Bunny Fonts?
+You can use fonts distributed through Bunny Fonts on your website or any projects, regardless of whether they are free or commercial. Please remember that not all fonts share the same license either; some require the inclusion of attribution information when re-distributed. Such licenses are provided when you visit a font family's page.
+
+Will fonts ever change? Are they "frozen"?
+Yes and no. Font files will change periodically with any fixes or improvements that are made by the respective font authors.
+
+To answer the question: no, fonts are not "frozen" (or locked) at any point in time.
+
+Acknowledgements
+
+*   FontSource (MIT License)
+*   Adobe Blank (SIL Open Font License)
+
 Google Font API https://fonts.googleapis.com/css2?family=Roboto (and others)
 
 Licence https://developers.google.com/fonts/faq#can_i_use_any_font_in_a_commercial_product

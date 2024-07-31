@@ -92,11 +92,6 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'is_hover' => true,
             ]);
 
-            $icon_styles = array_merge(
-                $button_icon_styles,
-                $button_icon_hover_styles
-            );
-
             $background_styles = get_block_background_styles(
                 array_merge(
                     get_group_attributes($props, [
@@ -131,7 +126,8 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
 
             $styles_obj = array_merge_recursive(
                 $styles_obj,
-                $icon_styles,
+                $button_icon_styles,
+                $button_icon_hover_styles,
                 $background_styles,
                 $background_hover_styles,
             );
@@ -158,15 +154,15 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                         get_group_attributes($props, 'alignment'),
                     ),
                     'border' => get_border_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, array(
+                        'obj' => get_group_attributes($props, array(
                             'border',
                             'borderWidth',
                             'borderRadius',
-                        ))),
+                        )),
                         'block_style' => $block_style,
                     )),
                     'boxShadow' => get_box_shadow_styles(array(
-                        'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
+                        'obj' => get_group_attributes($props, 'boxShadow'),
                         'block_style' => $block_style,
                         'block_name' => $block_name,
                     )),
@@ -194,16 +190,12 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
 
             $response = [
                 'border' => array_key_exists('border-status-hover', $props) && $props['border-status-hover'] ? get_border_styles([
-                    'obj' => [
-                        ...get_group_attributes($props, ['border', 'borderWidth', 'borderRadius'], true)
-                    ],
+                    'obj' => get_group_attributes($props, ['border', 'borderWidth', 'borderRadius'], true),
                     'is_hover' => true,
                     'block_style' => $block_style
                 ]) : null,
                 'boxShadow' => array_key_exists('box-shadow-status-hover', $props) && $props['box-shadow-status-hover'] ? get_box_shadow_styles([
-                    'obj' => [
-                        ...get_group_attributes($props, 'boxShadow', true)
-                    ],
+                    'obj' => get_group_attributes($props, 'boxShadow', true),
                     'is_hover' => true,
                     'block_style' => $block_style,
                     'block_name' => (new self())->get_block_name()
@@ -240,7 +232,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                     'prefix' => $prefix,
                 )),
                 'boxShadow' => get_box_shadow_styles(array(
-                    'obj' => array_merge(get_group_attributes($props, 'boxShadow', false, $prefix)),
+                    'obj' => get_group_attributes($props, 'boxShadow', false, $prefix),
                     'block_style' => $block_style,
                     'prefix' => $prefix,
                     'block_name' => (new self())->get_block_name()

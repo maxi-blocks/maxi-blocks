@@ -1,12 +1,11 @@
 <?php
 
 function get_attribute_key(
-    $key, 
-    $isHover = false, 
+    $key,
+    $is_hover = false,
     $prefix = '',
     $breakpoint = false
-    )
-    {
-        return $prefix . $key . ($breakpoint ? '-' . $breakpoint : '') 
-        . ($isHover ? '-hover' : '');
-    }
+) {
+    return $prefix . $key . ($breakpoint ? '-' . $breakpoint : '')
+    . ($is_hover ? '-hover' : '');
+}

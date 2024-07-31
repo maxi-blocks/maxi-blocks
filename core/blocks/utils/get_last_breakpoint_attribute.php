@@ -2,9 +2,14 @@
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_value_from_keys.php';
 
-function get_last_breakpoint_attribute(
-    $args
-) {
+function attr_filter($attributes)
+{
+    return isset($attributes) &&
+        (is_int($attributes) || is_bool($attributes) || is_string($attributes) || !empty($attributes));
+}
+
+function get_last_breakpoint_attribute($args)
+{
     $target = $args['target'];
     $breakpoint = $args['breakpoint'];
     $attributes = $args['attributes'];
@@ -33,16 +38,10 @@ function get_last_breakpoint_attribute(
     $current_breakpoint = 'general';
     $base_breakpoint = 'xl';
 
-    $attr_filter = function ($attributes) {
-        return isset($attributes) &&
-            (is_int($attributes) || is_bool($attributes) || is_string($attributes) || !empty($attributes));
-    };
-
     if ($breakpoint === 'general' &&
         ($current_breakpoint === 'general' ||
             ($base_breakpoint !== 'xxl' && $current_breakpoint !== $base_breakpoint))
     ) {
-
         $base_breakpoint_attr = get_last_breakpoint_attribute([
             'target' => $target,
             'breakpoint' => $base_breakpoint,
@@ -52,59 +51,39 @@ function get_last_breakpoint_attribute(
             'keys' => $keys,
         ]);
 
-        if ($attr_filter($base_breakpoint_attr)) {
+        if (attr_filter($base_breakpoint_attr)) {
             return $base_breakpoint_attr;
         }
     }
 
-    $current_attr = isset($attributes[
-        (!empty($target) ? $target . '-' : '') .
-        $breakpoint .
-        ($is_hover ? '-hover' : '')
-    ]) ? get_value_from_keys(
-        $attributes[
-            (!empty($target) ? $target . '-' : '') .
-            $breakpoint .
-            ($is_hover ? '-hover' : '')
-        ],
-        $keys
-    ) : null;
+    $key = ($target ? "$target-" : '') . $breakpoint . ($is_hover ? '-hover' : '');
+    $current_attr = isset($attributes[$key]) ? get_value_from_keys($attributes[$key], $keys) : null;
 
-    if ($attr_filter($current_attr) &&
+    if (attr_filter($current_attr) &&
         ($base_breakpoint !== 'xxl' || $breakpoint === 'xxl')
     ) {
-
         return $current_attr;
     }
 
-    $breakpoint_position = array_search($breakpoint, $breakpoints);
+    $breakpoint_position = array_flip($breakpoints)[$breakpoint] ?? false;
+    if ($breakpoint_position === false) {
+        return null;
+    }
 
     while ($breakpoint_position > 0 &&
         !is_int($current_attr) &&
         !is_bool($current_attr) &&
         (empty($current_attr) || !isset($current_attr))
     ) {
-        $breakpoint_position -= 1;
+        $breakpoint_position--;
 
         if (!($avoid_xxl && $breakpoints[$breakpoint_position] === 'xxl')) {
-
-            $current_attr = isset($attributes[
-                (!empty($target) ? $target . '-' : '') .
-                $breakpoints[$breakpoint_position] .
-                ($is_hover ? '-hover' : '')
-            ]) ? get_value_from_keys(
-                $attributes[
-                    (!empty($target) ? $target . '-' : '') .
-                    $breakpoints[$breakpoint_position] .
-                    ($is_hover ? '-hover' : '')
-                ],
-                $keys
-            ) : null;
+            $key = ($target ? "$target-" : '') . $breakpoints[$breakpoint_position] . ($is_hover ? '-hover' : '');
+            $current_attr = isset($attributes[$key]) ? get_value_from_keys($attributes[$key], $keys) : null;
         }
     }
 
-    if ($is_hover && !$attr_filter($current_attr)) {
-
+    if ($is_hover && !attr_filter($current_attr)) {
         $current_attr = get_last_breakpoint_attribute(
             ['target' => $target,
             'breakpoint' => $breakpoint,
@@ -116,7 +95,6 @@ function get_last_breakpoint_attribute(
     }
 
     if (!$current_attr && $breakpoint === 'general' && $base_breakpoint) {
-
         $current_attr = get_last_breakpoint_attribute([
             'target' => $target,
             'breakpoint' => $base_breakpoint,

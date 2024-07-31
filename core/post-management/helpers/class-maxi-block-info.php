@@ -32,6 +32,29 @@ class MaxiBlocks_Block_Info_Updater
         $this->max_execution_time = ini_get('max_execution_time');
     }
 
+    /**
+     * Updates the styles of all blocks within a post's content.
+     */
+    public function update_post_blocks_styles(string $post_content): void
+    {
+        $blocks = parse_blocks($post_content);
+
+        // Split blocks array into chunks of 3 blocks
+        $block_chunks = array_chunk($blocks, 3);
+
+        foreach ($block_chunks as $block_chunk) {
+            // Process each block in the current chunk
+            foreach($block_chunk as $block) {
+                $this->update_blocks_info($block);
+            }
+
+            // Reset PHP maximum execution time for each chunk to avoid a timeout
+            if ($this->max_execution_time != 0) {
+                set_time_limit($this->max_execution_time - 2);
+            }
+        }
+    }
+
     public function update_blocks_info(array $block, array $context = []): void
     {
         $block_name = $block['blockName'];
@@ -174,7 +197,7 @@ class MaxiBlocks_Block_Info_Updater
 
     public function get_block_fonts(string $block_name, array $props, bool $only_backend = false): array
     {
-        if(empty($block_name) || empty($props)) {
+        if (empty($block_name) || empty($props)) {
             return [];
         }
 
@@ -193,11 +216,9 @@ class MaxiBlocks_Block_Info_Updater
             'maxi-blocks/container-maxi',
         ];
 
-        if(!in_array($block_name, $blocks_with_fonts)) {
+        if (!in_array($block_name, $blocks_with_fonts, true)) {
             return [];
         }
-
-        $response = [];
 
         $typography = [];
         $typography_hover = [];
@@ -253,6 +274,7 @@ class MaxiBlocks_Block_Info_Updater
                 break;
         }
 
+        $response = [];
         foreach ($prefixes as $prefix) {
             if (!empty($typography_hover["{$prefix}typography-status-hover"])) {
                 $response = array_merge_recursive(
@@ -264,99 +286,75 @@ class MaxiBlocks_Block_Info_Updater
             }
         }
 
-        foreach ($response as $font_name => $font_data) {
-            $font_weight = $font_data['weight'] ?? '400';
-            $font_style = $font_data['style'] ?? 'normal';
+        $font_files = $this->load_font_files();
+        if (empty($font_files)) {
+            return [];
+        }
 
-            $font_weight_arr = [];
-            $font_data_new = [];
-
-            if (is_array($font_weight)) {
-                $response[$font_name]['weight'] = implode(',', array_unique($font_weight));
-                $font_weight_arr = $font_weight;
-            } elseif (is_string($font_weight)) {
-                $font_weight_arr = array_filter(array_unique(explode(',', $font_weight)), function ($weight) {
-                    return !empty($weight);
-                });
-                $font_data_new = array_merge($font_data, ['weight' => implode(',', $font_weight_arr)]);
-                $response[$font_name]['weight'] = implode(',', $font_weight_arr);
-            } else {
-                $font_weight_arr = [$font_weight];
-                $font_data_new = array_merge($font_data, ['weight' => $font_weight]);
-            }
-
-            $font_data_new = array_merge($font_data_new, ['display' => 'swap']);
-
-            $font_style_arr = [];
-
-            if (is_array($font_style) && !empty($font_style)) {
-                $response[$font_name]['style'] = implode(',', array_unique($font_style));
-            } elseif (is_string($font_style)) {
-                $font_style_arr = array_filter(array_unique(explode(',', $font_style)), function ($style) {
-                    return !empty($style);
-                });
-
-                $response[$font_name]['style'] = implode(',', $font_style_arr);
-            } else {
-                $font_style_arr = ['normal'];
-            }
-
-            if (empty($font_data_new['style'])) {
-                unset($font_data_new['style']);
-            }
-
-            $font_files = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . '/core/post-management/fonts.json'), true);
-            if (empty($font_files)) {
-                return null;
-            }
-
-            $font_files_content = isset($font_files[$font_name]['files']) ? $font_files[$font_name]['files'] : null;
-
-            $get_weight_file = function ($weight, $style) {
-                return $style === 'italic' ? (($weight === '400' ? '' : $weight) . 'italic') : $weight;
-            };
-
-            foreach ($font_weight_arr as $weight) {
-                foreach ($font_style_arr as $current_font_style) {
-                    $weight_file = $get_weight_file($weight, $current_font_style);
-                    if (is_array($font_files_content) && !array_key_exists($weight_file, $font_files_content)) {
-                        $weight_file = '400';
-                        $new_font_weight_arr = array_filter(array_unique($font_weight_arr), function ($value) use ($weight) {
-                            return $value !== $weight;
-                        });
-
-                        $new_font_weight_arr[] = $weight_file;
-                        $new_font_weight = implode(',', array_unique($new_font_weight_arr));
-                        $response[$font_name]['weight'] = $new_font_weight;
-                    }
-                }
-            }
+        foreach ($response as $font_name => &$font_data) {
+            $this->process_font_data($font_data, $font_files[$font_name]['files'] ?? null);
         }
 
         return $response;
     }
 
-    /**
-     * Updates the styles of all blocks within a post's content.
-     */
-    public function update_post_blocks_styles(string $post_content): void
+    private function load_font_files(): array
     {
-        $blocks = parse_blocks($post_content);
-
-        // Split blocks array into chunks of 3 blocks
-        $block_chunks = array_chunk($blocks, 3);
-
-        foreach ($block_chunks as $block_chunk) {
-            // Process each block in the current chunk
-            foreach($block_chunk as $block) {
-                $this->update_blocks_info($block);
-            }
-
-            // Reset PHP maximum execution time for each chunk to avoid a timeout
-            if ($this->max_execution_time != 0) {
-                set_time_limit($this->max_execution_time - 2);
-            }
+        static $font_files = null;
+        if ($font_files === null) {
+            $font_files = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . '/core/post-management/fonts.json'), true);
         }
+        return $font_files ?: [];
+    }
+
+    private function process_font_data(array &$font_data, ?array $font_files_content): void
+    {
+        $font_weight = $font_data['weight'] ?? '400';
+        $font_style = $font_data['style'] ?? 'normal';
+
+        $font_weight_arr = $this->normalize_font_property($font_weight);
+        $font_style_arr = $this->normalize_font_property($font_style);
+
+        $font_data['weight'] = implode(',', $font_weight_arr);
+        $font_data['style'] = implode(',', $font_style_arr);
+        $font_data['display'] = 'swap';
+
+        if (empty($font_data['style'])) {
+            unset($font_data['style']);
+        }
+
+        $this->adjust_font_weights($font_weight_arr, $font_style_arr, $font_files_content, $font_data);
+    }
+
+    private function normalize_font_property($property): array
+    {
+        if (is_array($property)) {
+            return array_unique($property);
+        }
+        if (is_string($property)) {
+            return array_filter(array_unique(explode(',', $property)), 'strlen');
+        }
+        return [$property];
+    }
+
+    private function adjust_font_weights(array $font_weight_arr, array $font_style_arr, ?array $font_files_content, array &$font_data): void
+    {
+        $get_weight_file = function ($weight, $style) {
+            return $style === 'italic' ? (($weight === '400' ? '' : $weight) . 'italic') : $weight;
+        };
+
+        $new_font_weight_arr = [];
+        foreach ($font_weight_arr as $weight) {
+            foreach ($font_style_arr as $current_font_style) {
+                $weight_file = $get_weight_file($weight, $current_font_style);
+                if (is_array($font_files_content) && !array_key_exists($weight_file, $font_files_content)) {
+                    $weight = '400';
+                }
+            }
+            $new_font_weight_arr[] = $weight;
+        }
+
+        $font_data['weight'] = implode(',', array_unique($new_font_weight_arr));
     }
 
     /**

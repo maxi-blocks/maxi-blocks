@@ -192,43 +192,29 @@ class MaxiBlocks_Content_Processor
     {
         $block_pattern = '/<!-- wp:maxi-blocks\/\$?[a-zA-Z-]+ (.*?) -->/';
 
-        if (preg_match_all($block_pattern, $content, $block_matches)) {
-            foreach ($block_matches[1] as $block_content) {
-                // e.g. "background-svg-SVGElement":"\u003csvg fill=\u0022#ff4a17\u0022...
-                $attribute_pattern = '/"([^"]+)":\s*"([^"]+)"/';
+        return preg_replace_callback($block_pattern, function ($matches) {
+            $block_content = $matches[1];
 
-                // e.g. "custom-formats":{"maxi-text-block__custom-format\u002d\u002d0"...
-                $key_pattern = '/"([^"]+)"\s*:/';
+            // e.g. "background-svg-SVGElement":"\u003csvg fill=\u0022#ff4a17\u0022...
+            $attribute_pattern = '/"([^"]+)":\s*"([^"]+)"/';
 
-                $replacements = [];
+            // e.g. "custom-formats":{"maxi-text-block__custom-format\u002d\u002d0"...
+            $key_pattern = '/"([^"]+)"\s*:/';
 
-                if (preg_match_all($attribute_pattern, $block_content, $matches)) {
-                    foreach ($matches[2] as $match) {
-                        $encoded_value = addslashes($match);
+            // Process attribute values
+            $block_content = preg_replace_callback($attribute_pattern, function ($attr_matches) {
+                $encoded_value = addslashes($attr_matches[2]);
+                return '"' . $attr_matches[1] . '":"' . $encoded_value . '"';
+            }, $block_content);
 
-                        if ($encoded_value) {
-                            $replacements[$match] = $encoded_value;
-                        }
-                    }
-                }
+            // Process keys
+            $block_content = preg_replace_callback($key_pattern, function ($key_matches) {
+                $encoded_key = addslashes($key_matches[1]);
+                return '"' . $encoded_key . '":';
+            }, $block_content);
 
-                if (preg_match_all($key_pattern, $block_content, $matches)) {
-                    foreach ($matches[1] as $match) {
-                        $encoded_key = addslashes($match);
-
-                        if ($encoded_key) {
-                            $replacements[$match] = $encoded_key;
-                        }
-                    }
-                }
-
-                foreach ($replacements as $original => $encoded) {
-                    $content = str_replace($original, $encoded, $content);
-                }
-            }
-        }
-
-        return $content;
+            return '<!-- wp:maxi-blocks/' . substr($matches[0], 20, strpos($matches[0], ' ', 20) - 20) . ' ' . $block_content . ' -->';
+        }, $content);
     }
 
     public static function unique_id_generator(string $block_name): string

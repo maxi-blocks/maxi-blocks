@@ -630,8 +630,8 @@ class MaxiBlocks_Styles
                     }
 
                     if (!$use_local_fonts) {
-                        $local_fonts = new MaxiBlocks_Local_Fonts();
-                        $font_url = $local_fonts->generateFontURL(
+                        $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+                        $font_url = $local_fonts->generate_font_url(
                             $font_url,
                             $font_data
                         );
@@ -730,8 +730,8 @@ class MaxiBlocks_Styles
                             ];
 
                             if (!$use_local_fonts) {
-                                $local_fonts = new MaxiBlocks_Local_Fonts();
-                                $font_url = $local_fonts->generateFontURL(
+                                $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+                                $font_url = $local_fonts->generate_font_url(
                                     $font_url,
                                     $font_data
                                 );

@@ -1631,7 +1631,19 @@ class MaxiBlocks_Styles
         }
 
         if ($template_slug === 'index') {
-            $template_slug = 'front-page';
+            if (is_front_page() && is_home()) {
+                // Default homepage
+                $template_slug = 'home';
+            } elseif (is_front_page()) {
+                // Static homepage
+                $template_slug = 'front-page';
+            } elseif (is_home()) {
+                // Blog page
+                $template_slug = 'home';
+            } else {
+                // Fallback to index.html for other cases
+                $template_slug = 'index';
+            }
         }
 
         $theme_directory = get_template_directory();

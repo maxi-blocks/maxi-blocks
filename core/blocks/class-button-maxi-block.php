@@ -92,6 +92,11 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
                 'is_hover' => true,
             ]);
 
+            $icon_styles = array_merge(
+                $button_icon_styles,
+                $button_icon_hover_styles,
+            );
+
             $background_styles = get_block_background_styles(
                 array_merge(
                     get_group_attributes($props, [
@@ -126,8 +131,7 @@ if (!class_exists('MaxiBlocks_Button_Maxi_Block')):
 
             $styles_obj = array_merge_recursive(
                 $styles_obj,
-                $button_icon_styles,
-                $button_icon_hover_styles,
+                $icon_styles,
                 $background_styles,
                 $background_hover_styles,
             );

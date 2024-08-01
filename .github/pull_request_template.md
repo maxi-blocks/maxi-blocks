@@ -31,6 +31,7 @@ Please also list any relevant details for your test configuration.
 -   [ ] Test the block as a standalone block
 -   [ ] Duplicate the block, test that the settings of the first do not affect the second
 -   [ ] Test with 2 blocks of the same type
+-   [ ] Test functionality via CLI commands (if applicable)
 
 **_ Pre-Code Testing _**
 
@@ -47,6 +48,8 @@ Please also list any relevant details for your test configuration.
 -   [ ] Check no commented code and no unnecessary imports
 -   [ ] Standards of the project have been followed
 -   [ ] No errors/warnings on console
+-   [ ] Test functionality via CLI commands (if applicable)
+-   [ ] Check for proper error handling in CLI operations
 
 # Checklist
 
@@ -56,3 +59,4 @@ Please also list any relevant details for your test configuration.
 -   [ ] My changes generate no new warnings/errors
 -   [ ] I have added/updated tests that prove my fix is effective or that my feature works
 -   [ ] New and existing unit tests pass locally with my changes
+-   [ ] I have modified CLI commands to work with my changes (if applicable)

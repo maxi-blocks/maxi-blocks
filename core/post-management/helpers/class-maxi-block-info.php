@@ -62,6 +62,10 @@ class MaxiBlocks_Block_Info_Updater
 
         if($block_name && strpos($block_name, 'maxi-blocks') !== false && $block['attrs']) {
             $block_instance = self::$block_factory->create_block($block_name);
+            if($block_instance === null) {
+                return;
+            }
+
             $props = $block_instance->get_block_attributes($block['attrs']);
             $unique_id = $props['uniqueID'];
 
@@ -193,6 +197,7 @@ class MaxiBlocks_Block_Info_Updater
                 )
             );
         }
+        do_action('maxiblocks_block_info_updated');
     }
 
     public function get_block_fonts(string $block_name, array $props, bool $only_backend = false): array

@@ -464,7 +464,6 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         public static function replace_post_content($args, $assoc_args)
         {
             $post_id = $args[0];
-
             $content_source = isset($args[1]) ? $args[1] : null;
 
             if (!$content_source) {
@@ -472,33 +471,13 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             }
 
             $content = self::get_content($content_source);
+            $block_count = self::count_blocks($content);
 
-            self::update_post_content($post_id, $content, $assoc_args);
-        }
-
-        private static function update_post_content(int $post_id, string $content, array $assoc_args): void
-        {
-            $post = get_post($post_id);
-
-            if (!$post) {
-                WP_CLI::error('Post not found.');
-            }
-
-            $new_content = self::prepare_new_content($post->post_content, $content, $assoc_args);
-
-            do_action('maxiblocks_update_post_content', $post_id, $new_content, true);
+            self::execute_with_progress('Updating post', $block_count, function () use ($post_id, $content, $assoc_args) {
+                self::update_post_content($post_id, $content, $assoc_args);
+            });
 
             WP_CLI::success('Post content updated successfully.');
-        }
-
-        private static function prepare_new_content(string $existing_content, string $new_content, array $assoc_args): string
-        {
-            if (isset($assoc_args['append'])) {
-                return $existing_content . $new_content;
-            } elseif (isset($assoc_args['prepend'])) {
-                return $new_content . $existing_content;
-            }
-            return $new_content;
         }
 
         /**
@@ -520,7 +499,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * wp maxiblocks create-post "Post Title" 456  # where 456 is an attachment ID
          * wp maxiblocks create-post "Post Title" --post_type=page
          */
-        public static function create_post($args, $assoc_args)
+        public function create_post($args, $assoc_args)
         {
             $title = $args[0];
             $content_source = isset($args[1]) ? $args[1] : null;
@@ -529,10 +508,15 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
                 $content_source = self::prompt_for_attachment();
             }
             $content = self::get_content($content_source);
+            $block_count = self::count_blocks($content);
+
             $post_type = isset($assoc_args['post_type']) ? $assoc_args['post_type'] : 'post';
 
             $post_id = self::insert_post($title, $post_type);
-            self::update_post_content($post_id, $content, []);
+
+            self::execute_with_progress('Creating post', $block_count, function () use ($post_id, $content) {
+                self::update_post_content($post_id, $content, []);
+            });
 
             WP_CLI::success('Post created successfully (' . get_permalink($post_id) . ')');
         }
@@ -549,7 +533,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          *
          *    wp maxiblocks reload-post-styles 123
          */
-        public static function reload_post_styles($args)
+        public function reload_post_styles($args)
         {
             $post_id = $args[0];
 
@@ -561,9 +545,56 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             }
 
             $post_content = $post->post_content;
-            do_action('maxiblocks_update_post_content', $post_id, $post_content, false);
+            $block_count = self::count_blocks($post_content);
+
+            self::execute_with_progress('Reloading styles', $block_count, function () use ($post_id, $post_content) {
+                do_action('maxiblocks_update_post_content', $post_id, $post_content, false);
+            });
 
             WP_CLI::success('Block styles updated successfully.');
+        }
+
+        /**
+         * Creates a progress bar and executes a given action with block count tracking.
+         *
+         * @param string $message The message to display with the progress bar.
+         * @param int $block_count The total number of blocks to process.
+         * @param callable $action The action to execute.
+         */
+        private static function execute_with_progress(string $message, int $block_count, callable $action): void
+        {
+            $progress = WP_CLI\Utils\make_progress_bar($message, $block_count);
+
+            add_action('maxiblocks_block_info_updated', function () use ($progress) {
+                $progress->tick();
+            });
+
+            $action();
+
+            $progress->finish();
+        }
+
+        private static function update_post_content(int $post_id, string $content, array $assoc_args): void
+        {
+            $post = get_post($post_id);
+
+            if (!$post) {
+                WP_CLI::error('Post not found.');
+            }
+
+            $new_content = self::prepare_new_content($post->post_content, $content, $assoc_args);
+
+            do_action('maxiblocks_update_post_content', $post_id, $new_content, true);
+        }
+
+        private static function prepare_new_content(string $existing_content, string $new_content, array $assoc_args): string
+        {
+            if (isset($assoc_args['append'])) {
+                return $existing_content . $new_content;
+            } elseif (isset($assoc_args['prepend'])) {
+                return $new_content . $existing_content;
+            }
+            return $new_content;
         }
 
         private static function insert_post(string $title, string $post_type): int
@@ -642,6 +673,24 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             }
 
             return $attachment_id;
+        }
+
+        private static function count_blocks($content)
+        {
+            $blocks = parse_blocks($content);
+            return self::count_blocks_recursive($blocks);
+        }
+
+        private static function count_blocks_recursive($blocks)
+        {
+            $count = 0;
+            foreach ($blocks as $block) {
+                $count++;
+                if (!empty($block['innerBlocks'])) {
+                    $count += self::count_blocks_recursive($block['innerBlocks']);
+                }
+            }
+            return $count;
         }
     }
 endif;

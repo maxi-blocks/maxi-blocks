@@ -125,7 +125,7 @@ class MaxiBlocks_Post_Update_Manager
     }
 
     /**
-     * Updates the post content of an imported post and add styles to the blocks.
+     * Updates the post content of an imported post and add styles, custom meta to the blocks.
      */
     public function process_imported_post(array $post): array
     {

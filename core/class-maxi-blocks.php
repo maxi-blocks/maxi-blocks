@@ -173,33 +173,32 @@ if (!class_exists('MaxiBlocks_Blocks')):
         public function maxi_add_sc_native_blocks($block_content, $block, $instance)
         {
             if (str_contains($block['blockName'] ?? '', 'core/') && isset($block_content) && !empty($block_content)) {
-                // We create a new DOMDocument object
-                $dom = new DOMDocument();
-                @$dom->loadHTML(mb_convert_encoding($block_content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                // Use regular expression to find the first opening tag
+                if (preg_match('/<[^>]+>/', $block_content, $matches)) {
+                    $opening_tag = $matches[0];
 
-                // Using XPath to find the elements we want to change
-                $xpath = new DOMXPath($dom);
+                    // Check if the 'maxi-block--use-sc' class is already present
+                    if (!str_contains($opening_tag, 'maxi-block--use-sc')) {
+                        // Add the 'maxi-block--use-sc' class to the opening tag
+                        $modified_tag = preg_replace(
+                            '/class=(["\'])/',
+                            'class=$1maxi-block--use-sc ',
+                            $opening_tag,
+                            1
+                        );
 
-                // Look for all elements
-                $elements = $xpath->query('//*');
-
-                // Check if elements are found
-                if(isset($elements) && $elements->length > 0) {
-                    // Pick the first element
-                    $element = $elements[0];
-
-                    // Check if the element is a DOMElement
-                    if ($element instanceof DOMElement) {
-                        $classes = $element->getAttribute('class');
-
-                        if (!isset($classes) || empty($classes)) {
-                            $element->setAttribute('class', 'maxi-block--use-sc');
-                        } elseif (!str_contains($classes, 'maxi-block--use-sc')) {
-                            $element->setAttribute('class', $classes . ' maxi-block--use-sc');
+                        // If the class attribute doesn't exist, add it
+                        if ($modified_tag === $opening_tag) {
+                            $modified_tag = str_replace(
+                                '>',
+                                ' class="maxi-block--use-sc">',
+                                $opening_tag
+                            );
                         }
-                    }
 
-                    $block_content = $dom->saveHTML();
+                        // Replace the opening tag in the block content
+                        $block_content = str_replace($opening_tag, $modified_tag, $block_content);
+                    }
                 }
             }
 

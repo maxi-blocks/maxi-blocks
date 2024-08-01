@@ -1,6 +1,13 @@
 <?php
 
-function get_block_attributes($block_name)
+/**
+ * Get the attributes of a block.
+ *
+ * @param string $block_name The name of the block, e.g. 'accordion-maxi'.
+ *
+ * @return array The attributes of the block.
+ */
+function get_block_attributes(string $block_name): array
 {
     $path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $block_name . '/block.json';
 
@@ -18,7 +25,7 @@ function get_block_attributes($block_name)
 
     $file_contents = $wp_filesystem->get_contents($path);
     if (!$file_contents) {
-        return null;
+        throw new Error('Failed to read block.json file for ' . $block_name . ' block.');
     }
 
     $block = json_decode($file_contents, true);
@@ -28,7 +35,7 @@ function get_block_attributes($block_name)
     }
 
     $attributes = $block['attributes'];
-    $response = array();
+    $response = [];
 
     foreach ($attributes as $key => $attribute) {
         if (isset($attribute['default'])) {

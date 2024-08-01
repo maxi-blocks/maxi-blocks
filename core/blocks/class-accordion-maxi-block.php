@@ -69,39 +69,30 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                 ':hover' => self::get_hover_object($props),
             ];
 
-            $background_styles = get_block_background_styles(
-                array_merge(
-                    get_group_attributes($props, [
-                        'blockBackground',
-                        'border',
-                        'borderWidth',
-                        'borderRadius',
-                    ]),
-                    [ 'block_style' => $block_style,]
-                )
-            );
-            $background_hover_styles = get_block_background_styles(
-                array_merge(
-                    get_group_attributes(
-                        $props,
-                        [
-                            'blockBackground',
-                            'border',
-                            'borderWidth',
-                            'borderRadius',
-                        ],
-                        true
-                    ),
-                    [
-                        'block_style' => $block_style,
-                        'is_hover' => true,
-                    ]
-                )
-            );
-            $icon_styles = get_icon_styles(
-                $props,
-                $uniqueID
-            );
+            $background_styles = get_block_background_styles(array_merge(
+                get_group_attributes($props, [
+                    'blockBackground',
+                    'border',
+                    'borderWidth',
+                    'borderRadius',
+                ]),
+                ['block_style' => $block_style]
+            ));
+
+            $background_hover_styles = get_block_background_styles(array_merge(
+                get_group_attributes($props, [
+                    'blockBackground',
+                    'border',
+                    'borderWidth',
+                    'borderRadius',
+                ], true),
+                [
+                    'is_hover' => true,
+                    'block_style' => $block_style,
+                ]
+            ));
+
+            $icon_styles = self::get_icon_object($props, $uniqueID);
 
             $styles_obj = array_merge_recursive(
                 $styles_obj,
@@ -112,10 +103,14 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
 
             $response = [
                 $uniqueID => style_processor($styles_obj, $data, $props),
-                "{$uniqueID} .maxi-pane-block[data-accordion='{$uniqueID}']" =>  style_processor(array_merge(
-                    self::get_pane_header_object($props),
-                    self::get_pane_content_object($props),
-                ), $data, $props),
+                "{$uniqueID} .maxi-pane-block[data-accordion='{$uniqueID}']" => style_processor(
+                    array_merge(
+                        self::get_pane_header_object($props),
+                        self::get_pane_content_object($props)
+                    ),
+                    $data,
+                    $props
+                ),
             ];
 
             return $response;
@@ -193,7 +188,7 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
             $get_icon_styles = function ($is_hover = false, $is_active = false) use ($props, $uniqueID) {
                 return get_button_icon_styles([
                     'obj' => $props,
-                    'block_style' => $props['block_style'],
+                    'block_style' => $props['blockStyle'],
                     'target' => ' .maxi-pane-block__icon',
                     'wrapperTarget' => ".maxi-pane-block[data-accordion='{$uniqueID}'][aria-expanded=" . ($is_active ? 'true' : 'false') . "] .maxi-pane-block__header",
                     'prefix' => $is_active ? 'active-' : '',
@@ -204,9 +199,9 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
 
             $response = array_merge(
                 $get_icon_styles(),
-                ($props['icon-status-hover'] ? $get_icon_styles(true) : []),
+                (isset($props['icon-status-hover']) && $props['icon-status-hover'] ? $get_icon_styles(true) : []),
                 $get_icon_styles(false, true),
-                ($props['active-icon-status-hover'] ? $get_icon_styles(true, true) : [])
+                (isset($props['active-icon-status-hover']) && $props['active-icon-status-hover'] ? $get_icon_styles(true, true) : [])
             );
 
             return $response;
@@ -246,20 +241,20 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
             return null;
         }
 
+        private static function get_pane_content_transition($duration)
+        {
+            return "max-height {$duration}s, padding-top {$duration}s, padding-bottom {$duration}s";
+        }
+
         public static function get_pane_content_wrapper_styles($props)
         {
             $animationDuration = $props['animationDuration'];
-
-            function get_pane_content_transition($duration)
-            {
-                return "max-height {$duration}s, padding-top {$duration}s, padding-bottom {$duration}s";
-            }
 
             $response = [
                 'paneTransition' => [
                     'label' => 'Pane transition',
                     'general' => [
-                        'transition' => get_pane_content_transition($animationDuration),
+                        'transition' => self::get_pane_content_transition($animationDuration),
                     ],
                 ],
             ];
@@ -326,42 +321,37 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
         {
             $block_style = $props['blockStyle'];
 
-            $pane_header_styles = self::get_pane_header_styles($props, '');
-            $pane_header_styles_active = self::get_pane_header_styles($props, 'active-');
-            $hover_pane_header_styles = self::get_pane_header_styles($props, '', true);
-            $pane_title_styles = self::get_pane_title_styles($props, 'title-');
-            $pane_title_styles_active = self::get_pane_title_styles($props, 'active-title-');
-            $hover_pane_title_styles = self::get_pane_title_styles($props, 'title-', true);
-
-            $response = [];
-            $response [' .maxi-pane-block__header-content'] = [
-                'paneHeader' => $pane_header_styles,
-                'paneHeaderIconPosition' => [
-                    'general' => [
-                        'flex-direction' => $props['icon-position'] === 'right' ? 'row' : 'row-reverse',
+            $response = [
+                ' .maxi-pane-block__header-content' => [
+                    'paneHeader' => self::get_pane_header_styles($props, ''),
+                    'paneHeaderIconPosition' => [
+                        'general' => [
+                            'flex-direction' => isset($props['icon-position']) && $props['icon-position'] === 'right' ? 'row' : 'row-reverse',
+                        ],
                     ],
                 ],
+                ' .maxi-pane-block__header-line-container' => [
+                    'headerLine' => get_divider_styles(
+                        $props,
+                        'container',
+                        $block_style,
+                        false,
+                        'header-'
+                    ),
+                ],
+                ' .maxi-pane-block__header-line' => [
+                    'headerLine' => get_divider_styles(
+                        $props,
+                        'line',
+                        $block_style,
+                        false,
+                        'header-',
+                        true
+                    ),
+                ],
             ];
-            $response[' .maxi-pane-block__header-line-container'] = [
-                'headerLine' => get_divider_styles(
-                    $props,
-                    'container',
-                    $block_style,
-                    false,
-                    'header-'
-                ),
-            ];
-            $response[' .maxi-pane-block__header-line'] = [
-                'headerLine' => get_divider_styles(
-                    $props,
-                    'line',
-                    $block_style,
-                    false,
-                    'header-',
-                    true
-                ),
-            ];
-            if((isset($props['header-line-status-active']) && $props['header-line-status-active'])) {
+
+            if (isset($props['header-line-status-active']) && $props['header-line-status-active']) {
                 $response['[aria-expanded=true] .maxi-pane-block__header-line'] = [
                     'headerLine' => get_divider_styles(
                         $props,
@@ -373,30 +363,36 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
                     ),
                 ];
             }
-            if(isset($props['header-line-status-hover']) && $props['header-line-status-hover']) {
+
+            if (isset($props['header-line-status-hover']) && $props['header-line-status-hover']) {
                 $response['[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-line'] = [
                     'headerLine' => get_divider_styles(
                         $props,
                         'line',
                         $block_style,
-                        false,
+                        true,
                         'header-',
                         true
                     ),
                 ];
-            };
-            $response['[aria-expanded=true] .maxi-pane-block__header-content'] = [
-                'paneHeaderActive' => $pane_header_styles_active,
-            ];
-            $response['[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-content'] = [
-                'paneHeaderHover' => $hover_pane_header_styles,
-            ];
-            $response[' .maxi-pane-block__title'] = $pane_title_styles;
-            if (isset($props['title-typography-status-active']) && $props['title-typography-status-active']) {
-                $response['[aria-expanded=true] .maxi-pane-block__title'] = $pane_title_styles_active;
             }
+
+            $response['[aria-expanded=true] .maxi-pane-block__header-content'] = [
+                'paneHeaderActive' => self::get_pane_header_styles($props, 'active-'),
+            ];
+
+            $response['[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-content'] = [
+                'paneHeaderHover' => self::get_pane_header_styles($props, '', true),
+            ];
+
+            $response[' .maxi-pane-block__title'] = self::get_pane_title_styles($props, 'title-');
+
+            if (isset($props['title-typography-status-active']) && $props['title-typography-status-active']) {
+                $response['[aria-expanded=true] .maxi-pane-block__title'] = self::get_pane_title_styles($props, 'active-title-');
+            }
+
             if (isset($props['title-typography-status-hover']) && $props['title-typography-status-hover']) {
-                $response['[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title'] = $hover_pane_title_styles;
+                $response['[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title'] = self::get_pane_title_styles($props, 'title-', true);
             }
 
             return $response;
@@ -404,50 +400,52 @@ if (!class_exists('MaxiBlocks_Accordion_Maxi_Block')):
 
         public static function get_pane_content_object($props)
         {
-            $accordionLayout = $props['accordionLayout'];
-            $block_style = $props['blockStyle'];
+            $response = [
+                ' .maxi-pane-block__content-wrapper' => self::get_pane_content_wrapper_styles($props),
+            ];
 
-            $response = [];
-            $response[' .maxi-pane-block__content-wrapper'] = self::get_pane_content_wrapper_styles($props);
-            if (isset($accordionLayout) && $accordionLayout === 'simple') {
+            if (isset($props['accordionLayout']) && $props['accordionLayout'] === 'simple') {
                 $response[' .maxi-pane-block__content-line-container'] = [
                     'paneLine' => get_divider_styles(
                         $props,
                         'container',
-                        $block_style,
+                        $props['blockStyle'],
                         false,
                         'content-'
                     ),
                 ];
+
                 $response[' .maxi-pane-block__content-line'] = [
                     'paneLine' => get_divider_styles(
                         $props,
                         'line',
-                        $block_style,
+                        $props['blockStyle'],
                         false,
                         'content-',
                         true
                     ),
                 ];
+
                 if (isset($props['content-line-status-active']) && $props['content-line-status-active']) {
                     $response['[aria-expanded=true] .maxi-pane-block__content-line'] = [
                         'paneLine' => get_divider_styles(
                             $props,
                             'line',
-                            $block_style,
+                            $props['blockStyle'],
                             false,
                             'content-active-',
                             true
                         ),
                     ];
                 }
+
                 if (isset($props['content-line-status-hover']) && $props['content-line-status-hover']) {
                     $response['[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__content-line'] = [
                         'paneLine' => get_divider_styles(
                             $props,
                             'line',
-                            $block_style,
-                            false,
+                            $props['blockStyle'],
+                            true,
                             'content-',
                             true
                         ),

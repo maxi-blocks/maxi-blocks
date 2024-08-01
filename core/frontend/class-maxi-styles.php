@@ -574,6 +574,8 @@ class MaxiBlocks_Styles
                 if (!empty($revisions)) {
                     $latest_revision = array_shift($revisions);
                     $blocks_post = parse_blocks($latest_revision->post_content);
+                } else {
+                    $blocks_post = parse_blocks($post->post_content);
                 }
             } else {
                 $blocks_post = parse_blocks($post->post_content);

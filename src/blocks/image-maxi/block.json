@@ -11234,9 +11234,6 @@
     },
     "className": {
       "type": "string"
-    },
-    "metadata": {
-      "type": "object"
     }
   },
   "customCss": {

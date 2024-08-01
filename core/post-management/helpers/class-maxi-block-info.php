@@ -10,7 +10,10 @@ class MaxiBlocks_Block_Info_Updater
     private static ?self $instance = null;
     private static ?MaxiBlocks_BlockFactory $block_factory = null;
 
-    private int $max_execution_time;
+    private static int $max_execution_time;
+    private const CHUNK_SIZE = 3;
+
+    private static array $block_updates = [];
 
     public static function register(): void
     {
@@ -29,7 +32,7 @@ class MaxiBlocks_Block_Info_Updater
 
     public function __construct()
     {
-        $this->max_execution_time = ini_get('max_execution_time');
+        self::$max_execution_time = ini_get('max_execution_time');
     }
 
     /**
@@ -38,31 +41,40 @@ class MaxiBlocks_Block_Info_Updater
     public function update_post_blocks_styles(string $post_content): void
     {
         $blocks = parse_blocks($post_content);
+        $this->process_blocks_chunk($blocks);
+        $this->perform_bulk_update();
+    }
 
-        // Split blocks array into chunks of 3 blocks
-        $block_chunks = array_chunk($blocks, 3);
+    /**
+     * Recursively processes chunks of blocks.
+     */
+    private function process_blocks_chunk(array $blocks, array $context = []): void
+    {
+        $block_chunks = array_chunk($blocks, self::CHUNK_SIZE);
 
         foreach ($block_chunks as $block_chunk) {
-            // Process each block in the current chunk
-            foreach($block_chunk as $block) {
-                $this->update_blocks_info($block);
+            foreach ($block_chunk as $block) {
+                $this->update_block_info_recursive($block, $context);
             }
 
             // Reset PHP maximum execution time for each chunk to avoid a timeout
-            if ($this->max_execution_time != 0) {
-                set_time_limit($this->max_execution_time - 2);
+            if (self::$max_execution_time != 0) {
+                set_time_limit(self::$max_execution_time * 0.95);
             }
         }
     }
 
-    public function update_blocks_info(array $block, array $context = []): void
+    /**
+     * Recursively updates block info, including nested blocks.
+     */
+    private function update_block_info_recursive(array $block, array $context = []): void
     {
         $block_name = $block['blockName'];
         $inner_blocks = $block['innerBlocks'];
 
-        if($block_name && strpos($block_name, 'maxi-blocks') !== false && $block['attrs']) {
+        if ($block_name && strpos($block_name, 'maxi-blocks') !== false && $block['attrs']) {
             $block_instance = self::$block_factory->create_block($block_name);
-            if($block_instance === null) {
+            if ($block_instance === null) {
                 return;
             }
 
@@ -76,34 +88,20 @@ class MaxiBlocks_Block_Info_Updater
             $frontend_styles = process_css(frontend_style_generator($styles, $unique_id));
             $custom_meta = $this->get_custom_data_from_block($block_name, $props, $context);
 
-            $this->update_block_info($unique_id, $block_name, $props, $custom_meta, $frontend_styles, $fonts);
+            $this->collect_block_update($unique_id, $block_name, $props, $custom_meta, $frontend_styles, $fonts);
         }
 
-        if ($inner_blocks && !empty($inner_blocks)) {
-            //Split inner_blocks array into chunks of 3
-            $inner_block_chunks = array_chunk($inner_blocks, 3);
-
-            foreach ($inner_block_chunks as $inner_block_chunk) {
-                // Process each block in the current chunk
-                foreach($inner_block_chunk as $inner_block) {
-                    $this->update_blocks_info($inner_block, $context);
-                }
-
-                // Reset PHP maximum execution time for each chunk to avoid a timeout
-                if ($this->max_execution_time != 0) {
-                    set_time_limit($this->max_execution_time - 2);
-                }
-            }
+        if (!empty($inner_blocks)) {
+            $this->process_blocks_chunk($inner_blocks, $context);
         }
     }
 
-    public function update_block_info(string $unique_id, string $block_name, array $props, array $custom_meta, string $frontend_styles, string $fonts, int $custom_meta_block = 0)
+    /**
+     * Collects block update information.
+     */
+    private function collect_block_update(string $unique_id, string $block_name, array $props, array $custom_meta, string $frontend_styles, string $fonts): void
     {
-        global $wpdb;
-
-        // custom meta
         $custom_meta_block = 0;
-
         $meta_blocks = [
             'maxi-blocks/number-counter-maxi',
             'maxi-blocks/video-maxi',
@@ -112,254 +110,86 @@ class MaxiBlocks_Block_Info_Updater
             'maxi-blocks/accordion-maxi',
             'maxi-blocks/pane-maxi',
             'maxi-blocks/slider-maxi',
-
         ];
 
-        if(in_array($block_name, $meta_blocks)) {
+        if (in_array($block_name, $meta_blocks)) {
             $custom_meta_block = 1;
         }
 
-        if(!empty($custom_meta)) {
-            $custom_meta_json = json_encode($custom_meta);
-            $exists = $wpdb->get_row(
-                $wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                    $unique_id
-                ),
-                OBJECT
-            );
-
-            if (!empty($exists)) {
-                // Update the existing row.
-                $old_custom_meta = $exists->custom_data_value;
-                $wpdb->query(
-                    $wpdb->prepare(
-                        "UPDATE {$wpdb->prefix}maxi_blocks_custom_data_blocks
-						SET custom_data_value = %s, prev_custom_data_value = %s
-						WHERE block_style_id = %s",
-                        $custom_meta_json,
-                        $old_custom_meta,
-                        $unique_id
-                    )
-                );
-            } else {
-                // Insert a new row.
-                $wpdb->query(
-                    $wpdb->prepare(
-                        "INSERT INTO {$wpdb->prefix}maxi_blocks_custom_data_blocks (block_style_id, custom_data_value, prev_custom_data_value)
-						VALUES (%s, %s, %s)",
-                        $unique_id,
-                        $custom_meta_json,
-                        ''
-                    )
-                );
-            }
-        }
-
-        // save to DB
-        $exists = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                $unique_id
-            ),
-            OBJECT
-        );
-
-        if (!empty($exists)) {
-            // Update the existing row.
-            $wpdb->query(
-                $wpdb->prepare(
-                    "UPDATE {$wpdb->prefix}maxi_blocks_styles_blocks
-					SET css_value = %s, prev_css_value = %s, prev_fonts_value = %s, fonts_value = %s, active_custom_data = %d, prev_active_custom_data = %d
-					WHERE block_style_id = %s",
-                    $frontend_styles,
-                    $frontend_styles,
-                    $fonts,
-                    $fonts,
-                    $custom_meta_block,
-                    $custom_meta_block,
-                    $unique_id
-                )
-            );
-        } else {
-            // Insert a new row.
-            $wpdb->query(
-                $wpdb->prepare(
-                    "INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks (block_style_id, css_value, prev_css_value, fonts_value, prev_fonts_value, active_custom_data, prev_active_custom_data)
-					VALUES (%s, %s, %s, %s, %s, %d, %d)",
-                    $unique_id,
-                    $frontend_styles,
-                    $frontend_styles,
-                    $fonts,
-                    $fonts,
-                    $custom_meta_block,
-                    $custom_meta_block
-                )
-            );
-        }
-        do_action('maxiblocks_block_info_updated');
-    }
-
-    public function get_block_fonts(string $block_name, array $props, bool $only_backend = false): array
-    {
-        if (empty($block_name) || empty($props)) {
-            return [];
-        }
-
-        $blocks_with_fonts = [
-            'maxi-blocks/number-counter-maxi',
-            'maxi-blocks/button-maxi',
-            'maxi-blocks/text-maxi',
-            'maxi-blocks/list-item-maxi',
-            'maxi-blocks/image-maxi',
-            'maxi-blocks/accordion-maxi',
-            'maxi-blocks/search-maxi',
-            'maxi-blocks/map-maxi',
-            'maxi-blocks/row-maxi',
-            'maxi-blocks/column-maxi',
-            'maxi-blocks/group-maxi',
-            'maxi-blocks/container-maxi',
+        self::$block_updates[] = [
+            'unique_id' => $unique_id,
+            'block_name' => $block_name,
+            'props' => $props,
+            'custom_meta' => $custom_meta,
+            'frontend_styles' => $frontend_styles,
+            'fonts' => $fonts,
+            'custom_meta_block' => $custom_meta_block,
         ];
 
-        if (!in_array($block_name, $blocks_with_fonts, true)) {
-            return [];
+		do_action('maxiblocks_block_info_processed');
+    }
+
+    /**
+     * Performs bulk update of all collected block information.
+     */
+    private function perform_bulk_update(): void
+    {
+        global $wpdb;
+
+        if (empty(self::$block_updates)) {
+            return;
         }
 
-        $typography = [];
-        $typography_hover = [];
-        $text_level = isset($props['textLevel']) ? $props['textLevel'] : 'p';
-        $block_style = $props['blockStyle'] ?? 'light';
-        $prefixes = [''];
+        $styles_values = [];
+        $custom_data_values = [];
 
-        switch ($block_name) {
-            case 'maxi-blocks/number-counter-maxi':
-                $typography = get_group_attributes($props, 'numberCounter');
-                break;
-            case 'maxi-blocks/button-maxi':
-                $typography = get_group_attributes($props, 'typography');
-                $typography_hover = get_group_attributes($props, 'typographyHover');
-                $text_level = 'button';
-                break;
-            case 'maxi-blocks/row-maxi':
-            case 'maxi-blocks/column-maxi':
-            case 'maxi-blocks/group-maxi':
-            case 'maxi-blocks/container-maxi':
-                $typography = get_group_attributes($props, 'typography', false, 'cl-pagination-');
-                $prefixes[] = 'cl-pagination-';
-                break;
-            case 'maxi-blocks/map-maxi':
-                $typography = array_merge(
-                    get_group_attributes($props, 'typography'),
-                    get_group_attributes($props, 'typography', false, 'description-')
-                );
-                $prefixes[] = 'description-';
-                break;
-            case 'maxi-blocks/accordion-maxi':
-                $typography = array_merge(
-                    get_group_attributes($props, 'typography', false, 'title-'),
-                    get_group_attributes($props, 'typography', false, 'active-title-')
-                );
-                $typography_hover = get_group_attributes($props, 'typographyHover', false, 'title-');
-                $prefixes = array_merge($prefixes, ['title-', 'active-title-']);
-                break;
-            case 'maxi-blocks/search-maxi':
-                $typography = array_merge(
-                    get_group_attributes($props, 'typography', false, 'button-'),
-                    get_group_attributes($props, 'typography', false, 'input-')
-                );
-                $typography_hover = array_merge(
-                    get_group_attributes($props, 'typographyHover', false, 'button-'),
-                    get_group_attributes($props, 'typographyHover', false, 'input-')
-                );
-                $prefixes = array_merge($prefixes, ['button-', 'input-']);
-                break;
-            default:
-                $typography = get_group_attributes($props, 'typography');
-                $typography_hover = get_group_attributes($props, 'typographyHover');
-                break;
-        }
+        foreach (self::$block_updates as $update) {
+            $styles_values[] = $wpdb->prepare(
+                "(%s, %s, %s, %s, %s, %d, %d)",
+                $update['unique_id'],
+                $update['frontend_styles'],
+                $update['frontend_styles'],
+                $update['fonts'],
+                $update['fonts'],
+                $update['custom_meta_block'],
+                $update['custom_meta_block']
+            );
 
-        $response = [];
-        foreach ($prefixes as $prefix) {
-            if (!empty($typography_hover["{$prefix}typography-status-hover"])) {
-                $response = array_merge_recursive(
-                    get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend, $prefixes),
-                    get_all_fonts($typography_hover, 'custom-formats', true, $text_level, $block_style, $only_backend, $prefixes)
+            if (!empty($update['custom_meta'])) {
+                $custom_meta_json = json_encode($update['custom_meta']);
+                $custom_data_values[] = $wpdb->prepare(
+                    "(%s, %s, %s)",
+                    $update['unique_id'],
+                    $custom_meta_json,
+                    $custom_meta_json
                 );
-            } else {
-                $response = get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend, $prefixes);
             }
         }
 
-        $font_files = $this->load_font_files();
-        if (empty($font_files)) {
-            return [];
+        // Bulk insert/update styles
+        $wpdb->query("INSERT INTO {$wpdb->prefix}maxi_blocks_styles_blocks
+            (block_style_id, css_value, prev_css_value, fonts_value, prev_fonts_value, active_custom_data, prev_active_custom_data)
+            VALUES " . implode(', ', $styles_values) . "
+            ON DUPLICATE KEY UPDATE
+            css_value = VALUES(css_value),
+            prev_css_value = VALUES(prev_css_value),
+            fonts_value = VALUES(fonts_value),
+            prev_fonts_value = VALUES(prev_fonts_value),
+            active_custom_data = VALUES(active_custom_data),
+            prev_active_custom_data = VALUES(prev_active_custom_data)");
+
+        // Bulk insert/update custom data if any
+        if (!empty($custom_data_values)) {
+            $wpdb->query("INSERT INTO {$wpdb->prefix}maxi_blocks_custom_data_blocks
+                (block_style_id, custom_data_value, prev_custom_data_value)
+                VALUES " . implode(', ', $custom_data_values) . "
+                ON DUPLICATE KEY UPDATE
+                custom_data_value = VALUES(custom_data_value),
+                prev_custom_data_value = VALUES(prev_custom_data_value)");
         }
 
-        foreach ($response as $font_name => &$font_data) {
-            $this->process_font_data($font_data, $font_files[$font_name]['files'] ?? null);
-        }
-
-        return $response;
-    }
-
-    private function load_font_files(): array
-    {
-        static $font_files = null;
-        if ($font_files === null) {
-            $font_files = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . '/core/post-management/fonts.json'), true);
-        }
-        return $font_files ?: [];
-    }
-
-    private function process_font_data(array &$font_data, ?array $font_files_content): void
-    {
-        $font_weight = $font_data['weight'] ?? '400';
-        $font_style = $font_data['style'] ?? 'normal';
-
-        $font_weight_arr = $this->normalize_font_property($font_weight);
-        $font_style_arr = $this->normalize_font_property($font_style);
-
-        $font_data['weight'] = implode(',', $font_weight_arr);
-        $font_data['style'] = implode(',', $font_style_arr);
-        $font_data['display'] = 'swap';
-
-        if (empty($font_data['style'])) {
-            unset($font_data['style']);
-        }
-
-        $this->adjust_font_weights($font_weight_arr, $font_style_arr, $font_files_content, $font_data);
-    }
-
-    private function normalize_font_property($property): array
-    {
-        if (is_array($property)) {
-            return array_unique($property);
-        }
-        if (is_string($property)) {
-            return array_filter(array_unique(explode(',', $property)), 'strlen');
-        }
-        return [$property];
-    }
-
-    private function adjust_font_weights(array $font_weight_arr, array $font_style_arr, ?array $font_files_content, array &$font_data): void
-    {
-        $get_weight_file = function ($weight, $style) {
-            return $style === 'italic' ? (($weight === '400' ? '' : $weight) . 'italic') : $weight;
-        };
-
-        $new_font_weight_arr = [];
-        foreach ($font_weight_arr as $weight) {
-            foreach ($font_style_arr as $current_font_style) {
-                $weight_file = $get_weight_file($weight, $current_font_style);
-                if (is_array($font_files_content) && !array_key_exists($weight_file, $font_files_content)) {
-                    $weight = '400';
-                }
-            }
-            $new_font_weight_arr[] = $weight;
-        }
-
-        $font_data['weight'] = implode(',', array_unique($new_font_weight_arr));
+        // Clear the block updates array
+        self::$block_updates = [];
     }
 
     /**
@@ -600,5 +430,167 @@ class MaxiBlocks_Block_Info_Updater
             's' => 767,
             'xs' => 480,
         ];
+    }
+
+    public function get_block_fonts(string $block_name, array $props, bool $only_backend = false): array
+    {
+        if (empty($block_name) || empty($props)) {
+            return [];
+        }
+
+        $blocks_with_fonts = [
+            'maxi-blocks/number-counter-maxi',
+            'maxi-blocks/button-maxi',
+            'maxi-blocks/text-maxi',
+            'maxi-blocks/list-item-maxi',
+            'maxi-blocks/image-maxi',
+            'maxi-blocks/accordion-maxi',
+            'maxi-blocks/search-maxi',
+            'maxi-blocks/map-maxi',
+            'maxi-blocks/row-maxi',
+            'maxi-blocks/column-maxi',
+            'maxi-blocks/group-maxi',
+            'maxi-blocks/container-maxi',
+        ];
+
+        if (!in_array($block_name, $blocks_with_fonts, true)) {
+            return [];
+        }
+
+        $typography = [];
+        $typography_hover = [];
+        $text_level = isset($props['textLevel']) ? $props['textLevel'] : 'p';
+        $block_style = $props['blockStyle'] ?? 'light';
+        $prefixes = [''];
+
+        switch ($block_name) {
+            case 'maxi-blocks/number-counter-maxi':
+                $typography = get_group_attributes($props, 'numberCounter');
+                break;
+            case 'maxi-blocks/button-maxi':
+                $typography = get_group_attributes($props, 'typography');
+                $typography_hover = get_group_attributes($props, 'typographyHover');
+                $text_level = 'button';
+                break;
+            case 'maxi-blocks/row-maxi':
+            case 'maxi-blocks/column-maxi':
+            case 'maxi-blocks/group-maxi':
+            case 'maxi-blocks/container-maxi':
+                $typography = get_group_attributes($props, 'typography', false, 'cl-pagination-');
+                $prefixes[] = 'cl-pagination-';
+                break;
+            case 'maxi-blocks/map-maxi':
+                $typography = array_merge(
+                    get_group_attributes($props, 'typography'),
+                    get_group_attributes($props, 'typography', false, 'description-')
+                );
+                $prefixes[] = 'description-';
+                break;
+            case 'maxi-blocks/accordion-maxi':
+                $typography = array_merge(
+                    get_group_attributes($props, 'typography', false, 'title-'),
+                    get_group_attributes($props, 'typography', false, 'active-title-')
+                );
+                $typography_hover = get_group_attributes($props, 'typographyHover', false, 'title-');
+                $prefixes = array_merge($prefixes, ['title-', 'active-title-']);
+                break;
+            case 'maxi-blocks/search-maxi':
+                $typography = array_merge(
+                    get_group_attributes($props, 'typography', false, 'button-'),
+                    get_group_attributes($props, 'typography', false, 'input-')
+                );
+                $typography_hover = array_merge(
+                    get_group_attributes($props, 'typographyHover', false, 'button-'),
+                    get_group_attributes($props, 'typographyHover', false, 'input-')
+                );
+                $prefixes = array_merge($prefixes, ['button-', 'input-']);
+                break;
+            default:
+                $typography = get_group_attributes($props, 'typography');
+                $typography_hover = get_group_attributes($props, 'typographyHover');
+                break;
+        }
+
+        $response = [];
+        foreach ($prefixes as $prefix) {
+            if (!empty($typography_hover["{$prefix}typography-status-hover"])) {
+                $response = array_merge_recursive(
+                    get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend, $prefixes),
+                    get_all_fonts($typography_hover, 'custom-formats', true, $text_level, $block_style, $only_backend, $prefixes)
+                );
+            } else {
+                $response = get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend, $prefixes);
+            }
+        }
+
+        $font_files = $this->load_font_files();
+        if (empty($font_files)) {
+            return [];
+        }
+
+        foreach ($response as $font_name => &$font_data) {
+            $this->process_font_data($font_data, $font_files[$font_name]['files'] ?? null);
+        }
+
+        return $response;
+    }
+
+    private function load_font_files(): array
+    {
+        static $font_files = null;
+        if ($font_files === null) {
+            $font_files = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . '/core/post-management/fonts.json'), true);
+        }
+        return $font_files ?: [];
+    }
+
+    private function process_font_data(array &$font_data, ?array $font_files_content): void
+    {
+        $font_weight = $font_data['weight'] ?? '400';
+        $font_style = $font_data['style'] ?? 'normal';
+
+        $font_weight_arr = $this->normalize_font_property($font_weight);
+        $font_style_arr = $this->normalize_font_property($font_style);
+
+        $font_data['weight'] = implode(',', $font_weight_arr);
+        $font_data['style'] = implode(',', $font_style_arr);
+        $font_data['display'] = 'swap';
+
+        if (empty($font_data['style'])) {
+            unset($font_data['style']);
+        }
+
+        $this->adjust_font_weights($font_weight_arr, $font_style_arr, $font_files_content, $font_data);
+    }
+
+    private function normalize_font_property($property): array
+    {
+        if (is_array($property)) {
+            return array_unique($property);
+        }
+        if (is_string($property)) {
+            return array_filter(array_unique(explode(',', $property)), 'strlen');
+        }
+        return [$property];
+    }
+
+    private function adjust_font_weights(array $font_weight_arr, array $font_style_arr, ?array $font_files_content, array &$font_data): void
+    {
+        $get_weight_file = function ($weight, $style) {
+            return $style === 'italic' ? (($weight === '400' ? '' : $weight) . 'italic') : $weight;
+        };
+
+        $new_font_weight_arr = [];
+        foreach ($font_weight_arr as $weight) {
+            foreach ($font_style_arr as $current_font_style) {
+                $weight_file = $get_weight_file($weight, $current_font_style);
+                if (is_array($font_files_content) && !array_key_exists($weight_file, $font_files_content)) {
+                    $weight = '400';
+                }
+            }
+            $new_font_weight_arr[] = $weight;
+        }
+
+        $font_data['weight'] = implode(',', array_unique($new_font_weight_arr));
     }
 }

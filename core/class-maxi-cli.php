@@ -565,7 +565,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
         {
             $progress = WP_CLI\Utils\make_progress_bar($message, $block_count);
 
-            add_action('maxiblocks_block_info_updated', function () use ($progress) {
+            add_action('maxiblocks_block_info_processed', function () use ($progress) {
                 $progress->tick();
             });
 

@@ -26,8 +26,6 @@ class MaxiBlocks_Post_Update_Manager
     private static ?MaxiBlocks_Block_Info_Updater $block_info_updater = null;
     private static ?MaxiBlocks_Content_Processor $content_processor = null;
 
-    protected int $max_execution_time;
-
     /**
      * Registers the plugin.
      */
@@ -57,8 +55,6 @@ class MaxiBlocks_Post_Update_Manager
     */
     public function __construct()
     {
-        $this->max_execution_time = ini_get('max_execution_time');
-
         /**
          * Custom maxiblocks action to process and update the post content
          */
@@ -81,16 +77,19 @@ class MaxiBlocks_Post_Update_Manager
     }
 
     /**
-     * Updates the post with maxi blocks with updated post_content and styles
+     * Updates the styles and custom meta of post's maxi blocks
      */
     public function process_updated_post_content(int $post_id, string $post_content, bool $new_blocks = false): void
     {
         $updated_post_content = self::$content_processor->get_updated_post_content($post_content, $new_blocks);
         self::$block_info_updater->update_post_blocks_styles($updated_post_content);
-        wp_update_post([
-            'ID' => $post_id,
-            'post_content' => self::$content_processor->prepare_content($updated_post_content),
-        ]);
+        if($updated_post_content !== $post_content) {
+            $updated_post_content = self::$content_processor->prepare_content($updated_post_content);
+            wp_update_post([
+                'ID' => $post_id,
+                'post_content' => $updated_post_content,
+            ]);
+        }
     }
 
     /**

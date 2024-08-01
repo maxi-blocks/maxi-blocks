@@ -132,39 +132,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 		return kindDictionary[type];
 	};
 
-	if (type === 'users') {
-		dataRequest.id = author ?? id;
-
-		const { getUsers, getUser } = resolveSelect('core');
-
-		if (relation === 'random') {
-			return getRandomEntity(
-				await getUsers({
-					who: 'authors',
-					per_page: 100,
-					hide_empty: false,
-				}),
-				clientId
-			);
-		}
-
-		if (['by-date', 'alphabetical'].includes(relation)) {
-			const users = await getUsers({
-				who: 'authors',
-				per_page: accumulator + 1,
-				hide_empty: false,
-				order,
-				orderby: relation === 'by-date' ? 'registered_date' : 'name',
-			});
-
-			return users?.at(-1);
-		}
-
-		const user = await getUser(author ?? id);
-
-		return user;
-	}
-
 	const relationTypes = select(
 		'maxiBlocks/dynamic-content'
 	).getRelationTypes();
@@ -208,6 +175,40 @@ const getDCEntity = async (dataRequest, clientId) => {
 			if (product) return product;
 		}
 	}
+
+	if (type === 'users') {
+		dataRequest.id = author ?? id;
+
+		const { getUsers, getUser } = resolveSelect('core');
+
+		if (relation === 'random') {
+			return getRandomEntity(
+				await getUsers({
+					who: 'authors',
+					per_page: 100,
+					hide_empty: false,
+				}),
+				clientId
+			);
+		}
+
+		if (['by-date', 'alphabetical'].includes(relation)) {
+			const users = await getUsers({
+				who: 'authors',
+				per_page: accumulator + 1,
+				hide_empty: false,
+				order,
+				orderby: relation === 'by-date' ? 'registered_date' : 'name',
+			});
+
+			return users?.at(-1);
+		}
+
+		const user = await getUser(author ?? id);
+
+		return user;
+	}
+
 
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
 

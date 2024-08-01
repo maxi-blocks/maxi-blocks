@@ -292,9 +292,9 @@ class MaxiBlocks_StyleCards
             (array) $values
         );
 
-        $text_level_values = (object) $style_card_values->$text_level;
+        $text_level_values = isset($style_card_values->$text_level) ? (object) $style_card_values->$text_level : new stdClass();
 
-        if (!property_exists($text_level_values, 'font-family-general')) {
+        if (isset($default_values[$text_level]) && !property_exists($text_level_values, 'font-family-general')) {
             $text_level_values = (object) $default_values[$text_level];
         }
 

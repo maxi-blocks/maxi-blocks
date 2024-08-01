@@ -79,7 +79,11 @@ class MaxiBlocks_Fonts_Processor
 
     private function process_sc_font(string $font, array $font_data, string $name): void
     {
-        list($font, $font_weights, $font_styles) = $this->get_sc_font_data($font, $font_data);
+        list($font_name, $font_weights, $font_styles) = $this->get_sc_font_data($font, $font_data);
+
+        if(empty($font_name)) {
+            return;
+        }
 
         if (empty($font_weights)) {
             $font_weights = [$font_data['weight']];
@@ -88,7 +92,7 @@ class MaxiBlocks_Fonts_Processor
             $font_styles = isset($font_data['style']) ? [$font_data['style']] : ['normal'];
         }
 
-        $this->add_font_to_load($font, $font_weights, $font_styles, $name);
+        $this->add_font_to_load($font_name, $font_weights, $font_styles, $name);
     }
 
     private function get_sc_font_data(string $font, array $font_data): array

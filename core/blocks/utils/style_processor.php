@@ -128,6 +128,10 @@ function objects_cleaner($obj)
         return false;
     }
 
+    if(!is_array($obj)) {
+        return $obj;
+    }
+
     $response = $obj;
 
     foreach ($response as $key => $val) {
@@ -295,19 +299,21 @@ function style_cleaner($styles)
         // Set the cleaned value back in the styles
         $styles[$target] = $val;
 
-        // Clean breakpoint repeated values
-        foreach ($styles[$target] as $type_key => $type_val) {
-            // If the type has more than one breakpoint, clean the repeated values
-            if (count(array_keys($type_val)) > 1) {
-                $styles[$target][$type_key] = repeated_breakpoint_cleaner($type_val);
+        if(is_array($styles[$target])) {
+            // Clean breakpoint repeated values
+            foreach ($styles[$target] as $type_key => $type_val) {
+                // If the type has more than one breakpoint, clean the repeated values
+                if (count(array_keys($type_val)) > 1) {
+                    $styles[$target][$type_key] = repeated_breakpoint_cleaner($type_val);
+                }
             }
-        }
 
-        // Clean non-necessary breakpoint values when is same than general
-        foreach ($styles[$target] as $type_key => $type_val) {
-            // If the type has more than one breakpoint, clean the non-necessary values
-            if (count(array_keys($type_val)) > 1) {
-                $styles[$target][$type_key] = general_breakpoint_cleaner($type_val);
+            // Clean non-necessary breakpoint values when is same than general
+            foreach ($styles[$target] as $type_key => $type_val) {
+                // If the type has more than one breakpoint, clean the non-necessary values
+                if (count(array_keys($type_val)) > 1) {
+                    $styles[$target][$type_key] = general_breakpoint_cleaner($type_val);
+                }
             }
         }
 
@@ -322,18 +328,21 @@ function style_cleaner($styles)
             }
         }
 
-        // Clean empty breakpoints
-        foreach ($styles[$target] as $type_key => $type_val) {
-            foreach ($type_val as $breakpoint => $breakpoint_val) {
-                // If the breakpoint is empty, remove it from the styles
-                if (!is_array($breakpoint_val) || empty($breakpoint_val)) {
-                    unset($styles[$target][$type_key][$breakpoint]);
+
+        if (is_array($styles[$target])) {
+            // Clean empty breakpoints
+            foreach ($styles[$target] as $type_key => $type_val) {
+                foreach ($type_val as $breakpoint => $breakpoint_val) {
+                    // If the breakpoint is empty, remove it from the styles
+                    if (!is_array($breakpoint_val) || empty($breakpoint_val)) {
+                        unset($styles[$target][$type_key][$breakpoint]);
+                    }
                 }
             }
-        }
 
-        // Clean non-object and empty targets - Second clean before returning
-        $cleaned_val = objects_cleaner($styles[$target]);
+            // Clean non-object and empty targets - Second clean before returning
+            $cleaned_val = objects_cleaner($styles[$target]);
+        }
 
         // If the cleaned value is empty, remove it from the styles and continue to the next iteration
         if (empty($cleaned_val)) {

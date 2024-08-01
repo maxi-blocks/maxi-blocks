@@ -430,7 +430,7 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
             $image_ratio_custom = $props['imageRatioCustom'];
             $img_width = $props['img-width-general'] ?? null;
             $use_init_size = $props['useInitSize'] ?? false;
-            $media_width = $props['mediaWidth'];
+            $media_width = $props['mediaWidth'] ?? null;
             $is_first_on_hierarchy = $props['isFirstOnHierarchy'];
             $svg_element = $props['SVGElement'] ?? '';
 

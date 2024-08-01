@@ -3,15 +3,15 @@
 /**
  * Generates image width styles object
  *
- * @param array   $obj         Block size properties
+ * @param array   $obj           Block size properties
  * @param boolean $use_init_size Flag to determine if initial size should be used
- * @param number  $media_width Width of the media element
+ * @param ?int    $media_width   Width of the media element
  *
  * @return array The image width styles
  */
-function get_img_width_styles(array $obj, bool $use_init_size, int $media_width)
+function get_img_width_styles(array $obj, bool $use_init_size, ?int $media_width)
 {
-	$breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     $response = [];
 

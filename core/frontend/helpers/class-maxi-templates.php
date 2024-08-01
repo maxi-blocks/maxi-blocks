@@ -24,8 +24,11 @@ class MaxiBlocks_Templates_Processor
 
     /**
      * Fetches blocks from template and template parts based on the template slug.
-     */
-    public function fetch_blocks_by_template_id(string $template_id): array
+     *
+     * @param string $template_id The ID of the template you want to fetch.
+     * @return array
+    */
+    public function fetch_blocks_by_template_id($template_id)
     {
         global $wpdb;
 
@@ -76,7 +79,7 @@ class MaxiBlocks_Templates_Processor
             $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
         }
 
-        if (get_template() === 'maxiblocks') {
+        if (get_template() === 'maxiblocks' || get_template() === 'maxiblocks-go') {
             $templates_blocks = $this->fetch_blocks_from_beta_maxi_theme_templates($template_id);
             if($templates_blocks) {
                 $all_blocks = array_merge_recursive($all_blocks, $templates_blocks);
@@ -86,7 +89,7 @@ class MaxiBlocks_Templates_Processor
         return $all_blocks;
     }
 
-    private function fetch_blocks_from_beta_maxi_theme_template_parts(string $template_id): array
+    public function fetch_blocks_from_beta_maxi_theme_template_parts($template_id)
     {
         $all_blocks = [];
         $theme_directory = get_template_directory();
@@ -119,7 +122,7 @@ class MaxiBlocks_Templates_Processor
         $part_blocks = parse_blocks($text_content);
         $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
 
-        $pattern = '/<!-- wp:pattern \{"slug":"(maxiblocks\/[^"]+)"\} \/-->/';
+        $pattern = '/<!-- wp:pattern \{"slug":"((?:maxiblocks|maxiblocks-go)\/[^"]+)"\} \/-->/';
         preg_match_all($pattern, $file_contents, $matches);
 
         if (!empty($matches[1])) {
@@ -132,26 +135,38 @@ class MaxiBlocks_Templates_Processor
         return $all_blocks;
     }
 
-    private function fetch_blocks_from_beta_maxi_theme_templates(string $template_id): array
+    public function fetch_blocks_from_beta_maxi_theme_templates(string $template_id)
     {
-        if (get_template() !== 'maxiblocks') {
-            return [];
+        if (get_template() !== 'maxiblocks' && get_template() !== 'maxiblocks-go') {
+            return;
         }
         $all_blocks = [];
 
         $parts = explode('//', $template_id);
-        if (!isset($parts[0]) || $parts[0] !== 'maxiblocks') {
-            return [];
+        if (!isset($parts[0]) || ($parts[0] !== 'maxiblocks' && $parts[0] !== 'maxiblocks-go')) {
+            return;
         }
 
         $template_slug = isset($parts[1]) ? $parts[1] : null;
 
         if (!$template_slug) {
-            return [];
+            return;
         }
 
         if ($template_slug === 'index') {
-            $template_slug = 'front-page';
+            if (is_front_page() && is_home()) {
+                // Default homepage
+                $template_slug = 'home';
+            } elseif (is_front_page()) {
+                // Static homepage
+                $template_slug = 'front-page';
+            } elseif (is_home()) {
+                // Blog page
+                $template_slug = 'home';
+            } else {
+                // Fallback to index.html for other cases
+                $template_slug = 'index';
+            }
         }
 
         $theme_directory = get_template_directory();
@@ -175,7 +190,7 @@ class MaxiBlocks_Templates_Processor
 
         $file_contents = $wp_filesystem->get_contents($file);
         if (!$file_contents) {
-            return [];
+            return;
         }
 
         if (strpos($file_contents, '"slug":"header"') !== false) {
@@ -188,7 +203,7 @@ class MaxiBlocks_Templates_Processor
             $all_blocks = array_merge_recursive($all_blocks, $footer_blocks);
         }
 
-        $pattern = '/<!-- wp:pattern \{"slug":"(maxiblocks\/[^"]+)"\} \/-->/';
+        $pattern = '/<!-- wp:pattern \{"slug":"((?:maxiblocks|maxiblocks-go)\/[^"]+)"\} \/-->/';
         preg_match_all($pattern, $file_contents, $matches);
 
         if (!empty($matches[1])) {
@@ -205,7 +220,7 @@ class MaxiBlocks_Templates_Processor
     {
         $all_blocks = [];
         $parts = explode('/', $pattern_id);
-        if (!isset($parts[0]) || $parts[0] !== 'maxiblocks') {
+        if (!isset($parts[0]) || ($parts[0] !== 'maxiblocks' && $parts[0] !== 'maxiblocks-go')) {
             return [];
         }
 

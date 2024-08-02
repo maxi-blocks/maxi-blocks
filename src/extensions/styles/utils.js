@@ -32,12 +32,15 @@ export const validateOriginValue = val => {
 };
 
 export const getParallaxLayers = (uniqueID, bgLayers) => {
-	const response = bgLayers?.filter(
-		layer =>
-			layer.type === 'image' && layer['background-image-parallax-status']
+	if (!bgLayers || isEmpty(bgLayers)) {
+		return {};
+	}
+
+	const response = bgLayers.filter(
+		({ type, 'background-image-parallax-status': parallaxStatus }) =>
+			type === 'image' && parallaxStatus
 	);
 
-	if (!response || isEmpty(response)) return null;
 	return { [uniqueID]: response };
 };
 

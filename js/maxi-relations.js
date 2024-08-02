@@ -516,6 +516,7 @@ class Relation {
 	generateStyles() {
 		const getStylesLine = (stylesObj, target, index) => {
 			const isBackground = target.includes('maxi-background-displayer');
+			let targetStyleString = '';
 
 			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
@@ -582,8 +583,8 @@ class Relation {
 								const selectorRegExp = new RegExp(
 									`(${this.escapeRegExp(selector)})`
 								);
-								if (!this.stylesString.match(selectorRegExp)) {
-									this.stylesString += `${selector}}${postLine}`;
+								if (!targetStyleString.match(selectorRegExp)) {
+									targetStyleString += `${selector}}${postLine}`;
 								}
 
 								// Generate the property-value pair string
@@ -591,13 +592,13 @@ class Relation {
 
 								// Check if the property-value pair already exists in the stylesString
 								if (
-									!this.stylesString.includes(
+									!targetStyleString.includes(
 										propertyValuePair
 									)
 								) {
 									// If it doesn't exist, perform the replace operation
-									this.stylesString =
-										this.stylesString.replace(
+									targetStyleString =
+										targetStyleString.replace(
 											selectorRegExp,
 											`$1 ${propertyValuePair}`
 										);
@@ -626,32 +627,32 @@ class Relation {
 							const selectorRegExp = new RegExp(
 								`(${this.escapeRegExp(selector)})`
 							);
-							if (!this.stylesString.match(selectorRegExp))
-								this.stylesString += `${selector}}${postLine}`;
+							if (!targetStyleString.match(selectorRegExp))
+								targetStyleString += `${selector}}${postLine}`;
 
 							if (widthTop || widthTop === 0)
-								this.stylesString = this.stylesString.replace(
+								targetStyleString = targetStyleString.replace(
 									selectorRegExp,
 									`$1 top: -${roundNumber(
 										widthTop
 									)}${widthUnit};`
 								);
 							if (widthBottom || widthBottom === 0)
-								this.stylesString = this.stylesString.replace(
+								targetStyleString = targetStyleString.replace(
 									selectorRegExp,
 									`$1 bottom: -${roundNumber(
 										widthBottom
 									)}${widthUnit};`
 								);
 							if (widthLeft || widthLeft === 0)
-								this.stylesString = this.stylesString.replace(
+								targetStyleString = targetStyleString.replace(
 									selectorRegExp,
 									`$1 left: -${roundNumber(
 										widthLeft
 									)}${widthUnit};`
 								);
 							if (widthRight || widthRight === 0)
-								this.stylesString = this.stylesString.replace(
+								targetStyleString = targetStyleString.replace(
 									selectorRegExp,
 									`$1 right: -${roundNumber(
 										widthRight
@@ -661,6 +662,8 @@ class Relation {
 					}
 				}
 			);
+
+			this.stylesString += targetStyleString;
 		};
 
 		// On styles (not transitions), we need to keep the styles after run the interaction.

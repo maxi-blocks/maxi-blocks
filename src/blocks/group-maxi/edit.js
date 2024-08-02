@@ -6,15 +6,13 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
+import Inspector from './inspector';
 const BlockInserter = loadable(() => import('../../components/block-inserter'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Toolbar from '../../components/toolbar';
 const ArrowDisplayer = loadable(() =>
 	import('../../components/arrow-displayer')
 );
-const MaxiBlock = loadable(() =>
-	import('../../components/maxi-block/maxiBlock')
-);
+import MaxiBlock from '../../components/maxi-block/maxiBlock';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';

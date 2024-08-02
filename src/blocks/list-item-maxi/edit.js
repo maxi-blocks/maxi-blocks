@@ -16,8 +16,8 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Inspector from './inspector';
+import Toolbar from '../../components/toolbar';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';

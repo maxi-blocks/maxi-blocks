@@ -15,8 +15,8 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Inspector from './inspector';
+import Toolbar from '../../components/toolbar';
 const BlockInserter = loadable(() => import('../../components/block-inserter'));
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { RawHTML } from '../../components';

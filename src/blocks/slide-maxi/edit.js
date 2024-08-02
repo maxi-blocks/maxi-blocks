@@ -12,9 +12,9 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
+import Inspector from './inspector';
 const BlockInserter = loadable(() => import('../../components/block-inserter'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Toolbar from '../../components/toolbar';
 import { copyPasteMapping } from './data';
 import {
 	withMaxiContextLoop,

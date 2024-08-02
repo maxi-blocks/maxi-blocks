@@ -13,13 +13,11 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
-const BlockResizer = loadable(() => import('../../components/block-resizer'));
+import Inspector from './inspector';
+import Toolbar from '../../components/toolbar';
+ import BlockResizer from '../../components/block-resizer';
 const RawHTML = loadable(() => import('../../components/raw-html'));
-const MaxiPopoverButton = loadable(() =>
-	import('../../components/maxi-popover-button')
-);
+import MaxiPopoverButton from '../../components/maxi-popover-button';
 import MaxiModal from '../../editor/library/modal';
 
 import {

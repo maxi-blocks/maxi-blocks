@@ -466,41 +466,9 @@ class MaxiBlocks_Styles
             foreach ($block['innerBlocks'] as $innerBlock) {
                 $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
             }
-        }
-
-        if (isset($content_block['css_value'])) {
-            if($block_name === 'maxi-blocks/container-maxi' && $props['isFirstOnHierarchy'] && strpos($content_block['css_value'], 'min-width:100%') !== false) {
-                if(self::$active_theme === "2023" || self::$active_theme === "2024") {
-                    $new_styles = "body.maxi-blocks--active .has-global-padding > #$unique_id {
-					margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
-					margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
-					min-width: calc(100% + var(--wp--style--root--padding-right) + var(--wp--style--root--padding-left)) !important;
-				}";
-                    $content_block['css_value'] .= $new_styles;
-                }
-                if(self::$active_theme === 2022) {
-                    $new_styles = "body.maxi-blocks--active .wp-site-blocks .entry-content > #$unique_id {
-					margin-left: calc(-1 * var(--wp--custom--spacing--outer)) !important;
-					margin-right: calc(-1 * var(--wp--custom--spacing--outer)) !important;
-					min-width: calc(100% + var(--wp--custom--spacing--outer) * 2) !important;
-				}";
-                    $content_block['css_value'] .= $new_styles;
-                }
-                if(self::$active_theme === 'astra') {
-                    $new_styles = "body.maxi-blocks--active .entry-content > #$unique_id {
-						margin-left: calc( -50vw + 50%);
-						margin-right: calc( -50vw + 50%);
-						max-width: 100vw;
-						width: 100vw;
-				}";
-                    $content_block['css_value'] .= $new_styles;
-                }
-            }
-            $styles .= ' ' . $content_block['css_value'];
-        }
-
-        if (isset($content_block['prev_css_value'])) {
-            $prev_styles .= ' ' . $content_block['prev_css_value'];
+        } else {
+            $this->process_styles($unique_id, 'css_value', $styles, $content_block, $block_name, $props);
+            $this->process_styles($unique_id, 'prev_css_value', $prev_styles, $content_block, $block_name, $props);
         }
 
         if (isset($content_block['active_custom_data'])) {
@@ -527,6 +495,64 @@ class MaxiBlocks_Styles
                 $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
             }
         }
+    }
+
+    private function process_styles(string $unique_id, string $style_key, string &$style, array $content_block, string $block_name, array $props): void
+    {
+        if (!isset($content_block[$style_key])) {
+            return;
+        }
+
+        $additional_styles = $this->get_additional_styles($unique_id, $block_name, $props);
+        if ($additional_styles) {
+            $style .= $additional_styles;
+        }
+
+        $style .= ' ' . $content_block[$style_key];
+    }
+
+    private function get_additional_styles(string $unique_id, string $block_name, array $props): string
+    {
+        if ($block_name !== 'maxi-blocks/container-maxi' || !($props['isFirstOnHierarchy'] ?? false)) {
+            return '';
+        }
+
+        $theme_styles = [
+            '2023' => $this->get_2023_theme_styles($unique_id),
+            '2024' => $this->get_2023_theme_styles($unique_id), // Same as 2023
+            '2022' => $this->get_2022_theme_styles($unique_id),
+            'astra' => $this->get_astra_theme_styles($unique_id),
+        ];
+
+        return $theme_styles[self::$active_theme] ?? '';
+    }
+
+    private function get_2023_theme_styles(string $unique_id): string
+    {
+        return "body.maxi-blocks--active .has-global-padding > #$unique_id {
+            margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
+            margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
+            min-width: calc(100% + var(--wp--style--root--padding-right) + var(--wp--style--root--padding-left)) !important;
+        }";
+    }
+
+    private function get_2022_theme_styles(string $unique_id): string
+    {
+        return "body.maxi-blocks--active .wp-site-blocks .entry-content > #$unique_id {
+            margin-left: calc(-1 * var(--wp--custom--spacing--outer)) !important;
+            margin-right: calc(-1 * var(--wp--custom--spacing--outer)) !important;
+            min-width: calc(100% + var(--wp--custom--spacing--outer) * 2) !important;
+        }";
+    }
+
+    private function get_astra_theme_styles(string $unique_id): string
+    {
+        return "body.maxi-blocks--active .entry-content > #$unique_id {
+            margin-left: calc( -50vw + 50%);
+            margin-right: calc( -50vw + 50%);
+            max-width: 100vw;
+            width: 100vw;
+        }";
     }
 
     /**

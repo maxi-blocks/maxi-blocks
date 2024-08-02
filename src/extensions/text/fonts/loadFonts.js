@@ -78,7 +78,7 @@ const getFontUrl = async (fontName, fontData) => {
 };
 
 const getFontID = (fontName, fontData) => {
-	const normalizeFontName = name => name.toLowerCase().replace(' ', '-');
+	const normalizeFontName = name => name.toLowerCase().replace(/ /g, '-');
 
 	return `maxi-blocks-styles-font-${normalizeFontName(fontName)}-${
 		fontData.weight

@@ -39,6 +39,7 @@ export const ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP = {
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
+			console.time('withMaxiContextLoop');
 			const isPreview = isInSiteEditorPreviewIframe();
 
 			if (isPreview) {
@@ -221,6 +222,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				};
 			}, [setAttributes, contextLoopAttributes]);
 
+			console.timeEnd('withMaxiContextLoop');
 			return (
 				<LoopContext.Provider value={memoizedValue}>
 					<WrappedComponent {...ownProps} />

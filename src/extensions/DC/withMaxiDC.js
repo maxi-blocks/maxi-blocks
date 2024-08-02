@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useContext, useEffect } from '@wordpress/element';
+import { useContext, useEffect, useMemo, useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -28,25 +28,32 @@ const DCBlocks = [
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
+			console.time('withMaxiDC');
 			const { attributes, name, setAttributes, clientId } = ownProps;
 			const {
 				'background-layers': backgroundLayers,
 				'background-layers-hover': backgroundLayersHover,
 			} = attributes;
-			const isDCBlock = DCBlocks.includes(name);
 
+			const isDCBlock = useMemo(() => DCBlocks.includes(name), [name]);
 			const contextLoop = useContext(LoopContext)?.contextLoop;
 			const dynamicContent =
 				isDCBlock && getGroupAttributes(attributes, 'dynamicContent');
 			const dynamicContentProps =
 				isDCBlock && getDCValues(dynamicContent, contextLoop);
+			const contentType = useMemo(
+				() => name.replace(/maxi-blocks\//, '').replace(/-maxi/, ''),
+				[name]
+			);
 
-			const contentType = name
-				.replace(/maxi-blocks\//, '')
-				.replace(/-maxi/, '');
-
-			useEffect(() => {
-				if (isDCBlock) {
+			const fetchDCData = useCallback(
+				(
+					attributes,
+					setAttributes,
+					contextLoop,
+					contentType,
+					clientId
+				) => {
 					fetchAndUpdateDCData(
 						attributes,
 						setAttributes,
@@ -54,8 +61,57 @@ const withMaxiDC = createHigherOrderComponent(
 						contentType,
 						clientId
 					).catch(console.error);
-				}
+				},
+				[]
+			);
 
+			const fetchDCDataForLayer = useCallback(
+				(
+					layer,
+					setAttributes,
+					backgroundLayersHover,
+					backgroundLayers,
+					contextLoop,
+					clientId
+				) => {
+					fetchAndUpdateDCData(
+						layer,
+						obj =>
+							onChangeLayer(
+								{ ...layer, ...obj },
+								setAttributes,
+								backgroundLayersHover,
+								backgroundLayers
+							),
+						contextLoop,
+						'image',
+						clientId
+					).catch(console.error);
+				},
+				[]
+			);
+
+			useEffect(() => {
+				if (isDCBlock) {
+					fetchDCData(
+						attributes,
+						setAttributes,
+						contextLoop,
+						contentType,
+						clientId
+					);
+				}
+			}, [
+				isDCBlock,
+				attributes,
+				setAttributes,
+				contextLoop,
+				contentType,
+				clientId,
+				fetchDCData,
+			]);
+
+			useEffect(() => {
 				[...backgroundLayers, ...backgroundLayersHover]?.forEach(
 					layer => {
 						if (
@@ -63,28 +119,27 @@ const withMaxiDC = createHigherOrderComponent(
 							layer.type === 'image' &&
 							layer['dc-status']
 						) {
-							fetchAndUpdateDCData(
+							fetchDCDataForLayer(
 								layer,
-								obj =>
-									onChangeLayer(
-										{ ...layer, ...obj },
-										setAttributes,
-										backgroundLayersHover,
-										backgroundLayers
-									),
+								setAttributes,
+								backgroundLayersHover,
+								backgroundLayers,
 								contextLoop,
-								'image',
 								clientId
-							).catch(console.error);
+							);
 						}
 					}
 				);
 			}, [
-				contextLoop,
-				dynamicContentProps,
 				backgroundLayers,
 				backgroundLayersHover,
+				setAttributes,
+				contextLoop,
+				clientId,
+				fetchDCDataForLayer,
 			]);
+
+			console.timeEnd('withMaxiDC');
 
 			return <WrappedComponent {...ownProps} />;
 		}),

@@ -12,6 +12,7 @@ import { capitalize } from 'lodash';
 const withMaxiPreview = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
+			console.time('withMaxiPreview');
 			if (!ownProps) {
 				return null;
 			}
@@ -42,6 +43,8 @@ const withMaxiPreview = createHigherOrderComponent(
 					slide: 'slide_preview',
 				};
 
+				console.timeEnd('withMaxiPreview');
+
 				return (
 					<div>
 						<img // eslint-disable-next-line no-undef
@@ -54,6 +57,8 @@ const withMaxiPreview = createHigherOrderComponent(
 					</div>
 				);
 			}
+
+			console.timeEnd('withMaxiPreview');
 
 			return <WrappedComponent {...ownProps} />;
 		}),

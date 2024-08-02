@@ -41,6 +41,7 @@ const DISABLED_BLOCKS = ['maxi-blocks/list-item-maxi'];
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
+			console.time('withMaxiProps');
 			const {
 				setAttributes,
 				attributes,
@@ -299,6 +300,8 @@ const withMaxiProps = createHigherOrderComponent(
 					}
 				}
 			}, [blockPositionFromColumn]);
+
+			console.timeEnd('withMaxiProps');
 
 			return (
 				<>

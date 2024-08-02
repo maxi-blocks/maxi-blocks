@@ -177,8 +177,10 @@
 		}
 
 		.maxi-inter-blocks-inserter__toggle {
+			opacity: 0;
 			height: 10px;
 			cursor: pointer;
+			transition: all 0.3s ease;
 
 			&::before {
 				content: '';
@@ -191,19 +193,20 @@
 			}
 
 			&--is-hovered {
-				height: 20px;
+				opacity: 1;
+				height: 10px;
 
 				.maxi-inter-blocks-inserter__content-item {
 					width: 20px;
 					height: 20px;
-					margin-top: 5px;
+					margin-top: 0;
 				}
 
 				&::before {
 					width: 100%;
 					height: 5px;
 					background-color: #d2f6cb;
-					margin-top: 5px;
+					margin-top: 0;
 				}
 			}
 		}

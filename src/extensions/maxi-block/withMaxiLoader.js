@@ -54,7 +54,6 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 const withMaxiLoader = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			console.time('withMaxiLoader');
 			if (!ownProps) return null;
 			const {
 				clientId,
@@ -105,11 +104,8 @@ const withMaxiLoader = createHigherOrderComponent(
 			}, []);
 
 			if (canRender && hasBeenConsolidated) {
-				console.timeEnd('withMaxiLoader');
 				return <WrappedComponent {...ownProps} />;
 			}
-
-			console.timeEnd('withMaxiLoader');
 
 			return (
 				<SuspendedBlock

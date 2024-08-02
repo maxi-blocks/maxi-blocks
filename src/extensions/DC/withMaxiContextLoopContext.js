@@ -13,7 +13,6 @@ import LoopContext from './loopContext';
 const withMaxiContextLoopContext = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(props => {
-			console.time('withMaxiContextLoopContext');
 			const context = useContext(LoopContext);
 
 			useMaxiDCLink(
@@ -23,8 +22,6 @@ const withMaxiContextLoopContext = createHigherOrderComponent(
 				context,
 				props.setAttributes
 			);
-
-			console.timeEnd('withMaxiContextLoopContext');
 
 			return <WrappedComponent contextLoopContext={context} {...props} />;
 		}),

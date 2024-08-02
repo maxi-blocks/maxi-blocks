@@ -28,7 +28,6 @@ const DCBlocks = [
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			console.time('withMaxiDC');
 			const { attributes, name, setAttributes, clientId } = ownProps;
 			const {
 				'background-layers': backgroundLayers,
@@ -138,8 +137,6 @@ const withMaxiDC = createHigherOrderComponent(
 				clientId,
 				fetchDCDataForLayer,
 			]);
-
-			console.timeEnd('withMaxiDC');
 
 			return <WrappedComponent {...ownProps} />;
 		}),

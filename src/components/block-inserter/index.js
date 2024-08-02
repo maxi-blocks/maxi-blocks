@@ -270,23 +270,27 @@ const InterBlockToggle = props => {
 						/** Removes original WP inserter, so avoids both inserters at same time */
 						'.block-editor-block-list__insertion-point: {display: none}'
 					}
-					{clientId &&
-						/** Adds blue boundary outline on the current block */
-						`.maxi-block[data-block="${clientId}"]::after {
-								content: '';
-								position: absolute;
-								pointer-events: none;
-								opacity: 1;
-							} `}
-					{nextBlockClientId &&
-						/** Adds blue boundary outline on the next block */
-						`.maxi-block[data-block="${nextBlockClientId}"]::after {
-								content: '';
-								position: absolute;
-								pointer-events: none;
-								opacity: 1;
-							} `}
 				</style>
+				{(isHovered || isOpen) && (
+					<style>
+						{clientId &&
+							/** Adds blue boundary outline on the current block */
+							`.maxi-block[data-block="${clientId}"]::after {
+                content: '';
+                position: absolute;
+                pointer-events: none;
+                opacity: 1;
+              }`}
+						{nextBlockClientId &&
+							/** Adds blue boundary outline on the next block */
+							`.maxi-block[data-block="${nextBlockClientId}"]::after {
+                content: '';
+                position: absolute;
+                pointer-events: none;
+                opacity: 1;
+              }`}
+					</style>
+				)}
 			</>
 		</div>
 	);

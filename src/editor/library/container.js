@@ -561,7 +561,7 @@ const LibraryContainer = props => {
 			svgCode.indexOf('<style>') + 7,
 			svgCode.indexOf('</style>') - svgCode.indexOf('<style>') - 7
 		);
-		const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
+		const svgClass = svgCode.match(/ class="(.+?(?=))"/)?.[1];
 
 		const hoverStyle = style
 			.replaceAll(svgClass, `${svgClass}:hover`)

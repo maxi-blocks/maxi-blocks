@@ -102,7 +102,7 @@ class edit extends MaxiBlockComponent {
 		}
 
 		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
-			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
+			const svgClass = svgCode.match(/ class="(.+?(?=))"/)?.[1];
 			const newSvgClass = `${svgClass}__${uniqueId()}`;
 			const replaceIt = `${svgClass}`;
 

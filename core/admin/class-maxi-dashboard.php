@@ -121,30 +121,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     )
                 );
 
-                // Add inline script to handle cache busting with delay on specific page and tab
-                $delay_script = "
-		document.addEventListener('DOMContentLoaded', function() {
-			var urlParams = new URLSearchParams(window.location.search);
-			var page = urlParams.get('page');
-			var tab = urlParams.get('tab');
-			var maxiDashboardNeedsCacheBusting = localStorage.getItem('maxiDashboardNeedsCacheBusting');
-
-			if (page === 'maxi-blocks-dashboard' && tab === 'maxi_blocks_settings') {
-				if (maxiDashboardNeedsCacheBusting) {
-					localStorage.removeItem('maxiDashboardNeedsCacheBusting');
-					setTimeout(function() {
-						var newCacheBuster = new Date().getTime();
-						var newUrl = new URL(window.location.href);
-						newUrl.searchParams.set('t', newCacheBuster);
-						window.location.href = newUrl.toString();
-					}, 100);
-				} else {
-					localStorage.setItem('maxiDashboardNeedsCacheBusting', 'true');
-				}
-			}
-		});
-	";
-                wp_add_inline_script('maxi-admin', $delay_script);
             }
         }
 

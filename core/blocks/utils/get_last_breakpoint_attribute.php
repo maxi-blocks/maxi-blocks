@@ -10,14 +10,19 @@ function attr_filter($attributes)
 
 function get_last_breakpoint_attribute($args)
 {
+    static $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+    static $breakpoints_flipped = null;
+
+    if ($breakpoints_flipped === null) {
+        $breakpoints_flipped = array_flip($breakpoints);
+    }
+
     $target = $args['target'];
     $breakpoint = $args['breakpoint'];
     $attributes = $args['attributes'];
     $is_hover = $args['is_hover'] ?? false;
     $avoid_xxl = $args['avoid_xxl'] ?? true;
     $keys = $args['keys'] ?? [];
-
-    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
     if (!isset($attributes)) {
         return false;
@@ -65,7 +70,7 @@ function get_last_breakpoint_attribute($args)
         return $current_attr;
     }
 
-    $breakpoint_position = array_flip($breakpoints)[$breakpoint] ?? false;
+    $breakpoint_position = $breakpoints_flipped[$breakpoint] ?? false;
     if ($breakpoint_position === false) {
         return null;
     }

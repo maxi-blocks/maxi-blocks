@@ -14,8 +14,8 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
 import MaxiBlock from '../../components/maxi-block/maxiBlock';
 const RowBlockTemplate = loadable(() =>
 	import('./components/row-block-template')

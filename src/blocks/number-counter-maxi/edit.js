@@ -12,7 +12,7 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
 
 import {
 	getResizerSize,

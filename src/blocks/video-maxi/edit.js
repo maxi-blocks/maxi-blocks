@@ -15,9 +15,9 @@ import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-import Inspector from './inspector';
+const Inspector = loadable(() => import('./inspector'));
 import MaxiBlock from '../../components/maxi-block/maxiBlock';
-import Toolbar from '../../components/toolbar';
+const Toolbar = loadable(() => import('../../components/toolbar'));
 const Placeholder = loadable(() => import('../../components/placeholder'));
 import MaxiPopoverButton from '../../components/maxi-popover-button';
 const Button = loadable(() => import('../../components/button'));

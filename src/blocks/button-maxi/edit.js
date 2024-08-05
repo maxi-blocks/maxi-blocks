@@ -9,12 +9,13 @@ import { RawHTML, createRef, forwardRef } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
+const Inspector = loadable(() => import('./inspector'));
+const Toolbar = loadable(() => import('../../components/toolbar'));
 import IconToolbar from '../../components/toolbar/iconToolbar';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';

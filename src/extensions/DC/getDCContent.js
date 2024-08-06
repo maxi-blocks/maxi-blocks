@@ -26,7 +26,7 @@ import { getACFOptions } from '../../components/dynamic-content/acf-settings-con
 /**
  * External dependencies
  */
-import { isNil, isEmpty, capitalize } from 'lodash';
+import { isNil, isEmpty, capitalize, isEqual } from 'lodash';
 
 const handleParentField = async (contentValue, type) => {
 	if (!contentValue || contentValue === 0)
@@ -39,10 +39,45 @@ const handleParentField = async (contentValue, type) => {
 	return parent?.[0]?.name || __('No parent', 'maxi-blocks');
 };
 
-const getDCContent = async (dataRequest, clientId) => {
-	const data = await getDCEntity(dataRequest, clientId);
+const cache = {};
+const MAX_CACHE_SIZE = 200;
 
+const getDCContent = async (dataRequest, clientId) => {
+	if (isEmpty(dataRequest)) return null;
 	const { source, relation, field } = dataRequest;
+
+	if (field === 'archive-type') {
+		return getCurrentTemplateSlug().replace(/-/g, ' ');
+	}
+
+	const filteredDataRequest = { ...dataRequest };
+	const keysToRemove = [
+		'content',
+		'customDelimiterStatus',
+		'customFormat',
+		'linkTarget',
+		'linkUrl',
+		'linkStatus',
+		'field',
+	];
+	keysToRemove.forEach(key => delete filteredDataRequest[key]);
+
+	const cacheKey = JSON.stringify(filteredDataRequest);
+	let data;
+
+	if (cache[cacheKey]) {
+		data = cache[cacheKey];
+	} else {
+		data = await getDCEntity(dataRequest, clientId);
+		// Check if the cache size exceeds the maximum limit
+		console.log('cache size', Object.keys(cache).length);
+		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
+			// Remove the oldest entry from the cache
+			const oldestKey = Object.keys(cache)[0];
+			delete cache[oldestKey];
+		  }
+		cache[cacheKey] = data;
+	}
 
 	if (relation === 'current' && isEmpty(data)) {
 		if (source === 'acf') {
@@ -69,10 +104,6 @@ const getDCContent = async (dataRequest, clientId) => {
 		acfFieldType,
 		linkTarget,
 	} = dataRequest;
-
-	if (field === 'archive-type') {
-		return getCurrentTemplateSlug().replace(/-/g, ' ');
-	}
 
 	let contentValue;
 

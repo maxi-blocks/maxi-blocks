@@ -30,7 +30,6 @@ const getAuthorLink = async authorId => {
 
 const cache = {};
 const MAX_CACHE_SIZE = 200;
-let getDCLinkCounter = 0;
 
 const getDCLink = async (dataRequest, clientId) => {
 	const { type, linkTarget, author } = dataRequest;
@@ -50,8 +49,6 @@ const getDCLink = async (dataRequest, clientId) => {
 		return 'Multiple Links';
 	}
 
-	const timerId = `getDCLink-${getDCLinkCounter++}`;
-	console.time(timerId);
 	const filteredDataRequest = { ...dataRequest };
 	const keysToRemove = [
 		'content',
@@ -86,8 +83,6 @@ const getDCLink = async (dataRequest, clientId) => {
 	if (linkTarget === 'author') {
 		return getAuthorLink(author);
 	}
-
-	console.timeEnd(timerId);
 
 	return data?.link || null;
 };

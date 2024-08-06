@@ -249,7 +249,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 				hasEntity = existingEntities[entityKey];
 			} else {
 				try {
-					console.log('relationKeyForId: ' + relationKeyForId);
 					if (relationKeyForId === 'author') {
 						hasEntity = await resolveSelect('core').getEntityRecord(
 							'root',

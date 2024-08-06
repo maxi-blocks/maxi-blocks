@@ -236,30 +236,21 @@ const getDCEntity = async (dataRequest, clientId) => {
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
 
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
-		const timerId = `getDCEntity-${getDCEntityCounter++}`;
-		console.time(`${timerId}-getEntityRecords`);
-		console.log(`${timerId}-getEntityRecords`);
-		console.log(`${timerId}-clientId`, clientId);
-		console.log(`${timerId}-type`, type);
-		console.log(`${timerId}-id`, id);
-		console.log(`${timerId}-relation`, relation);
-		console.log(`${timerId}-author`, author);
-		console.log(`${timerId}-orderBy`, orderBy);
-		console.log(`${timerId}-order`, order);
-		console.log(`${timerId}-accumulator`, accumulator);
 
 		const relationKeyForId = getRelationKeyForId(relation, type);
+
 		if (relationKeyForId && id) {
-			console.time(`${timerId}-checkEntity`);
 			let hasEntity;
 			const entityKey = `${relationKeyForId}-${id}`;
-			if (existingEntities[entityKey]) {
+			if (nonExistingEntities[entityKey]) {
+
+				return null;
+			} else if (existingEntities[entityKey]) {
 				hasEntity = existingEntities[entityKey];
-			} else if (nonExistingEntities[entityKey]) {
-				hasEntity = null;
 			} else {
 				try {
-					if (relationKeyForId === 'authors') {
+					console.log('relationKeyForId: ' + relationKeyForId);
+					if (relationKeyForId === 'author') {
 						hasEntity = await resolveSelect('core').getEntityRecord(
 							'root',
 							'user',
@@ -288,17 +279,11 @@ const getDCEntity = async (dataRequest, clientId) => {
 					hasEntity = null;
 				}
 			}
-			console.timeEnd(`${timerId}-checkEntity`);
 
 			if (!hasEntity) {
-				console.log(
-					`${timerId}-Entity with ${relationKeyForId} ${id} not found`
-				);
-				console.timeEnd(`${timerId}-getEntityRecords`);
 				return null;
 			}
 		}
-		console.time(`${timerId}-entities`);
 		const entities = await resolveSelect('core').getEntityRecords(
 			getKind(type),
 			nameDictionary[type] ?? type,
@@ -310,12 +295,10 @@ const getDCEntity = async (dataRequest, clientId) => {
 				...(relationKeyForId && { [relationKeyForId]: id }),
 			}
 		);
-		console.log('return: ');
-		console.log(entities?.slice(-1)[0]);
-		console.timeEnd(`${timerId}-entities`);
-
-		console.timeEnd(`${timerId}-getEntityRecords`);
-		return entities?.slice(-1)[0];
+		if (entities && entities.length > 0) {
+			return entities.slice(-1)[0];
+		  }
+		  return null;
 	}
 
 	if (type === 'settings') {

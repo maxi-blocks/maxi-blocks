@@ -28,6 +28,10 @@ const getAuthorLink = async authorId => {
 	return user?.[0]?.link;
 };
 
+const cache = {};
+const MAX_CACHE_SIZE = 200;
+let getDCLinkCounter = 0;
+
 const getDCLink = async (dataRequest, clientId) => {
 	const { type, linkTarget, author } = dataRequest;
 
@@ -39,11 +43,41 @@ const getDCLink = async (dataRequest, clientId) => {
 		'maxiBlocks/dynamic-content'
 	).getCustomTaxonomies();
 
-	if (inlineLinkFields.includes(linkTarget) || customTaxonomies.includes(linkTarget)) {
+	if (
+		inlineLinkFields.includes(linkTarget) ||
+		customTaxonomies.includes(linkTarget)
+	) {
 		return 'Multiple Links';
 	}
 
-	const data = await getDCEntity(dataRequest, clientId);
+	const timerId = `getDCLink-${getDCLinkCounter++}`;
+	console.time(timerId);
+	const filteredDataRequest = { ...dataRequest };
+	const keysToRemove = [
+		'content',
+		'customDelimiterStatus',
+		'customFormat',
+		'linkTarget',
+		'linkUrl',
+		'linkStatus',
+		'field',
+	];
+	keysToRemove.forEach(key => delete filteredDataRequest[key]);
+	const cacheKey = JSON.stringify(filteredDataRequest);
+	let data;
+
+	if (cache[cacheKey]) {
+		data = cache[cacheKey];
+	} else {
+		data = await getDCEntity(dataRequest, clientId);
+		// Check if the cache size exceeds the maximum limit
+		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
+			// Remove the oldest entry from the cache
+			const oldestKey = Object.keys(cache)[0];
+			delete cache[oldestKey];
+		}
+		cache[cacheKey] = data;
+	}
 
 	if (type === 'products') {
 		return getProductsLink(dataRequest, data);
@@ -52,6 +86,8 @@ const getDCLink = async (dataRequest, clientId) => {
 	if (linkTarget === 'author') {
 		return getAuthorLink(author);
 	}
+
+	console.timeEnd(timerId);
 
 	return data?.link || null;
 };

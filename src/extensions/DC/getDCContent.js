@@ -41,8 +41,11 @@ const handleParentField = async (contentValue, type) => {
 
 const cache = {};
 const MAX_CACHE_SIZE = 200;
+let getDCContentCounter = 0;
+
 
 const getDCContent = async (dataRequest, clientId) => {
+	const timerId = `getDCContent-${getDCContentCounter++}`;
 	if (isEmpty(dataRequest)) return null;
 	const { source, relation, field } = dataRequest;
 
@@ -68,9 +71,10 @@ const getDCContent = async (dataRequest, clientId) => {
 	if (cache[cacheKey]) {
 		data = cache[cacheKey];
 	} else {
+		console.time(timerId);
 		data = await getDCEntity(dataRequest, clientId);
+
 		// Check if the cache size exceeds the maximum limit
-		console.log('cache size', Object.keys(cache).length);
 		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
 			// Remove the oldest entry from the cache
 			const oldestKey = Object.keys(cache)[0];
@@ -193,6 +197,7 @@ const getDCContent = async (dataRequest, clientId) => {
 			nameDictionary[field] || field
 		);
 	}
+	console.timeEnd(timerId);
 
 	return contentValue || null;
 };

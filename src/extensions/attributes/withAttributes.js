@@ -54,7 +54,6 @@ const withAttributes = createHigherOrderComponent(
 		if (!props) {
 			return null;
 		}
-		console.time(`withAttributes ${props.attributes.uniqueID}`);
 		const { attributes, name: blockName, clientId, setAttributes } = props;
 		const { uniqueID } = attributes;
 
@@ -177,8 +176,6 @@ const withAttributes = createHigherOrderComponent(
 			markNextChangeAsNotPersistent,
 			setAttributes,
 		]);
-
-		console.timeEnd(`withAttributes ${props.attributes.uniqueID}`);
 
 		return <BlockEdit {...props} />;
 	},

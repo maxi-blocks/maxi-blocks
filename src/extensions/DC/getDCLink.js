@@ -31,6 +31,7 @@ const getAuthorLink = async authorId => {
 const cache = {};
 const MAX_CACHE_SIZE = 200;
 
+let getDCLinkCounter = 0;
 const getDCLink = async (dataRequest, clientId) => {
 	const { type, linkTarget, author } = dataRequest;
 
@@ -66,7 +67,14 @@ const getDCLink = async (dataRequest, clientId) => {
 	if (cache[cacheKey]) {
 		data = cache[cacheKey];
 	} else {
+		console.log('Fetching data from getDCLink');
+		const timerId = `getDCLink-${getDCLinkCounter++}`;
+		console.time(timerId);
+
 		data = await getDCEntity(dataRequest, clientId);
+
+		console.timeEnd(timerId);
+
 		// Check if the cache size exceeds the maximum limit
 		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
 			// Remove the oldest entry from the cache

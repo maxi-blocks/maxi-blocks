@@ -56,6 +56,7 @@ const getMediaById = async (id, type) => {
 const cache = {};
 const MAX_CACHE_SIZE = 200;
 
+let getDCMediaCounter = 0;
 const getDCMedia = async (dataRequest, clientId) => {
 	const filteredDataRequest = { ...dataRequest };
 	const keysToRemove = [
@@ -75,7 +76,12 @@ const getDCMedia = async (dataRequest, clientId) => {
 	if (cache[cacheKey]) {
 		data = cache[cacheKey];
 	} else {
+		console.log('Fetching data from getDCMedia');
+		const timerId = `getDCMedia-${getDCMediaCounter++}`;
+		console.time(timerId);
 		data = await getDCEntity(dataRequest, clientId);
+		console.timeEnd(timerId);
+
 		// Check if the cache size exceeds the maximum limit
 		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
 			// Remove the oldest entry from the cache

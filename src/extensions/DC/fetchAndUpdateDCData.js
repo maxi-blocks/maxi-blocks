@@ -29,6 +29,7 @@ const fetchAndUpdateDCData = async (
 	contentType,
 	clientId
 ) => {
+	console.log('fetchAndUpdateDCData');
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 	const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
@@ -153,6 +154,8 @@ const fetchAndUpdateDCData = async (
 			onChange(synchronizedAttributes);
 		}
 	}
+	console.log('fetchAndUpdateDCData End');
+
 };
 
 export default fetchAndUpdateDCData;

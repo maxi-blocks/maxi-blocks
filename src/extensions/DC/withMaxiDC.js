@@ -33,7 +33,6 @@ const DCBlocks = [
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			console.time(`withMaxiDC ${ownProps.attributes.uniqueID}`);
 
 			if (!ownProps) {
 				return null;
@@ -141,8 +140,6 @@ const withMaxiDC = createHigherOrderComponent(
 				fetchDCDataForLayer,
 				dynamicContent,
 			]);
-
-			console.timeEnd(`withMaxiDC ${ownProps.attributes.uniqueID}`);
 
 			return <WrappedComponent {...ownProps} />;
 		}),

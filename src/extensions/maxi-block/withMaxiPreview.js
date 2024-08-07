@@ -15,7 +15,6 @@ const withMaxiPreview = createHigherOrderComponent(
 			if (!ownProps) {
 				return null;
 			}
-			console.time(`withMaxiPreview ${ownProps.attributes.uniqueID}`);
 			const { attributes } = ownProps;
 
 			if (attributes && attributes?.preview) {
@@ -43,8 +42,6 @@ const withMaxiPreview = createHigherOrderComponent(
 					slide: 'slide_preview',
 				};
 
-				console.timeEnd(`withMaxiPreview ${ownProps.attributes.uniqueID}`);
-
 				return (
 					<div>
 						<img // eslint-disable-next-line no-undef
@@ -58,7 +55,6 @@ const withMaxiPreview = createHigherOrderComponent(
 				);
 			}
 
-			console.timeEnd(`withMaxiPreview ${ownProps.attributes.uniqueID}`);
 			return <WrappedComponent {...ownProps} />;
 		}),
 	'withMaxiPreview'

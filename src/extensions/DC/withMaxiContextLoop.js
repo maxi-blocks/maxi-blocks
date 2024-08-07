@@ -48,7 +48,6 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			if (!ownProps) {
 				return null;
 			}
-			console.time(`withMaxiContextLoop ${ownProps.attributes.uniqueID}`);
 			const isPreview = isInSiteEditorPreviewIframe();
 
 			if (isPreview) {
@@ -261,10 +260,6 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				orderByRelations,
 				updateRelationIds,
 			]);
-
-			console.timeEnd(
-				`withMaxiContextLoop ${ownProps.attributes.uniqueID}`
-			);
 
 			return (
 				<LoopContext.Provider value={memoizedValue}>

@@ -33,6 +33,9 @@ const DCBlocks = [
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
+			if (!ownProps) {
+				return null;
+			}
 			const { attributes, name, setAttributes, clientId } = ownProps;
 			const {
 				'background-layers': backgroundLayers,
@@ -71,7 +74,7 @@ const withMaxiDC = createHigherOrderComponent(
 					).catch(console.error);
 					console.log('fetchDCDataEnd');
 				},
-				[]
+				[fetchAndUpdateDCData]
 			);
 
 			const fetchDCDataForLayer = useCallback(
@@ -97,7 +100,7 @@ const withMaxiDC = createHigherOrderComponent(
 						clientId
 					).catch(console.error);
 				},
-				[]
+				[fetchAndUpdateDCData, onChangeLayer]
 			);
 
 			useEffect(() => {
@@ -111,14 +114,7 @@ const withMaxiDC = createHigherOrderComponent(
 						clientId
 					);
 				}
-			}, [
-				isDCBlock,
-				contextLoop,
-				contentType,
-				clientId,
-			]);
 
-			useEffect(() => {
 				[...backgroundLayers, ...backgroundLayersHover]?.forEach(
 					layer => {
 						if (
@@ -138,11 +134,14 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 				);
 			}, [
+				isDCBlock,
+				contextLoop,
+				contentType,
+				clientId,
 				backgroundLayers,
 				backgroundLayersHover,
 				setAttributes,
-				contextLoop,
-				clientId,
+				fetchDCData,
 				fetchDCDataForLayer,
 			]);
 

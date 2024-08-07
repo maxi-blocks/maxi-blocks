@@ -53,8 +53,6 @@ const withMaxiDC = createHigherOrderComponent(
 				[name]
 			);
 
-			console.log('withMaxiDC', attributes.uniqueID);
-
 			const fetchDCData = useCallback(
 				(
 					attributes,
@@ -63,8 +61,6 @@ const withMaxiDC = createHigherOrderComponent(
 					contentType,
 					clientId
 				) => {
-					console.log('fetchDCData');
-
 					fetchAndUpdateDCData(
 						attributes,
 						setAttributes,
@@ -72,7 +68,6 @@ const withMaxiDC = createHigherOrderComponent(
 						contentType,
 						clientId
 					).catch(console.error);
-					console.log('fetchDCDataEnd');
 				},
 				[fetchAndUpdateDCData]
 			);
@@ -105,7 +100,6 @@ const withMaxiDC = createHigherOrderComponent(
 
 			useEffect(() => {
 				if (isDCBlock) {
-					console.log('useEffect fetchDCDate', attributes.uniqueID);
 					fetchDCData(
 						attributes,
 						setAttributes,

@@ -36,6 +36,7 @@ const typography = ({
 		scValues = {},
 		insertInlineStyles,
 		cleanInlineStyles,
+		setShowLoader,
 	} = props;
 	const {
 		blockStyle,
@@ -83,6 +84,7 @@ const typography = ({
 									maxiSetAttributes(obj);
 									cleanInlineStyles(target);
 								}}
+								setShowLoader={setShowLoader}
 								hideAlignment={hideAlignment}
 								showBottomGap={showBottomGap}
 								breakpoint={deviceType}

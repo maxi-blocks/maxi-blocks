@@ -163,7 +163,13 @@ class edit extends MaxiBlockComponent {
 					},
 				}}
 			>
-				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
+				<Inspector
+					key={`block-settings-${uniqueID}`}
+					{...this.props}
+					setShowLoader={value =>
+						this.setState({ showLoader: value })
+					}
+				/>
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
@@ -179,6 +185,7 @@ class edit extends MaxiBlockComponent {
 					)}
 					ref={this.blockRef}
 					tagName='li'
+					showLoader={this.state.showLoader}
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					<RichText

@@ -102,11 +102,17 @@ const getFontElement = (fontName, fontData, url) => {
  * FontFaceSet API uses check() to check if a font exists, but needs to compare with some exact value:
  * in this case is used '12px' as a standard that returns if the font has been loaded.
  *
- * @param {string}      font        Name of the selected font
- * @param {boolean}     backendOnly If true, `dispatch('maxiBlocks/text').updateFonts()` isn't called
- * @param {HTMLElement} target      Element, where the font will be loaded
+ * @param {string}           font         Name of the selected font
+ * @param {boolean}          backendOnly  If true, `dispatch('maxiBlocks/text').updateFonts()` isn't called
+ * @param {HTMLElement}      target       Element, where the font will be loaded
+ * @param {CallableFunction} setIsLoading Function to set loading state
  */
-const loadFonts = (font, backendOnly = true, target = document) => {
+const loadFonts = (
+	font,
+	backendOnly = true,
+	target = document,
+	setIsLoading
+) => {
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([fontName, fontData]) => {
 			if (!fontName || fontName === 'undefined') return;
@@ -161,16 +167,18 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 			if (isEmpty(fontFiles)) return;
 
 			const loadBackendFont = async fontName => {
-				if (
-					target.head.querySelector(
-						`#${getFontID(fontName, fontDataNew)}`
-					) !== null
-				)
-					return;
+				const fontId = getFontID(fontName, fontDataNew);
+				if (target.head.querySelector(`#${fontId}`) !== null) return;
+
+				if (setIsLoading) setIsLoading(true, fontId);
 
 				const url = await getFontUrl(fontName, fontDataNew);
 
 				const styleElement = getFontElement(fontName, fontDataNew, url);
+
+				styleElement.onload = () => {
+					if (setIsLoading) setIsLoading(false, fontId);
+				};
 
 				if (target.getElementById(styleElement.id)) return;
 
@@ -232,11 +240,28 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 	return null;
 };
 
-const loadFontsInEditor = objFont => {
+const loadFontsInEditor = (objFont, setShowLoader) => {
 	const iframeEditor = document.querySelector('iframe[name="editor-canvas"]');
+	const currentlyLoadingIds = [];
+
+	const setIsLoading = (isLoading, fontId) => {
+		if (isLoading) {
+			currentlyLoadingIds.push(fontId);
+		} else {
+			const index = currentlyLoadingIds.indexOf(fontId);
+			if (index > -1) {
+				currentlyLoadingIds.splice(index, 1);
+			}
+		}
+
+		if (setShowLoader) {
+			setShowLoader(currentlyLoadingIds.length > 0);
+		}
+	};
+
 	if (iframeEditor) {
 		loadFonts(objFont, true, iframeEditor.contentDocument);
-	} else loadFonts(objFont);
+	} else loadFonts(objFont, true, undefined, setIsLoading);
 };
 
 export { loadFontsInEditor, loadFonts };

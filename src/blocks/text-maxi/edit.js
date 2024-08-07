@@ -219,6 +219,9 @@ class edit extends MaxiBlockComponent {
 				<Inspector
 					key={`block-settings-${uniqueID}`}
 					disableCustomFormats={dcStatus && dcField !== 'static_text'}
+					setShowLoader={value =>
+						this.setState({ showLoader: value })
+					}
 					{...this.props}
 				/>
 				<Toolbar
@@ -238,6 +241,7 @@ class edit extends MaxiBlockComponent {
 					)}
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
+					showLoader={this.state.showLoader}
 				>
 					{(!dcStatus || dcField === 'static_text') && !isList && (
 						<RichText

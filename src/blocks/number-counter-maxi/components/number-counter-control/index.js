@@ -44,7 +44,8 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, breakpoint, onChangeInline, onChange } = props;
+	const { className, breakpoint, onChangeInline, onChange, setShowLoader } =
+		props;
 
 	const classes = classnames('maxi-number-counter-control', className);
 
@@ -313,6 +314,7 @@ const NumberCounterControl = props => {
 					attributes: props,
 				})}
 				breakpoint={breakpoint}
+				setShowLoader={setShowLoader}
 			/>
 			<AdvancedNumberControl
 				className='maxi-number-counter-control__font-size'

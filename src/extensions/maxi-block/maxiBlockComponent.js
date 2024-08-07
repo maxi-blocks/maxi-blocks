@@ -189,6 +189,7 @@ class MaxiBlockComponent extends Component {
 		this.state = {
 			oldSC: {},
 			scValues: {},
+			showLoader: false,
 		};
 
 		this.areFontsLoaded = createRef(false);

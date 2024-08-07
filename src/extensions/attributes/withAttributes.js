@@ -54,6 +54,7 @@ const withAttributes = createHigherOrderComponent(
 		if (!props) {
 			return null;
 		}
+		console.time(`withAttributes ${props.attributes.uniqueID}`);
 		const { attributes, name: blockName, clientId, setAttributes } = props;
 		const { uniqueID } = attributes;
 
@@ -62,15 +63,20 @@ const withAttributes = createHigherOrderComponent(
 		const repeaterContext = useContext(RepeaterContext);
 		const repeaterStatus = repeaterContext?.repeaterStatus;
 
-		const blockRootClientId = useSelect(select => {
+		const getBlockRootClientId = (select, blockName, clientId) => {
 			if (allowedBlocks.includes(blockName)) {
 				return select('core/block-editor').getBlockRootClientId(
 					clientId
 				);
 			}
 			return null;
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, []);
+		};
+
+		const blockRootClientId = useSelect(
+			select => getBlockRootClientId(select, blockName, clientId),
+			[blockName, clientId]
+		);
+
 		const {
 			__unstableMarkNextChangeAsNotPersistent:
 				markNextChangeAsNotPersistent,
@@ -107,7 +113,7 @@ const withAttributes = createHigherOrderComponent(
 			if (repeaterStatus) {
 				repeaterContext?.updateInnerBlocksPositions();
 			}
-		}, []);
+		}, [repeaterStatus, repeaterContext]);
 
 		useEffect(() => {
 			if (repeaterContext?.repeaterStatus && wasUniqueIDAdded.current) {
@@ -116,32 +122,29 @@ const withAttributes = createHigherOrderComponent(
 					repeaterContext?.getInnerBlocksPositions?.()?.[[-1]]
 				);
 			}
-		}, [wasUniqueIDAdded.current]);
+		}, [clientId, repeaterContext, wasUniqueIDAdded.current]);
+
+		const checkParentBlocks = clientId => {
+			const block = select('core/block-editor').getBlock(clientId);
+			if (block) {
+				if (block.name.startsWith('core')) {
+					const parentClientId = select(
+						'core/block-editor'
+					).getBlockRootClientId(block.clientId);
+					if (parentClientId) {
+						return checkParentBlocks(parentClientId);
+					}
+					return true;
+				}
+			}
+			return false;
+		};
 
 		useEffect(() => {
 			if (allowedBlocks.includes(blockName)) {
 				const isFirstOnHierarchy = !blockRootClientId;
 				let isFirstOnHierarchyUpdated = false;
 				const currentClientId = blockRootClientId;
-
-				// Function to recursively check parent blocks
-				const checkParentBlocks = clientId => {
-					const block =
-						select('core/block-editor').getBlock(clientId);
-					if (block) {
-						if (block.name.startsWith('core')) {
-							const parentClientId = select(
-								'core/block-editor'
-							).getBlockRootClientId(block.clientId);
-							if (parentClientId) {
-								return checkParentBlocks(parentClientId);
-							}
-							// This is the topmost 'core' block in the hierarchy
-							return true;
-						}
-					}
-					return false;
-				};
 
 				if (!isFirstOnHierarchy) {
 					const isReusableFirstOnHierarchy =
@@ -171,7 +174,11 @@ const withAttributes = createHigherOrderComponent(
 			allowedBlocks,
 			blockName,
 			attributes.isFirstOnHierarchy,
+			markNextChangeAsNotPersistent,
+			setAttributes,
 		]);
+
+		console.timeEnd(`withAttributes ${props.attributes.uniqueID}`);
 
 		return <BlockEdit {...props} />;
 	},

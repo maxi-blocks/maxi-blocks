@@ -55,6 +55,7 @@ const withMaxiLoader = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
 			if (!ownProps) return null;
+			console.time(`withMaxiLoader ${ownProps.attributes.uniqueID}`);
 			const {
 				clientId,
 				attributes: { uniqueID },
@@ -104,9 +105,12 @@ const withMaxiLoader = createHigherOrderComponent(
 			}, []);
 
 			if (canRender && hasBeenConsolidated) {
+				console.time(`withMaxiLoader ${ownProps.attributes.uniqueID}`);
+
 				return <WrappedComponent {...ownProps} />;
 			}
 
+			console.timeEnd(`withMaxiLoader ${ownProps.attributes.uniqueID}`);
 			return (
 				<SuspendedBlock
 					onMountBlock={onMountBlock}

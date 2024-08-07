@@ -15,6 +15,8 @@ const withMaxiInspector = createHigherOrderComponent(
 		pure(
 			memo(
 				ownProps => {
+					if(!ownProps) return null;
+					console.time(`withMaxiInspector ${ownProps.attributes.uniqueID}`);
 					// Adds correct class to the wrapper
 					useEffect(() => {
 						if (ownProps.isSelected) {
@@ -73,6 +75,8 @@ const withMaxiInspector = createHigherOrderComponent(
 								);
 							}
 
+							console.timeEnd(`withMaxiInspector ${ownProps.attributes.uniqueID}`);
+
 							return () => {
 								if (editPostSidebarNode)
 									editPostSidebarNode.classList.remove(
@@ -92,6 +96,7 @@ const withMaxiInspector = createHigherOrderComponent(
 					if (ownProps.isSelected) {
 						return <WrappedComponent {...ownProps} />;
 					}
+					console.timeEnd(`withMaxiInspector ${ownProps.attributes.uniqueID}`);
 
 					return null;
 				},

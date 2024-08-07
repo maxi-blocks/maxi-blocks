@@ -39,6 +39,10 @@ export const ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP = {
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
+			if (!ownProps) {
+				return null;
+			}
+			console.time(`withMaxiContextLoop ${ownProps.attributes.uniqueID}`);
 			const isPreview = isInSiteEditorPreviewIframe();
 
 			if (isPreview) {
@@ -241,6 +245,8 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					isCancelled = true;
 				};
 			}, [setAttributes, contextLoopAttributes, orderByRelations]);
+
+			console.timeEnd(`withMaxiContextLoop ${ownProps.attributes.uniqueID}`);
 
 			return (
 				<LoopContext.Provider value={memoizedValue}>

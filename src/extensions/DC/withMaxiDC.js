@@ -139,6 +139,7 @@ const withMaxiDC = createHigherOrderComponent(
 				setAttributes,
 				fetchDCData,
 				fetchDCDataForLayer,
+				dynamicContent,
 			]);
 
 			console.timeEnd(`withMaxiDC ${ownProps.attributes.uniqueID}`);

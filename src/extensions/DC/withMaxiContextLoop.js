@@ -3,7 +3,13 @@
  */
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import { dispatch, select } from '@wordpress/data';
-import { useContext, useMemo, useEffect, useRef } from '@wordpress/element';
+import {
+	useContext,
+	useMemo,
+	useEffect,
+	useRef,
+	useCallback,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -59,9 +65,9 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				if (context) prevContextLoopAttributes = context.contextLoop;
 			}
 
-			const contextLoopAttributes = getGroupAttributes(
-				attributes,
-				'contextLoop'
+			const contextLoopAttributes = useMemo(
+				() => getGroupAttributes(attributes, 'contextLoop'),
+				[attributes]
 			);
 
 			const getAccumulator = useMemo(() => {
@@ -169,11 +175,13 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					return prevAccumulator;
 				};
 			}, [
-				attributes,
+				attributes.isFirstOnHierarchy,
 				clientId,
-				contextLoopAttributes,
+				contextLoopAttributes['cl-accumulator'],
+				contextLoopAttributes['cl-relation'],
 				name,
-				prevContextLoopAttributes,
+				prevContextLoopAttributes?.['cl-accumulator'],
+				prevContextLoopAttributes?.['cl-status'],
 			]);
 
 			const contextLoop = useMemo(() => {
@@ -188,9 +196,11 @@ const withMaxiContextLoop = createHigherOrderComponent(
 						prevContextLoopAttributes?.['cl-status'],
 				};
 			}, [
-				contextLoopAttributes,
+				contextLoopAttributes['cl-accumulator'],
+				contextLoopAttributes['cl-relation'],
+				contextLoopAttributes['cl-status'],
 				getAccumulator,
-				prevContextLoopAttributes,
+				prevContextLoopAttributes?.['cl-status'],
 			]);
 
 			const memoizedValue = useMemo(() => {
@@ -200,53 +210,61 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			}, [contextLoop]);
 
 			const wasRelationValidated = useRef(false);
-			// Check if category or tag by which the post is filtered exists
+			const prevRelation = useRef(null);
+			const prevRelationId = useRef(null);
+
+			const updateRelationIds = useCallback(async () => {
+				const dataRequest = getAttributesWithoutPrefix(
+					getCLAttributes(contextLoopAttributes),
+					'cl-'
+				);
+
+				const { newValues } =
+					(await getDCOptions(
+						dataRequest,
+						contextLoopAttributes['cl-id'],
+						null,
+						true
+					)) ?? {};
+
+				if (!isEmpty(newValues)) {
+					const {
+						__unstableMarkNextChangeAsNotPersistent:
+							markNextChangeAsNotPersistent,
+					} = dispatch('core/block-editor');
+
+					markNextChangeAsNotPersistent();
+					setAttributes(newValues);
+				}
+
+				wasRelationValidated.current = true;
+			}, [contextLoopAttributes, setAttributes]);
+
 			useEffect(() => {
+				const currentRelation = contextLoopAttributes['cl-relation'];
+				const currentRelationId = contextLoopAttributes['cl-id'];
+
 				if (
-					wasRelationValidated.current ||
-					!orderByRelations.includes(
-						contextLoopAttributes['cl-relation']
-					)
-				)
-					return () => null;
+					!wasRelationValidated.current &&
+					orderByRelations.includes(currentRelation) &&
+					(currentRelation !== prevRelation.current ||
+						currentRelationId !== prevRelationId.current)
+				) {
+					updateRelationIds();
+				}
 
-				let isCancelled = false;
+				prevRelation.current = currentRelation;
+				prevRelationId.current = currentRelationId;
+			}, [
+				contextLoopAttributes['cl-relation'],
+				contextLoopAttributes['cl-id'],
+				orderByRelations,
+				updateRelationIds,
+			]);
 
-				const updateRelationIds = async () => {
-					const dataRequest = getAttributesWithoutPrefix(
-						getCLAttributes(contextLoopAttributes),
-						'cl-'
-					);
-
-					const { newValues } =
-						(await getDCOptions(
-							dataRequest,
-							contextLoopAttributes['cl-id'],
-							null,
-							true
-						)) ?? {};
-
-					if (!isEmpty(newValues) && !isCancelled) {
-						const {
-							__unstableMarkNextChangeAsNotPersistent:
-								markNextChangeAsNotPersistent,
-						} = dispatch('core/block-editor');
-
-						markNextChangeAsNotPersistent();
-						setAttributes(newValues);
-					}
-
-					wasRelationValidated.current = true;
-				};
-
-				updateRelationIds();
-
-				return () => {
-					isCancelled = true;
-				};
-			}, [setAttributes, contextLoopAttributes, orderByRelations]);
-
-			console.timeEnd(`withMaxiContextLoop ${ownProps.attributes.uniqueID}`);
+			console.timeEnd(
+				`withMaxiContextLoop ${ownProps.attributes.uniqueID}`
+			);
 
 			return (
 				<LoopContext.Provider value={memoizedValue}>

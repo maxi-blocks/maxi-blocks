@@ -62,19 +62,15 @@ const withAttributes = createHigherOrderComponent(
 		const repeaterContext = useContext(RepeaterContext);
 		const repeaterStatus = repeaterContext?.repeaterStatus;
 
-		const getBlockRootClientId = (select, blockName, clientId) => {
+		const blockRootClientId = useSelect(select => {
 			if (allowedBlocks.includes(blockName)) {
 				return select('core/block-editor').getBlockRootClientId(
 					clientId
 				);
 			}
 			return null;
-		};
-
-		const blockRootClientId = useSelect(
-			select => getBlockRootClientId(select, blockName, clientId),
-			[blockName, clientId]
-		);
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, []);
 
 		const {
 			__unstableMarkNextChangeAsNotPersistent:
@@ -112,7 +108,7 @@ const withAttributes = createHigherOrderComponent(
 			if (repeaterStatus) {
 				repeaterContext?.updateInnerBlocksPositions();
 			}
-		}, [repeaterStatus, repeaterContext]);
+		}, []);
 
 		useEffect(() => {
 			if (repeaterContext?.repeaterStatus && wasUniqueIDAdded.current) {
@@ -121,7 +117,7 @@ const withAttributes = createHigherOrderComponent(
 					repeaterContext?.getInnerBlocksPositions?.()?.[[-1]]
 				);
 			}
-		}, [clientId, repeaterContext, wasUniqueIDAdded.current]);
+		}, [wasUniqueIDAdded.current]);
 
 		const checkParentBlocks = clientId => {
 			const block = select('core/block-editor').getBlock(clientId);
@@ -173,8 +169,6 @@ const withAttributes = createHigherOrderComponent(
 			allowedBlocks,
 			blockName,
 			attributes.isFirstOnHierarchy,
-			markNextChangeAsNotPersistent,
-			setAttributes,
 		]);
 
 		return <BlockEdit {...props} />;

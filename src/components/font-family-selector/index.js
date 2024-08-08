@@ -37,6 +37,7 @@ const FontFamilySelector = props => {
 		fontWeight,
 		fontStyle,
 		disableFontFamilyReset = false,
+		setShowLoader,
 	} = props;
 
 	const { options } = useSelect(select => {
@@ -65,7 +66,7 @@ const FontFamilySelector = props => {
 
 		if (fontWeight) objFont[newFont.value].weight = fontWeight.toString();
 		if (fontStyle) objFont[newFont.value].style = fontStyle;
-		loadFontsInEditor(objFont);
+		loadFontsInEditor(objFont, setShowLoader);
 
 		setValue({ label: newFont.value, value: newFont.value });
 	};

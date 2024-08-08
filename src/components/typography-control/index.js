@@ -343,6 +343,7 @@ const TypographyControl = props => {
 		blockStyle,
 		globalProps,
 		forceIndividualChanges = false,
+		setShowLoader,
 	} = props;
 	const { formatValue, onChangeTextFormat } =
 		!isStyleCards && !disableCustomFormats ? useContext(TextContext) : {};
@@ -583,12 +584,14 @@ const TypographyControl = props => {
 									),
 									fontName,
 									getValue('font-style') ??
-										getDefault('font-style')
+										getDefault('font-style'),
+									setShowLoader
 								);
 							}
 						}}
 						fontWeight={getValue('font-weight')}
 						fontStyle={getValue('font-style')}
+						setShowLoader={setShowLoader}
 						breakpoint={breakpoint}
 					/>
 				)}
@@ -806,6 +809,7 @@ const TypographyControl = props => {
 					}
 					fontStyle={getValue('font-style')}
 					breakpoint={breakpoint}
+					setShowLoader={setShowLoader}
 				/>
 				<SelectControl
 					label={__('Text transform', 'maxi-blocks')}

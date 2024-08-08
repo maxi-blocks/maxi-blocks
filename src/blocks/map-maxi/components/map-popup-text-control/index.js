@@ -18,6 +18,7 @@ const MapPopupTextControl = ({
 	clientId,
 	deviceType,
 	onChange,
+	setShowLoader,
 	...attributes
 }) => {
 	const typographyProps = {
@@ -62,6 +63,7 @@ const MapPopupTextControl = ({
 								}
 								{...typographyProps}
 								showBottomGap
+								setShowLoader={setShowLoader}
 							/>
 						</>
 					),

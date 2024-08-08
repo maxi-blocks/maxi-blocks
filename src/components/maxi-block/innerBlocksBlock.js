@@ -13,6 +13,7 @@ import BackgroundDisplayer from '../background-displayer';
 import BlockInserter from '../block-inserter';
 import DisabledMaxiBlock from './disabledMaxiBlock';
 import Pagination from './pagination';
+import ContentLoader from '../content-loader';
 
 /**
  * External dependencies
@@ -142,6 +143,7 @@ const MainInnerBlocksBlock = forwardRef(
 			isDisabled,
 			pagination,
 			paginationProps,
+			showLoader,
 			...props
 		},
 		ref
@@ -191,6 +193,7 @@ const MainInnerBlocksBlock = forwardRef(
 		return (
 			<TagName {...restInnerBlocksProps}>
 				{blockChildren}
+				{showLoader && <ContentLoader overlay />}
 				{pagination && <Pagination {...paginationProps} />}
 			</TagName>
 		);

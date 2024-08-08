@@ -127,6 +127,7 @@ class edit extends MaxiBlockComponent {
 				propsToAvoid={['buttonContent', 'formatValue']}
 				inlineStylesTargets={inlineStylesTargets}
 				scValues={scValues}
+				setShowLoader={value => this.setState({ showLoader: value })}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -150,6 +151,7 @@ class edit extends MaxiBlockComponent {
 				{...(attributes['icon-only'] && {
 					'aria-label': getAreaLabel(attributes['icon-content']),
 				})}
+				showLoader={this.state.showLoader}
 			>
 				<div className={buttonClasses}>
 					{!attributes['icon-only'] && (

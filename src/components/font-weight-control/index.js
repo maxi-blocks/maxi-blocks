@@ -19,6 +19,7 @@ const FontWeightControl = props => {
 		fontWeight,
 		defaultFontWeight,
 		onReset,
+		setShowLoader,
 	} = props;
 
 	const options = getWeightOptions(fontName);
@@ -44,7 +45,7 @@ const FontWeightControl = props => {
 				newStyle
 				onChange={val => {
 					onChange(val);
-					onChangeFontWeight(val, fontName, fontStyle);
+					onChangeFontWeight(val, fontName, fontStyle, setShowLoader);
 				}}
 				onReset={() => onReset()}
 			/>

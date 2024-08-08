@@ -80,6 +80,7 @@ class edit extends MaxiBlockComponent {
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
 				apiKey={this.state.googleApiKey}
+				setShowLoader={value => this.setState({ showLoader: value })}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -91,6 +92,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-map--${uniqueID}`}
 				ref={this.blockRef}
 				className='maxi-map-block'
+				showLoader={this.state.showLoader}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<MapContent

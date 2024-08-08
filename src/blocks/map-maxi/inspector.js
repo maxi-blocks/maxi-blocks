@@ -140,6 +140,9 @@ const Inspector = props => {
 												clientId={clientId}
 												deviceType={deviceType}
 												onChange={maxiSetAttributes}
+												setShowLoader={
+													props.setShowLoader
+												}
 											/>
 										),
 									},

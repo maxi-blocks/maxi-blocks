@@ -72,8 +72,6 @@
 		"react-slider": "latest",
 		"react-spinners": "latest",
 		"react-tilt": "latest",
-		"redux": "^5.0.1",
-		"redux-thunk": "^3.1.0",
 		"tilt.js": "latest",
 		"tinycolor2": "latest",
 		"typesense": "^1.8.0-2",

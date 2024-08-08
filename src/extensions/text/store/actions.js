@@ -1,5 +1,4 @@
 import { apiFetch } from '@wordpress/data-controls';
-import { uniq } from 'lodash';
 
 export const updateFonts = (fonts) => {
 	return {

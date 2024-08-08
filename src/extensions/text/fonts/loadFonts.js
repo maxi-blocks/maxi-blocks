@@ -240,9 +240,9 @@ const loadFonts = (
 	return null;
 };
 
+const currentlyLoadingIds = [];
 const loadFontsInEditor = (objFont, setShowLoader) => {
 	const iframeEditor = document.querySelector('iframe[name="editor-canvas"]');
-	const currentlyLoadingIds = [];
 
 	const setIsLoading = (isLoading, fontId) => {
 		if (isLoading) {

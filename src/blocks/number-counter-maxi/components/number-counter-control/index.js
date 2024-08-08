@@ -288,6 +288,7 @@ const NumberCounterControl = props => {
 					})
 				}
 				breakpoint={breakpoint}
+				setShowLoader={setShowLoader}
 			/>
 			<FontWeightControl
 				onChange={val => {

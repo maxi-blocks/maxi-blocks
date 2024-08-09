@@ -191,6 +191,10 @@ if (!class_exists('MaxiBlocks_Block')):
             'dc-media-caption' => [
                 'type' => 'string',
             ],
+            'dc-media-size' => [
+                'type' => 'number',
+                'default' => 512
+            ],
             'dc-link-status' => [
                 'type' => 'boolean',
             ],
@@ -230,13 +234,13 @@ if (!class_exists('MaxiBlocks_Block')):
             'linkSettings' => [
                 'type' => 'object',
             ],
-			// Required to render backcground DC
-			'background-layers' => [
-				'type' => 'array',
-			],
-			'background-layers-hover' => [
-				'type' => 'array',
-			],
+            // Required to render backcground DC
+            'background-layers' => [
+                'type' => 'array',
+            ],
+            'background-layers-hover' => [
+                'type' => 'array',
+            ],
         ];
 
         /**

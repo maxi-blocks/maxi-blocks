@@ -141,6 +141,7 @@ const DynamicContent = props => {
 		year,
 		customFormat,
 		acfGroup,
+		mediaSize,
 	} = dcValues;
 
 	const dcValuesForDate = {
@@ -744,6 +745,32 @@ const DynamicContent = props => {
 									disableRange
 								/>
 							)}
+							{(field === 'avatar' ||
+								field === 'author_avatar') &&
+								!error && (
+									<AdvancedNumberControl
+										label={__('Size (px)', 'maxi-blocks')}
+										value={mediaSize}
+										min={1}
+										max={2048}
+										initialPosition={getDefaultAttribute(
+											'dc-media-size'
+										)}
+										onChangeValue={value =>
+											changeProps({
+												'dc-media-size': Number(value),
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'dc-media-size':
+													getDefaultAttribute(
+														'dc-media-size'
+													),
+											})
+										}
+									/>
+								)}
 						</>
 					)}
 				</>

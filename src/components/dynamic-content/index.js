@@ -756,6 +756,10 @@ const DynamicContent = props => {
 										initialPosition={getDefaultAttribute(
 											'dc-media-size'
 										)}
+										defaultValue={getDefaultAttribute(
+											'dc-media-size'
+										)}
+										placeholder={mediaSize}
 										onChangeValue={value =>
 											changeProps({
 												'dc-media-size': Number(value),

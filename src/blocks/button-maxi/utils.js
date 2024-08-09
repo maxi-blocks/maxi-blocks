@@ -8,7 +8,7 @@ const getAreaLabel = iconContent => {
 
 	if (!iconContent) return defaultLabel;
 
-	const svgClass = iconContent.match(/ class="(.+?(?=))"/)[1];
+	const svgClass = iconContent.match(/ class="(.+?(?=))"/)?.[1];
 
 	if (!svgClass) return defaultLabel;
 

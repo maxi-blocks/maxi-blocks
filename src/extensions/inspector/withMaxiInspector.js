@@ -15,6 +15,7 @@ const withMaxiInspector = createHigherOrderComponent(
 		pure(
 			memo(
 				ownProps => {
+					if(!ownProps) return null;
 					// Adds correct class to the wrapper
 					useEffect(() => {
 						if (ownProps.isSelected) {

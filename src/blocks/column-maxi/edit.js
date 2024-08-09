@@ -16,7 +16,7 @@ import loadable from '@loadable/component';
 const Inspector = loadable(() => import('./inspector'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
 const BlockInserter = loadable(() => import('../../components/block-inserter'));
-const BlockResizer = loadable(() => import('../../components/block-resizer'));
+ import BlockResizer from '../../components/block-resizer';
 
 import RowContext from '../row-maxi/rowContext';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';

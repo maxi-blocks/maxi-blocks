@@ -24,28 +24,17 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	}, []);
 
 	const getAllMaxiBlocks = blocks => {
-		let maxiBlocks = [];
-
-		blocks.forEach(block => {
+		return blocks.reduce((maxiBlocks, block) => {
 			if (block.name.includes('maxi-blocks')) {
 				maxiBlocks.push(block);
 			}
 
-			// Check for Reusable blocks that might contain maxi-blocks
-			if (block.name === 'core/block' && block.innerBlocks.length > 0) {
-				maxiBlocks = maxiBlocks.concat(
-					getAllMaxiBlocks(block.innerBlocks)
-				);
+			if (block.innerBlocks?.length) {
+				maxiBlocks.push(...getAllMaxiBlocks(block.innerBlocks));
 			}
 
-			if (block.innerBlocks && block.innerBlocks.length > 0) {
-				maxiBlocks = maxiBlocks.concat(
-					getAllMaxiBlocks(block.innerBlocks)
-				);
-			}
-		});
-
-		return maxiBlocks;
+			return maxiBlocks;
+		}, []);
 	};
 
 	const allBlocks = getBlocks();
@@ -91,15 +80,16 @@ const withMaxiLoader = createHigherOrderComponent(
 			useEffect(() => {
 				if (canRender && hasBeenConsolidated) return;
 
-				const interval = setInterval(() => {
+				const checkRender = () => {
 					if (canBlockRender(uniqueID, clientId)) {
 						setCanRender(true);
 						setHasBeenConsolidated(true);
-						clearInterval(interval);
+					} else {
+						setTimeout(checkRender, 100);
 					}
-				}, 100);
+				};
 
-				return () => clearInterval(interval);
+				checkRender();
 			}, [
 				canRender,
 				hasBeenConsolidated,

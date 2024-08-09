@@ -16,63 +16,48 @@ import {
  */
 import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const SvgColorToolbar = loadable(() => import('./components/svg-color'));
-const VideoUrl = loadable(() => import('./components/video-url'));
-const Popover = loadable(() => import('../popover'));
+import SvgColorToolbar from './components/svg-color';
+import VideoUrl from './components/video-url';
+import Popover from '../popover';
 
 /**
  * Utils
  */
-const Breadcrumbs = loadable(() => import('../breadcrumbs'));
-const BackgroundColor = loadable(() =>
-	import('./components/background-color/background-color')
-);
-const BlockBackgroundColor = loadable(() =>
-	import('./components/background-color/block-background-color')
-);
-const Border = loadable(() => import('./components/border'));
-const BoxShadow = loadable(() => import('./components/box-shadow'));
-const ColumnMover = loadable(() => import('./components/column-mover'));
-const ColumnSize = loadable(() => import('./components/column-size'));
-const Divider = loadable(() => import('./components/divider-line'));
-const DividerAlignment = loadable(() =>
-	import('./components/divider-alignment')
-);
-const DividerColor = loadable(() => import('./components/divider-color'));
-const Duplicate = loadable(() => import('./components/duplicate'));
-const DynamicContent = loadable(() => import('./components/dynamic-content'));
-const Link = loadable(() => import('./components/link'));
-const Mover = loadable(() => import('./components/mover'));
-const NumberCounterReplay = loadable(() =>
-	import('./components/number-counter-replay')
-);
-const Size = loadable(() => import('./components/size'));
-const SliderSettings = loadable(() => import('./components/slider-settings'));
-const SliderSlidesSettings = loadable(() =>
-	import('./components/slider-slides-settings')
-);
-const SvgWidth = loadable(() => import('./components/svg-width'));
-const TextColor = loadable(() => import('./components/text-color'));
-const TextLevel = loadable(() => import('./components/text-level'));
-const TextLink = loadable(() => import('./components/text-link'));
-const TextListOptions = loadable(() =>
-	import('./components/text-list-options')
-);
-const ToolbarColumnPattern = loadable(() =>
-	import('./components/column-pattern')
-);
-const TextOptions = loadable(() => import('./components/text-options'));
-const MoreSettings = loadable(() => import('./components/more-settings'));
-const Help = loadable(() => import('./components/help'));
-const VerticalAlign = loadable(() => import('./components/vertical-align'));
-const TextMargin = loadable(() => import('./components/text-margin'));
-const ToolbarMediaUpload = loadable(() => import('./components/media-upload'));
-const ContextLoop = loadable(() => import('./components/context-loop'));
+import Breadcrumbs from '../breadcrumbs';
+import BackgroundColor from './components/background-color/background-color';
+import BlockBackgroundColor from './components/background-color/block-background-color';
+import Border from './components/border';
+import BoxShadow from './components/box-shadow';
+import ColumnMover from './components/column-mover';
+import ColumnSize from './components/column-size';
+import Divider from './components/divider-line';
+import DividerAlignment from './components/divider-alignment';
+import DividerColor from './components/divider-color';
+import Duplicate from './components/duplicate';
+import DynamicContent from './components/dynamic-content';
+import Link from './components/link';
+import Mover from './components/mover';
+import NumberCounterReplay from './components/number-counter-replay';
+import Size from './components/size';
+import SliderSettings from './components/slider-settings';
+import SliderSlidesSettings from './components/slider-slides-settings';
+import SvgWidth from './components/svg-width';
+import TextColor from './components/text-color';
+import TextLevel from './components/text-level';
+import TextLink from './components/text-link';
+import TextListOptions from './components/text-list-options';
+import ToolbarColumnPattern from './components/column-pattern';
+import TextOptions from './components/text-options';
+import MoreSettings from './components/more-settings';
+import Help from './components/help';
+import VerticalAlign from './components/vertical-align';
+import TextMargin from './components/text-margin';
+import ToolbarMediaUpload from './components/media-upload';
+import ContextLoop from './components/context-loop';
 
 import {
 	getGroupAttributes,
@@ -803,28 +788,36 @@ const MaxiToolbar = memo(
 		} = newProps;
 
 		// If is not selected, don't render
-		if (!isSelected && wasSelected === isSelected) return true;
+		if (!isSelected && wasSelected === isSelected) {
+			return true;
+		}
 
-		if (select('core/block-editor').isDraggingBlocks()) return true;
+		if (select('core/block-editor').isDraggingBlocks()) {
+			return true;
+		}
 
 		if (
 			wasSelected !== isSelected ||
 			oldBreakpoint !== breakpoint ||
 			!isEqual(oldSCValues, scValues)
-		)
+		) {
 			return false;
-
-		const oldAttributes = cloneDeep(oldAttr);
-		const newAttributes = cloneDeep(newAttr);
-
-		if (!isEmpty(propsToAvoid)) {
-			propsToAvoid.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
 		}
 
-		return isEqual(oldAttributes, newAttributes);
+		const result = isEqual(
+			Object.fromEntries(
+				Object.entries(oldAttr).filter(
+					([key]) => !Array.isArray(propsToAvoid) || !propsToAvoid.includes(key)
+				)
+			),
+			Object.fromEntries(
+				Object.entries(newAttr).filter(
+					([key]) => !Array.isArray(propsToAvoid) || !propsToAvoid.includes(key)
+				)
+			)
+		);
+
+		return result;
 	}
 );
 

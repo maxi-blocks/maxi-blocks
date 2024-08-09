@@ -18,20 +18,14 @@ import loadable from '@loadable/component';
  */
 const Inspector = loadable(() => import('./inspector'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
-const BlockResizer = loadable(() => import('../../components/block-resizer'));
+import BlockResizer from '../../components/block-resizer';
 const Button = loadable(() => import('../../components/button'));
 const HoverPreview = loadable(() => import('../../components/hover-preview'));
 const Placeholder = loadable(() => import('../../components/placeholder'));
 const RawHTML = loadable(() => import('../../components/raw-html'));
-const MaxiPopoverButton = loadable(() =>
-	import('../../components/maxi-popover-button')
-);
-const MaxiBlock = loadable(() =>
-	import('../../components/maxi-block/maxiBlock')
-);
-const CaptionToolbar = loadable(() =>
-	import('../../components/toolbar/captionToolbar')
-);
+import MaxiPopoverButton from '../../components/maxi-popover-button';
+import MaxiBlock from '../../components/maxi-block/maxiBlock';
+import CaptionToolbar from '../../components/toolbar/captionToolbar';
 import getStyles from './styles';
 import {
 	getGroupAttributes,

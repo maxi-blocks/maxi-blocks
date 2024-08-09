@@ -19,7 +19,8 @@ import loadable from '@loadable/component';
 const AdvancedNumberControl = loadable(() =>
 	import('../../../../components/advanced-number-control')
 );
-const Button = loadable(() => import('../../../../components/button'));
+import Button from '../../../../components/button';
+//const Button = loadable(() => import('../../../../components/button'));
 const Icon = loadable(() => import('../../../../components/icon'));
 
 import {

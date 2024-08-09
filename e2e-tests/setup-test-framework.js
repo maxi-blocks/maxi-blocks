@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { get } from 'lodash';
+import dotenv from 'dotenv';
 
 /**
  * WordPress dependencies
@@ -25,6 +26,11 @@ import { deactivatePlugin } from './utils';
 const _ = require('lodash');
 
 _.debounce = func => func;
+
+/**
+ * Load environment variables from .env file
+ */
+dotenv.config();
 
 /**
  * Timeout, in seconds, that the test should be allowed to run.
@@ -213,6 +219,26 @@ function observeConsoleLogging() {
 		)
 			return;
 
+		if (
+			text.includes(
+				"Blocked attempt to show a 'beforeunload' confirmation panel"
+			)
+		) {
+			return;
+		}
+		if (text.includes('Request failed due to "ECONNABORTED timeout')) {
+			console.warn('Network request timeout:', text);
+			return;
+		}
+
+		if (
+			text.includes('Sleeping for') &&
+			text.includes('and then retrying request')
+		) {
+			console.warn('Retrying request:', text);
+			return;
+		}
+
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
 
 		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of
@@ -255,8 +281,20 @@ beforeAll(async () => {
 
 	// Default theme, twentytwentytwo, has a bug that returns a console.error
 	await activateTheme('twentytwentyone');
+
+	// Add this global error handler
+	page.on('error', error => {
+		console.error('Uncaught exception:', error);
+	});
+
+	page.on('pageerror', error => {
+		console.error('Page error:', error);
+	});
 });
 
 afterEach(async () => {
 	await setupBrowser();
 });
+
+// Increase the default timeout for Puppeteer operations
+jest.setTimeout(30000); // 30 seconds

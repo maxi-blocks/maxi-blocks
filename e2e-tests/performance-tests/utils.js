@@ -86,6 +86,7 @@ export function saveEventMeasurements(key, measurements) {
 
 	let results = {};
 	try {
+		fs.mkdirSync(RESULTS_FILE_DIR, { recursive: true });
 		if (fs.existsSync(resultsFilePath)) {
 			results = JSON.parse(fs.readFileSync(resultsFilePath, 'utf8'));
 		}

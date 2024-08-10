@@ -9,6 +9,12 @@ import path from 'path';
 export const ITERATIONS = 5;
 
 /**
+ * Timeout for performance tests.
+ * 2 mins for each iteration
+ */
+export const PERFORMANCE_TESTS_TIMEOUT = 120000 * ITERATIONS;
+
+/**
  * Directory where the results will be stored.
  */
 export const RESULTS_FILE_DIR = path.join(__dirname, '../../bin');

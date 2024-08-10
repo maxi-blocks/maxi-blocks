@@ -14,6 +14,7 @@ import { ITERATIONS, RESULTS_FILE_DIR } from './config';
  */
 import fs from 'fs';
 import path from 'path';
+import { Client } from 'typesense';
 
 export async function waitForBlocksLoad(page, maxWaitTime = 100000) {
 	await page.waitForFunction(
@@ -31,11 +32,12 @@ export async function waitForBlocksLoad(page, maxWaitTime = 100000) {
  * Measure the time it takes to perform a single action.
  *
  * @param {Function} action
+ * @param {Object} context
  * @returns {number} time in milliseconds
  */
-export async function measureSingleAction(action) {
+export async function measureSingleAction(action, context) {
 	const start = performance.now();
-	await action();
+	await action(context);
 	const end = performance.now();
 	return end - start;
 }
@@ -55,8 +57,11 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 	for (let i = 0; i < iterations; i++) {
 		await createNewPost();
 		for (const [key, event] of Object.entries(events)) {
-			if (event.pre) await event.pre();
-			results[key].times.push(await measureSingleAction(event.action));
+			let context = {};
+			if (event.pre) context = await event.pre();
+			results[key].times.push(
+				await measureSingleAction(event.action, context)
+			);
 			if (event.post) await event.post();
 		}
 	}
@@ -126,10 +131,76 @@ export async function warmupRun(page) {
  * @returns {Promise<Function>} Callback to click on to insert block
  */
 export async function prepareInsertMaxiBlock(page, blockName) {
-	await page
-		.$('.block-editor-default-block-appender__content')
-		.then(el => el.focus());
+	const block = await page.waitForSelector(
+		'.block-editor-default-block-appender__content',
+		{ visible: true }
+	);
+	await page.evaluate(block => {
+		block.focus();
+	}, block);
 	await page.keyboard.type(`/${blockName}`);
-	return async () =>
-		page.$('.components-autocomplete__result').then(el => el.click());
+	return async () => {
+		const block = await page.waitForSelector(
+			'.components-autocomplete__result',
+			{ visible: true }
+		);
+		await page.evaluate(block => {
+			block.click();
+		}, block);
+	};
+}
+
+export class PatternManager {
+	constructor(page) {
+		this.page = page;
+		this.searchClient = this.createSearchClient();
+	}
+
+	async searchPatternByName(patternName) {
+		try {
+			const searchParameters = {
+				q: patternName,
+				query_by: 'post_title',
+				filter_by: 'gutenberg_type:=Patterns',
+				sort_by: '_text_match:desc',
+				per_page: 1,
+			};
+
+			const searchResults = await this.searchClient
+				.collections('post')
+				.documents()
+				.search(searchParameters);
+
+			if (searchResults.hits.length > 0) {
+				return searchResults.hits[0].document;
+			}
+			return null;
+		} catch (error) {
+			console.error('Error searching for pattern:', error);
+			return null;
+		}
+	}
+
+	async getPatternCodeEditor(patternName) {
+		const pattern = await this.searchPatternByName(patternName);
+		if (pattern) {
+			console.log(`Pattern found: ${pattern.post_title}`);
+			return pattern.gutenberg_code;
+		} else {
+			console.log(`Pattern not found: ${patternName}`);
+		}
+	}
+
+	createSearchClient() {
+		return new Client({
+			nodes: [
+				{
+					host: process.env.REACT_APP_TYPESENSE_API_URL,
+					port: '443',
+					protocol: 'https',
+				},
+			],
+			apiKey: process.env.REACT_APP_TYPESENSE_API_KEY,
+		});
+	}
 }

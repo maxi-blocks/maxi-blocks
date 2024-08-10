@@ -29,6 +29,7 @@ const DEFAULT_SHOW_ALL_DETAILS = false;
 
 /**
  * Compares performance metrics between two JSON files.
+ *
  * @param {string} file1 - Path to the first JSON file.
  * @param {string} file2 - Path to the second JSON file.
  * @param {number} threshold - The threshold (in milliseconds) for considering a change significant.
@@ -51,8 +52,10 @@ function comparePerformance(file1, file2, threshold, showAllDetails) {
 		let blockPrinted = false;
 
 		for (const [metric, values] of Object.entries(metrics)) {
-			const diff = data2[block][metric].average - values.average;
-			const percentChange = (diff / values.average) * 100;
+			const oldMedian = calculateMedian(values.times);
+			const newMedian = calculateMedian(data2[block][metric].times);
+			const diff = newMedian - oldMedian;
+			const percentChange = (diff / oldMedian) * 100;
 
 			let status = 'unchanged';
 			let statusEmoji = '➖';
@@ -73,9 +76,9 @@ function comparePerformance(file1, file2, threshold, showAllDetails) {
 				}
 
 				console.log(`  ${metric}:`);
-				console.log(`    Old average: ${values.average.toFixed(2)} ms`);
+				console.log(`    Old median: ${oldMedian.toFixed(2)} ms`);
 				console.log(
-					`    New average: ${data2[block][metric].average.toFixed(
+					`    New median: ${newMedian.toFixed(
 						2
 					)} ms`
 				);
@@ -104,6 +107,20 @@ function comparePerformance(file1, file2, threshold, showAllDetails) {
 			}
 		}
 	}
+}
+
+/**
+ * Calculates the median of an array of numbers.
+ * @param {number[]} numbers - The array of numbers.
+ * @returns {number} The median value.
+ */
+function calculateMedian(numbers) {
+  const sorted = numbers.slice().sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  if (sorted.length % 2 === 0) {
+    return (sorted[middle - 1] + sorted[middle]) / 2;
+  }
+  return sorted[middle];
 }
 
 /**

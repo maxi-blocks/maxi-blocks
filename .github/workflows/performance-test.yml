@@ -1,0 +1,102 @@
+name: Performance Tests
+
+on:
+    pull_request:
+        branches: [master]
+    workflow_dispatch:
+
+jobs:
+    e2e-js:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 2
+            - name: Cache node modules
+              uses: actions/cache@v2
+              with:
+                  # npm cache files are stored in `~/.npm` on Linux/macOS
+                  # to clear the cache, change `v1.3` for any other random number, github will destroy
+                  # the old cache within 7 days 👌
+                  # Note: don't change the `actions/setup-node@v1` or any other dependency version by error
+                  path: ~/.npm
+                  key: ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-v1.3-
+                      ${{ runner.os }}-
+              env:
+                  cache-name: cache-node-modules
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 16.x
+            - name: Install dependencies
+              run: npm install --legacy-peer-deps
+            - name: Create .env file
+              run: |
+                  touch .env
+                  echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
+                  echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
+                  echo "REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}" >> .env
+                  echo "REACT_APP_MAXI_BLOCKS_PRO_LOGIN=${{ secrets.REACT_APP_MAXI_BLOCKS_PRO_LOGIN }}" >> .env
+                  echo "REACT_APP_MAXI_BLOCKS_PRO_PASSWORD=${{ secrets.REACT_APP_MAXI_BLOCKS_PRO_PASSWORD }}" >> .env
+            - name: Build
+              run: npm run build
+            - name: reset package-lock.json
+              run: git checkout package-lock.json
+            - name: Install WordPress
+              run: |
+                  chmod -R 767 ./
+                  npm run wp-env start
+            - name: Run performance test on current branch
+              run: |
+                  CURRENT_HASH=$(git rev-parse --short HEAD)
+                  npm run test:performance
+                  echo "CURRENT_RESULTS_1=$(ls bin/performance-results-$CURRENT_HASH.json)" >> $GITHUB_ENV
+                  echo "CURRENT_HASH=$CURRENT_HASH" >> $GITHUB_ENV
+            - name: Checkout master branch
+              uses: actions/checkout@v4
+              with:
+                  ref: master
+            - name: Check if performance test exists on master
+              id: check_master_test
+              run: |
+                  if [ -f "package.json" ] && grep -q "test:performance" package.json; then
+                    echo "MASTER_HAS_TEST=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "MASTER_HAS_TEST=false" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Run test on master (if available)
+              if: steps.check_master_test.outputs.MASTER_HAS_TEST == 'true'
+              run: |
+                  MASTER_HASH=$(git rev-parse --short HEAD)
+                  npm install --legacy-peer-deps
+                  npm run build
+                  npm run test:performance
+                  echo "COMPARISON_RESULTS=$(ls bin/performance-results-$MASTER_HASH.json)" >> $GITHUB_ENV
+            - name: Run second test on current branch (if master test unavailable)
+              if: steps.check_master_test.outputs.MASTER_HAS_TEST == 'false'
+              run: |
+                  git checkout ${{ github.head_ref }}
+                  npm install --legacy-peer-deps
+                  npm run build
+                  npm run test:performance
+                  echo "COMPARISON_RESULTS=$(ls bin/performance-results-${{ env.CURRENT_HASH }}-2.json)" >> $GITHUB_ENV
+            - name: Compare performance results
+              run: npm run compare-performance -- --file1 ${{ env.CURRENT_RESULTS_1 }} --file2 ${{ env.COMPARISON_RESULTS }}
+            - name: Upload performance results
+              uses: actions/upload-artifact@v2
+              with:
+                  name: performance-results
+                  path: |
+                      ${{ env.CURRENT_RESULTS_1 }}
+                      ${{ env.COMPARISON_RESULTS }}
+            - name: Notify about comparison source
+              run: |
+                  if [ "${{ steps.check_master_test.outputs.MASTER_HAS_TEST }}" == "true" ]; then
+                    echo "Performance test results compared between current branch and master branch."
+                  else
+                    echo "Performance test results compared between two runs of the current branch."
+                  fi

@@ -113,14 +113,15 @@ describe('Blocks performance', () => {
 										`Saving draft for ${blockName}`
 									);
 									await saveDraft();
+									await page.waitForTimeout(1000);
+								},
+								action: async () => {
 									console.log(
 										`Reloading page for ${blockName}`
 									);
 									await page.reload({
 										waitUntil: 'networkidle0',
 									});
-								},
-								action: async () => {
 									console.log(
 										`Waiting for blocks to load after reload for ${blockName}`
 									);

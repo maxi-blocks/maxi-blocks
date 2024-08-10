@@ -6,7 +6,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    e2e-js:
+    performance-js:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4

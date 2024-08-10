@@ -36,8 +36,14 @@ const DEFAULT_SHOW_ALL_DETAILS = false;
  * @param {boolean} showAllDetails - Whether to show all details or only significant changes.
  */
 function comparePerformance(file1, file2, threshold, showAllDetails) {
-	const data1 = JSON.parse(fs.readFileSync(file1, 'utf8'));
-	const data2 = JSON.parse(fs.readFileSync(file2, 'utf8'));
+	let data1, data2;
+	try {
+		data1 = JSON.parse(fs.readFileSync(file1, 'utf8'));
+		data2 = JSON.parse(fs.readFileSync(file2, 'utf8'));
+	} catch (error) {
+		console.error('Error reading or parsing JSON files:', error);
+		process.exit(1);
+	}
 
 	console.log(
 		`Comparing ${path.basename(file1)} with ${path.basename(file2)}:\n`
@@ -77,11 +83,7 @@ function comparePerformance(file1, file2, threshold, showAllDetails) {
 
 				console.log(`  ${metric}:`);
 				console.log(`    Old median: ${oldMedian.toFixed(2)} ms`);
-				console.log(
-					`    New median: ${newMedian.toFixed(
-						2
-					)} ms`
-				);
+				console.log(`    New median: ${newMedian.toFixed(2)} ms`);
 				console.log(
 					`    Difference: ${diff.toFixed(
 						2
@@ -115,12 +117,12 @@ function comparePerformance(file1, file2, threshold, showAllDetails) {
  * @returns {number} The median value.
  */
 function calculateMedian(numbers) {
-  const sorted = numbers.slice().sort((a, b) => a - b);
-  const middle = Math.floor(sorted.length / 2);
-  if (sorted.length % 2 === 0) {
-    return (sorted[middle - 1] + sorted[middle]) / 2;
-  }
-  return sorted[middle];
+	const sorted = numbers.slice().sort((a, b) => a - b);
+	const middle = Math.floor(sorted.length / 2);
+	if (sorted.length % 2 === 0) {
+		return (sorted[middle - 1] + sorted[middle]) / 2;
+	}
+	return sorted[middle];
 }
 
 /**

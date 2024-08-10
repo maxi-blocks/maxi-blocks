@@ -85,11 +85,15 @@ export function saveEventMeasurements(key, measurements) {
 	const resultsFilePath = path.join(RESULTS_FILE_DIR, resultsFileName);
 
 	let results = {};
-	if (fs.existsSync(resultsFilePath)) {
-		results = JSON.parse(fs.readFileSync(resultsFilePath, 'utf8'));
+	try {
+		if (fs.existsSync(resultsFilePath)) {
+			results = JSON.parse(fs.readFileSync(resultsFilePath, 'utf8'));
+		}
+		results[key] = measurements;
+		fs.writeFileSync(resultsFilePath, JSON.stringify(results, null, 2));
+	} catch (error) {
+		console.error('Error saving measurements:', error);
 	}
-	results[key] = measurements;
-	fs.writeFileSync(resultsFilePath, JSON.stringify(results, null, 2));
 }
 
 /**
@@ -157,15 +161,15 @@ export class PatternManager {
 	}
 
 	async searchPatternByName(patternName) {
-		try {
-			const searchParameters = {
-				q: patternName,
-				query_by: 'post_title',
-				filter_by: 'gutenberg_type:=Patterns',
-				sort_by: '_text_match:desc',
-				per_page: 1,
-			};
+		const searchParameters = {
+			q: patternName,
+			query_by: 'post_title',
+			filter_by: 'gutenberg_type:=Patterns',
+			sort_by: '_text_match:desc',
+			per_page: 1,
+		};
 
+		try {
 			const searchResults = await this.searchClient
 				.collections('post')
 				.documents()

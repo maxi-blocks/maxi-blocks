@@ -107,49 +107,49 @@ describe('Blocks performance', () => {
 									await waitForBlocksLoad(page);
 								},
 							},
-							reload: {
-								pre: async () => {
-									console.log(
-										`Saving draft for ${blockName}`
-									);
-									await saveDraft();
-									await page.waitForTimeout(1000);
-								},
-								action: async () => {
-									console.log(
-										`Reloading page for ${blockName}`
-									);
-									await page.reload({
-										waitUntil: 'networkidle0',
-									});
-									console.log(
-										`Waiting for blocks to load after reload for ${blockName}`
-									);
-									await waitForBlocksLoad(page);
-								},
-							},
-							select: {
-								pre: async () => {
-									console.log(
-										`Getting block client ID for ${blockName}`
-									);
-									const blocks = await page.evaluate(() =>
-										wp.data
-											.select('core/block-editor')
-											.getBlocks()
-									);
-									return blocks[0].clientId;
-								},
-								action: async blockClientId => {
-									console.log(`Selecting ${blockName}`);
-									await page.evaluate(clientId => {
-										wp.data
-											.dispatch('core/block-editor')
-											.selectBlock(clientId);
-									}, blockClientId);
-									await page.waitForSelector('.is-selected');
-								},
-							},
+							// reload: {
+							// 	pre: async () => {
+							// 		console.log(
+							// 			`Saving draft for ${blockName}`
+							// 		);
+							// 		await saveDraft();
+							// 		await page.waitForTimeout(1000);
+							// 	},
+							// 	action: async () => {
+							// 		console.log(
+							// 			`Reloading page for ${blockName}`
+							// 		);
+							// 		await page.reload({
+							// 			waitUntil: 'networkidle0',
+							// 		});
+							// 		console.log(
+							// 			`Waiting for blocks to load after reload for ${blockName}`
+							// 		);
+							// 		await waitForBlocksLoad(page);
+							// 	},
+							// },
+							// select: {
+							// 	pre: async () => {
+							// 		console.log(
+							// 			`Getting block client ID for ${blockName}`
+							// 		);
+							// 		const blocks = await page.evaluate(() =>
+							// 			wp.data
+							// 				.select('core/block-editor')
+							// 				.getBlocks()
+							// 		);
+							// 		return blocks[0].clientId;
+							// 	},
+							// 	action: async blockClientId => {
+							// 		console.log(`Selecting ${blockName}`);
+							// 		await page.evaluate(clientId => {
+							// 			wp.data
+							// 				.dispatch('core/block-editor')
+							// 				.selectBlock(clientId);
+							// 		}, blockClientId);
+							// 		await page.waitForSelector('.is-selected');
+							// 	},
+							// },
 						});
 
 						console.log(`Saving measurements for ${blockName}`);

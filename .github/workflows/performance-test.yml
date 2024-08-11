@@ -57,7 +57,7 @@ jobs:
               id: cache-results
               with:
                   path: |
-                      bin/performance-results-*.json
+                      ${{ runner.temp }}/performance_results
                   key: ${{ runner.os }}-performance-${{ github.sha }}
                   restore-keys: |
                       ${{ runner.os }}-performance-
@@ -67,11 +67,12 @@ jobs:
               run: |
                   CURRENT_HASH=$(git rev-parse --short HEAD)
                   npm run test:performance
-                  mv bin/performance-results-$CURRENT_HASH.json bin/performance-results-current.json
-                  echo "current_results=bin/performance-results-current.json" >> $GITHUB_OUTPUT
+                  mkdir -p $RUNNER_TEMP/performance_results
+                  mv bin/performance-results-$CURRENT_HASH.json $RUNNER_TEMP/performance_results/performance-results-current.json
+                  echo "current_results=$RUNNER_TEMP/performance_results/performance-results-current.json" >> $GITHUB_OUTPUT
             - name: Set current results path from cache
               if: steps.cache-results.outputs.cache-hit == 'true'
-              run: echo "current_results=bin/performance-results-${{ github.sha }}.json" >> $GITHUB_OUTPUT
+              run: echo "current_results=$RUNNER_TEMP/performance_results/performance-results-${{ github.sha }}.json" >> $GITHUB_OUTPUT
             - name: Checkout master branch
               uses: actions/checkout@v4
               with:
@@ -98,7 +99,6 @@ jobs:
               uses: actions/checkout@v4
               with:
                   ref: ${{ steps.determine_branch.outputs.branch }}
-                  clean: false
             - name: Recreate .env file
               run: |
                   cat << EOF > .env
@@ -111,7 +111,7 @@ jobs:
               id: cache-comparison-results
               with:
                   path: |
-                      ${{ steps.determine_branch.outputs.results_file }}
+                      ${{ runner.temp }}/performance_results
                   key: ${{ runner.os }}-performance-${{ steps.determine_branch.outputs.branch }}-${{ github.sha }}
                   restore-keys: |
                       ${{ runner.os }}-performance-${{ steps.determine_branch.outputs.branch }}-
@@ -127,12 +127,12 @@ jobs:
               run: |
                   npm run test:performance
                   HASH=$(git rev-parse --short HEAD)
-                  mv bin/performance-results-$HASH.json ${{ steps.determine_branch.outputs.results_file }}
-                  echo "comparison_results=${{ steps.determine_branch.outputs.results_file }}" >> $GITHUB_OUTPUT
+                  mkdir -p $RUNNER_TEMP/performance_results
+                  mv bin/performance-results-$HASH.json $RUNNER_TEMP/performance_results/${{ steps.determine_branch.outputs.results_file }}
+                  echo "comparison_results=$RUNNER_TEMP/performance_results/${{ steps.determine_branch.outputs.results_file }}" >> $GITHUB_OUTPUT
             - name: Set comparison results path from cache
               if: steps.cache-comparison-results.outputs.cache-hit == 'true'
-              run: echo "comparison_results=${{ steps.determine_branch.outputs.results_file }}" >> $GITHUB_OUTPUT
-
+              run: echo "comparison_results=$RUNNER_TEMP/performance_results/${{ steps.determine_branch.outputs.results_file }}" >> $GITHUB_OUTPUT
             - name: Compare performance results
               run: npm run compare-performance -- --file1 ${{ steps.current_test.outputs.current_results }} --file2 ${{ steps.comparison_test.outputs.comparison_results }}
             - name: Read comparison results
@@ -146,10 +146,3 @@ jobs:
               with:
                   issue-number: ${{ github.event.pull_request.number }}
                   body: ${{ steps.read_comparison.outputs.content }}
-            - name: Upload performance results
-              uses: actions/upload-artifact@v3
-              with:
-                  name: performance-results
-                  path: |
-                      ${{ steps.current_test.outputs.current_results }}
-                      ${{ steps.comparison_test.outputs.comparison_results }}

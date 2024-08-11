@@ -37,7 +37,7 @@ export function debugLog(...args) {
  * @param {number} maxWaitTime
  */
 export async function waitForBlocksLoad(page, expectedBlocksCount) {
-	console.info(`Waiting for ${expectedBlocksCount} blocks to load...`);
+	debugLog(`Waiting for ${expectedBlocksCount} blocks to load...`);
 	try {
 		await page.waitForFunction(
 			expectedCount => {
@@ -61,7 +61,7 @@ export async function waitForBlocksLoad(page, expectedBlocksCount) {
 			{ timeout: BLOCKS_LOAD_TIMEOUT },
 			expectedBlocksCount
 		);
-		console.info('Blocks loaded successfully');
+		debugLog('Blocks loaded successfully');
 	} catch (error) {
 		const blocks = await page.evaluate(() => {
 			const editor = document.querySelector(
@@ -131,6 +131,7 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 				throw error;
 			}
 		}
+		debugLog(`Iteration ${i + 1} completed`);
 	}
 
 	for (const key in results) {

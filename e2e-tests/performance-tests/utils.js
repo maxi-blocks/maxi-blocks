@@ -7,7 +7,7 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import { execSync } from 'child_process';
-import { ITERATIONS, RESULTS_FILE_DIR } from './config';
+import { ITERATIONS, RESULTS_FILE_DIR, WARMUP_ITERATIONS } from './config';
 
 /**
  * External dependencies
@@ -16,15 +16,28 @@ import fs from 'fs';
 import path from 'path';
 import { Client } from 'typesense';
 
-export async function waitForBlocksLoad(page, maxWaitTime = 100000) {
+export async function waitForBlocksLoad(
+	page,
+	expectedBlocksCount,
+	maxWaitTime = 30000
+) {
 	await page.waitForFunction(
-		() => {
+		expectedCount => {
+			const blocks = document.querySelectorAll('.maxi-block');
 			const loader = document.querySelector(
 				'.maxi-blocks-content-loader__bar'
 			);
-			return !loader || loader.offsetParent === null;
+			const editor = document.querySelector(
+				'.block-editor-block-list__layout'
+			);
+			return (
+				(!loader || loader.offsetParent === null) &&
+				editor !== null &&
+				blocks.length >= expectedCount
+			);
 		},
-		{ timeout: maxWaitTime }
+		{ timeout: maxWaitTime },
+		expectedBlocksCount
 	);
 }
 
@@ -32,14 +45,14 @@ export async function waitForBlocksLoad(page, maxWaitTime = 100000) {
  * Measure the time it takes to perform a single action.
  *
  * @param {Function} action
- * @param {Object} context
- * @returns {number} time in milliseconds
+ * @param {any} context
+ * @returns {Object<string, any>} { time: number, context: Any }
  */
 export async function measureSingleAction(action, context) {
 	const start = performance.now();
-	await action(context);
+	const newContext = await action(context);
 	const end = performance.now();
-	return end - start;
+	return { time: end - start, context: newContext };
 }
 
 /**
@@ -56,13 +69,25 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 
 	for (let i = 0; i < iterations; i++) {
 		await createNewPost();
+		let context = {};
 		for (const [key, event] of Object.entries(events)) {
-			let context = {};
-			if (event.pre) context = await event.pre();
-			results[key].times.push(
-				await measureSingleAction(event.action, context)
-			);
-			if (event.post) await event.post();
+			try {
+				if (event.pre) {
+					context = await event.pre(context);
+				}
+				const { time, context: newContext } = await measureSingleAction(
+					event.action,
+					context
+				);
+				results[key].times.push(time);
+				context = newContext;
+				if (event.post) {
+					context = await event.post(context);
+				}
+			} catch (error) {
+				console.error(`Error in test for event ${key}:`, error);
+				throw error;
+			}
 		}
 	}
 
@@ -119,11 +144,9 @@ export function getCurrentHash() {
 
 /**
  * Warmup runs to stabilize the environment.
- *
- * @param {Page} page
  */
-export async function warmupRun(page) {
-	for (let i = 0; i < 3; i++) {
+export async function warmupRun() {
+	for (let i = 0; i < WARMUP_ITERATIONS; i++) {
 		await createNewPost();
 	}
 }

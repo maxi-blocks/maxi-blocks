@@ -16,25 +16,26 @@ describe('Patterns performance', () => {
 	console.log('Starting Patterns performance tests');
 
 	beforeEach(async () => {
-		await warmupRun(page);
+		await warmupRun();
 	});
 
-	PATTERNS.forEach(patternName => {
-		it(
-			`${patternName} performance`,
-			async () => {
-				console.log(`Starting test for pattern: ${patternName}`);
+	PATTERNS.forEach(({ type, patterns }) => {
+		patterns.forEach(patternName => {
+			it(
+				`[${type}] ${patternName} performance`,
+				async () => {
+					console.log(
+						`Starting test for pattern: ${patternName} (${type})`
+					);
 
-				const patternCode = await patternManager.getPatternCodeEditor(
-					patternName
-				);
+					const patternCode =
+						await patternManager.getPatternCodeEditor(patternName);
 
-				try {
 					const measurements = await performMeasurements({
 						insert: {
 							pre: async () => {
 								console.log(
-									`Preparing to insert pattern: ${patternName}`
+									`Preparing to insert pattern: ${patternName} (${type})`
 								);
 								const blocks = await page.evaluate(code => {
 									return wp.blocks.rawHandler({
@@ -42,6 +43,24 @@ describe('Patterns performance', () => {
 										mode: 'BLOCKS',
 									});
 								}, patternCode);
+
+								const countBlocks = blocks => {
+									let count = blocks.length;
+									for (const block of blocks) {
+										if (
+											block.innerBlocks &&
+											block.innerBlocks.length > 0
+										) {
+											count += countBlocks(
+												block.innerBlocks
+											);
+										}
+									}
+									return count;
+								};
+
+								const totalBlockCount = countBlocks(blocks);
+
 								const block = await page.waitForSelector(
 									'.block-editor-default-block-appender__content',
 									{ visible: true }
@@ -49,57 +68,57 @@ describe('Patterns performance', () => {
 								await page.evaluate(block => {
 									block.focus();
 								}, block);
-								return blocks;
+								return { blocks, totalBlockCount };
 							},
-							action: async blocks => {
+							action: async ({ blocks, totalBlockCount }) => {
 								console.log(
-									`Inserting pattern: ${patternName}`
+									`Inserting pattern: ${patternName} (${type}) (Total blocks: ${totalBlockCount})`
 								);
 								await page.evaluate(blocks => {
 									wp.data
 										.dispatch('core/block-editor')
 										.insertBlocks(blocks);
 								}, blocks);
-								await waitForBlocksLoad(page);
+								await waitForBlocksLoad(page, totalBlockCount);
+								return { totalBlockCount };
 							},
 						},
 						reload: {
-							pre: async () => {
+							pre: async ({ totalBlockCount }) => {
 								console.log(
-									`Saving draft for pattern: ${patternName}`
+									`Saving draft for pattern: ${patternName} (${type})`
 								);
 								await page.waitForSelector(
 									'.editor-post-save-draft'
 								);
 								await page.click('.editor-post-save-draft');
 								await page.waitForTimeout(2000);
+								return { totalBlockCount };
 							},
-							action: async () => {
+							action: async ({ totalBlockCount }) => {
 								console.log(
-									`Reloading page for pattern: ${patternName}`
+									`Reloading page for pattern: ${patternName} (${type})`
 								);
-								await page.reload({
-									waitUntil: 'networkidle0',
-								});
-								await waitForBlocksLoad(page);
+								await page.reload();
+								await waitForBlocksLoad(page, totalBlockCount);
+								return { totalBlockCount };
 							},
 						},
 					});
 
 					console.log(
-						`Saving measurements for pattern: ${patternName}`
+						`Saving measurements for pattern: ${patternName} (${type})`
 					);
-					saveEventMeasurements(patternName, measurements);
-					console.log(`Finished test for pattern: ${patternName}`);
-				} catch (error) {
-					console.error(
-						`Error in test for pattern ${patternName}:`,
-						error
+					saveEventMeasurements(
+						`${type}_${patternName}`,
+						measurements
 					);
-					throw error;
-				}
-			},
-			PERFORMANCE_TESTS_TIMEOUT
-		);
+					console.log(
+						`Finished test for pattern: ${patternName} (${type})`
+					);
+				},
+				PERFORMANCE_TESTS_TIMEOUT
+			);
+		});
 	});
 });

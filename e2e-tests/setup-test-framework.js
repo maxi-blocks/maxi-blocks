@@ -281,20 +281,8 @@ beforeAll(async () => {
 
 	// Default theme, twentytwentytwo, has a bug that returns a console.error
 	await activateTheme('twentytwentyone');
-
-	// Add this global error handler
-	page.on('error', error => {
-		console.error('Uncaught exception:', error);
-	});
-
-	page.on('pageerror', error => {
-		console.error('Page error:', error);
-	});
 });
 
 afterEach(async () => {
 	await setupBrowser();
 });
-
-// Increase the default timeout for Puppeteer operations
-jest.setTimeout(30000); // 30 seconds

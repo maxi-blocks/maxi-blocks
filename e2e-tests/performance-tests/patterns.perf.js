@@ -13,16 +13,16 @@ import {
 	waitForBlocksLoad,
 	PatternManager,
 } from './utils';
-import { PATTERNS, PERFORMANCE_TESTS_TIMEOUT } from './config';
+import { PATTERNS, PERFORMANCE_TESTS_TIMEOUT, WARMUP_TIMEOUT } from './config';
 
 describe('Patterns performance', () => {
-	const patternManager = new PatternManager(page);
-
 	console.log('Starting Patterns performance tests');
+
+	const patternManager = new PatternManager(page);
 
 	beforeEach(async () => {
 		await warmupRun();
-	});
+	}, WARMUP_TIMEOUT);
 
 	PATTERNS.forEach(({ type, patterns }) => {
 		patterns.forEach(patternName => {

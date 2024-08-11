@@ -9,6 +9,11 @@ import path from 'path';
 export const WARMUP_ITERATIONS = 5;
 
 /**
+ * Timeout for warmup.
+ */
+export const WARMUP_TIMEOUT = 10000 * WARMUP_ITERATIONS;
+
+/**
  * Number of iterations to perform for each action.
  */
 export const ITERATIONS = 3;

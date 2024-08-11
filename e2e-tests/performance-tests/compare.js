@@ -18,54 +18,64 @@ class PerformanceComparator {
 		const data1 = this.readJsonFile(this.file1);
 		const data2 = this.readJsonFile(this.file2);
 
-		for (const [block, metrics] of Object.entries(data1)) {
-			if (!(block in data2)) {
-				this.results.comparisons.push({
-					block,
-					warning: `${block} is not present in the second file.`,
-				});
-				continue;
-			}
-
-			const blockComparison = this.compareBlock(
-				block,
-				metrics,
-				data2[block]
-			);
-			if (blockComparison.metrics.length > 0) {
-				this.results.comparisons.push(blockComparison);
-			}
-		}
-
+		this.results.comparisons = this.compareDataSets(data1, data2);
 		return this.results;
 	}
 
-	compareBlock(block, metrics1, metrics2) {
-		const blockComparison = { block, metrics: [] };
+	compareDataSets(data1, data2) {
+		return Object.entries(data1)
+			.map(([block, metrics]) =>
+				this.compareDataBlock(block, metrics, data2[block])
+			)
+			.filter(
+				comparison =>
+					comparison.metrics.length > 0 || comparison.warning
+			);
+	}
 
-		for (const [metric, values] of Object.entries(metrics1)) {
-			const oldMedian = this.calculateMedian(values.times);
-			const newMedian = this.calculateMedian(metrics2[metric].times);
-			const diff = newMedian - oldMedian;
-			const percentChange = (diff / oldMedian) * 100;
-
-			const status = this.determineStatus(diff);
-
-			if (this.showAllDetails || status.status !== 'unchanged') {
-				blockComparison.metrics.push({
-					metric,
-					oldMedian,
-					newMedian,
-					diff,
-					percentChange,
-					...status,
-					oldTimes: values.times,
-					newTimes: metrics2[metric].times,
-				});
-			}
+	compareDataBlock(block, metrics1, metrics2) {
+		if (!metrics2) {
+			return {
+				block,
+				warning: `${block} is not present in the second file.`,
+			};
 		}
 
-		return blockComparison;
+		return {
+			block,
+			metrics: this.compareMetrics(metrics1, metrics2),
+		};
+	}
+
+	compareMetrics(metrics1, metrics2) {
+		return Object.entries(metrics1)
+			.map(([metric, values]) =>
+				this.compareMetric(metric, values, metrics2[metric])
+			)
+			.filter(
+				metricComparison =>
+					this.showAllDetails ||
+					metricComparison.status !== 'unchanged'
+			);
+	}
+
+	compareMetric(metric, values1, values2) {
+		const oldMedian = this.calculateMedian(values1.times);
+		const newMedian = this.calculateMedian(values2.times);
+		const diff = newMedian - oldMedian;
+		const percentChange = (diff / oldMedian) * 100;
+		const status = this.determineStatus(diff);
+
+		return {
+			metric,
+			oldMedian,
+			newMedian,
+			diff,
+			percentChange,
+			...status,
+			oldTimes: values1.times,
+			newTimes: values2.times,
+		};
 	}
 
 	determineStatus(diff) {

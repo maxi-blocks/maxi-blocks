@@ -13,12 +13,18 @@ import {
 	warmupRun,
 	prepareInsertMaxiBlock,
 } from './utils';
-import { BLOCKS_DATA, PERFORMANCE_TESTS_TIMEOUT } from './config';
+import {
+	BLOCKS_DATA,
+	PERFORMANCE_TESTS_TIMEOUT,
+	WARMUP_TIMEOUT,
+} from './config';
 
 describe('Blocks performance', () => {
+	console.log('Starting Blocks performance tests');
+
 	beforeEach(async () => {
 		await warmupRun();
-	});
+	}, WARMUP_TIMEOUT);
 
 	Object.entries(BLOCKS_DATA).forEach(
 		([blockType, { name: blockName, action }]) => {

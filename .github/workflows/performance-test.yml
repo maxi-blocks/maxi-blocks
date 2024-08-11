@@ -43,8 +43,6 @@ jobs:
                   REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
                   REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}
                   REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}
-                  REACT_APP_MAXI_BLOCKS_PRO_LOGIN=${{ secrets.REACT_APP_MAXI_BLOCKS_PRO_LOGIN }}
-                  REACT_APP_MAXI_BLOCKS_PRO_PASSWORD=${{ secrets.REACT_APP_MAXI_BLOCKS_PRO_PASSWORD }}
                   EOF
             - name: Build
               run: npm run build
@@ -100,7 +98,13 @@ jobs:
               uses: actions/checkout@v4
               with:
                   ref: ${{ steps.determine_branch.outputs.branch }}
-                  clean: false
+            - name: Recreate .env file
+              run: |
+                  cat << EOF > .env
+                  REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
+                  REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}
+                  REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}
+                  EOF
             - name: Cache comparison results
               uses: actions/cache@v3
               id: cache-comparison-results

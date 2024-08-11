@@ -6,18 +6,23 @@ import path from 'path';
 /**
  * Number of warmup iterations to perform.
  */
-export const WARMUP_ITERATIONS = 3;
+export const WARMUP_ITERATIONS = 5;
 
 /**
  * Number of iterations to perform for each action.
  */
-export const ITERATIONS = 5;
+export const ITERATIONS = 3;
 
 /**
  * Timeout for performance tests.
  * 2 mins for each iteration
  */
 export const PERFORMANCE_TESTS_TIMEOUT = 120000 * ITERATIONS;
+
+/**
+ * Timeout for blocks to load.
+ */
+export const BLOCKS_LOAD_TIMEOUT = 90000;
 
 /**
  * Directory where the results will be stored.

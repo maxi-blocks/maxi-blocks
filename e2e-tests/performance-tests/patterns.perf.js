@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { saveDraft } from '@wordpress/e2e-test-utils';
+
+/**
  * Internal dependencies
  */
 import {
@@ -45,8 +50,16 @@ describe('Patterns performance', () => {
 								}, patternCode);
 
 								const countBlocks = blocks => {
-									let count = blocks.length;
+									let count = 0;
 									for (const block of blocks) {
+										if (
+											block.name.startsWith(
+												'maxi-blocks/'
+											)
+										) {
+											count += 1;
+										}
+
 										if (
 											block.innerBlocks &&
 											block.innerBlocks.length > 0
@@ -88,11 +101,8 @@ describe('Patterns performance', () => {
 								console.log(
 									`Saving draft for pattern: ${patternName} (${type})`
 								);
-								await page.waitForSelector(
-									'.editor-post-save-draft'
-								);
-								await page.click('.editor-post-save-draft');
-								await page.waitForTimeout(2000);
+								await saveDraft();
+								await page.waitForTimeout(1000);
 								return { totalBlockCount };
 							},
 							action: async ({ totalBlockCount }) => {

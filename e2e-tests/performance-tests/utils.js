@@ -7,7 +7,12 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import { execSync } from 'child_process';
-import { ITERATIONS, RESULTS_FILE_DIR, WARMUP_ITERATIONS } from './config';
+import {
+	BLOCKS_LOAD_TIMEOUT,
+	ITERATIONS,
+	RESULTS_FILE_DIR,
+	WARMUP_ITERATIONS,
+} from './config';
 
 /**
  * External dependencies
@@ -16,29 +21,54 @@ import fs from 'fs';
 import path from 'path';
 import { Client } from 'typesense';
 
-export async function waitForBlocksLoad(
-	page,
-	expectedBlocksCount,
-	maxWaitTime = 30000
-) {
-	await page.waitForFunction(
-		expectedCount => {
-			const blocks = document.querySelectorAll('.maxi-block');
-			const loader = document.querySelector(
-				'.maxi-blocks-content-loader__bar'
-			);
+/**
+ * Wait for the blocks to load.
+ *
+ * @param {Page} page
+ * @param {number} expectedBlocksCount
+ * @param {number} maxWaitTime
+ */
+export async function waitForBlocksLoad(page, expectedBlocksCount) {
+	console.log(`Waiting for ${expectedBlocksCount} blocks to load...`);
+	try {
+		await page.waitForFunction(
+			expectedCount => {
+				const editor = document.querySelector(
+					'.block-editor-block-list__layout'
+				);
+				if (!editor) {
+					console.log('Editor not found');
+					return false;
+				}
+				const blocks = editor.querySelectorAll('.maxi-block');
+				const loader = editor.querySelector(
+					'.maxi-blocks-content-loader__bar'
+				);
+
+				return (
+					(!loader || loader.offsetParent === null) &&
+					blocks.length >= expectedCount
+				);
+			},
+			{ timeout: BLOCKS_LOAD_TIMEOUT },
+			expectedBlocksCount
+		);
+		console.log('Blocks loaded successfully');
+	} catch (error) {
+		const blocks = await page.evaluate(() => {
 			const editor = document.querySelector(
 				'.block-editor-block-list__layout'
 			);
-			return (
-				(!loader || loader.offsetParent === null) &&
-				editor !== null &&
-				blocks.length >= expectedCount
-			);
-		},
-		{ timeout: maxWaitTime },
-		expectedBlocksCount
-	);
+			if (!editor) return 'Editor not found';
+			const blocks = editor.querySelectorAll('.maxi-block');
+			return blocks.length;
+		});
+		console.error(
+			`Timeout waiting for ${expectedBlocksCount} blocks to load, actual count: ${blocks}`
+		);
+		console.error(error);
+		throw error;
+	}
 }
 
 /**
@@ -188,7 +218,7 @@ export class PatternManager {
 		const searchParameters = {
 			q: patternName,
 			query_by: 'post_title',
-			filter_by: 'gutenberg_type:=Patterns',
+			filter_by: 'gutenberg_type:=[Patterns,Pages]',
 			sort_by: '_text_match:desc',
 			per_page: 1,
 		};

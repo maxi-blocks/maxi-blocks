@@ -97,6 +97,7 @@
 		"@wordpress/jest-preset-default": "latest",
 		"@wordpress/scripts": "27.9.0",
 		"css-minimizer-webpack-plugin": "latest",
+		"dotenv": "^16.4.5",
 		"dotenv-webpack": "latest",
 		"enzyme": "latest",
 		"eslint": "latest",

@@ -92,21 +92,6 @@ describe('Blocks performance', () => {
 									await page.waitForSelector('.is-selected');
 								},
 							},
-							reload: {
-								pre: async () => {
-									debugLog(`Saving draft for ${blockName}`);
-									await saveDraft();
-									await page.waitForTimeout(1000);
-								},
-								action: async () => {
-									debugLog(`Reloading page for ${blockName}`);
-									await page.reload();
-									debugLog(
-										`Waiting for blocks to load after reload for ${blockName}`
-									);
-									await waitForBlocksLoad(page, 1);
-								},
-							},
 						});
 
 						debugLog(`Saving measurements for ${blockName}`);

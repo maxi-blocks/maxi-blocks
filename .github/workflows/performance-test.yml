@@ -90,10 +90,10 @@ jobs:
               run: |
                   if [ "${{ steps.check_master_test.outputs.has_test }}" == "true" ]; then
                     echo "branch=master" >> $GITHUB_OUTPUT
-                    echo "results_file=bin/performance-results-master.json" >> $GITHUB_OUTPUT
+                    echo "results_file=performance-results-master.json" >> $GITHUB_OUTPUT
                   else
                     echo "branch=${{ github.head_ref }}" >> $GITHUB_OUTPUT
-                    echo "results_file=bin/performance-results-current-2.json" >> $GITHUB_OUTPUT
+                    echo "results_file=performance-results-current-2.json" >> $GITHUB_OUTPUT
                   fi
             - name: Checkout comparison branch
               uses: actions/checkout@v4

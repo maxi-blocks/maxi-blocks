@@ -12,11 +12,12 @@ import {
 	saveEventMeasurements,
 	waitForBlocksLoad,
 	PatternManager,
+	debugLog,
 } from './utils';
 import { PATTERNS, PERFORMANCE_TESTS_TIMEOUT, WARMUP_TIMEOUT } from './config';
 
 describe('Patterns performance', () => {
-	console.log('Starting Patterns performance tests');
+	console.info('Starting Patterns performance tests');
 
 	const patternManager = new PatternManager(page);
 
@@ -29,7 +30,7 @@ describe('Patterns performance', () => {
 			it(
 				`[${type}] ${patternName} performance`,
 				async () => {
-					console.log(
+					console.info(
 						`Starting test for pattern: ${patternName} (${type})`
 					);
 
@@ -39,7 +40,7 @@ describe('Patterns performance', () => {
 					const measurements = await performMeasurements({
 						insert: {
 							pre: async () => {
-								console.log(
+								debugLog(
 									`Preparing to insert pattern: ${patternName} (${type})`
 								);
 								const blocks = await page.evaluate(code => {
@@ -84,7 +85,7 @@ describe('Patterns performance', () => {
 								return { blocks, totalBlockCount };
 							},
 							action: async ({ blocks, totalBlockCount }) => {
-								console.log(
+								debugLog(
 									`Inserting pattern: ${patternName} (${type}) (Total blocks: ${totalBlockCount})`
 								);
 								await page.evaluate(blocks => {
@@ -98,7 +99,7 @@ describe('Patterns performance', () => {
 						},
 						reload: {
 							pre: async ({ totalBlockCount }) => {
-								console.log(
+								debugLog(
 									`Saving draft for pattern: ${patternName} (${type})`
 								);
 								await saveDraft();
@@ -106,24 +107,29 @@ describe('Patterns performance', () => {
 								return { totalBlockCount };
 							},
 							action: async ({ totalBlockCount }) => {
-								console.log(
+								debugLog(
 									`Reloading page for pattern: ${patternName} (${type})`
 								);
 								await page.reload();
 								await waitForBlocksLoad(page, totalBlockCount);
 								return { totalBlockCount };
 							},
+							post: async ({ totalBlockCount }) => {
+								debugLog(
+									`Finished reloading page for pattern: ${patternName} (${type})`
+								);
+							},
 						},
 					});
 
-					console.log(
+					debugLog(
 						`Saving measurements for pattern: ${patternName} (${type})`
 					);
 					saveEventMeasurements(
 						`${type}_${patternName}`,
 						measurements
 					);
-					console.log(
+					console.info(
 						`Finished test for pattern: ${patternName} (${type})`
 					);
 				},

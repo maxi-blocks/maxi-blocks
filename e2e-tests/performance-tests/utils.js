@@ -21,6 +21,14 @@ import fs from 'fs';
 import path from 'path';
 import { Client } from 'typesense';
 
+const DEBUG = process.env.DEBUG_PERF_TESTS === 'true';
+
+export function debugLog(...args) {
+	if (DEBUG) {
+		console.debug(...args);
+	}
+}
+
 /**
  * Wait for the blocks to load.
  *
@@ -29,7 +37,7 @@ import { Client } from 'typesense';
  * @param {number} maxWaitTime
  */
 export async function waitForBlocksLoad(page, expectedBlocksCount) {
-	console.log(`Waiting for ${expectedBlocksCount} blocks to load...`);
+	console.info(`Waiting for ${expectedBlocksCount} blocks to load...`);
 	try {
 		await page.waitForFunction(
 			expectedCount => {
@@ -53,7 +61,7 @@ export async function waitForBlocksLoad(page, expectedBlocksCount) {
 			{ timeout: BLOCKS_LOAD_TIMEOUT },
 			expectedBlocksCount
 		);
-		console.log('Blocks loaded successfully');
+		console.info('Blocks loaded successfully');
 	} catch (error) {
 		const blocks = await page.evaluate(() => {
 			const editor = document.querySelector(
@@ -98,13 +106,16 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 	);
 
 	for (let i = 0; i < iterations; i++) {
+		console.info(`Starting iteration ${i + 1} of ${iterations}`);
 		await createNewPost();
 		let context = {};
 		for (const [key, event] of Object.entries(events)) {
 			try {
 				if (event.pre) {
+					debugLog(`Pre-action for ${key}`);
 					context = await event.pre(context);
 				}
+				debugLog(`Measuring action for ${key}`);
 				const { time, context: newContext } = await measureSingleAction(
 					event.action,
 					context
@@ -112,6 +123,7 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 				results[key].times.push(time);
 				context = newContext;
 				if (event.post) {
+					debugLog(`Post-action for ${key}`);
 					context = await event.post(context);
 				}
 			} catch (error) {
@@ -136,6 +148,7 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
  * @param {Object<string, {times: number[], average: number}>} measurements
  */
 export function saveEventMeasurements(key, measurements) {
+	debugLog(`Saving measurements for ${key}`);
 	const resultsFileName = getResultsFileName();
 	const resultsFilePath = path.join(RESULTS_FILE_DIR, resultsFileName);
 
@@ -176,9 +189,12 @@ export function getCurrentHash() {
  * Warmup runs to stabilize the environment.
  */
 export async function warmupRun() {
+	console.info(`Starting warmup (${WARMUP_ITERATIONS} iterations)`);
 	for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+		debugLog(`Warmup iteration ${i + 1}`);
 		await createNewPost();
 	}
+	console.info('Warmup completed');
 }
 
 /**
@@ -215,6 +231,7 @@ export class PatternManager {
 	}
 
 	async searchPatternByName(patternName) {
+		debugLog(`Searching for pattern: ${patternName}`);
 		const searchParameters = {
 			q: patternName,
 			query_by: 'post_title',
@@ -242,10 +259,10 @@ export class PatternManager {
 	async getPatternCodeEditor(patternName) {
 		const pattern = await this.searchPatternByName(patternName);
 		if (pattern) {
-			console.log(`Pattern found: ${pattern.post_title}`);
+			debugLog(`Pattern found: ${pattern.post_title}`);
 			return pattern.gutenberg_code;
 		} else {
-			console.log(`Pattern not found: ${patternName}`);
+			console.warn(`Pattern not found: ${patternName}`);
 		}
 	}
 

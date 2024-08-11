@@ -12,6 +12,7 @@ import {
 	saveEventMeasurements,
 	warmupRun,
 	prepareInsertMaxiBlock,
+	debugLog,
 } from './utils';
 import {
 	BLOCKS_DATA,
@@ -20,7 +21,7 @@ import {
 } from './config';
 
 describe('Blocks performance', () => {
-	console.log('Starting Blocks performance tests');
+	console.info('Starting Blocks performance tests');
 
 	beforeEach(async () => {
 		await warmupRun();
@@ -31,13 +32,13 @@ describe('Blocks performance', () => {
 			it(
 				`${blockName} performance`,
 				async () => {
-					console.log(`Starting test for ${blockName}`);
+					console.info(`Starting test for ${blockName}`);
 
 					try {
 						const measurements = await performMeasurements({
 							insert: {
 								pre: async () => {
-									console.log(
+									debugLog(
 										`Preparing to insert ${blockName}`
 									);
 									const insertBlock =
@@ -48,7 +49,7 @@ describe('Blocks performance', () => {
 									return { insertBlock };
 								},
 								action: async ({ insertBlock }) => {
-									console.log(`Inserting ${blockName}`);
+									debugLog(`Inserting ${blockName}`);
 									await insertBlock();
 									await action?.(page);
 									await waitForBlocksLoad(page, 1);
@@ -56,18 +57,14 @@ describe('Blocks performance', () => {
 							},
 							reload: {
 								pre: async () => {
-									console.log(
-										`Saving draft for ${blockName}`
-									);
+									debugLog(`Saving draft for ${blockName}`);
 									await saveDraft();
 									await page.waitForTimeout(1000);
 								},
 								action: async () => {
-									console.log(
-										`Reloading page for ${blockName}`
-									);
+									debugLog(`Reloading page for ${blockName}`);
 									await page.reload();
-									console.log(
+									debugLog(
 										`Waiting for blocks to load after reload for ${blockName}`
 									);
 									await waitForBlocksLoad(page, 1);
@@ -75,7 +72,7 @@ describe('Blocks performance', () => {
 							},
 							select: {
 								pre: async () => {
-									console.log(
+									debugLog(
 										`Getting block client ID for ${blockName}`
 									);
 									const blocks = await page.evaluate(() =>
@@ -86,7 +83,7 @@ describe('Blocks performance', () => {
 									return { clientId: blocks[0].clientId };
 								},
 								action: async ({ clientId }) => {
-									console.log(`Selecting ${blockName}`);
+									debugLog(`Selecting ${blockName}`);
 									await page.evaluate(clientId => {
 										wp.data
 											.dispatch('core/block-editor')
@@ -95,11 +92,26 @@ describe('Blocks performance', () => {
 									await page.waitForSelector('.is-selected');
 								},
 							},
+							reload: {
+								pre: async () => {
+									debugLog(`Saving draft for ${blockName}`);
+									await saveDraft();
+									await page.waitForTimeout(1000);
+								},
+								action: async () => {
+									debugLog(`Reloading page for ${blockName}`);
+									await page.reload();
+									debugLog(
+										`Waiting for blocks to load after reload for ${blockName}`
+									);
+									await waitForBlocksLoad(page, 1);
+								},
+							},
 						});
 
-						console.log(`Saving measurements for ${blockName}`);
+						debugLog(`Saving measurements for ${blockName}`);
 						saveEventMeasurements(blockName, measurements);
-						console.log(`Finished test for ${blockName}`);
+						console.info(`Finished test for ${blockName}`);
 					} catch (error) {
 						console.error(`Error in test for ${blockName}:`, error);
 						throw error;

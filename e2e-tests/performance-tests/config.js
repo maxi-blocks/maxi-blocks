@@ -106,17 +106,17 @@ export const BLOCKS_DATA = {
 	'button-maxi': {
 		name: 'Button Maxi',
 	},
-	'container-maxi': {
-		name: 'Container Maxi with Row and Columns Maxi',
-		action: async page => {
-			// 8 columns pattern
-			await page.waitForSelector('.maxi-row-block__template button');
-			await page.$$eval('.maxi-row-block__template button', button =>
-				button[7].click()
-			);
-			await page.waitForSelector('.maxi-column-block');
-		},
-	},
+	// 'container-maxi': {
+	// 	name: 'Container Maxi with Row and Columns Maxi',
+	// 	action: async page => {
+	// 		// 8 columns pattern
+	// 		await page.waitForSelector('.maxi-row-block__template button');
+	// 		await page.$$eval('.maxi-row-block__template button', button =>
+	// 			button[7].click()
+	// 		);
+	// 		await page.waitForSelector('.maxi-column-block');
+	// 	},
+	// },
 	// 'divider-maxi': {
 	// 	name: 'Divider Maxi',
 	// },

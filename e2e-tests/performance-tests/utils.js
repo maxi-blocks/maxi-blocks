@@ -106,7 +106,7 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 	);
 
 	for (let i = 0; i < iterations; i++) {
-		console.info(`Starting iteration ${i + 1} of ${iterations}`);
+		debugLog(`Starting iteration ${i + 1} of ${iterations}`);
 		await createNewPost();
 		let context = {};
 		for (const [key, event] of Object.entries(events)) {

@@ -143,8 +143,30 @@ jobs:
                   echo "content<<EOF" >> $GITHUB_OUTPUT
                   cat bin/performance_comparison.md >> $GITHUB_OUTPUT
                   echo "EOF" >> $GITHUB_OUTPUT
-            - name: Create comment with performance results
-              uses: peter-evans/create-or-update-comment@v3
+            - name: Find Comment
+              uses: peter-evans/find-comment@v2
+              id: fc
               with:
                   issue-number: ${{ github.event.pull_request.number }}
-                  body: ${{ steps.read_comparison.outputs.content }}
+                  comment-author: 'github-actions[bot]'
+                  body-includes: Performance Test Results
+            - name: Create or update comment
+              uses: peter-evans/create-or-update-comment@v3
+              with:
+                  comment-id: ${{ steps.fc.outputs.comment-id }}
+                  issue-number: ${{ github.event.pull_request.number }}
+                  body: |
+                      ## Performance Test Results
+                      ${{ steps.read_comparison.outputs.content }}
+                  edit-mode: replace
+            - name: Upload current results
+              uses: actions/upload-artifact@v4
+              with:
+                  name: current-performance-results
+                  path: ${{ steps.current_test.outputs.current_results }}
+
+            - name: Upload comparison results
+              uses: actions/upload-artifact@v4
+              with:
+                  name: comparison-performance-results
+                  path: ${{ steps.comparison_test.outputs.comparison_results }}

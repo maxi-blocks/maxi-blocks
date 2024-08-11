@@ -156,7 +156,7 @@ class ResultWriter {
 	}
 
 	generateMarkdown() {
-		let markdown = `# Performance Comparison: ${this.results.file1} vs ${this.results.file2}\n\n`;
+		let markdown = '';
 
 		for (const comparison of this.results.comparisons) {
 			if (comparison.warning) {

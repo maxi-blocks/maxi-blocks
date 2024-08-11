@@ -100,6 +100,7 @@ jobs:
               uses: actions/checkout@v4
               with:
                   ref: ${{ steps.determine_branch.outputs.branch }}
+                  clean: false
             - name: Cache comparison results
               uses: actions/cache@v3
               id: cache-comparison-results
@@ -109,12 +110,16 @@ jobs:
                   key: ${{ runner.os }}-performance-${{ steps.determine_branch.outputs.branch }}-${{ github.sha }}
                   restore-keys: |
                       ${{ runner.os }}-performance-${{ steps.determine_branch.outputs.branch }}-
+            - name: Install dependencies for comparison branch
+              if: steps.cache-comparison-results.outputs.cache-hit != 'true'
+              run: npm install --legacy-peer-deps
+            - name: Build comparison branch
+              if: steps.cache-comparison-results.outputs.cache-hit != 'true'
+              run: npm run build
             - name: Run performance test on comparison branch
               id: comparison_test
               if: steps.cache-comparison-results.outputs.cache-hit != 'true'
               run: |
-                  npm install --legacy-peer-deps
-                  npm run build
                   npm run test:performance
                   HASH=$(git rev-parse --short HEAD)
                   mv bin/performance-results-$HASH.json ${{ steps.determine_branch.outputs.results_file }}

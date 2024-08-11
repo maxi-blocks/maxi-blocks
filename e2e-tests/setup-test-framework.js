@@ -219,26 +219,6 @@ function observeConsoleLogging() {
 		)
 			return;
 
-		if (
-			text.includes(
-				"Blocked attempt to show a 'beforeunload' confirmation panel"
-			)
-		) {
-			return;
-		}
-		if (text.includes('Request failed due to "ECONNABORTED timeout')) {
-			console.warn('Network request timeout:', text);
-			return;
-		}
-
-		if (
-			text.includes('Sleeping for') &&
-			text.includes('and then retrying request')
-		) {
-			console.warn('Retrying request:', text);
-			return;
-		}
-
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
 
 		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of

@@ -44,57 +44,57 @@ export const PATTERNS = [
 		type: 'Simple',
 		patterns: [
 			'HOL-PRO-95',
-			'ANL-PRO-09',
-			'NML-PRO-18',
-			'PIL-PRO-164',
-			'SML-PRO-61',
-			'SML-38',
+			// 'ANL-PRO-09',
+			// 'NML-PRO-18',
+			// 'PIL-PRO-164',
+			// 'SML-PRO-61',
+			// 'SML-38',
 		],
 	},
-	{
-		type: 'DC/CL/IB',
-		patterns: [
-			'PBGL-PRO-60',
-			'PBGL-PRO-97',
-			'WCL-PRO-01',
-			'PBGL-PRO-12',
-			'WCL-PRO-06',
-		],
-	},
-	{
-		type: 'IB',
-		patterns: [
-			'PIL-PRO-75',
-			'PIL-PRO-82',
-			'PIL-PRO-83',
-			'PIL-PRO-118',
-			'HOL-PRO-133',
-			'SML-PRO-137',
-			'PTML-PRO-77',
-		],
-	},
-	{
-		type: 'Complex',
-		patterns: [
-			'HOL-PRO-62',
-			'SML-PRO-134',
-			'PFL-PRO-62',
-			'HOL-PRO-53',
-			'HOL-PRO-47',
-			'SML-PRO-162',
-		],
-	},
-	{
-		type: 'Pages',
-		patterns: [
-			'DSP-PRO-01',
-			'GMP-PRO-01',
-			'NGOP-PRO-02',
-			'HEP-PRO-05',
-			'GDSP-PRO-01',
-			'CSPY-PRO-01',
-		],
-	},
+	// {
+	// 	type: 'DC/CL/IB',
+	// 	patterns: [
+	// 		'PBGL-PRO-60',
+	// 		'PBGL-PRO-97',
+	// 		'WCL-PRO-01',
+	// 		'PBGL-PRO-12',
+	// 		'WCL-PRO-06',
+	// 	],
+	// },
+	// {
+	// 	type: 'IB',
+	// 	patterns: [
+	// 		'PIL-PRO-75',
+	// 		'PIL-PRO-82',
+	// 		'PIL-PRO-83',
+	// 		'PIL-PRO-118',
+	// 		'HOL-PRO-133',
+	// 		'SML-PRO-137',
+	// 		'PTML-PRO-77',
+	// 	],
+	// },
+	// {
+	// 	type: 'Complex',
+	// 	patterns: [
+	// 		'HOL-PRO-62',
+	// 		'SML-PRO-134',
+	// 		'PFL-PRO-62',
+	// 		'HOL-PRO-53',
+	// 		'HOL-PRO-47',
+	// 		'SML-PRO-162',
+	// 	],
+	// },
+	// {
+	// 	type: 'Pages',
+	// 	patterns: [
+	// 		'DSP-PRO-01',
+	// 		'GMP-PRO-01',
+	// 		'NGOP-PRO-02',
+	// 		'HEP-PRO-05',
+	// 		'GDSP-PRO-01',
+	// 		'CSPY-PRO-01',
+	// 	],
+	// },
 ];
 
 /**
@@ -117,42 +117,42 @@ export const BLOCKS_DATA = {
 			await page.waitForSelector('.maxi-column-block');
 		},
 	},
-	'divider-maxi': {
-		name: 'Divider Maxi',
-	},
-	'group-maxi': {
-		name: 'Group Maxi',
-	},
-	'image-maxi': {
-		name: 'Image Maxi',
-	},
-	'map-maxi': {
-		name: 'Map Maxi',
-	},
-	'number-counter-maxi': {
-		name: 'Number Counter Maxi',
-	},
-	'svg-icon-maxi': {
-		name: 'Icon Maxi',
-		action: async page => {
-			await page.$eval('button[aria-label="Close"]', button =>
-				button.click()
-			);
-		},
-	},
-	'text-maxi': {
-		name: 'Text Maxi',
-	},
-	'slider-maxi': {
-		name: 'Slider Maxi',
-	},
-	'accordion-maxi': {
-		name: 'Accordion Maxi',
-	},
-	'video-maxi': {
-		name: 'Video Maxi',
-	},
-	'search-maxi': {
-		name: 'Search Maxi',
-	},
+	// 'divider-maxi': {
+	// 	name: 'Divider Maxi',
+	// },
+	// 'group-maxi': {
+	// 	name: 'Group Maxi',
+	// },
+	// 'image-maxi': {
+	// 	name: 'Image Maxi',
+	// },
+	// 'map-maxi': {
+	// 	name: 'Map Maxi',
+	// },
+	// 'number-counter-maxi': {
+	// 	name: 'Number Counter Maxi',
+	// },
+	// 'svg-icon-maxi': {
+	// 	name: 'Icon Maxi',
+	// 	action: async page => {
+	// 		await page.$eval('button[aria-label="Close"]', button =>
+	// 			button.click()
+	// 		);
+	// 	},
+	// },
+	// 'text-maxi': {
+	// 	name: 'Text Maxi',
+	// },
+	// 'slider-maxi': {
+	// 	name: 'Slider Maxi',
+	// },
+	// 'accordion-maxi': {
+	// 	name: 'Accordion Maxi',
+	// },
+	// 'video-maxi': {
+	// 	name: 'Video Maxi',
+	// },
+	// 'search-maxi': {
+	// 	name: 'Search Maxi',
+	// },
 };

@@ -358,7 +358,6 @@ if (!class_exists('MaxiBlocks_API')):
                     'business_name' => get_option('maxi_ai_business_name'),
                     'business_info' => get_option('maxi_ai_business_info'),
                 ],
-                'bunny_fonts' => get_option('bunny_fonts'),
 
                 'core' => [
                     'version' => $wp_version,

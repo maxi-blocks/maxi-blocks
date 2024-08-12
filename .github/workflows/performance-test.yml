@@ -63,7 +63,8 @@ jobs:
             - name: Check for performance test on master
               id: check_master_test
               run: |
-                  if [ -f "package.json" ] && grep -q "test:performance" package.json; then
+                  git fetch origin master:master
+                  if git show master:package.json | grep -q "test:performance"; then
                     echo "has_master_test=true" >> $GITHUB_OUTPUT
                   else
                     echo "has_master_test=false" >> $GITHUB_OUTPUT

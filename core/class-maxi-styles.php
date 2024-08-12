@@ -81,9 +81,16 @@ class MaxiBlocks_Styles
 
         $this->max_execution_time = ini_get('max_execution_time');
         if (!get_option('maxi_blocks_sc_fonts_migration_done')) {
-            // Migrate fonts
-            $this->migrate_sc_fonts();
+            if (!wp_next_scheduled('maxi_blocks_migrate_sc_fonts')) {
+                // Schedule the migration to run in the background
+                wp_schedule_single_event(time(), 'maxi_blocks_migrate_sc_fonts');
+                error_log('Scheduling migration');
+            }
+
         }
+
+        add_action('maxi_blocks_migrate_sc_fonts', [$this, 'run_migrate_sc_fonts']);
+
     }
 
     private function should_apply_content_filter()
@@ -2431,8 +2438,15 @@ class MaxiBlocks_Styles
         }
     }
 
+    public function run_migrate_sc_fonts()
+    {
+        error_log('run_migrate_sc_fonts');
+        $this->migrate_sc_fonts();
+    }
+
     private function migrate_sc_fonts()
     {
+        error_log('migrate_sc_fonts');
         $style_cards = new MaxiBlocks_StyleCards();
         $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
 
@@ -2463,6 +2477,7 @@ class MaxiBlocks_Styles
         $chunk_size = 1000; // Adjust the chunk size as needed
 
         foreach ($unique_font_families as $font_name) {
+            error_log('font_name: ' . $font_name);
             $offset = 0;
 
             do {
@@ -2473,25 +2488,35 @@ class MaxiBlocks_Styles
                     $offset
                 );
                 $results = $wpdb->get_results($query);
+                error_log("Processing chunk for font_name: $font_name, offset: $offset, chunk_size: $chunk_size, results count: " . count($results));
 
                 foreach ($results as $row) {
                     $text_levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button'];
                     $block_styles = ['-dark-', '-light-'];
 
-                    foreach ($text_levels as $text_level) {
-                        if (strpos($row->css_value, ' ' . $text_level) !== false) {
-                            foreach ($block_styles as $block_style) {
-                                if (strpos($row->css_value, $block_style) !== false) {
-                                    $new_font_name = 'sc_font_' . str_replace('-', '', $block_style) . '_' . ($text_level);
-                                    $new_fonts_value = str_replace($font_name, $new_font_name, $row->fonts_value);
+                    foreach ($block_styles as $block_style) {
+                        $text_level_found = false;
 
-                                    $wpdb->update(
-                                        $db_css_table_name,
-                                        ['fonts_value' => $new_fonts_value],
-                                        ['id' => $row->id]
-                                    );
-                                }
+                        foreach ($text_levels as $text_level) {
+                            if (strpos($row->css_value, ' ' . $text_level) !== false) {
+                                $new_font_name = 'sc_font_' . str_replace('-', '', $block_style) . '_' . ($text_level);
+                                $text_level_found = true;
+                                break;
                             }
+                        }
+
+                        if (!$text_level_found) {
+                            $new_font_name = 'sc_font_' . str_replace('-', '', $block_style) . '_p';
+                        }
+
+                        if (strpos($row->fonts_value, $font_name) !== false) {
+                            $new_fonts_value = str_replace($font_name, $new_font_name, $row->fonts_value);
+                            $update_result = $wpdb->update(
+                                $db_css_table_name,
+                                ['fonts_value' => $new_fonts_value],
+                                ['id' => $row->id]
+                            );
+                            error_log("Updated row ID: $row->id, font_name: $font_name, new_font_name: $new_font_name, update_result: $update_result");
                         }
                     }
                 }
@@ -2500,5 +2525,6 @@ class MaxiBlocks_Styles
             } while (count($results) === $chunk_size);
         }
         update_option('maxi_blocks_sc_fonts_migration_done', true);
+        error_log('migrate_sc_fonts done');
     }
 }

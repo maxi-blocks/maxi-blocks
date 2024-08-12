@@ -451,6 +451,11 @@ class edit extends MaxiBlockComponent {
 										<CaptionToolbar
 											key={`caption-toolbar-${uniqueID}`}
 											ref={this.textRef}
+											setShowLoader={value =>
+												this.setState({
+													showLoader: value,
+												})
+											}
 											{...this.props}
 										/>
 										{dcStatus ? (
@@ -553,6 +558,11 @@ class edit extends MaxiBlockComponent {
 										<CaptionToolbar
 											key={`caption-toolbar-${uniqueID}`}
 											ref={this.textRef}
+											setShowLoader={value =>
+												this.setState({
+													showLoader: value,
+												})
+											}
 											{...this.props}
 										/>
 										{dcStatus ? (

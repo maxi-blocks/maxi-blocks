@@ -230,6 +230,9 @@ class edit extends MaxiBlockComponent {
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
 					disableCustomFormats={dcStatus && dcField !== 'static_text'}
+					setShowLoader={value =>
+						this.setState({ showLoader: value })
+					}
 				/>
 				<MaxiBlock
 					key={`maxi-text--${uniqueID}`}

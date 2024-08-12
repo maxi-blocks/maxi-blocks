@@ -14,6 +14,11 @@ export const WARMUP_ITERATIONS = 5;
 export const WARMUP_TIMEOUT = 10000 * WARMUP_ITERATIONS;
 
 /**
+ * Cool down time between iterations.
+ */
+export const COOL_DOWN_TIME = 1000;
+
+/**
  * Number of iterations to perform for each action.
  */
 export const ITERATIONS = 5;

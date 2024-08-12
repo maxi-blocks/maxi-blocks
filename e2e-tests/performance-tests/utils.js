@@ -12,6 +12,7 @@ import {
 	RESULTS_FILE_DIR,
 	RESULTS_FILE_NAME,
 	WARMUP_ITERATIONS,
+	COOL_DOWN_TIME,
 } from './config';
 
 /**
@@ -82,15 +83,22 @@ export async function waitForBlocksLoad(page, expectedBlocksCount) {
 /**
  * Measure the time it takes to perform a single action.
  *
+ * @param {Page} page
  * @param {Function} action
  * @param {any} context
  * @returns {Object<string, any>} { time: number, context: Any }
  */
-export async function measureSingleAction(action, context) {
-	const start = performance.now();
+export async function measureSingleAction(page, action, context) {
+	const startMetrics = await page.metrics();
 	const newContext = await action(context);
-	const end = performance.now();
-	return { time: end - start, context: newContext };
+	const endMetrics = await page.metrics();
+
+	const duration = endMetrics.TaskDuration - startMetrics.TaskDuration;
+
+	return {
+		time: duration,
+		context: newContext,
+	};
 }
 
 /**
@@ -102,7 +110,7 @@ export async function measureSingleAction(action, context) {
 function removeOutliers(times) {
 	const sorted = times.sort((a, b) => a - b);
 	const q1 = sorted[Math.floor(sorted.length / 4)];
-	const q3 = sorted[Math.floor((3 * sorted.length) / 4)];
+	const q3 = sorted[Math.ceil((sorted.length * 3) / 4)];
 	const iqr = q3 - q1;
 	const lowerBound = q1 - 1.5 * iqr;
 	const upperBound = q3 + 1.5 * iqr;
@@ -133,6 +141,7 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 				}
 				debugLog(`Measuring action for ${key}`);
 				const { time, context: newContext } = await measureSingleAction(
+					page,
 					event.action,
 					context
 				);
@@ -148,6 +157,7 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 			}
 		}
 		debugLog(`Iteration ${i + 1} completed`);
+		await page.waitForTimeout(COOL_DOWN_TIME);
 	}
 
 	for (const key in results) {
@@ -175,38 +185,36 @@ export function saveEventMeasurements(key, measurements) {
 	let results = {};
 	try {
 		fs.mkdirSync(RESULTS_FILE_DIR, { recursive: true });
+		const newFilePath = getNewFilePath(resultsFilePath);
+
 		if (fs.existsSync(resultsFilePath)) {
 			results = JSON.parse(fs.readFileSync(resultsFilePath, 'utf8'));
 			const backupPath = getBackupFilePath(resultsFilePath);
 			fs.copyFileSync(resultsFilePath, backupPath);
 			debugLog(`Backup created: ${backupPath}`);
 		}
+
 		results[key] = measurements;
-		fs.writeFileSync(resultsFilePath, JSON.stringify(results, null, 2));
+		fs.writeFileSync(newFilePath, JSON.stringify(results, null, 2));
+		debugLog(`Results saved to: ${newFilePath}`);
 	} catch (error) {
 		console.error('Error saving measurements:', error);
 	}
 }
 
-/**
- * Get a backup file path for the results file.
- *
- * @param {string} originalPath
- * @returns {string}
- */
-function getBackupFilePath(originalPath) {
+function getNewFilePath(originalPath) {
 	const dir = path.dirname(originalPath);
 	const ext = path.extname(originalPath);
 	const baseName = path.basename(originalPath, ext);
 	let counter = 1;
-	let backupPath;
+	let newPath;
 
 	do {
-		backupPath = path.join(dir, `${baseName}_backup${counter}${ext}`);
+		newPath = path.join(dir, `${baseName}-${counter}${ext}`);
 		counter++;
-	} while (fs.existsSync(backupPath));
+	} while (fs.existsSync(newPath));
 
-	return backupPath;
+	return newPath;
 }
 
 /**

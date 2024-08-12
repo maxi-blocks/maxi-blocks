@@ -2,10 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 class PerformanceComparator {
-	constructor(file1, file2, threshold, showAllDetails) {
+	constructor(file1, file2, threshold, percentThreshold, showAllDetails) {
 		this.file1 = file1;
 		this.file2 = file2;
 		this.threshold = threshold;
+		this.percentThreshold = percentThreshold;
 		this.showAllDetails = showAllDetails;
 		this.results = {
 			file1: path.basename(file1),
@@ -23,9 +24,13 @@ class PerformanceComparator {
 	}
 
 	compareDataSets(data1, data2) {
-		return Object.entries(data1)
-			.map(([block, metrics]) =>
-				this.compareDataBlock(block, metrics, data2[block])
+		const allBlocks = new Set([
+			...Object.keys(data1),
+			...Object.keys(data2),
+		]);
+		return Array.from(allBlocks)
+			.map(block =>
+				this.compareDataBlock(block, data1[block], data2[block])
 			)
 			.filter(
 				comparison =>
@@ -34,6 +39,18 @@ class PerformanceComparator {
 	}
 
 	compareDataBlock(block, metrics1, metrics2) {
+		if (!metrics1 && !metrics2) {
+			return {
+				block,
+				warning: `${block} is not present in either file.`,
+			};
+		}
+		if (!metrics1) {
+			return {
+				block,
+				warning: `${block} is not present in the first file.`,
+			};
+		}
 		if (!metrics2) {
 			return {
 				block,
@@ -48,9 +65,13 @@ class PerformanceComparator {
 	}
 
 	compareMetrics(metrics1, metrics2) {
-		return Object.entries(metrics1)
-			.map(([metric, values]) =>
-				this.compareMetric(metric, values, metrics2[metric])
+		const allMetrics = new Set([
+			...Object.keys(metrics1),
+			...Object.keys(metrics2),
+		]);
+		return Array.from(allMetrics)
+			.map(metric =>
+				this.compareMetric(metric, metrics1[metric], metrics2[metric])
 			)
 			.filter(
 				metricComparison =>
@@ -60,11 +81,20 @@ class PerformanceComparator {
 	}
 
 	compareMetric(metric, values1, values2) {
+		if (!values1 || !values2) {
+			return {
+				metric,
+				status: 'missing',
+				statusEmoji: '❓',
+				warning: `Metric ${metric} is missing in one of the files.`,
+			};
+		}
+
 		const oldMedian = values1.median;
 		const newMedian = values2.median;
 		const diff = newMedian - oldMedian;
 		const percentChange = oldMedian !== 0 ? (diff / oldMedian) * 100 : 0;
-		const status = this.determineStatus(diff);
+		const status = this.determineStatus(diff, percentChange);
 
 		return {
 			metric,
@@ -73,13 +103,15 @@ class PerformanceComparator {
 			diff,
 			percentChange,
 			...status,
-			oldTimes: values1.times,
-			newTimes: values2.times,
 		};
 	}
 
-	determineStatus(diff) {
-		if (Math.abs(diff) <= this.threshold) {
+	determineStatus(diff, percentChange) {
+		console.log(diff, this.threshold);
+		if (
+			Math.abs(diff) <= this.threshold ||
+			Math.abs(percentChange) <= this.percentThreshold
+		) {
 			return { status: 'unchanged', statusEmoji: '➖' };
 		}
 		return diff > 0
@@ -150,25 +182,30 @@ class ResultWriter {
 	generateMarkdown() {
 		let markdown = this.generateDescription();
 
-		for (const comparison of this.results.comparisons) {
-			if (comparison.warning) {
-				markdown += `## ⚠️ ${comparison.block}\n\n${comparison.warning}\n\n`;
-			} else {
-				markdown += `## ${comparison.block}\n\n`;
-				markdown += `| Metric | Old Median (ms) | New Median (ms) | Difference (ms) | Change (%) | Status |\n`;
-				markdown += `|--------|-----------------|-----------------|-----------------|------------|--------|\n`;
-				for (const metric of comparison.metrics) {
-					markdown += `| ${
-						metric.metric
-					} | ${metric.oldMedian.toFixed(
-						2
-					)} | ${metric.newMedian.toFixed(2)} | ${metric.diff.toFixed(
-						2
-					)} | ${metric.percentChange.toFixed(2)}% | ${
-						metric.statusEmoji
-					} ${metric.status} |\n`;
+		if (this.results.comparisons.length === 0) {
+			markdown += `## No significant changes detected.\n\n`;
+		} else {
+			markdown += `| Block | Metric | Old Median (ms) | New Median (ms) | Difference (ms) | Change (%) | Status |\n`;
+			markdown += `|-------|--------|-----------------|-----------------|-----------------|------------|--------|\n`;
+
+			for (const comparison of this.results.comparisons) {
+				if (comparison.warning) {
+					markdown += `| ${comparison.block} | ⚠️ | | | | | ${comparison.warning} |\n`;
+				} else {
+					for (const metric of comparison.metrics) {
+						markdown += `| ${comparison.block} | ${
+							metric.metric
+						} | ${metric.oldMedian.toFixed(
+							2
+						)} | ${metric.newMedian.toFixed(
+							2
+						)} | ${metric.diff.toFixed(
+							2
+						)} | ${metric.percentChange.toFixed(2)}% | ${
+							metric.statusEmoji
+						} ${metric.status} |\n`;
+					}
 				}
-				markdown += '\n';
 			}
 		}
 
@@ -203,7 +240,8 @@ class ArgumentParser {
 		const parsedArgs = {
 			file1: null,
 			file2: null,
-			threshold: 100,
+			threshold: 0.02, // ms
+			percentThreshold: 3, // %
 			showAllDetails: false,
 		};
 
@@ -223,6 +261,15 @@ class ArgumentParser {
 						);
 					}
 					parsedArgs.threshold = thresholdValue;
+					break;
+				case '--percentThreshold':
+					const percentThresholdValue = parseFloat(args[++i]);
+					if (Number.isNaN(percentThresholdValue)) {
+						throw new Error(
+							'Invalid percentThreshold value. Must be a number.'
+						);
+					}
+					parsedArgs.percentThreshold = percentThresholdValue;
 					break;
 				case '--showAllDetails':
 					const showAllDetailsValue = args[++i].toLowerCase();
@@ -256,6 +303,7 @@ function main() {
 			args.file1,
 			args.file2,
 			args.threshold,
+			args.percentThreshold,
 			args.showAllDetails
 		);
 		const results = comparator.compare();
@@ -271,7 +319,7 @@ function main() {
 	} catch (error) {
 		console.error(`Error: ${error.message}`);
 		console.log(
-			'Usage: node compare-performance.js --file1 <file1> --file2 <file2> [--threshold <number>] [--showAllDetails <boolean>]'
+			'Usage: node compare-performance.js --file1 <file1> --file2 <file2> [--threshold <number>] [--percentThreshold <number>] [--showAllDetails <boolean>]'
 		);
 		process.exit(1);
 	}

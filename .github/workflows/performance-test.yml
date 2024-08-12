@@ -13,7 +13,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                  fetch-depth: 2
+                  fetch-depth: 0
             - name: Setup Node.js
               uses: actions/setup-node@v3
               with:
@@ -54,27 +54,13 @@ jobs:
               run: |
                   chmod -R 767 ./
                   npm run wp-env start
-            - name: Cache performance results
-              uses: actions/cache@v3
-              id: cache-results
-              with:
-                  path: |
-                      ${{ runner.temp }}/performance_results
-                  key: ${{ runner.os }}-performance-${{ github.sha }}
-                  restore-keys: |
-                      ${{ runner.os }}-performance-
             - name: Run performance test on current branch
               id: current_test
-              if: steps.cache-results.outputs.cache-hit != 'true'
               run: |
-                  CURRENT_HASH=$(git rev-parse --short HEAD)
                   npm run test:performance
                   mkdir -p $RUNNER_TEMP/performance_results
-                  mv bin/performance-results-$CURRENT_HASH.json $RUNNER_TEMP/performance_results/performance-results-current.json
+                  mv bin/performance-results.json $RUNNER_TEMP/performance_results/performance-results-current.json
                   echo "current_results=$RUNNER_TEMP/performance_results/performance-results-current.json" >> $GITHUB_OUTPUT
-            - name: Set current results path from cache
-              if: steps.cache-results.outputs.cache-hit == 'true'
-              run: echo "current_results=$RUNNER_TEMP/performance_results/performance-results-${{ github.sha }}.json" >> $GITHUB_OUTPUT
             - name: Checkout master branch
               uses: actions/checkout@v4
               with:
@@ -101,6 +87,7 @@ jobs:
               uses: actions/checkout@v4
               with:
                   ref: ${{ steps.determine_branch.outputs.branch }}
+                  fetch-depth: 0
             - name: Recreate .env file
               run: |
                   cat << EOF > .env
@@ -108,33 +95,17 @@ jobs:
                   REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}
                   REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}
                   EOF
-            - name: Cache comparison results
-              uses: actions/cache@v3
-              id: cache-comparison-results
-              with:
-                  path: |
-                      ${{ runner.temp }}/performance_results
-                  key: ${{ runner.os }}-performance-${{ steps.determine_branch.outputs.branch }}-${{ github.sha }}
-                  restore-keys: |
-                      ${{ runner.os }}-performance-${{ steps.determine_branch.outputs.branch }}-
             - name: Install dependencies for comparison branch
-              if: steps.cache-comparison-results.outputs.cache-hit != 'true'
               run: npm install --legacy-peer-deps
             - name: Build comparison branch
-              if: steps.cache-comparison-results.outputs.cache-hit != 'true'
               run: npm run build
             - name: Run performance test on comparison branch
               id: comparison_test
-              if: steps.cache-comparison-results.outputs.cache-hit != 'true'
               run: |
                   npm run test:performance
-                  HASH=$(git rev-parse --short HEAD)
                   mkdir -p $RUNNER_TEMP/performance_results
-                  mv bin/performance-results-$HASH.json $RUNNER_TEMP/performance_results/${{ steps.determine_branch.outputs.results_file }}
+                  mv bin/performance-results.json $RUNNER_TEMP/performance_results/${{ steps.determine_branch.outputs.results_file }}
                   echo "comparison_results=$RUNNER_TEMP/performance_results/${{ steps.determine_branch.outputs.results_file }}" >> $GITHUB_OUTPUT
-            - name: Set comparison results path from cache
-              if: steps.cache-comparison-results.outputs.cache-hit == 'true'
-              run: echo "comparison_results=$RUNNER_TEMP/performance_results/${{ steps.determine_branch.outputs.results_file }}" >> $GITHUB_OUTPUT
             - name: Compare performance results
               run: npm run compare-performance -- --file1 ${{ steps.current_test.outputs.current_results }} --file2 ${{ steps.comparison_test.outputs.comparison_results }}
             - name: Read comparison results

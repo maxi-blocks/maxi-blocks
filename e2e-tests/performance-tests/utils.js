@@ -6,11 +6,11 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { execSync } from 'child_process';
 import {
 	BLOCKS_LOAD_TIMEOUT,
 	ITERATIONS,
 	RESULTS_FILE_DIR,
+	RESULTS_FILE_NAME,
 	WARMUP_ITERATIONS,
 } from './config';
 
@@ -150,14 +150,16 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
  */
 export function saveEventMeasurements(key, measurements) {
 	debugLog(`Saving measurements for ${key}`);
-	const resultsFileName = getResultsFileName();
-	const resultsFilePath = path.join(RESULTS_FILE_DIR, resultsFileName);
+	const resultsFilePath = path.join(RESULTS_FILE_DIR, RESULTS_FILE_NAME);
 
 	let results = {};
 	try {
 		fs.mkdirSync(RESULTS_FILE_DIR, { recursive: true });
 		if (fs.existsSync(resultsFilePath)) {
 			results = JSON.parse(fs.readFileSync(resultsFilePath, 'utf8'));
+			const backupPath = getBackupFilePath(resultsFilePath);
+			fs.copyFileSync(resultsFilePath, backupPath);
+			debugLog(`Backup created: ${backupPath}`);
 		}
 		results[key] = measurements;
 		fs.writeFileSync(resultsFilePath, JSON.stringify(results, null, 2));
@@ -167,23 +169,24 @@ export function saveEventMeasurements(key, measurements) {
 }
 
 /**
- * Generate the results file name with the current branch
+ * Get a backup file path for the results file.
+ *
+ * @param {string} originalPath
+ * @returns {string}
  */
-export function getResultsFileName() {
-	const hash = getCurrentHash();
-	return `performance-results-${hash}.json`;
-}
+function getBackupFilePath(originalPath) {
+	const dir = path.dirname(originalPath);
+	const ext = path.extname(originalPath);
+	const baseName = path.basename(originalPath, ext);
+	let counter = 1;
+	let backupPath;
 
-/**
- * Get the current git hash
- */
-export function getCurrentHash() {
-	try {
-		return execSync('git rev-parse --short HEAD').toString().trim();
-	} catch (error) {
-		console.error('Error getting git hash:', error);
-		return 'unknown';
-	}
+	do {
+		backupPath = path.join(dir, `${baseName}_backup${counter}${ext}`);
+		counter++;
+	} while (fs.existsSync(backupPath));
+
+	return backupPath;
 }
 
 /**

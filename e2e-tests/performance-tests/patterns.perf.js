@@ -97,29 +97,24 @@ describe('Patterns performance', () => {
 								return { totalBlockCount };
 							},
 						},
-						reload: {
-							pre: async ({ totalBlockCount }) => {
-								debugLog(
-									`Saving draft for pattern: ${patternName} (${type})`
-								);
-								await saveDraft();
-								await page.waitForTimeout(1000);
-								return { totalBlockCount };
-							},
-							action: async ({ totalBlockCount }) => {
-								debugLog(
-									`Reloading page for pattern: ${patternName} (${type})`
-								);
-								await page.reload();
-								await waitForBlocksLoad(page, totalBlockCount);
-								return { totalBlockCount };
-							},
-							post: async ({ totalBlockCount }) => {
-								debugLog(
-									`Finished reloading page for pattern: ${patternName} (${type})`
-								);
-							},
-						},
+						// reload: {
+						// 	pre: async ({ totalBlockCount }) => {
+						// 		debugLog(
+						// 			`Saving draft for pattern: ${patternName} (${type})`
+						// 		);
+						// 		await saveDraft();
+						// 		await page.waitForTimeout(1000);
+						// 		return { totalBlockCount };
+						// 	},
+						// 	action: async ({ totalBlockCount }) => {
+						// 		debugLog(
+						// 			`Reloading page for pattern: ${patternName} (${type})`
+						// 		);
+						// 		await page.reload();
+						// 		await waitForBlocksLoad(page, totalBlockCount);
+						// 		return { totalBlockCount };
+						// 	},
+						// },
 					});
 
 					debugLog(

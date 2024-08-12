@@ -20,7 +20,7 @@ $coreClasses = [
     'blocks/utils/get_all_fonts',
 ];
 
-foreach($coreClasses as $coreClass) {
+foreach ($coreClasses as $coreClass) {
     require_once MAXI_PLUGIN_DIR_PATH . 'core/' . $coreClass . '.php';
 }
 
@@ -49,7 +49,6 @@ class MaxiBlocks_Styles
 
     protected $max_execution_time;
 
-
     /**
      * Constructor
      */
@@ -58,24 +57,42 @@ class MaxiBlocks_Styles
         global $wpdb;
         $table_name = $wpdb->prefix . 'maxi_blocks_styles';
 
-        add_filter('duplicate_post_new_post', [$this, 'update_post_unique_ids'], 10, 2);
+        add_filter(
+            'duplicate_post_new_post',
+            [$this, 'update_post_unique_ids'],
+            10,
+            2,
+        );
 
-        if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) == $table_name) {
-            add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
+        if (
+            $wpdb->get_var(
+                $wpdb->prepare('SHOW TABLES LIKE %s', $table_name),
+            ) == $table_name
+        ) {
+            add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']); // legacy code
         }
 
-        if(self::should_apply_content_filter()) {
-            add_filter('wp_enqueue_scripts', [$this, 'process_content_frontend']);
+        if (self::should_apply_content_filter()) {
+            add_filter('wp_enqueue_scripts', [
+                $this,
+                'process_content_frontend',
+            ]);
         }
 
         $this->max_execution_time = ini_get('max_execution_time');
-
+        if (!get_option('maxi_blocks_sc_fonts_migration_done')) {
+            // Migrate fonts
+            $this->migrate_sc_fonts();
+        }
     }
 
     private function should_apply_content_filter()
     {
         // Check if the REQUEST_URI contains context=edit
-        if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'context=edit') !== false) {
+        if (
+            isset($_SERVER['REQUEST_URI']) &&
+            strpos($_SERVER['REQUEST_URI'], 'context=edit') !== false
+        ) {
             return false; // Do not apply the filter for this context
         }
 
@@ -108,16 +125,24 @@ class MaxiBlocks_Styles
 
     public function enqueue_styles()
     {
-
         $post_id = $this->get_id();
         $post_content = $this->get_content(false, $post_id);
         $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
 
         $template_id = $this->get_id(true);
         $template_content = $this->get_content(true, $template_id);
-        $this->apply_content('maxi-blocks-styles-templates', $template_content, $template_id);
+        $this->apply_content(
+            'maxi-blocks-styles-templates',
+            $template_content,
+            $template_id,
+        );
 
-        if ($this->need_custom_meta([['content' => $post_content], ['content' => $template_content, 'is_template' => true]])) {
+        if (
+            $this->need_custom_meta([
+                ['content' => $post_content],
+                ['content' => $template_content, 'is_template' => true],
+            ])
+        ) {
             $scripts = [
                 'hover-effects',
                 'bg-video',
@@ -130,7 +155,7 @@ class MaxiBlocks_Styles
                 'search',
                 'map',
                 'accordion',
-                'slider'
+                'slider',
             ];
 
             $template_parts = $this->get_template_parts($template_content);
@@ -142,7 +167,7 @@ class MaxiBlocks_Styles
                     str_replace(
                         ' ',
                         '',
-                        ucwords(str_replace('-', ' ', $script))
+                        ucwords(str_replace('-', ' ', $script)),
                     );
                 $js_script_name = 'maxi-' . $script;
                 $js_script_path = '//js//min//' . $js_script_name . '.min.js';
@@ -154,11 +179,22 @@ class MaxiBlocks_Styles
 
                 if ($template_parts && !empty($template_parts)) {
                     foreach ($template_parts as $template_part_id) {
-                        $template_parts_meta = array_merge($template_parts_meta, $this->custom_meta($js_var, true, $template_part_id));
+                        $template_parts_meta = array_merge(
+                            $template_parts_meta,
+                            $this->custom_meta(
+                                $js_var,
+                                true,
+                                $template_part_id,
+                            ),
+                        );
                     }
                 }
 
-                $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
+                $meta = array_merge(
+                    $post_meta,
+                    $template_meta,
+                    $template_parts_meta,
+                );
 
                 if (!empty($meta)) {
                     if ($script === 'number-counter') {
@@ -166,23 +202,27 @@ class MaxiBlocks_Styles
                             'maxi-waypoints-js',
                             plugins_url(
                                 '/js/waypoints.min.js',
-                                dirname(__FILE__)
+                                dirname(__FILE__),
                             ),
-                            array(),
+                            [],
                             MAXI_PLUGIN_VERSION,
-                            true
+                            true,
                         );
                     }
 
                     wp_enqueue_script(
                         $js_script_name,
                         plugins_url($js_script_path, dirname(__FILE__)),
-                        array(),
+                        [],
                         MAXI_PLUGIN_VERSION,
-                        true
+                        true,
                     );
 
-                    wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
+                    wp_localize_script(
+                        $js_script_name,
+                        $js_var_to_pass,
+                        $this->get_block_data($js_var, $meta),
+                    );
                 }
             }
         }
@@ -212,10 +252,7 @@ class MaxiBlocks_Styles
          * template parts (header and footer).
          */
         $theme_name = $this->get_template_name();
-        return [
-            $theme_name . '//header',
-            $theme_name . '//footer',
-        ];
+        return [$theme_name . '//header', $theme_name . '//footer'];
     }
 
     /**
@@ -242,7 +279,10 @@ class MaxiBlocks_Styles
             if ($fonts) {
                 $this->enqueue_fonts($fonts, $name);
             }
-        } elseif ($this->get_template_name() === 'maxi-theme' && $is_template_part) {
+        } elseif (
+            $this->get_template_name() === 'maxi-theme' &&
+            $is_template_part
+        ) {
             do_action('maxi_enqueue_template_styles', $name, $id, $is_template);
         }
 
@@ -251,8 +291,14 @@ class MaxiBlocks_Styles
 
             if ($template_parts && !empty($template_parts)) {
                 foreach ($template_parts as $template_part) {
-                    $template_part_name = 'maxi-blocks-style-templates-' . @end(explode('//', $template_part, 2));
-                    $this->apply_content($template_part_name, $this->get_content(true, $template_part), $template_part);
+                    $template_part_name =
+                        'maxi-blocks-style-templates-' .
+                        @end(explode('//', $template_part, 2));
+                    $this->apply_content(
+                        $template_part_name,
+                        $this->get_content(true, $template_part),
+                        $template_part,
+                    );
                 }
             }
         }
@@ -278,13 +324,15 @@ class MaxiBlocks_Styles
         $template_id = $this->get_template_name() . '//';
 
         if ($template_slug != '' && $template_slug !== false) {
-            if(is_search()) {
+            if (is_search()) {
                 $template_id .= 'search';
             } else {
                 $template_id .= $template_slug;
             }
         } elseif (is_home() || is_front_page()) {
-            $block_templates = get_block_templates(['slug__in' => ['index', 'front-page', 'home']]);
+            $block_templates = get_block_templates([
+                'slug__in' => ['index', 'front-page', 'home'],
+            ]);
 
             $has_front_page_and_home = count($block_templates) > 2;
 
@@ -292,7 +340,12 @@ class MaxiBlocks_Styles
                 if (is_home() && !is_front_page()) {
                     $template_id .= 'home';
                 } else {
-                    $template_id .= in_array('front-page', array_column($block_templates, 'slug')) ? 'front-page' : 'home';
+                    $template_id .= in_array(
+                        'front-page',
+                        array_column($block_templates, 'slug'),
+                    )
+                        ? 'front-page'
+                        : 'home';
                 }
             } else {
                 // Arrived here, means we are probably trying to get index.php; so if the slug is not coming from $block_templates,
@@ -338,7 +391,7 @@ class MaxiBlocks_Styles
     /**
      * Legacy function
      * Get need custom meta
-    */
+     */
     public function need_custom_meta($contents)
     {
         $need_custom_meta = false;
@@ -351,8 +404,10 @@ class MaxiBlocks_Styles
 
                 if ($content) {
                     if (
-                        ((isset($content['prev_active_custom_data']) && (int) $content['prev_active_custom_data'] === 1) ||
-                        (isset($content['active_custom_data']) && (int) $content['active_custom_data'] === 1))
+                        (isset($content['prev_active_custom_data']) &&
+                            (int) $content['prev_active_custom_data'] === 1) ||
+                        (isset($content['active_custom_data']) &&
+                            (int) $content['active_custom_data'] === 1)
                     ) {
                         $need_custom_meta = true;
                         break;
@@ -364,8 +419,19 @@ class MaxiBlocks_Styles
 
                     if ($template_parts) {
                         foreach ($template_parts as $template_part) {
-                            $template_part_content = $this->get_content(true, $template_part);
-                            if ($template_part_content && $this->need_custom_meta([['content' => $template_part_content, 'is_template_part' => true]])) {
+                            $template_part_content = $this->get_content(
+                                true,
+                                $template_part,
+                            );
+                            if (
+                                $template_part_content &&
+                                $this->need_custom_meta([
+                                    [
+                                        'content' => $template_part_content,
+                                        'is_template_part' => true,
+                                    ],
+                                ])
+                            ) {
                                 $need_custom_meta = true;
                                 break;
                             }
@@ -401,18 +467,18 @@ class MaxiBlocks_Styles
             $content_array = (array) $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_templates WHERE template_id = %s",
-                    $id
+                    $id,
                 ),
-                OBJECT
+                OBJECT,
             );
         } else {
             // Prepare and execute the query for posts
             $content_array = (array) $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
-                    $id
+                    $id,
                 ),
-                OBJECT
+                OBJECT,
             );
         }
 
@@ -436,9 +502,16 @@ class MaxiBlocks_Styles
     public function get_meta($id, $is_template = false)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'maxi_blocks_custom_data' . ($is_template ? '_templates' : '');
+        $table_name =
+            $wpdb->prefix .
+            'maxi_blocks_custom_data' .
+            ($is_template ? '_templates' : '');
 
-        if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) == $table_name) {
+        if (
+            $wpdb->get_var(
+                $wpdb->prepare('SHOW TABLES LIKE %s', $table_name),
+            ) == $table_name
+        ) {
             global $post;
 
             if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
@@ -451,18 +524,18 @@ class MaxiBlocks_Styles
                 $response = $wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_templates WHERE template_id = %s",
-                        $id
+                        $id,
                     ),
-                    OBJECT
+                    OBJECT,
                 );
             } else {
                 // Prepare and execute the query for posts
                 $response = $wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id = %d",
-                        $id
+                        $id,
                     ),
-                    OBJECT
+                    OBJECT,
                 );
             }
 
@@ -472,7 +545,6 @@ class MaxiBlocks_Styles
 
             return $response;
         }
-
     }
 
     /**
@@ -481,7 +553,6 @@ class MaxiBlocks_Styles
      */
     public function get_styles($content)
     {
-
         $style =
             is_preview() || is_admin()
                 ? $content['prev_css_value']
@@ -502,7 +573,7 @@ class MaxiBlocks_Styles
      */
     public function get_fonts($content)
     {
-        if(!isset($content['fonts_value'])) {
+        if (!isset($content['fonts_value'])) {
             return false;
         }
         $fonts =
@@ -523,7 +594,6 @@ class MaxiBlocks_Styles
      */
     public function get_breakpoints($breakpoints)
     {
-
         // TODO: It may connect to the API to centralize the default values there
         return (object) [
             'xs' => 480,
@@ -565,7 +635,6 @@ class MaxiBlocks_Styles
      */
     public function enqueue_fonts($fonts, $name)
     {
-
         if (empty($fonts) || !is_array($fonts)) {
             return;
         }
@@ -573,7 +642,9 @@ class MaxiBlocks_Styles
         foreach ($fonts as $font => $values) {
             foreach ($values as $attribute => $value) {
                 if (is_array($value)) {
-                    $fonts[$font][$attribute] = array_values(array_unique($value))[0];
+                    $fonts[$font][$attribute] = array_values(
+                        array_unique($value),
+                    )[0];
                 }
             }
         }
@@ -597,16 +668,29 @@ class MaxiBlocks_Styles
                 $text_level = $split_font[1];
 
                 if (class_exists('MaxiBlocks_StyleCards')) {
-                    $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level);
-                    @list($font, $font_weights, $font_styles) = $sc_fonts;
+                    $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts(
+                        $block_style,
+                        $text_level,
+                    );
+                    @[$font, $font_weights, $font_styles] = $sc_fonts;
                 }
 
-                if (isset($font_data['weight']) && !in_array($font_data['weight'], $font_weights)) {
-                    $font_weights = [[...$font_weights, intval($font_data['weight'])]];
+                if (
+                    isset($font_data['weight']) &&
+                    !in_array($font_data['weight'], $font_weights)
+                ) {
+                    $font_weights = [
+                        [...$font_weights, intval($font_data['weight'])],
+                    ];
                 }
 
-                if (isset($font_data['style']) && !in_array($font_data['style'], $font_styles)) {
-                    $font_styles = [[...$font_styles, intval($font_data['style'])]];
+                if (
+                    isset($font_data['style']) &&
+                    !in_array($font_data['style'], $font_styles)
+                ) {
+                    $font_styles = [
+                        [...$font_styles, intval($font_data['style'])],
+                    ];
                 }
             }
 
@@ -616,7 +700,7 @@ class MaxiBlocks_Styles
                         $font_name_sanitized = str_replace(
                             ' ',
                             '',
-                            strtolower($font)
+                            strtolower($font),
                         );
                         $font_url =
                             wp_upload_dir()['baseurl'] .
@@ -631,7 +715,7 @@ class MaxiBlocks_Styles
                         $local_fonts = new MaxiBlocks_Local_Fonts();
                         $font_url = $local_fonts->generateFontURL(
                             $font_url,
-                            $font_data
+                            $font_data,
                         );
                     }
 
@@ -639,21 +723,25 @@ class MaxiBlocks_Styles
                         if ($font_url) {
                             if ($this->check_font_url($font_url)) {
                                 wp_enqueue_style(
-                                    $name . '-font-' . sanitize_title_with_dashes($font),
+                                    $name .
+                                        '-font-' .
+                                        sanitize_title_with_dashes($font),
                                     $font_url,
-                                    array(),
+                                    [],
                                     MAXI_PLUGIN_VERSION,
-                                    'all'
+                                    'all',
                                 );
                             }
                         }
                     } else {
                         if ($font_url) {
                             wp_enqueue_style(
-                                $name . '-font-' . sanitize_title_with_dashes($font),
+                                $name .
+                                    '-font-' .
+                                    sanitize_title_with_dashes($font),
                                 $font_url,
-                                array(),
-                                MAXI_PLUGIN_VERSION
+                                [],
+                                MAXI_PLUGIN_VERSION,
                             );
                         }
                     }
@@ -671,7 +759,7 @@ class MaxiBlocks_Styles
                         $font_name_sanitized = str_replace(
                             ' ',
                             '',
-                            strtolower($font)
+                            strtolower($font),
                         );
                         $font_url =
                             wp_upload_dir()['baseurl'] .
@@ -682,37 +770,44 @@ class MaxiBlocks_Styles
                         $font_url = "https://fonts.googleapis.com/css2?family=$font";
                     }
 
-
                     if ($font_url && !$use_local_fonts) {
                         $font_url .= ':';
                     }
 
                     foreach ($font_weights as $font_weight) {
-                        if(!$font_weight) {
+                        if (!$font_weight) {
                             continue;
                         }
 
                         foreach ($font_styles as $font_style) {
-                            if(!is_array($font_weight)) {
-                                $font_weight = [ $font_weight ];
+                            if (!is_array($font_weight)) {
+                                $font_weight = [$font_weight];
                             }
 
                             $already_loaded = false;
 
-                            if (in_array(
-                                [
-                                    'font' => $font,
-                                    'font_weight' => $font_weight,
-                                    'font_style' => $font_style,
-                                ],
-                                $loaded_fonts
-                            )) {
+                            if (
+                                in_array(
+                                    [
+                                        'font' => $font,
+                                        'font_weight' => $font_weight,
+                                        'font_style' => $font_style,
+                                    ],
+                                    $loaded_fonts,
+                                )
+                            ) {
                                 $already_loaded = true;
                             }
 
                             foreach ($font_weight as $weight) {
                                 foreach ($loaded_fonts as $loaded_font) {
-                                    if (in_array($weight, $loaded_font['font_weight']) && $loaded_font['font'] === $font) {
+                                    if (
+                                        in_array(
+                                            $weight,
+                                            $loaded_font['font_weight'],
+                                        ) &&
+                                        $loaded_font['font'] === $font
+                                    ) {
                                         $already_loaded = true;
                                     }
                                 }
@@ -731,7 +826,7 @@ class MaxiBlocks_Styles
                                 $local_fonts = new MaxiBlocks_Local_Fonts();
                                 $font_url = $local_fonts->generateFontURL(
                                     $font_url,
-                                    $font_data
+                                    $font_data,
                                 );
                             }
 
@@ -745,39 +840,63 @@ class MaxiBlocks_Styles
                                 $font_weight = implode('-', $font_weight);
                             }
 
-                            if(is_array($font_style)) {
+                            if (is_array($font_style)) {
                                 $font_style = implode('-', $font_style);
                             }
 
                             if (!$use_local_fonts) {
-
                                 if ($font_url) {
                                     if ($this->check_font_url($font_url)) {
                                         wp_enqueue_style(
-                                            $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
+                                            $name .
+                                                '-font-' .
+                                                sanitize_title_with_dashes(
+                                                    $font .
+                                                        '-' .
+                                                        $font_weight .
+                                                        '-' .
+                                                        $font_style,
+                                                ),
                                             $font_url,
-                                            array(),
+                                            [],
                                             MAXI_PLUGIN_VERSION,
-                                            'all'
+                                            'all',
                                         );
-                                    } else {  // Load default font weight for cases where the saved font weight doesn't exist
-                                        $font_url = strstr($font_url, ':wght', true);
-                                        wp_enqueue_style(
-                                            $name . '-font-' . sanitize_title_with_dashes($font),
+                                    } else {
+                                        // Load default font weight for cases where the saved font weight doesn't exist
+                                        $font_url = strstr(
                                             $font_url,
-                                            array(),
+                                            ':wght',
+                                            true,
+                                        );
+                                        wp_enqueue_style(
+                                            $name .
+                                                '-font-' .
+                                                sanitize_title_with_dashes(
+                                                    $font,
+                                                ),
+                                            $font_url,
+                                            [],
                                             MAXI_PLUGIN_VERSION,
-                                            'all'
+                                            'all',
                                         );
                                     }
                                 }
                             } else {
                                 if ($font_url) {
                                     wp_enqueue_style(
-                                        $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
+                                        $name .
+                                            '-font-' .
+                                            sanitize_title_with_dashes(
+                                                $font .
+                                                    '-' .
+                                                    $font_weight .
+                                                    '-' .
+                                                    $font_style,
+                                            ),
                                         $font_url,
-                                        array(),
-                                        MAXI_PLUGIN_VERSION
+                                        [],
+                                        MAXI_PLUGIN_VERSION,
                                     );
                                 }
                             }
@@ -791,21 +910,26 @@ class MaxiBlocks_Styles
             add_filter(
                 'style_loader_tag',
                 function ($html, $handle) {
-                    if (strpos($handle, 'maxi-blocks-styles-font-') !== false || strpos($handle, 'maxi-blocks-style-templates-header-font-') !== false) {
+                    if (
+                        strpos($handle, 'maxi-blocks-styles-font-') !== false ||
+                        strpos(
+                            $handle,
+                            'maxi-blocks-style-templates-header-font-',
+                        ) !== false
+                    ) {
                         $html = str_replace(
                             "rel='stylesheet'",
                             "rel='stylesheet preload'",
-                            $html
+                            $html,
                         );
                     }
                     return $html;
                 },
                 10,
-                2
+                2,
             );
         }
     }
-
 
     /**
      * Legacy function
@@ -814,7 +938,10 @@ class MaxiBlocks_Styles
     public function custom_meta($metaJs, $is_template = false, $id = null)
     {
         global $post;
-        if ((!$is_template && (!$post || !isset($post->ID))) || empty($metaJs)) {
+        if (
+            (!$is_template && (!$post || !isset($post->ID))) ||
+            empty($metaJs)
+        ) {
             return [];
         }
 
@@ -844,7 +971,7 @@ class MaxiBlocks_Styles
 
         // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects and slider meta
         if (in_array($metaJs, ['bg_video', 'scroll_effects', 'slider'])) {
-            return [ true ];
+            return [true];
         }
 
         if (!is_array($result_decoded) || empty($result_decoded)) {
@@ -863,9 +990,9 @@ class MaxiBlocks_Styles
             $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
-                    'sc_string'
-                )
-            )
+                    'sc_string',
+                ),
+            ),
         );
 
         if (!$style_card) {
@@ -921,7 +1048,7 @@ class MaxiBlocks_Styles
             $color_sc_value = substr(
                 $style_card,
                 $start_pos + strlen($color_key) + 1,
-                $end_pos - $start_pos - strlen($color_key) - 1
+                $end_pos - $start_pos - strlen($color_key) - 1,
             );
 
             if ($color_sc_value !== $color_value) {
@@ -943,7 +1070,7 @@ class MaxiBlocks_Styles
                 $new_style = str_replace(
                     $old_color_str,
                     $new_color_str,
-                    $new_style
+                    $new_style,
                 );
             }
 
@@ -951,7 +1078,7 @@ class MaxiBlocks_Styles
             $new_style = preg_replace(
                 '/,\d+\)\),(\d+(\.\d+)?\))/',
                 ',$1',
-                $new_style
+                $new_style,
             );
 
             return $new_style;
@@ -964,36 +1091,60 @@ class MaxiBlocks_Styles
      */
     public function set_home_to_front_page($post_id, $post, $update)
     {
-        if (!($post->post_type === 'wp_template' && $post->post_name === 'front-page' && !$update)) {
+        if (
+            !(
+                $post->post_type === 'wp_template' &&
+                $post->post_name === 'front-page' &&
+                !$update
+            )
+        ) {
             return;
         }
 
         global $wpdb;
 
         if (class_exists('MaxiBlocks_API')) {
-            $home_id =  $this->get_template_name() . '//' . 'home';
+            $home_id = $this->get_template_name() . '//' . 'home';
             $home_content = $this->get_content(true, $home_id);
 
             $front_page_id = $this->get_template_name() . '//' . 'front-page';
 
             $api = new MaxiBlocks_API();
 
-            $styles = isset($home_content['css_value']) && is_string($home_content['css_value']) ? $home_content['css_value'] : '';
-            $fonts_value = isset($home_content['fonts_value']) && is_string($home_content['fonts_value']) ? json_decode($home_content['fonts_value'], true) : [];
-            $template_parts = isset($home_content['template_parts']) && is_array($home_content['template_parts']) ? $home_content['template_parts'] : [];
+            $styles =
+                isset($home_content['css_value']) &&
+                is_string($home_content['css_value'])
+                    ? $home_content['css_value']
+                    : '';
+            $fonts_value =
+                isset($home_content['fonts_value']) &&
+                is_string($home_content['fonts_value'])
+                    ? json_decode($home_content['fonts_value'], true)
+                    : [];
+            $template_parts =
+                isset($home_content['template_parts']) &&
+                is_array($home_content['template_parts'])
+                    ? $home_content['template_parts']
+                    : [];
 
-            $api->post_maxi_blocks_styles([
-                'id' => $front_page_id,
-                'meta' => [
-                    'styles' => $styles,
-                    'fonts' => [$fonts_value],
+            $api->post_maxi_blocks_styles(
+                [
+                    'id' => $front_page_id,
+                    'meta' => [
+                        'styles' => $styles,
+                        'fonts' => [$fonts_value],
+                    ],
+                    'isTemplate' => true,
+                    'templateParts' => $template_parts,
+                    'update' => true,
                 ],
-                'isTemplate' => true,
-                'templateParts' => $template_parts,
-                'update' => true,
-            ], false);
+                false,
+            );
 
-            ['table' => $table, 'where_clause' => $where_clause] = $api->get_query_params('maxi_blocks_custom_data', true);
+            [
+                'table' => $table,
+                'where_clause' => $where_clause,
+            ] = $api->get_query_params('maxi_blocks_custom_data', true);
 
             $table = sanitize_text_field($table);
             $where_clause = sanitize_text_field($where_clause);
@@ -1002,17 +1153,20 @@ class MaxiBlocks_Styles
             $home_custom_data = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT * FROM {$table} WHERE {$where_clause}",
-                    $home_id
+                    $home_id,
                 ),
-                OBJECT
+                OBJECT,
             );
 
-            $api->set_maxi_blocks_current_custom_data([
-                'id' => $front_page_id,
-                'data' => $home_custom_data[0]->custom_data_value,
-                'isTemplate' => true,
-                'update' => true,
-            ], false);
+            $api->set_maxi_blocks_current_custom_data(
+                [
+                    'id' => $front_page_id,
+                    'data' => $home_custom_data[0]->custom_data_value,
+                    'isTemplate' => true,
+                    'update' => true,
+                ],
+                false,
+            );
         }
     }
 
@@ -1030,21 +1184,23 @@ class MaxiBlocks_Styles
         });
     }
 
-
     /**
      * Processing content for blocks
      * @return string
      */
     public function process_content_frontend()
     {
-
         $post_id = $this->get_id();
 
-        $content_meta_fonts = $this->get_content_meta_fonts_frontend($post_id, 'maxi-blocks-styles');
+        $content_meta_fonts = $this->get_content_meta_fonts_frontend(
+            $post_id,
+            'maxi-blocks-styles',
+        );
 
         if ($content_meta_fonts['meta'] !== null) {
-
-            $meta_filtered = $this->filter_recursive($content_meta_fonts['meta']);
+            $meta_filtered = $this->filter_recursive(
+                $content_meta_fonts['meta'],
+            );
             $this->process_scripts($meta_filtered);
         }
     }
@@ -1058,10 +1214,14 @@ class MaxiBlocks_Styles
      */
     private function get_content_meta_fonts_frontend($id, $content_key)
     {
-
         $data = $this->get_content_for_blocks_frontend($id);
 
-        if(!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
+        if (
+            !empty($data) &&
+            isset($data['content']) &&
+            isset($data['meta']) &&
+            isset($data['fonts'])
+        ) {
             $this->apply_content($content_key, $data['content'], $id);
             $this->enqueue_fonts($data['fonts'], $content_key);
 
@@ -1073,7 +1233,6 @@ class MaxiBlocks_Styles
         }
         return ['content' => null, 'meta' => null, 'fonts' => null];
     }
-
 
     /**
      * Process scripts
@@ -1111,7 +1270,9 @@ class MaxiBlocks_Styles
 
         foreach ($scripts as $script) {
             $js_var = str_replace('-', '_', $script);
-            $js_var_to_pass = 'maxi' . str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
+            $js_var_to_pass =
+                'maxi' .
+                str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
             $js_script_name = 'maxi-' . $script;
             $js_script_path = '//js//min//' . $js_script_name . '.min.js';
             //$js_script_path = '//js//' . $js_script_name . '.js';
@@ -1120,18 +1281,26 @@ class MaxiBlocks_Styles
             $template_meta = $this->custom_meta($js_var, true);
             $meta_to_pass = [];
 
-            $meta = array_merge_recursive($post_meta, $block_meta, $template_meta);
+            $meta = array_merge_recursive(
+                $post_meta,
+                $block_meta,
+                $template_meta,
+            );
             $match = false;
             $block_names = [];
 
             foreach ($meta as $key => $value) {
-                if(str_contains($key, $script)) {
+                if (str_contains($key, $script)) {
                     $match = true;
                     $block_names[] = $key;
                 } else {
-                    if(is_array($value) && in_array($script, $script_attr)) {
+                    if (is_array($value) && in_array($script, $script_attr)) {
                         foreach ($value as $k => $v) {
-                            if(gettype($v) === 'string' && (str_contains($v, $script) || str_contains($v, $js_var))) {
+                            if (
+                                gettype($v) === 'string' &&
+                                (str_contains($v, $script) ||
+                                    str_contains($v, $js_var))
+                            ) {
                                 $match = true;
                                 $block_names[] = $key;
                             }
@@ -1142,44 +1311,76 @@ class MaxiBlocks_Styles
 
             if ($match) {
                 foreach ($block_names as $block_name) {
-                    if(!str_contains($block_name, 'maxi-blocks')) {
+                    if (!str_contains($block_name, 'maxi-blocks')) {
                         continue;
                     }
-                    if($script === 'relations') {
+                    if ($script === 'relations') {
                         foreach ($meta[$block_name] as $json) {
                             if (is_string($json)) {
                                 $array = json_decode($json, true);
                                 if (isset($array['relations'])) {
-                                    $meta_to_pass = array_merge($meta_to_pass, $array['relations']);  // Add the 'relations' value to the new array
+                                    $meta_to_pass = array_merge(
+                                        $meta_to_pass,
+                                        $array['relations'],
+                                    ); // Add the 'relations' value to the new array
                                 }
                             }
                         }
-                    } elseif($script === 'navigation') {
+                    } elseif ($script === 'navigation') {
                         foreach ($meta[$block_name] as $json) {
                             if (is_string($json)) {
                                 $array = json_decode($json, true);
                                 if (isset($array['navigation'])) {
-                                    $block_style = $array['navigation']['style'];
-                                    $overwrite_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'overwrite-mobile');
-                                    if($overwrite_mobile) {
-                                        $always_show_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'always-show-mobile');
-                                        $show_mobile_down_from = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, 'navigation', 'show-mobile-down-from');
-                                        $meta[$block_name]['navigation']['always-show-mobile'] = $always_show_mobile;
-                                        $meta[$block_name]['navigation']['show-mobile-down-from'] = $show_mobile_down_from;
+                                    $block_style =
+                                        $array['navigation']['style'];
+                                    $overwrite_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name(
+                                        $block_style,
+                                        'navigation',
+                                        'overwrite-mobile',
+                                    );
+                                    if ($overwrite_mobile) {
+                                        $always_show_mobile = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name(
+                                            $block_style,
+                                            'navigation',
+                                            'always-show-mobile',
+                                        );
+                                        $show_mobile_down_from = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name(
+                                            $block_style,
+                                            'navigation',
+                                            'show-mobile-down-from',
+                                        );
+                                        $meta[$block_name]['navigation'][
+                                            'always-show-mobile'
+                                        ] = $always_show_mobile;
+                                        $meta[$block_name]['navigation'][
+                                            'show-mobile-down-from'
+                                        ] = $show_mobile_down_from;
                                     }
 
-                                    $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);
+                                    $meta_to_pass = array_merge(
+                                        $meta_to_pass,
+                                        $meta[$block_name],
+                                    );
                                 }
                             }
                         }
                     } else {
-                        $meta_to_pass = array_merge($meta_to_pass, $meta[$block_name]);
+                        $meta_to_pass = array_merge(
+                            $meta_to_pass,
+                            $meta[$block_name],
+                        );
                     }
-
                 }
 
-                if(!empty($meta_to_pass)) {
-                    $this->enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta_to_pass);
+                if (!empty($meta_to_pass)) {
+                    $this->enqueue_script_per_block(
+                        $script,
+                        $js_script_name,
+                        $js_script_path,
+                        $js_var_to_pass,
+                        $js_var,
+                        $meta_to_pass,
+                    );
                 }
             }
         }
@@ -1195,12 +1396,25 @@ class MaxiBlocks_Styles
      * @param  array $meta
      * @return void
      */
-    private function enqueue_script_per_block($script, $js_script_name, $js_script_path, $js_var_to_pass, $js_var, $meta)
-    {
+    private function enqueue_script_per_block(
+        $script,
+        $js_script_name,
+        $js_script_path,
+        $js_var_to_pass,
+        $js_var,
+        $meta
+    ) {
         if ($script === 'number-counter') {
-            wp_enqueue_script('maxi-waypoints-js', plugins_url('/js/waypoints.min.js', dirname(__FILE__)), [], MAXI_PLUGIN_VERSION, array(
-                'strategy'  => 'defer', 'in_footer' => true
-                ));
+            wp_enqueue_script(
+                'maxi-waypoints-js',
+                plugins_url('/js/waypoints.min.js', dirname(__FILE__)),
+                [],
+                MAXI_PLUGIN_VERSION,
+                [
+                    'strategy' => 'defer',
+                    'in_footer' => true,
+                ],
+            );
         }
 
         $strategy = 'defer';
@@ -1210,16 +1424,26 @@ class MaxiBlocks_Styles
             $strategy = 'async';
         }
 
-        wp_enqueue_script($js_script_name, plugins_url($js_script_path, dirname(__FILE__)), [], $version, array(
-            'strategy'  => $strategy, 'in_footer' => true
-            ));
-        wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
+        wp_enqueue_script(
+            $js_script_name,
+            plugins_url($js_script_path, dirname(__FILE__)),
+            [],
+            $version,
+            [
+                'strategy' => $strategy,
+                'in_footer' => true,
+            ],
+        );
+        wp_localize_script(
+            $js_script_name,
+            $js_var_to_pass,
+            $this->get_block_data($js_var, $meta),
+        );
 
         // Add prefetch link for the script
         $prefetch_url = plugins_url($js_script_path, dirname(__FILE__));
         echo "<link rel='prefetch' href='$prefetch_url' as='script'>";
     }
-
 
     /**
      * Check if block needs custom meta
@@ -1234,11 +1458,11 @@ class MaxiBlocks_Styles
         $active_custom_data = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT active_custom_data FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                $unique_id
-            )
+                $unique_id,
+            ),
         );
 
-        return (bool)$active_custom_data;
+        return (bool) $active_custom_data;
     }
 
     /**
@@ -1249,8 +1473,15 @@ class MaxiBlocks_Styles
      * @param string &$prev_styles
      * @param array &$active_custom_data_array
      */
-    public function process_block_frontend(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array, bool &$gutenberg_blocks_status, string $maxi_block_style = '')
-    {
+    public function process_block_frontend(
+        array $block,
+        array &$fonts,
+        string &$styles,
+        string &$prev_styles,
+        array &$active_custom_data_array,
+        bool &$gutenberg_blocks_status,
+        string $maxi_block_style = ''
+    ) {
         global $wpdb;
 
         $block_name = $block['blockName'] ?? '';
@@ -1258,69 +1489,103 @@ class MaxiBlocks_Styles
         $unique_id = $props['uniqueID'] ?? null;
         $is_core_block = str_starts_with($block_name, 'core/');
 
-        if($gutenberg_blocks_status && $is_core_block && $maxi_block_style) {
+        if ($gutenberg_blocks_status && $is_core_block && $maxi_block_style) {
             $level = $props['level'] ?? null;
             $text_level = null;
 
-            if($block_name === 'core/button') {
+            if ($block_name === 'core/button') {
                 $text_level = 'button';
-            } elseif($block_name === 'core/navigation') {
+            } elseif ($block_name === 'core/navigation') {
                 $text_level = 'navigation';
-                $remove_hover_underline = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($maxi_block_style, 'navigation', 'remove-hover-underline');
-                if($remove_hover_underline) {
-                    $styles .= ' .maxi-blocks--active .maxi-container-block .wp-block-navigation ul li a:hover { text-decoration: none; }';
+                $remove_hover_underline = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name(
+                    $maxi_block_style,
+                    'navigation',
+                    'remove-hover-underline',
+                );
+                if ($remove_hover_underline) {
+                    $styles .=
+                        ' .maxi-blocks--active .maxi-container-block .wp-block-navigation ul li a:hover { text-decoration: none; }';
                 }
-            } elseif($level) {
+            } elseif ($level) {
                 $text_level = 'h' . $level;
             } else {
                 $text_level = 'p';
             }
 
-            $fonts_array = get_all_fonts([], false, false, $text_level, $maxi_block_style, false);
+            $fonts_array = get_all_fonts(
+                [],
+                false,
+                false,
+                $text_level,
+                $maxi_block_style,
+                false,
+            );
             $fonts = array_merge($fonts, $fonts_array);
         }
 
-        if(!$maxi_block_style && str_starts_with($block_name, 'maxi-blocks/')) {
+        if (
+            !$maxi_block_style &&
+            str_starts_with($block_name, 'maxi-blocks/')
+        ) {
             $maxi_block_style = $props['blockStyle'] ?? 'light';
         }
 
         if (empty($props) || !isset($unique_id) || !$unique_id) {
             if (!empty($block['innerBlocks'])) {
                 foreach ($block['innerBlocks'] as $innerBlock) {
-                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                    $this->process_block_frontend(
+                        $innerBlock,
+                        $fonts,
+                        $styles,
+                        $prev_styles,
+                        $active_custom_data_array,
+                        $gutenberg_blocks_status,
+                        $maxi_block_style,
+                    );
                 }
             } else {
                 return;
             }
-
         }
 
         $content_array_block = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                $unique_id
+                $unique_id,
             ),
-            ARRAY_A
+            ARRAY_A,
         );
-
-
 
         $content_block = $content_array_block[0] ?? null;
 
         if (!isset($content_block) || empty($content_block)) {
             if (!empty($block['innerBlocks'])) {
                 foreach ($block['innerBlocks'] as $innerBlock) {
-                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                    $this->process_block_frontend(
+                        $innerBlock,
+                        $fonts,
+                        $styles,
+                        $prev_styles,
+                        $active_custom_data_array,
+                        $gutenberg_blocks_status,
+                        $maxi_block_style,
+                    );
                 }
             } else {
                 return;
             }
-
         }
 
         if (isset($content_block['css_value'])) {
-            if($block_name === 'maxi-blocks/container-maxi' && $props['isFirstOnHierarchy'] && strpos($content_block['css_value'], 'min-width:100%') !== false) {
-                if(self::$active_theme === 2023 || self::$active_theme === 2024) {
+            if (
+                $block_name === 'maxi-blocks/container-maxi' &&
+                $props['isFirstOnHierarchy'] &&
+                strpos($content_block['css_value'], 'min-width:100%') !== false
+            ) {
+                if (
+                    self::$active_theme === 2023 ||
+                    self::$active_theme === 2024
+                ) {
                     $new_styles = "body.maxi-blocks--active .has-global-padding > #$unique_id {
 					margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
 					margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
@@ -1328,7 +1593,7 @@ class MaxiBlocks_Styles
 				}";
                     $content_block['css_value'] .= $new_styles;
                 }
-                if(self::$active_theme === 2022) {
+                if (self::$active_theme === 2022) {
                     $new_styles = "body.maxi-blocks--active .wp-site-blocks .entry-content > #$unique_id {
 					margin-left: calc(-1 * var(--wp--custom--spacing--outer)) !important;
 					margin-right: calc(-1 * var(--wp--custom--spacing--outer)) !important;
@@ -1336,7 +1601,7 @@ class MaxiBlocks_Styles
 				}";
                     $content_block['css_value'] .= $new_styles;
                 }
-                if(self::$active_theme === 'astra') {
+                if (self::$active_theme === 'astra') {
                     $new_styles = "body.maxi-blocks--active .entry-content > #$unique_id {
 						margin-left: calc( -50vw + 50%);
 						margin-right: calc( -50vw + 50%);
@@ -1354,7 +1619,11 @@ class MaxiBlocks_Styles
         }
 
         if (isset($content_block['active_custom_data'])) {
-            $this->process_custom_data_frontend($block_name, $unique_id, $active_custom_data_array);
+            $this->process_custom_data_frontend(
+                $block_name,
+                $unique_id,
+                $active_custom_data_array,
+            );
         }
 
         // fonts
@@ -1369,13 +1638,20 @@ class MaxiBlocks_Styles
             }
 
             $fonts = array_merge($fonts, $fonts_array);
-
         }
 
         // Process inner blocks, if any
         if (!empty($block['innerBlocks'])) {
             foreach ($block['innerBlocks'] as $innerBlock) {
-                $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                $this->process_block_frontend(
+                    $innerBlock,
+                    $fonts,
+                    $styles,
+                    $prev_styles,
+                    $active_custom_data_array,
+                    $gutenberg_blocks_status,
+                    $maxi_block_style,
+                );
             }
         }
     }
@@ -1387,22 +1663,30 @@ class MaxiBlocks_Styles
      * @param string $unique_id
      * @param array &$active_custom_data_array
      */
-    private function process_custom_data_frontend(string $block_name, string $unique_id, array &$active_custom_data_array)
-    {
+    private function process_custom_data_frontend(
+        string $block_name,
+        string $unique_id,
+        array &$active_custom_data_array
+    ) {
         global $wpdb;
 
         $block_meta = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                $unique_id
-            )
+                $unique_id,
+            ),
         );
 
         if (!empty($block_meta)) {
             if (isset($active_custom_data_array[$block_name])) {
-                $active_custom_data_array[$block_name] = array_merge($active_custom_data_array[$block_name], [$unique_id => $block_meta]);
+                $active_custom_data_array[$block_name] = array_merge(
+                    $active_custom_data_array[$block_name],
+                    [$unique_id => $block_meta],
+                );
             } else {
-                $active_custom_data_array[$block_name] = [$unique_id => $block_meta];
+                $active_custom_data_array[$block_name] = [
+                    $unique_id => $block_meta,
+                ];
             }
         }
     }
@@ -1414,11 +1698,13 @@ class MaxiBlocks_Styles
      * @param string|null $passed_content
      * @return array
      */
-    public function get_content_for_blocks_frontend($id = null, string $passed_content = null)
-    {
+    public function get_content_for_blocks_frontend(
+        $id = null,
+        string $passed_content = null
+    ) {
         global $post;
 
-        if(!$id) {
+        if (!$id) {
             $post = get_post();
         } else {
             $post = get_post($id);
@@ -1433,7 +1719,12 @@ class MaxiBlocks_Styles
         foreach ($specific_archives as $archive_type) {
             if (strpos($template_id, $archive_type) !== false) {
                 // Replace the first occurrence of the archive_type with 'archive'
-                $modified_template_id = preg_replace('/' . preg_quote($archive_type, '/') . '/', 'archive', $template_id, 1);
+                $modified_template_id = preg_replace(
+                    '/' . preg_quote($archive_type, '/') . '/',
+                    'archive',
+                    $template_id,
+                    1,
+                );
                 break; // Exit the loop once a match is found and replacement is done
             }
         }
@@ -1441,20 +1732,21 @@ class MaxiBlocks_Styles
         // Check if the modification was successful and the modified template_id is different
         if ($modified_template_id !== $template_id) {
             // Fetch blocks for the modified template_id which now targets 'archive'
-            $blocks_all_archives = $this->fetch_blocks_by_template_id($modified_template_id);
+            $blocks_all_archives = $this->fetch_blocks_by_template_id(
+                $modified_template_id,
+            );
 
             // Merge the blocks specific to the archive with the general archive blocks
             $blocks = array_merge($blocks, $blocks_all_archives);
         }
 
-
         $blocks_post = [];
 
         // Fetch blocks from passed content or from the global post.
-        if($passed_content) {
+        if ($passed_content) {
             $blocks_post = parse_blocks($passed_content);
-        } elseif($post) {
-            if(is_preview()) {
+        } elseif ($post) {
+            if (is_preview()) {
                 $revisions = wp_get_post_revisions($post->ID);
 
                 if (!empty($revisions)) {
@@ -1465,7 +1757,6 @@ class MaxiBlocks_Styles
                 $blocks_post = parse_blocks($post->post_content);
             }
         }
-
 
         // Merge the blocks.
         if (is_array($blocks_post) && !empty($blocks_post)) {
@@ -1483,9 +1774,13 @@ class MaxiBlocks_Styles
             $blocks = array_merge_recursive($blocks, $reusable_blocks);
         }
 
-
         // Process the blocks to extract styles and other metadata.
-        list($styles, $prev_styles, $active_custom_data_array, $fonts) = $this->process_blocks_frontend($blocks);
+        [
+            $styles,
+            $prev_styles,
+            $active_custom_data_array,
+            $fonts,
+        ] = $this->process_blocks_frontend($blocks);
 
         // Construct the content array.
         $content = [
@@ -1493,7 +1788,11 @@ class MaxiBlocks_Styles
             'prev_css_value' => $prev_styles,
         ];
 
-        return ['content' => json_decode(wp_json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
+        return [
+            'content' => json_decode(wp_json_encode($content), true),
+            'meta' => $active_custom_data_array,
+            'fonts' => $fonts,
+        ];
     }
 
     /**
@@ -1517,19 +1816,18 @@ class MaxiBlocks_Styles
             $templates = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name LIKE %s AND post_status = 'publish'",
-                    '%' . $wpdb->esc_like($template_slug) . '%'
-                )
+                    '%' . $wpdb->esc_like($template_slug) . '%',
+                ),
             );
         }
 
-
-        if($template_slug === 'home') {
+        if ($template_slug === 'home') {
             // First, check for the existence of wp_template(s) with the post_name equal to the template_slug.
             $templates_home = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template' AND post_name = %s AND post_status = 'publish'",
-                    'blog'
-                )
+                    'blog',
+                ),
             );
             $templates = array_merge($templates, $templates_home);
         }
@@ -1545,8 +1843,8 @@ class MaxiBlocks_Styles
             $wpdb->prepare(
                 "SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'wp_template_part' AND (post_name LIKE %s OR post_name LIKE %s) AND post_status = 'publish'",
                 '%header%',
-                '%footer%'
-            )
+                '%footer%',
+            ),
         );
 
         foreach ($template_parts as $template_part) {
@@ -1554,18 +1852,27 @@ class MaxiBlocks_Styles
             $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
         }
 
-        if (get_template() === 'maxiblocks' || get_template() === 'maxiblocks-go') {
-            $templates_blocks = $this->fetch_blocks_from_beta_maxi_theme_templates($template_id);
-            if($templates_blocks) {
-                $all_blocks = array_merge_recursive($all_blocks, $templates_blocks);
+        if (
+            get_template() === 'maxiblocks' ||
+            get_template() === 'maxiblocks-go'
+        ) {
+            $templates_blocks = $this->fetch_blocks_from_beta_maxi_theme_templates(
+                $template_id,
+            );
+            if ($templates_blocks) {
+                $all_blocks = array_merge_recursive(
+                    $all_blocks,
+                    $templates_blocks,
+                );
             }
         }
 
         return $all_blocks;
     }
 
-    public function fetch_blocks_from_beta_maxi_theme_template_parts($template_id)
-    {
+    public function fetch_blocks_from_beta_maxi_theme_template_parts(
+        $template_id
+    ) {
         $all_blocks = [];
         $theme_directory = get_template_directory();
         $parts_directory = $theme_directory . '/parts/';
@@ -1597,30 +1904,40 @@ class MaxiBlocks_Styles
         $part_blocks = parse_blocks($text_content);
         $all_blocks = array_merge_recursive($all_blocks, $part_blocks);
 
-        $pattern = '/<!-- wp:pattern \{"slug":"((?:maxiblocks|maxiblocks-go)\/[^"]+)"\} \/-->/';
+        $pattern =
+            '/<!-- wp:pattern \{"slug":"((?:maxiblocks|maxiblocks-go)\/[^"]+)"\} \/-->/';
         preg_match_all($pattern, $file_contents, $matches);
 
         if (!empty($matches[1])) {
             foreach ($matches[1] as $slug) {
-                $parsed_blocks = $this->fetch_blocks_from_beta_maxi_theme_patterns($slug);
-                $all_blocks = array_merge_recursive($all_blocks, $parsed_blocks);
+                $parsed_blocks = $this->fetch_blocks_from_beta_maxi_theme_patterns(
+                    $slug,
+                );
+                $all_blocks = array_merge_recursive(
+                    $all_blocks,
+                    $parsed_blocks,
+                );
             }
         }
 
         return $all_blocks;
     }
 
-
-
     public function fetch_blocks_from_beta_maxi_theme_templates($template_id)
     {
-        if (get_template() !== 'maxiblocks' && get_template() !== 'maxiblocks-go') {
+        if (
+            get_template() !== 'maxiblocks' &&
+            get_template() !== 'maxiblocks-go'
+        ) {
             return;
         }
         $all_blocks = [];
 
         $parts = explode('//', $template_id);
-        if (!isset($parts[0]) || ($parts[0] !== 'maxiblocks' && $parts[0] !== 'maxiblocks-go')) {
+        if (
+            !isset($parts[0]) ||
+            ($parts[0] !== 'maxiblocks' && $parts[0] !== 'maxiblocks-go')
+        ) {
             return;
         }
 
@@ -1651,10 +1968,14 @@ class MaxiBlocks_Styles
         $file = $template_directory . $template_slug . '.html';
 
         if (!file_exists($file)) {
-            $header_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('header');
+            $header_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts(
+                'header',
+            );
             $all_blocks = array_merge_recursive($all_blocks, $header_blocks);
 
-            $footer_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('footer');
+            $footer_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts(
+                'footer',
+            );
             $all_blocks = array_merge_recursive($all_blocks, $footer_blocks);
             return $all_blocks;
         }
@@ -1671,34 +1992,46 @@ class MaxiBlocks_Styles
         }
 
         if (strpos($file_contents, '"slug":"header"') !== false) {
-            $header_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('header');
+            $header_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts(
+                'header',
+            );
             $all_blocks = array_merge_recursive($all_blocks, $header_blocks);
         }
 
         if (strpos($file_contents, '"slug":"footer"') !== false) {
-            $footer_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts('footer');
+            $footer_blocks = $this->fetch_blocks_from_beta_maxi_theme_template_parts(
+                'footer',
+            );
             $all_blocks = array_merge_recursive($all_blocks, $footer_blocks);
         }
 
-        $pattern = '/<!-- wp:pattern \{"slug":"((?:maxiblocks|maxiblocks-go)\/[^"]+)"\} \/-->/';
+        $pattern =
+            '/<!-- wp:pattern \{"slug":"((?:maxiblocks|maxiblocks-go)\/[^"]+)"\} \/-->/';
         preg_match_all($pattern, $file_contents, $matches);
 
         if (!empty($matches[1])) {
             foreach ($matches[1] as $slug) {
-                $parsed_blocks = $this->fetch_blocks_from_beta_maxi_theme_patterns($slug);
-                $all_blocks = array_merge_recursive($all_blocks, $parsed_blocks);
+                $parsed_blocks = $this->fetch_blocks_from_beta_maxi_theme_patterns(
+                    $slug,
+                );
+                $all_blocks = array_merge_recursive(
+                    $all_blocks,
+                    $parsed_blocks,
+                );
             }
         }
 
         return $all_blocks;
     }
 
-
     public function fetch_blocks_from_beta_maxi_theme_patterns($pattern_id)
     {
         $all_blocks = [];
         $parts = explode('/', $pattern_id);
-        if (!isset($parts[0]) || ($parts[0] !== 'maxiblocks' && $parts[0] !== 'maxiblocks-go')) {
+        if (
+            !isset($parts[0]) ||
+            ($parts[0] !== 'maxiblocks' && $parts[0] !== 'maxiblocks-go')
+        ) {
             return [];
         }
 
@@ -1709,7 +2042,8 @@ class MaxiBlocks_Styles
         }
 
         $theme_directory = get_template_directory();
-        $html_pattern = $theme_directory . '/patterns/' . $pattern_slug . '.html';
+        $html_pattern =
+            $theme_directory . '/patterns/' . $pattern_slug . '.html';
         $php_pattern = $theme_directory . '/patterns/' . $pattern_slug . '.php';
 
         $pattern_file = '';
@@ -1740,18 +2074,23 @@ class MaxiBlocks_Styles
         return $all_blocks;
     }
 
-
     public function get_reusable_blocks_ids($blocks)
     {
         $reusableBlockIds = [];
 
         foreach ($blocks as $block) {
-            if ($block['blockName'] === 'core/block' && !empty($block['attrs']['ref'])) {
+            if (
+                $block['blockName'] === 'core/block' &&
+                !empty($block['attrs']['ref'])
+            ) {
                 $reusableBlockIds[] = $block['attrs']['ref'];
             }
 
             if (!empty($block['innerBlocks'])) {
-                $reusableBlockIds = array_merge($reusableBlockIds, $this->get_reusable_blocks_ids($block['innerBlocks']));
+                $reusableBlockIds = array_merge(
+                    $reusableBlockIds,
+                    $this->get_reusable_blocks_ids($block['innerBlocks']),
+                );
             }
         }
 
@@ -1766,7 +2105,6 @@ class MaxiBlocks_Styles
      */
     private function get_parsed_reusable_blocks_frontend($blocks)
     {
-
         $reusable_block_ids = $this->get_reusable_blocks_ids($blocks);
 
         // Remove duplicates from the block IDs.
@@ -1778,7 +2116,10 @@ class MaxiBlocks_Styles
             $block = get_post($block_id);
             if ($block) {
                 $parsed_blocks = parse_blocks($block->post_content);
-                $all_parsed_blocks = array_merge($all_parsed_blocks, $parsed_blocks);
+                $all_parsed_blocks = array_merge(
+                    $all_parsed_blocks,
+                    $parsed_blocks,
+                );
             }
         }
 
@@ -1801,20 +2142,29 @@ class MaxiBlocks_Styles
         $style_cards = new MaxiBlocks_StyleCards();
         $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
 
-        $gutenberg_blocks_status = $current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards) && $current_style_cards['gutenberg_blocks_status'];
+        $gutenberg_blocks_status =
+            $current_style_cards &&
+            array_key_exists('gutenberg_blocks_status', $current_style_cards) &&
+            $current_style_cards['gutenberg_blocks_status'];
 
         foreach ($blocks as $block) {
-            $this->process_block_frontend($block, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status);
+            $this->process_block_frontend(
+                $block,
+                $fonts,
+                $styles,
+                $prev_styles,
+                $active_custom_data_array,
+                $gutenberg_blocks_status,
+            );
         }
-
 
         return [$styles, $prev_styles, $active_custom_data_array, $fonts];
     }
 
-
     public static function generate_random_string()
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters =
+            '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
 
         for ($i = 0; $i < 3; $i++) {
@@ -1828,12 +2178,16 @@ class MaxiBlocks_Styles
     public static function unique_id_generator($blockName)
     {
         $name = str_replace('maxi-blocks/', '', $blockName);
-        $uniquePart = self::generate_random_string().substr(uniqid('', true), 0, 5);
+        $uniquePart =
+            self::generate_random_string() . substr(uniqid('', true), 0, 5);
         return "{$name}-{$uniquePart}-u";
     }
 
-    public function get_block_fonts($block_name, $props, $only_backend = false)
-    {
+    public function get_block_fonts(
+        $block_name,
+        $props,
+        $only_backend = false
+    ) {
         $response = [];
 
         $typography = [];
@@ -1847,24 +2201,50 @@ class MaxiBlocks_Styles
                 break;
             case 'maxi-blocks/button-maxi':
                 $typography = get_group_attributes($props, 'typography');
-                $typography_hover = get_group_attributes($props, 'typographyHover');
+                $typography_hover = get_group_attributes(
+                    $props,
+                    'typographyHover',
+                );
                 $text_level = 'button';
                 break;
             default:
                 $typography = get_group_attributes($props, 'typography');
-                $typography_hover = get_group_attributes($props, 'typographyHover');
+                $typography_hover = get_group_attributes(
+                    $props,
+                    'typographyHover',
+                );
                 break;
         }
 
         if (isset($typography_hover['typography-status-hover'])) {
             $response = array_merge_recursive(
-                get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend),
-                get_all_fonts($typography_hover, 'custom-formats', true, $text_level, $block_style, $only_backend)
+                get_all_fonts(
+                    $typography,
+                    'custom-formats',
+                    false,
+                    $text_level,
+                    $block_style,
+                    $only_backend,
+                ),
+                get_all_fonts(
+                    $typography_hover,
+                    'custom-formats',
+                    true,
+                    $text_level,
+                    $block_style,
+                    $only_backend,
+                ),
             );
         } else {
-            $response = get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend);
+            $response = get_all_fonts(
+                $typography,
+                'custom-formats',
+                false,
+                $text_level,
+                $block_style,
+                $only_backend,
+            );
         }
-
 
         return $response;
     }
@@ -1873,16 +2253,28 @@ class MaxiBlocks_Styles
     {
         $current_theme = wp_get_theme();
 
-        if ('Twenty Twenty-Four' === $current_theme->name || 'twentytwentyfour' === $current_theme->template) {
+        if (
+            'Twenty Twenty-Four' === $current_theme->name ||
+            'twentytwentyfour' === $current_theme->template
+        ) {
             return 2024;
         }
-        if ('Twenty Twenty-Three' === $current_theme->name || 'twentytwentythree' === $current_theme->template) {
+        if (
+            'Twenty Twenty-Three' === $current_theme->name ||
+            'twentytwentythree' === $current_theme->template
+        ) {
             return 2023;
         }
-        if ('Twenty Twenty-Two' === $current_theme->name || 'twentytwentytwo' === $current_theme->template) {
+        if (
+            'Twenty Twenty-Two' === $current_theme->name ||
+            'twentytwentytwo' === $current_theme->template
+        ) {
             return 2022;
         }
-        if ('Astra' === $current_theme->name || 'astra' === $current_theme->template) {
+        if (
+            'Astra' === $current_theme->name ||
+            'astra' === $current_theme->template
+        ) {
             return 'astra';
         }
 
@@ -1897,7 +2289,7 @@ class MaxiBlocks_Styles
      *
      * @param array $new_post The new post array containing 'post_content' among other details.
      * @return array The modified post array with updated block unique IDs in the content.
-    */
+     */
     public function update_post_unique_ids($new_post)
     {
         $blocks = parse_blocks($new_post['post_content']);
@@ -1919,20 +2311,22 @@ class MaxiBlocks_Styles
      *
      * @param array $blocks Reference to the array of blocks to be updated.
      * @return void
-    */
+     */
     private function update_unique_ids(&$blocks)
     {
         $idMapping = [];
         $blocksWithRelations = [];
 
         foreach ($blocks as &$block) {
-            $previous_unique_id = isset($block['attrs']['uniqueID']) ? $block['attrs']['uniqueID'] : null;
-            if(!$previous_unique_id) {
+            $previous_unique_id = isset($block['attrs']['uniqueID'])
+                ? $block['attrs']['uniqueID']
+                : null;
+            if (!$previous_unique_id) {
                 continue;
             }
 
             $block_name = $block['blockName'];
-            if(strpos($block_name, 'maxi-blocks') === false) {
+            if (strpos($block_name, 'maxi-blocks') === false) {
                 continue;
             }
 
@@ -1941,32 +2335,64 @@ class MaxiBlocks_Styles
 
             $block['attrs']['uniqueID'] = $new_unique_id;
 
-            if(isset($block['attrs']['background-layers'])) {
-                foreach($block['attrs']['background-layers'] as $key => &$value) {
-                    if(isset($value['background-svg-SVGData'])) {
+            if (isset($block['attrs']['background-layers'])) {
+                foreach (
+                    $block['attrs']['background-layers']
+                    as $key => &$value
+                ) {
+                    if (isset($value['background-svg-SVGData'])) {
                         $svg_data = $value['background-svg-SVGData'];
-                        foreach($svg_data as $svg_data_key => $svg_data_value) {
-                            if(strpos($svg_data_key, $previous_unique_id) !== false) {
+                        foreach (
+                            $svg_data
+                            as $svg_data_key => $svg_data_value
+                        ) {
+                            if (
+                                strpos($svg_data_key, $previous_unique_id) !==
+                                false
+                            ) {
                                 $svg_data[$new_unique_id] = $svg_data_value;
                                 unset($svg_data[$svg_data_key]);
                             }
                         }
                     }
 
-                    if(isset($value['background-svg-SVGElement'])) {
+                    if (isset($value['background-svg-SVGElement'])) {
                         $svg_element = $value['background-svg-SVGElement'];
-                        $svg_element = str_replace($previous_unique_id, $new_unique_id, $svg_element);
+                        $svg_element = str_replace(
+                            $previous_unique_id,
+                            $new_unique_id,
+                            $svg_element,
+                        );
                         $value['background-svg-SVGElement'] = $svg_element;
                     }
                 }
             }
 
-            $block['innerHTML'] = str_replace($previous_unique_id, $block['attrs']['uniqueID'], $block['innerHTML']);
-            $block['innerContent'] = array_map(function ($content) use ($previous_unique_id, $block) {
-                return is_string($content) ? str_replace($previous_unique_id, $block['attrs']['uniqueID'], $content) : $content;
-            }, $block['innerContent']);
+            $block['innerHTML'] = str_replace(
+                $previous_unique_id,
+                $block['attrs']['uniqueID'],
+                $block['innerHTML'],
+            );
+            $block['innerContent'] = array_map(
+                function ($content) use (
+                    $previous_unique_id,
+                    $block
+                ) {
+                    return is_string($content)
+                        ? str_replace(
+                            $previous_unique_id,
+                            $block['attrs']['uniqueID'],
+                            $content,
+                        )
+                        : $content;
+                },
+                $block['innerContent']
+            );
 
-            if (isset($block['attrs']['relations']) && is_array($block['attrs']['relations'])) {
+            if (
+                isset($block['attrs']['relations']) &&
+                is_array($block['attrs']['relations'])
+            ) {
                 $blocksWithRelations[] = &$block;
             }
 
@@ -1986,17 +2412,93 @@ class MaxiBlocks_Styles
      *
      * @return void
      */
-    private function update_attribute_relations(&$blocksWithRelations, &$idMapping)
-    {
+    private function update_attribute_relations(
+        &$blocksWithRelations,
+        &$idMapping
+    ) {
         foreach ($blocksWithRelations as &$block) {
             if (is_array($block['attrs']['relations'])) {
                 foreach ($block['attrs']['relations'] as &$relation) {
-                    if (isset($relation['uniqueID']) && isset($idMapping[$relation['uniqueID']])) {
-                        $relation['uniqueID'] = $idMapping[$relation['uniqueID']];
+                    if (
+                        isset($relation['uniqueID']) &&
+                        isset($idMapping[$relation['uniqueID']])
+                    ) {
+                        $relation['uniqueID'] =
+                            $idMapping[$relation['uniqueID']];
                     }
                 }
             }
         }
     }
 
+    private function migrate_sc_fonts()
+    {
+        $style_cards = new MaxiBlocks_StyleCards();
+        $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
+
+        $font_families = [];
+
+        // Recursive function to search for 'font-family' keys
+        $collect_font_families = function ($array) use (&$collect_font_families, &$font_families) {
+            foreach ($array as $key => $value) {
+                if (is_array($value)) {
+                    $collect_font_families($value);
+                } elseif (strpos($key, 'font-family') !== false) {
+                    $font_families[] = $value;
+                }
+            }
+        };
+
+        // Call the recursive function to collect font families
+        $collect_font_families($current_style_cards);
+
+        // Remove duplicate font families
+        $unique_font_families = array_values(array_unique($font_families));
+
+        global $wpdb;
+
+        $db_custom_prefix = 'maxi_blocks_';
+        $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles_blocks';
+
+        $chunk_size = 1000; // Adjust the chunk size as needed
+
+        foreach ($unique_font_families as $font_name) {
+            $offset = 0;
+
+            do {
+                $query = $wpdb->prepare(
+                    "SELECT * FROM $db_css_table_name WHERE fonts_value LIKE %s LIMIT %d OFFSET %d",
+                    '%' . $wpdb->esc_like($font_name) . '%',
+                    $chunk_size,
+                    $offset
+                );
+                $results = $wpdb->get_results($query);
+
+                foreach ($results as $row) {
+                    $text_levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button'];
+                    $block_styles = ['-dark-', '-light-'];
+
+                    foreach ($text_levels as $text_level) {
+                        if (strpos($row->css_value, ' ' . $text_level) !== false) {
+                            foreach ($block_styles as $block_style) {
+                                if (strpos($row->css_value, $block_style) !== false) {
+                                    $new_font_name = 'sc_font_' . str_replace('-', '', $block_style) . '_' . ($text_level);
+                                    $new_fonts_value = str_replace($font_name, $new_font_name, $row->fonts_value);
+
+                                    $wpdb->update(
+                                        $db_css_table_name,
+                                        ['fonts_value' => $new_fonts_value],
+                                        ['id' => $row->id]
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $offset += $chunk_size;
+            } while (count($results) === $chunk_size);
+        }
+        update_option('maxi_blocks_sc_fonts_migration_done', true);
+    }
 }

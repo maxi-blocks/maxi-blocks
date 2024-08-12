@@ -94,6 +94,22 @@ export async function measureSingleAction(action, context) {
 }
 
 /**
+ * Remove outliers from an array of times.
+ *
+ * @param {number[]} times
+ * @returns {number[]}
+ */
+function removeOutliers(times) {
+	const sorted = times.sort((a, b) => a - b);
+	const q1 = sorted[Math.floor(sorted.length / 4)];
+	const q3 = sorted[Math.floor((3 * sorted.length) / 4)];
+	const iqr = q3 - q1;
+	const lowerBound = q1 - 1.5 * iqr;
+	const upperBound = q3 + 1.5 * iqr;
+	return sorted.filter(x => x >= lowerBound && x <= upperBound);
+}
+
+/**
  * Perform measurements for a set of events.
  *
  * @param {Object<string, {pre: Function, action: Function, post: Function}>} events
@@ -135,8 +151,12 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 	}
 
 	for (const key in results) {
-		results[key].average =
-			results[key].times.reduce((a, b) => a + b, 0) / iterations;
+		const cleanedTimes = removeOutliers(results[key].times);
+		const mid = Math.floor(cleanedTimes.length / 2);
+		results[key].median =
+			cleanedTimes.length % 2 === 0
+				? (cleanedTimes[mid - 1] + cleanedTimes[mid]) / 2
+				: cleanedTimes[mid];
 	}
 
 	return results;

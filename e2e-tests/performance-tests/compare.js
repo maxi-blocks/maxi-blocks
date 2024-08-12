@@ -60,8 +60,8 @@ class PerformanceComparator {
 	}
 
 	compareMetric(metric, values1, values2) {
-		const oldMedian = this.calculateMedian(values1.times);
-		const newMedian = this.calculateMedian(values2.times);
+		const oldMedian = values1.median;
+		const newMedian = values2.median;
 		const diff = newMedian - oldMedian;
 		const percentChange = oldMedian !== 0 ? (diff / oldMedian) * 100 : 0;
 		const status = this.determineStatus(diff);
@@ -85,14 +85,6 @@ class PerformanceComparator {
 		return diff > 0
 			? { status: 'slower', statusEmoji: '🐢' }
 			: { status: 'faster', statusEmoji: '🚀' };
-	}
-
-	calculateMedian(numbers) {
-		const sorted = numbers.slice().sort((a, b) => a - b);
-		const middle = Math.floor(sorted.length / 2);
-		return sorted.length % 2 === 0
-			? (sorted[middle - 1] + sorted[middle]) / 2
-			: sorted[middle];
 	}
 
 	readJsonFile(filePath) {
@@ -184,9 +176,7 @@ class ResultWriter {
 	}
 
 	generateDescription() {
-		return `# Performance Comparison Results
-
-This report compares performance metrics between two test runs.
+		return `This report compares performance metrics between two test runs.
 
 - **Old Run**: ${this.results.file1}
 - **New Run**: ${this.results.file2}
@@ -198,7 +188,11 @@ This report compares performance metrics between two test runs.
 - 🐢 indicates degraded performance (slower)
 - ➖ indicates no significant change
 
-${this.results.showAllDetails ? "All test results are shown, including unchanged metrics.\n\n" : "Unchanged metrics are not displayed in this report.\n\n"}
+${
+	this.results.showAllDetails
+		? 'All test results are shown, including unchanged metrics.\n\n'
+		: 'Unchanged metrics are not displayed in this report.\n\n'
+}
 `;
 	}
 }

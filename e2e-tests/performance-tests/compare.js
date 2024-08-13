@@ -107,7 +107,6 @@ class PerformanceComparator {
 	}
 
 	determineStatus(diff, percentChange) {
-		console.log(diff, this.threshold);
 		if (
 			Math.abs(diff) <= this.threshold ||
 			Math.abs(percentChange) <= this.percentThreshold
@@ -131,8 +130,10 @@ class PerformanceComparator {
 }
 
 class ResultWriter {
-	constructor(results, outputDir = 'bin') {
+	constructor(results, threshold, percentThreshold, outputDir = 'bin') {
 		this.results = results;
+		this.threshold = threshold;
+		this.percentThreshold = percentThreshold;
 		this.outputDir = outputDir;
 		this.ensureOutputDirExists();
 	}
@@ -220,7 +221,9 @@ class ResultWriter {
 
 ## Notes:
 - By default, only metrics that have changed beyond the threshold are shown.
-- Threshold for considering a change significant: ${this.results.threshold}ms
+- Threshold for considering a change significant: ${this.threshold}s and ${
+			this.percentThreshold
+		}%
 - 🚀 indicates improved performance (faster)
 - 🐢 indicates degraded performance (slower)
 - ➖ indicates no significant change
@@ -240,7 +243,7 @@ class ArgumentParser {
 		const parsedArgs = {
 			file1: null,
 			file2: null,
-			threshold: 0.02, // ms
+			threshold: 0.2, // s
 			percentThreshold: 3, // %
 			showAllDetails: false,
 		};
@@ -310,7 +313,11 @@ function main() {
 
 		console.log(JSON.stringify(results, null, 2));
 
-		const writer = new ResultWriter(results);
+		const writer = new ResultWriter(
+			results,
+			args.threshold,
+			args.percentThreshold
+		);
 		writer.saveResults();
 
 		console.log(

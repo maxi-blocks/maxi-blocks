@@ -13,6 +13,8 @@ import {
 	RESULTS_FILE_NAME,
 	WARMUP_ITERATIONS,
 	COOL_DOWN_TIME,
+	currentSessionFilePath,
+	setCurrentSessionFilePath,
 } from './config';
 
 /**
@@ -93,7 +95,7 @@ export async function measureSingleAction(page, action, context) {
 	const newContext = await action(context);
 	const endMetrics = await page.metrics();
 
-	const duration = endMetrics.TaskDuration - startMetrics.TaskDuration;
+	const duration = endMetrics.ScriptDuration - startMetrics.ScriptDuration;
 
 	return {
 		time: duration,
@@ -182,30 +184,55 @@ export function saveEventMeasurements(key, measurements) {
 	debugLog(`Saving measurements for ${key}`);
 	const resultsFilePath = path.join(RESULTS_FILE_DIR, RESULTS_FILE_NAME);
 
-	let results = {};
 	try {
 		fs.mkdirSync(RESULTS_FILE_DIR, { recursive: true });
-		const newFilePath = getNewFilePath(resultsFilePath);
+	} catch (error) {
+		console.error('Error creating directory:', error);
+		return;
+	}
 
-		if (fs.existsSync(resultsFilePath)) {
-			results = JSON.parse(fs.readFileSync(resultsFilePath, 'utf8'));
-			const backupPath = getBackupFilePath(resultsFilePath);
-			fs.copyFileSync(resultsFilePath, backupPath);
-			debugLog(`Backup created: ${backupPath}`);
+	const newFilePath = getNewFilePath(resultsFilePath);
+	let existingResults = {};
+
+	if (fs.existsSync(newFilePath)) {
+		try {
+			const fileContent = fs.readFileSync(newFilePath, 'utf8');
+			existingResults = JSON.parse(fileContent);
+		} catch (error) {
+			console.warn(
+				`Error reading existing file: ${error.message}. Creating a new file.`
+			);
 		}
+	}
 
-		results[key] = measurements;
-		fs.writeFileSync(newFilePath, JSON.stringify(results, null, 2));
+	const mergedResults = {
+		...existingResults,
+		[key]: measurements,
+	};
+
+	try {
+		fs.writeFileSync(newFilePath, JSON.stringify(mergedResults, null, 2));
 		debugLog(`Results saved to: ${newFilePath}`);
 	} catch (error) {
-		console.error('Error saving measurements:', error);
+		console.error('Error writing to file:', error);
 	}
 }
 
+/**
+ * Get a new session file path with a unique name.
+ *
+ * @param {string} originalPath
+ * @returns {string}
+ */
 function getNewFilePath(originalPath) {
+	if (currentSessionFilePath) {
+		return currentSessionFilePath;
+	}
+
 	const dir = path.dirname(originalPath);
 	const ext = path.extname(originalPath);
 	const baseName = path.basename(originalPath, ext);
+
 	let counter = 1;
 	let newPath;
 
@@ -214,6 +241,7 @@ function getNewFilePath(originalPath) {
 		counter++;
 	} while (fs.existsSync(newPath));
 
+	setCurrentSessionFilePath(newPath);
 	return newPath;
 }
 

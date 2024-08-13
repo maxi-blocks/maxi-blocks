@@ -16,12 +16,12 @@ import { getProductsContent } from './getWCContent';
  */
 import { isNil } from 'lodash';
 
-const getAvatar = user => {
+const getAvatar = (user, size) => {
 	const { avatar_urls: avatarUrls } = user;
 	if (!avatarUrls) return null;
 
-	const size = Math.max(...Object.keys(avatarUrls).map(Number));
-	return { url: avatarUrls[size] };
+	const url = Object.values(avatarUrls).pop();
+	return { url: url.replace(/(\?|&)s=\d+/, `$1s=${size}`) };
 };
 
 const getMediaById = async (id, type) => {
@@ -87,7 +87,7 @@ const getDCMedia = async (dataRequest, clientId) => {
 	}
 	if (!data) return null;
 
-	const { field, source, type } = dataRequest;
+	const { field, source, type, mediaSize } = dataRequest;
 
 	if (source === 'acf') {
 		const image = await getACFFieldContent(field, data.id);
@@ -103,14 +103,14 @@ const getDCMedia = async (dataRequest, clientId) => {
 	}
 
 	if (field === 'avatar' && type === 'users') {
-		return getAvatar(data);
+		return getAvatar(data, mediaSize);
 	}
 
 	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
 		const { author: authorId } = data;
 		const { getUser } = resolveSelect('core');
 		const author = await getUser(authorId);
-		return getAvatar(author);
+		return getAvatar(author, mediaSize);
 	}
 
 	let id;

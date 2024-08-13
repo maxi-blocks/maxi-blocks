@@ -1564,10 +1564,8 @@
 					border: 1px solid #dbdde6;
 					padding: 0;
 					cursor: pointer;
-					transition: opacity 0.5s ease-out;
-					animation: fadeIn 0.5s ease-out;
-
-					//animation: 1s ease-out 0s 1 opacityAnimation;
+					transition: 1s;
+					animation: 1s ease-out 0s 1 fadeIn;
 
 					.maxi-cloud-masonry-card {
 						& > .maxi-components-button {

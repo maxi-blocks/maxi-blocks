@@ -70,6 +70,16 @@ class MaxiBlocks_Styles
 
         $this->max_execution_time = ini_get('max_execution_time');
 
+        if (!get_option('maxi_blocks_sc_fonts_migration_done')) {
+            if (!wp_next_scheduled('maxi_blocks_migrate_sc_fonts')) {
+                // Schedule the migration to run in the background
+                wp_schedule_single_event(time(), 'maxi_blocks_migrate_sc_fonts');
+            }
+
+        }
+
+        add_action('maxi_blocks_migrate_sc_fonts', [$this, 'run_migrate_sc_fonts']);
+
     }
 
     private function should_apply_content_filter()
@@ -1999,6 +2009,90 @@ class MaxiBlocks_Styles
                 }
             }
         }
+    }
+
+    public function run_migrate_sc_fonts()
+    {
+        $this->migrate_sc_fonts();
+    }
+
+    private function migrate_sc_fonts()
+    {
+        $style_cards = new MaxiBlocks_StyleCards();
+        $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
+
+        $font_families = [];
+
+        // Recursive function to search for 'font-family' keys
+        $collect_font_families = function ($array) use (&$collect_font_families, &$font_families) {
+            foreach ($array as $key => $value) {
+                if (is_array($value)) {
+                    $collect_font_families($value);
+                } elseif (strpos($key, 'font-family') !== false) {
+                    $font_families[] = $value;
+                }
+            }
+        };
+
+        // Call the recursive function to collect font families
+        $collect_font_families($current_style_cards);
+
+        // Remove duplicate font families
+        $unique_font_families = array_values(array_unique($font_families));
+
+        global $wpdb;
+
+        $db_custom_prefix = 'maxi_blocks_';
+        $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles_blocks';
+
+        $chunk_size = 1000; // Adjust the chunk size as needed
+
+        foreach ($unique_font_families as $font_name) {
+            $offset = 0;
+
+            do {
+                $query = $wpdb->prepare(
+                    "SELECT * FROM $db_css_table_name WHERE fonts_value LIKE %s LIMIT %d OFFSET %d",
+                    '%' . $wpdb->esc_like($font_name) . '%',
+                    $chunk_size,
+                    $offset
+                );
+                $results = $wpdb->get_results($query);
+
+                foreach ($results as $row) {
+                    $text_levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button'];
+                    $block_styles = ['-dark-', '-light-'];
+
+                    foreach ($block_styles as $block_style) {
+                        $text_level_found = false;
+
+                        foreach ($text_levels as $text_level) {
+                            if (strpos($row->css_value, ' ' . $text_level) !== false) {
+                                $new_font_name = 'sc_font_' . str_replace('-', '', $block_style) . '_' . ($text_level);
+                                $text_level_found = true;
+                                break;
+                            }
+                        }
+
+                        if (!$text_level_found) {
+                            $new_font_name = 'sc_font_' . str_replace('-', '', $block_style) . '_p';
+                        }
+
+                        if (strpos($row->fonts_value, $font_name) !== false) {
+                            $new_fonts_value = str_replace($font_name, $new_font_name, $row->fonts_value);
+                            $update_result = $wpdb->update(
+                                $db_css_table_name,
+                                ['fonts_value' => $new_fonts_value],
+                                ['id' => $row->id]
+                            );
+                        }
+                    }
+                }
+
+                $offset += $chunk_size;
+            } while (count($results) === $chunk_size);
+        }
+        update_option('maxi_blocks_sc_fonts_migration_done', true);
     }
 
 }

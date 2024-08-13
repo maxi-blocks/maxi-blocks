@@ -195,11 +195,9 @@ const withMaxiContextLoop = createHigherOrderComponent(
 						prevContextLoopAttributes?.['cl-status'],
 				};
 			}, [
-				contextLoopAttributes['cl-accumulator'],
-				contextLoopAttributes['cl-relation'],
-				contextLoopAttributes['cl-status'],
+				contextLoopAttributes,
 				getAccumulator,
-				prevContextLoopAttributes?.['cl-status'],
+				prevContextLoopAttributes,
 			]);
 
 			const memoizedValue = useMemo(() => {

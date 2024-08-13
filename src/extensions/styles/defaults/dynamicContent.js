@@ -120,6 +120,10 @@ const dynamicContent = {
 	'dc-media-caption': {
 		type: 'string',
 	},
+	'dc-media-size': {
+		type: 'number',
+		default: 512,
+	},
 	'dc-link-status': {
 		type: 'boolean',
 	},

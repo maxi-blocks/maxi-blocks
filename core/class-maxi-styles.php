@@ -87,7 +87,6 @@ class MaxiBlocks_Styles
                     time(),
                     'maxi_blocks_migrate_sc_fonts',
                 );
-                error_log('Scheduling migration');
             }
         }
 
@@ -2444,13 +2443,11 @@ class MaxiBlocks_Styles
 
     public function run_migrate_sc_fonts()
     {
-        error_log('run_migrate_sc_fonts');
         $this->migrate_sc_fonts();
     }
 
     private function migrate_sc_fonts()
     {
-        error_log('migrate_sc_fonts');
         $style_cards = new MaxiBlocks_StyleCards();
         $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
 
@@ -2485,7 +2482,6 @@ class MaxiBlocks_Styles
         $chunk_size = 1000; // Adjust the chunk size as needed
 
         foreach ($unique_font_families as $font_name) {
-            error_log('font_name: ' . $font_name);
             $offset = 0;
 
             do {
@@ -2496,10 +2492,6 @@ class MaxiBlocks_Styles
                     $offset,
                 );
                 $results = $wpdb->get_results($query);
-                error_log(
-                    "Processing chunk for font_name: $font_name, offset: $offset, chunk_size: $chunk_size, results count: " .
-                        count($results),
-                );
 
                 foreach ($results as $row) {
                     $text_levels = [
@@ -2550,9 +2542,6 @@ class MaxiBlocks_Styles
                                 ['fonts_value' => $new_fonts_value],
                                 ['id' => $row->id],
                             );
-                            error_log(
-                                "Updated row ID: $row->id, font_name: $font_name, new_font_name: $new_font_name, update_result: $update_result",
-                            );
                         }
                     }
                 }
@@ -2561,6 +2550,5 @@ class MaxiBlocks_Styles
             } while (count($results) === $chunk_size);
         }
         update_option('maxi_blocks_sc_fonts_migration_done', true);
-        error_log('migrate_sc_fonts done');
     }
 }

@@ -148,7 +148,6 @@ function maxi_blocks_after_update($upgrader_object, $options)
 {
     // Check if it's an update of plugins
     if ($options['action'] == 'update' && $options['type'] == 'plugin') {
-        // Check if YOUR plugin is in the list of updated plugins
         foreach ($options['plugins'] as $plugin) {
             if ($plugin == plugin_basename(__FILE__)) {
                 // Reset the dismissal option

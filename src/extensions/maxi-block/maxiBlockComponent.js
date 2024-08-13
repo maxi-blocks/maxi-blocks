@@ -1060,7 +1060,7 @@ class MaxiBlockComponent extends Component {
 				this.hasParentWithClass(
 					iframe?.parentNode,
 					'maxiblocks-custom-pattern'
-				)  ||
+				) ||
 				this.hasParentWithClass(
 					iframe?.parentNode,
 					'maxiblocks-go-custom-pattern'

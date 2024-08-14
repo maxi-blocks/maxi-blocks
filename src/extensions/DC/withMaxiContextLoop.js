@@ -3,7 +3,13 @@
  */
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import { dispatch, select } from '@wordpress/data';
-import { useContext, useMemo, useEffect, useRef } from '@wordpress/element';
+import {
+	useContext,
+	useMemo,
+	useEffect,
+	useRef,
+	useCallback,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -39,6 +45,9 @@ export const ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP = {
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
+			if (!ownProps) {
+				return null;
+			}
 			const isPreview = isInSiteEditorPreviewIframe();
 
 			if (isPreview) {
@@ -55,12 +64,12 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				if (context) prevContextLoopAttributes = context.contextLoop;
 			}
 
-			const contextLoopAttributes = getGroupAttributes(
-				attributes,
-				'contextLoop'
+			const contextLoopAttributes = useMemo(
+				() => getGroupAttributes(attributes, 'contextLoop'),
+				[attributes]
 			);
 
-			const getAccumulator = () => {
+			const getAccumulator = useMemo(() => {
 				const getIsAccumulator = attributes =>
 					orderRelations.includes(attributes?.['cl-relation']);
 
@@ -71,102 +80,125 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					prevContextLoopAttributes
 				);
 
-				const currentAccumulator =
-					contextLoopAttributes?.['cl-accumulator'];
-				if (
-					isNumber(currentAccumulator) &&
-					(isCurrentAccumulator || isPrevAccumulator)
-				) {
-					return currentAccumulator;
-				}
+				return () => {
+					const currentAccumulator =
+						contextLoopAttributes?.['cl-accumulator'];
+					if (
+						isNumber(currentAccumulator) &&
+						(isCurrentAccumulator || isPrevAccumulator)
+					) {
+						return currentAccumulator;
+					}
 
-				const prevContextLoopStatus =
-					prevContextLoopAttributes?.['cl-status'];
+					const prevContextLoopStatus =
+						prevContextLoopAttributes?.['cl-status'];
 
-				if (
-					!prevContextLoopStatus ||
-					attributes.isFirstOnHierarchy ||
-					!isPrevAccumulator
-				) {
-					return null;
-				}
+					if (
+						!prevContextLoopStatus ||
+						attributes.isFirstOnHierarchy ||
+						!isPrevAccumulator
+					) {
+						return null;
+					}
 
-				const { getBlock, getBlockParents } =
-					select('core/block-editor');
-				const parent = getBlock(
-					getBlockParents(clientId)
-						.filter(id => id !== clientId)
-						.at(-1)
-				);
-
-				if (!parent) {
-					return null;
-				}
-
-				const prevAccumulator =
-					prevContextLoopAttributes?.['cl-accumulator'];
-
-				const currentBlockIndex = parent.innerBlocks.findIndex(
-					block => block.clientId === clientId
-				);
-
-				const grandparent = getBlock(
-					getBlockParents(parent.clientId)
-						.filter(id => id !== parent.clientId)
-						.at(-1)
-				);
-
-				// Increase the accumulator only if context loop is enabled in the parent
-				// And the grandchild accumulator is not enabled
-				if (
-					parent.attributes['cl-status'] &&
-					!grandparent?.attributes['cl-grandchild-accumulator'] &&
-					ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
-					name ===
-						ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
-					currentBlockIndex !== 0
-				) {
-					return prevAccumulator + currentBlockIndex;
-				}
-
-				const grandchildAllowed =
-					grandparent &&
-					ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP[
-						grandparent.name
-					] === name;
-
-				// Check if the current block is a valid grandchild
-				if (grandchildAllowed) {
-					const grandparentInnerBlocks = grandparent.innerBlocks;
-					const parentIndex = grandparentInnerBlocks.findIndex(
-						block => block.clientId === parent.clientId
+					const { getBlock, getBlockParents } =
+						select('core/block-editor');
+					const parent = getBlock(
+						getBlockParents(clientId)
+							.filter(id => id !== clientId)
+							.at(-1)
 					);
 
-					const accumulatorOffset = grandparentInnerBlocks
-						.slice(0, parentIndex)
-						.reduce(
-							(acc, block) => acc + block.innerBlocks.length,
-							0
-						);
+					if (!parent) {
+						return null;
+					}
+
+					const prevAccumulator =
+						prevContextLoopAttributes?.['cl-accumulator'];
 
 					const currentBlockIndex = parent.innerBlocks.findIndex(
 						block => block.clientId === clientId
 					);
 
-					// Check for valid grandchild
-					if (grandparent.attributes['cl-grandchild-accumulator']) {
-						return accumulatorOffset + currentBlockIndex;
+					const grandparent = getBlock(
+						getBlockParents(parent.clientId)
+							.filter(id => id !== parent.clientId)
+							.at(-1)
+					);
+
+					// Increase the accumulator only if context loop is enabled in the parent
+					// And the grandchild accumulator is not enabled
+					if (
+						parent.attributes['cl-status'] &&
+						!grandparent?.attributes['cl-grandchild-accumulator'] &&
+						ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
+						name ===
+							ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
+						currentBlockIndex !== 0
+					) {
+						return prevAccumulator + currentBlockIndex;
 					}
-				}
 
-				return prevAccumulator;
-			};
+					const grandchildAllowed =
+						grandparent &&
+						ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP[
+							grandparent.name
+						] === name;
 
-			const contextLoop = {
-				...merge({}, prevContextLoopAttributes, contextLoopAttributes),
-				'cl-accumulator': getAccumulator(),
-				prevContextLoopStatus: prevContextLoopAttributes?.['cl-status'],
-			};
+					// Check if the current block is a valid grandchild
+					if (grandchildAllowed) {
+						const grandparentInnerBlocks = grandparent.innerBlocks;
+						const parentIndex = grandparentInnerBlocks.findIndex(
+							block => block.clientId === parent.clientId
+						);
+
+						const accumulatorOffset = grandparentInnerBlocks
+							.slice(0, parentIndex)
+							.reduce(
+								(acc, block) => acc + block.innerBlocks.length,
+								0
+							);
+
+						const currentBlockIndex = parent.innerBlocks.findIndex(
+							block => block.clientId === clientId
+						);
+
+						// Check for valid grandchild
+						if (
+							grandparent.attributes['cl-grandchild-accumulator']
+						) {
+							return accumulatorOffset + currentBlockIndex;
+						}
+					}
+
+					return prevAccumulator;
+				};
+			}, [
+				attributes.isFirstOnHierarchy,
+				clientId,
+				contextLoopAttributes['cl-accumulator'],
+				contextLoopAttributes['cl-relation'],
+				name,
+				prevContextLoopAttributes?.['cl-accumulator'],
+				prevContextLoopAttributes?.['cl-status'],
+			]);
+
+			const contextLoop = useMemo(() => {
+				return {
+					...merge(
+						{},
+						prevContextLoopAttributes,
+						contextLoopAttributes
+					),
+					'cl-accumulator': getAccumulator(),
+					prevContextLoopStatus:
+						prevContextLoopAttributes?.['cl-status'],
+				};
+			}, [
+				contextLoopAttributes,
+				getAccumulator,
+				prevContextLoopAttributes,
+			]);
 
 			const memoizedValue = useMemo(() => {
 				return {
@@ -175,51 +207,57 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			}, [contextLoop]);
 
 			const wasRelationValidated = useRef(false);
-			// Check if category or tag by which the post is filtered exists
+			const prevRelation = useRef(null);
+			const prevRelationId = useRef(null);
+
+			const updateRelationIds = useCallback(async () => {
+				const dataRequest = getAttributesWithoutPrefix(
+					getCLAttributes(contextLoopAttributes),
+					'cl-'
+				);
+
+				const { newValues } =
+					(await getDCOptions(
+						dataRequest,
+						contextLoopAttributes['cl-id'],
+						null,
+						true
+					)) ?? {};
+
+				if (!isEmpty(newValues)) {
+					const {
+						__unstableMarkNextChangeAsNotPersistent:
+							markNextChangeAsNotPersistent,
+					} = dispatch('core/block-editor');
+
+					markNextChangeAsNotPersistent();
+					setAttributes(newValues);
+				}
+
+				wasRelationValidated.current = true;
+			}, [contextLoopAttributes, setAttributes]);
+
 			useEffect(() => {
+				const currentRelation = contextLoopAttributes['cl-relation'];
+				const currentRelationId = contextLoopAttributes['cl-id'];
+
 				if (
-					wasRelationValidated.current ||
-					!orderByRelations.includes(
-						contextLoopAttributes['cl-relation']
-					)
-				)
-					return () => null;
+					!wasRelationValidated.current &&
+					orderByRelations.includes(currentRelation) &&
+					(currentRelation !== prevRelation.current ||
+						currentRelationId !== prevRelationId.current)
+				) {
+					updateRelationIds();
+				}
 
-				let isCancelled = false;
-
-				const updateRelationIds = async () => {
-					const dataRequest = getAttributesWithoutPrefix(
-						getCLAttributes(contextLoopAttributes),
-						'cl-'
-					);
-
-					const { newValues } =
-						(await getDCOptions(
-							dataRequest,
-							contextLoopAttributes['cl-id'],
-							null,
-							true
-						)) ?? {};
-
-					if (!isEmpty(newValues) && !isCancelled) {
-						const {
-							__unstableMarkNextChangeAsNotPersistent:
-								markNextChangeAsNotPersistent,
-						} = dispatch('core/block-editor');
-
-						markNextChangeAsNotPersistent();
-						setAttributes(newValues);
-					}
-
-					wasRelationValidated.current = true;
-				};
-
-				updateRelationIds();
-
-				return () => {
-					isCancelled = true;
-				};
-			}, [setAttributes, contextLoopAttributes]);
+				prevRelation.current = currentRelation;
+				prevRelationId.current = currentRelationId;
+			}, [
+				contextLoopAttributes['cl-relation'],
+				contextLoopAttributes['cl-id'],
+				orderByRelations,
+				updateRelationIds,
+			]);
 
 			return (
 				<LoopContext.Provider value={memoizedValue}>

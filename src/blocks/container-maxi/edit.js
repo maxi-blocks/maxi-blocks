@@ -12,9 +12,7 @@ import loadable from '@loadable/component';
  * Internal dependencies
  */
 const Inspector = loadable(() => import('./inspector'));
-const MaxiBlock = loadable(() =>
-	import('../../components/maxi-block/maxiBlock')
-);
+import MaxiBlock from '../../components/maxi-block/maxiBlock';
 const Toolbar = loadable(() => import('../../components/toolbar'));
 const ArrowDisplayer = loadable(() =>
 	import('../../components/arrow-displayer')

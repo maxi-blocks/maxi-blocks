@@ -13,6 +13,8 @@ import {
 	warmupRun,
 	prepareInsertMaxiBlock,
 	debugLog,
+	setupNetworkThrottling,
+	disableNetworkThrottling,
 } from './utils';
 import {
 	BLOCKS_DATA,
@@ -23,9 +25,17 @@ import {
 describe('Blocks performance', () => {
 	console.info('Starting Blocks performance tests');
 
+	beforeAll(async () => {
+		await setupNetworkThrottling(page);
+	});
+
 	beforeEach(async () => {
 		await warmupRun();
 	}, WARMUP_TIMEOUT);
+
+	afterAll(async () => {
+		await disableNetworkThrottling(page);
+	});
 
 	Object.entries(BLOCKS_DATA).forEach(
 		([blockType, { name: blockName, action }]) => {

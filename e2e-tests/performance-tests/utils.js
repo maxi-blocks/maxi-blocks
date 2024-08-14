@@ -88,7 +88,7 @@ export async function waitForBlocksLoad(page, expectedBlocksCount) {
  * @param {Page} page
  * @param {Function} action
  * @param {any} context
- * @returns {Object<string, any>} { time: number, context: Any }
+ * @returns {Promise<Object<string, any>>} { time: number, context: Any }
  */
 export async function measureSingleAction(page, action, context) {
 	const startMetrics = await page.metrics();
@@ -104,27 +104,11 @@ export async function measureSingleAction(page, action, context) {
 }
 
 /**
- * Remove outliers from an array of times.
- *
- * @param {number[]} times
- * @returns {number[]}
- */
-function removeOutliers(times) {
-	const sorted = times.sort((a, b) => a - b);
-	const q1 = sorted[Math.floor(sorted.length / 4)];
-	const q3 = sorted[Math.ceil((sorted.length * 3) / 4)];
-	const iqr = q3 - q1;
-	const lowerBound = q1 - 1.5 * iqr;
-	const upperBound = q3 + 1.5 * iqr;
-	return sorted.filter(x => x >= lowerBound && x <= upperBound);
-}
-
-/**
  * Perform measurements for a set of events.
  *
  * @param {Object<string, {pre: Function, action: Function, post: Function}>} events
  * @param {number} iterations
- * @returns {Object<string, {times: number[], average: number}>} measurements
+ * @returns {Promise<Object<string, {times: number[], average: number}>>} measurements
  */
 export async function performMeasurements(events, iterations = ITERATIONS) {
 	const results = Object.fromEntries(
@@ -159,11 +143,14 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 			}
 		}
 		debugLog(`Iteration ${i + 1} completed`);
+
+		await cleanupAfterIteration();
+
 		await page.waitForTimeout(COOL_DOWN_TIME);
 	}
 
 	for (const key in results) {
-		const cleanedTimes = removeOutliers(results[key].times);
+		const cleanedTimes = results[key].times;
 		const mid = Math.floor(cleanedTimes.length / 2);
 		results[key].median =
 			cleanedTimes.length % 2 === 0
@@ -172,6 +159,19 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 	}
 
 	return results;
+}
+
+async function cleanupAfterIteration() {
+	debugLog('Performing cleanup after iteration');
+	// Clear browser cache and cookies
+	const client = await page.target().createCDPSession();
+	await client.send('Network.clearBrowserCache');
+	await client.send('Network.clearBrowserCookies');
+
+	// Clear JavaScript heap
+	await client.send('HeapProfiler.collectGarbage');
+
+	debugLog('Cleanup completed');
 }
 
 /**
@@ -282,6 +282,38 @@ export async function prepareInsertMaxiBlock(page, blockName) {
 			block.click();
 		}, block);
 	};
+}
+
+/**
+ * Set up network throttling
+ * @param {Object} page - Puppeteer page object
+ */
+export async function setupNetworkThrottling(page) {
+	const client = await page.target().createCDPSession();
+	await client.send('Network.enable');
+	await client.send('Network.emulateNetworkConditions', {
+		offline: false,
+		latency: 20,
+		downloadThroughput: 1 * 1024 * 1024, // 1 Mbps
+		uploadThroughput: 1 * 1024 * 1024, // 1 Mbps
+	});
+	console.info('Network throttling enabled');
+}
+
+/**
+ * Disable network throttling
+ * @param {Object} page - Puppeteer page object
+ */
+export async function disableNetworkThrottling(page) {
+	const client = await page.target().createCDPSession();
+	await client.send('Network.emulateNetworkConditions', {
+		offline: false,
+		latency: 0,
+		downloadThroughput: -1,
+		uploadThroughput: -1,
+	});
+	await client.send('Network.disable');
+	console.info('Network throttling disabled');
 }
 
 export class PatternManager {

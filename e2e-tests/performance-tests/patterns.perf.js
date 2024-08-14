@@ -13,6 +13,8 @@ import {
 	waitForBlocksLoad,
 	PatternManager,
 	debugLog,
+	setupNetworkThrottling,
+	disableNetworkThrottling,
 } from './utils';
 import { PATTERNS, PERFORMANCE_TESTS_TIMEOUT, WARMUP_TIMEOUT } from './config';
 
@@ -21,9 +23,17 @@ describe('Patterns performance', () => {
 
 	const patternManager = new PatternManager(page);
 
+	beforeAll(async () => {
+		await setupNetworkThrottling(page);
+	});
+
 	beforeEach(async () => {
 		await warmupRun();
 	}, WARMUP_TIMEOUT);
+
+	afterAll(async () => {
+		await disableNetworkThrottling(page);
+	});
 
 	PATTERNS.forEach(({ type, patterns }) => {
 		patterns.forEach(patternName => {
@@ -131,5 +141,17 @@ describe('Patterns performance', () => {
 				PERFORMANCE_TESTS_TIMEOUT
 			);
 		});
+	});
+
+	afterAll(async () => {
+		// Disable network throttling
+		const client = await page.target().createCDPSession();
+		await client.send('Network.emulateNetworkConditions', {
+			offline: false,
+			latency: 0,
+			downloadThroughput: -1,
+			uploadThroughput: -1,
+		});
+		await client.send('Network.disable');
 	});
 });

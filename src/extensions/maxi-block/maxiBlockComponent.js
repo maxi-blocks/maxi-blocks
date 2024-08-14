@@ -419,7 +419,7 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Force rendering the block when SC related values change
-		if (this.scProps) {
+		if (this.scProps && this.state.oldSC) {
 			const SC = select(
 				'maxiBlocks/style-cards'
 			).receiveMaxiSelectedStyleCard();

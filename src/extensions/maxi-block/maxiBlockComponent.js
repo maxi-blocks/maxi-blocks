@@ -200,7 +200,6 @@ class MaxiBlockComponent extends Component {
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.paginationTypographyStatus = attributes['cl-pagination'];
-		console.log(uniqueID, this.paginationTypographyStatus);
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
@@ -1262,21 +1261,16 @@ class MaxiBlockComponent extends Component {
 
 		let response = {};
 		if (this.paginationTypographyStatus) {
-			console.log('paginationTypographyStatus is true for ', this.props.attributes.uniqueID);
+
 			const paginationTypography = getGroupAttributes(
 				this.props.attributes,
 				'typography',
 				false,
 				'cl-pagination-'
 			);
-			console.log('paginationTypography is ', paginationTypography);
-			response = getAllFonts(
-				{ ...this.typography, ...paginationTypography },
-				'custom-formats'
-			);
-			console.log('response is ', response);
-		}
-		else response = getAllFonts(this.typography, 'custom-formats');
+
+			response = getAllFonts(paginationTypography);
+		} else response = getAllFonts(this.typography, 'custom-formats');
 
 		if (isEmpty(response)) return;
 

@@ -172,6 +172,20 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 15 Aug 2024_
+MaxiBlocks v1.9.5
+* Update: Optimized performance for MaxiBlocks in the Editing Experience and FSE Site Editor, resulting in faster load times and smoother interactions.
+* Update: Introduced a new setting to customize avatar size in Dynamic Content.
+* Fix: Resolved an issue where icon hover effects created in the Interaction Builder were not functioning correctly, ensuring a consistent user experience.
+* Fix: Addressed a bug that prevented fonts from loading on the frontend when switching Style Cards without making any other changes to the page.
+
+_Updates 1 Aug 2024_
+MaxiBlocks v1.9.4
+* Update: Enhanced compatibility with the upcoming MaxiBlocks Go theme, optimizing integration and performance for future theme updates.
+* Update: Expanded Dynamic Content functionality to support current item templates for specific posts, authors, categories, tags, and WooCommerce products, enabling more flexible content management.
+* Fix: Resolved an issue ensuring the Roboto font consistently appears in the Editor UI when the MaxiBlocks plugin is active, providing a cohesive visual experience.
+* Fix: Optimized the Editor height when creating Custom Templates to improve the overall editing experience and ensure content is easily accessible.
+
 _Updates 19 Jul 2024_
 MaxiBlocks v1.9.3
 * Security: Fixed arbitrary file deletion vulnerability for Authenticated (Subscriber+) (CVE-2024-6885). Thanks to Lucio Sá for the responsible disclosure.
@@ -186,15 +200,6 @@ MaxiBlocks v1.9.2
 * Fix: Enabled the mobile navigation menu background by default for improved user experience.
 * Fix: Addressed inconsistencies in the Text block's toolbar icons for a more cohesive interface.
 * Fix: Incorporated bottom-gap and mobile navigation options into Style Cards from the Style Cards Library by default for enhanced functionality.
-
-_Updates 9 Jul 2024_
-MaxiBlocks v1.9.1
-* Update: Added support for more Dynamic Content options for Custom Post Types.
-* Update: Improved SEO score for patterns with Interaction Builder effects.
-* Update: Optimized speed for Number Counter and Video frontend scripts.
-* Update: Enhancements to Dynamic Content and Content Loop speed on backend.
-* Fix: Resolved Search Maxi block's search icon bug when trying to replace it.
-* Fix: Pagination and hiding repeated elements for Content Loop when using WooCommerce products.
 
 == Upgrade Notice ==
 

@@ -149,15 +149,6 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 		await page.waitForTimeout(COOL_DOWN_TIME);
 	}
 
-	for (const key in results) {
-		const cleanedTimes = results[key].times;
-		const mid = Math.floor(cleanedTimes.length / 2);
-		results[key].median =
-			cleanedTimes.length % 2 === 0
-				? (cleanedTimes[mid - 1] + cleanedTimes[mid]) / 2
-				: cleanedTimes[mid];
-	}
-
 	return results;
 }
 
@@ -282,38 +273,6 @@ export async function prepareInsertMaxiBlock(page, blockName) {
 			block.click();
 		}, block);
 	};
-}
-
-/**
- * Set up network throttling
- * @param {Object} page - Puppeteer page object
- */
-export async function setupNetworkThrottling(page) {
-	const client = await page.target().createCDPSession();
-	await client.send('Network.enable');
-	await client.send('Network.emulateNetworkConditions', {
-		offline: false,
-		latency: 20,
-		downloadThroughput: 1 * 1024 * 1024, // 1 Mbps
-		uploadThroughput: 1 * 1024 * 1024, // 1 Mbps
-	});
-	console.info('Network throttling enabled');
-}
-
-/**
- * Disable network throttling
- * @param {Object} page - Puppeteer page object
- */
-export async function disableNetworkThrottling(page) {
-	const client = await page.target().createCDPSession();
-	await client.send('Network.emulateNetworkConditions', {
-		offline: false,
-		latency: 0,
-		downloadThroughput: -1,
-		uploadThroughput: -1,
-	});
-	await client.send('Network.disable');
-	console.info('Network throttling disabled');
 }
 
 export class PatternManager {

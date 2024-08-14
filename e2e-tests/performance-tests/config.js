@@ -54,7 +54,7 @@ export let currentSessionFilePath = '';
  * @param {string} newPath
  */
 export function setCurrentSessionFilePath(newPath) {
-    currentSessionFilePath = newPath;
+	currentSessionFilePath = newPath;
 }
 
 /**

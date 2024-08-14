@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { saveDraft } from '@wordpress/e2e-test-utils';
+// import { saveDraft } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -13,8 +13,6 @@ import {
 	waitForBlocksLoad,
 	PatternManager,
 	debugLog,
-	setupNetworkThrottling,
-	disableNetworkThrottling,
 } from './utils';
 import { PATTERNS, PERFORMANCE_TESTS_TIMEOUT, WARMUP_TIMEOUT } from './config';
 
@@ -23,17 +21,9 @@ describe('Patterns performance', () => {
 
 	const patternManager = new PatternManager(page);
 
-	beforeAll(async () => {
-		await setupNetworkThrottling(page);
-	});
-
 	beforeEach(async () => {
 		await warmupRun();
 	}, WARMUP_TIMEOUT);
-
-	afterAll(async () => {
-		await disableNetworkThrottling(page);
-	});
 
 	PATTERNS.forEach(({ type, patterns }) => {
 		patterns.forEach(patternName => {
@@ -92,9 +82,6 @@ describe('Patterns performance', () => {
 								await page.evaluate(block => {
 									block.focus();
 								}, block);
-								return { blocks, totalBlockCount };
-							},
-							action: async ({ blocks, totalBlockCount }) => {
 								debugLog(
 									`Inserting pattern: ${patternName} (${type}) (Total blocks: ${totalBlockCount})`
 								);
@@ -103,6 +90,9 @@ describe('Patterns performance', () => {
 										.dispatch('core/block-editor')
 										.insertBlocks(blocks);
 								}, blocks);
+								return { blocks, totalBlockCount };
+							},
+							action: async ({ blocks, totalBlockCount }) => {
 								await waitForBlocksLoad(page, totalBlockCount);
 								return { totalBlockCount };
 							},
@@ -141,17 +131,5 @@ describe('Patterns performance', () => {
 				PERFORMANCE_TESTS_TIMEOUT
 			);
 		});
-	});
-
-	afterAll(async () => {
-		// Disable network throttling
-		const client = await page.target().createCDPSession();
-		await client.send('Network.emulateNetworkConditions', {
-			offline: false,
-			latency: 0,
-			downloadThroughput: -1,
-			uploadThroughput: -1,
-		});
-		await client.send('Network.disable');
 	});
 });

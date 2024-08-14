@@ -90,32 +90,195 @@ class PerformanceComparator {
 			};
 		}
 
-		const oldMedian = values1.median;
-		const newMedian = values2.median;
-		const diff = newMedian - oldMedian;
-		const percentChange = oldMedian !== 0 ? (diff / oldMedian) * 100 : 0;
-		const status = this.determineStatus(diff, percentChange);
+		const oldStats = this.calculateStatistics(values1.times);
+		const newStats = this.calculateStatistics(values2.times);
+		const diffMean = newStats.mean - oldStats.mean;
+		const percentChangeMean =
+			oldStats.mean !== 0 ? (diffMean / oldStats.mean) * 100 : 0;
+		const status = this.determineStatus(oldStats, newStats);
 
 		return {
 			metric,
-			oldMedian,
-			newMedian,
-			diff,
-			percentChange,
+			oldStats,
+			newStats,
+			diffMean,
+			percentChangeMean,
 			...status,
+			statusEmoji: status.statusEmoji,
 		};
 	}
 
-	determineStatus(diff, percentChange) {
-		if (
-			Math.abs(diff) <= this.threshold ||
-			Math.abs(percentChange) <= this.percentThreshold
-		) {
+	calculateStatistics(times) {
+		const cleanedTimes = times.filter(time => time !== 0);
+		return {
+			mean: this.calculateMean(cleanedTimes),
+			median: this.calculateMedian(cleanedTimes),
+			min: this.calculateMin(cleanedTimes),
+			max: this.calculateMax(cleanedTimes),
+			standardDeviation: this.calculateStandardDeviation(cleanedTimes),
+			sampleSize: cleanedTimes.length,
+		};
+	}
+
+	calculateMean(data) {
+		// Formula: mean = sum of all values / number of values
+		return data.reduce((sum, value) => sum + value, 0) / data.length;
+	}
+
+	calculateMedian(data) {
+		const sortedData = [...data].sort((a, b) => a - b);
+		const mid = Math.floor(sortedData.length / 2);
+		// Formula: If odd number of values, median is the middle value
+		//          If even number of values, median is the average of the two middle values
+		return sortedData.length % 2 === 0
+			? (sortedData[mid - 1] + sortedData[mid]) / 2
+			: sortedData[mid];
+	}
+
+	calculateMin(data) {
+		// Minimum value in the dataset
+		return Math.min(...data);
+	}
+
+	calculateMax(data) {
+		// Maximum value in the dataset
+		return Math.max(...data);
+	}
+
+	calculateStandardDeviation(data) {
+		const mean = this.calculateMean(data);
+		// Formula: sqrt(sum of squared differences from mean / (n - 1))
+		return Math.sqrt(
+			data.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) /
+				(data.length - 1)
+		);
+	}
+
+	determineStatus(oldStats, newStats) {
+		const diffMean = newStats.mean - oldStats.mean;
+		const percentChangeMean = this.calculatePercentChange(
+			oldStats.mean,
+			newStats.mean
+		);
+		const pooledSD = this.calculatePooledStandardDeviation(
+			oldStats,
+			newStats
+		);
+		const SE = this.calculateStandardError(
+			pooledSD,
+			oldStats.sampleSize,
+			newStats.sampleSize
+		);
+		const tStatistic = this.calculateTStatistic(diffMean, SE);
+		const degreesOfFreedom = oldStats.sampleSize + newStats.sampleSize - 2;
+		const criticalTValue = this.getCriticalTValue(degreesOfFreedom);
+
+		if (tStatistic > criticalTValue) {
+			if (Math.abs(percentChangeMean) > this.percentThreshold) {
+				return diffMean > 0
+					? { status: 'significantly slower', statusEmoji: '🐢' }
+					: { status: 'significantly faster', statusEmoji: '🚀' };
+			} else {
+				return diffMean > 0
+					? { status: 'slightly slower', statusEmoji: '⚠️' }
+					: { status: 'slightly faster', statusEmoji: '✅' };
+			}
+		} else {
 			return { status: 'unchanged', statusEmoji: '➖' };
 		}
-		return diff > 0
-			? { status: 'slower', statusEmoji: '🐢' }
-			: { status: 'faster', statusEmoji: '🚀' };
+	}
+
+	calculatePercentChange(oldValue, newValue) {
+		// Formula: (new value - old value) / old value * 100
+		return oldValue !== 0 ? ((newValue - oldValue) / oldValue) * 100 : 0;
+	}
+
+	calculatePooledStandardDeviation(oldStats, newStats) {
+		// Formula: sqrt(((n1 - 1) * s1^2 + (n2 - 1) * s2^2) / (n1 + n2 - 2))
+		// Where n1, n2 are sample sizes and s1, s2 are standard deviations
+		return Math.sqrt(
+			((oldStats.sampleSize - 1) *
+				Math.pow(oldStats.standardDeviation, 2) +
+				(newStats.sampleSize - 1) *
+					Math.pow(newStats.standardDeviation, 2)) /
+				(oldStats.sampleSize + newStats.sampleSize - 2)
+		);
+	}
+
+	calculateStandardError(pooledSD, sampleSize1, sampleSize2) {
+		// Formula: pooled standard deviation * sqrt(1/n1 + 1/n2)
+		// Where n1 and n2 are the sample sizes
+		return pooledSD * Math.sqrt(1 / sampleSize1 + 1 / sampleSize2);
+	}
+
+	calculateTStatistic(diffMean, standardError) {
+		// Formula: |difference in means| / standard error
+		return Math.abs(diffMean) / standardError;
+	}
+
+	getCriticalTValue(degreesOfFreedom) {
+		const tTable = {
+			1: 12.706,
+			2: 4.303,
+			3: 3.182,
+			4: 2.776,
+			5: 2.571,
+			6: 2.447,
+			7: 2.365,
+			8: 2.306,
+			9: 2.262,
+			10: 2.228,
+			11: 2.201,
+			12: 2.179,
+			13: 2.16,
+			14: 2.145,
+			15: 2.131,
+			16: 2.12,
+			17: 2.11,
+			18: 2.101,
+			19: 2.093,
+			20: 2.086,
+			21: 2.08,
+			22: 2.074,
+			23: 2.069,
+			24: 2.064,
+			25: 2.06,
+			26: 2.056,
+			27: 2.052,
+			28: 2.048,
+			29: 2.045,
+			30: 2.042,
+			40: 2.021,
+			50: 2.009,
+			60: 2.0,
+			80: 1.99,
+			100: 1.984,
+			120: 1.98,
+			Infinity: 1.96,
+		};
+
+		const keys = Object.keys(tTable)
+			.map(Number)
+			.sort((a, b) => a - b);
+
+		if (tTable.hasOwnProperty(degreesOfFreedom)) {
+			return tTable[degreesOfFreedom];
+		}
+
+		let lowerDegreesOfFreedom = keys.find(df => df > degreesOfFreedom) - 1;
+		let upperDegreesOfFreedom = lowerDegreesOfFreedom + 1;
+
+		if (lowerDegreesOfFreedom === undefined) {
+			return tTable[Infinity];
+		}
+
+		const lowerValue = tTable[lowerDegreesOfFreedom];
+		const upperValue = tTable[upperDegreesOfFreedom];
+		const proportion =
+			(degreesOfFreedom - lowerDegreesOfFreedom) /
+			(upperDegreesOfFreedom - lowerDegreesOfFreedom);
+
+		return lowerValue + (upperValue - lowerValue) * proportion;
 	}
 
 	readJsonFile(filePath) {
@@ -186,23 +349,37 @@ class ResultWriter {
 		if (this.results.comparisons.length === 0) {
 			markdown += `## No significant changes detected.\n\n`;
 		} else {
-			markdown += `| Block | Metric | Old Median (ms) | New Median (ms) | Difference (ms) | Change (%) | Status |\n`;
-			markdown += `|-------|--------|-----------------|-----------------|-----------------|------------|--------|\n`;
+			markdown += `| Block | Metric | Old Mean (ms) | New Mean (ms) | Difference (ms) | Change (%) | Status |\n`;
+			markdown += `|-------|--------|---------------|---------------|-----------------|------------|--------|\n`;
 
 			for (const comparison of this.results.comparisons) {
 				if (comparison.warning) {
 					markdown += `| ${comparison.block} | ⚠️ | | | | | ${comparison.warning} |\n`;
-				} else {
+				} else if (comparison.metrics) {
 					for (const metric of comparison.metrics) {
+						const oldMean = metric.oldStats?.mean ?? 'N/A';
+						const newMean = metric.newStats?.mean ?? 'N/A';
+						const diffMean =
+							oldMean !== 'N/A' && newMean !== 'N/A'
+								? (newMean - oldMean).toFixed(2)
+								: 'N/A';
+						const percentChange =
+							oldMean !== 'N/A' &&
+							newMean !== 'N/A' &&
+							oldMean !== 0
+								? (
+										((newMean - oldMean) / oldMean) *
+										100
+								  ).toFixed(2) + '%'
+								: 'N/A';
+
 						markdown += `| ${comparison.block} | ${
 							metric.metric
-						} | ${metric.oldMedian.toFixed(
-							2
-						)} | ${metric.newMedian.toFixed(
-							2
-						)} | ${metric.diff.toFixed(
-							2
-						)} | ${metric.percentChange.toFixed(2)}% | ${
+						} | ${
+							oldMean !== 'N/A' ? oldMean.toFixed(2) : 'N/A'
+						} | ${
+							newMean !== 'N/A' ? newMean.toFixed(2) : 'N/A'
+						} | ${diffMean} | ${percentChange} | ${
 							metric.statusEmoji
 						} ${metric.status} |\n`;
 					}
@@ -210,7 +387,82 @@ class ResultWriter {
 			}
 		}
 
+		markdown += this.generateDetailedStatistics();
+
 		return markdown;
+	}
+
+	generateDetailedStatistics() {
+		let markdown = '';
+
+		for (const comparison of this.results.comparisons) {
+			markdown += `<details>\n<summary><strong>${comparison.block}</strong></summary>\n\n`;
+
+			if (comparison.warning) {
+				markdown += `⚠️ ${comparison.warning}\n\n`;
+			} else if (comparison.metrics && comparison.metrics.length > 0) {
+				for (const metric of comparison.metrics) {
+					markdown += `### ${metric.metric}\n\n`;
+					if (metric.status === 'missing') {
+						markdown += `⚠️ ${metric.warning}\n\n`;
+					} else if (metric.oldStats && metric.newStats) {
+						markdown += `| Statistic | Old Value | New Value |\n`;
+						markdown += `|-----------|-----------|-----------|\n`;
+						markdown += this.generateStatRow(
+							'Mean',
+							metric.oldStats.mean,
+							metric.newStats.mean
+						);
+						markdown += this.generateStatRow(
+							'Median',
+							metric.oldStats.median,
+							metric.newStats.median
+						);
+						markdown += this.generateStatRow(
+							'Min',
+							metric.oldStats.min,
+							metric.newStats.min
+						);
+						markdown += this.generateStatRow(
+							'Max',
+							metric.oldStats.max,
+							metric.newStats.max
+						);
+						markdown += this.generateStatRow(
+							'Standard Deviation',
+							metric.oldStats.standardDeviation,
+							metric.newStats.standardDeviation
+						);
+						markdown += this.generateStatRow(
+							'Sample Size',
+							metric.oldStats.sampleSize,
+							metric.newStats.sampleSize
+						);
+						markdown += '\n';
+					} else {
+						markdown += `⚠️ Incomplete data for this metric\n\n`;
+					}
+				}
+			} else {
+				markdown += `No metrics data available for this block.\n\n`;
+			}
+
+			markdown += `</details>\n\n`;
+		}
+
+		if (markdown.length === 0) {
+			return '';
+		}
+
+		return `\n## Detailed Statistics\n\n${markdown}`;
+	}
+
+	generateStatRow(statName, oldValue, newValue) {
+		const formatValue = value =>
+			value !== undefined ? value.toFixed(2) : 'N/A';
+		return `| ${statName} | ${formatValue(oldValue)} | ${formatValue(
+			newValue
+		)} |\n`;
 	}
 
 	generateDescription() {
@@ -224,9 +476,6 @@ class ResultWriter {
 - Threshold for considering a change significant: ${this.threshold}s and ${
 			this.percentThreshold
 		}%
-- 🚀 indicates improved performance (faster)
-- 🐢 indicates degraded performance (slower)
-- ➖ indicates no significant change
 
 ${
 	this.results.showAllDetails

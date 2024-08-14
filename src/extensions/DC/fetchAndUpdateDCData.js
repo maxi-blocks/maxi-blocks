@@ -30,13 +30,15 @@ const fetchAndUpdateDCData = async (
 	clientId
 ) => {
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
+
+	if(!dynamicContent?.['dc-status'] && !contextLoop?.['cl-status']) return;
+
 	const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
 	const { status, content, type, field, id, linkTarget, containsHTML } =
 		dynamicContentProps;
 
 	if (
-		status &&
 		!isNil(type) &&
 		!isNil(field) &&
 		(!isNil(id) || ['settings', 'cart'].includes(type))
@@ -153,6 +155,7 @@ const fetchAndUpdateDCData = async (
 			onChange(synchronizedAttributes);
 		}
 	}
+
 };
 
 export default fetchAndUpdateDCData;

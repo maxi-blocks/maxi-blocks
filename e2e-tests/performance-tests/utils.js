@@ -13,8 +13,6 @@ import {
 	RESULTS_FILE_NAME,
 	WARMUP_ITERATIONS,
 	COOL_DOWN_TIME,
-	currentSessionFilePath,
-	setCurrentSessionFilePath,
 } from './config';
 
 /**
@@ -182,12 +180,11 @@ export function saveEventMeasurements(key, measurements) {
 		return;
 	}
 
-	const newFilePath = getNewFilePath(resultsFilePath);
 	let existingResults = {};
 
-	if (fs.existsSync(newFilePath)) {
+	if (fs.existsSync(resultsFilePath)) {
 		try {
-			const fileContent = fs.readFileSync(newFilePath, 'utf8');
+			const fileContent = fs.readFileSync(resultsFilePath, 'utf8');
 			existingResults = JSON.parse(fileContent);
 		} catch (error) {
 			console.warn(
@@ -202,38 +199,14 @@ export function saveEventMeasurements(key, measurements) {
 	};
 
 	try {
-		fs.writeFileSync(newFilePath, JSON.stringify(mergedResults, null, 2));
-		debugLog(`Results saved to: ${newFilePath}`);
+		fs.writeFileSync(
+			resultsFilePath,
+			JSON.stringify(mergedResults, null, 2)
+		);
+		debugLog(`Results saved to: ${resultsFilePath}`);
 	} catch (error) {
 		console.error('Error writing to file:', error);
 	}
-}
-
-/**
- * Get a new session file path with a unique name.
- *
- * @param {string} originalPath
- * @returns {string}
- */
-function getNewFilePath(originalPath) {
-	if (currentSessionFilePath) {
-		return currentSessionFilePath;
-	}
-
-	const dir = path.dirname(originalPath);
-	const ext = path.extname(originalPath);
-	const baseName = path.basename(originalPath, ext);
-
-	let counter = 1;
-	let newPath;
-
-	do {
-		newPath = path.join(dir, `${baseName}-${counter}${ext}`);
-		counter++;
-	} while (fs.existsSync(newPath));
-
-	setCurrentSessionFilePath(newPath);
-	return newPath;
 }
 
 /**

@@ -45,19 +45,6 @@ export const RESULTS_FILE_DIR = path.join(__dirname, '../../bin');
 export const RESULTS_FILE_NAME = 'performance-results.json';
 
 /**
- * Current session file path
- */
-export let currentSessionFilePath = '';
-
-/**
- * Setter function for currentSessionFilePath
- * @param {string} newPath
- */
-export function setCurrentSessionFilePath(newPath) {
-	currentSessionFilePath = newPath;
-}
-
-/**
  * Patterns to test
  *
  * @type {Array<{ type: string, patterns: string[] }>}

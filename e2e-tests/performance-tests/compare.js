@@ -173,8 +173,14 @@ class PerformanceComparator {
 		const degreesOfFreedom = oldStats.sampleSize + newStats.sampleSize - 2;
 		const criticalTValue = this.getCriticalTValue(degreesOfFreedom);
 
-		if (tStatistic > criticalTValue) {
-			if (Math.abs(percentChangeMean) > this.percentThreshold) {
+		const isStatisticallySignificant =
+			Math.abs(tStatistic) > criticalTValue;
+		const isAboveThreshold = Math.abs(diffMean) > this.threshold;
+		const isAbovePercentThreshold =
+			Math.abs(percentChangeMean) > this.percentThreshold;
+
+		if (isStatisticallySignificant && isAboveThreshold) {
+			if (isAbovePercentThreshold) {
 				return diffMean > 0
 					? { status: 'significantly slower', statusEmoji: '🐢' }
 					: { status: 'significantly faster', statusEmoji: '🚀' };

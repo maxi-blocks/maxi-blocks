@@ -47,7 +47,7 @@ jobs:
               run: |
                   npm run test:performance
                   mkdir -p $RUNNER_TEMP/performance_results
-                  mv bin/performance-results-1.json $RUNNER_TEMP/performance_results/performance-results-current.json
+                  mv bin/performance-results.json $RUNNER_TEMP/performance_results/performance-results-current.json
             - name: Upload current results
               uses: actions/upload-artifact@v4
               with:
@@ -117,7 +117,7 @@ jobs:
               run: |
                   npm run test:performance
                   mkdir -p $RUNNER_TEMP/performance_results
-                  mv bin/performance-results-1.json $RUNNER_TEMP/performance_results/performance-results-comparison.json
+                  mv bin/performance-results.json $RUNNER_TEMP/performance_results/performance-results-comparison.json
             - name: Upload comparison results
               uses: actions/upload-artifact@v4
               with:

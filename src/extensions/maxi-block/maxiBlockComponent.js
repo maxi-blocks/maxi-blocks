@@ -1261,7 +1261,6 @@ class MaxiBlockComponent extends Component {
 
 		let response = {};
 		if (this.paginationTypographyStatus) {
-
 			const paginationTypography = getGroupAttributes(
 				this.props.attributes,
 				'typography',
@@ -1269,7 +1268,8 @@ class MaxiBlockComponent extends Component {
 				'cl-pagination-'
 			);
 
-			response = getAllFonts(paginationTypography);
+			response = getAllFonts(paginationTypography, false, false, 'p', 'light', true, ['cl-pagination-']);
+
 		} else response = getAllFonts(this.typography, 'custom-formats');
 
 		if (isEmpty(response)) return;

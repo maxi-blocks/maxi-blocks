@@ -178,6 +178,7 @@ MaxiBlocks v1.9.5
 * Update: Introduced a new setting to customize avatar size in Dynamic Content.
 * Fix: Resolved an issue where icon hover effects created in the Interaction Builder were not functioning correctly, ensuring a consistent user experience.
 * Fix: Addressed a bug that prevented fonts from loading on the frontend when switching Style Cards without making any other changes to the page.
+* Fix: Corrected an issue where unique fonts were not rendering for Context Loop pagination in the Editing Experience.
 
 _Updates 1 Aug 2024_
 MaxiBlocks v1.9.4

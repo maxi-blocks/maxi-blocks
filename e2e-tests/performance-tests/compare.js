@@ -299,10 +299,17 @@ class PerformanceComparator {
 }
 
 class ResultWriter {
-	constructor(results, threshold, percentThreshold, outputDir = 'bin') {
+	constructor(
+		results,
+		threshold,
+		percentThreshold,
+		showAllDetails,
+		outputDir = 'bin'
+	) {
 		this.results = results;
 		this.threshold = threshold;
 		this.percentThreshold = percentThreshold;
+		this.showAllDetails = showAllDetails;
 		this.outputDir = outputDir;
 		this.ensureOutputDirExists();
 	}
@@ -355,7 +362,7 @@ class ResultWriter {
 		if (this.results.comparisons.length === 0) {
 			markdown += `## No significant changes detected.\n\n`;
 		} else {
-			markdown += `| Block | Metric | Old Mean (ms) | New Mean (ms) | Difference (ms) | Change (%) | Status |\n`;
+			markdown += `| Block | Metric | Old Mean (s) | New Mean (s) | Difference (s) | Change (%) | Status |\n`;
 			markdown += `|-------|--------|---------------|---------------|-----------------|------------|--------|\n`;
 
 			for (const comparison of this.results.comparisons) {
@@ -478,13 +485,13 @@ class ResultWriter {
 - **New Run**: ${this.results.file2}
 
 ## Notes:
-- By default, only metrics that have changed beyond the threshold are shown.
-- Threshold for considering a change significant: ${this.threshold}s and ${
-			this.percentThreshold
-		}%
+- Changes are considered significant if they meet these criteria:
+  1. Statistically significant (using t-test)
+  2. Absolute difference > ${this.threshold}s
+  3. Percentage change > ${this.percentThreshold}%
 
 ${
-	this.results.showAllDetails
+	this.showAllDetails
 		? 'All test results are shown, including unchanged metrics.\n\n'
 		: 'Unchanged metrics are not displayed in this report.\n\n'
 }
@@ -571,7 +578,8 @@ function main() {
 		const writer = new ResultWriter(
 			results,
 			args.threshold,
-			args.percentThreshold
+			args.percentThreshold,
+			args.showAllDetails
 		);
 		writer.saveResults();
 

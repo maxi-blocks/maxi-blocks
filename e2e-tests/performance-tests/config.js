@@ -1,6 +1,11 @@
 /**
  * Internal dependencies
  */
+import { waitForBlocksLoad } from './utils';
+
+/**
+ * External dependencies
+ */
 import path from 'path';
 
 /**
@@ -119,12 +124,12 @@ export const BLOCKS_DATA = {
 	'container-maxi': {
 		name: 'Container Maxi with Row and Columns Maxi',
 		action: async page => {
-			// 8 columns pattern
 			await page.waitForSelector('.maxi-row-block__template button');
-			await page.$$eval('.maxi-row-block__template button', button =>
-				button[7].click()
+			await page.$$eval('.maxi-row-block__template button', buttons =>
+				// 8 columns pattern
+				buttons.at(-1).click()
 			);
-			await page.waitForSelector('.maxi-column-block');
+			await waitForBlocksLoad(page, 10); // 1 container + 1 row + 8 columns
 		},
 	},
 	'divider-maxi': {

@@ -451,12 +451,55 @@ const LibraryContainer = props => {
 	const typesenseInstantsearchAdapter = params => {
 		const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 		const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
+		const apiHostBalancer =
+			process.env.REACT_APP_TYPESENSE_API_URL_BALANCER;
+		const apiHost_1 = process.env.REACT_APP_TYPESENSE_API_URL_1;
+		const apiHost_2 = process.env.REACT_APP_TYPESENSE_API_URL_2;
+		const apiHost_3 = process.env.REACT_APP_TYPESENSE_API_URL_3;
+		const apiHost_4 = process.env.REACT_APP_TYPESENSE_API_URL_4;
+		const apiHost_5 = process.env.REACT_APP_TYPESENSE_API_URL_5;
+		const apiHost_6 = process.env.REACT_APP_TYPESENSE_API_URL_6;
 		return new TypesenseInstantSearchAdapter({
 			server: {
-				apiKey, // Be sure to use an API key that only allows search operations
+				apiKey,
+				nearestNode: {
+					host: apiHostBalancer,
+					port: '443',
+					protocol: 'https',
+				},
 				nodes: [
 					{
+						host: apiHost_1,
+						port: '443',
+						protocol: 'https',
+					},
+					{
+						host: apiHost_2,
+						port: '443',
+						protocol: 'https',
+					},
+					{
+						host: apiHost_3,
+						port: '443',
+						protocol: 'https',
+					},
+					{
 						host: apiHost,
+						port: '443',
+						protocol: 'https',
+					},
+					{
+						host: apiHost_4,
+						port: '443',
+						protocol: 'https',
+					},
+					{
+						host: apiHost_5,
+						port: '443',
+						protocol: 'https',
+					},
+					{
+						host: apiHost_6,
 						port: '443',
 						protocol: 'https',
 					},

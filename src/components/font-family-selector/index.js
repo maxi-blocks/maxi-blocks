@@ -24,6 +24,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
+import ContentLoader from '../content-loader';
 
 /**
  * Component
@@ -37,8 +38,15 @@ const FontFamilySelector = props => {
 		fontWeight,
 		fontStyle,
 		disableFontFamilyReset = false,
-		setShowLoader,
+		setShowLoader: setShowLoaderProp,
 	} = props;
+
+	const [showSelectLoader, setShowSelectLoader] = useState(false);
+
+	const setShowLoader = value => {
+		setShowLoaderProp?.(value);
+		setShowSelectLoader(value);
+	};
 
 	const { options } = useSelect(select => {
 		const { getFonts } = select('maxiBlocks/text');
@@ -95,6 +103,7 @@ const FontFamilySelector = props => {
 				onMenuClose={e => setValue({ label: font, value: font })}
 			/>
 
+			{showSelectLoader && <ContentLoader overlay ignoreClicks />}
 			{!disableFontFamilyReset && (
 				<ResetButton
 					onReset={e => {

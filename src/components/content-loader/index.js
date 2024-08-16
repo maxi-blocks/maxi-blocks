@@ -9,12 +9,13 @@ import { BarLoader, PuffLoader } from 'react-spinners';
 import './editor.scss';
 
 const ContentLoader = props => {
-	const { cloud, overlay } = props;
+	const { cloud, overlay, ignoreClicks } = props;
 	const containerStyles = overlay ? { position: 'absolute', zIndex: 2 } : {};
 	return (
 		<div
 			style={{
 				...containerStyles,
+				pointerEvents: ignoreClicks ? 'none' : 'auto',
 				display: 'flex',
 				flexDirection: 'column',
 				placeContent: 'center',

@@ -14,6 +14,7 @@ import classnames from 'classnames';
  */
 import BaseControl from '../base-control';
 import ResetButton from '../reset-control';
+import ContentLoader from '../content-loader';
 
 /**
  * Styles
@@ -32,6 +33,7 @@ export default function SelectControl({
 	defaultValue,
 	value,
 	newStyle = false,
+	isLoading,
 	...props
 }) {
 	const instanceId = useInstanceId(SelectControl);
@@ -103,6 +105,7 @@ export default function SelectControl({
 						  )
 						: getOptions(options)}
 				</select>
+				{isLoading && <ContentLoader overlay />}
 				{onReset && <ResetButton onReset={() => onReset()} />}
 			</BaseControl>
 		)

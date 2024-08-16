@@ -10,6 +10,7 @@ import InfoBox from '../info-box';
 import SelectControl from '../select-control';
 import { getWeightLabel, getWeightOptions } from '../typography-control/utils';
 import onChangeFontWeight from './utils';
+import { useState } from '@wordpress/element';
 
 const FontWeightControl = props => {
 	const {
@@ -19,8 +20,15 @@ const FontWeightControl = props => {
 		fontWeight,
 		defaultFontWeight,
 		onReset,
-		setShowLoader,
+		setShowLoader: setShowLoaderProp,
 	} = props;
+
+	const [showSelectLoader, setShowSelectLoader] = useState(false);
+
+	const setShowLoader = value => {
+		setShowLoaderProp?.(value);
+		setShowSelectLoader(value);
+	};
 
 	const options = getWeightOptions(fontName);
 	const isFontWeightAvailable = options?.some(
@@ -43,6 +51,7 @@ const FontWeightControl = props => {
 				defaultValue={defaultFontWeight}
 				options={options}
 				newStyle
+				isLoading={showSelectLoader}
 				onChange={val => {
 					onChange(val);
 					onChangeFontWeight(val, fontName, fontStyle, setShowLoader);

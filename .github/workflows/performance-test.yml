@@ -1,0 +1,173 @@
+name: Performance Tests
+
+on:
+    pull_request:
+        branches: [master]
+    workflow_dispatch:
+
+jobs:
+    performance-current:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16.x
+            - name: Cache node modules
+              uses: actions/cache@v2
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-v1.3-
+                      ${{ runner.os }}-
+              env:
+                  cache-name: cache-node-modules
+            - name: Install dependencies
+              run: npm install --legacy-peer-deps
+            - name: Create .env file
+              run: |
+                  cat << EOF > .env
+                  REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
+                  REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}
+                  REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}
+                  EOF
+            - name: Build
+              run: npm run build
+            - name: Install WordPress
+              run: |
+                  chmod -R 767 ./
+                  npm run wp-env start
+            - name: Run performance test on current branch
+              id: current_test
+              run: |
+                  npm run test:performance
+                  mkdir -p $RUNNER_TEMP/performance_results
+                  mv bin/performance-results.json $RUNNER_TEMP/performance_results/performance-results-current.json
+            - name: Upload current results
+              uses: actions/upload-artifact@v4
+              with:
+                  name: current-performance-results
+                  path: ${{ runner.temp }}/performance_results/performance-results-current.json
+
+    performance-comparison:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Check for performance test on master
+              id: check_master_test
+              run: |
+                  git fetch origin master:master
+                  if git show master:package.json | grep -q "test:performance"; then
+                    echo "has_master_test=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "has_master_test=false" >> $GITHUB_OUTPUT
+                  fi
+            - name: Determine comparison branch
+              id: determine_branch
+              run: |
+                  if [ "${{ steps.check_master_test.outputs.has_master_test }}" == "true" ]; then
+                    echo "branch=master" >> $GITHUB_OUTPUT
+                  else
+                    echo "branch=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+                  fi
+            - name: Checkout comparison branch
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ steps.determine_branch.outputs.branch }}
+                  fetch-depth: 0
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16.x
+            - name: Cache node modules
+              uses: actions/cache@v2
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-v1.3-
+                      ${{ runner.os }}-
+              env:
+                  cache-name: cache-node-modules
+            - name: Install dependencies
+              run: npm install --legacy-peer-deps
+            - name: Create .env file
+              run: |
+                  cat << EOF > .env
+                  REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}
+                  REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}
+                  REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}
+                  EOF
+            - name: Build
+              run: npm run build
+            - name: Install WordPress
+              run: |
+                  chmod -R 767 ./
+                  npm run wp-env start
+            - name: Run performance test on comparison branch
+              id: comparison_test
+              run: |
+                  npm run test:performance
+                  mkdir -p $RUNNER_TEMP/performance_results
+                  mv bin/performance-results.json $RUNNER_TEMP/performance_results/performance-results-comparison.json
+            - name: Upload comparison results
+              uses: actions/upload-artifact@v4
+              with:
+                  name: comparison-performance-results
+                  path: ${{ runner.temp }}/performance_results/performance-results-comparison.json
+
+    compare-results:
+        needs: [performance-current, performance-comparison]
+        runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
+        steps:
+            - uses: actions/checkout@v4
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16.x
+            - name: Install dependencies
+              run: npm install --legacy-peer-deps
+            - name: Download current results
+              uses: actions/download-artifact@v4
+              with:
+                  name: current-performance-results
+                  path: ${{ runner.temp }}/performance_results
+            - name: Download comparison results
+              uses: actions/download-artifact@v4
+              with:
+                  name: comparison-performance-results
+                  path: ${{ runner.temp }}/performance_results
+            - name: Compare performance results
+              run: npm run compare-performance -- --file1 ${{ runner.temp }}/performance_results/performance-results-current.json --file2 ${{ runner.temp }}/performance_results/performance-results-comparison.json --showAllDetails true
+            - name: Read comparison results
+              id: read_comparison
+              run: |
+                  echo "content<<EOF" >> $GITHUB_OUTPUT
+                  cat bin/performance_comparison.md >> $GITHUB_OUTPUT
+                  echo "EOF" >> $GITHUB_OUTPUT
+            - name: Find Comment
+              uses: peter-evans/find-comment@v2
+              id: fc
+              with:
+                  issue-number: ${{ github.event.pull_request.number }}
+                  comment-author: 'github-actions[bot]'
+                  body-includes: Performance Test Results
+            - name: Create or update comment
+              uses: peter-evans/create-or-update-comment@v3
+              with:
+                  comment-id: ${{ steps.fc.outputs.comment-id }}
+                  issue-number: ${{ github.event.pull_request.number }}
+                  body: |
+                      ## Performance Test Results
+                      ${{ steps.read_comparison.outputs.content }}
+                  edit-mode: replace

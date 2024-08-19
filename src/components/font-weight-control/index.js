@@ -25,10 +25,7 @@ const FontWeightControl = props => {
 
 	const [showSelectLoader, setShowSelectLoader] = useState(false);
 
-	const setShowLoader = value => {
-		setShowLoaderProp?.(value);
-		setShowSelectLoader(value);
-	};
+	const setShowLoader = setShowLoaderProp ?? setShowSelectLoader;
 
 	const options = getWeightOptions(fontName);
 	const isFontWeightAvailable = options?.some(

@@ -176,11 +176,27 @@ const loadFonts = (
 
 				const styleElement = getFontElement(fontName, fontDataNew, url);
 
-				styleElement.onload = () => {
-					if (setIsLoading) setIsLoading(false, fontId);
-				};
+				const oldStyleElement = target.getElementById(styleElement.id);
+				if (oldStyleElement) {
+					if (setIsLoading) {
+						if (oldStyleElement.sheet) {
+							// The link element is already loaded
+							setIsLoading(false, fontId);
+						} else {
+							// The link element is not loaded yet, so we add the onload event listener
+							oldStyleElement.onload = () => {
+								setIsLoading(false, fontId);
+							};
+						}
+					}
+					return;
+				}
 
-				if (target.getElementById(styleElement.id)) return;
+				if (setIsLoading) {
+					styleElement.onload = () => {
+						setIsLoading(false, fontId);
+					};
+				}
 
 				target.head.appendChild(styleElement);
 			};

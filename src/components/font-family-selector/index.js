@@ -42,11 +42,7 @@ const FontFamilySelector = props => {
 	} = props;
 
 	const [showSelectLoader, setShowSelectLoader] = useState(false);
-
-	const setShowLoader = value => {
-		setShowLoaderProp?.(value);
-		setShowSelectLoader(value);
-	};
+	const setShowLoader = setShowLoaderProp ?? setShowSelectLoader;
 
 	const { options } = useSelect(select => {
 		const { getFonts } = select('maxiBlocks/text');

@@ -6,7 +6,38 @@ on:
     workflow_dispatch:
 
 jobs:
+    get-comparison-branch:
+        runs-on: ubuntu-latest
+        outputs:
+            comparison_branch: ${{ steps.get_branch.outputs.branch }}
+        steps:
+            - name: Get comparison branch from latest comment
+              id: get_branch
+              uses: actions/github-script@v6
+              with:
+                  github-token: ${{secrets.GITHUB_TOKEN}}
+                  script: |
+                      const issueNumber = context.issue.number;
+                      const { data: comments } = await github.rest.issues.listComments({
+                        issue_number: issueNumber,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        per_page: 100,
+                        direction: 'desc'
+                      });
+
+                      const setComparisonRegex = /^\/set-comparison-branch\s+(\S+)/;
+                      for (const comment of comments) {
+                        const match = comment.body.match(setComparisonRegex);
+                        if (match) {
+                          core.setOutput('branch', match[1]);
+                          return;
+                        }
+                      }
+                      core.setOutput('branch', 'master');  // Default to master if no command found
+
     performance-current:
+        needs: get-comparison-branch
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -55,32 +86,16 @@ jobs:
                   path: ${{ runner.temp }}/performance_results/performance-results-current.json
 
     performance-comparison:
+        needs: get-comparison-branch
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-            - name: Check for performance test on master
-              id: check_master_test
-              run: |
-                  git fetch origin master:master
-                  if git show master:package.json | grep -q "test:performance"; then
-                    echo "has_master_test=true" >> $GITHUB_OUTPUT
-                  else
-                    echo "has_master_test=false" >> $GITHUB_OUTPUT
-                  fi
-            - name: Determine comparison branch
-              id: determine_branch
-              run: |
-                  if [ "${{ steps.check_master_test.outputs.has_master_test }}" == "true" ]; then
-                    echo "branch=master" >> $GITHUB_OUTPUT
-                  else
-                    echo "branch=${{ github.head_ref }}" >> $GITHUB_OUTPUT
-                  fi
             - name: Checkout comparison branch
               uses: actions/checkout@v4
               with:
-                  ref: ${{ steps.determine_branch.outputs.branch }}
+                  ref: ${{ needs.get-comparison-branch.outputs.comparison_branch }}
                   fetch-depth: 0
             - name: Setup Node.js
               uses: actions/setup-node@v3

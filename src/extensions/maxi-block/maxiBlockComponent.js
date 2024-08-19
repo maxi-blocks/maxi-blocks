@@ -200,12 +200,7 @@ class MaxiBlockComponent extends Component {
 		this.isReusable = false;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
-		this.paginationTypography = getGroupAttributes(
-			attributes,
-			'typography',
-			false,
-			'cl-pagination-'
-		);
+		this.paginationTypographyStatus = attributes['cl-pagination'];
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
@@ -420,7 +415,7 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Force rendering the block when SC related values change
-		if (this.scProps) {
+		if (this.scProps && this.state.oldSC) {
 			const SC = select(
 				'maxiBlocks/style-cards'
 			).receiveMaxiSelectedStyleCard();
@@ -1061,6 +1056,10 @@ class MaxiBlockComponent extends Component {
 				this.hasParentWithClass(
 					iframe?.parentNode,
 					'maxiblocks-custom-pattern'
+				) ||
+				this.hasParentWithClass(
+					iframe?.parentNode,
+					'maxiblocks-go-custom-pattern'
 				)
 			)
 				return;
@@ -1247,22 +1246,40 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
+			const typographyToCheck = Object.fromEntries(
+				Object.entries(this.typography).filter(
+					([key, value]) => value !== undefined
+				)
+			);
+
 		if (
 			this.areFontsLoaded.current ||
-			(isEmpty(this.typography) && isEmpty(this.paginationTypography))
+			(isEmpty(typographyToCheck) && !this.paginationTypographyStatus)
 		)
 			return;
 
 		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
 		if (!target) return;
 
-		const response = isEmpty(this.paginationTypography)
-			? getAllFonts(this.typography, 'custom-formats')
-			: getAllFonts(
-					{ ...this.typography, ...this.paginationTypography },
-					'custom-formats'
-			  );
+		let response = {};
+		if (this.paginationTypographyStatus) {
+			const paginationTypography = getGroupAttributes(
+				this.props.attributes,
+				'typography',
+				false,
+				'cl-pagination-'
+			);
 
+			response = getAllFonts(
+				paginationTypography,
+				false,
+				false,
+				'p',
+				'light',
+				true,
+				['cl-pagination-']
+			);
+		} else response = getAllFonts(this.typography, 'custom-formats');
 		if (isEmpty(response)) return;
 
 		loadFonts(response, true, target);

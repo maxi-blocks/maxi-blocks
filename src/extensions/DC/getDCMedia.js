@@ -16,12 +16,12 @@ import { getProductsContent } from './getWCContent';
  */
 import { isNil } from 'lodash';
 
-const getAvatar = user => {
+const getAvatar = (user, size) => {
 	const { avatar_urls: avatarUrls } = user;
 	if (!avatarUrls) return null;
 
-	const size = Math.max(...Object.keys(avatarUrls).map(Number));
-	return { url: avatarUrls[size] };
+	const url = Object.values(avatarUrls).pop();
+	return { url: url.replace(/(\?|&)s=\d+/, `$1s=${size}`) };
 };
 
 const getMediaById = async (id, type) => {
@@ -53,11 +53,41 @@ const getMediaById = async (id, type) => {
 	}
 };
 
+const cache = {};
+const MAX_CACHE_SIZE = 200;
+
 const getDCMedia = async (dataRequest, clientId) => {
-	const data = await getDCEntity(dataRequest, clientId);
+	const filteredDataRequest = { ...dataRequest };
+	const keysToRemove = [
+		'content',
+		'customDelimiterStatus',
+		'customFormat',
+		'linkTarget',
+		'linkUrl',
+		'linkStatus',
+		'field',
+	];
+	keysToRemove.forEach(key => delete filteredDataRequest[key]);
+
+	const cacheKey = JSON.stringify(filteredDataRequest);
+	let data;
+
+	if (cache[cacheKey]) {
+		data = cache[cacheKey];
+	} else {
+		data = await getDCEntity(dataRequest, clientId);
+
+		// Check if the cache size exceeds the maximum limit
+		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
+			// Remove the oldest entry from the cache
+			const oldestKey = Object.keys(cache)[0];
+			delete cache[oldestKey];
+		}
+		cache[cacheKey] = data;
+	}
 	if (!data) return null;
 
-	const { field, source, type } = dataRequest;
+	const { field, source, type, mediaSize } = dataRequest;
 
 	if (source === 'acf') {
 		const image = await getACFFieldContent(field, data.id);
@@ -73,14 +103,14 @@ const getDCMedia = async (dataRequest, clientId) => {
 	}
 
 	if (field === 'avatar' && type === 'users') {
-		return getAvatar(data);
+		return getAvatar(data, mediaSize);
 	}
 
 	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
 		const { author: authorId } = data;
 		const { getUser } = resolveSelect('core');
 		const author = await getUser(authorId);
-		return getAvatar(author);
+		return getAvatar(author, mediaSize);
 	}
 
 	let id;

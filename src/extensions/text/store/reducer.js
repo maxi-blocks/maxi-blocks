@@ -1,9 +1,4 @@
 /**
- * Internal dependencies
- */
-import fonts from '../fonts/fonts';
-
-/**
  * External dependencies
  */
 import { uniq } from 'lodash';
@@ -15,11 +10,13 @@ import { uniq } from 'lodash';
  * @param {Object} action Dispatched action.
  * @return {Object} Updated state.
  */
-function reducer(
-	state = { fonts: { ...fonts }, postFonts: [], fontUrls: {} },
-	action
-) {
+function reducer(state = { fonts: {}, postFonts: [], fontUrls: {} }, action) {
 	switch (action.type) {
+		case 'SET_FONTS':
+			return {
+				...state,
+				fonts: action.fonts,
+			};
 		case 'UPDATE_FONTS':
 			return {
 				...state,

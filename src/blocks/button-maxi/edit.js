@@ -8,17 +8,15 @@ import { RawHTML, createRef, forwardRef } from '@wordpress/element';
 /**
  * External dependencies
  */
-import loadable from '@loadable/component';
 import classnames from 'classnames';
+import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
 const Inspector = loadable(() => import('./inspector'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
-const IconToolbar = loadable(() =>
-	import('../../components/toolbar/iconToolbar')
-);
+import IconToolbar from '../../components/toolbar/iconToolbar';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import {

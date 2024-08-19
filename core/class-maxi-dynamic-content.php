@@ -15,12 +15,16 @@ class MaxiBlocks_DynamicContent
      */
     private static $instance;
     private static $custom_data = null;
-    private static $order_by_relations = ['by-category', 'by-author', 'by-tag', 'current-archive'];
+    private static $order_by_relations = [
+        'by-category',
+        'by-author',
+        'by-tag',
+        'current-archive',
+    ];
     private static $ignore_empty_fields = ['avatar', 'author_avatar'];
 
     private static $global_dc_accumulator_cl = null;
     private static $global_dc_id_cl = null;
-
 
     private static $link_only_blocks = [
         'group-maxi',
@@ -49,29 +53,31 @@ class MaxiBlocks_DynamicContent
     }
 
     /**
-    * Constructor: empty
+     * Constructor: empty
      */
     public function __construct()
     {
     }
 
     /**
-    * Extracts the last closing HTML tag from the given content.
-    *
-    * This function searches for the last occurrence of a closing HTML tag
-    * within the provided string. If no valid closing tag is found, an empty
-    * string is returned.
-    *
-    * @param string $content The HTML content to search within.
-    * @return string The last closing HTML tag, or an empty string if none found.
-    */
+     * Extracts the last closing HTML tag from the given content.
+     *
+     * This function searches for the last occurrence of a closing HTML tag
+     * within the provided string. If no valid closing tag is found, an empty
+     * string is returned.
+     *
+     * @param string $content The HTML content to search within.
+     * @return string The last closing HTML tag, or an empty string if none found.
+     */
     public function get_last_closing_tag($content)
     {
         // Reverse the content to find the last closing tag from the end more easily
         $reversedContent = strrev($content);
 
         // Look for the first occurrence of a reversed closing tag
-        if (preg_match('/>([a-zA-Z]+)\/</', $reversedContent, $reversedMatches)) {
+        if (
+            preg_match('/>([a-zA-Z]+)\/</', $reversedContent, $reversedMatches)
+        ) {
             // Reverse the tag name back to normal
             $tagName = strrev($reversedMatches[1]);
             // Construct the closing tag correctly
@@ -84,9 +90,6 @@ class MaxiBlocks_DynamicContent
         // Return an empty string if no valid closing tag is found
         return '';
     }
-
-
-
 
     /**
      * Extracts the value of the first 'id' attribute found in the given content.
@@ -142,26 +145,28 @@ class MaxiBlocks_DynamicContent
      * @return int The total number of items found matching the criteria.
      * @throws Exception If the provided relation is not supported for the given post type.
      */
-    public function get_total_posts_by_relation($relation, $id, $type = 'post')
-    {
-
+    public function get_total_posts_by_relation(
+        $relation,
+        $id,
+        $type = 'post'
+    ) {
         // Initialize the query args array
-        $args = array(
-            'post_type'      => $type, // Can be 'post', 'page', 'product', or any custom post type
-            'post_status'    => ($type === 'attachment' ? 'inherit' : 'publish'), // Only count published items
-            'fields'         => 'ids', // Retrieve only the IDs for performance
-            'nopaging'       => true, // Retrieve all items matching the criteria
-        );
+        $args = [
+            'post_type' => $type, // Can be 'post', 'page', 'product', or any custom post type
+            'post_status' => $type === 'attachment' ? 'inherit' : 'publish', // Only count published items
+            'fields' => 'ids', // Retrieve only the IDs for performance
+            'nopaging' => true, // Retrieve all items matching the criteria
+        ];
 
         if ($relation === 'current-archive') {
             $archive_info = $this->get_current_archive_type_and_id();
 
             switch ($archive_info['type']) {
                 case 'category':
-                    $args['category__in'] = array($archive_info['id']); // Array of category IDs
+                    $args['category__in'] = [$archive_info['id']]; // Array of category IDs
                     break;
                 case 'tag':
-                    $args['tag__in'] = array($archive_info['id']); // Array of tag IDs
+                    $args['tag__in'] = [$archive_info['id']]; // Array of tag IDs
                     break;
                 case 'author':
                     if ($type === 'attachment') {
@@ -173,16 +178,16 @@ class MaxiBlocks_DynamicContent
                 case 'date':
                     // For date archives, you might need to decompose the ID back into components
                     $date_parts = explode('-', $archive_info['id']);
-                    $args['date_query'] = array(
-                        array(
-                            'year'  => $date_parts[0] ?? null,
+                    $args['date_query'] = [
+                        [
+                            'year' => $date_parts[0] ?? null,
                             'month' => $date_parts[1] ?? null,
-                            'day'   => $date_parts[2] ?? null,
-                        ),
-                    );
+                            'day' => $date_parts[2] ?? null,
+                        ],
+                    ];
                     break;
                 default:
-                    error_log("Unsupported archive type.");
+                    error_log('Unsupported archive type.');
             }
         } else {
             // Modify the query based on the relation
@@ -190,33 +195,37 @@ class MaxiBlocks_DynamicContent
                 case 'by-category':
                     if ($type === 'product') {
                         // Use WooCommerce's product category taxonomy
-                        $args['tax_query'] = array(
-                            array(
+                        $args['tax_query'] = [
+                            [
                                 'taxonomy' => 'product_cat',
-                                'field'    => 'term_id',
-                                'terms'    => array($id),
-                            ),
-                        );
+                                'field' => 'term_id',
+                                'terms' => [$id],
+                            ],
+                        ];
                     } elseif ($type === 'post') {
-                        $args['category__in'] = array($id); // Array of category IDs
+                        $args['category__in'] = [$id]; // Array of category IDs
                     } else {
-                        error_log("Categories are not associated with this post type.");
+                        error_log(
+                            'Categories are not associated with this post type.',
+                        );
                     }
                     break;
                 case 'by-tag':
                     if ($type === 'product') {
                         // Use WooCommerce's product tag taxonomy
-                        $args['tax_query'] = array(
-                            array(
+                        $args['tax_query'] = [
+                            [
                                 'taxonomy' => 'product_tag',
-                                'field'    => 'term_id',
-                                'terms'    => array($id),
-                            ),
-                        );
+                                'field' => 'term_id',
+                                'terms' => [$id],
+                            ],
+                        ];
                     } elseif ($type === 'post') {
-                        $args['tag__in'] = array($id); // Array of tag IDs
+                        $args['tag__in'] = [$id]; // Array of tag IDs
                     } else {
-                        error_log("Tags are not associated with this post type.");
+                        error_log(
+                            'Tags are not associated with this post type.',
+                        );
                     }
                     break;
                 case 'by-author':
@@ -229,9 +238,9 @@ class MaxiBlocks_DynamicContent
                     break;
                     // Detect the type of current archive and adjust $args accordingly
                     if (is_category()) {
-                        $args['category__in'] = array($id); // Array of category IDs
+                        $args['category__in'] = [$id]; // Array of category IDs
                     } elseif (is_tag()) {
-                        $args['tag__in'] = array($id); // Array of tag IDs
+                        $args['tag__in'] = [$id]; // Array of tag IDs
                     } elseif (is_author()) {
                         if ($type === 'attachment') {
                             // Ensure correct post_status is set for attachments
@@ -242,18 +251,17 @@ class MaxiBlocks_DynamicContent
                         // For date archives, $id needs to be processed differently
                         // You might pass $id as a date range or specific date components
                         // Here's a simplified example assuming $id is a year
-                        $args['date_query'] = array(
-                            array(
-                                'year'  => $id,
-                            ),
-                        );
+                        $args['date_query'] = [
+                            [
+                                'year' => $id,
+                            ],
+                        ];
                     } else {
-                        error_log("Unsupported archive type.");
+                        error_log('Unsupported archive type.');
                     }
                     break;
             }
         }
-
 
         // Create a new WP_Query instance
         $query = new WP_Query($args);
@@ -277,11 +285,11 @@ class MaxiBlocks_DynamicContent
      */
     public function get_pagination_content($cl, $pagination_anchor)
     {
-        if(empty($cl) || !is_array($cl)) {
+        if (empty($cl) || !is_array($cl)) {
             return '';
         }
 
-        @list(
+        @[
             'cl-pagination-previous-text' => $cl_prev_text,
             'cl-pagination-next-text' => $cl_next_text,
             'cl-pagination-show-page-list' => $cl_show_page_list,
@@ -291,7 +299,7 @@ class MaxiBlocks_DynamicContent
             'cl-relation' => $cl_relation,
             'cl-id' => $cl_id,
             'cl-type' => $cl_type,
-        ) = $cl + ['cl-pagination-per-page' => 3];
+        ] = $cl + ['cl-pagination-per-page' => 3];
 
         if (!isset($cl_id) || !isset($cl_relation)) {
             return '';
@@ -305,23 +313,29 @@ class MaxiBlocks_DynamicContent
             'products' => 'product',
             'media' => 'attachment',
             'users' => 'users',
-            default => ($cl_type === 'posts' || $cl_type === null) ? 'post' : $cl_type,
+            default => $cl_type === 'posts' || $cl_type === null
+                ? 'post'
+                : $cl_type,
         };
 
         // Update total count if necessary
-        if($cl_pagination_total_all) {
+        if ($cl_pagination_total_all) {
             if ($type === 'users') {
                 // If the type is 'users', get the total number of users
                 $pagination_total = $this->get_total_users();
             } else {
-                $pagination_total = $this->get_total_posts_by_relation($cl_relation, $cl_id, $type);
+                $pagination_total = $this->get_total_posts_by_relation(
+                    $cl_relation,
+                    $cl_id,
+                    $type,
+                );
             }
         }
 
         $max_page = (int) ceil($pagination_total / $cl_pagination_per_page);
 
         // If there is only one page, return an empty string
-        if($max_page <= 1) {
+        if ($max_page <= 1) {
             return '';
         }
 
@@ -333,8 +347,14 @@ class MaxiBlocks_DynamicContent
         $pagination_page_prev = $pagination_page - 1;
 
         // Build the current URL without query parameters
-        $current_url_protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
-        $current_url = esc_url($current_url_protocol . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+        $current_url_protocol =
+            isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
+                ? 'https'
+                : 'http';
+        $current_url = esc_url(
+            $current_url_protocol .
+                "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",
+        );
 
         // Initialize an array to hold query parameters
         $current_query_params = [];
@@ -343,20 +363,42 @@ class MaxiBlocks_DynamicContent
         $query_string = wp_parse_url($current_url, PHP_URL_QUERY) ?? '';
         parse_str($query_string, $current_query_params);
 
-
         // Start building the pagination HTML content
         $content = '<div class="maxi-pagination">';
 
         // Previous link
-        $content .= $this->build_pagination_link($pagination_page_prev, $cl_prev_text, $current_url, $current_query_params, $pagination_anchor, 'prev', $max_page);
+        $content .= $this->build_pagination_link(
+            $pagination_page_prev,
+            $cl_prev_text,
+            $current_url,
+            $current_query_params,
+            $pagination_anchor,
+            'prev',
+            $max_page,
+        );
 
         // Page list
-        if($cl_show_page_list) {
-            $content .= $this->build_page_list($pagination_page, $pagination_total, $cl_pagination_per_page, $current_url, $current_query_params, $pagination_anchor);
+        if ($cl_show_page_list) {
+            $content .= $this->build_page_list(
+                $pagination_page,
+                $pagination_total,
+                $cl_pagination_per_page,
+                $current_url,
+                $current_query_params,
+                $pagination_anchor,
+            );
         }
 
         // Next link
-        $content .= $this->build_pagination_link($pagination_page_next, $cl_next_text, $current_url, $current_query_params, $pagination_anchor, 'next', $max_page);
+        $content .= $this->build_pagination_link(
+            $pagination_page_next,
+            $cl_next_text,
+            $current_url,
+            $current_query_params,
+            $pagination_anchor,
+            'next',
+            $max_page,
+        );
 
         $content .= '</div>'; // Closing maxi-pagination div
 
@@ -375,18 +417,37 @@ class MaxiBlocks_DynamicContent
      * @param float|int $max_page Optional. The maximum page number for 'next' link type.
      * @return string HTML content for a single pagination link.
      */
-    private function build_pagination_link($page, $text, $base_url, &$query_params, $anchor, $type, $max_page = PHP_INT_MAX)
-    {
-        if (($type === 'prev' && $page > 0) || ($type === 'next' && $page <= $max_page)) {
+    private function build_pagination_link(
+        $page,
+        $text,
+        $base_url,
+        &$query_params,
+        $anchor,
+        $type,
+        $max_page = PHP_INT_MAX
+    ) {
+        if (
+            ($type === 'prev' && $page > 0) ||
+            ($type === 'next' && $page <= $max_page)
+        ) {
             $query_params['cl-page'] = $page;
-            $link = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor); // Safe URL construction
+            $link =
+                strtok($base_url, '?') .
+                '?' .
+                http_build_query($query_params) .
+                '#' .
+                urlencode($anchor); // Safe URL construction
             $escaped_link = esc_url($link); // Escaping the URL for HTML output
             $escaped_text = esc_html($text); // Escaping the text for HTML content
-            return sprintf('<div class="maxi-pagination__%s"><a href="%s" class="maxi-pagination__link"><span class="maxi-pagination__text">%s</span></a></div>', $type, $escaped_link, $escaped_text);
+            return sprintf(
+                '<div class="maxi-pagination__%s"><a href="%s" class="maxi-pagination__link"><span class="maxi-pagination__text">%s</span></a></div>',
+                $type,
+                $escaped_link,
+                $escaped_text,
+            );
         }
         return sprintf('<div class="maxi-pagination__%s"></div>', $type);
     }
-
 
     /**
      * Builds the HTML content for the list of page numbers, including handling for
@@ -400,11 +461,17 @@ class MaxiBlocks_DynamicContent
      * @param string $anchor An HTML anchor to append to pagination links for anchor navigation.
      * @return string The generated HTML content for the pagination page list.
      */
-    private function build_page_list($current_page, $total_items, $items_per_page, $base_url, &$query_params, $anchor)
-    {
+    private function build_page_list(
+        $current_page,
+        $total_items,
+        $items_per_page,
+        $base_url,
+        &$query_params,
+        $anchor
+    ) {
         // Determine the total number of pages
         $total_pages = (int) ceil($total_items / $items_per_page);
-        if($total_pages <= 1) {
+        if ($total_pages <= 1) {
             return '';
         }
 
@@ -420,23 +487,41 @@ class MaxiBlocks_DynamicContent
 
         // Show the first page and ellipses if necessary
         if ($initial_pages > 1) {
-            $page_list_html .= $this->generate_page_link(1, $base_url, $query_params, $anchor);
+            $page_list_html .= $this->generate_page_link(
+                1,
+                $base_url,
+                $query_params,
+                $anchor,
+            );
             if ($initial_pages > 2) {
-                $page_list_html .= '<span class="maxi-pagination__text">...</span>';
+                $page_list_html .=
+                    '<span class="maxi-pagination__text">...</span>';
             }
         }
 
         // Generate links for the range around the current page
         for ($page = $initial_pages; $page <= $final_pages; $page++) {
-            $page_list_html .= $this->generate_page_link($page, $base_url, $query_params, $anchor, $current_page);
+            $page_list_html .= $this->generate_page_link(
+                $page,
+                $base_url,
+                $query_params,
+                $anchor,
+                $current_page,
+            );
         }
 
         // Show the last page and ellipses if necessary
         if ($final_pages < $total_pages) {
             if ($final_pages < $total_pages - 1) {
-                $page_list_html .= '<span class="maxi-pagination__text">...</span>';
+                $page_list_html .=
+                    '<span class="maxi-pagination__text">...</span>';
             }
-            $page_list_html .= $this->generate_page_link($total_pages, $base_url, $query_params, $anchor);
+            $page_list_html .= $this->generate_page_link(
+                $total_pages,
+                $base_url,
+                $query_params,
+                $anchor,
+            );
         }
 
         $page_list_html .= '</div>'; // Close the page list container
@@ -454,21 +539,36 @@ class MaxiBlocks_DynamicContent
      * @param int|null $current_page The current page number, if generating a current page span.
      * @return string The HTML string for a page link or a current page span.
      */
-    private function generate_page_link($page, $base_url, &$query_params, $anchor, $current_page = null)
-    {
+    private function generate_page_link(
+        $page,
+        $base_url,
+        &$query_params,
+        $anchor,
+        $current_page = null
+    ) {
         $query_params['cl-page'] = $page;
-        $url = strtok($base_url, '?') . '?' . http_build_query($query_params) . '#' . urlencode($anchor);
+        $url =
+            strtok($base_url, '?') .
+            '?' .
+            http_build_query($query_params) .
+            '#' .
+            urlencode($anchor);
         $escaped_url = esc_url($url); // Escape the URL for HTML output
 
         if ($page === $current_page) {
             // Use esc_html() to escape the page number for safe HTML display
-            return "<span class=\"maxi-pagination__link maxi-pagination__link--current\">" . esc_html($page) . "</span>";
+            return "<span class=\"maxi-pagination__link maxi-pagination__link--current\">" .
+                esc_html($page) .
+                '</span>';
         } else {
             // Use esc_url() for the href attribute and esc_html() for the page number
-            return "<a href=\"" . $escaped_url . "\" class=\"maxi-pagination__link\"><span class=\"maxi-pagination__text\">" . esc_html($page) . "</span></a>";
+            return "<a href=\"" .
+                $escaped_url .
+                "\" class=\"maxi-pagination__link\"><span class=\"maxi-pagination__text\">" .
+                esc_html($page) .
+                '</span></a>';
         }
     }
-
 
     /**
      * Modifies the provided content by appending pagination controls.
@@ -484,9 +584,11 @@ class MaxiBlocks_DynamicContent
      */
     public function render_pagination($attributes, $content)
     {
-
         // Check if pagination is enabled in the attributes
-        if (!array_key_exists('cl-pagination', $attributes) || !$attributes['cl-pagination']) {
+        if (
+            !array_key_exists('cl-pagination', $attributes) ||
+            !$attributes['cl-pagination']
+        ) {
             return $content;
         }
 
@@ -503,16 +605,29 @@ class MaxiBlocks_DynamicContent
                 $pagination_anchor = $this->get_first_id_value($content);
 
                 // Generate pagination content based on the cl settings and the anchor
-                $pagination_content = $this->get_pagination_content($cl, $pagination_anchor);
+                $pagination_content = $this->get_pagination_content(
+                    $cl,
+                    $pagination_anchor,
+                );
 
                 // Insert the pagination content before the last closing tag of the original content
-                $content_before_last_tag = substr($content, 0, strrpos($content, '<'));
-                $modified_content = $content_before_last_tag . $pagination_content . $last_tag;
+                $content_before_last_tag = substr(
+                    $content,
+                    0,
+                    strrpos($content, '<'),
+                );
+                $modified_content =
+                    $content_before_last_tag . $pagination_content . $last_tag;
 
                 return $modified_content;
             } catch (Exception $e) {
                 // Log any exceptions and return the unmodified content
-                error_log('Error in render_pagination for uniqueID ' . $unique_id . ': ' . $e->getMessage());
+                error_log(
+                    'Error in render_pagination for uniqueID ' .
+                        $unique_id .
+                        ': ' .
+                        $e->getMessage(),
+                );
                 return $content;
             }
         }
@@ -536,32 +651,45 @@ class MaxiBlocks_DynamicContent
                 $inner_block_attributes = $inner_block->attributes;
 
                 // Check if the inner block has dc-status set to true
-                if (isset($inner_block_attributes['dc-status']) && $inner_block_attributes['dc-status']) {
+                if (
+                    isset($inner_block_attributes['dc-status']) &&
+                    $inner_block_attributes['dc-status']
+                ) {
                     $content = self::render_dc_classes($attributes, $content);
                     break;
                 }
 
                 // Recursively check the inner blocks of the current inner block
-                $content = $this->recursive_check($inner_block, $inner_block_attributes, $content);
+                $content = $this->recursive_check(
+                    $inner_block,
+                    $inner_block_attributes,
+                    $content,
+                );
             }
         }
 
         return $content;
     }
 
-
-
     public function render_dc($attributes, $content, $block)
     {
-
-        if (!array_key_exists('dc-status', $attributes) &&
-        !array_key_exists('background-layers', $attributes) &&
-        !array_key_exists('background-layers-hover', $attributes)) {
+        if (
+            !array_key_exists('dc-status', $attributes) &&
+            !array_key_exists('background-layers', $attributes) &&
+            !array_key_exists('background-layers-hover', $attributes)
+        ) {
             if (isset($block->inner_blocks) && !empty($block->inner_blocks)) {
-                $content = $this->check_inner_blocks($block, $attributes, $content);
+                $content = $this->check_inner_blocks(
+                    $block,
+                    $attributes,
+                    $content,
+                );
             }
 
-            if(array_key_exists('cl-pagination', $attributes) && $attributes['cl-pagination']) {
+            if (
+                array_key_exists('cl-pagination', $attributes) &&
+                $attributes['cl-pagination']
+            ) {
                 $content = self::render_dc_classes($attributes, $content);
                 return $this->render_pagination($attributes, $content);
             }
@@ -576,7 +704,7 @@ class MaxiBlocks_DynamicContent
         $unique_id = $attributes['uniqueID'];
         $is_template = is_string($unique_id) && strpos($unique_id, '-template');
 
-        if(strpos($unique_id, 'container-maxi') !== false) {
+        if (strpos($unique_id, 'container-maxi') !== false) {
             self::$global_dc_id_cl = null;
             self::$global_dc_accumulator_cl = null;
         }
@@ -588,39 +716,56 @@ class MaxiBlocks_DynamicContent
             $block_name = substr($unique_id, 0, strrpos($unique_id, '-'));
         }
 
-        if(str_ends_with($unique_id, '-u')) {
+        if (str_ends_with($unique_id, '-u')) {
             self::$custom_data = $this->get_dc_cl($unique_id);
         } elseif (self::$custom_data === null) {
-
             if (class_exists('MaxiBlocks_Styles')) {
                 $styles = new MaxiBlocks_Styles();
-                self::$custom_data = $styles->custom_meta('dynamic_content', $is_template);
+                self::$custom_data = $styles->custom_meta(
+                    'dynamic_content',
+                    $is_template,
+                );
             } else {
                 self::$custom_data = [];
             }
-
         }
 
         $context_loop = [];
 
-        if (is_array(self::$custom_data) && array_key_exists($unique_id, self::$custom_data)) {
+        if (
+            is_array(self::$custom_data) &&
+            array_key_exists($unique_id, self::$custom_data)
+        ) {
             $context_loop = self::$custom_data[$unique_id];
             $accumulator = $context_loop['cl-accumulator'];
-            if(isset($_GET['cl-page'])) {
-                $cl_pagination_per_page = $context_loop['cl-pagination-per-page'] ?? 3;
-                $context_loop['cl-accumulator'] = $accumulator + intval($cl_pagination_per_page) * (intval($pagination_page) - 1);
-
+            if (isset($_GET['cl-page'])) {
+                $cl_pagination_per_page =
+                    $context_loop['cl-pagination-per-page'] ?? 3;
+                $context_loop['cl-accumulator'] =
+                    $accumulator +
+                    intval($cl_pagination_per_page) *
+                        (intval($pagination_page) - 1);
             }
         }
 
-        $content = self::render_dc_background($attributes, $content, $context_loop);
+        $content = self::render_dc_background(
+            $attributes,
+            $content,
+            $context_loop,
+        );
 
-        if (!array_key_exists('dc-status', $attributes) || !$attributes['dc-status']) {
+        if (
+            !array_key_exists('dc-status', $attributes) ||
+            !$attributes['dc-status']
+        ) {
             $content = $this->check_inner_blocks($block, $attributes, $content);
             return $content;
         }
 
-        $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
+        $attributes = array_merge(
+            $attributes,
+            $this->get_dc_values($attributes, $context_loop),
+        );
 
         if (array_key_exists('dc-link-status', $attributes)) {
             $dc_link_status = $attributes['dc-link-status'];
@@ -630,7 +775,7 @@ class MaxiBlocks_DynamicContent
             }
         }
 
-        if($is_template) {
+        if ($is_template) {
             $block_name = substr($block_name, 0, strrpos($block_name, '-'));
         }
 
@@ -650,10 +795,10 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_background($attributes, $content, $context_loop)
     {
-        @list(
+        @[
             'background-layers' => $background_layers,
             'background-layers-hover' => $background_layers_hover,
-        ) = $attributes;
+        ] = $attributes;
 
         foreach ([$background_layers, $background_layers_hover] as $layers) {
             if (!is_array($layers)) {
@@ -661,9 +806,16 @@ class MaxiBlocks_DynamicContent
             }
 
             foreach ($layers as $layer) {
-                if (array_key_exists('dc-status', $layer) && $layer['dc-status'] &&
-                    array_key_exists('type', $layer) && $layer['type'] === 'image') {
-                    $layer = array_merge($layer, $this->get_dc_values($layer, $context_loop));
+                if (
+                    array_key_exists('dc-status', $layer) &&
+                    $layer['dc-status'] &&
+                    array_key_exists('type', $layer) &&
+                    $layer['type'] === 'image'
+                ) {
+                    $layer = array_merge(
+                        $layer,
+                        $this->get_dc_values($layer, $context_loop),
+                    );
 
                     $content = self::render_dc_image($layer, $content, true);
                 }
@@ -675,70 +827,117 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
-
-        @list(
+        @[
             'dc-accumulator' => $dc_accumulator,
             'linkSettings' => $linkSettings,
-        ) = $attributes;
+        ] = $attributes;
 
         $post = self::get_post($attributes);
 
-        if(!empty($post)) {
-            $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
+        if (!empty($post)) {
+            $is_product =
+                $attributes['dc-type'] === 'products' ||
+                $attributes['dc-type'] === 'cart';
             $item_id = $is_product ? $post->get_id() : $post->ID;
-            if($this->is_repeated_post($item_id, $dc_accumulator)) {
+            if ($this->is_repeated_post($item_id, $dc_accumulator)) {
                 return '';
             }
         }
 
-        if(isset($linkSettings)) {
-            if(isset($linkSettings['title']) && isset($linkSettings['url'])) {
-                if($linkSettings['title'] === $linkSettings['url']) {
-                    $content = str_replace('title="'.$linkSettings['title'].'"', 'title="$link-to-replace"', $content);
+        if (isset($linkSettings)) {
+            if (isset($linkSettings['title']) && isset($linkSettings['url'])) {
+                if ($linkSettings['title'] === $linkSettings['url']) {
+                    $content = str_replace(
+                        'title="' . $linkSettings['title'] . '"',
+                        'title="$link-to-replace"',
+                        $content,
+                    );
                 }
             }
         }
 
-        if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'author') {
+        if (
+            array_key_exists('dc-link-target', $attributes) &&
+            $attributes['dc-link-target'] === 'author'
+        ) {
             if (empty($post) || !isset($post->post_author)) {
                 $link = '';
             } else {
                 $link = self::get_field_link(
                     $post->post_author,
-                    $attributes['dc-field']
+                    $attributes['dc-field'],
                 );
             }
-
-        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
+        } elseif (
+            array_key_exists('dc-type', $attributes) &&
+            $attributes['dc-type'] === 'settings'
+        ) {
             $link = get_home_url();
-        } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
-            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+        } elseif (
+            array_key_exists('dc-type', $attributes) &&
+            in_array(
+                $attributes['dc-type'],
+                array_merge(
+                    ['categories', 'tags'],
+                    $this->get_custom_taxonomies(),
+                ),
+            )
+        ) {
+            if (
+                $this->is_repeated_post($attributes['dc-id'], $dc_accumulator)
+            ) {
                 return '';
             }
             $link = get_term_link($attributes['dc-id']);
-        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'users') {
-            if(isset($attributes['dc-relation']) && $attributes['dc-relation'] === 'current') {
+        } elseif (
+            array_key_exists('dc-type', $attributes) &&
+            $attributes['dc-type'] === 'users'
+        ) {
+            if (
+                isset($attributes['dc-relation']) &&
+                $attributes['dc-relation'] === 'current'
+            ) {
                 $user_id = get_queried_object_id();
                 $link = get_author_posts_url($user_id);
             } else {
-                if (isset($attributes['dc-author']) && !empty($attributes['dc-author'])) {
+                if (
+                    isset($attributes['dc-author']) &&
+                    !empty($attributes['dc-author'])
+                ) {
                     $link = get_author_posts_url($attributes['dc-author']);
                 } else {
                     $link = get_author_posts_url($attributes['dc-id']);
                 }
             }
-        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'products') {
-
-            if (empty($post) || $this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+        } elseif (
+            array_key_exists('dc-type', $attributes) &&
+            $attributes['dc-type'] === 'products'
+        ) {
+            if (
+                empty($post) ||
+                (isset($attributes['dc-id']) &&
+                    $this->is_repeated_post(
+                        $attributes['dc-id'],
+                        $dc_accumulator,
+                    ))
+            ) {
                 return '';
             }
-            if (array_key_exists('dc-link-target', $attributes) && $attributes['dc-link-target'] === 'add_to_cart') {
+            if (
+                array_key_exists('dc-link-target', $attributes) &&
+                $attributes['dc-link-target'] === 'add_to_cart'
+            ) {
                 $link = $post->add_to_cart_url();
             } else {
                 $link = get_permalink($post->get_id());
             }
-        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'cart') {
-            if($this->is_repeated_post($attributes['dc-id'], $dc_accumulator)) {
+        } elseif (
+            array_key_exists('dc-type', $attributes) &&
+            $attributes['dc-type'] === 'cart'
+        ) {
+            if (
+                $this->is_repeated_post($attributes['dc-id'], $dc_accumulator)
+            ) {
                 return '';
             }
             $link = wc_get_cart_url();
@@ -746,16 +945,15 @@ class MaxiBlocks_DynamicContent
             if (empty($post)) {
                 return $content;
             }
-            if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+            if ($this->is_repeated_post($post->ID, $dc_accumulator)) {
                 return '';
             }
 
             $link = get_permalink($post->ID);
         }
 
-        if(gettype($link) === 'string') {
+        if (gettype($link) === 'string') {
             $content = str_replace('$link-to-replace', $link, $content);
-
         }
 
         return $content;
@@ -763,8 +961,7 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_content($attributes, $content)
     {
-
-        @list(
+        @[
             'dc-source' => $dc_source,
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
@@ -772,16 +969,18 @@ class MaxiBlocks_DynamicContent
             'dc-link-status' => $dc_link_status,
             'dc-link-target' => $dc_link_target,
             'dc-accumulator' => $dc_accumulator,
-        ) = $attributes;
+        ] = $attributes;
 
         if (!isset($dc_field) || $dc_field === 'static_text') {
             $post = $this->get_post($attributes);
 
-            if(!empty($post)) {
-                $is_product = $attributes['dc-type'] === 'products' || $attributes['dc-type'] === 'cart';
+            if (!empty($post)) {
+                $is_product =
+                    $attributes['dc-type'] === 'products' ||
+                    $attributes['dc-type'] === 'cart';
                 $item_id = $is_product ? $post->get_id() : $post->ID;
 
-                if($this->is_repeated_post($item_id, $dc_accumulator)) {
+                if ($this->is_repeated_post($item_id, $dc_accumulator)) {
                     return '';
                 }
             }
@@ -802,15 +1001,37 @@ class MaxiBlocks_DynamicContent
 
         if ($dc_source === 'acf') {
             $response = self::get_acf_content($attributes);
-        } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
+        } elseif (
+            in_array(
+                $dc_type,
+                array_merge(['posts', 'pages'], $this->get_custom_post_types()),
+            )
+        ) {
+            // Post or page
             $response = self::get_post_or_page_content($attributes);
-        } elseif ($dc_type === 'settings') { // Site settings
+        } elseif ($dc_type === 'settings') {
+            // Site settings
             $response = self::get_site_content($dc_field);
         } elseif ($dc_type === 'media') {
             $response = self::get_media_content($attributes);
-        } elseif (in_array($dc_type, array_merge(['categories', 'tags', 'product_categories', 'product_tags', 'archive'], $this->get_custom_taxonomies()))) {
+        } elseif (
+            in_array(
+                $dc_type,
+                array_merge(
+                    [
+                        'categories',
+                        'tags',
+                        'product_categories',
+                        'product_tags',
+                        'archive',
+                    ],
+                    $this->get_custom_taxonomies(),
+                ),
+            )
+        ) {
             $response = self::get_taxonomy_content($attributes);
-        } elseif ($dc_type === 'users') { // Users
+        } elseif ($dc_type === 'users') {
+            // Users
             $response = self::get_user_content($attributes);
         } elseif ($dc_type === 'products') {
             $response = self::get_product_content($attributes);
@@ -822,20 +1043,21 @@ class MaxiBlocks_DynamicContent
             $response = self::get_date($response, $attributes);
         }
 
-        if($dc_field === 'archive-type' && $dc_type !== 'users') {
+        if ($dc_field === 'archive-type' && $dc_type !== 'users') {
             if (is_author()) {
                 $response = __('author', 'maxi-blocks');
-
             } elseif (is_date()) {
                 $response = __('date', 'maxi-blocks');
             } else {
                 $queried_object = get_queried_object();
-                if ($queried_object !== null && isset($queried_object->taxonomy)) {
+                if (
+                    $queried_object !== null &&
+                    isset($queried_object->taxonomy)
+                ) {
                     $response = $queried_object->taxonomy;
                     $response = preg_replace('/^post_/', '', $response);
                 }
             }
-
         }
 
         if (empty($response) && $response !== '0') {
@@ -843,8 +1065,22 @@ class MaxiBlocks_DynamicContent
             $response = 'No content found';
         }
 
-        if ($dc_link_status && in_array($dc_link_target, array_merge(['categories', 'tags'], $this->get_custom_taxonomies()))) {
-            $content = preg_replace('/<a[^>]+class="maxi-link-wrapper"[^>]*>/', '', $content, 1);
+        if (
+            $dc_link_status &&
+            in_array(
+                $dc_link_target,
+                array_merge(
+                    ['categories', 'tags'],
+                    $this->get_custom_taxonomies(),
+                ),
+            )
+        ) {
+            $content = preg_replace(
+                '/<a[^>]+class="maxi-link-wrapper"[^>]*>/',
+                '',
+                $content,
+                1,
+            );
             $content = str_replace('$text-to-replace', $response, $content);
 
             return $content;
@@ -855,10 +1091,12 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
-    public function render_dc_image($attributes, $content, $is_background = false)
-    {
-
-        @list(
+    public function render_dc_image(
+        $attributes,
+        $content,
+        $is_background = false
+    ) {
+        @[
             'dc-source' => $dc_source,
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
@@ -866,8 +1104,8 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-media-id' => $dc_media_id,
             'dc-accumulator' => $dc_accumulator,
-
-        ) = $attributes;
+            'dc-media-size' => $dc_media_size,
+        ] = $attributes;
 
         if (empty($dc_type)) {
             $dc_type = 'posts';
@@ -885,39 +1123,65 @@ class MaxiBlocks_DynamicContent
 
             $media_id = $image['id'] ?? '';
             $media_src = $image['url'] ?? '';
-        } elseif (in_array($dc_type, array_merge(['posts', 'pages'], $this->get_custom_post_types()))) { // Post or page
+        } elseif (
+            in_array(
+                $dc_type,
+                array_merge(['posts', 'pages'], $this->get_custom_post_types()),
+            )
+        ) {
+            // Post or page
             $post = $this->get_post($attributes);
 
             if (!empty($post)) {
-                if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+                if ($this->is_repeated_post($post->ID, $dc_accumulator)) {
                     return '';
                 }
                 if ($dc_field === 'featured_media') {
                     $media_id = get_post_meta($post->ID, '_thumbnail_id', true);
                 } elseif ($dc_field === 'author_avatar') {
                     $media_id = 'external';
-                    $media_src = get_avatar_url($post->post_author);
+                    $media_src = get_avatar_url($post->post_author, [
+                        'size' => $dc_media_size
+                    ]);
                 }
             }
-        } elseif ($dc_type === 'settings') { // Site settings
+        } elseif ($dc_type === 'settings') {
+            // Site settings
             // $dc_field is not used here as there's just on option for the moment
             $media_id = get_theme_mod('custom_logo');
         } elseif ($dc_type === 'media') {
             $post = $this->get_post($attributes);
-            if(!empty($post) && $this->is_repeated_post($post->ID, $dc_accumulator)) {
+            if (
+                !empty($post) &&
+                $this->is_repeated_post($post->ID, $dc_accumulator)
+            ) {
                 return '';
             }
-            $media_id = $post->ID ?? $dc_media_id ?? $dc_id;
+            $media_id = $post->ID ?? ($dc_media_id ?? $dc_id);
         } elseif ($dc_type === 'users') {
             $media_id = 'external';
-            $post = $this->get_post($attributes);
-            if(!empty($post) && $this->is_repeated_post($post->ID, $dc_accumulator)) {
-                return '';
+            if ($dc_relation === 'current' && is_author()) {
+                $media_src = get_avatar_url(get_queried_object_id(), [
+                    'size' => $dc_media_size
+                ]);
+            } else {
+                $post = $this->get_post($attributes);
+                if (
+                    !empty($post) &&
+                    $this->is_repeated_post($post->ID, $dc_accumulator)
+                ) {
+                    return '';
+                }
+                $media_src = get_avatar_url($post->ID, [
+                    'size' => $dc_media_size
+                ]);
             }
-            $media_src = get_avatar_url($post->ID);
         } elseif ($dc_type === 'products') {
             $product = self::get_post($attributes);
-            if(!empty($product) && $this->is_repeated_post($product->get_id(), $dc_accumulator)) {
+            if (
+                !empty($product) &&
+                $this->is_repeated_post($product->get_id(), $dc_accumulator)
+            ) {
                 return '';
             }
             $media_id = self::get_product_content($attributes);
@@ -927,7 +1191,11 @@ class MaxiBlocks_DynamicContent
             $image_src_array = wp_get_attachment_image_src($media_id, 'full');
             $media_src = !empty($image_src_array) ? $image_src_array[0] : '';
 
-            $media_alt = get_post_meta($media_id, '_wp_attachment_image_alt', true);
+            $media_alt = get_post_meta(
+                $media_id,
+                '_wp_attachment_image_alt',
+                true,
+            );
 
             if (empty($media_alt)) {
                 $media_alt = 'No content found';
@@ -940,21 +1208,38 @@ class MaxiBlocks_DynamicContent
             }
         }
 
-        $mediaIdToReplace = ($is_background) ? '$bg-media-id-to-replace' : '$media-id-to-replace';
-        $mediaUrlToReplace = ($is_background) ? '$bg-media-url-to-replace' : '$media-url-to-replace';
-        $mediaAltToReplace = ($is_background) ? '$bg-media-alt-to-replace' : '$media-alt-to-replace';
-        $mediaCaptionToReplace = ($is_background) ? '$bg-media-caption-to-replace' : '$media-caption-to-replace';
+        $mediaIdToReplace = $is_background
+            ? '$bg-media-id-to-replace'
+            : '$media-id-to-replace';
+        $mediaUrlToReplace = $is_background
+            ? '$bg-media-url-to-replace'
+            : '$media-url-to-replace';
+        $mediaAltToReplace = $is_background
+            ? '$bg-media-alt-to-replace'
+            : '$media-alt-to-replace';
+        $mediaCaptionToReplace = $is_background
+            ? '$bg-media-caption-to-replace'
+            : '$media-caption-to-replace';
 
         if (!empty($media_src)) {
             $content = str_replace($mediaIdToReplace, $media_id, $content);
             $content = str_replace($mediaUrlToReplace, $media_src, $content);
             $content = str_replace($mediaAltToReplace, $media_alt, $content);
-            $content = str_replace($mediaCaptionToReplace, $media_caption, $content);
+            $content = str_replace(
+                $mediaCaptionToReplace,
+                $media_caption,
+                $content,
+            );
         } else {
             $this->is_empty = true;
 
             // Check if the content is just one <figure> element
-            if (preg_match('/^(?:<a[^>]*>)?\s*<figure[^>]*>.*<\/figure>\s*(?:<\/a>)?$/s', trim($content))) {
+            if (
+                preg_match(
+                    '/^(?:<a[^>]*>)?\s*<figure[^>]*>.*<\/figure>\s*(?:<\/a>)?$/s',
+                    trim($content),
+                )
+            ) {
                 return '';
             }
 
@@ -969,24 +1254,31 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_classes($attributes, $content)
     {
-        @list(
+        @[
             'dc-hide' => $dc_hide,
             'dc-field' => $dc_field,
-        ) = $attributes;
+        ] = $attributes;
 
         $classes = [];
 
-        $classes[] = ($dc_hide && !in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)
-        ? 'maxi-block--hidden'
-        : '';
+        $classes[] =
+            $dc_hide &&
+            !in_array($dc_field, self::$ignore_empty_fields) &&
+            $this->is_empty
+                ? 'maxi-block--hidden'
+                : '';
 
         $content = str_replace(
             '$class-to-replace',
             implode(' ', array_filter($classes)),
-            $content
+            $content,
         );
 
-        if ($this->check_if_content_is_empty($attributes, $content) || (!in_array($dc_field, self::$ignore_empty_fields) && $this->is_empty)) {
+        if (
+            $this->check_if_content_is_empty($attributes, $content) ||
+            (!in_array($dc_field, self::$ignore_empty_fields) &&
+                $this->is_empty)
+        ) {
             // Add the class only to elements that don't have it yet
             $content = preg_replace_callback(
                 '/<([a-z]+)([^>]*?)class="([^"]*?)"/i',
@@ -1002,7 +1294,7 @@ class MaxiBlocks_DynamicContent
 
                     return "<$tag$attributes class=\"$classes\"";
                 },
-                $content
+                $content,
             );
 
             return $content;
@@ -1011,13 +1303,12 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
-
     public function get_current_archive_type_and_id()
     {
-        $archive_info = array(
+        $archive_info = [
             'type' => null,
-            'id' => null
-        );
+            'id' => null,
+        ];
 
         if (is_category()) {
             // It's a category archive
@@ -1064,10 +1355,9 @@ class MaxiBlocks_DynamicContent
         return $archive_info;
     }
 
-
     public function get_post($attributes)
     {
-        @list(
+        @[
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
@@ -1075,7 +1365,7 @@ class MaxiBlocks_DynamicContent
             'dc-order-by' => $dc_order_by,
             'dc-order' => $dc_order,
             'dc-accumulator' => $dc_accumulator,
-        ) = $attributes;
+        ] = $attributes;
 
         if (empty($dc_type)) {
             $dc_type = 'posts';
@@ -1086,18 +1376,32 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_accumulator)) {
             $dc_accumulator = 0;
         }
-        if(empty($dc_order_by)) {
+        if (empty($dc_order_by)) {
             $dc_order_by = 'by-date';
         }
         if (empty($dc_order)) {
             $dc_order = 'desc';
         }
 
-        $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical', 'by-category', 'by-author', 'by-tag']);
+        $is_sort_relation = in_array($dc_relation, [
+            'by-date',
+            'alphabetical',
+            'by-category',
+            'by-author',
+            'by-tag',
+        ]);
         $is_random = $dc_relation === 'random';
         $is_current_archive = $dc_relation === 'current-archive';
 
-        if (in_array($dc_type, array_merge(['posts', 'pages', 'products'], $this->get_custom_post_types()))) {
+        if (
+            in_array(
+                $dc_type,
+                array_merge(
+                    ['posts', 'pages', 'products'],
+                    $this->get_custom_post_types(),
+                ),
+            )
+        ) {
             // Basic args
             $args = [
                 'post_status' => 'publish',
@@ -1129,12 +1433,12 @@ class MaxiBlocks_DynamicContent
                 } elseif (is_tax()) {
                     $taxonomy = get_queried_object()->taxonomy;
                     $term_id = get_queried_object_id();
-                    $args['tax_query'] = array(
-                        array(
+                    $args['tax_query'] = [
+                        [
                             'taxonomy' => $taxonomy,
                             'terms' => $term_id,
-                        )
-                    );
+                        ],
+                    ];
                 }
                 unset($args['post_status']);
             } elseif ($dc_relation == 'author') {
@@ -1142,14 +1446,35 @@ class MaxiBlocks_DynamicContent
             } elseif ($is_random) {
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
+                $args = array_merge(
+                    $args,
+                    $this->get_order_by_args(
+                        $dc_relation,
+                        $dc_order_by,
+                        $dc_order,
+                        $dc_accumulator,
+                        $dc_type,
+                        $dc_id,
+                    ),
+                );
             } elseif ($is_current_archive) {
                 $archive_info = $this->get_current_archive_type_and_id();
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $archive_info['id'], $archive_info['type']));
+                $args = array_merge(
+                    $args,
+                    $this->get_order_by_args(
+                        $dc_relation,
+                        $dc_order_by,
+                        $dc_order,
+                        $dc_accumulator,
+                        $dc_type,
+                        $archive_info['id'],
+                        $archive_info['type'],
+                    ),
+                );
             }
 
             if ($dc_type === 'products') {
-                if(!function_exists('wc_get_products')) {
+                if (!function_exists('wc_get_products')) {
                     return null;
                 }
 
@@ -1160,10 +1485,22 @@ class MaxiBlocks_DynamicContent
 
             $query = new WP_Query($args);
 
-            if (empty($query->posts) && !$is_current_archive && $dc_relation !== 'by-author') {
-                $validated_attributes = self::get_validated_orderby_attributes($dc_relation, $dc_id);
-                if (in_array($dc_relation, self::$order_by_relations) && $validated_attributes) {
-                    return $this->get_post(array_replace($attributes, $validated_attributes));
+            if (
+                empty($query->posts) &&
+                !$is_current_archive &&
+                $dc_relation !== 'by-author'
+            ) {
+                $validated_attributes = self::get_validated_orderby_attributes(
+                    $dc_relation,
+                    $dc_id,
+                );
+                if (
+                    in_array($dc_relation, self::$order_by_relations) &&
+                    $validated_attributes
+                ) {
+                    return $this->get_post(
+                        array_replace($attributes, $validated_attributes),
+                    );
                 } else {
                     return null;
                 }
@@ -1171,7 +1508,6 @@ class MaxiBlocks_DynamicContent
 
             return end($query->posts);
         } elseif ($dc_type === 'media') {
-
             $args = [
                 'post_type' => 'attachment',
                 'posts_per_page' => 1,
@@ -1184,19 +1520,37 @@ class MaxiBlocks_DynamicContent
                 $args = [
                     'post_type' => 'attachment',
                     'post_status' => 'inherit',
-                    'posts_per_page' => -1
+                    'posts_per_page' => -1,
                 ];
             } elseif ($is_sort_relation) {
                 $args['post_status'] = 'inherit';
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
+                $args = array_merge(
+                    $args,
+                    $this->get_order_by_args(
+                        $dc_relation,
+                        $dc_order_by,
+                        $dc_order,
+                        $dc_accumulator,
+                        $dc_type,
+                        $dc_id,
+                    ),
+                );
             }
 
             $query = new WP_Query($args);
 
-            if (empty($query->posts) && in_array($dc_relation, self::$order_by_relations)) {
-                $validated_attributes = self::get_validated_orderby_attributes($dc_relation, $dc_id);
+            if (
+                empty($query->posts) &&
+                in_array($dc_relation, self::$order_by_relations)
+            ) {
+                $validated_attributes = self::get_validated_orderby_attributes(
+                    $dc_relation,
+                    $dc_id,
+                );
                 if ($validated_attributes) {
-                    return $this->get_post(array_replace($attributes, $validated_attributes));
+                    return $this->get_post(
+                        array_replace($attributes, $validated_attributes),
+                    );
                 } else {
                     return null;
                 }
@@ -1210,7 +1564,20 @@ class MaxiBlocks_DynamicContent
             }
 
             return $post;
-        } elseif (in_array($dc_type, array_merge(['categories', 'tags', 'product_categories', 'product_tags'], $this->get_custom_taxonomies()))) {
+        } elseif (
+            in_array(
+                $dc_type,
+                array_merge(
+                    [
+                        'categories',
+                        'tags',
+                        'product_categories',
+                        'product_tags',
+                    ],
+                    $this->get_custom_taxonomies(),
+                ),
+            )
+        ) {
             if ($dc_type === 'categories') {
                 $taxonomy = 'category';
             } elseif ($dc_type === 'tags') {
@@ -1248,7 +1615,17 @@ class MaxiBlocks_DynamicContent
             ];
 
             if ($is_sort_relation) {
-                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_order, $dc_accumulator, $dc_type, $dc_id));
+                $args = array_merge(
+                    $args,
+                    $this->get_order_by_args(
+                        $dc_relation,
+                        $dc_order_by,
+                        $dc_order,
+                        $dc_accumulator,
+                        $dc_type,
+                        $dc_id,
+                    ),
+                );
             } elseif ($dc_relation === 'by-id') {
                 $args['include'] = $dc_author ?? $dc_id;
             }
@@ -1279,7 +1656,10 @@ class MaxiBlocks_DynamicContent
             $first_category = reset($non_empty_categories);
 
             if ($first_category) {
-                return ['dc-relation' => 'by-category', 'dc-id' => $first_category->term_id];
+                return [
+                    'dc-relation' => 'by-category',
+                    'dc-id' => $first_category->term_id,
+                ];
             }
         } elseif ($dc_relation === 'by-tag') {
             $tags = get_tags(['hide_empty' => false]);
@@ -1293,7 +1673,10 @@ class MaxiBlocks_DynamicContent
             $first_tag = reset($non_empty_tags);
 
             if ($first_tag) {
-                return ['dc-relation' => 'by-tag', 'dc-id' => $first_tag->term_id];
+                return [
+                    'dc-relation' => 'by-tag',
+                    'dc-id' => $first_tag->term_id,
+                ];
             }
         }
 
@@ -1303,8 +1686,12 @@ class MaxiBlocks_DynamicContent
     public function get_link_attributes_from_link_settings($linkSettings)
     {
         $rel = '';
-        $isNoFollow = isset($linkSettings['noFollow']) ? $linkSettings['noFollow'] : false;
-        $isSponsored = isset($linkSettings['sponsored']) ? $linkSettings['sponsored'] : false;
+        $isNoFollow = isset($linkSettings['noFollow'])
+            ? $linkSettings['noFollow']
+            : false;
+        $isSponsored = isset($linkSettings['sponsored'])
+            ? $linkSettings['sponsored']
+            : false;
         $isUGC = isset($linkSettings['ugc']) ? $linkSettings['ugc'] : false;
         if ($isNoFollow) {
             $rel .= ' nofollow';
@@ -1321,9 +1708,13 @@ class MaxiBlocks_DynamicContent
             $rel = trim($rel);
         }
 
-        $target = (isset($linkSettings['opensInNewTab']) && $linkSettings['opensInNewTab']) ? '_blank' : '_self';
+        $target =
+            isset($linkSettings['opensInNewTab']) &&
+            $linkSettings['opensInNewTab']
+                ? '_blank'
+                : '_self';
 
-        return array('rel' => $rel, 'target' => $target);
+        return ['rel' => $rel, 'target' => $target];
     }
 
     public function get_field_link($item, $field)
@@ -1335,15 +1726,21 @@ class MaxiBlocks_DynamicContent
             case 'tags':
                 return get_term_link($item);
             default:
-                if(in_array($field, $this->get_custom_taxonomies())) {
+                if (in_array($field, $this->get_custom_taxonomies())) {
                     return get_term_link($item);
                 }
                 return '';
         }
     }
 
-    public function get_post_taxonomy_item_content($item, $content, $link_status, $field, $dc_post_taxonomy_links_status, $linkSettings = null)
-    {
+    public function get_post_taxonomy_item_content(
+        $item,
+        $content,
+        $link_status,
+        $field,
+        $dc_post_taxonomy_links_status,
+        $linkSettings = null
+    ) {
         // Need to support $dc_post_taxonomy_links_status for blocks that were not migrated (up until 1.7.2 version included)
         if ($link_status || $dc_post_taxonomy_links_status) {
             $href = 'href="' . $this->get_field_link($item, $field) . '"';
@@ -1352,20 +1749,33 @@ class MaxiBlocks_DynamicContent
 
             // If $dc_post_taxonomy_links_status is true, link settings should not affect inline links
             if ($linkSettings && !$dc_post_taxonomy_links_status) {
-                $link_attributes = $this->get_link_attributes_from_link_settings($linkSettings);
-                $rel = $link_attributes['rel'] ? ' rel="' . $link_attributes['rel'] . '"' : '';
+                $link_attributes = $this->get_link_attributes_from_link_settings(
+                    $linkSettings,
+                );
+                $rel = $link_attributes['rel']
+                    ? ' rel="' . $link_attributes['rel'] . '"'
+                    : '';
                 $target = ' target="' . $link_attributes['target'] . '"';
             }
 
-            return '<a ' . $href . $rel . $target . ' class="maxi-text-block--link"><span>' . $content . '</span></a>';
+            return '<a ' .
+                $href .
+                $rel .
+                $target .
+                ' class="maxi-text-block--link"><span>' .
+                $content .
+                '</span></a>';
         }
 
         return $content;
     }
 
-    public function get_post_taxonomy_content($attributes, $post_id, $taxonomy)
-    {
-        @list(
+    public function get_post_taxonomy_content(
+        $attributes,
+        $post_id,
+        $taxonomy
+    ) {
+        @[
             'dc-field' => $dc_field,
             'dc-delimiter-content' => $dc_delimiter,
             'dc-link-target' => $dc_link_target,
@@ -1374,9 +1784,9 @@ class MaxiBlocks_DynamicContent
             'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
             'linkSettings' => $linkSettings,
             'dc-accumulator' => $dc_accumulator,
-        ) = $attributes;
+        ] = $attributes;
 
-        if($this->is_repeated_post($post_id, $dc_accumulator)) {
+        if ($this->is_repeated_post($post_id, $dc_accumulator)) {
             return '';
         }
 
@@ -1399,7 +1809,7 @@ class MaxiBlocks_DynamicContent
 
     public function get_post_or_page_content($attributes)
     {
-        @list(
+        @[
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
@@ -1407,19 +1817,21 @@ class MaxiBlocks_DynamicContent
             'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
             'dc-link-status' => $dc_link_status,
             'dc-accumulator' => $dc_accumulator,
-        ) = $attributes;
+        ] = $attributes;
 
         $post = $this->get_post($attributes);
 
-        if(empty($post)) {
+        if (empty($post)) {
             return '';
         }
 
-        if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+        if ($this->is_repeated_post($post->ID, $dc_accumulator)) {
             return '';
         }
 
-        $post_data = isset($post->{"post_$dc_field"}) ? $post->{"post_$dc_field"} : null;
+        $post_data = isset($post->{"post_$dc_field"})
+            ? $post->{"post_$dc_field"}
+            : null;
 
         if (empty($post_data) && $dc_field === 'excerpt') {
             $post_data = $post->post_content;
@@ -1427,7 +1839,7 @@ class MaxiBlocks_DynamicContent
         // In case is title, excerpt, remove blocks and strip tags
         if (in_array($dc_field, ['title', 'excerpt'])) {
             // Remove all HTML tags and replace with a line break
-            if($dc_field === 'excerpt') {
+            if ($dc_field === 'excerpt') {
                 $post_data = excerpt_remove_blocks($post_data);
             }
             $post_data = wp_strip_all_tags($post_data);
@@ -1453,7 +1865,7 @@ class MaxiBlocks_DynamicContent
             }
 
             // Limit content
-            if(isset($dc_limit) && $dc_limit > 0) {
+            if (isset($dc_limit) && $dc_limit > 0) {
                 $post_data = wp_strip_all_tags($post_data);
 
                 // Ensures no double or more line breaks
@@ -1462,7 +1874,6 @@ class MaxiBlocks_DynamicContent
                 $post_data = nl2br($post_data);
                 $post_data = self::get_limited_string($post_data, $dc_limit);
             }
-
         }
 
         // In case is author, get author name
@@ -1472,7 +1883,7 @@ class MaxiBlocks_DynamicContent
                 get_the_author_meta('display_name', $post->post_author),
                 false,
                 $dc_field,
-                $dc_post_taxonomy_links_status
+                $dc_post_taxonomy_links_status,
             );
         }
 
@@ -1482,18 +1893,23 @@ class MaxiBlocks_DynamicContent
                 'categories' => 'category',
             ];
 
-            $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $field_name_to_taxonomy[$dc_field]);
+            $post_data = self::get_post_taxonomy_content(
+                $attributes,
+                $post->ID,
+                $field_name_to_taxonomy[$dc_field],
+            );
         }
 
-        if(in_array($dc_field, $this->get_custom_taxonomies())) {
-            $post_data = self::get_post_taxonomy_content($attributes, $post->ID, $dc_field);
+        if (in_array($dc_field, $this->get_custom_taxonomies())) {
+            $post_data = self::get_post_taxonomy_content(
+                $attributes,
+                $post->ID,
+                $dc_field,
+            );
         }
 
         return $post_data;
     }
-
-
-
 
     public function get_site_content($dc_field)
     {
@@ -1523,9 +1939,9 @@ class MaxiBlocks_DynamicContent
      */
     public function get_media_content($attributes)
     {
-        @list(
+        @[
             'dc-field' => $dc_field,
-        ) = $attributes;
+        ] = $attributes;
 
         $post = $this->get_post($attributes);
 
@@ -1537,7 +1953,7 @@ class MaxiBlocks_DynamicContent
         $post_id = $post->ID;
         $dc_accumulator = $attributes['dc-accumulator'];
 
-        if($this->is_repeated_post($post_id, $dc_accumulator)) {
+        if ($this->is_repeated_post($post_id, $dc_accumulator)) {
             return 0;
         }
 
@@ -1546,18 +1962,20 @@ class MaxiBlocks_DynamicContent
             $media_data = $post->{"post_$dc_field"};
         } else {
             // Specifically handle the 'author' case
-            $media_data = get_the_author_meta('display_name', $post->post_author);
+            $media_data = get_the_author_meta(
+                'display_name',
+                $post->post_author,
+            );
         }
 
         return $media_data;
     }
 
-
     public function get_user_content($attributes)
     {
-        @list(
+        @[
             'dc-relation' => $dc_relation,
-        ) = $attributes;
+        ] = $attributes;
 
         // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
         if (!array_key_exists('dc-field', $attributes)) {
@@ -1565,13 +1983,16 @@ class MaxiBlocks_DynamicContent
         } else {
             $dc_field = $attributes['dc-field'];
         }
-        if($dc_relation === 'by-id' && $attributes['dc-type'] === 'archive' && is_author()) {
+        if (
+            $dc_relation === 'by-id' &&
+            $attributes['dc-type'] === 'archive' &&
+            is_author()
+        ) {
             $dc_relation = 'current';
         }
-        if($dc_relation === 'current') {
+        if ($dc_relation === 'current') {
             $user = get_queried_object();
             $user_id = get_queried_object_id();
-
         } else {
             $user = $this->get_post($attributes);
             if (!is_object($user) || !isset($user->data)) {
@@ -1595,13 +2016,17 @@ class MaxiBlocks_DynamicContent
         }
 
         // Ensure $user is an object and $user->data exists and is an object
-        if (!is_object($user) || !isset($user->data) || !is_object($user->data)) {
+        if (
+            !is_object($user) ||
+            !isset($user->data) ||
+            !is_object($user->data)
+        ) {
             return 0;
         }
 
         // Check if the property exists in $user->data
         $property = $user_dictionary[$dc_field];
-        if($dc_field === 'archive-type' || $dc_field === 'link') {
+        if ($dc_field === 'archive-type' || $dc_field === 'link') {
             return $property;
         }
         if (!property_exists($user->data, $property)) {
@@ -1613,18 +2038,17 @@ class MaxiBlocks_DynamicContent
         return $user_data;
     }
 
-
     public function get_taxonomy_content($attributes)
     {
-        @list(
+        @[
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-relation' => $dc_relation,
             'dc-type' => $dc_type,
             'dc-accumulator' => $dc_accumulator,
-        ) = $attributes;
+        ] = $attributes;
 
-        if($dc_relation === 'current' || $dc_type === 'archive') {
+        if ($dc_relation === 'current' || $dc_type === 'archive') {
             if (is_date()) {
                 global $wp_query;
                 $year = $wp_query->get('year');
@@ -1635,9 +2059,15 @@ class MaxiBlocks_DynamicContent
 
                 // Format the date based on the available date components
                 if ($day) {
-                    $formatted_date = gmdate($format, gmmktime(0, 0, 0, $month, $day, $year));
+                    $formatted_date = gmdate(
+                        $format,
+                        gmmktime(0, 0, 0, $month, $day, $year),
+                    );
                 } elseif ($month) {
-                    $formatted_date = gmdate('F Y', gmmktime(0, 0, 0, $month, 1, $year));
+                    $formatted_date = gmdate(
+                        'F Y',
+                        gmmktime(0, 0, 0, $month, 1, $year),
+                    );
                 } elseif ($year) {
                     $formatted_date = $year;
                 } else {
@@ -1650,13 +2080,12 @@ class MaxiBlocks_DynamicContent
                 }
             }
             $term = get_queried_object();
-
         } else {
             $term = $this->get_post($attributes);
         }
 
-        if(!empty($term)) {
-            if($this->is_repeated_post($term->term_id, $dc_accumulator)) {
+        if (!empty($term)) {
+            if ($this->is_repeated_post($term->term_id, $dc_accumulator)) {
                 return null;
             }
             if ($dc_field === 'link') {
@@ -1664,7 +2093,7 @@ class MaxiBlocks_DynamicContent
             } elseif (isset($term->$dc_field)) {
                 $tax_data = $term->$dc_field;
             } else {
-                if(isset($term->data->user_login) && $dc_type === 'archive') {
+                if (isset($term->data->user_login) && $dc_type === 'archive') {
                     return self::get_user_content($attributes);
                 } else {
                     $tax_data = null;
@@ -1687,22 +2116,21 @@ class MaxiBlocks_DynamicContent
         }
 
         return null;
-
     }
 
     public function get_product_content($attributes)
     {
-        @list(
+        @[
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-image-accumulator' => $dc_image_accumulator,
             'dc-accumulator' => $dc_accumulator,
-        ) = $attributes;
+        ] = $attributes;
 
         $product = $this->get_post($attributes);
 
-        if(!empty($product)) {
-            if($this->is_repeated_post($product->get_id(), $dc_accumulator)) {
+        if (!empty($product)) {
+            if ($this->is_repeated_post($product->get_id(), $dc_accumulator)) {
                 return '';
             }
             switch ($dc_field) {
@@ -1735,20 +2163,28 @@ class MaxiBlocks_DynamicContent
                     return wp_strip_all_tags(wc_price($product->get_price()));
                 case 'price_range':
                     if ($product->is_type('variable')) {
-
                         $min_price = $product->get_variation_price('min', true);
                         $max_price = $product->get_variation_price('max', true);
 
                         if ($min_price !== $max_price) {
-                            return wc_format_price_range($min_price, $max_price);
+                            return wc_format_price_range(
+                                $min_price,
+                                $max_price,
+                            );
                         }
                     }
 
                     return wp_strip_all_tags(wc_price($product->get_price()));
                 case 'description':
-                    return self::get_limited_string($product->get_description(), $dc_limit);
+                    return self::get_limited_string(
+                        $product->get_description(),
+                        $dc_limit,
+                    );
                 case 'short_description':
-                    return self::get_limited_string($product->get_short_description(), $dc_limit);
+                    return self::get_limited_string(
+                        $product->get_short_description(),
+                        $dc_limit,
+                    );
                 case 'tags':
                 case 'categories':
                     $field_name_to_taxonomy = [
@@ -1756,11 +2192,17 @@ class MaxiBlocks_DynamicContent
                         'categories' => 'product_cat',
                     ];
 
-                    return self::get_post_taxonomy_content($attributes, $product->get_id(), $field_name_to_taxonomy[$dc_field]);
+                    return self::get_post_taxonomy_content(
+                        $attributes,
+                        $product->get_id(),
+                        $field_name_to_taxonomy[$dc_field],
+                    );
                 case 'featured_media':
                     return (int) $product->get_image_id();
                 case 'gallery':
-                    return $product->get_gallery_image_ids()[$dc_image_accumulator];
+                    return $product->get_gallery_image_ids()[
+                        $dc_image_accumulator
+                    ];
                 default:
                     return null;
             }
@@ -1769,10 +2211,10 @@ class MaxiBlocks_DynamicContent
 
     public function get_cart_content($attributes)
     {
-        @list(
+        @[
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
-        ) = $attributes;
+        ] = $attributes;
 
         if (!WC()->cart) {
             return null;
@@ -1800,10 +2242,16 @@ class MaxiBlocks_DynamicContent
             case 'total_discount':
             case 'total_fees':
             case 'total_fees_tax':
-                if (empty(WC()->cart->get_totals()[$field_to_totals[$dc_field]])) {
+                if (
+                    empty(WC()->cart->get_totals()[$field_to_totals[$dc_field]])
+                ) {
                     $this->is_empty = true;
                 }
-                return wp_strip_all_tags(wc_price(WC()->cart->get_totals()[$field_to_totals[$dc_field]]));
+                return wp_strip_all_tags(
+                    wc_price(
+                        WC()->cart->get_totals()[$field_to_totals[$dc_field]],
+                    ),
+                );
             default:
                 return null;
         }
@@ -1815,20 +2263,20 @@ class MaxiBlocks_DynamicContent
             return '';
         }
 
-        @list(
+        @[
             'dc-field' => $dc_field,
             'dc-acf-field-type' => $dc_acf_field_type,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
             'dc-accumulator' => $dc_accumulator,
-        ) = $attributes;
+        ] = $attributes;
 
         $post = $this->get_post($attributes);
-        if(empty($post)) {
+        if (empty($post)) {
             return '';
         }
 
-        if($this->is_repeated_post($post->ID, $dc_accumulator)) {
+        if ($this->is_repeated_post($post->ID, $dc_accumulator)) {
             return '';
         }
         $acf_data = get_field_object($dc_field, $post->ID);
@@ -1838,19 +2286,32 @@ class MaxiBlocks_DynamicContent
         switch ($dc_acf_field_type) {
             case 'select':
             case 'radio':
-                $content = is_array($acf_value) ? $acf_value['label'] : $acf_value;
+                $content = is_array($acf_value)
+                    ? $acf_value['label']
+                    : $acf_value;
                 break;
             case 'checkbox':
-                $content = implode("$dc_delimiter ", array_map(function ($item) {
-                    return is_array($item) ? $item['label'] : $item;
-                }, $acf_value));
+                $content = implode(
+                    "$dc_delimiter ",
+                    array_map(function ($item) {
+                        return is_array($item) ? $item['label'] : $item;
+                    }, $acf_value),
+                );
                 break;
             case 'image':
-                if (is_array($acf_data) && isset($acf_data['return_format']) && $acf_data['return_format'] === 'url') {
+                if (
+                    is_array($acf_data) &&
+                    isset($acf_data['return_format']) &&
+                    $acf_data['return_format'] === 'url'
+                ) {
                     $content = [
                         'url' => $acf_value,
                     ];
-                } elseif (is_array($acf_data) && isset($acf_data['return_format']) && $acf_data['return_format'] === 'id') {
+                } elseif (
+                    is_array($acf_data) &&
+                    isset($acf_data['return_format']) &&
+                    $acf_data['return_format'] === 'id'
+                ) {
                     $content = [
                         'id' => $acf_value,
                     ];
@@ -1867,8 +2328,7 @@ class MaxiBlocks_DynamicContent
 
     public function get_date($date, $attributes)
     {
-
-        @list(
+        @[
             'dc-format' => $dc_format,
             'dc-custom-format' => $dc_custom_format,
             'dc-custom-date' => $dc_custom_date,
@@ -1884,7 +2344,7 @@ class MaxiBlocks_DynamicContent
             'dc-locale' => $dc_locale,
             'dc-timezone' => $dc_timezone,
             'dc-timezone-name' => $dc_timezone_name,
-        ) = $attributes;
+        ] = $attributes;
 
         if (!isset($dc_custom_date)) {
             $dc_custom_date = false;
@@ -1896,19 +2356,25 @@ class MaxiBlocks_DynamicContent
             $dc_format = 'd.m.Y t';
         }
 
-        $options = array(
+        $options = [
             'day' => $dc_day === 'none' ? null : $dc_day,
             'era' => $dc_era === 'none' ? null : $dc_era,
             'hour' => $dc_hour === 'none' ? null : $dc_hour,
-            'hour12' => $dc_hour12 === 'false' ? false : ($dc_hour12 === 'true' ? true : $dc_hour12),
+            'hour12' =>
+                $dc_hour12 === 'false'
+                    ? false
+                    : ($dc_hour12 === 'true'
+                        ? true
+                        : $dc_hour12),
             'minute' => $dc_minute === 'none' ? null : $dc_minute,
             'month' => $dc_month === 'none' ? null : $dc_month,
             'second' => $dc_second === 'none' ? null : $dc_second,
             'timezone' => $dc_timezone === 'none' ? 'UTC' : $dc_timezone,
-            'timezone_name' => $dc_timezone_name === 'none' ? null : $dc_timezone_name,
+            'timezone_name' =>
+                $dc_timezone_name === 'none' ? null : $dc_timezone_name,
             'weekday' => $dc_weekday === 'none' ? null : $dc_weekday,
             'year' => $dc_year === 'none' ? null : $dc_year,
-        );
+        ];
 
         // Validate the $date variable
         if (empty($date) || strtotime($date) === false) {
@@ -1917,23 +2383,31 @@ class MaxiBlocks_DynamicContent
         }
 
         try {
-            $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
+            $new_date = new DateTime(
+                $date,
+                new DateTimeZone($options['timezone']),
+            );
         } catch (Exception $e) {
             error_log('Failed to create DateTime object: ' . $e->getMessage());
             return '';
         }
 
-
         $content = '';
         $new_format = $dc_custom_date ? $dc_custom_format : $dc_format;
 
         if ($dc_custom_date) {
-            $new_format = self::convert_moment_to_php_date_format($dc_custom_format);
+            $new_format = self::convert_moment_to_php_date_format(
+                $dc_custom_format,
+            );
         }
 
-        $new_format = str_replace(['DV', 'DS', 'MS'], ['x', 'z', 'c'], $new_format);
+        $new_format = str_replace(
+            ['DV', 'DS', 'MS'],
+            ['x', 'z', 'c'],
+            $new_format,
+        );
 
-        $map = array(
+        $map = [
             'z' => 'D',
             'x' => 'd',
             'c' => 'M',
@@ -1944,11 +2418,15 @@ class MaxiBlocks_DynamicContent
             'y' => 'y',
             'Y' => 'Y',
             't' => 'H:i',
-        );
+        ];
 
-        $new_format = preg_replace_callback('/(?![^\[]*\])[xzcdDmMyYt]/', function ($match) use ($map) {
-            return $map[$match[0]];
-        }, $new_format);
+        $new_format = preg_replace_callback(
+            '/(?![^\[]*\])[xzcdDmMyYt]/',
+            function ($match) use ($map) {
+                return $map[$match[0]];
+            },
+            $new_format,
+        );
 
         $content = date_i18n($new_format, $new_date->getTimestamp());
 
@@ -1963,55 +2441,59 @@ class MaxiBlocks_DynamicContent
 
     public function convert_moment_to_php_date_format($format)
     {
-        $replacements = array(
-          'DD' => 'd',
-          'ddd' => 'D',
-          'D' => 'j',
-          'dddd' => 'l',
-          'E' => 'N',
-          'o' => 'S',
-          'e' => 'w',
-          'DDD' => 'z',
-          'W' => 'W',
-          'MMMM' => 'F',
-          'MM' => 'm',
-          'MMM' => 'M',
-          'M' => 'n',
-          'YYYY' => 'o',
-          'YY' => 'y',
-          'a' => 'a',
-          'A' => 'A',
-          'h' => 'g',
-          'H' => 'G',
-          'hh' => 'h',
-          'HH' => 'H',
-          'mm' => 'i',
-          'ss' => 's',
-          'SSS' => 'u',
-          'zz' => 'e',
-          'X' => 'U'
-        );
+        $replacements = [
+            'DD' => 'd',
+            'ddd' => 'D',
+            'D' => 'j',
+            'dddd' => 'l',
+            'E' => 'N',
+            'o' => 'S',
+            'e' => 'w',
+            'DDD' => 'z',
+            'W' => 'W',
+            'MMMM' => 'F',
+            'MM' => 'm',
+            'MMM' => 'M',
+            'M' => 'n',
+            'YYYY' => 'o',
+            'YY' => 'y',
+            'a' => 'a',
+            'A' => 'A',
+            'h' => 'g',
+            'H' => 'G',
+            'hh' => 'h',
+            'HH' => 'H',
+            'mm' => 'i',
+            'ss' => 's',
+            'SSS' => 'u',
+            'zz' => 'e',
+            'X' => 'U',
+        ];
 
         $format = preg_replace_callback(
             '/\b(' . implode('|', array_keys($replacements)) . ')\b/',
             function ($matches) use ($replacements) {
                 return $replacements[$matches[0]];
             },
-            $format
+            $format,
         );
 
         // Regular expression to match content inside square brackets, including brackets.
         $regex = '/\[[^\]]*\]/';
 
         // Use preg_replace_callback to replace each match.
-        $format = preg_replace_callback($regex, function ($matches) {
-            // Prepend each symbol with a slash.
-            $result = '';
-            for ($i = 0; $i < strlen($matches[0]); $i++) {
-                $result .= '\\' . $matches[0][$i];
-            }
-            return $result;
-        }, $format);
+        $format = preg_replace_callback(
+            $regex,
+            function ($matches) {
+                // Prepend each symbol with a slash.
+                $result = '';
+                for ($i = 0; $i < strlen($matches[0]); $i++) {
+                    $result .= '\\' . $matches[0][$i];
+                }
+                return $result;
+            },
+            $format,
+        );
 
         return $format;
     }
@@ -2036,7 +2518,11 @@ class MaxiBlocks_DynamicContent
 
     public function get_default_dc_value($target, $obj, $defaults)
     {
-        if(!is_array($defaults) || !isset($defaults[$target]) || !is_array($obj)) {
+        if (
+            !is_array($defaults) ||
+            !isset($defaults[$target]) ||
+            !is_array($obj)
+        ) {
             return false;
         }
 
@@ -2047,15 +2533,28 @@ class MaxiBlocks_DynamicContent
         return $defaults[$target];
     }
 
-    public function get_dc_value($target, $dynamic_content, $context_loop, $defaults, $result)
-    {
-        $context_loop_status = isset($context_loop['cl-status']) ? $context_loop['cl-status'] : false;
+    public function get_dc_value(
+        $target,
+        $dynamic_content,
+        $context_loop,
+        $defaults,
+        $result
+    ) {
+        $context_loop_status = isset($context_loop['cl-status'])
+            ? $context_loop['cl-status']
+            : false;
 
-        $dc_value = isset($dynamic_content['dc-' . $target]) ? $dynamic_content['dc-' . $target] : null;
-        $context_loop_value = isset($context_loop['cl-' . $target]) ? $context_loop['cl-' . $target] : null;
+        $dc_value = isset($dynamic_content['dc-' . $target])
+            ? $dynamic_content['dc-' . $target]
+            : null;
+        $context_loop_value = isset($context_loop['cl-' . $target])
+            ? $context_loop['cl-' . $target]
+            : null;
 
         if ($target === 'status') {
-            return $dc_value !== null ? $dc_value : $this->get_default_dc_value($target, $result, $defaults);
+            return $dc_value !== null
+                ? $dc_value
+                : $this->get_default_dc_value($target, $result, $defaults);
         }
 
         if ($dc_value !== null) {
@@ -2086,7 +2585,9 @@ class MaxiBlocks_DynamicContent
             return $dictionary['by-date'];
         }
 
-        return array_key_exists($relation, $dictionary) ? $dictionary[$relation] : null;
+        return array_key_exists($relation, $dictionary)
+            ? $dictionary[$relation]
+            : null;
     }
 
     /**
@@ -2103,9 +2604,13 @@ class MaxiBlocks_DynamicContent
             'accumulator' => 0,
         ];
 
-        $dynamic_content = array_filter($attributes, function ($key) {
-            return strpos($key, 'dc-') === 0;
-        }, ARRAY_FILTER_USE_KEY);
+        $dynamic_content = array_filter(
+            $attributes,
+            function ($key) {
+                return strpos($key, 'dc-') === 0;
+            },
+            ARRAY_FILTER_USE_KEY,
+        );
 
         $dynamic_content_keys = array_keys($dynamic_content);
         $context_loop_keys = array_map(function ($key) {
@@ -2115,23 +2620,41 @@ class MaxiBlocks_DynamicContent
             return 'dc-' . $key;
         }, array_keys($defaults));
 
-        $values_keys = array_merge($dynamic_content_keys, $context_loop_keys, $defaults_keys);
+        $values_keys = array_merge(
+            $dynamic_content_keys,
+            $context_loop_keys,
+            $defaults_keys,
+        );
 
         $result = [];
 
         foreach ($values_keys as $key) {
             $target = str_replace('dc-', '', $key);
-            $dc_value = $this->get_dc_value($target, $dynamic_content, $context_loop, $defaults, $result);
+            $dc_value = $this->get_dc_value(
+                $target,
+                $dynamic_content,
+                $context_loop,
+                $defaults,
+                $result,
+            );
             $result[$key] = $dc_value;
         }
 
         return $result;
     }
 
-    public function get_order_by_args($relation, $order_by, $order, $accumulator, $type, $id, $archive_type = null)
-    {
+    public function get_order_by_args(
+        $relation,
+        $order_by,
+        $order,
+        $accumulator,
+        $type,
+        $id,
+        $archive_type = null
+    ) {
         if ($type === 'users') {
-            $order_by_arg = $relation === 'by-date' ? 'user_registered' : 'display_name';
+            $order_by_arg =
+                $relation === 'by-date' ? 'user_registered' : 'display_name';
             $limit_key = 'number';
         } else {
             $dictionary = [
@@ -2139,8 +2662,7 @@ class MaxiBlocks_DynamicContent
                 'alphabetical' => 'title',
             ];
 
-
-            if(in_array($relation, self::$order_by_relations)) {
+            if (in_array($relation, self::$order_by_relations)) {
                 $order_by_arg = $dictionary[$order_by];
             } else {
                 $order_by_arg = $dictionary[$relation];
@@ -2152,28 +2674,26 @@ class MaxiBlocks_DynamicContent
         $args = [
             'orderby' => $order_by_arg,
             'order' => $order,
-           // $limit_key => $accumulator + 1,
+            // $limit_key => $accumulator + 1,
             $limit_key => 1, // Fetch only one post
             'offset' => $accumulator, // Set the offset to get the specific post
         ];
 
-        if($relation === 'by-category') {
+        if ($relation === 'by-category') {
             if ($type === 'products') {
                 $args['category'] = [$this->get_term_slug($id)];
             } else {
                 $args['cat'] = $id;
             }
-        } elseif($relation === 'by-author') {
+        } elseif ($relation === 'by-author') {
             $args['author'] = $id;
-
-        } elseif($relation === 'by-tag') {
+        } elseif ($relation === 'by-tag') {
             if ($type === 'products') {
                 $args['tag'] = [$this->get_term_slug($id)];
             } else {
                 $args['tag_id'] = $id;
             }
-        } elseif($relation === 'current-archive') {
-
+        } elseif ($relation === 'current-archive') {
             switch ($archive_type) {
                 case 'category':
                     $args['cat'] = $id;
@@ -2187,9 +2707,9 @@ class MaxiBlocks_DynamicContent
                 case 'date':
                     // Assuming $id is in the format 'YYYY', 'YYYY-MM', or 'YYYY-MM-DD'
                     $dateParts = explode('-', $id);
-                    $args['date_query'] = array(
-                        'inclusive' => true
-                    );
+                    $args['date_query'] = [
+                        'inclusive' => true,
+                    ];
                     if (isset($dateParts[0])) {
                         $args['date_query']['year'] = intval($dateParts[0]);
                     }
@@ -2211,10 +2731,10 @@ class MaxiBlocks_DynamicContent
     }
 
     /**
-    * Return DC and CL
-    *
-    * @param string $unique_id
-    */
+     * Return DC and CL
+     *
+     * @param string $unique_id
+     */
     public function get_dc_cl(string $id)
     {
         global $wpdb;
@@ -2222,8 +2742,8 @@ class MaxiBlocks_DynamicContent
         $block_meta = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                $id
-            )
+                $id,
+            ),
         );
 
         if (!empty($block_meta)) {
@@ -2234,10 +2754,10 @@ class MaxiBlocks_DynamicContent
     }
 
     /**
-    * Return CL for blocks without DC (for pagination)
-    *
-    * @param string $unique_id
-    */
+     * Return CL for blocks without DC (for pagination)
+     *
+     * @param string $unique_id
+     */
     public function get_cl(string $id)
     {
         global $wpdb;
@@ -2245,8 +2765,8 @@ class MaxiBlocks_DynamicContent
         $block_meta = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                $id
-            )
+                $id,
+            ),
         );
 
         if (!empty($block_meta)) {
@@ -2280,9 +2800,7 @@ class MaxiBlocks_DynamicContent
         ];
 
         // Post types supported by maxi, that are not built in WP post types
-        $supported_post_types = [
-            'product'
-        ];
+        $supported_post_types = ['product'];
 
         $post_types = array_diff(get_post_types($args), $supported_post_types);
 
@@ -2297,10 +2815,7 @@ class MaxiBlocks_DynamicContent
         ];
 
         // Taxonomies supported by maxi, that are not built in WP taxonomies
-        $supported_taxonomies = [
-            'product_cat',
-            'product_tag',
-        ];
+        $supported_taxonomies = ['product_cat', 'product_tag'];
 
         $taxonomies = array_diff(get_taxonomies($args), $supported_taxonomies);
 
@@ -2323,7 +2838,10 @@ class MaxiBlocks_DynamicContent
 
         // Check if the current post ID matches the global post ID
         // and the current accumulator is different from the global accumulator
-        if (self::$global_dc_id_cl === $post_id && self::$global_dc_accumulator_cl !== $dc_accumulator) {
+        if (
+            self::$global_dc_id_cl === $post_id &&
+            self::$global_dc_accumulator_cl !== $dc_accumulator
+        ) {
             return true;
         }
 
@@ -2336,36 +2854,60 @@ class MaxiBlocks_DynamicContent
 
     public function check_if_content_is_empty($attributes, $content)
     {
-        $blocks_to_check = ['container-maxi', 'row-maxi', 'column-maxi', 'group-maxi'];
+        $blocks_to_check = [
+            'container-maxi',
+            'row-maxi',
+            'column-maxi',
+            'group-maxi',
+        ];
 
         if (
             isset($attributes['uniqueID']) &&
-            (
-                (isset($attributes['cl-status']) && $attributes['cl-status']) ||
+            ((isset($attributes['cl-status']) && $attributes['cl-status']) ||
                 (isset($attributes['dc-status']) && $attributes['dc-status']) ||
-                (isset($attributes['dc-hide']) && $attributes['dc-hide'])
-            )
+                (isset($attributes['dc-hide']) && $attributes['dc-hide']))
         ) {
             $unique_id = $attributes['uniqueID'];
 
             foreach ($blocks_to_check as $block) {
                 if (strpos($unique_id, $block) !== false) {
                     // Replace the invalid parts of the data-stroke attribute
-                    $content_sanitized = str_replace(',1))"#081219"', ',1))"', $content);
-                    $content_sanitized = str_replace(',1))\\u0022#081219\\u0022', ',1))\\u0022', $content_sanitized);
+                    $content_sanitized = str_replace(
+                        ',1))"#081219"',
+                        ',1))"',
+                        $content,
+                    );
+                    $content_sanitized = str_replace(
+                        ',1))\\u0022#081219\\u0022',
+                        ',1))\\u0022',
+                        $content_sanitized,
+                    );
 
                     // Remove <div> elements containing <svg> with the class 'maxi-background-displayer__svg'
-                    $content_sanitized = preg_replace('/<div[^>]*class="[^"]*maxi-background-displayer__svg[^"]*"[^>]*>.*?<\/div>/s', '', $content_sanitized);
+                    $content_sanitized = preg_replace(
+                        '/<div[^>]*class="[^"]*maxi-background-displayer__svg[^"]*"[^>]*>.*?<\/div>/s',
+                        '',
+                        $content_sanitized,
+                    );
 
                     $allowed_tags = '<svg><img><iframe><hr>';
-                    $text_content = strip_tags($content_sanitized, $allowed_tags);
+                    $text_content = strip_tags(
+                        $content_sanitized,
+                        $allowed_tags,
+                    );
 
                     // Trim the text content to remove leading and trailing whitespace
                     $trimmed_text_content = trim($text_content);
 
                     // Check if the trimmed text content contains only "No content found" and spaces
-                    if (empty($trimmed_text_content) || preg_match('/^(?:\s*No content found\s*)+$/', $trimmed_text_content) || preg_match('/^\s*$/', $trimmed_text_content)) {
-
+                    if (
+                        empty($trimmed_text_content) ||
+                        preg_match(
+                            '/^(?:\s*No content found\s*)+$/',
+                            $trimmed_text_content,
+                        ) ||
+                        preg_match('/^\s*$/', $trimmed_text_content)
+                    ) {
                         return true;
                     }
                     break;

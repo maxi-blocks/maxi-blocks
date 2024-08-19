@@ -71,6 +71,7 @@ const withAttributes = createHigherOrderComponent(
 			return null;
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []);
+
 		const {
 			__unstableMarkNextChangeAsNotPersistent:
 				markNextChangeAsNotPersistent,
@@ -118,30 +119,27 @@ const withAttributes = createHigherOrderComponent(
 			}
 		}, [wasUniqueIDAdded.current]);
 
+		const checkParentBlocks = clientId => {
+			const block = select('core/block-editor').getBlock(clientId);
+			if (block) {
+				if (block.name.startsWith('core')) {
+					const parentClientId = select(
+						'core/block-editor'
+					).getBlockRootClientId(block.clientId);
+					if (parentClientId) {
+						return checkParentBlocks(parentClientId);
+					}
+					return true;
+				}
+			}
+			return false;
+		};
+
 		useEffect(() => {
 			if (allowedBlocks.includes(blockName)) {
 				const isFirstOnHierarchy = !blockRootClientId;
 				let isFirstOnHierarchyUpdated = false;
 				const currentClientId = blockRootClientId;
-
-				// Function to recursively check parent blocks
-				const checkParentBlocks = clientId => {
-					const block =
-						select('core/block-editor').getBlock(clientId);
-					if (block) {
-						if (block.name.startsWith('core')) {
-							const parentClientId = select(
-								'core/block-editor'
-							).getBlockRootClientId(block.clientId);
-							if (parentClientId) {
-								return checkParentBlocks(parentClientId);
-							}
-							// This is the topmost 'core' block in the hierarchy
-							return true;
-						}
-					}
-					return false;
-				};
 
 				if (!isFirstOnHierarchy) {
 					const isReusableFirstOnHierarchy =

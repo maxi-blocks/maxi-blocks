@@ -63,10 +63,14 @@ const getAuthorBySlug = async slug => {
 };
 
 const getCategoryBySlug = async slug => {
-	const categories = await select('core').getEntityRecords('taxonomy', 'category', {
-		slug: slug,
-		per_page: 1,
-	});
+	const categories = await select('core').getEntityRecords(
+		'taxonomy',
+		'category',
+		{
+			slug: slug,
+			per_page: 1,
+		}
+	);
 
 	if (categories && categories.length > 0) {
 		return categories[0];
@@ -89,10 +93,14 @@ const getTagBySlug = async slug => {
 };
 
 const getProductBySlug = async slug => {
-	const products = await select('core').getEntityRecords('postType', 'product', {
-		slug: slug,
-		per_page: 1,
-	});
+	const products = await select('core').getEntityRecords(
+		'postType',
+		'product',
+		{
+			slug: slug,
+			per_page: 1,
+		}
+	);
 
 	if (products && products.length > 0) {
 		return products[0];
@@ -100,6 +108,11 @@ const getProductBySlug = async slug => {
 
 	return null;
 };
+
+let getDCEntityCounter = 0;
+
+const existingEntities = {};
+const nonExistingEntities = {};
 
 const getDCEntity = async (dataRequest, clientId) => {
 	const {
@@ -131,6 +144,61 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 		return kindDictionary[type];
 	};
+
+	const relationTypes = select(
+		'maxiBlocks/dynamic-content'
+	).getRelationTypes();
+
+	if (relationTypes.includes(type) && relation === 'random') {
+		return getRandomEntity(
+			await resolveSelect('core').getEntityRecords(
+				getKind(type),
+				nameDictionary[type] ?? type,
+				{
+					per_page: 100,
+					hide_empty: false,
+				}
+			),
+			clientId
+		);
+	}
+
+	if (relation === 'current') {
+		const currentTemplateType = getCurrentTemplateSlug();
+		if (currentTemplateType.includes('single-post-') && type === 'posts') {
+			const postSlug = currentTemplateType.replace('single-post-', '');
+			const post = await getPostBySlug(postSlug);
+			if (post) return post;
+		} else if (
+			currentTemplateType.includes('author-') &&
+			type === 'users'
+		) {
+			const authorSlug = currentTemplateType.replace('author-', '');
+			const author = await getAuthorBySlug(authorSlug);
+			if (author) return author;
+		} else if (
+			currentTemplateType.includes('category-') &&
+			type === 'categories'
+		) {
+			const categorySlug = currentTemplateType.replace('category-', '');
+			const category = await getCategoryBySlug(categorySlug);
+			if (category) return category;
+		} else if (currentTemplateType.includes('tag-') && type === 'tags') {
+			const tagSlug = currentTemplateType.replace('tag-', '');
+			const tag = await getTagBySlug(tagSlug);
+			if (tag) return tag;
+		} else if (
+			currentTemplateType.includes('single-product-') &&
+			type === 'products'
+		) {
+			const productSlug = currentTemplateType.replace(
+				'single-product-',
+				''
+			);
+			const product = await getProductBySlug(productSlug);
+			if (product) return product;
+		}
+	}
 
 	if (type === 'users') {
 		dataRequest.id = author ?? id;
@@ -165,55 +233,56 @@ const getDCEntity = async (dataRequest, clientId) => {
 		return user;
 	}
 
-	const relationTypes = select(
-		'maxiBlocks/dynamic-content'
-	).getRelationTypes();
-
-	if (relationTypes.includes(type) && relation === 'random') {
-		return getRandomEntity(
-			await resolveSelect('core').getEntityRecords(
-				getKind(type),
-				nameDictionary[type] ?? type,
-				{
-					per_page: 100,
-					hide_empty: false,
-				}
-			),
-			clientId
-		);
-	}
-
-
-	if (relation === 'current') {
-		const currentTemplateType = getCurrentTemplateSlug();
-		if (currentTemplateType.includes('single-post-') && type === 'posts') {
-			const postSlug = currentTemplateType.replace('single-post-', '');
-			const post = await getPostBySlug(postSlug);
-			if (post) return post;
-		} else if (currentTemplateType.includes('author-') && type === 'users') {
-			const authorSlug = currentTemplateType.replace('author-', '');
-			const author = await getAuthorBySlug(authorSlug);
-			if (author) return author;
-		} else if (currentTemplateType.includes('category-') && type === 'categories') {
-			const categorySlug = currentTemplateType.replace('category-', '');
-			const category = await getCategoryBySlug(categorySlug);
-			if (category) return category;
-		} else if (currentTemplateType.includes('tag-') && type === 'tags') {
-			const tagSlug = currentTemplateType.replace('tag-', '');
-			const tag = await getTagBySlug(tagSlug);
-			if (tag) return tag;
-		} else if (currentTemplateType.includes('single-product-') && type === 'products') {
-			const productSlug = currentTemplateType.replace('single-product-', '');
-			const product = await getProductBySlug(productSlug);
-			if (product) return product;
-		}
-	}
-
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
 
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
+
 		const relationKeyForId = getRelationKeyForId(relation, type);
 
+		if (relationKeyForId && id) {
+			let hasEntity;
+			const entityKey = `${relationKeyForId}-${id}`;
+			if (nonExistingEntities[entityKey]) {
+
+				return null;
+			} else if (existingEntities[entityKey]) {
+				hasEntity = existingEntities[entityKey];
+			} else {
+				try {
+					if (relationKeyForId === 'author') {
+						hasEntity = await resolveSelect('core').getEntityRecord(
+							'root',
+							'user',
+							id
+						);
+					} else {
+						const taxonomyName =
+							relationKeyForId === 'tags'
+								? 'post_tag'
+								: relationKeyForId === 'categories'
+								? 'category'
+								: relationKeyForId;
+						hasEntity = await resolveSelect('core').getEntityRecord(
+							'taxonomy',
+							taxonomyName,
+							id
+						);
+					}
+					if (hasEntity) {
+						existingEntities[entityKey] = hasEntity;
+					} else {
+						nonExistingEntities[entityKey] = true;
+					}
+				} catch (error) {
+					// Silent error handling
+					hasEntity = null;
+				}
+			}
+
+			if (!hasEntity) {
+				return null;
+			}
+		}
 		const entities = await resolveSelect('core').getEntityRecords(
 			getKind(type),
 			nameDictionary[type] ?? type,
@@ -225,8 +294,10 @@ const getDCEntity = async (dataRequest, clientId) => {
 				...(relationKeyForId && { [relationKeyForId]: id }),
 			}
 		);
-
-		return entities?.slice(-1)[0];
+		if (entities && entities.length > 0) {
+			return entities.slice(-1)[0];
+		  }
+		  return null;
 	}
 
 	if (type === 'settings') {

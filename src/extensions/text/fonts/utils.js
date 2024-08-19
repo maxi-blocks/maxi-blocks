@@ -71,7 +71,7 @@ export const getAllFonts = (
 									breakpoint,
 									isHover,
 									textLevel,
-									avoidSC: onlyBackend,
+									avoidSC: !onlyBackend,
 									styleCard,
 								}) ??
 								(finalPropertyName.includes('pagination')
@@ -87,7 +87,6 @@ export const getAllFonts = (
 									breakpoint,
 									isHover,
 									textLevel,
-									avoidSC: onlyBackend,
 									styleCard,
 								})?.toString();
 							finalFontWeight = finalValue;
@@ -100,7 +99,6 @@ export const getAllFonts = (
 									breakpoint,
 									isHover,
 									textLevel,
-									avoidSC: onlyBackend,
 									styleCard,
 								});
 							finalFontStyle = finalValue;

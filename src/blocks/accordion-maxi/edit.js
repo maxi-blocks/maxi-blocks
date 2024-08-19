@@ -15,9 +15,7 @@ import loadable from '@loadable/component';
  */
 const Inspector = loadable(() => import('./inspector'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
-const MaxiBlock = loadable(() =>
-	import('../../components/maxi-block/maxiBlock')
-);
+import MaxiBlock from '../../components/maxi-block/maxiBlock';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { withMaxiContextLoop } from '../../extensions/DC';
 import { getMaxiBlockAttributes } from '../../components/maxi-block';

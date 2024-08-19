@@ -30,9 +30,9 @@ jobs:
             - name: FTP-Deploy-Action
               uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
-                  server: staging.maximaster.git.maxiblocks.com
+                  server: ${{ secrets.FTP_SERVER }}
                   server-dir: ./wp-content/plugins/maxi-blocks/
-                  username: ftp_staging_maximaster_git
+                  username: ${{ secrets.FTP_USERNAME }}
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftp
                   exclude: '[
@@ -42,8 +42,8 @@ jobs:
                       .eslintrc.json,
                       .github/*,
                       .gitignore,
-                      .prettierignore,
                       .prettierrc.json,
+                      .prettierignore,
                       .wp-env.json,
                       package.json,
                       package-lock.json,

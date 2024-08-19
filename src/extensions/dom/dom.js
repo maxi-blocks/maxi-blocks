@@ -39,6 +39,9 @@ window.process.env = window.process.env || {};
 window.process.env.BROWSERSLIST_DISABLE_CACHE = false;
 
 wp.domReady(() => {
+	// Dispatch the fetchFonts action to load the fonts initially
+	dispatch('maxiBlocks/text').fetchFonts();
+
 	const changeHandlesDisplay = (display, wrapper) =>
 		Array.from(
 			wrapper.querySelectorAll('.resizable-editor__drag-handle')

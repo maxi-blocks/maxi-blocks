@@ -1,6 +1,6 @@
 import { apiFetch } from '@wordpress/data-controls';
 
-export const updateFonts = (fonts) => {
+export const updateFonts = fonts => {
 	return {
 		type: 'UPDATE_FONTS',
 		fonts,
@@ -8,28 +8,35 @@ export const updateFonts = (fonts) => {
 };
 
 // Action to set fonts after fetching from JSON
-export const setFonts = (fonts) => ({
+export const setFonts = fonts => ({
 	type: 'SET_FONTS',
 	fonts,
 });
 
-// Generator function to fetch fonts using data-controls
+const getFontsUrl = defaultUrl => {
+	const linkElement = document.querySelector('#maxi-blocks-block-css');
+	const href = linkElement?.getAttribute('href');
+
+	if (href) {
+		const pluginsPath = href.substring(0, href.lastIndexOf('/build'));
+		return `${pluginsPath}/fonts/fonts.json`;
+	}
+
+	return defaultUrl;
+};
+
 export function* fetchFonts() {
+	const defaultFontsUrl = '/wp-content/plugins/maxi-blocks/fonts/fonts.json';
+	const fontsUrl = getFontsUrl(defaultFontsUrl);
+
 	try {
-		const defaultFontsUrl = '/wp-content/plugins/maxi-blocks/fonts/fonts.json';
-		let fontsUrl = defaultFontsUrl;
-
-		const linkElement = document.querySelector('#maxi-blocks-block-css');
-		const href = linkElement?.getAttribute('href');
-
-		if (href) {
-			const pluginsPath = href.substring(0, href.lastIndexOf('/build'));
-			fontsUrl = `${pluginsPath}/fonts/fonts.json`;
+		const response = yield apiFetch({ url: fontsUrl });
+		if (typeof response !== 'object') {
+			throw new Error('Invalid response format');
 		}
-
-		const fonts = yield apiFetch({ url: fontsUrl });
-		yield setFonts(fonts);
+		yield setFonts(response);
+		return;
 	} catch (error) {
-		console.error('Failed to load fonts:', error);
+		console.error(`Failed to load fonts: ${error.message}`);
 	}
 }

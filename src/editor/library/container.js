@@ -519,9 +519,6 @@ const LibraryContainer = props => {
 	const patternsResults = hit => {
 
 		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
-		const isThemeItem = hit?.post_tag?.includes('Beta'); // TO DO: change to Theme category
-		console.log('isThemeItem', isThemeItem);
-		if (isThemeItem) {console.log(hit?.post_title); hit.gutenberg_type.push('Theme');console.log('hit', hit);}
 
 		return (
 			<MasonryItem

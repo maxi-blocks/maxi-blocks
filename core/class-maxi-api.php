@@ -531,7 +531,7 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             if ((bool) get_option('local_fonts')) {
-                new MaxiBlocks_Local_Fonts();
+                MaxiBlocks_Local_Fonts::register();
             }
 
             $updated_meta = [];

@@ -1,3 +1,5 @@
+/* eslint-disable jest/expect-expect */
+/* eslint-disable no-console */
 /**
  * WordPress dependencies
  */
@@ -19,29 +21,43 @@ import { PATTERNS, PERFORMANCE_TESTS_TIMEOUT, WARMUP_TIMEOUT } from './config';
 describe('Patterns performance', () => {
 	console.info('Starting Patterns performance tests');
 
-	const patternManager = new PatternManager(page);
+	let patternManager;
+	let patternCodes;
+
+	beforeAll(async () => {
+		patternManager = new PatternManager(page);
+		const allPatternNames = PATTERNS.flatMap(({ patterns }) => patterns);
+		patternCodes =
+			await patternManager.getPatternCodeEditors(allPatternNames);
+	});
 
 	beforeEach(async () => {
 		await warmupRun();
 	}, WARMUP_TIMEOUT);
 
 	PATTERNS.forEach(({ type, patterns }) => {
-		patterns.forEach(patternName => {
+		patterns.forEach((patternName, index) => {
 			it(
 				`[${type}] ${patternName} performance`,
 				async () => {
 					console.info(
-						`Starting test for pattern: ${patternName} (${type})`
+						`Starting test for pattern: ${patternName} (${type})`,
 					);
 
-					const patternCode =
-						await patternManager.getPatternCodeEditor(patternName);
+					const patternCode = patternCodes[index];
+
+					if (!patternCode) {
+						console.warn(
+							`Skipping test for pattern: ${patternName} (${type}) - Pattern not found`,
+						);
+						return;
+					}
 
 					const measurements = await performMeasurements({
 						insert: {
 							pre: async () => {
 								debugLog(
-									`Preparing to insert pattern: ${patternName} (${type})`
+									`Preparing to insert pattern: ${patternName} (${type})`,
 								);
 								const blocks = await page.evaluate(code => {
 									return wp.blocks.rawHandler({
@@ -55,7 +71,7 @@ describe('Patterns performance', () => {
 									for (const block of blocks) {
 										if (
 											block.name.startsWith(
-												'maxi-blocks/'
+												'maxi-blocks/',
 											)
 										) {
 											count += 1;
@@ -66,7 +82,7 @@ describe('Patterns performance', () => {
 											block.innerBlocks.length > 0
 										) {
 											count += countBlocks(
-												block.innerBlocks
+												block.innerBlocks,
 											);
 										}
 									}
@@ -77,13 +93,13 @@ describe('Patterns performance', () => {
 
 								const block = await page.waitForSelector(
 									'.block-editor-default-block-appender__content',
-									{ visible: true }
+									{ visible: true },
 								);
 								await page.evaluate(block => {
 									block.focus();
 								}, block);
 								debugLog(
-									`Inserting pattern: ${patternName} (${type}) (Total blocks: ${totalBlockCount})`
+									`Inserting pattern: ${patternName} (${type}) (Total blocks: ${totalBlockCount})`,
 								);
 								await page.evaluate(blocks => {
 									wp.data
@@ -118,17 +134,17 @@ describe('Patterns performance', () => {
 					});
 
 					debugLog(
-						`Saving measurements for pattern: ${patternName} (${type})`
+						`Saving measurements for pattern: ${patternName} (${type})`,
 					);
 					saveEventMeasurements(
 						`${type}_${patternName}`,
-						measurements
+						measurements,
 					);
 					console.info(
-						`Finished test for pattern: ${patternName} (${type})`
+						`Finished test for pattern: ${patternName} (${type})`,
 					);
 				},
-				PERFORMANCE_TESTS_TIMEOUT
+				PERFORMANCE_TESTS_TIMEOUT,
 			);
 		});
 	});

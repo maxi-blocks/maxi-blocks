@@ -1,7 +1,9 @@
+/* eslint-disable jest/expect-expect */
+/* eslint-disable no-console */
 /**
  * WordPress dependencies
  */
-import { saveDraft } from '@wordpress/e2e-test-utils';
+// import { saveDraft } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -28,7 +30,7 @@ describe('Blocks performance', () => {
 	}, WARMUP_TIMEOUT);
 
 	Object.entries(BLOCKS_DATA).forEach(
-		([blockType, { name: blockName, action }]) => {
+		([blockType, { name: blockName, action, amountOfBlocks }]) => {
 			it(
 				`${blockName} performance`,
 				async () => {
@@ -39,12 +41,12 @@ describe('Blocks performance', () => {
 							insert: {
 								pre: async () => {
 									debugLog(
-										`Preparing to insert ${blockName}`
+										`Preparing to insert ${blockName}`,
 									);
 									const insertBlock =
 										await prepareInsertMaxiBlock(
 											page,
-											blockType
+											blockType,
 										);
 									return { insertBlock };
 								},
@@ -52,7 +54,10 @@ describe('Blocks performance', () => {
 									debugLog(`Inserting ${blockName}`);
 									await insertBlock();
 									await action?.(page);
-									await waitForBlocksLoad(page, 1);
+									await waitForBlocksLoad(
+										page,
+										amountOfBlocks ?? 1,
+									);
 								},
 							},
 							// reload: {
@@ -102,8 +107,8 @@ describe('Blocks performance', () => {
 						throw error;
 					}
 				},
-				PERFORMANCE_TESTS_TIMEOUT
+				PERFORMANCE_TESTS_TIMEOUT,
 			);
-		}
+		},
 	);
 });

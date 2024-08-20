@@ -22,4 +22,4 @@ const store = createReduxStore('maxiBlocks/text', {
 register(store);
 
 // Dispatch the fetchFonts action to load the fonts initially
-dispatch('maxiBlocks/text').fetchFonts();
+dispatch('maxiBlocks/text').initializeFonts();

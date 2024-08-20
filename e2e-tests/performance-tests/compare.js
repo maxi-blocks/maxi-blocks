@@ -267,7 +267,7 @@ class PerformanceComparator {
 			.map(Number)
 			.sort((a, b) => a - b);
 
-		if (tTable.hasOwnProperty(degreesOfFreedom)) {
+		if (Object.hasOwn(tTable, degreesOfFreedom)) {
 			return tTable[degreesOfFreedom];
 		}
 

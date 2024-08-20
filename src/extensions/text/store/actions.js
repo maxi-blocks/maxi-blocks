@@ -28,15 +28,35 @@ const getFontsUrl = defaultUrl => {
 export function* fetchFonts() {
 	const defaultFontsUrl = '/wp-content/plugins/maxi-blocks/fonts/fonts.json';
 	const fontsUrl = getFontsUrl(defaultFontsUrl);
+	const maxRetries = 3;
+	let retries = 0;
 
-	try {
-		const response = yield apiFetch({ url: fontsUrl });
-		if (typeof response !== 'object') {
-			throw new Error('Invalid response format');
+	while (retries < maxRetries) {
+		try {
+			const response = yield apiFetch({ url: fontsUrl });
+
+			if (typeof response !== 'object') {
+				throw new Error('Invalid response format: not an object');
+			}
+
+			yield setFonts(response);
+			return;
+		} catch (error) {
+			console.error(`Attempt ${retries + 1} failed:`, error);
+			console.error('Error details:', {
+				message: error.message,
+				stack: error.stack,
+				response: error.response,
+			});
+
+			retries++;
+			if (retries < maxRetries) {
+				yield new Promise(resolve =>
+					setTimeout(resolve, retries * 2000)
+				);
+			}
 		}
-		yield setFonts(response);
-		return;
-	} catch (error) {
-		console.error(`Failed to load fonts: ${error.message}`);
 	}
+
+	console.error(`Failed to load fonts after ${maxRetries} attempts`);
 }

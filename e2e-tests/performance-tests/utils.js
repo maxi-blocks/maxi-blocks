@@ -254,40 +254,41 @@ export class PatternManager {
 		this.searchClient = this.createSearchClient();
 	}
 
-	async searchPatternByName(patternName) {
-		debugLog(`Searching for pattern: ${patternName}`);
-		const searchParameters = {
-			q: patternName,
+	async searchPatternsByNames(patternNames) {
+		debugLog(`Searching for patterns: ${patternNames.join(', ')}`);
+		const searches = patternNames.map(name => ({
+			collection: 'post',
+			q: name,
 			query_by: 'post_title',
 			filter_by: 'gutenberg_type:=[Patterns,Pages]',
 			sort_by: '_text_match:desc',
 			per_page: 1,
-		};
+		}));
 
 		try {
-			const searchResults = await this.searchClient
-				.collections('post')
-				.documents()
-				.search(searchParameters);
-
-			if (searchResults.hits.length > 0) {
-				return searchResults.hits[0].document;
-			}
-			return null;
+			const searchResults = await this.searchClient.multiSearch.perform({
+				searches,
+			});
+			return searchResults.results.map(result =>
+				result.hits.length > 0 ? result.hits[0].document : null
+			);
 		} catch (error) {
-			console.error('Error searching for pattern:', error);
-			return null;
+			console.error('Error searching for patterns:', error);
+			return patternNames.map(() => null);
 		}
 	}
 
-	async getPatternCodeEditor(patternName) {
-		const pattern = await this.searchPatternByName(patternName);
-		if (pattern) {
-			debugLog(`Pattern found: ${pattern.post_title}`);
-			return pattern.gutenberg_code;
-		} else {
-			console.warn(`Pattern not found: ${patternName}`);
-		}
+	async getPatternCodeEditors(patternNames) {
+		const patterns = await this.searchPatternsByNames(patternNames);
+		return patterns.map((pattern, index) => {
+			if (pattern) {
+				debugLog(`Pattern found: ${pattern.post_title}`);
+				return pattern.gutenberg_code;
+			} else {
+				console.warn(`Pattern not found: ${patternNames[index]}`);
+				return null;
+			}
+		});
 	}
 
 	createSearchClient() {

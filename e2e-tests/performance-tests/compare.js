@@ -505,7 +505,7 @@ class ArgumentParser {
 		const parsedArgs = {
 			file1: null,
 			file2: null,
-			threshold: 0.2, // s
+			threshold: 0.1, // s
 			percentThreshold: 3, // %
 			showAllDetails: false,
 		};

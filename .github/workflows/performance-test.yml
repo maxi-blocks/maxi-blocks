@@ -163,7 +163,7 @@ jobs:
                   name: comparison-performance-results
                   path: ${{ runner.temp }}/performance_results
             - name: Compare performance results
-              run: npm run compare-performance -- --file1 ${{ runner.temp }}/performance_results/performance-results-current.json --file2 ${{ runner.temp }}/performance_results/performance-results-comparison.json --showAllDetails true
+              run: npm run compare-performance -- --file1 ${{ runner.temp }}/performance_results/performance-results-comparison.json --file2 ${{ runner.temp }}/performance_results/performance-results-current.json --showAllDetails true
             - name: Read comparison results
               id: read_comparison
               run: |

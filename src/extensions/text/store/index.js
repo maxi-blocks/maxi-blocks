@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { register, createReduxStore } from '@wordpress/data';
+import { createReduxStore, dispatch, register } from '@wordpress/data';
 import { controls } from '@wordpress/data-controls';
 
 /**

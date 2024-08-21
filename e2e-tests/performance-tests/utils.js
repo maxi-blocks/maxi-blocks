@@ -93,11 +93,30 @@ export async function measureSingleAction(page, action, context) {
 	const newContext = await action(context);
 	const endMetrics = await page.metrics();
 
-	const duration = endMetrics.ScriptDuration - startMetrics.ScriptDuration;
+	const endDuration =
+		endMetrics.ScriptDuration +
+		endMetrics.RecalcStyleDuration +
+		endMetrics.LayoutDuration;
+
+	const startDuration =
+		startMetrics.ScriptDuration +
+		startMetrics.RecalcStyleDuration +
+		startMetrics.LayoutDuration;
+
+	const detailedMetrics = {
+		ScriptDuration: endMetrics.ScriptDuration - startMetrics.ScriptDuration,
+		RecalcStyleDuration:
+			endMetrics.RecalcStyleDuration - startMetrics.RecalcStyleDuration,
+		LayoutDuration: endMetrics.LayoutDuration - startMetrics.LayoutDuration,
+		TaskDuration: endMetrics.TaskDuration - startMetrics.TaskDuration,
+	};
+
+	const duration = endDuration - startDuration;
 
 	return {
 		time: duration,
 		context: newContext,
+		detailedMetrics,
 	};
 }
 
@@ -110,7 +129,10 @@ export async function measureSingleAction(page, action, context) {
  */
 export async function performMeasurements(events, iterations = ITERATIONS) {
 	const results = Object.fromEntries(
-		Object.keys(events).map(key => [key, { times: [] }])
+		Object.keys(events).map(key => [
+			key,
+			{ times: [], detailedMetrics: [] },
+		])
 	);
 
 	for (let i = 0; i < iterations; i++) {
@@ -124,12 +146,13 @@ export async function performMeasurements(events, iterations = ITERATIONS) {
 					context = await event.pre(context);
 				}
 				debugLog(`Measuring action for ${key}`);
-				const { time, context: newContext } = await measureSingleAction(
-					page,
-					event.action,
-					context
-				);
+				const {
+					time,
+					context: newContext,
+					detailedMetrics,
+				} = await measureSingleAction(page, event.action, context);
 				results[key].times.push(time);
+				results[key].detailedMetrics.push(detailedMetrics);
 				context = newContext;
 				if (event.post) {
 					debugLog(`Post-action for ${key}`);

@@ -11,8 +11,7 @@ function main() {
 			args.file1,
 			args.file2,
 			args.threshold,
-			args.percentThreshold,
-			args.showAllDetails,
+			args.percentThreshold
 		);
 		const results = comparator.compare();
 
@@ -21,18 +20,17 @@ function main() {
 		const writer = new ResultWriter(
 			results,
 			args.threshold,
-			args.percentThreshold,
-			args.showAllDetails,
+			args.percentThreshold
 		);
 		writer.saveResults();
 
 		console.log(
-			'Results saved to bin/performance_comparison.json and bin/performance_comparison.md',
+			'Results saved to bin/performance_comparison.json and bin/performance_comparison.md'
 		);
 	} catch (error) {
 		console.error(`Error: ${error.message}`);
 		console.log(
-			'Usage: node compare-performance.js --file1 <file1> --file2 <file2> [--threshold <number>] [--percentThreshold <number>] [--showAllDetails <boolean>]',
+			'Usage: node compare-performance.js --file1 <file1> --file2 <file2> [--threshold <number>] [--percentThreshold <number>]'
 		);
 		process.exit(1);
 	}

@@ -16,7 +16,7 @@ export const WARMUP_ITERATIONS = 5;
 /**
  * Timeout for warmup.
  */
-export const WARMUP_TIMEOUT = 10000 * WARMUP_ITERATIONS;
+export const WARMUP_TIMEOUT = 20000 * WARMUP_ITERATIONS;
 
 /**
  * Cool down time between iterations.

@@ -6,7 +6,6 @@ class ArgumentParser {
 			file2: null,
 			threshold: 0.1, // s
 			percentThreshold: 3, // %
-			showAllDetails: false,
 		};
 
 		for (let i = 0; i < args.length; i += 1) {
@@ -25,7 +24,7 @@ class ArgumentParser {
 					const thresholdValue = parseFloat(args[i]);
 					if (Number.isNaN(thresholdValue)) {
 						throw new Error(
-							'Invalid threshold value. Must be a number.',
+							'Invalid threshold value. Must be a number.'
 						);
 					}
 					parsedArgs.threshold = thresholdValue;
@@ -36,24 +35,10 @@ class ArgumentParser {
 					const percentThresholdValue = parseFloat(args[i]);
 					if (Number.isNaN(percentThresholdValue)) {
 						throw new Error(
-							'Invalid percentThreshold value. Must be a number.',
+							'Invalid percentThreshold value. Must be a number.'
 						);
 					}
 					parsedArgs.percentThreshold = percentThresholdValue;
-					break;
-				case '--showAllDetails':
-					i += 1;
-					// eslint-disable-next-line no-case-declarations
-					const showAllDetailsValue = args[i].toLowerCase();
-					if (
-						showAllDetailsValue !== 'true' &&
-						showAllDetailsValue !== 'false'
-					) {
-						throw new Error(
-							'Invalid showAllDetails value. Must be true or false.',
-						);
-					}
-					parsedArgs.showAllDetails = showAllDetailsValue === 'true';
 					break;
 				default:
 					throw new Error(`Unknown argument: ${args[i]}`);

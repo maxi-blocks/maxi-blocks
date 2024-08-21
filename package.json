@@ -22,7 +22,7 @@
 		"test:performance-interactive": "wp-scripts test-e2e -c ./e2e-tests/jest.config.performance.js --puppeteer-interactive",
 		"test:performance:debug": "DEBUG_PERF_TESTS=true wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.performance.js --runInBand --no-cache --verbose",
 		"test:performance-interactive:debug": "DEBUG_PERF_TESTS=true wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.performance.js --runInBand --no-cache --verbose --puppeteer-interactive",
-		"compare-performance": "node e2e-tests/performance-tests/compare.js",
+		"compare-performance": "node e2e-tests/performance-tests/compare/compare.js",
 		"update-blocks-json": "node src/extensions/maxi-block/block-json-abstract/index.js"
 	},
 	"dependencies": {

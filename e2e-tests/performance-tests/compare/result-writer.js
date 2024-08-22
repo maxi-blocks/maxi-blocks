@@ -2,17 +2,10 @@ const fs = require('fs');
 const path = require('path');
 
 class ResultWriter {
-	constructor(
-		results,
-		threshold,
-		percentThreshold,
-		showAllDetails,
-		outputDir = 'bin',
-	) {
+	constructor(results, threshold, percentThreshold, outputDir = 'bin') {
 		this.results = results;
 		this.threshold = threshold;
 		this.percentThreshold = percentThreshold;
-		this.showAllDetails = showAllDetails;
 		this.outputDir = outputDir;
 		this.ensureOutputDirExists();
 	}
@@ -24,7 +17,7 @@ class ResultWriter {
 			}
 		} catch (error) {
 			console.error(
-				`Error creating output directory ${this.outputDir}: ${error.message}`,
+				`Error creating output directory ${this.outputDir}: ${error.message}`
 			);
 		}
 	}
@@ -42,7 +35,7 @@ class ResultWriter {
 			fs.writeFileSync(filePath, jsonOutput);
 		} catch (error) {
 			console.error(
-				`Error writing JSON file ${filePath}: ${error.message}`,
+				`Error writing JSON file ${filePath}: ${error.message}`
 			);
 		}
 	}
@@ -54,7 +47,7 @@ class ResultWriter {
 			fs.writeFileSync(filePath, markdownOutput);
 		} catch (error) {
 			console.error(
-				`Error writing markdown file ${filePath}: ${error.message}`,
+				`Error writing markdown file ${filePath}: ${error.message}`
 			);
 		}
 	}
@@ -65,6 +58,8 @@ class ResultWriter {
 		if (this.results.comparisons.length === 0) {
 			markdown += '## No significant changes detected.\n\n';
 		} else {
+			markdown += '\n## Summary\n\n';
+			markdown += '\n';
 			markdown +=
 				'| Block | Metric | Old Mean (s) | New Mean (s) | Difference (s) | Change (%) | Status |\n';
 			markdown +=
@@ -88,7 +83,7 @@ class ResultWriter {
 								? `${(
 										((newMean - oldMean) / oldMean) *
 										100
-									).toFixed(2)}%`
+								  ).toFixed(2)}%`
 								: 'N/A';
 
 						markdown += `| ${comparison.block} | ${
@@ -129,32 +124,32 @@ class ResultWriter {
 						markdown += ResultWriter.generateStatRow(
 							'Mean',
 							metric.oldStats.mean,
-							metric.newStats.mean,
+							metric.newStats.mean
 						);
 						markdown += ResultWriter.generateStatRow(
 							'Median',
 							metric.oldStats.median,
-							metric.newStats.median,
+							metric.newStats.median
 						);
 						markdown += ResultWriter.generateStatRow(
 							'Min',
 							metric.oldStats.min,
-							metric.newStats.min,
+							metric.newStats.min
 						);
 						markdown += ResultWriter.generateStatRow(
 							'Max',
 							metric.oldStats.max,
-							metric.newStats.max,
+							metric.newStats.max
 						);
 						markdown += ResultWriter.generateStatRow(
 							'Standard Deviation',
 							metric.oldStats.standardDeviation,
-							metric.newStats.standardDeviation,
+							metric.newStats.standardDeviation
 						);
 						markdown += ResultWriter.generateStatRow(
 							'Sample Size',
 							metric.oldStats.sampleSize,
-							metric.newStats.sampleSize,
+							metric.newStats.sampleSize
 						);
 						markdown += '\n';
 					} else {
@@ -179,7 +174,7 @@ class ResultWriter {
 		const formatValue = value =>
 			value !== undefined ? value.toFixed(2) : 'N/A';
 		return `| ${statName} | ${formatValue(oldValue)} | ${formatValue(
-			newValue,
+			newValue
 		)} |\n`;
 	}
 
@@ -191,15 +186,8 @@ class ResultWriter {
 
 ## Notes:
 - Changes are considered significant if they meet these criteria:
-  1. Statistically significant (using t-test)
-  2. Absolute difference > ${this.threshold}s
-  3. Percentage change > ${this.percentThreshold}%
-
-${
-	this.showAllDetails
-		? 'All test results are shown, including unchanged metrics.\n\n'
-		: 'Unchanged metrics are not displayed in this report.\n\n'
-}
+  1. Absolute difference > ${this.threshold}s
+  2. Percentage change > ${this.percentThreshold}%
 `;
 	}
 }

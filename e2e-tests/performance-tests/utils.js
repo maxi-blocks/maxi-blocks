@@ -8,7 +8,7 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
  */
 import {
 	BLOCKS_LOAD_TIMEOUT,
-	ITERATIONS,
+	PATTERNS_ITERATIONS,
 	RESULTS_FILE_DIR,
 	RESULTS_FILE_NAME,
 	WARMUP_ITERATIONS,
@@ -127,7 +127,7 @@ export async function measureSingleAction(page, action, context) {
  * @param {number} iterations
  * @returns {Promise<Object<string, {times: number[], average: number}>>} measurements
  */
-export async function performMeasurements(events, iterations = ITERATIONS) {
+export async function performMeasurements(events, iterations = PATTERNS_ITERATIONS) {
 	const results = Object.fromEntries(
 		Object.keys(events).map(key => [
 			key,

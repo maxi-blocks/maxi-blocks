@@ -58,6 +58,8 @@ class ResultWriter {
 		if (this.results.comparisons.length === 0) {
 			markdown += '## No significant changes detected.\n\n';
 		} else {
+			markdown += '\n## Summary\n\n';
+			markdown += '\n';
 			markdown +=
 				'| Block | Metric | Old Mean (s) | New Mean (s) | Difference (s) | Change (%) | Status |\n';
 			markdown +=

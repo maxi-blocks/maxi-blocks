@@ -37,7 +37,8 @@ export const BLOCKS_ITERATIONS = 10;
  * Timeout for performance tests.
  * 2 mins for each iteration
  */
-export const PERFORMANCE_TESTS_TIMEOUT = 120000 * ITERATIONS;
+export const PERFORMANCE_TESTS_TIMEOUT =
+	120000 * Math.max(PATTERNS_ITERATIONS, BLOCKS_ITERATIONS);
 
 /**
  * Timeout for blocks to load.

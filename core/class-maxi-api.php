@@ -293,6 +293,20 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/wc/get-customer-data/(?P<customer_id>\d+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_customer_data'],
+                'args' => [
+                    'customer_id' => [
+                        'validate_callback' => function ($param) {
+                            return is_numeric($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
             register_rest_route($this->namespace, '/pro', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_pro_status'],
@@ -1010,6 +1024,42 @@ if (!class_exists('MaxiBlocks_API')):
             if(is_array($field)) {
                 return wp_json_encode($field['value']);
             }
+        }
+
+        public function get_customer_data($request)
+        {
+            $customer_id = $request['customer_id'];
+
+            $customer_data = get_user_meta($customer_id);
+            $woocommerce_fields = array(
+                'billing_first_name',
+                'billing_last_name',
+                'billing_company',
+                'billing_address_1',
+                'billing_address_2',
+                'billing_city',
+                'billing_postcode',
+                'billing_country',
+                'billing_state',
+                'billing_phone',
+                'billing_email',
+                'shipping_first_name',
+                'shipping_last_name',
+                'shipping_company',
+                'shipping_address_1',
+                'shipping_address_2',
+                'shipping_city',
+                'shipping_postcode',
+                'shipping_country',
+                'shipping_state',
+                'shipping_phone',
+            );
+
+            $customer_data = array_filter($customer_data, function ($key) use ($woocommerce_fields) {
+                return in_array($key, $woocommerce_fields);
+            }, ARRAY_FILTER_USE_KEY);
+
+            return wp_json_encode($customer_data);
         }
 
         public function get_maxi_blocks_pro_status()

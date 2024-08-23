@@ -67,7 +67,7 @@ export const getIdOptions = async (
 		return users ? users.map(({ id, name }) => ({ id, name })) : null;
 	};
 
-	if (type === 'users' || relation === 'by-author') {
+	if (['users', 'customers'].includes(type) || relation === 'by-author') {
 		data = await fetchUsers();
 	} else if (
 		['categories', 'product_categories'].includes(type) ||

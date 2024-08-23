@@ -19,6 +19,7 @@ import { kindDictionary, nameDictionary, orderRelations } from './constants';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import data from '../../blocks/search-maxi/data';
 
 const randomEntityIndexes = {};
 
@@ -200,13 +201,14 @@ const getDCEntity = async (dataRequest, clientId) => {
 		}
 	}
 
-	if (type === 'users') {
+	if (['users', 'customers'].includes(type)) {
+		let user;
 		dataRequest.id = author ?? id;
 
 		const { getUsers, getUser } = resolveSelect('core');
 
 		if (relation === 'random') {
-			return getRandomEntity(
+			user = getRandomEntity(
 				await getUsers({
 					who: 'authors',
 					per_page: 100,
@@ -214,9 +216,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 				}),
 				clientId
 			);
-		}
-
-		if (['by-date', 'alphabetical'].includes(relation)) {
+		} else if (['by-date', 'alphabetical'].includes(relation)) {
 			const users = await getUsers({
 				who: 'authors',
 				per_page: accumulator + 1,
@@ -225,10 +225,21 @@ const getDCEntity = async (dataRequest, clientId) => {
 				orderby: relation === 'by-date' ? 'registered_date' : 'name',
 			});
 
-			return users?.at(-1);
-		}
+			user = users?.at(-1);
+		} else user = await getUser(author ?? id);
 
-		const user = await getUser(author ?? id);
+		if (type === 'customers' && user) {
+			const customerData = await resolveSelect(
+				'maxiBlocks/dynamic-content'
+			).getCustomerData(user.id);
+
+			if (customerData) {
+				user = {
+					...user,
+					customerData,
+				};
+			}
+		}
 
 		return user;
 	}
@@ -236,14 +247,12 @@ const getDCEntity = async (dataRequest, clientId) => {
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
 
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
-
 		const relationKeyForId = getRelationKeyForId(relation, type);
 
 		if (relationKeyForId && id) {
 			let hasEntity;
 			const entityKey = `${relationKeyForId}-${id}`;
 			if (nonExistingEntities[entityKey]) {
-
 				return null;
 			} else if (existingEntities[entityKey]) {
 				hasEntity = existingEntities[entityKey];
@@ -296,8 +305,8 @@ const getDCEntity = async (dataRequest, clientId) => {
 		);
 		if (entities && entities.length > 0) {
 			return entities.slice(-1)[0];
-		  }
-		  return null;
+		}
+		return null;
 	}
 
 	if (type === 'settings') {

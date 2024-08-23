@@ -455,30 +455,31 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{type === 'users' && relation === 'by-id' && (
-								<SelectControl
-									label={__('Author id', 'maxi-blocks')}
-									value={author}
-									options={postAuthorOptions}
-									newStyle
-									onChange={value =>
-										changeProps({
-											'dc-author': Number(value),
-										})
-									}
-									onReset={() =>
-										changeProps({
-											'dc-author':
-												getDefaultAttribute(
-													'dc-author'
-												),
-										})
-									}
-								/>
-							)}
+							{['users', 'customers'].includes(type) &&
+								relation === 'by-id' && (
+									<SelectControl
+										label={__('User id', 'maxi-blocks')}
+										value={author}
+										options={postAuthorOptions}
+										newStyle
+										onChange={value =>
+											changeProps({
+												'dc-author': Number(value),
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'dc-author':
+													getDefaultAttribute(
+														'dc-author'
+													),
+											})
+										}
+									/>
+								)}
 							{relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
-								type !== 'users' &&
+								!['users', 'customers'].includes(type) &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id') && (
 									<SelectControl

@@ -127,7 +127,10 @@ export async function measureSingleAction(page, action, context) {
  * @param {number} iterations
  * @returns {Promise<Object<string, {times: number[], average: number}>>} measurements
  */
-export async function performMeasurements(events, iterations = PATTERNS_ITERATIONS) {
+export async function performMeasurements(
+	events,
+	iterations = PATTERNS_ITERATIONS
+) {
 	const results = Object.fromEntries(
 		Object.keys(events).map(key => [
 			key,
@@ -272,8 +275,7 @@ export async function prepareInsertMaxiBlock(page, blockName) {
 }
 
 export class PatternManager {
-	constructor(page) {
-		this.page = page;
+	constructor() {
 		this.searchClient = this.createSearchClient();
 	}
 
@@ -303,15 +305,33 @@ export class PatternManager {
 
 	async getPatternCodeEditors(patternNames) {
 		const patterns = await this.searchPatternsByNames(patternNames);
-		return patterns.map((pattern, index) => {
+		const patternMap = new Map();
+
+		for (let i = 0; i < patternNames.length; i++) {
+			const requestedName = patternNames[i];
+			const pattern = patterns[i];
+
 			if (pattern) {
-				debugLog(`Pattern found: ${pattern.post_title}`);
-				return pattern.gutenberg_code;
+				if (
+					pattern.post_title
+						.toLowerCase()
+						.includes(requestedName.toLowerCase())
+				) {
+					debugLog(`Pattern found: ${pattern.post_title}`);
+					patternMap.set(requestedName, pattern.gutenberg_code);
+				} else {
+					console.warn(
+						`Pattern mismatch for "${requestedName}". Found: "${pattern.post_title}"`
+					);
+					patternMap.set(requestedName, null);
+				}
 			} else {
-				console.warn(`Pattern not found: ${patternNames[index]}`);
-				return null;
+				console.warn(`Pattern not found: ${requestedName}`);
+				patternMap.set(requestedName, null);
 			}
-		});
+		}
+
+		return patternMap;
 	}
 
 	createSearchClient() {

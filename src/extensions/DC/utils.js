@@ -19,6 +19,7 @@ import {
 	taxonomyRelationOptions,
 	linkTypesOptions,
 	linkFieldsOptions,
+	alwaysShowCurrentTypes,
 } from './constants';
 import getTypes from './getTypes';
 
@@ -72,8 +73,7 @@ const showCurrent = (type, currentTemplateType) => {
 	if (currentTemplateType.includes('category-') && type === 'categories')
 		return true;
 	// for specific tag templates
-	if (currentTemplateType.includes('tag-') && type === 'tags')
-		return true;
+	if (currentTemplateType.includes('tag-') && type === 'tags') return true;
 	// for specific woo products templates
 	if (currentTemplateType.includes('single-product') && type === 'products')
 		return true;
@@ -405,7 +405,10 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 		options = getTaxonomyRelationOptions();
 	else options = relationOptions[contentType]?.[type];
 
-	if (type.includes(select('core/editor').getCurrentPostType())) {
+	if (
+		type.includes(select('core/editor').getCurrentPostType()) ||
+		alwaysShowCurrentTypes.includes(type)
+	) {
 		const newItem = {
 			label: __("Get the current item's data", 'maxi-blocks'),
 			value: 'current',
@@ -517,8 +520,9 @@ export const getDCOrder = (relation, orderBy) => {
 };
 
 export const canCurrentEntityBeSelected = type =>
-	currentEntityTypes.includes(type) &&
-	nameDictionary[type] === select('core/editor').getCurrentPostType();
+	alwaysShowCurrentTypes.includes(type) ||
+	(currentEntityTypes.includes(type) &&
+		nameDictionary[type] === select('core/editor').getCurrentPostType());
 
 export const validateRelations = (type, relation, isCL) => {
 	const prefix = isCL ? 'cl-' : 'dc-';

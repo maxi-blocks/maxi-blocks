@@ -1030,8 +1030,7 @@ class MaxiBlocks_DynamicContent
             )
         ) {
             $response = self::get_taxonomy_content($attributes);
-        } elseif ($dc_type === 'users') {
-            // Users
+        } elseif ($dc_type === 'users' || $dc_type === 'customers') {
             $response = self::get_user_content($attributes);
         } elseif ($dc_type === 'products') {
             $response = self::get_product_content($attributes);
@@ -1609,7 +1608,15 @@ class MaxiBlocks_DynamicContent
             } else {
                 return null;
             }
-        } elseif ($dc_type === 'users') {
+        } elseif ($dc_type === 'users' || $dc_type === 'customers') {
+            if ($dc_relation === 'current') {
+                if ($dc_type === 'customers') {
+                    return get_user_by('id', get_current_user_id());
+                }
+
+                return get_user_by('id', get_the_author_id());
+            }
+
             $args = [
                 'capability' => 'edit_posts',
             ];
@@ -1990,30 +1997,28 @@ class MaxiBlocks_DynamicContent
         ) {
             $dc_relation = 'current';
         }
-        if ($dc_relation === 'current') {
-            $user = get_queried_object();
-            $user_id = get_queried_object_id();
-        } else {
-            $user = $this->get_post($attributes);
-            if (!is_object($user) || !isset($user->data)) {
-                return 0;
-            }
-            $user_id = $user->data->ID;
+
+        $user = $this->get_post($attributes);
+        if (!is_object($user) || !isset($user->data)) {
+            return 0;
         }
+        $user_id = $user->data->ID;
+
+        $user_meta = array_map(function ($value) {
+            return $value[0];
+        }, get_user_meta($user_id));
+        $user_data = array_merge((array) $user->data, $user_meta);
+
 
         $user_dictionary = [
             'name' => 'display_name',
+            'username' => 'user_login',
             'email' => 'user_email',
             'url' => 'user_url',
             'link' => get_author_posts_url($user_id),
             'description' => 'description',
             'archive-type' => __('author', 'maxi-blocks'),
         ];
-
-        // Check if the $dc_field is defined in your dictionary
-        if (!array_key_exists($dc_field, $user_dictionary)) {
-            return 0;
-        }
 
         // Ensure $user is an object and $user->data exists and is an object
         if (
@@ -2025,17 +2030,17 @@ class MaxiBlocks_DynamicContent
         }
 
         // Check if the property exists in $user->data
-        $property = $user_dictionary[$dc_field];
+        $property = $user_dictionary[$dc_field] ?? $dc_field;
         if ($dc_field === 'archive-type' || $dc_field === 'link') {
             return $property;
         }
-        if (!property_exists($user->data, $property)) {
+        if (!array_key_exists($property, $user_data) || !isset($user_data[$property])) {
             return 0;
         }
 
-        $user_data = $user->data->$property;
+        $value = $user_data[$property];
 
-        return $user_data;
+        return $value;
     }
 
     public function get_taxonomy_content($attributes)

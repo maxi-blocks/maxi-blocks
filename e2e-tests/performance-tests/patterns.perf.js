@@ -30,7 +30,7 @@ describe('Patterns performance', () => {
 	let patternCodes;
 
 	beforeAll(async () => {
-		patternManager = new PatternManager(page);
+		patternManager = new PatternManager();
 		const allPatternNames = PATTERNS.flatMap(({ patterns }) => patterns);
 		patternCodes = await patternManager.getPatternCodeEditors(
 			allPatternNames
@@ -42,7 +42,7 @@ describe('Patterns performance', () => {
 	}, WARMUP_TIMEOUT);
 
 	PATTERNS.forEach(({ type, patterns }) => {
-		patterns.forEach((patternName, index) => {
+		patterns.forEach(patternName => {
 			it(
 				`[${type}] ${patternName} performance`,
 				async () => {
@@ -50,7 +50,7 @@ describe('Patterns performance', () => {
 						`Starting test for pattern: ${patternName} (${type})`
 					);
 
-					const patternCode = patternCodes[index];
+					const patternCode = patternCodes.get(patternName);
 
 					if (!patternCode) {
 						console.warn(

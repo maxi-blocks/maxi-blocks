@@ -7,15 +7,15 @@
 			flex-grow: 1;
 		}
 
-		& > div > div > div{
+		& > div > div > div {
 			border-color: var(--maxi-grey-1-color);
 		}
 	}
 
-	&__button{
+	&__button {
 		background: var(--maxi-light-blue-2-color);
 		color: var(--maxi-black-1-color) !important;
-		&:hover{
+		&:hover {
 			background: var(--maxi-white-3-color);
 		}
 	}

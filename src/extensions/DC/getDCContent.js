@@ -75,7 +75,7 @@ const getDCContent = async (dataRequest, clientId) => {
 			// Remove the oldest entry from the cache
 			const oldestKey = Object.keys(cache)[0];
 			delete cache[oldestKey];
-		  }
+		}
 		cache[cacheKey] = data;
 	}
 

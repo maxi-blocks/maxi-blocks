@@ -167,7 +167,8 @@ const Link = props => {
 									}}
 								/>
 								{(multipleLinksTypes.includes(selectedDCType) ||
-									linkFields.includes(dcField) || customTaxonomies.includes(dcField)) &&
+									linkFields.includes(dcField) ||
+									customTaxonomies.includes(dcField)) &&
 									dcLinkStatus && (
 										<SelectControl
 											label={__(

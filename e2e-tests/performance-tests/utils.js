@@ -318,7 +318,10 @@ export class PatternManager {
 						.includes(requestedName.toLowerCase())
 				) {
 					debugLog(`Pattern found: ${pattern.post_title}`);
-					patternMap.set(requestedName, pattern.gutenberg_code);
+					const modifiedCode = PatternManager.replaceMediaURLs(
+						pattern.gutenberg_code
+					);
+					patternMap.set(requestedName, modifiedCode);
 				} else {
 					console.warn(
 						`Pattern mismatch for "${requestedName}". Found: "${pattern.post_title}"`
@@ -332,6 +335,12 @@ export class PatternManager {
 		}
 
 		return patternMap;
+	}
+
+	static replaceMediaURLs(code) {
+		return code
+			.replace(/"mediaURL"\s*:\s*"https:\/\/[^"]*"/g, '"mediaURL":""')
+			.replace(/src="https:\/\/[^"]*"/g, 'src=""');
 	}
 
 	createSearchClient() {

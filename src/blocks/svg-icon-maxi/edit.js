@@ -15,11 +15,9 @@ import loadable from '@loadable/component';
  */
 const Inspector = loadable(() => import('./inspector'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
-const BlockResizer = loadable(() => import('../../components/block-resizer'));
+ import BlockResizer from '../../components/block-resizer';
 const RawHTML = loadable(() => import('../../components/raw-html'));
-const MaxiPopoverButton = loadable(() =>
-	import('../../components/maxi-popover-button')
-);
+import MaxiPopoverButton from '../../components/maxi-popover-button';
 import MaxiModal from '../../editor/library/modal';
 
 import {
@@ -125,7 +123,7 @@ class edit extends MaxiBlockComponent {
 		}
 
 		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
-			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
+			const svgClass = svgCode.match(/ class="(.+?(?=))"/)?.[1];
 			const newSvgClass = `${svgClass}__${uniqueId()}`;
 			const replaceIt = `${svgClass}`;
 

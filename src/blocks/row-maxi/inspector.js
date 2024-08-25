@@ -27,7 +27,7 @@ const ResponsiveTabsControl = loadable(() =>
 const SettingTabsControl = loadable(() =>
 	import('../../components/setting-tabs-control')
 );
-const ColumnPattern = loadable(() => import('./components/column-pattern'));
+import ColumnPattern from './components/column-pattern';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';

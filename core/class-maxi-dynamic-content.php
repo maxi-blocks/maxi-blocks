@@ -1101,6 +1101,7 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-media-id' => $dc_media_id,
             'dc-accumulator' => $dc_accumulator,
+            'dc-media-size' => $dc_media_size,
         ] = $attributes;
 
         if (empty($dc_type)) {
@@ -1136,7 +1137,9 @@ class MaxiBlocks_DynamicContent
                     $media_id = get_post_meta($post->ID, '_thumbnail_id', true);
                 } elseif ($dc_field === 'author_avatar') {
                     $media_id = 'external';
-                    $media_src = get_avatar_url($post->post_author);
+                    $media_src = get_avatar_url($post->post_author, [
+                        'size' => $dc_media_size
+                    ]);
                 }
             }
         } elseif ($dc_type === 'settings') {
@@ -1155,7 +1158,9 @@ class MaxiBlocks_DynamicContent
         } elseif ($dc_type === 'users') {
             $media_id = 'external';
             if ($dc_relation === 'current' && is_author()) {
-                $media_src = get_avatar_url(get_queried_object_id());
+                $media_src = get_avatar_url(get_queried_object_id(), [
+                    'size' => $dc_media_size
+                ]);
             } else {
                 $post = $this->get_post($attributes);
                 if (
@@ -1164,7 +1169,9 @@ class MaxiBlocks_DynamicContent
                 ) {
                     return '';
                 }
-                $media_src = get_avatar_url($post->ID);
+                $media_src = get_avatar_url($post->ID, [
+                    'size' => $dc_media_size
+                ]);
             }
         } elseif ($dc_type === 'products') {
             $product = self::get_post($attributes);

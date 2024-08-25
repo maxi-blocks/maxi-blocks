@@ -122,6 +122,10 @@ wp.domReady(() => {
 			}
 
 			isMaxiToolbar = true;
+
+			if (!getIsSiteEditor()) {
+				unsubscribe();
+			}
 		}
 	});
 });

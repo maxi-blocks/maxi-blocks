@@ -196,6 +196,10 @@ if (!class_exists('MaxiBlocks_Block')):
             'dc-media-caption' => [
                 'type' => 'string',
             ],
+            'dc-media-size' => [
+                'type' => 'number',
+                'default' => 512
+            ],
             'dc-link-status' => [
                 'type' => 'boolean',
             ],

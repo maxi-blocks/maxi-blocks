@@ -255,7 +255,7 @@ function hover_styles_cleaner($normal_obj, $hover_obj)
                             }
 
                             // If the previous breakpoint exists and the attribute value is different in it, continue to the next iteration
-                            if ($prev_breakpoint && $hover_obj[$key][$prev_breakpoint][$attr_key] !== $hover_obj[$key][$breakpoint][$attr_key]) {
+                            if ($prev_breakpoint && isset($hover_obj[$key][$prev_breakpoint][$attr_key]) && isset($hover_obj[$key][$breakpoint][$attr_key]) && $hover_obj[$key][$prev_breakpoint][$attr_key] !== $hover_obj[$key][$breakpoint][$attr_key]) {
                                 continue;
                             }
 

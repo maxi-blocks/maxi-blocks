@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
 }
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/post-management/class-maxi-post-update-manager.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/style-cards/get_sc_variables_object.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/style-cards/get_sc_styles.php';
 
@@ -26,6 +27,7 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * @var MaxiBlocks_CLI
          */
         private static $instance;
+
         private static $typesense_client;
         private static $maxi_api;
 
@@ -438,6 +440,24 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
             $page_set_path = $args[0];
             $authors = isset($assoc_args['authors']) ? $assoc_args['authors'] : 'create';
             WP_CLI::runcommand('import ' . $page_set_path . ' --authors=' . $authors);
+
+            $imported_post_ids = MaxiBlocks_Post_Update_Manager::get_imported_post_ids();
+
+            if(!empty($imported_post_ids)) {
+                WP_CLI::warning("Reloading styles for imported posts with MaxiBlocks. They are not ready for use until this is complete.");
+                $progress = WP_CLI\Utils\make_progress_bar('Reloading styles for imported posts', count($imported_post_ids));
+                foreach($imported_post_ids as $post_id) {
+                    WP_CLI::runcommand('maxiblocks reload-post-styles ' . $post_id . ' --disable-logs --new-blocks');
+                    $progress->tick();
+                }
+                $progress->finish();
+            } else {
+                WP_CLI::log('No posts with blocks were imported.');
+            }
+
+            MaxiBlocks_Post_Update_Manager::reset_imported_post_ids();
+
+            WP_CLI::success('Imported and loaded styles for all imported posts');
         }
 
         /**
@@ -529,29 +549,44 @@ if (class_exists('WP_CLI') && !class_exists('MaxiBlocks_CLI')):
          * <post_id>
          * : The ID of the post to update the block styles.
          *
+         * [--disable-logs]
+         * : Disable progress logs and output.
+         *
+         * [--new-blocks]
+         * : Treat the blocks as new when reloading styles.
+         *
          * ## EXAMPLES
          *
          *    wp maxiblocks reload-post-styles 123
+         *    wp maxiblocks reload-post-styles 123 --disable-logs
+         *    wp maxiblocks reload-post-styles 123 --new-blocks
          */
-        public function reload_post_styles($args)
+        public function reload_post_styles($args, $assoc_args)
         {
             $post_id = $args[0];
+            $disable_logs = isset($assoc_args['disable-logs']);
+            $new_blocks = isset($assoc_args['new-blocks']);
 
             $post = get_post($post_id);
 
             if (!$post) {
-                WP_CLI::error('Post not found.');
+                if (!$disable_logs) {
+                    WP_CLI::error('Post not found.');
+                }
                 return;
             }
 
             $post_content = $post->post_content;
             $block_count = self::count_blocks($post_content);
 
-            self::execute_with_progress('Reloading styles', $block_count, function () use ($post_id, $post_content) {
-                do_action('maxiblocks_update_post_content', $post_id, $post_content, false);
-            });
-
-            WP_CLI::success('Block styles updated successfully.');
+            if ($disable_logs) {
+                do_action('maxiblocks_update_post_content', $post_id, $post_content, $new_blocks);
+            } else {
+                self::execute_with_progress('Reloading styles', $block_count, function () use ($post_id, $post_content, $new_blocks) {
+                    do_action('maxiblocks_update_post_content', $post_id, $post_content, $new_blocks);
+                });
+                WP_CLI::success('Block styles updated successfully.');
+            }
         }
 
         /**

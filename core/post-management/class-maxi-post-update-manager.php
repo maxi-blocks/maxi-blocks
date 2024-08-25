@@ -26,6 +26,8 @@ class MaxiBlocks_Post_Update_Manager
     private static ?MaxiBlocks_Block_Info_Updater $block_info_updater = null;
     private static ?MaxiBlocks_Content_Processor $content_processor = null;
 
+    private const IMPORTED_POST_IDS_OPTION = 'maxiblocks_imported_post_ids';
+
     /**
      * Registers the plugin.
      */
@@ -129,10 +131,20 @@ class MaxiBlocks_Post_Update_Manager
     public function process_imported_post(array $post): array
     {
         if(isset($post['post_content']) && has_blocks($post['post_content'])) {
-            $updated_post_content = self::$content_processor->get_updated_post_content($post['post_content'], true);
-            self::$block_info_updater->update_post_blocks_styles($updated_post_content);
-            $post['post_content'] = $updated_post_content;
+            $imported_post_ids = get_option(self::IMPORTED_POST_IDS_OPTION, []);
+            $imported_post_ids[] = $post['post_id'];
+            update_option(self::IMPORTED_POST_IDS_OPTION, $imported_post_ids);
         }
         return $post;
+    }
+
+    public static function get_imported_post_ids(): array
+    {
+        return get_option(self::IMPORTED_POST_IDS_OPTION, []);
+    }
+
+    public static function reset_imported_post_ids(): void
+    {
+        delete_option(self::IMPORTED_POST_IDS_OPTION);
     }
 }

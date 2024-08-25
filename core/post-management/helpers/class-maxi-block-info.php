@@ -126,7 +126,7 @@ class MaxiBlocks_Block_Info_Updater
             'custom_meta_block' => $custom_meta_block,
         ];
 
-		do_action('maxiblocks_block_info_processed');
+        do_action('maxiblocks_block_info_processed');
     }
 
     /**
@@ -539,7 +539,7 @@ class MaxiBlocks_Block_Info_Updater
     {
         static $font_files = null;
         if ($font_files === null) {
-            $font_files = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . '/core/post-management/fonts.json'), true);
+            $font_files = json_decode(file_get_contents(MAXI_PLUGIN_DIR_PATH . '/fonts/fonts.json'), true);
         }
         return $font_files ?: [];
     }

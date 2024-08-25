@@ -11,30 +11,28 @@ jobs:
         outputs:
             comparison_branch: ${{ steps.get_branch.outputs.branch }}
         steps:
-            - name: Get comparison branch from latest comment
+            - name: Get comparison branch from PR description
               id: get_branch
               uses: actions/github-script@v6
               with:
                   github-token: ${{secrets.GITHUB_TOKEN}}
                   script: |
-                      const issueNumber = context.issue.number;
-                      const { data: comments } = await github.rest.issues.listComments({
-                        issue_number: issueNumber,
+                      const { data: pullRequest } = await github.rest.pulls.get({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
-                        per_page: 100,
-                        direction: 'desc'
+                        pull_number: context.issue.number
                       });
 
-                      const setComparisonRegex = /^\/set-comparison-branch\s+(\S+)/;
-                      for (const comment of comments) {
-                        const match = comment.body.match(setComparisonRegex);
-                        if (match) {
-                          core.setOutput('branch', match[1]);
-                          return;
-                        }
+                      const setComparisonRegex = /comparison-branch:\s*(\S+)/i;
+                      const match = pullRequest.body.match(setComparisonRegex);
+
+                      if (match) {
+                        core.setOutput('branch', match[1]);
+                        console.log(`Found comparison branch: ${match[1]}`);
+                      } else {
+                        console.log('No comparison branch found in PR description, defaulting to master');
+                        core.setOutput('branch', 'master');
                       }
-                      core.setOutput('branch', 'master');  // Default to master if no command found
 
     performance-current:
         needs: get-comparison-branch

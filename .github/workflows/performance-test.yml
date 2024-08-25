@@ -55,6 +55,7 @@ jobs:
 
                       // Process comments from newest to oldest
                       for (const comment of allComments.reverse()) {
+                        console.log(`Processing comment: ${comment.body}`);
                         const match = comment.body.match(setComparisonRegex);
                         if (match) {
                           comparisonBranch = match[1];

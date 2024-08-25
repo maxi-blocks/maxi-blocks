@@ -50,12 +50,12 @@ jobs:
                       );
                       console.log(`Found ${allComments.length} comments on PR #${context.issue.number}`);
 
-                      const setComparisonRegex = /comparison-branch:\s*(\S+)/i;
+                      const setComparisonRegex = /\/comparison-branch\s+(\S+)/i;
                       let comparisonBranch = 'master';
 
                       // Process comments from newest to oldest
                       for (const comment of allComments.reverse()) {
-                        console.log(`Processing comment: ${comment.body}`);
+                        console.log(`Processing comment: ${comment.url}`);
                         const match = comment.body.match(setComparisonRegex);
                         if (match) {
                           comparisonBranch = match[1];

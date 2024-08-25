@@ -11,28 +11,37 @@ jobs:
         outputs:
             comparison_branch: ${{ steps.get_branch.outputs.branch }}
         steps:
-            - name: Get comparison branch from PR description
+            - name: Get comparison branch from latest PR comment
               id: get_branch
               uses: actions/github-script@v6
               with:
                   github-token: ${{secrets.GITHUB_TOKEN}}
                   script: |
-                      const { data: pullRequest } = await github.rest.pulls.get({
+                      const { data: comments } = await github.rest.issues.listComments({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
-                        pull_number: context.issue.number
+                        issue_number: context.issue.number,
+                        per_page: 100
                       });
 
                       const setComparisonRegex = /comparison-branch:\s*(\S+)/i;
-                      const match = pullRequest.body.match(setComparisonRegex);
+                      let comparisonBranch = 'master';
 
-                      if (match) {
-                        core.setOutput('branch', match[1]);
-                        console.log(`Found comparison branch: ${match[1]}`);
-                      } else {
-                        console.log('No comparison branch found in PR description, defaulting to master');
-                        core.setOutput('branch', 'master');
+                      // Reverse the comments array to process from newest to oldest
+                      for (const comment of comments.reverse()) {
+                        const match = comment.body.match(setComparisonRegex);
+                        if (match) {
+                          comparisonBranch = match[1];
+                          console.log(`Found comparison branch in latest matching comment: ${comparisonBranch}`);
+                          break;
+                        }
                       }
+
+                      if (comparisonBranch === 'master') {
+                        console.log('No comparison branch found in PR comments, defaulting to master');
+                      }
+
+                      core.setOutput('branch', comparisonBranch);
 
     performance-current:
         needs: get-comparison-branch

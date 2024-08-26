@@ -1,0 +1,78 @@
+{
+  "background-svg-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "background-svg-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-svg-palette-color": {
+    "type": "number",
+    "default": 5
+  },
+  "background-svg-palette-opacity": {
+    "type": "number"
+  },
+  "background-svg-color": {
+    "type": "string"
+  },
+  "background-svg-SVGElement": {
+    "type": "string"
+  },
+  "background-svg-SVGData": {
+    "type": "object"
+  },
+  "background-svg-top-unit": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-svg-position-top": {
+    "type": "string"
+  },
+  "background-svg-position-right": {
+    "type": "string"
+  },
+  "background-svg-position-bottom": {
+    "type": "string"
+  },
+  "background-svg-position-left": {
+    "type": "string"
+  },
+  "background-svg-position-sync": {
+    "type": "string",
+    "default": "all"
+  },
+  "background-svg-position-top-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-svg-position-right-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-svg-position-bottom-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-svg-position-left-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-svg-width": {
+    "type": "number",
+    "default": 100
+  },
+  "background-svg-width-unit": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-svg-height": {
+    "type": "number",
+    "default": 100
+  },
+  "background-svg-height-unit": {
+    "type": "string",
+    "default": "%"
+  }
+}

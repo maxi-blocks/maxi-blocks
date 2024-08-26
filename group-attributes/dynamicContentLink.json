@@ -1,0 +1,12 @@
+{
+  "dc-status": {
+    "type": "boolean"
+  },
+  "dc-link-status": {
+    "type": "boolean"
+  },
+  "dc-link-target": {
+    "type": "string",
+    "default": "none"
+  }
+}

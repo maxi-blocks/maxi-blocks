@@ -1,0 +1,23 @@
+{
+  "display-general-hover": {
+    "type": "string"
+  },
+  "display-xxl-hover": {
+    "type": "string"
+  },
+  "display-xl-hover": {
+    "type": "string"
+  },
+  "display-l-hover": {
+    "type": "string"
+  },
+  "display-m-hover": {
+    "type": "string"
+  },
+  "display-s-hover": {
+    "type": "string"
+  },
+  "display-xs-hover": {
+    "type": "string"
+  }
+}

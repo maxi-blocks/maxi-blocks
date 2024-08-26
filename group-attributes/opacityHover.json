@@ -1,0 +1,27 @@
+{
+  "opacity-general-hover": {
+    "type": "number"
+  },
+  "opacity-xxl-hover": {
+    "type": "number"
+  },
+  "opacity-xl-hover": {
+    "type": "number"
+  },
+  "opacity-l-hover": {
+    "type": "number"
+  },
+  "opacity-m-hover": {
+    "type": "number"
+  },
+  "opacity-s-hover": {
+    "type": "number"
+  },
+  "opacity-xs-hover": {
+    "type": "number"
+  },
+  "opacity-status-hover": {
+    "type": "boolean",
+    "default": false
+  }
+}

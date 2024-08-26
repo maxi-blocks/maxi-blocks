@@ -1,0 +1,9 @@
+{
+  "max-height-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "max-height": {
+    "type": "string"
+  }
+}

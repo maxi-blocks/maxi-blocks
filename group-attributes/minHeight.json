@@ -1,0 +1,45 @@
+{
+  "min-height-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "min-height-unit-xxl": {
+    "type": "string"
+  },
+  "min-height-unit-xl": {
+    "type": "string"
+  },
+  "min-height-unit-l": {
+    "type": "string"
+  },
+  "min-height-unit-m": {
+    "type": "string"
+  },
+  "min-height-unit-s": {
+    "type": "string"
+  },
+  "min-height-unit-xs": {
+    "type": "string"
+  },
+  "min-height-general": {
+    "type": "string"
+  },
+  "min-height-xxl": {
+    "type": "string"
+  },
+  "min-height-xl": {
+    "type": "string"
+  },
+  "min-height-l": {
+    "type": "string"
+  },
+  "min-height-m": {
+    "type": "string"
+  },
+  "min-height-s": {
+    "type": "string"
+  },
+  "min-height-xs": {
+    "type": "string"
+  }
+}

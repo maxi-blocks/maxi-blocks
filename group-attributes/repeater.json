@@ -1,0 +1,6 @@
+{
+  "repeater-status": {
+    "type": "boolean",
+    "default": false
+  }
+}

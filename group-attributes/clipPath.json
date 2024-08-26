@@ -1,0 +1,50 @@
+{
+  "clip-path-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "clip-path-xxl": {
+    "type": "string"
+  },
+  "clip-path-xl": {
+    "type": "string"
+  },
+  "clip-path-l": {
+    "type": "string"
+  },
+  "clip-path-m": {
+    "type": "string"
+  },
+  "clip-path-s": {
+    "type": "string"
+  },
+  "clip-path-xs": {
+    "type": "string"
+  },
+  "clip-path-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "clip-path-status-xxl": {
+    "type": "boolean"
+  },
+  "clip-path-status-xl": {
+    "type": "boolean"
+  },
+  "clip-path-status-l": {
+    "type": "boolean"
+  },
+  "clip-path-status-m": {
+    "type": "boolean"
+  },
+  "clip-path-status-s": {
+    "type": "boolean"
+  },
+  "clip-path-status-xs": {
+    "type": "boolean"
+  },
+  "clip-path-status-hover": {
+    "type": "boolean",
+    "default": false
+  }
+}

@@ -1,0 +1,1909 @@
+{
+  "active-navigation-dot-svgType": {
+    "type": "string",
+    "default": "Shape"
+  },
+  "active-navigation-dot-icon-content": {
+    "type": "string",
+    "default": "<svg class=\"circle-2-shape-maxi-svg__3\" width=\"64px\" height=\"64px\" viewBox=\"0 0 36.1 36.1\"><circle cx=\"18\" cy=\"18\" r=\"17.2\" data-fill  fill=\"var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))\"/></svg>"
+  },
+  "active-navigation-dot-icon-stroke-general": {
+    "type": "number",
+    "default": 2
+  },
+  "active-navigation-dot-icon-stroke-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-stroke-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-stroke-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-stroke-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-stroke-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-stroke-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-width-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-width-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-general": {
+    "type": "string",
+    "default": "10"
+  },
+  "active-navigation-dot-icon-width-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-width-fit-content-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-width-fit-content-xxl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-width-fit-content-xl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-width-fit-content-l": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-width-fit-content-m": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-width-fit-content-s": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-width-fit-content-xs": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-height-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-height-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-general": {
+    "type": "string",
+    "default": "32"
+  },
+  "active-navigation-dot-icon-height-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-height-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-force-aspect-ratio-general": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-force-aspect-ratio-xxl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-force-aspect-ratio-xl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-force-aspect-ratio-l": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-force-aspect-ratio-m": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-force-aspect-ratio-s": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-force-aspect-ratio-xs": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-stroke-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "active-navigation-dot-icon-stroke-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-stroke-palette-color": {
+    "type": "number",
+    "default": 2
+  },
+  "active-navigation-dot-icon-stroke-palette-opacity": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-stroke-color": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-fill-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "active-navigation-dot-icon-fill-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-fill-palette-color": {
+    "type": "number",
+    "default": 4
+  },
+  "active-navigation-dot-icon-fill-palette-opacity": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-fill-color": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-padding-top-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-top-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-padding-right-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-right-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-padding-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-bottom-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-padding-left-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-left-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "active-navigation-dot-icon-padding-sync-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-sync-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-sync-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-sync-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-sync-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-padding-sync-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-active-media-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "active-navigation-dot-icon-background-active-media-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-active-media-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-active-media-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-active-media-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-active-media-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-active-media-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "active-navigation-dot-icon-background-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-status-xl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-status-l": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-status-m": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-status-s": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-status-xs": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-background-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-background-palette-color-general": {
+    "type": "number",
+    "default": 1
+  },
+  "active-navigation-dot-icon-background-palette-color-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-color-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-color-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-color-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-color-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-color-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-opacity-general": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-opacity-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-opacity-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-opacity-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-opacity-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-palette-opacity-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-sync-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-sync-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-sync-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-sync-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-sync-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-sync-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-top-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-right-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-position-left-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-width-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-color-wrapper-height-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-opacity-general": {
+    "type": "number",
+    "default": 1
+  },
+  "active-navigation-dot-icon-background-gradient-opacity-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-opacity-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-opacity-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-opacity-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-opacity-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-opacity-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-sync-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-sync-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-sync-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-sync-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-sync-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-sync-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-top-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-right-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-position-left-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-width-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-background-gradient-wrapper-height-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "active-navigation-dot-icon-border-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-status-xl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-status-l": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-status-m": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-status-s": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-status-xs": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-border-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-border-palette-color-general": {
+    "type": "number",
+    "default": 2
+  },
+  "active-navigation-dot-icon-border-palette-color-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-color-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-color-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-color-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-color-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-color-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-opacity-general": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-opacity-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-opacity-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-opacity-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-opacity-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-palette-opacity-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-color-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-color-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-color-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-color-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-color-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-color-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-color-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-style-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "active-navigation-dot-icon-border-style-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-style-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-style-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-style-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-style-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-style-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-top-left-radius-general": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-left-radius-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-left-radius-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-left-radius-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-left-radius-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-left-radius-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-left-radius-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-right-radius-general": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-right-radius-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-right-radius-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-right-radius-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-right-radius-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-right-radius-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-right-radius-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-right-radius-general": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-right-radius-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-right-radius-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-right-radius-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-right-radius-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-right-radius-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-right-radius-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-left-radius-general": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-left-radius-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-left-radius-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-left-radius-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-left-radius-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-left-radius-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-left-radius-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-sync-radius-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "active-navigation-dot-icon-border-sync-radius-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-radius-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-radius-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-radius-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-radius-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-radius-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-radius-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-border-unit-radius-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-radius-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-radius-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-radius-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-radius-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-radius-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-top-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "active-navigation-dot-icon-border-top-width-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-width-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-width-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-width-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-width-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-top-width-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-right-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "active-navigation-dot-icon-border-right-width-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-right-width-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-right-width-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-right-width-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-right-width-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-right-width-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "active-navigation-dot-icon-border-bottom-width-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-width-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-width-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-width-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-width-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-bottom-width-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-left-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "active-navigation-dot-icon-border-left-width-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-left-width-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-left-width-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-left-width-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-left-width-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-left-width-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-border-sync-width-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "active-navigation-dot-icon-border-sync-width-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-width-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-width-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-width-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-width-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-sync-width-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-width-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-border-unit-width-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-width-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-width-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-width-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-width-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-border-unit-width-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "active-navigation-dot-icon-box-shadow-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-status-xl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-status-l": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-status-m": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-status-s": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-status-xs": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-box-shadow-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-color-general": {
+    "type": "number",
+    "default": 8
+  },
+  "active-navigation-dot-icon-box-shadow-palette-color-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-color-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-color-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-color-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-color-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-color-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-opacity-general": {
+    "type": "number",
+    "default": 1
+  },
+  "active-navigation-dot-icon-box-shadow-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-opacity-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-opacity-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-opacity-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-opacity-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-palette-opacity-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-color-general": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-color-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-color-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-color-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-color-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-color-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-color-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-inset-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-box-shadow-inset-xxl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-inset-xl": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-inset-l": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-inset-m": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-inset-s": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-inset-xs": {
+    "type": "boolean"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-general": {
+    "type": "number",
+    "default": 0
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-horizontal-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-general": {
+    "type": "number",
+    "default": 0
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-vertical-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-general": {
+    "type": "number",
+    "default": 0
+  },
+  "active-navigation-dot-icon-box-shadow-blur-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-blur-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-general": {
+    "type": "number",
+    "default": 0
+  },
+  "active-navigation-dot-icon-box-shadow-spread-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-unit-xxl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-unit-xl": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-unit-l": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-unit-m": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-unit-s": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-box-shadow-spread-unit-xs": {
+    "type": "string"
+  },
+  "active-navigation-dot-icon-status-border": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-status-background": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-status-shadow": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-navigation-dot-icon-spacing-horizontal-general": {
+    "type": "number",
+    "default": 50
+  },
+  "active-navigation-dot-icon-spacing-horizontal-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-horizontal-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-horizontal-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-horizontal-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-horizontal-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-horizontal-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-vertical-general": {
+    "type": "number",
+    "default": 85
+  },
+  "active-navigation-dot-icon-spacing-vertical-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-vertical-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-vertical-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-vertical-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-vertical-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-vertical-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-between-general": {
+    "type": "number",
+    "default": 3
+  },
+  "active-navigation-dot-icon-spacing-between-xxl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-between-xl": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-between-l": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-between-m": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-between-s": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-spacing-between-xs": {
+    "type": "number"
+  },
+  "active-navigation-dot-icon-status": {
+    "type": "boolean",
+    "default": true
+  }
+}

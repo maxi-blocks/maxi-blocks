@@ -1,0 +1,24 @@
+{
+  "typography-alignment-general": {
+    "type": "string",
+    "default": "left"
+  },
+  "typography-alignment-xxl": {
+    "type": "string"
+  },
+  "typography-alignment-xl": {
+    "type": "string"
+  },
+  "typography-alignment-l": {
+    "type": "string"
+  },
+  "typography-alignment-m": {
+    "type": "string"
+  },
+  "typography-alignment-s": {
+    "type": "string"
+  },
+  "typography-alignment-xs": {
+    "type": "string"
+  }
+}

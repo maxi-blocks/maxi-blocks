@@ -1,0 +1,9 @@
+{
+  "max-width-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "max-width": {
+    "type": "string"
+  }
+}

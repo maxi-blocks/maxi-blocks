@@ -1,0 +1,76 @@
+{
+  "background-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "background-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-palette-color": {
+    "type": "number",
+    "default": 1
+  },
+  "background-palette-opacity": {
+    "type": "number"
+  },
+  "background-color": {
+    "type": "string"
+  },
+  "background-color-clip-path": {
+    "type": "string",
+    "default": "none"
+  },
+  "background-color-clip-path-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-color-wrapper-position-top": {
+    "type": "string"
+  },
+  "background-color-wrapper-position-right": {
+    "type": "string"
+  },
+  "background-color-wrapper-position-bottom": {
+    "type": "string"
+  },
+  "background-color-wrapper-position-left": {
+    "type": "string"
+  },
+  "background-color-wrapper-position-sync": {
+    "type": "string",
+    "default": "all"
+  },
+  "background-color-wrapper-position-top-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-color-wrapper-position-right-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-color-wrapper-position-bottom-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-color-wrapper-position-left-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-color-wrapper-width": {
+    "type": "number",
+    "default": 100
+  },
+  "background-color-wrapper-width-unit": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-color-wrapper-height": {
+    "type": "number",
+    "default": 100
+  },
+  "background-color-wrapper-height-unit": {
+    "type": "string",
+    "default": "%"
+  }
+}

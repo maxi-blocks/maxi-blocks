@@ -1,0 +1,45 @@
+{
+  "min-width-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "min-width-unit-xxl": {
+    "type": "string"
+  },
+  "min-width-unit-xl": {
+    "type": "string"
+  },
+  "min-width-unit-l": {
+    "type": "string"
+  },
+  "min-width-unit-m": {
+    "type": "string"
+  },
+  "min-width-unit-s": {
+    "type": "string"
+  },
+  "min-width-unit-xs": {
+    "type": "string"
+  },
+  "min-width-general": {
+    "type": "string"
+  },
+  "min-width-xxl": {
+    "type": "string"
+  },
+  "min-width-xl": {
+    "type": "string"
+  },
+  "min-width-l": {
+    "type": "string"
+  },
+  "min-width-m": {
+    "type": "string"
+  },
+  "min-width-s": {
+    "type": "string"
+  },
+  "min-width-xs": {
+    "type": "string"
+  }
+}

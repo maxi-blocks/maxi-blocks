@@ -1,0 +1,126 @@
+{
+  "svg-fill-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "svg-fill-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "svg-fill-palette-color": {
+    "type": "number",
+    "default": 4
+  },
+  "svg-fill-palette-opacity": {
+    "type": "number"
+  },
+  "svg-fill-color": {
+    "type": "string"
+  },
+  "svg-line-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "svg-line-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "svg-line-palette-color": {
+    "type": "number",
+    "default": 7
+  },
+  "svg-line-palette-opacity": {
+    "type": "number"
+  },
+  "svg-line-color": {
+    "type": "string"
+  },
+  "svg-width-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "svg-width-unit-xxl": {
+    "type": "string"
+  },
+  "svg-width-unit-xl": {
+    "type": "string"
+  },
+  "svg-width-unit-l": {
+    "type": "string"
+  },
+  "svg-width-unit-m": {
+    "type": "string"
+  },
+  "svg-width-unit-s": {
+    "type": "string"
+  },
+  "svg-width-unit-xs": {
+    "type": "string"
+  },
+  "svg-width-general": {
+    "type": "string",
+    "default": "64"
+  },
+  "svg-width-xxl": {
+    "type": "string"
+  },
+  "svg-width-xl": {
+    "type": "string"
+  },
+  "svg-width-l": {
+    "type": "string"
+  },
+  "svg-width-m": {
+    "type": "string"
+  },
+  "svg-width-s": {
+    "type": "string"
+  },
+  "svg-width-xs": {
+    "type": "string"
+  },
+  "svg-width-fit-content-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "svg-width-fit-content-xxl": {
+    "type": "boolean"
+  },
+  "svg-width-fit-content-xl": {
+    "type": "boolean"
+  },
+  "svg-width-fit-content-l": {
+    "type": "boolean"
+  },
+  "svg-width-fit-content-m": {
+    "type": "boolean"
+  },
+  "svg-width-fit-content-s": {
+    "type": "boolean"
+  },
+  "svg-width-fit-content-xs": {
+    "type": "boolean"
+  },
+  "svg-stroke-general": {
+    "type": "number",
+    "default": 2
+  },
+  "svg-stroke-xxl": {
+    "type": "number"
+  },
+  "svg-stroke-xl": {
+    "type": "number"
+  },
+  "svg-stroke-l": {
+    "type": "number"
+  },
+  "svg-stroke-m": {
+    "type": "number"
+  },
+  "svg-stroke-s": {
+    "type": "number"
+  },
+  "svg-stroke-xs": {
+    "type": "number"
+  }
+}

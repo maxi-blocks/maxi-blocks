@@ -1,0 +1,28 @@
+{
+  "shape-fill-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "shape-fill-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "shape-fill-palette-color": {
+    "type": "number",
+    "default": 4
+  },
+  "shape-fill-palette-opacity": {
+    "type": "number"
+  },
+  "shape-fill-color": {
+    "type": "string"
+  },
+  "shape-width": {
+    "type": "number",
+    "default": 64
+  },
+  "shape-width-unit": {
+    "type": "string",
+    "default": "px"
+  }
+}

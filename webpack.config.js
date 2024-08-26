@@ -7,11 +7,10 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config');
  * External Dependencies
  */
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const { resolve } = require('path');
+const { resolve, relative } = require('path');
 const { sync: glob } = require('fast-glob');
 const Dotenv = require('dotenv-webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { exec } = require('child_process');
 const JsonMinimizerPlugin = require('json-minimizer-webpack-plugin');
 
 // Check if ANALYZE is set to true
@@ -39,33 +38,31 @@ glob(resolveNormalized(__dirname, 'js/*')).forEach(file => {
 	}
 });
 
-class GenerateBlocksJsonPlugin {
-	constructor() {
-		this.hasRun = false;
-	}
-
+class UpdateBlocksJsonWarningPlugin {
 	apply(compiler) {
-		compiler.hooks.done.tap('GenerateBlocksJsonPlugin', stats => {
-			if (!stats.hasErrors() && !this.hasRun) {
-				this.runScript(compiler);
-				this.hasRun = true;
-			}
-		});
-	}
+		compiler.hooks.watchRun.tap(
+			'UpdateBlocksJsonWarningPlugin',
+			compilation => {
+				const changedFiles = compilation.modifiedFiles || new Set();
 
-	runScript(compiler) {
-		exec('npm run update-blocks-json', (error, stdout, stderr) => {
-			if (error) {
-				console.error(`exec error: ${error}`);
-				console.error(`stderr: ${stderr}`);
-				// Exit the process with a non-zero status code
-				process.exit(1);
+				const shouldWarn = Array.from(changedFiles).some(file => {
+					const relativePath = relative(compiler.context, file);
+					return (
+						relativePath.includes('attributes.js') ||
+						relativePath.startsWith(
+							'src/extensions/styles/defaults'
+						)
+					);
+				});
+
+				if (shouldWarn) {
+					console.warn(
+						'\x1b[33m%s\x1b[0m',
+						"Warning: Changes detected in attributes.js or styles defaults. Don't forget to run npm run update-blocks-json"
+					);
+				}
 			}
-			console.log(`stdout: ${stdout}`);
-			if (stderr) {
-				console.error(`stderr: ${stderr}`);
-			}
-		});
+		);
 	}
 }
 
@@ -114,10 +111,10 @@ const blocksConfig = {
 	plugins: [
 		...defaultConfig.plugins,
 		new Dotenv(),
+		new UpdateBlocksJsonWarningPlugin(),
 		...(isAnalyze
 			? [new BundleAnalyzerPlugin({ analyzerPort: 'auto' })]
 			: []),
-		new GenerateBlocksJsonPlugin(),
 	],
 	watchOptions: {
 		ignored: /node_modules/,

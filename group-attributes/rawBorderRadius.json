@@ -1,0 +1,22 @@
+{
+  "border-top-left-radius": {
+    "type": "number"
+  },
+  "border-top-right-radius": {
+    "type": "number"
+  },
+  "border-bottom-right-radius": {
+    "type": "number"
+  },
+  "border-bottom-left-radius": {
+    "type": "number"
+  },
+  "border-sync-radius": {
+    "type": "string",
+    "default": "all"
+  },
+  "border-unit-radius": {
+    "type": "string",
+    "default": "px"
+  }
+}

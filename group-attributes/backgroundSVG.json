@@ -1,0 +1,456 @@
+{
+  "background-svg-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "background-svg-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "background-svg-palette-status-xl": {
+    "type": "boolean"
+  },
+  "background-svg-palette-status-l": {
+    "type": "boolean"
+  },
+  "background-svg-palette-status-m": {
+    "type": "boolean"
+  },
+  "background-svg-palette-status-s": {
+    "type": "boolean"
+  },
+  "background-svg-palette-status-xs": {
+    "type": "boolean"
+  },
+  "background-svg-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "background-svg-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "background-svg-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "background-svg-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "background-svg-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "background-svg-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "background-svg-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "background-svg-palette-color-general": {
+    "type": "number",
+    "default": 5
+  },
+  "background-svg-palette-color-xxl": {
+    "type": "number"
+  },
+  "background-svg-palette-color-xl": {
+    "type": "number"
+  },
+  "background-svg-palette-color-l": {
+    "type": "number"
+  },
+  "background-svg-palette-color-m": {
+    "type": "number"
+  },
+  "background-svg-palette-color-s": {
+    "type": "number"
+  },
+  "background-svg-palette-color-xs": {
+    "type": "number"
+  },
+  "background-svg-palette-opacity-general": {
+    "type": "number"
+  },
+  "background-svg-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "background-svg-palette-opacity-xl": {
+    "type": "number"
+  },
+  "background-svg-palette-opacity-l": {
+    "type": "number"
+  },
+  "background-svg-palette-opacity-m": {
+    "type": "number"
+  },
+  "background-svg-palette-opacity-s": {
+    "type": "number"
+  },
+  "background-svg-palette-opacity-xs": {
+    "type": "number"
+  },
+  "background-svg-color-general": {
+    "type": "string"
+  },
+  "background-svg-color-xxl": {
+    "type": "string"
+  },
+  "background-svg-color-xl": {
+    "type": "string"
+  },
+  "background-svg-color-l": {
+    "type": "string"
+  },
+  "background-svg-color-m": {
+    "type": "string"
+  },
+  "background-svg-color-s": {
+    "type": "string"
+  },
+  "background-svg-color-xs": {
+    "type": "string"
+  },
+  "background-svg-SVGElement-general": {
+    "type": "string"
+  },
+  "background-svg-SVGElement-xxl": {
+    "type": "string"
+  },
+  "background-svg-SVGElement-xl": {
+    "type": "string"
+  },
+  "background-svg-SVGElement-l": {
+    "type": "string"
+  },
+  "background-svg-SVGElement-m": {
+    "type": "string"
+  },
+  "background-svg-SVGElement-s": {
+    "type": "string"
+  },
+  "background-svg-SVGElement-xs": {
+    "type": "string"
+  },
+  "background-svg-SVGData-general": {
+    "type": "object"
+  },
+  "background-svg-SVGData-xxl": {
+    "type": "object"
+  },
+  "background-svg-SVGData-xl": {
+    "type": "object"
+  },
+  "background-svg-SVGData-l": {
+    "type": "object"
+  },
+  "background-svg-SVGData-m": {
+    "type": "object"
+  },
+  "background-svg-SVGData-s": {
+    "type": "object"
+  },
+  "background-svg-SVGData-xs": {
+    "type": "object"
+  },
+  "background-svg-top-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-svg-top-unit-xxl": {
+    "type": "string"
+  },
+  "background-svg-top-unit-xl": {
+    "type": "string"
+  },
+  "background-svg-top-unit-l": {
+    "type": "string"
+  },
+  "background-svg-top-unit-m": {
+    "type": "string"
+  },
+  "background-svg-top-unit-s": {
+    "type": "string"
+  },
+  "background-svg-top-unit-xs": {
+    "type": "string"
+  },
+  "background-svg-position-top-general": {
+    "type": "string"
+  },
+  "background-svg-position-top-xxl": {
+    "type": "string"
+  },
+  "background-svg-position-top-xl": {
+    "type": "string"
+  },
+  "background-svg-position-top-l": {
+    "type": "string"
+  },
+  "background-svg-position-top-m": {
+    "type": "string"
+  },
+  "background-svg-position-top-s": {
+    "type": "string"
+  },
+  "background-svg-position-top-xs": {
+    "type": "string"
+  },
+  "background-svg-position-right-general": {
+    "type": "string"
+  },
+  "background-svg-position-right-xxl": {
+    "type": "string"
+  },
+  "background-svg-position-right-xl": {
+    "type": "string"
+  },
+  "background-svg-position-right-l": {
+    "type": "string"
+  },
+  "background-svg-position-right-m": {
+    "type": "string"
+  },
+  "background-svg-position-right-s": {
+    "type": "string"
+  },
+  "background-svg-position-right-xs": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-general": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-xxl": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-xl": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-l": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-m": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-s": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-xs": {
+    "type": "string"
+  },
+  "background-svg-position-left-general": {
+    "type": "string"
+  },
+  "background-svg-position-left-xxl": {
+    "type": "string"
+  },
+  "background-svg-position-left-xl": {
+    "type": "string"
+  },
+  "background-svg-position-left-l": {
+    "type": "string"
+  },
+  "background-svg-position-left-m": {
+    "type": "string"
+  },
+  "background-svg-position-left-s": {
+    "type": "string"
+  },
+  "background-svg-position-left-xs": {
+    "type": "string"
+  },
+  "background-svg-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "background-svg-position-sync-xxl": {
+    "type": "string"
+  },
+  "background-svg-position-sync-xl": {
+    "type": "string"
+  },
+  "background-svg-position-sync-l": {
+    "type": "string"
+  },
+  "background-svg-position-sync-m": {
+    "type": "string"
+  },
+  "background-svg-position-sync-s": {
+    "type": "string"
+  },
+  "background-svg-position-sync-xs": {
+    "type": "string"
+  },
+  "background-svg-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-svg-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "background-svg-position-top-unit-xl": {
+    "type": "string"
+  },
+  "background-svg-position-top-unit-l": {
+    "type": "string"
+  },
+  "background-svg-position-top-unit-m": {
+    "type": "string"
+  },
+  "background-svg-position-top-unit-s": {
+    "type": "string"
+  },
+  "background-svg-position-top-unit-xs": {
+    "type": "string"
+  },
+  "background-svg-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-svg-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "background-svg-position-right-unit-xl": {
+    "type": "string"
+  },
+  "background-svg-position-right-unit-l": {
+    "type": "string"
+  },
+  "background-svg-position-right-unit-m": {
+    "type": "string"
+  },
+  "background-svg-position-right-unit-s": {
+    "type": "string"
+  },
+  "background-svg-position-right-unit-xs": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-svg-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "background-svg-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "background-svg-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "background-svg-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "background-svg-position-left-unit-xl": {
+    "type": "string"
+  },
+  "background-svg-position-left-unit-l": {
+    "type": "string"
+  },
+  "background-svg-position-left-unit-m": {
+    "type": "string"
+  },
+  "background-svg-position-left-unit-s": {
+    "type": "string"
+  },
+  "background-svg-position-left-unit-xs": {
+    "type": "string"
+  },
+  "background-svg-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "background-svg-width-xxl": {
+    "type": "number"
+  },
+  "background-svg-width-xl": {
+    "type": "number"
+  },
+  "background-svg-width-l": {
+    "type": "number"
+  },
+  "background-svg-width-m": {
+    "type": "number"
+  },
+  "background-svg-width-s": {
+    "type": "number"
+  },
+  "background-svg-width-xs": {
+    "type": "number"
+  },
+  "background-svg-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-svg-width-unit-xxl": {
+    "type": "string"
+  },
+  "background-svg-width-unit-xl": {
+    "type": "string"
+  },
+  "background-svg-width-unit-l": {
+    "type": "string"
+  },
+  "background-svg-width-unit-m": {
+    "type": "string"
+  },
+  "background-svg-width-unit-s": {
+    "type": "string"
+  },
+  "background-svg-width-unit-xs": {
+    "type": "string"
+  },
+  "background-svg-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "background-svg-height-xxl": {
+    "type": "number"
+  },
+  "background-svg-height-xl": {
+    "type": "number"
+  },
+  "background-svg-height-l": {
+    "type": "number"
+  },
+  "background-svg-height-m": {
+    "type": "number"
+  },
+  "background-svg-height-s": {
+    "type": "number"
+  },
+  "background-svg-height-xs": {
+    "type": "number"
+  },
+  "background-svg-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "background-svg-height-unit-xxl": {
+    "type": "string"
+  },
+  "background-svg-height-unit-xl": {
+    "type": "string"
+  },
+  "background-svg-height-unit-l": {
+    "type": "string"
+  },
+  "background-svg-height-unit-m": {
+    "type": "string"
+  },
+  "background-svg-height-unit-s": {
+    "type": "string"
+  },
+  "background-svg-height-unit-xs": {
+    "type": "string"
+  }
+}

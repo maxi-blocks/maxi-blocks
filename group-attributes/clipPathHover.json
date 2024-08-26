@@ -1,0 +1,48 @@
+{
+  "clip-path-general-hover": {
+    "type": "string"
+  },
+  "clip-path-xxl-hover": {
+    "type": "string"
+  },
+  "clip-path-xl-hover": {
+    "type": "string"
+  },
+  "clip-path-l-hover": {
+    "type": "string"
+  },
+  "clip-path-m-hover": {
+    "type": "string"
+  },
+  "clip-path-s-hover": {
+    "type": "string"
+  },
+  "clip-path-xs-hover": {
+    "type": "string"
+  },
+  "clip-path-status-general-hover": {
+    "type": "boolean",
+    "default": false
+  },
+  "clip-path-status-xxl-hover": {
+    "type": "boolean"
+  },
+  "clip-path-status-xl-hover": {
+    "type": "boolean"
+  },
+  "clip-path-status-l-hover": {
+    "type": "boolean"
+  },
+  "clip-path-status-m-hover": {
+    "type": "boolean"
+  },
+  "clip-path-status-s-hover": {
+    "type": "boolean"
+  },
+  "clip-path-status-xs-hover": {
+    "type": "boolean"
+  },
+  "clip-path-status-hover-hover": {
+    "type": "boolean"
+  }
+}

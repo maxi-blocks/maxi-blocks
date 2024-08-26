@@ -1,0 +1,12 @@
+{
+  "background-layers": {
+    "type": "array"
+  },
+  "background-layers-hover": {
+    "type": "array"
+  },
+  "block-background-status-hover": {
+    "type": "boolean",
+    "default": false
+  }
+}

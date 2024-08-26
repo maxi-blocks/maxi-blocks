@@ -1,0 +1,542 @@
+{
+  "active-background-video-mediaID-general": {
+    "type": "number"
+  },
+  "active-background-video-mediaID-xxl": {
+    "type": "number"
+  },
+  "active-background-video-mediaID-xl": {
+    "type": "number"
+  },
+  "active-background-video-mediaID-l": {
+    "type": "number"
+  },
+  "active-background-video-mediaID-m": {
+    "type": "number"
+  },
+  "active-background-video-mediaID-s": {
+    "type": "number"
+  },
+  "active-background-video-mediaID-xs": {
+    "type": "number"
+  },
+  "active-background-video-mediaURL-general": {
+    "type": "string",
+    "default": "https://www.youtube.com/watch?v=ScMzIvxBSi4"
+  },
+  "active-background-video-mediaURL-xxl": {
+    "type": "string"
+  },
+  "active-background-video-mediaURL-xl": {
+    "type": "string"
+  },
+  "active-background-video-mediaURL-l": {
+    "type": "string"
+  },
+  "active-background-video-mediaURL-m": {
+    "type": "string"
+  },
+  "active-background-video-mediaURL-s": {
+    "type": "string"
+  },
+  "active-background-video-mediaURL-xs": {
+    "type": "string"
+  },
+  "active-background-video-startTime-general": {
+    "type": "string"
+  },
+  "active-background-video-startTime-xxl": {
+    "type": "string"
+  },
+  "active-background-video-startTime-xl": {
+    "type": "string"
+  },
+  "active-background-video-startTime-l": {
+    "type": "string"
+  },
+  "active-background-video-startTime-m": {
+    "type": "string"
+  },
+  "active-background-video-startTime-s": {
+    "type": "string"
+  },
+  "active-background-video-startTime-xs": {
+    "type": "string"
+  },
+  "active-background-video-endTime-general": {
+    "type": "string"
+  },
+  "active-background-video-endTime-xxl": {
+    "type": "string"
+  },
+  "active-background-video-endTime-xl": {
+    "type": "string"
+  },
+  "active-background-video-endTime-l": {
+    "type": "string"
+  },
+  "active-background-video-endTime-m": {
+    "type": "string"
+  },
+  "active-background-video-endTime-s": {
+    "type": "string"
+  },
+  "active-background-video-endTime-xs": {
+    "type": "string"
+  },
+  "active-background-video-loop-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-background-video-loop-xxl": {
+    "type": "boolean"
+  },
+  "active-background-video-loop-xl": {
+    "type": "boolean"
+  },
+  "active-background-video-loop-l": {
+    "type": "boolean"
+  },
+  "active-background-video-loop-m": {
+    "type": "boolean"
+  },
+  "active-background-video-loop-s": {
+    "type": "boolean"
+  },
+  "active-background-video-loop-xs": {
+    "type": "boolean"
+  },
+  "active-background-video-clip-path-general": {
+    "type": "string"
+  },
+  "active-background-video-clip-path-xxl": {
+    "type": "string"
+  },
+  "active-background-video-clip-path-xl": {
+    "type": "string"
+  },
+  "active-background-video-clip-path-l": {
+    "type": "string"
+  },
+  "active-background-video-clip-path-m": {
+    "type": "string"
+  },
+  "active-background-video-clip-path-s": {
+    "type": "string"
+  },
+  "active-background-video-clip-path-xs": {
+    "type": "string"
+  },
+  "active-background-video-clip-path-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-background-video-clip-path-status-xxl": {
+    "type": "boolean"
+  },
+  "active-background-video-clip-path-status-xl": {
+    "type": "boolean"
+  },
+  "active-background-video-clip-path-status-l": {
+    "type": "boolean"
+  },
+  "active-background-video-clip-path-status-m": {
+    "type": "boolean"
+  },
+  "active-background-video-clip-path-status-s": {
+    "type": "boolean"
+  },
+  "active-background-video-clip-path-status-xs": {
+    "type": "boolean"
+  },
+  "active-background-video-fallbackID-general": {
+    "type": "number"
+  },
+  "active-background-video-fallbackID-xxl": {
+    "type": "number"
+  },
+  "active-background-video-fallbackID-xl": {
+    "type": "number"
+  },
+  "active-background-video-fallbackID-l": {
+    "type": "number"
+  },
+  "active-background-video-fallbackID-m": {
+    "type": "number"
+  },
+  "active-background-video-fallbackID-s": {
+    "type": "number"
+  },
+  "active-background-video-fallbackID-xs": {
+    "type": "number"
+  },
+  "active-background-video-fallbackURL-general": {
+    "type": "string"
+  },
+  "active-background-video-fallbackURL-xxl": {
+    "type": "string"
+  },
+  "active-background-video-fallbackURL-xl": {
+    "type": "string"
+  },
+  "active-background-video-fallbackURL-l": {
+    "type": "string"
+  },
+  "active-background-video-fallbackURL-m": {
+    "type": "string"
+  },
+  "active-background-video-fallbackURL-s": {
+    "type": "string"
+  },
+  "active-background-video-fallbackURL-xs": {
+    "type": "string"
+  },
+  "active-background-video-playOnMobile-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-background-video-playOnMobile-xxl": {
+    "type": "boolean"
+  },
+  "active-background-video-playOnMobile-xl": {
+    "type": "boolean"
+  },
+  "active-background-video-playOnMobile-l": {
+    "type": "boolean"
+  },
+  "active-background-video-playOnMobile-m": {
+    "type": "boolean"
+  },
+  "active-background-video-playOnMobile-s": {
+    "type": "boolean"
+  },
+  "active-background-video-playOnMobile-xs": {
+    "type": "boolean"
+  },
+  "active-background-video-opacity-general": {
+    "type": "number",
+    "default": 1
+  },
+  "active-background-video-opacity-xxl": {
+    "type": "number"
+  },
+  "active-background-video-opacity-xl": {
+    "type": "number"
+  },
+  "active-background-video-opacity-l": {
+    "type": "number"
+  },
+  "active-background-video-opacity-m": {
+    "type": "number"
+  },
+  "active-background-video-opacity-s": {
+    "type": "number"
+  },
+  "active-background-video-opacity-xs": {
+    "type": "number"
+  },
+  "active-background-video-reduce-border-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "active-background-video-reduce-border-xxl": {
+    "type": "boolean"
+  },
+  "active-background-video-reduce-border-xl": {
+    "type": "boolean"
+  },
+  "active-background-video-reduce-border-l": {
+    "type": "boolean"
+  },
+  "active-background-video-reduce-border-m": {
+    "type": "boolean"
+  },
+  "active-background-video-reduce-border-s": {
+    "type": "boolean"
+  },
+  "active-background-video-reduce-border-xs": {
+    "type": "boolean"
+  },
+  "active-background-video-wrapper-position-top-general": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-general": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-general": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-general": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "active-background-video-wrapper-position-sync-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-sync-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-sync-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-sync-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-sync-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-sync-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-background-video-wrapper-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-unit-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-unit-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-unit-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-unit-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-top-unit-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-background-video-wrapper-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-unit-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-unit-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-unit-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-unit-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-right-unit-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-background-video-wrapper-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "active-background-video-wrapper-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-unit-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-unit-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-unit-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-unit-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-position-left-unit-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "active-background-video-wrapper-width-xxl": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-width-xl": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-width-l": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-width-m": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-width-s": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-width-xs": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "active-background-video-wrapper-width-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-width-unit-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-width-unit-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-width-unit-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-width-unit-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-width-unit-xs": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "active-background-video-wrapper-height-xxl": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-height-xl": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-height-l": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-height-m": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-height-s": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-height-xs": {
+    "type": "number"
+  },
+  "active-background-video-wrapper-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "active-background-video-wrapper-height-unit-xxl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-height-unit-xl": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-height-unit-l": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-height-unit-m": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-height-unit-s": {
+    "type": "string"
+  },
+  "active-background-video-wrapper-height-unit-xs": {
+    "type": "string"
+  }
+}

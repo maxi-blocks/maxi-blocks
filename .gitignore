@@ -17,7 +17,6 @@ build
 js/min
 vendor
 .phpunit.result.cache
-group-attributes
 
 # Ignore Mac DS_Store files
 **/.DS_Store

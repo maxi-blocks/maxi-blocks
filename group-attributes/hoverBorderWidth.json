@@ -1,0 +1,134 @@
+{
+  "hover-border-top-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "hover-border-top-width-xxl": {
+    "type": "number"
+  },
+  "hover-border-top-width-xl": {
+    "type": "number"
+  },
+  "hover-border-top-width-l": {
+    "type": "number"
+  },
+  "hover-border-top-width-m": {
+    "type": "number"
+  },
+  "hover-border-top-width-s": {
+    "type": "number"
+  },
+  "hover-border-top-width-xs": {
+    "type": "number"
+  },
+  "hover-border-right-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "hover-border-right-width-xxl": {
+    "type": "number"
+  },
+  "hover-border-right-width-xl": {
+    "type": "number"
+  },
+  "hover-border-right-width-l": {
+    "type": "number"
+  },
+  "hover-border-right-width-m": {
+    "type": "number"
+  },
+  "hover-border-right-width-s": {
+    "type": "number"
+  },
+  "hover-border-right-width-xs": {
+    "type": "number"
+  },
+  "hover-border-bottom-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "hover-border-bottom-width-xxl": {
+    "type": "number"
+  },
+  "hover-border-bottom-width-xl": {
+    "type": "number"
+  },
+  "hover-border-bottom-width-l": {
+    "type": "number"
+  },
+  "hover-border-bottom-width-m": {
+    "type": "number"
+  },
+  "hover-border-bottom-width-s": {
+    "type": "number"
+  },
+  "hover-border-bottom-width-xs": {
+    "type": "number"
+  },
+  "hover-border-left-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "hover-border-left-width-xxl": {
+    "type": "number"
+  },
+  "hover-border-left-width-xl": {
+    "type": "number"
+  },
+  "hover-border-left-width-l": {
+    "type": "number"
+  },
+  "hover-border-left-width-m": {
+    "type": "number"
+  },
+  "hover-border-left-width-s": {
+    "type": "number"
+  },
+  "hover-border-left-width-xs": {
+    "type": "number"
+  },
+  "hover-border-sync-width-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "hover-border-sync-width-xxl": {
+    "type": "string"
+  },
+  "hover-border-sync-width-xl": {
+    "type": "string"
+  },
+  "hover-border-sync-width-l": {
+    "type": "string"
+  },
+  "hover-border-sync-width-m": {
+    "type": "string"
+  },
+  "hover-border-sync-width-s": {
+    "type": "string"
+  },
+  "hover-border-sync-width-xs": {
+    "type": "string"
+  },
+  "hover-border-unit-width-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "hover-border-unit-width-xxl": {
+    "type": "string"
+  },
+  "hover-border-unit-width-xl": {
+    "type": "string"
+  },
+  "hover-border-unit-width-l": {
+    "type": "string"
+  },
+  "hover-border-unit-width-m": {
+    "type": "string"
+  },
+  "hover-border-unit-width-s": {
+    "type": "string"
+  },
+  "hover-border-unit-width-xs": {
+    "type": "string"
+  }
+}

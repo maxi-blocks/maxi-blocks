@@ -1,0 +1,381 @@
+{
+  "divider-border-top-width-general-hover": {
+    "type": "number"
+  },
+  "divider-border-top-width-xxl-hover": {
+    "type": "number"
+  },
+  "divider-border-top-width-xl-hover": {
+    "type": "number"
+  },
+  "divider-border-top-width-l-hover": {
+    "type": "number"
+  },
+  "divider-border-top-width-m-hover": {
+    "type": "number"
+  },
+  "divider-border-top-width-s-hover": {
+    "type": "number"
+  },
+  "divider-border-top-width-xs-hover": {
+    "type": "number"
+  },
+  "divider-border-top-unit-general-hover": {
+    "type": "string"
+  },
+  "divider-border-top-unit-xxl-hover": {
+    "type": "string"
+  },
+  "divider-border-top-unit-xl-hover": {
+    "type": "string"
+  },
+  "divider-border-top-unit-l-hover": {
+    "type": "string"
+  },
+  "divider-border-top-unit-m-hover": {
+    "type": "string"
+  },
+  "divider-border-top-unit-s-hover": {
+    "type": "string"
+  },
+  "divider-border-top-unit-xs-hover": {
+    "type": "string"
+  },
+  "divider-border-right-width-general-hover": {
+    "type": "number"
+  },
+  "divider-border-right-width-xxl-hover": {
+    "type": "number"
+  },
+  "divider-border-right-width-xl-hover": {
+    "type": "number"
+  },
+  "divider-border-right-width-l-hover": {
+    "type": "number"
+  },
+  "divider-border-right-width-m-hover": {
+    "type": "number"
+  },
+  "divider-border-right-width-s-hover": {
+    "type": "number"
+  },
+  "divider-border-right-width-xs-hover": {
+    "type": "number"
+  },
+  "divider-border-right-unit-general-hover": {
+    "type": "string"
+  },
+  "divider-border-right-unit-xxl-hover": {
+    "type": "string"
+  },
+  "divider-border-right-unit-xl-hover": {
+    "type": "string"
+  },
+  "divider-border-right-unit-l-hover": {
+    "type": "string"
+  },
+  "divider-border-right-unit-m-hover": {
+    "type": "string"
+  },
+  "divider-border-right-unit-s-hover": {
+    "type": "string"
+  },
+  "divider-border-right-unit-xs-hover": {
+    "type": "string"
+  },
+  "divider-border-radius-general-hover": {
+    "type": "boolean"
+  },
+  "divider-border-radius-xxl-hover": {
+    "type": "boolean"
+  },
+  "divider-border-radius-xl-hover": {
+    "type": "boolean"
+  },
+  "divider-border-radius-l-hover": {
+    "type": "boolean"
+  },
+  "divider-border-radius-m-hover": {
+    "type": "boolean"
+  },
+  "divider-border-radius-s-hover": {
+    "type": "boolean"
+  },
+  "divider-border-radius-xs-hover": {
+    "type": "boolean"
+  },
+  "divider-width-general-hover": {
+    "type": "number"
+  },
+  "divider-width-xxl-hover": {
+    "type": "number"
+  },
+  "divider-width-xl-hover": {
+    "type": "number"
+  },
+  "divider-width-l-hover": {
+    "type": "number"
+  },
+  "divider-width-m-hover": {
+    "type": "number"
+  },
+  "divider-width-s-hover": {
+    "type": "number"
+  },
+  "divider-width-xs-hover": {
+    "type": "number"
+  },
+  "divider-width-unit-general-hover": {
+    "type": "string"
+  },
+  "divider-width-unit-xxl-hover": {
+    "type": "string"
+  },
+  "divider-width-unit-xl-hover": {
+    "type": "string"
+  },
+  "divider-width-unit-l-hover": {
+    "type": "string"
+  },
+  "divider-width-unit-m-hover": {
+    "type": "string"
+  },
+  "divider-width-unit-s-hover": {
+    "type": "string"
+  },
+  "divider-width-unit-xs-hover": {
+    "type": "string"
+  },
+  "divider-height-general-hover": {
+    "type": "number"
+  },
+  "divider-height-xxl-hover": {
+    "type": "number"
+  },
+  "divider-height-xl-hover": {
+    "type": "number"
+  },
+  "divider-height-l-hover": {
+    "type": "number"
+  },
+  "divider-height-m-hover": {
+    "type": "number"
+  },
+  "divider-height-s-hover": {
+    "type": "number"
+  },
+  "divider-height-xs-hover": {
+    "type": "number"
+  },
+  "line-align-general-hover": {
+    "type": "string"
+  },
+  "line-align-xxl-hover": {
+    "type": "string"
+  },
+  "line-align-xl-hover": {
+    "type": "string"
+  },
+  "line-align-l-hover": {
+    "type": "string"
+  },
+  "line-align-m-hover": {
+    "type": "string"
+  },
+  "line-align-s-hover": {
+    "type": "string"
+  },
+  "line-align-xs-hover": {
+    "type": "string"
+  },
+  "line-vertical-general-hover": {
+    "type": "string"
+  },
+  "line-vertical-xxl-hover": {
+    "type": "string"
+  },
+  "line-vertical-xl-hover": {
+    "type": "string"
+  },
+  "line-vertical-l-hover": {
+    "type": "string"
+  },
+  "line-vertical-m-hover": {
+    "type": "string"
+  },
+  "line-vertical-s-hover": {
+    "type": "string"
+  },
+  "line-vertical-xs-hover": {
+    "type": "string"
+  },
+  "line-horizontal-general-hover": {
+    "type": "string"
+  },
+  "line-horizontal-xxl-hover": {
+    "type": "string"
+  },
+  "line-horizontal-xl-hover": {
+    "type": "string"
+  },
+  "line-horizontal-l-hover": {
+    "type": "string"
+  },
+  "line-horizontal-m-hover": {
+    "type": "string"
+  },
+  "line-horizontal-s-hover": {
+    "type": "string"
+  },
+  "line-horizontal-xs-hover": {
+    "type": "string"
+  },
+  "line-orientation-general-hover": {
+    "type": "string"
+  },
+  "line-orientation-xxl-hover": {
+    "type": "string"
+  },
+  "line-orientation-xl-hover": {
+    "type": "string"
+  },
+  "line-orientation-l-hover": {
+    "type": "string"
+  },
+  "line-orientation-m-hover": {
+    "type": "string"
+  },
+  "line-orientation-s-hover": {
+    "type": "string"
+  },
+  "line-orientation-xs-hover": {
+    "type": "string"
+  },
+  "divider-border-palette-status-general-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-status-xxl-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-status-xl-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-status-l-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-status-m-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-status-s-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-status-xs-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-sc-status-general-hover": {
+    "type": "boolean",
+    "default": false
+  },
+  "divider-border-palette-sc-status-xxl-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-sc-status-xl-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-sc-status-l-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-sc-status-m-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-sc-status-s-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-sc-status-xs-hover": {
+    "type": "boolean"
+  },
+  "divider-border-palette-color-general-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-color-xxl-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-color-xl-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-color-l-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-color-m-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-color-s-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-color-xs-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-opacity-general-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-opacity-xxl-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-opacity-xl-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-opacity-l-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-opacity-m-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-opacity-s-hover": {
+    "type": "number"
+  },
+  "divider-border-palette-opacity-xs-hover": {
+    "type": "number"
+  },
+  "divider-border-color-general-hover": {
+    "type": "string"
+  },
+  "divider-border-color-xxl-hover": {
+    "type": "string"
+  },
+  "divider-border-color-xl-hover": {
+    "type": "string"
+  },
+  "divider-border-color-l-hover": {
+    "type": "string"
+  },
+  "divider-border-color-m-hover": {
+    "type": "string"
+  },
+  "divider-border-color-s-hover": {
+    "type": "string"
+  },
+  "divider-border-color-xs-hover": {
+    "type": "string"
+  },
+  "divider-border-style-general-hover": {
+    "type": "string"
+  },
+  "divider-border-style-xxl-hover": {
+    "type": "string"
+  },
+  "divider-border-style-xl-hover": {
+    "type": "string"
+  },
+  "divider-border-style-l-hover": {
+    "type": "string"
+  },
+  "divider-border-style-m-hover": {
+    "type": "string"
+  },
+  "divider-border-style-s-hover": {
+    "type": "string"
+  },
+  "divider-border-style-xs-hover": {
+    "type": "string"
+  }
+}

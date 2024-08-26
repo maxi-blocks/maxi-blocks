@@ -1,0 +1,1894 @@
+{
+  "navigation-arrow-both-svgType": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-stroke-general": {
+    "type": "number",
+    "default": 2
+  },
+  "navigation-arrow-both-icon-stroke-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-stroke-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-stroke-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-stroke-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-stroke-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-stroke-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-width-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-width-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-general": {
+    "type": "string",
+    "default": "20"
+  },
+  "navigation-arrow-both-icon-width-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-width-fit-content-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-both-icon-width-fit-content-xxl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-width-fit-content-xl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-width-fit-content-l": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-width-fit-content-m": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-width-fit-content-s": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-width-fit-content-xs": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-height-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-height-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-general": {
+    "type": "string",
+    "default": "32"
+  },
+  "navigation-arrow-both-icon-height-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-height-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-force-aspect-ratio-general": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-force-aspect-ratio-xxl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-force-aspect-ratio-xl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-force-aspect-ratio-l": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-force-aspect-ratio-m": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-force-aspect-ratio-s": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-force-aspect-ratio-xs": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-stroke-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "navigation-arrow-both-icon-stroke-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-both-icon-stroke-palette-color": {
+    "type": "number",
+    "default": 5
+  },
+  "navigation-arrow-both-icon-stroke-palette-opacity": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-stroke-color": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-fill-palette-status": {
+    "type": "boolean",
+    "default": true
+  },
+  "navigation-arrow-both-icon-fill-palette-sc-status": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-both-icon-fill-palette-color": {
+    "type": "number",
+    "default": 4
+  },
+  "navigation-arrow-both-icon-fill-palette-opacity": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-fill-color": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-padding-top-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-top-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-padding-right-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-right-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-padding-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-bottom-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-padding-left-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-left-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "navigation-arrow-both-icon-padding-sync-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-sync-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-sync-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-sync-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-sync-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-padding-sync-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-active-media-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "navigation-arrow-both-icon-background-active-media-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-active-media-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-active-media-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-active-media-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-active-media-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-active-media-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "navigation-arrow-both-icon-background-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-status-xl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-status-l": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-status-m": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-status-s": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-status-xs": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-both-icon-background-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-background-palette-color-general": {
+    "type": "number",
+    "default": 1
+  },
+  "navigation-arrow-both-icon-background-palette-color-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-color-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-color-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-color-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-color-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-color-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-opacity-general": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-opacity-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-opacity-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-opacity-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-opacity-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-palette-opacity-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-sync-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-sync-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-sync-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-sync-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-sync-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-sync-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-top-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-right-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-position-left-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-width-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-color-wrapper-height-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-opacity-general": {
+    "type": "number",
+    "default": 1
+  },
+  "navigation-arrow-both-icon-background-gradient-opacity-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-opacity-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-opacity-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-opacity-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-opacity-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-opacity-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-sync-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-sync-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-sync-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-sync-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-sync-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-sync-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-top-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-right-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-position-left-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-width-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-background-gradient-wrapper-height-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "navigation-arrow-both-icon-border-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-status-xl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-status-l": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-status-m": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-status-s": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-status-xs": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-both-icon-border-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-border-palette-color-general": {
+    "type": "number",
+    "default": 2
+  },
+  "navigation-arrow-both-icon-border-palette-color-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-color-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-color-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-color-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-color-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-color-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-opacity-general": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-opacity-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-opacity-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-opacity-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-opacity-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-palette-opacity-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-color-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-color-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-color-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-color-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-color-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-color-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-color-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-style-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "navigation-arrow-both-icon-border-style-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-style-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-style-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-style-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-style-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-style-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-top-left-radius-general": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-left-radius-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-left-radius-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-left-radius-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-left-radius-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-left-radius-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-left-radius-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-right-radius-general": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-right-radius-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-right-radius-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-right-radius-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-right-radius-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-right-radius-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-right-radius-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-right-radius-general": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-right-radius-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-right-radius-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-right-radius-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-right-radius-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-right-radius-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-right-radius-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-left-radius-general": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-left-radius-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-left-radius-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-left-radius-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-left-radius-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-left-radius-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-left-radius-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-sync-radius-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "navigation-arrow-both-icon-border-sync-radius-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-radius-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-radius-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-radius-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-radius-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-radius-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-radius-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-border-unit-radius-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-radius-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-radius-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-radius-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-radius-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-radius-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-top-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "navigation-arrow-both-icon-border-top-width-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-width-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-width-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-width-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-width-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-top-width-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-right-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "navigation-arrow-both-icon-border-right-width-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-right-width-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-right-width-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-right-width-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-right-width-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-right-width-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "navigation-arrow-both-icon-border-bottom-width-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-width-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-width-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-width-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-width-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-bottom-width-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-left-width-general": {
+    "type": "number",
+    "default": 2
+  },
+  "navigation-arrow-both-icon-border-left-width-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-left-width-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-left-width-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-left-width-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-left-width-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-left-width-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-border-sync-width-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "navigation-arrow-both-icon-border-sync-width-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-width-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-width-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-width-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-width-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-sync-width-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-width-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-border-unit-width-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-width-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-width-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-width-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-width-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-border-unit-width-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-status-xl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-status-l": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-status-m": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-status-s": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-status-xs": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-color-general": {
+    "type": "number",
+    "default": 8
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-color-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-color-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-color-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-color-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-color-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-color-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-opacity-general": {
+    "type": "number",
+    "default": 1
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-opacity-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-opacity-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-opacity-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-opacity-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-palette-opacity-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-color-general": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-color-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-color-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-color-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-color-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-color-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-color-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-inset-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-both-icon-box-shadow-inset-xxl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-inset-xl": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-inset-l": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-inset-m": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-inset-s": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-inset-xs": {
+    "type": "boolean"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-general": {
+    "type": "number",
+    "default": 0
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-horizontal-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-general": {
+    "type": "number",
+    "default": 0
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-vertical-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-general": {
+    "type": "number",
+    "default": 0
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-blur-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-general": {
+    "type": "number",
+    "default": 0
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-unit-xxl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-unit-xl": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-unit-l": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-unit-m": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-unit-s": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-box-shadow-spread-unit-xs": {
+    "type": "string"
+  },
+  "navigation-arrow-both-icon-status-background": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-both-icon-status-border": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-both-icon-status-shadow": {
+    "type": "boolean",
+    "default": false
+  },
+  "navigation-arrow-first-icon-content": {
+    "type": "string",
+    "default": "<svg class=\"arrow-left-line-maxi-svg\" width=\"64px\" height=\"64px\" viewBox=\"0 0 24 24\" fill=\"none\" data-stroke stroke=\"#081219\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\"><path d=\"M8.85 19l-7-7 7-7m-7 7h20.3\"/></svg>"
+  },
+  "navigation-arrow-second-icon-content": {
+    "type": "string",
+    "default": "<svg class=\"arrow-right-line-maxi-svg\" width=\"64px\" height=\"64px\" viewBox=\"0 0 24 24\" fill=\"none\" data-stroke stroke=\"#081219\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\"><path d=\"M15.15 5l7 7-7 7m7-7H1.85\"/></svg>"
+  },
+  "navigation-arrow-both-icon-spacing-horizontal-general": {
+    "type": "number",
+    "default": -40
+  },
+  "navigation-arrow-both-icon-spacing-horizontal-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-horizontal-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-horizontal-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-horizontal-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-horizontal-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-horizontal-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-vertical-general": {
+    "type": "number",
+    "default": 50
+  },
+  "navigation-arrow-both-icon-spacing-vertical-xxl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-vertical-xl": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-vertical-l": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-vertical-m": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-vertical-s": {
+    "type": "number"
+  },
+  "navigation-arrow-both-icon-spacing-vertical-xs": {
+    "type": "number"
+  },
+  "navigation-arrow-first-svgType": {
+    "type": "string",
+    "default": "Line"
+  },
+  "navigation-arrow-second-svgType": {
+    "type": "string",
+    "default": "Line"
+  }
+}

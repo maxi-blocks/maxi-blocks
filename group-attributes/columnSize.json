@@ -1,0 +1,45 @@
+{
+  "column-size-general": {
+    "type": "number",
+    "default": 90
+  },
+  "column-size-xxl": {
+    "type": "number"
+  },
+  "column-size-xl": {
+    "type": "number"
+  },
+  "column-size-l": {
+    "type": "number"
+  },
+  "column-size-m": {
+    "type": "number"
+  },
+  "column-size-s": {
+    "type": "number"
+  },
+  "column-size-xs": {
+    "type": "number"
+  },
+  "column-fit-content-general": {
+    "type": "boolean"
+  },
+  "column-fit-content-xxl": {
+    "type": "boolean"
+  },
+  "column-fit-content-xl": {
+    "type": "boolean"
+  },
+  "column-fit-content-l": {
+    "type": "boolean"
+  },
+  "column-fit-content-m": {
+    "type": "boolean"
+  },
+  "column-fit-content-s": {
+    "type": "boolean"
+  },
+  "column-fit-content-xs": {
+    "type": "boolean"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "width-unit": {
+    "type": "string",
+    "default": "px"
+  },
+  "width": {
+    "type": "string"
+  },
+  "width-fit-content": {
+    "type": "boolean",
+    "default": false
+  }
+}

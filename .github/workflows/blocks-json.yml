@@ -1,0 +1,47 @@
+name: Check Blocks JSON
+
+on:
+    pull_request:
+        branches: [master]
+
+jobs:
+    check-blocks-json:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  fetch-depth: 2
+            - name: Cache node modules
+              uses: actions/cache@v2
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-v1.3-
+                      ${{ runner.os }}-
+              env:
+                  cache-name: cache-node-modules
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 16.x
+            - name: Install dependencies
+              run: npm install --legacy-peer-deps
+            - name: reset package-lock.json
+              run: git checkout package-lock.json
+            - name: Install WordPress
+              run: |
+                  chmod -R 767 ./
+                  npm run wp-env start
+            - name: Run update-blocks-json
+              run: npm run update-blocks-json
+            - name: Check for changes
+              run: |
+                  if [[ `git status --porcelain` ]]; then
+                    echo "Changes detected after running update-blocks-json"
+                    git status
+                    exit 1
+                  else
+                    echo "No changes detected after running update-blocks-json"
+                  fi

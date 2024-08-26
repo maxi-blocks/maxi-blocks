@@ -1,0 +1,40 @@
+{
+  "svg-fill-palette-status-hover": {
+    "type": "boolean",
+    "default": true
+  },
+  "svg-fill-palette-sc-status-hover": {
+    "type": "boolean"
+  },
+  "svg-fill-palette-color-hover": {
+    "type": "number",
+    "default": 6
+  },
+  "svg-fill-palette-opacity-hover": {
+    "type": "number"
+  },
+  "svg-fill-color-hover": {
+    "type": "string"
+  },
+  "svg-line-palette-status-hover": {
+    "type": "boolean",
+    "default": true
+  },
+  "svg-line-palette-sc-status-hover": {
+    "type": "boolean"
+  },
+  "svg-line-palette-color-hover": {
+    "type": "number",
+    "default": 8
+  },
+  "svg-line-palette-opacity-hover": {
+    "type": "number"
+  },
+  "svg-line-color-hover": {
+    "type": "string"
+  },
+  "svg-status-hover": {
+    "type": "boolean",
+    "default": false
+  }
+}

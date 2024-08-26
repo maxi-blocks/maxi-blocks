@@ -11,6 +11,17 @@ jobs:
             - uses: actions/checkout@v2
               with:
                   fetch-depth: 2
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.0'
+            - name: Cache Composer packages
+              uses: actions/cache@v3
+              with:
+                  path: ~/.composer/cache
+                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-
             - name: Cache node modules
               uses: actions/cache@v2
               with:
@@ -26,6 +37,8 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: 16.x
+            - name: Install Composer dependencies
+              run: composer install --prefer-dist --no-progress
             - name: Install dependencies
               run: npm install --legacy-peer-deps
             - name: reset package-lock.json

@@ -356,6 +356,7 @@ class Get_Typography_Styles_Test extends WP_UnitTestCase
             'obj' => $obj,
             'block_style' => 'light',
             'disable_palette_defaults' => true,
+            'block_name' => 'text-maxi',
         ]);
 
         $this->assertMatchesJsonSnapshot(json_encode($result));
@@ -379,6 +380,7 @@ class Get_Typography_Styles_Test extends WP_UnitTestCase
             'obj' => $obj,
             'block_style' => 'light',
             'disable_palette_defaults' => true,
+            'block_name' => 'text-maxi',
         ]);
 
         $this->assertMatchesJsonSnapshot(json_encode($result));
@@ -403,6 +405,7 @@ class Get_Typography_Styles_Test extends WP_UnitTestCase
             'obj' => $obj,
             'block_style' => 'light',
             'disable_palette_defaults' => true,
+            'block_name' => 'text-maxi',
         ]);
 
         $this->assertMatchesJsonSnapshot(json_encode($result));
@@ -428,6 +431,7 @@ class Get_Typography_Styles_Test extends WP_UnitTestCase
             'obj' => $obj,
             'block_style' => 'light',
             'disable_palette_defaults' => true,
+            'block_name' => 'text-maxi',
         ]);
 
         $this->assertMatchesJsonSnapshot(json_encode($result));
@@ -453,6 +457,7 @@ class Get_Typography_Styles_Test extends WP_UnitTestCase
             'obj' => $obj,
             'block_style' => 'light',
             'disable_palette_defaults' => true,
+            'block_name' => 'text-maxi',
         ]);
 
         $this->assertMatchesJsonSnapshot(json_encode($result));
@@ -480,6 +485,7 @@ class Get_Typography_Styles_Test extends WP_UnitTestCase
             'obj' => $obj,
             'block_style' => 'light',
             'disable_palette_defaults' => true,
+            'block_name' => 'text-maxi',
         ]);
 
         $this->assertMatchesJsonSnapshot(json_encode($result));

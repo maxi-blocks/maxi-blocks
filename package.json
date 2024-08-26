@@ -17,6 +17,7 @@
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose",
 		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive",
 		"test:php": "wp-env start && wp-env run tests-cli --env-cwd=wp-content/plugins/maxi-blocks vendor/bin/phpunit",
+		"test:php:debug": "wp-env start --xdebug && wp-env run tests-cli --env-cwd=wp-content/plugins/maxi-blocks vendor/bin/phpunit",
 		"test:php-update": "wp-env run tests-cli --env-cwd=wp-content/plugins/maxi-blocks vendor/bin/phpunit -d --update-snapshots",
 		"update-blocks-json": "node src/extensions/maxi-block/block-json-abstract/index.js"
 	},

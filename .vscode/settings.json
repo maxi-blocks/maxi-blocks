@@ -28,6 +28,7 @@
 		"minifier",
 		"runcommand",
 		"typesense",
-		"wpdb"
+		"wpdb",
+		"xdebug"
 	]
 }

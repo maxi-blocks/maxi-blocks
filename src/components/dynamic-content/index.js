@@ -309,6 +309,7 @@ const DynamicContent = props => {
 		'maxiBlocks/dynamic-content'
 	).getCustomTaxonomies();
 
+
 	useEffect(() => {
 		setIsCustomTaxonomyField(customTaxonomies.includes(field));
 	}, [field, type]);

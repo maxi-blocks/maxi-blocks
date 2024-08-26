@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
+import { select } from '@wordpress/data';
 
 /**
  * Source constants
@@ -148,8 +149,14 @@ export const taxonomyRelationOptions = [
 	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
 ];
 
+const customTaxonomies = select(
+	'maxiBlocks/dynamic-content'
+).getCustomTaxonomies();
+
+console.log(customTaxonomies);
+
 const generalRelationOptions = {
-	posts: generalRelationOptionsPosts,
+	posts: {...generalRelationOptionsPosts, ...customTaxonomies},
 	pages: generalRelationOptionsPages,
 	settings: generalRelationOptionsPosts,
 	media: generalRelationOptionsPages,

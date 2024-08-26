@@ -8,13 +8,17 @@ jobs:
     check-blocks-json:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
               with:
                   fetch-depth: 2
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.0'
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16.x'
             - name: Cache Composer packages
               uses: actions/cache@v3
               with:
@@ -22,27 +26,23 @@ jobs:
                   key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
                   restore-keys: |
                       ${{ runner.os }}-php-
-            - name: Cache node modules
-              uses: actions/cache@v2
+            - name: Cache npm packages
+              uses: actions/cache@v3
               with:
                   path: ~/.npm
-                  key: ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-
-                      ${{ runner.os }}-build-v1.3-
-                      ${{ runner.os }}-
-              env:
-                  cache-name: cache-node-modules
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 16.x
+                      ${{ runner.os }}-node-
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress
-            - name: Install dependencies
+            - name: Install Node.js dependencies
               run: npm install --legacy-peer-deps
-            - name: reset package-lock.json
-              run: git checkout package-lock.json
+            - name: Create .env file
+              run: |
+                  touch .env
+                  echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
+                  echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
+                  echo "REACT_APP_MAXI_BLOCKS_CRISP_API_KEY=${{ secrets.REACT_APP_MAXI_BLOCKS_CRISP_API_KEY }}" >> .env
             - name: Install WordPress
               run: |
                   chmod -R 767 ./

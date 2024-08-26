@@ -11,7 +11,7 @@ import path from 'path';
 /**
  * Number of warmup iterations to perform.
  */
-export const WARMUP_ITERATIONS = 5;
+export const WARMUP_ITERATIONS = 3;
 
 /**
  * Timeout for warmup.
@@ -21,17 +21,17 @@ export const WARMUP_TIMEOUT = 20000 * WARMUP_ITERATIONS;
 /**
  * Cool down time between iterations.
  */
-export const COOL_DOWN_TIME = 1000;
+export const COOL_DOWN_TIME = 500;
 
 /**
  * Number of iterations to perform for each pattern.
  */
-export const PATTERNS_ITERATIONS = 5;
+export const PATTERNS_ITERATIONS = 3;
 
 /**
  * Number of iterations to perform for each block.
  */
-export const BLOCKS_ITERATIONS = 5;
+export const BLOCKS_ITERATIONS = 3;
 
 /**
  * Timeout for performance tests.

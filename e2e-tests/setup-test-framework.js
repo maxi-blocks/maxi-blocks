@@ -240,7 +240,7 @@ function observeConsoleLogging() {
 		// failure.
 
 		// eslint-disable-next-line no-console
-		console[logFunction](text);
+		// console[logFunction](text);
 
 		// In case we want to debug the error
 		// debugger;

@@ -153,12 +153,14 @@ class PerformanceComparator {
 		const isAbovePercentThreshold =
 			Math.abs(percentChangeMean) > this.percentThreshold;
 
-		if (isAboveThreshold && isAbovePercentThreshold) {
-			return diffMean > 0
-				? { status: 'significantly slower', statusEmoji: '🐢' }
-				: { status: 'significantly faster', statusEmoji: '🚀' };
+		if (isAboveThreshold) {
+			if (!isAbovePercentThreshold)
+			{return diffMean > 0
+				? { status: 'Regressed', statusEmoji: '🐢' }
+				: { status: 'Improved', statusEmoji: '🚀' };}
+			else {return { status: 'Unchanged', statusEmoji: '➖' }; }
 		} else {
-			return { status: 'unchanged', statusEmoji: '➖' };
+			return { status: 'Below threshold', statusEmoji: '➖' };
 		}
 	}
 

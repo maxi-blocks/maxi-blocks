@@ -87,17 +87,31 @@ async function updateGroupAttributes(page) {
 }
 
 async function blockJsonAbstracter() {
+	if (!existsSync('build')) {
+		console.error(
+			'❌ Error: The build folder does not exist. Please run "npm run build" or "npm run start" before running this script.'
+		);
+		process.exit(1);
+	}
+
 	const browser = await puppeteer.launch({ headless: 'new' });
 	const page = await browser.newPage();
 
 	try {
+		console.log('Attempting to log in to WordPress...');
 		await loginToWordPress(page);
-		await activateMaxiBlocks(page);
+		console.log('Login successful.');
 
+		console.log('Activating MaxiBlocks plugin...');
+		await activateMaxiBlocks(page);
+		console.log('MaxiBlocks plugin activated.');
+
+		console.log('Fetching MaxiBlocks...');
 		const maxiBlocks = JSON.parse(await getMaxiBlocks(page));
 		if (!maxiBlocks.length) {
 			throw new Error('No `maxi-blocks` blocks found');
 		}
+		console.log(`Found ${maxiBlocks.length} MaxiBlocks.`);
 
 		const updatePromises = maxiBlocks.map(block => {
 			const { attributes, customCss, scProps, transition, name } = block;

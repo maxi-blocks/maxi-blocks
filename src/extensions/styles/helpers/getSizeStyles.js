@@ -96,6 +96,7 @@ const getSizeStyles = (obj, prefix = '') => {
 		}
 
 		if (
+			breakpoint === 'general' ||
 			isFinite(parseInt(obj[`${prefix}${target}-${breakpoint}`])) ||
 			obj[`${prefix}${target}-unit-${breakpoint}`]
 		) {

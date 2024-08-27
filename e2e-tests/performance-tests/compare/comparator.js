@@ -153,18 +153,15 @@ class PerformanceComparator {
 		const isAbovePercentThreshold =
 			Math.abs(percentChangeMean) > this.percentThreshold;
 
-		if (isAboveThreshold) {
-			if (!isAbovePercentThreshold) {
-				return diffMean > 0
-					? { status: 'Regressed', statusEmoji: '🐢' }
-					: { status: 'Improved', statusEmoji: '🚀' };
+		if (isAboveThreshold && isAbovePercentThreshold) {
+			if (diffMean > 0) {
+				return { status: 'Regressed', statusEmoji: '🐢' };
 			} else {
-				return { status: 'Unchanged', statusEmoji: '➖' };
+				return { status: 'Improved', statusEmoji: '🚀' };
 			}
 		} else {
 			return { status: 'Below threshold', statusEmoji: '➖' };
 		}
-	}
 
 	readJsonFile(filePath) {
 		try {

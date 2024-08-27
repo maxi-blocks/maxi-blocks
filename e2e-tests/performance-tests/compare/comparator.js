@@ -103,6 +103,7 @@ class PerformanceComparator {
 		};
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	calculateStatistics(times) {
 		const cleanedTimes = times.filter(time => time !== 0);
 		return {
@@ -139,7 +140,7 @@ class PerformanceComparator {
 	static calculateStandardDeviation(data) {
 		const mean = PerformanceComparator.calculateMean(data);
 		return Math.sqrt(
-			data.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) /
+			data.reduce((sum, value) => sum + (value - mean) ** 2, 0) /
 				(data.length - 1)
 		);
 	}
@@ -156,13 +157,13 @@ class PerformanceComparator {
 		if (isAboveThreshold && isAbovePercentThreshold) {
 			if (diffMean > 0) {
 				return { status: 'Regressed', statusEmoji: '🐢' };
-			} else {
-				return { status: 'Improved', statusEmoji: '🚀' };
 			}
-		} else {
-			return { status: 'Below threshold', statusEmoji: '➖' };
+			return { status: 'Improved', statusEmoji: '🚀' };
 		}
+		return { status: 'Below threshold', statusEmoji: '➖' };
+	}
 
+	// eslint-disable-next-line class-methods-use-this
 	readJsonFile(filePath) {
 		try {
 			return JSON.parse(fs.readFileSync(filePath, 'utf8'));

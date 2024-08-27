@@ -807,12 +807,16 @@ const MaxiToolbar = memo(
 		const result = isEqual(
 			Object.fromEntries(
 				Object.entries(oldAttr).filter(
-					([key]) => !Array.isArray(propsToAvoid) || !propsToAvoid.includes(key)
+					([key]) =>
+						!Array.isArray(propsToAvoid) ||
+						!propsToAvoid.includes(key)
 				)
 			),
 			Object.fromEntries(
 				Object.entries(newAttr).filter(
-					([key]) => !Array.isArray(propsToAvoid) || !propsToAvoid.includes(key)
+					([key]) =>
+						!Array.isArray(propsToAvoid) ||
+						!propsToAvoid.includes(key)
 				)
 			)
 		);

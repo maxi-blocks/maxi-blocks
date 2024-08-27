@@ -72,8 +72,7 @@ const showCurrent = (type, currentTemplateType) => {
 	if (currentTemplateType.includes('category-') && type === 'categories')
 		return true;
 	// for specific tag templates
-	if (currentTemplateType.includes('tag-') && type === 'tags')
-		return true;
+	if (currentTemplateType.includes('tag-') && type === 'tags') return true;
 	// for specific woo products templates
 	if (currentTemplateType.includes('single-product') && type === 'products')
 		return true;

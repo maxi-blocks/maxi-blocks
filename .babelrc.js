@@ -4,10 +4,7 @@ module.exports = function (api) {
 		api.debug = process.env.NODE_ENV === 'development' || false;
 	}
 
-	const presets = [
-		'@babel/preset-react',
-		'@wordpress/babel-preset-default',
-	];
+	const presets = ['@babel/preset-react', '@wordpress/babel-preset-default'];
 	const plugins = [
 		'@babel/plugin-proposal-class-properties',
 		'@babel/plugin-transform-classes',

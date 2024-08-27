@@ -25,7 +25,6 @@
 				fill: var(--maxi-secondary-color) !important;
 			}
 		}
-
 	}
 
 	.components-button:nth-child(1) {
@@ -38,7 +37,6 @@
 				transition: 0.3s;
 			}
 		}
-	
 	}
 
 	.components-button:nth-child(2) {
@@ -52,7 +50,7 @@
 }
 .toolbar-item-move__horizontally {
 	transition: all 0.3s;
-	
+
 	.components-button {
 		border-radius: 0;
 		height: 32px;

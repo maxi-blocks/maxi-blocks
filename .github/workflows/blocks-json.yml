@@ -53,10 +53,16 @@ jobs:
               run: npm run update-blocks-json
             - name: Check for changes
               run: |
-                  if [[ `git status --porcelain` ]]; then
-                    echo "Changes detected after running update-blocks-json"
-                    git status
+                  git config --global core.autocrlf false
+                  echo "Checking for changes in JSON files"
+
+                  if [[ $(git status --porcelain **/*.json) ]]; then
+                    echo "Changes detected in JSON files:"
+                    git diff --name-status **/*.json
+                    echo "Changes detected in JSON files after running update-blocks-json"
                     exit 1
                   else
-                    echo "No changes detected after running update-blocks-json"
+                    echo "No changes detected in JSON files after running update-blocks-json"
+                    echo "Unexpected changes in other files:"
+                    git status --porcelain
                   fi

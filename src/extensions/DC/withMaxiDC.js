@@ -33,7 +33,6 @@ const DCBlocks = [
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-
 			if (!ownProps) {
 				return null;
 			}

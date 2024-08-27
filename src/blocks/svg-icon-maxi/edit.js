@@ -15,7 +15,7 @@ import loadable from '@loadable/component';
  */
 const Inspector = loadable(() => import('./inspector'));
 const Toolbar = loadable(() => import('../../components/toolbar'));
- import BlockResizer from '../../components/block-resizer';
+import BlockResizer from '../../components/block-resizer';
 const RawHTML = loadable(() => import('../../components/raw-html'));
 import MaxiPopoverButton from '../../components/maxi-popover-button';
 import MaxiModal from '../../editor/library/modal';

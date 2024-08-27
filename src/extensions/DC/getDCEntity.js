@@ -236,14 +236,12 @@ const getDCEntity = async (dataRequest, clientId) => {
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
 
 	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
-
 		const relationKeyForId = getRelationKeyForId(relation, type);
 
 		if (relationKeyForId && id) {
 			let hasEntity;
 			const entityKey = `${relationKeyForId}-${id}`;
 			if (nonExistingEntities[entityKey]) {
-
 				return null;
 			} else if (existingEntities[entityKey]) {
 				hasEntity = existingEntities[entityKey];
@@ -296,8 +294,8 @@ const getDCEntity = async (dataRequest, clientId) => {
 		);
 		if (entities && entities.length > 0) {
 			return entities.slice(-1)[0];
-		  }
-		  return null;
+		}
+		return null;
 	}
 
 	if (type === 'settings') {

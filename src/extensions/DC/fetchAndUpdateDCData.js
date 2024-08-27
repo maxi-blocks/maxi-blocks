@@ -31,7 +31,7 @@ const fetchAndUpdateDCData = async (
 ) => {
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 
-	if(!dynamicContent?.['dc-status'] && !contextLoop?.['cl-status']) return;
+	if (!dynamicContent?.['dc-status'] && !contextLoop?.['cl-status']) return;
 
 	const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
@@ -155,7 +155,6 @@ const fetchAndUpdateDCData = async (
 			onChange(synchronizedAttributes);
 		}
 	}
-
 };
 
 export default fetchAndUpdateDCData;

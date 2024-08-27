@@ -21,12 +21,11 @@ import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
 import getACFContentByType from './getACFContentByType';
 import { getCartContent, getProductsContent } from './getWCContent';
-import { getACFOptions } from '../../components/dynamic-content/acf-settings-control/utils';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty, capitalize, isEqual } from 'lodash';
+import { isNil, isEmpty, capitalize } from 'lodash';
 
 const handleParentField = async (contentValue, type) => {
 	if (!contentValue || contentValue === 0)
@@ -147,9 +146,9 @@ const getDCContent = async (dataRequest, clientId) => {
 
 		if (field === 'billing_name' || field === 'shipping_name') {
 			const firstNameField = field.replace('_name', '_first_name');
-			const firstName = getCustomerDataField(firstNameField);
+			const firstName = getCustomerDataField(firstNameField) ?? '';
 			const lastNameField = field.replace('_name', '_last_name');
-			const lastName = getCustomerDataField(lastNameField);
+			const lastName = getCustomerDataField(lastNameField) ?? '';
 			return `${firstName} ${lastName}`;
 		}
 

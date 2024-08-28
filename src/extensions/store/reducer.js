@@ -31,13 +31,27 @@ const breakpointResizer = ({
 	const getEditorWrapper = () => {
 		if (getIsSiteEditor()) {
 			if (getIsTemplatePart()) {
-				return document.querySelector(
-					'.edit-site-visual-editor .components-resizable-box__container'
-				) || document.querySelector('.editor-visual-editor .components-resizable-box__container') || null;
+				return (
+					document.querySelector(
+						'.edit-site-visual-editor .components-resizable-box__container'
+					) ||
+					document.querySelector(
+						'.editor-visual-editor .components-resizable-box__container'
+					) ||
+					null
+				);
 			}
-			return document.querySelector('.edit-site-visual-editor') || document.querySelector('.editor-visual-editor') || null;
+			return (
+				document.querySelector('.edit-site-visual-editor') ||
+				document.querySelector('.editor-visual-editor') ||
+				null
+			);
 		}
-		return document.querySelector('.edit-post-visual-editor') || document.querySelector('.editor-visual-editor') || null;
+		return (
+			document.querySelector('.edit-post-visual-editor') ||
+			document.querySelector('.editor-visual-editor') ||
+			null
+		);
 	};
 	const editorWrapper = getEditorWrapper();
 

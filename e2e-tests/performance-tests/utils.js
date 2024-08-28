@@ -33,7 +33,7 @@ export function debugLog(...args) {
 /**
  * Wait for the blocks to load.
  *
- * @param {Page} page
+ * @param {Page}   page
  * @param {number} expectedBlocksCount
  * @param {number} maxWaitTime
  */
@@ -83,9 +83,9 @@ export async function waitForBlocksLoad(page, expectedBlocksCount) {
 /**
  * Measure the time it takes to perform a single action.
  *
- * @param {Page} page
+ * @param {Page}     page
  * @param {Function} action
- * @param {any} context
+ * @param {any}      context
  * @returns {Promise<Object<string, any>>} { time: number, context: Any }
  */
 export async function measureSingleAction(page, action, context) {
@@ -124,7 +124,7 @@ export async function measureSingleAction(page, action, context) {
  * Perform measurements for a set of events.
  *
  * @param {Object<string, {pre: Function, action: Function, post: Function}>} events
- * @param {number} iterations
+ * @param {number}                                                            iterations
  * @returns {Promise<Object<string, {times: number[], average: number}>>} measurements
  */
 export async function performMeasurements(
@@ -192,7 +192,7 @@ async function cleanupAfterIteration() {
 /**
  * Save the measurements for a single event.
  *
- * @param {string} key
+ * @param {string}                                             key
  * @param {Object<string, {times: number[], average: number}>} measurements
  */
 export function saveEventMeasurements(key, measurements) {
@@ -250,7 +250,7 @@ export async function warmupRun() {
 /**
  * Returns callback, click on which will add block to the page
  *
- * @param {Page} page
+ * @param {Page}   page
  * @param {string} blockName
  * @returns {Promise<Function>} Callback to click on to insert block
  */

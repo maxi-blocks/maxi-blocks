@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-console */
 /**
  * WordPress dependencies
  */
@@ -6,6 +8,7 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
+// eslint-disable-next-line import/no-cycle
 import {
 	BLOCKS_LOAD_TIMEOUT,
 	PATTERNS_ITERATIONS,
@@ -33,7 +36,7 @@ export function debugLog(...args) {
 /**
  * Wait for the blocks to load.
  *
- * @param {Page} page
+ * @param {Page}   page
  * @param {number} expectedBlocksCount
  * @param {number} maxWaitTime
  */
@@ -83,9 +86,9 @@ export async function waitForBlocksLoad(page, expectedBlocksCount) {
 /**
  * Measure the time it takes to perform a single action.
  *
- * @param {Page} page
+ * @param {Page}     page
  * @param {Function} action
- * @param {any} context
+ * @param {any}      context
  * @returns {Promise<Object<string, any>>} { time: number, context: Any }
  */
 export async function measureSingleAction(page, action, context) {
@@ -124,7 +127,7 @@ export async function measureSingleAction(page, action, context) {
  * Perform measurements for a set of events.
  *
  * @param {Object<string, {pre: Function, action: Function, post: Function}>} events
- * @param {number} iterations
+ * @param {number}                                                            iterations
  * @returns {Promise<Object<string, {times: number[], average: number}>>} measurements
  */
 export async function performMeasurements(
@@ -138,7 +141,7 @@ export async function performMeasurements(
 		])
 	);
 
-	for (let i = 0; i < iterations; i++) {
+	for (let i = 0; i < iterations; i += 1) {
 		debugLog(`Starting iteration ${i + 1} of ${iterations}`);
 		await createNewPost();
 		let context = {};
@@ -192,12 +195,11 @@ async function cleanupAfterIteration() {
 /**
  * Save the measurements for a single event.
  *
- * @param {string} key
+ * @param {string}                                             key
  * @param {Object<string, {times: number[], average: number}>} measurements
  */
 export function saveEventMeasurements(key, measurements) {
 	debugLog(`Saving measurements for ${key}`);
-	const resultsFilePath = path.join(RESULTS_FILE_DIR, RESULTS_FILE_NAME);
 
 	try {
 		fs.mkdirSync(RESULTS_FILE_DIR, { recursive: true });
@@ -207,6 +209,7 @@ export function saveEventMeasurements(key, measurements) {
 	}
 
 	let existingResults = {};
+	const resultsFilePath = path.join(RESULTS_FILE_DIR, RESULTS_FILE_NAME);
 
 	if (fs.existsSync(resultsFilePath)) {
 		try {
@@ -240,7 +243,7 @@ export function saveEventMeasurements(key, measurements) {
  */
 export async function warmupRun() {
 	console.info(`Starting warmup (${WARMUP_ITERATIONS} iterations)`);
-	for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+	for (let i = 0; i < WARMUP_ITERATIONS; i += 1) {
 		debugLog(`Warmup iteration ${i + 1}`);
 		await createNewPost();
 	}
@@ -250,7 +253,7 @@ export async function warmupRun() {
 /**
  * Returns callback, click on which will add block to the page
  *
- * @param {Page} page
+ * @param {Page}   page
  * @param {string} blockName
  * @returns {Promise<Function>} Callback to click on to insert block
  */
@@ -307,7 +310,7 @@ export class PatternManager {
 		const patterns = await this.searchPatternsByNames(patternNames);
 		const patternMap = new Map();
 
-		for (let i = 0; i < patternNames.length; i++) {
+		for (let i = 0; i < patternNames.length; i += 1) {
 			const requestedName = patternNames[i];
 			const pattern = patterns[i];
 
@@ -343,6 +346,7 @@ export class PatternManager {
 			.replace(/src="https:\/\/[^"]*"/g, 'src=""');
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	createSearchClient() {
 		return new Client({
 			nodes: [

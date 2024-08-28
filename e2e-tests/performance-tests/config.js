@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+// eslint-disable-next-line import/no-cycle
 import { waitForBlocksLoad } from './utils';
 
 /**

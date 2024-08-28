@@ -53,6 +53,8 @@ jobs:
               run: npm run update-blocks-json
             - name: Check for changes
               run: |
+                  git config --global core.autocrlf false
+                  git config core.fileMode false
                   echo "Checking for changes in JSON files"
 
                   changed_files=$(git diff --name-only **/*.json)
@@ -61,13 +63,11 @@ jobs:
                     echo "Changes detected in JSON files:"
                     while IFS= read -r file; do
                       echo "Changes in $file:"
-                      git diff --unified=0 "$file"
+                      git diff --unified=0 --ignore-space-at-eol --ignore-space-change --ignore-all-space "$file"
                       echo "----------------------------------------"
                     done <<< "$changed_files"
                     echo "Changes detected in JSON files after running update-blocks-json"
                     exit 1
                   else
                     echo "No changes detected in JSON files after running update-blocks-json"
-                    echo "Unexpected changes in other files:"
-                    git status --porcelain
                   fi

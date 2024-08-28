@@ -68,7 +68,7 @@ export const PATTERNS = [
 			'ANL-PRO-09',
 			'NML-PRO-18',
 			'PIL-PRO-164',
-			'SML-PRO-61',
+			'SML-PRO-139',
 			'SML-38',
 		],
 	},

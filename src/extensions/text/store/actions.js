@@ -1,4 +1,4 @@
-import { apiFetch } from '@wordpress/api-fetch';
+import { apiFetch } from '@wordpress/data-controls';
 
 export const updateFonts = fonts => {
 	return {

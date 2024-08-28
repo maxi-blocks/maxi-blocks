@@ -13,8 +13,6 @@ export const setFonts = fonts => ({
 	fonts,
 });
 
-export const initializeFonts = () => fetchFonts();
-
 // Generator function to fetch fonts using data-controls
 export function* fetchFonts() {
 	try {

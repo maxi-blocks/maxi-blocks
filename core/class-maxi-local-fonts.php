@@ -177,6 +177,8 @@ class MaxiBlocks_Local_Fonts
             return rtrim($font_url, ':') . '&display=swap';
         }
 
+        // For legacy reasons font data is saved both as 'weight' ('style') and 'fontWeight' ('fontStyle')
+        // See https://github.com/maxi-blocks/maxi-blocks/pull/4305#discussion_r1098988152
         $font_weight = $font_data['fontWeight'] ?? $font_data['weight'] ?? false;
         $font_style = $font_data['fontStyle'] ?? $font_data['style'] ?? false;
 
@@ -209,8 +211,8 @@ class MaxiBlocks_Local_Fonts
 
     private function normalize_weights($font_weight)
     {
-        $weights = is_array($font_weight) ? $font_weight : explode(',', $font_weight);
-        $weights = array_unique($weights);
+        $weight_string = is_array($font_weight) ? implode($font_weight, ',') : $font_weight;
+        $weights = array_unique(explode(',', $weight_string));
         sort($weights);
         return $weights;
     }

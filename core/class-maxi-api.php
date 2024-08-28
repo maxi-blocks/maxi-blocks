@@ -500,7 +500,6 @@ if (!class_exists('MaxiBlocks_API')):
                             'css_value',
                             'prev_fonts_value',
                             'fonts_value',
-
                         ], $dictionary), [
                             'block_style_id' => $id,
                         ]);

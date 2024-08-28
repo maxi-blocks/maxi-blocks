@@ -38,6 +38,7 @@
 		"@wordpress/components": "latest",
 		"@wordpress/compose": "latest",
 		"@wordpress/data": "latest",
+		"@wordpress/data-controls": "^4.6.0",
 		"@wordpress/editor": "latest",
 		"@wordpress/element": "^6.2.0",
 		"@wordpress/hooks": "latest",

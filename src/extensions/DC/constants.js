@@ -149,14 +149,8 @@ export const taxonomyRelationOptions = [
 	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
 ];
 
-const customTaxonomies = select(
-	'maxiBlocks/dynamic-content'
-).getCustomTaxonomies();
-
-console.log(customTaxonomies);
-
 const generalRelationOptions = {
-	posts: {...generalRelationOptionsPosts, ...customTaxonomies},
+	posts: generalRelationOptionsPosts,
 	pages: generalRelationOptionsPages,
 	settings: generalRelationOptionsPosts,
 	media: generalRelationOptionsPages,

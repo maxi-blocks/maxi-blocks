@@ -432,6 +432,9 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 
 			addUniqueOption(options, newItem);
 		} else {
+			console.log('currentTemplateType', currentTemplateType);
+			console.log('type', type);
+			console.log(options);
 			options?.filter(option => option.value !== 'current');
 		}
 	}
@@ -446,7 +449,7 @@ export const validationsValues = (
 	contentType,
 	source = 'wp',
 	linkTarget,
-	isCL = false,
+	isCL = false, 
 	acfGroup
 ) => {
 	if (

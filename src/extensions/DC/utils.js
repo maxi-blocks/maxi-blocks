@@ -157,7 +157,7 @@ export const getLinkTargets = (type, field) => {
 	if (customTaxonomies.includes(field)) {
 		const capitalizedField = field.charAt(0).toUpperCase() + field.slice(1);
 		targets.push({
-			label: capitalizedField + ' ' + __('links', 'maxi-blocks'),
+			label: `${capitalizedField} ${__('links', 'maxi-blocks')}`,
 			value: field,
 		});
 	}
@@ -402,7 +402,11 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 			.includes(type)
 	)
 		options = getTaxonomyRelationOptions();
-	else options = relationOptions[contentType]?.[type];
+	else {
+		options = relationOptions[contentType]?.[type];
+		const ct = select('maxiBlocks/dynamic-content').getCustomTaxonomies();
+		console.log('ct', ct);
+	}
 
 	if (type.includes(select('core/editor').getCurrentPostType())) {
 		const newItem = {
@@ -449,7 +453,7 @@ export const validationsValues = (
 	contentType,
 	source = 'wp',
 	linkTarget,
-	isCL = false, 
+	isCL = false,
 	acfGroup
 ) => {
 	if (

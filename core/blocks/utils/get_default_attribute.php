@@ -24,7 +24,7 @@ function get_default_attribute($prop, $block_name = null)
     ];
 
     $current_last_modified = max(array_map(function ($block) {
-        $path = MAXI_PLUGIN_DIR_PATH . "build/blocks/" . $block . "/block.json";
+        $path = MAXI_PLUGIN_DIR_PATH . "metadata/blocks/" . $block . ".json";
         return file_exists($path) ? filemtime($path) : 0;
     }, $blocks));
 
@@ -39,11 +39,11 @@ function get_default_attribute($prop, $block_name = null)
         }
 
         foreach ($blocks as $block) {
-            $block_json_path = MAXI_PLUGIN_DIR_PATH . "build/blocks/" . $block . "/block.json";
+            $block_json_path = MAXI_PLUGIN_DIR_PATH . "metadata/blocks/" . $block . ".json";
 
             if (!file_exists($block_json_path)) {
                 throw new Error(
-                    'Missing block.json file for ' . $block . ' block. Run `npm update-blocks-json` to generate it.'
+                    'Missing block metadata file for ' . $block . ' block. Run `npm update-blocks-json` to generate it.'
                 );
             }
 

@@ -6,9 +6,9 @@ function json_file_to_array($item, $is_hover)
     static $cache = [];
     $cache_key = $item . ($is_hover ? 'Hover' : '');
 
-    $file_path = MAXI_PLUGIN_DIR_PATH . 'group-attributes/' . $cache_key . '.json';
+    $file_path = MAXI_PLUGIN_DIR_PATH . 'metadata/groups/' . $cache_key . '.json';
     if (!file_exists($file_path) && !$is_hover) {
-        $file_path = MAXI_PLUGIN_DIR_PATH . 'group-attributes/' . $item . '.json';
+        $file_path = MAXI_PLUGIN_DIR_PATH . 'metadata/groups/' . $item . '.json';
     }
 
     if (!file_exists($file_path)) {

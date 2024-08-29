@@ -1,0 +1,23 @@
+{
+  "advanced-css-general": {
+    "type": "string"
+  },
+  "advanced-css-xxl": {
+    "type": "string"
+  },
+  "advanced-css-xl": {
+    "type": "string"
+  },
+  "advanced-css-l": {
+    "type": "string"
+  },
+  "advanced-css-m": {
+    "type": "string"
+  },
+  "advanced-css-s": {
+    "type": "string"
+  },
+  "advanced-css-xs": {
+    "type": "string"
+  }
+}

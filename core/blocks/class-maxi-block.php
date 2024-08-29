@@ -277,32 +277,16 @@ if (!class_exists('MaxiBlocks_Block')):
                 'attributes' => self::$dynamic_content_attributes,
             ]) : $basic_config;
 
-            // Construct the file path
-            $file_path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json';
+            $block_metadata = $this->get_block_metadata();
 
-            // Check if the file exists
-            if (!$wp_filesystem->exists($file_path)) {
-                return false; // Handle the error appropriately
-            }
-
-            // Read the file contents
-            $file_contents = $wp_filesystem->get_contents($file_path);
-
-            if ($file_contents === false) {
-                return false; // Handle the error appropriately
-            }
-
-            // Decode the JSON file
-            $block_json = json_decode($file_contents, true);
-
-            if ($block_json === null) {
+            if ($block_metadata === null) {
                 return false; // Handle the JSON decoding error
             }
 
             // Register the block type
             $this->block = register_block_type(
                 "maxi-blocks/{$this->block_name}",
-                array_merge($block_json, $config)
+                array_merge($block_metadata, $config)
             );
         }
 
@@ -331,30 +315,51 @@ if (!class_exists('MaxiBlocks_Block')):
         /**
          * Get block metadata.
          *
-         * Reads the block.json file to retrieve the block metadata.
+         * Reads and merges block metadata from two files.
          *
-         * @return array The block metadata.
+         * @return array The merged block metadata.
          */
         public function get_block_metadata()
         {
-            static $metadata_cache = [];
+            $block_json_path = MAXI_PLUGIN_DIR_PATH . 'blocks/' . $this->block_name . '/block.json';
+            $metadata_path = MAXI_PLUGIN_DIR_PATH . 'metadata/blocks/' . $this->block_name . '.json';
 
-            $cache_key = $this->block_name;
+            $block_json_data = $this->get_cached_file_contents($block_json_path);
+            $metadata_data = $this->get_cached_file_contents($metadata_path);
 
-            if (isset($metadata_cache[$cache_key])) {
-                return $metadata_cache[$cache_key]['data'];
-            }
-
-            $path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json';
-
-            if (!file_exists($path)) {
+            if ($block_json_data === null && $metadata_data === null) {
                 return null;
             }
 
-            $file_mtime = filemtime($path);
+            $this->block_metadata = array_merge(
+                $block_json_data ?? [],
+                $metadata_data ?? []
+            );
 
-            if (isset($metadata_cache[$cache_key]) && $metadata_cache[$cache_key]['mtime'] === $file_mtime) {
-                return $metadata_cache[$cache_key]['data'];
+            return $this->block_metadata;
+        }
+
+        /**
+         * Get cached file contents.
+         *
+         * Reads and caches file contents, using file modification time for cache invalidation.
+         *
+         * @param string $file_path Path to the file.
+         * @return array|null Parsed JSON data or null if file doesn't exist or is invalid.
+         */
+        private function get_cached_file_contents($file_path)
+        {
+            static $file_cache = [];
+
+            if (!file_exists($file_path)) {
+                return null;
+            }
+
+            $file_mtime = filemtime($file_path);
+            $cache_key = md5($file_path);
+
+            if (isset($file_cache[$cache_key]) && $file_cache[$cache_key]['mtime'] === $file_mtime) {
+                return $file_cache[$cache_key]['data'];
             }
 
             global $wp_filesystem;
@@ -363,19 +368,19 @@ if (!class_exists('MaxiBlocks_Block')):
                 WP_Filesystem();
             }
 
-            $file_contents = $wp_filesystem->get_contents($path);
+            $file_contents = $wp_filesystem->get_contents($file_path);
             if (!$file_contents) {
                 return null;
             }
 
-            $this->block_metadata = json_decode($file_contents, true);
+            $parsed_data = json_decode($file_contents, true);
 
-            $metadata_cache[$cache_key] = [
+            $file_cache[$cache_key] = [
                 'mtime' => $file_mtime,
-                'data' => $this->block_metadata
+                'data' => $parsed_data
             ];
 
-            return $this->block_metadata;
+            return $parsed_data;
         }
 
         public function get_block_attributes($props)

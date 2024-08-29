@@ -1,0 +1,86 @@
+{
+  "image-shape-scale-general-hover": {
+    "type": "number"
+  },
+  "image-shape-scale-xxl-hover": {
+    "type": "number"
+  },
+  "image-shape-scale-xl-hover": {
+    "type": "number"
+  },
+  "image-shape-scale-l-hover": {
+    "type": "number"
+  },
+  "image-shape-scale-m-hover": {
+    "type": "number"
+  },
+  "image-shape-scale-s-hover": {
+    "type": "number"
+  },
+  "image-shape-scale-xs-hover": {
+    "type": "number"
+  },
+  "image-shape-rotate-general-hover": {
+    "type": "number"
+  },
+  "image-shape-rotate-xxl-hover": {
+    "type": "number"
+  },
+  "image-shape-rotate-xl-hover": {
+    "type": "number"
+  },
+  "image-shape-rotate-l-hover": {
+    "type": "number"
+  },
+  "image-shape-rotate-m-hover": {
+    "type": "number"
+  },
+  "image-shape-rotate-s-hover": {
+    "type": "number"
+  },
+  "image-shape-rotate-xs-hover": {
+    "type": "number"
+  },
+  "image-shape-flip-x-general-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-x-xxl-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-x-xl-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-x-l-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-x-m-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-x-s-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-x-xs-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-y-general-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-y-xxl-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-y-xl-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-y-l-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-y-m-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-y-s-hover": {
+    "type": "boolean"
+  },
+  "image-shape-flip-y-xs-hover": {
+    "type": "boolean"
+  }
+}

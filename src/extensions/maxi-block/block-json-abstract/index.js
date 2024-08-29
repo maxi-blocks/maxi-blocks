@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 /**
  * Dependencies
  */
 const path = require('path');
-const { writeFile, readFile } = require('fs').promises;
+const { writeFile } = require('fs').promises;
 const { existsSync, mkdirSync } = require('fs');
 const puppeteer = require('puppeteer');
 const { createURL } = require('@wordpress/e2e-test-utils');
@@ -28,7 +29,9 @@ async function activateMaxiBlocks(page) {
 
 async function getMaxiBlocks(page) {
 	await page.goto(createURL('wp-admin/post-new.php'));
-	await new Promise(resolve => setTimeout(resolve, 1000));
+	await new Promise(resolve => {
+		setTimeout(resolve, 1000);
+	});
 
 	return page.evaluate(() => {
 		const allBlocks = wp.blocks.getBlockTypes();
@@ -39,27 +42,12 @@ async function getMaxiBlocks(page) {
 }
 
 async function updateBlockJson(blockName, blockData) {
-	const blockFolderPaths = [
-		`src/blocks/${blockName}`,
-		`build/blocks/${blockName}`,
-	];
-	const blockFile = 'block.json';
+	const metadataFolder = path.join('metadata', 'blocks');
+	mkdirSync(metadataFolder, { recursive: true });
+	const blockJsonPath = path.join(metadataFolder, `${blockName}.json`);
 
-	for (const folderPath of blockFolderPaths) {
-		const blockPath = path.join(folderPath, blockFile);
-		if (!existsSync(blockPath)) continue;
-
-		const blockFileContent = JSON.parse(await readFile(blockPath, 'utf8'));
-		Object.assign(blockFileContent, blockData);
-
-		await writeFile(blockPath, JSON.stringify(blockFileContent, null, 2));
-		return blockName;
-	}
-
-	if (!BLOCKS_WITHOUT_JSON_FILE.includes(blockName)) {
-		console.error(`❌ block.json file does not exist for ${blockName}`);
-	}
-	return null;
+	await writeFile(blockJsonPath, `${JSON.stringify(blockData, null, 2)}\n`);
+	return blockName;
 }
 
 async function updateGroupAttributes(page) {
@@ -74,11 +62,13 @@ async function updateGroupAttributes(page) {
 	}
 
 	const parsedAttributes = JSON.parse(defaultGroupAttributes);
+	const metadataGroupFolder = path.join('metadata', 'groups');
+	mkdirSync(metadataGroupFolder, { recursive: true });
+
 	const writePromises = Object.entries(parsedAttributes).map(
 		([key, value]) => {
-			const filePath = path.join('group-attributes', `${key}.json`);
-			mkdirSync(path.dirname(filePath), { recursive: true });
-			return writeFile(filePath, JSON.stringify(value, null, 2));
+			const filePath = path.join(metadataGroupFolder, `${key}.json`);
+			return writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`);
 		}
 	);
 
@@ -116,6 +106,9 @@ async function blockJsonAbstracter() {
 		const updatePromises = maxiBlocks.map(block => {
 			const { attributes, customCss, scProps, transition, name } = block;
 			const blockName = name.replace('maxi-blocks/', '');
+			if (BLOCKS_WITHOUT_JSON_FILE.includes(blockName)) {
+				return null;
+			}
 			const blockData = { attributes, customCss, scProps, transition };
 			return updateBlockJson(blockName, blockData);
 		});
@@ -123,9 +116,7 @@ async function blockJsonAbstracter() {
 		const updatedBlocks = (await Promise.all(updatePromises)).filter(
 			Boolean
 		);
-		console.log(
-			`✅ block.json files updated for ${updatedBlocks.join(', ')}`
-		);
+		console.log(`✅ JSON files updated for ${updatedBlocks.join(', ')}`);
 
 		const groupAttributesCount = await updateGroupAttributes(page);
 		console.log(

@@ -1,0 +1,458 @@
+{
+  "lightbox-background-active-media-general": {
+    "type": "string",
+    "default": "color"
+  },
+  "lightbox-background-active-media-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-active-media-xl": {
+    "type": "string"
+  },
+  "lightbox-background-active-media-l": {
+    "type": "string"
+  },
+  "lightbox-background-active-media-m": {
+    "type": "string"
+  },
+  "lightbox-background-active-media-s": {
+    "type": "string"
+  },
+  "lightbox-background-active-media-xs": {
+    "type": "string"
+  },
+  "lightbox-background-palette-status-general": {
+    "type": "boolean",
+    "default": true
+  },
+  "lightbox-background-palette-status-xxl": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-status-xl": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-status-l": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-status-m": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-status-s": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-status-xs": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-sc-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "lightbox-background-palette-sc-status-xxl": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-sc-status-xl": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-sc-status-l": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-sc-status-m": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-sc-status-s": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-sc-status-xs": {
+    "type": "boolean"
+  },
+  "lightbox-background-palette-color-general": {
+    "type": "number",
+    "default": 5
+  },
+  "lightbox-background-palette-color-xxl": {
+    "type": "number"
+  },
+  "lightbox-background-palette-color-xl": {
+    "type": "number"
+  },
+  "lightbox-background-palette-color-l": {
+    "type": "number"
+  },
+  "lightbox-background-palette-color-m": {
+    "type": "number"
+  },
+  "lightbox-background-palette-color-s": {
+    "type": "number"
+  },
+  "lightbox-background-palette-color-xs": {
+    "type": "number"
+  },
+  "lightbox-background-palette-opacity-general": {
+    "type": "number"
+  },
+  "lightbox-background-palette-opacity-xxl": {
+    "type": "number"
+  },
+  "lightbox-background-palette-opacity-xl": {
+    "type": "number"
+  },
+  "lightbox-background-palette-opacity-l": {
+    "type": "number"
+  },
+  "lightbox-background-palette-opacity-m": {
+    "type": "number"
+  },
+  "lightbox-background-palette-opacity-s": {
+    "type": "number"
+  },
+  "lightbox-background-palette-opacity-xs": {
+    "type": "number"
+  },
+  "lightbox-background-color-general": {
+    "type": "string"
+  },
+  "lightbox-background-color-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-clip-path-general": {
+    "type": "string",
+    "default": "none"
+  },
+  "lightbox-background-color-clip-path-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-clip-path-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-clip-path-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-clip-path-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-clip-path-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-clip-path-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-clip-path-status-general": {
+    "type": "boolean",
+    "default": false
+  },
+  "lightbox-background-color-clip-path-status-xxl": {
+    "type": "boolean"
+  },
+  "lightbox-background-color-clip-path-status-xl": {
+    "type": "boolean"
+  },
+  "lightbox-background-color-clip-path-status-l": {
+    "type": "boolean"
+  },
+  "lightbox-background-color-clip-path-status-m": {
+    "type": "boolean"
+  },
+  "lightbox-background-color-clip-path-status-s": {
+    "type": "boolean"
+  },
+  "lightbox-background-color-clip-path-status-xs": {
+    "type": "boolean"
+  },
+  "lightbox-background-color-wrapper-position-top-general": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-general": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-general": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-general": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-sync-general": {
+    "type": "string",
+    "default": "all"
+  },
+  "lightbox-background-color-wrapper-position-sync-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-sync-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-sync-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-sync-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-sync-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-sync-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "lightbox-background-color-wrapper-position-top-unit-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-unit-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-unit-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-unit-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-unit-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-top-unit-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "lightbox-background-color-wrapper-position-right-unit-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-unit-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-unit-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-unit-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-unit-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-right-unit-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "lightbox-background-color-wrapper-position-bottom-unit-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-unit-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-unit-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-unit-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-unit-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-bottom-unit-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-unit-general": {
+    "type": "string",
+    "default": "px"
+  },
+  "lightbox-background-color-wrapper-position-left-unit-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-unit-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-unit-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-unit-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-unit-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-position-left-unit-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-width-general": {
+    "type": "number",
+    "default": 100
+  },
+  "lightbox-background-color-wrapper-width-xxl": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-width-xl": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-width-l": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-width-m": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-width-s": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-width-xs": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-width-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "lightbox-background-color-wrapper-width-unit-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-width-unit-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-width-unit-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-width-unit-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-width-unit-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-width-unit-xs": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-height-general": {
+    "type": "number",
+    "default": 100
+  },
+  "lightbox-background-color-wrapper-height-xxl": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-height-xl": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-height-l": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-height-m": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-height-s": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-height-xs": {
+    "type": "number"
+  },
+  "lightbox-background-color-wrapper-height-unit-general": {
+    "type": "string",
+    "default": "%"
+  },
+  "lightbox-background-color-wrapper-height-unit-xxl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-height-unit-xl": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-height-unit-l": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-height-unit-m": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-height-unit-s": {
+    "type": "string"
+  },
+  "lightbox-background-color-wrapper-height-unit-xs": {
+    "type": "string"
+  }
+}

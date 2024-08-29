@@ -9,11 +9,11 @@
  */
 function get_block_attributes(string $block_name): array
 {
-    $path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $block_name . '/block.json';
+    $path = MAXI_PLUGIN_DIR_PATH . 'metadata/blocks/' . $block_name . '.json';
 
     if (!file_exists($path)) {
         throw new Error(
-            'Missing block.json file for ' . $block_name . ' block. Run `npm update-blocks-json` to generate it.'
+            'Missing block metadata file for ' . $block_name . ' block. Run `npm update-blocks-json` to generate it.'
         );
     }
 
@@ -25,7 +25,7 @@ function get_block_attributes(string $block_name): array
 
     $file_contents = $wp_filesystem->get_contents($path);
     if (!$file_contents) {
-        throw new Error('Failed to read block.json file for ' . $block_name . ' block.');
+        throw new Error('Failed to read block metadata file for ' . $block_name . ' block.');
     }
 
     $block = json_decode($file_contents, true);
@@ -42,8 +42,6 @@ function get_block_attributes(string $block_name): array
             $response[$key] = $attribute['default'];
         }
     }
-
-    $response = array_merge($response);
 
     return $response;
 }

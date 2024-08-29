@@ -1246,11 +1246,11 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
-			const typographyToCheck = Object.fromEntries(
-				Object.entries(this.typography).filter(
-					([key, value]) => value !== undefined
-				)
-			);
+		const typographyToCheck = Object.fromEntries(
+			Object.entries(this.typography).filter(
+				([key, value]) => value !== undefined
+			)
+		);
 
 		if (
 			this.areFontsLoaded.current ||

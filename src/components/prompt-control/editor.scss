@@ -5,15 +5,15 @@
 		margin-bottom: 8px;
 	}
 
-	&-history-buttons{
+	&-history-buttons {
 		padding-left: 10px;
 		column-gap: 20px;
 	}
 
 	&-history-tab,
-	&-modify-tab{
-		.maxi-prompt-control__buttons{
-			.maxi-components-button{
+	&-modify-tab {
+		.maxi-prompt-control__buttons {
+			.maxi-components-button {
 				height: auto;
 				padding: 0;
 				color: var(--maxi-black-1-color);
@@ -21,19 +21,19 @@
 		}
 	}
 
-	&-generate-tab{
+	&-generate-tab {
 		padding-top: 8px;
-		.maxi-react-select-control{
-			& > label{
+		.maxi-react-select-control {
+			& > label {
 				display: block;
 				margin-bottom: 3px;
 			}
-			& > div > div{
+			& > div > div {
 				border-color: var(--maxi-grey-1-color);
 			}
 		}
-		.maxi-prompt-control__buttons{
-			.maxi-components-button{
+		.maxi-prompt-control__buttons {
+			.maxi-components-button {
 				justify-content: center;
 				width: 100%;
 				border: 2px solid var(--maxi-secondary-color);
@@ -42,7 +42,7 @@
 				font-size: 16px !important;
 				font-weight: 700 !important;
 				text-align: center;
-				&:hover{
+				&:hover {
 					border-color: var(--maxi-primary-color) !important;
 					color: var(--maxi-black-1-color) !important;
 					background: var(--maxi-white-3-color);

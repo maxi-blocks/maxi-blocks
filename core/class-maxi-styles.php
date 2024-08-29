@@ -573,8 +573,9 @@ class MaxiBlocks_Styles
      *
      * @return object   Font name with font options
      */
-    public function enqueue_fonts($fonts, $name)
+    public function enqueue_fonts($all_fonts, $name)
     {
+        $fonts = is_preview() || is_admin() ? $all_fonts['fonts'] : $all_fonts['prev_fonts'];
 
         if (empty($fonts) || !is_array($fonts)) {
             return;
@@ -1049,7 +1050,6 @@ class MaxiBlocks_Styles
      */
     public function process_content_frontend()
     {
-
         $post_id = $this->get_id();
 
         $content_meta_fonts = $this->get_content_meta_fonts_frontend($post_id, 'maxi-blocks-styles');
@@ -1261,7 +1261,7 @@ class MaxiBlocks_Styles
      * @param string &$prev_styles
      * @param array &$active_custom_data_array
      */
-    public function process_block_frontend(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array, bool &$gutenberg_blocks_status, string $maxi_block_style = '')
+    public function process_block_frontend(array $block, array &$fonts, array &$prev_fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array, bool &$gutenberg_blocks_status, string $maxi_block_style = '')
     {
         global $wpdb;
 
@@ -1299,7 +1299,7 @@ class MaxiBlocks_Styles
         if (empty($props) || !isset($unique_id) || !$unique_id) {
             if (!empty($block['innerBlocks'])) {
                 foreach ($block['innerBlocks'] as $innerBlock) {
-                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                    $this->process_block_frontend($innerBlock, $fonts, $prev_fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
                 }
             } else {
                 return;
@@ -1322,7 +1322,7 @@ class MaxiBlocks_Styles
         if (!isset($content_block) || empty($content_block)) {
             if (!empty($block['innerBlocks'])) {
                 foreach ($block['innerBlocks'] as $innerBlock) {
-                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                    $this->process_block_frontend($innerBlock, $fonts, $prev_fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
                 }
             } else {
                 return;
@@ -1369,9 +1369,7 @@ class MaxiBlocks_Styles
             $this->process_custom_data_frontend($block_name, $unique_id, $active_custom_data_array);
         }
 
-        // fonts
-        // TODO: split fonts and prev_fonts
-        foreach (['prev_fonts_value', 'fonts_value'] as $fonts_key) {
+        $get_fonts = function (string $fonts_key) {
             $fonts_json = $content_block[$fonts_key] ?? null;
 
             if ($fonts_json !== '' && $fonts_json !== null) {
@@ -1380,14 +1378,16 @@ class MaxiBlocks_Styles
                 $fonts_array = [];
             }
 
-            $fonts = array_merge($fonts, $fonts_array);
+            return $fonts_array;
+        };
 
-        }
+        $fonts = $get_fonts('fonts_value');
+        $prev_fonts = $get_fonts('prev_fonts_value');
 
         // Process inner blocks, if any
         if (!empty($block['innerBlocks'])) {
             foreach ($block['innerBlocks'] as $innerBlock) {
-                $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                $this->process_block_frontend($innerBlock, $fonts, $prev_fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
             }
         }
     }
@@ -1497,15 +1497,19 @@ class MaxiBlocks_Styles
 
 
         // Process the blocks to extract styles and other metadata.
-        list($styles, $prev_styles, $active_custom_data_array, $fonts) = $this->process_blocks_frontend($blocks);
+        list($styles, $prev_styles, $active_custom_data_array, $fonts, $prev_fonts) = $this->process_blocks_frontend($blocks);
 
         // Construct the content array.
         $content = [
             'css_value' => $styles,
             'prev_css_value' => $prev_styles,
         ];
+        $all_fonts = [
+            'fonts' => $fonts,
+            'prev_fonts' => $prev_fonts,
+        ];
 
-        return ['content' => json_decode(wp_json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $fonts];
+        return ['content' => json_decode(wp_json_encode($content), true), 'meta' => $active_custom_data_array, 'fonts'=> $all_fonts];
     }
 
     /**
@@ -1809,6 +1813,7 @@ class MaxiBlocks_Styles
         $prev_styles = '';
         $active_custom_data_array = [];
         $fonts = [];
+        $prev_fonts = [];
 
         $style_cards = new MaxiBlocks_StyleCards();
         $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
@@ -1816,11 +1821,11 @@ class MaxiBlocks_Styles
         $gutenberg_blocks_status = $current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards) && $current_style_cards['gutenberg_blocks_status'];
 
         foreach ($blocks as $block) {
-            $this->process_block_frontend($block, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status);
+            $this->process_block_frontend($block, $fonts, $prev_fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status);
         }
 
 
-        return [$styles, $prev_styles, $active_custom_data_array, $fonts];
+        return [$styles, $prev_styles, $active_custom_data_array, $fonts, $prev_fonts];
     }
 
 

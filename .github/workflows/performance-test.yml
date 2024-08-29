@@ -92,8 +92,17 @@ jobs:
                       ${{ runner.os }}-
               env:
                   cache-name: cache-node-modules
+            - name: Cache Composer packages
+              uses: actions/cache@v3
+              with:
+                  path: ~/.composer/cache
+                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-
             - name: Install dependencies
               run: npm install --legacy-peer-deps
+            - name: Install Composer dependencies
+              run: composer install --prefer-dist --no-progress
             - name: Create .env file
               run: |
                   cat << EOF > .env
@@ -146,8 +155,18 @@ jobs:
                       ${{ runner.os }}-
               env:
                   cache-name: cache-node-modules
+            - name: Cache Composer packages
+              uses: actions/cache@v3
+              with:
+                  path: ~/.composer/cache
+                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-
             - name: Install dependencies
               run: npm install --legacy-peer-deps
+            - name: Install Composer dependencies
+              if: hashFiles('composer.json') != ''
+              run: composer install --prefer-dist --no-progress
             - name: Create .env file
               run: |
                   cat << EOF > .env

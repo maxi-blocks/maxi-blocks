@@ -261,8 +261,18 @@ class MaxiBlocks_DynamicContent
                     }
                     break;
             }
+            if(strpos($relation, 'custom-taxonomy') !== false) {
+                $relationParts = explode('-', $relation);
+                $customTaxonomy = implode('-', array_slice($relationParts, 3));
+                $args['tax_query'] = [
+                    [
+                        'taxonomy' => $customTaxonomy,
+                        'field' => 'term_id',
+                        'terms' => [$id],
+                    ],
+                ];
+            }
         }
-
         // Create a new WP_Query instance
         $query = new WP_Query($args);
 

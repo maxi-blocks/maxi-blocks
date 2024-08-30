@@ -213,8 +213,6 @@ const ContextLoop = props => {
 				true
 			);
 
-			console.log('postIDSettings', postIDSettings);
-
 			if (postIDSettings) {
 				const { newValues, newPostIdOptions } = postIDSettings;
 

@@ -240,36 +240,52 @@ const getDCEntity = async (dataRequest, clientId) => {
 	) {
 		let relationKeyForId = getRelationKeyForId(relation, type);
 		const currentTemplateType = getCurrentTemplateSlug();
+		let currentId = id;
 		if (relation === 'current-archive') {
-			const isFSE = select('core/edit-site') !== undefined;
-			if (isFSE) {
-				const getRelationKeyForIdByTemplate = templateType => {
-					if (templateType.includes('single-post')) {
-						return 'post';
-					}
-					if (templateType.includes('author')) {
-						return 'author';
-					}
-					if (templateType.includes('category')) {
-						return 'categories';
-					}
-					if (templateType.includes('tag')) {
-						return 'tags';
-					}
-					if (templateType.includes('single-product-')) {
-						return 'product_categories';
-					}
-					if (templateType.includes('taxonomy')) {
-						return templateType.replace('taxonomy-', '');
-					}
-					return null;
-				};
-				relationKeyForId =
-					getRelationKeyForIdByTemplate(currentTemplateType);
+			const getRelationKeyForIdByTemplate = templateType => {
+				if (templateType.includes('single-post')) {
+					return 'post';
+				}
+				if (templateType.includes('author')) {
+					return 'author';
+				}
+				if (templateType.includes('category')) {
+					return 'categories';
+				}
+				if (templateType.includes('tag')) {
+					return 'tags';
+				}
+				if (templateType.includes('single-product-')) {
+					return 'product_categories';
+				}
+				if (templateType.includes('taxonomy')) {
+					return templateType.replace('taxonomy-', '');
+				}
+				return null;
+			};
+			relationKeyForId =
+				getRelationKeyForIdByTemplate(currentTemplateType);
+
+			const taxonomyName =
+				relationKeyForId === 'tags'
+					? 'post_tag'
+					: relationKeyForId === 'categories'
+					? 'category'
+					: relationKeyForId;
+
+			const taxonomyRecords = await resolveSelect(
+				'core'
+			).getEntityRecords('taxonomy', taxonomyName, {
+				per_page: 1,
+				hide_empty: false,
+			});
+
+			if (taxonomyRecords && taxonomyRecords.length > 0) {
+				const firstRecord = taxonomyRecords[0];
+				currentId = firstRecord.id;
 			}
 		}
 
-		let currentId = id;
 		if (relationKeyForId && currentId) {
 			let hasEntity;
 			const entityKey = `${relationKeyForId}-${currentId}`;
@@ -293,31 +309,11 @@ const getDCEntity = async (dataRequest, clientId) => {
 								: relationKeyForId === 'categories'
 								? 'category'
 								: relationKeyForId;
-						console.log('taxonomyName', taxonomyName);
-						if (relation !== 'current-archive')
-							hasEntity = await resolveSelect(
-								'core'
-							).getEntityRecord(
-								'taxonomy',
-								taxonomyName,
-								currentId
-							);
-						else {
-							const taxonomyRecords = await resolveSelect(
-								'core'
-							).getEntityRecords('taxonomy', taxonomyName, {
-								per_page: 1,
-								hide_empty: false,
-							});
-
-							console.log('taxonomyRecords', taxonomyRecords);
-
-							if (taxonomyRecords && taxonomyRecords.length > 0) {
-								const firstRecord = taxonomyRecords[0];
-								currentId = firstRecord.id;
-								hasEntity = firstRecord;
-							}
-						}
+						hasEntity = await resolveSelect('core').getEntityRecord(
+							'taxonomy',
+							taxonomyName,
+							currentId
+						);
 					}
 					if (hasEntity) {
 						existingEntities[entityKey] = hasEntity;
@@ -334,19 +330,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 				return null;
 			}
 		}
-		console.log('getKind(type)', getKind(type));
-		console.log(
-			'nameDictionary[type] ?? type',
-			nameDictionary[type] ?? type
-		);
-		console.log(
-			'getDCOrder(relation, orderBy)',
-			getDCOrder(relation, orderBy)
-		);
-		console.log('accumulator', accumulator);
-		console.log('rc id', {
-			[relationKeyForId]: currentId,
-		});
 		const entities = await resolveSelect('core').getEntityRecords(
 			getKind(type),
 			nameDictionary[type] ?? type,

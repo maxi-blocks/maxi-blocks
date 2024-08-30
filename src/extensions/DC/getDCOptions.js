@@ -62,9 +62,6 @@ export const getIdOptions = async (
 
 	const currentTemplateType = getCurrentTemplateSlug();
 
-	console.log('type', type);
-	console.log('relation', relation);
-
 	const fetchUsers = async () => {
 		const users = await getUsers();
 		return users ? users.map(({ id, name }) => ({ id, name })) : null;
@@ -101,7 +98,9 @@ export const getIdOptions = async (
 	} else if (relation === 'current-archive') {
 		if (currentTemplateType === 'author') {
 			data = await fetchUsers();
-		} else if (['category', 'tag'].includes(currentTemplateType)) {
+		} else if (
+			['category', 'tag', 'taxonomy'].includes(currentTemplateType)
+		) {
 			data = await getEntityRecords(
 				'taxonomy',
 				currentTemplateType,

@@ -9,8 +9,6 @@ import { attributeDefaults } from './constants';
 import { camelCase, isFunction, isNil } from 'lodash';
 
 const getDCValues = (dynamicContent, contextLoop) => {
-	console.log('dynamicContent', dynamicContent);
-	console.log('contextLoop', contextLoop);
 	const getDefaultDCValue = (target, obj) => {
 		const defaultValue = attributeDefaults?.[target];
 		return isFunction(defaultValue) ? defaultValue(obj) : defaultValue;

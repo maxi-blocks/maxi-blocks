@@ -74,12 +74,6 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				attributes?.['cl-relation']?.includes('custom-taxonomy');
 
 			const getAccumulator = useMemo(() => {
-				console.log('contextLoopAttributes', contextLoopAttributes);
-				console.log(
-					'prevContextLoopAttributes',
-					prevContextLoopAttributes
-				);
-
 				const isCurrentAccumulator = getIsAccumulator(
 					contextLoopAttributes
 				);
@@ -87,14 +81,9 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					prevContextLoopAttributes
 				);
 
-				// console.log('getIsAccumulator', getIsAccumulator());
-				// console.log('isCurrentAccumulator', isCurrentAccumulator);
-				// console.log('isPrevAccumulator', isPrevAccumulator);
-
 				return () => {
 					const currentAccumulator =
 						contextLoopAttributes?.['cl-accumulator'];
-					console.log('currentAccumulator', currentAccumulator);
 					if (
 						isNumber(currentAccumulator) &&
 						(isCurrentAccumulator || isPrevAccumulator)
@@ -105,14 +94,11 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					const prevContextLoopStatus =
 						prevContextLoopAttributes?.['cl-status'];
 
-					console.log('prevContextLoopStatus', prevContextLoopStatus);
-
 					if (
 						!prevContextLoopStatus ||
 						attributes.isFirstOnHierarchy ||
 						!isPrevAccumulator
 					) {
-						console.log('return null');
 						return null;
 					}
 
@@ -197,8 +183,6 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				prevContextLoopAttributes?.['cl-accumulator'],
 				prevContextLoopAttributes?.['cl-status'],
 			]);
-
-			console.log('getAccumulator', getAccumulator());
 
 			const contextLoop = useMemo(() => {
 				return {

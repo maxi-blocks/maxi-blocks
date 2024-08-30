@@ -186,9 +186,10 @@ class MaxiBlocks_DynamicContent
                         ],
                     ];
                     break;
-                default:
-                    error_log('Unsupported archive type.');
+                default: $args = $archive_info;
+
             }
+
         } else {
             // Modify the query based on the relation
             switch ($relation) {
@@ -1331,8 +1332,16 @@ class MaxiBlocks_DynamicContent
         } elseif (is_tax()) {
             // It's a custom taxonomy archive
             $queried_object = get_queried_object();
-            $archive_info['type'] = $queried_object->taxonomy;
-            $archive_info['id'] = $queried_object->term_id; // Get the term ID of the custom taxonomy
+            $archive_info['tax_query']      = [
+                [
+                    'taxonomy' => $queried_object->taxonomy,
+                    'field'    => 'term_id',
+                    'terms'    => $queried_object->term_id,
+                ],
+            ];
+            // $archive_info['type'] = $queried_object->taxonomy;
+            // $archive_info['id'] = $queried_object->term_id; // Get the term ID of the custom taxonomy
+
         } elseif (is_post_type_archive()) {
             // It's a custom post type archive
             $queried_object = get_queried_object();
@@ -1376,15 +1385,6 @@ class MaxiBlocks_DynamicContent
             'dc-order' => $dc_order,
             'dc-accumulator' => $dc_accumulator,
         ] = $attributes;
-
-        // echo 'dc_type: ' . $dc_type . '<br>';
-        // echo 'dc_relation: ' . $dc_relation . '<br>';
-        // echo 'dc_id: ' . $dc_id . '<br>';
-        // echo 'dc_author: ' . $dc_author . '<br>';
-        // echo 'dc_order_by: ' . $dc_order_by . '<br>';
-        // echo 'dc_order: ' . $dc_order . '<br>';
-        // echo 'dc_accumulator: ' . $dc_accumulator . '<br>';
-        // echo '==============================<br>';
 
         if (empty($dc_type)) {
             $dc_type = 'posts';
@@ -1477,21 +1477,23 @@ class MaxiBlocks_DynamicContent
                         $dc_id,
                     ),
                 );
-                // echo 'args: ' . print_r($args, true) . '<br>';
             } elseif ($is_current_archive) {
                 $archive_info = $this->get_current_archive_type_and_id();
-                $args = array_merge(
-                    $args,
-                    $this->get_order_by_args(
-                        $dc_relation,
-                        $dc_order_by,
-                        $dc_order,
-                        $dc_accumulator,
-                        $dc_type,
-                        $archive_info['id'],
-                        $archive_info['type'],
-                    ),
+                $order_by_args = $this->get_order_by_args(
+                    $dc_relation,
+                    $dc_order_by,
+                    $dc_order,
+                    $dc_accumulator,
+                    $dc_type,
+                    $archive_info['id'],
+                    $archive_info['type']
                 );
+
+                if (isset($archive_info['tax_query'])) {
+                    $order_by_args['tax_query'] = $archive_info['tax_query'];
+                }
+
+                $args = array_merge($args, $order_by_args);
             }
 
             if ($dc_type === 'products') {

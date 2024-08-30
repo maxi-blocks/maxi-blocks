@@ -405,7 +405,13 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 	else {
 		options = relationOptions[contentType]?.[type];
 		const ct = select('maxiBlocks/dynamic-content').getCustomTaxonomies();
-		console.log('ct', ct);
+		const ctOptions = ct.map(taxonomy => ({
+			label: `Get by ${taxonomy.replace(/_/g, ' ')}`,
+			value: `by-custom-taxonomy-${taxonomy}`,
+		}));
+
+		const mergedOptions = [...options, ...ctOptions];
+		options = mergedOptions;
 	}
 
 	if (type.includes(select('core/editor').getCurrentPostType())) {
@@ -436,9 +442,6 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 
 			addUniqueOption(options, newItem);
 		} else {
-			console.log('currentTemplateType', currentTemplateType);
-			console.log('type', type);
-			console.log(options);
 			options?.filter(option => option.value !== 'current');
 		}
 	}
@@ -510,12 +513,18 @@ export const validationsValues = (
 };
 
 export const getDCOrder = (relation, orderBy) => {
+	if (!relation || !orderBy) return null;
+	console.log('relation', relation);
+	console.log('orderBy', orderBy);
 	const dictionary = {
 		'by-date': 'date',
 		alphabetical: 'title',
 	};
 
-	if (orderByRelations.includes(relation)) {
+	if (
+		orderByRelations.includes(relation) ||
+		relation.includes('custom-taxonomy')
+	) {
 		return dictionary[orderBy];
 	}
 
@@ -554,6 +563,9 @@ export const getAttributesWithoutPrefix = (attributes, prefix) => {
 };
 
 export const getRelationKeyForId = (relation, type) => {
+	if (!relation || !type) return null;
+	if (relation.includes('custom-taxonomy'))
+		return relation?.split('-')?.slice(3);
 	const relationType = relationDictionary[relation];
 	if (relationType) {
 		return relationType[type] || relationType.default;

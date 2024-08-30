@@ -213,6 +213,8 @@ const ContextLoop = props => {
 				true
 			);
 
+			console.log('postIDSettings', postIDSettings);
+
 			if (postIDSettings) {
 				const { newValues, newPostIdOptions } = postIDSettings;
 
@@ -441,11 +443,12 @@ const ContextLoop = props => {
 										}
 									/>
 								)}
-							{relation !== 'current-archive' &&
+							{(relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
-									relation === 'by-id') && (
+									relation === 'by-id')) ||
+								(relation.includes('custom-taxonomy') && (
 									<SelectControl
 										label={__(
 											`${capitalize(
@@ -473,10 +476,14 @@ const ContextLoop = props => {
 											})
 										}
 									/>
-								)}
-							{isOrderSettings && (
+								))}
+							{(isOrderSettings ||
+								relation.includes('custom-taxonomy')) && (
 								<>
-									{orderByRelations.includes(relation) && (
+									{(orderByRelations.includes(relation) ||
+										relation.includes(
+											'custom-taxonomy'
+										)) && (
 										<SelectControl
 											label={__(
 												'Order by',
@@ -506,6 +513,9 @@ const ContextLoop = props => {
 											orderOptions[
 												orderByRelations.includes(
 													relation
+												) ||
+												relation.includes(
+													'custom-taxonomy'
 												)
 													? orderBy
 													: relation

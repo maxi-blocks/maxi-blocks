@@ -35,7 +35,7 @@ const fetchAndUpdateDCData = async (
 
 	const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
-	const { status, content, type, field, id, linkTarget, containsHTML } =
+	const { content, type, field, id, linkTarget, containsHTML } =
 		dynamicContentProps;
 
 	if (

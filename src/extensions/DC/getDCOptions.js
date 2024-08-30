@@ -62,12 +62,21 @@ export const getIdOptions = async (
 
 	const currentTemplateType = getCurrentTemplateSlug();
 
+	console.log('type', type);
+	console.log('relation', relation);
+
 	const fetchUsers = async () => {
 		const users = await getUsers();
 		return users ? users.map(({ id, name }) => ({ id, name })) : null;
 	};
 
-	if (type === 'users' || relation === 'by-author') {
+	if (relation.includes('by-custom-taxonomy')) {
+		const [taxonomy, term] = relation.split('-').slice(3);
+		data = await getEntityRecords('taxonomy', taxonomy, {
+			per_page: -1,
+			term,
+		});
+	} else if (type === 'users' || relation === 'by-author') {
 		data = await fetchUsers();
 	} else if (
 		['categories', 'product_categories'].includes(type) ||
@@ -144,6 +153,12 @@ const getDCOptions = async (
 	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const newPostIdOptions = data.map(item => {
+		if (relation.includes('by-custom-taxonomy')) {
+			return {
+				label: limitString(item.name, 20),
+				value: +item.id,
+			};
+		}
 		if (
 			[
 				'tags',

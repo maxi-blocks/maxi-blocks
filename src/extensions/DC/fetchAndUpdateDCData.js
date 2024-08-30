@@ -71,6 +71,9 @@ const fetchAndUpdateDCData = async (
 			onChange(newAttributes);
 		};
 
+		console.log('lastDynamicContentProps');
+		console.log(lastDynamicContentProps);
+
 		if (contentType !== 'image') {
 			let newContent = await getDCContent(
 				lastDynamicContentProps,

@@ -514,8 +514,6 @@ export const validationsValues = (
 
 export const getDCOrder = (relation, orderBy) => {
 	if (!relation || !orderBy) return null;
-	console.log('relation', relation);
-	console.log('orderBy', orderBy);
 	const dictionary = {
 		'by-date': 'date',
 		alphabetical: 'title',

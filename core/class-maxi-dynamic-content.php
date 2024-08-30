@@ -1367,6 +1367,15 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ] = $attributes;
 
+        // echo 'dc_type: ' . $dc_type . '<br>';
+        // echo 'dc_relation: ' . $dc_relation . '<br>';
+        // echo 'dc_id: ' . $dc_id . '<br>';
+        // echo 'dc_author: ' . $dc_author . '<br>';
+        // echo 'dc_order_by: ' . $dc_order_by . '<br>';
+        // echo 'dc_order: ' . $dc_order . '<br>';
+        // echo 'dc_accumulator: ' . $dc_accumulator . '<br>';
+        // echo '==============================<br>';
+
         if (empty($dc_type)) {
             $dc_type = 'posts';
         }
@@ -1389,7 +1398,7 @@ class MaxiBlocks_DynamicContent
             'by-category',
             'by-author',
             'by-tag',
-        ]);
+        ]) || strpos($dc_relation, 'custom-taxonomy') !== false;
         $is_random = $dc_relation === 'random';
         $is_current_archive = $dc_relation === 'current-archive';
 
@@ -1446,6 +1455,7 @@ class MaxiBlocks_DynamicContent
             } elseif ($is_random) {
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
+
                 $args = array_merge(
                     $args,
                     $this->get_order_by_args(
@@ -1457,6 +1467,7 @@ class MaxiBlocks_DynamicContent
                         $dc_id,
                     ),
                 );
+                // echo 'args: ' . print_r($args, true) . '<br>';
             } elseif ($is_current_archive) {
                 $archive_info = $this->get_current_archive_type_and_id();
                 $args = array_merge(
@@ -2577,7 +2588,7 @@ class MaxiBlocks_DynamicContent
 
         $relation = $attributes['dc-relation'] ?? null;
 
-        if (in_array($relation, self::$order_by_relations)) {
+        if (in_array($relation, self::$order_by_relations) || strpos($relation, 'custom-taxonomy') !== false) {
             if (isset($attributes['dc-order-by'])) {
                 return $dictionary[$attributes['dc-order-by']];
             }
@@ -2662,7 +2673,7 @@ class MaxiBlocks_DynamicContent
                 'alphabetical' => 'title',
             ];
 
-            if (in_array($relation, self::$order_by_relations)) {
+            if (in_array($relation, self::$order_by_relations) || strpos($relation, 'custom-taxonomy') !== false) {
                 $order_by_arg = $dictionary[$order_by];
             } else {
                 $order_by_arg = $dictionary[$relation];
@@ -2725,6 +2736,16 @@ class MaxiBlocks_DynamicContent
                     $args[$archive_type] = $id;
                     break;
             }
+        } elseif(strpos($relation, 'custom-taxonomy') !== false) {
+            $relationParts = explode('-', $relation);
+            $customTaxonomy = implode('-', array_slice($relationParts, 3));
+            $args['tax_query'] = [
+                [
+                    'taxonomy' => $customTaxonomy,
+                    'field' => 'term_id',
+                    'terms' => $id,
+                ],
+            ];
         }
 
         return $args;

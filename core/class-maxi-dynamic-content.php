@@ -1339,8 +1339,6 @@ class MaxiBlocks_DynamicContent
                     'terms'    => $queried_object->term_id,
                 ],
             ];
-            // $archive_info['type'] = $queried_object->taxonomy;
-            // $archive_info['id'] = $queried_object->term_id; // Get the term ID of the custom taxonomy
 
         } elseif (is_post_type_archive()) {
             // It's a custom post type archive

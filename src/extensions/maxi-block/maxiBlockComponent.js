@@ -10,7 +10,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component, createRoot, createRef } from '@wordpress/element';
+import { Component, createRef } from '@wordpress/element';
 import {
 	dispatch,
 	resolveSelect,
@@ -72,112 +72,8 @@ import {
 } from 'lodash';
 import { diff } from 'deep-object-diff';
 
-/**
- * Style Component
- */
-const StyleComponent = ({
-	uniqueID,
-	blockStyle,
-	stylesObj,
-	blockBreakpoints,
-	isIframe = false,
-	isSiteEditor = false,
-	isBreakpointChange,
-	isBlockStyleChange,
-	currentBreakpoint,
-}) => {
-	const { breakpoints } = useSelect(select => {
-		const { receiveMaxiBreakpoints } = select('maxiBlocks');
-
-		const breakpoints = receiveMaxiBreakpoints();
-
-		return { breakpoints };
-	});
-
-	const { updateStyles, saveCSSCache, saveRawCSSCache } =
-		useDispatch('maxiBlocks/styles');
-
-	if (isBreakpointChange || isBlockStyleChange) {
-		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
-		let styleContent = cssCache[currentBreakpoint];
-
-		if (isBlockStyleChange) {
-			const previousBlockStyle =
-				blockStyle === 'light' ? 'dark' : 'light';
-
-			const newCssCache = Object.entries(cssCache).reduce(
-				(acc, [breakpoint, css]) => {
-					acc[breakpoint] = css.replaceAll(
-						`--maxi-${previousBlockStyle}-`,
-						`--maxi-${blockStyle}-`
-					);
-					if (currentBreakpoint === breakpoint) {
-						styleContent = acc[breakpoint];
-					}
-					return acc;
-				},
-				{}
-			);
-
-			const styles = select('maxiBlocks/styles').getBlockStyles(uniqueID);
-
-			const newStyles = {
-				[uniqueID]: {
-					...styles,
-					content: Object.entries(styles.content).reduce(
-						(acc, [selector, props]) => {
-							acc[selector] = Object.entries(props).reduce(
-								(acc, [breakpoint, props]) => {
-									acc[breakpoint] = Object.entries(
-										props
-									).reduce((acc, [prop, value]) => {
-										acc[prop] = isString(value)
-											? value.replaceAll(
-													previousBlockStyle,
-													blockStyle
-											  )
-											: value;
-										return acc;
-									}, {});
-									return acc;
-								},
-								{}
-							);
-							return acc;
-						},
-						{}
-					),
-				},
-			};
-
-			updateStyles(uniqueID, newStyles);
-			saveRawCSSCache(uniqueID, newCssCache);
-		}
-
-		return <style>{styleContent}</style>;
-	}
-
-	const getBreakpoints = () => {
-		const areBreakpointsLoaded =
-			!isEmpty(blockBreakpoints) &&
-			Object.values(blockBreakpoints).every(blockValue => !!blockValue);
-
-		return areBreakpointsLoaded ? blockBreakpoints : breakpoints;
-	};
-
-	const styles = styleResolver({
-		styles: stylesObj,
-		remove: false,
-		breakpoints: getBreakpoints(),
-		uniqueID,
-	});
-
-	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
-
-	saveCSSCache(uniqueID, styles, isIframe, isSiteEditor);
-
-	return <style>{styleContent}</style>;
-};
+let totalGetStylesObjectTime = 0;
+let totalRenderStyleComponentTime = 0;
 
 /**
  * Class
@@ -1301,14 +1197,18 @@ class MaxiBlockComponent extends Component {
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
-		this.rootSlot = this.getRootEl(iframe);
+		// this.rootSlot = this.getRootEl(iframe);
 
 		let obj;
 		let breakpoints;
 		let customDataRelations;
 
 		if (!isBreakpointChange && !isBlockStyleChange) {
+			const start = performance.now();
 			obj = this.getStylesObject;
+			const end = performance.now();
+			const time = end - start;
+			totalGetStylesObjectTime += time;
 			breakpoints = this.getBreakpoints;
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1324,38 +1224,30 @@ class MaxiBlockComponent extends Component {
 			customDataRelations = customData?.[uniqueID]?.relations;
 		}
 
+		const start = performance.now();
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			const isSiteEditor = getIsSiteEditor();
 
 			if (
-				this.rootSlot &&
 				!this.isPatternsPreview &&
 				!document.querySelector(
 					'.editor-post-template__swap-template-modal'
 				)
 			) {
-				const styleComponent = (
-					<StyleComponent
-						uniqueID={uniqueID}
-						blockStyle={this.props.attributes.blockStyle}
-						stylesObj={obj}
-						currentBreakpoint={this.props.deviceType}
-						blockBreakpoints={breakpoints}
-						isSiteEditor={isSiteEditor}
-						isBreakpointChange={isBreakpointChange}
-						isBlockStyleChange={isBlockStyleChange}
-						isPreview={this.isTemplatePartPreview}
-						isIframe={!!iframe}
-					/>
+				this.injectStyles(
+					uniqueID,
+					obj,
+					this.props.deviceType,
+					breakpoints,
+					isSiteEditor,
+					isBreakpointChange,
+					isBlockStyleChange,
+					iframe
 				);
-				// Check if the root slot is still mounted before rendering
-				if (
-					this.rootSlot._internalRoot &&
-					this.rootSlot._internalRoot.containerInfo
-				) {
-					this.rootSlot.render(styleComponent);
-				}
 			}
+			const end = performance.now();
+			const time = end - start;
+			totalRenderStyleComponentTime += time;
 
 			if (customDataRelations) {
 				const isRelationsPreview =
@@ -1462,6 +1354,71 @@ class MaxiBlockComponent extends Component {
 				this.previousRelationInstances = this.relationInstances;
 			}
 		}
+
+		console.log(
+			`Total time to get styles object: ${totalGetStylesObjectTime}ms`
+		);
+		console.log(
+			`Total time to render style component: ${totalRenderStyleComponentTime}ms`
+		);
+	}
+
+	injectStyles(
+		uniqueID,
+		stylesObj,
+		currentBreakpoint,
+		breakpoints,
+		isSiteEditor,
+		isBreakpointChange,
+		isBlockStyleChange,
+		iframe
+	) {
+		const target = iframe ? iframe.contentDocument : document;
+		let styleElement = target.getElementById(
+			`maxi-blocks__styles--${uniqueID}`
+		);
+
+		if (!styleElement) {
+			styleElement = target.createElement('style');
+			styleElement.id = `maxi-blocks__styles--${uniqueID}`;
+			target.head.appendChild(styleElement);
+		}
+
+		let styleContent;
+
+		if (isBreakpointChange || isBlockStyleChange) {
+			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+			styleContent = cssCache[currentBreakpoint];
+
+			if (isBlockStyleChange) {
+				const previousBlockStyle =
+					this.props.attributes.blockStyle === 'light'
+						? 'dark'
+						: 'light';
+				styleContent = styleContent.replaceAll(
+					`--maxi-${previousBlockStyle}-`,
+					`--maxi-${this.props.attributes.blockStyle}-`
+				);
+			}
+		} else {
+			const styles = styleResolver({
+				styles: stylesObj,
+				remove: false,
+				breakpoints: breakpoints || this.getBreakpoints,
+				uniqueID,
+			});
+
+			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+
+			dispatch('maxiBlocks/styles').saveCSSCache(
+				uniqueID,
+				styles,
+				!!iframe,
+				isSiteEditor
+			);
+		}
+
+		styleElement.textContent = styleContent;
 	}
 
 	removeStyles() {
@@ -1470,14 +1427,10 @@ class MaxiBlockComponent extends Component {
 			document.querySelector('.editor-post-template__swap-template-modal')
 		)
 			return;
-		// TODO: check if the code below is still necessary after this root unmount
-		// TODO: check if there's an alternative to the setTimeout to `unmount` the rootSlot
-		if (!this.isReusable && this.rootSlot)
-			setTimeout(() => this.rootSlot.unmount(), 0);
 
-		const templateViewIframe = getTemplateViewIframe(
-			this.props.attributes.uniqueID
-		);
+		const { uniqueID } = this.props.attributes;
+
+		const templateViewIframe = getTemplateViewIframe(uniqueID);
 		const siteEditorIframe = getSiteEditorIframe();
 		const previewIframe = document.querySelector(
 			'.block-editor-block-preview__container iframe'
@@ -1499,7 +1452,12 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
-		editorElement?.getElementById(this.wrapperId)?.remove();
+		const styleElement = editorElement.getElementById(
+			`maxi-blocks__styles--${uniqueID}`
+		);
+		if (styleElement) {
+			styleElement.remove();
+		}
 	}
 
 	/**

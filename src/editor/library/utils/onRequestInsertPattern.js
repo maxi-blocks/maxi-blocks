@@ -22,29 +22,15 @@ const insertCode = async (content, clientId) => {
 
 	// Extract uniqueID values that don't end with '-u'
 	const uniqueIDPattern = /"uniqueID":"((?!-u")[^"]+)"/g;
-	const uniqueIDMatches = content.match(uniqueIDPattern);
+	const uniqueIDMatches = content.match(uniqueIDPattern) || [];
 
-	const uniqueIDArray = uniqueIDMatches
-		? uniqueIDMatches.map(match => {
-				const [, uniqueID] = match.match(/"uniqueID":"((?!-u")[^"]+)"/);
-				return uniqueID;
-		  })
-		: [];
-
-	// Generate new unique IDs for each block
-	const newUniqueIDArray = uniqueIDArray.map(uniqueID => {
+	// Generate new unique IDs and replace them in the content string
+	const updatedContent = uniqueIDMatches.reduce((acc, match) => {
+		const [, uniqueID] = match.match(/"uniqueID":"((?!-u")[^"]+)"/);
 		const blockName = getBlockNameFromUniqueID(uniqueID);
-		return uniqueIDGenerator({ blockName, clientId });
-	});
-
-	// Replace original unique IDs with new unique IDs in the content string
-	let updatedContent = content;
-	uniqueIDArray.forEach((uniqueID, index) => {
-		updatedContent = updatedContent.replace(
-			new RegExp(uniqueID, 'g'),
-			newUniqueIDArray[index]
-		);
-	});
+		const newUniqueID = uniqueIDGenerator({ blockName, clientId });
+		return acc.replace(new RegExp(uniqueID, 'g'), newUniqueID);
+	}, content);
 
 	const parsedContent = rawHandler({
 		HTML: updatedContent,

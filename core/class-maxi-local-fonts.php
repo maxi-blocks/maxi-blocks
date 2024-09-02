@@ -211,7 +211,7 @@ class MaxiBlocks_Local_Fonts
 
     private function normalize_weights($font_weight)
     {
-        $weight_string = is_array($font_weight) ? implode($font_weight, ',') : $font_weight;
+        $weight_string = is_array($font_weight) ? implode(',', $font_weight) : $font_weight;
         $weights = array_unique(explode(',', $weight_string));
         sort($weights);
         return $weights;

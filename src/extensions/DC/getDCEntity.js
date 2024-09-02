@@ -309,6 +309,13 @@ const getDCEntity = async (dataRequest, clientId) => {
 								: relationKeyForId === 'categories'
 								? 'category'
 								: relationKeyForId;
+
+						const delay = ms =>
+							new Promise(resolve => {
+								setTimeout(resolve, ms);
+							});
+						await delay(1000); // Delay for 1 second
+
 						hasEntity = await resolveSelect('core').getEntityRecord(
 							'taxonomy',
 							taxonomyName,

@@ -76,6 +76,7 @@ const fetchAndUpdateDCData = async (
 				lastDynamicContentProps,
 				clientId
 			);
+
 			newContent = decodeEntities(newContent);
 
 			const customTaxonomies = select(

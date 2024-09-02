@@ -20,7 +20,7 @@ import { isEmpty, uniq } from 'lodash';
 const insertCode = async (content, clientId) => {
 	const { replaceBlock } = dispatch('core/block-editor');
 
-	// Extract uniqueID values that don't end with '-u'
+	// Extract uniqueID values that don't end with '-u' from block content
 	const uniqueIDPattern = /"uniqueID":"((?!-u")[^"]+)"/g;
 	const uniqueIDMatches = content.match(uniqueIDPattern) || [];
 

@@ -147,7 +147,7 @@ const ContextLoop = props => {
 		);
 
 		return filteredOptions;
-	}, [contentType, type]);
+	}, [contentType, currentTemplateType, type]);
 
 	const isTypeHasRelations =
 		relationTypes.includes(type) && !!currentRelationOptions;
@@ -193,7 +193,7 @@ const ContextLoop = props => {
 		if (!postAuthorOptions) {
 			fetchPostAuthorOptions();
 		}
-	}, []);
+	}, [changeProps, postAuthorOptions]);
 
 	const fetchDcData = useCallback(async () => {
 		if (status && isTypeHasRelations) {
@@ -236,6 +236,7 @@ const ContextLoop = props => {
 		relation,
 		author,
 		contentType,
+		changeProps,
 	]);
 
 	const selectedBlockClientId = useSelect(
@@ -452,7 +453,16 @@ const ContextLoop = props => {
 								<SelectControl
 									label={__(
 										`${capitalize(
-											orderByRelations.includes(relation)
+											relation.includes('custom-taxonomy')
+												? relation
+														.split(
+															'custom-taxonomy-'
+														)
+														.pop()
+														.replace(/_/g, ' ')
+												: orderByRelations.includes(
+														relation
+												  )
 												? relation.replace('by-', '')
 												: type
 										)} id`,

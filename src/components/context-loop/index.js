@@ -443,41 +443,36 @@ const ContextLoop = props => {
 										}
 									/>
 								)}
-							{(relation !== 'current-archive' &&
+							{((relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id')) ||
-								(relation.includes('custom-taxonomy') && (
-									<SelectControl
-										label={__(
-											`${capitalize(
-												orderByRelations.includes(
-													relation
-												)
-													? relation.replace(
-															'by-',
-															''
-													  )
-													: type
-											)} id`,
-											'maxi-blocks'
-										)}
-										value={id}
-										newStyle
-										options={postIdOptions}
-										onChange={value =>
-											changeProps({
-												'cl-id': Number(value),
-											})
-										}
-										onReset={() =>
-											changeProps({
-												'cl-id': postIdOptions[0].value,
-											})
-										}
-									/>
-								))}
+								relation.includes('custom-taxonomy')) && (
+								<SelectControl
+									label={__(
+										`${capitalize(
+											orderByRelations.includes(relation)
+												? relation.replace('by-', '')
+												: type
+										)} id`,
+										'maxi-blocks'
+									)}
+									value={id}
+									newStyle
+									options={postIdOptions}
+									onChange={value =>
+										changeProps({
+											'cl-id': Number(value),
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'cl-id': postIdOptions[0].value,
+										})
+									}
+								/>
+							)}
 							{(isOrderSettings ||
 								relation.includes('custom-taxonomy')) && (
 								<>

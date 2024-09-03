@@ -559,7 +559,7 @@ export const getAttributesWithoutPrefix = (attributes, prefix) => {
 export const getRelationKeyForId = (relation, type) => {
 	if (!relation || !type) return null;
 	if (relation.includes('custom-taxonomy'))
-		return relation?.split('-')?.slice(3);
+		return relation?.split('custom-taxonomy-').pop();
 	const relationType = relationDictionary[relation];
 	if (relationType) {
 		return relationType[type] || relationType.default;

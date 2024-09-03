@@ -68,11 +68,8 @@ export const getIdOptions = async (
 	};
 
 	if (relation.includes('by-custom-taxonomy')) {
-		const [taxonomy, term] = relation.split('-').slice(3);
-		data = await getEntityRecords('taxonomy', taxonomy, {
-			per_page: -1,
-			term,
-		});
+		const taxonomy = relation.split('custom-taxonomy-').pop();
+		data = await getEntityRecords('taxonomy', taxonomy, args);
 	} else if (type === 'users' || relation === 'by-author') {
 		data = await fetchUsers();
 	} else if (

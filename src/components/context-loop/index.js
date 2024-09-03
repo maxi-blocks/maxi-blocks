@@ -404,6 +404,7 @@ const ContextLoop = props => {
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
+									newStyle
 									options={currentRelationOptions}
 									onChange={value =>
 										changeProps({ 'cl-relation': value })
@@ -425,6 +426,7 @@ const ContextLoop = props => {
 									<SelectControl
 										label={__('Author id', 'maxi-blocks')}
 										value={author}
+										newStyle
 										options={postAuthorOptions}
 										onChange={value =>
 											changeProps({
@@ -462,6 +464,7 @@ const ContextLoop = props => {
 											'maxi-blocks'
 										)}
 										value={id}
+										newStyle
 										options={postIdOptions}
 										onChange={value =>
 											changeProps({
@@ -488,6 +491,7 @@ const ContextLoop = props => {
 												'maxi-blocks'
 											)}
 											value={orderBy}
+											newStyle
 											options={orderByOptions}
 											onChange={value =>
 												changeProps({
@@ -507,6 +511,7 @@ const ContextLoop = props => {
 									<SelectControl
 										label={__('Order', 'maxi-blocks')}
 										value={order}
+										newStyle
 										options={
 											orderOptions[
 												orderByRelations.includes(
@@ -738,12 +743,6 @@ const ContextLoop = props => {
 												paletteOpacity={
 													paginationLinkHoverPaletteOpacity
 												}
-												// onChangeInline={({ color }) =>
-												// 	onChangeInline(
-												// 		{ color },
-												// 		'a:hover'
-												// 	)
-												// }
 												onChange={({
 													paletteColor,
 													paletteStatus,

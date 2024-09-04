@@ -334,6 +334,10 @@ class MaxiBlocks_Styles
             $template_id .= 'author';
         } elseif (is_date()) {
             $template_id .= 'date';
+        } elseif (is_tax()) {
+            // It's a custom taxonomy archive
+            $taxonomy = get_queried_object();
+            $template_id .= 'taxonomy-' . $taxonomy->taxonomy;
         } elseif (is_archive()) {
             $template_id .= 'archive';
         } elseif (is_page()) {

@@ -287,8 +287,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 		}
 
 		if (relationKeyForId && currentId) {
-			console.log(relationKeyForId);
-			console.log(currentId);
 			let hasEntity;
 			const entityKey = `${relationKeyForId}-${currentId}`;
 			if (nonExistingEntities[entityKey]) {
@@ -311,8 +309,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 								: relationKeyForId === 'categories'
 								? 'category'
 								: relationKeyForId;
-
-						console.log(taxonomyName);
 
 						const delay = ms =>
 							new Promise(resolve => {

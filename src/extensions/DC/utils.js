@@ -76,6 +76,14 @@ const showCurrent = (type, currentTemplateType) => {
 	// for specific woo products templates
 	if (currentTemplateType.includes('single-product') && type === 'products')
 		return true;
+	// for taxonomies archive
+	if (
+		currentTemplateType.includes('taxonomy') &&
+		currentTemplateType.includes(type)
+	)
+		return true;
+	if (currentTemplateType.includes('taxonomy') && type.includes('posts'))
+		return true;
 
 	return false;
 };
@@ -90,12 +98,16 @@ const showCurrentArchive = (type, currentTemplateType) => {
 	];
 
 	if (
-		allowedTemplateTypes.includes(currentTemplateType) &&
+		(allowedTemplateTypes.includes(currentTemplateType) ||
+			allowedTemplateTypes.some(template =>
+				currentTemplateType.includes(template)
+			)) &&
 		type.includes('posts')
 	)
 		return true;
 
-	if (currentTemplateType.includes('taxonomy')) return true;
+	if (type.includes('posts') && currentTemplateType.includes('taxonomy'))
+		return true;
 
 	return false;
 };
@@ -262,6 +274,22 @@ const getCustomPostTypeFields = (contentType, type) => {
 	return fields;
 };
 
+export const getCurrentTemplateSlug = () => {
+	const editSite = select('core/edit-site');
+	if (!editSite) return null;
+
+	const currentTemplateTypeRaw =
+		editSite?.getEditedPostContext()?.templateSlug ||
+		editSite?.getEditedPostId(); // fix for WordPress 6.5
+
+	if (!currentTemplateTypeRaw) return null;
+
+	// Extract the part after '//' if it exists
+	const [, currentTemplateType] = currentTemplateTypeRaw.split('//');
+
+	return currentTemplateType || currentTemplateTypeRaw;
+};
+
 const getCustomTaxonomyFields = type => {
 	const fields = [];
 
@@ -282,24 +310,11 @@ const getCustomTaxonomyFields = type => {
 	}
 	addField('Count', 'count');
 	addField('Link', 'link');
+	if (getCurrentTemplateSlug().includes(type)) {
+		addField("Archive type's name", 'archive-type');
+	}
 
 	return fields;
-};
-
-export const getCurrentTemplateSlug = () => {
-	const editSite = select('core/edit-site');
-	if (!editSite) return null;
-
-	const currentTemplateTypeRaw =
-		editSite?.getEditedPostContext()?.templateSlug ||
-		editSite?.getEditedPostId(); // fix for WordPress 6.5
-
-	if (!currentTemplateTypeRaw) return null;
-
-	// Extract the part after '//' if it exists
-	const [, currentTemplateType] = currentTemplateTypeRaw.split('//');
-
-	return currentTemplateType || currentTemplateTypeRaw;
 };
 
 // Utility function to add an item to the options array if it doesn't already exist
@@ -418,7 +433,10 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 		}
 	}
 
-	if (type.includes(select('core/editor').getCurrentPostType())) {
+	if (
+		type.includes(select('core/editor').getCurrentPostType()) ||
+		select('core/editor').getCurrentPostType().includes(type)
+	) {
 		const newItem = {
 			label: __("Get the current item's data", 'maxi-blocks'),
 			value: 'current',

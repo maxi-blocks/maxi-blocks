@@ -304,14 +304,18 @@ export const getCurrentTemplateSlug = () => {
 
 // Utility function to add an item to the options array if it doesn't already exist
 const addUniqueOption = (options, newItem) => {
-	if (!options) return;
+	if (!options || !newItem) return options;
+
 	if (
 		!options.some(
-			item => item.label === newItem.label && item.value === newItem.value
+			item =>
+				item?.label === newItem?.label && item?.value === newItem?.value
 		)
 	) {
 		options.push(newItem);
 	}
+
+	return options.filter(Boolean);
 };
 
 export const getFields = (contentType, type) => {
@@ -400,14 +404,18 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 		options = getTaxonomyRelationOptions();
 	else {
 		options = relationOptions[contentType]?.[type];
-		const ct = select('maxiBlocks/dynamic-content').getCustomTaxonomies();
-		const ctOptions = ct.map(taxonomy => ({
-			label: `Get by ${taxonomy.replace(/_/g, ' ')}`,
-			value: `by-custom-taxonomy-${taxonomy}`,
-		}));
+		if (type !== 'archive') {
+			const ct = select(
+				'maxiBlocks/dynamic-content'
+			).getCustomTaxonomies();
+			const ctOptions = ct.map(taxonomy => ({
+				label: `Get by ${taxonomy.replace(/_/g, ' ')}`,
+				value: `by-custom-taxonomy-${taxonomy}`,
+			}));
 
-		const mergedOptions = [...options, ...ctOptions];
-		options = mergedOptions;
+			const mergedOptions = [...options, ...ctOptions];
+			options = mergedOptions;
+		}
 	}
 
 	if (type.includes(select('core/editor').getCurrentPostType())) {
@@ -438,7 +446,7 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 
 			addUniqueOption(options, newItem);
 		} else {
-			options?.filter(option => option.value !== 'current');
+			options?.filter(option => option?.value !== 'current');
 		}
 	}
 
@@ -473,7 +481,7 @@ export const validationsValues = (
 		currentTemplateType
 	);
 	const relationResult = Array.isArray(relationOptions)
-		? relationOptions.map(x => x.value)
+		? relationOptions.map(x => x?.value)
 		: [];
 	const typeResult = getTypes(
 		contentType,

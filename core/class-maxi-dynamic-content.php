@@ -1614,7 +1614,7 @@ class MaxiBlocks_DynamicContent
                     return get_user_by('id', get_current_user_id());
                 }
 
-                return get_user_by('id', get_the_author_id());
+                return get_user_by('id', get_the_author_meta('id'));
             }
 
             $args = [

@@ -233,7 +233,7 @@ const generalUsersFields = [
 	{ label: __('First name', 'maxi-blocks'), value: 'first_name' },
 	{ label: __('Last name', 'maxi-blocks'), value: 'last_name' },
 	{ label: __('Nickname', 'maxi-blocks'), value: 'nickname' },
-	{ label: __('Description', 'maxi-blocks'), value: 'description' },
+	{ label: __('Biographical info', 'maxi-blocks'), value: 'description' },
 	{ label: __('Email', 'maxi-blocks'), value: 'email' },
 	{ label: __('Link', 'maxi-blocks'), value: 'link' },
 	{ label: __('Website', 'maxi-blocks'), value: 'url' },

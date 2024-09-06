@@ -168,7 +168,6 @@ export function toTree({
 		append(tree, '');
 	}
 
-	// eslint-disable-next-line no-plusplus
 	for (let i = 0; i < formatsLength; i++) {
 		const character = text.charAt(i);
 		const shouldInsertPadding =

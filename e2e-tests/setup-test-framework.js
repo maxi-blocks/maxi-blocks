@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { get } from 'lodash';
+import dotenv from 'dotenv';
 
 /**
  * WordPress dependencies
@@ -25,6 +26,11 @@ import { deactivatePlugin } from './utils';
 const _ = require('lodash');
 
 _.debounce = func => func;
+
+/**
+ * Load environment variables from .env file
+ */
+dotenv.config();
 
 /**
  * Timeout, in seconds, that the test should be allowed to run.
@@ -234,7 +240,7 @@ function observeConsoleLogging() {
 		// failure.
 
 		// eslint-disable-next-line no-console
-		console[logFunction](text);
+		// console[logFunction](text);
 
 		// In case we want to debug the error
 		// debugger;

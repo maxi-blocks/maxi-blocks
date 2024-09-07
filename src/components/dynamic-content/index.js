@@ -424,7 +424,8 @@ const DynamicContent = props => {
 					) : (
 						<>
 							{(relationTypes.includes(type) ||
-								type === 'archive') && (
+								type === 'archive' ||
+								relation.includes('custom-taxonomy')) && (
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
@@ -458,7 +459,7 @@ const DynamicContent = props => {
 							{['users', 'customers'].includes(type) &&
 								relation === 'by-id' && (
 									<SelectControl
-										label={__('User id', 'maxi-blocks')}
+										label={__('Author id', 'maxi-blocks')}
 										value={author}
 										options={postAuthorOptions}
 										newStyle
@@ -477,11 +478,12 @@ const DynamicContent = props => {
 										}
 									/>
 								)}
-							{relation !== 'current-archive' &&
+							{(relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
 								!['users', 'customers'].includes(type) &&
 								(orderByRelations.includes(relation) ||
-									relation === 'by-id') && (
+									relation === 'by-id')) ||
+								(relation.includes('custom-taxonomy') && (
 									<SelectControl
 										label={__(
 											`${capitalize(
@@ -512,12 +514,14 @@ const DynamicContent = props => {
 											})
 										}
 									/>
-								)}
-							{orderTypes.includes(type) &&
-								orderRelations.includes(relation) && (
-									<>
-										{orderByRelations.includes(
-											relation
+								))}
+							{((orderTypes.includes(type) &&
+								orderRelations.includes(relation)) ||
+								relation.includes('custom-taxonomy')) && (
+								<>
+									{orderByRelations.includes(relation) ||
+										(relation.includes(
+											'custom-taxonomy'
 										) && (
 											<SelectControl
 												label={__(
@@ -541,57 +545,57 @@ const DynamicContent = props => {
 													})
 												}
 											/>
-										)}
-										<SelectControl
-											label={__('Order', 'maxi-blocks')}
-											value={order}
-											options={
-												orderOptions[
-													orderByRelations.includes(
-														relation
-													)
-														? orderBy
-														: relation
-												]
-											}
-											newStyle
-											onChange={value =>
-												changeProps({
-													'dc-order': value,
-												})
-											}
-											onReset={() =>
-												changeProps({
-													'dc-order':
-														getDefaultAttribute(
-															'dc-order'
-														),
-												})
-											}
-										/>
-										<AdvancedNumberControl
-											label={__(
-												'Accumulator',
-												'maxi-blocks'
-											)}
-											value={accumulator}
-											onChangeValue={value =>
-												changeProps({
-													'dc-accumulator': value,
-												})
-											}
-											onReset={() =>
-												changeProps({
-													'dc-accumulator':
-														getDefaultAttribute(
-															'dc-accumulator'
-														),
-												})
-											}
-											disableRange
-										/>
-									</>
-								)}
+										))}
+									<SelectControl
+										label={__('Order', 'maxi-blocks')}
+										value={order}
+										options={
+											orderOptions[
+												orderByRelations.includes(
+													relation
+												) ||
+												relation.includes(
+													'custom-taxonomy'
+												)
+													? orderBy
+													: relation
+											]
+										}
+										newStyle
+										onChange={value =>
+											changeProps({
+												'dc-order': value,
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'dc-order':
+													getDefaultAttribute(
+														'dc-order'
+													),
+											})
+										}
+									/>
+									<AdvancedNumberControl
+										label={__('Accumulator', 'maxi-blocks')}
+										value={accumulator}
+										onChangeValue={value =>
+											changeProps({
+												'dc-accumulator': value,
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'dc-accumulator':
+													getDefaultAttribute(
+														'dc-accumulator'
+													),
+											})
+										}
+										disableRange
+									/>
+								</>
+							)}
 							{source === 'wp' &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||

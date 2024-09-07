@@ -77,6 +77,14 @@ const showCurrent = (type, currentTemplateType) => {
 	// for specific woo products templates
 	if (currentTemplateType.includes('single-product') && type === 'products')
 		return true;
+	// for taxonomies archive
+	if (
+		currentTemplateType.includes('taxonomy') &&
+		currentTemplateType.includes(type)
+	)
+		return true;
+	if (currentTemplateType.includes('taxonomy') && type.includes('posts'))
+		return true;
 
 	return false;
 };
@@ -91,15 +99,15 @@ const showCurrentArchive = (type, currentTemplateType) => {
 	];
 
 	if (
-		allowedTemplateTypes.includes(currentTemplateType) &&
+		(allowedTemplateTypes.includes(currentTemplateType) ||
+			allowedTemplateTypes.some(template =>
+				currentTemplateType.includes(template)
+			)) &&
 		type.includes('posts')
 	)
 		return true;
 
-	if (
-		currentTemplateType.includes('taxonomy') &&
-		currentTemplateType.includes(type)
-	)
+	if (type.includes('posts') && currentTemplateType.includes('taxonomy'))
 		return true;
 
 	return false;
@@ -158,7 +166,7 @@ export const getLinkTargets = (type, field) => {
 	if (customTaxonomies.includes(field)) {
 		const capitalizedField = field.charAt(0).toUpperCase() + field.slice(1);
 		targets.push({
-			label: capitalizedField + ' ' + __('links', 'maxi-blocks'),
+			label: `${capitalizedField} ${__('links', 'maxi-blocks')}`,
 			value: field,
 		});
 	}
@@ -267,6 +275,22 @@ const getCustomPostTypeFields = (contentType, type) => {
 	return fields;
 };
 
+export const getCurrentTemplateSlug = () => {
+	const editSite = select('core/edit-site');
+	if (!editSite) return null;
+
+	const currentTemplateTypeRaw =
+		editSite?.getEditedPostContext()?.templateSlug ||
+		editSite?.getEditedPostId(); // fix for WordPress 6.5
+
+	if (!currentTemplateTypeRaw) return null;
+
+	// Extract the part after '//' if it exists
+	const [, currentTemplateType] = currentTemplateTypeRaw.split('//');
+
+	return currentTemplateType || currentTemplateTypeRaw;
+};
+
 const getCustomTaxonomyFields = type => {
 	const fields = [];
 
@@ -287,36 +311,27 @@ const getCustomTaxonomyFields = type => {
 	}
 	addField('Count', 'count');
 	addField('Link', 'link');
+	if (getCurrentTemplateSlug().includes(type)) {
+		addField("Archive type's name", 'archive-type');
+	}
 
 	return fields;
 };
 
-export const getCurrentTemplateSlug = () => {
-	const editSite = select('core/edit-site');
-	if (!editSite) return null;
-
-	const currentTemplateTypeRaw =
-		editSite?.getEditedPostContext()?.templateSlug ||
-		editSite?.getEditedPostId(); // fix for WordPress 6.5
-
-	if (!currentTemplateTypeRaw) return null;
-
-	// Extract the part after '//' if it exists
-	const [, currentTemplateType] = currentTemplateTypeRaw.split('//');
-
-	return currentTemplateType || currentTemplateTypeRaw;
-};
-
 // Utility function to add an item to the options array if it doesn't already exist
 const addUniqueOption = (options, newItem) => {
-	if (!options) return;
+	if (!options || !newItem) return options;
+
 	if (
 		!options.some(
-			item => item.label === newItem.label && item.value === newItem.value
+			item =>
+				item?.label === newItem?.label && item?.value === newItem?.value
 		)
 	) {
 		options.push(newItem);
 	}
+
+	return options.filter(Boolean);
 };
 
 export const getFields = (contentType, type) => {
@@ -403,10 +418,25 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 			.includes(type)
 	)
 		options = getTaxonomyRelationOptions();
-	else options = relationOptions[contentType]?.[type];
+	else {
+		options = relationOptions[contentType]?.[type];
+		if (type !== 'archive') {
+			const ct = select(
+				'maxiBlocks/dynamic-content'
+			).getCustomTaxonomies();
+			const ctOptions = ct.map(taxonomy => ({
+				label: `Get by ${taxonomy.replace(/_/g, ' ')}`,
+				value: `by-custom-taxonomy-${taxonomy}`,
+			}));
+
+			const mergedOptions = [...options, ...ctOptions];
+			options = mergedOptions;
+		}
+	}
 
 	if (
 		type.includes(select('core/editor').getCurrentPostType()) ||
+		select('core/editor').getCurrentPostType().includes(type) ||
 		alwaysShowCurrentTypes.includes(type)
 	) {
 		const newItem = {
@@ -436,7 +466,7 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 
 			addUniqueOption(options, newItem);
 		} else {
-			options?.filter(option => option.value !== 'current');
+			options?.filter(option => option?.value !== 'current');
 		}
 	}
 
@@ -471,7 +501,7 @@ export const validationsValues = (
 		currentTemplateType
 	);
 	const relationResult = Array.isArray(relationOptions)
-		? relationOptions.map(x => x.value)
+		? relationOptions.map(x => x?.value)
 		: [];
 	const typeResult = getTypes(
 		contentType,
@@ -507,12 +537,16 @@ export const validationsValues = (
 };
 
 export const getDCOrder = (relation, orderBy) => {
+	if (!relation || !orderBy) return null;
 	const dictionary = {
 		'by-date': 'date',
 		alphabetical: 'title',
 	};
 
-	if (orderByRelations.includes(relation)) {
+	if (
+		orderByRelations.includes(relation) ||
+		relation.includes('custom-taxonomy')
+	) {
 		return dictionary[orderBy];
 	}
 
@@ -552,6 +586,9 @@ export const getAttributesWithoutPrefix = (attributes, prefix) => {
 };
 
 export const getRelationKeyForId = (relation, type) => {
+	if (!relation || !type) return null;
+	if (relation.includes('custom-taxonomy'))
+		return relation?.split('custom-taxonomy-').pop();
 	const relationType = relationDictionary[relation];
 	if (relationType) {
 		return relationType[type] || relationType.default;

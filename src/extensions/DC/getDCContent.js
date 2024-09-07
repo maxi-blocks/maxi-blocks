@@ -82,9 +82,8 @@ const getDCContent = async (dataRequest, clientId) => {
 		if (source === 'acf') {
 			if (field) {
 				return capitalize(field) + __(': example value', 'maxi-blocks');
-			} else {
-				return __('ACF: example value', 'maxi-blocks');
 			}
+			return __('ACF: example value', 'maxi-blocks');
 		}
 		return (
 			capitalize(dataRequest.field) + __(': example value', 'maxi-blocks')

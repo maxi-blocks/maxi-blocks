@@ -10,3 +10,6 @@ API
 img
 src/includes
 src/extensions/text/fonts/font.js
+
+# Ignore markdown files
+**/*.md

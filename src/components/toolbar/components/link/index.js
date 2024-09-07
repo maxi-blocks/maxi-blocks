@@ -17,6 +17,14 @@ import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
 import { LoopContext, getDCLink, getDCValues } from '../../../../extensions/DC';
 import DC_LINK_BLOCKS from './dcLinkBlocks';
+import { toolbarLink } from '../../../../icons';
+import {
+	linkFields,
+	multipleLinksTypes,
+} from '../../../../extensions/DC/constants';
+import SelectControl from '../../../select-control';
+import { getLinkTargets } from '../../../../extensions/DC/utils';
+import InfoBox from '../../../info-box';
 
 /**
  * External dependencies
@@ -27,14 +35,6 @@ import { isNil, isEmpty } from 'lodash';
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarLink } from '../../../../icons';
-import {
-	linkFields,
-	multipleLinksTypes,
-} from '../../../../extensions/DC/constants';
-import SelectControl from '../../../select-control';
-import { getLinkTargets } from '../../../../extensions/DC/utils';
-import InfoBox from '../../../info-box';
 
 const DISABLED_BLOCKS = [
 	'maxi-blocks/divider-maxi',

@@ -436,7 +436,7 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 
 	if (
 		type.includes(select('core/editor').getCurrentPostType()) ||
-		select('core/editor').getCurrentPostType().includes(type) ||
+		select('core/editor').getCurrentPostType()?.includes(type) ||
 		alwaysShowCurrentTypes.includes(type)
 	) {
 		const newItem = {

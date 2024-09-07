@@ -452,18 +452,29 @@ const getDCEntity = async (dataRequest, clientId) => {
 									!['category', 'post_tag'].includes(taxonomy)
 							);
 
+							const termsPerTaxonomy = {};
 							for (const taxonomy of customTaxonomies) {
-								const terms = await resolveSelect(
+								termsPerTaxonomy[taxonomy] = resolveSelect(
 									'core'
 								).getEntityRecords('taxonomy', taxonomy, {
 									per_page: 2,
 								});
-
-								const termIds = terms
-									? terms.map(term => term.id)
-									: [];
-								taxonomyData[taxonomy] = termIds;
 							}
+
+							const resolvedTerms = await Promise.all(
+								Object.values(termsPerTaxonomy)
+							);
+
+							Object.entries(termsPerTaxonomy).forEach(
+								([taxonomy], index) => {
+									const termIds = resolvedTerms[index]
+										? resolvedTerms[index].map(
+												term => term.id
+										  )
+										: [];
+									taxonomyData[taxonomy] = termIds;
+								}
+							);
 						}
 					}
 				} catch (error) {

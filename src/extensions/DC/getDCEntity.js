@@ -461,16 +461,12 @@ const getDCEntity = async (dataRequest, clientId) => {
 								});
 							}
 
-							const resolvedTerms = await Promise.all(
-								Object.values(termsPerTaxonomy)
-							);
+							await Promise.all(Object.values(termsPerTaxonomy));
 
 							Object.entries(termsPerTaxonomy).forEach(
-								([taxonomy], index) => {
-									const termIds = resolvedTerms[index]
-										? resolvedTerms[index].map(
-												term => term.id
-										  )
+								([taxonomy, terms]) => {
+									const termIds = terms
+										? terms.map(term => term.id)
 										: [];
 									taxonomyData[taxonomy] = termIds;
 								}

@@ -893,20 +893,32 @@ class MaxiBlocks_DynamicContent
             array_key_exists('dc-type', $attributes) &&
             $attributes['dc-type'] === 'users'
         ) {
+            $user_id = null;
+
             if (
                 isset($attributes['dc-relation']) &&
                 $attributes['dc-relation'] === 'current'
             ) {
                 $user_id = get_queried_object_id();
-                $link = get_author_posts_url($user_id);
             } else {
                 if (
                     isset($attributes['dc-author']) &&
                     !empty($attributes['dc-author'])
                 ) {
-                    $link = get_author_posts_url($attributes['dc-author']);
+                    $user_id = $attributes['dc-author'];
                 } else {
-                    $link = get_author_posts_url($attributes['dc-id']);
+                    $user_id = $attributes['dc-id'];
+                }
+            }
+
+            $dc_link_target = $attributes['dc-link-target'];
+            if (isset($user_id)) {
+                if ($dc_link_target === 'author_email') {
+                    $link = $this->xor_obfuscate_email(get_the_author_meta('user_email', $user_id));
+                } elseif ($dc_link_target === 'author_site') {
+                    $link = get_the_author_meta('user_url', $user_id);
+                } else {
+                    $link = get_author_posts_url($user_id);
                 }
             }
         } elseif (
@@ -2920,5 +2932,21 @@ class MaxiBlocks_DynamicContent
             }
         }
         return false;
+    }
+
+    /**
+     * XOR obfuscation function for email address
+     *
+     * @param string $email The email to obfuscate
+     * @param string $key The key to XOR with (could be a single character or a string)
+     * @return string The obfuscated email, base64 encoded for safe transmission
+     */
+    public function xor_obfuscate_email($email, $key = 'K')
+    {
+        $obfuscated = '';
+        for ($i = 0; $i < strlen($email); $i++) {
+            $obfuscated .= $email[$i] ^ $key[$i % strlen($key)];
+        }
+        return base64_encode($obfuscated); // Base64 encode to safely pass through HTML
     }
 }

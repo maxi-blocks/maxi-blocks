@@ -3,7 +3,8 @@ import { inlineLinkFields } from '../DC/constants';
 const getLinkAttributesFromLinkSettings = (
 	linkSettings,
 	dcStatus,
-	dcLinkStatus
+	dcLinkStatus,
+	dcLinkTarget
 ) => {
 	let rel = '';
 	const nf = linkSettings.noFollow;
@@ -21,8 +22,9 @@ const getLinkAttributesFromLinkSettings = (
 	const href =
 		dcStatus && dcLinkStatus ? '$link-to-replace' : linkSettings.url;
 	const target = linkSettings.opensInNewTab ? '_blank' : '_self';
+	const dataEmailObfuscated = dcLinkTarget === 'author_email';
 
-	return { rel, href, target };
+	return { rel, href, target, 'data-email-obfuscated': dataEmailObfuscated };
 };
 
 const WithLink = props => {
@@ -46,7 +48,8 @@ const WithLink = props => {
 				{...getLinkAttributesFromLinkSettings(
 					linkSettings,
 					dcStatus,
-					dcLinkStatus
+					dcLinkStatus,
+					dcLinkTarget
 				)}
 			>
 				{children}

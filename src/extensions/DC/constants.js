@@ -522,11 +522,15 @@ export const htmlFields = ['tags', 'categories'];
 /**
  * Link constants
  */
-export const multipleLinksTypes = ['products'];
+export const multipleLinksTypes = ['products', 'users', 'customers'];
 
 export const linkTypesOptions = {
 	products: [
 		{ label: __('Add to cart', 'maxi-blocks'), value: 'add_to_cart' },
+	],
+	users: [
+		{ label: __('Author email', 'maxi-blocks'), value: 'author_email' },
+		{ label: __('Author site', 'maxi-blocks'), value: 'author_site' },
 	],
 };
 

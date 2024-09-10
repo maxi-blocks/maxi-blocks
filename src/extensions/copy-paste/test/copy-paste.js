@@ -21,8 +21,8 @@ jest.mock('src/extensions/styles/getDefaultAttribute.js', () => ({}));
 jest.mock('src/extensions/maxi-block/handleSetAttributes.js', () => ({}));
 jest.mock('src/extensions/maxi-block/index.js', () => ({}));
 jest.mock('src/extensions/styles/store/selectors.js', () => ({}));
-jest.mock('src/extensions/styles/store/index.js', () => ({}));
 jest.mock('src/components/alignment-control/index.js', () => ({}));
+jest.mock('src/extensions/styles/store/index.js', () => ({}));
 
 describe('getOrganizedAttributes', () => {
 	it('Ensure it works with simple copy paste object', () => {

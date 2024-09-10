@@ -8,30 +8,19 @@ import { useState } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const Button = loadable(() => import('../../components/button'));
-const ColorControl = loadable(() => import('../../components/color-control'));
-const Icon = loadable(() => import('../../components/icon'));
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const TypographyControl = loadable(() =>
-	import('../../components/typography-control')
-);
-const ToggleSwitch = loadable(() => import('../../components/toggle-switch'));
-const AdvancedNumberControl = loadable(() =>
-	import('../../components/advanced-number-control')
-);
-const PaddingControl = loadable(() =>
-	import('../../components/padding-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import Button from '../../components/button';
+import ColorControl from '../../components/color-control';
+import Icon from '../../components/icon';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import TypographyControl from '../../components/typography-control';
+import ToggleSwitch from '../../components/toggle-switch';
+import AdvancedNumberControl from '../../components/advanced-number-control';
+import PaddingControl from '../../components/padding-control';
 import {
 	processSCAttribute,
 	getDefaultSCAttribute,

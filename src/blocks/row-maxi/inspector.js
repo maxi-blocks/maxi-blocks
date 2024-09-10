@@ -5,28 +5,13 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const FlexGapControl = loadable(() =>
-	import('../../components/flex-settings-control/flex-gap-control')
-);
-const FlexWrapControl = loadable(() =>
-	import('../../components/flex-settings-control/flex-wrap-control')
-);
-const ResponsiveTabsControl = loadable(() =>
-	import('../../components/responsive-tabs-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import FlexGapControl from '../../components/flex-settings-control/flex-gap-control';
+import FlexWrapControl from '../../components/flex-settings-control/flex-wrap-control';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
 import ColumnPattern from './components/column-pattern';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';

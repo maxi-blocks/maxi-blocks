@@ -8,28 +8,17 @@ import { isURL } from '@wordpress/url';
 /**
  * External dependencies
  */
-import loadable from '@loadable/component';
 import { capitalize } from 'lodash';
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const ColorControl = loadable(() =>
-	import('../../../../components/color-control')
-);
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
-const TextControl = loadable(() =>
-	import('../../../../components/text-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const MaxiModal = loadable(() => import('../../../../editor/library/modal'));
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import ColorControl from '../../../../components/color-control';
+import SelectControl from '../../../../components/select-control';
+import TextControl from '../../../../components/text-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
+import MaxiModal from '../../../../editor/library/modal';
 
 import {
 	getColorRGBAString,

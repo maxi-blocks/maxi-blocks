@@ -9,25 +9,16 @@ import { useCallback } from '@wordpress/element';
  * External dependencies
  */
 import { isEmpty, without } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const AxisPositionControl = loadable(() =>
-	import('../../components/axis-position-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const ButtonControl = loadable(() => import('./components/button-control'));
-const SkinControl = loadable(() => import('./components/skin-control'));
-const PlaceholderColorControl = loadable(() =>
-	import('./components/placeholder-color-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import AxisPositionControl from '../../components/axis-position-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import ButtonControl from './components/button-control';
+import SkinControl from './components/skin-control';
+import PlaceholderColorControl from './components/placeholder-color-control';
 import { getGroupAttributes } from '../../extensions/styles';
 import { ariaLabelsCategories, customCss, prefixes } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';

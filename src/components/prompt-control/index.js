@@ -8,17 +8,16 @@ import { useContext, useEffect, useRef, useState } from '@wordpress/element';
  * External dependencies
  */
 import { ceil, floor, isEmpty, lowerCase } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const ContentLoader = loadable(() => import('../content-loader'));
-const InfoBox = loadable(() => import('../info-box'));
-const SettingTabsControl = loadable(() => import('../setting-tabs-control'));
-const GenerateTab = loadable(() => import('./tabs/generate-tab'));
-const ResultsTab = loadable(() => import('./tabs/results-tab'));
-const ModifyTab = loadable(() => import('./tabs/modify-tab'));
+import ContentLoader from '../content-loader';
+import InfoBox from '../info-box';
+import SettingTabsControl from '../setting-tabs-control';
+import GenerateTab from './tabs/generate-tab';
+import ResultsTab from './tabs/results-tab';
+import ModifyTab from './tabs/modify-tab';
 import TextContext from '../../extensions/text/formats/TextContext';
 import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
 import { useAISettings, useResultsHandling, useSettings } from './hooks';

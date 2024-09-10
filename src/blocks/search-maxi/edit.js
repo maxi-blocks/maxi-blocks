@@ -7,14 +7,13 @@ import { useEffect, useState } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const RawHTML = loadable(() => import('../../components/raw-html'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Inspector from './inspector';
+import RawHTML from '../../components/raw-html';
+import Toolbar from '../../components/toolbar';
 import MaxiBlock from '../../components/maxi-block/maxiBlock';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes } from '../../components/maxi-block';

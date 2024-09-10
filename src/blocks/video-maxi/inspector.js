@@ -3,30 +3,17 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const PopupSettingsControl = loadable(() =>
-	import('./components/popup-settings-control')
-);
-const VideoControl = loadable(() => import('./components/video-control'));
-const VideoIconControl = loadable(() =>
-	import('./components/video-icon-control')
-);
-const VideoOptionsControl = loadable(() =>
-	import('./components/video-options-control')
-);
-const VideoOverlayControl = loadable(() =>
-	import('./components/video-overlay-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import PopupSettingsControl from './components/popup-settings-control';
+import VideoControl from './components/video-control';
+import VideoIconControl from './components/video-icon-control';
+import VideoOptionsControl from './components/video-options-control';
+import VideoOverlayControl from './components/video-overlay-control';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';

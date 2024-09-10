@@ -10,14 +10,12 @@ import { useState } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-
-const LibraryToolbar = loadable(() => import('./toolbar'));
-const LibraryContainer = loadable(() => import('./container'));
+import LibraryToolbar from './toolbar';
+import LibraryContainer from './container';
 
 /**
  * Styles

@@ -7,12 +7,11 @@ import { useState, useEffect, useRef, createRef } from '@wordpress/element';
  * External dependencies
  */
 import { round } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
+import Inspector from './inspector';
 
 import {
 	getResizerSize,

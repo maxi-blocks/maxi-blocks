@@ -4,19 +4,10 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AlignmentControl = loadable(() =>
-	import('../../components/alignment-control')
-);
-const TypographyControl = loadable(() =>
-	import('../../components/typography-control')
-);
+import AlignmentControl from '../../components/alignment-control';
+import TypographyControl from '../../components/typography-control';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	getAlignmentTextStyles,

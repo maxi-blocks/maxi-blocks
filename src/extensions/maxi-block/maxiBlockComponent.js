@@ -55,7 +55,7 @@ import processRelations from '../relations/processRelations';
 /**
  * External dependencies
  */
-import { isArray, isEmpty, isEqual, isFunction, isNil, isObject } from 'lodash';
+import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 
 let totalGetStylesObjectTime = 0;
@@ -149,10 +149,13 @@ class MaxiBlockComponent extends Component {
 			'maxiBlocks/relations'
 		).receiveBlockUnderRelationClientIDs(uniqueID);
 
-		if (!isEmpty(blocksIBRelations))
-			blocksIBRelations.forEach(({ clientId }) => {
+		if (!isEmpty(blocksIBRelations)) {
+			const { getBlockAttributes } = select('core/block-editor');
+			const { clientId, attributes, deviceType } = this.props;
+
+			blocksIBRelations.forEach(({ clientId: relationClientId }) => {
 				const blockMaxiVersionCurrent =
-					select('core/block-editor')?.getBlockAttributes(clientId)?.[
+					getBlockAttributes(relationClientId)?.[
 						'maxi-version-current'
 					];
 
@@ -170,15 +173,17 @@ class MaxiBlockComponent extends Component {
 						'1.0.1',
 					].includes(blockMaxiVersionCurrent);
 
-					if (needUpdate)
+					if (needUpdate) {
 						updateRelationsRemotely({
-							blockTriggerClientId: clientId,
-							blockTargetClientId: this.props.clientId,
-							blockAttributes: this.props.attributes,
-							breakpoint: this.props.deviceType,
+							blockTriggerClientId: relationClientId,
+							blockTargetClientId: clientId,
+							blockAttributes: attributes,
+							breakpoint: deviceType,
 						});
+					}
 				}
 			});
+		}
 
 		// Migrate uniqueID for IB
 		if (isFirstOnHierarchy && legacyUniqueID) {
@@ -214,53 +219,58 @@ class MaxiBlockComponent extends Component {
 				block.innerBlocks
 			);
 
-			if (isEmpty(idPairs)) return;
-			// Function to replace relation.uniqueID with legacyUniqueID in each block's relations
-			const replaceRelationIDs = (attributes, innerBlocks, clientId) => {
-				const { relations } = attributes;
+			if (!isEmpty(idPairs)) {
+				// Function to replace relation.uniqueID with legacyUniqueID in each block's relations
+				const replaceRelationIDs = (
+					attributes,
+					innerBlocks,
+					clientId
+				) => {
+					const { relations } = attributes;
 
-				if (isArray(relations)) {
-					const newRelations = relations.map(relation => {
-						if (
-							isRelationEligible(relation) &&
-							idPairs[relation.uniqueID]
-						) {
-							return {
-								...relation,
-								uniqueID: idPairs[relation.uniqueID],
-							};
-						}
-						return relation;
-					});
-					const { updateBlockAttributes } =
-						dispatch('core/block-editor');
-					updateBlockAttributes(clientId, {
-						relations: newRelations,
-					});
-				}
-
-				if (isArray(innerBlocks)) {
-					for (let i = 0; i < innerBlocks.length; i++) {
-						const {
-							attributes,
-							innerBlocks: nestedBlocks,
-							clientId: nestedClientId,
-						} = innerBlocks[i];
-						replaceRelationIDs(
-							attributes,
-							nestedBlocks,
-							nestedClientId
-						);
+					if (isArray(relations)) {
+						const { updateBlockAttributes } =
+							dispatch('core/block-editor');
+						const newRelations = relations.map(relation => {
+							if (
+								isRelationEligible(relation) &&
+								idPairs[relation.uniqueID]
+							) {
+								return {
+									...relation,
+									uniqueID: idPairs[relation.uniqueID],
+								};
+							}
+							return relation;
+						});
+						updateBlockAttributes(clientId, {
+							relations: newRelations,
+						});
 					}
-				}
-			};
 
-			// Replace relation.uniqueID with legacyUniqueID in all blocks
-			replaceRelationIDs(
-				this.props.attributes,
-				block.innerBlocks,
-				this.props.clientId
-			);
+					if (isArray(innerBlocks)) {
+						for (let i = 0; i < innerBlocks.length; i++) {
+							const {
+								attributes,
+								innerBlocks: nestedBlocks,
+								clientId: nestedClientId,
+							} = innerBlocks[i];
+							replaceRelationIDs(
+								attributes,
+								nestedBlocks,
+								nestedClientId
+							);
+						}
+					}
+				};
+
+				// Replace relation.uniqueID with legacyUniqueID in all blocks
+				replaceRelationIDs(
+					this.props.attributes,
+					block.innerBlocks,
+					this.props.clientId
+				);
+			}
 		}
 
 		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');

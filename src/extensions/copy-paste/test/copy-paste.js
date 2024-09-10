@@ -5,6 +5,24 @@ jest.mock('@wordpress/blocks', () => jest.fn());
 jest.mock('src/components/block-inserter/index.js', () => jest.fn());
 jest.mock('src/components/index.js', () => jest.fn());
 jest.mock('src/extensions/dom/dom.js', () => jest.fn());
+// Add these mock statements at the top of your test file
+jest.mock('src/extensions/styles/index.js', () => ({
+	createIconTransitions: jest.fn(),
+}));
+jest.mock('src/blocks/search-maxi/data.js', () => ({}));
+jest.mock('src/components/transform-control/utils.js', () => ({}));
+jest.mock('src/extensions/relations/getAdvancedSettings.js', () => ({}));
+jest.mock('src/extensions/relations/index.js', () => ({}));
+jest.mock('src/blocks/accordion-maxi/data.js', () => ({}));
+jest.mock('src/blocks/data.js', () => ({}));
+jest.mock('src/extensions/attributes/getBlockData.js', () => ({}));
+jest.mock('src/extensions/attributes/index.js', () => ({}));
+jest.mock('src/extensions/styles/getDefaultAttribute.js', () => ({}));
+jest.mock('src/extensions/maxi-block/handleSetAttributes.js', () => ({}));
+jest.mock('src/extensions/maxi-block/index.js', () => ({}));
+jest.mock('src/extensions/styles/store/selectors.js', () => ({}));
+jest.mock('src/extensions/styles/store/index.js', () => ({}));
+jest.mock('src/components/alignment-control/index.js', () => ({}));
 
 describe('getOrganizedAttributes', () => {
 	it('Ensure it works with simple copy paste object', () => {

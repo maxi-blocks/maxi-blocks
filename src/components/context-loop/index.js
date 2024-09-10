@@ -147,7 +147,7 @@ const ContextLoop = props => {
 		);
 
 		return filteredOptions;
-	}, [contentType, type]);
+	}, [contentType, currentTemplateType, type]);
 
 	const isTypeHasRelations =
 		relationTypes.includes(type) && !!currentRelationOptions;
@@ -193,7 +193,7 @@ const ContextLoop = props => {
 		if (!postAuthorOptions) {
 			fetchPostAuthorOptions();
 		}
-	}, []);
+	}, [changeProps, postAuthorOptions]);
 
 	const fetchDcData = useCallback(async () => {
 		if (status && isTypeHasRelations) {
@@ -236,6 +236,7 @@ const ContextLoop = props => {
 		relation,
 		author,
 		contentType,
+		changeProps,
 	]);
 
 	const selectedBlockClientId = useSelect(
@@ -404,6 +405,7 @@ const ContextLoop = props => {
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
+									newStyle
 									options={currentRelationOptions}
 									onChange={value =>
 										changeProps({ 'cl-relation': value })
@@ -425,6 +427,7 @@ const ContextLoop = props => {
 									<SelectControl
 										label={__('Author id', 'maxi-blocks')}
 										value={author}
+										newStyle
 										options={postAuthorOptions}
 										onChange={value =>
 											changeProps({
@@ -441,48 +444,59 @@ const ContextLoop = props => {
 										}
 									/>
 								)}
-							{relation !== 'current-archive' &&
+							{((relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
-									relation === 'by-id') && (
-									<SelectControl
-										label={__(
-											`${capitalize(
-												orderByRelations.includes(
-													relation
-												)
-													? relation.replace(
-															'by-',
-															''
-													  )
-													: type
-											)} id`,
-											'maxi-blocks'
-										)}
-										value={id}
-										options={postIdOptions}
-										onChange={value =>
-											changeProps({
-												'cl-id': Number(value),
-											})
-										}
-										onReset={() =>
-											changeProps({
-												'cl-id': postIdOptions[0].value,
-											})
-										}
-									/>
-								)}
-							{isOrderSettings && (
+									relation === 'by-id')) ||
+								relation.includes('custom-taxonomy')) && (
+								<SelectControl
+									label={__(
+										`${capitalize(
+											relation.includes('custom-taxonomy')
+												? relation
+														.split(
+															'custom-taxonomy-'
+														)
+														.pop()
+														.replace(/_/g, ' ')
+												: orderByRelations.includes(
+														relation
+												  )
+												? relation.replace('by-', '')
+												: type
+										)} id`,
+										'maxi-blocks'
+									)}
+									value={id}
+									newStyle
+									options={postIdOptions}
+									onChange={value =>
+										changeProps({
+											'cl-id': Number(value),
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'cl-id': postIdOptions[0].value,
+										})
+									}
+								/>
+							)}
+							{(isOrderSettings ||
+								relation.includes('custom-taxonomy')) && (
 								<>
-									{orderByRelations.includes(relation) && (
+									{(orderByRelations.includes(relation) ||
+										relation.includes(
+											'custom-taxonomy'
+										)) && (
 										<SelectControl
 											label={__(
 												'Order by',
 												'maxi-blocks'
 											)}
 											value={orderBy}
+											newStyle
 											options={orderByOptions}
 											onChange={value =>
 												changeProps({
@@ -502,10 +516,14 @@ const ContextLoop = props => {
 									<SelectControl
 										label={__('Order', 'maxi-blocks')}
 										value={order}
+										newStyle
 										options={
 											orderOptions[
 												orderByRelations.includes(
 													relation
+												) ||
+												relation.includes(
+													'custom-taxonomy'
 												)
 													? orderBy
 													: relation
@@ -730,12 +748,6 @@ const ContextLoop = props => {
 												paletteOpacity={
 													paginationLinkHoverPaletteOpacity
 												}
-												// onChangeInline={({ color }) =>
-												// 	onChangeInline(
-												// 		{ color },
-												// 		'a:hover'
-												// 	)
-												// }
 												onChange={({
 													paletteColor,
 													paletteStatus,

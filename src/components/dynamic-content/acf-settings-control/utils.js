@@ -37,7 +37,7 @@ export const getValidatedACFAttributes = async (
 		'maxiBlocks/dynamic-content'
 	).getACFFields(currentGroup);
 
-	const filteredFields = fields.filter(field =>
+	const filteredFields = fields?.filter(field =>
 		acfFieldTypes[contentType]?.includes(field.type)
 	);
 
@@ -88,7 +88,7 @@ export const getACFOptions = async (
 	const fields = await resolveSelect(
 		'maxiBlocks/dynamic-content'
 	).getACFFields(currentGroup);
-	const filteredFields = fields.filter(field =>
+	const filteredFields = fields?.filter(field =>
 		acfFieldTypes[contentType]?.includes(field.type)
 	);
 

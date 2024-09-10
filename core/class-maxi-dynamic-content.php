@@ -186,9 +186,10 @@ class MaxiBlocks_DynamicContent
                         ],
                     ];
                     break;
-                default:
-                    error_log('Unsupported archive type.');
+                default: $args = $archive_info;
+
             }
+
         } else {
             // Modify the query based on the relation
             switch ($relation) {
@@ -261,8 +262,18 @@ class MaxiBlocks_DynamicContent
                     }
                     break;
             }
+            if(strpos($relation, 'custom-taxonomy') !== false) {
+                $relationParts = explode('-', $relation);
+                $customTaxonomy = implode('-', array_slice($relationParts, 3));
+                $args['tax_query'] = [
+                    [
+                        'taxonomy' => $customTaxonomy,
+                        'field' => 'term_id',
+                        'terms' => [$id],
+                    ],
+                ];
+            }
         }
-
         // Create a new WP_Query instance
         $query = new WP_Query($args);
 
@@ -1321,8 +1332,14 @@ class MaxiBlocks_DynamicContent
         } elseif (is_tax()) {
             // It's a custom taxonomy archive
             $queried_object = get_queried_object();
-            $archive_info['type'] = $queried_object->taxonomy;
-            $archive_info['id'] = $queried_object->term_id; // Get the term ID of the custom taxonomy
+            $archive_info['tax_query']      = [
+                [
+                    'taxonomy' => $queried_object->taxonomy,
+                    'field'    => 'term_id',
+                    'terms'    => $queried_object->term_id,
+                ],
+            ];
+
         } elseif (is_post_type_archive()) {
             // It's a custom post type archive
             $queried_object = get_queried_object();
@@ -1389,7 +1406,7 @@ class MaxiBlocks_DynamicContent
             'by-category',
             'by-author',
             'by-tag',
-        ]);
+        ]) || strpos($dc_relation, 'custom-taxonomy') !== false;
         $is_random = $dc_relation === 'random';
         $is_current_archive = $dc_relation === 'current-archive';
 
@@ -1446,6 +1463,7 @@ class MaxiBlocks_DynamicContent
             } elseif ($is_random) {
                 $args['orderby'] = 'rand';
             } elseif ($is_sort_relation) {
+
                 $args = array_merge(
                     $args,
                     $this->get_order_by_args(
@@ -1459,18 +1477,21 @@ class MaxiBlocks_DynamicContent
                 );
             } elseif ($is_current_archive) {
                 $archive_info = $this->get_current_archive_type_and_id();
-                $args = array_merge(
-                    $args,
-                    $this->get_order_by_args(
-                        $dc_relation,
-                        $dc_order_by,
-                        $dc_order,
-                        $dc_accumulator,
-                        $dc_type,
-                        $archive_info['id'],
-                        $archive_info['type'],
-                    ),
+                $order_by_args = $this->get_order_by_args(
+                    $dc_relation,
+                    $dc_order_by,
+                    $dc_order,
+                    $dc_accumulator,
+                    $dc_type,
+                    $archive_info['id'],
+                    $archive_info['type']
                 );
+
+                if (isset($archive_info['tax_query'])) {
+                    $order_by_args['tax_query'] = $archive_info['tax_query'];
+                }
+
+                $args = array_merge($args, $order_by_args);
             }
 
             if ($dc_type === 'products') {
@@ -2577,7 +2598,7 @@ class MaxiBlocks_DynamicContent
 
         $relation = $attributes['dc-relation'] ?? null;
 
-        if (in_array($relation, self::$order_by_relations)) {
+        if (in_array($relation, self::$order_by_relations) || strpos($relation, 'custom-taxonomy') !== false) {
             if (isset($attributes['dc-order-by'])) {
                 return $dictionary[$attributes['dc-order-by']];
             }
@@ -2662,7 +2683,7 @@ class MaxiBlocks_DynamicContent
                 'alphabetical' => 'title',
             ];
 
-            if (in_array($relation, self::$order_by_relations)) {
+            if (in_array($relation, self::$order_by_relations) || strpos($relation, 'custom-taxonomy') !== false) {
                 $order_by_arg = $dictionary[$order_by];
             } else {
                 $order_by_arg = $dictionary[$relation];
@@ -2725,6 +2746,16 @@ class MaxiBlocks_DynamicContent
                     $args[$archive_type] = $id;
                     break;
             }
+        } elseif(strpos($relation, 'custom-taxonomy') !== false) {
+            $relationParts = explode('-', $relation);
+            $customTaxonomy = implode('-', array_slice($relationParts, 3));
+            $args['tax_query'] = [
+                [
+                    'taxonomy' => $customTaxonomy,
+                    'field' => 'term_id',
+                    'terms' => $id,
+                ],
+            ];
         }
 
         return $args;

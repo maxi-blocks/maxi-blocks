@@ -21,12 +21,11 @@ import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
 import getACFContentByType from './getACFContentByType';
 import { getCartContent, getProductsContent } from './getWCContent';
-import { getACFOptions } from '../../components/dynamic-content/acf-settings-control/utils';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty, capitalize, isEqual } from 'lodash';
+import { isNil, isEmpty, capitalize } from 'lodash';
 
 const handleParentField = async (contentValue, type) => {
 	if (!contentValue || contentValue === 0)
@@ -83,9 +82,8 @@ const getDCContent = async (dataRequest, clientId) => {
 		if (source === 'acf') {
 			if (field) {
 				return capitalize(field) + __(': example value', 'maxi-blocks');
-			} else {
-				return __('ACF: example value', 'maxi-blocks');
 			}
+			return __('ACF: example value', 'maxi-blocks');
 		}
 		return (
 			capitalize(dataRequest.field) + __(': example value', 'maxi-blocks')

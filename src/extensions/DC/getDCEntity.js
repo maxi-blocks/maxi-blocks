@@ -38,7 +38,7 @@ const getRandomEntity = (entities, clientId) => {
 
 const getPostBySlug = async slug => {
 	const posts = await select('core').getEntityRecords('postType', 'post', {
-		slug: slug,
+		slug,
 		per_page: 1,
 	});
 
@@ -51,7 +51,7 @@ const getPostBySlug = async slug => {
 
 const getAuthorBySlug = async slug => {
 	const users = await select('core').getEntityRecords('root', 'user', {
-		slug: slug,
+		slug,
 		per_page: 1,
 	});
 
@@ -67,7 +67,7 @@ const getCategoryBySlug = async slug => {
 		'taxonomy',
 		'category',
 		{
-			slug: slug,
+			slug,
 			per_page: 1,
 		}
 	);
@@ -81,7 +81,7 @@ const getCategoryBySlug = async slug => {
 
 const getTagBySlug = async slug => {
 	const tags = await select('core').getEntityRecords('taxonomy', 'post_tag', {
-		slug: slug,
+		slug,
 		per_page: 1,
 	});
 
@@ -97,7 +97,7 @@ const getProductBySlug = async slug => {
 		'postType',
 		'product',
 		{
-			slug: slug,
+			slug,
 			per_page: 1,
 		}
 	);
@@ -108,8 +108,6 @@ const getProductBySlug = async slug => {
 
 	return null;
 };
-
-let getDCEntityCounter = 0;
 
 const existingEntities = {};
 const nonExistingEntities = {};
@@ -235,15 +233,66 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
 
-	if (orderTypes.includes(type) && orderRelations.includes(relation)) {
-		const relationKeyForId = getRelationKeyForId(relation, type);
+	if (
+		(orderTypes.includes(type) && orderRelations.includes(relation)) ||
+		relation.includes('custom-taxonomy') ||
+		relation === 'current-archive'
+	) {
+		let relationKeyForId = getRelationKeyForId(relation, type);
+		const currentTemplateType = getCurrentTemplateSlug();
+		let currentId = id;
+		if (relation === 'current-archive') {
+			const getRelationKeyForIdByTemplate = templateType => {
+				if (templateType.includes('single-post')) {
+					return 'post';
+				}
+				if (templateType.includes('author')) {
+					return 'author';
+				}
+				if (templateType.includes('category')) {
+					return 'categories';
+				}
+				if (templateType.includes('tag')) {
+					return 'tags';
+				}
+				if (templateType.includes('single-product-')) {
+					return 'product_categories';
+				}
+				if (templateType.includes('taxonomy')) {
+					return templateType.replace('taxonomy-', '');
+				}
+				return null;
+			};
+			relationKeyForId =
+				getRelationKeyForIdByTemplate(currentTemplateType);
 
-		if (relationKeyForId && id) {
+			const taxonomyName =
+				relationKeyForId === 'tags'
+					? 'post_tag'
+					: relationKeyForId === 'categories'
+					? 'category'
+					: relationKeyForId;
+
+			const taxonomyRecords = await resolveSelect(
+				'core'
+			).getEntityRecords('taxonomy', taxonomyName, {
+				per_page: 1,
+				hide_empty: false,
+			});
+
+			if (taxonomyRecords && taxonomyRecords.length > 0) {
+				const firstRecord = taxonomyRecords[0];
+				currentId = firstRecord.id;
+			}
+		}
+
+		if (relationKeyForId && currentId) {
 			let hasEntity;
-			const entityKey = `${relationKeyForId}-${id}`;
+			const entityKey = `${relationKeyForId}-${currentId}`;
 			if (nonExistingEntities[entityKey]) {
 				return null;
-			} else if (existingEntities[entityKey]) {
+			}
+			if (existingEntities[entityKey]) {
 				hasEntity = existingEntities[entityKey];
 			} else {
 				try {
@@ -251,7 +300,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 						hasEntity = await resolveSelect('core').getEntityRecord(
 							'root',
 							'user',
-							id
+							currentId
 						);
 					} else {
 						const taxonomyName =
@@ -260,10 +309,17 @@ const getDCEntity = async (dataRequest, clientId) => {
 								: relationKeyForId === 'categories'
 								? 'category'
 								: relationKeyForId;
+
+						const delay = ms =>
+							new Promise(resolve => {
+								setTimeout(resolve, ms);
+							});
+						await delay(1000); // Delay for 1 second
+
 						hasEntity = await resolveSelect('core').getEntityRecord(
 							'taxonomy',
 							taxonomyName,
-							id
+							currentId
 						);
 					}
 					if (hasEntity) {
@@ -289,7 +345,9 @@ const getDCEntity = async (dataRequest, clientId) => {
 				order,
 				orderby: getDCOrder(relation, orderBy),
 				offset: accumulator,
-				...(relationKeyForId && { [relationKeyForId]: id }),
+				...(relationKeyForId && {
+					[relationKeyForId]: currentId,
+				}),
 			}
 		);
 		if (entities && entities.length > 0) {

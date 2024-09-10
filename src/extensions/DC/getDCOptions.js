@@ -67,7 +67,10 @@ export const getIdOptions = async (
 		return users ? users.map(({ id, name }) => ({ id, name })) : null;
 	};
 
-	if (type === 'users' || relation === 'by-author') {
+	if (relation.includes('by-custom-taxonomy')) {
+		const taxonomy = relation.split('custom-taxonomy-').pop();
+		data = await getEntityRecords('taxonomy', taxonomy, args);
+	} else if (type === 'users' || relation === 'by-author') {
 		data = await fetchUsers();
 	} else if (
 		['categories', 'product_categories'].includes(type) ||
@@ -92,7 +95,9 @@ export const getIdOptions = async (
 	} else if (relation === 'current-archive') {
 		if (currentTemplateType === 'author') {
 			data = await fetchUsers();
-		} else if (['category', 'tag'].includes(currentTemplateType)) {
+		} else if (
+			['category', 'tag', 'taxonomy'].includes(currentTemplateType)
+		) {
 			data = await getEntityRecords(
 				'taxonomy',
 				currentTemplateType,
@@ -144,6 +149,12 @@ const getDCOptions = async (
 	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const newPostIdOptions = data.map(item => {
+		if (relation.includes('by-custom-taxonomy')) {
+			return {
+				label: limitString(item.name, 20),
+				value: +item.id,
+			};
+		}
 		if (
 			[
 				'tags',

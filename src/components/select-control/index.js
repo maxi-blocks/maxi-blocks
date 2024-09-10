@@ -49,17 +49,21 @@ export default function SelectControl({
 	};
 
 	const getOptions = options =>
-		options.map((option, index) => (
-			<option
-				// eslint-disable-next-line react/no-array-index-key
-				key={`${option.label}-${option.value}-${index}`}
-				value={option.value}
-				disabled={option.disabled}
-				className={option.className}
-			>
-				{option.label}
-			</option>
-		));
+		options
+			.filter(option => option !== undefined)
+			.map((option, index) => {
+				return (
+					<option
+						// eslint-disable-next-line react/no-array-index-key
+						key={`${option.label}-${option.value}-${index}`}
+						value={option.value}
+						disabled={option.disabled}
+						className={option.className}
+					>
+						{option.label}
+					</option>
+				);
+			});
 
 	const classes = classnames(
 		`maxi-select-control ${

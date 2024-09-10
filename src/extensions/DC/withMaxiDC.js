@@ -13,7 +13,6 @@ import {
  * Internal dependencies
  */
 import { getGroupAttributes } from '../styles';
-import getDCValues from './getDCValues';
 import LoopContext from './loopContext';
 
 /**
@@ -46,8 +45,6 @@ const withMaxiDC = createHigherOrderComponent(
 			const contextLoop = useContext(LoopContext)?.contextLoop;
 			const dynamicContent =
 				isDCBlock && getGroupAttributes(attributes, 'dynamicContent');
-			const dynamicContentProps =
-				isDCBlock && getDCValues(dynamicContent, contextLoop);
 			const contentType = useMemo(
 				() => name.replace(/maxi-blocks\//, '').replace(/-maxi/, ''),
 				[name]
@@ -69,7 +66,7 @@ const withMaxiDC = createHigherOrderComponent(
 						clientId
 					).catch(console.error);
 				},
-				[fetchAndUpdateDCData]
+				[]
 			);
 
 			const fetchDCDataForLayer = useCallback(
@@ -95,7 +92,7 @@ const withMaxiDC = createHigherOrderComponent(
 						clientId
 					).catch(console.error);
 				},
-				[fetchAndUpdateDCData, onChangeLayer]
+				[]
 			);
 
 			useEffect(() => {

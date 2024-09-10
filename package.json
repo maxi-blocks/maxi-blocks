@@ -34,7 +34,7 @@
 		"@uiw/react-textarea-code-editor": "latest",
 		"@wordpress/babel-preset-default": "^7.35.1",
 		"@wordpress/block-editor": "latest",
-		"@wordpress/blocks": "latest",
+		"@wordpress/blocks": "^13.6.0",
 		"@wordpress/components": "latest",
 		"@wordpress/compose": "latest",
 		"@wordpress/data": "latest",

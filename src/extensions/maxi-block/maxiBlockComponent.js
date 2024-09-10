@@ -131,25 +131,32 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		const {
+			uniqueID,
+			isFirstOnHierarchy,
+			legacyUniqueID,
+			'maxi-version-current': maxiVersionCurrent,
+			'maxi-version-origin': maxiVersionOrigin,
+		} = this.props.attributes;
+
 		if (
 			this.isPatternsPreview ||
 			document.querySelector('.editor-post-template__swap-template-modal')
 		)
 			return;
-		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
-		// setting this snippet here that should act the same way as a migrator
+
 		const blocksIBRelations = select(
 			'maxiBlocks/relations'
-		).receiveBlockUnderRelationClientIDs(this.props.attributes.uniqueID);
+		).receiveBlockUnderRelationClientIDs(uniqueID);
 
 		if (!isEmpty(blocksIBRelations))
 			blocksIBRelations.forEach(({ clientId }) => {
-				const maxiVersionCurrent =
+				const blockMaxiVersionCurrent =
 					select('core/block-editor')?.getBlockAttributes(clientId)?.[
 						'maxi-version-current'
 					];
 
-				if (maxiVersionCurrent) {
+				if (blockMaxiVersionCurrent) {
 					const needUpdate = [
 						'0.0.1-SC1',
 						'0.0.1-SC2',
@@ -161,7 +168,7 @@ class MaxiBlockComponent extends Component {
 						'1.0.0-RC2',
 						'1.0.0',
 						'1.0.1',
-					].includes(maxiVersionCurrent);
+					].includes(blockMaxiVersionCurrent);
 
 					if (needUpdate)
 						updateRelationsRemotely({
@@ -174,10 +181,7 @@ class MaxiBlockComponent extends Component {
 			});
 
 		// Migrate uniqueID for IB
-		if (
-			this.props.attributes.isFirstOnHierarchy &&
-			this.props.attributes.legacyUniqueID
-		) {
+		if (isFirstOnHierarchy && legacyUniqueID) {
 			const isRelationEligible = relation =>
 				isObject(relation) &&
 				'uniqueID' in relation &&
@@ -263,14 +267,13 @@ class MaxiBlockComponent extends Component {
 
 		receiveMaxiSettings()
 			.then(settings => {
-				const { attributes } = this.props;
 				const maxiVersion = settings.maxi_version;
 
-				if (maxiVersion !== attributes['maxi-version-current'])
-					attributes['maxi-version-current'] = maxiVersion;
+				if (maxiVersion !== maxiVersionCurrent)
+					this.props.attributes['maxi-version-current'] = maxiVersion;
 
-				if (!attributes['maxi-version-origin'])
-					attributes['maxi-version-origin'] = maxiVersion;
+				if (!maxiVersionOrigin)
+					this.props.attributes['maxi-version-origin'] = maxiVersion;
 			})
 			.catch(error =>
 				console.error('MaxiBlocks: Could not load settings', error)

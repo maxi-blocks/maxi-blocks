@@ -183,7 +183,7 @@ class MaxiBlockComponent extends Component {
 				'uniqueID' in relation &&
 				!relation.uniqueID.endsWith('-u');
 
-			// Function to collect all uniqueID and legacyUniqueID pairs from blocks within the hierarchy
+			// Optimized function to collect all uniqueID and legacyUniqueID pairs
 			const collectIDs = (attributes, innerBlocks, idPairs = {}) => {
 				const { uniqueID, legacyUniqueID } = attributes;
 
@@ -192,10 +192,11 @@ class MaxiBlockComponent extends Component {
 				}
 
 				if (isArray(innerBlocks)) {
-					innerBlocks.forEach(block => {
-						const { innerBlocks, attributes } = block;
-						collectIDs(attributes, innerBlocks, idPairs);
-					});
+					for (let i = 0; i < innerBlocks.length; i++) {
+						const { attributes, innerBlocks: nestedBlocks } =
+							innerBlocks[i];
+						collectIDs(attributes, nestedBlocks, idPairs);
+					}
 				}
 
 				return idPairs;
@@ -235,10 +236,18 @@ class MaxiBlockComponent extends Component {
 				}
 
 				if (isArray(innerBlocks)) {
-					innerBlocks.forEach(block => {
-						const { innerBlocks, attributes, clientId } = block;
-						replaceRelationIDs(attributes, innerBlocks, clientId);
-					});
+					for (let i = 0; i < innerBlocks.length; i++) {
+						const {
+							attributes,
+							innerBlocks: nestedBlocks,
+							clientId: nestedClientId,
+						} = innerBlocks[i];
+						replaceRelationIDs(
+							attributes,
+							nestedBlocks,
+							nestedClientId
+						);
+					}
 				}
 			};
 

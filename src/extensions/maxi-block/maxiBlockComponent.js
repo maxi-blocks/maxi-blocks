@@ -11,13 +11,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import {
-	dispatch,
-	resolveSelect,
-	select,
-	useDispatch,
-	useSelect,
-} from '@wordpress/data';
+import { dispatch, resolveSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -61,15 +55,7 @@ import processRelations from '../relations/processRelations';
 /**
  * External dependencies
  */
-import {
-	isArray,
-	isEmpty,
-	isEqual,
-	isFunction,
-	isNil,
-	isObject,
-	isString,
-} from 'lodash';
+import { isArray, isEmpty, isEqual, isFunction, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 
 let totalGetStylesObjectTime = 0;
@@ -142,8 +128,6 @@ class MaxiBlockComponent extends Component {
 		// 1. Adding again the root and having a React error
 		// 2. Will request `displayStyles` without re-rendering the styles, which speeds up the process
 		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
-
-		this.wrapperId = getStylesWrapperId(newUniqueID);
 	}
 
 	componentDidMount() {
@@ -644,140 +628,6 @@ class MaxiBlockComponent extends Component {
 		}
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
-	}
-
-	getRootEl(iframe) {
-		const { uniqueID } = this.props.attributes;
-
-		const getStylesWrapper = (element, onCreateWrapper) => {
-			let wrapper = element.querySelector(`#${this.wrapperId}`);
-
-			if (!wrapper) {
-				wrapper = document.createElement('div');
-				wrapper.id = this.wrapperId;
-				wrapper.classList.add('maxi-blocks__styles');
-				element.appendChild(wrapper);
-
-				if (isFunction(onCreateWrapper)) onCreateWrapper(wrapper);
-			}
-
-			return wrapper;
-		};
-
-		const getPreviewWrapper = (element, changeBreakpoint = true) => {
-			const elementHead = Array.from(
-				element.querySelectorAll('head')
-			).pop();
-
-			const elementBody = Array.from(
-				element.querySelectorAll('body')
-			).pop();
-
-			elementBody.classList.add('maxi-blocks--active');
-
-			if (changeBreakpoint) {
-				const width =
-					elementBody.querySelector('.is-root-container').offsetWidth;
-				elementBody.setAttribute(
-					'maxi-blocks-responsive',
-					getWinBreakpoint(width)
-				);
-			}
-
-			return getStylesWrapper(elementHead, () => {
-				if (!element.getElementById('maxi-blocks-sc-vars-inline-css')) {
-					const SC = select(
-						'maxiBlocks/style-cards'
-					).receiveMaxiActiveStyleCard();
-					if (SC) {
-						updateSCOnEditor(SC.value, null, element);
-					}
-				}
-			});
-		};
-
-		let wrapper;
-		let root = null;
-
-		const isSiteEditor = getIsSiteEditor();
-
-		if (isSiteEditor) {
-			const siteEditorIframe = getSiteEditorIframe();
-
-			if (this.isTemplatePartPreview) {
-				const templateViewIframe = getTemplateViewIframe(uniqueID);
-				if (templateViewIframe) {
-					wrapper = getPreviewWrapper(templateViewIframe);
-				}
-			} else if (siteEditorIframe) {
-				// Iframe on creation generates head, then gutenberg generates their own head
-				// and in some moment we have two heads, so we need to add styles only to second head(gutenberg one)
-				const iframeHead = Array.from(
-					siteEditorIframe.querySelectorAll('head')
-				).pop();
-
-				wrapper = getStylesWrapper(iframeHead);
-			}
-		} else if (iframe) {
-			wrapper = getPreviewWrapper(iframe.contentDocument, false);
-
-			const currentPreviewDeviceType = getCurrentPreviewDeviceType();
-
-			if (currentPreviewDeviceType !== 'Desktop')
-				iframe.contentDocument.body.setAttribute(
-					'maxi-blocks-responsive',
-					document.querySelector('.is-tablet-preview') ? 's' : 'xs'
-				);
-			if (currentPreviewDeviceType === 'Tablet')
-				iframe.contentDocument.body.setAttribute(
-					'maxi-blocks-responsive',
-					's'
-				);
-			if (!select('maxiBlocks').getIsIframeObserverSet()) {
-				dispatch('maxiBlocks').setIsIframeObserverSet(true);
-				const iframeObserver = new MutationObserver(() => {
-					if (
-						!iframe.contentDocument.body.classList.contains(
-							'maxi-blocks--active'
-						)
-					) {
-						iframe.contentDocument.body.classList.add(
-							'maxi-blocks--active'
-						);
-					}
-				});
-				iframeObserver.observe(iframe.contentDocument.body, {
-					attributes: true,
-					attributeFilter: ['class'],
-				});
-			}
-		} else {
-			dispatch('maxiBlocks').setIsIframeObserverSet(false);
-			wrapper = getStylesWrapper(document.head);
-		}
-
-		if (
-			this.rootSlot &&
-			wrapper?.parentElement.isSameNode(
-				this.rootSlot._internalRoot?.containerInfo?.parentElement
-			)
-		)
-			return this.rootSlot;
-
-		if (!root && wrapper) {
-			if (wrapper._reactRoot) {
-				root = wrapper._reactRoot;
-			} else {
-				root = createRoot(wrapper);
-				wrapper._reactRoot = root; // Store the created root for later use
-			}
-		}
-
-		if (root) {
-			dispatch('maxiBlocks/blocks').updateBlockStylesRoot(uniqueID, root);
-		}
-
-		return root;
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1373,14 +1223,13 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
-		const target = iframe ? iframe.contentDocument : document;
-		let styleElement = target.getElementById(
-			`maxi-blocks__styles--${uniqueID}`
-		);
+		const target = iframe?.contentDocument || document;
+		const styleId = `maxi-blocks__styles--${uniqueID}`;
+		let styleElement = target.getElementById(styleId);
 
 		if (!styleElement) {
 			styleElement = target.createElement('style');
-			styleElement.id = `maxi-blocks__styles--${uniqueID}`;
+			styleElement.id = styleId;
 			target.head.appendChild(styleElement);
 		}
 
@@ -1391,13 +1240,12 @@ class MaxiBlockComponent extends Component {
 			styleContent = cssCache[currentBreakpoint];
 
 			if (isBlockStyleChange) {
+				const { blockStyle } = this.props.attributes;
 				const previousBlockStyle =
-					this.props.attributes.blockStyle === 'light'
-						? 'dark'
-						: 'light';
-				styleContent = styleContent.replaceAll(
-					`--maxi-${previousBlockStyle}-`,
-					`--maxi-${this.props.attributes.blockStyle}-`
+					blockStyle === 'light' ? 'dark' : 'light';
+				styleContent = styleContent.replace(
+					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
+					`--maxi-${blockStyle}-`
 				);
 			}
 		} else {
@@ -1418,7 +1266,9 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
-		styleElement.textContent = styleContent;
+		if (styleElement.textContent !== styleContent) {
+			styleElement.textContent = styleContent;
+		}
 	}
 
 	removeStyles() {

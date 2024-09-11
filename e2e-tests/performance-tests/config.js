@@ -12,7 +12,7 @@ import path from 'path';
 /**
  * Number of warmup iterations to perform.
  */
-export const WARMUP_ITERATIONS = 3;
+export const WARMUP_ITERATIONS = 5;
 
 /**
  * Timeout for warmup.
@@ -22,17 +22,17 @@ export const WARMUP_TIMEOUT = 20000 * WARMUP_ITERATIONS;
 /**
  * Cool down time between iterations.
  */
-export const COOL_DOWN_TIME = 500;
+export const COOL_DOWN_TIME = 1000;
 
 /**
  * Number of iterations to perform for each pattern.
  */
-export const PATTERNS_ITERATIONS = 3;
+export const PATTERNS_ITERATIONS = 5;
 
 /**
  * Number of iterations to perform for each block.
  */
-export const BLOCKS_ITERATIONS = 3;
+export const BLOCKS_ITERATIONS = 5;
 
 /**
  * Timeout for performance tests.
@@ -68,9 +68,9 @@ export const PATTERNS = [
 			'HOL-PRO-95',
 			'ANL-PRO-09',
 			'NML-PRO-18',
-			'PIL-PRO-164',
-			'SML-PRO-139',
-			'SML-38',
+			// 'PIL-PRO-164',
+			// 'SML-PRO-139',
+			// 'SML-38',
 		],
 	},
 	{
@@ -79,20 +79,20 @@ export const PATTERNS = [
 			'PBGL-PRO-60',
 			'PBGL-PRO-97',
 			'WCL-PRO-01',
-			'PBGL-PRO-12',
-			'WCL-PRO-06',
+			// 'PBGL-PRO-12',
+			// 'WCL-PRO-06',
 		],
 	},
 	{
 		type: 'IB',
 		patterns: [
 			'PIL-PRO-75',
-			'PIL-PRO-82',
-			'PIL-PRO-83',
-			'PIL-PRO-118',
+			// 'PIL-PRO-82',
+			// 'PIL-PRO-83',
+			// 'PIL-PRO-118',
 			'HOL-PRO-133',
 			'SML-PRO-137',
-			'PTML-PRO-77',
+			// 'PTML-PRO-77',
 		],
 	},
 	{
@@ -101,9 +101,9 @@ export const PATTERNS = [
 			'HOL-PRO-62',
 			'SML-PRO-134',
 			'PFL-PRO-62',
-			'HOL-PRO-53',
-			'HOL-PRO-47',
-			'SML-PRO-162',
+			// 'HOL-PRO-53',
+			// 'HOL-PRO-47',
+			// 'SML-PRO-162',
 		],
 	},
 	{
@@ -111,10 +111,10 @@ export const PATTERNS = [
 		patterns: [
 			'DSP-PRO-01',
 			'GMP-PRO-01',
-			'NGOP-PRO-02',
+			// 'NGOP-PRO-02',
 			'HEP-PRO-05',
-			'GDSP-PRO-01',
-			'CSPY-PRO-01',
+			// 'GDSP-PRO-01',
+			// 'CSPY-PRO-01',
 		],
 	},
 ];

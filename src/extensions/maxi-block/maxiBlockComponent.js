@@ -1286,7 +1286,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	/**
-	 * Refresh the styles on Editor
+	 * Refresh the styles on the Editor
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
 		if (

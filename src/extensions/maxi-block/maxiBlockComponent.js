@@ -58,8 +58,8 @@ import processRelations from '../relations/processRelations';
 import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 
-let totalGetStylesObjectTime = 0;
-let totalRenderStyleComponentTime = 0;
+const totalGetStylesObjectTime = 0;
+const totalRenderStyleComponentTime = 0;
 
 /**
  * Class
@@ -1069,23 +1069,12 @@ class MaxiBlockComponent extends Component {
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
-		// this.rootSlot = this.getRootEl(iframe);
-
 		let obj;
 		let breakpoints;
 		let customDataRelations;
 
 		if (!isBreakpointChange && !isBlockStyleChange) {
-			const start = performance.now();
 			obj = this.getStylesObject;
-			const end = performance.now();
-			const time = end - start;
-			totalGetStylesObjectTime += time;
-			console.log(
-				`Time to get styles object for ${uniqueID}: ${time.toFixed(
-					2
-				)}ms`
-			);
 			breakpoints = this.getBreakpoints;
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1101,7 +1090,6 @@ class MaxiBlockComponent extends Component {
 			customDataRelations = customData?.[uniqueID]?.relations;
 		}
 
-		const start = performance.now();
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			const isSiteEditor = getIsSiteEditor();
 
@@ -1122,9 +1110,6 @@ class MaxiBlockComponent extends Component {
 					iframe
 				);
 			}
-			const end = performance.now();
-			const time = end - start;
-			totalRenderStyleComponentTime += time;
 
 			if (customDataRelations) {
 				const isRelationsPreview =
@@ -1231,17 +1216,6 @@ class MaxiBlockComponent extends Component {
 				this.previousRelationInstances = this.relationInstances;
 			}
 		}
-
-		console.log(
-			`Total time to get styles object: ${totalGetStylesObjectTime.toFixed(
-				2
-			)}ms`
-		);
-		console.log(
-			`Total time to render style component: ${totalRenderStyleComponentTime.toFixed(
-				2
-			)}ms`
-		);
 	}
 
 	injectStyles(

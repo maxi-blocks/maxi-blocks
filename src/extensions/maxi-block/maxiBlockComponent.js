@@ -1081,11 +1081,6 @@ class MaxiBlockComponent extends Component {
 			const end = performance.now();
 			const time = end - start;
 			totalGetStylesObjectTime += time;
-			console.log(
-				`Time to get styles object for ${uniqueID}: ${time.toFixed(
-					2
-				)}ms`
-			);
 			breakpoints = this.getBreakpoints;
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1233,14 +1228,10 @@ class MaxiBlockComponent extends Component {
 		}
 
 		console.log(
-			`Total time to get styles object: ${totalGetStylesObjectTime.toFixed(
-				2
-			)}ms`
+			`Total time to get styles object: ${totalGetStylesObjectTime}ms`
 		);
 		console.log(
-			`Total time to render style component: ${totalRenderStyleComponentTime.toFixed(
-				2
-			)}ms`
+			`Total time to render style component: ${totalRenderStyleComponentTime}ms`
 		);
 	}
 

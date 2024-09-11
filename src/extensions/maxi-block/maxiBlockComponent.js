@@ -613,7 +613,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		// Return if it's a preview block
+		// Return if we are previewing the block
 		if (
 			this.isTemplatePartPreview ||
 			this.isPatternsPreview ||

@@ -10,7 +10,7 @@ import { uniq } from 'lodash';
  * @param {Object} action Dispatched action.
  * @return {Object} Updated state.
  */
-function reducer(state = { fonts: {}, postFonts: [] }, action) {
+function reducer(state = { fonts: {}, postFonts: [], fontUrls: {} }, action) {
 	switch (action.type) {
 		case 'SET_FONTS':
 			return {
@@ -21,6 +21,14 @@ function reducer(state = { fonts: {}, postFonts: [] }, action) {
 			return {
 				...state,
 				postFonts: uniq([...action.fonts]),
+			};
+		case 'SET_FONT_URL':
+			return {
+				...state,
+				fontUrls: {
+					...state.fontUrls,
+					[action.name]: action.url,
+				},
 			};
 		default:
 			return state;

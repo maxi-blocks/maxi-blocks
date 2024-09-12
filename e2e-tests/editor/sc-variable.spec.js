@@ -26,7 +26,7 @@ describe('sc-variable', () => {
 
 		await page.evaluate(() => window.location.reload());
 
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(1000);
 		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');
 
 		const scVariable = await page.$eval(

@@ -5,7 +5,7 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { resolveSelect } from '@wordpress/data';
+import { resolveSelect, select } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -53,7 +53,15 @@ class edit extends MaxiBlockComponent {
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		const { receiveMaxiSelectedStyleCard } = select(
+			'maxiBlocks/style-cards'
+		);
+		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+		return getStyles(
+			this.props.attributes,
+			styleCard,
+			this.props.baseBreakpoint
+		);
 	}
 
 	maxiBlockDidUpdate() {

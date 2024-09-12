@@ -130,7 +130,7 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getTypographyObject = props => {
+const getTypographyObject = (props, styleCard, baseBreakpoint) => {
 	const response = {
 		typography: getTypographyStyles({
 			obj: {
@@ -138,13 +138,15 @@ const getTypographyObject = props => {
 			},
 			blockStyle: props.blockStyle,
 			textLevel: props.textLevel,
+			styleCard,
+			baseBreakpoint,
 		}),
 	};
 
 	return response;
 };
 
-const getTypographyHoverObject = props => {
+const getTypographyHoverObject = (props, styleCard, baseBreakpoint) => {
 	const response = {
 		typography: getTypographyStyles({
 			obj: {
@@ -156,6 +158,8 @@ const getTypographyHoverObject = props => {
 			normalTypography: {
 				...getGroupAttributes(props, 'typography'),
 			},
+			styleCard,
+			baseBreakpoint,
 		}),
 	};
 
@@ -589,7 +593,7 @@ const getMarkerObject = props => {
 	};
 };
 
-const getStyles = props => {
+const getStyles = (props, styleCard, baseBreakpoint) => {
 	const { uniqueID, isList, textLevel, typeOfList } = props;
 	const element = isList ? typeOfList : textLevel;
 	const { isRTL } = select('core/editor').getEditorSettings();
@@ -601,9 +605,13 @@ const getStyles = props => {
 				':hover': getHoverObject(props),
 				...(!isList && {
 					[` ${element}.maxi-text-block__content`]:
-						getTypographyObject(props, isList),
+						getTypographyObject(props, styleCard, baseBreakpoint),
 					[` ${element}.maxi-text-block__content:hover`]:
-						getTypographyHoverObject(props),
+						getTypographyHoverObject(
+							props,
+							styleCard,
+							baseBreakpoint
+						),
 				}),
 				...(isList && {
 					[` ${element}`]: getListObject({
@@ -611,13 +619,21 @@ const getStyles = props => {
 						isRTL,
 					}),
 					[` ${element} li`]: {
-						...getTypographyObject(props),
+						...getTypographyObject(
+							props,
+							styleCard,
+							baseBreakpoint
+						),
 						...getListItemObject(props),
 					},
 					[` ${element} li:not(:first-child)`]: {
 						...getListParagraphObject(props),
 					},
-					[` ${element} li:hover`]: getTypographyHoverObject(props),
+					[` ${element} li:hover`]: getTypographyHoverObject(
+						props,
+						styleCard,
+						baseBreakpoint
+					),
 					[` ${element} li::before`]: getMarkerObject({
 						...props,
 						isRTL,
@@ -700,9 +716,7 @@ const getStyles = props => {
 								'typographyHover',
 							]),
 						},
-						[
-							`.maxi-block--has-link ${element}`,
-						],
+						[`.maxi-block--has-link ${element}`],
 						props.blockStyle
 					),
 				}),

@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import ClampControl from '../clamp-control';
 import ToggleSwitch from '../toggle-switch';
 import withRTC from '../../extensions/maxi-block/withRTC';
 import {
@@ -135,42 +136,36 @@ const FullSizeControl = props => {
 				/>
 			)}
 			{showWidth && (
-				<AdvancedNumberControl
+				<ClampControl
 					label={__('Width', 'maxi-blocks')}
 					className='maxi-full-size-control__width'
-					enableUnit
-					unit={getLastBreakpointAttribute({
-						target: `${prefix}width-unit`,
-						breakpoint,
-						attributes: props,
-					})}
-					onChangeUnit={val =>
-						onChange({ [`${prefix}width-unit-${breakpoint}`]: val })
-					}
-					value={getLastBreakpointAttribute({
-						target: `${prefix}width`,
-						breakpoint,
-						attributes: props,
-					})}
-					onChangeValue={val =>
-						onChange({ [`${prefix}width-${breakpoint}`]: val })
-					}
-					onReset={() => {
-						onChange({
-							[`${prefix}width-${breakpoint}`]:
-								getDefaultAttribute(
-									`${prefix}width-${breakpoint}`
-								),
-							[`${prefix}width-unit-${breakpoint}`]:
-								getDefaultAttribute(
-									`${prefix}width-unit-${breakpoint}`
-								),
-							isReset: true,
+					valueKey='width'
+					getValue={key => {
+						console.log(key, props);
+						return getLastBreakpointAttribute({
+							target: `${prefix}${key}`,
+							breakpoint,
+							attributes: props,
 						});
+					}}
+					getDefault={key =>
+						getDefaultAttribute(`${prefix}${key}`, props)
+					}
+					onChangeFormat={obj => {
+						const modifiedObj = Object.entries(obj).reduce(
+							(acc, [key, value]) => {
+								acc[`${prefix}${key}-${breakpoint}`] = value;
+								return acc;
+							},
+							{}
+						);
+
+						onChange(modifiedObj);
 					}}
 					minMaxSettings={minMaxSettings}
 					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 					optionType='string'
+					prefix={prefix}
 				/>
 			)}
 			{allowForceAspectRatio && (

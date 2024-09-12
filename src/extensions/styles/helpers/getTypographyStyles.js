@@ -4,6 +4,7 @@
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getAttributeKey from '../getAttributeKey';
+import { getTypographyValue } from '../../text/formats';
 
 /**
  * External dependencies
@@ -14,6 +15,14 @@ import { isEmpty, isNil } from 'lodash';
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpointsWidthDictionary = {
+	xxl: 1920,
+	xl: 1920,
+	l: 1366,
+	m: 1024,
+	s: 767,
+	xs: 480,
+};
 
 /**
  * Generates size styles object
@@ -30,6 +39,9 @@ const getTypographyStyles = ({
 	normalTypography, // Just in case is hover,
 	scValues = {},
 	isStyleCards = false,
+	styleCard,
+	styleCardPrefix = '',
+	baseBreakpoint,
 }) => {
 	const response = {};
 
@@ -52,13 +64,27 @@ const getTypographyStyles = ({
 				breakpoint
 			)
 		];
-	const getLastBreakpointValue = (target, breakpoint) =>
-		getLastBreakpointAttribute({
-			target: `${prefix}${target}`,
-			breakpoint,
-			attributes: obj,
-			isHover: !isCustomFormat && isHover,
-		});
+
+	const getLastBreakpointValue = (target, breakpoint, avoidSC = true) =>
+		avoidSC
+			? getLastBreakpointAttribute({
+					target: `${prefix}${target}`,
+					breakpoint,
+					attributes: obj,
+					isHover: !isCustomFormat && isHover,
+			  })
+			: getTypographyValue({
+					prop: `${prefix}${target}`,
+					breakpoint,
+					typography: obj,
+					isHover: !isCustomFormat && isHover,
+					textLevel,
+					blockStyle,
+					styleCard,
+					styleCardPrefix,
+					prefix,
+					avoidSC: !styleCard,
+			  });
 
 	const getPaletteColorStatus = breakpoint => {
 		const paletteStatus = getLastBreakpointAttribute({
@@ -151,36 +177,197 @@ const getTypographyStyles = ({
 		});
 	};
 
-	const getFontSizeValue = breakpoint => {
-		const fontSize = getValue('font-size', breakpoint);
+	const calculateFontValuesForBreakpoints = () => {
+		const fontValuesPerBreakpoint = {};
+		let lastClampValues = {};
+		let firstConsistentBreakpoint = null;
 
-		if (isNil(fontSize)) return null;
-
-		const fontSizeUnit = getUnitValue('font-size-unit', breakpoint);
-
-		const clampStatus = getValue('font-size-clamp-status', breakpoint);
-
-		if (clampStatus) {
-			const clampMin = getValue('font-size-clamp-min', breakpoint);
-			const clampMinUnit = getUnitValue(
-				'font-size-clamp-min-unit',
-				breakpoint
-			);
-			const clampMax = getValue('font-size-clamp-max', breakpoint);
-			const clampMaxUnit = getUnitValue(
-				'font-size-clamp-max-unit',
-				breakpoint
+		for (const bp of breakpoints) {
+			const clampStatus = getLastBreakpointValue(
+				'font-size-clamp-status',
+				bp,
+				false
 			);
 
-			if (!isNil(clampMin) && !isNil(clampMax)) {
-				return {
-					'font-size': `clamp(${clampMin}${clampMinUnit}, ${fontSize}${fontSizeUnit}, ${clampMax}${clampMaxUnit})`,
+			if (clampStatus) {
+				const clampAutoStatus = getLastBreakpointValue(
+					'font-size-clamp-auto-status',
+					bp
+				);
+
+				const clampMin = getLastBreakpointValue(
+					'font-size-clamp-min',
+					bp
+				);
+				const clampPreferred = getLastBreakpointValue('font-size', bp);
+				const clampMax = getLastBreakpointValue(
+					'font-size-clamp-max',
+					bp
+				);
+				const clampMinUnit = getLastBreakpointValue(
+					'font-size-clamp-min-unit',
+					bp
+				);
+				const clampPreferredUnit = getLastBreakpointValue(
+					'font-size-unit',
+					bp
+				);
+				const clampMaxUnit = getLastBreakpointValue(
+					'font-size-clamp-max-unit',
+					bp
+				);
+
+				const currentClampValues = {
+					clampAutoStatus,
+					clampMin,
+					clampPreferred,
+					clampMax,
+					clampMinUnit,
+					clampPreferredUnit,
+					clampMaxUnit,
+				};
+
+				if (
+					styleCard &&
+					Object.values(currentClampValues).some(isNil)
+				) {
+					if (isNil(clampAutoStatus)) {
+						currentClampValues.clampAutoStatus =
+							getLastBreakpointValue(
+								'font-size-clamp-auto-status',
+								bp,
+								false
+							);
+					}
+
+					if (isNil(clampMin)) {
+						currentClampValues.clampMin = getLastBreakpointValue(
+							'font-size-clamp-min',
+							bp,
+							false
+						);
+					}
+
+					if (isNil(clampPreferred)) {
+						currentClampValues.clampPreferred =
+							getLastBreakpointValue('font-size', bp, false);
+					}
+
+					if (isNil(clampMax)) {
+						currentClampValues.clampMax = getLastBreakpointValue(
+							'font-size-clamp-max',
+							bp,
+							false
+						);
+					}
+
+					if (isNil(clampMinUnit)) {
+						currentClampValues.clampMinUnit =
+							getLastBreakpointValue(
+								'font-size-clamp-min-unit',
+								bp,
+								false
+							);
+					}
+
+					if (isNil(clampPreferredUnit)) {
+						currentClampValues.clampPreferredUnit =
+							getLastBreakpointValue('font-size-unit', bp, false);
+					}
+
+					if (isNil(clampMaxUnit)) {
+						currentClampValues.clampMaxUnit =
+							getLastBreakpointValue(
+								'font-size-clamp-max-unit',
+								bp,
+								false
+							);
+					}
+				}
+
+				if (
+					[
+						'clampAutoStatus',
+						'clampMin',
+						'clampPreferred',
+						'clampMax',
+						'clampMinUnit',
+						'clampPreferredUnit',
+						'clampMaxUnit',
+					].some(
+						key => currentClampValues[key] !== lastClampValues[key]
+					)
+				) {
+					lastClampValues = currentClampValues;
+					firstConsistentBreakpoint =
+						firstConsistentBreakpoint ||
+						(bp === 'general' ? baseBreakpoint : bp);
+				}
+
+				fontValuesPerBreakpoint[bp] = {
+					minViewportWidth:
+						breakpointsWidthDictionary[
+							bp === 'general' ? baseBreakpoint : bp
+						],
+					maxViewportWidth: firstConsistentBreakpoint
+						? breakpointsWidthDictionary[firstConsistentBreakpoint]
+						: breakpointsWidthDictionary.xxl,
+					clampStatus,
+					...lastClampValues,
+				};
+			} else {
+				const fontSize = getValue('font-size', bp);
+				const fontSizeUnit = getUnitValue('font-size-unit', bp);
+				fontValuesPerBreakpoint[bp] = {
+					fontSize,
+					fontSizeUnit,
+					clampStatus,
 				};
 			}
 		}
 
-		return { 'font-size': `${fontSize}${fontSizeUnit}` };
+		return fontValuesPerBreakpoint;
 	};
+
+	const getFontSizeValue = fontValues => {
+		const { fontSize, clampStatus } = fontValues;
+
+		if (!clampStatus) {
+			if (isNil(fontSize)) return null;
+
+			const { fontSizeUnit } = fontValues;
+
+			return { 'font-size': `${fontSize}${fontSizeUnit}` };
+		}
+
+		const { clampMin, clampPreferred, clampMax } = fontValues;
+
+		if ([clampMin, clampPreferred, clampMax].every(isNil)) return null;
+
+		const {
+			minViewportWidth,
+			maxViewportWidth,
+			clampAutoStatus,
+			clampMinUnit,
+			clampPreferredUnit,
+			clampMaxUnit,
+		} = fontValues;
+
+		if (clampAutoStatus) {
+			const preferredFontSize = `calc(${clampMin}${clampMinUnit} + (${clampMax}${clampMaxUnit} - ${clampMin}${clampMinUnit}) * ((100vw - ${minViewportWidth}px) / (${maxViewportWidth} - ${minViewportWidth})))`;
+
+			return {
+				'font-size': `clamp(${clampMin}${clampMinUnit}, ${preferredFontSize}, ${clampMax}${clampMaxUnit})`,
+			};
+		}
+
+		return {
+			'font-size': `clamp(${clampMin}${clampMinUnit}, ${clampPreferred}${clampPreferredUnit}, ${clampMax}${clampMaxUnit})`,
+		};
+	};
+	console.log(styleCard);
+	const fontValuesPerBreakpoint = calculateFontValuesForBreakpoints();
+	console.log(fontValuesPerBreakpoint);
 
 	breakpoints.forEach(breakpoint => {
 		const typography = {
@@ -188,7 +375,7 @@ const getTypographyStyles = ({
 				'font-family': `"${getValue('font-family', breakpoint)}"`,
 			}),
 			...getColorString(breakpoint),
-			...getFontSizeValue(breakpoint),
+			...getFontSizeValue(fontValuesPerBreakpoint[breakpoint]),
 			...(!isNil(getValue('line-height', breakpoint)) && {
 				'line-height': `${getValue('line-height', breakpoint)}${
 					getUnitValue('line-height-unit', breakpoint) || ''

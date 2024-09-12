@@ -25,6 +25,24 @@ export const rawWidth = {
 	width: {
 		type: 'string',
 	},
+	'width-clamp-status': {
+		type: 'boolean',
+		default: false,
+	},
+	'width-clamp-max-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'width-clamp-max': {
+		type: 'string',
+	},
+	'width-clamp-min-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'width-clamp-min': {
+		type: 'string',
+	},
 	'width-fit-content': {
 		type: 'boolean',
 		default: false,

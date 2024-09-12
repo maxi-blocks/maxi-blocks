@@ -4,7 +4,6 @@ import { receiveMaxiStyleCards, sendMaxiStyleCards } from './actions';
 import { getActiveColourFromSC } from '../../../editor/style-cards/utils';
 
 import { isEmpty } from 'lodash';
-import { dispatch } from '@wordpress/data';
 
 const resolvers = {
 	*receiveMaxiStyleCards() {
@@ -22,7 +21,62 @@ const resolvers = {
 							...styleCard,
 							gutenberg_blocks_status: true,
 						};
-					} else {
+					}
+
+					if (
+						!(
+							'font-size-clamp-status-general' in
+							styleCard.light.defaultStyleCard.p
+						)
+					) {
+						shouldSCMigratorRun = true;
+
+						const clampAttributes = {
+							'font-size-clamp-status-general': false,
+							'font-size-clamp-min-general': 1,
+							'font-size-clamp-min-unit-general': 'rem',
+							'font-size-clamp-max-general': 3,
+							'font-size-clamp-max-unit-general': 'rem',
+							'font-size-clamp-status-xl': false,
+							'font-size-clamp-min-xl': 1,
+							'font-size-clamp-min-unit-xl': 'rem',
+							'font-size-clamp-max-xl': 3,
+							'font-size-clamp-max-unit-xl': 'rem',
+						};
+
+						const items = [
+							'p',
+							'button',
+							'h1',
+							'h2',
+							'h3',
+							'h4',
+							'h5',
+							'h6',
+						];
+
+						updatedMaxiStyleCards[key] = styleCard;
+						items.forEach(item => {
+							updatedMaxiStyleCards[key].light.defaultStyleCard[
+								item
+							] = {
+								...updatedMaxiStyleCards[key].light
+									.defaultStyleCard[item],
+								...clampAttributes,
+							};
+							updatedMaxiStyleCards[key].dark.defaultStyleCard[
+								item
+							] = {
+								...updatedMaxiStyleCards[key].dark
+									.defaultStyleCard[item],
+								...clampAttributes,
+							};
+						});
+
+						console.log(updatedMaxiStyleCards);
+					}
+
+					if (!updatedMaxiStyleCards[key]) {
 						updatedMaxiStyleCards[key] = styleCard;
 					}
 				}

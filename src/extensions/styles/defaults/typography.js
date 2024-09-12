@@ -18,21 +18,21 @@ export const rawTypography = {
 	},
 	'font-size-clamp-status': {
 		type: 'boolean',
-		default: false,
+	},
+	'font-size-clamp-auto-status': {
+		type: 'boolean',
 	},
 	'font-size-clamp-min': {
 		type: 'number',
 	},
 	'font-size-clamp-min-unit': {
 		type: 'string',
-		default: 'rem',
 	},
 	'font-size-clamp-max': {
 		type: 'number',
 	},
 	'font-size-clamp-max-unit': {
 		type: 'string',
-		default: 'rem',
 	},
 	'line-height-unit': {
 		type: 'string',

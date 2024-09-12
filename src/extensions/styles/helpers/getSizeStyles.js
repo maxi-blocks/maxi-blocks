@@ -121,11 +121,48 @@ const getSizeStyles = (obj, prefix = '') => {
 							attributes: obj,
 					  }) && '100%';
 
-			if (!isNil(num) && !isNil(unit))
+			const clampStatus = getLastBreakpointAttribute({
+				target: `${prefix}${target}-clamp-status`,
+				breakpoint,
+				attributes: obj,
+			});
+
+			if (!isNil(num) && !isNil(unit)) {
+				if (clampStatus) {
+					const clampMin = getLastBreakpointAttribute({
+						target: `${prefix}${target}-clamp-min`,
+						breakpoint,
+						attributes: obj,
+					});
+					const clampMinUnit = getLastBreakpointAttribute({
+						target: `${prefix}${target}-clamp-min-unit`,
+						breakpoint,
+						attributes: obj,
+					});
+					const clampMax = getLastBreakpointAttribute({
+						target: `${prefix}${target}-clamp-max`,
+						breakpoint,
+						attributes: obj,
+					});
+					const clampMaxUnit = getLastBreakpointAttribute({
+						target: `${prefix}${target}-clamp-max-unit`,
+						breakpoint,
+						attributes: obj,
+					});
+
+					if (!isNil(clampMin) && !isNil(clampMax)) {
+						return {
+							[target]: `clamp(${clampMin}${clampMinUnit}, ${num}${unit}, ${clampMax}${clampMaxUnit})`,
+							...fullWidthNormalStyles,
+						};
+					}
+				}
+
 				return {
 					[target]: auto || num + unit,
 					...fullWidthNormalStyles,
 				};
+			}
 		}
 
 		return {

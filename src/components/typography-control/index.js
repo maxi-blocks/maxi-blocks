@@ -411,6 +411,7 @@ const TypographyControl = props => {
 			prefix,
 			avoidSC,
 		});
+	console.log(styleCard);
 
 	const getDefault = (target, keepBreakpoint = false) => {
 		const prop = `${prefix}${target}`;

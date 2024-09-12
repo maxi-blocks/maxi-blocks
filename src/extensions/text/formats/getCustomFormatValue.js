@@ -88,6 +88,9 @@ const getCustomFormatValue = ({
 		: getBlockStyle();
 	const SCLevel = styleCardPrefix || textLevel;
 	const activeStyleCard = styleCard || getActiveStyleCard().value;
+
+	if (!activeStyleCard) return null;
+
 	const currentSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
 	const currentSCValue = getLastBreakpointAttribute({

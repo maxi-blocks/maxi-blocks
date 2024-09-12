@@ -26,7 +26,19 @@ const ClampControl = ({
 	className,
 	...props
 }) => {
-	const clampStatus = getValue(`${valueKey}-clamp-status`);
+	// TODO list:
+	// 1. add min, max support in case if some of values isn't provided
+	// 2. think how to add fallback
+	// .hero {
+	//   padding: 4rem 1rem;
+	//   padding: clamp(2rem, 10vmax, 10rem) 1rem;
+	// }
+	// 3. add auto calculation for preferred value
+	// 4. add custom field support (to write sth like: 1vw + 1vh)
+	// 5. add clamp attrs generator
+
+	const clampStatus = getPlaceholder(`${valueKey}-clamp-status`);
+	const clampAutoStatus = getPlaceholder(`${valueKey}-clamp-auto-status`);
 
 	return (
 		<div className={className}>
@@ -70,40 +82,50 @@ const ClampControl = ({
 						}
 						{...props}
 					/>
-					<AdvancedNumberControl
-						label={`Preferred ${lowerCase(label)}`}
-						enableUnit
-						unit={getUnitValue(`${valueKey}-unit`)}
-						defaultUnit={getDefault(`${valueKey}-unit`)}
-						onChangeUnit={val => {
+					{!clampAutoStatus && (
+						<AdvancedNumberControl
+							label={`Preferred ${lowerCase(label)}`}
+							enableUnit
+							unit={getUnitValue(`${valueKey}-unit`)}
+							defaultUnit={getDefault(`${valueKey}-unit`)}
+							onChangeUnit={val => {
+								onChangeFormat({
+									[`${prefix}${valueKey}-unit`]: val,
+								});
+							}}
+							placeholder={getPlaceholder(valueKey)}
+							value={getValue(valueKey)}
+							defaultValue={getDefault(valueKey)}
+							onChangeValue={(val, unit) => {
+								onChangeFormat({
+									[`${prefix}${valueKey}`]: val,
+									...(unit && {
+										[`${prefix}${valueKey}-unit`]: unit,
+									}),
+								});
+							}}
+							onReset={() =>
+								onChangeFormat(
+									{
+										[`${prefix}${valueKey}-unit`]:
+											getDefault(`${valueKey}-unit`),
+										[`${prefix}${valueKey}`]:
+											getDefault(valueKey),
+									},
+									{ isReset: true }
+								)
+							}
+							{...props}
+						/>
+					)}
+					<ToggleSwitch
+						label={__('Auto-adjust scaling', 'maxi-blocks')}
+						selected={clampAutoStatus}
+						onChange={val => {
 							onChangeFormat({
-								[`${prefix}${valueKey}-unit`]: val,
+								[`${prefix}${valueKey}-clamp-auto-status`]: val,
 							});
 						}}
-						placeholder={getPlaceholder(valueKey)}
-						value={getValue(valueKey)}
-						defaultValue={getDefault(valueKey)}
-						onChangeValue={(val, unit) => {
-							onChangeFormat({
-								[`${prefix}${valueKey}`]: val,
-								...(unit && {
-									[`${prefix}${valueKey}-unit`]: unit,
-								}),
-							});
-						}}
-						onReset={() =>
-							onChangeFormat(
-								{
-									[`${prefix}${valueKey}-unit`]: getDefault(
-										`${valueKey}-unit`
-									),
-									[`${prefix}${valueKey}`]:
-										getDefault(valueKey),
-								},
-								{ isReset: true }
-							)
-						}
-						{...props}
 					/>
 					<AdvancedNumberControl
 						label={`Maximum ${lowerCase(label)}`}
@@ -181,7 +203,7 @@ const ClampControl = ({
 				/>
 			)}
 			<ToggleSwitch
-				label={__(`Clamp ${lowerCase(props.label)}`, 'maxi-blocks')}
+				label={__(`Clamp ${lowerCase(label)}`, 'maxi-blocks')}
 				selected={clampStatus}
 				onChange={val => {
 					onChangeFormat({

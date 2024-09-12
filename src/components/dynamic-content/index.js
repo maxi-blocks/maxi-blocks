@@ -84,7 +84,7 @@ const DynamicContent = props => {
 	} = props;
 
 	const contextLoop = useContext(LoopContext)?.contextLoop;
-	const isCL = contextLoop ? contextLoop['cl-status'] === true : false;
+	const CLStatus = contextLoop ? contextLoop['cl-status'] === true : false;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -177,6 +177,7 @@ const DynamicContent = props => {
 	const changeProps = params => {
 		let hasChangesToSave = false;
 
+		// TODO: iterate over params instead of dynamicContent
 		for (const [key, val] of Object.entries(dynamicContent)) {
 			if (key in params && params[key] !== val) {
 				hasChangesToSave = true;
@@ -339,7 +340,7 @@ const DynamicContent = props => {
 				<>
 					{!disableHideOnFrontend &&
 						!ignoreEmptyFields.includes(field) &&
-						!isCL && (
+						!CLStatus && (
 							<ToggleSwitch
 								label={__(
 									'Hide if no content found on frontend',
@@ -477,12 +478,12 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{(relation !== 'current-archive' &&
+							{relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
-									relation === 'by-id')) ||
-								(relation.includes('custom-taxonomy') && (
+									relation === 'by-id' ||
+									relation.includes('custom-taxonomy')) && (
 									<SelectControl
 										label={__(
 											`${capitalize(
@@ -509,11 +510,13 @@ const DynamicContent = props => {
 										}
 										onReset={() =>
 											changeProps({
-												'dc-id': postIdOptions[0].value,
+												'dc-id': CLStatus
+													? null
+													: postIdOptions[0].value,
 											})
 										}
 									/>
-								))}
+								)}
 							{((orderTypes.includes(type) &&
 								orderRelations.includes(relation)) ||
 								relation.includes('custom-taxonomy')) && (

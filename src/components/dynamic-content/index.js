@@ -177,9 +177,8 @@ const DynamicContent = props => {
 	const changeProps = params => {
 		let hasChangesToSave = false;
 
-		// TODO: iterate over params instead of dynamicContent
-		for (const [key, val] of Object.entries(dynamicContent)) {
-			if (key in params && params[key] !== val) {
+		for (const [key, val] of Object.entries(params)) {
+			if (key in dynamicContent && dynamicContent[key] !== val) {
 				hasChangesToSave = true;
 				break;
 			}

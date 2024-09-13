@@ -10,12 +10,14 @@ import { controls } from '@wordpress/data-controls';
 import reducer from './reducer';
 import * as actions from './actions';
 import * as selectors from './selectors';
+import resolvers from './resolvers';
 
 // Create the Redux store for the text domain 'maxiBlocks/text'
 const store = createReduxStore('maxiBlocks/text', {
 	reducer,
 	actions,
 	selectors,
+	resolvers,
 	controls,
 });
 

@@ -25,7 +25,14 @@ const getLinkAttributesFromLinkSettings = (
 	const dataEmailObfuscated =
 		dcStatus && dcLinkStatus && dcLinkTarget === 'author_email';
 
-	return { rel, href, target, 'data-email-obfuscated': dataEmailObfuscated };
+	return {
+		rel,
+		href,
+		target,
+		...(dataEmailObfuscated && {
+			'data-email-obfuscated': dataEmailObfuscated,
+		}),
+	};
 };
 
 const WithLink = props => {

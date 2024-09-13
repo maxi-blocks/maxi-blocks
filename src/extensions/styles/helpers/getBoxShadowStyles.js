@@ -104,11 +104,12 @@ const getBoxShadowStyles = ({
 		const { value: paletteColor, defaultValue: defaultPaletteColor } =
 			paletteStatus ? getValue('palette-color') : getValue('color');
 
-		const { value: paletteOpacity } = getValue('palette-opacity');
+		const { value: paletteOpacity, defaultValue: defaultPaletteOpacity } =
+			getValue('palette-opacity');
 
 		const defaultColor = getColorRGBAString({
 			firstVar: `color-${defaultPaletteColor}`,
-			opacity: paletteOpacity?.defaultValue,
+			opacity: defaultPaletteOpacity,
 			blockStyle,
 		});
 
@@ -116,7 +117,7 @@ const getBoxShadowStyles = ({
 			paletteStatus && paletteColor
 				? getColorRGBAString({
 						firstVar: `color-${paletteColor}`,
-						opacity: paletteOpacity?.value,
+						opacity: paletteOpacity,
 						blockStyle,
 				  })
 				: paletteColor;
@@ -195,20 +196,29 @@ const getBoxShadowStyles = ({
 				? values.inset.value
 				: values.inset?.defaultValue;
 
-			boxShadowString = `${insetValue ? 'inset ' : ''}${
-				horizontalValue || 0
-			}${values['horizontal-unit']?.value || 'px'} ${verticalValue || 0}${
-				values['vertical-unit']?.value || 'px'
-			} ${blurValue || 0}${values['blur-unit']?.value || 'px'} ${
-				spreadValue || 0
-			}${values['spread-unit']?.value || 'px'} ${color || defaultColor}`;
+			boxShadowString = '';
 
-			response[breakpoint] = {
-				'box-shadow':
-					prefix === 'image-' && clipPathExists
-						? 'none'
-						: boxShadowString,
-			};
+			if (isBoolean(insetValue) && insetValue) {
+				boxShadowString += 'inset ';
+			}
+
+			boxShadowString += `${horizontalValue || 0}${
+				values['horizontal-unit']?.value || 'px'
+			} ${verticalValue || 0}${values['vertical-unit']?.value || 'px'} ${
+				blurValue || 0
+			}${values['blur-unit']?.value || 'px'} ${spreadValue || 0}${
+				values['spread-unit']?.value || 'px'
+			} ${color || defaultColor}`;
+
+			if (!(prefix === 'image-' && clipPathExists)) {
+				response[breakpoint] = {
+					'box-shadow': boxShadowString.trim(),
+				};
+			} else {
+				response[breakpoint] = {
+					'box-shadow': 'none',
+				};
+			}
 		}
 	});
 

@@ -1229,7 +1229,8 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
-		const target = iframe?.contentDocument || document;
+		const siteEditorIframe = isSiteEditor ? getSiteEditorIframe() : null;
+		const target = siteEditorIframe || iframe?.contentDocument || document;
 		const styleId = `maxi-blocks__styles--${uniqueID}`;
 		let styleElement = target.getElementById(styleId);
 

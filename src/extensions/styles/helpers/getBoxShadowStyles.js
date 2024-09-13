@@ -171,7 +171,7 @@ const getBoxShadowStyles = ({
 			const blurValue = round(
 				(isNumber(values.blur?.value)
 					? values.blur.value
-					: values.blur?.defaultValue) / 3
+					: values.blur?.defaultValue ?? 0) / 3
 			);
 
 			boxShadowString = `${horizontalValue || 0}${
@@ -188,7 +188,7 @@ const getBoxShadowStyles = ({
 		} else {
 			const blurValue = isNumber(values.blur?.value)
 				? values.blur.value
-				: values.blur?.defaultValue;
+				: values.blur?.defaultValue ?? 0;
 			const spreadValue = isNumber(values.spread?.value)
 				? values.spread.value
 				: values.spread?.defaultValue;

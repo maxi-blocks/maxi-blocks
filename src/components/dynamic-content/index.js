@@ -185,12 +185,7 @@ const DynamicContent = props => {
 		}
 
 		if (hasChangesToSave) {
-			const filteredObj = Object.fromEntries(
-				Object.entries(params).filter(
-					([key, value]) => value !== undefined
-				)
-			);
-			onChange(filteredObj);
+			onChange(params);
 		}
 	};
 

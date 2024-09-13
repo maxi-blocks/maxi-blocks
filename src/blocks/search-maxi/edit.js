@@ -175,7 +175,11 @@ class edit extends MaxiBlockComponent {
 		);
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				setShowLoader={value => this.setState({ showLoader: value })}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
@@ -187,6 +191,7 @@ class edit extends MaxiBlockComponent {
 				classes={classes}
 				key={`maxi-search--${uniqueID}`}
 				ref={this.blockRef}
+				showLoader={this.state.showLoader}
 			>
 				<SearchBlock {...this.props} />
 			</MaxiBlock>,

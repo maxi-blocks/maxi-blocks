@@ -96,6 +96,7 @@ class edit extends MaxiBlockComponent {
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
 				inlineStylesTargets={inlineStylesTargets}
+				setShowLoader={value => this.setState({ showLoader: value })}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -128,6 +129,7 @@ class edit extends MaxiBlockComponent {
 						templateLock: false,
 						template: [['maxi-blocks/pane-maxi']],
 					}}
+					showLoader={this.state.showLoader}
 					{...getMaxiBlockAttributes(this.props)}
 				/>
 			</AccordionContext.Provider>,

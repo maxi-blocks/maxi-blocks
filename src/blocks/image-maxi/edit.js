@@ -296,6 +296,9 @@ class edit extends MaxiBlockComponent {
 					getBlockRefBounds={() =>
 						this.blockRef.current.getBoundingClientRect()
 					}
+					setShowLoader={value =>
+						this.setState({ showLoader: value })
+					}
 					{...this.props}
 				/>
 				<Toolbar
@@ -396,6 +399,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					tagName='figure'
 					className='maxi-image-block'
+					showLoader={this.state.showLoader}
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					{showImage ? (
@@ -441,6 +445,11 @@ class edit extends MaxiBlockComponent {
 										<CaptionToolbar
 											key={`caption-toolbar-${uniqueID}`}
 											ref={this.textRef}
+											setShowLoader={value =>
+												this.setState({
+													showLoader: value,
+												})
+											}
 											{...this.props}
 										/>
 										{dcStatus ? (
@@ -543,6 +552,11 @@ class edit extends MaxiBlockComponent {
 										<CaptionToolbar
 											key={`caption-toolbar-${uniqueID}`}
 											ref={this.textRef}
+											setShowLoader={value =>
+												this.setState({
+													showLoader: value,
+												})
+											}
 											{...this.props}
 										/>
 										{dcStatus ? (

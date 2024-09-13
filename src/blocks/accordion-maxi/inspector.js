@@ -133,6 +133,9 @@ const Inspector = props => {
 													type: titleLevel,
 												}}
 												styleCardPrefix=''
+												setShowLoader={
+													props.setShowLoader
+												}
 											/>
 										),
 									},

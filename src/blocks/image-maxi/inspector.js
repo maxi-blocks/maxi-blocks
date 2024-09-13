@@ -360,6 +360,9 @@ const Inspector = props => {
 																	type: 'p',
 																}}
 																styleCardPrefix=''
+																setShowLoader={
+																	props.setShowLoader
+																}
 															/>
 														</>
 													)}

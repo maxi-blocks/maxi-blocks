@@ -114,6 +114,7 @@ const MaxiToolbar = memo(
 			repeaterStatus,
 			repeaterRowClientId,
 			getInnerBlocksPositions,
+			setShowLoader,
 		} = props;
 		const {
 			blockStyle,
@@ -329,6 +330,7 @@ const MaxiToolbar = memo(
 							styleCard={styleCard}
 							clientId={clientId}
 							disableCustomFormats={disableCustomFormats}
+							setShowLoader={setShowLoader}
 						/>
 						<Mover
 							clientId={clientId}

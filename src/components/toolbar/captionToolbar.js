@@ -41,6 +41,7 @@ const CaptionToolbar = memo(
 			insertInlineStyles,
 			cleanInlineStyles,
 			isSelected,
+			setShowLoader,
 		} = props;
 		const { isList = false, textLevel = 'p', uniqueID } = attributes;
 
@@ -131,6 +132,7 @@ const CaptionToolbar = memo(
 							blockStyle={blockStyle}
 							isList={isList}
 							clientId={clientId}
+							setShowLoader={setShowLoader}
 							isCaptionToolbar
 						/>
 					</div>

@@ -105,6 +105,9 @@ const Inspector = props => {
 														);
 													}}
 													breakpoint={deviceType}
+													setShowLoader={
+														props.setShowLoader
+													}
 												/>
 											</ResponsiveTabsControl>
 										),

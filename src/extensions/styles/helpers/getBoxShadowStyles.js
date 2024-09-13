@@ -16,14 +16,6 @@ import { isBoolean, isNil, isNumber, round, isEmpty } from 'lodash';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getPrevBreakpoint = breakpoint =>
-	breakpoints[breakpoints.indexOf(breakpoint) - 1];
-
-/**
- * Generates size styles object
- *
- * @param {Object} obj Block size properties
- */
 const getBoxShadowStyles = ({
 	obj,
 	isHover = false,
@@ -34,35 +26,38 @@ const getBoxShadowStyles = ({
 	isIB = false,
 }) => {
 	const response = {};
+	const getPrevBreakpoint = breakpoint =>
+		breakpoints[breakpoints.indexOf(breakpoint) - 1];
+
+	const clipPathStatus = getLastBreakpointAttribute({
+		target: 'clip-path-status',
+		attributes: obj,
+	});
+	const svgElementExists = !isEmpty(obj.SVGElement);
 
 	breakpoints.forEach(breakpoint => {
-		let boxShadowString = '';
-
-		const getValue = target => {
+		const getValue = (target, defaultPrefix = `${prefix}box-shadow-`) => {
 			const value = getAttributeValue({
 				target,
 				props: obj,
 				isHover,
-				prefix: `${prefix}box-shadow-`,
+				prefix: defaultPrefix,
 				breakpoint,
 			});
 
 			const defaultValue =
 				breakpoint === 'general'
 					? getDefaultAttribute(
-							`${prefix}box-shadow-${target}-${breakpoint}`
+							`${defaultPrefix}${target}-${breakpoint}`
 					  )
 					: getLastBreakpointAttribute({
-							target: `${prefix}box-shadow-${target}`,
+							target: `${defaultPrefix}${target}`,
 							breakpoint: getPrevBreakpoint(breakpoint),
 							attributes: obj,
 							isHover,
 					  });
 
-			return {
-				value,
-				defaultValue,
-			};
+			return { value, defaultValue };
 		};
 
 		const clipPathExists =
@@ -71,63 +66,34 @@ const getBoxShadowStyles = ({
 				breakpoint,
 				attributes: obj,
 			}) &&
-				getLastBreakpointAttribute({
-					target: 'clip-path-status',
-					breakpoint,
-					attributes: obj,
-				})) ||
-			!isEmpty(obj.SVGElement);
+				clipPathStatus) ||
+			svgElementExists;
 
 		const defaultClipPathExists =
-			breakpoint === 'general'
-				? false
-				: (getLastBreakpointAttribute({
-						target: 'clip-path',
-						breakpoint: getPrevBreakpoint(breakpoint),
-						attributes: obj,
-				  }) &&
-						getLastBreakpointAttribute({
-							target: 'clip-path-status',
-							breakpoint: getPrevBreakpoint(breakpoint),
-							attributes: obj,
-						})) ||
-				  !isEmpty(obj.SVGElement);
+			breakpoint !== 'general' &&
+			((getLastBreakpointAttribute({
+				target: 'clip-path',
+				breakpoint: getPrevBreakpoint(breakpoint),
+				attributes: obj,
+			}) &&
+				clipPathStatus) ||
+				svgElementExists);
 
-		// Inset
-		const { value: inset, defaultValue: defaultInset } = getValue('inset');
+		const values = [
+			'inset',
+			'horizontal',
+			'vertical',
+			'blur',
+			'spread',
+			'horizontal-unit',
+			'vertical-unit',
+			'blur-unit',
+			'spread-unit',
+		].reduce((acc, key) => {
+			acc[key] = getValue(key);
+			return acc;
+		}, {});
 
-		// Horizontal
-		const { value: horizontal, defaultValue: defaultHorizontal } =
-			getValue('horizontal');
-
-		// Vertical
-		const { value: vertical, defaultValue: defaultVertical } =
-			getValue('vertical');
-
-		// Blur
-		const { value: blur, defaultValue: defaultBlur } = getValue('blur');
-
-		// Spread
-		const { value: spread, defaultValue: defaultSpread } =
-			getValue('spread');
-
-		// Horizontal Unit
-		const { value: horizontalUnit, defaultValue: defaultHorizontalUnit } =
-			getValue('horizontal-unit');
-
-		// Vertical Unit
-		const { value: verticalUnit, defaultValue: defaultVerticalUnit } =
-			getValue('vertical-unit');
-
-		// Blur Unit
-		const { value: blurUnit, defaultValue: defaultBlurUnit } =
-			getValue('blur-unit');
-
-		// Spread Unit
-		const { value: spreadUnit, defaultValue: defaultSpreadUnit } =
-			getValue('spread-unit');
-
-		// Palette
 		const paletteStatus = getLastBreakpointAttribute({
 			target: `${prefix}box-shadow-palette-status`,
 			breakpoint,
@@ -135,12 +101,15 @@ const getBoxShadowStyles = ({
 			isHover,
 		});
 
-		// Color
 		const { value: paletteColor, defaultValue: defaultPaletteColor } =
 			paletteStatus ? getValue('palette-color') : getValue('color');
+
+		const { value: paletteOpacity, defaultValue: defaultPaletteOpacity } =
+			getValue('palette-opacity');
+
 		const defaultColor = getColorRGBAString({
 			firstVar: `color-${defaultPaletteColor}`,
-			opacity: getValue('palette-opacity').defaultValue,
+			opacity: defaultPaletteOpacity,
 			blockStyle,
 		});
 
@@ -148,7 +117,7 @@ const getBoxShadowStyles = ({
 			paletteStatus && paletteColor
 				? getColorRGBAString({
 						firstVar: `color-${paletteColor}`,
-						opacity: getValue('palette-opacity').value,
+						opacity: paletteOpacity,
 						blockStyle,
 				  })
 				: paletteColor;
@@ -159,66 +128,97 @@ const getBoxShadowStyles = ({
 				clipPathExists !== defaultClipPathExists &&
 				prefix === 'image-' &&
 				clipPathExists) ||
-			(isBoolean(inset) && inset !== defaultInset) ||
-			(isNumber(horizontal) &&
-				horizontal !== 0 &&
-				horizontal !== defaultHorizontal) ||
-			(isNumber(vertical) &&
-				vertical !== 0 &&
-				vertical !== defaultVertical) ||
-			(isNumber(blur) && blur !== 0 && blur !== defaultBlur) ||
-			(isNumber(spread) && spread !== 0 && spread !== defaultSpread) ||
-			(!isNil(horizontalUnit) &&
-				horizontalUnit !== defaultHorizontalUnit) ||
-			(!isNil(verticalUnit) && verticalUnit !== defaultVerticalUnit) ||
-			(!isNil(blurUnit) && blurUnit !== defaultBlurUnit) ||
-			(!isNil(spreadUnit) && spreadUnit !== defaultSpreadUnit) ||
+			(isBoolean(values.inset?.value) &&
+				values.inset?.value !== values.inset?.defaultValue) ||
+			(isNumber(values.horizontal?.value) &&
+				values.horizontal?.value !== 0 &&
+				values.horizontal?.value !== values.horizontal?.defaultValue) ||
+			(isNumber(values.vertical?.value) &&
+				values.vertical?.value !== 0 &&
+				values.vertical?.value !== values.vertical?.defaultValue) ||
+			(isNumber(values.blur?.value) &&
+				values.blur?.value !== 0 &&
+				values.blur?.value !== values.blur?.defaultValue) ||
+			(isNumber(values.spread?.value) &&
+				values.spread?.value !== 0 &&
+				values.spread?.value !== values.spread?.defaultValue) ||
+			(!isNil(values['horizontal-unit']?.value) &&
+				values['horizontal-unit']?.value !==
+					values['horizontal-unit']?.defaultValue) ||
+			(!isNil(values['vertical-unit']?.value) &&
+				values['vertical-unit']?.value !==
+					values['vertical-unit']?.defaultValue) ||
+			(!isNil(values['blur-unit']?.value) &&
+				values['blur-unit']?.value !==
+					values['blur-unit']?.defaultValue) ||
+			(!isNil(values['spread-unit']?.value) &&
+				values['spread-unit']?.value !==
+					values['spread-unit']?.defaultValue) ||
 			(!isNil(color) && color !== defaultColor);
 
-		const horizontalValue = isNumber(horizontal)
-			? horizontal
-			: defaultHorizontal;
-		const verticalValue = isNumber(vertical) ? vertical : defaultVertical;
+		if (!isNotDefault) return;
 
-		if (isNotDefault && dropShadow) {
-			const blurValue = isNumber(blur)
-				? round(blur / 3)
-				: round(defaultBlur / 3);
+		const horizontalValue = isNumber(values.horizontal?.value)
+			? values.horizontal.value
+			: values.horizontal?.defaultValue;
+		const verticalValue = isNumber(values.vertical?.value)
+			? values.vertical.value
+			: values.vertical?.defaultValue;
+
+		let boxShadowString = '';
+
+		if (dropShadow) {
+			const blurValue = round(
+				(isNumber(values.blur?.value)
+					? values.blur.value
+					: values.blur?.defaultValue ?? 0) / 3
+			);
+
+			boxShadowString = `${horizontalValue || 0}${
+				values['horizontal-unit']?.value || 'px'
+			} ${verticalValue || 0}${values['vertical-unit']?.value || 'px'} ${
+				blurValue || 0
+			}${values['blur-unit']?.value || 'px'} ${color || defaultColor}`;
+
+			if (!(forClipPath && !clipPathExists)) {
+				response[breakpoint] = {
+					filter: `drop-shadow(${boxShadowString})`,
+				};
+			}
+		} else {
+			const blurValue = isNumber(values.blur?.value)
+				? values.blur.value
+				: values.blur?.defaultValue ?? 0;
+			const spreadValue = isNumber(values.spread?.value)
+				? values.spread.value
+				: values.spread?.defaultValue;
+			const insetValue = isBoolean(values.inset?.value)
+				? values.inset.value
+				: values.inset?.defaultValue;
+
+			boxShadowString = '';
+
+			if (isBoolean(insetValue) && insetValue) {
+				boxShadowString += 'inset ';
+			}
 
 			boxShadowString += `${horizontalValue || 0}${
-				horizontalUnit || 'px'
-			} `;
-			boxShadowString += `${verticalValue || 0}${verticalUnit || 'px'} `;
-			boxShadowString += `${blurValue || 0}${blurUnit || 'px'} `;
-			boxShadowString += color || defaultColor;
+				values['horizontal-unit']?.value || 'px'
+			} ${verticalValue || 0}${values['vertical-unit']?.value || 'px'} ${
+				blurValue || 0
+			}${values['blur-unit']?.value || 'px'} ${spreadValue || 0}${
+				values['spread-unit']?.value || 'px'
+			} ${color || defaultColor}`;
 
-			if (!(forClipPath && !clipPathExists))
+			if (!(prefix === 'image-' && clipPathExists)) {
 				response[breakpoint] = {
-					filter: `drop-shadow(${boxShadowString.trim()})`,
+					'box-shadow': boxShadowString.trim(),
 				};
-		} else if (isNotDefault) {
-			const blurValue = isNumber(blur) ? blur : defaultBlur;
-			const spreadValue = isNumber(spread) ? spread : defaultSpread;
-			const insetValue = isBoolean(inset) ? inset : defaultInset;
-
-			boxShadowString +=
-				isBoolean(insetValue) && insetValue ? 'inset ' : '';
-			boxShadowString += `${horizontalValue || 0}${
-				horizontalUnit || 'px'
-			} `;
-			boxShadowString += `${verticalValue || 0}${verticalUnit || 'px'} `;
-			boxShadowString += `${blurValue || 0}${blurUnit || 'px'} `;
-			boxShadowString += `${spreadValue || 0}${spreadUnit || 'px'} `;
-			boxShadowString += color || defaultColor;
-
-			if (!(prefix === 'image-' && clipPathExists))
-				response[breakpoint] = {
-					'box-shadow': `${boxShadowString.trim()}`,
-				};
-			else
+			} else {
 				response[breakpoint] = {
 					'box-shadow': 'none',
 				};
+			}
 		}
 	});
 

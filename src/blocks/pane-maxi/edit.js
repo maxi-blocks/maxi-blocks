@@ -112,7 +112,7 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	maxiBlockDidUpdate() {
+	updateAttributesFromContext() {
 		// Attributes from context that need to be saved for frontend
 		const accordionAttributes = ['accordionUniqueId', 'titleLevel'];
 
@@ -147,6 +147,14 @@ class edit extends MaxiBlockComponent {
 				});
 			}
 		}
+	}
+
+	maxiBlockDidMount() {
+		this.updateAttributesFromContext();
+	}
+
+	maxiBlockDidUpdate() {
+		this.updateAttributesFromContext();
 
 		const newIsOpen = this.context.openPanes.includes(this.props.clientId);
 		if (newIsOpen !== this.state.isOpen) {

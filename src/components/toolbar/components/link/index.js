@@ -227,7 +227,7 @@ const Link = props => {
 						{showLinkElemetSelect && (
 							<SelectControl
 								label={__('Apply link on', 'maxi-blocks')}
-								value={linkSettings.linkElement}
+								value={linkSettings?.linkElement}
 								options={linkElementOptions}
 								newStyle
 								onChange={value => {

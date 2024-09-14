@@ -51,20 +51,22 @@ const ACFSettingsControl = props => {
 					})
 				}
 			/>
-			<SelectControl
-				label='ACF Field'
-				value={field}
-				options={fieldsOptions}
-				newStyle
-				onChange={value =>
-					onChange({
-						[`${prefix}field`]: value,
-						[`${prefix}acf-field-type`]: fieldsOptions.find(
-							option => option.value === value
-						).type,
-					})
-				}
-			/>
+			{!isCL && (
+				<SelectControl
+					label='ACF Field'
+					value={field}
+					options={fieldsOptions}
+					newStyle
+					onChange={value =>
+						onChange({
+							[`${prefix}field`]: value,
+							[`${prefix}acf-field-type`]: fieldsOptions.find(
+								option => option.value === value
+							).type,
+						})
+					}
+				/>
+			)}
 		</>
 	);
 };

@@ -813,6 +813,11 @@ class MaxiBlocks_Styles
                             "rel='stylesheet preload'",
                             $html
                         );
+                        $html = str_replace(
+                            "media='all'",
+                            "as='style' media='all'",
+                            $html
+                        );
                     }
                     return $html;
                 },

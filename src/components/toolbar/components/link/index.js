@@ -5,7 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useContext, useEffect, useMemo, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,16 +17,6 @@ import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
 import { LoopContext, getDCLink, getDCValues } from '../../../../extensions/DC';
 import DC_LINK_BLOCKS from './dcLinkBlocks';
-
-/**
- * External dependencies
- */
-import { isNil, isEmpty } from 'lodash';
-
-/**
- * Styles & Icons
- */
-import './editor.scss';
 import { toolbarLink } from '../../../../icons';
 import {
 	linkFields,
@@ -34,6 +24,17 @@ import {
 } from '../../../../extensions/DC/constants';
 import SelectControl from '../../../select-control';
 import { getLinkTargets } from '../../../../extensions/DC/utils';
+import { getBlockData } from '../../../../extensions/attributes';
+
+/**
+ * External dependencies
+ */
+import { isNil, isEmpty, capitalize } from 'lodash';
+
+/**
+ * Styles & Icons
+ */
+import './editor.scss';
 
 const DISABLED_BLOCKS = [
 	'maxi-blocks/divider-maxi',
@@ -66,6 +67,19 @@ const Link = props => {
 	const showDCLink = clStatus && DC_LINK_BLOCKS.includes(blockName);
 	const showUseDCLink = dcStatus || showDCLink;
 	const selectedDCType = dcType ?? clType;
+	const { linkElements, linkElementOptions } = useMemo(() => {
+		const linkElements = getBlockData(blockName)?.linkElements;
+		const linkElementOptions = linkElements?.map(element => ({
+			label: capitalize(element),
+			value: element,
+		}));
+
+		return {
+			linkElements,
+			linkElementOptions,
+		};
+	}, [blockName]);
+	const showLinkElemetSelect = !!linkElements;
 
 	if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
 		return null;
@@ -209,6 +223,20 @@ const Link = props => {
 										/>
 									)}
 							</>
+						)}
+						{showLinkElemetSelect && (
+							<SelectControl
+								label={__('Apply link on', 'maxi-blocks')}
+								value={linkSettings.linkElement}
+								options={linkElementOptions}
+								newStyle
+								onChange={value => {
+									onChange({
+										...linkSettings,
+										linkElement: value,
+									});
+								}}
+							/>
 						)}
 						<ToolbarContext.Consumer>
 							{context => (

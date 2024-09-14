@@ -179,11 +179,7 @@ const getDCContent = async (dataRequest, clientId) => {
 		'product_categories',
 	].includes(field);
 
-	if (
-		isCustomTaxonomyField &&
-		!isNil(contentValue) &&
-		!isEmpty(contentValue)
-	) {
+	if (isCustomTaxonomyField) {
 		contentValue = await getTaxonomyContent(
 			contentValue,
 			delimiterContent,

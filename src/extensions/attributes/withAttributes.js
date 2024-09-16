@@ -162,14 +162,10 @@ const withAttributes = createHigherOrderComponent(
 					setAttributes({
 						isFirstOnHierarchy,
 					});
+					attributes.isFirstOnHierarchy = isFirstOnHierarchy;
 				}
 			}
-		}, [
-			blockRootClientId,
-			allowedBlocks,
-			blockName,
-			attributes.isFirstOnHierarchy,
-		]);
+		}, [blockRootClientId, attributes.isFirstOnHierarchy]);
 
 		return <BlockEdit {...props} />;
 	},

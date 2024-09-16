@@ -223,8 +223,7 @@ const AdvancedNumberControl = props => {
 		? rawPreferredValues.map(transformRangePreferredValue)
 		: rawPreferredValues;
 
-	const rangeValue =
-		+preferredValues.find(val => /\d/.test(val) && +val !== 0) || 0;
+	const rangeValue = +preferredValues.find(val => /\d/.test(val)) || 0;
 
 	const [showHelpContent, setShowHelpContent] = useState(false);
 

@@ -47,6 +47,7 @@ const getProductsContent = async (dataRequest, entityData) => {
 
 	switch (field) {
 		case 'name':
+			return limitString(data[field]?.toString(), limit);
 		case 'slug':
 		case 'review_count':
 		case 'average_rating':

@@ -11,17 +11,13 @@ import { useEffect, useState } from '@wordpress/element';
  */
 import { floor, isEqual, isNil, uniqueId } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
 import Button from '../../../../components/button';
-//const Button = loadable(() => import('../../../../components/button'));
-const Icon = loadable(() => import('../../../../components/icon'));
+import Icon from '../../../../components/icon';
 
 import {
 	getNumCol,

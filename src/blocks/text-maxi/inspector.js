@@ -5,25 +5,12 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const FontLevelControl = loadable(() =>
-	import('../../components/font-level-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const ListOptionsControl = loadable(() =>
-	import('./components/list-options-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import FontLevelControl from '../../components/font-level-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import ListOptionsControl from './components/list-options-control';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';

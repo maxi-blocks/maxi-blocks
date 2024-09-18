@@ -7,14 +7,13 @@ import { select } from '@wordpress/data';
  * External dependencies
  */
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const BlockInserter = loadable(() => import('../../components/block-inserter'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Inspector from './inspector';
+import BlockInserter from '../../components/block-inserter';
+import Toolbar from '../../components/toolbar';
 import { copyPasteMapping } from './data';
 import {
 	withMaxiContextLoop,

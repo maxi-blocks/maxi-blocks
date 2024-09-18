@@ -8,12 +8,11 @@ import { __ } from '@wordpress/i18n';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies.
  */
-const MaxiModal = loadable(() => import('../../editor/library/modal'));
+import MaxiModal from '../../editor/library/modal';
 import { withMaxiProps } from '../../extensions/maxi-block';
 
 class edit extends Component {

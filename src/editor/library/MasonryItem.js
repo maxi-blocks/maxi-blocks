@@ -9,15 +9,14 @@ import { RawHTML } from '@wordpress/element';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
 
 // eslint-disable-next-line import/no-cycle
-const MaxiModal = loadable(() => import('./modal'));
-const Button = loadable(() => import('../../components/button'));
+import MaxiModal from './modal';
+import Button from '../../components/button';
 
 const MasonryItem = props => {
 	const {

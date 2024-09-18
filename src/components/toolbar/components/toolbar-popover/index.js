@@ -11,14 +11,13 @@ import { select } from '@wordpress/data';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Button = loadable(() => import('../../../button'));
-const Icon = loadable(() => import('../../../icon'));
-const Popover = loadable(() => import('../../../popover'));
+import Button from '../../../button';
+import Icon from '../../../icon';
+import Popover from '../../../popover';
 import { openSidebarAccordion } from '../../../../extensions/inspector';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';

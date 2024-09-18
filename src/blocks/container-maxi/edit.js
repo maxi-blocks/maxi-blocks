@@ -4,21 +4,14 @@
 import { dispatch, select } from '@wordpress/data';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
+import Inspector from './inspector';
 import MaxiBlock from '../../components/maxi-block/maxiBlock';
-const Toolbar = loadable(() => import('../../components/toolbar'));
-const ArrowDisplayer = loadable(() =>
-	import('../../components/arrow-displayer')
-);
-const BlockInserter = loadable(() => import('../../components/block-inserter'));
-const ShapeDivider = loadable(() => import('../../components/shape-divider'));
+import Toolbar from '../../components/toolbar';
+import ArrowDisplayer from '../../components/arrow-displayer';
+import BlockInserter from '../../components/block-inserter';
+import ShapeDivider from '../../components/shape-divider';
 import { BlockIndicators } from '../../components';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes } from '../../components/maxi-block';

@@ -36,14 +36,34 @@ const updateAllBlockUniqueIds = async (page, innerBlocks) => {
 				newUniqueID
 			);
 
-			// Change the element ID in the DOM
+			// Change the element ID in the DOM and update content
 			await page.evaluate(
 				(oldUniqueID, newUniqueID) => {
 					const element = document.getElementById(
 						`maxi-blocks__styles--${oldUniqueID}`
 					);
 					if (element) {
+						// Update the element's ID
 						element.id = `maxi-blocks__styles--${newUniqueID}`;
+
+						// Update the content of the element
+						element.innerHTML = element.innerHTML.replace(
+							new RegExp(oldUniqueID, 'g'),
+							newUniqueID
+						);
+
+						// Update any data attributes that might contain the old ID
+						Array.from(element.attributes).forEach(attr => {
+							if (attr.value.includes(oldUniqueID)) {
+								element.setAttribute(
+									attr.name,
+									attr.value.replace(
+										new RegExp(oldUniqueID, 'g'),
+										newUniqueID
+									)
+								);
+							}
+						});
 					}
 				},
 				oldUniqueID,

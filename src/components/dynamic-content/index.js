@@ -17,17 +17,14 @@ import { Popover } from '@wordpress/components';
  */
 import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../advanced-number-control')
-);
-const SelectControl = loadable(() => import('../select-control'));
-const ToggleSwitch = loadable(() => import('../toggle-switch'));
-const TextControl = loadable(() => import('../text-control'));
+import AdvancedNumberControl from '../advanced-number-control';
+import SelectControl from '../select-control';
+import ToggleSwitch from '../toggle-switch';
+import TextControl from '../text-control';
 
 import {
 	getFields,

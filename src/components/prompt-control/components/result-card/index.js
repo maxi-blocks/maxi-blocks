@@ -9,15 +9,14 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  */
 import { capitalize } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Button = loadable(() => import('../../../button'));
-const DialogBox = loadable(() => import('../../../dialog-box'));
-const ResultModifyBar = loadable(() => import('../result-modify-bar'));
-const Icon = loadable(() => import('../../../icon'));
+import Button from '../../../button';
+import DialogBox from '../../../dialog-box';
+import ResultModifyBar from '../result-modify-bar';
+import Icon from '../../../icon';
 import { CONTENT_LIMIT, MODIFICATION_MODIFICATORS } from '../../constants';
 
 /**

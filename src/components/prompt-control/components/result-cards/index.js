@@ -8,13 +8,12 @@ import { useEffect, useState } from '@wordpress/element';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const ResultCard = loadable(() => import('../result-card'));
-const Button = loadable(() => import('../../../button'));
+import ResultCard from '../result-card';
+import Button from '../../../button';
 import { LOAD_MORE_COUNT } from '../../constants';
 
 /**

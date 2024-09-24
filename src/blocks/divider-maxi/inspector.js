@@ -1,25 +1,14 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-
-// Use loadable for components that you want to code-split
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const DividerControl = loadable(() =>
-	import('../../components/divider-control')
-);
-const ResponsiveTabsControl = loadable(() =>
-	import('../../components/responsive-tabs-control')
-);
-const SelectControl = loadable(() => import('../../components/select-control'));
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import DividerControl from '../../components/divider-control';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import SelectControl from '../../components/select-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
 
 import {
 	getDefaultAttribute,

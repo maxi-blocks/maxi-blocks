@@ -12,3 +12,13 @@ export const getFont = (state, font) => {
 	if (state.fonts) return state.fonts[font];
 	return state;
 };
+
+export const getFontUrl = (state, fontName, fontData) => {
+	if (Array.isArray(fontData.weight)) {
+		fontData.weight = fontData.weight.join();
+	}
+
+	if (state.fontUrls)
+		return state.fontUrls[fontName + fontData.style + fontData.weight];
+	return state;
+};

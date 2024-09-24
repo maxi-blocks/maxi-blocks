@@ -5,31 +5,14 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const ResponsiveTabsControl = loadable(() =>
-	import('../../components/responsive-tabs-control')
-);
-const AccordionLineControl = loadable(() =>
-	import('./components/accordion-line-control')
-);
-const AccordionSettings = loadable(() =>
-	import('./components/accordion-settings-control')
-);
-const AccordionTitleSettings = loadable(() =>
-	import('./components/accordion-title-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import AccordionLineControl from './components/accordion-line-control';
+import AccordionSettings from './components/accordion-settings-control';
+import AccordionTitleSettings from './components/accordion-title-control';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
@@ -150,6 +133,9 @@ const Inspector = props => {
 													type: titleLevel,
 												}}
 												styleCardPrefix=''
+												setShowLoader={
+													props.setShowLoader
+												}
 											/>
 										),
 									},

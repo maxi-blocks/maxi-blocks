@@ -2,14 +2,11 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
+import ToggleSwitch from '../../../../components/toggle-switch';
 import { getParsedVideoUrl } from '../../../../extensions/video';
 
 const VideoOptionsControl = props => {

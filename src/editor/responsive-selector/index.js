@@ -11,12 +11,11 @@ import { useCallback, useEffect, useRef } from '@wordpress/element';
  */
 import { isEmpty } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const MaxiStyleCardsEditorPopUp = loadable(() => import('../style-cards'));
+import MaxiStyleCardsEditorPopUp from '../style-cards';
 import { Button, Icon } from '../../components';
 import { setScreenSize } from '../../extensions/styles';
 import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';

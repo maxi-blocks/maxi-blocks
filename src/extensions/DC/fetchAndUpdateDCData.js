@@ -31,11 +31,11 @@ const fetchAndUpdateDCData = async (
 ) => {
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 
-	if(!dynamicContent?.['dc-status'] && !contextLoop?.['cl-status']) return;
+	if (!dynamicContent?.['dc-status'] && !contextLoop?.['cl-status']) return;
 
 	const dynamicContentProps = getDCValues(dynamicContent, contextLoop);
 
-	const { status, content, type, field, id, linkTarget, containsHTML } =
+	const { content, type, field, id, linkTarget, containsHTML } =
 		dynamicContentProps;
 
 	if (
@@ -76,6 +76,7 @@ const fetchAndUpdateDCData = async (
 				lastDynamicContentProps,
 				clientId
 			);
+
 			newContent = decodeEntities(newContent);
 
 			const customTaxonomies = select(
@@ -155,7 +156,6 @@ const fetchAndUpdateDCData = async (
 			onChange(synchronizedAttributes);
 		}
 	}
-
 };
 
 export default fetchAndUpdateDCData;

@@ -13,12 +13,10 @@ import Button from '../button';
 /**
  * External dependencies
  */
-import loadable from '@loadable/component';
 import cssValidator from 'w3c-css-validator';
 import { isEmpty } from 'lodash';
 import classnames from 'classnames';
-
-const CodeEditor = loadable(() => import('@uiw/react-textarea-code-editor'));
+import CodeEditor from '@uiw/react-textarea-code-editor';
 
 /**
  * Styles

@@ -12,17 +12,17 @@ import { createRef } from '@wordpress/element';
 import classnames from 'classnames';
 import { isEmpty, isNil, isNumber, round, uniqueId } from 'lodash';
 import DOMPurify from 'dompurify';
-import loadable from '@loadable/component';
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Inspector from './inspector';
+import Toolbar from '../../components/toolbar';
 import BlockResizer from '../../components/block-resizer';
-const Button = loadable(() => import('../../components/button'));
-const HoverPreview = loadable(() => import('../../components/hover-preview'));
-const Placeholder = loadable(() => import('../../components/placeholder'));
-const RawHTML = loadable(() => import('../../components/raw-html'));
+
+import Button from '../../components/button';
+import HoverPreview from '../../components/hover-preview';
+import Placeholder from '../../components/placeholder';
+import RawHTML from '../../components/raw-html';
 import MaxiPopoverButton from '../../components/maxi-popover-button';
 import MaxiBlock from '../../components/maxi-block/maxiBlock';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
@@ -296,6 +296,9 @@ class edit extends MaxiBlockComponent {
 					getBlockRefBounds={() =>
 						this.blockRef.current.getBoundingClientRect()
 					}
+					setShowLoader={value =>
+						this.setState({ showLoader: value })
+					}
 					{...this.props}
 				/>
 				<Toolbar
@@ -396,6 +399,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					tagName='figure'
 					className='maxi-image-block'
+					showLoader={this.state.showLoader}
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					{showImage ? (
@@ -441,6 +445,11 @@ class edit extends MaxiBlockComponent {
 										<CaptionToolbar
 											key={`caption-toolbar-${uniqueID}`}
 											ref={this.textRef}
+											setShowLoader={value =>
+												this.setState({
+													showLoader: value,
+												})
+											}
 											{...this.props}
 										/>
 										{dcStatus ? (
@@ -543,6 +552,11 @@ class edit extends MaxiBlockComponent {
 										<CaptionToolbar
 											key={`caption-toolbar-${uniqueID}`}
 											ref={this.textRef}
+											setShowLoader={value =>
+												this.setState({
+													showLoader: value,
+												})
+											}
 											{...this.props}
 										/>
 										{dcStatus ? (

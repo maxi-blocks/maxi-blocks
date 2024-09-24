@@ -7,17 +7,12 @@ import { __ } from '@wordpress/i18n';
  * External dependencies
  */
 import { isNil } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const BoxShadowControl = loadable(() =>
-	import('../../components/box-shadow-control')
-);
-const DividerControl = loadable(() =>
-	import('../../components/divider-control')
-);
+import BoxShadowControl from '../../components/box-shadow-control';
+import DividerControl from '../../components/divider-control';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	getBoxShadowStyles,

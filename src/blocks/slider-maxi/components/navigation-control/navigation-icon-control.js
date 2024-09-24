@@ -9,46 +9,23 @@ import { useState } from '@wordpress/element';
  */
 import classnames from 'classnames';
 import { capitalize } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Icon = loadable(() => import('../../../../components/icon'));
-const ResponsiveTabsControl = loadable(() =>
-	import('../../../../components/responsive-tabs-control')
-);
-const SvgWidthControl = loadable(() =>
-	import('../../../../components/svg-width-control')
-);
-const SvgStrokeWidthControl = loadable(() =>
-	import('../../../../components/svg-stroke-width-control')
-);
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const AxisControl = loadable(() =>
-	import('../../../../components/axis-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../../../components/setting-tabs-control')
-);
-const ColorControl = loadable(() =>
-	import('../../../../components/color-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const BorderControl = loadable(() =>
-	import('../../../../components/border-control')
-);
-const BoxShadowControl = loadable(() =>
-	import('../../../../components/box-shadow-control')
-);
-const MaxiModal = loadable(() => import('../../../../editor/library/modal'));
-const GradientControl = loadable(() =>
-	import('../../../../components/gradient-control')
-);
+import Icon from '../../../../components/icon';
+import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
+import SvgWidthControl from '../../../../components/svg-width-control';
+import SvgStrokeWidthControl from '../../../../components/svg-stroke-width-control';
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import AxisControl from '../../../../components/axis-control';
+import SettingTabsControl from '../../../../components/setting-tabs-control';
+import ColorControl from '../../../../components/color-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
+import BorderControl from '../../../../components/border-control';
+import BoxShadowControl from '../../../../components/box-shadow-control';
+import MaxiModal from '../../../../editor/library/modal';
+import GradientControl from '../../../../components/gradient-control';
 
 import {
 	getAttributeKey,

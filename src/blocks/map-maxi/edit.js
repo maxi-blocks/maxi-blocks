@@ -5,14 +5,9 @@ import { resolveSelect } from '@wordpress/data';
 import { renderToString } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
+import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MapContent } from './components';
@@ -85,6 +80,7 @@ class edit extends MaxiBlockComponent {
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
 				apiKey={this.state.googleApiKey}
+				setShowLoader={value => this.setState({ showLoader: value })}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -96,6 +92,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-map--${uniqueID}`}
 				ref={this.blockRef}
 				className='maxi-map-block'
+				showLoader={this.state.showLoader}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<MapContent

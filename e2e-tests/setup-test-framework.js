@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { get } from 'lodash';
+import dotenv from 'dotenv';
 
 /**
  * WordPress dependencies
@@ -25,6 +26,11 @@ import { deactivatePlugin } from './utils';
 const _ = require('lodash');
 
 _.debounce = func => func;
+
+/**
+ * Load environment variables from .env file
+ */
+dotenv.config();
 
 /**
  * Timeout, in seconds, that the test should be allowed to run.

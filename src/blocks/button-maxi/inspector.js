@@ -8,22 +8,15 @@ import { useCallback, useEffect } from '@wordpress/element';
 /**
  * External dependencies
  */
-import loadable from '@loadable/component';
 import { isEmpty, isNil, cloneDeep, without } from 'lodash';
 
 /**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const DefaultStylesControl = loadable(() =>
-	import('../../components/default-styles-control')
-);
-const Icon = loadable(() => import('../../components/icon'));
+import AccordionControl from '../../components/accordion-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import DefaultStylesControl from '../../components/default-styles-control';
+import Icon from '../../components/icon';
 import * as defaultPresets from './defaults';
 import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
 import { ariaLabelsCategories, customCss } from './data';

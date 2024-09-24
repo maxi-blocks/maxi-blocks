@@ -4,14 +4,9 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const Repeater = loadable(() => import('../repeater'));
+import Repeater from '../repeater';
 import { getGroupAttributes } from '../../extensions/styles';
 
 const repeater = ({

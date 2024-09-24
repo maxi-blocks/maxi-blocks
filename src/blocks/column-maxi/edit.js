@@ -8,15 +8,14 @@ import { createRef } from '@wordpress/element';
  */
 import classnames from 'classnames';
 import { round, isEqual } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
-const BlockInserter = loadable(() => import('../../components/block-inserter'));
- import BlockResizer from '../../components/block-resizer';
+import Inspector from './inspector';
+import Toolbar from '../../components/toolbar';
+import BlockInserter from '../../components/block-inserter';
+import BlockResizer from '../../components/block-resizer';
 
 import RowContext from '../row-maxi/rowContext';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';

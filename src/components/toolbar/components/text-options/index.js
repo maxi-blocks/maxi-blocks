@@ -176,6 +176,7 @@ const TextOptions = props => {
 		styleCards = false,
 		styleCardPrefix,
 		isCaptionToolbar = false,
+		setShowLoader,
 	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
@@ -318,6 +319,7 @@ const TextOptions = props => {
 										}}
 										theme='dark'
 										breakpoint={breakpoint}
+										setShowLoader={setShowLoader}
 									/>
 								</div>
 								<div className='toolbar-item__typography-control__extra-text-options'>

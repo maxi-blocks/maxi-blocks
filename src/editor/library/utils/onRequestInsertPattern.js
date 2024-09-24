@@ -9,6 +9,8 @@ import { dispatch, resolveSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import imageUploader, { placeholderUploader } from './imageUploader';
+import uniqueIDGenerator from '../../../extensions/attributes/uniqueIDGenerator';
+import { getBlockNameFromUniqueID } from '../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -18,8 +20,20 @@ import { isEmpty, uniq } from 'lodash';
 const insertCode = async (content, clientId) => {
 	const { replaceBlock } = dispatch('core/block-editor');
 
+	// Extract uniqueID values that don't end with '-u' from block content
+	const uniqueIDPattern = /"uniqueID":"((?!-u")[^"]+)"/g;
+	const uniqueIDMatches = content.match(uniqueIDPattern) || [];
+
+	// Generate new unique IDs and replace them in the content string
+	const updatedContent = uniqueIDMatches.reduce((acc, match) => {
+		const [, uniqueID] = match.match(/"uniqueID":"((?!-u")[^"]+)"/);
+		const blockName = getBlockNameFromUniqueID(uniqueID);
+		const newUniqueID = uniqueIDGenerator({ blockName, clientId });
+		return acc.replace(new RegExp(uniqueID, 'g'), newUniqueID);
+	}, content);
+
 	const parsedContent = rawHandler({
-		HTML: content,
+		HTML: updatedContent,
 		mode: 'BLOCKS',
 	});
 

@@ -8,41 +8,22 @@ import { __ } from '@wordpress/i18n';
  */
 import { isNil } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
-
-const BezierEditor = loadable(() => import('bezier-easing-editor'));
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const AxisControl = loadable(() =>
-	import('../../../../components/axis-control')
-);
-const BackgroundControl = loadable(() =>
-	import('../../../../components/background-control')
-);
-const BorderControl = loadable(() =>
-	import('../../../../components/border-control')
-);
-const Icon = loadable(() => import('../../../../components/icon'));
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../../../components/setting-tabs-control')
-);
-const TextareaControl = loadable(() =>
-	import('../../../../components/textarea-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const TypographyControl = loadable(() =>
-	import('../../../../components/typography-control')
-);
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import AxisControl from '../../../../components/axis-control';
+import BackgroundControl from '../../../../components/background-control';
+import BorderControl from '../../../../components/border-control';
+import Icon from '../../../../components/icon';
+import SelectControl from '../../../../components/select-control';
+import SettingTabsControl from '../../../../components/setting-tabs-control';
+import TextareaControl from '../../../../components/textarea-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
+import TypographyControl from '../../../../components/typography-control';
+
+import BezierEditor from 'bezier-easing-editor';
 
 import {
 	getDefaultAttribute,

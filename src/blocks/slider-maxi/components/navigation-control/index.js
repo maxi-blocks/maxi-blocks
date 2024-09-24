@@ -7,17 +7,12 @@ import { __ } from '@wordpress/i18n';
  * External dependencies
  */
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
+import ToggleSwitch from '../../../../components/toggle-switch';
+import SelectControl from '../../../../components/select-control';
 import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 
 /**

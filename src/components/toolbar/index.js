@@ -114,6 +114,7 @@ const MaxiToolbar = memo(
 			repeaterStatus,
 			repeaterRowClientId,
 			getInnerBlocksPositions,
+			setShowLoader,
 		} = props;
 		const {
 			blockStyle,
@@ -329,6 +330,7 @@ const MaxiToolbar = memo(
 							styleCard={styleCard}
 							clientId={clientId}
 							disableCustomFormats={disableCustomFormats}
+							setShowLoader={setShowLoader}
 						/>
 						<Mover
 							clientId={clientId}
@@ -807,12 +809,16 @@ const MaxiToolbar = memo(
 		const result = isEqual(
 			Object.fromEntries(
 				Object.entries(oldAttr).filter(
-					([key]) => !Array.isArray(propsToAvoid) || !propsToAvoid.includes(key)
+					([key]) =>
+						!Array.isArray(propsToAvoid) ||
+						!propsToAvoid.includes(key)
 				)
 			),
 			Object.fromEntries(
 				Object.entries(newAttr).filter(
-					([key]) => !Array.isArray(propsToAvoid) || !propsToAvoid.includes(key)
+					([key]) =>
+						!Array.isArray(propsToAvoid) ||
+						!propsToAvoid.includes(key)
 				)
 			)
 		);

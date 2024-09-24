@@ -17,17 +17,14 @@ import { Popover } from '@wordpress/components';
  */
 import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../advanced-number-control')
-);
-const SelectControl = loadable(() => import('../select-control'));
-const ToggleSwitch = loadable(() => import('../toggle-switch'));
-const TextControl = loadable(() => import('../text-control'));
+import AdvancedNumberControl from '../advanced-number-control';
+import SelectControl from '../select-control';
+import ToggleSwitch from '../toggle-switch';
+import TextControl from '../text-control';
 
 import {
 	getFields,
@@ -424,7 +421,8 @@ const DynamicContent = props => {
 					) : (
 						<>
 							{(relationTypes.includes(type) ||
-								type === 'archive') && (
+								type === 'archive' ||
+								relation.includes('custom-taxonomy')) && (
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
@@ -476,47 +474,45 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{relation !== 'current-archive' &&
+							{((relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
-									relation === 'by-id') && (
-									<SelectControl
-										label={__(
-											`${capitalize(
-												orderByRelations.includes(
-													relation
-												)
-													? relation.replace(
-															'by-',
-															''
-													  )
-													: type.replace('_', ' ')
-											)} id`,
-											'maxi-blocks'
-										)}
-										value={id}
-										options={postIdOptions}
-										newStyle
-										onChange={value =>
-											changeProps({
-												'dc-error': '',
-												'dc-show': 'current',
-												'dc-id': Number(value),
-											})
-										}
-										onReset={() =>
-											changeProps({
-												'dc-id': postIdOptions[0].value,
-											})
-										}
-									/>
-								)}
-							{orderTypes.includes(type) &&
-								orderRelations.includes(relation) && (
-									<>
-										{orderByRelations.includes(
-											relation
+									relation === 'by-id')) ||
+								relation.includes('custom-taxonomy')) && (
+								<SelectControl
+									label={__(
+										`${capitalize(
+											orderByRelations.includes(relation)
+												? relation.replace('by-', '')
+												: type.replace('_', ' ')
+										)} id`,
+										'maxi-blocks'
+									)}
+									value={id}
+									options={postIdOptions}
+									newStyle
+									onChange={value =>
+										changeProps({
+											'dc-error': '',
+											'dc-show': 'current',
+											'dc-id': Number(value),
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-id': postIdOptions[0].value,
+										})
+									}
+								/>
+							)}
+							{((orderTypes.includes(type) &&
+								orderRelations.includes(relation)) ||
+								relation.includes('custom-taxonomy')) && (
+								<>
+									{orderByRelations.includes(relation) ||
+										(relation.includes(
+											'custom-taxonomy'
 										) && (
 											<SelectControl
 												label={__(
@@ -540,57 +536,57 @@ const DynamicContent = props => {
 													})
 												}
 											/>
-										)}
-										<SelectControl
-											label={__('Order', 'maxi-blocks')}
-											value={order}
-											options={
-												orderOptions[
-													orderByRelations.includes(
-														relation
-													)
-														? orderBy
-														: relation
-												]
-											}
-											newStyle
-											onChange={value =>
-												changeProps({
-													'dc-order': value,
-												})
-											}
-											onReset={() =>
-												changeProps({
-													'dc-order':
-														getDefaultAttribute(
-															'dc-order'
-														),
-												})
-											}
-										/>
-										<AdvancedNumberControl
-											label={__(
-												'Accumulator',
-												'maxi-blocks'
-											)}
-											value={accumulator}
-											onChangeValue={value =>
-												changeProps({
-													'dc-accumulator': value,
-												})
-											}
-											onReset={() =>
-												changeProps({
-													'dc-accumulator':
-														getDefaultAttribute(
-															'dc-accumulator'
-														),
-												})
-											}
-											disableRange
-										/>
-									</>
-								)}
+										))}
+									<SelectControl
+										label={__('Order', 'maxi-blocks')}
+										value={order}
+										options={
+											orderOptions[
+												orderByRelations.includes(
+													relation
+												) ||
+												relation.includes(
+													'custom-taxonomy'
+												)
+													? orderBy
+													: relation
+											]
+										}
+										newStyle
+										onChange={value =>
+											changeProps({
+												'dc-order': value,
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'dc-order':
+													getDefaultAttribute(
+														'dc-order'
+													),
+											})
+										}
+									/>
+									<AdvancedNumberControl
+										label={__('Accumulator', 'maxi-blocks')}
+										value={accumulator}
+										onChangeValue={value =>
+											changeProps({
+												'dc-accumulator': value,
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'dc-accumulator':
+													getDefaultAttribute(
+														'dc-accumulator'
+													),
+											})
+										}
+										disableRange
+									/>
+								</>
+							)}
 							{source === 'wp' &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||

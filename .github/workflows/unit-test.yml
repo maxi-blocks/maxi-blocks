@@ -17,7 +17,7 @@ jobs:
                   cache-name: cache-node-modules
               with:
                   # npm cache files are stored in `~/.npm` on Linux/macOS
-                   # to clear the cache, change `v1.2` for any other random number, github will destroy
+                  # to clear the cache, change `v1.2` for any other random number, github will destroy
                   # the old cache within 7 days 👌
                   # Note: don't change the `actions/setup-node@v1` or any other dependency version by error
                   path: ~/.npm

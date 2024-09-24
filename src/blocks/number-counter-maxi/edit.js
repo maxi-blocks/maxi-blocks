@@ -7,12 +7,11 @@ import { useState, useEffect, useRef, createRef } from '@wordpress/element';
  * External dependencies
  */
 import { round } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
+import Inspector from './inspector';
 
 import {
 	getResizerSize,
@@ -111,7 +110,11 @@ class edit extends MaxiBlockComponent {
 		const handleReset = () => this.resetNumberHelper();
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				setShowLoader={value => this.setState({ showLoader: value })}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
@@ -124,6 +127,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-number-counter--${uniqueID}`}
 				ref={this.blockRef}
 				className={classes}
+				showLoader={this.state.showLoader}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<NumberCounter

@@ -39,11 +39,7 @@ import {
 	getTemplateViewIframe,
 	getSiteEditorPreviewIframes,
 } from '../fse';
-import { updateSCOnEditor } from '../style-cards';
-import getWinBreakpoint from '../dom/getWinBreakpoint';
-import getCurrentPreviewDeviceType from '../dom/getCurrentPreviewDeviceType';
 import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
-import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
@@ -57,9 +53,6 @@ import processRelations from '../relations/processRelations';
  */
 import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
-
-const totalGetStylesObjectTime = 0;
-const totalRenderStyleComponentTime = 0;
 
 /**
  * Class
@@ -1071,12 +1064,11 @@ class MaxiBlockComponent extends Component {
 		);
 
 		let obj;
-		let breakpoints;
+		const breakpoints = this.getBreakpoints;
 		let customDataRelations;
 
 		if (!isBreakpointChange && !isBlockStyleChange) {
 			obj = this.getStylesObject;
-			breakpoints = this.getBreakpoints;
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {

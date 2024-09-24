@@ -517,7 +517,6 @@ const LibraryContainer = props => {
 
 	/** Patterns / Blocks Results */
 	const patternsResults = hit => {
-
 		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
 
 		return (
@@ -1437,9 +1436,7 @@ const LibraryContainer = props => {
 									itemsReturn.push(
 										generateItem('Playground')
 									);
-									itemsReturn.push(
-										generateItem('Theme')
-									);
+									itemsReturn.push(generateItem('Theme'));
 
 									return itemsReturn;
 								}}

@@ -474,43 +474,38 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{(relation !== 'current-archive' &&
+							{((relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id')) ||
-								(relation.includes('custom-taxonomy') && (
-									<SelectControl
-										label={__(
-											`${capitalize(
-												orderByRelations.includes(
-													relation
-												)
-													? relation.replace(
-															'by-',
-															''
-													  )
-													: type.replace('_', ' ')
-											)} id`,
-											'maxi-blocks'
-										)}
-										value={id}
-										options={postIdOptions}
-										newStyle
-										onChange={value =>
-											changeProps({
-												'dc-error': '',
-												'dc-show': 'current',
-												'dc-id': Number(value),
-											})
-										}
-										onReset={() =>
-											changeProps({
-												'dc-id': postIdOptions[0].value,
-											})
-										}
-									/>
-								))}
+								relation.includes('custom-taxonomy')) && (
+								<SelectControl
+									label={__(
+										`${capitalize(
+											orderByRelations.includes(relation)
+												? relation.replace('by-', '')
+												: type.replace('_', ' ')
+										)} id`,
+										'maxi-blocks'
+									)}
+									value={id}
+									options={postIdOptions}
+									newStyle
+									onChange={value =>
+										changeProps({
+											'dc-error': '',
+											'dc-show': 'current',
+											'dc-id': Number(value),
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-id': postIdOptions[0].value,
+										})
+									}
+								/>
+							)}
 							{((orderTypes.includes(type) &&
 								orderRelations.includes(relation)) ||
 								relation.includes('custom-taxonomy')) && (

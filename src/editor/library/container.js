@@ -1436,6 +1436,7 @@ const LibraryContainer = props => {
 									itemsReturn.push(
 										generateItem('Playground')
 									);
+									itemsReturn.push(generateItem('Theme'));
 
 									return itemsReturn;
 								}}

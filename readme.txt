@@ -172,6 +172,12 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 25 Sep 2024_
+MaxiBlocks v1.9.7
+* Update: Added Theme tab to Template Library for future Theme templates.
+* Fix: Addressed responsive issues when breakpoints values were missing on frontend in some cases.
+* Fix: Restored "by relation" dropdown option for Dynamic Content.
+
 _Updates 19 Sep 2024_
 MaxiBlocks v1.9.6
 * Update: Introduced Bunny Fonts option as an alternative to Google Fonts.

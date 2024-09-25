@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.6
 Requires PHP: 8.0
-Stable tag: 1.9.6
+Stable tag: 1.9.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -171,6 +171,12 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates 25 Sep 2024_
+MaxiBlocks v1.9.7
+* Update: Added Theme tab to Template Library for future Theme templates.
+* Fix: Addressed responsive issues when breakpoints values were missing on frontend in some cases.
+* Fix: Restored "by relation" dropdown option for Dynamic Content.
 
 _Updates 19 Sep 2024_
 MaxiBlocks v1.9.6

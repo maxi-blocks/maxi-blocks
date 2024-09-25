@@ -1425,6 +1425,8 @@ class MaxiBlocks_Styles
                     return str_replace('max-width:undefinedpx', 'max-width:767px', $matches[0]);
                 } elseif (strpos($content, 'row-gap:40px;') !== false) {
                     return str_replace('max-width:undefinedpx', 'max-width:480px', $matches[0]);
+                } elseif (strpos($content, 'top:-100px;') !== false) {
+                    return str_replace('max-width:undefinedpx', 'max-width:1024px', $matches[0]);
                 }
                 return $matches[0];
             },

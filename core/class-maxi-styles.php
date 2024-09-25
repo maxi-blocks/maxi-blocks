@@ -1324,8 +1324,6 @@ class MaxiBlocks_Styles
             ARRAY_A
         );
 
-
-
         $content_block = $content_array_block[0] ?? null;
 
         if (!isset($content_block) || empty($content_block)) {
@@ -1367,6 +1365,10 @@ class MaxiBlocks_Styles
                     $content_block['css_value'] .= $new_styles;
                 }
             }
+            if (strpos($content_block['css_value'], '@media only screen and (min-width:NaNpx)') !== false) {
+                $content_block['css_value'] = $this->fix_broken_styles($content_block['css_value']);
+            }
+
             $styles .= ' ' . $content_block['css_value'];
         }
 
@@ -1399,6 +1401,56 @@ class MaxiBlocks_Styles
                 $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
             }
         }
+    }
+
+    /**
+     * Fix broken styles by replacing undefinedpx with appropriate values.
+     *
+     * @param string $style The CSS style string.
+     * @return string The fixed CSS style string.
+     */
+    private function fix_broken_styles($style)
+    {
+        // Replace NaNpx with 1921px
+        $style = str_replace('min-width:NaNpx', 'min-width:1921px', $style);
+
+        // Replace max-width:undefinedpx with appropriate values
+        $style = preg_replace_callback(
+            '/@media only screen and \(max-width:undefinedpx\)\{(.*?)\}/s',
+            function ($matches) {
+                $content = $matches[1];
+                if (strpos($content, 'width:90%;') !== false) {
+                    return str_replace('max-width:undefinedpx', 'max-width:1366px', $matches[0]);
+                } elseif (strpos($content, 'moz-column-gap:2.5%;') !== false || strpos($content, 'column-gap:2.5%;') !== false) {
+                    return str_replace('max-width:undefinedpx', 'max-width:767px', $matches[0]);
+                } elseif (strpos($content, 'row-gap:40px;') !== false) {
+                    return str_replace('max-width:undefinedpx', 'max-width:480px', $matches[0]);
+                } elseif (strpos($content, 'top:-100px;') !== false) {
+                    return str_replace('max-width:undefinedpx', 'max-width:1024px', $matches[0]);
+                }
+                return $matches[0];
+            },
+            $style
+        );
+
+        // If no specific matches, replace the last, second to last, and first max-width:undefinedpx
+        $undefined_matches = [];
+        preg_match_all('/max-width:undefinedpx/', $style, $undefined_matches, PREG_OFFSET_CAPTURE);
+
+        if (!empty($undefined_matches[0])) {
+            $count = count($undefined_matches[0]);
+            if ($count >= 1) {
+                $style = substr_replace($style, 'max-width:480px', $undefined_matches[0][$count - 1][1], strlen('max-width:undefinedpx'));
+            }
+            if ($count >= 2) {
+                $style = substr_replace($style, 'max-width:767px', $undefined_matches[0][$count - 2][1], strlen('max-width:undefinedpx'));
+            }
+            if ($count >= 3) {
+                $style = substr_replace($style, 'max-width:1366px', $undefined_matches[0][0][1], strlen('max-width:undefinedpx'));
+            }
+        }
+
+        return $style;
     }
 
     /**

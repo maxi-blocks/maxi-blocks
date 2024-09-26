@@ -412,6 +412,7 @@ class MaxiBlocks_StyleCards
 
         $style_cards = json_decode($maxi_blocks_style_cards_current, true);
         $updated = false;
+        $sc_maxi_active = false;
 
         foreach ($style_cards as $key => $sc) {
             if (isset($sc['dark']['defaultStyleCard']['link']['link-palette-color']) && $sc['dark']['defaultStyleCard']['link']['link-palette-color'] == 5) {
@@ -422,6 +423,9 @@ class MaxiBlocks_StyleCards
                 $style_cards[$key]['light']['defaultStyleCard']['link']['link-palette-color'] = 4;
                 $updated = true;
             }
+            if ($key === 'sc_maxi' && isset($sc['status']) && $sc['status'] === 'active') {
+                $sc_maxi_active = true;
+            }
         }
 
         if ($updated) {
@@ -431,10 +435,45 @@ class MaxiBlocks_StyleCards
                 ['object' => $updated_style_cards],
                 ['id' => 'style_cards_current']
             );
-            return true;
         }
 
-        return false;
+        // Migrate sc_string if sc_maxi is active
+        if ($sc_maxi_active) {
+            $sc_string = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT object FROM {$wpdb->prefix}maxi_blocks_general WHERE id = %s",
+                    'sc_string'
+                )
+            );
+
+            if ($sc_string) {
+                $sc_string = maybe_unserialize($sc_string);
+
+                // Replace dark link color
+                $sc_string = str_replace(
+                    '--maxi-dark-link:rgba(var(--maxi-dark-color-5,255,255,255),1);',
+                    '--maxi-dark-link:rgba(var(--maxi-dark-color-4,255,74,23),1);',
+                    $sc_string
+                );
+
+                // Replace light link color
+                $sc_string = str_replace(
+                    '--maxi-light-link:rgba(var(--maxi-light-color-5,0,0,0),1);',
+                    '--maxi-light-link:rgba(var(--maxi-light-color-4,255,74,23),1);',
+                    $sc_string
+                );
+
+                $wpdb->update(
+                    $wpdb->prefix . "maxi_blocks_general",
+                    ['object' => serialize($sc_string)],
+                    ['id' => 'sc_string']
+                );
+
+                $updated = true;
+            }
+        }
+
+        return $updated;
     }
 
     public function run_link_palette_migration()

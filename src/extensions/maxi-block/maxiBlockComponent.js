@@ -1234,6 +1234,7 @@ class MaxiBlockComponent extends Component {
 		}
 
 		let styleContent;
+		let styles;
 
 		if (isBreakpointChange || isBlockStyleChange) {
 			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
@@ -1247,29 +1248,14 @@ class MaxiBlockComponent extends Component {
 					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
 					`--maxi-${blockStyle}-`
 				);
-				const styles = styleResolver({
-					styles: stylesObj,
-					remove: false,
-					breakpoints: breakpoints || this.getBreakpoints,
-					uniqueID,
-				});
-				dispatch('maxiBlocks/styles').saveCSSCache(
-					uniqueID,
-					styles,
-					!!iframe,
-					isSiteEditor
-				);
+				styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
 			}
 		} else {
-			const styles = styleResolver({
-				styles: stylesObj,
-				remove: false,
-				breakpoints: breakpoints || this.getBreakpoints,
-				uniqueID,
-			});
-
+			styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+		}
 
+		if (styles) {
 			dispatch('maxiBlocks/styles').saveCSSCache(
 				uniqueID,
 				styles,
@@ -1281,6 +1267,16 @@ class MaxiBlockComponent extends Component {
 		if (styleElement.textContent !== styleContent) {
 			styleElement.textContent = styleContent;
 		}
+	}
+
+	// Helper method to generate styles
+	generateStyles(stylesObj, breakpoints, uniqueID) {
+		return styleResolver({
+			styles: stylesObj,
+			remove: false,
+			breakpoints: breakpoints || this.getBreakpoints,
+			uniqueID,
+		});
 	}
 
 	removeStyles() {

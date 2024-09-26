@@ -452,14 +452,14 @@ class MaxiBlocks_StyleCards
                 // Replace dark link color
                 $sc_string = str_replace(
                     '--maxi-dark-link:rgba(var(--maxi-dark-color-5,255,255,255),1);',
-                    '--maxi-dark-link:rgba(var(--maxi-dark-color-4,255,74,23),1);',
+                    '',
                     $sc_string
                 );
 
                 // Replace light link color
                 $sc_string = str_replace(
                     '--maxi-light-link:rgba(var(--maxi-light-color-5,0,0,0),1);',
-                    '--maxi-light-link:rgba(var(--maxi-light-color-4,255,74,23),1);',
+                    '',
                     $sc_string
                 );
 

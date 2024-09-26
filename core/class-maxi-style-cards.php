@@ -38,7 +38,7 @@ class MaxiBlocks_StyleCards
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
 
         // Run the migration once
-        add_action('init', [$this, 'run_link_palette_migration']);
+        add_action('admin_init', [$this, 'run_link_palette_migration']);
     }
 
     /**

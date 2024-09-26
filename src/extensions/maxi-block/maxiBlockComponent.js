@@ -1092,6 +1092,7 @@ class MaxiBlockComponent extends Component {
 					'.editor-post-template__swap-template-modal'
 				)
 			) {
+				obj = this.getStylesObject;
 				this.injectStyles(
 					uniqueID,
 					obj,
@@ -1245,6 +1246,18 @@ class MaxiBlockComponent extends Component {
 				styleContent = styleContent.replace(
 					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
 					`--maxi-${blockStyle}-`
+				);
+				const styles = styleResolver({
+					styles: stylesObj,
+					remove: false,
+					breakpoints: breakpoints || this.getBreakpoints,
+					uniqueID,
+				});
+				dispatch('maxiBlocks/styles').saveCSSCache(
+					uniqueID,
+					styles,
+					!!iframe,
+					isSiteEditor
 				);
 			}
 		} else {

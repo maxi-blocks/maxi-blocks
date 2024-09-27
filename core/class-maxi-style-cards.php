@@ -470,6 +470,7 @@ class MaxiBlocks_StyleCards
                 );
 
                 $updated = true;
+
             }
         }
 

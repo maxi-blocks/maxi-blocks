@@ -449,27 +449,29 @@ class MaxiBlocks_StyleCards
             if ($sc_string) {
                 $sc_string = maybe_unserialize($sc_string);
 
-                // Replace dark link color
-                $sc_string = str_replace(
-                    '--maxi-dark-link:rgba(var(--maxi-dark-color-5,255,255,255),1);',
-                    '',
-                    $sc_string
-                );
+                if (is_string($sc_string)) {
+                    // Replace dark link color
+                    $sc_string = str_replace(
+                        '--maxi-dark-link:rgba(var(--maxi-dark-color-5,255,255,255),1);',
+                        '',
+                        $sc_string
+                    );
 
-                // Replace light link color
-                $sc_string = str_replace(
-                    '--maxi-light-link:rgba(var(--maxi-light-color-5,0,0,0),1);',
-                    '',
-                    $sc_string
-                );
+                    // Replace light link color
+                    $sc_string = str_replace(
+                        '--maxi-light-link:rgba(var(--maxi-light-color-5,0,0,0),1);',
+                        '',
+                        $sc_string
+                    );
 
-                $wpdb->update(
-                    $wpdb->prefix . "maxi_blocks_general",
-                    ['object' => serialize($sc_string)],
-                    ['id' => 'sc_string']
-                );
+                    $wpdb->update(
+                        $wpdb->prefix . "maxi_blocks_general",
+                        ['object' => serialize($sc_string)],
+                        ['id' => 'sc_string']
+                    );
 
-                $updated = true;
+                    $updated = true;
+                }
             }
         }
 

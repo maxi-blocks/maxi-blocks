@@ -172,6 +172,11 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 27 Sep 2024_
+MaxiBlocks v1.9.8
+* Fix: Resolved issue where block tones were not switching correctly on the frontend.
+* Fix: Refined default link colour settings in the Template style cards for improved consistency.
+
 _Updates 25 Sep 2024_
 MaxiBlocks v1.9.7
 * Update: Added Theme tab to Template Library for future Theme templates.

@@ -29,7 +29,7 @@ import {
 	getHasDC,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
-import getIsIDTrulyUnique from './getIsIDTrulyUnique';
+import { getIsIDUniqueOnDB, getIsIDUniqueOnPage } from './getIsIDTrulyUnique';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import {
@@ -39,11 +39,7 @@ import {
 	getTemplateViewIframe,
 	getSiteEditorPreviewIframes,
 } from '../fse';
-import { updateSCOnEditor } from '../style-cards';
-import getWinBreakpoint from '../dom/getWinBreakpoint';
-import getCurrentPreviewDeviceType from '../dom/getCurrentPreviewDeviceType';
 import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
-import { getStylesWrapperId } from './utils';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
@@ -57,9 +53,6 @@ import processRelations from '../relations/processRelations';
  */
 import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
-
-const totalGetStylesObjectTime = 0;
-const totalRenderStyleComponentTime = 0;
 
 /**
  * Class
@@ -88,6 +81,7 @@ class MaxiBlockComponent extends Component {
 		this.previousRelationInstances = null;
 		this.popoverStyles = null;
 		this.isPatternsPreview = false;
+		this.abortController = new AbortController();
 
 		const previewIframes = getSiteEditorPreviewIframes();
 
@@ -942,7 +936,7 @@ class MaxiBlockComponent extends Component {
 		)
 			return idToCheck;
 
-		const { clientId, name: blockName, attributes } = this.props;
+		const { attributes } = this.props;
 		const { customLabel } = attributes;
 
 		const isBlockCopied =
@@ -953,48 +947,10 @@ class MaxiBlockComponent extends Component {
 				.getLastInsertedBlocks()
 				.includes(this.props.clientId);
 
-		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {
-			const newUniqueID = uniqueIDGenerator({
-				blockName,
-			});
+		this.checkGlobalUniqueID(idToCheck);
 
-			propagateNewUniqueID(
-				idToCheck,
-				newUniqueID,
-				clientId,
-				this.props.repeaterStatus,
-				this.props.repeaterRowClientId,
-				this.props.attributes['background-layers']
-			);
-
-			this.props.attributes.uniqueID = newUniqueID;
-
-			/**
-			 * Use `updateBlockAttributes` for `uniqueID` update in case if
-			 * `updateBlockAttributes` was called before (for example in `propagateNewUniqueID`)
-			 */
-			if (
-				select('maxiBlocks/blocks').getIsBlockWithUpdatedAttributes(
-					clientId
-				)
-			) {
-				const { updateBlockAttributes } = dispatch('core/block-editor');
-				updateBlockAttributes(clientId, {
-					uniqueID: newUniqueID,
-				});
-			}
-
-			if (!this.props.repeaterStatus) {
-				this.props.attributes.customLabel = getCustomLabel(
-					this.props.attributes.customLabel,
-					this.props.attributes.uniqueID
-				);
-			}
-
-			if (this.maxiBlockDidChangeUniqueID)
-				this.maxiBlockDidChangeUniqueID(newUniqueID);
-
-			return newUniqueID;
+		if (isBlockCopied || !getIsIDUniqueOnPage(idToCheck)) {
+			return this.updateUniqueID();
 		}
 
 		if (getIsUniqueCustomLabelRepeated(customLabel)) {
@@ -1005,6 +961,72 @@ class MaxiBlockComponent extends Component {
 		}
 
 		return idToCheck;
+	}
+
+	async checkGlobalUniqueID(idToCheck) {
+		try {
+			const isGlobalUniqueID = await getIsIDUniqueOnDB(
+				idToCheck,
+				this.abortController.signal
+			);
+
+			if (!isGlobalUniqueID) {
+				this.updateUniqueID(idToCheck);
+			}
+		} catch (error) {
+			if (error.name === 'AbortError') {
+				console.warn('checkGlobalUniqueID aborted');
+			} else {
+				console.error(
+					'An error occurred in checkGlobalUniqueID:',
+					error
+				);
+			}
+		}
+	}
+
+	updateUniqueID(idToCheck) {
+		const { clientId, name: blockName } = this.props;
+
+		const newUniqueID = uniqueIDGenerator({
+			blockName,
+		});
+
+		propagateNewUniqueID(
+			idToCheck,
+			newUniqueID,
+			clientId,
+			this.props.repeaterStatus,
+			this.props.repeaterRowClientId,
+			this.props.attributes['background-layers']
+		);
+
+		this.props.attributes.uniqueID = newUniqueID;
+
+		/**
+		 * Use `updateBlockAttributes` for `uniqueID` update in case if
+		 * `updateBlockAttributes` was called before (for example in `propagateNewUniqueID`)
+		 */
+		if (
+			select('maxiBlocks/blocks').getIsBlockWithUpdatedAttributes(
+				clientId
+			)
+		) {
+			const { updateBlockAttributes } = dispatch('core/block-editor');
+			updateBlockAttributes(clientId, {
+				uniqueID: newUniqueID,
+			});
+		}
+
+		if (!this.props.repeaterStatus) {
+			this.props.attributes.customLabel = getCustomLabel(
+				this.props.attributes.customLabel,
+				this.props.attributes.uniqueID
+			);
+		}
+
+		if (this.maxiBlockDidChangeUniqueID)
+			this.maxiBlockDidChangeUniqueID(newUniqueID);
 	}
 
 	loadFonts() {

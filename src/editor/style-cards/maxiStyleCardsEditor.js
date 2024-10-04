@@ -13,23 +13,18 @@ import { Popover } from '@wordpress/components';
  * External dependencies
  */
 import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Button = loadable(() => import('../../components/button'));
-const DialogBox = loadable(() => import('../../components/dialog-box'));
-const Icon = loadable(() => import('../../components/icon'));
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const ToggleSwitch = loadable(() => import('../../components/toggle-switch'));
-const ReactSelectControl = loadable(() =>
-	import('../../components/react-select-control')
-);
-const MaxiStyleCardsTab = loadable(() => import('./maxiStyleCardsTab'));
-const MaxiModal = loadable(() => import('../library/modal'));
+import Button from '../../components/button';
+import DialogBox from '../../components/dialog-box';
+import Icon from '../../components/icon';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import ToggleSwitch from '../../components/toggle-switch';
+import ReactSelectControl from '../../components/react-select-control';
+import MaxiStyleCardsTab from './maxiStyleCardsTab';
+import MaxiModal from '../library/modal';
 import { exportStyleCard, getActiveColourFromSC } from './utils';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import { handleSetAttributes } from '../../extensions/maxi-block';

@@ -5,26 +5,13 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const SliderControl = loadable(() => import('./components/slider-control'));
-const NavigationControl = loadable(() =>
-	import('./components/navigation-control')
-);
-const NavigationIconsControl = loadable(() =>
-	import('./components/navigation-control/navigation-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import SliderControl from './components/slider-control';
+import NavigationControl from './components/navigation-control';
+import NavigationIconsControl from './components/navigation-control/navigation-control';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import {
 	getGroupAttributes,

@@ -10,17 +10,16 @@ import { MediaUpload } from '@wordpress/block-editor';
  */
 import classnames from 'classnames';
 import { isNil } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
+import Inspector from './inspector';
 import MaxiBlock from '../../components/maxi-block/maxiBlock';
-const Toolbar = loadable(() => import('../../components/toolbar'));
-const Placeholder = loadable(() => import('../../components/placeholder'));
+import Toolbar from '../../components/toolbar';
+import Placeholder from '../../components/placeholder';
 import MaxiPopoverButton from '../../components/maxi-popover-button';
-const Button = loadable(() => import('../../components/button'));
+import Button from '../../components/button';
 import getStyles from './styles';
 import { getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';

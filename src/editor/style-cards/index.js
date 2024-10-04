@@ -6,16 +6,11 @@ import { useState, forwardRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const MaxiStyleCardsEditor = loadable(() => import('./maxiStyleCardsEditor'));
-const Button = loadable(() => import('../../components/button'));
-const Icon = loadable(() => import('../../components/icon'));
+import MaxiStyleCardsEditor from './maxiStyleCardsEditor';
+import Button from '../../components/button';
+import Icon from '../../components/icon';
 
 /**
  * Styles and icons

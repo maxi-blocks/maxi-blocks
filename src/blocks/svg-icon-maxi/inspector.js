@@ -6,36 +6,17 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { useCallback } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const BlockStylesControl = loadable(() =>
-	import('../../components/block-styles-control')
-);
-const CustomLabel = loadable(() => import('../../components/custom-label'));
-const ResponsiveTabsControl = loadable(() =>
-	import('../../components/responsive-tabs-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const SvgStrokeWidthControl = loadable(() =>
-	import('../../components/svg-stroke-width-control')
-);
-const SvgWidthControl = loadable(() =>
-	import('../../components/svg-width-control')
-);
-const SvgAltControl = loadable(() => import('./components/svg-alt-control'));
-const SvgColorControl = loadable(() =>
-	import('./components/svg-color-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import BlockStylesControl from '../../components/block-styles-control';
+import CustomLabel from '../../components/custom-label';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import SvgStrokeWidthControl from '../../components/svg-stroke-width-control';
+import SvgWidthControl from '../../components/svg-width-control';
+import SvgAltControl from './components/svg-alt-control';
+import SvgColorControl from './components/svg-color-control';
 import {
 	getColorRGBAString,
 	getGroupAttributes,

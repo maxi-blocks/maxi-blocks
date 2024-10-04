@@ -20,13 +20,13 @@ describe('sc-variable', () => {
 		await insertMaxiBlock(page, 'Divider Maxi');
 		await updateAllBlockUniqueIds(page);
 
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(2000);
 		await saveDraft();
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(2000);
 
 		await page.evaluate(() => window.location.reload());
 
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(5000);
 		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');
 
 		const scVariable = await page.$eval(

@@ -4,22 +4,13 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../advanced-number-control')
-);
-const ResponsiveTabsControl = loadable(() =>
-	import('../responsive-tabs-control')
-);
-const SelectControl = loadable(() => import('../select-control'));
-const ToggleSwitch = loadable(() => import('../toggle-switch'));
-const MaxiModal = loadable(() => import('../../editor/library/modal'));
+import AdvancedNumberControl from '../advanced-number-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+import SelectControl from '../select-control';
+import ToggleSwitch from '../toggle-switch';
+import MaxiModal from '../../editor/library/modal';
 
 import {
 	getDefaultAttribute,

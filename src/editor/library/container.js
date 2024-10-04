@@ -762,7 +762,7 @@ const LibraryContainer = props => {
 					button: { 'hover-background-color-global': true },
 					link: {
 						'link-color-global': true,
-						'link-palette-color': 5,
+						'link-palette-color': 4,
 					},
 					navigation: {
 						'always-show-mobile': false,
@@ -926,7 +926,7 @@ const LibraryContainer = props => {
 					button: { 'hover-background-color-global': true },
 					link: {
 						'link-color-global': true,
-						'link-palette-color': 5,
+						'link-palette-color': 4,
 					},
 					navigation: {
 						'always-show-mobile': false,
@@ -1436,6 +1436,7 @@ const LibraryContainer = props => {
 									itemsReturn.push(
 										generateItem('Playground')
 									);
+									itemsReturn.push(generateItem('Theme'));
 
 									return itemsReturn;
 								}}

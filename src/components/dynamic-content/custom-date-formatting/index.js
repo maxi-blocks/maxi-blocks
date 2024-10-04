@@ -5,15 +5,9 @@ import { __ } from '@wordpress/i18n';
 import { Popover } from '@wordpress/components';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-
-const TextControl = loadable(() => import('../../text-control'));
+import TextControl from '../../text-control';
 
 /**
  * Styles & Icons
@@ -123,7 +117,7 @@ const DateFormatting = props => {
 			const word = '([dDmMyYt]{0,1}|MS{0,1}|DS{0,1})';
 			const interWord = '(\\s{0,1})([-,\\.\\/]{0,3})(\\s{0,1})';
 			const regex = new RegExp(
-				`^\\s{0,1}${word}${interWord}${word}${interWord}${word}${interWord}${word}${interWord}${word}$`
+				`^\\s{0,1}${word}${interWord}${word}${interWord}${word}${interWord}${word}$`
 			);
 			if (regex.test(str)) {
 				changeProps({ 'dc-format': str });

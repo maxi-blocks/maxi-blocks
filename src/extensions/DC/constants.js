@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import { select } from '@wordpress/data';
 
 /**
  * Source constants
@@ -736,6 +735,10 @@ export const limitTypes = [
 	'products',
 	'product_categories',
 	'product_tags',
+	'users',
+	'media',
+	'settings',
+	'archive',
 ];
 
 export const limitFields = [
@@ -743,6 +746,11 @@ export const limitFields = [
 	'content',
 	'description',
 	'short_description',
+	'title',
+	'tagline',
+	'caption',
+	'alt_text',
+	'name',
 ];
 
 export const limitOptions = {

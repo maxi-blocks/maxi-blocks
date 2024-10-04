@@ -11,13 +11,12 @@ import { createBlock } from '@wordpress/blocks';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Inspector from './inspector';
+import Toolbar from '../../components/toolbar';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
@@ -163,7 +162,13 @@ class edit extends MaxiBlockComponent {
 					},
 				}}
 			>
-				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
+				<Inspector
+					key={`block-settings-${uniqueID}`}
+					{...this.props}
+					setShowLoader={value =>
+						this.setState({ showLoader: value })
+					}
+				/>
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
@@ -179,6 +184,7 @@ class edit extends MaxiBlockComponent {
 					)}
 					ref={this.blockRef}
 					tagName='li'
+					showLoader={this.state.showLoader}
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					<RichText

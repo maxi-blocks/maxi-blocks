@@ -4,15 +4,10 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const DynamicContent = loadable(() => import('../dynamic-content'));
-const InfoBox = loadable(() => import('../info-box'));
+import DynamicContent from '../dynamic-content';
+import InfoBox from '../info-box';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**

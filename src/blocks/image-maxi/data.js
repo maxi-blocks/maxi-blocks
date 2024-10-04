@@ -4,24 +4,14 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-
-const AlignmentControl = loadable(() =>
-	import('../../components/alignment-control')
-);
-const BorderControl = loadable(() => import('../../components/border-control'));
-const ImageShape = loadable(() => import('../../components/image-shape'));
-const InfoBox = loadable(() => import('../../components/info-box'));
-const ClipPathControl = loadable(() =>
-	import('../../components/clip-path-control')
-);
+import AlignmentControl from '../../components/alignment-control';
+import BorderControl from '../../components/border-control';
+import ImageShape from '../../components/image-shape';
+import InfoBox from '../../components/info-box';
+import ClipPathControl from '../../components/clip-path-control';
 import {
 	getAlignmentFlexStyles,
 	getBorderStyles,

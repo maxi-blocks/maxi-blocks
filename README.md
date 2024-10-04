@@ -7,6 +7,7 @@
 <img width="120" alt="Design like a pro with fast-styling web templates. MaxiBlocks. Explore 2000+ block patterns, 150+ page templates, 13.5k SVG icons & 100 free global style cards." src="https://github.com/maxi-blocks/maxi-blocks/assets/7437580/e473df3b-6838-4c3f-80ea-792e8e8d2571">
 </a>
 
+
 <h3 align="center">MaxiBlocks</h3>
 
 <p align="center">
@@ -18,7 +19,7 @@ We help website builders with a passion for design create professional websites 
 
 <p align="center">
 <a href="https://github.com/maxi-blocks/maxi-blocks/tree/master?tab=License-1-ov-file#"><img src="https://img.shields.io/badge/License-GPLV 3 or later-purple"
-alt="License"></a>
+alt="License"></a> 
 
 <img alt="WordPress Plugin Active Installs" src="https://img.shields.io/wordpress/plugin/installs/maxi-blocks">
 <img alt="WordPress Plugin Rating" src="https://img.shields.io/wordpress/plugin/rating/maxi-blocks">
@@ -38,6 +39,7 @@ _New:_ Quickly create or revise content using the new GPT4 Open AI integration's
 [Watch the introductory video](https://youtu.be/EFXhXGFfMF8)
 
 ![MaxiBlocks Banner](https://ps.w.org/maxi-blocks/assets/banner-1544x500.jpg)
+
 
 ## No Locked Blocks 📖
 
@@ -113,12 +115,12 @@ Adjustable settings for the content creation text block.
 
 **Generate Tab**:
 
--   Content Type: Specify the content's category.
--   Tone: Set the tone of voice.
--   Writing Style: Choose a style.
--   Language: Select the content's language.
--   Temperature: Set between precision, neutrality, and creativity.
--   Contextual Inputs: Provide an initial prompt or leave it blank.
+- Content Type: Specify the content's category.
+- Tone: Set the tone of voice.
+- Writing Style: Choose a style.
+- Language: Select the content's language.
+- Temperature: Set between precision, neutrality, and creativity.
+- Contextual Inputs: Provide an initial prompt or leave it blank.
 
 **Results Tab**: Export, import, clean, replace, generate, and modify.
 
@@ -128,20 +130,20 @@ Adjustable settings for the content creation text block.
 
 MaxiBlocks comes with a variety of custom blocks to help you build stunning web pages. Here are some of the custom blocks you'll have access to:
 
--   **Accordion Maxi**: Manages content within expandable and collapsible panels.
--   **Button Maxi**: Offers insertion, modification, or styling of buttons.
--   **Container Maxi**: Encapsulates other blocks within a designated container.
--   **Divider Maxi**: Produces a visual separator between elements.
--   **Group Maxi**: Binds a set of blocks together to form patterns.
--   **Icon Maxi**: Enables the addition and styling of icons or shapes.
--   **Image Maxi**: Offers tools to insert, modify, or style images.
--   **Map Maxi**: Facilitates the addition of maps with markers and descriptions.
--   **Number Counter Maxi**: Enables the creation of dynamic number counters.
--   **Search Maxi**: Integrates a search bar with an icon.
--   **Slider Maxi**: Aligns one or more blocks horizontally.
--   **Template Library Maxi**: Provides access to pre-designed templates or patterns.
--   **Text Maxi**: Allows the insertion, modification, or styling of text.
--   **Video Maxi**: Facilitates the addition of videos with controls or lightbox.
+- **Accordion Maxi**: Manages content within expandable and collapsible panels.
+- **Button Maxi**: Offers insertion, modification, or styling of buttons.
+- **Container Maxi**: Encapsulates other blocks within a designated container.
+- **Divider Maxi**: Produces a visual separator between elements.
+- **Group Maxi**: Binds a set of blocks together to form patterns.
+- **Icon Maxi**: Enables the addition and styling of icons or shapes.
+- **Image Maxi**: Offers tools to insert, modify, or style images.
+- **Map Maxi**: Facilitates the addition of maps with markers and descriptions.
+- **Number Counter Maxi**: Enables the creation of dynamic number counters.
+- **Search Maxi**: Integrates a search bar with an icon.
+- **Slider Maxi**: Aligns one or more blocks horizontally.
+- **Template Library Maxi**: Provides access to pre-designed templates or patterns.
+- **Text Maxi**: Allows the insertion, modification, or styling of text.
+- **Video Maxi**: Facilitates the addition of videos with controls or lightbox.
 
 ## Design Features 🎨
 
@@ -179,36 +181,35 @@ Pro templates give you more variety and original designs. It's faster and easier
 
 Ready-made block patterns
 
--   Accordion (4)
--   Call to action (80)
--   Footer (110)
--   Headlines (60)
--   Hero (228)
--   Icon (170)
--   Image (258)
--   Logo (12)
--   Number counter (26)
--   Pricing tables (32)
--   Story mix (378)
--   Team (258)
--   Testimonial (164)
+- Accordion (4)
+- Call to action (80)
+- Footer (110)
+- Headlines (60)
+- Hero (228)
+- Icon (170)
+- Image (258)
+- Logo (12)
+- Number counter (26)
+- Pricing tables (32)
+- Story mix (378)
+- Team (258)
+- Testimonial (164)
 
 Coming soon
-
--   Blogs
--   Navigation menus
+- Blogs
+- Navigation menus
 
 ### Ready-made Page Templates
 
--   404 Pages (14)
--   About us pages (7)
--   Business (19)
--   Educational (3)
--   Entertainment (3)
--   Food (1)
--   Health (2)
--   Sports (4)
--   Many more coming soon
+- 404 Pages (14)
+- About us pages (7)
+- Business (19)
+- Educational (3)
+- Entertainment (3)
+- Food (1)
+- Health (2)
+- Sports (4)
+- Many more coming soon
 
 With Maxi, your pro templates always auto-update even without Pro access. Now that's peace-of-mind.
 
@@ -218,36 +219,36 @@ With Maxi, your pro templates always auto-update even without Pro access. Now th
 
 Look forward to exciting additions to enhance your design experience.
 
--   **More AI tools:** Content creation like images, integrated with style cards and right where you need it.
--   **AI templates:** We're planning a library of AI templates for various use cases, like custom chatbots.
--   **Additional blocks:** Expand your design toolbox with block quotes, blogs, image galleries, and more.
--   **Navigation & mega menu:** Create responsive menus for seamless site navigation.
--   **Full site editing:** Further integrate MaxiBlocks for complete site customization.
--   **Nested slider:** Display any Maxi foundation block in a slider format with player controls & custom icons.
--   **Menu builder:** A custom navigation block for responsive menus.
--   **See what's cooking:** Check out our [roadmap](https://maxiblocks.com/go/roadmap) for more info.
+- **More AI tools:** Content creation like images, integrated with style cards and right where you need it.
+- **AI templates:** We're planning a library of AI templates for various use cases, like custom chatbots.
+- **Additional blocks:** Expand your design toolbox with block quotes, blogs, image galleries, and more.
+- **Navigation & mega menu:** Create responsive menus for seamless site navigation.
+- **Full site editing:** Further integrate MaxiBlocks for complete site customization.
+- **Nested slider:** Display any Maxi foundation block in a slider format with player controls & custom icons.
+- **Menu builder:** A custom navigation block for responsive menus.
+- **See what's cooking:** Check out our [roadmap](https://maxiblocks.com/go/roadmap) for more info.
 
 ## Documentation & Support 📚
 
 Our resources will help you get started and master MaxiBlocks in no time:
 
--   **Detailed documentation:** Step-by-step guides, troubleshooting tips, and in-depth explanations for every feature. Visit our [help desk](https://maxiblocks.com/go/help-desk) for more.
+- **Detailed documentation:** Step-by-step guides, troubleshooting tips, and in-depth explanations for every feature. Visit our [help desk](https://maxiblocks.com/go/help-desk) for more.
 
--   **Video tutorials:** A library of video tutorials, covering everything from installation to advanced techniques. Try this playlist: [⏱️Quick tips & techniques: Short MaxiBlocks mastery!🚀](https://youtube.com/playlist?list=PLyq6BtMKKWud7jkcKsulb_jcvgmH3jcda)
+- **Video tutorials:** A library of video tutorials, covering everything from installation to advanced techniques. Try this playlist: [⏱️Quick tips & techniques: Short MaxiBlocks mastery!🚀](https://youtube.com/playlist?list=PLyq6BtMKKWud7jkcKsulb_jcvgmH3jcda)
 
--   **Dedicated support:** A support team is available to address any questions or concerns you might have. Please use the support forums, or the [help desk](https://maxiblocks.com/go/help-desk).
+- **Dedicated support:** A support team is available to address any questions or concerns you might have. Please use the support forums, or the [help desk](https://maxiblocks.com/go/help-desk).
 
--   **Full changelog:** Please visit our [GitHub repo](https://maxiblocks.com/go/wordpress-plugin-changelog).
+- **Full changelog:** Please visit our [GitHub repo](https://maxiblocks.com/go/wordpress-plugin-changelog).
 
 ## Community & Contributions 🌍
 
 MaxiBlocks is more than a plugin. It's a community of passionate designers, developers, and users. We welcome your contributions and feedback to make MaxiBlocks even better:
 
--   **Join the MaxiBlocks community:** Participate in forums, share your experiences, and connect with other users. Follow us on [Twitter](https://twitter.com/maxiblocks) or join our [Discord community](https://maxiblocks.com/go/maxi-discord).
+- **Join the MaxiBlocks community:** Participate in forums, share your experiences, and connect with other users. Follow us on [Twitter](https://twitter.com/maxiblocks) or join our [Discord community](https://maxiblocks.com/go/maxi-discord).
 
--   **Contribute to MaxiBlocks:** Submit your suggestions, or contribute code to our open-source project. Visit our [GitHub repo](https://maxiblocks.com/go/github-maxi-blocks).
+- **Contribute to MaxiBlocks:** Submit your suggestions, or contribute code to our open-source project. Visit our [GitHub repo](https://maxiblocks.com/go/github-maxi-blocks).
 
--   **Share your work:** Show off your amazing creations with MaxiBlocks and inspire others with your designs. Use the hashtag **#maxiblocks** or **#madewithmaxi**
+- **Share your work:** Show off your amazing creations with MaxiBlocks and inspire others with your designs. Use the hashtag **#maxiblocks** or **#madewithmaxi**
 
 ## Get Started with MaxiBlocks 🔰
 
@@ -260,6 +261,7 @@ _Join us in our mission to provide a user-friendly solution for website creation
 _Take care, Kyra - Design lead & co-founder of MaxiBlocks_
 
 ## Frequently Asked Questions
+
 
 #### How many sites can I build?
 
@@ -323,6 +325,7 @@ MaxiBlocks believes in the spirit of open collaboration. All our templates, patt
 
 You bet. [Check it out here](https://maxiblocks.com/go/roadmap).
 
+
 ## Installation
 
 Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPress admin dashboard.
@@ -333,24 +336,23 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 **To use free templates, first edit, or create a new page in WordPress**
 
--   From the page editing view, click the MaxiBlocks icon to open the master toolbar, top left side.
+- From the page editing view, click the MaxiBlocks icon to open the master toolbar, top left side.
 
--   Launch the template library and browse for patterns. Insert and start editing.
+- Launch the template library and browse for patterns. Insert and start editing.
 
--   Play around with some patterns to see how Maxi works and how we use blocks to create patterns.
+- Play around with some patterns to see how Maxi works and how we use blocks to create patterns.
 
--   Also choose a style card to instantly update your templates to your chosen style.
+- Also choose a style card to instantly update your templates to your chosen style.
 
--   Use the (?) icon to open the help docs for more info and tutorials.
+- Use the (?) icon to open the help docs for more info and tutorials.
 
--   Visit our [help desk](https://maxiblocks.com/go/help-desk) for more.
+- Visit our [help desk](https://maxiblocks.com/go/help-desk) for more.
 
 **Helpful links:**
 
 [YouTube ](https://www.youtube.com/@maxiblocks) | [Pro library](https://maxiblocks.com/pro-library/) | [Demo library](https://maxiblocks.com/demo/) | [maxiblocks.com](https://maxiblocks.com/) | [X-Twitter](https://twitter.com/maxiblocks) | [Discord community](https://maxiblocks.com/go/maxi-discord) | [Roadmap](https://maxiblocks.com/go/roadmap)
 
 ## Screenshots
-
 _Learn to change style cards: Find out how to switch style cards to improve the appearance of your website with our helpful guide._
 
 ![Learn to change style cards: Find out how to switch style cards to improve the appearance of your website with our helpful guide.](https://ps.w.org/maxi-blocks/assets/screenshot-1.gif)

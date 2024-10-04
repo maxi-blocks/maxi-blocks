@@ -904,32 +904,14 @@ class MaxiBlocks_DynamicContent
             array_key_exists('dc-type', $attributes) &&
             $attributes['dc-type'] === 'users'
         ) {
-            $user_id = null;
-
-            if (
-                isset($attributes['dc-relation']) &&
-                $attributes['dc-relation'] === 'current'
-            ) {
-                $user_id = get_queried_object_id();
-            } else {
-                if (
-                    isset($attributes['dc-author']) &&
-                    !empty($attributes['dc-author'])
-                ) {
-                    $user_id = $attributes['dc-author'];
-                } else {
-                    $user_id = $attributes['dc-id'];
-                }
-            }
-
             $dc_link_target = $attributes['dc-link-target'];
-            if (isset($user_id)) {
+            if (!empty($post) && isset($post->ID)) {
                 if ($dc_link_target === 'author_email') {
-                    $link = $this->xor_obfuscate_email(get_the_author_meta('user_email', $user_id));
+                    $link = $this->xor_obfuscate_email(get_the_author_meta('user_email', $post->ID));
                 } elseif ($dc_link_target === 'author_site') {
-                    $link = get_the_author_meta('user_url', $user_id);
+                    $link = get_the_author_meta('user_url', $post->ID);
                 } else {
-                    $link = get_author_posts_url($user_id);
+                    $link = get_author_posts_url($post->ID);
                 }
             }
         } elseif (

@@ -9,7 +9,7 @@
  * Version: 1.9.8
  * Requires at least: 6.2.2
  * Requires PHP: 8.0
- * License: GPL v3 or later
+ * License: GPLv3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain: maxi-blocks
  * Domain Path: /languages

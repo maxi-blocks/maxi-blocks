@@ -7,8 +7,8 @@ Requires at least: 6.2.2
 Tested up to: 6.6
 Requires PHP: 8.0
 Stable tag: 1.9.8
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Build professional WordPress sites faster, boost your design confidence, and deliver higher-quality results with MaxiBlocks.
 

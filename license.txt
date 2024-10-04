@@ -1,10 +1,10 @@
-MaxiBlocks is open source software license under GPLv2 or later
+MaxiBlocks is open source software license under GPLv3 or later
 All free icons and shapes and free patterns in MaxiBlocks library is free to use. For stock images see below.
 
 Gutenberg components
 GNU General Public License as published by the Free Software Foundation; either version 2 of the License or (at your option) any later version (the “GPL”) and the Mozilla Public License, Version 2.0 (the “MPL”)
-License: GPLv2 or later
-License: https://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later
+License: https://www.gnu.org/licenses/gpl-3.0.html
 
 === Stock images by Unsplash ===
 
@@ -23,8 +23,6 @@ Compiling photos from Unsplash to replicate a similar or competing service.
 Longform: Unsplash grants you an irrevocable, nonexclusive, worldwide copyright license to download, copy, modify, distribute, perform, and use photos from Unsplash for free, including for commercial purposes, without permission from or attributing the photographer or Unsplash. This license does not include the right to compile photos from Unsplash to replicate a similar or competing service.
 
 === Other integrations ===
-
-Crisp crisp-sdk-web https://github.com/crisp-im/crisp-sdk-web
 
 Video Maxi - vimeo.com https://player.vimeo.com/api/player.js
 

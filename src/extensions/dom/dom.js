@@ -103,7 +103,7 @@ wp.domReady(() => {
 		}, 150);
 	});
 
-	const resizeObserverSelector = '.interface-interface-skeleton__content';
+	const resizeObserverSelector = '.interface-interface-skeleton__body';
 
 	const setBaseBreakpoint = () => {
 		const resizeObserverTarget = document.querySelector(

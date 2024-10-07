@@ -31,7 +31,7 @@ import {
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsIDTrulyUnique from './getIsIDTrulyUnique';
 import getCustomLabel from './getCustomLabel';
-import { loadFonts, getAllFonts } from '../text/fonts';
+import { loadFonts, getAllFonts, getPageFonts } from '../text/fonts';
 import {
 	getIsSiteEditor,
 	getSiteEditorIframe,
@@ -1222,6 +1222,144 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
+		if (iframe && iframe?.contentDocument?.body) {
+			const iframeDocument = iframe.contentDocument;
+			const editorWrapper = iframeDocument.body;
+			// In case Gutenberg native preview responsive is enabled
+			const tabletPreview =
+				editorWrapper.querySelector('.is-tablet-preview');
+			const mobilePreview =
+				editorWrapper.querySelector('.is-mobile-preview');
+
+			if (tabletPreview || mobilePreview) {
+				const previewTarget = tabletPreview ?? mobilePreview;
+
+				const postEditor = document?.body?.querySelector(
+					'.edit-post-visual-editor'
+				);
+				const responsiveWidth = postEditor.getAttribute(
+					'maxi-blocks-responsive-width'
+				);
+				const isMaxiPreview =
+					postEditor.getAttribute('is-maxi-preview');
+
+				if (isMaxiPreview) {
+					previewTarget.style.width = `${responsiveWidth}px`;
+					previewTarget.style.boxSizing = 'content-box';
+				}
+
+				if (editorWrapper) {
+					if (
+						iframe &&
+						!iframeDocument.body.classList.contains(
+							'maxi-blocks--active'
+						)
+					) {
+						// Iframe needs Maxi classes and attributes
+						iframeDocument.body.classList.add(
+							'maxi-blocks--active'
+						);
+
+						editorWrapper.setAttribute(
+							'maxi-blocks-responsive',
+							tabletPreview ? 's' : 'xs'
+						);
+
+						// Hides scrollbar in firefox
+						iframeDocument.documentElement.style.scrollbarWidth =
+							'none';
+
+						// Copy all fonts to iframe
+						loadFonts(getPageFonts(), true, iframeDocument);
+
+						const maxiFonts = Array.from(
+							document.querySelectorAll(
+								'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]'
+							)
+						);
+
+						if (!isEmpty(maxiFonts))
+							maxiFonts.forEach(rawMaxiFont => {
+								const maxiFont = rawMaxiFont.cloneNode(true);
+
+								iframe.contentDocument.head.appendChild(
+									maxiFont
+								);
+							});
+
+						// Get all Maxi blocks <style> from <head>
+						// and move to new iframe
+						const maxiStyles = Array.from(
+							document.querySelectorAll('div.maxi-blocks__styles')
+						);
+
+						if (!isEmpty(maxiStyles))
+							maxiStyles.forEach(rawMaxiStyle => {
+								const maxiStyle = rawMaxiStyle.cloneNode(true);
+								const { id } = maxiStyle;
+								iframeDocument
+									.querySelector(`#${id}`)
+									?.remove();
+
+								maxiStyle.children[0].innerText =
+									maxiStyle.children[0].innerText.replaceAll(
+										' .edit-post-visual-editor',
+										'.editor-styles-wrapper'
+									);
+
+								iframe.contentDocument.head.appendChild(
+									maxiStyle
+								);
+							});
+
+						// Move Maxi variables to iframe
+						const maxiVariables = document
+							.querySelector('#maxi-blocks-sc-vars-inline-css')
+							?.cloneNode(true);
+
+						if (maxiVariables) {
+							iframeDocument
+								.querySelector(
+									'#maxi-blocks-sc-vars-inline-css'
+								)
+								?.remove();
+
+							iframe.contentDocument.head.appendChild(
+								maxiVariables
+							);
+						}
+
+						// Ensures all Maxi styles are loaded on iframe
+						const editStyles = iframeDocument.querySelector(
+							'#maxi-blocks-block-editor-css'
+						);
+						const frontStyles = iframeDocument.querySelector(
+							'#maxi-blocks-block-css'
+						);
+
+						if (!editStyles) {
+							const rawEditStyles = document.querySelector(
+								'#maxi-blocks-block-editor-css'
+							);
+
+							iframe.contentDocument.head.appendChild(
+								rawEditStyles.cloneNode(true)
+							);
+						}
+
+						if (!frontStyles) {
+							const rawFrontStyles = document.querySelector(
+								'#maxi-blocks-block-css'
+							);
+
+							iframe.contentDocument.head.appendChild(
+								rawFrontStyles.cloneNode(true)
+							);
+						}
+					}
+				}
+			}
+		}
 		const siteEditorIframe = isSiteEditor ? getSiteEditorIframe() : null;
 		const target = siteEditorIframe || iframe?.contentDocument || document;
 		const styleId = `maxi-blocks__styles--${uniqueID}`;

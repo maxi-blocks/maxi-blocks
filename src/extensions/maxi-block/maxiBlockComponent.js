@@ -1222,7 +1222,7 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
-		if (iframe && iframe?.contentDocument?.body) {
+		if (iframe?.contentDocument?.body) {
 			const iframeDocument = iframe.contentDocument;
 			const editorWrapper = iframeDocument.body;
 			// In case Gutenberg native preview responsive is enabled
@@ -1352,9 +1352,11 @@ class MaxiBlockComponent extends Component {
 								'#maxi-blocks-block-css'
 							);
 
-							iframe.contentDocument.head.appendChild(
-								rawFrontStyles.cloneNode(true)
-							);
+							if (rawFrontStyles) {
+								iframe.contentDocument.head.appendChild(
+									rawFrontStyles.cloneNode(true)
+								);
+							}
 						}
 					}
 				}

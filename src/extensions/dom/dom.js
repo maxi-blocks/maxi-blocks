@@ -39,6 +39,37 @@ window.process.env = window.process.env || {};
 window.process.env.BROWSERSLIST_DISABLE_CACHE = false;
 
 wp.domReady(() => {
+	const getScrollbarWidth = () => {
+		// Create a temporary div
+		const outer = document.createElement('div');
+		outer.style.visibility = 'hidden';
+		outer.style.overflow = 'scroll';
+		outer.style.msOverflowStyle = 'scrollbar';
+		document.body.appendChild(outer);
+
+		// Create an inner div
+		const inner = document.createElement('div');
+		outer.appendChild(inner);
+
+		// Calculate the width difference
+		const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+
+		// Remove the temporary elements
+		outer.parentNode.removeChild(outer);
+
+		return scrollbarWidth;
+	};
+
+	const updateScrollbarWidth = () => {
+		document.documentElement.style.setProperty(
+			'--maxi-blocks-scrollbar-width',
+			`${getScrollbarWidth()}px`
+		);
+	};
+
+	// Initial set of scrollbar width
+	updateScrollbarWidth();
+
 	const changeHandlesDisplay = (display, wrapper) =>
 		Array.from(
 			wrapper.querySelectorAll('.resizable-editor__drag-handle')
@@ -119,6 +150,9 @@ wp.domReady(() => {
 
 	const resizeObserver = new ResizeObserver(() => {
 		setBaseBreakpoint();
+
+		// Update scrollbar width on resize
+		updateScrollbarWidth();
 
 		// On changing the canvas editor size, we must update the winBreakpoint
 		// to add the necessary attributes to display styles. The observer can't

@@ -607,5 +607,5 @@ body.maxi-blocks--active .interface-interface-skeleton__content {
 
 body.maxi-blocks--active .edit-post-visual-editor {
 	width: 100%;
-	min-width: calc(100vw - 15px);
+	min-width: calc(100vw - var(--maxi-blocks-scrollbar-width, 15px));
 }

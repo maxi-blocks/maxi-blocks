@@ -578,3 +578,10 @@ body.maxi-blocks--active .editor-styles-wrapper .has-global-padding {
 	padding-right: 0;
 	padding-left: 0;
 }
+
+body.maxi-blocks--active
+	.editor-styles-wrapper
+	.block-editor-block-list__layout.is-root-container
+	> :where(:not(.alignleft):not(.alignright):not(.alignfull)):has(.maxi-container-block) {
+	max-width: 100%;
+}

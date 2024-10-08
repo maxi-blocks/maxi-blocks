@@ -17,7 +17,7 @@ import {
 describe('Responsive attributes mechanisms', () => {
 	beforeEach(async () => {
 		// Base responsive is "M"
-		await setBrowserViewport({ width: 1240, height: 700 });
+		await setBrowserViewport({ width: 1024, height: 700 });
 
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');

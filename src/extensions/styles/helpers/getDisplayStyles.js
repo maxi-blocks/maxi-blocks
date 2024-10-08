@@ -13,7 +13,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getDisplayStyles = (obj, isHover = false) => {
+const getDisplayStyles = (obj, isHover = false, isRelations = false) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -22,6 +22,11 @@ const getDisplayStyles = (obj, isHover = false) => {
 			response[breakpoint] = {
 				display: obj[attrKey],
 			};
+		else if (isRelations) {
+			response[breakpoint] = {
+				display: 'flex',
+			};
+		}
 	});
 
 	return response;

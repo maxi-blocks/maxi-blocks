@@ -312,8 +312,7 @@ const RelationControl = props => {
 		goThroughMaxiBlocks(block => {
 			if (
 				block.attributes.customLabel !==
-					getDefaultAttribute('customLabel', block.clientId) &&
-				block.attributes.uniqueID !== uniqueID
+				getDefaultAttribute('customLabel', block.clientId)
 			) {
 				const targetParentRows = getBlockParentsByBlockName(
 					block.clientId,

@@ -572,6 +572,13 @@ body[maxi-blocks-responsive]:not(.branch-6-6) {
 	}
 }
 
+body.maxi-blocks--active
+	.editor-styles-wrapper
+	.block-editor-block-list__layout.is-root-container
+	> :where(:not(.alignleft):not(.alignright):not(.alignfull)):has(.maxi-container-block) {
+	max-width: 100%;
+}
+
 /** Fix templates padding in the editor */
 
 body.maxi-blocks--active .editor-styles-wrapper .has-global-padding {

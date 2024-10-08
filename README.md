@@ -18,7 +18,7 @@ We help website builders with a passion for design create professional websites 
 </p>
 
 <p align="center">
-<a href="https://github.com/maxi-blocks/maxi-blocks/tree/master?tab=License-1-ov-file#"><img src="https://img.shields.io/badge/License-GPLV 2 or later-purple"
+<a href="https://github.com/maxi-blocks/maxi-blocks/tree/master?tab=License-1-ov-file#"><img src="https://img.shields.io/badge/License-GPLV 3 or later-purple"
 alt="License"></a> 
 
 <img alt="WordPress Plugin Active Installs" src="https://img.shields.io/wordpress/plugin/installs/maxi-blocks">

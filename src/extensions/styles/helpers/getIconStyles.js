@@ -24,37 +24,28 @@ const getIconStyles = (
 
 	const isShape = iconType !== 'shape';
 
+	// Early return if conditions are not met
 	if (isIconInherit && !obj['typography-status-hover']) return response;
 
-	if (isIconInherit) {
-		const { paletteStatus, paletteColor, paletteOpacity, color } =
-			getPaletteAttributes({
-				obj,
-				prefix,
-				isHover,
-				breakpoint: 'general',
-			});
-		response.general.fill = 'none';
+	const paletteAttributes = getPaletteAttributes({
+		obj,
+		prefix: isIconInherit ? prefix : `${prefix}icon-`,
+		isHover,
+		breakpoint: isIconInherit ? 'general' : undefined,
+	});
 
-		if (!isShape && !paletteStatus && color) {
+	const { paletteStatus, paletteColor, paletteOpacity, color } =
+		paletteAttributes;
+
+	response.general.fill = 'none';
+
+	if (!isShape) {
+		if (!paletteStatus && !isNil(color)) {
 			response.general.stroke = color;
-		} else if (!isShape && paletteStatus && paletteColor) {
+		} else if (paletteStatus && paletteColor) {
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		}
-	} else {
-		const { paletteStatus, paletteColor, paletteOpacity, color } =
-			getPaletteAttributes({ obj, prefix: `${prefix}icon-`, isHover });
-
-		if (!isShape && !paletteStatus && !isNil(color)) {
-			response.general.stroke = color;
-		} else if (!isShape && paletteStatus && paletteColor) {
-			response.general.stroke = getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				opacity: obj[paletteOpacity],
+				opacity: isIconInherit ? paletteOpacity : obj[paletteOpacity],
 				blockStyle,
 			});
 		}

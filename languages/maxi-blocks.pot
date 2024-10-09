@@ -1,15 +1,15 @@
 # Copyright (C) 2024 MaxiBlocks
-# This file is distributed under the GPL v2 or later.
+# This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.9.8\n"
+"Project-Id-Version: MaxiBlocks 1.9.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-27T10:22:02+00:00\n"
+"POT-Creation-Date: 2024-10-08T15:54:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: maxi-blocks\n"
@@ -89,8 +89,8 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:57
 #: src/components/background-control/imageLayer.js:781
 #: src/components/inspector-tabs/inspector-transition.js:139
-#: src/components/relation-control/index.js:510
-#: src/components/relation-control/index.js:652
+#: src/components/relation-control/index.js:509
+#: src/components/relation-control/index.js:651
 msgid "Settings"
 msgstr ""
 
@@ -832,7 +832,7 @@ msgstr ""
 #: src/components/arrow-control/index.js:148
 #: src/components/inspector-tabs/inspector-position.js:19
 #: src/components/position-control/index.js:113
-#: src/extensions/relations/getAdvancedSettings.js:94
+#: src/extensions/relations/getAdvancedSettings.js:96
 msgid "Position"
 msgstr ""
 
@@ -918,7 +918,7 @@ msgstr ""
 #: build/index.js:15
 #: src/components/inspector-tabs/inspector-opacity.js:33
 #: src/components/opacity-control/index.js:56
-#: src/extensions/relations/getAdvancedSettings.js:77
+#: src/extensions/relations/getAdvancedSettings.js:79
 msgid "Opacity"
 msgstr ""
 
@@ -1408,7 +1408,7 @@ msgid "Mime type"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:411
+#: src/components/relation-control/index.js:410
 #: src/extensions/DC/constants.js:229
 #: src/extensions/DC/constants.js:237
 #: src/extensions/DC/constants.js:328
@@ -2100,8 +2100,8 @@ msgstr ""
 #: build/index.js:15
 #: src/editor/library/modal.js:84
 #: src/editor/library/toolbar.js:402
-#: src/editor/responsive-selector/index.js:472
-#: src/editor/responsive-selector/index.js:479
+#: src/editor/responsive-selector/index.js:356
+#: src/editor/responsive-selector/index.js:363
 msgid "Template library"
 msgstr ""
 
@@ -2206,7 +2206,7 @@ msgstr ""
 #: build/index.js:15
 #: src/components/toolbar/components/help/index.js:48
 #: src/editor/library/toolbar.js:576
-#: src/editor/responsive-selector/index.js:490
+#: src/editor/responsive-selector/index.js:374
 msgid "Help"
 msgstr ""
 
@@ -3313,67 +3313,67 @@ msgid "Choose settings"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:382
+#: src/components/relation-control/index.js:381
 msgid "Preview all interactions"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:396
+#: src/components/relation-control/index.js:395
 msgid "Add new interaction"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:406
+#: src/components/relation-control/index.js:405
 msgid "Untitled interaction"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:413
+#: src/components/relation-control/index.js:412
 msgid "Give memorable name…"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:431
+#: src/components/relation-control/index.js:430
 msgid "Add names to blocks which you want to be able to select them here."
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:438
+#: src/components/relation-control/index.js:437
 msgid "Block to affect"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:446
+#: src/components/relation-control/index.js:445
 msgid "Select block…"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:467
+#: src/components/relation-control/index.js:466
 msgid "Action"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:476
+#: src/components/relation-control/index.js:475
 msgid "Choose action"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:483
+#: src/components/relation-control/index.js:482
 msgid "On click"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:490
+#: src/components/relation-control/index.js:489
 msgid "On hover"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:635
+#: src/components/relation-control/index.js:634
 msgid "Open block settings"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:662
+#: src/components/relation-control/index.js:661
 msgid "Effects"
 msgstr ""
 
@@ -4281,8 +4281,14 @@ msgstr ""
 
 #: build/index.js:15
 #: src/components/inspector-tabs/inspector-transform.js:37
-#: src/extensions/relations/getAdvancedSettings.js:33
+#: src/extensions/relations/getAdvancedSettings.js:35
 msgid "Transform"
+msgstr ""
+
+#: build/index.js:15
+#: src/components/inspector-tabs/inspector-display.js:20
+#: src/extensions/relations/getAdvancedSettings.js:104
+msgid "Show/hide block"
 msgstr ""
 
 #: build/index.js:15
@@ -4511,11 +4517,6 @@ msgstr ""
 #: build/index.js:15
 #: src/components/inspector-tabs/inspector-dc.js:35
 msgid "Dynamic content is not available for lists."
-msgstr ""
-
-#: build/index.js:15
-#: src/components/inspector-tabs/inspector-display.js:20
-msgid "Show/hide block"
 msgstr ""
 
 #: build/index.js:15

@@ -6,9 +6,9 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.6
 Requires PHP: 8.0
-Stable tag: 1.9.8
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 1.9.9
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Build professional WordPress sites faster, boost your design confidence, and deliver higher-quality results with MaxiBlocks.
 
@@ -172,6 +172,13 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 9 Oct 2024_
+MaxiBlocks v1.9.9
+* Update: Enhanced the main Editor screen with the ability to keep the current breakpoint width regardless of the opened sidebars.
+* Update: Interaction Builder improvements for the future Mega menu blocks.
+* Update: Backend speed optimization for the List view and selecting blocks.
+* Update: Switched the plugin licence to GPLv3 or later.
+
 _Updates 27 Sep 2024_
 MaxiBlocks v1.9.8
 * Fix: Resolved issue where block tones were not switching correctly on the frontend.
@@ -212,13 +219,6 @@ MaxiBlocks v1.9.5
 * Fix: Resolved an issue where icon hover effects created in the Interaction Builder were not functioning correctly, ensuring a consistent user experience.
 * Fix: Addressed a bug that prevented fonts from loading on the frontend when switching Style Cards without making any other changes to the page.
 * Fix: Corrected an issue where unique fonts were not rendering for Context Loop pagination in the Editing Experience.
-
-_Updates 1 Aug 2024_
-MaxiBlocks v1.9.4
-* Update: Enhanced compatibility with the upcoming MaxiBlocks Go theme, optimizing integration and performance for future theme updates.
-* Update: Expanded Dynamic Content functionality to support current item templates for specific posts, authors, categories, tags, and WooCommerce products, enabling more flexible content management.
-* Fix: Resolved an issue ensuring the Roboto font consistently appears in the Editor UI when the MaxiBlocks plugin is active, providing a cohesive visual experience.
-* Fix: Optimized the Editor height when creating Custom Templates to improve the overall editing experience and ensure content is easily accessible.
 
 == Upgrade Notice ==
 

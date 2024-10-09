@@ -452,7 +452,6 @@ class MaxiBlockComponent extends Component {
 		);
 
 		if (!isEmpty(diffAttributes)) {
-			console.time(`processAttributeChanges ${uniqueID}`);
 			// Check if the modified attribute is related with hover status,
 			// and in that case update the other blocks IB relation
 			if (Object.keys(diffAttributes).some(key => key.includes('hover')))
@@ -484,9 +483,7 @@ class MaxiBlockComponent extends Component {
 					);
 				}
 			}
-			console.timeEnd(`processAttributeChanges ${uniqueID}`);
 
-			console.time(`updateRelations ${uniqueID}`);
 			// If there's a relation affecting this concrete block, check if is necessary
 			// to update it's content to keep the coherence and the good UX
 			const blocksIBRelations = select(
@@ -502,7 +499,6 @@ class MaxiBlockComponent extends Component {
 						breakpoint: this.props.deviceType,
 					})
 				);
-			console.timeEnd(`updateRelations ${uniqueID}`);
 		}
 
 		this.hideGutenbergPopover();

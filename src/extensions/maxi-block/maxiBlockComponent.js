@@ -373,7 +373,13 @@ class MaxiBlockComponent extends Component {
 			this.isPatternsPreview ||
 			document.querySelector('.editor-post-template__swap-template-modal')
 		)
-			return false;
+			return true;
+
+		// If deviceType or baseBreakpoint changes, render styles
+		const wasBreakpointChanged =
+			this.props.deviceType !== prevProps.deviceType ||
+			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
+		if (wasBreakpointChanged) return false;
 
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
@@ -409,12 +415,6 @@ class MaxiBlockComponent extends Component {
 		)
 			return false;
 
-		// If deviceType or baseBreakpoint changes, render styles
-		const wasBreakpointChanged =
-			this.props.deviceType !== prevProps.deviceType ||
-			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
-		if (wasBreakpointChanged) return false;
-
 		if (
 			this.props.attributes.uniqueID !== prevProps.attributes.uniqueID &&
 			!wasBreakpointChanged
@@ -430,8 +430,20 @@ class MaxiBlockComponent extends Component {
 			document.querySelector('.editor-post-template__swap-template-modal')
 		)
 			return;
-
 		const { uniqueID } = this.props.attributes;
+
+		if (!shouldDisplayStyles) {
+			!this.isReusable &&
+				this.displayStyles(
+					this.props.deviceType !== prevProps.deviceType ||
+						(this.props.baseBreakpoint !==
+							prevProps.baseBreakpoint &&
+							!!prevProps.baseBreakpoint),
+					this.props.attributes.blockStyle !==
+						prevProps.attributes.blockStyle
+				);
+			this.isReusable && this.displayStyles();
+		}
 
 		// Gets the differences between the previous and current attributes
 		const diffAttributes = diff(
@@ -440,6 +452,7 @@ class MaxiBlockComponent extends Component {
 		);
 
 		if (!isEmpty(diffAttributes)) {
+			console.time(`processAttributeChanges ${uniqueID}`);
 			// Check if the modified attribute is related with hover status,
 			// and in that case update the other blocks IB relation
 			if (Object.keys(diffAttributes).some(key => key.includes('hover')))
@@ -471,6 +484,9 @@ class MaxiBlockComponent extends Component {
 					);
 				}
 			}
+			console.timeEnd(`processAttributeChanges ${uniqueID}`);
+
+			console.time(`updateRelations ${uniqueID}`);
 			// If there's a relation affecting this concrete block, check if is necessary
 			// to update it's content to keep the coherence and the good UX
 			const blocksIBRelations = select(
@@ -486,19 +502,7 @@ class MaxiBlockComponent extends Component {
 						breakpoint: this.props.deviceType,
 					})
 				);
-		}
-
-		if (!shouldDisplayStyles) {
-			!this.isReusable &&
-				this.displayStyles(
-					this.props.deviceType !== prevProps.deviceType ||
-						(this.props.baseBreakpoint !==
-							prevProps.baseBreakpoint &&
-							!!prevProps.baseBreakpoint),
-					this.props.attributes.blockStyle !==
-						prevProps.attributes.blockStyle
-				);
-			this.isReusable && this.displayStyles();
+			console.timeEnd(`updateRelations ${uniqueID}`);
 		}
 
 		this.hideGutenbergPopover();
@@ -831,7 +835,7 @@ class MaxiBlockComponent extends Component {
 						'maxi-blocks-pattern-preview'
 					) ||
 					iframe?.parentNode?.querySelector(
-						'img.maxiblocks-pattern-preview-image'
+						'img.maxi-blocks-pattern-preview-image'
 					)
 				)
 					return;
@@ -1411,12 +1415,13 @@ class MaxiBlockComponent extends Component {
 
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
-		return styleResolver({
+		const result = styleResolver({
 			styles: stylesObj,
 			remove: false,
 			breakpoints: breakpoints || this.getBreakpoints,
 			uniqueID,
 		});
+		return result;
 	}
 
 	removeStyles() {

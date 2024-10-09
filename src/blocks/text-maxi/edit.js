@@ -10,14 +10,13 @@ import { select } from '@wordpress/data';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
-const BlockInserter = loadable(() => import('../../components/block-inserter'));
+import Inspector from './inspector';
+import Toolbar from '../../components/toolbar';
+import BlockInserter from '../../components/block-inserter';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { RawHTML } from '../../components';
 import {
@@ -219,6 +218,9 @@ class edit extends MaxiBlockComponent {
 				<Inspector
 					key={`block-settings-${uniqueID}`}
 					disableCustomFormats={dcStatus && dcField !== 'static_text'}
+					setShowLoader={value =>
+						this.setState({ showLoader: value })
+					}
 					{...this.props}
 				/>
 				<Toolbar
@@ -227,6 +229,9 @@ class edit extends MaxiBlockComponent {
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
 					disableCustomFormats={dcStatus && dcField !== 'static_text'}
+					setShowLoader={value =>
+						this.setState({ showLoader: value })
+					}
 				/>
 				<MaxiBlock
 					key={`maxi-text--${uniqueID}`}
@@ -238,6 +243,7 @@ class edit extends MaxiBlockComponent {
 					)}
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
+					showLoader={this.state.showLoader}
 				>
 					{(!dcStatus || dcField === 'static_text') && !isList && (
 						<RichText

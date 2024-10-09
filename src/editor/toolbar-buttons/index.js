@@ -5,16 +5,11 @@ import { subscribe } from '@wordpress/data';
 import { render, useState, createRoot } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const Button = loadable(() => import('../../components/button'));
-const Icon = loadable(() => import('../../components/icon'));
-const ResponsiveSelector = loadable(() => import('../responsive-selector'));
+import Button from '../../components/button';
+import Icon from '../../components/icon';
+import ResponsiveSelector from '../responsive-selector';
 import {
 	getIsSiteEditor,
 	getIsTemplatesListOpened,

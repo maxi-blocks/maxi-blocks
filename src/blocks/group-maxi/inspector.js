@@ -5,18 +5,10 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-/**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';

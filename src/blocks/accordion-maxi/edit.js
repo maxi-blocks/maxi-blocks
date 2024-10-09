@@ -6,15 +6,10 @@
 import { dispatch } from '@wordpress/data';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Inspector from './inspector';
+import Toolbar from '../../components/toolbar';
 import MaxiBlock from '../../components/maxi-block/maxiBlock';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { withMaxiContextLoop } from '../../extensions/DC';
@@ -101,6 +96,7 @@ class edit extends MaxiBlockComponent {
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
 				inlineStylesTargets={inlineStylesTargets}
+				setShowLoader={value => this.setState({ showLoader: value })}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
@@ -133,6 +129,7 @@ class edit extends MaxiBlockComponent {
 						templateLock: false,
 						template: [['maxi-blocks/pane-maxi']],
 					}}
+					showLoader={this.state.showLoader}
 					{...getMaxiBlockAttributes(this.props)}
 				/>
 			</AccordionContext.Provider>,

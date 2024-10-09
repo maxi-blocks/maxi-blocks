@@ -8,6 +8,7 @@ import { forwardRef, memo } from '@wordpress/element';
  * Internal dependencies
  */
 import BackgroundDisplayer from '../background-displayer';
+import ContentLoader from '../content-loader';
 
 /**
  * External dependencies
@@ -27,6 +28,7 @@ const MainBlock = forwardRef(
 			anchorLink,
 			isChild,
 			isDisabled,
+			showLoader,
 			...props
 		},
 		ref
@@ -73,6 +75,7 @@ const MainBlock = forwardRef(
 						{...background}
 					/>
 				)}
+				{showLoader && <ContentLoader overlay />}
 				{children}
 			</TagName>
 		);

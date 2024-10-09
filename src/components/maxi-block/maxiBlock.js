@@ -125,6 +125,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		pagination = false,
 		dcLinkStatus,
 		dcLinkTarget,
+		showLoader,
 		...extraProps
 	} = props;
 
@@ -209,7 +210,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
 		isHovered && 'maxi-block--is-hovered',
 		isRepeater && 'maxi-block--repeater',
-		isDisabled && 'maxi-block--disabled',
+		(isDisabled || showLoader) && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width',
 		isSave && dcStatus && dcHide && '$class-to-replace'
 	);
@@ -263,6 +264,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		disableBackground: !disableBackground,
 		isChild,
 		isDisabled,
+		showLoader,
 		isSave,
 		...(!isSave &&
 			INNER_BLOCKS.includes(blockName) && {

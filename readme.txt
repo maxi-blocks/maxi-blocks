@@ -6,9 +6,9 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.6
 Requires PHP: 8.0
-Stable tag: 1.9.3
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 1.9.9
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Build professional WordPress sites faster, boost your design confidence, and deliver higher-quality results with MaxiBlocks.
 
@@ -172,29 +172,53 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 19 Jul 2024_
-MaxiBlocks v1.9.3
-* Security: Fixed arbitrary file deletion vulnerability for Authenticated (Subscriber+) (CVE-2024-6885). Thanks to Lucio Sá for the responsible disclosure.
-* Fix: Resolved a PHP notice that appeared during image uploads in the cropping interface.
-* Fix: Addressed a JavaScript error that occurred in the template parts editor.
+_Updates 9 Oct 2024_
+MaxiBlocks v1.9.9
+* Update: Enhanced the main Editor screen with the ability to keep the current breakpoint width regardless of the opened sidebars.
+* Update: Interaction Builder improvements for the future Mega menu blocks.
+* Update: Backend speed optimization for the List view and selecting blocks.
+* Update: Switched the plugin licence to GPLv3 or later.
 
-_Updates 15 Jul 2024_
-MaxiBlocks v1.9.2
-* Update: Added compatibility with WordPress 6.6.
-* Fix: Resolved an issue where custom fonts failed to load on the frontend when only custom fonts were used on the page.
-* Fix: Adjusted the default search state for the Search block's close icon to display the appropriate icons consistently.
-* Fix: Enabled the mobile navigation menu background by default for improved user experience.
-* Fix: Addressed inconsistencies in the Text block's toolbar icons for a more cohesive interface.
-* Fix: Incorporated bottom-gap and mobile navigation options into Style Cards from the Style Cards Library by default for enhanced functionality.
+_Updates 27 Sep 2024_
+MaxiBlocks v1.9.8
+* Fix: Resolved issue where block tones were not switching correctly on the frontend.
+* Fix: Refined default link colour settings in the Template style cards for improved consistency.
 
-_Updates 9 Jul 2024_
-MaxiBlocks v1.9.1
-* Update: Added support for more Dynamic Content options for Custom Post Types.
-* Update: Improved SEO score for patterns with Interaction Builder effects.
-* Update: Optimized speed for Number Counter and Video frontend scripts.
-* Update: Enhancements to Dynamic Content and Content Loop speed on backend.
-* Fix: Resolved Search Maxi block's search icon bug when trying to replace it.
-* Fix: Pagination and hiding repeated elements for Content Loop when using WooCommerce products.
+_Updates 25 Sep 2024_
+MaxiBlocks v1.9.7
+* Update: Added Theme tab to Template Library for future Theme templates.
+* Fix: Addressed responsive issues when breakpoints values were missing on frontend in some cases.
+* Fix: Restored "by relation" dropdown option for Dynamic Content.
+
+_Updates 19 Sep 2024_
+MaxiBlocks v1.9.6
+* Update: Introduced Bunny Fonts option as an alternative to Google Fonts.
+* Update: Enhanced backend speed and performance.
+* Update: Optimized speed by refactoring loadable components.
+* Update: Added slider to set avatar size in Dynamic Content.
+* Update: Added custom taxonomies support for relations in Context Loop and Dynamic Content.
+* Update: Improved handling of styles on block insertion.
+* Update: Added limit option to all text fields in Dynamic Content.
+* Update: Upgraded npm packages for better functionality and security.
+* Fix: Addressed local fonts preload warning.
+* Fix: Rectified Style Card font loading issues.
+* Fix: Adjusted pagination font display on backend.
+* Fix: Enhanced local fonts handling in the editor.
+* Fix: Corrected issues with synced block patterns inside columns.
+* Fix: Fine-tuned RangeControl value handling for zero.
+* Fix: Optimized tab label display to prevent wrapping on second line when selected.
+* Fix: Restored insert button visibility when using Dynamic Content link in Icon Maxi.
+* Fix: Stabilized Dynamic Content blocks when no tags are found.
+* Fix: Ensured accordion styles load properly without requiring changes.
+* Fix: Hidden "ACF Field" dropdown for Context Loop where it's not applicable.
+
+_Updates 15 Aug 2024_
+MaxiBlocks v1.9.5
+* Update: Optimized performance for MaxiBlocks in the Editing Experience and FSE Site Editor, resulting in faster load times and smoother interactions.
+* Update: Introduced a new setting to customize avatar size in Dynamic Content.
+* Fix: Resolved an issue where icon hover effects created in the Interaction Builder were not functioning correctly, ensuring a consistent user experience.
+* Fix: Addressed a bug that prevented fonts from loading on the frontend when switching Style Cards without making any other changes to the page.
+* Fix: Corrected an issue where unique fonts were not rendering for Context Loop pagination in the Editing Experience.
 
 == Upgrade Notice ==
 

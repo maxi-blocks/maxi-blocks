@@ -10,36 +10,21 @@ import { useCallback } from '@wordpress/element';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const AdvancedNumberControl = loadable(() =>
-	import('../../components/advanced-number-control')
-);
-const ImageAltControl = loadable(() =>
-	import('../../components/image-alt-control')
-);
-const ImageShape = loadable(() => import('../../components/image-shape'));
-const ResponsiveTabsControl = loadable(() =>
-	import('../../components/responsive-tabs-control')
-);
-const SelectControl = loadable(() => import('../../components/select-control'));
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const TypographyControl = loadable(() =>
-	import('../../components/typography-control')
-);
-const DimensionTab = loadable(() => import('./components/dimension-tab'));
-const HoverEffectControl = loadable(() =>
-	import('./components/hover-effect-control')
-);
-const InfoBox = loadable(() => import('../../components/info-box'));
+import AccordionControl from '../../components/accordion-control';
+import AdvancedNumberControl from '../../components/advanced-number-control';
+import ImageAltControl from '../../components/image-alt-control';
+import ImageShape from '../../components/image-shape';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import SelectControl from '../../components/select-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import TypographyControl from '../../components/typography-control';
+import DimensionTab from './components/dimension-tab';
+import HoverEffectControl from './components/hover-effect-control';
+import InfoBox from '../../components/info-box';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -375,6 +360,9 @@ const Inspector = props => {
 																	type: 'p',
 																}}
 																styleCardPrefix=''
+																setShowLoader={
+																	props.setShowLoader
+																}
 															/>
 														</>
 													)}

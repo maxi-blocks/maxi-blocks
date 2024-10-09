@@ -53,16 +53,15 @@ const ToolbarMediaUpload = props => {
 		uniqueID,
 		'dc-status': dcStatus,
 	} = attributes;
+	const isIcon = blockName === 'maxi-blocks/svg-icon-maxi';
 
 	if (
 		!ALLOWED_BLOCKS.includes(blockName) ||
-		dcStatus ||
+		(dcStatus && !isIcon) ||
 		playerType === 'video' ||
 		hideImage
 	)
 		return null;
-
-	const isIcon = blockName === 'maxi-blocks/svg-icon-maxi';
 
 	return (
 		<div className='toolbar-item toolbar-item__replace-image'>

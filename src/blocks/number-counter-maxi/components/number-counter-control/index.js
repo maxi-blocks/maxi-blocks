@@ -7,29 +7,16 @@ import { __ } from '@wordpress/i18n';
  * External dependencies
  */
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const ColorControl = loadable(() =>
-	import('../../../../components/color-control')
-);
-const FontFamilySelector = loadable(() =>
-	import('../../../../components/font-family-selector')
-);
-const FontWeightControl = loadable(() =>
-	import('../../../../components/font-weight-control')
-);
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import ColorControl from '../../../../components/color-control';
+import FontFamilySelector from '../../../../components/font-family-selector';
+import FontWeightControl from '../../../../components/font-weight-control';
+import SelectControl from '../../../../components/select-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -44,7 +31,8 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, breakpoint, onChangeInline, onChange } = props;
+	const { className, breakpoint, onChangeInline, onChange, setShowLoader } =
+		props;
 
 	const classes = classnames('maxi-number-counter-control', className);
 
@@ -287,6 +275,7 @@ const NumberCounterControl = props => {
 					})
 				}
 				breakpoint={breakpoint}
+				setShowLoader={setShowLoader}
 			/>
 			<FontWeightControl
 				onChange={val => {
@@ -313,6 +302,7 @@ const NumberCounterControl = props => {
 					attributes: props,
 				})}
 				breakpoint={breakpoint}
+				setShowLoader={setShowLoader}
 			/>
 			<AdvancedNumberControl
 				className='maxi-number-counter-control__font-size'

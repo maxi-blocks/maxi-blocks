@@ -6,15 +6,10 @@ import { __ } from '@wordpress/i18n';
 import { createRef, forwardRef, RawHTML } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const Inspector = loadable(() => import('./inspector'));
-const Toolbar = loadable(() => import('../../components/toolbar'));
+import Inspector from './inspector';
+import Toolbar from '../../components/toolbar';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { BlockInserter } from '../../components';
@@ -112,7 +107,7 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	maxiBlockDidUpdate() {
+	updateAttributesFromContext() {
 		// Attributes from context that need to be saved for frontend
 		const accordionAttributes = ['accordionUniqueId', 'titleLevel'];
 
@@ -147,6 +142,14 @@ class edit extends MaxiBlockComponent {
 				});
 			}
 		}
+	}
+
+	maxiBlockDidMount() {
+		this.updateAttributesFromContext();
+	}
+
+	maxiBlockDidUpdate() {
+		this.updateAttributesFromContext();
 
 		const newIsOpen = this.context.openPanes.includes(this.props.clientId);
 		if (newIsOpen !== this.state.isOpen) {

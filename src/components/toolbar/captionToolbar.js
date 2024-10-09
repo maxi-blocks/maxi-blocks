@@ -9,18 +9,13 @@ import { useSelect } from '@wordpress/data';
  */
 import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual } from 'lodash';
-import loadable from '@loadable/component';
-
-/**
- * Utils
- */
-const TextColor = loadable(() => import('./components/text-color'));
-const TextOptions = loadable(() => import('./components/text-options'));
 
 /**
  * Internal dependencies
  */
-const Popover = loadable(() => import('../popover'));
+import TextColor from './components/text-color';
+import TextOptions from './components/text-options';
+import Popover from '../popover';
 
 /**
  * Styles
@@ -41,6 +36,7 @@ const CaptionToolbar = memo(
 			insertInlineStyles,
 			cleanInlineStyles,
 			isSelected,
+			setShowLoader,
 		} = props;
 		const { isList = false, textLevel = 'p', uniqueID } = attributes;
 
@@ -131,6 +127,7 @@ const CaptionToolbar = memo(
 							blockStyle={blockStyle}
 							isList={isList}
 							clientId={clientId}
+							setShowLoader={setShowLoader}
 							isCaptionToolbar
 						/>
 					</div>

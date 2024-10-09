@@ -4,23 +4,12 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const ManageHoverTransitions = loadable(() =>
-	import('../../../../components/manage-hover-transitions')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../../../components/setting-tabs-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const SvgColor = loadable(() => import('../../../../components/svg-color'));
+import ManageHoverTransitions from '../../../../components/manage-hover-transitions';
+import SettingTabsControl from '../../../../components/setting-tabs-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
+import SvgColor from '../../../../components/svg-color';
 
 const SvgColorControl = props => {
 	const {

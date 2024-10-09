@@ -8,12 +8,11 @@ import { forwardRef, useRef } from '@wordpress/element';
  */
 import classnames from 'classnames';
 import { isEqual, isNaN, toNumber } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const Popover = loadable(() => import('../popover'));
+import Popover from '../popover';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**

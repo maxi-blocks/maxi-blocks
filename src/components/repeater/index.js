@@ -6,16 +6,11 @@ import { useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const InfoBox = loadable(() => import('../info-box'));
-const ToggleSwitch = loadable(() => import('../toggle-switch'));
-const DialogBox = loadable(() => import('../dialog-box'));
+import InfoBox from '../info-box';
+import ToggleSwitch from '../toggle-switch';
+import DialogBox from '../dialog-box';
 import { getAttributeKey, getAttributeValue } from '../../extensions/styles';
 import { validateRowColumnsStructure } from '../../extensions/repeater';
 

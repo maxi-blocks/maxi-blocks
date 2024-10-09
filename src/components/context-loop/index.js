@@ -478,7 +478,10 @@ const ContextLoop = props => {
 									}
 									onReset={() =>
 										changeProps({
-											'cl-id': postIdOptions[0].value,
+											'cl-id':
+												contextLoop.prevContextLoopStatus
+													? undefined
+													: postIdOptions[0].value,
 										})
 									}
 								/>

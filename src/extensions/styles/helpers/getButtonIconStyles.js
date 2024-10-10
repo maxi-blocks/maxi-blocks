@@ -258,64 +258,64 @@ const getButtonIconStyles = ({
 
 	const iconType = obj?.[`${prefix}svgType`]?.toLowerCase();
 
-	const response = {
-		...(hasIcon && !isHover
-			? {
-					...getSVGStyles({
-						obj,
-						target: normalTarget,
-						blockStyle,
-						prefix: `${prefix}icon-`,
-						useIconColor,
-						iconType,
-					}),
-					[normalTarget]: getIconObject(obj, 'icon', prefix, isIB),
-					[`${normalTarget} svg`]: getIconSize(
-						obj,
-						false,
-						prefix,
-						iconWidthHeightRatio
-					),
-					[`${normalTarget} svg > *`]: getIconObject(
-						obj,
-						'svg',
-						prefix
-					),
-			  }
-			: iconHoverStatus &&
-			  (() => {
-					const iconHoverObj = getIconHoverObject(
-						obj,
-						'iconHover',
-						prefix,
-						iconType
-					);
+	let response = {};
 
-					return {
-						[`${hoverTarget}`]: iconHoverObj,
-						[`${hoverTarget} svg > *`]: iconHoverObj,
-						[`${hoverTarget} svg`]: getIconSize(
-							obj,
-							true,
-							prefix,
-							iconWidthHeightRatio
-						),
-						[`${hoverTarget} svg path`]: getIconPathStyles(
-							obj,
-							true
-						),
-						...getSVGStyles({
-							obj,
-							target: hoverTarget,
-							blockStyle,
-							prefix: `${prefix}icon-`,
-							useIconColor,
-							isHover: true,
-							iconType,
-						}),
-					};
-			  })()),
-		// Background
+	if (hasIcon && !isHover) {
+		const svgStyles = getSVGStyles({
+			obj,
+			target: normalTarget,
+			blockStyle,
+			prefix: `${prefix}icon-`,
+			useIconColor,
+			iconType,
+		});
+
+		const iconObj = getIconObject(obj, 'icon', prefix, isIB);
+		const iconSize = getIconSize(obj, false, prefix, iconWidthHeightRatio);
+		const svgChildStyles = getIconObject(obj, 'svg', prefix);
+
+		response = {
+			...svgStyles,
+			[normalTarget]: iconObj,
+			[`${normalTarget} svg`]: iconSize,
+			[`${normalTarget} svg > *`]: svgChildStyles,
+		};
+	} else if (iconHoverStatus) {
+		const hoverIconObj = getIconHoverObject(
+			obj,
+			'iconHover',
+			prefix,
+			iconType
+		);
+		const hoverIconSize = getIconSize(
+			obj,
+			true,
+			prefix,
+			iconWidthHeightRatio
+		);
+
+		const hoverIconPathStyles = getIconPathStyles(obj, true);
+		const hoverSvgStyles = getSVGStyles({
+			obj,
+			target: hoverTarget,
+			blockStyle,
+			prefix: `${prefix}icon-`,
+			useIconColor,
+			isHover: true,
+			iconType,
+		});
+
+		response = {
+			[`${hoverTarget}`]: hoverIconObj,
+			[`${hoverTarget} svg > *`]: hoverIconObj,
+			[`${hoverTarget} svg`]: hoverIconSize,
+			[`${hoverTarget} svg path`]: hoverIconPathStyles,
+			...hoverSvgStyles,
+		};
+	}
+
+	response = {
+		...response,
 		[`${normalTarget} svg path`]: getIconPathStyles(obj, false),
 		[hoverTarget]:
 			obj['icon-status-hover'] && getIconHoverObject(obj, 'iconHover'),
@@ -326,6 +326,9 @@ const getButtonIconStyles = ({
 			getIconSize(obj, true, prefix, iconWidthHeightRatio),
 		[`${hoverTarget} svg path`]:
 			obj['icon-status-hover'] && getIconPathStyles(obj, true),
+	};
+
+	const backgroundStyles = {
 		...getBlockBackgroundStyles({
 			...getGroupAttributes(obj, [
 				'blockBackground',
@@ -346,7 +349,7 @@ const getButtonIconStyles = ({
 		}),
 	};
 
-	return response;
+	return { ...response, ...backgroundStyles };
 };
 
 export default getButtonIconStyles;

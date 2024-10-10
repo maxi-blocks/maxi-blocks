@@ -374,7 +374,7 @@ class MaxiBlockComponent extends Component {
 			this.isPatternsPreview ||
 			document.querySelector('.editor-post-template__swap-template-modal')
 		)
-			return true;
+			return false;
 
 		// If deviceType or baseBreakpoint changes, render styles
 		const wasBreakpointChanged =

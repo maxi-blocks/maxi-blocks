@@ -832,7 +832,7 @@ class MaxiBlockComponent extends Component {
 						'maxi-blocks-pattern-preview'
 					) ||
 					iframe?.parentNode?.querySelector(
-						'img.maxi-blocks-pattern-preview-image'
+						'img.maxiblocks-pattern-preview-image'
 					)
 				)
 					return;
@@ -1470,13 +1470,12 @@ class MaxiBlockComponent extends Component {
 
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
-		const result = styleResolver({
+		return styleResolver({
 			styles: stylesObj,
 			remove: false,
 			breakpoints: breakpoints || this.getBreakpoints,
 			uniqueID,
 		});
-		return result;
 	}
 
 	removeStyles() {

@@ -156,17 +156,7 @@ const getBoxShadowStyles = ({
 					values['spread-unit']?.defaultValue) ||
 			(!isNil(color) && color !== defaultColor);
 
-		// Add this new check after the isNotDefault declaration
-		const allValuesAreZero =
-			(isNumber(values.horizontal?.value)
-				? values.horizontal.value
-				: 0) === 0 &&
-			(isNumber(values.vertical?.value) ? values.vertical.value : 0) ===
-				0 &&
-			(isNumber(values.blur?.value) ? values.blur.value : 0) === 0 &&
-			(isNumber(values.spread?.value) ? values.spread.value : 0) === 0;
-
-		if (!isNotDefault || allValuesAreZero) return;
+		if (!isNotDefault) return;
 
 		const horizontalValue = isNumber(values.horizontal?.value)
 			? values.horizontal.value

@@ -1068,7 +1068,8 @@ class MaxiBlockComponent extends Component {
 		const breakpoints = this.getBreakpoints;
 		let customDataRelations;
 
-		if (!isBreakpointChange && !isBlockStyleChange) {
+		// Only generate new styles if it's not a breakpoint change
+		if (!isBreakpointChange) {
 			obj = this.getStylesObject;
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1093,17 +1094,23 @@ class MaxiBlockComponent extends Component {
 					'.editor-post-template__swap-template-modal'
 				)
 			) {
-				obj = this.getStylesObject;
-				this.injectStyles(
-					uniqueID,
-					obj,
-					this.props.deviceType,
-					breakpoints,
-					isSiteEditor,
-					isBreakpointChange,
-					isBlockStyleChange,
-					iframe
-				);
+				// Only inject styles if it's not a breakpoint change
+				if (!isBreakpointChange) {
+					obj = this.getStylesObject;
+					this.injectStyles(
+						uniqueID,
+						obj,
+						this.props.deviceType,
+						breakpoints,
+						isSiteEditor,
+						isBreakpointChange,
+						isBlockStyleChange,
+						iframe
+					);
+				} else {
+					// If it's a breakpoint change, only update the responsive classes
+					this.updateResponsiveClasses(iframe, this.props.deviceType);
+				}
 			}
 
 			if (customDataRelations) {
@@ -1230,18 +1237,21 @@ class MaxiBlockComponent extends Component {
 		const target = this.getStyleTarget(isSiteEditor, iframe);
 		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
-		const styleContent = this.generateStyleContent(
-			uniqueID,
-			stylesObj,
-			currentBreakpoint,
-			breakpoints,
-			isBreakpointChange,
-			isBlockStyleChange,
-			iframe,
-			isSiteEditor
-		);
+		// Only generate new styles if it's not a breakpoint change
+		if (!isBreakpointChange) {
+			const styleContent = this.generateStyleContent(
+				uniqueID,
+				stylesObj,
+				currentBreakpoint,
+				breakpoints,
+				isBreakpointChange,
+				isBlockStyleChange,
+				iframe,
+				isSiteEditor
+			);
 
-		this.updateStyleElement(styleElement, styleContent);
+			this.updateStyleElement(styleElement, styleContent);
+		}
 	}
 
 	handleIframeStyles(iframe, currentBreakpoint) {
@@ -1449,6 +1459,7 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
+		console.log('styleContent', styleContent);
 		return styleContent;
 	}
 
@@ -1561,6 +1572,19 @@ class MaxiBlockComponent extends Component {
 		} else if (!this.props.isSelected && this.popoverStyles) {
 			this.popoverStyles.remove();
 			this.popoverStyles = null;
+		}
+	}
+
+	// Add this new method to handle responsive class updates
+	updateResponsiveClasses(iframe, currentBreakpoint) {
+		const target = iframe?.contentDocument?.body || document.body;
+		const editorWrapper = target.querySelector('.editor-styles-wrapper');
+
+		if (editorWrapper) {
+			editorWrapper.setAttribute(
+				'maxi-blocks-responsive',
+				currentBreakpoint === 's' ? 's' : 'xs'
+			);
 		}
 	}
 }

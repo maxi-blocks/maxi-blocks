@@ -37,8 +37,6 @@ const getIconStyles = (
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		paletteAttributes;
 
-	response.general.fill = 'none';
-
 	if (!isShape) {
 		if (!paletteStatus && !isNil(color)) {
 			response.general.stroke = color;

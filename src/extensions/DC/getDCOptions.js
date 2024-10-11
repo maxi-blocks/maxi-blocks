@@ -38,6 +38,12 @@ wp.domReady(() => {
 	clearCustomCache();
 });
 
+const fetchUsers = async () => {
+	const { getUsers } = resolveSelect(coreStore);
+	const users = await getUsers();
+	return users ? users.map(({ id, name }) => ({ id, name })) : null;
+};
+
 export const getIdOptions = async (
 	type,
 	relation,
@@ -48,24 +54,10 @@ export const getIdOptions = async (
 	if (![...idTypes].includes(type) && !isCustomPostType && !isCustomTaxonomy)
 		return false;
 
-	const { getEntityRecords, getUsers } = resolveSelect(coreStore);
 	let data;
 
-	const dictionary = {
-		posts: 'post',
-		pages: 'page',
-		media: 'attachment',
-		products: 'product',
-	};
-
 	const args = { per_page: -1 };
-
-	const currentTemplateType = getCurrentTemplateSlug();
-
-	const fetchUsers = async () => {
-		const users = await getUsers();
-		return users ? users.map(({ id, name }) => ({ id, name })) : null;
-	};
+	const { getEntityRecords } = resolveSelect(coreStore);
 
 	if (relation.includes('by-custom-taxonomy')) {
 		const taxonomy = relation.split('custom-taxonomy-').pop();
@@ -93,6 +85,8 @@ export const getIdOptions = async (
 	} else if (isCustomPostType) {
 		data = await getEntityRecords('postType', type, args);
 	} else if (relation === 'current-archive') {
+		const currentTemplateType = getCurrentTemplateSlug();
+
 		if (currentTemplateType === 'author') {
 			data = await fetchUsers();
 		} else if (
@@ -106,9 +100,15 @@ export const getIdOptions = async (
 		} else {
 			data = await getEntityRecords('taxonomy', 'category', args);
 		}
-	} else if (currentTemplateType === 'archive') {
+	} else if (getCurrentTemplateSlug() === 'archive') {
 		data = await getEntityRecords('taxonomy', 'category', args);
 	} else {
+		const dictionary = {
+			posts: 'post',
+			pages: 'page',
+			media: 'attachment',
+			products: 'product',
+		};
 		data = await getEntityRecords('postType', dictionary[type], args);
 	}
 
@@ -122,21 +122,9 @@ const getDCOptions = async (
 	isCL = false,
 	{ 'cl-status': clStatus } = {}
 ) => {
-	const defaultTypes = [
-		'posts',
-		'pages',
-		'settings',
-		'media',
-		'users',
-		'tags',
-		'categories',
-		'products',
-		'product_tags',
-		'product_categories',
-	];
 	let isCustomPostType = false;
 	let isCustomTaxonomy = false;
-	if (!defaultTypes.includes(type)) {
+	if (![...idTypes].includes(type)) {
 		if (
 			!customPostTypesCache ||
 			!customTaxonomiesCache ||

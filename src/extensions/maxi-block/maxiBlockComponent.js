@@ -1407,8 +1407,6 @@ class MaxiBlockComponent extends Component {
 		if (styleElement.textContent !== styleContent) {
 			styleElement.textContent = styleContent;
 		}
-
-		console.log(styleContent);
 	}
 
 	// Helper method to generate styles

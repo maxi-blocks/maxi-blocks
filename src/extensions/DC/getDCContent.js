@@ -7,7 +7,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { limitFields, nameDictionary, renderedFields } from './constants';
+import {
+	limitFields,
+	nameDictionary,
+	renderedFields,
+	idTypes,
+} from './constants';
 import {
 	getItemLinkContent,
 	getSimpleText,
@@ -43,7 +48,7 @@ const MAX_CACHE_SIZE = 200;
 
 const getDCContent = async (dataRequest, clientId) => {
 	if (isEmpty(dataRequest)) return null;
-	const { source, relation, field } = dataRequest;
+	const { field } = dataRequest;
 
 	if (field === 'archive-type') {
 		return getCurrentTemplateSlug().replace(/-/g, ' ');
@@ -78,6 +83,8 @@ const getDCContent = async (dataRequest, clientId) => {
 		cache[cacheKey] = data;
 	}
 
+	const { source, relation } = dataRequest;
+
 	if (relation === 'current' && isEmpty(data)) {
 		if (source === 'acf') {
 			if (field) {
@@ -91,18 +98,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	}
 	if (!data) return null;
 
-	const {
-		type,
-		limit,
-		delimiterContent,
-		customDate,
-		format,
-		locale,
-		postTaxonomyLinksStatus,
-		acfFieldType,
-		linkTarget,
-	} = dataRequest;
-
+	const { acfFieldType } = dataRequest;
 	let contentValue;
 
 	if (source === 'acf') {
@@ -110,17 +106,37 @@ const getDCContent = async (dataRequest, clientId) => {
 		return getACFContentByType(contentValue, acfFieldType, dataRequest);
 	}
 
-	const customTaxonomies = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomTaxonomies();
-
-	const isCustomTaxonomyType = [
-		...customTaxonomies,
-		'tags',
-		'categories',
-		'product_tags',
-		'product_categories',
-	].includes(type);
+	const { type } = dataRequest;
+	let isCustomTaxonomyType = false;
+	if (
+		![
+			'posts',
+			'pages',
+			'media',
+			'users',
+			'authors',
+			'products',
+			'archive',
+		].includes(type)
+	) {
+		if (
+			[
+				'tags',
+				'categories',
+				'product_tags',
+				'product_categories',
+			].includes(type)
+		) {
+			isCustomTaxonomyType = true;
+		} else {
+			const customTaxonomies = select(
+				'maxiBlocks/dynamic-content'
+			).getCustomTaxonomies();
+			if ([...customTaxonomies].includes(type)) {
+				isCustomTaxonomyType = true;
+			}
+		}
+	}
 
 	if (
 		renderedFields.includes(field) &&
@@ -143,6 +159,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	const limitTypes = select('maxiBlocks/dynamic-content').getLimitTypes();
 
 	if (field === 'date') {
+		const { customDate, format, locale } = dataRequest;
 		const options = formatDateOptions(dataRequest);
 		contentValue = processDCDate(
 			contentValue,
@@ -157,9 +174,11 @@ const getDCContent = async (dataRequest, clientId) => {
 				? parseText(contentValue)
 				: contentValue;
 		if (field === 'content') contentValue = getSimpleText(contentValue);
+		const { limit } = dataRequest;
 		contentValue = limitString(contentValue, limit);
 	} else if (field === 'author') {
 		const { getUsers } = resolveSelect('core');
+		const { postTaxonomyLinksStatus } = dataRequest;
 		const user = await getUsers({ include: contentValue });
 		contentValue = getItemLinkContent(
 			user[0].name,
@@ -171,15 +190,38 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = await handleParentField(contentValue, type);
 	}
 
-	const isCustomTaxonomyField = [
-		...customTaxonomies,
-		'tags',
-		'categories',
-		'product_tags',
-		'product_categories',
-	].includes(field);
+	let isCustomTaxonomyField = false;
+	if (
+		![
+			'title',
+			'content',
+			'excerpt',
+			'date',
+			'author',
+			'static_text',
+		].includes(field)
+	) {
+		if (
+			[
+				'tags',
+				'categories',
+				'product_tags',
+				'product_categories',
+			].includes(field)
+		) {
+			isCustomTaxonomyField = true;
+		} else {
+			const customTaxonomies = select(
+				'maxiBlocks/dynamic-content'
+			).getCustomTaxonomies();
+			if ([...customTaxonomies].includes(field)) {
+				isCustomTaxonomyField = true;
+			}
+		}
+	}
 
 	if (isCustomTaxonomyField) {
+		const { delimiterContent, linkTarget } = dataRequest;
 		contentValue = await getTaxonomyContent(
 			contentValue,
 			delimiterContent,

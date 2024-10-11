@@ -122,17 +122,33 @@ const getDCOptions = async (
 	isCL = false,
 	{ 'cl-status': clStatus } = {}
 ) => {
-	if (
-		!customPostTypesCache ||
-		!customTaxonomiesCache ||
-		customPostTypesCache.length === 0 ||
-		customTaxonomiesCache.length === 0
-	) {
-		await fetchCustomPostTypesAndTaxonomies();
-	}
+	const defaultTypes = [
+		'posts',
+		'pages',
+		'settings',
+		'media',
+		'users',
+		'tags',
+		'categories',
+		'products',
+		'product_tags',
+		'product_categories',
+	];
+	let isCustomPostType = false;
+	let isCustomTaxonomy = false;
+	if (!defaultTypes.includes(type)) {
+		if (
+			!customPostTypesCache ||
+			!customTaxonomiesCache ||
+			customPostTypesCache.length === 0 ||
+			customTaxonomiesCache.length === 0
+		) {
+			await fetchCustomPostTypesAndTaxonomies();
+		}
 
-	const isCustomPostType = customPostTypesCache.includes(type);
-	const isCustomTaxonomy = customTaxonomiesCache.includes(type);
+		isCustomPostType = customPostTypesCache.includes(type);
+		isCustomTaxonomy = customTaxonomiesCache.includes(type);
+	}
 
 	const data = await getIdOptions(
 		type,

@@ -89,6 +89,17 @@ const getDCMedia = async (dataRequest, clientId) => {
 
 	const { field, source, type, mediaSize } = dataRequest;
 
+	if (field === 'avatar' && type === 'users') {
+		return getAvatar(data, mediaSize);
+	}
+
+	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
+		const { author: authorId } = data;
+		const { getUser } = resolveSelect('core');
+		const author = await getUser(authorId);
+		return getAvatar(author, mediaSize);
+	}
+
 	if (source === 'acf') {
 		const image = await getACFFieldContent(field, data.id);
 		if (!image) return null;
@@ -100,17 +111,6 @@ const getDCMedia = async (dataRequest, clientId) => {
 			return getMediaById(image.value, type);
 		}
 		return image.value;
-	}
-
-	if (field === 'avatar' && type === 'users') {
-		return getAvatar(data, mediaSize);
-	}
-
-	if (['posts', 'pages'].includes(type) && field === 'author_avatar') {
-		const { author: authorId } = data;
-		const { getUser } = resolveSelect('core');
-		const author = await getUser(authorId);
-		return getAvatar(author, mediaSize);
 	}
 
 	let id;

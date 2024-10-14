@@ -38,15 +38,22 @@ const getDCLink = async (dataRequest, clientId) => {
 		return getCartUrl();
 	}
 
-	const customTaxonomies = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomTaxonomies();
+	if (linkTarget === 'author') {
+		return getAuthorLink(author);
+	}
 
-	if (
-		inlineLinkFields.includes(linkTarget) ||
-		customTaxonomies.includes(linkTarget)
-	) {
+	if (inlineLinkFields.includes(linkTarget)) {
 		return 'Multiple Links';
+	}
+
+	if (linkTarget !== 'entity') {
+		const customTaxonomies = select(
+			'maxiBlocks/dynamic-content'
+		).getCustomTaxonomies();
+
+		if (customTaxonomies.includes(linkTarget)) {
+			return 'Multiple Links';
+		}
 	}
 
 	const filteredDataRequest = { ...dataRequest };
@@ -78,10 +85,6 @@ const getDCLink = async (dataRequest, clientId) => {
 
 	if (type === 'products') {
 		return getProductsLink(dataRequest, data);
-	}
-
-	if (linkTarget === 'author') {
-		return getAuthorLink(author);
 	}
 
 	return data?.link || null;

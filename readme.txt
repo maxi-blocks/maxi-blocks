@@ -172,6 +172,14 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 15 Oct 2024_
+MaxiBlocks v2.0.0
+* Update: Optimized performance for styles generation in the Editing Experience (EE) and the Site Editor (SE).
+* Update: Speed up MaxiBlocks breakpoint switching and responsive rendering in EE.
+* Update: Enhanced Context Loop / Dynamic Content speed for content rendering, changing settings, and loading from the Template Library, both in EE and SE.
+* Fix: Addressed issues with styles not loading in Mobile and Tablet preview mode in EE.
+* Fix: Restored Dynamic Content reset function to correspondent Context Loop values.
+
 _Updates 9 Oct 2024_
 MaxiBlocks v1.9.9
 * Update: Enhanced the main Editor screen with the ability to keep the current breakpoint width regardless of the opened sidebars.
@@ -189,36 +197,6 @@ MaxiBlocks v1.9.7
 * Update: Added Theme tab to Template Library for future Theme templates.
 * Fix: Addressed responsive issues when breakpoints values were missing on frontend in some cases.
 * Fix: Restored "by relation" dropdown option for Dynamic Content.
-
-_Updates 19 Sep 2024_
-MaxiBlocks v1.9.6
-* Update: Introduced Bunny Fonts option as an alternative to Google Fonts.
-* Update: Enhanced backend speed and performance.
-* Update: Optimized speed by refactoring loadable components.
-* Update: Added slider to set avatar size in Dynamic Content.
-* Update: Added custom taxonomies support for relations in Context Loop and Dynamic Content.
-* Update: Improved handling of styles on block insertion.
-* Update: Added limit option to all text fields in Dynamic Content.
-* Update: Upgraded npm packages for better functionality and security.
-* Fix: Addressed local fonts preload warning.
-* Fix: Rectified Style Card font loading issues.
-* Fix: Adjusted pagination font display on backend.
-* Fix: Enhanced local fonts handling in the editor.
-* Fix: Corrected issues with synced block patterns inside columns.
-* Fix: Fine-tuned RangeControl value handling for zero.
-* Fix: Optimized tab label display to prevent wrapping on second line when selected.
-* Fix: Restored insert button visibility when using Dynamic Content link in Icon Maxi.
-* Fix: Stabilized Dynamic Content blocks when no tags are found.
-* Fix: Ensured accordion styles load properly without requiring changes.
-* Fix: Hidden "ACF Field" dropdown for Context Loop where it's not applicable.
-
-_Updates 15 Aug 2024_
-MaxiBlocks v1.9.5
-* Update: Optimized performance for MaxiBlocks in the Editing Experience and FSE Site Editor, resulting in faster load times and smoother interactions.
-* Update: Introduced a new setting to customize avatar size in Dynamic Content.
-* Fix: Resolved an issue where icon hover effects created in the Interaction Builder were not functioning correctly, ensuring a consistent user experience.
-* Fix: Addressed a bug that prevented fonts from loading on the frontend when switching Style Cards without making any other changes to the page.
-* Fix: Corrected an issue where unique fonts were not rendering for Context Loop pagination in the Editing Experience.
 
 == Upgrade Notice ==
 

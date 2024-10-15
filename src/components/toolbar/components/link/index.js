@@ -17,6 +17,14 @@ import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
 import { LoopContext, getDCLink, getDCValues } from '../../../../extensions/DC';
 import DC_LINK_BLOCKS from './dcLinkBlocks';
+import { toolbarLink } from '../../../../icons';
+import {
+	linkFields,
+	multipleLinksTypes,
+} from '../../../../extensions/DC/constants';
+import SelectControl from '../../../select-control';
+import { getLinkTargets } from '../../../../extensions/DC/utils';
+import InfoBox from '../../../info-box';
 
 /**
  * External dependencies
@@ -27,13 +35,6 @@ import { isNil, isEmpty } from 'lodash';
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarLink } from '../../../../icons';
-import {
-	linkFields,
-	multipleLinksTypes,
-} from '../../../../extensions/DC/constants';
-import SelectControl from '../../../select-control';
-import { getLinkTargets } from '../../../../extensions/DC/utils';
 
 const DISABLED_BLOCKS = [
 	'maxi-blocks/divider-maxi',
@@ -170,43 +171,56 @@ const Link = props => {
 									linkFields.includes(dcField) ||
 									customTaxonomies.includes(dcField)) &&
 									dcLinkStatus && (
-										<SelectControl
-											label={__(
-												'Link target',
-												'maxi-blocks'
-											)}
-											value={dcLinkTarget}
-											options={linkTargetOptions}
-											newStyle
-											onChange={async value => {
-												const url =
-													value &&
-													(await getDCLink(
-														getDCValues(
-															getGroupAttributes(
-																{
-																	...props,
-																	'dc-link-target':
-																		value,
-																},
-																'dynamicContent'
-															)
-														),
-														clientId
-													));
+										<>
+											<SelectControl
+												label={__(
+													'Link target',
+													'maxi-blocks'
+												)}
+												value={dcLinkTarget}
+												options={linkTargetOptions}
+												newStyle
+												onChange={async value => {
+													const url =
+														value &&
+														(await getDCLink(
+															getDCValues(
+																getGroupAttributes(
+																	{
+																		...props,
+																		'dc-link-target':
+																			value,
+																	},
+																	'dynamicContent'
+																)
+															),
+															clientId
+														));
 
-												onChange(
-													{
-														...linkSettings,
-														url,
-														title: url,
-													},
-													{
-														'dc-link-target': value,
-													}
-												);
-											}}
-										/>
+													onChange(
+														{
+															...linkSettings,
+															url,
+															title: url,
+														},
+														{
+															'dc-link-target':
+																value,
+														}
+													);
+												}}
+											/>
+											{dcLinkTarget ===
+												'author_email' && (
+												<InfoBox
+													className='toolbar-item__link-warning'
+													message={__(
+														'Warning: To protect your privacy, we obfuscate email addresses to make them harder for bots to scrape and use for spam. However, advanced bots may still retrieve them. For better security, use contact forms or CAPTCHA to avoid publicly displaying your email.',
+														'maxi-blocks'
+													)}
+												/>
+											)}
+										</>
 									)}
 							</>
 						)}

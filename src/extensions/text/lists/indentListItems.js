@@ -63,7 +63,6 @@ const indentListItems = (value, rootFormat) => {
 	const newFormats = replacements.slice();
 	const targetLevelLineIndex = getTargetLevelLineIndex(value, lineIndex);
 
-	// eslint-disable-next-line no-plusplus
 	for (let index = lineIndex; index < end; index++) {
 		if (text[index] !== LINE_SEPARATOR) {
 			// eslint-disable-next-line no-continue

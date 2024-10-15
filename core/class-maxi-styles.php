@@ -140,7 +140,8 @@ class MaxiBlocks_Styles
                 'search',
                 'map',
                 'accordion',
-                'slider'
+                'slider',
+                'email-obfuscate'
             ];
 
             $template_parts = $this->get_template_parts($template_content);
@@ -1119,6 +1120,7 @@ class MaxiBlocks_Styles
             'accordion',
             'slider',
             'navigation',
+            'email-obfuscate',
         ];
 
         $script_attr = [
@@ -1128,6 +1130,7 @@ class MaxiBlocks_Styles
             'shape-divider',
             'relations',
             'navigation',
+            'email-obfuscate',
         ];
 
         foreach ($scripts as $script) {

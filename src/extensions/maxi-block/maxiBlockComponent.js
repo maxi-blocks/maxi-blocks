@@ -726,6 +726,7 @@ class MaxiBlockComponent extends Component {
 		const {
 			uniqueID,
 			'dc-status': dcStatus,
+			'dc-link-target': dcLinkTarget,
 			'background-layers': bgLayers,
 			relations: relationsRaw,
 		} = this.props.attributes;
@@ -743,6 +744,7 @@ class MaxiBlockComponent extends Component {
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 		const hasVideo = getHasVideo(uniqueID, bgLayers);
 		const hasDC = dcStatus || getHasDC(bgLayers);
+		const hasEmailLink = dcStatus && dcLinkTarget === 'author_email';
 		const scrollEffects = getScrollEffects(uniqueID, scroll);
 		const relations = getRelations(uniqueID, relationsRaw);
 
@@ -762,13 +764,16 @@ class MaxiBlockComponent extends Component {
 							[uniqueID]: contextLoop,
 						},
 					}),
-				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 				...(!hasDC &&
 					contextLoop?.['cl-status'] && {
 						context_loop: {
 							[uniqueID]: contextLoop,
 						},
 					}),
+				...(hasEmailLink && {
+					email_obfuscate: true,
+				}),
+				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 			},
 		};
 	}

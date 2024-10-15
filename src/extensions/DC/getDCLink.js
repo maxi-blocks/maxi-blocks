@@ -22,10 +22,21 @@ const getProductsLink = async (dataRequest, data) => {
 	return productData?.permalink;
 };
 
-const getAuthorLink = async authorId => {
+const getPostAuthorLink = async authorId => {
 	const { getUsers } = resolveSelect('core');
 	const user = await getUsers({ include: authorId });
 	return user?.[0]?.link;
+};
+
+const getUserLink = (dataRequest, data) => {
+	if (dataRequest?.linkTarget === 'author_email') {
+		return `mailto:${data?.email}`;
+	}
+	if (dataRequest?.linkTarget === 'author_site') {
+		return data?.url;
+	}
+
+	return data?.link;
 };
 
 const cache = {};
@@ -80,8 +91,12 @@ const getDCLink = async (dataRequest, clientId) => {
 		return getProductsLink(dataRequest, data);
 	}
 
+	if (type === 'users') {
+		return getUserLink(dataRequest, data);
+	}
+
 	if (linkTarget === 'author') {
-		return getAuthorLink(author);
+		return getPostAuthorLink(author);
 	}
 
 	return data?.link || null;

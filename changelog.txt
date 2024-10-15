@@ -1,4 +1,4 @@
-_Updates 15 Oct 2024_
+_Updates 16 Oct 2024_
 MaxiBlocks v2.0.0
 * Update: Optimized performance for styles generation in the Editing Experience (EE) and the Site Editor (SE).
 * Update: Speed up MaxiBlocks breakpoint switching and responsive rendering in EE.

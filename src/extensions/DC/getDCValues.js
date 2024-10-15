@@ -8,12 +8,12 @@ import { attributeDefaults } from './constants';
  */
 import { camelCase, isFunction, isNil } from 'lodash';
 
-const getDCValues = (dynamicContent, contextLoop) => {
-	const getDefaultDCValue = (target, obj) => {
-		const defaultValue = attributeDefaults?.[target];
-		return isFunction(defaultValue) ? defaultValue(obj) : defaultValue;
-	};
+const getDefaultDCValue = (target, obj) => {
+	const defaultValue = attributeDefaults?.[target];
+	return isFunction(defaultValue) ? defaultValue(obj) : defaultValue;
+};
 
+const getDCValues = (dynamicContent, contextLoop) => {
 	const getDCValue = (target, obj) => {
 		const contextLoopStatus = !!contextLoop?.['cl-status'];
 

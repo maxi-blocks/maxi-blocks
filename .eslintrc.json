@@ -40,7 +40,6 @@
 		],
 		"no-console": ["error", { "allow": ["warn", "error"] }],
 		"no-unused-vars": ["error", { "args": "none" }],
-		"no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
 		"consistent-return": ["error", { "treatUndefinedAsUnspecified": true }],
 		"array-callback-return": ["error", { "allowImplicit": true }],
 		"no-unused-expressions": [
@@ -64,6 +63,7 @@
 		"import/named": "off",
 		"react/destructuring-assignment": "off",
 		"jsx-a11y/anchor-is-valid": "off",
+		"no-plusplus": "off",
 		// Short term deactivate rules //
 		"no-shadow": "off",
 		"no-restricted-syntax": "off",

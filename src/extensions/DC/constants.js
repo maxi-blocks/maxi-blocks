@@ -522,7 +522,7 @@ export const htmlFields = ['tags', 'categories'];
 /**
  * Link constants
  */
-export const multipleLinksTypes = ['products', 'users', 'customers'];
+export const multipleLinksTypes = ['products', 'users'];
 
 export const linkTypesOptions = {
 	products: [

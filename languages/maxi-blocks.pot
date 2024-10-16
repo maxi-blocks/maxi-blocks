@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-15T10:53:17+00:00\n"
+"POT-Creation-Date: 2024-10-16T14:18:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: maxi-blocks\n"
@@ -2083,12 +2083,12 @@ msgid "Speed"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/utils/onRequestInsertPattern.js:85
+#: src/editor/library/utils/onRequestInsertPattern.js:88
 msgid "Error processing images' links and ids - counts do not match"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/utils/onRequestInsertPattern.js:132
+#: src/editor/library/utils/onRequestInsertPattern.js:135
 msgid "The Code is not valid"
 msgstr ""
 

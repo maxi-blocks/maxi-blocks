@@ -172,13 +172,15 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 16 Oct 2024_
+_Updates 17 Oct 2024_
 MaxiBlocks v2.0.0
 * Update: Optimized performance for styles generation in the Editing Experience (EE) and the Site Editor (SE).
 * Update: Speed up MaxiBlocks breakpoint switching and responsive rendering in EE.
 * Update: Enhanced Context Loop / Dynamic Content speed for content rendering, changing settings, and loading from the Template Library, both in EE and SE.
 * Fix: Addressed issues with styles not loading in Mobile and Tablet preview mode in EE.
 * Fix: Restored Dynamic Content reset function to correspondent Context Loop values.
+* Fix: Interaction Builder frontend adjustments when legacy and new relations are mixed on the same page.
+* Fix: Corrected issue with unique block id having special symbols inside.
 
 _Updates 9 Oct 2024_
 MaxiBlocks v1.9.9

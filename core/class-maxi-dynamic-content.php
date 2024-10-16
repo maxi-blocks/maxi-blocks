@@ -905,13 +905,14 @@ class MaxiBlocks_DynamicContent
             $attributes['dc-type'] === 'users'
         ) {
             $dc_link_target = $attributes['dc-link-target'];
-            if (!empty($post) && isset($post->ID)) {
+			$author_id = $post->ID;
+            if (!empty($post) && isset($author_id)) {
                 if ($dc_link_target === 'author_email') {
-                    $link = $this->xor_obfuscate_email(get_the_author_meta('user_email', $post->ID));
+                    $link = $this->xor_obfuscate_email(get_the_author_meta('user_email', $author_id));
                 } elseif ($dc_link_target === 'author_site') {
-                    $link = get_the_author_meta('user_url', $post->ID);
+                    $link = get_the_author_meta('user_url', $author_id);
                 } else {
-                    $link = get_author_posts_url($post->ID);
+                    $link = get_author_posts_url($author_id);
                 }
             }
         } elseif (
@@ -2014,10 +2015,10 @@ class MaxiBlocks_DynamicContent
         }
 
         $user = $this->get_post($attributes);
-        if (!is_object($user) || !isset($user->data)) {
+        if (!($user instanceof WP_User)) {
             return 0;
         }
-        $user_id = $user->data->ID;
+        $user_id = $user->ID;
 
         $user_meta = array_map(function ($value) {
             return $value[0];

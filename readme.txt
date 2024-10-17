@@ -1,4 +1,4 @@
-=== MaxiBlocks: 2200+ Patterns, 190 Pages, 14.2K Icons & 100 Styles ===
+=== MaxiBlocks: 2300+ Patterns, 280+ Pages, 14.3K Icons & 100 Styles ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
 Tags: block, blocks, gutenberg blocks, page builder, template library
@@ -32,8 +32,9 @@ No one wants to produce generic-looking websites or spend unnecessary time and r
 **We understand the struggle of turning your design vision into reality.** That's why we've created MaxiBlocks:
 
 - 18 Foundation blocks with advanced design controls
-- Extensive library of 2200+ block patterns and 190+ page templates
-- 14.2k SVG icons for creative design possibilities
+- Extensive library of 2300+ block patterns and 280+ page templates
+- 230+ Site editor theme templates
+- 14.3k SVG icons for creative design possibilities
 - Regular updates to keep your toolkit fresh and relevant
 
 ## The Solution 💡
@@ -119,7 +120,7 @@ We take a different approach to block design. Instead of offering numerous speci
 
 Our 18 core blocks are highly versatile, as [demonstrated in our pattern library](https://maxiblocks.com/demo/). By focusing on a smaller set of powerful blocks, we ensure they're well-maintained and continually improved.
 
-Unlike some libraries that restrict key features to encourage paid upgrades, MaxiBlocks provides full functionality in every block from the start. This gives you the freedom to build without limitations, regardless of whether you're using the free version or have a Pro cloud account.
+Unlike some libraries that restrict key features to encourage paid upgrades, MaxiBlocks provides full functionality in every block from the start. This gives you the freedom to build without limitations, regardless of whether you're using the free version or have a Pro cloud account. All our foundations block are free. 
 = Is MaxiBlocks compatible with Gutenberg and my theme? =
 Yes, MaxiBlocks is fully integrated with the Gutenberg editor. For the best experience, we recommend using a block theme like Twenty Twenty-Four (TT4) or our own MaxiBlocks theme, which is currently in beta testing. [Join the MaxiBlocks theme beta](https://maxiblocks.com/free-maxiblocks-wordpress-theme/?utm_source=web&utm_medium=wp-org&utm_campaign=theme+beta&utm_content=Try+Beta). Our support team is here to help if you encounter any issues.
 = What is a Pro cloud account? =

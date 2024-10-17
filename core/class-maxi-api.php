@@ -328,6 +328,20 @@ if (!class_exists('MaxiBlocks_API')):
                     ],
                 ],
             ]);
+            register_rest_route($this->namespace, '/block-exists/(?P<id>[a-zA-Z0-9-]+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'check_block_exists'],
+                'args' => [
+                    'id' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
         }
 
         /**
@@ -833,8 +847,8 @@ if (!class_exists('MaxiBlocks_API')):
             foreach($processed_data as $id => $data_val) {
                 if (empty($data_val) || $data_val === '{}') {
                     $wpdb->update("{$styles_table}", array(
-                        'prev_active_custom_data' =>  null,
-                        'active_custom_data' =>  null,
+                        'prev_active_custom_data' => null,
+                        'active_custom_data' => null,
                     ), ["{$id_key}" => $id]);
 
                     $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE $where_clause", $id));
@@ -853,12 +867,10 @@ if (!class_exists('MaxiBlocks_API')):
                 if ($update) {
                     $new_custom_data = $data_val;
 
-
                     $wpdb->update("{$styles_table}", array(
                         'prev_active_custom_data' =>  1,
                         'active_custom_data' =>  1,
                     ), ["{$id_key}" => $id]);
-
 
                     if (!empty($exists)) {
                         $old_custom_data = $exists[0]->custom_data_value;
@@ -868,17 +880,40 @@ if (!class_exists('MaxiBlocks_API')):
                             'custom_data_value' =>  $new_custom_data,
                         ), ["{$id_key}" =>  $id]);
                     } else {
-                        $wpdb->insert("{$table}", array(
-                            $id_key => $id,
-                            'prev_custom_data_value' =>  '',
-                            'custom_data_value' => $new_custom_data,
-                        ));
+						$wpdb->insert("{$table}", array(
+							$id_key => $id,
+							'prev_custom_data_value' =>  '',
+							'custom_data_value' => $new_custom_data,
+						));
                     }
                 }
             }
 
-
             return $new_custom_data;
+        }
+
+		private function block_id_exists($id)
+        {
+            global $wpdb;
+
+            $table = $wpdb->prefix . 'maxi_blocks_custom_data_blocks';
+            $id_key = 'block_style_id';
+
+            $exists = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT COUNT(*) FROM $table WHERE $id_key = %s",
+                    $id
+                )
+            );
+
+            return $exists > 0;
+        }
+
+        public function check_block_exists($request)
+        {
+            $id = $request['id'];
+            $exists = $this->block_id_exists($id);
+            return new WP_REST_Response(['exists' => $exists], 200);
         }
 
         public function create_maxi_blocks_unique_id($request)

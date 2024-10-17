@@ -153,7 +153,7 @@ class MaxiBlocks_Styles
                         ' ',
                         '',
                         ucwords(str_replace('-', ' ', $script))
-                    );
+                    ).'Legacy';
                 $js_script_name = 'maxi-' . $script;
                 $js_script_path = '//js//min//' . $js_script_name . '.min.js';
                 // $js_script_path = '//js//' . $js_script_name . '.js';
@@ -185,14 +185,14 @@ class MaxiBlocks_Styles
                     }
 
                     wp_enqueue_script(
-                        $js_script_name,
+                        $js_script_name.'-legacy',
                         plugins_url($js_script_path, dirname(__FILE__)),
                         array(),
                         MAXI_PLUGIN_VERSION,
                         true
                     );
 
-                    wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
+                    wp_localize_script($js_script_name.'-legacy', $js_var_to_pass, $this->get_block_data($js_var, $meta));
                 }
             }
         }

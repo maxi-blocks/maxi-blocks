@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 1.9.9\n"
+"Project-Id-Version: MaxiBlocks 2.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-08T15:54:01+00:00\n"
+"POT-Creation-Date: 2024-10-16T14:18:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: maxi-blocks\n"
@@ -690,7 +690,7 @@ msgid "Text custom hover"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/maxi-block/maxiBlockComponent.js:879
+#: src/extensions/maxi-block/maxiBlockComponent.js:880
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 
@@ -1013,8 +1013,8 @@ msgstr ""
 
 #: build/index.js:15
 #: src/components/clip-path-control/index.js:368
-#: src/components/context-loop/index.js:372
-#: src/components/dynamic-content/index.js:388
+#: src/components/context-loop/index.js:375
+#: src/components/dynamic-content/index.js:383
 msgid "Type"
 msgstr ""
 
@@ -1742,19 +1742,19 @@ msgid "d.m.Y t"
 msgstr ""
 
 #: build/index.js:15
-#: src/extensions/DC/getDCContent.js:84
-#: src/extensions/DC/getDCContent.js:89
+#: src/extensions/DC/getDCContent.js:91
+#: src/extensions/DC/getDCContent.js:96
 msgid ": example value"
 msgstr ""
 
 #: build/index.js:15
-#: src/extensions/DC/getDCContent.js:86
+#: src/extensions/DC/getDCContent.js:93
 msgid "ACF: example value"
 msgstr ""
 
 #: build/index.js:15
-#: src/extensions/DC/getDCContent.js:32
-#: src/extensions/DC/getDCContent.js:38
+#: src/extensions/DC/getDCContent.js:37
+#: src/extensions/DC/getDCContent.js:43
 msgid "No parent"
 msgstr ""
 
@@ -1769,86 +1769,86 @@ msgid "Semicolon"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:320
+#: src/components/dynamic-content/index.js:315
 msgid "Use dynamic content"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:341
+#: src/components/dynamic-content/index.js:336
 msgid "Hide if no content found on frontend"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/text-maxi/components/list-options-control/index.js:821
-#: src/components/context-loop/index.js:339
-#: src/components/dynamic-content/index.js:353
+#: src/components/context-loop/index.js:342
+#: src/components/dynamic-content/index.js:348
 msgid "Source"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:401
-#: src/components/dynamic-content/index.js:420
+#: src/components/context-loop/index.js:404
+#: src/components/dynamic-content/index.js:415
 msgid "This type is empty"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:406
-#: src/components/dynamic-content/index.js:427
+#: src/components/context-loop/index.js:409
+#: src/components/dynamic-content/index.js:422
 msgid "Relation"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:428
-#: src/components/dynamic-content/index.js:458
+#: src/components/context-loop/index.js:431
+#: src/components/dynamic-content/index.js:453
 msgid "Author id"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:494
-#: src/components/dynamic-content/index.js:518
+#: src/components/context-loop/index.js:500
+#: src/components/dynamic-content/index.js:515
 msgid "Order by"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:517
-#: src/components/dynamic-content/index.js:541
+#: src/components/context-loop/index.js:523
+#: src/components/dynamic-content/index.js:538
 #: src/components/flex-settings-control/index.js:115
 msgid "Order"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:547
-#: src/components/dynamic-content/index.js:571
+#: src/components/context-loop/index.js:553
+#: src/components/dynamic-content/index.js:568
 msgid "Accumulator"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:603
+#: src/components/dynamic-content/index.js:600
 msgid "Field"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:627
+#: src/components/dynamic-content/index.js:624
 msgid "Character limit"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:678
+#: src/components/dynamic-content/index.js:675
 msgid "Delimiter"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:706
+#: src/components/dynamic-content/index.js:703
 msgid "Custom delimiter"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:723
+#: src/components/dynamic-content/index.js:720
 msgid "Image accumulator"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:748
+#: src/components/dynamic-content/index.js:745
 msgid "Size (px)"
 msgstr ""
 
@@ -2083,12 +2083,12 @@ msgid "Speed"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/utils/onRequestInsertPattern.js:85
+#: src/editor/library/utils/onRequestInsertPattern.js:88
 msgid "Error processing images' links and ids - counts do not match"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/utils/onRequestInsertPattern.js:132
+#: src/editor/library/utils/onRequestInsertPattern.js:135
 msgid "The Code is not valid"
 msgstr ""
 
@@ -2869,62 +2869,62 @@ msgid "The block should have a wrapper to use flex-child properties"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:298
+#: src/components/context-loop/index.js:301
 msgid "Use context loop"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:322
+#: src/components/context-loop/index.js:325
 msgid "Stop accumulator inheritance"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:572
+#: src/components/context-loop/index.js:578
 msgid "Enable for grandchildren blocks"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:587
+#: src/components/context-loop/index.js:593
 msgid "Pagination"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:602
+#: src/components/context-loop/index.js:608
 msgid "Items per page"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:628
+#: src/components/context-loop/index.js:634
 msgid "Items total: show all"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:642
+#: src/components/context-loop/index.js:648
 msgid "Items total"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:673
+#: src/components/context-loop/index.js:679
 msgid "Text for previous link"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:687
+#: src/components/context-loop/index.js:693
 msgid "Text for next link"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:700
+#: src/components/context-loop/index.js:706
 msgid "Show page list (1, 2, 3, …)"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:732
+#: src/components/context-loop/index.js:738
 msgid "Pagination hover"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:777
+#: src/components/context-loop/index.js:783
 msgid "Pagination current"
 msgstr ""
 

@@ -50,12 +50,15 @@ const onRequestInsertPattern = async (
 	);
 
 	if (isValid) {
+		// Replace all occurrences of \\u002d with - in a new variable
+		const modifiedContent = parsedContent.replace(/\\u002d/g, '-');
+
 		const imagesLinks = [];
 		const imagesIds = [];
 
 		const allImagesRegexp = /(mediaID|imageID)":(.*)",/g;
 
-		const allImagesLinks = parsedContent.match(allImagesRegexp);
+		const allImagesLinks = modifiedContent.match(allImagesRegexp);
 
 		allImagesLinks?.forEach(image => {
 			const parsed = image.replace(/\\/g, '');
@@ -74,7 +77,7 @@ const onRequestInsertPattern = async (
 		});
 
 		if (!isEmpty(imagesLinks) && !isEmpty(imagesIds)) {
-			let tempContent = parsedContent;
+			let tempContent = modifiedContent;
 			const imagesLinksUniq = uniq(imagesLinks);
 			const imagesIdsUniq = uniq(imagesIds);
 			const counter = imagesLinksUniq.length;
@@ -124,7 +127,7 @@ const onRequestInsertPattern = async (
 			await insertCode(tempContent, clientId);
 		} else {
 			// no images to process
-			insertCode(parsedContent, clientId);
+			insertCode(modifiedContent, clientId);
 		}
 	} else {
 		// not valid gutenberg code

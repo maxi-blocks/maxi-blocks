@@ -456,9 +456,21 @@ class MaxiBlocks_StyleCards
                     $sc_string
                 );
 
+                $sc_string = str_replace(
+                    '--maxi-dark-link:rgba(var(--maxi-dark-color-4,255,74,23),1);',
+                    '',
+                    $sc_string
+                );
+
                 // Replace light link color
                 $sc_string = str_replace(
                     '--maxi-light-link:rgba(var(--maxi-light-color-5,0,0,0),1);',
+                    '',
+                    $sc_string
+                );
+
+                $sc_string = str_replace(
+                    '--maxi-light-link:rgba(var(--maxi-light-color-4,255,74,23),1);',
                     '',
                     $sc_string
                 );
@@ -480,9 +492,9 @@ class MaxiBlocks_StyleCards
     public function run_link_palette_migration()
     {
         // Check if migration has already been run
-        if (get_option('maxi_blocks_link_palette_color_migrated') !== 'yes') {
+        if (get_option('maxi_blocks_link_color_migrated') !== 'yes') {
             self::migrate_style_cards_link_palette_color();
-            update_option('maxi_blocks_link_palette_color_migrated', 'yes');
+            update_option('maxi_blocks_link_color_migrated', 'yes');
         }
     }
 }

@@ -609,3 +609,14 @@ body.maxi-blocks--active .edit-post-visual-editor {
 	width: 100%;
 	min-width: calc(100vw - var(--maxi-blocks-scrollbar-width, 15px));
 }
+
+body.maxi-blocks--active
+	.editor-styles-wrapper
+	.block-editor-block-list__layout.is-root-container.is-desktop-preview {
+	padding-bottom: 40vh;
+}
+
+body.maxi-blocks--active
+	.editor-styles-wrapper.block-editor-writing-flow:after {
+	display: none;
+}

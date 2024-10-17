@@ -13,7 +13,8 @@
 	"supports": {
 		"align": false,
 		"anchor": false,
-		"html": false
+		"html": false,
+		"splitting": true
 	},
 	"editorScript": "maxi-blocks-block-editor",
 	"scProps": {

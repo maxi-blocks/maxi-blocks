@@ -1998,6 +1998,8 @@ class MaxiBlocks_DynamicContent
     {
         @[
             'dc-relation' => $dc_relation,
+			'dc-field' => $dc_field,
+			'dc-limit' => $dc_limit,
         ] = $attributes;
 
         // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
@@ -2055,6 +2057,10 @@ class MaxiBlocks_DynamicContent
         }
 
         $value = $user_data[$property];
+
+		if ($dc_field === 'description' || $dc_field === 'name') {
+			$value = self::get_limited_string($value, $dc_limit);
+		}
 
         return $value;
     }

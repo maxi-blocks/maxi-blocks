@@ -1065,12 +1065,13 @@ class MaxiBlockComponent extends Component {
 		);
 
 		let obj;
-		const breakpoints = this.getBreakpoints;
+		let breakpoints;
 		let customDataRelations;
 
 		// Only generate new styles if it's not a breakpoint change
 		if (!isBreakpointChange) {
 			obj = this.getStylesObject;
+			breakpoints = this.getBreakpoints;
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
@@ -1459,6 +1460,7 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
+		console.log(styles);
 		return styleContent;
 	}
 

@@ -1460,7 +1460,6 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
-		console.log(styles);
 		return styleContent;
 	}
 

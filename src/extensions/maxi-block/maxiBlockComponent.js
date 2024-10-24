@@ -1432,17 +1432,19 @@ class MaxiBlockComponent extends Component {
 		let styleContent;
 		let styles;
 
-		const originVersion = this.props.attributes['maxi-version-origin'];
-		const currentVersion = this.props.attributes['maxi-version-current'];
-		const isCurrentVersionAtLeast201 =
-			compareVersions(currentVersion, '2.0.1') >= 0;
-		const isOriginVersionBelow156 =
-			compareVersions(originVersion, '1.5.6') < 0;
+		const originVersion = this.props.attributes?.['maxi-version-origin'];
+		const currentVersion = this.props.attributes?.['maxi-version-current'];
+		const isOriginVersionBelow156 = originVersion
+			? compareVersions(originVersion, '1.5.6') < 0
+			: false;
+		const isCurrentVersionAtLeast201 = currentVersion
+			? compareVersions(currentVersion, '2.0.1') >= 0
+			: false;
 
-		// Apply the copyGeneralToXL function to stylesObj only if currentBreakpoint is 'xxl',
+		// Apply the copyGeneralToXL function to stylesObj only if this.props.baseBreakpoint is 'xxl',
 		// the current version is less than 2.0.1, and the origin version is below 1.5.6
 		const updatedStylesObj =
-			currentBreakpoint === 'xxl' &&
+			this.props.baseBreakpoint === 'xxl' &&
 			!isCurrentVersionAtLeast201 &&
 			isOriginVersionBelow156
 				? this.copyGeneralToXL(stylesObj)

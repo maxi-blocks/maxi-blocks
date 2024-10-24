@@ -1098,6 +1098,7 @@ class MaxiBlockComponent extends Component {
 				// Only inject styles if it's not a breakpoint change
 				if (!isBreakpointChange) {
 					obj = this.getStylesObject;
+					console.log('obj', obj);
 					this.injectStyles(
 						uniqueID,
 						obj,
@@ -1447,7 +1448,18 @@ class MaxiBlockComponent extends Component {
 				styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
 			}
 		} else {
-			styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
+			// Add missing breakpoint values
+			const updatedStylesObj = this.addMissingBreakpointValues(
+				stylesObj,
+				breakpoints,
+				currentBreakpoint
+			);
+
+			styles = this.generateStyles(
+				updatedStylesObj,
+				breakpoints,
+				uniqueID
+			);
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
 		}
 
@@ -1585,6 +1597,39 @@ class MaxiBlockComponent extends Component {
 				currentBreakpoint === 's' ? 's' : 'xs'
 			);
 		}
+	}
+
+	// Add this new method to handle missing breakpoint values
+	addMissingBreakpointValues(stylesObj, breakpoints, currentBreakpoint) {
+		const updatedStylesObj = JSON.parse(JSON.stringify(stylesObj));
+		const breakpointOrder = ['general', 'xs', 's', 'm', 'l', 'xl', 'xxl'];
+		const currentBreakpointIndex =
+			breakpointOrder.indexOf(currentBreakpoint);
+
+		Object.keys(updatedStylesObj).forEach(blockId => {
+			Object.keys(updatedStylesObj[blockId]).forEach(selector => {
+				Object.keys(updatedStylesObj[blockId][selector]).forEach(
+					property => {
+						const propertyObj =
+							updatedStylesObj[blockId][selector][property];
+
+						if (
+							propertyObj.xxl &&
+							propertyObj.general &&
+							!propertyObj.xl &&
+							currentBreakpointIndex >=
+								breakpointOrder.indexOf('xxl')
+						) {
+							propertyObj.xl = { ...propertyObj.general };
+						}
+
+						// Add similar checks for other breakpoints if needed
+					}
+				);
+			});
+		});
+
+		return updatedStylesObj;
 	}
 }
 

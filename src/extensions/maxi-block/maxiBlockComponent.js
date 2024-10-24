@@ -48,6 +48,7 @@ import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
 import processRelations from '../relations/processRelations';
+import compareVersions from './compareVersions';
 
 /**
  * External dependencies
@@ -1431,6 +1432,24 @@ class MaxiBlockComponent extends Component {
 		let styleContent;
 		let styles;
 
+		const originVersion = this.props.attributes?.['maxi-version-origin'];
+		const currentVersion = this.props.attributes?.['maxi-version-current'];
+		const isOriginVersionBelow156 = originVersion
+			? compareVersions(originVersion, '1.5.6') < 0
+			: false;
+		const isCurrentVersionAtLeast201 = currentVersion
+			? compareVersions(currentVersion, '2.0.1') >= 0
+			: false;
+
+		// Apply the copyGeneralToXL function to stylesObj only if this.props.baseBreakpoint is 'xxl',
+		// the current version is less than 2.0.1, and the origin version is below 1.5.6
+		const updatedStylesObj =
+			this.props.baseBreakpoint === 'xxl' &&
+			!isCurrentVersionAtLeast201 &&
+			isOriginVersionBelow156
+				? this.copyGeneralToXL(stylesObj)
+				: stylesObj;
+
 		if (isBreakpointChange || isBlockStyleChange) {
 			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
 			styleContent = cssCache[currentBreakpoint];
@@ -1443,10 +1462,18 @@ class MaxiBlockComponent extends Component {
 					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
 					`--maxi-${blockStyle}-`
 				);
-				styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
+				styles = this.generateStyles(
+					updatedStylesObj,
+					breakpoints,
+					uniqueID
+				);
 			}
 		} else {
-			styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
+			styles = this.generateStyles(
+				updatedStylesObj,
+				breakpoints,
+				uniqueID
+			);
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
 		}
 
@@ -1584,6 +1611,27 @@ class MaxiBlockComponent extends Component {
 				currentBreakpoint === 's' ? 's' : 'xs'
 			);
 		}
+	}
+
+	copyGeneralToXL(obj) {
+		const copyToXL = innerObj => {
+			for (const key in innerObj) {
+				if (typeof innerObj[key] === 'object') {
+					if (
+						'general' in innerObj[key] &&
+						!('xl' in innerObj[key])
+					) {
+						innerObj[key].xl = { ...innerObj[key].general };
+					} else {
+						copyToXL(innerObj[key]);
+					}
+				}
+			}
+		};
+
+		const newObj = JSON.parse(JSON.stringify(obj));
+		copyToXL(newObj);
+		return newObj;
 	}
 }
 

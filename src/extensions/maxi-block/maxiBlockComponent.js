@@ -833,7 +833,7 @@ class MaxiBlockComponent extends Component {
 						'maxi-blocks-pattern-preview'
 					) ||
 					iframe?.parentNode?.querySelector(
-						'img.maxi-blocks-pattern-preview-image'
+						'img.maxiblocks-pattern-preview-image'
 					)
 				)
 					return;

@@ -1834,6 +1834,7 @@ class MaxiBlocks_DynamicContent
     {
         @[
             'dc-field' => $dc_field,
+			'dc-sub-field' => $dc_sub_field,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
             // Need to keep old attribute for backward compatibility
@@ -1899,11 +1900,11 @@ class MaxiBlocks_DynamicContent
             }
         }
 
-        // In case is author, get author name
         if ($dc_field === 'author') {
+			$content = $this->get_user_field_value($post->post_author, $dc_sub_field, $dc_limit);
             $post_data = $this->get_post_taxonomy_item_content(
                 $post->post_author,
-                get_the_author_meta('display_name', $post->post_author),
+                $content,
                 false,
                 $dc_field,
                 $dc_post_taxonomy_links_status,
@@ -2022,7 +2023,16 @@ class MaxiBlocks_DynamicContent
         }
         $user_id = $user->ID;
 
-        $user_meta = array_map(function ($value) {
+        return $this->get_user_field_value($user_id, $dc_field, $dc_limit);
+    }
+
+	public function get_user_field_value($user_id, $dc_field, $dc_limit) {
+		$user = get_user_by('id', $user_id);
+		if (!$user) {
+			return 0;
+		}
+
+		$user_meta = array_map(function ($value) {
             return $value[0];
         }, get_user_meta($user_id));
         $user_data = array_merge((array) $user->data, $user_meta);
@@ -2058,12 +2068,12 @@ class MaxiBlocks_DynamicContent
 
         $value = $user_data[$property];
 
-		if ($dc_field === 'description' || $dc_field === 'name') {
-			$value = self::get_limited_string($value, $dc_limit);
-		}
+        if ($dc_field === 'description' || $dc_field === 'name') {
+            $value = self::get_limited_string($value, $dc_limit);
+        }
 
         return $value;
-    }
+	}
 
     public function get_taxonomy_content($attributes)
     {

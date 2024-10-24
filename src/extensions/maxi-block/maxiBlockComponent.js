@@ -48,6 +48,7 @@ import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
 import processRelations from '../relations/processRelations';
+import compareVersions from './compareVersions';
 
 /**
  * External dependencies
@@ -832,7 +833,7 @@ class MaxiBlockComponent extends Component {
 						'maxi-blocks-pattern-preview'
 					) ||
 					iframe?.parentNode?.querySelector(
-						'img.maxiblocks-pattern-preview-image'
+						'img.maxi-blocks-pattern-preview-image'
 					)
 				)
 					return;
@@ -1065,13 +1066,12 @@ class MaxiBlockComponent extends Component {
 		);
 
 		let obj;
-		let breakpoints;
+		const breakpoints = this.getBreakpoints;
 		let customDataRelations;
 
 		// Only generate new styles if it's not a breakpoint change
 		if (!isBreakpointChange) {
 			obj = this.getStylesObject;
-			breakpoints = this.getBreakpoints;
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
@@ -1098,7 +1098,6 @@ class MaxiBlockComponent extends Component {
 				// Only inject styles if it's not a breakpoint change
 				if (!isBreakpointChange) {
 					obj = this.getStylesObject;
-					console.log('obj', obj);
 					this.injectStyles(
 						uniqueID,
 						obj,
@@ -1433,6 +1432,22 @@ class MaxiBlockComponent extends Component {
 		let styleContent;
 		let styles;
 
+		const originVersion = this.props.attributes['maxi-version-origin'];
+		const currentVersion = this.props.attributes['maxi-version-current'];
+		const isCurrentVersionAtLeast201 =
+			compareVersions(currentVersion, '2.0.1') >= 0;
+		const isOriginVersionBelow156 =
+			compareVersions(originVersion, '1.5.6') < 0;
+
+		// Apply the copyGeneralToXL function to stylesObj only if currentBreakpoint is 'xxl',
+		// the current version is less than 2.0.1, and the origin version is below 1.5.6
+		const updatedStylesObj =
+			currentBreakpoint === 'xxl' &&
+			!isCurrentVersionAtLeast201 &&
+			isOriginVersionBelow156
+				? this.copyGeneralToXL(stylesObj)
+				: stylesObj;
+
 		if (isBreakpointChange || isBlockStyleChange) {
 			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
 			styleContent = cssCache[currentBreakpoint];
@@ -1445,16 +1460,13 @@ class MaxiBlockComponent extends Component {
 					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
 					`--maxi-${blockStyle}-`
 				);
-				styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
+				styles = this.generateStyles(
+					updatedStylesObj,
+					breakpoints,
+					uniqueID
+				);
 			}
 		} else {
-			// Add missing breakpoint values
-			const updatedStylesObj = this.addMissingBreakpointValues(
-				stylesObj,
-				breakpoints,
-				currentBreakpoint
-			);
-
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,
@@ -1599,37 +1611,25 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	// Add this new method to handle missing breakpoint values
-	addMissingBreakpointValues(stylesObj, breakpoints, currentBreakpoint) {
-		const updatedStylesObj = JSON.parse(JSON.stringify(stylesObj));
-		const breakpointOrder = ['general', 'xs', 's', 'm', 'l', 'xl', 'xxl'];
-		const currentBreakpointIndex =
-			breakpointOrder.indexOf(currentBreakpoint);
-
-		Object.keys(updatedStylesObj).forEach(blockId => {
-			Object.keys(updatedStylesObj[blockId]).forEach(selector => {
-				Object.keys(updatedStylesObj[blockId][selector]).forEach(
-					property => {
-						const propertyObj =
-							updatedStylesObj[blockId][selector][property];
-
-						if (
-							propertyObj.xxl &&
-							propertyObj.general &&
-							!propertyObj.xl &&
-							currentBreakpointIndex >=
-								breakpointOrder.indexOf('xxl')
-						) {
-							propertyObj.xl = { ...propertyObj.general };
-						}
-
-						// Add similar checks for other breakpoints if needed
+	copyGeneralToXL(obj) {
+		const copyToXL = innerObj => {
+			for (const key in innerObj) {
+				if (typeof innerObj[key] === 'object') {
+					if (
+						'general' in innerObj[key] &&
+						!('xl' in innerObj[key])
+					) {
+						innerObj[key].xl = { ...innerObj[key].general };
+					} else {
+						copyToXL(innerObj[key]);
 					}
-				);
-			});
-		});
+				}
+			}
+		};
 
-		return updatedStylesObj;
+		const newObj = JSON.parse(JSON.stringify(obj));
+		copyToXL(newObj);
+		return newObj;
 	}
 }
 

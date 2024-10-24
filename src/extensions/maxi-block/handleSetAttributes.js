@@ -31,11 +31,6 @@ const handleSetAttributes = ({
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
-	console.log('handleSetAttributes');
-	console.log('baseBreakpoint', baseBreakpoint);
-	console.log('obj', obj);
-	console.log('====================');
-
 	Object.entries(obj).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 

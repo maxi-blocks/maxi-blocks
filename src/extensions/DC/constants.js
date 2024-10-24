@@ -699,8 +699,6 @@ export const relationTypes = [
 // Types that can have relation "current".
 export const currentEntityTypes = ['posts', 'pages', 'users', 'customers'];
 
-export const alwaysShowCurrentTypes = ['users', 'customers'];
-
 export const ignoreEmptyFields = ['avatar', 'author_avatar'];
 
 export const descriptionOfErrors = {

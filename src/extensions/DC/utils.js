@@ -19,7 +19,6 @@ import {
 	taxonomyRelationOptions,
 	linkTypesOptions,
 	linkFieldsOptions,
-	alwaysShowCurrentTypes,
 } from './constants';
 import getTypes from './getTypes';
 
@@ -436,8 +435,7 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 
 	if (
 		type.includes(select('core/editor').getCurrentPostType()) ||
-		select('core/editor').getCurrentPostType()?.includes(type) ||
-		alwaysShowCurrentTypes.includes(type)
+		select('core/editor').getCurrentPostType()?.includes(type)
 	) {
 		const newItem = {
 			label: __("Get the current item's data", 'maxi-blocks'),
@@ -554,9 +552,8 @@ export const getDCOrder = (relation, orderBy) => {
 };
 
 export const canCurrentEntityBeSelected = type =>
-	alwaysShowCurrentTypes.includes(type) ||
-	(currentEntityTypes.includes(type) &&
-		nameDictionary[type] === select('core/editor').getCurrentPostType());
+	currentEntityTypes.includes(type) &&
+	nameDictionary[type] === select('core/editor').getCurrentPostType();
 
 export const validateRelations = (type, relation, isCL) => {
 	const prefix = isCL ? 'cl-' : 'dc-';

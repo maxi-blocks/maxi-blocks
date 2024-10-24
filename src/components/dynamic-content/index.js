@@ -111,6 +111,7 @@ const DynamicContent = props => {
 		relation,
 		id,
 		field,
+		subField,
 		author,
 		limit,
 		delimiterContent,
@@ -170,6 +171,15 @@ const DynamicContent = props => {
 		() => getFields(contentType, type),
 		[contentType, type]
 	);
+
+	const showSubField = field === 'author';
+	const currentSubFieldOptions = useMemo(() => {
+		if (field !== 'author') {
+			return [];
+		}
+
+		return getFields(contentType, 'users');
+	}, [contentType, field]);
 
 	const changeProps = params => {
 		let hasChangesToSave = false;
@@ -613,15 +623,37 @@ const DynamicContent = props => {
 										onReset={() =>
 											changeProps({
 												'dc-field':
-													fieldOptions[contentType][
+													fieldOptions[contentType][ // TODO: Check if this will work with currentFieldOptions
 														type
 													][0]?.value,
 											})
 										}
 									/>
 								)}
+							{showSubField && (
+								<SelectControl
+									label={__('Author field', 'maxi-blocks')}
+									value={subField}
+									options={currentSubFieldOptions}
+									newStyle
+									onChange={value =>
+										changeProps({
+											'dc-sub-field': value,
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-sub-field':
+												currentSubFieldOptions[0]
+													?.value,
+										})
+									}
+								/>
+							)}
 							{limitTypes.includes(type) &&
-								limitFields.includes(field) &&
+								(limitFields.includes(field) ||
+									(showSubField &&
+										limitFields.includes(subField))) &&
 								!error && (
 									<div className='maxi-info'>
 										<AdvancedNumberControl

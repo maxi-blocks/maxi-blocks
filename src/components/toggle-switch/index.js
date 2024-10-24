@@ -31,11 +31,12 @@ const ToggleSwitch = ({
 }) => {
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
+	const checked = selected && !disabled;
 
 	const classes = classnames(
 		'maxi-toggle-switch',
-		selected && 'maxi-toggle-switch--is-checked',
-		disabled && 'maxi-toggle-switch--disabled', // TODO
+		checked && 'maxi-toggle-switch--is-checked',
+		disabled && 'maxi-toggle-switch--disabled',
 		className
 	);
 
@@ -44,10 +45,11 @@ const ToggleSwitch = ({
 			<div className='maxi-toggle-switch__toggle'>
 				<input
 					onChange={() => onChange(!selected)}
-					checked={selected || false}
+					checked={checked || false}
 					type='checkbox'
 					id={id}
 					aria-describedby={help ? `${id}__help` : undefined}
+					disabled={disabled}
 				/>
 				<span className='maxi-toggle-switch__toggle__track' />
 				<span className='maxi-toggle-switch__toggle__thumb' />

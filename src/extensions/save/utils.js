@@ -21,7 +21,10 @@ const getLinkAttributesFromLinkSettings = (
 
 	const href =
 		dcStatus && dcLinkStatus ? '$link-to-replace' : linkSettings.url;
-	const target = linkSettings.opensInNewTab ? '_blank' : '_self';
+	const target =
+		linkSettings.opensInNewTab && dcLinkTarget !== 'author_email'
+			? '_blank'
+			: '_self';
 	const dataEmailObfuscated =
 		dcStatus && dcLinkStatus && dcLinkTarget === 'author_email';
 

@@ -231,6 +231,11 @@ const Link = props => {
 									isDCLinkActive={
 										showUseDCLink && dcLinkStatus
 									}
+									disableOpenInNewTab={
+										showUseDCLink &&
+										dcLinkStatus &&
+										dcLinkTarget === 'author_email'
+									}
 									onChangeLink={onChange}
 									onRemoveLink={() => {
 										removeLinkHandle();

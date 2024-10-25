@@ -433,9 +433,10 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 		}
 	}
 
+	const currentPostType = select('core/editor').getCurrentPostType();
 	if (
-		type.includes(select('core/editor').getCurrentPostType()) ||
-		select('core/editor').getCurrentPostType()?.includes(type)
+		currentPostType &&
+		(type.includes(currentPostType) || currentPostType.includes(type))
 	) {
 		const newItem = {
 			label: __("Get the current item's data", 'maxi-blocks'),

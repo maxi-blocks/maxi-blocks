@@ -190,7 +190,7 @@ const getDCContent = async (dataRequest, clientId) => {
 		const { postTaxonomyLinksStatus, subField } = dataRequest;
 		const user = await getUsers({ include: contentValue });
 		contentValue = getItemLinkContent(
-			user[0][subField] || user[0].name,
+			user[0]?.[subField] || user[0]?.name,
 			postTaxonomyLinksStatus
 		);
 	}

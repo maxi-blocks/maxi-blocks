@@ -42,6 +42,9 @@ class MaxiBlocks_DynamicContent
 
     private $is_empty = false;
 
+    private static $session_seed;
+    private static $shuffled_posts = [];
+
     /**
      * Initializes the plugin and its hooks.
      */
@@ -50,6 +53,16 @@ class MaxiBlocks_DynamicContent
         if (is_null(self::$instance)) {
             self::$instance = new self();
         }
+        self::generate_session_seed();
+    }
+
+    public static function generate_session_seed()
+    {
+        if (!session_id()) {
+            session_start();
+        }
+        self::$session_seed = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $_SESSION['maxi_blocks_random_seed'] = self::$session_seed;
     }
 
     /**
@@ -1385,10 +1398,6 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
         ] = $attributes;
 
-        // echo '<pre>';
-        // print_r($attributes);
-        // echo '</pre>';
-
         if (empty($dc_type)) {
             $dc_type = 'posts';
         }
@@ -1466,16 +1475,44 @@ class MaxiBlocks_DynamicContent
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
             } elseif ($is_random) {
-                // Fetch all posts
-                $args['posts_per_page'] = -1;
-                $query = new WP_Query($args);
-                $posts = $query->posts;
+                // Use the pre-generated session seed
+                $session_seed = self::$session_seed;
 
-                if (!empty($posts)) {
-                    // Use accumulator as seed for consistent randomness
-                    srand($dc_accumulator);
-                    $random_index = rand(0, count($posts) - 1);
-                    return $posts[$random_index];
+                echo 'session seed: '.$session_seed.'<br>';
+                echo 'accumulator: '.$dc_accumulator.'<br>';
+                echo 'field: '.$dc_field.'<br>';
+
+                // Create a unique key for this combination of post type and relation
+                $shuffle_key = $dc_type . '_' . $dc_relation;
+
+                // If we haven't shuffled this post type and relation before, do it now
+                if (!isset(self::$shuffled_posts[$shuffle_key])) {
+                    // Fetch all posts
+                    $args['posts_per_page'] = -1;
+                    $query = new WP_Query($args);
+                    $posts = $query->posts;
+
+                    if (!empty($posts)) {
+                        $post_ids = wp_list_pluck($posts, 'ID');
+                        // Use the Fisher-Yates shuffle algorithm with our session seed
+                        self::$shuffled_posts[$shuffle_key] = $this->seeded_shuffle($post_ids, $session_seed);
+                    } else {
+                        self::$shuffled_posts[$shuffle_key] = [];
+                    }
+                }
+
+                $shuffled_ids = self::$shuffled_posts[$shuffle_key];
+
+                if (!empty($shuffled_ids)) {
+                    // Use modulo to ensure we always have a valid index, even if accumulator is large
+                    $index = $dc_accumulator % count($shuffled_ids);
+
+                    echo 'shuffled ids: '.implode(', ', $shuffled_ids).'<br>';
+                    echo 'index: '.$index.'<br><br>';
+
+                    // Find the post with the selected ID
+                    $post_id = $shuffled_ids[$index];
+                    return get_post($post_id);
                 }
                 return null;
             } elseif ($is_sort_relation) {
@@ -1563,8 +1600,7 @@ class MaxiBlocks_DynamicContent
                 $posts = $query->posts;
 
                 if (!empty($posts)) {
-                    srand($dc_accumulator);
-                    $random_index = rand(0, count($posts) - 1);
+                    $random_index = wp_rand(0, count($posts) - 1);
                     return $posts[$random_index];
                 }
                 return null;
@@ -1605,7 +1641,6 @@ class MaxiBlocks_DynamicContent
             if ($is_random) {
                 $posts = $query->posts;
                 $post = $posts[array_rand($posts)];
-                echo 'random post for DC media: ' . $post->ID.'<br>';
             } else {
                 $post = end($query->posts);
             }
@@ -1648,8 +1683,7 @@ class MaxiBlocks_DynamicContent
                 $terms = get_terms($args);
 
                 if (!empty($terms)) {
-                    srand($dc_accumulator);
-                    $random_index = rand(0, count($terms) - 1);
+                    $random_index = wp_rand(0, count($terms) - 1);
                     return $terms[$random_index];
                 }
                 return null;
@@ -1689,8 +1723,7 @@ class MaxiBlocks_DynamicContent
                 $users = get_users($args);
 
                 if (!empty($users)) {
-                    srand($dc_accumulator);
-                    $random_index = rand(0, count($users) - 1);
+                    $random_index = wp_rand(0, count($users) - 1);
                     return $users[$random_index];
                 }
                 return null;
@@ -1750,6 +1783,27 @@ class MaxiBlocks_DynamicContent
 
         return ['dc-relation' => 'by-date', 'dc-order' => 'desc'];
     }
+
+    /**
+     * Performs a seeded shuffle on an array.
+     *
+     * @param array $array The array to shuffle.
+     * @param int $seed The seed for the random number generator.
+     * @return array The shuffled array.
+     */
+    private function seeded_shuffle($array, $seed)
+    {
+        $shuffled = $array;
+        $count = count($shuffled);
+        for ($i = $count - 1; $i > 0; $i--) {
+            $j = random_int(0, $i);
+            $temp = $shuffled[$i];
+            $shuffled[$i] = $shuffled[$j];
+            $shuffled[$j] = $temp;
+        }
+        return $shuffled;
+    }
+
 
     public function get_link_attributes_from_link_settings($linkSettings)
     {

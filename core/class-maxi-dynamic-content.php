@@ -1395,7 +1395,6 @@ class MaxiBlocks_DynamicContent
             'dc-order-by' => $dc_order_by,
             'dc-order' => $dc_order,
             'dc-accumulator' => $dc_accumulator,
-            'dc-field' => $dc_field,
         ] = $attributes;
 
         if (empty($dc_type)) {
@@ -1477,10 +1476,6 @@ class MaxiBlocks_DynamicContent
             } elseif ($is_random) {
                 // Use the pre-generated session seed
                 $session_seed = self::$session_seed;
-
-                // echo 'session seed: '.$session_seed.'<br>';
-                // echo 'accumulator: '.$dc_accumulator.'<br>';
-                // echo 'field: '.$dc_field.'<br>';
 
                 // Create a unique key for this combination of post type and relation
                 $shuffle_key = $dc_type . '_' . $dc_relation;

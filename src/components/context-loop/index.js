@@ -850,6 +850,26 @@ const ContextLoop = props => {
 									)}
 								</>
 							)}
+							{relation === 'random' && (
+								<AdvancedNumberControl
+									label={__('Accumulator', 'maxi-blocks')}
+									value={accumulator}
+									onChangeValue={value =>
+										changeProps({
+											'cl-accumulator': value,
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'cl-accumulator':
+												getDefaultAttribute(
+													'cl-accumulator'
+												),
+										})
+									}
+									disableRange
+								/>
+							)}
 						</>
 					)}
 				</>

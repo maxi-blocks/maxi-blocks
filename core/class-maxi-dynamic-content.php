@@ -1478,9 +1478,9 @@ class MaxiBlocks_DynamicContent
                 // Use the pre-generated session seed
                 $session_seed = self::$session_seed;
 
-                echo 'session seed: '.$session_seed.'<br>';
-                echo 'accumulator: '.$dc_accumulator.'<br>';
-                echo 'field: '.$dc_field.'<br>';
+                // echo 'session seed: '.$session_seed.'<br>';
+                // echo 'accumulator: '.$dc_accumulator.'<br>';
+                // echo 'field: '.$dc_field.'<br>';
 
                 // Create a unique key for this combination of post type and relation
                 $shuffle_key = $dc_type . '_' . $dc_relation;
@@ -1506,9 +1506,6 @@ class MaxiBlocks_DynamicContent
                 if (!empty($shuffled_ids)) {
                     // Use modulo to ensure we always have a valid index, even if accumulator is large
                     $index = $dc_accumulator % count($shuffled_ids);
-
-                    echo 'shuffled ids: '.implode(', ', $shuffled_ids).'<br>';
-                    echo 'index: '.$index.'<br><br>';
 
                     // Find the post with the selected ID
                     $post_id = $shuffled_ids[$index];
@@ -1694,7 +1691,6 @@ class MaxiBlocks_DynamicContent
             $terms = get_terms($args);
 
             if (!empty($terms) && isset($terms[0])) {
-                echo 'random term for DC media: ' . $terms[0]->term_id.'<br>';
                 return $terms[0];
             } else {
                 return null;
@@ -1732,8 +1728,6 @@ class MaxiBlocks_DynamicContent
             $users = get_users($args);
 
             if ($dc_relation === 'random') {
-                echo 'random user for DC media: ' . $users[array_rand($users)]->ID.'<br>';
-
                 return $users[array_rand($users)];
             }
 

@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /**
  * MaxiBlocks Block component extension
  *
@@ -31,7 +32,7 @@ import {
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsIDTrulyUnique from './getIsIDTrulyUnique';
 import getCustomLabel from './getCustomLabel';
-import { loadFonts, getAllFonts } from '../text/fonts';
+import { loadFonts, getAllFonts, getPageFonts } from '../text/fonts';
 import {
 	getIsSiteEditor,
 	getSiteEditorIframe,
@@ -310,7 +311,7 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Force rendering the block when SC related values change
-		if (this.scProps && this.state.oldSC) {
+		if (this.scProps && this.state.oldSC && !isEmpty(this.state.oldSC)) {
 			const SC = select(
 				'maxiBlocks/style-cards'
 			).receiveMaxiSelectedStyleCard();
@@ -375,6 +376,12 @@ class MaxiBlockComponent extends Component {
 		)
 			return false;
 
+		// If deviceType or baseBreakpoint changes, render styles
+		const wasBreakpointChanged =
+			this.props.deviceType !== prevProps.deviceType ||
+			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
+		if (wasBreakpointChanged) return false;
+
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
 
@@ -409,12 +416,6 @@ class MaxiBlockComponent extends Component {
 		)
 			return false;
 
-		// If deviceType or baseBreakpoint changes, render styles
-		const wasBreakpointChanged =
-			this.props.deviceType !== prevProps.deviceType ||
-			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
-		if (wasBreakpointChanged) return false;
-
 		if (
 			this.props.attributes.uniqueID !== prevProps.attributes.uniqueID &&
 			!wasBreakpointChanged
@@ -430,8 +431,20 @@ class MaxiBlockComponent extends Component {
 			document.querySelector('.editor-post-template__swap-template-modal')
 		)
 			return;
-
 		const { uniqueID } = this.props.attributes;
+
+		if (!shouldDisplayStyles) {
+			!this.isReusable &&
+				this.displayStyles(
+					this.props.deviceType !== prevProps.deviceType ||
+						(this.props.baseBreakpoint !==
+							prevProps.baseBreakpoint &&
+							!!prevProps.baseBreakpoint),
+					this.props.attributes.blockStyle !==
+						prevProps.attributes.blockStyle
+				);
+			this.isReusable && this.displayStyles();
+		}
 
 		// Gets the differences between the previous and current attributes
 		const diffAttributes = diff(
@@ -471,6 +484,7 @@ class MaxiBlockComponent extends Component {
 					);
 				}
 			}
+
 			// If there's a relation affecting this concrete block, check if is necessary
 			// to update it's content to keep the coherence and the good UX
 			const blocksIBRelations = select(
@@ -486,19 +500,6 @@ class MaxiBlockComponent extends Component {
 						breakpoint: this.props.deviceType,
 					})
 				);
-		}
-
-		if (!shouldDisplayStyles) {
-			!this.isReusable &&
-				this.displayStyles(
-					this.props.deviceType !== prevProps.deviceType ||
-						(this.props.baseBreakpoint !==
-							prevProps.baseBreakpoint &&
-							!!prevProps.baseBreakpoint),
-					this.props.attributes.blockStyle !==
-						prevProps.attributes.blockStyle
-				);
-			this.isReusable && this.displayStyles();
 		}
 
 		this.hideGutenbergPopover();
@@ -1072,7 +1073,8 @@ class MaxiBlockComponent extends Component {
 		const breakpoints = this.getBreakpoints;
 		let customDataRelations;
 
-		if (!isBreakpointChange && !isBlockStyleChange) {
+		// Only generate new styles if it's not a breakpoint change
+		if (!isBreakpointChange) {
 			obj = this.getStylesObject;
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1097,17 +1099,23 @@ class MaxiBlockComponent extends Component {
 					'.editor-post-template__swap-template-modal'
 				)
 			) {
-				obj = this.getStylesObject;
-				this.injectStyles(
-					uniqueID,
-					obj,
-					this.props.deviceType,
-					breakpoints,
-					isSiteEditor,
-					isBreakpointChange,
-					isBlockStyleChange,
-					iframe
-				);
+				// Only inject styles if it's not a breakpoint change
+				if (!isBreakpointChange) {
+					obj = this.getStylesObject;
+					this.injectStyles(
+						uniqueID,
+						obj,
+						this.props.deviceType,
+						breakpoints,
+						isSiteEditor,
+						isBreakpointChange,
+						isBlockStyleChange,
+						iframe
+					);
+				} else {
+					// If it's a breakpoint change, only update the responsive classes
+					this.updateResponsiveClasses(iframe, this.props.deviceType);
+				}
 			}
 
 			if (customDataRelations) {
@@ -1227,8 +1235,182 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
+		if (iframe?.contentDocument?.body) {
+			this.handleIframeStyles(iframe, currentBreakpoint);
+		}
+
+		const target = this.getStyleTarget(isSiteEditor, iframe);
+		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
+
+		// Only generate new styles if it's not a breakpoint change
+		if (!isBreakpointChange) {
+			const styleContent = this.generateStyleContent(
+				uniqueID,
+				stylesObj,
+				currentBreakpoint,
+				breakpoints,
+				isBreakpointChange,
+				isBlockStyleChange,
+				iframe,
+				isSiteEditor
+			);
+
+			this.updateStyleElement(styleElement, styleContent);
+		}
+	}
+
+	handleIframeStyles(iframe, currentBreakpoint) {
+		const iframeDocument = iframe.contentDocument;
+		const editorWrapper = iframeDocument.body;
+		const tabletPreview = editorWrapper.querySelector('.is-tablet-preview');
+		const mobilePreview = editorWrapper.querySelector('.is-mobile-preview');
+
+		if (tabletPreview || mobilePreview) {
+			this.handleResponsivePreview(
+				editorWrapper,
+				tabletPreview,
+				mobilePreview
+			);
+		}
+
+		if (editorWrapper) {
+			this.setupIframeForMaxi(
+				iframe,
+				iframeDocument,
+				editorWrapper,
+				currentBreakpoint
+			);
+		}
+	}
+
+	handleResponsivePreview(editorWrapper, tabletPreview, mobilePreview) {
+		const previewTarget = tabletPreview ?? mobilePreview;
+		const postEditor = document?.body?.querySelector(
+			'.edit-post-visual-editor'
+		);
+		const responsiveWidth = postEditor.getAttribute(
+			'maxi-blocks-responsive-width'
+		);
+		const isMaxiPreview = postEditor.getAttribute('is-maxi-preview');
+
+		if (isMaxiPreview) {
+			previewTarget.style.width = `${responsiveWidth}px`;
+			previewTarget.style.boxSizing = 'content-box';
+		}
+	}
+
+	setupIframeForMaxi(
+		iframe,
+		iframeDocument,
+		editorWrapper,
+		currentBreakpoint
+	) {
+		if (
+			iframe &&
+			!iframeDocument.body.classList.contains('maxi-blocks--active')
+		) {
+			this.addMaxiClassesToIframe(
+				iframeDocument,
+				editorWrapper,
+				currentBreakpoint
+			);
+			this.copyFontsToIframe(iframeDocument, iframe);
+			this.copyMaxiStylesToIframe(iframeDocument, iframe);
+			this.copyMaxiVariablesToIframe(iframeDocument, iframe);
+			this.ensureMaxiStylesLoaded(iframeDocument, iframe);
+		}
+	}
+
+	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
+		iframeDocument.body.classList.add('maxi-blocks--active');
+		editorWrapper.setAttribute(
+			'maxi-blocks-responsive',
+			currentBreakpoint === 's' ? 's' : 'xs'
+		);
+		iframeDocument.documentElement.style.scrollbarWidth = 'none';
+	}
+
+	copyFontsToIframe(iframeDocument, iframe) {
+		loadFonts(getPageFonts(), true, iframeDocument);
+		const maxiFonts = Array.from(
+			document.querySelectorAll(
+				'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]'
+			)
+		);
+		if (!isEmpty(maxiFonts)) {
+			maxiFonts.forEach(rawMaxiFont => {
+				const maxiFont = rawMaxiFont.cloneNode(true);
+				iframe.contentDocument.head.appendChild(maxiFont);
+			});
+		}
+	}
+
+	copyMaxiStylesToIframe(iframeDocument, iframe) {
+		const maxiStyles = Array.from(
+			document.querySelectorAll('div.maxi-blocks__styles')
+		);
+		if (!isEmpty(maxiStyles)) {
+			maxiStyles.forEach(rawMaxiStyle => {
+				const maxiStyle = rawMaxiStyle.cloneNode(true);
+				const { id } = maxiStyle;
+				iframeDocument.querySelector(`#${id}`)?.remove();
+				maxiStyle.children[0].innerText =
+					maxiStyle.children[0].innerText.replaceAll(
+						' .edit-post-visual-editor',
+						'.editor-styles-wrapper'
+					);
+				iframe.contentDocument.head.appendChild(maxiStyle);
+			});
+		}
+	}
+
+	copyMaxiVariablesToIframe(iframeDocument, iframe) {
+		const maxiVariables = document
+			.querySelector('#maxi-blocks-sc-vars-inline-css')
+			?.cloneNode(true);
+		if (maxiVariables) {
+			iframeDocument
+				.querySelector('#maxi-blocks-sc-vars-inline-css')
+				?.remove();
+			iframe.contentDocument.head.appendChild(maxiVariables);
+		}
+	}
+
+	ensureMaxiStylesLoaded(iframeDocument, iframe) {
+		const editStyles = iframeDocument.querySelector(
+			'#maxi-blocks-block-editor-css'
+		);
+		const frontStyles = iframeDocument.querySelector(
+			'#maxi-blocks-block-css'
+		);
+
+		if (!editStyles) {
+			const rawEditStyles = document.querySelector(
+				'#maxi-blocks-block-editor-css'
+			);
+			iframe.contentDocument.head.appendChild(
+				rawEditStyles.cloneNode(true)
+			);
+		}
+
+		if (!frontStyles) {
+			const rawFrontStyles = document.querySelector(
+				'#maxi-blocks-block-css'
+			);
+			if (rawFrontStyles) {
+				iframe.contentDocument.head.appendChild(
+					rawFrontStyles.cloneNode(true)
+				);
+			}
+		}
+	}
+
+	getStyleTarget(isSiteEditor, iframe) {
 		const siteEditorIframe = isSiteEditor ? getSiteEditorIframe() : null;
-		const target = siteEditorIframe || iframe?.contentDocument || document;
+		return siteEditorIframe || iframe?.contentDocument || document;
+	}
+
+	getOrCreateStyleElement(target, uniqueID) {
 		const styleId = `maxi-blocks__styles--${uniqueID}`;
 		let styleElement = target.getElementById(styleId);
 
@@ -1238,6 +1420,19 @@ class MaxiBlockComponent extends Component {
 			target.head.appendChild(styleElement);
 		}
 
+		return styleElement;
+	}
+
+	generateStyleContent(
+		uniqueID,
+		stylesObj,
+		currentBreakpoint,
+		breakpoints,
+		isBreakpointChange,
+		isBlockStyleChange,
+		iframe,
+		isSiteEditor
+	) {
 		let styleContent;
 		let styles;
 
@@ -1269,6 +1464,10 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
+		return styleContent;
+	}
+
+	updateStyleElement(styleElement, styleContent) {
 		if (styleElement.textContent !== styleContent) {
 			styleElement.textContent = styleContent;
 		}
@@ -1376,6 +1575,19 @@ class MaxiBlockComponent extends Component {
 		} else if (!this.props.isSelected && this.popoverStyles) {
 			this.popoverStyles.remove();
 			this.popoverStyles = null;
+		}
+	}
+
+	// Add this new method to handle responsive class updates
+	updateResponsiveClasses(iframe, currentBreakpoint) {
+		const target = iframe?.contentDocument?.body || document.body;
+		const editorWrapper = target.querySelector('.editor-styles-wrapper');
+
+		if (editorWrapper) {
+			editorWrapper.setAttribute(
+				'maxi-blocks-responsive',
+				currentBreakpoint === 's' ? 's' : 'xs'
+			);
 		}
 	}
 }

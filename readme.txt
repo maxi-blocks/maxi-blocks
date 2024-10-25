@@ -1,4 +1,4 @@
-=== MaxiBlocks: 2200+ Patterns, 190 Pages, 14.2K Icons & 100 Styles ===
+=== MaxiBlocks: 2300+ Patterns, 280+ Pages, 14.3K Icons & 100 Styles ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
 Tags: block, blocks, gutenberg blocks, page builder, template library
@@ -6,9 +6,9 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.6
 Requires PHP: 8.0
-Stable tag: 1.9.8
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 2.0.0
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Build professional WordPress sites faster, boost your design confidence, and deliver higher-quality results with MaxiBlocks.
 
@@ -32,8 +32,9 @@ No one wants to produce generic-looking websites or spend unnecessary time and r
 **We understand the struggle of turning your design vision into reality.** That's why we've created MaxiBlocks:
 
 - 18 Foundation blocks with advanced design controls
-- Extensive library of 2200+ block patterns and 190+ page templates
-- 14.2k SVG icons for creative design possibilities
+- Extensive library of 2300+ block patterns and 280+ page templates
+- 230+ Site editor theme templates
+- 14.3k SVG icons for creative design possibilities
 - Regular updates to keep your toolkit fresh and relevant
 
 ## The Solution 💡
@@ -119,7 +120,7 @@ We take a different approach to block design. Instead of offering numerous speci
 
 Our 18 core blocks are highly versatile, as [demonstrated in our pattern library](https://maxiblocks.com/demo/). By focusing on a smaller set of powerful blocks, we ensure they're well-maintained and continually improved.
 
-Unlike some libraries that restrict key features to encourage paid upgrades, MaxiBlocks provides full functionality in every block from the start. This gives you the freedom to build without limitations, regardless of whether you're using the free version or have a Pro cloud account.
+Unlike some libraries that restrict key features to encourage paid upgrades, MaxiBlocks provides full functionality in every block from the start. This gives you the freedom to build without limitations, regardless of whether you're using the free version or have a Pro cloud account. All our foundations block are free. 
 = Is MaxiBlocks compatible with Gutenberg and my theme? =
 Yes, MaxiBlocks is fully integrated with the Gutenberg editor. For the best experience, we recommend using a block theme like Twenty Twenty-Four (TT4) or our own MaxiBlocks theme, which is currently in beta testing. [Join the MaxiBlocks theme beta](https://maxiblocks.com/free-maxiblocks-wordpress-theme/?utm_source=web&utm_medium=wp-org&utm_campaign=theme+beta&utm_content=Try+Beta). Our support team is here to help if you encounter any issues.
 = What is a Pro cloud account? =
@@ -172,6 +173,23 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 17 Oct 2024_
+MaxiBlocks v2.0.0
+* Update: Optimized performance for styles generation in the Editing Experience (EE) and the Site Editor (SE).
+* Update: Speed up MaxiBlocks breakpoint switching and responsive rendering in EE.
+* Update: Enhanced Context Loop / Dynamic Content speed for content rendering, changing settings, and loading from the Template Library, both in EE and SE.
+* Fix: Addressed issues with styles not loading in Mobile and Tablet preview mode in EE.
+* Fix: Restored Dynamic Content reset function to correspondent Context Loop values.
+* Fix: Interaction Builder frontend adjustments when legacy and new relations are mixed on the same page.
+* Fix: Corrected issue with unique block id having special symbols inside.
+
+_Updates 9 Oct 2024_
+MaxiBlocks v1.9.9
+* Update: Enhanced the main Editor screen with the ability to keep the current breakpoint width regardless of the opened sidebars.
+* Update: Interaction Builder improvements for the future Mega menu blocks.
+* Update: Backend speed optimization for the List view and selecting blocks.
+* Update: Switched the plugin licence to GPLv3 or later.
+
 _Updates 27 Sep 2024_
 MaxiBlocks v1.9.8
 * Fix: Resolved issue where block tones were not switching correctly on the frontend.
@@ -182,43 +200,6 @@ MaxiBlocks v1.9.7
 * Update: Added Theme tab to Template Library for future Theme templates.
 * Fix: Addressed responsive issues when breakpoints values were missing on frontend in some cases.
 * Fix: Restored "by relation" dropdown option for Dynamic Content.
-
-_Updates 19 Sep 2024_
-MaxiBlocks v1.9.6
-* Update: Introduced Bunny Fonts option as an alternative to Google Fonts.
-* Update: Enhanced backend speed and performance.
-* Update: Optimized speed by refactoring loadable components.
-* Update: Added slider to set avatar size in Dynamic Content.
-* Update: Added custom taxonomies support for relations in Context Loop and Dynamic Content.
-* Update: Improved handling of styles on block insertion.
-* Update: Added limit option to all text fields in Dynamic Content.
-* Update: Upgraded npm packages for better functionality and security.
-* Fix: Addressed local fonts preload warning.
-* Fix: Rectified Style Card font loading issues.
-* Fix: Adjusted pagination font display on backend.
-* Fix: Enhanced local fonts handling in the editor.
-* Fix: Corrected issues with synced block patterns inside columns.
-* Fix: Fine-tuned RangeControl value handling for zero.
-* Fix: Optimized tab label display to prevent wrapping on second line when selected.
-* Fix: Restored insert button visibility when using Dynamic Content link in Icon Maxi.
-* Fix: Stabilized Dynamic Content blocks when no tags are found.
-* Fix: Ensured accordion styles load properly without requiring changes.
-* Fix: Hidden "ACF Field" dropdown for Context Loop where it's not applicable.
-
-_Updates 15 Aug 2024_
-MaxiBlocks v1.9.5
-* Update: Optimized performance for MaxiBlocks in the Editing Experience and FSE Site Editor, resulting in faster load times and smoother interactions.
-* Update: Introduced a new setting to customize avatar size in Dynamic Content.
-* Fix: Resolved an issue where icon hover effects created in the Interaction Builder were not functioning correctly, ensuring a consistent user experience.
-* Fix: Addressed a bug that prevented fonts from loading on the frontend when switching Style Cards without making any other changes to the page.
-* Fix: Corrected an issue where unique fonts were not rendering for Context Loop pagination in the Editing Experience.
-
-_Updates 1 Aug 2024_
-MaxiBlocks v1.9.4
-* Update: Enhanced compatibility with the upcoming MaxiBlocks Go theme, optimizing integration and performance for future theme updates.
-* Update: Expanded Dynamic Content functionality to support current item templates for specific posts, authors, categories, tags, and WooCommerce products, enabling more flexible content management.
-* Fix: Resolved an issue ensuring the Roboto font consistently appears in the Editor UI when the MaxiBlocks plugin is active, providing a cohesive visual experience.
-* Fix: Optimized the Editor height when creating Custom Templates to improve the overall editing experience and ensure content is easily accessible.
 
 == Upgrade Notice ==
 

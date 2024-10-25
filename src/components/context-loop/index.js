@@ -155,21 +155,24 @@ const ContextLoop = props => {
 	const isOrderSettings =
 		orderTypes.includes(type) && orderRelations.includes(relation);
 
-	const changeProps = (params, alwaysSaveCLStatus = false) => {
-		let hasChangesToSave = false;
+	const changeProps = useCallback(
+		(params, alwaysSaveCLStatus = false) => {
+			let hasChangesToSave = false;
 
-		for (const [key, val] of Object.entries(contextLoop)) {
-			if (
-				(alwaysSaveCLStatus && key === 'cl-status') ||
-				(key in params && params[key] !== val)
-			) {
-				hasChangesToSave = true;
-				break;
+			for (const [key, val] of Object.entries(contextLoop)) {
+				if (
+					(alwaysSaveCLStatus && key === 'cl-status') ||
+					(key in params && params[key] !== val)
+				) {
+					hasChangesToSave = true;
+					break;
+				}
 			}
-		}
 
-		if (hasChangesToSave) onChange(params);
-	};
+			if (hasChangesToSave) onChange(params);
+		},
+		[contextLoop, onChange]
+	);
 
 	useEffect(() => {
 		const fetchPostAuthorOptions = async () => {
@@ -421,9 +424,9 @@ const ContextLoop = props => {
 								/>
 							)}
 							{contentType !== 'container' &&
-								relationTypes.includes(type) &&
 								type === 'users' &&
-								relation === 'by-id' && (
+								relation === 'by-id' &&
+								relationTypes.includes(type) && (
 									<SelectControl
 										label={__('Author id', 'maxi-blocks')}
 										value={author}
@@ -445,8 +448,8 @@ const ContextLoop = props => {
 									/>
 								)}
 							{((relation !== 'current-archive' &&
-								relationTypes.includes(type) &&
 								type !== 'users' &&
+								relationTypes.includes(type) &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id')) ||
 								relation.includes('custom-taxonomy')) && (
@@ -478,7 +481,10 @@ const ContextLoop = props => {
 									}
 									onReset={() =>
 										changeProps({
-											'cl-id': postIdOptions[0].value,
+											'cl-id':
+												contextLoop.prevContextLoopStatus
+													? undefined
+													: postIdOptions[0].value,
 										})
 									}
 								/>

@@ -112,6 +112,24 @@ const getProductBySlug = async slug => {
 const existingEntities = {};
 const nonExistingEntities = {};
 
+const getKind = type => {
+	if (kindDictionary[type]) {
+		return kindDictionary[type];
+	}
+
+	const customPostTypes = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomPostTypes();
+	if (customPostTypes.includes(type)) return 'postType';
+
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+	if (customTaxonomies.includes(type)) return 'taxonomy';
+
+	return 'postType';
+};
+
 const getDCEntity = async (dataRequest, clientId) => {
 	const {
 		type,
@@ -128,38 +146,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 	const contentError = getDCErrors(type, error, show, relation);
 
 	if (contentError) return contentError;
-
-	const customPostTypes = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomPostTypes();
-	const customTaxonomies = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomTaxonomies();
-
-	const getKind = type => {
-		if (customPostTypes.includes(type)) return 'postType';
-		if (customTaxonomies.includes(type)) return 'taxonomy';
-
-		return kindDictionary[type];
-	};
-
-	const relationTypes = select(
-		'maxiBlocks/dynamic-content'
-	).getRelationTypes();
-
-	if (relationTypes.includes(type) && relation === 'random') {
-		return getRandomEntity(
-			await resolveSelect('core').getEntityRecords(
-				getKind(type),
-				nameDictionary[type] ?? type,
-				{
-					per_page: 100,
-					hide_empty: false,
-				}
-			),
-			clientId
-		);
-	}
 
 	if (relation === 'current') {
 		const isFSE = select('core/edit-site') !== undefined;
@@ -258,6 +244,38 @@ const getDCEntity = async (dataRequest, clientId) => {
 		}
 
 		return user;
+	}
+
+	if (relation === 'random') {
+		const relationTypes = select(
+			'maxiBlocks/dynamic-content'
+		).getRelationTypes();
+		if (relationTypes.includes(type))
+			return getRandomEntity(
+				await resolveSelect('core').getEntityRecords(
+					getKind(type),
+					nameDictionary[type] ?? type,
+					{
+						per_page: 100,
+						hide_empty: false,
+					}
+				),
+				clientId
+			);
+	}
+
+	if (type === 'settings') {
+		const settings = await resolveSelect('core').getEditedEntityRecord(
+			getKind(type),
+			'site'
+		);
+
+		return settings;
+	}
+	if (type === 'cart') {
+		const cart = await getCartData();
+
+		return cart;
 	}
 
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
@@ -385,19 +403,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 		return null;
 	}
 
-	if (type === 'settings') {
-		const settings = await resolveSelect('core').getEditedEntityRecord(
-			getKind(type),
-			'site'
-		);
-
-		return settings;
-	}
-	if (type === 'cart') {
-		const cart = await getCartData();
-
-		return cart;
-	}
 	if (relation === 'current' || type === 'archive') {
 		const isFSE = select('core/edit-site') !== undefined;
 
@@ -586,14 +591,14 @@ const getDCEntity = async (dataRequest, clientId) => {
 				const taxonomy = taxonomies.find(tax => tax.slug === type);
 				if (taxonomy) return taxonomy;
 			}
-		}
-
-		if (!isFSE)
-			return resolveSelect('core').getEditedEntityRecord(
+		} else {
+			const entity = await resolveSelect('core').getEditedEntityRecord(
 				getKind(type),
 				nameDictionary[type] ?? type,
 				select('core/editor').getCurrentPostId()
 			);
+			if (entity) return entity;
+		}
 	}
 	if (
 		['tags', 'categories', 'product_categories', 'product_tags'].includes(

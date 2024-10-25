@@ -88,7 +88,9 @@ const breakpointResizer = ({
 		if (size === 'general') {
 			editorWrapper.style.width = '';
 			editorWrapper.style.margin = '';
+			editorWrapper.style.minWidth = '';
 		} else {
+			editorWrapper.style.minWidth = 'auto';
 			editorWrapper.style.margin =
 				winHeight > responsiveWidth ? '0 auto' : '';
 

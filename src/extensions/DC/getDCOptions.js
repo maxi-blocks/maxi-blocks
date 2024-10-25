@@ -33,10 +33,57 @@ const clearCustomCache = () => {
 	customTaxonomiesCache = null;
 };
 
+// Add this at the top of the file, after the imports
+const cache = {
+	customTaxonomy: {},
+	users: {},
+	categories: {},
+	tags: {},
+	customPostType: {},
+	currentArchive: {},
+	postType: {},
+};
+
+export const clearIdOptionsCache = () => {
+	Object.keys(cache).forEach(key => {
+		if (cache[key] && typeof cache[key] === 'object') {
+			Object.keys(cache[key]).forEach(subKey => {
+				cache[key][subKey] = null;
+			});
+		} else {
+			cache[key] = null;
+		}
+	});
+};
+
 // Hook into the editor initialization
 wp.domReady(() => {
 	clearCustomCache();
+	clearIdOptionsCache();
 });
+
+const fetchUsers = async () => {
+	const { getUsers } = resolveSelect(coreStore);
+	const users = await getUsers();
+	return users ? users.map(({ id, name }) => ({ id, name })) : null;
+};
+
+const MAX_CACHE_AGE = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+const getCachedData = cacheKey => {
+	const cachedItem = cache[cacheKey];
+	if (cachedItem && Date.now() - cachedItem.timestamp < MAX_CACHE_AGE) {
+		return cachedItem.data;
+	}
+	return null;
+};
+
+const setCachedData = (cacheKey, data) => {
+	cache[cacheKey] = {
+		data,
+		timestamp: Date.now(),
+	};
+};
 
 export const getIdOptions = async (
 	type,
@@ -48,33 +95,27 @@ export const getIdOptions = async (
 	if (![...idTypes].includes(type) && !isCustomPostType && !isCustomTaxonomy)
 		return false;
 
-	const { getEntityRecords, getUsers } = resolveSelect(coreStore);
 	let data;
-
-	const dictionary = {
-		posts: 'post',
-		pages: 'page',
-		media: 'attachment',
-		products: 'product',
-	};
-
 	const args = { per_page: -1 };
-
-	const currentTemplateType = getCurrentTemplateSlug();
-
-	const fetchUsers = async () => {
-		const users = await getUsers();
-		return users ? users.map(({ id, name }) => ({ id, name })) : null;
-	};
+	const { getEntityRecords } = resolveSelect(coreStore);
 
 	if (relation.includes('by-custom-taxonomy')) {
 		const taxonomy = relation.split('custom-taxonomy-').pop();
-		data = await getEntityRecords('taxonomy', taxonomy, args);
+		const cacheKey = `customTaxonomy.${taxonomy}`;
+		data = getCachedData(cacheKey);
+		if (!data) {
+			data = await getEntityRecords('taxonomy', taxonomy, args);
+			setCachedData(cacheKey, data);
+		}
 	} else if (
 		['users', 'customers'].includes(type) ||
 		relation === 'by-author'
 	) {
-		data = await fetchUsers();
+		data = getCachedData('users');
+		if (!data) {
+			data = await fetchUsers();
+			setCachedData('users', data);
+		}
 	} else if (
 		['categories', 'product_categories'].includes(type) ||
 		relation === 'by-category'
@@ -82,7 +123,12 @@ export const getIdOptions = async (
 		const categoryType = ['products', 'product_categories'].includes(type)
 			? 'product_cat'
 			: 'category';
-		data = await getEntityRecords('taxonomy', categoryType, args);
+		const cacheKey = `categories.${categoryType}`;
+		data = getCachedData(cacheKey);
+		if (!data) {
+			data = await getEntityRecords('taxonomy', categoryType, args);
+			setCachedData(cacheKey, data);
+		}
 	} else if (
 		['tags', 'product_tags'].includes(type) ||
 		relation === 'by-tag'
@@ -90,29 +136,67 @@ export const getIdOptions = async (
 		const tagType = ['products', 'product_tags'].includes(type)
 			? 'product_tag'
 			: 'post_tag';
-		data = await getEntityRecords('taxonomy', tagType, args);
-	} else if (isCustomTaxonomy) {
-		data = await getEntityRecords('taxonomy', type, args);
-	} else if (isCustomPostType) {
-		data = await getEntityRecords('postType', type, args);
-	} else if (relation === 'current-archive') {
-		if (currentTemplateType === 'author') {
-			data = await fetchUsers();
-		} else if (
-			['category', 'tag', 'taxonomy'].includes(currentTemplateType)
-		) {
-			data = await getEntityRecords(
-				'taxonomy',
-				currentTemplateType,
-				args
-			);
-		} else {
-			data = await getEntityRecords('taxonomy', 'category', args);
+		const cacheKey = `tags.${tagType}`;
+		data = getCachedData(cacheKey);
+		if (!data) {
+			data = await getEntityRecords('taxonomy', tagType, args);
+			setCachedData(cacheKey, data);
 		}
-	} else if (currentTemplateType === 'archive') {
-		data = await getEntityRecords('taxonomy', 'category', args);
+	} else if (isCustomTaxonomy) {
+		const cacheKey = `customTaxonomy.${type}`;
+		data = getCachedData(cacheKey);
+		if (!data) {
+			data = await getEntityRecords('taxonomy', type, args);
+			setCachedData(cacheKey, data);
+		}
+	} else if (isCustomPostType) {
+		const cacheKey = `customPostType.${type}`;
+		data = getCachedData(cacheKey);
+		if (!data) {
+			data = await getEntityRecords('postType', type, args);
+			setCachedData(cacheKey, data);
+		}
+	} else if (relation === 'current-archive') {
+		const currentTemplateType = getCurrentTemplateSlug();
+		const cacheKey = `currentArchive.${currentTemplateType}`;
+		data = getCachedData(cacheKey);
+		if (!data) {
+			if (currentTemplateType === 'author') {
+				data = await fetchUsers();
+			} else if (
+				['category', 'tag', 'taxonomy'].includes(currentTemplateType)
+			) {
+				data = await getEntityRecords(
+					'taxonomy',
+					currentTemplateType,
+					args
+				);
+			} else {
+				data = await getEntityRecords('taxonomy', 'category', args);
+			}
+			setCachedData(cacheKey, data);
+		}
+	} else if (getCurrentTemplateSlug() === 'archive') {
+		const cacheKey = 'currentArchive.archive';
+		data = getCachedData(cacheKey);
+		if (!data) {
+			data = await getEntityRecords('taxonomy', 'category', args);
+			setCachedData(cacheKey, data);
+		}
 	} else {
-		data = await getEntityRecords('postType', dictionary[type], args);
+		const dictionary = {
+			posts: 'post',
+			pages: 'page',
+			media: 'attachment',
+			products: 'product',
+		};
+		const postType = dictionary[type];
+		const cacheKey = `postType.${postType}`;
+		data = getCachedData(cacheKey);
+		if (!data) {
+			data = await getEntityRecords('postType', postType, args);
+			setCachedData(cacheKey, data);
+		}
 	}
 
 	return data;
@@ -125,17 +209,21 @@ const getDCOptions = async (
 	isCL = false,
 	{ 'cl-status': clStatus } = {}
 ) => {
-	if (
-		!customPostTypesCache ||
-		!customTaxonomiesCache ||
-		customPostTypesCache.length === 0 ||
-		customTaxonomiesCache.length === 0
-	) {
-		await fetchCustomPostTypesAndTaxonomies();
-	}
+	let isCustomPostType = false;
+	let isCustomTaxonomy = false;
+	if (![...idTypes].includes(type)) {
+		if (
+			!customPostTypesCache ||
+			!customTaxonomiesCache ||
+			customPostTypesCache.length === 0 ||
+			customTaxonomiesCache.length === 0
+		) {
+			await fetchCustomPostTypesAndTaxonomies();
+		}
 
-	const isCustomPostType = customPostTypesCache.includes(type);
-	const isCustomTaxonomy = customTaxonomiesCache.includes(type);
+		isCustomPostType = customPostTypesCache.includes(type);
+		isCustomTaxonomy = customTaxonomiesCache.includes(type);
+	}
 
 	const data = await getIdOptions(
 		type,

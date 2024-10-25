@@ -11,7 +11,7 @@ import getAttributeValue from '../getAttributeValue';
 /**
  * External dependencies
  */
-import { isNil, isEmpty, round } from 'lodash';
+import { isNil, round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -37,36 +37,43 @@ export const getSVGWidthStyles = ({
 	const perStrokeWidthCoefficient = 4;
 	const attributeCache = {};
 
+	const getAttribute = (attr, breakpoint) => {
+		const key = `${attr}-${breakpoint}-${isHover}`;
+		if (attributeCache[key] === undefined) {
+			attributeCache[key] = getLastBreakpointAttribute({
+				target: `${prefix}${attr}`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			});
+		}
+		return attributeCache[key];
+	};
+
 	breakpoints.forEach(breakpoint => {
-		const getAttribute = attr => {
-			const key = `${attr}-${breakpoint}-${isHover}`;
-			if (attributeCache[key] === undefined) {
-				attributeCache[key] = getLastBreakpointAttribute({
-					target: `${prefix}${attr}`,
-					isHover,
-					breakpoint,
-					attributes: obj,
-				});
-			}
-			return attributeCache[key];
-		};
-
-		const iconSize = getAttribute('width') ?? getAttribute('height');
+		const iconSize =
+			getAttribute('width', breakpoint) ??
+			getAttribute('height', breakpoint);
 		const iconUnit =
-			getAttribute('width-unit') ?? getAttribute('height-unit') ?? 'px';
-		const iconWidthFitContent = getAttribute('width-fit-content');
+			getAttribute('width-unit', breakpoint) ??
+			getAttribute('height-unit', breakpoint) ??
+			'px';
+		const iconWidthFitContent = getAttribute(
+			'width-fit-content',
+			breakpoint
+		);
 		const iconStrokeWidth =
-			svgType !== 'Shape' ? getAttribute('stroke') : 1;
+			svgType !== 'Shape' ? getAttribute('stroke', breakpoint) : 1;
 
-		const heightToStrokeWidthCoefficient =
-			1 +
-			((iconStrokeWidth - 1) *
-				perStrokeWidthCoefficient *
-				iconWidthHeightRatio) /
-				100;
+		if (iconSize != null && iconSize !== '') {
+			const heightToStrokeWidthCoefficient =
+				1 +
+				((iconStrokeWidth - 1) *
+					perStrokeWidthCoefficient *
+					iconWidthHeightRatio) /
+					100;
 
-		if (!isNil(iconSize) && !isEmpty(iconSize)) {
-			response[breakpoint] = response[breakpoint] || {}; // Ensure the object exists
+			response[breakpoint] = {};
 			if (iconWidthFitContent || !disableHeight) {
 				const calculatedHeight =
 					iconWidthFitContent && iconWidthHeightRatio !== 1
@@ -85,7 +92,10 @@ export const getSVGWidthStyles = ({
 			response[breakpoint].width = `${iconSize}${iconUnit}`;
 		}
 
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general') {
+		if (
+			Object.keys(response[breakpoint] || {}).length === 0 &&
+			breakpoint !== 'general'
+		) {
 			delete response[breakpoint];
 		}
 	});
@@ -99,18 +109,34 @@ const getSVGPathStyles = (obj, prefix = 'svg-', isHover = false) => {
 		general: {},
 	};
 
+	const attributeCache = {};
+
 	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
+		const key = `stroke-${breakpoint}-${isHover}`;
+		if (attributeCache[key] === undefined) {
+			attributeCache[key] = getAttributeKey(
+				'stroke',
+				isHover,
+				prefix,
+				breakpoint
+			);
+		}
+		const iconStroke = obj[attributeCache[key]];
 
-		const iconStroke =
-			obj[getAttributeKey('stroke', isHover, prefix, breakpoint)];
-
-		if (!isNil(iconStroke)) {
+		if (iconStroke != null) {
+			if (!response[breakpoint]) response[breakpoint] = {};
 			response[breakpoint]['stroke-width'] = iconStroke;
 		}
+	});
 
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+	// Remove empty breakpoints
+	Object.keys(response).forEach(breakpoint => {
+		if (
+			breakpoint !== 'general' &&
+			Object.keys(response[breakpoint]).length === 0
+		) {
 			delete response[breakpoint];
+		}
 	});
 
 	return { SVGPath: response };
@@ -147,7 +173,7 @@ const getSVGPathFillStyles = (
 			colorParams.secondVar = `color-${paletteColor}`;
 		}
 		response.general.fill = getColorRGBAString(colorParams);
-	} else if (!paletteStatus && !isNil(color)) {
+	} else if (!paletteStatus && color != null) {
 		response.general.fill = color;
 	}
 
@@ -216,7 +242,7 @@ const getSVGPathStrokeStyles = (
 			} else {
 				response[breakpoint] = { stroke: strokeColor };
 			}
-		} else if (!paletteStatus && !isNil(color)) {
+		} else if (!paletteStatus && color != null) {
 			response[breakpoint] = { stroke: color };
 		}
 	});
@@ -248,24 +274,6 @@ export const getSVGStyles = ({
 	);
 	const pathStyles = getSVGPathStyles(obj, prefix, isHover);
 
-	const fillSelectors = [
-		`${target} svg[data-fill]:not([fill^="none"])`,
-		`${target} svg[data-fill]:not([fill^="none"]) *`,
-		`${target} svg g[data-fill]:not([fill^="none"])`,
-		`${target} svg use[data-fill]:not([fill^="none"])`,
-		`${target} svg circle[data-fill]:not([fill^="none"])`,
-		`${target} svg path[data-fill]:not([fill^="none"])`,
-	];
-
-	const strokeSelectors = [
-		`${target} svg[data-stroke]:not([stroke^="none"]) *`,
-		`${target} svg path[data-stroke]:not([stroke^="none"])`,
-		`${target} svg[data-stroke]:not([stroke^="none"])`,
-		`${target} svg g[data-stroke]:not([stroke^="none"])`,
-		`${target} svg use[data-stroke]:not([stroke^="none"])`,
-		`${target} svg circle[data-stroke]:not([stroke^="none"])`,
-	];
-
 	const response = {
 		[`${target} svg path`]: pathStyles,
 		...(!isHover
@@ -276,34 +284,53 @@ export const getSVGStyles = ({
 			  }),
 	};
 
-	if (iconType !== 'line') {
-		fillSelectors.forEach(selector => {
-			response[selector] = pathFillStyles;
+	const addStyles = (selectors, styles, dataAttr, hoverDataAttr) => {
+		selectors.forEach(selector => {
+			response[selector] = styles;
 		});
 		if (isHover) {
-			fillSelectors
+			selectors
 				.map(selector =>
-					selector.replace('[data-fill]', '[data-hover-fill]')
+					selector.replace(`[${dataAttr}]`, `[${hoverDataAttr}]`)
 				)
 				.forEach(hoverSelector => {
-					response[hoverSelector] = pathFillStyles;
+					response[hoverSelector] = styles;
 				});
 		}
+	};
+
+	if (iconType !== 'line') {
+		const fillSelectors = [
+			`${target} svg[data-fill]:not([fill^="none"])`,
+			`${target} svg[data-fill]:not([fill^="none"]) *`,
+			`${target} svg g[data-fill]:not([fill^="none"])`,
+			`${target} svg use[data-fill]:not([fill^="none"])`,
+			`${target} svg circle[data-fill]:not([fill^="none"])`,
+			`${target} svg path[data-fill]:not([fill^="none"])`,
+		];
+		addStyles(
+			fillSelectors,
+			pathFillStyles,
+			'data-fill',
+			'data-hover-fill'
+		);
 	}
 
 	if (iconType !== 'shape') {
-		strokeSelectors.forEach(selector => {
-			response[selector] = pathStrokeStyles;
-		});
-		if (isHover) {
-			strokeSelectors
-				.map(selector =>
-					selector.replace('[data-stroke]', '[data-hover-stroke]')
-				)
-				.forEach(hoverSelector => {
-					response[hoverSelector] = pathStrokeStyles;
-				});
-		}
+		const strokeSelectors = [
+			`${target} svg[data-stroke]:not([stroke^="none"]) *`,
+			`${target} svg path[data-stroke]:not([stroke^="none"])`,
+			`${target} svg[data-stroke]:not([stroke^="none"])`,
+			`${target} svg g[data-stroke]:not([stroke^="none"])`,
+			`${target} svg use[data-stroke]:not([stroke^="none"])`,
+			`${target} svg circle[data-stroke]:not([stroke^="none"])`,
+		];
+		addStyles(
+			strokeSelectors,
+			pathStrokeStyles,
+			'data-stroke',
+			'data-hover-stroke'
+		);
 	}
 
 	return response;

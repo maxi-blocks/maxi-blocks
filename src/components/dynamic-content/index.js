@@ -81,7 +81,7 @@ const DynamicContent = props => {
 	} = props;
 
 	const contextLoop = useContext(LoopContext)?.contextLoop;
-	const isCL = contextLoop ? contextLoop['cl-status'] === true : false;
+	const CLStatus = contextLoop ? contextLoop['cl-status'] === true : false;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -184,20 +184,15 @@ const DynamicContent = props => {
 	const changeProps = params => {
 		let hasChangesToSave = false;
 
-		for (const [key, val] of Object.entries(dynamicContent)) {
-			if (key in params && params[key] !== val) {
+		for (const [key, val] of Object.entries(params)) {
+			if (key in dynamicContent && dynamicContent[key] !== val) {
 				hasChangesToSave = true;
 				break;
 			}
 		}
 
 		if (hasChangesToSave) {
-			const filteredObj = Object.fromEntries(
-				Object.entries(params).filter(
-					([key, value]) => value !== undefined
-				)
-			);
-			onChange(filteredObj);
+			onChange(params);
 		}
 	};
 
@@ -346,7 +341,7 @@ const DynamicContent = props => {
 				<>
 					{!disableHideOnFrontend &&
 						!ignoreEmptyFields.includes(field) &&
-						!isCL && (
+						!CLStatus && (
 							<ToggleSwitch
 								label={__(
 									'Hide if no content found on frontend',
@@ -512,7 +507,9 @@ const DynamicContent = props => {
 									}
 									onReset={() =>
 										changeProps({
-											'dc-id': postIdOptions[0].value,
+											'dc-id': CLStatus
+												? null
+												: postIdOptions[0].value,
 										})
 									}
 								/>

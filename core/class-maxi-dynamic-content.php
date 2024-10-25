@@ -262,7 +262,7 @@ class MaxiBlocks_DynamicContent
                     }
                     break;
             }
-            if(strpos($relation, 'custom-taxonomy') !== false) {
+            if (strpos($relation, 'custom-taxonomy') !== false) {
                 $relationParts = explode('-', $relation);
                 $customTaxonomy = implode('-', array_slice($relationParts, 3));
                 $args['tax_query'] = [
@@ -1382,7 +1382,12 @@ class MaxiBlocks_DynamicContent
             'dc-order-by' => $dc_order_by,
             'dc-order' => $dc_order,
             'dc-accumulator' => $dc_accumulator,
+            'dc-field' => $dc_field,
         ] = $attributes;
+
+        // echo '<pre>';
+        // print_r($attributes);
+        // echo '</pre>';
 
         if (empty($dc_type)) {
             $dc_type = 'posts';
@@ -1461,7 +1466,18 @@ class MaxiBlocks_DynamicContent
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
             } elseif ($is_random) {
-                $args['orderby'] = 'rand';
+                // Fetch all posts
+                $args['posts_per_page'] = -1;
+                $query = new WP_Query($args);
+                $posts = $query->posts;
+
+                if (!empty($posts)) {
+                    // Use accumulator as seed for consistent randomness
+                    srand($dc_accumulator);
+                    $random_index = rand(0, count($posts) - 1);
+                    return $posts[$random_index];
+                }
+                return null;
             } elseif ($is_sort_relation) {
 
                 $args = array_merge(
@@ -1543,6 +1559,15 @@ class MaxiBlocks_DynamicContent
                     'post_status' => 'inherit',
                     'posts_per_page' => -1,
                 ];
+                $query = new WP_Query($args);
+                $posts = $query->posts;
+
+                if (!empty($posts)) {
+                    srand($dc_accumulator);
+                    $random_index = rand(0, count($posts) - 1);
+                    return $posts[$random_index];
+                }
+                return null;
             } elseif ($is_sort_relation) {
                 $args['post_status'] = 'inherit';
                 $args = array_merge(
@@ -1580,6 +1605,7 @@ class MaxiBlocks_DynamicContent
             if ($is_random) {
                 $posts = $query->posts;
                 $post = $posts[array_rand($posts)];
+                echo 'random post for DC media: ' . $post->ID.'<br>';
             } else {
                 $post = end($query->posts);
             }
@@ -1618,7 +1644,15 @@ class MaxiBlocks_DynamicContent
             ];
 
             if ($is_random) {
-                $args['orderby'] = 'rand';
+                $args['number'] = 0; // Get all terms
+                $terms = get_terms($args);
+
+                if (!empty($terms)) {
+                    srand($dc_accumulator);
+                    $random_index = rand(0, count($terms) - 1);
+                    return $terms[$random_index];
+                }
+                return null;
             } else {
                 $args['include'] = $dc_id;
             }
@@ -1626,6 +1660,7 @@ class MaxiBlocks_DynamicContent
             $terms = get_terms($args);
 
             if (!empty($terms) && isset($terms[0])) {
+                echo 'random term for DC media: ' . $terms[0]->term_id.'<br>';
                 return $terms[0];
             } else {
                 return null;
@@ -1649,11 +1684,23 @@ class MaxiBlocks_DynamicContent
                 );
             } elseif ($dc_relation === 'by-id') {
                 $args['include'] = $dc_author ?? $dc_id;
+            } elseif ($is_random) {
+                $args['number'] = 0; // Get all users
+                $users = get_users($args);
+
+                if (!empty($users)) {
+                    srand($dc_accumulator);
+                    $random_index = rand(0, count($users) - 1);
+                    return $users[$random_index];
+                }
+                return null;
             }
 
             $users = get_users($args);
 
             if ($dc_relation === 'random') {
+                echo 'random user for DC media: ' . $users[array_rand($users)]->ID.'<br>';
+
                 return $users[array_rand($users)];
             }
 
@@ -2746,7 +2793,7 @@ class MaxiBlocks_DynamicContent
                     $args[$archive_type] = $id;
                     break;
             }
-        } elseif(strpos($relation, 'custom-taxonomy') !== false) {
+        } elseif (strpos($relation, 'custom-taxonomy') !== false) {
             $relationParts = explode('-', $relation);
             $customTaxonomy = implode('-', array_slice($relationParts, 3));
             $args['tax_query'] = [

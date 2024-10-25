@@ -70,17 +70,19 @@ const getDCLink = async (dataRequest, clientId) => {
 	const cacheKey = JSON.stringify(filteredDataRequest);
 	let data;
 
-	if (cache[cacheKey]) {
+	if (cache[cacheKey] && dataRequest?.relation !== 'random') {
 		data = cache[cacheKey];
 	} else {
 		data = await getDCEntity(dataRequest, clientId);
 		// Check if the cache size exceeds the maximum limit
-		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
-			// Remove the oldest entry from the cache
-			const oldestKey = Object.keys(cache)[0];
-			delete cache[oldestKey];
+		if (dataRequest?.relation !== 'random') {
+			if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
+				// Remove the oldest entry from the cache
+				const oldestKey = Object.keys(cache)[0];
+				delete cache[oldestKey];
+			}
+			cache[cacheKey] = data;
 		}
-		cache[cacheKey] = data;
 	}
 
 	if (type === 'products') {

@@ -85,7 +85,6 @@ export const placeholderUploader = async () => {
 			},
 			{ throwOnError: true }
 		);
-
 		return response;
 	} catch (err) {
 		console.error(
@@ -130,6 +129,10 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 
 	const { title, fileName, mimeType } = getImageInfo(imageSrc);
 
+	console.log('title', title);
+	console.log('fileName', fileName);
+	console.log('mimeType', mimeType);
+
 	// Check if it already exist
 	const media = await getEntityRecords('postType', 'attachment', {
 		post_status: 'inherit',
@@ -161,6 +164,7 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 		};
 	}
 
+	console.log('new image');
 	// In case the image is not found, let's fetch it from the Cloud server
 	const imageBlob = await fetch(imageSrc)
 		.then(res => res.blob())
@@ -181,6 +185,7 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 
 	const maxiTerms = await getEntityRecords('taxonomy', 'maxi-image-type');
 	const maxiTermId = maxiTerms[0].id;
+	console.log('maxiTermId', maxiTermId);
 
 	await uploadMedia({
 		filesList: [
@@ -200,9 +205,15 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 			),
 	});
 
+	console.log('after uploadMedia');
+
 	// Check if comment_status is empty and set it to 'closed' if needed
 	const updatedCommentStatus =
-		response.comment_status === '' ? 'closed' : response.comment_status;
+		response.comment_status === '' || response.comment_status === undefined
+			? 'closed'
+			: response.comment_status;
+
+	console.log('updatedCommentStatus', updatedCommentStatus);
 
 	// Add maxi-image-type taxonomy
 	dispatch('core').saveEntityRecord(
@@ -216,6 +227,8 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 		{ throwOnError: true }
 	);
 
+	console.log('after saveEntityRecord');
+	console.log('response', response);
 	return response;
 };
 

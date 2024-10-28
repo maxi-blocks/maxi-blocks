@@ -106,6 +106,8 @@ const onRequestInsertPattern = async (
 
 			const imagesReplacer = await Promise.all(
 				Object.entries(imagesUniq).map(async ([id, url]) => {
+					console.log('url', url);
+					console.log('usePlaceholderImage', usePlaceholderImage);
 					data = usePlaceholderImage
 						? data
 						: await imageUploader(url, usePlaceholderImage);

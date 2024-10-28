@@ -125,6 +125,8 @@ const ScrollEffectsControl = props => {
 	return (
 		<div className={classes}>
 			<SelectControl
+__nextHasNoMarginBottom
+
 				className='maxi-scroll-combinations-select'
 				label={__('Scroll combinations', 'maxi-blocks')}
 				onChange={val => onChangeShortcut(val)}
@@ -187,6 +189,8 @@ const ScrollEffectsControl = props => {
 					}) && (
 						<>
 							<SelectControl
+__nextHasNoMarginBottom
+
 								label={__('Direction preset', 'maxi-blocks')}
 								newStyle
 								value={props.shortcutEffectType?.[type]}
@@ -194,6 +198,8 @@ const ScrollEffectsControl = props => {
 								options={getShortcutEffect(type)}
 							/>
 							<SelectControl
+__nextHasNoMarginBottom
+
 								label={__('Easing function', 'maxi-blocks')}
 								newStyle
 								value={getLastBreakpointAttribute({
@@ -286,6 +292,8 @@ const ScrollEffectsControl = props => {
 							/>
 							{isBlockZone && (
 								<SelectControl
+__nextHasNoMarginBottom
+
 									label={__('Viewport entry', 'maxi-blocks')}
 									value={getLastBreakpointAttribute({
 										target: `scroll-${type}-viewport-top`,

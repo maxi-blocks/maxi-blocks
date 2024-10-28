@@ -60,6 +60,8 @@ const NavigationControl = props => {
 			/>
 			{arrowsEnabled && (
 				<SelectControl
+__nextHasNoMarginBottom
+
 					label={__('Arrow position', 'maxi-blocks')}
 					newStyle
 					options={[
@@ -93,6 +95,8 @@ const NavigationControl = props => {
 			)}
 			{dotsEnabled && (
 				<SelectControl
+__nextHasNoMarginBottom
+
 					label={__('Dots position', 'maxi-blocks')}
 					newStyle
 					options={[

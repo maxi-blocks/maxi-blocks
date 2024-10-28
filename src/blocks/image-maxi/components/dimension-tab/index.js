@@ -95,6 +95,7 @@ const DimensionTab = props => {
 			{(!isImageUrl || !SVGElement) && getSizeOptions().length > 1 && (
 				<>
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Image size', 'maxi-blocks')}
 						value={
 							imageSize || imageSize === 'custom'
@@ -188,6 +189,7 @@ const DimensionTab = props => {
 								`img-width-${deviceType}`,
 								clientId
 							)}
+							__nextHasNoMarginBottom
 						/>
 					)}
 					<AspectRatioControl

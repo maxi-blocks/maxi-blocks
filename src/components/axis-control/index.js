@@ -355,6 +355,8 @@ const AxisControlContent = props => {
 							className='maxi-axis-control__unit-header'
 						>
 							<SelectControl
+__nextHasNoMarginBottom
+
 								className='maxi-axis-control__units'
 								hideLabelFromVision
 								label={__('Unit', 'maxi-blocks')}

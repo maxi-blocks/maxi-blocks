@@ -93,7 +93,7 @@
 		"@babel/plugin-transform-spread": "latest",
 		"@prettier/plugin-php": "latest",
 		"@wordpress/base-styles": "latest",
-		"@wordpress/e2e-test-utils": "latest",
+		"@wordpress/e2e-test-utils": "^11.10.0",
 		"@wordpress/env": "latest",
 		"@wordpress/jest-preset-default": "latest",
 		"@wordpress/scripts": "27.9.0",

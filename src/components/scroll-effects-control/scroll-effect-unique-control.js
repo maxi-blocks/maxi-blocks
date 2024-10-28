@@ -214,6 +214,8 @@ const ScrollEffectsUniqueControl = props => {
 		<div className={classes}>
 			{isTypeWithUnit && (
 				<SelectControl
+__nextHasNoMarginBottom
+
 					label={__('Units', 'maxi-blocks')}
 					value={unitAttribute}
 					options={effectProperties.allowedUnits.map(unit => ({

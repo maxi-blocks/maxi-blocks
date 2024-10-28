@@ -116,6 +116,8 @@ const CustomCssControl = props => {
 		>
 			<>
 				<SelectControl
+__nextHasNoMarginBottom
+
 					label={__('Add CSS for', 'maxi-blocks')}
 					className='maxi-custom-css-control__category'
 					id='maxi-custom-css-control__category'

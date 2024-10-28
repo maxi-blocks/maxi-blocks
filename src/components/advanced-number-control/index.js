@@ -282,6 +282,7 @@ const AdvancedNumberControl = props => {
 					/>
 					{enableUnit && (
 						<SelectControl
+							__nextHasNoMarginBottom
 							hideLabelFromVision
 							className='maxi-dimensions-control__units'
 							options={getOptions()}
@@ -341,6 +342,7 @@ const AdvancedNumberControl = props => {
 							step={stepValue}
 							withInputField={false}
 							initialPosition={value || initial}
+							__nextHasNoMarginBottom
 						/>
 					)}
 				</BaseControl>

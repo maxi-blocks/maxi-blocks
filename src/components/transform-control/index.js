@@ -259,6 +259,8 @@ const TransformControl = props => {
 				depth={depth}
 			/>
 			<SelectControl
+__nextHasNoMarginBottom
+
 				className='maxi-transform-control__target-select'
 				newStyle
 				label={__(

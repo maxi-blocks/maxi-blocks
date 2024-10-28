@@ -322,6 +322,8 @@ const BorderControl = props => {
 			/>
 			{!isToolbar && (
 				<SelectControl
+__nextHasNoMarginBottom
+
 					label={__('Add border line', 'maxi-blocks')}
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}

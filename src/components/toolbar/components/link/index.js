@@ -171,6 +171,8 @@ const Link = props => {
 									customTaxonomies.includes(dcField)) &&
 									dcLinkStatus && (
 										<SelectControl
+__nextHasNoMarginBottom
+
 											label={__(
 												'Link target',
 												'maxi-blocks'

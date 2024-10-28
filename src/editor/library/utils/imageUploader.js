@@ -69,10 +69,7 @@ export const placeholderUploader = async () => {
 		});
 
 		// Check if comment_status is empty and set it to 'closed' if needed
-		const updatedCommentStatus =
-			response?.comment_status === ''
-				? 'closed'
-				: response?.comment_status;
+		const updatedCommentStatus = response?.comment_status ?? 'closed';
 
 		// Add maxi-image-type taxonomy
 		dispatch('core').saveEntityRecord(
@@ -129,10 +126,6 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 
 	const { title, fileName, mimeType } = getImageInfo(imageSrc);
 
-	console.log('title', title);
-	console.log('fileName', fileName);
-	console.log('mimeType', mimeType);
-
 	// Check if it already exist
 	const media = await getEntityRecords('postType', 'attachment', {
 		post_status: 'inherit',
@@ -148,7 +141,7 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 		else {
 			const mediaElIndex = media.findIndex(
 				({ title: { raw: rawTitle } }) =>
-					rawTitle === title || rawTitle === `${title}-1` // sometimes WP add a -1 to the title
+					rawTitle === title || rawTitle === `${title}-1`
 			);
 
 			if (mediaElIndex === -1) return placeholderUploader();
@@ -160,11 +153,10 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 			id: mediaEl.id,
 			url:
 				mediaEl?.media_details?.sizes?.full?.source_url ??
-				mediaEl.guid.rendered,
+				mediaEl.guid?.rendered,
 		};
 	}
 
-	console.log('new image');
 	// In case the image is not found, let's fetch it from the Cloud server
 	const imageBlob = await fetch(imageSrc)
 		.then(res => res.blob())
@@ -175,61 +167,70 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 					'maxi-blocks'
 				)
 			);
-
 			return false;
 		});
 
 	if (!imageBlob) return placeholderUploader();
 
-	let response = false;
-
 	const maxiTerms = await getEntityRecords('taxonomy', 'maxi-image-type');
 	const maxiTermId = maxiTerms[0].id;
-	console.log('maxiTermId', maxiTermId);
 
-	await uploadMedia({
-		filesList: [
-			new File([imageBlob], fileName, {
-				type: mimeType,
-			}),
-		],
-		onFileChange: data => {
-			[response] = data;
-		},
-		onError: err =>
-			console.warn(
-				__(
-					`The original image not found (404) on the Cloud Site, using the placeholder image. Error: ${err.code}, ${err.message}`,
-					'maxi-blocks'
-				)
-			),
+	let response;
+	let isComplete = false;
+
+	const uploadPromise = new Promise((resolve, reject) => {
+		uploadMedia({
+			filesList: [
+				new File([imageBlob], fileName, {
+					type: mimeType,
+				}),
+			],
+			onFileChange: data => {
+				const [firstItem] = data;
+				if (!firstItem?.url?.startsWith('blob:')) {
+					response = firstItem;
+					isComplete = true;
+					resolve(response);
+				}
+			},
+			onError: err => {
+				console.warn(
+					__(
+						`The original image not found (404) on the Cloud Site, using the placeholder image. Error: ${err.code}, ${err.message}`,
+						'maxi-blocks'
+					)
+				);
+				reject(err);
+			},
+		});
 	});
 
-	console.log('after uploadMedia');
+	try {
+		await uploadPromise;
+	} catch (err) {
+		return placeholderUploader();
+	}
 
-	// Check if comment_status is empty and set it to 'closed' if needed
-	const updatedCommentStatus =
-		response.comment_status === '' || response.comment_status === undefined
-			? 'closed'
-			: response.comment_status;
-
-	console.log('updatedCommentStatus', updatedCommentStatus);
+	if (!response || !isComplete) return placeholderUploader();
 
 	// Add maxi-image-type taxonomy
-	dispatch('core').saveEntityRecord(
+	await dispatch('core').saveEntityRecord(
 		'postType',
 		'attachment',
 		{
 			...response,
 			'maxi-image-type': maxiTermId,
-			comment_status: updatedCommentStatus,
+			comment_status: response?.comment_status ?? 'closed',
 		},
 		{ throwOnError: true }
 	);
 
-	console.log('after saveEntityRecord');
-	console.log('response', response);
-	return response;
+	return {
+		id: response.id,
+		url:
+			response?.media_details?.sizes?.full?.source_url ??
+			response.guid?.rendered,
+	};
 };
 
 export default imageUploader;

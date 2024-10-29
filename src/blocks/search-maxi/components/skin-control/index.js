@@ -42,6 +42,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	return (
 		<>
 			<SelectControl
+				__nextHasNoMarginBottom
 				label={__('Choose', 'maxi-blocks')}
 				value={skin}
 				newStyle

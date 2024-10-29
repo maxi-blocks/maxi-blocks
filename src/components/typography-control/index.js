@@ -812,6 +812,7 @@ const TypographyControl = props => {
 					setShowLoader={setShowLoader}
 				/>
 				<SelectControl
+					__nextHasNoMarginBottom
 					label={__('Text transform', 'maxi-blocks')}
 					className='maxi-typography-control__transform'
 					value={getValue('text-transform')}
@@ -851,6 +852,7 @@ const TypographyControl = props => {
 					}
 				/>
 				<SelectControl
+					__nextHasNoMarginBottom
 					label={__('Style', 'maxi-blocks')}
 					className='maxi-typography-control__font-style'
 					value={getValue('font-style')}
@@ -886,6 +888,7 @@ const TypographyControl = props => {
 					}
 				/>
 				<SelectControl
+					__nextHasNoMarginBottom
 					label={__('Text decoration', 'maxi-blocks')}
 					className='maxi-typography-control__decoration'
 					value={getValue('text-decoration')}
@@ -931,6 +934,7 @@ const TypographyControl = props => {
 				{!isStyleCards && (
 					<>
 						<SelectControl
+							__nextHasNoMarginBottom
 							label={__('Text orientation', 'maxi-blocks')}
 							className='maxi-typography-control__orientation'
 							value={getValue('text-orientation')}
@@ -973,6 +977,7 @@ const TypographyControl = props => {
 							}
 						/>
 						<SelectControl
+							__nextHasNoMarginBottom
 							label={__('Text direction', 'maxi-blocks')}
 							className='maxi-typography-control__direction'
 							value={getValue('text-direction')}
@@ -1066,6 +1071,7 @@ const TypographyControl = props => {
 					allowedUnits={['px', 'em', 'vw', '%']}
 				/>
 				<SelectControl
+					__nextHasNoMarginBottom
 					label={__('White space', 'maxi-blocks')}
 					className='maxi-typography-control__white-space'
 					value={getValue('white-space')}

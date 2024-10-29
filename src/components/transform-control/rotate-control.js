@@ -26,6 +26,7 @@ const RotateControl = props => {
 		<div className='maxi-transform-control__rotate-control'>
 			<div className='maxi-transform-control__rotate-control__item'>
 				<BaseControl
+					__nextHasNoMarginBottom
 					label={__('X', 'maxi-blocks')}
 					className='maxi-transform-control__rotate-control__item__label'
 				>
@@ -69,6 +70,7 @@ const RotateControl = props => {
 			</div>
 			<div className='maxi-transform-control__rotate-control__item'>
 				<BaseControl
+					__nextHasNoMarginBottom
 					label={__('Y', 'maxi-blocks')}
 					className='maxi-transform-control__rotate-control__item__label'
 				>
@@ -112,6 +114,7 @@ const RotateControl = props => {
 			</div>
 			<div className='maxi-transform-control__rotate-control__item'>
 				<BaseControl
+					__nextHasNoMarginBottom
 					label={__('Z', 'maxi-blocks')}
 					className='maxi-transform-control__rotate-control__item__label'
 				>

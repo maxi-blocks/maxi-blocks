@@ -23,7 +23,8 @@
 		}
 	}
 
-	&__button {
+	&__button,
+	&__button.components-button.is-next-40px-default-size {
 		display: block;
 		position: relative;
 		width: 16px;

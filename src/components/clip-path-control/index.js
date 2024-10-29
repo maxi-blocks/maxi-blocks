@@ -84,6 +84,7 @@ const ClipPathOption = props => {
 				/>
 			</div>
 			<BaseControl
+				__nextHasNoMarginBottom
 				label={getLabel()}
 				className='maxi-clip-path-controller__item'
 			>
@@ -365,6 +366,7 @@ const ClipPathControl = props => {
 					{isCustom && (
 						<div className='maxi-clip-path-control__handles'>
 							<SelectControl
+								__nextHasNoMarginBottom
 								label={__('Type', 'maxi-blocks')}
 								value={clipPathOptions.type}
 								options={[

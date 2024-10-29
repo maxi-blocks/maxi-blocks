@@ -64,6 +64,7 @@ const DividerAlignment = props => {
 		>
 			<div className='toolbar-item__divider-alignment__popover'>
 				<SelectControl
+					__nextHasNoMarginBottom
 					label={__('Line orientation', 'maxi-blocks')}
 					options={[
 						{
@@ -81,6 +82,7 @@ const DividerAlignment = props => {
 				/>
 				{lineOrientation === 'vertical' && (
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Vertical position', 'maxi-blocks')}
 						options={getVerticalOptions()}
 						value={lineVertical}

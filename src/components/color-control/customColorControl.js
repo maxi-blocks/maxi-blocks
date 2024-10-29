@@ -52,6 +52,7 @@ const CustomColorControl = props => {
 				<>
 					{!disableColorDisplay && (
 						<BaseControl
+					__nextHasNoMarginBottom
 							className='maxi-color-control__display'
 							label={`${label} ${__('colour', 'maxi-blocks')}`}
 						>
@@ -97,6 +98,7 @@ const CustomColorControl = props => {
 			{isToolbar && (
 				<div className='maxi-color-control__wrap'>
 					<BaseControl
+					__nextHasNoMarginBottom
 						className='maxi-color-control__display'
 						label={`${label} ${__('colour', 'maxi-blocks')}`}
 					>

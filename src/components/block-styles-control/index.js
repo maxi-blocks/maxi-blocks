@@ -84,6 +84,7 @@ const BlockStylesControl = props => {
 			</div>
 			{isFirstOnHierarchy ? (
 				<SelectControl
+					__nextHasNoMarginBottom
 					label={__('Block tone', 'maxi-blocks')}
 					className={classes}
 					value={blockStyle}

@@ -37,6 +37,7 @@ const FontWeightControl = props => {
 	return (
 		<>
 			<SelectControl
+				__nextHasNoMarginBottom
 				label={__('Font weight', 'maxi-blocks')}
 				className='maxi-typography-control__weight'
 				value={fontWeight}

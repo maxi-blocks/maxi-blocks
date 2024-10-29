@@ -90,6 +90,7 @@ const ImageAltControl = ({
 	return (
 		<>
 			<SelectControl
+				__nextHasNoMarginBottom
 				className='maxi-image-inspector__alt-tag'
 				label={__('Image alt tag', 'maxi-blocks')}
 				value={altSelector}

@@ -71,7 +71,8 @@ const withMaxiContextLoop = createHigherOrderComponent(
 
 			const getIsAccumulator = attributes =>
 				orderRelations.includes(attributes?.['cl-relation']) ||
-				attributes?.['cl-relation']?.includes('custom-taxonomy');
+				attributes?.['cl-relation']?.includes('custom-taxonomy') ||
+				attributes?.['cl-relation'] === 'random';
 
 			const getAccumulator = useMemo(() => {
 				const isCurrentAccumulator = getIsAccumulator(

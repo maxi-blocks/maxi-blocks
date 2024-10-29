@@ -1134,6 +1134,7 @@ const LibraryContainer = props => {
 					setSwapChecked(val);
 					saveMaxiSetting('swap_cloud_images', val);
 				}}
+				__nextHasNoMarginBottom
 			/>
 		);
 	};

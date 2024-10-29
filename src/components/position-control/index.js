@@ -110,6 +110,7 @@ const PositionControl = props => {
 			{!disablePosition ? (
 				<>
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Position', 'maxi-blocks')}
 						options={[
 							{ label: 'Default', value: 'inherit' },

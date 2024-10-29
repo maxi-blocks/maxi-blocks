@@ -33,6 +33,7 @@ const IconPosition = props => {
 		>
 			<div className='toolbar-item__icon-position__popover'>
 				<SelectControl
+					__nextHasNoMarginBottom
 					label={__('Icon position', 'maxi-blocks')}
 					className='maxi-icon__position'
 					value={props['icon-position']}

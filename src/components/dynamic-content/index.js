@@ -345,6 +345,7 @@ const DynamicContent = props => {
 						)}
 					{sourceOptions.length > 1 && (
 						<SelectControl
+							__nextHasNoMarginBottom
 							label={__('Source', 'maxi-blocks')}
 							value={source}
 							options={sourceOptions}
@@ -380,6 +381,7 @@ const DynamicContent = props => {
 						/>
 					)}
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Type', 'maxi-blocks')}
 						value={type}
 						options={postTypesOptions}
@@ -419,6 +421,7 @@ const DynamicContent = props => {
 								type === 'archive' ||
 								relation.includes('custom-taxonomy')) && (
 								<SelectControl
+									__nextHasNoMarginBottom
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
 									options={currentRelationOptions}
@@ -450,6 +453,7 @@ const DynamicContent = props => {
 							)}
 							{type === 'users' && relation === 'by-id' && (
 								<SelectControl
+									__nextHasNoMarginBottom
 									label={__('Author id', 'maxi-blocks')}
 									value={author}
 									options={postAuthorOptions}
@@ -476,6 +480,7 @@ const DynamicContent = props => {
 									relation === 'by-id')) ||
 								relation.includes('custom-taxonomy')) && (
 								<SelectControl
+									__nextHasNoMarginBottom
 									label={__(
 										`${capitalize(
 											orderByRelations.includes(relation)
@@ -512,6 +517,7 @@ const DynamicContent = props => {
 											'custom-taxonomy'
 										) && (
 											<SelectControl
+												__nextHasNoMarginBottom
 												label={__(
 													'Order by',
 													'maxi-blocks'
@@ -535,6 +541,7 @@ const DynamicContent = props => {
 											/>
 										))}
 									<SelectControl
+										__nextHasNoMarginBottom
 										label={__('Order', 'maxi-blocks')}
 										value={order}
 										options={
@@ -617,6 +624,7 @@ const DynamicContent = props => {
 										...orderRelations,
 									].includes(relation)) && (
 									<SelectControl
+										__nextHasNoMarginBottom
 										label={__('Field', 'maxi-blocks')}
 										value={field}
 										options={currentFieldOptions}
@@ -692,6 +700,7 @@ const DynamicContent = props => {
 								!error && (
 									<>
 										<SelectControl
+											__nextHasNoMarginBottom
 											label={__(
 												'Delimiter',
 												'maxi-blocks'

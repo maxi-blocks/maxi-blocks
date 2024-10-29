@@ -75,11 +75,13 @@ export default function SelectControl({
 	return (
 		!isEmpty(options) && (
 			<BaseControl
+				__nextHasNoMarginBottom
 				label={label}
 				hideLabelFromVision={hideLabelFromVision}
 				id={id}
 				help={help}
 				className={classes}
+				__nextHasNoMarginBottom
 			>
 				<select
 					id={id}

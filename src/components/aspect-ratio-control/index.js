@@ -19,6 +19,7 @@ const AspectRatioControl = ({
 }) => (
 	<>
 		<SelectControl
+			__nextHasNoMarginBottom
 			newStyle
 			{...props}
 			options={[

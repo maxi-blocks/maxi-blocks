@@ -367,7 +367,6 @@ exports[`getSCVariablesObject Returns the correct object 1`] = `
 exports[`getSCVariablesObject Returns the correct object from default SC 1`] = `
 {
   "--maxi-active-sc-color": "255,74,23",
-  "--maxi-dark-button-background-color-hover": "rgba(var(--maxi-dark-color-6),1)",
   "--maxi-dark-button-font-family-general": ""Roboto"",
   "--maxi-dark-button-font-size-general": "16px",
   "--maxi-dark-button-font-size-xl": "16px",
@@ -580,7 +579,6 @@ exports[`getSCVariablesObject Returns the correct object from default SC 1`] = `
   "--maxi-dark-p-text-transform-general": "none",
   "--maxi-dark-p-white-space-general": "normal",
   "--maxi-dark-p-word-spacing-general": "0px",
-  "--maxi-light-button-background-color-hover": "rgba(var(--maxi-light-color-6),1)",
   "--maxi-light-button-font-family-general": ""Roboto"",
   "--maxi-light-button-font-size-general": "16px",
   "--maxi-light-button-font-size-xl": "16px",

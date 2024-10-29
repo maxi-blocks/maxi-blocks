@@ -759,7 +759,6 @@ const LibraryContainer = props => {
 			gutenberg_blocks_status: true,
 			dark: {
 				defaultStyleCard: {
-					button: { 'hover-background-color-global': true },
 					link: {
 						'link-color-global': false,
 						'link-palette-color': 4,
@@ -923,7 +922,6 @@ const LibraryContainer = props => {
 			},
 			light: {
 				defaultStyleCard: {
-					button: { 'hover-background-color-global': true },
 					link: {
 						'link-color-global': false,
 						'link-palette-color': 4,

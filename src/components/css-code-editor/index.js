@@ -95,6 +95,7 @@ const CssCodeEditor = ({
 
 	return (
 		<BaseControl
+					__nextHasNoMarginBottom
 			label={label}
 			className={classnames(
 				'maxi-css-code-editor',

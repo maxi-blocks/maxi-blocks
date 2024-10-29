@@ -207,6 +207,7 @@ const SettingTabsControl = props => {
 		<div className={classes}>
 			{type === 'buttons' && (
 				<BaseControl
+					__nextHasNoMarginBottom
 					label={label}
 					help={help}
 					aria-labelledby={label}

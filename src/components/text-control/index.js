@@ -53,6 +53,7 @@ export default function TextControl({
 
 	return (
 		<BaseControl
+					__nextHasNoMarginBottom
 			label={label}
 			hideLabelFromVision={hideLabelFromVision}
 			id={id}

@@ -84,6 +84,7 @@ const ClipPathOption = props => {
 				/>
 			</div>
 			<BaseControl
+				__nextHasNoMarginBottom
 				label={getLabel()}
 				className='maxi-clip-path-controller__item'
 			>

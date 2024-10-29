@@ -243,6 +243,7 @@ const AdvancedNumberControl = props => {
 			)}
 			{value !== 'auto' && (
 				<BaseControl
+					__nextHasNoMarginBottom
 					id={advancedNumberControlId}
 					label={label}
 					className={classes}

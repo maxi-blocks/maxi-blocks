@@ -84,8 +84,7 @@ const ColumnSizeControl = props => {
 				/>
 			)}
 			<SelectControl
-__nextHasNoMarginBottom
-
+				__nextHasNoMarginBottom
 				label={__('Vertical align', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
 					target: 'justify-content',

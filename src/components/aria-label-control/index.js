@@ -48,8 +48,7 @@ const AriaLabelControl = ({ ariaLabels, targets, onChange, getIcon }) => {
 	return (
 		<>
 			<SelectControl
-__nextHasNoMarginBottom
-
+				__nextHasNoMarginBottom
 				label={__('Target', 'maxi-blocks')}
 				newStyle
 				options={targetsOptions}

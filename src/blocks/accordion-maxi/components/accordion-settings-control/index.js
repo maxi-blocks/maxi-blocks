@@ -53,8 +53,7 @@ const AccordionSettings = props => {
 			{breakpoint === 'general' && (
 				<>
 					<SelectControl
-__nextHasNoMarginBottom
-
+						__nextHasNoMarginBottom
 						label={__('Accordion layout', 'maxi-blocks')}
 						value={accordionLayout}
 						options={[

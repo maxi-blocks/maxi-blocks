@@ -472,8 +472,7 @@ const SquareControl = props => {
 							/>
 							{isShowUnit(y) && (
 								<SelectControl
-__nextHasNoMarginBottom
-
+									__nextHasNoMarginBottom
 									options={[
 										{ label: 'PX', value: 'px' },
 										{ label: 'EM', value: 'em' },
@@ -597,8 +596,7 @@ __nextHasNoMarginBottom
 							/>
 							{isShowUnit(x) && (
 								<SelectControl
-__nextHasNoMarginBottom
-
+									__nextHasNoMarginBottom
 									options={[
 										{ label: 'PX', value: 'px' },
 										{ label: 'EM', value: 'em' },
@@ -690,8 +688,7 @@ __nextHasNoMarginBottom
 							/>
 							{!!yUnit && (
 								<SelectControl
-__nextHasNoMarginBottom
-
+									__nextHasNoMarginBottom
 									options={[
 										{ label: 'PX', value: 'px' },
 										{ label: 'EM', value: 'em' },
@@ -777,8 +774,7 @@ __nextHasNoMarginBottom
 							/>
 							{!!xUnit && (
 								<SelectControl
-__nextHasNoMarginBottom
-
+									__nextHasNoMarginBottom
 									options={[
 										{ label: 'PX', value: 'px' },
 										{ label: 'EM', value: 'em' },

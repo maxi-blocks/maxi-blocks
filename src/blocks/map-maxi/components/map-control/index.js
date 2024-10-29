@@ -40,8 +40,7 @@ const MapControl = props => {
 				/>
 			)}
 			<SelectControl
-__nextHasNoMarginBottom
-
+				__nextHasNoMarginBottom
 				className='maxi-map-control__provider'
 				label={__('Map service provider', 'maxi-blocks')}
 				value={mapProvider}

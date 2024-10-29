@@ -19,8 +19,7 @@ const ButtonControl = ({
 	return (
 		<>
 			<SelectControl
-__nextHasNoMarginBottom
-
+				__nextHasNoMarginBottom
 				className='maxi-search-button-control__skin'
 				label={__('Skin', 'maxi-blocks')}
 				value={buttonSkin}

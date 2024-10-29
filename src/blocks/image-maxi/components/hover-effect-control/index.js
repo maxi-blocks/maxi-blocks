@@ -168,8 +168,7 @@ const HoverEffectControl = props => {
 						'clear-grey-scale',
 					].includes(props['hover-basic-effect-type'])) && (
 					<SelectControl
-__nextHasNoMarginBottom
-
+						__nextHasNoMarginBottom
 						label={__('Easing', 'maxi-blocks')}
 						value={props['hover-transition-easing']}
 						defaultValue={getDefaultAttribute(
@@ -227,8 +226,7 @@ __nextHasNoMarginBottom
 			{props['hover-type'] === 'basic' && (
 				<>
 					<SelectControl
-__nextHasNoMarginBottom
-
+						__nextHasNoMarginBottom
 						label={__('Effect type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
 						defaultValue={getDefaultAttribute(
@@ -336,8 +334,7 @@ __nextHasNoMarginBottom
 			{props['hover-type'] === 'text' && (
 				<>
 					<SelectControl
-__nextHasNoMarginBottom
-
+						__nextHasNoMarginBottom
 						label={__('Animation type', 'maxi-blocks')}
 						value={props['hover-text-effect-type']}
 						defaultValue={getDefaultAttribute(

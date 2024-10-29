@@ -138,8 +138,7 @@ const ListOptionsControl = props => {
 	return (
 		<>
 			<SelectControl
-__nextHasNoMarginBottom
-
+				__nextHasNoMarginBottom
 				label={__('List style position', 'maxi-blocks')}
 				className='maxi-text-inspector__list-style-position'
 				value={getLastBreakpointAttribute({
@@ -660,8 +659,7 @@ __nextHasNoMarginBottom
 				/>
 			)}
 			<SelectControl
-__nextHasNoMarginBottom
-
+				__nextHasNoMarginBottom
 				label={__('Text position', 'maxi-blocks')}
 				className='maxi-text-inspector__list-style'
 				value={getLastBreakpointAttribute({
@@ -717,8 +715,7 @@ __nextHasNoMarginBottom
 			/>
 			{deviceType === 'general' && (
 				<SelectControl
-__nextHasNoMarginBottom
-
+					__nextHasNoMarginBottom
 					label={__('Type of list', 'maxi-blocks')}
 					className='maxi-text-inspector__list-type'
 					value={typeOfList}
@@ -753,8 +750,7 @@ __nextHasNoMarginBottom
 			{deviceType === 'general' && (
 				<>
 					<SelectControl
-__nextHasNoMarginBottom
-
+						__nextHasNoMarginBottom
 						label={__('Style', 'maxi-blocks')}
 						className='maxi-text-inspector__list-style'
 						value={listStyle || 'disc'}
@@ -826,8 +822,7 @@ __nextHasNoMarginBottom
 					{typeOfList === 'ul' && listStyle === 'custom' && (
 						<>
 							<SelectControl
-__nextHasNoMarginBottom
-
+								__nextHasNoMarginBottom
 								label={__('Source', 'maxi-blocks')}
 								className='maxi-text-inspector__list-source-selector'
 								value={listStyleSource}

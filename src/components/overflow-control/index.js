@@ -106,8 +106,7 @@ const OverflowControl = props => {
 		<div className={classes}>
 			{axes.map(axis => (
 				<SelectControl
-__nextHasNoMarginBottom
-
+					__nextHasNoMarginBottom
 					label={__(`Overflow ${axis}`, 'maxi-blocks')}
 					key={uniqueId('maxi-position-control__overflow')}
 					newStyle

@@ -153,8 +153,7 @@ const ImageShape = props => {
 						<>
 							{!disableImageRatio && (
 								<SelectControl
-__nextHasNoMarginBottom
-
+									__nextHasNoMarginBottom
 									label={__('Image ratio', 'maxi-blocks')}
 									value={shapeRatio || ''}
 									options={[
@@ -176,8 +175,7 @@ __nextHasNoMarginBottom
 							)}
 							{!disableImagePosition && (
 								<SelectControl
-__nextHasNoMarginBottom
-
+									__nextHasNoMarginBottom
 									label={__('Image position', 'maxi-blocks')}
 									value={shapePosition || 'xMidYMid'}
 									options={[

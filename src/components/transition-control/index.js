@@ -172,8 +172,7 @@ const TransitionControl = props => {
 						}
 					/>
 					<SelectControl
-__nextHasNoMarginBottom
-
+						__nextHasNoMarginBottom
 						label={__('Easing', 'maxi-blocks')}
 						className='maxi-transition-control__easing'
 						value={getLastBreakpointAttribute({

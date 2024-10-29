@@ -23,8 +23,7 @@ const AccordionLineControl = props => {
 	return (
 		<>
 			<SelectControl
-__nextHasNoMarginBottom
-
+				__nextHasNoMarginBottom
 				label={__('Line horizontal position', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
 					target: `${prefix}line-horizontal`,

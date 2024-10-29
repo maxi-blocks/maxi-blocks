@@ -80,8 +80,7 @@ const ImageLayerSettings = props => {
 				disableRTC
 			/>
 			<SelectControl
-__nextHasNoMarginBottom
-
+				__nextHasNoMarginBottom
 				label={__('Background size', 'maxi-blocks')}
 				className='maxi-background-control__image-layer__size-selector'
 				value={getLastBreakpointAttribute({
@@ -193,8 +192,7 @@ __nextHasNoMarginBottom
 			)}
 			{!parallaxStatus && (
 				<SelectControl
-__nextHasNoMarginBottom
-
+					__nextHasNoMarginBottom
 					label={__('Background repeat', 'maxi-blocks')}
 					className='maxi-background-control__image-layer__repeat-selector'
 					value={getLastBreakpointAttribute({
@@ -254,8 +252,7 @@ __nextHasNoMarginBottom
 				/>
 			)}
 			<SelectControl
-__nextHasNoMarginBottom
-
+				__nextHasNoMarginBottom
 				label={__('Background position', 'maxi-blocks')}
 				className='maxi-background-control__image-layer__position-selector'
 				value={getLastBreakpointAttribute({
@@ -455,8 +452,7 @@ __nextHasNoMarginBottom
 			{!parallaxStatus && (
 				<>
 					<SelectControl
-__nextHasNoMarginBottom
-
+						__nextHasNoMarginBottom
 						label={__('Background attachment', 'maxi-blocks')}
 						className='maxi-background-control__image-layer__attachment-selector'
 						value={getLastBreakpointAttribute({
@@ -517,8 +513,7 @@ __nextHasNoMarginBottom
 					{moreSettings && (
 						<div className='maxi-background-image-more-settings'>
 							<SelectControl
-__nextHasNoMarginBottom
-
+								__nextHasNoMarginBottom
 								label={__('Background origin', 'maxi-blocks')}
 								className='maxi-background-control__image-layer__origin-selector'
 								value={getLastBreakpointAttribute({
@@ -569,8 +564,7 @@ __nextHasNoMarginBottom
 								}
 							/>
 							<SelectControl
-__nextHasNoMarginBottom
-
+								__nextHasNoMarginBottom
 								label={__('Background clip', 'maxi-blocks')}
 								className='maxi-background-control__image-layer__clip-selector'
 								value={getLastBreakpointAttribute({

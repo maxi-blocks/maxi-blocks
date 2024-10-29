@@ -434,8 +434,7 @@ const RelationControl = props => {
 										/>
 									)}
 									<SelectControl
-__nextHasNoMarginBottom
-
+										__nextHasNoMarginBottom
 										label={__(
 											'Block to affect',
 											'maxi-blocks'
@@ -465,8 +464,7 @@ __nextHasNoMarginBottom
 									{item.uniqueID && (
 										<>
 											<SelectControl
-__nextHasNoMarginBottom
-
+												__nextHasNoMarginBottom
 												label={__(
 													'Action',
 													'maxi-blocks'
@@ -510,8 +508,7 @@ __nextHasNoMarginBottom
 												}}
 											/>
 											<SelectControl
-__nextHasNoMarginBottom
-
+												__nextHasNoMarginBottom
 												label={__(
 													'Settings',
 													'maxi-blocks'

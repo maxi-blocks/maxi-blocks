@@ -98,8 +98,7 @@ const SliderSettings = props => {
 					}}
 				/>
 				<SelectControl
-__nextHasNoMarginBottom
-
+					__nextHasNoMarginBottom
 					label={__('Transition', 'maxi-blocks')}
 					options={[
 						{

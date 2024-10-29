@@ -33,8 +33,7 @@ const VerticalAlign = props => {
 		>
 			<div className='toolbar-item__vertical-align__popover'>
 				<SelectControl
-__nextHasNoMarginBottom
-
+					__nextHasNoMarginBottom
 					label={__('Vertical align', 'maxi-blocks')}
 					value={verticalAlign}
 					defaultValue={getDefaultAttribute(

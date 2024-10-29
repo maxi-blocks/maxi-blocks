@@ -188,8 +188,7 @@ const Inspector = props => {
 											>
 												<>
 													<SelectControl
-__nextHasNoMarginBottom
-
+														__nextHasNoMarginBottom
 														value={captionType}
 														className='maxi-image-caption-type'
 														options={getCaptionOptions()}
@@ -215,8 +214,7 @@ __nextHasNoMarginBottom
 													{captionType !== 'none' && (
 														<>
 															<SelectControl
-__nextHasNoMarginBottom
-
+																__nextHasNoMarginBottom
 																label={__(
 																	'Caption position',
 																	'maxi-blocks'

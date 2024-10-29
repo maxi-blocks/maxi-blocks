@@ -1,13 +1,23 @@
 name: Bug report
-description: Report a bug on MaxiBlocks
+title: 'PART AFFECTED :: summary'
+description: Report a bug in MaxiBlocks plugin
 labels: ['bug']
 body:
     - type: textarea
       attributes:
           label: Description
-          description: Please write a brief description of the bug, including what you expect to happen and what is currently happening.
-          placeholder: |
-              Feature '...' is not working properly. I expect '...' to happen, but '...' happens instead
+          description: Please write a description of the bug, including what was expect to happen and what is currently happening.
+          value: |
+              1. Brief description
+              <!-- Clear description of what the bug is. -->
+              
+              2. What was expected to happen
+              <!-- Clear description of what was expected to happen. -->
+              
+              3. What actually happened
+              <!-- Clear description of what actually happened. -->
+              
+
       validations:
           required: true
 
@@ -35,14 +45,6 @@ body:
           label: URL and/or Code editor
           description: |
               In case the bug is related to a specific URL /andor code editor, please provide the URL and/or code editor.
-      validations:
-          required: false
-
-    - type: textarea
-      attributes:
-          label: How to fix it
-          description: |
-              Please, if you have an idea or suggestion about how to fix the bug, write it here.
       validations:
           required: false
 

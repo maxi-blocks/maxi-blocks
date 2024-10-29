@@ -1096,7 +1096,10 @@ class MaxiBlockComponent extends Component {
 				)
 			) {
 				// Only inject styles if it's not a breakpoint change
-				if (!isBreakpointChange) {
+				if (
+					!isBreakpointChange ||
+					(isBreakpointChange && this.props.deviceType === 'xxl')
+				) {
 					obj = this.getStylesObject;
 					this.injectStyles(
 						uniqueID,
@@ -1109,7 +1112,7 @@ class MaxiBlockComponent extends Component {
 						iframe
 					);
 				} else {
-					// If it's a breakpoint change, only update the responsive classes
+					// If it's a breakpoint change, and not to XXL, only update the responsive classes
 					this.updateResponsiveClasses(iframe, this.props.deviceType);
 				}
 			}
@@ -1239,7 +1242,10 @@ class MaxiBlockComponent extends Component {
 		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
 		// Only generate new styles if it's not a breakpoint change
-		if (!isBreakpointChange) {
+		if (
+			!isBreakpointChange ||
+			(isBreakpointChange && currentBreakpoint === 'xxl')
+		) {
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,

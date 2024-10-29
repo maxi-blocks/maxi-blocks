@@ -55,7 +55,7 @@
 		"dompurify": "latest",
 		"html-react-parser": "latest",
 		"is-mobile": "latest",
-		"langchain": "^0.1.30",
+		"langchain": "^0.3.5",
 		"leaflet": "latest",
 		"masonry-layout": "latest",
 		"re-resizable": "latest",

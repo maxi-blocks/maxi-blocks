@@ -53,16 +53,16 @@ class MaxiBlocks_DynamicContent
         if (is_null(self::$instance)) {
             self::$instance = new self();
         }
-        self::generate_session_seed();
     }
 
     public static function generate_session_seed()
     {
-        if (!session_id()) {
-            session_start();
+        $transient_key = 'maxi_blocks_random_seed_' . session_id();
+        self::$session_seed = get_transient($transient_key);
+        if (self::$session_seed === false) {
+            self::$session_seed = random_int(PHP_INT_MIN, PHP_INT_MAX);
+            set_transient($transient_key, self::$session_seed, DAY_IN_SECONDS);
         }
-        self::$session_seed = random_int(PHP_INT_MIN, PHP_INT_MAX);
-        $_SESSION['maxi_blocks_random_seed'] = self::$session_seed;
     }
 
     /**
@@ -70,6 +70,7 @@ class MaxiBlocks_DynamicContent
      */
     public function __construct()
     {
+        self::generate_session_seed();
     }
 
     /**

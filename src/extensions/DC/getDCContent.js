@@ -7,12 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import {
-	limitFields,
-	nameDictionary,
-	renderedFields,
-	idTypes,
-} from './constants';
+import { limitFields, nameDictionary, renderedFields } from './constants';
 import {
 	getItemLinkContent,
 	getSimpleText,
@@ -75,6 +70,7 @@ const getDCContent = async (dataRequest, clientId) => {
 		data = await getDCEntity(dataRequest, clientId);
 
 		// Check if the cache size exceeds the maximum limit
+
 		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
 			// Remove the oldest entry from the cache
 			const oldestKey = Object.keys(cache)[0];

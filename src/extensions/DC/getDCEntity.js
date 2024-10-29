@@ -18,22 +18,22 @@ import { kindDictionary, nameDictionary, orderRelations } from './constants';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 
-const randomEntityIndexes = {};
+// New function to get a seeded random index
+const getSeededRandomIndex = (seed, max) => {
+	const x = Math.sin(seed) * 10000;
+	return Math.floor((x - Math.floor(x)) * max);
+};
 
-// Gets a random entity from a list of entities and stores the index per block
-const getRandomEntity = (entities, clientId) => {
-	if (
-		isNil(randomEntityIndexes[clientId]) ||
-		randomEntityIndexes[clientId] > entities.length
-	) {
-		randomEntityIndexes[clientId] = Math.floor(
-			Math.random() * entities.length
-		);
-	}
+// Updated getRandomEntity function
+const getRandomEntity = (entities, accumulator) => {
+	if (isEmpty(entities)) return null;
 
-	return entities[randomEntityIndexes[clientId]];
+	const seed = accumulator;
+	const randomIndex = getSeededRandomIndex(seed, entities.length);
+
+	return entities[randomIndex];
 };
 
 const getPostBySlug = async slug => {
@@ -190,14 +190,12 @@ const getDCEntity = async (dataRequest, clientId) => {
 		const { getUsers, getUser } = resolveSelect('core');
 
 		if (relation === 'random') {
-			return getRandomEntity(
-				await getUsers({
-					who: 'authors',
-					per_page: 100,
-					hide_empty: false,
-				}),
-				clientId
-			);
+			const users = await getUsers({
+				who: 'authors',
+				per_page: 100,
+				hide_empty: false,
+			});
+			return getRandomEntity(users, accumulator);
 		}
 
 		if (['by-date', 'alphabetical'].includes(relation)) {
@@ -221,18 +219,17 @@ const getDCEntity = async (dataRequest, clientId) => {
 		const relationTypes = select(
 			'maxiBlocks/dynamic-content'
 		).getRelationTypes();
-		if (relationTypes.includes(type))
-			return getRandomEntity(
-				await resolveSelect('core').getEntityRecords(
-					getKind(type),
-					nameDictionary[type] ?? type,
-					{
-						per_page: 100,
-						hide_empty: false,
-					}
-				),
-				clientId
+		if (relationTypes.includes(type)) {
+			const entities = await resolveSelect('core').getEntityRecords(
+				getKind(type),
+				nameDictionary[type] ?? type,
+				{
+					per_page: 100,
+					hide_empty: false,
+				}
 			);
+			return getRandomEntity(entities, accumulator);
+		}
 	}
 
 	if (type === 'settings') {

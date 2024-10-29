@@ -584,6 +584,26 @@ const DynamicContent = props => {
 									/>
 								</>
 							)}
+							{relation === 'random' && (
+								<AdvancedNumberControl
+									label={__('Accumulator', 'maxi-blocks')}
+									value={accumulator}
+									onChangeValue={value =>
+										changeProps({
+											'dc-accumulator': value,
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-accumulator':
+												getDefaultAttribute(
+													'dc-accumulator'
+												),
+										})
+									}
+									disableRange
+								/>
+							)}
 							{source === 'wp' &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||

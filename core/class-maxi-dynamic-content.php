@@ -42,6 +42,9 @@ class MaxiBlocks_DynamicContent
 
     private $is_empty = false;
 
+    private static $session_seed;
+    private static $shuffled_posts = [];
+
     /**
      * Initializes the plugin and its hooks.
      */
@@ -52,11 +55,22 @@ class MaxiBlocks_DynamicContent
         }
     }
 
+    public static function generate_session_seed()
+    {
+        $transient_key = 'maxi_blocks_random_seed_' . session_id();
+        self::$session_seed = get_transient($transient_key);
+        if (self::$session_seed === false) {
+            self::$session_seed = random_int(PHP_INT_MIN, PHP_INT_MAX);
+            set_transient($transient_key, self::$session_seed, DAY_IN_SECONDS);
+        }
+    }
+
     /**
      * Constructor: empty
      */
     public function __construct()
     {
+        self::generate_session_seed();
     }
 
     /**
@@ -262,7 +276,7 @@ class MaxiBlocks_DynamicContent
                     }
                     break;
             }
-            if(strpos($relation, 'custom-taxonomy') !== false) {
+            if (strpos($relation, 'custom-taxonomy') !== false) {
                 $relationParts = explode('-', $relation);
                 $customTaxonomy = implode('-', array_slice($relationParts, 3));
                 $args['tax_query'] = [
@@ -1461,7 +1475,39 @@ class MaxiBlocks_DynamicContent
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
             } elseif ($is_random) {
-                $args['orderby'] = 'rand';
+                // Use the pre-generated session seed
+                $session_seed = self::$session_seed;
+
+                // Create a unique key for this combination of post type and relation
+                $shuffle_key = $dc_type . '_' . $dc_relation;
+
+                // If we haven't shuffled this post type and relation before, do it now
+                if (!isset(self::$shuffled_posts[$shuffle_key])) {
+                    // Fetch all posts
+                    $args['posts_per_page'] = -1;
+                    $query = new WP_Query($args);
+                    $posts = $query->posts;
+
+                    if (!empty($posts)) {
+                        $post_ids = wp_list_pluck($posts, 'ID');
+                        // Use the Fisher-Yates shuffle algorithm with our session seed
+                        self::$shuffled_posts[$shuffle_key] = $this->seeded_shuffle($post_ids, $session_seed);
+                    } else {
+                        self::$shuffled_posts[$shuffle_key] = [];
+                    }
+                }
+
+                $shuffled_ids = self::$shuffled_posts[$shuffle_key];
+
+                if (!empty($shuffled_ids)) {
+                    // Use modulo to ensure we always have a valid index, even if accumulator is large
+                    $index = $dc_accumulator % count($shuffled_ids);
+
+                    // Find the post with the selected ID
+                    $post_id = $shuffled_ids[$index];
+                    return get_post($post_id);
+                }
+                return null;
             } elseif ($is_sort_relation) {
 
                 $args = array_merge(
@@ -1543,6 +1589,14 @@ class MaxiBlocks_DynamicContent
                     'post_status' => 'inherit',
                     'posts_per_page' => -1,
                 ];
+                $query = new WP_Query($args);
+                $posts = $query->posts;
+
+                if (!empty($posts)) {
+                    $random_index = wp_rand(0, count($posts) - 1);
+                    return $posts[$random_index];
+                }
+                return null;
             } elseif ($is_sort_relation) {
                 $args['post_status'] = 'inherit';
                 $args = array_merge(
@@ -1618,7 +1672,14 @@ class MaxiBlocks_DynamicContent
             ];
 
             if ($is_random) {
-                $args['orderby'] = 'rand';
+                $args['number'] = 0; // Get all terms
+                $terms = get_terms($args);
+
+                if (!empty($terms)) {
+                    $random_index = wp_rand(0, count($terms) - 1);
+                    return $terms[$random_index];
+                }
+                return null;
             } else {
                 $args['include'] = $dc_id;
             }
@@ -1649,6 +1710,15 @@ class MaxiBlocks_DynamicContent
                 );
             } elseif ($dc_relation === 'by-id') {
                 $args['include'] = $dc_author ?? $dc_id;
+            } elseif ($is_random) {
+                $args['number'] = 0; // Get all users
+                $users = get_users($args);
+
+                if (!empty($users)) {
+                    $random_index = wp_rand(0, count($users) - 1);
+                    return $users[$random_index];
+                }
+                return null;
             }
 
             $users = get_users($args);
@@ -1703,6 +1773,27 @@ class MaxiBlocks_DynamicContent
 
         return ['dc-relation' => 'by-date', 'dc-order' => 'desc'];
     }
+
+    /**
+     * Performs a seeded shuffle on an array.
+     *
+     * @param array $array The array to shuffle.
+     * @param int $seed The seed for the random number generator.
+     * @return array The shuffled array.
+     */
+    private function seeded_shuffle($array, $seed)
+    {
+        $shuffled = $array;
+        $count = count($shuffled);
+        for ($i = $count - 1; $i > 0; $i--) {
+            $j = random_int(0, $i);
+            $temp = $shuffled[$i];
+            $shuffled[$i] = $shuffled[$j];
+            $shuffled[$j] = $temp;
+        }
+        return $shuffled;
+    }
+
 
     public function get_link_attributes_from_link_settings($linkSettings)
     {
@@ -2746,7 +2837,7 @@ class MaxiBlocks_DynamicContent
                     $args[$archive_type] = $id;
                     break;
             }
-        } elseif(strpos($relation, 'custom-taxonomy') !== false) {
+        } elseif (strpos($relation, 'custom-taxonomy') !== false) {
             $relationParts = explode('-', $relation);
             $customTaxonomy = implode('-', array_slice($relationParts, 3));
             $args['tax_query'] = [

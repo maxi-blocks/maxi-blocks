@@ -1096,10 +1096,7 @@ class MaxiBlockComponent extends Component {
 				)
 			) {
 				// Only inject styles if it's not a breakpoint change
-				if (
-					!isBreakpointChange ||
-					(isBreakpointChange && this.props.deviceType === 'xxl')
-				) {
+				if (!isBreakpointChange || this.props.deviceType === 'xxl') {
 					obj = this.getStylesObject;
 					this.injectStyles(
 						uniqueID,
@@ -1242,10 +1239,7 @@ class MaxiBlockComponent extends Component {
 		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
 		// Only generate new styles if it's not a breakpoint change
-		if (
-			!isBreakpointChange ||
-			(isBreakpointChange && currentBreakpoint === 'xxl')
-		) {
+		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,

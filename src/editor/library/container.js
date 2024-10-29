@@ -761,7 +761,7 @@ const LibraryContainer = props => {
 				defaultStyleCard: {
 					button: { 'hover-background-color-global': true },
 					link: {
-						'link-color-global': true,
+						'link-color-global': false,
 						'link-palette-color': 4,
 					},
 					navigation: {
@@ -925,7 +925,7 @@ const LibraryContainer = props => {
 				defaultStyleCard: {
 					button: { 'hover-background-color-global': true },
 					link: {
-						'link-color-global': true,
+						'link-color-global': false,
 						'link-palette-color': 4,
 					},
 					navigation: {

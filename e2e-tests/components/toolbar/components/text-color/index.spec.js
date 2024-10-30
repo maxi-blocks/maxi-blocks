@@ -39,17 +39,21 @@ describe('Text color', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('32', { delay: 350 });
+		await page.keyboard.type('32', { delay: 500 });
 
 		const expectDivider = {
 			'palette-color-general': 5,
 			'palette-opacity-general': 0.32,
 		};
 
+		await page.waitForTimeout(500);
+
 		const dividerResult = await getAttributes([
 			'palette-color-general',
 			'palette-opacity-general',
 		]);
+
+		await page.waitForTimeout(500);
 
 		expect(dividerResult).toStrictEqual(expectDivider);
 

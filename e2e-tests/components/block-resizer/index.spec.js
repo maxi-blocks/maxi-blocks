@@ -18,6 +18,15 @@ describe('BlockResizer', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Number Counter Maxi');
 		await updateAllBlockUniqueIds(page);
+
+		// Remove the maxi-block-inserter__last element
+		await page.evaluate(() => {
+			const element = document.querySelector(
+				'.maxi-block-inserter__last'
+			);
+			if (element) element.remove();
+		});
+
 		const accordionPanel = await openSidebarTab(page, 'style', 'number');
 
 		const blockBaseWith = await accordionPanel.$eval(
@@ -25,7 +34,7 @@ describe('BlockResizer', () => {
 			selector => selector.value
 		);
 		expect(blockBaseWith).toStrictEqual('250');
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(300);
 
 		// click and drag
 		const resizerBottomRight = await page.$(

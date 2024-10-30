@@ -25,7 +25,7 @@ describe('BlockResizer', () => {
 			selector => selector.value
 		);
 		expect(blockBaseWith).toStrictEqual('250');
-		await page.waitForTimeout(300);
+		await page.waitForTimeout(1000);
 
 		// click and drag
 		const resizerBottomRight = await page.$(

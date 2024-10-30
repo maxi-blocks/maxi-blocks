@@ -60,7 +60,6 @@ const withMaxiProps = createHigherOrderComponent(
 				getBlockOrder,
 				getBlockParents,
 				getBlockParentsByBlockName,
-				getBlocks,
 			} = useSelect(select => select('core/block-editor'), []);
 
 			const {
@@ -352,7 +351,9 @@ const withMaxiProps = createHigherOrderComponent(
 							{...ownProps}
 						/>
 					)}
-					{isLastBlock && <BlockInserter />}
+					{isLastBlock && (
+						<BlockInserter className='maxi-block-inserter maxi-block-inserter__last' />
+					)}
 				</>
 			);
 		}),

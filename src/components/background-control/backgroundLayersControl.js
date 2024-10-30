@@ -588,6 +588,7 @@ const BackgroundLayersControl = ({
 				)}
 				{!disableAddLayer && !isHover && (
 					<SelectControl
+						__nextHasNoMarginBottom
 						className='maxi-background-control__add-layer'
 						value='Add new layer'
 						options={[

@@ -153,6 +153,7 @@ const DividerControl = props => {
 			/>
 			{!disableLineStyle && (
 				<SelectControl
+					__nextHasNoMarginBottom
 					label={__('Add border line', 'maxi-blocks')}
 					options={[
 						{ label: __('None', 'maxi-blocks'), value: 'none' },

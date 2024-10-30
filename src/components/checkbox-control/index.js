@@ -38,7 +38,8 @@ const CheckBoxControl = props => {
 	const classes = classnames('maxi-checkbox-control', className);
 
 	return (
-		<BaseControl id={id} label={title} help={help} className={classes}>
+		<BaseControl
+					__nextHasNoMarginBottom id={id} label={title} help={help} className={classes}>
 			<label
 				htmlFor={checkboxId}
 				className='maxi-checkbox-control__label'

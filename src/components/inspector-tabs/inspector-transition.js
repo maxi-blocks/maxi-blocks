@@ -136,6 +136,7 @@ const TransitionControlWrapper = props => {
 		<>
 			{!transitionChangeAll && (
 				<SelectControl
+					__nextHasNoMarginBottom
 					label={__('Settings', 'maxi-blocks')}
 					value={selected}
 					options={[

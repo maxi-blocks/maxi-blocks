@@ -50,6 +50,7 @@ const ColorPaletteControl = props => {
 	return (
 		<div className='maxi-color-control__palette'>
 			<BaseControl
+					__nextHasNoMarginBottom
 				className='maxi-color-control__palette-label'
 				label={label ? `${label} colour` : ''}
 			>

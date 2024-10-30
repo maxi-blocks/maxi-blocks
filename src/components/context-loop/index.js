@@ -339,6 +339,7 @@ const ContextLoop = props => {
 						)}
 					{sourceOptions.length > 1 && (
 						<SelectControl
+							__nextHasNoMarginBottom
 							label={__('Source', 'maxi-blocks')}
 							value={source}
 							options={sourceOptions}
@@ -372,6 +373,7 @@ const ContextLoop = props => {
 						/>
 					)}
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Type', 'maxi-blocks')}
 						value={type}
 						options={postTypesOptions}
@@ -406,6 +408,7 @@ const ContextLoop = props => {
 						<>
 							{isTypeHasRelations && (
 								<SelectControl
+									__nextHasNoMarginBottom
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
 									newStyle
@@ -428,6 +431,7 @@ const ContextLoop = props => {
 								relation === 'by-id' &&
 								relationTypes.includes(type) && (
 									<SelectControl
+										__nextHasNoMarginBottom
 										label={__('Author id', 'maxi-blocks')}
 										value={author}
 										newStyle
@@ -454,6 +458,7 @@ const ContextLoop = props => {
 									relation === 'by-id')) ||
 								relation.includes('custom-taxonomy')) && (
 								<SelectControl
+									__nextHasNoMarginBottom
 									label={__(
 										`${capitalize(
 											relation.includes('custom-taxonomy')
@@ -497,6 +502,7 @@ const ContextLoop = props => {
 											'custom-taxonomy'
 										)) && (
 										<SelectControl
+											__nextHasNoMarginBottom
 											label={__(
 												'Order by',
 												'maxi-blocks'
@@ -520,6 +526,7 @@ const ContextLoop = props => {
 										/>
 									)}
 									<SelectControl
+										__nextHasNoMarginBottom
 										label={__('Order', 'maxi-blocks')}
 										value={order}
 										newStyle
@@ -849,6 +856,26 @@ const ContextLoop = props => {
 										</>
 									)}
 								</>
+							)}
+							{relation === 'random' && (
+								<AdvancedNumberControl
+									label={__('Accumulator', 'maxi-blocks')}
+									value={accumulator}
+									onChangeValue={value =>
+										changeProps({
+											'cl-accumulator': value,
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'cl-accumulator':
+												getDefaultAttribute(
+													'cl-accumulator'
+												),
+										})
+									}
+									disableRange
+								/>
 							)}
 						</>
 					)}

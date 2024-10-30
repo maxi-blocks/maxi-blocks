@@ -41,6 +41,7 @@ const ACFSettingsControl = props => {
 	return (
 		<>
 			<SelectControl
+				__nextHasNoMarginBottom
 				label='ACF Group'
 				value={group}
 				options={groupOptions}
@@ -53,6 +54,7 @@ const ACFSettingsControl = props => {
 			/>
 			{!isCL && (
 				<SelectControl
+					__nextHasNoMarginBottom
 					label='ACF Field'
 					value={field}
 					options={fieldsOptions}

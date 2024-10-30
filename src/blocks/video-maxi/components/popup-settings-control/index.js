@@ -119,6 +119,7 @@ const PopupSettingsControl = props => {
 				}
 			/>
 			<SelectControl
+				__nextHasNoMarginBottom
 				label={__('Pop animation', 'maxi-blocks')}
 				className='maxi-video-popup-control__pop-animation'
 				value={popAnimation}

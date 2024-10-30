@@ -197,7 +197,7 @@ class MaxiBlockComponent extends Component {
 				}
 
 				if (isArray(innerBlocks)) {
-					for (let i = 0; i < innerBlocks.length; i++) {
+					for (let i = 0; i < innerBlocks.length; i += 1) {
 						const { attributes, innerBlocks: nestedBlocks } =
 							innerBlocks[i];
 						collectIDs(attributes, nestedBlocks, idPairs);
@@ -648,9 +648,57 @@ class MaxiBlockComponent extends Component {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
 
-	// eslint-disable-next-line class-methods-use-this
-	getMaxiAttributes() {
-		return null;
+	handleResponsivePreview(editorWrapper, tabletPreview, mobilePreview) {
+		const previewTarget = tabletPreview ?? mobilePreview;
+		const postEditor = document?.body?.querySelector(
+			'.edit-post-visual-editor'
+		);
+		const responsiveWidth = postEditor.getAttribute(
+			'maxi-blocks-responsive-width'
+		);
+		const isMaxiPreview = postEditor.getAttribute('is-maxi-preview');
+
+		if (isMaxiPreview) {
+			previewTarget.style.width = `${responsiveWidth}px`;
+			previewTarget.style.boxSizing = 'content-box';
+		}
+	}
+
+	handleIframeStyles(iframe, currentBreakpoint) {
+		const iframeDocument = iframe.contentDocument;
+		const editorWrapper = iframeDocument.body;
+		const tabletPreview = editorWrapper.querySelector('.is-tablet-preview');
+		const mobilePreview = editorWrapper.querySelector('.is-mobile-preview');
+
+		if (tabletPreview || mobilePreview) {
+			this.handleResponsivePreview(
+				editorWrapper,
+				tabletPreview,
+				mobilePreview
+			);
+		}
+
+		if (editorWrapper) {
+			this.setupIframeForMaxi(
+				iframe,
+				iframeDocument,
+				editorWrapper,
+				currentBreakpoint
+			);
+		}
+	}
+
+	getOrCreateStyleElement(target, uniqueID) {
+		const styleId = `maxi-blocks__styles--${uniqueID}`;
+		let styleElement = target.getElementById(styleId);
+
+		if (!styleElement) {
+			styleElement = target.createElement('style');
+			styleElement.id = styleId;
+			target.head.appendChild(styleElement);
+		}
+
+		return styleElement;
 	}
 
 	setMaxiAttributes() {
@@ -1255,44 +1303,9 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	handleIframeStyles(iframe, currentBreakpoint) {
-		const iframeDocument = iframe.contentDocument;
-		const editorWrapper = iframeDocument.body;
-		const tabletPreview = editorWrapper.querySelector('.is-tablet-preview');
-		const mobilePreview = editorWrapper.querySelector('.is-mobile-preview');
-
-		if (tabletPreview || mobilePreview) {
-			this.handleResponsivePreview(
-				editorWrapper,
-				tabletPreview,
-				mobilePreview
-			);
-		}
-
-		if (editorWrapper) {
-			this.setupIframeForMaxi(
-				iframe,
-				iframeDocument,
-				editorWrapper,
-				currentBreakpoint
-			);
-		}
-	}
-
-	handleResponsivePreview(editorWrapper, tabletPreview, mobilePreview) {
-		const previewTarget = tabletPreview ?? mobilePreview;
-		const postEditor = document?.body?.querySelector(
-			'.edit-post-visual-editor'
-		);
-		const responsiveWidth = postEditor.getAttribute(
-			'maxi-blocks-responsive-width'
-		);
-		const isMaxiPreview = postEditor.getAttribute('is-maxi-preview');
-
-		if (isMaxiPreview) {
-			previewTarget.style.width = `${responsiveWidth}px`;
-			previewTarget.style.boxSizing = 'content-box';
-		}
+	// eslint-disable-next-line class-methods-use-this
+	getMaxiAttributes() {
+		return null;
 	}
 
 	setupIframeForMaxi(
@@ -1404,19 +1417,6 @@ class MaxiBlockComponent extends Component {
 	getStyleTarget(isSiteEditor, iframe) {
 		const siteEditorIframe = isSiteEditor ? getSiteEditorIframe() : null;
 		return siteEditorIframe || iframe?.contentDocument || document;
-	}
-
-	getOrCreateStyleElement(target, uniqueID) {
-		const styleId = `maxi-blocks__styles--${uniqueID}`;
-		let styleElement = target.getElementById(styleId);
-
-		if (!styleElement) {
-			styleElement = target.createElement('style');
-			styleElement.id = styleId;
-			target.head.appendChild(styleElement);
-		}
-
-		return styleElement;
 	}
 
 	generateStyleContent(

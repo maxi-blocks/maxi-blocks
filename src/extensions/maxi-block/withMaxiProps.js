@@ -60,6 +60,7 @@ const withMaxiProps = createHigherOrderComponent(
 				getBlockOrder,
 				getBlockParents,
 				getBlockParentsByBlockName,
+				getBlocks,
 			} = useSelect(select => select('core/block-editor'), []);
 
 			const {
@@ -79,6 +80,7 @@ const withMaxiProps = createHigherOrderComponent(
 				isTyping,
 				blockIndex,
 				blockRootClientId,
+				isLastBlock,
 			} = useSelect(select => {
 				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 					select('maxiBlocks');
@@ -87,15 +89,22 @@ const withMaxiProps = createHigherOrderComponent(
 					isTyping,
 					getBlockIndex,
 					getBlockRootClientId,
+					getBlocks,
 				} = select('core/block-editor');
+
+				const currentBlockIndex = getBlockIndex(clientId);
+				const allBlocks = getBlocks();
 
 				return {
 					deviceType: receiveMaxiDeviceType(),
 					baseBreakpoint: receiveBaseBreakpoint(),
 					hasSelectedChild: hasSelectedInnerBlock(clientId, true),
 					isTyping: isTyping(),
-					blockIndex: getBlockIndex(clientId),
+					blockIndex: currentBlockIndex,
 					blockRootClientId: getBlockRootClientId(clientId),
+					isLastBlock:
+						attributes?.isFirstOnHierarchy &&
+						currentBlockIndex === allBlocks.length - 1,
 				};
 			});
 
@@ -337,16 +346,13 @@ const withMaxiProps = createHigherOrderComponent(
 							repeaterContext?.updateInnerBlocksPositions
 						}
 					/>
-					{/*
-						Need to check if it's typing to avoid an error on Text Maxi when moving the caret selector doing a keyDown event.
-						It happens when, for example, you are typing and you move the caret selector to another block using the arrows.
-					*/}
 					{!isTyping && !DISABLED_BLOCKS.includes(ownProps.name) && (
 						<BlockInserter.InterBlockInserter
 							ref={ref}
 							{...ownProps}
 						/>
 					)}
+					{isLastBlock && <BlockInserter />}
 				</>
 			);
 		}),

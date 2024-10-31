@@ -113,10 +113,12 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
-            register_rest_route('maxi-blocks/v1.0', '/get-font-url/(?P<font_name>.+)', [
+            register_rest_route($this->namespace, '/get-font-url/(?P<font_name>.+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_font_url'],
-                'permission_callback' => '__return_true',
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
                 'args' => [
                     'font_name' => [
                         'required' => true,

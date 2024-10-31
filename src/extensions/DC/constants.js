@@ -421,6 +421,10 @@ const generalCustomerFields = [
 		value: 'billing_postcode',
 	},
 	{ label: __('Country (billing)', 'maxi-blocks'), value: 'billing_country' },
+	{
+		label: __('Country full name (billing)', 'maxi-blocks'),
+		value: 'billing_full_country',
+	},
 	{ label: __('State (billing)', 'maxi-blocks'), value: 'billing_state' },
 	{ label: __('Name (shipping)', 'maxi-blocks'), value: 'shipping_name' },
 	{
@@ -451,6 +455,10 @@ const generalCustomerFields = [
 	{
 		label: __('Country (shipping)', 'maxi-blocks'),
 		value: 'shipping_country',
+	},
+	{
+		label: __('Country full name (shipping)', 'maxi-blocks'),
+		value: 'shipping_full_country',
 	},
 	{ label: __('State (shipping)', 'maxi-blocks'), value: 'shipping_state' },
 ];

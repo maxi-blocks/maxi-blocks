@@ -1061,6 +1061,10 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function get_customer_data($request)
         {
+			if (!class_exists('WooCommerce')) {
+				return null;
+			}
+
             $customer_id = $request['customer_id'];
 
             $customer_data = get_user_meta($customer_id);
@@ -1091,6 +1095,12 @@ if (!class_exists('MaxiBlocks_API')):
             $customer_data = array_filter($customer_data, function ($key) use ($woocommerce_fields) {
                 return in_array($key, $woocommerce_fields);
             }, ARRAY_FILTER_USE_KEY);
+			if (isset($customer_data['billing_country'])) {
+				$customer_data['billing_full_country'] = [WC()->countries->countries[$customer_data['billing_country'][0]]];
+			}
+			if (isset($customer_data['shipping_country'])) {
+				$customer_data['shipping_full_country'] = [WC()->countries->countries[$customer_data['shipping_country'][0]]];
+			}
 
             return wp_json_encode($customer_data);
         }

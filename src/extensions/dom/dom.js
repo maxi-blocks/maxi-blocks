@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { select, dispatch, subscribe, resolveSelect } from '@wordpress/data';
+import { setDefaultBlockName } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -509,4 +510,17 @@ wp.domReady(() => {
 			removeNavigationHoverUnderline(removeUnderlineHover);
 		}
 	});
+
+	const isPost = () => {
+		const postType = select('core/editor').getCurrentPostType();
+		return postType === 'post';
+	};
+
+	setDefaultBlockName('maxi-blocks/container-maxi');
+
+	setTimeout(() => {
+		if (isPost()) {
+			setDefaultBlockName('maxi-blocks/text-maxi');
+		}
+	}, 100);
 });

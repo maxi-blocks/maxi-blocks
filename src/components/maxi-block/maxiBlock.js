@@ -11,6 +11,7 @@ import {
 	useState,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
+import { setDefaultBlockName } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -135,6 +136,14 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		breakpoint: extraProps.deviceType,
 		attributes: extraProps.attributes,
 	});
+
+	if (isSelected) {
+		if (blockName === 'maxi-blocks/text-maxi') {
+			setDefaultBlockName('maxi-blocks/text-maxi');
+		} else {
+			setDefaultBlockName('maxi-blocks/container-maxi');
+		}
+	}
 
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =

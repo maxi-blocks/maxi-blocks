@@ -878,7 +878,7 @@ const loadIntegrationsOptions = () => {
 					generalTypeOptions.push(...WCTypeOptions);
 					imageTypeOptions.push(
 						...WCTypeOptions.filter(option =>
-							['products', 'customers'].includes(option.value)
+							['products'].includes(option.value)
 						)
 					);
 				}

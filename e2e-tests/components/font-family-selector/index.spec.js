@@ -71,6 +71,8 @@ describe('FontFamilySelector', () => {
 			'Montserrat'
 		);
 
+		await page.waitForTimeout(500);
+
 		const hasBeenLoaded = await page.evaluate(() =>
 			document.fonts.check('12px Montserrat')
 		);

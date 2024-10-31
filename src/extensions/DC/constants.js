@@ -237,6 +237,7 @@ const generalUsersFields = [
 	{ label: __('Email', 'maxi-blocks'), value: 'email' },
 	{ label: __('Link', 'maxi-blocks'), value: 'link' },
 	{ label: __('Website', 'maxi-blocks'), value: 'url' },
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
 ];
 
 const generalCategoryFields = [

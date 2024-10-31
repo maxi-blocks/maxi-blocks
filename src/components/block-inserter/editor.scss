@@ -115,7 +115,8 @@
 		}
 	}
 	&__last {
-		.maxi-block-inserter__button {
+		.maxi-block-inserter__button,
+		.maxi-block-inserter__button.is-next-40px-default-size {
 			width: 25px;
 			height: 24px;
 			margin: auto;

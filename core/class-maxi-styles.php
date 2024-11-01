@@ -1344,7 +1344,7 @@ class MaxiBlocks_Styles
 
         if (isset($content_block['css_value'])) {
             if ($block_name === 'maxi-blocks/container-maxi' && $props['isFirstOnHierarchy'] && strpos($content_block['css_value'], 'min-width:100%') !== false) {
-                if (self::$active_theme === 2023 || self::$active_theme === 2024) {
+                if (self::$active_theme === 2023 || self::$active_theme === 2024 || self::$active_theme === 2025) {
                     $new_styles = "body.maxi-blocks--active .has-global-padding > #$unique_id {
 					margin-right: calc(var(--wp--style--root--padding-right) * -1) !important;
 					margin-left: calc(var(--wp--style--root--padding-left) * -1) !important;
@@ -1959,6 +1959,9 @@ class MaxiBlocks_Styles
         }
         if ('Twenty Twenty-Two' === $current_theme->name || 'twentytwentytwo' === $current_theme->template) {
             return 2022;
+        }
+        if ('Twenty Twenty-Five' === $current_theme->name || 'twentytwentyfive' === $current_theme->template) {
+            return 2025;
         }
         if ('Astra' === $current_theme->name || 'astra' === $current_theme->template) {
             return 'astra';

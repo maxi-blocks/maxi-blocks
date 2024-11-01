@@ -1,4 +1,4 @@
-_Updates 1 Now 2024_
+_Updates 1 Nov 2024_
 MaxiBlocks v2.0.1
 * Update: Enabled Container Maxi and Text Maxi as default blocks when creating a new page / post accordingly.
 * Update: Restored the Text Block splitting into a new Text Block on pressing Enter at the end and in the beginning of the block's content.

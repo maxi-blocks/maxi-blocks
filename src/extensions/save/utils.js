@@ -1,4 +1,5 @@
 import { inlineLinkFields } from '../DC/constants';
+import { isLinkObfuscationEnabled } from '../DC/utils';
 
 const getLinkAttributesFromLinkSettings = (
 	linkSettings,
@@ -25,15 +26,18 @@ const getLinkAttributesFromLinkSettings = (
 		linkSettings.opensInNewTab && dcLinkTarget !== 'author_email'
 			? '_blank'
 			: '_self';
-	const dataEmailObfuscated =
-		dcStatus && dcLinkStatus && dcLinkTarget === 'author_email';
+	const isEmailLinkObfuscated = isLinkObfuscationEnabled(
+		dcStatus,
+		dcLinkStatus,
+		dcLinkTarget
+	);
 
 	return {
 		rel,
 		href,
 		target,
-		...(dataEmailObfuscated && {
-			'data-email-obfuscated': dataEmailObfuscated,
+		...(isEmailLinkObfuscated && {
+			'data-email-obfuscated': isEmailLinkObfuscated,
 		}),
 	};
 };

@@ -531,7 +531,7 @@ export const htmlFields = ['tags', 'categories'];
 /**
  * Link constants
  */
-export const multipleLinksTypes = ['products', 'users'];
+export const multipleLinksTypes = ['products', 'users', 'customers'];
 
 export const linkTypesOptions = {
 	products: [
@@ -540,6 +540,9 @@ export const linkTypesOptions = {
 	users: [
 		{ label: __('Author email', 'maxi-blocks'), value: 'author_email' },
 		{ label: __('Author site', 'maxi-blocks'), value: 'author_site' },
+	],
+	customers: [
+		{ label: __('Customer email', 'maxi-blocks'), value: 'customer_email' },
 	],
 };
 

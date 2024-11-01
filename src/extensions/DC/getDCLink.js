@@ -30,10 +30,19 @@ const getPostAuthorLink = async authorId => {
 
 const getUserLink = (dataRequest, data) => {
 	if (dataRequest?.linkTarget === 'author_email') {
-		return `mailto:${data?.email}`;
+		return data?.email ? `mailto:${data?.email}` : null;
 	}
 	if (dataRequest?.linkTarget === 'author_site') {
 		return data?.url;
+	}
+
+	return data?.link;
+};
+
+const getCustomerLink = (dataRequest, data) => {
+	if (dataRequest?.linkTarget === 'customer_email') {
+		const email = data?.customerData?.billing_email?.[0];
+		return email ? `mailto:${email}` : null;
 	}
 
 	return data?.link;
@@ -100,6 +109,10 @@ const getDCLink = async (dataRequest, clientId) => {
 
 	if (type === 'users') {
 		return getUserLink(dataRequest, data);
+	}
+
+	if (type === 'customers') {
+		return getCustomerLink(dataRequest, data);
 	}
 
 	return data?.link || null;

@@ -593,3 +593,12 @@ export const getRelationKeyForId = (relation, type) => {
 	}
 	return null;
 };
+
+export const isLinkObfuscationEnabled = (
+	dcStatus,
+	dcLinkStatus,
+	dcLinkTarget
+) =>
+	dcStatus &&
+	dcLinkStatus &&
+	['author_email', 'customer_email'].includes(dcLinkTarget);

@@ -54,6 +54,7 @@ import processRelations from '../relations/processRelations';
  */
 import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
+import { isLinkObfuscationEnabled } from '../DC/utils';
 
 /**
  * Class
@@ -726,6 +727,7 @@ class MaxiBlockComponent extends Component {
 		const {
 			uniqueID,
 			'dc-status': dcStatus,
+			'dc-link-status': dcLinkStatus,
 			'dc-link-target': dcLinkTarget,
 			'background-layers': bgLayers,
 			relations: relationsRaw,
@@ -744,7 +746,11 @@ class MaxiBlockComponent extends Component {
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 		const hasVideo = getHasVideo(uniqueID, bgLayers);
 		const hasDC = dcStatus || getHasDC(bgLayers);
-		const hasEmailLink = dcStatus && dcLinkTarget === 'author_email';
+		const shouldEnableLinkObfuscation = isLinkObfuscationEnabled(
+			dcStatus,
+			dcLinkStatus,
+			dcLinkTarget
+		);
 		const scrollEffects = getScrollEffects(uniqueID, scroll);
 		const relations = getRelations(uniqueID, relationsRaw);
 
@@ -770,7 +776,7 @@ class MaxiBlockComponent extends Component {
 							[uniqueID]: contextLoop,
 						},
 					}),
-				...(hasEmailLink && {
+				...(shouldEnableLinkObfuscation && {
 					email_obfuscate: true,
 				}),
 				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),

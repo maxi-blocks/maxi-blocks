@@ -159,7 +159,8 @@ const getDCContent = async (dataRequest, clientId) => {
 			const firstName = getCustomerDataField(firstNameField) ?? '';
 			const lastNameField = field.replace('_name', '_last_name');
 			const lastName = getCustomerDataField(lastNameField) ?? '';
-			return `${firstName} ${lastName}`;
+			const name = `${firstName} ${lastName}`;
+			return name.trim() ? name : null;
 		}
 
 		return getCustomerDataField(field) || null;

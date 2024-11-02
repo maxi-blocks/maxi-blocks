@@ -44,7 +44,8 @@ const showCurrent = (type, currentTemplateType) => {
 
 	if (
 		allowedTemplateTypesCurrent.includes(currentTemplateType) &&
-		type.includes(currentTemplateType)
+		(type.includes(currentTemplateType) ||
+			(type === 'users' && currentTemplateType === 'author'))
 	)
 		return true;
 

@@ -141,12 +141,7 @@ const ContextLoop = props => {
 			currentTemplateType
 		);
 
-		// Filter out the item where the value is 'current'
-		const filteredOptions = options.filter(
-			item => item.value !== 'current'
-		);
-
-		return filteredOptions;
+		return options;
 	}, [contentType, currentTemplateType, type]);
 
 	const isTypeHasRelations =

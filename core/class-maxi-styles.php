@@ -148,13 +148,18 @@ class MaxiBlocks_Styles
 
             foreach ($scripts as &$script) {
                 $js_var = str_replace('-', '_', $script);
-                $js_var_to_pass =
-                    'maxi' .
+                $js_var_to_pass = $script === 'relations' ? 'maxi' .
                     str_replace(
                         ' ',
                         '',
                         ucwords(str_replace('-', ' ', $script))
-                    ).'Legacy';
+                    ).'Legacy' : 'maxi' .
+                    str_replace(
+                        ' ',
+                        '',
+                        ucwords(str_replace('-', ' ', $script))
+                    );
+
                 $js_script_name = 'maxi-' . $script;
                 $js_script_path = '//js//min//' . $js_script_name . '.min.js';
                 // $js_script_path = '//js//' . $js_script_name . '.js';
@@ -186,14 +191,14 @@ class MaxiBlocks_Styles
                     }
 
                     wp_enqueue_script(
-                        $js_script_name.'-legacy',
+                        $script === 'relations' ? $js_script_name.'-legacy' : $js_script_name,
                         plugins_url($js_script_path, dirname(__FILE__)),
                         array(),
                         MAXI_PLUGIN_VERSION,
                         true
                     );
 
-                    wp_localize_script($js_script_name.'-legacy', $js_var_to_pass, $this->get_block_data($js_var, $meta));
+                    wp_localize_script($script === 'relations' ? $js_script_name.'-legacy' : $js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
                 }
             }
         }

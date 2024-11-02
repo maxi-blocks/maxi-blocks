@@ -759,9 +759,8 @@ const LibraryContainer = props => {
 			gutenberg_blocks_status: true,
 			dark: {
 				defaultStyleCard: {
-					button: { 'hover-background-color-global': true },
 					link: {
-						'link-color-global': true,
+						'link-color-global': false,
 						'link-palette-color': 4,
 					},
 					navigation: {
@@ -923,9 +922,8 @@ const LibraryContainer = props => {
 			},
 			light: {
 				defaultStyleCard: {
-					button: { 'hover-background-color-global': true },
 					link: {
-						'link-color-global': true,
+						'link-color-global': false,
 						'link-palette-color': 4,
 					},
 					navigation: {
@@ -1134,6 +1132,7 @@ const LibraryContainer = props => {
 					setSwapChecked(val);
 					saveMaxiSetting('swap_cloud_images', val);
 				}}
+				__nextHasNoMarginBottom
 			/>
 		);
 	};

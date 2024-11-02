@@ -173,6 +173,7 @@ const Link = props => {
 									dcLinkStatus && (
 										<>
 											<SelectControl
+												__nextHasNoMarginBottom
 												label={__(
 													'Link target',
 													'maxi-blocks'

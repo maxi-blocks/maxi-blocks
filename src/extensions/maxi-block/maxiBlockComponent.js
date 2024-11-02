@@ -48,6 +48,7 @@ import updateRelationsRemotely from '../relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
 import processRelations from '../relations/processRelations';
+import compareVersions from './compareVersions';
 
 /**
  * External dependencies
@@ -197,7 +198,7 @@ class MaxiBlockComponent extends Component {
 				}
 
 				if (isArray(innerBlocks)) {
-					for (let i = 0; i < innerBlocks.length; i++) {
+					for (let i = 0; i < innerBlocks.length; i += 1) {
 						const { attributes, innerBlocks: nestedBlocks } =
 							innerBlocks[i];
 						collectIDs(attributes, nestedBlocks, idPairs);
@@ -648,9 +649,57 @@ class MaxiBlockComponent extends Component {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
 
-	// eslint-disable-next-line class-methods-use-this
-	getMaxiAttributes() {
-		return null;
+	handleResponsivePreview(editorWrapper, tabletPreview, mobilePreview) {
+		const previewTarget = tabletPreview ?? mobilePreview;
+		const postEditor = document?.body?.querySelector(
+			'.edit-post-visual-editor'
+		);
+		const responsiveWidth = postEditor.getAttribute(
+			'maxi-blocks-responsive-width'
+		);
+		const isMaxiPreview = postEditor.getAttribute('is-maxi-preview');
+
+		if (isMaxiPreview) {
+			previewTarget.style.width = `${responsiveWidth}px`;
+			previewTarget.style.boxSizing = 'content-box';
+		}
+	}
+
+	handleIframeStyles(iframe, currentBreakpoint) {
+		const iframeDocument = iframe.contentDocument;
+		const editorWrapper = iframeDocument.body;
+		const tabletPreview = editorWrapper.querySelector('.is-tablet-preview');
+		const mobilePreview = editorWrapper.querySelector('.is-mobile-preview');
+
+		if (tabletPreview || mobilePreview) {
+			this.handleResponsivePreview(
+				editorWrapper,
+				tabletPreview,
+				mobilePreview
+			);
+		}
+
+		if (editorWrapper) {
+			this.setupIframeForMaxi(
+				iframe,
+				iframeDocument,
+				editorWrapper,
+				currentBreakpoint
+			);
+		}
+	}
+
+	getOrCreateStyleElement(target, uniqueID) {
+		const styleId = `maxi-blocks__styles--${uniqueID}`;
+		let styleElement = target.getElementById(styleId);
+
+		if (!styleElement) {
+			styleElement = target.createElement('style');
+			styleElement.id = styleId;
+			target.head.appendChild(styleElement);
+		}
+
+		return styleElement;
 	}
 
 	setMaxiAttributes() {
@@ -1106,7 +1155,7 @@ class MaxiBlockComponent extends Component {
 				)
 			) {
 				// Only inject styles if it's not a breakpoint change
-				if (!isBreakpointChange) {
+				if (!isBreakpointChange || this.props.deviceType === 'xxl') {
 					obj = this.getStylesObject;
 					this.injectStyles(
 						uniqueID,
@@ -1119,7 +1168,7 @@ class MaxiBlockComponent extends Component {
 						iframe
 					);
 				} else {
-					// If it's a breakpoint change, only update the responsive classes
+					// If it's a breakpoint change, and not to XXL, only update the responsive classes
 					this.updateResponsiveClasses(iframe, this.props.deviceType);
 				}
 			}
@@ -1249,7 +1298,7 @@ class MaxiBlockComponent extends Component {
 		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
 		// Only generate new styles if it's not a breakpoint change
-		if (!isBreakpointChange) {
+		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,
@@ -1265,44 +1314,9 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	handleIframeStyles(iframe, currentBreakpoint) {
-		const iframeDocument = iframe.contentDocument;
-		const editorWrapper = iframeDocument.body;
-		const tabletPreview = editorWrapper.querySelector('.is-tablet-preview');
-		const mobilePreview = editorWrapper.querySelector('.is-mobile-preview');
-
-		if (tabletPreview || mobilePreview) {
-			this.handleResponsivePreview(
-				editorWrapper,
-				tabletPreview,
-				mobilePreview
-			);
-		}
-
-		if (editorWrapper) {
-			this.setupIframeForMaxi(
-				iframe,
-				iframeDocument,
-				editorWrapper,
-				currentBreakpoint
-			);
-		}
-	}
-
-	handleResponsivePreview(editorWrapper, tabletPreview, mobilePreview) {
-		const previewTarget = tabletPreview ?? mobilePreview;
-		const postEditor = document?.body?.querySelector(
-			'.edit-post-visual-editor'
-		);
-		const responsiveWidth = postEditor.getAttribute(
-			'maxi-blocks-responsive-width'
-		);
-		const isMaxiPreview = postEditor.getAttribute('is-maxi-preview');
-
-		if (isMaxiPreview) {
-			previewTarget.style.width = `${responsiveWidth}px`;
-			previewTarget.style.boxSizing = 'content-box';
-		}
+	// eslint-disable-next-line class-methods-use-this
+	getMaxiAttributes() {
+		return null;
 	}
 
 	setupIframeForMaxi(
@@ -1416,19 +1430,6 @@ class MaxiBlockComponent extends Component {
 		return siteEditorIframe || iframe?.contentDocument || document;
 	}
 
-	getOrCreateStyleElement(target, uniqueID) {
-		const styleId = `maxi-blocks__styles--${uniqueID}`;
-		let styleElement = target.getElementById(styleId);
-
-		if (!styleElement) {
-			styleElement = target.createElement('style');
-			styleElement.id = styleId;
-			target.head.appendChild(styleElement);
-		}
-
-		return styleElement;
-	}
-
 	generateStyleContent(
 		uniqueID,
 		stylesObj,
@@ -1442,6 +1443,24 @@ class MaxiBlockComponent extends Component {
 		let styleContent;
 		let styles;
 
+		const originVersion = this.props.attributes?.['maxi-version-origin'];
+		const currentVersion = this.props.attributes?.['maxi-version-current'];
+		const isOriginVersionBelow156 = originVersion
+			? compareVersions(originVersion, '1.5.6') < 0
+			: false;
+		const isCurrentVersionAtLeast201 = currentVersion
+			? compareVersions(currentVersion, '2.0.1') >= 0
+			: false;
+
+		// Apply the copyGeneralToXL function to stylesObj only if this.props.baseBreakpoint is 'xxl',
+		// the current version is less than 2.0.1, and the origin version is below 1.5.6
+		const updatedStylesObj =
+			this.props.baseBreakpoint === 'xxl' &&
+			!isCurrentVersionAtLeast201 &&
+			isOriginVersionBelow156
+				? this.copyGeneralToXL(stylesObj)
+				: stylesObj;
+
 		if (isBreakpointChange || isBlockStyleChange) {
 			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
 			styleContent = cssCache[currentBreakpoint];
@@ -1454,10 +1473,18 @@ class MaxiBlockComponent extends Component {
 					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
 					`--maxi-${blockStyle}-`
 				);
-				styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
+				styles = this.generateStyles(
+					updatedStylesObj,
+					breakpoints,
+					uniqueID
+				);
 			}
 		} else {
-			styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
+			styles = this.generateStyles(
+				updatedStylesObj,
+				breakpoints,
+				uniqueID
+			);
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
 		}
 
@@ -1595,6 +1622,27 @@ class MaxiBlockComponent extends Component {
 				currentBreakpoint === 's' ? 's' : 'xs'
 			);
 		}
+	}
+
+	copyGeneralToXL(obj) {
+		const copyToXL = innerObj => {
+			for (const key in innerObj) {
+				if (typeof innerObj[key] === 'object') {
+					if (
+						'general' in innerObj[key] &&
+						!('xl' in innerObj[key])
+					) {
+						innerObj[key].xl = { ...innerObj[key].general };
+					} else {
+						copyToXL(innerObj[key]);
+					}
+				}
+			}
+		};
+
+		const newObj = JSON.parse(JSON.stringify(obj));
+		copyToXL(newObj);
+		return newObj;
 	}
 }
 

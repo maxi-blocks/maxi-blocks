@@ -178,14 +178,6 @@ class edit extends MaxiBlockComponent {
 						this.typingTimeoutContent = typingTimeoutContent;
 					}
 				),
-			onSplit: (value, isOriginal) =>
-				handleSplit(
-					value,
-					isOriginal,
-					attributes,
-					clientId,
-					'maxi-blocks/text-maxi'
-				),
 			onReplace,
 			onMerge: forward => onMerge(this.props, forward),
 			// onRemove needs to be commented to avoid removing the block

@@ -7,8 +7,14 @@ const resolvers = {
 	getFontUrl:
 		(fontName, fontData) =>
 		async ({ dispatch }) => {
+			// Encode the font name for the URL path
+			const encodedFontName = encodeURIComponent(fontName).replace(
+				/%20/g,
+				'+'
+			);
+
 			const fontUrl = await apiFetch({
-				path: `/maxi-blocks/v1.0/get-font-url/${fontName}`,
+				path: `/maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
 				method: 'GET',
 			});
 

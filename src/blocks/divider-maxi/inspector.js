@@ -61,6 +61,7 @@ const Inspector = props => {
 											>
 												<>
 													<SelectControl
+														__nextHasNoMarginBottom
 														label={__(
 															'Line orientation',
 															'maxi-blocks'
@@ -111,6 +112,7 @@ const Inspector = props => {
 														}}
 													/>
 													<SelectControl
+														__nextHasNoMarginBottom
 														label={__(
 															'Line vertical position',
 															'maxi-blocks'
@@ -167,6 +169,7 @@ const Inspector = props => {
 														}}
 													/>
 													<SelectControl
+														__nextHasNoMarginBottom
 														label={__(
 															'Line horizontal position',
 															'maxi-blocks'

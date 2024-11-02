@@ -347,6 +347,9 @@ body .maxi-style-cards__popover {
 			position: relative;
 			button:not(.maxi-reset-button):not(.maxi-color-control__palette-box),
 			a.components-button {
+				&:disabled {
+					opacity: 0.3;
+				}
 				display: flex;
 				align-items: center;
 				justify-content: center;

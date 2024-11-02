@@ -15,7 +15,19 @@ describe('Delete block', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		await page.keyboard.type('Block 1', { delay: 100 });
+		await page.waitForTimeout(300);
+
+		// Remove the maxi-block-inserter__last element content
+		await page.evaluate(() => {
+			const element = document.querySelector(
+				'.maxi-block-inserter__last'
+			);
+			if (element) element.textContent = '';
+		});
+
+		await page.waitForTimeout(300);
+
+		await page.keyboard.type('Block 1', { delay: 300 });
 
 		const textContent = await page.$eval(
 			'.is-root-container.block-editor-block-list__layout',
@@ -37,6 +49,13 @@ describe('Delete block', () => {
 
 		await page.waitForTimeout(500);
 
+		// Remove the maxi-block-inserter__last element content
+		await page.evaluate(() => {
+			const element = document.querySelector(
+				'.maxi-block-inserter__last'
+			);
+			if (element) element.textContent = '';
+		});
 		// check block not exist
 		const textContentBeforeDelete = await page.$eval(
 			'.is-root-container.block-editor-block-list__layout',

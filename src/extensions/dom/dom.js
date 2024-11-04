@@ -23,6 +23,7 @@ import {
 	showHideHamburgerNavigation,
 	removeNavigationHoverUnderline,
 } from '../../editor/style-cards/utils';
+import isPostEditor from './isPostEditor';
 
 /**
  * External dependencies
@@ -511,16 +512,11 @@ wp.domReady(() => {
 		}
 	});
 
-	const isPost = () => {
-		const postType = select('core/editor').getCurrentPostType();
-		return postType === 'post';
-	};
-
-	setDefaultBlockName('maxi-blocks/container-maxi');
-
 	setTimeout(() => {
-		if (isPost()) {
+		if (isPostEditor()) {
 			setDefaultBlockName('maxi-blocks/text-maxi');
+		} else {
+			setDefaultBlockName('maxi-blocks/container-maxi');
 		}
 	}, 100);
 });

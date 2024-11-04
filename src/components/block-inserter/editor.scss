@@ -115,15 +115,16 @@
 		}
 	}
 	&__last {
-		.maxi-block-inserter__button {
+		.maxi-block-inserter__button,
+		.maxi-block-inserter__button.is-next-40px-default-size {
 			width: 25px;
-			height: 24px;
+			height: 25px;
 			margin: auto;
 			background: var(--maxi-black-1-color) !important;
 			border: 1px solid var(--maxi-white-3-color);
 			svg {
 				width: 24px;
-				height: 22px;
+				height: 24px;
 			}
 			&:hover,
 			&:focus {

@@ -98,3 +98,8 @@
 		max-width: inherit;
 	}
 }
+
+// 2025
+body.maxi-blocks--active .maxi-block--use-sc .entry-content:has(.maxi-block) {
+	margin-block-start: 0;
+}

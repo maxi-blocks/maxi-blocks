@@ -1,3 +1,15 @@
+_Updates 4 Nov 2024_
+MaxiBlocks v2.0.1
+* Update: Enabled Container Maxi and Text Maxi as default blocks when creating a new page / post accordingly.
+* Update: Restored the Text Block splitting into a new Text Block when pressing Enter at the end or beginning of the block's content.
+* Update: Implemented fixes for WordPress 6.7RC-2, ensuring compatibility and stability.
+* Update: Complete overhaul of the Random option for Dynamic Content and Context Loop: now it shows consistent random posts inside a Context Loop.
+* Update: Removed font family option for 'Open Sans Condensed' since it's no longer on Google / Bunny fonts.
+* Fix: Corrected issue with older blocks losing the XL screen values while editing them on a bigger screen.
+* Fix: Addressed issues with Style Cards having global Link colour and Button Hover colour enabled by default.
+* Fix: Switching to 4k XXL breakpoint on backend now renders all XXL styles in the Editing Experience.
+* Fix: Ensured that fonts names with spaces work correctly in the Editing Experience.
+
 _Updates 17 Oct 2024_
 MaxiBlocks v2.0.0
 * Update: Optimized performance for styles generation in the Editing Experience (EE) and the Site Editor (SE).

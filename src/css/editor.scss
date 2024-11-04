@@ -578,3 +578,45 @@ body.maxi-blocks--active .editor-styles-wrapper .has-global-padding {
 	padding-right: 0;
 	padding-left: 0;
 }
+
+body.maxi-blocks--active
+	.editor-styles-wrapper
+	.block-editor-block-list__layout.is-root-container
+	> :where(:not(.alignleft):not(.alignright):not(.alignfull)):has(.maxi-container-block) {
+	max-width: 100%;
+}
+
+/** Fix breakpoints change on opening a sidebar in the editor experience */
+body.maxi-blocks--active .interface-interface-skeleton__body {
+	display: flex;
+	width: 100%;
+	max-width: 100%;
+	overflow-x: hidden; /* Hide horizontal overflow at this level */
+}
+
+body.maxi-blocks--active .interface-interface-skeleton__sidebar,
+body.maxi-blocks--active .interface-interface-skeleton__secondary-sidebar {
+	flex-shrink: 0;
+}
+
+body.maxi-blocks--active .interface-interface-skeleton__content {
+	flex-grow: 1;
+	min-width: 0; /* Allow content to shrink below its content width */
+	overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+body.maxi-blocks--active .edit-post-visual-editor {
+	width: 100%;
+	min-width: calc(100vw - var(--maxi-blocks-scrollbar-width, 15px));
+}
+
+body.maxi-blocks--active
+	.editor-styles-wrapper
+	.block-editor-block-list__layout.is-root-container.is-desktop-preview {
+	padding-bottom: 40vh;
+}
+
+body.maxi-blocks--active
+	.editor-styles-wrapper.block-editor-writing-flow:after {
+	display: none;
+}

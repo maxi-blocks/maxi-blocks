@@ -8,20 +8,13 @@ import { InspectorControls } from '@wordpress/block-editor';
  * External dependencies
  */
 import { without } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AccordionControl = loadable(() =>
-	import('../../components/accordion-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../components/setting-tabs-control')
-);
-const ShapeDividerControl = loadable(() =>
-	import('./components/shape-divider-control')
-);
+import AccordionControl from '../../components/accordion-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import ShapeDividerControl from './components/shape-divider-control';
 
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';

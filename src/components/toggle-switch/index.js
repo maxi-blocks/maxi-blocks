@@ -40,7 +40,8 @@ const ToggleSwitch = ({
 	);
 
 	return (
-		<BaseControl label={label} id={id} help={help} className={classes}>
+		<BaseControl
+					__nextHasNoMarginBottom label={label} id={id} help={help} className={classes}>
 			<div className='maxi-toggle-switch__toggle'>
 				<input
 					onChange={() => onChange(!selected)}

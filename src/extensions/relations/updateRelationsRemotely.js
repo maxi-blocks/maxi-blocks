@@ -23,6 +23,8 @@ const updateRelationsRemotely = ({
 	blockAttributes,
 	breakpoint,
 }) => {
+	if (blockTriggerClientId === blockTargetClientId) return;
+
 	// Block trigger relations
 	const relations =
 		select('core/block-editor')?.getBlockAttributes(

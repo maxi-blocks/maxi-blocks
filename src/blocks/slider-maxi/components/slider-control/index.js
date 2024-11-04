@@ -2,20 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
+import ToggleSwitch from '../../../../components/toggle-switch';
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import SelectControl from '../../../../components/select-control';
 import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
@@ -99,6 +92,7 @@ const SliderControl = props => {
 				}}
 			/>
 			<SelectControl
+				__nextHasNoMarginBottom
 				label={__('Transition', 'maxi-blocks')}
 				newStyle
 				options={[

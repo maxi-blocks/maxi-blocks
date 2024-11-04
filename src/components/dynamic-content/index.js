@@ -17,17 +17,14 @@ import { Popover } from '@wordpress/components';
  */
 import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../advanced-number-control')
-);
-const SelectControl = loadable(() => import('../select-control'));
-const ToggleSwitch = loadable(() => import('../toggle-switch'));
-const TextControl = loadable(() => import('../text-control'));
+import AdvancedNumberControl from '../advanced-number-control';
+import SelectControl from '../select-control';
+import ToggleSwitch from '../toggle-switch';
+import TextControl from '../text-control';
 
 import {
 	getFields,
@@ -84,7 +81,7 @@ const DynamicContent = props => {
 	} = props;
 
 	const contextLoop = useContext(LoopContext)?.contextLoop;
-	const isCL = contextLoop ? contextLoop['cl-status'] === true : false;
+	const CLStatus = contextLoop ? contextLoop['cl-status'] === true : false;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -177,20 +174,15 @@ const DynamicContent = props => {
 	const changeProps = params => {
 		let hasChangesToSave = false;
 
-		for (const [key, val] of Object.entries(dynamicContent)) {
-			if (key in params && params[key] !== val) {
+		for (const [key, val] of Object.entries(params)) {
+			if (key in dynamicContent && dynamicContent[key] !== val) {
 				hasChangesToSave = true;
 				break;
 			}
 		}
 
 		if (hasChangesToSave) {
-			const filteredObj = Object.fromEntries(
-				Object.entries(params).filter(
-					([key, value]) => value !== undefined
-				)
-			);
-			onChange(filteredObj);
+			onChange(params);
 		}
 	};
 
@@ -339,7 +331,7 @@ const DynamicContent = props => {
 				<>
 					{!disableHideOnFrontend &&
 						!ignoreEmptyFields.includes(field) &&
-						!isCL && (
+						!CLStatus && (
 							<ToggleSwitch
 								label={__(
 									'Hide if no content found on frontend',
@@ -353,6 +345,7 @@ const DynamicContent = props => {
 						)}
 					{sourceOptions.length > 1 && (
 						<SelectControl
+							__nextHasNoMarginBottom
 							label={__('Source', 'maxi-blocks')}
 							value={source}
 							options={sourceOptions}
@@ -388,6 +381,7 @@ const DynamicContent = props => {
 						/>
 					)}
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Type', 'maxi-blocks')}
 						value={type}
 						options={postTypesOptions}
@@ -427,6 +421,7 @@ const DynamicContent = props => {
 								type === 'archive' ||
 								relation.includes('custom-taxonomy')) && (
 								<SelectControl
+									__nextHasNoMarginBottom
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
 									options={currentRelationOptions}
@@ -458,6 +453,7 @@ const DynamicContent = props => {
 							)}
 							{type === 'users' && relation === 'by-id' && (
 								<SelectControl
+									__nextHasNoMarginBottom
 									label={__('Author id', 'maxi-blocks')}
 									value={author}
 									options={postAuthorOptions}
@@ -477,43 +473,41 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{(relation !== 'current-archive' &&
+							{((relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
 								type !== 'users' &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id')) ||
-								(relation.includes('custom-taxonomy') && (
-									<SelectControl
-										label={__(
-											`${capitalize(
-												orderByRelations.includes(
-													relation
-												)
-													? relation.replace(
-															'by-',
-															''
-													  )
-													: type.replace('_', ' ')
-											)} id`,
-											'maxi-blocks'
-										)}
-										value={id}
-										options={postIdOptions}
-										newStyle
-										onChange={value =>
-											changeProps({
-												'dc-error': '',
-												'dc-show': 'current',
-												'dc-id': Number(value),
-											})
-										}
-										onReset={() =>
-											changeProps({
-												'dc-id': postIdOptions[0].value,
-											})
-										}
-									/>
-								))}
+								relation.includes('custom-taxonomy')) && (
+								<SelectControl
+									__nextHasNoMarginBottom
+									label={__(
+										`${capitalize(
+											orderByRelations.includes(relation)
+												? relation.replace('by-', '')
+												: type.replace('_', ' ')
+										)} id`,
+										'maxi-blocks'
+									)}
+									value={id}
+									options={postIdOptions}
+									newStyle
+									onChange={value =>
+										changeProps({
+											'dc-error': '',
+											'dc-show': 'current',
+											'dc-id': Number(value),
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-id': CLStatus
+												? null
+												: postIdOptions[0].value,
+										})
+									}
+								/>
+							)}
 							{((orderTypes.includes(type) &&
 								orderRelations.includes(relation)) ||
 								relation.includes('custom-taxonomy')) && (
@@ -523,6 +517,7 @@ const DynamicContent = props => {
 											'custom-taxonomy'
 										) && (
 											<SelectControl
+												__nextHasNoMarginBottom
 												label={__(
 													'Order by',
 													'maxi-blocks'
@@ -546,6 +541,7 @@ const DynamicContent = props => {
 											/>
 										))}
 									<SelectControl
+										__nextHasNoMarginBottom
 										label={__('Order', 'maxi-blocks')}
 										value={order}
 										options={
@@ -595,6 +591,26 @@ const DynamicContent = props => {
 									/>
 								</>
 							)}
+							{relation === 'random' && (
+								<AdvancedNumberControl
+									label={__('Accumulator', 'maxi-blocks')}
+									value={accumulator}
+									onChangeValue={value =>
+										changeProps({
+											'dc-accumulator': value,
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-accumulator':
+												getDefaultAttribute(
+													'dc-accumulator'
+												),
+										})
+									}
+									disableRange
+								/>
+							)}
 							{source === 'wp' &&
 								(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||
@@ -608,6 +624,7 @@ const DynamicContent = props => {
 										...orderRelations,
 									].includes(relation)) && (
 									<SelectControl
+										__nextHasNoMarginBottom
 										label={__('Field', 'maxi-blocks')}
 										value={field}
 										options={currentFieldOptions}
@@ -683,6 +700,7 @@ const DynamicContent = props => {
 								!error && (
 									<>
 										<SelectControl
+											__nextHasNoMarginBottom
 											label={__(
 												'Delimiter',
 												'maxi-blocks'

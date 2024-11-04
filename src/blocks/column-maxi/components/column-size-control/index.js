@@ -4,22 +4,11 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
+import SelectControl from '../../../../components/select-control';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
 import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
@@ -95,6 +84,7 @@ const ColumnSizeControl = props => {
 				/>
 			)}
 			<SelectControl
+				__nextHasNoMarginBottom
 				label={__('Vertical align', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
 					target: 'justify-content',

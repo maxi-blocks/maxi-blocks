@@ -4,19 +4,10 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../../../components/setting-tabs-control')
-);
+import SelectControl from '../../../../components/select-control';
+import SettingTabsControl from '../../../../components/setting-tabs-control';
 import { getDefaultAttribute } from '../../../../extensions/styles';
 import { prefixes } from '../../data';
 
@@ -51,6 +42,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	return (
 		<>
 			<SelectControl
+				__nextHasNoMarginBottom
 				label={__('Choose', 'maxi-blocks')}
 				value={skin}
 				newStyle

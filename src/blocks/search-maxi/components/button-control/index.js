@@ -4,19 +4,10 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
-const TextControl = loadable(() =>
-	import('../../../../components/text-control')
-);
+import SelectControl from '../../../../components/select-control';
+import TextControl from '../../../../components/text-control';
 
 const ButtonControl = ({
 	buttonContent,
@@ -28,6 +19,7 @@ const ButtonControl = ({
 	return (
 		<>
 			<SelectControl
+				__nextHasNoMarginBottom
 				className='maxi-search-button-control__skin'
 				label={__('Skin', 'maxi-blocks')}
 				value={buttonSkin}

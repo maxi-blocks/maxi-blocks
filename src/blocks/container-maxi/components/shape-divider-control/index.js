@@ -4,32 +4,15 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const ColorControl = loadable(() =>
-	import('../../../../components/color-control')
-);
-const Dropdown = loadable(() => import('../../../../components/dropdown'));
-const OpacityControl = loadable(() =>
-	import('../../../../components/opacity-control')
-);
-const ResponsiveTabsControl = loadable(() =>
-	import('../../../../components/responsive-tabs-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../../../components/setting-tabs-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import ColorControl from '../../../../components/color-control';
+import Dropdown from '../../../../components/dropdown';
+import OpacityControl from '../../../../components/opacity-control';
+import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
+import SettingTabsControl from '../../../../components/setting-tabs-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,

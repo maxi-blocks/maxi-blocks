@@ -7,27 +7,16 @@ import { RangeControl } from '@wordpress/components';
 /**
  * External dependencies
  */
-import loadable from '@loadable/component';
 import { capitalize, isNil } from 'lodash';
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const AspectRatioControl = loadable(() =>
-	import('../../../../components/aspect-ratio-control')
-);
-const ImageCropControl = loadable(() =>
-	import('../../../../components/image-crop-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import AspectRatioControl from '../../../../components/aspect-ratio-control';
+import ImageCropControl from '../../../../components/image-crop-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
+import SelectControl from '../../../../components/select-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -106,6 +95,7 @@ const DimensionTab = props => {
 			{(!isImageUrl || !SVGElement) && getSizeOptions().length > 1 && (
 				<>
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Image size', 'maxi-blocks')}
 						value={
 							imageSize || imageSize === 'custom'
@@ -199,6 +189,7 @@ const DimensionTab = props => {
 								`img-width-${deviceType}`,
 								clientId
 							)}
+							__nextHasNoMarginBottom
 						/>
 					)}
 					<AspectRatioControl

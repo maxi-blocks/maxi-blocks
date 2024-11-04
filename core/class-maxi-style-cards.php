@@ -36,6 +36,9 @@ class MaxiBlocks_StyleCards
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+
+        // Run the migration once
+        add_action('admin_init', [$this, 'run_link_palette_migration']);
     }
 
     /**
@@ -43,7 +46,7 @@ class MaxiBlocks_StyleCards
      */
     public function enqueue_styles()
     {
-        if(!wp_style_is('maxi-blocks-sc-vars', 'registered')) {
+        if (!wp_style_is('maxi-blocks-sc-vars', 'registered')) {
             $vars = $this->get_style_card_variables();
 
             // SC variables
@@ -54,7 +57,7 @@ class MaxiBlocks_StyleCards
             }
         }
 
-        if(!wp_style_is('maxi-blocks-sc-styles', 'registered')) {
+        if (!wp_style_is('maxi-blocks-sc-styles', 'registered')) {
             $styles = $this->get_style_card_styles();
 
             // MVP: ensure no margin-bottom for button
@@ -263,7 +266,7 @@ class MaxiBlocks_StyleCards
     {
         $maxi_blocks_style_cards = self::get_maxi_blocks_current_style_cards();
 
-        if(!$maxi_blocks_style_cards) {
+        if (!$maxi_blocks_style_cards) {
             return false;
         }
 
@@ -397,4 +400,101 @@ class MaxiBlocks_StyleCards
         return $json;
     }
 
+    public static function migrate_style_cards_link_palette_color()
+    {
+        global $wpdb;
+
+        $maxi_blocks_style_cards_current = self::get_maxi_blocks_current_style_cards();
+
+        if (!$maxi_blocks_style_cards_current) {
+            return false;
+        }
+
+        $style_cards = json_decode($maxi_blocks_style_cards_current, true);
+        $updated = false;
+        $sc_maxi_active = false;
+
+        foreach ($style_cards as $key => $sc) {
+            if (isset($sc['dark']['defaultStyleCard']['link']['link-palette-color']) && $sc['dark']['defaultStyleCard']['link']['link-palette-color'] == 5) {
+                $style_cards[$key]['dark']['defaultStyleCard']['link']['link-palette-color'] = 4;
+                $updated = true;
+            }
+            if (isset($sc['light']['defaultStyleCard']['link']['link-palette-color']) && $sc['light']['defaultStyleCard']['link']['link-palette-color'] == 5) {
+                $style_cards[$key]['light']['defaultStyleCard']['link']['link-palette-color'] = 4;
+                $updated = true;
+            }
+            if ($key === 'sc_maxi' && isset($sc['status']) && $sc['status'] === 'active') {
+                $sc_maxi_active = true;
+            }
+        }
+
+        if ($updated) {
+            $updated_style_cards = json_encode($style_cards);
+            $wpdb->update(
+                $wpdb->prefix . "maxi_blocks_general",
+                ['object' => $updated_style_cards],
+                ['id' => 'style_cards_current']
+            );
+        }
+
+        // Migrate sc_string if sc_maxi is active
+        if ($sc_maxi_active) {
+            $sc_string = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT object FROM {$wpdb->prefix}maxi_blocks_general WHERE id = %s",
+                    'sc_string'
+                )
+            );
+
+            if ($sc_string) {
+                $sc_string = maybe_unserialize($sc_string);
+
+                // Replace dark link color
+                $sc_string = str_replace(
+                    '--maxi-dark-link:rgba(var(--maxi-dark-color-5,255,255,255),1);',
+                    '',
+                    $sc_string
+                );
+
+                $sc_string = str_replace(
+                    '--maxi-dark-link:rgba(var(--maxi-dark-color-4,255,74,23),1);',
+                    '',
+                    $sc_string
+                );
+
+                // Replace light link color
+                $sc_string = str_replace(
+                    '--maxi-light-link:rgba(var(--maxi-light-color-5,0,0,0),1);',
+                    '',
+                    $sc_string
+                );
+
+                $sc_string = str_replace(
+                    '--maxi-light-link:rgba(var(--maxi-light-color-4,255,74,23),1);',
+                    '',
+                    $sc_string
+                );
+
+                $wpdb->update(
+                    $wpdb->prefix . "maxi_blocks_general",
+                    ['object' => serialize($sc_string)],
+                    ['id' => 'sc_string']
+                );
+
+                $updated = true;
+
+            }
+        }
+
+        return $updated;
+    }
+
+    public function run_link_palette_migration()
+    {
+        // Check if migration has already been run
+        if (get_option('maxi_blocks_link_color_migrated') !== 'yes') {
+            self::migrate_style_cards_link_palette_color();
+            update_option('maxi_blocks_link_color_migrated', 'yes');
+        }
+    }
 }

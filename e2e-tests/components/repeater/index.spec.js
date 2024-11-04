@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	pressKeyWithModifier,
-	setClipboardData,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, setPostContent } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -123,17 +119,11 @@ describe('Repeater', () => {
 	});
 
 	it('Check repeater columns validation on toggle when first column has content', async () => {
-		// Set code editor as clipboard data
-		await setClipboardData({
-			plainText: codeEditorWithContentInFirstColumn,
-		});
-
 		// Set title
 		await page.keyboard.type('Page repeater test', { delay: 350 });
 
 		// Add code editor
-		await page.keyboard.press('Enter');
-		await pressKeyWithModifier('primary', 'v');
+		await setPostContent(codeEditorWithContentInFirstColumn);
 
 		await page.waitForTimeout(500);
 
@@ -155,18 +145,12 @@ describe('Repeater', () => {
 	});
 
 	it('Check block moving with turned on repeater', async () => {
-		// Set code editor as clipboard data
-		await setClipboardData({
-			plainText: codeEditorWithRepeater,
-		});
-
 		// Set title
 		await page.keyboard.type('Page repeater test');
 
 		// Add code editor
-		await page.keyboard.press('Enter');
-		await pressKeyWithModifier('primary', 'v');
-		await page.waitForTimeout(2000);
+		await setPostContent(codeEditorWithRepeater);
+		await page.waitForTimeout(1000);
 
 		// Select text from second column
 		await page.$eval(
@@ -210,18 +194,12 @@ describe('Repeater', () => {
 	});
 
 	it('Check different structure popup', async () => {
-		// Set code editor as clipboard data
-		await setClipboardData({
-			plainText: codeEditorWithDifferentContentInColumns,
-		});
-
 		// Set title
 		await page.keyboard.type('Page repeater test');
 
 		// Add code editor
-		await page.keyboard.press('Enter');
-		await pressKeyWithModifier('primary', 'v');
-		await page.waitForTimeout(2000);
+		await setPostContent(codeEditorWithDifferentContentInColumns);
+		await page.waitForTimeout(500);
 
 		// Select row
 		await page.$eval('.maxi-row-block', block =>

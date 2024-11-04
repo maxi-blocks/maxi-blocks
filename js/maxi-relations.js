@@ -1164,20 +1164,40 @@ class Relation {
 function initializeRelations() {
 	let relations;
 
-	if (typeof maxiRelations?.[0] === 'string') {
-		try {
-			relations = JSON.parse(maxiRelations?.[0]);
-		} catch (e) {
-			console.error('Invalid JSON string', e);
-			relations = null;
+	if (typeof maxiRelations !== 'undefined' && maxiRelations !== null) {
+		if (typeof maxiRelations[0] === 'string') {
+			try {
+				relations = JSON.parse(maxiRelations[0]);
+			} catch (e) {
+				console.error('Invalid JSON string in maxiRelations', e);
+				relations = null;
+			}
+		} else if (
+			typeof maxiRelations[0] === 'object' &&
+			maxiRelations[0] !== null
+		) {
+			[relations] = maxiRelations;
 		}
-	} else if (
-		typeof maxiRelations?.[0] === 'object' &&
-		maxiRelations?.[0] !== null
+	}
+
+	if (
+		!relations &&
+		typeof maxiRelationsLegacy !== 'undefined' &&
+		maxiRelationsLegacy !== null
 	) {
-		relations = maxiRelations?.[0];
-	} else {
-		relations = null;
+		if (typeof maxiRelationsLegacy[0] === 'string') {
+			try {
+				relations = JSON.parse(maxiRelationsLegacy[0]);
+			} catch (e) {
+				console.error('Invalid JSON string in maxiRelationsLegacy', e);
+				relations = null;
+			}
+		} else if (
+			typeof maxiRelationsLegacy[0] === 'object' &&
+			maxiRelationsLegacy[0] !== null
+		) {
+			[relations] = maxiRelationsLegacy;
+		}
 	}
 
 	if (!relations) return;

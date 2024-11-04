@@ -223,8 +223,7 @@ const AdvancedNumberControl = props => {
 		? rawPreferredValues.map(transformRangePreferredValue)
 		: rawPreferredValues;
 
-	const rangeValue =
-		+preferredValues.find(val => /\d/.test(val) && +val !== 0) || 0;
+	const rangeValue = +preferredValues.find(val => /\d/.test(val)) || 0;
 
 	const [showHelpContent, setShowHelpContent] = useState(false);
 
@@ -244,6 +243,7 @@ const AdvancedNumberControl = props => {
 			)}
 			{value !== 'auto' && (
 				<BaseControl
+					__nextHasNoMarginBottom
 					id={advancedNumberControlId}
 					label={label}
 					className={classes}
@@ -283,6 +283,7 @@ const AdvancedNumberControl = props => {
 					/>
 					{enableUnit && (
 						<SelectControl
+							__nextHasNoMarginBottom
 							hideLabelFromVision
 							className='maxi-dimensions-control__units'
 							options={getOptions()}
@@ -342,6 +343,7 @@ const AdvancedNumberControl = props => {
 							step={stepValue}
 							withInputField={false}
 							initialPosition={value || initial}
+							__nextHasNoMarginBottom
 						/>
 					)}
 				</BaseControl>

@@ -18,22 +18,22 @@ import { kindDictionary, nameDictionary, orderRelations } from './constants';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 
-const randomEntityIndexes = {};
+// New function to get a seeded random index
+const getSeededRandomIndex = (seed, max) => {
+	const x = Math.sin(seed) * 10000;
+	return Math.floor((x - Math.floor(x)) * max);
+};
 
-// Gets a random entity from a list of entities and stores the index per block
-const getRandomEntity = (entities, clientId) => {
-	if (
-		isNil(randomEntityIndexes[clientId]) ||
-		randomEntityIndexes[clientId] > entities.length
-	) {
-		randomEntityIndexes[clientId] = Math.floor(
-			Math.random() * entities.length
-		);
-	}
+// Updated getRandomEntity function
+const getRandomEntity = (entities, accumulator) => {
+	if (isEmpty(entities)) return null;
 
-	return entities[randomEntityIndexes[clientId]];
+	const seed = accumulator;
+	const randomIndex = getSeededRandomIndex(seed, entities.length);
+
+	return entities[randomIndex];
 };
 
 const getPostBySlug = async slug => {
@@ -112,6 +112,24 @@ const getProductBySlug = async slug => {
 const existingEntities = {};
 const nonExistingEntities = {};
 
+const getKind = type => {
+	if (kindDictionary[type]) {
+		return kindDictionary[type];
+	}
+
+	const customPostTypes = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomPostTypes();
+	if (customPostTypes.includes(type)) return 'postType';
+
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+	if (customTaxonomies.includes(type)) return 'taxonomy';
+
+	return 'postType';
+};
+
 const getDCEntity = async (dataRequest, clientId) => {
 	const {
 		type,
@@ -128,38 +146,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 	const contentError = getDCErrors(type, error, show, relation);
 
 	if (contentError) return contentError;
-
-	const customPostTypes = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomPostTypes();
-	const customTaxonomies = select(
-		'maxiBlocks/dynamic-content'
-	).getCustomTaxonomies();
-
-	const getKind = type => {
-		if (customPostTypes.includes(type)) return 'postType';
-		if (customTaxonomies.includes(type)) return 'taxonomy';
-
-		return kindDictionary[type];
-	};
-
-	const relationTypes = select(
-		'maxiBlocks/dynamic-content'
-	).getRelationTypes();
-
-	if (relationTypes.includes(type) && relation === 'random') {
-		return getRandomEntity(
-			await resolveSelect('core').getEntityRecords(
-				getKind(type),
-				nameDictionary[type] ?? type,
-				{
-					per_page: 100,
-					hide_empty: false,
-				}
-			),
-			clientId
-		);
-	}
 
 	if (relation === 'current') {
 		const currentTemplateType = getCurrentTemplateSlug();
@@ -204,14 +190,12 @@ const getDCEntity = async (dataRequest, clientId) => {
 		const { getUsers, getUser } = resolveSelect('core');
 
 		if (relation === 'random') {
-			return getRandomEntity(
-				await getUsers({
-					who: 'authors',
-					per_page: 100,
-					hide_empty: false,
-				}),
-				clientId
-			);
+			const users = await getUsers({
+				who: 'authors',
+				per_page: 100,
+				hide_empty: false,
+			});
+			return getRandomEntity(users, accumulator);
 		}
 
 		if (['by-date', 'alphabetical'].includes(relation)) {
@@ -229,6 +213,37 @@ const getDCEntity = async (dataRequest, clientId) => {
 		const user = await getUser(author ?? id);
 
 		return user;
+	}
+
+	if (relation === 'random') {
+		const relationTypes = select(
+			'maxiBlocks/dynamic-content'
+		).getRelationTypes();
+		if (relationTypes.includes(type)) {
+			const entities = await resolveSelect('core').getEntityRecords(
+				getKind(type),
+				nameDictionary[type] ?? type,
+				{
+					per_page: 100,
+					hide_empty: false,
+				}
+			);
+			return getRandomEntity(entities, accumulator);
+		}
+	}
+
+	if (type === 'settings') {
+		const settings = await resolveSelect('core').getEditedEntityRecord(
+			getKind(type),
+			'site'
+		);
+
+		return settings;
+	}
+	if (type === 'cart') {
+		const cart = await getCartData();
+
+		return cart;
 	}
 
 	const orderTypes = select('maxiBlocks/dynamic-content').getOrderTypes();
@@ -356,19 +371,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 		return null;
 	}
 
-	if (type === 'settings') {
-		const settings = await resolveSelect('core').getEditedEntityRecord(
-			getKind(type),
-			'site'
-		);
-
-		return settings;
-	}
-	if (type === 'cart') {
-		const cart = await getCartData();
-
-		return cart;
-	}
 	if (relation === 'current' || type === 'archive') {
 		const isFSE = select('core/edit-site') !== undefined;
 
@@ -550,14 +552,14 @@ const getDCEntity = async (dataRequest, clientId) => {
 				const taxonomy = taxonomies.find(tax => tax.slug === type);
 				if (taxonomy) return taxonomy;
 			}
-		}
-
-		if (!isFSE)
-			return await resolveSelect('core').getEditedEntityRecord(
+		} else {
+			const entity = await resolveSelect('core').getEditedEntityRecord(
 				getKind(type),
 				nameDictionary[type] ?? type,
 				select('core/editor').getCurrentPostId()
 			);
+			if (entity) return entity;
+		}
 	}
 	if (
 		['tags', 'categories', 'product_categories', 'product_tags'].includes(

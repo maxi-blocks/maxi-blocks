@@ -10,11 +10,13 @@ import {
 	OpacityControl,
 	PositionControl,
 	TransformControl,
+	DisplayControl,
 } from '../../components';
 import {
 	getOpacityStyles,
 	getPositionStyles,
 	getTransformStyles,
+	getDisplayStyles,
 } from '../styles/helpers';
 import {
 	getTransformCategories,
@@ -97,6 +99,13 @@ const getAdvancedSettings = ({ customCss }) => [
 		helper: props => getPositionStyles(props.obj),
 	},
 	...getTransformControl(customCss),
+	{
+		sid: 'sh',
+		label: __('Show/hide block', 'maxi-blocks'),
+		attrGroupName: 'display',
+		component: props => <DisplayControl {...props} />,
+		helper: props => getDisplayStyles(props.obj, false, true),
+	},
 ];
 
 export default getAdvancedSettings;

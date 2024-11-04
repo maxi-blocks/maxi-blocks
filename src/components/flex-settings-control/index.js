@@ -189,6 +189,7 @@ const FlexSettingsControl = props => {
 									}
 								/>
 								<SelectControl
+									__nextHasNoMarginBottom
 									label={__('Flex-basis', 'maxi-blocks')}
 									className='maxi-flex-settings-control__flex-basis'
 									value={

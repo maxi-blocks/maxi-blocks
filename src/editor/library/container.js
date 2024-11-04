@@ -759,10 +759,9 @@ const LibraryContainer = props => {
 			gutenberg_blocks_status: true,
 			dark: {
 				defaultStyleCard: {
-					button: { 'hover-background-color-global': true },
 					link: {
-						'link-color-global': true,
-						'link-palette-color': 5,
+						'link-color-global': false,
+						'link-palette-color': 4,
 					},
 					navigation: {
 						'always-show-mobile': false,
@@ -923,10 +922,9 @@ const LibraryContainer = props => {
 			},
 			light: {
 				defaultStyleCard: {
-					button: { 'hover-background-color-global': true },
 					link: {
-						'link-color-global': true,
-						'link-palette-color': 5,
+						'link-color-global': false,
+						'link-palette-color': 4,
 					},
 					navigation: {
 						'always-show-mobile': false,
@@ -1134,6 +1132,7 @@ const LibraryContainer = props => {
 					setSwapChecked(val);
 					saveMaxiSetting('swap_cloud_images', val);
 				}}
+				__nextHasNoMarginBottom
 			/>
 		);
 	};
@@ -1436,6 +1435,7 @@ const LibraryContainer = props => {
 									itemsReturn.push(
 										generateItem('Playground')
 									);
+									itemsReturn.push(generateItem('Theme'));
 
 									return itemsReturn;
 								}}

@@ -11,12 +11,11 @@ import { useCallback, useEffect, useRef } from '@wordpress/element';
  */
 import { isEmpty } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const MaxiStyleCardsEditorPopUp = loadable(() => import('../style-cards'));
+import MaxiStyleCardsEditorPopUp from '../style-cards';
 import { Button, Icon } from '../../components';
 import { setScreenSize } from '../../extensions/styles';
 import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
@@ -177,122 +176,6 @@ const ResponsiveSelector = props => {
 			)
 				wrapper.setAttribute('maxi-blocks-responsive', baseBreakpoint);
 		});
-	});
-
-	// TODO: check if it can be reduced to avoid the amount of resources used (MVP)
-	useEffect(() => {
-		// In case Gutenberg native preview responsive is enabled
-		const tabletPreview = document.querySelector('.is-tablet-preview');
-		const mobilePreview = document.querySelector('.is-mobile-preview');
-
-		if (tabletPreview || mobilePreview) {
-			const previewTarget = tabletPreview ?? mobilePreview;
-
-			const iframe = previewTarget.querySelector(
-				'iframe[name="editor-canvas"]'
-			);
-			const iframeDocument = iframe.contentDocument;
-			const editorWrapper = iframeDocument.body;
-
-			const postEditor = previewTarget.closest(
-				'.edit-post-visual-editor'
-			);
-			const responsiveWidth = postEditor.getAttribute(
-				'maxi-blocks-responsive-width'
-			);
-			const isMaxiPreview = postEditor.getAttribute('is-maxi-preview');
-
-			if (isMaxiPreview) {
-				previewTarget.style.width = `${responsiveWidth}px`;
-				previewTarget.style.boxSizing = 'content-box';
-			}
-
-			if (editorWrapper) {
-				if (
-					iframe &&
-					!iframeDocument.body.classList.contains(
-						'maxi-blocks--active'
-					)
-				) {
-					// Iframe needs Maxi classes and attributes
-					iframeDocument.body.classList.add('maxi-blocks--active');
-
-					editorWrapper.setAttribute(
-						'maxi-blocks-responsive',
-						tabletPreview ? 's' : 'xs'
-					);
-
-					// Hides scrollbar in firefox
-					iframeDocument.documentElement.style.scrollbarWidth =
-						'none';
-
-					// Copy all fonts to iframe
-					loadFonts(getPageFonts(), true, iframeDocument);
-
-					// Get all Maxi blocks <style> from <head>
-					// and move to new iframe
-					const maxiStyles = Array.from(
-						document.querySelectorAll('div.maxi-blocks__styles')
-					);
-
-					if (!isEmpty(maxiStyles))
-						maxiStyles.forEach(rawMaxiStyle => {
-							const maxiStyle = rawMaxiStyle.cloneNode(true);
-							const { id } = maxiStyle;
-							iframeDocument.querySelector(`#${id}`)?.remove();
-
-							maxiStyle.children[0].innerText =
-								maxiStyle.children[0].innerText.replaceAll(
-									' .edit-post-visual-editor',
-									'.editor-styles-wrapper'
-								);
-
-							iframe.contentDocument.head.appendChild(maxiStyle);
-						});
-
-					// Move Maxi variables to iframe
-					const maxiVariables = document
-						.querySelector('#maxi-blocks-sc-vars-inline-css')
-						?.cloneNode(true);
-
-					if (maxiVariables) {
-						iframeDocument
-							.querySelector('#maxi-blocks-sc-vars-inline-css')
-							?.remove();
-
-						iframe.contentDocument.head.appendChild(maxiVariables);
-					}
-
-					// Ensures all Maxi styles are loaded on iframe
-					const editStyles = iframeDocument.querySelector(
-						'#maxi-blocks-block-editor-css'
-					);
-					const frontStyles = iframeDocument.querySelector(
-						'#maxi-blocks-block-css'
-					);
-
-					if (!editStyles) {
-						const rawEditStyles = document.querySelector(
-							'#maxi-blocks-block-editor-css'
-						);
-
-						iframe.contentDocument.head.appendChild(
-							rawEditStyles.cloneNode(true)
-						);
-					}
-
-					if (!frontStyles) {
-						const rawFrontStyles = document.querySelector(
-							'#maxi-blocks-block-css'
-						);
-
-						iframe.contentDocument.head.appendChild(
-							rawFrontStyles.cloneNode(true)
-						);
-					}
-				}
-			}
-		}
 	});
 
 	// TODO: check if it can be reduced to avoid the amount of resources used (MVP)

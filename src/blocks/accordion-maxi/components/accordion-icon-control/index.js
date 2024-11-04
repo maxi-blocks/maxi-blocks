@@ -4,26 +4,13 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const AxisPositionControl = loadable(() =>
-	import('../../../../components/axis-position-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../../../components/setting-tabs-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const IconControl = loadable(() =>
-	import('../../../../components/icon-control')
-);
-const MaxiModal = loadable(() => import('../../../../editor/library/modal'));
+import AxisPositionControl from '../../../../components/axis-position-control';
+import SettingTabsControl from '../../../../components/setting-tabs-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
+import IconControl from '../../../../components/icon-control';
+import MaxiModal from '../../../../editor/library/modal';
 import { getIconWithColor } from '../../../../extensions/styles';
 
 const AccordionIconSettings = props => {

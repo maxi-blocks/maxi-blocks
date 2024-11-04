@@ -2,22 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-
-const VideoIconControl = loadable(() => import('../video-icon-control'));
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
-const ColorControl = loadable(() =>
-	import('../../../../components/color-control')
-);
-const AspectRatioControl = loadable(() =>
-	import('../../../../components/aspect-ratio-control')
-);
+import VideoIconControl from '../video-icon-control';
+import SelectControl from '../../../../components/select-control';
+import ColorControl from '../../../../components/color-control';
+import AspectRatioControl from '../../../../components/aspect-ratio-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -127,6 +119,7 @@ const PopupSettingsControl = props => {
 				}
 			/>
 			<SelectControl
+				__nextHasNoMarginBottom
 				label={__('Pop animation', 'maxi-blocks')}
 				className='maxi-video-popup-control__pop-animation'
 				value={popAnimation}

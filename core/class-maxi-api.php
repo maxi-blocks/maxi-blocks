@@ -113,19 +113,21 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
-            register_rest_route($this->namespace, '/get-font-url/(?P<font_name>[\w\s]+)', [
+            register_rest_route($this->namespace, '/get-font-url/(?P<font_name>.+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_font_url'],
-                'args' => [
-                    'font_name' => [
-                        'validate_callback' => function ($param) {
-                            return is_string($param);
-                        },
-                    ],
-                ],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
                 },
+                'args' => [
+                    'font_name' => [
+                        'required' => true,
+                        'sanitize_callback' => function ($param) {
+                            // Convert '+' back to spaces and decode other URL entities
+                            return urldecode(str_replace('+', ' ', $param));
+                        },
+                    ],
+                ],
             ]);
             register_rest_route($this->namespace, '/style-card', [
                 'methods' => 'GET',

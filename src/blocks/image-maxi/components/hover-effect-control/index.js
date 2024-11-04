@@ -8,41 +8,22 @@ import { __ } from '@wordpress/i18n';
  */
 import { isNil } from 'lodash';
 import classnames from 'classnames';
-import loadable from '@loadable/component';
-
-const BezierEditor = loadable(() => import('bezier-easing-editor'));
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const AxisControl = loadable(() =>
-	import('../../../../components/axis-control')
-);
-const BackgroundControl = loadable(() =>
-	import('../../../../components/background-control')
-);
-const BorderControl = loadable(() =>
-	import('../../../../components/border-control')
-);
-const Icon = loadable(() => import('../../../../components/icon'));
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../../../components/setting-tabs-control')
-);
-const TextareaControl = loadable(() =>
-	import('../../../../components/textarea-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const TypographyControl = loadable(() =>
-	import('../../../../components/typography-control')
-);
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import AxisControl from '../../../../components/axis-control';
+import BackgroundControl from '../../../../components/background-control';
+import BorderControl from '../../../../components/border-control';
+import Icon from '../../../../components/icon';
+import SelectControl from '../../../../components/select-control';
+import SettingTabsControl from '../../../../components/setting-tabs-control';
+import TextareaControl from '../../../../components/textarea-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
+import TypographyControl from '../../../../components/typography-control';
+
+import BezierEditor from 'bezier-easing-editor';
 
 import {
 	getDefaultAttribute,
@@ -187,6 +168,7 @@ const HoverEffectControl = props => {
 						'clear-grey-scale',
 					].includes(props['hover-basic-effect-type'])) && (
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Easing', 'maxi-blocks')}
 						value={props['hover-transition-easing']}
 						defaultValue={getDefaultAttribute(
@@ -244,6 +226,7 @@ const HoverEffectControl = props => {
 			{props['hover-type'] === 'basic' && (
 				<>
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Effect type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
 						defaultValue={getDefaultAttribute(
@@ -351,6 +334,7 @@ const HoverEffectControl = props => {
 			{props['hover-type'] === 'text' && (
 				<>
 					<SelectControl
+						__nextHasNoMarginBottom
 						label={__('Animation type', 'maxi-blocks')}
 						value={props['hover-text-effect-type']}
 						defaultValue={getDefaultAttribute(

@@ -312,8 +312,7 @@ const RelationControl = props => {
 		goThroughMaxiBlocks(block => {
 			if (
 				block.attributes.customLabel !==
-					getDefaultAttribute('customLabel', block.clientId) &&
-				block.attributes.uniqueID !== uniqueID
+				getDefaultAttribute('customLabel', block.clientId)
 			) {
 				const targetParentRows = getBlockParentsByBlockName(
 					block.clientId,
@@ -435,6 +434,7 @@ const RelationControl = props => {
 										/>
 									)}
 									<SelectControl
+										__nextHasNoMarginBottom
 										label={__(
 											'Block to affect',
 											'maxi-blocks'
@@ -464,6 +464,7 @@ const RelationControl = props => {
 									{item.uniqueID && (
 										<>
 											<SelectControl
+												__nextHasNoMarginBottom
 												label={__(
 													'Action',
 													'maxi-blocks'
@@ -507,6 +508,7 @@ const RelationControl = props => {
 												}}
 											/>
 											<SelectControl
+												__nextHasNoMarginBottom
 												label={__(
 													'Settings',
 													'maxi-blocks'

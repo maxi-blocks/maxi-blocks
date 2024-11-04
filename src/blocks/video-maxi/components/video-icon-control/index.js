@@ -2,30 +2,17 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const AdvancedNumberControl = loadable(() =>
-	import('../../../../components/advanced-number-control')
-);
-const SelectControl = loadable(() =>
-	import('../../../../components/select-control')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../../../components/setting-tabs-control')
-);
-const ColorControl = loadable(() =>
-	import('../../../../components/color-control')
-);
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const ResponsiveTabsControl = loadable(() =>
-	import('../../../../components/responsive-tabs-control')
-);
-const MaxiModal = loadable(() => import('../../../../editor/library/modal'));
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import SelectControl from '../../../../components/select-control';
+import SettingTabsControl from '../../../../components/setting-tabs-control';
+import ColorControl from '../../../../components/color-control';
+import ToggleSwitch from '../../../../components/toggle-switch';
+import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
+import MaxiModal from '../../../../editor/library/modal';
 import {
 	getAttributeKey,
 	getAttributeValue,
@@ -209,6 +196,7 @@ const IconSettings = props => {
 					/>
 					{prefix === 'close-' && (
 						<SelectControl
+							__nextHasNoMarginBottom
 							label={__('Icon position', 'maxi-blocks')}
 							className='maxi-video-icon-control__icon-position'
 							value={props[`${prefix}icon-position`]}

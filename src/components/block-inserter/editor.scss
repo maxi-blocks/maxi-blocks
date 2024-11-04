@@ -23,7 +23,8 @@
 		}
 	}
 
-	&__button {
+	&__button,
+	&__button.components-button.is-next-40px-default-size {
 		display: block;
 		position: relative;
 		width: 16px;
@@ -110,6 +111,24 @@
 			}
 			.maxi-block-inserter__content {
 				width: 180px;
+			}
+		}
+	}
+	&__last {
+		.maxi-block-inserter__button,
+		.maxi-block-inserter__button.is-next-40px-default-size {
+			width: 25px;
+			height: 25px;
+			margin: auto;
+			background: var(--maxi-black-1-color) !important;
+			border: 1px solid var(--maxi-white-3-color);
+			svg {
+				width: 24px;
+				height: 24px;
+			}
+			&:hover,
+			&:focus {
+				background: var(--maxi-secondary-color) !important;
 			}
 		}
 	}

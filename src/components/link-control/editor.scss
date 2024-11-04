@@ -209,13 +209,19 @@
 		&__search-results-wrapper,
 		&__search-results {
 			margin-top: 0;
-		}
-		&__search-results {
 			padding: 8px 0 0px;
+			overflow-x: hidden;
+			max-width: 100%;
 			&:hover {
 				.block-editor-link-control__search-item-type {
 					background-color: var(--maxi-black-1-color);
 				}
+			}
+			.components-menu-item__button {
+				padding-left: 2px;
+			}
+			.components-menu-item__shortcut {
+				padding-left: 0;
 			}
 		}
 		&__search-item {
@@ -236,6 +242,11 @@
 		}
 		&__search-input {
 			margin: 0;
+			.components-input-control {
+				.components-input-base {
+					width: 100%;
+				}
+			}
 		}
 	}
 
@@ -249,7 +260,7 @@
 		display: block;
 
 		&:hover {
-			color: var(--maxi-white-1-color);
+			color: var(--maxi-white-1-color) !important;
 			background-color: var(--maxi-black-1-color) !important;
 		}
 	}

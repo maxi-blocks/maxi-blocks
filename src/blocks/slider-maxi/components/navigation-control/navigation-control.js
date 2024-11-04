@@ -4,22 +4,11 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const ToggleSwitch = loadable(() =>
-	import('../../../../components/toggle-switch')
-);
-const SettingTabsControl = loadable(() =>
-	import('../../../../components/setting-tabs-control')
-);
-const NavigationIconControl = loadable(() =>
-	import('./navigation-icon-control')
-);
+import ToggleSwitch from '../../../../components/toggle-switch';
+import SettingTabsControl from '../../../../components/setting-tabs-control';
+import NavigationIconControl from './navigation-icon-control';
 
 const NavigationIconsControl = props => {
 	const {

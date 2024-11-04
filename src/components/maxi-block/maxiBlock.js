@@ -11,6 +11,7 @@ import {
 	useState,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
+import { setDefaultBlockName } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -24,6 +25,7 @@ import { getIsHoverPreview } from '../../extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 import { inlineLinkFields } from '../../extensions/DC/constants';
+import isPostEditor from '../../extensions/dom/isPostEditor';
 
 /**
  * External dependencies
@@ -135,6 +137,18 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		breakpoint: extraProps.deviceType,
 		attributes: extraProps.attributes,
 	});
+
+	if (isSelected) {
+		if (blockName === 'maxi-blocks/text-maxi') {
+			setDefaultBlockName('maxi-blocks/text-maxi');
+		} else if (blockName === 'maxi-blocks/container-maxi') {
+			setDefaultBlockName('maxi-blocks/container-maxi');
+		} else if (isPostEditor()) {
+			setDefaultBlockName('maxi-blocks/text-maxi');
+		} else {
+			setDefaultBlockName('maxi-blocks/container-maxi');
+		}
+	}
 
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =

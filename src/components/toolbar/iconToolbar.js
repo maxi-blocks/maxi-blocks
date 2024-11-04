@@ -8,18 +8,17 @@ import { useSelect } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty, cloneDeep, isEqual } from 'lodash';
-import loadable from '@loadable/component';
 
 /**
  * Internal dependencies
  */
-const IconPosition = loadable(() => import('./components/icon-position'));
-const IconSize = loadable(() => import('./components/icon-size'));
-const IconColor = loadable(() => import('./components/icon-color'));
-const IconBackground = loadable(() => import('./components/icon-background'));
-const Border = loadable(() => import('./components/border'));
-const PaddingMargin = loadable(() => import('./components/padding-margin'));
-const Popover = loadable(() => import('../popover'));
+import IconPosition from './components/icon-position';
+import IconSize from './components/icon-size';
+import IconColor from './components/icon-color';
+import IconBackground from './components/icon-background';
+import Border from './components/border';
+import PaddingMargin from './components/padding-margin';
+import Popover from '../popover';
 
 import { getGroupAttributes } from '../../extensions/styles';
 

@@ -4,20 +4,11 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * External dependencies
- */
-import loadable from '@loadable/component';
-
-/**
  * Internal dependencies
  */
-const BackgroundControl = loadable(() =>
-	import('../../components/background-control')
-);
-const BorderControl = loadable(() => import('../../components/border-control'));
-const SvgColorControl = loadable(() =>
-	import('./components/svg-color-control')
-);
+import BackgroundControl from '../../components/background-control';
+import BorderControl from '../../components/border-control';
+import SvgColorControl from './components/svg-color-control';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { createIconTransitions } from '../../extensions/styles';
 import {

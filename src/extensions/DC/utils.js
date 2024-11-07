@@ -44,7 +44,7 @@ const showCurrent = (type, currentTemplateType) => {
 
 	if (
 		allowedTemplateTypesCurrent.includes(currentTemplateType) &&
-		type.includes(currentTemplateType)
+		type?.includes(currentTemplateType)
 	)
 		return true;
 
@@ -435,7 +435,7 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 
 	if (
 		type.includes(select('core/editor').getCurrentPostType()) ||
-		select('core/editor').getCurrentPostType().includes(type)
+		select('core/editor').getCurrentPostType()?.includes(type)
 	) {
 		const newItem = {
 			label: __("Get the current item's data", 'maxi-blocks'),

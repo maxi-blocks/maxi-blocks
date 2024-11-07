@@ -20,6 +20,10 @@ if (!defined('MAXIBLOCKS_GO_MAXI_PARTS_PATH')) { // path to the parts folder in 
     define('MAXIBLOCKS_GO_MAXI_PARTS_PATH', plugin_dir_path(__FILE__) . 'parts/');
 }
 
+if (!defined('MAXIBLOCKS_GO_MAXI_PATTERNS_PLUGIN_URL')) { // url to the patterns folder in plugin
+    define('MAXIBLOCKS_GO_MAXI_PATTERNS_PLUGIN_URL', plugin_dir_url(__FILE__) . 'patterns/');
+}
+
 include_once plugin_dir_path(__FILE__) . 'php/add-maxi-templates.php';
 /**
  * Registers custom block pattern categories for MaxiBlocks Go.

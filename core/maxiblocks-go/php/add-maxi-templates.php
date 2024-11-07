@@ -290,7 +290,7 @@ function maxiblocks_go_add_styles_meta_fonts_to_db()
         return;
     }
 
-    $db_folder = MAXIBLOCKS_GO_PATH . '/maxi/db/';
+    $db_folder = MAXI_PLUGIN_DIR_PATH . 'core/maxiblocks-go/db/';
 
     // Check if the 'db' folder exists
     if (is_dir($db_folder)) {
@@ -435,8 +435,8 @@ if (maxiblocks_go_check_template_files_exist()) {
 }
 
 /**
- * Copies the content of the /maxi/patterns, /maxi/templates, and /maxi/parts folders
- * into the /patterns, /templates, and /parts folders respectively.
+ * Copies the content of the plugins /patterns, /templates, and /parts folders
+ * into the themes /patterns, /templates, and /parts folders respectively.
  *
  * @since 1.1.0
  * @return void

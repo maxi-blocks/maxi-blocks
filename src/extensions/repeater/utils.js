@@ -108,17 +108,12 @@ export const getChildColumns = (clientId, isRowClientId = false) => {
 };
 
 export const goThroughColumns = (columns, blockClientId, callback) => {
-	// eslint-disable-next-line no-async-promise-executor
-	return new Promise(async resolve => {
-		for (const column of columns) {
-			// Skip the column where the block was originally added
-			if (column.clientId !== blockClientId) {
-				// eslint-disable-next-line no-await-in-loop
-				await callback(column);
-			}
-		}
-		resolve();
-	});
+	// Filter out the target column first, then process others
+	const columnsToProcess = columns.filter(
+		column => column.clientId !== blockClientId
+	);
+
+	return Promise.all(columnsToProcess.map(column => callback(column)));
 };
 
 export const getInitialColumn = (clientId, repeaterColumnsClientIds) => {

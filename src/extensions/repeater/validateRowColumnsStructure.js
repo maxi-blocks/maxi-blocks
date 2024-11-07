@@ -102,23 +102,12 @@ const replaceColumnInnerBlocks = (
 	modifiedMarkNextChangeAsNotPersistent
 ) => {
 	const { replaceInnerBlocks } = dispatch('core/block-editor');
-
 	const { getBlock } = select('core/block-editor');
-
-	const column = getBlock(columnClientId);
-
-	validateAttributes(
-		column,
-		column,
-		innerBlocksPositions,
-		columnToValidateByIndex,
-		true,
-		modifiedMarkNextChangeAsNotPersistent
-	);
 
 	const newInnerBlocks = cleanInnerBlocks(
 		getBlock(columnToValidateByClientId).innerBlocks
 	);
+	const column = getBlock(columnClientId);
 
 	const newColumn = {
 		...column,
@@ -128,7 +117,6 @@ const replaceColumnInnerBlocks = (
 	goThroughMaxiBlocks(
 		block => {
 			const blockPosition = findBlockPosition(block.clientId, newColumn);
-
 			const oldBlock = findTarget(blockPosition, column);
 
 			if (!oldBlock) {
@@ -282,7 +270,6 @@ const validateRowColumnsStructure = async (
 				innerBlocksPositions,
 				modifiedMarkNextChangeAsNotPersistent
 			);
-			return;
 		}
 
 		validateAttributes(

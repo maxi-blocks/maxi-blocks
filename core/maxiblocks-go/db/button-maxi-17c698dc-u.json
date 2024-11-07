@@ -1,0 +1,7 @@
+{
+    "block_style_id": "button-maxi-17c698dc-u",
+    "css_value": "body.maxi-blocks--active #button-maxi-17c698dc-u{justify-content:flex-start;box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-8,29,48,53),1);min-width:initial;}body.maxi-blocks--active #button-maxi-17c698dc-u .maxi-button-block__button{min-width:initial;border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-right-radius:10px;border-bottom-left-radius:10px;box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-4,156,246,251),1);text-align:left;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;}body.maxi-blocks--active #button-maxi-17c698dc-u .maxi-button-block__content{color:var(--maxi-dark-button-color,rgba(var(--maxi-dark-color-4,156,246,251),1));font-weight:700;transition:all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-17c698dc-u .maxi-button-block__button .maxi-button-block__icon svg path{stroke-width:2;}body.maxi-blocks--active #button-maxi-17c698dc-u .maxi-button-block__button:hover .maxi-button-block__content{color:var(--maxi-dark-button-color-hover,rgba(var(--maxi-dark-color-6,214,163,251),1));}",
+    "fonts_value": "{\"sc_font_light_p\":{\"weight\":\"400\"},\"sc_font_light_button\":{\"weight\":\"400\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": null
+}

@@ -1,0 +1,7 @@
+{
+    "block_style_id": "column-maxi-e8283695-u",
+    "css_value": "body.maxi-blocks--active #column-maxi-e8283695-u{width:-moz-fit-content;width:fit-content;flex-basis:fit-content;min-width:initial;justify-content:center;flex-direction:column;}@media only screen and (max-width:1024px){body.maxi-blocks--active #column-maxi-e8283695-u{padding-right:20px;padding-left:20px;margin-left:auto;}}@media only screen and (max-width:480px){body.maxi-blocks--active #column-maxi-e8283695-u{padding-right:10px;padding-left:10px;width:100%;flex-basis:100%;}}",
+    "fonts_value": "{\"Roboto\":{\"weight\":\"400,700\",\"style\":\"normal\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "[]"
+}

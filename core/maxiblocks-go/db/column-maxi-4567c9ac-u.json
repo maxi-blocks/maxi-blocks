@@ -1,0 +1,7 @@
+{
+    "block_style_id": "column-maxi-4567c9ac-u",
+    "css_value": "body.maxi-blocks--active #column-maxi-4567c9ac-u{box-shadow:0px 0px 0px 0px rgba(var(--maxi-light-color-8,150,176,203),1);padding-right:20px;width:100%;flex-basis:100%;min-width:initial;flex-direction:column;}",
+    "fonts_value": "{\"sc_font_dark_p\":{\"weight\":\"400\"},\"sc_font_dark_button\":{\"weight\":\"400\"},\"sc_font_light_p\":{\"weight\":\"400\"},\"sc_font_dark_h1\":{\"weight\":\"400\"},\"sc_font_dark_h2\":{\"weight\":\"400\"},\"sc_font_dark_h3\":{\"weight\":\"400\"},\"sc_font_light_h2\":{\"weight\":\"400\"},\"sc_font_light_h3\":{\"weight\":\"400\"},\"sc_font_light_h1\":{\"weight\":\"400\"},\"sc_font_light_button\":{\"weight\":\"400\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": null
+}

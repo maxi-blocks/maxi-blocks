@@ -306,3 +306,10 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-dynamic-content.php';
 if (class_exists('MaxiBlocks_DynamicContent')) {
     MaxiBlocks_DynamicContent::register();
 }
+
+//======================================================================
+// MaxiBlocks Go
+//======================================================================
+if (get_template() === 'maxiblocks-go') {
+    require_once MAXI_PLUGIN_DIR_PATH . 'core/maxiblocks-go/maxiblocks-go.php';
+}

@@ -1,0 +1,7 @@
+{
+    "block_style_id": "column-maxi-86ac1ffd-u",
+    "css_value": "body.maxi-blocks--active #column-maxi-86ac1ffd-u{box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-8,9,60,88),1);width:calc(33.33% - 0px);flex-basis:calc(33.33% - 0px);min-width:initial;justify-content:center;flex-direction:column;}body.maxi-blocks--active #column-maxi-86ac1ffd-u > .maxi-background-displayer .maxi-background-displayer__1{background-color:rgba(var(--maxi-dark-color-1,0,0,0),1);display:block;}@media only screen and (max-width:767px){body.maxi-blocks--active #column-maxi-86ac1ffd-u{width:100%;flex-basis:100%;order:2;}}",
+    "fonts_value": "{\"Roboto\":{\"weight\":\"400,700,500\",\"style\":\"normal\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "[]"
+}

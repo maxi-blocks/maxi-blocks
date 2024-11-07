@@ -252,10 +252,9 @@ const validateRowColumnsStructure = async (
 	}
 
 	await goThroughColumns(childColumns, null, async column => {
-		console.log('column', column.clientId);
-		// if (column.clientId === columnToValidateByClientId) {
-		// 	return;
-		// }
+		if (column.clientId === columnToValidateByClientId) {
+			return;
+		}
 
 		if (
 			columnsStructure[column.clientId] &&
@@ -273,28 +272,28 @@ const validateRowColumnsStructure = async (
 			);
 		}
 
-		// validateAttributes(
-		// 	column,
-		// 	column,
-		// 	innerBlocksPositions,
-		// 	columnToValidateByIndex,
-		// 	false,
-		// 	modifiedMarkNextChangeAsNotPersistent
-		// );
+		validateAttributes(
+			column,
+			column,
+			innerBlocksPositions,
+			columnToValidateByIndex,
+			false,
+			modifiedMarkNextChangeAsNotPersistent
+		);
 
-		// goThroughMaxiBlocks(
-		// 	block =>
-		// 		validateAttributes(
-		// 			block,
-		// 			column,
-		// 			innerBlocksPositions,
-		// 			columnToValidateByIndex,
-		// 			false,
-		// 			modifiedMarkNextChangeAsNotPersistent
-		// 		),
-		// 	false,
-		// 	column.innerBlocks
-		// );
+		goThroughMaxiBlocks(
+			block =>
+				validateAttributes(
+					block,
+					column,
+					innerBlocksPositions,
+					columnToValidateByIndex,
+					false,
+					modifiedMarkNextChangeAsNotPersistent
+				),
+			false,
+			column.innerBlocks
+		);
 	});
 
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

@@ -102,23 +102,12 @@ const replaceColumnInnerBlocks = (
 	modifiedMarkNextChangeAsNotPersistent
 ) => {
 	const { replaceInnerBlocks } = dispatch('core/block-editor');
-
 	const { getBlock } = select('core/block-editor');
-
-	const column = getBlock(columnClientId);
-
-	validateAttributes(
-		column,
-		column,
-		innerBlocksPositions,
-		columnToValidateByIndex,
-		true,
-		modifiedMarkNextChangeAsNotPersistent
-	);
 
 	const newInnerBlocks = cleanInnerBlocks(
 		getBlock(columnToValidateByClientId).innerBlocks
 	);
+	const column = getBlock(columnClientId);
 
 	const newColumn = {
 		...column,
@@ -128,7 +117,6 @@ const replaceColumnInnerBlocks = (
 	goThroughMaxiBlocks(
 		block => {
 			const blockPosition = findBlockPosition(block.clientId, newColumn);
-
 			const oldBlock = findTarget(blockPosition, column);
 
 			if (!oldBlock) {
@@ -264,9 +252,10 @@ const validateRowColumnsStructure = async (
 	}
 
 	await goThroughColumns(childColumns, null, async column => {
-		if (column.clientId === columnToValidateByClientId) {
-			return;
-		}
+		console.log('column', column.clientId);
+		// if (column.clientId === columnToValidateByClientId) {
+		// 	return;
+		// }
 
 		if (
 			columnsStructure[column.clientId] &&
@@ -282,31 +271,30 @@ const validateRowColumnsStructure = async (
 				innerBlocksPositions,
 				modifiedMarkNextChangeAsNotPersistent
 			);
-			return;
 		}
 
-		validateAttributes(
-			column,
-			column,
-			innerBlocksPositions,
-			columnToValidateByIndex,
-			false,
-			modifiedMarkNextChangeAsNotPersistent
-		);
+		// validateAttributes(
+		// 	column,
+		// 	column,
+		// 	innerBlocksPositions,
+		// 	columnToValidateByIndex,
+		// 	false,
+		// 	modifiedMarkNextChangeAsNotPersistent
+		// );
 
-		goThroughMaxiBlocks(
-			block =>
-				validateAttributes(
-					block,
-					column,
-					innerBlocksPositions,
-					columnToValidateByIndex,
-					false,
-					modifiedMarkNextChangeAsNotPersistent
-				),
-			false,
-			column.innerBlocks
-		);
+		// goThroughMaxiBlocks(
+		// 	block =>
+		// 		validateAttributes(
+		// 			block,
+		// 			column,
+		// 			innerBlocksPositions,
+		// 			columnToValidateByIndex,
+		// 			false,
+		// 			modifiedMarkNextChangeAsNotPersistent
+		// 		),
+		// 	false,
+		// 	column.innerBlocks
+		// );
 	});
 
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

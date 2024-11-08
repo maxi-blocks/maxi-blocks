@@ -15,7 +15,7 @@ if (!defined('MAXIBLOCKS_GO_PREFIX')) {
 }
 
 if (!defined('MAXIBLOCKS_GO_TEMPLATES_NOTICE_JS')) {
-    define('MAXIBLOCKS_GO_TEMPLATE_NOTICE_JS', MAXIBLOCKS_GO_PREFIX . 'templates-notice');
+    define('MAXIBLOCKS_GO_TEMPLATE_NOTICE_PLUGIN_JS', MAXIBLOCKS_GO_PREFIX . 'templates-notice');
 }
 
 if (!defined('MAXIBLOCKS_GO_TEMPLATE_NOTICE_DISMISS')) {
@@ -48,11 +48,11 @@ function plugin_maxiblocks_go_render_templates_notice()
     $notice_css_url = MAXI_PLUGIN_URL_PATH . 'core/maxiblocks-go/css/add-maxi-templates.css';
 
     // Enqueue the CSS.
-    wp_enqueue_style(MAXIBLOCKS_GO_TEMPLATE_NOTICE_JS, $notice_css_url, [], MAXI_PLUGIN_VERSION);
+    wp_enqueue_style(MAXIBLOCKS_GO_TEMPLATE_NOTICE_PLUGIN_JS, $notice_css_url, [], MAXI_PLUGIN_VERSION);
 
     // Enqueue the script.
-    wp_enqueue_script(MAXIBLOCKS_GO_TEMPLATE_NOTICE_JS, $notice_js_url, [], MAXI_PLUGIN_VERSION, true);
-    wp_localize_script(MAXIBLOCKS_GO_TEMPLATE_NOTICE_JS, 'maxiblocks', plugin_maxiblocks_go_localize_templates_notice_js());
+    wp_enqueue_script(MAXIBLOCKS_GO_TEMPLATE_NOTICE_PLUGIN_JS, $notice_js_url, [], MAXI_PLUGIN_VERSION, true);
+    wp_localize_script(MAXIBLOCKS_GO_TEMPLATE_NOTICE_PLUGIN_JS, 'maxiblocks', plugin_maxiblocks_go_localize_templates_notice_js());
 
     // Define other variables.
     $install_plugin_image  = MAXI_PLUGIN_URL_PATH . 'core/maxiblocks-go/images/maxiblocks-templates-notice.jpg';

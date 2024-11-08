@@ -393,6 +393,7 @@ const scProps = {
 	],
 	scType: 'button',
 };
+const linkElements = ['button', 'canvas'];
 
 const data = {
 	name,
@@ -402,6 +403,7 @@ const data = {
 	interactionBuilderSettings,
 	maxiAttributes,
 	scProps,
+	linkElements,
 };
 
 export {

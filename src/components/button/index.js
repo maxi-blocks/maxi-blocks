@@ -22,6 +22,7 @@ export function SimpleButton(props, ref) {
 	const {
 		href,
 		target,
+		linkElement,
 		isPrimary,
 		isSmall,
 		isTertiary,
@@ -69,7 +70,12 @@ export function SimpleButton(props, ref) {
 	);
 
 	const trulyDisabled = disabled && !isFocusable;
-	const Tag = href !== undefined && !trulyDisabled ? 'a' : 'button';
+	const Tag =
+		href !== undefined &&
+		!trulyDisabled &&
+		(!linkElement || linkElement === 'button')
+			? 'a'
+			: 'button';
 	const tagProps =
 		Tag === 'a'
 			? { href, target }

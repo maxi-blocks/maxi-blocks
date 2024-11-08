@@ -22,8 +22,8 @@ if (!defined('MAXIBLOCKS_GO_TEMPLATE_NOTICE_DISMISS')) {
     define('MAXIBLOCKS_GO_TEMPLATE_NOTICE_DISMISS', MAXIBLOCKS_GO_PREFIX . 'dismiss-templates-notice');
 }
 
-add_action('admin_notices', 'maxiblocks_go_render_templates_notice', 0);
-add_action('wp_ajax_maxiblocks-go-theme-dismiss-templates-notice', 'maxiblocks_go_close_templates_notice');
+add_action('admin_notices', 'plugin_maxiblocks_go_render_templates_notice', 0);
+add_action('wp_ajax_maxiblocks-go-theme-dismiss-templates-notice', 'plugin_maxiblocks_go_close_templates_notice');
 
 /**
  * Renders the import notice for templates, patterns, parts.
@@ -35,11 +35,11 @@ add_action('wp_ajax_maxiblocks-go-theme-dismiss-templates-notice', 'maxiblocks_g
  * @since 1.0.0
  * @return void
  */
-function maxiblocks_go_render_templates_notice()
+function plugin_maxiblocks_go_render_templates_notice()
 {
 
     // Check if the notice should be displayed.
-    if (!maxiblocks_go_templates_notice_display()) {
+    if (!plugin_maxiblocks_go_templates_notice_display()) {
         return;
     }
 
@@ -52,7 +52,7 @@ function maxiblocks_go_render_templates_notice()
 
     // Enqueue the script.
     wp_enqueue_script(MAXIBLOCKS_GO_TEMPLATE_NOTICE_JS, $notice_js_url, [], MAXI_PLUGIN_VERSION, true);
-    wp_localize_script(MAXIBLOCKS_GO_TEMPLATE_NOTICE_JS, 'maxiblocks', maxiblocks_go_localize_templates_notice_js());
+    wp_localize_script(MAXIBLOCKS_GO_TEMPLATE_NOTICE_JS, 'maxiblocks', plugin_maxiblocks_go_localize_templates_notice_js());
 
     // Define other variables.
     $install_plugin_image  = MAXI_PLUGIN_URL_PATH . 'core/maxiblocks-go/images/maxiblocks-templates-notice.jpg';
@@ -75,7 +75,7 @@ function maxiblocks_go_render_templates_notice()
                     <?php esc_html_e('Now for the fun part. Let\'s import seven theme templates to showcase MaxiBlocks\' full range. These include blog home, archives, pages, index, 404, search results, and single posts.', 'maxiblocks-go');?>
                 </p>
                 <div class="maxiblocks-go-notice__actions">
-                    <button id="maxiblocks-go-notice-import-templates-patterns" class="maxiblocks-go-button maxiblocks-go-button--primary maxiblocks-go-button--hero" onclick="maxiblocks_go_copy_patterns()">
+                    <button id="maxiblocks-go-notice-import-templates-patterns" class="maxiblocks-go-button maxiblocks-go-button--primary maxiblocks-go-button--hero" onclick="plugin_maxiblocks_go_copy_patterns()">
                         <span class="maxiblocks-go-button__text">
                             <?php esc_html_e('Import theme templates', 'maxiblocks-go')?>
                         </span><span class="maxiblocks-go-button__icon">&rsaquo;</span></button>
@@ -100,7 +100,7 @@ function maxiblocks_go_render_templates_notice()
  *
  * @since 1.0.0
  */
-function maxiblocks_go_close_templates_notice()
+function plugin_maxiblocks_go_close_templates_notice()
 {
     if (!isset($_POST['nonce'])) {
         return;
@@ -119,7 +119,7 @@ function maxiblocks_go_close_templates_notice()
  * @since 1.0.0
  * @return bool True if both files exist, false otherwise.
  */
-function maxiblocks_go_check_template_files_exist()
+function plugin_maxiblocks_go_check_template_files_exist()
 {
     $template_404_path = get_stylesheet_directory() . '/templates/404.html';
     $template_archive_path = get_stylesheet_directory() . '/templates/archive.html';
@@ -140,7 +140,7 @@ function maxiblocks_go_check_template_files_exist()
  * @since 1.0.0
  * @return bool True if the notice should be displayed, false otherwise.
  */
-function maxiblocks_go_templates_notice_display()
+function plugin_maxiblocks_go_templates_notice_display()
 {
     $screen = get_current_screen();
 
@@ -160,7 +160,7 @@ function maxiblocks_go_templates_notice_display()
     }
 
     // Check if the 404.html and archive.html files exist in the /templates folder.
-    if (maxiblocks_go_check_template_files_exist()) {
+    if (plugin_maxiblocks_go_check_template_files_exist()) {
         return false;
     }
 
@@ -174,7 +174,7 @@ function maxiblocks_go_templates_notice_display()
  * @param string $plugin_status plugin current status.
  * @return array
  */
-function maxiblocks_go_localize_templates_notice_js()
+function plugin_maxiblocks_go_localize_templates_notice_js()
 {
 
     return array(
@@ -195,7 +195,7 @@ function maxiblocks_go_localize_templates_notice_js()
  * @param string $destination_dir The destination directory path.
  * @return void
  */
-function maxiblocks_go_copy_directory($source_dir, $destination_dir)
+function plugin_maxiblocks_go_copy_directory($source_dir, $destination_dir)
 {
     require_once ABSPATH . 'wp-admin/includes/file.php';
 
@@ -277,7 +277,7 @@ function maxiblocks_go_copy_directory($source_dir, $destination_dir)
     }
 }
 
-function maxiblocks_go_add_styles_meta_fonts_to_db()
+function plugin_maxiblocks_go_add_styles_meta_fonts_to_db()
 {
     global $wpdb;
 
@@ -369,9 +369,9 @@ function maxiblocks_go_add_styles_meta_fonts_to_db()
 
 }
 
-function maxiblocks_go_register_patterns()
+function plugin_maxiblocks_go_register_patterns()
 {
-    $pattern_files = glob(MAXIBLOCKS_GO_MAXI_PATTERNS_PATH . '/*.php');
+    $pattern_files = glob(MAXIBLOCKS_GO_MAXI_PATTERNS_PLUGIN_PATH . '/*.php');
 
     foreach ($pattern_files as $pattern_file) {
         // Start output buffering
@@ -430,8 +430,8 @@ function maxiblocks_go_register_patterns()
     }
 }
 
-if (maxiblocks_go_check_template_files_exist()) {
-    add_action('init', 'maxiblocks_go_register_patterns');
+if (plugin_maxiblocks_go_check_template_files_exist()) {
+    add_action('init', 'plugin_maxiblocks_go_register_patterns');
 }
 
 /**
@@ -441,14 +441,14 @@ if (maxiblocks_go_check_template_files_exist()) {
  * @since 1.1.0
  * @return void
  */
-function maxiblocks_go_copy_patterns()
+function plugin_maxiblocks_go_copy_patterns()
 {
-    maxiblocks_go_import_templates();
+    plugin_maxiblocks_go_import_templates();
     $theme_version = wp_get_theme('maxiblocks-go')->get('Version');
-    update_option('maxiblocks_go_templates_version', $theme_version);
-    update_option('maxiblocks_go_templates_imported', true);
+    update_option('plugin_maxiblocks_go_templates_version', $theme_version);
+    update_option('plugin_maxiblocks_go_templates_imported', true);
     wp_send_json_success('Patterns, templates, and parts copied successfully');
 }
 
-// Add the maxiblocks_go_copy_patterns function to the WordPress AJAX actions
-add_action('wp_ajax_maxiblocks_go_copy_patterns', 'maxiblocks_go_copy_patterns');
+// Add the plugin_maxiblocks_go_copy_patterns function to the WordPress AJAX actions
+add_action('wp_ajax_plugin_maxiblocks_go_copy_patterns', 'plugin_maxiblocks_go_copy_patterns');

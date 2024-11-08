@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 /* eslint-disable class-methods-use-this */
 /**
  * MaxiBlocks Block component extension
@@ -882,6 +883,9 @@ class MaxiBlockComponent extends Component {
 					) ||
 					iframe?.parentNode?.querySelector(
 						'img.maxiblocks-pattern-preview-image'
+					) ||
+					iframe?.parentNode?.querySelector(
+						'img.maxiblocks-go-pattern-preview-image'
 					)
 				)
 					return;

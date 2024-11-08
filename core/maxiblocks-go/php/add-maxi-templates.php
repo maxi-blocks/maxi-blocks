@@ -445,8 +445,8 @@ function plugin_maxiblocks_go_copy_patterns()
 {
     plugin_maxiblocks_go_import_templates();
     $theme_version = wp_get_theme('maxiblocks-go')->get('Version');
-    update_option('plugin_maxiblocks_go_templates_version', $theme_version);
-    update_option('plugin_maxiblocks_go_templates_imported', true);
+    update_option('maxiblocks_go_templates_version', $theme_version);
+    update_option('maxiblocks_go_templates_imported', true);
     wp_send_json_success('Patterns, templates, and parts copied successfully');
 }
 

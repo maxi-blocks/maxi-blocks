@@ -92,7 +92,7 @@ document.addEventListener(
 							error || originalButtonText;
 						// Display error message or perform any other actions
 					};
-					const data = `action=maxiblocks_go_copy_patterns&nonce=${nonce}`;
+					const data = `action=plugin_maxiblocks_go_copy_patterns&nonce=${nonce}`;
 					xhr.send(data);
 				}
 			);

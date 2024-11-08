@@ -71,15 +71,15 @@ add_action('init', 'plugin_maxiblocks_go_register_maxi_block_categories', 100);
  */
 function plugin_maxiblocks_go_check_and_update_templates()
 {
-    $templates_imported = get_option('plugin_maxiblocks_go_templates_imported', false);
+    $templates_imported = get_option('maxiblocks_go_templates_imported', false);
 
     if ($templates_imported) {
-        $current_version = get_option('plugin_maxiblocks_go_templates_version', '0');
+        $current_version = get_option('maxiblocks_go_templates_version', '0');
         $theme_version = wp_get_theme('maxiblocks-go')->get('Version');
 
-        if (version_compare($current_version, $theme_version, '<')) {
+        if (version_compare($current_version, $theme_version, '<>')) {
             plugin_maxiblocks_go_import_templates();
-            update_option('plugin_maxiblocks_go_templates_version', $theme_version);
+            update_option('maxiblocks_go_templates_version', $theme_version);
         }
     }
 }

@@ -6,7 +6,7 @@
   * Block Types: core/template-part/header
   */
 if (!defined('MAXIBLOCKS_GO_MAXI_PATTERNS_PLUGIN_URL')) {
-    define('MAXIBLOCKS_GO_MAXI_PATTERNS_PLUGIN_URL', plugins_url('core/maxiblocks-go/patterns/', WP_PLUGIN_DIR . '/maxi-blocks/'));
+    define('MAXIBLOCKS_GO_MAXI_PATTERNS_PLUGIN_URL', plugins_url().'/maxi-blocks/core/maxiblocks-go/patterns/');
 }
 $path_to_images = MAXIBLOCKS_GO_MAXI_PATTERNS_PLUGIN_URL . 'header/images/';?>
 <!-- wp:columns {"className":"maxiblocks-go template_header_columns template_width","style":{"spacing":{"padding":{"top":"20px","bottom":"20px"},"margin":{"top":"0","bottom":"0"}}}} -->

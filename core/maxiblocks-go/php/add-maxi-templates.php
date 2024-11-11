@@ -338,7 +338,7 @@ function plugin_maxiblocks_go_add_styles_meta_fonts_to_db()
 
 
             if (strpos($css_value, '_path_to_replace_') !== false) {
-                $css_value = str_replace('_path_to_replace_', MAXIBLOCKS_GO_MAXI_PATTERNS_URL, $css_value);
+                $css_value = str_replace('_path_to_replace_', MAXIBLOCKS_GO_MAXI_PATTERNS_PLUGIN_URL, $css_value);
             }
             // Insert a new row into the styles table
             $wpdb->insert(

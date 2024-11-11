@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.6
 Requires PHP: 8.0
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -174,11 +174,14 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 == Changelog ==
 
 _Updates 11 Nov 2024_
+MaxiBlocks v2.0.3
+* Fix: Corrected images url path for MaxiBlocks Go patterns import.
+
+_Updates 11 Nov 2024_
 MaxiBlocks v2.0.2
 * Update: Introduced default templates, patterns and template parts import for the MaxiBlocks Go theme. These include blog home, archives, pages, index, 404, search results, and single posts.
 * Update: Added a Button Maxi link setting that lets users choose if the link should be on the button or on the canvas.
 * Fix: Optimized repeater performance to deal with the Editor Experience slowdown and freezes.
-
 
 _Updates 4 Nov 2024_
 MaxiBlocks v2.0.1

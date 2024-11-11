@@ -1,4 +1,8 @@
 _Updates 11 Nov 2024_
+MaxiBlocks v2.0.3
+* Fix: Corrected images url path for MaxiBlocks Go patterns import.
+
+_Updates 11 Nov 2024_
 MaxiBlocks v2.0.2
 * Update: Introduced default templates, patterns and template parts import for the MaxiBlocks Go theme. These include blog home, archives, pages, index, 404, search results, and single posts.
 * Update: Added a Button Maxi link setting that lets users choose if the link should be on the button or on the canvas.

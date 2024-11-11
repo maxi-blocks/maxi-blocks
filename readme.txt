@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.6
 Requires PHP: 8.0
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,13 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 11 Nov 2024_
+MaxiBlocks v2.0.2
+* Update: Introduced default templates, patterns and template parts import for the MaxiBlocks Go theme. These include blog home, archives, pages, index, 404, search results, and single posts.
+* Update: Added a Button Maxi link setting that lets users choose if the link should be on the button or on the canvas.
+* Fix: Optimized repeater performance to deal with the Editor Experience slowdown and freezes.
+
+
 _Updates 4 Nov 2024_
 MaxiBlocks v2.0.1
 * Update: Enabled Container Maxi and Text Maxi as default blocks when creating a new page / post accordingly.
@@ -194,13 +201,6 @@ MaxiBlocks v2.0.0
 * Fix: Restored Dynamic Content reset function to correspondent Context Loop values.
 * Fix: Interaction Builder frontend adjustments when legacy and new relations are mixed on the same page.
 * Fix: Corrected issue with unique block id having special symbols inside.
-
-_Updates 9 Oct 2024_
-MaxiBlocks v1.9.9
-* Update: Enhanced the main Editor screen with the ability to keep the current breakpoint width regardless of the opened sidebars.
-* Update: Interaction Builder improvements for the future Mega menu blocks.
-* Update: Backend speed optimization for the List view and selecting blocks.
-* Update: Switched the plugin licence to GPLv3 or later.
 
 == Upgrade Notice ==
 

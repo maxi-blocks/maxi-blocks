@@ -306,3 +306,15 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-dynamic-content.php';
 if (class_exists('MaxiBlocks_DynamicContent')) {
     MaxiBlocks_DynamicContent::register();
 }
+
+//======================================================================
+// MaxiBlocks Go
+//======================================================================
+if (get_template() === 'maxiblocks-go') {
+    $theme_version = wp_get_theme('maxiblocks-go')->get('Version');
+
+    if (version_compare($theme_version, '1.2.1', '>=')) {
+        require_once MAXI_PLUGIN_DIR_PATH . 'core/maxiblocks-go/maxiblocks-go.php';
+    }
+
+}

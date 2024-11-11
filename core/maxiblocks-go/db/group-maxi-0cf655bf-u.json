@@ -1,0 +1,7 @@
+{
+    "block_style_id": "group-maxi-0cf655bf-u",
+    "css_value": "body.maxi-blocks--active #group-maxi-0cf655bf-u{min-width:initial;box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-8,9,60,88),1);flex-direction:row;-moz-column-gap:6.5%;column-gap:6.5%;}@media only screen and (min-width:1921px){body.maxi-blocks--active #group-maxi-0cf655bf-u{-moz-column-gap:9%;column-gap:9%;}}@media only screen and (max-width:767px){body.maxi-blocks--active #group-maxi-0cf655bf-u{justify-content:center;flex-direction:column;row-gap:30px;}}@media only screen and (max-width:480px){body.maxi-blocks--active #group-maxi-0cf655bf-u{align-items:center;}}",
+    "fonts_value": "{\"Roboto\":{\"weight\":\"400,700,500\",\"style\":\"normal\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "[]"
+}

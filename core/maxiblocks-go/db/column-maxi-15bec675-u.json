@@ -1,0 +1,7 @@
+{
+    "block_style_id": "column-maxi-15bec675-u",
+    "css_value": "body.maxi-blocks--active #column-maxi-15bec675-u{box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-8,9,60,88),1);border-color:rgba(var(--maxi-dark-color-3,155,155,155),1);border-style:solid;border-top-width:0px;border-right-width:2px;border-bottom-width:0px;border-left-width:0px;padding-right:20px;width:calc(50% - 0px);flex-basis:calc(50% - 0px);min-width:initial;justify-content:flex-end;flex-direction:row;}body.maxi-blocks--active #column-maxi-15bec675-u > .maxi-background-displayer{border-color:rgba(var(--maxi-dark-color-3,155,155,155),1);border-top-width:0px;border-right-width:2px;border-bottom-width:0px;border-left-width:0px;border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;top:0px;bottom:0px;left:0px;right:-2px;}@media only screen and (min-width:1921px){body.maxi-blocks--active #column-maxi-15bec675-u > .maxi-background-displayer{border-style:solid;}}@media only screen and (max-width:1920px){body.maxi-blocks--active #column-maxi-15bec675-u > .maxi-background-displayer{border-style:solid;}}@media only screen and (max-width:480px){body.maxi-blocks--active #column-maxi-15bec675-u{padding-right:10px;}}",
+    "fonts_value": "{\"Roboto\":{\"weight\":\"400,700,500\",\"style\":\"normal\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "[]"
+}

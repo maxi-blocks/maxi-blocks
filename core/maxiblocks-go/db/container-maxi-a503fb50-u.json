@@ -1,0 +1,7 @@
+{
+    "block_style_id": "container-maxi-a503fb50-u",
+    "css_value": "body.maxi-blocks--active #container-maxi-a503fb50-u{min-width:100%;box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-8,9,60,88),1);overflow-x:hidden;overflow-y:hidden;padding-top:0px;padding-bottom:0px;flex-direction:column;row-gap:20px;}body.maxi-blocks--active #container-maxi-a503fb50-u > .maxi-background-displayer .maxi-background-displayer__1{width:100%;height:100%;background-color:rgba(var(--maxi-dark-color-1,0,0,0),1);display:block;}",
+    "fonts_value": "{\"Roboto\":{\"weight\":\"400,700,500\",\"style\":\"normal\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "[]"
+}

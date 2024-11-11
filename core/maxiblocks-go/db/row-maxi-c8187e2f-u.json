@@ -1,0 +1,7 @@
+{
+    "block_style_id": "row-maxi-c8187e2f-u",
+    "css_value": "body.maxi-blocks--active #row-maxi-c8187e2f-u{box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-8,9,60,88),1);max-width:1170px;min-width:initial;width:-moz-fit-content;width:fit-content;margin-right:0px;margin-left:0px;flex-wrap:nowrap;row-gap:20px;-moz-column-gap:0%;column-gap:0%;}@media only screen and (min-width:1921px){body.maxi-blocks--active #row-maxi-c8187e2f-u{max-width:1690px;}}@media only screen and (max-width:1366px){body.maxi-blocks--active #row-maxi-c8187e2f-u{max-width:90%;}}@media only screen and (max-width:1024px){body.maxi-blocks--active #row-maxi-c8187e2f-u{max-width:100%;}}@media only screen and (max-width:480px){body.maxi-blocks--active #row-maxi-c8187e2f-u{flex-wrap:wrap;row-gap:10px;-moz-column-gap:2.5%;column-gap:2.5%;}}",
+    "fonts_value": "{\"Roboto\":{\"weight\":\"400,700,500\",\"style\":\"normal\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "[]"
+}

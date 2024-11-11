@@ -1,0 +1,7 @@
+{
+    "block_style_id": "group-maxi-daaf419b-u",
+    "css_value": "body.maxi-blocks--active #group-maxi-daaf419b-u{padding-top:25px;padding-right:20px;padding-bottom:10px;padding-left:20px;min-width:initial;height:100%;box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-8,9,60,88),1);flex-direction:column;}@media only screen and (max-width:767px){body.maxi-blocks--active #group-maxi-daaf419b-u{padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;}}",
+    "fonts_value": "{\"Roboto\":{\"weight\":\"400,700,500\",\"style\":\"normal\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "{\"relations\":[{\"title\":\"Divider\",\"uniqueID\":\"divider-maxi-47e0f4a4-u\",\"target\":\" .maxi-divider-block__divider\",\"action\":\"hover\",\"attributes\":{\"divider-width-general\":100,\"divider-width-xl\":100,\"divider-width-unit-general\":\"%\"},\"css\":{\"general\":{\"styles\":{\"border-top-style\":\"solid\",\"border-right-style\":\"none\",\"width\":\"100%\"},\"breakpoint\":null},\"xxl\":{\"styles\":[],\"breakpoint\":1921},\"xl\":{\"styles\":[],\"breakpoint\":1920},\"l\":{\"styles\":[],\"breakpoint\":1366},\"m\":{\"styles\":[],\"breakpoint\":1024},\"s\":{\"styles\":[],\"breakpoint\":767},\"xs\":{\"styles\":[],\"breakpoint\":480}},\"id\":1,\"effects\":{\"transition-duration-general\":0.3,\"transition-delay-general\":0,\"easing-general\":\"ease\",\"transition-status-general\":true},\"isButton\":false,\"sid\":\"dls\",\"trigger\":\"group-maxi-daaf419b-u\"}]}"
+}

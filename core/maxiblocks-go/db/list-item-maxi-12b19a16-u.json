@@ -1,0 +1,7 @@
+{
+    "block_style_id": "list-item-maxi-12b19a16-u",
+    "css_value": "body.maxi-blocks--active #list-item-maxi-12b19a16-u{min-width:initial;box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-8,9,60,88),1);}body.maxi-blocks--active #list-item-maxi-12b19a16-u .maxi-list-item-block--link{transition:color 0.3s 0s ease;}body.maxi-blocks--active #list-item-maxi-12b19a16-u .maxi-list-item-block--link span{transition:color 0.3s 0s ease;}",
+    "fonts_value": "{\"Roboto\":{\"weight\":\"400,700\",\"style\":\"normal\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "[]"
+}

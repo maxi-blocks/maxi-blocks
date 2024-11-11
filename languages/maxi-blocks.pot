@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-01T13:19:33+00:00\n"
+"POT-Creation-Date: 2024-11-11T11:20:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: maxi-blocks\n"
@@ -669,7 +669,7 @@ msgstr ""
 
 #: build/index.js:1
 #: build/index.js:15
-#: src/components/toolbar/components/link/index.js:116
+#: src/components/toolbar/components/link/index.js:130
 #: src/components/toolbar/components/text-link/index.js:301
 #: src/components/typography-control/index.js:90
 #: src/extensions/DC/constants.js:221
@@ -690,7 +690,7 @@ msgid "Text custom hover"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/maxi-block/maxiBlockComponent.js:929
+#: src/extensions/maxi-block/maxiBlockComponent.js:933
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 
@@ -3887,13 +3887,18 @@ msgid "Dynamic Content"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/link/index.js:129
+#: src/components/toolbar/components/link/index.js:143
 msgid "Use dynamic content link"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/link/index.js:176
+#: src/components/toolbar/components/link/index.js:190
 msgid "Link target"
+msgstr ""
+
+#: build/index.js:15
+#: src/components/toolbar/components/link/index.js:231
+msgid "Apply link on"
 msgstr ""
 
 #: build/index.js:15

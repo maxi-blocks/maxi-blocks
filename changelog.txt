@@ -1,3 +1,9 @@
+_Updates 11 Nov 2024_
+MaxiBlocks v2.0.2
+* Update: Introduced default templates, patterns and template parts import for the MaxiBlocks Go theme. These include blog home, archives, pages, index, 404, search results, and single posts.
+* Update: Added a Button Maxi link setting that lets users choose if the link should be on the button or on the canvas.
+* Fix: Optimized repeater performance to deal with the Editor Experience slowdown and freezes.
+
 _Updates 4 Nov 2024_
 MaxiBlocks v2.0.1
 * Update: Enabled Container Maxi and Text Maxi as default blocks when creating a new page / post accordingly.

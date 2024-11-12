@@ -68,6 +68,12 @@ const Link = props => {
 	const showUseDCLink = dcStatus || showDCLink;
 	const selectedDCType = dcType ?? clType;
 
+	useEffect(() => {
+		if (dcLinkStatus) {
+			setLinkTargetOptions(getLinkTargets(selectedDCType, dcField));
+		}
+	}, [selectedDCType, dcField, dcLinkStatus]);
+
 	if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
 		return null;
 
@@ -99,12 +105,6 @@ const Link = props => {
 			});
 		}
 	}
-
-	useEffect(() => {
-		if (dcLinkStatus) {
-			setLinkTargetOptions(getLinkTargets(selectedDCType, dcField));
-		}
-	}, [selectedDCType, dcField, dcLinkStatus]);
 
 	const customTaxonomies = select(
 		'maxiBlocks/dynamic-content'

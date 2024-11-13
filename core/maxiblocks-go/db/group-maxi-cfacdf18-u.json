@@ -1,0 +1,7 @@
+{
+    "block_style_id": "group-maxi-cfacdf18-u",
+    "css_value": "body.maxi-blocks--active #group-maxi-cfacdf18-u{min-width:initial;box-shadow:0px 0px 0px 0px rgba(var(--maxi-light-color-8,150,176,203),1);flex-wrap:nowrap;justify-content:flex-start;flex-direction:row;align-items:center;-moz-column-gap:20px;column-gap:20px;transform-origin:0% 50% ;}",
+    "fonts_value": "{\"sc_font_dark_p\":{\"weight\":\"400\"},\"sc_font_dark_button\":{\"weight\":\"400\"},\"sc_font_light_p\":{\"weight\":\"400\"},\"sc_font_dark_h1\":{\"weight\":\"400\"},\"sc_font_dark_h2\":{\"weight\":\"400\"},\"sc_font_dark_h3\":{\"weight\":\"400\"},\"sc_font_light_h2\":{\"weight\":\"400\"},\"sc_font_light_h3\":{\"weight\":\"400\"},\"sc_font_light_h1\":{\"weight\":\"400\"},\"sc_font_light_button\":{\"weight\":\"400\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "{\"horizontal\":{\"scroll-horizontal-status-general\":true,\"scroll-horizontal-preview-status-general\":false,\"scroll-horizontal-easing-general\":\"ease\",\"scroll-horizontal-speed-general\":2000,\"scroll-horizontal-delay-general\":0,\"scroll-horizontal-viewport-top-general\":\"mid\",\"scroll-horizontal-status-reverse-general\":true,\"scroll-horizontal-is-block-zone-general\":false,\"scroll-horizontal-unit-general\":\"px\",\"scroll-horizontal-zones-general\":{\"0\":-100,\"50\":-500,\"100\":-900}},\"scroll_effects\":true}"
+}

@@ -97,4 +97,14 @@
 	> .maxi-block--has-link {
 		max-width: inherit;
 	}
+
+	// Override the default button style that makes cursor default for links
+	button {
+		cursor: pointer;
+	}
+}
+
+// 2025
+body.maxi-blocks--active .maxi-block--use-sc .entry-content:has(.maxi-block) {
+	margin-block-start: 0;
 }

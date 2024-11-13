@@ -1,0 +1,7 @@
+{
+    "block_style_id": "group-maxi-885b4755-u",
+    "css_value": "body.maxi-blocks--active #group-maxi-885b4755-u{min-width:initial;box-shadow:0px 0px 0px 0px rgba(var(--maxi-light-color-8,150,176,203),1);flex-direction:row;-moz-column-gap:9%;column-gap:9%;}@media only screen and (max-width:1920px){body.maxi-blocks--active #group-maxi-885b4755-u{-moz-column-gap:6.5%;column-gap:6.5%;}}@media only screen and (max-width:767px){body.maxi-blocks--active #group-maxi-885b4755-u{justify-content:center;flex-direction:column;row-gap:30px;}}@media only screen and (max-width:480px){body.maxi-blocks--active #group-maxi-885b4755-u{align-items:center;}}",
+    "fonts_value": "{\"sc_font_dark_p\":{\"weight\":\"400\"},\"sc_font_dark_button\":{\"weight\":\"400\"},\"sc_font_light_p\":{\"weight\":\"400\"},\"sc_font_dark_h1\":{\"weight\":\"400\"},\"sc_font_dark_h2\":{\"weight\":\"400\"},\"sc_font_dark_h3\":{\"weight\":\"400\"},\"sc_font_light_h2\":{\"weight\":\"400\"},\"sc_font_light_h3\":{\"weight\":\"400\"},\"sc_font_light_h1\":{\"weight\":\"400\"},\"sc_font_light_button\":{\"weight\":\"400\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": null
+}

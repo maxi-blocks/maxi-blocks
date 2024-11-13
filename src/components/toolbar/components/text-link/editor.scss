@@ -10,6 +10,14 @@
 			background-color: #fff;
 		}
 	}
+	.block-editor-url-input {
+		min-width: auto;
+		.components-input-control {
+			input.components-input-control__input {
+				border-right: none;
+			}
+		}
+	}
 	.block-editor-url-input__input {
 		background-color: transparent;
 		color: #fff;
@@ -23,6 +31,9 @@
 		color: var(--maxi-grey-5-color);
 	}
 	.block-editor-link-control__search-submit {
+		&.has-icon {
+			padding: 0 !important;
+		}
 		svg {
 			fill: #5f6063 !important;
 		}

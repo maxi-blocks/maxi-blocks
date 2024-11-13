@@ -1,0 +1,7 @@
+{
+    "block_style_id": "row-maxi-768e01d3-u",
+    "css_value": "body.maxi-blocks--active #row-maxi-768e01d3-u{box-shadow:0px 0px 0px 0px rgba(var(--maxi-dark-color-8,9,60,88),1);min-width:100%;flex-wrap:wrap;row-gap:20px;-moz-column-gap:0%;column-gap:0%;}",
+    "fonts_value": "{\"Roboto\":{\"weight\":\"400,700,500\",\"style\":\"normal\"}}",
+    "active_custom_data": "1",
+    "custom_data_value": "[]"
+}

@@ -5,7 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useContext, useEffect, useMemo, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -25,11 +25,12 @@ import {
 import SelectControl from '../../../select-control';
 import { getLinkTargets } from '../../../../extensions/DC/utils';
 import InfoBox from '../../../info-box';
+import { getBlockData } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, capitalize } from 'lodash';
 
 /**
  * Styles & Icons
@@ -67,6 +68,19 @@ const Link = props => {
 	const showDCLink = clStatus && DC_LINK_BLOCKS.includes(blockName);
 	const showUseDCLink = dcStatus || showDCLink;
 	const selectedDCType = dcType ?? clType;
+	const { linkElements, linkElementOptions } = useMemo(() => {
+		const linkElements = getBlockData(blockName)?.linkElements;
+		const linkElementOptions = linkElements?.map(element => ({
+			label: capitalize(element),
+			value: element,
+		}));
+
+		return {
+			linkElements,
+			linkElementOptions,
+		};
+	}, [blockName]);
+	const showLinkElemetSelect = !!linkElements;
 
 	useEffect(() => {
 		if (dcLinkStatus) {
@@ -224,6 +238,20 @@ const Link = props => {
 										</>
 									)}
 							</>
+						)}
+						{showLinkElemetSelect && (
+							<SelectControl
+								label={__('Apply link on', 'maxi-blocks')}
+								value={linkSettings?.linkElement}
+								options={linkElementOptions}
+								newStyle
+								onChange={value => {
+									onChange({
+										...linkSettings,
+										linkElement: value,
+									});
+								}}
+							/>
 						)}
 						<ToolbarContext.Consumer>
 							{context => (

@@ -141,10 +141,11 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	if (isSelected) {
 		if (blockName === 'maxi-blocks/text-maxi') {
 			setDefaultBlockName('maxi-blocks/text-maxi');
-		} else if (blockName === 'maxi-blocks/container-maxi') {
-			setDefaultBlockName('maxi-blocks/container-maxi');
 		}
 		// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+		// } else if (blockName === 'maxi-blocks/container-maxi') {
+		// 	setDefaultBlockName('maxi-blocks/container-maxi');
+		// }
 		// } else if (isPostEditor()) {
 		// 	setDefaultBlockName('maxi-blocks/text-maxi');
 		// } else {

@@ -15,8 +15,6 @@ describe('Delete block', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		await page.keyboard.type('Block 1', { delay: 100 });
-
 		// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 		// await page.waitForTimeout(300);
 		// Remove the maxi-block-inserter__last element content
@@ -29,7 +27,7 @@ describe('Delete block', () => {
 
 		// await page.waitForTimeout(300);
 
-		await page.keyboard.type('Block 1', { delay: 300 });
+		await page.keyboard.type('Block 1', { delay: 100 });
 
 		const textContent = await page.$eval(
 			'.is-root-container.block-editor-block-list__layout',

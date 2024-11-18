@@ -18,13 +18,14 @@ describe('Svg Icon Maxi default size', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Icon Maxi');
 
+		// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 		// Remove the maxi-block-inserter__last element
-		await page.evaluate(() => {
-			const element = document.querySelector(
-				'.maxi-block-inserter__last'
-			);
-			if (element) element.remove();
-		});
+		// await page.evaluate(() => {
+		// 	const element = document.querySelector(
+		// 		'.maxi-block-inserter__last'
+		// 	);
+		// 	if (element) element.remove();
+		// });
 
 		await modalMock(page, { type: 'svg' });
 		await page.waitForTimeout(500);

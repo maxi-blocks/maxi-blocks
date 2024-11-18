@@ -114,24 +114,25 @@
 			}
 		}
 	}
-	&__last {
-		.maxi-block-inserter__button,
-		.maxi-block-inserter__button.is-next-40px-default-size {
-			width: 25px;
-			height: 25px;
-			margin: auto;
-			background: var(--maxi-black-1-color) !important;
-			border: 1px solid var(--maxi-white-3-color);
-			svg {
-				width: 24px;
-				height: 24px;
-			}
-			&:hover,
-			&:focus {
-				background: var(--maxi-secondary-color) !important;
-			}
-		}
-	}
+	// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+	// &__last {
+	// 	.maxi-block-inserter__button,
+	// 	.maxi-block-inserter__button.is-next-40px-default-size {
+	// 		width: 25px;
+	// 		height: 25px;
+	// 		margin: auto;
+	// 		background: var(--maxi-black-1-color) !important;
+	// 		border: 1px solid var(--maxi-white-3-color);
+	// 		svg {
+	// 			width: 24px;
+	// 			height: 24px;
+	// 		}
+	// 		&:hover,
+	// 		&:focus {
+	// 			background: var(--maxi-secondary-color) !important;
+	// 		}
+	// 	}
+	// }
 }
 
 .maxi-wrapper-block-inserter {

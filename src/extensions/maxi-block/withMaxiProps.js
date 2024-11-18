@@ -79,7 +79,8 @@ const withMaxiProps = createHigherOrderComponent(
 				isTyping,
 				blockIndex,
 				blockRootClientId,
-				isLastBlock,
+				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+				// isLastBlock,
 			} = useSelect(select => {
 				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 					select('maxiBlocks');
@@ -88,11 +89,13 @@ const withMaxiProps = createHigherOrderComponent(
 					isTyping,
 					getBlockIndex,
 					getBlockRootClientId,
-					getBlocks,
+					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+					// getBlocks,
 				} = select('core/block-editor');
 
 				const currentBlockIndex = getBlockIndex(clientId);
-				const allBlocks = getBlocks();
+				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+				// const allBlocks = getBlocks();
 
 				return {
 					deviceType: receiveMaxiDeviceType(),
@@ -101,9 +104,10 @@ const withMaxiProps = createHigherOrderComponent(
 					isTyping: isTyping(),
 					blockIndex: currentBlockIndex,
 					blockRootClientId: getBlockRootClientId(clientId),
-					isLastBlock:
-						attributes?.isFirstOnHierarchy &&
-						currentBlockIndex === allBlocks.length - 1,
+					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+					// isLastBlock:
+					// 	attributes?.isFirstOnHierarchy &&
+					// 	currentBlockIndex === allBlocks.length - 1,
 				};
 			});
 
@@ -351,9 +355,10 @@ const withMaxiProps = createHigherOrderComponent(
 							{...ownProps}
 						/>
 					)}
-					{isLastBlock && (
+					{/* TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806 */}
+					{/* {isLastBlock && (
 						<BlockInserter className='maxi-block-inserter maxi-block-inserter__last' />
-					)}
+					)} */}
 				</>
 			);
 		}),

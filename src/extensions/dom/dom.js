@@ -2,7 +2,8 @@
  * WordPress dependencies
  */
 import { select, dispatch, subscribe, resolveSelect } from '@wordpress/data';
-import { setDefaultBlockName } from '@wordpress/blocks';
+// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+// import { setDefaultBlockName } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -23,7 +24,8 @@ import {
 	showHideHamburgerNavigation,
 	removeNavigationHoverUnderline,
 } from '../../editor/style-cards/utils';
-import isPostEditor from './isPostEditor';
+// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+// import isPostEditor from './isPostEditor';
 
 /**
  * External dependencies
@@ -512,11 +514,12 @@ wp.domReady(() => {
 		}
 	});
 
-	setTimeout(() => {
-		if (isPostEditor()) {
-			setDefaultBlockName('maxi-blocks/text-maxi');
-		} else {
-			setDefaultBlockName('maxi-blocks/container-maxi');
-		}
-	}, 100);
+	// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+	// setTimeout(() => {
+	// 	if (isPostEditor()) {
+	// 		setDefaultBlockName('maxi-blocks/text-maxi');
+	// 	} else {
+	// 		setDefaultBlockName('maxi-blocks/container-maxi');
+	// 	}
+	// }, 100);
 });

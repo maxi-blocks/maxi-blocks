@@ -146,6 +146,10 @@ function maxi_blocks_dismiss_notice()
 
 function maxi_blocks_after_update($upgrader_object, $options)
 {
+    // Check if required keys exist in the options array
+    if (!isset($options['action']) || !isset($options['type']) || !isset($options['plugins'])) {
+        return;
+    }
     // Check if it's an update of plugins
     if ($options['action'] == 'update' && $options['type'] == 'plugin') {
         // Check if YOUR plugin is in the list of updated plugins

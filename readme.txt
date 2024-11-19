@@ -173,6 +173,11 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 19 Nov 2024_
+MaxiBlocks v2.0.4
+* Fix: Reverted the default block on a new page / post back to Gutenberg Paragraph.
+* Fix: Addressed PHP warnings during update.
+
 _Updates 11 Nov 2024_
 MaxiBlocks v2.0.3
 * Fix: Corrected images url path for MaxiBlocks Go patterns import.

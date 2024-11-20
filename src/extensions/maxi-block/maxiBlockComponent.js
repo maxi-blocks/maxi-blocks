@@ -247,7 +247,7 @@ class MaxiBlockComponent extends Component {
 					}
 
 					if (isArray(innerBlocks)) {
-						for (let i = 0; i < innerBlocks.length; i++) {
+						for (let i = 0; i < innerBlocks.length; i += 1) {
 							const {
 								attributes,
 								innerBlocks: nestedBlocks,

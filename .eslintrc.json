@@ -63,7 +63,6 @@
 		"import/named": "off",
 		"react/destructuring-assignment": "off",
 		"jsx-a11y/anchor-is-valid": "off",
-		"no-plusplus": "off",
 		// Short term deactivate rules //
 		"no-shadow": "off",
 		"no-restricted-syntax": "off",

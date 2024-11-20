@@ -4,9 +4,9 @@ Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaa
 Tags: block, blocks, gutenberg blocks, page builder, template library
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -172,6 +172,11 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates 19 Nov 2024_
+MaxiBlocks v2.0.4
+* Fix: Reverted the default block on a new page / post back to Gutenberg Paragraph.
+* Fix: Addressed PHP warnings during update.
 
 _Updates 11 Nov 2024_
 MaxiBlocks v2.0.3

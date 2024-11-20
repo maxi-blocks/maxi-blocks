@@ -141,6 +141,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	if (isSelected) {
 		if (blockName === 'maxi-blocks/text-maxi') {
 			setDefaultBlockName('maxi-blocks/text-maxi');
+		} else {
+			setDefaultBlockName('core/paragraph');
 		}
 		// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 		// } else if (blockName === 'maxi-blocks/container-maxi') {

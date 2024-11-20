@@ -3,9 +3,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
+import { useSelect, select } from '@wordpress/data';
 import { forwardRef } from '@wordpress/element';
 import { Popover } from '@wordpress/components';
+
+/**
+ * External dependencies
+ */
+import JSZip from 'jszip';
 
 /**
  * Internal dependencies
@@ -34,13 +39,48 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 		};
 	});
 
-	const handleDownload = () => {
-		const exportData = {
-			[currentPostTitle]: {
-				content: postContent,
-			},
+	const getExportData = () => {
+		// Get all blocks from the content
+		const blocks = wp.blocks.parse(postContent);
+		const uniqueIDs = new Set();
+
+		// Recursive function to collect all uniqueIDs
+		const collectUniqueIDs = block => {
+			if (block.attributes?.uniqueID) {
+				uniqueIDs.add(block.attributes.uniqueID);
+			}
+			if (block.innerBlocks) {
+				block.innerBlocks.forEach(innerBlock => {
+					collectUniqueIDs(innerBlock);
+				});
+			}
 		};
 
+		// Collect all uniqueIDs
+		blocks.forEach(block => {
+			collectUniqueIDs(block);
+		});
+
+		// Get styles for each uniqueID
+		const styles = {};
+		uniqueIDs.forEach(uniqueID => {
+			const blockStyles =
+				select('maxiBlocks/styles').getCSSCache(uniqueID);
+			if (blockStyles) {
+				styles[uniqueID] = blockStyles;
+			}
+		});
+
+		return {
+			[currentPostTitle]: {
+				content: postContent,
+				styles,
+			},
+		};
+	};
+
+	const handleDownloadJSON = () => {
+		const exportData = getExportData();
 		const jsonData = JSON.stringify(exportData, null, 2);
 		const blob = new Blob([jsonData], { type: 'application/json' });
 
@@ -50,6 +90,61 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 		link.download = `${currentPostTitle
 			.toLowerCase()
 			.replace(/\s+/g, '-')}.json`;
+
+		document.body.appendChild(link);
+		link.click();
+
+		document.body.removeChild(link);
+		window.URL.revokeObjectURL(url);
+	};
+
+	const handleDownloadZIP = async () => {
+		const exportData = getExportData();
+		const jsonData = JSON.stringify(exportData, null, 2);
+
+		// Create a new JSZip instance
+		const zip = new JSZip();
+
+		// Add the JSON file to the zip with maximum compression
+		zip.file(
+			`${currentPostTitle.toLowerCase().replace(/\s+/g, '-')}.json`,
+			jsonData,
+			{
+				compression: 'DEFLATE',
+				compressionOptions: {
+					level: 9, // 9 = maximum compression
+				},
+			}
+		);
+
+		// Add a readme file with maximum compression
+		zip.file(
+			'readme.txt',
+			'This export was created with MaxiBlocks.\nContains page content and styles.',
+			{
+				compression: 'DEFLATE',
+				compressionOptions: {
+					level: 9,
+				},
+			}
+		);
+
+		// Generate the zip file with maximum compression
+		const zipBlob = await zip.generateAsync({
+			type: 'blob',
+			compression: 'DEFLATE',
+			compressionOptions: {
+				level: 9,
+			},
+		});
+
+		// Create download link
+		const url = window.URL.createObjectURL(zipBlob);
+		const link = document.createElement('a');
+		link.href = url;
+		link.download = `${currentPostTitle
+			.toLowerCase()
+			.replace(/\s+/g, '-')}.zip`;
 
 		document.body.appendChild(link);
 		link.click();
@@ -93,9 +188,15 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 				<div className='maxi-style-cards__sc__more-sc'>
 					<Button
 						className='maxi-style-cards__download-button'
-						onClick={handleDownload}
+						onClick={handleDownloadJSON}
 					>
 						{__('Download as JSON', 'maxi-blocks')}
+					</Button>
+					<Button
+						className='maxi-style-cards__download-button'
+						onClick={handleDownloadZIP}
+					>
+						{__('Download as ZIP', 'maxi-blocks')}
 					</Button>
 				</div>
 			</div>

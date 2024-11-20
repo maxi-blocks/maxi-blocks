@@ -322,3 +322,11 @@ if (get_template() === 'maxiblocks-go') {
     }
 
 }
+
+//======================================================================
+// MaxiBlocks Site Editor (starter sites)
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-site-editor.php';
+if (class_exists('MaxiBlocks_SiteEditor')) {
+    new MaxiBlocks_SiteEditor();
+}

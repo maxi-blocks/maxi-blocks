@@ -1,0 +1,16 @@
+.maxi-style-cards__download-button {
+	width: 100%;
+	justify-content: center;
+	margin: 15px 0;
+	padding: 10px;
+	background-color: #2196f3;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+
+	&:hover {
+		background-color: #1976d2;
+	}
+}

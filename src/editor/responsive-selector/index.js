@@ -16,11 +16,11 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import MaxiStyleCardsEditorPopUp from '../style-cards';
+import MaxiExportEditorPopUp from '../export';
 import { Button, Icon } from '../../components';
 import { setScreenSize } from '../../extensions/styles';
 import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
 import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
-import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
 
 /**
  * Styles
@@ -364,6 +364,7 @@ const ResponsiveSelector = props => {
 				</Button>
 			</div>
 			<MaxiStyleCardsEditorPopUp ref={settingsRef} />
+			<MaxiExportEditorPopUp ref={settingsRef} />
 			<a
 				href='https://maxiblocks.com/go/help-center'
 				target='_blank'

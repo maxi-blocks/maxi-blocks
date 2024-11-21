@@ -26,20 +26,83 @@ import { processCss } from '../../extensions/styles/store/controls';
 import { styleCardBoat, closeIcon } from '../../icons';
 
 const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
-	const { isRTL, currentPostTitle, postContent } = useSelect(select => {
-		const { getEditorSettings, getEditedPostContent } =
-			select('core/editor');
-		const { getCurrentPost } = select('core/editor');
-		const { isRTL } = getEditorSettings();
-		const currentPost = getCurrentPost();
+	const { isRTL, currentPostTitle, postContent, postType } = useSelect(
+		select => {
+			const { getEditorSettings, getEditedPostContent, getCurrentPost } =
+				select('core/editor');
+			const { isRTL } = getEditorSettings();
+			const currentPost = getCurrentPost();
 
-		return {
-			isRTL,
-			currentPostTitle:
-				currentPost?.title || `maxi-export-${currentPost?.id || ''}`,
-			postContent: getEditedPostContent(),
-		};
-	});
+			return {
+				isRTL,
+				currentPostTitle:
+					currentPost?.title ||
+					`maxi-export-${currentPost?.id || ''}`,
+				postContent: getEditedPostContent(),
+				postType: currentPost?.type || 'post',
+			};
+		}
+	);
+
+	const isFSE = select('core/edit-site') !== undefined;
+
+	const { entityType, entityTitle, entitySlug, wpPatternSyncStatus } =
+		useSelect(
+			select => {
+				if (!isFSE) {
+					return {
+						entityType: postType,
+						entityTitle: currentPostTitle,
+						entitySlug: currentPostTitle
+							.toLowerCase()
+							.replace(/\s+/g, '-'),
+						wpPatternSyncStatus: '',
+					};
+				}
+
+				const { getEditedPostId, getEditedPostType } =
+					select('core/edit-site');
+				const editedPostType = getEditedPostType();
+				const editedPostId = getEditedPostId();
+
+				let type = '';
+				let title = '';
+				let slug = '';
+				let patternSyncStatus = '';
+
+				const getEntityRecord = (postType, id) =>
+					select('core').getEntityRecord('postType', postType, id);
+
+				if (editedPostType === 'wp_template') {
+					type = 'template';
+					const record = getEntityRecord('wp_template', editedPostId);
+					title = record?.title?.rendered || '';
+					slug = record?.slug || `template-${editedPostId}`;
+				} else if (editedPostType === 'wp_template_part') {
+					type = 'template-part';
+					const record = getEntityRecord(
+						'wp_template_part',
+						editedPostId
+					);
+					title = record?.title?.rendered || '';
+					slug = record?.slug || `template-part-${editedPostId}`;
+				} else if (editedPostType === 'wp_block') {
+					type = 'pattern';
+					const record = getEntityRecord('wp_block', editedPostId);
+					title = record?.title?.raw || '';
+					slug = record?.slug || `pattern-${editedPostId}`;
+					patternSyncStatus = record?.wp_pattern_sync_status || '';
+				}
+
+				return {
+					entityType: type || editedPostType,
+					entityTitle: title || `maxi-export-${editedPostId}`,
+					entitySlug: slug || `maxi-export-${editedPostId}`,
+					wpPatternSyncStatus: patternSyncStatus,
+				};
+			},
+			[isFSE, currentPostTitle, postType]
+		);
 
 	const getExportData = async () => {
 		const blocks = wp.blocks.parse(postContent);
@@ -117,22 +180,25 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 			})
 		);
 
-		// Only include customData if it has entries
 		const exportData = {
-			[currentPostTitle]: {
-				content: postContent,
-				styles,
-			},
+			content: postContent,
+			styles,
+			isFSE,
+			entityType,
+			entityTitle,
+			entitySlug,
+			...(entityType === 'pattern' &&
+				wpPatternSyncStatus && { wpPatternSyncStatus }),
 		};
 
 		if (Object.keys(customData).length > 0) {
-			exportData[currentPostTitle].customData = customData;
+			exportData.customData = customData;
 		}
 
 		// Get fonts
 		const fonts = select('maxiBlocks/text').getPostFonts();
 		if (fonts.length > 0) {
-			exportData[currentPostTitle].fonts = fonts;
+			exportData.fonts = fonts;
 		}
 
 		return exportData;
@@ -146,9 +212,7 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 		const url = window.URL.createObjectURL(blob);
 		const link = document.createElement('a');
 		link.href = url;
-		link.download = `${currentPostTitle
-			.toLowerCase()
-			.replace(/\s+/g, '-')}.json`;
+		link.download = `${entitySlug}.json`;
 
 		document.body.appendChild(link);
 		link.click();
@@ -161,20 +225,14 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 		const exportData = await getExportData();
 		const jsonData = JSON.stringify(exportData, null, 2);
 
-		// Create a new JSZip instance
 		const zip = new JSZip();
 
-		// Add the JSON file to the zip with maximum compression
-		zip.file(
-			`${currentPostTitle.toLowerCase().replace(/\s+/g, '-')}.json`,
-			jsonData,
-			{
-				compression: 'DEFLATE',
-				compressionOptions: {
-					level: 9, // 9 = maximum compression
-				},
-			}
-		);
+		zip.file(`${entitySlug}.json`, jsonData, {
+			compression: 'DEFLATE',
+			compressionOptions: {
+				level: 9,
+			},
+		});
 
 		// Add a readme file with maximum compression
 		zip.file(
@@ -201,9 +259,7 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 		const url = window.URL.createObjectURL(zipBlob);
 		const link = document.createElement('a');
 		link.href = url;
-		link.download = `${currentPostTitle
-			.toLowerCase()
-			.replace(/\s+/g, '-')}.zip`;
+		link.download = `${entitySlug}.zip`;
 
 		document.body.appendChild(link);
 		link.click();

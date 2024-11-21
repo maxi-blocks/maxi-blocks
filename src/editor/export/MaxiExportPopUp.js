@@ -17,6 +17,9 @@ import JSZip from 'jszip';
  */
 import Icon from '../../components/icon';
 import Button from '../../components/button';
+import styleResolver from '../../extensions/styles/styleResolver';
+import frontendStyleGenerator from '../../extensions/styles/frontendStyleGenerator';
+import { processCss } from '../../extensions/styles/store/controls';
 
 /**
  * Icons
@@ -39,12 +42,10 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 		};
 	});
 
-	const getExportData = () => {
-		// Get all blocks from the content
+	const getExportData = async () => {
 		const blocks = wp.blocks.parse(postContent);
 		const uniqueIDs = new Set();
 
-		// Recursive function to collect all uniqueIDs
 		const collectUniqueIDs = block => {
 			if (block.attributes?.uniqueID) {
 				uniqueIDs.add(block.attributes.uniqueID);
@@ -56,20 +57,47 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 			}
 		};
 
-		// Collect all uniqueIDs
 		blocks.forEach(block => {
 			collectUniqueIDs(block);
 		});
 
 		// Get styles for each uniqueID
 		const styles = {};
-		uniqueIDs.forEach(uniqueID => {
-			const blockStyles =
-				select('maxiBlocks/styles').getCSSCache(uniqueID);
-			if (blockStyles) {
-				styles[uniqueID] = blockStyles;
-			}
-		});
+		try {
+			await Promise.all(
+				Array.from(uniqueIDs).map(async uniqueID => {
+					const blockStyles =
+						select('maxiBlocks/styles').getBlockStyles(uniqueID);
+
+					if (blockStyles) {
+						try {
+							// Format the styles as expected by frontendStyleGenerator
+							const styleArray = [uniqueID, blockStyles];
+							const generatedStyle =
+								frontendStyleGenerator(styleArray);
+
+							if (generatedStyle) {
+								const cssString = await processCss(
+									generatedStyle
+								);
+
+								if (cssString) {
+									styles[uniqueID] = cssString;
+								}
+							}
+						} catch (error) {
+							console.error(
+								'Error processing styles for uniqueID:',
+								uniqueID,
+								error
+							);
+						}
+					}
+				})
+			);
+		} catch (error) {
+			console.error('Error in getExportData:', error);
+		}
 
 		return {
 			[currentPostTitle]: {
@@ -79,8 +107,8 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 		};
 	};
 
-	const handleDownloadJSON = () => {
-		const exportData = getExportData();
+	const handleDownloadJSON = async () => {
+		const exportData = await getExportData();
 		const jsonData = JSON.stringify(exportData, null, 2);
 		const blob = new Blob([jsonData], { type: 'application/json' });
 
@@ -99,7 +127,7 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 	};
 
 	const handleDownloadZIP = async () => {
-		const exportData = getExportData();
+		const exportData = await getExportData();
 		const jsonData = JSON.stringify(exportData, null, 2);
 
 		// Create a new JSZip instance

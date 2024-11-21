@@ -26,6 +26,7 @@ const getMediaQueryString = (breakpoint, media) =>
 	}px){`;
 
 const frontendStyleGenerator = styles => {
+	console.log('styles', styles);
 	if (isNil(styles) || isEmpty(styles)) return false;
 
 	let response = '';
@@ -34,8 +35,14 @@ const frontendStyleGenerator = styles => {
 		const target = styles?.[0];
 		const value = styles?.[1];
 
+		console.log('target', target);
+		console.log('value', value);
+
 		let breakpointResponse = '';
 		const { breakpoints, content } = value;
+
+		console.log('breakpoints', breakpoints);
+		console.log('content', content);
 
 		Object.entries(content).forEach(([suffix, props]) => {
 			if (!isNil(props[breakpoint]) && !isEmpty(props[breakpoint])) {

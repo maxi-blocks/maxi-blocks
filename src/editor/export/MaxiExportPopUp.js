@@ -17,7 +17,6 @@ import JSZip from 'jszip';
  */
 import Icon from '../../components/icon';
 import Button from '../../components/button';
-import styleResolver from '../../extensions/styles/styleResolver';
 import frontendStyleGenerator from '../../extensions/styles/frontendStyleGenerator';
 import { processCss } from '../../extensions/styles/store/controls';
 
@@ -99,12 +98,44 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 			console.error('Error in getExportData:', error);
 		}
 
-		return {
+		// Get custom data and remove empty values
+		const rawCustomData = select(
+			'maxiBlocks/customData'
+		).getPostCustomData();
+		const customData = Object.fromEntries(
+			Object.entries(rawCustomData).filter(([_, value]) => {
+				// Remove empty strings, null, undefined, empty arrays and empty objects
+				if (value === null || value === undefined || value === '')
+					return false;
+				if (Array.isArray(value) && value.length === 0) return false;
+				if (
+					typeof value === 'object' &&
+					Object.keys(value).length === 0
+				)
+					return false;
+				return true;
+			})
+		);
+
+		// Only include customData if it has entries
+		const exportData = {
 			[currentPostTitle]: {
 				content: postContent,
 				styles,
 			},
 		};
+
+		if (Object.keys(customData).length > 0) {
+			exportData[currentPostTitle].customData = customData;
+		}
+
+		// Get fonts
+		const fonts = select('maxiBlocks/text').getPostFonts();
+		if (fonts.length > 0) {
+			exportData[currentPostTitle].fonts = fonts;
+		}
+
+		return exportData;
 	};
 
 	const handleDownloadJSON = async () => {

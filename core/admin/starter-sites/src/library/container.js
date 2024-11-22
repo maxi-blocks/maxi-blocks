@@ -166,6 +166,7 @@ const HierarchicalMenu = ({ items, refine }) =>
 const ClearRefinements = ({ items, refine }) => (
 	<div className='ais-ClearRefinements'>
 		<button
+			type='button'
 			className='ais-ClearRefinements-button'
 			onClick={() => {
 				refine(items);
@@ -235,8 +236,6 @@ const LibraryContainer = props => {
 			return null;
 		}
 	})();
-
-	console.log(searchClientPatterns);
 
 	/** Patterns / Blocks Results */
 	const patternsResults = ({ hit }) => {
@@ -348,18 +347,6 @@ const LibraryContainer = props => {
 			onClickTypeButton(typeButtons[i]);
 		}
 	};
-
-	setTimeout(() => {
-		processTypeMenuClick();
-
-		document
-			.querySelector('.maxi-cloud-toolbar__logo')
-			.after(
-				document.querySelector(
-					'.maxi-cloud-container__patterns__top-menu'
-				)
-			);
-	}, '100');
 
 	return (
 		<div className='maxi-cloud-container'>

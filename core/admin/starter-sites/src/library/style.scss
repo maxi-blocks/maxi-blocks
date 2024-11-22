@@ -78,9 +78,11 @@
 	.maxi-preview {
 		.maxi-cloud-toolbar {
 			position: fixed !important;
+			top: 100px;
 			z-index: 10000;
-			width: 85.5%;
+			width: 84.7%;
 			height: 50px;
+
 			padding: 5px 8px;
 			&__fullwidth {
 				width: 100%;
@@ -209,16 +211,16 @@
 		bottom: 0;
 		left: 0;
 		display: flex;
-		background-color: rgba(0, 0, 0, 0.35);
+		background-color: rgba(0, 0, 0, 0.65);
 
 		.maxi-library-modal {
-			width: 85.5%;
+			width: 78.5%;
 			max-width: 90%;
 			overflow-y: auto;
 			margin: auto;
 			.components-modal__content {
 				left: auto;
-				top: 50px;
+				top: 161px;
 				width: 85.5%;
 				background: repeating-linear-gradient(
 					-45deg,
@@ -452,7 +454,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		width: 100%;
+		width: 99%;
 		height: 46px;
 		padding: 5px 43px 5px 8px;
 		border-bottom: 1px solid #dbdde6;
@@ -526,7 +528,7 @@
 		display: flex;
 		flex-wrap: nowrap;
 		justify-content: space-between;
-		height: calc(100% - 46px);
+		height: calc(100% - 250px);
 		margin: 0;
 		background: #fff;
 

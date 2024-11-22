@@ -27,4 +27,4 @@ js/min
 .github/ISSUE_TEMPLATE/*
 
 # Ignore for security reasons
-.env
+**/.env

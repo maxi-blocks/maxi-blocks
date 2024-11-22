@@ -43,6 +43,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             ]);
 
             add_action('maxi_blocks_db_tables_created', [$this, 'update_settings_on_install']);
+
+            // Add init hook for starter sites scripts
+            add_action('admin_init', [$this, 'maxi_blocks_starter_sites_init']);
         }
 
         public function update_settings_on_install()
@@ -403,7 +406,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<div class="maxi-dashboard_main-sidebar">';
 
             $content .= '<div class="maxi-dashboard_main-sidebar-item">';
-            $content .= '<svg class="news-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M55.8 16.2V9.9H15.6v6.3h40.2m-39 9.3v12.4h10.3V25.5H16.8M56 29.7H45.7v25.8H56V29.7z" data-fill="" fill="#FF4A17"></path><g fill="none"><path d="M62.1 5.6l-2.3-3.1L57.3 5l-2.6-2.5L52.1 5l-2.6-2.5L47 5l-2.5-2.5L41.8 5l-2.5-2.5L36.7 5l-2.6-2.5L31.5 5 29 2.5 26.4 5l-2.6-2.5L21.2 5l-2.6-2.5L16.1 5l-2.6-2.5-2.9 3.1v8.7 40.6c-.4 4.9-2.4 6.5-4.3 6.5.5.2 1.1.3 1.8.3h54V5.6"></path><path d="M44.7 21.5H57m-12.3 4H57M10.6 14.3H2v41.3c0 2.6 1.9 5 4.3 5.7m9.5-39.8h12.3M15.8 42.7h12.3m-12.3 4.1h12.3M15.8 51h12.3m-12.3 4.5h12.3m3.2-34H41m-9.7 4.1H41m-9.7 4.3H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 13H41m-9.7-8.7H41"></path><path d="M31.3 51H41"></path></g></svg>';
+            $content .= '<svg class="news-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M55.8 16.2V9.9H15.6v6.3h40.2m-39 9.3v12.4h10.3V25.5H16.8M56 29.7H45.7v25.8H56V29.7z" data-fill="" fill="#FF4A17"></path><g fill="none"><path d="M62.1 5.6l-2.3-3.1L57.3 5l-2.6-2.5L52.1 5l-2.6-2.5L47 5l-2.5-2.5L41.8 5l-2.5-2.5L36.7 5l-2.6-2.5L31.5 5 29 2.5 26.4 5l-2.6-2.5L21.2 5l-2.6-2.5L16.1 5l-2.6-2.5-2.9 3.1v8.7 40.6c-.4 4.9-2.4 6.5-4.3 6.5.5.2 1.1.3 1.8.3h54V5.6"></path><path d="M44.7 21.5H57m-12.3 4H57M10.6 14.3H2v41.3c0 2.6 1.9 5 4.3 5.7m9.5-39.8h12.3M15.8 42.7h12.3m-12.3 4.1h12.3M15.8 51h12.3m-12.3 4.5h12.3m3.2-34H41m-9.7 4.1H41m-9.7 4.3H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 13H41m-9.7-8.7H41"></path><path d="M31.3 51H41"></path></g></svg>';
             $content .= '<p>'.__('News and stories for creators.', 'maxi-blocks');
             $content .= ' <a href="https://maxiblocks.com/go/read-the-blog" target="_blank">'.__('Read the blog', 'maxi-blocks').'</a>.</p>';
             $content .='</div>'; // maxi-dashboard_main-sidebar-item
@@ -694,7 +697,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion
             $content .= '</div>'; // maxi-dashboard_main-content
 
             return $content;
@@ -866,21 +868,56 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $content;
         }
 
+        public function maxi_blocks_starter_sites_init()
+        {
+            $path = MAXI_PLUGIN_URL_PATH . 'core/admin/starter-sites/build';
+
+            wp_register_script(
+                'maxi-starter-sites',
+                $path . '/js/main.js',
+                ['wp-element', 'wp-components', 'wp-i18n'], // Add React dependencies
+                MAXI_PLUGIN_VERSION,
+                true // Load in footer
+            );
+
+            wp_register_style(
+                'maxi-starter-sites',
+                $path . '/css/main.css',
+                [],
+                MAXI_PLUGIN_VERSION
+            );
+
+            // Add any localized data needed by the JS
+            wp_localize_script(
+                'maxi-starter-sites',
+                'maxiStarterSites',
+                [
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('maxi_starter_sites'),
+                    // Add other data needed by your JS app
+                ]
+            );
+        }
+
         public function maxi_blocks_starter_sites()
         {
-            // TODO: Add starter sites UI
-            // TODO: Connect typesense index for starter sites
+            // Enqueue the scripts and styles
+            wp_enqueue_script('maxi-starter-sites');
+            wp_enqueue_style('maxi-starter-sites');
+
             $content = '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-pro-library maxi-dashboard_main-content-starter-sites">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion" id="maxi-dashboard_main-content_starter-sites-not-pro">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion" id="maxi-dashboard_main-content_starter-sites">';
 
             $content .= '<div id="maxi-dashboard_main-content_not-pro">';
-            $content .= '<h1>'.__('Starter sites', 'maxi-blocks').'</h1>';
-            $content .= '<h2>'.__('Get started with a pre-built website', 'maxi-blocks').'</h2>';
+            $content .= '<h1>' . __('Starter sites', 'maxi-blocks') . '</h1>';
+            $content .= '<h2>' . __('Get started with a pre-built website', 'maxi-blocks') . '</h2>';
 
+            // Add root element for React app
+            $content .= '<div id="maxi-starter-sites-root"></div>';
 
             $content .= '</div>'; // maxi-dashboard_main-content_not-pro
-            return $content;
 
+            return $content;
         }
 
         public function generate_item_header($title, $checked)

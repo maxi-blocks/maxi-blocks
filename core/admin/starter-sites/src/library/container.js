@@ -200,7 +200,8 @@ const ClearRefinementsHidden = ({ items, refine }) => (
  * Component
  */
 const LibraryContainer = props => {
-	const { type, url, title } = props;
+	console.log('props', props);
+	const { type, url, title, templates, pages, patterns, cost } = props;
 
 	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
@@ -224,7 +225,6 @@ const LibraryContainer = props => {
 		});
 	};
 
-	// Add error handling
 	const searchClientStarterSites = (() => {
 		try {
 			return typesenseInstantsearchAdapter(
@@ -270,40 +270,33 @@ const LibraryContainer = props => {
 
 	useInterval(masonryGenerator, 100);
 
-	const maxiPreviewIframe = (url, title) => {
+	const maxiDetailsPopUp = (url, title, cost, templates, pages, patterns) => {
 		return (
 			<>
-				<div
-					className='maxi-cloud-container__preview-tablet__label'
-					style={{ display: 'none' }}
-				>
-					{__(
-						'Tablet / iPad simulator | Viewport 768px x 1024px',
-						'maxi-blocks'
-					)}
-				</div>
-				<div
-					className='maxi-cloud-container__preview-mobile__label'
-					style={{ display: 'none' }}
-				>
-					{__(
-						'Mobile / iPhone simulator | Viewport 390px x 844px',
-						'maxi-blocks'
-					)}
-				</div>
-				<div className='maxi-cloud-container__preview-iframe_main-wrap'>
-					<div className='maxi-cloud-container__preview-iframe_wrap'>
+				<div className='maxi-cloud-container__details-popup_main-wrap'>
+					<div className='maxi-cloud-container__details-popup_wrap'>
 						<div>
-							<iframe
-								className='maxi-cloud-container__preview-iframe'
-								src={url}
-								title={title}
-								width='100%'
-								height='100%'
-							/>
+							{templates.map(template => (
+								<div key={template.name} className='maxi-cloud-container__details-popup_item'>
+									<h3 key={template.name}>{template.name}</h3>
+									<img src={template.screenshot} alt={template.name} />
+								</div>
+							))}
+							{pages.map(page => (
+								<div key={page.name} className='maxi-cloud-container__details-popup_item'>
+									<h3 key={page.name}>{page.name}</h3>
+									<img src={page.screenshot} alt={page.name} />
+								</div>
+							))}
+							{patterns.map(pattern => (
+								<div key={pattern.name} className='maxi-cloud-container__details-popup_item'>
+									<h3 key={pattern.name}>{pattern.name}</h3>
+									<img src={pattern.screenshot} alt={pattern.name} />
+								</div>
+							))}
 						</div>
 					</div>
-					<div className='maxi-cloud-container__preview-iframe_space'></div>
+					<div className='maxi-cloud-container__details-popup_space'></div>
 				</div>
 			</>
 		);
@@ -324,13 +317,11 @@ const LibraryContainer = props => {
 		}
 	};
 
-	console.log('type', type);
-
 	return (
 		<div className='maxi-cloud-container'>
 			{(type === 'preview') && (
 				<div className='maxi-cloud-container__patterns'>
-					{maxiPreviewIframe(url, title)}
+					{maxiDetailsPopUp(url, title, cost, templates, pages, patterns)}
 				</div>
 			)}
 

@@ -43,65 +43,12 @@ const ToolbarButton = props => {
 const LibraryToolbar = props => {
 	const {
 		type,
-		onChange,
+		onClickImport,
 		onRequestClose,
 		title = '',
 		cost = '',
 	} = props;
 
-	function addClass(elements, className) {
-		for (var i = 0; i < elements.length; i++) {
-			var element = elements[i];
-			if (element.classList) {
-				element.classList.add(className);
-			} else {
-				element.className += ' ' + className;
-			}
-		}
-	}
-
-	function removeClass(elements, className) {
-		for (var i = 0; i < elements.length; i++) {
-			var element = elements[i];
-			if (element.classList) {
-				element.classList.remove(className);
-			} else {
-				element.className = element.className.replace(
-					new RegExp(
-						'(^|\\b)' + className.split(' ').join('|') + '(\\b|$)',
-						'gi'
-					),
-					' '
-				);
-			}
-		}
-	}
-
-	document.addEventListener('fullscreenchange', event => {
-		if (!document.fullscreenElement) {
-			removeClass(
-				document.getElementsByClassName('maxi-cloud-toolbar'),
-				'maxi-cloud-toolbar__fullwidth'
-			);
-			removeClass(
-				document.getElementsByClassName(
-					'maxi-cloud-toolbar__button-fullwidth'
-				),
-				'maxi-cloud-toolbar__button_active'
-			);
-		} else {
-			addClass(
-				document.getElementsByClassName('maxi-cloud-toolbar'),
-				'maxi-cloud-toolbar__fullwidth'
-			);
-			addClass(
-				document.getElementsByClassName(
-					'maxi-cloud-toolbar__button-fullwidth'
-				),
-				'maxi-cloud-toolbar__button_active'
-			);
-		}
-	});
 
 	return (
 		<div className='maxi-cloud-toolbar'>
@@ -128,6 +75,13 @@ const LibraryToolbar = props => {
 						<h2>{title}</h2>
 						<span className='maxi-cloud-toolbar__line'>|</span>
 						<span>{cost}</span>
+						<button
+							type='button'
+							className='maxi-cloud-masonry-card__button'
+							onClick={onClickImport}
+						>
+							{__('Import', 'maxi-blocks')}
+						</button>
 					</div>
 				</>
 			)}

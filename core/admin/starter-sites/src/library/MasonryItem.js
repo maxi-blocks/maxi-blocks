@@ -24,9 +24,10 @@ const MasonryItem = (props) => {
         demoUrl,
         cost,
         className,
+        templates,
+        pages,
+        patterns,
     } = props;
-
-	console.log(props);
 
     const cardSerial = serial.toLowerCase().replace(/\s+/g, '-');
 
@@ -67,6 +68,9 @@ const MasonryItem = (props) => {
                                 serial={cardSerial}
                                 cost={cost}
                                 cardId={masonryCardId}
+                                templates={templates}
+                                pages={pages}
+                                patterns={patterns}
                             />
                         </>
                     )}

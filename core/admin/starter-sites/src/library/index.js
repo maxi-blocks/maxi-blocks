@@ -21,14 +21,15 @@ import './style.scss';
 const CloudLibrary = (props) => {
     const {
         cloudType,
-        blockStyle,
         url,
         title,
         cost,
-        toneUrl,
         cardId,
         prefix = '',
         onClose,
+        templates,
+        pages,
+        patterns,
     } = props;
 
     const [type, setType] = useState(cloudType);
@@ -50,14 +51,18 @@ const CloudLibrary = (props) => {
             <LibraryToolbar
                 type={cloudType}
                 onRequestClose={onClose}
+                title={title}
+                cost={cost}
             />
             <LibraryContainer
                 type={cloudType}
-                blockStyle={blockStyle}
                 url={url}
                 title={title}
                 prefix={prefix}
                 isPro
+                templates={templates}
+                pages={pages}
+                patterns={patterns}
             />
         </div>
     );

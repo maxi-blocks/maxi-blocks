@@ -27,6 +27,9 @@ const Hit = ({ hit, type }) => {
                 taxonomies={hit.category?.[0]}
                 serial={hit.name}
                 title={hit.name}
+                templates={hit.templates}
+                pages={hit.pages}
+                patterns={hit.patterns}
                 className={wrapClassName}
             />
         );

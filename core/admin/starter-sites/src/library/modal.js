@@ -24,14 +24,14 @@ const MaxiModal = props => {
 		url,
 		title,
 		cost,
-		toneUrl,
 		cardId,
 		prefix = '',
+		templates,
+		pages,
+		patterns,
 	} = props;
 
 	const [isOpen, changeIsOpen] = useState(false);
-
-	console.log(props);
 
 	const onClickOpenModal = () => {
 		changeIsOpen(!isOpen);
@@ -55,7 +55,7 @@ const MaxiModal = props => {
 						<button
 							type='button'
 							className='maxi-cloud-masonry-card__button'
-							onClickOpenModal={onClickOpenModal}
+							onClick={onClickOpenModal}
 						>
 							{__('Details', 'maxi-blocks')}
 						</button>
@@ -87,10 +87,12 @@ const MaxiModal = props => {
 								url={url}
 								title={title}
 								cost={cost}
-								toneUrl={toneUrl}
 								cardId={cardId}
 								prefix={prefix}
 								className={`maxi-library-modal__${type}`}
+								templates={templates}
+								pages={pages}
+								patterns={patterns}
 							/>
 						</div>
 					</div>

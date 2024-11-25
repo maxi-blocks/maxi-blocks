@@ -151,6 +151,7 @@
 					font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
 					font-weight: 500;
 					letter-spacing: -0.5px;
+					margin-bottom: 0;
 				}
 				.maxi-cloud-toolbar__button {
 					padding: 9px 19px;
@@ -412,6 +413,13 @@
 		}
 	}
 
+	.components-modal__screen-overlay.maxi-open-preview {
+		.components-modal__content {
+			min-height: auto;
+			height: 80%;
+		}
+	}
+
 	.spinner {
 		position: relative;
 		display: none; // TEMPORARY
@@ -566,24 +574,33 @@
 			width: 100%;
 		}
 
-		&__preview-iframe {
+		&__details-popup {
 			border-width: 0 !important;
 		}
-		&__preview-iframe_wrap,
-		&__preview-iframe_wrap > div {
+		&__details-popup_wrap,
+		&__details-popup_wrap > div {
 			height: 100%;
 			width: 100%;
 			position: relative;
 			background-color: #fff;
 		}
-		&__preview-iframe_main-wrap {
+		&__details-popup_main-wrap {
 			position: absolute;
 			width: 100%;
 			height: 100%;
 			border: 0;
+			overflow: scroll;
+			.maxi-cloud-container__details-popup_item {
+				max-width: 30%;
+				display: flex;
+				flex-direction: column;
+				img {
+					max-width: 100%;
+				}
+			}
 		}
 
-		&__preview-iframe_space {
+		&__details-popup_space {
 			display: block;
 			width: 100%;
 		}

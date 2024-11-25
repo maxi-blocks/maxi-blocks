@@ -3,8 +3,8 @@
  */
 import Masonry from 'masonry-layout';
 
-const masonryGenerator = (type = 'patterns') => {
-    if (type === 'preview' || type === 'switch-tone') return;
+const masonryGenerator = (type = 'starter-sites') => {
+    if (type === 'preview') return;
 
     const elem = document.querySelector(
         '.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'

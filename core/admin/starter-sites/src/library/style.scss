@@ -140,7 +140,7 @@
 				column-gap: 10px;
 				width: 33.33%;
 			}
-			&__buttuns-group {
+			&__buttons-group {
 				display: flex;
 				align-items: center;
 				column-gap: 17px;
@@ -168,7 +168,7 @@
 					font-size: 0;
 				}
 			}
-			&__buttuns-group_close {
+			&__buttons-group_close {
 				display: flex;
 				align-items: center;
 				justify-content: flex-end;
@@ -1552,7 +1552,7 @@
 						&__patterns {
 							padding: 6px;
 							.maxi-cloud-masonry-card__button {
-								margin-right: 0;
+								margin-right: 5px;
 							}
 						}
 					}
@@ -2208,8 +2208,8 @@
 	#maxi-starter-sites-root {
 		.maxi-preview {
 			.maxi-cloud-toolbar {
-				&__buttuns-group,
-				&__buttuns-group_close,
+				&__buttons-group,
+				&__buttons-group_close,
 				&__responsive-buttons {
 					width: auto;
 				}
@@ -2334,7 +2334,7 @@
 	#maxi-starter-sites-root {
 		.maxi-preview {
 			.maxi-cloud-toolbar {
-				&__buttuns-group {
+				&__buttons-group {
 					column-gap: 10px;
 					h2,
 					span {
@@ -2524,7 +2524,7 @@
 		}
 		.maxi-preview {
 			.maxi-cloud-toolbar {
-				&__buttuns-group {
+				&__buttons-group {
 					flex-direction: column;
 					justify-content: flex-start;
 					align-items: flex-start;

@@ -26,7 +26,7 @@ class InfiniteHits extends Component {
         entries.forEach((entry) => {
             if (entry.isIntersecting && hasMore) {
                 refineNext();
-                masonryGenerator('patterns');
+                masonryGenerator('starter-sites');
             }
         });
     };

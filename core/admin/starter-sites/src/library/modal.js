@@ -31,68 +31,72 @@ const MaxiModal = props => {
 
 	const [isOpen, changeIsOpen] = useState(false);
 
-	const onClick = () => {
+	console.log(props);
+
+	const onClickOpenModal = () => {
 		changeIsOpen(!isOpen);
 		if (onOpen) onOpen({ openFirstTime: !isOpen });
 		if (onClose) onClose();
 	};
 
+	const onClickLiveDemo = () => {
+		window.open(url, '_blank');
+	};
+
+	const onClickImport = () => {
+		console.log('import');
+	};
+
 	return (
-		<>
-			{type !== 'switch-tone' && (
-				<div className='maxi-library-modal__action-section'>
-					<div className='maxi-library-modal__action-section__buttons'>
-						{type === 'preview' && (
-							<button
-								type='button'
-								className='maxi-cloud-masonry-card__button'
-								onClick={onClick}
-							>
-								{__('Preview', 'maxi-blocks')}
-							</button>
-						)}
-						{isOpen && (
-							<div
-								className='components-modal__screen-overlay maxi-open-preview'
-								id='maxi-modal'
-							>
-								<div className='maxi-library-modal maxi-preview'>
-									<CloudLibrary
-										cloudType={type}
-										onClose={onClick}
-										url={url}
-										title={title}
-										cost={cost}
-										toneUrl={toneUrl}
-										cardId={cardId}
-										prefix={prefix}
-										className={`maxi-library-modal__${type}`}
-									/>
-								</div>
-							</div>
-						)}
+		<div className='maxi-library-modal__action-section'>
+			<div className='maxi-library-modal__action-section__buttons'>
+				{type === 'preview' && (
+					<>
+						<button
+							type='button'
+							className='maxi-cloud-masonry-card__button'
+							onClickOpenModal={onClickOpenModal}
+						>
+							{__('Details', 'maxi-blocks')}
+						</button>
+						<button
+							type='button'
+							className='maxi-cloud-masonry-card__button'
+							onClick={onClickLiveDemo}
+						>
+							{__('Live Demo', 'maxi-blocks')}
+						</button>
+						<button
+							type='button'
+							className='maxi-cloud-masonry-card__button'
+							onClick={onClickImport}
+						>
+							{__('Import', 'maxi-blocks')}
+						</button>
+					</>
+				)}
+				{isOpen && (
+					<div
+						className='components-modal__screen-overlay maxi-open-preview'
+						id='maxi-modal'
+					>
+						<div className='maxi-library-modal maxi-preview'>
+							<CloudLibrary
+								cloudType={type}
+								onClose={onClickOpenModal}
+								url={url}
+								title={title}
+								cost={cost}
+								toneUrl={toneUrl}
+								cardId={cardId}
+								prefix={prefix}
+								className={`maxi-library-modal__${type}`}
+							/>
+						</div>
 					</div>
-				</div>
-			)}
-			{type === 'switch-tone' && (
-				<div className='components-modal__screen-overlay maxi-open-preview maxi-switch-tone'>
-					<div className='maxi-library-modal maxi-preview'>
-						<CloudLibrary
-							cloudType={type}
-							onClose={onClick}
-							blockStyle='light'
-							url={url}
-							title={title}
-							cost={cost}
-							toneUrl={toneUrl}
-							cardId={cardId}
-							prefix={prefix}
-							className={`maxi-library-modal__${type}`}
-						/>
-					</div>
-				</div>
-			)}
-		</>
+				)}
+			</div>
+		</div>
 	);
 };
 

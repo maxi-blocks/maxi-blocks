@@ -14,43 +14,20 @@ const Hit = ({ hit, type }) => {
         hit.cost?.[0] === 'Pro'
             ? 'ais-InfiniteHits-item-pro'
             : 'ais-InfiniteHits-item-free';
-    if (type === 'patterns')
+    if (type === 'starter-sites')
         return (
             <MasonryItem
-                type='patterns'
-                target='patterns'
-                key={`maxi-cloud-masonry__item-${hit.post_id}`}
-                demoUrl={hit.demo_url}
-                toneUrl={hit.link_to_related}
-                previewIMG={hit.preview_image_url}
+                type='starter-sites'
+                target='starter-sites'
+                key={`maxi-cloud-masonry__item-${hit.id}`}
+                demoUrl={hit.live_demo}
+                previewIMG={hit.screenshot}
                 cost={hit.cost?.[0]}
                 isPro={hit.cost?.[0] === 'Pro'}
                 taxonomies={hit.category?.[0]}
-                serial={hit.post_title}
-                title={hit.post_title}
+                serial={hit.name}
+                title={hit.name}
                 className={wrapClassName}
-            />
-        );
-    if (type === 'svg')
-        return (
-            <MasonryItem
-                type='svg'
-                target={hit.svg_category[0]}
-                key={`maxi-cloud-masonry__item-${hit.post_id}`}
-                svgCode={hit.svg_code}
-                isPro={hit.cost?.[0] === 'Pro'}
-                serial={hit.post_title}
-            />
-        );
-    if (type === 'sc')
-        return (
-            <MasonryItem
-                type='sc'
-                target='style-cards'
-                key={`maxi-cloud-masonry__item-${hit.post_id}`}
-                previewIMG={hit.post_thumbnail}
-                isPro={hit.cost === 'Pro'}
-                serial={hit.post_title}
             />
         );
 };

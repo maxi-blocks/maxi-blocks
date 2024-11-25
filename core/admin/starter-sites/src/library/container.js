@@ -216,7 +216,6 @@ const LibraryContainer = props => {
 						protocol: 'https',
 					},
 				],
-				cacheSearchResultsForSeconds: 2 * 60, // Cache search results for 2 minutes
 			},
 			additionalSearchParameters: {
 				query_by: params,
@@ -226,10 +225,10 @@ const LibraryContainer = props => {
 	};
 
 	// Add error handling
-	const searchClientPatterns = (() => {
+	const searchClientStarterSites = (() => {
 		try {
 			return typesenseInstantsearchAdapter(
-				'post_title, post_number, category.lvl0, category.lvl1, cost'
+				'name, category.lvl0, category.lvl1, cost'
 			).searchClient;
 		} catch (error) {
 			console.error('Typesense initialization error:', error);
@@ -237,25 +236,25 @@ const LibraryContainer = props => {
 		}
 	})();
 
-	/** Patterns / Blocks Results */
-	const patternsResults = ({ hit }) => {
+	/** Starter Sites Results */
+	const starterSitesResults = ({ hit }) => {
+		console.log('hit', hit);
 		const wrapClassName =
 			hit.cost?.[0] === 'Pro'
 				? 'ais-InfiniteHits-item-pro'
 				: 'ais-InfiniteHits-item-free';
 		return (
 			<MasonryItem
-				type='patterns'
-				target='patterns'
-				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				demoUrl={hit.demo_url}
-				toneUrl={hit.link_to_related}
-				previewIMG={hit.preview_image_url}
+				type='starter-sites'
+				target='starter-sites'
+				key={`maxi-cloud-masonry__item-${hit.id}`}
+				demoUrl={hit.live_demo}
+				previewIMG={hit.screenshot}
 				cost={hit.cost?.[0]}
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
-				serial={hit.post_title}
-				title={hit.post_title}
+				serial={hit.name}
+				title={hit.name}
 				className={wrapClassName}
 			/>
 		);
@@ -325,42 +324,21 @@ const LibraryContainer = props => {
 		}
 	};
 
-	const processTypeMenuClick = () => {
-		const onClickTypeButton = button => {
-			button.addEventListener(
-				'click',
-				function (e) {
-					e.preventDefault();
-					const clearButton = document.querySelector(
-						'.maxi-clear-for-type .ais-ClearRefinements-button'
-					);
-					clearButton?.click();
-				},
-				false
-			);
-		};
-		const typeButtons = document.querySelectorAll(
-			'.maxi-cloud-container__patterns__top-menu .ais-Menu-list .ais-Menu-item a'
-		);
-
-		for (let i = 0; i < typeButtons?.length; i++) {
-			onClickTypeButton(typeButtons[i]);
-		}
-	};
+	console.log('type', type);
 
 	return (
 		<div className='maxi-cloud-container'>
-			{(type === 'preview' || type === 'switch-tone') && (
+			{(type === 'preview') && (
 				<div className='maxi-cloud-container__patterns'>
 					{maxiPreviewIframe(url, title)}
 				</div>
 			)}
 
-			{type === 'patterns' && (
+			{type === 'starter-sites' && (
 				<div className='maxi-cloud-container__patterns'>
 					<InstantSearch
-						indexName='post'
-						searchClient={searchClientPatterns}
+						indexName='starter_sites'
+						searchClient={searchClientStarterSites}
 					>
 						<Configure hitsPerPage={20} />
 						<div className='maxi-cloud-container__patterns__sidebar'>
@@ -382,20 +360,13 @@ const LibraryContainer = props => {
 								limit={20}
 							/>
 							<CustomClearRefinements />
-							<CustomClearRefinementsHidden
-								transformItems={items =>
-									items.filter(
-										item =>
-											item.attribute !== 'gutenberg_type'
-									)
-								}
-							/>
+							<CustomClearRefinementsHidden />
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>
 							<Stats translations={resultsCount} />
 							<InfiniteHits
-								hitComponent={patternsResults}
-								type='patterns'
+								hitComponent={starterSitesResults}
+								type='starter-sites'
 							/>
 						</div>
 					</InstantSearch>

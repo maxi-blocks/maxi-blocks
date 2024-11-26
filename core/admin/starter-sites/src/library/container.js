@@ -10,11 +10,12 @@ import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
 import useInterval from './useInterval';
 import InfiniteHits from './InfiniteHits';
+import { ToggleSwitch } from '../components';
 
 /**
  * External dependencies
  */
-import React from 'react';
+import React, { useState } from 'react';
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter/src/TypesenseInstantsearchAdapter.js';
 import {
 	InstantSearch,
@@ -200,8 +201,9 @@ const ClearRefinementsHidden = ({ items, refine }) => (
  * Component
  */
 const LibraryContainer = props => {
-	console.log('props', props);
-	const { type, url, title, templates, pages, patterns, cost } = props;
+	console.log('LibraryContainer props', props);
+	const { type, url, title, templates, pages, patterns, cost, isImport, sc, contentXML } =
+		props;
 
 	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
@@ -277,26 +279,277 @@ const LibraryContainer = props => {
 					<div className='maxi-cloud-container__details-popup_wrap'>
 						<div>
 							{templates.map(template => (
-								<div key={template.name} className='maxi-cloud-container__details-popup_item'>
+								<div
+									key={template.name}
+									className='maxi-cloud-container__details-popup_item'
+								>
 									<h3 key={template.name}>{template.name}</h3>
-									<img src={template.screenshot} alt={template.name} />
+									<img
+										src={template.screenshot}
+										alt={template.name}
+									/>
 								</div>
 							))}
 							{pages.map(page => (
-								<div key={page.name} className='maxi-cloud-container__details-popup_item'>
+								<div
+									key={page.name}
+									className='maxi-cloud-container__details-popup_item'
+								>
 									<h3 key={page.name}>{page.name}</h3>
-									<img src={page.screenshot} alt={page.name} />
+									<img
+										src={page.screenshot}
+										alt={page.name}
+									/>
 								</div>
 							))}
 							{patterns.map(pattern => (
-								<div key={pattern.name} className='maxi-cloud-container__details-popup_item'>
+								<div
+									key={pattern.name}
+									className='maxi-cloud-container__details-popup_item'
+								>
 									<h3 key={pattern.name}>{pattern.name}</h3>
-									<img src={pattern.screenshot} alt={pattern.name} />
+									<img
+										src={pattern.screenshot}
+										alt={pattern.name}
+									/>
 								</div>
 							))}
 						</div>
 					</div>
 					<div className='maxi-cloud-container__details-popup_space'></div>
+				</div>
+			</>
+		);
+	};
+
+	const [selectedItems, setSelectedItems] = useState(() => {
+		const initialState = {
+			templates: {},
+			pages: {},
+			patterns: {},
+			sc: sc !== '',
+			contentXML: contentXML !== '',
+		};
+
+		templates?.forEach(template => {
+			initialState.templates[template.name] = true;
+		});
+
+		pages?.forEach(page => {
+			initialState.pages[page.name] = true;
+		});
+
+		patterns?.forEach(pattern => {
+			initialState.patterns[pattern.name] = true;
+		});
+
+		return initialState;
+	});
+
+	const handleToggleChange = (type, name, value) => {
+		if (type === 'sc' || type === 'contentXML') {
+			setSelectedItems(prevState => ({
+				...prevState,
+				[type]: value,
+			}));
+		} else {
+			setSelectedItems(prevState => ({
+				...prevState,
+				[type]: {
+					...prevState[type],
+					[name]: value,
+				},
+			}));
+		}
+	};
+
+	const maxiImportPopUp = (
+		url,
+		title,
+		cost,
+		templates,
+		pages,
+		patterns,
+		sc,
+		contentXML
+	) => {
+		return (
+			<>
+				<div className='maxi-cloud-container__import-popup_main-wrap'>
+					<div className='maxi-cloud-container__import-popup_wrap'>
+						<div className='maxi-cloud-container__import-popup_content'>
+							{templates?.length > 0 && sc !== '' && (
+								<div className='maxi-cloud-container__import-popup_warning'>
+									<h2 className='maxi-cloud-container__import-popup_warning-title'>
+										{__(
+											'Important! Templates, template parts and Style Card will overwrite your current correspondent items',
+											'maxi-blocks'
+										)}
+									</h2>
+								</div>
+							)}
+							{(sc !== '' || contentXML !== '') && (
+								<div className='maxi-cloud-container__import-popup_section'>
+									<h2 className='maxi-cloud-container__import-popup_section-title'>
+										{__('General', 'maxi-blocks')}
+									</h2>
+									<div className='maxi-cloud-container__import-popup_section-content'>
+										{sc !== '' && (
+											<div
+												key='sc'
+												className='maxi-cloud-container__import-popup_item'
+											>
+												<ToggleSwitch
+													label={__(
+														'Style Card',
+														'maxi-blocks'
+													)}
+													selected={
+														selectedItems.sc || false
+													}
+													onChange={val =>
+														handleToggleChange(
+															'sc',
+															'sc',
+															val
+														)
+													}
+												/>
+											</div>
+										)}
+										{contentXML !== '' && (
+											<div
+												key='contentXML'
+												className='maxi-cloud-container__import-popup_item'
+											>
+												<ToggleSwitch
+													label={__(
+														'Content XML',
+														'maxi-blocks'
+													)}
+													selected={
+														selectedItems.contentXML || false
+													}
+													onChange={val =>
+														handleToggleChange(
+															'contentXML',
+															'contentXML',
+															val
+														)
+													}
+												/>
+											</div>
+										)}
+									</div>
+								</div>
+							)}
+							{templates?.length > 0 && (
+								<div className='maxi-cloud-container__import-popup_section'>
+									<h2 className='maxi-cloud-container__import-popup_section-title'>
+										{__('Templates', 'maxi-blocks')}
+									</h2>
+									<div className='maxi-cloud-container__import-popup_section-content'>
+										{templates.map(template => (
+											<div
+												key={template.name}
+												className='maxi-cloud-container__import-popup_item'
+											>
+												<ToggleSwitch
+													label={template.name}
+													selected={
+														selectedItems.templates[
+															template.name
+														] || false
+													}
+													onChange={val =>
+														handleToggleChange(
+															'templates',
+															template.name,
+															val
+														)
+													}
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+
+							{pages?.length > 0 && (
+								<div className='maxi-cloud-container__import-popup_section'>
+									<h2 className='maxi-cloud-container__import-popup_section-title'>
+										{__('Pages', 'maxi-blocks')}
+									</h2>
+									<div className='maxi-cloud-container__import-popup_section-content'>
+										{pages.map(page => (
+											<div
+												key={page.name}
+												className='maxi-cloud-container__import-popup_item'
+											>
+												<ToggleSwitch
+													label={page.name}
+													selected={
+														selectedItems.pages[
+															page.name
+														] || false
+													}
+													onChange={val =>
+														handleToggleChange(
+															'pages',
+															page.name,
+															val
+														)
+													}
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+
+							{patterns?.length > 0 && (
+								<div className='maxi-cloud-container__import-popup_section'>
+									<h2 className='maxi-cloud-container__import-popup_section-title'>
+										{__('Patterns', 'maxi-blocks')}
+									</h2>
+									<div className='maxi-cloud-container__import-popup_section-content'>
+										{patterns.map(pattern => (
+											<div
+												key={pattern.name}
+												className='maxi-cloud-container__import-popup_item'
+											>
+												<ToggleSwitch
+													label={pattern.name}
+													selected={
+														selectedItems.patterns[
+															pattern.name
+														] || false
+													}
+													onChange={val =>
+														handleToggleChange(
+															'patterns',
+															pattern.name,
+															val
+														)
+													}
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+						</div>
+						<button
+							type='button'
+							key='Import'
+							className='maxi-cloud-masonry-card__button'
+							value={__('Import', 'maxi-blocks')}
+							onClick={() => {}}
+						>
+							{__('Import', 'maxi-blocks')}
+						</button>
+					</div>
+					<div className='maxi-cloud-container__import-popup_space'></div>
 				</div>
 			</>
 		);
@@ -319,9 +572,30 @@ const LibraryContainer = props => {
 
 	return (
 		<div className='maxi-cloud-container'>
-			{(type === 'preview') && (
+			{isImport && (
+				<div className='maxi-cloud-container__import'>
+					{maxiImportPopUp(
+						url,
+						title,
+						cost,
+						templates,
+						pages,
+						patterns,
+						sc,
+						contentXML
+					)}
+				</div>
+			)}
+			{type === 'preview' && !isImport && (
 				<div className='maxi-cloud-container__patterns'>
-					{maxiDetailsPopUp(url, title, cost, templates, pages, patterns)}
+					{maxiDetailsPopUp(
+						url,
+						title,
+						cost,
+						templates,
+						pages,
+						patterns
+					)}
 				</div>
 			)}
 

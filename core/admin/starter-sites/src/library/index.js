@@ -24,19 +24,17 @@ const CloudLibrary = (props) => {
         url,
         title,
         cost,
-        cardId,
         prefix = '',
         onClose,
         templates,
         pages,
         patterns,
+		isImport,
+		sc,
+		contentXML,
     } = props;
 
-    const [type, setType] = useState(cloudType);
-
-    useEffect(() => {
-        setType(cloudType);
-    }, [cloudType]);
+	console.log('CloudLibrary props', props);
 
     document.addEventListener('keypress', (e) => {
         if (e.key === 40) {
@@ -53,6 +51,7 @@ const CloudLibrary = (props) => {
                 onRequestClose={onClose}
                 title={title}
                 cost={cost}
+				isImport={isImport}
             />
             <LibraryContainer
                 type={cloudType}
@@ -63,6 +62,9 @@ const CloudLibrary = (props) => {
                 templates={templates}
                 pages={pages}
                 patterns={patterns}
+				isImport={isImport}
+				sc={sc}
+				contentXML={contentXML}
             />
         </div>
     );

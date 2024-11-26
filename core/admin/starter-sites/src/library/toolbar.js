@@ -47,6 +47,7 @@ const LibraryToolbar = props => {
 		onRequestClose,
 		title = '',
 		cost = '',
+		isImport = false,
 	} = props;
 
 
@@ -75,13 +76,15 @@ const LibraryToolbar = props => {
 						<h2>{title}</h2>
 						<span className='maxi-cloud-toolbar__line'>|</span>
 						<span>{cost}</span>
-						<button
-							type='button'
-							className='maxi-cloud-masonry-card__button'
-							onClick={onClickImport}
+						{!isImport && (
+							<button
+								type='button'
+								className='maxi-cloud-masonry-card__button'
+								onClick={onClickImport}
 						>
-							{__('Import', 'maxi-blocks')}
-						</button>
+								{__('Import', 'maxi-blocks')}
+							</button>
+						)}
 					</div>
 				</>
 			)}

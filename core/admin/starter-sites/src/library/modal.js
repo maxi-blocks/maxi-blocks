@@ -29,22 +29,29 @@ const MaxiModal = props => {
 		templates,
 		pages,
 		patterns,
+		sc,
+		contentXML,
 	} = props;
 
-	const [isOpen, changeIsOpen] = useState(false);
+	const [isOpenDetails, changeIsOpenDetails] = useState(false);
+	const [isOpenImport, changeIsOpenImport] = useState(false);
 
-	const onClickOpenModal = () => {
-		changeIsOpen(!isOpen);
-		if (onOpen) onOpen({ openFirstTime: !isOpen });
+	const onClickOpenModalDetails = () => {
+		changeIsOpenDetails(!isOpenDetails);
+		if (onOpen) onOpen({ openFirstTime: !isOpenDetails });
+		if (onClose) onClose();
+	};
+
+	const onClickOpenModalImport = () => {
+		console.log('onClickOpenModalImport');
+		console.log(isOpenImport);
+		changeIsOpenImport(!isOpenImport);
+		if (onOpen) onOpen({ openFirstTime: !isOpenImport });
 		if (onClose) onClose();
 	};
 
 	const onClickLiveDemo = () => {
 		window.open(url, '_blank');
-	};
-
-	const onClickImport = () => {
-		console.log('import');
 	};
 
 	return (
@@ -55,7 +62,7 @@ const MaxiModal = props => {
 						<button
 							type='button'
 							className='maxi-cloud-masonry-card__button'
-							onClick={onClickOpenModal}
+							onClick={onClickOpenModalDetails}
 						>
 							{__('Details', 'maxi-blocks')}
 						</button>
@@ -69,13 +76,13 @@ const MaxiModal = props => {
 						<button
 							type='button'
 							className='maxi-cloud-masonry-card__button'
-							onClick={onClickImport}
+							onClick={onClickOpenModalImport}
 						>
 							{__('Import', 'maxi-blocks')}
 						</button>
 					</>
 				)}
-				{isOpen && (
+				{isOpenDetails && (
 					<div
 						className='components-modal__screen-overlay maxi-open-preview'
 						id='maxi-modal'
@@ -83,7 +90,7 @@ const MaxiModal = props => {
 						<div className='maxi-library-modal maxi-preview'>
 							<CloudLibrary
 								cloudType={type}
-								onClose={onClickOpenModal}
+								onClose={onClickOpenModalDetails}
 								url={url}
 								title={title}
 								cost={cost}
@@ -93,6 +100,31 @@ const MaxiModal = props => {
 								templates={templates}
 								pages={pages}
 								patterns={patterns}
+							/>
+						</div>
+					</div>
+				)}
+				{isOpenImport && (
+					<div
+						className='components-modal__screen-overlay maxi-open-preview'
+						id='maxi-modal-import'
+					>
+						<div className='maxi-library-modal maxi-preview maxi-modal-import'>
+							<CloudLibrary
+								cloudType={type}
+								onClose={onClickOpenModalImport}
+								url={url}
+								title={title}
+								cost={cost}
+								cardId={cardId}
+								prefix={prefix}
+								className={`maxi-library-modal__${type}`}
+								templates={templates}
+								pages={pages}
+								patterns={patterns}
+								isImport={true}
+								sc={sc}
+								contentXML={contentXML}
 							/>
 						</div>
 					</div>

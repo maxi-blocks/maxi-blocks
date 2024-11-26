@@ -30,6 +30,8 @@ const Hit = ({ hit, type }) => {
                 templates={hit.templates}
                 pages={hit.pages}
                 patterns={hit.patterns}
+				sc={hit.sc}
+				contentXML={hit.content_xml}
                 className={wrapClassName}
             />
         );

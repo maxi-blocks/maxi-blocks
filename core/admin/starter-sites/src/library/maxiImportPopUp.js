@@ -14,6 +14,8 @@ import { closeIcon } from '../icons';
  */
 import { useState } from 'react';
 
+const isValidValue = value => value !== '' && value != null && value !== undefined;
+
 const MaxiImportPopUp = ({
 	url,
 	title,
@@ -30,15 +32,15 @@ const MaxiImportPopUp = ({
 			templates: {},
 			pages: {},
 			patterns: {},
-			sc: sc !== '',
-			contentXML: contentXML !== '',
+			sc: isValidValue(sc),
+			contentXML: isValidValue(contentXML),
 		};
 
 		templates?.forEach(template => {
 			initialState.templates[template.name] = true;
 		});
 
-		pages?.forEach(page => {
+		 pages?.forEach(page => {
 			initialState.pages[page.name] = true;
 		});
 
@@ -71,7 +73,7 @@ const MaxiImportPopUp = ({
 			<div className='maxi-cloud-container__import-popup_main-wrap'>
 				<div className='maxi-cloud-container__import-popup_wrap'>
 					<div className='maxi-cloud-container__import-popup_content'>
-						{templates?.length > 0 && sc !== '' && (
+						{templates?.length > 0 && isValidValue(sc) && (
 							<div className='maxi-cloud-container__import-popup_warning'>
 								<h2 className='maxi-cloud-container__import-popup_warning-title'>
 									{__(
@@ -81,22 +83,19 @@ const MaxiImportPopUp = ({
 								</h2>
 							</div>
 						)}
-						{(sc !== '' || contentXML !== '') && (
+						{(isValidValue(sc) || isValidValue(contentXML)) && (
 							<div className='maxi-cloud-container__import-popup_section'>
 								<h2 className='maxi-cloud-container__import-popup_section-title'>
 									{__('General', 'maxi-blocks')}
 								</h2>
 								<div className='maxi-cloud-container__import-popup_section-content'>
-									{sc !== '' && (
-										<div
-											key='sc'
-											className='maxi-cloud-container__import-popup_item'
-										>
+									{isValidValue(sc) && (
+										<div key='sc' className='maxi-cloud-container__import-popup_item'>
 											<ToggleSwitch
 												label={__(
 													'Style Card',
 													'maxi-blocks'
-												)}
+													)}
 												selected={
 													selectedItems.sc || false
 												}
@@ -110,16 +109,13 @@ const MaxiImportPopUp = ({
 											/>
 										</div>
 									)}
-									{contentXML !== '' && (
-										<div
-											key='contentXML'
-											className='maxi-cloud-container__import-popup_item'
-										>
+									{isValidValue(contentXML) && (
+										<div key='contentXML' className='maxi-cloud-container__import-popup_item'>
 											<ToggleSwitch
 												label={__(
 													'Content XML',
 													'maxi-blocks'
-												)}
+													)}
 												selected={
 													selectedItems.contentXML || false
 												}

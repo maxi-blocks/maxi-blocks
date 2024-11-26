@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToggleSwitch from '../components/toggle-switch';
+import { closeIcon } from '../icons';
 
 /**
  * External dependencies
@@ -22,6 +23,7 @@ const MaxiImportPopUp = ({
 	patterns,
 	sc,
 	contentXML,
+	onRequestClose,
 }) => {
 	const [selectedItems, setSelectedItems] = useState(() => {
 		const initialState = {
@@ -230,17 +232,27 @@ const MaxiImportPopUp = ({
 							</div>
 						)}
 					</div>
-					<button
-						type='button'
-						key='Import'
-						className='maxi-cloud-masonry-card__button'
-						value={__('Import', 'maxi-blocks')}
-						onClick={() => {}}
-					>
-						{__('Import', 'maxi-blocks')}
-					</button>
+					<div className='maxi-cloud-container__import-popup_footer'>
+						<button
+							type='button'
+							className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-cancel'
+							onClick={onRequestClose}
+						>
+							{__('Cancel', 'maxi-blocks')}
+						</button>
+						<button
+							type='button'
+							className='maxi-cloud-masonry-card__button'
+							onClick={() => {}}
+						>
+							{__('Import', 'maxi-blocks')}
+						</button>
+					</div>
 				</div>
-				<div className='maxi-cloud-container__import-popup_space'></div>
+				<div
+					className='maxi-cloud-container__import-popup_space'
+					onClick={onRequestClose}
+				></div>
 			</div>
 		</>
 	);

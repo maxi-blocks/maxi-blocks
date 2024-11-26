@@ -29,35 +29,37 @@ const CloudLibrary = (props) => {
         templates,
         pages,
         patterns,
-		isImport,
-		sc,
-		contentXML,
+        isImport,
+        sc,
+        contentXML,
     } = props;
 
-	console.log('CloudLibrary props', props);
+    console.log('CloudLibrary props:', props);
+    console.log('isImport value:', isImport);
 
-    document.addEventListener('keypress', (e) => {
-        if (e.key === 40) {
-            window.scrollBy({ top: -30, behavior: 'smooth' });
-        } else if (e.key === 38) {
-            window.scrollBy({ top: 30, behavior: 'smooth' });
+    // Add handler for Import button in toolbar
+    const handleImportClick = () => {
+        // Close current view and reopen with import
+        if (onClose) {
+            onClose({ openImport: true });
         }
-    });
+    };
 
     return (
         <div className='components-modal__content'>
             <LibraryToolbar
                 type={cloudType}
                 onRequestClose={onClose}
+                onImportClick={handleImportClick}
                 title={title}
                 cost={cost}
-				isImport={isImport}
-				url={url}
-				templates={templates}
-				pages={pages}
-				patterns={patterns}
-				sc={sc}
-				contentXML={contentXML}
+                isImport={isImport}
+                url={url}
+                templates={templates}
+                pages={pages}
+                patterns={patterns}
+                sc={sc}
+                contentXML={contentXML}
             />
             <LibraryContainer
                 type={cloudType}
@@ -68,9 +70,10 @@ const CloudLibrary = (props) => {
                 templates={templates}
                 pages={pages}
                 patterns={patterns}
-				isImport={isImport}
-				sc={sc}
-				contentXML={contentXML}
+                isImport={isImport}
+                onRequestClose={onClose}
+                sc={sc}
+                contentXML={contentXML}
             />
         </div>
     );

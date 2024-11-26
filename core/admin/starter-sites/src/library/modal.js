@@ -37,18 +37,35 @@ const MaxiModal = props => {
 	const [isOpenImport, changeIsOpenImport] = useState(false);
 
 	const onClickOpenModalDetails = () => {
+		console.log('Opening Details Modal');
 		changeIsOpenDetails(!isOpenDetails);
+		changeIsOpenImport(false);
 		if (onOpen) onOpen({ openFirstTime: !isOpenDetails });
 		if (onClose) onClose();
 	};
 
 	const onClickOpenModalImport = () => {
-		console.log('onClickOpenModalImport');
-		console.log(isOpenImport);
-		changeIsOpenImport(!isOpenImport);
-		if (onOpen) onOpen({ openFirstTime: !isOpenImport });
+		console.log('Opening Import Modal');
+		changeIsOpenImport(true);
+		changeIsOpenDetails(false);
+		if (onOpen) onOpen({ openFirstTime: true });
+	};
+
+	const handleClose = (params = {}) => {
+		console.log('Handling close', params);
+		changeIsOpenImport(false);
+		changeIsOpenDetails(false);
+
+		if (params.openImport) {
+			setTimeout(() => {
+				changeIsOpenImport(true);
+			}, 0);
+		}
+
 		if (onClose) onClose();
 	};
+
+	console.log('Current state - isOpenImport:', isOpenImport, 'isOpenDetails:', isOpenDetails);
 
 	const onClickLiveDemo = () => {
 		window.open(url, '_blank');
@@ -82,7 +99,7 @@ const MaxiModal = props => {
 						</button>
 					</>
 				)}
-				{isOpenDetails && (
+				{isOpenDetails && !isOpenImport && (
 					<div
 						className='components-modal__screen-overlay maxi-open-preview'
 						id='maxi-modal'
@@ -90,7 +107,7 @@ const MaxiModal = props => {
 						<div className='maxi-library-modal maxi-preview'>
 							<CloudLibrary
 								cloudType={type}
-								onClose={onClickOpenModalDetails}
+								onClose={handleClose}
 								url={url}
 								title={title}
 								cost={cost}
@@ -104,7 +121,7 @@ const MaxiModal = props => {
 						</div>
 					</div>
 				)}
-				{isOpenImport && (
+				{isOpenImport && !isOpenDetails && (
 					<div
 						className='components-modal__screen-overlay maxi-open-preview'
 						id='maxi-modal-import'
@@ -112,7 +129,7 @@ const MaxiModal = props => {
 						<div className='maxi-library-modal maxi-preview maxi-modal-import'>
 							<CloudLibrary
 								cloudType={type}
-								onClose={onClickOpenModalImport}
+								onClose={handleClose}
 								url={url}
 								title={title}
 								cost={cost}

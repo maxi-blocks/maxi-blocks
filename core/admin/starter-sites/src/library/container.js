@@ -11,7 +11,6 @@ import masonryGenerator from './masonryGenerator';
 import useInterval from './useInterval';
 import InfiniteHits from './InfiniteHits';
 import MaxiImportPopUp from './maxiImportPopUp';
-import LibraryToolbar from './toolbar';
 
 /**
  * External dependencies
@@ -30,6 +29,10 @@ import {
 import classnames from 'classnames';
 import { isEmpty, unescape } from 'lodash';
 import { arrowIcon } from '../icons';
+
+// Keep all the necessary functions and constants
+const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
+const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
 
 const resultsCount = {
 	stats(nbHits) {
@@ -71,7 +74,6 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					'maxi-cloud-container__content-svg-shape__button',
 					proElement?.isRefined &&
 						' maxi-cloud-container__content-svg-shape__button___pressed'
-					// proClass
 				)}
 				value='Pro'
 				onClick={event => {
@@ -89,7 +91,6 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					'maxi-cloud-container__content-svg-shape__button',
 					freeElement?.isRefined &&
 						' maxi-cloud-container__content-svg-shape__button___pressed'
-					// freeClass
 				)}
 				value='Free'
 				onClick={event => {
@@ -142,9 +143,7 @@ const HierarchicalMenu = ({ items, refine }) =>
 						<span>
 							<span
 								className='ais-HierarchicalMenu-item-arrow'
-								visible={
-									!isEmpty(item.items) ? 'visible' : 'hide'
-								}
+								visible={!isEmpty(item.items) ? 'visible' : 'hide'}
 							>
 								{arrowIcon}
 							</span>
@@ -154,10 +153,7 @@ const HierarchicalMenu = ({ items, refine }) =>
 					</a>
 					<div className='sub_menu-wrapper'>
 						{item.items && (
-							<HierarchicalMenu
-								items={item.items}
-								refine={refine}
-							/>
+							<HierarchicalMenu items={item.items} refine={refine} />
 						)}
 					</div>
 				</li>
@@ -198,164 +194,149 @@ const ClearRefinementsHidden = ({ items, refine }) => (
 	</div>
 );
 
+const CustomMenuSelect = connectMenu(MenuSelect);
+const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
+const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
+const CustomClearRefinementsHidden = connectCurrentRefinements(ClearRefinementsHidden);
+
+const typesenseInstantsearchAdapter = params => {
+	return new TypesenseInstantSearchAdapter({
+		server: {
+			apiKey,
+			nodes: [
+				{
+					host: apiHost,
+					port: '443',
+					protocol: 'https',
+				},
+			],
+		},
+		additionalSearchParameters: {
+			query_by: params,
+			sort_by: 'post_date_int:desc',
+		},
+	});
+};
+
+const searchClientStarterSites = (() => {
+	try {
+		return typesenseInstantsearchAdapter(
+			'name, category.lvl0, category.lvl1, cost'
+		).searchClient;
+	} catch (error) {
+		console.error('Typesense initialization error:', error);
+		return null;
+	}
+})();
+
+const starterSitesResults = ({ hit }) => {
+	const wrapClassName =
+		hit.cost?.[0] === 'Pro'
+			? 'ais-InfiniteHits-item-pro'
+			: 'ais-InfiniteHits-item-free';
+	return (
+		<MasonryItem
+			type='starter-sites'
+			target='starter-sites'
+			key={`maxi-cloud-masonry__item-${hit.id}`}
+			demoUrl={hit.live_demo}
+			previewIMG={hit.screenshot}
+			cost={hit.cost?.[0]}
+			isPro={hit.cost?.[0] === 'Pro'}
+			taxonomies={hit.category?.[0]}
+			serial={hit.name}
+			title={hit.name}
+			className={wrapClassName}
+		/>
+	);
+};
+
+const maxiDetailsPopUp = (url, title, cost, templates, pages, patterns) => {
+	return (
+		<>
+			<div className='maxi-cloud-container__details-popup_main-wrap'>
+				<div className='maxi-cloud-container__details-popup_wrap'>
+					<div>
+						{templates.map(template => (
+							<div
+								key={template.name}
+								className='maxi-cloud-container__details-popup_item'
+							>
+								<h3>{template.name}</h3>
+								<img
+									src={template.screenshot}
+									alt={template.name}
+								/>
+							</div>
+						))}
+						{pages.map(page => (
+							<div
+								key={page.name}
+								className='maxi-cloud-container__details-popup_item'
+							>
+								<h3>{page.name}</h3>
+								<img
+									src={page.screenshot}
+									alt={page.name}
+								/>
+							</div>
+						))}
+						{patterns.map(pattern => (
+							<div
+								key={pattern.name}
+								className='maxi-cloud-container__details-popup_item'
+							>
+								<h3>{pattern.name}</h3>
+								<img
+									src={pattern.screenshot}
+									alt={pattern.name}
+								/>
+							</div>
+						))}
+					</div>
+				</div>
+				<div className='maxi-cloud-container__details-popup_space'></div>
+			</div>
+		</>
+	);
+};
+
+const getDefaultMenuCost = () => {
+	const urlParams = new URLSearchParams(window.location.search);
+	const cost = urlParams?.get('plan');
+	switch (cost) {
+		case 'pro':
+			return 'Pro';
+		case 'free':
+			return 'Free';
+		default:
+			return '';
+	}
+};
+
 /**
  * Component
  */
 const LibraryContainer = props => {
-	console.log('LibraryContainer props', props);
-	const { type, url, title, templates, pages, patterns, cost, sc, contentXML } = props;
-
-	// Add state to control import popup visibility
-	const [showImport, setShowImport] = React.useState(false);
-
-	// Handler for Import button click
-	const handleImportClick = () => {
-		setShowImport(true);
-	};
-
-	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
-	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
-
-	const typesenseInstantsearchAdapter = params => {
-		return new TypesenseInstantSearchAdapter({
-			server: {
-				apiKey,
-				nodes: [
-					{
-						host: apiHost,
-						port: '443',
-						protocol: 'https',
-					},
-				],
-			},
-			additionalSearchParameters: {
-				query_by: params,
-				sort_by: 'post_date_int:desc',
-			},
-		});
-	};
-
-	const searchClientStarterSites = (() => {
-		try {
-			return typesenseInstantsearchAdapter(
-				'name, category.lvl0, category.lvl1, cost'
-			).searchClient;
-		} catch (error) {
-			console.error('Typesense initialization error:', error);
-			return null;
-		}
-	})();
-
-	/** Starter Sites Results */
-	const starterSitesResults = ({ hit }) => {
-		console.log('hit', hit);
-		const wrapClassName =
-			hit.cost?.[0] === 'Pro'
-				? 'ais-InfiniteHits-item-pro'
-				: 'ais-InfiniteHits-item-free';
-		return (
-			<MasonryItem
-				type='starter-sites'
-				target='starter-sites'
-				key={`maxi-cloud-masonry__item-${hit.id}`}
-				demoUrl={hit.live_demo}
-				previewIMG={hit.screenshot}
-				cost={hit.cost?.[0]}
-				isPro={hit.cost?.[0] === 'Pro'}
-				taxonomies={hit.category?.[0]}
-				serial={hit.name}
-				title={hit.name}
-				className={wrapClassName}
-			/>
-		);
-	};
-
-	const CustomMenuSelect = connectMenu(MenuSelect);
-	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
-
-	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
-	const CustomClearRefinementsHidden = connectCurrentRefinements(
-		ClearRefinementsHidden
-	);
+	const {
+		type,
+		url,
+		title,
+		templates,
+		pages,
+		patterns,
+		cost,
+		sc,
+		contentXML,
+		isImport,
+		onRequestClose
+	} = props;
 
 	useInterval(masonryGenerator, 100);
 
-	const maxiDetailsPopUp = (url, title, cost, templates, pages, patterns) => {
-		return (
-			<>
-				<div className='maxi-cloud-container__details-popup_main-wrap'>
-					<div className='maxi-cloud-container__details-popup_wrap'>
-						<div>
-							{templates.map(template => (
-								<div
-									key={template.name}
-									className='maxi-cloud-container__details-popup_item'
-								>
-									<h3 key={template.name}>{template.name}</h3>
-									<img
-										src={template.screenshot}
-										alt={template.name}
-									/>
-								</div>
-							))}
-							{pages.map(page => (
-								<div
-									key={page.name}
-									className='maxi-cloud-container__details-popup_item'
-								>
-									<h3 key={page.name}>{page.name}</h3>
-									<img
-										src={page.screenshot}
-										alt={page.name}
-									/>
-								</div>
-							))}
-							{patterns.map(pattern => (
-								<div
-									key={pattern.name}
-									className='maxi-cloud-container__details-popup_item'
-								>
-									<h3 key={pattern.name}>{pattern.name}</h3>
-									<img
-										src={pattern.screenshot}
-										alt={pattern.name}
-									/>
-								</div>
-							))}
-						</div>
-					</div>
-					<div className='maxi-cloud-container__details-popup_space'></div>
-				</div>
-			</>
-		);
-	};
-
-	const queryString = window.location.search;
-	const urlParams = new URLSearchParams(queryString);
-
-	const getDefaultMenuCost = () => {
-		const cost = urlParams?.get('plan');
-		switch (cost) {
-			case 'pro':
-				return 'Pro';
-			case 'free':
-				return 'Free';
-			default:
-				return '';
-		}
-	};
-
 	return (
 		<div className='maxi-cloud-container'>
-			{type === 'preview' && (
-				<LibraryToolbar
-					{...props}
-					onImportClick={handleImportClick}
-					isImport={showImport}
-				/>
-			)}
-
-			{showImport && (
+			{isImport && (
 				<div className='maxi-cloud-container__import'>
 					<MaxiImportPopUp
 						url={url}
@@ -366,12 +347,12 @@ const LibraryContainer = props => {
 						patterns={patterns}
 						sc={sc}
 						contentXML={contentXML}
-						onRequestClose={() => setShowImport(false)}
+						onRequestClose={onRequestClose}
 					/>
 				</div>
 			)}
 
-			{type === 'preview' && !showImport && (
+			{type === 'preview' && !isImport && (
 				<div className='maxi-cloud-container__patterns'>
 					{maxiDetailsPopUp(
 						url,

@@ -52,6 +52,13 @@ const LibraryToolbar = props => {
 		onImportClick,
 	} = props;
 
+	const handleClose = () => {
+		console.log('Toolbar close clicked');
+		if (onRequestClose) {
+			onRequestClose();
+		}
+	};
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && (
@@ -105,7 +112,7 @@ const LibraryToolbar = props => {
 
 			{type === 'preview' && (
 				<div className='maxi-cloud-toolbar__buttons-group_close'>
-					<ToolbarButton onClick={onRequestClose} icon={closeIcon} />
+					<ToolbarButton onClick={handleClose} icon={closeIcon} />
 				</div>
 			)}
 		</div>

@@ -6,12 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import {
-	library,
-	help,
-	closeIcon,
-
-} from '../icons';
+import { library, help, closeIcon } from '../icons';
+import MaxiImportPopUp from './maxiImportPopUp';
 
 /**
  * External dependencies
@@ -47,8 +43,14 @@ const LibraryToolbar = props => {
 		title = '',
 		cost = '',
 		isImport = false,
+		url,
+		templates,
+		pages,
+		patterns,
+		sc,
+		contentXML,
+		onImportClick,
 	} = props;
-
 
 	return (
 		<div className='maxi-cloud-toolbar'>
@@ -62,7 +64,8 @@ const LibraryToolbar = props => {
 				>
 					{library}
 
-					{type === 'starter-sites' && __('Starter sites', 'maxi-blocks')}
+					{type === 'starter-sites' &&
+						__('Starter sites', 'maxi-blocks')}
 				</a>
 			)}
 			{type === 'preview' && (
@@ -79,8 +82,8 @@ const LibraryToolbar = props => {
 							<button
 								type='button'
 								className='maxi-cloud-masonry-card__button'
-								onClick={onClickImport}
-						>
+								onClick={onImportClick}
+							>
 								{__('Import', 'maxi-blocks')}
 							</button>
 						)}
@@ -100,7 +103,7 @@ const LibraryToolbar = props => {
 				</a>
 			)}
 
-			{(type === 'preview') && (
+			{type === 'preview' && (
 				<div className='maxi-cloud-toolbar__buttons-group_close'>
 					<ToolbarButton onClick={onRequestClose} icon={closeIcon} />
 				</div>

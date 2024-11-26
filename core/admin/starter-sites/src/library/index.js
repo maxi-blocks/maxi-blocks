@@ -52,6 +52,12 @@ const CloudLibrary = (props) => {
                 title={title}
                 cost={cost}
 				isImport={isImport}
+				url={url}
+				templates={templates}
+				pages={pages}
+				patterns={patterns}
+				sc={sc}
+				contentXML={contentXML}
             />
             <LibraryContainer
                 type={cloudType}

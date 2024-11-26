@@ -10,13 +10,13 @@ import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
 import useInterval from './useInterval';
 import InfiniteHits from './InfiniteHits';
-import { ToggleSwitch } from '../components';
 import MaxiImportPopUp from './maxiImportPopUp';
+import LibraryToolbar from './toolbar';
 
 /**
  * External dependencies
  */
-import React, { useState } from 'react';
+import React from 'react';
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter/src/TypesenseInstantsearchAdapter.js';
 import {
 	InstantSearch,
@@ -203,8 +203,15 @@ const ClearRefinementsHidden = ({ items, refine }) => (
  */
 const LibraryContainer = props => {
 	console.log('LibraryContainer props', props);
-	const { type, url, title, templates, pages, patterns, cost, isImport, sc, contentXML } =
-		props;
+	const { type, url, title, templates, pages, patterns, cost, sc, contentXML } = props;
+
+	// Add state to control import popup visibility
+	const [showImport, setShowImport] = React.useState(false);
+
+	// Handler for Import button click
+	const handleImportClick = () => {
+		setShowImport(true);
+	};
 
 	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
@@ -340,7 +347,15 @@ const LibraryContainer = props => {
 
 	return (
 		<div className='maxi-cloud-container'>
-			{isImport && (
+			{type === 'preview' && (
+				<LibraryToolbar
+					{...props}
+					onImportClick={handleImportClick}
+					isImport={showImport}
+				/>
+			)}
+
+			{showImport && (
 				<div className='maxi-cloud-container__import'>
 					<MaxiImportPopUp
 						url={url}
@@ -351,10 +366,12 @@ const LibraryContainer = props => {
 						patterns={patterns}
 						sc={sc}
 						contentXML={contentXML}
+						onRequestClose={() => setShowImport(false)}
 					/>
 				</div>
 			)}
-			{type === 'preview' && !isImport && (
+
+			{type === 'preview' && !showImport && (
 				<div className='maxi-cloud-container__patterns'>
 					{maxiDetailsPopUp(
 						url,

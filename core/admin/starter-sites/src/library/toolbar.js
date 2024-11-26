@@ -43,7 +43,6 @@ const ToolbarButton = props => {
 const LibraryToolbar = props => {
 	const {
 		type,
-		onClickImport,
 		onRequestClose,
 		title = '',
 		cost = '',

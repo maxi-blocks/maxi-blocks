@@ -37,7 +37,6 @@ const MaxiModal = props => {
 	const [isOpenImport, changeIsOpenImport] = useState(false);
 
 	const onClickOpenModalDetails = () => {
-		console.log('Opening Details Modal');
 		changeIsOpenDetails(!isOpenDetails);
 		changeIsOpenImport(false);
 		if (onOpen) onOpen({ openFirstTime: !isOpenDetails });
@@ -45,14 +44,12 @@ const MaxiModal = props => {
 	};
 
 	const onClickOpenModalImport = () => {
-		console.log('Opening Import Modal');
 		changeIsOpenImport(true);
 		changeIsOpenDetails(false);
 		if (onOpen) onOpen({ openFirstTime: true });
 	};
 
 	const handleClose = (params = {}) => {
-		console.log('Handling close', params);
 		changeIsOpenImport(false);
 		changeIsOpenDetails(false);
 
@@ -64,8 +61,6 @@ const MaxiModal = props => {
 
 		if (onClose) onClose();
 	};
-
-	console.log('Current state - isOpenImport:', isOpenImport, 'isOpenDetails:', isOpenDetails);
 
 	const onClickLiveDemo = () => {
 		window.open(url, '_blank');

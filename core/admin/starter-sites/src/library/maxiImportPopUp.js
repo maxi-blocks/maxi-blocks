@@ -1,20 +1,50 @@
+/* eslint-disable no-undef */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
  */
 import ToggleSwitch from '../components/toggle-switch';
-import { closeIcon } from '../icons';
 
 /**
  * External dependencies
  */
 import { useState } from 'react';
 
-const isValidValue = value => value !== '' && value != null && value !== undefined;
+const isValidValue = value =>
+	value !== '' && value != null && value !== undefined;
+
+const getTemplateDescription = name => {
+	if (name.toLowerCase().includes('404')) {
+		return __(
+			"Imports a custom design for your website's 404 error page.",
+			'maxi-blocks'
+		);
+	}
+	if (name.toLowerCase().includes('header')) {
+		return __(
+			'Imports the global header design for your site.',
+			'maxi-blocks'
+		);
+	}
+	if (name.toLowerCase().includes('footer')) {
+		return __(
+			'Imports the global footer design for your site.',
+			'maxi-blocks'
+		);
+	}
+	if (name.toLowerCase().includes('blog')) {
+		return __(
+			'Imports the default blog landing page design for your site.',
+			'maxi-blocks'
+		);
+	}
+	return '';
+};
 
 const MaxiImportPopUp = ({
 	url,
@@ -40,7 +70,7 @@ const MaxiImportPopUp = ({
 			initialState.templates[template.name] = true;
 		});
 
-		 pages?.forEach(page => {
+		pages?.forEach(page => {
 			initialState.pages[page.name] = true;
 		});
 
@@ -68,189 +98,248 @@ const MaxiImportPopUp = ({
 		}
 	};
 
+	const onClickImport = selectedItems => {
+		// Create object to store selected items with their content
+		const importData = {};
+
+		// Add selected templates with their content
+		if (templates) {
+			const selectedTemplates = templates
+				.filter(template => selectedItems.templates[template.name])
+				.map(template => ({
+					name: template.name,
+					content: template.content,
+				}));
+
+			if (selectedTemplates.length > 0) {
+				importData.templates = selectedTemplates;
+			}
+		}
+
+		// Add selected pages with their content
+		if (pages) {
+			const selectedPages = pages
+				.filter(page => selectedItems.pages[page.name])
+				.map(page => ({
+					name: page.name,
+					content: page.content,
+				}));
+
+			if (selectedPages.length > 0) {
+				importData.pages = selectedPages;
+			}
+		}
+
+		// Add selected patterns with their content
+		if (patterns) {
+			const selectedPatterns = patterns
+				.filter(pattern => selectedItems.patterns[pattern.name])
+				.map(pattern => ({
+					name: pattern.name,
+					content: pattern.content,
+				}));
+
+			if (selectedPatterns.length > 0) {
+				importData.patterns = selectedPatterns;
+			}
+		}
+
+		// Add SC and contentXML only if selected
+		if (selectedItems.sc && sc) {
+			importData.sc = sc;
+		}
+
+		if (selectedItems.contentXML && contentXML) {
+			importData.contentXML = contentXML;
+		}
+
+		// Send to API endpoint
+		console.log('Using API URL:', maxiStarterSites.apiRoot);
+
+		apiFetch({
+			url: `${maxiStarterSites.apiRoot}maxi-blocks/v1.0/import-starter-site`,
+			method: 'POST',
+			headers: {
+				'X-WP-Nonce': maxiStarterSites.apiNonce
+			},
+			data: importData,
+		}).then(response => {
+			console.log('Import response:', response);
+		}).catch(error => {
+			console.error('Import error full details:', error);
+			console.error('Error status:', error.status);
+			console.error('Error message:', error.message);
+			console.error('Error data:', error.data);
+		});
+	};
+
 	return (
-		<>
-			<div className='maxi-cloud-container__import-popup_main-wrap'>
-				<div className='maxi-cloud-container__import-popup_wrap'>
-					<div className='maxi-cloud-container__import-popup_content'>
-						{templates?.length > 0 && isValidValue(sc) && (
-							<div className='maxi-cloud-container__import-popup_warning'>
-								<h2 className='maxi-cloud-container__import-popup_warning-title'>
+		<div className='maxi-cloud-container__import-popup_main-wrap'>
+			<div className='maxi-cloud-container__import-popup_wrap'>
+				<div className='maxi-cloud-container__import-popup_warning'>
+					<h2>
+						{__(
+							'Note: When you import templates, template parts, or a Style Card, they will replace your existing items. Ensure you back up or review your current settings before proceeding.',
+							'maxi-blocks'
+						)}
+					</h2>
+					<p>
+						{__(
+							'Before importing, review which elements you want to overwrite. Anything toggled on will replace the corresponding item on your website.',
+							'maxi-blocks'
+						)}
+					</p>
+				</div>
+
+				<div className='maxi-cloud-container__import-popup_sections-container'>
+					{/* General section */}
+					<div className='maxi-cloud-container__import-popup_section'>
+						<h3>{__('General', 'maxi-blocks')}</h3>
+						<div className='maxi-cloud-container__import-popup_item'>
+							<ToggleSwitch
+								label={__('Style Card', 'maxi-blocks')}
+								selected={selectedItems.sc}
+								onChange={val =>
+									handleToggleChange('sc', 'sc', val)
+								}
+							/>
+							<p>
+								{__(
+									'This option applies the design style (colours, typography, spacing, etc.) from the imported Style Card.',
+									'maxi-blocks'
+								)}
+							</p>
+						</div>
+						{isValidValue(contentXML) && (
+							<div className='maxi-cloud-container__import-popup_item'>
+								<ToggleSwitch
+									label={__('Content XML', 'maxi-blocks')}
+									selected={selectedItems.contentXML}
+									onChange={val =>
+										handleToggleChange(
+											'contentXML',
+											'contentXML',
+											val
+										)
+									}
+								/>
+								<p>
 									{__(
-										'Important! Templates, template parts and Style Card will overwrite your current correspondent items',
+										'This option imports predefined content (posts, pages, or custom content) from the XML file.',
 										'maxi-blocks'
 									)}
-								</h2>
-							</div>
-						)}
-						{(isValidValue(sc) || isValidValue(contentXML)) && (
-							<div className='maxi-cloud-container__import-popup_section'>
-								<h2 className='maxi-cloud-container__import-popup_section-title'>
-									{__('General', 'maxi-blocks')}
-								</h2>
-								<div className='maxi-cloud-container__import-popup_section-content'>
-									{isValidValue(sc) && (
-										<div key='sc' className='maxi-cloud-container__import-popup_item'>
-											<ToggleSwitch
-												label={__(
-													'Style Card',
-													'maxi-blocks'
-													)}
-												selected={
-													selectedItems.sc || false
-												}
-												onChange={val =>
-													handleToggleChange(
-														'sc',
-														'sc',
-														val
-													)
-												}
-											/>
-										</div>
-									)}
-									{isValidValue(contentXML) && (
-										<div key='contentXML' className='maxi-cloud-container__import-popup_item'>
-											<ToggleSwitch
-												label={__(
-													'Content XML',
-													'maxi-blocks'
-													)}
-												selected={
-													selectedItems.contentXML || false
-												}
-												onChange={val =>
-													handleToggleChange(
-														'contentXML',
-														'contentXML',
-														val
-													)
-												}
-											/>
-										</div>
-									)}
-								</div>
-							</div>
-						)}
-						{templates?.length > 0 && (
-							<div className='maxi-cloud-container__import-popup_section'>
-								<h2 className='maxi-cloud-container__import-popup_section-title'>
-									{__('Templates', 'maxi-blocks')}
-								</h2>
-								<div className='maxi-cloud-container__import-popup_section-content'>
-									{templates.map(template => (
-										<div
-											key={template.name}
-											className='maxi-cloud-container__import-popup_item'
-										>
-											<ToggleSwitch
-												label={template.name}
-												selected={
-													selectedItems.templates[
-														template.name
-													] || false
-												}
-												onChange={val =>
-													handleToggleChange(
-														'templates',
-														template.name,
-														val
-													)
-												}
-											/>
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-
-						{pages?.length > 0 && (
-							<div className='maxi-cloud-container__import-popup_section'>
-								<h2 className='maxi-cloud-container__import-popup_section-title'>
-									{__('Pages', 'maxi-blocks')}
-								</h2>
-								<div className='maxi-cloud-container__import-popup_section-content'>
-									{pages.map(page => (
-										<div
-											key={page.name}
-											className='maxi-cloud-container__import-popup_item'
-										>
-											<ToggleSwitch
-												label={page.name}
-												selected={
-													selectedItems.pages[
-														page.name
-													] || false
-												}
-												onChange={val =>
-													handleToggleChange(
-														'pages',
-														page.name,
-														val
-													)
-												}
-											/>
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-
-						{patterns?.length > 0 && (
-							<div className='maxi-cloud-container__import-popup_section'>
-								<h2 className='maxi-cloud-container__import-popup_section-title'>
-									{__('Patterns', 'maxi-blocks')}
-								</h2>
-								<div className='maxi-cloud-container__import-popup_section-content'>
-									{patterns.map(pattern => (
-										<div
-											key={pattern.name}
-											className='maxi-cloud-container__import-popup_item'
-										>
-											<ToggleSwitch
-												label={pattern.name}
-												selected={
-													selectedItems.patterns[
-														pattern.name
-													] || false
-												}
-												onChange={val =>
-													handleToggleChange(
-														'patterns',
-														pattern.name,
-														val
-													)
-												}
-											/>
-										</div>
-									))}
-								</div>
+								</p>
 							</div>
 						)}
 					</div>
-					<div className='maxi-cloud-container__import-popup_footer'>
-						<button
-							type='button'
-							className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-cancel'
-							onClick={onRequestClose}
-						>
-							{__('Cancel', 'maxi-blocks')}
-						</button>
-						<button
-							type='button'
-							className='maxi-cloud-masonry-card__button'
-							onClick={() => {}}
-						>
-							{__('Import', 'maxi-blocks')}
-						</button>
-					</div>
+
+					{templates?.length > 0 && (
+						<div className='maxi-cloud-container__import-popup_section'>
+							<h3>{__('Templates', 'maxi-blocks')}</h3>
+							{templates.map(template => (
+								<div
+									key={template.name}
+									className='maxi-cloud-container__import-popup_item'
+								>
+									<ToggleSwitch
+										label={template.name}
+										selected={
+											selectedItems.templates[
+												template.name
+											]
+										}
+										onChange={val =>
+											handleToggleChange(
+												'templates',
+												template.name,
+												val
+											)
+										}
+									/>
+									<p>
+										{getTemplateDescription(template.name)}
+									</p>
+								</div>
+							))}
+						</div>
+					)}
+
+					{pages?.length > 0 && (
+						<div className='maxi-cloud-container__import-popup_section'>
+							<h3>{__('Pages', 'maxi-blocks')}</h3>
+							<p className='maxi-cloud-container__import-popup_section-description'>
+								{__(
+									'The Pages section allows you to import predefined pages included in the starter site. Toggle the options on or off depending on whether you want to include them in your site.',
+									'maxi-blocks'
+								)}
+							</p>
+							{pages.map(page => (
+								<div
+									key={page.name}
+									className='maxi-cloud-container__import-popup_item'
+								>
+									<ToggleSwitch
+										label={page.name}
+										selected={
+											selectedItems.pages[page.name]
+										}
+										onChange={val =>
+											handleToggleChange(
+												'pages',
+												page.name,
+												val
+											)
+										}
+									/>
+								</div>
+							))}
+						</div>
+					)}
+
+					{patterns?.length > 0 && (
+						<div className='maxi-cloud-container__import-popup_section'>
+							<h3>{__('Patterns', 'maxi-blocks')}</h3>
+							<p className='maxi-cloud-container__import-popup_section-description'>
+								{__(
+									'The Patterns section provides pre-designed block layouts or reusable elements that can be added to your website. Toggle the options on or off depending on whether you want to include them in your site.',
+									'maxi-blocks'
+								)}
+							</p>
+							{patterns.map(pattern => (
+								<div
+									key={pattern.name}
+									className='maxi-cloud-container__import-popup_item'
+								>
+									<ToggleSwitch
+										label={pattern.name}
+										selected={
+											selectedItems.patterns[pattern.name]
+										}
+										onChange={val =>
+											handleToggleChange(
+												'patterns',
+												pattern.name,
+												val
+											)
+										}
+									/>
+								</div>
+							))}
+						</div>
+					)}
 				</div>
-				<div
-					className='maxi-cloud-container__import-popup_space'
-					onClick={onRequestClose}
-				></div>
+
+				<div className='maxi-cloud-container__import-popup_footer'>
+					<button
+						type='button'
+						className='maxi-cloud-container__import-popup_button maxi-cloud-container__import-popup_button-import'
+						onClick={() => onClickImport(selectedItems)}
+					>
+						{__('Import', 'maxi-blocks')}
+					</button>
+				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

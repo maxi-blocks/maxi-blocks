@@ -283,8 +283,9 @@ if (class_exists('MaxiBlocks_ImageCrop')) {
 // MaxiBlocks API
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
+MaxiBlocks_API::register();
 if (class_exists('MaxiBlocks_API')) {
-    MaxiBlocks_API::register();
+    add_action('plugins_loaded', array('MaxiBlocks_API', 'register'));
 }
 
 //======================================================================

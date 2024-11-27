@@ -39,6 +39,7 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public function __construct()
         {
+            error_log('MaxiBlocks_API constructor called');
             $this->version = '1.0';
             $this->namespace = 'maxi-blocks/v' . $this->version;
 
@@ -54,6 +55,7 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public function mb_register_routes()
         {
+            error_log('MaxiBlocks_API mb_register_routes called');
             register_rest_route($this->namespace, '/settings', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_options'],
@@ -329,6 +331,14 @@ if (!class_exists('MaxiBlocks_API')):
                         },
                     ],
                 ],
+            ]);
+            register_rest_route($this->namespace, '/import-starter-site', [
+                'methods' => 'POST',
+                'callback' => [$this, 'maxi_import_starter_site'],
+                'permission_callback' => function () {
+                    // Check if user is logged in and has correct capabilities
+                    return is_user_logged_in() && current_user_can('edit_posts');
+                },
             ]);
         }
 
@@ -1084,6 +1094,108 @@ if (!class_exists('MaxiBlocks_API')):
             } else {
                 return false;
             }
+        }
+
+        public function maxi_import_starter_site($request)
+        {
+            $import_data = $request->get_json_params();
+            error_log('Import data received: ' . print_r($import_data, true));
+
+            $results = [];
+
+            // Helper function to fetch remote content
+            $fetch_remote_content = function ($url) {
+                $response = wp_remote_get($url);
+                if (is_wp_error($response)) {
+                    error_log('Error fetching URL: ' . $url . ' - ' . $response->get_error_message());
+                    return false;
+                }
+                return wp_remote_retrieve_body($response);
+            };
+
+            // Process templates
+            if (!empty($import_data['templates'])) {
+                foreach ($import_data['templates'] as $template) {
+                    $content = $fetch_remote_content($template['content']);
+                    if ($content) {
+                        $json_content = json_decode($content, true);
+                        if ($json_content) {
+                            $results['templates'][$template['name']] = $json_content;
+                        }
+                    }
+                }
+            }
+
+            // Process pages
+            if (!empty($import_data['pages'])) {
+                foreach ($import_data['pages'] as $page) {
+                    $content = $fetch_remote_content($page['content']);
+                    if ($content) {
+                        $json_content = json_decode($content, true);
+                        if ($json_content) {
+                            $results['pages'][$page['name']] = $json_content;
+                        }
+                    }
+                }
+            }
+
+            // Process patterns
+            if (!empty($import_data['patterns'])) {
+                foreach ($import_data['patterns'] as $pattern) {
+                    $content = $fetch_remote_content($pattern['content']);
+                    if ($content) {
+                        $json_content = json_decode($content, true);
+                        if ($json_content) {
+                            $results['patterns'][$pattern['name']] = $json_content;
+                        }
+                    }
+                }
+            }
+
+            // Process Style Card
+            if (!empty($import_data['sc'])) {
+                $sc_content = $fetch_remote_content($import_data['sc']);
+                if ($sc_content) {
+                    $results['sc'] = json_decode($sc_content, true);
+                }
+            }
+
+            // Process XML content
+            if (!empty($import_data['contentXML'])) {
+                $xml_content = $fetch_remote_content($import_data['contentXML']);
+                if ($xml_content) {
+                    // Create a temporary file to store the XML
+                    $temp_file = wp_tempnam('maxi_import_');
+                    if ($temp_file) {
+                        file_put_contents($temp_file, $xml_content);
+
+                        // Parse XML using WordPress importer
+                        if (file_exists(ABSPATH . 'wp-admin/includes/import.php')) {
+                            require_once ABSPATH . 'wp-admin/includes/import.php';
+
+                            if (!class_exists('WP_Importer')) {
+                                $class_wp_importer = ABSPATH . 'wp-admin/includes/class-wp-importer.php';
+                                if (file_exists($class_wp_importer)) {
+                                    require_once $class_wp_importer;
+                                }
+                            }
+
+                            $results['xml'] = simplexml_load_string($xml_content);
+                        }
+
+                        // Clean up
+                        unlink($temp_file);
+                    }
+                }
+            }
+
+            error_log('Processed import data: ' . print_r($results, true));
+
+            return rest_ensure_response([
+                'success' => true,
+                'message' => 'Import data processed',
+                'data' => $results
+            ]);
         }
     }
 endif;

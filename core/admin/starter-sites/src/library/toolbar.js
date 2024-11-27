@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { library, help, closeIcon } from '../icons';
-import MaxiImportPopUp from './maxiImportPopUp';
 
 /**
  * External dependencies
@@ -42,14 +41,6 @@ const LibraryToolbar = props => {
 		onRequestClose,
 		title = '',
 		cost = '',
-		isImport = false,
-		url,
-		templates,
-		pages,
-		patterns,
-		sc,
-		contentXML,
-		onImportClick,
 	} = props;
 
 	const handleClose = () => {
@@ -85,15 +76,6 @@ const LibraryToolbar = props => {
 						<h2>{title}</h2>
 						<span className='maxi-cloud-toolbar__line'>|</span>
 						<span>{cost}</span>
-						{!isImport && (
-							<button
-								type='button'
-								className='maxi-cloud-masonry-card__button'
-								onClick={onImportClick}
-							>
-								{__('Import', 'maxi-blocks')}
-							</button>
-						)}
 					</div>
 				</>
 			)}

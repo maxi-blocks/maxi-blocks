@@ -252,50 +252,91 @@ const starterSitesResults = ({ hit }) => {
 };
 
 const maxiDetailsPopUp = (url, title, cost, templates, pages, patterns) => {
+	const firstPage = pages?.[0];
+	const firstTemplate = templates?.[0];
+	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
+
 	return (
 		<>
 			<div className='maxi-cloud-container__details-popup_main-wrap'>
-				<div className='maxi-cloud-container__details-popup_wrap'>
-					<div>
-						{templates.map(template => (
-							<div
-								key={template.name}
-								className='maxi-cloud-container__details-popup_item'
-							>
-								<h3>{template.name}</h3>
-								<img
-									src={template.screenshot}
-									alt={template.name}
-								/>
+				<div className='maxi-cloud-container__details-popup_columns'>
+					{/* Left column - Preview */}
+					<div className='maxi-cloud-container__details-popup_column-left'>
+						{mainPreviewImage && (
+							<div className='maxi-cloud-container__details-popup_main-preview'>
+								<img src={mainPreviewImage} alt={title} />
 							</div>
-						))}
-						{pages.map(page => (
-							<div
-								key={page.name}
-								className='maxi-cloud-container__details-popup_item'
+						)}
+					</div>
+
+					{/* Right column - Content */}
+					<div className='maxi-cloud-container__details-popup_column-right'>
+						<h2>{title}</h2>
+						<p className='maxi-cloud-container__details-popup_description'>
+							{__('This demo is designed using MaxiBlocks to provide you with a sleek, modern, and fully customizable website.', 'maxi-blocks')}
+						</p>
+
+						<div className='maxi-cloud-container__details-popup_actions'>
+							<a
+								href={url}
+								target='_blank'
+								rel='noopener noreferrer'
+								className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-preview'
 							>
-								<h3>{page.name}</h3>
-								<img
-									src={page.screenshot}
-									alt={page.name}
-								/>
-							</div>
-						))}
-						{patterns.map(pattern => (
-							<div
-								key={pattern.name}
-								className='maxi-cloud-container__details-popup_item'
+								{__('Live preview', 'maxi-blocks')}
+							</a>
+							<button
+								type='button'
+								className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-import'
 							>
-								<h3>{pattern.name}</h3>
-								<img
-									src={pattern.screenshot}
-									alt={pattern.name}
-								/>
+								{__('Import', 'maxi-blocks')}
+							</button>
+						</div>
+
+						{/* Pages section */}
+						<div className='maxi-cloud-container__details-popup_section'>
+							<h3>{__('Pages in this starter site', 'maxi-blocks')} ({pages?.length || 0})</h3>
+							<div className='maxi-cloud-masonry'>
+								{pages?.map(page => (
+									<div key={page.name} className='maxi-cloud-container__details-popup_item'>
+										<img src={page.screenshot} alt={page.name} />
+										<span>{page.name}</span>
+									</div>
+								))}
 							</div>
-						))}
+						</div>
+
+						{/* Templates section */}
+						{templates?.length > 0 && (
+							<div className='maxi-cloud-container__details-popup_section'>
+								<h3>{__('Templates in this starter site', 'maxi-blocks')} ({templates.length})</h3>
+								<div className='maxi-cloud-masonry'>
+									{templates.map(template => (
+										<div key={template.name} className='maxi-cloud-container__details-popup_item'>
+											<img src={template.screenshot} alt={template.name} />
+											<span>{template.name}</span>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
+
+						{/* Patterns section */}
+						{patterns?.length > 0 && (
+							<div className='maxi-cloud-container__details-popup_section'>
+								<h3>{__('Patterns in this starter site', 'maxi-blocks')} ({patterns.length})</h3>
+								<div className='maxi-cloud-masonry'>
+									{patterns.map(pattern => (
+										<div key={pattern.name} className='maxi-cloud-container__details-popup_item'>
+											<img src={pattern.screenshot} alt={pattern.name} />
+											<span>{pattern.name}</span>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
 					</div>
 				</div>
-				<div className='maxi-cloud-container__details-popup_space'></div>
 			</div>
 		</>
 	);

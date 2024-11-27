@@ -251,93 +251,115 @@ const starterSitesResults = ({ hit }) => {
 	);
 };
 
-const maxiDetailsPopUp = (url, title, cost, templates, pages, patterns) => {
+const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns }) => {
 	const firstPage = pages?.[0];
 	const firstTemplate = templates?.[0];
 	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
+	const [showImport, setShowImport] = React.useState(false);
+
+	const handleImportClick = () => {
+		setShowImport(true);
+	};
+
+	const handleImportClose = () => {
+		setShowImport(false);
+	};
 
 	return (
 		<>
-			<div className='maxi-cloud-container__details-popup_main-wrap'>
-				<div className='maxi-cloud-container__details-popup_columns'>
-					{/* Left column - Preview */}
-					<div className='maxi-cloud-container__details-popup_column-left'>
-						{mainPreviewImage && (
-							<div className='maxi-cloud-container__details-popup_main-preview'>
-								<img src={mainPreviewImage} alt={title} />
-							</div>
-						)}
-					</div>
-
-					{/* Right column - Content */}
-					<div className='maxi-cloud-container__details-popup_column-right'>
-						<h2>{title}</h2>
-						<p className='maxi-cloud-container__details-popup_description'>
-							{__('This demo is designed using MaxiBlocks to provide you with a sleek, modern, and fully customizable website.', 'maxi-blocks')}
-						</p>
-
-						<div className='maxi-cloud-container__details-popup_actions'>
-							<a
-								href={url}
-								target='_blank'
-								rel='noopener noreferrer'
-								className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-preview'
-							>
-								{__('Live preview', 'maxi-blocks')}
-							</a>
-							<button
-								type='button'
-								className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-import'
-							>
-								{__('Import', 'maxi-blocks')}
-							</button>
+			{showImport ? (
+				<MaxiImportPopUp
+					url={url}
+					title={title}
+					cost={cost}
+					templates={templates}
+					pages={pages}
+					patterns={patterns}
+					onRequestClose={handleImportClose}
+				/>
+			) : (
+				<div className='maxi-cloud-container__details-popup_main-wrap'>
+					<div className='maxi-cloud-container__details-popup_columns'>
+						{/* Left column - Preview */}
+						<div className='maxi-cloud-container__details-popup_column-left'>
+							{mainPreviewImage && (
+								<div className='maxi-cloud-container__details-popup_main-preview'>
+									<img src={mainPreviewImage} alt={title} />
+								</div>
+							)}
 						</div>
 
-						{/* Pages section */}
-						<div className='maxi-cloud-container__details-popup_section'>
-							<h3>{__('Pages in this starter site', 'maxi-blocks')} ({pages?.length || 0})</h3>
-							<div className='maxi-cloud-masonry'>
-								{pages?.map(page => (
-									<div key={page.name} className='maxi-cloud-container__details-popup_item'>
-										<img src={page.screenshot} alt={page.name} />
-										<span>{page.name}</span>
+						{/* Right column - Content */}
+						<div className='maxi-cloud-container__details-popup_column-right'>
+							<h2>{title}</h2>
+							<p className='maxi-cloud-container__details-popup_description'>
+								{__('This demo is designed using MaxiBlocks to provide you with a sleek, modern, and fully customizable website.', 'maxi-blocks')}
+							</p>
+
+							<div className='maxi-cloud-container__details-popup_actions'>
+								<a
+									href={url}
+									target='_blank'
+									rel='noopener noreferrer'
+									className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-preview'
+								>
+									{__('Live preview', 'maxi-blocks')}
+								</a>
+								<button
+									type='button'
+									className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-import'
+									onClick={handleImportClick}
+								>
+									{__('Import', 'maxi-blocks')}
+								</button>
+							</div>
+
+							{/* Pages section */}
+							<div className='maxi-cloud-container__details-popup_section'>
+								<h3>{__('Pages in this starter site', 'maxi-blocks')} ({pages?.length || 0})</h3>
+								<div className='maxi-cloud-masonry'>
+									{pages?.map(page => (
+										<div key={page.name} className='maxi-cloud-container__details-popup_item'>
+											<img src={page.screenshot} alt={page.name} />
+											<span>{page.name}</span>
+										</div>
+									))}
+								</div>
+							</div>
+
+							{/* Templates section */}
+							{templates?.length > 0 && (
+								<div className='maxi-cloud-container__details-popup_section'>
+									<h3>{__('Templates in this starter site', 'maxi-blocks')} ({templates.length})</h3>
+									<div className='maxi-cloud-masonry'>
+										{templates.map(template => (
+											<div key={template.name} className='maxi-cloud-container__details-popup_item'>
+												<img src={template.screenshot} alt={template.name} />
+												<span>{template.name}</span>
+											</div>
+										))}
 									</div>
-								))}
-							</div>
+								</div>
+							)}
+
+							{/* Patterns section */}
+							{patterns?.length > 0 && (
+								<div className='maxi-cloud-container__details-popup_section'>
+									<h3>{__('Patterns in this starter site', 'maxi-blocks')} ({patterns.length})</h3>
+									<div className='maxi-cloud-masonry'>
+										{patterns.map(pattern => (
+											<div key={pattern.name} className='maxi-cloud-container__details-popup_item'>
+												<img src={pattern.screenshot} alt={pattern.name} />
+												<span>{pattern.name}</span>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
 						</div>
-
-						{/* Templates section */}
-						{templates?.length > 0 && (
-							<div className='maxi-cloud-container__details-popup_section'>
-								<h3>{__('Templates in this starter site', 'maxi-blocks')} ({templates.length})</h3>
-								<div className='maxi-cloud-masonry'>
-									{templates.map(template => (
-										<div key={template.name} className='maxi-cloud-container__details-popup_item'>
-											<img src={template.screenshot} alt={template.name} />
-											<span>{template.name}</span>
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-
-						{/* Patterns section */}
-						{patterns?.length > 0 && (
-							<div className='maxi-cloud-container__details-popup_section'>
-								<h3>{__('Patterns in this starter site', 'maxi-blocks')} ({patterns.length})</h3>
-								<div className='maxi-cloud-masonry'>
-									{patterns.map(pattern => (
-										<div key={pattern.name} className='maxi-cloud-container__details-popup_item'>
-											<img src={pattern.screenshot} alt={pattern.name} />
-											<span>{pattern.name}</span>
-										</div>
-									))}
-								</div>
-							</div>
-						)}
 					</div>
 				</div>
-			</div>
+			)}
 		</>
 	);
 };
@@ -395,14 +417,14 @@ const LibraryContainer = props => {
 
 			{type === 'preview' && !isImport && (
 				<div className='maxi-cloud-container__patterns'>
-					{maxiDetailsPopUp(
-						url,
-						title,
-						cost,
-						templates,
-						pages,
-						patterns
-					)}
+					<MaxiDetailsPopUp
+						url={url}
+						title={title}
+						cost={cost}
+						templates={templates}
+						pages={pages}
+						patterns={patterns}
+					/>
 				</div>
 			)}
 

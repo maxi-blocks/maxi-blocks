@@ -39,7 +39,6 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public function __construct()
         {
-            error_log('MaxiBlocks_API constructor called');
             $this->version = '1.0';
             $this->namespace = 'maxi-blocks/v' . $this->version;
 
@@ -55,7 +54,6 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public function mb_register_routes()
         {
-            error_log('MaxiBlocks_API mb_register_routes called');
             register_rest_route($this->namespace, '/settings', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_options'],
@@ -1099,7 +1097,6 @@ if (!class_exists('MaxiBlocks_API')):
         public function maxi_import_starter_site($request)
         {
             $import_data = $request->get_json_params();
-            error_log('Import data received: ' . print_r($import_data, true));
 
             $results = [];
 
@@ -1107,11 +1104,25 @@ if (!class_exists('MaxiBlocks_API')):
             $fetch_remote_content = function ($url) {
                 $response = wp_remote_get($url);
                 if (is_wp_error($response)) {
-                    error_log('Error fetching URL: ' . $url . ' - ' . $response->get_error_message());
                     return false;
                 }
                 return wp_remote_retrieve_body($response);
             };
+
+            // Process pages
+            if (!empty($import_data['pages'])) {
+                $pages_data = [];
+                foreach ($import_data['pages'] as $page) {
+                    $content = $fetch_remote_content($page['content']);
+                    if ($content) {
+                        $json_content = json_decode($content, true);
+                        if ($json_content) {
+                            $pages_data[$page['name']] = $json_content;
+                        }
+                    }
+                }
+                $results['pages'] = $this->maxi_import_pages($pages_data);
+            }
 
             // Process templates
             if (!empty($import_data['templates'])) {
@@ -1121,19 +1132,6 @@ if (!class_exists('MaxiBlocks_API')):
                         $json_content = json_decode($content, true);
                         if ($json_content) {
                             $results['templates'][$template['name']] = $json_content;
-                        }
-                    }
-                }
-            }
-
-            // Process pages
-            if (!empty($import_data['pages'])) {
-                foreach ($import_data['pages'] as $page) {
-                    $content = $fetch_remote_content($page['content']);
-                    if ($content) {
-                        $json_content = json_decode($content, true);
-                        if ($json_content) {
-                            $results['pages'][$page['name']] = $json_content;
                         }
                     }
                 }
@@ -1189,13 +1187,193 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
 
-            error_log('Processed import data: ' . print_r($results, true));
-
             return rest_ensure_response([
                 'success' => true,
                 'message' => 'Import data processed',
                 'data' => $results
             ]);
+        }
+
+        private function maxi_import_pages($pages_data)
+        {
+            $results = [];
+            global $wpdb;
+
+            foreach ($pages_data as $page_name => $page_data) {
+                // Parse the page data
+                $content = $page_data['content'] ?? '';
+
+                // Replace all unicode escape sequences with their actual characters
+                $content = str_replace(
+                    [
+                        'u002d',  // hyphen -
+                        'u0022',  // double quote "
+                        'u003e',  // greater than >
+                        'u003c',  // less than <
+                        'u0026',  // ampersand &
+                        'u0027',  // single quote '
+                        'u002f',  // forward slash /
+                        'u005c',  // backslash \
+                        'u0020',  // space
+                        'u003d',  // equals =
+                    ],
+                    [
+                        '-',
+                        '"',
+                        '>',
+                        '<',
+                        '&',
+                        "'",
+                        '/',
+                        '\\',
+                        ' ',
+                        '='
+                    ],
+                    $content
+                );
+
+                $styles = $page_data['styles'] ?? [];
+                $entity_type = $page_data['entityType'] ?? 'page';
+                $entity_title = $page_data['entityTitle'] ?? $page_name;
+                $entity_slug = $page_data['entitySlug'] ?? sanitize_title($entity_title);
+                $custom_data = $page_data['customData'] ?? [];
+                $fonts = $page_data['fonts'] ?? [];
+
+                // Create the page/post
+                $post_data = array(
+                    'post_title'    => $entity_title,
+                    'post_content'  => wp_slash($content),
+                    'post_status'   => 'publish',
+                    'post_type'     => $entity_type,
+                    'post_name'     => $entity_slug,
+                );
+
+                $post_id = wp_insert_post($post_data);
+
+                if (is_wp_error($post_id)) {
+                    $results[$page_name] = [
+                        'success' => false,
+                        'message' => $post_id->get_error_message()
+                    ];
+                    continue;
+                }
+
+                // Import styles into DB
+                foreach ($styles as $block_id => $style_data) {
+                    // Check if block_id exists
+                    $existing_style = $wpdb->get_row(
+                        $wpdb->prepare(
+                            "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                            $block_id
+                        )
+                    );
+
+                    if ($existing_style) {
+                        // Update existing record, keeping current css_value as prev_css_value
+                        $wpdb->update(
+                            $wpdb->prefix . 'maxi_blocks_styles_blocks',
+                            array(
+                                'prev_css_value' => $existing_style->css_value,
+                                'css_value' => $style_data,
+                            ),
+                            array('block_style_id' => $block_id),
+                            array('%s', '%s'),
+                            array('%s')
+                        );
+                    } else {
+                        // Insert new record
+                        $wpdb->insert(
+                            $wpdb->prefix . 'maxi_blocks_styles_blocks',
+                            array(
+                                'block_style_id' => $block_id,
+                                'css_value' => $style_data,
+                                'prev_css_value' => $style_data,
+                            ),
+                            array('%s', '%s', '%s')
+                        );
+                    }
+                }
+
+                // Import custom data
+                foreach ($custom_data as $block_id => $block_custom_data) {
+                    // Check if block_id exists
+                    $existing_custom_data = $wpdb->get_row(
+                        $wpdb->prepare(
+                            "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                            $block_id
+                        )
+                    );
+
+                    if ($existing_custom_data) {
+                        // Update existing record, keeping current custom_data as prev_custom_data
+                        $wpdb->update(
+                            $wpdb->prefix . 'maxi_blocks_custom_data_blocks',
+                            array(
+                                'prev_custom_data_value' => $existing_custom_data->custom_data_value,
+                                'custom_data_value' => $block_custom_data,
+                            ),
+                            array('block_style_id' => $block_id),
+                            array('%s', '%s'),
+                            array('%s')
+                        );
+                    } else {
+                        // Insert new record
+                        $wpdb->insert(
+                            $wpdb->prefix . 'maxi_blocks_custom_data_blocks',
+                            array(
+                                'block_style_id' => $block_id,
+                                'custom_data_value' => $block_custom_data,
+                                'prev_custom_data_value' => $block_custom_data,
+                            ),
+                            array('%s', '%s', '%s')
+                        );
+                    }
+                }
+
+                // Import fonts
+                foreach ($fonts as $block_id => $font_data) {
+                    // Check if block_id exists
+                    $existing_fonts = $wpdb->get_row(
+                        $wpdb->prepare(
+                            "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                            $block_id
+                        )
+                    );
+
+                    if ($existing_fonts) {
+                        // Update existing record, keeping current fonts as prev_fonts
+                        $wpdb->update(
+                            $wpdb->prefix . 'maxi_blocks_styles_blocks',
+                            array(
+                                'prev_fonts_value' => $existing_fonts->fonts_value,
+                                'fonts_value' => wp_json_encode($font_data),
+                            ),
+                            array('block_style_id' => $block_id),
+                            array('%s', '%s'),
+                            array('%s')
+                        );
+                    } else {
+                        // Insert new record
+                        $wpdb->insert(
+                            $wpdb->prefix . 'maxi_blocks_styles_blocks',
+                            array(
+                                'block_style_id' => $block_id,
+                                'fonts_value' => wp_json_encode($font_data),
+                                'prev_fonts_value' => wp_json_encode($font_data),
+                            ),
+                            array('%s', '%s', '%s')
+                        );
+                    }
+                }
+
+                $results[$page_name] = [
+                    'success' => true,
+                    'post_id' => $post_id,
+                    'message' => sprintf(__('Successfully imported %s', 'maxi-blocks'), $entity_title)
+                ];
+            }
+
+            return $results;
         }
     }
 endif;

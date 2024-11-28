@@ -338,6 +338,20 @@ if (!class_exists('MaxiBlocks_API')):
                     return is_user_logged_in() && current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/fonts/(?P<unique_id>[a-z0-9-]+)$', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_maxi_blocks_fonts_by_id'],
+                'args' => [
+                    'unique_id' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
         }
 
         /**
@@ -1202,36 +1216,6 @@ if (!class_exists('MaxiBlocks_API')):
             foreach ($pages_data as $page_name => $page_data) {
                 // Parse the page data
                 $content = $page_data['content'] ?? '';
-
-                // Replace all unicode escape sequences with their actual characters
-                $content = str_replace(
-                    [
-                        'u002d',  // hyphen -
-                        'u0022',  // double quote "
-                        'u003e',  // greater than >
-                        'u003c',  // less than <
-                        'u0026',  // ampersand &
-                        'u0027',  // single quote '
-                        'u002f',  // forward slash /
-                        'u005c',  // backslash \
-                        'u0020',  // space
-                        'u003d',  // equals =
-                    ],
-                    [
-                        '-',
-                        '"',
-                        '>',
-                        '<',
-                        '&',
-                        "'",
-                        '/',
-                        '\\',
-                        ' ',
-                        '='
-                    ],
-                    $content
-                );
-
                 $styles = $page_data['styles'] ?? [];
                 $entity_type = $page_data['entityType'] ?? 'page';
                 $entity_title = $page_data['entityTitle'] ?? $page_name;
@@ -1345,8 +1329,8 @@ if (!class_exists('MaxiBlocks_API')):
                         $wpdb->update(
                             $wpdb->prefix . 'maxi_blocks_styles_blocks',
                             array(
-                                'prev_fonts_value' => $existing_fonts->fonts_value,
-                                'fonts_value' => wp_json_encode($font_data),
+                                'prev_fonts_value' => $existing_fonts->fonts_value ?? $font_data,
+                                'fonts_value' => $font_data,
                             ),
                             array('block_style_id' => $block_id),
                             array('%s', '%s'),
@@ -1358,8 +1342,8 @@ if (!class_exists('MaxiBlocks_API')):
                             $wpdb->prefix . 'maxi_blocks_styles_blocks',
                             array(
                                 'block_style_id' => $block_id,
-                                'fonts_value' => wp_json_encode($font_data),
-                                'prev_fonts_value' => wp_json_encode($font_data),
+                                'fonts_value' => $font_data,
+                                'prev_fonts_value' => $font_data,
                             ),
                             array('%s', '%s', '%s')
                         );
@@ -1374,6 +1358,46 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $results;
+        }
+
+        /**
+         * Get fonts for a specific block by unique ID
+         *
+         * @param WP_REST_Request $request Request object
+         * @return WP_REST_Response|WP_Error Response object or WP_Error
+         */
+        public function get_maxi_blocks_fonts_by_id($request)
+        {
+            global $wpdb;
+            $unique_id = $request->get_param('unique_id');
+
+            if(!$unique_id || $unique_id === '') {
+                return new WP_Error(
+                    'no_unique_id',
+                    'No block unique ID provided',
+                    array('status' => 400)
+                );
+            }
+
+            $fonts = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT fonts_value
+                    FROM {$wpdb->prefix}maxi_blocks_styles_blocks
+                    WHERE block_style_id = %s",
+                    $unique_id
+                ),
+                ARRAY_A
+            );
+
+            if (!$fonts) {
+                return new WP_Error(
+                    'no_fonts_found',
+                    'No fonts found for this block ID',
+                    array('status' => 404)
+                );
+            }
+
+            return $fonts['fonts_value'];
         }
     }
 endif;

@@ -11,6 +11,7 @@ import { Popover } from '@wordpress/components';
  * External dependencies
  */
 import JSZip from 'jszip';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -166,18 +167,21 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 			'maxiBlocks/customData'
 		).getPostCustomData();
 		const customData = Object.fromEntries(
-			Object.entries(rawCustomData).filter(([_, value]) => {
-				// Remove empty strings, null, undefined, empty arrays and empty objects
-				if (value === null || value === undefined || value === '')
-					return false;
-				if (Array.isArray(value) && value.length === 0) return false;
-				if (
-					typeof value === 'object' &&
-					Object.keys(value).length === 0
-				)
-					return false;
-				return true;
-			})
+			Object.entries(rawCustomData)
+				.filter(([_, value]) => {
+					// Remove empty strings, null, undefined, empty arrays and empty objects
+					if (value === null || value === undefined || value === '')
+						return false;
+					if (Array.isArray(value) && value.length === 0)
+						return false;
+					if (
+						typeof value === 'object' &&
+						Object.keys(value).length === 0
+					)
+						return false;
+					return true;
+				})
+				.map(([key, value]) => [key, JSON.stringify(value)])
 		);
 
 		const exportData = {
@@ -196,9 +200,36 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 		}
 
 		// Get fonts
-		const fonts = select('maxiBlocks/text').getPostFonts();
-		if (fonts.length > 0) {
-			exportData.fonts = fonts;
+		const getFontsForBlock = async uniqueID => {
+			try {
+				const data = await apiFetch({
+					path: `/maxi-blocks/v1.0/fonts/${uniqueID}`,
+					method: 'GET',
+				});
+				return data;
+			} catch (error) {
+				return null;
+			}
+		};
+
+		// Get fonts for each uniqueID
+		const blockFonts = {};
+		try {
+			await Promise.all(
+				Array.from(uniqueIDs).map(async uniqueID => {
+					const fonts = await getFontsForBlock(uniqueID);
+					if (fonts) {
+						blockFonts[uniqueID] = fonts;
+					}
+				})
+			);
+		} catch (error) {
+			console.error('Error fetching fonts:', error);
+		}
+
+		// Only add fonts to exportData if we have any
+		if (Object.keys(blockFonts).length > 0) {
+			exportData.fonts = blockFonts;
 		}
 
 		return exportData;

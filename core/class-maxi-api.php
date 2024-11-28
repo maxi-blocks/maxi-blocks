@@ -1168,7 +1168,158 @@ if (!class_exists('MaxiBlocks_API')):
             if (!empty($import_data['sc'])) {
                 $sc_content = $fetch_remote_content($import_data['sc']);
                 if ($sc_content) {
-                    $results['sc'] = json_decode($sc_content, true);
+                    global $wpdb;
+
+                    // Get default SC
+                    $default_sc = json_decode(MaxiBlocks_StyleCards::get_default_style_card(), true);
+                    $default_maxi_sc = $default_sc['sc_maxi'];
+
+                    // Parse imported SC (double decode as it's a JSON string within a string)
+                    $imported_sc = json_decode($sc_content, true);
+                    error_log('Imported SC structure: ' . print_r($imported_sc, true));
+
+                    // Deep merge default with imported
+                    $new_sc = array_replace_recursive($default_maxi_sc, $imported_sc);
+                    error_log('Merged SC structure: ' . print_r($new_sc, true));
+
+                    // Generate new SC ID
+                    $new_id = 'sc_' . time();
+
+                    // Get current style cards
+                    $current_style_cards = json_decode(
+                        MaxiBlocks_StyleCards::get_maxi_blocks_current_style_cards(),
+                        true
+                    );
+
+                    // Set all cards as inactive
+                    foreach ($current_style_cards as &$card) {
+                        $card['status'] = '';
+                    }
+
+                    // Add new card to collection
+                    $current_style_cards[$new_id] = $new_sc;
+                    $current_style_cards[$new_id]['status'] = 'active';
+
+                    // Save updated style cards collection
+                    $wpdb->replace(
+                        "{$wpdb->prefix}maxi_blocks_general",
+                        array(
+                            'id' => 'style_cards_current',
+                            'object' => wp_json_encode($current_style_cards)
+                        )
+                    );
+
+                    // Generate sc_string from the active card
+                    // Create variables object first
+                    $get_sc_variables_object = function ($sc) {
+                        $response = array();
+                        $styles = array('light', 'dark');
+                        $elements = array('button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation');
+                        $breakpoints = array('general', 'xxl', 'xl', 'l', 'm', 's', 'xs');
+                        $settings = array(
+                            'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
+                            'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
+                            'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
+                            'padding-top', 'padding-left', 'padding-right'
+                        );
+
+                        // Helper function to merge style card data
+                        $merge_style_cards = function ($default_card, $style_card) {
+                            if (empty($style_card)) {
+                                return $default_card;
+                            }
+                            if (empty($default_card)) {
+                                return $style_card;
+                            }
+                            return array_replace_recursive($default_card, $style_card);
+                        };
+
+                        foreach ($styles as $style) {
+                            // Merge defaultStyleCard and styleCard
+                            $style_data = $merge_style_cards(
+                                $sc[$style]['defaultStyleCard'] ?? array(),
+                                $sc[$style]['styleCard'] ?? array()
+                            );
+
+                            if ($style_data) {
+                                foreach ($elements as $element) {
+                                    if (isset($style_data[$element])) {
+                                        foreach ($settings as $setting) {
+                                            foreach ($breakpoints as $breakpoint) {
+                                                $key = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+                                                $value = $style_data[$element][$setting.'-'.$breakpoint] ?? null;
+
+                                                // Handle font-family quotes
+                                                if ($setting === 'font-family' && !empty($value)) {
+                                                    $value = "\"{$value}\"";
+                                                }
+
+                                                // Handle padding units
+                                                if (strpos($setting, 'padding') === 0 && $value !== null) {
+                                                    $unit = $style_data[$element][$setting.'-unit-'.$breakpoint] ?? 'px';
+                                                    $value .= $unit;
+                                                }
+
+                                                if ($value !== null && $value !== '') {
+                                                    $response[$key] = $value;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Handle colors
+                                if (isset($style_data['color'])) {
+                                    for ($i = 1; $i <= 8; $i++) {
+                                        if (isset($style_data['color'][$i])) {
+                                            $response["--maxi-{$style}-color-{$i}"] = $style_data['color'][$i];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        error_log('Generated variables: ' . print_r($response, true));
+                        return $response;
+                    };
+
+                    // Create CSS variables string
+                    $create_sc_style_string = function ($sc_object) {
+                        $response = ':root{';
+                        foreach ($sc_object as $key => $val) {
+                            if ($val) {
+                                $response .= "{$key}:{$val};";
+                            }
+                        }
+                        $response .= '}';
+                        return $response;
+                    };
+
+                    // Create variables object and convert to CSS string
+                    $variables_object = $get_sc_variables_object($new_sc);
+                    $var_sc_string = $create_sc_style_string($variables_object);
+
+                    $sc_string = array(
+                        '_maxi_blocks_style_card' => $var_sc_string,
+                        '_maxi_blocks_style_card_preview' => $var_sc_string,
+                        '_maxi_blocks_style_card_styles' => $var_sc_string,
+                        '_maxi_blocks_style_card_styles_preview' => $var_sc_string
+                    );
+
+                    // Save sc_string
+                    $wpdb->replace(
+                        "{$wpdb->prefix}maxi_blocks_general",
+                        array(
+                            'id' => 'sc_string',
+                            'object' => serialize($sc_string)
+                        )
+                    );
+
+                    $results['sc'] = [
+                        'success' => true,
+                        'message' => __('Style Card imported successfully', 'maxi-blocks'),
+                        'id' => $new_id
+                    ];
                 }
             }
 

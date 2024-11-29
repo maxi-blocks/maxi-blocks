@@ -1153,23 +1153,8 @@ if (!class_exists('MaxiBlocks_API')):
                         continue;
                     }
 
-                    // Import the template based on its type
-                    if ($template_data['entityType'] === 'template') {
-                        error_log('Importing template');
-                        $import_result = $this->maxi_import_templates([$template_data]);
-                    } elseif ($template_data['entityType'] === 'template-part') {
-                        error_log('Importing template part');
-                        $import_result = $this->maxi_import_template_parts([$template_data]);
-                    } else {
-                        error_log('Invalid entity type: ' . $template_data['entityType']);
-                        $results['templates'][] = [
-                            'name' => $template['name'],
-                            'success' => false,
-                            'message' => sprintf(__('Invalid entity type: %s', 'maxi-blocks'), $template_data['entityType'])
-                        ];
-                        continue;
-                    }
-
+                    // Import the template
+                    $import_result = $this->maxi_import_template_parts([$template_data]);
                     $results['templates'][] = [
                         'name' => $template['name'],
                         'success' => true,
@@ -1217,6 +1202,45 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
 
+            // Process patterns
+            if (!empty($import_data['patterns'])) {
+                $results['patterns'] = [];
+
+                foreach ($import_data['patterns'] as $pattern) {
+                    error_log('Processing pattern: ' . print_r($pattern, true));
+
+                    // Fetch pattern content from URL
+                    $pattern_content = $fetch_remote_content($pattern['content']);
+                    if (!$pattern_content) {
+                        $results['patterns'][] = [
+                            'name' => $pattern['name'],
+                            'success' => false,
+                            'message' => sprintf(__('Failed to fetch pattern content from %s', 'maxi-blocks'), $pattern['content'])
+                        ];
+                        continue;
+                    }
+
+                    // Parse the fetched content
+                    $pattern_data = json_decode($pattern_content, true);
+                    if (!$pattern_data) {
+                        $results['patterns'][] = [
+                            'name' => $pattern['name'],
+                            'success' => false,
+                            'message' => __('Invalid pattern JSON content', 'maxi-blocks')
+                        ];
+                        continue;
+                    }
+
+                    // Import the pattern
+                    $import_result = $this->maxi_import_patterns([$pattern_data]);
+                    $results['patterns'][] = [
+                        'name' => $pattern['name'],
+                        'success' => true,
+                        'data' => $import_result
+                    ];
+                }
+            }
+
             return rest_ensure_response([
                 'success' => true,
                 'message' => 'Import data processed',
@@ -1227,7 +1251,6 @@ if (!class_exists('MaxiBlocks_API')):
         private function maxi_import_pages($pages_data)
         {
             $results = [];
-            global $wpdb;
 
             foreach ($pages_data as $page_name => $page_data) {
                 // Parse the page data
@@ -1259,112 +1282,13 @@ if (!class_exists('MaxiBlocks_API')):
                 }
 
                 // Import styles into DB
-                foreach ($styles as $block_id => $style_data) {
-                    // Check if block_id exists
-                    $existing_style = $wpdb->get_row(
-                        $wpdb->prepare(
-                            "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                            $block_id
-                        )
-                    );
-
-                    if ($existing_style) {
-                        // Update existing record, keeping current css_value as prev_css_value
-                        $wpdb->update(
-                            $wpdb->prefix . 'maxi_blocks_styles_blocks',
-                            array(
-                                'prev_css_value' => $existing_style->css_value,
-                                'css_value' => $style_data,
-                            ),
-                            array('block_style_id' => $block_id),
-                            array('%s', '%s'),
-                            array('%s')
-                        );
-                    } else {
-                        // Insert new record
-                        $wpdb->insert(
-                            $wpdb->prefix . 'maxi_blocks_styles_blocks',
-                            array(
-                                'block_style_id' => $block_id,
-                                'css_value' => $style_data,
-                                'prev_css_value' => $style_data,
-                            ),
-                            array('%s', '%s', '%s')
-                        );
-                    }
-                }
+                $this->import_styles_to_db($styles);
 
                 // Import custom data
-                foreach ($custom_data as $block_id => $block_custom_data) {
-                    // Check if block_id exists
-                    $existing_custom_data = $wpdb->get_row(
-                        $wpdb->prepare(
-                            "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                            $block_id
-                        )
-                    );
-
-                    if ($existing_custom_data) {
-                        // Update existing record, keeping current custom_data as prev_custom_data
-                        $wpdb->update(
-                            $wpdb->prefix . 'maxi_blocks_custom_data_blocks',
-                            array(
-                                'prev_custom_data_value' => $existing_custom_data->custom_data_value,
-                                'custom_data_value' => $block_custom_data,
-                            ),
-                            array('block_style_id' => $block_id),
-                            array('%s', '%s'),
-                            array('%s')
-                        );
-                    } else {
-                        // Insert new record
-                        $wpdb->insert(
-                            $wpdb->prefix . 'maxi_blocks_custom_data_blocks',
-                            array(
-                                'block_style_id' => $block_id,
-                                'custom_data_value' => $block_custom_data,
-                                'prev_custom_data_value' => $block_custom_data,
-                            ),
-                            array('%s', '%s', '%s')
-                        );
-                    }
-                }
+                $this->import_custom_data_to_db($custom_data);
 
                 // Import fonts
-                foreach ($fonts as $block_id => $font_data) {
-                    // Check if block_id exists
-                    $existing_fonts = $wpdb->get_row(
-                        $wpdb->prepare(
-                            "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                            $block_id
-                        )
-                    );
-
-                    if ($existing_fonts) {
-                        // Update existing record, keeping current fonts as prev_fonts
-                        $wpdb->update(
-                            $wpdb->prefix . 'maxi_blocks_styles_blocks',
-                            array(
-                                'prev_fonts_value' => $existing_fonts->fonts_value ?? $font_data,
-                                'fonts_value' => $font_data,
-                            ),
-                            array('block_style_id' => $block_id),
-                            array('%s', '%s'),
-                            array('%s')
-                        );
-                    } else {
-                        // Insert new record
-                        $wpdb->insert(
-                            $wpdb->prefix . 'maxi_blocks_styles_blocks',
-                            array(
-                                'block_style_id' => $block_id,
-                                'fonts_value' => $font_data,
-                                'prev_fonts_value' => $font_data,
-                            ),
-                            array('%s', '%s', '%s')
-                        );
-                    }
-                }
+                $this->import_fonts_to_db($fonts);
 
                 $results[$page_name] = [
                     'success' => true,
@@ -1883,6 +1807,104 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $fonts['fonts_value'];
+        }
+
+        /**
+         * Import patterns
+         *
+         * @param array $pattern_data Pattern data
+         * @return array Results of the import
+         */
+        private function maxi_import_patterns($pattern_data)
+        {
+            $results = [];
+            global $wpdb;
+            error_log('Starting pattern import with data: ' . print_r($pattern_data, true));
+
+            // Get current theme
+            $current_theme = wp_get_theme();
+            $theme_slug = $current_theme->get_stylesheet();
+            error_log('Current theme: ' . $theme_slug);
+
+            foreach ($pattern_data as $pattern_name => $pattern_data) {
+                error_log('Processing pattern: ' . $pattern_name);
+
+                // Parse the pattern data
+                $content = $pattern_data['content'] ?? '';
+                $styles = $pattern_data['styles'] ?? [];
+                $entity_title = $pattern_data['entityTitle'] ?? $pattern_name;
+                $entity_slug = $pattern_data['entitySlug'] ?? sanitize_title($entity_title);
+                $custom_data = $pattern_data['customData'] ?? [];
+                $fonts = $pattern_data['fonts'] ?? [];
+                $wp_pattern_sync_status = $pattern_data['wpPatternSyncStatus'] ?? '';
+
+                error_log('Pattern details - Title: ' . $entity_title . ', Slug: ' . $entity_slug);
+
+                // Check if pattern exists in database
+                $existing_post = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT ID FROM {$wpdb->posts}
+                        WHERE post_type = 'wp_block'
+                        AND post_name = %s
+                        AND post_status = 'publish'",
+                        $entity_slug
+                    )
+                );
+                error_log('Database check result by slug: ' . print_r($existing_post, true));
+
+                $pattern_content = array(
+                    'post_name' => $entity_slug,
+                    'post_title' => $entity_title,
+                    'post_content' => wp_slash($content),
+                    'post_status' => 'publish',
+                    'post_type' => 'wp_block',
+                    'post_excerpt' => '',
+                    'meta_input' => array(
+                        'wp_pattern_sync_status' => $wp_pattern_sync_status
+                    )
+                );
+                error_log('Pattern content prepared: ' . print_r($pattern_content, true));
+
+                if ($existing_post) {
+                    error_log('Updating existing pattern in database with ID: ' . $existing_post->ID);
+                    $pattern_content['ID'] = $existing_post->ID;
+                    $post_id = wp_update_post($pattern_content);
+                } else {
+                    error_log('Creating new pattern');
+                    $post_id = wp_insert_post($pattern_content);
+                }
+
+                if (is_wp_error($post_id)) {
+                    error_log('Error creating/updating pattern: ' . $post_id->get_error_message());
+                    $results[$pattern_name] = [
+                        'success' => false,
+                        'message' => $post_id->get_error_message()
+                    ];
+                    continue;
+                }
+                error_log('Pattern created/updated successfully with ID: ' . $post_id);
+
+                // Import styles into DB
+                error_log('Importing styles');
+                $this->import_styles_to_db($styles);
+
+                // Import custom data
+                error_log('Importing custom data');
+                $this->import_custom_data_to_db($custom_data);
+
+                // Import fonts
+                error_log('Importing fonts');
+                $this->import_fonts_to_db($fonts);
+
+                $results[$pattern_name] = [
+                    'success' => true,
+                    'post_id' => $post_id,
+                    'message' => sprintf(__('Successfully imported %s pattern', 'maxi-blocks'), $entity_title)
+                ];
+                error_log('Pattern import completed successfully');
+            }
+
+            return $results;
         }
     }
 endif;

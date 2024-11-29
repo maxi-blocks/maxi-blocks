@@ -44,6 +44,12 @@ const AdvancedNumberControl = props => {
 			minRange: -300,
 			maxRange: 300,
 		},
+		rem: {
+			min: 0,
+			max: 999,
+			minRange: -300,
+			maxRange: 300,
+		},
 		vw: {
 			min: 0,
 			max: 999,

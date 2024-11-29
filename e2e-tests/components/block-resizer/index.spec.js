@@ -19,13 +19,14 @@ describe('BlockResizer', () => {
 		await insertMaxiBlock(page, 'Number Counter Maxi');
 		await updateAllBlockUniqueIds(page);
 
+		// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 		// Remove the maxi-block-inserter__last element
-		await page.evaluate(() => {
-			const element = document.querySelector(
-				'.maxi-block-inserter__last'
-			);
-			if (element) element.remove();
-		});
+		// await page.evaluate(() => {
+		// 	const element = document.querySelector(
+		// 		'.maxi-block-inserter__last'
+		// 	);
+		// 	if (element) element.remove();
+		// });
 
 		const accordionPanel = await openSidebarTab(page, 'style', 'number');
 

@@ -346,7 +346,7 @@ body .toolbar-item__popover {
 			margin-bottom: 0;
 
 			.maxi-select-control__input {
-				min-width: 3.2rem;
+				min-width: 3.6rem;
 				max-width: 100%;
 			}
 		}
@@ -609,7 +609,6 @@ body.maxi-blocks--active .edit-post-visual-editor {
 	width: 100%;
 	min-width: calc(100vw - var(--maxi-blocks-scrollbar-width, 15px));
 }
-
 body.maxi-blocks--active
 	.editor-styles-wrapper
 	.block-editor-block-list__layout.is-root-container.is-desktop-preview {

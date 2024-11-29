@@ -647,9 +647,8 @@ const DynamicContent = props => {
 										onReset={() =>
 											changeProps({
 												'dc-field':
-													fieldOptions[contentType][ // TODO: Check if this will work with currentFieldOptions
-														type
-													][0]?.value,
+													currentFieldOptions[0]
+														?.value,
 											})
 										}
 									/>

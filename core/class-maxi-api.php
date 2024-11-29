@@ -1110,9 +1110,10 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function maxi_import_starter_site($request)
         {
-            $import_data = $request->get_json_params();
-
+            $import_data = json_decode($request->get_body(), true);
             $results = [];
+
+            error_log('Starting import with data: ' . print_r($import_data, true));
 
             // Helper function to fetch remote content
             $fetch_remote_content = function ($url) {
@@ -1123,435 +1124,81 @@ if (!class_exists('MaxiBlocks_API')):
                 return wp_remote_retrieve_body($response);
             };
 
-            // Process pages
-            if (!empty($import_data['pages'])) {
-                $pages_data = [];
-                foreach ($import_data['pages'] as $page) {
-                    $content = $fetch_remote_content($page['content']);
-                    if ($content) {
-                        $json_content = json_decode($content, true);
-                        if ($json_content) {
-                            $pages_data[$page['name']] = $json_content;
-                        }
-                    }
-                }
-                $results['pages'] = $this->maxi_import_pages($pages_data);
-            }
-
             // Process templates
             if (!empty($import_data['templates'])) {
+                $results['templates'] = [];
+
                 foreach ($import_data['templates'] as $template) {
-                    $content = $fetch_remote_content($template['content']);
-                    if ($content) {
-                        $json_content = json_decode($content, true);
-                        if ($json_content) {
-                            $results['templates'][$template['name']] = $json_content;
-                        }
-                    }
-                }
-            }
+                    error_log('Processing template: ' . print_r($template, true));
 
-            // Process patterns
-            if (!empty($import_data['patterns'])) {
-                foreach ($import_data['patterns'] as $pattern) {
-                    $content = $fetch_remote_content($pattern['content']);
-                    if ($content) {
-                        $json_content = json_decode($content, true);
-                        if ($json_content) {
-                            $results['patterns'][$pattern['name']] = $json_content;
-                        }
-                    }
-                }
-            }
-
-            // Process Style Card
-            if (!empty($import_data['sc'])) {
-                $sc_content = $fetch_remote_content($import_data['sc']);
-                if ($sc_content) {
-                    global $wpdb;
-
-                    // Get default SC
-                    $default_sc = json_decode(MaxiBlocks_StyleCards::get_default_style_card(), true);
-                    $default_maxi_sc = $default_sc['sc_maxi'];
-
-                    // Parse imported SC (double decode as it's a JSON string within a string)
-                    $imported_sc = json_decode($sc_content, true);
-
-                    // Deep merge default with imported
-                    $new_sc = array_replace_recursive($default_maxi_sc, $imported_sc);
-
-                    // Generate new SC ID
-                    $new_id = 'sc_' . time();
-
-                    // Get current style cards
-                    $current_style_cards = json_decode(
-                        MaxiBlocks_StyleCards::get_maxi_blocks_current_style_cards(),
-                        true
-                    );
-
-                    // Set all cards as inactive
-                    foreach ($current_style_cards as &$card) {
-                        $card['status'] = '';
+                    // Fetch template content from URL
+                    $template_content = $fetch_remote_content($template['content']);
+                    if (!$template_content) {
+                        $results['templates'][] = [
+                            'name' => $template['name'],
+                            'success' => false,
+                            'message' => sprintf(__('Failed to fetch template content from %s', 'maxi-blocks'), $template['content'])
+                        ];
+                        continue;
                     }
 
-                    // Add new card to collection
-                    $current_style_cards[$new_id] = $new_sc;
-                    $current_style_cards[$new_id]['status'] = 'active';
+                    // Parse the fetched content
+                    $template_data = json_decode($template_content, true);
+                    if (!$template_data) {
+                        $results['templates'][] = [
+                            'name' => $template['name'],
+                            'success' => false,
+                            'message' => __('Invalid template JSON content', 'maxi-blocks')
+                        ];
+                        continue;
+                    }
 
-                    // Save updated style cards collection
-                    $wpdb->replace(
-                        "{$wpdb->prefix}maxi_blocks_general",
-                        array(
-                            'id' => 'style_cards_current',
-                            'object' => wp_json_encode($current_style_cards)
-                        )
-                    );
-
-                    // Create variables object first
-                    $get_sc_variables_object = function ($sc) {
-                        $response = array();
-                        $styles = array('light', 'dark');
-                        $elements = array('button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation');
-                        $breakpoints = array('general', 'xxl', 'xl', 'l', 'm', 's', 'xs');
-                        $settings = array(
-                            'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
-                            'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
-                            'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
-                            'padding-top', 'padding-left', 'padding-right'
-                        );
-
-                        // Helper function to merge style card data
-                        $merge_style_cards = function ($default_card, $style_card) {
-                            if (empty($style_card)) {
-                                return $default_card;
-                            }
-                            if (empty($default_card)) {
-                                return $style_card;
-                            }
-                            return array_replace_recursive($default_card, $style_card);
-                        };
-
-                        foreach ($styles as $style) {
-                            // Merge defaultStyleCard and styleCard
-                            $style_data = $merge_style_cards(
-                                $sc[$style]['defaultStyleCard'] ?? array(),
-                                $sc[$style]['styleCard'] ?? array()
-                            );
-
-                            // Process each element
-                            foreach ($elements as $element) {
-                                if (!isset($style_data[$element])) {
-                                    continue;
-                                }
-
-                                // Process each setting
-                                foreach ($settings as $setting) {
-                                    foreach ($breakpoints as $breakpoint) {
-                                        $key = "{$setting}-{$breakpoint}";
-                                        $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
-
-                                        if (isset($style_data[$element][$key])) {
-                                            $value = $style_data[$element][$key];
-
-                                            // Add units if needed
-                                            if ($setting === 'font-family') {
-                                                $value = "\"{$value}\"";
-                                            } elseif (in_array($setting, array('font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent'))) {
-                                                if (is_numeric($value)) {
-                                                    $value .= 'px';
-                                                }
-                                            }
-
-                                            $response[$var_name] = $value;
-                                        }
-                                    }
-                                }
-                            }
-
-                            // Process colors
-                            if (isset($style_data['color'])) {
-                                for ($i = 1; $i <= 8; $i++) {
-                                    if (isset($style_data['color'][$i])) {
-                                        $response["--maxi-{$style}-color-{$i}"] = $style_data['color'][$i];
-                                    }
-                                }
-                            }
-                        }
-
-                        return $response;
-                    };
-
-                    // Create CSS variables string
-                    $create_sc_style_string = function ($sc_object) {
-                        $response = ':root{';
-                        foreach ($sc_object as $key => $val) {
-                            if ($val) {
-                                $response .= "{$key}:{$val};";
-                            }
-                        }
-                        $response .= '}';
-                        return $response;
-                    };
-
-                    // Create variables object and convert to CSS string
-                    $variables_object = $get_sc_variables_object($new_sc);
-                    $var_sc_string = $create_sc_style_string($variables_object);
-                    error_log('Generated SC string: ' . $var_sc_string);
-
-                    // Create styles similar to getSCStyles.js
-                    $get_sc_styles = function ($sc) {
-                        $response = '';
-                        $prefix = 'body.maxi-blocks--active';
-                        $styles = array('light', 'dark');
-                        $breakpoints = array(
-                            'xxl' => 1921,
-                            'xl' => 1920,
-                            'l' => 1366,
-                            'm' => 1024,
-                            's' => 767,
-                            'xs' => 480
-                        );
-                        $breakpoint_keys = array('general', 'xxl', 'xl', 'l', 'm', 's', 'xs');
-
-                        // Helper function to organize values like in JS
-                        $get_organized_values = function ($sc) use ($styles, $breakpoint_keys) {
-                            $organized_values = array();
-
-                            foreach ($styles as $style) {
-                                if (!isset($sc[$style])) {
-                                    continue;
-                                }
-
-                                $style_data = array_merge(
-                                    $sc[$style]['defaultStyleCard'] ?? array(),
-                                    $sc[$style]['styleCard'] ?? array()
-                                );
-
-                                // Process typography settings
-                                $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'navigation');
-                                $settings = array(
-                                    'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
-                                    'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
-                                    'word-spacing', 'margin-bottom', 'text-indent'
-                                );
-
-                                foreach ($elements as $element) {
-                                    if (!isset($style_data[$element])) {
-                                        continue;
-                                    }
-
-                                    foreach ($settings as $setting) {
-                                        foreach ($breakpoint_keys as $breakpoint) {
-                                            $key = "{$setting}-{$breakpoint}";
-                                            if (isset($style_data[$element][$key])) {
-                                                $organized_values[$style][$element][$breakpoint][$setting] =
-                                                    "var(--maxi-{$style}-{$element}-{$setting}-{$breakpoint})";
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // Process colors
-                                if (isset($style_data['color'])) {
-                                    $organized_values[$style]['color'] = $style_data['color'];
-                                }
-                            }
-
-                            return $organized_values;
-                        };
-
-                        // Get organized values
-                        $organized_values = $get_organized_values($sc);
-                        error_log('Organized values: ' . print_r($organized_values, true));
-
-                        // Helper function to get Maxi block styles
-                        $get_maxi_sc_styles = function ($style, $breakpoint, $prefix) use ($organized_values) {
-                            $response = '';
-
-                            // Text block styles
-                            $text_selectors = array(
-                                "{$prefix} .maxi-{$style}.maxi-block.maxi-text-block",
-                                "{$prefix} .maxi-{$style} .maxi-block.maxi-text-block",
-                                "{$prefix} .maxi-{$style}.maxi-map-block__popup__content",
-                                "{$prefix} .maxi-{$style} .maxi-map-block__popup__content",
-                                "{$prefix} .maxi-{$style} .maxi-pane-block .maxi-pane-block__header"
-                            );
-
-                            $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6');
-                            foreach ($elements as $element) {
-                                if (!isset($organized_values[$style][$element][$breakpoint])) {
-                                    continue;
-                                }
-
-                                $styles_string = '';
-                                foreach ($organized_values[$style][$element][$breakpoint] as $prop => $value) {
-                                    $styles_string .= "{$prop}: {$value};";
-                                }
-
-                                foreach ($text_selectors as $selector) {
-                                    $response .= "{$selector} {$element} {";
-                                    $response .= $styles_string;
-                                    $response .= "}";
-                                }
-
-                                // Add paragraph styles to lists and links
-                                if ($element === 'p') {
-                                    foreach ($text_selectors as $selector) {
-                                        // Add styles for lists
-                                        $response .= "{$selector} li {";
-                                        $response .= $styles_string;
-                                        $response .= "}";
-
-                                        // Add styles for links
-                                        $response .= "{$selector} a {";
-                                        $response .= $styles_string;
-                                        $response .= "}";
-                                    }
-                                }
-                            }
-
-                            // Button block styles
-                            $response .= "{$prefix} .maxi-{$style}.maxi-button-block {";
-                            $response .= "font-family: var(--maxi-{$style}-button-font-family-{$breakpoint});";
-                            $response .= "font-size: var(--maxi-{$style}-button-font-size-{$breakpoint});";
-                            $response .= "background-color: var(--maxi-{$style}-button-background-color);";
-                            $response .= "}";
-
-                            return $response;
-                        };
-
-                        // Helper function to get WP native block styles
-                        $get_wp_native_styles = function ($style, $breakpoint, $prefix) {
-                            $response = '';
-                            $native_prefix = 'wp-block';
-
-                            // Native block text styles
-                            $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6');
-                            foreach ($elements as $element) {
-                                $response .= "{$prefix} .maxi-{$style} .{$native_prefix} {$element} {";
-                                $response .= "font-family: var(--maxi-{$style}-{$element}-font-family-{$breakpoint});";
-                                $response .= "font-size: var(--maxi-{$style}-{$element}-font-size-{$breakpoint});";
-                                $response .= "line-height: var(--maxi-{$style}-{$element}-line-height-{$breakpoint});";
-                                $response .= "}";
-                            }
-
-                            return $response;
-                        };
-
-                        // Helper function for link colors
-                        $get_link_colors = function ($style, $prefix, $color_number) use ($organized_values) {
-                            if (!isset($organized_values[$style]['color'][$color_number])) {
-                                return '';
-                            }
-
-                            $response = '';
-                            $selectors = array(
-                                'link' => "--maxi-{$style}-link-palette",
-                                'link-hover' => "--maxi-{$style}-link-hover-palette",
-                                'link-active' => "--maxi-{$style}-link-active-palette",
-                                'link-visited' => "--maxi-{$style}-link-visited-palette"
-                            );
-
-                            foreach ($selectors as $type => $var) {
-                                $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
-                                $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
-                                $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
-                                $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
-                            }
-
-                            return $response;
-                        };
-
-                        // Process each style (light/dark)
-                        foreach ($styles as $style) {
-                            // Process colors
-                            if (isset($organized_values[$style]['color'])) {
-                                foreach ($organized_values[$style]['color'] as $number => $color) {
-                                    $response .= $get_link_colors($style, $prefix, $number);
-                                }
-                            }
-
-                            // Add media queries for each breakpoint
-                            $add_styles_for_breakpoint = function ($breakpoint = 'general') use ($style, $prefix, $sc, $get_maxi_sc_styles, $get_wp_native_styles, $organized_values) {
-                                $response = '';
-
-                                // Add Maxi block styles
-                                $response .= $get_maxi_sc_styles($style, $breakpoint, $prefix);
-
-                                // Add WP native block styles
-                                $response .= $get_wp_native_styles($style, $breakpoint, $prefix);
-
-                                return $response;
-                            };
-
-                            // Add styles for general breakpoint
-                            $response .= $add_styles_for_breakpoint('general');
-
-                            // Add styles for each breakpoint with media queries
-                            foreach ($breakpoints as $breakpoint => $width) {
-                                $response .= "@media (" . ($breakpoint === 'xxl' ? 'min' : 'max') . "-width: {$width}px) {";
-                                $response .= $add_styles_for_breakpoint($breakpoint);
-                                $response .= "}";
-                            }
-                        }
-
-                        error_log('Generated styles: ' . $response);
-                        return $response;
-                    };
-
-                    // Generate styles string
-                    $styles_string = $get_sc_styles($new_sc);
-
-                    $sc_string = array(
-                        '_maxi_blocks_style_card' => $var_sc_string,
-                        '_maxi_blocks_style_card_preview' => $var_sc_string,
-                        '_maxi_blocks_style_card_styles' => $styles_string,
-                        '_maxi_blocks_style_card_styles_preview' => $styles_string
-                    );
-
-                    // Save sc_string
-                    $wpdb->replace(
-                        "{$wpdb->prefix}maxi_blocks_general",
-                        array(
-                            'id' => 'sc_string',
-                            'object' => serialize($sc_string)
-                        )
-                    );
-
-                    $results['sc'] = [
+                    // Import the template
+                    $import_result = $this->maxi_import_template_parts([$template_data]);
+                    $results['templates'][] = [
+                        'name' => $template['name'],
                         'success' => true,
-                        'message' => __('Style Card imported successfully', 'maxi-blocks'),
-                        'id' => $new_id
+                        'data' => $import_result
                     ];
                 }
             }
 
-            // Process XML content
-            if (!empty($import_data['contentXML'])) {
-                $xml_content = $fetch_remote_content($import_data['contentXML']);
-                if ($xml_content) {
-                    // Create a temporary file to store the XML
-                    $temp_file = wp_tempnam('maxi_import_');
-                    if ($temp_file) {
-                        file_put_contents($temp_file, $xml_content);
+            // Process pages
+            if (!empty($import_data['pages'])) {
+                $results['pages'] = [];
 
-                        // Parse XML using WordPress importer
-                        if (file_exists(ABSPATH . 'wp-admin/includes/import.php')) {
-                            require_once ABSPATH . 'wp-admin/includes/import.php';
+                foreach ($import_data['pages'] as $page) {
+                    error_log('Processing page: ' . print_r($page, true));
 
-                            if (!class_exists('WP_Importer')) {
-                                $class_wp_importer = ABSPATH . 'wp-admin/includes/class-wp-importer.php';
-                                if (file_exists($class_wp_importer)) {
-                                    require_once $class_wp_importer;
-                                }
-                            }
-
-                            $results['xml'] = simplexml_load_string($xml_content);
-                        }
-
-                        // Clean up
-                        unlink($temp_file);
+                    // Fetch page content from URL
+                    $page_content = $fetch_remote_content($page['content']);
+                    if (!$page_content) {
+                        $results['pages'][] = [
+                            'name' => $page['name'],
+                            'success' => false,
+                            'message' => sprintf(__('Failed to fetch page content from %s', 'maxi-blocks'), $page['content'])
+                        ];
+                        continue;
                     }
+
+                    // Parse the fetched content
+                    $page_data = json_decode($page_content, true);
+                    if (!$page_data) {
+                        $results['pages'][] = [
+                            'name' => $page['name'],
+                            'success' => false,
+                            'message' => __('Invalid page JSON content', 'maxi-blocks')
+                        ];
+                        continue;
+                    }
+
+                    // Import the page
+                    $import_result = $this->maxi_import_pages([$page_data]);
+                    $results['pages'][] = [
+                        'name' => $page['name'],
+                        'success' => true,
+                        'data' => $import_result
+                    ];
                 }
             }
 
@@ -1712,6 +1359,292 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $results;
+        }
+
+
+        /**
+         * Import template parts
+         *
+         * @param array $template_data Template part data
+         * @return array Results of the import
+         */
+        private function maxi_import_template_parts($template_data)
+        {
+            $results = [];
+            global $wpdb;
+            error_log('Starting template part import with data: ' . print_r($template_data, true));
+
+            // Get current theme
+            $current_theme = wp_get_theme();
+            $theme_slug = $current_theme->get_stylesheet();
+            error_log('Current theme: ' . $theme_slug);
+
+            foreach ($template_data as $template_name => $template_part_data) {
+                error_log('Processing template part: ' . $template_name);
+                // Parse the template data
+                $content = $template_part_data['content'] ?? '';
+                $styles = $template_part_data['styles'] ?? [];
+                $entity_type = $template_part_data['entityType'] ?? 'template-part';
+                $entity_title = $template_part_data['entityTitle'] ?? $template_name;
+                $entity_slug = $template_part_data['entitySlug'] ?? sanitize_title($entity_title);
+                $custom_data = $template_part_data['customData'] ?? [];
+                $fonts = $template_part_data['fonts'] ?? [];
+
+                error_log('Template part details - Title: ' . $entity_title . ', Slug: ' . $entity_slug);
+
+                // Set up the template part area
+                $area = '';
+                if (strpos(strtolower($entity_title), 'header') !== false) {
+                    $area = 'header';
+                } elseif (strpos(strtolower($entity_title), 'footer') !== false) {
+                    $area = 'footer';
+                } else {
+                    $area = 'uncategorized';
+                }
+                error_log('Template part area: ' . $area);
+
+                // Check if template part exists
+                $existing_template = get_block_template(
+                    $theme_slug . '//' . $entity_slug,
+                    'wp_template_part'
+                );
+                error_log('Existing template check: ' . ($existing_template ? 'Found' : 'Not found'));
+                error_log('Existing template data: ' . print_r($existing_template, true));
+
+                // Check if it exists in database by simple slug
+                $existing_post = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT ID FROM {$wpdb->posts}
+                        WHERE post_type = 'wp_template_part'
+                        AND post_name = %s
+                        AND post_status = 'publish'",
+                        $entity_slug // Just 'header' instead of 'twentytwentyfive//header'
+                    )
+                );
+                error_log('Database check result by slug: ' . print_r($existing_post, true));
+
+                $template_content = array(
+                    'post_name' => $entity_slug,
+                    'post_title' => $entity_title,
+                    'post_content' => wp_slash($content),
+                    'post_status' => 'publish',
+                    'post_type' => 'wp_template_part',
+                    'post_excerpt' => '',
+                    'tax_input' => array(
+                        'wp_theme' => array($theme_slug),
+                        'wp_template_part_area' => array($area)
+                    ),
+                    'meta_input' => array(
+                        'origin' => 'theme',
+                        'theme' => $theme_slug,
+                        'area' => $area,
+                        'is_custom' => true
+                    )
+                );
+                error_log('Template content prepared: ' . print_r($template_content, true));
+
+                if ($existing_template) {
+                    error_log('Found template in theme files');
+
+                    if ($existing_post) {
+                        error_log('Updating existing template part in database with ID: ' . $existing_post->ID);
+                        $template_content['ID'] = $existing_post->ID;
+                        $post_id = wp_update_post($template_content);
+                    } else {
+                        error_log('Creating new template part in database');
+                        $post_id = wp_insert_post($template_content);
+
+                        if ($post_id && !is_wp_error($post_id)) {
+                            error_log('Setting taxonomies for template part ID: ' . $post_id);
+                            wp_set_object_terms($post_id, $area, 'wp_template_part_area');
+                            wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
+                        }
+                    }
+                } else {
+                    error_log('Creating new template part');
+                    $post_id = wp_insert_post($template_content);
+
+                    if ($post_id && !is_wp_error($post_id)) {
+                        error_log('Setting taxonomies for new template part ID: ' . $post_id);
+                        wp_set_object_terms($post_id, $area, 'wp_template_part_area');
+                        wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
+                    }
+                }
+
+                if (is_wp_error($post_id)) {
+                    error_log('Error creating/updating template part: ' . $post_id->get_error_message());
+                    $results[$template_name] = [
+                        'success' => false,
+                        'message' => $post_id->get_error_message()
+                    ];
+                    continue;
+                }
+                error_log('Template part created/updated successfully with ID: ' . $post_id);
+
+                // Import styles into DB
+                error_log('Importing styles');
+                $this->import_styles_to_db($styles);
+
+                // Import custom data
+                error_log('Importing custom data');
+                $this->import_custom_data_to_db($custom_data);
+
+                // Import fonts
+                error_log('Importing fonts');
+                $this->import_fonts_to_db($fonts);
+
+                // Clear template parts cache
+                wp_cache_delete('wp_template_part_' . $theme_slug);
+                wp_cache_delete('wp_template_part_area_' . $area);
+                error_log('Cache cleared');
+
+                $results[$template_name] = [
+                    'success' => true,
+                    'post_id' => $post_id,
+                    'message' => sprintf(__('Successfully imported %s template part', 'maxi-blocks'), $entity_title)
+                ];
+                error_log('Template part import completed successfully');
+            }
+
+            return $results;
+        }
+
+        /**
+         * Import styles into database
+         *
+         * @param array $styles Array of styles with block IDs as keys
+         * @return void
+         */
+        private function import_styles_to_db($styles)
+        {
+            global $wpdb;
+
+            foreach ($styles as $block_id => $style_data) {
+                // Check if block_id exists
+                $existing_style = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                        $block_id
+                    )
+                );
+
+                if ($existing_style) {
+                    // Update existing record, keeping current css_value as prev_css_value
+                    $wpdb->update(
+                        $wpdb->prefix . 'maxi_blocks_styles_blocks',
+                        array(
+                            'prev_css_value' => $existing_style->css_value,
+                            'css_value' => $style_data,
+                        ),
+                        array('block_style_id' => $block_id),
+                        array('%s', '%s'),
+                        array('%s')
+                    );
+                } else {
+                    // Insert new record
+                    $wpdb->insert(
+                        $wpdb->prefix . 'maxi_blocks_styles_blocks',
+                        array(
+                            'block_style_id' => $block_id,
+                            'css_value' => $style_data,
+                            'prev_css_value' => $style_data,
+                        ),
+                        array('%s', '%s', '%s')
+                    );
+                }
+            }
+        }
+
+        /**
+         * Import custom data into database
+         *
+         * @param array $custom_data Array of custom data with block IDs as keys
+         * @return void
+         */
+        private function import_custom_data_to_db($custom_data)
+        {
+            global $wpdb;
+
+            foreach ($custom_data as $block_id => $block_custom_data) {
+                // Check if block_id exists
+                $existing_custom_data = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                        $block_id
+                    )
+                );
+
+                if ($existing_custom_data) {
+                    // Update existing record, keeping current custom_data as prev_custom_data
+                    $wpdb->update(
+                        $wpdb->prefix . 'maxi_blocks_custom_data_blocks',
+                        array(
+                            'prev_custom_data_value' => $existing_custom_data->custom_data_value,
+                            'custom_data_value' => $block_custom_data,
+                        ),
+                        array('block_style_id' => $block_id),
+                        array('%s', '%s'),
+                        array('%s')
+                    );
+                } else {
+                    // Insert new record
+                    $wpdb->insert(
+                        $wpdb->prefix . 'maxi_blocks_custom_data_blocks',
+                        array(
+                            'block_style_id' => $block_id,
+                            'custom_data_value' => $block_custom_data,
+                            'prev_custom_data_value' => $block_custom_data,
+                        ),
+                        array('%s', '%s', '%s')
+                    );
+                }
+            }
+        }
+
+        /**
+         * Import fonts into database
+         *
+         * @param array $fonts Array of fonts with block IDs as keys
+         * @return void
+         */
+        private function import_fonts_to_db($fonts)
+        {
+            global $wpdb;
+
+            foreach ($fonts as $block_id => $font_data) {
+                // Check if block_id exists
+                $existing_fonts = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                        $block_id
+                    )
+                );
+
+                if ($existing_fonts) {
+                    // Update existing record, keeping current fonts as prev_fonts
+                    $wpdb->update(
+                        $wpdb->prefix . 'maxi_blocks_styles_blocks',
+                        array(
+                            'prev_fonts_value' => $existing_fonts->fonts_value ?? $font_data,
+                            'fonts_value' => $font_data,
+                        ),
+                        array('block_style_id' => $block_id),
+                        array('%s', '%s'),
+                        array('%s')
+                    );
+                } else {
+                    // Insert new record
+                    $wpdb->insert(
+                        $wpdb->prefix . 'maxi_blocks_styles_blocks',
+                        array(
+                            'block_style_id' => $block_id,
+                            'fonts_value' => $font_data,
+                            'prev_fonts_value' => $font_data,
+                        ),
+                        array('%s', '%s', '%s')
+                    );
+                }
+            }
         }
 
         /**

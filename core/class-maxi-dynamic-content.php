@@ -920,15 +920,21 @@ class MaxiBlocks_DynamicContent
             $dc_link_target = $attributes['dc-link-target'];
             $author_id = $post->ID;
             if (!empty($post) && isset($author_id)) {
-                if ($dc_link_target === 'author_email') {
-                    $link = $this->xor_obfuscate_email(sanitize_email(get_the_author_meta('user_email', $author_id)));
-                } elseif ($dc_link_target === 'customer_email') {
-                    $link = $this->xor_obfuscate_email(sanitize_email(get_user_meta($author_id, 'billing_email', true)));
-                } elseif ($dc_link_target === 'author_site') {
-                    $link = get_the_author_meta('user_url', $author_id);
-                } else {
-                    $link = get_author_posts_url($author_id);
-                }
+				switch ($dc_link_target) {
+					case 'author_email':
+						$email = sanitize_email(get_the_author_meta('user_email', $author_id));
+						$link = $this->xor_obfuscate_email($email);
+						break;
+					case 'customer_email':
+						$email = sanitize_email(get_user_meta($author_id, 'billing_email', true));
+						$link = $this->xor_obfuscate_email($email);
+						break;
+					case 'author_site':
+						$link = get_the_author_meta('user_url', $author_id);
+						break;
+					default:
+						$link = get_author_posts_url($author_id);
+				}
             }
         } elseif (
             array_key_exists('dc-type', $attributes) &&

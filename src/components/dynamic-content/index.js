@@ -461,32 +461,31 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{['users', 'customers'].includes(type) &&
-								relation === 'by-id' && (
-									<SelectControl
-										__nextHasNoMarginBottom
-										label={__('Author id', 'maxi-blocks')}
-										value={author}
-										options={postAuthorOptions}
-										newStyle
-										onChange={value =>
-											changeProps({
-												'dc-author': Number(value),
-											})
-										}
-										onReset={() =>
-											changeProps({
-												'dc-author':
-													getDefaultAttribute(
-														'dc-author'
-													),
-											})
-										}
-									/>
-								)}
+							{['users'].includes(type) && relation === 'by-id' && (
+								<SelectControl
+									__nextHasNoMarginBottom
+									label={__('Author id', 'maxi-blocks')}
+									value={author}
+									options={postAuthorOptions}
+									newStyle
+									onChange={value =>
+										changeProps({
+											'dc-author': Number(value),
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-author':
+												getDefaultAttribute(
+													'dc-author'
+												),
+										})
+									}
+								/>
+							)}
 							{((relation !== 'current-archive' &&
 								relationTypes.includes(type) &&
-								!['users', 'customers'].includes(type) &&
+								!['users'].includes(type) &&
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id')) ||
 								relation.includes('custom-taxonomy')) && (

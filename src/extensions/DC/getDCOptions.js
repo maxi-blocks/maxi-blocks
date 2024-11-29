@@ -62,9 +62,13 @@ wp.domReady(() => {
 	clearIdOptionsCache();
 });
 
-const fetchUsers = async () => {
+const fetchUsers = async type => {
 	const { getUsers } = resolveSelect(coreStore);
-	const users = await getUsers();
+	let users = await getUsers();
+	if (type === 'customers') {
+		users = users?.filter(user => user?.roles?.includes('customer'));
+	}
+
 	return users ? users.map(({ id, name }) => ({ id, name })) : null;
 };
 
@@ -113,7 +117,7 @@ export const getIdOptions = async (
 	) {
 		data = getCachedData('users');
 		if (!data) {
-			data = await fetchUsers();
+			data = await fetchUsers(type);
 			setCachedData('users', data);
 		}
 	} else if (

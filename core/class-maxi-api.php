@@ -1176,11 +1176,9 @@ if (!class_exists('MaxiBlocks_API')):
 
                     // Parse imported SC (double decode as it's a JSON string within a string)
                     $imported_sc = json_decode($sc_content, true);
-                    error_log('Imported SC structure: ' . print_r($imported_sc, true));
 
                     // Deep merge default with imported
                     $new_sc = array_replace_recursive($default_maxi_sc, $imported_sc);
-                    error_log('Merged SC structure: ' . print_r($new_sc, true));
 
                     // Generate new SC ID
                     $new_id = 'sc_' . time();
@@ -1209,7 +1207,6 @@ if (!class_exists('MaxiBlocks_API')):
                         )
                     );
 
-                    // Generate sc_string from the active card
                     // Create variables object first
                     $get_sc_variables_object = function ($sc) {
                         $response = array();
@@ -1241,45 +1238,46 @@ if (!class_exists('MaxiBlocks_API')):
                                 $sc[$style]['styleCard'] ?? array()
                             );
 
-                            if ($style_data) {
-                                foreach ($elements as $element) {
-                                    if (isset($style_data[$element])) {
-                                        foreach ($settings as $setting) {
-                                            foreach ($breakpoints as $breakpoint) {
-                                                $key = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
-                                                $value = $style_data[$element][$setting.'-'.$breakpoint] ?? null;
+                            // Process each element
+                            foreach ($elements as $element) {
+                                if (!isset($style_data[$element])) {
+                                    continue;
+                                }
 
-                                                // Handle font-family quotes
-                                                if ($setting === 'font-family' && !empty($value)) {
-                                                    $value = "\"{$value}\"";
-                                                }
+                                // Process each setting
+                                foreach ($settings as $setting) {
+                                    foreach ($breakpoints as $breakpoint) {
+                                        $key = "{$setting}-{$breakpoint}";
+                                        $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
 
-                                                // Handle padding units
-                                                if (strpos($setting, 'padding') === 0 && $value !== null) {
-                                                    $unit = $style_data[$element][$setting.'-unit-'.$breakpoint] ?? 'px';
-                                                    $value .= $unit;
-                                                }
+                                        if (isset($style_data[$element][$key])) {
+                                            $value = $style_data[$element][$key];
 
-                                                if ($value !== null && $value !== '') {
-                                                    $response[$key] = $value;
+                                            // Add units if needed
+                                            if ($setting === 'font-family') {
+                                                $value = "\"{$value}\"";
+                                            } elseif (in_array($setting, array('font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent'))) {
+                                                if (is_numeric($value)) {
+                                                    $value .= 'px';
                                                 }
                                             }
+
+                                            $response[$var_name] = $value;
                                         }
                                     }
                                 }
+                            }
 
-                                // Handle colors
-                                if (isset($style_data['color'])) {
-                                    for ($i = 1; $i <= 8; $i++) {
-                                        if (isset($style_data['color'][$i])) {
-                                            $response["--maxi-{$style}-color-{$i}"] = $style_data['color'][$i];
-                                        }
+                            // Process colors
+                            if (isset($style_data['color'])) {
+                                for ($i = 1; $i <= 8; $i++) {
+                                    if (isset($style_data['color'][$i])) {
+                                        $response["--maxi-{$style}-color-{$i}"] = $style_data['color'][$i];
                                     }
                                 }
                             }
                         }
 
-                        error_log('Generated variables: ' . print_r($response, true));
                         return $response;
                     };
 
@@ -1298,12 +1296,199 @@ if (!class_exists('MaxiBlocks_API')):
                     // Create variables object and convert to CSS string
                     $variables_object = $get_sc_variables_object($new_sc);
                     $var_sc_string = $create_sc_style_string($variables_object);
+                    error_log('Generated SC string: ' . $var_sc_string);
+
+                    // Create styles similar to getSCStyles.js
+                    $get_sc_styles = function ($sc) {
+                        $response = '';
+                        $prefix = 'body.maxi-blocks--active';
+                        $styles = array('light', 'dark');
+                        $breakpoints = array(
+                            'xxl' => 1921,
+                            'xl' => 1920,
+                            'l' => 1366,
+                            'm' => 1024,
+                            's' => 767,
+                            'xs' => 480
+                        );
+                        $breakpoint_keys = array('general', 'xxl', 'xl', 'l', 'm', 's', 'xs');
+
+                        // Helper function to organize values like in JS
+                        $get_organized_values = function ($sc) use ($styles, $breakpoint_keys) {
+                            $organized_values = array();
+
+                            foreach ($styles as $style) {
+                                if (!isset($sc[$style])) {
+                                    continue;
+                                }
+
+                                $style_data = array_merge(
+                                    $sc[$style]['defaultStyleCard'] ?? array(),
+                                    $sc[$style]['styleCard'] ?? array()
+                                );
+
+                                // Process typography settings
+                                $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'navigation');
+                                $settings = array(
+                                    'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
+                                    'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
+                                    'word-spacing', 'margin-bottom', 'text-indent'
+                                );
+
+                                foreach ($elements as $element) {
+                                    if (!isset($style_data[$element])) {
+                                        continue;
+                                    }
+
+                                    foreach ($settings as $setting) {
+                                        foreach ($breakpoint_keys as $breakpoint) {
+                                            $key = "{$setting}-{$breakpoint}";
+                                            if (isset($style_data[$element][$key])) {
+                                                $organized_values[$style][$element][$breakpoint][$setting] =
+                                                    "var(--maxi-{$style}-{$element}-{$setting}-{$breakpoint})";
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Process colors
+                                if (isset($style_data['color'])) {
+                                    $organized_values[$style]['color'] = $style_data['color'];
+                                }
+                            }
+
+                            return $organized_values;
+                        };
+
+                        // Get organized values
+                        $organized_values = $get_organized_values($sc);
+                        error_log('Organized values: ' . print_r($organized_values, true));
+
+                        // Helper function to get Maxi block styles
+                        $get_maxi_sc_styles = function ($style, $breakpoint, $prefix) use ($organized_values) {
+                            $response = '';
+
+                            // Text block styles
+                            $text_selectors = array(
+                                "{$prefix} .maxi-{$style}.maxi-block.maxi-text-block",
+                                "{$prefix} .maxi-{$style} .maxi-block.maxi-text-block",
+                                "{$prefix} .maxi-{$style}.maxi-map-block__popup__content",
+                                "{$prefix} .maxi-{$style} .maxi-map-block__popup__content",
+                                "{$prefix} .maxi-{$style} .maxi-pane-block .maxi-pane-block__header"
+                            );
+
+                            $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6');
+                            foreach ($elements as $element) {
+                                if (!isset($organized_values[$style][$element][$breakpoint])) {
+                                    continue;
+                                }
+
+                                foreach ($text_selectors as $selector) {
+                                    $response .= "{$selector} {$element} {";
+                                    foreach ($organized_values[$style][$element][$breakpoint] as $prop => $value) {
+                                        $response .= "{$prop}: {$value};";
+                                    }
+                                    $response .= "}";
+                                }
+                            }
+
+                            // Button block styles
+                            $response .= "{$prefix} .maxi-{$style}.maxi-button-block {";
+                            $response .= "font-family: var(--maxi-{$style}-button-font-family-{$breakpoint});";
+                            $response .= "font-size: var(--maxi-{$style}-button-font-size-{$breakpoint});";
+                            $response .= "background-color: var(--maxi-{$style}-button-background-color);";
+                            $response .= "}";
+
+                            return $response;
+                        };
+
+                        // Helper function to get WP native block styles
+                        $get_wp_native_styles = function ($style, $breakpoint, $prefix) {
+                            $response = '';
+                            $native_prefix = 'wp-block';
+
+                            // Native block text styles
+                            $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6');
+                            foreach ($elements as $element) {
+                                $response .= "{$prefix} .maxi-{$style} .{$native_prefix} {$element} {";
+                                $response .= "font-family: var(--maxi-{$style}-{$element}-font-family-{$breakpoint});";
+                                $response .= "font-size: var(--maxi-{$style}-{$element}-font-size-{$breakpoint});";
+                                $response .= "line-height: var(--maxi-{$style}-{$element}-line-height-{$breakpoint});";
+                                $response .= "}";
+                            }
+
+                            return $response;
+                        };
+
+                        // Helper function for link colors
+                        $get_link_colors = function ($style, $prefix, $color_number) use ($organized_values) {
+                            if (!isset($organized_values[$style]['color'][$color_number])) {
+                                return '';
+                            }
+
+                            $response = '';
+                            $selectors = array(
+                                'link' => "--maxi-{$style}-link-palette",
+                                'link-hover' => "--maxi-{$style}-link-hover-palette",
+                                'link-active' => "--maxi-{$style}-link-active-palette",
+                                'link-visited' => "--maxi-{$style}-link-visited-palette"
+                            );
+
+                            foreach ($selectors as $type => $var) {
+                                $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
+                                $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
+                                $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
+                                $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
+                            }
+
+                            return $response;
+                        };
+
+                        // Process each style (light/dark)
+                        foreach ($styles as $style) {
+                            // Process colors
+                            if (isset($organized_values[$style]['color'])) {
+                                foreach ($organized_values[$style]['color'] as $number => $color) {
+                                    $response .= $get_link_colors($style, $prefix, $number);
+                                }
+                            }
+
+                            // Add media queries for each breakpoint
+                            $add_styles_for_breakpoint = function ($breakpoint = 'general') use ($style, $prefix, $sc, $get_maxi_sc_styles, $get_wp_native_styles, $organized_values) {
+                                $response = '';
+
+                                // Add Maxi block styles
+                                $response .= $get_maxi_sc_styles($style, $breakpoint, $prefix);
+
+                                // Add WP native block styles
+                                $response .= $get_wp_native_styles($style, $breakpoint, $prefix);
+
+                                return $response;
+                            };
+
+                            // Add styles for general breakpoint
+                            $response .= $add_styles_for_breakpoint('general');
+
+                            // Add styles for each breakpoint with media queries
+                            foreach ($breakpoints as $breakpoint => $width) {
+                                $response .= "@media (" . ($breakpoint === 'xxl' ? 'min' : 'max') . "-width: {$width}px) {";
+                                $response .= $add_styles_for_breakpoint($breakpoint);
+                                $response .= "}";
+                            }
+                        }
+
+                        error_log('Generated styles: ' . $response);
+                        return $response;
+                    };
+
+                    // Generate styles string
+                    $styles_string = $get_sc_styles($new_sc);
 
                     $sc_string = array(
                         '_maxi_blocks_style_card' => $var_sc_string,
                         '_maxi_blocks_style_card_preview' => $var_sc_string,
-                        '_maxi_blocks_style_card_styles' => $var_sc_string,
-                        '_maxi_blocks_style_card_styles_preview' => $var_sc_string
+                        '_maxi_blocks_style_card_styles' => $styles_string,
+                        '_maxi_blocks_style_card_styles_preview' => $styles_string
                     );
 
                     // Save sc_string

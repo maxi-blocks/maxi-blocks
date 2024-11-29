@@ -1383,12 +1383,30 @@ if (!class_exists('MaxiBlocks_API')):
                                     continue;
                                 }
 
+                                $styles_string = '';
+                                foreach ($organized_values[$style][$element][$breakpoint] as $prop => $value) {
+                                    $styles_string .= "{$prop}: {$value};";
+                                }
+
                                 foreach ($text_selectors as $selector) {
                                     $response .= "{$selector} {$element} {";
-                                    foreach ($organized_values[$style][$element][$breakpoint] as $prop => $value) {
-                                        $response .= "{$prop}: {$value};";
-                                    }
+                                    $response .= $styles_string;
                                     $response .= "}";
+                                }
+
+                                // Add paragraph styles to lists and links
+                                if ($element === 'p') {
+                                    foreach ($text_selectors as $selector) {
+                                        // Add styles for lists
+                                        $response .= "{$selector} li {";
+                                        $response .= $styles_string;
+                                        $response .= "}";
+
+                                        // Add styles for links
+                                        $response .= "{$selector} a {";
+                                        $response .= $styles_string;
+                                        $response .= "}";
+                                    }
                                 }
                             }
 

@@ -1241,6 +1241,11 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
 
+            // Save current starter site name
+            if (!empty($import_data['title'])) {
+                update_option('maxiblocks_current_starter_site', $import_data['title']);
+            }
+
             return rest_ensure_response([
                 'success' => true,
                 'message' => 'Import data processed',

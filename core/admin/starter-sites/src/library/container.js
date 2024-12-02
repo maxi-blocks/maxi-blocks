@@ -310,7 +310,9 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns }) => {
 									className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-import'
 									onClick={handleImportClick}
 								>
-									{__('Import', 'maxi-blocks')}
+									{title === window.maxiStarterSites?.currentStarterSite
+										? __('Reset', 'maxi-blocks')
+										: __('Import', 'maxi-blocks')}
 								</button>
 							</div>
 

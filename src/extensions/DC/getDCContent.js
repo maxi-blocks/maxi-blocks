@@ -190,9 +190,10 @@ const getDCContent = async (dataRequest, clientId) => {
 	} else if (field === 'author') {
 		const { getUsers } = resolveSelect('core');
 		const { postTaxonomyLinksStatus, subField } = dataRequest;
+		const userField = subField ?? 'name';
 		const user = await getUsers({ include: contentValue });
 		contentValue = getItemLinkContent(
-			user[0]?.[subField] || user[0]?.name,
+			user[0]?.[userField],
 			postTaxonomyLinksStatus
 		);
 	}

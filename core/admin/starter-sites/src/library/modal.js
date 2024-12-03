@@ -112,6 +112,8 @@ const MaxiModal = props => {
 								templates={templates}
 								pages={pages}
 								patterns={patterns}
+								sc={sc}
+								contentXML={contentXML}
 							/>
 						</div>
 					</div>

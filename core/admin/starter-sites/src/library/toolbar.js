@@ -44,7 +44,6 @@ const LibraryToolbar = props => {
 	} = props;
 
 	const handleClose = () => {
-		console.log('Toolbar close clicked');
 		if (onRequestClose) {
 			onRequestClose();
 		}

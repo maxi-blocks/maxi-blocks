@@ -221,7 +221,7 @@ const typesenseInstantsearchAdapter = params => {
 const searchClientStarterSites = (() => {
 	try {
 		return typesenseInstantsearchAdapter(
-			'name, category.lvl0, category.lvl1, cost'
+			'post_title, starter_sites_category, cost'
 		).searchClient;
 	} catch (error) {
 		console.error('Typesense initialization error:', error);
@@ -238,20 +238,20 @@ const starterSitesResults = ({ hit }) => {
 		<MasonryItem
 			type='starter-sites'
 			target='starter-sites'
-			key={`maxi-cloud-masonry__item-${hit.id}`}
-			demoUrl={hit.live_demo}
-			previewIMG={hit.screenshot}
+			key={`maxi-cloud-masonry__item-${hit.post_id}`}
+			demoUrl={hit.live_demo_url}
+			previewIMG={hit.screenshot_url}
 			cost={hit.cost?.[0]}
 			isPro={hit.cost?.[0] === 'Pro'}
-			taxonomies={hit.category?.[0]}
-			serial={hit.name}
-			title={hit.name}
+			taxonomies={hit.starter_sites_category}
+			serial={hit.post_id}
+			title={hit.post_title}
 			className={wrapClassName}
 		/>
 	);
 };
 
-const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns }) => {
+const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, contentXML }) => {
 	const firstPage = pages?.[0];
 	const firstTemplate = templates?.[0];
 	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
@@ -275,6 +275,8 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns }) => {
 					templates={templates}
 					pages={pages}
 					patterns={patterns}
+					sc={sc}
+					contentXML={contentXML}
 					onRequestClose={handleImportClose}
 				/>
 			) : (
@@ -426,6 +428,8 @@ const LibraryContainer = props => {
 						templates={templates}
 						pages={pages}
 						patterns={patterns}
+						sc={sc}
+						contentXML={contentXML}
 					/>
 				</div>
 			)}
@@ -433,7 +437,7 @@ const LibraryContainer = props => {
 			{type === 'starter-sites' && (
 				<div className='maxi-cloud-container__patterns'>
 					<InstantSearch
-						indexName='starter_sites'
+						indexName='starter_site'
 						searchClient={searchClientStarterSites}
 					>
 						<Configure hitsPerPage={20} />
@@ -452,7 +456,7 @@ const LibraryContainer = props => {
 								}}
 							/>
 							<CustomHierarchicalMenu
-								attributes={['category.lvl0', 'category.lvl1']}
+								attributes={['starter_sites_category' ]}
 								limit={20}
 							/>
 							<CustomClearRefinements />

@@ -154,8 +154,6 @@ const MaxiImportPopUp = ({
 		}
 
 		// Send to API endpoint
-		console.log('Using API URL:', maxiStarterSites.apiRoot);
-
 		apiFetch({
 			url: `${maxiStarterSites.apiRoot}maxi-blocks/v1.0/import-starter-site`,
 			method: 'POST',

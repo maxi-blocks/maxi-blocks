@@ -20,6 +20,7 @@ const MasonryItem = (props) => {
         target,
         isPro,
         serial,
+		title,
         previewIMG,
         demoUrl,
         cost,
@@ -31,17 +32,15 @@ const MasonryItem = (props) => {
 		contentXML,
     } = props;
 
-    const cardSerial = serial.toLowerCase().replace(/\s+/g, '-');
-
     const masonryCardClasses = classnames(
         'maxi-cloud-masonry-card',
         `maxi-cloud-masonry-card__${target}`,
         type === 'starter-sites' &&
-            `maxi-cloud-masonry-card__patterns ${cardSerial} maxi-open-preview`,
+            `maxi-cloud-masonry-card__patterns ${serial} maxi-open-preview`,
         className
     );
 
-    const masonryCardId = `maxi-cloud-masonry-card__pattern-${cardSerial}`;
+    const masonryCardId = `maxi-cloud-masonry-card__pattern-${serial}`;
 
     const starterSitesContent = () => {
         return (
@@ -49,14 +48,14 @@ const MasonryItem = (props) => {
                 <div className='maxi-cloud-masonry-card__container maxi-open-preview'>
                     <div className='maxi-cloud-masonry-card__container__top-bar maxi-open-preview'>
                         <div className='maxi-cloud-masonry__serial-tag maxi-open-preview'>
-                            {serial}
+                            {title}
                         </div>
                     </div>
                 </div>
                 <div className='maxi-cloud-masonry-card__image maxi-open-preview'>
                     <img
                         src={previewIMG}
-                        alt={`Preview for ${serial}`}
+                        alt={`Preview for ${title}`}
                         className='maxi-cloud-masonry-card__image-picture maxi-open-preview'
                     />
                 </div>
@@ -66,8 +65,8 @@ const MasonryItem = (props) => {
                             <MaxiModal
                                 type='preview'
                                 url={demoUrl}
-                                title={serial}
-                                serial={cardSerial}
+                                title={title}
+                                serial={serial}
                                 cost={cost}
                                 cardId={masonryCardId}
                                 templates={templates}

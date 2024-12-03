@@ -19,19 +19,19 @@ const Hit = ({ hit, type }) => {
             <MasonryItem
                 type='starter-sites'
                 target='starter-sites'
-                key={`maxi-cloud-masonry__item-${hit.id}`}
-                demoUrl={hit.live_demo}
-                previewIMG={hit.screenshot}
+                key={`maxi-cloud-masonry__item-${hit.post_id}`}
+                demoUrl={hit.live_demo_url}
+                previewIMG={hit.screenshot_url}
                 cost={hit.cost?.[0]}
                 isPro={hit.cost?.[0] === 'Pro'}
-                taxonomies={hit.category?.[0]}
-                serial={hit.name}
-                title={hit.name}
+                taxonomies={hit.starter_sites_category}
+                serial={hit.post_id}
+                title={hit.post_title}
                 templates={hit.templates}
                 pages={hit.pages}
                 patterns={hit.patterns}
-				sc={hit.sc}
-				contentXML={hit.content_xml}
+				sc={hit.sc_url}
+				contentXML={hit.content_xml_url}
                 className={wrapClassName}
             />
         );

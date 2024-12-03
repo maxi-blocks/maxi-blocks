@@ -46,6 +46,24 @@ const getTemplateDescription = name => {
 	return '';
 };
 
+// Add CSS for the loading animation
+const loadingButtonStyles = `
+	@keyframes rotate {
+		100% { transform: rotate(360deg); }
+	}
+	.maxi-cloud-container__import-popup_button-loading::after {
+		content: '';
+		display: inline-block;
+		width: 12px;
+		height: 12px;
+		margin-left: 10px;
+		border: 2px solid #fff;
+		border-radius: 50%;
+		border-right-color: transparent;
+		animation: rotate 1s linear infinite;
+	}
+`;
+
 const MaxiImportPopUp = ({
 	url,
 	title,
@@ -81,6 +99,8 @@ const MaxiImportPopUp = ({
 		return initialState;
 	});
 
+	const [importStatus, setImportStatus] = useState('idle'); // 'idle' | 'loading' | 'done'
+
 	const handleToggleChange = (type, name, value) => {
 		if (type === 'sc' || type === 'contentXML') {
 			setSelectedItems(prevState => ({
@@ -99,6 +119,8 @@ const MaxiImportPopUp = ({
 	};
 
 	const onClickImport = selectedItems => {
+		setImportStatus('loading');
+
 		// Create object to store selected items with their content
 		const importData = {};
 
@@ -163,16 +185,19 @@ const MaxiImportPopUp = ({
 			data: importData,
 		}).then(response => {
 			console.log('Import response:', response);
+			setImportStatus('done');
 		}).catch(error => {
 			console.error('Import error full details:', error);
 			console.error('Error status:', error.status);
 			console.error('Error message:', error.message);
 			console.error('Error data:', error.data);
+			setImportStatus('idle');
 		});
 	};
 
 	return (
 		<div className='maxi-cloud-container__import-popup_main-wrap'>
+			<style>{loadingButtonStyles}</style>
 			<div className='maxi-cloud-container__import-popup_wrap'>
 				<div className='maxi-cloud-container__import-popup_warning'>
 					<h2>
@@ -330,10 +355,17 @@ const MaxiImportPopUp = ({
 				<div className='maxi-cloud-container__import-popup_footer'>
 					<button
 						type='button'
-						className='maxi-cloud-container__import-popup_button maxi-cloud-container__import-popup_button-import'
+						className={`maxi-cloud-container__import-popup_button maxi-cloud-container__import-popup_button-import ${
+							importStatus === 'loading' ? 'maxi-cloud-container__import-popup_button-loading' : ''
+						}`}
 						onClick={() => onClickImport(selectedItems)}
+						disabled={importStatus === 'loading' || importStatus === 'done'}
 					>
-						{__('Import', 'maxi-blocks')}
+						{importStatus === 'loading'
+							? __('Importing...', 'maxi-blocks')
+							: importStatus === 'done'
+							? __('Done', 'maxi-blocks')
+							: __('Import', 'maxi-blocks')}
 					</button>
 				</div>
 			</div>

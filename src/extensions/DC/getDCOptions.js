@@ -69,7 +69,9 @@ const fetchUsers = async type => {
 		users = users?.filter(user => user?.roles?.includes('customer'));
 	}
 
-	return users ? users.map(({ id, name }) => ({ id, name })) : null;
+	return users && users.length
+		? users.map(({ id, name }) => ({ id, name }))
+		: null;
 };
 
 const MAX_CACHE_AGE = 5 * 60 * 1000; // 5 minutes in milliseconds

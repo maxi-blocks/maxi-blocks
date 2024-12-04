@@ -22,10 +22,30 @@ const getProductsLink = async (dataRequest, data) => {
 	return productData?.permalink;
 };
 
-const getAuthorLink = async authorId => {
+const getPostAuthorLink = async authorId => {
 	const { getUsers } = resolveSelect('core');
 	const user = await getUsers({ include: authorId });
 	return user?.[0]?.link;
+};
+
+const getUserLink = (dataRequest, data) => {
+	if (dataRequest?.linkTarget === 'author_email') {
+		return data?.email ? `mailto:${data?.email}` : null;
+	}
+	if (dataRequest?.linkTarget === 'author_site') {
+		return data?.url;
+	}
+
+	return data?.link;
+};
+
+const getCustomerLink = (dataRequest, data) => {
+	if (dataRequest?.linkTarget === 'customer_email') {
+		const email = data?.customerData?.billing_email?.[0];
+		return email ? `mailto:${email}` : null;
+	}
+
+	return data?.link;
 };
 
 const cache = {};
@@ -39,7 +59,7 @@ const getDCLink = async (dataRequest, clientId) => {
 	}
 
 	if (linkTarget === 'author') {
-		return getAuthorLink(author);
+		return getPostAuthorLink(author);
 	}
 
 	if (inlineLinkFields.includes(linkTarget)) {
@@ -85,6 +105,14 @@ const getDCLink = async (dataRequest, clientId) => {
 
 	if (type === 'products') {
 		return getProductsLink(dataRequest, data);
+	}
+
+	if (type === 'users') {
+		return getUserLink(dataRequest, data);
+	}
+
+	if (type === 'customers') {
+		return getCustomerLink(dataRequest, data);
 	}
 
 	return data?.link || null;

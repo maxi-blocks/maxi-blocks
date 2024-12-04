@@ -62,10 +62,16 @@ wp.domReady(() => {
 	clearIdOptionsCache();
 });
 
-const fetchUsers = async () => {
+const fetchUsers = async type => {
 	const { getUsers } = resolveSelect(coreStore);
-	const users = await getUsers();
-	return users ? users.map(({ id, name }) => ({ id, name })) : null;
+	let users = await getUsers();
+	if (type === 'customers') {
+		users = users?.filter(user => user?.roles?.includes('customer'));
+	}
+
+	return users && users.length
+		? users.map(({ id, name }) => ({ id, name }))
+		: null;
 };
 
 const MAX_CACHE_AGE = 5 * 60 * 1000; // 5 minutes in milliseconds
@@ -107,10 +113,13 @@ export const getIdOptions = async (
 			data = await getEntityRecords('taxonomy', taxonomy, args);
 			setCachedData(cacheKey, data);
 		}
-	} else if (type === 'users' || relation === 'by-author') {
+	} else if (
+		['users', 'customers'].includes(type) ||
+		relation === 'by-author'
+	) {
 		data = getCachedData('users');
 		if (!data) {
-			data = await fetchUsers();
+			data = await fetchUsers(type);
 			setCachedData('users', data);
 		}
 	} else if (

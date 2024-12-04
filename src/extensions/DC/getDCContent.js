@@ -152,6 +152,21 @@ const getDCContent = async (dataRequest, clientId) => {
 		return getCartContent(dataRequest, data);
 	}
 
+	if (type === 'customers') {
+		const getCustomerDataField = field => data?.customerData?.[field]?.[0];
+
+		if (field === 'billing_name' || field === 'shipping_name') {
+			const firstNameField = field.replace('_name', '_first_name');
+			const firstName = getCustomerDataField(firstNameField) ?? '';
+			const lastNameField = field.replace('_name', '_last_name');
+			const lastName = getCustomerDataField(lastNameField) ?? '';
+			const name = `${firstName} ${lastName}`;
+			return name.trim() ? name : null;
+		}
+
+		return getCustomerDataField(field) || null;
+	}
+
 	const limitTypes = select('maxiBlocks/dynamic-content').getLimitTypes();
 
 	if (field === 'date') {
@@ -174,10 +189,11 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = limitString(contentValue, limit);
 	} else if (field === 'author') {
 		const { getUsers } = resolveSelect('core');
-		const { postTaxonomyLinksStatus } = dataRequest;
+		const { postTaxonomyLinksStatus, subField } = dataRequest;
+		const userField = subField ?? 'name';
 		const user = await getUsers({ include: contentValue });
 		contentValue = getItemLinkContent(
-			user[0].name,
+			user[0]?.[userField],
 			postTaxonomyLinksStatus
 		);
 	}

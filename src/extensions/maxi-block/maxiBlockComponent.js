@@ -56,6 +56,7 @@ import compareVersions from './compareVersions';
  */
 import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
+import { isLinkObfuscationEnabled } from '../DC/utils';
 
 /**
  * Class
@@ -246,7 +247,7 @@ class MaxiBlockComponent extends Component {
 					}
 
 					if (isArray(innerBlocks)) {
-						for (let i = 0; i < innerBlocks.length; i++) {
+						for (let i = 0; i < innerBlocks.length; i += 1) {
 							const {
 								attributes,
 								innerBlocks: nestedBlocks,
@@ -776,6 +777,8 @@ class MaxiBlockComponent extends Component {
 		const {
 			uniqueID,
 			'dc-status': dcStatus,
+			'dc-link-status': dcLinkStatus,
+			'dc-link-target': dcLinkTarget,
 			'background-layers': bgLayers,
 			relations: relationsRaw,
 		} = this.props.attributes;
@@ -793,6 +796,11 @@ class MaxiBlockComponent extends Component {
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 		const hasVideo = getHasVideo(uniqueID, bgLayers);
 		const hasDC = dcStatus || getHasDC(bgLayers);
+		const shouldEnableLinkObfuscation = isLinkObfuscationEnabled(
+			dcStatus,
+			dcLinkStatus,
+			dcLinkTarget
+		);
 		const scrollEffects = getScrollEffects(uniqueID, scroll);
 		const relations = getRelations(uniqueID, relationsRaw);
 
@@ -812,13 +820,16 @@ class MaxiBlockComponent extends Component {
 							[uniqueID]: contextLoop,
 						},
 					}),
-				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 				...(!hasDC &&
 					contextLoop?.['cl-status'] && {
 						context_loop: {
 							[uniqueID]: contextLoop,
 						},
 					}),
+				...(shouldEnableLinkObfuscation && {
+					email_obfuscate: true,
+				}),
+				...(this.getMaxiCustomData && { ...this.getMaxiCustomData }),
 			},
 		};
 	}

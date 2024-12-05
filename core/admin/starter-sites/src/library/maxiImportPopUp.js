@@ -224,7 +224,7 @@ const MaxiImportPopUp = ({
 				<div className='maxi-cloud-container__import-popup_sections-container'>
 					{/* General section */}
 					<div className='maxi-cloud-container__import-popup_section'>
-						<h3>{__('General', 'maxi-blocks')}</h3>
+						<h3 className='maxi-cloud-container__import-popup_section-title'>{__('General', 'maxi-blocks')}</h3>
 						<div className='maxi-cloud-container__import-popup_item'>
 							<ToggleSwitch
 								label={__('Style Card', 'maxi-blocks')}
@@ -265,7 +265,7 @@ const MaxiImportPopUp = ({
 
 					{templates?.length > 0 && (
 						<div className='maxi-cloud-container__import-popup_section'>
-							<h3>{__('Templates', 'maxi-blocks')}</h3>
+							<h3 className='maxi-cloud-container__import-popup_section-title'>{__('Templates', 'maxi-blocks')}</h3>
 							{templates.map(template => (
 								<div
 									key={template.name}
@@ -296,7 +296,7 @@ const MaxiImportPopUp = ({
 
 					{pages?.length > 0 && (
 						<div className='maxi-cloud-container__import-popup_section'>
-							<h3>{__('Pages', 'maxi-blocks')}</h3>
+							<h3 className='maxi-cloud-container__import-popup_section-title'>{__('Pages', 'maxi-blocks')}</h3>
 							<p className='maxi-cloud-container__import-popup_section-description'>
 								{__(
 									'The Pages section allows you to import predefined pages included in the starter site. Toggle the options on or off depending on whether you want to include them in your site.',

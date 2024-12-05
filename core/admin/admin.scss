@@ -204,7 +204,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 						font-size: 20px;
 						color: #5e5656;
 					}
-					h3 {
+					h3:not(.maxi-cloud-container__import-popup_section-title) {
 						margin-top: 53px !important;
 						font-size: 20px !important;
 					}

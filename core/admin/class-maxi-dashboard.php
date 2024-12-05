@@ -68,6 +68,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_admin_scripts_styles()
         {
             if (is_admin()) {
+                // Register and enqueue Roboto font styles
+                wp_register_style(
+                    'maxi-admin-roboto',
+                    plugin_dir_url(__FILE__) . 'fonts/roboto/style.css',
+                    [],
+                    MAXI_PLUGIN_VERSION
+                );
+                wp_enqueue_style('maxi-admin-roboto');
                 wp_register_style(
                     'maxi-admin',
                     MAXI_PLUGIN_URL_PATH . 'build/admin.css',

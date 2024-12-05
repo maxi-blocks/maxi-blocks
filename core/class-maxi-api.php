@@ -1113,8 +1113,6 @@ if (!class_exists('MaxiBlocks_API')):
             $import_data = json_decode($request->get_body(), true);
             $results = [];
 
-            error_log('Starting import with data: ' . print_r($import_data, true));
-
             // Helper function to fetch remote content
             $fetch_remote_content = function ($url) {
                 $response = wp_remote_get($url);
@@ -1129,8 +1127,6 @@ if (!class_exists('MaxiBlocks_API')):
                 $results['templates'] = [];
 
                 foreach ($import_data['templates'] as $template) {
-                    error_log('Processing template: ' . print_r($template, true));
-
                     // Fetch template content from URL
                     $template_content = $fetch_remote_content($template['content']);
                     if (!$template_content) {
@@ -1168,8 +1164,6 @@ if (!class_exists('MaxiBlocks_API')):
                 $results['pages'] = [];
 
                 foreach ($import_data['pages'] as $page) {
-                    error_log('Processing page: ' . print_r($page, true));
-
                     // Fetch page content from URL
                     $page_content = $fetch_remote_content($page['content']);
                     if (!$page_content) {
@@ -1207,8 +1201,6 @@ if (!class_exists('MaxiBlocks_API')):
                 $results['patterns'] = [];
 
                 foreach ($import_data['patterns'] as $pattern) {
-                    error_log('Processing pattern: ' . print_r($pattern, true));
-
                     // Fetch pattern content from URL
                     $pattern_content = $fetch_remote_content($pattern['content']);
                     if (!$pattern_content) {
@@ -1316,22 +1308,18 @@ if (!class_exists('MaxiBlocks_API')):
         {
             $results = [];
             global $wpdb;
-            error_log('Starting template part import with data: ' . print_r($template_data, true));
 
             // Get current theme
             $current_theme = wp_get_theme();
             $theme_slug = $current_theme->get_stylesheet();
-            error_log('Current theme: ' . $theme_slug);
 
             foreach ($template_data as $template_name => $template_part_data) {
                 // Check entity type and route to appropriate function
                 if ($template_part_data['entityType'] === 'template') {
-                    error_log('Processing template: ' . $template_name);
                     return $this->maxi_import_templates([$template_part_data]);
                 }
 
                 if ($template_part_data['entityType'] !== 'template-part') {
-                    error_log('Invalid entity type: ' . $template_part_data['entityType']);
                     $results[$template_name] = [
                         'success' => false,
                         'message' => sprintf(__('Invalid entity type: %s', 'maxi-blocks'), $template_part_data['entityType'])
@@ -1339,7 +1327,6 @@ if (!class_exists('MaxiBlocks_API')):
                     continue;
                 }
 
-                error_log('Processing template part: ' . $template_name);
                 // Parse the template data
                 $content = $template_part_data['content'] ?? '';
                 $styles = $template_part_data['styles'] ?? [];
@@ -1347,8 +1334,6 @@ if (!class_exists('MaxiBlocks_API')):
                 $entity_slug = $template_part_data['entitySlug'] ?? sanitize_title($entity_title);
                 $custom_data = $template_part_data['customData'] ?? [];
                 $fonts = $template_part_data['fonts'] ?? [];
-
-                error_log('Template part details - Title: ' . $entity_title . ', Slug: ' . $entity_slug);
 
                 // Set up the template part area
                 $area = '';
@@ -1359,15 +1344,12 @@ if (!class_exists('MaxiBlocks_API')):
                 } else {
                     $area = 'uncategorized';
                 }
-                error_log('Template part area: ' . $area);
 
                 // Check if template part exists
                 $existing_template = get_block_template(
                     $theme_slug . '//' . $entity_slug,
                     'wp_template_part'
                 );
-                error_log('Existing template check: ' . ($existing_template ? 'Found' : 'Not found'));
-                error_log('Existing template data: ' . print_r($existing_template, true));
 
                 // Check if it exists in database by simple slug
                 $existing_post = $wpdb->get_row(
@@ -1379,7 +1361,6 @@ if (!class_exists('MaxiBlocks_API')):
                         $entity_slug
                     )
                 );
-                error_log('Database check result by slug: ' . print_r($existing_post, true));
 
                 $template_content = array(
                     'post_name' => $entity_slug,
@@ -1399,69 +1380,54 @@ if (!class_exists('MaxiBlocks_API')):
                         'is_custom' => true
                     )
                 );
-                error_log('Template content prepared: ' . print_r($template_content, true));
 
                 if ($existing_template) {
-                    error_log('Found template in theme files');
-
                     if ($existing_post) {
-                        error_log('Updating existing template part in database with ID: ' . $existing_post->ID);
                         $template_content['ID'] = $existing_post->ID;
                         $post_id = wp_update_post($template_content);
                     } else {
-                        error_log('Creating new template part in database');
                         $post_id = wp_insert_post($template_content);
 
                         if ($post_id && !is_wp_error($post_id)) {
-                            error_log('Setting taxonomies for template part ID: ' . $post_id);
                             wp_set_object_terms($post_id, $area, 'wp_template_part_area');
                             wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
                         }
                     }
                 } else {
-                    error_log('Creating new template part');
                     $post_id = wp_insert_post($template_content);
 
                     if ($post_id && !is_wp_error($post_id)) {
-                        error_log('Setting taxonomies for new template part ID: ' . $post_id);
                         wp_set_object_terms($post_id, $area, 'wp_template_part_area');
                         wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
                     }
                 }
 
                 if (is_wp_error($post_id)) {
-                    error_log('Error creating/updating template part: ' . $post_id->get_error_message());
                     $results[$template_name] = [
                         'success' => false,
                         'message' => $post_id->get_error_message()
                     ];
                     continue;
                 }
-                error_log('Template part created/updated successfully with ID: ' . $post_id);
 
                 // Import styles into DB
-                error_log('Importing styles');
                 $this->import_styles_to_db($styles);
 
                 // Import custom data
-                error_log('Importing custom data');
                 $this->import_custom_data_to_db($custom_data);
 
                 // Import fonts
-                error_log('Importing fonts');
                 $this->import_fonts_to_db($fonts);
 
                 // Clear template parts cache
                 wp_cache_delete('wp_template_part_' . $theme_slug);
                 wp_cache_delete('wp_template_part_area_' . $area);
-                error_log('Cache cleared');
 
                 $results[$template_name] = [
                     'success' => true,
                     'post_id' => $post_id,
                     'message' => sprintf(__('Successfully imported %s template part', 'maxi-blocks'), $entity_title)
                 ];
-                error_log('Template part import completed successfully');
             }
 
             return $results;
@@ -1477,12 +1443,10 @@ if (!class_exists('MaxiBlocks_API')):
         {
             $results = [];
             global $wpdb;
-            error_log('Starting template import with data: ' . print_r($template_data, true));
 
             // Get current theme
             $current_theme = wp_get_theme();
             $theme_slug = $current_theme->get_stylesheet();
-            error_log('Current theme: ' . $theme_slug);
 
             // Helper function to replace template part references
             $replace_template_parts = function ($content) use ($theme_slug) {
@@ -1509,7 +1473,6 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             foreach ($template_data as $template_name => $template_data) {
-                error_log('Processing template: ' . $template_name);
                 // Parse the template data
                 $content = $template_data['content'] ?? '';
                 // Replace template part references with current theme
@@ -1524,7 +1487,6 @@ if (!class_exists('MaxiBlocks_API')):
 
                 // Validate template type
                 if (!in_array($entity_slug, $valid_types)) {
-                    error_log('Invalid template slug: ' . $entity_slug);
                     $results[$template_name] = [
                         'success' => false,
                         'message' => sprintf(__('Invalid template slug: %s', 'maxi-blocks'), $entity_slug)
@@ -1532,15 +1494,11 @@ if (!class_exists('MaxiBlocks_API')):
                     continue;
                 }
 
-                error_log('Template details - Title: ' . $entity_title . ', Slug: ' . $entity_slug . ', Type: ' . $entity_type);
-
                 // Check if template exists
                 $existing_template = get_block_template(
                     $theme_slug . '//' . $entity_slug,
                     'wp_template'
                 );
-                error_log('Existing template check: ' . ($existing_template ? 'Found' : 'Not found'));
-                error_log('Existing template data: ' . print_r($existing_template, true));
 
                 // Check if it exists in database by simple slug
                 $existing_post = $wpdb->get_row(
@@ -1552,7 +1510,6 @@ if (!class_exists('MaxiBlocks_API')):
                         $entity_slug
                     )
                 );
-                error_log('Database check result by slug: ' . print_r($existing_post, true));
 
                 $template_content = array(
                     'post_name' => $entity_slug,
@@ -1571,66 +1528,51 @@ if (!class_exists('MaxiBlocks_API')):
                         'type' => $entity_type
                     )
                 );
-                error_log('Template content prepared: ' . print_r($template_content, true));
 
                 if ($existing_template) {
-                    error_log('Found template in theme files');
-
                     if ($existing_post) {
-                        error_log('Updating existing template in database with ID: ' . $existing_post->ID);
                         $template_content['ID'] = $existing_post->ID;
                         $post_id = wp_update_post($template_content);
                     } else {
-                        error_log('Creating new template in database');
                         $post_id = wp_insert_post($template_content);
 
                         if ($post_id && !is_wp_error($post_id)) {
-                            error_log('Setting taxonomy for template ID: ' . $post_id);
                             wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
                         }
                     }
                 } else {
-                    error_log('Creating new template');
                     $post_id = wp_insert_post($template_content);
 
                     if ($post_id && !is_wp_error($post_id)) {
-                        error_log('Setting taxonomy for new template ID: ' . $post_id);
                         wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
                     }
                 }
 
                 if (is_wp_error($post_id)) {
-                    error_log('Error creating/updating template: ' . $post_id->get_error_message());
                     $results[$template_name] = [
                         'success' => false,
                         'message' => $post_id->get_error_message()
                     ];
                     continue;
                 }
-                error_log('Template created/updated successfully with ID: ' . $post_id);
 
                 // Import styles into DB
-                error_log('Importing styles');
                 $this->import_styles_to_db($styles);
 
                 // Import custom data
-                error_log('Importing custom data');
                 $this->import_custom_data_to_db($custom_data);
 
                 // Import fonts
-                error_log('Importing fonts');
                 $this->import_fonts_to_db($fonts);
 
                 // Clear template cache
                 wp_cache_delete('wp_template_' . $theme_slug);
-                error_log('Cache cleared');
 
                 $results[$template_name] = [
                     'success' => true,
                     'post_id' => $post_id,
                     'message' => sprintf(__('Successfully imported %s template', 'maxi-blocks'), $entity_title)
                 ];
-                error_log('Template import completed successfully');
             }
 
             return $results;
@@ -1824,16 +1766,12 @@ if (!class_exists('MaxiBlocks_API')):
         {
             $results = [];
             global $wpdb;
-            error_log('Starting pattern import with data: ' . print_r($pattern_data, true));
 
             // Get current theme
             $current_theme = wp_get_theme();
             $theme_slug = $current_theme->get_stylesheet();
-            error_log('Current theme: ' . $theme_slug);
 
             foreach ($pattern_data as $pattern_name => $pattern_data) {
-                error_log('Processing pattern: ' . $pattern_name);
-
                 // Parse the pattern data
                 $content = $pattern_data['content'] ?? '';
                 $styles = $pattern_data['styles'] ?? [];
@@ -1842,8 +1780,6 @@ if (!class_exists('MaxiBlocks_API')):
                 $custom_data = $pattern_data['customData'] ?? [];
                 $fonts = $pattern_data['fonts'] ?? [];
                 $wp_pattern_sync_status = $pattern_data['wpPatternSyncStatus'] ?? '';
-
-                error_log('Pattern details - Title: ' . $entity_title . ', Slug: ' . $entity_slug);
 
                 // Check if pattern exists in database
                 $existing_post = $wpdb->get_row(
@@ -1855,7 +1791,6 @@ if (!class_exists('MaxiBlocks_API')):
                         $entity_slug
                     )
                 );
-                error_log('Database check result by slug: ' . print_r($existing_post, true));
 
                 $pattern_content = array(
                     'post_name' => $entity_slug,
@@ -1868,37 +1803,29 @@ if (!class_exists('MaxiBlocks_API')):
                         'wp_pattern_sync_status' => $wp_pattern_sync_status
                     )
                 );
-                error_log('Pattern content prepared: ' . print_r($pattern_content, true));
 
                 if ($existing_post) {
-                    error_log('Updating existing pattern in database with ID: ' . $existing_post->ID);
                     $pattern_content['ID'] = $existing_post->ID;
                     $post_id = wp_update_post($pattern_content);
                 } else {
-                    error_log('Creating new pattern');
                     $post_id = wp_insert_post($pattern_content);
                 }
 
                 if (is_wp_error($post_id)) {
-                    error_log('Error creating/updating pattern: ' . $post_id->get_error_message());
                     $results[$pattern_name] = [
                         'success' => false,
                         'message' => $post_id->get_error_message()
                     ];
                     continue;
                 }
-                error_log('Pattern created/updated successfully with ID: ' . $post_id);
 
                 // Import styles into DB
-                error_log('Importing styles');
                 $this->import_styles_to_db($styles);
 
                 // Import custom data
-                error_log('Importing custom data');
                 $this->import_custom_data_to_db($custom_data);
 
                 // Import fonts
-                error_log('Importing fonts');
                 $this->import_fonts_to_db($fonts);
 
                 $results[$pattern_name] = [
@@ -1906,7 +1833,6 @@ if (!class_exists('MaxiBlocks_API')):
                     'post_id' => $post_id,
                     'message' => sprintf(__('Successfully imported %s pattern', 'maxi-blocks'), $entity_title)
                 ];
-                error_log('Pattern import completed successfully');
             }
 
             return $results;

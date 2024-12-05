@@ -1959,34 +1959,53 @@ if (!class_exists('MaxiBlocks_API')):
 
         private function maxi_import_xml($xml_content)
         {
-            error_log('XML content: ' . $xml_content);
-            if ($xml_content) {
-                // Create a temporary file to store the XML
-                $temp_file = wp_tempnam('maxi_import_');
-                error_log('Temp file: ' . $temp_file);
-                if ($temp_file) {
-                    file_put_contents($temp_file, $xml_content);
-
-                    // Parse XML using WordPress importer
-                    if (file_exists(ABSPATH . 'wp-admin/includes/import.php')) {
-                        require_once ABSPATH . 'wp-admin/includes/import.php';
-
-                        if (!class_exists('WP_Importer')) {
-                            $class_wp_importer = ABSPATH . 'wp-admin/includes/class-wp-importer.php';
-                            if (file_exists($class_wp_importer)) {
-                                require_once $class_wp_importer;
-                            }
-                        }
-
-                        $results['xml'] = simplexml_load_string($xml_content);
-                        error_log('XML results: ' . $results['xml']);
-                    }
-
-                    // Clean up
-                    unlink($temp_file);
-                }
+            if (!$xml_content) {
+                return false;
             }
 
+            // Create a temporary file to store the XML
+            $temp_file = wp_tempnam('maxi_import_');
+            if (!$temp_file) {
+                return new WP_Error('temp_file_error', 'Could not create temporary file');
+            }
+
+            file_put_contents($temp_file, $xml_content);
+
+            // Required files for WP_Import
+            if (! function_exists('post_exists')) {
+                require_once ABSPATH . 'wp-admin/includes/post.php';
+            }
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/image-edit.php';
+            require_once ABSPATH . 'wp-admin/includes/import.php';
+            require_once ABSPATH . 'wp-admin/includes/class-wp-importer.php';
+            require_once WP_PLUGIN_DIR . '/wordpress-importer/class-wp-import.php';
+            require_once WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php';
+            require_once WP_PLUGIN_DIR . '/wordpress-importer/parsers/class-wxr-parser.php';
+            require_once WP_PLUGIN_DIR . '/wordpress-importer/parsers/class-wxr-parser-simplexml.php';
+
+            // Run the importer
+            try {
+                $importer = new WP_Import();
+                $importer->fetch_attachments = true;
+
+                // Suppress output
+                ob_start();
+                $importer->import($temp_file);
+                ob_end_clean();
+
+                // Clean up
+                unlink($temp_file);
+
+                return array(
+                    'success' => true,
+                    'message' => 'XML content imported successfully'
+                );
+            } catch (Exception $e) {
+                unlink($temp_file);
+                return new WP_Error('import_error', $e->getMessage());
+            }
         }
 
         /**

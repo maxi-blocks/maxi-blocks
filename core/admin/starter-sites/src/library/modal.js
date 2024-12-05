@@ -35,6 +35,8 @@ const MaxiModal = props => {
 
 	const [isOpenDetails, changeIsOpenDetails] = useState(false);
 	const [isOpenImport, changeIsOpenImport] = useState(false);
+	const isCurrentStarterSite =
+		title === window.maxiStarterSites?.currentStarterSite;
 
 	const onClickOpenModalDetails = () => {
 		changeIsOpenDetails(!isOpenDetails);
@@ -90,7 +92,9 @@ const MaxiModal = props => {
 							className='maxi-cloud-masonry-card__button'
 							onClick={onClickOpenModalImport}
 						>
-							{__('Import', 'maxi-blocks')}
+							{isCurrentStarterSite
+								? __('Reset', 'maxi-blocks')
+								: __('Import', 'maxi-blocks')}
 						</button>
 					</>
 				)}

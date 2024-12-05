@@ -82,6 +82,7 @@ const MaxiImportPopUp = ({
 			patterns: {},
 			sc: isValidValue(sc),
 			contentXML: isValidValue(contentXML),
+			title,
 		};
 
 		templates?.forEach(template => {
@@ -89,7 +90,7 @@ const MaxiImportPopUp = ({
 		});
 
 		pages?.forEach(page => {
-			initialState.pages[page.name] = true;
+				initialState.pages[page.name] = true;
 		});
 
 		patterns?.forEach(pattern => {
@@ -123,6 +124,11 @@ const MaxiImportPopUp = ({
 
 		// Create object to store selected items with their content
 		const importData = {};
+
+		// Add title if it exists
+		if (title) {
+			importData.title = title;
+		}
 
 		// Add selected templates with their content
 		if (templates) {

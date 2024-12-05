@@ -191,6 +191,7 @@ const MaxiImportPopUp = ({
 			data: importData,
 		}).then(response => {
 			console.log('Import response:', response);
+			window.maxiStarterSites.currentStarterSite = title;
 			setImportStatus('done');
 		}).catch(error => {
 			console.error('Import error full details:', error);

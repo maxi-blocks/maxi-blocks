@@ -1233,6 +1233,24 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
 
+
+            // Process Style Card
+            if (!empty($import_data['sc'])) {
+                $sc_content = $fetch_remote_content($import_data['sc']);
+                if($sc_content) {
+                    $this->maxi_import_sc($sc_content);
+                }
+            }
+
+            // Process XML content
+            if (!empty($import_data['contentXML'])) {
+                $xml_content = $fetch_remote_content($import_data['contentXML']);
+                if ($xml_content) {
+                    $this->maxi_import_xml($xml_content);
+                }
+            }
+
+
             // Save current starter site name
             if (!empty($import_data['title'])) {
                 update_option('maxiblocks_current_starter_site', $import_data['title']);
@@ -1576,6 +1594,399 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $results;
+        }
+
+        private function maxi_import_sc($sc_content)
+        {
+
+            if ($sc_content) {
+                global $wpdb;
+
+                // Get default SC
+                $default_sc = json_decode(MaxiBlocks_StyleCards::get_default_style_card(), true);
+                $default_maxi_sc = $default_sc['sc_maxi'];
+
+                // Parse imported SC (double decode as it's a JSON string within a string)
+                $imported_sc = json_decode($sc_content, true);
+
+                // Deep merge default with imported
+                $new_sc = array_replace_recursive($default_maxi_sc, $imported_sc);
+
+                // Generate new SC ID
+                $new_id = 'sc_' . time();
+
+                // Get current style cards
+                $current_style_cards = json_decode(
+                    MaxiBlocks_StyleCards::get_maxi_blocks_current_style_cards(),
+                    true
+                );
+
+                // Set all cards as inactive
+                foreach ($current_style_cards as &$card) {
+                    $card['status'] = '';
+                }
+
+                // Add new card to collection
+                $current_style_cards[$new_id] = $new_sc;
+                $current_style_cards[$new_id]['status'] = 'active';
+
+                // Save updated style cards collection
+                $wpdb->replace(
+                    "{$wpdb->prefix}maxi_blocks_general",
+                    array(
+                        'id' => 'style_cards_current',
+                        'object' => wp_json_encode($current_style_cards)
+                    )
+                );
+
+                // Create variables object first
+                $get_sc_variables_object = function ($sc) {
+                    $response = array();
+                    $styles = array('light', 'dark');
+                    $elements = array('button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation');
+                    $breakpoints = array('general', 'xxl', 'xl', 'l', 'm', 's', 'xs');
+                    $settings = array(
+                        'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
+                        'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
+                        'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
+                        'padding-top', 'padding-left', 'padding-right'
+                    );
+
+                    // Helper function to merge style card data
+                    $merge_style_cards = function ($default_card, $style_card) {
+                        if (empty($style_card)) {
+                            return $default_card;
+                        }
+                        if (empty($default_card)) {
+                            return $style_card;
+                        }
+                        return array_replace_recursive($default_card, $style_card);
+                    };
+
+                    foreach ($styles as $style) {
+                        // Merge defaultStyleCard and styleCard
+                        $style_data = $merge_style_cards(
+                            $sc[$style]['defaultStyleCard'] ?? array(),
+                            $sc[$style]['styleCard'] ?? array()
+                        );
+
+                        // Process each element
+                        foreach ($elements as $element) {
+                            if (!isset($style_data[$element])) {
+                                continue;
+                            }
+
+                            // Process each setting
+                            foreach ($settings as $setting) {
+                                foreach ($breakpoints as $breakpoint) {
+                                    $key = "{$setting}-{$breakpoint}";
+                                    $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+
+                                    if (isset($style_data[$element][$key])) {
+                                        $value = $style_data[$element][$key];
+
+                                        // Add units if needed
+                                        if ($setting === 'font-family') {
+                                            $value = "\"{$value}\"";
+                                        } elseif (in_array($setting, array('font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent'))) {
+                                            if (is_numeric($value)) {
+                                                $value .= 'px';
+                                            }
+                                        }
+
+                                        $response[$var_name] = $value;
+                                    }
+                                }
+                            }
+                        }
+
+                        // Process colors
+                        if (isset($style_data['color'])) {
+                            for ($i = 1; $i <= 8; $i++) {
+                                if (isset($style_data['color'][$i])) {
+                                    $response["--maxi-{$style}-color-{$i}"] = $style_data['color'][$i];
+                                }
+                            }
+                        }
+                    }
+
+                    return $response;
+                };
+
+                // Create CSS variables string
+                $create_sc_style_string = function ($sc_object) {
+                    $response = ':root{';
+                    foreach ($sc_object as $key => $val) {
+                        if ($val) {
+                            $response .= "{$key}:{$val};";
+                        }
+                    }
+                    $response .= '}';
+                    return $response;
+                };
+
+                // Create variables object and convert to CSS string
+                $variables_object = $get_sc_variables_object($new_sc);
+                $var_sc_string = $create_sc_style_string($variables_object);
+
+                // Create styles similar to getSCStyles.js
+                $get_sc_styles = function ($sc) {
+                    $response = '';
+                    $prefix = 'body.maxi-blocks--active';
+                    $styles = array('light', 'dark');
+                    $breakpoints = array(
+                        'xxl' => 1921,
+                        'xl' => 1920,
+                        'l' => 1366,
+                        'm' => 1024,
+                        's' => 767,
+                        'xs' => 480
+                    );
+                    $breakpoint_keys = array('general', 'xxl', 'xl', 'l', 'm', 's', 'xs');
+
+                    // Helper function to organize values like in JS
+                    $get_organized_values = function ($sc) use ($styles, $breakpoint_keys) {
+                        $organized_values = array();
+
+                        foreach ($styles as $style) {
+                            if (!isset($sc[$style])) {
+                                continue;
+                            }
+
+                            $style_data = array_merge(
+                                $sc[$style]['defaultStyleCard'] ?? array(),
+                                $sc[$style]['styleCard'] ?? array()
+                            );
+
+                            // Process typography settings
+                            $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'navigation');
+                            $settings = array(
+                                'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
+                                'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
+                                'word-spacing', 'margin-bottom', 'text-indent'
+                            );
+
+                            foreach ($elements as $element) {
+                                if (!isset($style_data[$element])) {
+                                    continue;
+                                }
+
+                                foreach ($settings as $setting) {
+                                    foreach ($breakpoint_keys as $breakpoint) {
+                                        $key = "{$setting}-{$breakpoint}";
+                                        if (isset($style_data[$element][$key])) {
+                                            $organized_values[$style][$element][$breakpoint][$setting] =
+                                                "var(--maxi-{$style}-{$element}-{$setting}-{$breakpoint})";
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Process colors
+                            if (isset($style_data['color'])) {
+                                $organized_values[$style]['color'] = $style_data['color'];
+                            }
+                        }
+
+                        return $organized_values;
+                    };
+
+                    // Get organized values
+                    $organized_values = $get_organized_values($sc);
+
+                    // Helper function to get Maxi block styles
+                    $get_maxi_sc_styles = function ($style, $breakpoint, $prefix) use ($organized_values) {
+                        $response = '';
+
+                        // Text block styles
+                        $text_selectors = array(
+                            "{$prefix} .maxi-{$style}.maxi-block.maxi-text-block",
+                            "{$prefix} .maxi-{$style} .maxi-block.maxi-text-block",
+                            "{$prefix} .maxi-{$style}.maxi-map-block__popup__content",
+                            "{$prefix} .maxi-{$style} .maxi-map-block__popup__content",
+                            "{$prefix} .maxi-{$style} .maxi-pane-block .maxi-pane-block__header"
+                        );
+
+                        $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6');
+                        foreach ($elements as $element) {
+                            if (!isset($organized_values[$style][$element][$breakpoint])) {
+                                continue;
+                            }
+
+                            $styles_string = '';
+                            foreach ($organized_values[$style][$element][$breakpoint] as $prop => $value) {
+                                $styles_string .= "{$prop}: {$value};";
+                            }
+
+                            foreach ($text_selectors as $selector) {
+                                $response .= "{$selector} {$element} {";
+                                $response .= $styles_string;
+                                $response .= "}";
+                            }
+
+                            // Add paragraph styles to lists and links
+                            if ($element === 'p') {
+                                foreach ($text_selectors as $selector) {
+                                    // Add styles for lists
+                                    $response .= "{$selector} li {";
+                                    $response .= $styles_string;
+                                    $response .= "}";
+
+                                    // Add styles for links
+                                    $response .= "{$selector} a {";
+                                    $response .= $styles_string;
+                                    $response .= "}";
+                                }
+                            }
+                        }
+
+                        // Button block styles
+                        $response .= "{$prefix} .maxi-{$style}.maxi-button-block {";
+                        $response .= "font-family: var(--maxi-{$style}-button-font-family-{$breakpoint});";
+                        $response .= "font-size: var(--maxi-{$style}-button-font-size-{$breakpoint});";
+                        $response .= "background-color: var(--maxi-{$style}-button-background-color);";
+                        $response .= "}";
+
+                        return $response;
+                    };
+
+                    // Helper function to get WP native block styles
+                    $get_wp_native_styles = function ($style, $breakpoint, $prefix) {
+                        $response = '';
+                        $native_prefix = 'wp-block';
+
+                        // Native block text styles
+                        $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6');
+                        foreach ($elements as $element) {
+                            $response .= "{$prefix} .maxi-{$style} .{$native_prefix} {$element} {";
+                            $response .= "font-family: var(--maxi-{$style}-{$element}-font-family-{$breakpoint});";
+                            $response .= "font-size: var(--maxi-{$style}-{$element}-font-size-{$breakpoint});";
+                            $response .= "line-height: var(--maxi-{$style}-{$element}-line-height-{$breakpoint});";
+                            $response .= "}";
+                        }
+
+                        return $response;
+                    };
+
+                    // Helper function for link colors
+                    $get_link_colors = function ($style, $prefix, $color_number) use ($organized_values) {
+                        if (!isset($organized_values[$style]['color'][$color_number])) {
+                            return '';
+                        }
+
+                        $response = '';
+                        $selectors = array(
+                            'link' => "--maxi-{$style}-link-palette",
+                            'link-hover' => "--maxi-{$style}-link-hover-palette",
+                            'link-active' => "--maxi-{$style}-link-active-palette",
+                            'link-visited' => "--maxi-{$style}-link-visited-palette"
+                        );
+
+                        foreach ($selectors as $type => $var) {
+                            $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
+                            $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
+                            $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
+                            $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { {$var}: var(--maxi-{$style}-color-{$color_number});}";
+                        }
+
+                        return $response;
+                    };
+
+                    // Process each style (light/dark)
+                    foreach ($styles as $style) {
+                        // Process colors
+                        if (isset($organized_values[$style]['color'])) {
+                            foreach ($organized_values[$style]['color'] as $number => $color) {
+                                $response .= $get_link_colors($style, $prefix, $number);
+                            }
+                        }
+
+                        // Add media queries for each breakpoint
+                        $add_styles_for_breakpoint = function ($breakpoint = 'general') use ($style, $prefix, $sc, $get_maxi_sc_styles, $get_wp_native_styles, $organized_values) {
+                            $response = '';
+
+                            // Add Maxi block styles
+                            $response .= $get_maxi_sc_styles($style, $breakpoint, $prefix);
+
+                            // Add WP native block styles
+                            $response .= $get_wp_native_styles($style, $breakpoint, $prefix);
+
+                            return $response;
+                        };
+
+                        // Add styles for general breakpoint
+                        $response .= $add_styles_for_breakpoint('general');
+
+                        // Add styles for each breakpoint with media queries
+                        foreach ($breakpoints as $breakpoint => $width) {
+                            $response .= "@media (" . ($breakpoint === 'xxl' ? 'min' : 'max') . "-width: {$width}px) {";
+                            $response .= $add_styles_for_breakpoint($breakpoint);
+                            $response .= "}";
+                        }
+                    }
+
+                    error_log('Generated styles: ' . $response);
+                    return $response;
+                };
+
+                // Generate styles string
+                $styles_string = $get_sc_styles($new_sc);
+
+                $sc_string = array(
+                    '_maxi_blocks_style_card' => $var_sc_string,
+                    '_maxi_blocks_style_card_preview' => $var_sc_string,
+                    '_maxi_blocks_style_card_styles' => $styles_string,
+                    '_maxi_blocks_style_card_styles_preview' => $styles_string
+                );
+
+                // Save sc_string
+                $wpdb->replace(
+                    "{$wpdb->prefix}maxi_blocks_general",
+                    array(
+                        'id' => 'sc_string',
+                        'object' => serialize($sc_string)
+                    )
+                );
+
+                $results['sc'] = [
+                    'success' => true,
+                    'message' => __('Style Card imported successfully', 'maxi-blocks'),
+                    'id' => $new_id
+                ];
+            }
+
+        }
+
+        private function maxi_import_xml($xml_content)
+        {
+            error_log('XML content: ' . $xml_content);
+            if ($xml_content) {
+                // Create a temporary file to store the XML
+                $temp_file = wp_tempnam('maxi_import_');
+                error_log('Temp file: ' . $temp_file);
+                if ($temp_file) {
+                    file_put_contents($temp_file, $xml_content);
+
+                    // Parse XML using WordPress importer
+                    if (file_exists(ABSPATH . 'wp-admin/includes/import.php')) {
+                        require_once ABSPATH . 'wp-admin/includes/import.php';
+
+                        if (!class_exists('WP_Importer')) {
+                            $class_wp_importer = ABSPATH . 'wp-admin/includes/class-wp-importer.php';
+                            if (file_exists($class_wp_importer)) {
+                                require_once $class_wp_importer;
+                            }
+                        }
+
+                        $results['xml'] = simplexml_load_string($xml_content);
+                        error_log('XML results: ' . $results['xml']);
+                    }
+
+                    // Clean up
+                    unlink($temp_file);
+                }
+            }
+
         }
 
         /**

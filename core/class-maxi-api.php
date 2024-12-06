@@ -1270,6 +1270,10 @@ if (!class_exists('MaxiBlocks_API')):
             foreach ($pages_data as $page_name => $page_data) {
                 // Parse the page data
                 $content = $page_data['content'] ?? '';
+
+                // Process images in content
+                $content = $this->process_content_images($content);
+
                 $styles = $page_data['styles'] ?? [];
                 $entity_type = $page_data['entityType'] ?? 'page';
                 $entity_title = $page_data['entityTitle'] ?? $page_name;
@@ -1347,6 +1351,10 @@ if (!class_exists('MaxiBlocks_API')):
 
                 // Parse the template data
                 $content = $template_part_data['content'] ?? '';
+
+                // Process images in content
+                $content = $this->process_content_images($content);
+
                 $styles = $template_part_data['styles'] ?? [];
                 $entity_title = $template_part_data['entityTitle'] ?? $template_name;
                 $entity_slug = $template_part_data['entitySlug'] ?? sanitize_title($entity_title);
@@ -1493,6 +1501,10 @@ if (!class_exists('MaxiBlocks_API')):
             foreach ($template_data as $template_name => $template_data) {
                 // Parse the template data
                 $content = $template_data['content'] ?? '';
+
+                // Process images in content
+                $content = $this->process_content_images($content);
+
                 // Replace template part references with current theme
                 $content = $replace_template_parts($content);
 
@@ -2204,6 +2216,10 @@ if (!class_exists('MaxiBlocks_API')):
             foreach ($pattern_data as $pattern_name => $pattern_data) {
                 // Parse the pattern data
                 $content = $pattern_data['content'] ?? '';
+
+                // Process images in content
+                $content = $this->process_content_images($content);
+
                 $styles = $pattern_data['styles'] ?? [];
                 $entity_title = $pattern_data['entityTitle'] ?? $pattern_name;
                 $entity_slug = $pattern_data['entitySlug'] ?? sanitize_title($entity_title);
@@ -2266,6 +2282,129 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $results;
+        }
+
+        // Add this new function after the class opening
+
+        /**
+         * Process content to import external images and replace URLs
+         *
+         * @param string $content The content to process
+         * @return string The processed content with updated image URLs
+         */
+        private function process_content_images($content)
+        {
+            // Skip if content is empty
+            if (empty($content)) {
+                return $content;
+            }
+
+            // Helper function to download and upload image
+            $import_image = function ($url) {
+                // Skip if not a valid URL
+                if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                    return false;
+                }
+
+                // Get file name from URL
+                $file_name = basename(parse_url($url, PHP_URL_PATH));
+
+                // Download file
+                $temp_file = download_url($url);
+                if (is_wp_error($temp_file)) {
+                    return false;
+                }
+
+                // Prepare file data
+                $file_array = array(
+                    'name'     => $file_name,
+                    'tmp_name' => $temp_file
+                );
+
+                // Set upload directory filter to ensure proper path
+                $upload_override = function ($upload) {
+                    $upload['path'] = WP_CONTENT_DIR . '/uploads';
+                    $upload['url'] = WP_CONTENT_URL . '/uploads';
+                    return $upload;
+                };
+                add_filter('upload_dir', $upload_override);
+
+                // Upload the image
+                $id = media_handle_sideload($file_array, 0);
+
+                // Remove the upload directory filter
+                remove_filter('upload_dir', $upload_override);
+
+                // Clean up temp file
+                @unlink($temp_file);
+
+                if (is_wp_error($id)) {
+                    return false;
+                }
+
+                // Get the uploaded image URL
+                $new_url = wp_get_attachment_url($id);
+                return $new_url;
+            };
+
+            // Find all image URLs in content
+            $pattern = '/"url":\s*"([^"]+)"/';
+            $content = preg_replace_callback($pattern, function ($matches) use ($import_image) {
+                $old_url = $matches[1];
+
+                // Skip if it's already a local URL
+                if (strpos($old_url, site_url()) !== false) {
+                    return $matches[0];
+                }
+
+                // Import the image
+                $new_url = $import_image($old_url);
+                if ($new_url) {
+                    return '"url":"' . $new_url . '"';
+                }
+
+                return $matches[0];
+            }, $content);
+
+            // Also handle background images
+            $pattern = '/"backgroundImage":\s*"([^"]+)"/';
+            $content = preg_replace_callback($pattern, function ($matches) use ($import_image) {
+                $old_url = $matches[1];
+
+                // Skip if it's already a local URL
+                if (strpos($old_url, site_url()) !== false) {
+                    return $matches[0];
+                }
+
+                // Import the image
+                $new_url = $import_image($old_url);
+                if ($new_url) {
+                    return '"backgroundImage":"' . $new_url . '"';
+                }
+
+                return $matches[0];
+            }, $content);
+
+            // Handle SVG content
+            $pattern = '/"svg":\s*"([^"]+)"/';
+            $content = preg_replace_callback($pattern, function ($matches) use ($import_image) {
+                $old_url = $matches[1];
+
+                // Skip if it's already a local URL or if it's inline SVG
+                if (strpos($old_url, site_url()) !== false || strpos($old_url, '<svg') !== false) {
+                    return $matches[0];
+                }
+
+                // Import the SVG
+                $new_url = $import_image($old_url);
+                if ($new_url) {
+                    return '"svg":"' . $new_url . '"';
+                }
+
+                return $matches[0];
+            }, $content);
+
+            return $content;
         }
     }
 endif;

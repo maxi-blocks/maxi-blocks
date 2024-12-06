@@ -76,7 +76,8 @@ const MaxiImportPopUp = ({
 	onRequestClose,
 }) => {
 	// Add check for WordPress Importer status from localized data
-	const wpImporterStatus = window.maxiStarterSites?.wpImporterStatus || 'missing';
+	const wpImporterStatus =
+		window.maxiStarterSites?.wpImporterStatus || 'missing';
 
 	const [selectedItems, setSelectedItems] = useState(() => {
 		const initialState = {
@@ -85,7 +86,8 @@ const MaxiImportPopUp = ({
 			patterns: {},
 			sc: isValidValue(sc),
 			// Only set contentXML to true if plugin is active and value is valid
-			contentXML: wpImporterStatus === 'active' && isValidValue(contentXML),
+			contentXML:
+				wpImporterStatus === 'active' && isValidValue(contentXML),
 			title,
 		};
 
@@ -126,6 +128,45 @@ const MaxiImportPopUp = ({
 				},
 			}));
 		}
+	};
+
+	const handleToggleAll = value => {
+		setSelectedItems(prevState => {
+			const newState = { ...prevState };
+
+			// Toggle templates
+			if (templates) {
+				templates.forEach(template => {
+					newState.templates[template.name] = value;
+				});
+			}
+
+			// Toggle pages
+			if (pages) {
+				pages.forEach(page => {
+					newState.pages[page.name] = value;
+				});
+			}
+
+			// Toggle patterns
+			if (patterns) {
+				patterns.forEach(pattern => {
+					newState.patterns[pattern.name] = value;
+				});
+			}
+
+			// Toggle SC
+			if (isValidValue(sc)) {
+				newState.sc = value;
+			}
+
+			// Only toggle contentXML if it's enabled
+			if (wpImporterStatus === 'active' && isValidValue(contentXML)) {
+				newState.contentXML = value;
+			}
+
+			return newState;
+		});
 	};
 
 	const onClickImport = selectedItems => {
@@ -195,20 +236,22 @@ const MaxiImportPopUp = ({
 			url: `${maxiStarterSites.apiRoot}maxi-blocks/v1.0/import-starter-site`,
 			method: 'POST',
 			headers: {
-				'X-WP-Nonce': maxiStarterSites.apiNonce
+				'X-WP-Nonce': maxiStarterSites.apiNonce,
 			},
 			data: importData,
-		}).then(response => {
-			console.log('Import response:', response);
-			window.maxiStarterSites.currentStarterSite = title;
-			setImportStatus('done');
-		}).catch(error => {
-			console.error('Import error full details:', error);
-			console.error('Error status:', error.status);
-			console.error('Error message:', error.message);
-			console.error('Error data:', error.data);
-			setImportStatus('idle');
-		});
+		})
+			.then(response => {
+				console.log('Import response:', response);
+				window.maxiStarterSites.currentStarterSite = title;
+				setImportStatus('done');
+			})
+			.catch(error => {
+				console.error('Import error full details:', error);
+				console.error('Error status:', error.status);
+				console.error('Error message:', error.message);
+				console.error('Error data:', error.data);
+				setImportStatus('idle');
+			});
 	};
 
 	return (
@@ -229,11 +272,26 @@ const MaxiImportPopUp = ({
 						)}
 					</p>
 				</div>
-
 				<div className='maxi-cloud-container__import-popup_sections-container'>
 					{/* General section */}
 					<div className='maxi-cloud-container__import-popup_section'>
-						<h3 className='maxi-cloud-container__import-popup_section-title'>{__('General', 'maxi-blocks')}</h3>
+						<div className='maxi-cloud-container__import-popup_toggle-all'>
+							<ToggleSwitch
+								label={__('Toggle all on/off', 'maxi-blocks')}
+								selected={Object.values(selectedItems).every(
+									item =>
+										typeof item === 'boolean'
+											? item
+											: Object.values(item).every(
+													val => val
+											  )
+								)}
+								onChange={handleToggleAll}
+							/>
+						</div>
+						<h3 className='maxi-cloud-container__import-popup_section-title'>
+							{__('General', 'maxi-blocks')}
+						</h3>
 						<div className='maxi-cloud-container__import-popup_item'>
 							<ToggleSwitch
 								label={__('Style Card', 'maxi-blocks')}
@@ -251,7 +309,13 @@ const MaxiImportPopUp = ({
 						</div>
 						{isValidValue(contentXML) && (
 							<div className='maxi-cloud-container__import-popup_item'>
-								<div className={`maxi-cloud-container__import-popup_toggle-wrapper${wpImporterStatus !== 'active' ? ' maxi-disabled' : ''}`}>
+								<div
+									className={`maxi-cloud-container__import-popup_toggle-wrapper${
+										wpImporterStatus !== 'active'
+											? ' maxi-disabled'
+											: ''
+									}`}
+								>
 									<ToggleSwitch
 										label={__('Content XML', 'maxi-blocks')}
 										selected={selectedItems.contentXML}
@@ -265,30 +329,49 @@ const MaxiImportPopUp = ({
 										disabled={wpImporterStatus !== 'active'}
 									/>
 									{wpImporterStatus !== 'active' && (
-										<div className="maxi-cloud-container__import-popup_warning-message">
-											{wpImporterStatus === 'installed' ? (
+										<div className='maxi-cloud-container__import-popup_warning-message'>
+											{wpImporterStatus ===
+											'installed' ? (
 												<p>
-													{__('Please ', 'maxi-blocks')}
+													{__(
+														'Please ',
+														'maxi-blocks'
+													)}
 													<a
-														href="/wp-admin/plugins.php"
-														target="_blank"
-														rel="noopener noreferrer"
+														href='/wp-admin/plugins.php'
+														target='_blank'
+														rel='noopener noreferrer'
 													>
-														{__('activate', 'maxi-blocks')}
+														{__(
+															'activate',
+															'maxi-blocks'
+														)}
 													</a>
-													{__(' WordPress Importer plugin to import content XML files.', 'maxi-blocks')}
+													{__(
+														' WordPress Importer plugin to import content XML files.',
+														'maxi-blocks'
+													)}
 												</p>
 											) : (
 												<p>
-													{__('Please ', 'maxi-blocks')}
+													{__(
+														'Please ',
+														'maxi-blocks'
+													)}
 													<a
-														href="https://wordpress.org/plugins/wordpress-importer/"
-														target="_blank"
-														rel="noopener noreferrer"
+														href='https://wordpress.org/plugins/wordpress-importer/'
+														target='_blank'
+														rel='noopener noreferrer'
 													>
-														{__('install and activate', 'maxi-blocks')}
+														{__(
+															'install and activate',
+															'maxi-blocks'
+														)}
 													</a>
-													{__(' WordPress Importer plugin to import content XML files.', 'maxi-blocks')}
+													{__(
+														' WordPress Importer plugin to import content XML files.',
+														'maxi-blocks'
+													)}
 												</p>
 											)}
 										</div>
@@ -308,7 +391,9 @@ const MaxiImportPopUp = ({
 
 					{templates?.length > 0 && (
 						<div className='maxi-cloud-container__import-popup_section'>
-							<h3 className='maxi-cloud-container__import-popup_section-title'>{__('Templates', 'maxi-blocks')}</h3>
+							<h3 className='maxi-cloud-container__import-popup_section-title'>
+								{__('Templates', 'maxi-blocks')}
+							</h3>
 							{templates.map(template => (
 								<div
 									key={template.name}
@@ -339,7 +424,9 @@ const MaxiImportPopUp = ({
 
 					{pages?.length > 0 && (
 						<div className='maxi-cloud-container__import-popup_section'>
-							<h3 className='maxi-cloud-container__import-popup_section-title'>{__('Pages', 'maxi-blocks')}</h3>
+							<h3 className='maxi-cloud-container__import-popup_section-title'>
+								{__('Pages', 'maxi-blocks')}
+							</h3>
 							<p className='maxi-cloud-container__import-popup_section-description'>
 								{__(
 									'The Pages section allows you to import predefined pages included in the starter site. Toggle the options on or off depending on whether you want to include them in your site.',
@@ -406,10 +493,15 @@ const MaxiImportPopUp = ({
 					<button
 						type='button'
 						className={`maxi-cloud-container__import-popup_button maxi-cloud-container__import-popup_button-import ${
-							importStatus === 'loading' ? 'maxi-cloud-container__import-popup_button-loading' : ''
+							importStatus === 'loading'
+								? 'maxi-cloud-container__import-popup_button-loading'
+								: ''
 						}`}
 						onClick={() => onClickImport(selectedItems)}
-						disabled={importStatus === 'loading' || importStatus === 'done'}
+						disabled={
+							importStatus === 'loading' ||
+							importStatus === 'done'
+						}
 					>
 						{importStatus === 'loading'
 							? __('Importing...', 'maxi-blocks')

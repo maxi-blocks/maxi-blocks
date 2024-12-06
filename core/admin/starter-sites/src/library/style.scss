@@ -1642,13 +1642,13 @@
 						}
 					}
 				}
+			}
 
-				.maxi-cloud-masonry-card__image {
-					border: none;
-					padding: 0;
-					background: #fff;
-					border: 1px solid #e3e3e3;
-				}
+			.maxi-cloud-masonry-card__image {
+				border: none;
+				padding: 0;
+				background: #fff;
+				border: 1px solid #e3e3e3;
 			}
 		}
 	}
@@ -3059,6 +3059,33 @@ body .maxi-hidden {
 		@media (max-width: 768px) {
 			&_sections-container {
 				grid-template-columns: 1fr;
+			}
+		}
+
+		&_toggle-wrapper {
+			width: 100%;
+
+			&.maxi-disabled {
+				opacity: 0.7;
+
+				.maxi-toggle-switch {
+					pointer-events: none;
+				}
+			}
+		}
+
+		&_warning-message {
+			margin-top: 8px;
+			color: #d63638;
+			font-size: 13px;
+
+			a {
+				color: #0073aa;
+				text-decoration: underline;
+
+				&:hover {
+					color: #00496e;
+				}
 			}
 		}
 	}

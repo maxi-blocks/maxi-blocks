@@ -1238,15 +1238,21 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 MAXI_PLUGIN_VERSION,
             );
 
+            // Check WordPress Importer plugin status
+            $wp_importer_status = 'missing';
+            if (file_exists(WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php')) {
+                $wp_importer_status = is_plugin_active('wordpress-importer/wordpress-importer.php')
+                    ? 'active'
+                    : 'installed';
+            }
+
             wp_localize_script('maxi-starter-sites', 'maxiStarterSites', [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('maxi_starter_sites'),
                 'apiRoot' => esc_url_raw(rest_url()),
                 'apiNonce' => wp_create_nonce('wp_rest'),
-                'currentStarterSite' => get_option(
-                    'maxiblocks_current_starter_site',
-                    '',
-                ),
+                'currentStarterSite' => get_option('maxiblocks_current_starter_site', ''),
+                'wpImporterStatus' => $wp_importer_status,
             ]);
         }
 

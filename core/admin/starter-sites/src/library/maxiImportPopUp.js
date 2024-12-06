@@ -75,13 +75,17 @@ const MaxiImportPopUp = ({
 	contentXML,
 	onRequestClose,
 }) => {
+	// Add check for WordPress Importer status from localized data
+	const wpImporterStatus = window.maxiStarterSites?.wpImporterStatus || 'missing';
+
 	const [selectedItems, setSelectedItems] = useState(() => {
 		const initialState = {
 			templates: {},
 			pages: {},
 			patterns: {},
 			sc: isValidValue(sc),
-			contentXML: isValidValue(contentXML),
+			// Only set contentXML to true if plugin is active and value is valid
+			contentXML: wpImporterStatus === 'active' && isValidValue(contentXML),
 			title,
 		};
 
@@ -90,7 +94,7 @@ const MaxiImportPopUp = ({
 		});
 
 		pages?.forEach(page => {
-				initialState.pages[page.name] = true;
+			initialState.pages[page.name] = true;
 		});
 
 		patterns?.forEach(pattern => {
@@ -103,6 +107,11 @@ const MaxiImportPopUp = ({
 	const [importStatus, setImportStatus] = useState('idle'); // 'idle' | 'loading' | 'done'
 
 	const handleToggleChange = (type, name, value) => {
+		// Prevent changing contentXML if plugin is not active
+		if (type === 'contentXML' && wpImporterStatus !== 'active') {
+			return;
+		}
+
 		if (type === 'sc' || type === 'contentXML') {
 			setSelectedItems(prevState => ({
 				...prevState,
@@ -242,23 +251,57 @@ const MaxiImportPopUp = ({
 						</div>
 						{isValidValue(contentXML) && (
 							<div className='maxi-cloud-container__import-popup_item'>
-								<ToggleSwitch
-									label={__('Content XML', 'maxi-blocks')}
-									selected={selectedItems.contentXML}
-									onChange={val =>
-										handleToggleChange(
-											'contentXML',
-											'contentXML',
-											val
-										)
-									}
-								/>
-								<p>
-									{__(
-										'This option imports predefined content (posts, pages, or custom content) from the XML file.',
-										'maxi-blocks'
+								<div className={`maxi-cloud-container__import-popup_toggle-wrapper${wpImporterStatus !== 'active' ? ' maxi-disabled' : ''}`}>
+									<ToggleSwitch
+										label={__('Content XML', 'maxi-blocks')}
+										selected={selectedItems.contentXML}
+										onChange={val =>
+											handleToggleChange(
+												'contentXML',
+												'contentXML',
+												val
+											)
+										}
+										disabled={wpImporterStatus !== 'active'}
+									/>
+									{wpImporterStatus !== 'active' && (
+										<div className="maxi-cloud-container__import-popup_warning-message">
+											{wpImporterStatus === 'installed' ? (
+												<p>
+													{__('Please ', 'maxi-blocks')}
+													<a
+														href="/wp-admin/plugins.php"
+														target="_blank"
+														rel="noopener noreferrer"
+													>
+														{__('activate', 'maxi-blocks')}
+													</a>
+													{__(' WordPress Importer plugin to import content XML files.', 'maxi-blocks')}
+												</p>
+											) : (
+												<p>
+													{__('Please ', 'maxi-blocks')}
+													<a
+														href="https://wordpress.org/plugins/wordpress-importer/"
+														target="_blank"
+														rel="noopener noreferrer"
+													>
+														{__('install and activate', 'maxi-blocks')}
+													</a>
+													{__(' WordPress Importer plugin to import content XML files.', 'maxi-blocks')}
+												</p>
+											)}
+										</div>
 									)}
-								</p>
+								</div>
+								{wpImporterStatus === 'active' && (
+									<p>
+										{__(
+											'This option imports predefined content (posts, pages, or custom content) from the XML file.',
+											'maxi-blocks'
+										)}
+									</p>
+								)}
 							</div>
 						)}
 					</div>

@@ -40,6 +40,7 @@ import {
 	limitShift,
 	size,
 	flip,
+	hide,
 } from '@floating-ui/react-dom';
 
 /**
@@ -150,6 +151,7 @@ const Popover = (
 		shiftLimit,
 		useFlip = false,
 		resize = false,
+		useHide = false,
 		__unstableObserveElement,
 		__unstableSlotName = SLOT_NAME,
 		...contentProps
@@ -265,6 +267,7 @@ const Popover = (
 			  })
 			: undefined,
 		hasArrow ? arrow({ element: arrowRef }) : undefined,
+		useHide ? hide() : undefined,
 	].filter(m => !!m);
 	const slotName = useContext(slotNameContext) || __unstableSlotName;
 
@@ -300,7 +303,7 @@ const Popover = (
 		floating,
 		update,
 		placement: computedPlacement,
-		middlewareData: { arrow: arrowData = {} },
+		middlewareData: { arrow: arrowData = {}, hide: hideData = {} },
 	} = useFloating({
 		strategy,
 		placement: normalizedPlacementFromProps,
@@ -403,6 +406,18 @@ const Popover = (
 							position: strategy,
 							left: Number.isNaN(x) ? 0 : x,
 							top: Number.isNaN(y) ? 0 : y,
+							display: hideData?.referenceHidden
+								? 'none'
+								: undefined,
+							// Clip the popover content to prevent it from overflowing the viewport.
+							// Top and bottom are set to -100px because the popover shouldn't be clipped in those directions.
+							clipPath: `inset(-100px ${
+								(hideData?.referenceHiddenOffsets?.right ?? 0) +
+								(refs?.floating?.current?.offsetWidth ?? 0)
+							}px -100px ${
+								(hideData?.referenceHiddenOffsets?.left ?? 0) +
+								(refs?.floating?.current?.offsetWidth ?? 0)
+							}px)`,
 					  }
 			}
 		>

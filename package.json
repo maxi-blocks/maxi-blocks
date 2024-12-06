@@ -55,6 +55,7 @@
 		"dompurify": "latest",
 		"html-react-parser": "latest",
 		"is-mobile": "latest",
+		"jszip": "^3.10.1",
 		"langchain": "^0.1.30",
 		"leaflet": "latest",
 		"masonry-layout": "latest",

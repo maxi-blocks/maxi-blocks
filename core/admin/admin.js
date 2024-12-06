@@ -15,9 +15,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	);
 	if (notProDiv) {
 		notProDiv.style.display = 'block';
-		document.getElementById(
+		const proNotProDiv = document.getElementById(
 			'maxi-dashboard_main-content_pro-not-pro'
-		).style.display = 'block';
+		);
+		if (proNotProDiv) proNotProDiv.style.display = 'block';
 	}
 
 	// save new breakpoints to the hidden input

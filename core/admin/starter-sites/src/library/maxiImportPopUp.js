@@ -169,6 +169,31 @@ const MaxiImportPopUp = ({
 		});
 	};
 
+	const areAllItemsSelected = selectedItems => {
+		// Check templates
+		const templatesSelected = templates
+			? Object.values(selectedItems.templates).every(val => val)
+			: true;
+
+		// Check pages
+		const pagesSelected = pages
+			? Object.values(selectedItems.pages).every(val => val)
+			: true;
+
+		// Check patterns
+		const patternsSelected = patterns
+			? Object.values(selectedItems.patterns).every(val => val)
+			: true;
+
+		// Check SC and contentXML only if they are valid
+		const scSelected = isValidValue(sc) ? selectedItems.sc : true;
+		const xmlSelected = wpImporterStatus === 'active' && isValidValue(contentXML)
+			? selectedItems.contentXML
+			: true;
+
+		return templatesSelected && pagesSelected && patternsSelected && scSelected && xmlSelected;
+	};
+
 	const onClickImport = selectedItems => {
 		setImportStatus('loading');
 
@@ -278,14 +303,7 @@ const MaxiImportPopUp = ({
 						<div className='maxi-cloud-container__import-popup_toggle-all'>
 							<ToggleSwitch
 								label={__('Toggle all on/off', 'maxi-blocks')}
-								selected={Object.values(selectedItems).every(
-									item =>
-										typeof item === 'boolean'
-											? item
-											: Object.values(item).every(
-													val => val
-											  )
-								)}
+								selected={areAllItemsSelected(selectedItems)}
 								onChange={handleToggleAll}
 							/>
 						</div>

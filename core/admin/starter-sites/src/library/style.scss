@@ -2969,6 +2969,10 @@ body .maxi-hidden {
 			grid-template-columns: repeat(4, 1fr);
 			gap: 20px;
 		}
+		&_toggle-all {
+			// border-bottom: 1px solid #eee;
+			// padding-bottom: 20px;
+		}
 
 		&_section {
 			background: #fff;
@@ -2981,12 +2985,15 @@ body .maxi-hidden {
 				font-weight: 500 !important;
 				color: #151617;
 				margin-top: 30px !important;
+				border-bottom: 1px solid #eee;
+				padding-bottom: 13px;
 			}
 
 			&-description {
 				font-size: 13px !important;
-				color: #939fa7;
+				color: #939fa7 !important;
 				margin: 0 0 20px;
+				padding-top: 13px;
 			}
 			.maxi-toggle-switch {
 				margin-bottom: 0 !important;
@@ -3017,21 +3024,27 @@ body .maxi-hidden {
 				color: #464a53;
 				margin: 4px 0 0 16px;
 			}
+			> p {
+				font-size: 13px !important;
+				color: #939fa7 !important;
+			}
 		}
 
 		&_footer {
 			display: flex;
-			justify-content: flex-end;
+			justify-content: flex-start;
 			padding-top: 20px;
 			margin-top: auto;
+			margin-bottom: 30px;
 		}
 
 		&_button {
 			&-import {
-				background-color: #0073aa;
+				border-radius: 20px !important;
+				background-color: #007cba;
+				border: none !important;
 				color: #fff;
-				border: 1px solid #0073aa;
-				padding: 10px 24px;
+				padding: 15px 40px;
 				border-radius: 4px;
 				font-size: 14px;
 				font-weight: 500;
@@ -3039,8 +3052,7 @@ body .maxi-hidden {
 				transition: all 0.2s ease;
 
 				&:hover:not(:disabled) {
-					background-color: darken(#0073aa, 10%);
-					border-color: darken(#0073aa, 10%);
+					background-color: var(--maxi-primary-color);
 				}
 
 				&:disabled {

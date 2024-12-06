@@ -1,5 +1,9 @@
 <?php
 require_once(plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php');
+// At the top of the file, after the initial requires
+require_once(ABSPATH . 'wp-admin/includes/file.php');
+require_once(ABSPATH . 'wp-admin/includes/media.php');
+require_once(ABSPATH . 'wp-admin/includes/image.php');
 /**
  * MaxiBlocks styles API
  */
@@ -1128,6 +1132,7 @@ if (!class_exists('MaxiBlocks_API')):
 
                 foreach ($import_data['templates'] as $template) {
                     // Fetch template content from URL
+                    error_log($template['name']);
                     $template_content = $fetch_remote_content($template['content']);
                     if (!$template_content) {
                         $results['templates'][] = [
@@ -1266,12 +1271,15 @@ if (!class_exists('MaxiBlocks_API')):
         private function maxi_import_pages($pages_data)
         {
             $results = [];
+            $home_page_id = null;
+            $blog_page_id = null;
+            $has_home_page = false;
+            $has_blog_template = false;
 
+            // First pass - import pages and identify home/blog pages
             foreach ($pages_data as $page_name => $page_data) {
                 // Parse the page data
                 $content = $page_data['content'] ?? '';
-
-                // Process images in content
                 $content = $this->process_content_images($content);
 
                 $styles = $page_data['styles'] ?? [];
@@ -1300,6 +1308,14 @@ if (!class_exists('MaxiBlocks_API')):
                     continue;
                 }
 
+                // Check if this is a home or blog page
+                if (stripos($entity_title, 'home') !== false || stripos($entity_slug, 'home') !== false) {
+                    $home_page_id = $post_id;
+                    $has_home_page = true;
+                } elseif (stripos($entity_title, 'blog') !== false || stripos($entity_slug, 'blog') !== false) {
+                    $blog_page_id = $post_id;
+                }
+
                 // Import styles into DB
                 $this->import_styles_to_db($styles);
 
@@ -1315,6 +1331,55 @@ if (!class_exists('MaxiBlocks_API')):
                     'message' => sprintf(__('Successfully imported %s', 'maxi-blocks'), $entity_title)
                 ];
             }
+
+            // Check if we have a blog template
+            $blog_template = get_block_template(get_stylesheet() . '//blog', 'wp_template');
+            $has_blog_template = !empty($blog_template);
+
+            // Create blog page if it doesn't exist
+            if (!$blog_page_id) {
+                // Check if a page with slug 'blog' already exists
+                $existing_blog = get_page_by_path('blog');
+
+                if ($existing_blog) {
+                    $blog_page_id = $existing_blog->ID;
+                } else {
+                    $blog_page = array(
+                        'post_title'    => 'Blog',
+                        'post_content'  => '',
+                        'post_status'   => 'publish',
+                        'post_type'     => 'page',
+                        'post_name'     => 'blog'
+                    );
+                    $blog_page_id = wp_insert_post($blog_page);
+
+                    if (!is_wp_error($blog_page_id)) {
+                        $results['blog_page'] = [
+                            'success' => true,
+                            'post_id' => $blog_page_id,
+                            'message' => __('Created Blog page', 'maxi-blocks')
+                        ];
+                    }
+                }
+            }
+
+            // Update reading settings
+            if ($has_home_page) {
+                update_option('show_on_front', 'page');
+                update_option('page_on_front', $home_page_id);
+            }
+
+            // Always set the blog page if we have one
+            if ($blog_page_id && !is_wp_error($blog_page_id)) {
+                update_option('page_for_posts', $blog_page_id);
+            }
+
+            // Add reading settings to results
+            $results['reading_settings'] = [
+                'show_on_front' => get_option('show_on_front'),
+                'page_on_front' => get_option('page_on_front'),
+                'page_for_posts' => get_option('page_for_posts')
+            ];
 
             return $results;
         }
@@ -1937,7 +2002,6 @@ if (!class_exists('MaxiBlocks_API')):
                         }
                     }
 
-                    error_log('Generated styles: ' . $response);
                     return $response;
                 };
 
@@ -2306,22 +2370,60 @@ if (!class_exists('MaxiBlocks_API')):
                     return false;
                 }
 
-                // Get file name from URL
-                $file_name = basename(parse_url($url, PHP_URL_PATH));
+                // Skip if URL is already from this site
+                if (strpos($url, site_url()) !== false) {
+                    return $url;
+                }
 
-                // Download file
+                // Get file info
+                $file_array = array();
+                $file_array['name'] = basename(parse_url($url, PHP_URL_PATH));
+
+                // Check file type
+                $wp_filetype = wp_check_filetype($file_array['name']);
+                if (!$wp_filetype['type']) {
+                    // Try to get type from remote file
+                    $response = wp_remote_head($url);
+                    if (!is_wp_error($response)) {
+                        $headers = wp_remote_retrieve_headers($response);
+                        if (isset($headers['content-type'])) {
+                            $mime_type = $headers['content-type'];
+                            // Map common MIME types to extensions
+                            $mime_to_ext = array(
+                                'image/jpeg' => 'jpg',
+                                'image/jpg' => 'jpg',
+                                'image/png' => 'png',
+                                'image/gif' => 'gif',
+                                'image/webp' => 'webp',
+                                'image/svg+xml' => 'svg'
+                            );
+
+                            if (isset($mime_to_ext[$mime_type])) {
+                                $wp_filetype['type'] = $mime_type;
+                                $wp_filetype['ext'] = $mime_to_ext[$mime_type];
+                                // Update filename with correct extension
+                                $file_array['name'] = sanitize_file_name(
+                                    pathinfo($file_array['name'], PATHINFO_FILENAME) . '.' . $wp_filetype['ext']
+                                );
+                            }
+                        }
+                    }
+                }
+
+                // Skip if not a valid image type
+                if (!$wp_filetype['type'] || !stristr($wp_filetype['type'], 'image/')) {
+                    return false;
+                }
+
+                // Download file to temp dir
                 $temp_file = download_url($url);
                 if (is_wp_error($temp_file)) {
                     return false;
                 }
 
-                // Prepare file data
-                $file_array = array(
-                    'name'     => $file_name,
-                    'tmp_name' => $temp_file
-                );
+                $file_array['tmp_name'] = $temp_file;
 
-                // Set upload directory filter to ensure proper path
+                // Set upload directory filter
                 $upload_override = function ($upload) {
                     $upload['path'] = WP_CONTENT_DIR . '/uploads';
                     $upload['url'] = WP_CONTENT_URL . '/uploads';
@@ -2329,8 +2431,12 @@ if (!class_exists('MaxiBlocks_API')):
                 };
                 add_filter('upload_dir', $upload_override);
 
-                // Upload the image
-                $id = media_handle_sideload($file_array, 0);
+                // Do the upload
+                $time = current_time('mysql');
+                $file = wp_handle_sideload(
+                    $file_array,
+                    array('test_form' => false, 'time' => $time)
+                );
 
                 // Remove the upload directory filter
                 remove_filter('upload_dir', $upload_override);
@@ -2338,70 +2444,67 @@ if (!class_exists('MaxiBlocks_API')):
                 // Clean up temp file
                 @unlink($temp_file);
 
-                if (is_wp_error($id)) {
+                if (isset($file['error'])) {
                     return false;
                 }
 
-                // Get the uploaded image URL
-                $new_url = wp_get_attachment_url($id);
-                return $new_url;
+                // Create attachment
+                $attachment = array(
+                    'post_mime_type' => $file['type'],
+                    'post_title' => preg_replace('/\.[^.]+$/', '', $file_array['name']),
+                    'post_content' => '',
+                    'post_status' => 'inherit',
+                    'guid' => $file['url']
+                );
+
+                $attach_id = wp_insert_attachment($attachment, $file['file']);
+                if (is_wp_error($attach_id)) {
+                    return false;
+                }
+
+                // Generate metadata and thumbnails
+                require_once(ABSPATH . 'wp-admin/includes/image.php');
+                $attach_data = wp_generate_attachment_metadata($attach_id, $file['file']);
+                wp_update_attachment_metadata($attach_id, $attach_data);
+
+                return $file['url'];
             };
 
             // Find all image URLs in content
             $pattern = '/"url":\s*"([^"]+)"/';
             $content = preg_replace_callback($pattern, function ($matches) use ($import_image) {
-                $old_url = $matches[1];
-
-                // Skip if it's already a local URL
-                if (strpos($old_url, site_url()) !== false) {
+                if (empty($matches[1])) {
                     return $matches[0];
                 }
-
-                // Import the image
+                $old_url = $matches[1];
                 $new_url = $import_image($old_url);
-                if ($new_url) {
-                    return '"url":"' . $new_url . '"';
-                }
-
-                return $matches[0];
+                return $new_url ? '"url":"' . $new_url . '"' : $matches[0];
             }, $content);
 
             // Also handle background images
             $pattern = '/"backgroundImage":\s*"([^"]+)"/';
             $content = preg_replace_callback($pattern, function ($matches) use ($import_image) {
-                $old_url = $matches[1];
-
-                // Skip if it's already a local URL
-                if (strpos($old_url, site_url()) !== false) {
+                if (empty($matches[1])) {
                     return $matches[0];
                 }
-
-                // Import the image
+                $old_url = $matches[1];
                 $new_url = $import_image($old_url);
-                if ($new_url) {
-                    return '"backgroundImage":"' . $new_url . '"';
-                }
-
-                return $matches[0];
+                return $new_url ? '"backgroundImage":"' . $new_url . '"' : $matches[0];
             }, $content);
 
             // Handle SVG content
             $pattern = '/"svg":\s*"([^"]+)"/';
             $content = preg_replace_callback($pattern, function ($matches) use ($import_image) {
-                $old_url = $matches[1];
-
-                // Skip if it's already a local URL or if it's inline SVG
-                if (strpos($old_url, site_url()) !== false || strpos($old_url, '<svg') !== false) {
+                if (empty($matches[1])) {
                     return $matches[0];
                 }
-
-                // Import the SVG
-                $new_url = $import_image($old_url);
-                if ($new_url) {
-                    return '"svg":"' . $new_url . '"';
+                $old_url = $matches[1];
+                // Skip if it's inline SVG
+                if (strpos($old_url, '<svg') !== false) {
+                    return $matches[0];
                 }
-
-                return $matches[0];
+                $new_url = $import_image($old_url);
+                return $new_url ? '"svg":"' . $new_url . '"' : $matches[0];
             }, $content);
 
             return $content;

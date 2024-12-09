@@ -320,7 +320,7 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, co
 
 							{/* Pages section */}
 							<div className='maxi-cloud-container__details-popup_section'>
-								<h3>{__('Pages in this starter site', 'maxi-blocks')} ({pages?.length || 0})</h3>
+								<h3 className='maxi-cloud-container__details-popup_section-title'>{__('Pages in this starter site', 'maxi-blocks')} ({pages?.length || 0})</h3>
 								<div className='maxi-cloud-masonry'>
 									{pages?.map(page => (
 										<div key={page.name} className='maxi-cloud-container__details-popup_item'>
@@ -334,7 +334,7 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, co
 							{/* Templates section */}
 							{templates?.length > 0 && (
 								<div className='maxi-cloud-container__details-popup_section'>
-									<h3>{__('Templates in this starter site', 'maxi-blocks')} ({templates.length})</h3>
+									<h3 className='maxi-cloud-container__details-popup_section-title'>{__('Templates in this starter site', 'maxi-blocks')} ({templates.length})</h3>
 									<div className='maxi-cloud-masonry'>
 										{templates.map(template => (
 											<div key={template.name} className='maxi-cloud-container__details-popup_item'>
@@ -349,7 +349,7 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, co
 							{/* Patterns section */}
 							{patterns?.length > 0 && (
 								<div className='maxi-cloud-container__details-popup_section'>
-									<h3>{__('Patterns in this starter site', 'maxi-blocks')} ({patterns.length})</h3>
+									<h3 className='maxi-cloud-container__details-popup_section-title'>{__('Patterns in this starter site', 'maxi-blocks')} ({patterns.length})</h3>
 									<div className='maxi-cloud-masonry'>
 										{patterns.map(pattern => (
 											<div key={pattern.name} className='maxi-cloud-container__details-popup_item'>
@@ -420,7 +420,7 @@ const LibraryContainer = props => {
 			)}
 
 			{type === 'preview' && !isImport && (
-				<div className='maxi-cloud-container__patterns'>
+				<div className='maxi-cloud-container__patterns maxi-cloud-container__details'>
 					<MaxiDetailsPopUp
 						url={url}
 						title={title}

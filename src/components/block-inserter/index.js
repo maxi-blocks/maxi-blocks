@@ -248,50 +248,48 @@ const InterBlockToggle = props => {
 			}}
 			onClick={onToggleInserter}
 		>
-			<>
-				<Button
-					key={`maxi-inter-blocks-inserter__content-item-${clientId}`}
-					className='maxi-inter-blocks-inserter__content-item'
+			<Button
+				key={`maxi-inter-blocks-inserter__content-item-${clientId}`}
+				className='maxi-inter-blocks-inserter__content-item'
+			>
+				<svg
+					xmlns='http://www.w3.org/2000/svg'
+					viewBox='0 0 24 24'
+					width='24'
+					height='24'
+					role='img'
+					aria-hidden='true'
+					focusable='false'
 				>
-					<svg
-						xmlns='http://www.w3.org/2000/svg'
-						viewBox='0 0 24 24'
-						width='24'
-						height='24'
-						role='img'
-						aria-hidden='true'
-						focusable='false'
-					>
-						<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
-					</svg>
-				</Button>
+					<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
+				</svg>
+			</Button>
+			<style>
+				{
+					/** Removes original WP inserter, so avoids both inserters at same time */
+					'.block-editor-block-list__insertion-point: {display: none}'
+				}
+			</style>
+			{(isHovered || isOpen) && (
 				<style>
-					{
-						/** Removes original WP inserter, so avoids both inserters at same time */
-						'.block-editor-block-list__insertion-point: {display: none}'
-					}
+					{clientId &&
+						/** Adds blue boundary outline on the current block */
+						`.maxi-block[data-block="${clientId}"]::after {
+                content: '';
+                position: absolute;
+                pointer-events: none;
+                opacity: 1;
+              }`}
+					{nextBlockClientId &&
+						/** Adds blue boundary outline on the next block */
+						`.maxi-block[data-block="${nextBlockClientId}"]::after {
+                content: '';
+                position: absolute;
+                pointer-events: none;
+                opacity: 1;
+              }`}
 				</style>
-				{(isHovered || isOpen) && (
-					<style>
-						{clientId &&
-							/** Adds blue boundary outline on the current block */
-							`.maxi-block[data-block="${clientId}"]::after {
-                content: '';
-                position: absolute;
-                pointer-events: none;
-                opacity: 1;
-              }`}
-						{nextBlockClientId &&
-							/** Adds blue boundary outline on the next block */
-							`.maxi-block[data-block="${nextBlockClientId}"]::after {
-                content: '';
-                position: absolute;
-                pointer-events: none;
-                opacity: 1;
-              }`}
-					</style>
-				)}
-			</>
+			)}
 		</div>
 	);
 };
@@ -338,6 +336,8 @@ const InterBlockInserter = forwardRef((props, ref) => {
 			observeBlockPosition={clientId}
 			dataclientid={clientId}
 			useAnimationFrame
+			useHide
+			strategy='fixed'
 		>
 			<Inserter
 				key={`maxi-inter-blocks-inserter__content-${clientId}`}

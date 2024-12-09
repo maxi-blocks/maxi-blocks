@@ -31,8 +31,7 @@ const outdentListItems = value => {
 	// Outdent all list items from the starting line index until the last child
 	// index of the ending list. All children of the ending list need to be
 	// outdented, otherwise they'll be orphaned.
-	// eslint-disable-next-line no-plusplus
-	for (let index = startingLineIndex; index <= lastChildIndex; index++) {
+	for (let index = startingLineIndex; index <= lastChildIndex; index += 1) {
 		// Skip indices that are not line separators.
 		if (text[index] !== LINE_SEPARATOR) {
 			// eslint-disable-next-line no-continue

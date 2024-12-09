@@ -45,6 +45,9 @@ const dynamicContent = {
 	'dc-field': {
 		type: 'string',
 	},
+	'dc-sub-field': {
+		type: 'string',
+	},
 	'dc-format': {
 		type: 'string',
 		default: 'd.m.Y t',

@@ -26,7 +26,7 @@ import { isValidEmail } from '../auth';
  */
 import classnames from 'classnames';
 import { SearchClient as TypesenseSearchClient } from 'typesense';
-import { isNil, isUndefined } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -419,14 +419,15 @@ const LibraryToolbar = props => {
 						<h2>{title}</h2>
 						<span className='maxi-cloud-toolbar__line'>|</span>
 						<span>{cost}</span>
-						{!isUndefined(toneUrl) && !isNil(toneUrl) && (
-							<ToolbarButton
-								onClick={() => {
-									openRelatedPattern();
-								}}
-								label={__('Switch tone', 'maxi-blocks')}
-							/>
-						)}
+						{!isNil(toneUrl) &&
+							!isEmpty(toneUrl)(
+								<ToolbarButton
+									onClick={() => {
+										openRelatedPattern();
+									}}
+									label={__('Switch tone', 'maxi-blocks')}
+								/>
+							)}
 					</div>
 					<div className='maxi-cloud-toolbar__responsive-buttons'>
 						<ToolbarButton

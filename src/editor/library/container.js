@@ -517,7 +517,9 @@ const LibraryContainer = props => {
 
 	/** Patterns / Blocks Results */
 	const patternsResults = hit => {
-		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
+		const hasDifferentTone = ['Patterns', 'Theme'].includes(
+			hit?.gutenberg_type?.[0]
+		);
 
 		return (
 			<MasonryItem
@@ -537,7 +539,7 @@ const LibraryContainer = props => {
 				isBeta={hit.post_tag?.includes('Beta')}
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
-				toneUrl={isPattern ? hit.link_to_related : null}
+				toneUrl={hasDifferentTone ? hit.link_to_related : null}
 				gutenbergCode={hit.gutenberg_code}
 				isSwapChecked={isSwapChecked}
 				onSelect={onSelect}

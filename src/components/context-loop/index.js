@@ -182,9 +182,11 @@ const ContextLoop = props => {
 					}))
 				);
 
-				const { id } = await resolveSelect('core').getCurrentUser();
+				if (!author) {
+					const { id } = await resolveSelect('core').getCurrentUser();
 
-				changeProps({ 'cl-author': id });
+					changeProps({ 'cl-author': id });
+				}
 			}
 		};
 

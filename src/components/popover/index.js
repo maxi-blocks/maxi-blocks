@@ -411,13 +411,19 @@ const Popover = (
 								: undefined,
 							// Clip the popover content to prevent it from overflowing the viewport.
 							// Top and bottom are set to -100px because the popover shouldn't be clipped in those directions.
-							clipPath: `inset(-100px ${
-								(hideData?.referenceHiddenOffsets?.right ?? 0) +
-								(refs?.floating?.current?.offsetWidth ?? 0)
-							}px -100px ${
-								(hideData?.referenceHiddenOffsets?.left ?? 0) +
-								(refs?.floating?.current?.offsetWidth ?? 0)
-							}px)`,
+							clipPath: hideData?.referenceHiddenOffsets
+								? `inset(-100px ${
+										(hideData.referenceHiddenOffsets
+											.right ?? 0) +
+										(refs?.floating?.current?.offsetWidth ??
+											0)
+								  }px -100px ${
+										(hideData.referenceHiddenOffsets.left ??
+											0) +
+										(refs?.floating?.current?.offsetWidth ??
+											0)
+								  }px)`
+								: undefined,
 					  }
 			}
 		>

@@ -10,7 +10,6 @@ import { Popover } from '@wordpress/components';
 /**
  * External dependencies
  */
-import JSZip from 'jszip';
 import apiFetch from '@wordpress/api-fetch';
 
 /**
@@ -252,53 +251,6 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 		window.URL.revokeObjectURL(url);
 	};
 
-	const handleDownloadZIP = async () => {
-		const exportData = await getExportData();
-		const jsonData = JSON.stringify(exportData, null, 2);
-
-		const zip = new JSZip();
-
-		zip.file(`${entitySlug}.json`, jsonData, {
-			compression: 'DEFLATE',
-			compressionOptions: {
-				level: 9,
-			},
-		});
-
-		// Add a readme file with maximum compression
-		zip.file(
-			'readme.txt',
-			'This export was created with MaxiBlocks.\nContains page content and styles.',
-			{
-				compression: 'DEFLATE',
-				compressionOptions: {
-					level: 9,
-				},
-			}
-		);
-
-		// Generate the zip file with maximum compression
-		const zipBlob = await zip.generateAsync({
-			type: 'blob',
-			compression: 'DEFLATE',
-			compressionOptions: {
-				level: 9,
-			},
-		});
-
-		// Create download link
-		const url = window.URL.createObjectURL(zipBlob);
-		const link = document.createElement('a');
-		link.href = url;
-		link.download = `${entitySlug}.zip`;
-
-		document.body.appendChild(link);
-		link.click();
-
-		document.body.removeChild(link);
-		window.URL.revokeObjectURL(url);
-	};
-
 	return (
 		<Popover
 			anchor={ref.current}
@@ -337,12 +289,6 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 						onClick={handleDownloadJSON}
 					>
 						{__('Download as JSON', 'maxi-blocks')}
-					</Button>
-					<Button
-						className='maxi-style-cards__download-button'
-						onClick={handleDownloadZIP}
-					>
-						{__('Download as ZIP', 'maxi-blocks')}
 					</Button>
 				</div>
 			</div>

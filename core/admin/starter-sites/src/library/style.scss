@@ -77,10 +77,9 @@
 
 	.maxi-preview {
 		.maxi-cloud-toolbar {
-			position: fixed !important;
-			top: 100px;
+			position: relative !important;
+			top: 0;
 			z-index: 10000;
-			width: 84.7%;
 			height: 50px;
 
 			padding: 5px 8px;
@@ -2211,15 +2210,9 @@
 	}
 }
 @media only screen and (min-width: 2210px) {
-	#maxi-starter-sites-root .maxi-preview .maxi-cloud-toolbar {
-		width: 84.8%;
-	}
 }
 @media only screen and (min-width: 2500px) {
 	#maxi-starter-sites-root {
-		.maxi-preview .maxi-cloud-toolbar {
-			width: 84.9%;
-		}
 		.maxi-cloud-container {
 			&__patterns {
 				&__sidebar {
@@ -2325,6 +2318,20 @@
 		}
 	}
 }
+@media (max-width: 1500px) {
+	#maxi-starter-sites-root .maxi-modal-import .components-modal__content {
+		width: 83% !important;
+		left: 15% !important;
+		top: 50px;
+	}
+	#maxi-starter-sites-root
+		.ais-InfiniteHits-list
+		.ais-InfiniteHits-item
+		.maxi-cloud-masonry-card__button {
+		padding: 0 8px !important;
+	}
+}
+
 @media only screen and (max-width: 1366px) {
 	#maxi-starter-sites-root {
 		.maxi-cloud-container__content-svg-shape
@@ -2383,6 +2390,10 @@
 	#maxi-starter-sites-root
 		.maxi-cloud-container__patterns__top-menu__show_button {
 		padding: 5px 8px;
+	}
+	#maxi-starter-sites-root .maxi-modal-import .components-modal__content {
+		left: 18% !important;
+		width: 80% !important;
 	}
 }
 @media only screen and (max-width: 1024px) {
@@ -2483,6 +2494,19 @@
 				}
 			}
 		}
+	}
+}
+
+@media only screen and (max-width: 960px) {
+	#maxi-starter-sites-root .maxi-modal-import .components-modal__content {
+		left: 10% !important;
+		width: 83% !important;
+	}
+	#maxi-starter-sites-root .maxi-cloud-container__import-popup_warning h2 {
+		padding: 0 !important;
+	}
+	#maxi-starter-sites-root .maxi-cloud-container__import-popup_section h3 {
+		margin-top: 10px !important;
 	}
 }
 
@@ -2690,6 +2714,14 @@
 		}
 	}
 	#maxi-starter-sites-root {
+		.maxi-cloud-container__import-popup_main-wrap {
+			padding: 0 !important;
+		}
+		.maxi-cloud-container__import-popup_section
+			.maxi-base-control__field
+			label {
+			text-align: left !important;
+		}
 		width: 100%;
 		min-height: 100%;
 		max-width: 100%;
@@ -2948,7 +2980,7 @@ body .maxi-hidden {
 			border-radius: 8px;
 			box-shadow: 0px 15px 28.5px rgba(150, 176, 203, 0.29);
 			padding: 50px 20px !important;
-
+			margin-top: 50px;
 			h2 {
 				font-size: 26px !important;
 				line-height: 36px !important;
@@ -3071,9 +3103,12 @@ body .maxi-hidden {
 			}
 		}
 
-		@media (max-width: 1200px) {
+		@media (max-width: 1500px) {
 			&_sections-container {
 				grid-template-columns: repeat(2, 1fr);
+			}
+			&_warning h2 {
+				padding: 0 30px !important;
 			}
 		}
 

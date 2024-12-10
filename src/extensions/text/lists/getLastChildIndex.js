@@ -19,8 +19,7 @@ const getLastChildIndex = ({ text, replacements }, lineIndex) => {
 	let childIndex = lineIndex;
 
 	// `lineIndex` could be `undefined` if it's the first line.
-	// eslint-disable-next-line no-plusplus
-	for (let index = lineIndex || 0; index < text.length; index++) {
+	for (let index = lineIndex || 0; index < text.length; index += 1) {
 		// We're only interested in line indices.
 		if (text[index] !== LINE_SEPARATOR) {
 			// eslint-disable-next-line no-continue

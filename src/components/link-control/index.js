@@ -26,6 +26,7 @@ import './editor.scss';
 const LinkControl = ({
 	linkValue = {},
 	isDCLinkActive,
+	disableOpenInNewTab,
 	onChangeLink,
 	onRemoveLink,
 }) => {
@@ -51,6 +52,7 @@ const LinkControl = ({
 								{
 									label: __('Open in new tab', 'maxi-blocks'),
 									id: 'opensInNewTab',
+									disabled: disableOpenInNewTab,
 								},
 								{
 									label: __('"nofollow"', 'maxi-blocks'),
@@ -73,10 +75,11 @@ const LinkControl = ({
 								key={index}
 								className='maxi-link-control__options-row'
 							>
-								{options.map(({ label, id }) => (
+								{options.map(({ label, id, disabled }) => (
 									<ToggleSwitch
 										key={id}
 										label={label}
+										disabled={disabled}
 										selected={linkValue[id]}
 										onChange={checked =>
 											onChangeLink({

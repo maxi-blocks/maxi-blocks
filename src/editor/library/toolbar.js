@@ -419,15 +419,14 @@ const LibraryToolbar = props => {
 						<h2>{title}</h2>
 						<span className='maxi-cloud-toolbar__line'>|</span>
 						<span>{cost}</span>
-						{!isNil(toneUrl) &&
-							!isEmpty(toneUrl)(
-								<ToolbarButton
-									onClick={() => {
-										openRelatedPattern();
-									}}
-									label={__('Switch tone', 'maxi-blocks')}
-								/>
-							)}
+						{!isNil(toneUrl) && !isEmpty(toneUrl) && (
+							<ToolbarButton
+								onClick={() => {
+									openRelatedPattern();
+								}}
+								label={__('Switch tone', 'maxi-blocks')}
+							/>
+						)}
 					</div>
 					<div className='maxi-cloud-toolbar__responsive-buttons'>
 						<ToolbarButton

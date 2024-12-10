@@ -265,17 +265,17 @@ const ContextLoop = props => {
 		paginationPerPage || childBlocksCount
 	);
 
-	useEffect(() => {
-		if (!paginationPerPage && paginationEnabled)
-			changeProps({ 'cl-pagination-per-page': usePaginationPerPage });
-	}, [usePaginationPerPage, paginationEnabled]);
-
 	// Until there is a value for paginationPerPage, set it to the number of child blocks
 	useEffect(() => {
-		if (childBlocksCount && !paginationPerPage) {
-			setUsePaginationPerPage(childBlocksCount);
+		if (!isNil(paginationPerPage)) {
+			if (childBlocksCount) {
+				setUsePaginationPerPage(childBlocksCount);
+				if (paginationEnabled) {
+					changeProps({ 'cl-pagination-per-page': childBlocksCount });
+				}
+			}
 		}
-	}, [childBlocksCount]);
+	}, [childBlocksCount, paginationEnabled, paginationPerPage, changeProps]);
 
 	useEffect(() => {
 		const postTypes = getTypes(source === 'wp' ? contentType : source);

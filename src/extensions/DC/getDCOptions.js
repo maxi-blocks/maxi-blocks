@@ -240,7 +240,10 @@ const getDCOptions = async (
 	);
 
 	if (!data) {
-		return null;
+		return {
+			newValues: {},
+			newPostIdOptions: [],
+		};
 	}
 
 	const prefix = isCL ? 'cl-' : 'dc-';

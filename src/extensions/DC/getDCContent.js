@@ -111,6 +111,7 @@ const getDCContent = async (dataRequest, clientId) => {
 			'media',
 			'users',
 			'authors',
+			'customers',
 			'products',
 			'archive',
 		].includes(type)

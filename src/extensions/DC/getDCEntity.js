@@ -240,7 +240,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 			user = await getUser(currentUserId);
 		} else user = await getUser(author ?? id);
 
-		if (type === 'customers' && user) {
+		if (type === 'customers' && user && user.roles.includes('customer')) {
 			const customerData = await resolveSelect(
 				'maxiBlocks/dynamic-content'
 			).getCustomerData(user.id);
@@ -251,6 +251,8 @@ const getDCEntity = async (dataRequest, clientId) => {
 					customerData,
 				};
 			}
+		} else if (type === 'customers') {
+			return null;
 		}
 
 		return user;

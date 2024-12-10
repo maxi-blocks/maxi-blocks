@@ -267,7 +267,7 @@ const ContextLoop = props => {
 
 	// Until there is a value for paginationPerPage, set it to the number of child blocks
 	useEffect(() => {
-		if (!isNil(paginationPerPage)) {
+		if (isNil(paginationPerPage)) {
 			if (childBlocksCount) {
 				setUsePaginationPerPage(childBlocksCount);
 				if (paginationEnabled) {

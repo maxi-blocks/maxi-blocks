@@ -502,6 +502,7 @@
 			}
 
 			&:hover {
+				opacity: 1 !important;
 				color: #000;
 				svg {
 					background-color: #000;
@@ -2225,6 +2226,9 @@
 	bottom: 0;
 	right: 0;
 	position: absolute;
+}
+.maxi-cloud-toolbar__logo {
+	margin-bottom: 0 !important;
 }
 @media only screen and (min-height: 1210px) {
 	#maxi-starter-sites-root {

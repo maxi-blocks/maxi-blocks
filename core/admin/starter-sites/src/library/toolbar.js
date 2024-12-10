@@ -53,17 +53,14 @@ const LibraryToolbar = props => {
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && (
 				// eslint-disable-next-line jsx-a11y/anchor-is-valid
-				<a
-					href='https://maxiblocks.com/demo/'
-					target='_blank'
-					rel='noreferrer'
+				<p
 					className='maxi-cloud-toolbar__logo'
 				>
 					{library}
 
 					{type === 'starter-sites' &&
 						__('Starter sites', 'maxi-blocks')}
-				</a>
+				</p>
 			)}
 			{type === 'preview' && (
 				<>

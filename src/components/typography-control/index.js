@@ -411,6 +411,15 @@ const TypographyControl = props => {
 		},
 	};
 
+	const minMaxSettingsLineHeight = {
+		...minMaxSettings,
+		'%': {
+			min: 0,
+			max: 300,
+			maxRange: 300,
+		},
+	};
+
 	const minMaxSettingsLetterSpacing = {
 		px: {
 			min: -10,
@@ -742,14 +751,7 @@ const TypographyControl = props => {
 							{ isReset: true }
 						)
 					}
-					minMaxSettings={{
-						...minMaxSettings,
-						'%': {
-							min: 0,
-							max: 300,
-							maxRange: 300,
-						},
-					}}
+					minMaxSettings={minMaxSettingsLineHeight}
 					allowedUnits={['px', 'em', 'rem', 'vw', '%', '-']}
 				/>
 				<AdvancedNumberControl

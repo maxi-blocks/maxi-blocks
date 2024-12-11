@@ -277,9 +277,6 @@ const MaxiDetailsPopUp = ({
 	const firstTemplate = templates?.[0];
 	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
 	const [showImport, setShowImport] = React.useState(false);
-	console.log('isPro', isPro);
-	console.log('isMaxiProActive', isMaxiProActive);
-	console.log('cost', cost);
 
 	const handleImportClick = () => {
 		setShowImport(true);

@@ -1076,8 +1076,6 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_pro_status()
         {
             $pro = get_option('maxi_pro');
-            error_log('$pro');
-            error_log($pro);
             $default = '{"status": "no", "name": ""}';
 
             if ($pro === false) {
@@ -1134,7 +1132,6 @@ if (!class_exists('MaxiBlocks_API')):
 
                 foreach ($import_data['templates'] as $template) {
                     // Fetch template content from URL
-                    error_log($template['name']);
                     $template_content = $fetch_remote_content($template['content']);
                     if (!$template_content) {
                         $results['templates'][] = [

@@ -52,10 +52,6 @@ const LibraryToolbar = ({
 	const [clickCount, setClickCount] = useState(0);
 	const [emailNotValid, setEmailNotValid] = useState(showNotValidEmail);
 
-	console.log('isMaxiProActive', isMaxiProActive);
-	console.log('isMaxiProExpired', isMaxiProExpired);
-	console.log('userName', userName);
-
 	if (isLoading) {
 		return (
 			<div className='maxi-cloud-toolbar'>

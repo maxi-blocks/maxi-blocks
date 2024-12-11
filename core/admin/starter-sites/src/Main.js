@@ -24,7 +24,6 @@ const Main = ({ type }) => {
     const [showNotValidEmail, setShowNotValidEmail] = useState(false);
 
     const onClickConnect = async email => {
-        console.log('onClickConnect in Main', email);
         const isValid = isValidEmail(email);
         if (isValid) {
             setShowNotValidEmail(false);
@@ -35,9 +34,7 @@ const Main = ({ type }) => {
             setUserName(getUserName());
 
             const intervalId = setInterval(async () => {
-				console.log('intervalId', intervalId);
                 const result = await authConnect(false, email);
-				console.log('result', result);
                 if (result) {
                     setIsMaxiProActive(isProSubActive());
                     setIsMaxiProExpired(isProSubExpired());

@@ -3212,6 +3212,12 @@ body .maxi-hidden {
 			margin-bottom: 50px;
 		}
 
+		&_status-text {
+			font-size: 16px;
+			border: solid 2px #5de85d;
+			padding: 5px;
+		}
+
 		&_button {
 			&-import {
 				border-radius: 20px !important;

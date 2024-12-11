@@ -62,6 +62,26 @@ const loadingButtonStyles = `
 		border-right-color: transparent;
 		animation: rotate 1s linear infinite;
 	}
+	.maxi-cloud-container__import-popup_close-link {
+		background: none;
+		border: none;
+		color: #2271b1;
+		padding: 0;
+		margin: 0;
+		cursor: pointer;
+		text-decoration: underline;
+		font-size: inherit;
+	}
+	.maxi-cloud-container__import-popup_close-link:hover {
+		color: #135e96;
+	}
+	.maxi-cloud-container__import-popup_status-text a {
+		color: #2271b1;
+		text-decoration: underline;
+	}
+	.maxi-cloud-container__import-popup_status-text a:hover {
+		color: #135e96;
+	}
 `;
 
 const MaxiImportPopUp = ({
@@ -187,11 +207,18 @@ const MaxiImportPopUp = ({
 
 		// Check SC and contentXML only if they are valid
 		const scSelected = isValidValue(sc) ? selectedItems.sc : true;
-		const xmlSelected = wpImporterStatus === 'active' && isValidValue(contentXML)
-			? selectedItems.contentXML
-			: true;
+		const xmlSelected =
+			wpImporterStatus === 'active' && isValidValue(contentXML)
+				? selectedItems.contentXML
+				: true;
 
-		return templatesSelected && pagesSelected && patternsSelected && scSelected && xmlSelected;
+		return (
+			templatesSelected &&
+			pagesSelected &&
+			patternsSelected &&
+			scSelected &&
+			xmlSelected
+		);
 	};
 
 	const onClickImport = selectedItems => {
@@ -508,25 +535,49 @@ const MaxiImportPopUp = ({
 				</div>
 
 				<div className='maxi-cloud-container__import-popup_footer'>
-					<button
-						type='button'
-						className={`maxi-cloud-container__import-popup_button maxi-cloud-container__import-popup_button-import ${
-							importStatus === 'loading'
-								? 'maxi-cloud-container__import-popup_button-loading'
-								: ''
-						}`}
-						onClick={() => onClickImport(selectedItems)}
-						disabled={
-							importStatus === 'loading' ||
-							importStatus === 'done'
-						}
-					>
-						{importStatus === 'loading'
-							? __('Importing...', 'maxi-blocks')
-							: importStatus === 'done'
-							? __('Done', 'maxi-blocks')
-							: __('Import', 'maxi-blocks')}
-					</button>
+					{importStatus === 'done' ? (
+						<div className='maxi-cloud-container__import-popup_status-text'>
+							{__('Import completed. ', 'maxi-blocks')}
+							<a
+								href='/wp-admin/edit.php?post_type=page'
+								target='_blank'
+								rel='noopener noreferrer'
+							>
+								{__('Browse your pages', 'maxi-blocks')}
+							</a>
+							{__(', ', 'maxi-blocks')}
+							<a
+								href='/wp-admin/site-editor.php'
+								target='_blank'
+								rel='noopener noreferrer'
+							>
+								{__('change templates', 'maxi-blocks')}
+							</a>
+							{__(', or ', 'maxi-blocks')}
+							<button
+								type='button'
+								className='maxi-cloud-container__import-popup_close-link'
+								onClick={onRequestClose}
+							>
+								{__('close this window', 'maxi-blocks')}
+							</button>
+						</div>
+					) : (
+						<button
+							type='button'
+							className={`maxi-cloud-container__import-popup_button maxi-cloud-container__import-popup_button-import ${
+								importStatus === 'loading'
+									? 'maxi-cloud-container__import-popup_button-loading'
+									: ''
+							}`}
+							onClick={() => onClickImport(selectedItems)}
+							disabled={importStatus === 'loading'}
+						>
+							{importStatus === 'loading'
+								? __('Importing...', 'maxi-blocks')
+								: __('Import', 'maxi-blocks')}
+						</button>
+					)}
 				</div>
 			</div>
 		</div>

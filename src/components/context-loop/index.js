@@ -93,7 +93,7 @@ const ContextLoop = props => {
 		'cl-accumulator': accumulator,
 		'cl-grandchild-accumulator': grandchildAccumulator = false,
 		'cl-acf-group': acfGroup,
-		'cl-pagination': pagination,
+		'cl-pagination': paginationEnabled,
 		'cl-pagination-per-page': paginationPerPage,
 		'cl-pagination-total': paginationTotal,
 		'cl-pagination-total-all': paginationTotalAll,
@@ -265,10 +265,17 @@ const ContextLoop = props => {
 		paginationPerPage || childBlocksCount
 	);
 
+	// Until there is a value for paginationPerPage, set it to the number of child blocks
 	useEffect(() => {
-		if (!paginationPerPage)
-			changeProps({ 'cl-pagination-per-page': usePaginationPerPage });
-	}, [usePaginationPerPage]);
+		if (isNil(paginationPerPage)) {
+			if (childBlocksCount) {
+				setUsePaginationPerPage(childBlocksCount);
+				if (paginationEnabled) {
+					changeProps({ 'cl-pagination-per-page': childBlocksCount });
+				}
+			}
+		}
+	}, [childBlocksCount, paginationEnabled, paginationPerPage, changeProps]);
 
 	useEffect(() => {
 		const postTypes = getTypes(source === 'wp' ? contentType : source);
@@ -601,7 +608,7 @@ const ContextLoop = props => {
 												'Pagination',
 												'maxi-blocks'
 											)}
-											selected={pagination}
+											selected={paginationEnabled}
 											onChange={value =>
 												changeProps({
 													'cl-pagination': value,
@@ -609,7 +616,7 @@ const ContextLoop = props => {
 											}
 										/>
 									)}
-									{!isToolbar && pagination && (
+									{!isToolbar && paginationEnabled && (
 										<>
 											<AdvancedNumberControl
 												label={__(

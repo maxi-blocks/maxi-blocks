@@ -60,6 +60,7 @@ const TextOptionsContent = props => {
 		onChangeFormat,
 		prefix,
 		minMaxSettings,
+		minMaxSettingsLineHeight,
 		minMaxSettingsLetterSpacing,
 		breakpoint,
 		avoidXXL,
@@ -116,8 +117,16 @@ const TextOptionsContent = props => {
 						true
 					)
 				}
-				min={minMaxSettings[getValue(`${prefix}line-height-unit`)].min}
-				max={minMaxSettings[getValue(`${prefix}line-height-unit`)].max}
+				min={
+					minMaxSettingsLineHeight[
+						getValue(`${prefix}line-height-unit`)
+					].min
+				}
+				max={
+					minMaxSettingsLineHeight[
+						getValue(`${prefix}line-height-unit`)
+					].max
+				}
 			/>
 			<Icon
 				className='toolbar-item__text-size-icon'
@@ -276,6 +285,15 @@ const TextOptions = props => {
 		},
 	};
 
+	const minMaxSettingsLineHeight = {
+		...minMaxSettings,
+		'%': {
+			min: 0,
+			max: 300,
+			maxRange: 300,
+		},
+	};
+
 	const minMaxSettingsLetterSpacing = {
 		px: {
 			min: -3,
@@ -373,6 +391,9 @@ const TextOptions = props => {
 									onChangeFormat={onChangeFormat}
 									prefix={prefix}
 									minMaxSettings={minMaxSettings}
+									minMaxSettingsLineHeight={
+										minMaxSettingsLineHeight
+									}
 									minMaxSettingsLetterSpacing={
 										minMaxSettingsLetterSpacing
 									}

@@ -393,6 +393,10 @@ const TypographyControl = props => {
 			min: 0,
 			max: 100,
 		},
+		rem: {
+			min: 0,
+			max: 100,
+		},
 		vw: {
 			min: 0,
 			max: 100,
@@ -407,12 +411,25 @@ const TypographyControl = props => {
 		},
 	};
 
+	const minMaxSettingsLineHeight = {
+		...minMaxSettings,
+		'%': {
+			min: 0,
+			max: 300,
+			maxRange: 300,
+		},
+	};
+
 	const minMaxSettingsLetterSpacing = {
 		px: {
 			min: -10,
 			max: 30,
 		},
 		em: {
+			min: -3,
+			max: 10,
+		},
+		rem: {
 			min: -3,
 			max: 10,
 		},
@@ -699,7 +716,7 @@ const TypographyControl = props => {
 						)
 					}
 					minMaxSettings={minMaxSettings}
-					allowedUnits={['px', 'em', 'vw', '%']}
+					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 				/>
 				<AdvancedNumberControl
 					className='maxi-typography-control__line-height'
@@ -734,21 +751,14 @@ const TypographyControl = props => {
 							{ isReset: true }
 						)
 					}
-					minMaxSettings={{
-						...minMaxSettings,
-						'%': {
-							min: 0,
-							max: 300,
-							maxRange: 300,
-						},
-					}}
-					allowedUnits={['px', 'em', 'vw', '%', '-']}
+					minMaxSettings={minMaxSettingsLineHeight}
+					allowedUnits={['px', 'em', 'rem', 'vw', '%', '-']}
 				/>
 				<AdvancedNumberControl
 					className='maxi-typography-control__letter-spacing'
 					label={__('Letter spacing', 'maxi-blocks')}
 					enableUnit
-					allowedUnits={['px', 'em', 'vw']}
+					allowedUnits={['px', 'em', 'rem', 'vw']}
 					unit={getValue('letter-spacing-unit')}
 					defaultUnit={getDefault('letter-spacing-unit')}
 					onChangeUnit={val => {
@@ -1059,6 +1069,10 @@ const TypographyControl = props => {
 							min: -99,
 							max: 99,
 						},
+						rem: {
+							min: -99,
+							max: 99,
+						},
 						vw: {
 							min: -99,
 							max: 99,
@@ -1068,7 +1082,7 @@ const TypographyControl = props => {
 							max: 100,
 						},
 					}}
-					allowedUnits={['px', 'em', 'vw', '%']}
+					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 				/>
 				<SelectControl
 					__nextHasNoMarginBottom
@@ -1167,6 +1181,10 @@ const TypographyControl = props => {
 							min: -99,
 							max: 99,
 						},
+						rem: {
+							min: -99,
+							max: 99,
+						},
 						vw: {
 							min: -99,
 							max: 99,
@@ -1176,7 +1194,7 @@ const TypographyControl = props => {
 							max: 100,
 						},
 					}}
-					allowedUnits={['px', 'em', 'vw', '%']}
+					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 				/>
 				{showBottomGap && (
 					<AdvancedNumberControl
@@ -1231,6 +1249,10 @@ const TypographyControl = props => {
 								min: -99,
 								max: 99,
 							},
+							rem: {
+								min: -99,
+								max: 99,
+							},
 							vw: {
 								min: -99,
 								max: 99,
@@ -1240,7 +1262,7 @@ const TypographyControl = props => {
 								max: 100,
 							},
 						}}
-						allowedUnits={['px', 'em', 'vw', '%']}
+						allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 					/>
 				)}
 				{!hideTextShadow && (

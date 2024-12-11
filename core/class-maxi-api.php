@@ -1915,8 +1915,6 @@ if (!class_exists('MaxiBlocks_API')):
                             }
                         }
 
-                        // Inside $get_maxi_sc_styles function, after the text block styles section:
-
                         // Add paragraph styles to lists and links
                         if ($element === 'p') {
                             foreach ($text_selectors as $selector) {
@@ -2056,19 +2054,42 @@ if (!class_exists('MaxiBlocks_API')):
                         $response .= "{$subMenuTargetEditor} { background-color: var(--maxi-{$style}-menu-item-sub-bg) !important; }";
                         $response .= "{$subMenuTargetEditor}:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover) !important; }";
 
-                        // Comments form styles
+                        // Comments form styles - update this section in $get_maxi_sc_styles
                         $commentsSelectors = array(
+                            // Existing selectors
                             "{$prefix} .maxi-{$style} .wp-block .wp-block-post-comments-form .comment-form textarea",
                             "{$prefix} .maxi-{$style} .wp-block .wp-block-post-comments-form .comment-form p:not(.form-submit) input",
                             "{$prefix} .maxi-{$style} .wp-block .wp-block-post-comments-form .comment-reply-title small a",
                             "{$prefix} .maxi-{$style} .wp-block.wp-block-post-comments-form .comment-form textarea",
                             "{$prefix} .maxi-{$style} .wp-block.wp-block-post-comments-form .comment-form p:not(.form-submit) input",
-                            "{$prefix} .maxi-{$style} .wp-block.wp-block-post-comments-form .comment-reply-title small a"
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-post-comments-form .comment-reply-title small a",
+                            // Add these new selectors
+                            "{$prefix} .maxi-{$style} .wp-block .wp-block-post-comments-form .comment-form p.form-submit input",
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-post-comments-form .comment-form p.form-submit input"
                         );
 
                         foreach ($commentsSelectors as $selector) {
-                            $response .= "{$selector} { background: transparent; color: inherit; max-width: 100%; }";
+                            if (strpos($selector, 'form-submit') !== false) {
+                                // Submit button styles
+                                $response .= "{$selector} { color: var(--maxi-{$style}-button-color); }";
+                                $response .= "{$selector} { background: var(--maxi-{$style}-button-background-color); }";
+                                if (isset($organized_values[$style]['button'][$breakpoint])) {
+                                    $button_styles = '';
+                                    foreach ($organized_values[$style]['button'][$breakpoint] as $prop => $value) {
+                                        if ($prop !== 'margin-bottom') {
+                                            $button_styles .= "{$prop}: {$value};";
+                                        }
+                                    }
+                                    $response .= "{$selector} {{$button_styles}}";
+                                }
+                            } else {
+                                // Other form elements
+                                $response .= "{$selector} { background: transparent; color: inherit; max-width: 100%; }";
+                            }
                         }
+
+                        // Add comment form general color
+                        $response .= "{$prefix} .maxi-{$style} .wp-block .wp-block-post-comments-form .comment-reply-title small { color: var(--maxi-{$style}-p-color,rgba(var(--maxi-{$style}-color-3,155,155,155),1)); }";
 
                         // Pagination styles
                         $paginationSelectors = array(

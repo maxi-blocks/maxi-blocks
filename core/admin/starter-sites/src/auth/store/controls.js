@@ -8,7 +8,6 @@ import apiFetch from '@wordpress/api-fetch';
  */
 const controls = {
 	async RECEIVE_PRO_STATUS() {
-		console.log('RECEIVE_PRO_STATUS');
 		return apiFetch({ path: '/maxi-blocks/v1.0/pro/' });
 	},
 	async SAVE_PRO_STATUS(data) {

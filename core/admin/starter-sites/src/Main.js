@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 /**
  * Internal dependencies
  */
-import './auth/store';
 import {
     authConnect,
     isProSubActive,

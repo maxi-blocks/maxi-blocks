@@ -18,7 +18,7 @@ import {
 /**
  * External dependencies
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /**
  * Layout modal window with tab panel.
@@ -47,36 +47,59 @@ const MaxiModal = props => {
 	const [isMaxiProExpired, setIsMaxiProExpired] = useState(isProSubExpired());
 	const [userName, setUserName] = useState(getUserName());
 	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
-	const isActiveState = isProSubActive();
-	const isExpiredState = isProSubExpired();
-	const isUserName = getUserName();
+	useEffect(() => {
+		const checkStatus = async () => {
+			try {
+				const [active, expired, name] = await Promise.all([
+					isProSubActive(),
+					isProSubExpired(),
+					getUserName(),
+				]);
+
+				setIsMaxiProActive(active);
+				setIsMaxiProExpired(expired);
+				setUserName(name || '');
+			} catch (error) {
+				console.error('Error checking status:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		checkStatus();
+	}, []);
+
 	const isCurrentStarterSite =
 		title === window.maxiStarterSites?.currentStarterSite;
 
 	const onClickConnect = async email => {
-		console.log('onClickConnect', email);
 		const isValid = isValidEmail(email);
 		if (isValid) {
 			setShowNotValidEmail(false);
+			setIsLoading(true);
 
-			await authConnect(false, email); // Initial call
+			await authConnect(false, email);
 			setIsMaxiProActive(isProSubActive());
 			setIsMaxiProExpired(isProSubExpired());
 			setUserName(getUserName());
 
-			// Start a periodic check
 			const intervalId = setInterval(async () => {
 				const result = await authConnect(false, email);
 				console.log('result', result);
 				if (result) {
-					// Assuming authConnect returns a truthy value on success
 					setIsMaxiProActive(isProSubActive());
 					setIsMaxiProExpired(isProSubExpired());
 					setUserName(getUserName());
-					clearInterval(intervalId); // Clear the interval once authenticated
+					clearInterval(intervalId);
 				}
-			}, 1000); // Check every 5 seconds, adjust as needed
+			}, 1000);
+
+			setTimeout(() => {
+				clearInterval(intervalId);
+				setIsLoading(false);
+			}, 30000);
 		} else {
 			setShowNotValidEmail(true);
 		}
@@ -175,6 +198,7 @@ const MaxiModal = props => {
 								showNotValidEmail={showNotValidEmail}
 								userName={userName}
 								onLogOut={onLogOut}
+								isLoading={isLoading}
 							/>
 						</div>
 					</div>
@@ -206,6 +230,7 @@ const MaxiModal = props => {
 								showNotValidEmail={showNotValidEmail}
 								userName={userName}
 								onLogOut={onLogOut}
+								isLoading={isLoading}
 							/>
 						</div>
 					</div>

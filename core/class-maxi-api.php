@@ -1076,6 +1076,8 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_pro_status()
         {
             $pro = get_option('maxi_pro');
+            error_log('$pro');
+            error_log($pro);
             $default = '{"status": "no", "name": ""}';
 
             if ($pro === false) {

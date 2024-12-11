@@ -40,8 +40,6 @@ const CloudLibrary = (props) => {
 		showNotValidEmail,
     } = props;
 
-	console.log('onClickConnect in index', onClickConnect);
-
     return (
         <div className='components-modal__content'>
             <LibraryToolbar

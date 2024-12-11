@@ -46,9 +46,24 @@ const LibraryToolbar = ({
 	onLogOut,
 	onClickConnect,
 	showNotValidEmail,
+	isLoading,
 }) => {
 	const [userEmail, setUserEmail] = useState(false);
 	const [clickCount, setClickCount] = useState(0);
+
+	console.log('isMaxiProActive', isMaxiProActive);
+	console.log('isMaxiProExpired', isMaxiProExpired);
+	console.log('userName', userName);
+
+	if (isLoading) {
+		return (
+			<div className='maxi-cloud-toolbar'>
+				<div className='maxi-cloud-toolbar__loading'>
+					{__('Loading...', 'maxi-blocks')}
+				</div>
+			</div>
+		);
+	}
 
 	const handleClose = () => {
 		if (onRequestClose) {
@@ -64,7 +79,9 @@ const LibraryToolbar = ({
 		console.log('userEmail', userEmail);
 		console.log('onClickConnect', onClickConnect);
 
-		onClickConnect(userEmail);
+		if (onClickConnect) {
+			onClickConnect(userEmail);
+		}
 	};
 
 	return (
@@ -118,8 +135,9 @@ const LibraryToolbar = ({
 							onLogOut(true);
 							onLogOut();
 						}}
+						disabled={isLoading}
 					>
-						{__('Sign out', 'maxi-blocks')}
+						{isLoading ? __('Please wait...', 'maxi-blocks') : __('Sign out', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
@@ -148,9 +166,13 @@ const LibraryToolbar = ({
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
 						label={__('Sign out', 'maxi-blocks')}
-						onClick={onLogOut}
+						onClick={() => {
+							onLogOut(true);
+							onLogOut();
+						}}
+						disabled={isLoading}
 					>
-						{__('Sign out', 'maxi-blocks')}
+						{isLoading ? __('Please wait...', 'maxi-blocks') : __('Sign out', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}

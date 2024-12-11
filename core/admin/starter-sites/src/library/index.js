@@ -6,7 +6,7 @@ import LibraryContainer from './container';
 /**
  * External dependencies
  */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 /**
  * Styles
@@ -32,7 +32,15 @@ const CloudLibrary = (props) => {
         isImport,
         sc,
         contentXML,
+		isMaxiProActive,
+		isMaxiProExpired,
+		onClickConnect,
+		userName,
+		onLogOut,
+		showNotValidEmail,
     } = props;
+
+	console.log('onClickConnect in index', onClickConnect);
 
     return (
         <div className='components-modal__content'>
@@ -41,6 +49,12 @@ const CloudLibrary = (props) => {
                 onRequestClose={onClose}
                 title={title}
                 cost={cost}
+				isMaxiProActive={isMaxiProActive}
+				isMaxiProExpired={isMaxiProExpired}
+				onClickConnect={onClickConnect}
+				userName={userName}
+				onLogOut={onLogOut}
+				showNotValidEmail={showNotValidEmail}
             />
             <LibraryContainer
                 type={cloudType}

@@ -1674,7 +1674,6 @@ if (!class_exists('MaxiBlocks_API')):
 
         private function maxi_import_sc($sc_content)
         {
-
             if ($sc_content) {
                 global $wpdb;
 
@@ -1764,7 +1763,7 @@ if (!class_exists('MaxiBlocks_API')):
                                         // Add units if needed
                                         if ($setting === 'font-family') {
                                             $value = "\"{$value}\"";
-                                        } elseif (in_array($setting, array('font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent'))) {
+                                        } elseif (in_array($setting, array('font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'))) {
                                             if (is_numeric($value)) {
                                                 $value .= 'px';
                                             }
@@ -1839,7 +1838,7 @@ if (!class_exists('MaxiBlocks_API')):
                             $settings = array(
                                 'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
                                 'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
-                                'word-spacing', 'margin-bottom', 'text-indent'
+                                'word-spacing', 'margin-bottom', 'text-indent', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left'
                             );
 
                             foreach ($elements as $element) {
@@ -1923,22 +1922,97 @@ if (!class_exists('MaxiBlocks_API')):
                         $response .= "background-color: var(--maxi-{$style}-button-background-color);";
                         $response .= "}";
 
-                        return $response;
-                    };
+                        // Navigation styles
+                        $targetItem = "{$prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation-item";
 
-                    // Helper function to get WP native block styles
-                    $get_wp_native_styles = function ($style, $breakpoint, $prefix) {
-                        $response = '';
-                        $native_prefix = 'wp-block';
+                        // Get all navigation styles including paddings
+                        if (isset($organized_values[$style]['navigation'][$breakpoint])) {
+                            $nav_styles = '';
+                            foreach ($organized_values[$style]['navigation'][$breakpoint] as $prop => $value) {
+                                $nav_styles .= "{$prop}: {$value};";
+                            }
+                            $response .= "{$targetItem} {{$nav_styles}}";
+                        }
 
-                        // Native block text styles
-                        $elements = array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6');
-                        foreach ($elements as $element) {
-                            $response .= "{$prefix} .maxi-{$style} .{$native_prefix} {$element} {";
-                            $response .= "font-family: var(--maxi-{$style}-{$element}-font-family-{$breakpoint});";
-                            $response .= "font-size: var(--maxi-{$style}-{$element}-font-size-{$breakpoint});";
-                            $response .= "line-height: var(--maxi-{$style}-{$element}-line-height-{$breakpoint});";
-                            $response .= "}";
+                        $targetLink = "{$targetItem} a";
+                        $targetButton = "{$targetItem} button";
+
+                        foreach (array($targetLink, $targetButton) as $target) {
+                            $response .= "{$target} { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease;}";
+                            $response .= "{$target} span { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease; }";
+                            $response .= "{$target} + span { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease;}";
+                            $response .= "{$target} + button { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease;}";
+
+                            $response .= "{$target}:hover { color: var(--maxi-{$style}-menu-item-hover); }";
+                            $response .= "{$target}:hover span { color: var(--maxi-{$style}-menu-item-hover); }";
+                            $response .= "{$target}:hover + span { color: var(--maxi-{$style}-menu-item-hover); }";
+                            $response .= "{$target}:hover + button { color: var(--maxi-{$style}-menu-item-hover); }";
+                        }
+
+                        $response .= "{$targetLink}:focus { color: var(--maxi-{$style}-menu-item-hover); }";
+                        $response .= "{$targetLink}:focus span { color: var(--maxi-{$style}-menu-item-hover); }";
+                        $response .= "{$targetLink}:focus + span { color: var(--maxi-{$style}-menu-item-hover); }";
+                        $response .= "{$targetLink}:focus + button { color: var(--maxi-{$style}-menu-item-hover); }";
+
+                        $response .= "{$targetLink}:visited { color: var(--maxi-{$style}-menu-item-visited); }";
+                        $response .= "{$targetLink}:visited span { color: var(--maxi-{$style}-menu-item-visited); }";
+                        $response .= "{$targetLink}:visited + span { color: var(--maxi-{$style}-menu-item-visited); }";
+                        $response .= "{$targetLink}:visited + button { color: var(--maxi-{$style}-menu-item-visited); }";
+
+                        // Mobile menu styles
+                        $burgerItem = "{$prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open";
+                        $burgerItemClose = "{$prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close";
+
+                        foreach (array($burgerItem, $burgerItemClose) as $target) {
+                            $response .= "{$target} { color: var(--maxi-{$style}-menu-burger); }";
+                            $response .= "{$target} { font-family: var(--maxi-{$style}-navigation-font-family-general); }";
+                        }
+
+                        // Mobile menu background
+                        $mobileMenuBgTarget = "{$prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation .wp-block-navigation__responsive-container.has-modal-open";
+                        $response .= "{$mobileMenuBgTarget} { background-color: var(--maxi-{$style}-menu-mobile-bg) !important; }";
+
+                        // Sub-menus
+                        $subMenuTarget = "{$prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container ul li";
+                        $subMenuTargetEditor = "{$prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation__submenu-container > div";
+
+                        $response .= "{$subMenuTarget} { background-color: var(--maxi-{$style}-menu-item-sub-bg); }";
+                        $response .= "{$subMenuTarget}:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover); }";
+                        $response .= "{$subMenuTargetEditor} { background-color: var(--maxi-{$style}-menu-item-sub-bg) !important; }";
+                        $response .= "{$subMenuTargetEditor}:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover) !important; }";
+
+                        // Comments form styles
+                        $commentsSelectors = array(
+                            "{$prefix} .maxi-{$style} .wp-block .wp-block-post-comments-form .comment-form textarea",
+                            "{$prefix} .maxi-{$style} .wp-block .wp-block-post-comments-form .comment-form p:not(.form-submit) input",
+                            "{$prefix} .maxi-{$style} .wp-block .wp-block-post-comments-form .comment-reply-title small a",
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-post-comments-form .comment-form textarea",
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-post-comments-form .comment-form p:not(.form-submit) input",
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-post-comments-form .comment-reply-title small a"
+                        );
+
+                        foreach ($commentsSelectors as $selector) {
+                            $response .= "{$selector} { background: transparent; color: inherit; max-width: 100%; }";
+                        }
+
+                        // Pagination styles
+                        $paginationSelectors = array(
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-post-navigation-link a",
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-query-pagination-previous",
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-query-pagination-next",
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-query-pagination-numbers a",
+                            "{$prefix} .maxi-{$style} .wp-block.wp-block-query-pagination-numbers span"
+                        );
+
+                        foreach ($paginationSelectors as $selector) {
+                            $response .= "{$selector} { color: var(--maxi-{$style}-link); }";
+                            $response .= "{$selector}:hover { color: var(--maxi-{$style}-link-hover); }";
+                        }
+
+                        // Editor styles
+                        if ($style === 'light') {
+                            $response .= "{$prefix} p > span[data-rich-text-placeholder]::after { color: var(--maxi-light-p-color); }";
+                            $response .= "{$prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title { color: var(--maxi-light-h1-color); }";
                         }
 
                         return $response;
@@ -1978,16 +2052,8 @@ if (!class_exists('MaxiBlocks_API')):
                         }
 
                         // Add media queries for each breakpoint
-                        $add_styles_for_breakpoint = function ($breakpoint = 'general') use ($style, $prefix, $sc, $get_maxi_sc_styles, $get_wp_native_styles, $organized_values) {
-                            $response = '';
-
-                            // Add Maxi block styles
-                            $response .= $get_maxi_sc_styles($style, $breakpoint, $prefix);
-
-                            // Add WP native block styles
-                            $response .= $get_wp_native_styles($style, $breakpoint, $prefix);
-
-                            return $response;
+                        $add_styles_for_breakpoint = function ($breakpoint = 'general') use ($style, $prefix, $sc, $get_maxi_sc_styles, $organized_values) {
+                            return $get_maxi_sc_styles($style, $breakpoint, $prefix);
                         };
 
                         // Add styles for general breakpoint
@@ -2029,7 +2095,6 @@ if (!class_exists('MaxiBlocks_API')):
                     'id' => $new_id
                 ];
             }
-
         }
 
         private function maxi_import_xml($xml_content)

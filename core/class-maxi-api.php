@@ -1915,6 +1915,81 @@ if (!class_exists('MaxiBlocks_API')):
                             }
                         }
 
+                        // Inside $get_maxi_sc_styles function, after the text block styles section:
+
+                        // Add paragraph styles to lists and links
+                        if ($element === 'p') {
+                            foreach ($text_selectors as $selector) {
+                                // Add styles for lists
+                                $response .= "{$selector} li {";
+                                $response .= $styles_string;
+                                $response .= "}";
+
+                                // Add styles for links
+                                $response .= "{$selector} a {";
+                                $response .= $styles_string;
+                                $response .= "}";
+                            }
+                        }
+
+                        // Image Maxi
+                        $image_selectors = array(
+                            "{$prefix} .maxi-{$style}.maxi-image-block .maxi-hover-details",
+                            "{$prefix} .maxi-{$style} .maxi-image-block .maxi-hover-details"
+                        );
+
+                        foreach ($image_selectors as $target) {
+                            // Apply h4 styles
+                            if (isset($organized_values[$style]['h4'][$breakpoint])) {
+                                $h4_styles = '';
+                                foreach ($organized_values[$style]['h4'][$breakpoint] as $prop => $value) {
+                                    if ($prop !== 'margin-bottom') {
+                                        $h4_styles .= "{$prop}: {$value};";
+                                    }
+                                }
+                                $response .= "{$target} h4 {{$h4_styles}}";
+                            }
+
+                            // Apply p styles
+                            if (isset($organized_values[$style]['p'][$breakpoint])) {
+                                $p_styles = '';
+                                foreach ($organized_values[$style]['p'][$breakpoint] as $prop => $value) {
+                                    $p_styles .= "{$prop}: {$value};";
+                                }
+                                $response .= "{$target} p {{$p_styles}}";
+                            }
+                        }
+
+                        // Search Maxi
+                        $search_selectors = array(
+                            "{$prefix} .maxi-{$style}.maxi-search-block .maxi-search-block__input",
+                            "{$prefix} .maxi-{$style} .maxi-search-block .maxi-search-block__input",
+                            "{$prefix} .maxi-{$style}.maxi-search-block .maxi-search-block__button__content",
+                            "{$prefix} .maxi-{$style} .maxi-search-block .maxi-search-block__button__content"
+                        );
+
+                        foreach ($search_selectors as $target) {
+                            if (isset($organized_values[$style]['p'][$breakpoint])) {
+                                $p_styles = '';
+                                foreach ($organized_values[$style]['p'][$breakpoint] as $prop => $value) {
+                                    if ($prop !== 'margin-bottom') {
+                                        $p_styles .= "{$prop}: {$value};";
+                                    }
+                                }
+                                $response .= "{$target} {{$p_styles}}";
+                            }
+                        }
+
+                        // Text Maxi when has link
+                        $textMaxiLinkPrefix = "{$prefix} .maxi-{$style}.maxi-block.maxi-block--has-link > .maxi-text-block__content:not(p)";
+
+                        $response .= "{$textMaxiLinkPrefix} { color: var(--maxi-{$style}-link); }";
+                        $response .= "{$textMaxiLinkPrefix}:hover { color: var(--maxi-{$style}-link-hover); }";
+                        $response .= "{$textMaxiLinkPrefix}:focus { color: var(--maxi-{$style}-link-hover); }";
+                        $response .= "{$textMaxiLinkPrefix}:active { color: var(--maxi-{$style}-link-active); }";
+                        $response .= "{$textMaxiLinkPrefix}:visited { color: var(--maxi-{$style}-link-visited); }";
+                        $response .= "{$textMaxiLinkPrefix}:visited:hover { color: var(--maxi-{$style}-link-hover); }";
+
                         // Button block styles
                         $response .= "{$prefix} .maxi-{$style}.maxi-button-block {";
                         $response .= "font-family: var(--maxi-{$style}-button-font-family-{$breakpoint});";

@@ -2,6 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -38,6 +39,9 @@ const MaxiModal = props => {
 		patterns,
 		sc,
 		contentXML,
+		isPro,
+		onClickConnect,
+		onLogOut,
 	} = props;
 
 	const [isOpenDetails, changeIsOpenDetails] = useState(false);
@@ -74,44 +78,6 @@ const MaxiModal = props => {
 	const isCurrentStarterSite =
 		title === window.maxiStarterSites?.currentStarterSite;
 
-	const onClickConnect = async email => {
-		const isValid = isValidEmail(email);
-		if (isValid) {
-			setShowNotValidEmail(false);
-			setIsLoading(true);
-
-			await authConnect(false, email);
-			setIsMaxiProActive(isProSubActive());
-			setIsMaxiProExpired(isProSubExpired());
-			setUserName(getUserName());
-
-			const intervalId = setInterval(async () => {
-				const result = await authConnect(false, email);
-				console.log('result', result);
-				if (result) {
-					setIsMaxiProActive(isProSubActive());
-					setIsMaxiProExpired(isProSubExpired());
-					setUserName(getUserName());
-					clearInterval(intervalId);
-				}
-			}, 1000);
-
-			setTimeout(() => {
-				clearInterval(intervalId);
-				setIsLoading(false);
-			}, 30000);
-		} else {
-			setShowNotValidEmail(true);
-		}
-	};
-
-	const onLogOut = redirect => {
-		logOut(redirect);
-		setIsMaxiProActive(false);
-		setIsMaxiProExpired(false);
-		setUserName('');
-	};
-
 	const onClickOpenModalDetails = () => {
 		changeIsOpenDetails(!isOpenDetails);
 		changeIsOpenImport(false);
@@ -142,6 +108,10 @@ const MaxiModal = props => {
 		window.open(url, '_blank');
 	};
 
+	const handleGoProClick = () => {
+		window.open('https://maxiblocks.com/go/pro-library', '_blank');
+	};
+
 	return (
 		<div className='maxi-library-modal__action-section'>
 			<div className='maxi-library-modal__action-section__buttons'>
@@ -161,15 +131,25 @@ const MaxiModal = props => {
 						>
 							{__('Live Demo', 'maxi-blocks')}
 						</button>
-						<button
-							type='button'
-							className='maxi-cloud-masonry-card__button'
-							onClick={onClickOpenModalImport}
-						>
-							{isCurrentStarterSite
-								? __('Reset', 'maxi-blocks')
-								: __('Import', 'maxi-blocks')}
-						</button>
+						{isPro && !isMaxiProActive ? (
+							<button
+								type='button'
+								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-go-pro'
+								onClick={handleGoProClick}
+							>
+								{__('Go Pro', 'maxi-blocks')}
+							</button>
+						) : (
+							<button
+								type='button'
+								className='maxi-cloud-masonry-card__button'
+								onClick={onClickOpenModalImport}
+							>
+								{isCurrentStarterSite
+									? __('Reset', 'maxi-blocks')
+									: __('Import', 'maxi-blocks')}
+							</button>
+						)}
 					</>
 				)}
 				{isOpenDetails && !isOpenImport && (
@@ -199,6 +179,7 @@ const MaxiModal = props => {
 								userName={userName}
 								onLogOut={onLogOut}
 								isLoading={isLoading}
+								isPro={isPro}
 							/>
 						</div>
 					</div>
@@ -231,6 +212,7 @@ const MaxiModal = props => {
 								userName={userName}
 								onLogOut={onLogOut}
 								isLoading={isLoading}
+								isPro={isPro}
 							/>
 						</div>
 					</div>

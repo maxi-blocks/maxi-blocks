@@ -1253,6 +1253,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'apiNonce' => wp_create_nonce('wp_rest'),
                 'currentStarterSite' => get_option('maxiblocks_current_starter_site', ''),
                 'wpImporterStatus' => $wp_importer_status,
+                'proInitialState' => get_option('maxi_pro', ''),
             ]);
         }
 

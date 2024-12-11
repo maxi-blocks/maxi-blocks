@@ -67,6 +67,9 @@ const CloudLibrary = (props) => {
                 onRequestClose={onClose}
                 sc={sc}
                 contentXML={contentXML}
+				isMaxiProActive={isMaxiProActive}
+				onClickConnect={onClickConnect}
+				onLogOut={onLogOut}
             />
         </div>
     );

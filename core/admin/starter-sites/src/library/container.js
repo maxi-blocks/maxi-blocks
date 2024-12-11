@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -143,7 +144,9 @@ const HierarchicalMenu = ({ items, refine }) =>
 						<span>
 							<span
 								className='ais-HierarchicalMenu-item-arrow'
-								visible={!isEmpty(item.items) ? 'visible' : 'hide'}
+								visible={
+									!isEmpty(item.items) ? 'visible' : 'hide'
+								}
 							>
 								{arrowIcon}
 							</span>
@@ -153,7 +156,10 @@ const HierarchicalMenu = ({ items, refine }) =>
 					</a>
 					<div className='sub_menu-wrapper'>
 						{item.items && (
-							<HierarchicalMenu items={item.items} refine={refine} />
+							<HierarchicalMenu
+								items={item.items}
+								refine={refine}
+							/>
 						)}
 					</div>
 				</li>
@@ -197,7 +203,9 @@ const ClearRefinementsHidden = ({ items, refine }) => (
 const CustomMenuSelect = connectMenu(MenuSelect);
 const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
-const CustomClearRefinementsHidden = connectCurrentRefinements(ClearRefinementsHidden);
+const CustomClearRefinementsHidden = connectCurrentRefinements(
+	ClearRefinementsHidden
+);
 
 const typesenseInstantsearchAdapter = params => {
 	return new TypesenseInstantSearchAdapter({
@@ -229,7 +237,7 @@ const searchClientStarterSites = (() => {
 	}
 })();
 
-const starterSitesResults = ({ hit }) => {
+const starterSitesResults = ({ hit, onClickConnect, onLogOut }) => {
 	const wrapClassName =
 		hit.cost?.[0] === 'Pro'
 			? 'ais-InfiniteHits-item-pro'
@@ -247,15 +255,31 @@ const starterSitesResults = ({ hit }) => {
 			serial={hit.post_id}
 			title={hit.post_title}
 			className={wrapClassName}
+			onClickConnect={onClickConnect}
+			onLogOut={onLogOut}
 		/>
 	);
 };
 
-const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, contentXML }) => {
+const MaxiDetailsPopUp = ({
+	url,
+	title,
+	cost,
+	templates,
+	pages,
+	patterns,
+	sc,
+	contentXML,
+	isMaxiProActive,
+	isPro,
+}) => {
 	const firstPage = pages?.[0];
 	const firstTemplate = templates?.[0];
 	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
 	const [showImport, setShowImport] = React.useState(false);
+	console.log('isPro', isPro);
+	console.log('isMaxiProActive', isMaxiProActive);
+	console.log('cost', cost);
 
 	const handleImportClick = () => {
 		setShowImport(true);
@@ -263,6 +287,10 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, co
 
 	const handleImportClose = () => {
 		setShowImport(false);
+	};
+
+	const handleGoProClick = () => {
+		window.open('https://maxiblocks.com/go/pro-library', '_blank');
 	};
 
 	return (
@@ -295,7 +323,10 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, co
 						<div className='maxi-cloud-container__details-popup_column-right'>
 							<h2>{title}</h2>
 							<p className='maxi-cloud-container__details-popup_description'>
-								{__('This demo is designed using MaxiBlocks to provide you with a sleek, modern, and fully customizable website.', 'maxi-blocks')}
+								{__(
+									'This demo is designed using MaxiBlocks to provide you with a sleek, modern, and fully customizable website.',
+									'maxi-blocks'
+								)}
 							</p>
 
 							<div className='maxi-cloud-container__details-popup_actions'>
@@ -307,24 +338,48 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, co
 								>
 									{__('Live preview', 'maxi-blocks')}
 								</a>
-								<button
-									type='button'
-									className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-import'
-									onClick={handleImportClick}
-								>
-									{title === window.maxiStarterSites?.currentStarterSite
-										? __('Reset', 'maxi-blocks')
-										: __('Import', 'maxi-blocks')}
-								</button>
+								{isPro && !isMaxiProActive ? (
+									<button
+										type='button'
+										className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-preview maxi-cloud-container__details-popup_button-go-pro'
+										onClick={handleGoProClick}
+									>
+										{__('Go Pro', 'maxi-blocks')}
+									</button>
+								) : (
+									<button
+										type='button'
+										className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-import'
+										onClick={handleImportClick}
+									>
+										{title ===
+										window.maxiStarterSites
+											?.currentStarterSite
+											? __('Reset', 'maxi-blocks')
+											: __('Import', 'maxi-blocks')}
+									</button>
+								)}
 							</div>
 
 							{/* Pages section */}
 							<div className='maxi-cloud-container__details-popup_section'>
-								<h3 className='maxi-cloud-container__details-popup_section-title'>{__('Pages in this starter site', 'maxi-blocks')} ({pages?.length || 0})</h3>
+								<h3 className='maxi-cloud-container__details-popup_section-title'>
+									{__(
+										'Pages in this starter site',
+										'maxi-blocks'
+									)}{' '}
+									({pages?.length || 0})
+								</h3>
 								<div className='maxi-cloud-masonry'>
 									{pages?.map(page => (
-										<div key={page.name} className='maxi-cloud-container__details-popup_item'>
-											<img src={page.screenshot} alt={page.name} />
+										<div
+											key={page.name}
+											className='maxi-cloud-container__details-popup_item'
+										>
+											<img
+												src={page.screenshot}
+												alt={page.name}
+											/>
 											<span>{page.name}</span>
 										</div>
 									))}
@@ -334,11 +389,23 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, co
 							{/* Templates section */}
 							{templates?.length > 0 && (
 								<div className='maxi-cloud-container__details-popup_section'>
-									<h3 className='maxi-cloud-container__details-popup_section-title'>{__('Templates in this starter site', 'maxi-blocks')} ({templates.length})</h3>
+									<h3 className='maxi-cloud-container__details-popup_section-title'>
+										{__(
+											'Templates in this starter site',
+											'maxi-blocks'
+										)}{' '}
+										({templates.length})
+									</h3>
 									<div className='maxi-cloud-masonry'>
 										{templates.map(template => (
-											<div key={template.name} className='maxi-cloud-container__details-popup_item'>
-												<img src={template.screenshot} alt={template.name} />
+											<div
+												key={template.name}
+												className='maxi-cloud-container__details-popup_item'
+											>
+												<img
+													src={template.screenshot}
+													alt={template.name}
+												/>
 												<span>{template.name}</span>
 											</div>
 										))}
@@ -349,11 +416,23 @@ const MaxiDetailsPopUp = ({ url, title, cost, templates, pages, patterns, sc, co
 							{/* Patterns section */}
 							{patterns?.length > 0 && (
 								<div className='maxi-cloud-container__details-popup_section'>
-									<h3 className='maxi-cloud-container__details-popup_section-title'>{__('Patterns in this starter site', 'maxi-blocks')} ({patterns.length})</h3>
+									<h3 className='maxi-cloud-container__details-popup_section-title'>
+										{__(
+											'Patterns in this starter site',
+											'maxi-blocks'
+										)}{' '}
+										({patterns.length})
+									</h3>
 									<div className='maxi-cloud-masonry'>
 										{patterns.map(pattern => (
-											<div key={pattern.name} className='maxi-cloud-container__details-popup_item'>
-												<img src={pattern.screenshot} alt={pattern.name} />
+											<div
+												key={pattern.name}
+												className='maxi-cloud-container__details-popup_item'
+											>
+												<img
+													src={pattern.screenshot}
+													alt={pattern.name}
+												/>
 												<span>{pattern.name}</span>
 											</div>
 										))}
@@ -396,7 +475,11 @@ const LibraryContainer = props => {
 		sc,
 		contentXML,
 		isImport,
-		onRequestClose
+		onRequestClose,
+		isMaxiProActive,
+		isPro,
+		onClickConnect,
+		onLogOut,
 	} = props;
 
 	useInterval(masonryGenerator, 100);
@@ -415,6 +498,7 @@ const LibraryContainer = props => {
 						sc={sc}
 						contentXML={contentXML}
 						onRequestClose={onRequestClose}
+						isMaxiProActive={isMaxiProActive}
 					/>
 				</div>
 			)}
@@ -430,6 +514,8 @@ const LibraryContainer = props => {
 						patterns={patterns}
 						sc={sc}
 						contentXML={contentXML}
+						isMaxiProActive={isMaxiProActive}
+						isPro={isPro}
 					/>
 				</div>
 			)}
@@ -456,7 +542,7 @@ const LibraryContainer = props => {
 								}}
 							/>
 							<CustomHierarchicalMenu
-								attributes={['starter_sites_category' ]}
+								attributes={['starter_sites_category']}
 								limit={20}
 							/>
 							<CustomClearRefinements />
@@ -467,6 +553,9 @@ const LibraryContainer = props => {
 							<InfiniteHits
 								hitComponent={starterSitesResults}
 								type='starter-sites'
+								isMaxiProActive={isMaxiProActive}
+								onClickConnect={onClickConnect}
+								onLogOut={onLogOut}
 							/>
 						</div>
 					</InstantSearch>

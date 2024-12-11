@@ -45,22 +45,21 @@ export const removeMaxiCookie = () => {
 
 const getProInfoByEmail = () => {
 	const cookie = getMaxiCookieKey();
-	console.log('cookie', cookie);
 	if (!cookie) return false;
 	const { email, key } = cookie;
-	console.log('email', email);
-	console.log('key', key);
 
-	const pro = select('maxiBlocks/pro').receiveMaxiProStatus();
-	console.log('pro', pro);
+	const pro =
+		// eslint-disable-next-line no-undef
+		maxiStarterSites?.proInitialState ||
+		select('maxiBlocks/pro').receiveMaxiProStatus();
 
 	if (typeof pro === 'string') {
 		const proJson = JSON.parse(
-			select('maxiBlocks/pro').receiveMaxiProStatus()
+			// eslint-disable-next-line no-undef
+			maxiStarterSites?.proInitialState || select('maxiBlocks/pro').receiveMaxiProStatus()
 		);
 
 		const response = proJson?.[email];
-		console.log('response', response);
 
 		if (response) return { email, info: response, key };
 	}
@@ -69,9 +68,6 @@ const getProInfoByEmail = () => {
 
 export const isProSubActive = () => {
 	const { info, key } = getProInfoByEmail();
-
-	console.log('info', info);
-	console.log('key', key);
 
 	if (info && info?.status === 'yes' && info?.key) {
 		const keysArray = info?.key.split(',');

@@ -50,6 +50,7 @@ const LibraryToolbar = ({
 }) => {
 	const [userEmail, setUserEmail] = useState(false);
 	const [clickCount, setClickCount] = useState(0);
+	const [emailNotValid, setEmailNotValid] = useState(showNotValidEmail);
 
 	console.log('isMaxiProActive', isMaxiProActive);
 	console.log('isMaxiProExpired', isMaxiProExpired);
@@ -72,16 +73,13 @@ const LibraryToolbar = ({
 	};
 
 	const onClickAuth = () => {
+		if (showNotValidEmail) return;
+
 		const encodedEmail = encodeURIComponent(userEmail);
 		const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
 		window.open(url, '_blank')?.focus();
 
-		console.log('userEmail', userEmail);
-		console.log('onClickConnect', onClickConnect);
-
-		if (onClickConnect) {
-			onClickConnect(userEmail);
-		}
+		if (userEmail) onClickConnect(userEmail);
 	};
 
 	return (
@@ -184,7 +182,7 @@ const LibraryToolbar = ({
 							value={userEmail}
 							onChange={value => setUserEmail(value)}
 						/>
-						{showNotValidEmail && (
+						{emailNotValid && (
 							<span>
 								{__('The email is not valid', 'maxi-blocks')}
 							</span>
@@ -194,7 +192,14 @@ const LibraryToolbar = ({
 						key='maxi-cloud-toolbar__button__connect'
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
 						label={__('Sign in', 'maxi-blocks')}
-						onClick={() => onClickAuth()}
+						onClick={() => {
+							if (isValidEmail(userEmail)) {
+								setEmailNotValid(false);
+								onClickAuth();
+							} else {
+								setEmailNotValid(true);
+							}
+						}}
 					>
 						{__('Sign in', 'maxi-blocks')}
 					</Button>

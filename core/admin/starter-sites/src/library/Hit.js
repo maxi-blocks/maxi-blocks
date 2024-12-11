@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  */
 import MasonryItem from './MasonryItem';
 
-const Hit = ({ hit, type }) => {
+const Hit = ({ hit, type, isMaxiProActive, onClickConnect, onLogOut }) => {
     const wrapClassName =
         hit.cost?.[0] === 'Pro'
             ? 'ais-InfiniteHits-item-pro'
@@ -33,6 +33,9 @@ const Hit = ({ hit, type }) => {
 				sc={hit.sc_url}
 				contentXML={hit.content_xml_url}
                 className={wrapClassName}
+				isMaxiProActive={isMaxiProActive}
+				onClickConnect={onClickConnect}
+				onLogOut={onLogOut}
             />
         );
 };

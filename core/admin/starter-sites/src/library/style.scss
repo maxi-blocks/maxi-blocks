@@ -1688,6 +1688,8 @@
 				border: 1px solid #2bafb7;
 				transition: 0.1s;
 				z-index: 100000;
+				font-size: 13px;
+				font-weight: 400;
 				&:hover {
 					background-color: #007cba;
 					color: #fff;
@@ -2002,6 +2004,8 @@
 		border: 1px solid var(--maxi-primary-color);
 		border-radius: 5px;
 		transition: 0.1s;
+		font-size: 13px;
+		font-weight: 400;
 		&:hover {
 			background-color: #eaf3f7;
 			color: #081219;

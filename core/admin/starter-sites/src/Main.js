@@ -35,12 +35,15 @@ const Main = ({ type }) => {
             setUserName(getUserName());
 
             const intervalId = setInterval(async () => {
+				console.log('intervalId', intervalId);
                 const result = await authConnect(false, email);
+				console.log('result', result);
                 if (result) {
                     setIsMaxiProActive(isProSubActive());
                     setIsMaxiProExpired(isProSubExpired());
                     setUserName(getUserName());
                     clearInterval(intervalId);
+					window.location.reload();
                 }
             }, 1000);
         } else {

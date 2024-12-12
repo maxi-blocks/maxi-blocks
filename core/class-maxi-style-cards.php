@@ -501,12 +501,12 @@ class MaxiBlocks_StyleCards
     /**
      * Helper function to get WP native styles
      */
-    private static function get_wp_native_styles($organized_values, $style_card, $prefix, $style)
+    private static function get_wp_native_styles($organized_values, $style_card, $prefix, $style, $is_backend = false)
     {
         $response = '';
-        $native_wp_prefix = 'maxi-block--use-sc';
-        $levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+        $native_wp_prefix = $is_backend ? 'wp-block[data-type^="core/"]' : 'maxi-block--use-sc';
         $headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+        $levels = array_merge(['p'], $headings);
         $breakpoints = [
             'xxl' => 1921,
             'xl' => 1920,
@@ -517,341 +517,138 @@ class MaxiBlocks_StyleCards
         ];
         $breakpoint_keys = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-        // Get breakpoint level sentences
-        foreach ($levels as $level) {
-            $sentences = [];
-            foreach ($organized_values[$style][$level] ?? [] as $prop => $value) {
-                if ($prop !== 'margin-bottom') {
-                    $processed_value = self::stringify_value($value);
-                    $sentences[] = "$prop: $processed_value;";
-                }
-            }
+        $add_styles_by_breakpoint = function ($breakpoint, $second_prefix = '') use (
+            $organized_values,
+            $prefix,
+            $style,
+            $levels,
+            $native_wp_prefix,
+            $headings,
+            $style_card
+        ) {
+            $added_response = '';
 
-            if (!empty($sentences)) {
+            $breakpoint_level_sentences = self::get_sentences_by_breakpoint([
+                'organized_values' => $organized_values,
+                'style' => $style,
+                'breakpoint' => $breakpoint,
+                'targets' => $levels,
+            ]);
+
+            foreach ($breakpoint_level_sentences as $level => $sentences) {
+                // Remove margin-bottom sentences
+                $margin_sentence = null;
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        $margin_sentence = $sentence;
+                        unset($sentences[$key]);
+                        break;
+                    }
+                }
+
                 $selectors = [
-                    "$prefix .maxi-$style .$native_wp_prefix $level",
-                    "$prefix .maxi-$style $level.$native_wp_prefix",
-                    "$prefix .maxi-$style .$native_wp_prefix $level a",
-                    "$prefix .maxi-$style $level.$native_wp_prefix a"
+                    "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} {$level}",
+                    "{$prefix} {$second_prefix} .maxi-{$style} {$level}.{$native_wp_prefix}",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} {$level} a",
+                    "{$prefix} {$second_prefix} .maxi-{$style} {$level}.{$native_wp_prefix} a",
                 ];
 
                 // Add paragraph-specific selectors
                 if ($level === 'p') {
                     $p_selectors = [
-                        "$prefix .maxi-$style .$native_wp_prefix div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block)",
-                        "$prefix .maxi-$style .wp-block-comments div:not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block)",
-                        "$prefix .maxi-$style .$native_wp_prefix .wp-block-post-comments-form .comment-form textarea",
-                        "$prefix .maxi-$style .$native_wp_prefix .wp-block-post-comments-form .comment-form p:not(.form-submit) input",
-                        "$prefix .maxi-$style .$native_wp_prefix .wp-block-post-comments-form .comment-reply-title small a",
-                        "$prefix .maxi-$style .$native_wp_prefix.wp-block-post-comments-form .comment-form textarea",
-                        "$prefix .maxi-$style .$native_wp_prefix.wp-block-post-comments-form .comment-form p:not(.form-submit) input",
-                        "$prefix .maxi-$style .$native_wp_prefix.wp-block-post-comments-form .comment-reply-title small a",
-                        "$prefix .maxi-$style .$native_wp_prefix.wp-block-post-navigation-link a",
-                        "$prefix .maxi-$style .$native_wp_prefix.wp-block-query-pagination-previous",
-                        "$prefix .maxi-$style .$native_wp_prefix.wp-block-query-pagination-next",
-                        "$prefix .maxi-$style .$native_wp_prefix.wp-block-query-pagination-numbers a",
-                        "$prefix .maxi-$style .$native_wp_prefix.wp-block-query-pagination-numbers span"
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block)",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .wp-block-comments div:not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block)",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-form textarea",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-form p:not(.form-submit) input",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-reply-title small a",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-form textarea",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-form p:not(.form-submit) input",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-reply-title small a",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-navigation-link a",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-query-pagination-previous",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-query-pagination-next",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-query-pagination-numbers a",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-query-pagination-numbers span",
                     ];
                     $selectors = array_merge($selectors, $p_selectors);
 
                     // Fix for .has-small-font-size
-                    $response .= "$prefix .maxi-$style .wp-block-comments div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block).has-small-font-size {font-size: inherit !important;}";
-                    $response .= "$prefix .maxi-$style .wp-block-comments div:not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block).has-small-font-size {font-size: inherit !important;}";
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .wp-block-comments div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block).has-small-font-size {font-size: inherit !important;}";
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .wp-block-comments div:not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block).has-small-font-size {font-size: inherit !important;}";
                 }
 
-                $response .= implode(', ', $selectors) . " {" . implode(' ', $sentences) . "}";
+                $added_response .= implode(', ', array_filter($selectors)) . " {" . implode(' ', $sentences) . "}";
 
                 // Add list styles for paragraphs
                 if ($level === 'p') {
-                    $response .= "$prefix .maxi-$style li.$native_wp_prefix {" . implode(' ', $sentences) . "}";
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} li.{$native_wp_prefix} {" . implode(' ', $sentences) . "}";
                 }
-            }
-        }
 
-        // Text Maxi list styles
-        $list_selectors = [
-            "$prefix .maxi-$style maxi-list-block ul.maxi-text-block__content",
-            "$prefix .maxi-$style .maxi-list-block ul.maxi-text-block__content",
-            "$prefix .maxi-$style maxi-list-block ol.maxi-text-block__content",
-            "$prefix .maxi-$style .maxi-list-block ol.maxi-text-block__content"
-        ];
-
-        foreach ($list_selectors as $selector) {
-            $p_sentences = $organized_values[$style]['p'] ?? [];
-            $margin_sentence = '';
-            foreach ($p_sentences as $prop => $value) {
-                if (strpos($prop, 'margin-bottom') !== false) {
-                    $margin_sentence = "$prop: $value;";
-                    break;
-                }
-            }
-            if ($margin_sentence) {
-                $response .= "$selector:not(:last-child) { $margin_sentence }";
-            }
-        }
-
-        // Text Maxi when has link
-        $text_maxi_link_prefix = "$prefix .maxi-$style.maxi-block.maxi-block--has-link > .maxi-text-block__content:not(p)";
-        $response .= "$text_maxi_link_prefix { color: var(--maxi-$style-link); }";
-        $response .= "$text_maxi_link_prefix:hover { color: var(--maxi-$style-link-hover); }";
-        $response .= "$text_maxi_link_prefix:focus { color: var(--maxi-$style-link-hover); }";
-        $response .= "$text_maxi_link_prefix:active { color: var(--maxi-$style-link-active); }";
-        $response .= "$text_maxi_link_prefix:visited { color: var(--maxi-$style-link-visited); }";
-        $response .= "$text_maxi_link_prefix:visited:hover { color: var(--maxi-$style-link-hover); }";
-
-        // Text block link styles
-        $text_block_link_selectors = [
-            "$prefix .maxi-$style.maxi-block.maxi-text-block a.maxi-block--has-link",
-            "$prefix .maxi-$style.maxi-block .maxi-text-block a.maxi-block--has-link"
-        ];
-
-        foreach ($text_block_link_selectors as $selector) {
-            $response .= "$selector { color: var(--maxi-$style-link); }";
-            $response .= "$selector:hover { color: var(--maxi-$style-link-hover); }";
-            $response .= "$selector:hover span { color: var(--maxi-$style-link-hover); }";
-            $response .= "$selector:focus { color: var(--maxi-$style-link-hover); }";
-            $response .= "$selector:focus span { color: var(--maxi-$style-link-hover); }";
-            $response .= "$selector:active { color: var(--maxi-$style-link-active); }";
-            $response .= "$selector:active span { color: var(--maxi-$style-link-active); }";
-            $response .= "$selector:visited { color: var(--maxi-$style-link-visited); }";
-            $response .= "$selector:visited span { color: var(--maxi-$style-link-visited); }";
-            $response .= "$selector:visited:hover { color: var(--maxi-$style-link-hover); }";
-            $response .= "$selector:visited:hover span { color: var(--maxi-$style-link-hover); }";
-        }
-
-        // WP native block when has link
-        $wp_native_link_prefix = "$prefix .maxi-$style .$native_wp_prefix a";
-        foreach (['', ' span'] as $suffix) {
-            $response .= "$wp_native_link_prefix$suffix { color: var(--maxi-$style-link); }";
-            if (isset($style_card["--maxi-$style-link-hover"])) {
-                $response .= "$wp_native_link_prefix$suffix:hover { color: var(--maxi-$style-link-hover); }";
-                $response .= "$wp_native_link_prefix$suffix:focus { color: var(--maxi-$style-link-hover); }";
-            }
-            if (isset($style_card["--maxi-$style-link-active"])) {
-                $response .= "$wp_native_link_prefix$suffix:active { color: var(--maxi-$style-link-active); }";
-            }
-            if (isset($style_card["--maxi-$style-link-visited"])) {
-                $response .= "$wp_native_link_prefix$suffix:visited { color: var(--maxi-$style-link-visited); }";
-                if (isset($style_card["--maxi-$style-link-hover"])) {
-                    $response .= "$wp_native_link_prefix$suffix:visited:hover { color: var(--maxi-$style-link-hover); }";
-                }
-            }
-        }
-
-        // Image Maxi caption
-        $caption_selectors = [
-            "$prefix .maxi-$style.maxi-image-block figcaption",
-            "$prefix .maxi-$style .maxi-image-block figcaption"
-        ];
-
-        foreach ($caption_selectors as $selector) {
-            $p_sentences = [];
-            foreach ($organized_values[$style]['p'] ?? [] as $prop => $value) {
-                if ($prop !== 'margin-bottom' && !is_array($value)) {
-                    $p_sentences[] = "$prop: $value;";
-                }
-            }
-            if (!empty($p_sentences)) {
-                $response .= "$selector {" . implode(' ', $p_sentences) . "}";
-            }
-        }
-
-        // Image Maxi hover details
-        $hover_detail_selectors = [
-            "$prefix .maxi-$style.maxi-image-block .maxi-hover-details",
-            "$prefix .maxi-$style .maxi-image-block .maxi-hover-details"
-        ];
-
-        foreach ($hover_detail_selectors as $target) {
-            // Apply h4 styles
-            if (isset($organized_values[$style]['h4'])) {
-                $h4_styles = [];
-                foreach ($organized_values[$style]['h4'] as $prop => $value) {
-                    if ($prop !== 'margin-bottom' && !is_array($value)) {
-                        $h4_styles[] = "$prop: $value;";
-                    }
-                }
-                if (!empty($h4_styles)) {
-                    $response .= "$target h4 {" . implode(' ', $h4_styles) . "}";
+                // Add margin-bottom sentence to all elements except the last one
+                if ($margin_sentence) {
+                    $added_response .= ":is(" . implode(', ', array_filter($selectors)) . "):not(:last-child) {" . $margin_sentence . "}";
                 }
             }
 
-            // Apply p styles
-            if (isset($organized_values[$style]['p'])) {
-                $p_styles = [];
-                foreach ($organized_values[$style]['p'] as $prop => $value) {
-                    if (!is_array($value)) {
-                        $p_styles[] = "$prop: $value;";
-                    }
+            // WP native block when has link
+            $wp_native_link_prefix = "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} a";
+            foreach (['', ' span'] as $suffix) {
+                $added_response .= "{$wp_native_link_prefix}{$suffix} { color: var(--maxi-{$style}-link); }";
+                if (isset($style_card["--maxi-{$style}-link-hover"])) {
+                    $added_response .= "{$wp_native_link_prefix}{$suffix}:hover { color: var(--maxi-{$style}-link-hover); }";
+                    $added_response .= "{$wp_native_link_prefix}{$suffix}:focus { color: var(--maxi-{$style}-link-hover); }";
                 }
-                if (!empty($p_styles)) {
-                    $response .= "$target p {" . implode(' ', $p_styles) . "}";
+                if (isset($style_card["--maxi-{$style}-link-active"])) {
+                    $added_response .= "{$wp_native_link_prefix}{$suffix}:active { color: var(--maxi-{$style}-link-active); }";
                 }
-            }
-        }
-
-        // Button styles
-        $button_sentences = [];
-        foreach ($organized_values[$style]['button'] ?? [] as $prop => $value) {
-            if ($prop !== 'margin-bottom' && !is_array($value)) {
-                $button_sentences[] = "$prop: $value;";
-            }
-        }
-
-        if (!empty($button_sentences)) {
-            $button_selector = "$prefix .maxi-$style .$native_wp_prefix .wp-element-button";
-            $response .= "$button_selector {" . implode(' ', $button_sentences);
-            $response .= isset($style_card["--maxi-$style-button-color"])
-                ? " color: var(--maxi-$style-button-color);"
-                : " color: var(--maxi-$style-p-color,rgba(var(--maxi-$style-color-3,155,155,155),1));";
-            $response .= "}";
-
-            if (isset($style_card["--maxi-$style-button-color-hover"])) {
-                $response .= "$button_selector:hover { color: var(--maxi-$style-button-color-hover); }";
-            }
-        }
-
-        // Navigation link styles
-        $target_item = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation-item";
-
-        // Get all navigation styles including paddings
-        if (isset($organized_values[$style]['navigation'])) {
-            foreach ($breakpoint_keys as $breakpoint) {
-                if (isset($organized_values[$style]['navigation'][$breakpoint])) {
-                    $nav_styles = '';
-                    foreach ($organized_values[$style]['navigation'][$breakpoint] as $prop => $value) {
-                        $processed_value = self::stringify_value($value);
-                        $nav_styles .= "{$prop}: {$processed_value};";
-                        error_log('Processed value: ' . "{$prop}: {$processed_value};");
-                    }
-                    if ($nav_styles) {
-                        $response .= "{$target_item} {{$nav_styles}}";
+                if (isset($style_card["--maxi-{$style}-link-visited"])) {
+                    $added_response .= "{$wp_native_link_prefix}{$suffix}:visited { color: var(--maxi-{$style}-link-visited); }";
+                    if (isset($style_card["--maxi-{$style}-link-hover"])) {
+                        $added_response .= "{$wp_native_link_prefix}{$suffix}:visited:hover { color: var(--maxi-{$style}-link-hover); }";
                     }
                 }
             }
-        }
 
-        $target_link = "$target_item a";
-        $target_button = "$target_item button";
+            // General color
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}, {$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-reply-title small {
+                color: var(--maxi-{$style}-p-color,rgba(var(--maxi-{$style}-color-3,155,155,155),1));
+            }";
 
-        foreach ([$target_link, $target_button] as $target) {
-            $response .= "$target { color: var(--maxi-$style-menu-item); transition: color 0.3s 0s ease;}";
-            $response .= "$target span { color: var(--maxi-$style-menu-item); transition: color 0.3s 0s ease; }";
-            $response .= "$target + span { color: var(--maxi-$style-menu-item); transition: color 0.3s 0s ease;}";
-            $response .= "$target + button { color: var(--maxi-$style-menu-item); transition: color 0.3s 0s ease;}";
-
-            $response .= "$target:hover { color: var(--maxi-$style-menu-item-hover); }";
-            $response .= "$target:hover span { color: var(--maxi-$style-menu-item-hover); }";
-            $response .= "$target:hover + span { color: var(--maxi-$style-menu-item-hover); }";
-            $response .= "$target:hover + button { color: var(--maxi-$style-menu-item-hover); }";
-        }
-
-        $response .= "$target_link:focus { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link:focus span { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link:focus + span { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link:focus + button { color: var(--maxi-$style-menu-item-hover); }";
-
-        $response .= "$target_link:visited { color: var(--maxi-$style-menu-item-visited); }";
-        $response .= "$target_link:visited span { color: var(--maxi-$style-menu-item-visited); }";
-        $response .= "$target_link:visited + span { color: var(--maxi-$style-menu-item-visited); }";
-        $response .= "$target_link:visited + button { color: var(--maxi-$style-menu-item-visited); }";
-
-        // Navigation current menu item styles
-        $target_link_current = "$target_item.current-menu-item > a";
-
-        $response .= "$target_link_current { color: var(--maxi-$style-menu-item-current); }";
-        $response .= "$target_link_current span { color: var(--maxi-$style-menu-item-current); }";
-        $response .= "$target_link_current + span { color: var(--maxi-$style-menu-item-current); }";
-        $response .= "$target_link_current + button { color: var(--maxi-$style-menu-item-current); }";
-
-        $response .= "$target_link_current:hover { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link_current:hover span { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link_current:hover + span { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link_current:hover + button { color: var(--maxi-$style-menu-item-hover); }";
-
-        $response .= "$target_link_current:focus { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link_current:focus span { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link_current:focus + span { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link_current:focus + button { color: var(--maxi-$style-menu-item-hover); }";
-
-        // General color
-        $response .= "$prefix .maxi-$style .$native_wp_prefix, $prefix .maxi-$style .$native_wp_prefix .wp-block-post-comments-form .comment-reply-title small {";
-        $response .= "color: var(--maxi-$style-p-color,rgba(var(--maxi-$style-color-3,155,155,155),1));}";
-
-        // Headings color
-        foreach ($headings as $heading) {
-            $response .= "$prefix .maxi-$style $heading.$native_wp_prefix, $prefix .maxi-$style .$native_wp_prefix $heading {";
-            $response .= "color: var(--maxi-$style-$heading-color,rgba(var(--maxi-$style-color-5,0,0,0),1));}";
-        }
-
-        // Button background color
-        $response .= "$prefix .maxi-$style .$native_wp_prefix .wp-element-button {";
-        $response .= "background: var(--maxi-$style-button-background-color,rgba(var(--maxi-$style-color-4,255,74,23),1));}";
-
-        if (isset($style_card["--maxi-$style-button-background-color-hover"])) {
-            $response .= "$prefix .maxi-$style .$native_wp_prefix .wp-element-button:hover {";
-            $response .= "background: var(--maxi-$style-button-background-color-hover);}";
-        }
-
-        // Sub-menu styles
-        $sub_menu_target = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation .wp-block-navigation__container ul li";
-        $sub_menu_target_editor = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation__submenu-container > div";
-
-        $response .= "$sub_menu_target { background-color: var(--maxi-$style-menu-item-sub-bg); }";
-        $response .= "$sub_menu_target:hover { background-color: var(--maxi-$style-menu-item-sub-bg-hover); }";
-        $response .= "$sub_menu_target_editor { background-color: var(--maxi-$style-menu-item-sub-bg) !important; }";
-        $response .= "$sub_menu_target_editor:hover { background-color: var(--maxi-$style-menu-item-sub-bg-hover) !important; }";
-
-        // Sub-menu current item styles
-        foreach ([$sub_menu_target, $sub_menu_target_editor] as $target) {
-            $response .= "$target.current-menu-item { background-color: var(--maxi-$style-menu-item-sub-bg-current); }";
-            $response .= "$target.current-menu-item:hover { background-color: var(--maxi-$style-menu-item-sub-bg-hover); }";
-        }
-
-        // Form styles
-        $form_selectors = [
-            "$prefix .maxi-$style .$native_wp_prefix .wp-block-post-comments-form .comment-form textarea",
-            "$prefix .maxi-$style .$native_wp_prefix.wp-block-post-comments-form .comment-form textarea",
-            "$prefix .maxi-$style .$native_wp_prefix .wp-block-post-comments-form .comment-form p:not(.form-submit) input",
-            "$prefix .maxi-$style .$native_wp_prefix.wp-block-post-comments-form .comment-form p:not(.form-submit) input"
-        ];
-
-        foreach ($form_selectors as $selector) {
-            $response .= "$selector { background: transparent; color: inherit; max-width: 100%; }";
-        }
-
-        // Mobile menu icon/text
-        $burger_item = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open";
-        $burger_item_close = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close";
-
-        foreach ([$burger_item, $burger_item_close] as $target) {
-            $response .= "$target { color: var(--maxi-$style-menu-burger); }";
-            if (isset($organized_values[$style]['navigation']['font-family-general'])) {
-                $response .= "$target { font-family: var(--maxi-$style-navigation-font-family-general); }";
+            // Headings color
+            foreach ($headings as $heading) {
+                $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} {$heading}.{$native_wp_prefix}, {$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} {$heading} {
+                    color: var(--maxi-{$style}-{$heading}-color,rgba(var(--maxi-{$style}-color-5,0,0,0),1));
+                }";
             }
-        }
 
-        // Mobile menu background
-        $mobile_menu_bg_target = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation .wp-block-navigation__responsive-container.has-modal-open";
-        $response .= "$mobile_menu_bg_target { background-color: var(--maxi-$style-menu-mobile-bg) !important; }";
+            // Button color
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-element-button {
+                background: var(--maxi-{$style}-button-background-color,rgba(var(--maxi-{$style}-color-4,255,74,23),1));
+            }";
 
-        // After headings color, add editor-specific styles for light theme
-        if ($style === 'light') {
-            $response .= "$prefix p > span[data-rich-text-placeholder]::after { color: var(--maxi-light-p-color); }";
-            $response .= "$prefix .editor-editor-canvas__post-title-wrapper > h1.editor-post-title { color: var(--maxi-light-h1-color); }";
-        }
+            if (isset($style_card["--maxi-{$style}-button-background-color-hover"])) {
+                $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-element-button:hover {
+                    background: var(--maxi-{$style}-button-background-color-hover);
+                }";
+            }
 
-        // Add visited:hover states to navigation links after the existing visited states
-        $response .= "$target_link:visited:hover { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link:visited:hover span { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link:visited:hover + span { color: var(--maxi-$style-menu-item-hover); }";
-        $response .= "$target_link:visited:hover + button { color: var(--maxi-$style-menu-item-hover); }";
+            return $added_response;
+        };
 
-        // Add media queries for breakpoints
-        foreach ($breakpoints as $breakpoint => $width) {
-            $response .= "@media (" . ($breakpoint === 'xxl' ? 'min' : 'max') . "-width: {$width}px) {";
-            // Add breakpoint-specific styles here
-            $response .= "}";
+        // Add styles for all breakpoints
+        $response .= $add_styles_by_breakpoint('general');
+
+        foreach ($breakpoints as $breakpoint => $value) {
+            if ($is_backend) {
+                $response .= $add_styles_by_breakpoint(
+                    $breakpoint,
+                    ".edit-post-visual-editor[maxi-blocks-responsive=\"{$breakpoint}\"]"
+                );
+            } else {
+                $response .= "@media (" . ($breakpoint !== 'xxl' ? 'max' : 'min') . "-width: {$value}px) {";
+                $response .= $add_styles_by_breakpoint($breakpoint);
+                $response .= '}';
+            }
         }
 
         return $response;
@@ -991,28 +788,7 @@ class MaxiBlocks_StyleCards
             $var_sc_string .= '}';
 
             // Generate styles string
-            $styles_string = '';
-            $prefix = 'body.maxi-blocks--active';
-
-            foreach ($styles as $style) {
-                // Add link colors
-                if (isset($organized_values[$style]['color'])) {
-                    for ($i = 1; $i <= 8; $i++) {
-                        if (isset($organized_values[$style]['color'][$i])) {
-                            $link_types = ['link', 'link-hover', 'link-active', 'link-visited'];
-                            foreach ($link_types as $type) {
-                                $styles_string .= "$prefix .maxi-$style.maxi-sc-$style-$type-color-$i.maxi-block--has-link { --maxi-$style-$type-palette: var(--maxi-$style-color-$i);}";
-                                $styles_string .= "$prefix .maxi-$style.maxi-sc-$style-$type-color-$i a.maxi-block--has-link { --maxi-$style-$type-palette: var(--maxi-$style-color-$i);}";
-                                $styles_string .= "$prefix .maxi-$style .maxi-sc-$style-$type-color-$i.maxi-block--has-link { --maxi-$style-$type-palette: var(--maxi-$style-color-$i);}";
-                                $styles_string .= "$prefix .maxi-$style .maxi-sc-$style-$type-color-$i a.maxi-block--has-link { --maxi-$style-$type-palette: var(--maxi-$style-color-$i);}";
-                            }
-                        }
-                    }
-                }
-
-                // Add WP native styles
-                $styles_string .= self::get_wp_native_styles($organized_values, $new_sc, $prefix, $style);
-            }
+            $styles_string = self::get_sc_styles($new_sc, true);
 
             $sc_string = array(
                 '_maxi_blocks_style_card' => $var_sc_string,
@@ -1071,5 +847,283 @@ class MaxiBlocks_StyleCards
             return json_encode($value);
         }
         return $value;
+    }
+
+    private static function get_organized_values($style_card)
+    {
+        $organized_values = [];
+        $styles = ['light', 'dark'];
+        $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation'];
+        $breakpoints_keys = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+        $settings = [
+            'font-family',
+            'font-size',
+            'font-style',
+            'font-weight',
+            'line-height',
+            'text-decoration',
+            'text-transform',
+            'letter-spacing',
+            'white-space',
+            'word-spacing',
+            'text-indent',
+            'margin-bottom',
+            'padding-bottom',
+            'padding-top',
+            'padding-left',
+            'padding-right',
+        ];
+
+        foreach ($styles as $style) {
+            foreach ($elements as $element) {
+                foreach ($breakpoints_keys as $breakpoint) {
+                    foreach ($settings as $setting) {
+                        $label = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+
+                        if (isset($style_card[$label])) {
+                            if (!isset($organized_values[$style])) {
+                                $organized_values[$style] = [];
+                            }
+                            if (!isset($organized_values[$style][$element])) {
+                                $organized_values[$style][$element] = [];
+                            }
+                            if (!isset($organized_values[$style][$element][$breakpoint])) {
+                                $organized_values[$style][$element][$breakpoint] = [];
+                            }
+
+                            $organized_values[$style][$element][$breakpoint][$setting] = $style_card[$label];
+                            unset($style_card[$label]);
+                        }
+                    }
+                }
+            }
+
+            // Colors
+            for ($i = 1; $i <= 8; $i++) {
+                $label = "--maxi-{$style}-color-" . $i;
+                if (isset($style_card[$label])) {
+                    if (!isset($organized_values[$style])) {
+                        $organized_values[$style] = [];
+                    }
+                    if (!isset($organized_values[$style]['color'])) {
+                        $organized_values[$style]['color'] = [];
+                    }
+                    $organized_values[$style]['color'][$i] = $style_card[$label];
+                    unset($style_card[$label]);
+                }
+            }
+        }
+
+        return $organized_values;
+    }
+
+    private static function get_link_colors_string($args)
+    {
+        $organized_values = $args['organized_values'];
+        $prefix = $args['prefix'];
+        $style = $args['style'];
+
+        $response = '';
+
+        if (isset($organized_values[$style]['color'])) {
+            for ($i = 1; $i <= 8; $i++) {
+                $color_number = $i;
+
+                if (isset($organized_values[$style]['color'][$color_number])) {
+                    $link_types = ['link', 'link-hover', 'link-active', 'link-visited'];
+
+                    foreach ($link_types as $type) {
+                        $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { --maxi-{$style}-{$type}-palette: var(--maxi-{$style}-color-{$color_number});}";
+                        $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { --maxi-{$style}-{$type}-palette: var(--maxi-{$style}-color-{$color_number});}";
+                        $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { --maxi-{$style}-{$type}-palette: var(--maxi-{$style}-color-{$color_number});}";
+                        $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { --maxi-{$style}-{$type}-palette: var(--maxi-{$style}-color-{$color_number});}";
+                    }
+                }
+            }
+        }
+
+        return $response;
+    }
+
+    private static function get_sentences_by_breakpoint($args)
+    {
+        $organized_values = $args['organized_values'];
+        $style = $args['style'];
+        $breakpoint = $args['breakpoint'];
+        $targets = $args['targets'];
+        $settings = [
+            'font-family',
+            'font-size',
+            'font-style',
+            'font-weight',
+            'line-height',
+            'text-decoration',
+            'text-transform',
+            'letter-spacing',
+            'white-space',
+            'word-spacing',
+            'text-indent',
+            'margin-bottom',
+            'padding-bottom',
+            'padding-top',
+            'padding-left',
+            'padding-right',
+        ];
+
+        $sentences = [];
+
+        foreach ($targets as $target) {
+            $sentences[$target] = [];
+
+            foreach ($settings as $setting) {
+                $value = isset($organized_values[$style][$target][$breakpoint][$setting])
+                    ? $organized_values[$style][$target][$breakpoint][$setting]
+                    : null;
+
+                if ($value) {
+                    $sentences[$target][] = "{$setting}: var(--maxi-{$style}-{$target}-{$setting}-{$breakpoint});";
+                }
+            }
+        }
+
+        return $sentences;
+    }
+
+    private static function get_maxi_sc_styles($args)
+    {
+        $organized_values = $args['organized_values'];
+        $prefix = $args['prefix'];
+        $style = $args['style'];
+        $is_backend = $args['is_backend'] ?? false;
+
+        $response = '';
+        $levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+        $breakpoints = [
+            'xxl' => 1921,
+            'xl' => 1920,
+            'l' => 1366,
+            'm' => 1024,
+            's' => 767,
+            'xs' => 480,
+        ];
+        $breakpoint_keys = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+        // Add styles by breakpoint function
+        $add_styles_by_breakpoint = function ($breakpoint, $second_prefix = '') use (
+            $organized_values,
+            $prefix,
+            $style,
+            $levels
+        ) {
+            $added_response = '';
+
+            // Get breakpoint level sentences
+            $breakpoint_level_sentences = self::get_sentences_by_breakpoint([
+                'organized_values' => $organized_values,
+                'style' => $style,
+                'breakpoint' => $breakpoint,
+                'targets' => $levels,
+            ]);
+
+            // Process each level's sentences
+            foreach ($breakpoint_level_sentences as $level => $sentences) {
+                // Remove margin-bottom sentences
+                $margin_sentence = null;
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        $margin_sentence = $sentence;
+                        unset($sentences[$key]);
+                        break;
+                    }
+                }
+
+                // Build selectors
+                $selectors = [
+                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-block.maxi-text-block",
+                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-map-block__popup__content",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-map-block__popup__content",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-pane-block .maxi-pane-block__header",
+                ];
+
+                foreach ($selectors as $selector) {
+                    $added_response .= "{$selector} {$level} {" . implode(' ', $sentences) . "}";
+                }
+
+                if ($margin_sentence) {
+                    // Add margin-bottom for Text Maxi
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block {$level} {{$margin_sentence}}";
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .maxi-block.maxi-text-block {$level} {{$margin_sentence}}";
+                }
+            }
+
+            return $added_response;
+        };
+
+        // Add styles for all breakpoints
+        $response .= $add_styles_by_breakpoint('general');
+
+        foreach ($breakpoints as $breakpoint => $value) {
+            if ($is_backend) {
+                $response .= $add_styles_by_breakpoint(
+                    $breakpoint,
+                    ".edit-post-visual-editor[maxi-blocks-responsive=\"{$breakpoint}\"]"
+                );
+            } else {
+                $response .= "@media (" . ($breakpoint !== 'xxl' ? 'max' : 'min') . "-width: {$value}px) {";
+                $response .= $add_styles_by_breakpoint($breakpoint);
+                $response .= '}';
+            }
+        }
+
+        return $response;
+    }
+
+    private static function get_sc_styles($raw_style_card, $gutenberg_blocks_status = true, $is_backend = false)
+    {
+        $style_card = $raw_style_card;
+        $response = '';
+        $prefix = 'body.maxi-blocks--active';
+        $styles = ['light', 'dark'];
+
+        $organized_values = self::get_organized_values($style_card);
+
+        foreach ($styles as $style) {
+            // Link colors
+            $response .= self::get_link_colors_string([
+                'organized_values' => $organized_values,
+                'prefix' => $prefix,
+                'style' => $style,
+            ]);
+
+            // Maxi styles
+            $response .= self::get_maxi_sc_styles([
+                'organized_values' => $organized_values,
+                'prefix' => $prefix,
+                'style' => $style,
+                'is_backend' => $is_backend,
+            ]);
+
+            // WP native blocks styles
+            if ($gutenberg_blocks_status) {
+                $response .= self::get_wp_native_styles($organized_values, $style_card, $prefix, $style, $is_backend);
+            }
+        }
+
+        return self::process_css($response);
+    }
+
+    private static function process_css($css)
+    {
+        // Remove duplicate rules
+        $css = preg_replace('/([^{}]*){([^{}]*)}/', '$1{$2}', $css);
+
+        // Remove empty rules
+        $css = preg_replace('/[^{}]+{}/', '', $css);
+
+        // Remove extra whitespace
+        $css = preg_replace('/\s+/', ' ', $css);
+
+        return trim($css);
     }
 }

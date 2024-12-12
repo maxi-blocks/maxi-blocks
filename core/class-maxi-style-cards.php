@@ -589,6 +589,26 @@ class MaxiBlocks_StyleCards
         $response .= "$text_maxi_link_prefix:visited { color: var(--maxi-$style-link-visited); }";
         $response .= "$text_maxi_link_prefix:visited:hover { color: var(--maxi-$style-link-hover); }";
 
+        // Text block link styles
+        $text_block_link_selectors = [
+            "$prefix .maxi-$style.maxi-block.maxi-text-block a.maxi-block--has-link",
+            "$prefix .maxi-$style.maxi-block .maxi-text-block a.maxi-block--has-link"
+        ];
+
+        foreach ($text_block_link_selectors as $selector) {
+            $response .= "$selector { color: var(--maxi-$style-link); }";
+            $response .= "$selector:hover { color: var(--maxi-$style-link-hover); }";
+            $response .= "$selector:hover span { color: var(--maxi-$style-link-hover); }";
+            $response .= "$selector:focus { color: var(--maxi-$style-link-hover); }";
+            $response .= "$selector:focus span { color: var(--maxi-$style-link-hover); }";
+            $response .= "$selector:active { color: var(--maxi-$style-link-active); }";
+            $response .= "$selector:active span { color: var(--maxi-$style-link-active); }";
+            $response .= "$selector:visited { color: var(--maxi-$style-link-visited); }";
+            $response .= "$selector:visited span { color: var(--maxi-$style-link-visited); }";
+            $response .= "$selector:visited:hover { color: var(--maxi-$style-link-hover); }";
+            $response .= "$selector:visited:hover span { color: var(--maxi-$style-link-hover); }";
+        }
+
         // WP native block when has link
         $wp_native_link_prefix = "$prefix .maxi-$style .$native_wp_prefix a";
         foreach (['', ' span'] as $suffix) {
@@ -647,8 +667,34 @@ class MaxiBlocks_StyleCards
             }
         }
 
-        // Navigation current menu item styles
+        // Navigation link styles
         $target_item = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation-item";
+        $target_link = "$target_item a";
+        $target_button = "$target_item button";
+
+        foreach ([$target_link, $target_button] as $target) {
+            $response .= "$target { color: var(--maxi-$style-menu-item); transition: color 0.3s 0s ease;}";
+            $response .= "$target span { color: var(--maxi-$style-menu-item); transition: color 0.3s 0s ease; }";
+            $response .= "$target + span { color: var(--maxi-$style-menu-item); transition: color 0.3s 0s ease;}";
+            $response .= "$target + button { color: var(--maxi-$style-menu-item); transition: color 0.3s 0s ease;}";
+
+            $response .= "$target:hover { color: var(--maxi-$style-menu-item-hover); }";
+            $response .= "$target:hover span { color: var(--maxi-$style-menu-item-hover); }";
+            $response .= "$target:hover + span { color: var(--maxi-$style-menu-item-hover); }";
+            $response .= "$target:hover + button { color: var(--maxi-$style-menu-item-hover); }";
+        }
+
+        $response .= "$target_link:focus { color: var(--maxi-$style-menu-item-hover); }";
+        $response .= "$target_link:focus span { color: var(--maxi-$style-menu-item-hover); }";
+        $response .= "$target_link:focus + span { color: var(--maxi-$style-menu-item-hover); }";
+        $response .= "$target_link:focus + button { color: var(--maxi-$style-menu-item-hover); }";
+
+        $response .= "$target_link:visited { color: var(--maxi-$style-menu-item-visited); }";
+        $response .= "$target_link:visited span { color: var(--maxi-$style-menu-item-visited); }";
+        $response .= "$target_link:visited + span { color: var(--maxi-$style-menu-item-visited); }";
+        $response .= "$target_link:visited + button { color: var(--maxi-$style-menu-item-visited); }";
+
+        // Navigation current menu item styles
         $target_link_current = "$target_item.current-menu-item > a";
 
         $response .= "$target_link_current { color: var(--maxi-$style-menu-item-current); }";
@@ -711,6 +757,21 @@ class MaxiBlocks_StyleCards
         foreach ($form_selectors as $selector) {
             $response .= "$selector { background: transparent; color: inherit; max-width: 100%; }";
         }
+
+        // Mobile menu icon/text
+        $burger_item = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open";
+        $burger_item_close = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close";
+
+        foreach ([$burger_item, $burger_item_close] as $target) {
+            $response .= "$target { color: var(--maxi-$style-menu-burger); }";
+            if (isset($organized_values[$style]['navigation']['font-family-general'])) {
+                $response .= "$target { font-family: var(--maxi-$style-navigation-font-family-general); }";
+            }
+        }
+
+        // Mobile menu background
+        $mobile_menu_bg_target = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation .wp-block-navigation__responsive-container.has-modal-open";
+        $response .= "$mobile_menu_bg_target { background-color: var(--maxi-$style-menu-mobile-bg) !important; }";
 
         return $response;
     }

@@ -2155,6 +2155,19 @@ class MaxiBlocks_DynamicContent
             return 0;
         }
 
+		// Special case for 'billing_name' and 'shipping_name' fields
+		if ($dc_field === 'billing_name' || $dc_field === 'shipping_name') {
+            $prefix = substr($dc_field, 0, -5); // Remove '_name' to get 'billing' or 'shipping'
+            $first_name = $user_data[$prefix . '_first_name'] ?? '';
+            $last_name = $user_data[$prefix . '_last_name'] ?? '';
+
+            if (!$first_name && !$last_name) {
+                return 0;
+            }
+
+            return trim($first_name . ' ' . $last_name);
+        }
+
         // Check if the property exists in $user->data
         $property = $user_dictionary[$dc_field] ?? $dc_field;
         if ($dc_field === 'archive-type' || $dc_field === 'link') {

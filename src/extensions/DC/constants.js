@@ -115,12 +115,7 @@ const generalRelationOptionsPages = [
 	{ label: __('Get by author', 'maxi-blocks'), value: 'by-author' },
 ];
 
-const generalRelationOptionsUsers = [
-	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
-	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
-	{ label: __('Get alphabetical', 'maxi-blocks'), value: 'alphabetical' },
-];
+const generalRelationOptionsUsers = [];
 
 const generalRelationOptionsCategories = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
@@ -710,6 +705,8 @@ export const relationTypes = [
 
 // Types that can have relation "current".
 export const currentEntityTypes = ['posts', 'pages', 'users', 'customers'];
+
+export const alwaysShowCurrentTypes = ['customers'];
 
 export const ignoreEmptyFields = ['avatar', 'author_avatar'];
 

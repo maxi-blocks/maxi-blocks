@@ -546,6 +546,7 @@ class MaxiBlocks_StyleCards
                     }
                 }
 
+                // Build selectors with level included
                 $selectors = [
                     "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} {$level}",
                     "{$prefix} {$second_prefix} .maxi-{$style} {$level}.{$native_wp_prefix}",
@@ -578,11 +579,6 @@ class MaxiBlocks_StyleCards
                 }
 
                 $added_response .= implode(', ', array_filter($selectors)) . " {" . implode(' ', $sentences) . "}";
-
-                // Add list styles for paragraphs
-                if ($level === 'p') {
-                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} li.{$native_wp_prefix} {" . implode(' ', $sentences) . "}";
-                }
 
                 // Add margin-bottom sentence to all elements except the last one
                 if ($margin_sentence) {
@@ -1103,17 +1099,16 @@ class MaxiBlocks_StyleCards
 
             // Safely get navigation sentences
             $sentences = isset($breakpoint_level_sentences['navigation']) ? $breakpoint_level_sentences['navigation'] : [];
-            error_log(json_encode($sentences, true));
 
             // Remove margin-bottom sentences
             $margin_sentence = null;
-            // foreach ($sentences as $key => $sentence) {
-            //     if (strpos($sentence, 'margin-bottom') !== false) {
-            //         $margin_sentence = $sentence;
-            //         unset($sentences[$key]);
-            //         break;
-            //     }
-            // }
+            foreach ($sentences as $key => $sentence) {
+                if (strpos($sentence, 'margin-bottom') !== false) {
+                    $margin_sentence = $sentence;
+                    unset($sentences[$key]);
+                    break;
+                }
+            }
 
             $added_response .= "{$target_item} {" . implode(' ', $sentences) . "}";
 

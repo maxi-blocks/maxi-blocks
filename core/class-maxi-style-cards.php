@@ -765,6 +765,22 @@ class MaxiBlocks_StyleCards
 
             // Generate CSS variables string
             $var_sc_string = ':root{';
+
+            // Add default margin-bottom for text elements
+            $text_elements = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+            $styles = ['light', 'dark'];
+
+            foreach ($styles as $style) {
+                foreach ($text_elements as $element) {
+                    $margin_key = "margin-bottom-general";
+                    // Only add default if the margin-bottom is not already set
+                    if (!isset($organized_values[$style][$element]['general']['margin-bottom'])) {
+                        $var_sc_string .= "--maxi-{$style}-{$element}-{$margin_key}:20px;";
+                    }
+                }
+            }
+
+            // Continue with existing organized values
             foreach ($organized_values as $style => $style_data) {
                 foreach ($style_data as $element => $element_data) {
                     if ($element === 'color') {
@@ -877,6 +893,20 @@ class MaxiBlocks_StyleCards
                 $style_card[$style]['styleCard'] ?? []
             );
 
+            // Add default margin-bottom for text elements if not already set
+            $text_elements = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+            foreach ($text_elements as $element) {
+                $margin_key = "margin-bottom-general";
+
+                // Only add default if the margin-bottom is not already set
+                if (!isset($style_data[$element][$margin_key])) {
+                    $organized_values[$style][$element]['general']['margin-bottom'] = [
+                        'value' => '20px',
+                        'var_name' => "--maxi-{$style}-{$element}-margin-bottom-general"
+                    ];
+                }
+            }
+
             foreach ($elements as $element) {
                 if (!isset($style_data[$element])) {
                     continue;
@@ -885,35 +915,19 @@ class MaxiBlocks_StyleCards
                 foreach ($settings as $setting) {
                     foreach ($breakpoints_keys as $breakpoint) {
                         $key = "{$setting}-{$breakpoint}";
+                        $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
 
                         // Handle navigation styles differently
                         if ($element === 'navigation' && isset($style_data[$element][$breakpoint])) {
                             foreach ($style_data[$element][$breakpoint] as $prop => $value) {
-                                if (!isset($organized_values[$style])) {
-                                    $organized_values[$style] = [];
-                                }
-                                if (!isset($organized_values[$style][$element])) {
-                                    $organized_values[$style][$element] = [];
-                                }
-                                if (!isset($organized_values[$style][$element][$breakpoint])) {
-                                    $organized_values[$style][$element][$breakpoint] = [];
-                                }
-
-                                $organized_values[$style][$element][$breakpoint][$prop] = $value;
+                                $organized_values[$style][$element][$breakpoint][$prop] = [
+                                    'value' => $value,
+                                    'var_name' => "--maxi-{$style}-{$element}-{$prop}-{$breakpoint}"
+                                ];
                             }
                         }
                         // Handle other elements
                         elseif (isset($style_data[$element][$key])) {
-                            if (!isset($organized_values[$style])) {
-                                $organized_values[$style] = [];
-                            }
-                            if (!isset($organized_values[$style][$element])) {
-                                $organized_values[$style][$element] = [];
-                            }
-                            if (!isset($organized_values[$style][$element][$breakpoint])) {
-                                $organized_values[$style][$element][$breakpoint] = [];
-                            }
-
                             $value = $style_data[$element][$key];
 
                             // Add units if needed
@@ -925,7 +939,10 @@ class MaxiBlocks_StyleCards
                                 }
                             }
 
-                            $organized_values[$style][$element][$breakpoint][$setting] = $value;
+                            $organized_values[$style][$element][$breakpoint][$setting] = [
+                                'value' => $value,
+                                'var_name' => $var_name
+                            ];
                         }
                     }
                 }
@@ -935,13 +952,10 @@ class MaxiBlocks_StyleCards
             if (isset($style_data['color'])) {
                 for ($i = 1; $i <= 8; $i++) {
                     if (isset($style_data['color'][$i])) {
-                        if (!isset($organized_values[$style])) {
-                            $organized_values[$style] = [];
-                        }
-                        if (!isset($organized_values[$style]['color'])) {
-                            $organized_values[$style]['color'] = [];
-                        }
-                        $organized_values[$style]['color'][$i] = $style_data['color'][$i];
+                        $organized_values[$style]['color'][$i] = [
+                            'value' => $style_data['color'][$i],
+                            'var_name' => "--maxi-{$style}-color-{$i}"
+                        ];
                     }
                 }
             }
@@ -1009,12 +1023,9 @@ class MaxiBlocks_StyleCards
             $sentences[$target] = [];
 
             foreach ($settings as $setting) {
-                $value = isset($organized_values[$style][$target][$breakpoint][$setting])
-                    ? $organized_values[$style][$target][$breakpoint][$setting]
-                    : null;
-
-                if ($value) {
-                    $sentences[$target][] = "{$setting}: var(--maxi-{$style}-{$target}-{$setting}-{$breakpoint});";
+                if (isset($organized_values[$style][$target][$breakpoint][$setting])) {
+                    $value_data = $organized_values[$style][$target][$breakpoint][$setting];
+                    $sentences[$target][] = "{$setting}: var({$value_data['var_name']});";
                 }
             }
         }

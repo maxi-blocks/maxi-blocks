@@ -507,13 +507,23 @@ class MaxiBlocks_StyleCards
         $native_wp_prefix = 'maxi-block--use-sc';
         $levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
         $headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+        $breakpoints = [
+            'xxl' => 1921,
+            'xl' => 1920,
+            'l' => 1366,
+            'm' => 1024,
+            's' => 767,
+            'xs' => 480,
+        ];
+        $breakpoint_keys = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
         // Get breakpoint level sentences
         foreach ($levels as $level) {
             $sentences = [];
             foreach ($organized_values[$style][$level] ?? [] as $prop => $value) {
                 if ($prop !== 'margin-bottom') {
-                    $sentences[] = "$prop: $value;";
+                    $processed_value = self::stringify_value($value);
+                    $sentences[] = "$prop: $processed_value;";
                 }
             }
 
@@ -576,7 +586,7 @@ class MaxiBlocks_StyleCards
                 }
             }
             if ($margin_sentence) {
-                $response .= "$selector { $margin_sentence }";
+                $response .= "$selector:not(:last-child) { $margin_sentence }";
             }
         }
 
@@ -637,7 +647,7 @@ class MaxiBlocks_StyleCards
         foreach ($caption_selectors as $selector) {
             $p_sentences = [];
             foreach ($organized_values[$style]['p'] ?? [] as $prop => $value) {
-                if ($prop !== 'margin-bottom') {
+                if ($prop !== 'margin-bottom' && !is_array($value)) {
                     $p_sentences[] = "$prop: $value;";
                 }
             }
@@ -646,10 +656,44 @@ class MaxiBlocks_StyleCards
             }
         }
 
+        // Image Maxi hover details
+        $hover_detail_selectors = [
+            "$prefix .maxi-$style.maxi-image-block .maxi-hover-details",
+            "$prefix .maxi-$style .maxi-image-block .maxi-hover-details"
+        ];
+
+        foreach ($hover_detail_selectors as $target) {
+            // Apply h4 styles
+            if (isset($organized_values[$style]['h4'])) {
+                $h4_styles = [];
+                foreach ($organized_values[$style]['h4'] as $prop => $value) {
+                    if ($prop !== 'margin-bottom' && !is_array($value)) {
+                        $h4_styles[] = "$prop: $value;";
+                    }
+                }
+                if (!empty($h4_styles)) {
+                    $response .= "$target h4 {" . implode(' ', $h4_styles) . "}";
+                }
+            }
+
+            // Apply p styles
+            if (isset($organized_values[$style]['p'])) {
+                $p_styles = [];
+                foreach ($organized_values[$style]['p'] as $prop => $value) {
+                    if (!is_array($value)) {
+                        $p_styles[] = "$prop: $value;";
+                    }
+                }
+                if (!empty($p_styles)) {
+                    $response .= "$target p {" . implode(' ', $p_styles) . "}";
+                }
+            }
+        }
+
         // Button styles
         $button_sentences = [];
         foreach ($organized_values[$style]['button'] ?? [] as $prop => $value) {
-            if ($prop !== 'margin-bottom') {
+            if ($prop !== 'margin-bottom' && !is_array($value)) {
                 $button_sentences[] = "$prop: $value;";
             }
         }
@@ -669,6 +713,24 @@ class MaxiBlocks_StyleCards
 
         // Navigation link styles
         $target_item = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation-item";
+
+        // Get all navigation styles including paddings
+        if (isset($organized_values[$style]['navigation'])) {
+            foreach ($breakpoint_keys as $breakpoint) {
+                if (isset($organized_values[$style]['navigation'][$breakpoint])) {
+                    $nav_styles = '';
+                    foreach ($organized_values[$style]['navigation'][$breakpoint] as $prop => $value) {
+                        $processed_value = self::stringify_value($value);
+                        $nav_styles .= "{$prop}: {$processed_value};";
+                        error_log('Processed value: ' . "{$prop}: {$processed_value};");
+                    }
+                    if ($nav_styles) {
+                        $response .= "{$target_item} {{$nav_styles}}";
+                    }
+                }
+            }
+        }
+
         $target_link = "$target_item a";
         $target_button = "$target_item button";
 
@@ -772,6 +834,25 @@ class MaxiBlocks_StyleCards
         // Mobile menu background
         $mobile_menu_bg_target = "$prefix .maxi-$style.maxi-container-block .wp-block-navigation .wp-block-navigation__responsive-container.has-modal-open";
         $response .= "$mobile_menu_bg_target { background-color: var(--maxi-$style-menu-mobile-bg) !important; }";
+
+        // After headings color, add editor-specific styles for light theme
+        if ($style === 'light') {
+            $response .= "$prefix p > span[data-rich-text-placeholder]::after { color: var(--maxi-light-p-color); }";
+            $response .= "$prefix .editor-editor-canvas__post-title-wrapper > h1.editor-post-title { color: var(--maxi-light-h1-color); }";
+        }
+
+        // Add visited:hover states to navigation links after the existing visited states
+        $response .= "$target_link:visited:hover { color: var(--maxi-$style-menu-item-hover); }";
+        $response .= "$target_link:visited:hover span { color: var(--maxi-$style-menu-item-hover); }";
+        $response .= "$target_link:visited:hover + span { color: var(--maxi-$style-menu-item-hover); }";
+        $response .= "$target_link:visited:hover + button { color: var(--maxi-$style-menu-item-hover); }";
+
+        // Add media queries for breakpoints
+        foreach ($breakpoints as $breakpoint => $width) {
+            $response .= "@media (" . ($breakpoint === 'xxl' ? 'min' : 'max') . "-width: {$width}px) {";
+            // Add breakpoint-specific styles here
+            $response .= "}";
+        }
 
         return $response;
     }
@@ -975,5 +1056,20 @@ class MaxiBlocks_StyleCards
             }
         }
         return false;
+    }
+
+    // Helper function to handle array values
+    private static function stringify_value($value)
+    {
+        if (is_array($value)) {
+            if (isset($value['value'])) {
+                return $value['value'];
+            }
+            if (isset($value[0])) {
+                return $value[0];
+            }
+            return json_encode($value);
+        }
+        return $value;
     }
 }

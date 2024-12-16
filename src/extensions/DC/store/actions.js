@@ -62,13 +62,6 @@ const actions = {
 			acfFields,
 		};
 	},
-	setCustomerData(customerData, customerId) {
-		return {
-			type: 'SET_CUSTOMER_DATA',
-			customerData,
-			customerId,
-		};
-	},
 };
 
 export default actions;

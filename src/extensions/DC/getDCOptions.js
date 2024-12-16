@@ -64,10 +64,7 @@ wp.domReady(() => {
 
 const fetchUsers = async type => {
 	const { getUsers } = resolveSelect(coreStore);
-	let users = await getUsers();
-	if (type === 'customers') {
-		users = users?.filter(user => user?.roles?.includes('customer'));
-	}
+	const users = await getUsers();
 
 	return users && users.length
 		? users.map(({ id, name }) => ({ id, name }))
@@ -113,10 +110,7 @@ export const getIdOptions = async (
 			data = await getEntityRecords('taxonomy', taxonomy, args);
 			setCachedData(cacheKey, data);
 		}
-	} else if (
-		['users', 'customers'].includes(type) ||
-		relation === 'by-author'
-	) {
+	} else if (['users'].includes(type) || relation === 'by-author') {
 		data = getCachedData('users');
 		if (!data) {
 			data = await fetchUsers(type);

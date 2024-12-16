@@ -39,15 +39,6 @@ const getUserLink = (dataRequest, data) => {
 	return data?.link;
 };
 
-const getCustomerLink = (dataRequest, data) => {
-	if (dataRequest?.linkTarget === 'customer_email') {
-		const email = data?.customerData?.billing_email?.[0];
-		return email ? `mailto:${email}` : null;
-	}
-
-	return data?.link;
-};
-
 const cache = {};
 const MAX_CACHE_SIZE = 200;
 
@@ -109,10 +100,6 @@ const getDCLink = async (dataRequest, clientId) => {
 
 	if (type === 'users') {
 		return getUserLink(dataRequest, data);
-	}
-
-	if (type === 'customers') {
-		return getCustomerLink(dataRequest, data);
 	}
 
 	return data?.link || null;

@@ -6,7 +6,6 @@ const initialState = {
 	limitTypes,
 	acfGroups: null,
 	acfFields: null,
-	customerData: {},
 	customPostTypes: [],
 	customTaxonomies: [],
 	wasCustomPostTypesLoaded: false,
@@ -48,14 +47,6 @@ const reducer = (state = initialState, action) => {
 				acfFields: {
 					...state.acfFields,
 					[action.groupId]: action.acfFields,
-				},
-			};
-		case 'SET_CUSTOMER_DATA':
-			return {
-				...state,
-				customerData: {
-					...state.customerData,
-					[action.customerId]: action.customerData,
 				},
 			};
 		default:

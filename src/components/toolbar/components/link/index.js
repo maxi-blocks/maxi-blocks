@@ -263,10 +263,7 @@ const Link = props => {
 									disableOpenInNewTab={
 										showUseDCLink &&
 										dcLinkStatus &&
-										[
-											'author_email',
-											'customer_email',
-										].includes(dcLinkTarget)
+										['author_email'].includes(dcLinkTarget)
 									}
 									onChangeLink={onChange}
 									onRemoveLink={() => {

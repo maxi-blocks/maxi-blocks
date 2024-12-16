@@ -40,9 +40,6 @@ const selectors = {
 	getACFFields: (state, groupId) => {
 		return state?.acfFields?.[groupId];
 	},
-	getCustomerData: (state, customerId) => {
-		return state?.customerData?.[customerId];
-	},
 };
 
 export default selectors;

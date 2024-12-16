@@ -130,18 +130,6 @@ const getKind = type => {
 	return 'postType';
 };
 
-const getUsersByType = async (type, args) => {
-	const users = await resolveSelect('core').getUsers(args);
-
-	if (type === 'customers') {
-		return users.filter(
-			user => user.roles && user.roles.includes('customer')
-		);
-	}
-
-	return users;
-};
-
 const getDCEntity = async (dataRequest, clientId) => {
 	const {
 		type,
@@ -212,14 +200,14 @@ const getDCEntity = async (dataRequest, clientId) => {
 		}
 	}
 
-	if (['users', 'customers'].includes(type)) {
+	if (['users'].includes(type)) {
 		let user;
 		dataRequest.id = author ?? id;
 
 		const { getUser } = resolveSelect('core');
 
 		if (relation === 'random') {
-			const users = await getUsersByType(type, {
+			const users = await resolveSelect('core').getUsers({
 				per_page: 100,
 				hide_empty: false,
 			});
@@ -227,7 +215,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 		}
 
 		if (['by-date', 'alphabetical'].includes(relation)) {
-			const users = await getUsersByType(type, {
+			const users = await resolveSelect('core').getUsers({
 				per_page: accumulator + 1,
 				hide_empty: false,
 				order,
@@ -239,21 +227,6 @@ const getDCEntity = async (dataRequest, clientId) => {
 			const currentUserId = select('core').getCurrentUser()?.id; // getCurrentUser doesn't have all the data we need
 			user = await getUser(currentUserId);
 		} else user = await getUser(author ?? id);
-
-		if (type === 'customers' && user && user.roles.includes('customer')) {
-			const customerData = await resolveSelect(
-				'maxiBlocks/dynamic-content'
-			).getCustomerData(user.id);
-
-			if (customerData) {
-				user = {
-					...user,
-					customerData,
-				};
-			}
-		} else if (type === 'customers') {
-			return null;
-		}
 
 		return user;
 	}

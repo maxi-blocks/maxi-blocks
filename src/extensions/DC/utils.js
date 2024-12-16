@@ -602,7 +602,4 @@ export const isLinkObfuscationEnabled = (
 	dcStatus,
 	dcLinkStatus,
 	dcLinkTarget
-) =>
-	dcStatus &&
-	dcLinkStatus &&
-	['author_email', 'customer_email'].includes(dcLinkTarget);
+) => dcStatus && dcLinkStatus && ['author_email'].includes(dcLinkTarget);

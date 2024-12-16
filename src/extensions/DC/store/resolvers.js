@@ -21,15 +21,6 @@ const resolvers = {
 			const fields = await getACFGroupFields(groupId);
 			dispatch.setACFFields(groupId, fields);
 		},
-	getCustomerData:
-		customerId =>
-		async ({ dispatch }) => {
-			const customerData = await apiFetch({
-				path: `/maxi-blocks/v1.0/wc/get-customer-data/${customerId}`,
-				method: 'GET',
-			}).then(res => JSON.parse(res));
-			dispatch.setCustomerData(customerData, customerId);
-		},
 };
 
 export default resolvers;

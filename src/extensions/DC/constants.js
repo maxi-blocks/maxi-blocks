@@ -43,7 +43,6 @@ export const WCTypeOptions = [
 		value: 'product_categories',
 	},
 	{ label: __('Product tags', 'maxi-blocks'), value: 'product_tags' },
-	{ label: __('Customer', 'maxi-blocks'), value: 'customers' },
 ];
 
 export const typeOptions = {
@@ -156,7 +155,6 @@ const generalRelationOptions = {
 	cart: generalRelationOptionsPosts,
 	product_categories: generalRelationOptionsCategories,
 	product_tags: generalRelationOptionsTags,
-	customers: generalRelationOptionsUsers,
 };
 
 export const relationOptions = {
@@ -390,74 +388,6 @@ const dividerFields = [
 	{ label: __('Static', 'maxi-blocks'), value: 'static_text' },
 ];
 
-const generalCustomerFields = [
-	{ label: __('Name (billing)', 'maxi-blocks'), value: 'billing_name' },
-	{
-		label: __('First name (billing)', 'maxi-blocks'),
-		value: 'billing_first_name',
-	},
-	{
-		label: __('Last name (billing)', 'maxi-blocks'),
-		value: 'billing_last_name',
-	},
-	{ label: __('Email (billing)', 'maxi-blocks'), value: 'billing_email' },
-	{ label: __('Phone (billing)', 'maxi-blocks'), value: 'billing_phone' },
-	{
-		label: __('Address line 1 (billing)', 'maxi-blocks'),
-		value: 'billing_address_1',
-	},
-	{
-		label: __('Address line 2 (billing)', 'maxi-blocks'),
-		value: 'billing_address_2',
-	},
-	{ label: __('City (billing)', 'maxi-blocks'), value: 'billing_city' },
-	{
-		label: __('Postcode (billing)', 'maxi-blocks'),
-		value: 'billing_postcode',
-	},
-	{ label: __('Country (billing)', 'maxi-blocks'), value: 'billing_country' },
-	{
-		label: __('Country full name (billing)', 'maxi-blocks'),
-		value: 'billing_full_country',
-	},
-	{ label: __('State (billing)', 'maxi-blocks'), value: 'billing_state' },
-	{ label: __('Name (shipping)', 'maxi-blocks'), value: 'shipping_name' },
-	{
-		label: __('First name (shipping)', 'maxi-blocks'),
-		value: 'shipping_first_name',
-	},
-	{
-		label: __('Last name (shipping)', 'maxi-blocks'),
-		value: 'shipping_last_name',
-	},
-	{
-		label: __('Phone (shipping)', 'maxi-blocks'),
-		value: 'shipping_phone',
-	},
-	{
-		label: __('Address line 1 (shipping)', 'maxi-blocks'),
-		value: 'shipping_address_1',
-	},
-	{
-		label: __('Address line 2 (shipping)', 'maxi-blocks'),
-		value: 'shipping_address_2',
-	},
-	{ label: __('City (shipping)', 'maxi-blocks'), value: 'shipping_city' },
-	{
-		label: __('Postcode (shipping)', 'maxi-blocks'),
-		value: 'shipping_postcode',
-	},
-	{
-		label: __('Country (shipping)', 'maxi-blocks'),
-		value: 'shipping_country',
-	},
-	{
-		label: __('Country full name (shipping)', 'maxi-blocks'),
-		value: 'shipping_full_country',
-	},
-	{ label: __('State (shipping)', 'maxi-blocks'), value: 'shipping_state' },
-];
-
 export const fieldOptions = {
 	text: {
 		posts: generalPostsFields,
@@ -471,7 +401,6 @@ export const fieldOptions = {
 		cart: generalCartFields,
 		product_categories: generalCategoryFields,
 		product_tags: generalTagFields,
-		customers: generalCustomerFields,
 	},
 	button: {
 		posts: buttonPostsPagesFields,
@@ -485,7 +414,6 @@ export const fieldOptions = {
 		cart: buttonCartFields,
 		product_categories: buttonCategoryFields,
 		product_tags: buttonTagFields,
-		customers: generalCustomerFields,
 	},
 	image: {
 		posts: mediaPostsPagesFields,
@@ -526,7 +454,7 @@ export const htmlFields = ['tags', 'categories'];
 /**
  * Link constants
  */
-export const multipleLinksTypes = ['products', 'users', 'customers'];
+export const multipleLinksTypes = ['products', 'users'];
 
 export const linkTypesOptions = {
 	products: [
@@ -535,9 +463,6 @@ export const linkTypesOptions = {
 	users: [
 		{ label: __('Author email', 'maxi-blocks'), value: 'author_email' },
 		{ label: __('Author site', 'maxi-blocks'), value: 'author_site' },
-	],
-	customers: [
-		{ label: __('Customer email', 'maxi-blocks'), value: 'customer_email' },
 	],
 };
 
@@ -642,7 +567,6 @@ export const randomOptions = {
 	settings: [],
 	media: mediaRandomOptions,
 	users: usersRandomOptions,
-	customers: usersRandomOptions,
 	categories: categoriesRandomOptions,
 	tags: tagsRandomOptions,
 };
@@ -657,7 +581,6 @@ export const idOptionByField = {
 	products: 'title',
 	tags: 'name',
 	users: 'name',
-	customers: 'name',
 	author: 'name',
 	categories: 'name',
 	product_categories: 'name',
@@ -673,7 +596,6 @@ export const idTypes = [
 	'categories',
 	'tags',
 	'authors',
-	'customers',
 	'products',
 	'product_categories',
 	'product_tags',
@@ -697,16 +619,13 @@ export const relationTypes = [
 	'categories',
 	'tags',
 	'users', // TODO: Add support for users
-	'customers',
 	'products',
 	'product_categories',
 	'product_tags',
 ];
 
 // Types that can have relation "current".
-export const currentEntityTypes = ['posts', 'pages', 'users', 'customers'];
-
-export const alwaysShowCurrentTypes = ['customers'];
+export const currentEntityTypes = ['posts', 'pages', 'users'];
 
 export const ignoreEmptyFields = ['avatar', 'author_avatar'];
 
@@ -782,14 +701,7 @@ export const orderByOptions = [
 	{ label: __('Alphabetical', 'maxi-blocks'), value: 'alphabetical' },
 ];
 
-export const orderTypes = [
-	'posts',
-	'pages',
-	'media',
-	'users',
-	'customers',
-	'products',
-];
+export const orderTypes = ['posts', 'pages', 'media', 'users', 'products'];
 
 export const orderOptions = {
 	'by-date': [

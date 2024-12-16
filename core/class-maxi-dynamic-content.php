@@ -915,7 +915,7 @@ class MaxiBlocks_DynamicContent
             }
             $link = get_term_link($attributes['dc-id']);
         } elseif (
-            in_array($attributes['dc-type'] ?? '', ['users', 'customers'])
+            in_array($attributes['dc-type'] ?? '', ['users'])
         ) {
             $dc_link_target = $attributes['dc-link-target'];
             $author_id = $post->ID;
@@ -923,10 +923,6 @@ class MaxiBlocks_DynamicContent
 				switch ($dc_link_target) {
 					case 'author_email':
 						$email = sanitize_email(get_the_author_meta('user_email', $author_id));
-						$link = $this->xor_obfuscate_email($email);
-						break;
-					case 'customer_email':
-						$email = sanitize_email(get_user_meta($author_id, 'billing_email', true));
 						$link = $this->xor_obfuscate_email($email);
 						break;
 					case 'author_site':
@@ -1057,7 +1053,7 @@ class MaxiBlocks_DynamicContent
             )
         ) {
             $response = self::get_taxonomy_content($attributes);
-        } elseif ($dc_type === 'users' || $dc_type === 'customers') {
+        } elseif ($dc_type === 'users') {
             $response = self::get_user_content($attributes);
         } elseif ($dc_type === 'products') {
             $response = self::get_product_content($attributes);
@@ -1692,12 +1688,8 @@ class MaxiBlocks_DynamicContent
             } else {
                 return null;
             }
-        } elseif ($dc_type === 'users' || $dc_type === 'customers') {
+        } elseif ($dc_type === 'users') {
             if ($dc_relation === 'current') {
-                if ($dc_type === 'customers') {
-                    return get_user_by('id', get_current_user_id());
-                }
-
                 return get_user_by('id', get_the_author_meta('ID'));
             }
 
@@ -2153,19 +2145,6 @@ class MaxiBlocks_DynamicContent
             !is_object($user->data)
         ) {
             return 0;
-        }
-
-		// Special case for 'billing_name' and 'shipping_name' fields
-		if ($dc_field === 'billing_name' || $dc_field === 'shipping_name') {
-            $prefix = substr($dc_field, 0, -5); // Remove '_name' to get 'billing' or 'shipping'
-            $first_name = $user_data[$prefix . '_first_name'] ?? '';
-            $last_name = $user_data[$prefix . '_last_name'] ?? '';
-
-            if (!$first_name && !$last_name) {
-                return 0;
-            }
-
-            return trim($first_name . ' ' . $last_name);
         }
 
         // Check if the property exists in $user->data

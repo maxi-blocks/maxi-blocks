@@ -133,19 +133,50 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 
 					if (blockStyles) {
 						try {
-							// Format the styles as expected by frontendStyleGenerator
-							const styleArray = [uniqueID, blockStyles];
-							const generatedStyle =
-								frontendStyleGenerator(styleArray);
+							// Process main block styles
+							const mainStyleArray = [uniqueID, blockStyles];
+							const mainGeneratedStyle =
+								frontendStyleGenerator(mainStyleArray);
+							let finalCssString = '';
 
-							if (generatedStyle) {
-								const cssString = await processCss(
-									generatedStyle
+							if (mainGeneratedStyle) {
+								const mainCssString = await processCss(
+									mainGeneratedStyle
+								);
+								if (mainCssString) {
+									finalCssString = mainCssString;
+								}
+							}
+
+							// Handle accordion pane styles separately
+							if (uniqueID.includes('accordion')) {
+								const paneStyles = select(
+									'maxiBlocks/styles'
+								).getBlockStyles(
+									`${uniqueID} .maxi-pane-block[data-accordion="${uniqueID}"]`
 								);
 
-								if (cssString) {
-									styles[uniqueID] = cssString;
+								if (paneStyles) {
+									const paneStyleArray = [
+										`.maxi-pane-block[data-accordion="${uniqueID}"]`,
+										paneStyles,
+									];
+									const paneGeneratedStyle =
+										frontendStyleGenerator(paneStyleArray);
+
+									if (paneGeneratedStyle) {
+										const paneCssString = await processCss(
+											paneGeneratedStyle
+										);
+										if (paneCssString) {
+											finalCssString += paneCssString;
+										}
+									}
 								}
+							}
+
+							if (finalCssString) {
+								styles[uniqueID] = finalCssString;
 							}
 						} catch (error) {
 							console.error(

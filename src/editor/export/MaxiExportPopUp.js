@@ -158,12 +158,11 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 
 								if (paneStyles) {
 									const paneStyleArray = [
-										`.maxi-pane-block[data-accordion="${uniqueID}"]`,
+										`${uniqueID} .maxi-pane-block[data-accordion="${uniqueID}"]`,
 										paneStyles,
 									];
 									const paneGeneratedStyle =
 										frontendStyleGenerator(paneStyleArray);
-
 									if (paneGeneratedStyle) {
 										const paneCssString = await processCss(
 											paneGeneratedStyle

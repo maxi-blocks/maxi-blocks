@@ -101,6 +101,11 @@ body {
 		}
 	}
 }
+.maxi-style-cards__popover .maxi-library-modal__action-section__export {
+	width: 100% !important;
+	padding-bottom: 7px;
+	padding-top: 2px;
+}
 .maxi-style-cards__card-already-exists {
 	&.create-new-section {
 		margin-left: 8px;

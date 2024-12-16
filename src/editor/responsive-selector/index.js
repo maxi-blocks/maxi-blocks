@@ -9,7 +9,6 @@ import { useCallback, useEffect, useRef } from '@wordpress/element';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**

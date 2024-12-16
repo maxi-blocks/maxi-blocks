@@ -15,7 +15,7 @@ import Icon from '../../components/icon';
  * Styles and icons
  */
 import './editor.scss';
-import { styleCardMenu } from '../../icons';
+import { cloudLib } from '../../icons';
 
 const MaxiExportEditorPopUp = forwardRef((props, settingsRef) => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -28,7 +28,7 @@ const MaxiExportEditorPopUp = forwardRef((props, settingsRef) => {
 				aria-label={__('Export', 'maxi-blocks')}
 				onClick={() => setIsVisible(!isVisible)}
 			>
-				<Icon icon={styleCardMenu} />
+				<Icon icon={cloudLib} className='export-icon' />
 				<span>{__('Export', 'maxi-blocks')}</span>
 			</Button>
 			{isVisible && (

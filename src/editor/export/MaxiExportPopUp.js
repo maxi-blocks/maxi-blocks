@@ -23,7 +23,7 @@ import { processCss } from '../../extensions/styles/store/controls';
 /**
  * Icons
  */
-import { styleCardBoat, closeIcon } from '../../icons';
+import { cloudLib, closeIcon } from '../../icons';
 
 const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 	const { isRTL, currentPostTitle, postContent, postType } = useSelect(
@@ -262,8 +262,8 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 			strategy='fixed'
 		>
 			<div className='active-style-card'>
-				<div className='active-style-card_icon'>
-					<Icon icon={styleCardBoat} />
+				<div className='active-style-card_icon export-icon'>
+					<Icon icon={cloudLib} />
 				</div>
 				<div className='active-style-card_title'>
 					<span>{__('Export', 'maxi-blocks')}</span>
@@ -283,9 +283,9 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 			</div>
 
 			<div className='maxi-style-cards__sc'>
-				<div className='maxi-style-cards__sc__more-sc'>
+				<div className='maxi-library-modal__action-section maxi-library-modal__action-section__export'>
 					<Button
-						className='maxi-style-cards__download-button'
+						className='maxi-style-cards__sc__more-sc--add-more'
 						onClick={handleDownloadJSON}
 					>
 						{__('Download as JSON', 'maxi-blocks')}

@@ -18,3 +18,8 @@
 		margin-top: 0;
 	}
 }
+
+.maxi-responsive-selector .export-icon,
+.maxi-sidebar .export-icon {
+	transform: scaleY(-1);
+}

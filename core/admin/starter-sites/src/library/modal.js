@@ -2,19 +2,15 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import CloudLibrary from '.';
 import {
-	authConnect,
 	isProSubActive,
 	isProSubExpired,
-	isValidEmail,
 	getUserName,
-	logOut,
 } from '../auth';
 /**
  * External dependencies
@@ -46,6 +42,9 @@ const MaxiModal = props => {
 
 	const [isOpenDetails, changeIsOpenDetails] = useState(false);
 	const [isOpenImport, changeIsOpenImport] = useState(false);
+	const [isCurrentStarterSite, setIsCurrentStarterSite] = useState(
+		title === window.maxiStarterSites?.currentStarterSite
+	);
 
 	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
 	const [isMaxiProExpired, setIsMaxiProExpired] = useState(isProSubExpired());
@@ -75,8 +74,20 @@ const MaxiModal = props => {
 		checkStatus();
 	}, []);
 
-	const isCurrentStarterSite =
-		title === window.maxiStarterSites?.currentStarterSite;
+	useEffect(() => {
+		const handleStorageChange = () => {
+			const currentSite = window.maxiStarterSites?.currentStarterSite;
+			setIsCurrentStarterSite(title === currentSite);
+		};
+
+		handleStorageChange();
+
+		window.addEventListener('maxiStarterSiteChanged', handleStorageChange);
+
+		return () => {
+			window.removeEventListener('maxiStarterSiteChanged', handleStorageChange);
+		};
+	}, [title]);
 
 	const onClickOpenModalDetails = () => {
 		changeIsOpenDetails(!isOpenDetails);

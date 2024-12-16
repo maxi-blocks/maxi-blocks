@@ -294,8 +294,19 @@ const MaxiImportPopUp = ({
 		})
 			.then(response => {
 				console.log('Import response:', response);
-				window.maxiStarterSites.currentStarterSite = title;
+				// Update window variable with the response data
+				window.maxiStarterSites = window.maxiStarterSites || {};
+				window.maxiStarterSites.currentStarterSite = response.currentStarterSite;
+
+				// Dispatch the event
+				window.dispatchEvent(new CustomEvent('maxiStarterSiteChanged'));
+
 				setImportStatus('done');
+
+				// Close the popup after successful import
+				if (onRequestClose) {
+					setTimeout(onRequestClose, 2000);
+				}
 			})
 			.catch(error => {
 				console.error('Import error full details:', error);

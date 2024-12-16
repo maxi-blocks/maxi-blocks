@@ -1263,7 +1263,8 @@ if (!class_exists('MaxiBlocks_API')):
             return rest_ensure_response([
                 'success' => true,
                 'message' => 'Import data processed',
-                'data' => $results
+                'data' => $results,
+                'currentStarterSite' => $import_data['title'] ?? ''
             ]);
         }
 
@@ -1688,14 +1689,27 @@ if (!class_exists('MaxiBlocks_API')):
             file_put_contents($temp_file, $xml_content);
 
             // Required files for WP_Import
-            if (! function_exists('post_exists')) {
+            if (!function_exists('post_exists')) {
                 require_once ABSPATH . 'wp-admin/includes/post.php';
+            }
+            if (!function_exists('comment_exists')) {
+                require_once ABSPATH . 'wp-admin/includes/comment.php';
             }
             require_once ABSPATH . 'wp-admin/includes/image.php';
             require_once ABSPATH . 'wp-admin/includes/media.php';
             require_once ABSPATH . 'wp-admin/includes/image-edit.php';
             require_once ABSPATH . 'wp-admin/includes/import.php';
             require_once ABSPATH . 'wp-admin/includes/class-wp-importer.php';
+
+            // Check if WordPress Importer plugin is installed and active
+            if (!file_exists(WP_PLUGIN_DIR . '/wordpress-importer/class-wp-import.php')) {
+                return new WP_Error(
+                    'importer_missing',
+                    'WordPress Importer plugin is required but not installed.',
+                    array('status' => 400)
+                );
+            }
+
             require_once WP_PLUGIN_DIR . '/wordpress-importer/class-wp-import.php';
             require_once WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php';
             require_once WP_PLUGIN_DIR . '/wordpress-importer/parsers/class-wxr-parser.php';
@@ -1781,6 +1795,18 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
 
             foreach ($custom_data as $block_id => $block_custom_data) {
+                // Try to parse the custom data if it's a string
+                if (is_string($block_custom_data)) {
+                    $parsed_data = json_decode($block_custom_data, true);
+
+                    // If parsing successful and contains nested structure
+                    if ($parsed_data && isset($parsed_data[$block_id])) {
+                        // Extract the inner object
+                        $block_custom_data = json_encode($parsed_data[$block_id]);
+                    }
+                    // If already in the correct format, keep as is
+                }
+
                 // Check if block_id exists
                 $existing_custom_data = $wpdb->get_row(
                     $wpdb->prepare(

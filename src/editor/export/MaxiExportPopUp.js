@@ -180,7 +180,26 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 						return false;
 					return true;
 				})
-				.map(([key, value]) => [key, JSON.stringify(value)])
+				.map(([key, value]) => {
+					try {
+						// Handle both string and object values
+						const parsedValue =
+							typeof value === 'string'
+								? JSON.parse(value)
+								: value;
+
+						// Get the inner value, whether it's nested or not
+						const innerValue = parsedValue[key] || parsedValue;
+
+						return [key, JSON.stringify(innerValue)];
+					} catch (error) {
+						console.error(
+							`Error processing customData for key ${key}:`,
+							error
+						);
+						return [key, JSON.stringify(value)];
+					}
+				})
 		);
 
 		const exportData = {

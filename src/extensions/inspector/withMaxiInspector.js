@@ -22,7 +22,7 @@ const withMaxiInspector = createHigherOrderComponent(
 							const addSidebarClass = () => {
 								const editPostSidebarNode =
 									document.querySelector(
-										'.interface-complementary-area'
+										'.interface-interface-skeleton__sidebar'
 									);
 
 								if (editPostSidebarNode) {
@@ -36,22 +36,16 @@ const withMaxiInspector = createHigherOrderComponent(
 
 							addSidebarClass();
 
-							const unsubscribe = subscribe(() => {
-								const updatedSidebarClass = addSidebarClass();
-							});
-
 							return () => {
 								const editPostSidebarNode =
 									document.querySelector(
-										'.interface-complementary-area'
+										'.interface-interface-skeleton__sidebar'
 									);
 								if (editPostSidebarNode) {
 									editPostSidebarNode.classList.remove(
 										'maxi-sidebar'
 									);
 								}
-
-								unsubscribe();
 							};
 						}
 

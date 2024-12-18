@@ -136,6 +136,7 @@ const DateFormatting = props => {
 					onChange={val => validateAnchor(val)}
 					showHelp
 					helpContent={<DateHelperPopover />}
+					autoComplete='off'
 				/>
 			</div>
 		</div>

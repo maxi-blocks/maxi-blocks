@@ -26,6 +26,9 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			transform: translateX(20px);
 		}
 	}
+	&--disabled {
+		opacity: 0.5;
+	}
 	.maxi-base-control {
 		&__field {
 			width: 100%;

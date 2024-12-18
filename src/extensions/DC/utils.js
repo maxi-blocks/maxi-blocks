@@ -44,7 +44,8 @@ const showCurrent = (type, currentTemplateType) => {
 
 	if (
 		allowedTemplateTypesCurrent.includes(currentTemplateType) &&
-		type?.includes(currentTemplateType)
+		(type?.includes(currentTemplateType) ||
+			(type === 'users' && currentTemplateType === 'author'))
 	)
 		return true;
 
@@ -433,10 +434,8 @@ export const getRelationOptions = (type, contentType, currentTemplateType) => {
 		}
 	}
 
-	if (
-		type.includes(select('core/editor').getCurrentPostType()) ||
-		select('core/editor').getCurrentPostType()?.includes(type)
-	) {
+	const currentPostType = select('core/editor').getCurrentPostType();
+	if (type.includes(currentPostType) || currentPostType?.includes(type)) {
 		const newItem = {
 			label: __("Get the current item's data", 'maxi-blocks'),
 			value: 'current',
@@ -592,3 +591,9 @@ export const getRelationKeyForId = (relation, type) => {
 	}
 	return null;
 };
+
+export const isLinkObfuscationEnabled = (
+	dcStatus,
+	dcLinkStatus,
+	dcLinkTarget
+) => dcStatus && dcLinkStatus && ['author_email'].includes(dcLinkTarget);

@@ -1,9 +1,11 @@
 import { inlineLinkFields } from '../DC/constants';
+import { isLinkObfuscationEnabled } from '../DC/utils';
 
 const getLinkAttributesFromLinkSettings = (
 	linkSettings,
 	dcStatus,
-	dcLinkStatus
+	dcLinkStatus,
+	dcLinkTarget
 ) => {
 	let rel = '';
 	const nf = linkSettings.noFollow;
@@ -20,9 +22,24 @@ const getLinkAttributesFromLinkSettings = (
 
 	const href =
 		dcStatus && dcLinkStatus ? '$link-to-replace' : linkSettings.url;
-	const target = linkSettings.opensInNewTab ? '_blank' : '_self';
+	const target =
+		linkSettings.opensInNewTab && dcLinkTarget !== 'author_email'
+			? '_blank'
+			: '_self';
+	const isEmailLinkObfuscated = isLinkObfuscationEnabled(
+		dcStatus,
+		dcLinkStatus,
+		dcLinkTarget
+	);
 
-	return { rel, href, target };
+	return {
+		rel,
+		href,
+		target,
+		...(isEmailLinkObfuscated && {
+			'data-email-obfuscated': isEmailLinkObfuscated,
+		}),
+	};
 };
 
 const WithLink = props => {
@@ -46,7 +63,8 @@ const WithLink = props => {
 				{...getLinkAttributesFromLinkSettings(
 					linkSettings,
 					dcStatus,
-					dcLinkStatus
+					dcLinkStatus,
+					dcLinkTarget
 				)}
 			>
 				{children}

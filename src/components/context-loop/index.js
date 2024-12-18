@@ -141,12 +141,7 @@ const ContextLoop = props => {
 			currentTemplateType
 		);
 
-		// Filter out the item where the value is 'current'
-		const filteredOptions = options.filter(
-			item => item.value !== 'current'
-		);
-
-		return filteredOptions;
+		return options;
 	}, [contentType, currentTemplateType, type]);
 
 	const isTypeHasRelations =
@@ -187,9 +182,11 @@ const ContextLoop = props => {
 					}))
 				);
 
-				const { id } = await resolveSelect('core').getCurrentUser();
+				if (!author) {
+					const { id } = await resolveSelect('core').getCurrentUser();
 
-				changeProps({ 'cl-author': id });
+					changeProps({ 'cl-author': id });
+				}
 			}
 		};
 

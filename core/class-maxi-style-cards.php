@@ -584,6 +584,21 @@ class MaxiBlocks_StyleCards
                 if ($margin_sentence) {
                     $added_response .= ":is(" . implode(', ', array_filter($selectors)) . "):not(:last-child) {" . $margin_sentence . "}";
                 }
+
+                // Add this after the main selectors in get_wp_native_styles
+                if ($level === 'p') {
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} li.{$native_wp_prefix} {" . implode(' ', $sentences) . "}";
+                }
+
+                // Add this after list styles
+                if ($level === 'p' && $style === 'light') {
+                    $added_response .= "{$prefix} {$second_prefix} p > span[data-rich-text-placeholder]::after {" . implode(' ', $sentences) . "}";
+                }
+
+                // Add this after rich text placeholder styles
+                if ($level === 'h1' && $style === 'light') {
+                    $added_response .= "{$prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {" . implode(' ', $sentences) . "}";
+                }
             }
 
             // WP native block when has link
@@ -627,6 +642,37 @@ class MaxiBlocks_StyleCards
                     background: var(--maxi-{$style}-button-background-color-hover);
                 }";
             }
+
+            // Remove form textarea background
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-form textarea {
+                background: transparent;
+                color: inherit;
+                max-width: 100%;
+            }";
+
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-form textarea {
+                background: transparent;
+                color: inherit;
+                max-width: 100%;
+            }";
+
+            // Remove form input background
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-form p:not(.form-submit) input {
+                background: transparent;
+                color: inherit;
+                max-width: 100%;
+            }";
+
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-form p:not(.form-submit) input {
+                background: transparent;
+                color: inherit;
+                max-width: 100%;
+            }";
+
+            // Add this after headings color styles
+            $added_response .= "{$prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {
+                color: var(--maxi-light-h1-color,rgba(var(--maxi-light-color-5,0,0,0),1));
+            }";
 
             return $added_response;
         };

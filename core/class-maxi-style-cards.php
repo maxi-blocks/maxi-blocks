@@ -1088,17 +1088,7 @@ class MaxiBlocks_StyleCards
 
         $response = '';
         $levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'navigation'];
-        $breakpoints = [
-            'xxl' => 1921,
-            'xl' => 1920,
-            'l' => 1366,
-            'm' => 1024,
-            's' => 767,
-            'xs' => 480,
-        ];
-        $breakpoint_keys = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-        // Add styles by breakpoint function
         $add_styles_by_breakpoint = function ($breakpoint, $second_prefix = '') use (
             $organized_values,
             $prefix,
@@ -1107,7 +1097,6 @@ class MaxiBlocks_StyleCards
         ) {
             $added_response = '';
 
-            // Get breakpoint level sentences
             $breakpoint_level_sentences = self::get_sentences_by_breakpoint([
                 'organized_values' => $organized_values,
                 'style' => $style,
@@ -1151,11 +1140,155 @@ class MaxiBlocks_StyleCards
                 }
             }
 
+            // Text Maxi list styles
+            $list_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}maxi-list-block ul.maxi-text-block__content",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-list-block ul.maxi-text-block__content",
+                "{$prefix} {$second_prefix} .maxi-{$style}maxi-list-block ol.maxi-text-block__content",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-list-block ol.maxi-text-block__content",
+            ];
+
+            foreach ($list_selectors as $target) {
+                $sentences = $breakpoint_level_sentences['p'];
+                $margin_sentence = null;
+
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        $margin_sentence = $sentence;
+                        break;
+                    }
+                }
+
+                if ($margin_sentence) {
+                    $added_response .= "{$target} {$margin_sentence}";
+                }
+            }
+
+            // Add list and pagination styles
+            $list_pagination_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block li",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-block.maxi-text-block li",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-pagination a",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-pagination span.maxi-pagination__link--current",
+            ];
+
+            foreach ($list_pagination_selectors as $target) {
+                $sentences = $breakpoint_level_sentences['p'];
+                $margin_sentence = null;
+
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        $margin_sentence = $sentence;
+                        unset($sentences[$key]);
+                        break;
+                    }
+                }
+
+                $added_response .= "{$target} {" . implode(' ', $sentences) . "}";
+            }
+
+            // Text Maxi when has link
+            $text_maxi_link_prefix = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-block--has-link > .maxi-text-block__content:not(p)";
+
+            $added_response .= "{$text_maxi_link_prefix} { color: var(--maxi-{$style}-link); }";
+            $added_response .= "{$text_maxi_link_prefix}:hover { color: var(--maxi-{$style}-link-hover); }";
+            $added_response .= "{$text_maxi_link_prefix}:focus { color: var(--maxi-{$style}-link-hover); }";
+            $added_response .= "{$text_maxi_link_prefix}:active { color: var(--maxi-{$style}-link-active); }";
+            $added_response .= "{$text_maxi_link_prefix}:visited { color: var(--maxi-{$style}-link-visited); }";
+            $added_response .= "{$text_maxi_link_prefix}:visited:hover { color: var(--maxi-{$style}-link-hover); }";
+
+            // Text block link styles
+            $text_block_link_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block a.maxi-block--has-link",
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block .maxi-text-block a.maxi-block--has-link",
+            ];
+
+            foreach ($text_block_link_selectors as $target) {
+                $added_response .= "{$target} { color: var(--maxi-{$style}-link); }";
+                $added_response .= "{$target}:hover { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:hover span { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:focus { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:focus span { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:active { color: var(--maxi-{$style}-link-active); }";
+                $added_response .= "{$target}:active span { color: var(--maxi-{$style}-link-active); }";
+                $added_response .= "{$target}:visited { color: var(--maxi-{$style}-link-visited); }";
+                $added_response .= "{$target}:visited span { color: var(--maxi-{$style}-link-visited); }";
+                $added_response .= "{$target}:visited:hover { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:visited:hover span { color: var(--maxi-{$style}-link-hover); }";
+            }
+
+            // Image Maxi styles
+            $image_maxi_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-image-block .maxi-hover-details",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-image-block .maxi-hover-details",
+            ];
+
+            foreach ($image_maxi_selectors as $target) {
+                $image_sentences = [
+                    'h4' => $breakpoint_level_sentences['h4'],
+                    'p' => $breakpoint_level_sentences['p'],
+                ];
+
+                foreach ($image_sentences as $level => $sentences) {
+                    if ($level !== 'p') {
+                        // Remove margin-bottom sentences
+                        foreach ($sentences as $key => $sentence) {
+                            if (strpos($sentence, 'margin-bottom') !== false) {
+                                unset($sentences[$key]);
+                                break;
+                            }
+                        }
+                    }
+
+                    $added_response .= "{$target} {$level} {" . implode(' ', $sentences) . "}";
+                }
+            }
+
+            // Image Maxi caption
+            $caption_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-image-block figcaption",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-image-block figcaption",
+            ];
+
+            foreach ($caption_selectors as $target) {
+                $sentences = $breakpoint_level_sentences['p'];
+
+                // Remove margin-bottom sentences
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        unset($sentences[$key]);
+                        break;
+                    }
+                }
+
+                $added_response .= "{$target} {" . implode(' ', $sentences) . "}";
+            }
+
+            // Search Maxi
+            $search_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-search-block .maxi-search-block__input",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-search-block .maxi-search-block__input",
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-search-block .maxi-search-block__button__content",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-search-block .maxi-search-block__button__content",
+            ];
+
+            foreach ($search_selectors as $target) {
+                $sentences = $breakpoint_level_sentences['p'];
+
+                // Remove margin-bottom sentences
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        unset($sentences[$key]);
+                        break;
+                    }
+                }
+
+                $added_response .= "{$target} {" . implode(' ', $sentences) . "}";
+            }
+
             // Navigation inside Maxi Container
             $target_item = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation-item";
-
-            // Safely get navigation sentences
-            $sentences = isset($breakpoint_level_sentences['navigation']) ? $breakpoint_level_sentences['navigation'] : [];
+            $sentences = $breakpoint_level_sentences['navigation'] ?? [];
 
             // Remove margin-bottom sentences
             $margin_sentence = null;
@@ -1172,6 +1305,7 @@ class MaxiBlocks_StyleCards
             $target_link = "{$target_item} a";
             $target_button = "{$target_item} button";
 
+            // Apply styles to both link and button elements
             foreach ([$target_link, $target_button] as $target) {
                 $added_response .= "{$target} { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease;}";
                 $added_response .= "{$target} span { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease; }";
@@ -1184,6 +1318,7 @@ class MaxiBlocks_StyleCards
                 $added_response .= "{$target}:hover + button { color: var(--maxi-{$style}-menu-item-hover); }";
             }
 
+            // Link-specific styles
             $added_response .= "{$target_link}:focus { color: var(--maxi-{$style}-menu-item-hover); }";
             $added_response .= "{$target_link}:focus span { color: var(--maxi-{$style}-menu-item-hover); }";
             $added_response .= "{$target_link}:focus + span { color: var(--maxi-{$style}-menu-item-hover); }";
@@ -1199,6 +1334,7 @@ class MaxiBlocks_StyleCards
             $added_response .= "{$target_link}:visited:hover + span { color: var(--maxi-{$style}-menu-item-hover); }";
             $added_response .= "{$target_link}:visited:hover + button { color: var(--maxi-{$style}-menu-item-hover); }";
 
+            // Current menu item styles
             $target_link_current = "{$target_item}.current-menu-item > a";
 
             $added_response .= "{$target_link_current} { color: var(--maxi-{$style}-menu-item-current); }";
@@ -1216,7 +1352,7 @@ class MaxiBlocks_StyleCards
             $added_response .= "{$target_link_current}:focus + span { color: var(--maxi-{$style}-menu-item-hover); }";
             $added_response .= "{$target_link_current}:focus + button { color: var(--maxi-{$style}-menu-item-hover); }";
 
-            // Mobile menu icon/text
+            // Mobile menu icon/text styles
             $burger_item = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open";
             $burger_item_close = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close";
 
@@ -1253,6 +1389,15 @@ class MaxiBlocks_StyleCards
 
         // Add styles for all breakpoints
         $response .= $add_styles_by_breakpoint('general');
+
+        $breakpoints = [
+            'xxl' => 1921,
+            'xl' => 1920,
+            'l' => 1366,
+            'm' => 1024,
+            's' => 767,
+            'xs' => 480,
+        ];
 
         foreach ($breakpoints as $breakpoint => $value) {
             if ($is_backend) {

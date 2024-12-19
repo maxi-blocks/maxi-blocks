@@ -283,61 +283,63 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 	return (
 		!isEmpty(items) && (
 			<ul>
-				{items.map(item => (
-					<li
-						key={item.label}
-						className={classnames(
-							'ais-HierarchicalMenu-item',
-							`ais-HierarchicalMenu-item__${type}`,
-							`ais-HierarchicalMenu-item__${item.label
-								.replace(/\s+/g, '-')
-								.toLowerCase()}`,
-							item.isRefined &&
-								'ais-HierarchicalMenu-item--selected'
-						)}
-					>
-						<a
-							href='#'
-							onClick={event => {
-								event.preventDefault();
-								type === 'secondLevel' &&
-									fixMenuBug(
-										document.getElementsByClassName(
-											`ais-HierarchicalMenu-item__${item.label
-												.replace(/\s+/g, '-')
-												.toLowerCase()}`
-										)[0]
-									);
-								type === 'firstLevel' && removeMenuBugFix();
-								refine(item.value);
-							}}
-						>
-							<span>
-								<span
-									className='ais-HierarchicalMenu-item-arrow'
-									visible={
-										!isEmpty(item.items)
-											? 'visible'
-											: 'hide'
-									}
-								>
-									{arrowIcon}
-								</span>
-								{unescape(item.label)}
-							</span>
-							<span>{item.count}</span>
-						</a>
-						<div className='sub_menu-wrapper'>
-							{item.items && (
-								<HierarchicalMenu
-									items={item.items}
-									refine={refine}
-									type='secondLevel'
-								/>
+				{items
+					.filter(item => item.label !== '')
+					.map(item => (
+						<li
+							key={item.label}
+							className={classnames(
+								'ais-HierarchicalMenu-item',
+								`ais-HierarchicalMenu-item__${type}`,
+								`ais-HierarchicalMenu-item__${item.label
+									.replace(/\s+/g, '-')
+									.toLowerCase()}`,
+								item.isRefined &&
+									'ais-HierarchicalMenu-item--selected'
 							)}
-						</div>
-					</li>
-				))}
+						>
+							<a
+								href='#'
+								onClick={event => {
+									event.preventDefault();
+									type === 'secondLevel' &&
+										fixMenuBug(
+											document.getElementsByClassName(
+												`ais-HierarchicalMenu-item__${item.label
+													.replace(/\s+/g, '-')
+													.toLowerCase()}`
+											)[0]
+										);
+									type === 'firstLevel' && removeMenuBugFix();
+									refine(item.value);
+								}}
+							>
+								<span>
+									<span
+										className='ais-HierarchicalMenu-item-arrow'
+										visible={
+											!isEmpty(item.items)
+												? 'visible'
+												: 'hide'
+										}
+									>
+										{arrowIcon}
+									</span>
+									{unescape(item.label)}
+								</span>
+								<span>{item.count}</span>
+							</a>
+							<div className='sub_menu-wrapper'>
+								{item.items && (
+									<HierarchicalMenu
+										items={item.items}
+										refine={refine}
+										type='secondLevel'
+									/>
+								)}
+							</div>
+						</li>
+					))}
 			</ul>
 		)
 	);

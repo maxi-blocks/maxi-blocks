@@ -19,71 +19,33 @@ const withMaxiInspector = createHigherOrderComponent(
 					// Adds correct class to the wrapper
 					useEffect(() => {
 						if (ownProps.isSelected) {
-							const editPostSidebarNode = document.querySelector(
-								'.interface-complementary-area'
-							);
+							const addSidebarClass = () => {
+								const editPostSidebarNode =
+									document.querySelector(
+										'.interface-interface-skeleton__sidebar'
+									);
 
-							if (editPostSidebarNode)
-								editPostSidebarNode.classList.add(
-									'maxi-sidebar'
-								);
-							else {
-								const sidebarIntervalUnsubscribe = subscribe(
-									() => {
-										const editPostSidebarNode =
-											document.querySelector(
-												'.interface-complementary-area'
-											);
+								if (editPostSidebarNode) {
+									editPostSidebarNode.classList.add(
+										'maxi-sidebar'
+									);
+								}
 
-										if (editPostSidebarNode) {
-											editPostSidebarNode.classList.add(
-												'maxi-sidebar'
-											);
+								return !!editPostSidebarNode;
+							};
 
-											sidebarIntervalUnsubscribe();
-										}
-									}
-								);
-							}
-
-							const blockEditorBlockInspectorNode =
-								document.querySelector(
-									'.block-editor-block-inspector'
-								);
-
-							if (blockEditorBlockInspectorNode)
-								blockEditorBlockInspectorNode.classList.add(
-									'maxi-controls'
-								);
-							else {
-								const controlsIntervalUnsubscribe = subscribe(
-									() => {
-										const blockEditorBlockInspectorNode =
-											document.querySelector(
-												'.block-editor-block-inspector'
-											);
-
-										if (blockEditorBlockInspectorNode) {
-											blockEditorBlockInspectorNode.classList.add(
-												'maxi-controls'
-											);
-
-											controlsIntervalUnsubscribe();
-										}
-									}
-								);
-							}
+							addSidebarClass();
 
 							return () => {
-								if (editPostSidebarNode)
+								const editPostSidebarNode =
+									document.querySelector(
+										'.interface-interface-skeleton__sidebar'
+									);
+								if (editPostSidebarNode) {
 									editPostSidebarNode.classList.remove(
 										'maxi-sidebar'
 									);
-
-								if (blockEditorBlockInspectorNode)
-									blockEditorBlockInspectorNode.classList.remove(
-										'maxi-controls'
-									);
+								}
 							};
 						}
 

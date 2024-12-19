@@ -1,4 +1,9 @@
 /**
+ * Wordpress dependencies
+ */
+import apiFetch from '@wordpress/api-fetch';
+
+/**
  * Internal dependencies
  */
 import { getACFFieldGroups, getACFGroupFields } from '../getACFData';

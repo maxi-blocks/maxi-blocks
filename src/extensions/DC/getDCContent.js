@@ -174,10 +174,11 @@ const getDCContent = async (dataRequest, clientId) => {
 		contentValue = limitString(contentValue, limit);
 	} else if (field === 'author') {
 		const { getUsers } = resolveSelect('core');
-		const { postTaxonomyLinksStatus } = dataRequest;
+		const { postTaxonomyLinksStatus, subField } = dataRequest;
+		const userField = subField ?? 'name';
 		const user = await getUsers({ include: contentValue });
 		contentValue = getItemLinkContent(
-			user[0].name,
+			user[0]?.[userField],
 			postTaxonomyLinksStatus
 		);
 	}

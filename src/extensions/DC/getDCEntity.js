@@ -148,50 +148,66 @@ const getDCEntity = async (dataRequest, clientId) => {
 	if (contentError) return contentError;
 
 	if (relation === 'current') {
-		const currentTemplateType = getCurrentTemplateSlug();
-		if (currentTemplateType.includes('single-post-') && type === 'posts') {
-			const postSlug = currentTemplateType.replace('single-post-', '');
-			const post = await getPostBySlug(postSlug);
-			if (post) return post;
-		} else if (
-			currentTemplateType.includes('author-') &&
-			type === 'users'
-		) {
-			const authorSlug = currentTemplateType.replace('author-', '');
-			const author = await getAuthorBySlug(authorSlug);
-			if (author) return author;
-		} else if (
-			currentTemplateType.includes('category-') &&
-			type === 'categories'
-		) {
-			const categorySlug = currentTemplateType.replace('category-', '');
-			const category = await getCategoryBySlug(categorySlug);
-			if (category) return category;
-		} else if (currentTemplateType.includes('tag-') && type === 'tags') {
-			const tagSlug = currentTemplateType.replace('tag-', '');
-			const tag = await getTagBySlug(tagSlug);
-			if (tag) return tag;
-		} else if (
-			currentTemplateType.includes('single-product-') &&
-			type === 'products'
-		) {
-			const productSlug = currentTemplateType.replace(
-				'single-product-',
-				''
-			);
-			const product = await getProductBySlug(productSlug);
-			if (product) return product;
+		const isFSE = select('core/edit-site') !== undefined;
+
+		if (isFSE) {
+			const currentTemplateType = getCurrentTemplateSlug();
+			if (
+				currentTemplateType.includes('single-post-') &&
+				type === 'posts'
+			) {
+				const postSlug = currentTemplateType.replace(
+					'single-post-',
+					''
+				);
+				const post = await getPostBySlug(postSlug);
+				if (post) return post;
+			} else if (
+				currentTemplateType.includes('author-') &&
+				type === 'users'
+			) {
+				const authorSlug = currentTemplateType.replace('author-', '');
+				const author = await getAuthorBySlug(authorSlug);
+				if (author) return author;
+			} else if (
+				currentTemplateType.includes('category-') &&
+				type === 'categories'
+			) {
+				const categorySlug = currentTemplateType.replace(
+					'category-',
+					''
+				);
+				const category = await getCategoryBySlug(categorySlug);
+				if (category) return category;
+			} else if (
+				currentTemplateType.includes('tag-') &&
+				type === 'tags'
+			) {
+				const tagSlug = currentTemplateType.replace('tag-', '');
+				const tag = await getTagBySlug(tagSlug);
+				if (tag) return tag;
+			} else if (
+				currentTemplateType.includes('single-product-') &&
+				type === 'products'
+			) {
+				const productSlug = currentTemplateType.replace(
+					'single-product-',
+					''
+				);
+				const product = await getProductBySlug(productSlug);
+				if (product) return product;
+			}
 		}
 	}
 
-	if (type === 'users') {
+	if (['users'].includes(type)) {
+		let user;
 		dataRequest.id = author ?? id;
 
-		const { getUsers, getUser } = resolveSelect('core');
+		const { getUser } = resolveSelect('core');
 
 		if (relation === 'random') {
-			const users = await getUsers({
-				who: 'authors',
+			const users = await resolveSelect('core').getUsers({
 				per_page: 100,
 				hide_empty: false,
 			});
@@ -199,18 +215,18 @@ const getDCEntity = async (dataRequest, clientId) => {
 		}
 
 		if (['by-date', 'alphabetical'].includes(relation)) {
-			const users = await getUsers({
-				who: 'authors',
+			const users = await resolveSelect('core').getUsers({
 				per_page: accumulator + 1,
 				hide_empty: false,
 				order,
 				orderby: relation === 'by-date' ? 'registered_date' : 'name',
 			});
 
-			return users?.at(-1);
-		}
-
-		const user = await getUser(author ?? id);
+			user = users?.at(-1);
+		} else if (relation === 'current') {
+			const currentUserId = select('core').getCurrentUser()?.id; // getCurrentUser doesn't have all the data we need
+			user = await getUser(currentUserId);
+		} else user = await getUser(author ?? id);
 
 		return user;
 	}
@@ -425,18 +441,25 @@ const getDCEntity = async (dataRequest, clientId) => {
 									!['category', 'post_tag'].includes(taxonomy)
 							);
 
+							const termsPerTaxonomy = {};
 							for (const taxonomy of customTaxonomies) {
-								const terms = await resolveSelect(
+								termsPerTaxonomy[taxonomy] = resolveSelect(
 									'core'
 								).getEntityRecords('taxonomy', taxonomy, {
 									per_page: 2,
 								});
-
-								const termIds = terms
-									? terms.map(term => term.id)
-									: [];
-								taxonomyData[taxonomy] = termIds;
 							}
+
+							await Promise.all(Object.values(termsPerTaxonomy));
+
+							Object.entries(termsPerTaxonomy).forEach(
+								([taxonomy, terms]) => {
+									const termIds = terms
+										? terms.map(term => term.id)
+										: [];
+									taxonomyData[taxonomy] = termIds;
+								}
+							);
 						}
 					}
 				} catch (error) {

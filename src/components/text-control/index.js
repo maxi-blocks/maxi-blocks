@@ -36,7 +36,7 @@ export default function TextControl({
 	newStyle = false,
 	showHelp,
 	helpContent,
-	autocomplete,
+	autoComplete,
 	...props
 }) {
 	const instanceId = useInstanceId(TextControl);
@@ -53,7 +53,7 @@ export default function TextControl({
 
 	return (
 		<BaseControl
-					__nextHasNoMarginBottom
+			__nextHasNoMarginBottom
 			label={label}
 			hideLabelFromVision={hideLabelFromVision}
 			id={id}
@@ -76,7 +76,7 @@ export default function TextControl({
 				value={value || ''}
 				onChange={onChange}
 				aria-describedby={help ? `${id}__help` : undefined}
-				autocomplete={autocomplete}
+				autoComplete={autoComplete}
 				{...props}
 			/>
 			{validationText && (

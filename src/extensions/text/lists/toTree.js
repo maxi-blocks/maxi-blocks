@@ -168,8 +168,7 @@ export function toTree({
 		append(tree, '');
 	}
 
-	// eslint-disable-next-line no-plusplus
-	for (let i = 0; i < formatsLength; i++) {
+	for (let i = 0; i < formatsLength; i += 1) {
 		const character = text.charAt(i);
 		const shouldInsertPadding =
 			isEditableTree &&

@@ -24,6 +24,7 @@ import {
 } from '../../../../extensions/DC/constants';
 import SelectControl from '../../../select-control';
 import { getLinkTargets } from '../../../../extensions/DC/utils';
+import InfoBox from '../../../info-box';
 import { getBlockData } from '../../../../extensions/attributes';
 
 /**
@@ -81,6 +82,12 @@ const Link = props => {
 	}, [blockName]);
 	const showLinkElemetSelect = !!linkElements;
 
+	useEffect(() => {
+		if (dcLinkStatus) {
+			setLinkTargetOptions(getLinkTargets(selectedDCType, dcField));
+		}
+	}, [selectedDCType, dcField, dcLinkStatus]);
+
 	if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
 		return null;
 
@@ -112,12 +119,6 @@ const Link = props => {
 			});
 		}
 	}
-
-	useEffect(() => {
-		if (dcLinkStatus) {
-			setLinkTargetOptions(getLinkTargets(selectedDCType, dcField));
-		}
-	}, [selectedDCType, dcField, dcLinkStatus]);
 
 	const customTaxonomies = select(
 		'maxiBlocks/dynamic-content'
@@ -184,45 +185,57 @@ const Link = props => {
 									linkFields.includes(dcField) ||
 									customTaxonomies.includes(dcField)) &&
 									dcLinkStatus && (
-										<SelectControl
-__nextHasNoMarginBottom
+										<>
+											<SelectControl
+												__nextHasNoMarginBottom
+												label={__(
+													'Link target',
+													'maxi-blocks'
+												)}
+												value={dcLinkTarget}
+												options={linkTargetOptions}
+												newStyle
+												onChange={async value => {
+													const url =
+														value &&
+														(await getDCLink(
+															getDCValues(
+																getGroupAttributes(
+																	{
+																		...props,
+																		'dc-link-target':
+																			value,
+																	},
+																	'dynamicContent'
+																)
+															),
+															clientId
+														));
 
-											label={__(
-												'Link target',
-												'maxi-blocks'
+													onChange(
+														{
+															...linkSettings,
+															url,
+															title: url,
+														},
+														{
+															'dc-link-target':
+																value,
+														}
+													);
+												}}
+											/>
+											{dcLinkTarget ===
+												'author_email' && (
+												<InfoBox
+													className='toolbar-item__link-warning'
+													message={__(
+														'Warning: To protect your privacy, we obfuscate email addresses to make them harder for bots to scrape and use for spam. However, advanced bots may still retrieve them. For better security, use contact forms or CAPTCHA to avoid publicly displaying your email.',
+														'maxi-blocks'
+													)}
+												/>
 											)}
-											value={dcLinkTarget}
-											options={linkTargetOptions}
-											newStyle
-											onChange={async value => {
-												const url =
-													value &&
-													(await getDCLink(
-														getDCValues(
-															getGroupAttributes(
-																{
-																	...props,
-																	'dc-link-target':
-																		value,
-																},
-																'dynamicContent'
-															)
-														),
-														clientId
-													));
-
-												onChange(
-													{
-														...linkSettings,
-														url,
-														title: url,
-													},
-													{
-														'dc-link-target': value,
-													}
-												);
-											}}
-										/>
+										</>
 									)}
 							</>
 						)}
@@ -246,6 +259,11 @@ __nextHasNoMarginBottom
 									linkValue={linkSettings}
 									isDCLinkActive={
 										showUseDCLink && dcLinkStatus
+									}
+									disableOpenInNewTab={
+										showUseDCLink &&
+										dcLinkStatus &&
+										['author_email'].includes(dcLinkTarget)
 									}
 									onChangeLink={onChange}
 									onRemoveLink={() => {

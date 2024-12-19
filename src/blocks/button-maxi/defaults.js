@@ -548,7 +548,7 @@ export const preset7 = {
 	'icon-background-palette-status-general': true,
 	'icon-border-style-general': 'none',
 	'icon-content':
-		'<svg class="twitter-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M21.856 5.888c-.733.322-1.514.535-2.328.638a4.02 4.02 0 0 0 1.778-2.234c-.781.466-1.643.795-2.563.978a4.05 4.05 0 0 0-2.952-1.279 4.04 4.04 0 0 0-4.038 4.042c0 .32.027.628.094.922-3.36-.164-6.332-1.774-8.329-4.227-.349.605-.553 1.297-.553 2.043 0 1.399.721 2.64 1.795 3.358a3.99 3.99 0 0 1-1.826-.498v.044a4.06 4.06 0 0 0 3.238 3.971c-.329.09-.687.133-1.059.133-.259 0-.52-.015-.765-.069a4.08 4.08 0 0 0 3.776 2.815 8.12 8.12 0 0 1-5.01 1.724 7.58 7.58 0 0 1-.967-.055c1.79 1.154 3.912 1.814 6.199 1.814 7.436 0 11.502-6.16 11.502-11.499a10.34 10.34 0 0 0-.015-.522c.802-.569 1.476-1.28 2.026-2.098z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
+		'<svg class="circle-arrow-right-11-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M3.145 8.591h9.09V4.516c0-.628.509-1.136 1.136-1.136.301 0 .59.12.803.333l7.484 7.484c.444.444.444 1.163 0 1.607l-7.484 7.484c-.444.444-1.163.444-1.607 0-.213-.213-.333-.502-.333-.803v-4.075h-9.09c-.628 0-1.136-.509-1.136-1.136V9.727c0-.627.509-1.136 1.136-1.136z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="11.3333"></path></svg>',
 	svgType: 'Line',
 	'icon-padding-bottom-general': '0',
 	'icon-padding-left-general': '0',
@@ -630,7 +630,7 @@ export const preset8 = {
 	'icon-border-unit-radius-general': '%',
 	'icon-border-unit-width-general': 'px',
 	'icon-content':
-		'<svg class="twitter-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M21.856 5.888c-.733.322-1.514.535-2.328.638a4.02 4.02 0 0 0 1.778-2.234c-.781.466-1.643.795-2.563.978a4.05 4.05 0 0 0-2.952-1.279 4.04 4.04 0 0 0-4.038 4.042c0 .32.027.628.094.922-3.36-.164-6.332-1.774-8.329-4.227-.349.605-.553 1.297-.553 2.043 0 1.399.721 2.64 1.795 3.358a3.99 3.99 0 0 1-1.826-.498v.044a4.06 4.06 0 0 0 3.238 3.971c-.329.09-.687.133-1.059.133-.259 0-.52-.015-.765-.069a4.08 4.08 0 0 0 3.776 2.815 8.12 8.12 0 0 1-5.01 1.724 7.58 7.58 0 0 1-.967-.055c1.79 1.154 3.912 1.814 6.199 1.814 7.436 0 11.502-6.16 11.502-11.499a10.34 10.34 0 0 0-.015-.522c.802-.569 1.476-1.28 2.026-2.098z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
+		'<svg class="circle-arrow-right-11-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M3.145 8.591h9.09V4.516c0-.628.509-1.136 1.136-1.136.301 0 .59.12.803.333l7.484 7.484c.444.444.444 1.163 0 1.607l-7.484 7.484c-.444.444-1.163.444-1.607 0-.213-.213-.333-.502-.333-.803v-4.075h-9.09c-.628 0-1.136-.509-1.136-1.136V9.727c0-.627.509-1.136 1.136-1.136z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="11.3333"></path></svg>',
 	svgType: 'Line',
 	'icon-padding-bottom-general': '5',
 	'icon-padding-left-general': '5',
@@ -706,7 +706,7 @@ export const preset9 = {
 	'icon-border-top-right-radius-general': 100,
 	'icon-border-unit-radius-general': '%',
 	'icon-content':
-		'<svg class="twitter-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M21.856 5.888c-.733.322-1.514.535-2.328.638a4.02 4.02 0 0 0 1.778-2.234c-.781.466-1.643.795-2.563.978a4.05 4.05 0 0 0-2.952-1.279 4.04 4.04 0 0 0-4.038 4.042c0 .32.027.628.094.922-3.36-.164-6.332-1.774-8.329-4.227-.349.605-.553 1.297-.553 2.043 0 1.399.721 2.64 1.795 3.358a3.99 3.99 0 0 1-1.826-.498v.044a4.06 4.06 0 0 0 3.238 3.971c-.329.09-.687.133-1.059.133-.259 0-.52-.015-.765-.069a4.08 4.08 0 0 0 3.776 2.815 8.12 8.12 0 0 1-5.01 1.724 7.58 7.58 0 0 1-.967-.055c1.79 1.154 3.912 1.814 6.199 1.814 7.436 0 11.502-6.16 11.502-11.499a10.34 10.34 0 0 0-.015-.522c.802-.569 1.476-1.28 2.026-2.098z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
+		'<svg class="circle-arrow-right-11-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M3.145 8.591h9.09V4.516c0-.628.509-1.136 1.136-1.136.301 0 .59.12.803.333l7.484 7.484c.444.444.444 1.163 0 1.607l-7.484 7.484c-.444.444-1.163.444-1.607 0-.213-.213-.333-.502-.333-.803v-4.075h-9.09c-.628 0-1.136-.509-1.136-1.136V9.727c0-.627.509-1.136 1.136-1.136z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="11.3333"></path></svg>',
 	svgType: 'Line',
 	'icon-padding-bottom-general': '7',
 	'icon-padding-left-general': '7',
@@ -789,7 +789,7 @@ export const preset10 = {
 	'icon-border-unit-radius-general': 'px',
 	'icon-border-unit-width-general': 'px',
 	'icon-content':
-		'<svg class="twitter-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M21.856 5.888c-.733.322-1.514.535-2.328.638a4.02 4.02 0 0 0 1.778-2.234c-.781.466-1.643.795-2.563.978a4.05 4.05 0 0 0-2.952-1.279 4.04 4.04 0 0 0-4.038 4.042c0 .32.027.628.094.922-3.36-.164-6.332-1.774-8.329-4.227-.349.605-.553 1.297-.553 2.043 0 1.399.721 2.64 1.795 3.358a3.99 3.99 0 0 1-1.826-.498v.044a4.06 4.06 0 0 0 3.238 3.971c-.329.09-.687.133-1.059.133-.259 0-.52-.015-.765-.069a4.08 4.08 0 0 0 3.776 2.815 8.12 8.12 0 0 1-5.01 1.724 7.58 7.58 0 0 1-.967-.055c1.79 1.154 3.912 1.814 6.199 1.814 7.436 0 11.502-6.16 11.502-11.499a10.34 10.34 0 0 0-.015-.522c.802-.569 1.476-1.28 2.026-2.098z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
+		'<svg class="circle-arrow-right-11-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M3.145 8.591h9.09V4.516c0-.628.509-1.136 1.136-1.136.301 0 .59.12.803.333l7.484 7.484c.444.444.444 1.163 0 1.607l-7.484 7.484c-.444.444-1.163.444-1.607 0-.213-.213-.333-.502-.333-.803v-4.075h-9.09c-.628 0-1.136-.509-1.136-1.136V9.727c0-.627.509-1.136 1.136-1.136z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="11.3333"></path></svg>',
 	svgType: 'Line',
 	'icon-padding-bottom-general': '5',
 	'icon-padding-left-general': '5',
@@ -865,7 +865,7 @@ export const preset11 = {
 	'icon-border-top-right-radius-general': 8,
 	'icon-border-unit-radius-general': 'px',
 	'icon-content':
-		'<svg class="twitter-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M21.856 5.888c-.733.322-1.514.535-2.328.638a4.02 4.02 0 0 0 1.778-2.234c-.781.466-1.643.795-2.563.978a4.05 4.05 0 0 0-2.952-1.279 4.04 4.04 0 0 0-4.038 4.042c0 .32.027.628.094.922-3.36-.164-6.332-1.774-8.329-4.227-.349.605-.553 1.297-.553 2.043 0 1.399.721 2.64 1.795 3.358a3.99 3.99 0 0 1-1.826-.498v.044a4.06 4.06 0 0 0 3.238 3.971c-.329.09-.687.133-1.059.133-.259 0-.52-.015-.765-.069a4.08 4.08 0 0 0 3.776 2.815 8.12 8.12 0 0 1-5.01 1.724 7.58 7.58 0 0 1-.967-.055c1.79 1.154 3.912 1.814 6.199 1.814 7.436 0 11.502-6.16 11.502-11.499a10.34 10.34 0 0 0-.015-.522c.802-.569 1.476-1.28 2.026-2.098z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
+		'<svg class="circle-arrow-right-11-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M3.145 8.591h9.09V4.516c0-.628.509-1.136 1.136-1.136.301 0 .59.12.803.333l7.484 7.484c.444.444.444 1.163 0 1.607l-7.484 7.484c-.444.444-1.163.444-1.607 0-.213-.213-.333-.502-.333-.803v-4.075h-9.09c-.628 0-1.136-.509-1.136-1.136V9.727c0-.627.509-1.136 1.136-1.136z" fill="none" stroke="var(--maxi-light-color,rgba(var(--maxi-light-color-4), 1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="11.3333"></path></svg>',
 	svgType: 'Line',
 	'icon-padding-bottom-general': '7',
 	'icon-padding-left-general': '7',

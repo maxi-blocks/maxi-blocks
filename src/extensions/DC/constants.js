@@ -114,12 +114,7 @@ const generalRelationOptionsPages = [
 	{ label: __('Get by author', 'maxi-blocks'), value: 'by-author' },
 ];
 
-const generalRelationOptionsUsers = [
-	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
-	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
-	{ label: __('Get alphabetical', 'maxi-blocks'), value: 'alphabetical' },
-];
+const generalRelationOptionsUsers = [];
 
 const generalRelationOptionsCategories = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
@@ -227,10 +222,15 @@ const generalMediaFields = [
 
 const generalUsersFields = [
 	{ label: __('Name', 'maxi-blocks'), value: 'name' },
-	{ label: __('Description', 'maxi-blocks'), value: 'description' },
+	{ label: __('Username', 'maxi-blocks'), value: 'username' },
+	{ label: __('First name', 'maxi-blocks'), value: 'first_name' },
+	{ label: __('Last name', 'maxi-blocks'), value: 'last_name' },
+	{ label: __('Nickname', 'maxi-blocks'), value: 'nickname' },
+	{ label: __('Biographical info', 'maxi-blocks'), value: 'description' },
 	{ label: __('Email', 'maxi-blocks'), value: 'email' },
 	{ label: __('Link', 'maxi-blocks'), value: 'link' },
 	{ label: __('Website', 'maxi-blocks'), value: 'url' },
+	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
 ];
 
 const generalCategoryFields = [
@@ -454,11 +454,15 @@ export const htmlFields = ['tags', 'categories'];
 /**
  * Link constants
  */
-export const multipleLinksTypes = ['products'];
+export const multipleLinksTypes = ['products', 'users'];
 
 export const linkTypesOptions = {
 	products: [
 		{ label: __('Add to cart', 'maxi-blocks'), value: 'add_to_cart' },
+	],
+	users: [
+		{ label: __('Author email', 'maxi-blocks'), value: 'author_email' },
+		{ label: __('Author site', 'maxi-blocks'), value: 'author_site' },
 	],
 };
 
@@ -621,7 +625,7 @@ export const relationTypes = [
 ];
 
 // Types that can have relation "current".
-export const currentEntityTypes = ['posts', 'pages'];
+export const currentEntityTypes = ['posts', 'pages', 'users'];
 
 export const ignoreEmptyFields = ['avatar', 'author_avatar'];
 
@@ -793,13 +797,8 @@ const loadIntegrationsOptions = () => {
 				if (response.includes('woocommerce')) {
 					generalTypeOptions.push(...WCTypeOptions);
 					imageTypeOptions.push(
-						...WCTypeOptions.filter(
-							option =>
-								![
-									'cart',
-									'product_tags',
-									'product_categories',
-								].includes(option.value)
+						...WCTypeOptions.filter(option =>
+							['products'].includes(option.value)
 						)
 					);
 				}

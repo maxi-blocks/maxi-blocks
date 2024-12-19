@@ -10,6 +10,11 @@ import { uploadMedia } from '@wordpress/media-utils';
  */
 import { isEmpty } from 'lodash';
 
+const validateCommentStatus = status => {
+	const validStatuses = ['open', 'closed'];
+	return validStatuses.includes(status) ? status : 'closed';
+};
+
 export const placeholderUploader = async () => {
 	try {
 		const { getEntityRecords } = resolveSelect('core');
@@ -71,21 +76,26 @@ export const placeholderUploader = async () => {
 		// Check if comment_status is empty and set it to 'closed' if needed
 		const updatedCommentStatus = response?.comment_status ?? 'closed';
 
-		// Add maxi-image-type taxonomy
-		dispatch('core').saveEntityRecord(
+		// Validate comment_status before saving
+		const validatedCommentStatus =
+			validateCommentStatus(updatedCommentStatus);
+
+		const saveResult = await dispatch('core').saveEntityRecord(
 			'postType',
 			'attachment',
 			{
 				...response,
 				'maxi-image-type': maxiTermId,
-				comment_status: updatedCommentStatus,
+				comment_status: validatedCommentStatus,
 			},
 			{ throwOnError: true }
 		);
+
 		return response;
 	} catch (err) {
 		console.error(
-			__(`Error uploading the placeholder image: ${err}`, 'maxi-blocks')
+			__(`Error uploading the placeholder image: ${err}`, 'maxi-blocks'),
+			err
 		);
 	}
 	return null;
@@ -213,14 +223,17 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 
 	if (!response || !isComplete) return placeholderUploader();
 
-	// Add maxi-image-type taxonomy
+	const validatedCommentStatus = validateCommentStatus(
+		response?.comment_status
+	);
+
 	await dispatch('core').saveEntityRecord(
 		'postType',
 		'attachment',
 		{
 			...response,
 			'maxi-image-type': maxiTermId,
-			comment_status: response?.comment_status ?? 'closed',
+			comment_status: validatedCommentStatus,
 		},
 		{ throwOnError: true }
 	);

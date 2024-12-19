@@ -302,6 +302,18 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	background: rgba(0, 0, 0, 0.7);
 	z-index: 160000;
+}
+
+#maxi-starter-sites-root.modal-open>div {
+	width: 85%;
+	height: 85%;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+	overflow: auto;
 }

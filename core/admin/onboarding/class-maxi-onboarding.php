@@ -38,8 +38,14 @@ class MaxiBlocks_Onboarding
         add_action('wp_ajax_maxi_save_design_settings', [$this, 'save_design_settings']);
         add_action('wp_ajax_maxi_save_pages_settings', [$this, 'save_pages_settings']);
         add_action('wp_ajax_maxi_save_theme_settings', [$this, 'save_theme_settings']);
+        add_action('wp_ajax_maxi_activate_theme', [$this, 'activate_theme']);
 
         $this->init_steps();
+
+        // Store initial theme state when onboarding starts
+        if (get_transient('maxi_blocks_activation_redirect')) {
+            update_option('maxi_onboarding_initial_theme', get_template());
+        }
     }
 
     /**
@@ -51,6 +57,10 @@ class MaxiBlocks_Onboarding
             'identity' => [
                 'name' => __('Identity', 'maxi-blocks'),
                 'view' => [$this, 'identity_step'],
+            ],
+            'theme' => [
+                'name' => __('Theme', 'maxi-blocks'),
+                'view' => [$this, 'theme_step'],
             ],
             'design' => [
                 'name' => __('Design', 'maxi-blocks'),
@@ -106,6 +116,18 @@ class MaxiBlocks_Onboarding
             return;
         }
 
+        // Enqueue WordPress media scripts and styles
+        wp_enqueue_media();
+
+        // Enqueue Underscore.js and Backbone.js before media scripts
+        wp_enqueue_script('underscore');
+        wp_enqueue_script('backbone');
+
+        // Add compatibility layer for _.contains
+        wp_add_inline_script('underscore', '
+            _.contains = _.contains || _.includes;
+        ');
+
         // Enqueue starter sites assets
         wp_enqueue_script('maxi-blocks-starter-sites');
         wp_enqueue_style('maxi-blocks-starter-sites');
@@ -120,7 +142,7 @@ class MaxiBlocks_Onboarding
         wp_enqueue_script(
             'maxi-blocks-onboarding',
             MAXI_PLUGIN_URL_PATH . 'core/admin/onboarding/js/onboarding.js',
-            ['jquery'],
+            ['jquery', 'media-upload', 'wp-media-utils', 'media-editor', 'media-views', 'underscore', 'backbone'],
             MAXI_PLUGIN_VERSION,
             true
         );
@@ -128,6 +150,11 @@ class MaxiBlocks_Onboarding
         wp_localize_script('maxi-blocks-onboarding', 'maxiOnboarding', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('maxi_onboarding'),
+            'strings' => [
+                'activeTheme' => __('Active Theme', 'maxi-blocks'),
+            ],
+            'isMaxiBlocksGoActive' => get_template() === 'maxiblocks-go',
+            'initialThemeWasMaxiBlocksGo' => get_option('maxi_onboarding_initial_theme', '') === 'maxiblocks-go',
         ]);
     }
 
@@ -165,7 +192,17 @@ class MaxiBlocks_Onboarding
         echo '<ul class="maxi-onboarding-steps-nav">';
         $step_number = 1;
         $steps_array = array_keys($this->steps);
+
+        // Only skip if theme was active before onboarding started
+        $initial_theme = get_option('maxi_onboarding_initial_theme', '');
+        $skip_theme_step = $initial_theme === 'maxiblocks-go';
+
         foreach ($this->steps as $key => $step) {
+            // Skip rendering the theme step if MaxiBlocks Go was initially active
+            if ($skip_theme_step && $key === 'theme') {
+                continue;
+            }
+
             $current_index = array_search($current_step, $steps_array);
             $step_index = array_search($key, $steps_array);
 
@@ -298,48 +335,60 @@ class MaxiBlocks_Onboarding
     }
 
     /**
-     * Design step view (without style cards)
+     * Design step view
      */
     public function design_step()
     {
         ?>
         <h1><?php _e('Design your site', 'maxi-blocks'); ?></h1>
         <p class="description">
-            <?php _e('Upload your logo and customize the basic design elements of your site.', 'maxi-blocks'); ?>
+            <?php _e('Customize the basic design elements of your site.', 'maxi-blocks'); ?>
         </p>
 
         <div class="maxi-onboarding-section">
-            <h2><?php _e('Site Logo', 'maxi-blocks'); ?></h2>
+            <h2><?php _e('Site Logo & Icon', 'maxi-blocks'); ?></h2>
             <p class="description">
-                <?php _e('Upload your site logo. This will be displayed in your site header.', 'maxi-blocks'); ?>
+                <?php _e('Upload your site logo and icon to establish your brand identity.', 'maxi-blocks'); ?>
             </p>
-            <div class="maxi-logo-upload">
-                <button type="button" class="button" id="upload-logo">
-                    <?php _e('Upload Logo', 'maxi-blocks'); ?>
-                </button>
-                <div id="logo-preview"></div>
-            </div>
-        </div>
 
-        <div class="maxi-onboarding-section">
-            <h2><?php _e('Site Icon', 'maxi-blocks'); ?></h2>
-            <p class="description">
-                <?php _e('Upload a site icon (favicon). This appears in browser tabs and bookmarks.', 'maxi-blocks'); ?>
-            </p>
-            <div class="maxi-icon-upload">
-                <button type="button" class="button" id="upload-icon">
-                    <?php _e('Upload Icon', 'maxi-blocks'); ?>
-                </button>
-                <div id="site-icon-preview"></div>
+            <div class="customizer-links">
+                <a href="<?php echo esc_url(admin_url('customize.php?autofocus[section]=title_tagline')); ?>" class="button" target="_blank">
+                    <span class="dashicons dashicons-format-image"></span>
+                    <?php _e('Customize Logo', 'maxi-blocks'); ?>
+                </a>
+
+                <a href="<?php echo esc_url(admin_url('customize.php?autofocus[control]=site_icon')); ?>" class="button" target="_blank">
+                    <span class="dashicons dashicons-admin-site"></span>
+                    <?php _e('Set Site Icon', 'maxi-blocks'); ?>
+                </a>
             </div>
+
+            <?php
+            // Show current site icon if set
+            $site_icon_id = get_option('site_icon');
+        if ($site_icon_id) {
+            $icon_url = wp_get_attachment_image_url($site_icon_id, 'full');
+            echo '<div class="current-site-icon">';
+            echo '<p>' . __('Current Site Icon:', 'maxi-blocks') . '</p>';
+            echo '<img src="' . esc_url($icon_url) . '" alt="Current site icon" />';
+            echo '</div>';
+        }
+
+        // Show current logo if set
+        $custom_logo_id = get_theme_mod('custom_logo');
+        if ($custom_logo_id) {
+            $logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
+            echo '<div class="current-site-logo">';
+            echo '<p>' . __('Current Logo:', 'maxi-blocks') . '</p>';
+            echo '<img src="' . esc_url($logo_url) . '" alt="Current site logo" />';
+            echo '</div>';
+        }
+        ?>
         </div>
 
         <div class="maxi-onboarding-actions">
             <button type="button" class="button" data-action="back">
                 <?php _e('Back', 'maxi-blocks'); ?>
-            </button>
-            <button type="button" class="button button-primary" data-action="save-design">
-                <?php _e('Save settings', 'maxi-blocks'); ?>
             </button>
             <button type="button" class="button" data-action="continue">
                 <?php _e('Continue', 'maxi-blocks'); ?>
@@ -395,66 +444,72 @@ class MaxiBlocks_Onboarding
      */
     public function theme_step()
     {
+        $theme = wp_get_theme('maxiblocks-go');
+        $is_installed = $theme->exists();
+        $is_active = get_template() === 'maxiblocks-go';
         ?>
-        <h1><?php _e('Theme and navigation design', 'maxi-blocks'); ?></h1>
-        <p class="description">
-            <?php _e('Select pages for your website', 'maxi-blocks'); ?>
-        </p>
+        <h1><?php _e('Theme Setup', 'maxi-blocks'); ?></h1>
 
-        <div class="maxi-onboarding-section">
-            <h2><?php _e('Navigation menu design', 'maxi-blocks'); ?></h2>
+        <?php if ($is_active): ?>
             <p class="description">
-                <?php _e('Choose from the MaxiBlocks library', 'maxi-blocks'); ?>
+                <?php _e('Great! You\'re using MaxiBlocks Go theme. This ensures the best experience with MaxiBlocks plugin.', 'maxi-blocks'); ?>
             </p>
 
-            <button type="button" class="button" id="select-menu">
-                <?php _e('Select menu', 'maxi-blocks'); ?>
-            </button>
-        </div>
-
-        <div class="maxi-onboarding-section">
-            <h2><?php _e('Set theme files', 'maxi-blocks'); ?></h2>
-            <p class="description">
-                <?php _e('Choose from the premade designs', 'maxi-blocks'); ?>
-            </p>
-
-            <div class="theme-templates">
-                <div class="template-item">
-                    <h3><?php _e('Single post', 'maxi-blocks'); ?></h3>
-                    <button type="button" class="button"><?php _e('Select design', 'maxi-blocks'); ?></button>
-                </div>
-
-                <div class="template-item">
-                    <h3><?php _e('Archive (Category, Tag, Date)', 'maxi-blocks'); ?></h3>
-                    <button type="button" class="button"><?php _e('Select design', 'maxi-blocks'); ?></button>
-                </div>
-
-                <div class="template-item">
-                    <h3><?php _e('Author archive', 'maxi-blocks'); ?></h3>
-                    <button type="button" class="button"><?php _e('Select design', 'maxi-blocks'); ?></button>
-                </div>
-
-                <div class="template-item">
-                    <h3><?php _e('Search results', 'maxi-blocks'); ?></h3>
-                    <button type="button" class="button"><?php _e('Select design', 'maxi-blocks'); ?></button>
-                </div>
-
-                <div class="template-item">
-                    <h3><?php _e('404 error page', 'maxi-blocks'); ?></h3>
-                    <button type="button" class="button"><?php _e('Select design', 'maxi-blocks'); ?></button>
+            <div class="maxi-onboarding-section theme-recommendation">
+                <div class="theme-card">
+                    <div class="theme-info">
+                        <h2>
+                            <?php _e('MaxiBlocks Go', 'maxi-blocks'); ?>
+                            <span class="theme-status active">
+                                <span class="dashicons dashicons-yes-alt"></span>
+                                <?php _e('Active', 'maxi-blocks'); ?>
+                            </span>
+                        </h2>
+                        <p><?php _e('You\'re all set! MaxiBlocks Go theme is active and ready to use.', 'maxi-blocks'); ?></p>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php else: ?>
+            <p class="description">
+                <?php _e('For the best experience with MaxiBlocks, we recommend using our official theme.', 'maxi-blocks'); ?>
+            </p>
+
+            <div class="maxi-onboarding-section theme-recommendation">
+                <div class="theme-card">
+                    <div class="theme-info">
+                        <h2><?php _e('MaxiBlocks Go', 'maxi-blocks'); ?></h2>
+                        <p><?php _e('Create professional websites in record time with the MaxiBlocks Go theme. Our designer-made block patterns, full-page templates, global style cards, and customizable SVG icons make it simple to build unique sites.', 'maxi-blocks'); ?></p>
+
+                        <ul class="theme-features">
+                            <li><span class="dashicons dashicons-yes"></span> <?php _e('Full Site Editing Ready', 'maxi-blocks'); ?></li>
+                            <li><span class="dashicons dashicons-yes"></span> <?php _e('Block Patterns Library', 'maxi-blocks'); ?></li>
+                            <li><span class="dashicons dashicons-yes"></span> <?php _e('Global Style System', 'maxi-blocks'); ?></li>
+                            <li><span class="dashicons dashicons-yes"></span> <?php _e('Responsive Design', 'maxi-blocks'); ?></li>
+                        </ul>
+
+                        <div class="theme-actions">
+                            <?php if ($is_installed): ?>
+                                <button type="button" class="button button-primary activate-theme" data-theme="maxiblocks-go">
+                                    <?php _e('Activate Theme', 'maxi-blocks'); ?>
+                                </button>
+                            <?php else: ?>
+                                <a href="<?php echo esc_url('https://wordpress.org/themes/maxiblocks-go/'); ?>"
+                                   class="button button-primary" target="_blank">
+                                    <?php _e('Install Theme', 'maxi-blocks'); ?>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <div class="maxi-onboarding-actions">
             <button type="button" class="button" data-action="back">
                 <?php _e('Back', 'maxi-blocks'); ?>
             </button>
-            <button type="button" class="button button-primary" data-action="save-theme">
-                <?php _e('Save settings', 'maxi-blocks'); ?>
-            </button>
-            <button type="button" class="button maxi-editor-button">
-                <?php _e('Export to the Maxi editor', 'maxi-blocks'); ?>
+            <button type="button" class="button" data-action="continue">
+                <?php _e('Continue', 'maxi-blocks'); ?>
             </button>
         </div>
         <?php
@@ -707,5 +762,25 @@ class MaxiBlocks_Onboarding
             'wpImporterStatus' => $wp_importer_status,
             'proInitialState' => get_option('maxi_pro', ''),
         ]);
+    }
+
+    /**
+     * Activate theme
+     */
+    public function activate_theme()
+    {
+        check_ajax_referer('maxi_onboarding', 'nonce');
+
+        if (!current_user_can('switch_themes')) {
+            wp_send_json_error(__('You do not have permission to switch themes.', 'maxi-blocks'));
+        }
+
+        $theme = isset($_POST['theme']) ? sanitize_text_field($_POST['theme']) : '';
+        if (empty($theme)) {
+            wp_send_json_error(__('No theme specified.', 'maxi-blocks'));
+        }
+
+        switch_theme($theme);
+        wp_send_json_success();
     }
 }

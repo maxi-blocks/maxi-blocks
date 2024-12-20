@@ -37,23 +37,79 @@
 			$('#choose-starter-site, .change-starter-site').on('click', () => {
 				$('#maxi-starter-sites-root').addClass('modal-open');
 			});
+
+			// Theme activation
+			$('.activate-theme').on('click', function () {
+				const theme = $(this).data('theme');
+				const $button = $(this);
+
+				$button.prop('disabled', true);
+				MaxiOnboarding.showLoader();
+
+				$.ajax({
+					url: maxiOnboarding.ajaxUrl,
+					method: 'POST',
+					data: {
+						action: 'maxi_activate_theme',
+						nonce: maxiOnboarding.nonce,
+						theme,
+					},
+					success(response) {
+						if (response.success) {
+							// Update button to show active state
+							$button.replaceWith(`
+								<button type="button" class="button button-primary" disabled>
+									<span class="dashicons dashicons-yes"></span>
+									${maxiOnboarding.strings.activeTheme}
+								</button>
+							`);
+						} else {
+							alert(response.data || 'Error activating theme');
+						}
+					},
+					error() {
+						alert('Error activating theme');
+						$button.prop('disabled', false);
+					},
+					complete() {
+						MaxiOnboarding.hideLoader();
+					},
+				});
+			});
 		},
 
 		initMediaUploader() {
 			// Site logo uploader
+			let logoFrame;
+			let iconFrame;
+
 			$('#upload-logo').on('click', function (e) {
 				e.preventDefault();
 
-				const uploader = wp.media({
+				if (logoFrame) {
+					logoFrame.open();
+					return;
+				}
+
+				// Create the media frame
+				logoFrame = wp.media.frames.logoFrame = wp.media({
 					title: 'Select Site Logo',
 					button: {
 						text: 'Use this image',
 					},
-					multiple: false,
+					states: [
+						new wp.media.controller.Library({
+							title: 'Select Site Logo',
+							library: wp.media.query({ type: 'image' }),
+							multiple: false,
+							date: false,
+						}),
+					],
 				});
 
-				uploader.on('select', function () {
-					const attachment = uploader
+				// When an image is selected, run a callback
+				logoFrame.on('select', function () {
+					const attachment = logoFrame
 						.state()
 						.get('selection')
 						.first()
@@ -61,9 +117,54 @@
 					$('#logo-preview').html(
 						`<img src="${attachment.url}" style="max-width: 200px;" />`
 					);
+					$('#logo-preview').data('attachment-id', attachment.id);
 				});
 
-				uploader.open();
+				logoFrame.open();
+			});
+
+			// Site icon uploader
+			$('#upload-icon').on('click', function (e) {
+				e.preventDefault();
+
+				if (iconFrame) {
+					iconFrame.open();
+					return;
+				}
+
+				// Create the media frame
+				iconFrame = wp.media.frames.iconFrame = wp.media({
+					title: 'Select Site Icon',
+					button: {
+						text: 'Use this image',
+					},
+					states: [
+						new wp.media.controller.Library({
+							title: 'Select Site Icon',
+							library: wp.media.query({ type: 'image' }),
+							multiple: false,
+							date: false,
+						}),
+					],
+				});
+
+				// When an image is selected, run a callback
+				iconFrame.on('select', function () {
+					const attachment = iconFrame
+						.state()
+						.get('selection')
+						.first()
+						.toJSON();
+					$('#site-icon-preview').html(
+						`<img src="${attachment.url}" style="max-width: 64px;" />`
+					);
+					$('#site-icon-preview').data(
+						'attachment-id',
+						attachment.id
+					);
+				});
+
+				iconFrame.open();
 			});
 		},
 
@@ -80,8 +181,22 @@
 			const currentStep =
 				new URLSearchParams(window.location.search).get('step') ||
 				'identity';
-			const steps = ['identity', 'design', 'starter_site', 'finish'];
-			const currentIndex = steps.indexOf(currentStep);
+			const steps = [
+				'identity',
+				'theme',
+				'design',
+				'starter_site',
+				'finish',
+			];
+			let currentIndex = steps.indexOf(currentStep);
+
+			// Skip theme step only if it was active initially
+			if (
+				currentStep === 'identity' &&
+				maxiOnboarding.initialThemeWasMaxiBlocksGo
+			) {
+				currentIndex = steps.indexOf('theme');
+			}
 
 			if (currentIndex < steps.length - 1) {
 				window.location.href = `?page=maxi-blocks-onboarding&step=${
@@ -94,8 +209,22 @@
 			const currentStep =
 				new URLSearchParams(window.location.search).get('step') ||
 				'identity';
-			const steps = ['identity', 'design', 'pages', 'theme', 'finish'];
-			const currentIndex = steps.indexOf(currentStep);
+			const steps = [
+				'identity',
+				'theme',
+				'design',
+				'starter_site',
+				'finish',
+			];
+			let currentIndex = steps.indexOf(currentStep);
+
+			// Skip theme step only if it was active initially
+			if (
+				currentStep === 'design' &&
+				maxiOnboarding.initialThemeWasMaxiBlocksGo
+			) {
+				currentIndex = steps.indexOf('theme') + 1;
+			}
 
 			if (currentIndex > 0) {
 				window.location.href = `?page=maxi-blocks-onboarding&step=${

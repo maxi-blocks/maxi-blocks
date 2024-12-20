@@ -4,7 +4,7 @@
 import getShapeStyles from '../getShapeStyles';
 
 // Mock dependencies
-jest.mock('../../getColorRGBAString', () => {
+jest.mock('src/extensions/styles/getColorRGBAString', () => {
 	return jest.fn(({ firstVar, opacity, blockStyle }) => {
 		if (firstVar && opacity) return `rgba(${firstVar},${opacity})`;
 		if (firstVar) return `rgb(${firstVar})`;
@@ -12,7 +12,7 @@ jest.mock('../../getColorRGBAString', () => {
 	});
 });
 
-jest.mock('../../getPaletteAttributes', () => {
+jest.mock('src/extensions/styles/getPaletteAttributes', () => {
 	return jest.fn(({ obj, prefix }) => {
 		if (!obj) return {};
 

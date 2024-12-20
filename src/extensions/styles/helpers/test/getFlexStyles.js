@@ -3,7 +3,7 @@
  */
 import getFlexStyles from '../getFlexStyles';
 
-jest.mock('../../getLastBreakpointAttribute', () => {
+jest.mock('src/extensions/styles/getLastBreakpointAttribute', () => {
 	return jest.fn(({ target, breakpoint, attributes }) => {
 		if (!attributes) return null;
 		return attributes[

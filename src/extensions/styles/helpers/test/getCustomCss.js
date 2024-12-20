@@ -4,7 +4,7 @@
 import getCustomCssObject from '../getCustomCss';
 
 // Mock dependencies
-jest.mock('../../getLastBreakpointAttribute', () => {
+jest.mock('src/extensions/styles/getLastBreakpointAttribute', () => {
 	return jest.fn(({ target, breakpoint, attributes }) => {
 		if (!attributes) return null;
 		return attributes[
@@ -13,7 +13,7 @@ jest.mock('../../getLastBreakpointAttribute', () => {
 	});
 });
 
-jest.mock('../../getGroupAttributes', () => {
+jest.mock('src/extensions/styles/getGroupAttributes', () => {
 	return jest.fn((props, group) => {
 		if (group === 'customCss') {
 			return props.customCss || {};

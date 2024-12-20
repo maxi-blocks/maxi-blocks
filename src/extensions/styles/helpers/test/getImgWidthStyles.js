@@ -3,7 +3,7 @@
  */
 import getImgWidthStyles from '../getImgWidthStyles';
 
-jest.mock('../../getAttributeKey', () => {
+jest.mock('src/extensions/styles/getAttributeKey', () => {
 	return jest.fn((base, isHover, prefix, breakpoint) => {
 		return `${base}${breakpoint === 'general' ? '' : `-${breakpoint}`}`;
 	});

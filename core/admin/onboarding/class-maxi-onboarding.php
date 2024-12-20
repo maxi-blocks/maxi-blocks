@@ -87,8 +87,10 @@ class MaxiBlocks_Onboarding
      */
     public function maybe_redirect_to_onboarding()
     {
-        if (!get_option($this->option_name) && !wp_doing_ajax() && !isset($_GET['page']) || $_GET['page'] !== 'maxi-blocks-onboarding') {
-            if (current_user_can('manage_options')) {
+        // Only redirect once after activation, using the transient set during activation
+        if (get_transient('maxi_blocks_activation_redirect')) {
+            delete_transient('maxi_blocks_activation_redirect');
+            if (current_user_can('manage_options') && !isset($_GET['page']) || $_GET['page'] !== 'maxi-blocks-onboarding') {
                 wp_redirect(admin_url('admin.php?page=maxi-blocks-onboarding'));
                 exit;
             }
@@ -261,9 +263,26 @@ class MaxiBlocks_Onboarding
                 <?php _e('Choose a structure for your site\'s URLs (permalinks).', 'maxi-blocks'); ?>
             </p>
             <select name="permalink_structure">
-                <option value=""><?php _e('Plain', 'maxi-blocks'); ?></option>
-                <option value="/%postname%/" selected><?php _e('Post name', 'maxi-blocks'); ?></option>
-                <option value="/%year%/%monthnum%/%postname%/"><?php _e('Day and name', 'maxi-blocks'); ?></option>
+                <?php
+                $current_structure = get_option('permalink_structure');
+        $structures = array(
+            '' => __('Plain', 'maxi-blocks'),
+            '/archives/%post_id%' => __('Numeric', 'maxi-blocks'),
+            '/%year%/%monthnum%/%day%/%postname%/' => __('Day and name', 'maxi-blocks'),
+            '/%year%/%monthnum%/%postname%/' => __('Month and name', 'maxi-blocks'),
+            '/%postname%/' => __('Post name', 'maxi-blocks'),
+            '/archives/%post_id%' => __('Post ID', 'maxi-blocks')
+        );
+
+        foreach ($structures as $value => $label) {
+            printf(
+                '<option value="%s" %s>%s</option>',
+                esc_attr($value),
+                selected($current_structure, $value, false),
+                esc_html($label)
+            );
+        }
+        ?>
             </select>
         </div>
 
@@ -495,10 +514,16 @@ class MaxiBlocks_Onboarding
             }
 
             // Update permalink structure
-            if (!empty($_POST['permalink_structure'])) {
+            if (isset($_POST['permalink_structure'])) {
+                $permalink_structure = sanitize_text_field($_POST['permalink_structure']);
+
+                // Update the permalink structure option
+                update_option('permalink_structure', $permalink_structure);
+
+                // Flush rewrite rules
                 global $wp_rewrite;
-                $wp_rewrite->set_permalink_structure(sanitize_text_field($_POST['permalink_structure']));
-                $wp_rewrite->flush_rules();
+                $wp_rewrite->set_permalink_structure($permalink_structure);
+                $wp_rewrite->flush_rules(true);
             }
 
             wp_send_json_success();

@@ -317,3 +317,20 @@
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 	overflow: auto;
 }
+
+select[name="permalink_structure"] {
+	width: 100%;
+	max-width: 500px;
+	height: 35px;
+	margin-bottom: 10px;
+}
+
+select[name="permalink_structure"] option {
+	padding: 8px;
+}
+
+select[name="permalink_structure"]:focus {
+	border-color: #0073aa;
+	box-shadow: 0 0 0 1px #0073aa;
+	outline: none;
+}

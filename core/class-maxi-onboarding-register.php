@@ -28,10 +28,9 @@ class MaxiBlocks_Onboarding_Register
      */
     public static function activate()
     {
-        // Set option to show onboarding
-        update_option('maxi_blocks_onboarding_completed', false);
-
-        // Redirect to onboarding page
-        set_transient('maxi_blocks_activation_redirect', true, 30);
+        // Only set the redirect transient if onboarding hasn't been completed
+        if (!get_option('maxi_blocks_onboarding_completed')) {
+            set_transient('maxi_blocks_activation_redirect', true, 30);
+        }
     }
 }

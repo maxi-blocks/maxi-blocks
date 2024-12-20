@@ -109,6 +109,9 @@
 				return;
 			}
 
+			const $permalinkSelect = $('select[name="permalink_structure"]');
+			const selectedPermalink = $permalinkSelect.val();
+
 			$.ajax({
 				url: maxiOnboarding.ajaxUrl,
 				method: 'POST',
@@ -119,15 +122,19 @@
 					site_tagline: $('input[name="site_tagline"]').val(),
 					site_language: $('select[name="site_language"]').val(),
 					timezone_string: $('select[name="timezone_string"]').val(),
-					permalink_structure: $(
-						'select[name="permalink_structure"]'
-					).val(),
+					permalink_structure: selectedPermalink,
 				},
 				beforeSend() {
 					MaxiOnboarding.showLoader();
 				},
 				success(response) {
 					if (response.success) {
+						// Update the permalink select to reflect the saved value
+						$permalinkSelect.find('option').prop('selected', false);
+						$permalinkSelect
+							.find(`option[value="${selectedPermalink}"]`)
+							.prop('selected', true);
+
 						MaxiOnboarding.saveProgress('identity');
 						MaxiOnboarding.nextStep();
 					} else {

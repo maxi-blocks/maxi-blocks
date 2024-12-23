@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,20 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 23 Dec 2024_
+* Update: Switched Templates, Icons, and Style Cards libraries to a self-hosted server to improve speed and stability.
+* Update: Implemented rem units support in typography control for better responsive design and accessibility.
+* Update: Enhanced Dynamic Content with additional author fields for more comprehensive content display.
+* Update: Redesigned Button icon presets for improved usability and visual appeal.
+* Fix: Enhanced Interaction Builder performance by optimizing action dropdown updates during block switching.
+* Fix: Eliminated horizontal scrollbar appearance in Editor Experience for cleaner interface.
+* Fix: Implemented "Switch tone" button visibility for Theme items in Templates library.
+* Fix: Synchronized maximum values between Toolbar and Sidebar settings for line height consistency.
+* Fix: Resolved pagination count calculation issues in specific scenarios.
+* Fix: Optimized template library image upload process for slow server environments.
+* Fix: Addressed sidebar styles persistence issues during open and close actions.
+* Fix: Eliminated incorrect autocomplete tooltip for date formatting options.
+
 _Updates 19 Nov 2024_
 MaxiBlocks v2.0.4
 * Fix: Reverted the default block on a new page / post back to Gutenberg Paragraph.
@@ -199,16 +213,6 @@ MaxiBlocks v2.0.1
 * Fix: Addressed issues with Style Cards having global Link colour and Button Hover colour enabled by default.
 * Fix: Switching to 4k XXL breakpoint on backend now renders all XXL styles in the Editing Experience.
 * Fix: Ensured that fonts names with spaces work correctly in the Editing Experience.
-
-_Updates 17 Oct 2024_
-MaxiBlocks v2.0.0
-* Update: Optimized performance for styles generation in the Editing Experience (EE) and the Site Editor (SE).
-* Update: Speed up MaxiBlocks breakpoint switching and responsive rendering in EE.
-* Update: Enhanced Context Loop / Dynamic Content speed for content rendering, changing settings, and loading from the Template Library, both in EE and SE.
-* Fix: Addressed issues with styles not loading in Mobile and Tablet preview mode in EE.
-* Fix: Restored Dynamic Content reset function to correspondent Context Loop values.
-* Fix: Interaction Builder frontend adjustments when legacy and new relations are mixed on the same page.
-* Fix: Corrected issue with unique block id having special symbols inside.
 
 == Upgrade Notice ==
 

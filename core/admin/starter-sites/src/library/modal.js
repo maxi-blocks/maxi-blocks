@@ -38,6 +38,7 @@ const MaxiModal = props => {
 		isPro,
 		onClickConnect,
 		onLogOut,
+		isOnboarding,
 	} = props;
 
 	const [isOpenDetails, changeIsOpenDetails] = useState(false);
@@ -191,6 +192,7 @@ const MaxiModal = props => {
 								onLogOut={onLogOut}
 								isLoading={isLoading}
 								isPro={isPro}
+								isOnboarding={isOnboarding}
 							/>
 						</div>
 					</div>
@@ -224,6 +226,7 @@ const MaxiModal = props => {
 								onLogOut={onLogOut}
 								isLoading={isLoading}
 								isPro={isPro}
+								isOnboarding={isOnboarding}
 							/>
 						</div>
 					</div>

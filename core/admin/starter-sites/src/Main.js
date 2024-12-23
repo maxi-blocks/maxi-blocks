@@ -17,7 +17,7 @@ import {
 import CloudLibrary from './library';
 import './Main.css';
 
-const Main = ({ type }) => {
+const Main = ({ type, isOnboarding }) => {
     const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
     const [isMaxiProExpired, setIsMaxiProExpired] = useState(isProSubExpired());
     const [userName, setUserName] = useState(getUserName());
@@ -69,6 +69,7 @@ const Main = ({ type }) => {
                 showNotValidEmail={showNotValidEmail}
                 userName={userName}
                 onLogOut={onLogOut}
+				isOnboarding={isOnboarding}
             />
         </div>
     );

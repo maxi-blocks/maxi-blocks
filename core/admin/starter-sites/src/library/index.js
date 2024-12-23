@@ -38,6 +38,7 @@ const CloudLibrary = (props) => {
 		userName,
 		onLogOut,
 		showNotValidEmail,
+		isOnboarding,
     } = props;
 
     return (
@@ -53,6 +54,7 @@ const CloudLibrary = (props) => {
 				userName={userName}
 				onLogOut={onLogOut}
 				showNotValidEmail={showNotValidEmail}
+				isOnboarding={isOnboarding}
             />
             <LibraryContainer
                 type={cloudType}
@@ -70,6 +72,7 @@ const CloudLibrary = (props) => {
 				isMaxiProActive={isMaxiProActive}
 				onClickConnect={onClickConnect}
 				onLogOut={onLogOut}
+				isOnboarding={isOnboarding}
             />
         </div>
     );

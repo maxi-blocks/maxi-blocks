@@ -272,6 +272,7 @@ const MaxiDetailsPopUp = ({
 	contentXML,
 	isMaxiProActive,
 	isPro,
+	isOnboarding,
 }) => {
 	const firstPage = pages?.[0];
 	const firstTemplate = templates?.[0];
@@ -303,6 +304,7 @@ const MaxiDetailsPopUp = ({
 					sc={sc}
 					contentXML={contentXML}
 					onRequestClose={handleImportClose}
+					isOnboarding={isOnboarding}
 				/>
 			) : (
 				<div className='maxi-cloud-container__details-popup_main-wrap'>
@@ -477,6 +479,7 @@ const LibraryContainer = props => {
 		isPro,
 		onClickConnect,
 		onLogOut,
+		isOnboarding,
 	} = props;
 
 	useInterval(masonryGenerator, 100);
@@ -496,6 +499,7 @@ const LibraryContainer = props => {
 						contentXML={contentXML}
 						onRequestClose={onRequestClose}
 						isMaxiProActive={isMaxiProActive}
+						isOnboarding={isOnboarding}
 					/>
 				</div>
 			)}
@@ -513,6 +517,7 @@ const LibraryContainer = props => {
 						contentXML={contentXML}
 						isMaxiProActive={isMaxiProActive}
 						isPro={isPro}
+						isOnboarding={isOnboarding}
 					/>
 				</div>
 			)}

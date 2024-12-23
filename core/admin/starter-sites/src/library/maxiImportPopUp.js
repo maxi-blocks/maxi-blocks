@@ -94,6 +94,7 @@ const MaxiImportPopUp = ({
 	sc,
 	contentXML,
 	onRequestClose,
+	isOnboarding,
 }) => {
 	// Add check for WordPress Importer status from localized data
 	const wpImporterStatus =

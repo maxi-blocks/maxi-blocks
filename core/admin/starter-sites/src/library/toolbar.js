@@ -47,6 +47,7 @@ const LibraryToolbar = ({
 	onClickConnect,
 	showNotValidEmail,
 	isLoading,
+	isOnboarding,
 }) => {
 	const [userEmail, setUserEmail] = useState(false);
 	const [clickCount, setClickCount] = useState(0);

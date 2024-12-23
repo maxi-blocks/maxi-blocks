@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.0.4\n"
+"Project-Id-Version: MaxiBlocks 2.0.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-19T09:55:42+00:00\n"
+"POT-Creation-Date: 2024-12-23T11:16:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: maxi-blocks\n"
@@ -89,8 +89,8 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:57
 #: src/components/background-control/imageLayer.js:787
 #: src/components/inspector-tabs/inspector-transition.js:140
-#: src/components/relation-control/index.js:512
-#: src/components/relation-control/index.js:654
+#: src/components/relation-control/index.js:506
+#: src/components/relation-control/index.js:645
 msgid "Settings"
 msgstr ""
 
@@ -623,12 +623,12 @@ msgstr ""
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1073
-#: core/class-maxi-dynamic-content.php:2122
+#: core/class-maxi-dynamic-content.php:1070
+#: core/class-maxi-dynamic-content.php:2138
 msgid "author"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1075
+#: core/class-maxi-dynamic-content.php:1072
 msgid "date"
 msgstr ""
 
@@ -669,11 +669,11 @@ msgstr ""
 
 #: build/index.js:1
 #: build/index.js:15
-#: src/components/toolbar/components/link/index.js:130
+#: src/components/toolbar/components/link/index.js:131
 #: src/components/toolbar/components/text-link/index.js:301
 #: src/components/typography-control/index.js:90
-#: src/extensions/DC/constants.js:221
-#: src/extensions/DC/constants.js:232
+#: src/extensions/DC/constants.js:216
+#: src/extensions/DC/constants.js:231
 #: src/extensions/DC/constants.js:242
 #: src/extensions/text/formats/link/index.js:10
 msgid "Link"
@@ -690,7 +690,543 @@ msgid "Text custom hover"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/maxi-block/maxiBlockComponent.js:933
+#: src/extensions/DC/constants.js:12
+msgid "WordPress"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:21
+msgid "Post"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:22
+msgid "Page"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:23
+msgid "Site"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:24
+msgid "Media"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:25
+#: src/extensions/DC/constants.js:192
+#: src/extensions/DC/constants.js:220
+#: src/extensions/DC/constants.js:488
+msgid "Author"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:26
+#: src/extensions/DC/constants.js:199
+#: src/extensions/DC/constants.js:342
+msgid "Categories"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:27
+#: src/extensions/DC/constants.js:200
+#: src/extensions/DC/constants.js:343
+msgid "Tags"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:39
+msgid "Product"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:40
+msgid "Cart"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:42
+msgid "Product categories"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:45
+msgid "Product tags"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:98
+#: src/extensions/DC/constants.js:110
+#: src/extensions/DC/constants.js:120
+#: src/extensions/DC/constants.js:125
+#: src/extensions/DC/constants.js:135
+#: src/extensions/DC/constants.js:142
+msgid "Get by id"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:104
+#: src/extensions/DC/utils.js:398
+msgid "Get by tag"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:111
+#: src/extensions/DC/constants.js:121
+#: src/extensions/DC/constants.js:126
+#: src/extensions/DC/constants.js:136
+#: src/extensions/DC/constants.js:143
+msgid "Get random"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:112
+#: src/extensions/DC/constants.js:137
+msgid "Get by date"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:113
+#: src/extensions/DC/utils.js:380
+msgid "Get alphabetical"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:114
+#: src/extensions/DC/utils.js:386
+msgid "Get by author"
+msgstr ""
+
+#: build/index.js:1
+#: build/index.js:15
+#: src/blocks/accordion-maxi/inspector.js:111
+#: src/blocks/map-maxi/components/map-popup-text-control/index.js:37
+#: src/blocks/map-maxi/components/markers/index.js:94
+#: src/blocks/pane-maxi/edit.js:248
+#: src/extensions/DC/constants.js:180
+#: src/extensions/DC/constants.js:204
+#: src/extensions/DC/constants.js:212
+msgid "Title"
+msgstr ""
+
+#: build/index.js:1
+#: build/index.js:15
+#: src/blocks/pane-maxi/inspector.js:105
+#: src/components/background-control/imageLayer.js:539
+#: src/components/background-control/imageLayer.js:590
+#: src/extensions/DC/constants.js:184
+msgid "Content"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:188
+msgid "Excerpt"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:191
+#: src/extensions/DC/constants.js:219
+msgid "Date"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:193
+#: src/extensions/DC/constants.js:233
+#: src/extensions/DC/constants.js:253
+#: src/extensions/DC/constants.js:260
+#: src/extensions/DC/constants.js:267
+#: src/extensions/DC/constants.js:274
+#: src/extensions/DC/constants.js:281
+#: src/extensions/DC/constants.js:288
+#: src/extensions/DC/constants.js:356
+#: src/extensions/DC/constants.js:384
+msgid "Static text"
+msgstr ""
+
+#: build/index.js:1
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-popup-text-control/index.js:72
+#: src/blocks/map-maxi/components/markers/index.js:106
+#: src/extensions/DC/constants.js:205
+#: src/extensions/DC/constants.js:214
+#: src/extensions/DC/constants.js:238
+#: src/extensions/DC/constants.js:329
+msgid "Description"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:206
+msgid "Site URL"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:207
+msgid "Admin email"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:208
+msgid "Language"
+msgstr ""
+
+#: build/index.js:1
+#: build/index.js:15
+#: src/blocks/image-maxi/inspector.js:184
+#: src/components/toolbar/components/more-settings/index.js:122
+#: src/extensions/DC/constants.js:213
+msgid "Caption"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:215
+msgid "Alt text"
+msgstr ""
+
+#: build/index.js:1
+#: build/index.js:15
+#: src/blocks/text-maxi/components/list-options-control/index.js:836
+#: src/blocks/video-maxi/components/video-control/index.js:62
+#: src/components/image-url-upload/index.js:37
+#: src/components/toolbar/components/video-url/index.js:38
+#: src/extensions/DC/constants.js:217
+msgid "URL"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:218
+msgid "Mime type"
+msgstr ""
+
+#: build/index.js:1
+#: build/index.js:15
+#: src/components/relation-control/index.js:407
+#: src/extensions/DC/constants.js:224
+#: src/extensions/DC/constants.js:237
+#: src/extensions/DC/constants.js:328
+msgid "Name"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:225
+msgid "Username"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:226
+msgid "First name"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:227
+msgid "Last name"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:228
+msgid "Nickname"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:229
+msgid "Biographical info"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:230
+msgid "Email"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:232
+msgid "Website"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:239
+#: src/extensions/DC/constants.js:334
+msgid "Slug"
+msgstr ""
+
+#: build/index.js:1
+#: build/index.js:15
+#: src/components/block-styles-control/index.js:107
+#: src/extensions/DC/constants.js:240
+msgid "Parent"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:241
+msgid "Count"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:292
+msgid "Featured media"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:293
+msgid "Author's avatar"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:297
+msgid "Logo"
+msgstr ""
+
+#: build/index.js:1
+#: build/index.js:15
+#: src/blocks/video-maxi/inspector.js:170
+#: src/components/media-uploader-control/index.js:114
+#: src/components/media-uploader-control/index.js:155
+#: src/extensions/DC/constants.js:300
+msgid "Image"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:303
+msgid "Avatar"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:331
+msgid "Short description"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:335
+msgid "SKU"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:336
+msgid "Review count"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:337
+msgid "Average rating"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:338
+msgid "Price"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:339
+msgid "Regular price"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:340
+msgid "Sale price"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:341
+msgid "Price range"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:360
+msgid "Featured image"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:361
+msgid "Gallery image"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:365
+msgid "Total price"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:366
+msgid "Total tax"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:367
+msgid "Total shipping"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:369
+msgid "Total shipping tax"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:372
+msgid "Total discount"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:373
+msgid "Total items"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:375
+msgid "Total items tax"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:378
+msgid "Total fees"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:379
+msgid "Total fees tax"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:388
+msgid "Static"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:461
+msgid "Add to cart"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:464
+msgid "Author email"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:465
+msgid "Author site"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:476
+msgid "Categories links"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:482
+msgid "Tags links"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:633
+msgid "Sorry, there is no next post, please choose something else."
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:637
+msgid "Sorry, there is no previous post, please choose something else."
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:641
+msgid "Value is not an object."
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:642
+msgid "Sorry, this author has no posts yet, please choose something else."
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:646
+msgid "Sorry, you do not have any images yet, please choose something else."
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:650
+msgid "Sorry, you do not have any tags yet, please choose something else."
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:700
+msgid "By date"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:701
+msgid "Alphabetical"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:708
+msgid "New/old"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:709
+msgid "Old/new"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:712
+msgid "A/Z"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:713
+msgid "Z/A"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:792
+msgid "ACF"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/getTypes.js:54
+msgid "All archives"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/utils.js:155
+msgid "Selected entity"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/utils.js:169
+msgid "links"
+msgstr ""
+
+#: build/index.js:1
+#: build/index.js:15
+#: src/blocks/image-maxi/edit.js:460
+#: src/blocks/image-maxi/edit.js:567
+#: src/blocks/image-maxi/edit.js:628
+#: src/extensions/DC/utils.js:181
+msgid "No content found"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/utils.js:359
+msgid "Archive type's name"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/utils.js:392
+msgid "Get by category"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/utils.js:440
+#: src/extensions/DC/utils.js:460
+msgid "Get the current item's data"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/utils.js:450
+msgid "Get the current archive's posts"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/maxi-block/maxiBlockComponent.js:944
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 
@@ -732,7 +1268,7 @@ msgstr ""
 
 #: build/index.js:1
 #: build/index.js:15
-#: src/components/advanced-number-control/index.js:238
+#: src/components/advanced-number-control/index.js:244
 #: src/components/background-control/imageLayer.js:96
 msgid "Auto"
 msgstr ""
@@ -871,7 +1407,7 @@ msgstr ""
 #: src/components/aspect-ratio-control/index.js:48
 #: src/components/background-control/imageLayer.js:110
 #: src/components/background-control/imageLayer.js:304
-#: src/components/dynamic-content/index.js:166
+#: src/components/dynamic-content/index.js:167
 #: src/components/image-alt-control/index.js:58
 msgid "Custom"
 msgstr ""
@@ -1013,8 +1549,8 @@ msgstr ""
 
 #: build/index.js:15
 #: src/components/clip-path-control/index.js:370
-#: src/components/context-loop/index.js:377
-#: src/components/dynamic-content/index.js:385
+#: src/components/context-loop/index.js:381
+#: src/components/dynamic-content/index.js:395
 msgid "Type"
 msgstr ""
 
@@ -1112,10 +1648,10 @@ msgstr ""
 #: src/blocks/video-maxi/components/video-control/index.js:142
 #: src/components/background-control/imageLayer.js:122
 #: src/components/divider-control/index.js:159
-#: src/components/dynamic-content/index.js:163
+#: src/components/dynamic-content/index.js:164
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
-#: src/components/typography-control/index.js:945
+#: src/components/typography-control/index.js:955
 msgid "None"
 msgstr ""
 
@@ -1132,15 +1668,6 @@ msgstr ""
 #: build/index.js:15
 #: src/components/image-alt-control/index.js:115
 msgid "Add Your Alt Tag Here"
-msgstr ""
-
-#: build/index.js:15
-#: src/blocks/text-maxi/components/list-options-control/index.js:836
-#: src/blocks/video-maxi/components/video-control/index.js:62
-#: src/components/image-url-upload/index.js:37
-#: src/components/toolbar/components/video-url/index.js:38
-#: src/extensions/DC/constants.js:222
-msgid "URL"
 msgstr ""
 
 #: build/index.js:15
@@ -1193,497 +1720,10 @@ msgid " from media library"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/video-maxi/inspector.js:170
-#: src/components/media-uploader-control/index.js:114
-#: src/components/media-uploader-control/index.js:155
-#: src/extensions/DC/constants.js:300
-msgid "Image"
-msgstr ""
-
-#: build/index.js:15
 #: src/blocks/video-maxi/components/video-control/index.js:42
 #: src/blocks/video-maxi/inspector.js:63
 #: src/components/media-uploader-control/index.js:156
 msgid "Video"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:12
-msgid "WordPress"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:21
-msgid "Post"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:22
-msgid "Page"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:23
-msgid "Site"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:24
-msgid "Media"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:25
-#: src/extensions/DC/constants.js:197
-#: src/extensions/DC/constants.js:225
-#: src/extensions/DC/constants.js:484
-msgid "Author"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:26
-#: src/extensions/DC/constants.js:204
-#: src/extensions/DC/constants.js:342
-msgid "Categories"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:27
-#: src/extensions/DC/constants.js:205
-#: src/extensions/DC/constants.js:343
-msgid "Tags"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:39
-msgid "Product"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:40
-msgid "Cart"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:42
-msgid "Product categories"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:45
-msgid "Product tags"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:98
-#: src/extensions/DC/constants.js:110
-#: src/extensions/DC/constants.js:118
-#: src/extensions/DC/constants.js:125
-#: src/extensions/DC/constants.js:130
-#: src/extensions/DC/constants.js:140
-#: src/extensions/DC/constants.js:147
-msgid "Get by id"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:104
-#: src/extensions/DC/utils.js:397
-msgid "Get by tag"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:111
-#: src/extensions/DC/constants.js:119
-#: src/extensions/DC/constants.js:126
-#: src/extensions/DC/constants.js:131
-#: src/extensions/DC/constants.js:141
-#: src/extensions/DC/constants.js:148
-msgid "Get random"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:112
-#: src/extensions/DC/constants.js:120
-#: src/extensions/DC/constants.js:142
-msgid "Get by date"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:113
-#: src/extensions/DC/constants.js:121
-#: src/extensions/DC/utils.js:379
-msgid "Get alphabetical"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:114
-#: src/extensions/DC/utils.js:385
-msgid "Get by author"
-msgstr ""
-
-#: build/index.js:15
-#: src/blocks/accordion-maxi/inspector.js:111
-#: src/blocks/map-maxi/components/map-popup-text-control/index.js:37
-#: src/blocks/map-maxi/components/markers/index.js:94
-#: src/blocks/pane-maxi/edit.js:248
-#: src/extensions/DC/constants.js:185
-#: src/extensions/DC/constants.js:209
-#: src/extensions/DC/constants.js:217
-msgid "Title"
-msgstr ""
-
-#: build/index.js:15
-#: src/blocks/pane-maxi/inspector.js:105
-#: src/components/background-control/imageLayer.js:539
-#: src/components/background-control/imageLayer.js:590
-#: src/extensions/DC/constants.js:189
-msgid "Content"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:193
-msgid "Excerpt"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:196
-#: src/extensions/DC/constants.js:224
-msgid "Date"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:198
-#: src/extensions/DC/constants.js:253
-#: src/extensions/DC/constants.js:260
-#: src/extensions/DC/constants.js:267
-#: src/extensions/DC/constants.js:274
-#: src/extensions/DC/constants.js:281
-#: src/extensions/DC/constants.js:288
-#: src/extensions/DC/constants.js:356
-#: src/extensions/DC/constants.js:384
-msgid "Static text"
-msgstr ""
-
-#: build/index.js:15
-#: src/blocks/map-maxi/components/map-popup-text-control/index.js:72
-#: src/blocks/map-maxi/components/markers/index.js:106
-#: src/extensions/DC/constants.js:210
-#: src/extensions/DC/constants.js:219
-#: src/extensions/DC/constants.js:230
-#: src/extensions/DC/constants.js:238
-#: src/extensions/DC/constants.js:329
-msgid "Description"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:211
-msgid "Site URL"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:212
-msgid "Admin email"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:213
-msgid "Language"
-msgstr ""
-
-#: build/index.js:15
-#: src/blocks/image-maxi/inspector.js:184
-#: src/components/toolbar/components/more-settings/index.js:122
-#: src/extensions/DC/constants.js:218
-msgid "Caption"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:220
-msgid "Alt text"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:223
-msgid "Mime type"
-msgstr ""
-
-#: build/index.js:15
-#: src/components/relation-control/index.js:410
-#: src/extensions/DC/constants.js:229
-#: src/extensions/DC/constants.js:237
-#: src/extensions/DC/constants.js:328
-msgid "Name"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:231
-msgid "Email"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:233
-msgid "Website"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:239
-#: src/extensions/DC/constants.js:334
-msgid "Slug"
-msgstr ""
-
-#: build/index.js:15
-#: src/components/block-styles-control/index.js:107
-#: src/extensions/DC/constants.js:240
-msgid "Parent"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:241
-msgid "Count"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:292
-msgid "Featured media"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:293
-msgid "Author's avatar"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:297
-msgid "Logo"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:303
-msgid "Avatar"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:331
-msgid "Short description"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:335
-msgid "SKU"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:336
-msgid "Review count"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:337
-msgid "Average rating"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:338
-msgid "Price"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:339
-msgid "Regular price"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:340
-msgid "Sale price"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:341
-msgid "Price range"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:360
-msgid "Featured image"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:361
-msgid "Gallery image"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:365
-msgid "Total price"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:366
-msgid "Total tax"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:367
-msgid "Total shipping"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:369
-msgid "Total shipping tax"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:372
-msgid "Total discount"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:373
-msgid "Total items"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:375
-msgid "Total items tax"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:378
-msgid "Total fees"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:379
-msgid "Total fees tax"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:388
-msgid "Static"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:461
-msgid "Add to cart"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:472
-msgid "Categories links"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:478
-msgid "Tags links"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:629
-msgid "Sorry, there is no next post, please choose something else."
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:633
-msgid "Sorry, there is no previous post, please choose something else."
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:637
-msgid "Value is not an object."
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:638
-msgid "Sorry, this author has no posts yet, please choose something else."
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:642
-msgid "Sorry, you do not have any images yet, please choose something else."
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:646
-msgid "Sorry, you do not have any tags yet, please choose something else."
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:696
-msgid "By date"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:697
-msgid "Alphabetical"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:704
-msgid "New/old"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:705
-msgid "Old/new"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:708
-msgid "A/Z"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:709
-msgid "Z/A"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/constants.js:788
-msgid "ACF"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/getTypes.js:54
-msgid "All archives"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/utils.js:154
-msgid "Selected entity"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/utils.js:168
-msgid "links"
-msgstr ""
-
-#: build/index.js:15
-#: src/blocks/image-maxi/edit.js:460
-#: src/blocks/image-maxi/edit.js:567
-#: src/blocks/image-maxi/edit.js:628
-#: src/extensions/DC/utils.js:180
-msgid "No content found"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/utils.js:358
-msgid "Archive type's name"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/utils.js:391
-msgid "Get by category"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/utils.js:441
-#: src/extensions/DC/utils.js:461
-msgid "Get the current item's data"
-msgstr ""
-
-#: build/index.js:15
-#: src/extensions/DC/utils.js:451
-msgid "Get the current archive's posts"
 msgstr ""
 
 #: build/index.js:15
@@ -1759,98 +1799,103 @@ msgid "No parent"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:164
+#: src/components/dynamic-content/index.js:165
 msgid "Comma"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:165
+#: src/components/dynamic-content/index.js:166
 msgid "Semicolon"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:315
+#: src/components/dynamic-content/index.js:325
 msgid "Use dynamic content"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:336
+#: src/components/dynamic-content/index.js:346
 msgid "Hide if no content found on frontend"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/text-maxi/components/list-options-control/index.js:826
-#: src/components/context-loop/index.js:343
-#: src/components/dynamic-content/index.js:349
+#: src/components/context-loop/index.js:347
+#: src/components/dynamic-content/index.js:359
 msgid "Source"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:406
-#: src/components/dynamic-content/index.js:417
+#: src/components/context-loop/index.js:410
+#: src/components/dynamic-content/index.js:427
 msgid "This type is empty"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:412
-#: src/components/dynamic-content/index.js:425
+#: src/components/context-loop/index.js:416
+#: src/components/dynamic-content/index.js:435
 msgid "Relation"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:435
-#: src/components/dynamic-content/index.js:457
+#: src/components/context-loop/index.js:439
+#: src/components/dynamic-content/index.js:467
 msgid "Author id"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:506
-#: src/components/dynamic-content/index.js:521
+#: src/components/context-loop/index.js:510
+#: src/components/dynamic-content/index.js:531
 msgid "Order by"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:530
-#: src/components/dynamic-content/index.js:545
+#: src/components/context-loop/index.js:534
+#: src/components/dynamic-content/index.js:555
 #: src/components/flex-settings-control/index.js:115
 msgid "Order"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:560
-#: src/components/context-loop/index.js:862
-#: src/components/dynamic-content/index.js:575
-#: src/components/dynamic-content/index.js:596
+#: src/components/context-loop/index.js:564
+#: src/components/context-loop/index.js:866
+#: src/components/dynamic-content/index.js:585
+#: src/components/dynamic-content/index.js:606
 msgid "Accumulator"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:628
+#: src/components/dynamic-content/index.js:638
 msgid "Field"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:652
+#: src/components/dynamic-content/index.js:658
+msgid "Author field"
+msgstr ""
+
+#: build/index.js:15
+#: src/components/dynamic-content/index.js:683
 msgid "Character limit"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:704
+#: src/components/dynamic-content/index.js:735
 msgid "Delimiter"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:732
+#: src/components/dynamic-content/index.js:763
 msgid "Custom delimiter"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:749
+#: src/components/dynamic-content/index.js:780
 msgid "Image accumulator"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/dynamic-content/index.js:774
+#: src/components/dynamic-content/index.js:805
 msgid "Size (px)"
 msgstr ""
 
@@ -2271,40 +2316,40 @@ msgid "All"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:387
-#: src/editor/library/container.js:1519
+#: src/editor/library/container.js:389
+#: src/editor/library/container.js:1523
 msgid "Clear filters"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1208
-#: src/editor/library/container.js:1327
-#: src/editor/library/container.js:1340
+#: src/editor/library/container.js:1212
+#: src/editor/library/container.js:1331
+#: src/editor/library/container.js:1344
 msgid "All icons"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1218
-#: src/editor/library/container.js:1252
-#: src/editor/library/container.js:1263
-#: src/editor/library/container.js:1272
-#: src/editor/library/container.js:1351
-#: src/editor/library/container.js:1362
+#: src/editor/library/container.js:1222
+#: src/editor/library/container.js:1256
+#: src/editor/library/container.js:1267
+#: src/editor/library/container.js:1276
+#: src/editor/library/container.js:1355
+#: src/editor/library/container.js:1366
 msgid "Find"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1155
+#: src/editor/library/container.js:1159
 msgid "Tablet / iPad simulator | Viewport 768px x 1024px"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1164
+#: src/editor/library/container.js:1168
 msgid "Mobile / iPhone simulator | Viewport 390px x 844px"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1126
+#: src/editor/library/container.js:1130
 msgid "Swap stock images for placeholders to save disk space"
 msgstr ""
 
@@ -2605,7 +2650,7 @@ msgstr ""
 #: src/components/typography-control/index.js:177
 #: src/components/typography-control/index.js:222
 #: src/components/typography-control/index.js:270
-#: src/components/typography-control/index.js:600
+#: src/components/typography-control/index.js:617
 msgid "Font"
 msgstr ""
 
@@ -2615,179 +2660,179 @@ msgstr ""
 #: src/blocks/list-item-maxi/data.js:110
 #: src/blocks/text-maxi/data.js:180
 #: src/components/inspector-tabs/inspector-alignment.js:33
-#: src/components/typography-control/index.js:662
+#: src/components/typography-control/index.js:679
 msgid "Alignment"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:671
+#: src/components/typography-control/index.js:688
 msgid "Font size"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:706
+#: src/components/typography-control/index.js:723
 msgid "Line height"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:749
+#: src/components/typography-control/index.js:759
 msgid "Letter spacing"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:816
+#: src/components/typography-control/index.js:826
 msgid "Text transform"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:823
-#: src/components/typography-control/index.js:863
-#: src/components/typography-control/index.js:899
+#: src/components/typography-control/index.js:833
+#: src/components/typography-control/index.js:873
+#: src/components/typography-control/index.js:909
 msgid "Default"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:827
+#: src/components/typography-control/index.js:837
 msgid "Capitalize"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:831
+#: src/components/typography-control/index.js:841
 msgid "Uppercase"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:835
+#: src/components/typography-control/index.js:845
 msgid "Lowercase"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/text-maxi/components/list-options-control/index.js:754
-#: src/components/typography-control/index.js:856
+#: src/components/typography-control/index.js:866
 msgid "Style"
 msgstr ""
 
 #: build/index.js:15
 #: src/components/toolbar/components/text-italic/index.js:58
-#: src/components/typography-control/index.js:867
+#: src/components/typography-control/index.js:877
 msgid "Italic"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:871
+#: src/components/typography-control/index.js:881
 msgid "Oblique"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:892
+#: src/components/typography-control/index.js:902
 msgid "Text decoration"
 msgstr ""
 
 #: build/index.js:15
 #: src/components/toolbar/components/text-format-overline/index.js:114
-#: src/components/typography-control/index.js:903
+#: src/components/typography-control/index.js:913
 msgid "Overline"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:907
+#: src/components/typography-control/index.js:917
 msgid "Line through"
 msgstr ""
 
 #: build/index.js:15
 #: src/components/toolbar/components/text-format-underline/index.js:74
-#: src/components/typography-control/index.js:911
+#: src/components/typography-control/index.js:921
 msgid "Underline"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:915
+#: src/components/typography-control/index.js:925
 msgid "Underline overline"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:938
+#: src/components/typography-control/index.js:948
 msgid "Text orientation"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:949
+#: src/components/typography-control/index.js:959
 msgid "Mixed"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:953
+#: src/components/typography-control/index.js:963
 msgid "Upright"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:957
+#: src/components/typography-control/index.js:967
 msgid "Sideways"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:981
+#: src/components/typography-control/index.js:991
 msgid "Text direction"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:988
+#: src/components/typography-control/index.js:998
 msgid "Left to right"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:992
+#: src/components/typography-control/index.js:1002
 msgid "Right to left"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/text-maxi/components/list-options-control/index.js:178
-#: src/components/typography-control/index.js:1015
+#: src/components/typography-control/index.js:1025
 msgid "Text indent"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1075
+#: src/components/typography-control/index.js:1089
 msgid "White space"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1082
+#: src/components/typography-control/index.js:1096
 msgid "Normal"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1086
+#: src/components/typography-control/index.js:1100
 msgid "No wrap"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1090
+#: src/components/typography-control/index.js:1104
 msgid "Pre"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1094
+#: src/components/typography-control/index.js:1108
 msgid "Pre line"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1098
+#: src/components/typography-control/index.js:1112
 msgid "Pre wrap"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1102
+#: src/components/typography-control/index.js:1116
 msgid "Break spaces"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1123
+#: src/components/typography-control/index.js:1137
 msgid "Word Spacing"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1184
+#: src/components/typography-control/index.js:1202
 msgid "Bottom gap"
 msgstr ""
 
@@ -2871,62 +2916,62 @@ msgid "The block should have a wrapper to use flex-child properties"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:301
+#: src/components/context-loop/index.js:305
 msgid "Use context loop"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:325
+#: src/components/context-loop/index.js:329
 msgid "Stop accumulator inheritance"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:585
+#: src/components/context-loop/index.js:589
 msgid "Enable for grandchildren blocks"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:600
+#: src/components/context-loop/index.js:604
 msgid "Pagination"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:615
+#: src/components/context-loop/index.js:619
 msgid "Items per page"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:641
+#: src/components/context-loop/index.js:645
 msgid "Items total: show all"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:655
+#: src/components/context-loop/index.js:659
 msgid "Items total"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:686
+#: src/components/context-loop/index.js:690
 msgid "Text for previous link"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:700
+#: src/components/context-loop/index.js:704
 msgid "Text for next link"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:713
+#: src/components/context-loop/index.js:717
 msgid "Show page list (1, 2, 3, …)"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:745
+#: src/components/context-loop/index.js:749
 msgid "Pagination hover"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/context-loop/index.js:790
+#: src/components/context-loop/index.js:794
 msgid "Pagination current"
 msgstr ""
 
@@ -3181,32 +3226,32 @@ msgid "Icon padding"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:40
+#: src/components/link-control/index.js:41
 msgid "Search or type URL"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:52
+#: src/components/link-control/index.js:53
 msgid "Open in new tab"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:56
+#: src/components/link-control/index.js:58
 msgid "\"nofollow\""
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:62
+#: src/components/link-control/index.js:64
 msgid "\"sponsored\""
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:66
+#: src/components/link-control/index.js:68
 msgid "\"UGC\""
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:97
+#: src/components/link-control/index.js:100
 msgid "Remove link"
 msgstr ""
 
@@ -3310,72 +3355,72 @@ msgid "Linear"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:95
+#: src/components/relation-control/index.js:93
 msgid "Choose settings"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:381
+#: src/components/relation-control/index.js:378
 msgid "Preview all interactions"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:395
+#: src/components/relation-control/index.js:392
 msgid "Add new interaction"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:405
+#: src/components/relation-control/index.js:402
 msgid "Untitled interaction"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:412
+#: src/components/relation-control/index.js:409
 msgid "Give memorable name…"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:430
+#: src/components/relation-control/index.js:427
 msgid "Add names to blocks which you want to be able to select them here."
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:438
+#: src/components/relation-control/index.js:435
 msgid "Block to affect"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:446
+#: src/components/relation-control/index.js:443
 msgid "Select block…"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:468
+#: src/components/relation-control/index.js:465
 msgid "Action"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:477
+#: src/components/relation-control/index.js:472
 msgid "Choose action"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:484
+#: src/components/relation-control/index.js:479
 msgid "On click"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:491
+#: src/components/relation-control/index.js:486
 msgid "On hover"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:637
+#: src/components/relation-control/index.js:628
 msgid "Open block settings"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/relation-control/index.js:664
+#: src/components/relation-control/index.js:655
 msgid "Effects"
 msgstr ""
 
@@ -3887,17 +3932,22 @@ msgid "Dynamic Content"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/link/index.js:143
+#: src/components/toolbar/components/link/index.js:144
 msgid "Use dynamic content link"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/link/index.js:190
+#: src/components/toolbar/components/link/index.js:191
 msgid "Link target"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/link/index.js:231
+#: src/components/toolbar/components/link/index.js:232
+msgid "Warning: To protect your privacy, we obfuscate email addresses to make them harder for bots to scrape and use for spam. However, advanced bots may still retrieve them. For better security, use contact forms or CAPTCHA to avoid publicly displaying your email."
+msgstr ""
+
+#: build/index.js:15
+#: src/components/toolbar/components/link/index.js:244
 msgid "Apply link on"
 msgstr ""
 
@@ -4062,12 +4112,12 @@ msgid "Superscript"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/text-options/index.js:297
+#: src/components/toolbar/components/text-options/index.js:315
 msgid "Edit text"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/text-options/index.js:298
+#: src/components/toolbar/components/text-options/index.js:316
 msgid "Edit"
 msgstr ""
 

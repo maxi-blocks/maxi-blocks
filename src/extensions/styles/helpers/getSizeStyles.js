@@ -7,7 +7,7 @@ import getDefaultAttribute from '../getDefaultAttribute';
 /**
  * External dependencies
  */
-import { isNumber, isNil } from 'lodash';
+import { isNumber, isNil, isEmpty } from 'lodash';
 
 /**
  * General
@@ -121,7 +121,7 @@ const getSizeStyles = (obj, prefix = '') => {
 							attributes: obj,
 					  }) && '100%';
 
-			if (!isNil(num) && !isNil(unit))
+			if (!isNil(num) && !isEmpty(num) && !isNil(unit))
 				return {
 					[target]: auto || num + unit,
 					...fullWidthNormalStyles,

@@ -121,7 +121,7 @@ const getSizeStyles = (obj, prefix = '') => {
 							attributes: obj,
 					  }) && '100%';
 
-			if (!isNil(num) && !isEmpty(num) && !isNil(unit))
+			if ((Number.isFinite(num) || !isEmpty(num)) && !isNil(unit))
 				return {
 					[target]: auto || num + unit,
 					...fullWidthNormalStyles,

@@ -98,7 +98,7 @@ const BackgroundColor = props => {
 						clientId={clientId}
 						disableClipPath
 						isToolbar
-						disableResponsiveTabs
+						disableRTC
 					/>
 				)}
 			</div>

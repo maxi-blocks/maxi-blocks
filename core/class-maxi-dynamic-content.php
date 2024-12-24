@@ -920,17 +920,17 @@ class MaxiBlocks_DynamicContent
             $dc_link_target = $attributes['dc-link-target'];
             $author_id = $post->ID;
             if (!empty($post) && isset($author_id)) {
-				switch ($dc_link_target) {
-					case 'author_email':
-						$email = sanitize_email(get_the_author_meta('user_email', $author_id));
-						$link = $this->xor_obfuscate_email($email);
-						break;
-					case 'author_site':
-						$link = get_the_author_meta('user_url', $author_id);
-						break;
-					default:
-						$link = get_author_posts_url($author_id);
-				}
+                switch ($dc_link_target) {
+                    case 'author_email':
+                        $email = sanitize_email(get_the_author_meta('user_email', $author_id));
+                        $link = $this->xor_obfuscate_email($email);
+                        break;
+                    case 'author_site':
+                        $link = get_the_author_meta('user_url', $author_id);
+                        break;
+                    default:
+                        $link = get_author_posts_url($author_id);
+                }
             }
         } elseif (
             array_key_exists('dc-type', $attributes) &&
@@ -1924,7 +1924,7 @@ class MaxiBlocks_DynamicContent
     {
         @[
             'dc-field' => $dc_field,
-			'dc-sub-field' => $dc_sub_field,
+            'dc-sub-field' => $dc_sub_field,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
             // Need to keep old attribute for backward compatibility
@@ -1991,7 +1991,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if ($dc_field === 'author') {
-			$content = $this->get_user_field_value($post->post_author, $dc_sub_field, $dc_limit);
+            $content = $this->get_user_field_value($post->post_author, $dc_sub_field ?? $dc_field, $dc_limit)
             $post_data = $this->get_post_taxonomy_item_content(
                 $post->post_author,
                 $content,
@@ -2089,8 +2089,9 @@ class MaxiBlocks_DynamicContent
     {
         @[
             'dc-relation' => $dc_relation,
-			'dc-field' => $dc_field,
-			'dc-limit' => $dc_limit,
+            'dc-field' => $dc_field,
+            'dc-limit' => $dc_limit,
+            'dc-sub-field' => $dc_sub_field,
         ] = $attributes;
 
         // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
@@ -2113,22 +2114,23 @@ class MaxiBlocks_DynamicContent
         }
         $user_id = $user->ID;
 
-        return $this->get_user_field_value($user_id, $dc_field, $dc_limit);
+        return $this->get_user_field_value($user_id, $dc_sub_field ?? $dc_field, $dc_limit);
     }
 
-	public function get_user_field_value($user_id, $dc_field, $dc_limit) {
-		$user = get_user_by('id', $user_id);
-		if (!$user) {
-			return 0;
-		}
+    public function get_user_field_value($user_id, $dc_field, $dc_limit)
+    {
+        $user = get_user_by('id', $user_id);
+        if (!$user) {
+            return 0;
+        }
 
-		$user_meta = array_map(function ($value) {
+        $user_meta = array_map(function ($value) {
             return $value[0];
         }, get_user_meta($user_id));
         $user_data = array_merge((array) $user->data, $user_meta);
 
-
         $user_dictionary = [
+            'author' => 'display_name',
             'name' => 'display_name',
             'username' => 'user_login',
             'email' => 'user_email',
@@ -2163,7 +2165,7 @@ class MaxiBlocks_DynamicContent
         }
 
         return $value;
-	}
+    }
 
     public function get_taxonomy_content($attributes)
     {

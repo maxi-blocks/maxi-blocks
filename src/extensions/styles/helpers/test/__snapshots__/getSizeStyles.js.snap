@@ -394,3 +394,29 @@ exports[`getSizeStyles Get a correct size styles with width fit content 1`] = `
   },
 }
 `;
+
+exports[`getSizeStyles Should return an empty object if the width/height is an empty string and the unit is not empty 1`] = `
+{
+  "general": {
+    "min-width": "initial",
+  },
+  "l": {
+    "min-width": "initial",
+  },
+  "m": {
+    "min-width": "initial",
+  },
+  "s": {
+    "min-width": "initial",
+  },
+  "xl": {
+    "min-width": "initial",
+  },
+  "xs": {
+    "min-width": "initial",
+  },
+  "xxl": {
+    "min-width": "initial",
+  },
+}
+`;

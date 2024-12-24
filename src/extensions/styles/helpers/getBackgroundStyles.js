@@ -613,7 +613,10 @@ const getWrapperObject = ({
 			isHover,
 		});
 
-		if (!isNil(positionValue) && !isNil(positionUnit)) {
+		if (
+			(Number.isFinite(positionValue) || !isEmpty(positionValue)) &&
+			!isNil(positionUnit)
+		) {
 			response[breakpoint][keyWord] =
 				positionValue === 'auto'
 					? 'auto'

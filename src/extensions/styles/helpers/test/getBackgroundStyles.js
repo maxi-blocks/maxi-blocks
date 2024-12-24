@@ -1543,4 +1543,39 @@ describe('getBackgroundStyles', () => {
 
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Should return an empty object if the position value is an empty string and the unit is not empty', () => {
+		const attributes = {
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					isHover: false,
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-color-clip-path-status-general': false,
+					order: 1,
+					id: 1,
+					'background-palette-status-general-hover': true,
+					'background-palette-color-general-hover': 1,
+					'background-palette-opacity-general-hover': 0,
+					'background-color-wrapper-position-top-general': '',
+					'background-color-wrapper-position-left-general': '',
+					'background-color-wrapper-position-bottom-general': '',
+					'background-color-wrapper-position-right-general': '',
+					'background-color-wrapper-position-top-unit-general': 'px',
+					'background-color-wrapper-position-left-unit-general': 'px',
+					'background-color-wrapper-position-bottom-unit-general':
+						'px',
+					'background-color-wrapper-position-right-unit-general':
+						'px',
+				},
+			],
+		};
+
+		const result = getBlockBackgroundStyles(attributes);
+
+		expect(result).toMatchSnapshot();
+	});
 });

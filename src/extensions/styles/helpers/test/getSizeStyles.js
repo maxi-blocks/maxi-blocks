@@ -505,4 +505,14 @@ describe('getSizeStyles', () => {
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Should return an empty object if the width/height is an empty string and the unit is not empty', () => {
+		const object = {
+			'width-general': '',
+			'width-unit-general': 'px',
+		};
+
+		const result = getSizeStyles(object);
+		expect(result).toMatchSnapshot();
+	});
 });

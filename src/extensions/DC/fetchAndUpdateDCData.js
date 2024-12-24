@@ -95,7 +95,10 @@ const fetchAndUpdateDCData = async (
 			if (newContent !== content) {
 				updateAttributes({
 					'dc-content': newContent,
-					...(newLinkSettings && { linkSettings: newLinkSettings }),
+					...(newLinkSettings !== null &&
+						newLinkSettings?.url !== null && {
+							linkSettings: newLinkSettings,
+						}),
 					...synchronizedAttributes,
 					...(newContainsHTML !== containsHTML && {
 						'dc-contains-html': newContainsHTML,
@@ -119,7 +122,10 @@ const fetchAndUpdateDCData = async (
 				updateAttributes({
 					'dc-media-id': null,
 					'dc-media-url': null,
-					...(newLinkSettings && { linkSettings: newLinkSettings }),
+					...(newLinkSettings !== null &&
+						newLinkSettings?.url !== null && {
+							linkSettings: newLinkSettings,
+						}),
 					...synchronizedAttributes,
 				});
 			} else {
@@ -139,9 +145,10 @@ const fetchAndUpdateDCData = async (
 								getSimpleText(caption)
 							),
 						}),
-						...(newLinkSettings && {
-							linkSettings: newLinkSettings,
-						}),
+						...(newLinkSettings !== null &&
+							newLinkSettings?.url !== null && {
+								linkSettings: newLinkSettings,
+							}),
 						...synchronizedAttributes,
 					});
 				}

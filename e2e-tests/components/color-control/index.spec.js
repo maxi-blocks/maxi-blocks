@@ -26,9 +26,7 @@ describe('ColorControl', () => {
 
 		await editColorControl({
 			page,
-			instance: await accordionPanel.$(
-				'.maxi-background-control .maxi-tabs-content'
-			),
+			instance: await accordionPanel.$('.maxi-background-control '),
 			paletteStatus: true,
 			colorPalette: 3,
 			opacity: '45',
@@ -145,9 +143,7 @@ describe('ColorControl', () => {
 
 		await editColorControl({
 			page,
-			instance: await accordionPanel.$(
-				'.maxi-background-control .maxi-tabs-content'
-			),
+			instance: await accordionPanel.$('.maxi-background-control'),
 			paletteStatus: true,
 			colorPalette: 5,
 		});
@@ -160,7 +156,7 @@ describe('ColorControl', () => {
 
 		// reset button
 		await page.$$eval(
-			'.maxi-responsive-tabs-control .maxi-tabs-content .maxi-color-palette-control .maxi-reset-button',
+			'.maxi-background-control .maxi-color-palette-control .maxi-reset-button',
 			input => input[0].click()
 		);
 

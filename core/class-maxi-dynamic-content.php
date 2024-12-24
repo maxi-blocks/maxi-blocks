@@ -1933,6 +1933,7 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
         ] = $attributes;
 
+
         $post = $this->get_post($attributes);
 
         if (empty($post)) {
@@ -1990,8 +1991,10 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+
         if ($dc_field === 'author') {
-            $content = $this->get_user_field_value($post->post_author, $dc_sub_field ?? $dc_field, $dc_limit)
+            $content = $this->get_user_field_value($post->post_author, $dc_sub_field ?? $dc_field, $dc_limit);
+
             $post_data = $this->get_post_taxonomy_item_content(
                 $post->post_author,
                 $content,

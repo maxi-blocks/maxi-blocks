@@ -2095,6 +2095,7 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-sub-field' => $dc_sub_field,
+            'dc-type' => $dc_type,
         ] = $attributes;
 
         // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
@@ -2111,7 +2112,11 @@ class MaxiBlocks_DynamicContent
             $dc_relation = 'current';
         }
 
-        $user = $this->get_post($attributes);
+        if (is_author() && $dc_relation === 'current' && $dc_type === 'archive') {
+            $user = get_user_by('id', get_queried_object_id());
+        } else {
+            $user = $this->get_post($attributes);
+        }
         if (!($user instanceof WP_User)) {
             return 0;
         }

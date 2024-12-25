@@ -8,12 +8,12 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import Icon from '../../../icon';
+import Icon from '@components/icon';
 
 /**
  * Icons
  */
-import { toolbarHelp } from '../../../../icons';
+import { toolbarHelp } from '@maxi-icons';
 
 /**
  * Style

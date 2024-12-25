@@ -8,10 +8,10 @@ import { MediaUpload } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Dropdown from '../../../dropdown';
-import ImageUrlUpload from '../../../image-url-upload';
-import { getUpdatedImgSVG } from '../../../../extensions/svg';
+import Button from '@components/button';
+import Dropdown from '@components/dropdown';
+import ImageUrlUpload from '@components/image-url-upload';
+import { getUpdatedImgSVG } from '@extensions/svg';
 
 /**
  * Styles

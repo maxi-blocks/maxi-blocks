@@ -7,18 +7,18 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import InfoBox from '../info-box';
-import SelectControl from '../select-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import TransitionControl from '../transition-control';
+import InfoBox from '@components/info-box';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
+import TransitionControl from '@components/transition-control';
 import {
 	createTransitionObj,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getTransitionData,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * External dependencies

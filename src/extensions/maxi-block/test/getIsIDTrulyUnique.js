@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getIsIDTrulyUnique from '../getIsIDTrulyUnique';
+import getIsIDTrulyUnique from '@extensions/maxi-block/getIsIDTrulyUnique';
 
 jest.mock('@wordpress/data', () => {
 	return {

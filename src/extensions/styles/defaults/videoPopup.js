@@ -1,4 +1,4 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { background, backgroundColor } from './background';
 
 const videoPopup = {

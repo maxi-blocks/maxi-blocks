@@ -12,8 +12,8 @@ import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
  * Internal dependencies
  */
 import getCustomFormat from './getCustomFormat';
-import { getBlockStyle } from '../../styles';
-import { getTypographyFromSC } from '../../style-cards';
+import { getBlockStyle } from '@extensions/styles';
+import { getTypographyFromSC } from '@extensions/style-cards';
 
 /**
  * Ensures that custom formats on typography is an object

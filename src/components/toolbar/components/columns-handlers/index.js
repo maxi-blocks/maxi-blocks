@@ -9,8 +9,8 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Icon from '../../../icon';
+import Button from '@components/button';
+import Icon from '@components/icon';
 
 /**
  * External dependencies
@@ -22,7 +22,7 @@ import classnames from 'classnames';
  */
 
 import './editor.scss';
-import { handlers } from '../../../../icons';
+import { handlers } from '@maxi-icons';
 
 const ColumnsHandlers = props => {
 	const { blockName, className, toggleHandlers, tooltipsHide } = props;

@@ -12,7 +12,7 @@ import { isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
-import { AccordionControl, SettingTabsControl } from '../../components';
+import { AccordionControl, SettingTabsControl } from '@components';
 import {
 	MapControl,
 	MapInteractionControl,
@@ -20,10 +20,10 @@ import {
 	MapPopupControl,
 	MapPopupTextControl,
 } from './components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '@extensions/styles';
 import { ariaLabelsCategories, customCss } from './data';
-import { withMaxiInspector } from '../../extensions/inspector';
-import * as inspectorTabs from '../../components/inspector-tabs';
+import { withMaxiInspector } from '@extensions/inspector';
+import * as inspectorTabs from '@components/inspector-tabs';
 
 /**
  * Inspector

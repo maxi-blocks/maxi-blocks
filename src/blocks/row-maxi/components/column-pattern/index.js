@@ -15,23 +15,23 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import Button from '../../../../components/button';
-import Icon from '../../../../components/icon';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import Button from '@components/button';
+import Icon from '@components/icon';
 
 import {
 	getNumCol,
 	getTemplateObject,
 	getTemplates,
 	loadColumnsTemplate,
-} from '../../../../extensions/column-templates';
+} from '@extensions/column-templates';
 import {
 	getAttributeKey,
 	getAttributeValue,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
-import { validateRowColumnsStructure } from '../../../../extensions/repeater';
-import { getBlockPosition } from '../../../../extensions/repeater/utils';
+} from '@extensions/styles';
+import { validateRowColumnsStructure } from '@extensions/repeater';
+import { getBlockPosition } from '@extensions/repeater/utils';
 
 /**
  * Styles and icons

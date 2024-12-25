@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import InfoBox from '../../info-box';
+import InfoBox from '@components/info-box';
 
 /**
  * Styles

@@ -49,7 +49,7 @@ import {
 	cloudBottom,
 	cloudTopOpacity,
 	cloudBottomOpacity,
-} from '../../icons';
+} from '@maxi-icons';
 
 /**
  * Component

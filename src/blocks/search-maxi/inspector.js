@@ -13,16 +13,16 @@ import { isEmpty, without } from 'lodash';
 /**
  * Internal dependencies
  */
-import AccordionControl from '../../components/accordion-control';
-import AxisPositionControl from '../../components/axis-position-control';
-import SettingTabsControl from '../../components/setting-tabs-control';
+import AccordionControl from '@components/accordion-control';
+import AxisPositionControl from '@components/axis-position-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 import ButtonControl from './components/button-control';
 import SkinControl from './components/skin-control';
 import PlaceholderColorControl from './components/placeholder-color-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '@extensions/styles';
 import { ariaLabelsCategories, customCss, prefixes } from './data';
-import { withMaxiInspector } from '../../extensions/inspector';
-import * as inspectorTabs from '../../components/inspector-tabs';
+import { withMaxiInspector } from '@extensions/inspector';
+import * as inspectorTabs from '@components/inspector-tabs';
 
 /**
  * Inspector

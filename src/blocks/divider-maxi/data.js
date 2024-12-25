@@ -11,19 +11,19 @@ import { isNil } from 'lodash';
 /**
  * Internal dependencies
  */
-import BoxShadowControl from '../../components/box-shadow-control';
-import DividerControl from '../../components/divider-control';
-import { createSelectors } from '../../extensions/styles/custom-css';
+import BoxShadowControl from '@components/box-shadow-control';
+import DividerControl from '@components/divider-control';
+import { createSelectors } from '@extensions/styles/custom-css';
 import {
 	getBoxShadowStyles,
 	getDividerStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
-import { getPaletteAttributes } from '../../extensions/styles';
+} from '@extensions/relations';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
+import { getPaletteAttributes } from '@extensions/styles';
 
 /**
  * Classnames

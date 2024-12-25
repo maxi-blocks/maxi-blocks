@@ -6,10 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ManageHoverTransitions from '../../../../components/manage-hover-transitions';
-import SettingTabsControl from '../../../../components/setting-tabs-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
-import SvgColor from '../../../../components/svg-color';
+import ManageHoverTransitions from '@components/manage-hover-transitions';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
+import SvgColor from '@components/svg-color';
 
 const SvgColorControl = props => {
 	const {

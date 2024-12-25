@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToggleSwitch from '../../../../components/toggle-switch';
-import { getParsedVideoUrl } from '../../../../extensions/video';
+import ToggleSwitch from '@components/toggle-switch';
+import { getParsedVideoUrl } from '@extensions/video';
 
 const VideoOptionsControl = props => {
 	const {

@@ -1,12 +1,12 @@
 /**
  * Internal dependencies
  */
-import Icon from '../../../icon';
+import Icon from '@components/icon';
 
 /**
  * Icons
  */
-import { toolbarStyle } from '../../../../icons';
+import { toolbarStyle } from '@maxi-icons';
 
 /**
  * Style

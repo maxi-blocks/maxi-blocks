@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import OpacityControl from '../opacity-control';
+import OpacityControl from '@components/opacity-control';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { opacity as opacityAttr } from '../../extensions/styles/defaults';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import ManageHoverTransitions from '../manage-hover-transitions';
+} from '@extensions/styles';
+import { opacity as opacityAttr } from '@extensions/styles/defaults';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
+import ManageHoverTransitions from '@components/manage-hover-transitions';
 
 /**
  * Component

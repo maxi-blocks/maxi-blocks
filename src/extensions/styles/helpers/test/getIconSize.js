@@ -1,4 +1,4 @@
-import getIconSize from '../getIconSize';
+import getIconSize from '@extensions/styles/helpers/getIconSize';
 
 describe('getIconSize', () => {
 	it('Should return correct icon size', () => {

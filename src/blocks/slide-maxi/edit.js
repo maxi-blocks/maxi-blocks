@@ -12,19 +12,19 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import BlockInserter from '../../components/block-inserter';
-import Toolbar from '../../components/toolbar';
+import BlockInserter from '@components/block-inserter';
+import Toolbar from '@components/toolbar';
 import { copyPasteMapping } from './data';
 import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
-} from '../../extensions/DC';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+} from '@extensions/DC';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 import getStyles from './styles';
-import SliderContext from '../slider-maxi/context';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import SliderContext from '@blocks/slider-maxi/context';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Editor

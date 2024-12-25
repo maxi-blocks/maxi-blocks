@@ -1,10 +1,10 @@
 /**
  * Internal dependencies
  */
-import getColorRGBAString from '../getColorRGBAString';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getAttributeKey from '../getAttributeKey';
-import getDefaultAttribute from '../getDefaultAttribute';
+import getColorRGBAString from '@extensions/styles/getColorRGBAString';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
+import getAttributeKey from '@extensions/styles/getAttributeKey';
+import getDefaultAttribute from '@extensions/styles/getDefaultAttribute';
 
 /**
  * External dependencies

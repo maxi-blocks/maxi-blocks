@@ -1,4 +1,4 @@
-import getOpacityStyles from '../getOpacityStyles';
+import getOpacityStyles from '@extensions/styles/helpers/getOpacityStyles';
 
 describe('getOpacityStyles', () => {
 	it('Get a correct opacity styles', () => {

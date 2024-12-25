@@ -1,5 +1,5 @@
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import paletteAttributesCreator from '../paletteAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
+import paletteAttributesCreator from '@extensions/styles/paletteAttributesCreator';
 
 const prefix = 'box-shadow-';
 

@@ -6,17 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../advanced-number-control';
-import ToolbarPopover from '../toolbar-popover';
-import { getDefaultAttribute } from '../../../../extensions/styles';
-import SvgWidthControl from '../../../svg-width-control';
-import SvgStrokeWidthControl from '../../../svg-stroke-width-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { getDefaultAttribute } from '@extensions/styles';
+import SvgWidthControl from '@components/svg-width-control';
+import SvgStrokeWidthControl from '@components/svg-stroke-width-control';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarShapeWidth } from '../../../../icons';
+import { toolbarShapeWidth } from '@maxi-icons';
 
 /**
  * Component

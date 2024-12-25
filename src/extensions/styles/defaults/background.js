@@ -1,6 +1,6 @@
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import paletteAttributesCreator from '../paletteAttributesCreator';
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
+import paletteAttributesCreator from '@extensions/styles/paletteAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { rawPosition } from './position';
 import { clipPathRaw } from './clipPath';
 import { dynamicContent } from './dynamicContent';

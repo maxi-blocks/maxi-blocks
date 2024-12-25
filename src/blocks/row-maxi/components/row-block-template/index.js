@@ -8,10 +8,10 @@ import { useDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 
-import { Button, Icon } from '../../../../components';
-import { getBlockPosition } from '../../../../extensions/repeater/utils';
-import { getTemplates } from '../../../../extensions/column-templates';
-import loadColumnsTemplate from '../../../../extensions/column-templates/loadColumnsTemplate';
+import { Button, Icon } from '@components';
+import { getBlockPosition } from '@extensions/repeater/utils';
+import { getTemplates } from '@extensions/column-templates';
+import loadColumnsTemplate from '@extensions/column-templates/loadColumnsTemplate';
 
 /**
  * External dependencies

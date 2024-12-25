@@ -10,22 +10,19 @@ import { useContext, useEffect, useMemo, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import LinkControl from '../../../link-control';
-import ToggleSwitch from '../../../toggle-switch';
-import ToolbarContext from '../toolbar-popover/toolbarContext';
-import ToolbarPopover from '../toolbar-popover';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import { LoopContext, getDCLink, getDCValues } from '../../../../extensions/DC';
+import LinkControl from '@components/link-control';
+import ToggleSwitch from '@components/toggle-switch';
+import ToolbarContext from '@components/toolbar/components/toolbar-popover/toolbarContext';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { getGroupAttributes } from '@extensions/styles';
+import { LoopContext, getDCLink, getDCValues } from '@extensions/DC';
 import DC_LINK_BLOCKS from './dcLinkBlocks';
-import { toolbarLink } from '../../../../icons';
-import {
-	linkFields,
-	multipleLinksTypes,
-} from '../../../../extensions/DC/constants';
-import SelectControl from '../../../select-control';
-import { getLinkTargets } from '../../../../extensions/DC/utils';
-import InfoBox from '../../../info-box';
-import { getBlockData } from '../../../../extensions/attributes';
+import { toolbarLink } from '@maxi-icons';
+import { linkFields, multipleLinksTypes } from '@extensions/DC/constants';
+import SelectControl from '@components/select-control';
+import { getLinkTargets } from '@extensions/DC/utils';
+import InfoBox from '@components/info-box';
+import { getBlockData } from '@extensions/attributes';
 
 /**
  * External dependencies

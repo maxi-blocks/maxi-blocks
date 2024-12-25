@@ -7,7 +7,7 @@ import setFormatWithClass, {
 	getFormatClassName,
 } from '../setFormatWithClass';
 import '@wordpress/data';
-import '../../../style-cards';
+import '@extensions/style-cards';
 
 /**
  * Mocks

@@ -12,9 +12,9 @@ import { isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
-import ResultCard from '../result-card';
-import Button from '../../../button';
-import { LOAD_MORE_COUNT } from '../../constants';
+import ResultCard from '@components/prompt-control/components/result-card';
+import Button from '@components/button';
+import { LOAD_MORE_COUNT } from '@components/prompt-control/constants';
 
 /**
  * Styles

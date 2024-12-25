@@ -2,21 +2,21 @@
  * Internal dependencies
  */
 import Inspector from './inspector';
-import BlockInserter from '../../components/block-inserter';
-import Toolbar from '../../components/toolbar';
-import ArrowDisplayer from '../../components/arrow-displayer';
-import MaxiBlock from '../../components/maxi-block/maxiBlock';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import BlockInserter from '@components/block-inserter';
+import Toolbar from '@components/toolbar';
+import ArrowDisplayer from '@components/arrow-displayer';
+import MaxiBlock from '@components/maxi-block/maxiBlock';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { getMaxiBlockAttributes } from '@components/maxi-block';
+import { getGroupAttributes } from '@extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
-} from '../../extensions/DC';
-import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+} from '@extensions/DC';
+import { DISALLOWED_BLOCKS } from '@extensions/repeater';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Edit

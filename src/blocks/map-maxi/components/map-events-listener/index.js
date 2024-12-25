@@ -6,7 +6,7 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getNewMarker, getUpdatedMarkers } from '../../utils';
+import { getNewMarker, getUpdatedMarkers } from '@blocks/map-maxi/utils';
 
 /**
  * External dependencies

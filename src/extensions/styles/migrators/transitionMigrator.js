@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import { getBlockData, getBlockNameFromUniqueID } from '../../attributes';
-import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
+import { getBlockData, getBlockNameFromUniqueID } from '@extensions/attributes';
+import transitionAttributesCreator from '@extensions/styles/transitions/transitionAttributesCreator';
 
 /**
  * External dependencies

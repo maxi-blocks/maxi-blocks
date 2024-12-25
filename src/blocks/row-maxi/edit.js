@@ -14,24 +14,24 @@ import { isEmpty, isEqual } from 'lodash';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import MaxiBlock from '../../components/maxi-block/maxiBlock';
+import Toolbar from '@components/toolbar';
+import MaxiBlock from '@components/maxi-block/maxiBlock';
 import RowBlockTemplate from './components/row-block-template';
 
 import RepeaterContext from './repeaterContext';
 import RowContext from './rowContext';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
-import { retrieveInnerBlocksPositions } from '../../extensions/repeater';
-import getRowGapProps from '../../extensions/attributes/getRowGapProps';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { getMaxiBlockAttributes } from '@components/maxi-block';
+import { getAttributeValue, getGroupAttributes } from '@extensions/styles';
+import { retrieveInnerBlocksPositions } from '@extensions/repeater';
+import getRowGapProps from '@extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
-} from '../../extensions/DC';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+} from '@extensions/DC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Edit

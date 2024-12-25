@@ -9,8 +9,8 @@ import { useEffect, useRef } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Icon from '../../../icon';
+import Button from '@components/button';
+import Icon from '@components/icon';
 
 /**
  * External dependencies
@@ -21,7 +21,7 @@ import { castArray, first, last } from 'lodash';
  * Icons
  */
 import './editor.scss';
-import { toolbarDrop, moveUp, moveDown } from '../../../../icons';
+import { toolbarDrop, moveUp, moveDown } from '@maxi-icons';
 
 /**
  * Mover

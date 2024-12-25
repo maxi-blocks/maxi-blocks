@@ -1,4 +1,4 @@
-import getImageShapeStyles from '../getImageShapeStyles';
+import getImageShapeStyles from '@extensions/styles/helpers/getImageShapeStyles';
 
 describe('getImageShapeStyles', () => {
 	const object = {

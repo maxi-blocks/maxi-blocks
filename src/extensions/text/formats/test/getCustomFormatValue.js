@@ -1,4 +1,4 @@
-import getCustomFormatValue from '../getCustomFormatValue';
+import getCustomFormatValue from '@extensions/text/formats/getCustomFormatValue';
 import '@wordpress/rich-text';
 
 jest.mock('@wordpress/blocks', () => {

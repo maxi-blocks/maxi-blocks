@@ -3,7 +3,7 @@ import {
 	ignoredTaxonomies,
 	supportedPostTypes,
 	supportedTaxonomies,
-} from '../constants';
+} from '@extensions/DC/constants';
 
 const actions = {
 	*loadCustomPostTypes() {

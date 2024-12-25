@@ -6,20 +6,20 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../advanced-number-control';
-import ToggleSwitch from '../../../toggle-switch';
-import SelectControl from '../../../select-control';
-import ToolbarPopover from '../toolbar-popover';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ToggleSwitch from '@components/toggle-switch';
+import SelectControl from '@components/select-control';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarSliderSettings } from '../../../../icons';
+import { toolbarSliderSettings } from '@maxi-icons';
 
 /**
  * Slider settings

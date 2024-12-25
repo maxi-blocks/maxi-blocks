@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBlockData, getBlockNameFromUniqueID } from '../../attributes';
+import { getBlockData, getBlockNameFromUniqueID } from '@extensions/attributes';
 
 /**
  * Returns block data from uniqueID

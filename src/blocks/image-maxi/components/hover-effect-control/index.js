@@ -12,23 +12,20 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import AxisControl from '../../../../components/axis-control';
-import BackgroundControl from '../../../../components/background-control';
-import BorderControl from '../../../../components/border-control';
-import Icon from '../../../../components/icon';
-import SelectControl from '../../../../components/select-control';
-import SettingTabsControl from '../../../../components/setting-tabs-control';
-import TextareaControl from '../../../../components/textarea-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
-import TypographyControl from '../../../../components/typography-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import AxisControl from '@components/axis-control';
+import BackgroundControl from '@components/background-control';
+import BorderControl from '@components/border-control';
+import Icon from '@components/icon';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import TextareaControl from '@components/textarea-control';
+import ToggleSwitch from '@components/toggle-switch';
+import TypographyControl from '@components/typography-control';
 
 import BezierEditor from 'bezier-easing-editor';
 
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../../../extensions/styles';
+import { getDefaultAttribute, getGroupAttributes } from '@extensions/styles';
 
 /**
  * Styles and icons
@@ -42,7 +39,7 @@ import {
 	alignLeftBottom,
 	alignRightTop,
 	alignRightBottom,
-} from '../../../../icons';
+} from '@maxi-icons';
 
 /**
  * Component

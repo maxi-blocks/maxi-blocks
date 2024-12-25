@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../../styles';
+import { getGroupAttributes } from '@extensions/styles';
 import getHasNativeFormat from './getHasNativeFormat';
 import setCustomFormatsWhenPaste from './setCustomFormatsWhenPaste';
 

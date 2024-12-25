@@ -10,10 +10,10 @@ import { useContext, useEffect, useRef, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import LinkControl from '../../../link-control';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import ToolbarContext from '../toolbar-popover/toolbarContext';
-import ToolbarPopover from '../toolbar-popover';
+import LinkControl from '@components/link-control';
+import { getGroupAttributes } from '@extensions/styles';
+import ToolbarContext from '@components/toolbar/components/toolbar-popover/toolbarContext';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
 import { createLinkAttributes, createLinkValue } from './utils';
 import {
 	getFormattedString,
@@ -21,8 +21,8 @@ import {
 	removeLinkFormat,
 	getFormatPosition,
 	TextContext,
-} from '../../../../extensions/text/formats';
-import Link from '../link';
+} from '@extensions/text/formats';
+import Link from '@components/toolbar/components/link';
 
 /**
  * External dependencies
@@ -33,7 +33,7 @@ import { isEmpty, isEqual, isNil } from 'lodash';
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarLink } from '../../../../icons';
+import { toolbarLink } from '@maxi-icons';
 
 /**
  * TextLink

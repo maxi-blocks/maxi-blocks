@@ -10,14 +10,14 @@ import {
 	getAttributeKey,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import ColorLayer from './colorLayer';
 import GradientLayer from './gradientLayer';
-import Icon from '../icon';
+import Icon from '@components/icon';
 import ImageLayer from './imageLayer';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
-import SettingTabsControl from '../setting-tabs-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 
 /**
  * External dependencies
@@ -34,7 +34,7 @@ import {
 	backgroundVideo,
 	backgroundGradient,
 	shape,
-} from '../../icons';
+} from '@maxi-icons';
 import './editor.scss';
 
 /**

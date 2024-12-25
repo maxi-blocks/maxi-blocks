@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import getActiveStyleCard from '../getActiveStyleCard';
+import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
 import controls from './controls';
-import standardSC from '../../../../core/defaults/defaultSC.json';
+import standardSC from '@maxi-core/defaults/defaultSC.json';
 
 /**
  * External dependencies

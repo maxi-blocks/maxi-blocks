@@ -1,4 +1,4 @@
-import getCleanDisplayIBAttributes from '../getCleanDisplayIBAttributes';
+import getCleanDisplayIBAttributes from '@extensions/relations/getCleanDisplayIBAttributes';
 
 let blockAttributes = {
 	'font-size-unit-general': 'em',

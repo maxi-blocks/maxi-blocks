@@ -15,13 +15,13 @@ import { isEmpty, cloneDeep, isEqual } from 'lodash';
  */
 import TextColor from './components/text-color';
 import TextOptions from './components/text-options';
-import Popover from '../popover';
+import Popover from '@components/popover';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Component

@@ -1,8 +1,8 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
-import margin from '../defaults/margin';
-import boxShadowHover from '../defaults/boxShadowHover';
-import { borderWidth } from '../defaults/border';
-import padding from '../defaults/padding';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
+import margin from '@extensions/styles/defaults/margin';
+import boxShadowHover from '@extensions/styles/defaults/boxShadowHover';
+import { borderWidth } from '@extensions/styles/defaults/border';
+import padding from '@extensions/styles/defaults/padding';
 
 describe('prefixAttributesCreator', () => {
 	it('Returns prefixed object with default values', () => {

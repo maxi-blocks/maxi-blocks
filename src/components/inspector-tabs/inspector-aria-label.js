@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AriaLabelControl from '../aria-label-control';
-import filterAriaLabelCategories from '../aria-label-control/utils';
+import AriaLabelControl from '@components/aria-label-control';
+import filterAriaLabelCategories from '@components/aria-label-control/utils';
 
 /**
  * Component

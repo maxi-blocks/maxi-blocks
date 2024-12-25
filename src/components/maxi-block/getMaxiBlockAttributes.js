@@ -4,7 +4,7 @@
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import getOldScrollAttributes from './getOldScrollAttributes';
 
 /**

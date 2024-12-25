@@ -1,4 +1,4 @@
-import getDividerStyles from '../getDividerStyles';
+import getDividerStyles from '@extensions/styles/helpers/getDividerStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

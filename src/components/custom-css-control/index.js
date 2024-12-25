@@ -12,13 +12,13 @@ import { isEmpty, cloneDeep, capitalize } from 'lodash';
 /**
  * Internal dependencies
  */
-import ResponsiveTabsControl from '../responsive-tabs-control';
-import SelectControl from '../select-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import SelectControl from '@components/select-control';
 /**
  * Styles
  */
 import './editor.scss';
-import CssCodeEditor from '../css-code-editor';
+import CssCodeEditor from '@components/css-code-editor';
 
 /**
  * Component

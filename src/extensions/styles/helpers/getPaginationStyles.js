@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import getGroupAttributes from '../getGroupAttributes';
-import getAttributeValue from '../getAttributeValue';
-import getColorRGBAString from '../getColorRGBAString';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
+import getAttributeValue from '@extensions/styles/getAttributeValue';
+import getColorRGBAString from '@extensions/styles/getColorRGBAString';
 import getFlexStyles from './getFlexStyles';
 import getTypographyStyles from './getTypographyStyles';
 

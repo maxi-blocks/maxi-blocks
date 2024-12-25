@@ -6,21 +6,21 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import ColorControl from '../color-control';
-import DefaultStylesControl from '../default-styles-control';
-import Icon from '../icon';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ColorControl from '@components/color-control';
+import DefaultStylesControl from '@components/default-styles-control';
+import Icon from '@components/icon';
 import {
 	boxShadowNone,
 	boxShadowTotal,
 	boxShadowBottom,
 	boxShadowSolid,
 } from './defaults';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * External dependencies
@@ -32,8 +32,8 @@ import { capitalize } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
-import { styleNone, boxShadow } from '../../icons';
-import ToggleSwitch from '../toggle-switch';
+import { styleNone, boxShadow } from '@maxi-icons';
+import ToggleSwitch from '@components/toggle-switch';
 
 /**
  * Component

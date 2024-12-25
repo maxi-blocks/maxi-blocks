@@ -13,20 +13,20 @@ import { capitalize } from 'lodash';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import ColorControl from '../../../../components/color-control';
-import SelectControl from '../../../../components/select-control';
-import TextControl from '../../../../components/text-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
-import MaxiModal from '../../../../editor/library/modal';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ColorControl from '@components/color-control';
+import SelectControl from '@components/select-control';
+import TextControl from '@components/text-control';
+import ToggleSwitch from '@components/toggle-switch';
+import MaxiModal from '@editor/library/modal';
 
 import {
 	getColorRGBAString,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 	getPaletteAttributes,
-} from '../../../../extensions/styles';
-import { setSVGColor } from '../../../../extensions/svg';
+} from '@extensions/styles';
+import { setSVGColor } from '@extensions/svg';
 
 const ListOptionsControl = props => {
 	const {

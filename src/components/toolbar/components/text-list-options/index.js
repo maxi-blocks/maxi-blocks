@@ -11,16 +11,16 @@ import { createBlock } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import ToolbarPopover from '../toolbar-popover';
-import { TextContext } from '../../../../extensions/text/formats';
+import Button from '@components/button';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { TextContext } from '@extensions/text/formats';
 import {
 	canIndentListItems,
 	canOutdentListItems,
 	indentListItems,
 	outdentListItems,
 	toHTMLString,
-} from '../../../../extensions/text/lists';
+} from '@extensions/text/lists';
 
 /**
  * External dependencies
@@ -36,7 +36,7 @@ import {
 	toolbarOutdentList,
 	toolbarOrderedList,
 	toolbarUnorderedList,
-} from '../../../../icons';
+} from '@maxi-icons';
 
 /**
  * TextListOptions

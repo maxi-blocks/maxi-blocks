@@ -17,19 +17,19 @@ import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
-} from '../../extensions/maxi-block';
-import { BlockResizer, Toolbar } from '../../components';
-import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
+} from '@extensions/maxi-block';
+import { BlockResizer, Toolbar } from '@components';
+import { getMaxiBlockAttributes, MaxiBlock } from '@components/maxi-block';
 
 import {
 	getGroupAttributes,
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import getStyles from './styles';
-import { getBreakpoints } from '../../extensions/styles/helpers';
+import { getBreakpoints } from '@extensions/styles/helpers';
 import { copyPasteMapping } from './data';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Content

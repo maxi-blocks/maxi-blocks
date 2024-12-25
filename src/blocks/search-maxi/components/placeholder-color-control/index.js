@@ -6,10 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ColorControl from '../../../../components/color-control';
-import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
-import TextControl from '../../../../components/text-control';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import ColorControl from '@components/color-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import TextControl from '@components/text-control';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 
 const PlaceholderColorControl = ({
 	placeholder,

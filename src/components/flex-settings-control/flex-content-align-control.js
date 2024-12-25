@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SettingTabsControl from '../setting-tabs-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
-import Icon from '../icon';
+import SettingTabsControl from '@components/setting-tabs-control';
+import { getLastBreakpointAttribute } from '@extensions/styles';
+import Icon from '@components/icon';
 
 /**
  * Icons
@@ -22,7 +22,7 @@ import {
 	flexAlignAround,
 	flexAlignStretch,
 	flexAlignBaseline,
-} from '../../icons';
+} from '@maxi-icons';
 
 const FlexContentAlignControl = props => {
 	const { breakpoint, onChange, prefix = '' } = props;

@@ -10,9 +10,9 @@ import { useContext, useEffect, useRef } from '@wordpress/element';
  * Internal dependencies
  */
 import uniqueIDGenerator from './uniqueIDGenerator';
-import { insertBlockIntoColumns } from '../repeater';
-import { getCustomLabel } from '../maxi-block';
-import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
+import { insertBlockIntoColumns } from '@extensions/repeater';
+import { getCustomLabel } from '@extensions/maxi-block';
+import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 
 /**
  * External Dependencies

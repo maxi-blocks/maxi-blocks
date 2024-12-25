@@ -6,10 +6,10 @@ import { RichText } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { HoverPreview, RawHTML } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
-import { getDCImgSVG } from '../../extensions/DC';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { HoverPreview, RawHTML } from '@components';
+import { getGroupAttributes } from '@extensions/styles';
+import { getDCImgSVG } from '@extensions/DC';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 
 /**
  * External dependencies

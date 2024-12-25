@@ -7,7 +7,7 @@ import { Popover } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import TextControl from '../../text-control';
+import TextControl from '@components/text-control';
 
 /**
  * Styles & Icons

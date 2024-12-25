@@ -12,8 +12,8 @@ import { isEqual, isNaN, toNumber } from 'lodash';
 /**
  * Internal dependencies
  */
-import Popover from '../popover';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import Popover from '@components/popover';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * Styles

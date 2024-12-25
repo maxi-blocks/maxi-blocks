@@ -6,25 +6,25 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
-import AlignmentControl from '../../components/alignment-control';
-import BorderControl from '../../components/border-control';
-import ImageShape from '../../components/image-shape';
-import InfoBox from '../../components/info-box';
-import ClipPathControl from '../../components/clip-path-control';
+import { createSelectors } from '@extensions/styles/custom-css';
+import AlignmentControl from '@components/alignment-control';
+import BorderControl from '@components/border-control';
+import ImageShape from '@components/image-shape';
+import InfoBox from '@components/info-box';
+import ClipPathControl from '@components/clip-path-control';
 import {
 	getAlignmentFlexStyles,
 	getBorderStyles,
 	getClipPathStyles,
 	getImageShapeStyles,
-} from '../../extensions/styles/helpers';
-import { getGroupAttributes } from '../../extensions/styles';
+} from '@extensions/styles/helpers';
+import { getGroupAttributes } from '@extensions/styles';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
-import { getEditorWrapper } from '../../extensions/dom';
+} from '@extensions/relations';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
+import { getEditorWrapper } from '@extensions/dom';
 
 /**
  * Classnames

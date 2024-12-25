@@ -3,7 +3,7 @@ import { isNaN, merge } from 'lodash';
 import {
 	getBlockBackgroundStyles,
 	getBackgroundStyles,
-} from '../getBackgroundStyles';
+} from '@extensions/styles/helpers/getBackgroundStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

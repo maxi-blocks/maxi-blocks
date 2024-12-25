@@ -9,14 +9,14 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import MaxiStyleCardsEditor from './maxiStyleCardsEditor';
-import Button from '../../components/button';
-import Icon from '../../components/icon';
+import Button from '@components/button';
+import Icon from '@components/icon';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import { styleCardMenu } from '../../icons';
+import { styleCardMenu } from '@maxi-icons';
 
 const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 	const { styleCards } = useSelect(select => {

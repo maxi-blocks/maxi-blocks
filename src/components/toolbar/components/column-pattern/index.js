@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import { ColumnPattern } from '../../../../blocks/row-maxi/components';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { ColumnPattern } from '@blocks/row-maxi/components';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarColumnPattern } from '../../../../icons';
+import { toolbarColumnPattern } from '@maxi-icons';
 
 const ToolbarColumnPattern = props => {
 	const {

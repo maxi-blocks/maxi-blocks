@@ -12,14 +12,14 @@ import { ceil, floor, isEmpty, lowerCase } from 'lodash';
 /**
  * Internal dependencies
  */
-import ContentLoader from '../content-loader';
-import InfoBox from '../info-box';
-import SettingTabsControl from '../setting-tabs-control';
+import ContentLoader from '@components/content-loader';
+import InfoBox from '@components/info-box';
+import SettingTabsControl from '@components/setting-tabs-control';
 import GenerateTab from './tabs/generate-tab';
 import ResultsTab from './tabs/results-tab';
 import ModifyTab from './tabs/modify-tab';
-import TextContext from '../../extensions/text/formats/TextContext';
-import { getMaxiAdminSettingsUrl } from '../../blocks/map-maxi/utils';
+import TextContext from '@extensions/text/formats/TextContext';
+import { getMaxiAdminSettingsUrl } from '@blocks/map-maxi/utils';
 import { useAISettings, useResultsHandling, useSettings } from './hooks';
 import {
 	getContext,

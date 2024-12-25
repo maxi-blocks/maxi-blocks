@@ -1,5 +1,5 @@
-import { createSelectors } from '../../custom-css';
-import getTransformStyles from '../getTransformStyles';
+import { createSelectors } from '@extensions/styles/custom-css';
+import getTransformStyles from '@extensions/styles/helpers/getTransformStyles';
 
 describe('getTransformStyles', () => {
 	const selectors = createSelectors({

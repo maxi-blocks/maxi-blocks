@@ -21,17 +21,17 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
-import TextControl from '../text-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import SelectControl from '@components/select-control';
+import ToggleSwitch from '@components/toggle-switch';
+import TextControl from '@components/text-control';
 
 import {
 	getFields,
 	validationsValues,
 	getRelationOptions,
 	getCurrentTemplateSlug,
-} from '../../extensions/DC/utils';
+} from '@extensions/DC/utils';
 import {
 	fieldOptions,
 	limitOptions,
@@ -42,15 +42,15 @@ import {
 	orderRelations,
 	sourceOptions,
 	ignoreEmptyFields,
-} from '../../extensions/DC/constants';
-import getDCOptions from '../../extensions/DC/getDCOptions';
+} from '@extensions/DC/constants';
+import getDCOptions from '@extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
-import { getDefaultAttribute } from '../../extensions/styles';
-import { getUpdatedImgSVG } from '../../extensions/svg';
+import { getDefaultAttribute } from '@extensions/styles';
+import { getUpdatedImgSVG } from '@extensions/svg';
 import ACFSettingsControl from './acf-settings-control';
-import { getDCValues, LoopContext } from '../../extensions/DC';
-import getTypes from '../../extensions/DC/getTypes';
-import showStaticOption from '../../extensions/DC/showStaticOption';
+import { getDCValues, LoopContext } from '@extensions/DC';
+import getTypes from '@extensions/DC/getTypes';
+import showStaticOption from '@extensions/DC/showStaticOption';
 
 /**
  * Styles

@@ -7,12 +7,12 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import standardSC from '../../../core/defaults/defaultSC.json';
+import standardSC from '@maxi-core/defaults/defaultSC.json';
 import {
 	getIsSiteEditor,
 	getSiteEditorIframeBody,
 	getSiteEditorIframe,
-} from '../../extensions/fse';
+} from '@extensions/fse';
 
 /**
  * External dependencies

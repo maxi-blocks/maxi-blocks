@@ -8,27 +8,27 @@ import { useContext, useRef } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import ColorControl from '../../../color-control';
-import Icon from '../../../icon';
-import ToolbarPopover from '../toolbar-popover';
+import ColorControl from '@components/color-control';
+import Icon from '@components/icon';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
 import {
 	getCustomFormatValue,
 	setFormat,
 	TextContext,
 	ListContext,
-} from '../../../../extensions/text/formats';
+} from '@extensions/text/formats';
 import {
 	getGroupAttributes,
 	getBlockStyle,
 	getColorRGBAString,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import { toolbarType } from '../../../../icons';
-import { getListTypographyAttributes } from '../../../../extensions/text/lists';
+import { toolbarType } from '@maxi-icons';
+import { getListTypographyAttributes } from '@extensions/text/lists';
 
 const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 

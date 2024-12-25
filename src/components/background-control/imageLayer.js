@@ -7,27 +7,27 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import ClipPathControl from '../clip-path-control';
-import ImageAltControl from '../image-alt-control';
-import ImageCropControl from '../image-crop-control';
-import ImageUrlUpload from '../image-url-upload';
-import MediaUploaderControl from '../media-uploader-control';
-import OpacityControl from '../opacity-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
-import SelectControl from '../select-control';
-import SettingTabsControl from '../setting-tabs-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ClipPathControl from '@components/clip-path-control';
+import ImageAltControl from '@components/image-alt-control';
+import ImageCropControl from '@components/image-crop-control';
+import ImageUrlUpload from '@components/image-url-upload';
+import MediaUploaderControl from '@components/media-uploader-control';
+import OpacityControl from '@components/opacity-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
-import ToggleSwitch from '../toggle-switch';
+import ToggleSwitch from '@components/toggle-switch';
 import {
 	getAttributeKey,
 	getAttributeValue,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import { getDefaultLayerAttr } from './utils';
-import DynamicContent from '../dynamic-content';
+import DynamicContent from '@components/dynamic-content';
 
 /**
  * External dependencies

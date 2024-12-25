@@ -1,7 +1,7 @@
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import hoverAttributesCreator from '../hoverAttributesCreator';
-import paletteAttributesCreator from '../paletteAttributesCreator';
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
+import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
+import paletteAttributesCreator from '@extensions/styles/paletteAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { typography } from './typography';
 import typographyHover from './typographyHover';
 

@@ -8,17 +8,17 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import { ColumnSizeControl } from './components';
-import { createSelectors } from '../../extensions/styles/custom-css';
-import { getGroupAttributes } from '../../extensions/styles';
-import getRowGapProps from '../../extensions/attributes/getRowGapProps';
+import { createSelectors } from '@extensions/styles/custom-css';
+import { getGroupAttributes } from '@extensions/styles';
+import getRowGapProps from '@extensions/attributes/getRowGapProps';
 import {
 	getColumnSizeStyles,
 	getFlexStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
+} from '@extensions/relations';
 
 /**
  * External dependencies

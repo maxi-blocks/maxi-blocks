@@ -1,4 +1,4 @@
-import frontendStyleGenerator from '../frontendStyleGenerator';
+import frontendStyleGenerator from '@extensions/styles/frontendStyleGenerator';
 
 describe('frontendStyleGenerator', () => {
 	it('Returns styles', () => {

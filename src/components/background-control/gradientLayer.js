@@ -6,11 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ClipPathControl from '../clip-path-control';
-import GradientControl from '../gradient-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
+import ClipPathControl from '@components/clip-path-control';
+import GradientControl from '@components/gradient-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * External dependencies

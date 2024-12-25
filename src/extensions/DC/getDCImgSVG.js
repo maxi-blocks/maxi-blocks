@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { injectImgSVG } from '../svg';
+import { injectImgSVG } from '@extensions/svg';
 
 /**
  * External dependencies

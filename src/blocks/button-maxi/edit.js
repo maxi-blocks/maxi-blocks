@@ -14,19 +14,19 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import IconToolbar from '../../components/toolbar/iconToolbar';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import Toolbar from '@components/toolbar';
+import IconToolbar from '@components/toolbar/iconToolbar';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import {
 	getGroupAttributes,
 	getIconPositionClass,
-} from '../../extensions/styles';
-import { getSVGWidthHeightRatio } from '../../extensions/svg';
+} from '@extensions/styles';
+import { getSVGWidthHeightRatio } from '@extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
-import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 import getAreaLabel from './utils';
 
 /**

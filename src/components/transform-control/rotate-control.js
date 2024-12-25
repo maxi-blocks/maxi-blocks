@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
-import ResetButton from '../reset-control';
-import validateNumberInput from '../advanced-number-control/utils';
+import BaseControl from '@components/base-control';
+import ResetButton from '@components/reset-control';
+import validateNumberInput from '@components/advanced-number-control/utils';
 
 /**
  * External dependencies

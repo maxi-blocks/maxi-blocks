@@ -7,7 +7,7 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 
 /**
  * External dependencies

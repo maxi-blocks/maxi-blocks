@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
+import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 import { CONTENT_TYPE_EXAMPLES } from './constants';
 
 /**

@@ -1,4 +1,4 @@
-import getWinBreakpoint from '../getWinBreakpoint';
+import getWinBreakpoint from '@extensions/dom/getWinBreakpoint';
 
 describe('getWinBreakpoint', () => {
 	it('Returns the correct breakpoint', () => {

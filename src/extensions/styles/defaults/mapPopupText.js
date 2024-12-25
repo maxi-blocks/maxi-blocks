@@ -1,5 +1,5 @@
 import { typography } from './typography';
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 
 const mapPopupText = {
 	'map-marker-heading-level': {

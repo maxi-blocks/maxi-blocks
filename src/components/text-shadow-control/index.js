@@ -7,12 +7,12 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import ColorControl from '../color-control';
-import DefaultStylesControl from '../default-styles-control';
-import ToggleSwitch from '../toggle-switch';
-import AdvancedNumberControl from '../advanced-number-control';
-import Icon from '../icon';
-import { getColorRGBAString, getColorRGBAParts } from '../../extensions/styles';
+import ColorControl from '@components/color-control';
+import DefaultStylesControl from '@components/default-styles-control';
+import ToggleSwitch from '@components/toggle-switch';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import Icon from '@components/icon';
+import { getColorRGBAString, getColorRGBAParts } from '@extensions/styles';
 
 /**
  * External dependencies
@@ -24,7 +24,7 @@ import { isNil, isEmpty, trim } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
-import { styleNone } from '../../icons';
+import { styleNone } from '@maxi-icons';
 
 /**
  * Component

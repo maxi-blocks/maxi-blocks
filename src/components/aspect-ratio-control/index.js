@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
-import { convertAspectRatioToDecimal } from '../../extensions/styles';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import SelectControl from '@components/select-control';
+import { convertAspectRatioToDecimal } from '@extensions/styles';
 
 const AspectRatioControl = ({
 	additionalOptions,

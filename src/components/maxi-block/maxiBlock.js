@@ -20,12 +20,12 @@ import {
 	getHasParallax,
 	getLastBreakpointAttribute,
 	getGroupAttributes,
-} from '../../extensions/styles';
-import { getIsHoverPreview } from '../../extensions/maxi-block';
+} from '@extensions/styles';
+import { getIsHoverPreview } from '@extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
-import { inlineLinkFields } from '../../extensions/DC/constants';
-import isPostEditor from '../../extensions/dom/isPostEditor';
+import { inlineLinkFields } from '@extensions/DC/constants';
+import isPostEditor from '@extensions/dom/isPostEditor';
 
 /**
  * External dependencies

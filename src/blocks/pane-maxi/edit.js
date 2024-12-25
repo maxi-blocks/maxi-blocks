@@ -9,18 +9,18 @@ import { createRef, forwardRef, RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { BlockInserter } from '../../components';
+import Toolbar from '@components/toolbar';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
+import { BlockInserter } from '@components';
 import getStyles from './styles';
-import AccordionContext from '../accordion-maxi/context';
+import AccordionContext from '@blocks/accordion-maxi/context';
 import { copyPasteMapping } from './data';
 import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
-} from '../../extensions/DC';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+} from '@extensions/DC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 const boxedPreset = {
 	'border-bottom-left-radius-general': 10,

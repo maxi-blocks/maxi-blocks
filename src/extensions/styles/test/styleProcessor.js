@@ -1,4 +1,4 @@
-import styleProcessor from '../styleProcessor';
+import styleProcessor from '@extensions/styles/styleProcessor';
 
 jest.mock('@wordpress/blocks', () => jest.fn());
 jest.mock('src/components/block-inserter/index.js', () => jest.fn());

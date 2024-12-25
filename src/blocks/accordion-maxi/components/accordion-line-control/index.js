@@ -11,11 +11,11 @@ import {
 	DividerControl,
 	ToggleSwitch,
 	SelectControl,
-} from '../../../../components';
+} from '@components';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 const AccordionLineControl = props => {
 	const { onChange, breakpoint, prefix } = props;

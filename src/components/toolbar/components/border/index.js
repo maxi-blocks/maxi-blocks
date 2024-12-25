@@ -6,16 +6,16 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Icon from '../../../icon';
-import BorderControl from '../../../border-control';
-import ToolbarPopover from '../toolbar-popover';
+import Icon from '@components/icon';
+import BorderControl from '@components/border-control';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarBorder } from '../../../../icons';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import { toolbarBorder } from '@maxi-icons';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Border

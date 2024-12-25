@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import CustomCssControl from '../custom-css-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
-import { getSelectorsCss, getCategoriesCss } from '../custom-css-control/utils';
+import CustomCssControl from '@components/custom-css-control';
+import { getLastBreakpointAttribute } from '@extensions/styles';
+import { getSelectorsCss, getCategoriesCss } from '@components/custom-css-control/utils';
 
 /**
  * Component

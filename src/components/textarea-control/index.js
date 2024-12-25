@@ -6,7 +6,7 @@ import { useInstanceId } from '@wordpress/compose';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
+import BaseControl from '@components/base-control';
 
 /**
  * External dependencies

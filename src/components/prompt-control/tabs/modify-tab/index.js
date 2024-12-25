@@ -6,7 +6,7 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import ResultCards from '../../components/result-cards';
+import ResultCards from '@components/prompt-control/components/result-cards';
 import {
 	getContentAttributesSection,
 	getContext,
@@ -14,8 +14,8 @@ import {
 	getFormattedMessages,
 	getSiteInformation,
 	handleContentGeneration,
-} from '../../utils';
-import { MODIFICATION_MODIFICATORS } from '../../constants';
+} from '@components/prompt-control/utils';
+import { MODIFICATION_MODIFICATORS } from '@components/prompt-control/constants';
 
 /**
  * Styles

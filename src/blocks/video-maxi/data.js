@@ -4,13 +4,13 @@
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
-import { createIconTransitions } from '../../extensions/styles';
+} from '@extensions/relations';
+import { createIconTransitions } from '@extensions/styles';
 import {
 	createIconSelectors,
 	createSelectors,
-} from '../../extensions/styles/custom-css';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+} from '@extensions/styles/custom-css';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
  * Classnames

@@ -7,15 +7,15 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../button';
-import CssCodeEditor from '../css-code-editor';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import Button from '@components/button';
+import CssCodeEditor from '@components/css-code-editor';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * Styles
  */
 import './editor.scss';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import withRTC from '@extensions/maxi-block/withRTC';
 
 const AdvancedCssControl = ({ breakpoint, onChange, ...attributes }) => {
 	const [isExampleShown, setIsExampleShown] = useState(false);

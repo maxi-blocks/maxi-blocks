@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AlignmentControl from '../alignment-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import AlignmentControl from '@components/alignment-control';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * External dependencies

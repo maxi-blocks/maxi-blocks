@@ -1,4 +1,4 @@
-import getBreakpoints from '../getBreakpoints';
+import getBreakpoints from '@extensions/styles/helpers/getBreakpoints';
 
 jest.mock('@wordpress/data', () => {
 	return {

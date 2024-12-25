@@ -6,13 +6,13 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import TransformControl from '../transform-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import TransformControl from '@components/transform-control';
+import { getGroupAttributes } from '@extensions/styles';
 import {
 	getTransformSelectors,
 	getTransformCategories,
 	getDisabledTransformCategories,
-} from '../transform-control/utils';
+} from '@components/transform-control/utils';
 
 /**
  * Component

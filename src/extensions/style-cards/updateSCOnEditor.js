@@ -6,8 +6,8 @@ import { dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { loadFonts } from '../text/fonts';
-import { getSiteEditorIframe, getSiteEditorPreviewIframes } from '../fse';
+import { loadFonts } from '@extensions/text/fonts';
+import { getSiteEditorIframe, getSiteEditorPreviewIframes } from '@extensions/fse';
 import getSCVariablesObject from './getSCVariablesObject';
 import getSCStyles from './getSCStyles';
 

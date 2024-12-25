@@ -7,12 +7,12 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
+import { getLastBreakpointAttribute } from '@extensions/styles';
+import withRTC from '@extensions/maxi-block/withRTC';
 
 /**
  * External dependencies

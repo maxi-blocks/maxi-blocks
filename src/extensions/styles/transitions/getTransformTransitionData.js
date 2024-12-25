@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getTransformSelectors } from '../../../components/transform-control/utils';
+import { getTransformSelectors } from '@components/transform-control/utils';
 
 /**
  * External dependencies

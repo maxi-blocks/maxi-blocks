@@ -10,9 +10,9 @@ import {
 	getIsSiteEditor,
 	getIsTemplatePart,
 	getSiteEditorIframeBody,
-} from '../fse';
-import getWinBreakpoint from '../dom/getWinBreakpoint';
-import getCurrentPreviewDeviceType from '../dom/getCurrentPreviewDeviceType';
+} from '@extensions/fse';
+import getWinBreakpoint from '@extensions/dom/getWinBreakpoint';
+import getCurrentPreviewDeviceType from '@extensions/dom/getCurrentPreviewDeviceType';
 
 /**
  * External dependencies

@@ -7,7 +7,7 @@ import {
 	getLastBreakpointAttribute,
 	getTransitionTimingFunction,
 	styleProcessor,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -30,7 +30,7 @@ import {
 	getFlexStyles,
 	getAspectRatio,
 	getImgWidthStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import {
 	transitionDurationEffects,
 	transitionFilterEffects,

@@ -6,20 +6,20 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
-} from '../../../../extensions/styles';
-import AdvancedNumberControl from '../../../advanced-number-control';
-import { getColumnDefaultValue } from '../../../../extensions/column-templates';
+} from '@extensions/styles';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import { getColumnDefaultValue } from '@extensions/column-templates';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarSizing } from '../../../../icons';
+import { toolbarSizing } from '@maxi-icons';
 
 /**
  * ColumnSize

@@ -1,4 +1,4 @@
-import setSVGContentHover from '../setSVGContentHover';
+import setSVGContentHover from '@extensions/svg/setSVGContentHover';
 
 describe('SVGContentHover', () => {
 	const svgContent =

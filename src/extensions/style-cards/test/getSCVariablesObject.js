@@ -1,5 +1,5 @@
-import standardSC from '../../../../core/defaults/defaultSC.json';
-import getSCVariablesObject from '../getSCVariablesObject';
+import standardSC from '@maxi-core/defaults/defaultSC.json';
+import getSCVariablesObject from '@extensions/style-cards/getSCVariablesObject';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 0)

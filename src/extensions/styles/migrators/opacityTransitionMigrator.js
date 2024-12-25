@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import getTransitionData from '../transitions/getTransitionData';
-import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
-import { getBlockNameFromUniqueID } from '../../attributes';
+import getTransitionData from '@extensions/styles/transitions/getTransitionData';
+import transitionAttributesCreator from '@extensions/styles/transitions/transitionAttributesCreator';
+import { getBlockNameFromUniqueID } from '@extensions/attributes';
 
 const name = 'Opacity Transition Migrator';
 

@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import styleGenerator from '../styleGenerator';
+import styleGenerator from '@extensions/styles/styleGenerator';
 import controls from './controls';
-import * as defaultGroupAttributes from '../defaults/index';
+import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

@@ -1,4 +1,4 @@
-import hoverAttributesCreator from '../hoverAttributesCreator';
+import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
 import { iconBorder, iconBorderWidth, iconBorderRadius } from './iconBorder';
 
 export const iconBorderHover = hoverAttributesCreator({

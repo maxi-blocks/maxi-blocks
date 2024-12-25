@@ -12,8 +12,8 @@ import { isEmpty } from 'lodash';
 /**
  * Internal dependencies.
  */
-import MaxiModal from '../../editor/library/modal';
-import { withMaxiProps } from '../../extensions/maxi-block';
+import MaxiModal from '@editor/library/modal';
+import { withMaxiProps } from '@extensions/maxi-block';
 
 class edit extends Component {
 	render() {

@@ -9,7 +9,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import Spinner from '../spinner';
+import Spinner from '@components/spinner';
 
 /**
  * External dependencies

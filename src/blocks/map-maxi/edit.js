@@ -8,16 +8,16 @@ import { renderToString } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar } from '../../components';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { Toolbar } from '@components';
 import { MapContent } from './components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
-import { getBreakpoints } from '../../extensions/styles/helpers';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
+import { getGroupAttributes } from '@extensions/styles';
+import { getBreakpoints } from '@extensions/styles/helpers';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
-import * as mapMarkerIcons from '../../icons/map-icons/markers';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import * as mapMarkerIcons from '@maxi-icons/map-icons/markers';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Edit

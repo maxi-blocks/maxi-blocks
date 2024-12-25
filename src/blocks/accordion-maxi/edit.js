@@ -9,15 +9,15 @@ import { dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import MaxiBlock from '../../components/maxi-block/maxiBlock';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { withMaxiContextLoop } from '../../extensions/DC';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
+import Toolbar from '@components/toolbar';
+import MaxiBlock from '@components/maxi-block/maxiBlock';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { withMaxiContextLoop } from '@extensions/DC';
+import { getMaxiBlockAttributes } from '@components/maxi-block';
 import getStyles from './styles';
 import AccordionContext from './context';
 import { copyPasteMapping } from './data';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Edit

@@ -1,5 +1,5 @@
 import { isNumber } from 'lodash';
-import { goThroughMaxiBlocks } from '../../maxi-block';
+import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 
 /**
  * Returns post styles.

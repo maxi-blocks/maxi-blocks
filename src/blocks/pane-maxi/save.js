@@ -6,9 +6,9 @@ import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
-import { WithLink } from '../../extensions/save/utils';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getMaxiBlockAttributes, MaxiBlock } from '@components/maxi-block';
+import { WithLink } from '@extensions/save/utils';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Save

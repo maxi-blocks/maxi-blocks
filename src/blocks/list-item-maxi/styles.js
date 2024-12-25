@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '@extensions/styles';
 import {
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -17,7 +17,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 	getFlexStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import data from './data';
 
 const getNormalObject = props => {

@@ -1,5 +1,5 @@
-import { rawBackgroundImage } from '../defaults/background';
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import { rawBackgroundImage } from '@extensions/styles/defaults/background';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
 
 describe('breakpointAttributesCreator', () => {
 	it('Returns an image bg object', () => {

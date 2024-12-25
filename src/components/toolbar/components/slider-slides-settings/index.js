@@ -13,14 +13,14 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 
-import ToolbarPopover from '../toolbar-popover';
-import Button from '../../../button';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import Button from '@components/button';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarSlideSettings, toolbarRemove } from '../../../../icons';
+import { toolbarSlideSettings, toolbarRemove } from '@maxi-icons';
 
 /**
  * Slider settings

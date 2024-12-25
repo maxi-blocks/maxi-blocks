@@ -7,7 +7,7 @@
  * Import dependencies.
  */
 import edit from './edit';
-import { library } from '../../icons';
+import { library } from '@maxi-icons';
 import './style.scss';
 import './editor.scss';
 

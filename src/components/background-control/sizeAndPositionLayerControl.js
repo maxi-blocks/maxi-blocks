@@ -7,13 +7,13 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import PositionControl from '../position-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import PositionControl from '@components/position-control';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	getDefaultLayerAttr,
 	getDefaultLayerAttrs,

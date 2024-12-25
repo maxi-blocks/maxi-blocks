@@ -1,4 +1,4 @@
-import styleGenerator from '../styleGenerator';
+import styleGenerator from '@extensions/styles/styleGenerator';
 
 jest.mock('@wordpress/data', () => {
 	return {

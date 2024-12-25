@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 
 /**
  * External dependencies

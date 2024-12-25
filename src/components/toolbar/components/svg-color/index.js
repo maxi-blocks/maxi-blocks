@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import SvgColor from '../../../svg-color';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import SvgColor from '@components/svg-color';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { toolbarShapeColor, toolbarShapeLineColor } from '../../../../icons';
+import { toolbarShapeColor, toolbarShapeLineColor } from '@maxi-icons';
 
 /**
  * SvgColor

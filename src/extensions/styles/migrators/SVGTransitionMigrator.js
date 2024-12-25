@@ -1,6 +1,6 @@
-import { getBlockNameFromUniqueID } from '../../attributes';
-import getTransitionData from '../transitions/getTransitionData';
-import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
+import { getBlockNameFromUniqueID } from '@extensions/attributes';
+import getTransitionData from '@extensions/styles/transitions/getTransitionData';
+import transitionAttributesCreator from '@extensions/styles/transitions/transitionAttributesCreator';
 import { isEqual } from 'lodash';
 
 const name = 'SVG Transition Migrator';

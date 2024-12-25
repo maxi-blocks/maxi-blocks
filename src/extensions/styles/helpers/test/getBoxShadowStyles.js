@@ -1,4 +1,4 @@
-import getBoxShadowStyles from '../getBoxShadowStyles';
+import getBoxShadowStyles from '@extensions/styles/helpers/getBoxShadowStyles';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 4)

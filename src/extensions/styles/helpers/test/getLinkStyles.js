@@ -1,4 +1,4 @@
-import getLinkStyles from '../getLinkStyles';
+import getLinkStyles from '@extensions/styles/helpers/getLinkStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

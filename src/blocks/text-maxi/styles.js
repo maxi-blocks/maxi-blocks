@@ -13,7 +13,7 @@ import {
 	getLastBreakpointAttribute,
 	getPaletteAttributes,
 	styleProcessor,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	getAlignmentTextStyles,
 	getBlockBackgroundStyles,
@@ -30,7 +30,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 	getFlexStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import data from './data';
 import { getSVGListStyle } from './utils';
 

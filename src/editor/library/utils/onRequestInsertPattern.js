@@ -9,8 +9,8 @@ import { dispatch, resolveSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import imageUploader, { placeholderUploader } from './imageUploader';
-import uniqueIDGenerator from '../../../extensions/attributes/uniqueIDGenerator';
-import { getBlockNameFromUniqueID } from '../../../extensions/attributes';
+import uniqueIDGenerator from '@extensions/attributes/uniqueIDGenerator';
+import { getBlockNameFromUniqueID } from '@extensions/attributes';
 
 /**
  * External dependencies

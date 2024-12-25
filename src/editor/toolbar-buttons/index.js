@@ -7,19 +7,16 @@ import { render, useState, createRoot } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../../components/button';
-import Icon from '../../components/icon';
-import ResponsiveSelector from '../responsive-selector';
-import {
-	getIsSiteEditor,
-	getIsTemplatesListOpened,
-} from '../../extensions/fse';
+import Button from '@components/button';
+import Icon from '@components/icon';
+import ResponsiveSelector from '@editor/responsive-selector';
+import { getIsSiteEditor, getIsTemplatesListOpened } from '@extensions/fse';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { main } from '../../icons';
+import { main } from '@maxi-icons';
 
 /**
  * Component

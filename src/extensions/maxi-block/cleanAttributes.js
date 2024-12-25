@@ -6,9 +6,9 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getAttributeKey from '../styles/getAttributeKey';
-import getDefaultAttribute from '../styles/getDefaultAttribute';
-import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
+import getAttributeKey from '@extensions/styles/getAttributeKey';
+import getDefaultAttribute from '@extensions/styles/getDefaultAttribute';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 import {
 	getHoverAttributeKey,
 	getNormalAttributeKey,
@@ -16,7 +16,7 @@ import {
 	attrExistsOnResponsive,
 	getIsHoverAttribute,
 	getSimpleLabel,
-} from '../styles/utils';
+} from '@extensions/styles/utils';
 
 /**
  * External dependencies

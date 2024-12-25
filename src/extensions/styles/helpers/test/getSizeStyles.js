@@ -1,4 +1,4 @@
-import getSizeStyles from '../getSizeStyles';
+import getSizeStyles from '@extensions/styles/helpers/getSizeStyles';
 
 jest.mock('../../getDefaultAttribute', () => {
 	return jest.fn(attribute => {

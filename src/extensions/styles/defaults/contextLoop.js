@@ -1,7 +1,7 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { typography } from './typography';
 import flex from './flex';
-import paletteAttributesCreator from '../paletteAttributesCreator';
+import paletteAttributesCreator from '@extensions/styles/paletteAttributesCreator';
 
 const prefix = 'cl-pagination-';
 

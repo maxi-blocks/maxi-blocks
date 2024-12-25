@@ -11,10 +11,10 @@ import { capitalize } from 'lodash';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import ReactSelectControl from '../../../react-select-control';
-import TextareaControl from '../../../textarea-control';
-import { MODIFY_OPTIONS, LANGUAGES } from '../../constants';
+import Button from '@components/button';
+import ReactSelectControl from '@components/react-select-control';
+import TextareaControl from '@components/textarea-control';
+import { MODIFY_OPTIONS, LANGUAGES } from '@components/prompt-control/constants';
 
 /**
  * Styles

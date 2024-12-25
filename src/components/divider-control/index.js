@@ -6,23 +6,23 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import ColorControl from '../color-control';
-import DefaultStylesControl from '../default-styles-control';
-import Icon from '../icon';
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ColorControl from '@components/color-control';
+import DefaultStylesControl from '@components/default-styles-control';
+import Icon from '@components/icon';
+import SelectControl from '@components/select-control';
+import ToggleSwitch from '@components/toggle-switch';
+import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Icons
  */
-import { styleNone, dashed, dotted, solid } from '../../icons';
+import { styleNone, dashed, dotted, solid } from '@maxi-icons';
 
 /**
  * Component

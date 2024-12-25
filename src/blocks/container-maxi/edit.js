@@ -7,22 +7,22 @@ import { dispatch, select } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import MaxiBlock from '../../components/maxi-block/maxiBlock';
-import Toolbar from '../../components/toolbar';
-import ArrowDisplayer from '../../components/arrow-displayer';
-import BlockInserter from '../../components/block-inserter';
-import ShapeDivider from '../../components/shape-divider';
-import { BlockIndicators } from '../../components';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import MaxiBlock from '@components/maxi-block/maxiBlock';
+import Toolbar from '@components/toolbar';
+import ArrowDisplayer from '@components/arrow-displayer';
+import BlockInserter from '@components/block-inserter';
+import ShapeDivider from '@components/shape-divider';
+import { BlockIndicators } from '@components';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { getMaxiBlockAttributes } from '@components/maxi-block';
+import { getGroupAttributes } from '@extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
-} from '../../extensions/DC';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+} from '@extensions/DC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * General

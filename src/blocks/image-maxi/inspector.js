@@ -14,25 +14,25 @@ import { isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
-import AccordionControl from '../../components/accordion-control';
-import AdvancedNumberControl from '../../components/advanced-number-control';
-import ImageAltControl from '../../components/image-alt-control';
-import ImageShape from '../../components/image-shape';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
-import SelectControl from '../../components/select-control';
-import SettingTabsControl from '../../components/setting-tabs-control';
-import TypographyControl from '../../components/typography-control';
+import AccordionControl from '@components/accordion-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ImageAltControl from '@components/image-alt-control';
+import ImageShape from '@components/image-shape';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import TypographyControl from '@components/typography-control';
 import DimensionTab from './components/dimension-tab';
 import HoverEffectControl from './components/hover-effect-control';
-import InfoBox from '../../components/info-box';
+import InfoBox from '@components/info-box';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import * as inspectorTabs from '../../components/inspector-tabs';
+} from '@extensions/styles';
+import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
-import { withMaxiInspector } from '../../extensions/inspector';
+import { withMaxiInspector } from '@extensions/inspector';
 import { transitionFilterEffects } from './components/hover-effect-control/constants';
 
 /**

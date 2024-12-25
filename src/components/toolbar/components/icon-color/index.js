@@ -6,17 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import ColorControl from '../../../color-control';
-import ToggleSwitch from '../../../toggle-switch';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import ColorControl from '@components/color-control';
+import ToggleSwitch from '@components/toggle-switch';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { toolbarShapeColor } from '../../../../icons';
-import { getColorRGBAString } from '../../../../extensions/styles';
-import { setSVGContent } from '../../../../extensions/svg';
+import { toolbarShapeColor } from '@maxi-icons';
+import { getColorRGBAString } from '@extensions/styles';
+import { setSVGContent } from '@extensions/svg';
 
 /**
  * Component

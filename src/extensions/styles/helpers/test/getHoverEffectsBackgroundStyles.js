@@ -1,4 +1,4 @@
-import getHoverEffectsBackgroundStyles from '../getHoverEffectsBackgroundStyles';
+import getHoverEffectsBackgroundStyles from '@extensions/styles/helpers/getHoverEffectsBackgroundStyles';
 import '@wordpress/i18n';
 
 describe('getHoverEffectsBackgroundStyles', () => {

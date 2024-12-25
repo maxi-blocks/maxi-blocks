@@ -6,12 +6,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AxisPositionControl from '../../../../components/axis-position-control';
-import SettingTabsControl from '../../../../components/setting-tabs-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
-import IconControl from '../../../../components/icon-control';
-import MaxiModal from '../../../../editor/library/modal';
-import { getIconWithColor } from '../../../../extensions/styles';
+import AxisPositionControl from '@components/axis-position-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
+import IconControl from '@components/icon-control';
+import MaxiModal from '@editor/library/modal';
+import { getIconWithColor } from '@extensions/styles';
 
 const AccordionIconSettings = props => {
 	const { onChange, blockStyle, svgTypeActive, breakpoint } = props;

@@ -6,7 +6,7 @@ import {
 	getLastBreakpointAttribute,
 	getColorRGBAString,
 	styleProcessor,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	getBackgroundStyles,
 	getBorderStyles,
@@ -21,7 +21,7 @@ import {
 	getSizeStyles,
 	getTypographyStyles,
 	getZIndexStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import data, { prefixes } from './data';
 
 const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;

@@ -1,4 +1,4 @@
-import getIBStyles from '../getIBStyles';
+import getIBStyles from '@extensions/relations/getIBStyles';
 
 jest.mock('@wordpress/data', () => {
 	return {

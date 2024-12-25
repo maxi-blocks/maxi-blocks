@@ -12,15 +12,15 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import AccordionControl from '../../components/accordion-control';
-import Button from '../../components/button';
-import ColorControl from '../../components/color-control';
-import Icon from '../../components/icon';
-import SettingTabsControl from '../../components/setting-tabs-control';
-import TypographyControl from '../../components/typography-control';
-import ToggleSwitch from '../../components/toggle-switch';
-import AdvancedNumberControl from '../../components/advanced-number-control';
-import PaddingControl from '../../components/padding-control';
+import AccordionControl from '@components/accordion-control';
+import Button from '@components/button';
+import ColorControl from '@components/color-control';
+import Icon from '@components/icon';
+import SettingTabsControl from '@components/setting-tabs-control';
+import TypographyControl from '@components/typography-control';
+import ToggleSwitch from '@components/toggle-switch';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import PaddingControl from '@components/padding-control';
 import {
 	processSCAttribute,
 	getDefaultSCAttribute,
@@ -31,12 +31,12 @@ import {
 import {
 	getDefaultSCValue,
 	getTypographyFromSC,
-} from '../../extensions/style-cards';
+} from '@extensions/style-cards';
 
 /**
  * Icons
  */
-import { reset } from '../../icons';
+import { reset } from '@maxi-icons';
 
 /**
  * Component

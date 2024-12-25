@@ -7,15 +7,15 @@ import { useEffect, useRef, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
-import Icon from '../icon';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import SelectControl from '@components/select-control';
+import Icon from '@components/icon';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import { applyEffect } from './scroll-effect-preview';
-import { scrollTypesWithUnits } from '../../extensions/styles/defaults/scroll';
+import { scrollTypesWithUnits } from '@extensions/styles/defaults/scroll';
 import EFFECT_PROPERTIES from './effect-properties';
 
 /**
@@ -28,7 +28,7 @@ import { isArray } from 'lodash';
 /**
  * Icons
  */
-import { promptDelete } from '../../icons';
+import { promptDelete } from '@maxi-icons';
 
 /**
  * Component

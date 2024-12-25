@@ -1,10 +1,10 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { background, backgroundColor, backgroundGradient } from './background';
 import { height, width } from './size';
 import padding from './padding';
 
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import paletteAttributesCreator from '../paletteAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
+import paletteAttributesCreator from '@extensions/styles/paletteAttributesCreator';
 import boxShadow from './boxShadow';
 
 const prefix = 'icon-';

@@ -9,8 +9,8 @@ import { RichText } from '@wordpress/block-editor';
 import {
 	getMaxiBlockAttributes,
 	MaxiBlock,
-} from '../../../components/maxi-block';
-import { WithLink } from '../../save/utils';
+} from '@components/maxi-block';
+import { WithLink } from '@extensions/save/utils';
 
 const name = 'List item double link';
 

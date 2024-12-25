@@ -11,9 +11,9 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import ToggleSwitch from '../../../../components/toggle-switch';
-import SelectControl from '../../../../components/select-control';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import ToggleSwitch from '@components/toggle-switch';
+import SelectControl from '@components/select-control';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * Styles and icons

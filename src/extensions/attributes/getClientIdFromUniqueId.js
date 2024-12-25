@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { goThroughMaxiBlocks } from '../maxi-block';
-import { getIsTemplatePart, getSiteEditorIframeBody } from '../fse';
+import { goThroughMaxiBlocks } from '@extensions/maxi-block';
+import { getIsTemplatePart, getSiteEditorIframeBody } from '@extensions/fse';
 
 const getClientIdFromUniqueId = uniqueID => {
 	if (!uniqueID) return false;

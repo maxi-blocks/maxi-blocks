@@ -2,10 +2,10 @@
  * Internal dependencies
  */
 import getBoxShadowStyles from './getBoxShadowStyles';
-import getColorRGBAString from '../getColorRGBAString';
-import getGroupAttributes from '../getGroupAttributes';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getPaletteAttributes from '../getPaletteAttributes';
+import getColorRGBAString from '@extensions/styles/getColorRGBAString';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
+import getPaletteAttributes from '@extensions/styles/getPaletteAttributes';
 
 /**
  * External dependencies

@@ -1,4 +1,4 @@
-import handleSetAttributes from '../handleSetAttributes';
+import handleSetAttributes from '@extensions/maxi-block/handleSetAttributes';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => undefined)

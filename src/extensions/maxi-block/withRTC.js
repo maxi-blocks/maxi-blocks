@@ -6,7 +6,7 @@ import { createHigherOrderComponent, pure } from '@wordpress/compose';
 /**
  * Internal dependencies
  */
-import { ResponsiveTabsControl } from '../../components';
+import { ResponsiveTabsControl } from '@components';
 
 const withRTC = createHigherOrderComponent(
 	WrappedComponent =>

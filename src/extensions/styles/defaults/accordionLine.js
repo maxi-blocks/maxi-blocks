@@ -1,4 +1,4 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import divider from './divider';
 import dividerHover from './dividerHover';
 

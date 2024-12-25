@@ -9,8 +9,8 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import Icon from '../../../icon';
-import Button from '../../../button';
+import Icon from '@components/icon';
+import Button from '@components/button';
 
 /**
  * External dependencies
@@ -21,7 +21,7 @@ import { isNil } from 'lodash';
  * Icons
  */
 import './editor.scss';
-import { moveRight, moveLeft } from '../../../../icons';
+import { moveRight, moveLeft } from '@maxi-icons';
 
 /**
  * ColumnMover

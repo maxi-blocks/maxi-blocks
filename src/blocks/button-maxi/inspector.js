@@ -13,20 +13,20 @@ import { isEmpty, isNil, cloneDeep, without } from 'lodash';
 /**
  * Internal dependencies
  */
-import AccordionControl from '../../components/accordion-control';
-import SettingTabsControl from '../../components/setting-tabs-control';
-import DefaultStylesControl from '../../components/default-styles-control';
-import Icon from '../../components/icon';
+import AccordionControl from '@components/accordion-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import DefaultStylesControl from '@components/default-styles-control';
+import Icon from '@components/icon';
 import * as defaultPresets from './defaults';
-import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
+import { getGroupAttributes, getIconWithColor } from '@extensions/styles';
 import { ariaLabelsCategories, customCss } from './data';
-import * as inspectorTabs from '../../components/inspector-tabs';
-import { withMaxiInspector } from '../../extensions/inspector';
+import * as inspectorTabs from '@components/inspector-tabs';
+import { withMaxiInspector } from '@extensions/inspector';
 
 /**
  * Icons
  */
-import * as iconPresets from '../../icons/button-presets/index';
+import * as iconPresets from '@maxi-icons/button-presets/index';
 
 /**
  * Inspector

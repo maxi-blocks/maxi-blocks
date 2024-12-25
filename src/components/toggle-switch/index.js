@@ -11,7 +11,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
+import BaseControl from '@components/base-control';
 
 /**
  * Styles

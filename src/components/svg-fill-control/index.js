@@ -7,17 +7,17 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import ColorControl from '../color-control';
-import ImageShape from '../image-shape';
-import ImageUrlUpload from '../image-url-upload';
-import MediaUploaderControl from '../media-uploader-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import { injectImgSVG, getSVGHasImage } from '../../extensions/svg';
+import ColorControl from '@components/color-control';
+import ImageShape from '@components/image-shape';
+import ImageUrlUpload from '@components/image-url-upload';
+import MediaUploaderControl from '@components/media-uploader-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
+import { injectImgSVG, getSVGHasImage } from '@extensions/svg';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * External dependencies

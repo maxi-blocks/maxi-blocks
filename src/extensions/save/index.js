@@ -7,8 +7,8 @@ import { addFilter } from '@wordpress/hooks';
  * Internal dependencies
  */
 import { WithLink } from './utils';
-import getGroupAttributes from '../styles/getGroupAttributes';
-import { getBlockData } from '../attributes';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
+import { getBlockData } from '@extensions/attributes';
 
 /**
  * General

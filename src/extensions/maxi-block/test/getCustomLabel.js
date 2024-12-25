@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getCustomLabel from '../getCustomLabel';
+import getCustomLabel from '@extensions/maxi-block/getCustomLabel';
 
 const mockStateBlock = {
 	blocks: {

@@ -20,15 +20,15 @@ import attributes from './attributes';
 import save from './save';
 import transforms from './transforms';
 import { customCss, scProps } from './data';
-import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
-import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
+import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';
+import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
 import './style.scss';
-import { textIcon } from '../../icons';
+import { textIcon } from '@maxi-icons';
 
 /**
  * Migrators
@@ -37,7 +37,7 @@ import {
 	blockMigrator,
 	listBrMigrator,
 	listItemMigrator,
-} from '../../extensions/styles/migrators';
+} from '@extensions/styles/migrators';
 
 /**
  * Block

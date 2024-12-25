@@ -11,7 +11,7 @@ import { isEmpty, isNumber } from 'lodash';
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 
 /**
  * Generates overflow styles object

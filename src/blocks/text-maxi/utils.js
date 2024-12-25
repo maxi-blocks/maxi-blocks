@@ -6,7 +6,7 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getFormatsOnMerge } from '../../extensions/text/formats';
+import { getFormatsOnMerge } from '@extensions/text/formats';
 import { createBlock } from '@wordpress/blocks';
 
 const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];

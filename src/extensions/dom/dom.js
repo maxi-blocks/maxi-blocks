@@ -8,22 +8,22 @@ import { select, dispatch, subscribe, resolveSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { updateSCOnEditor } from '../style-cards';
+import { updateSCOnEditor } from '@extensions/style-cards';
 import {
 	getIsSiteEditor,
 	getIsTemplatePart,
 	getIsTemplatesListOpened,
 	getSiteEditorIframeBody,
 	getSiteEditorIframe,
-} from '../fse';
+} from '@extensions/fse';
 import getWinBreakpoint from './getWinBreakpoint';
 import getEditorWrapper from './getEditorWrapper';
-import { setScreenSize } from '../styles';
-import { authConnect, getMaxiCookieKey } from '../../editor/auth';
+import { setScreenSize } from '@extensions/styles';
+import { authConnect, getMaxiCookieKey } from '@editor/auth';
 import {
 	showHideHamburgerNavigation,
 	removeNavigationHoverUnderline,
-} from '../../editor/style-cards/utils';
+} from '@editor/style-cards/utils';
 // TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 // import isPostEditor from './isPostEditor';
 

@@ -1,4 +1,4 @@
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '@extensions/styles';
 import {
 	getBoxShadowStyles,
 	getZIndexStyles,
@@ -10,7 +10,7 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import { customCss } from './data';
 
 const getNormalObject = props => {

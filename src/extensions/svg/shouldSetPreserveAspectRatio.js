@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getAttributeKey } from '../styles';
+import { getAttributeKey } from '@extensions/styles';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

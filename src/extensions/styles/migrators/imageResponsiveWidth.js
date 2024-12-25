@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBlockNameFromUniqueID } from '../../attributes';
+import { getBlockNameFromUniqueID } from '@extensions/attributes';
 
 const name = 'imgWidth to responsive Migrator';
 

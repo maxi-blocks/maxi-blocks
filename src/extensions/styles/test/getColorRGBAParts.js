@@ -1,4 +1,4 @@
-import getColorRGBAParts from '../getColorRGBAParts';
+import getColorRGBAParts from '@extensions/styles/getColorRGBAParts';
 
 describe('getColorRGBAParts', () => {
 	it('Returns a decomposed RGBA', () => {

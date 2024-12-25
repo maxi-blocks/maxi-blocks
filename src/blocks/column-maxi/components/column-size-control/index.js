@@ -6,17 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
-import SelectControl from '../../../../components/select-control';
-import { getColumnDefaultValue } from '../../../../extensions/column-templates';
-import withRTC from '../../../../extensions/maxi-block/withRTC';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ToggleSwitch from '@components/toggle-switch';
+import SelectControl from '@components/select-control';
+import { getColumnDefaultValue } from '@extensions/column-templates';
+import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Component

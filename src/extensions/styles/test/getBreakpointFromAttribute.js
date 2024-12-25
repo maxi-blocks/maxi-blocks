@@ -1,4 +1,4 @@
-import { getBreakpointFromAttribute } from '../utils';
+import { getBreakpointFromAttribute } from '@extensions/styles/utils';
 
 describe('getBreakpointFromAttribute', () => {
 	it('Some examples', () => {

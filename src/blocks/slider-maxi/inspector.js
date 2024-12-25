@@ -7,19 +7,19 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import AccordionControl from '../../components/accordion-control';
-import SettingTabsControl from '../../components/setting-tabs-control';
+import AccordionControl from '@components/accordion-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 import SliderControl from './components/slider-control';
 import NavigationControl from './components/navigation-control';
 import NavigationIconsControl from './components/navigation-control/navigation-control';
-import * as inspectorTabs from '../../components/inspector-tabs';
+import * as inspectorTabs from '@components/inspector-tabs';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 import { ariaLabelsCategories, customCss } from './data';
-import { withMaxiInspector } from '../../extensions/inspector';
+import { withMaxiInspector } from '@extensions/inspector';
 
 /**
  * Inspector

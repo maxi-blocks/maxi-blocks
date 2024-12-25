@@ -17,11 +17,11 @@ import { isEmpty } from 'lodash';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
+import Toolbar from '@components/toolbar';
 import SliderContext from './context';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { withMaxiContextLoop } from '../../extensions/DC';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
+import { withMaxiContextLoop } from '@extensions/DC';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import TEMPLATE from './template';

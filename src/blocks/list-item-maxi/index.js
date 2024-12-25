@@ -19,15 +19,15 @@ import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import { customCss, scProps } from './data';
-import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
-import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
+import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';
+import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
 import './style.scss';
-import { textIcon } from '../../icons';
+import { textIcon } from '@maxi-icons';
 
 /**
  * Migrators
@@ -35,7 +35,7 @@ import { textIcon } from '../../icons';
 import {
 	blockMigrator,
 	listItemDoubleLinkMigrator,
-} from '../../extensions/styles/migrators';
+} from '@extensions/styles/migrators';
 
 /**
  * Block

@@ -9,18 +9,18 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import RotateControl from './rotate-control';
-import SelectControl from '../select-control';
-import SettingTabsControl from '../setting-tabs-control';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 import SquareControl from './square-control';
-import ToggleSwitch from '../toggle-switch';
-import InfoBox from '../info-box';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import ToggleSwitch from '@components/toggle-switch';
+import InfoBox from '@components/info-box';
+import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getGroupAttributes,
-} from '../../extensions/styles';
-import { getTransformStyles } from '../../extensions/styles/helpers';
-import { getActiveTabName } from '../../extensions/inspector';
+} from '@extensions/styles';
+import { getTransformStyles } from '@extensions/styles/helpers';
+import { getActiveTabName } from '@extensions/inspector';
 
 /**
  * External dependencies

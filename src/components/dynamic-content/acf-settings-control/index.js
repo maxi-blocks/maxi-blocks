@@ -6,7 +6,7 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SelectControl from '../../select-control';
+import SelectControl from '@components/select-control';
 
 /**
  * External dependencies

@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import InfoBox from '../info-box';
-import SelectControl from '../select-control';
-import { getWeightLabel, getWeightOptions } from '../typography-control/utils';
+import InfoBox from '@components/info-box';
+import SelectControl from '@components/select-control';
+import { getWeightLabel, getWeightOptions } from '@components/typography-control/utils';
 import onChangeFontWeight from './utils';
 
 const FontWeightControl = props => {

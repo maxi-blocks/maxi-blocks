@@ -9,11 +9,11 @@ import { forwardRef, cloneElement, memo } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import BackgroundDisplayer from '../background-displayer';
-import BlockInserter from '../block-inserter';
+import BackgroundDisplayer from '@components/background-displayer';
+import BlockInserter from '@components/block-inserter';
 import DisabledMaxiBlock from './disabledMaxiBlock';
 import Pagination from './pagination';
-import ContentLoader from '../content-loader';
+import ContentLoader from '@components/content-loader';
 
 /**
  * External dependencies

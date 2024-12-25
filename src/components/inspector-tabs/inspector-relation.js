@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import RelationControl from '../relation-control';
+import RelationControl from '@components/relation-control';
 
 const relation = ({ props, isButton = false }) => {
 	const { attributes, name, clientId, maxiSetAttributes, deviceType } = props;

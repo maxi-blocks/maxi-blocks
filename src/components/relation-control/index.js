@@ -8,31 +8,31 @@ import { useContext } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../button';
-import InfoBox from '../info-box';
-import ListControl from '../list-control';
-import ListItemControl from '../list-control/list-item-control';
-import SelectControl from '../select-control';
-import SettingTabsControl from '../setting-tabs-control';
-import TextControl from '../text-control';
-import ToggleSwitch from '../toggle-switch';
-import TransitionControl from '../transition-control';
-import { openSidebarAccordion } from '../../extensions/inspector';
+import Button from '@components/button';
+import InfoBox from '@components/info-box';
+import ListControl from '@components/list-control';
+import ListItemControl from '@components/list-control/list-item-control';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import TextControl from '@components/text-control';
+import ToggleSwitch from '@components/toggle-switch';
+import TransitionControl from '@components/transition-control';
+import { openSidebarAccordion } from '@extensions/inspector';
 import {
 	createTransitionObj,
 	getDefaultAttribute,
 	getGroupAttributes,
-} from '../../extensions/styles';
-import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
-import { getHoverStatus } from '../../extensions/relations';
-import getCleanResponseIBAttributes from '../../extensions/relations/getCleanResponseIBAttributes';
-import getIBOptionsFromBlockData from '../../extensions/relations/getIBOptionsFromBlockData';
-import { getSelectedIBSettings } from '../../extensions/relations/utils';
-import getIBStylesObj from '../../extensions/relations/getIBStylesObj';
-import getIBStyles from '../../extensions/relations/getIBStyles';
-import getCleanDisplayIBAttributes from '../../extensions/relations/getCleanDisplayIBAttributes';
-import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
+} from '@extensions/styles';
+import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
+import { goThroughMaxiBlocks } from '@extensions/maxi-block';
+import { getHoverStatus } from '@extensions/relations';
+import getCleanResponseIBAttributes from '@extensions/relations/getCleanResponseIBAttributes';
+import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlockData';
+import { getSelectedIBSettings } from '@extensions/relations/utils';
+import getIBStylesObj from '@extensions/relations/getIBStylesObj';
+import getIBStyles from '@extensions/relations/getIBStyles';
+import getCleanDisplayIBAttributes from '@extensions/relations/getCleanDisplayIBAttributes';
+import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies

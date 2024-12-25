@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import convertAspectRatioToDecimal from '../convertAspectRatioToDecimal';
+import convertAspectRatioToDecimal from '@extensions/styles/convertAspectRatioToDecimal';
 
 const getAspectRatio = (ratio, customRatio) => {
 	if (ratio === 'original') return null;

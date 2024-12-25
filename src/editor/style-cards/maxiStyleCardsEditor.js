@@ -17,23 +17,23 @@ import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
 /**
  * Internal dependencies
  */
-import Button from '../../components/button';
-import DialogBox from '../../components/dialog-box';
-import Icon from '../../components/icon';
-import SettingTabsControl from '../../components/setting-tabs-control';
-import ToggleSwitch from '../../components/toggle-switch';
-import ReactSelectControl from '../../components/react-select-control';
+import Button from '@components/button';
+import DialogBox from '@components/dialog-box';
+import Icon from '@components/icon';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
+import ReactSelectControl from '@components/react-select-control';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
-import MaxiModal from '../library/modal';
+import MaxiModal from '@editor/library/modal';
 import { exportStyleCard, getActiveColourFromSC } from './utils';
-import { updateSCOnEditor } from '../../extensions/style-cards';
-import { handleSetAttributes } from '../../extensions/maxi-block';
-import standardSC from '../../../core/defaults/defaultSC.json';
+import { updateSCOnEditor } from '@extensions/style-cards';
+import { handleSetAttributes } from '@extensions/maxi-block';
+import standardSC from '@maxi-core/defaults/defaultSC.json';
 
 /**
  * Icons
  */
-import { styleCardBoat, SCDelete, closeIcon } from '../../icons';
+import { styleCardBoat, SCDelete, closeIcon } from '@maxi-icons';
 
 const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const {

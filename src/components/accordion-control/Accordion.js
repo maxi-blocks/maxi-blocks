@@ -12,7 +12,7 @@ import AccordionItem from './AccordionItem';
 import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
-} from '../../extensions/indicators';
+} from '@extensions/indicators';
 
 /**
  * External dependencies

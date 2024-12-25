@@ -1,4 +1,4 @@
-import getArrowStyles from '../getArrowStyles';
+import getArrowStyles from '@extensions/styles/helpers/getArrowStyles';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 0)

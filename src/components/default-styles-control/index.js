@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import Button from '../button';
+import Button from '@components/button';
 
 /**
  * External dependencies

@@ -7,8 +7,8 @@ import { cloneElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SettingTabsControl from '../setting-tabs-control';
-import { setScreenSize } from '../../extensions/styles';
+import SettingTabsControl from '@components/setting-tabs-control';
+import { setScreenSize } from '@extensions/styles';
 
 /**
  * External dependencies

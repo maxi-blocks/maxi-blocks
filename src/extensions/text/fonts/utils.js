@@ -11,10 +11,10 @@ import { isEmpty, isString, cloneDeep, isObject } from 'lodash';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../../styles';
-import getAttributeKey from '../../styles/getAttributeKey';
-import { getCustomFormatValue } from '../formats';
-import { goThroughMaxiBlocks } from '../../maxi-block';
+import { getGroupAttributes } from '@extensions/styles';
+import getAttributeKey from '@extensions/styles/getAttributeKey';
+import { getCustomFormatValue } from '@extensions/text/formats';
+import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

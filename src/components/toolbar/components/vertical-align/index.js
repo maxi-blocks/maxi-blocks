@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../../../select-control';
-import ToolbarPopover from '../toolbar-popover';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import SelectControl from '@components/select-control';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { getDefaultAttribute } from '@extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarVerticalAlign } from '../../../../icons';
+import { toolbarVerticalAlign } from '@maxi-icons';
 
 /**
  * ColumnSize

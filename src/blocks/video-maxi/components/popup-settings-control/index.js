@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import VideoIconControl from '../video-icon-control';
-import SelectControl from '../../../../components/select-control';
-import ColorControl from '../../../../components/color-control';
-import AspectRatioControl from '../../../../components/aspect-ratio-control';
+import VideoIconControl from '@blocks/video-maxi/components/video-icon-control';
+import SelectControl from '@components/select-control';
+import ColorControl from '@components/color-control';
+import AspectRatioControl from '@components/aspect-ratio-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 const PopupSettingsControl = props => {
 	const {

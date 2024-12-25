@@ -1,11 +1,11 @@
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
+import { createSelectors } from '@extensions/styles/custom-css';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
+} from '@extensions/relations';
 
 /**
  * Data object

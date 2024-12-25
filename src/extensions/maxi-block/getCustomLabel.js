@@ -6,7 +6,7 @@ import { capitalize } from 'lodash';
 /**
  * Internal dependencies
  */
-import uniqueCustomLabelGenerator from '../attributes/uniqueCustomLabelGenerator';
+import uniqueCustomLabelGenerator from '@extensions/attributes/uniqueCustomLabelGenerator';
 
 /**
  *

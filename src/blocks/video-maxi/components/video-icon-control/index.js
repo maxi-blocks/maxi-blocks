@@ -6,25 +6,25 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import SelectControl from '../../../../components/select-control';
-import SettingTabsControl from '../../../../components/setting-tabs-control';
-import ColorControl from '../../../../components/color-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
-import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
-import MaxiModal from '../../../../editor/library/modal';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ColorControl from '@components/color-control';
+import ToggleSwitch from '@components/toggle-switch';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import MaxiModal from '@editor/library/modal';
 import {
 	getAttributeKey,
 	getAttributeValue,
 	getColorRGBAString,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 import {
 	setSVGAriaLabel,
 	setSVGContent,
 	setSVGContentHover,
-} from '../../../../extensions/svg';
+} from '@extensions/svg';
 
 /**
  * External dependencies

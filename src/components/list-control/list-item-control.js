@@ -6,7 +6,7 @@ import classnames from 'classnames';
 /**
  * Icons
  */
-import { moveRight } from '../../icons';
+import { moveRight } from '@maxi-icons';
 
 /**
  * Styles

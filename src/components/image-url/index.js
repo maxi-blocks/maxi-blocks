@@ -10,12 +10,12 @@ import { isURL } from '@wordpress/url';
 /**
  * Internal dependencies
  */
-import Button from '../button';
+import Button from '@components/button';
 
 /**
  * Styles and icons
  */
-import { toolbarImageUrl } from '../../icons';
+import { toolbarImageUrl } from '@maxi-icons';
 import './editor.scss';
 
 const ImageURL = props => {

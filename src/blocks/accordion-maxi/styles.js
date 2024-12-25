@@ -12,7 +12,7 @@ import {
 	styleProcessor,
 	getGroupAttributes,
 	getAttributeValue,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -28,7 +28,7 @@ import {
 	getSizeStyles,
 	getTypographyStyles,
 	getZIndexStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import data from './data';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

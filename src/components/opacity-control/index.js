@@ -6,13 +6,13 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getDefaultAttribute,
 	getIsValid,
 	getAttributeKey,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * External dependencies

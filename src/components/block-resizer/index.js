@@ -13,8 +13,8 @@ import { isEqual } from 'lodash';
 /**
  * Internal dependencies
  */
-import { memoChildrenComparator } from '../../extensions/maxi-block';
-import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
+import { memoChildrenComparator } from '@extensions/maxi-block';
+import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 
 /**
  * Styles and icons

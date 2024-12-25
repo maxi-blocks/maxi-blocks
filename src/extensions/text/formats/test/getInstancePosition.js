@@ -1,5 +1,5 @@
 /* eslint-disable no-sparse-arrays */
-import getInstancePositions from '../getInstancePositions';
+import getInstancePositions from '@extensions/text/formats/getInstancePositions';
 
 describe('getInstancePositions', () => {
 	it('Returns format position', () => {

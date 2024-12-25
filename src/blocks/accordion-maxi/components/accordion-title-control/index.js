@@ -12,11 +12,11 @@ import {
 	SettingTabsControl,
 	TypographyControl,
 	ToggleSwitch,
-} from '../../../../components';
+} from '@components';
 import {
 	getAttributeKey,
 	getAttributeValue,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 const TitleSettings = props => {
 	const { onChange, clientId, bgPrefix, isHover = false, breakpoint } = props;

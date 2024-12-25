@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getIsSiteEditor } from '../../fse';
+import { getIsSiteEditor } from '@extensions/fse';
 
 /**
  * External dependencies

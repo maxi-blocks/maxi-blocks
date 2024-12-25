@@ -1,4 +1,4 @@
-import { getClosestAvailableFontWeight } from '../utils';
+import { getClosestAvailableFontWeight } from '@components/typography-control/utils';
 
 jest.mock('@wordpress/data', () => {
 	return {

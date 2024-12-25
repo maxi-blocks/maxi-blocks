@@ -16,7 +16,7 @@ import { isEmpty } from 'lodash';
 
 // eslint-disable-next-line import/no-cycle
 import MaxiModal from './modal';
-import Button from '../../components/button';
+import Button from '@components/button';
 
 const MasonryItem = props => {
 	const {

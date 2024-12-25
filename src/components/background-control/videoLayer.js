@@ -7,20 +7,20 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import ImageUrlUpload from '../image-url-upload';
-import MediaUploaderControl from '../media-uploader-control';
-import OpacityControl from '../opacity-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ImageUrlUpload from '@components/image-url-upload';
+import MediaUploaderControl from '@components/media-uploader-control';
+import OpacityControl from '@components/opacity-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
-import TextControl from '../text-control';
-import ToggleSwitch from '../toggle-switch';
+import TextControl from '@components/text-control';
+import ToggleSwitch from '@components/toggle-switch';
 import {
 	getAttributeKey,
 	getAttributeValue,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { videoUrlRegex } from '../../extensions/video';
+} from '@extensions/styles';
+import { videoUrlRegex } from '@extensions/video';
 
 /**
  * External dependencies

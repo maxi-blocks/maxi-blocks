@@ -1,4 +1,4 @@
-import setSVGRatio from '../setSVGRatio';
+import setSVGRatio from '@extensions/svg/setSVGRatio';
 
 describe('setSVGRatio', () => {
 	const icon =

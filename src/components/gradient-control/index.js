@@ -7,12 +7,12 @@ import { GradientPicker } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
-import OpacityControl from '../opacity-control';
+import BaseControl from '@components/base-control';
+import OpacityControl from '@components/opacity-control';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * External dependencies

@@ -1,4 +1,4 @@
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 
 /**
  * General

@@ -10,14 +10,14 @@ import { useEffect } from '@wordpress/element';
  */
 import CustomColorControl from './customColorControl';
 import ColorPaletteControl from './paletteControl';
-import ToggleSwitch from '../toggle-switch';
+import ToggleSwitch from '@components/toggle-switch';
 import {
 	getBlockStyle,
 	getColorRGBAParts,
 	getAttributeKey,
 	getDefaultAttribute,
-} from '../../extensions/styles';
-import { getPaletteColor } from '../../extensions/style-cards';
+} from '@extensions/styles';
+import { getPaletteColor } from '@extensions/style-cards';
 
 /**
  * External dependencies

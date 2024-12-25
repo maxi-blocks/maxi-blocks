@@ -1,12 +1,12 @@
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults/index';
+import * as attributesData from '@extensions/styles/defaults/index';
 import {
 	breakpointAttributesCreator,
 	prefixAttributesCreator,
 	transitionAttributesCreator,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import { customCss, transition } from './data';
 
 /**

@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getIsSiteEditor } from '../fse';
+import { getIsSiteEditor } from '@extensions/fse';
 
 const getCurrentPreviewDeviceType = () => {
 	// First, try to use the new preferred method if it exists

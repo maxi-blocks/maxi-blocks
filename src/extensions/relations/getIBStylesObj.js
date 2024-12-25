@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleCleaner } from '../styles';
+import { getGroupAttributes, styleCleaner } from '@extensions/styles';
 import { getSelectedIBSettings } from './utils';
 
 const getIBStylesObj = ({

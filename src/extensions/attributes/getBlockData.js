@@ -1,4 +1,4 @@
-import * as blocksData from '../../blocks/data';
+import * as blocksData from '@blocks/data';
 
 const getBlockData = blockName =>
 	Object.values(blocksData).find(

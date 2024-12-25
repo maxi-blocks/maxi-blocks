@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { Button } from '../../..';
-import HistoryButtons from '../../components/history-buttons';
-import ResultCards from '../../components/result-cards';
+import { Button } from '@components';
+import HistoryButtons from '@components/prompt-control/components/history-buttons';
+import ResultCards from '@components/prompt-control/components/result-cards';
 
 /**
  * Styles

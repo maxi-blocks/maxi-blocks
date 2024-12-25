@@ -2,14 +2,14 @@
  * Internal dependencies
  */
 import { __ } from '@wordpress/i18n';
-import ToolbarPopover from '../toolbar-popover';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
 
 /**
  * Internal dependencies
  */
-import Icon from '../../../icon';
-import SelectControl from '../../../select-control';
-import SettingTabsControl from '../../../setting-tabs-control';
+import Icon from '@components/icon';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 
 /**
  * Styles & Icons
@@ -20,7 +20,7 @@ import {
 	alignCenter,
 	alignRight,
 	toolbarVerticalAlign,
-} from '../../../../icons';
+} from '@maxi-icons';
 
 /**
  * DividerAlignment

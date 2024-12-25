@@ -1,4 +1,4 @@
-import boxShadow from '../../extensions/styles/defaults/boxShadow';
+import boxShadow from '@extensions/styles/defaults/boxShadow';
 
 export const boxShadowNone = prefix => {
 	let response = {};

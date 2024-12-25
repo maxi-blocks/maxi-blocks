@@ -6,10 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../../../../components/select-control';
-import SettingTabsControl from '../../../../components/setting-tabs-control';
-import { getDefaultAttribute } from '../../../../extensions/styles';
-import { prefixes } from '../../data';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import { getDefaultAttribute } from '@extensions/styles';
+import { prefixes } from '@blocks/search-maxi/data';
 
 const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	const { buttonPrefix, inputPrefix } = prefixes;

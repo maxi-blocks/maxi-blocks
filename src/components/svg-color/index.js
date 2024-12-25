@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import ColorControl from '../color-control';
-import { getAttributeValue, getColorRGBAString } from '../../extensions/styles';
-import { setSVGContent, setSVGContentHover } from '../../extensions/svg';
+import ColorControl from '@components/color-control';
+import { getAttributeValue, getColorRGBAString } from '@extensions/styles';
+import { setSVGContent, setSVGContentHover } from '@extensions/svg';
 
 /**
  * SvgColor

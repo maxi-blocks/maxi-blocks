@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getGroupAttributes from '../styles/getGroupAttributes';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 
 /**
  * External dependencies

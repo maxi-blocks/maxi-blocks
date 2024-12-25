@@ -11,7 +11,7 @@ import { isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
-import { acfFieldTypes } from '../../../extensions/DC/constants';
+import { acfFieldTypes } from '@extensions/DC/constants';
 
 export const getValidatedACFAttributes = async (
 	group,

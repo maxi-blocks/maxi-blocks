@@ -14,20 +14,20 @@ import {
 	InfoBox,
 	MarginControl,
 	PaddingControl,
-} from '../../components';
+} from '@components';
 import {
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getMarginPaddingStyles,
 	getSizeStyles,
-} from '../styles/helpers';
+} from '@extensions/styles/helpers';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteAttributes,
-} from '../styles';
-import { getEditorWrapper } from '../dom';
+} from '@extensions/styles';
+import { getEditorWrapper } from '@extensions/dom';
 import getRelatedAttributes from './getRelatedAttributes';
 
 /**

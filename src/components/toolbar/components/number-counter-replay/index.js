@@ -7,13 +7,13 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Icon from '../../../icon';
+import Button from '@components/button';
+import Icon from '@components/icon';
 
 /**
  * Styles and icons
  */
-import { replay } from '../../../../icons';
+import { replay } from '@maxi-icons';
 
 const NumberCounterReplay = props => {
 	const { blockName, resetNumberHelper, tooltipsHide } = props;

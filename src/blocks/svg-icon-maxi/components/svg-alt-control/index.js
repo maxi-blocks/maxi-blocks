@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import TextControl from '../../../../components/text-control';
+import TextControl from '@components/text-control';
 
 const SvgAltControl = props => {
 	const { altTitle, altDescription, onChange } = props;

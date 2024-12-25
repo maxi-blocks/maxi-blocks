@@ -8,18 +8,18 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import Button from '../button';
-import SelectControl from '../select-control';
+import Button from '@components/button';
+import SelectControl from '@components/select-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import './editor.scss';
 
 /**
  * Icons
  */
-import { sync as syncIcon } from '../../icons';
+import { sync as syncIcon } from '@maxi-icons';
 
 /**
  * External dependencies

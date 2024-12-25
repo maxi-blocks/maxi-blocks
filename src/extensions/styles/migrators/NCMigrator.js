@@ -4,7 +4,7 @@
 import {
 	MaxiBlock,
 	getMaxiBlockAttributes,
-} from '../../../components/maxi-block';
+} from '@components/maxi-block';
 
 const name = 'Number Counter migrator';
 

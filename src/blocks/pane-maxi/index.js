@@ -16,19 +16,19 @@ import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
-import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
-import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
+import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';
+import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
 
 /**
  * Styles and icons
  */
 import './style.scss';
-import { groupIcon } from '../../icons';
+import { groupIcon } from '@maxi-icons';
 
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
+import { blockMigrator } from '@extensions/styles/migrators';
 
 /**
  * Block

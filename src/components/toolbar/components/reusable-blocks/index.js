@@ -10,9 +10,9 @@ import { store as reusableBlocksStore } from '@wordpress/reusable-blocks';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import TextControl from '../../../text-control';
-import Dropdown from '../../../dropdown';
+import Button from '@components/button';
+import TextControl from '@components/text-control';
+import Dropdown from '@components/dropdown';
 
 /**
  * Styles

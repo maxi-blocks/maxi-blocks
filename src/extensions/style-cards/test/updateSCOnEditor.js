@@ -6,9 +6,9 @@ import '@wordpress/rich-text';
 /**
  * Internal dependencies
  */
-import { createSCStyleString } from '../updateSCOnEditor';
-import standardSC from '../../../../core/defaults/defaultSC.json';
-import getSCVariablesObject from '../getSCVariablesObject';
+import { createSCStyleString } from '@extensions/style-cards/updateSCOnEditor';
+import standardSC from '@maxi-core/defaults/defaultSC.json';
+import getSCVariablesObject from '@extensions/style-cards/getSCVariablesObject';
 
 jest.mock('@wordpress/blocks', () => {
 	return {

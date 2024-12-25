@@ -10,7 +10,7 @@ import { RichText } from '@wordpress/block-editor';
 import {
 	getMaxiBlockAttributes,
 	MaxiBlock,
-} from '../../../components/maxi-block';
+} from '@components/maxi-block';
 
 /**
  * External dependencies

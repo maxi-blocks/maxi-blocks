@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import PromptControl from '../prompt-control';
+import PromptControl from '@components/prompt-control';
 
 /**
  * Component

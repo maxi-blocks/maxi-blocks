@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import getBlockNameFromUniqueID from '../attributes/getBlockNameFromUniqueID';
-import { getIsSiteEditor, getSiteEditorIframe } from '../fse';
+import getBlockNameFromUniqueID from '@extensions/attributes/getBlockNameFromUniqueID';
+import { getIsSiteEditor, getSiteEditorIframe } from '@extensions/fse';
 
 // Relations (IB)
 class Relation {

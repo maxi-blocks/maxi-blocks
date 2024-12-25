@@ -12,8 +12,8 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
-import ResetButton from '../reset-control';
+import BaseControl from '@components/base-control';
+import ResetButton from '@components/reset-control';
 
 /**
  * Styles

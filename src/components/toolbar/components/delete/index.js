@@ -9,8 +9,8 @@ import { useDispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import uniqueIDRemover from '../../../../extensions/attributes/uniqueIDRemover';
+import Button from '@components/button';
+import uniqueIDRemover from '@extensions/attributes/uniqueIDRemover';
 
 /**
  * Delete

@@ -6,8 +6,8 @@ import { select, dispatch } from '@wordpress/data';
 /*
  * Internal dependencies
  */
-import { openSidebar } from '../dom';
-import { getBlockDataByUniqueID } from '../styles/migrators/utils';
+import { openSidebar } from '@extensions/dom';
+import { getBlockDataByUniqueID } from '@extensions/styles/migrators/utils';
 
 const { receiveInspectorPath } = select('maxiBlocks');
 

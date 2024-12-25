@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { getBgLayersSelectorsCss } from '../custom-css-control/utils';
-import { prefixes as searchPrefixes } from '../../blocks/search-maxi/data';
+import { getBgLayersSelectorsCss } from '@components/custom-css-control/utils';
+import { prefixes as searchPrefixes } from '@blocks/search-maxi/data';
 
 /**
  * External dependencies

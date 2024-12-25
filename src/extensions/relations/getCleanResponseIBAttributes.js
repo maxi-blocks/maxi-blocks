@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import { getClientIdFromUniqueId } from '../attributes';
-import { handleSetAttributes } from '../maxi-block';
-import { getBreakpointFromAttribute } from '../styles/utils';
+import { getClientIdFromUniqueId } from '@extensions/attributes';
+import { handleSetAttributes } from '@extensions/maxi-block';
+import { getBreakpointFromAttribute } from '@extensions/styles/utils';
 import getRelatedAttributes from './getRelatedAttributes';
 import getTempAttributes from './getTempAttributes';
 

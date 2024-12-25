@@ -1,4 +1,4 @@
-import getPositionStyles from '../getPositionStyles';
+import getPositionStyles from '@extensions/styles/helpers/getPositionStyles';
 
 describe('getPositionStyles', () => {
 	it('Get a correct position styles', () => {

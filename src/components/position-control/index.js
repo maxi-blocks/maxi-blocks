@@ -6,14 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
-import AxisControl from '../axis-control';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import SelectControl from '@components/select-control';
+import AxisControl from '@components/axis-control';
+import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * External dependencies

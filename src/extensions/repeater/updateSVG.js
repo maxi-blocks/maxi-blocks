@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getUpdatedSVGDataAndElement } from '../attributes';
+import { getUpdatedSVGDataAndElement } from '@extensions/attributes';
 import {
 	shouldSetPreserveAspectRatio,
 	getSVGPosition,
@@ -10,7 +10,7 @@ import {
 	setSVGRatio,
 	togglePreserveAspectRatio,
 	setSVGAriaLabel,
-} from '../svg';
+} from '@extensions/svg';
 
 /**
  * Sets correct uniqueID, mediaURL, SVGPosition, SVGRatio and aria-label for repeated SVGs

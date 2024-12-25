@@ -76,7 +76,15 @@ const blocksConfig = {
 		fallback: { ...defaultConfig.resolve.fallback, https: false },
 		alias: {
 			...defaultConfig.resolve.alias,
+			'@blocks': resolve(__dirname, 'src/blocks'),
+			'@components': resolve(__dirname, 'src/components'),
+			'@css': resolve(__dirname, 'src/css'),
+			'@editor': resolve(__dirname, 'src/editor'),
+			'@extensions': resolve(__dirname, 'src/extensions'),
+			'@maxi-icons': resolve(__dirname, 'src/icons'),
+			'@maxi-core': resolve(__dirname, 'core'),
 		},
+		extensions: ['.js', '.json', ...defaultConfig.resolve.extensions],
 	},
 	plugins: [
 		...defaultConfig.plugins,

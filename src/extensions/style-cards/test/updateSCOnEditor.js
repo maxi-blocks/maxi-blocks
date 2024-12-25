@@ -16,8 +16,8 @@ jest.mock('@wordpress/blocks', () => {
 	};
 });
 jest.mock('src/components/block-inserter/index.js', () => jest.fn());
-jest.mock('../../styles/transitions/getTransitionData.js', () => jest.fn());
-jest.mock('../../attributes/getBlockData.js', () => jest.fn());
+jest.mock('@extensions/styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('@extensions/attributes/getBlockData.js', () => jest.fn());
 jest.mock('src/components/transform-control/utils.js', () => jest.fn());
 
 describe('getSCVariablesObject', () => {

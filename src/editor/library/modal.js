@@ -24,6 +24,7 @@ import {
 	getUserName,
 	logOut,
 } from '@editor/auth';
+import useObserveBlockSize from './hooks';
 
 /**
  * External dependencies
@@ -42,27 +43,7 @@ import { toolbarReplaceImage, remove, cloudLib, selectIcon } from '@maxi-icons';
 const CloudPlaceholder = forwardRef((props, ref) => {
 	const { clientId, onClick } = props;
 
-	const [isBlockSmall, setIsBlockSmall] = useState(null);
-	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
-
-	const resizeObserver = new ResizeObserver(entries => {
-		const newIsSmallBlock = entries[0].contentRect.width < 120;
-		const newIsSmallerBlock = entries[0].contentRect.width < 38;
-
-		if (newIsSmallBlock !== isBlockSmall) setIsBlockSmall(newIsSmallBlock);
-		if (newIsSmallerBlock !== isBlockSmaller)
-			setIsBlockSmaller(newIsSmallerBlock);
-	});
-
-	useEffect(() => {
-		resizeObserver.observe(
-			ref.current?.closest('.maxi-block-library__placeholder')
-		);
-
-		return () => {
-			resizeObserver.disconnect();
-		};
-	}, []);
+	const { isBlockSmall, isBlockSmaller } = useObserveBlockSize(ref, true);
 
 	return (
 		<Button
@@ -92,25 +73,7 @@ const CloudPlaceholder = forwardRef((props, ref) => {
 const SVGIconPlaceholder = forwardRef((props, ref) => {
 	const { uniqueID, clientId, onClick } = props;
 
-	const [isBlockSmall, setIsBlockSmall] = useState(null);
-	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
-
-	const resizeObserver = new ResizeObserver(entries => {
-		const newIsSmallBlock = entries[0].contentRect.width < 120;
-		const newIsSmallerBlock = entries[0].contentRect.width < 38;
-
-		if (newIsSmallBlock !== isBlockSmall) setIsBlockSmall(newIsSmallBlock);
-		if (newIsSmallerBlock !== isBlockSmaller)
-			setIsBlockSmaller(newIsSmallerBlock);
-	});
-
-	useEffect(() => {
-		resizeObserver.observe(ref.current);
-
-		return () => {
-			resizeObserver.disconnect();
-		};
-	}, []);
+	const { isBlockSmall, isBlockSmaller } = useObserveBlockSize(ref);
 
 	return (
 		<div

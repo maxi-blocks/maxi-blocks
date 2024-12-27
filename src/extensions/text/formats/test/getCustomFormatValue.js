@@ -10,6 +10,7 @@ jest.mock('src/components/block-inserter/index.js', () => jest.fn());
 jest.mock('@extensions/styles/transitions/getTransitionData.js', () => jest.fn());
 jest.mock('@extensions/attributes/getBlockData.js', () => jest.fn());
 jest.mock('src/components/transform-control/utils.js', () => jest.fn());
+jest.mock('src/extensions/DC/constants.js', () => ({}));
 
 describe('getCustomFormatValue', () => {
 	it('Returns SC value', () => {

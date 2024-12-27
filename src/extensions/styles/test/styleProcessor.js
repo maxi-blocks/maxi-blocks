@@ -6,6 +6,7 @@ jest.mock('@extensions/attributes/getBlockData.js', () => jest.fn());
 jest.mock('src/components/transform-control/utils.js', () => ({
 	getTransformSelectors: jest.fn(),
 }));
+jest.mock('src/extensions/DC/constants.js', () => ({}));
 
 describe('styleCleaner', () => {
 	it('Returns cleaned styles obj', () => {

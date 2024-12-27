@@ -202,7 +202,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 	if (['users'].includes(type)) {
 		let user;
-		dataRequest.id = author ?? id;
+		if (type === 'users') dataRequest.id = author ?? id;
 
 		const { getUser } = resolveSelect('core');
 
@@ -226,7 +226,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 		} else if (relation === 'current') {
 			const currentUserId = select('core').getCurrentUser()?.id; // getCurrentUser doesn't have all the data we need
 			user = await getUser(currentUserId);
-		} else user = await getUser(author ?? id);
+		} else user = await getUser(dataRequest.id);
 
 		return user;
 	}

@@ -23,7 +23,7 @@ import { ContentLoader } from '@components';
 /**
  * External dependencies
  */
-import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter/src/TypesenseInstantsearchAdapter.js';
+import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter/src/TypesenseInstantsearchAdapter';
 import {
 	InstantSearch,
 	SearchBox,

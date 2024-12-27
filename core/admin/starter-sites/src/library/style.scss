@@ -477,8 +477,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			position: absolute;
-			right: 100px;
+			margin-right: 20px;
 			column-gap: 15px;
 		}
 
@@ -531,6 +530,7 @@
 			font-size: 18px;
 			word-spacing: 0;
 			text-decoration: none;
+			margin-top: 0;
 
 			& svg {
 				display: block;
@@ -538,6 +538,13 @@
 				width: 30px;
 				margin-right: 10px;
 			}
+		}
+
+		&__content {
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			flex: 1;
 		}
 	}
 

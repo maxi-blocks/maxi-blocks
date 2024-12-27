@@ -549,30 +549,38 @@ const MaxiImportPopUp = ({
 				<div className='maxi-cloud-container__import-popup_footer'>
 					{importStatus === 'done' ? (
 						<div className='maxi-cloud-container__import-popup_status-text'>
-							{__('Import completed. ', 'maxi-blocks')}
-							<a
-								href='/wp-admin/edit.php?post_type=page'
-								target='_blank'
-								rel='noopener noreferrer'
-							>
-								{__('Browse your pages', 'maxi-blocks')}
-							</a>
-							{__(', ', 'maxi-blocks')}
-							<a
-								href='/wp-admin/site-editor.php'
-								target='_blank'
-								rel='noopener noreferrer'
-							>
-								{__('change templates', 'maxi-blocks')}
-							</a>
-							{__(', or ', 'maxi-blocks')}
-							<button
-								type='button'
-								className='maxi-cloud-container__import-popup_close-link'
-								onClick={onRequestClose}
-							>
-								{__('close this window', 'maxi-blocks')}
-							</button>
+							{isOnboarding ? (
+								<>
+									{__('Import completed. You can continue, or chose another starter site', 'maxi-blocks')}
+								</>
+							) : (
+								<>
+									{__('Import completed. ', 'maxi-blocks')}
+									<a
+										href='/wp-admin/edit.php?post_type=page'
+										target='_blank'
+										rel='noopener noreferrer'
+									>
+										{__('Browse your pages', 'maxi-blocks')}
+									</a>
+									{__(', ', 'maxi-blocks')}
+									<a
+										href='/wp-admin/site-editor.php'
+										target='_blank'
+										rel='noopener noreferrer'
+									>
+										{__('change templates', 'maxi-blocks')}
+									</a>
+									{__(', or ', 'maxi-blocks')}
+									<button
+										type='button'
+										className='maxi-cloud-container__import-popup_close-link'
+										onClick={onRequestClose}
+									>
+										{__('close this window', 'maxi-blocks')}
+									</button>
+								</>
+							)}
 						</div>
 					) : (
 						<button

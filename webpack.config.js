@@ -84,7 +84,18 @@ const blocksConfig = {
 			'@maxi-icons': resolve(__dirname, 'src/icons'),
 			'@maxi-core': resolve(__dirname, 'core'),
 		},
-		extensions: ['.js', '.json', ...defaultConfig.resolve.extensions],
+		modules: [
+			'node_modules',
+			resolve(__dirname, 'src'),
+			resolve(__dirname),
+		],
+		extensions: [
+			'.js',
+			'.json',
+			'.css',
+			'.scss',
+			...defaultConfig.resolve.extensions,
+		],
 	},
 	plugins: [
 		...defaultConfig.plugins,

@@ -62,6 +62,10 @@ class MaxiBlocks_Onboarding
                 'name' => __('Theme', 'maxi-blocks'),
                 'view' => [$this, 'theme_step'],
             ],
+            'design' => [
+                'name' => __('Design', 'maxi-blocks'),
+                'view' => [$this, 'design_step'],
+            ],
             'starter_site' => [
                 'name' => __('Starter Site', 'maxi-blocks'),
                 'view' => [$this, 'starter_site_step'],
@@ -112,22 +116,120 @@ class MaxiBlocks_Onboarding
             return;
         }
 
-        // Enqueue WordPress media scripts and styles
-        wp_enqueue_media();
+        // Add debug helper
+        wp_add_inline_script('jquery', '
+            window.debugUnderscore = {
+                log: function(msg, data) {
+                    console.log("%c Underscore Debug:", "background: #007cba; color: white; padding: 2px 5px; border-radius: 3px;", msg, data);
+                },
+                error: function(msg, error) {
+                    console.error("%c Underscore Error:", "background: #dc3232; color: white; padding: 2px 5px; border-radius: 3px;", msg, error);
+                }
+            };
+        ', 'before');
 
-        // Enqueue Underscore.js and Backbone.js before media scripts
+        // Deregister default underscore and backbone
+        wp_deregister_script('underscore');
+        wp_deregister_script('backbone');
+
+        // Register modified underscore
+        wp_register_script(
+            'underscore',
+            includes_url('js/underscore.min.js'),
+            [],
+            '1.13.7'
+        );
+
+        // Add our modifications to underscore
+        wp_add_inline_script('underscore', '
+            (function() {
+                // Store original underscore
+                var originalUnderscore = window._;
+
+                // Create new underscore instance
+                var newUnderscore = function(obj) {
+                    if (obj instanceof newUnderscore) return obj;
+                    if (!(this instanceof newUnderscore)) return new newUnderscore(obj);
+                    this._wrapped = obj;
+                };
+
+                // Copy all properties from original underscore
+                for (var key in originalUnderscore) {
+                    if (originalUnderscore.hasOwnProperty(key)) {
+                        newUnderscore[key] = originalUnderscore[key];
+                    }
+                }
+
+                // Add contains method
+                newUnderscore.contains = function(collection, item) {
+                    if (collection == null) return false;
+                    if (collection.length !== undefined) {
+                        return newUnderscore.indexOf(collection, item) >= 0;
+                    }
+                    return newUnderscore.some(collection, function(value) {
+                        return value === item;
+                    });
+                };
+
+                // Add includes as alias
+                newUnderscore.includes = newUnderscore.contains;
+
+                // Copy prototype methods
+                newUnderscore.prototype = originalUnderscore.prototype;
+
+                // Replace global underscore
+                window._ = newUnderscore;
+
+                debugUnderscore.log("Underscore replaced:", {
+                    version: window._.VERSION,
+                    contains: typeof window._.contains,
+                    includes: typeof window._.includes,
+                    methods: Object.keys(window._)
+                });
+            })();
+        ', 'after');
+
+        // Register backbone with modified underscore dependency
+        wp_register_script(
+            'backbone',
+            includes_url('js/backbone.min.js'),
+            ['underscore', 'jquery'],
+            '1.6.0'
+        );
+
+        // Enqueue scripts in order
+        wp_enqueue_script('jquery');
+        wp_enqueue_script('jquery-ui-core');
+        wp_enqueue_script('jquery-ui-sortable');
         wp_enqueue_script('underscore');
         wp_enqueue_script('backbone');
 
-        // Add compatibility layer for _.contains
-        wp_add_inline_script('underscore', '
-            _.contains = _.contains || _.includes;
-        ');
+        // Add verification after backbone
+        wp_add_inline_script('backbone', '
+            debugUnderscore.log("Underscore state after backbone:", {
+                contains: _.contains,
+                includes: _.includes,
+                backup: window._underscoreBackup !== undefined
+            });
+        ', 'after');
+
+        // Enqueue media scripts
+        wp_enqueue_media();
+
+        // Add final verification
+        wp_add_inline_script('media-models', '
+            debugUnderscore.log("Final underscore state:", {
+                contains: _.contains,
+                includes: _.includes,
+                backup: window._underscoreBackup !== undefined
+            });
+        ', 'after');
 
         // Enqueue starter sites assets
         wp_enqueue_script('maxi-blocks-starter-sites');
         wp_enqueue_style('maxi-blocks-starter-sites');
 
+        // Enqueue onboarding styles and scripts
         wp_enqueue_style(
             'maxi-blocks-onboarding',
             MAXI_PLUGIN_URL_PATH . 'core/admin/onboarding/css/onboarding.css',
@@ -138,7 +240,17 @@ class MaxiBlocks_Onboarding
         wp_enqueue_script(
             'maxi-blocks-onboarding',
             MAXI_PLUGIN_URL_PATH . 'core/admin/onboarding/js/onboarding.js',
-            ['jquery', 'media-upload', 'wp-media-utils', 'media-editor', 'media-views', 'underscore', 'backbone'],
+            [
+                'jquery',
+                'jquery-ui-core',
+                'jquery-ui-sortable',
+                'underscore',
+                'backbone',
+                'media-models',
+                'media-views',
+                'media-editor',
+                'wp-media-utils'
+            ],
             MAXI_PLUGIN_VERSION,
             true
         );
@@ -148,6 +260,15 @@ class MaxiBlocks_Onboarding
             'nonce' => wp_create_nonce('maxi_onboarding'),
             'strings' => [
                 'activeTheme' => __('Active Theme', 'maxi-blocks'),
+                'selectIcon' => __('Select Site Icon', 'maxi-blocks'),
+                'useAsIcon' => __('Use as site icon', 'maxi-blocks'),
+                'changeIcon' => __('Change Site Icon', 'maxi-blocks'),
+                'uploadIcon' => __('Upload Site Icon', 'maxi-blocks'),
+                'remove' => __('Remove', 'maxi-blocks'),
+                'selectLogo' => __('Select Site Logo', 'maxi-blocks'),
+                'useAsLogo' => __('Use as site logo', 'maxi-blocks'),
+                'changeLogo' => __('Change Logo', 'maxi-blocks'),
+                'uploadLogo' => __('Upload Logo', 'maxi-blocks'),
             ],
             'isMaxiBlocksGoActive' => get_template() === 'maxiblocks-go',
             'initialThemeWasMaxiBlocksGo' => get_option('maxi_onboarding_initial_theme', '') === 'maxiblocks-go',
@@ -320,32 +441,6 @@ class MaxiBlocks_Onboarding
             </select>
         </div>
 
-        <div class="maxi-onboarding-section">
-            <h2><?php _e('Site Icon', 'maxi-blocks'); ?></h2>
-            <p class="description">
-                <?php _e('Upload your site icon (favicon) that will appear in browser tabs and bookmarks.', 'maxi-blocks'); ?>
-            </p>
-
-            <div class="customizer-links">
-                <a href="<?php echo esc_url(admin_url('customize.php?autofocus[control]=site_icon')); ?>" class="button" target="_blank">
-                    <span class="dashicons dashicons-admin-site"></span>
-                    <?php _e('Set Site Icon', 'maxi-blocks'); ?>
-                </a>
-            </div>
-
-            <?php
-            // Show current site icon if set
-            $site_icon_id = get_option('site_icon');
-        if ($site_icon_id) {
-            $icon_url = wp_get_attachment_image_url($site_icon_id, 'full');
-            echo '<div class="current-site-icon">';
-            echo '<p>' . __('Current Site Icon:', 'maxi-blocks') . '</p>';
-            echo '<img src="' . esc_url($icon_url) . '" alt="Current site icon" />';
-            echo '</div>';
-        }
-        ?>
-        </div>
-
         <div class="maxi-onboarding-actions">
             <button type="button" class="button button-primary" data-action="save-welcome">
                 <?php _e('Save settings', 'maxi-blocks'); ?>
@@ -467,6 +562,109 @@ class MaxiBlocks_Onboarding
         <div class="maxi-onboarding-actions">
             <button type="button" class="button" data-action="back">
                 <?php _e('Back', 'maxi-blocks'); ?>
+            </button>
+            <button type="button" class="button" data-action="continue">
+                <?php _e('Continue', 'maxi-blocks'); ?>
+            </button>
+        </div>
+        <?php
+    }
+
+    /**
+     * Design step view
+     */
+    public function design_step()
+    {
+        ?>
+        <h1><?php _e('Design Settings', 'maxi-blocks'); ?></h1>
+        <p class="description">
+            <?php _e('Customize the visual identity of your website', 'maxi-blocks'); ?>
+        </p>
+
+        <div class="maxi-onboarding-section">
+            <h2><?php _e('Site Logo & Icon', 'maxi-blocks'); ?></h2>
+            <p class="description">
+                <?php _e('Upload your site logo and icon to establish your brand identity.', 'maxi-blocks'); ?>
+            </p>
+
+            <div class="site-logo-wrapper">
+                <h3><?php _e('Site Logo', 'maxi-blocks'); ?></h3>
+                <p class="description">
+                    <?php _e('Your logo will appear in your site header. For best results, use a transparent PNG file.', 'maxi-blocks'); ?>
+                </p>
+
+                <?php
+                $custom_logo_id = get_theme_mod('custom_logo');
+        if ($custom_logo_id) {
+            $logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
+            echo '<div class="current-site-logo">';
+            echo '<p>' . __('Current Logo:', 'maxi-blocks') . '</p>';
+            echo '<img src="' . esc_url($logo_url) . '" alt="Current site logo" />';
+            echo '</div>';
+        }
+        ?>
+
+                <div class="site-logo-controls">
+                    <input type="hidden" name="site_logo_id" value="<?php echo esc_attr($custom_logo_id); ?>">
+                    <button type="button" class="button" id="upload-site-logo">
+                        <?php echo $custom_logo_id ? __('Change Logo', 'maxi-blocks') : __('Upload Logo', 'maxi-blocks'); ?>
+                    </button>
+                    <?php if ($custom_logo_id): ?>
+                        <button type="button" class="button remove-site-logo" id="remove-site-logo">
+                            <?php _e('Remove', 'maxi-blocks'); ?>
+                        </button>
+                    <?php endif; ?>
+                </div>
+
+                <p class="site-logo-description">
+                    <?php _e('Recommended size: 250 × 100 pixels or larger', 'maxi-blocks'); ?>
+                </p>
+            </div>
+
+            <?php
+            // Show current site icon if set
+            $site_icon_id = get_option('site_icon');
+        if ($site_icon_id) {
+            $icon_url = wp_get_attachment_image_url($site_icon_id, 'full');
+            echo '<div class="current-site-icon">';
+            echo '<p>' . __('Current Site Icon:', 'maxi-blocks') . '</p>';
+            echo '<img src="' . esc_url($icon_url) . '" alt="Current site icon" />';
+            echo '</div>';
+        }
+        ?>
+
+            <div class="site-icon-wrapper">
+                <h3><?php _e('Site Icon', 'maxi-blocks'); ?></h3>
+                <p class="description">
+                    <?php _e('Your site icon appears in browser tabs, bookmarks, and mobile devices. Icons should be square and at least 512 × 512 pixels.', 'maxi-blocks'); ?>
+                </p>
+
+                <?php
+        ?>
+                <div class="site-icon-controls">
+                    <input type="hidden" name="site_icon_id" value="<?php echo esc_attr($site_icon_id); ?>">
+                    <button type="button" class="button" id="upload-site-icon">
+                        <?php echo $site_icon_id ? __('Change Site Icon', 'maxi-blocks') : __('Upload Site Icon', 'maxi-blocks'); ?>
+                    </button>
+                    <?php if ($site_icon_id): ?>
+                        <button type="button" class="button remove-site-icon" id="remove-site-icon">
+                            <?php _e('Remove', 'maxi-blocks'); ?>
+                        </button>
+                    <?php endif; ?>
+                </div>
+
+                <p class="site-icon-description">
+                    <?php _e('Site icons should be square and at least 512 × 512 pixels.', 'maxi-blocks'); ?>
+                </p>
+            </div>
+        </div>
+
+        <div class="maxi-onboarding-actions">
+            <button type="button" class="button" data-action="back">
+                <?php _e('Back', 'maxi-blocks'); ?>
+            </button>
+            <button type="button" class="button button-primary" data-action="save-design">
+                <?php _e('Save settings', 'maxi-blocks'); ?>
             </button>
             <button type="button" class="button" data-action="continue">
                 <?php _e('Continue', 'maxi-blocks'); ?>
@@ -713,5 +911,33 @@ class MaxiBlocks_Onboarding
 
         switch_theme($theme);
         wp_send_json_success();
+    }
+
+    /**
+     * Save design settings via AJAX
+     */
+    public function save_design_settings()
+    {
+        check_ajax_referer('maxi_onboarding', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(__('You do not have permission to perform this action.', 'maxi-blocks'));
+        }
+
+        try {
+            // Update site icon
+            if (isset($_POST['site_icon_id'])) {
+                update_option('site_icon', absint($_POST['site_icon_id']));
+            }
+
+            // Update site logo
+            if (isset($_POST['site_logo_id'])) {
+                set_theme_mod('custom_logo', absint($_POST['site_logo_id']));
+            }
+
+            wp_send_json_success();
+        } catch (Exception $e) {
+            wp_send_json_error(__('An error occurred while saving settings.', 'maxi-blocks'));
+        }
     }
 }

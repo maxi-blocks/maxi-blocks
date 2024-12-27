@@ -9,6 +9,8 @@ const MaxiOnboarding = {
 		this.bindEvents();
 		this.initMediaUploader();
 		this.initValidation();
+		this.initSiteIconUploader();
+		this.initSiteLogoUploader();
 	},
 
 	bindEvents() {
@@ -25,6 +27,7 @@ const MaxiOnboarding = {
 		// Save actions
 		document.querySelector('[data-action="save-welcome"]')?.addEventListener('click', () => this.saveWelcomeSettings());
 		document.querySelector('[data-action="complete"]')?.addEventListener('click', () => this.completeOnboarding());
+		document.querySelector('[data-action="save-design"]')?.addEventListener('click', () => this.saveDesignSettings());
 
 		// Starter site selection
 		const starterSiteElements = [
@@ -240,6 +243,7 @@ const MaxiOnboarding = {
 					site_language: document.querySelector('select[name="site_language"]')?.value,
 					timezone_string: document.querySelector('select[name="timezone_string"]')?.value,
 					permalink_structure: selectedPermalink,
+					site_icon_id: document.querySelector('input[name="site_icon_id"]')?.value,
 				}),
 			});
 
@@ -247,9 +251,9 @@ const MaxiOnboarding = {
 
 			if (data.success) {
 				if (permalinkSelect) {
-					permalinkSelect.querySelectorAll('option').forEach(option => {
-						option.selected = option.value === selectedPermalink;
-					});
+						permalinkSelect.querySelectorAll('option').forEach(option => {
+							option.selected = option.value === selectedPermalink;
+						});
 				}
 
 				this.saveProgress('identity');
@@ -300,30 +304,42 @@ const MaxiOnboarding = {
 		console.log('Adding new page...');
 	},
 
-	saveDesignSettings() {
-		const logoId = document.getElementById('logo-preview')?.dataset.attachmentId;
-		const iconId = document.getElementById('site-icon-preview')?.dataset.attachmentId;
-		const styleCard = document.querySelector('.current-style-card')?.dataset.styleCard;
+	async saveDesignSettings() {
+		this.showLoader();
 
-		fetch(maxiOnboarding.ajaxUrl, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body: new URLSearchParams({
-				action: 'maxi_save_design_settings',
-				nonce: maxiOnboarding.nonce,
-				site_logo_id: logoId,
-				site_icon_id: iconId,
-				style_card: styleCard,
-			}),
-		})
-			.then(response => response.json())
-			.then(data => {
-				if (data.success) {
-					this.nextStep();
-				}
+		try {
+			const response = await fetch(maxiOnboarding.ajaxUrl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: new URLSearchParams({
+					action: 'maxi_save_design_settings',
+					nonce: maxiOnboarding.nonce,
+					site_icon_id: document.querySelector('input[name="site_icon_id"]')?.value,
+					site_logo_id: document.querySelector('input[name="site_logo_id"]')?.value,
+				}),
 			});
+
+			const data = await response.json();
+
+			if (data.success) {
+				this.saveProgress('design');
+				this.nextStep();
+			} else {
+				this.showError(
+					document.querySelector('.maxi-onboarding-content'),
+					data.data || 'Error saving design settings'
+				);
+			}
+		} catch (error) {
+			this.showError(
+				document.querySelector('.maxi-onboarding-content'),
+				'An error occurred while saving. Please try again.'
+			);
+		} finally {
+			this.hideLoader();
+		}
 	},
 
 	savePagesSettings() {
@@ -506,6 +522,196 @@ const MaxiOnboarding = {
 			if (progress[step.dataset.step]) {
 				step.classList.add('completed');
 			}
+		});
+	},
+
+	initSiteIconUploader() {
+		let frame;
+		const uploadButton = document.getElementById('upload-site-icon');
+		const preview = document.querySelector('.site-icon-preview');
+		const hiddenInput = document.querySelector('input[name="site_icon_id"]');
+
+		if (!uploadButton) return;
+
+		uploadButton.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			// If the frame already exists, reuse it
+			if (frame) {
+				frame.open();
+				return;
+			}
+
+			// Create the media frame
+			frame = wp.media.frames.siteIcon = wp.media({
+				title: maxiOnboarding.strings.selectIcon || 'Select Site Icon',
+				button: {
+					text: maxiOnboarding.strings.useAsIcon || 'Use as site icon'
+				},
+				multiple: false,
+				library: {
+					type: 'image'
+				},
+				// Set the initial mode to 'select'
+				state: 'library',
+				// Set states
+				states: [
+					new wp.media.controller.Library({
+						title: maxiOnboarding.strings.selectIcon || 'Select Site Icon',
+						library: wp.media.query({ type: 'image' }),
+						multiple: false,
+						priority: 20,
+						filterable: 'uploaded'
+					})
+				]
+			});
+
+			// When an image is selected in the media frame...
+			frame.on('select', () => {
+				const attachment = frame.state().get('selection').first().toJSON();
+
+				// Update hidden input
+				hiddenInput.value = attachment.id;
+
+				// Update preview
+				preview.innerHTML = `<img src="${attachment.url}" alt="Site icon preview" />`;
+
+				// Update upload button text
+				uploadButton.textContent = maxiOnboarding.strings.changeIcon || 'Change Site Icon';
+
+				// Add remove button if not present
+				if (!document.getElementById('remove-site-icon')) {
+					const removeButton = document.createElement('button');
+					removeButton.type = 'button';
+					removeButton.className = 'button remove-site-icon';
+					removeButton.id = 'remove-site-icon';
+					removeButton.textContent = maxiOnboarding.strings.remove || 'Remove';
+					uploadButton.parentNode.appendChild(removeButton);
+				}
+			});
+
+			frame.open();
+		});
+
+		// Handle remove button click
+		document.addEventListener('click', (e) => {
+			if (e.target.id !== 'remove-site-icon') return;
+
+			e.preventDefault();
+
+			// Clear hidden input
+			hiddenInput.value = '';
+
+			// Update preview
+				preview.innerHTML = `
+					<div class="placeholder">
+						<span class="dashicons dashicons-admin-site"></span>
+					</div>
+				`;
+
+			// Update upload button text
+				uploadButton.textContent = maxiOnboarding.strings.uploadIcon || 'Upload Site Icon';
+
+			// Remove the remove button
+				e.target.remove();
+		});
+	},
+
+	initSiteLogoUploader() {
+		let frame;
+		const uploadButton = document.getElementById('upload-site-logo');
+		const preview = document.querySelector('.current-site-logo');
+		const hiddenInput = document.querySelector('input[name="site_logo_id"]');
+
+		if (!uploadButton) return;
+
+		uploadButton.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			if (frame) {
+				frame.open();
+				return;
+			}
+
+			frame = wp.media.frames.siteLogo = wp.media({
+				title: maxiOnboarding.strings.selectLogo || 'Select Site Logo',
+				button: {
+					text: maxiOnboarding.strings.useAsLogo || 'Use as site logo'
+				},
+				multiple: false,
+				library: {
+					type: 'image'
+				},
+				state: 'library',
+				states: [
+					new wp.media.controller.Library({
+						title: maxiOnboarding.strings.selectLogo || 'Select Site Logo',
+						library: wp.media.query({ type: 'image' }),
+						multiple: false,
+						priority: 20,
+						filterable: 'uploaded'
+					})
+				]
+			});
+
+			frame.on('select', () => {
+				const attachment = frame.state().get('selection').first().toJSON();
+
+				// Update hidden input
+				hiddenInput.value = attachment.id;
+
+				// Update preview
+				if (!preview) {
+					const previewDiv = document.createElement('div');
+					previewDiv.className = 'current-site-logo';
+					previewDiv.innerHTML = `
+						<p>${maxiOnboarding.strings.currentLogo || 'Current Logo:'}</p>
+						<img src="${attachment.url}" alt="Site logo preview" />
+					`;
+					uploadButton.parentNode.insertBefore(previewDiv, uploadButton);
+				} else {
+					preview.innerHTML = `
+						<p>${maxiOnboarding.strings.currentLogo || 'Current Logo:'}</p>
+						<img src="${attachment.url}" alt="Site logo preview" />
+					`;
+				}
+
+				// Update upload button text
+				uploadButton.textContent = maxiOnboarding.strings.changeLogo || 'Change Logo';
+
+				// Add remove button if not present
+				if (!document.getElementById('remove-site-logo')) {
+					const removeButton = document.createElement('button');
+					removeButton.type = 'button';
+					removeButton.className = 'button remove-site-logo';
+					removeButton.id = 'remove-site-logo';
+					removeButton.textContent = maxiOnboarding.strings.remove || 'Remove';
+					uploadButton.parentNode.appendChild(removeButton);
+				}
+			});
+
+			frame.open();
+		});
+
+		// Handle remove button click
+		document.addEventListener('click', (e) => {
+			if (e.target.id !== 'remove-site-logo') return;
+
+			e.preventDefault();
+
+			// Clear hidden input
+			hiddenInput.value = '';
+
+			// Remove preview
+			if (preview) {
+				preview.remove();
+			}
+
+			// Update upload button text
+			uploadButton.textContent = maxiOnboarding.strings.uploadLogo || 'Upload Logo';
+
+			// Remove the remove button
+			e.target.remove();
 		});
 	}
 };

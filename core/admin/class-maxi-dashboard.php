@@ -325,7 +325,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $content .= __('Hello, friend', 'maxi-blocks') . ' 👋';
             }
 
+            $content .= '<a href="' . esc_url(admin_url('admin.php?page=maxi-blocks-onboarding')) . '" target="_blank" class="maxi-dashboard_setup-wizard-button">';
+            $content .= __('Start set-up wizard', 'maxi-blocks');
+            $content .= '</a>';
+
             $content .= '</h1>';
+            // Add the setup wizard button
+
             $content .=
                 '<h2>' .
                 __(

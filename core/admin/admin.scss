@@ -692,3 +692,28 @@ body.site-editor-php
 	display: none !important;
 	background: yellow;
 }
+
+.maxi-dashboard_setup-wizard-button {
+	display: inline-block;
+	font-size: 16px;
+	line-height: 20px;
+	margin: 0 20px;
+	padding: 12px 24px;
+	background-color: #ff4a17;
+	color: #ffffff !important;
+	text-decoration: none;
+	border-radius: 4px;
+	font-weight: 500;
+	transition: background-color 0.2s ease;
+}
+
+.maxi-dashboard_setup-wizard-button:hover {
+	background-color: #e63e0f;
+	color: #ffffff;
+}
+
+.maxi-dashboard_setup-wizard-button:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px #fff, 0 0 0 4px #ff4a17;
+	color: #ffffff;
+}

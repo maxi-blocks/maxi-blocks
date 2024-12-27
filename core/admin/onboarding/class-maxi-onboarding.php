@@ -62,10 +62,6 @@ class MaxiBlocks_Onboarding
                 'name' => __('Theme', 'maxi-blocks'),
                 'view' => [$this, 'theme_step'],
             ],
-            'design' => [
-                'name' => __('Design', 'maxi-blocks'),
-                'view' => [$this, 'design_step'],
-            ],
             'starter_site' => [
                 'name' => __('Starter Site', 'maxi-blocks'),
                 'view' => [$this, 'starter_site_step'],
@@ -155,6 +151,7 @@ class MaxiBlocks_Onboarding
             ],
             'isMaxiBlocksGoActive' => get_template() === 'maxiblocks-go',
             'initialThemeWasMaxiBlocksGo' => get_option('maxi_onboarding_initial_theme', '') === 'maxiblocks-go',
+            'adminUrl' => admin_url(),
         ]);
     }
 
@@ -323,40 +320,13 @@ class MaxiBlocks_Onboarding
             </select>
         </div>
 
-        <div class="maxi-onboarding-actions">
-            <button type="button" class="button button-primary" data-action="save-welcome">
-                <?php _e('Save settings', 'maxi-blocks'); ?>
-            </button>
-            <button type="button" class="button" data-action="continue">
-                <?php _e('Continue', 'maxi-blocks'); ?>
-            </button>
-        </div>
-        <?php
-    }
-
-    /**
-     * Design step view
-     */
-    public function design_step()
-    {
-        ?>
-        <h1><?php _e('Design your site', 'maxi-blocks'); ?></h1>
-        <p class="description">
-            <?php _e('Customize the basic design elements of your site.', 'maxi-blocks'); ?>
-        </p>
-
         <div class="maxi-onboarding-section">
-            <h2><?php _e('Site Logo & Icon', 'maxi-blocks'); ?></h2>
+            <h2><?php _e('Site Icon', 'maxi-blocks'); ?></h2>
             <p class="description">
-                <?php _e('Upload your site logo and icon to establish your brand identity.', 'maxi-blocks'); ?>
+                <?php _e('Upload your site icon (favicon) that will appear in browser tabs and bookmarks.', 'maxi-blocks'); ?>
             </p>
 
             <div class="customizer-links">
-                <a href="<?php echo esc_url(admin_url('customize.php?autofocus[section]=title_tagline')); ?>" class="button" target="_blank">
-                    <span class="dashicons dashicons-format-image"></span>
-                    <?php _e('Customize Logo', 'maxi-blocks'); ?>
-                </a>
-
                 <a href="<?php echo esc_url(admin_url('customize.php?autofocus[control]=site_icon')); ?>" class="button" target="_blank">
                     <span class="dashicons dashicons-admin-site"></span>
                     <?php _e('Set Site Icon', 'maxi-blocks'); ?>
@@ -373,22 +343,12 @@ class MaxiBlocks_Onboarding
             echo '<img src="' . esc_url($icon_url) . '" alt="Current site icon" />';
             echo '</div>';
         }
-
-        // Show current logo if set
-        $custom_logo_id = get_theme_mod('custom_logo');
-        if ($custom_logo_id) {
-            $logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
-            echo '<div class="current-site-logo">';
-            echo '<p>' . __('Current Logo:', 'maxi-blocks') . '</p>';
-            echo '<img src="' . esc_url($logo_url) . '" alt="Current site logo" />';
-            echo '</div>';
-        }
         ?>
         </div>
 
         <div class="maxi-onboarding-actions">
-            <button type="button" class="button" data-action="back">
-                <?php _e('Back', 'maxi-blocks'); ?>
+            <button type="button" class="button button-primary" data-action="save-welcome">
+                <?php _e('Save settings', 'maxi-blocks'); ?>
             </button>
             <button type="button" class="button" data-action="continue">
                 <?php _e('Continue', 'maxi-blocks'); ?>
@@ -585,35 +545,6 @@ class MaxiBlocks_Onboarding
         } catch (Exception $e) {
             wp_send_json_error(__('An error occurred while saving settings.', 'maxi-blocks'));
         }
-    }
-
-    /**
-     * Save design step settings
-     */
-    public function save_design_settings()
-    {
-        check_ajax_referer('maxi_onboarding', 'nonce');
-
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error('Unauthorized');
-        }
-
-        // Save site logo
-        if (!empty($_POST['site_logo_id'])) {
-            update_option('site_logo', absint($_POST['site_logo_id']));
-        }
-
-        // Save site icon
-        if (!empty($_POST['site_icon_id'])) {
-            update_option('site_icon', absint($_POST['site_icon_id']));
-        }
-
-        // Save style card
-        if (!empty($_POST['style_card'])) {
-            update_option('maxi_blocks_style_card', sanitize_text_field($_POST['style_card']));
-        }
-
-        wp_send_json_success();
     }
 
     /**

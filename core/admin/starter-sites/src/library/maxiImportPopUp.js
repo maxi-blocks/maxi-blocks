@@ -280,6 +280,29 @@ const MaxiImportPopUp = props => {
 		);
 	};
 
+	const hasAnySelection = selectedItems => {
+		// Check templates
+		const hasTemplates = templates
+			? Object.values(selectedItems.templates).some(val => val)
+			: false;
+
+		// Check pages
+		const hasPages = pages
+			? Object.values(selectedItems.pages).some(val => val)
+			: false;
+
+		// Check patterns
+		const hasPatterns = patterns
+			? Object.values(selectedItems.patterns).some(val => val)
+			: false;
+
+		// Check SC and contentXML
+		const hasSC = selectedItems.sc;
+		const hasXML = selectedItems.contentXML;
+
+		return hasTemplates || hasPages || hasPatterns || hasSC || hasXML;
+	};
+
 	const onClickImport = selectedItems => {
 		setImportStatus('loading');
 
@@ -403,6 +426,8 @@ const MaxiImportPopUp = props => {
 			</p>
 		</div>
 	);
+
+	console.log('selectedItems in renderWarningMessage', selectedItems);
 
 	return (
 		<div className='maxi-cloud-container__import-popup_main-wrap'>
@@ -662,7 +687,7 @@ const MaxiImportPopUp = props => {
 									: ''
 							}`}
 							onClick={() => onClickImport(selectedItems)}
-							disabled={importStatus === 'loading'}
+							disabled={importStatus === 'loading' || !hasAnySelection(selectedItems)}
 						>
 							{importStatus === 'loading'
 								? __('Importing...', 'maxi-blocks')

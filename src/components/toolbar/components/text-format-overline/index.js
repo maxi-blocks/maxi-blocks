@@ -8,12 +8,9 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Icon from '../../../icon';
-import {
-	setFormat,
-	getCustomFormatValue,
-} from '../../../../extensions/text/formats';
+import Button from '@components/button';
+import Icon from '@components/icon';
+import { setFormat, getCustomFormatValue } from '@extensions/text/formats';
 
 /**
  * External dependencies
@@ -23,8 +20,8 @@ import { trim, isEmpty } from 'lodash';
 /**
  * Styles and icons
  */
-import { toolbarOverline } from '../../../../icons';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import { toolbarOverline } from '@maxi-icons';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * TextFormatOverline

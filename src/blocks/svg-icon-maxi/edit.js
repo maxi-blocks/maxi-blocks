@@ -13,32 +13,32 @@ import { isEmpty, uniqueId, uniq, isArray } from 'lodash';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import BlockResizer from '../../components/block-resizer';
-import RawHTML from '../../components/raw-html';
-import MaxiPopoverButton from '../../components/maxi-popover-button';
-import MaxiModal from '../../editor/library/modal';
+import Toolbar from '@components/toolbar';
+import BlockResizer from '@components/block-resizer';
+import RawHTML from '@components/raw-html';
+import MaxiPopoverButton from '@components/maxi-popover-button';
+import MaxiModal from '@editor/library/modal';
 
 import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
-} from '../../extensions/maxi-block';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+} from '@extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import {
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	shouldSetPreserveAspectRatio,
 	getSVGWidthHeightRatio,
 	togglePreserveAspectRatio,
 	setSVGAriaLabel,
-} from '../../extensions/svg';
-import { withMaxiContextLoopContext } from '../../extensions/DC';
+} from '@extensions/svg';
+import { withMaxiContextLoopContext } from '@extensions/DC';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 class edit extends MaxiBlockComponent {
 	constructor(props) {

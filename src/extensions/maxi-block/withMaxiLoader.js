@@ -13,7 +13,7 @@ import {
 /**
  * Internal dependencies
  */
-import { ContentLoader } from '../../components';
+import { ContentLoader } from '@components';
 
 const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	useEffect(() => onMountBlock(), [onMountBlock]);

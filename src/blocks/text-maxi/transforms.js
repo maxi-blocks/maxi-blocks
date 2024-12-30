@@ -10,8 +10,8 @@ import { select } from '@wordpress/data';
 import {
 	generateFormatValue,
 	setCustomFormatsWhenPaste,
-} from '../../extensions/text/formats';
-import { getGroupAttributes } from '../../extensions/styles';
+} from '@extensions/text/formats';
+import { getGroupAttributes } from '@extensions/styles';
 
 const name = 'maxi-blocks/text-maxi';
 

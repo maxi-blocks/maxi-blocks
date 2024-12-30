@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * External dependencies

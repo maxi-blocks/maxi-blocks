@@ -6,12 +6,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import MarginControl from '../margin-control';
-import PaddingControl from '../padding-control';
+import MarginControl from '@components/margin-control';
+import PaddingControl from '@components/padding-control';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Component

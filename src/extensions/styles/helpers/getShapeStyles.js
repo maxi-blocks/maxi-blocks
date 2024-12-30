@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import getColorRGBAString from '../getColorRGBAString';
-import getPaletteAttributes from '../getPaletteAttributes';
+import getColorRGBAString from '@extensions/styles/getColorRGBAString';
+import getPaletteAttributes from '@extensions/styles/getPaletteAttributes';
 
 /**
  * External dependencies

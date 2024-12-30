@@ -1,4 +1,4 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { icon } from './icon';
 import { iconHover } from './iconHover';
 

@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SettingTabsControl from '../setting-tabs-control';
-import Icon from '../icon';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import SettingTabsControl from '@components/setting-tabs-control';
+import Icon from '@components/icon';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * Icons
@@ -18,7 +18,7 @@ import {
 	flexDirectionColumn,
 	flexDirectionRowReverse,
 	flexDirectionColumnReverse,
-} from '../../icons';
+} from '@maxi-icons';
 
 /**
  * Component

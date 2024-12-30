@@ -6,9 +6,9 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import { createSCStyleString } from '../updateSCOnEditor';
-import getSCVariablesObject from '../getSCVariablesObject';
-import getSCStyles from '../getSCStyles';
+import { createSCStyleString } from '@extensions/style-cards/updateSCOnEditor';
+import getSCVariablesObject from '@extensions/style-cards/getSCVariablesObject';
+import getSCStyles from '@extensions/style-cards/getSCStyles';
 
 /**
  * Controls

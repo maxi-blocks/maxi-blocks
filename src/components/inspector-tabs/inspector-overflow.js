@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import OverflowControl from '../overflow-control';
-import { getGroupAttributes } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
+import OverflowControl from '@components/overflow-control';
+import { getGroupAttributes } from '@extensions/styles';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
 
 /**
  * Component

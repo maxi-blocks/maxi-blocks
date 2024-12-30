@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getIsUniqueCustomLabelRepeated from '../maxi-block/getIsUniqueCustomLabelRepeated';
+import getIsUniqueCustomLabelRepeated from '@extensions/maxi-block/getIsUniqueCustomLabelRepeated';
 
 const uniqueCustomLabelGenerator = (customLabel, uniqueID, diff = 1) => {
 	const newLabel = `${customLabel}${diff ? `_${diff}` : ''}`;

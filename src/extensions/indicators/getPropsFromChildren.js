@@ -13,7 +13,7 @@ import { select } from '@wordpress/data';
  * External dependencies
  */
 import { isObject, compact, uniq, intersection } from 'lodash';
-import { getIsValid } from '../styles';
+import { getIsValid } from '@extensions/styles';
 
 const getPropsFromChildren = (items, excludedEntries = []) => {
 	const response = [];

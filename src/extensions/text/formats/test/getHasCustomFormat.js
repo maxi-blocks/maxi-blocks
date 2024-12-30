@@ -1,5 +1,5 @@
 /* eslint-disable no-sparse-arrays */
-import getHasCustomFormat from '../getHasCustomFormat';
+import getHasCustomFormat from '@extensions/text/formats/getHasCustomFormat';
 
 describe('getHasCustomFormat', () => {
 	it('Should return true', () => {

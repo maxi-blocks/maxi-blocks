@@ -15,7 +15,7 @@ import {
  */
 // eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
-import { Icon, BaseControl, Button } from '../../components';
+import { Icon, BaseControl, Button } from '@components';
 import {
 	authConnect,
 	isProSubActive,
@@ -23,7 +23,7 @@ import {
 	isValidEmail,
 	getUserName,
 	logOut,
-} from '../auth';
+} from '@editor/auth';
 import useObserveBlockSize from './hooks';
 
 /**
@@ -35,7 +35,7 @@ import classNames from 'classnames';
 /**
  * Icons
  */
-import { toolbarReplaceImage, remove, cloudLib, selectIcon } from '../../icons';
+import { toolbarReplaceImage, remove, cloudLib, selectIcon } from '@maxi-icons';
 
 /**
  * Cloud Content Placeholder

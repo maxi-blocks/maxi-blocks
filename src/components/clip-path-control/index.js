@@ -8,21 +8,21 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import Button from '../button';
-import SelectControl from '../select-control';
-import BaseControl from '../base-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import Button from '@components/button';
+import SelectControl from '@components/select-control';
+import BaseControl from '@components/base-control';
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
-import Icon from '../icon';
-import ToggleSwitch from '../toggle-switch';
-import SettingTabsControl from '../setting-tabs-control';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import Icon from '@components/icon';
+import ToggleSwitch from '@components/toggle-switch';
+import SettingTabsControl from '@components/setting-tabs-control';
+import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getAttributeValue,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import getClipPath from './getClipPath';
 import optionColors from './optionColors';
 import typeDefaults from './typeDefaults';
@@ -37,7 +37,7 @@ import { cloneDeep, isEmpty, isEqual, isNil } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import { styleNone } from '../../icons';
+import { styleNone } from '@maxi-icons';
 
 /**
  * Component

@@ -11,11 +11,11 @@ import {
 	AdvancedNumberControl,
 	ToggleSwitch,
 	SelectControl,
-} from '../../../../components';
+} from '@components';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 const AccordionSettings = props => {
 	const {

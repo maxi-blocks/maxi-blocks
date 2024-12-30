@@ -5,7 +5,7 @@ import {
 	iconBackgroundGradient,
 	iconPadding,
 } from './icon';
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import {
 	iconBackgroundHover,
 	iconBackgroundColorHover,

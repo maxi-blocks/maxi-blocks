@@ -1,7 +1,7 @@
 import {
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
-} from '../getShapeDividerStyles';
+} from '@extensions/styles/helpers/getShapeDividerStyles';
 
 describe('getShapeDividerStyles', () => {
 	it('Get a correct shape divider styles', () => {

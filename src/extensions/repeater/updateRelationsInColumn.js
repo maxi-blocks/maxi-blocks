@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getClientIdFromUniqueId } from '../attributes';
+import { getClientIdFromUniqueId } from '@extensions/attributes';
 import { getBlockPosition } from './utils';
 
 /**

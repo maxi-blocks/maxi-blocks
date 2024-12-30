@@ -10,10 +10,10 @@ import { useContext, useState } from '@wordpress/element';
  * Internal dependencies
  */
 
-import Button from '../../../button';
-import AdvancedNumberControl from '../../../advanced-number-control';
-import Dropdown from '../../../dropdown';
-import { TextContext } from '../../../../extensions/text/formats';
+import Button from '@components/button';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import Dropdown from '@components/dropdown';
+import { TextContext } from '@extensions/text/formats';
 
 /**
  * External dependencies

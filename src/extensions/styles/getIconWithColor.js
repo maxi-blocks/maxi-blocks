@@ -1,7 +1,7 @@
 import { isArray, isNil } from 'lodash';
 
 import getColorRGBAString from './getColorRGBAString';
-import { setSVGContent, setSVGContentHover } from '../svg';
+import { setSVGContent, setSVGContentHover } from '@extensions/svg';
 import getAttributeValue from './getAttributeValue';
 
 const getIconWithColor = (attributes, args = {}, prefix = '') => {

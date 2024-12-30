@@ -1,5 +1,5 @@
-import getActiveStyleCard from '../getActiveStyleCard';
-import { getIsValid } from '../../styles';
+import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
+import { getIsValid } from '@extensions/styles';
 
 const navigationObject = {
 	navigation: {

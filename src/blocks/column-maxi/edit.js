@@ -13,28 +13,28 @@ import { round, isEqual } from 'lodash';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import BlockInserter from '../../components/block-inserter';
-import BlockResizer from '../../components/block-resizer';
+import Toolbar from '@components/toolbar';
+import BlockInserter from '@components/block-inserter';
+import BlockResizer from '@components/block-resizer';
 
-import RowContext from '../row-maxi/rowContext';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
-import { getColumnSizeStyles } from '../../extensions/styles/helpers';
+import RowContext from '@blocks/row-maxi/rowContext';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { getMaxiBlockAttributes, MaxiBlock } from '@components/maxi-block';
+import { getColumnSizeStyles } from '@extensions/styles/helpers';
 import {
 	getGroupAttributes,
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import getRowBorderRadius from './utils';
 import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
-} from '../../extensions/DC';
-import { DISALLOWED_BLOCKS } from '../../extensions/repeater';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+} from '@extensions/DC';
+import { DISALLOWED_BLOCKS } from '@extensions/repeater';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Editor

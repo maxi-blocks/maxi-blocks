@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Icon from '../icon';
+import Icon from '@components/icon';
 
 /**
  * Icons
@@ -21,7 +21,7 @@ import {
 	motionBlur,
 	motionRotate,
 	motionScale,
-} from '../../icons';
+} from '@maxi-icons';
 
 const motionOptions = [
 	{

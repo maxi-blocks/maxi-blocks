@@ -6,17 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import ColorControl from '../../../../components/color-control';
-import Dropdown from '../../../../components/dropdown';
-import OpacityControl from '../../../../components/opacity-control';
-import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
-import SettingTabsControl from '../../../../components/setting-tabs-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ColorControl from '@components/color-control';
+import Dropdown from '@components/dropdown';
+import OpacityControl from '@components/opacity-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Styles and icons
@@ -63,7 +63,7 @@ import {
 	cloudBottom,
 	cloudTopOpacity,
 	cloudBottomOpacity,
-} from '../../../../icons';
+} from '@maxi-icons';
 
 /**
  * Component

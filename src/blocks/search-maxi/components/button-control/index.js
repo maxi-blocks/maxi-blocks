@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../../../../components/select-control';
-import TextControl from '../../../../components/text-control';
+import SelectControl from '@components/select-control';
+import TextControl from '@components/text-control';
 
 const ButtonControl = ({
 	buttonContent,

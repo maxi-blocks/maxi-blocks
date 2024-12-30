@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import Icon from '../icon';
+import Icon from '@components/icon';
 import AccordionItemHeading from './AccordionItemHeading';
 import AccordionItemButton from './AccordionItemButton';
 import AccordionItemPanel from './AccordionItemPanel';

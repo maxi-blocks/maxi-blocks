@@ -6,10 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToggleSwitch from '../../../../components/toggle-switch';
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import SelectControl from '../../../../components/select-control';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import ToggleSwitch from '@components/toggle-switch';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import SelectControl from '@components/select-control';
+import { getDefaultAttribute } from '@extensions/styles';
 
 /**
  * External dependencies

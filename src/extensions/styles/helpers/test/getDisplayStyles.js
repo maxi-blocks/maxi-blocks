@@ -1,4 +1,4 @@
-import getDisplayStyles from '../getDisplayStyles';
+import getDisplayStyles from '@extensions/styles/helpers/getDisplayStyles';
 
 describe('getDisplayStyles', () => {
 	it('Get a correct display styles', () => {

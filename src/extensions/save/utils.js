@@ -1,5 +1,5 @@
-import { inlineLinkFields } from '../DC/constants';
-import { isLinkObfuscationEnabled } from '../DC/utils';
+import { inlineLinkFields } from '@extensions/DC/constants';
+import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
 
 const getLinkAttributesFromLinkSettings = (
 	linkSettings,

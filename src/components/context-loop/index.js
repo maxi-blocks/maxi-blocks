@@ -14,18 +14,18 @@ import { resolveSelect, select, useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
-import TextControl from '../text-control';
-import TypographyControl from '../typography-control';
-import ColorControl from '../color-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
-import FlexSettingsControl from '../flex-settings-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import SelectControl from '@components/select-control';
+import ToggleSwitch from '@components/toggle-switch';
+import TextControl from '@components/text-control';
+import TypographyControl from '@components/typography-control';
+import ColorControl from '@components/color-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import FlexSettingsControl from '@components/flex-settings-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	orderByRelations,
 	orderByOptions,
@@ -33,24 +33,24 @@ import {
 	orderRelations,
 	relationOptions,
 	sourceOptions,
-} from '../../extensions/DC/constants';
+} from '@extensions/DC/constants';
 import {
 	getCLAttributes,
 	getDCOptions,
 	LoopContext,
-} from '../../extensions/DC';
+} from '@extensions/DC';
 import {
 	getRelationOptions,
 	validationsValues,
 	getCurrentTemplateSlug,
-} from '../../extensions/DC/utils';
+} from '@extensions/DC/utils';
 import {
 	ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP,
 	ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP,
-} from '../../extensions/DC/withMaxiContextLoop';
-import getTypes from '../../extensions/DC/getTypes';
-import showStaticOption from '../../extensions/DC/showStaticOption';
-import ACFSettingsControl from '../dynamic-content/acf-settings-control';
+} from '@extensions/DC/withMaxiContextLoop';
+import getTypes from '@extensions/DC/getTypes';
+import showStaticOption from '@extensions/DC/showStaticOption';
+import ACFSettingsControl from '@components/dynamic-content/acf-settings-control';
 
 /**
  * External dependencies

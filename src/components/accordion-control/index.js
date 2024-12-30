@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import Accordion from './Accordion';
-import { getActiveAccordion } from '../../extensions/inspector';
+import { getActiveAccordion } from '@extensions/inspector';
 
 /**
  * External dependencies

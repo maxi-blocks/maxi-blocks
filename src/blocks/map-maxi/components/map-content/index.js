@@ -7,12 +7,12 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import DropMarkerAlert from '../drop-marker-alert';
-import MapEventsListener from '../map-events-listener';
-import Markers from '../markers';
-import SearchBox from '../search-box';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import { getMaxiAdminSettingsUrl } from '../../utils';
+import DropMarkerAlert from '@blocks/map-maxi/components/drop-marker-alert';
+import MapEventsListener from '@blocks/map-maxi/components/map-events-listener';
+import Markers from '@blocks/map-maxi/components/markers';
+import SearchBox from '@blocks/map-maxi/components/search-box';
+import { getGroupAttributes } from '@extensions/styles';
+import { getMaxiAdminSettingsUrl } from '@blocks/map-maxi/utils';
 
 /**
  * External dependencies

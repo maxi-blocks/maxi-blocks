@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { ToggleSwitch } from '../../../../components';
+import { ToggleSwitch } from '@components';
 
 const MapInteractionControl = ({ onChange, ...attributes }) => (
 	<>

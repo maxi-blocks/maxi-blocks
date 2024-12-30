@@ -1,4 +1,4 @@
-import { getSVGStyles } from '../helpers/getSVGStyles';
+import { getSVGStyles } from '@extensions/styles/helpers/getSVGStyles';
 import { merge } from 'lodash';
 
 const name = 'IB SVG Icon Target';

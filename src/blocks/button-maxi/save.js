@@ -6,8 +6,8 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { Button } from '../../components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { Button } from '@components';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import getAreaLabel from './utils';
 
 /**

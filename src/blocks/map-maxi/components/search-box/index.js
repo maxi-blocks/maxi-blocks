@@ -7,8 +7,8 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getNewMarker, getUpdatedMarkers } from '../../utils';
-import { Button, TextInput } from '../../../../components';
+import { getNewMarker, getUpdatedMarkers } from '@blocks/map-maxi/utils';
+import { Button, TextInput } from '@components';
 
 /**
  * External dependencies

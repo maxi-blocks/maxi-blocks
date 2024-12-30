@@ -1,4 +1,4 @@
-import linkAttributesCreator from '../linkAttributesCreator';
+import linkAttributesCreator from '@extensions/styles/linkAttributesCreator';
 
 const link = linkAttributesCreator();
 

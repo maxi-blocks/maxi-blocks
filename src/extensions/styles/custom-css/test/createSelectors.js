@@ -1,4 +1,4 @@
-import createSelectors from '../createSelectors';
+import createSelectors from '@extensions/styles/custom-css/createSelectors';
 
 describe('createSelectors', () => {
 	const selectors = {

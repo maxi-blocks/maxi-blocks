@@ -356,6 +356,13 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/check-theme-type', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_theme_type'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
         }
 
         /**
@@ -2174,6 +2181,24 @@ if (!class_exists('MaxiBlocks_API')):
             }, $content);
 
             return $content;
+        }
+
+        public function is_block_theme()
+        {
+            return wp_is_block_theme();
+        }
+
+        public function get_theme_type()
+        {
+            $current_theme = wp_get_theme();
+            $maxiblocks_go_theme = wp_get_theme('maxiblocks-go');
+
+            return rest_ensure_response([
+                'isBlockTheme' => $this->is_block_theme(),
+                'themeName' => $current_theme->get('Name'),
+                'isMaxiBlocksGoInstalled' => $maxiblocks_go_theme->exists(),
+                'themeActivateNonce' => wp_create_nonce('switch-theme_maxiblocks-go'),
+            ]);
         }
     }
 endif;

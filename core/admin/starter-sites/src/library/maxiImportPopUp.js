@@ -83,6 +83,33 @@ const loadingButtonStyles = `
 	.maxi-cloud-container__import-popup_status-text a:hover {
 		color: #135e96;
 	}
+	.maxi-cloud-container__import-popup_warning-message {
+		background-color: #fef8ee;
+		border-left: 4px solid #f0b849;
+		margin: 10px 0;
+		padding: 10px 15px;
+	}
+	.maxi-cloud-container__import-popup_warning-message p {
+		margin: 0;
+		color: #674e27;
+	}
+	.maxi-cloud-container__import-popup_install-link {
+		background: none;
+		border: none;
+		color: #2271b1;
+		padding: 0;
+		margin: 0;
+		cursor: pointer;
+		text-decoration: underline;
+		font-size: inherit;
+	}
+	.maxi-cloud-container__import-popup_install-link:hover {
+		color: #135e96;
+	}
+	.maxi-cloud-container__import-popup_templates-list.maxi-disabled {
+		opacity: 0.5;
+		pointer-events: none;
+	}
 `;
 
 const MaxiImportPopUp = props => {
@@ -93,6 +120,7 @@ const MaxiImportPopUp = props => {
 		cost,
 		templates,
 		pages,
+
 		patterns,
 		sc,
 		contentXML,
@@ -105,20 +133,26 @@ const MaxiImportPopUp = props => {
 	const wpImporterStatus =
 		window.maxiStarterSites?.wpImporterStatus || 'missing';
 
+	// Move themeType state declaration before selectedItems
+	const [themeType, setThemeType] = useState({
+		isBlockTheme: true,
+		themeName: '',
+	});
+
 	const [selectedItems, setSelectedItems] = useState(() => {
 		const initialState = {
 			templates: {},
 			pages: {},
 			patterns: {},
 			sc: isValidValue(sc),
-			// Only set contentXML to true if plugin is active and value is valid
 			contentXML:
 				wpImporterStatus === 'active' && isValidValue(contentXML),
 			title,
 		};
 
+		// Initialize all templates to false initially
 		templates?.forEach(template => {
-			initialState.templates[template.name] = true;
+			initialState.templates[template.name] = false;
 		});
 
 		pages?.forEach(page => {
@@ -193,6 +227,11 @@ const MaxiImportPopUp = props => {
 			return;
 		}
 
+		// Prevent changing templates if not using a block theme
+		if (type === 'templates' && !themeType.isBlockTheme) {
+			return;
+		}
+
 		if (type === 'sc' || type === 'contentXML') {
 			setSelectedItems(prevState => ({
 				...prevState,
@@ -213,8 +252,8 @@ const MaxiImportPopUp = props => {
 		setSelectedItems(prevState => {
 			const newState = { ...prevState };
 
-			// Toggle templates
-			if (templates) {
+			// Toggle templates only if using a block theme
+			if (templates && themeType.isBlockTheme) {
 				templates.forEach(template => {
 					newState.templates[template.name] = value;
 				});
@@ -429,6 +468,51 @@ const MaxiImportPopUp = props => {
 
 	console.log('selectedItems in renderWarningMessage', selectedItems);
 
+	// Update templates when theme type is confirmed
+	useEffect(() => {
+		const checkThemeType = async () => {
+			try {
+				const response = await apiFetch({
+					path: '/maxi-blocks/v1.0/check-theme-type',
+					method: 'GET',
+				});
+				setThemeType(response);
+
+				// Update template toggles based on theme type
+				if (response.isBlockTheme) {
+					setSelectedItems(prev => ({
+						...prev,
+						templates: Object.keys(prev.templates).reduce((acc, key) => {
+							acc[key] = true;
+							return acc;
+						}, {})
+					}));
+				}
+			} catch (error) {
+				console.error('Error checking theme type:', error);
+			}
+		};
+
+		checkThemeType();
+	}, []);
+
+	// Add this helper function to check if templates section should be disabled
+	const isTemplatesSectionDisabled = () => {
+		return !themeType.isBlockTheme;
+	};
+
+	// Add this new function to handle theme installation/activation
+	const handleThemeAction = () => {
+		const adminUrl = window.maxiStarterSites?.adminUrl || '/wp-admin/';
+		if (themeType.isMaxiBlocksGoInstalled) {
+			// If theme is installed but not active, activate it
+			window.location.href = `${adminUrl}themes.php?action=activate&stylesheet=maxiblocks-go&_wpnonce=${window.maxiStarterSites?.themeActivateNonce}`;
+		} else {
+			// If theme is not installed, go to theme installation
+			window.location.href = `${adminUrl}theme-install.php?search=maxiblocks+go`;
+		}
+	};
+
 	return (
 		<div className='maxi-cloud-container__import-popup_main-wrap'>
 			<style>{loadingButtonStyles}</style>
@@ -515,31 +599,47 @@ const MaxiImportPopUp = props => {
 							<h3 className='maxi-cloud-container__import-popup_section-title'>
 								{__('Templates', 'maxi-blocks')}
 							</h3>
-							{templates.map(template => (
-								<div
-									key={template.name}
-									className='maxi-cloud-container__import-popup_item'
-								>
-									<ToggleSwitch
-										label={template.name}
-										selected={
-											selectedItems.templates[
-												template.name
-											]
-										}
-										onChange={val =>
-											handleToggleChange(
-												'templates',
-												template.name,
-												val
-											)
-										}
-									/>
+
+							{!themeType.isBlockTheme && (
+								<div className='maxi-cloud-container__import-popup_warning-message'>
 									<p>
-										{getTemplateDescription(template.name)}
+										{sprintf(
+											__('Templates cannot be imported because you are using a classic theme (%s). To import templates, you need a block theme. We recommend ', 'maxi-blocks'),
+											themeType.themeName
+										)}
+										<button
+											type='button'
+											className='maxi-cloud-container__import-popup_install-link'
+											onClick={handleThemeAction}
+										>
+											{themeType.isMaxiBlocksGoInstalled
+												? __('activating', 'maxi-blocks')
+												: __('installing', 'maxi-blocks')}
+											{' MaxiBlocksGo'}
+										</button>
+										{__(' theme, which is optimized for MaxiBlocks.', 'maxi-blocks')}
 									</p>
 								</div>
-							))}
+							)}
+
+							<div className={`maxi-cloud-container__import-popup_templates-list ${
+								!themeType.isBlockTheme ? 'maxi-disabled' : ''
+							}`}>
+								{templates.map(template => (
+									<div
+										key={template.name}
+										className='maxi-cloud-container__import-popup_item'
+									>
+										<ToggleSwitch
+											label={template.name}
+											selected={selectedItems.templates[template.name]}
+											onChange={val => handleToggleChange('templates', template.name, val)}
+											disabled={!themeType.isBlockTheme}
+										/>
+										<p>{getTemplateDescription(template.name)}</p>
+									</div>
+								))}
+							</div>
 						</div>
 					)}
 

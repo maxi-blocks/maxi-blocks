@@ -41,6 +41,8 @@ const CloudLibrary = (props) => {
 		isOnboarding,
     } = props;
 
+    console.log('CloudLibrary isOnboarding:', isOnboarding);
+
     return (
         <div className='components-modal__content'>
             <LibraryToolbar

@@ -33,6 +33,7 @@ const MasonryItem = (props) => {
 		isMaxiProActive,
 		onClickConnect,
 		onLogOut,
+		isOnboarding,
     } = props;
 
     const masonryCardClasses = classnames(
@@ -81,6 +82,7 @@ const MasonryItem = (props) => {
 								isPro={isPro}
 								onClickConnect={onClickConnect}
 								onLogOut={onLogOut}
+								isOnboarding={isOnboarding}
                             />
                         </>
                     )}

@@ -48,6 +48,21 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Add init hook for starter sites scripts
             add_action('admin_init', [$this, 'maxi_blocks_starter_sites_init']);
+
+            // Add AJAX handlers for WordPress Importer plugin
+            add_action('wp_ajax_maxi_install_importer', [$this, 'ajax_install_importer']);
+            add_action('wp_ajax_maxi_activate_importer', [$this, 'ajax_activate_importer']);
+
+            // Add REST API endpoint for checking importer status
+            add_action('rest_api_init', function () {
+                register_rest_route('maxi-blocks/v1.0', '/check-importer-status', [
+                    'methods' => 'GET',
+                    'callback' => [$this, 'check_importer_status'],
+                    'permission_callback' => function () {
+                        return current_user_can('manage_options');
+                    },
+                ]);
+            });
         }
 
         public function update_settings_on_install()
@@ -358,7 +373,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 __('No locked blocks', 'maxi-blocks') .
                 ' 📖: ' .
                 __(
-                    "We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design.",
+                    'We refuse to hold basic features hostage just to sell the "full-version". Everyone gets access to all page builder features, custom blocks and settings completely free. There`s no lock-in by design.',
                     'maxi-blocks',
                 ) .
                 '</p>';
@@ -367,7 +382,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 __('Goodbye license keys', 'maxi-blocks') .
                 ' 👋: ' .
                 __(
-                    'Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads.',
+                    'Plus, we`re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads.',
                     'maxi-blocks',
                 ) .
                 '</p>';
@@ -402,7 +417,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<p>' .
                 __(
-                    'It’s like having a dedicated professional designer crafting unique designs exclusively for you.',
+                    'It`s like having a dedicated professional designer crafting unique designs exclusively for you.',
                     'maxi-blocks',
                 ) .
                 '</p>';
@@ -525,7 +540,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<li>' .
                 __(
-                    'Create a Google Cloud Platform account, if you don’t already have one.',
+                    'Create a Google Cloud Platform account, if you don`t already have one.',
                     'maxi-blocks',
                 ) .
                 '</li>';
@@ -800,7 +815,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<p>' .
                 __(
-                    'Whatever you create with MaxiBlocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don’t forget to share your pages with the hashtag',
+                    'Whatever you create with MaxiBlocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don`t forget to share your pages with the hashtag',
                     'maxi-blocks',
                 );
 
@@ -810,13 +825,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '</a>';
 
             $content .=
-                __(' - We’re dying to see what you create. ', 'maxi-blocks') .
+                __(' - We`re dying to see what you create. ', 'maxi-blocks') .
                 '</p>';
 
             $content .=
                 '<p>' .
                 __(
-                    'Our next goal is to launch the MaxiBlocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap.',
+                    'Our next goal is to launch the MaxiBlocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It`s going to be epic. This income will help us grow the team and build out the awesome roadmap.',
                     'maxi-blocks',
                 );
 
@@ -838,7 +853,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<p>' .
                 __(
-                    'There’s a grand plan and we need your help. Share your suggestions or vote on what to build next. ',
+                    'There`s a grand plan and we need your help. Share your suggestions or vote on what to build next. ',
                     'maxi-blocks',
                 );
 
@@ -889,7 +904,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '</p>';
             $content .=
                 '<h3>' .
-                __('Let’s create something amazing with Maxi', 'maxi-blocks') .
+                __('Let`s create something amazing with Maxi', 'maxi-blocks') .
                 '</h3>';
             $content .= '<div class="sign-up_button-wrap">';
             $content .=
@@ -1017,7 +1032,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 __('Discord community', 'maxi-blocks') .
                 '</a></li>';
             $content .= '</ul>';
-            $content .= '</div>';
             return $content;
         }
 
@@ -1257,6 +1271,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'nonce' => wp_create_nonce('maxi_starter_sites'),
                 'apiRoot' => esc_url_raw(rest_url()),
                 'apiNonce' => wp_create_nonce('wp_rest'),
+                 'adminUrl' => admin_url(),
+                'installNonce' => wp_create_nonce('install-plugin_wordpress-importer'),
+                'activateNonce' => wp_create_nonce('activate-plugin_wordpress-importer/wordpress-importer.php'),
                 'currentStarterSite' => get_option('maxiblocks_current_starter_site', ''),
                 'wpImporterStatus' => $wp_importer_status,
                 'proInitialState' => get_option('maxi_pro', ''),
@@ -1672,6 +1689,73 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     '../core/class-maxi-local-fonts.php';
                 MaxiBlocks_Local_Fonts::register();
             }
+        }
+
+        public function ajax_install_importer()
+        {
+            check_ajax_referer('install-plugin_wordpress-importer', 'nonce');
+
+            if (!current_user_can('install_plugins')) {
+                wp_send_json_error(['message' => 'Insufficient permissions']);
+            }
+
+            if (!function_exists('plugins_api')) {
+                require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+            }
+            if (!class_exists('WP_Upgrader')) {
+                require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+            }
+
+            $api = plugins_api('plugin_information', [
+                'slug' => 'wordpress-importer',
+                'fields' => ['sections' => false],
+            ]);
+
+            if (is_wp_error($api)) {
+                wp_send_json_error(['message' => $api->get_error_message()]);
+            }
+
+            $upgrader = new Plugin_Upgrader(new Automatic_Upgrader_Skin());
+            $result = $upgrader->install($api->download_link);
+
+            if (is_wp_error($result)) {
+                wp_send_json_error(['message' => $result->get_error_message()]);
+            }
+
+            wp_send_json_success(['status' => 'installed']);
+        }
+
+        public function ajax_activate_importer()
+        {
+            check_ajax_referer('activate-plugin_wordpress-importer/wordpress-importer.php', 'nonce');
+
+            if (!current_user_can('activate_plugins')) {
+                wp_send_json_error(['message' => 'Insufficient permissions']);
+            }
+
+            $result = activate_plugin('wordpress-importer/wordpress-importer.php');
+
+            if (is_wp_error($result)) {
+                wp_send_json_error(['message' => $result->get_error_message()]);
+            }
+
+            wp_send_json_success(['status' => 'active']);
+        }
+
+        public function check_importer_status()
+        {
+            if (!function_exists('is_plugin_active')) {
+                require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            }
+
+            $status = 'missing';
+            if (file_exists(WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php')) {
+                $status = is_plugin_active('wordpress-importer/wordpress-importer.php')
+                    ? 'active'
+                    : 'installed';
+            }
+
+            return new WP_REST_Response(['status' => $status], 200);
         }
     }
 endif;

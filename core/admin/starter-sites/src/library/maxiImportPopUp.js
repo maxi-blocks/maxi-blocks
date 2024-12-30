@@ -13,7 +13,7 @@ import ToggleSwitch from '../components/toggle-switch';
 /**
  * External dependencies
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const isValidValue = value =>
 	value !== '' && value != null && value !== undefined;
@@ -84,18 +84,22 @@ const loadingButtonStyles = `
 	}
 `;
 
-const MaxiImportPopUp = ({
-	url,
-	title,
-	cost,
-	templates,
-	pages,
-	patterns,
-	sc,
-	contentXML,
-	onRequestClose,
-	isOnboarding,
-}) => {
+const MaxiImportPopUp = props => {
+	const {
+		isOnboarding,
+		url,
+		title,
+		cost,
+		templates,
+		pages,
+		patterns,
+		sc,
+		contentXML,
+		onRequestClose,
+	} = props;
+
+	console.log('MaxiImportPopUp isOnboarding:', isOnboarding);
+
 	// Add check for WordPress Importer status from localized data
 	const wpImporterStatus =
 		window.maxiStarterSites?.wpImporterStatus || 'missing';
@@ -128,6 +132,59 @@ const MaxiImportPopUp = ({
 	});
 
 	const [importStatus, setImportStatus] = useState('idle'); // 'idle' | 'loading' | 'done'
+	const [installingImporter, setInstallingImporter] = useState(false);
+	const [wpImporterStatusState, setWpImporterStatusState] = useState(
+		window.maxiStarterSites?.wpImporterStatus || 'missing'
+	);
+
+	// Add polling effect
+	useEffect(() => {
+		let pollTimer;
+
+		const checkPluginStatus = async () => {
+			try {
+				const response = await apiFetch({
+					path: '/maxi-blocks/v1.0/check-importer-status',
+					method: 'GET',
+				});
+
+				if (response.status !== wpImporterStatusState) {
+					setWpImporterStatusState(response.status);
+					window.maxiStarterSites = {
+						...window.maxiStarterSites,
+						wpImporterStatus: response.status,
+					};
+
+					if (response.status === 'active') {
+						handleToggleChange('contentXML', 'contentXML', true);
+						clearInterval(pollTimer);
+					}
+				}
+			} catch (error) {
+				console.error('Error checking plugin status:', error);
+			}
+		};
+
+		// Start polling when status is not 'active'
+		if (wpImporterStatusState !== 'active') {
+			pollTimer = setInterval(checkPluginStatus, 2000); // Check every 2 seconds
+		}
+
+		return () => {
+			if (pollTimer) {
+				clearInterval(pollTimer);
+			}
+		};
+	}, [wpImporterStatusState]);
+
+	const updateImporterStatus = (newStatus) => {
+		setWpImporterStatusState(newStatus);
+		// Update the window variable to keep it in sync
+		window.maxiStarterSites = {
+			...window.maxiStarterSites,
+			wpImporterStatus: newStatus,
+		};
+	};
 
 	const handleToggleChange = (type, name, value) => {
 		// Prevent changing contentXML if plugin is not active
@@ -305,9 +362,9 @@ const MaxiImportPopUp = ({
 				setImportStatus('done');
 
 				// Close the popup after successful import
-				if (onRequestClose) {
-					setTimeout(onRequestClose, 2000);
-				}
+				// if (onRequestClose) {
+				// 	setTimeout(onRequestClose, 2000);
+				// }
 			})
 			.catch(error => {
 				console.error('Import error full details:', error);
@@ -317,6 +374,34 @@ const MaxiImportPopUp = ({
 				setImportStatus('idle');
 			});
 	};
+
+	const installAndActivateImporter = () => {
+		// Redirect to WordPress plugin installation
+		window.location.href = `${maxiStarterSites.adminUrl}update.php?action=install-plugin&plugin=wordpress-importer&_wpnonce=${maxiStarterSites.installNonce}`;
+	};
+
+	// Update the warning message JSX
+	const renderWarningMessage = () => (
+		<div className='maxi-cloud-container__import-popup_warning-message'>
+			<p>
+				{__('Please ', 'maxi-blocks')}
+				<button
+					type='button'
+					className='maxi-cloud-container__import-popup_install-link'
+					onClick={installAndActivateImporter}
+					disabled={installingImporter}
+				>
+					{installingImporter
+						? __('Installing...', 'maxi-blocks')
+						: wpImporterStatusState === 'installed'
+							? __('activate', 'maxi-blocks')
+							: __('install and activate', 'maxi-blocks')
+					}
+				</button>
+				{__(' WordPress Importer plugin to import content XML files.', 'maxi-blocks')}
+			</p>
+		</div>
+	);
 
 	return (
 		<div className='maxi-cloud-container__import-popup_main-wrap'>
@@ -368,7 +453,7 @@ const MaxiImportPopUp = ({
 							<div className='maxi-cloud-container__import-popup_item'>
 								<div
 									className={`maxi-cloud-container__import-popup_toggle-wrapper${
-										wpImporterStatus !== 'active'
+										wpImporterStatusState !== 'active'
 											? ' maxi-disabled'
 											: ''
 									}`}
@@ -383,58 +468,11 @@ const MaxiImportPopUp = ({
 												val
 											)
 										}
-										disabled={wpImporterStatus !== 'active'}
+										disabled={wpImporterStatusState !== 'active'}
 									/>
-									{wpImporterStatus !== 'active' && (
-										<div className='maxi-cloud-container__import-popup_warning-message'>
-											{wpImporterStatus ===
-											'installed' ? (
-												<p>
-													{__(
-														'Please ',
-														'maxi-blocks'
-													)}
-													<a
-														href='/wp-admin/plugins.php'
-														target='_blank'
-														rel='noopener noreferrer'
-													>
-														{__(
-															'activate',
-															'maxi-blocks'
-														)}
-													</a>
-													{__(
-														' WordPress Importer plugin to import content XML files.',
-														'maxi-blocks'
-													)}
-												</p>
-											) : (
-												<p>
-													{__(
-														'Please ',
-														'maxi-blocks'
-													)}
-													<a
-														href='https://wordpress.org/plugins/wordpress-importer/'
-														target='_blank'
-														rel='noopener noreferrer'
-													>
-														{__(
-															'install and activate',
-															'maxi-blocks'
-														)}
-													</a>
-													{__(
-														' WordPress Importer plugin to import content XML files.',
-														'maxi-blocks'
-													)}
-												</p>
-											)}
-										</div>
-									)}
+									{wpImporterStatusState !== 'active' && renderWarningMessage()}
 								</div>
-								{wpImporterStatus === 'active' && (
+								{wpImporterStatusState === 'active' && (
 									<p>
 										{__(
 											'This option imports predefined content (posts, pages, or custom content) from the XML file.',

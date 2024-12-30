@@ -237,7 +237,7 @@ const searchClientStarterSites = (() => {
 	}
 })();
 
-const starterSitesResults = ({ hit, onClickConnect, onLogOut }) => {
+const starterSitesResults = ({ hit, onClickConnect, onLogOut, isOnboarding }) => {
 	const wrapClassName =
 		hit.cost?.[0] === 'Pro'
 			? 'ais-InfiniteHits-item-pro'
@@ -257,6 +257,7 @@ const starterSitesResults = ({ hit, onClickConnect, onLogOut }) => {
 			className={wrapClassName}
 			onClickConnect={onClickConnect}
 			onLogOut={onLogOut}
+			isOnboarding={isOnboarding}
 		/>
 	);
 };
@@ -274,6 +275,8 @@ const MaxiDetailsPopUp = ({
 	isPro,
 	isOnboarding,
 }) => {
+	console.log('MaxiDetailsPopUp isOnboarding:', isOnboarding);
+
 	const firstPage = pages?.[0];
 	const firstTemplate = templates?.[0];
 	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
@@ -304,6 +307,7 @@ const MaxiDetailsPopUp = ({
 					sc={sc}
 					contentXML={contentXML}
 					onRequestClose={handleImportClose}
+					isMaxiProActive={isMaxiProActive}
 					isOnboarding={isOnboarding}
 				/>
 			) : (
@@ -482,6 +486,8 @@ const LibraryContainer = props => {
 		isOnboarding,
 	} = props;
 
+	console.log('LibraryContainer isOnboarding:', isOnboarding);
+
 	useInterval(masonryGenerator, 100);
 
 	return (
@@ -558,6 +564,7 @@ const LibraryContainer = props => {
 								isMaxiProActive={isMaxiProActive}
 								onClickConnect={onClickConnect}
 								onLogOut={onLogOut}
+								isOnboarding={isOnboarding}
 							/>
 						</div>
 					</InstantSearch>

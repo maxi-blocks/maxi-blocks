@@ -41,7 +41,7 @@ class InfiniteHits extends Component {
     }
 
     render() {
-        const { hits, type } = this.props;
+        const { hits, type, isOnboarding } = this.props;
 
         return (
             <div className='ais-InfiniteHits'>
@@ -51,7 +51,7 @@ class InfiniteHits extends Component {
                             key={hit.objectID}
                             className='ais-InfiniteHits-item'
                         >
-                            <Hit hit={hit} type={type} />
+                            <Hit hit={hit} type={type} isOnboarding={isOnboarding} />
                         </li>
                     ))}
                     <li

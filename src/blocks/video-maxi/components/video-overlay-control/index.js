@@ -6,18 +6,18 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ColorControl from '../../../../components/color-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
-import SettingTabsControl from '../../../../components/setting-tabs-control';
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import MediaUploaderControl from '../../../../components/media-uploader-control';
-import OpacityControl from '../../../../components/opacity-control';
-import withRTC from '../../../../extensions/maxi-block/withRTC';
+import ColorControl from '@components/color-control';
+import ToggleSwitch from '@components/toggle-switch';
+import SettingTabsControl from '@components/setting-tabs-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import MediaUploaderControl from '@components/media-uploader-control';
+import OpacityControl from '@components/opacity-control';
+import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 const OverlayColor = props => {
 	const {

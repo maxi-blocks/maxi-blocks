@@ -1,7 +1,7 @@
-import paletteAttributesCreator from '../paletteAttributesCreator';
-import hoverAttributesCreator from '../hoverAttributesCreator';
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import paletteAttributesCreator from '@extensions/styles/paletteAttributesCreator';
+import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { width } from './size';
 
 const prefix = 'svg-';

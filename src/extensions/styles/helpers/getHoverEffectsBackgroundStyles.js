@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import getGroupAttributes from '../getGroupAttributes';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 import {
 	getColorBackgroundObject,
 	getGradientBackgroundObject,

@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { processCss } from '../styles/store/controls';
+import { processCss } from '@extensions/styles/store/controls';
 
 /**
  * External dependencies

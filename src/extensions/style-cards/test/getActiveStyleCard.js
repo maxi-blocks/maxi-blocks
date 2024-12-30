@@ -1,4 +1,4 @@
-import getStyleCardActive from '../getActiveStyleCard';
+import getStyleCardActive from '@extensions/style-cards/getActiveStyleCard';
 
 describe('getStyleCardActive', () => {
 	it('Returns the name and value of the active SC', () => {

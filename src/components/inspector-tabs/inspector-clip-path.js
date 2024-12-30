@@ -6,14 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ClipPathControl from '../clip-path-control';
-import ToggleSwitch from '../toggle-switch';
-import SettingTabsControl from '../setting-tabs-control';
+import ClipPathControl from '@components/clip-path-control';
+import ToggleSwitch from '@components/toggle-switch';
+import SettingTabsControl from '@components/setting-tabs-control';
 import {
 	getAttributeKey,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 /**
  * External dependencies
  */

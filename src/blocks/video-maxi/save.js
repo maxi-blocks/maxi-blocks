@@ -6,9 +6,9 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { videoValidation } from '../../extensions/video';
-import { placeholderImage } from '../../icons';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
+import { videoValidation } from '@extensions/video';
+import { placeholderImage } from '@maxi-icons';
 
 /**
  * External dependencies

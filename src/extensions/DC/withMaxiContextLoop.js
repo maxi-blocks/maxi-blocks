@@ -14,13 +14,13 @@ import {
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../styles';
+import { getGroupAttributes } from '@extensions/styles';
 import { orderByRelations, orderRelations } from './constants';
 import LoopContext from './loopContext';
 import getDCOptions from './getDCOptions';
 import getCLAttributes from './getCLAttributes';
 import { getAttributesWithoutPrefix } from './utils';
-import { isInSiteEditorPreviewIframe } from '../fse';
+import { isInSiteEditorPreviewIframe } from '@extensions/fse';
 
 /**
  * External dependencies

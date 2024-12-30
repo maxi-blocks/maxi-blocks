@@ -6,11 +6,11 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../../../components/button';
+import Button from '@components/button';
 import {
 	getMaxiBlockAttributes,
 	MaxiBlock,
-} from '../../../components/maxi-block';
+} from '@components/maxi-block';
 /**
  * External dependencies
  */

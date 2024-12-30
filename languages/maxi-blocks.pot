@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.0.5\n"
+"Project-Id-Version: MaxiBlocks 2.0.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-23T11:16:45+00:00\n"
+"POT-Creation-Date: 2024-12-24T12:12:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: maxi-blocks\n"
@@ -624,7 +624,7 @@ msgid "Outline your business operations, share the origins of your venture, deta
 msgstr ""
 
 #: core/class-maxi-dynamic-content.php:1070
-#: core/class-maxi-dynamic-content.php:2138
+#: core/class-maxi-dynamic-content.php:2143
 msgid "author"
 msgstr ""
 

@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ColorControl from '../color-control';
-import ClipPathControl from '../clip-path-control';
+import ColorControl from '@components/color-control';
+import ClipPathControl from '@components/clip-path-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import {
 	getAttributeKey,
@@ -15,10 +15,10 @@ import {
 	getGroupAttributes,
 	getBlockStyle,
 	getDefaultAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import { getDefaultLayerAttr } from './utils';
-import { getPaletteColor } from '../../extensions/style-cards';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import { getPaletteColor } from '@extensions/style-cards';
+import withRTC from '@extensions/maxi-block/withRTC';
 
 /**
  * External dependencies

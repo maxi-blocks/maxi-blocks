@@ -2,7 +2,7 @@
 /**
  * Internal dependencies
  */
-import getMultiFormatObj from '../getMultiFormatObj';
+import getMultiFormatObj from '@extensions/text/formats/getMultiFormatObj';
 
 describe('getMultiFormatObj', () => {
 	it('getMultiFormatObj: simple object', () => {

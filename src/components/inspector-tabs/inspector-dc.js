@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import DynamicContent from '../dynamic-content';
-import InfoBox from '../info-box';
-import { getGroupAttributes } from '../../extensions/styles';
+import DynamicContent from '@components/dynamic-content';
+import InfoBox from '@components/info-box';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Component

@@ -1,4 +1,4 @@
-import getAlignmentFlexStyles from '../getAlignmentFlexStyles';
+import getAlignmentFlexStyles from '@extensions/styles/helpers/getAlignmentFlexStyles';
 
 describe('getAlignmentFlexStyles', () => {
 	it('Get a correct alignment flex styles', () => {

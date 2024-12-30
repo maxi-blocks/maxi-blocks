@@ -10,15 +10,15 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Icon from '../../../icon';
-import { insertBlockIntoColumns } from '../../../../extensions/repeater';
-import RepeaterContext from '../../../../blocks/row-maxi/repeaterContext';
+import Button from '@components/button';
+import Icon from '@components/icon';
+import { insertBlockIntoColumns } from '@extensions/repeater';
+import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 
 /**
  * Icons
  */
-import { toolbarDuplicate } from '../../../../icons';
+import { toolbarDuplicate } from '@maxi-icons';
 
 /**
  * Duplicate

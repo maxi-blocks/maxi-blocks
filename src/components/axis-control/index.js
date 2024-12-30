@@ -8,17 +8,17 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import BaseControl from '../base-control';
-import SettingTabsControl from '../setting-tabs-control';
-import SelectControl from '../select-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import BaseControl from '@components/base-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import SelectControl from '@components/select-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 	getAttributeKey,
-} from '../../extensions/styles';
-import ResetButton from '../reset-control';
+} from '@extensions/styles';
+import ResetButton from '@components/reset-control';
 
 /**
  * External dependencies
@@ -46,7 +46,7 @@ import {
 	paddingSeparate as paddingSeparateIcon,
 	paddingSyncAll as paddingSyncAllIcon,
 	paddingSyncDirection as paddingSyncDirectionIcon,
-} from '../../icons';
+} from '@maxi-icons';
 
 /**
  * Component

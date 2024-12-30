@@ -4,20 +4,20 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import AccordionControl from '../../components/accordion-control';
-import DividerControl from '../../components/divider-control';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
-import SelectControl from '../../components/select-control';
-import SettingTabsControl from '../../components/setting-tabs-control';
+import AccordionControl from '@components/accordion-control';
+import DividerControl from '@components/divider-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import SelectControl from '@components/select-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import * as inspectorTabs from '../../components/inspector-tabs';
+} from '@extensions/styles';
+import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
-import { withMaxiInspector } from '../../extensions/inspector';
+import { withMaxiInspector } from '@extensions/inspector';
 
 /**
  * Inspector

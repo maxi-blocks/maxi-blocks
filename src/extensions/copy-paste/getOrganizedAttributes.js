@@ -2,8 +2,8 @@
  * Internal dependencies
  */
 import templates from './templates';
-import getGroupAttributes from '../styles/getGroupAttributes';
-import paletteAttributesCreator from '../styles/paletteAttributesCreator';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
+import paletteAttributesCreator from '@extensions/styles/paletteAttributesCreator';
 
 /**
  * External dependencies

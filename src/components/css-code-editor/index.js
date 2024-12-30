@@ -7,8 +7,8 @@ import { useRef } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
-import Button from '../button';
+import BaseControl from '@components/base-control';
+import Button from '@components/button';
 
 /**
  * External dependencies

@@ -6,12 +6,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { ColorControl } from '../../../../components';
+import { ColorControl } from '@components';
 import {
 	getAttributeValue,
 	getColorRGBAString,
-} from '../../../../extensions/styles';
-import { setSVGContent, setSVGContentHover } from '../../../../extensions/svg';
+} from '@extensions/styles';
+import { setSVGContent, setSVGContentHover } from '@extensions/svg';
 
 const IconColor = props => {
 	const { prefix, colorType, isHover = false, onChange, blockStyle } = props;

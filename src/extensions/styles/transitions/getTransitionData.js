@@ -1,4 +1,4 @@
-import { getBlockData } from '../../attributes';
+import { getBlockData } from '@extensions/attributes';
 import getTransformTransitionData from './getTransformTransitionData';
 import transitionDefault from './transitionDefault';
 

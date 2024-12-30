@@ -1,4 +1,4 @@
-import styleResolver from '../styleResolver';
+import styleResolver from '@extensions/styles/styleResolver';
 
 jest.mock('@wordpress/data', () => {
 	return {

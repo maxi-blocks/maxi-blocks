@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getTransitionTimingFunction } from '../../extensions/styles';
+import { getTransitionTimingFunction } from '@extensions/styles';
 
 /**
  * External dependencies

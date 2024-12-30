@@ -2,10 +2,10 @@
  * Internal dependencies
  */
 
-import MaxiModal from '../../editor/library/modal';
+import MaxiModal from '@editor/library/modal';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
-import SVGFillControl from '../svg-fill-control';
-import { getBlockStyle } from '../../extensions/styles';
+import SVGFillControl from '@components/svg-fill-control';
+import { getBlockStyle } from '@extensions/styles';
 
 /**
  * External dependencies

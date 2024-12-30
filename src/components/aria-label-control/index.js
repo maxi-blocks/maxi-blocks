@@ -7,9 +7,9 @@ import { useCallback, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import TextControl from '../text-control';
-import SelectControl from '../select-control';
-import { setSVGAriaLabel } from '../../extensions/svg';
+import TextControl from '@components/text-control';
+import SelectControl from '@components/select-control';
+import { setSVGAriaLabel } from '@extensions/svg';
 
 /**
  * External dependencies

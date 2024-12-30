@@ -1,4 +1,4 @@
-import getFormatsOnMerge from '../getFormatsOnMerge';
+import getFormatsOnMerge from '@extensions/text/formats/getFormatsOnMerge';
 
 describe('getFormatsOnMerge', () => {
 	it('Merges two Text Maxi', async () => {

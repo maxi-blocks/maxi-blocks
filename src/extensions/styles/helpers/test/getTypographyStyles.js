@@ -1,4 +1,4 @@
-import getTypographyStyles from '../getTypographyStyles';
+import getTypographyStyles from '@extensions/styles/helpers/getTypographyStyles';
 
 jest.mock('@wordpress/data', () => {
 	return {

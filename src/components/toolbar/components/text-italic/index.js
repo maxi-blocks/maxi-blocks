@@ -8,15 +8,15 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Icon from '../../../icon';
+import Button from '@components/button';
+import Icon from '@components/icon';
 
 /**
  * Styles and icons
  */
 
 import './editor.scss';
-import { toolbarItalic } from '../../../../icons';
+import { toolbarItalic } from '@maxi-icons';
 
 /**
  * TextItalic

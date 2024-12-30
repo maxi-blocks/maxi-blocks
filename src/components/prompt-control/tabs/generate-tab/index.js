@@ -8,11 +8,11 @@ import { Fragment } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../advanced-number-control';
-import Button from '../../../button';
-import ReactSelectControl from '../../../react-select-control';
-import TextareaControl from '../../../textarea-control';
-import ResultCard from '../../components/result-card';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import Button from '@components/button';
+import ReactSelectControl from '@components/react-select-control';
+import TextareaControl from '@components/textarea-control';
+import ResultCard from '@components/prompt-control/components/result-card';
 import {
 	CONTENT_TYPES,
 	CONTEXT_OPTIONS,
@@ -21,7 +21,7 @@ import {
 	LANGUAGES,
 	TONES,
 	WRITING_STYLES,
-} from '../../constants';
+} from '@components/prompt-control/constants';
 
 /**
  * Styles

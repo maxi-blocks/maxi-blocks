@@ -1,4 +1,4 @@
-import hoverAttributesCreator from '../hoverAttributesCreator';
+import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
 import display from './display';
 
 const displayHover = hoverAttributesCreator({

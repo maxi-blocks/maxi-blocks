@@ -9,28 +9,25 @@ import { useContext } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../advanced-number-control';
-import AlignmentControl from '../../../alignment-control';
-import FontFamilySelector from '../../../font-family-selector';
-import Icon from '../../../icon';
-import ResponsiveTabsControl from '../../../responsive-tabs-control';
-import TextBold from '../text-bold';
-import TextFormatStrikethrough from '../text-format-strikethrough';
-import TextFormatSubscript from '../text-format-subscript';
-import TextFormatSuperscript from '../text-format-superscript';
-import TextFormatUnderline from '../text-format-underline';
-import TextItalic from '../text-italic';
-import ToolbarPopover from '../toolbar-popover';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import AlignmentControl from '@components/alignment-control';
+import FontFamilySelector from '@components/font-family-selector';
+import Icon from '@components/icon';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import TextBold from '@components/toolbar/components/text-bold';
+import TextFormatStrikethrough from '@components/toolbar/components/text-format-strikethrough';
+import TextFormatSubscript from '@components/toolbar/components/text-format-subscript';
+import TextFormatSuperscript from '@components/toolbar/components/text-format-superscript';
+import TextFormatUnderline from '@components/toolbar/components/text-format-underline';
+import TextItalic from '@components/toolbar/components/text-italic';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
 import {
 	setFormat,
 	getTypographyValue,
 	TextContext,
 	ListContext,
-} from '../../../../extensions/text/formats';
-import {
-	getGroupAttributes,
-	getDefaultAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/text/formats';
+import { getGroupAttributes, getDefaultAttribute } from '@extensions/styles';
 
 /**
  * External dependencies
@@ -45,8 +42,8 @@ import {
 	toolbarTextSize,
 	toolbarTextLineHeight,
 	toolbarTextLetterSpacing,
-} from '../../../../icons';
-import { getListTypographyAttributes } from '../../../../extensions/text/lists';
+} from '@maxi-icons';
+import { getListTypographyAttributes } from '@extensions/text/lists';
 
 const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 

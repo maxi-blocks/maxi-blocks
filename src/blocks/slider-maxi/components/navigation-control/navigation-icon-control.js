@@ -13,19 +13,19 @@ import { capitalize } from 'lodash';
 /**
  * Internal dependencies
  */
-import Icon from '../../../../components/icon';
-import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
-import SvgWidthControl from '../../../../components/svg-width-control';
-import SvgStrokeWidthControl from '../../../../components/svg-stroke-width-control';
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import AxisControl from '../../../../components/axis-control';
-import SettingTabsControl from '../../../../components/setting-tabs-control';
-import ColorControl from '../../../../components/color-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
-import BorderControl from '../../../../components/border-control';
-import BoxShadowControl from '../../../../components/box-shadow-control';
-import MaxiModal from '../../../../editor/library/modal';
-import GradientControl from '../../../../components/gradient-control';
+import Icon from '@components/icon';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import SvgWidthControl from '@components/svg-width-control';
+import SvgStrokeWidthControl from '@components/svg-stroke-width-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import AxisControl from '@components/axis-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ColorControl from '@components/color-control';
+import ToggleSwitch from '@components/toggle-switch';
+import BorderControl from '@components/border-control';
+import BoxShadowControl from '@components/box-shadow-control';
+import MaxiModal from '@editor/library/modal';
+import GradientControl from '@components/gradient-control';
 
 import {
 	getAttributeKey,
@@ -33,12 +33,12 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 import {
 	setSVGContent,
 	setSVGContentHover,
 	setSVGStrokeWidth,
-} from '../../../../extensions/svg';
+} from '@extensions/svg';
 
 /**
  * Styles and icons
@@ -49,7 +49,7 @@ import {
 	backgroundColor,
 	backgroundGradient,
 	styleNone,
-} from '../../../../icons';
+} from '@maxi-icons';
 
 /**
  * Component

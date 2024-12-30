@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import getTransitionStyles from '../getTransitionStyles';
-import transitionDefault from '../../transitions/transitionDefault';
+import getTransitionStyles from '@extensions/styles/helpers/getTransitionStyles';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies

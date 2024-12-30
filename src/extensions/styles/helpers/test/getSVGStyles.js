@@ -1,4 +1,4 @@
-import { getSVGStyles, getSVGWidthStyles } from '../getSVGStyles';
+import { getSVGStyles, getSVGWidthStyles } from '@extensions/styles/helpers/getSVGStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

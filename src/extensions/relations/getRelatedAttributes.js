@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBreakpointFromAttribute } from '../styles/utils';
+import { getBreakpointFromAttribute } from '@extensions/styles/utils';
 
 /**
  * External dependencies

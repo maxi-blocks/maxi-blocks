@@ -6,18 +6,18 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AlignmentControl from '../../components/alignment-control';
-import TypographyControl from '../../components/typography-control';
-import { createSelectors } from '../../extensions/styles/custom-css';
+import AlignmentControl from '@components/alignment-control';
+import TypographyControl from '@components/typography-control';
+import { createSelectors } from '@extensions/styles/custom-css';
 import {
 	getAlignmentTextStyles,
 	getTypographyStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+} from '@extensions/relations';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
  * Classnames

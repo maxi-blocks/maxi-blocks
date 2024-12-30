@@ -14,10 +14,10 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Button from '../button';
-import Dropdown from '../dropdown';
-import Popover from '../popover';
-import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
+import Button from '@components/button';
+import Dropdown from '@components/dropdown';
+import Popover from '@components/popover';
+import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 
 /**
  * Styles

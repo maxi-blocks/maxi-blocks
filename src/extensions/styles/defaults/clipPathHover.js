@@ -1,4 +1,4 @@
-import hoverAttributesCreator from '../hoverAttributesCreator';
+import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
 import clipPath from './clipPath';
 
 const clipPathHover = hoverAttributesCreator({

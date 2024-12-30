@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getAttributeKey from '../getAttributeKey';
+import getAttributeKey from '@extensions/styles/getAttributeKey';
 
 /**
  * External dependencies
@@ -19,7 +19,8 @@ const getIconPathStyles = (obj, isHover = false, prefix = '') => {
 
 	// Use for...of loop instead of forEach for better performance
 	for (const breakpoint of breakpoints) {
-		const iconStroke = obj[getAttributeKey('icon-stroke', isHover, prefix, breakpoint)];
+		const iconStroke =
+			obj[getAttributeKey('icon-stroke', isHover, prefix, breakpoint)];
 
 		// Only create the breakpoint object if iconStroke is not null or undefined
 		if (!isNil(iconStroke)) {

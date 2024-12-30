@@ -12,21 +12,21 @@ import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
-import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
-import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
+import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';
+import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
 
 /**
  * Styles and icons
  */
 import './style.scss';
 import './editor.scss';
-import { containerIcon } from '../../icons';
+import { containerIcon } from '@maxi-icons';
 
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
-import shapeDividerMigrator from '../../extensions/styles/migrators/shapeDividerMigrator';
+import { blockMigrator } from '@extensions/styles/migrators';
+import shapeDividerMigrator from '@extensions/styles/migrators/shapeDividerMigrator';
 
 /**
  * Block

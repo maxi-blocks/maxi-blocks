@@ -2,8 +2,8 @@
  * Internal dependencies
  */
 
-import { handleSetAttributes } from '../../extensions/maxi-block';
-import { getAttributeKey } from '../../extensions/styles';
+import { handleSetAttributes } from '@extensions/maxi-block';
+import { getAttributeKey } from '@extensions/styles';
 import * as backgroundLayers from './layers';
 
 /**

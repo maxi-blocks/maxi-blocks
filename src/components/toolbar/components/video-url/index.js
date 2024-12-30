@@ -8,16 +8,16 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 
-import ToolbarPopover from '../toolbar-popover';
-import { TextInput } from '../../../';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { TextInput } from '@components';
 import {
 	videoUrlRegex,
 	getParsedVideoUrl,
 	parseVideo,
-} from '../../../../extensions/video';
+} from '@extensions/video';
 
 /** Icons */
-import { toolbarVideo } from '../../../../icons';
+import { toolbarVideo } from '@maxi-icons';
 
 const VideoUrl = props => {
 	const { url, onChange } = props;

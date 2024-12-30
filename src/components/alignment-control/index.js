@@ -1,10 +1,10 @@
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute } from '../../extensions/styles';
-import SettingTabsControl from '../setting-tabs-control';
-import Icon from '../icon';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import { getLastBreakpointAttribute } from '@extensions/styles';
+import SettingTabsControl from '@components/setting-tabs-control';
+import Icon from '@components/icon';
+import withRTC from '@extensions/maxi-block/withRTC';
 
 /**
  * External dependencies
@@ -25,7 +25,7 @@ import {
 	toolbarAlignLeft,
 	toolbarAlignRight,
 	toolbarAlignJustify,
-} from '../../icons';
+} from '@maxi-icons';
 
 /**
  * Component

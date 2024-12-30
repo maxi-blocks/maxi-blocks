@@ -1,4 +1,4 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { border, borderWidth, borderRadius } from './border';
 
 const prefix = 'icon-';

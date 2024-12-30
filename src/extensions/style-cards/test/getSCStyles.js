@@ -1,6 +1,6 @@
-import getSCStyles from '../getSCStyles';
-import standardSC from '../../../../core/defaults/defaultSC.json';
-import getSCVariablesObject from '../getSCVariablesObject';
+import getSCStyles from '@extensions/style-cards/getSCStyles';
+import standardSC from '@maxi-core/defaults/defaultSC.json';
+import getSCVariablesObject from '@extensions/style-cards/getSCVariablesObject';
 
 jest.mock('@wordpress/data', () => {
 	return {

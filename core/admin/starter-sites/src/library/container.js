@@ -274,6 +274,7 @@ const MaxiDetailsPopUp = ({
 	isMaxiProActive,
 	isPro,
 	isOnboarding,
+	onRequestClose,
 }) => {
 	console.log('MaxiDetailsPopUp isOnboarding:', isOnboarding);
 
@@ -281,6 +282,19 @@ const MaxiDetailsPopUp = ({
 	const firstTemplate = templates?.[0];
 	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
 	const [showImport, setShowImport] = React.useState(false);
+
+	// Add event listener for closing details popup
+	React.useEffect(() => {
+		const handleCloseDetailsPopup = () => {
+			if (onRequestClose) onRequestClose();
+		};
+
+		document.addEventListener('close-details-popup', handleCloseDetailsPopup);
+
+		return () => {
+			document.removeEventListener('close-details-popup', handleCloseDetailsPopup);
+		};
+	}, [onRequestClose]);
 
 	const handleImportClick = () => {
 		setShowImport(true);
@@ -524,6 +538,7 @@ const LibraryContainer = props => {
 						isMaxiProActive={isMaxiProActive}
 						isPro={isPro}
 						isOnboarding={isOnboarding}
+						onRequestClose={onRequestClose}
 					/>
 				</div>
 			)}

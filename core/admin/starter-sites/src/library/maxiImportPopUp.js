@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-undef */
 /**
  * WordPress dependencies
@@ -589,7 +590,39 @@ const MaxiImportPopUp = props => {
 						<div className='maxi-cloud-container__import-popup_status-text'>
 							{isOnboarding ? (
 								<>
-									{__('Import completed. You can continue, or chose another starter site', 'maxi-blocks')}
+									{__('Import completed. You can ', 'maxi-blocks')}
+									<a
+										href='#'
+										className='maxi-cloud-container__import-popup_close-link'
+										onClick={(e) => {
+											e.preventDefault();
+											const detailsPopup = document.querySelector('.maxi-cloud-container__details');
+											if (detailsPopup) {
+												const event = new Event('close-details-popup', { bubbles: true });
+												detailsPopup.dispatchEvent(event);
+											}
+											if (onRequestClose) onRequestClose();
+
+											// Remove 'modal-open' class from #maxi-starter-sites-root if it exists
+											const rootElement = document.getElementById('maxi-starter-sites-root');
+											if (rootElement) {
+												rootElement.classList.remove('modal-open');
+											}
+										}}
+									>
+										{__('continue to wizard', 'maxi-blocks')}
+									</a>
+									{__(', or ', 'maxi-blocks')}
+									<a
+										href='#'
+										className='maxi-cloud-container__import-popup_close-link'
+										onClick={(e) => {
+											e.preventDefault();
+											if (onRequestClose) onRequestClose();
+										}}
+									>
+										{__('choose another starter site', 'maxi-blocks')}
+									</a>
 								</>
 							) : (
 								<>

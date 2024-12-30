@@ -92,9 +92,7 @@ describe('Repeater', () => {
 
 		await editColorControl({
 			page,
-			instance: await accordionPanel.$(
-				'.maxi-background-control .maxi-tabs-content'
-			),
+			instance: await accordionPanel.$('.maxi-background-control'),
 			paletteStatus: true,
 			colorPalette: 3,
 		});

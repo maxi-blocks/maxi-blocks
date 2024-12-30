@@ -64,6 +64,7 @@ const MaxiOnboarding = {
 					const data = await response.json();
 
 					if (data.success) {
+						// Show temporary success state
 						const newButton = document.createElement('button');
 						newButton.type = 'button';
 						newButton.className = 'button button-primary';
@@ -73,6 +74,11 @@ const MaxiOnboarding = {
 							${maxiOnboarding.strings.activeTheme}
 						`;
 						button.replaceWith(newButton);
+
+						// Reload the page after a short delay to show the updated theme
+						setTimeout(() => {
+							window.location.reload();
+						}, 500);
 					} else {
 						alert(data.data || 'Error activating theme');
 					}
@@ -489,13 +495,19 @@ const MaxiOnboarding = {
 	},
 
 	showLoader() {
-		document.querySelector('.maxi-onboarding-content').classList.add('loading');
-		document.querySelector('.maxi-loader').style.display = 'block';
+		document.querySelector('.maxi-onboarding-content')?.classList.add('loading');
+		let loader = document.querySelector('.maxi-loader');
+		if (loader) {
+			loader.style.display = 'block';
+		}
 	},
 
 	hideLoader() {
-		document.querySelector('.maxi-onboarding-content').classList.remove('loading');
-		document.querySelector('.maxi-loader').style.display = 'none';
+		document.querySelector('.maxi-onboarding-content')?.classList.remove('loading');
+		let loader = document.querySelector('.maxi-loader');
+		if (loader) {
+			loader.style.display = 'none';
+		}
 	},
 
 	saveProgress(step) {

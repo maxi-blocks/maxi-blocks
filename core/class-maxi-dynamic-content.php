@@ -1931,6 +1931,7 @@ class MaxiBlocks_DynamicContent
             'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
             'dc-link-status' => $dc_link_status,
             'dc-accumulator' => $dc_accumulator,
+            'dc-keep-only-text-content' => $dc_keep_only_text_content,
         ] = $attributes;
 
 
@@ -1980,7 +1981,7 @@ class MaxiBlocks_DynamicContent
             }
 
             // Limit content
-            if (isset($dc_limit) && $dc_limit > 0) {
+            if (isset($dc_limit) && ($dc_limit > 0 || $dc_keep_only_text_content)) {
                 $post_data = wp_strip_all_tags($post_data);
 
                 // Ensures no double or more line breaks

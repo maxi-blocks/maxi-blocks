@@ -13,11 +13,14 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import DialogBox from '../../../dialog-box';
-import ResultModifyBar from '../result-modify-bar';
-import Icon from '../../../icon';
-import { CONTENT_LIMIT, MODIFICATION_MODIFICATORS } from '../../constants';
+import Button from '@components/button';
+import DialogBox from '@components/dialog-box';
+import ResultModifyBar from '@components/prompt-control/components/result-modify-bar';
+import Icon from '@components/icon';
+import {
+	CONTENT_LIMIT,
+	MODIFICATION_MODIFICATORS,
+} from '@components/prompt-control/constants';
 
 /**
  * Styles
@@ -27,7 +30,7 @@ import './editor.scss';
 /**
  * Icons
  */
-import { promptDelete, promptCopy } from '../../../../icons';
+import { promptDelete, promptCopy } from '@maxi-icons';
 
 const ResultCard = ({
 	result,

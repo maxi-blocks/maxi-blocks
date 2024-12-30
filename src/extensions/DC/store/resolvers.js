@@ -6,7 +6,7 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import { getACFFieldGroups, getACFGroupFields } from '../getACFData';
+import { getACFFieldGroups, getACFGroupFields } from '@extensions/DC/getACFData';
 
 const resolvers = {
 	getACFGroups:

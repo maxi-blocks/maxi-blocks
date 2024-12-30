@@ -10,8 +10,8 @@ import {
 	FontLevelControl,
 	SettingTabsControl,
 	TypographyControl,
-} from '../../../../components';
-import { getGroupAttributes } from '../../../../extensions/styles';
+} from '@components';
+import { getGroupAttributes } from '@extensions/styles';
 
 const MapPopupTextControl = ({
 	blockStyle,

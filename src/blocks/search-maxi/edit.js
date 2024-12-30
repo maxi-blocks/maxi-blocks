@@ -12,15 +12,15 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import RawHTML from '../../components/raw-html';
-import Toolbar from '../../components/toolbar';
-import MaxiBlock from '../../components/maxi-block/maxiBlock';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getIconPositionClass } from '../../extensions/styles';
+import RawHTML from '@components/raw-html';
+import Toolbar from '@components/toolbar';
+import MaxiBlock from '@components/maxi-block/maxiBlock';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { getMaxiBlockAttributes } from '@components/maxi-block';
+import { getIconPositionClass } from '@extensions/styles';
 import getStyles from './styles';
 import { prefixes, copyPasteMapping } from './data';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Search block

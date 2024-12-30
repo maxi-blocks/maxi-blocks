@@ -1,5 +1,5 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
 
 import { rawBorder } from './border';
 

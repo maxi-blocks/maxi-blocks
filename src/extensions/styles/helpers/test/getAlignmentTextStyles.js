@@ -1,4 +1,4 @@
-import getAlignmentTextStyles from '../getAlignmentTextStyles';
+import getAlignmentTextStyles from '@extensions/styles/helpers/getAlignmentTextStyles';
 
 describe('getAlignmentTextStyles', () => {
 	it('Get a correct alignment text styles', () => {

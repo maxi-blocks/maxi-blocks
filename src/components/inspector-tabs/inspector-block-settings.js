@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import BlockStylesControl from '../block-styles-control';
-import CustomLabel from '../custom-label';
+import BlockStylesControl from '@components/block-styles-control';
+import CustomLabel from '@components/custom-label';
 
 /**
  * Component

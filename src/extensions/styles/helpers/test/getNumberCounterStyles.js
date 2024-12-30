@@ -1,4 +1,4 @@
-import getNumberCounterStyles from '../getNumberCounterStyles';
+import getNumberCounterStyles from '@extensions/styles/helpers/getNumberCounterStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

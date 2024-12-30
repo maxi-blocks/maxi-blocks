@@ -1,4 +1,4 @@
-import { loadFontsInEditor } from '../../extensions/text/fonts';
+import { loadFontsInEditor } from '@extensions/text/fonts';
 
 const onChangeFontWeight = (val, fontName, fontStyle, setShowLoader) => {
 	const objFont = { [fontName]: {} };

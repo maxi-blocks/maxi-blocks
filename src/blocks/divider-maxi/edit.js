@@ -12,22 +12,22 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import { BlockResizer } from '../../components';
+import Toolbar from '@components/toolbar';
+import { BlockResizer } from '@components';
 import {
 	MaxiBlockComponent,
 	getResizerSize,
 	withMaxiProps,
-} from '../../extensions/maxi-block';
+} from '@extensions/maxi-block';
 import {
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import getStyles from './styles';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { copyPasteMapping } from './data';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
-import { withMaxiContextLoopContext } from '../../extensions/DC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
+import { withMaxiContextLoopContext } from '@extensions/DC';
 
 /**
  * Content

@@ -5,7 +5,7 @@ import {
 	rawBackgroundVideo,
 	rawBackgroundSVG,
 	rawImageShape,
-} from '../../extensions/styles/defaults';
+} from '@extensions/styles/defaults';
 
 /**
  * Layers

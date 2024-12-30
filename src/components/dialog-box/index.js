@@ -7,14 +7,14 @@ import { createPortal, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../button';
-import Icon from '../icon';
-import { getIsSiteEditor } from '../../extensions/fse';
+import Button from '@components/button';
+import Icon from '@components/icon';
+import { getIsSiteEditor } from '@extensions/fse';
 
 /**
  * Styles and icons
  */
-import { closeIcon, dialogIcon } from '../../icons';
+import { closeIcon, dialogIcon } from '@maxi-icons';
 import './editor.scss';
 
 const DialogBox = props => {

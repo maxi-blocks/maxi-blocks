@@ -6,11 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import InfoBox from '../../../../components/info-box';
-import SelectControl from '../../../../components/select-control';
-import { getDefaultAttribute } from '../../../../extensions/styles';
-import { getMaxiAdminSettingsUrl } from '../../utils';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import InfoBox from '@components/info-box';
+import SelectControl from '@components/select-control';
+import { getDefaultAttribute } from '@extensions/styles';
+import { getMaxiAdminSettingsUrl } from '@blocks/map-maxi/utils';
 
 /**
  * Component

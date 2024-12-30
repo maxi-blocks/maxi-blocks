@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 
-import { getAttributeKey } from '../../extensions/styles';
+import { getAttributeKey } from '@extensions/styles';
 import * as backgroundLayers from './layers';
 
 /**

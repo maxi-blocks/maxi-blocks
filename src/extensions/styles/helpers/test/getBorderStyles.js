@@ -1,4 +1,4 @@
-import getBorderStyles from '../getBorderStyles';
+import getBorderStyles from '@extensions/styles/helpers/getBorderStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

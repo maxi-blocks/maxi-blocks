@@ -7,8 +7,8 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../button';
-import { getGroupAttributes } from '../../extensions/styles';
+import Button from '@components/button';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * External dependencies

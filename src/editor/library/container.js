@@ -10,15 +10,15 @@ import { CheckboxControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { updateSCOnEditor } from '../../extensions/style-cards';
+import { updateSCOnEditor } from '@extensions/style-cards';
 import { svgAttributesReplacer, svgCurrentColorStatus, fitSvg } from './util';
-import { injectImgSVG } from '../../extensions/svg';
+import { injectImgSVG } from '@extensions/svg';
 import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
-import useInterval from '../../extensions/dom/useInterval';
+import useInterval from '@extensions/dom/useInterval';
 import InfiniteHits from './InfiniteHits';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
-import { ContentLoader } from '../../components';
+import { ContentLoader } from '@components';
 
 /**
  * External dependencies
@@ -48,7 +48,7 @@ import DOMPurify from 'dompurify';
 /**
  * Icons
  */
-import { arrowIcon } from '../../icons';
+import { arrowIcon } from '@maxi-icons';
 
 // hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 const removeMenuBugFix = () => {

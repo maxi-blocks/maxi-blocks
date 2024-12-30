@@ -7,14 +7,14 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import AccordionControl from '../../components/accordion-control';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
-import SettingTabsControl from '../../components/setting-tabs-control';
+import AccordionControl from '@components/accordion-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 import NumberCounterControl from './components/number-counter-control';
-import { getGroupAttributes } from '../../extensions/styles';
-import * as inspectorTabs from '../../components/inspector-tabs';
+import { getGroupAttributes } from '@extensions/styles';
+import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
-import { withMaxiInspector } from '../../extensions/inspector';
+import { withMaxiInspector } from '@extensions/inspector';
 
 /**
  * Inspector

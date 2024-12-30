@@ -7,7 +7,7 @@ import { RichText } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { Button } from '../../../../components';
+import { Button } from '@components';
 
 /**
  * External dependencies

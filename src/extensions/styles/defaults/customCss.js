@@ -1,4 +1,4 @@
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
 
 const customCss = breakpointAttributesCreator({
 	obj: {

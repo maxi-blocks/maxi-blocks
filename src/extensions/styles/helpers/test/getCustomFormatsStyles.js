@@ -1,4 +1,4 @@
-import getCustomFormatsStyles from '../getCustomFormatsStyles';
+import getCustomFormatsStyles from '@extensions/styles/helpers/getCustomFormatsStyles';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 0)

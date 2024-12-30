@@ -1,4 +1,4 @@
-import setSVGColor from '../setSVGColor';
+import setSVGColor from '@extensions/svg/setSVGColor';
 
 describe('setSVGColor', () => {
 	it('Return svg element with new colour fill', async () => {

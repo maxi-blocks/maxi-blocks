@@ -6,16 +6,16 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ColorControl from '../../../color-control';
-import Icon from '../../../icon';
-import ToolbarPopover from '../toolbar-popover';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import ColorControl from '@components/color-control';
+import Icon from '@components/icon';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarShapeLineColor } from '../../../../icons';
+import { toolbarShapeLineColor } from '@maxi-icons';
 
 /**
  * DividerColor

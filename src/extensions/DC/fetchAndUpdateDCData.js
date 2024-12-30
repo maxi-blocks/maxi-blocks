@@ -7,14 +7,14 @@ import { decodeEntities } from '@wordpress/html-entities';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../styles';
+import { getGroupAttributes } from '@extensions/styles';
 import getDCContent from './getDCContent';
 import { getSimpleText, sanitizeDCContent } from './utils';
 import getDCMedia from './getDCMedia';
 import getDCNewLinkSettings from './getDCNewLinkSettings';
 import getDCValues from './getDCValues';
 import getValidatedDCAttributes from './validateDCAttributes';
-import { getUpdatedImgSVG } from '../svg';
+import { getUpdatedImgSVG } from '@extensions/svg';
 import { inlineLinkFields } from './constants';
 
 /**

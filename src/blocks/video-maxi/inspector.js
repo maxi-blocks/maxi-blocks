@@ -7,17 +7,17 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import AccordionControl from '../../components/accordion-control';
-import SettingTabsControl from '../../components/setting-tabs-control';
+import AccordionControl from '@components/accordion-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 import PopupSettingsControl from './components/popup-settings-control';
 import VideoControl from './components/video-control';
 import VideoIconControl from './components/video-icon-control';
 import VideoOptionsControl from './components/video-options-control';
 import VideoOverlayControl from './components/video-overlay-control';
-import * as inspectorTabs from '../../components/inspector-tabs';
+import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
-import { withMaxiInspector } from '../../extensions/inspector';
-import { getGroupAttributes } from '../../extensions/styles';
+import { withMaxiInspector } from '@extensions/inspector';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Inspector

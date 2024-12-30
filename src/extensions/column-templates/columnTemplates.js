@@ -41,7 +41,7 @@ import {
 	oneOneOneOneOneOne,
 	twoTwoTwoTwoTwoTwo,
 	twoTwoTwoTwo,
-} from '../../icons';
+} from '@maxi-icons';
 
 // Array of all templates
 const columnTemplates = {

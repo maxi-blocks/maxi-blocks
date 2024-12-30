@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { getBlockSelectorsByUniqueID } from './utils';
-import { splitValueAndUnit } from '../utils';
+import { splitValueAndUnit } from '@extensions/styles/utils';
 
 /**
  * External dependencies

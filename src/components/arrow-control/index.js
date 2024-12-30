@@ -6,14 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import InfoBox from '../info-box';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
+import InfoBox from '@components/info-box';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * External dependencies

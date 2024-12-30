@@ -8,8 +8,8 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
-import TextControl from '../text-control';
+import SelectControl from '@components/select-control';
+import TextControl from '@components/text-control';
 
 /**
  * Component

@@ -15,11 +15,11 @@ import { isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Icon from '../../../icon';
-import Popover from '../../../popover';
-import { openSidebarAccordion } from '../../../../extensions/inspector';
-import { toolbarAdvancedSettings } from '../../../../icons';
+import Button from '@components/button';
+import Icon from '@components/icon';
+import Popover from '@components/popover';
+import { openSidebarAccordion } from '@extensions/inspector';
+import { toolbarAdvancedSettings } from '@maxi-icons';
 import ToolbarContext from './toolbarContext';
 
 /**

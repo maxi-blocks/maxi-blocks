@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { openTransitions } from '../../extensions/inspector';
+import { openTransitions } from '@extensions/inspector';
 
 const ManageHoverTransitions = () => {
 	return (

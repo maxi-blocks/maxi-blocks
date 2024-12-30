@@ -8,12 +8,12 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import Button from '../button';
-import SelectControl from '../select-control';
-import BlockResizer from '../block-resizer';
-import { validateOriginValue, getIsValid } from '../../extensions/styles';
-import ResetButton from '../reset-control';
-import validateNumberInput from '../advanced-number-control/utils';
+import Button from '@components/button';
+import SelectControl from '@components/select-control';
+import BlockResizer from '@components/block-resizer';
+import { validateOriginValue, getIsValid } from '@extensions/styles';
+import ResetButton from '@components/reset-control';
+import validateNumberInput from '@components/advanced-number-control/utils';
 
 /**
  * External dependencies
@@ -24,7 +24,7 @@ import { isEmpty, isNaN, isNumber, round, toNumber } from 'lodash';
 /**
  * Icons
  */
-import { sync as syncIcon } from '../../icons';
+import { sync as syncIcon } from '@maxi-icons';
 
 /**
  * Component

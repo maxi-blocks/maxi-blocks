@@ -1,4 +1,4 @@
-import getAspectRatio from '../getAspectRatio';
+import getAspectRatio from '@extensions/styles/helpers/getAspectRatio';
 
 describe('getAspectRatio', () => {
 	it('Should return null for input "original"', () => {

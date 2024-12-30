@@ -12,13 +12,13 @@ import {
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../styles';
+import { getGroupAttributes } from '@extensions/styles';
 import LoopContext from './loopContext';
 
 /**
  * External dependencies
  */
-import { onChangeLayer } from '../../components/background-control/utils';
+import { onChangeLayer } from '@components/background-control/utils';
 import fetchAndUpdateDCData from './fetchAndUpdateDCData';
 
 // List of blocks that have dynamic content

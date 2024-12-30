@@ -15,19 +15,19 @@ import { isNil } from 'lodash';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import MaxiBlock from '../../components/maxi-block/maxiBlock';
-import Toolbar from '../../components/toolbar';
-import Placeholder from '../../components/placeholder';
-import MaxiPopoverButton from '../../components/maxi-popover-button';
-import Button from '../../components/button';
+import MaxiBlock from '@components/maxi-block/maxiBlock';
+import Toolbar from '@components/toolbar';
+import Placeholder from '@components/placeholder';
+import MaxiPopoverButton from '@components/maxi-popover-button';
+import Button from '@components/button';
 import getStyles from './styles';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
-import { videoValidation } from '../../extensions/video';
+import { getMaxiBlockAttributes } from '@components/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { getGroupAttributes } from '@extensions/styles';
+import { videoValidation } from '@extensions/video';
 import { copyPasteMapping } from './data';
-import { placeholderImage, toolbarReplaceImage } from '../../icons';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import { placeholderImage, toolbarReplaceImage } from '@maxi-icons';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Video player

@@ -9,6 +9,7 @@ import getGroupAttributes from '../getGroupAttributes';
 import getImageShapeStyles from './getImageShapeStyles';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
+import { isValidNumber } from '../utils';
 
 /**
  * External dependencies
@@ -613,10 +614,7 @@ const getWrapperObject = ({
 			isHover,
 		});
 
-		if (
-			(Number.isFinite(positionValue) || !isEmpty(positionValue)) &&
-			!isNil(positionUnit)
-		) {
+		if (isValidNumber(positionValue) && !isNil(positionUnit)) {
 			response[breakpoint][keyWord] =
 				positionValue === 'auto'
 					? 'auto'

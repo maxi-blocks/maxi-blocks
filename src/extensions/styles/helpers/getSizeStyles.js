@@ -3,11 +3,12 @@
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getDefaultAttribute from '../getDefaultAttribute';
+import { isValidNumber } from '../utils';
 
 /**
  * External dependencies
  */
-import { isNumber, isNil, isEmpty } from 'lodash';
+import { isNumber, isNil } from 'lodash';
 
 /**
  * General
@@ -121,7 +122,7 @@ const getSizeStyles = (obj, prefix = '') => {
 							attributes: obj,
 					  }) && '100%';
 
-			if ((Number.isFinite(num) || !isEmpty(num)) && !isNil(unit))
+			if (isValidNumber(num) && !isNil(unit))
 				return {
 					[target]: auto || num + unit,
 					...fullWidthNormalStyles,

@@ -172,3 +172,11 @@ export const getTransitionTimingFunction = (
 		.map(value => round(value, 4))
 		.join()})`;
 };
+
+/**
+ * Checks if a number value is valid
+ *
+ * @param {string | number | undefined} val Value to check
+ * @returns {boolean}                      True if valid, false otherwise
+ */
+export const isValidNumber = val => Number.isFinite(val) || !isEmpty(val);

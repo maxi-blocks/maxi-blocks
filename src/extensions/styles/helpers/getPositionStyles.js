@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import { isValidNumber } from '../utils';
 
 /**
  * External dependencies
@@ -55,7 +56,7 @@ const getPositionStyles = obj => {
 				attributes: obj,
 			});
 
-			if (!isNil(value) && !isNil(unit) && !omitPositionStyle)
+			if (isValidNumber(value) && !isNil(unit) && !omitPositionStyle)
 				response[breakpoint][keyWord] =
 					value !== 'auto' ? `${value}${unit}` : value;
 		});

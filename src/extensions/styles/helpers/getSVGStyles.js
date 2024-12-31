@@ -7,11 +7,12 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
 import getAttributeKey from '../getAttributeKey';
 import getAttributeValue from '../getAttributeValue';
+import { isValidNumber } from '../utils';
 
 /**
  * External dependencies
  */
-import { isNil, round } from 'lodash';
+import { round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -65,7 +66,7 @@ export const getSVGWidthStyles = ({
 		const iconStrokeWidth =
 			svgType !== 'Shape' ? getAttribute('stroke', breakpoint) : 1;
 
-		if (iconSize != null && iconSize !== '') {
+		if (isValidNumber(iconSize)) {
 			const heightToStrokeWidthCoefficient =
 				1 +
 				((iconStrokeWidth - 1) *

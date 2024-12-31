@@ -1,4 +1,4 @@
-import getRowBorderRadius from '../utils';
+import getRowBorderRadius from '@blocks/column-maxi/utils';
 
 describe('getRowBorderRadius', () => {
 	it('Get correct row border radius with one nested column', () => {

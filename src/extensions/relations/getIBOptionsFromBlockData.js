@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getBlockData } from '../attributes';
+import { getBlockData } from '@extensions/attributes';
 
 const getIBOptionsFromBlockData = clientId => {
 	const blockName = select('core/block-editor')

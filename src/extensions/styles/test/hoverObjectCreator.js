@@ -1,5 +1,5 @@
-import { background, backgroundColor } from '../defaults/background';
-import hoverAttributesCreator from '../hoverAttributesCreator';
+import { background, backgroundColor } from '@extensions/styles/defaults/background';
+import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
 
 describe('hoverAttributesCreator', () => {
 	it('Returns a color bg object', () => {

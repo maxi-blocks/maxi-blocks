@@ -6,12 +6,12 @@ import {
 	linkAttributesCreator,
 	transitionAttributesCreator,
 	typographyAttributesCreator,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults/index';
+import * as attributesData from '@extensions/styles/defaults/index';
 import { customCss, transition } from './data';
 
 /**

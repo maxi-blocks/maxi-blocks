@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { RawHTML } from '../../components';
-import { getIconPositionClass } from '../../extensions/styles';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
+import { RawHTML } from '@components';
+import { getIconPositionClass } from '@extensions/styles';
 
 /**
  * External dependencies

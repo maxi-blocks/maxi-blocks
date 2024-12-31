@@ -11,7 +11,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Popover from '../popover';
+import Popover from '@components/popover';
 
 function useObservableState(initialState, onStateChange) {
 	const [state, setState] = useState(initialState);

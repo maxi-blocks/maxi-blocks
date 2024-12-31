@@ -6,19 +6,19 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SettingTabsControl from '../setting-tabs-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 import ScrollEffectUniqueControl from './scroll-effect-unique-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { scrollTypes } from '../../extensions/styles/defaults/scroll';
-import SelectControl from '../select-control';
-import AdvancedNumberControl from '../advanced-number-control';
-import ToggleSwitch from '../toggle-switch';
+} from '@extensions/styles';
+import { scrollTypes } from '@extensions/styles/defaults/scroll';
+import SelectControl from '@components/select-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ToggleSwitch from '@components/toggle-switch';
 import * as defaultShortcuts from './shortcuts';
 import { applyEffect, removeEffect } from './scroll-effect-preview';
-import { getActiveTabName } from '../../extensions/inspector';
+import { getActiveTabName } from '@extensions/inspector';
 import {
 	motionOptions,
 	motionSubOptions,

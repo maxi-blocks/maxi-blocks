@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getBlockStyle from '../styles/getBlockStyle';
+import getBlockStyle from '@extensions/styles/getBlockStyle';
 import getActiveStyleCard from './getActiveStyleCard';
 
 const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {

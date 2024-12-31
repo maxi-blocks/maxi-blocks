@@ -3,7 +3,7 @@
  * we added the new `bottom-gap` attribute and affects the patterns in the Cloud until the
  * version 0.0.1-SC5.
  */
-import { getBlockNameFromUniqueID } from '../../attributes';
+import { getBlockNameFromUniqueID } from '@extensions/attributes';
 
 const name = 'Text bottom gap migrator';
 

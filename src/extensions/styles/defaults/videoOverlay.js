@@ -1,5 +1,5 @@
-import hoverAttributesCreator from '../hoverAttributesCreator';
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { background, backgroundColor } from './background';
 import opacity from './opacity';
 import { height, width } from './size';

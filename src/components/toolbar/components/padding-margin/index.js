@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import AxisControl from '../../../axis-control';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import AxisControl from '@components/axis-control';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarPadding } from '../../../../icons';
+import { toolbarPadding } from '@maxi-icons';
 
 /**
  * PaddingMargin

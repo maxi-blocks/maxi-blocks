@@ -12,32 +12,32 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import AxisControl from '../axis-control';
-import AxisPositionControl from '../axis-position-control';
-import BorderControl from '../border-control';
-import ColorControl from '../color-control';
-import GradientControl from '../gradient-control';
-import Icon from '../icon';
-import InfoBox from '../info-box';
-import SettingTabsControl from '../setting-tabs-control';
-import SvgStrokeWidthControl from '../svg-stroke-width-control';
-import SvgWidthControl from '../svg-width-control';
-import ToggleSwitch from '../toggle-switch';
-import MaxiModal from '../../editor/library/modal';
-import withRTC from '../../extensions/maxi-block/withRTC';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import AxisControl from '@components/axis-control';
+import AxisPositionControl from '@components/axis-position-control';
+import BorderControl from '@components/border-control';
+import ColorControl from '@components/color-control';
+import GradientControl from '@components/gradient-control';
+import Icon from '@components/icon';
+import InfoBox from '@components/info-box';
+import SettingTabsControl from '@components/setting-tabs-control';
+import SvgStrokeWidthControl from '@components/svg-stroke-width-control';
+import SvgWidthControl from '@components/svg-width-control';
+import ToggleSwitch from '@components/toggle-switch';
+import MaxiModal from '@editor/library/modal';
+import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getAttributeValue,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	setSVGAriaLabel,
 	shouldSetPreserveAspectRatio,
 	togglePreserveAspectRatio,
-} from '../../extensions/svg';
+} from '@extensions/svg';
 
 /**
  * Styles and icons
@@ -50,7 +50,7 @@ import {
 	styleNone,
 	iconStroke,
 	iconFill,
-} from '../../icons';
+} from '@maxi-icons';
 
 const IconControlResponsiveSettings = withRTC(props => {
 	const {

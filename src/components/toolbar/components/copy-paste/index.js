@@ -8,28 +8,28 @@ import { useContext, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { SettingTabsControl } from '../../../../components';
-import Button from '../../../button';
+import { SettingTabsControl } from '@components';
+import Button from '@components/button';
 import CopyPasteGroup from './CopyPasteGroup';
-import Dropdown from '../../../dropdown';
-import { goThroughMaxiBlocks } from '../../../../extensions/maxi-block';
+import Dropdown from '@components/dropdown';
+import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 import {
 	cleanInnerBlocks,
 	excludeAttributes,
 	getOrganizedAttributes,
-} from '../../../../extensions/copy-paste';
-import { loadColumnsTemplate } from '../../../../extensions/column-templates';
-import { getUpdatedBGLayersWithNewUniqueID } from '../../../../extensions/attributes';
+} from '@extensions/copy-paste';
+import { loadColumnsTemplate } from '@extensions/column-templates';
+import { getUpdatedBGLayersWithNewUniqueID } from '@extensions/attributes';
 import {
 	validateAttributes,
 	validateRowColumnsStructure,
-} from '../../../../extensions/repeater';
+} from '@extensions/repeater';
 import {
 	findTarget,
 	findBlockPosition,
 	getInitialColumn,
-} from '../../../../extensions/repeater/utils';
-import RepeaterContext from '../../../../blocks/row-maxi/repeaterContext';
+} from '@extensions/repeater/utils';
+import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies

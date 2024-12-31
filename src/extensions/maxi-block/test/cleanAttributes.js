@@ -1,4 +1,4 @@
-import cleanAttributes from '../cleanAttributes';
+import cleanAttributes from '@extensions/maxi-block/cleanAttributes';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(attr =>

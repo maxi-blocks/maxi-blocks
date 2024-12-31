@@ -6,10 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import ColorLayer from '../../../background-control/colorLayer';
-import { colorOptions as colorLayerAttr } from '../../../background-control/layers';
-import ToggleSwitch from '../../../toggle-switch';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import ColorLayer from '@components/background-control/colorLayer';
+import { colorOptions as colorLayerAttr } from '@components/background-control/layers';
+import ToggleSwitch from '@components/toggle-switch';
 
 /**
  * External dependencies
@@ -20,12 +20,12 @@ import { isEmpty, cloneDeep, findIndex, isEqual } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import { setBreakpointToLayer } from '../../../background-control/utils';
+import { setBreakpointToLayer } from '@components/background-control/utils';
 
 /**
  * Icons
  */
-import { backgroundColor } from '../../../../icons';
+import { backgroundColor } from '@maxi-icons';
 
 /**
  * BackgroundColor

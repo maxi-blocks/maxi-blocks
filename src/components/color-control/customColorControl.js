@@ -7,9 +7,9 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
-import OpacityControl from '../opacity-control';
-import ResetButton from '../reset-control';
+import BaseControl from '@components/base-control';
+import OpacityControl from '@components/opacity-control';
+import ResetButton from '@components/reset-control';
 
 /**
  * External dependencies

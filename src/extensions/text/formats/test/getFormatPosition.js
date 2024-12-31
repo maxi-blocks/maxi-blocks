@@ -1,5 +1,5 @@
 /* eslint-disable no-sparse-arrays */
-import getFormatPosition from '../getFormatPosition';
+import getFormatPosition from '@extensions/text/formats/getFormatPosition';
 
 describe('getFormatPosition', () => {
 	it('Returns correct link position', () => {

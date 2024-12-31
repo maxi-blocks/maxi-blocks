@@ -7,14 +7,14 @@ import { decodeEntities } from '@wordpress/html-entities';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../styles';
+import { getGroupAttributes } from '@extensions/styles';
 import getDCContent from './getDCContent';
 import { getSimpleText, sanitizeDCContent } from './utils';
 import getDCMedia from './getDCMedia';
 import getDCNewLinkSettings from './getDCNewLinkSettings';
 import getDCValues from './getDCValues';
 import getValidatedDCAttributes from './validateDCAttributes';
-import { getUpdatedImgSVG } from '../svg';
+import { getUpdatedImgSVG } from '@extensions/svg';
 import { inlineLinkFields } from './constants';
 
 /**
@@ -95,7 +95,10 @@ const fetchAndUpdateDCData = async (
 			if (newContent !== content) {
 				updateAttributes({
 					'dc-content': newContent,
-					...(newLinkSettings && { linkSettings: newLinkSettings }),
+					...(newLinkSettings !== null &&
+						newLinkSettings?.url !== null && {
+							linkSettings: newLinkSettings,
+						}),
 					...synchronizedAttributes,
 					...(newContainsHTML !== containsHTML && {
 						'dc-contains-html': newContainsHTML,
@@ -119,7 +122,10 @@ const fetchAndUpdateDCData = async (
 				updateAttributes({
 					'dc-media-id': null,
 					'dc-media-url': null,
-					...(newLinkSettings && { linkSettings: newLinkSettings }),
+					...(newLinkSettings !== null &&
+						newLinkSettings?.url !== null && {
+							linkSettings: newLinkSettings,
+						}),
 					...synchronizedAttributes,
 				});
 			} else {
@@ -139,9 +145,10 @@ const fetchAndUpdateDCData = async (
 								getSimpleText(caption)
 							),
 						}),
-						...(newLinkSettings && {
-							linkSettings: newLinkSettings,
-						}),
+						...(newLinkSettings !== null &&
+							newLinkSettings?.url !== null && {
+								linkSettings: newLinkSettings,
+							}),
 						...synchronizedAttributes,
 					});
 				}

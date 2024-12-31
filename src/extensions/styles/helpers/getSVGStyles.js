@@ -2,12 +2,12 @@
 /**
  * Internal dependencies
  */
-import getColorRGBAString from '../getColorRGBAString';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getPaletteAttributes from '../getPaletteAttributes';
-import getAttributeKey from '../getAttributeKey';
-import getAttributeValue from '../getAttributeValue';
-import { isValidNumber } from '../utils';
+import getColorRGBAString from '@extensions/styles/getColorRGBAString';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
+import getPaletteAttributes from '@extensions/styles/getPaletteAttributes';
+import getAttributeKey from '@extensions/styles/getAttributeKey';
+import getAttributeValue from '@extensions/styles/getAttributeValue';
+import { isValidNumber } from '@extensions/styles/utils';
 
 /**
  * External dependencies

@@ -6,8 +6,8 @@ import classnames from 'classnames';
 /**
  * Internal Dependencies
  */
-import { getLastBreakpointAttribute } from '../../extensions/styles';
-import { parseVideo, videoValidation } from '../../extensions/video';
+import { getLastBreakpointAttribute } from '@extensions/styles';
+import { parseVideo, videoValidation } from '@extensions/video';
 import { isNil } from 'lodash';
 
 /**

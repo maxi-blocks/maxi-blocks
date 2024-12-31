@@ -7,10 +7,10 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../styles';
+import { getGroupAttributes } from '@extensions/styles';
 import getDCNewLinkSettings from './getDCNewLinkSettings';
 import getDCValues from './getDCValues';
-import DC_LINK_BLOCKS from '../../components/toolbar/components/link/dcLinkBlocks';
+import DC_LINK_BLOCKS from '@components/toolbar/components/link/dcLinkBlocks';
 
 const useMaxiDCLink = (
 	blockName,

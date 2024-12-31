@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { getSelectorsCss } from '../../components/custom-css-control/utils';
-import { getTransformSelectors } from '../../components/transform-control/utils';
+import { getSelectorsCss } from '@components/custom-css-control/utils';
+import { getTransformSelectors } from '@components/transform-control/utils';
 import {
 	getCustomCssObject,
 	getAdvancedCssObject,

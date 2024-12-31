@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
-import { getAdvancedSettings } from '../../extensions/relations';
+import { createSelectors } from '@extensions/styles/custom-css';
+import { getAdvancedSettings } from '@extensions/relations';
 
 /**
  * Classnames

@@ -1,4 +1,10 @@
+_Updates 24 Dec 2024_
+MaxiBlocks v2.0.6
+* Fix: Restored missing author display functionality in Dynamic Content on frontend.
+* Fix: Resolved link settings freeze issue in Dynamic Content.
+
 _Updates 23 Dec 2024_
+MaxiBlocks v2.0.5
 * Update: Switched Templates, Icons, and Style Cards libraries to a self-hosted server to improve speed and stability.
 * Update: Implemented rem units support in typography control for better responsive design and accessibility.
 * Update: Enhanced Dynamic Content with additional author fields for more comprehensive content display.

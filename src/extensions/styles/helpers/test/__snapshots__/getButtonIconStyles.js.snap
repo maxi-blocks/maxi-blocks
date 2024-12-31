@@ -1,0 +1,569 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getButtonIconStyles Should return the correct styles for empty object 1`] = `
+{
+  " .maxi-button-block__button .maxi-button-block__icon svg path": {
+    "iconPath": {
+      "general": {},
+      "label": "Icon path",
+    },
+  },
+  " > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+  ":hover .maxi-button-block__button .maxi-button-block__icon": undefined,
+  ":hover .maxi-button-block__button .maxi-button-block__icon svg": undefined,
+  ":hover .maxi-button-block__button .maxi-button-block__icon svg > *": undefined,
+  ":hover .maxi-button-block__button .maxi-button-block__icon svg path": undefined,
+  ":hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+}
+`;
+
+exports[`getButtonIconStyles Should return the correct styles for random object 1`] = `
+{
+  " .maxi-button-block__button .maxi-button-block__icon": {
+    "background": false,
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+    "gradient": false,
+    "iconResponsive": {
+      "general": {
+        "margin-left": "5px",
+      },
+      "l": {},
+      "label": "Icon responsive",
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+    "padding": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg": {
+    "iconSize": {
+      "general": {
+        "height": "124px",
+        "width": "124px",
+      },
+      "l": {
+        "height": "124px",
+        "width": "124px",
+      },
+      "label": "Icon size",
+      "m": {
+        "height": "124px",
+        "width": "124px",
+      },
+      "s": {
+        "height": "124px",
+        "width": "124px",
+      },
+      "xl": {
+        "height": "124px",
+        "width": "124px",
+      },
+      "xs": {
+        "height": "124px",
+        "width": "124px",
+      },
+      "xxl": {
+        "height": "124px",
+        "width": "124px",
+      },
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg > *": {
+    "background": false,
+    "border": false,
+    "gradient": false,
+    "iconResponsive": {
+      "general": {
+        "margin-left": "5px",
+      },
+      "l": {},
+      "label": "Icon responsive",
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+    "padding": false,
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg path": {
+    "iconPath": {
+      "general": {
+        "stroke-width": 2,
+      },
+      "label": "Icon path",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) *": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon": false,
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg": false,
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg > *": false,
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg path": false,
+  " > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+  ":hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+}
+`;
+
+exports[`getButtonIconStyles Should work on hover 1`] = `
+{
+  " .maxi-button-block__button .maxi-button-block__icon svg path": {
+    "iconPath": {
+      "general": {
+        "stroke-width": 2,
+      },
+      "label": "Icon path",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon": {
+    "background": false,
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+    "gradient": false,
+    "icon": {
+      "general": {},
+      "label": "Icon",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg": {
+    "iconSize": {
+      "general": {
+        "height": "101px",
+        "width": "101px",
+      },
+      "l": {
+        "height": "101px",
+        "width": "101px",
+      },
+      "label": "Icon size",
+      "m": {
+        "height": "101px",
+        "width": "101px",
+      },
+      "s": {
+        "height": "101px",
+        "width": "101px",
+      },
+      "xl": {
+        "height": "101px",
+        "width": "101px",
+      },
+      "xs": {
+        "height": "101px",
+        "width": "101px",
+      },
+      "xxl": {
+        "height": "101px",
+        "width": "101px",
+      },
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg > *": {
+    "background": false,
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+    "gradient": false,
+    "icon": {
+      "general": {},
+      "label": "Icon",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg circle[data-hover-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg g[data-hover-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg path": {
+    "iconPath": {
+      "general": {},
+      "label": "Icon path",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg path[data-hover-stroke]": {
+    "SVGPath": {
+      "general": {},
+      "label": "SVG path",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg path[data-hover-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg use[data-hover-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg[data-hover-stroke] path": {
+    "SVGPath": {
+      "general": {},
+      "label": "SVG path",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg[data-hover-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg[data-hover-stroke]:not([stroke^="none"]) *": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) *": {
+    "SVGPathStroke": {
+      "general": {
+        "stroke": "var(--maxi-light-icon-stroke-hover,rgba(var(--maxi-light-color-8),1))",
+      },
+      "label": "SVG Path stroke",
+    },
+  },
+  " > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+  ":hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+}
+`;
+
+exports[`getButtonIconStyles Should work on responsive 1`] = `
+{
+  " .maxi-button-block__button .maxi-button-block__icon": {
+    "background": false,
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+    "gradient": false,
+    "iconResponsive": {
+      "general": {
+        "margin-left": "5px",
+      },
+      "l": {},
+      "label": "Icon responsive",
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {
+        "margin-left": "10px",
+      },
+    },
+    "padding": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg": {
+    "iconSize": {
+      "general": {
+        "height": "32px",
+        "width": "32px",
+      },
+      "l": {
+        "height": "32px",
+        "width": "32px",
+      },
+      "label": "Icon size",
+      "m": {
+        "height": "32px",
+        "width": "32px",
+      },
+      "s": {
+        "height": "32px",
+        "width": "32px",
+      },
+      "xl": {
+        "height": "32px",
+        "width": "32px",
+      },
+      "xs": {
+        "height": "32px",
+        "width": "32px",
+      },
+      "xxl": {
+        "height": "124px",
+        "width": "124px",
+      },
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg > *": {
+    "background": false,
+    "border": false,
+    "gradient": false,
+    "iconResponsive": {
+      "general": {
+        "margin-left": "5px",
+      },
+      "l": {},
+      "label": "Icon responsive",
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {
+        "margin-left": "10px",
+      },
+    },
+    "padding": false,
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg path": {
+    "iconPath": {
+      "general": {
+        "stroke-width": 2,
+      },
+      "label": "Icon path",
+      "xxl": {
+        "stroke-width": 4,
+      },
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"])": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) *": {
+    "SVGPathStroke": {
+      "label": "SVG Path stroke",
+    },
+  },
+  " .maxi-button-block__button:hover .maxi-button-block__icon": false,
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg": false,
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg > *": false,
+  " .maxi-button-block__button:hover .maxi-button-block__icon svg path": false,
+  " > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+  ":hover > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+}
+`;

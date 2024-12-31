@@ -6,7 +6,7 @@ import margin from './margin';
 import padding from './padding';
 import { typography } from './typography';
 
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 
 export const hover = {
 	'hover-type': {

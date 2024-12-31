@@ -1,4 +1,4 @@
-import paletteAttributesCreator from '../paletteAttributesCreator';
+import paletteAttributesCreator from '@extensions/styles/paletteAttributesCreator';
 
 const shape = {
 	...paletteAttributesCreator({ prefix: 'shape-fill-', palette: 4 }),

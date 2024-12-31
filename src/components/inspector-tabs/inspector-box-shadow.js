@@ -6,11 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SettingTabsControl from '../setting-tabs-control';
-import BoxShadowControl from '../box-shadow-control';
-import ToggleSwitch from '../toggle-switch';
-import { getGroupAttributes } from '../../extensions/styles';
-import ManageHoverTransitions from '../manage-hover-transitions';
+import SettingTabsControl from '@components/setting-tabs-control';
+import BoxShadowControl from '@components/box-shadow-control';
+import ToggleSwitch from '@components/toggle-switch';
+import { getGroupAttributes } from '@extensions/styles';
+import ManageHoverTransitions from '@components/manage-hover-transitions';
 
 /**
  * Component

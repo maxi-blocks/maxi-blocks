@@ -9,7 +9,7 @@ import { removeFormat } from '@wordpress/rich-text';
 import applyLinkFormat from './applyLinkFormat';
 import setFormatWithClass from './setFormatWithClass';
 import getInstancePositions from './getInstancePositions';
-import getGroupAttributes from '../../styles/getGroupAttributes';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 
 /**
  * Check if the RichText format value is formatted with requested format

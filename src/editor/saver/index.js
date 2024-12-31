@@ -13,8 +13,8 @@ import { useEffect, createRoot, useLayoutEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getPageFonts, loadFonts } from '../../extensions/text/fonts';
-import { getIsSiteEditor, getIsTemplatePart } from '../../extensions/fse';
+import { getPageFonts, loadFonts } from '@extensions/text/fonts';
+import { getIsSiteEditor, getIsTemplatePart } from '@extensions/fse';
 
 /**
  * Component

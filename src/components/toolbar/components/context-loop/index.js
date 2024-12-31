@@ -6,14 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import { ContextLoop } from '../../..';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { ContextLoop } from '@components';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarContextLoop } from '../../../../icons';
+import { toolbarContextLoop } from '@maxi-icons';
 
 /**
  * Dynamic Content

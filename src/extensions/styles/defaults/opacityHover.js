@@ -1,4 +1,4 @@
-import hoverAttributesCreator from '../hoverAttributesCreator';
+import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
 import opacity from './opacity';
 
 const opacityHover = hoverAttributesCreator({

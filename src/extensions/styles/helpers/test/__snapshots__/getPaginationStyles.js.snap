@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getPaginationColours Should return correct styles when using palette colors 1`] = `
+{
+  "current": {
+    "general": {
+      "color": "rgba(var(--maxi-light-color-8),1)",
+    },
+  },
+}
+`;
+
+exports[`getPaginationColours Should return empty object when no colors are set 1`] = `
+{
+  "current": {
+    "general": {},
+  },
+}
+`;
+
+exports[`getPaginationLinksStyles Should return the correct styles for empty object 1`] = `
+{
+  "typography": {},
+}
+`;
+
+exports[`getPaginationLinksStyles Should return the correct styles with typography attributes 1`] = `
+{
+  "typography": {
+    "general": {
+      "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5),1))",
+      "font-size": "18px",
+      "text-decoration": "underline",
+    },
+    "l": {
+      "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5),1))",
+    },
+    "m": {
+      "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5),1))",
+    },
+    "s": {
+      "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5),1))",
+    },
+    "xl": {
+      "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5),1))",
+    },
+    "xs": {
+      "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5),1))",
+    },
+    "xxl": {
+      "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-5),1))",
+    },
+  },
+}
+`;
+
+exports[`getPaginationStyles Should return the correct styles for empty object 1`] = `
+{
+  "flex": {},
+}
+`;
+
+exports[`getPaginationStyles Should return the correct styles with flex attributes 1`] = `
+{
+  "flex": {
+    "general": {
+      "align-content": "center",
+      "align-items": "center",
+      "flex-direction": "column",
+      "justify-content": "center",
+      "row-gap": "5px",
+    },
+    "l": {
+      "align-content": "center",
+      "align-items": "center",
+      "flex-direction": "column",
+      "justify-content": "center",
+      "row-gap": "5px",
+    },
+    "m": {
+      "align-content": "center",
+      "align-items": "center",
+      "flex-direction": "column",
+      "justify-content": "center",
+      "row-gap": "5px",
+    },
+    "s": {
+      "align-content": "center",
+      "align-items": "center",
+      "flex-direction": "column",
+      "justify-content": "center",
+      "row-gap": "5px",
+    },
+    "xl": {
+      "align-content": "center",
+      "align-items": "center",
+      "flex-direction": "column",
+      "justify-content": "center",
+      "row-gap": "5px",
+    },
+    "xs": {
+      "align-content": "center",
+      "align-items": "center",
+      "flex-direction": "column",
+      "justify-content": "center",
+      "row-gap": "5px",
+    },
+    "xxl": {
+      "align-content": "center",
+      "align-items": "center",
+      "flex-direction": "column",
+      "justify-content": "center",
+      "row-gap": "5px",
+    },
+  },
+}
+`;

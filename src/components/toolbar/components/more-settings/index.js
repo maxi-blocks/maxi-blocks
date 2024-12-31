@@ -9,21 +9,21 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Icon from '../../../icon';
-import Dropdown from '../../../dropdown';
-import CopyPaste from '../copy-paste';
-import ReusableBlocks from '../reusable-blocks';
-import Delete from '../delete';
-import Alignment from '../alignment';
-import TextGenerator from '../text-generator';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import { openSidebarAccordion } from '../../../../extensions/inspector';
+import Button from '@components/button';
+import Icon from '@components/icon';
+import Dropdown from '@components/dropdown';
+import CopyPaste from '@components/toolbar/components/copy-paste';
+import ReusableBlocks from '@components/toolbar/components/reusable-blocks';
+import Delete from '@components/toolbar/components/delete';
+import Alignment from '@components/toolbar/components/alignment';
+import TextGenerator from '@components/toolbar/components/text-generator';
+import { getGroupAttributes } from '@extensions/styles';
+import { openSidebarAccordion } from '@extensions/inspector';
 
 /**
  * Icons
  */
-import { toolbarMoreSettings } from '../../../../icons';
+import { toolbarMoreSettings } from '@maxi-icons';
 
 /**
  * Style

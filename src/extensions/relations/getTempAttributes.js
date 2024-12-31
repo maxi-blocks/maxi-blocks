@@ -5,7 +5,7 @@ import {
 	getAttributeKey,
 	getAttributeValue,
 	getPaletteAttributes,
-} from '../styles';
+} from '@extensions/styles';
 
 /**
  * External dependencies

@@ -1,4 +1,4 @@
-import getGroupAttributes from '../getGroupAttributes';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 
 const attributes = {
 	extraClassName: '',

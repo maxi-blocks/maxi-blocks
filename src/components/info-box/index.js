@@ -6,8 +6,8 @@ import { dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { openSidebarAccordion } from '../../extensions/inspector';
-import Icon from '../icon';
+import { openSidebarAccordion } from '@extensions/inspector';
+import Icon from '@components/icon';
 
 /**
  * External dependencies
@@ -18,7 +18,7 @@ import { isEmpty, uniqueId } from 'lodash';
 /**
  * Styles and icons
  */
-import { closeIcon } from '../../icons';
+import { closeIcon } from '@maxi-icons';
 import './editor.scss';
 
 const InfoBox = ({ className, message, links, tab = 0, onClose }) => {

@@ -15,19 +15,19 @@ import {
 	getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { handleSetAttributes } from '../../extensions/maxi-block';
+} from '@extensions/styles';
+import { handleSetAttributes } from '@extensions/maxi-block';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
 import GradientLayer from './gradientLayer';
-import Icon from '../icon';
+import Icon from '@components/icon';
 import ImageLayer from './imageLayer';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
 import { onChangeLayer, setBreakpointToLayer } from './utils';
-import SelectControl from '../select-control';
-import ListControl from '../list-control';
-import ListItemControl from '../list-control/list-item-control';
+import SelectControl from '@components/select-control';
+import ListControl from '@components/list-control';
+import ListItemControl from '@components/list-control/list-item-control';
 
 /**
  * External dependencies
@@ -38,8 +38,8 @@ import { cloneDeep, isEmpty, omit } from 'lodash';
 /**
  * Icons
  */
-import { toolbarDrop, toolbarShow } from '../../icons';
-import { getDCValues } from '../../extensions/DC';
+import { toolbarDrop, toolbarShow } from '@maxi-icons';
+import { getDCValues } from '@extensions/DC';
 
 /**
  * Component

@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getVwSize from '../dom/getViewPortUnitsSize';
+import getVwSize from '@extensions/dom/getViewPortUnitsSize';
 
 /**
  * External dependencies

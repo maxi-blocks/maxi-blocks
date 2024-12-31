@@ -6,22 +6,22 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
-import MaxiModal from '../../editor/library/modal';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import SelectControl from '@components/select-control';
+import ToggleSwitch from '@components/toggle-switch';
+import MaxiModal from '@editor/library/modal';
 
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	setSVGRatio,
 	setSVGPosition,
 	getSVGPosition,
 	getSVGRatio,
-} from '../../extensions/svg';
+} from '@extensions/svg';
 
 const ImageShapeResponsiveSettings = ({
 	breakpoint,

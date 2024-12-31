@@ -9,9 +9,9 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 
-import { loadFontsInEditor } from '../../extensions/text/fonts';
-import BaseControl from '../base-control';
-import ResetButton from '../reset-control';
+import { loadFontsInEditor } from '@extensions/text/fonts';
+import BaseControl from '@components/base-control';
+import ResetButton from '@components/reset-control';
 
 /**
  * External dependencies

@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { scrollTypes } from '../defaults/scroll';
+import { scrollTypes } from '@extensions/styles/defaults/scroll';
 
 const name = 'Scroll effects zones';
 

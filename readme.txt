@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 2.0.5
+Stable tag: 2.0.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,7 +173,13 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 24 Dec 2024_
+MaxiBlocks v2.0.6
+* Fix: Restored missing author display functionality in Dynamic Content on frontend.
+* Fix: Resolved link settings freeze issue in Dynamic Content.
+
 _Updates 23 Dec 2024_
+MaxiBlocks v2.0.5
 * Update: Switched Templates, Icons, and Style Cards libraries to a self-hosted server to improve speed and stability.
 * Update: Implemented rem units support in typography control for better responsive design and accessibility.
 * Update: Enhanced Dynamic Content with additional author fields for more comprehensive content display.
@@ -196,23 +202,6 @@ _Updates 11 Nov 2024_
 MaxiBlocks v2.0.3
 * Fix: Corrected images url path for MaxiBlocks Go patterns import.
 
-_Updates 11 Nov 2024_
-MaxiBlocks v2.0.2
-* Update: Introduced default templates, patterns and template parts import for the MaxiBlocks Go theme. These include blog home, archives, pages, index, 404, search results, and single posts.
-* Update: Added a Button Maxi link setting that lets users choose if the link should be on the button or on the canvas.
-* Fix: Optimized repeater performance to deal with the Editor Experience slowdown and freezes.
-
-_Updates 4 Nov 2024_
-MaxiBlocks v2.0.1
-* Update: Enabled Container Maxi and Text Maxi as default blocks when creating a new page / post accordingly.
-* Update: Restored the Text Block splitting into a new Text Block when pressing Enter at the end or beginning of the block's content.
-* Update: Implemented fixes for WordPress 6.7RC-2, ensuring compatibility and stability.
-* Update: Complete overhaul of the Random option for Dynamic Content and Context Loop: now it shows consistent random posts inside a Context Loop.
-* Update: Removed font family option for 'Open Sans Condensed' since it's no longer on Google / Bunny fonts.
-* Fix: Corrected issue with older blocks losing the XL screen values while editing them on a bigger screen.
-* Fix: Addressed issues with Style Cards having global Link colour and Button Hover colour enabled by default.
-* Fix: Switching to 4k XXL breakpoint on backend now renders all XXL styles in the Editing Experience.
-* Fix: Ensured that fonts names with spaces work correctly in the Editing Experience.
 
 == Upgrade Notice ==
 

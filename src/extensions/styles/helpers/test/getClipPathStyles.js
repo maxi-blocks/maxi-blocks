@@ -1,4 +1,4 @@
-import getClipPathStyles from '../getClipPathStyles';
+import getClipPathStyles from '@extensions/styles/helpers/getClipPathStyles';
 
 describe('getClipPathStyles', () => {
 	const object = {

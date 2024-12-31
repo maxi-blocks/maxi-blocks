@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import { isValidNumber } from '../utils';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
+import { isValidNumber } from '@extensions/styles/utils';
 
 /**
  * General

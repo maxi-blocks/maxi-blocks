@@ -1,4 +1,4 @@
-import setSVGContent from '../setSVGContent';
+import setSVGContent from '@extensions/svg/setSVGContent';
 
 describe('setSVGContent', () => {
 	const svgContent =

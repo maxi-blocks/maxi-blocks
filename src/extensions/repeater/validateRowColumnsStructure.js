@@ -6,7 +6,7 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { cleanInnerBlocks, excludeAttributes } from '../copy-paste';
+import { cleanInnerBlocks, excludeAttributes } from '@extensions/copy-paste';
 import {
 	findBlockPosition,
 	findTarget,
@@ -16,11 +16,11 @@ import {
 import updateNCLimits from './updateNCLimits';
 import updateSVG from './updateSVG';
 import updateRelationsInColumn from './updateRelationsInColumn';
-import { goThroughMaxiBlocks } from '../maxi-block';
-import { getBlockData } from '../attributes';
-import loadColumnsTemplate from '../column-templates/loadColumnsTemplate';
-import { getTemplates } from '../column-templates';
-import { getLastBreakpointAttribute } from '../styles';
+import { goThroughMaxiBlocks } from '@extensions/maxi-block';
+import { getBlockData } from '@extensions/attributes';
+import loadColumnsTemplate from '@extensions/column-templates/loadColumnsTemplate';
+import { getTemplates } from '@extensions/column-templates';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 import DISALLOWED_BLOCKS from './disallowedBlocks';
 
 /**

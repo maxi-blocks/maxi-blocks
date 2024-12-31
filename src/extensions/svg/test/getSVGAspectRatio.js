@@ -1,5 +1,5 @@
-import getSVGAspectRatio from '../getSVGAspectRatio';
-import setSVGRatio from '../setSVGRatio';
+import getSVGAspectRatio from '@extensions/svg/getSVGAspectRatio';
+import setSVGRatio from '@extensions/svg/setSVGRatio';
 
 describe('getSVGAspectRatio', () => {
 	const icon =

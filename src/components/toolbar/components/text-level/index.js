@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import FontLevelControl from '../../../font-level-control';
-import ToolbarPopover from '../toolbar-popover';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import FontLevelControl from '@components/font-level-control';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Styles and icons
@@ -22,7 +22,7 @@ import {
 	toolbarH5,
 	toolbarH6,
 	toolbarP,
-} from '../../../../icons';
+} from '@maxi-icons';
 
 /**
  * TextLevel

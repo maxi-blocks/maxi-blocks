@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getWinBreakpoint from '../dom/getWinBreakpoint';
+import getWinBreakpoint from '@extensions/dom/getWinBreakpoint';
 
 const selectors = {
 	receiveMaxiSettings(state) {

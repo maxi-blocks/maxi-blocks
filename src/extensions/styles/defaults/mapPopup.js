@@ -1,6 +1,6 @@
 import { background, backgroundColor } from './background';
 import boxShadow from './boxShadow';
-import prefixAttributesCreator from '../prefixAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 
 const prefix = 'popup-';
 

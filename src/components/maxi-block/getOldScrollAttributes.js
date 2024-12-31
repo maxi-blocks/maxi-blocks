@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { scrollTypes } from '../../extensions/styles/defaults/scroll';
+import { scrollTypes } from '@extensions/styles/defaults/scroll';
 
 /**
  * External dependencies

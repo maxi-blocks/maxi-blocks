@@ -3,7 +3,7 @@
 exports[`Video options control Check video options control 1`] = `"<iframe class="maxi-video-block__video-player" id="video-maxi-1se8ef1z-u-player" title="Placeholder Video" allowfullscreen="" allow="autoplay" src="https://www.youtube.com/embed/ScMzIvxBSi4?rel=0&amp;enablejsapi=1&amp;mute=1&amp;controls=0&amp;autoplay=1"></iframe>"`;
 
 exports[`Video options control Check video options control 2`] = `
-"<!-- wp:maxi-blocks/video-maxi {"maxi-version-current":"2.0.5","maxi-version-origin":"2.0.5","blockStyle":"light","isFirstOnHierarchy":true,"uniqueID":"video-maxi-1se8ef1z-u","customLabel":"Video_1","embedUrl":"https://www.youtube.com/embed/ScMzIvxBSi4?rel=0\\u0026enablejsapi=1\\u0026mute=1\\u0026controls=0\\u0026autoplay=1","isLoop":true,"isMuted":true,"isAutoplay":true,"showPlayerControls":false} -->
+"<!-- wp:maxi-blocks/video-maxi {"maxi-version-current":"2.0.6","maxi-version-origin":"2.0.6","blockStyle":"light","isFirstOnHierarchy":true,"uniqueID":"video-maxi-1se8ef1z-u","customLabel":"Video_1","embedUrl":"https://www.youtube.com/embed/ScMzIvxBSi4?rel=0\\u0026enablejsapi=1\\u0026mute=1\\u0026controls=0\\u0026autoplay=1","isLoop":true,"isMuted":true,"isAutoplay":true,"showPlayerControls":false} -->
 <div class="wp-block-maxi-blocks-video-maxi maxi-block maxi-video-block maxi-light video-maxi-1se8ef1z-u maxi-video-block--youtube" id="video-maxi-1se8ef1z-u"><div class="maxi-video-block__video-container"><iframe class="maxi-video-block__video-player" title="video player" allowfullscreen allow="autoplay" src="https://www.youtube.com/embed/ScMzIvxBSi4?rel=0&amp;enablejsapi=1&amp;mute=1&amp;controls=0&amp;autoplay=1" frameborder="0"></iframe></div></div>
 <!-- /wp:maxi-blocks/video-maxi -->"
 `;

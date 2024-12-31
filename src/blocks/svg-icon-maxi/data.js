@@ -6,21 +6,21 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import BackgroundControl from '../../components/background-control';
-import BorderControl from '../../components/border-control';
+import BackgroundControl from '@components/background-control';
+import BorderControl from '@components/border-control';
 import SvgColorControl from './components/svg-color-control';
-import { createSelectors } from '../../extensions/styles/custom-css';
-import { createIconTransitions } from '../../extensions/styles';
+import { createSelectors } from '@extensions/styles/custom-css';
+import { createIconTransitions } from '@extensions/styles';
 import {
 	getBackgroundStyles,
 	getBorderStyles,
 	getSVGStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+} from '@extensions/relations';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
  * Classnames

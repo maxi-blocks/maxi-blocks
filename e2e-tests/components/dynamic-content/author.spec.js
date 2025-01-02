@@ -14,7 +14,7 @@ import {
 import { siteCodeEditor } from './content';
 
 describe('Dynamic content', () => {
-	it.skip('Should return author DC content', async () => {
+	it('Should return author DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data
@@ -35,16 +35,16 @@ describe('Dynamic content', () => {
 
 		// Check backend
 		const expectedResults = {
-			'text-maxi-1se8ef1z-u': 'admin',
-			'text-maxi-2se8ef1z-u': 'No content found',
-			'text-maxi-3se8ef1z-u': 'No content found',
-			'text-maxi-4se8ef1z-u': 'http://localhost:8889/?author=1',
-			'text-maxi-5se8ef1z-u': 'http://localhost:8889',
+			'text-dc-1': 'admin',
+			'text-dc-2': 'No content found',
+			'text-dc-3': 'No content found',
+			'text-dc-4': 'http://localhost:8889/?author=1',
+			'text-dc-5': 'http://localhost:8889',
 		};
 
 		const getBackResults = async (block, expect) =>
 			page.$eval(
-				`.maxi-text-block[uniqueid="${block}"] .maxi-text-block__content`,
+				`.maxi-text-block.${block} .maxi-text-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect
 			);
@@ -58,7 +58,7 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage();
 		await previewPage.waitForSelector(
-			'#text-maxi-1se8ef1z-u.maxi-text-block .maxi-text-block__content',
+			'.text-dc-1.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}
@@ -67,7 +67,7 @@ describe('Dynamic content', () => {
 
 		const getFrontResults = async (block, expect) =>
 			previewPage.$eval(
-				`#${block}.maxi-text-block .maxi-text-block__content`,
+				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect
 			);

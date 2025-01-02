@@ -13,10 +13,18 @@ import {
  * Internal dependencies
  */
 import { mediaCodeEditor } from './content';
-import addImageToLibrary from '../../utils/addImageToLibrary';
+import {
+	addImageToLibrary,
+	removeUploadedImage,
+} from '../../utils/addImageToLibrary';
 
 describe('Dynamic content', () => {
-	it.skip('Should return media DC content', async () => {
+	afterEach(async () => {
+		await page.goto('http://localhost:8889/wp-admin/post-new.php');
+		await removeUploadedImage(page);
+	});
+
+	it('Should return media DC content', async () => {
 		await createNewPost();
 		await addImageToLibrary(page);
 
@@ -27,7 +35,7 @@ describe('Dynamic content', () => {
 			'postType',
 			'attachment'
 		);
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(1000);
 
 		const mediaEntities = await wpDataSelect(
 			'core',
@@ -39,7 +47,7 @@ describe('Dynamic content', () => {
 
 		// Set code editor as clipboard data
 		const codeEditor = mediaCodeEditor.replaceAll(
-			'"dc-id":91',
+			'"dc-id":1377',
 			`"dc-id":${mediaElement.id}`
 		);
 		await setClipboardData({ plainText: codeEditor });
@@ -56,44 +64,69 @@ describe('Dynamic content', () => {
 		});
 		await page.waitForTimeout(1000);
 
+		const currentYear = new Date().getFullYear();
+		const currentMonth = new Date().getMonth() + 1;
+
 		// Check backend
 		const expectedResults = {
-			title: 'Delete Key',
-			content: 'Delete Key',
-			excerpt: 'Delete Key',
+			title: 'foo',
+			caption: 'No content found',
+			description: 'No content found',
 			author: 'admin',
+			content: `http://localhost:8889/wp-content/uploads/${currentYear}/${currentMonth}/foo.png`,
 		};
 
-		const titleBlocks = ['text-maxi-1se8ef1z-u', 'text-maxi-1se8ef1z-u5'];
-		const contentBlocks = ['text-maxi-2se8ef1z-u', 'text-maxi-1se8ef1z-u6'];
-		const excerptBlocks = ['text-maxi-3se8ef1z-u', 'text-maxi-1se8ef1z-u7'];
-		const authorBlocks = ['text-maxi-5se8ef1z-u', 'text-maxi-1se8ef1z-u9'];
+		const titleBlocks = ['text-dc-title-1', 'text-dc-title-2'];
+		const captionBlocks = ['text-dc-caption-1', 'text-dc-caption-2'];
+		const descriptionBlocks = [
+			'text-dc-description-1',
+			'text-dc-description-2',
+		];
+		const authorBlocks = ['text-dc-author-1', 'text-dc-author-2'];
+		const contentBlocks = ['image-dc-content-1', 'image-dc-content-2'];
 
-		const getBackResults = async (block, type) =>
+		const getBackTextResults = async (block, type) =>
 			page.$eval(
-				`.maxi-text-block[uniqueid="${block}"] .maxi-text-block__content`,
-				(el, expect) => el.innerText === expect,
+				`.${block}.maxi-text-block .maxi-text-block__content`,
+				(el, expect) => (el.innerText === expect ? true : el.innerText),
+				expectedResults[type]
+			);
+
+		const getBackImageResults = async (block, type) =>
+			page.$eval(
+				`.${block}.maxi-image-block .maxi-image-block__image`,
+				(el, expect) => (el.src === expect ? true : el.src),
 				expectedResults[type]
 			);
 
 		const titleResults = await Promise.all(
-			titleBlocks.map(async block => getBackResults(block, 'title'))
+			titleBlocks.map(async block => getBackTextResults(block, 'title'))
 		);
-		const contentResults = await Promise.all(
-			contentBlocks.map(async block => getBackResults(block, 'content'))
+		const captionResults = await Promise.all(
+			captionBlocks.map(async block =>
+				getBackTextResults(block, 'caption')
+			)
 		);
-		const excerptResults = await Promise.all(
-			excerptBlocks.map(async block => getBackResults(block, 'excerpt'))
+		const descriptionResults = await Promise.all(
+			descriptionBlocks.map(async block =>
+				getBackTextResults(block, 'description')
+			)
 		);
 		const authorResults = await Promise.all(
-			authorBlocks.map(async block => getBackResults(block, 'author'))
+			authorBlocks.map(async block => getBackTextResults(block, 'author'))
+		);
+		const contentResults = await Promise.all(
+			contentBlocks.map(async block =>
+				getBackImageResults(block, 'content')
+			)
 		);
 
 		const results = [
 			...titleResults,
-			...contentResults,
-			...excerptResults,
+			...captionResults,
+			...descriptionResults,
 			...authorResults,
+			...contentResults,
 		];
 
 		expect(results.every(result => result)).toBe(true);
@@ -101,38 +134,57 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage();
 		await previewPage.waitForSelector(
-			'#text-maxi-1se8ef1z-u.maxi-text-block .maxi-text-block__content',
+			'.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}
 		);
 		await previewPage.waitForTimeout(1000);
 
-		const getFrontResults = async (block, type) =>
+		const getFrontTextResults = async (block, type) =>
 			previewPage.$eval(
-				`#${block}.maxi-text-block .maxi-text-block__content`,
-				(el, expect) => el.innerText === expect,
+				`.${block}.maxi-text-block .maxi-text-block__content`,
+				(el, expect) => (el.innerText === expect ? true : el.innerText),
+				expectedResults[type]
+			);
+
+		const getFrontImageResults = async (block, type) =>
+			previewPage.$eval(
+				`.${block}.maxi-image-block .maxi-image-block__image`,
+				(el, expect) => (el.src === expect ? true : el.src),
 				expectedResults[type]
 			);
 
 		const frontTitleResults = await Promise.all(
-			titleBlocks.map(async block => getFrontResults(block, 'title'))
+			titleBlocks.map(async block => getFrontTextResults(block, 'title'))
 		);
-		const frontContentResults = await Promise.all(
-			contentBlocks.map(async block => getFrontResults(block, 'content'))
+		const frontCaptionResults = await Promise.all(
+			captionBlocks.map(async block =>
+				getFrontTextResults(block, 'caption')
+			)
 		);
-		const frontExcerptResults = await Promise.all(
-			excerptBlocks.map(async block => getFrontResults(block, 'excerpt'))
+		const frontDescriptionResults = await Promise.all(
+			descriptionBlocks.map(async block =>
+				getFrontTextResults(block, 'description')
+			)
 		);
 		const frontAuthorResults = await Promise.all(
-			authorBlocks.map(async block => getFrontResults(block, 'author'))
+			authorBlocks.map(async block =>
+				getFrontTextResults(block, 'author')
+			)
+		);
+		const frontContentResults = await Promise.all(
+			contentBlocks.map(async block =>
+				getFrontImageResults(block, 'content')
+			)
 		);
 
 		const frontResults = [
 			...frontTitleResults,
-			...frontContentResults,
-			...frontExcerptResults,
+			...frontCaptionResults,
+			...frontDescriptionResults,
 			...frontAuthorResults,
+			...frontContentResults,
 		];
 
 		expect(frontResults.every(result => result)).toBe(true);

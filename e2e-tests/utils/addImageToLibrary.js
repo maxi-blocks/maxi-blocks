@@ -16,4 +16,22 @@ const addImageToLibrary = async page => {
 	);
 };
 
-export default addImageToLibrary;
+const removeUploadedImage = async page => {
+	await page.evaluate(async () => {
+		const mediaItems = await wp.data.resolveSelect('core').getMediaItems({
+			search: 'foo.png',
+		});
+
+		if (!mediaItems || mediaItems.length === 0) {
+			throw new Error('Image not found');
+		}
+
+		const imageToDelete = mediaItems[0];
+
+		await wp.data.dispatch('core').deleteMedia(imageToDelete.id, {
+			force: true,
+		});
+	});
+};
+
+export { addImageToLibrary, removeUploadedImage };

@@ -14,7 +14,7 @@ import {
 import { catCodeEditor } from './content';
 
 describe('Dynamic content', () => {
-	it.skip('Should return categories DC content', async () => {
+	it('Should return categories DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data
@@ -31,7 +31,7 @@ describe('Dynamic content', () => {
 		await page.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 		});
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(5000);
 
 		// Check backend
 		const expectedResults = {
@@ -43,19 +43,19 @@ describe('Dynamic content', () => {
 			link: 'http://localhost:8889/?cat=1',
 		};
 
-		const titleBlocks = ['text-maxi-1se8ef1z-u', 'text-maxi-9se8ef1z-u'];
+		const titleBlocks = ['text-dc-title-1', 'text-dc-title-2'];
 		const descriptionBlocks = [
-			'text-maxi-2se8ef1z-u',
-			'text-maxi-1se8ef1z-u0',
+			'text-dc-description-1',
+			'text-dc-description-2',
 		];
-		const slugBlocks = ['text-maxi-3se8ef1z-u', 'text-maxi-1se8ef1z-u1'];
-		const parentBlocks = ['text-maxi-4se8ef1z-u', 'text-maxi-1se8ef1z-u2'];
-		const countBlocks = ['text-maxi-5se8ef1z-u', 'text-maxi-1se8ef1z-u3'];
-		const linkBlocks = ['text-maxi-1se8ef1z-u5', 'text-maxi-1se8ef1z-u4'];
+		const slugBlocks = ['text-dc-slug-1', 'text-dc-slug-2'];
+		const parentBlocks = ['text-dc-parent-1', 'text-dc-parent-2'];
+		const countBlocks = ['text-dc-count-1', 'text-dc-count-2'];
+		const linkBlocks = ['text-dc-link-1', 'text-dc-link-2'];
 
 		const getBackResults = async (block, type) =>
 			page.$eval(
-				`.maxi-text-block[uniqueid="${block}"] .maxi-text-block__content`,
+				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => el.innerText === expect,
 				expectedResults[type]
 			);
@@ -94,7 +94,7 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage();
 		await previewPage.waitForSelector(
-			'#text-maxi-1se8ef1z-u.maxi-text-block .maxi-text-block__content',
+			'.text-dc-title-1.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}
@@ -103,7 +103,7 @@ describe('Dynamic content', () => {
 
 		const getFrontResults = async (block, type) =>
 			previewPage.$eval(
-				`#${block}.maxi-text-block .maxi-text-block__content`,
+				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => el.innerText === expect,
 				expectedResults[type]
 			);

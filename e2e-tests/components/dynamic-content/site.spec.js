@@ -14,7 +14,7 @@ import {
 import { siteCodeEditor } from './content';
 
 describe('Dynamic content', () => {
-	it.skip('Should return site DC content', async () => {
+	it('Should return site DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data
@@ -35,16 +35,16 @@ describe('Dynamic content', () => {
 
 		// Check backend
 		const expectedResults = {
-			'text-maxi-1se8ef1z-u': 'maxi-blocks',
-			'text-maxi-2se8ef1z-u': 'No content found',
-			'text-maxi-3se8ef1z-u': 'http://localhost:8889',
-			'text-maxi-4se8ef1z-u': 'wordpress@example.com',
-			'text-maxi-5se8ef1z-u': 'en_US',
+			'text-dc-title-1': 'maxi-blocks',
+			'text-dc-description-1': 'No content found',
+			'text-dc-url-1': 'http://localhost:8889',
+			'text-dc-email-1': 'wordpress@example.com',
+			'text-dc-language-1': 'en_US',
 		};
 
 		const getBackResults = async (block, expect) =>
 			page.$eval(
-				`.maxi-text-block[uniqueid="${block}"] .maxi-text-block__content`,
+				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect
 			);
@@ -58,7 +58,7 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage();
 		await previewPage.waitForSelector(
-			'#text-maxi-1se8ef1z-u.maxi-text-block .maxi-text-block__content',
+			'.text-dc-title-1.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}
@@ -67,7 +67,7 @@ describe('Dynamic content', () => {
 
 		const getFrontResults = async (block, expect) =>
 			previewPage.$eval(
-				`#${block}.maxi-text-block .maxi-text-block__content`,
+				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect
 			);

@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import ColorControl from '@components/color-control';
 import ClipPathControl from '@components/clip-path-control';
-import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import {
 	getAttributeKey,
@@ -19,6 +18,7 @@ import {
 } from '@extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 import { getPaletteColor } from '@extensions/style-cards';
+import withRTC from '@extensions/maxi-block/withRTC';
 
 /**
  * External dependencies
@@ -30,7 +30,7 @@ const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * Component
  */
-const ColorLayerContent = props => {
+const ColorLayer = props => {
 	const {
 		onChange,
 		onChangeInline,
@@ -263,17 +263,4 @@ const ColorLayerContent = props => {
 	);
 };
 
-const ColorLayer = props => {
-	const { breakpoint, disableResponsiveTabs = false, ...rest } = props;
-
-	if (disableResponsiveTabs)
-		return <ColorLayerContent breakpoint={breakpoint} {...rest} />;
-
-	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
-			<ColorLayerContent {...rest} />
-		</ResponsiveTabsControl>
-	);
-};
-
-export default ColorLayer;
+export default withRTC(ColorLayer);

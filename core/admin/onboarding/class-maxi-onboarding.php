@@ -116,120 +116,28 @@ class MaxiBlocks_Onboarding
             return;
         }
 
-        // Add debug helper
-        wp_add_inline_script('jquery', '
-            window.debugUnderscore = {
-                log: function(msg, data) {
-                    console.log("%c Underscore Debug:", "background: #007cba; color: white; padding: 2px 5px; border-radius: 3px;", msg, data);
-                },
-                error: function(msg, error) {
-                    console.error("%c Underscore Error:", "background: #dc3232; color: white; padding: 2px 5px; border-radius: 3px;", msg, error);
-                }
-            };
-        ', 'before');
-
-        // Deregister default underscore and backbone
-        wp_deregister_script('underscore');
-        wp_deregister_script('backbone');
-
-        // Register modified underscore
-        wp_register_script(
-            'underscore',
-            includes_url('js/underscore.min.js'),
-            [],
-            '1.13.7'
-        );
-
-        // Add our modifications to underscore
-        wp_add_inline_script('underscore', '
-            (function() {
-                // Store original underscore
-                var originalUnderscore = window._;
-
-                // Create new underscore instance
-                var newUnderscore = function(obj) {
-                    if (obj instanceof newUnderscore) return obj;
-                    if (!(this instanceof newUnderscore)) return new newUnderscore(obj);
-                    this._wrapped = obj;
-                };
-
-                // Copy all properties from original underscore
-                for (var key in originalUnderscore) {
-                    if (originalUnderscore.hasOwnProperty(key)) {
-                        newUnderscore[key] = originalUnderscore[key];
-                    }
-                }
-
-                // Add contains method
-                newUnderscore.contains = function(collection, item) {
-                    if (collection == null) return false;
-                    if (collection.length !== undefined) {
-                        return newUnderscore.indexOf(collection, item) >= 0;
-                    }
-                    return newUnderscore.some(collection, function(value) {
-                        return value === item;
-                    });
-                };
-
-                // Add includes as alias
-                newUnderscore.includes = newUnderscore.contains;
-
-                // Copy prototype methods
-                newUnderscore.prototype = originalUnderscore.prototype;
-
-                // Replace global underscore
-                window._ = newUnderscore;
-
-                debugUnderscore.log("Underscore replaced:", {
-                    version: window._.VERSION,
-                    contains: typeof window._.contains,
-                    includes: typeof window._.includes,
-                    methods: Object.keys(window._)
-                });
-            })();
-        ', 'after');
-
-        // Register backbone with modified underscore dependency
-        wp_register_script(
-            'backbone',
-            includes_url('js/backbone.min.js'),
-            ['underscore', 'jquery'],
-            '1.6.0'
-        );
-
-        // Enqueue scripts in order
-        wp_enqueue_script('jquery');
-        wp_enqueue_script('jquery-ui-core');
-        wp_enqueue_script('jquery-ui-sortable');
-        wp_enqueue_script('underscore');
-        wp_enqueue_script('backbone');
-
-        // Add verification after backbone
-        wp_add_inline_script('backbone', '
-            debugUnderscore.log("Underscore state after backbone:", {
-                contains: _.contains,
-                includes: _.includes,
-                backup: window._underscoreBackup !== undefined
-            });
-        ', 'after');
-
-        // Enqueue media scripts
-        wp_enqueue_media();
-
-        // Add final verification
-        wp_add_inline_script('media-models', '
-            debugUnderscore.log("Final underscore state:", {
-                contains: _.contains,
-                includes: _.includes,
-                backup: window._underscoreBackup !== undefined
-            });
-        ', 'after');
-
-        // Enqueue starter sites assets
+        // Then enqueue starter sites assets
         wp_enqueue_script('maxi-blocks-starter-sites');
         wp_enqueue_style('maxi-blocks-starter-sites');
 
-        // Enqueue onboarding styles and scripts
+        // First enqueue Underscore.js
+        // wp_enqueue_script('underscore');
+
+        // Then enqueue media scripts
+        wp_enqueue_media();
+
+        // Then enqueue onboarding script
+        wp_enqueue_script(
+            'maxi-blocks-onboarding',
+            MAXI_PLUGIN_URL_PATH . 'core/admin/onboarding/js/onboarding.js',
+            ['jquery'], // Add both jQuery and underscore as dependencies
+            MAXI_PLUGIN_VERSION,
+            true // Move to footer
+        );
+
+
+
+        // Enqueue onboarding styles
         wp_enqueue_style(
             'maxi-blocks-onboarding',
             MAXI_PLUGIN_URL_PATH . 'core/admin/onboarding/css/onboarding.css',
@@ -237,24 +145,7 @@ class MaxiBlocks_Onboarding
             MAXI_PLUGIN_VERSION
         );
 
-        wp_enqueue_script(
-            'maxi-blocks-onboarding',
-            MAXI_PLUGIN_URL_PATH . 'core/admin/onboarding/js/onboarding.js',
-            [
-                'jquery',
-                'jquery-ui-core',
-                'jquery-ui-sortable',
-                'underscore',
-                'backbone',
-                'media-models',
-                'media-views',
-                'media-editor',
-                'wp-media-utils'
-            ],
-            MAXI_PLUGIN_VERSION,
-            true
-        );
-
+        // Localize script after enqueueing
         wp_localize_script('maxi-blocks-onboarding', 'maxiOnboarding', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('maxi_onboarding'),

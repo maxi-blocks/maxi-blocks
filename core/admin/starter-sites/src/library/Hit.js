@@ -14,7 +14,6 @@ const Hit = ({ hit, type, isMaxiProActive, onClickConnect, onLogOut, isOnboardin
         hit.cost?.[0] === 'Pro'
             ? 'ais-InfiniteHits-item-pro'
             : 'ais-InfiniteHits-item-free';
-	console.log('Hit.description:', hit.description);
 
     if (type === 'starter-sites')
         return (

@@ -1,733 +1,364 @@
-const MaxiOnboarding = {
-	errors: {
-		required: 'This field is required',
-		invalidUrl: 'Please enter a valid URL',
-		invalidEmail: 'Please enter a valid email address',
-	},
+jQuery(document).ready(function($) {
+	const MaxiOnboarding = {
+		errors: {
+			required: 'This field is required',
+			invalidUrl: 'Please enter a valid URL',
+			invalidEmail: 'Please enter a valid email address',
+		},
 
-	init() {
-		this.bindEvents();
-		this.initMediaUploader();
-		this.initValidation();
-		this.initSiteIconUploader();
-		this.initSiteLogoUploader();
-	},
+		init() {
+			this.bindEvents();
+			this.initMediaUploader();
+			this.initValidation();
+		},
 
-	bindEvents() {
-		// Navigation
-		document.querySelectorAll('.maxi-onboarding-steps-nav .step')
-			.forEach(step => step.addEventListener('click', this.handleStepClick));
+		bindEvents() {
+			// Navigation
+			$('.maxi-onboarding-steps-nav .step').on('click', this.handleStepClick);
+			$('.maxi-onboarding-actions [data-action="continue"]').on('click', () => this.nextStep());
+			$('.maxi-onboarding-actions [data-action="back"]').on('click', () => this.previousStep());
 
-		document.querySelectorAll('.maxi-onboarding-actions [data-action="continue"]')
-			.forEach(btn => btn.addEventListener('click', () => this.nextStep()));
+			// Save actions
+			$('[data-action="save-welcome"]').on('click', () => this.saveWelcomeSettings());
+			$('[data-action="complete"]').on('click', () => this.completeOnboarding());
+			$('[data-action="save-design"]').on('click', () => this.saveDesignSettings());
 
-		document.querySelectorAll('.maxi-onboarding-actions [data-action="back"]')
-			.forEach(btn => btn.addEventListener('click', () => this.previousStep()));
-
-		// Save actions
-		document.querySelector('[data-action="save-welcome"]')?.addEventListener('click', () => this.saveWelcomeSettings());
-		document.querySelector('[data-action="complete"]')?.addEventListener('click', () => this.completeOnboarding());
-		document.querySelector('[data-action="save-design"]')?.addEventListener('click', () => this.saveDesignSettings());
-
-		// Starter site selection
-		const starterSiteElements = [
-			document.getElementById('choose-starter-site'),
-			...document.querySelectorAll('.change-starter-site'),
-		];
-
-		starterSiteElements.forEach(element => {
-			element?.addEventListener('click', () => {
-				document.getElementById('maxi-starter-sites-root')?.classList.add('modal-open');
+			// Starter site selection
+			$('#choose-starter-site, .change-starter-site').on('click', () => {
+				$('#maxi-starter-sites-root').addClass('modal-open');
 			});
-		});
 
-		// Theme activation
-		document.querySelectorAll('.activate-theme').forEach(button => {
-			button.addEventListener('click', async () => {
-				const theme = button.dataset.theme;
-				button.disabled = true;
-				this.showLoader();
+			// Theme activation
+			$('.activate-theme').on('click', function() {
+				const $button = $(this);
+				const theme = $button.data('theme');
+				$button.prop('disabled', true);
+				MaxiOnboarding.showLoader();
 
-				try {
-					const response = await fetch(maxiOnboarding.ajaxUrl, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded',
-						},
-						body: new URLSearchParams({
-							action: 'maxi_activate_theme',
-							nonce: maxiOnboarding.nonce,
-							theme,
-						}),
-					});
+				$.ajax({
+					url: maxiOnboarding.ajaxUrl,
+					type: 'POST',
+					data: {
+						action: 'maxi_activate_theme',
+						nonce: maxiOnboarding.nonce,
+						theme: theme
+					},
+					success: function(response) {
+						if (response.success) {
+							const $newButton = $('<button>', {
+								type: 'button',
+								class: 'button button-primary',
+								disabled: true,
+								html: `<span class="dashicons dashicons-yes"></span> ${maxiOnboarding.strings.activeTheme}`
+							});
+							$button.replaceWith($newButton);
 
-					const data = await response.json();
-
-					if (data.success) {
-						// Show temporary success state
-						const newButton = document.createElement('button');
-						newButton.type = 'button';
-						newButton.className = 'button button-primary';
-						newButton.disabled = true;
-						newButton.innerHTML = `
-							<span class="dashicons dashicons-yes"></span>
-							${maxiOnboarding.strings.activeTheme}
-						`;
-						button.replaceWith(newButton);
-
-						// Reload the page after a short delay to show the updated theme
-						setTimeout(() => {
-							window.location.reload();
-						}, 500);
-					} else {
-						alert(data.data || 'Error activating theme');
+							setTimeout(() => {
+								window.location.reload();
+							}, 500);
+						} else {
+							alert(response.data || 'Error activating theme');
+						}
+					},
+					error: function() {
+						alert('Error activating theme');
+						$button.prop('disabled', false);
+					},
+					complete: function() {
+						MaxiOnboarding.hideLoader();
 					}
-				} catch (error) {
-					alert('Error activating theme');
-					button.disabled = false;
-				} finally {
+				});
+			});
+		},
+
+		initMediaUploader() {
+			let logoFrame;
+			let iconFrame;
+
+			$('#upload-site-logo').on('click', function(e) {
+				e.preventDefault();
+
+				// Create new frame each time to avoid state issues
+				logoFrame = wp.media({
+					title: maxiOnboarding.strings.selectLogo || 'Select Site Logo',
+					multiple: false,
+					library: {
+						type: 'image'
+					},
+					button: {
+						text: maxiOnboarding.strings.useAsLogo || 'Use as site logo'
+					}
+				});
+
+				// When an image is selected in the media frame...
+				logoFrame.on('select', function() {
+					const attachment = logoFrame.state().get('selection').first().toJSON();
+					const $preview = $('#logo-preview');
+					const $input = $('input[name="site_logo_id"]');
+
+					if ($preview.length) {
+						$preview.html(`<img src="${attachment.url}" style="max-width: 200px;" />`);
+					}
+					if ($input.length) {
+						$input.val(attachment.id);
+					}
+				});
+
+				logoFrame.open();
+			});
+
+			$('#upload-site-icon').on('click', function(e) {
+				e.preventDefault();
+
+				// Create new frame each time to avoid state issues
+				iconFrame = wp.media({
+					title: maxiOnboarding.strings.selectIcon || 'Select Site Icon',
+					multiple: false,
+					library: {
+						type: 'image'
+					},
+					button: {
+						text: maxiOnboarding.strings.useAsIcon || 'Use as site icon'
+					}
+				});
+
+				// When an image is selected in the media frame...
+				iconFrame.on('select', function() {
+					const attachment = iconFrame.state().get('selection').first().toJSON();
+					const $preview = $('#site-icon-preview');
+					const $input = $('input[name="site_icon_id"]');
+
+					if ($preview.length) {
+						$preview.html(`<img src="${attachment.url}" style="max-width: 64px;" />`);
+					}
+					if ($input.length) {
+						$input.val(attachment.id);
+					}
+				});
+
+				iconFrame.open();
+			});
+		},
+
+		handleStepClick(e) {
+			const stepKey = $(this).data('step');
+			if (stepKey) {
+				window.location.href = `?page=maxi-blocks-onboarding&step=${stepKey}`;
+			}
+		},
+
+		nextStep() {
+			const currentStep = new URLSearchParams(window.location.search).get('step') || 'identity';
+			const steps = ['identity', 'theme', 'design', 'starter_site', 'finish'];
+			let currentIndex = steps.indexOf(currentStep);
+
+			if (currentStep === 'identity' && maxiOnboarding.initialThemeWasMaxiBlocksGo) {
+				currentIndex = steps.indexOf('theme');
+			}
+
+			if (currentIndex < steps.length - 1) {
+				window.location.href = `?page=maxi-blocks-onboarding&step=${steps[currentIndex + 1]}`;
+			}
+		},
+
+		previousStep() {
+			const currentStep = new URLSearchParams(window.location.search).get('step') || 'identity';
+			const steps = ['identity', 'theme', 'design', 'starter_site', 'finish'];
+			let currentIndex = steps.indexOf(currentStep);
+
+			if (currentStep === 'design' && maxiOnboarding.initialThemeWasMaxiBlocksGo) {
+				currentIndex = steps.indexOf('theme') + 1;
+			}
+
+			if (currentIndex > 0) {
+				window.location.href = `?page=maxi-blocks-onboarding&step=${steps[currentIndex - 1]}`;
+			}
+		},
+
+		saveWelcomeSettings() {
+			if (!this.validateStep()) return;
+
+			const $permalinkSelect = $('select[name="permalink_structure"]');
+			const selectedPermalink = $permalinkSelect.val();
+
+			this.showLoader();
+
+			$.ajax({
+				url: maxiOnboarding.ajaxUrl,
+				type: 'POST',
+				data: {
+					action: 'maxi_save_welcome_settings',
+					nonce: maxiOnboarding.nonce,
+					site_title: $('input[name="site_title"]').val(),
+					site_tagline: $('input[name="site_tagline"]').val(),
+					site_language: $('select[name="site_language"]').val(),
+					timezone_string: $('select[name="timezone_string"]').val(),
+					permalink_structure: selectedPermalink,
+					site_icon_id: $('input[name="site_icon_id"]').val()
+				},
+				success: (response) => {
+					if (response.success) {
+						if ($permalinkSelect.length) {
+							$permalinkSelect.find('option').prop('selected', false);
+							$permalinkSelect.find(`option[value="${selectedPermalink}"]`).prop('selected', true);
+						}
+						this.saveProgress('identity');
+						this.nextStep();
+					} else {
+						this.showError($('.maxi-onboarding-content'), response.data);
+					}
+				},
+				error: () => {
+					this.showError($('.maxi-onboarding-content'), 'An error occurred while saving. Please try again.');
+				},
+				complete: () => {
 					this.hideLoader();
 				}
 			});
-		});
-	},
+		},
 
-	initMediaUploader() {
-		let logoFrame;
-		let iconFrame;
+		saveDesignSettings() {
+			this.showLoader();
 
-		document.getElementById('upload-logo')?.addEventListener('click', (e) => {
-			e.preventDefault();
-
-			if (logoFrame) {
-				logoFrame.open();
-				return;
-			}
-
-			logoFrame = wp.media.frames.logoFrame = wp.media({
-				title: 'Select Site Logo',
-				button: { text: 'Use this image' },
-				states: [
-					new wp.media.controller.Library({
-						title: 'Select Site Logo',
-						library: wp.media.query({ type: 'image' }),
-						multiple: false,
-						date: false,
-					}),
-				],
-			});
-
-			logoFrame.on('select', () => {
-				const attachment = logoFrame.state().get('selection').first().toJSON();
-				const preview = document.getElementById('logo-preview');
-				if (preview) {
-					preview.innerHTML = `<img src="${attachment.url}" style="max-width: 200px;" />`;
-					preview.dataset.attachmentId = attachment.id;
-				}
-			});
-
-			logoFrame.open();
-		});
-
-		// Similar update for site icon uploader
-		document.getElementById('upload-icon')?.addEventListener('click', (e) => {
-			e.preventDefault();
-
-			if (iconFrame) {
-				iconFrame.open();
-				return;
-			}
-
-			iconFrame = wp.media.frames.iconFrame = wp.media({
-				title: 'Select Site Icon',
-				button: { text: 'Use this image' },
-				states: [
-					new wp.media.controller.Library({
-						title: 'Select Site Icon',
-						library: wp.media.query({ type: 'image' }),
-						multiple: false,
-						date: false,
-					}),
-				],
-			});
-
-			iconFrame.on('select', () => {
-				const attachment = iconFrame.state().get('selection').first().toJSON();
-				const preview = document.getElementById('site-icon-preview');
-				if (preview) {
-					preview.innerHTML = `<img src="${attachment.url}" style="max-width: 64px;" />`;
-					preview.dataset.attachmentId = attachment.id;
-				}
-			});
-
-			iconFrame.open();
-		});
-	},
-
-	handleStepClick(e) {
-		const stepKey = e.currentTarget.dataset.step;
-		if (stepKey) {
-			window.location.href = `?page=maxi-blocks-onboarding&step=${stepKey}`;
-		}
-	},
-
-	nextStep() {
-		const currentStep =
-			new URLSearchParams(window.location.search).get('step') ||
-			'identity';
-		const steps = [
-			'identity',
-			'theme',
-			'design',
-			'starter_site',
-			'finish',
-		];
-		let currentIndex = steps.indexOf(currentStep);
-
-		// Skip theme step only if it was active initially
-		if (
-			currentStep === 'identity' &&
-			maxiOnboarding.initialThemeWasMaxiBlocksGo
-		) {
-			currentIndex = steps.indexOf('theme');
-		}
-
-		if (currentIndex < steps.length - 1) {
-			window.location.href = `?page=maxi-blocks-onboarding&step=${
-				steps[currentIndex + 1]
-			}`;
-		}
-	},
-
-	previousStep() {
-		const currentStep =
-			new URLSearchParams(window.location.search).get('step') ||
-			'identity';
-		const steps = [
-			'identity',
-			'theme',
-			'design',
-			'starter_site',
-			'finish',
-		];
-		let currentIndex = steps.indexOf(currentStep);
-
-		// Skip theme step only if it was active initially
-		if (
-			currentStep === 'design' &&
-			maxiOnboarding.initialThemeWasMaxiBlocksGo
-		) {
-			currentIndex = steps.indexOf('theme') + 1;
-		}
-
-		if (currentIndex > 0) {
-			window.location.href = `?page=maxi-blocks-onboarding&step=${
-				steps[currentIndex - 1]
-			}`;
-		}
-	},
-
-	async saveWelcomeSettings() {
-		if (!this.validateStep()) return;
-
-		const permalinkSelect = document.querySelector('select[name="permalink_structure"]');
-		const selectedPermalink = permalinkSelect?.value;
-
-		this.showLoader();
-
-		try {
-			const response = await fetch(maxiOnboarding.ajaxUrl, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-				body: new URLSearchParams({
-					action: 'maxi_save_welcome_settings',
-					nonce: maxiOnboarding.nonce,
-					site_title: document.querySelector('input[name="site_title"]')?.value,
-					site_tagline: document.querySelector('input[name="site_tagline"]')?.value,
-					site_language: document.querySelector('select[name="site_language"]')?.value,
-					timezone_string: document.querySelector('select[name="timezone_string"]')?.value,
-					permalink_structure: selectedPermalink,
-					site_icon_id: document.querySelector('input[name="site_icon_id"]')?.value,
-				}),
-			});
-
-			const data = await response.json();
-
-			if (data.success) {
-				if (permalinkSelect) {
-						permalinkSelect.querySelectorAll('option').forEach(option => {
-							option.selected = option.value === selectedPermalink;
-						});
-				}
-
-				this.saveProgress('identity');
-				this.nextStep();
-			} else {
-				this.showError(
-					document.querySelector('.maxi-onboarding-content'),
-					data.data
-				);
-			}
-		} catch (error) {
-			this.showError(
-				document.querySelector('.maxi-onboarding-content'),
-				'An error occurred while saving. Please try again.'
-			);
-		} finally {
-			this.hideLoader();
-		}
-	},
-
-	completeOnboarding() {
-		fetch(maxiOnboarding.ajaxUrl, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body: new URLSearchParams({
-				action: 'maxi_complete_onboarding',
-				nonce: maxiOnboarding.nonce,
-			}),
-		})
-			.then(response => response.json())
-			.then(() => {
-				// Redirect to full site editor
-				window.location.href = `${maxiOnboarding.adminUrl}site-editor.php`;
-			});
-	},
-
-	openTemplateLibrary() {
-		// Implementation will depend on your template library system
-		// This is a placeholder for the actual implementation
-		console.log('Opening template library...');
-	},
-
-	addNewPage() {
-		// Implementation will depend on your page creation system
-		// This is a placeholder for the actual implementation
-		console.log('Adding new page...');
-	},
-
-	async saveDesignSettings() {
-		this.showLoader();
-
-		try {
-			const response = await fetch(maxiOnboarding.ajaxUrl, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-				body: new URLSearchParams({
+			$.ajax({
+				url: maxiOnboarding.ajaxUrl,
+				type: 'POST',
+				data: {
 					action: 'maxi_save_design_settings',
 					nonce: maxiOnboarding.nonce,
-					site_icon_id: document.querySelector('input[name="site_icon_id"]')?.value,
-					site_logo_id: document.querySelector('input[name="site_logo_id"]')?.value,
-				}),
-			});
-
-			const data = await response.json();
-
-			if (data.success) {
-				this.saveProgress('design');
-				this.nextStep();
-			} else {
-				this.showError(
-					document.querySelector('.maxi-onboarding-content'),
-					data.data || 'Error saving design settings'
-				);
-			}
-		} catch (error) {
-			this.showError(
-				document.querySelector('.maxi-onboarding-content'),
-				'An error occurred while saving. Please try again.'
-			);
-		} finally {
-			this.hideLoader();
-		}
-	},
-
-	savePagesSettings() {
-		const homepageId = document.getElementById('homepage-preview')?.dataset.pageId;
-		const additionalPages = [];
-
-		document.querySelectorAll('.page-card').forEach(card => {
-			const pageData = card.dataset.pageData;
-			if (pageData) {
-				additionalPages.push(pageData);
-			}
-		});
-
-		fetch(maxiOnboarding.ajaxUrl, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body: new URLSearchParams({
-				action: 'maxi_save_pages_settings',
-				nonce: maxiOnboarding.nonce,
-				homepage_id: homepageId,
-				pages: additionalPages,
-			}),
-		})
-			.then(response => response.json())
-			.then(data => {
-				if (data.success) {
-					this.nextStep();
+					site_icon_id: $('input[name="site_icon_id"]').val(),
+					site_logo_id: $('input[name="site_logo_id"]').val()
+				},
+				success: (response) => {
+					if (response.success) {
+						this.saveProgress('design');
+						this.nextStep();
+					} else {
+						this.showError($('.maxi-onboarding-content'), response.data || 'Error saving design settings');
+					}
+				},
+				error: () => {
+					this.showError($('.maxi-onboarding-content'), 'An error occurred while saving. Please try again.');
+				},
+				complete: () => {
+					this.hideLoader();
 				}
 			});
-	},
+		},
 
-	saveThemeSettings() {
-		const menuDesign = document.getElementById('menu-preview')?.dataset.menuDesign;
-		const templates = {
-			single_post: document.getElementById('single-post-template')?.value,
-			archive: document.getElementById('archive-template')?.value,
-			author_archive: document.getElementById('author-archive-template')?.value,
-			search_results: document.getElementById('search-results-template')?.value,
-			error_404: document.getElementById('404-template')?.value,
-		};
-
-		fetch(maxiOnboarding.ajaxUrl, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body: new URLSearchParams({
-				action: 'maxi_save_theme_settings',
-				nonce: maxiOnboarding.nonce,
-				menu_design: menuDesign,
-				...templates,
-			}),
-		})
-			.then(response => response.json())
-			.then(data => {
-				if (data.success) {
-					this.nextStep();
+		completeOnboarding() {
+			$.ajax({
+				url: maxiOnboarding.ajaxUrl,
+				type: 'POST',
+				data: {
+					action: 'maxi_complete_onboarding',
+					nonce: maxiOnboarding.nonce
+				},
+				success: () => {
+					window.location.href = `${maxiOnboarding.adminUrl}site-editor.php`;
 				}
 			});
-	},
+		},
 
-	initValidation() {
-		// Add validation classes to required fields
-		document.querySelectorAll('input[required], select[required]').forEach(field => field.classList.add('maxi-validate'));
+		initValidation() {
+			$('input[required], select[required]').addClass('maxi-validate');
 
-		// Validate on blur
-		document.addEventListener('blur', (e) => {
-			const field = e.target;
-			if (field.classList.contains('maxi-validate')) {
-				this.validateField(field);
+			$(document).on('blur', '.maxi-validate', (e) => {
+				this.validateField($(e.target));
+			});
+		},
+
+		validateField($field) {
+			const value = $field.val();
+			const $error = $field.next('.maxi-error');
+
+			if ($field.prop('required') && !value) {
+				this.showError($field, this.errors.required);
+				return false;
 			}
-		});
-	},
 
-	validateField(field) {
-		const value = field.value;
-		const error = field.nextElementSibling;
-
-		if (field.required && !value) {
-			this.showError(field, this.errors.required);
-			return false;
-		}
-
-		if (
-			field.type === 'url' &&
-			value &&
-			!this.isValidUrl(value)
-		) {
-			this.showError(field, this.errors.invalidUrl);
-			return false;
-		}
-
-		if (
-			field.type === 'email' &&
-			value &&
-			!this.isValidEmail(value)
-		) {
-			this.showError(field, this.errors.invalidEmail);
-			return false;
-		}
-
-		if (error) {
-			error.remove();
-		}
-		return true;
-	},
-
-	validateStep() {
-		const currentStep = document.querySelector('.maxi-onboarding-content');
-		const fields = currentStep.querySelectorAll('.maxi-validate');
-		let isValid = true;
-
-		fields.forEach(field => {
-			if (!this.validateField(field)) {
-				isValid = false;
+			if ($field.attr('type') === 'url' && value && !this.isValidUrl(value)) {
+				this.showError($field, this.errors.invalidUrl);
+				return false;
 			}
-		});
 
-		return isValid;
-	},
+			if ($field.attr('type') === 'email' && value && !this.isValidEmail(value)) {
+				this.showError($field, this.errors.invalidEmail);
+				return false;
+			}
 
-	showError(field, message) {
-		const error = field.nextElementSibling;
-		if (error) {
-			error.textContent = message;
-		} else {
-			const newError = document.createElement('span');
-			newError.className = 'maxi-error';
-			newError.textContent = message;
-			field.parentNode.appendChild(newError);
-		}
-	},
-
-	isValidUrl(url) {
-		try {
-			new URL(url);
+			$error.remove();
 			return true;
-		} catch {
-			return false;
-		}
-	},
+		},
 
-	isValidEmail(email) {
-		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-	},
+		validateStep() {
+			const $fields = $('.maxi-onboarding-content .maxi-validate');
+			let isValid = true;
 
-	showLoader() {
-		document.querySelector('.maxi-onboarding-content')?.classList.add('loading');
-		let loader = document.querySelector('.maxi-loader');
-		if (loader) {
-			loader.style.display = 'block';
-		}
-	},
-
-	hideLoader() {
-		document.querySelector('.maxi-onboarding-content')?.classList.remove('loading');
-		let loader = document.querySelector('.maxi-loader');
-		if (loader) {
-			loader.style.display = 'none';
-		}
-	},
-
-	saveProgress(step) {
-		const progress = JSON.parse(
-			localStorage.getItem('maxiOnboardingProgress') || '{}'
-		);
-		progress[step] = true;
-		localStorage.setItem(
-			'maxiOnboardingProgress',
-			JSON.stringify(progress)
-		);
-		this.updateStepStatus();
-	},
-
-	getProgress() {
-		return JSON.parse(
-			localStorage.getItem('maxiOnboardingProgress') || '{}'
-		);
-	},
-
-	updateStepStatus() {
-		const progress = this.getProgress();
-		document.querySelectorAll('.maxi-onboarding-steps-nav .step').forEach(step => {
-			if (progress[step.dataset.step]) {
-				step.classList.add('completed');
-			}
-		});
-	},
-
-	initSiteIconUploader() {
-		let frame;
-		const uploadButton = document.getElementById('upload-site-icon');
-		const preview = document.querySelector('.site-icon-preview');
-		const hiddenInput = document.querySelector('input[name="site_icon_id"]');
-
-		if (!uploadButton) return;
-
-		uploadButton.addEventListener('click', (e) => {
-			e.preventDefault();
-
-			// If the frame already exists, reuse it
-			if (frame) {
-				frame.open();
-				return;
-			}
-
-			// Create the media frame
-			frame = wp.media.frames.siteIcon = wp.media({
-				title: maxiOnboarding.strings.selectIcon || 'Select Site Icon',
-				button: {
-					text: maxiOnboarding.strings.useAsIcon || 'Use as site icon'
-				},
-				multiple: false,
-				library: {
-					type: 'image'
-				},
-				// Set the initial mode to 'select'
-				state: 'library',
-				// Set states
-				states: [
-					new wp.media.controller.Library({
-						title: maxiOnboarding.strings.selectIcon || 'Select Site Icon',
-						library: wp.media.query({ type: 'image' }),
-						multiple: false,
-						priority: 20,
-						filterable: 'uploaded'
-					})
-				]
-			});
-
-			// When an image is selected in the media frame...
-			frame.on('select', () => {
-				const attachment = frame.state().get('selection').first().toJSON();
-
-				// Update hidden input
-				hiddenInput.value = attachment.id;
-
-				// Update preview
-				preview.innerHTML = `<img src="${attachment.url}" alt="Site icon preview" />`;
-
-				// Update upload button text
-				uploadButton.textContent = maxiOnboarding.strings.changeIcon || 'Change Site Icon';
-
-				// Add remove button if not present
-				if (!document.getElementById('remove-site-icon')) {
-					const removeButton = document.createElement('button');
-					removeButton.type = 'button';
-					removeButton.className = 'button remove-site-icon';
-					removeButton.id = 'remove-site-icon';
-					removeButton.textContent = maxiOnboarding.strings.remove || 'Remove';
-					uploadButton.parentNode.appendChild(removeButton);
+			$fields.each((_, field) => {
+				if (!this.validateField($(field))) {
+					isValid = false;
 				}
 			});
 
-			frame.open();
-		});
+			return isValid;
+		},
 
-		// Handle remove button click
-		document.addEventListener('click', (e) => {
-			if (e.target.id !== 'remove-site-icon') return;
-
-			e.preventDefault();
-
-			// Clear hidden input
-			hiddenInput.value = '';
-
-			// Update preview
-				preview.innerHTML = `
-					<div class="placeholder">
-						<span class="dashicons dashicons-admin-site"></span>
-					</div>
-				`;
-
-			// Update upload button text
-				uploadButton.textContent = maxiOnboarding.strings.uploadIcon || 'Upload Site Icon';
-
-			// Remove the remove button
-				e.target.remove();
-		});
-	},
-
-	initSiteLogoUploader() {
-		let frame;
-		const uploadButton = document.getElementById('upload-site-logo');
-		const preview = document.querySelector('.current-site-logo');
-		const hiddenInput = document.querySelector('input[name="site_logo_id"]');
-
-		if (!uploadButton) return;
-
-		uploadButton.addEventListener('click', (e) => {
-			e.preventDefault();
-
-			if (frame) {
-				frame.open();
-				return;
+		showError($element, message) {
+			const $error = $element.next('.maxi-error');
+			if ($error.length) {
+				$error.text(message);
+			} else {
+				$('<span>', {
+					class: 'maxi-error',
+					text: message
+				}).insertAfter($element);
 			}
+		},
 
-			frame = wp.media.frames.siteLogo = wp.media({
-				title: maxiOnboarding.strings.selectLogo || 'Select Site Logo',
-				button: {
-					text: maxiOnboarding.strings.useAsLogo || 'Use as site logo'
-				},
-				multiple: false,
-				library: {
-					type: 'image'
-				},
-				state: 'library',
-				states: [
-					new wp.media.controller.Library({
-						title: maxiOnboarding.strings.selectLogo || 'Select Site Logo',
-						library: wp.media.query({ type: 'image' }),
-						multiple: false,
-						priority: 20,
-						filterable: 'uploaded'
-					})
-				]
-			});
+		isValidUrl(url) {
+			try {
+				new URL(url);
+				return true;
+			} catch {
+				return false;
+			}
+		},
 
-			frame.on('select', () => {
-				const attachment = frame.state().get('selection').first().toJSON();
+		isValidEmail(email) {
+			return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+		},
 
-				// Update hidden input
-				hiddenInput.value = attachment.id;
+		showLoader() {
+			$('.maxi-onboarding-content').addClass('loading');
+			$('.maxi-loader').show();
+		},
 
-				// Update preview
-				if (!preview) {
-					const previewDiv = document.createElement('div');
-					previewDiv.className = 'current-site-logo';
-					previewDiv.innerHTML = `
-						<p>${maxiOnboarding.strings.currentLogo || 'Current Logo:'}</p>
-						<img src="${attachment.url}" alt="Site logo preview" />
-					`;
-					uploadButton.parentNode.insertBefore(previewDiv, uploadButton);
-				} else {
-					preview.innerHTML = `
-						<p>${maxiOnboarding.strings.currentLogo || 'Current Logo:'}</p>
-						<img src="${attachment.url}" alt="Site logo preview" />
-					`;
-				}
+		hideLoader() {
+			$('.maxi-onboarding-content').removeClass('loading');
+			$('.maxi-loader').hide();
+		},
 
-				// Update upload button text
-				uploadButton.textContent = maxiOnboarding.strings.changeLogo || 'Change Logo';
+		saveProgress(step) {
+			const progress = JSON.parse(localStorage.getItem('maxiOnboardingProgress') || '{}');
+			progress[step] = true;
+			localStorage.setItem('maxiOnboardingProgress', JSON.stringify(progress));
+			this.updateStepStatus();
+		},
 
-				// Add remove button if not present
-				if (!document.getElementById('remove-site-logo')) {
-					const removeButton = document.createElement('button');
-					removeButton.type = 'button';
-					removeButton.className = 'button remove-site-logo';
-					removeButton.id = 'remove-site-logo';
-					removeButton.textContent = maxiOnboarding.strings.remove || 'Remove';
-					uploadButton.parentNode.appendChild(removeButton);
+		getProgress() {
+			return JSON.parse(localStorage.getItem('maxiOnboardingProgress') || '{}');
+		},
+
+		updateStepStatus() {
+			const progress = this.getProgress();
+			$('.maxi-onboarding-steps-nav .step').each(function() {
+				if (progress[$(this).data('step')]) {
+					$(this).addClass('completed');
 				}
 			});
+		}
+	};
 
-			frame.open();
-		});
-
-		// Handle remove button click
-		document.addEventListener('click', (e) => {
-			if (e.target.id !== 'remove-site-logo') return;
-
-			e.preventDefault();
-
-			// Clear hidden input
-			hiddenInput.value = '';
-
-			// Remove preview
-			if (preview) {
-				preview.remove();
-			}
-
-			// Update upload button text
-			uploadButton.textContent = maxiOnboarding.strings.uploadLogo || 'Upload Logo';
-
-			// Remove the remove button
-			e.target.remove();
-		});
-	}
-};
-
-document.addEventListener('DOMContentLoaded', () => {
 	MaxiOnboarding.init();
 });

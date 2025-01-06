@@ -72,14 +72,11 @@ jQuery(document).ready(function($) {
 		},
 
 		initMediaUploader() {
-			let logoFrame;
-			let iconFrame;
-
+			// For site logo
 			$('#upload-site-logo').on('click', function(e) {
 				e.preventDefault();
 
-				// Create new frame each time to avoid state issues
-				logoFrame = wp.media({
+				const frame = wp.media({
 					title: maxiOnboarding.strings.selectLogo || 'Select Site Logo',
 					multiple: false,
 					library: {
@@ -90,28 +87,37 @@ jQuery(document).ready(function($) {
 					}
 				});
 
-				// When an image is selected in the media frame...
-				logoFrame.on('select', function() {
-					const attachment = logoFrame.state().get('selection').first().toJSON();
-					const $preview = $('#logo-preview');
-					const $input = $('input[name="site_logo_id"]');
+				frame.on('select', function() {
+					const attachment = frame.state().get('selection').first().toJSON();
 
-					if ($preview.length) {
-						$preview.html(`<img src="${attachment.url}" style="max-width: 200px;" />`);
+					// Update the preview
+					const $logoWrapper = $('.current-site-logo');
+					if ($logoWrapper.length) {
+						if ($logoWrapper.find('img').length) {
+							$logoWrapper.find('img').attr('src', attachment.url);
+						} else {
+							$logoWrapper.html(`
+								<p>${maxiOnboarding.strings.currentLogo || 'Current Logo:'}</p>
+								<img src="${attachment.url}" alt="Current site logo" />
+							`);
+						}
 					}
-					if ($input.length) {
-						$input.val(attachment.id);
-					}
+
+					// Update the hidden input
+					$('input[name="site_logo_id"]').val(attachment.id);
+
+					// Update button text
+					$('#upload-site-logo').text(maxiOnboarding.strings.changeLogo || 'Change Logo');
 				});
 
-				logoFrame.open();
+				frame.open();
 			});
 
+			// For site icon
 			$('#upload-site-icon').on('click', function(e) {
 				e.preventDefault();
 
-				// Create new frame each time to avoid state issues
-				iconFrame = wp.media({
+				const frame = wp.media({
 					title: maxiOnboarding.strings.selectIcon || 'Select Site Icon',
 					multiple: false,
 					library: {
@@ -122,21 +128,43 @@ jQuery(document).ready(function($) {
 					}
 				});
 
-				// When an image is selected in the media frame...
-				iconFrame.on('select', function() {
-					const attachment = iconFrame.state().get('selection').first().toJSON();
-					const $preview = $('#site-icon-preview');
-					const $input = $('input[name="site_icon_id"]');
+				frame.on('select', function() {
+					const attachment = frame.state().get('selection').first().toJSON();
 
-					if ($preview.length) {
-						$preview.html(`<img src="${attachment.url}" style="max-width: 64px;" />`);
+					// Update the preview
+					const $iconWrapper = $('.current-site-icon');
+					if ($iconWrapper.length) {
+						if ($iconWrapper.find('img').length) {
+							$iconWrapper.find('img').attr('src', attachment.url);
+						} else {
+							$iconWrapper.html(`
+								<p>${maxiOnboarding.strings.currentIcon || 'Current Site Icon:'}</p>
+								<img src="${attachment.url}" alt="Current site icon" />
+							`);
+						}
 					}
-					if ($input.length) {
-						$input.val(attachment.id);
-					}
+
+					// Update the hidden input
+					$('input[name="site_icon_id"]').val(attachment.id);
+
+					// Update button text
+					$('#upload-site-icon').text(maxiOnboarding.strings.changeIcon || 'Change Site Icon');
 				});
 
-				iconFrame.open();
+				frame.open();
+			});
+
+			// Handle remove buttons
+			$('.remove-site-logo').on('click', function() {
+				$('input[name="site_logo_id"]').val('');
+				$('.current-site-logo').empty();
+				$('#upload-site-logo').text(maxiOnboarding.strings.uploadLogo || 'Upload Logo');
+			});
+
+			$('.remove-site-icon').on('click', function() {
+				$('input[name="site_icon_id"]').val('');
+				$('.current-site-icon').empty();
+				$('#upload-site-icon').text(maxiOnboarding.strings.uploadIcon || 'Upload Site Icon');
 			});
 		},
 

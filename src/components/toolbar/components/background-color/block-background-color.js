@@ -14,13 +14,16 @@ import ToggleSwitch from '@components/toggle-switch';
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep, findIndex, isEqual } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { setBreakpointToLayer } from '@components/background-control/utils';
+import {
+	handleOnChangeLayer,
+	setBreakpointToLayer,
+} from '@components/background-control/utils';
 
 /**
  * Icons
@@ -114,16 +117,15 @@ const BlockBackgroundColor = props => {
 							)
 						}
 						onChange={obj => {
-							const newLayer = { ...layer, ...obj };
+							const newLayer = {
+								...layer,
+								...handleOnChangeLayer(obj, layer, false),
+							};
 							const newLayers = cloneDeep(backgroundLayers);
 
 							backgroundLayers.forEach((lay, i) => {
 								if (lay.order === newLayer.order) {
-									const index = findIndex(newLayers, {
-										order: newLayer.order,
-									});
-
-									newLayers[index] = newLayer;
+									newLayers[i] = newLayer;
 								}
 							});
 
@@ -137,7 +139,7 @@ const BlockBackgroundColor = props => {
 						}}
 						breakpoint={breakpoint}
 						isToolbar
-						disableResponsiveTabs
+						disableRTC
 					/>
 				)}
 			</div>

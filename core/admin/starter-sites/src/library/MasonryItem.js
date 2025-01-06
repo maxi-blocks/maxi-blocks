@@ -34,6 +34,7 @@ const MasonryItem = (props) => {
 		onClickConnect,
 		onLogOut,
 		isOnboarding,
+		description,
     } = props;
 
     const masonryCardClasses = classnames(
@@ -83,6 +84,7 @@ const MasonryItem = (props) => {
 								onClickConnect={onClickConnect}
 								onLogOut={onLogOut}
 								isOnboarding={isOnboarding}
+								description={description}
                             />
                         </>
                     )}

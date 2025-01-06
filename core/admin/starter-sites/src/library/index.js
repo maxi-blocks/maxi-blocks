@@ -39,9 +39,9 @@ const CloudLibrary = (props) => {
 		onLogOut,
 		showNotValidEmail,
 		isOnboarding,
+		description,
     } = props;
 
-    console.log('CloudLibrary isOnboarding:', isOnboarding);
 
     return (
         <div className='components-modal__content'>
@@ -75,6 +75,7 @@ const CloudLibrary = (props) => {
 				onClickConnect={onClickConnect}
 				onLogOut={onLogOut}
 				isOnboarding={isOnboarding}
+				description={description}
             />
         </div>
     );

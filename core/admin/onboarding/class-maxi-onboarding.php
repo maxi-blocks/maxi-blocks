@@ -502,6 +502,7 @@ class MaxiBlocks_Onboarding
         $theme = wp_get_theme('maxiblocks-go');
         $is_installed = $theme->exists();
         $is_active = get_template() === 'maxiblocks-go';
+        $current_theme = wp_get_theme(); // Get current theme info
         ?>
         <h1><?php _e('Theme Setup', 'maxi-blocks'); ?></h1>
 
@@ -525,6 +526,15 @@ class MaxiBlocks_Onboarding
                 </div>
             </div>
         <?php else: ?>
+            <h3 class="description">
+                <?php
+                printf(
+                    /* translators: %s: current theme name */
+                    __('Your current theme: %s', 'maxi-blocks'),
+                    esc_html($current_theme->get('Name'))
+                );
+            ?>
+            </h3>
             <p class="description">
                 <?php _e('For the best experience with MaxiBlocks, we recommend using our official theme.', 'maxi-blocks'); ?>
             </p>

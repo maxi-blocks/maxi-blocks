@@ -258,6 +258,7 @@ const starterSitesResults = ({ hit, onClickConnect, onLogOut, isOnboarding }) =>
 			onClickConnect={onClickConnect}
 			onLogOut={onLogOut}
 			isOnboarding={isOnboarding}
+			description={hit.description}
 		/>
 	);
 };
@@ -275,8 +276,8 @@ const MaxiDetailsPopUp = ({
 	isPro,
 	isOnboarding,
 	onRequestClose,
+	description,
 }) => {
-	console.log('MaxiDetailsPopUp isOnboarding:', isOnboarding);
 
 	const firstPage = pages?.[0];
 	const firstTemplate = templates?.[0];
@@ -340,10 +341,7 @@ const MaxiDetailsPopUp = ({
 						<div className='maxi-cloud-container__details-popup_column-right'>
 							<h2>{title}</h2>
 							<p className='maxi-cloud-container__details-popup_description'>
-								{__(
-									'This demo is designed using MaxiBlocks to provide you with a sleek, modern, and fully customizable website.',
-									'maxi-blocks'
-								)}
+								{description}
 							</p>
 
 							<div className='maxi-cloud-container__details-popup_actions'>
@@ -498,9 +496,8 @@ const LibraryContainer = props => {
 		onClickConnect,
 		onLogOut,
 		isOnboarding,
+		description,
 	} = props;
-
-	console.log('LibraryContainer isOnboarding:', isOnboarding);
 
 	useInterval(masonryGenerator, 100);
 
@@ -520,6 +517,7 @@ const LibraryContainer = props => {
 						onRequestClose={onRequestClose}
 						isMaxiProActive={isMaxiProActive}
 						isOnboarding={isOnboarding}
+						description={description}
 					/>
 				</div>
 			)}
@@ -539,6 +537,7 @@ const LibraryContainer = props => {
 						isPro={isPro}
 						isOnboarding={isOnboarding}
 						onRequestClose={onRequestClose}
+						description={description}
 					/>
 				</div>
 			)}

@@ -127,8 +127,6 @@ const MaxiImportPopUp = props => {
 		onRequestClose,
 	} = props;
 
-	console.log('MaxiImportPopUp isOnboarding:', isOnboarding);
-
 	// Add check for WordPress Importer status from localized data
 	const wpImporterStatus =
 		window.maxiStarterSites?.wpImporterStatus || 'missing';
@@ -414,7 +412,6 @@ const MaxiImportPopUp = props => {
 			data: importData,
 		})
 			.then(response => {
-				console.log('Import response:', response);
 				// Update window variable with the response data
 				window.maxiStarterSites = window.maxiStarterSites || {};
 				window.maxiStarterSites.currentStarterSite = response.currentStarterSite;
@@ -465,8 +462,6 @@ const MaxiImportPopUp = props => {
 			</p>
 		</div>
 	);
-
-	console.log('selectedItems in renderWarningMessage', selectedItems);
 
 	// Update templates when theme type is confirmed
 	useEffect(() => {

@@ -363,6 +363,13 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/install-theme', [
+                'methods' => 'POST',
+                'callback' => [$this, 'install_maxiblocks_go_theme'],
+                'permission_callback' => function () {
+                    return current_user_can('install_themes') && current_user_can('switch_themes');
+                },
+            ]);
         }
 
         /**
@@ -2198,6 +2205,61 @@ if (!class_exists('MaxiBlocks_API')):
                 'themeName' => $current_theme->get('Name'),
                 'isMaxiBlocksGoInstalled' => $maxiblocks_go_theme->exists(),
                 'themeActivateNonce' => wp_create_nonce('switch-theme_maxiblocks-go'),
+            ]);
+        }
+
+        public function install_maxiblocks_go_theme()
+        {
+            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+            require_once ABSPATH . 'wp-admin/includes/theme-install.php';
+
+            // Check if theme is already installed
+            $theme = wp_get_theme('maxiblocks-go');
+
+            if (!$theme->exists()) {
+                // Get theme information from WordPress.org
+                $api = themes_api('theme_information', array(
+                    'slug' => 'maxiblocks-go'
+                ));
+
+                if (is_wp_error($api)) {
+                    return rest_ensure_response([
+                        'success' => false,
+                        'message' => $api->get_error_message()
+                    ]);
+                }
+
+                // Install the theme
+                $upgrader = new Theme_Upgrader(new WP_Ajax_Upgrader_Skin());
+                $installed = $upgrader->install($api->download_link);
+
+                if (is_wp_error($installed)) {
+                    return rest_ensure_response([
+                        'success' => false,
+                        'message' => $installed->get_error_message()
+                    ]);
+                }
+            }
+
+            // Activate the theme
+            $activated = switch_theme('maxiblocks-go');
+
+            if (is_wp_error($activated)) {
+                return rest_ensure_response([
+                    'success' => false,
+                    'message' => $activated->get_error_message()
+                ]);
+            }
+
+            // Clear any caches
+            wp_clean_themes_cache();
+
+            return rest_ensure_response([
+                'success' => true,
+                'message' => __('MaxiBlocks Go theme has been installed and activated successfully.', 'maxi-blocks'),
+                'isBlockTheme' => true,
+                'themeName' => 'MaxiBlocks Go',
+                'isMaxiBlocksGoInstalled' => true
             ]);
         }
     }

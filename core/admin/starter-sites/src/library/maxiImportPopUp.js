@@ -497,14 +497,23 @@ const MaxiImportPopUp = props => {
 	};
 
 	// Add this new function to handle theme installation/activation
-	const handleThemeAction = () => {
-		const adminUrl = window.maxiStarterSites?.adminUrl || '/wp-admin/';
-		if (themeType.isMaxiBlocksGoInstalled) {
-			// If theme is installed but not active, activate it
-			window.location.href = `${adminUrl}themes.php?action=activate&stylesheet=maxiblocks-go&_wpnonce=${window.maxiStarterSites?.themeActivateNonce}`;
-		} else {
-			// If theme is not installed, go to theme installation
-			window.location.href = `${adminUrl}theme-install.php?search=maxiblocks+go`;
+	const handleThemeAction = async () => {
+		try {
+			const response = await apiFetch({
+				path: '/maxi-blocks/v1.0/install-theme',
+				method: 'POST'
+			});
+
+			if (response.success) {
+				// Update theme type state with the new values
+				setThemeType({
+					isBlockTheme: true,
+					themeName: 'MaxiBlocks Go',
+					isMaxiBlocksGoInstalled: true
+				});
+			}
+		} catch (error) {
+			console.error('Error installing theme:', error);
 		}
 	};
 
@@ -595,7 +604,7 @@ const MaxiImportPopUp = props => {
 								{__('Templates', 'maxi-blocks')}
 							</h3>
 
-							{!themeType.isBlockTheme && (
+							{isTemplatesSectionDisabled() && (
 								<div className='maxi-cloud-container__import-popup_warning-message'>
 									<p>
 										{sprintf(
@@ -610,7 +619,7 @@ const MaxiImportPopUp = props => {
 											{themeType.isMaxiBlocksGoInstalled
 												? __('activating', 'maxi-blocks')
 												: __('installing', 'maxi-blocks')}
-											{' MaxiBlocksGo'}
+											{' MaxiBlocks Go'}
 										</button>
 										{__(' theme, which is optimized for MaxiBlocks.', 'maxi-blocks')}
 									</p>
@@ -618,7 +627,7 @@ const MaxiImportPopUp = props => {
 							)}
 
 							<div className={`maxi-cloud-container__import-popup_templates-list ${
-								!themeType.isBlockTheme ? 'maxi-disabled' : ''
+								isTemplatesSectionDisabled() ? 'maxi-disabled' : ''
 							}`}>
 								{templates.map(template => (
 									<div

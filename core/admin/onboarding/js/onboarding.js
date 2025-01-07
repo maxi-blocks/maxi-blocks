@@ -90,24 +90,41 @@ jQuery(document).ready(function($) {
 				frame.on('select', function() {
 					const attachment = frame.state().get('selection').first().toJSON();
 
-					// Update the preview
-					const $logoWrapper = $('.current-site-logo');
-					if ($logoWrapper.length) {
-						if ($logoWrapper.find('img').length) {
-							$logoWrapper.find('img').attr('src', attachment.url);
-						} else {
-							$logoWrapper.html(`
-								<p>${maxiOnboarding.strings.currentLogo}</p>
-								<img src="${attachment.url}" alt="Current site logo" />
-							`);
-						}
+					// Update or create the preview
+					let $logoWrapper = $('.current-site-logo');
+					if (!$logoWrapper.length) {
+						$logoWrapper = $('<div>', {
+							class: 'current-site-logo'
+						}).insertBefore('#upload-site-logo');
 					}
+
+					$logoWrapper.html(`
+						<p>${maxiOnboarding.strings.currentLogo}</p>
+						<img src="${attachment.url}" alt="Current site logo" />
+					`);
 
 					// Update the hidden input
 					$('input[name="site_logo_id"]').val(attachment.id);
 
-					// Update button text
+					// Update button text and show remove button
 					$('#upload-site-logo').text(maxiOnboarding.strings.changeLogo);
+
+					// Add remove button if it doesn't exist
+					if (!$('.remove-site-logo').length) {
+						$('<button>', {
+							type: 'button',
+							class: 'button remove-site-logo',
+							text: maxiOnboarding.strings.remove
+						}).insertAfter('#upload-site-logo');
+
+						// Bind remove event to the new button
+						$('.remove-site-logo').on('click', function() {
+							$('input[name="site_logo_id"]').val('');
+							$('.current-site-logo').remove();
+							$('#upload-site-logo').text(maxiOnboarding.strings.uploadLogo);
+							$(this).remove();
+						});
+					}
 				});
 
 				frame.open();
@@ -118,53 +135,57 @@ jQuery(document).ready(function($) {
 				e.preventDefault();
 
 				const frame = wp.media({
-					title: maxiOnboarding.strings.selectIcon || 'Select Site Icon',
+					title: maxiOnboarding.strings.selectIcon,
 					multiple: false,
 					library: {
 						type: 'image'
 					},
 					button: {
-						text: maxiOnboarding.strings.useAsIcon || 'Use as site icon'
+						text: maxiOnboarding.strings.useAsIcon
 					}
 				});
 
 				frame.on('select', function() {
 					const attachment = frame.state().get('selection').first().toJSON();
 
-					// Update the preview
-					const $iconWrapper = $('.current-site-icon');
-					if ($iconWrapper.length) {
-						if ($iconWrapper.find('img').length) {
-							$iconWrapper.find('img').attr('src', attachment.url);
-						} else {
-							$iconWrapper.html(`
-								<p>${maxiOnboarding.strings.currentIcon || 'Current Site Icon:'}</p>
-								<img src="${attachment.url}" alt="Current site icon" />
-							`);
-						}
+					// Update or create the preview
+					let $iconWrapper = $('.current-site-icon');
+					if (!$iconWrapper.length) {
+						$iconWrapper = $('<div>', {
+							class: 'current-site-icon'
+						}).insertBefore('#upload-site-icon');
 					}
+
+					$iconWrapper.html(`
+						<p>${maxiOnboarding.strings.currentIcon}</p>
+						<img src="${attachment.url}" alt="Current site icon" />
+					`);
 
 					// Update the hidden input
 					$('input[name="site_icon_id"]').val(attachment.id);
 
-					// Update button text
-					$('#upload-site-icon').text(maxiOnboarding.strings.changeIcon || 'Change Site Icon');
+					// Update button text and show remove button
+					$('#upload-site-icon').text(maxiOnboarding.strings.changeIcon);
+
+					// Add remove button if it doesn't exist
+					if (!$('.remove-site-icon').length) {
+						$('<button>', {
+							type: 'button',
+							class: 'button remove-site-icon',
+							text: maxiOnboarding.strings.remove
+						}).insertAfter('#upload-site-icon');
+
+						// Bind remove event to the new button
+						$('.remove-site-icon').on('click', function() {
+							$('input[name="site_icon_id"]').val('');
+							$('.current-site-icon').remove();
+							$('#upload-site-icon').text(maxiOnboarding.strings.uploadIcon);
+							$(this).remove();
+						});
+					}
 				});
 
 				frame.open();
-			});
-
-			// Handle remove buttons
-			$('.remove-site-logo').on('click', function() {
-				$('input[name="site_logo_id"]').val('');
-				$('.current-site-logo').empty();
-				$('#upload-site-logo').text(maxiOnboarding.strings.uploadLogo || 'Upload Logo');
-			});
-
-			$('.remove-site-icon').on('click', function() {
-				$('input[name="site_icon_id"]').val('');
-				$('.current-site-icon').empty();
-				$('#upload-site-icon').text(maxiOnboarding.strings.uploadIcon || 'Upload Site Icon');
 			});
 		},
 

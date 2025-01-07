@@ -337,7 +337,7 @@ class MaxiBlocks_Onboarding
                 <?php _e('Save settings', 'maxi-blocks'); ?>
             </button>
             <button type="button" class="button" data-action="continue">
-                <?php _e('Continue', 'maxi-blocks'); ?>
+                <?php _e('Skip to next step', 'maxi-blocks'); ?>
             </button>
         </div>
         <?php
@@ -379,7 +379,7 @@ class MaxiBlocks_Onboarding
                 <?php _e('Save settings', 'maxi-blocks'); ?>
             </button>
             <button type="button" class="button" data-action="continue">
-                <?php _e('Continue', 'maxi-blocks'); ?>
+                <?php _e('Skip to next step', 'maxi-blocks'); ?>
             </button>
         </div>
         <?php
@@ -465,7 +465,7 @@ class MaxiBlocks_Onboarding
                 <?php _e('Back', 'maxi-blocks'); ?>
             </button>
             <button type="button" class="button" data-action="continue">
-                <?php _e('Continue', 'maxi-blocks'); ?>
+                <?php _e('Skip to next step', 'maxi-blocks'); ?>
             </button>
         </div>
         <?php
@@ -568,7 +568,7 @@ class MaxiBlocks_Onboarding
                 <?php _e('Save settings', 'maxi-blocks'); ?>
             </button>
             <button type="button" class="button" data-action="continue">
-                <?php _e('Continue', 'maxi-blocks'); ?>
+                <?php _e('Skip to next step', 'maxi-blocks'); ?>
             </button>
         </div>
         <?php
@@ -746,7 +746,7 @@ class MaxiBlocks_Onboarding
                 <?php _e('Back', 'maxi-blocks'); ?>
             </button>
             <button type="button" class="button" data-action="continue">
-                <?php _e('Continue', 'maxi-blocks'); ?>
+                <?php _e('Skip to next step', 'maxi-blocks'); ?>
             </button>
         </div>
         <?php

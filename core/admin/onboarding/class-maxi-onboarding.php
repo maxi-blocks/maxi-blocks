@@ -120,9 +120,6 @@ class MaxiBlocks_Onboarding
         wp_enqueue_script('maxi-blocks-starter-sites');
         wp_enqueue_style('maxi-blocks-starter-sites');
 
-        // First enqueue Underscore.js
-        // wp_enqueue_script('underscore');
-
         // Then enqueue media scripts
         wp_enqueue_media();
 
@@ -130,7 +127,7 @@ class MaxiBlocks_Onboarding
         wp_enqueue_script(
             'maxi-blocks-onboarding',
             MAXI_PLUGIN_URL_PATH . 'core/admin/onboarding/js/onboarding.js',
-            ['jquery'], // Add both jQuery and underscore as dependencies
+            ['jquery'],
             MAXI_PLUGIN_VERSION,
             true // Move to footer
         );
@@ -465,7 +462,7 @@ class MaxiBlocks_Onboarding
                 <?php _e('Back', 'maxi-blocks'); ?>
             </button>
             <button type="button" class="button" data-action="continue">
-                <?php _e('Skip to next step', 'maxi-blocks'); ?>
+                <?php _e('Continue', 'maxi-blocks'); ?>
             </button>
         </div>
         <?php

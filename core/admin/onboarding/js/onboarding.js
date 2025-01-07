@@ -1,9 +1,9 @@
 jQuery(document).ready(function($) {
 	const MaxiOnboarding = {
 		errors: {
-			required: 'This field is required',
-			invalidUrl: 'Please enter a valid URL',
-			invalidEmail: 'Please enter a valid email address',
+			required: maxiOnboarding.strings.required,
+			invalidUrl: maxiOnboarding.strings.invalidUrl,
+			invalidEmail: maxiOnboarding.strings.invalidEmail,
 		},
 
 		init() {
@@ -77,13 +77,13 @@ jQuery(document).ready(function($) {
 				e.preventDefault();
 
 				const frame = wp.media({
-					title: maxiOnboarding.strings.selectLogo || 'Select Site Logo',
+					title: maxiOnboarding.strings.selectLogo,
 					multiple: false,
 					library: {
 						type: 'image'
 					},
 					button: {
-						text: maxiOnboarding.strings.useAsLogo || 'Use as site logo'
+						text: maxiOnboarding.strings.useAsLogo
 					}
 				});
 
@@ -97,7 +97,7 @@ jQuery(document).ready(function($) {
 							$logoWrapper.find('img').attr('src', attachment.url);
 						} else {
 							$logoWrapper.html(`
-								<p>${maxiOnboarding.strings.currentLogo || 'Current Logo:'}</p>
+								<p>${maxiOnboarding.strings.currentLogo}</p>
 								<img src="${attachment.url}" alt="Current site logo" />
 							`);
 						}
@@ -107,7 +107,7 @@ jQuery(document).ready(function($) {
 					$('input[name="site_logo_id"]').val(attachment.id);
 
 					// Update button text
-					$('#upload-site-logo').text(maxiOnboarding.strings.changeLogo || 'Change Logo');
+					$('#upload-site-logo').text(maxiOnboarding.strings.changeLogo);
 				});
 
 				frame.open();

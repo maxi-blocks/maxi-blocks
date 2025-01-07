@@ -12,7 +12,7 @@
 		"wp-env": "wp-env",
 		"test": "wp-scripts test-unit-jest -c ./jest/jest-unit.config.js",
 		"test:debug": "wp-scripts --inspect-brk test-unit-jest -c ./jest/jest-unit.config.js --runInBand --no-cache --verbose",
-		"test:e2e": "wp-scripts test-e2e -c ./jest/jest-e2e.config.js --runInBand",
+		"test:e2e": "wp-scripts test-e2e --runInBand -c ./jest/jest-e2e.config.js",
 		"test:e2e:help": "wp-scripts test-e2e --help",
 		"test:e2e-interactive": "wp-scripts test-e2e -c ./jest/jest-e2e.config.js --puppeteer-interactive",
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e -c ./jest/jest-e2e.config.js --runInBand --no-cache --verbose",

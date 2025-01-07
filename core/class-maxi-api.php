@@ -370,6 +370,13 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('install_themes') && current_user_can('switch_themes');
                 },
             ]);
+            register_rest_route($this->namespace, '/install-importer', [
+                'methods' => 'POST',
+                'callback' => [$this, 'install_wordpress_importer'],
+                'permission_callback' => function () {
+                    return current_user_can('install_plugins') && current_user_can('activate_plugins');
+                },
+            ]);
         }
 
         /**
@@ -2260,6 +2267,56 @@ if (!class_exists('MaxiBlocks_API')):
                 'isBlockTheme' => true,
                 'themeName' => 'MaxiBlocks Go',
                 'isMaxiBlocksGoInstalled' => true
+            ]);
+        }
+
+        public function install_wordpress_importer()
+        {
+            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+            require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+            // Check if plugin is already installed
+            $installed = file_exists(WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php');
+
+            if (!$installed) {
+                // Get plugin information from WordPress.org
+                $api = plugins_api('plugin_information', array(
+                    'slug' => 'wordpress-importer'
+                ));
+
+                if (is_wp_error($api)) {
+                    return rest_ensure_response([
+                        'success' => false,
+                        'message' => $api->get_error_message()
+                    ]);
+                }
+
+                // Install the plugin
+                $upgrader = new Plugin_Upgrader(new WP_Ajax_Upgrader_Skin());
+                $installed = $upgrader->install($api->download_link);
+
+                if (is_wp_error($installed)) {
+                    return rest_ensure_response([
+                        'success' => false,
+                        'message' => $installed->get_error_message()
+                    ]);
+                }
+            }
+
+            // Activate the plugin
+            $activated = activate_plugin('wordpress-importer/wordpress-importer.php');
+
+            if (is_wp_error($activated)) {
+                return rest_ensure_response([
+                    'success' => false,
+                    'message' => $activated->get_error_message()
+                ]);
+            }
+
+            return rest_ensure_response([
+                'success' => true,
+                'message' => __('WordPress Importer has been installed and activated successfully.', 'maxi-blocks'),
+                'status' => 'active'
             ]);
         }
     }

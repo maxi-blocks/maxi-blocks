@@ -435,9 +435,25 @@ const MaxiImportPopUp = props => {
 			});
 	};
 
-	const installAndActivateImporter = () => {
-		// Redirect to WordPress plugin installation
-		window.location.href = `${maxiStarterSites.adminUrl}update.php?action=install-plugin&plugin=wordpress-importer&_wpnonce=${maxiStarterSites.installNonce}`;
+	const installAndActivateImporter = async () => {
+		setInstallingImporter(true);
+		try {
+			const response = await apiFetch({
+				path: '/maxi-blocks/v1.0/install-importer',
+				method: 'POST'
+			});
+
+			if (response.success) {
+				// Update importer status
+				updateImporterStatus('active');
+				// Enable content XML toggle
+				handleToggleChange('contentXML', 'contentXML', true);
+			}
+		} catch (error) {
+			console.error('Error installing WordPress Importer:', error);
+		} finally {
+			setInstallingImporter(false);
+		}
 	};
 
 	// Update the warning message JSX

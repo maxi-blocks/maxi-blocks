@@ -8,7 +8,7 @@ import { Tooltip } from '@wordpress/components'; // Should be replaced for the n
 /**
  * Internal dependencies
  */
-import Icon from '../icon';
+import Icon from '@components/icon';
 
 /**
  * External dependencies

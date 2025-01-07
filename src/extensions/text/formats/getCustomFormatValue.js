@@ -3,9 +3,9 @@
  */
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 import getCustomFormat from './getCustomFormat';
-import { getTypographyFromSC } from '../../style-cards';
-import getActiveStyleCard from '../../style-cards/getActiveStyleCard';
-import { getBlockStyle, getLastBreakpointAttribute } from '../../styles';
+import { getTypographyFromSC } from '@extensions/style-cards';
+import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
+import { getBlockStyle, getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * External dependencies

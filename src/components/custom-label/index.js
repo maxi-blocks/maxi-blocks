@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import TextControl from '../text-control';
+import TextControl from '@components/text-control';
 
 /**
  * External dependencies

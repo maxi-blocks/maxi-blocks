@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '@extensions/styles';
 import { ContextLoop } from '..';
 
 /**

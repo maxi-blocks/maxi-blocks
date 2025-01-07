@@ -19,17 +19,17 @@ import {
 	handleInsertInlineStyles,
 	handleCleanInlineStyles,
 } from './inlineStyles';
-import { excludeAttributes } from '../copy-paste';
-import { getBlockData } from '../attributes';
-import BlockInserter from '../../components/block-inserter';
+import { excludeAttributes } from '@extensions/copy-paste';
+import { getBlockData } from '@extensions/attributes';
+import BlockInserter from '@components/block-inserter';
 import {
 	handleBlockMove,
 	updateNCLimits,
 	updateRelationsInColumn,
 	updateSVG,
-} from '../repeater';
-import { findBlockPosition, getBlockPosition } from '../repeater/utils';
-import RepeaterContext from '../../blocks/row-maxi/repeaterContext';
+} from '@extensions/repeater';
+import { findBlockPosition, getBlockPosition } from '@extensions/repeater/utils';
+import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 
 /**
  * External dependencies

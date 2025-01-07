@@ -7,12 +7,12 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import './editor.scss';
-import Button from '../button';
+import Button from '@components/button';
 
 /**
  * Icons
  */
-import { reset } from '../../icons';
+import { reset } from '@maxi-icons';
 
 const ResetButton = props => {
 	return (

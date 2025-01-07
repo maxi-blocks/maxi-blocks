@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import { getBreakpointFromAttribute } from '../utils';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
+import { getBreakpointFromAttribute } from '@extensions/styles/utils';
 import { getBlockSelectorsByUniqueID } from './utils';
 
 /**

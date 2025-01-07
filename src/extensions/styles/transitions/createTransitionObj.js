@@ -1,4 +1,4 @@
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
 
 // AFTER #3265 WILL BE RECEIVED FROM THE STORE
 const disableDefaultTransition = false;

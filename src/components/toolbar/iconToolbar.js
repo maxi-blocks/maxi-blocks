@@ -18,9 +18,9 @@ import IconColor from './components/icon-color';
 import IconBackground from './components/icon-background';
 import Border from './components/border';
 import PaddingMargin from './components/padding-margin';
-import Popover from '../popover';
+import Popover from '@components/popover';
 
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * Styles

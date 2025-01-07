@@ -14,12 +14,13 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import MaxiStyleCardsEditorPopUp from '../style-cards';
-import MaxiExportEditorPopUp from '../export';
-import { Button, Icon } from '../../components';
-import { setScreenSize } from '../../extensions/styles';
-import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
+import MaxiStyleCardsEditorPopUp from '@editor/style-cards';
+import MaxiExportEditorPopUp from '@editor/export';
+import { Button, Icon } from '@components';
+import { setScreenSize } from '@extensions/styles';
+import { getIsSiteEditor, getSiteEditorIframeBody } from '@extensions/fse';
+import { goThroughMaxiBlocks } from '@extensions/maxi-block';
+import { getPageFonts, loadFonts } from '@extensions/text/fonts';
 
 /**
  * Styles
@@ -35,7 +36,7 @@ import {
 	cloudLib,
 	closeIcon,
 	helpIcon,
-} from '../../icons';
+} from '@maxi-icons';
 
 /**
  * Components

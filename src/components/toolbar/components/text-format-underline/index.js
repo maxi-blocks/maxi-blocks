@@ -8,8 +8,8 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Icon from '../../../icon';
+import Button from '@components/button';
+import Icon from '@components/icon';
 
 /**
  * External dependencies
@@ -19,7 +19,7 @@ import { trim, isEmpty } from 'lodash';
 /**
  * Styles and icons
  */
-import { toolbarUnderline } from '../../../../icons';
+import { toolbarUnderline } from '@maxi-icons';
 
 /**
  * TextFormatUnderline

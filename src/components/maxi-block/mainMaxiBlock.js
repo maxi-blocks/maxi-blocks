@@ -7,8 +7,8 @@ import { forwardRef, memo } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import BackgroundDisplayer from '../background-displayer';
-import ContentLoader from '../content-loader';
+import BackgroundDisplayer from '@components/background-displayer';
+import ContentLoader from '@components/content-loader';
 
 /**
  * External dependencies

@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import DisplayControl from '../display-control';
-import { getGroupAttributes } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
+import DisplayControl from '@components/display-control';
+import { getGroupAttributes } from '@extensions/styles';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
 
 /**
  * Component

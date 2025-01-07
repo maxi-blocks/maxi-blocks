@@ -1,4 +1,4 @@
-import getColorRGBAString from '../getColorRGBAString';
+import getColorRGBAString from '@extensions/styles/getColorRGBAString';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

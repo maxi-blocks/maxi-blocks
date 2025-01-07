@@ -7,16 +7,16 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import AspectRatioControl from '../../../../components/aspect-ratio-control';
-import SettingTabsControl from '../../../../components/setting-tabs-control';
-import TextControl from '../../../../components/text-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import AspectRatioControl from '@components/aspect-ratio-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import TextControl from '@components/text-control';
 import {
 	getParsedVideoUrl,
 	parseVideo,
 	videoUrlRegex,
-} from '../../../../extensions/video';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+} from '@extensions/video';
+import { getDefaultAttribute } from '@extensions/styles';
 
 const VideoControl = props => {
 	const {

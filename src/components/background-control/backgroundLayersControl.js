@@ -15,19 +15,23 @@ import {
 	getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { handleSetAttributes } from '../../extensions/maxi-block';
+} from '@extensions/styles';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
 import GradientLayer from './gradientLayer';
-import Icon from '../icon';
+import Icon from '@components/icon';
 import ImageLayer from './imageLayer';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
-import { onChangeLayer, setBreakpointToLayer } from './utils';
-import SelectControl from '../select-control';
-import ListControl from '../list-control';
-import ListItemControl from '../list-control/list-item-control';
+import {
+	getLayerLabel,
+	handleOnChangeLayer,
+	onChangeLayer,
+	setBreakpointToLayer,
+} from './utils';
+import SelectControl from '@components/select-control';
+import ListControl from '@components/list-control';
+import ListItemControl from '@components/list-control/list-item-control';
 
 /**
  * External dependencies
@@ -38,8 +42,8 @@ import { cloneDeep, isEmpty, omit } from 'lodash';
 /**
  * Icons
  */
-import { toolbarDrop, toolbarShow } from '../../icons';
-import { getDCValues } from '../../extensions/DC';
+import { toolbarDrop, toolbarShow } from '@maxi-icons';
+import { getDCValues } from '@extensions/DC';
 
 /**
  * Component
@@ -47,7 +51,6 @@ import { getDCValues } from '../../extensions/DC';
 const getLayerCardContent = props => {
 	const {
 		breakpoint,
-		handleOnChangeLayer,
 		isHover,
 		isIB,
 		layer,
@@ -82,7 +85,10 @@ const getLayerCardContent = props => {
 					}}
 					onChange={obj => {
 						onChange(
-							{ ...layer, ...handleOnChangeLayer(obj, layer) },
+							{
+								...layer,
+								...handleOnChangeLayer(obj, layer, isHover),
+							},
 							`.maxi-background-displayer__${layer.order}`
 						);
 					}}
@@ -418,23 +424,6 @@ const BackgroundLayersControl = ({
 
 	allLayers.sort((a, b) => a.order - b.order);
 
-	const getLayerLabel = type => {
-		switch (type) {
-			case 'color':
-				return 'colorOptions';
-			case 'image':
-				return 'imageOptions';
-			case 'video':
-				return 'videoOptions';
-			case 'gradient':
-				return 'gradientOptions';
-			case 'shape':
-				return 'SVGOptions';
-			default:
-				return false;
-		}
-	};
-
 	const getObject = type => {
 		return {
 			...setBreakpointToLayer({
@@ -468,20 +457,6 @@ const BackgroundLayersControl = ({
 			'background-layers-hover': hoverLayers,
 		});
 	};
-
-	const handleOnChangeLayer = (layer, currentLayer) =>
-		handleSetAttributes({
-			obj: layer,
-			attributes: currentLayer,
-			onChange: result => result,
-			defaultAttributes: {
-				...setBreakpointToLayer({
-					layer: backgroundLayers[getLayerLabel(currentLayer.type)],
-					breakpoint: 'general',
-					isHover,
-				}),
-			},
-		});
 
 	const onAddLayer = layer => {
 		const isHoverLayer = layer.isHover;
@@ -553,12 +528,10 @@ const BackgroundLayersControl = ({
 												target
 											),
 										breakpoint,
-										handleOnChangeLayer,
 										previewRef,
 									})}
 									content={getLayerCardContent({
 										breakpoint,
-										handleOnChangeLayer,
 										isHover,
 										isIB,
 										layer,

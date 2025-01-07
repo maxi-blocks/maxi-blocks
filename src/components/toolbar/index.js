@@ -22,12 +22,12 @@ import classnames from 'classnames';
  */
 import SvgColorToolbar from './components/svg-color';
 import VideoUrl from './components/video-url';
-import Popover from '../popover';
+import Popover from '@components/popover';
 
 /**
  * Utils
  */
-import Breadcrumbs from '../breadcrumbs';
+import Breadcrumbs from '@components/breadcrumbs';
 import BackgroundColor from './components/background-color/background-color';
 import BlockBackgroundColor from './components/background-color/block-background-color';
 import Border from './components/border';
@@ -62,14 +62,14 @@ import ContextLoop from './components/context-loop';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { isInSiteEditorPreviewIframe } from '../../extensions/fse';
+} from '@extensions/styles';
+import { isInSiteEditorPreviewIframe } from '@extensions/fse';
 
 /**
  * Styles & icons
  */
 import './editor.scss';
-import { toolbarPin, toolbarPinLocked } from '../../icons';
+import { toolbarPin, toolbarPinLocked } from '@maxi-icons';
 
 /**
  * Component

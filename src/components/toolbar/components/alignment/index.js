@@ -6,17 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AlignmentControl from '../../../alignment-control';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import Button from '../../../button';
-import Icon from '../../../icon';
-import Dropdown from '../../../dropdown';
+import AlignmentControl from '@components/alignment-control';
+import { getGroupAttributes } from '@extensions/styles';
+import Button from '@components/button';
+import Icon from '@components/icon';
+import Dropdown from '@components/dropdown';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { alignCenter } from '../../../../icons';
+import { alignCenter } from '@maxi-icons';
 
 /**
  * Alignment

@@ -7,7 +7,7 @@ import { cloneBlock } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { uniqueIDGenerator } from '../attributes';
+import { uniqueIDGenerator } from '@extensions/attributes';
 import {
 	findBlockPosition,
 	findTargetParent,

@@ -15,17 +15,17 @@ import { isEmpty, isNumber, merge, trim, debounce } from 'lodash';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
-import BaseControl from '../base-control';
-import ToggleSwitch from '../toggle-switch';
-import ResetButton from '../reset-control';
+import SelectControl from '@components/select-control';
+import BaseControl from '@components/base-control';
+import ToggleSwitch from '@components/toggle-switch';
+import ResetButton from '@components/reset-control';
 import validateNumberInput from './utils';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getIsValid } from '../../extensions/styles';
+import { getIsValid } from '@extensions/styles';
 
 /**
  * Component

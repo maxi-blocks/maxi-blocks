@@ -13,7 +13,7 @@ import {
 	LANGUAGES,
 	TONES,
 	WRITING_STYLES,
-} from '../constants';
+} from '@components/prompt-control/constants';
 
 const useSettings = selectedText => {
 	const [settings, setSettings] = useState(() => {

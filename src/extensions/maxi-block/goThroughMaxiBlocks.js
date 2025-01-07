@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { createTemplatePartId } from '../fse';
+import { createTemplatePartId } from '@extensions/fse';
 
 const goThroughMaxiBlocks = (
 	callback,

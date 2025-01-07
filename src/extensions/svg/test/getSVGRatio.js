@@ -1,5 +1,5 @@
-import getSVGRatio from '../getSVGRatio';
-import setSVGRatio from '../setSVGRatio';
+import getSVGRatio from '@extensions/svg/getSVGRatio';
+import setSVGRatio from '@extensions/svg/setSVGRatio';
 
 describe('getSVGRatio', () => {
 	const icon =

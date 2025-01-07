@@ -16,34 +16,34 @@ import DOMPurify from 'dompurify';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import BlockResizer from '../../components/block-resizer';
+import Toolbar from '@components/toolbar';
+import BlockResizer from '@components/block-resizer';
 
-import Button from '../../components/button';
-import HoverPreview from '../../components/hover-preview';
-import Placeholder from '../../components/placeholder';
-import RawHTML from '../../components/raw-html';
-import MaxiPopoverButton from '../../components/maxi-popover-button';
-import MaxiBlock from '../../components/maxi-block/maxiBlock';
-import CaptionToolbar from '../../components/toolbar/captionToolbar';
+import Button from '@components/button';
+import HoverPreview from '@components/hover-preview';
+import Placeholder from '@components/placeholder';
+import RawHTML from '@components/raw-html';
+import MaxiPopoverButton from '@components/maxi-popover-button';
+import MaxiBlock from '@components/maxi-block/maxiBlock';
+import CaptionToolbar from '@components/toolbar/captionToolbar';
 import getStyles from './styles';
 import {
 	getGroupAttributes,
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { getMaxiBlockAttributes } from '../../components/maxi-block';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { injectImgSVG } from '../../extensions/svg';
+} from '@extensions/styles';
+import { getMaxiBlockAttributes } from '@components/maxi-block';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { injectImgSVG } from '@extensions/svg';
 import { copyPasteMapping } from './data';
-import { TextContext, onChangeRichText } from '../../extensions/text/formats';
-import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import { TextContext, onChangeRichText } from '@extensions/text/formats';
+import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Icons
  */
-import { toolbarReplaceImage, placeholderImage } from '../../icons';
+import { toolbarReplaceImage, placeholderImage } from '@maxi-icons';
 
 /**
  * Content

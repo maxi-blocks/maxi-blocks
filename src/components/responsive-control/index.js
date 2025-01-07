@@ -7,7 +7,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
 
 /**
  * External dependencies

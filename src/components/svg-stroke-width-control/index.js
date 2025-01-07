@@ -5,13 +5,13 @@ import { __ } from '@wordpress/i18n';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import { setSVGStrokeWidth } from '../../extensions/svg';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import { setSVGStrokeWidth } from '@extensions/svg';
 
 /**
  * External dependencies

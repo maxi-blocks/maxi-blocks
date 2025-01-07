@@ -6,7 +6,7 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getUpdatedBGLayersWithNewUniqueID } from '../attributes';
+import { getUpdatedBGLayersWithNewUniqueID } from '@extensions/attributes';
 
 /**
  * External dependencies

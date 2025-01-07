@@ -6,9 +6,9 @@ import '@wordpress/rich-text';
 /**
  * Internal dependencies
  */
-import { createSCStyleString } from '../updateSCOnEditor';
-import standardSC from '../../../../core/defaults/defaultSC.json';
-import getSCVariablesObject from '../getSCVariablesObject';
+import { createSCStyleString } from '@extensions/style-cards/updateSCOnEditor';
+import standardSC from '@maxi-core/defaults/defaultSC.json';
+import getSCVariablesObject from '@extensions/style-cards/getSCVariablesObject';
 
 jest.mock('@wordpress/blocks', () => {
 	return {
@@ -16,9 +16,10 @@ jest.mock('@wordpress/blocks', () => {
 	};
 });
 jest.mock('src/components/block-inserter/index.js', () => jest.fn());
-jest.mock('../../styles/transitions/getTransitionData.js', () => jest.fn());
-jest.mock('../../attributes/getBlockData.js', () => jest.fn());
+jest.mock('@extensions/styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('@extensions/attributes/getBlockData.js', () => jest.fn());
 jest.mock('src/components/transform-control/utils.js', () => jest.fn());
+jest.mock('src/extensions/DC/constants.js', () => ({}));
 
 describe('getSCVariablesObject', () => {
 	it('Return an object with variables ready to update on `document.documentElement`', () => {

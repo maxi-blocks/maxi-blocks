@@ -4,8 +4,8 @@
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+} from '@extensions/relations';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 const headerPrefix = 'header-';
 const contentPrefix = 'content-';

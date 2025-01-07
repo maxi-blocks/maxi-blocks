@@ -4,7 +4,7 @@
 import {
 	replaceAttrKeyBreakpoint,
 	getBreakpointFromAttribute,
-} from '../styles/utils';
+} from '@extensions/styles/utils';
 
 /**
  * External dependencies

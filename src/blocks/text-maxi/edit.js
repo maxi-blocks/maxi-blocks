@@ -15,16 +15,16 @@ import { isEmpty } from 'lodash';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import BlockInserter from '../../components/block-inserter';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { RawHTML } from '../../components';
+import Toolbar from '@components/toolbar';
+import BlockInserter from '@components/block-inserter';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { RawHTML } from '@components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
 	getGroupAttributes,
-} from '../../extensions/styles';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+} from '@extensions/styles';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import getStyles from './styles';
 import onMerge from './utils';
 import {
@@ -33,11 +33,11 @@ import {
 	handleSplit,
 	TextContext,
 	ListContext,
-} from '../../extensions/text/formats';
-import { setSVGColor } from '../../extensions/svg';
+} from '@extensions/text/formats';
+import { setSVGColor } from '@extensions/svg';
 import { copyPasteMapping, scProps } from './data';
-import { getDCValues, withMaxiContextLoopContext } from '../../extensions/DC';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 const List = props => {
 	const { clientId, hasInnerBlocks, typeOfList, start, reversed, className } =

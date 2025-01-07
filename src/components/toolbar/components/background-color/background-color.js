@@ -6,14 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import ColorLayer from '../../../background-control/colorLayer';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import ColorLayer from '@components/background-control/colorLayer';
 import {
 	getAttributeKey,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
-import ToggleSwitch from '../../../toggle-switch';
+} from '@extensions/styles';
+import ToggleSwitch from '@components/toggle-switch';
 
 /**
  * Styles
@@ -23,7 +23,7 @@ import './editor.scss';
 /**
  * Icons
  */
-import { backgroundColor } from '../../../../icons';
+import { backgroundColor } from '@maxi-icons';
 
 /**
  * BackgroundColor
@@ -98,7 +98,7 @@ const BackgroundColor = props => {
 						clientId={clientId}
 						disableClipPath
 						isToolbar
-						disableResponsiveTabs
+						disableRTC
 					/>
 				)}
 			</div>

@@ -7,8 +7,8 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getIsSiteEditor } from '../fse';
-import getWinBreakpoint from '../dom/getWinBreakpoint';
+import { getIsSiteEditor } from '@extensions/fse';
+import getWinBreakpoint from '@extensions/dom/getWinBreakpoint';
 
 const actions = {
 	receiveMaxiSettings() {

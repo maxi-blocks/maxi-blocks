@@ -9,21 +9,21 @@ import { __ } from '@wordpress/i18n';
 import {
 	createIconSelectors,
 	createSelectors,
-} from '../../extensions/styles/custom-css';
+} from '@extensions/styles/custom-css';
 import {
 	createIconTransitions,
 	getIconWithColor,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
-import BackgroundControl from '../../components/background-control';
-import BorderControl from '../../components/border-control';
-import BoxShadowControl from '../../components/box-shadow-control';
-import IconControl from '../../components/icon-control';
-import InfoBox from '../../components/info-box';
-import MarginControl from '../../components/margin-control';
-import PaddingControl from '../../components/padding-control';
-import TypographyControl from '../../components/typography-control';
+import BackgroundControl from '@components/background-control';
+import BorderControl from '@components/border-control';
+import BoxShadowControl from '@components/box-shadow-control';
+import IconControl from '@components/icon-control';
+import InfoBox from '@components/info-box';
+import MarginControl from '@components/margin-control';
+import PaddingControl from '@components/padding-control';
+import TypographyControl from '@components/typography-control';
 
 import {
 	getBackgroundStyles,
@@ -32,12 +32,12 @@ import {
 	getButtonIconStyles,
 	getMarginPaddingStyles,
 	getTypographyStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+} from '@extensions/relations';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
  * Classnames

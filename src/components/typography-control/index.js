@@ -9,31 +9,31 @@ import { useState, useContext } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import AlignmentControl from '../alignment-control';
-import ColorControl from '../color-control';
-import FontFamilySelector from '../font-family-selector';
-import ResponsiveTabsControl from '../responsive-tabs-control';
-import SelectControl from '../select-control';
-import TextShadowControl from '../text-shadow-control';
-import SettingTabsControl from '../setting-tabs-control';
-import FontWeightControl from '../font-weight-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import AlignmentControl from '@components/alignment-control';
+import ColorControl from '@components/color-control';
+import FontFamilySelector from '@components/font-family-selector';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import SelectControl from '@components/select-control';
+import TextShadowControl from '@components/text-shadow-control';
+import SettingTabsControl from '@components/setting-tabs-control';
+import FontWeightControl from '@components/font-weight-control';
 import {
 	setFormat,
 	getTypographyValue,
 	TextContext,
 	ListContext,
-} from '../../extensions/text/formats';
+} from '@extensions/text/formats';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getIsValid,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { getListTypographyAttributes } from '../../extensions/text/lists';
-import { getDefaultSCValue } from '../../extensions/style-cards';
+} from '@extensions/styles';
+import { getListTypographyAttributes } from '@extensions/text/lists';
+import { getDefaultSCValue } from '@extensions/style-cards';
 import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
-import onChangeFontWeight from '../font-weight-control/utils';
+import onChangeFontWeight from '@components/font-weight-control/utils';
 
 /**
  * External dependencies

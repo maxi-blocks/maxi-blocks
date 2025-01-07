@@ -16,19 +16,19 @@ import { isEmpty } from 'lodash';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import Toolbar from '../../components/toolbar';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import Toolbar from '@components/toolbar';
+import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import getStyles from './styles';
-import onMerge from '../text-maxi/utils';
+import onMerge from '@blocks/text-maxi/utils';
 import {
 	handleSplit,
 	onChangeRichText,
 	processContent,
 	TextContext,
-} from '../../extensions/text/formats';
+} from '@extensions/text/formats';
 import { copyPasteMapping, scProps } from './data';
-import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
  * Content

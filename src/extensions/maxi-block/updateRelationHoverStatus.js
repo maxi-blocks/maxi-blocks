@@ -7,8 +7,8 @@ import { dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import goThroughMaxiBlocks from './goThroughMaxiBlocks';
-import getHoverStatus from '../relations/getHoverStatus';
-import { getBlockData } from '../attributes';
+import getHoverStatus from '@extensions/relations/getHoverStatus';
+import { getBlockData } from '@extensions/attributes';
 
 /**
  * External dependencies

@@ -12,14 +12,14 @@ import { without } from 'lodash';
 /**
  * Internal dependencies
  */
-import AccordionControl from '../../components/accordion-control';
-import SettingTabsControl from '../../components/setting-tabs-control';
+import AccordionControl from '@components/accordion-control';
+import SettingTabsControl from '@components/setting-tabs-control';
 import ShapeDividerControl from './components/shape-divider-control';
 
-import { getGroupAttributes } from '../../extensions/styles';
-import * as inspectorTabs from '../../components/inspector-tabs';
+import { getGroupAttributes } from '@extensions/styles';
+import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
-import { withMaxiInspector } from '../../extensions/inspector';
+import { withMaxiInspector } from '@extensions/inspector';
 
 /**
  * Inspector

@@ -11,19 +11,19 @@ import {
 	PositionControl,
 	TransformControl,
 	DisplayControl,
-} from '../../components';
+} from '@components';
 import {
 	getOpacityStyles,
 	getPositionStyles,
 	getTransformStyles,
 	getDisplayStyles,
-} from '../styles/helpers';
+} from '@extensions/styles/helpers';
 import {
 	getTransformCategories,
 	getTransformSelectors,
-} from '../../components/transform-control/utils';
-import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
-import { getBlockNameFromUniqueID } from '../attributes';
+} from '@components/transform-control/utils';
+import { getGroupAttributes, getLastBreakpointAttribute } from '@extensions/styles';
+import { getBlockNameFromUniqueID } from '@extensions/attributes';
 
 /**
  * External dependencies

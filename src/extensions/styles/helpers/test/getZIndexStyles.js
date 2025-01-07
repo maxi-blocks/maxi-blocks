@@ -1,4 +1,4 @@
-import getZIndexStyles from '../getZIndexStyles';
+import getZIndexStyles from '@extensions/styles/helpers/getZIndexStyles';
 
 describe('getZIndexStyle', () => {
 	it('Get a correct z-index style', () => {

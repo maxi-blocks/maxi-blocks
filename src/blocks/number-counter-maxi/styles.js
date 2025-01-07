@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '@extensions/styles';
 import {
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -16,7 +16,7 @@ import {
 	getZIndexStyles,
 	getFlexStyles,
 	getAlignmentFlexStyles,
-} from '../../extensions/styles/helpers';
+} from '@extensions/styles/helpers';
 import data from './data';
 
 const getWrapperObject = props => {

@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { getBlockNameFromUniqueID } from '../../attributes';
-import DC_LINK_BLOCKS from '../../../components/toolbar/components/link/dcLinkBlocks';
+import { getBlockNameFromUniqueID } from '@extensions/attributes';
+import DC_LINK_BLOCKS from '@components/toolbar/components/link/dcLinkBlocks';
 
 const name = 'DC link blocks';
 

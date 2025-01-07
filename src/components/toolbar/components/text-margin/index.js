@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import { getGroupAttributes } from '../../../../extensions/styles';
-import MarginControl from '../../../margin-control';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { getGroupAttributes } from '@extensions/styles';
+import MarginControl from '@components/margin-control';
 
 /**
  * Icons
  */
 import './editor.scss';
-import { toolbarTextMargin } from '../../../../icons';
+import { toolbarTextMargin } from '@maxi-icons';
 
 /**
  * BoxShadow

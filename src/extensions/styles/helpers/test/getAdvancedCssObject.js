@@ -1,4 +1,4 @@
-import getAdvancedCssObject from '../getAdvancedCssObject';
+import getAdvancedCssObject from '@extensions/styles/helpers/getAdvancedCssObject';
 
 describe('getAdvancedCssObject', () => {
 	it('should handle basic CSS correctly', () => {

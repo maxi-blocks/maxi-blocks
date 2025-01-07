@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedCssControl from '../advanced-css-control';
-import { getAttributeKey, getGroupAttributes } from '../../extensions/styles';
+import AdvancedCssControl from '@components/advanced-css-control';
+import { getAttributeKey, getGroupAttributes } from '@extensions/styles';
 
 /**
  * Component

@@ -1,12 +1,12 @@
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
-import { createIconTransitions } from '../../extensions/styles';
+import { createSelectors } from '@extensions/styles/custom-css';
+import { createIconTransitions } from '@extensions/styles';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
+} from '@extensions/relations';
 
 /**
  * Classnames

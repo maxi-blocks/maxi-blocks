@@ -1,5 +1,5 @@
-import getOrganizedAttributes from '../getOrganizedAttributes';
-import { copyPasteMapping } from '../../../blocks/image-maxi/data';
+import getOrganizedAttributes from '@extensions/copy-paste/getOrganizedAttributes';
+import { copyPasteMapping } from '@blocks/image-maxi/data';
 
 jest.mock('@wordpress/blocks', () => jest.fn());
 jest.mock('src/components/block-inserter/index.js', () => jest.fn());

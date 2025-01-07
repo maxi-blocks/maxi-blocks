@@ -7,8 +7,8 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
-import TextInput from '../text-input';
+import BaseControl from '@components/base-control';
+import TextInput from '@components/text-input';
 
 /**
  * External dependencies

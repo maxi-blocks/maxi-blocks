@@ -12,15 +12,15 @@ import { capitalize, isNil } from 'lodash';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import AspectRatioControl from '../../../../components/aspect-ratio-control';
-import ImageCropControl from '../../../../components/image-crop-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
-import SelectControl from '../../../../components/select-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import AspectRatioControl from '@components/aspect-ratio-control';
+import ImageCropControl from '@components/image-crop-control';
+import ToggleSwitch from '@components/toggle-switch';
+import SelectControl from '@components/select-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 const DimensionTab = props => {
 	const {

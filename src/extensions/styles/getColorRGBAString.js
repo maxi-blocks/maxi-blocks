@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getPaletteColor from '../style-cards/getPaletteColor';
+import getPaletteColor from '@extensions/style-cards/getPaletteColor';
 
 /**
  * External dependencies

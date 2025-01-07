@@ -1,4 +1,6 @@
-import getColumnSizeStyles, { getColumnNum } from '../getColumnSizeStyles';
+import getColumnSizeStyles, {
+	getColumnNum,
+} from '@extensions/styles/helpers/getColumnSizeStyles';
 
 const rowGapProps = {
 	rowElements: ['', ''],

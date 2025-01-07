@@ -6,14 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import Icon from '../../../icon';
-import AdvancedNumberControl from '../../../advanced-number-control';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import Icon from '@components/icon';
+import AdvancedNumberControl from '@components/advanced-number-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
-import { DefaultDividersControl } from '../../../divider-control';
+} from '@extensions/styles';
+import { DefaultDividersControl } from '@components/divider-control';
 
 /**
  * External dependencies
@@ -24,7 +24,7 @@ import classnames from 'classnames';
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarBorder, borderWidth } from '../../../../icons';
+import { toolbarBorder, borderWidth } from '@maxi-icons';
 
 /**
  * Divider

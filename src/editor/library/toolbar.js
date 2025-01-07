@@ -16,10 +16,10 @@ import {
 	largeMode,
 	mediumMode,
 	smallMode,
-} from '../../icons';
+} from '@maxi-icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
-import { Button, TextControl } from '../../components';
-import { isValidEmail } from '../auth';
+import { Button, TextControl } from '@components';
+import { isValidEmail } from '@editor/auth';
 
 /**
  * External dependencies

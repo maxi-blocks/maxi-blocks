@@ -8,8 +8,8 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
-import { getBlockStyle } from '../../extensions/styles';
+import SelectControl from '@components/select-control';
+import { getBlockStyle } from '@extensions/styles';
 
 /**
  * External dependencies

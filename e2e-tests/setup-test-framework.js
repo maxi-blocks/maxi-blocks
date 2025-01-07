@@ -261,7 +261,7 @@ beforeAll(async () => {
 
 	// Default theme, twentytwentytwo, has a bug that returns a console.error
 	await activateTheme('twentytwentyone');
-	await new Promise(resolve => setTimeout(resolve, 10000));
+	await new Promise(resolve => setTimeout(resolve, 120000));
 
 });
 

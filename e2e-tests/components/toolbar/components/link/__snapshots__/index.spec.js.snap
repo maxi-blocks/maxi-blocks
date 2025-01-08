@@ -9,3 +9,10 @@ exports[`Button link Check button link 1`] = `
   "url": "test.com",
 }
 `;
+
+exports[`Button link Should work correctly with dynamic content 1`] = `
+{
+  "title": null,
+  "url": null,
+}
+`;

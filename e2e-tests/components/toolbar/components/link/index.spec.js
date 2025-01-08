@@ -91,7 +91,7 @@ describe('Button link', () => {
 		);
 		await page.waitForTimeout(200);
 
-		expect(await getAttributes('dc-')).toMatchSnapshot();
+		expect(await getAttributes('linkSettings')).toMatchSnapshot();
 
 		const previewPage = await openPreviewPage(page);
 

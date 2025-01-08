@@ -12,7 +12,7 @@ exports[`Button link Check button link 1`] = `
 
 exports[`Button link Should work correctly with dynamic content 1`] = `
 {
-  "title": null,
-  "url": null,
+  "title": "http://localhost:8889",
+  "url": "http://localhost:8889",
 }
 `;

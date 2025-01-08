@@ -207,7 +207,8 @@ function observeConsoleLogging() {
 		// In case there's no internet connection (like when you're in a plane working lol)
 		if (
 			text.includes('ERR_INTERNET_DISCONNECTED') ||
-			text.includes('network error occurred')
+			text.includes('network error occurred') ||
+			text.includes('You are probably offline')
 		) {
 			return;
 		}

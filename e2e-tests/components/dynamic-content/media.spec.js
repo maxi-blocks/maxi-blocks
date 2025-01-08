@@ -35,7 +35,7 @@ describe('Dynamic content', () => {
 			'postType',
 			'attachment'
 		);
-		await page.waitForTimeout(3000);
+		await page.waitForTimeout(1000);
 
 		const mediaEntities = await wpDataSelect(
 			'core',

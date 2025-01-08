@@ -723,7 +723,7 @@ const DynamicContent = props => {
 										{limit === 0 && field === 'content' && (
 											<ToggleSwitch
 												label={__(
-													'Keep only text content',
+													'Display as plain text',
 													'maxi-blocks'
 												)}
 												selected={keepOnlyTextContent}

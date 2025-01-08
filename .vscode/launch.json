@@ -12,6 +12,24 @@
 			"pathMappings": {
 				"/var/www/html/wp-content/plugins/maxi-blocks": "${workspaceFolder}/"
 			}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Debug current e2e test",
+			"program": "${workspaceFolder}/node_modules/@wordpress/scripts/bin/wp-scripts.js",
+			"args": [
+				"test-e2e",
+				"--config=${workspaceFolder}/e2e-tests/jest.config.e2e.js",
+				"--verbose=true",
+				"--runInBand",
+				"--watch",
+				"${fileBasename}"
+			],
+			"cwd": "${fileDirname}",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
+			"trace": "all"
 		}
 	]
 }

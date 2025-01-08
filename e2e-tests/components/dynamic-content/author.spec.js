@@ -5,20 +5,20 @@ import {
 	createNewPost,
 	setClipboardData,
 	pressKeyWithModifier,
-	openPreviewPage,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { siteCodeEditor } from './content';
+import { authorCodeEditor } from './content';
+import { openPreviewPage } from '../../utils';
 
 describe('Dynamic content', () => {
 	it('Should return author DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data
-		const codeEditor = siteCodeEditor;
+		const codeEditor = authorCodeEditor;
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
@@ -56,7 +56,7 @@ describe('Dynamic content', () => {
 		expect(results.every(result => result)).toBe(true);
 
 		// Check frontend
-		const previewPage = await openPreviewPage();
+		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector(
 			'.text-dc-1.maxi-text-block .maxi-text-block__content',
 			{

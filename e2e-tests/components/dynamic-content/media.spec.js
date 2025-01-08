@@ -5,7 +5,6 @@ import {
 	createNewPost,
 	setClipboardData,
 	pressKeyWithModifier,
-	openPreviewPage,
 	wpDataSelect,
 } from '@wordpress/e2e-test-utils';
 
@@ -17,6 +16,7 @@ import {
 	addImageToLibrary,
 	removeUploadedImage,
 } from '../../utils/addImageToLibrary';
+import { openPreviewPage } from '../../utils';
 
 describe('Dynamic content', () => {
 	afterEach(async () => {
@@ -35,7 +35,7 @@ describe('Dynamic content', () => {
 			'postType',
 			'attachment'
 		);
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(3000);
 
 		const mediaEntities = await wpDataSelect(
 			'core',
@@ -132,7 +132,7 @@ describe('Dynamic content', () => {
 		expect(results.every(result => result)).toBe(true);
 
 		// Check frontend
-		const previewPage = await openPreviewPage();
+		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector(
 			'.maxi-text-block .maxi-text-block__content',
 			{

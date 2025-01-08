@@ -5,13 +5,13 @@ import {
 	createNewPost,
 	setClipboardData,
 	pressKeyWithModifier,
-	openPreviewPage,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
 import { pageCodeEditor } from './content';
+import { openPreviewPage } from '../../utils';
 
 describe('Dynamic content', () => {
 	it('Should return page DC content', async () => {
@@ -78,7 +78,7 @@ describe('Dynamic content', () => {
 		expect(results.every(result => result)).toBe(true);
 
 		// Check frontend
-		const previewPage = await openPreviewPage();
+		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector(
 			'.text-dc-title-1.maxi-text-block .maxi-text-block__content',
 			{

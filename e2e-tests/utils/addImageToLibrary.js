@@ -3,15 +3,28 @@ const addImageToLibrary = async page => {
 		fetch(
 			'https://upload.wikimedia.org/wikipedia/commons/7/77/Delete_key1.jpg'
 		)
-			.then(res => res.blob()) // Gets the response and returns it as a blob
+			.then(res => res.blob())
+			.catch(err => {
+				console.error('Failed to fetch image:', err);
+			})
 			.then(blob => {
-				window.wp.mediaUtils.uploadMedia({
-					filesList: [
-						new File([blob], 'foo.png', { type: 'image/png' }),
-					],
-					onFileChange: () => null,
-					onError: console.error,
-				});
+				if (!blob) return;
+				try {
+					window.wp.mediaUtils.uploadMedia({
+						filesList: [
+							new File([blob], 'foo.png', { type: 'image/png' }),
+						],
+						onFileChange: () => null,
+						onError: err => {
+							console.error('Failed to upload media:', err);
+						},
+					});
+				} catch (err) {
+					console.error('Failed to create File or upload:', err);
+				}
+			})
+			.catch(err => {
+				console.error('Unhandled error:', err);
 			})
 	);
 };

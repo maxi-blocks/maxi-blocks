@@ -140,6 +140,7 @@ const DynamicContent = props => {
 		customFormat,
 		acfGroup,
 		mediaSize,
+		keepOnlyTextContent,
 	} = dcValues;
 
 	const dcValuesForDate = {
@@ -678,45 +679,63 @@ const DynamicContent = props => {
 									(showSubField &&
 										limitFields.includes(subField))) &&
 								!error && (
-									<div className='maxi-info'>
-										<AdvancedNumberControl
-											label={__(
-												'Character limit',
-												'maxi-blocks'
-											)}
-											value={limit}
-											showHelp
-											helpContent={
-												<UnlimitedCharacterPopover message='Type 0 for unlimited' />
-											}
-											onChangeValue={value =>
-												changeProps({
-													'dc-limit': Number(value),
-												})
-											}
-											disableReset={
-												limitOptions.disableReset
-											}
-											step={limitOptions.steps}
-											withInputField={
-												limitOptions.withInputField
-											}
-											onReset={() =>
-												changeProps({
-													'dc-limit':
-														getDefaultAttribute(
-															'dc-limit'
-														),
-												})
-											}
-											min={limitOptions.min}
-											max={limitOptions.max}
-											initialPosition={
-												limit ||
-												limitOptions.defaultValue
-											}
-										/>
-									</div>
+									<>
+										<div className='maxi-info'>
+											<AdvancedNumberControl
+												label={__(
+													'Character limit',
+													'maxi-blocks'
+												)}
+												value={limit}
+												showHelp
+												helpContent={
+													<UnlimitedCharacterPopover message='Type 0 for unlimited' />
+												}
+												onChangeValue={value =>
+													changeProps({
+														'dc-limit':
+															Number(value),
+													})
+												}
+												disableReset={
+													limitOptions.disableReset
+												}
+												step={limitOptions.steps}
+												withInputField={
+													limitOptions.withInputField
+												}
+												onReset={() =>
+													changeProps({
+														'dc-limit':
+															getDefaultAttribute(
+																'dc-limit'
+															),
+													})
+												}
+												min={limitOptions.min}
+												max={limitOptions.max}
+												initialPosition={
+													limit ||
+													limitOptions.defaultValue
+												}
+											/>
+										</div>
+										{limit === 0 && field === 'content' && (
+											<ToggleSwitch
+												label={__(
+													'Display as plain text',
+													'maxi-blocks'
+												)}
+												selected={keepOnlyTextContent}
+												onChange={value =>
+													changeProps({
+														'dc-keep-only-text-content':
+															value,
+													})
+												}
+											/>
+										)}
+									</>
 								)}
 							{field === 'date' && !error && (
 								<DateFormatting

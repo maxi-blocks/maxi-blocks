@@ -220,6 +220,15 @@ function observeConsoleLogging() {
 		)
 			return;
 
+		// Sometimes fonts are not loaded
+		if (
+			text.includes(
+				'Failed to load fonts'
+			)
+		) {
+				return;
+		}
+
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
 
 		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of

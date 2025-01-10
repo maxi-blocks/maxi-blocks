@@ -41,20 +41,9 @@ export function* fetchFonts() {
 			fontsUrl = `${pluginsPath}/fonts/fonts.json`;
 		}
 
-		// Add fallback for test environment
-		if (process.env.NODE_ENV === 'test') {
-			// Return empty fonts object for tests
-			yield setFonts({});
-			return;
-		}
-
 		const fonts = yield apiFetch({ url: fontsUrl });
 		yield setFonts(fonts);
 	} catch (error) {
 		console.error('Failed to load fonts:', error);
-		// Prevent test failures by setting empty fonts on error
-		if (process.env.NODE_ENV === 'test') {
-			yield setFonts({});
-		}
 	}
 }

@@ -163,6 +163,10 @@ const dynamicContent = {
 		type: 'number',
 		default: 0,
 	},
+	'dc-keep-only-text-content': {
+		type: 'boolean',
+		default: false,
+	},
 	...dynamicContentLink,
 };
 

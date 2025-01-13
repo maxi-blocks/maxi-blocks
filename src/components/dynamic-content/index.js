@@ -237,7 +237,8 @@ const DynamicContent = props => {
 					postIdOptions,
 					contentType,
 					false,
-					contextLoop
+					contextLoop,
+					'dc'
 				);
 
 				if (postIDSettings) {

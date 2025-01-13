@@ -210,7 +210,9 @@ const ContextLoop = props => {
 				dataRequest,
 				postIdOptions,
 				contentType,
-				true
+				true,
+				{},
+				clientId
 			);
 
 			if (postIDSettings) {

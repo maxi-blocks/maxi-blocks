@@ -53,12 +53,25 @@ const onRequestInsertPattern = async (
 		// Replace all occurrences of \\u002d with - in a new variable
 		const modifiedContent = parsedContent.replace(/\\u002d/g, '-');
 
+		// Check and replace cl-relation value
+		const contentWithUpdatedRelation = modifiedContent.replace(
+			/"cl-relation":"by-category"/g,
+			'"cl-relation":"by-date"'
+		);
+
+		// Remove dc-media-id, dc-media-url, cl-id, cl-author, and specific dc-content entries
+		const cleanedContent = contentWithUpdatedRelation
+			.replace(/"dc-media-id":\d+,/g, '')
+			.replace(/"dc-media-url":"[^"]+",/g, '')
+			.replace(/"cl-author":\d+,/g, '')
+			.replace(/"dc-content":"No content found",/g, '');
+
 		const imagesLinks = [];
 		const imagesIds = [];
 
 		const allImagesRegexp = /(mediaID|imageID)":(.*)",/g;
 
-		const allImagesLinks = modifiedContent.match(allImagesRegexp);
+		const allImagesLinks = cleanedContent.match(allImagesRegexp);
 
 		allImagesLinks?.forEach(image => {
 			const parsed = image.replace(/\\/g, '');
@@ -77,7 +90,7 @@ const onRequestInsertPattern = async (
 		});
 
 		if (!isEmpty(imagesLinks) && !isEmpty(imagesIds)) {
-			let tempContent = modifiedContent;
+			let tempContent = cleanedContent;
 			const imagesLinksUniq = uniq(imagesLinks);
 			const imagesIdsUniq = uniq(imagesIds);
 			const counter = imagesLinksUniq.length;
@@ -127,7 +140,7 @@ const onRequestInsertPattern = async (
 			await insertCode(tempContent, clientId);
 		} else {
 			// no images to process
-			insertCode(modifiedContent, clientId);
+			insertCode(cleanedContent, clientId);
 		}
 	} else {
 		// not valid gutenberg code

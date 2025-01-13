@@ -13,7 +13,8 @@ const getValidatedDCAttributes = async (
 		attributes.id,
 		contentType,
 		isCL,
-		contextLoop
+		contextLoop,
+		attributes.uniqueID
 	);
 	const validatedAttributes = validationsValues(
 		attributes.type,

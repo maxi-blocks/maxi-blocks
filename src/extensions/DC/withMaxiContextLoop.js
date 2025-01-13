@@ -223,7 +223,9 @@ const withMaxiContextLoop = createHigherOrderComponent(
 						dataRequest,
 						contextLoopAttributes['cl-id'],
 						null,
-						true
+						true,
+						{},
+						ownProps.attributes.uniqueID
 					)) ?? {};
 
 				if (!isEmpty(newValues)) {

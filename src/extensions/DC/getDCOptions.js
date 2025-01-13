@@ -297,7 +297,7 @@ const getDCOptions = async (
 	const newPostIdOptions = data.map(item => {
 		if (relation.includes('by-custom-taxonomy')) {
 			return {
-				label: limitString(item.name, 20),
+				label: limitString(item.name, 25),
 				value: +item.id,
 			};
 		}
@@ -312,7 +312,7 @@ const getDCOptions = async (
 			orderByRelations.includes(relation)
 		) {
 			return {
-				label: limitString(item.name, 10),
+				label: limitString(item.name, 25),
 				value: +item.id,
 			};
 		}

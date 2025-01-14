@@ -30,15 +30,15 @@ describe('Dynamic content component', () => {
 
 		// Select "Author" as DC type
 		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-select-control__input'
+			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('users');
 		await page.waitForTimeout(2000);
 
 		// Select "Username" as field
-		const selectField = await page
-			.$$('.maxi-dynamic-content .maxi-select-control__input')
-			.then(elements => elements[2]);
+		const selectField = await page.$(
+			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
+		);
 		await selectField.select('username');
 		await page.waitForTimeout(2000);
 
@@ -60,24 +60,24 @@ describe('Dynamic content component', () => {
 	it('Should work correctly with post settings', async () => {
 		// Select "Post" as DC type
 		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-select-control__input'
+			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('posts');
 		await page.waitForTimeout(2000);
 
 		// Select "Title" as field
-		const selectField = await page
-			.$$('.maxi-dynamic-content .maxi-select-control__input')
-			.then(elements => elements[2]);
+		const selectField = await page.$(
+			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
+		);
 		await selectField.select('title');
 		await page.waitForTimeout(2000);
 
 		expect(await getDCContent(page)).toBe('Hello world!');
 
 		// Select "Get by date" as relation
-		const selectRelation = await page
-			.$$('.maxi-dynamic-content .maxi-select-control__input')
-			.then(elements => elements[1]);
+		const selectRelation = await page.$(
+			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
+		);
 		await selectRelation.select('by-date');
 		await page.waitForTimeout(2000);
 
@@ -97,15 +97,15 @@ describe('Dynamic content component', () => {
 	it('Should work correctly with page settings', async () => {
 		// Select "Page" as DC type
 		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-select-control__input'
+			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('pages');
 		await page.waitForTimeout(3000);
 
 		// Select "by-id" as relation
-		const selectRelation = await page
-			.$$('.maxi-dynamic-content .maxi-select-control__input')
-			.then(elements => elements[1]);
+		const selectRelation = await page.$(
+			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
+		);
 		await selectRelation.select('by-id');
 		await page.waitForTimeout(3000);
 
@@ -131,15 +131,15 @@ describe('Dynamic content component', () => {
 	it('Should work correctly with category settings', async () => {
 		// Select "Category" as DC type
 		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-select-control__input'
+			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('categories');
 		await page.waitForTimeout(3000);
 
 		// Select "Name" as field
-		const selectField = await page
-			.$$('.maxi-dynamic-content .maxi-select-control__input')
-			.then(elements => elements[2]);
+		const selectField = await page.$(
+			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
+		);
 		await selectField.select('name');
 		await page.waitForTimeout(3000);
 
@@ -149,13 +149,13 @@ describe('Dynamic content component', () => {
 		await selectField.select('count');
 		await page.waitForTimeout(3000);
 
-		expect(await getDCContent(page)).toBe('Uncategorized');
+		expect(await getDCContent(page)).toBe('1');
 	});
 
 	it('Should work correctly with tag settings', async () => {
 		// Select "Tag" as DC type
 		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-select-control__input'
+			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('tags');
 		await page.waitForTimeout(3000);
@@ -166,7 +166,7 @@ describe('Dynamic content component', () => {
 	it('Should work correctly with site settings', async () => {
 		// Select "Site" as DC type
 		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-select-control__input'
+			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('settings');
 		await page.waitForTimeout(3000);
@@ -174,9 +174,9 @@ describe('Dynamic content component', () => {
 		expect(await getDCContent(page)).toBe('maxi-blocks');
 
 		// Select "Language" as field
-		const selectField = await page
-			.$$('.maxi-dynamic-content .maxi-select-control__input')
-			.then(elements => elements[1]);
+		const selectField = await page.$(
+			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
+		);
 		await selectField.select('language');
 		await page.waitForTimeout(3000);
 

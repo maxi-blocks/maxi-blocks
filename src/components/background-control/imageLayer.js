@@ -775,7 +775,6 @@ const ImageLayer = props => {
 
 							onChange(newObj);
 						}}
-						uniqueID={props.uniqueID}
 						contentType='image'
 						disableHideOnFrontend
 					/>

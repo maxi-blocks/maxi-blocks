@@ -212,7 +212,6 @@ const ContextLoop = props => {
 				contentType,
 				true,
 				{
-					'cl-status': status,
 					'cl-pagination-per-page': paginationPerPage,
 				}
 			);

@@ -63,7 +63,7 @@ const onRequestInsertPattern = async (
 		const cleanedContent = contentWithUpdatedRelation
 			.replace(/"dc-media-id":\d+,/g, '')
 			.replace(/"dc-media-url":"[^"]+",/g, '')
-			//.replace(/"cl-author":\d+,/g, '')
+			.replace(/"cl-author":\d+,/g, '')
 			.replace(/"dc-content":"No content found",/g, '');
 
 		const imagesLinks = [];

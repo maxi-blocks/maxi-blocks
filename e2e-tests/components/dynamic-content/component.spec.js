@@ -1,5 +1,9 @@
 import { createNewPost } from '@wordpress/e2e-test-utils';
 import { insertMaxiBlock } from '../../utils';
+import {
+	addImageToLibrary,
+	removeUploadedImage,
+} from '../../utils/addImageToLibrary';
 
 const getDCContent = async page =>
 	page.$eval(
@@ -7,7 +11,10 @@ const getDCContent = async page =>
 		el => el.textContent
 	);
 
-describe('Dynamic content component', () => {
+const getDCImageContent = async page =>
+	page.$eval('.maxi-image-block .maxi-image-block__image', el => el.src);
+
+describe('Dynamic content component for text blocks', () => {
 	it('Should work correctly with author settings', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
@@ -181,5 +188,62 @@ describe('Dynamic content component', () => {
 		await page.waitForTimeout(3000);
 
 		expect(await getDCContent(page)).toBe('en_US');
+	});
+});
+
+describe('Dynamic content component for image blocks', () => {
+	beforeAll(async () => {
+		await createNewPost();
+		await addImageToLibrary(page);
+	});
+
+	afterAll(async () => {
+		await page.goto('http://localhost:8889/wp-admin/post-new.php');
+		await removeUploadedImage(page);
+	});
+
+	it('Should work correctly with author settings', async () => {
+		await insertMaxiBlock(page, 'Image Maxi');
+
+		await page.waitForSelector('.toolbar-wrapper');
+
+		// open DC editor
+		await page.$eval(
+			'.toolbar-wrapper .toolbar-item__dynamic-content',
+			button => button.click()
+		);
+
+		await page.waitForSelector('.maxi-dynamic-content');
+
+		// Enable DC
+		await page.$eval(
+			'.maxi-dynamic-content .maxi-toggle-switch input',
+			button => button.click()
+		);
+
+		// Select "Media" as DC type
+		const selectType = await page.$(
+			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
+		);
+		await selectType.select('media');
+		await page.waitForTimeout(3000);
+
+		const currentYear = new Date().getFullYear();
+		const currentMonth = `0${new Date().getMonth() + 1}`.slice(-2);
+
+		expect(await getDCImageContent(page)).toBe(
+			`http://localhost:8889/wp-content/uploads/${currentYear}/${currentMonth}/foo.png`
+		);
+
+		// Select "Get by date" as relation
+		const selectRelation = await page.$(
+			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
+		);
+		await selectRelation.select('by-date');
+		await page.waitForTimeout(3000);
+
+		expect(await getDCImageContent(page)).toBe(
+			`http://localhost:8889/wp-content/uploads/${currentYear}/${currentMonth}/foo.png`
+		);
 	});
 });

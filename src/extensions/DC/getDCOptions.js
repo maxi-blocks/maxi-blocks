@@ -94,7 +94,6 @@ export const getIdOptions = async (
 	author,
 	isCustomPostType,
 	isCustomTaxonomy,
-	uniqueID,
 	paginationPerPage = null
 ) => {
 	if (![...idTypes].includes(type) && !isCustomPostType && !isCustomTaxonomy) {
@@ -159,14 +158,8 @@ export const getIdOptions = async (
 					}
 				} catch (error) {
 					if (error.message === 'Timeout') {
-						console.warn(`Category fetch timeout for ${uniqueID}`);
 						// 4. Return cached data even if expired
 						data = cache[cacheKey]?.data || [];
-						console.warn(`Using cached data for ${uniqueID}:`, {
-							hasCachedData: !!data,
-							itemCount: data?.length,
-							cacheKey
-						});
 					} else {
 						console.error(`Category fetch error for ${uniqueID}:`, error);
 					}
@@ -255,7 +248,6 @@ const getDCOptions = async (
 	contentType,
 	isCL = false,
 	{ 'cl-status': clStatus, 'cl-pagination-per-page': clPaginationPerPage } = {},
-	uniqueID = null
 ) => {
 	let isCustomPostType = false;
 	let isCustomTaxonomy = false;
@@ -279,7 +271,6 @@ const getDCOptions = async (
 		author,
 		isCustomPostType,
 		isCustomTaxonomy,
-		uniqueID,
 		clPaginationPerPage
 	);
 

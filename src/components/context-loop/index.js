@@ -196,8 +196,6 @@ const ContextLoop = props => {
 	}, [changeProps, postAuthorOptions]);
 
 	const fetchDcData = useCallback(async () => {
-		console.log('fetchDcData');
-		console.log('relation', relation);
 		if (status && isTypeHasRelations) {
 			const dataRequest = {
 				type,
@@ -216,8 +214,7 @@ const ContextLoop = props => {
 				{
 					'cl-status': status,
 					'cl-pagination-per-page': paginationPerPage,
-				},
-				clientId
+				}
 			);
 
 			if (postIDSettings) {
@@ -229,7 +226,6 @@ const ContextLoop = props => {
 					!isNil(newPostIdOptions) &&
 					!isEqual(postIdOptions, newPostIdOptions)
 				) {
-					console.log('newPostIdOptions', newPostIdOptions);
 					setPostIdOptions(newPostIdOptions);
 				}
 			}
@@ -307,8 +303,6 @@ const ContextLoop = props => {
 	useEffect(() => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);
-
-	console.log('postIdOptions', postIdOptions);
 
 	return (
 		<div className={classes}>

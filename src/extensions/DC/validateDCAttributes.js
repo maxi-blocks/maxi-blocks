@@ -13,7 +13,10 @@ const getValidatedDCAttributes = async (
 		attributes.id,
 		contentType,
 		isCL,
-		contextLoop,
+		{
+			'cl-status': contextLoop?.['cl-status'],
+			'cl-pagination-per-page': contextLoop?.['cl-pagination-per-page'],
+		},
 		attributes.uniqueID
 	);
 	const validatedAttributes = validationsValues(

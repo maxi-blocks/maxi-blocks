@@ -94,14 +94,17 @@ export const getIdOptions = async (
 	author,
 	isCustomPostType,
 	isCustomTaxonomy,
-	uniqueID
+	uniqueID,
+	paginationPerPage = null
 ) => {
 	if (![...idTypes].includes(type) && !isCustomPostType && !isCustomTaxonomy) {
 		return false;
 	}
 
 	let data;
-	const args = { per_page: -1 };
+	const args = {
+		per_page: relation === 'by-id' ? -1 : (paginationPerPage * 3 || -1)
+	};
 	const { getEntityRecords } = resolveSelect(coreStore);
 
 	try {
@@ -123,8 +126,6 @@ export const getIdOptions = async (
 			['categories', 'product_categories'].includes(type) ||
 			relation === 'by-category'
 		) {
-			console.time(`[getIdOptions: categories-start][${uniqueID}]`);
-
 			const categoryType = ['products', 'product_categories'].includes(type)
 				? 'product_cat'
 				: 'category';
@@ -133,8 +134,6 @@ export const getIdOptions = async (
 			data = getCachedData(cacheKey);
 
 			if (!data) {
-				console.time(`[getIdOptions: categories-fetch][${uniqueID}]`);
-
 				// 1. Add request timeout with shorter duration (1 second)
 				const timeoutPromise = new Promise((_, reject) =>
 					setTimeout(() => reject(new Error('Timeout')), 1000)
@@ -172,10 +171,8 @@ export const getIdOptions = async (
 						console.error(`Category fetch error for ${uniqueID}:`, error);
 					}
 				}
-				console.timeEnd(`[getIdOptions: categories-fetch][${uniqueID}]`);
 			}
 
-			console.timeEnd(`[getIdOptions: categories-start][${uniqueID}]`);
 		} else if (
 			['tags', 'product_tags'].includes(type) ||
 			relation === 'by-tag'
@@ -257,7 +254,7 @@ const getDCOptions = async (
 	postIdOptions,
 	contentType,
 	isCL = false,
-	{ 'cl-status': clStatus } = {},
+	{ 'cl-status': clStatus, 'cl-pagination-per-page': clPaginationPerPage } = {},
 	uniqueID = null
 ) => {
 	let isCustomPostType = false;
@@ -282,7 +279,8 @@ const getDCOptions = async (
 		author,
 		isCustomPostType,
 		isCustomTaxonomy,
-		uniqueID
+		uniqueID,
+		clPaginationPerPage
 	);
 
 	if (!data) {

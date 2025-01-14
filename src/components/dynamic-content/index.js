@@ -237,8 +237,11 @@ const DynamicContent = props => {
 					postIdOptions,
 					contentType,
 					false,
-					contextLoop,
-					'dc'
+					contextLoop ? {
+						'cl-status': contextLoop['cl-status'],
+						'cl-pagination-per-page': contextLoop['cl-pagination-per-page']
+					} : {},
+					uniqueID
 				);
 
 				if (postIDSettings) {
@@ -269,6 +272,7 @@ const DynamicContent = props => {
 		relationTypes,
 		status,
 		type,
+		uniqueID,
 	]);
 
 	const currentTemplateType = getCurrentTemplateSlug();

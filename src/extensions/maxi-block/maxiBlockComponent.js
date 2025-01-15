@@ -61,105 +61,6 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
 /**
  * Class
  */
-const getBlockMemoryUsage = () => {
-	if (window.performance?.memory) {
-		return {
-			usedJSHeapSize: Math.round(window.performance.memory.usedJSHeapSize / (1024 * 1024)),
-			totalJSHeapSize: Math.round(window.performance.memory.totalJSHeapSize / (1024 * 1024)),
-			jsHeapSizeLimit: Math.round(window.performance.memory.jsHeapSizeLimit / (1024 * 1024))
-		};
-	}
-	return null;
-};
-
-function analyzeMaxiBlocksMemory() {
-    if (!window.maxiBlocksMemory) {
-        console.log('No MaxiBlocks memory data available');
-        return;
-    }
-
-    const totalPageMemory = Math.round(window.performance?.memory?.totalJSHeapSize / 1048576);
-    const usedPageMemory = Math.round(window.performance?.memory?.usedJSHeapSize / 1048576);
-
-    const blockMetrics = Object.entries(window.maxiBlocksMemory)
-        .map(([uniqueID, data]) => {
-            const history = data.memoryHistory;
-            if (!history || history.length < 2) return null;
-
-            // Get raw values
-            const current = history[history.length - 1].memory?.totalJSHeapSize;
-            const previous = history[history.length - 2].memory?.totalJSHeapSize;
-            const initial = history[0].memory?.totalJSHeapSize;
-
-            // Calculate relative impact based on block type
-            const typeImpact = {
-                'maxi-blocks/row-maxi': 2,
-                'maxi-blocks/column-maxi': 1.5,
-                'maxi-blocks/text-maxi': 1,
-                'maxi-blocks/image-maxi': 3,
-                'maxi-blocks/video-maxi': 4,
-                'maxi-blocks/container-maxi': 1.8,
-            }[data.type] || 1;
-
-            // Calculate normalized impact
-            const recentImpact = Math.abs(current - previous) * typeImpact / history.length;
-            const totalImpact = Math.abs(current - initial) * typeImpact / history.length;
-
-            return {
-                uniqueID,
-                type: data.type,
-                recentImpact: recentImpact / 1048576,
-                totalImpact: totalImpact / 1048576,
-                typeImpact,
-                timeElapsed: Math.round((Date.now() - data.mountTime) / 1000)
-            };
-        })
-        .filter(Boolean);
-
-    // Sort by impact scores
-    const topRecent = [...blockMetrics]
-        .sort((a, b) => b.recentImpact - a.recentImpact)
-        .slice(0, 10);
-
-    const topTotal = [...blockMetrics]
-        .sort((a, b) => b.totalImpact - a.totalImpact)
-        .slice(0, 10);
-
-    console.group('MaxiBlocks Memory Analysis');
-
-    console.log(`Total Page Memory: ${totalPageMemory} MB`);
-    console.log(`Used Page Memory: ${usedPageMemory} MB`);
-    console.log(`Memory Usage: ${Math.round(usedPageMemory/totalPageMemory * 100)}%`);
-    console.log(`Blocks Monitored: ${blockMetrics.length}`);
-
-    console.group('Top 10 Recent Memory Impact');
-    console.table(topRecent.map(block => ({
-        'Block Type': block.type,
-        'Block ID': block.uniqueID,
-        'Impact Score': Math.round(block.recentImpact * 1000) / 1000,
-        'Type Weight': block.typeImpact,
-        'Time (s)': block.timeElapsed
-    })));
-    console.groupEnd();
-
-    console.group('Top 10 Total Memory Impact');
-    console.table(topTotal.map(block => ({
-        'Block Type': block.type,
-        'Block ID': block.uniqueID,
-        'Impact Score': Math.round(block.totalImpact * 1000) / 1000,
-        'Type Weight': block.typeImpact,
-        'Time (s)': block.timeElapsed
-    })));
-    console.groupEnd();
-
-    console.groupEnd();
-}
-
-// Auto-run analysis every 10 seconds
-if (!window.memoryAnalysisInterval) {
-    window.memoryAnalysisInterval = setInterval(analyzeMaxiBlocksMemory, 10000);
-}
-
 class MaxiBlockComponent extends Component {
 	constructor(...args) {
 		super(...args);
@@ -225,9 +126,6 @@ class MaxiBlockComponent extends Component {
 		// 1. Adding again the root and having a React error
 		// 2. Will request `displayStyles` without re-rendering the styles, which speeds up the process
 		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
-
-		// Add memory tracking initialization
-		this.memoryInterval = null;
 	}
 
 	componentDidMount() {
@@ -402,33 +300,6 @@ class MaxiBlockComponent extends Component {
 		this?.displayStyles(!!this?.rootSlot);
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
-
-		// Add memory tracking
-		if (!this.isPatternsPreview && uniqueID) {
-			window.maxiBlocksMemory = window.maxiBlocksMemory || {};
-			window.maxiBlocksMemory[uniqueID] = {
-				type: this.props.name,
-				memoryHistory: [{
-					time: Date.now(),
-					memory: getBlockMemoryUsage()
-				}],
-				mountTime: Date.now()
-			};
-
-			this.memoryInterval = setInterval(() => {
-				if (window.maxiBlocksMemory?.[uniqueID]) {
-					window.maxiBlocksMemory[uniqueID].memoryHistory.push({
-						time: Date.now(),
-						memory: getBlockMemoryUsage()
-					});
-
-					// Keep only last 10 measurements to prevent memory bloat
-					if (window.maxiBlocksMemory[uniqueID].memoryHistory.length > 10) {
-						window.maxiBlocksMemory[uniqueID].memoryHistory.shift();
-					}
-				}
-			}, 10000);
-		}
 	}
 
 	/**
@@ -777,18 +648,6 @@ class MaxiBlockComponent extends Component {
 		}
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
-
-		// Add memory tracking cleanup
-		if (this.memoryInterval) {
-			clearInterval(this.memoryInterval);
-			this.memoryInterval = null;
-		}
-
-		const { uniqueID } = this.props.attributes;
-		if (!this.isPatternsPreview && uniqueID && window.maxiBlocksMemory?.[uniqueID]) {
-			window.maxiBlocksMemory[uniqueID].unmountMemory = getBlockMemoryUsage();
-			window.maxiBlocksMemory[uniqueID].unmountTime = Date.now();
-		}
 	}
 
 	handleResponsivePreview(editorWrapper, tabletPreview, mobilePreview) {

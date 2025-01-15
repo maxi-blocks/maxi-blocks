@@ -4,6 +4,7 @@
 import styleGenerator from '@extensions/styles/styleGenerator';
 import controls from './controls';
 import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
+import { omit } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -22,33 +23,25 @@ function reducer(
 		prevSavedAttrsClientId: null,
 		cssCache: {},
 		blockMarginValue: '',
-		defaultGroupAttributes: { ...defaultGroupAttributes },
+		defaultGroupAttributes: defaultGroupAttributes,
 	},
 	action
 ) {
 	switch (action.type) {
 		case 'UPDATE_STYLES':
-			return {
-				...state,
-				styles: {
-					...state.styles,
-					...action.styles,
-				},
-			};
+			return Object.assign({}, state, {
+				styles: Object.assign({}, state.styles, action.styles),
+			});
 		case 'SAVE_STYLES':
 			controls.SAVE_STYLES({
 				styles: state.styles,
 				isUpdate: action.isUpdate,
 			});
-			return {
-				...state,
-				isUpdate: action.isUpdate,
-			};
+			return Object.assign({}, state, { isUpdate: action.isUpdate });
 		case 'REMOVE_STYLES':
-			action.targets.forEach(target => delete state.styles[target]);
-			return {
-				...state,
-			};
+			return Object.assign({}, state, {
+				styles: omit(state.styles, action.targets),
+			});
 		case 'SAVE_PREV_SAVED_ATTRS':
 			return {
 				...state,
@@ -58,54 +51,48 @@ function reducer(
 		case 'SAVE_CSS_CACHE': {
 			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
 
-			return {
-				...state,
-				cssCache: {
-					...state.cssCache,
-					[uniqueID]: {
-						...BREAKPOINTS.reduce(
-							(acc, breakpoint) => ({
-								...acc,
-								[breakpoint]: styleGenerator(
-									stylesObj,
-									isIframe,
-									isSiteEditor,
-									breakpoint
-								),
-							}),
-							{}
-						),
-					},
-				},
-			};
+			const breakpointStyles = {};
+			BREAKPOINTS.forEach(breakpoint => {
+				breakpointStyles[breakpoint] = styleGenerator(
+					stylesObj,
+					isIframe,
+					isSiteEditor,
+					breakpoint
+				);
+			});
+
+			const newState = Object.assign({}, state, {
+				cssCache: Object.assign({}, state.cssCache, {
+					[uniqueID]: breakpointStyles,
+				}),
+			});
+
+			const size = new TextEncoder().encode(JSON.stringify(newState)).length;
+			console.log('newState size in MB:', (size / 1048576).toFixed(2));
+			console.log('newState cssCache:', newState.cssCache);
+
+			return newState;
 		}
 		case 'SAVE_RAW_CSS_CACHE': {
 			const { uniqueID, stylesContent } = action;
 
-			return {
-				...state,
-				cssCache: {
-					...state.cssCache,
-					[uniqueID]: {
-						...state.cssCache[uniqueID],
-						...stylesContent,
-					},
-				},
-			};
+			return Object.assign({}, state, {
+				cssCache: Object.assign({}, state.cssCache, {
+					[uniqueID]: Object.assign({}, state.cssCache[uniqueID], stylesContent),
+				}),
+			});
 		}
 		case 'REMOVE_CSS_CACHE': {
 			const { uniqueID } = action;
 
-			delete state.cssCache[uniqueID];
-
-			return state;
+			return Object.assign({}, state, {
+				cssCache: omit(state.cssCache, [uniqueID]),
+			});
 		}
-		case 'SAVE_BLOCK_MARGIN_VALUE': {
-			return {
-				...state,
+		case 'SAVE_BLOCK_MARGIN_VALUE':
+			return Object.assign({}, state, {
 				blockMarginValue: action.blockMarginValue,
-			};
-		}
+			});
 		default:
 			return state;
 	}

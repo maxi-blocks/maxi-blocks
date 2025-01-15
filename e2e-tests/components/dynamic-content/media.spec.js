@@ -19,15 +19,17 @@ import {
 import { openPreviewPage } from '../../utils';
 
 describe('Dynamic content', () => {
-	afterEach(async () => {
+	beforeAll(async () => {
+		await createNewPost();
+		await addImageToLibrary(page);
+	});
+
+	afterAll(async () => {
 		await page.goto('http://localhost:8889/wp-admin/post-new.php');
 		await removeUploadedImage(page);
 	});
 
 	it('Should return media DC content', async () => {
-		await createNewPost();
-		await addImageToLibrary(page);
-
 		// Need a first call to set the results on the store
 		await wpDataSelect(
 			'core',

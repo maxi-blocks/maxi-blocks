@@ -41,13 +41,19 @@ import {
 	getTemplateViewIframe,
 	getSiteEditorPreviewIframes,
 } from '@extensions/fse';
-import { getClientIdFromUniqueId, uniqueIDGenerator } from '@extensions/attributes';
+import {
+	getClientIdFromUniqueId,
+	uniqueIDGenerator,
+} from '@extensions/attributes';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
-import { insertBlockIntoColumns, removeBlockFromColumns } from '@extensions/repeater';
+import {
+	insertBlockIntoColumns,
+	removeBlockFromColumns,
+} from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 
@@ -1465,25 +1471,22 @@ class MaxiBlockComponent extends Component {
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
 
-		if (isBreakpointChange || isBlockStyleChange) {
+		if (isBlockStyleChange) {
 			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
 			styleContent = cssCache[currentBreakpoint];
-
-			if (isBlockStyleChange) {
-				const { blockStyle } = this.props.attributes;
-				const previousBlockStyle =
-					blockStyle === 'light' ? 'dark' : 'light';
-				styleContent = styleContent.replace(
-					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
-					`--maxi-${blockStyle}-`
-				);
-				styles = this.generateStyles(
-					updatedStylesObj,
-					breakpoints,
-					uniqueID
-				);
-			}
-		} else {
+			const { blockStyle } = this.props.attributes;
+			const previousBlockStyle =
+				blockStyle === 'light' ? 'dark' : 'light';
+			styleContent = styleContent.replace(
+				new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
+				`--maxi-${blockStyle}-`
+			);
+			styles = this.generateStyles(
+				updatedStylesObj,
+				breakpoints,
+				uniqueID
+			);
+		} else if (!isBreakpointChange) {
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,

@@ -5,6 +5,7 @@ import styleGenerator from '@extensions/styles/styleGenerator';
 import controls from './controls';
 import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
 import { omit } from 'lodash';
+import { select } from '@wordpress/data';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -23,15 +24,28 @@ function reducer(
 		prevSavedAttrsClientId: null,
 		cssCache: {},
 		blockMarginValue: '',
-		defaultGroupAttributes: defaultGroupAttributes,
+		defaultGroupAttributes,
 	},
 	action
 ) {
+	console.log('Reducer Action:', action.type);
+
 	switch (action.type) {
-		case 'UPDATE_STYLES':
-			return Object.assign({}, state, {
-				styles: Object.assign({}, state.styles, action.styles),
-			});
+		case 'UPDATE_STYLES': {
+			console.log('UPDATE_STYLES - Input size:', Object.keys(action.styles).length);
+
+			const chunkSize = 100;
+			const chunks = chunkStylesIntoChunks(action.styles, chunkSize);
+			console.log('Chunks created:', chunks.length);
+
+			const updatedStyles = chunks.reduce((acc, chunk) => ({
+				...acc,
+				...chunk
+			}), state.styles);
+
+			console.log('Updated styles size:', Object.keys(updatedStyles).length);
+			return { ...state, styles: updatedStyles };
+		}
 		case 'SAVE_STYLES':
 			controls.SAVE_STYLES({
 				styles: state.styles,
@@ -50,28 +64,37 @@ function reducer(
 			};
 		case 'SAVE_CSS_CACHE': {
 			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
+			console.log('SAVE_CSS_CACHE - UniqueID:', uniqueID);
 
-			const breakpointStyles = {};
-			BREAKPOINTS.forEach(breakpoint => {
-				breakpointStyles[breakpoint] = styleGenerator(
+			const breakpointStyles = BREAKPOINTS.reduce((acc, breakpoint) => ({
+				...acc,
+				[breakpoint]: styleGenerator(
 					stylesObj,
 					isIframe,
 					isSiteEditor,
 					breakpoint
+				),
+			}), {});
+
+			console.log('Generated styles for breakpoints:', Object.keys(breakpointStyles));
+
+			const updatedCache = {
+				...state.cssCache,
+				[uniqueID]: breakpointStyles,
+			};
+
+			const cacheSize = Object.keys(updatedCache).length;
+			console.log('Cache size after update:', cacheSize);
+
+			if (cacheSize > 100) {
+				console.log('Cache limit exceeded, truncating...');
+				const truncatedCache = Object.fromEntries(
+					Object.entries(updatedCache).slice(-100)
 				);
-			});
+				return { ...state, cssCache: truncatedCache };
+			}
 
-			const newState = Object.assign({}, state, {
-				cssCache: Object.assign({}, state.cssCache, {
-					[uniqueID]: breakpointStyles,
-				}),
-			});
-
-			const size = new TextEncoder().encode(JSON.stringify(newState)).length;
-			console.log('newState size in MB:', (size / 1048576).toFixed(2));
-			console.log('newState cssCache:', newState.cssCache);
-
-			return newState;
+			return { ...state, cssCache: updatedCache };
 		}
 		case 'SAVE_RAW_CSS_CACHE': {
 			const { uniqueID, stylesContent } = action;
@@ -97,5 +120,21 @@ function reducer(
 			return state;
 	}
 }
+
+// Helper function to chunk large style objects
+const chunkStylesIntoChunks = (styles, size) => {
+	console.log('Chunking styles - Input size:', Object.keys(styles).length);
+	const chunks = [];
+	const entries = Object.entries(styles);
+
+	for (let i = 0; i < entries.length; i += size) {
+		chunks.push(
+			Object.fromEntries(entries.slice(i, i + size))
+		);
+	}
+
+	console.log('Chunks created:', chunks.length);
+	return chunks;
+};
 
 export default reducer;

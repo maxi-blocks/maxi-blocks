@@ -161,7 +161,7 @@ export const getIdOptions = async (
 						// 4. Return cached data even if expired
 						data = cache[cacheKey]?.data || [];
 					} else {
-						console.error(`Category fetch error for ${uniqueID}:`, error);
+						console.error(`Category fetch error for ${cacheKey}:`, error);
 					}
 				}
 			}

@@ -14,8 +14,39 @@ const getDCContent = async page =>
 const getDCImageContent = async page =>
 	page.$eval('.maxi-image-block .maxi-image-block__image', el => el.src);
 
+/**
+ * Check if the response has loaded the DC data
+ * @param {HTTPResponse} response      - response object
+ * @param {string}       type          - DC type
+ * @param {...string}    shouldInclude - should be included in the response URL
+ * @returns {boolean}
+ */
+const isResponseOk = (response, type, ...shouldInclude) => {
+	const url = response.url();
+	const endpoint = `wp/v2/${type}`;
+
+	if (
+		!(
+			url.includes(encodeURIComponent(endpoint)) &&
+			shouldInclude.every(include => url.includes(include))
+		)
+	) {
+		return false;
+	}
+
+	if (response.status() !== 200) {
+		throw new Error(
+			`Failed to load DC data for ${type} with ${shouldInclude.join(
+				', '
+			)}: ${response.status()}`
+		);
+	}
+
+	return true;
+};
+
 describe('Dynamic content component for text blocks', () => {
-	it('Should work correctly with author settings', async () => {
+	beforeAll(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 
@@ -34,34 +65,6 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-toggle-switch input',
 			button => button.click()
 		);
-
-		// Select "Author" as DC type
-		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
-		);
-		await selectType.select('users');
-		await page.waitForTimeout(2000);
-
-		// Select "Username" as field
-		const selectField = await page.$(
-			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
-		);
-		await selectField.select('username');
-		await page.waitForTimeout(2000);
-
-		expect(await getDCContent(page)).toBe('admin');
-
-		// Select "Biographical info" as field
-		await selectField.select('description');
-		await page.waitForTimeout(2000);
-
-		expect(await getDCContent(page)).toBe('No content found');
-
-		// Select "Website" as field
-		await selectField.select('url');
-		await page.waitForTimeout(2000);
-
-		expect(await getDCContent(page)).toBe('http://localhost:8889');
 	});
 
 	it('Should work correctly with post settings', async () => {
@@ -70,14 +73,16 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('posts');
-		await page.waitForTimeout(2000);
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'posts', 'include=')
+		);
+		await page.waitForTimeout(300);
 
 		// Select "Title" as field
 		const selectField = await page.$(
 			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
 		);
 		await selectField.select('title');
-		await page.waitForTimeout(2000);
 
 		expect(await getDCContent(page)).toBe('Hello world!');
 
@@ -86,7 +91,10 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
 		);
 		await selectRelation.select('by-date');
-		await page.waitForTimeout(2000);
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'posts', 'orderby=date')
+		);
+		await page.waitForTimeout(300);
 
 		expect(await getDCContent(page)).toBe('Hello world!');
 
@@ -96,9 +104,44 @@ describe('Dynamic content component for text blocks', () => {
 		);
 		await accumulator.click();
 		await page.keyboard.press('ArrowUp');
-		await page.waitForTimeout(2000);
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'posts', 'orderby=date')
+		);
+		await page.waitForTimeout(300);
 
 		expect(await getDCContent(page)).toBe('No content found');
+
+		await selectRelation.select('by-id');
+	});
+
+	it('Should work correctly with author settings', async () => {
+		// Select "Author" as DC type
+		const selectType = await page.$(
+			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
+		);
+		await selectType.select('users');
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'users', 'users%2F')
+		);
+		await page.waitForTimeout(300);
+
+		// Select "Username" as field
+		const selectField = await page.$(
+			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
+		);
+		await selectField.select('username');
+
+		expect(await getDCContent(page)).toBe('admin');
+
+		// Select "Biographical info" as field
+		await selectField.select('description');
+
+		expect(await getDCContent(page)).toBe('No content found');
+
+		// Select "Website" as field
+		await selectField.select('url');
+
+		expect(await getDCContent(page)).toBe('http://localhost:8889');
 	});
 
 	it('Should work correctly with page settings', async () => {
@@ -107,20 +150,22 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('pages');
-		await page.waitForTimeout(3000);
-
-		// Select "by-id" as relation
-		const selectRelation = await page.$(
-			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'pages', 'include=')
 		);
-		await selectRelation.select('by-id');
-		await page.waitForTimeout(3000);
+		await page.waitForTimeout(300);
 
 		expect(await getDCContent(page)).toBe('Sample Page');
 
 		// Select "Alphabetical" as relation
+		const selectRelation = await page.$(
+			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
+		);
 		await selectRelation.select('alphabetical');
-		await page.waitForTimeout(3000);
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'pages', 'orderby=title')
+		);
+		await page.waitForTimeout(300);
 
 		expect(await getDCContent(page)).toBe('No content found');
 
@@ -130,9 +175,15 @@ describe('Dynamic content component for text blocks', () => {
 		);
 		await accumulator.click();
 		await page.keyboard.press('ArrowDown');
-		await page.waitForTimeout(3000);
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'pages', 'orderby=title')
+		);
+		await page.waitForTimeout(300);
 
 		expect(await getDCContent(page)).toBe('Sample Page');
+
+		// Select "Get by id" as relation
+		await selectRelation.select('by-id');
 	});
 
 	it('Should work correctly with category settings', async () => {
@@ -141,20 +192,21 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('categories');
-		await page.waitForTimeout(3000);
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'categories', 'include=')
+		);
+		await page.waitForTimeout(300);
 
 		// Select "Name" as field
 		const selectField = await page.$(
 			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
 		);
 		await selectField.select('name');
-		await page.waitForTimeout(3000);
 
 		expect(await getDCContent(page)).toBe('Uncategorized');
 
 		// Select "Count" as field
 		await selectField.select('count');
-		await page.waitForTimeout(3000);
 
 		expect(await getDCContent(page)).toBe('1');
 	});
@@ -176,7 +228,7 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('settings');
-		await page.waitForTimeout(3000);
+		await page.waitForTimeout(300);
 
 		expect(await getDCContent(page)).toBe('maxi-blocks');
 
@@ -185,7 +237,6 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
 		);
 		await selectField.select('language');
-		await page.waitForTimeout(3000);
 
 		expect(await getDCContent(page)).toBe('en_US');
 	});
@@ -226,7 +277,10 @@ describe('Dynamic content component for image blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
 		);
 		await selectType.select('media');
-		await page.waitForTimeout(3000);
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'media', 'include=')
+		);
+		await page.waitForTimeout(300);
 
 		const currentYear = new Date().getFullYear();
 		const currentMonth = `0${new Date().getMonth() + 1}`.slice(-2);
@@ -240,7 +294,10 @@ describe('Dynamic content component for image blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
 		);
 		await selectRelation.select('by-date');
-		await page.waitForTimeout(3000);
+		await page.waitForResponse(response =>
+			isResponseOk(response, 'media', 'orderby=date')
+		);
+		await page.waitForTimeout(300);
 
 		expect(await getDCImageContent(page)).toBe(
 			`http://localhost:8889/wp-content/uploads/${currentYear}/${currentMonth}/foo.png`

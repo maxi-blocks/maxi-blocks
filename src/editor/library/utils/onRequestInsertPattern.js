@@ -59,12 +59,24 @@ const onRequestInsertPattern = async (
 			'"cl-relation":"by-date"'
 		);
 
-		// Remove dc-media-id, dc-media-url, cl-id, cl-author, and specific dc-content entries
+		console.log(contentWithUpdatedRelation);
+
+		// Remove dc-media-id, dc-media-url, cl-id, cl-author, specific dc-content entries, and maxiblocks demo URLs/titles
 		const cleanedContent = contentWithUpdatedRelation
 			.replace(/,"dc-media-id":\d+,"dc-media-url":"[^"]+"/g, '')
 			.replace(/"cl-author":\d+,/g, '')
-			.replace(/"dc-content":"No content found",/g, '');
-
+			.replace(/"dc-content":"No content found",/g, '')
+			.replace(/"dc-status":true,"dc-field":"categories","dc-content":"[^"]+"/g, '"dc-status":true,"dc-field":"categories","dc-content":""')
+			.replace(/"dc-status":true,"dc-field":"tags","dc-content":"[^"]+"/g, '"dc-status":true,"dc-field":"tags","dc-content":""')
+			.replace(/"dc-status":true,"dc-field":"categories","dc-content":"\\u003cspan\\u003e\\u003ca[^"]+\\u003e\\u003cspan\\u003e[^<]+\\u003c\/span\\u003e\\u003c\/a\\u003e\\u003c\/span\\u003e"/g, '"dc-status":true,"dc-field":"categories","dc-content":""')
+			.replace(/"dc-status":true,"dc-field":"tags","dc-content":"\\u003cspan\\u003e\\u003ca[^"]+\\u003e\\u003cspan\\u003e[^<]+\\u003c\/span\\u003e\\u003c\/a\\u003e\\u003c\/span\\u003e"/g, '"dc-status":true,"dc-field":"tags","dc-content":""')
+			.replace(/"dc-status":true,"dc-field":"title","dc-content":"[^"]+"/g, '"dc-status":true,"dc-field":"title","dc-content":""')
+			.replace(/"dc-status":true,"dc-field":"author","dc-content":"[^"]+"/g, '"dc-status":true,"dc-field":"author","dc-content":""')
+			.replace(/"dc-status":true,"dc-field":"content","dc-content":"[^"]+"/g, '"dc-status":true,"dc-field":"content","dc-content":""')
+			.replace(/"dc-field":"date","dc-format":"[^"]+","dc-content":"[^"]+"/g, (match) => {
+				const formatMatch = match.match(/"dc-format":"([^"]+)"/);
+				return `"dc-field":"date","dc-format":"${formatMatch[1]}","dc-content":""`;
+			});
 		const imagesLinks = [];
 		const imagesIds = [];
 

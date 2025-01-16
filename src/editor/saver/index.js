@@ -134,6 +134,7 @@ const BlockStylesSaver = () => {
 	useEffect(() => {
 		if (!allStylesAreSaved) {
 			const forbidUpdateUnsubscribe = subscribe(() => {
+				console.log('subscribe allStylesAreSaved');
 				const publishButton = document.querySelector(
 					'.editor-post-publish-button'
 				);
@@ -184,6 +185,7 @@ const BlockStylesSaver = () => {
 
 wp.domReady(() => {
 	if (document.body.classList.contains('maxi-blocks--active')) {
+		console.log('BlockStylesSaver');
 		const wrapper = document.createElement('div');
 		wrapper.id = 'maxi-blocks__saver';
 

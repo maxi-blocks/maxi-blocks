@@ -49,9 +49,11 @@ wp.domReady(() => {
 	 * - Add special classes on Settings Sidebar
 	 * - Hide original WP toolbar on selected MaxiBlocks
 	 */
+	console.log('ToolbarButtons');
 	let isMaxiToolbar = false;
 
 	const unsubscribe = subscribe(() => {
+		console.log('subscribe ToolbarButtons');
 		if (
 			// Resetting isMaxiToolbar if we are switching to a different template
 			getIsTemplatesListOpened() ||

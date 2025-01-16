@@ -58,6 +58,7 @@ export const clearIdOptionsCache = () => {
 
 // Hook into the editor initialization
 wp.domReady(() => {
+	console.log('getDCOptions');
 	clearCustomCache();
 	clearIdOptionsCache();
 });

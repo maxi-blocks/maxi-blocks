@@ -73,9 +73,10 @@ describe('FontFamilySelector', () => {
 
 		await page.waitForTimeout(3000);
 
-		const hasBeenLoaded = await page.evaluate(() => {
-			return document.fonts.check('12px Montserrat');
-		});
+		const hasBeenLoaded = await page.evaluate(() =>
+			document.fonts.check('12px Montserrat')
+		);
+
 		expect(hasBeenLoaded).toBeTruthy();
 	});
 });

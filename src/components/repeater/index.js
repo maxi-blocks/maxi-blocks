@@ -8,11 +8,11 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import InfoBox from '../info-box';
-import ToggleSwitch from '../toggle-switch';
-import DialogBox from '../dialog-box';
-import { getAttributeKey, getAttributeValue } from '../../extensions/styles';
-import { validateRowColumnsStructure } from '../../extensions/repeater';
+import InfoBox from '@components/info-box';
+import ToggleSwitch from '@components/toggle-switch';
+import DialogBox from '@components/dialog-box';
+import { getAttributeKey, getAttributeValue } from '@extensions/styles';
+import { validateRowColumnsStructure } from '@extensions/repeater';
 
 const Repeater = ({
 	clientId,

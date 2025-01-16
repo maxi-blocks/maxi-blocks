@@ -6,11 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * External dependencies

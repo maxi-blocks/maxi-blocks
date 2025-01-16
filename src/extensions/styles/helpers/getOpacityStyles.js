@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getAttributeKey from '../getAttributeKey';
+import getAttributeKey from '@extensions/styles/getAttributeKey';
 
 /**
  * General

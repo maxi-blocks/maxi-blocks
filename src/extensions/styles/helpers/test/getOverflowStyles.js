@@ -1,4 +1,4 @@
-import getOverflowStyles from '../getOverflowStyles';
+import getOverflowStyles from '@extensions/styles/helpers/getOverflowStyles';
 
 describe('getOverflowStyles', () => {
 	it('Get a correct overflow styles with default values', () => {

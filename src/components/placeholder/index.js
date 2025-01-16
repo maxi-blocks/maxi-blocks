@@ -11,7 +11,7 @@ import { useResizeObserver } from '@wordpress/compose';
 /**
  * Internal dependencies
  */
-import Icon from '../icon';
+import Icon from '@components/icon';
 
 /**
  * Styles and Icons

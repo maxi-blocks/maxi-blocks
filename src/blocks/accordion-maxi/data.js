@@ -1,14 +1,14 @@
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
-import { createIconTransitions } from '../../extensions/styles';
+import { createSelectors } from '@extensions/styles/custom-css';
+import { createIconTransitions } from '@extensions/styles';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
-} from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
-import { targets as paneTargets } from '../pane-maxi/data';
+} from '@extensions/relations';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
+import { targets as paneTargets } from '@blocks/pane-maxi/data';
 
 /**
  * Data object

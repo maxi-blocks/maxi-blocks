@@ -1,8 +1,8 @@
 import {
 	getAdvancedSettings,
 	getCanvasSettings,
-} from '../../extensions/relations';
-import { createSelectors } from '../../extensions/styles/custom-css';
+} from '@extensions/relations';
+import { createSelectors } from '@extensions/styles/custom-css';
 
 /**
  * Data object

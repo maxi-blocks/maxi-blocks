@@ -1,14 +1,15 @@
 /**
  * Internal dependencies
  */
-import getAttributeValue from '../getAttributeValue';
+import getAttributeValue from '@extensions/styles/getAttributeValue';
 import getBorderStyles from './getBorderStyles';
-import getColorRGBAString from '../getColorRGBAString';
+import getColorRGBAString from '@extensions/styles/getColorRGBAString';
 import getDisplayStyles from './getDisplayStyles';
-import getGroupAttributes from '../getGroupAttributes';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 import getImageShapeStyles from './getImageShapeStyles';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getPaletteAttributes from '../getPaletteAttributes';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
+import getPaletteAttributes from '@extensions/styles/getPaletteAttributes';
+import { isValidNumber } from '@extensions/styles/utils';
 
 /**
  * External dependencies
@@ -613,7 +614,7 @@ const getWrapperObject = ({
 			isHover,
 		});
 
-		if (!isNil(positionValue) && !isNil(positionUnit)) {
+		if (isValidNumber(positionValue) && !isNil(positionUnit)) {
 			response[breakpoint][keyWord] =
 				positionValue === 'auto'
 					? 'auto'

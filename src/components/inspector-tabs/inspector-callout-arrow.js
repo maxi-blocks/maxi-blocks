@@ -6,12 +6,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ArrowControl from '../arrow-control';
+import ArrowControl from '@components/arrow-control';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
+} from '@extensions/styles';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
 
 /**
  * Component

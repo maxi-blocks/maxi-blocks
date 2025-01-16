@@ -7,8 +7,8 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import TextControl from '../text-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import TextControl from '@components/text-control';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * Styles

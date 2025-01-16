@@ -35,16 +35,39 @@ function get_default_attribute($prop, $block_name = null)
         'slider-maxi',
     ];
 
-    global $wp_filesystem;
-    if (empty($wp_filesystem)) {
-        require_once ABSPATH . '/wp-admin/includes/file.php';
-        WP_Filesystem();
-    }
-
     foreach ($blocks as $block) {
         $block_json_path = MAXI_PLUGIN_DIR_PATH . "build/blocks/" . $block . "/block.json";
 
         if (file_exists($block_json_path)) {
+            // Try direct file reading first
+            if (is_readable($block_json_path)) {
+                $block_json = file_get_contents($block_json_path);
+                if ($block_json !== false) {
+                    $block_data = json_decode($block_json, true);
+                    $block_defaults = $block_data['attributes'];
+
+                    if (array_key_exists($prop, $block_defaults) && isset($block_defaults[$prop]['default'])) {
+                        $response = $block_defaults[$prop]['default'];
+                    }
+
+                    if (isset($response)) {
+                        return $response;
+                    }
+                    continue;
+                }
+            }
+
+            // Fallback to WP_Filesystem if direct reading fails
+            global $wp_filesystem;
+            if (empty($wp_filesystem)) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem(false, false, true);
+            }
+
+            if (empty($wp_filesystem)) {
+                continue;
+            }
+
             $block_json = $wp_filesystem->get_contents($block_json_path);
             if (!$block_json) {
                 continue;

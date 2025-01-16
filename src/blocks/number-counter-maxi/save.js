@@ -6,7 +6,7 @@ eslint-disable react/no-unknown-property
 /**
  * Internal dependencies
  */
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 
 /**
  * Save

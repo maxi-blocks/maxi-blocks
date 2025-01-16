@@ -1,6 +1,6 @@
-import getSizeStyles from '../getSizeStyles';
+import getSizeStyles from '@extensions/styles/helpers/getSizeStyles';
 
-jest.mock('../../getDefaultAttribute', () => {
+jest.mock('@extensions/styles/getDefaultAttribute', () => {
 	return jest.fn(attribute => {
 		return attribute.includes('general') ? false : undefined;
 	});
@@ -500,6 +500,16 @@ describe('getSizeStyles', () => {
 			'min-height-unit-xs': 'px',
 			'min-height-xs': '4',
 			'width-fit-content-general': true,
+		};
+
+		const result = getSizeStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Should return an empty object if the width/height is an empty string and the unit is not empty', () => {
+		const object = {
+			'width-general': '',
+			'width-unit-general': 'px',
 		};
 
 		const result = getSizeStyles(object);

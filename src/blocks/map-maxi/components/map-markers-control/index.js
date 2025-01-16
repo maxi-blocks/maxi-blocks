@@ -12,17 +12,17 @@ import {
 	DefaultStylesControl,
 	ResponsiveTabsControl,
 	SvgColor,
-} from '../../../../components';
+} from '@components';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Icons
  */
-import * as mapMarkers from '../../../../icons/map-icons/markers';
+import * as mapMarkers from '@maxi-icons/map-icons/markers';
 
 const MarkerSize = ({ deviceType, onChange, ...props }) => (
 	<AdvancedNumberControl

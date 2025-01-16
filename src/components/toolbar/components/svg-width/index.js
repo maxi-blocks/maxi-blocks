@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
+import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarIconSize } from '../../../../icons';
-import SvgWidthControl from '../../../svg-width-control';
-import SvgStrokeWidthControl from '../../../svg-stroke-width-control';
+import { toolbarIconSize } from '@maxi-icons';
+import SvgWidthControl from '@components/svg-width-control';
+import SvgStrokeWidthControl from '@components/svg-stroke-width-control';
 
 /**
  * SvgWidth

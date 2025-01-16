@@ -5,21 +5,21 @@
 import flatFormatsWithClass, {
 	getRepeatedClassNames,
 	flatRepeatedClassNames,
-} from '../flatFormatsWithClass';
+} from '@extensions/text/formats/flatFormatsWithClass';
 
 /**
  * Mocks
  */
 jest.mock('@wordpress/blocks', () => jest.fn());
 jest.mock('src/components/block-inserter/index.js', () => jest.fn());
-jest.mock('../../../styles/getBlockStyle', () => {
+jest.mock('@extensions/styles/getBlockStyle', () => {
 	return jest.fn(() => {
 		return 'light';
 	});
 });
-jest.mock('../../../attributes/getBlockData.js', () => jest.fn());
+jest.mock('@extensions/attributes/getBlockData.js', () => jest.fn());
 jest.mock('src/components/transform-control/utils.js', () => jest.fn());
-jest.mock('../../../style-cards/getActiveStyleCard', () => {
+jest.mock('@extensions/style-cards/getActiveStyleCard', () => {
 	return jest.fn(() => {
 		return {
 			value: {
@@ -197,7 +197,10 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 		};
 	});
 });
-jest.mock('../../../styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('@extensions/styles/transitions/getTransitionData.js', () =>
+	jest.fn()
+);
+jest.mock('src/extensions/DC/constants.js', () => ({}));
 
 describe('getRepeatedClassNames', () => {
 	it('Should return no repeated classNames', () => {

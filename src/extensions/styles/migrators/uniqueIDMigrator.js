@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import { getBlockNameFromUniqueID } from '../../attributes';
-import uniqueIDGenerator from '../../attributes/uniqueIDGenerator';
-import getCustomLabel from '../../maxi-block/getCustomLabel';
+import { getBlockNameFromUniqueID } from '@extensions/attributes';
+import uniqueIDGenerator from '@extensions/attributes/uniqueIDGenerator';
+import getCustomLabel from '@extensions/maxi-block/getCustomLabel';
 
 const name = 'uniqueID';
 const ignoreAttributesForSave = true;

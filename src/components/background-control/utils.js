@@ -2,7 +2,8 @@
  * Internal dependencies
  */
 
-import { getAttributeKey } from '../../extensions/styles';
+import { handleSetAttributes } from '@extensions/maxi-block';
+import { getAttributeKey } from '@extensions/styles';
 import * as backgroundLayers from './layers';
 
 /**
@@ -86,6 +87,32 @@ export const getDefaultLayerWithBreakpoint = (
 	});
 };
 
+export const getLayerLabel = type => {
+	switch (type) {
+		case 'color':
+			return 'colorOptions';
+		case 'image':
+			return 'imageOptions';
+		case 'video':
+			return 'videoOptions';
+		case 'gradient':
+			return 'gradientOptions';
+		case 'shape':
+			return 'SVGOptions';
+		default:
+			return false;
+	}
+};
+
+/**
+ * Handle the onChange event for a layer
+ *
+ * @param {Object}   rawLayer    - The raw layer
+ * @param {Function} onChange    - The onChange function
+ * @param {Object}   layersHover - The hover layers
+ * @param {Object}   layers      - The layers
+ * @param {boolean}  target      - Inline styles target
+ */
 export const onChangeLayer = (
 	rawLayer,
 	onChange,
@@ -109,3 +136,25 @@ export const onChangeLayer = (
 			target
 		);
 };
+
+/**
+ * Handle the responsive attributes for a layer
+ *
+ * @param {Object}  layer        - The layer to update
+ * @param {Object}  currentLayer - The current layer
+ * @param {boolean} isHover      - Whether the layer is a hover layer
+ * @returns {Object} The updated layer
+ */
+export const handleOnChangeLayer = (layer, currentLayer, isHover) =>
+	handleSetAttributes({
+		obj: layer,
+		attributes: currentLayer,
+		onChange: result => result,
+		defaultAttributes: {
+			...setBreakpointToLayer({
+				layer: backgroundLayers[getLayerLabel(currentLayer.type)],
+				breakpoint: 'general',
+				isHover,
+			}),
+		},
+	});

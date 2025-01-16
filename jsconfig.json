@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"module": "ESNext",
+		"target": "ES2022",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"baseUrl": ".",
+		"paths": {
+			"@blocks": ["src/blocks"],
+			"@blocks/*": ["src/blocks/*"],
+			"@components": ["src/components"],
+			"@components/*": ["src/components/*"],
+			"@css": ["src/css"],
+			"@css/*": ["src/css/*"],
+			"@editor": ["src/editor"],
+			"@editor/*": ["src/editor/*"],
+			"@extensions": ["src/extensions"],
+			"@extensions/*": ["src/extensions/*"],
+			"@maxi-icons": ["src/icons"],
+			"@maxi-icons/*": ["src/icons/*"],
+			"@maxi-core/*": ["core/*"]
+		}
+	},
+	"include": ["src/**/*", "core/**/*.json"]
+}

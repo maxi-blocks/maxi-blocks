@@ -1,4 +1,4 @@
-import hoverAttributesCreator from '../hoverAttributesCreator';
+import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
 import { typography, listItemTypography } from './typography';
 
 const typographyHover = hoverAttributesCreator({

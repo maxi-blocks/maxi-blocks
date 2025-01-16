@@ -1,7 +1,7 @@
-import updateSCOnEditor from '../updateSCOnEditor';
-import getActiveStyleCard from '../getActiveStyleCard';
+import updateSCOnEditor from '@extensions/style-cards/updateSCOnEditor';
+import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
 import { receiveMaxiStyleCards, sendMaxiStyleCards } from './actions';
-import { getActiveColourFromSC } from '../../../editor/style-cards/utils';
+import { getActiveColourFromSC } from '@editor/style-cards/utils';
 
 import { isEmpty } from 'lodash';
 import { dispatch } from '@wordpress/data';

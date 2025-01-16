@@ -1,4 +1,4 @@
-import getMarginPaddingStyles from '../getMarginPaddingStyles';
+import getMarginPaddingStyles from '@extensions/styles/helpers/getMarginPaddingStyles';
 
 describe('getMarginPaddingStyles', () => {
 	it('Get a correct margin and padding simple styles', () => {

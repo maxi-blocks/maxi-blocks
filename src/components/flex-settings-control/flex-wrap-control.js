@@ -6,17 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SettingTabsControl from '../setting-tabs-control';
-import Icon from '../icon';
+import SettingTabsControl from '@components/setting-tabs-control';
+import Icon from '@components/icon';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Icons
  */
-import { flexWrapNowrap, flexWrap, flexWrapReverse } from '../../icons';
+import { flexWrapNowrap, flexWrap, flexWrapReverse } from '@maxi-icons';
 
 /**
  * Component

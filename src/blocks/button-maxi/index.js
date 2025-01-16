@@ -12,15 +12,15 @@ import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import { customCss, scProps } from './data';
-import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
-import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
+import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';
+import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
 
 /**
  * Styles and icons
  */
 import './style.scss';
 import './editor.scss';
-import { buttonIcon } from '../../icons';
+import { buttonIcon } from '@maxi-icons';
 
 /**
  * Migrators
@@ -29,7 +29,7 @@ import {
 	blockMigrator,
 	buttonIconTransitionMigrator,
 	buttonAriaLabelMigrator,
-} from '../../extensions/styles/migrators';
+} from '@extensions/styles/migrators';
 
 /**
  * Block

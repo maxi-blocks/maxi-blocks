@@ -7,17 +7,17 @@ import {
 	getAttributeValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import {
 	shouldSetPreserveAspectRatio,
 	togglePreserveAspectRatio,
-} from '../../extensions/svg';
+} from '@extensions/svg';
 
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import ToggleSwitch from '../toggle-switch';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ToggleSwitch from '@components/toggle-switch';
 
 /**
  * External dependencies

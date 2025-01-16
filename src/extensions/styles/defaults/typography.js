@@ -1,5 +1,5 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
-import typographyAttributesCreator from '../typographyAttributesCreator';
+import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
+import typographyAttributesCreator from '@extensions/styles/typographyAttributesCreator';
 import alignment from './alignment';
 
 export const typography = typographyAttributesCreator();

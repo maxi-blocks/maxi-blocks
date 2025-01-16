@@ -1,11 +1,11 @@
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults/index';
+import * as attributesData from '@extensions/styles/defaults/index';
 import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
-} from '../../extensions/styles';
+} from '@extensions/styles';
 import { customCss, prefixes, transition } from './data';
 
 const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;

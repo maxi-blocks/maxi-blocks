@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AxisControl from '../axis-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import AxisControl from '@components/axis-control';
+import { getGroupAttributes } from '@extensions/styles';
 
 const MarginControl = props => {
 	const { breakpoint, fullWidth, noResponsiveTabs, onChange, prefix } = props;

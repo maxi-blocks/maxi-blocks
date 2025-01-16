@@ -11,16 +11,16 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import ColorControl from '../../../../components/color-control';
-import FontFamilySelector from '../../../../components/font-family-selector';
-import FontWeightControl from '../../../../components/font-weight-control';
-import SelectControl from '../../../../components/select-control';
-import ToggleSwitch from '../../../../components/toggle-switch';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import ColorControl from '@components/color-control';
+import FontFamilySelector from '@components/font-family-selector';
+import FontWeightControl from '@components/font-weight-control';
+import SelectControl from '@components/select-control';
+import ToggleSwitch from '@components/toggle-switch';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '@extensions/styles';
 
 /**
  * Styles

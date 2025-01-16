@@ -1,4 +1,4 @@
-import { getValidatedACFAttributes } from '../../components/dynamic-content/acf-settings-control/utils';
+import { getValidatedACFAttributes } from '@components/dynamic-content/acf-settings-control/utils';
 import getDCOptions from './getDCOptions';
 import { validateRelations, validationsValues } from './utils';
 

@@ -9,7 +9,7 @@ import { getBlockAttributes } from '@wordpress/blocks';
  */
 import * as defaults from './defaults/index';
 import { getIsValid, getBreakpointFromAttribute } from './utils';
-import { getBlockData } from '../attributes';
+import { getBlockData } from '@extensions/attributes';
 
 /**
  * External dependencies

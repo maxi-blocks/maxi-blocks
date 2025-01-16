@@ -21,17 +21,17 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
-import TextControl from '../text-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
+import SelectControl from '@components/select-control';
+import ToggleSwitch from '@components/toggle-switch';
+import TextControl from '@components/text-control';
 
 import {
 	getFields,
 	validationsValues,
 	getRelationOptions,
 	getCurrentTemplateSlug,
-} from '../../extensions/DC/utils';
+} from '@extensions/DC/utils';
 import {
 	fieldOptions,
 	limitOptions,
@@ -42,15 +42,15 @@ import {
 	orderRelations,
 	sourceOptions,
 	ignoreEmptyFields,
-} from '../../extensions/DC/constants';
-import getDCOptions from '../../extensions/DC/getDCOptions';
+} from '@extensions/DC/constants';
+import getDCOptions from '@extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
-import { getDefaultAttribute } from '../../extensions/styles';
-import { getUpdatedImgSVG } from '../../extensions/svg';
+import { getDefaultAttribute } from '@extensions/styles';
+import { getUpdatedImgSVG } from '@extensions/svg';
 import ACFSettingsControl from './acf-settings-control';
-import { getDCValues, LoopContext } from '../../extensions/DC';
-import getTypes from '../../extensions/DC/getTypes';
-import showStaticOption from '../../extensions/DC/showStaticOption';
+import { getDCValues, LoopContext } from '@extensions/DC';
+import getTypes from '@extensions/DC/getTypes';
+import showStaticOption from '@extensions/DC/showStaticOption';
 
 /**
  * Styles
@@ -140,6 +140,7 @@ const DynamicContent = props => {
 		customFormat,
 		acfGroup,
 		mediaSize,
+		keepOnlyTextContent,
 	} = dcValues;
 
 	const dcValuesForDate = {
@@ -684,45 +685,63 @@ const DynamicContent = props => {
 									(showSubField &&
 										limitFields.includes(subField))) &&
 								!error && (
-									<div className='maxi-info'>
-										<AdvancedNumberControl
-											label={__(
-												'Character limit',
-												'maxi-blocks'
-											)}
-											value={limit}
-											showHelp
-											helpContent={
-												<UnlimitedCharacterPopover message='Type 0 for unlimited' />
-											}
-											onChangeValue={value =>
-												changeProps({
-													'dc-limit': Number(value),
-												})
-											}
-											disableReset={
-												limitOptions.disableReset
-											}
-											step={limitOptions.steps}
-											withInputField={
-												limitOptions.withInputField
-											}
-											onReset={() =>
-												changeProps({
-													'dc-limit':
-														getDefaultAttribute(
-															'dc-limit'
-														),
-												})
-											}
-											min={limitOptions.min}
-											max={limitOptions.max}
-											initialPosition={
-												limit ||
-												limitOptions.defaultValue
-											}
-										/>
-									</div>
+									<>
+										<div className='maxi-info'>
+											<AdvancedNumberControl
+												label={__(
+													'Character limit',
+													'maxi-blocks'
+												)}
+												value={limit}
+												showHelp
+												helpContent={
+													<UnlimitedCharacterPopover message='Type 0 for unlimited' />
+												}
+												onChangeValue={value =>
+													changeProps({
+														'dc-limit':
+															Number(value),
+													})
+												}
+												disableReset={
+													limitOptions.disableReset
+												}
+												step={limitOptions.steps}
+												withInputField={
+													limitOptions.withInputField
+												}
+												onReset={() =>
+													changeProps({
+														'dc-limit':
+															getDefaultAttribute(
+																'dc-limit'
+															),
+													})
+												}
+												min={limitOptions.min}
+												max={limitOptions.max}
+												initialPosition={
+													limit ||
+													limitOptions.defaultValue
+												}
+											/>
+										</div>
+										{limit === 0 && field === 'content' && (
+											<ToggleSwitch
+												label={__(
+													'Display as plain text',
+													'maxi-blocks'
+												)}
+												selected={keepOnlyTextContent}
+												onChange={value =>
+													changeProps({
+														'dc-keep-only-text-content':
+															value,
+													})
+												}
+											/>
+										)}
+									</>
 								)}
 							{field === 'date' && !error && (
 								<DateFormatting

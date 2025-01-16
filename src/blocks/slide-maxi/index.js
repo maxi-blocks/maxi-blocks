@@ -12,15 +12,15 @@ import { customCss } from './data';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
-import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
-import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
+import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';
+import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
 
 /**
  * Styles and icons
  */
 import './style.scss';
 import './editor.scss';
-import { slideIcon } from '../../icons';
+import { slideIcon } from '@maxi-icons';
 
 /**
  * Block

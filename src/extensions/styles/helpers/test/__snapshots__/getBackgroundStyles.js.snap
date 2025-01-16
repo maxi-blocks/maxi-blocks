@@ -2794,3 +2794,46 @@ exports[`getBackgroundStyles Get correct simple background styles 1`] = `
   },
 }
 `;
+
+exports[`getBackgroundStyles Should return an empty object if the position value is an empty string and the unit is not empty 1`] = `
+{
+  " > .maxi-background-displayer": {
+    "border": {
+      "general": {},
+      "l": {},
+      "m": {},
+      "s": {},
+      "xl": {},
+      "xs": {},
+      "xxl": {},
+    },
+  },
+  " > .maxi-background-displayer .maxi-background-displayer__1": {
+    "color": {
+      "general": {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+        "display": "block",
+      },
+      "l": {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "label": "Background Color",
+      "m": {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "s": {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "xl": {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "xs": {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+      "xxl": {
+        "background-color": "rgba(var(--maxi-light-color-1,255,255,255),1)",
+      },
+    },
+  },
+}
+`;

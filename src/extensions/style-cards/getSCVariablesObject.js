@@ -2,12 +2,12 @@
  * Internal dependencies
  */
 
-import getColorRGBAString from '../styles/getColorRGBAString';
-import getGroupAttributes from '../styles/getGroupAttributes';
-import { getIsValid } from '../styles/utils';
-import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
-import { getActiveColourFromSC } from '../../editor/style-cards/utils';
-import getTypographyStyles from '../styles/helpers/getTypographyStyles';
+import getColorRGBAString from '@extensions/styles/getColorRGBAString';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
+import { getIsValid } from '@extensions/styles/utils';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
+import { getActiveColourFromSC } from '@editor/style-cards/utils';
+import getTypographyStyles from '@extensions/styles/helpers/getTypographyStyles';
 import replaceUndefinedWithNull from './utils';
 
 /**

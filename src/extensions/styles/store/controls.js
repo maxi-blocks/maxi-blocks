@@ -14,8 +14,8 @@ import postcss from 'postcss';
 /**
  * Internal dependencies
  */
-import frontendStyleGenerator from '../frontendStyleGenerator';
-import entityRecordsWrapper from '../entityRecordsWrapper';
+import frontendStyleGenerator from '@extensions/styles/frontendStyleGenerator';
+import entityRecordsWrapper from '@extensions/styles/entityRecordsWrapper';
 
 export const processCss = async code => {
 	if (!code) return null;

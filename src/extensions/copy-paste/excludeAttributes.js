@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { getAttributeKey, getDefaultAttribute } from '../styles';
-import DC_LINK_BLOCKS from '../../components/toolbar/components/link/dcLinkBlocks';
+import { getAttributeKey, getDefaultAttribute } from '@extensions/styles';
+import DC_LINK_BLOCKS from '@components/toolbar/components/link/dcLinkBlocks';
 
 /**
  * External dependencies

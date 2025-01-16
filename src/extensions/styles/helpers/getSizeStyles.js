@@ -1,8 +1,9 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getDefaultAttribute from '../getDefaultAttribute';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
+import getDefaultAttribute from '@extensions/styles/getDefaultAttribute';
+import { isValidNumber } from '@extensions/styles/utils';
 
 /**
  * External dependencies
@@ -121,7 +122,7 @@ const getSizeStyles = (obj, prefix = '') => {
 							attributes: obj,
 					  }) && '100%';
 
-			if (!isNil(num) && !isNil(unit))
+			if (isValidNumber(num) && !isNil(unit))
 				return {
 					[target]: auto || num + unit,
 					...fullWidthNormalStyles,

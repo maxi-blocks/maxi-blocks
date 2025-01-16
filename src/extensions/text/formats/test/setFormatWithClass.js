@@ -5,22 +5,23 @@
 import setFormatWithClass, {
 	checkFormatCoincidence,
 	getFormatClassName,
-} from '../setFormatWithClass';
+} from '@extensions/text/formats/setFormatWithClass';
 import '@wordpress/data';
-import '../../../style-cards';
+import '@extensions/style-cards';
 
 /**
  * Mocks
  */
 jest.mock('@wordpress/blocks', () => jest.fn());
 jest.mock('src/components/block-inserter/index.js', () => jest.fn());
-jest.mock('../../../styles/getBlockStyle', () => {
+jest.mock('@extensions/styles/getBlockStyle', () => {
 	return jest.fn(() => {
 		return 'light';
 	});
 });
-jest.mock('../../../attributes/getBlockData.js', () => jest.fn());
+jest.mock('@extensions/attributes/getBlockData.js', () => jest.fn());
 jest.mock('src/components/transform-control/utils.js', () => jest.fn());
+jest.mock('src/extensions/DC/constants.js', () => ({}));
 
 const styleCard = {
 	name: 'Maxi (Default)',

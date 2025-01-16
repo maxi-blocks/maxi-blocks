@@ -29,26 +29,26 @@ import {
 	styleGenerator,
 	styleResolver,
 	getHasDC,
-} from '../styles';
-import getBreakpoints from '../styles/helpers/getBreakpoints';
+} from '@extensions/styles';
+import getBreakpoints from '@extensions/styles/helpers/getBreakpoints';
 import getIsIDTrulyUnique from './getIsIDTrulyUnique';
 import getCustomLabel from './getCustomLabel';
-import { loadFonts, getAllFonts, getPageFonts } from '../text/fonts';
+import { loadFonts, getAllFonts, getPageFonts } from '@extensions/text/fonts';
 import {
 	getIsSiteEditor,
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
 	getSiteEditorPreviewIframes,
-} from '../fse';
-import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
+} from '@extensions/fse';
+import { getClientIdFromUniqueId, uniqueIDGenerator } from '@extensions/attributes';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
-import updateRelationsRemotely from '../relations/updateRelationsRemotely';
+import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
-import { insertBlockIntoColumns, removeBlockFromColumns } from '../repeater';
-import processRelations from '../relations/processRelations';
+import { insertBlockIntoColumns, removeBlockFromColumns } from '@extensions/repeater';
+import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 
 /**
@@ -56,7 +56,7 @@ import compareVersions from './compareVersions';
  */
 import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
-import { isLinkObfuscationEnabled } from '../DC/utils';
+import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
 
 /**
  * Class

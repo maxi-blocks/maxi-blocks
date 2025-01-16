@@ -17,25 +17,77 @@ import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
 /**
  * Internal dependencies
  */
-import Button from '../../components/button';
-import DialogBox from '../../components/dialog-box';
-import Icon from '../../components/icon';
-import SettingTabsControl from '../../components/setting-tabs-control';
-import ToggleSwitch from '../../components/toggle-switch';
-import ReactSelectControl from '../../components/react-select-control';
+import Button from '@components/button';
+import DialogBox from '@components/dialog-box';
+import Icon from '@components/icon';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
+import ReactSelectControl from '@components/react-select-control';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
-import MaxiModal from '../library/modal';
+import MaxiModal from '@editor/library/modal';
 import { exportStyleCard, getActiveColourFromSC } from './utils';
-import { updateSCOnEditor } from '../../extensions/style-cards';
-import { handleSetAttributes } from '../../extensions/maxi-block';
-import standardSC from '../../../core/defaults/defaultSC.json';
+import { updateSCOnEditor } from '@extensions/style-cards';
+import { handleSetAttributes } from '@extensions/maxi-block';
+import standardSC from '@maxi-core/defaults/defaultSC.json';
 
 /**
  * Icons
  */
-import { styleCardBoat, SCDelete, closeIcon } from '../../icons';
+import { styleCardBoat, SCDelete, closeIcon } from '@maxi-icons';
 
 const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
+	const prevValues = useRef(null);
+
+	const selectData = useSelect(
+		select => {
+			const { getEditorSettings } = select('core/editor');
+			const { isRTL } = getEditorSettings();
+
+			const { receiveMaxiDeviceType } = select('maxiBlocks');
+			const breakpoint = receiveMaxiDeviceType();
+
+			const {
+				receiveStyleCardsList,
+				receiveMaxiActiveStyleCard,
+				receiveSavedMaxiStyleCards,
+				receiveMaxiSelectedStyleCard,
+			} = select('maxiBlocks/style-cards');
+
+			// Get current values
+			const SCList = receiveStyleCardsList();
+			const activeStyleCard = receiveMaxiActiveStyleCard();
+			const { key: activeSCKey, value: activeSCValue } = activeStyleCard;
+			const savedStyleCards = receiveSavedMaxiStyleCards();
+			const selectedStyleCard = receiveMaxiSelectedStyleCard();
+			const { key: selectedSCKey, value: selectedSCValue } = selectedStyleCard;
+
+			// Create new values object
+			const newValues = {
+				isRTL,
+				breakpoint,
+				SCList,
+				activeSCKey,
+				activeStyleCard,
+				activeSCValue,
+				savedStyleCards,
+				selectedSCKey,
+				selectedSCValue,
+			};
+
+			// Return previous values if unchanged
+			if (prevValues.current && isEqual(prevValues.current, newValues)) {
+				return prevValues.current;
+			}
+
+			prevValues.current = newValues;
+			return newValues;
+		},
+		[], // Empty dependency array
+		{
+			equalityCheck: (a, b) => isEqual(a, b)
+		}
+	);
+
 	const {
 		isRTL,
 		breakpoint,
@@ -46,40 +98,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		savedStyleCards,
 		selectedSCKey,
 		selectedSCValue,
-	} = useSelect(select => {
-		const { getEditorSettings } = select('core/editor');
-		const { isRTL } = getEditorSettings();
-
-		const { receiveMaxiDeviceType } = select('maxiBlocks');
-		const breakpoint = receiveMaxiDeviceType();
-
-		const {
-			receiveStyleCardsList,
-			receiveMaxiActiveStyleCard,
-			receiveSavedMaxiStyleCards,
-			receiveMaxiSelectedStyleCard,
-		} = select('maxiBlocks/style-cards');
-
-		const SCList = receiveStyleCardsList();
-		const activeStyleCard = receiveMaxiActiveStyleCard();
-		const { key: activeSCKey, value: activeSCValue } = activeStyleCard;
-		const savedStyleCards = receiveSavedMaxiStyleCards();
-		const selectedStyleCard = receiveMaxiSelectedStyleCard();
-		const { key: selectedSCKey, value: selectedSCValue } =
-			selectedStyleCard;
-
-		return {
-			isRTL,
-			breakpoint,
-			SCList,
-			activeSCKey,
-			activeStyleCard,
-			activeSCValue,
-			savedStyleCards,
-			selectedSCKey,
-			selectedSCValue,
-		};
-	});
+	} = selectData;
 
 	const {
 		saveMaxiStyleCards,

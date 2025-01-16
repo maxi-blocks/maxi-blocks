@@ -1,4 +1,4 @@
-import { limitTypes, orderTypes, relationTypes } from '../constants';
+import { limitTypes, orderTypes, relationTypes } from '@extensions/DC/constants';
 
 const initialState = {
 	relationTypes,

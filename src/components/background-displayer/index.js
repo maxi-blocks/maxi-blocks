@@ -7,8 +7,8 @@ import { RawHTML, useRef } from '@wordpress/element';
  * Internal Dependencies
  */
 import VideoLayer from './videoLayer';
-import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
-import { getDCValues } from '../../extensions/DC';
+import { getAttributeValue, getGroupAttributes } from '@extensions/styles';
+import { getDCValues } from '@extensions/DC';
 
 /**
  * External dependencies

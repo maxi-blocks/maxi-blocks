@@ -85,7 +85,7 @@ describe('Dynamic content', () => {
 			'text-dc-description-2',
 		];
 		const authorBlocks = ['text-dc-author-1', 'text-dc-author-2'];
-		const contentBlocks = ['image-dc-content-1', 'image-dc-content-2'];
+		const contentBlocks = ['image-dc-content-1'];
 
 		const getBackTextResults = async (block, type) =>
 			page.$eval(

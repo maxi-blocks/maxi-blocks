@@ -71,11 +71,27 @@ describe('FontFamilySelector', () => {
 			'Montserrat'
 		);
 
-		await page.waitForTimeout(1500);
+		await page.waitForTimeout(3000);
 
-		const hasBeenLoaded = await page.evaluate(() =>
-			document.fonts.check('12px Montserrat')
-		);
+		const fontsDebugInfo = await page.evaluate(() => {
+			const fonts = Array.from(document.fonts);
+			return {
+				ready: document.fonts.ready,
+				status: document.fonts.status,
+				fontsList: fonts.map(font => ({
+					family: font.family,
+					weight: font.weight,
+					style: font.styleMon,
+					status: font.status,
+				})),
+			};
+		});
+
+		console.log('Font Loading Debug Info:', JSON.stringify(fontsDebugInfo));
+
+		const hasBeenLoaded = await page.evaluate(() => {
+			return document.fonts.check('12px Montserrat');
+		});
 		expect(hasBeenLoaded).toBeTruthy();
 	});
 });

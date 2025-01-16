@@ -61,8 +61,7 @@ const onRequestInsertPattern = async (
 
 		// Remove dc-media-id, dc-media-url, cl-id, cl-author, and specific dc-content entries
 		const cleanedContent = contentWithUpdatedRelation
-			.replace(/"dc-media-id":\d+,/g, '')
-			.replace(/"dc-media-url":"[^"]+",/g, '')
+			.replace(/,"dc-media-id":\d+,"dc-media-url":"[^"]+"/g, '')
 			.replace(/"cl-author":\d+,/g, '')
 			.replace(/"dc-content":"No content found",/g, '');
 

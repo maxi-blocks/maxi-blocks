@@ -381,14 +381,28 @@ class MaxiBlocks_StyleCards
 
     public static function get_default_style_card()
     {
+        $file_path = MAXI_PLUGIN_DIR_PATH . "core/defaults/defaultSC.json";
+
+        // First try direct file reading
+        if (file_exists($file_path) && is_readable($file_path)) {
+            $json = file_get_contents($file_path);
+            if ($json !== false) {
+                return $json;
+            }
+        }
+
+        // Fallback to WP_Filesystem if direct reading fails
         global $wp_filesystem;
 
         if (empty($wp_filesystem)) {
             require_once ABSPATH . '/wp-admin/includes/file.php';
-            WP_Filesystem();
+            WP_Filesystem(false, false, true); // Initialize without credentials check
         }
 
-        $file_path = MAXI_PLUGIN_DIR_PATH . "core/defaults/defaultSC.json";
+        // If WP_Filesystem is still not available, return null
+        if (empty($wp_filesystem)) {
+            return null;
+        }
 
         // Ensure the file exists before attempting to read
         if (!$wp_filesystem->exists($file_path)) {

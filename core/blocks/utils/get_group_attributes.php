@@ -5,22 +5,49 @@ function json_file_to_array($item, $is_hover)
 {
     $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $item . ($is_hover ? 'Hover' : '') . '.json';
 
+    // Try direct file reading first
+    if (file_exists($file_path) && is_readable($file_path)) {
+        $file_contents = file_get_contents($file_path);
+        if ($file_contents !== false) {
+            $result = json_decode($file_contents, true);
+            if ($result !== null) {
+                return $result;
+            }
+        }
+    }
+
+    // Try alternate path with direct reading
+    $alternate_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $item . '.json';
+    if (file_exists($alternate_path) && is_readable($alternate_path)) {
+        $file_contents = file_get_contents($alternate_path);
+        if ($file_contents !== false) {
+            $result = json_decode($file_contents, true);
+            if ($result !== null) {
+                return $result;
+            }
+        }
+    }
+
+    // Fallback to WP_Filesystem if direct reading fails
     global $wp_filesystem;
     if (empty($wp_filesystem)) {
         require_once ABSPATH . '/wp-admin/includes/file.php';
-        WP_Filesystem();
+        WP_Filesystem(false, false, true);
     }
 
-    if (file_exists($file_path)) {
+    if (empty($wp_filesystem)) {
+        return null;
+    }
+
+    if ($wp_filesystem->exists($file_path)) {
         $file_contents = $wp_filesystem->get_contents($file_path);
         if ($file_contents) {
             return json_decode($file_contents, true);
         }
     }
 
-    $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/defaults/' . $item . '.json';
-    if (file_exists($file_path)) {
-        $file_contents = $wp_filesystem->get_contents($file_path);
+    if ($wp_filesystem->exists($alternate_path)) {
+        $file_contents = $wp_filesystem->get_contents($alternate_path);
         if ($file_contents) {
             return json_decode($file_contents, true);
         }

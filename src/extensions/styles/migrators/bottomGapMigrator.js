@@ -5,16 +5,18 @@
  */
 import { getBlockNameFromUniqueID } from '@extensions/attributes';
 
-const name = 'Text bottom gap migrator';
-
-const maxiVersions = [
+// Constants to avoid string allocations and improve lookup speed
+const NAME = 'Text bottom gap';
+const BLOCK_TYPE = 'text-maxi';
+const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const VALID_VERSIONS = new Set([
 	'0.1',
 	'0.0.1 SC1',
 	'0.0.1-SC1',
 	'0.0.1-SC2',
 	'0.0.1-SC3',
 	'0.0.1-SC4',
-];
+]);
 
 const isEligible = blockAttributes => {
 	const {
@@ -23,26 +25,27 @@ const isEligible = blockAttributes => {
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;
 
-	const blockName = getBlockNameFromUniqueID(uniqueID);
+	// Early return if not text-maxi block
+	if (getBlockNameFromUniqueID(uniqueID) !== BLOCK_TYPE) return false;
 
-	if (
-		blockName === 'text-maxi' &&
-		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin)
-	)
-		return true;
-
-	return false;
+	return !maxiVersionOrigin || VALID_VERSIONS.has(maxiVersionCurrent);
 };
 
 const migrate = newAttributes => {
-	if (
-		!['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].some(
-			breakpoint => !!newAttributes[`bottom-gap-${breakpoint}`]
-		)
-	)
+	// Use for loop for better performance than .some()
+	let hasBottomGap = false;
+	for (let i = 0; i < BREAKPOINTS.length; i++) {
+		if (newAttributes[`bottom-gap-${BREAKPOINTS[i]}`]) {
+			hasBottomGap = true;
+			break;
+		}
+	}
+
+	if (!hasBottomGap) {
 		newAttributes['bottom-gap-general'] = 0;
+	}
 
 	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

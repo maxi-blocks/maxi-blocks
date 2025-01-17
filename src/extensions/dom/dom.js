@@ -43,7 +43,6 @@ window.process.env = window.process.env || {};
 window.process.env.BROWSERSLIST_DISABLE_CACHE = false;
 
 wp.domReady(() => {
-	console.log('dom');
 	const getScrollbarWidth = () => {
 		// Create a temporary div
 		const outer = document.createElement('div');
@@ -214,7 +213,6 @@ wp.domReady(() => {
 	let id = null;
 
 	const editorContentUnsubscribe = subscribe(() => {
-		console.log('editorContentUnsubscribe');
 		const resizeObserverTarget = document.querySelector(
 			resizeObserverSelector
 		);

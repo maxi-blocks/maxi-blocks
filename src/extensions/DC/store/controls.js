@@ -11,7 +11,6 @@ const clearCache = () => {
 
 // Hook into the editor initialization
 wp.domReady(() => {
-	console.log('controls');
 	clearCache();
 });
 

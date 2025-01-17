@@ -4,7 +4,6 @@ import { useIsomorphicLayoutEffect } from '@wordpress/compose';
 import { useRef, useEffect } from '@wordpress/element';
 
 const useInterval = (callback, delay) => {
-	console.log('useInterval', callback, delay);
 	const savedCallback = useRef(callback);
 
 	// Remember the latest callback if it changes.
@@ -14,7 +13,6 @@ const useInterval = (callback, delay) => {
 
 	// Set up the interval.
 	useEffect(() => {
-		console.log('useEffect', callback, delay);
 		// Don't schedule if no delay is specified.
 		// Note: 0 is a valid value for delay.
 		if (delay || delay === 0) {

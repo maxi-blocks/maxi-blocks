@@ -1,8 +1,8 @@
 import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
 
-const name = 'full-width Attribute Migrator';
-
-const versions = [
+// Constants
+const NAME = 'full-width Attribute';
+const VERSIONS = new Set([
 	'0.0.1-SC1',
 	'0.0.1-SC2',
 	'0.0.1-SC3',
@@ -18,33 +18,33 @@ const versions = [
 	'1.0.1',
 	'1.1.0',
 	'1.1.1',
-];
+]);
 
-const prefixes = ['', 'button-', 'image-', 'video-'];
+// Pre-compute prefixes array
+const PREFIXES = Object.freeze(['', 'button-', 'image-', 'video-']);
 
-const attributes = () => ({
-	...breakpointAttributesCreator({
-		obj: {
-			'full-width': {
-				type: 'string',
-				default: 'normal',
+// Pre-define attribute template
+const ATTRIBUTE_TEMPLATE = {
+	type: 'string',
+	default: 'normal',
+};
+
+const attributes = () => {
+	const result = breakpointAttributesCreator({
+		obj: { 'full-width': ATTRIBUTE_TEMPLATE },
+	});
+
+	// Use for loop for better performance
+	for (let i = 0; i < PREFIXES.length; i++) {
+		Object.assign(result, breakpointAttributesCreator({
+			obj: {
+				[`${PREFIXES[i]}full-width`]: ATTRIBUTE_TEMPLATE,
 			},
-		},
-	}),
-	...prefixes.reduce((acc, prefix) => {
-		return {
-			...acc,
-			...breakpointAttributesCreator({
-				obj: {
-					[`${prefix}full-width`]: {
-						type: 'string',
-						default: 'normal',
-					},
-				},
-			}),
-		};
-	}, {}),
-});
+		}));
+	}
+
+	return result;
+};
 
 const isEligible = blockAttributes => {
 	const {
@@ -52,20 +52,29 @@ const isEligible = blockAttributes => {
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;
 
-	return (
-		(versions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&
-		Object.entries(blockAttributes).some(([key, value]) => {
-			return key.includes('full-width') && typeof value === 'string';
-		})
-	);
+	// Early return if version check fails
+	if (!(!maxiVersionOrigin || VERSIONS.has(maxiVersionCurrent))) {
+		return false;
+	}
+
+	// Use for...of for better performance with break capability
+	for (const [key, value] of Object.entries(blockAttributes)) {
+		if (key.includes('full-width') && typeof value === 'string') {
+			return true;
+		}
+	}
+	return false;
 };
+
 const migrate = newAttributes => {
-	Object.entries(newAttributes).forEach(([key, value]) => {
-		if (key.includes('full-width') && typeof value === 'string')
+	// Use for...of for better performance
+	for (const [key, value] of Object.entries(newAttributes)) {
+		if (key.includes('full-width') && typeof value === 'string') {
 			newAttributes[key] = value === 'full';
-	});
+		}
+	}
 
 	return newAttributes;
 };
 
-export default { name, isEligible, migrate, attributes };
+export default { name: NAME, isEligible, migrate, attributes };

@@ -10,12 +10,11 @@ import transitionAttributesCreator from '@extensions/styles/transitions/transiti
  */
 import { isNil } from 'lodash';
 
-/**
- * This migrator is used to ensure transition objects are complete
- */
-const name = 'Transition attributes';
+// Constants
+const NAME = 'Transition attributes';
 
-const attributes = breakpointAttributesCreator({
+// Pre-define transform attributes for better performance
+const TRANSFORM_ATTRIBUTES = breakpointAttributesCreator({
 	obj: {
 		'transform-scale': {},
 		'transform-translate-unit': {},
@@ -27,20 +26,31 @@ const attributes = breakpointAttributesCreator({
 	},
 });
 
-const isEligible = blockAttributes => {
-	const { transition } = blockAttributes;
+// Cache for block data
+const blockDataCache = new Map();
 
+const getBlockDataCached = blockName => {
+	if (blockDataCache.has(blockName)) {
+		return blockDataCache.get(blockName);
+	}
+	const data = getBlockData(blockName);
+	blockDataCache.set(blockName, data);
+	return data;
+};
+
+const isEligible = blockAttributes => {
+	const { transition, uniqueID } = blockAttributes;
+
+	// Early return for quick fails
 	if (isNil(transition)) return false;
 
 	const hasTransform = Object.keys(blockAttributes).some(
-		key => key in attributes
+		key => key in TRANSFORM_ATTRIBUTES
 	);
-
 	if (!hasTransform) return false;
 
-	const blockName = getBlockNameFromUniqueID(blockAttributes.uniqueID);
-
-	const data = getBlockData(blockName);
+	const blockName = getBlockNameFromUniqueID(uniqueID);
+	const data = getBlockDataCached(blockName);
 
 	const defaultTransitionByBlock =
 		data?.transition ||
@@ -48,50 +58,46 @@ const isEligible = blockAttributes => {
 			?.transition?.default;
 
 	// Check if all transition keys exist on each transition selector object
-	const allSelectorHasAllTransitions = Object.entries(
-		defaultTransitionByBlock
-	).every(([selector, defaultTransition]) => {
-		if (!(selector in transition)) return false;
+	for (const [selector, defaultTransition] of Object.entries(defaultTransitionByBlock)) {
+		if (!(selector in transition)) return true;
 
-		const hasAllTransitions = Object.keys(defaultTransition).every(
-			key => key in transition[selector]
-		);
-
-		return hasAllTransitions;
-	});
-
-	if (!allSelectorHasAllTransitions) return true;
+		for (const key of Object.keys(defaultTransition)) {
+			if (!(key in transition[selector])) return true;
+		}
+	}
 
 	return false;
 };
 
 const migrate = newAttributes => {
-	const { transition } = newAttributes;
+	const { transition, uniqueID } = newAttributes;
+	if (!transition) return newAttributes;
 
-	const blockName = getBlockNameFromUniqueID(newAttributes.uniqueID);
+	const blockName = getBlockNameFromUniqueID(uniqueID);
+	const data = getBlockDataCached(blockName);
 
-	const data = getBlockData(blockName);
-
-	// Includes the missing transition keys on each transition selector object
+	// Get default transitions
 	const defaultTransitions = transitionAttributesCreator({
 		transition: data?.transition,
 		selectors: data?.customCss?.selectors,
 	}).transition.default;
 
-	Object.entries(defaultTransitions).forEach(
-		([selector, defaultTransition]) => {
-			if (!(selector in transition))
-				newAttributes.transition[selector] = defaultTransition;
-			else
-				Object.keys(defaultTransition).forEach(key => {
-					if (!(key in transition[selector]))
-						newAttributes.transition[selector][key] =
-							defaultTransitions[selector][key];
-				});
+	// Use for...of for better performance
+	for (const [selector, defaultTransition] of Object.entries(defaultTransitions)) {
+		if (!(selector in transition)) {
+			// Direct property mutation for better performance
+			transition[selector] = defaultTransition;
+			continue;
 		}
-	);
+
+		for (const [key, value] of Object.entries(defaultTransition)) {
+			if (!(key in transition[selector])) {
+				transition[selector][key] = value;
+			}
+		}
+	}
 
 	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

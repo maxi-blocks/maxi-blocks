@@ -3,9 +3,11 @@
  */
 import { scrollTypes } from '@extensions/styles/defaults/scroll';
 
-const name = 'Scroll effects zones';
+// Constants
+const NAME = 'Scroll effects zones';
 
-const maxiVersions = [
+// Pre-compile version set for O(1) lookup
+const VERSIONS = new Set([
 	'0.1',
 	'0.0.1-SC1',
 	'0.0.1-SC2',
@@ -40,81 +42,33 @@ const maxiVersions = [
 	'1.6.0',
 	'1.6.1',
 	'1.7.0',
-];
+]);
+
+// Pre-define attribute templates for better performance
+const createDefaultAttribute = (defaultValue) => ({
+	type: 'number',
+	default: defaultValue,
+});
 
 const attributes = () => ({
-	'scroll-vertical-offset-start-general': {
-		type: 'number',
-		default: -400,
-	},
-	'scroll-vertical-offset-mid-general': {
-		type: 'number',
-		default: 0,
-	},
-	'scroll-vertical-offset-end-general': {
-		type: 'number',
-		default: 400,
-	},
-	'scroll-horizontal-offset-start-general': {
-		type: 'number',
-		default: -200,
-	},
-	'scroll-horizontal-offset-mid-general': {
-		type: 'number',
-		default: 0,
-	},
-	'scroll-horizontal-offset-end-general': {
-		type: 'number',
-		default: 200,
-	},
-	'scroll-rotate-rotate-start-general': {
-		type: 'number',
-		default: 90,
-	},
-	'scroll-rotate-rotate-mid-general': {
-		type: 'number',
-		default: 0,
-	},
-	'scroll-rotate-rotate-end-general': {
-		type: 'number',
-		default: 0,
-	},
-	'scroll-scale-scale-start-general': {
-		type: 'number',
-		default: 70,
-	},
-	'scroll-scale-scale-mid-general': {
-		type: 'number',
-		default: 100,
-	},
-	'scroll-scale-scale-end-general': {
-		type: 'number',
-		default: 100,
-	},
-	'scroll-fade-opacity-start-general': {
-		type: 'number',
-		default: 0,
-	},
-	'scroll-fade-opacity-mid-general': {
-		type: 'number',
-		default: 100,
-	},
-	'scroll-fade-opacity-end-general': {
-		type: 'number',
-		default: 100,
-	},
-	'scroll-blur-blur-start-general': {
-		type: 'number',
-		default: 10,
-	},
-	'scroll-blur-blur-mid-general': {
-		type: 'number',
-		default: 0,
-	},
-	'scroll-blur-blur-end-general': {
-		type: 'number',
-		default: 0,
-	},
+	'scroll-vertical-offset-start-general': createDefaultAttribute(-400),
+	'scroll-vertical-offset-mid-general': createDefaultAttribute(0),
+	'scroll-vertical-offset-end-general': createDefaultAttribute(400),
+	'scroll-horizontal-offset-start-general': createDefaultAttribute(-200),
+	'scroll-horizontal-offset-mid-general': createDefaultAttribute(0),
+	'scroll-horizontal-offset-end-general': createDefaultAttribute(200),
+	'scroll-rotate-rotate-start-general': createDefaultAttribute(90),
+	'scroll-rotate-rotate-mid-general': createDefaultAttribute(0),
+	'scroll-rotate-rotate-end-general': createDefaultAttribute(0),
+	'scroll-scale-scale-start-general': createDefaultAttribute(70),
+	'scroll-scale-scale-mid-general': createDefaultAttribute(100),
+	'scroll-scale-scale-end-general': createDefaultAttribute(100),
+	'scroll-fade-opacity-start-general': createDefaultAttribute(0),
+	'scroll-fade-opacity-mid-general': createDefaultAttribute(100),
+	'scroll-fade-opacity-end-general': createDefaultAttribute(100),
+	'scroll-blur-blur-start-general': createDefaultAttribute(10),
+	'scroll-blur-blur-mid-general': createDefaultAttribute(0),
+	'scroll-blur-blur-end-general': createDefaultAttribute(0),
 });
 
 const isEligible = blockAttributes => {
@@ -124,7 +78,7 @@ const isEligible = blockAttributes => {
 	} = blockAttributes;
 
 	return (
-		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&
+		(VERSIONS.has(maxiVersionCurrent) || !maxiVersionOrigin) &&
 		scrollTypes.some(
 			type => blockAttributes[`scroll-${type}-status-general`]
 		)
@@ -136,69 +90,44 @@ const migrate = attributes => {
 		const startAttr = `${prefix}start-general`;
 		const midAttr = `${prefix}mid-general`;
 		const endAttr = `${prefix}end-general`;
+		const midValue = attributes[midAttr];
+		const endValue = attributes[endAttr];
+
 		return {
 			0: attributes[startAttr],
-			...(attributes[midAttr] !== attributes[endAttr]
-				? {
-						50: attributes[midAttr],
-						100: attributes[endAttr],
-				  }
-				: {
-						50: attributes[midAttr],
-				  }),
+			...(midValue !== endValue
+				? { 50: midValue, 100: endValue }
+				: { 50: midValue }),
 		};
 	};
 
-	attributes['scroll-vertical-zones-general'] = createZone(
-		'scroll-vertical-offset-'
-	);
-	attributes['scroll-horizontal-zones-general'] = createZone(
-		'scroll-horizontal-offset-'
-	);
-	attributes['scroll-rotate-zones-general'] = createZone(
-		'scroll-rotate-rotate-'
-	);
-	attributes['scroll-scale-zones-general'] = createZone(
-		'scroll-scale-scale-'
-	);
-	attributes['scroll-fade-zones-general'] = createZone(
-		'scroll-fade-opacity-'
-	);
-	attributes['scroll-blur-zones-general'] = createZone('scroll-blur-blur-');
-
-	attributes['scroll-vertical-is-block-zone-general'] = true;
-	attributes['scroll-horizontal-is-block-zone-general'] = true;
-	attributes['scroll-rotate-is-block-zone-general'] = true;
-	attributes['scroll-scale-is-block-zone-general'] = true;
-	attributes['scroll-fade-is-block-zone-general'] = true;
-	attributes['scroll-blur-is-block-zone-general'] = true;
-
-	const attributesToDelete = [
-		'scroll-vertical-offset-start-general',
-		'scroll-vertical-offset-mid-general',
-		'scroll-vertical-offset-end-general',
-		'scroll-horizontal-offset-start-general',
-		'scroll-horizontal-offset-mid-general',
-		'scroll-horizontal-offset-end-general',
-		'scroll-rotate-rotate-start-general',
-		'scroll-rotate-rotate-mid-general',
-		'scroll-rotate-rotate-end-general',
-		'scroll-scale-scale-start-general',
-		'scroll-scale-scale-mid-general',
-		'scroll-scale-scale-end-general',
-		'scroll-fade-opacity-start-general',
-		'scroll-fade-opacity-mid-general',
-		'scroll-fade-opacity-end-general',
-		'scroll-blur-blur-start-general',
-		'scroll-blur-blur-mid-general',
-		'scroll-blur-blur-end-general',
+	// Pre-compute prefixes for better performance
+	const prefixes = [
+		'scroll-vertical-offset-',
+		'scroll-horizontal-offset-',
+		'scroll-rotate-rotate-',
+		'scroll-scale-scale-',
+		'scroll-fade-opacity-',
+		'scroll-blur-blur-',
 	];
 
-	for (const attr of attributesToDelete) {
+	// Create zones and set block zone flags
+	prefixes.forEach(prefix => {
+		const type = prefix.split('-')[1];
+		attributes[`scroll-${type}-zones-general`] = createZone(prefix);
+		attributes[`scroll-${type}-is-block-zone-general`] = true;
+	});
+
+	// Delete old attributes
+	const attributesToDelete = Object.keys(attributes()).filter(key =>
+		prefixes.some(prefix => key.startsWith(prefix))
+	);
+
+	attributesToDelete.forEach(attr => {
 		delete attributes[attr];
-	}
+	});
 
 	return attributes;
 };
 
-export default { attributes, migrate, isEligible, name };
+export default { name: NAME, attributes, migrate, isEligible };

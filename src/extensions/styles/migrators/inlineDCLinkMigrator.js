@@ -1,6 +1,6 @@
-const name = 'DC Inline Links';
-
-const maxiVersions = [
+// Constants
+const NAME = 'DC Inline Links';
+const VERSIONS = new Set([
 	'0.1',
 	'0.0.1-SC1',
 	'0.0.1-SC2',
@@ -38,29 +38,28 @@ const maxiVersions = [
 	'1.7.1',
 	'1.7.2',
 	'1.7.3',
-];
+]);
 
 const isEligible = blockAttributes => {
 	const {
 		'maxi-version-origin': maxiVersionOrigin,
 		'maxi-version-current': maxiVersionCurrent,
+		'dc-post-taxonomy-links-status': dcPostTaxonomyLinksStatus,
 	} = blockAttributes;
 
-	return (
-		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&
-		blockAttributes['dc-post-taxonomy-links-status']
-	);
+	// Early return if no taxonomy links status
+	if (!dcPostTaxonomyLinksStatus) return false;
+
+	return VERSIONS.has(maxiVersionCurrent) || !maxiVersionOrigin;
 };
 
 const migrate = attributes => {
-	const newAttributes = { ...attributes };
+	// Direct property mutations for better performance
+	attributes['dc-link-target'] = attributes['dc-field'];
+	attributes['dc-link-status'] = true;
+	delete attributes['dc-post-taxonomy-links-status'];
 
-	// Instead of saving saving the inline link status, save selected field as link target and enable the link
-	delete newAttributes['dc-post-taxonomy-links-status'];
-	newAttributes['dc-link-target'] = newAttributes['dc-field'];
-	newAttributes['dc-link-status'] = true;
-
-	return newAttributes;
+	return attributes;
 };
 
-export default { migrate, isEligible, name };
+export default { name: NAME, isEligible, migrate };

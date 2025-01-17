@@ -1,27 +1,34 @@
-const NEW_KEYS = [
+// Constants for better performance and memory usage
+const NEW_KEYS = Object.freeze([
 	'icon colour',
 	'icon width',
 	'icon background',
 	'icon border',
-];
+]);
 
-const name = 'Transition Block Icon';
+const NAME = 'Transition Block Icon';
 
-const isEligible = blockAttributes =>
-	!!blockAttributes?.transition?.block?.icon;
+const isEligible = blockAttributes => {
+	const transition = blockAttributes?.transition;
+	return transition?.block?.icon != null;
+};
 
 const migrate = newAttributes => {
-	if (newAttributes.transition.block.icon) {
-		NEW_KEYS.forEach(key => {
-			newAttributes.transition.block[key] = {
-				...newAttributes.transition.block.icon,
-			};
-		});
+	const { transition } = newAttributes;
+	if (!transition?.block?.icon) return newAttributes;
 
-		delete newAttributes.transition.block.icon;
+	const { block } = transition;
+	const iconData = block.icon;
+
+	// Use for loop for better performance
+	for (let i = 0; i < NEW_KEYS.length; i++) {
+		block[NEW_KEYS[i]] = iconData;
 	}
+
+	// Direct deletion instead of creating new object
+	delete block.icon;
 
 	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

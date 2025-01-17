@@ -9,226 +9,176 @@ import { splitValueAndUnit } from '@extensions/styles/utils';
  */
 import { isEmpty, findKey, isEqual } from 'lodash';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-const name = 'IB Transform';
+// Constants
+const NAME = 'IB Transform';
+const BREAKPOINTS = Object.freeze(['general', 'xxl', 'xl', 'l', 'm', 's', 'xs']);
+const TRANSFORM_TYPES = Object.freeze(['scale', 'rotate', 'translate', 'origin']);
 
 const isEligible = blockAttributes => {
 	const { relations } = blockAttributes;
 
+	// Early return for quick fails
 	if (!relations || isEmpty(relations)) return false;
 
-	const isOldStructure = relations.some(relation => {
-		if (relation.settings !== 'Transform') return false;
-
-		if (breakpoints.some(breakpoint => relation.css[breakpoint]))
+	// Use for...of for better performance with break capability
+	for (const relation of relations) {
+		if (relation.settings !== 'Transform') continue;
+		if (BREAKPOINTS.some(breakpoint => relation.css[breakpoint])) {
 			return true;
-
-		return false;
-	});
-
-	return isOldStructure;
+		}
+	}
+	return false;
 };
 
-const transformIBCleaner = relations =>
-	relations.map(relation => {
+const transformIBCleaner = relations => {
+	const reversedBreakpoints = BREAKPOINTS.slice().reverse();
+
+	return relations.map(relation => {
 		const { attributes, css } = relation;
 
-		const reversedBreakpoints = breakpoints.slice().reverse();
+		// Clean transform attributes
+		for (const type of TRANSFORM_TYPES) {
+			for (let i = 0; i < reversedBreakpoints.length - 1; i++) {
+				const breakpoint = reversedBreakpoints[i];
+				const nextBreakpoint = reversedBreakpoints[i + 1];
+				const currentKey = `transform-${type}-${breakpoint}`;
+				const nextKey = `transform-${type}-${nextBreakpoint}`;
 
-		['scale', 'rotate', 'translate', 'origin'].forEach(type => {
-			reversedBreakpoints.forEach((breakpoint, i) => {
-				if (
-					attributes[`transform-${type}-${breakpoint}`] &&
-					isEqual(
-						attributes[`transform-${type}-${breakpoint}`],
-						attributes[
-							`transform-${type}-${reversedBreakpoints[i + 1]}`
-						]
-					)
-				) {
-					delete attributes[`transform-${type}-${breakpoint}`];
+				if (attributes[currentKey] &&
+					isEqual(attributes[currentKey], attributes[nextKey])) {
+					delete attributes[currentKey];
 				}
-			});
-		});
+			}
+		}
 
+		// Clean CSS
 		const cssUsesTarget = Object.keys(css).some(target =>
-			breakpoints.includes(target)
+			BREAKPOINTS.includes(target)
 		);
 
-		if (cssUsesTarget)
-			reversedBreakpoints.forEach((breakpoint, i) => {
-				if (
-					css[breakpoint] &&
-					isEqual(
-						css[breakpoint]?.styles,
-						css[reversedBreakpoints[i + 1]]?.styles
-					)
-				) {
+		if (cssUsesTarget) {
+			for (let i = 0; i < reversedBreakpoints.length - 1; i++) {
+				const breakpoint = reversedBreakpoints[i];
+				const nextBreakpoint = reversedBreakpoints[i + 1];
+
+				if (css[breakpoint] &&
+					isEqual(css[breakpoint]?.styles, css[nextBreakpoint]?.styles)) {
 					delete css[breakpoint];
 				}
-			});
+			}
+		} else {
+			for (const [target, styles] of Object.entries(css)) {
+				for (let i = 0; i < reversedBreakpoints.length - 1; i++) {
+					const breakpoint = reversedBreakpoints[i];
+					const nextBreakpoint = reversedBreakpoints[i + 1];
 
-		if (!cssUsesTarget)
-			Object.entries(css).forEach(([target, styles]) => {
-				reversedBreakpoints.forEach((breakpoint, i) => {
-					if (
-						styles[breakpoint] &&
-						isEqual(
-							styles[breakpoint]?.styles,
-							styles[reversedBreakpoints[i + 1]]?.styles
-						)
-					) {
+					if (styles[breakpoint] &&
+						isEqual(styles[breakpoint]?.styles, styles[nextBreakpoint]?.styles)) {
 						delete css[target][breakpoint];
 					}
-				});
-			});
+				}
+			}
+		}
 
 		return { ...relation, attributes, css };
 	});
+};
 
 const getAttributesFromStyle = (styles, selector) => {
 	const result = {};
 
-	breakpoints.forEach(breakpoint => {
-		if (!styles[breakpoint]) return;
+	for (const breakpoint of BREAKPOINTS) {
+		if (!styles[breakpoint]) continue;
 
-		const { transform, 'transform-origin': transformOrigin } =
-			styles[breakpoint].styles;
-
-		if (!transform && !transformOrigin) return;
+		const { transform, 'transform-origin': transformOrigin } = styles[breakpoint].styles;
+		if (!transform && !transformOrigin) continue;
 
 		if (transform) {
 			const transformAttrs = transform.split(' ');
-
-			transformAttrs.forEach(attr => {
+			for (const attr of transformAttrs) {
 				const [key, value] = attr.replace(')', '').split('(');
-
-				if (!key || !value) return;
+				if (!key || !value) continue;
 
 				const type = key.slice(0, -1);
 				const axis = key.slice(-1).toLowerCase();
 
 				if (['scale', 'rotate'].includes(type)) {
-					let finalValue;
-					if (type === 'scale') {
-						finalValue = parseFloat(value) * 100;
-					}
-					if (type === 'rotate') {
-						finalValue = parseFloat(value.replace('deg', ''));
-					}
+					const finalValue = type === 'scale'
+						? parseFloat(value) * 100
+						: parseFloat(value.replace('deg', ''));
 
 					result[`transform-${type}-${breakpoint}`] = {
-						...result[`transform-${type}-${breakpoint}`],
 						[selector]: {
-							...result[`transform-${type}-${breakpoint}`]?.[
-								selector
-							],
-							normal: {
-								...result[`transform-${type}-${breakpoint}`]?.[
-									selector
-								].normal,
-								[axis]: finalValue,
-							},
-						},
+							normal: { [axis]: finalValue }
+						}
 					};
 				}
 				if (type === 'translate') {
 					const { value: num, unit } = splitValueAndUnit(value);
-
 					result[`transform-${type}-${breakpoint}`] = {
-						...result[`transform-${type}-${breakpoint}`],
 						[selector]: {
-							...result[`transform-${type}-${breakpoint}`]?.[
-								selector
-							],
 							normal: {
-								...result[`transform-${type}-${breakpoint}`]?.[
-									selector
-								].normal,
 								[axis]: num,
-								[`${axis}-unit`]: unit,
-							},
-						},
+								[`${axis}-unit`]: unit
+							}
+						}
 					};
 				}
-			});
+			}
 		}
+
 		if (transformOrigin) {
 			const [x, y] = transformOrigin.split(' ');
-			const originAxis = { x, y };
-
-			Object.entries(originAxis).forEach(([axis, value]) => {
-				const isOriginWithUnit = ![
-					'top',
-					'right',
-					'bottom',
-					'left',
-					'center',
-				].includes(value);
-
-				const response = {
-					...(isOriginWithUnit
-						? (() => {
-								const { value: num, unit } =
-									splitValueAndUnit(value);
-
-								return {
-									[axis]: `${num}`,
-									[`${axis}-unit`]: unit,
-								};
-						  })()
-						: (() => {
-								return {
-									[axis]: value,
-								};
-						  })()),
-				};
+			for (const [axis, value] of Object.entries({ x, y })) {
+				const isOriginWithUnit = !['top', 'right', 'bottom', 'left', 'center'].includes(value);
+				const response = isOriginWithUnit
+					? (() => {
+						const { value: num, unit } = splitValueAndUnit(value);
+						return { [axis]: `${num}`, [`${axis}-unit`]: unit };
+					})()
+					: { [axis]: value };
 
 				result[`transform-origin-${breakpoint}`] = {
-					...result[`transform-origin-${breakpoint}`],
 					[selector]: {
-						...result[`transform-origin-${breakpoint}`]?.[selector],
-						normal: {
-							...result[`transform-origin-${breakpoint}`]?.[
-								selector
-							].normal,
-							...response,
-						},
-					},
+						normal: response
+					}
 				};
-			});
+			}
 		}
-	});
+	}
 
 	return result;
 };
 
 const migrate = newAttributes => {
 	const { relations } = newAttributes;
-
 	const newRelations = [...relations];
 
-	newRelations.forEach((relation, i) => {
-		if (relation.settings !== 'Transform') return;
+	for (let i = 0; i < newRelations.length; i++) {
+		const relation = newRelations[i];
+		if (relation.settings !== 'Transform') continue;
 
 		const { attributes, css, uniqueID } = relation;
-
-		// Returns the empty target selector, so the main one
 		const selector = findKey(
 			getBlockSelectorsByUniqueID(uniqueID),
 			selector => selector.normal.target === ''
 		);
 
-		newRelations[i].attributes = {
-			...attributes,
-			...getAttributesFromStyle(css, selector),
-			'transform-target': selector,
+		newRelations[i] = {
+			...relation,
+			attributes: {
+				...attributes,
+				...getAttributesFromStyle(css, selector),
+				'transform-target': selector
+			},
+			css: { '': { ...css } }
 		};
-		newRelations[i].css = { '': { ...css } };
-	});
+	}
 
-	return { ...newAttributes, relations: transformIBCleaner(newRelations) };
+	return {
+		...newAttributes,
+		relations: transformIBCleaner(newRelations)
+	};
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

@@ -1,4 +1,4 @@
-import addImageToLibrary from './addImageToLibrary';
+import { addImageToLibrary } from './addImageToLibrary';
 
 const addImageToImageMaxi = async (page, instance) => {
 	await addImageToLibrary(page);

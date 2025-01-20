@@ -102,6 +102,10 @@ const getDCLink = async (dataRequest, clientId) => {
 		return getUserLink(dataRequest, data);
 	}
 
+	if (type === 'settings') {
+		return data?.url || null;
+	}
+
 	return data?.link || null;
 };
 

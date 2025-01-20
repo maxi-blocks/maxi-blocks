@@ -10,41 +10,61 @@ const activeTimers = new Set();
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 const originalApiFetch = apiFetch;
-const wrappedApiFetch = async options => {
-	const startTime = Date.now();
-	console.log(`API Fetch: Starting request to ${options.path}`);
 
-	// Check cache first
-	const cacheKey = options.path;
-	const cached = fontUrlCache.get(cacheKey);
-	if (cached && (Date.now() - cached.timestamp < CACHE_DURATION)) {
-		console.log(`Using cached response for ${options.path}`);
-		return cached.data;
+// Add browser localStorage cache
+const getStorageCache = (key) => {
+	try {
+		const item = localStorage.getItem(`maxi_font_${key}`);
+		if (!item) return null;
+		const { value, timestamp } = JSON.parse(item);
+		if (Date.now() - timestamp < CACHE_DURATION) {
+			return value;
+		}
+		localStorage.removeItem(`maxi_font_${key}`);
+	} catch (e) {
+		return null;
+	}
+	return null;
+};
+
+const setStorageCache = (key, value) => {
+	try {
+		localStorage.setItem(`maxi_font_${key}`, JSON.stringify({
+			value,
+			timestamp: Date.now()
+		}));
+	} catch (e) {
+		// Storage full or other error, just continue
+	}
+};
+
+const cleanUrl = (url) => {
+	// Remove quotes and any potential whitespace
+	return url.replace(/^[\s"']+(.*?)[\s"']+$/, '$1');
+};
+
+const fetchFontUrl = async (encodedFontName) => {
+	const response = await fetch(`/wp-json/maxi-blocks/v1.0/get-font-url/${encodedFontName}`, {
+		credentials: 'same-origin',
+		headers: {
+			'X-WP-Nonce': window.wpApiSettings?.nonce,
+		}
+	});
+
+	if (!response.ok) {
+		throw new Error(`HTTP error! status: ${response.status}`);
 	}
 
+	const text = await response.text();
+	const cleanedUrl = cleanUrl(text);
+
+	// Validate URL
 	try {
-		const response = await originalApiFetch(options);
-		const duration = Date.now() - startTime;
-		console.log(
-			`API Fetch: Request to ${options.path} completed in ${duration}ms`,
-			duration > 1000 ? '⚠️ Slow request!' : ''
-		);
-
-		// Cache the response
-		fontUrlCache.set(cacheKey, {
-			data: response,
-			timestamp: Date.now()
-		});
-
-		return response;
-	} catch (error) {
-		console.error(
-			`API Fetch: Request to ${options.path} failed after ${
-				Date.now() - startTime
-			}ms`,
-			error
-		);
-		throw error;
+		new URL(cleanedUrl);
+		return cleanedUrl;
+	} catch (e) {
+		console.error('Invalid URL received:', text);
+		throw new Error('Invalid font URL received from server');
 	}
 };
 
@@ -67,49 +87,34 @@ const resolvers = {
 		(fontName, fontData) =>
 		async ({ dispatch }) => {
 			const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
-			const timerLabel = `resolver-getFontUrl-${fontName}`;
 
+			// Try to get from cache first
+			const cached = fontUrlCache.get(requestKey) || getStorageCache(requestKey);
+			if (cached) {
+				dispatch.setFontUrl(fontName, fontData, cached);
+				return cached;
+			}
+
+			// Check for pending request
 			if (pendingRequests.has(requestKey)) {
-				console.log(`Using pending request for ${fontName}`);
 				return pendingRequests.get(requestKey);
 			}
 
-			safeConsoleTime(`${timerLabel}-total`);
-			console.log(`Starting font URL fetch for: ${fontName}`);
+			const encodedFontName = encodeURIComponent(fontName).replace(/%20/g, '+');
 
 			const promise = (async () => {
-				safeConsoleTime(`${timerLabel}-encode`);
-				const encodedFontName = encodeURIComponent(fontName).replace(
-					/%20/g,
-					'+'
-				);
-				safeConsoleTimeEnd(`${timerLabel}-encode`);
-
-				safeConsoleTime(`${timerLabel}-apiFetch`);
-				let fontUrl;
 				try {
-					fontUrl = await wrappedApiFetch({
-						path: `/maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
-						method: 'GET',
-					});
-					console.log(`API Response received for ${fontName}:`, fontUrl);
-				} catch (error) {
-					console.error(
-						`Error in getFontUrl resolver for ${fontName}:`,
-						error
-					);
-					throw error;
+					const fontUrl = await fetchFontUrl(encodedFontName);
+
+					// Cache the successful response
+					fontUrlCache.set(requestKey, fontUrl);
+					setStorageCache(requestKey, fontUrl);
+
+					dispatch.setFontUrl(fontName, fontData, fontUrl);
+					return fontUrl;
 				} finally {
 					pendingRequests.delete(requestKey);
 				}
-				safeConsoleTimeEnd(`${timerLabel}-apiFetch`);
-
-				safeConsoleTime(`${timerLabel}-dispatch`);
-				const result = dispatch.setFontUrl(fontName, fontData, fontUrl);
-				safeConsoleTimeEnd(`${timerLabel}-dispatch`);
-
-				safeConsoleTimeEnd(`${timerLabel}-total`);
-				return result;
 			})();
 
 			pendingRequests.set(requestKey, promise);

@@ -110,33 +110,84 @@ const queueFontLoad = (fontName, fontData) => {
 	return promise;
 };
 
-const getFontUrl = async (fontName, fontData) => {
+const fontUrlCache = new Map();
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+
+const getStorageCache = (key) => {
+	try {
+		const item = localStorage.getItem(`maxi_font_${key}`);
+		if (!item) return null;
+		const { value, timestamp } = JSON.parse(item);
+		if (Date.now() - timestamp < CACHE_DURATION) {
+			return value;
+		}
+		localStorage.removeItem(`maxi_font_${key}`);
+	} catch (e) {
+		return null;
+	}
+	return null;
+};
+
+const setStorageCache = (key, value) => {
+	try {
+		localStorage.setItem(`maxi_font_${key}`, JSON.stringify({
+			value,
+			timestamp: Date.now()
+		}));
+	} catch (e) {
+		// Storage full or other error, just continue
+	}
+};
+
+const cleanUrl = url => {
+	return url
+		.trim()
+		.replace(/^["']+|["']+$/g, '')
+		.replace(/\\/g, '')
+		.replace(/\/+/g, '/'); // Fix double slashes
+};
+
+const buildFontString = (weight = '400', style = 'normal') => {
+	if (style === 'italic') {
+		return `ital,wght@0,${weight};1,${weight}`;
+	}
+	return `wght@${weight}`;
+};
+
+const buildFontUrl = (fontName, fontData = {}) => {
+	// Normalize font data
+	const weight = Array.isArray(fontData.weight)
+		? fontData.weight.join(',')
+		: fontData.weight || '400';
+	const style = fontData.style || 'normal';
+
+	const api_url = window.maxiBlocks?.bunny_fonts
+		? 'https://fonts.bunny.net'
+		: 'https://fonts.googleapis.com';
+
+	// Build font string
+	const fontString = buildFontString(weight, style);
+
+	return `${api_url}/css2?family=${encodeURIComponent(fontName)}:${fontString}&display=swap`;
+};
+
+const getFontUrl = async (fontName, fontData = {}) => {
 	const timerLabel = `getFontUrl-${fontName}`;
 	safeConsoleTime(`${timerLabel}-total`);
 
 	try {
-		safeConsoleTime(`${timerLabel}-resolveSelect`);
-		const fontUrl = await resolveSelect('maxiBlocks/text').getFontUrl(
-			fontName,
-			fontData
-		);
-		safeConsoleTimeEnd(`${timerLabel}-resolveSelect`);
+		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
 
-		safeConsoleTime(`${timerLabel}-buildStrings`);
-		if (
-			!fontData ||
-			Object.keys(fontData).length === 0 ||
-			!fontUrl.includes('$fontData')
-		) {
-			safeConsoleTimeEnd(`${timerLabel}-buildStrings`);
-			return fontUrl.replace(/:$/, '');
-		}
+		// Check cache first
+		const cached = fontUrlCache.get(requestKey) || getStorageCache(requestKey);
+		if (cached) return cached;
 
-		let fontDataString = buildFontStyleString(fontData.style);
-		fontDataString += buildFontWeightString(fontData.weight, fontData.style);
-		safeConsoleTimeEnd(`${timerLabel}-buildStrings`);
+		// Build and cache the URL
+		const fontUrl = buildFontUrl(fontName, fontData);
+		fontUrlCache.set(requestKey, fontUrl);
+		setStorageCache(requestKey, fontUrl);
 
-		return fontUrl.replace(/\$fontData/, fontDataString);
+		return fontUrl;
 	} finally {
 		safeConsoleTimeEnd(`${timerLabel}-total`);
 	}
@@ -150,15 +201,17 @@ const getFontID = (fontName, fontData) => {
 };
 
 const getFontElement = (fontName, fontData, url) => {
-	const style = document.createElement('link');
-	style.rel = 'stylesheet';
-	style.href = url;
-	style.type = 'text/css';
-	style.media = 'all';
+	// Always use our URL builder to ensure consistency
+	const fontUrl = buildFontUrl(fontName, fontData);
 
-	style.id = getFontID(fontName, fontData);
+	const style_element = document.createElement('link');
+	style_element.rel = 'stylesheet';
+	style_element.href = fontUrl;
+	style_element.type = 'text/css';
+	style_element.media = 'all';
+	style_element.id = getFontID(fontName, fontData);
 
-	return style;
+	return style_element;
 };
 
 /**
@@ -244,8 +297,10 @@ const loadFonts = (
 				if (setIsLoading) setIsLoading(true, fontId);
 
 				try {
-					const url = await queueFontLoad(fontName, fontData);
+					const url = await getFontUrl(fontName, fontData);
+					console.log('URL before creating element:', url);
 					const styleElement = getFontElement(fontName, fontData, url);
+					console.log('Created element href:', styleElement.href);
 
 					const oldStyleElement = target.getElementById(styleElement.id);
 					if (oldStyleElement) {

@@ -719,7 +719,7 @@ if (!class_exists('MaxiBlocks_API')):
             error_log("check_local_fonts end: " . microtime(true));
 
             error_log("Response ready to send: " . number_format(microtime(true) - $start_time, 4) . "s");
-            return $font_url;
+            return trim($font_url, '"\'');
         }
 
         public function get_maxi_blocks_current_style_cards()

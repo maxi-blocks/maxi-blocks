@@ -210,7 +210,10 @@ const ContextLoop = props => {
 				dataRequest,
 				postIdOptions,
 				contentType,
-				true
+				true,
+				{
+					'cl-pagination-per-page': paginationPerPage,
+				}
 			);
 
 			if (postIDSettings) {
@@ -236,6 +239,7 @@ const ContextLoop = props => {
 		relation,
 		author,
 		contentType,
+		paginationPerPage,
 		changeProps,
 	]);
 

@@ -115,9 +115,9 @@ const generalRelationOptionsPages = [
 ];
 
 const generalRelationOptionsUsers = [
+	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	{ label: __('Get random', 'maxi-blocks'), value: 'random' },
-	{ label: __('Get by date', 'maxi-blocks'), value: 'by-date' },
 	{ label: __('Get alphabetical', 'maxi-blocks'), value: 'alphabetical' },
 ];
 

@@ -223,7 +223,11 @@ const withMaxiContextLoop = createHigherOrderComponent(
 						dataRequest,
 						contextLoopAttributes['cl-id'],
 						null,
-						true
+						true,
+						{
+							'cl-status': contextLoopAttributes['cl-status'],
+							'cl-pagination-per-page': contextLoopAttributes['cl-pagination-per-page']
+						},
 					)) ?? {};
 
 				if (!isEmpty(newValues)) {

@@ -57,24 +57,89 @@ const buildFontWeightString = (fontWeight, fontStyle) => {
 	return getSingleWeightString(weights[0], fontStyle);
 };
 
-const getFontUrl = async (fontName, fontData) => {
-	const fontUrl = await resolveSelect('maxiBlocks/text').getFontUrl(
-		fontName,
-		fontData
+const activeTimers = new Set();
+
+const safeConsoleTime = (label) => {
+	if (!activeTimers.has(label)) {
+		console.time(label);
+		activeTimers.add(label);
+	}
+};
+
+const safeConsoleTimeEnd = (label) => {
+	if (activeTimers.has(label)) {
+		console.timeEnd(label);
+		activeTimers.delete(label);
+	}
+};
+
+// Batch font loading queue
+const fontQueue = new Map();
+let batchTimeout = null;
+const BATCH_DELAY = 50; // ms to wait for batching
+
+const processFontQueue = async () => {
+	if (fontQueue.size === 0) return;
+
+	const fonts = Array.from(fontQueue.keys());
+	console.log(`Processing batch of ${fonts.length} fonts:`, fonts);
+
+	// Process all fonts in parallel
+	const results = await Promise.all(
+		Array.from(fontQueue.entries()).map(async ([fontName, { resolve, reject, fontData }]) => {
+			try {
+				const result = await getFontUrl(fontName, fontData);
+				resolve(result);
+			} catch (error) {
+				reject(error);
+			}
+		})
 	);
 
-	if (
-		!fontData ||
-		Object.keys(fontData).length === 0 ||
-		!fontUrl.includes('$fontData')
-	) {
-		return fontUrl.replace(/:$/, '');
+	fontQueue.clear();
+};
+
+const queueFontLoad = (fontName, fontData) => {
+	if (batchTimeout) clearTimeout(batchTimeout);
+
+	const promise = new Promise((resolve, reject) => {
+		fontQueue.set(fontName, { resolve, reject, fontData });
+	});
+
+	batchTimeout = setTimeout(processFontQueue, BATCH_DELAY);
+	return promise;
+};
+
+const getFontUrl = async (fontName, fontData) => {
+	const timerLabel = `getFontUrl-${fontName}`;
+	safeConsoleTime(`${timerLabel}-total`);
+
+	try {
+		safeConsoleTime(`${timerLabel}-resolveSelect`);
+		const fontUrl = await resolveSelect('maxiBlocks/text').getFontUrl(
+			fontName,
+			fontData
+		);
+		safeConsoleTimeEnd(`${timerLabel}-resolveSelect`);
+
+		safeConsoleTime(`${timerLabel}-buildStrings`);
+		if (
+			!fontData ||
+			Object.keys(fontData).length === 0 ||
+			!fontUrl.includes('$fontData')
+		) {
+			safeConsoleTimeEnd(`${timerLabel}-buildStrings`);
+			return fontUrl.replace(/:$/, '');
+		}
+
+		let fontDataString = buildFontStyleString(fontData.style);
+		fontDataString += buildFontWeightString(fontData.weight, fontData.style);
+		safeConsoleTimeEnd(`${timerLabel}-buildStrings`);
+
+		return fontUrl.replace(/\$fontData/, fontDataString);
+	} finally {
+		safeConsoleTimeEnd(`${timerLabel}-total`);
 	}
-
-	let fontDataString = buildFontStyleString(fontData.style);
-	fontDataString += buildFontWeightString(fontData.weight, fontData.style);
-
-	return fontUrl.replace(/\$fontData/, fontDataString);
 };
 
 const getFontID = (fontName, fontData) => {
@@ -165,39 +230,48 @@ const loadFonts = (
 
 			if (isEmpty(fontFiles)) return;
 
-			const loadBackendFont = async fontName => {
-				const fontId = getFontID(fontName, fontDataNew);
-				if (target.head.querySelector(`#${fontId}`) !== null) return;
+			const loadBackendFont = async (fontName, fontData) => {
+				const timerLabel = `loadBackendFont-${fontName}`;
+				safeConsoleTime(`${timerLabel}-total`);
 
-				if (setIsLoading) setIsLoading(true, fontId);
+				const fontId = getFontID(fontName, fontData);
 
-				const url = await getFontUrl(fontName, fontDataNew);
-
-				const styleElement = getFontElement(fontName, fontDataNew, url);
-
-				const oldStyleElement = target.getElementById(styleElement.id);
-				if (oldStyleElement) {
-					if (setIsLoading) {
-						if (oldStyleElement.sheet) {
-							// The link element is already loaded
-							setIsLoading(false, fontId);
-						} else {
-							// The link element is not loaded yet, so we add the onload event listener
-							oldStyleElement.onload = () => {
-								setIsLoading(false, fontId);
-							};
-						}
-					}
+				if (target.head.querySelector(`#${fontId}`) !== null) {
+					safeConsoleTimeEnd(`${timerLabel}-total`);
 					return;
 				}
 
-				if (setIsLoading) {
-					styleElement.onload = () => {
-						setIsLoading(false, fontId);
-					};
-				}
+				if (setIsLoading) setIsLoading(true, fontId);
 
-				target.head.appendChild(styleElement);
+				try {
+					const url = await queueFontLoad(fontName, fontData);
+					const styleElement = getFontElement(fontName, fontData, url);
+
+					const oldStyleElement = target.getElementById(styleElement.id);
+					if (oldStyleElement) {
+						if (setIsLoading) {
+							if (oldStyleElement.sheet) {
+								setIsLoading(false, fontId);
+							} else {
+								oldStyleElement.onload = () => {
+									setIsLoading(false, fontId);
+								};
+							}
+						}
+						safeConsoleTimeEnd(`${timerLabel}-total`);
+						return;
+					}
+
+					if (setIsLoading) {
+						styleElement.onload = () => {
+							setIsLoading(false, fontId);
+						};
+					}
+
+					target.head.appendChild(styleElement);
+				} finally {
+					safeConsoleTimeEnd(`${timerLabel}-total`);
+				}
 			};
 
 			const getWeightFile = (weight, style) =>
@@ -241,7 +315,7 @@ const loadFonts = (
 								...{ weight: getWeight(weightFile) },
 							};
 
-							loadBackendFont(fontName);
+							loadBackendFont(fontName, fontDataNew);
 						}
 					});
 				});

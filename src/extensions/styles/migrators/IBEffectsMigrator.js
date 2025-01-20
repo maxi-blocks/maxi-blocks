@@ -8,20 +8,18 @@ import { getIBDataItem } from './utils';
  */
 import { isEqual } from 'lodash';
 
-const name = 'IB effects';
+// Constants
+const NAME = 'IB effects';
 
-const settingsToMigrate = [
+// Pre-define settings array for better performance
+const SETTINGS_TO_MIGRATE = Object.freeze([
 	{
 		key: 'transitionTarget',
 		get isEligible() {
 			return (transitionSetting, relation) =>
 				transitionSetting[this.key] &&
-				// `transitionTarget` generates dynamically for transform
 				transitionSetting.label !== 'Transform' &&
-				!isEqual(
-					relation.effects[this.key],
-					transitionSetting[this.key]
-				);
+				!isEqual(relation.effects[this.key], transitionSetting[this.key]);
 		},
 	},
 	{
@@ -29,10 +27,7 @@ const settingsToMigrate = [
 		get isEligible() {
 			return (transitionSetting, relation) =>
 				transitionSetting[this.key] &&
-				!isEqual(
-					relation.effects[this.key],
-					transitionSetting[this.key]
-				);
+				!isEqual(relation.effects[this.key], transitionSetting[this.key]);
 		},
 	},
 	{
@@ -45,41 +40,51 @@ const settingsToMigrate = [
 				!(this.attributeKey in relation.effects);
 		},
 	},
-];
+]);
 
-const isEligible = blockAttributes =>
-	!!blockAttributes?.relations &&
-	blockAttributes.relations.some(relation => {
-		const transitionSetting = getIBDataItem(relation);
+const isEligible = blockAttributes => {
+	const { relations } = blockAttributes;
+	if (!relations) return false;
 
-		return (
-			!relation.migrated &&
-			transitionSetting &&
-			settingsToMigrate.some(({ isEligible }) =>
-				isEligible(transitionSetting, relation)
-			)
-		);
-	});
+	// Use for...of for better performance with break capability
+	for (const relation of relations) {
+		if (!relation.migrated) {
+			const transitionSetting = getIBDataItem(relation);
+			if (!transitionSetting) continue;
+
+			// Use for...of for better performance
+			for (const setting of SETTINGS_TO_MIGRATE) {
+				if (setting.isEligible(transitionSetting, relation)) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+};
 
 const migrate = newAttributes => {
 	const { relations } = newAttributes;
+	if (!relations) return newAttributes;
 
-	relations.forEach((relation, i) => {
+	// Use for...of for better performance
+	for (const relation of relations) {
 		const transitionSetting = getIBDataItem(relation);
+		if (!transitionSetting) {
+			relation.migrated = true;
+			continue;
+		}
 
-		if (!transitionSetting) return;
-		settingsToMigrate.forEach(
-			({ key, attributeKey, attributeValue, isEligible }) => {
-				if (isEligible(transitionSetting, relation)) {
-					relations[i].effects[attributeKey ?? key] =
-						attributeValue ?? transitionSetting[key];
-					relations[i].migrated = true;
-				} else relations[i].migrated = true;
+		for (const setting of SETTINGS_TO_MIGRATE) {
+			if (setting.isEligible(transitionSetting, relation)) {
+				relation.effects[setting.attributeKey ?? setting.key] =
+					setting.attributeValue ?? transitionSetting[setting.key];
 			}
-		);
-	});
+		}
+		relation.migrated = true;
+	}
 
-	return { ...newAttributes, relations };
+	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

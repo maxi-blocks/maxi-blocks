@@ -3,28 +3,39 @@
  */
 import { getBlockNameFromUniqueID } from '@extensions/attributes';
 
-const name = 'imgWidth to responsive Migrator';
+// Constants
+const NAME = 'imgWidth to responsive Migrator';
+const IMAGE_BLOCK = 'image-maxi';
+
+// Cache block names for better performance
+const blockNameCache = new Map();
+
+const getBlockName = uniqueID => {
+	if (blockNameCache.has(uniqueID)) {
+		return blockNameCache.get(uniqueID);
+	}
+	const blockName = getBlockNameFromUniqueID(uniqueID);
+	blockNameCache.set(uniqueID, blockName);
+	return blockName;
+};
 
 const isEligible = blockAttributes => {
-	const { uniqueID } = blockAttributes;
+	const { uniqueID, imgWidth } = blockAttributes;
 
-	const blockName = getBlockNameFromUniqueID(uniqueID);
+	// Early return if no imgWidth
+	if (!imgWidth) return false;
 
-	if (blockName === 'image-maxi') {
-		const { imgWidth } = blockAttributes;
-
-		if (imgWidth) return true;
-	}
-
-	return false;
+	return getBlockName(uniqueID) === IMAGE_BLOCK;
 };
 
 const migrate = newAttributes => {
 	const { imgWidth } = newAttributes;
+
+	// Direct property mutations for better performance
 	newAttributes['img-width-general'] = imgWidth;
 	delete newAttributes.imgWidth;
 
 	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

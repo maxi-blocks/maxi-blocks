@@ -1,82 +1,102 @@
+/**
+ * Internal dependencies
+ */
 import { getSVGStyles } from '@extensions/styles/helpers/getSVGStyles';
+
+/**
+ * External dependencies
+ */
 import { merge } from 'lodash';
 
-const name = 'IB SVG Icon Target';
+// Constants
+const NAME = 'IB SVG Icon Target';
+const BREAKPOINTS = Object.freeze({
+	xs: 480,
+	s: 767,
+	m: 1024,
+	l: 1366,
+	xl: 1920,
+});
 
-// Copied from src/components/relation-control/index.js
 const getStyles = (stylesObj, isFirst = false) => {
-	// Using basic breakpoints as they can't be changed yet
-	const breakpoints = {
-		xs: 480,
-		s: 767,
-		m: 1024,
-		l: 1366,
-		xl: 1920,
-	};
+	// Early return for empty objects
+	if (!stylesObj || typeof stylesObj !== 'object') return {};
 
+	// Check if using general breakpoints
 	if (Object.keys(stylesObj).some(key => key.includes('general'))) {
-		const styles = Object.keys(stylesObj).reduce((acc, key) => {
-			if (breakpoints[key] || key === 'xxl' || key === 'general') {
-				acc[key] = {
+		const styles = {};
+
+		// Use for...of for better performance
+		for (const [key, breakpoint] of Object.entries(BREAKPOINTS)) {
+			if (stylesObj[key]) {
+				styles[key] = {
 					styles: stylesObj[key],
-					breakpoint: breakpoints[key] || null,
+					breakpoint,
 				};
-
-				return acc;
 			}
+		}
 
-			return acc;
-		}, {});
+		// Handle xxl and general cases
+		if (stylesObj.xxl) {
+			styles.xxl = { styles: stylesObj.xxl, breakpoint: null };
+		}
+		if (stylesObj.general) {
+			styles.general = { styles: stylesObj.general, breakpoint: null };
+		}
 
 		return styles;
 	}
 
-	const styles = Object.keys(stylesObj).reduce((acc, key) => {
-		if (isFirst) {
-			if (!key.includes(':hover')) acc[key] = getStyles(stylesObj[key]);
+	// Handle nested styles
+	const styles = {};
+	for (const [key, value] of Object.entries(stylesObj)) {
+		if (isFirst && key.includes(':hover')) continue;
 
-			return acc;
-		}
+		styles[key] = getStyles(value);
+	}
 
-		const newAcc = merge(acc, getStyles(stylesObj[key]));
-
-		return newAcc;
-	}, {});
-
-	return styles;
+	return isFirst ? styles : merge({}, styles);
 };
 
-const isEligible = blockAttributes =>
-	!!blockAttributes?.relations &&
-	blockAttributes.relations.some(
-		relation =>
-			relation.uniqueID &&
-			relation.uniqueID.includes('svg-icon-maxi') &&
+const isEligible = blockAttributes => {
+	const { relations } = blockAttributes;
+	if (!relations) return false;
+
+	// Use for...of for better performance with break capability
+	for (const relation of relations) {
+		if (relation.uniqueID?.includes('svg-icon-maxi') &&
 			relation.settings === 'Icon colour' &&
-			!Object.keys(relation.css).some(
-				target =>
-					target.includes('svg[data-fill]:not([fill^="none"]) *') ||
-					target.includes('svg[data-stroke]:not([stroke^="none"]) *')
-			)
-	);
+			!Object.keys(relation.css).some(target =>
+				target.includes('svg[data-fill]:not([fill^="none"]) *') ||
+				target.includes('svg[data-stroke]:not([stroke^="none"]) *')
+			)) {
+			return true;
+		}
+	}
+	return false;
+};
 
 const migrate = newAttributes => {
 	const { relations } = newAttributes;
+	if (!relations) return newAttributes;
 
-	relations.forEach((relation, i) => {
-		if (relation.uniqueID.includes('svg-icon-maxi')) {
-			const styles = getSVGStyles({
-				obj: relation.attributes,
-				target: ' .maxi-svg-icon-block__icon',
-				prefix: 'svg-',
-				blockStyle: newAttributes.blockStyle,
-			});
+	// Use for...of for better performance
+	for (let i = 0; i < relations.length; i++) {
+		const relation = relations[i];
+		if (!relation.uniqueID?.includes('svg-icon-maxi')) continue;
 
-			relations[i].css = getStyles(styles, true);
-		}
-	});
+		const styles = getSVGStyles({
+			obj: relation.attributes,
+			target: ' .maxi-svg-icon-block__icon',
+			prefix: 'svg-',
+			blockStyle: newAttributes.blockStyle,
+		});
 
-	return { ...newAttributes, relations };
+		relations[i].css = getStyles(styles, true);
+	}
+
+	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };
+

@@ -18,7 +18,13 @@ import {
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
-const name = 'List item';
+// Constants
+const NAME = 'List item';
+const LIST_ITEM_BLOCK = 'maxi-blocks/list-item-maxi';
+const TEXT_BLOCK = 'maxi-blocks/text-maxi';
+const LI_REGEX = /<li>(.*?)<\/li>/g;
+const LI_CLEAN_REGEX = /<\/?li>/g;
+const BR_REGEX = /\n/g;
 
 const isEligible = (blockAttributes, innerBlocks) => {
 	const { content, isList } = blockAttributes;
@@ -27,13 +33,18 @@ const isEligible = (blockAttributes, innerBlocks) => {
 
 const migrate = newAttributes => {
 	const { content } = newAttributes;
-	const innerBlocksArray = content.match(/<li>(.*?)<\/li>/g) || [];
-	const newInnerBlocks = innerBlocksArray.map(li => {
-		const liContent = li.replace(/<\/?li>/g, '');
-		return createBlock('maxi-blocks/list-item-maxi', {
-			content: liContent,
-		});
-	});
+
+	// Use match only once and store result
+	const matches = content.match(LI_REGEX) || [];
+
+	// Preallocate array size for better memory management
+	const newInnerBlocks = new Array(matches.length);
+
+	// Use traditional for loop for better performance
+	for (let i = 0; i < matches.length; i++) {
+		const liContent = matches[i].replace(LI_CLEAN_REGEX, '');
+		newInnerBlocks[i] = createBlock(LIST_ITEM_BLOCK, { content: liContent });
+	}
 
 	return [newAttributes, newInnerBlocks];
 };
@@ -49,27 +60,29 @@ const save = props => {
 		'dc-status': dcStatus,
 	} = props.attributes;
 
-	const name = 'maxi-blocks/text-maxi';
-	const className = 'maxi-text-block__content';
-	const value = content?.replace(/\n/g, '<br />');
+	// Compute values once
+	const value = dcStatus ? '$text-to-replace' : content?.replace(BR_REGEX, '<br />');
+	const tagName = isList && !dcStatus ? typeOfList : textLevel;
+
+	// Prepare props conditionally
+	const extraProps = !dcStatus ? {
+		reversed: !!listReversed,
+		start: listStart,
+	} : {};
 
 	return (
 		<MaxiBlock.save
 			classes={classnames(isList && 'maxi-list-block')}
-			{...getMaxiBlockAttributes({ ...props, name })}
+			{...getMaxiBlockAttributes({ ...props, name: TEXT_BLOCK })}
 		>
 			<RichText.Content
-				className={className}
-				value={dcStatus ? '$text-to-replace' : value}
-				// TODO: avoid DC for lists
-				tagName={isList && !dcStatus ? typeOfList : textLevel}
-				{...(!dcStatus && {
-					reversed: !!listReversed,
-					start: listStart,
-				})}
+				className='maxi-text-block__content'
+				value={value}
+				tagName={tagName}
+				{...extraProps}
 			/>
 		</MaxiBlock.save>
 	);
 };
 
-export default { name, isEligible, migrate, save };
+export default { name: NAME, isEligible, migrate, save };

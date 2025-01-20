@@ -3,62 +3,73 @@
  */
 import paletteAttributesCreator from '@extensions/styles/paletteAttributesCreator';
 
-const name = 'Shape Divider';
+// Constants
+const NAME = 'Shape Divider';
+const POSITIONS = Object.freeze(['top', 'bottom']);
+const PALETTE_SIZE = 5;
 
-const deprecatedAttributes = {
-	'shape-divider-top-height': {
-		type: 'number',
-		default: 100,
-	},
-	'shape-divider-top-height-unit': {
-		type: 'string',
-		default: 'px',
-	},
-	'shape-divider-bottom-height': {
-		type: 'number',
-		default: 100,
-	},
-	'shape-divider-bottom-height-unit': {
-		type: 'string',
-		default: 'px',
-	},
-	...paletteAttributesCreator({ prefix: 'shape-divider-top-', palette: 5 }),
-	...paletteAttributesCreator({
-		prefix: 'shape-divider-bottom-',
-		palette: 5,
-	}),
-	'shape-divider-top-opacity': {
-		type: 'number',
-		default: 1,
-	},
-	'shape-divider-bottom-opacity': {
-		type: 'number',
-		default: 1,
-	},
+// Pre-define attribute templates for better performance
+const createHeightAttribute = () => ({
+	type: 'number',
+	default: 100,
+});
+
+const createHeightUnitAttribute = () => ({
+	type: 'string',
+	default: 'px',
+});
+
+const createOpacityAttribute = () => ({
+	type: 'number',
+	default: 1,
+});
+
+const attributes = () => {
+	const result = {};
+
+	// Use for loop for better performance
+	for (let i = 0; i < POSITIONS.length; i++) {
+		const position = POSITIONS[i];
+		const prefix = `shape-divider-${position}-`;
+
+		result[`${prefix}height`] = createHeightAttribute();
+		result[`${prefix}height-unit`] = createHeightUnitAttribute();
+		result[`${prefix}opacity`] = createOpacityAttribute();
+
+		// Add palette attributes
+		Object.assign(result, paletteAttributesCreator({
+			prefix,
+			palette: PALETTE_SIZE
+		}));
+	}
+
+	return result;
 };
 
-const isEligible = blockAttributes =>
-	Object.keys(blockAttributes).some(
-		key =>
-			key in deprecatedAttributes &&
-			blockAttributes[key] !== deprecatedAttributes[key].default
-	);
+const isEligible = blockAttributes => {
+	const deprecatedAttributes = attributes();
+
+	// Use for...of for better performance with break capability
+	for (const [key, attr] of Object.entries(blockAttributes)) {
+		if (key in deprecatedAttributes &&
+			attr !== deprecatedAttributes[key].default) {
+			return true;
+		}
+	}
+	return false;
+};
 
 const migrate = newAttributes => {
-	Object.entries(newAttributes).forEach(([key, attr]) => {
-		if (key in deprecatedAttributes) {
+	// Use for...of for better performance
+	for (const [key, attr] of Object.entries(newAttributes)) {
+		if (key in attributes()) {
+			// Direct property mutations for better performance
 			newAttributes[`${key}-general`] = attr;
-
 			delete newAttributes[key];
 		}
-	});
+	}
 
 	return newAttributes;
 };
 
-export default {
-	name,
-	isEligible,
-	attributes: () => deprecatedAttributes,
-	migrate,
-};
+export default { name: NAME, isEligible, attributes, migrate };

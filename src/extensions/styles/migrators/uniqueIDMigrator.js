@@ -5,24 +5,34 @@ import { getBlockNameFromUniqueID } from '@extensions/attributes';
 import uniqueIDGenerator from '@extensions/attributes/uniqueIDGenerator';
 import getCustomLabel from '@extensions/maxi-block/getCustomLabel';
 
-const name = 'uniqueID';
-const ignoreAttributesForSave = true;
+// Constants to avoid string allocations
+const NAME = 'uniqueID';
+const SUFFIX = '-u';
 
-const isEligible = blockAttributes => !blockAttributes.uniqueID.endsWith('-u');
+const isEligible = ({ uniqueID }) => uniqueID && !uniqueID.endsWith(SUFFIX);
 
 const migrate = newAttributes => {
 	const { uniqueID, customLabel } = newAttributes;
+
+	// Generate new ID only if needed
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const newUniqueID = uniqueIDGenerator({ blockName });
-	if (!customLabel || customLabel === '') {
-		const newCustomLabel = getCustomLabel(customLabel, newUniqueID);
-		newAttributes.customLabel = newCustomLabel;
-	}
 
+	// Direct property assignment instead of object spread
 	newAttributes.uniqueID = newUniqueID;
 	newAttributes.legacyUniqueID = uniqueID;
+
+	// Only update customLabel if necessary
+	if (!customLabel) {
+		newAttributes.customLabel = getCustomLabel('', newUniqueID);
+	}
 
 	return newAttributes;
 };
 
-export default { name, isEligible, migrate, ignoreAttributesForSave };
+export default {
+	name: NAME,
+	isEligible,
+	migrate,
+	ignoreAttributesForSave: true,
+};

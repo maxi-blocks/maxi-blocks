@@ -8,98 +8,89 @@ import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 import { isEmpty, isFinite } from 'lodash';
 import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-const targets = ['position', 'blockBackground'];
-const keyWords = ['top', 'right', 'bottom', 'left'];
+// Constants
+const NAME = 'Position to number';
+const BREAKPOINTS = Object.freeze(['general', 'xxl', 'xl', 'l', 'm', 's', 'xs']);
+const TARGETS = Object.freeze(['position', 'blockBackground']);
+const KEYWORDS = Object.freeze(['top', 'right', 'bottom', 'left']);
+const POSITION_PREFIX = 'position-';
 
-const name = 'Position to number';
-
-const getOldUnits = attributes =>
-	breakpoints.map(bp => ({
-		[`position-unit-${bp}`]: attributes[`position-unit-${bp}`],
-	}));
-
-const getAttrsToChange = attributes =>
-	Object.assign(
-		{ ...getGroupAttributes(attributes, targets) },
-		...getOldUnits(attributes)
-	);
-
-const migratePositionAttributes = (key, val, oldAttributes, attributes) => {
-	if (key.includes('position')) {
-		// Convert number to string
-		if (isFinite(val) && attributes?.[key]?.type === 'string') {
-			oldAttributes[key] = val.toString();
-		}
+const getOldUnits = attributes => {
+	const result = {};
+	// Use for loop for better performance
+	for (let i = 0; i < BREAKPOINTS.length; i++) {
+		const key = `${POSITION_PREFIX}unit-${BREAKPOINTS[i]}`;
+		result[key] = attributes[key];
 	}
+	return result;
 };
 
 const isEligible = (blockAttributes, attributes) => {
-	const attrsToChange = getAttrsToChange(blockAttributes);
+	const attrsToChange = {
+		...getGroupAttributes(blockAttributes, TARGETS),
+		...getOldUnits(blockAttributes)
+	};
 
-	return Object.entries(attrsToChange).some(([attrKey, attrVal]) => {
-		if (attrKey.includes('position')) {
-			if (isFinite(attrVal)) {
-				const defaultType = attributes[attrKey].type;
-
-				return defaultType === 'string';
+	// Use for...of for better performance with break capability
+	for (const [attrKey, attrVal] of Object.entries(attrsToChange)) {
+		if (attrKey.includes(POSITION_PREFIX)) {
+			if (isFinite(attrVal) && attributes[attrKey]?.type === 'string') {
+				return true;
 			}
 		}
 
 		if (attrKey.includes('background-layers') && !isEmpty(attrVal)) {
-			return attrVal.some(layer => {
+			for (const layer of attrVal) {
 				if (layer.type === 'shape') {
-					return Object.entries(layer).some(([key, val]) => {
-						if (key.includes('position')) {
-							if (isFinite(val)) return true;
+					for (const [key, val] of Object.entries(layer)) {
+						if (key.includes(POSITION_PREFIX) && isFinite(val)) {
+							return true;
 						}
-
-						return false;
-					});
+					}
 				}
-
-				return false;
-			});
+			}
 		}
-
-		return false;
-	});
+	}
+	return false;
 };
 
-const attributes = () =>
-	breakpointAttributesCreator({
-		obj: {
-			...keyWords.reduce((acc, keyWord) => {
-				acc[`position-${keyWord}`] = {
-					type: 'number',
-				};
+const migratePositionAttributes = (key, val, oldAttributes, attributes) => {
+	if (key.includes(POSITION_PREFIX) &&
+		isFinite(val) &&
+		attributes?.[key]?.type === 'string') {
+		oldAttributes[key] = val.toString();
+	}
+};
 
-				return acc;
-			}, {}),
-		},
-	});
+const attributes = () => {
+	const obj = {};
+	// Use for loop instead of reduce
+	for (let i = 0; i < KEYWORDS.length; i++) {
+		obj[`${POSITION_PREFIX}${KEYWORDS[i]}`] = { type: 'number' };
+	}
+	return breakpointAttributesCreator({ obj });
+};
 
 const migrate = newAttributes => {
-	const attrsToChange = getAttrsToChange(newAttributes);
+	const attrsToChange = {
+		...getGroupAttributes(newAttributes, TARGETS),
+		...getOldUnits(newAttributes)
+	};
 
-	Object.entries(attrsToChange).forEach(([key, val]) => {
+	// Use for...of for better performance
+	for (const [key, val] of Object.entries(attrsToChange)) {
 		migratePositionAttributes(key, val, newAttributes, attributes);
 
 		if (key.includes('background-layers') && !isEmpty(val)) {
-			val.forEach(layer => {
-				Object.entries(layer).forEach(([key, val]) => {
-					migratePositionAttributes(key, val, layer, attributes);
-				});
-			});
+			for (const layer of val) {
+				for (const [layerKey, layerVal] of Object.entries(layer)) {
+					migratePositionAttributes(layerKey, layerVal, layer, attributes);
+				}
+			}
 		}
-	});
+	}
 
 	return newAttributes;
 };
 
-export default {
-	name,
-	isEligible,
-	attributes,
-	migrate,
-};
+export default { name: NAME, isEligible, attributes, migrate };

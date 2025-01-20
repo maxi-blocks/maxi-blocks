@@ -38,18 +38,19 @@ import inlineDCLinkMigrator from './inlineDCLinkMigrator';
  */
 import { isNil } from 'lodash';
 
-/**
- * Create a combination of the different migrators, from the most populate ones to the lighter ones.
- */
-export const handleBlockMigrator = ({
+// Cache for deprecated blocks
+const deprecatedBlockCache = new Map();
+
+const handleBlockMigrator = ({
 	attributes,
 	save,
 	isContainer = false,
 	migrators,
-}) =>
-	migrators.map(migrator => {
+}) => {
+	return migrators.map(migrator => {
 		const newMigrator = { ...migrator };
 
+		// Optimize attributes creation
 		newMigrator.attributes = {
 			...attributes,
 			...(newMigrator.attributes?.(isContainer, attributes) ?? {}),
@@ -57,16 +58,18 @@ export const handleBlockMigrator = ({
 
 		const originalMigrate = newMigrator.migrate;
 
-		if (originalMigrate)
+		if (originalMigrate) {
 			newMigrator.migrate = originalAttributes => {
-				// Here is where we cheat a bit. Gutenberg doesn't support chain updates,
-				// so, to avoid having multiple deprecation versions of each block and considering
-				// our migrators global (affect all blocks), we are saving the previous deprecation
-				// attributes and merging into a new object that will suffer the migration.
 				const { uniqueID } = originalAttributes;
 
-				const prevAttr =
-					select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
+				// Use cache for deprecated blocks
+				let prevAttr = deprecatedBlockCache.get(uniqueID);
+				if (!prevAttr) {
+					prevAttr = select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
+					if (prevAttr) {
+						deprecatedBlockCache.set(uniqueID, prevAttr);
+					}
+				}
 
 				const newAttributes = {
 					...originalAttributes,
@@ -78,8 +81,7 @@ export const handleBlockMigrator = ({
 				dispatch('maxiBlocks').saveDeprecatedBlock({
 					uniqueID,
 					attributes: result,
-					ignoreAttributesForSave:
-						newMigrator.ignoreAttributesForSave,
+					ignoreAttributesForSave: newMigrator.ignoreAttributesForSave,
 				});
 
 				// eslint-disable-next-line no-console
@@ -89,23 +91,32 @@ export const handleBlockMigrator = ({
 
 				return result;
 			};
+		}
 
-		if (!newMigrator.save) newMigrator.save = save;
+		if (!newMigrator.save) {
+			newMigrator.save = save;
+		}
 
 		const originalSave = newMigrator.save;
 		if (originalSave) {
 			newMigrator.save = props => {
 				const { uniqueID } = props.attributes;
 
-				const prevAttr = select('maxiBlocks').receiveDeprecatedBlock(
-					uniqueID,
-					true
-				);
+				// Use cache for deprecated blocks
+				let prevAttr = deprecatedBlockCache.get(uniqueID);
+				if (!prevAttr) {
+					prevAttr = select('maxiBlocks').receiveDeprecatedBlock(
+						uniqueID,
+						true
+					);
+					if (prevAttr) {
+						deprecatedBlockCache.set(uniqueID, prevAttr);
+					}
+				}
 
-				if (!isNil(prevAttr))
-					Object.keys(prevAttr).forEach(key => {
-						props.attributes[key] = prevAttr[key];
-					});
+				if (!isNil(prevAttr)) {
+					Object.assign(props.attributes, prevAttr);
+				}
 
 				return originalSave(props);
 			};
@@ -113,36 +124,42 @@ export const handleBlockMigrator = ({
 
 		return newMigrator;
 	});
+};
+
+// Pre-define migrators array for better performance
+const defaultMigrators = [
+	positionToNumberMigrator,
+	positionUnitsToAxisMigrator,
+	fullWidthAttributeMigrator,
+	fullWidthNonToResponsiveMigrator,
+	transformMigrator,
+	transformIBMigrator,
+	SVGIBTargetsMigrator,
+	IBEffectsMigrator,
+	hoverStatusMigrator,
+	backgroundSizeMigrator,
+	opacityTransitionMigrator,
+	maxiAttributesMigrator,
+	transformIBTargetMigrator,
+	backgroundPositionMigrator,
+	disableTransitionIBMigrator,
+	corruptedHoverAttributesMigrator,
+	bottomGapMigrator,
+	transitionMigrator,
+	IBLabelToIDMigrator,
+	SVGMarkerSizeMigrator,
+	dcLinkBlocksMigrator,
+	DCClassNameMigrator,
+	imageResponsiveWidth,
+	uniqueIDMigrator,
+	scrollEffectsMigrator,
+	inlineDCLinkMigrator,
+];
 
 const blockMigrator = blockMigratorProps => {
 	const migrators = [
-		positionToNumberMigrator,
-		positionUnitsToAxisMigrator,
-		fullWidthAttributeMigrator,
-		fullWidthNonToResponsiveMigrator,
-		transformMigrator,
-		transformIBMigrator,
-		SVGIBTargetsMigrator,
-		IBEffectsMigrator,
-		hoverStatusMigrator,
-		backgroundSizeMigrator,
-		opacityTransitionMigrator,
-		maxiAttributesMigrator,
-		transformIBTargetMigrator,
-		backgroundPositionMigrator,
-		disableTransitionIBMigrator,
-		corruptedHoverAttributesMigrator,
-		bottomGapMigrator,
-		transitionMigrator,
-		IBLabelToIDMigrator,
-		SVGMarkerSizeMigrator,
-		dcLinkBlocksMigrator,
-		DCClassNameMigrator,
+		...defaultMigrators,
 		...(blockMigratorProps.migrators ?? []),
-		imageResponsiveWidth,
-		uniqueIDMigrator,
-		scrollEffectsMigrator,
-		inlineDCLinkMigrator,
 	];
 
 	return handleBlockMigrator({ ...blockMigratorProps, migrators });

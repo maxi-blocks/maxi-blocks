@@ -1,6 +1,8 @@
-const name = 'SVG marker size';
+// Constants
+const NAME = 'SVG marker size';
 
-const versions = [
+// Pre-compile version set for O(1) lookup
+const VERSIONS = new Set([
 	'0.0.1-SC1',
 	'0.0.1-SC2',
 	'0.0.1-SC3',
@@ -18,7 +20,11 @@ const versions = [
 	'1.1.1',
 	'1.2.0',
 	'1.2.1',
-];
+]);
+
+// Pre-compile regex patterns for better performance
+const SIZE_PATTERN = /(height|width)=('|").*?('|")/g;
+const WHITESPACE_PATTERN = /\s+/g;
 
 const isEligible = blockAttributes => {
 	const {
@@ -27,22 +33,22 @@ const isEligible = blockAttributes => {
 		listStyleCustom,
 	} = blockAttributes;
 
-	return (
-		(versions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&
-		listStyleCustom &&
-		listStyleCustom.includes('</svg>')
-	);
+	// Early returns for quick fails
+	if (!listStyleCustom) return false;
+	if (!listStyleCustom.includes('</svg>')) return false;
+
+	return VERSIONS.has(maxiVersionCurrent) || !maxiVersionOrigin;
 };
 
 const migrate = newAttributes => {
 	const { listStyleCustom } = newAttributes;
 
-	return {
-		...newAttributes,
-		listStyleCustom: listStyleCustom
-			.replace(/(height|width)=('|").*?('|")/g, '')
-			.replace(/\s+/g, ' '),
-	};
+	// Direct string replacement for better performance
+	newAttributes.listStyleCustom = listStyleCustom
+		.replace(SIZE_PATTERN, '')
+		.replace(WHITESPACE_PATTERN, ' ');
+
+	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

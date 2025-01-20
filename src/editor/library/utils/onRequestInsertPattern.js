@@ -59,18 +59,11 @@ const onRequestInsertPattern = async (
 			'"cl-relation":"by-date"'
 		);
 
-
-		console.log('contentWithUpdatedRelation');
-		console.log(contentWithUpdatedRelation);
-
 		const cleanedContent = contentWithUpdatedRelation
 			.replace(/,"dc-media-id":\d+,"dc-media-url":"[^"]+"/g, '')
 			.replace(/"dc-field":"author_avatar","dc-media-url":"[^"]+"/g, '"dc-field":"author_avatar"')
 			.replace(/"cl-author":\d+,/g, '')
 			.replace(/"dc-content":"No content found",/g, '');
-
-		console.log('cleanedContent');
-		console.log(cleanedContent);
 
 		const imagesLinks = [];
 		const imagesIds = [];

@@ -34,7 +34,7 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 				const unit = obj[`${attributeName}-unit-${breakpoint}`]; // Note the correction here
 
 				// Refine comparison logic to handle cases where the value remains constant across breakpoints but the unit changes
-				if (isValidNumber(lastValue)) {
+				if (lastValue === 'auto' || isValidNumber(lastValue)) {
 					const isValueEqual = lastValue === value;
 					const isUnitEqual = lastUnit === unit;
 					const shouldSetResponse = isValueEqual || isUnitEqual;

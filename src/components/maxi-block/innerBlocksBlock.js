@@ -5,6 +5,7 @@
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { forwardRef, cloneElement, memo } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -148,6 +149,8 @@ const MainInnerBlocksBlock = forwardRef(
 		},
 		ref
 	) => {
+		const clStatus = select('core/block-editor')
+			.getBlockAttributes(clientId)?.['cl-status'];
 		const blockProps = isSave
 			? useBlockProps.save(props)
 			: useBlockProps({ ...props, ref });
@@ -194,7 +197,7 @@ const MainInnerBlocksBlock = forwardRef(
 			<TagName {...restInnerBlocksProps}>
 				{blockChildren}
 				{showLoader && <ContentLoader overlay />}
-				{pagination && <Pagination {...paginationProps} />}
+				{clStatus && pagination && <Pagination {...paginationProps} />}
 			</TagName>
 		);
 	}

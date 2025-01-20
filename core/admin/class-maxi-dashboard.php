@@ -1642,16 +1642,43 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function delete_all_files($folder)
         {
-            global $wp_filesystem;
-
-            if (empty($wp_filesystem)) {
-                require_once ABSPATH . '/wp-admin/includes/file.php';
-                WP_Filesystem();
-            }
-
             $folder = trailingslashit($folder);
 
-            // Ensure the folder exists before attempting to delete
+            // Try direct file operations first
+            if (file_exists($folder) && is_dir($folder)) {
+                $files = scandir($folder);
+
+                if ($files !== false) {
+                    foreach ($files as $file) {
+                        if ($file === '.' || $file === '..') {
+                            continue;
+                        }
+
+                        $file_path = $folder . $file;
+
+                        if (is_dir($file_path)) {
+                            $this->delete_all_files($file_path);
+                        } elseif (is_file($file_path)) {
+                            @unlink($file_path);
+                        }
+                    }
+
+                    @rmdir($folder);
+                    return;
+                }
+            }
+
+            // Fallback to WP_Filesystem if direct operations fail
+            global $wp_filesystem;
+            if (empty($wp_filesystem)) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem(false, false, true);
+            }
+
+            if (empty($wp_filesystem)) {
+                return;
+            }
+
             if (!$wp_filesystem->exists($folder)) {
                 return;
             }
@@ -1669,7 +1696,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
             }
 
-            // Finally, remove the empty folder itself
             $wp_filesystem->rmdir($folder);
         }
 

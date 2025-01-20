@@ -73,8 +73,11 @@ describe('FontFamilySelector', () => {
 
 		await page.waitForTimeout(500);
 
-		const hasBeenLoaded = await page.evaluate(() =>
-			document.fonts.check('12px Montserrat')
+		const hasBeenLoaded = await page.evaluate(
+			() =>
+				!!document.querySelector(
+					'link[href*="Montserrat"][id*="maxi-blocks-styles-font"]'
+				)?.sheet?.cssRules?.length
 		);
 		expect(hasBeenLoaded).toBeTruthy();
 	});

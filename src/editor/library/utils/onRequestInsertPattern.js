@@ -59,13 +59,19 @@ const onRequestInsertPattern = async (
 			'"cl-relation":"by-date"'
 		);
 
+
+		console.log('contentWithUpdatedRelation');
 		console.log(contentWithUpdatedRelation);
 
-		// Remove dc-media-id, dc-media-url, cl-id, cl-author, specific dc-content entries, and maxiblocks demo URLs/titles
 		const cleanedContent = contentWithUpdatedRelation
 			.replace(/,"dc-media-id":\d+,"dc-media-url":"[^"]+"/g, '')
+			.replace(/"dc-field":"author_avatar","dc-media-url":"[^"]+"/g, '"dc-field":"author_avatar"')
 			.replace(/"cl-author":\d+,/g, '')
 			.replace(/"dc-content":"No content found",/g, '');
+
+		console.log('cleanedContent');
+		console.log(cleanedContent);
+
 		const imagesLinks = [];
 		const imagesIds = [];
 

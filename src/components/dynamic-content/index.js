@@ -238,6 +238,12 @@ const DynamicContent = props => {
 					contentType,
 					false,
 					contextLoop
+						? {
+								'cl-status': contextLoop['cl-status'],
+								'cl-pagination-per-page':
+									contextLoop['cl-pagination-per-page'],
+						  }
+						: {}
 				);
 
 				if (postIDSettings) {

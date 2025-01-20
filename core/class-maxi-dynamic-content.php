@@ -915,7 +915,7 @@ class MaxiBlocks_DynamicContent
             }
             $link = get_term_link($attributes['dc-id']);
         } elseif (
-            in_array($attributes['dc-type'] ?? '', ['users'])
+            in_array($attributes['dc-type'] ?? '', ['users']) && isset($attributes['dc-link-target'])
         ) {
             $dc_link_target = $attributes['dc-link-target'];
             $author_id = $post->ID;

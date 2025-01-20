@@ -208,6 +208,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 		if (relation === 'random') {
 			const users = await resolveSelect('core').getUsers({
+				who: 'authors',
 				per_page: 100,
 				hide_empty: false,
 			});
@@ -216,6 +217,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 		if (['by-date', 'alphabetical'].includes(relation)) {
 			const users = await resolveSelect('core').getUsers({
+				who: 'authors',
 				per_page: accumulator + 1,
 				hide_empty: false,
 				order,

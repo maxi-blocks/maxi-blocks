@@ -1657,11 +1657,27 @@ class MaxiBlocks_Styles
             return [];
         }
 
-        global $wp_filesystem;
+        // Try direct file reading first
+        if (is_readable($file)) {
+            $file_contents = file_get_contents($file);
+            if ($file_contents !== false) {
+                // Process file contents...
+                $dom = new DOMDocument();
+                @$dom->loadHTML($file_contents);
+                // Rest of the processing...
+                return $all_blocks;
+            }
+        }
 
+        // Fallback to WP_Filesystem
+        global $wp_filesystem;
         if (empty($wp_filesystem)) {
             require_once ABSPATH . 'wp-admin/includes/file.php';
-            WP_Filesystem();
+            WP_Filesystem(false, false, true);
+        }
+
+        if (empty($wp_filesystem)) {
+            return [];
         }
 
         $file_contents = $wp_filesystem->get_contents($file);
@@ -1669,7 +1685,7 @@ class MaxiBlocks_Styles
             return [];
         }
 
-        // Example: Using DOMDocument to parse the HTML
+        // Rest of the processing...
         $dom = new DOMDocument();
         @$dom->loadHTML($file_contents);
 
@@ -1784,7 +1800,6 @@ class MaxiBlocks_Styles
         }
 
         $pattern_slug = isset($parts[1]) ? $parts[1] : null;
-
         if (!$pattern_slug) {
             return [];
         }
@@ -1794,7 +1809,6 @@ class MaxiBlocks_Styles
         $php_pattern = $theme_directory . '/patterns/' . $pattern_slug . '.php';
 
         $pattern_file = '';
-
         if (file_exists($html_pattern)) {
             $pattern_file = $html_pattern;
         } elseif (file_exists($php_pattern)) {
@@ -1802,20 +1816,29 @@ class MaxiBlocks_Styles
         }
 
         if (!empty($pattern_file)) {
+            // Try direct file reading first
+            if (is_readable($pattern_file)) {
+                $file_contents = file_get_contents($pattern_file);
+                if ($file_contents !== false) {
+                    $pattern_blocks = parse_blocks($file_contents);
+                    return array_merge_recursive($all_blocks, $pattern_blocks);
+                }
+            }
+
+            // Fallback to WP_Filesystem
             global $wp_filesystem;
             if (empty($wp_filesystem)) {
-                require_once ABSPATH . '/wp-admin/includes/file.php';
-                WP_Filesystem();
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+                WP_Filesystem(false, false, true);
             }
 
-            $file_contents = $wp_filesystem->get_contents($pattern_file);
-
-            if (!$file_contents) {
-                return [];
+            if (!empty($wp_filesystem)) {
+                $file_contents = $wp_filesystem->get_contents($pattern_file);
+                if ($file_contents) {
+                    $pattern_blocks = parse_blocks($file_contents);
+                    $all_blocks = array_merge_recursive($all_blocks, $pattern_blocks);
+                }
             }
-
-            $pattern_blocks = parse_blocks($file_contents);
-            $all_blocks = array_merge_recursive($all_blocks, $pattern_blocks);
         }
 
         return $all_blocks;

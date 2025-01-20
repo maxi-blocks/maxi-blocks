@@ -116,8 +116,6 @@ class MaxiBlocks_ImageCrop
         }
         if (isset($_POST['old_media_src'])) {//phpcs:ignore
             $this->validate_and_delete_old_file($_POST['old_media_src']);//phpcs:ignore
-            global $wp_filesystem;
-            WP_Filesystem();
         }
 
         die();

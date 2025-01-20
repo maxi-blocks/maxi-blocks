@@ -283,8 +283,9 @@ if (class_exists('MaxiBlocks_ImageCrop')) {
 // MaxiBlocks API
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
+MaxiBlocks_API::register();
 if (class_exists('MaxiBlocks_API')) {
-    MaxiBlocks_API::register();
+    add_action('plugins_loaded', array('MaxiBlocks_API', 'register'));
 }
 
 //======================================================================
@@ -321,4 +322,26 @@ if (get_template() === 'maxiblocks-go') {
         require_once MAXI_PLUGIN_DIR_PATH . 'core/maxiblocks-go/maxiblocks-go.php';
     }
 
+}
+
+//======================================================================
+// MaxiBlocks Onboarding
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-onboarding-register.php';
+if (class_exists('MaxiBlocks_Onboarding_Register')) {
+    MaxiBlocks_Onboarding_Register::register();
+
+    // Register activation hook
+    register_activation_hook(__FILE__, ['MaxiBlocks_Onboarding_Register', 'activate']);
+
+    // Handle redirect after activation
+    add_action('admin_init', function () {
+        if (get_transient('maxi_blocks_activation_redirect')) {
+            delete_transient('maxi_blocks_activation_redirect');
+            if (!isset($_GET['activate-multi'])) {
+                wp_safe_redirect(admin_url('admin.php?page=maxi-blocks-onboarding'));
+                exit;
+            }
+        }
+    });
 }

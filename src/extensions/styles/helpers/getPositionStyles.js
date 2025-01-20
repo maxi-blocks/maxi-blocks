@@ -56,7 +56,11 @@ const getPositionStyles = obj => {
 				attributes: obj,
 			});
 
-			if (isValidNumber(value) && !isNil(unit) && !omitPositionStyle)
+			if (
+				(value === 'auto' || isValidNumber(value)) &&
+				!isNil(unit) &&
+				!omitPositionStyle
+			)
 				response[breakpoint][keyWord] =
 					value !== 'auto' ? `${value}${unit}` : value;
 		});

@@ -1,77 +1,76 @@
 /**
- * This is a temporary file to migrate position attribute from 'number' to 'string' and units from non to axis.
- *
- * Can be used as example for future migrations
+ * Internal dependencies
  */
-
 import getGroupAttributes from '@extensions/styles/getGroupAttributes';
-import { isEmpty } from 'lodash';
 import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-const targets = ['position', 'blockBackground'];
-const keyWords = ['top', 'right', 'bottom', 'left'];
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
-const name = 'Position Axis Units';
+// Constants
+const NAME = 'Position Axis Units';
+const BREAKPOINTS = Object.freeze(['general', 'xxl', 'xl', 'l', 'm', 's', 'xs']);
+const TARGETS = Object.freeze(['position', 'blockBackground']);
+const KEYWORDS = Object.freeze(['top', 'right', 'bottom', 'left']);
 
-const getOldUnits = attributes =>
-	breakpoints.map(bp => ({
-		[`position-unit-${bp}`]: attributes[`position-unit-${bp}`],
-	}));
+const getOldUnits = attributes => {
+	const result = {};
 
-const getAttrsToChange = attributes =>
-	Object.assign(
-		{ ...getGroupAttributes(attributes, targets) },
-		...getOldUnits(attributes)
-	);
+	for (let i = 0; i < BREAKPOINTS.length; i++) {
+		const key = `position-unit-${BREAKPOINTS[i]}`;
+		result[key] = attributes[key];
+	}
+	return result;
+};
 
-// Check if unit no axis
 const unitChecker = (key, val) =>
-	val && key.includes('unit') && !keyWords.some(word => key.includes(word));
+	val && key.includes('unit') && !KEYWORDS.some(word => key.includes(word));
 
-const migratePositionAttributes = (key, val, oldAttributes, attributes) => {
-	if (key.includes('position')) {
-		// Convert non-axis unit to axis unit
-		if (unitChecker(key, val)) {
-			keyWords.forEach(keyWord => {
-				const stringBeforeUnit = key.slice(0, key.indexOf('unit'));
-				const stringAfterUnit = key.slice(key.indexOf('unit'));
-				const newKey = `${stringBeforeUnit}${keyWord}-${stringAfterUnit}`;
+const migratePositionAttributes = (key, val, oldAttributes) => {
+	if (!key.includes('position')) return;
 
-				oldAttributes[newKey] = val;
-			});
+	// Convert non-axis unit to axis unit
+	if (unitChecker(key, val)) {
+		const stringBeforeUnit = key.slice(0, key.indexOf('unit'));
+		const stringAfterUnit = key.slice(key.indexOf('unit'));
 
-			delete oldAttributes[key];
+
+		for (let i = 0; i < KEYWORDS.length; i++) {
+			const newKey = `${stringBeforeUnit}${KEYWORDS[i]}-${stringAfterUnit}`;
+			oldAttributes[newKey] = val;
 		}
+
+		delete oldAttributes[key];
 	}
 };
 
 const isEligible = blockAttributes => {
-	const attrsToChange = getAttrsToChange(blockAttributes);
+	const attrsToChange = {
+		...getGroupAttributes(blockAttributes, TARGETS),
+		...getOldUnits(blockAttributes)
+	};
 
-	return Object.entries(attrsToChange).some(([attrKey, attrVal]) => {
-		if (attrKey.includes('position')) {
-			return unitChecker(attrKey, attrVal);
+
+	for (const [attrKey, attrVal] of Object.entries(attrsToChange)) {
+		if (attrKey.includes('position') && unitChecker(attrKey, attrVal)) {
+			return true;
 		}
 
 		if (attrKey.includes('background-layers') && !isEmpty(attrVal)) {
-			return attrVal.some(layer => {
+			for (const layer of attrVal) {
 				if (layer.type === 'shape') {
-					return Object.entries(layer).some(([key, val]) => {
-						if (key.includes('position')) {
-							return unitChecker(key, val);
+					for (const [key, val] of Object.entries(layer)) {
+						if (key.includes('position') && unitChecker(key, val)) {
+							return true;
 						}
-
-						return false;
-					});
+					}
 				}
-
-				return false;
-			});
+			}
 		}
-
-		return false;
-	});
+	}
+	return false;
 };
 
 const attributes = () =>
@@ -84,26 +83,25 @@ const attributes = () =>
 	});
 
 const migrate = newAttributes => {
-	const attrsToChange = getAttrsToChange(newAttributes);
+	const attrsToChange = {
+		...getGroupAttributes(newAttributes, TARGETS),
+		...getOldUnits(newAttributes)
+	};
 
-	Object.entries(attrsToChange).forEach(([key, val]) => {
-		migratePositionAttributes(key, val, newAttributes, attributes);
+
+	for (const [key, val] of Object.entries(attrsToChange)) {
+		migratePositionAttributes(key, val, newAttributes);
 
 		if (key.includes('background-layers') && !isEmpty(val)) {
-			val.forEach(layer => {
-				Object.entries(layer).forEach(([key, val]) => {
-					migratePositionAttributes(key, val, layer, attributes);
-				});
-			});
+			for (const layer of val) {
+				for (const [layerKey, layerVal] of Object.entries(layer)) {
+					migratePositionAttributes(layerKey, layerVal, layer);
+				}
+			}
 		}
-	});
+	}
 
 	return newAttributes;
 };
 
-export default {
-	name,
-	isEligible,
-	attributes,
-	migrate,
-};
+export default { name: NAME, isEligible, attributes, migrate };

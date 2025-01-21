@@ -12,9 +12,13 @@ import {
 } from '@components/maxi-block';
 import { WithLink } from '@extensions/save/utils';
 
-const name = 'List item double link';
+// Constants
+const NAME = 'List item double link';
+const BLOCK_NAME = 'maxi-blocks/list-item-maxi';
+const CONTENT_CLASS = 'maxi-list-item-block__content';
 
-const maxiVersions = [
+// Pre-compile version set for O(1) lookup
+const VERSIONS = new Set([
 	'0.1',
 	'0.0.1-SC1',
 	'0.0.1-SC2',
@@ -57,7 +61,7 @@ const maxiVersions = [
 	'1.8.2',
 	'1.8.3',
 	'1.8.4',
-];
+]);
 
 const isEligible = blockAttributes => {
 	const {
@@ -65,10 +69,9 @@ const isEligible = blockAttributes => {
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;
 
-	return maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin;
+	return VERSIONS.has(maxiVersionCurrent) || !maxiVersionOrigin;
 };
 
-// 1.8.4 List-item-maxi version https://github.com/maxi-blocks/maxi-blocks/blob/afb972544e9ab29a2f74aab6a42f256ae07cb081/src/blocks/list-item-maxi/save.js
 const save = props => {
 	const {
 		content,
@@ -79,29 +82,30 @@ const save = props => {
 		linkSettings,
 	} = props.attributes;
 
-	const name = 'maxi-blocks/list-item-maxi';
-	const className = 'maxi-list-item-block__content';
+	// Pre-compute props for better performance
+	const blockProps = getMaxiBlockAttributes({ ...props, name: BLOCK_NAME });
+	const contentProps = {
+		className: CONTENT_CLASS,
+		value: content,
+		tagName: 'div',
+		'aria-label': ariaLabels['list item'],
+		...(dcStatus ? {} : {
+			reversed: !!listReversed,
+			start: listStart,
+		}),
+	};
 
 	return (
 		<WithLink linkSettings={linkSettings}>
 			<MaxiBlock.save
 				tagName='li'
-				{...getMaxiBlockAttributes({ ...props, name })}
+				{...blockProps}
 				aria-label={ariaLabels['list item wrapper']}
 			>
-				<RichText.Content
-					className={className}
-					value={content}
-					tagName='div'
-					aria-label={ariaLabels['list item']}
-					{...(!dcStatus && {
-						reversed: !!listReversed,
-						start: listStart,
-					})}
-				/>
+				<RichText.Content {...contentProps} />
 			</MaxiBlock.save>
 		</WithLink>
 	);
 };
 
-export default { name, isEligible, save };
+export default { name: NAME, isEligible, save };

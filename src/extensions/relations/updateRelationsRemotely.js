@@ -17,6 +17,11 @@ import getIBStylesObj from './getIBStylesObj';
 import { diff } from 'deep-object-diff';
 import { isEmpty, merge } from 'lodash';
 
+// Constants
+const BLOCK_EDITOR = 'core/block-editor';
+const BGL_SID = 'bgl';
+const TRANSITION_SID = 't';
+
 const updateRelationsRemotely = ({
 	blockTriggerClientId,
 	blockTargetClientId,
@@ -25,82 +30,60 @@ const updateRelationsRemotely = ({
 }) => {
 	if (blockTriggerClientId === blockTargetClientId) return;
 
-	// Block trigger relations
-	const relations =
-		select('core/block-editor')?.getBlockAttributes(
-			blockTriggerClientId
-		)?.relations;
-
+	const blockEditor = select(BLOCK_EDITOR);
+	const relations = blockEditor?.getBlockAttributes(blockTriggerClientId)?.relations;
 	if (!relations) return;
 
+	const { uniqueID } = blockAttributes;
 	const newRelations = [];
 
-	const { uniqueID } = blockAttributes;
 
-	Object.values(relations).forEach(item => {
-		if (isEmpty(item.attributes)) return;
-
+	for (const item of Object.values(relations)) {
+		if (isEmpty(item.attributes)) continue;
 		if (item.uniqueID !== uniqueID) {
 			newRelations.push(item);
-
-			return;
+			continue;
 		}
 
-		const selectedSettings = getSelectedIBSettings(
-			blockTargetClientId,
-			item.sid
-		);
-
+		const selectedSettings = getSelectedIBSettings(blockTargetClientId, item.sid);
 		const prefix = selectedSettings?.prefix || '';
-
 		const relationsAttributes = item.attributes || {};
 
-		// In case relation attributes contain background layers, check if there are the same
-		// amount of layers in the block attributes. If not, remove the relation attributes.
-		if (item.sid === 'bgl') {
+		// Handle background layers special case
+		if (item.sid === BGL_SID) {
 			const relationBGLayers = relationsAttributes['background-layers'];
 			const blockBGLayers = blockAttributes['background-layers'];
 
-			if (
-				relationBGLayers &&
-				blockBGLayers &&
-				relationBGLayers.length !== blockBGLayers.length
-			) {
-				if (blockBGLayers.length === 0)
+			if (relationBGLayers && blockBGLayers &&
+				relationBGLayers.length !== blockBGLayers.length) {
+				if (blockBGLayers.length === 0) {
 					relationsAttributes['background-layers'] = [];
-				else {
-					relationBGLayers.forEach(({ id }) => {
-						const index = blockBGLayers.findIndex(
-							({ id: blockId }) => blockId === id
-						);
-
-						if (index === -1)
-							relationsAttributes['background-layers'] =
-								relationsAttributes['background-layers'].filter(
-									({ id: relationId }) => relationId !== id
-								);
-					});
+				} else {
+					// Use Set for O(1) lookup
+					const blockLayerIds = new Set(blockBGLayers.map(layer => layer.id));
+					relationsAttributes['background-layers'] =
+						relationBGLayers.filter(layer => blockLayerIds.has(layer.id));
 				}
 			}
 		}
 
-		const { cleanAttributesObject, tempAttributes } =
-			getCleanResponseIBAttributes(
-				item.attributes,
-				blockAttributes,
-				item.uniqueID,
-				selectedSettings,
-				breakpoint,
-				prefix,
-				item.sid,
-				blockTriggerClientId
-			);
+		const { cleanAttributesObject, tempAttributes } = getCleanResponseIBAttributes(
+			item.attributes,
+			blockAttributes,
+			item.uniqueID,
+			selectedSettings,
+			breakpoint,
+			prefix,
+			item.sid,
+			blockTriggerClientId
+		);
 
+		const mergedAttributes = merge({}, cleanAttributesObject, tempAttributes);
 		const styles = getIBStyles({
 			stylesObj: getIBStylesObj({
 				clientId: blockTargetClientId,
 				sid: item.sid,
-				attributes: merge({}, cleanAttributesObject, tempAttributes),
+				attributes: mergedAttributes,
 				blockAttributes,
 				breakpoint,
 			}),
@@ -108,33 +91,27 @@ const updateRelationsRemotely = ({
 			isFirst: true,
 		});
 
-		newRelations.push({
+		const newItem = {
 			...item,
 			attributes: { ...item.attributes, ...cleanAttributesObject },
 			css: styles,
-			...(item.sid === 't' && {
-				effects: {
-					...item.effects,
-					transitionTarget: Object.keys(styles),
-				},
-			}),
-		});
-	});
+		};
+
+		// Handle transition effects
+		if (item.sid === TRANSITION_SID) {
+			newItem.effects = {
+				...item.effects,
+				transitionTarget: Object.keys(styles),
+			};
+		}
+
+		newRelations.push(newItem);
+	}
 
 	if (!isEmpty(diff(relations, newRelations))) {
-		const {
-			__unstableMarkNextChangeAsNotPersistent:
-				markNextChangeAsNotPersistent,
-			updateBlockAttributes,
-		} = dispatch('core/block-editor');
-
-		markNextChangeAsNotPersistent();
-		updateBlockAttributes(blockTriggerClientId, {
-			relations: newRelations,
-		});
-
-		const getUniqueID = clientID =>
-			select('core/block-editor').getBlockAttributes(clientID).uniqueID;
+		const editor = dispatch(BLOCK_EDITOR);
+		editor.__unstableMarkNextChangeAsNotPersistent();
+		editor.updateBlockAttributes(blockTriggerClientId, { relations: newRelations });
 
 		// eslint-disable-next-line no-console
 		console.log(

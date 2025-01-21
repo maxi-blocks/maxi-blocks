@@ -376,13 +376,16 @@ class MaxiBlockComponent extends Component {
 		if (
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
 			wasBreakpointChanged // In case of breakpoint change
-		)
+		) {
 			return true;
+		}
 
 		// Check changes on states
-		if (!isEqual(this.state, nextState)) return true;
+		if (!isEqual(this.state, nextState)) {
+			return true;
+		}
 
-		if (this.shouldMaxiBlockUpdate)
+		if (this.shouldMaxiBlockUpdate) {
 			return (
 				this.shouldMaxiBlockUpdate(
 					this.props,
@@ -395,6 +398,7 @@ class MaxiBlockComponent extends Component {
 					propsObjectCleaner(nextProps)
 				)
 			);
+		}
 
 		const result = !isEqual(
 			propsObjectCleaner(this.props),
@@ -1120,8 +1124,21 @@ class MaxiBlockComponent extends Component {
 		} else response = getAllFonts(this.typography, 'custom-formats');
 		if (isEmpty(response)) return;
 
-		loadFonts(response, true, target);
-		this.areFontsLoaded.current = true;
+		// Clear font cache after loading
+		if (this.fontCache) {
+			this.fontCache = null;
+		}
+
+		// Debounce font loading to prevent multiple loads
+		if (this.fontLoadTimeout) {
+			clearTimeout(this.fontLoadTimeout);
+		}
+
+		this.fontLoadTimeout = setTimeout(() => {
+			loadFonts(response, true, target);
+			this.areFontsLoaded.current = true;
+			this.fontLoadTimeout = null;
+		}, 300);
 	}
 
 	/**
@@ -1382,6 +1399,17 @@ class MaxiBlockComponent extends Component {
 			this.copyMaxiVariablesToIframe(iframeDocument, iframe);
 			this.ensureMaxiStylesLoaded(iframeDocument, iframe);
 		}
+
+		// Clear previous iframe references
+		if (this.previousIframeContent) {
+			this.previousIframeContent = null;
+		}
+
+		// Remove unused style elements
+		const unusedStyles = iframeDocument.querySelectorAll(
+			'style[id*="maxi-temp"]'
+		);
+		unusedStyles.forEach(el => el.remove());
 	}
 
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
@@ -1514,25 +1542,22 @@ class MaxiBlockComponent extends Component {
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
 
-		if (isBreakpointChange || isBlockStyleChange) {
+		if (isBlockStyleChange) {
 			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
 			styleContent = cssCache[currentBreakpoint];
-
-			if (isBlockStyleChange) {
-				const { blockStyle } = this.props.attributes;
-				const previousBlockStyle =
-					blockStyle === 'light' ? 'dark' : 'light';
-				styleContent = styleContent.replace(
-					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
-					`--maxi-${blockStyle}-`
-				);
-				styles = this.generateStyles(
-					updatedStylesObj,
-					breakpoints,
-					uniqueID
-				);
-			}
-		} else {
+			const { blockStyle } = this.props.attributes;
+			const previousBlockStyle =
+				blockStyle === 'light' ? 'dark' : 'light';
+			styleContent = styleContent.replace(
+				new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
+				`--maxi-${blockStyle}-`
+			);
+			styles = this.generateStyles(
+				updatedStylesObj,
+				breakpoints,
+				uniqueID
+			);
+		} else if (!isBreakpointChange) {
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,

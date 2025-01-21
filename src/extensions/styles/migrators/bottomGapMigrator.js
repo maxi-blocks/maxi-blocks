@@ -32,7 +32,7 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	// Use for loop for better performance than .some()
+	 than .some()
 	let hasBottomGap = false;
 	for (let i = 0; i < BREAKPOINTS.length; i++) {
 		if (newAttributes[`bottom-gap-${BREAKPOINTS[i]}`]) {

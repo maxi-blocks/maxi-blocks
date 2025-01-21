@@ -34,7 +34,7 @@ const attributes = () => {
 		obj: { 'full-width': ATTRIBUTE_TEMPLATE },
 	});
 
-	// Use for loop for better performance
+
 	for (let i = 0; i < PREFIXES.length; i++) {
 		Object.assign(result, breakpointAttributesCreator({
 			obj: {
@@ -57,7 +57,7 @@ const isEligible = blockAttributes => {
 		return false;
 	}
 
-	// Use for...of for better performance with break capability
+
 	for (const [key, value] of Object.entries(blockAttributes)) {
 		if (key.includes('full-width') && typeof value === 'string') {
 			return true;
@@ -67,7 +67,7 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	// Use for...of for better performance
+
 	for (const [key, value] of Object.entries(newAttributes)) {
 		if (key.includes('full-width') && typeof value === 'string') {
 			newAttributes[key] = value === 'full';

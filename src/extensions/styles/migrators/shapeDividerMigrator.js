@@ -27,7 +27,7 @@ const createOpacityAttribute = () => ({
 const attributes = () => {
 	const result = {};
 
-	// Use for loop for better performance
+
 	for (let i = 0; i < POSITIONS.length; i++) {
 		const position = POSITIONS[i];
 		const prefix = `shape-divider-${position}-`;
@@ -49,7 +49,7 @@ const attributes = () => {
 const isEligible = blockAttributes => {
 	const deprecatedAttributes = attributes();
 
-	// Use for...of for better performance with break capability
+
 	for (const [key, attr] of Object.entries(blockAttributes)) {
 		if (key in deprecatedAttributes &&
 			attr !== deprecatedAttributes[key].default) {
@@ -60,7 +60,7 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	// Use for...of for better performance
+
 	for (const [key, attr] of Object.entries(newAttributes)) {
 		if (key in attributes()) {
 			// Direct property mutations for better performance

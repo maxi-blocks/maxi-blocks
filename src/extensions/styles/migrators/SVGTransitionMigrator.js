@@ -54,7 +54,7 @@ const migrate = newAttributes => {
 		transition: blockDataTransition,
 	}).transition.default.block;
 
-	// Use for...of for better performance
+
 	for (const transitionName of Object.keys(blockDataTransition.block)) {
 		if (!transition.block[transitionName]) {
 			// Direct property mutation for better performance

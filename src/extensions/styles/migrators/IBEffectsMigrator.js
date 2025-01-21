@@ -46,13 +46,13 @@ const isEligible = blockAttributes => {
 	const { relations } = blockAttributes;
 	if (!relations) return false;
 
-	// Use for...of for better performance with break capability
+
 	for (const relation of relations) {
 		if (!relation.migrated) {
 			const transitionSetting = getIBDataItem(relation);
 			if (!transitionSetting) continue;
 
-			// Use for...of for better performance
+
 			for (const setting of SETTINGS_TO_MIGRATE) {
 				if (setting.isEligible(transitionSetting, relation)) {
 					return true;
@@ -67,7 +67,7 @@ const migrate = newAttributes => {
 	const { relations } = newAttributes;
 	if (!relations) return newAttributes;
 
-	// Use for...of for better performance
+
 	for (const relation of relations) {
 		const transitionSetting = getIBDataItem(relation);
 		if (!transitionSetting) {

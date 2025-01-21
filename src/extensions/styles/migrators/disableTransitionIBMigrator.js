@@ -13,7 +13,7 @@ const isEligible = blockAttributes => {
 	// Early return for quick fails
 	if (!relations || isEmpty(relations)) return false;
 
-	// Use for...of for better performance with break capability
+
 	for (const relation of relations) {
 		if (relation.settings === ALIGNMENT_SETTING &&
 			!relation.effects.disableTransition) {
@@ -27,7 +27,7 @@ const migrate = newAttributes => {
 	const { relations } = newAttributes;
 	if (!relations) return newAttributes;
 
-	// Use for...of for better performance
+
 	for (const relation of relations) {
 		if (relation.settings === ALIGNMENT_SETTING) {
 			relation.effects.disableTransition = true;

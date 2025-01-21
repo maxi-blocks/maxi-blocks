@@ -12,7 +12,7 @@ const isEligible = blockAttributes => {
 	// Early return for quick fails
 	if (!relations || isEmpty(relations)) return false;
 
-	// Use for...of for better performance with break capability
+
 	for (const relation of relations) {
 		if (relation.settings !== 'Transform') continue;
 		if (relation.css?.['']?.['']) return true;
@@ -27,7 +27,7 @@ const migrate = newAttributes => {
 
 	const newRelations = [...relations];
 
-	// Use for...of for better performance
+
 	for (let i = 0; i < newRelations.length; i++) {
 		const relation = newRelations[i];
 		if (relation.settings !== 'Transform') continue;

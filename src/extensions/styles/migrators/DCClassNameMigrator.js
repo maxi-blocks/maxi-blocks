@@ -59,7 +59,6 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = attributes => {
-	// Direct property assignment instead of spread
 	attributes['dc-hide'] = false;
 	return attributes;
 };

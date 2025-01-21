@@ -37,7 +37,7 @@ const updateRelationsRemotely = ({
 	const { uniqueID } = blockAttributes;
 	const newRelations = [];
 
-	// Use for...of for better performance
+
 	for (const item of Object.values(relations)) {
 		if (isEmpty(item.attributes)) continue;
 		if (item.uniqueID !== uniqueID) {
@@ -113,18 +113,15 @@ const updateRelationsRemotely = ({
 		editor.__unstableMarkNextChangeAsNotPersistent();
 		editor.updateBlockAttributes(blockTriggerClientId, { relations: newRelations });
 
-		// Debug logging
-		if (process.env.NODE_ENV !== 'production') {
-			const getUniqueID = clientID =>
-				select(BLOCK_EDITOR).getBlockAttributes(clientID).uniqueID;
-
-			console.log(
-				`Relations updated for ${getUniqueID(blockTriggerClientId)} ` +
-				`as a result of ${getUniqueID(blockTargetClientId)} change. ` +
-				`The new 'relations' attribute is: `,
-				newRelations
-			);
-		}
+		// eslint-disable-next-line no-console
+		console.log(
+			`Relations updated for ${getUniqueID(
+				blockTriggerClientId
+			)} as a result of ${getUniqueID(
+				blockTargetClientId
+			)} change. The new 'relations' attribute is: `,
+			newRelations
+		);
 	}
 };
 

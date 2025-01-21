@@ -17,7 +17,7 @@ const POSITION_PREFIX = 'position-';
 
 const getOldUnits = attributes => {
 	const result = {};
-	// Use for loop for better performance
+
 	for (let i = 0; i < BREAKPOINTS.length; i++) {
 		const key = `${POSITION_PREFIX}unit-${BREAKPOINTS[i]}`;
 		result[key] = attributes[key];
@@ -31,7 +31,7 @@ const isEligible = (blockAttributes, attributes) => {
 		...getOldUnits(blockAttributes)
 	};
 
-	// Use for...of for better performance with break capability
+
 	for (const [attrKey, attrVal] of Object.entries(attrsToChange)) {
 		if (attrKey.includes(POSITION_PREFIX)) {
 			if (isFinite(attrVal) && attributes[attrKey]?.type === 'string') {
@@ -77,7 +77,7 @@ const migrate = newAttributes => {
 		...getOldUnits(newAttributes)
 	};
 
-	// Use for...of for better performance
+
 	for (const [key, val] of Object.entries(attrsToChange)) {
 		migratePositionAttributes(key, val, newAttributes, attributes);
 

@@ -71,7 +71,7 @@ describe('FontFamilySelector', () => {
 			'Montserrat'
 		);
 
-		await page.waitForTimeout(3000);
+		await page.waitForTimeout(500);
 
 		const hasBeenLoaded = await page.evaluate(
 			() =>

@@ -20,7 +20,7 @@ const migrate = newAttributes => {
 	const { block } = transition;
 	const iconData = block.icon;
 
-	// Use for loop for better performance
+
 	for (let i = 0; i < NEW_KEYS.length; i++) {
 		block[NEW_KEYS[i]] = iconData;
 	}

@@ -82,7 +82,7 @@ const migrate = newAttributes => {
 		selectors: data?.customCss?.selectors,
 	}).transition.default;
 
-	// Use for...of for better performance
+
 	for (const [selector, defaultTransition] of Object.entries(defaultTransitions)) {
 		if (!(selector in transition)) {
 			// Direct property mutation for better performance

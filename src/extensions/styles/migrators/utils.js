@@ -45,7 +45,7 @@ export const getIBDataItem = ({ uniqueID, sid, settings }) => {
 
 	if (!interactionBuilderSettings) return null;
 
-	// Use for...of for better performance
+
 	const flattenedSettings = [].concat(...Object.values(interactionBuilderSettings));
 	for (const item of flattenedSettings) {
 		if ((sid && item?.sid === sid) || (!sid && settings && item?.label === settings)) {

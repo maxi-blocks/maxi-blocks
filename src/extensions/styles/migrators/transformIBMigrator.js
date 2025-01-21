@@ -20,7 +20,7 @@ const isEligible = blockAttributes => {
 	// Early return for quick fails
 	if (!relations || isEmpty(relations)) return false;
 
-	// Use for...of for better performance with break capability
+
 	for (const relation of relations) {
 		if (relation.settings !== 'Transform') continue;
 		if (BREAKPOINTS.some(breakpoint => relation.css[breakpoint])) {

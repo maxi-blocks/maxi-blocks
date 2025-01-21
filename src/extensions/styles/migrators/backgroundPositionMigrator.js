@@ -17,7 +17,6 @@ const isEligible = blockAttributes => {
 		const type = getLayerType(layers[i]);
 		const prefix = `background-${type}-`;
 
-		// Use for...of for better performance with break
 		for (const unit of POSITION_UNITS) {
 			if (!(prefix + unit in layers[i])) return true;
 		}

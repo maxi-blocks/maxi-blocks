@@ -30,7 +30,7 @@ const attributes = () => {
 };
 
 const isEligible = blockAttributes => {
-	// Use for...of for better performance with break capability
+
 	for (const key of Object.keys(blockAttributes)) {
 		if (key.includes(HOVER_STATUS)) return true;
 	}

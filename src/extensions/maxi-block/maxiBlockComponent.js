@@ -349,10 +349,9 @@ class MaxiBlockComponent extends Component {
 		if (
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
 			wasBreakpointChanged // In case of breakpoint change
-		)
-			{
-				return true;
-			}
+		) {
+			return true;
+		}
 
 		// Check changes on states
 		if (!isEqual(this.state, nextState)) {
@@ -1204,18 +1203,24 @@ class MaxiBlockComponent extends Component {
 			if (customDataRelations) {
 				// Clear previous instances when unmounting or switching
 				if (this.relationInstances) {
-					this.relationInstances.forEach(instance => instance.destroy?.());
+					this.relationInstances.forEach(instance =>
+						instance.destroy?.()
+					);
 					this.relationInstances = null;
 				}
 				if (this.previousRelationInstances) {
-					this.previousRelationInstances.forEach(instance => instance.destroy?.());
+					this.previousRelationInstances.forEach(instance =>
+						instance.destroy?.()
+					);
 					this.previousRelationInstances = null;
 				}
 
-				const isRelationsPreview = this.props.attributes['relations-preview'];
+				const isRelationsPreview =
+					this.props.attributes['relations-preview'];
 
 				if (isRelationsPreview) {
-					this.relationInstances = processRelations(customDataRelations);
+					this.relationInstances =
+						processRelations(customDataRelations);
 				}
 
 				this.relationInstances?.forEach(relationInstance => {
@@ -1392,7 +1397,9 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Remove unused style elements
-		const unusedStyles = iframeDocument.querySelectorAll('style[id*="maxi-temp"]');
+		const unusedStyles = iframeDocument.querySelectorAll(
+			'style[id*="maxi-temp"]'
+		);
 		unusedStyles.forEach(el => el.remove());
 	}
 

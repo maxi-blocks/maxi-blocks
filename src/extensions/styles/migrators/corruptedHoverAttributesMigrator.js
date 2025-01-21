@@ -27,7 +27,7 @@ const isEligible = blockAttributes => {
 		return false;
 	}
 
-	// Use for...of for better performance with break capability
+
 	for (const [key, val] of Object.entries(blockAttributes)) {
 		if (val) {
 			for (const attrKey of CORRUPTED_ATTRIBUTES) {
@@ -39,7 +39,7 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	// Use for...of for better performance
+
 	for (const [key, val] of Object.entries(newAttributes)) {
 		const hoverKey = `${key}-hover`;
 		if (val === newAttributes[hoverKey]) {

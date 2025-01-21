@@ -26,7 +26,7 @@ const getStyles = (stylesObj, isFirst = false) => {
 	if (Object.keys(stylesObj).some(key => key.includes('general'))) {
 		const styles = {};
 
-		// Use for...of for better performance
+
 		for (const [key, breakpoint] of Object.entries(BREAKPOINTS)) {
 			if (stylesObj[key]) {
 				styles[key] = {
@@ -62,7 +62,7 @@ const isEligible = blockAttributes => {
 	const { relations } = blockAttributes;
 	if (!relations) return false;
 
-	// Use for...of for better performance with break capability
+
 	for (const relation of relations) {
 		if (relation.uniqueID?.includes('svg-icon-maxi') &&
 			relation.settings === 'Icon colour' &&
@@ -80,7 +80,7 @@ const migrate = newAttributes => {
 	const { relations } = newAttributes;
 	if (!relations) return newAttributes;
 
-	// Use for...of for better performance
+
 	for (let i = 0; i < relations.length; i++) {
 		const relation = relations[i];
 		if (!relation.uniqueID?.includes('svg-icon-maxi')) continue;

@@ -17,7 +17,7 @@ const KEYWORDS = Object.freeze(['top', 'right', 'bottom', 'left']);
 
 const getOldUnits = attributes => {
 	const result = {};
-	// Use for loop for better performance
+
 	for (let i = 0; i < BREAKPOINTS.length; i++) {
 		const key = `position-unit-${BREAKPOINTS[i]}`;
 		result[key] = attributes[key];
@@ -36,7 +36,7 @@ const migratePositionAttributes = (key, val, oldAttributes) => {
 		const stringBeforeUnit = key.slice(0, key.indexOf('unit'));
 		const stringAfterUnit = key.slice(key.indexOf('unit'));
 
-		// Use for loop for better performance
+
 		for (let i = 0; i < KEYWORDS.length; i++) {
 			const newKey = `${stringBeforeUnit}${KEYWORDS[i]}-${stringAfterUnit}`;
 			oldAttributes[newKey] = val;
@@ -52,7 +52,7 @@ const isEligible = blockAttributes => {
 		...getOldUnits(blockAttributes)
 	};
 
-	// Use for...of for better performance with break capability
+
 	for (const [attrKey, attrVal] of Object.entries(attrsToChange)) {
 		if (attrKey.includes('position') && unitChecker(attrKey, attrVal)) {
 			return true;
@@ -88,7 +88,7 @@ const migrate = newAttributes => {
 		...getOldUnits(newAttributes)
 	};
 
-	// Use for...of for better performance
+
 	for (const [key, val] of Object.entries(attrsToChange)) {
 		migratePositionAttributes(key, val, newAttributes);
 

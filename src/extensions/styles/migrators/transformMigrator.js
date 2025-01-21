@@ -96,7 +96,7 @@ const migrate = props => {
 		([, selector]) => selector.normal.target === ''
 	)[0];
 
-	// Use for...of for better performance
+
 	for (const [key, attr] of Object.entries(newAttributes)) {
 		if (!(key in ATTRIBUTES)) continue;
 

@@ -35,7 +35,7 @@ const isEligible = blockAttributes => {
 	const { transition } = blockAttributes;
 	if (!transition) return false;
 
-	// Use for...of for better performance with break capability
+
 	for (const category of Object.values(transition)) {
 		if (!Object.prototype.hasOwnProperty.call(category, 'opacity')) {
 			return true;
@@ -51,7 +51,7 @@ const migrate = newAttributes => {
 	const blockDataTransition = getBlockData(uniqueID);
 	const opacityAttributes = getOpacityAttributes();
 
-	// Use for...of for better performance
+
 	for (const [category, properties] of Object.entries(blockDataTransition)) {
 		for (const name of Object.keys(properties)) {
 			if (name === 'opacity') {

@@ -47,7 +47,7 @@
 		"@wordpress/rich-text": "latest",
 		"babel-preset-react": "latest",
 		"bezier-easing-editor": "latest",
-		"caniuse-lite": "latest",
+		"caniuse-lite": "^1.0.30001695",
 		"ci": "^2.3.0",
 		"classnames": "latest",
 		"css-to-react-native": "latest",

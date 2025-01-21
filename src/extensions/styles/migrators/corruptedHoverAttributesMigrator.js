@@ -1,12 +1,20 @@
-const name = 'Corrupted Hover Attributes';
-
-const maxiVersions = [
+// Constants
+const NAME = 'Corrupted Hover Attributes';
+const VALID_VERSIONS = new Set([
 	'0.1',
 	'0.0.1-SC1',
 	'0.0.1-SC2',
 	'0.0.1-SC3',
 	'0.0.1-SC4',
-];
+]);
+
+// Pre-compile patterns for faster lookup
+const CORRUPTED_ATTRIBUTES = new Set([
+	'border-status-hover',
+	'box-shadow-status-hover',
+	'background-status-hover',
+	'svg-status-hover',
+]);
 
 const isEligible = blockAttributes => {
 	const {
@@ -14,31 +22,32 @@ const isEligible = blockAttributes => {
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;
 
-	const corruptedAttributes = [
-		'border-status-hover',
-		'box-shadow-status-hover',
-		'background-status-hover',
-		'svg-status-hover',
-	];
+	// Early return if version check fails
+	if (!(!maxiVersionOrigin || VALID_VERSIONS.has(maxiVersionCurrent))) {
+		return false;
+	}
 
-	return (
-		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&
-		Object.entries(blockAttributes).some(
-			([key, val]) =>
-				val &&
-				corruptedAttributes.some(attrKey => key.includes(attrKey))
-		)
-	);
+
+	for (const [key, val] of Object.entries(blockAttributes)) {
+		if (val) {
+			for (const attrKey of CORRUPTED_ATTRIBUTES) {
+				if (key.includes(attrKey)) return true;
+			}
+		}
+	}
+	return false;
 };
 
 const migrate = newAttributes => {
-	const response = { ...newAttributes };
 
-	Object.entries(response).forEach(([key, val]) => {
-		if (val === response[`${key}-hover`]) delete response[`${key}-hover`];
-	});
+	for (const [key, val] of Object.entries(newAttributes)) {
+		const hoverKey = `${key}-hover`;
+		if (val === newAttributes[hoverKey]) {
+			delete newAttributes[hoverKey];
+		}
+	}
 
-	return response;
+	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

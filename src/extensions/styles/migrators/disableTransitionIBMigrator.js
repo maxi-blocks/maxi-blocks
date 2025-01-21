@@ -3,31 +3,38 @@
  */
 import { isEmpty } from 'lodash';
 
-const name = 'IB disable transition for alignment';
+// Constants
+const NAME = 'IB disable transition for alignment';
+const ALIGNMENT_SETTING = 'Alignment';
 
 const isEligible = blockAttributes => {
 	const { relations } = blockAttributes;
 
+	// Early return for quick fails
 	if (!relations || isEmpty(relations)) return false;
 
-	return relations.some(
-		relation =>
-			relation.settings === 'Alignment' &&
-			!relation.effects.disableTransition
-	);
+
+	for (const relation of relations) {
+		if (relation.settings === ALIGNMENT_SETTING &&
+			!relation.effects.disableTransition) {
+			return true;
+		}
+	}
+	return false;
 };
 
 const migrate = newAttributes => {
 	const { relations } = newAttributes;
+	if (!relations) return newAttributes;
 
-	const newRelations = [...relations];
 
-	newRelations.forEach(relation => {
-		if (relation.settings === 'Alignment')
+	for (const relation of relations) {
+		if (relation.settings === ALIGNMENT_SETTING) {
 			relation.effects.disableTransition = true;
-	});
+		}
+	}
 
-	return { ...newAttributes, relations: newRelations };
+	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

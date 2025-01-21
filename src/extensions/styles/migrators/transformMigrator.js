@@ -10,11 +10,12 @@ import { getBlockSelectorsByUniqueID } from './utils';
  */
 import { isEmpty, isNil } from 'lodash';
 
-const name = 'Transform';
+// Constants
+const NAME = 'Transform';
+const TYPES = Object.freeze(['scale', 'translate', 'rotate', 'origin']);
 
-const types = ['scale', 'translate', 'rotate', 'origin'];
-
-const attributes = breakpointAttributesCreator({
+// Pre-define attribute templates for better performance
+const ATTRIBUTES = breakpointAttributesCreator({
 	obj: {
 		'transform-scale-x': {
 			type: 'number',
@@ -62,23 +63,27 @@ const attributes = breakpointAttributesCreator({
 	},
 });
 
-const isEligible = blockAttributes =>
-	Object.keys(blockAttributes).some(key => key in attributes) ||
-	(!!blockAttributes.relations &&
-		blockAttributes.relations.some(relation =>
-			Object.keys(relation.attributes).some(key => key in attributes)
-		));
+const isEligible = blockAttributes => {
+	// Early return for quick fails
+	if (!blockAttributes) return false;
+
+	const hasDirectAttribute = Object.keys(blockAttributes).some(key => key in ATTRIBUTES);
+	if (hasDirectAttribute) return true;
+
+	const { relations } = blockAttributes;
+	if (!relations) return false;
+
+	return relations.some(relation =>
+		Object.keys(relation.attributes).some(key => key in ATTRIBUTES)
+	);
+};
 
 const migrate = props => {
 	let newAttributes;
 	let selectors;
 
-	if (
-		Object.prototype.hasOwnProperty.call(props, 'newAttributes') &&
-		Object.prototype.hasOwnProperty.call(props, 'selectors')
-	) {
-		newAttributes = props.newAttributes;
-		selectors = props.selectors;
+	if ('newAttributes' in props && 'selectors' in props) {
+		({ newAttributes, selectors } = props);
 	} else {
 		newAttributes = props;
 		selectors = getBlockSelectorsByUniqueID(newAttributes.uniqueID);
@@ -87,65 +92,54 @@ const migrate = props => {
 	if (isEmpty(selectors)) return false;
 
 	const getAxis = attribute => attribute.match(/[x,y,z](-unit)?/)[0];
-
 	const target = Object.entries(selectors).find(
-		([key, selector]) => selector.normal.target === ''
+		([, selector]) => selector.normal.target === ''
 	)[0];
 
-	const updateAttribute = (key, attr) => {
-		types.every(type => {
-			if (
-				key.match(type) &&
-				!isNil(attr) &&
-				attr !== attributes[key].default
-			) {
-				const breakpoint = getBreakpointFromAttribute(key);
-				newAttributes[`transform-${type}-${breakpoint}`] = {
-					[`${target}`]: {
-						normal: {
-							...newAttributes[
-								`transform-${type}-${breakpoint}`
-							]?.[`${target}`]?.normal,
-							[getAxis(key)]: attr,
-						},
+
+	for (const [key, attr] of Object.entries(newAttributes)) {
+		if (!(key in ATTRIBUTES)) continue;
+
+		for (const type of TYPES) {
+			if (!key.match(type) || isNil(attr) || attr === ATTRIBUTES[key].default) continue;
+
+			const breakpoint = getBreakpointFromAttribute(key);
+			const transformKey = `transform-${type}-${breakpoint}`;
+
+			// Direct property mutations for better performance
+			newAttributes[transformKey] = {
+				[target]: {
+					normal: {
+						...newAttributes[transformKey]?.[target]?.normal,
+						[getAxis(key)]: attr,
 					},
-				};
+				},
+			};
 
-				return false;
-			}
-			return true;
-		});
-
-		delete newAttributes[key];
-	};
-
-	Object.entries(newAttributes).forEach(([key, attr]) => {
-		if (key in attributes) {
-			updateAttribute(key, attr);
+			delete newAttributes[key];
+			break;
 		}
-		if (key === 'relations' && !isNil(attr)) {
-			const newRelations = [...attr];
-			attr.forEach((relation, index) => {
-				const newRelationAttributes = { ...relation.attributes };
-				const { uniqueID } = relation;
-				const relationSelectors = getBlockSelectorsByUniqueID(uniqueID);
+	}
 
-				migrate({
-					newAttributes: newRelationAttributes,
-					selectors: relationSelectors,
-				});
+	// Handle relations
+	if (newAttributes.relations) {
+		const newRelations = newAttributes.relations.map(relation => {
+			const relationAttributes = { ...relation.attributes };
+			const { uniqueID } = relation;
+			const relationSelectors = getBlockSelectorsByUniqueID(uniqueID);
 
-				newRelations[index] = {
-					...newRelations[index],
-					attributes: newRelationAttributes,
-				};
+			migrate({
+				newAttributes: relationAttributes,
+				selectors: relationSelectors,
 			});
 
-			newAttributes[key] = newRelations;
-		}
-	});
+			return { ...relation, attributes: relationAttributes };
+		});
+
+		newAttributes.relations = newRelations;
+	}
 
 	return newAttributes;
 };
 
-export default { name, attributes: () => attributes, migrate, isEligible };
+export default { name: NAME, attributes: () => ATTRIBUTES, migrate, isEligible };

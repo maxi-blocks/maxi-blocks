@@ -120,6 +120,16 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 true
             );
 
+            // Localize the script with our data
+            wp_localize_script(
+                'maxi-blocks-block-editor',
+                'maxiBlocksMain',
+                array(
+                    'local_fonts' => get_option('local_fonts'),
+                    'bunny_fonts' => get_option('bunny_fonts'),
+                )
+            );
+
             $editor_css = 'build/index.css';
             wp_register_style(
                 'maxi-blocks-block-editor',

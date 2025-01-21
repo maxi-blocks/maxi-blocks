@@ -113,6 +113,9 @@ const updateRelationsRemotely = ({
 		editor.__unstableMarkNextChangeAsNotPersistent();
 		editor.updateBlockAttributes(blockTriggerClientId, { relations: newRelations });
 
+		const getUniqueID = clientID =>
+			blockEditor.getBlockAttributes(clientID).uniqueID;
+
 		// eslint-disable-next-line no-console
 		console.log(
 			`Relations updated for ${getUniqueID(

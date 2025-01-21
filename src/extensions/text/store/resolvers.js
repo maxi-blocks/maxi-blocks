@@ -68,20 +68,6 @@ const fetchFontUrl = async (encodedFontName) => {
 	}
 };
 
-const safeConsoleTime = (label) => {
-	if (!activeTimers.has(label)) {
-		console.time(label);
-		activeTimers.add(label);
-	}
-};
-
-const safeConsoleTimeEnd = (label) => {
-	if (activeTimers.has(label)) {
-		console.timeEnd(label);
-		activeTimers.delete(label);
-	}
-};
-
 const resolvers = {
 	getFontUrl:
 		(fontName, fontData) =>

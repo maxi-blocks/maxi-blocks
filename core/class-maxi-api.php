@@ -687,38 +687,25 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function get_maxi_blocks_font_url($request)
         {
-            $start_time = microtime(true);
-            error_log("REST API request received at: " . date('Y-m-d H:i:s'));
-            error_log("Request headers: " . json_encode(getallheaders()));
-            error_log("Request URI: " . $_SERVER['REQUEST_URI']);
 
-            error_log("get_font_name start: " . microtime(true));
             $font_name = $request['font_name'];
-            error_log("get_font_name end: " . microtime(true));
 
-            error_log("get_api_url start: " . microtime(true));
             $api_url = get_option('bunny_fonts') ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
-            error_log("get_api_url end: " . microtime(true));
 
-            error_log("check_local_fonts start: " . microtime(true));
             if (get_option('local_fonts')) {
                 $font_name_sanitized = MaxiBlocks_Local_Fonts::get_instance()->sanitize_font_name($font_name);
                 $font_path = '/maxi/fonts/' . $font_name_sanitized . '/style.css';
                 $font_file = wp_upload_dir()['basedir'] . $font_path;
                 $font_url = wp_upload_dir()['baseurl'] . $font_path;
 
-                error_log("check_font_file start: " . microtime(true));
                 if (!file_exists($font_file)) {
                     $url = $api_url . '/css2?family=' . $font_name . '&display=swap';
                     MaxiBlocks_Local_Fonts::get_instance()->upload_css_file($font_name_sanitized, $url);
                 }
-                error_log("check_font_file end: " . microtime(true));
             } else {
                 $font_url = $api_url . '/css2?family=' . $font_name . ':$fontData&display=swap';
             }
-            error_log("check_local_fonts end: " . microtime(true));
 
-            error_log("Response ready to send: " . number_format(microtime(true) - $start_time, 4) . "s");
             return trim($font_url, '"\'');
         }
 

@@ -57,21 +57,6 @@ const buildFontWeightString = (fontWeight, fontStyle) => {
 	return getSingleWeightString(weights[0], fontStyle);
 };
 
-const activeTimers = new Set();
-
-const safeConsoleTime = (label) => {
-	if (!activeTimers.has(label)) {
-		console.time(label);
-		activeTimers.add(label);
-	}
-};
-
-const safeConsoleTimeEnd = (label) => {
-	if (activeTimers.has(label)) {
-		console.timeEnd(label);
-		activeTimers.delete(label);
-	}
-};
 
 // Batch font loading queue
 const fontQueue = new Map();
@@ -82,7 +67,6 @@ const processFontQueue = async () => {
 	if (fontQueue.size === 0) return;
 
 	const fonts = Array.from(fontQueue.keys());
-	console.log(`Processing batch of ${fonts.length} fonts:`, fonts);
 
 	// Process all fonts in parallel
 	const results = await Promise.all(
@@ -217,9 +201,6 @@ const isCacheValid = (url) => {
 	const isLocalFont = window.maxiBlocksMain?.local_fonts;
 	const isBunnyFont = window.maxiBlocksMain?.bunny_fonts;
 
-	console.log('isLocalFont', isLocalFont);
-	console.log('isBunnyFont', isBunnyFont);
-
 	if (isLocalFont) {
 		// Local font URLs should be from our WordPress site
 		return url.includes(window.location.origin);
@@ -234,9 +215,6 @@ const isCacheValid = (url) => {
 };
 
 const getFontUrl = async (fontName, fontData = {}) => {
-	const timerLabel = `getFontUrl-${fontName}`;
-	safeConsoleTime(`${timerLabel}-total`);
-
 	try {
 		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
 
@@ -262,8 +240,9 @@ const getFontUrl = async (fontName, fontData = {}) => {
 		}
 
 		return fontUrl;
-	} finally {
-		safeConsoleTimeEnd(`${timerLabel}-total`);
+	} catch (error) {
+		console.error('Error getting font URL:', error);
+		throw error;
 	}
 };
 
@@ -280,8 +259,6 @@ const getFontElement = async (fontName, fontData, url) => {
 
 	// Clean the URL one final time before creating the element
 	fontUrl = cleanUrl(fontUrl);
-
-	console.log('Final cleaned URL:', fontUrl); // Debug log
 
 	const style_element = document.createElement('link');
 	style_element.rel = 'stylesheet';
@@ -363,13 +340,10 @@ const loadFonts = (
 			if (isEmpty(fontFiles)) return;
 
 			const loadBackendFont = async (fontName, fontData) => {
-				const timerLabel = `loadBackendFont-${fontName}`;
-				safeConsoleTime(`${timerLabel}-total`);
 
 				const fontId = getFontID(fontName, fontData);
 
 				if (target.head.querySelector(`#${fontId}`) !== null) {
-					safeConsoleTimeEnd(`${timerLabel}-total`);
 					return;
 				}
 
@@ -377,9 +351,7 @@ const loadFonts = (
 
 				try {
 					const url = await getFontUrl(fontName, fontData);
-					console.log('URL before creating element:', url);
 					const styleElement = await getFontElement(fontName, fontData, url);
-					console.log('Created element href:', styleElement.href);
 
 					const oldStyleElement = target.getElementById(styleElement.id);
 					if (oldStyleElement) {
@@ -392,7 +364,6 @@ const loadFonts = (
 								};
 							}
 						}
-						safeConsoleTimeEnd(`${timerLabel}-total`);
 						return;
 					}
 
@@ -403,8 +374,8 @@ const loadFonts = (
 					}
 
 					target.head.appendChild(styleElement);
-				} finally {
-					safeConsoleTimeEnd(`${timerLabel}-total`);
+				} catch (error) {
+					console.error('Error loading font:', error);
 				}
 			};
 

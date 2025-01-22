@@ -1145,7 +1145,6 @@ class MaxiBlockComponent extends Component {
 	 * Refresh the styles on the Editor
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
-		// Batch multiple style updates
 		if (this._batchTimeout) {
 			clearTimeout(this._batchTimeout);
 		}
@@ -1153,7 +1152,6 @@ class MaxiBlockComponent extends Component {
 		this._batchTimeout = setTimeout(() => {
 			const uniqueId = this.props.clientId + '-' + Date.now();
 
-			// Update references if they're null
 			this.updateDOMReferences();
 
 			if (this.isPatternsPreview || this.templateModal) return;
@@ -1161,27 +1159,21 @@ class MaxiBlockComponent extends Component {
 			const { uniqueID } = this.props.attributes;
 			const isSiteEditor = getIsSiteEditor();
 
-			let obj;
+			let obj = this.getStylesObject;
 			const breakpoints = this.getBreakpoints;
 			let customDataRelations;
 
-			// Only generate new styles if it's not a breakpoint change
-			if (!isBreakpointChange) {
-				obj = this.getStylesObject;
-
-				// When duplicating, need to change the obj target for the new uniqueID
-				if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
-					obj[uniqueID] = obj[this.props.attributes.uniqueID];
-					delete obj[this.props.attributes.uniqueID];
-				}
-
-				const customData = this.getCustomData;
-				dispatch('maxiBlocks/customData').updateCustomData(customData);
-
-				customDataRelations = customData?.[uniqueID]?.relations;
+			// Generate new styles for both breakpoint changes and regular updates
+			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+				obj[uniqueID] = obj[this.props.attributes.uniqueID];
+				delete obj[this.props.attributes.uniqueID];
 			}
 
-			// Use cached iframe reference
+			const customData = this.getCustomData;
+			dispatch('maxiBlocks/customData').updateCustomData(customData);
+			customDataRelations = customData?.[uniqueID]?.relations;
+
+			// Always inject styles for responsive modes
 			this.injectStyles(
 				uniqueID,
 				obj,
@@ -1337,7 +1329,7 @@ class MaxiBlockComponent extends Component {
 					this.editorIframe
 				);
 			});
-		}, 16); // One frame at 60fps
+		}, 16);
 	}
 
 	injectStyles(
@@ -1532,8 +1524,7 @@ class MaxiBlockComponent extends Component {
 			? compareVersions(currentVersion, '2.0.1') >= 0
 			: false;
 
-		// Apply the copyGeneralToXL function to stylesObj only if this.props.baseBreakpoint is 'xxl',
-		// the current version is less than 2.0.1, and the origin version is below 1.5.6
+		// Apply the copyGeneralToXL function to stylesObj only if needed
 		const updatedStylesObj =
 			this.props.baseBreakpoint === 'xxl' &&
 			!isCurrentVersionAtLeast201 &&
@@ -1541,27 +1532,26 @@ class MaxiBlockComponent extends Component {
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
 
-		if (isBlockStyleChange) {
+		// Generate styles for all breakpoints when in responsive mode
+		if (currentBreakpoint !== 'xxl') {
+			styles = this.generateStyles(
+				updatedStylesObj,
+				{ ...breakpoints, current: currentBreakpoint },
+				uniqueID
+			);
+			styleContent = styleGenerator(styles, !!iframe, isSiteEditor, true); // Added responsive flag
+		} else if (isBlockStyleChange) {
 			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
 			styleContent = cssCache[currentBreakpoint];
 			const { blockStyle } = this.props.attributes;
-			const previousBlockStyle =
-				blockStyle === 'light' ? 'dark' : 'light';
+			const previousBlockStyle = blockStyle === 'light' ? 'dark' : 'light';
 			styleContent = styleContent.replace(
 				new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
 				`--maxi-${blockStyle}-`
 			);
-			styles = this.generateStyles(
-				updatedStylesObj,
-				breakpoints,
-				uniqueID
-			);
-		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
-			styles = this.generateStyles(
-				updatedStylesObj,
-				breakpoints,
-				uniqueID
-			);
+			styles = this.generateStyles(updatedStylesObj, breakpoints, uniqueID);
+		} else {
+			styles = this.generateStyles(updatedStylesObj, breakpoints, uniqueID);
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
 		}
 

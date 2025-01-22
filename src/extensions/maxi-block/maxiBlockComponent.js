@@ -341,7 +341,7 @@ class MaxiBlockComponent extends Component {
 			return false;
 		}
 
-		const memoKey = JSON.stringify({props: nextProps, state: nextState});
+		const memoKey = JSON.stringify({ props: nextProps, state: nextState });
 		if (this.memoizedValues.has(memoKey)) {
 			return this.memoizedValues.get(memoKey);
 		}
@@ -1198,7 +1198,10 @@ class MaxiBlockComponent extends Component {
 
 				if (!this.isPatternsPreview && !this.templateModal) {
 					// Only inject styles if it's not a breakpoint change
-					if (!isBreakpointChange || this.props.deviceType === 'xxl') {
+					if (
+						!isBreakpointChange ||
+						this.props.deviceType === 'xxl'
+					) {
 						obj = this.getStylesObject;
 						this.injectStyles(
 							uniqueID,
@@ -1280,10 +1283,16 @@ class MaxiBlockComponent extends Component {
 							// Identify updated relation
 							for (const relation of currentRelations) {
 								if (previousIds.has(relation.id)) {
-									const previousRelation = previousRelations.find(
-										prev => prev.id === relation.id
-									);
-									if (!isEquivalent(relation, previousRelation)) {
+									const previousRelation =
+										previousRelations.find(
+											prev => prev.id === relation.id
+										);
+									if (
+										!isEquivalent(
+											relation,
+											previousRelation
+										)
+									) {
 										updated = relation.id;
 										break;
 									}
@@ -1502,9 +1511,9 @@ class MaxiBlockComponent extends Component {
 			return this.memoizedValues.get(cacheKey);
 		}
 
-		const target = isSiteEditor ?
-			getSiteEditorIframe() :
-			iframe?.contentDocument || document;
+		const target = isSiteEditor
+			? getSiteEditorIframe()
+			: iframe?.contentDocument || document;
 
 		this.memoizedValues.set(cacheKey, target);
 		return target;
@@ -1543,14 +1552,16 @@ class MaxiBlockComponent extends Component {
 
 		if (isBlockStyleChange) {
 			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
-			styleContent = cssCache[currentBreakpoint];
-			const { blockStyle } = this.props.attributes;
-			const previousBlockStyle =
-				blockStyle === 'light' ? 'dark' : 'light';
-			styleContent = styleContent.replace(
-				new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
-				`--maxi-${blockStyle}-`
-			);
+			if (cssCache) {
+				styleContent = cssCache[currentBreakpoint];
+				const { blockStyle } = this.props.attributes;
+				const previousBlockStyle =
+					blockStyle === 'light' ? 'dark' : 'light';
+				styleContent = styleContent?.replace(
+					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
+					`--maxi-${blockStyle}-`
+				);
+			}
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,
@@ -1587,7 +1598,7 @@ class MaxiBlockComponent extends Component {
 
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
-		const cacheKey = JSON.stringify({stylesObj, breakpoints, uniqueID});
+		const cacheKey = JSON.stringify({ stylesObj, breakpoints, uniqueID });
 
 		if (this.memoizedValues.has(cacheKey)) {
 			return this.memoizedValues.get(cacheKey);

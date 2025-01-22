@@ -115,7 +115,7 @@ if (!class_exists('MaxiBlocks_API')):
             ]);
             register_rest_route($this->namespace, '/get-font-url/(?P<font_name>.+)', [
                 'methods' => 'GET',
-                'callback' => [$this, 'get_maxi_blocks_font_url'],
+                'callback' => [$this, 'get_maxi_blocks_local_font_url'],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
                 },
@@ -685,25 +685,25 @@ if (!class_exists('MaxiBlocks_API')):
             }
         }
 
-        public function get_maxi_blocks_font_url($request)
+        public function get_maxi_blocks_local_font_url($request)
         {
+            if(!get_option('local_fonts')) {
+                error_log(__('MaxiBlocks_API::get_maxi_blocks_local_font_url called but local fonts option is not enabled'), 'maxi-blocks');
+                return false;
+            }
 
             $font_name = $request['font_name'];
+            error_log('font_name: ' . $font_name);
 
-            $api_url = get_option('bunny_fonts') ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
+            $font_name_sanitized = MaxiBlocks_Local_Fonts::get_instance()->sanitize_font_name($font_name);
+            $font_path = '/maxi/fonts/' . $font_name_sanitized . '/style.css';
+            $font_file = wp_upload_dir()['basedir'] . $font_path;
+            $font_url = wp_upload_dir()['baseurl'] . $font_path;
 
-            if (get_option('local_fonts')) {
-                $font_name_sanitized = MaxiBlocks_Local_Fonts::get_instance()->sanitize_font_name($font_name);
-                $font_path = '/maxi/fonts/' . $font_name_sanitized . '/style.css';
-                $font_file = wp_upload_dir()['basedir'] . $font_path;
-                $font_url = wp_upload_dir()['baseurl'] . $font_path;
-
-                if (!file_exists($font_file)) {
-                    $url = $api_url . '/css2?family=' . $font_name . '&display=swap';
-                    MaxiBlocks_Local_Fonts::get_instance()->upload_css_file($font_name_sanitized, $url);
-                }
-            } else {
-                $font_url = $api_url . '/css2?family=' . $font_name . ':$fontData&display=swap';
+            if (!file_exists($font_file)) {
+                $api_url = get_option('bunny_fonts') ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
+                $url = $api_url . '/css2?family=' . $font_name . '&display=swap';
+                MaxiBlocks_Local_Fonts::get_instance()->upload_css_file($font_name_sanitized, $url);
             }
 
             return trim($font_url, '"\'');

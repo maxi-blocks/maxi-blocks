@@ -1348,7 +1348,7 @@ class MaxiBlockComponent extends Component {
 		const target = this.getStyleTarget(isSiteEditor, iframe);
 		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
-		// Only generate new styles if it's not a breakpoint change
+		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
 		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			const styleContent = this.generateStyleContent(
 				uniqueID,
@@ -1360,7 +1360,6 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
-
 			this.updateStyleElement(styleElement, styleContent);
 		}
 	}
@@ -1538,7 +1537,7 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				uniqueID
 			);
-		} else if (!isBreakpointChange) {
+		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,

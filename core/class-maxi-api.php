@@ -690,32 +690,25 @@ if (!class_exists('MaxiBlocks_API')):
             $start_time = microtime(true);
             error_log('Starting get_maxi_blocks_local_font_url');
 
-            if(!get_option('local_fonts')) {
-                error_log(__('MaxiBlocks_API::get_maxi_blocks_local_font_url called but local fonts option is not enabled'), 'maxi-blocks');
+            if (!get_option('local_fonts')) {
+                error_log('MaxiBlocks_API::get_maxi_blocks_local_font_url called but local fonts option is not enabled');
                 return false;
             }
 
             $font_name = $request['font_name'];
             error_log('Font name: ' . $font_name);
 
-            $sanitize_start = microtime(true);
-            // Inline the sanitize function instead of calling MaxiBlocks_Local_Fonts
-            $font_name_sanitized = str_replace(' ', '', strtolower($font_name));
-            error_log('Sanitize font name took: ' . (microtime(true) - $sanitize_start) . ' seconds');
+            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+            $font_name_sanitized = $local_fonts->sanitize_font_name($font_name);
 
             $font_path = '/maxi/fonts/' . $font_name_sanitized . '/style.css';
             $font_file = wp_upload_dir()['basedir'] . $font_path;
             $font_url = wp_upload_dir()['baseurl'] . $font_path;
 
+            // Only process this specific font if it doesn't exist
             if (!file_exists($font_file)) {
                 error_log('Font file does not exist, downloading...');
-                $download_start = microtime(true);
-
-                $api_url = get_option('bunny_fonts') ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
-                $url = $api_url . '/css2?family=' . $font_name . '&display=swap';
-
-                MaxiBlocks_Local_Fonts::get_instance()->upload_css_file($font_name_sanitized, $url);
-                error_log('Font download and upload took: ' . (microtime(true) - $download_start) . ' seconds');
+                $local_fonts->process_single_font($font_name);
             }
 
             $total_time = microtime(true) - $start_time;

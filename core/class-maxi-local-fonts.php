@@ -37,24 +37,63 @@ class MaxiBlocks_Local_Fonts
      */
     public function __construct()
     {
-        if ((bool) get_option('local_fonts')) {
-            $this->fonts_upload_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
-            $all_fonts = $this->get_all_fonts_db();
+        $this->fonts_upload_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
+    }
 
-            if (is_array($all_fonts) && !empty($all_fonts)) {
-                $all_urls = $this->construct_font_urls($all_fonts);
+    public function process_single_font($font_name, $font_data = null)
+    {
+        $start_time = microtime(true);
 
-                if (is_array($all_urls) && !empty($all_urls)) {
-                    $this->create_upload_folder();
-                    $this->upload_css_files($all_urls);
-                }
-                update_option('local_fonts_uploaded', true);
-            }
+        $font_name_sanitized = $this->sanitize_font_name($font_name);
+        $font_dir = $this->fonts_upload_dir . '/' . $font_name_sanitized;
+
+        // If font directory and style.css exist, font is already processed
+        if (is_dir($font_dir) && file_exists($font_dir . '/style.css')) {
+            return true;
         }
+
+        // Create font URL
+        $use_bunny_fonts = (bool) get_option('bunny_fonts');
+        $font_api_url = $use_bunny_fonts ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
+        $font_url = $font_api_url . "/css2?family=" . str_replace(' ', '+', $font_name);
+
+        // Generate complete font URL with weights/styles
+        $font_url = $this->generate_font_url($font_url, $font_data);
+
+        // Create directory and upload font
+        $this->create_upload_folder();
+        $this->upload_css_file($font_name_sanitized, $font_url);
+
+        $total_time = microtime(true) - $start_time;
+        error_log("Processing single font {$font_name} took {$total_time} seconds");
+
+        return true;
+    }
+
+    public function process_all_fonts()
+    {
+        $start_time = microtime(true);
+
+        $all_fonts = $this->get_all_fonts_db();
+
+        if (is_array($all_fonts) && !empty($all_fonts)) {
+            $all_urls = $this->construct_font_urls($all_fonts);
+
+            if (is_array($all_urls) && !empty($all_urls)) {
+                $this->create_upload_folder();
+                $this->upload_css_files($all_urls);
+            }
+            update_option('local_fonts_uploaded', true);
+        }
+
+        $total_time = microtime(true) - $start_time;
+        error_log("Processing all fonts took {$total_time} seconds");
     }
 
     public function get_all_fonts_db()
     {
+        $start_time = microtime(true);
+
         global $wpdb;
 
         $post_content_array = [];
@@ -167,6 +206,9 @@ class MaxiBlocks_Local_Fonts
         }
 
         $array_all = array_merge_recursive(...$array);
+
+        $query_time = microtime(true) - $start_time;
+        error_log("Font DB queries took {$query_time} seconds");
 
         return $array_all;
     }
@@ -308,6 +350,8 @@ class MaxiBlocks_Local_Fonts
 
     public function upload_css_files($all_urls)
     {
+        $start_time = microtime(true);
+
         $all_fonts_names = [];
 
         foreach ($all_urls as $font_name => $font_url) {
@@ -324,6 +368,9 @@ class MaxiBlocks_Local_Fonts
                 $this->remove_directory_recursive($directory);
             }
         }
+
+        $total_time = microtime(true) - $start_time;
+        error_log("CSS files upload took {$total_time} seconds");
     }
 
     private function remove_directory_recursive($directory)
@@ -343,6 +390,8 @@ class MaxiBlocks_Local_Fonts
 
     public function upload_css_file($font_name, $font_url)
     {
+        $start_time = microtime(true);
+
         if (strpos($font_name, 'sc_font') !== false) {
             $split_font = explode('_', str_replace('sc_font_', '', $font_name));
             $block_style = $split_font[0];
@@ -421,6 +470,9 @@ class MaxiBlocks_Local_Fonts
                 $wp_filesystem->put_contents($font_uploads_dir . '/style.css', $new_css_file);
             }
         }
+
+        $total_time = microtime(true) - $start_time;
+        error_log("Upload of font {$font_name} took {$total_time} seconds");
     }
 
 

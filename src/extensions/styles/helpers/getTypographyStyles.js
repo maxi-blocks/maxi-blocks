@@ -105,55 +105,10 @@ const getTypographyStyles = ({
 
 	const getColorString = breakpoint => {
 		const paletteStatus = getPaletteColorStatus(breakpoint);
-		const paletteSCStatus = getLastBreakpointValue(
-			'palette-sc-status',
-			breakpoint
-		);
 		const paletteColor = getLastBreakpointValue(
 			'palette-color',
 			breakpoint
 		);
-
-		if (
-			!paletteSCStatus &&
-			paletteStatus &&
-			(!isHover || hoverStatus || globalHoverStatus)
-		) {
-			if (isNil(paletteColor)) {
-				return {};
-			}
-
-			const paletteOpacity = getLastBreakpointValue(
-				'palette-opacity',
-				breakpoint
-			);
-
-			if (disablePaletteDefaults) {
-				const defaultPaletteColor = getDefaultValue('palette-color');
-				const defaultPaletteOpacity =
-					getDefaultValue('palette-opacity');
-
-				if (
-					paletteColor === defaultPaletteColor &&
-					isDefaultOpacity(
-						paletteOpacity,
-						defaultPaletteOpacity,
-						breakpoint
-					)
-				) {
-					return {};
-				}
-			}
-
-			return {
-				color: getColorRGBAString({
-					firstVar: `${textLevel}-color${isHover ? '-hover' : ''}`,
-					secondVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle,
-				}),
-			};
-		}
 
 		if (paletteStatus) {
 			if (isNil(paletteColor)) {
@@ -182,9 +137,24 @@ const getTypographyStyles = ({
 				}
 			}
 
+			const paletteSCStatus = getLastBreakpointValue(
+				'palette-sc-status',
+				breakpoint
+			);
+
+			const shouldUseTextLevel =
+				!paletteSCStatus &&
+				(!isHover || hoverStatus || globalHoverStatus);
+			const firstVar = shouldUseTextLevel
+				? `${textLevel}-color${isHover ? '-hover' : ''}`
+				: `color-${paletteColor}`;
+
 			return {
 				color: getColorRGBAString({
-					firstVar: `color-${paletteColor}`,
+					firstVar,
+					...(shouldUseTextLevel && {
+						secondVar: `color-${paletteColor}`,
+					}),
 					opacity: paletteOpacity,
 					blockStyle,
 				}),

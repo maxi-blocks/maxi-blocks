@@ -159,25 +159,38 @@ const buildFontString = (weight = '400', style = 'normal') => {
 };
 
 const buildFontUrl = async (fontName, fontData = {}) => {
+	console.time(`buildFontUrl:${fontName}`);
+
 	// Check if we need to use local fonts
 	if (window.maxiBlocksMain?.local_fonts) {
+		console.time(`buildFontUrl:${fontName}:local`);
 		const encodedFontName = encodeURIComponent(fontName).replace(/%20/g, '+').toLowerCase();
-		const response = await fetch(`/wp-json/maxi-blocks/v1.0/get-font-url/${encodedFontName}`, {
-			credentials: 'same-origin',
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings?.nonce,
+
+		try {
+			const response = await fetch(`/wp-json/maxi-blocks/v1.0/get-font-url/${encodedFontName}`, {
+				credentials: 'same-origin',
+				headers: {
+					'X-WP-Nonce': window.wpApiSettings?.nonce,
+				}
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
 			}
-		});
 
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			const text = await response.text();
+			console.timeEnd(`buildFontUrl:${fontName}:local`);
+			console.timeEnd(`buildFontUrl:${fontName}`);
+			return cleanUrl(text);
+		} catch (error) {
+			console.timeEnd(`buildFontUrl:${fontName}:local`);
+			console.timeEnd(`buildFontUrl:${fontName}`);
+			throw error;
 		}
-
-		const text = await response.text();
-		return cleanUrl(text);
 	}
 
 	// For remote fonts (Google or Bunny)
+	console.time(`buildFontUrl:${fontName}:remote`);
 	const weight = Array.isArray(fontData.weight)
 		? fontData.weight.join(',')
 		: fontData.weight || '400';
@@ -191,7 +204,10 @@ const buildFontUrl = async (fontName, fontData = {}) => {
 		? `ital,wght@0,${weight};1,${weight}`
 		: `wght@${weight}`;
 
-	return `${api_url}/css2?family=${encodeURIComponent(fontName)}:${fontString}&display=swap`;
+	const url = `${api_url}/css2?family=${encodeURIComponent(fontName)}:${fontString}&display=swap`;
+	console.timeEnd(`buildFontUrl:${fontName}:remote`);
+	console.timeEnd(`buildFontUrl:${fontName}`);
+	return url;
 };
 
 const isCacheValid = (url) => {

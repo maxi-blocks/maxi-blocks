@@ -688,15 +688,12 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_local_font_url($request)
         {
             $start_time = microtime(true);
-            error_log('Starting get_maxi_blocks_local_font_url');
 
             if (!get_option('local_fonts')) {
-                error_log('MaxiBlocks_API::get_maxi_blocks_local_font_url called but local fonts option is not enabled');
                 return false;
             }
 
             $font_name = $request['font_name'];
-            error_log('Font name: ' . $font_name);
 
             $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
             $font_name_sanitized = $local_fonts->sanitize_font_name($font_name);
@@ -707,12 +704,10 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Only process this specific font if it doesn't exist
             if (!file_exists($font_file)) {
-                error_log('Font file does not exist, downloading...');
                 $local_fonts->process_single_font($font_name);
             }
 
             $total_time = microtime(true) - $start_time;
-            error_log('Total get_maxi_blocks_local_font_url execution time: ' . $total_time . ' seconds');
 
             return trim($font_url, '"\'');
         }

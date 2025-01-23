@@ -159,11 +159,9 @@ const buildFontString = (weight = '400', style = 'normal') => {
 };
 
 const buildFontUrl = async (fontName, fontData = {}) => {
-	console.time(`buildFontUrl:${fontName}`);
 
 	// Check if we need to use local fonts
 	if (window.maxiBlocksMain?.local_fonts) {
-		console.time(`buildFontUrl:${fontName}:local`);
 		const encodedFontName = encodeURIComponent(fontName).replace(/%20/g, '+').toLowerCase();
 
 		try {
@@ -179,18 +177,13 @@ const buildFontUrl = async (fontName, fontData = {}) => {
 			}
 
 			const text = await response.text();
-			console.timeEnd(`buildFontUrl:${fontName}:local`);
-			console.timeEnd(`buildFontUrl:${fontName}`);
 			return cleanUrl(text);
 		} catch (error) {
-			console.timeEnd(`buildFontUrl:${fontName}:local`);
-			console.timeEnd(`buildFontUrl:${fontName}`);
 			throw error;
 		}
 	}
 
 	// For remote fonts (Google or Bunny)
-	console.time(`buildFontUrl:${fontName}:remote`);
 	const weight = Array.isArray(fontData.weight)
 		? fontData.weight.join(',')
 		: fontData.weight || '400';
@@ -205,8 +198,6 @@ const buildFontUrl = async (fontName, fontData = {}) => {
 		: `wght@${weight}`;
 
 	const url = `${api_url}/css2?family=${encodeURIComponent(fontName)}:${fontString}&display=swap`;
-	console.timeEnd(`buildFontUrl:${fontName}:remote`);
-	console.timeEnd(`buildFontUrl:${fontName}`);
 	return url;
 };
 

@@ -42,6 +42,11 @@ class MaxiBlocks_Local_Fonts
 
     public function process_single_font($font_name, $font_data = null)
     {
+        // Check if fonts are disabled
+        if (!(bool) get_option('local_fonts')) {
+            return false;
+        }
+
         $start_time = microtime(true);
 
         $font_name_sanitized = $this->sanitize_font_name($font_name);
@@ -55,7 +60,9 @@ class MaxiBlocks_Local_Fonts
         // Create font URL
         $use_bunny_fonts = (bool) get_option('bunny_fonts');
         $font_api_url = $use_bunny_fonts ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
+        // Use the original font name for the URL to maintain proper capitalization
         $font_url = $font_api_url . "/css2?family=" . str_replace(' ', '+', $font_name);
+
 
         // Generate complete font URL with weights/styles
         $font_url = $this->generate_font_url($font_url, $font_data);
@@ -65,7 +72,6 @@ class MaxiBlocks_Local_Fonts
         $this->upload_css_file($font_name_sanitized, $font_url);
 
         $total_time = microtime(true) - $start_time;
-        error_log("Processing single font {$font_name} took {$total_time} seconds");
 
         return true;
     }
@@ -73,6 +79,16 @@ class MaxiBlocks_Local_Fonts
     public function process_all_fonts()
     {
         $start_time = microtime(true);
+
+        // Check if fonts are disabled
+        if (!(bool) get_option('local_fonts')) {
+            return false;
+        }
+
+        // Check if fonts are already uploaded
+        if ((bool) get_option('local_fonts_uploaded')) {
+            return false;
+        }
 
         $all_fonts = $this->get_all_fonts_db();
 
@@ -87,7 +103,6 @@ class MaxiBlocks_Local_Fonts
         }
 
         $total_time = microtime(true) - $start_time;
-        error_log("Processing all fonts took {$total_time} seconds");
     }
 
     public function get_all_fonts_db()
@@ -208,7 +223,6 @@ class MaxiBlocks_Local_Fonts
         $array_all = array_merge_recursive(...$array);
 
         $query_time = microtime(true) - $start_time;
-        error_log("Font DB queries took {$query_time} seconds");
 
         return $array_all;
     }
@@ -370,7 +384,6 @@ class MaxiBlocks_Local_Fonts
         }
 
         $total_time = microtime(true) - $start_time;
-        error_log("CSS files upload took {$total_time} seconds");
     }
 
     private function remove_directory_recursive($directory)
@@ -409,10 +422,12 @@ class MaxiBlocks_Local_Fonts
             }
         }
 
-        $font_uploads_dir = $this->fonts_upload_dir . '/' . $font_name;
+        $font_name_sanitized = $this->sanitize_font_name($font_name);
+
+        $font_uploads_dir = $this->fonts_upload_dir . '/' . $font_name_sanitized;
         wp_mkdir_p($font_uploads_dir);
 
-        $font_url_dir = wp_upload_dir()['baseurl'] . '/maxi/fonts/' . $font_name;
+        $font_url_dir = wp_upload_dir()['baseurl'] . '/maxi/fonts/' . $font_name_sanitized;
 
         if (!preg_match('/wght@.*?400/', $font_url)) {
             $font_url = preg_replace('/(wght@)/', '${1}400;', $font_url);
@@ -472,7 +487,6 @@ class MaxiBlocks_Local_Fonts
         }
 
         $total_time = microtime(true) - $start_time;
-        error_log("Upload of font {$font_name} took {$total_time} seconds");
     }
 
 

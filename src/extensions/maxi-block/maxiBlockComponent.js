@@ -1145,208 +1145,185 @@ class MaxiBlockComponent extends Component {
 	 * Refresh the styles on the Editor
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
-		// Batch multiple style updates
-		if (this._batchTimeout) {
-			clearTimeout(this._batchTimeout);
+		const uniqueId = this.props.clientId + '-' + Date.now();
+
+		// Update references if they're null
+		this.updateDOMReferences();
+
+		if (this.isPatternsPreview || this.templateModal) return;
+
+		const { uniqueID } = this.props.attributes;
+		const isSiteEditor = getIsSiteEditor();
+
+		let obj;
+		const breakpoints = this.getBreakpoints;
+		let customDataRelations;
+
+		// Only generate new styles if it's not a breakpoint change
+		if (!isBreakpointChange) {
+			obj = this.getStylesObject;
+
+			// When duplicating, need to change the obj target for the new uniqueID
+			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+				obj[uniqueID] = obj[this.props.attributes.uniqueID];
+				delete obj[this.props.attributes.uniqueID];
+			}
+
+			const customData = this.getCustomData;
+			dispatch('maxiBlocks/customData').updateCustomData(customData);
+
+			customDataRelations = customData?.[uniqueID]?.relations;
 		}
 
-		this._batchTimeout = setTimeout(() => {
-			const uniqueId = this.props.clientId + '-' + Date.now();
+		// Use cached iframe reference
+		this.injectStyles(
+			uniqueID,
+			obj,
+			this.props.deviceType,
+			breakpoints,
+			isSiteEditor,
+			isBreakpointChange,
+			isBlockStyleChange,
+			this.editorIframe
+		);
 
-			// Update references if they're null
-			this.updateDOMReferences();
-
-			if (this.isPatternsPreview || this.templateModal) return;
-
-			const { uniqueID } = this.props.attributes;
+		if (document.body.classList.contains('maxi-blocks--active')) {
 			const isSiteEditor = getIsSiteEditor();
 
-			let obj;
-			const breakpoints = this.getBreakpoints;
-			let customDataRelations;
-
-			// Only generate new styles if it's not a breakpoint change
-			if (!isBreakpointChange) {
-				obj = this.getStylesObject;
-
-				// When duplicating, need to change the obj target for the new uniqueID
-				if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
-					obj[uniqueID] = obj[this.props.attributes.uniqueID];
-					delete obj[this.props.attributes.uniqueID];
+			if (!this.isPatternsPreview && !this.templateModal) {
+				// Only inject styles if it's not a breakpoint change
+				if (!isBreakpointChange || this.props.deviceType === 'xxl') {
+					obj = this.getStylesObject;
+					this.injectStyles(
+						uniqueID,
+						obj,
+						this.props.deviceType,
+						breakpoints,
+						isSiteEditor,
+						isBreakpointChange,
+						isBlockStyleChange,
+						this.editorIframe
+					);
+				} else {
+					// If it's a breakpoint change, and not to XXL, only update the responsive classes
+					this.updateResponsiveClasses(
+						this.editorIframe,
+						this.props.deviceType
+					);
 				}
-
-				const customData = this.getCustomData;
-				dispatch('maxiBlocks/customData').updateCustomData(customData);
-
-				customDataRelations = customData?.[uniqueID]?.relations;
 			}
 
-			// Use cached iframe reference
-			this.injectStyles(
-				uniqueID,
-				obj,
-				this.props.deviceType,
-				breakpoints,
-				isSiteEditor,
-				isBreakpointChange,
-				isBlockStyleChange,
-				this.editorIframe
-			);
+			if (customDataRelations) {
+				const isRelationsPreview =
+					this.props.attributes['relations-preview'];
 
-			if (document.body.classList.contains('maxi-blocks--active')) {
-				const isSiteEditor = getIsSiteEditor();
-
-				if (!this.isPatternsPreview && !this.templateModal) {
-					// Only inject styles if it's not a breakpoint change
-					if (
-						!isBreakpointChange ||
-						this.props.deviceType === 'xxl'
-					) {
-						obj = this.getStylesObject;
-						this.injectStyles(
-							uniqueID,
-							obj,
-							this.props.deviceType,
-							breakpoints,
-							isSiteEditor,
-							isBreakpointChange,
-							isBlockStyleChange,
-							this.editorIframe
-						);
-					} else {
-						// If it's a breakpoint change, and not to XXL, only update the responsive classes
-						this.updateResponsiveClasses(
-							this.editorIframe,
-							this.props.deviceType
-						);
-					}
+				if (isRelationsPreview) {
+					this.relationInstances =
+						processRelations(customDataRelations);
 				}
 
-				if (customDataRelations) {
-					const isRelationsPreview =
-						this.props.attributes['relations-preview'];
+				this.relationInstances?.forEach(relationInstance => {
+					relationInstance.setIsPreview(isRelationsPreview);
+				});
 
-					if (isRelationsPreview) {
-						this.relationInstances =
-							processRelations(customDataRelations);
-					}
+				if (
+					isRelationsPreview &&
+					this.relationInstances !== null &&
+					this.previousRelationInstances !== null
+				) {
+					const keysToCompare = [
+						'action',
+						'uniqueID',
+						'trigger',
+						'target',
+						'blockTarget',
+						'stylesString',
+					];
 
-					this.relationInstances?.forEach(relationInstance => {
-						relationInstance.setIsPreview(isRelationsPreview);
-					});
+					const isEquivalent = (a, b) => {
+						for (const key of keysToCompare) {
+							if (a[key] !== b[key]) {
+								return false;
+							}
+						}
+						return true;
+					};
 
-					if (
-						isRelationsPreview &&
-						this.relationInstances !== null &&
-						this.previousRelationInstances !== null
-					) {
-						const keysToCompare = [
-							'action',
-							'uniqueID',
-							'trigger',
-							'target',
-							'blockTarget',
-							'stylesString',
-						];
+					const compareRelations = (
+						previousRelations,
+						currentRelations
+					) => {
+						const previousIds = new Set(
+							previousRelations.map(relation => relation.id)
+						);
+						const currentIds = new Set(
+							currentRelations.map(relation => relation.id)
+						);
 
-						const isEquivalent = (a, b) => {
-							for (const key of keysToCompare) {
-								if (a[key] !== b[key]) {
-									return false;
+						let removed = null;
+						let updated = null;
+
+						// Identify removed relation
+						for (const relation of previousRelations) {
+							if (!currentIds.has(relation.id)) {
+								removed = relation.id;
+								break; // Stop after finding the first removed item
+							}
+						}
+
+						// Identify updated relation
+						for (const relation of currentRelations) {
+							if (previousIds.has(relation.id)) {
+								const previousRelation =
+									previousRelations.find(
+										prev => prev.id === relation.id
+									);
+								if (
+									!isEquivalent(
+										relation,
+										previousRelation
+									)
+								) {
+									updated = relation.id;
+									break;
 								}
 							}
-							return true;
-						};
+						}
 
-						const compareRelations = (
-							previousRelations,
-							currentRelations
-						) => {
-							const previousIds = new Set(
-								previousRelations.map(relation => relation.id)
-							);
-							const currentIds = new Set(
-								currentRelations.map(relation => relation.id)
-							);
+						return { removed, updated };
+					};
 
-							let removed = null;
-							let updated = null;
+					// Usage
+					const { removed, updated } = compareRelations(
+						this.previousRelationInstances,
+						this.relationInstances
+					);
 
-							// Identify removed relation
-							for (const relation of previousRelations) {
-								if (!currentIds.has(relation.id)) {
-									removed = relation.id;
-									break; // Stop after finding the first removed item
-								}
-							}
-
-							// Identify updated relation
-							for (const relation of currentRelations) {
-								if (previousIds.has(relation.id)) {
-									const previousRelation =
-										previousRelations.find(
-											prev => prev.id === relation.id
-										);
-									if (
-										!isEquivalent(
-											relation,
-											previousRelation
-										)
-									) {
-										updated = relation.id;
-										break;
-									}
-								}
-							}
-
-							return { removed, updated };
-						};
-
-						// Usage
-						const { removed, updated } = compareRelations(
+					if (removed !== null) {
+						processRelations(
 							this.previousRelationInstances,
-							this.relationInstances
+							'remove',
+							removed
 						);
-
-						if (removed !== null) {
-							processRelations(
-								this.previousRelationInstances,
-								'remove',
-								removed
-							);
-							processRelations(this.relationInstances);
-						}
-						if (updated !== null) {
-							processRelations(
-								this.relationInstances,
-								'remove',
-								removed
-							);
-							processRelations(this.relationInstances);
-						}
+						processRelations(this.relationInstances);
 					}
-
-					if (!isRelationsPreview) {
-						this.relationInstances = null;
+					if (updated !== null) {
+						processRelations(
+							this.relationInstances,
+							'remove',
+							removed
+						);
+						processRelations(this.relationInstances);
 					}
-
-					this.previousRelationInstances = this.relationInstances;
 				}
-			}
 
-			requestAnimationFrame(() => {
-				this.injectStyles(
-					uniqueID,
-					obj,
-					this.props.deviceType,
-					this.getBreakpoints,
-					getIsSiteEditor(),
-					isBreakpointChange,
-					isBlockStyleChange,
-					this.editorIframe
-				);
-			});
-		}, 16); // One frame at 60fps
+				if (!isRelationsPreview) {
+					this.relationInstances = null;
+				}
+
+				this.previousRelationInstances = this.relationInstances;
+			}
+		}
 	}
 
 	injectStyles(
@@ -1590,9 +1567,7 @@ class MaxiBlockComponent extends Component {
 
 	updateStyleElement(styleElement, styleContent) {
 		if (styleElement.textContent !== styleContent) {
-			requestAnimationFrame(() => {
-				styleElement.textContent = styleContent;
-			});
+			styleElement.textContent = styleContent;
 		}
 	}
 

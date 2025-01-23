@@ -1562,6 +1562,14 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
+		// Add !important to white-space: nowrap
+		if (styleContent) {
+			styleContent = styleContent.replace(
+				/white-space:\s*nowrap(?!\s*!important)/g,
+				'white-space: nowrap !important'
+			);
+		}
+
 		return styleContent;
 	}
 

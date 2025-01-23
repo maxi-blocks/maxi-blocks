@@ -146,6 +146,11 @@ class MaxiBlockComponent extends Component {
 
 		// Debounce expensive operations
 		this.debouncedDisplayStyles = _.debounce(this.displayStyles, 150);
+
+		// Set maximum cache size and initialize cache timestamp
+		this.MAX_CACHE_SIZE = 1000;
+		this.CACHE_CLEANUP_INTERVAL = 600000; // 600 seconds
+		this.lastCacheCleanup = Date.now();
 	}
 
 	updateDOMReferences() {
@@ -1484,6 +1489,8 @@ class MaxiBlockComponent extends Component {
 	getStyleTarget(isSiteEditor, iframe) {
 		const cacheKey = `styleTarget-${isSiteEditor}-${!!iframe}`;
 
+		this.cleanupCache();
+
 		if (this.memoizedValues.has(cacheKey)) {
 			return this.memoizedValues.get(cacheKey);
 		}
@@ -1582,6 +1589,8 @@ class MaxiBlockComponent extends Component {
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
 		const cacheKey = JSON.stringify({ stylesObj, breakpoints, uniqueID });
+
+		this.cleanupCache();
 
 		if (this.memoizedValues.has(cacheKey)) {
 			return this.memoizedValues.get(cacheKey);
@@ -1717,6 +1726,31 @@ class MaxiBlockComponent extends Component {
 		const newObj = JSON.parse(JSON.stringify(obj));
 		copyToXL(newObj);
 		return newObj;
+	}
+
+	// Add cache management methods
+	cleanupCache() {
+		const now = Date.now();
+
+		// Only cleanup if enough time has passed AND cache is too large
+		if (this.memoizedValues.size > this.MAX_CACHE_SIZE &&
+			now - this.lastCacheCleanup >= this.CACHE_CLEANUP_INTERVAL) {
+
+			// Convert to array for sorting
+			const entries = Array.from(this.memoizedValues.entries());
+
+			// Keep only the most recent entries
+			const entriesToKeep = entries.slice(-Math.floor(this.MAX_CACHE_SIZE * 0.8)); // Keep 80% of max size
+
+			// Clear and rebuild cache
+			this.memoizedValues.clear();
+			entriesToKeep.forEach(([key, value]) => {
+				this.memoizedValues.set(key, value);
+			});
+
+			this.lastCacheCleanup = now;
+
+		}
 	}
 }
 

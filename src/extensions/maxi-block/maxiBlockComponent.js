@@ -1276,16 +1276,10 @@ class MaxiBlockComponent extends Component {
 						// Identify updated relation
 						for (const relation of currentRelations) {
 							if (previousIds.has(relation.id)) {
-								const previousRelation =
-									previousRelations.find(
-										prev => prev.id === relation.id
-									);
-								if (
-									!isEquivalent(
-										relation,
-										previousRelation
-									)
-								) {
+								const previousRelation = previousRelations.find(
+									prev => prev.id === relation.id
+								);
+								if (!isEquivalent(relation, previousRelation)) {
 									updated = relation.id;
 									break;
 								}
@@ -1538,8 +1532,12 @@ class MaxiBlockComponent extends Component {
 				const { blockStyle } = this.props.attributes;
 				const previousBlockStyle =
 					blockStyle === 'light' ? 'dark' : 'light';
+				const previousBlockStyleRegex = new RegExp(
+					`--maxi-${previousBlockStyle}-`,
+					'g'
+				);
 				styleContent = styleContent?.replace(
-					new RegExp(`--maxi-${previousBlockStyle}-`, 'g'),
+					previousBlockStyleRegex,
 					`--maxi-${blockStyle}-`
 				);
 			}
@@ -1567,9 +1565,10 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Add !important to white-space: nowrap
+		const whiteSpaceRegex = /white-space:\s*nowrap(?!\s*!important)/g;
 		if (styleContent) {
 			styleContent = styleContent.replace(
-				/white-space:\s*nowrap(?!\s*!important)/g,
+				whiteSpaceRegex,
 				'white-space: nowrap !important'
 			);
 		}
@@ -1730,14 +1729,17 @@ class MaxiBlockComponent extends Component {
 		const now = Date.now();
 
 		// Only cleanup if enough time has passed AND cache is too large
-		if (this.memoizedValues.size > this.MAX_CACHE_SIZE &&
-			now - this.lastCacheCleanup >= this.CACHE_CLEANUP_INTERVAL) {
-
+		if (
+			this.memoizedValues.size > this.MAX_CACHE_SIZE &&
+			now - this.lastCacheCleanup >= this.CACHE_CLEANUP_INTERVAL
+		) {
 			// Convert to array for sorting
 			const entries = Array.from(this.memoizedValues.entries());
 
 			// Keep only the most recent entries
-			const entriesToKeep = entries.slice(-Math.floor(this.MAX_CACHE_SIZE * 0.8)); // Keep 80% of max size
+			const entriesToKeep = entries.slice(
+				-Math.floor(this.MAX_CACHE_SIZE * 0.8)
+			); // Keep 80% of max size
 
 			// Clear and rebuild cache
 			this.memoizedValues.clear();
@@ -1746,7 +1748,6 @@ class MaxiBlockComponent extends Component {
 			});
 
 			this.lastCacheCleanup = now;
-
 		}
 	}
 }

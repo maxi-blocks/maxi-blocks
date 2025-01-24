@@ -552,12 +552,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		// Clear memoization cache
-		this.memoizedValues.clear();
-
-		// Clear debounced functions
-		this.debouncedDisplayStyles.cancel();
-
 		// Return if we are previewing the block
 		if (
 			this.isTemplatePartPreview ||
@@ -565,6 +559,12 @@ class MaxiBlockComponent extends Component {
 			this.templateModal
 		)
 			return;
+
+		// Clear memoization cache
+		this.memoizedValues?.clear();
+
+		// Clear debounced functions
+		this.debouncedDisplayStyles?.cancel();
 
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
@@ -1150,8 +1150,6 @@ class MaxiBlockComponent extends Component {
 	 * Refresh the styles on the Editor
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
-		const uniqueId = this.props.clientId + '-' + Date.now();
-
 		// Update references if they're null
 		this.updateDOMReferences();
 
@@ -1180,7 +1178,6 @@ class MaxiBlockComponent extends Component {
 			customDataRelations = customData?.[uniqueID]?.relations;
 		}
 
-		// Use cached iframe reference
 		this.injectStyles(
 			uniqueID,
 			obj,

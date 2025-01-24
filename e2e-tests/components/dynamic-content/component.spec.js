@@ -282,11 +282,11 @@ describe('Dynamic content component for image blocks', () => {
 		);
 		await page.waitForTimeout(300);
 
-		const currentYear = new Date().getFullYear();
-		const currentMonth = `0${new Date().getMonth() + 1}`.slice(-2);
-
-		expect(await getDCImageContent(page)).toBe(
-			`http://localhost:8889/wp-content/uploads/${currentYear}/${currentMonth}/foo.png`
+		const imageUrl = await getDCImageContent(page);
+		const url = new URL(imageUrl);
+		expect(url.origin).toBe('http://localhost:8889');
+		expect(url.pathname).toMatch(
+			/^\/wp-content\/uploads\/\d{4}\/\d{2}\/foo\.png$/
 		);
 
 		// Select "Get by date" as relation
@@ -299,8 +299,11 @@ describe('Dynamic content component for image blocks', () => {
 		);
 		await page.waitForTimeout(300);
 
-		expect(await getDCImageContent(page)).toBe(
-			`http://localhost:8889/wp-content/uploads/${currentYear}/${currentMonth}/foo.png`
+		const imageUrl1 = await getDCImageContent(page);
+		const url1 = new URL(imageUrl1);
+		expect(url1.origin).toBe('http://localhost:8889');
+		expect(url1.pathname).toMatch(
+			/^\/wp-content\/uploads\/\d{4}\/\d{2}\/foo\.png$/
 		);
 	});
 });

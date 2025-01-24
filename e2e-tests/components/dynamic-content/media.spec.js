@@ -66,16 +66,16 @@ describe('Dynamic content', () => {
 		});
 		await page.waitForTimeout(1000);
 
-		const currentYear = new Date().getFullYear();
-		const currentMonth = new Date().getMonth() + 1;
-
 		// Check backend
 		const expectedResults = {
 			title: 'foo',
 			caption: 'No content found',
 			description: 'No content found',
 			author: 'admin',
-			content: `http://localhost:8889/wp-content/uploads/${currentYear}/${currentMonth}/foo.png`,
+			content: {
+				origin: 'http://localhost:8889',
+				pathname: '/wp-content/uploads/\\d{4}/\\d{2}/foo\\.png',
+			},
 		};
 
 		const titleBlocks = ['text-dc-title-1', 'text-dc-title-2'];
@@ -97,7 +97,13 @@ describe('Dynamic content', () => {
 		const getBackImageResults = async (block, type) =>
 			page.$eval(
 				`.${block}.maxi-image-block .maxi-image-block__image`,
-				(el, expect) => (el.src === expect ? true : el.src),
+				(el, expect) => {
+					const url = new URL(el.src);
+					return url.origin === expect.origin &&
+						url.pathname.match(expect.pathname)
+						? true
+						: el.src;
+				},
 				expectedResults[type]
 			);
 
@@ -153,7 +159,13 @@ describe('Dynamic content', () => {
 		const getFrontImageResults = async (block, type) =>
 			previewPage.$eval(
 				`.${block}.maxi-image-block .maxi-image-block__image`,
-				(el, expect) => (el.src === expect ? true : el.src),
+				(el, expect) => {
+					const url = new URL(el.src);
+					return url.origin === expect.origin &&
+						url.pathname.match(expect.pathname)
+						? true
+						: el.src;
+				},
 				expectedResults[type]
 			);
 

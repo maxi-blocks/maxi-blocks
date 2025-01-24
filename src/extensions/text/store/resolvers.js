@@ -3,45 +3,15 @@
  */
 import apiFetch from '@wordpress/api-fetch';
 
+/**
+ * Internal dependencies
+ */
+import { fontUrlCache, getStorageCache, setStorageCache, cleanUrl } from '../fonts/fontCacheUtils';
+
 // Cache for font URLs and active timers
-const fontUrlCache = new Map();
-const pendingRequests = new Map();
-const activeTimers = new Set();
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 const originalApiFetch = apiFetch;
-
-// Add browser localStorage cache
-const getStorageCache = (key) => {
-	try {
-		const item = localStorage.getItem(`maxi_font_${key}`);
-		if (!item) return null;
-		const { value, timestamp } = JSON.parse(item);
-		if (Date.now() - timestamp < CACHE_DURATION) {
-			return value;
-		}
-		localStorage.removeItem(`maxi_font_${key}`);
-	} catch (e) {
-		return null;
-	}
-	return null;
-};
-
-const setStorageCache = (key, value) => {
-	try {
-		localStorage.setItem(`maxi_font_${key}`, JSON.stringify({
-			value,
-			timestamp: Date.now()
-		}));
-	} catch (e) {
-		// Storage full or other error, just continue
-	}
-};
-
-const cleanUrl = (url) => {
-	// Remove quotes and any potential whitespace
-	return url.replace(/^[\s"']+(.*?)[\s"']+$/, '$1');
-};
 
 const fetchFontUrl = async (encodedFontName) => {
 	const response = await fetch(`/wp-json/maxi-blocks/v1.0/get-font-url/${encodedFontName}`, {

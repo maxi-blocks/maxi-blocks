@@ -9,13 +9,13 @@ import { useCallback, useEffect, useRef } from '@wordpress/element';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import MaxiStyleCardsEditorPopUp from '@editor/style-cards';
+import MaxiExportEditorPopUp from '@editor/export';
 import { Button, Icon } from '@components';
 import { setScreenSize } from '@extensions/styles';
 import { getIsSiteEditor, getSiteEditorIframeBody } from '@extensions/fse';
@@ -364,6 +364,7 @@ const ResponsiveSelector = props => {
 				</Button>
 			</div>
 			<MaxiStyleCardsEditorPopUp ref={settingsRef} />
+			<MaxiExportEditorPopUp ref={settingsRef} />
 			<a
 				href='https://maxiblocks.com/go/help-center'
 				target='_blank'

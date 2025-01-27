@@ -571,30 +571,40 @@ class MaxiBlockComponent extends Component {
 		if (isBlockBeingRemoved) {
 			const { clientId } = this.props;
 
-			// Batch style removal for better performance
-			requestAnimationFrame(() => {
-				// Remove styles in a single operation
+			// Use a single rAF for all style operations
+			const batchStyleOperations = () => {
 				const obj = this.getStylesObject;
+
+				// Batch all style removals into a single operation
+				const fragment = document.createDocumentFragment();
 				styleResolver({
 					styles: obj,
 					remover: true,
-					optimized: true // Add this flag to styleResolver
+					optimized: true,
+					fragment,
+					uniqueID,
 				});
 				this.removeStyles();
 
-				// Batch store updates
+				// Use microtask for store updates to avoid blocking
 				queueMicrotask(() => {
-					// Remove block and related data
-					dispatch('maxiBlocks/blocks').removeBlock(uniqueID, clientId);
-					dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
-					dispatch('maxiBlocks/relations').removeBlockRelation(uniqueID);
-					dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
+					// Batch dispatch operations
+					const batchedDispatch = () => {
+						dispatch('maxiBlocks/blocks').removeBlock(uniqueID, clientId);
+						dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
+						dispatch('maxiBlocks/relations').removeBlockRelation(uniqueID);
+						dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
+					};
+					batchedDispatch();
 
 					if (this.props.repeaterStatus) {
 						this.handleRepeaterCleanup();
 					}
 				});
-			});
+			};
+
+			// Schedule style operations in the next frame
+			requestAnimationFrame(batchStyleOperations);
 		}
 
 		if (this.maxiBlockWillUnmount) {

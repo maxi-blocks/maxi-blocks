@@ -346,8 +346,64 @@ class MaxiBlockComponent extends Component {
 			return false;
 		}
 
+		// Debug changes in attributes
+		const attributesDiff = diff(this.props.attributes, nextProps.attributes);
+		if (!isEmpty(attributesDiff)) {
+			console.group('Attributes changed for block:', this.props.attributes.uniqueID);
+			console.log('Changed attributes:', attributesDiff);
+			console.log('Block type:', this.props.name);
+			console.log('Is undo/redo:', this.isUndoRedo(this.props, nextProps));
+			console.groupEnd();
+
+			// For container blocks during undo/redo, prevent full updates unless necessary
+			if (this.props.name.includes('container')) {
+				const hasStructuralChanges = Object.keys(attributesDiff).some(key =>
+					['content', 'innerBlocks', 'align', 'width', 'height'].includes(key)
+				);
+
+				if (!hasStructuralChanges) {
+					console.log('Preventing unnecessary container update during undo/redo');
+					return false;
+				}
+			}
+
+			// Force update if content or SVG-related attributes changed
+			const hasRelevantChanges = Object.keys(attributesDiff).some(key =>
+				key === 'content' ||
+				key.includes('svg') ||
+				key.includes('icon')
+			);
+
+			if (hasRelevantChanges) {
+				return true;
+			}
+		}
+
 		// Force update when selection state changes
 		if (this.props.isSelected !== nextProps.isSelected) return true;
+
+		// Check for SVG color changes specifically
+		const currentAttributes = this.props.attributes;
+		const nextAttributes = nextProps.attributes;
+
+		const svgChanges = Object.entries(nextAttributes).reduce((acc, [key, value]) => {
+			if ((key.includes('svg') || key.includes('icon')) &&
+				currentAttributes[key] !== value) {
+				acc[key] = {
+					from: currentAttributes[key],
+					to: value
+				};
+			}
+			return acc;
+		}, {});
+
+		if (!isEmpty(svgChanges)) {
+			console.group('SVG Changes detected');
+			console.log('Block ID:', this.props.attributes.uniqueID);
+			console.log('Changes:', svgChanges);
+			console.groupEnd();
+			return true;
+		}
 
 		const memoKey = JSON.stringify({ props: nextProps, state: nextState });
 		if (this.memoizedValues.has(memoKey)) {
@@ -478,16 +534,47 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { uniqueID } = this.props.attributes;
 
+		// Prevent unnecessary style updates for containers during undo/redo
+		if (this.props.name.includes('container') && this.isUndoRedo(prevProps, this.props)) {
+			const hasOnlySVGChanges = diff(prevProps.attributes, this.props.attributes, {
+				filter: (path, key) => key.includes('svg') || key.includes('icon')
+			});
+
+			if (!isEmpty(hasOnlySVGChanges)) {
+				console.log('Skipping container style update for SVG-only changes');
+				return;
+			}
+		}
+
+		// Debug version changes
+		const prevVersion = prevProps.attributes?.['maxi-version-current'];
+		const currentVersion = this.props.attributes?.['maxi-version-current'];
+
+		if (prevVersion !== currentVersion) {
+			console.group('Version change detected');
+			console.log('Previous version:', prevVersion);
+			console.log('Current version:', currentVersion);
+			console.log('Block ID:', this.props.attributes.uniqueID);
+			console.groupEnd();
+
+			// Only clear cache if it's not an undo/redo operation
+			if (!this.isUndoRedo(prevProps, this.props)) {
+				this.clearStyleCache();
+			}
+		}
+
 		if (!shouldDisplayStyles) {
-			!this.isReusable &&
-				this.displayStyles(
-					this.props.deviceType !== prevProps.deviceType ||
-						(this.props.baseBreakpoint !==
-							prevProps.baseBreakpoint &&
-							!!prevProps.baseBreakpoint),
-					this.props.attributes.blockStyle !==
-						prevProps.attributes.blockStyle
-				);
+			const isUndoRedo = this.isUndoRedo(prevProps, this.props);
+			const forceUpdate = !isUndoRedo || this.props.name.includes('svg');
+
+			!this.isReusable && this.displayStyles(
+				this.props.deviceType !== prevProps.deviceType ||
+				(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
+				!!prevProps.baseBreakpoint),
+				this.props.attributes.blockStyle !== prevProps.attributes.blockStyle,
+				forceUpdate
+			);
+
 			this.isReusable && this.displayStyles();
 		}
 
@@ -609,6 +696,10 @@ class MaxiBlockComponent extends Component {
 
 		if (this.maxiBlockWillUnmount) {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
+		}
+
+		if (this._styleGenerationTimeout) {
+			clearTimeout(this._styleGenerationTimeout);
 		}
 	}
 
@@ -1092,14 +1183,23 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Refresh the styles on the Editor
 	 */
-	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
-		// Update references if they're null
-		this.updateDOMReferences();
-
+	displayStyles(isBreakpointChange = false, isBlockStyleChange = false, forceUpdate = true) {
 		if (this.isPatternsPreview || this.templateModal) return;
 
 		const { uniqueID } = this.props.attributes;
-		const isSiteEditor = getIsSiteEditor();
+		console.group('Style Update');
+		console.log('Block ID:', uniqueID);
+		console.log('Block type:', this.props.name);
+		console.log('Is breakpoint change:', isBreakpointChange);
+		console.log('Is block style change:', isBlockStyleChange);
+		console.log('Force update:', forceUpdate);
+
+		// Skip unnecessary container updates during undo/redo
+		if (!forceUpdate && this.props.name.includes('container')) {
+			console.log('Skipping container style update');
+			console.groupEnd();
+			return;
+		}
 
 		let obj;
 		const breakpoints = this.getBreakpoints;
@@ -1108,9 +1208,11 @@ class MaxiBlockComponent extends Component {
 		// Only generate new styles if it's not a breakpoint change
 		if (!isBreakpointChange) {
 			obj = this.getStylesObject;
+			console.log('Generated styles object:', obj);
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+				console.warn('Style object mismatch - adjusting uniqueID');
 				obj[uniqueID] = obj[this.props.attributes.uniqueID];
 				delete obj[this.props.attributes.uniqueID];
 			}
@@ -1121,16 +1223,22 @@ class MaxiBlockComponent extends Component {
 			customDataRelations = customData?.[uniqueID]?.relations;
 		}
 
-		this.injectStyles(
-			uniqueID,
-			obj,
-			this.props.deviceType,
-			breakpoints,
-			isSiteEditor,
-			isBreakpointChange,
-			isBlockStyleChange,
-			this.editorIframe
-		);
+		try {
+			this.injectStyles(
+				uniqueID,
+				obj,
+				this.props.deviceType,
+				breakpoints,
+				getIsSiteEditor(),
+				isBreakpointChange,
+				isBlockStyleChange,
+				this.editorIframe
+			);
+		} catch (error) {
+			console.error('Error injecting styles:', error);
+		}
+
+		console.groupEnd();
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			const isSiteEditor = getIsSiteEditor();
@@ -1275,27 +1383,25 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
-		if (iframe?.contentDocument?.body) {
-			this.handleIframeStyles(iframe, currentBreakpoint);
-		}
-
 		const target = this.getStyleTarget(isSiteEditor, iframe);
 		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
-		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
-		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
-			const styleContent = this.generateStyleContent(
-				uniqueID,
-				stylesObj,
-				currentBreakpoint,
-				breakpoints,
-				isBreakpointChange,
-				isBlockStyleChange,
-				iframe,
-				isSiteEditor
-			);
-			this.updateStyleElement(styleElement, styleContent);
-		}
+		this.generateStyleContent(
+			uniqueID,
+			stylesObj,
+			currentBreakpoint,
+			breakpoints,
+			isBreakpointChange,
+			isBlockStyleChange,
+			iframe,
+			isSiteEditor
+		).then(styleContent => {
+			if (styleContent && styleElement.textContent !== styleContent) {
+				requestAnimationFrame(() => {
+					styleElement.textContent = styleContent;
+				});
+			}
+		});
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1447,76 +1553,47 @@ class MaxiBlockComponent extends Component {
 		iframe,
 		isSiteEditor
 	) {
+		console.group('Style Content Generation');
+		console.log('Block ID:', uniqueID);
+		console.log('Current breakpoint:', currentBreakpoint);
+
 		let styleContent;
 		let styles;
 
-		const originVersion = this.props.attributes?.['maxi-version-origin'];
-		const currentVersion = this.props.attributes?.['maxi-version-current'];
-		const isOriginVersionBelow156 = originVersion
-			? compareVersions(originVersion, '1.5.6') < 0
-			: false;
-		const isCurrentVersionAtLeast201 = currentVersion
-			? compareVersions(currentVersion, '2.0.1') >= 0
-			: false;
+		// Add a debounce key for style generation
+		const debounceKey = `${uniqueID}-${currentBreakpoint}`;
 
-		// Apply the copyGeneralToXL function to stylesObj only if this.props.baseBreakpoint is 'xxl',
-		// the current version is less than 2.0.1, and the origin version is below 1.5.6
-		const updatedStylesObj =
-			this.props.baseBreakpoint === 'xxl' &&
-			!isCurrentVersionAtLeast201 &&
-			isOriginVersionBelow156
-				? this.copyGeneralToXL(stylesObj)
-				: stylesObj;
-
-		if (isBlockStyleChange) {
-			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
-			if (cssCache) {
-				styleContent = cssCache[currentBreakpoint];
-				const { blockStyle } = this.props.attributes;
-				const previousBlockStyle =
-					blockStyle === 'light' ? 'dark' : 'light';
-				const previousBlockStyleRegex = new RegExp(
-					`--maxi-${previousBlockStyle}-`,
-					'g'
-				);
-				styleContent = styleContent?.replace(
-					previousBlockStyleRegex,
-					`--maxi-${blockStyle}-`
-				);
-			}
-			styles = this.generateStyles(
-				updatedStylesObj,
-				breakpoints,
-				uniqueID
-			);
-		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
-			styles = this.generateStyles(
-				updatedStylesObj,
-				breakpoints,
-				uniqueID
-			);
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+		if (this._styleGenerationTimeout) {
+			clearTimeout(this._styleGenerationTimeout);
 		}
 
-		if (styles) {
-			dispatch('maxiBlocks/styles').saveCSSCache(
-				uniqueID,
-				styles,
-				!!iframe,
-				isSiteEditor
-			);
-		}
+		return new Promise((resolve) => {
+			this._styleGenerationTimeout = setTimeout(() => {
+				if (isBlockStyleChange) {
+					const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+					if (cssCache) {
+						styleContent = cssCache[currentBreakpoint];
+					}
+				}
 
-		// Add !important to white-space: nowrap
-		const whiteSpaceRegex = /white-space:\s*nowrap(?!\s*!important)/g;
-		if (styleContent) {
-			styleContent = styleContent.replace(
-				whiteSpaceRegex,
-				'white-space: nowrap !important'
-			);
-		}
+				if (!styleContent) {
+					styles = this.generateStyles(stylesObj, breakpoints, uniqueID);
+					styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+				}
 
-		return styleContent;
+				if (styles) {
+					dispatch('maxiBlocks/styles').saveCSSCache(
+						uniqueID,
+						styles,
+						!!iframe,
+						isSiteEditor
+					);
+				}
+
+				console.groupEnd();
+				resolve(styleContent);
+			}, 50); // Small delay to batch similar updates
+		});
 	}
 
 	updateStyleElement(styleElement, styleContent) {
@@ -1529,21 +1606,21 @@ class MaxiBlockComponent extends Component {
 	generateStyles(stylesObj, breakpoints, uniqueID) {
 		const cacheKey = JSON.stringify({ stylesObj, breakpoints, uniqueID });
 
-		this.cleanupCache();
+	this.cleanupCache();
 
-		if (this.memoizedValues.has(cacheKey)) {
-			return this.memoizedValues.get(cacheKey);
-		}
+	if (this.memoizedValues.has(cacheKey)) {
+		return this.memoizedValues.get(cacheKey);
+	}
 
-		const styles = styleResolver({
-			styles: stylesObj,
-			remove: false,
-			breakpoints: breakpoints || this.getBreakpoints,
-			uniqueID,
-		});
+	const styles = styleResolver({
+		styles: stylesObj,
+		remove: false,
+		breakpoints: breakpoints || this.getBreakpoints,
+		uniqueID,
+	});
 
-		this.memoizedValues.set(cacheKey, styles);
-		return styles;
+	this.memoizedValues.set(cacheKey, styles);
+	return styles;
 	}
 
 	removeStyles() {
@@ -1692,6 +1769,53 @@ class MaxiBlockComponent extends Component {
 
 			this.lastCacheCleanup = now;
 		}
+	}
+
+	updateStyles(forceUpdate = false) {
+		if (this.isPatternsPreview || this.templateModal) return;
+
+		const { uniqueID } = this.props.attributes;
+
+		// Use RAF to batch style updates
+		requestAnimationFrame(() => {
+			const obj = forceUpdate ? this.getStylesObject : null;
+			const breakpoints = this.getBreakpoints;
+
+			this.injectStyles(
+				uniqueID,
+				obj,
+				this.props.deviceType,
+				breakpoints,
+				getIsSiteEditor(),
+				false,
+				false,
+				this.editorIframe
+			);
+		});
+	}
+
+	// Add a method to clear style cache for specific block
+	clearStyleCache() {
+		const { uniqueID } = this.props.attributes;
+		console.log('Clearing style cache for block:', uniqueID);
+		dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
+		this.memoizedValues.clear();
+	}
+
+	// Add helper method to detect undo/redo operations
+	isUndoRedo(prevProps, nextProps) {
+		// Check if this is an undo/redo operation by comparing versions and attributes
+		const prevVersion = prevProps?.attributes?.['maxi-version-current'];
+		const nextVersion = nextProps?.attributes?.['maxi-version-current'];
+
+		if (prevVersion !== nextVersion) {
+			// Check if there's an active undo operation
+			const isUndo = select('core/editor')?.isUndoing?.();
+			const isRedo = select('core/editor')?.isRedoing?.();
+			return isUndo || isRedo;
+		}
+
+		return false;
 	}
 }
 

@@ -563,139 +563,71 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
-		// Clear memoization cache
+		// Clear memoization and debounced functions
 		this.memoizedValues?.clear();
-
-		// Clear debounced functions
 		this.debouncedDisplayStyles?.cancel();
 
-		// If it's site editor, when swapping from pages we need to keep the styles
-		// On post editor, when entering to `code editor` page, we need to keep the styles
-		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
-			this.props.clientId
-		);
-
-		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
-		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
-		// the first copied block, on removing the styles the copied block appears naked. That's why we check if there's more than one block
-		// with same uniqueID
-		const keepStylesOnCloning =
-			Array.from(
-				document.getElementsByClassName(this.props.attributes.uniqueID)
-			).length > 1;
-
-		// Different cases:
-		// 1. Swapping page on site editor or entering to `code editor` page on post editor
-		// 2. Duplicating block
+		const keepStylesOnEditor = !!select('core/block-editor').getBlock(this.props.clientId);
+		const keepStylesOnCloning = Array.from(document.getElementsByClassName(this.props.attributes.uniqueID)).length > 1;
 		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
 		if (isBlockBeingRemoved) {
 			const { clientId } = this.props;
 			const { uniqueID } = this.props.attributes;
 
-			// Styles
-			const obj = this.getStylesObject;
-			styleResolver({ styles: obj, remover: true });
+			// Use Promise.all for parallel processing
+			Promise.all([
+				// Remove styles asynchronously
+				new Promise(resolve => {
+					const obj = this.getStylesObject;
+					styleResolver({ styles: obj, remover: true });
+					this.removeStyles();
+					resolve();
+				}),
 
-			this.removeStyles();
-
-			// Block
-			dispatch('maxiBlocks/blocks').removeBlock(uniqueID, clientId);
-
-			// Custom data
-			dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
-
-			// IB
-			dispatch('maxiBlocks/relations').removeBlockRelation(uniqueID);
-
-			// CSSCache
-			dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
-
-			// Repeater
-			if (this.props.repeaterStatus) {
-				const { getBlockParentsByBlockName } =
-					select('core/block-editor');
-				const parentRows = getBlockParentsByBlockName(
-					this.props.parentColumnClientId,
-					'maxi-blocks/row-maxi'
-				);
-
-				const isRepeaterWasUndo = parentRows.every(
-					parentRowClientId => {
-						const parentRowAttributes =
-							select('core/block-editor').getBlockAttributes(
-								parentRowClientId
-							);
-
-						return !parentRowAttributes['repeater-status'];
-					}
-				);
-
-				if (!isRepeaterWasUndo) {
-					removeBlockFromColumns(
-						this.props.blockPositionFromColumn,
-						this.props.parentColumnClientId,
-						this.props.clientId,
-						this.props.getInnerBlocksPositions(),
-						this.props.updateInnerBlocksPositions
-					);
+				// Handle store updates asynchronously
+				Promise.resolve().then(() => {
+					// Remove block and related data
+					dispatch('maxiBlocks/blocks').removeBlock(uniqueID, clientId);
+					dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
+					dispatch('maxiBlocks/relations').removeBlockRelation(uniqueID);
+					dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
+				})
+			]).then(() => {
+				// Handle repeater cleanup only if necessary
+				if (this.props.repeaterStatus) {
+					this.handleRepeaterCleanup();
 				}
-			}
-		} else {
-			const {
-				getBlockOrder,
-				getBlockAttributes,
-				getBlockParentsByBlockName,
-			} = select('core/block-editor');
-
-			const innerBlocksPositions = this.props.getInnerBlocksPositions?.();
-
-			// If repeater is turned on and block was moved
-			// outwards, remove it from the columns
-			if (
-				this.props.repeaterStatus &&
-				!innerBlocksPositions[[-1]].includes(
-					getBlockParentsByBlockName(
-						this.props.clientId,
-						'maxi-blocks/column-maxi'
-					)[0]
-				)
-			) {
-				// Repeater
-				removeBlockFromColumns(
-					this.props.blockPositionFromColumn,
-					this.props.parentColumnClientId,
-					this.props.clientId,
-					innerBlocksPositions,
-					this.props.updateInnerBlocksPositions
-				);
-			}
-
-			const parentRowClientId = getBlockParentsByBlockName(
-				this.props.clientId,
-				'maxi-blocks/row-maxi'
-			).find(currentParentRowClientId => {
-				const currentParentRowAttributes = getBlockAttributes(
-					currentParentRowClientId
-				);
-
-				return currentParentRowAttributes['repeater-status'];
 			});
-			const parentRowAttributes = getBlockAttributes(parentRowClientId);
-
-			// If repeater is turned on and block was moved
-			// inwards, validate the structure
-			if (
-				parentRowAttributes?.['repeater-status'] &&
-				(!this.props.repeaterStatus ||
-					this.props.repeaterRowClientId !== parentRowClientId)
-			) {
-				const columnsClientIds = getBlockOrder(parentRowClientId);
-				insertBlockIntoColumns(this.props.clientId, columnsClientIds);
-			}
 		}
-		if (this.maxiBlockWillUnmount)
-			this.maxiBlockWillUnmount(isBlockBeingRemoved);
+
+		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount(isBlockBeingRemoved);
+	}
+
+	// Add new helper method for repeater cleanup
+	handleRepeaterCleanup() {
+		const { getBlockParentsByBlockName } = select('core/block-editor');
+		const parentRows = getBlockParentsByBlockName(
+			this.props.parentColumnClientId,
+			'maxi-blocks/row-maxi'
+		);
+
+		const isRepeaterWasUndo = parentRows.every(parentRowClientId => {
+			const parentRowAttributes = select('core/block-editor').getBlockAttributes(
+				parentRowClientId
+			);
+			return !parentRowAttributes['repeater-status'];
+		});
+
+		if (!isRepeaterWasUndo) {
+			removeBlockFromColumns(
+				this.props.blockPositionFromColumn,
+				this.props.parentColumnClientId,
+				this.props.clientId,
+				this.props.getInnerBlocksPositions(),
+				this.props.updateInnerBlocksPositions
+			);
+		}
 	}
 
 	handleResponsivePreview(editorWrapper, tabletPreview, mobilePreview) {

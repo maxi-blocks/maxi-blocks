@@ -346,6 +346,9 @@ class MaxiBlockComponent extends Component {
 			return false;
 		}
 
+		// Force update when selection state changes
+		if (this.props.isSelected !== nextProps.isSelected) return true;
+
 		const memoKey = JSON.stringify({ props: nextProps, state: nextState });
 		if (this.memoizedValues.has(memoKey)) {
 			return this.memoizedValues.get(memoKey);

@@ -555,53 +555,51 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		// Return if we are previewing the block
-		if (
-			this.isTemplatePartPreview ||
-			this.isPatternsPreview ||
-			this.templateModal
-		)
-			return;
+		const { uniqueID } = this.props.attributes;
+
+		// Return early checks
+		if (this.isTemplatePartPreview || this.isPatternsPreview || this.templateModal) return;
 
 		// Clear memoization and debounced functions
 		this.memoizedValues?.clear();
 		this.debouncedDisplayStyles?.cancel();
 
 		const keepStylesOnEditor = !!select('core/block-editor').getBlock(this.props.clientId);
-		const keepStylesOnCloning = Array.from(document.getElementsByClassName(this.props.attributes.uniqueID)).length > 1;
+		const keepStylesOnCloning = Array.from(document.getElementsByClassName(uniqueID)).length > 1;
 		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
 		if (isBlockBeingRemoved) {
 			const { clientId } = this.props;
-			const { uniqueID } = this.props.attributes;
 
-			// Use Promise.all for parallel processing
-			Promise.all([
-				// Remove styles asynchronously
-				new Promise(resolve => {
-					const obj = this.getStylesObject;
-					styleResolver({ styles: obj, remover: true });
-					this.removeStyles();
-					resolve();
-				}),
+			// Batch style removal for better performance
+			requestAnimationFrame(() => {
+				// Remove styles in a single operation
+				const obj = this.getStylesObject;
+				styleResolver({
+					styles: obj,
+					remover: true,
+					optimized: true // Add this flag to styleResolver
+				});
+				this.removeStyles();
 
-				// Handle store updates asynchronously
-				Promise.resolve().then(() => {
+				// Batch store updates
+				queueMicrotask(() => {
 					// Remove block and related data
 					dispatch('maxiBlocks/blocks').removeBlock(uniqueID, clientId);
 					dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
 					dispatch('maxiBlocks/relations').removeBlockRelation(uniqueID);
 					dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
-				})
-			]).then(() => {
-				// Handle repeater cleanup only if necessary
-				if (this.props.repeaterStatus) {
-					this.handleRepeaterCleanup();
-				}
+
+					if (this.props.repeaterStatus) {
+						this.handleRepeaterCleanup();
+					}
+				});
 			});
 		}
 
-		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount(isBlockBeingRemoved);
+		if (this.maxiBlockWillUnmount) {
+			this.maxiBlockWillUnmount(isBlockBeingRemoved);
+		}
 	}
 
 	// Add new helper method for repeater cleanup

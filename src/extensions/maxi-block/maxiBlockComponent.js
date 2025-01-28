@@ -153,7 +153,7 @@ class MaxiBlockComponent extends Component {
 		this.debouncedDisplayStyles = _.debounce(this.displayStyles, 150);
 
 		// Set maximum cache size and initialize cache timestamp
-		this.MAX_CACHE_SIZE = 1000;
+		this.MAX_CACHE_SIZE = 10000;
 		this.CACHE_CLEANUP_INTERVAL = 600000; // 600 seconds
 		this.lastCacheCleanup = Date.now();
 	}

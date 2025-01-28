@@ -66,6 +66,11 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
 import _ from 'lodash';
 
 /**
+ * Constants
+ */
+const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
+
+/**
  * Class
  */
 class MaxiBlockComponent extends Component {
@@ -547,8 +552,11 @@ class MaxiBlockComponent extends Component {
 		this.hideGutenbergPopover();
 		this.getCurrentBlockStyle();
 
-		if (this.maxiBlockDidUpdate)
+		if (this.maxiBlockDidUpdate) {
+			console.time(`maxiBlockDidUpdate-${uniqueID}`);
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
+			console.timeEnd(`maxiBlockDidUpdate-${uniqueID}`);
+		}
 	}
 
 	componentWillUnmount() {
@@ -1523,10 +1531,9 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Add !important to white-space: nowrap
-		const whiteSpaceRegex = /white-space:\s*nowrap(?!\s*!important)/g;
 		if (styleContent) {
 			styleContent = styleContent.replace(
-				whiteSpaceRegex,
+				WHITE_SPACE_REGEX,
 				'white-space: nowrap !important'
 			);
 		}

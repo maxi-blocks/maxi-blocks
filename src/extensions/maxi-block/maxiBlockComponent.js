@@ -393,7 +393,6 @@ class MaxiBlockComponent extends Component {
 			return this.memoizedValues.get(memoKey);
 		}
 
-
 		const result = !isEqual(
 			propsObjectCleaner(this.props),
 			propsObjectCleaner(nextProps)
@@ -416,7 +415,6 @@ class MaxiBlockComponent extends Component {
 
 		this.memoizedValues.set(memoKey, result);
 		return result;
-
 	}
 
 	/**
@@ -553,9 +551,7 @@ class MaxiBlockComponent extends Component {
 		this.getCurrentBlockStyle();
 
 		if (this.maxiBlockDidUpdate) {
-			console.time(`maxiBlockDidUpdate-${uniqueID}`);
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
-			console.timeEnd(`maxiBlockDidUpdate-${uniqueID}`);
 		}
 	}
 

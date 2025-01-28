@@ -1510,7 +1510,6 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				uniqueID
 			);
-			console.log('styles', styles);
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
 		}
 

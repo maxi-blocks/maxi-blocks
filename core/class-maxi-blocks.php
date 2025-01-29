@@ -312,8 +312,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'date',
             ];
 
-            error_log('current_template_type: ' . $current_template_type);
-
             // Add the specific template for current page
             if ($current_template_type) {
                 $template = get_block_template(
@@ -421,8 +419,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 $matches,
             );
             $block_ids = $matches[1] ?? [];
-
-            error_log('block_ids: ' . print_r($block_ids, true));
 
             if (empty($block_ids)) {
                 return false;

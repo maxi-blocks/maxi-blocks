@@ -407,6 +407,43 @@ if (!class_exists('MaxiBlocks_Blocks')):
         }
 
         /**
+         * Check if content contains any Maxi blocks within reusable blocks
+         *
+         * @param string $content The content to check
+         * @return boolean True if Maxi blocks found in reusable blocks
+         */
+        private function has_maxi_in_reusable_blocks($content)
+        {
+            // Get all reusable block IDs
+            preg_match_all(
+                '/wp:block\s*{\s*"ref"\s*:\s*(\d+)}/',
+                $content,
+                $matches,
+            );
+            $block_ids = $matches[1] ?? [];
+
+            error_log('block_ids: ' . print_r($block_ids, true));
+
+            if (empty($block_ids)) {
+                return false;
+            }
+
+            // Check each reusable block for Maxi blocks
+            foreach ($block_ids as $block_id) {
+                $block_post = get_post($block_id);
+                if (
+                    $block_post &&
+                    strpos($block_post->post_content, 'wp:maxi-blocks/') !==
+                        false
+                ) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /**
          * Check if the current post/page contains Maxi blocks
          *
          * @return boolean
@@ -414,33 +451,41 @@ if (!class_exists('MaxiBlocks_Blocks')):
         public static function has_blocks()
         {
             $has_blocks = false;
+            $instance = new self();
 
             // First check template parts if using block theme
             if (wp_is_block_theme()) {
-                $instance = new self();
                 $template_parts = $instance->get_block_template_parts();
                 foreach ($template_parts as $template_part) {
-                    if (
-                        !empty($template_part->content) &&
-                        strpos($template_part->content, 'wp:maxi-blocks/') !==
-                            false
-                    ) {
-                        error_log(
-                            'template_part: ' . print_r($template_part, true),
-                        );
-                        $has_blocks = true;
-                        break;
+                    if (!empty($template_part->content)) {
+                        if (
+                            strpos(
+                                $template_part->content,
+                                'wp:maxi-blocks/',
+                            ) !== false ||
+                            $instance->has_maxi_in_reusable_blocks(
+                                $template_part->content,
+                            )
+                        ) {
+                            $has_blocks = true;
+                            break;
+                        }
                     }
                 }
             }
 
-            // If no blocks found in templates, check main content if it exists
+            // If no blocks found in templates, check main content
             if (!$has_blocks) {
                 global $post;
                 if ($post && !empty($post->post_content)) {
                     $has_blocks =
                         strpos($post->post_content, 'wp:maxi-blocks/') !==
                         false;
+                    if (!$has_blocks) {
+                        $has_blocks = $instance->has_maxi_in_reusable_blocks(
+                            $post->post_content,
+                        );
+                    }
                 }
             }
 

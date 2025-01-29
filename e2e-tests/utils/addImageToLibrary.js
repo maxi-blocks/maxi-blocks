@@ -1,7 +1,7 @@
 const addImageToLibrary = async page => {
 	await page.evaluate(() =>
 		fetch(
-			'https://upload.wikimedia.org/wikipedia/commons/7/77/Delete_key1.jpg'
+			'https://img.maxiblocks.com/2024/12/Pure-Image-Dark-PID-PRO-108-1734710451-273045251-1734710451-1041076938.webp'
 		)
 			.then(res => res.blob())
 			.catch(err => {
@@ -12,7 +12,9 @@ const addImageToLibrary = async page => {
 				try {
 					window.wp.mediaUtils.uploadMedia({
 						filesList: [
-							new File([blob], 'foo.png', { type: 'image/png' }),
+							new File([blob], 'foo.webp', {
+								type: 'image/webp',
+							}),
 						],
 						onFileChange: () => null,
 						onError: err => {
@@ -32,7 +34,7 @@ const addImageToLibrary = async page => {
 const removeUploadedImage = async page => {
 	await page.evaluate(async () => {
 		const mediaItems = await wp.data.resolveSelect('core').getMediaItems({
-			search: 'foo.png',
+			search: 'foo.webp',
 		});
 
 		if (!mediaItems || mediaItems.length === 0) {

@@ -77,7 +77,7 @@ describe('Dynamic content', () => {
 			author: 'admin',
 			content: {
 				origin: 'http://localhost:8889',
-				pathname: '/wp-content/uploads/\\d{4}/\\d{2}/foo\\.png',
+				pathname: '/wp-content/uploads/\\d{4}/\\d{2}/foo\\.webp',
 			},
 		};
 

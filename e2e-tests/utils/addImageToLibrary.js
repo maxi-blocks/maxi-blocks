@@ -30,7 +30,9 @@ const addImageToLibrary = async page => {
 			})
 	);
 };
-
+/**
+ * Remove the uploaded image from the library. Only works on gutenberg edit pages.
+ */
 const removeUploadedImage = async page => {
 	await page.evaluate(async () => {
 		const mediaItems = await wp.data.resolveSelect('core').getMediaItems({

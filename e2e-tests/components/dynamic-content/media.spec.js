@@ -25,7 +25,10 @@ describe('Dynamic content', () => {
 	});
 
 	afterAll(async () => {
-		await page.goto('http://localhost:8889/wp-admin/post-new.php');
+		// Go to the edit page
+		const pages = await browser.pages();
+		const currentIndex = pages.indexOf(page);
+		await pages[currentIndex - 1].bringToFront();
 		await removeUploadedImage(page);
 	});
 

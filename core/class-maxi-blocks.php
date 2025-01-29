@@ -72,7 +72,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 // For frontend, check for blocks after post is loaded
                 add_action('wp', function () {
                     if (self::has_blocks()) {
-                        error_log('has_blocks, enqueueing assets');
                         $this->enqueue_blocks_assets();
                     }
                 });
@@ -305,16 +304,15 @@ if (!class_exists('MaxiBlocks_Blocks')):
             // Get current template type
             $current_template_type = $this->get_current_template_type();
 
-            // Always check header and footer
-            $header = get_block_template(get_stylesheet() . '//header');
-            $footer = get_block_template(get_stylesheet() . '//footer');
+            $archive_templates = [
+                'archive',
+                'category',
+                'tag',
+                'author',
+                'date',
+            ];
 
-            if ($header && !empty($header->content)) {
-                $template_parts[] = $header;
-            }
-            if ($footer && !empty($footer->content)) {
-                $template_parts[] = $footer;
-            }
+            error_log('current_template_type: ' . $current_template_type);
 
             // Add the specific template for current page
             if ($current_template_type) {
@@ -323,6 +321,45 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 );
                 if ($template && !empty($template->content)) {
                     $template_parts[] = $template;
+
+                    // Parse template content for additional template parts
+                    preg_match_all(
+                        '/wp:template-part\s+({[^}]+})/',
+                        $template->content,
+                        $matches,
+                    );
+
+                    if (!empty($matches[1])) {
+                        foreach ($matches[1] as $json_string) {
+                            $template_part_data = json_decode(
+                                $json_string,
+                                true,
+                            );
+                            if (
+                                $template_part_data &&
+                                isset($template_part_data['slug'])
+                            ) {
+                                $part = get_block_template(
+                                    get_stylesheet() .
+                                        '//' .
+                                        $template_part_data['slug'],
+                                    'wp_template_part',
+                                );
+                                if ($part && !empty($part->content)) {
+                                    $template_parts[] = $part;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (in_array($current_template_type, $archive_templates)) {
+                        $template = get_block_template(
+                            get_stylesheet() . '//archive',
+                        );
+                        if ($template && !empty($template->content)) {
+                            $template_parts[] = $template;
+                        }
+                    }
                 }
             }
 
@@ -336,6 +373,9 @@ if (!class_exists('MaxiBlocks_Blocks')):
          */
         private function get_current_template_type()
         {
+            if (get_page_template_slug()) {
+                return get_page_template_slug();
+            }
             if (is_front_page() && is_home()) {
                 return 'index';
             } elseif (is_front_page()) {
@@ -373,23 +413,12 @@ if (!class_exists('MaxiBlocks_Blocks')):
          */
         public static function has_blocks()
         {
-            global $post;
-            if (!$post || empty($post->post_content)) {
-                error_log('no post content');
-                return false;
-            }
+            $has_blocks = false;
 
-            // Check main content for maxi blocks
-            $has_blocks =
-                strpos($post->post_content, 'wp:maxi-blocks/') !== false;
-
-            error_log('has_blocks: ' . ($has_blocks ? 'true' : 'false'));
-
-            // If no blocks found in main content, check template parts
-            if (!$has_blocks && wp_is_block_theme()) {
+            // First check template parts if using block theme
+            if (wp_is_block_theme()) {
                 $instance = new self();
                 $template_parts = $instance->get_block_template_parts();
-                //error_log('template_parts: ' . print_r($template_parts, true));
                 foreach ($template_parts as $template_part) {
                     if (
                         !empty($template_part->content) &&
@@ -402,6 +431,16 @@ if (!class_exists('MaxiBlocks_Blocks')):
                         $has_blocks = true;
                         break;
                     }
+                }
+            }
+
+            // If no blocks found in templates, check main content if it exists
+            if (!$has_blocks) {
+                global $post;
+                if ($post && !empty($post->post_content)) {
+                    $has_blocks =
+                        strpos($post->post_content, 'wp:maxi-blocks/') !==
+                        false;
                 }
             }
 

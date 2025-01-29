@@ -35,7 +35,13 @@ class MaxiBlocks_StyleCards
     public function __construct()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+
+        // Wrap wp_enqueue_scripts in wp action to check for blocks
+        add_action('wp', function () {
+            if (class_exists('MaxiBlocks_Blocks') && MaxiBlocks_Blocks::has_blocks()) {
+                add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+            }
+        });
 
         // Run the migration once
         add_action('admin_init', [$this, 'run_link_palette_migration']);

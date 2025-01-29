@@ -48,7 +48,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
             'Slider_Maxi_Block',
         ];
 
-
         /**
          * Registers the plugin.
          */
@@ -73,6 +72,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 // For frontend, check for blocks after post is loaded
                 add_action('wp', function () {
                     if (self::has_blocks()) {
+                        error_log('has_blocks, enqueueing assets');
                         $this->enqueue_blocks_assets();
                     }
                 });
@@ -82,8 +82,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
             add_action('init', [$this, 'register_blocks']);
 
             // Register MaxiBlocks attachment taxonomy and terms
-            add_action('init', [$this,'maxi_add_image_taxonomy']);
-            add_action('init', [$this,'maxi_add_image_taxonomy_term']);
+            add_action('init', [$this, 'maxi_add_image_taxonomy']);
+            add_action('init', [$this, 'maxi_add_image_taxonomy_term']);
 
             // Register MaxiBlocks category
             add_filter('block_categories_all', [$this, 'maxi_block_category']);
@@ -91,8 +91,20 @@ if (!class_exists('MaxiBlocks_Blocks')):
             $style_cards = new MaxiBlocks_StyleCards();
             $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
 
-            if($current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards) && $current_style_cards['gutenberg_blocks_status']) {
-                add_filter("render_block", [$this, "maxi_add_sc_native_blocks"], 10, 3);
+            if (
+                $current_style_cards &&
+                array_key_exists(
+                    'gutenberg_blocks_status',
+                    $current_style_cards,
+                ) &&
+                $current_style_cards['gutenberg_blocks_status']
+            ) {
+                add_filter(
+                    'render_block',
+                    [$this, 'maxi_add_sc_native_blocks'],
+                    10,
+                    3,
+                );
             }
         }
 
@@ -102,7 +114,11 @@ if (!class_exists('MaxiBlocks_Blocks')):
         private function include_block_classes()
         {
             foreach ($this->blocks_classes as $class) {
-                $file_path = MAXI_PLUGIN_DIR_PATH . 'core/blocks/class-' . strtolower(str_replace('_', '-', $class)) . '.php';
+                $file_path =
+                    MAXI_PLUGIN_DIR_PATH .
+                    'core/blocks/class-' .
+                    strtolower(str_replace('_', '-', $class)) .
+                    '.php';
                 if (file_exists($file_path)) {
                     require_once $file_path;
                 }
@@ -114,7 +130,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
             $script_asset_path = MAXI_PLUGIN_DIR_PATH . 'build/index.asset.php';
             if (!file_exists($script_asset_path)) {
                 throw new Error( //phpcs:ignore
-                    'You need to run `npm start` or `npm run build` for the "create-block/test-maxi-blocks" block first.'
+                    'You need to run `npm start` or `npm run build` for the "create-block/test-maxi-blocks" block first.',
                 );
             }
 
@@ -125,7 +141,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 plugins_url($index_js, dirname(__FILE__)),
                 $script_asset['dependencies'],
                 MAXI_PLUGIN_VERSION,
-                true
+                true,
             );
 
             $editor_css = 'build/index.css';
@@ -133,7 +149,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'maxi-blocks-block-editor',
                 plugins_url($editor_css, dirname(__FILE__)),
                 [],
-                MAXI_PLUGIN_VERSION
+                MAXI_PLUGIN_VERSION,
             );
 
             register_block_type('maxi-blocks/block-settings', [
@@ -146,7 +162,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'maxi-blocks-block',
                 plugins_url($style_css, dirname(__FILE__)),
                 [],
-                MAXI_PLUGIN_VERSION
+                MAXI_PLUGIN_VERSION,
             );
             wp_enqueue_style('maxi-blocks-block');
         }
@@ -166,45 +182,50 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
         public function maxi_add_image_taxonomy()
         {
-            $labels = array(
-            'name'              => __('Maxi Images', 'max-blocks'),
-            'singular_name'     => __('maxi-image-type', 'max-blocks'),
-            'search_items'      => __('Search Maxi Images', 'max-blocks'),
-            'all_items'         => __('All Maxi Images', 'max-blocks'),
-            'edit_item'         => __('Edit Maxi Image', 'max-blocks'),
-            'update_item'       => __('Update Maxi Image', 'max-blocks'),
-            'add_new_item'      => __('Add New Maxi Image', 'max-blocks'),
-            'new_item_name'     => __('New Maxi Image Name', 'max-blocks'),
-        );
+            $labels = [
+                'name' => __('Maxi Images', 'max-blocks'),
+                'singular_name' => __('maxi-image-type', 'max-blocks'),
+                'search_items' => __('Search Maxi Images', 'max-blocks'),
+                'all_items' => __('All Maxi Images', 'max-blocks'),
+                'edit_item' => __('Edit Maxi Image', 'max-blocks'),
+                'update_item' => __('Update Maxi Image', 'max-blocks'),
+                'add_new_item' => __('Add New Maxi Image', 'max-blocks'),
+                'new_item_name' => __('New Maxi Image Name', 'max-blocks'),
+            ];
 
-            $args = array(
-            'labels' => $labels,
-            'hierarchical' => false,
-            'query_var' => true,
-            'rewrite' => true,
-            'show_admin_column' => true,
-            'show_in_menu' => false,
-            'show_ui' => false,
-            'show_in_rest' => true,
-            'show_in_nav_menus' => false,
-            'show_tagcloud'     => false,
-            'show_in_quick_edit' => false,
-            'meta_box_cb'       => false,
-        );
+            $args = [
+                'labels' => $labels,
+                'hierarchical' => false,
+                'query_var' => true,
+                'rewrite' => true,
+                'show_admin_column' => true,
+                'show_in_menu' => false,
+                'show_ui' => false,
+                'show_in_rest' => true,
+                'show_in_nav_menus' => false,
+                'show_tagcloud' => false,
+                'show_in_quick_edit' => false,
+                'meta_box_cb' => false,
+            ];
 
             register_taxonomy('maxi-image-type', 'attachment', $args);
         }
 
         public function maxi_add_image_taxonomy_term()
         {
-            if (!term_exists(__('Maxi Image', 'max-blocks'), 'maxi-image-type')) {
+            if (
+                !term_exists(__('Maxi Image', 'max-blocks'), 'maxi-image-type')
+            ) {
                 wp_insert_term(
                     __('Maxi Image', 'max-blocks'),
                     'maxi-image-type',
-                    array(
-                      'description' => __('Images added by MaxiBlocks plugin', 'max-blocks'),
-                      'slug'        => 'maxi-image'
-                    )
+                    [
+                        'description' => __(
+                            'Images added by MaxiBlocks plugin',
+                            'max-blocks',
+                        ),
+                        'slug' => 'maxi-image',
+                    ],
                 );
             }
         }
@@ -218,13 +239,20 @@ if (!class_exists('MaxiBlocks_Blocks')):
                         'title' => __('MaxiBlocks', 'maxi-blocks'),
                     ],
                 ],
-                $categories
+                $categories,
             );
         }
 
-        public function maxi_add_sc_native_blocks($block_content, $block, $instance)
-        {
-            if (str_contains($block['blockName'] ?? '', 'core/') && isset($block_content) && !empty($block_content)) {
+        public function maxi_add_sc_native_blocks(
+            $block_content,
+            $block,
+            $instance
+        ) {
+            if (
+                str_contains($block['blockName'] ?? '', 'core/') &&
+                isset($block_content) &&
+                !empty($block_content)
+            ) {
                 // Use regular expression to find the first opening tag
                 if (preg_match('/<[^>]+>/', $block_content, $matches)) {
                     $opening_tag = $matches[0];
@@ -236,7 +264,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                             '/class=(["\'])/',
                             'class=$1maxi-block--use-sc ',
                             $opening_tag,
-                            1
+                            1,
                         );
 
                         // If the class attribute doesn't exist, add it
@@ -244,12 +272,16 @@ if (!class_exists('MaxiBlocks_Blocks')):
                             $modified_tag = str_replace(
                                 '>',
                                 ' class="maxi-block--use-sc">',
-                                $opening_tag
+                                $opening_tag,
                             );
                         }
 
                         // Replace the opening tag in the block content
-                        $block_content = str_replace($opening_tag, $modified_tag, $block_content);
+                        $block_content = str_replace(
+                            $opening_tag,
+                            $modified_tag,
+                            $block_content,
+                        );
                     }
                 }
             }
@@ -258,7 +290,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
         }
 
         /**
-         * Get all block template parts for the current theme
+         * Get block template parts for the current page
          *
          * @return array Array of template part objects
          */
@@ -269,26 +301,69 @@ if (!class_exists('MaxiBlocks_Blocks')):
             }
 
             $template_parts = [];
-            $template_types = [
-                'header',
-                'footer',
-                'sidebar',
-                'archive',
-                'single',
-                'page',
-                '404',
-                'index',
-                'search'
-            ];
 
-            foreach ($template_types as $type) {
-                $template = get_block_template(get_stylesheet() . '//' . $type);
+            // Get current template type
+            $current_template_type = $this->get_current_template_type();
+
+            // Always check header and footer
+            $header = get_block_template(get_stylesheet() . '//header');
+            $footer = get_block_template(get_stylesheet() . '//footer');
+
+            if ($header && !empty($header->content)) {
+                $template_parts[] = $header;
+            }
+            if ($footer && !empty($footer->content)) {
+                $template_parts[] = $footer;
+            }
+
+            // Add the specific template for current page
+            if ($current_template_type) {
+                $template = get_block_template(
+                    get_stylesheet() . '//' . $current_template_type,
+                );
                 if ($template && !empty($template->content)) {
                     $template_parts[] = $template;
                 }
             }
 
             return $template_parts;
+        }
+
+        /**
+         * Get the current template type based on WordPress template hierarchy
+         *
+         * @return string|null Template type
+         */
+        private function get_current_template_type()
+        {
+            if (is_front_page() && is_home()) {
+                return 'index';
+            } elseif (is_front_page()) {
+                return 'front-page';
+            } elseif (is_home()) {
+                return 'home';
+            } elseif (is_single()) {
+                return 'single';
+            } elseif (is_page()) {
+                return 'page';
+            } elseif (is_archive()) {
+                if (is_category()) {
+                    return 'category';
+                } elseif (is_tag()) {
+                    return 'tag';
+                } elseif (is_author()) {
+                    return 'author';
+                } elseif (is_date()) {
+                    return 'date';
+                }
+                return 'archive';
+            } elseif (is_search()) {
+                return 'search';
+            } elseif (is_404()) {
+                return '404';
+            }
+
+            return 'index';
         }
 
         /**
@@ -305,7 +380,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
             }
 
             // Check main content for maxi blocks
-            $has_blocks = strpos($post->post_content, 'wp:maxi-blocks/') !== false;
+            $has_blocks =
+                strpos($post->post_content, 'wp:maxi-blocks/') !== false;
 
             error_log('has_blocks: ' . ($has_blocks ? 'true' : 'false'));
 
@@ -313,8 +389,16 @@ if (!class_exists('MaxiBlocks_Blocks')):
             if (!$has_blocks && wp_is_block_theme()) {
                 $instance = new self();
                 $template_parts = $instance->get_block_template_parts();
+                //error_log('template_parts: ' . print_r($template_parts, true));
                 foreach ($template_parts as $template_part) {
-                    if (!empty($template_part->content) && strpos($template_part->content, 'wp:maxi-blocks/') !== false) {
+                    if (
+                        !empty($template_part->content) &&
+                        strpos($template_part->content, 'wp:maxi-blocks/') !==
+                            false
+                    ) {
+                        error_log(
+                            'template_part: ' . print_r($template_part, true),
+                        );
                         $has_blocks = true;
                         break;
                     }

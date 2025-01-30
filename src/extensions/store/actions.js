@@ -62,7 +62,7 @@ const actions = {
 		const breakpoints = receiveMaxiBreakpoints();
 
 		const getDeviceType = () => {
-			if (rawDeviceType) {
+			if (rawDeviceType && rawDeviceType !== 'general') {
 				return rawDeviceType;
 			}
 			const winBreakpoint = getWinBreakpoint(width, breakpoints);

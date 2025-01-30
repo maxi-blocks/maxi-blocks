@@ -388,11 +388,6 @@ class MaxiBlockComponent extends Component {
 			return true;
 		}
 
-		const memoKey = JSON.stringify({ props: nextProps, state: nextState });
-		if (this.memoizedValues.has(memoKey)) {
-			return this.memoizedValues.get(memoKey);
-		}
-
 		const result = !isEqual(
 			propsObjectCleaner(this.props),
 			propsObjectCleaner(nextProps)
@@ -410,7 +405,6 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
-		this.memoizedValues.set(memoKey, result);
 		return result;
 	}
 

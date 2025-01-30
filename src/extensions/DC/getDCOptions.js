@@ -341,7 +341,7 @@ const getDCOptions = async (
 				) {
 					newValues[`${prefix}relation`] = 'by-date';
 					newValues[`${prefix}order`] = 'desc';
-				} else {
+				} else if (data.length) {
 					newValues[`${prefix}id`] = Number(data[0].id);
 					idTypes.current = data[0].id;
 				}

@@ -1,19 +1,54 @@
 const addImageToLibrary = async page => {
 	await page.evaluate(() =>
 		fetch(
-			'https://upload.wikimedia.org/wikipedia/commons/7/77/Delete_key1.jpg'
+			'https://img.maxiblocks.com/2024/12/Pure-Image-Dark-PID-PRO-108-1734710451-273045251-1734710451-1041076938.webp'
 		)
-			.then(res => res.blob()) // Gets the response and returns it as a blob
+			.then(res => res.blob())
+			.catch(err => {
+				console.error('Failed to fetch image:', err);
+			})
 			.then(blob => {
-				window.wp.mediaUtils.uploadMedia({
-					filesList: [
-						new File([blob], 'foo.png', { type: 'image/png' }),
-					],
-					onFileChange: () => null,
-					onError: console.error,
-				});
+				if (!blob) return;
+				try {
+					window.wp.mediaUtils.uploadMedia({
+						filesList: [
+							new File([blob], 'foo.webp', {
+								type: 'image/webp',
+							}),
+						],
+						onFileChange: () => null,
+						onError: err => {
+							console.error('Failed to upload media:', err);
+						},
+					});
+				} catch (err) {
+					console.error('Failed to create File or upload:', err);
+				}
+			})
+			.catch(err => {
+				console.error('Unhandled error:', err);
 			})
 	);
 };
+/**
+ * Remove the uploaded image from the library. Only works on gutenberg edit pages.
+ */
+const removeUploadedImage = async page => {
+	await page.evaluate(async () => {
+		const mediaItems = await wp.data.resolveSelect('core').getMediaItems({
+			search: 'foo.webp',
+		});
 
-export default addImageToLibrary;
+		if (!mediaItems || mediaItems.length === 0) {
+			throw new Error('Image not found');
+		}
+
+		const imageToDelete = mediaItems[0];
+
+		await wp.data.dispatch('core').deleteMedia(imageToDelete.id, {
+			force: true,
+		});
+	});
+};
+
+export { addImageToLibrary, removeUploadedImage };

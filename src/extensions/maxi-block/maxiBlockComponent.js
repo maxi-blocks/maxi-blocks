@@ -400,8 +400,7 @@ class MaxiBlockComponent extends Component {
 					nextProps,
 					this.state,
 					nextState
-				) ||
-				!result
+				) || !result
 			);
 		}
 
@@ -1108,13 +1107,14 @@ class MaxiBlockComponent extends Component {
 
 		const { uniqueID } = this.props.attributes;
 		const isSiteEditor = getIsSiteEditor();
-
-		let obj;
 		const breakpoints = this.getBreakpoints;
+		let obj;
 		let customDataRelations;
 
-		// Only inject styles if it's not a breakpoint change
-		if (!isBreakpointChange || this.props.deviceType === 'xxl') {
+		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
+		const shouldGenerateNewStyles = !isBreakpointChange || this.props.deviceType === 'xxl';
+
+		if (shouldGenerateNewStyles) {
 			obj = this.getStylesObject;
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1123,27 +1123,35 @@ class MaxiBlockComponent extends Component {
 				delete obj[this.props.attributes.uniqueID];
 			}
 
-			this.injectStyles(
-				uniqueID,
-				obj,
-				this.props.deviceType,
-				breakpoints,
-				isSiteEditor,
-				isBreakpointChange,
-				isBlockStyleChange,
-				this.editorIframe
-			);
-		} else {
-			// If it's a breakpoint change, and not to XXL, only update the responsive classes
+			const customData = this.getCustomData;
+			if (customData) {
+				dispatch('maxiBlocks/customData').updateCustomData(customData);
+				customDataRelations = customData[uniqueID]?.relations;
+			}
+		}
+
+		this.injectStyles(
+			uniqueID,
+			obj,
+			this.props.deviceType,
+			breakpoints,
+			isSiteEditor,
+			isBreakpointChange,
+			isBlockStyleChange,
+			this.editorIframe
+		);
+
+		// Update responsive classes for non-XXL breakpoint changes
+		if (isBreakpointChange && this.props.deviceType !== 'xxl') {
 			this.updateResponsiveClasses(
 				this.editorIframe,
 				this.props.deviceType
 			);
 		}
 
+		// Handle relations if they exist
 		if (customDataRelations) {
-			const isRelationsPreview =
-				this.props.attributes['relations-preview'];
+			const isRelationsPreview = this.props.attributes['relations-preview'];
 
 			if (isRelationsPreview) {
 				this.relationInstances = processRelations(customDataRelations);

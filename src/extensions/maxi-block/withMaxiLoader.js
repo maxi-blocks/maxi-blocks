@@ -67,11 +67,6 @@ const withMaxiLoader = createHigherOrderComponent(
 
 			const [hasBeenConsolidated, setHasBeenConsolidated] =
 				useState(false);
-			const { blockWantsToRender } = useDispatch('maxiBlocks');
-
-			useLayoutEffect(() => {
-				blockWantsToRender(uniqueID, clientId);
-			}, [blockWantsToRender, uniqueID, clientId]);
 
 			const [canRender, setCanRender] = useState(
 				canBlockRender(uniqueID, clientId)

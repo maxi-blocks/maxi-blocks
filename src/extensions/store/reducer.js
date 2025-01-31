@@ -242,16 +242,6 @@ const reducer = (
 				...state,
 				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
 			};
-		case 'BLOCK_WANTS_TO_RENDER': {
-			const { uniqueID } = action;
-
-			if (state.blocksToRender.includes(uniqueID)) return state;
-
-			return {
-				...state,
-				blocksToRender: [...state.blocksToRender, uniqueID],
-			};
-		}
 		case 'SET_IS_PAGE_LOADED':
 			return {
 				...state,

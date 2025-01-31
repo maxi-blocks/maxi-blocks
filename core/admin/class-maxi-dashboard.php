@@ -1218,7 +1218,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if (!get_option('local_fonts_uploaded')) {
                 require_once plugin_dir_path(__DIR__) .
                     '../core/class-maxi-local-fonts.php';
-                MaxiBlocks_Local_Fonts::register();
+                MaxiBlocks_Local_Fonts::get_instance()->process_all_fonts();
             }
         }
 

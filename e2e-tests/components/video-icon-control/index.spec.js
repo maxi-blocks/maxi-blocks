@@ -121,6 +121,8 @@ describe('Video icon control', () => {
 			newNumber: '44',
 		});
 
+		await page.waitForTimeout(1500);
+
 		expect(await getAttributes('close-icon-spacing-general')).toStrictEqual(
 			44
 		);

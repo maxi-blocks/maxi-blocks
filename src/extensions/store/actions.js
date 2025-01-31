@@ -154,13 +154,6 @@ const actions = {
 			uniqueID,
 		};
 	},
-	blockWantsToRender(uniqueID, clientId) {
-		return {
-			type: 'BLOCK_WANTS_TO_RENDER',
-			uniqueID,
-			clientId,
-		};
-	},
 	blockHasBeenRendered(uniqueID) {
 		return {
 			type: 'BLOCK_HAS_BEEN_RENDERED',

@@ -35,9 +35,17 @@ const isEligible = blockAttributes => {
 	const { transition } = blockAttributes;
 	if (!transition) return false;
 
-
+	// Check if any category needs opacity migration
 	for (const category of Object.values(transition)) {
-		if (!Object.prototype.hasOwnProperty.call(category, 'opacity')) {
+		// If opacity exists but is not properly structured (not an object with properties)
+		if (category.opacity !== undefined && typeof category.opacity !== 'object') {
+			return true;
+		}
+		// If category should have opacity but doesn't
+		if (!Object.prototype.hasOwnProperty.call(category, 'opacity') &&
+			Object.keys(getBlockData(blockAttributes.uniqueID)).some(
+				cat => cat === Object.keys(category)[0]
+			)) {
 			return true;
 		}
 	}

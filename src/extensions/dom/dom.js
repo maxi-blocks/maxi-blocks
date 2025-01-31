@@ -106,24 +106,13 @@ wp.domReady(() => {
 
 			editorWrapper.style.maxWidth = 'initial';
 			const { width } = editorWrapper.getBoundingClientRect();
-			const responsiveDiv = document.querySelector(
-				'.editor-preview-dropdown'
-			);
 
-			let deviceClass = null;
-			let value = null;
-			if (responsiveDiv) {
-				deviceClass = responsiveDiv.className.match(
-					/editor-preview-dropdown--(mobile|tablet|desktop)/i
-				);
-				value = deviceClass ? deviceClass[1] : 'desktop';
-			}
 			const { setMaxiDeviceType } = dispatch('maxiBlocks');
 			const responsiveMenu = document.querySelector(
 				'.components-dropdown-menu__menu .components-menu-items-choice'
 			);
+
 			if (!responsiveMenu) {
-				console.log('setMaxiDeviceType templatePartResizeObserver', width);
 				setMaxiDeviceType({
 					width,
 					changeSize: false,

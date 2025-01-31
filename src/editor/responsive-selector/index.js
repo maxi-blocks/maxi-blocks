@@ -190,14 +190,10 @@ const ResponsiveSelector = props => {
 				);
 				const value = deviceClass ? deviceClass[1] : 'desktop';
 
-				console.log('value', value);
-
 				const maxiValue =
 					(value === 'desktop' && baseBreakpoint) ||
 					(value === 'tablet' && 's') ||
 					(value === 'mobile' && 'xs');
-
-				console.log('maxiValue', maxiValue);
 
 				const editorWrapper =
 					document.querySelector('.edit-post-visual-editor') ||

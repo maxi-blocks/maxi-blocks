@@ -60,13 +60,18 @@ class MaxiBlocks_Styles
 
         add_filter('duplicate_post_new_post', [$this, 'update_post_unique_ids'], 10, 2);
 
-        if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) == $table_name) {
-            add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
-        }
+        // Wrap the has_blocks check in wp action to ensure content is available
+        add_action('wp', function () use ($wpdb, $table_name) {
+            if (class_exists('MaxiBlocks_Blocks') && MaxiBlocks_Blocks::has_blocks()) {
+                if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) == $table_name) {
+                    add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);  // legacy code
+                }
 
-        if (self::should_apply_content_filter()) {
-            add_filter('wp_enqueue_scripts', [$this, 'process_content_frontend']);
-        }
+                if (self::should_apply_content_filter()) {
+                    add_filter('wp_enqueue_scripts', [$this, 'process_content_frontend']);
+                }
+            }
+        });
 
         $this->max_execution_time = ini_get('max_execution_time');
 
@@ -75,11 +80,9 @@ class MaxiBlocks_Styles
                 // Schedule the migration to run in the background
                 wp_schedule_single_event(time(), 'maxi_blocks_migrate_sc_fonts');
             }
-
         }
 
         add_action('maxi_blocks_migrate_sc_fonts', [$this, 'run_migrate_sc_fonts']);
-
     }
 
     private function should_apply_content_filter()
@@ -1564,6 +1567,11 @@ class MaxiBlocks_Styles
             $blocks = array_merge_recursive($blocks, $reusable_blocks);
         }
 
+        $custom_template_parts_blocks = $this->get_parsed_custom_template_parts_blocks_frontend($blocks);
+        if (!empty($custom_template_parts_blocks)) {
+            $blocks = array_merge_recursive($blocks, $custom_template_parts_blocks);
+        }
+
 
         // Process the blocks to extract styles and other metadata.
         list($styles, $prev_styles, $active_custom_data_array, $fonts) = $this->process_blocks_frontend($blocks);
@@ -1887,6 +1895,27 @@ class MaxiBlocks_Styles
         }
 
         return $all_parsed_blocks;
+    }
+
+    private function get_parsed_custom_template_parts_blocks_frontend($blocks)
+    {
+        $parsed_blocks = [];
+
+        foreach ($blocks as $block) {
+            if ($block['blockName'] === 'core/template-part' && !empty($block['attrs']['slug'])) {
+                $part = get_block_template(
+                    get_stylesheet() .
+                        '//' .
+                        $block['attrs']['slug'],
+                    'wp_template_part',
+                );
+                if ($part && !empty($part->content)) {
+                    $parsed_blocks = array_merge($parsed_blocks, parse_blocks($part->content));
+                }
+            }
+        }
+
+        return $parsed_blocks;
     }
 
     /**

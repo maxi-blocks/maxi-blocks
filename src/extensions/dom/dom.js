@@ -108,10 +108,16 @@ wp.domReady(() => {
 			const { width } = editorWrapper.getBoundingClientRect();
 
 			const { setMaxiDeviceType } = dispatch('maxiBlocks');
-			setMaxiDeviceType({
-				width,
-				changeSize: false,
-			});
+			const responsiveMenu = document.querySelector(
+				'.components-dropdown-menu__menu .components-menu-items-choice'
+			);
+
+			if (!responsiveMenu) {
+				setMaxiDeviceType({
+					width,
+					changeSize: false,
+				});
+			}
 
 			const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 				select('maxiBlocks');
@@ -230,11 +236,12 @@ wp.domReady(() => {
 				isNewEditorContentObserver &&
 				siteEditorIframeBody
 			) {
-				setTimeout(() => {
-					dispatch('maxiBlocks').setMaxiDeviceType({
-						deviceType: 'general',
-					});
-				}, 150);
+				if (!getIsTemplatePart())
+					setTimeout(() => {
+						dispatch('maxiBlocks').setMaxiDeviceType({
+							deviceType: 'general',
+						});
+					}, 150);
 
 				isNewEditorContentObserver = false;
 				resizeObserver.observe(resizeObserverTarget);

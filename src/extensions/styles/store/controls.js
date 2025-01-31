@@ -46,6 +46,10 @@ const controls = {
 			await Promise.all(
 				blockStyles.map(async blockStyle => {
 					const { uniqueID } = blockStyle[1];
+					if (uniqueID.includes('svg-')) {
+						console.log('uniqueID', uniqueID);
+						console.log('blockStyle', blockStyle);
+					}
 					const processedStyle = await processCss(
 						frontendStyleGenerator(blockStyle)
 					);

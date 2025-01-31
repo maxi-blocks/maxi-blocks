@@ -1112,7 +1112,8 @@ class MaxiBlockComponent extends Component {
 		let customDataRelations;
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
-		const shouldGenerateNewStyles = !isBreakpointChange || this.props.deviceType === 'xxl';
+		const shouldGenerateNewStyles =
+			!isBreakpointChange || this.props.deviceType === 'xxl';
 
 		if (shouldGenerateNewStyles) {
 			obj = this.getStylesObject;
@@ -1129,6 +1130,7 @@ class MaxiBlockComponent extends Component {
 				customDataRelations = customData[uniqueID]?.relations;
 			}
 		}
+
 
 		this.injectStyles(
 			uniqueID,
@@ -1151,7 +1153,8 @@ class MaxiBlockComponent extends Component {
 
 		// Handle relations if they exist
 		if (customDataRelations) {
-			const isRelationsPreview = this.props.attributes['relations-preview'];
+			const isRelationsPreview =
+				this.props.attributes['relations-preview'];
 
 			if (isRelationsPreview) {
 				this.relationInstances = processRelations(customDataRelations);
@@ -1260,6 +1263,10 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
+		if (uniqueID.includes('svg-')) {
+			console.log('uniqueID', uniqueID);
+			console.log('stylesObj', stylesObj);
+		}
 		if (iframe?.contentDocument?.body) {
 			this.handleIframeStyles(iframe, currentBreakpoint);
 		}
@@ -1279,6 +1286,9 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
+			if (uniqueID.includes('svg-')) {
+				console.log('styleContent', styleContent);
+			}
 			this.updateStyleElement(styleElement, styleContent);
 		}
 	}

@@ -986,7 +986,7 @@ class MaxiBlockComponent extends Component {
 				.getLastInsertedBlocks()
 				.includes(this.props.clientId);
 
-		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {
+		if (!getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});
@@ -1263,10 +1263,6 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
-		if (uniqueID.includes('svg-')) {
-			console.log('uniqueID', uniqueID);
-			console.log('stylesObj', stylesObj);
-		}
 		if (iframe?.contentDocument?.body) {
 			this.handleIframeStyles(iframe, currentBreakpoint);
 		}
@@ -1286,9 +1282,6 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
-			if (uniqueID.includes('svg-')) {
-				console.log('styleContent', styleContent);
-			}
 			this.updateStyleElement(styleElement, styleContent);
 		}
 	}
@@ -1523,13 +1516,6 @@ class MaxiBlockComponent extends Component {
 
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
-		const cacheKey = JSON.stringify({ stylesObj, breakpoints, uniqueID });
-
-		this.cleanupCache();
-
-		if (this.memoizedValues.has(cacheKey)) {
-			return this.memoizedValues.get(cacheKey);
-		}
 
 		const styles = styleResolver({
 			styles: stylesObj,
@@ -1538,7 +1524,6 @@ class MaxiBlockComponent extends Component {
 			uniqueID,
 		});
 
-		this.memoizedValues.set(cacheKey, styles);
 		return styles;
 	}
 

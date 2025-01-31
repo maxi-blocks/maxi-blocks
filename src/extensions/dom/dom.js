@@ -230,9 +230,9 @@ wp.domReady(() => {
 				isNewEditorContentObserver &&
 				siteEditorIframeBody
 			) {
-				setTimeout(() => {
+				if( !getIsTemplatePart()) setTimeout(() => {
 					dispatch('maxiBlocks').setMaxiDeviceType({
-						deviceType: 'general',
+						deviceType: deviceType,
 					});
 				}, 150);
 

@@ -66,7 +66,7 @@ const ResponsiveButton = ({
 			<Button
 				className='maxi-responsive-selector__button-item'
 				onClick={() =>
-					setScreenSize(isBaseBreakpoint ? 'general' : target)
+					setScreenSize(target)
 				}
 				aria-pressed={getIsPressed()}
 			>

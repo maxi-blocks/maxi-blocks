@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`setFormat Should correctly set the format when changing the color of part of the text 1`] = `
+{
+  "content": "Hello <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">world</maxi-blocks/text-custom>!",
+  "custom-formats": {
+    "maxi-text-block__custom-format--0": {
+      "palette-color-general": 4,
+      "palette-opacity-general": 1,
+    },
+  },
+  "formatValue": {
+    "activeFormats": [
+      {
+        "attributes": {
+          "className": "maxi-text-block__custom-format--0",
+        },
+        "type": "maxi-blocks/text-custom",
+      },
+    ],
+    "end": 11,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      ,
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 6,
+    "text": "Hello world!",
+  },
+}
+`;
+
+exports[`setFormat Should work when the selection is collapsed 1`] = `
+{
+  "color-general": null,
+  "content": "Hello world!",
+  "formatValue": {
+    "activeFormats": [],
+    "end": 1,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 1,
+    "text": "Hello world!",
+  },
+  "palette-color-general": 4,
+  "palette-opacity-general": 1,
+  "palette-sc-status-general": false,
+  "palette-status-general": true,
+}
+`;
+
+exports[`setFormat Should work when the selection is collapsed on existing format 1`] = `
+{
+  "color-general": null,
+  "content": "Hello world!",
+  "custom-formats": {},
+  "formatValue": {
+    "activeFormats": [],
+    "end": 7,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 7,
+    "text": "Hello world!",
+  },
+  "palette-color-general": 5,
+  "palette-opacity-general": 1,
+  "palette-sc-status-general": false,
+  "palette-status-general": true,
+}
+`;

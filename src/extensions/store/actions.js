@@ -57,12 +57,6 @@ const actions = {
 		isGutenbergButton = false,
 		changeSize = true,
 	}) {
-		console.log('setMaxiDeviceType');
-		console.log('rawDeviceType', rawDeviceType);
-		console.log('width', width);
-		console.log('isGutenbergButton', isGutenbergButton);
-		console.log('changeSize', changeSize);
-		console.log('--------------------------------');
 		const { receiveBaseBreakpoint, receiveMaxiBreakpoints } =
 			select('maxiBlocks');
 		const breakpoints = receiveMaxiBreakpoints();

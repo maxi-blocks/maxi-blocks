@@ -113,6 +113,7 @@ wp.domReady(() => {
 			);
 
 			if (!responsiveMenu) {
+				console.log('width', width);
 				setMaxiDeviceType({
 					width,
 					changeSize: false,

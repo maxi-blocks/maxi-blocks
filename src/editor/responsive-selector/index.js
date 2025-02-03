@@ -176,7 +176,6 @@ const ResponsiveSelector = props => {
 		});
 	});
 
-	// TODO: check if it can be reduced to avoid the amount of resources used (MVP)
 	const onChangeNativeResponsive = useCallback(button => {
 		button.addEventListener('click', e => {
 			const responsiveDiv = document.querySelector(
@@ -195,6 +194,8 @@ const ResponsiveSelector = props => {
 					(value === 'tablet' && 's') ||
 					(value === 'mobile' && 'xs');
 
+				console.log('maxiValue', maxiValue);
+
 				const editorWrapper =
 					document.querySelector('.edit-post-visual-editor') ||
 					document.querySelector('.edit-site-visual-editor') ||
@@ -203,7 +204,19 @@ const ResponsiveSelector = props => {
 				editorWrapper.setAttribute('maxi-blocks-responsive', maxiValue);
 				editorWrapper.removeAttribute('maxi-blocks-responsive-width');
 
-				if (value === 'desktop') editorWrapper.style.width = '';
+				if (value === 'desktop') {
+					console.log('Desktop');
+					editorWrapper.style.width = '';
+					const responsiveToolbar = document.querySelector(
+						'.maxi-responsive-selector'
+					);
+					console.log(' responsiveToolbar',  responsiveToolbar);
+					if (responsiveToolbar) {
+						const baseButton = responsiveToolbar.querySelector('div.maxi-responsive-selector__base button');
+						console.log('baseButton', baseButton)
+						if(baseButton) baseButton.click();
+					}
+				}
 
 				setMaxiDeviceType({
 					deviceType: maxiValue,

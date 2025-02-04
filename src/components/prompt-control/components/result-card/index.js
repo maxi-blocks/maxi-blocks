@@ -30,7 +30,7 @@ import './editor.scss';
 /**
  * Icons
  */
-import { promptDelete, promptCopy } from '@maxi-icons';
+import { promptDelete, promptCopy, arrowIcon } from '@maxi-icons';
 
 const ResultCard = ({
 	result,
@@ -61,6 +61,8 @@ const ResultCard = ({
 
 	const ref = useRef();
 	const endOfContentRef = useRef();
+
+	const [copySuccess, setCopySuccess] = useState(false);
 
 	const limitContent = (content, limit = CONTENT_LIMIT) => {
 		if (content.length <= limit) {
@@ -114,7 +116,33 @@ const ResultCard = ({
 
 	const handleCopy = async () => {
 		try {
-			await navigator.clipboard.writeText(result.content);
+			// Try modern clipboard API first
+			if (navigator?.clipboard?.writeText) {
+				await navigator.clipboard.writeText(result.content);
+				setCopySuccess(true);
+				setTimeout(() => setCopySuccess(false), 2000);
+				return;
+			}
+
+			// Fallback: Create temporary textarea element
+			const textArea = document.createElement('textarea');
+			textArea.value = result.content;
+			textArea.style.position = 'fixed';
+			textArea.style.left = '-999999px';
+			textArea.style.top = '-999999px';
+			document.body.appendChild(textArea);
+			textArea.focus();
+			textArea.select();
+
+			try {
+				document.execCommand('copy');
+				setCopySuccess(true);
+				setTimeout(() => setCopySuccess(false), 2000);
+			} catch (err) {
+				console.error('MaxiBlocks. Failed to copy text: ', err);
+			}
+
+			document.body.removeChild(textArea);
 		} catch (err) {
 			console.error('MaxiBlocks. Failed to copy text: ', err);
 		}
@@ -251,9 +279,9 @@ const ResultCard = ({
 						onClick={handleCopy}
 					>
 						<span className='tooltip'>
-							{__('Copy', 'maxi-blocks')}
+							{copySuccess ? __('Copied!', 'maxi-blocks') : __('Copy', 'maxi-blocks')}
 						</span>
-						<Icon icon={promptCopy} />
+						<Icon icon={copySuccess ? arrowIcon  : promptCopy} />
 					</Button>
 					<Button
 						className='maxi-prompt-control__button'

@@ -785,6 +785,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'gpt-4-32k',
                 'gpt-3.5-turbo',
                 'gpt-3.5-turbo-16k',
+                'gpt-4o-mini-realtime-preview',
+                'o1-mini',
+                'o1-preview',
             ]]);
 
             $content .= get_submit_button();

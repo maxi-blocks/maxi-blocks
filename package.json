@@ -91,6 +91,7 @@
 		"@babel/plugin-proposal-object-rest-spread": "latest",
 		"@babel/plugin-syntax-object-rest-spread": "latest",
 		"@babel/plugin-transform-spread": "latest",
+		"@limegrass/eslint-plugin-import-alias": "^1.5.0",
 		"@prettier/plugin-php": "latest",
 		"@wordpress/base-styles": "latest",
 		"@wordpress/e2e-test-utils": "10.13.13",

@@ -275,12 +275,9 @@ const ResultCard = ({
 			{!isModifyTab && !result.isSelectedText && (
 				<div className={`${className}__options`}>
 					<Button
-						className='maxi-prompt-control__button has-tooltip'
+						className='maxi-prompt-control__button'
 						onClick={handleCopy}
 					>
-						<span className='tooltip'>
-							{copySuccess ? __('Copied!', 'maxi-blocks') : __('Copy', 'maxi-blocks')}
-						</span>
 						<Icon icon={copySuccess ? arrowIcon  : promptCopy} />
 					</Button>
 					<Button

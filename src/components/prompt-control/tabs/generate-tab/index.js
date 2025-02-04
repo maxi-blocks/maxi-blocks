@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { Fragment } from '@wordpress/element';
-import { sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies

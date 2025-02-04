@@ -93,6 +93,11 @@
 		"import/no-extraneous-dependencies": "off",
 		"import/first": "off",
 		"import/order": "off", // Needs to be organized
-		"@limegrass/import-alias/import-alias": "error"
+		"@limegrass/import-alias/import-alias": [
+			"error",
+			{
+				"relativeImportOverrides": [{ "path": ".", "depth": 0 }]
+			}
+		]
 	}
 }

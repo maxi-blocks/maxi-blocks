@@ -288,7 +288,7 @@ const ResultCard = ({
 						onClick={onInsert}
 					>
 						{__(
-							isSelectedText ? 'Replace selection' : 'Insert',
+							isSelectedText ? 'Replace' : 'Insert',
 							'maxi-blocks'
 						)}
 					</Button>

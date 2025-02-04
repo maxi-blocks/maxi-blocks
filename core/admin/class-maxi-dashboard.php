@@ -1014,7 +1014,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if ($is_ai_model) {
                 // For AI model dropdown, show loading placeholder
-                $dropdown .= '<option value="">'.__('Loading available models...', 'maxi-blocks').'</option>';
+                $dropdown .= '<option value="">'.__('', 'maxi-blocks').'</option>';
             } else {
                 // For other dropdowns, process the static list
                 if(($key = array_search($option_value, $list)) !== false) {

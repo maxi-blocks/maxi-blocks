@@ -270,7 +270,6 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	};
 
 	const fetchOpenAIModels = async (apiKey) => {
-		console.log('Fetching models...');
 		try {
 			const response = await fetch('https://api.openai.com/v1/models', {
 				method: 'GET',
@@ -285,12 +284,11 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			}
 
 			const data = await response.json();
-			const models = data.data
-				.filter(model => model.id.includes('gpt') && !model.id.includes('audio'))
+
+			return data.data
+				.filter(model => !model.id.includes('audio') && (model.id.includes('o1') || model.id.includes('o3') || model.id.includes('gpt')))
 				.map(model => model.id)
 				.sort();
-			console.log('Fetched models:', models);
-			return models;
 		} catch (error) {
 			console.error('Error fetching OpenAI models:', error);
 			return [];
@@ -311,8 +309,15 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			return;
 		}
 
-		// Show loading message initially
-		modelSelect.innerHTML = '<option value="">Loading available models...</option>';
+		// Only show loading message if we have a valid API key
+		if (apiKey) {
+			modelSelect.innerHTML = '<option value="">Loading available models...</option>';
+		} else {
+			modelSelect.innerHTML = '<option value="">Please add your API key</option>';
+			modelInput.value = '';
+			isUpdatingDropdown = false;
+			return;
+		}
 
 		try {
 			const models = await fetchOpenAIModels(apiKey);

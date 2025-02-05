@@ -83,10 +83,29 @@ export const getExamplesSection = contentType => {
 
 export const getFormattedMessages = async (
 	systemMessageTemplate,
-	humanMessageTemplate
+	humanMessageTemplate,
+	modelName
 ) => {
+	const directGeneratorInstruction = `Act as a direct content generator that only outputs the requested content.
+Never ask questions or offer help - just generate the content.
+
+`;
+
+	// For o1 and o3 models, we need to combine system and human messages differently
+	if (modelName?.includes('o1') || modelName?.includes('o3')) {
+		return [
+			{
+				role: 'user',
+				content: `${directGeneratorInstruction}${systemMessageTemplate}
+
+${humanMessageTemplate}`,
+			},
+		];
+	}
+
+	// Original OpenAI format
 	const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
-		systemMessageTemplate
+		`${directGeneratorInstruction}${systemMessageTemplate}`
 	);
 
 	const humanMessagePrompt =
@@ -111,13 +130,23 @@ export const getUniqueId = results =>
 		  ) + 1
 		: 1;
 
-export const createChat = (openAIApiKey, modelName, additionalParams) =>
-	new ChatOpenAI({
+export const createChat = (openAIApiKey, modelName, additionalParams) => {
+	const config = {
 		openAIApiKey,
 		modelName,
-		...additionalParams,
 		streaming: true,
-	});
+	};
+
+	// Only add temperature for non-o1 and non-o3 models
+	if (!modelName?.includes('o1') && !modelName?.includes('o3')) {
+		config.temperature = additionalParams?.temperature;
+	}
+	if (modelName?.includes('o1') && !modelName?.includes('mini')) {
+		config.streaming = false;
+	}
+
+	return new ChatOpenAI(config);
+};
 
 export const updateResultsWithLoading = (
 	prevResults,

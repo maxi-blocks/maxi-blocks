@@ -22,6 +22,7 @@ import {
 	TONES,
 	WRITING_STYLES,
 } from '@components/prompt-control/constants';
+import { useAISettings } from '@components/prompt-control/hooks';
 
 /**
  * Styles
@@ -66,8 +67,19 @@ const GenerateTab = ({
 
 	const className = 'maxi-prompt-control-generate-tab';
 
+	const aiSettings = useAISettings();
+
 	return (
 		<div className={className}>
+			{aiSettings?.model && (
+				<div className={`${className}__ai-model`}>
+					<p>
+						{__('You are using ', 'maxi-blocks')}
+						<strong>{aiSettings.model}</strong>
+						{__(' AI model', 'maxi-blocks')}
+					</p>
+				</div>
+			)}
 			{selectedText && (
 				<ResultCard
 					result={{

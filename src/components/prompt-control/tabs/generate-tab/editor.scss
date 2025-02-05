@@ -19,4 +19,16 @@
 			color: var(--maxi-grey-7-color);
 		}
 	}
+
+	&__ai-model {
+		p {
+			font-size: small;
+			color: var(--maxi-grey-7-color);
+		}
+
+		p strong {
+			font-weight: 600;
+			color: var(--maxi-grey-7-color);
+		}
+	}
 }

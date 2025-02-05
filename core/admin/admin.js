@@ -285,8 +285,27 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 			const data = await response.json();
 
+			const excludedPatterns = [
+				'audio',
+				'gpt-3.5-turbo-instruct',
+				'gpt-4o-mini-realtime-preview',
+				'gpt-4o-realtime-preview'
+			];
+
+			const includedPatterns = ['o1', 'o3', 'gpt'];
+
 			return data.data
-				.filter(model => !model.id.includes('audio') && (model.id.includes('o1') || model.id.includes('o3') || model.id.includes('gpt')))
+				.filter(model => {
+					const modelId = model.id;
+					const isExcluded = excludedPatterns.some(pattern =>
+						modelId.includes(pattern)
+					);
+					const isIncluded = includedPatterns.some(pattern =>
+						modelId.includes(pattern)
+					);
+
+					return !isExcluded && isIncluded;
+				})
 				.map(model => model.id)
 				.sort();
 		} catch (error) {

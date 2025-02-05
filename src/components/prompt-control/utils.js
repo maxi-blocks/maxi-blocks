@@ -86,15 +86,17 @@ export const getFormattedMessages = async (
 	humanMessageTemplate,
 	modelName
 ) => {
+	const directGeneratorInstruction = `Act as a direct content generator that only outputs the requested content.
+Never ask questions or offer help - just generate the content.
+
+`;
+
 	// For o1 and o3 models, we need to combine system and human messages differently
 	if (modelName?.includes('o1') || modelName?.includes('o3')) {
 		return [
 			{
 				role: 'user',
-				content: `Act as a direct content generator that only outputs the requested content.
-Never ask questions or offer help - just generate the content.
-
-${systemMessageTemplate}
+				content: `${directGeneratorInstruction}${systemMessageTemplate}
 
 ${humanMessageTemplate}`,
 			},
@@ -103,7 +105,7 @@ ${humanMessageTemplate}`,
 
 	// Original OpenAI format
 	const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
-		systemMessageTemplate
+		`${directGeneratorInstruction}${systemMessageTemplate}`
 	);
 
 	const humanMessagePrompt =

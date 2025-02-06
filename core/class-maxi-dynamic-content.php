@@ -221,7 +221,7 @@ class MaxiBlocks_DynamicContent
                         $args['category__in'] = [$id]; // Array of category IDs
                     } else {
                         error_log(
-                            'Categories are not associated with this post type.',
+                            __('Categories are not associated with this post type.', 'maxi-blocks'),
                         );
                     }
                     break;
@@ -239,7 +239,7 @@ class MaxiBlocks_DynamicContent
                         $args['tag__in'] = [$id]; // Array of tag IDs
                     } else {
                         error_log(
-                            'Tags are not associated with this post type.',
+                            __('Tags are not associated with this post type.', 'maxi-blocks'),
                         );
                     }
                     break;
@@ -272,7 +272,7 @@ class MaxiBlocks_DynamicContent
                             ],
                         ];
                     } else {
-                        error_log('Unsupported archive type.');
+                        error_log(__('Unsupported archive type.', 'maxi-blocks'));
                     }
                     break;
             }
@@ -648,7 +648,7 @@ class MaxiBlocks_DynamicContent
             } catch (Exception $e) {
                 // Log any exceptions and return the unmodified content
                 error_log(
-                    'Error in render_pagination for uniqueID ' .
+                    __('Error in render_pagination for uniqueID ', 'maxi-blocks') .
                         $unique_id .
                         ': ' .
                         $e->getMessage(),
@@ -2526,7 +2526,7 @@ class MaxiBlocks_DynamicContent
                 new DateTimeZone($options['timezone']),
             );
         } catch (Exception $e) {
-            error_log('Failed to create DateTime object: ' . $e->getMessage());
+            error_log(__('Failed to create DateTime object: ', 'maxi-blocks') . $e->getMessage());
             return '';
         }
 

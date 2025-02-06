@@ -1,40 +1,49 @@
-const axis = ['top', 'left', 'bottom', 'right'];
+// Pre-compute type mappings and position units to avoid repetitive string operations
+const TYPE_MAP = { shape: 'svg' };
+const POSITION_UNITS = ['top', 'left', 'bottom', 'right'].map(a => `position-${a}-unit-general`);
 
-const positionArray = axis.map(a => `position-${a}-unit-general`);
-
+// Memoize type calculations
 const getLayerType = layer => {
-	let { type } = layer;
-
-	if (type === 'shape') type = 'svg';
-	else type = `${type}-wrapper`;
-
-	return type;
+	const type = TYPE_MAP[layer.type] || layer.type;
+	return type === 'svg' ? type : `${type}-wrapper`;
 };
 
-const name = 'Background Position';
+const isEligible = blockAttributes => {
+	const layers = blockAttributes['background-layers'];
+	if (!layers) return false;
 
-const isEligible = blockAttributes =>
-	blockAttributes['background-layers']?.some(
-		layer =>
-			!positionArray.every(
-				unit => `background-${getLayerType(layer)}-${unit}` in layer
-			)
-	);
+	// Early exit if no layers
+	for (let i = 0; i < layers.length; i++) {
+		const type = getLayerType(layers[i]);
+		const prefix = `background-${type}-`;
+
+		for (const unit of POSITION_UNITS) {
+			if (!(prefix + unit in layers[i])) return true;
+		}
+	}
+	return false;
+};
 
 const migrate = newAttributes => {
-	const response = { ...newAttributes };
+	if (!newAttributes['background-layers']?.length) return newAttributes;
 
-	response['background-layers'].forEach((layer, i) => {
-		const type = getLayerType(layer);
+	const layers = newAttributes['background-layers'];
 
-		positionArray.forEach(unit => {
-			if (!(`background-${type}-${unit}` in layer))
-				response['background-layers'][i][`background-${type}-${unit}`] =
-					'px';
-		});
-	});
+	// Avoid spread operator for better performance
+	const response = Object.assign({}, newAttributes);
+
+	for (let i = 0; i < layers.length; i++) {
+		const type = getLayerType(layers[i]);
+		const prefix = `background-${type}-`;
+
+		for (const unit of POSITION_UNITS) {
+			if (!(prefix + unit in layers[i])) {
+				layers[i][prefix + unit] = 'px';
+			}
+		}
+	}
 
 	return response;
 };
 
-export default { name, isEligible, migrate };
+export default { name: 'Background Position', isEligible, migrate };

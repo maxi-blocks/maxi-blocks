@@ -270,34 +270,148 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		);
 	};
 
+	const fetchOpenAIModels = async (apiKey) => {
+		try {
+			const response = await fetch('https://api.openai.com/v1/models', {
+				method: 'GET',
+				headers: {
+					'Authorization': `Bearer ${apiKey}`,
+					'Content-Type': 'application/json',
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to fetch models');
+			}
+
+			const data = await response.json();
+
+			const excludedPatterns = [
+				'audio',
+				'gpt-3.5-turbo-instruct',
+				'gpt-4o-mini-realtime-preview',
+				'gpt-4o-realtime-preview'
+			];
+
+			const includedPatterns = ['o1', 'o3', 'gpt'];
+
+			return data.data
+				.filter(model => {
+					const modelId = model.id;
+					const isExcluded = excludedPatterns.some(pattern =>
+						modelId.includes(pattern)
+					);
+					const isIncluded = includedPatterns.some(pattern =>
+						modelId.includes(pattern)
+					);
+
+					return !isExcluded && isIncluded;
+				})
+				.map(model => model.id)
+				.sort();
+		} catch (error) {
+			console.error('Error fetching OpenAI models:', error);
+			return [];
+		}
+	};
+
+	let isUpdatingDropdown = false;
+
+	const updateModelDropdown = async (apiKey) => {
+		if (isUpdatingDropdown) return;
+		isUpdatingDropdown = true;
+
+		const modelSelect = document.getElementById('maxi_ai_model');
+		const modelInput = document.querySelector('input#maxi_ai_model');
+
+		if (!modelSelect || !modelInput) {
+			isUpdatingDropdown = false;
+			return;
+		}
+
+		// Only show loading message if we have a valid API key
+		if (apiKey) {
+			modelSelect.innerHTML = '<option value="">Loading available models...</option>';
+		} else {
+			modelSelect.innerHTML = '<option value="">Please add your API key</option>';
+			modelInput.value = '';
+			isUpdatingDropdown = false;
+			return;
+		}
+
+		try {
+			const models = await fetchOpenAIModels(apiKey);
+
+			// Clear existing options
+			modelSelect.innerHTML = '';
+
+			if (models.length === 0) {
+				const option = document.createElement('option');
+				option.value = '';
+				option.textContent = 'No models available - check API key';
+				modelSelect.appendChild(option);
+				modelInput.value = '';
+				isUpdatingDropdown = false;
+				return;
+			}
+
+			// Add available models
+			models.forEach(modelId => {
+				const option = document.createElement('option');
+				option.value = modelId;
+				option.textContent = modelId;
+				modelSelect.appendChild(option);
+			});
+
+			// Get the saved value from WordPress options via localized script
+			const currentValue = window.maxiAiSettings?.defaultModel || 'gpt-3.5-turbo';
+			modelInput.value = currentValue;
+
+			// Try to restore previous selection if available
+			if (models.includes(currentValue)) {
+				modelSelect.value = currentValue;
+			} else {
+				// If previous selection not available, use first model
+				modelSelect.value = models[0];
+				modelInput.value = models[0];
+			}
+
+		} catch (error) {
+			console.error('Error updating model dropdown:', error);
+			modelSelect.innerHTML = '<option value="">Error loading models</option>';
+			modelInput.value = '';
+		} finally {
+			isUpdatingDropdown = false;
+		}
+	};
+
 	const testOpenAIApiKey = () => {
 		const openAIApiKey = getOpenAIApiKey();
 
 		if (openAIApiKey === '') {
-			openAIApiKeyCustomValidation(''); // Handle empty input case here
+			openAIApiKeyCustomValidation('');
 			return;
 		}
 
 		openAIApiKeyCustomValidation('validating');
 
-		fetch('https://api.openai.com/v1/chat/completions', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${openAIApiKey}`,
-			},
-			body: JSON.stringify({
-				messages: [
-					{
-						role: 'user',
-						content: 'Hello',
-					},
-				],
-				model: 'gpt-3.5-turbo',
-				max_tokens: 1,
+		// Test the API key and update models
+		Promise.all([
+			fetch('https://api.openai.com/v1/chat/completions', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${openAIApiKey}`,
+				},
+				body: JSON.stringify({
+					messages: [{ role: 'user', content: 'Hello' }],
+					model: 'gpt-3.5-turbo',
+					max_tokens: 1,
+				}),
 			}),
-		})
-			.then(response => {
+			updateModelDropdown(openAIApiKey)
+		])
+			.then(([response]) => {
 				if (response.ok) {
 					openAIApiKeyCustomValidation(true);
 				} else {
@@ -310,9 +424,29 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			});
 	};
 
-	openAIApiKeyVisibleInput?.addEventListener('input', () => {
-		testOpenAIApiKey();
-	});
+	// Check if openAIApiKeyVisibleInput exists before executing related code
+	if (openAIApiKeyVisibleInput) {
+		const openAIApiKey = getOpenAIApiKey();
+		if (openAIApiKey) {
+			updateModelDropdown(openAIApiKey);
+		}
+
+		// Handle select changes
+		const modelSelect = document.getElementById('maxi_ai_model');
+		if (modelSelect) {
+			modelSelect.addEventListener('change', function() {
+				const modelInput = document.querySelector('input#maxi_ai_model');
+				if (modelInput) {
+					modelInput.value = this.value;
+				}
+			});
+		}
+
+		// Handle API key changes
+		openAIApiKeyVisibleInput.addEventListener('input', () => {
+			testOpenAIApiKey();
+		});
+	}
 
 	function autoResize(textarea) {
 		const maxHeight = 300; // Set this to your preferred maximum height, e.g., 200, 300, or 400 px
@@ -341,10 +475,4 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			autoResize(textarea);
 		});
 	});
-
-	const targetNode = document.body;
-	const observerOptions = {
-		childList: true,
-		subtree: true,
-	};
 });

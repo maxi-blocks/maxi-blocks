@@ -162,6 +162,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'maxi-blocks',
                     ),
                 ]);
+                wp_localize_script(
+                    'maxi-admin',
+                    'maxiAiSettings',
+                    array(
+                        'defaultModel' => get_option('maxi_ai_model', 'gpt-3.5-turbo')
+                    )
+                );
+
             }
         }
 
@@ -1056,22 +1064,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'password',
             );
 
-            $description =
-                '<h4>' . __('ChatGPT AI Model', 'maxi-blocks') . '</h4>';
-            $content .= $this->generate_setting(
-                $description,
-                'maxi_ai_model',
-                '',
-                'dropdown',
-                [
-                    'list' => [
-                        'gpt-4',
-                        'gpt-4-32k',
-                        'gpt-3.5-turbo',
-                        'gpt-3.5-turbo-16k',
-                    ],
-                ],
-            );
+            $description = '<h4>'.__('ChatGPT AI Model', 'maxi-blocks').'</h4>';
+            $content .= $this->generate_setting($description, 'maxi_ai_model', '', 'dropdown', ['list' => []]);
 
             $content .= get_submit_button();
 
@@ -1466,6 +1460,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function generate_custom_dropdown($option, $args)
         {
             $list = isset($args['list']) ? $args['list'] : [];
+            $is_ai_model = $option === 'maxi_ai_model';
 
             $dropdown =
                 '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
@@ -1482,14 +1477,19 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 ? get_option($option)
                 : 'gpt-3.5-turbo';
 
-            if (($key = array_search($option_value, $list)) !== false) {
-                unset($list[$key]);
-                array_unshift($list, $option_value);
-            }
+            if ($is_ai_model) {
+                // For AI model dropdown, show loading placeholder
+                $dropdown .= '<option value="">'.__('', 'maxi-blocks').'</option>';
+            } else {
+                // For other dropdowns, process the static list
+                if(($key = array_search($option_value, $list)) !== false) {
+                    unset($list[$key]);
+                    array_unshift($list, $option_value);
+                }
 
-            foreach ($list as $value) {
-                $dropdown .=
-                    '<option value="' . $value . '">' . $value . '</option>';
+                foreach($list as $value) {
+                    $dropdown .= '<option value="'.$value.'">'.$value.'</option>';
+                }
             }
 
             $dropdown .= '</select>';
@@ -1713,7 +1713,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if (!get_option('local_fonts_uploaded')) {
                 require_once plugin_dir_path(__DIR__) .
                     '../core/class-maxi-local-fonts.php';
-                MaxiBlocks_Local_Fonts::register();
+                MaxiBlocks_Local_Fonts::get_instance()->process_all_fonts();
             }
         }
 

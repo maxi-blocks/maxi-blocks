@@ -93,110 +93,150 @@ export const getIdOptions = async (
 	relation,
 	author,
 	isCustomPostType,
-	isCustomTaxonomy
+	isCustomTaxonomy,
+	paginationPerPage = null
 ) => {
-	if (![...idTypes].includes(type) && !isCustomPostType && !isCustomTaxonomy)
+	if (![...idTypes].includes(type) && !isCustomPostType && !isCustomTaxonomy) {
 		return false;
+	}
 
 	let data;
-	const args = { per_page: -1 };
+	const args = {
+		per_page: relation === 'by-id' ? -1 : (paginationPerPage * 3 || -1)
+	};
 	const { getEntityRecords } = resolveSelect(coreStore);
 
-	if (relation.includes('by-custom-taxonomy')) {
-		const taxonomy = relation.split('custom-taxonomy-').pop();
-		const cacheKey = `customTaxonomy.${taxonomy}`;
-		data = getCachedData(cacheKey);
-		if (!data) {
-			data = await getEntityRecords('taxonomy', taxonomy, args);
-			setCachedData(cacheKey, data);
-		}
-	} else if (['users'].includes(type) || relation === 'by-author') {
-		data = getCachedData('users');
-		if (!data) {
-			data = await fetchUsers(type);
-			setCachedData('users', data);
-		}
-	} else if (
-		['categories', 'product_categories'].includes(type) ||
-		relation === 'by-category'
-	) {
-		const categoryType = ['products', 'product_categories'].includes(type)
-			? 'product_cat'
-			: 'category';
-		const cacheKey = `categories.${categoryType}`;
-		data = getCachedData(cacheKey);
-		if (!data) {
-			data = await getEntityRecords('taxonomy', categoryType, args);
-			setCachedData(cacheKey, data);
-		}
-	} else if (
-		['tags', 'product_tags'].includes(type) ||
-		relation === 'by-tag'
-	) {
-		const tagType = ['products', 'product_tags'].includes(type)
-			? 'product_tag'
-			: 'post_tag';
-		const cacheKey = `tags.${tagType}`;
-		data = getCachedData(cacheKey);
-		if (!data) {
-			data = await getEntityRecords('taxonomy', tagType, args);
-			setCachedData(cacheKey, data);
-		}
-	} else if (isCustomTaxonomy) {
-		const cacheKey = `customTaxonomy.${type}`;
-		data = getCachedData(cacheKey);
-		if (!data) {
-			data = await getEntityRecords('taxonomy', type, args);
-			setCachedData(cacheKey, data);
-		}
-	} else if (isCustomPostType) {
-		const cacheKey = `customPostType.${type}`;
-		data = getCachedData(cacheKey);
-		if (!data) {
-			data = await getEntityRecords('postType', type, args);
-			setCachedData(cacheKey, data);
-		}
-	} else if (relation === 'current-archive') {
-		const currentTemplateType = getCurrentTemplateSlug();
-		const cacheKey = `currentArchive.${currentTemplateType}`;
-		data = getCachedData(cacheKey);
-		if (!data) {
-			if (currentTemplateType === 'author') {
-				data = await fetchUsers();
-			} else if (
-				['category', 'tag', 'taxonomy'].includes(currentTemplateType)
-			) {
-				data = await getEntityRecords(
-					'taxonomy',
-					currentTemplateType,
-					args
-				);
-			} else {
-				data = await getEntityRecords('taxonomy', 'category', args);
+	try {
+		if (relation.includes('by-custom-taxonomy')) {
+			const taxonomy = relation.split('custom-taxonomy-').pop();
+			const cacheKey = `customTaxonomy.${taxonomy}`;
+			data = getCachedData(cacheKey);
+			if (!data) {
+				data = await getEntityRecords('taxonomy', taxonomy, args);
+				setCachedData(cacheKey, data);
 			}
-			setCachedData(cacheKey, data);
+		} else if (['users'].includes(type) || relation === 'by-author') {
+			data = getCachedData('users');
+			if (!data) {
+				data = await fetchUsers(type);
+				setCachedData('users', data);
+			}
+		} else if (
+			['categories', 'product_categories'].includes(type) ||
+			relation === 'by-category'
+		) {
+			const categoryType = ['products', 'product_categories'].includes(type)
+				? 'product_cat'
+				: 'category';
+			const cacheKey = `categories.${categoryType}`;
+
+			data = getCachedData(cacheKey);
+
+			if (!data) {
+				// 1. Add request timeout with shorter duration (1 second)
+				const timeoutPromise = new Promise((_, reject) =>
+					setTimeout(() => reject(new Error('Timeout')), 1000)
+				);
+
+				try {
+					// 2. Limit fields to only what we need
+					const optimizedArgs = {
+						...args,
+						_fields: ['id', 'name'], // Only fetch required fields
+						orderby: 'id',  // Optimize DB query
+						per_page: 100   // Limit initial load
+					};
+
+					// 3. Race between timeout and actual request
+					data = await Promise.race([
+						getEntityRecords('taxonomy', categoryType, optimizedArgs),
+						timeoutPromise
+					]);
+
+					if (data) {
+						setCachedData(cacheKey, data);
+					}
+				} catch (error) {
+					if (error.message === 'Timeout') {
+						// 4. Return cached data even if expired
+						data = cache[cacheKey]?.data || [];
+					} else {
+						console.error(`Category fetch error for ${cacheKey}:`, error);
+					}
+				}
+			}
+
+		} else if (
+			['tags', 'product_tags'].includes(type) ||
+			relation === 'by-tag'
+		) {
+			const tagType = ['products', 'product_tags'].includes(type)
+				? 'product_tag'
+				: 'post_tag';
+			const cacheKey = `tags.${tagType}`;
+			data = getCachedData(cacheKey);
+			if (!data) {
+				data = await getEntityRecords('taxonomy', tagType, args);
+				setCachedData(cacheKey, data);
+			}
+		} else if (isCustomTaxonomy) {
+			const cacheKey = `customTaxonomy.${type}`;
+			data = getCachedData(cacheKey);
+			if (!data) {
+				data = await getEntityRecords('taxonomy', type, args);
+				setCachedData(cacheKey, data);
+			}
+		} else if (isCustomPostType) {
+			const cacheKey = `customPostType.${type}`;
+			data = getCachedData(cacheKey);
+			if (!data) {
+				data = await getEntityRecords('postType', type, args);
+				setCachedData(cacheKey, data);
+			}
+		} else if (relation === 'current-archive') {
+			const currentTemplateType = getCurrentTemplateSlug();
+			const cacheKey = `currentArchive.${currentTemplateType}`;
+			data = getCachedData(cacheKey);
+			if (!data) {
+				if (currentTemplateType === 'author') {
+					data = await fetchUsers();
+				} else if (
+					['category', 'tag', 'taxonomy'].includes(currentTemplateType)
+				) {
+					data = await getEntityRecords(
+						'taxonomy',
+						currentTemplateType,
+						args
+					);
+				} else {
+					data = await getEntityRecords('taxonomy', 'category', args);
+				}
+				setCachedData(cacheKey, data);
+			}
+		} else if (getCurrentTemplateSlug() === 'archive') {
+			const cacheKey = 'currentArchive.archive';
+			data = getCachedData(cacheKey);
+			if (!data) {
+				data = await getEntityRecords('taxonomy', 'category', args);
+				setCachedData(cacheKey, data);
+			}
+		} else {
+			const dictionary = {
+				posts: 'post',
+				pages: 'page',
+				media: 'attachment',
+				products: 'product',
+			};
+			const postType = dictionary[type];
+			const cacheKey = `postType.${postType}`;
+			data = getCachedData(cacheKey);
+			if (!data) {
+				data = await getEntityRecords('postType', postType, args);
+				setCachedData(cacheKey, data);
+			}
 		}
-	} else if (getCurrentTemplateSlug() === 'archive') {
-		const cacheKey = 'currentArchive.archive';
-		data = getCachedData(cacheKey);
-		if (!data) {
-			data = await getEntityRecords('taxonomy', 'category', args);
-			setCachedData(cacheKey, data);
-		}
-	} else {
-		const dictionary = {
-			posts: 'post',
-			pages: 'page',
-			media: 'attachment',
-			products: 'product',
-		};
-		const postType = dictionary[type];
-		const cacheKey = `postType.${postType}`;
-		data = getCachedData(cacheKey);
-		if (!data) {
-			data = await getEntityRecords('postType', postType, args);
-			setCachedData(cacheKey, data);
-		}
+	} catch (error) {
+		console.error('Error in getIdOptions:', error);
 	}
 
 	return data;
@@ -207,7 +247,7 @@ const getDCOptions = async (
 	postIdOptions,
 	contentType,
 	isCL = false,
-	{ 'cl-status': clStatus } = {}
+	{ 'cl-status': clStatus, 'cl-pagination-per-page': clPaginationPerPage } = {},
 ) => {
 	let isCustomPostType = false;
 	let isCustomTaxonomy = false;
@@ -230,7 +270,8 @@ const getDCOptions = async (
 		relation,
 		author,
 		isCustomPostType,
-		isCustomTaxonomy
+		isCustomTaxonomy,
+		clPaginationPerPage
 	);
 
 	if (!data) {
@@ -245,7 +286,7 @@ const getDCOptions = async (
 	const newPostIdOptions = data.map(item => {
 		if (relation.includes('by-custom-taxonomy')) {
 			return {
-				label: limitString(item.name, 20),
+				label: limitString(item.name, 25),
 				value: +item.id,
 			};
 		}
@@ -260,7 +301,7 @@ const getDCOptions = async (
 			orderByRelations.includes(relation)
 		) {
 			return {
-				label: limitString(item.name, 10),
+				label: limitString(item.name, 25),
 				value: +item.id,
 			};
 		}
@@ -300,7 +341,7 @@ const getDCOptions = async (
 				) {
 					newValues[`${prefix}relation`] = 'by-date';
 					newValues[`${prefix}order`] = 'desc';
-				} else {
+				} else if (data.length) {
 					newValues[`${prefix}id`] = Number(data[0].id);
 					idTypes.current = data[0].id;
 				}

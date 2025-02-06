@@ -154,7 +154,11 @@ ${getExamplesSection(contentType)}`;
 			prompt ? `\nUser's custom instructions: ${prompt}` : ''
 		}`;
 
-		return getFormattedMessages(systemTemplate, humanTemplate);
+		return getFormattedMessages(
+			systemTemplate,
+			humanTemplate,
+			AISettings.model
+		);
 	};
 
 	const generateContent = async () => {

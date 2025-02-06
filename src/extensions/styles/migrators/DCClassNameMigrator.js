@@ -1,8 +1,8 @@
 import { isNil } from 'lodash';
 
-const name = 'DC Class Name';
-
-const maxiVersions = [
+// Constants
+const NAME = 'DC Class Name';
+const VERSIONS = new Set([
 	'0.1',
 	'0.0.1-SC1',
 	'0.0.1-SC2',
@@ -31,32 +31,36 @@ const maxiVersions = [
 	'1.5.3',
 	'1.5.4',
 	'1.5.5',
-];
+]);
+
+// Pre-define attribute template
+const DC_HIDE_ATTRIBUTE = {
+	type: 'boolean',
+	default: false,
+};
 
 const attributes = () => ({
-	'dc-hide': {
-		type: 'boolean',
-		default: false,
-	},
+	'dc-hide': DC_HIDE_ATTRIBUTE,
 });
 
 const isEligible = blockAttributes => {
 	const {
 		'maxi-version-origin': maxiVersionOrigin,
 		'maxi-version-current': maxiVersionCurrent,
+		'dc-status': dcStatus,
+		'dc-hide': dcHide,
 	} = blockAttributes;
 
 	return (
-		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&
-		blockAttributes['dc-status'] &&
-		isNil(blockAttributes['dc-hide'])
+		(VERSIONS.has(maxiVersionCurrent) || !maxiVersionOrigin) &&
+		dcStatus &&
+		isNil(dcHide)
 	);
 };
 
 const migrate = attributes => {
-	const newAttributes = { ...attributes };
-	newAttributes['dc-hide'] = false;
-	return newAttributes;
+	attributes['dc-hide'] = false;
+	return attributes;
 };
 
-export default { name, attributes, isEligible, migrate };
+export default { name: NAME, attributes, isEligible, migrate };

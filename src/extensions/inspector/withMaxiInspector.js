@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select, subscribe } from '@wordpress/data';
+import { select } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import { memo, useEffect } from '@wordpress/element';
 

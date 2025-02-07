@@ -50,18 +50,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             add_action('admin_init', [$this, 'maxi_blocks_starter_sites_init']);
 
             // Add AJAX handlers for WordPress Importer plugin
-            add_action('wp_ajax_maxi_install_importer', [$this, 'ajax_install_importer']);
-            add_action('wp_ajax_maxi_activate_importer', [$this, 'ajax_activate_importer']);
+            add_action('wp_ajax_maxi_install_importer', [
+                $this,
+                'ajax_install_importer',
+            ]);
+            add_action('wp_ajax_maxi_activate_importer', [
+                $this,
+                'ajax_activate_importer',
+            ]);
 
             // Add REST API endpoint for checking importer status
             add_action('rest_api_init', function () {
-                register_rest_route('maxi-blocks/v1.0', '/check-importer-status', [
-                    'methods' => 'GET',
-                    'callback' => [$this, 'check_importer_status'],
-                    'permission_callback' => function () {
-                        return current_user_can('manage_options');
-                    },
-                ]);
+                register_rest_route(
+                    'maxi-blocks/v1.0',
+                    '/check-importer-status',
+                    [
+                        'methods' => 'GET',
+                        'callback' => [$this, 'check_importer_status'],
+                        'permission_callback' => function () {
+                            return current_user_can('manage_options');
+                        },
+                    ],
+                );
             });
         }
 
@@ -88,9 +98,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'maxi-admin-roboto',
                     plugin_dir_url(__FILE__) . 'fonts/roboto/style.css',
                     [],
-                    MAXI_PLUGIN_VERSION
+                    MAXI_PLUGIN_VERSION,
                 );
                 wp_enqueue_style('maxi-admin-roboto');
+
                 wp_register_style(
                     'maxi-admin',
                     MAXI_PLUGIN_URL_PATH . 'build/admin.css',
@@ -110,6 +121,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     ],
                 );
                 wp_enqueue_script('maxi-admin');
+
+                // Add status report styles
+                wp_register_style(
+                    'maxi-status-report',
+                    plugin_dir_url(__FILE__) . 'status-report/styles.css',
+                    [],
+                    MAXI_PLUGIN_VERSION
+                );
+                wp_enqueue_style('maxi-status-report');
+
+                // Add status report script
+                wp_register_script(
+                    'maxi-status-report',
+                    plugin_dir_url(__FILE__) . 'status-report/index.js',
+                    [],
+                    MAXI_PLUGIN_VERSION,
+                    [
+                        'strategy' => 'defer',
+                        'in_footer' => true,
+                    ]
+                );
+                wp_enqueue_script('maxi-status-report');
 
                 $path_to_previews = plugins_url(
                     '../../img/block-preview/',
@@ -162,14 +195,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'maxi-blocks',
                     ),
                 ]);
-                wp_localize_script(
-                    'maxi-admin',
-                    'maxiAiSettings',
-                    array(
-                        'defaultModel' => get_option('maxi_ai_model', 'gpt-3.5-turbo')
-                    )
-                );
 
+                wp_localize_script('maxi-admin', 'maxiAiSettings', [
+                    'defaultModel' => get_option(
+                        'maxi_ai_model',
+                        'gpt-3.5-turbo',
+                    ),
+                ]);
             }
         }
 
@@ -230,6 +262,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 null,
             );
             add_submenu_page(
+                __('Status', 'maxi-blocks'),
+                __('Status', 'maxi-blocks'),
+                'manage_options',
+                'admin.php?page=' .
+                    self::$maxi_slug_dashboard .
+                    '&tab=maxi_blocks_status',
+                '',
+                null,
+            );
+            add_submenu_page(
                 self::$maxi_slug_dashboard,
                 __('Starter sites', 'maxi-blocks'),
                 __('Starter sites', 'maxi-blocks'),
@@ -257,6 +299,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'Starter sites',
                     'maxi-blocks',
                 ),
+                self::$maxi_prefix . 'status' => __('Status', 'maxi-blocks'),
             ];
 
             if (isset($_GET['tab'])) {
@@ -323,6 +366,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         $this->maxi_blocks_starter_sites(),
                         maxi_blocks_allowed_html(),
                     );
+                } elseif ($tab === self::$maxi_prefix . 'status') {
+                    echo wp_kses(
+                        $this->maxi_blocks_status(),
+                        maxi_blocks_allowed_html(),
+                    );
                 }
             }
 
@@ -348,7 +396,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $content .= __('Hello, friend', 'maxi-blocks') . ' 👋';
             }
 
-            $content .= '<a href="' . esc_url(admin_url('admin.php?page=maxi-blocks-onboarding')) . '" target="_blank" class="maxi-dashboard_setup-wizard-button">';
+            $content .=
+                '<a href="' .
+                esc_url(admin_url('admin.php?page=maxi-blocks-onboarding')) .
+                '" target="_blank" class="maxi-dashboard_setup-wizard-button">';
             $content .= __('Start set-up wizard', 'maxi-blocks');
             $content .= '</a>';
 
@@ -381,7 +432,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 __('No locked blocks', 'maxi-blocks') .
                 ' 📖: ' .
                 __(
-                    'We refuse to hold basic features hostage just to sell the "full-version". Everyone gets access to all page builder features, custom blocks and settings completely free. There`s no lock-in by design.',
+                    "We refuse to hold basic features hostage just to sell the \"full-version.\" Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design.",
                     'maxi-blocks',
                 ) .
                 '</p>';
@@ -390,7 +441,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 __('Goodbye license keys', 'maxi-blocks') .
                 ' 👋: ' .
                 __(
-                    'Plus, we`re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads.',
+                    'Plus, we\'re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads.',
                     'maxi-blocks',
                 ) .
                 '</p>';
@@ -548,7 +599,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<li>' .
                 __(
-                    'Create a Google Cloud Platform account, if you don`t already have one.',
+                    'Create a Google Cloud Platform account, if you don\'t already have one.',
                     'maxi-blocks',
                 ) .
                 '</li>';
@@ -833,7 +884,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '</a>';
 
             $content .=
-                __(' - We`re dying to see what you create. ', 'maxi-blocks') .
+                __(' - We\'re dying to see what you create. ', 'maxi-blocks') .
                 '</p>';
 
             $content .=
@@ -912,7 +963,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '</p>';
             $content .=
                 '<h3>' .
-                __('Let`s create something amazing with Maxi', 'maxi-blocks') .
+                __('Let\'s create something amazing with Maxi', 'maxi-blocks') .
                 '</h3>';
             $content .= '<div class="sign-up_button-wrap">';
             $content .=
@@ -1064,8 +1115,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'password',
             );
 
-            $description = '<h4>'.__('ChatGPT AI Model', 'maxi-blocks').'</h4>';
-            $content .= $this->generate_setting($description, 'maxi_ai_model', '', 'dropdown', ['list' => []]);
+            $description =
+                '<h4>' . __('ChatGPT AI Model', 'maxi-blocks') . '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_model',
+                '',
+                'dropdown',
+                ['list' => []],
+            );
 
             $content .= get_submit_button();
 
@@ -1254,8 +1312,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Check WordPress Importer plugin status
             $wp_importer_status = 'missing';
-            if (file_exists(WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php')) {
-                $wp_importer_status = is_plugin_active('wordpress-importer/wordpress-importer.php')
+            if (
+                file_exists(
+                    WP_PLUGIN_DIR .
+                        '/wordpress-importer/wordpress-importer.php',
+                )
+            ) {
+                $wp_importer_status = is_plugin_active(
+                    'wordpress-importer/wordpress-importer.php',
+                )
                     ? 'active'
                     : 'installed';
             }
@@ -1265,10 +1330,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'nonce' => wp_create_nonce('maxi_starter_sites'),
                 'apiRoot' => esc_url_raw(rest_url()),
                 'apiNonce' => wp_create_nonce('wp_rest'),
-                 'adminUrl' => admin_url(),
-                'installNonce' => wp_create_nonce('install-plugin_wordpress-importer'),
-                'activateNonce' => wp_create_nonce('activate-plugin_wordpress-importer/wordpress-importer.php'),
-                'currentStarterSite' => get_option('maxiblocks_current_starter_site', ''),
+                'adminUrl' => admin_url(),
+                'installNonce' => wp_create_nonce(
+                    'install-plugin_wordpress-importer',
+                ),
+                'activateNonce' => wp_create_nonce(
+                    'activate-plugin_wordpress-importer/wordpress-importer.php',
+                ),
+                'currentStarterSite' => get_option(
+                    'maxiblocks_current_starter_site',
+                    '',
+                ),
                 'wpImporterStatus' => $wp_importer_status,
                 'proInitialState' => get_option('maxi_pro', ''),
             ]);
@@ -1479,16 +1551,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if ($is_ai_model) {
                 // For AI model dropdown, show loading placeholder
-                $dropdown .= '<option value="">'.__('', 'maxi-blocks').'</option>';
+                $dropdown .=
+                    '<option value="">' . __('', 'maxi-blocks') . '</option>';
             } else {
                 // For other dropdowns, process the static list
-                if(($key = array_search($option_value, $list)) !== false) {
+                if (($key = array_search($option_value, $list)) !== false) {
                     unset($list[$key]);
                     array_unshift($list, $option_value);
                 }
 
-                foreach($list as $value) {
-                    $dropdown .= '<option value="'.$value.'">'.$value.'</option>';
+                foreach ($list as $value) {
+                    $dropdown .=
+                        '<option value="' .
+                        $value .
+                        '">' .
+                        $value .
+                        '</option>';
                 }
             }
 
@@ -1729,7 +1807,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
             }
             if (!class_exists('WP_Upgrader')) {
-                require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+                require_once ABSPATH .
+                    'wp-admin/includes/class-wp-upgrader.php';
             }
 
             $api = plugins_api('plugin_information', [
@@ -1753,13 +1832,18 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function ajax_activate_importer()
         {
-            check_ajax_referer('activate-plugin_wordpress-importer/wordpress-importer.php', 'nonce');
+            check_ajax_referer(
+                'activate-plugin_wordpress-importer/wordpress-importer.php',
+                'nonce',
+            );
 
             if (!current_user_can('activate_plugins')) {
                 wp_send_json_error(['message' => 'Insufficient permissions']);
             }
 
-            $result = activate_plugin('wordpress-importer/wordpress-importer.php');
+            $result = activate_plugin(
+                'wordpress-importer/wordpress-importer.php',
+            );
 
             if (is_wp_error($result)) {
                 wp_send_json_error(['message' => $result->get_error_message()]);
@@ -1775,13 +1859,27 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             $status = 'missing';
-            if (file_exists(WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php')) {
-                $status = is_plugin_active('wordpress-importer/wordpress-importer.php')
+            if (
+                file_exists(
+                    WP_PLUGIN_DIR .
+                        '/wordpress-importer/wordpress-importer.php',
+                )
+            ) {
+                $status = is_plugin_active(
+                    'wordpress-importer/wordpress-importer.php',
+                )
                     ? 'active'
                     : 'installed';
             }
 
             return new WP_REST_Response(['status' => $status], 200);
+        }
+
+        public function maxi_blocks_status()
+        {
+            require_once plugin_dir_path(__FILE__) . 'status-report/maxi-sytem-status-report.php';
+            $status_report = new MaxiBlocks_System_Status_Report();
+            return $status_report->generate_status_report();
         }
     }
 endif;

@@ -1,0 +1,49 @@
+.maxi-status-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+.maxi-status-table th {
+	background: #f8f9fa;
+	padding: 12px;
+	text-align: left;
+	border-bottom: 1px solid #dee2e6;
+}
+
+.maxi-status-table td {
+	padding: 12px;
+	border-bottom: 1px solid #dee2e6;
+}
+
+.maxi-status-table .header-row td {
+	font-weight: bold;
+	background: #f8f9fa;
+}
+
+.maxi-status-table .status-ok span {
+	background: #28a745;
+	color: white;
+	padding: 4px 8px;
+	border-radius: 3px;
+}
+
+.maxi-status-table .status-warning span {
+	background: #ffc107;
+	color: #000;
+	padding: 4px 8px;
+	border-radius: 3px;
+}
+
+.maxi-status-table .plugin-section {
+	padding: 15px;
+	background: #f8f9fa;
+}
+
+#maxi-copy-report {
+	margin-bottom: 20px;
+}
+
+#maxi-copy-success {
+	margin-bottom: 20px;
+}

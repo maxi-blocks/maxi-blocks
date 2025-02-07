@@ -269,12 +269,12 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		);
 	};
 
-	const fetchOpenAIModels = async (apiKey) => {
+	const fetchOpenAIModels = async apiKey => {
 		try {
 			const response = await fetch('https://api.openai.com/v1/models', {
 				method: 'GET',
 				headers: {
-					'Authorization': `Bearer ${apiKey}`,
+					Authorization: `Bearer ${apiKey}`,
 					'Content-Type': 'application/json',
 				},
 			});
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				'audio',
 				'gpt-3.5-turbo-instruct',
 				'gpt-4o-mini-realtime-preview',
-				'gpt-4o-realtime-preview'
+				'gpt-4o-realtime-preview',
 			];
 
 			const includedPatterns = ['o1', 'o3', 'gpt'];
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 	let isUpdatingDropdown = false;
 
-	const updateModelDropdown = async (apiKey) => {
+	const updateModelDropdown = async apiKey => {
 		if (isUpdatingDropdown) return;
 		isUpdatingDropdown = true;
 
@@ -330,9 +330,11 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 		// Only show loading message if we have a valid API key
 		if (apiKey) {
-			modelSelect.innerHTML = '<option value="">Loading available models...</option>';
+			modelSelect.innerHTML =
+				'<option value="">Loading available models...</option>';
 		} else {
-			modelSelect.innerHTML = '<option value="">Please add your API key</option>';
+			modelSelect.innerHTML =
+				'<option value="">Please add your API key</option>';
 			modelInput.value = '';
 			isUpdatingDropdown = false;
 			return;
@@ -363,7 +365,8 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			});
 
 			// Get the saved value from WordPress options via localized script
-			const currentValue = window.maxiAiSettings?.defaultModel || 'gpt-3.5-turbo';
+			const currentValue =
+				window.maxiAiSettings?.defaultModel || 'gpt-3.5-turbo';
 			modelInput.value = currentValue;
 
 			// Try to restore previous selection if available
@@ -374,10 +377,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				modelSelect.value = models[0];
 				modelInput.value = models[0];
 			}
-
 		} catch (error) {
 			console.error('Error updating model dropdown:', error);
-			modelSelect.innerHTML = '<option value="">Error loading models</option>';
+			modelSelect.innerHTML =
+				'<option value="">Error loading models</option>';
 			modelInput.value = '';
 		} finally {
 			isUpdatingDropdown = false;
@@ -408,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 					max_tokens: 1,
 				}),
 			}),
-			updateModelDropdown(openAIApiKey)
+			updateModelDropdown(openAIApiKey),
 		])
 			.then(([response]) => {
 				if (response.ok) {
@@ -433,8 +436,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		// Handle select changes
 		const modelSelect = document.getElementById('maxi_ai_model');
 		if (modelSelect) {
-			modelSelect.addEventListener('change', function() {
-				const modelInput = document.querySelector('input#maxi_ai_model');
+			modelSelect.addEventListener('change', function () {
+				const modelInput = document.querySelector(
+					'input#maxi_ai_model'
+				);
 				if (modelInput) {
 					modelInput.value = this.value;
 				}
@@ -474,4 +479,22 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			autoResize(textarea);
 		});
 	});
+
+	const copyButton = document.getElementById('maxi-copy-report');
+	if (copyButton) {
+		copyButton.addEventListener('click', function () {
+			const table = document.querySelector('.maxi-status-table');
+			const successNotice = document.getElementById('maxi-copy-success');
+
+			if (table) {
+				const text = table.innerText;
+				navigator.clipboard.writeText(text).then(function () {
+					successNotice.style.display = 'block';
+					setTimeout(function () {
+						successNotice.style.display = 'none';
+					}, 3000);
+				});
+			}
+		});
+	}
 });

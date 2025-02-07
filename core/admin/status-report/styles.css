@@ -78,7 +78,8 @@
 	display: none;
 }
 
-#maxi-copy-report {
+#maxi-copy-report,
+#maxi-download-report {
 	display: inline-block;
 	font-size: 16px;
 	line-height: 20px;
@@ -93,7 +94,8 @@
 	transition: background-color 0.2s ease;
 }
 
-#maxi-copy-report:hover {
+#maxi-copy-report:hover,
+#maxi-download-report:hover {
 	background-color: #e63e0f;
 	color: #ffffff;
 }
@@ -102,4 +104,8 @@
 	outline: none;
 	box-shadow: 0 0 0 2px #fff, 0 0 0 4px #ff4a17;
 	color: #ffffff;
+}
+
+#maxi-download-report {
+	margin-left: 10px !important;
 }

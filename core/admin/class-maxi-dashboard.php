@@ -73,6 +73,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     ],
                 );
             });
+
+            // Add AJAX handlers for frontend assets
+            add_action('wp_ajax_maxi_get_frontend_assets', [$this, 'handle_get_frontend_assets']);
+            add_action('wp_ajax_nopriv_maxi_get_frontend_assets', [$this, 'handle_get_frontend_assets']);
         }
 
         public function update_settings_on_install()
@@ -127,7 +131,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'maxi-status-report',
                     plugin_dir_url(__FILE__) . 'status-report/styles.css',
                     [],
-                    MAXI_PLUGIN_VERSION
+                    MAXI_PLUGIN_VERSION,
                 );
                 wp_enqueue_style('maxi-status-report');
 
@@ -140,7 +144,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     [
                         'strategy' => 'defer',
                         'in_footer' => true,
-                    ]
+                    ],
                 );
                 wp_enqueue_script('maxi-status-report');
 
@@ -262,16 +266,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 null,
             );
             add_submenu_page(
-                __('Status', 'maxi-blocks'),
-                __('Status', 'maxi-blocks'),
-                'manage_options',
-                'admin.php?page=' .
-                    self::$maxi_slug_dashboard .
-                    '&tab=maxi_blocks_status',
-                '',
-                null,
-            );
-            add_submenu_page(
                 self::$maxi_slug_dashboard,
                 __('Starter sites', 'maxi-blocks'),
                 __('Starter sites', 'maxi-blocks'),
@@ -279,6 +273,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'admin.php?page=' .
                     self::$maxi_slug_dashboard .
                     '&tab=maxi_blocks_starter_sites',
+                '',
+                null,
+            );
+            add_submenu_page(
+                self::$maxi_slug_dashboard,
+                __('Status Report', 'maxi-blocks'),
+                __('Status', 'maxi-blocks'),
+                'manage_options',
+                'admin.php?page=' .
+                    self::$maxi_slug_dashboard .
+                    '&tab=maxi_blocks_status',
                 '',
                 null,
             );
@@ -1877,9 +1882,113 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function maxi_blocks_status()
         {
-            require_once plugin_dir_path(__FILE__) . 'status-report/maxi-sytem-status-report.php';
+            require_once plugin_dir_path(__FILE__) .
+                'status-report/maxi-sytem-status-report.php';
             $status_report = new MaxiBlocks_System_Status_Report();
             return $status_report->generate_status_report();
+        }
+
+        public function maxi_blocks_menu_order($menu_order)
+        {
+            global $submenu;
+
+            if (isset($submenu['maxi-blocks-dashboard'])) {
+                $dashboard_menu = $submenu['maxi-blocks-dashboard'];
+                $new_menu_order = [];
+
+                // Define the desired order
+                $desired_order = [
+                    'maxi-blocks-dashboard', // Dashboard
+                    'maxi-blocks-templates', // Templates
+                    'maxi-blocks-style-cards', // Style Cards
+                    'maxi-blocks-pro', // Pro library
+                    'maxi-blocks-starter-sites', // Starter Sites
+                    'maxi-blocks-settings', // Settings
+                    'admin.php?page=' .
+                    self::$maxi_slug_dashboard .
+                    '&tab=maxi_blocks_status', // Status Report (at the end)
+                ];
+
+                // Reorder menu items
+                foreach ($desired_order as $slug) {
+                    foreach ($dashboard_menu as $key => $item) {
+                        if ($item[2] === $slug) {
+                            $new_menu_order[] = $item;
+                            unset($dashboard_menu[$key]);
+                            break;
+                        }
+                    }
+                }
+
+                // Add any remaining items
+                foreach ($dashboard_menu as $item) {
+                    $new_menu_order[] = $item;
+                }
+
+                $submenu['maxi-blocks-dashboard'] = $new_menu_order;
+            }
+
+            return $menu_order;
+        }
+
+        public function handle_get_frontend_assets()
+        {
+            try {
+                $home_url = home_url();
+                $response = wp_remote_get($home_url, [
+                    'timeout' => 30,
+                    'sslverify' => false,
+                    'headers' => [
+                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                    ]
+                ]);
+
+                if (is_wp_error($response)) {
+                    wp_send_json_error(['message' => 'Failed to fetch frontend']);
+                    return;
+                }
+
+                $html = wp_remote_retrieve_body($response);
+
+                // Parse HTML to find assets
+                $css_files = [];
+                $js_files = [];
+
+                // Use DOMDocument to parse HTML
+                $dom = new DOMDocument();
+                libxml_use_internal_errors(true);
+                @$dom->loadHTML($html);
+                libxml_clear_errors();
+
+                // Get all CSS files
+                $links = $dom->getElementsByTagName('link');
+                foreach ($links as $link) {
+                    if ($link->getAttribute('rel') === 'stylesheet') {
+                        $css_files[] = $link->getAttribute('href');
+                    }
+                }
+
+                // Get all JS files
+                $scripts = $dom->getElementsByTagName('script');
+                foreach ($scripts as $script) {
+                    $src = $script->getAttribute('src');
+                    if ($src) {
+                        $js_files[] = $src;
+                    }
+                }
+
+                // Clean up URLs
+                $css_files = array_values(array_filter(array_unique($css_files)));
+                $js_files = array_values(array_filter(array_unique($js_files)));
+
+                wp_send_json_success([
+                    'css' => $css_files ?: [__('No CSS files found', 'maxi-blocks')],
+                    'js' => $js_files ?: [__('No JavaScript files found', 'maxi-blocks')]
+                ]);
+
+            } catch (Exception $e) {
+                wp_send_json_error(['message' => 'Internal error']);
+            }
         }
     }
 endif;

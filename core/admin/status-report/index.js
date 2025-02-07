@@ -55,4 +55,27 @@ document.addEventListener('DOMContentLoaded', function maxiStatusReport() {
 			}
 		}
 	}
+
+	// New download functionality
+	const downloadButton = document.getElementById('maxi-download-report');
+	if (downloadButton && reportContent) {
+		downloadButton.addEventListener('click', function () {
+			const filename = this.getAttribute('data-filename');
+			const content = reportContent.value;
+
+			// Create blob and download
+			const blob = new Blob([content], { type: 'text/plain' });
+			const url = window.URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.style.display = 'none';
+			a.href = url;
+			a.download = filename || 'MaxiBlocks_Status_Report.txt';
+
+			document.body.appendChild(a);
+			a.click();
+
+			window.URL.revokeObjectURL(url);
+			document.body.removeChild(a);
+		});
+	}
 });

@@ -7,6 +7,8 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+require_once plugin_dir_path(__FILE__) . 'frontend-assets.php';
+
 if (!class_exists('MaxiBlocks_System_Status_Report')):
     class MaxiBlocks_System_Status_Report
     {
@@ -79,6 +81,22 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 
             // Copy Report Button
             $content .= '<button type="button" id="maxi-copy-report" class="button button-primary maxi-dashboard_copy-report-button">' . __('Copy Report to Clipboard', 'maxi-blocks') . '</button>';
+
+            // Download Report Button
+            $site_domain = str_replace(['http://', 'https://', 'www.'], '', get_site_url());
+            $site_domain = preg_replace('/[^a-zA-Z0-9_-]/', '_', $site_domain);
+            $date = date('d_m_Y');
+            $time = date('H_i_s');
+            $filename = "MaxiBlocks_Status_Report_{$site_domain}_{$date}_{$time}.txt";
+
+            $button_html = sprintf(
+                '<button type="button" id="maxi-download-report" class="button button-primary" data-filename="%s">%s</button>',
+                esc_attr($filename),
+                esc_html__('Download Report', 'maxi-blocks')
+            );
+
+            $content .= wp_kses($button_html, maxi_blocks_allowed_html());
+
             $content .= '<div id="maxi-copy-success" class="notice notice-success" style="display:none;"><p>' . __('Report copied to clipboard', 'maxi-blocks') . '</p></div>';
 
             // Hidden textarea for copy functionality
@@ -103,6 +121,9 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 
             // Start Status Table
             $content .= '<table class="maxi-status-table">';
+
+            // MaxiBlocks Plugin Section (moved to top)
+            $content .= $this->generate_maxiblocks_section();
 
             // Server Environment Section
             $content .= $this->generate_server_environment_section([
@@ -147,6 +168,26 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             if ($plugins && $mu_plugins) {
                 $content .= $this->generate_plugin_information_section($plugins, $mu_plugins, $active);
             }
+
+            // Frontend Assets Section
+            $assets = $this->get_frontend_assets();
+            $content .= '<tr><th colspan="4">' . __('Frontend Assets', 'maxi-blocks') . '</th></tr>';
+
+            // CSS Files
+            $content .= '<tr><td colspan="4" class="plugin-section">';
+            $content .= '<strong>' . __('CSS Files', 'maxi-blocks') . ' (' . count($assets['css']) . ')</strong><br>';
+            foreach ($assets['css'] as $css) {
+                $content .= esc_html($css) . '<br>';
+            }
+            $content .= '</td></tr>';
+
+            // JavaScript Files
+            $content .= '<tr><td colspan="4" class="plugin-section">';
+            $content .= '<strong>' . __('JavaScript Files', 'maxi-blocks') . ' (' . count($assets['js']) . ')</strong><br>';
+            foreach ($assets['js'] as $js) {
+                $content .= esc_html($js) . '<br>';
+            }
+            $content .= '</td></tr>';
 
             $content .= '</table>';
             $content .= '</div>'; // maxi-dashboard_main-content
@@ -193,6 +234,22 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 '<td>' . $actual . '</td>' .
                 $status .
                 '</tr>';
+        }
+
+        /**
+         * Add this helper method to detect localhost
+         */
+        private function is_localhost()
+        {
+            $server_name = strtolower($_SERVER['SERVER_NAME'] ?? '');
+            $server_addr = $_SERVER['SERVER_ADDR'] ?? '';
+            $remote_addr = $_SERVER['REMOTE_ADDR'] ?? '';
+
+            return in_array($server_name, ['localhost', '127.0.0.1', '::1']) ||
+                   strpos($server_addr, '127.0.') === 0 ||
+                   strpos($remote_addr, '127.0.') === 0 ||
+                   strpos($server_name, '.local') !== false ||
+                   strpos($server_name, '.test') !== false;
         }
 
         /**
@@ -274,7 +331,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 __('SSL/HTTPS', 'maxi-blocks'),
                 __('Enabled', 'maxi-blocks'),
                 $is_ssl ? __('Enabled', 'maxi-blocks') : __('Disabled', 'maxi-blocks'),
-                $is_ssl
+                $is_ssl || $this->is_localhost()
             );
 
             // Memory Limit
@@ -342,6 +399,15 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 __('Installed', 'maxi-blocks'),
                 $data['openssl'],
                 strpos($data['openssl'], 'installed') !== false,
+            );
+
+            // Is Localhost
+            $is_localhost = $this->is_localhost();
+            $content .= $this->generate_status_row(
+                __('Environment', 'maxi-blocks'),
+                '-',
+                $is_localhost ? __('Local', 'maxi-blocks') : __('Production', 'maxi-blocks'),
+                true
             );
 
             return $content;
@@ -511,12 +577,24 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 $wp_memory >= 40
             );
 
-            // WP Debug Mode
+            // WP Debug Mode with Log Status
+            $debug_status = 'Disabled';
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                $debug_status = 'Enabled';
+                if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+                    $log_path = WP_CONTENT_DIR . '/debug.log';
+                    if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
+                        $log_path = WP_DEBUG_LOG;
+                    }
+                    $debug_status .= ' (Log: ' . $log_path . ')';
+                }
+            }
+
             $content .= $this->generate_status_row(
                 __('WP Debug Mode', 'maxi-blocks'),
                 __('Disabled', 'maxi-blocks'),
-                $data['wpdebug'],
-                $data['wpdebug'] === 'Disabled'
+                $debug_status,
+                $debug_status === 'Disabled'
             );
 
             // WordPress Paths and Permissions
@@ -640,21 +718,6 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
         {
             $theme = wp_get_theme();
             $is_block_theme = function_exists('wp_is_block_theme') ? wp_is_block_theme() : false;
-
-            // Check for auto-update status
-            $updates = __('Unknown', 'maxi-blocks');
-            if (function_exists('wp_is_auto_update_enabled_for_type')) {
-                if (!wp_is_auto_update_enabled_for_type('theme')) {
-                    $updates = __('Disabled', 'maxi-blocks');
-                } else {
-                    $stylesheet = $theme->get_stylesheet();
-                    if (function_exists('get_theme_auto_update_setting')) {
-                        $auto_update_setting = get_theme_auto_update_setting($stylesheet);
-                        $updates = $auto_update_setting ? __('Enabled', 'maxi-blocks') : __('Disabled', 'maxi-blocks');
-                    }
-                }
-            }
-
             $parent_theme = $theme->parent();
 
             $content = '<tr><th colspan="4">' . __('Theme Information', 'maxi-blocks') . '</th></tr>';
@@ -708,9 +771,9 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             // Block Theme
             $content .= $this->generate_status_row(
                 __('Block Theme', 'maxi-blocks'),
-                '-',
+                __('Yes', 'maxi-blocks'),
                 $is_block_theme ? __('Yes', 'maxi-blocks') : __('No', 'maxi-blocks'),
-                true
+                $is_block_theme
             );
 
             // Theme Directory
@@ -721,12 +784,55 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 true
             );
 
-            // Auto Updates
+            return $content;
+        }
+
+        /**
+         * Generates the MaxiBlocks plugin section of the status table
+         */
+        private function generate_maxiblocks_section()
+        {
+            global $wpdb;
+
+            $content = '<tr><th colspan="4">' . __('MaxiBlocks Plugin', 'maxi-blocks') . '</th></tr>';
+            $content .= '<tr class="header-row">';
+            $content .= '<td>' . __('Setting', 'maxi-blocks') . '</td>';
+            $content .= '<td>' . __('Required', 'maxi-blocks') . '</td>';
+            $content .= '<td>' . __('Actual', 'maxi-blocks') . '</td>';
+            $content .= '<td>' . __('Status', 'maxi-blocks') . '</td>';
+            $content .= '</tr>';
+
+            // Check General Table
+            $general_table = $wpdb->prefix . 'maxi_blocks_general';
+            $general_exists = $wpdb->get_var("SHOW TABLES LIKE '$general_table'") === $general_table;
+
             $content .= $this->generate_status_row(
-                __('Auto-updates', 'maxi-blocks'),
-                '-',
-                $updates,
-                true
+                __('General Table', 'maxi-blocks'),
+                __('Exists', 'maxi-blocks'),
+                $general_exists ? __('Exists', 'maxi-blocks') : __('Missing', 'maxi-blocks'),
+                $general_exists
+            );
+
+            // Check Styles Table
+            $styles_table = $wpdb->prefix . 'maxi_blocks_styles_blocks';
+            $styles_exists = $wpdb->get_var("SHOW TABLES LIKE '$styles_table'") === $styles_table;
+
+            $content .= $this->generate_status_row(
+                __('Styles Table', 'maxi-blocks'),
+                __('Exists', 'maxi-blocks'),
+                $styles_exists ? __('Exists', 'maxi-blocks') : __('Missing', 'maxi-blocks'),
+                $styles_exists
+            );
+
+            // Check Custom Data Table
+            $custom_data_table = $wpdb->prefix . 'maxi_blocks_custom_data_blocks';
+            $custom_data_exists = $wpdb->get_var("SHOW TABLES LIKE '$custom_data_table'") === $custom_data_table;
+
+            $content .= $this->generate_status_row(
+                __('Custom Data Table', 'maxi-blocks'),
+                __('Exists', 'maxi-blocks'),
+                $custom_data_exists ? __('Exists', 'maxi-blocks') : __('Missing', 'maxi-blocks'),
+                $custom_data_exists
             );
 
             return $content;
@@ -737,11 +843,22 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
          */
         public function generate_report_text($data)
         {
-            global $wpdb;
             $report = "====== BEGIN SYSTEM REPORT ======\n\n";
+
+            // MaxiBlocks Plugin section (moved to top)
+            $report .= "--- MaxiBlocks Plugin ---\n";
+            global $wpdb;
+            $general_table = $wpdb->prefix . 'maxi_blocks_general';
+            $styles_table = $wpdb->prefix . 'maxi_blocks_styles_blocks';
+            $custom_data_table = $wpdb->prefix . 'maxi_blocks_custom_data_blocks';
+
+            $report .= 'General Table: ' . ($wpdb->get_var("SHOW TABLES LIKE '$general_table'") === $general_table ? 'Exists' : 'Missing') . "\n";
+            $report .= 'Styles Table: ' . ($wpdb->get_var("SHOW TABLES LIKE '$styles_table'") === $styles_table ? 'Exists' : 'Missing') . "\n";
+            $report .= 'Custom Data Table: ' . ($wpdb->get_var("SHOW TABLES LIKE '$custom_data_table'") === $custom_data_table ? 'Exists' : 'Missing') . "\n\n";
 
             // Server Environment
             $report .= "--- Server Environment ---\n";
+            $report .= 'Environment: ' . ($this->is_localhost() ? 'Local' : 'Production') . "\n";
             $report .= 'Server Software: ' . ($_SERVER['SERVER_SOFTWARE'] ?? 'Unknown') . "\n";
             $report .= 'Operating System: ' . (function_exists('php_uname') ? php_uname('s') . ' ' . php_uname('r') : PHP_OS) . "\n";
             $report .= 'Architecture: ' . (PHP_INT_SIZE === 8 ? 'x64' : 'x86') . "\n";
@@ -758,7 +875,8 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 $report .= 'Database: MySQL ' . $mysql_version . ' (Required: 8.0+)' . "\n";
             }
 
-            $report .= 'SSL/HTTPS: ' . (is_ssl() ? 'Enabled' : 'Disabled') . "\n";
+            $report .= 'SSL/HTTPS: ' . (is_ssl() ? 'Enabled' : 'Disabled') .
+                       ($this->is_localhost() ? ' (not required for local environment)' : '') . "\n";
             $report .= 'Safe Mode: ' . $data['safemode'] . "\n";
             $report .= 'cURL: ' . $data['hascurl'] . "\n";
             $report .= 'OpenSSL: ' . $data['openssl'] . "\n\n";
@@ -766,21 +884,6 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             // Theme Information
             $theme = wp_get_theme();
             $is_block_theme = function_exists('wp_is_block_theme') ? wp_is_block_theme() : false;
-
-            // Check for auto-update status
-            $updates = __('Unknown', 'maxi-blocks');
-            if (function_exists('wp_is_auto_update_enabled_for_type')) {
-                if (!wp_is_auto_update_enabled_for_type('theme')) {
-                    $updates = __('Disabled', 'maxi-blocks');
-                } else {
-                    $stylesheet = $theme->get_stylesheet();
-                    if (function_exists('get_theme_auto_update_setting')) {
-                        $auto_update_setting = get_theme_auto_update_setting($stylesheet);
-                        $updates = $auto_update_setting ? __('Enabled', 'maxi-blocks') : __('Disabled', 'maxi-blocks');
-                    }
-                }
-            }
-
             $parent_theme = $theme->parent();
 
             $report .= "--- Theme Information ---\n";
@@ -790,8 +893,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             $report .= 'Author Website: ' . $theme->get('AuthorURI') . "\n";
             $report .= 'Parent Theme: ' . ($parent_theme ? $parent_theme->get('Name') . ' ' . $parent_theme->get('Version') : 'None') . "\n";
             $report .= 'Block Theme: ' . ($is_block_theme ? 'Yes' : 'No') . "\n";
-            $report .= 'Theme Directory: ' . get_template_directory() . "\n";
-            $report .= 'Auto-updates: ' . $updates . "\n\n";
+            $report .= 'Theme Directory: ' . get_template_directory() . "\n\n";
 
             // WordPress Environment
             $report .= "--- WordPress Environment ---\n";
@@ -845,6 +947,22 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 }
             }
 
+            // Frontend Assets
+            $assets = $this->get_frontend_assets();
+            $report .= "\n--- Frontend Assets ---\n";
+
+            $report .= "CSS Files (" . count($assets['css']) . "):\n";
+            foreach ($assets['css'] as $css) {
+                $report .= "- " . $css . "\n";
+            }
+            $report .= "\n";
+
+            $report .= "JavaScript Files (" . count($assets['js']) . "):\n";
+            foreach ($assets['js'] as $js) {
+                $report .= "- " . $js . "\n";
+            }
+            $report .= "\n";
+
             $report .= "\n====== END SYSTEM REPORT ======";
 
             $report .= "\nWordPress Directories Permissions:\n";
@@ -853,6 +971,14 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             $report .= "WP Plugin Directory: " . WP_PLUGIN_DIR . " (" . $this->get_directory_permission(WP_PLUGIN_DIR) . ")\n";
             $report .= "WP Themes Directory: " . get_theme_root() . " (" . $this->get_directory_permission(get_theme_root()) . ")\n";
             $report .= "WP Uploads Directory: " . wp_upload_dir()['basedir'] . " (" . $this->get_directory_permission(wp_upload_dir()['basedir']) . ")\n";
+
+            // Add Debug Log if available
+            $debug_log = $this->get_debug_log_content();
+            if ($debug_log) {
+                $report .= "\n\n====== DEBUG LOG (LAST 1000 LINES) ======\n\n";
+                $report .= $debug_log;
+                $report .= "\n\n====== END DEBUG LOG ======";
+            }
 
             return $report;
         }
@@ -895,6 +1021,87 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             $mode = substr(sprintf('%o', $perms), -4);
 
             return sprintf('%s | %s | %s', $mode, $readable, $writable);
+        }
+
+        /**
+         * Helper method to get debug log content
+         */
+        private function get_debug_log_content()
+        {
+            if (!defined('WP_DEBUG_LOG') || !WP_DEBUG_LOG) {
+                return false;
+            }
+
+            $log_path = WP_CONTENT_DIR . '/debug.log';
+            if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
+                $log_path = WP_DEBUG_LOG;
+            }
+
+            if (!file_exists($log_path) || !is_readable($log_path)) {
+                return false;
+            }
+
+            // Get last 1000 lines of the log file (to keep the size reasonable)
+            $log_content = shell_exec("tail -n 1000 " . escapeshellarg($log_path));
+            if (!$log_content) {
+                // Fallback if shell_exec fails or is disabled
+                $log_content = file_get_contents($log_path);
+                if ($log_content) {
+                    $lines = explode("\n", $log_content);
+                    $lines = array_slice($lines, -1000);
+                    $log_content = implode("\n", $lines);
+                }
+            }
+
+            return $log_content;
+        }
+
+        // Add this method to get frontend assets
+        private function get_frontend_assets()
+        {
+            try {
+                $ajax_url = admin_url('admin-ajax.php');
+
+                $response = wp_remote_post($ajax_url, [
+                    'timeout' => 30,
+                    'body' => [
+                        'action' => 'maxi_get_frontend_assets'
+                    ],
+                    'cookies' => $_COOKIE
+                ]);
+
+                if (is_wp_error($response)) {
+                    return [
+                        'css' => [__('Error fetching assets', 'maxi-blocks')],
+                        'js' => [__('Error fetching assets', 'maxi-blocks')]
+                    ];
+                }
+
+                $response_body = wp_remote_retrieve_body($response);
+                $data = json_decode($response_body, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    return [
+                        'css' => [__('Invalid response format', 'maxi-blocks')],
+                        'js' => [__('Invalid response format', 'maxi-blocks')]
+                    ];
+                }
+
+                if (!isset($data['data'])) {
+                    return [
+                        'css' => [__('No data in response', 'maxi-blocks')],
+                        'js' => [__('No data in response', 'maxi-blocks')]
+                    ];
+                }
+
+                return $data['data'];
+
+            } catch (Exception $e) {
+                return [
+                    'css' => [__('Error processing assets', 'maxi-blocks')],
+                    'js' => [__('Error processing assets', 'maxi-blocks')]
+                ];
+            }
         }
     }
 endif;

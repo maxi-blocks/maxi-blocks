@@ -4,6 +4,32 @@
 	margin-top: 20px;
 }
 
+/* Column width specifications */
+.maxi-status-table th:first-child,
+.maxi-status-table td:first-child {
+	width: 20%;
+	/* First column wider */
+}
+
+.maxi-status-table th:nth-child(2),
+.maxi-status-table td:nth-child(2) {
+	width: 15%;
+	/* Recommended column */
+}
+
+.maxi-status-table th:nth-child(3),
+.maxi-status-table td:nth-child(3) {
+	width: 50%;
+	/* Actual value column smaller */
+}
+
+.maxi-status-table th:last-child,
+.maxi-status-table td:last-child {
+	width: 15%;
+	/* Status column */
+}
+
+/* Rest of the styles */
 .maxi-status-table th {
 	background: #f8f9fa;
 	padding: 12px;
@@ -46,4 +72,34 @@
 
 #maxi-copy-success {
 	margin-bottom: 20px;
+}
+
+#maxi-copy-report-content {
+	display: none;
+}
+
+#maxi-copy-report {
+	display: inline-block;
+	font-size: 16px;
+	line-height: 20px;
+	margin: 0;
+	padding: 12px 24px;
+	background-color: #ff4a17;
+	color: #ffffff !important;
+	border: none;
+	text-decoration: none;
+	border-radius: 4px;
+	font-weight: 500;
+	transition: background-color 0.2s ease;
+}
+
+#maxi-copy-report:hover {
+	background-color: #e63e0f;
+	color: #ffffff;
+}
+
+#maxi-copy-report:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px #fff, 0 0 0 4px #ff4a17;
+	color: #ffffff;
 }

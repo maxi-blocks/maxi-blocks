@@ -98,6 +98,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 			}
 			&-content {
 				width: 70%;
+				&:has(#maxi-copy-report) {
+					width: 100%;
+				}
 				&-start {
 					width: 62%;
 				}
@@ -540,10 +543,6 @@ body.toplevel_page_maxi-blocks-dashboard {
 							padding: 4px 8px;
 							border-radius: 3px;
 						}
-					}
-
-					#maxi-copy-report {
-						margin: 20px 0;
 					}
 				}
 			}

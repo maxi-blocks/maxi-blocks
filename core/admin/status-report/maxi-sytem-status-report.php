@@ -78,7 +78,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             $content .= '<p>' . __('This report provides information about your WordPress environment and server configuration.', 'maxi-blocks') . '</p>';
 
             // Copy Report Button
-            $content .= '<button id="maxi-copy-report" class="button button-primary">' . __('Copy Report to Clipboard', 'maxi-blocks') . '</button>';
+            $content .= '<button type="button" id="maxi-copy-report" class="button button-primary maxi-dashboard_copy-report-button">' . __('Copy Report to Clipboard', 'maxi-blocks') . '</button>';
             $content .= '<div id="maxi-copy-success" class="notice notice-success" style="display:none;"><p>' . __('Report copied to clipboard', 'maxi-blocks') . '</p></div>';
 
             // Hidden textarea for copy functionality
@@ -121,11 +121,11 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 'openssl' => $openssl,
             ]);
 
+            // Theme Information Section
+            $content .= $this->generate_theme_information_section();
+
             // WordPress Environment Section
             $content .= $this->generate_wordpress_environment_section([
-                'ismulti' => $ismulti,
-                'site_url' => site_url(),
-                'home_url' => home_url(),
                 'wp_version' => get_bloginfo('version'),
                 'permalink_structure' => get_option('permalink_structure'),
                 'theme' => $theme,
@@ -136,6 +136,11 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 'site_lang' => $site_lang,
                 'site_char' => $site_char,
                 'site_text_dir' => $site_text_dir,
+                'site_url' => site_url(),
+                'home_url' => home_url(),
+                'plugins' => $plugins,
+                'active' => $active,
+                'mu_plugins' => $mu_plugins
             ]);
 
             // Plugin Information Section
@@ -195,6 +200,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
          */
         public function generate_server_environment_section($data)
         {
+            global $wpdb;
             $content = '<tr><th colspan="4">' . __('Server Environment', 'maxi-blocks') . '</th></tr>';
             $content .= '<tr class="header-row">';
             $content .= '<td>' . __('Setting', 'maxi-blocks') . '</td>';
@@ -203,12 +209,72 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             $content .= '<td>' . __('Status', 'maxi-blocks') . '</td>';
             $content .= '</tr>';
 
+            // Server Software
+            $server_software = $_SERVER['SERVER_SOFTWARE'] ?? '';
+            $content .= $this->generate_status_row(
+                __('Server Software', 'maxi-blocks'),
+                '-',
+                $server_software,
+                true
+            );
+
+            // Operating System
+            $os = function_exists('php_uname') ? php_uname('s') . ' ' . php_uname('r') : PHP_OS;
+            $content .= $this->generate_status_row(
+                __('Operating System', 'maxi-blocks'),
+                '-',
+                $os,
+                true
+            );
+
+            // Architecture
+            $architecture = PHP_INT_SIZE === 8 ? 'x64' : 'x86';
+            $content .= $this->generate_status_row(
+                __('Architecture', 'maxi-blocks'),
+                '-',
+                $architecture,
+                true
+            );
+
             // PHP Version
             $content .= $this->generate_status_row(
                 __('PHP Version', 'maxi-blocks'),
-                '7.4+',
+                '8.0+',
                 $data['php_version'],
-                version_compare($data['php_version'], '7.4', '>='),
+                version_compare($data['php_version'], '8.0', '>='),
+            );
+
+            // Database Version and Type
+            $mysql_version = $wpdb->get_var('SELECT VERSION()');
+            $is_mariadb = strpos(strtolower($mysql_version), 'mariadb') !== false;
+
+            if ($is_mariadb) {
+                preg_match('/\d+\.\d+\.\d+/', $mysql_version, $matches);
+                $db_version = $matches[0] ?? '0.0.0';
+                $db_type = 'MariaDB';
+                $is_supported = version_compare($db_version, '10.4', '>=');
+                $recommended = '10.4+';
+            } else {
+                $db_version = $mysql_version;
+                $db_type = 'MySQL';
+                $is_supported = version_compare($db_version, '8.0', '>=');
+                $recommended = '8.0+';
+            }
+
+            $content .= $this->generate_status_row(
+                __('Database Type', 'maxi-blocks'),
+                $recommended,
+                $db_type . ' ' . $db_version,
+                $is_supported
+            );
+
+            // SSL/HTTPS Status
+            $is_ssl = is_ssl();
+            $content .= $this->generate_status_row(
+                __('SSL/HTTPS', 'maxi-blocks'),
+                __('Enabled', 'maxi-blocks'),
+                $is_ssl ? __('Enabled', 'maxi-blocks') : __('Disabled', 'maxi-blocks'),
+                $is_ssl
             );
 
             // Memory Limit
@@ -232,9 +298,17 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             // Max Execution Time
             $content .= $this->generate_status_row(
                 __('Max Execution Time', 'maxi-blocks'),
-                '180',
+                '60',
                 $data['max_execution_time'],
-                $data['max_execution_time'] >= 180,
+                $data['max_execution_time'] >= 60,
+            );
+
+            // Max Input Time
+            $content .= $this->generate_status_row(
+                __('Max Input Time', 'maxi-blocks'),
+                '60',
+                $data['max_input_time'],
+                $data['max_input_time'] >= 60,
             );
 
             // Upload Max Filesize
@@ -249,9 +323,9 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             // Max Input Vars
             $content .= $this->generate_status_row(
                 __('Max Input Vars', 'maxi-blocks'),
-                '3000',
+                '8000',
                 $data['max_input_vars'],
-                $data['max_input_vars'] >= 3000,
+                $data['max_input_vars'] >= 8000,
             );
 
             // cURL
@@ -289,9 +363,24 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             // WordPress Version
             $content .= $this->generate_status_row(
                 __('WordPress Version', 'maxi-blocks'),
-                '5.8+',
+                '6.2.2+',
                 $data['wp_version'],
-                version_compare($data['wp_version'], '5.8', '>='),
+                version_compare($data['wp_version'], '6.2.2', '>='),
+            );
+
+            // Multisite Status
+            $is_multisite = is_multisite();
+            $multisite_type = '';
+            if ($is_multisite) {
+                $multisite_type = defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL ?
+                    __('Subdomain', 'maxi-blocks') :
+                    __('Subfolder', 'maxi-blocks');
+            }
+            $content .= $this->generate_status_row(
+                __('Multisite', 'maxi-blocks'),
+                '-',
+                $is_multisite ? sprintf(__('Enabled (%s)', 'maxi-blocks'), $multisite_type) : __('Disabled', 'maxi-blocks'),
+                true
             );
 
             // Site URL
@@ -299,7 +388,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 __('Site URL', 'maxi-blocks'),
                 '-',
                 $data['site_url'],
-                true,
+                true
             );
 
             // Home URL
@@ -307,7 +396,110 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 __('Home URL', 'maxi-blocks'),
                 '-',
                 $data['home_url'],
-                true,
+                true
+            );
+
+            // Blog URL (if different from home URL)
+            if (get_option('page_for_posts')) {
+                $blog_url = get_permalink(get_option('page_for_posts'));
+                $content .= $this->generate_status_row(
+                    __('Blog URL', 'maxi-blocks'),
+                    '-',
+                    $blog_url,
+                    true
+                );
+            }
+
+            // Language
+            $content .= $this->generate_status_row(
+                __('Site Language', 'maxi-blocks'),
+                '-',
+                $data['site_lang'],
+                true
+            );
+
+            // Charset
+            $content .= $this->generate_status_row(
+                __('Site Charset', 'maxi-blocks'),
+                'UTF-8',
+                $data['site_char'],
+                $data['site_char'] === 'UTF-8'
+            );
+
+            // Timezone
+            $timezone = wp_timezone_string();
+            $content .= $this->generate_status_row(
+                __('Timezone', 'maxi-blocks'),
+                '-',
+                $timezone,
+                true
+            );
+
+            // Text Direction
+            $content .= $this->generate_status_row(
+                __('Text Direction', 'maxi-blocks'),
+                '-',
+                $data['site_text_dir'],
+                true
+            );
+
+            // Permalinks
+            $permalink_structure = get_option('permalink_structure');
+            $permalink_display = empty($permalink_structure) ?
+                __('Plain', 'maxi-blocks') :
+                sprintf(__('Pretty Permalinks (%s)', 'maxi-blocks'), $permalink_structure);
+            $content .= $this->generate_status_row(
+                __('Permalinks', 'maxi-blocks'),
+                __('Pretty Permalinks', 'maxi-blocks'),
+                $permalink_display,
+                !empty($permalink_structure)
+            );
+
+            // Allowed File Types
+            $allowed_mime_types = get_allowed_mime_types();
+            $common_types = array_filter($allowed_mime_types, function ($mime) {
+                return strpos($mime, 'image/') !== false
+                    || strpos($mime, 'video/') !== false
+                    || strpos($mime, 'audio/') !== false
+                    || strpos($mime, 'application/pdf') !== false;
+            });
+
+            $file_types = array_reduce(array_keys($common_types), function ($carry, $type) {
+                $extensions = explode('|', $type);
+                return array_merge($carry, $extensions);
+            }, []);
+
+            $content .= $this->generate_status_row(
+                __('Allowed Media Types', 'maxi-blocks'),
+                __('Common media formats', 'maxi-blocks'),
+                implode(', ', $file_types),
+                !empty($file_types)
+            );
+
+            // jQuery Version
+            $content .= $this->generate_status_row(
+                __('jQuery Version', 'maxi-blocks'),
+                '1.12+',
+                $data['jquchk'],
+                version_compare($data['jquchk'], '1.12', '>=')
+            );
+
+            // React Version
+            $wp_scripts = wp_scripts();
+            $react_version = $wp_scripts->registered['react']->ver ?? __('Not Found', 'maxi-blocks');
+            $content .= $this->generate_status_row(
+                __('React Version', 'maxi-blocks'),
+                '17.0+',
+                $react_version,
+                version_compare($react_version, '17.0', '>=')
+            );
+
+            // AJAX Status
+            $content .= $this->generate_status_row(
+                __('WordPress AJAX', 'maxi-blocks'),
+                __('Working', 'maxi-blocks'),
+                $this->test_ajax_status() ? __('Working', 'maxi-blocks') : __('Not Working', 'maxi-blocks'),
+                $this->test_ajax_status()
             );
 
             // WP Memory Limit
@@ -316,7 +508,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 __('WP Memory Limit', 'maxi-blocks'),
                 '40MB',
                 $data['wp_memory_limit'],
-                $wp_memory >= 40,
+                $wp_memory >= 40
             );
 
             // WP Debug Mode
@@ -324,8 +516,75 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 __('WP Debug Mode', 'maxi-blocks'),
                 __('Disabled', 'maxi-blocks'),
                 $data['wpdebug'],
-                $data['wpdebug'] === 'Disabled',
+                $data['wpdebug'] === 'Disabled'
             );
+
+            // WordPress Paths and Permissions
+            $content .= $this->generate_status_row(
+                __('WP Directory', 'maxi-blocks'),
+                __('Readable', 'maxi-blocks'),
+                sprintf('%s (%s)', ABSPATH, $this->get_directory_permission(ABSPATH)),
+                is_readable(ABSPATH)
+            );
+
+            $content .= $this->generate_status_row(
+                __('WP Content Directory', 'maxi-blocks'),
+                __('Readable/Writable', 'maxi-blocks'),
+                sprintf('%s (%s)', WP_CONTENT_DIR, $this->get_directory_permission(WP_CONTENT_DIR)),
+                is_readable(WP_CONTENT_DIR) && is_writable(WP_CONTENT_DIR)
+            );
+
+            $content .= $this->generate_status_row(
+                __('WP Plugin Directory', 'maxi-blocks'),
+                __('Readable/Writable', 'maxi-blocks'),
+                sprintf('%s (%s)', WP_PLUGIN_DIR, $this->get_directory_permission(WP_PLUGIN_DIR)),
+                is_readable(WP_PLUGIN_DIR) && is_writable(WP_PLUGIN_DIR)
+            );
+
+            $content .= $this->generate_status_row(
+                __('WP Themes Directory', 'maxi-blocks'),
+                __('Readable/Writable', 'maxi-blocks'),
+                sprintf('%s (%s)', get_theme_root(), $this->get_directory_permission(get_theme_root())),
+                is_readable(get_theme_root()) && is_writable(get_theme_root())
+            );
+
+            // Get uploads directory info
+            $uploads_dir = wp_upload_dir();
+
+            $content .= $this->generate_status_row(
+                __('WP Uploads Directory', 'maxi-blocks'),
+                __('Readable/Writable', 'maxi-blocks'),
+                sprintf('%s (%s)', $uploads_dir['basedir'], $this->get_directory_permission($uploads_dir['basedir'])),
+                is_readable($uploads_dir['basedir']) && is_writable($uploads_dir['basedir'])
+            );
+
+            // Add a separator for plugins
+            $content .= '<tr><td colspan="4" style="padding: 0;"></td></tr>';
+            $content .= '<tr><td colspan="4"><strong>' . __('Plugin Status', 'maxi-blocks') . '</strong></td></tr>';
+
+            // Active Plugins
+            if ($data['plugins']) {
+                $content .= '<tr><td colspan="4" class="plugin-section">';
+                $content .= '<strong>' . __('Active Plugins', 'maxi-blocks') . ' (' . count($data['active']) . ')</strong><br>';
+                foreach ($data['plugins'] as $plugin_path => $plugin) {
+                    if (in_array($plugin_path, $data['active'])) {
+                        $content .= $plugin['Name'] . ' ' . $plugin['Version'] . '<br>';
+                    }
+                }
+                $content .= '</td></tr>';
+
+                // Inactive Plugins
+                $inactive = array_diff(array_keys($data['plugins']), $data['active']);
+                if (!empty($inactive)) {
+                    $content .= '<tr><td colspan="4" class="plugin-section">';
+                    $content .= '<strong>' . __('Inactive Plugins', 'maxi-blocks') . ' (' . count($inactive) . ')</strong><br>';
+                    foreach ($inactive as $plugin_path) {
+                        $plugin = $data['plugins'][$plugin_path];
+                        $content .= $plugin['Name'] . ' ' . $plugin['Version'] . '<br>';
+                    }
+                    $content .= '</td></tr>';
+                }
+            }
 
             return $content;
         }
@@ -357,7 +616,118 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                     }
                 }
                 $content .= '</td></tr>';
+
+                // Inactive Plugins
+                $inactive = array_diff(array_keys($plugins), $active);
+                if (!empty($inactive)) {
+                    $content .= '<tr><td colspan="4" class="plugin-section">';
+                    $content .= '<strong>' . __('Inactive Plugins', 'maxi-blocks') . ' (' . count($inactive) . ')</strong><br>';
+                    foreach ($inactive as $plugin_path) {
+                        $plugin = $plugins[$plugin_path];
+                        $content .= $plugin['Name'] . ' ' . $plugin['Version'] . '<br>';
+                    }
+                    $content .= '</td></tr>';
+                }
             }
+
+            return $content;
+        }
+
+        /**
+         * Generates the theme information section of the status table
+         */
+        private function generate_theme_information_section()
+        {
+            $theme = wp_get_theme();
+            $is_block_theme = function_exists('wp_is_block_theme') ? wp_is_block_theme() : false;
+
+            // Check for auto-update status
+            $updates = __('Unknown', 'maxi-blocks');
+            if (function_exists('wp_is_auto_update_enabled_for_type')) {
+                if (!wp_is_auto_update_enabled_for_type('theme')) {
+                    $updates = __('Disabled', 'maxi-blocks');
+                } else {
+                    $stylesheet = $theme->get_stylesheet();
+                    if (function_exists('get_theme_auto_update_setting')) {
+                        $auto_update_setting = get_theme_auto_update_setting($stylesheet);
+                        $updates = $auto_update_setting ? __('Enabled', 'maxi-blocks') : __('Disabled', 'maxi-blocks');
+                    }
+                }
+            }
+
+            $parent_theme = $theme->parent();
+
+            $content = '<tr><th colspan="4">' . __('Theme Information', 'maxi-blocks') . '</th></tr>';
+            $content .= '<tr class="header-row">';
+            $content .= '<td>' . __('Setting', 'maxi-blocks') . '</td>';
+            $content .= '<td>' . __('Recommended', 'maxi-blocks') . '</td>';
+            $content .= '<td>' . __('Actual', 'maxi-blocks') . '</td>';
+            $content .= '<td>' . __('Status', 'maxi-blocks') . '</td>';
+            $content .= '</tr>';
+
+            // Theme Name
+            $content .= $this->generate_status_row(
+                __('Theme Name', 'maxi-blocks'),
+                '-',
+                $theme->get('Name'),
+                true
+            );
+
+            // Theme Version
+            $content .= $this->generate_status_row(
+                __('Version', 'maxi-blocks'),
+                '-',
+                $theme->get('Version'),
+                true
+            );
+
+            // Theme Author
+            $content .= $this->generate_status_row(
+                __('Author', 'maxi-blocks'),
+                '-',
+                strip_tags($theme->get('Author')),
+                true
+            );
+
+            // Author Website
+            $content .= $this->generate_status_row(
+                __('Author Website', 'maxi-blocks'),
+                '-',
+                $theme->get('AuthorURI'),
+                true
+            );
+
+            // Parent Theme
+            $content .= $this->generate_status_row(
+                __('Parent Theme', 'maxi-blocks'),
+                '-',
+                $parent_theme ? $parent_theme->get('Name') . ' ' . $parent_theme->get('Version') : __('None', 'maxi-blocks'),
+                true
+            );
+
+            // Block Theme
+            $content .= $this->generate_status_row(
+                __('Block Theme', 'maxi-blocks'),
+                '-',
+                $is_block_theme ? __('Yes', 'maxi-blocks') : __('No', 'maxi-blocks'),
+                true
+            );
+
+            // Theme Directory
+            $content .= $this->generate_status_row(
+                __('Theme Directory', 'maxi-blocks'),
+                '-',
+                get_template_directory(),
+                true
+            );
+
+            // Auto Updates
+            $content .= $this->generate_status_row(
+                __('Auto-updates', 'maxi-blocks'),
+                '-',
+                $updates,
+                true
+            );
 
             return $content;
         }
@@ -367,39 +737,94 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
          */
         public function generate_report_text($data)
         {
+            global $wpdb;
             $report = "====== BEGIN SYSTEM REPORT ======\n\n";
-
-            // WordPress Environment
-            $report .= "--- WordPress Environment ---\n";
-            $report .= 'WordPress Version: ' . get_bloginfo('version') . "\n";
-            $report .= 'Multisite: ' . $data['ismulti'] . "\n";
-            $report .= 'Site URL: ' . site_url() . "\n";
-            $report .= 'Home URL: ' . home_url() . "\n";
-            $report .= 'Current Theme: ' . $data['theme'] . "\n";
-            $report .= 'Parent Theme: ' . $data['parent_theme'] . "\n";
-            $report .= 'WP Debug Mode: ' . $data['wpdebug'] . "\n";
-            $report .= 'jQuery Version: ' . $data['jquchk'] . "\n";
-            $report .= 'Language: ' . $data['site_lang'] . "\n";
-            $report .= 'Charset: ' . $data['site_char'] . "\n";
-            $report .= 'Text Direction: ' . $data['site_text_dir'] . "\n\n";
 
             // Server Environment
             $report .= "--- Server Environment ---\n";
+            $report .= 'Server Software: ' . ($_SERVER['SERVER_SOFTWARE'] ?? 'Unknown') . "\n";
+            $report .= 'Operating System: ' . (function_exists('php_uname') ? php_uname('s') . ' ' . php_uname('r') : PHP_OS) . "\n";
+            $report .= 'Architecture: ' . (PHP_INT_SIZE === 8 ? 'x64' : 'x86') . "\n";
             $report .= 'PHP Version: ' . PHP_VERSION . "\n";
+
+            // Database info
+            $mysql_version = $wpdb->get_var('SELECT VERSION()');
+            $is_mariadb = strpos(strtolower($mysql_version), 'mariadb') !== false;
+            if ($is_mariadb) {
+                preg_match('/\d+\.\d+\.\d+/', $mysql_version, $matches);
+                $db_version = $matches[0] ?? '0.0.0';
+                $report .= 'Database: MariaDB ' . $db_version . ' (Required: 10.4+)' . "\n";
+            } else {
+                $report .= 'Database: MySQL ' . $mysql_version . ' (Required: 8.0+)' . "\n";
+            }
+
+            $report .= 'SSL/HTTPS: ' . (is_ssl() ? 'Enabled' : 'Disabled') . "\n";
             $report .= 'Safe Mode: ' . $data['safemode'] . "\n";
             $report .= 'cURL: ' . $data['hascurl'] . "\n";
             $report .= 'OpenSSL: ' . $data['openssl'] . "\n\n";
 
-            // Plugin Information
-            $report .= "--- Plugin Information ---\n";
-            if ($data['mu_plugins']) {
-                $report .= 'Must-Use Plugins (' . count($data['mu_plugins']) . "):\n";
-                foreach ($data['mu_plugins'] as $mu_plugin) {
-                    $report .= '- ' . $mu_plugin['Name'] . ' ' . $mu_plugin['Version'] . "\n";
+            // Theme Information
+            $theme = wp_get_theme();
+            $is_block_theme = function_exists('wp_is_block_theme') ? wp_is_block_theme() : false;
+
+            // Check for auto-update status
+            $updates = __('Unknown', 'maxi-blocks');
+            if (function_exists('wp_is_auto_update_enabled_for_type')) {
+                if (!wp_is_auto_update_enabled_for_type('theme')) {
+                    $updates = __('Disabled', 'maxi-blocks');
+                } else {
+                    $stylesheet = $theme->get_stylesheet();
+                    if (function_exists('get_theme_auto_update_setting')) {
+                        $auto_update_setting = get_theme_auto_update_setting($stylesheet);
+                        $updates = $auto_update_setting ? __('Enabled', 'maxi-blocks') : __('Disabled', 'maxi-blocks');
+                    }
                 }
-                $report .= "\n";
             }
 
+            $parent_theme = $theme->parent();
+
+            $report .= "--- Theme Information ---\n";
+            $report .= 'Theme Name: ' . $theme->get('Name') . "\n";
+            $report .= 'Version: ' . $theme->get('Version') . "\n";
+            $report .= 'Author: ' . strip_tags($theme->get('Author')) . "\n";
+            $report .= 'Author Website: ' . $theme->get('AuthorURI') . "\n";
+            $report .= 'Parent Theme: ' . ($parent_theme ? $parent_theme->get('Name') . ' ' . $parent_theme->get('Version') : 'None') . "\n";
+            $report .= 'Block Theme: ' . ($is_block_theme ? 'Yes' : 'No') . "\n";
+            $report .= 'Theme Directory: ' . get_template_directory() . "\n";
+            $report .= 'Auto-updates: ' . $updates . "\n\n";
+
+            // WordPress Environment
+            $report .= "--- WordPress Environment ---\n";
+            $report .= 'WordPress Version: ' . get_bloginfo('version') . "\n";
+            $report .= 'SSL/HTTPS: ' . (is_ssl() ? __('Enabled', 'maxi-blocks') : __('Disabled', 'maxi-blocks')) . "\n";
+            $report .= 'Multisite: ' . $data['ismulti'] . "\n";
+            if (is_multisite()) {
+                $report .= 'Multisite Type: ' . (defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL ? 'Subdomain' : 'Subfolder') . "\n";
+            }
+            $report .= 'Site URL: ' . site_url() . "\n";
+            $report .= 'Home URL: ' . home_url() . "\n";
+            if (get_option('page_for_posts')) {
+                $report .= 'Blog URL: ' . get_permalink(get_option('page_for_posts')) . "\n";
+            }
+            $report .= 'Current Theme: ' . $data['theme'] . "\n";
+            $report .= 'Parent Theme: ' . $data['parent_theme'] . "\n";
+            $report .= 'WP Debug Mode: ' . $data['wpdebug'] . "\n";
+            $report .= 'Language: ' . $data['site_lang'] . "\n";
+            $report .= 'Charset: ' . $data['site_char'] . "\n";
+            $report .= 'Timezone: ' . wp_timezone_string() . "\n";
+            $report .= 'Text Direction: ' . $data['site_text_dir'] . "\n";
+            $report .= 'Permalinks: ' . (empty(get_option('permalink_structure')) ?
+                'Plain' :
+                'Pretty Permalinks (' . get_option('permalink_structure') . ')') . "\n";
+            $report .= 'jQuery Version: ' . $data['jquchk'] . "\n";
+            $wp_scripts = wp_scripts();
+            $report .= 'React Version: ' . ($wp_scripts->registered['react']->ver ?? 'Not Found') . "\n";
+
+            // Add AJAX status to WordPress Environment section
+            $report .= 'WordPress AJAX: ' . ($this->test_ajax_status() ? 'Working' : 'Not Working') . "\n\n";
+
+            // Plugin Status
+            $report .= "--- Plugin Status ---\n";
             if ($data['plugins']) {
                 $report .= 'Active Plugins (' . count($data['active']) . "):\n";
                 foreach ($data['plugins'] as $plugin_path => $plugin) {
@@ -407,11 +832,69 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                         $report .= '- ' . $plugin['Name'] . ' ' . $plugin['Version'] . "\n";
                     }
                 }
+                $report .= "\n";
+
+                // Add inactive plugins
+                $inactive = array_diff(array_keys($data['plugins']), $data['active']);
+                if (!empty($inactive)) {
+                    $report .= 'Inactive Plugins (' . count($inactive) . "):\n";
+                    foreach ($inactive as $plugin_path) {
+                        $plugin = $data['plugins'][$plugin_path];
+                        $report .= '- ' . $plugin['Name'] . ' ' . $plugin['Version'] . "\n";
+                    }
+                }
             }
 
             $report .= "\n====== END SYSTEM REPORT ======";
 
+            $report .= "\nWordPress Directories Permissions:\n";
+            $report .= "WP Directory: " . ABSPATH . " (" . $this->get_directory_permission(ABSPATH) . ")\n";
+            $report .= "WP Content Directory: " . WP_CONTENT_DIR . " (" . $this->get_directory_permission(WP_CONTENT_DIR) . ")\n";
+            $report .= "WP Plugin Directory: " . WP_PLUGIN_DIR . " (" . $this->get_directory_permission(WP_PLUGIN_DIR) . ")\n";
+            $report .= "WP Themes Directory: " . get_theme_root() . " (" . $this->get_directory_permission(get_theme_root()) . ")\n";
+            $report .= "WP Uploads Directory: " . wp_upload_dir()['basedir'] . " (" . $this->get_directory_permission(wp_upload_dir()['basedir']) . ")\n";
+
             return $report;
+        }
+
+        /**
+         * Add the helper method for AJAX test
+         */
+        private function test_ajax_status()
+        {
+            // Check if admin-ajax.php exists and is accessible
+            $ajax_url = admin_url('admin-ajax.php');
+            $response = wp_remote_get($ajax_url, [
+                'timeout' => 5,
+                'sslverify' => false
+            ]);
+
+            if (is_wp_error($response)) {
+                return false;
+            }
+
+            $response_code = wp_remote_retrieve_response_code($response);
+
+            // WordPress AJAX typically returns 400 when no action is specified,
+            // which actually means it's working
+            return in_array($response_code, [200, 400], true);
+        }
+
+        // Add this helper method to check directory permissions
+        private function get_directory_permission($dir)
+        {
+            if (!file_exists($dir)) {
+                return __('Directory does not exist', 'maxi-blocks');
+            }
+
+            $perms = fileperms($dir);
+            $readable = is_readable($dir) ? __('Readable', 'maxi-blocks') : __('Not Readable', 'maxi-blocks');
+            $writable = is_writable($dir) ? __('Writable', 'maxi-blocks') : __('Not Writable', 'maxi-blocks');
+
+            // Convert file permission to human readable
+            $mode = substr(sprintf('%o', $perms), -4);
+
+            return sprintf('%s | %s | %s', $mode, $readable, $writable);
         }
     }
 endif;

@@ -403,7 +403,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $content .=
                 '<a href="' .
-                esc_url(admin_url('admin.php?page=maxi-blocks-onboarding')) .
+                esc_url(admin_url('admin.php?page=maxi-blocks-quick-start')) .
                 '" target="_blank" class="maxi-dashboard_setup-wizard-button">';
             $content .= __('Start set-up wizard', 'maxi-blocks');
             $content .= '</a>';

@@ -7,11 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import CloudLibrary from '.';
-import {
-	isProSubActive,
-	isProSubExpired,
-	getUserName,
-} from '../auth';
+import { isProSubActive, isProSubExpired, getUserName } from '../auth';
 /**
  * External dependencies
  */
@@ -38,7 +34,7 @@ const MaxiModal = props => {
 		isPro,
 		onClickConnect,
 		onLogOut,
-		isOnboarding,
+		isQuickStart,
 		description,
 	} = props;
 
@@ -87,7 +83,10 @@ const MaxiModal = props => {
 		window.addEventListener('maxiStarterSiteChanged', handleStorageChange);
 
 		return () => {
-			window.removeEventListener('maxiStarterSiteChanged', handleStorageChange);
+			window.removeEventListener(
+				'maxiStarterSiteChanged',
+				handleStorageChange
+			);
 		};
 	}, [title]);
 
@@ -193,7 +192,7 @@ const MaxiModal = props => {
 								onLogOut={onLogOut}
 								isLoading={isLoading}
 								isPro={isPro}
-								isOnboarding={isOnboarding}
+								isQuickStart={isQuickStart}
 								description={description}
 							/>
 						</div>
@@ -228,7 +227,7 @@ const MaxiModal = props => {
 								onLogOut={onLogOut}
 								isLoading={isLoading}
 								isPro={isPro}
-								isOnboarding={isOnboarding}
+								isQuickStart={isQuickStart}
 								description={description}
 							/>
 						</div>

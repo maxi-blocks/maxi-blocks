@@ -47,7 +47,7 @@ const LibraryToolbar = ({
 	onClickConnect,
 	showNotValidEmail,
 	isLoading,
-	isOnboarding,
+	isQuickStart,
 }) => {
 	const [userEmail, setUserEmail] = useState(false);
 	const [clickCount, setClickCount] = useState(0);
@@ -117,7 +117,9 @@ const LibraryToolbar = ({
 											: __('Click to show', 'maxi-blocks')
 									}
 									onClick={() => {
-										setClickCount(prevCount => prevCount + 1);
+										setClickCount(
+											prevCount => prevCount + 1
+										);
 									}}
 								>
 									{isValidEmail(userName)
@@ -147,7 +149,9 @@ const LibraryToolbar = ({
 						<div className='maxi-cloud-toolbar__sign-in'>
 							<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 								{__('Expired: ', 'maxi-blocks')}
-								<span className='maxi-username'>{userName}</span>
+								<span className='maxi-username'>
+									{userName}
+								</span>
 							</h5>
 							<Button
 								key='maxi-cloud-toolbar__button__connect'
@@ -162,7 +166,9 @@ const LibraryToolbar = ({
 					{!isMaxiProActive && userName && !isMaxiProExpired && (
 						<div className='maxi-cloud-toolbar__sign-in'>
 							<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
-								<span className='maxi-username'>{userName}</span>
+								<span className='maxi-username'>
+									{userName}
+								</span>
 							</h5>
 							<Button
 								key='maxi-cloud-toolbar__button__sing-out'
@@ -184,13 +190,19 @@ const LibraryToolbar = ({
 						<div className='maxi-cloud-toolbar__sign-in'>
 							<div className='maxi-cloud-container__patterns__top-menu__input'>
 								<TextControl
-									placeholder={__('Pro user email', 'maxi-blocks')}
+									placeholder={__(
+										'Pro user email',
+										'maxi-blocks'
+									)}
 									value={userEmail}
 									onChange={value => setUserEmail(value)}
 								/>
 								{emailNotValid && (
 									<span>
-										{__('The email is not valid', 'maxi-blocks')}
+										{__(
+											'The email is not valid',
+											'maxi-blocks'
+										)}
 									</span>
 								)}
 							</div>
@@ -220,13 +232,15 @@ const LibraryToolbar = ({
 						{help}
 						{__('Help', 'maxi-blocks')}
 					</a>
-					{isOnboarding && (
+					{isQuickStart && (
 						<div className='maxi-cloud-toolbar__buttons-group_close'>
 							<ToolbarButton
 								className='components-button is-small'
 								onClick={() =>
 									document
-										.getElementById('maxi-starter-sites-root')
+										.getElementById(
+											'maxi-starter-sites-root'
+										)
 										?.classList.remove('modal-open')
 								}
 								icon={closeIcon}

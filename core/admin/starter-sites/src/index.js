@@ -12,7 +12,9 @@ apiFetch.use(apiFetch.createRootURLMiddleware(apiRoot));
 
 const container = document.getElementById('maxi-starter-sites-root');
 if (container) {
-	const isOnboarding = document.querySelector('.maxi-onboarding-content') ? true : false;
-    const root = createRoot(container);
-    root.render(<Main type='starter-sites' isOnboarding={isOnboarding} />);
+	const isQuickStart = document.querySelector('.maxi-quick-start-content')
+		? true
+		: false;
+	const root = createRoot(container);
+	root.render(<Main type='starter-sites' isQuickStart={isQuickStart} />);
 }

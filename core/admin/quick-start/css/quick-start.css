@@ -1,4 +1,4 @@
-.maxi-onboarding-wrapper {
+.maxi-quick-start-wrapper {
 	max-width: 800px;
 	margin: 40px auto;
 	padding: 20px;
@@ -6,35 +6,35 @@
 	display: flex;
 }
 
-.maxi-onboarding-sidebar {
+.maxi-quick-start-sidebar {
 	width: 200px;
 	padding-right: 30px;
 	border-right: 1px solid #E5E7EB;
 }
 
-.maxi-onboarding-main {
+.maxi-quick-start-main {
 	flex: 1;
 	padding-left: 30px;
 }
 
-.maxi-onboarding-header {
+.maxi-quick-start-header {
 	text-align: center;
 	margin-bottom: 40px;
 }
 
-.maxi-onboarding-header img {
+.maxi-quick-start-header img {
 	max-width: 200px;
 	height: auto;
 }
 
-.maxi-onboarding-steps-nav {
+.maxi-quick-start-steps-nav {
 	display: block;
 	margin: 0 0 40px;
 	padding: 0;
 	list-style: none;
 }
 
-.maxi-onboarding-steps-nav .step {
+.maxi-quick-start-steps-nav .step {
 	position: relative;
 	padding: 12px 0 12px 45px;
 	margin-bottom: 8px;
@@ -44,11 +44,11 @@
 	transition: color 0.2s ease;
 }
 
-.maxi-onboarding-steps-nav .step:hover {
+.maxi-quick-start-steps-nav .step:hover {
 	color: #0073aa;
 }
 
-.maxi-onboarding-steps-nav .step::before {
+.maxi-quick-start-steps-nav .step::before {
 	content: attr(data-number);
 	position: absolute;
 	left: 0;
@@ -65,17 +65,17 @@
 	font-weight: 600;
 }
 
-.maxi-onboarding-steps-nav .step.active {
+.maxi-quick-start-steps-nav .step.active {
 	color: #0073aa;
 }
 
-.maxi-onboarding-steps-nav .step.active::before {
+.maxi-quick-start-steps-nav .step.active::before {
 	border-color: #0073aa;
 	background: #0073aa;
 	color: #fff;
 }
 
-.maxi-onboarding-steps-nav .step.completed::before {
+.maxi-quick-start-steps-nav .step.completed::before {
 	content: '✓';
 	background: #4CAF50;
 	border-color: #4CAF50;
@@ -128,32 +128,32 @@
 	height: 20px;
 }
 
-.maxi-onboarding-section {
+.maxi-quick-start-section {
 	margin-bottom: 40px;
 }
 
-.maxi-onboarding-section h2 {
+.maxi-quick-start-section h2 {
 	margin-bottom: 15px;
 	font-size: 18px;
 	color: #1e1e1e;
 }
 
-.maxi-onboarding-section .maxi-library-modal h2 {
+.maxi-quick-start-section .maxi-library-modal h2 {
 	margin-top: 0;
 }
 
-.maxi-onboarding-section #maxi-starter-sites-root .components-modal__screen-overlay.maxi-open-preview .components-modal__content {
+.maxi-quick-start-section #maxi-starter-sites-root .components-modal__screen-overlay.maxi-open-preview .components-modal__content {
 	left: 7%;
 }
 
-.maxi-onboarding-section .description {
+.maxi-quick-start-section .description {
 	color: #666;
 	margin-bottom: 15px;
 	font-size: 14px;
 	line-height: 1.5;
 }
 
-.maxi-onboarding-actions {
+.maxi-quick-start-actions {
 	display: flex;
 	justify-content: flex-end;
 	gap: 15px;
@@ -246,12 +246,12 @@
 	}
 }
 
-.maxi-onboarding-content {
+.maxi-quick-start-content {
 	position: relative;
 	min-height: 200px;
 }
 
-.maxi-onboarding-content.loading {
+.maxi-quick-start-content.loading {
 	pointer-events: none;
 	opacity: 0.7;
 }
@@ -285,7 +285,7 @@
 	padding: 0;
 }
 
-.maxi-onboarding-section #maxi-starter-sites-modal-root {
+.maxi-quick-start-section #maxi-starter-sites-modal-root {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -295,7 +295,7 @@
 	display: none;
 }
 
-.maxi-onboarding-section #maxi-starter-sites-modal-root:not(:empty) {
+.maxi-quick-start-section #maxi-starter-sites-modal-root:not(:empty) {
 	display: block;
 }
 
@@ -488,21 +488,21 @@ select[name="permalink_structure"]:focus {
 	align-items: center;
 }
 
-.maxi-onboarding-section #maxi-starter-sites-root .maxi-cloud-toolbar__buttons-group_close {
+.maxi-quick-start-section #maxi-starter-sites-root .maxi-cloud-toolbar__buttons-group_close {
 	margin-left: 20px;
 }
 
-.maxi-onboarding-section #maxi-starter-sites-root .maxi-cloud-toolbar__buttons-group_close button {
+.maxi-quick-start-section #maxi-starter-sites-root .maxi-cloud-toolbar__buttons-group_close button {
 	padding: 4px 8px;
 	background-color: #f0f0f0;
 	border: none;
 }
 
-.maxi-onboarding-section #maxi-starter-sites-root .maxi-cloud-toolbar__buttons-group_close button:hover {
+.maxi-quick-start-section #maxi-starter-sites-root .maxi-cloud-toolbar__buttons-group_close button:hover {
 	box-shadow: inset 0 0 0 2px #007cba;
 }
 
-.maxi-onboarding-section #maxi-starter-sites-root .maxi-cloud-toolbar__buttons-group_close svg {
+.maxi-quick-start-section #maxi-starter-sites-root .maxi-cloud-toolbar__buttons-group_close svg {
 	width: 12px;
 	height: 12px;
 }

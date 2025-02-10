@@ -237,7 +237,12 @@ const searchClientStarterSites = (() => {
 	}
 })();
 
-const starterSitesResults = ({ hit, onClickConnect, onLogOut, isOnboarding }) => {
+const starterSitesResults = ({
+	hit,
+	onClickConnect,
+	onLogOut,
+	isQuickStart,
+}) => {
 	const wrapClassName =
 		hit.cost?.[0] === 'Pro'
 			? 'ais-InfiniteHits-item-pro'
@@ -257,7 +262,7 @@ const starterSitesResults = ({ hit, onClickConnect, onLogOut, isOnboarding }) =>
 			className={wrapClassName}
 			onClickConnect={onClickConnect}
 			onLogOut={onLogOut}
-			isOnboarding={isOnboarding}
+			isQuickStart={isQuickStart}
 			description={hit.description}
 		/>
 	);
@@ -274,11 +279,10 @@ const MaxiDetailsPopUp = ({
 	contentXML,
 	isMaxiProActive,
 	isPro,
-	isOnboarding,
+	isQuickStart,
 	onRequestClose,
 	description,
 }) => {
-
 	const firstPage = pages?.[0];
 	const firstTemplate = templates?.[0];
 	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
@@ -290,10 +294,16 @@ const MaxiDetailsPopUp = ({
 			if (onRequestClose) onRequestClose();
 		};
 
-		document.addEventListener('close-details-popup', handleCloseDetailsPopup);
+		document.addEventListener(
+			'close-details-popup',
+			handleCloseDetailsPopup
+		);
 
 		return () => {
-			document.removeEventListener('close-details-popup', handleCloseDetailsPopup);
+			document.removeEventListener(
+				'close-details-popup',
+				handleCloseDetailsPopup
+			);
 		};
 	}, [onRequestClose]);
 
@@ -323,7 +333,7 @@ const MaxiDetailsPopUp = ({
 					contentXML={contentXML}
 					onRequestClose={handleImportClose}
 					isMaxiProActive={isMaxiProActive}
-					isOnboarding={isOnboarding}
+					isQuickStart={isQuickStart}
 				/>
 			) : (
 				<div className='maxi-cloud-container__details-popup_main-wrap'>
@@ -495,7 +505,7 @@ const LibraryContainer = props => {
 		isPro,
 		onClickConnect,
 		onLogOut,
-		isOnboarding,
+		isQuickStart,
 		description,
 	} = props;
 
@@ -516,7 +526,7 @@ const LibraryContainer = props => {
 						contentXML={contentXML}
 						onRequestClose={onRequestClose}
 						isMaxiProActive={isMaxiProActive}
-						isOnboarding={isOnboarding}
+						isQuickStart={isQuickStart}
 						description={description}
 					/>
 				</div>
@@ -535,7 +545,7 @@ const LibraryContainer = props => {
 						contentXML={contentXML}
 						isMaxiProActive={isMaxiProActive}
 						isPro={isPro}
-						isOnboarding={isOnboarding}
+						isQuickStart={isQuickStart}
 						onRequestClose={onRequestClose}
 						description={description}
 					/>
@@ -578,7 +588,7 @@ const LibraryContainer = props => {
 								isMaxiProActive={isMaxiProActive}
 								onClickConnect={onClickConnect}
 								onLogOut={onLogOut}
-								isOnboarding={isOnboarding}
+								isQuickStart={isQuickStart}
 							/>
 						</div>
 					</InstantSearch>

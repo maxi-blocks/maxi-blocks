@@ -1,6 +1,6 @@
 <?php
 /**
- * MaxiBlocks Onboarding Class
+ * MaxiBlocks Quick Start Class
  *
  * Handles the setup wizard functionality that appears after plugin activation
  *
@@ -12,12 +12,12 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-class MaxiBlocks_Onboarding
+class MaxiBlocks_QuickStart
 {
     /**
      * @var string
      */
-    private $option_name = 'maxi_blocks_onboarding_completed';
+    private $option_name = 'maxi_blocks_quick_start_completed';
 
     /**
      * @var array
@@ -29,11 +29,11 @@ class MaxiBlocks_Onboarding
      */
     public function __construct()
     {
-        add_action('admin_menu', [$this, 'add_onboarding_page']);
-        add_action('admin_init', [$this, 'maybe_redirect_to_onboarding']);
+        add_action('admin_menu', [$this, 'add_quick_start_page']);
+        add_action('admin_init', [$this, 'maybe_redirect_to_quick_start']);
         add_action('admin_init', [$this, 'maxi_blocks_starter_sites_init']);
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_onboarding_assets']);
-        add_action('wp_ajax_maxi_complete_onboarding', [$this, 'complete_onboarding']);
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_quick_start_assets']);
+        add_action('wp_ajax_maxi_complete_quick_start', [$this, 'complete_quick_start']);
         add_action('wp_ajax_maxi_save_welcome_settings', [$this, 'save_welcome_settings']);
         add_action('wp_ajax_maxi_save_design_settings', [$this, 'save_design_settings']);
         add_action('wp_ajax_maxi_save_pages_settings', [$this, 'save_pages_settings']);
@@ -42,14 +42,14 @@ class MaxiBlocks_Onboarding
 
         $this->init_steps();
 
-        // Store initial theme state when onboarding starts
+        // Store initial theme state when quick start starts
         if (get_transient('maxi_blocks_activation_redirect')) {
-            update_option('maxi_onboarding_initial_theme', get_template());
+            update_option('maxi_quick_start_initial_theme', get_template());
         }
     }
 
     /**
-     * Initialize onboarding steps
+     * Initialize quick start steps
      */
     private function init_steps()
     {
@@ -78,30 +78,30 @@ class MaxiBlocks_Onboarding
     }
 
     /**
-     * Add admin menu page for onboarding
+     * Add admin menu page for quick start
      */
-    public function add_onboarding_page()
+    public function add_quick_start_page()
     {
         add_submenu_page(
             null,
             __('MaxiBlocks Setup', 'maxi-blocks'),
             __('MaxiBlocks Setup', 'maxi-blocks'),
             'manage_options',
-            'maxi-blocks-onboarding',
-            [$this, 'render_onboarding_page']
+            'maxi-blocks-quick-start',
+            [$this, 'render_quick_start_page']
         );
     }
 
     /**
-     * Check if onboarding should be shown and redirect if necessary
+     * Check if quick start should be shown and redirect if necessary
      */
-    public function maybe_redirect_to_onboarding()
+    public function maybe_redirect_to_quick_start()
     {
         // Only redirect once after activation, using the transient set during activation
         if (get_transient('maxi_blocks_activation_redirect')) {
             delete_transient('maxi_blocks_activation_redirect');
-            if (current_user_can('manage_options') && !isset($_GET['page']) || $_GET['page'] !== 'maxi-blocks-onboarding') {
-                wp_redirect(admin_url('admin.php?page=maxi-blocks-onboarding'));
+            if (current_user_can('manage_options') && !isset($_GET['page']) || $_GET['page'] !== 'maxi-blocks-quick-start') {
+                wp_redirect(admin_url('admin.php?page=maxi-blocks-quick-start'));
                 exit;
             }
         }
@@ -110,9 +110,9 @@ class MaxiBlocks_Onboarding
     /**
      * Enqueue necessary assets
      */
-    public function enqueue_onboarding_assets($hook)
+    public function enqueue_quick_start_assets($hook)
     {
-        if ('admin_page_maxi-blocks-onboarding' !== $hook) {
+        if ('admin_page_maxi-blocks-quick-start' !== $hook) {
             return;
         }
 
@@ -123,29 +123,27 @@ class MaxiBlocks_Onboarding
         // Then enqueue media scripts
         wp_enqueue_media();
 
-        // Then enqueue onboarding script
+        // Then enqueue quick start script
         wp_enqueue_script(
-            'maxi-blocks-onboarding',
-            MAXI_PLUGIN_URL_PATH . 'core/admin/onboarding/js/onboarding.js',
+            'maxi-blocks-quick-start',
+            MAXI_PLUGIN_URL_PATH . 'core/admin/quick-start/js/quick-start.js',
             ['jquery'],
             MAXI_PLUGIN_VERSION,
             true // Move to footer
         );
 
-
-
-        // Enqueue onboarding styles
+        // Enqueue quick start styles
         wp_enqueue_style(
-            'maxi-blocks-onboarding',
-            MAXI_PLUGIN_URL_PATH . 'core/admin/onboarding/css/onboarding.css',
+            'maxi-blocks-quick-start',
+            MAXI_PLUGIN_URL_PATH . 'core/admin/quick-start/css/quick-start.css',
             [],
             MAXI_PLUGIN_VERSION
         );
 
         // Localize script after enqueueing
-        wp_localize_script('maxi-blocks-onboarding', 'maxiOnboarding', [
+        wp_localize_script('maxi-blocks-quick-start', 'maxiQuickStart', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('maxi_onboarding'),
+            'nonce' => wp_create_nonce('maxi_quick_start'),
             'strings' => [
                 'activeTheme' => __('Active Theme', 'maxi-blocks'),
                 'selectIcon' => __('Select Site Icon', 'maxi-blocks'),
@@ -171,26 +169,26 @@ class MaxiBlocks_Onboarding
                 'errorGeneric' => __('An error occurred. Please try again.', 'maxi-blocks'),
             ],
             'isMaxiBlocksGoActive' => get_template() === 'maxiblocks-go',
-            'initialThemeWasMaxiBlocksGo' => get_option('maxi_onboarding_initial_theme', '') === 'maxiblocks-go',
+            'initialThemeWasMaxiBlocksGo' => get_option('maxi_quick_start_initial_theme', '') === 'maxiblocks-go',
             'adminUrl' => admin_url(),
         ]);
     }
 
     /**
-     * Render the onboarding page
+     * Render the quick start page
      */
-    public function render_onboarding_page()
+    public function render_quick_start_page()
     {
         $current_step = isset($_GET['step']) ? sanitize_key($_GET['step']) : 'identity';
         ?>
-        <div class="maxi-onboarding-wrapper">
-            <div class="maxi-onboarding-sidebar">
-                <div class="maxi-onboarding-steps">
+        <div class="maxi-quick-start-wrapper">
+            <div class="maxi-quick-start-sidebar">
+                <div class="maxi-quick-start-steps">
                     <?php $this->render_steps_nav($current_step); ?>
                 </div>
             </div>
-            <div class="maxi-onboarding-main">
-                <div class="maxi-onboarding-content">
+            <div class="maxi-quick-start-main">
+                <div class="maxi-quick-start-content">
                     <?php
                     if (isset($this->steps[$current_step]['view'])) {
                         call_user_func($this->steps[$current_step]['view']);
@@ -207,12 +205,12 @@ class MaxiBlocks_Onboarding
      */
     private function render_steps_nav($current_step)
     {
-        echo '<ul class="maxi-onboarding-steps-nav">';
+        echo '<ul class="maxi-quick-start-steps-nav">';
         $step_number = 1;
         $steps_array = array_keys($this->steps);
 
-        // Only skip if theme was active before onboarding started
-        $initial_theme = get_option('maxi_onboarding_initial_theme', '');
+        // Only skip if theme was active before quick start started
+        $initial_theme = get_option('maxi_quick_start_initial_theme', '');
         $skip_theme_step = $initial_theme === 'maxiblocks-go';
 
         foreach ($this->steps as $key => $step) {
@@ -244,11 +242,11 @@ class MaxiBlocks_Onboarding
     }
 
     /**
-     * Mark onboarding as completed via AJAX
+     * Mark quick start as completed via AJAX
      */
-    public function complete_onboarding()
+    public function complete_quick_start()
     {
-        check_ajax_referer('maxi_onboarding', 'nonce');
+        check_ajax_referer('maxi_quick_start', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
@@ -269,7 +267,7 @@ class MaxiBlocks_Onboarding
             <?php _e('Welcome! This setup wizard will guide you through the initial configuration of your WordPress site. Follow the steps to get your site up and running quickly.', 'maxi-blocks'); ?>
         </p>
 
-        <div class="maxi-onboarding-section">
+        <div class="maxi-quick-start-section">
             <h2><?php _e('Site title and tagline', 'maxi-blocks'); ?></h2>
             <p class="description">
                 <?php _e('Enter a title for your site. This will be displayed at the top of your site and in search results.', 'maxi-blocks'); ?>
@@ -290,7 +288,7 @@ class MaxiBlocks_Onboarding
                    value="<?php echo esc_attr(get_option('blogdescription')); ?>" />
         </div>
 
-        <div class="maxi-onboarding-section">
+        <div class="maxi-quick-start-section">
             <h2><?php _e('Site language and time zone', 'maxi-blocks'); ?></h2>
             <p class="description">
                 <?php _e('Choose your site\'s language', 'maxi-blocks'); ?>
@@ -312,7 +310,7 @@ class MaxiBlocks_Onboarding
             </select>
         </div>
 
-        <div class="maxi-onboarding-section">
+        <div class="maxi-quick-start-section">
             <h2><?php _e('Permalink settings', 'maxi-blocks'); ?></h2>
             <p class="description">
                 <?php _e('Choose a structure for your site\'s URLs (permalinks).', 'maxi-blocks'); ?>
@@ -341,7 +339,7 @@ class MaxiBlocks_Onboarding
             </select>
         </div>
 
-        <div class="maxi-onboarding-actions">
+        <div class="maxi-quick-start-actions">
             <button type="button" class="button button-primary" data-action="save-welcome">
                 <?php _e('Save settings', 'maxi-blocks'); ?>
             </button>
@@ -363,7 +361,7 @@ class MaxiBlocks_Onboarding
             <?php _e('Select pages for your website', 'maxi-blocks'); ?>
         </p>
 
-        <div class="maxi-onboarding-section">
+        <div class="maxi-quick-start-section">
             <h2><?php _e('Select the page layout you like', 'maxi-blocks'); ?></h2>
             <p class="description">
                 <?php _e('Choose the pages you want to include on your website from the MaxiBlocks library. Select from a variety of pre-designed templates such as Home, About, Contact, Blog, Services, and more.', 'maxi-blocks'); ?>
@@ -380,7 +378,7 @@ class MaxiBlocks_Onboarding
             </button>
         </div>
 
-        <div class="maxi-onboarding-actions">
+        <div class="maxi-quick-start-actions">
             <button type="button" class="button" data-action="back">
                 <?php _e('Back', 'maxi-blocks'); ?>
             </button>
@@ -411,7 +409,7 @@ class MaxiBlocks_Onboarding
                 <?php _e('Great! You\'re using MaxiBlocks Go theme. This ensures the best experience with MaxiBlocks plugin.', 'maxi-blocks'); ?>
             </p>
 
-            <div class="maxi-onboarding-section theme-recommendation">
+            <div class="maxi-quick-start-section theme-recommendation">
                 <div class="theme-card">
                     <div class="theme-info">
                         <h2>
@@ -439,7 +437,7 @@ class MaxiBlocks_Onboarding
                 <?php _e('For the best experience with MaxiBlocks, we recommend using our official theme.', 'maxi-blocks'); ?>
             </p>
 
-            <div class="maxi-onboarding-section theme-recommendation">
+            <div class="maxi-quick-start-section theme-recommendation">
                 <div class="theme-card">
                     <div class="theme-info">
                         <h2><?php _e('MaxiBlocks Go', 'maxi-blocks'); ?></h2>
@@ -469,7 +467,7 @@ class MaxiBlocks_Onboarding
             </div>
         <?php endif; ?>
 
-        <div class="maxi-onboarding-actions">
+        <div class="maxi-quick-start-actions">
             <button type="button" class="button" data-action="back">
                 <?php _e('Back', 'maxi-blocks'); ?>
             </button>
@@ -491,7 +489,7 @@ class MaxiBlocks_Onboarding
             <?php _e('Customize the visual identity of your website', 'maxi-blocks'); ?>
         </p>
 
-        <div class="maxi-onboarding-section">
+        <div class="maxi-quick-start-section">
             <h2><?php _e('Site Logo & Icon', 'maxi-blocks'); ?></h2>
             <p class="description">
                 <?php _e('Upload your site logo and icon to establish your brand identity.', 'maxi-blocks'); ?>
@@ -569,7 +567,7 @@ class MaxiBlocks_Onboarding
             </div>
         </div>
 
-        <div class="maxi-onboarding-actions">
+        <div class="maxi-quick-start-actions">
             <button type="button" class="button" data-action="back">
                 <?php _e('Back', 'maxi-blocks'); ?>
             </button>
@@ -594,7 +592,7 @@ class MaxiBlocks_Onboarding
             <?php _e('Congratulations! Your MaxiBlocks site is now configured and ready to use.', 'maxi-blocks'); ?>
         </p>
 
-        <div class="maxi-onboarding-actions">
+        <div class="maxi-quick-start-actions">
             <button type="button" class="button" data-action="back">
                 <?php _e('Back', 'maxi-blocks'); ?>
             </button>
@@ -610,7 +608,7 @@ class MaxiBlocks_Onboarding
      */
     public function save_welcome_settings()
     {
-        check_ajax_referer('maxi_onboarding', 'nonce');
+        check_ajax_referer('maxi_quick_start', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error(__('You do not have permission to perform this action.', 'maxi-blocks'));
@@ -660,7 +658,7 @@ class MaxiBlocks_Onboarding
      */
     public function save_pages_settings()
     {
-        check_ajax_referer('maxi_onboarding', 'nonce');
+        check_ajax_referer('maxi_quick_start', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
@@ -683,7 +681,7 @@ class MaxiBlocks_Onboarding
                     'post_type' => 'page',
                 ]);
             }
-            update_option('maxi_blocks_onboarding_pages', $pages);
+            update_option('maxi_blocks_quick_start_pages', $pages);
         }
 
         wp_send_json_success();
@@ -694,7 +692,7 @@ class MaxiBlocks_Onboarding
      */
     public function save_theme_settings()
     {
-        check_ajax_referer('maxi_onboarding', 'nonce');
+        check_ajax_referer('maxi_quick_start', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
@@ -734,7 +732,7 @@ class MaxiBlocks_Onboarding
             <?php _e('Select a pre-built website design to get started quickly. You can customize everything later.', 'maxi-blocks'); ?>
         </p>
 
-        <div class="maxi-onboarding-section">
+        <div class="maxi-quick-start-section">
             <button type="button" class="button button-primary" id="choose-starter-site">
                 <?php _e('Choose starter site', 'maxi-blocks'); ?>
             </button>
@@ -750,7 +748,7 @@ class MaxiBlocks_Onboarding
             <div id="maxi-starter-sites-root"></div>
         </div>
 
-        <div class="maxi-onboarding-actions">
+        <div class="maxi-quick-start-actions">
             <button type="button" class="button" data-action="back">
                 <?php _e('Back', 'maxi-blocks'); ?>
             </button>
@@ -808,7 +806,7 @@ class MaxiBlocks_Onboarding
      */
     public function activate_theme()
     {
-        check_ajax_referer('maxi_onboarding', 'nonce');
+        check_ajax_referer('maxi_quick_start', 'nonce');
 
         if (!current_user_can('switch_themes')) {
             wp_send_json_error(__('You do not have permission to switch themes.', 'maxi-blocks'));
@@ -828,7 +826,7 @@ class MaxiBlocks_Onboarding
      */
     public function save_design_settings()
     {
-        check_ajax_referer('maxi_onboarding', 'nonce');
+        check_ajax_referer('maxi_quick_start', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error(__('You do not have permission to perform this action.', 'maxi-blocks'));

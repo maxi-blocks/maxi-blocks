@@ -28,6 +28,8 @@ class MaxiBlocks_QuickStart
      */
     private $steps = [];
 
+    private $initialized = false;
+
     /**
      * Constructor
      */
@@ -44,8 +46,6 @@ class MaxiBlocks_QuickStart
         add_action('wp_ajax_maxi_save_theme_settings', [$this, 'save_theme_settings']);
         add_action('wp_ajax_maxi_activate_theme', [$this, 'activate_theme']);
 
-        $this->init_steps();
-
         // Store initial theme state when quick start starts
         if (get_transient('maxi_blocks_activation_redirect')) {
             update_option('maxi_quick_start_initial_theme', get_template());
@@ -57,7 +57,27 @@ class MaxiBlocks_QuickStart
      */
     private function init_steps()
     {
-        $this->steps = [
+        if ($this->initialized) {
+            return;
+        }
+
+        // First check if there are any critical warnings
+        $status_report = new MaxiBlocks_System_Status_Report();
+        $critical_warnings = $this->get_critical_warnings($status_report);
+
+        $this->steps = [];
+
+        // Only add Status step if there are critical warnings
+        if (!empty($critical_warnings)) {
+            $this->steps['status'] = [
+                'name' => __('Status', 'maxi-blocks'),
+                'view' => [$this, 'status_step'],
+                'has_warnings' => true,
+            ];
+        }
+
+        // Add remaining steps
+        $this->steps += [
             'identity' => [
                 'name' => __('Identity', 'maxi-blocks'),
                 'view' => [$this, 'identity_step'],
@@ -79,6 +99,19 @@ class MaxiBlocks_QuickStart
                 'view' => [$this, 'finish_step'],
             ],
         ];
+
+        $this->initialized = true;
+    }
+
+    /**
+     * Get all steps
+     */
+    private function get_steps()
+    {
+        if (!$this->initialized) {
+            $this->init_steps();
+        }
+        return $this->steps;
     }
 
     /**
@@ -183,7 +216,8 @@ class MaxiBlocks_QuickStart
      */
     public function render_quick_start_page()
     {
-        $current_step = isset($_GET['step']) ? sanitize_key($_GET['step']) : 'identity';
+        $current_step = isset($_GET['step']) ? sanitize_key($_GET['step']) : $this->get_first_step();
+        $this->init_steps(); // Initialize steps when rendering
         ?>
         <div class="maxi-quick-start-wrapper">
             <div class="maxi-quick-start-sidebar">
@@ -210,8 +244,8 @@ class MaxiBlocks_QuickStart
     private function render_steps_nav($current_step)
     {
         echo '<ul class="maxi-quick-start-steps-nav">';
-        $step_number = 1;
         $steps_array = array_keys($this->steps);
+        $total_steps = count($steps_array);
 
         // Only skip if theme was active before quick start started
         $initial_theme = get_option('maxi_quick_start_initial_theme', '');
@@ -233,6 +267,14 @@ class MaxiBlocks_QuickStart
                 $classes[] = 'completed';
             }
 
+            // Calculate step number (add 1 because array is 0-based)
+            $step_number = $step_index + 1;
+
+            // Skip the Status step in the numbering if it exists
+            if (isset($this->steps['status']) && $key !== 'status') {
+                $step_number--;
+            }
+
             echo sprintf(
                 '<li class="%s" data-number="%d" data-step="%s"><span>%s</span></li>',
                 esc_attr(implode(' ', $classes)),
@@ -240,7 +282,6 @@ class MaxiBlocks_QuickStart
                 esc_attr($key),
                 esc_html($step['name'])
             );
-            $step_number++;
         }
         echo '</ul>';
     }
@@ -924,5 +965,80 @@ class MaxiBlocks_QuickStart
         }
 
         return array_unique($warnings);
+    }
+
+    /**
+     * Get critical warnings from status report
+     */
+    private function get_critical_warnings($status_report)
+    {
+        return $status_report->check_critical_requirements();
+    }
+
+    /**
+     * Status step view
+     */
+    public function status_step()
+    {
+        $status_report = new MaxiBlocks_System_Status_Report();
+        $critical_warnings = $this->get_critical_warnings($status_report);
+        ?>
+        <h1><?php _e('System Status Check', 'maxi-blocks'); ?></h1>
+
+        <?php if (!empty($critical_warnings)): ?>
+            <div class="notice notice-error">
+                <p>
+                    <strong><?php _e('Critical Issues Found', 'maxi-blocks'); ?></strong>
+                </p>
+                <p>
+                    <?php _e('The following system requirements are not met. MaxiBlocks may not function correctly unless these issues are resolved:', 'maxi-blocks'); ?>
+                </p>
+            </div>
+
+            <table class="maxi-status-table">
+                <tr class="header-row">
+                    <td><?php _e('Setting', 'maxi-blocks'); ?></td>
+                    <td><?php _e('Recommended', 'maxi-blocks'); ?></td>
+                    <td><?php _e('Current', 'maxi-blocks'); ?></td>
+                    <td><?php _e('Status', 'maxi-blocks'); ?></td>
+                </tr>
+                <?php foreach ($critical_warnings as $warning): ?>
+                    <tr>
+                        <td><?php echo esc_html($warning['setting']); ?></td>
+                        <td><?php echo esc_html($warning['recommended']); ?></td>
+                        <td><?php echo esc_html($warning['actual']); ?></td>
+                        <td class="status-warning"><span><?php _e('Warning', 'maxi-blocks'); ?></span></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+
+            <p class="description">
+                <?php _e('It is strongly recommended to fix these issues before proceeding. However, you can continue with the setup if you wish to address these later.', 'maxi-blocks'); ?>
+            </p>
+        <?php else: ?>
+            <div class="notice notice-success">
+                <p>
+                    <?php _e('All critical system requirements are met. You can proceed with the setup.', 'maxi-blocks'); ?>
+                </p>
+            </div>
+        <?php endif; ?>
+
+        <div class="maxi-quick-start-actions">
+            <button type="button" class="button button-primary" data-action="continue">
+                <?php _e('Continue to Setup', 'maxi-blocks'); ?>
+            </button>
+        </div>
+        <?php
+    }
+
+    /**
+     * Get the first step based on critical warnings
+     */
+    private function get_first_step()
+    {
+        $status_report = new MaxiBlocks_System_Status_Report();
+        $critical_warnings = $this->get_critical_warnings($status_report);
+
+        return !empty($critical_warnings) ? 'status' : 'identity';
     }
 }

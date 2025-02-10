@@ -10,6 +10,15 @@ jQuery(document).ready(function ($) {
 			this.bindEvents();
 			this.initMediaUploader();
 			this.initValidation();
+
+			// If Status step exists, it should always show warning
+			if (
+				$('.maxi-quick-start-steps-nav li[data-step="status"]').length
+			) {
+				$('.maxi-quick-start-steps-nav li[data-step="status"]')
+					.removeClass('completed')
+					.addClass('warning');
+			}
 		},
 
 		bindEvents() {
@@ -18,10 +27,58 @@ jQuery(document).ready(function ($) {
 				'click',
 				this.handleStepClick
 			);
+
+			// Continue button
 			$('.maxi-quick-start-actions [data-action="continue"]').on(
 				'click',
-				() => this.nextStep()
+				() => {
+					const steps = $('.maxi-quick-start-steps-nav li')
+						.map(function () {
+							return $(this).data('step');
+						})
+						.get();
+
+					const currentStep = $(
+						'.maxi-quick-start-steps-nav li.active'
+					).data('step');
+					const currentIndex = steps.indexOf(currentStep);
+
+					// If we're on the status step, mark it as warning and go to identity
+					if (currentStep === 'status') {
+						$('.maxi-quick-start-steps-nav li[data-step="status"]')
+							.removeClass('completed')
+							.addClass('warning');
+
+						// Store warning state in localStorage
+						const progress = JSON.parse(
+							localStorage.getItem('maxiQuickStartProgress') ||
+								'{}'
+						);
+						progress.statusWarning = true;
+						localStorage.setItem(
+							'maxiQuickStartProgress',
+							JSON.stringify(progress)
+						);
+
+						window.location.href = this.updateQueryParam(
+							'step',
+							'identity'
+						);
+						return;
+					}
+
+					// For other steps, go to the next step
+					if (currentIndex < steps.length - 1) {
+						const nextStep = steps[currentIndex + 1];
+						window.location.href = this.updateQueryParam(
+							'step',
+							nextStep
+						);
+					}
+				}
 			);
+
+			// Back button
 			$('.maxi-quick-start-actions [data-action="back"]').on(
 				'click',
 				() => this.previousStep()
@@ -56,9 +113,9 @@ jQuery(document).ready(function ($) {
 					data: {
 						action: 'maxi_activate_theme',
 						nonce: maxiQuickStart.nonce,
-						theme: theme,
+						theme,
 					},
-					success: function (response) {
+					success(response) {
 						if (response.success) {
 							const $newButton = $('<button>', {
 								type: 'button',
@@ -75,11 +132,11 @@ jQuery(document).ready(function ($) {
 							alert(response.data || 'Error activating theme');
 						}
 					},
-					error: function () {
+					error() {
 						alert('Error activating theme');
 						$button.prop('disabled', false);
 					},
-					complete: function () {
+					complete() {
 						MaxiQuickStart.hideLoader();
 					},
 				});
@@ -224,33 +281,6 @@ jQuery(document).ready(function ($) {
 			const stepKey = $(this).data('step');
 			if (stepKey) {
 				window.location.href = `?page=maxi-blocks-quick-start&step=${stepKey}`;
-			}
-		},
-
-		nextStep() {
-			const currentStep =
-				new URLSearchParams(window.location.search).get('step') ||
-				'identity';
-			const steps = [
-				'identity',
-				'theme',
-				'design',
-				'starter_site',
-				'finish',
-			];
-			let currentIndex = steps.indexOf(currentStep);
-
-			if (
-				currentStep === 'identity' &&
-				maxiQuickStart.initialThemeWasMaxiBlocksGo
-			) {
-				currentIndex = steps.indexOf('theme');
-			}
-
-			if (currentIndex < steps.length - 1) {
-				window.location.href = `?page=maxi-blocks-quick-start&step=${
-					steps[currentIndex + 1]
-				}`;
 			}
 		},
 
@@ -490,10 +520,23 @@ jQuery(document).ready(function ($) {
 		updateStepStatus() {
 			const progress = this.getProgress();
 			$('.maxi-quick-start-steps-nav .step').each(function () {
-				if (progress[$(this).data('step')]) {
+				const stepName = $(this).data('step');
+				// Skip the Status step entirely - it should never change from warning
+				if (stepName === 'status') {
+					return;
+				}
+				if (progress[stepName]) {
 					$(this).addClass('completed');
 				}
 			});
+		},
+
+		// Helper function to update URL query parameter
+		updateQueryParam(key, value) {
+			const baseUrl = window.location.href.split('?')[0];
+			const urlParams = new URLSearchParams(window.location.search);
+			urlParams.set(key, value);
+			return `${baseUrl}?${urlParams.toString()}`;
 		},
 	};
 

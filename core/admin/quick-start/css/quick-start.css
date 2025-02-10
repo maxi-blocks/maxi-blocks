@@ -82,6 +82,15 @@
 	color: #fff;
 }
 
+.maxi-quick-start-steps-nav .step.warning::before {
+	content: '!';
+	background: #dc3232;
+	border-color: #dc3232;
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+}
+
 /* Pages step specific styles */
 .page-selection-grid {
 	display: grid;

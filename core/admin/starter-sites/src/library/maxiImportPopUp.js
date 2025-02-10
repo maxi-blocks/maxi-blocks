@@ -114,7 +114,7 @@ const loadingButtonStyles = `
 
 const MaxiImportPopUp = props => {
 	const {
-		isOnboarding,
+		isQuickStart,
 		url,
 		title,
 		cost,
@@ -210,7 +210,7 @@ const MaxiImportPopUp = props => {
 		};
 	}, [wpImporterStatusState]);
 
-	const updateImporterStatus = (newStatus) => {
+	const updateImporterStatus = newStatus => {
 		setWpImporterStatusState(newStatus);
 		// Update the window variable to keep it in sync
 		window.maxiStarterSites = {
@@ -414,7 +414,8 @@ const MaxiImportPopUp = props => {
 			.then(response => {
 				// Update window variable with the response data
 				window.maxiStarterSites = window.maxiStarterSites || {};
-				window.maxiStarterSites.currentStarterSite = response.currentStarterSite;
+				window.maxiStarterSites.currentStarterSite =
+					response.currentStarterSite;
 
 				// Dispatch the event
 				window.dispatchEvent(new CustomEvent('maxiStarterSiteChanged'));
@@ -440,7 +441,7 @@ const MaxiImportPopUp = props => {
 		try {
 			const response = await apiFetch({
 				path: '/maxi-blocks/v1.0/install-importer',
-				method: 'POST'
+				method: 'POST',
 			});
 
 			if (response.success) {
@@ -470,11 +471,13 @@ const MaxiImportPopUp = props => {
 					{installingImporter
 						? __('Installing...', 'maxi-blocks')
 						: wpImporterStatusState === 'installed'
-							? __('activate', 'maxi-blocks')
-							: __('install and activate', 'maxi-blocks')
-					}
+						? __('activate', 'maxi-blocks')
+						: __('install and activate', 'maxi-blocks')}
 				</button>
-				{__(' WordPress Importer plugin to import content XML files.', 'maxi-blocks')}
+				{__(
+					' WordPress Importer plugin to import content XML files.',
+					'maxi-blocks'
+				)}
 			</p>
 		</div>
 	);
@@ -493,10 +496,13 @@ const MaxiImportPopUp = props => {
 				if (response.isBlockTheme) {
 					setSelectedItems(prev => ({
 						...prev,
-						templates: Object.keys(prev.templates).reduce((acc, key) => {
-							acc[key] = true;
-							return acc;
-						}, {})
+						templates: Object.keys(prev.templates).reduce(
+							(acc, key) => {
+								acc[key] = true;
+								return acc;
+							},
+							{}
+						),
 					}));
 				}
 			} catch (error) {
@@ -517,7 +523,7 @@ const MaxiImportPopUp = props => {
 		try {
 			const response = await apiFetch({
 				path: '/maxi-blocks/v1.0/install-theme',
-				method: 'POST'
+				method: 'POST',
 			});
 
 			if (response.success) {
@@ -525,7 +531,7 @@ const MaxiImportPopUp = props => {
 				setThemeType({
 					isBlockTheme: true,
 					themeName: 'MaxiBlocks Go',
-					isMaxiBlocksGoInstalled: true
+					isMaxiBlocksGoInstalled: true,
 				});
 			}
 		} catch (error) {
@@ -598,9 +604,12 @@ const MaxiImportPopUp = props => {
 												val
 											)
 										}
-										disabled={wpImporterStatusState !== 'active'}
+										disabled={
+											wpImporterStatusState !== 'active'
+										}
 									/>
-									{wpImporterStatusState !== 'active' && renderWarningMessage()}
+									{wpImporterStatusState !== 'active' &&
+										renderWarningMessage()}
 								</div>
 								{wpImporterStatusState === 'active' && (
 									<p>
@@ -624,7 +633,10 @@ const MaxiImportPopUp = props => {
 								<div className='maxi-cloud-container__import-popup_warning-message'>
 									<p>
 										{sprintf(
-											__('Templates cannot be imported because you are using a classic theme (%s). To import templates, you need a block theme. We recommend ', 'maxi-blocks'),
+											__(
+												'Templates cannot be imported because you are using a classic theme (%s). To import templates, you need a block theme. We recommend ',
+												'maxi-blocks'
+											),
 											themeType.themeName
 										)}
 										<button
@@ -633,18 +645,31 @@ const MaxiImportPopUp = props => {
 											onClick={handleThemeAction}
 										>
 											{themeType.isMaxiBlocksGoInstalled
-												? __('activating', 'maxi-blocks')
-												: __('installing', 'maxi-blocks')}
+												? __(
+														'activating',
+														'maxi-blocks'
+												  )
+												: __(
+														'installing',
+														'maxi-blocks'
+												  )}
 											{' MaxiBlocks Go'}
 										</button>
-										{__(' theme, which is optimized for MaxiBlocks.', 'maxi-blocks')}
+										{__(
+											' theme, which is optimized for MaxiBlocks.',
+											'maxi-blocks'
+										)}
 									</p>
 								</div>
 							)}
 
-							<div className={`maxi-cloud-container__import-popup_templates-list ${
-								isTemplatesSectionDisabled() ? 'maxi-disabled' : ''
-							}`}>
+							<div
+								className={`maxi-cloud-container__import-popup_templates-list ${
+									isTemplatesSectionDisabled()
+										? 'maxi-disabled'
+										: ''
+								}`}
+							>
 								{templates.map(template => (
 									<div
 										key={template.name}
@@ -652,11 +677,25 @@ const MaxiImportPopUp = props => {
 									>
 										<ToggleSwitch
 											label={template.name}
-											selected={selectedItems.templates[template.name]}
-											onChange={val => handleToggleChange('templates', template.name, val)}
+											selected={
+												selectedItems.templates[
+													template.name
+												]
+											}
+											onChange={val =>
+												handleToggleChange(
+													'templates',
+													template.name,
+													val
+												)
+											}
 											disabled={!themeType.isBlockTheme}
 										/>
-										<p>{getTemplateDescription(template.name)}</p>
+										<p>
+											{getTemplateDescription(
+												template.name
+											)}
+										</p>
 									</div>
 								))}
 							</div>
@@ -733,40 +772,64 @@ const MaxiImportPopUp = props => {
 				<div className='maxi-cloud-container__import-popup_footer'>
 					{importStatus === 'done' ? (
 						<div className='maxi-cloud-container__import-popup_status-text'>
-							{isOnboarding ? (
+							{isQuickStart ? (
 								<>
-									{__('Import completed. You can ', 'maxi-blocks')}
+									{__(
+										'Import completed. You can ',
+										'maxi-blocks'
+									)}
 									<a
 										href='#'
 										className='maxi-cloud-container__import-popup_close-link'
-										onClick={(e) => {
+										onClick={e => {
 											e.preventDefault();
-											const detailsPopup = document.querySelector('.maxi-cloud-container__details');
+											const detailsPopup =
+												document.querySelector(
+													'.maxi-cloud-container__details'
+												);
 											if (detailsPopup) {
-												const event = new Event('close-details-popup', { bubbles: true });
-												detailsPopup.dispatchEvent(event);
+												const event = new Event(
+													'close-details-popup',
+													{ bubbles: true }
+												);
+												detailsPopup.dispatchEvent(
+													event
+												);
 											}
-											if (onRequestClose) onRequestClose();
+											if (onRequestClose)
+												onRequestClose();
 
 											// Remove 'modal-open' class from #maxi-starter-sites-root if it exists
-											const rootElement = document.getElementById('maxi-starter-sites-root');
+											const rootElement =
+												document.getElementById(
+													'maxi-starter-sites-root'
+												);
 											if (rootElement) {
-												rootElement.classList.remove('modal-open');
+												rootElement.classList.remove(
+													'modal-open'
+												);
 											}
 										}}
 									>
-										{__('continue to wizard', 'maxi-blocks')}
+										{__(
+											'continue to wizard',
+											'maxi-blocks'
+										)}
 									</a>
 									{__(', or ', 'maxi-blocks')}
 									<a
 										href='#'
 										className='maxi-cloud-container__import-popup_close-link'
-										onClick={(e) => {
+										onClick={e => {
 											e.preventDefault();
-											if (onRequestClose) onRequestClose();
+											if (onRequestClose)
+												onRequestClose();
 										}}
 									>
-										{__('choose another starter site', 'maxi-blocks')}
+										{__(
+											'choose another starter site',
+											'maxi-blocks'
+										)}
 									</a>
 								</>
 							) : (
@@ -807,7 +870,10 @@ const MaxiImportPopUp = props => {
 									: ''
 							}`}
 							onClick={() => onClickImport(selectedItems)}
-							disabled={importStatus === 'loading' || !hasAnySelection(selectedItems)}
+							disabled={
+								importStatus === 'loading' ||
+								!hasAnySelection(selectedItems)
+							}
 						>
 							{importStatus === 'loading'
 								? __('Importing...', 'maxi-blocks')

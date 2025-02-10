@@ -12,6 +12,10 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+
+// Include the System Status Report class
+require_once plugin_dir_path(__FILE__) . '../status-report/maxi-system-status-report.php';
+
 class MaxiBlocks_QuickStart
 {
     /**
@@ -586,11 +590,44 @@ class MaxiBlocks_QuickStart
      */
     public function finish_step()
     {
+        // Get the status report
+        $status_report = new MaxiBlocks_System_Status_Report();
+        $warnings = $this->get_warnings_from_status_report($status_report);
+
         ?>
         <h1><?php _e('Setup Complete!', 'maxi-blocks'); ?></h1>
         <p class="description">
             <?php _e('Congratulations! Your MaxiBlocks site is now configured and ready to use.', 'maxi-blocks'); ?>
         </p>
+
+        <?php if (!empty($warnings)): ?>
+            <h2><?php _e('System Warnings', 'maxi-blocks'); ?></h2>
+            <p class="description">
+                <?php _e('The following settings might need your attention:', 'maxi-blocks'); ?>
+            </p>
+            <table class="maxi-status-table">
+                <tr class="header-row">
+                    <td><?php _e('Setting', 'maxi-blocks'); ?></td>
+                    <td><?php _e('Recommended', 'maxi-blocks'); ?></td>
+                    <td><?php _e('Current', 'maxi-blocks'); ?></td>
+                    <td><?php _e('Status', 'maxi-blocks'); ?></td>
+                </tr>
+                <?php foreach ($warnings as $warning): ?>
+                    <tr>
+                        <?php
+                        // Extract values from the warning array
+                        preg_match('/^(.*?)\s*\(Recommended:\s*(.*?),\s*Current:\s*(.*?)\)$/', $warning, $parts);
+                    if (count($parts) === 4):
+                        ?>
+                            <td><?php echo esc_html($parts[1]); ?></td>
+                            <td><?php echo esc_html($parts[2]); ?></td>
+                            <td><?php echo esc_html($parts[3]); ?></td>
+                            <td class="status-warning"><span><?php _e('Warning', 'maxi-blocks'); ?></span></td>
+                        <?php endif; ?>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php endif; ?>
 
         <div class="maxi-quick-start-actions">
             <button type="button" class="button" data-action="back">
@@ -847,5 +884,45 @@ class MaxiBlocks_QuickStart
         } catch (Exception $e) {
             wp_send_json_error(__('An error occurred while saving settings.', 'maxi-blocks'));
         }
+    }
+
+    /**
+     * Retrieve warnings from the status report
+     */
+    private function get_warnings_from_status_report($status_report)
+    {
+        // Generate the status report
+        $report_content = $status_report->generate_status_report();
+
+        // Use regex to find warning rows
+        preg_match_all('/<tr[^>]*>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td class="status-warning">/s', $report_content, $matches, PREG_SET_ORDER);
+
+        // Prepare an array to hold the warning messages
+        $warnings = [];
+
+        foreach ($matches as $match) {
+            $setting = trim(strip_tags($match[1]));
+            $recommended = trim(strip_tags($match[2]));
+            $actual = trim(strip_tags($match[3]));
+
+            // Skip header rows and empty settings
+            if ($setting === 'Setting' || empty($setting) || strpos($setting, 'Status') !== false) {
+                continue;
+            }
+
+            // Skip if it's just a section header
+            if (empty($recommended) || $recommended === '-') {
+                continue;
+            }
+
+            $warnings[] = sprintf(
+                '%s (Recommended: %s, Current: %s)',
+                $setting,
+                $recommended,
+                $actual
+            );
+        }
+
+        return array_unique($warnings);
     }
 }

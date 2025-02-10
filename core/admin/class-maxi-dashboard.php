@@ -1883,7 +1883,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_blocks_status()
         {
             require_once plugin_dir_path(__FILE__) .
-                'status-report/maxi-sytem-status-report.php';
+                'status-report/maxi-system-status-report.php';
             $status_report = new MaxiBlocks_System_Status_Report();
             return $status_report->generate_status_report();
         }

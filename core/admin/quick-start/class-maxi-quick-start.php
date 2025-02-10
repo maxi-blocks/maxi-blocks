@@ -932,14 +932,25 @@ class MaxiBlocks_QuickStart
      */
     private function get_warnings_from_status_report($status_report)
     {
-        // Generate the status report
+        // Get all warnings
+        $warnings = [];
+
+        // Get critical warnings first
+        $critical_warnings = $this->get_critical_warnings($status_report);
+        foreach ($critical_warnings as $warning) {
+            $warnings[] = sprintf(
+                '%s (Recommended: %s, Current: %s)',
+                $warning['setting'],
+                $warning['recommended'],
+                $warning['actual']
+            );
+        }
+
+        // Get the full report for other warnings
         $report_content = $status_report->generate_status_report();
 
         // Use regex to find warning rows
         preg_match_all('/<tr[^>]*>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td class="status-warning">/s', $report_content, $matches, PREG_SET_ORDER);
-
-        // Prepare an array to hold the warning messages
-        $warnings = [];
 
         foreach ($matches as $match) {
             $setting = trim(strip_tags($match[1]));
@@ -956,12 +967,15 @@ class MaxiBlocks_QuickStart
                 continue;
             }
 
-            $warnings[] = sprintf(
-                '%s (Recommended: %s, Current: %s)',
-                $setting,
-                $recommended,
-                $actual
-            );
+            // Skip critical warnings as we already have them
+            if (!in_array($setting, ['PHP Version', 'Database Type', 'WordPress AJAX', 'General Table', 'Styles Table', 'Custom Data Table'])) {
+                $warnings[] = sprintf(
+                    '%s (Recommended: %s, Current: %s)',
+                    $setting,
+                    $recommended,
+                    $actual
+                );
+            }
         }
 
         return array_unique($warnings);

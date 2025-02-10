@@ -298,7 +298,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 __('PHP Version', 'maxi-blocks'),
                 '8.0+',
                 $data['php_version'],
-                version_compare($data['php_version'], '8.0', '>='),
+                version_compare($data['php_version'], '9.0', '>='),
             );
 
             // Database Version and Type

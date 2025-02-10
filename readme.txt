@@ -173,7 +173,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 10 Feb 2025_
+_Updates 11 Feb 2025_
 MaxiBlocks v2.0.7
 * Update: Implemented comprehensive memory and speed optimizations across the Editor Experience (EE) and the Site Editor (SE) interfaces.
 * Update: Enhanced performance of Dynamic Content and Content Loop functionality in both EE and SE.

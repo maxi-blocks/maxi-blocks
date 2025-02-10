@@ -80,7 +80,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             $content .= '<p>' . __('This report provides information about your WordPress environment and server configuration.', 'maxi-blocks') . '</p>';
 
             // Copy Report Button
-            $content .= '<button type="button" id="maxi-copy-report" class="button button-primary maxi-dashboard_copy-report-button">' . __('Copy Report to Clipboard', 'maxi-blocks') . '</button>';
+            $content .= '<button type="button" id="maxi-copy-report" class="button button-primary maxi-dashboard_copy-report-button">' . __('Copy report to clipboard', 'maxi-blocks') . '</button>';
 
             // Download Report Button
             $site_domain = str_replace(['http://', 'https://', 'www.'], '', get_site_url());
@@ -92,7 +92,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             $button_html = sprintf(
                 '<button type="button" id="maxi-download-report" class="button button-primary" data-filename="%s">%s</button>',
                 esc_attr($filename),
-                esc_html__('Download Report', 'maxi-blocks')
+                esc_html__('Download report', 'maxi-blocks')
             );
 
             $content .= wp_kses($button_html, maxi_blocks_allowed_html());

@@ -405,11 +405,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '<a href="' .
                 esc_url(admin_url('admin.php?page=maxi-blocks-quick-start')) .
                 '" target="_blank" class="maxi-dashboard_setup-wizard-button">';
-            $content .= __('Start set-up wizard', 'maxi-blocks');
+            $content .= __('Quick start', 'maxi-blocks');
             $content .= '</a>';
 
             $content .= '</h1>';
-            // Add the setup wizard button
 
             $content .=
                 '<h2>' .

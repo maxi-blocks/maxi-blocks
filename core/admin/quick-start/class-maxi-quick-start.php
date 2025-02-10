@@ -2,7 +2,7 @@
 /**
  * MaxiBlocks Quick Start Class
  *
- * Handles the setup wizard functionality that appears after plugin activation
+ * Handles the quick start functionality that appears after plugin activation
  *
  * @package MaxiBlocks
  * @since 1.0.0
@@ -266,9 +266,9 @@ class MaxiBlocks_QuickStart
     public function identity_step()
     {
         ?>
-        <h1><?php _e('Welcome to the MaxiBlocks setup wizard', 'maxi-blocks'); ?></h1>
+        <h1><?php _e('Welcome to the MaxiBlocks quick start', 'maxi-blocks'); ?></h1>
         <p class="description">
-            <?php _e('Welcome! This setup wizard will guide you through the initial configuration of your WordPress site. Follow the steps to get your site up and running quickly.', 'maxi-blocks'); ?>
+            <?php _e('Welcome! This quick start will guide you through the initial configuration of your WordPress site. Follow the steps to get your site up and running quickly.', 'maxi-blocks'); ?>
         </p>
 
         <div class="maxi-quick-start-section">

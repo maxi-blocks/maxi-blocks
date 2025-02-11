@@ -13,8 +13,6 @@ import {
 	setBrowserViewport,
 	activatePlugin,
 	activateTheme,
-	setOption,
-	visitAdminPage,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -58,50 +56,7 @@ const OBSERVED_CONSOLE_MESSAGE_TYPES = {
 jest.setTimeout(PUPPETEER_TIMEOUT || 100000);
 
 async function setupBrowser() {
-	// Disable console logging during setup
-	const originalConsoleLog = console.log;
-	const originalConsoleError = console.error;
-	console.log = () => {};
-	console.error = () => {};
-
-	try {
-		await setBrowserViewport({ width: 1920, height: 700 });
-
-		// Skip external network checks in test environment
-		if (process.env.CI) {
-			// Only do network checks in CI environment
-			const testUrls = [
-				'https://wordpress.org',
-				'https://api.wordpress.org',
-				'https://google.com',
-				'https://github.com',
-			];
-
-			let connected = false;
-			for (const url of testUrls) {
-				try {
-					await page.goto(url, {
-						waitUntil: 'networkidle0',
-						timeout: 10000,
-					});
-					connected = true;
-					break;
-				} catch (e) {
-					continue;
-				}
-			}
-
-			if (!connected) {
-				throw new Error('Could not establish network connectivity');
-			}
-		}
-	} catch (error) {
-		throw error;
-	} finally {
-		// Restore console functions
-		console.log = originalConsoleLog;
-		console.error = originalConsoleError;
-	}
+	await setBrowserViewport({ width: 1920, height: 700 });
 }
 
 /**
@@ -121,16 +76,6 @@ function observeConsoleLogging() {
 		}
 
 		let text = message.text();
-
-		// Add ERR_CONNECTION_REFUSED to ignored errors
-		if (
-			text.includes('net::ERR_CONNECTION_REFUSED') ||
-			text.includes(
-				'Failed to load resource: net::ERR_CONNECTION_REFUSED'
-			)
-		) {
-			return;
-		}
 
 		// wp-bootstrap-block exceptions for WordPress 5.2
 		if (
@@ -259,23 +204,46 @@ function observeConsoleLogging() {
 			return;
 		}
 
-		// Handle JSHandle objects more gracefully
-		if (typeof text === 'object' && text._remoteObject) {
-			text = text._remoteObject.description || text.toString();
-		}
-
-		text = get(message.args(), [0, '_remoteObject', 'description'], text);
-
-		// Skip if the text is still a JSHandle reference
-		if (text.includes('JSHandle@')) {
+		// In case there's no internet connection (like when you're in a plane working lol)
+		if (
+			text.includes('ERR_INTERNET_DISCONNECTED') ||
+			text.includes('network error occurred')
+		) {
 			return;
 		}
 
-		// Only log errors that aren't explicitly ignored
+		// Sometimes favicon is not found
+		if (
+			message?._stackTraceLocations?.[0]?.url?.includes('favicon.ico') ||
+			text.includes('favicon.ico')
+		)
+			return;
+
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
-		if (process.env.DEBUG) {
-			console[logFunction](text);
-		}
+
+		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of
+		// type JSHandle for error logging, instead of the expected string.
+		//
+		// See: https://github.com/GoogleChrome/puppeteer/issues/3397
+		//
+		// The recommendation there to asynchronously resolve the error value
+		// upon a console event may be prone to a race condition with the test
+		// completion, leaving a possibility of an error not being surfaced
+		// correctly. Instead, the logic here synchronously inspects the
+		// internal object shape of the JSHandle to find the error text. If it
+		// cannot be found, the default text value is used instead.
+		text = get(message.args(), [0, '_remoteObject', 'description'], text);
+
+		// Disable reason: We intentionally bubble up the console message
+		// which, unless the test explicitly anticipates the logging via
+		// @wordpress/jest-console matchers, will cause the intended test
+		// failure.
+
+		// eslint-disable-next-line no-console
+		console[logFunction](text);
+
+		// In case we want to debug the error
+		// debugger;
 	});
 }
 
@@ -283,48 +251,16 @@ function observeConsoleLogging() {
 // other posts/comments/etc. aren't dirtying tests and tests don't depend on
 // each other's side-effects.
 beforeAll(async () => {
-	console.log('Starting test setup...');
-	try {
-		enablePageDialogAccept();
-		observeConsoleLogging();
+	enablePageDialogAccept();
+	observeConsoleLogging();
 
-		await setupBrowser();
-		console.log('Browser setup successful');
+	await setupBrowser();
 
-		console.log('Deactivating plugin...');
-		await deactivatePlugin('maxi-blocks');
-		console.log('Activating plugin...');
-		await activatePlugin('maxi-blocks');
+	await deactivatePlugin('maxi-blocks');
+	await activatePlugin('maxi-blocks');
 
-		console.log('Navigating to quick start...');
-		await visitAdminPage(
-			'admin.php',
-			'page=maxi-blocks-quick-start&step=finish'
-		);
-
-		console.log('Waiting for selector...');
-		await page.waitForSelector(
-			'.maxi-quick-start-actions button[data-action="complete"]',
-			{ timeout: 30000 }
-		);
-
-		console.log('Clicking complete...');
-		await page.click(
-			'.maxi-quick-start-actions button[data-action="complete"]'
-		);
-
-		console.log('Waiting for completion...');
-		await page.waitForTimeout(1000);
-
-		console.log('Activating theme...');
-		await activateTheme('twentytwentyone');
-
-		console.log('Test setup complete');
-	} catch (error) {
-		console.log('Test setup failed:', error.message);
-		console.log('Full error:', error);
-		throw error;
-	}
+	// Default theme, twentytwentytwo, has a bug that returns a console.error
+	await activateTheme('twentytwentyone');
 });
 
 afterEach(async () => {

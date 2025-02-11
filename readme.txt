@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 2.0.6
+Stable tag: 2.0.7
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,24 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 11 Feb 2025_
+MaxiBlocks v2.0.7
+* Update: Implemented comprehensive memory and speed optimizations across the Editor Experience (EE) and the Site Editor (SE) interfaces.
+* Update: Enhanced performance of Dynamic Content and Content Loop functionality in both EE and SE.
+* Update: Optimized frontend performance by conditionally loading scripts and styles only when Maxi Blocks are present on the page.
+* Update: Expanded Maxi AI capabilities with support for additional gpt-, o1 and o3 models based on OpenAI key permissions.
+* Update: Refined Maxi AI interface with improved usability features in both EE and Maxi AI Dashboard settings.
+* Update: Enhanced plugin compatibility with WordPress Multisite networks when network-activated.
+* Update: Introduced new "Keep only text content" option in Dynamic Content for HTML tag stripping functionality.
+* Update: Strengthened plugin testing infrastructure with multiple improvements.
+* Fix: Corrected pagination visibility issue in EE by automatically hiding it when Content Loop is inactive.
+* Fix: Resolved pattern selection issue in library modal that required double-clicking on categories.
+* Fix: Enhanced Style Cards modal stability by addressing re-rendering and filter reset issues.
+* Fix: Eliminated unwanted horizontal scrolling in Interaction Builder's transform sidebar section.
+* Fix: Corrected initial width rendering of template parts when loading SE.
+* Fix: Improved MaxiBlocks toolbar compatibility with WordPress Distraction-free and Spotlight editor modes.
+* Fix: Enhanced responsive background colour changes through improved toolbar settings functionality in responsive mode.
+
 _Updates 24 Dec 2024_
 MaxiBlocks v2.0.6
 * Fix: Restored missing author display functionality in Dynamic Content on frontend.
@@ -192,15 +210,6 @@ MaxiBlocks v2.0.5
 * Fix: Optimized template library image upload process for slow server environments.
 * Fix: Addressed sidebar styles persistence issues during open and close actions.
 * Fix: Eliminated incorrect autocomplete tooltip for date formatting options.
-
-_Updates 19 Nov 2024_
-MaxiBlocks v2.0.4
-* Fix: Reverted the default block on a new page / post back to Gutenberg Paragraph.
-* Fix: Addressed PHP warnings during update.
-
-_Updates 11 Nov 2024_
-MaxiBlocks v2.0.3
-* Fix: Corrected images url path for MaxiBlocks Go patterns import.
 
 
 == Upgrade Notice ==

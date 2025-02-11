@@ -50,10 +50,7 @@ import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
 import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
-import {
-	insertBlockIntoColumns,
-	removeBlockFromColumns,
-} from '@extensions/repeater';
+import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 
@@ -145,9 +142,6 @@ class MaxiBlockComponent extends Component {
 
 		// Cache frequently accessed values
 		this.memoizedValues = new Map();
-
-		// Use WeakMap for DOM references to allow garbage collection
-		this.domRefs = new WeakMap();
 
 		// Debounce expensive operations
 		this.debouncedDisplayStyles = _.debounce(this.displayStyles, 150);
@@ -354,12 +348,21 @@ class MaxiBlockComponent extends Component {
 		// Force update when selection state changes
 		if (this.props.isSelected !== nextProps.isSelected) return true;
 
+		// Ensures rendering when breakpoint changes
 		const wasBreakpointChanged =
 			this.props.deviceType !== nextProps.deviceType ||
 			this.props.baseBreakpoint !== nextProps.baseBreakpoint;
 
-		// Ensures rendering when breakpoint changes
 		if (wasBreakpointChanged) return true;
+
+		if (
+			this.props?.attributes?.blockStyle &&
+			this.props.attributes.blockStyle !== nextProps.attributes.blockStyle
+		)
+			return true;
+
+		// Check changes on states
+		if (!isEqual(this.state, nextState)) return true;
 
 		// Force rendering the block when SC related values change
 		if (this.scProps && this.state.oldSC && !isEmpty(this.state.oldSC)) {
@@ -381,11 +384,6 @@ class MaxiBlockComponent extends Component {
 
 				return true;
 			}
-		}
-
-		// Check changes on states
-		if (!isEqual(this.state, nextState)) {
-			return true;
 		}
 
 		const result = !isEqual(
@@ -1131,7 +1129,6 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-
 		this.injectStyles(
 			uniqueID,
 			obj,
@@ -1479,6 +1476,7 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				uniqueID
 			);
+			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
 				updatedStylesObj,
@@ -1516,7 +1514,6 @@ class MaxiBlockComponent extends Component {
 
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
-
 		const styles = styleResolver({
 			styles: stylesObj,
 			remove: false,

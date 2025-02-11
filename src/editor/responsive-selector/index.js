@@ -9,7 +9,6 @@ import { useCallback, useEffect, useRef } from '@wordpress/element';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -18,9 +17,12 @@ import classnames from 'classnames';
 import MaxiStyleCardsEditorPopUp from '@editor/style-cards';
 import { Button, Icon } from '@components';
 import { setScreenSize } from '@extensions/styles';
-import { getIsSiteEditor, getSiteEditorIframeBody } from '@extensions/fse';
+import {
+	getIsSiteEditor,
+	getSiteEditorIframeBody,
+	getIsTemplatePart,
+} from '@extensions/fse';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
-import { getPageFonts, loadFonts } from '@extensions/text/fonts';
 
 /**
  * Styles
@@ -65,7 +67,10 @@ const ResponsiveButton = ({
 		<div className={classes}>
 			<Button
 				className='maxi-responsive-selector__button-item'
-				onClick={() => setScreenSize(target)}
+				onClick={() => {
+					if (getIsTemplatePart()) setScreenSize(target);
+					else setScreenSize(isBaseBreakpoint ? 'general' : target);
+				}}
 				aria-pressed={getIsPressed()}
 			>
 				<div>

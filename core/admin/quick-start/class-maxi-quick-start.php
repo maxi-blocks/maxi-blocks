@@ -78,20 +78,20 @@ class MaxiBlocks_QuickStart
 
         // Add remaining steps
         $this->steps += [
-            'identity' => [
-                'name' => __('Identity', 'maxi-blocks'),
-                'view' => [$this, 'identity_step'],
+            'quick_start' => [
+                'name' => __('Quick start', 'maxi-blocks'),
+                'view' => [$this, 'quick_start_step'],
             ],
             'theme' => [
                 'name' => __('Theme', 'maxi-blocks'),
                 'view' => [$this, 'theme_step'],
             ],
-            'design' => [
-                'name' => __('Design', 'maxi-blocks'),
-                'view' => [$this, 'design_step'],
+            'brand_identity' => [
+                'name' => __('Brand identity', 'maxi-blocks'),
+                'view' => [$this, 'brand_identity_step'],
             ],
             'starter_site' => [
-                'name' => __('Starter Site', 'maxi-blocks'),
+                'name' => __('Starter site', 'maxi-blocks'),
                 'view' => [$this, 'starter_site_step'],
             ],
             'finish' => [
@@ -302,20 +302,20 @@ class MaxiBlocks_QuickStart
     }
 
     /**
-     * Identity step view
+     * Quick start step view
      */
-    public function identity_step()
+    public function quick_start_step()
     {
         ?>
         <h1><?php _e('Welcome to the MaxiBlocks quick start', 'maxi-blocks'); ?></h1>
         <p class="description">
-            <?php _e('Welcome! This quick start will guide you through the initial configuration of your WordPress site. Follow the steps to get your site up and running quickly.', 'maxi-blocks'); ?>
+            <?php _e('We\'ll help you configure your WordPress site in just a few simple steps. Follow along to set your site\'s title, brand, and starter site, then you\'ll be ready to add your own content.', 'maxi-blocks'); ?>
         </p>
 
         <div class="maxi-quick-start-section">
             <h2><?php _e('Site title and tagline', 'maxi-blocks'); ?></h2>
             <p class="description">
-                <?php _e('Enter a title for your site. This will be displayed at the top of your site and in search results.', 'maxi-blocks'); ?>
+                <?php _e('Your title appears at the top of your site and in search results.', 'maxi-blocks'); ?>
             </p>
             <input type="text"
                    name="site_title"
@@ -324,7 +324,7 @@ class MaxiBlocks_QuickStart
                    value="<?php echo esc_attr(get_option('blogname')); ?>" />
 
             <p class="description">
-                <?php _e('Enter a tagline. This is a short description or slogan for your site.', 'maxi-blocks'); ?>
+                <?php _e('Enter a tagline. A tagline is a short description or slogan that clarifies what your site is about.', 'maxi-blocks'); ?>
             </p>
             <input type="text"
                    name="site_tagline"
@@ -336,7 +336,7 @@ class MaxiBlocks_QuickStart
         <div class="maxi-quick-start-section">
             <h2><?php _e('Site language and time zone', 'maxi-blocks'); ?></h2>
             <p class="description">
-                <?php _e('Choose your site\'s language', 'maxi-blocks'); ?>
+                <?php _e('Choose your site\'s main language and nearest city time zone. This ensures dates and times display correctly for your readers and any scheduled content.', 'maxi-blocks'); ?>
             </p>
             <?php
             $languages = get_available_languages();
@@ -348,7 +348,7 @@ class MaxiBlocks_QuickStart
         ?>
 
             <p class="description">
-                <?php _e('Choose your site\'s time zone', 'maxi-blocks'); ?>
+                <?php _e('Nearest city', 'maxi-blocks'); ?>
             </p>
             <select name="timezone_string">
                 <?php echo wp_timezone_choice(get_option('timezone_string')); ?>
@@ -358,30 +358,84 @@ class MaxiBlocks_QuickStart
         <div class="maxi-quick-start-section">
             <h2><?php _e('Permalink settings', 'maxi-blocks'); ?></h2>
             <p class="description">
-                <?php _e('Choose a structure for your site\'s URLs (permalinks).', 'maxi-blocks'); ?>
+                <?php _e('Pick how you want your site\'s URLs to look. The "Post name" option is a popular choice for clarity and SEO.', 'maxi-blocks'); ?>
             </p>
-            <select name="permalink_structure">
+            <select name="permalink_structure" id="permalink_structure">
                 <?php
                 $current_structure = get_option('permalink_structure');
-        $structures = array(
-            '' => __('Plain', 'maxi-blocks'),
-            '/archives/%post_id%' => __('Numeric', 'maxi-blocks'),
-            '/%year%/%monthnum%/%day%/%postname%/' => __('Day and name', 'maxi-blocks'),
-            '/%year%/%monthnum%/%postname%/' => __('Month and name', 'maxi-blocks'),
-            '/%postname%/' => __('Post name', 'maxi-blocks'),
-            '/archives/%post_id%' => __('Post ID', 'maxi-blocks')
-        );
+                // Set default to Post name if no structure is set
+                if (empty($current_structure)) {
+                    $current_structure = '/%postname%/';
+                }
 
-        foreach ($structures as $value => $label) {
-            printf(
-                '<option value="%s" %s>%s</option>',
-                esc_attr($value),
-                selected($current_structure, $value, false),
-                esc_html($label)
-            );
-        }
-        ?>
+                $structures = array(
+                    '/%postname%/' => __('Post name (default)', 'maxi-blocks'),
+                    '' => __('Plain', 'maxi-blocks'),
+                    '/archives/%post_id%' => __('Numeric', 'maxi-blocks'),
+                    '/%year%/%monthnum%/%day%/%postname%/' => __('Day and name', 'maxi-blocks'),
+                    '/%year%/%monthnum%/%postname%/' => __('Month and name', 'maxi-blocks'),
+                    '/archives/%post_id%' => __('Post ID', 'maxi-blocks')
+                );
+
+                foreach ($structures as $value => $label) {
+                    printf(
+                        '<option value="%s" %s>%s</option>',
+                        esc_attr($value),
+                        selected($current_structure, $value, false),
+                        esc_html($label)
+                    );
+                }
+                ?>
             </select>
+
+            <div class="permalink-structure-preview">
+                <p class="description"><?php _e('Example URL:', 'maxi-blocks'); ?></p>
+                <code class="preview-url"></code>
+            </div>
+
+            <style>
+                .permalink-structure-preview {
+                    margin-top: 15px;
+                    padding: 12px;
+                    background: #f0f0f1;
+                    border-radius: 4px;
+                }
+                .permalink-structure-preview .description {
+                    margin: 0 0 5px 0;
+                    color: #646970;
+                }
+                .preview-url {
+                    display: block;
+                    padding: 8px;
+                    background: #fff;
+                    border: 1px solid #dcdcde;
+                    border-radius: 2px;
+                    color: #2271b1;
+                    word-break: break-all;
+                }
+            </style>
+
+            <script>
+                jQuery(document).ready(function($) {
+                    var siteUrl = '<?php echo esc_url(home_url()); ?>';
+                    var previewUrls = {
+                        '/%postname%/': siteUrl + '/sample-post/',
+                        '': siteUrl + '/?p=123',
+                        '/archives/%post_id%': siteUrl + '/archives/123',
+                        '/%year%/%monthnum%/%day%/%postname%/': siteUrl + '/2024/02/11/sample-post/',
+                        '/%year%/%monthnum%/%postname%/': siteUrl + '/2024/02/sample-post/',
+                        '/archives/%post_id%': siteUrl + '/archives/123'
+                    };
+
+                    function updatePreview() {
+                        var selected = $('select[name="permalink_structure"]').val();
+                        $('.preview-url').text(previewUrls[selected] || siteUrl);
+                    }
+
+                    $('select[name="permalink_structure"]').on('change', updatePreview);
+                    updatePreview(); // Show initial preview
+                });
+            </script>
         </div>
 
         <div class="maxi-quick-start-actions">
@@ -447,24 +501,24 @@ class MaxiBlocks_QuickStart
         $is_active = get_template() === 'maxiblocks-go';
         $current_theme = wp_get_theme(); // Get current theme info
         ?>
-        <h1><?php _e('Theme Setup', 'maxi-blocks'); ?></h1>
+        <h1><?php _e('Theme setup', 'maxi-blocks'); ?></h1>
 
         <?php if ($is_active): ?>
             <p class="description">
-                <?php _e('Great! You\'re using MaxiBlocks Go theme. This ensures the best experience with MaxiBlocks plugin.', 'maxi-blocks'); ?>
+                <?php _e('MaxiBlocks Go theme activated! Enjoy the best site building and customisation experience integrated with MaxiBlocks Builder.', 'maxi-blocks'); ?>
             </p>
 
             <div class="maxi-quick-start-section theme-recommendation">
                 <div class="theme-card">
                     <div class="theme-info">
                         <h2>
-                            <?php _e('MaxiBlocks Go', 'maxi-blocks'); ?>
+                            <?php _e('MaxiBlocks Go theme', 'maxi-blocks'); ?>
                             <span class="theme-status active">
                                 <span class="dashicons dashicons-yes-alt"></span>
                                 <?php _e('Active', 'maxi-blocks'); ?>
                             </span>
                         </h2>
-                        <p><?php _e('You\'re all set! MaxiBlocks Go theme is active and ready to use.', 'maxi-blocks'); ?></p>
+                        <p><?php _e('You\'re all set! Click Continue to customise your design and layout.', 'maxi-blocks'); ?></p>
                     </div>
                 </div>
             </div>
@@ -524,38 +578,33 @@ class MaxiBlocks_QuickStart
     }
 
     /**
-     * Design step view
+     * Brand identity step view
      */
-    public function design_step()
+    public function brand_identity_step()
     {
         ?>
-        <h1><?php _e('Design Settings', 'maxi-blocks'); ?></h1>
+        <h1><?php _e('Brand identity', 'maxi-blocks'); ?></h1>
         <p class="description">
-            <?php _e('Customize the visual identity of your website', 'maxi-blocks'); ?>
+            <?php _e('Add your brand identity by uploading a site logo and icon (favicon). This helps visitors instantly recognize your site.', 'maxi-blocks'); ?>
         </p>
 
         <div class="maxi-quick-start-section">
-            <h2><?php _e('Site Logo & Icon', 'maxi-blocks'); ?></h2>
-            <p class="description">
-                <?php _e('Upload your site logo and icon to establish your brand identity.', 'maxi-blocks'); ?>
-            </p>
-
             <div class="site-logo-wrapper">
-                <h3><?php _e('Site Logo', 'maxi-blocks'); ?></h3>
+                <h3><?php _e('Site logo', 'maxi-blocks'); ?></h3>
                 <p class="description">
-                    <?php _e('Your logo will appear in your site header. For best results, use a transparent PNG file.', 'maxi-blocks'); ?>
+                    <?php _e('Appears in your site header. For best results, use a transparent PNG that\'s at least 250 × 100 px.', 'maxi-blocks'); ?>
                 </p>
 
                 <?php
                 $custom_logo_id = get_theme_mod('custom_logo');
-        if ($custom_logo_id) {
-            $logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
-            echo '<div class="current-site-logo">';
-            echo '<p>' . __('Current Logo:', 'maxi-blocks') . '</p>';
-            echo '<img src="' . esc_url($logo_url) . '" alt="Current site logo" />';
-            echo '</div>';
-        }
-        ?>
+                if ($custom_logo_id) {
+                    $logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
+                    echo '<div class="current-site-logo">';
+                    echo '<p>' . __('Current Logo:', 'maxi-blocks') . '</p>';
+                    echo '<img src="' . esc_url($logo_url) . '" alt="Current site logo" />';
+                    echo '</div>';
+                }
+                ?>
 
                 <div class="site-logo-controls">
                     <input type="hidden" name="site_logo_id" value="<?php echo esc_attr($custom_logo_id); ?>">
@@ -568,36 +617,29 @@ class MaxiBlocks_QuickStart
                         </button>
                     <?php endif; ?>
                 </div>
-
-                <p class="site-logo-description">
-                    <?php _e('Recommended size: 250 × 100 pixels or larger', 'maxi-blocks'); ?>
-                </p>
             </div>
 
-            <?php
-            // Show current site icon if set
-            $site_icon_id = get_option('site_icon');
-        if ($site_icon_id) {
-            $icon_url = wp_get_attachment_image_url($site_icon_id, 'full');
-            echo '<div class="current-site-icon">';
-            echo '<p>' . __('Current Site Icon:', 'maxi-blocks') . '</p>';
-            echo '<img src="' . esc_url($icon_url) . '" alt="Current site icon" />';
-            echo '</div>';
-        }
-        ?>
-
             <div class="site-icon-wrapper">
-                <h3><?php _e('Site Icon', 'maxi-blocks'); ?></h3>
+                <h3><?php _e('Site icon', 'maxi-blocks'); ?></h3>
                 <p class="description">
-                    <?php _e('Your site icon appears in browser tabs, bookmarks, and mobile devices. Icons should be square and at least 512 × 512 pixels.', 'maxi-blocks'); ?>
+                    <?php _e('Appears in browser tabs, bookmarks, and mobile devices. Upload a square PNG or JPG file at least 512 × 512 px. WordPress will automatically generate all required favicon sizes.', 'maxi-blocks'); ?>
                 </p>
 
                 <?php
-        ?>
+                $site_icon_id = get_option('site_icon');
+                if ($site_icon_id) {
+                    $icon_url = wp_get_attachment_image_url($site_icon_id, 'full');
+                    echo '<div class="current-site-icon">';
+                    echo '<p>' . __('Current Site Icon:', 'maxi-blocks') . '</p>';
+                    echo '<img src="' . esc_url($icon_url) . '" alt="Current site icon" />';
+                    echo '</div>';
+                }
+                ?>
+
                 <div class="site-icon-controls">
                     <input type="hidden" name="site_icon_id" value="<?php echo esc_attr($site_icon_id); ?>">
                     <button type="button" class="button" id="upload-site-icon">
-                        <?php echo $site_icon_id ? __('Change Site Icon', 'maxi-blocks') : __('Upload Site Icon', 'maxi-blocks'); ?>
+                        <?php echo $site_icon_id ? __('Change Site Icon', 'maxi-blocks') : __('Upload Site icon', 'maxi-blocks'); ?>
                     </button>
                     <?php if ($site_icon_id): ?>
                         <button type="button" class="button remove-site-icon" id="remove-site-icon">
@@ -605,10 +647,6 @@ class MaxiBlocks_QuickStart
                         </button>
                     <?php endif; ?>
                 </div>
-
-                <p class="site-icon-description">
-                    <?php _e('Site icons should be square and at least 512 × 512 pixels.', 'maxi-blocks'); ?>
-                </p>
             </div>
         </div>
 
@@ -636,15 +674,15 @@ class MaxiBlocks_QuickStart
         $warnings = $this->get_warnings_from_status_report($status_report);
 
         ?>
-        <h1><?php _e('Setup Complete!', 'maxi-blocks'); ?></h1>
+        <h1><?php _e('Setup complete!', 'maxi-blocks'); ?></h1>
         <p class="description">
             <?php _e('Congratulations! Your MaxiBlocks site is now configured and ready to use.', 'maxi-blocks'); ?>
         </p>
 
         <?php if (!empty($warnings)): ?>
-            <h2><?php _e('System Warnings', 'maxi-blocks'); ?></h2>
+            <h2><?php _e('System warnings', 'maxi-blocks'); ?></h2>
             <p class="description">
-                <?php _e('The following settings might need your attention:', 'maxi-blocks'); ?>
+                <?php _e('Some settings below may need attention for optimal performance. Review the recommended values and update your server or WordPress configuration if necessary. If you have questions, check our documentation or contact support. Enjoy building with MaxiBlocks!', 'maxi-blocks'); ?>
             </p>
             <table class="maxi-status-table">
                 <tr class="header-row">
@@ -997,15 +1035,15 @@ class MaxiBlocks_QuickStart
         $status_report = new MaxiBlocks_System_Status_Report();
         $critical_warnings = $this->get_critical_warnings($status_report);
         ?>
-        <h1><?php _e('System Status Check', 'maxi-blocks'); ?></h1>
+        <h1><?php _e('System status check', 'maxi-blocks'); ?></h1>
 
         <?php if (!empty($critical_warnings)): ?>
             <div class="notice notice-error">
                 <p>
-                    <strong><?php _e('Critical Issues Found', 'maxi-blocks'); ?></strong>
+                    <strong><?php _e('Critical issues found', 'maxi-blocks'); ?></strong>
                 </p>
                 <p>
-                    <?php _e('The following system requirements are not met. MaxiBlocks may not function correctly unless these issues are resolved:', 'maxi-blocks'); ?>
+                    <?php _e('The following system requirements are not met. MaxiBlocks may not function correctly unless these issues are resolved.', 'maxi-blocks'); ?>
                 </p>
             </div>
 

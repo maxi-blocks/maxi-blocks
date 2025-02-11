@@ -210,7 +210,9 @@ function observeConsoleLogging() {
 		if (
 			text.includes('ERR_INTERNET_DISCONNECTED') ||
 			text.includes('network error occurred') ||
-			text.includes('You are probably offline')
+			text.includes('You are probably offline') ||
+			text.includes('net::ERR_NAME_NOT_RESOLVED') ||
+			text.includes('net::ERR_CONNECTION_REFUSED')
 		) {
 			return;
 		}

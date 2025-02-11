@@ -43,7 +43,7 @@ jQuery(document).ready(function ($) {
 					).data('step');
 					const currentIndex = steps.indexOf(currentStep);
 
-					// If we're on the status step, mark it as warning and go to identity
+					// If we're on the status step, mark it as warning and go to quick-start
 					if (currentStep === 'status') {
 						$('.maxi-quick-start-steps-nav li[data-step="status"]')
 							.removeClass('completed')
@@ -62,7 +62,7 @@ jQuery(document).ready(function ($) {
 
 						window.location.href = this.updateQueryParam(
 							'step',
-							'identity'
+							'quick_start'
 						);
 						return;
 					}
@@ -287,9 +287,9 @@ jQuery(document).ready(function ($) {
 		previousStep() {
 			const currentStep =
 				new URLSearchParams(window.location.search).get('step') ||
-				'identity';
+				'quick_start';
 			const steps = [
-				'identity',
+				'quick_start',
 				'theme',
 				'design',
 				'starter_site',
@@ -342,7 +342,7 @@ jQuery(document).ready(function ($) {
 								.find(`option[value="${selectedPermalink}"]`)
 								.prop('selected', true);
 						}
-						this.saveProgress('identity');
+						this.saveProgress('quick_start');
 						this.nextStep();
 					} else {
 						this.showError(

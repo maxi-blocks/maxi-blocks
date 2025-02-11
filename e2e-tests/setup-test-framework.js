@@ -13,6 +13,8 @@ import {
 	setBrowserViewport,
 	activatePlugin,
 	activateTheme,
+	setOption,
+	visitAdminPage,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -221,12 +223,8 @@ function observeConsoleLogging() {
 			return;
 
 		// Sometimes fonts are not loaded
-		if (
-			text.includes(
-				'Failed to load fonts'
-			)
-		) {
-				return;
+		if (text.includes('Failed to load fonts')) {
+			return;
 		}
 
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
@@ -268,6 +266,21 @@ beforeAll(async () => {
 
 	await deactivatePlugin('maxi-blocks');
 	await activatePlugin('maxi-blocks');
+
+	// Complete quick start by navigating to finish step and clicking complete
+	await visitAdminPage(
+		'admin.php',
+		'page=maxi-blocks-quick-start&step=finish'
+	);
+	await page.waitForSelector(
+		'.maxi-quick-start-actions button[data-action="complete"]'
+	);
+	await page.click(
+		'.maxi-quick-start-actions button[data-action="complete"]'
+	);
+
+	// Wait for completion
+	await page.waitForTimeout(1000);
 
 	// Default theme, twentytwentytwo, has a bug that returns a console.error
 	await activateTheme('twentytwentyone');

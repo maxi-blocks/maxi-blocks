@@ -327,21 +327,35 @@ if (get_template() === 'maxiblocks-go') {
 //======================================================================
 // MaxiBlocks Onboarding
 //======================================================================
-// require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-quick-start-register.php';
-// if (class_exists('MaxiBlocks_QuickStart_Register')) {
-//     MaxiBlocks_QuickStart_Register::register();
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-quick-start-register.php';
+if (class_exists('MaxiBlocks_QuickStart_Register')) {
+    MaxiBlocks_QuickStart_Register::register();
 
-//     // Register activation hook
-//     register_activation_hook(__FILE__, ['MaxiBlocks_QuickStart_Register', 'activate']);
+    // Register activation hook
+    register_activation_hook(__FILE__, ['MaxiBlocks_QuickStart_Register', 'activate']);
 
-//     // Handle redirect after activation
-//     add_action('admin_init', function () {
-//         if (get_transient('maxi_blocks_activation_redirect')) {
-//             delete_transient('maxi_blocks_activation_redirect');
-//             if (!isset($_GET['activate-multi'])) {
-//                 wp_safe_redirect(admin_url('admin.php?page=maxi-blocks-quick-start'));
-//                 exit;
-//             }
-//         }
-//     });
-// }
+    // Handle redirect after activation
+    add_action('admin_init', function () {
+        // Check if we're in a test environment
+        $is_test_environment = (
+            !empty(getenv('GITHUB_ACTIONS')) ||
+            !empty(getenv('CI')) ||
+            !empty(getenv('E2E_TESTING')) ||
+            defined('RUNNING_TESTS') ||
+            !empty(getenv('PUPPETEER_EXECUTABLE_PATH'))
+        );
+
+        if ($is_test_environment) {
+            delete_transient('maxi_blocks_activation_redirect');
+            return;
+        }
+
+        if (get_transient('maxi_blocks_activation_redirect')) {
+            delete_transient('maxi_blocks_activation_redirect');
+            if (!isset($_GET['activate-multi'])) {
+                wp_safe_redirect(admin_url('admin.php?page=maxi-blocks-quick-start'));
+                exit;
+            }
+        }
+    });
+}

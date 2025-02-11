@@ -21,7 +21,11 @@ body.toplevel_page_maxi-blocks-dashboard {
 	#wpcontent {
 		padding-left: 0;
 		.maxi-dashboard_wrap {
-			background-color: #fbf9fe;
+			background-color: #fff;
+			border: 18px solid #000000;
+			max-width: 94%;
+			margin: 30px auto 0;
+			border-radius: 25px;
 			& * {
 				font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
 			}
@@ -30,6 +34,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 	.maxi-dashboard_header {
 		position: relative;
 		z-index: 1;
+		display: flex;
+		justify-content: space-between;
+		border-top-left-radius: 25px;
+		border-top-right-radius: 25px;
 		background-color: #fff;
 		padding: 14px 38px 28px;
 		img {
@@ -76,6 +84,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 	.maxi-dashboard_form {
 		.maxi-dashboard_main {
 			display: flex;
+			flex-direction: column;
 			justify-content: space-between;
 			padding: 0 39px;
 			max-width: 1112px;
@@ -102,24 +111,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 					width: 100%;
 				}
 				&-start {
-					width: 62%;
+					width: 100%;
 				}
 				&-starter-sites {
 					width: 100%;
-				}
-				&:before {
-					content: '';
-					position: absolute;
-					top: 80px;
-					left: 100px;
-					z-index: 1;
-					display: block;
-					width: 60px;
-					height: 150px;
-					background-color: #ff4a17;
-					border-radius: 50%;
-					filter: blur(50px);
-					opacity: 0.3;
 				}
 				h1,
 				h2,
@@ -547,8 +542,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 			}
 			&-sidebar {
-				width: 28%;
-				max-width: 270px;
+				width: 100%;
 				.maxi-dashboard_main-sidebar-item {
 					background-color: #fff;
 					box-shadow: 0 0 87px 21px rgba(150, 176, 203, 0.2);

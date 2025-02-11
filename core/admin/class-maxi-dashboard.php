@@ -226,7 +226,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             add_submenu_page(
                 self::$maxi_slug_dashboard,
                 self::$maxi_plugin_name,
-                __('Start', 'maxi-blocks'),
+                __('Welcome', 'maxi-blocks'),
                 'manage_options',
                 self::$maxi_slug_dashboard,
                 '',
@@ -293,7 +293,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_config_page()
         {
             $settings_tabs = [
-                self::$maxi_prefix . 'start' => __('Start', 'maxi-blocks'),
+                self::$maxi_prefix . 'start' => __('Welcome', 'maxi-blocks'),
                 self::$maxi_prefix . 'settings' => __(
                     'Settings',
                     'maxi-blocks',
@@ -320,7 +320,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'img/maxi-logo-dashboard-white.svg' .
                 '" alt="' .
                 esc_html(__('MaxiBlocks Logo', 'maxi-blocks')) .
-                '"></header>';
+                '">';
             echo '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
 
             foreach ($settings_tabs as $tab_page => $tab_name) {
@@ -340,7 +340,23 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     wp_kses($tab_name, $this->maxi_blocks_allowed_html()) .
                     '</a>';
             }
-            echo '</h4><form action="options.php" method="post" class="maxi-dashboard_form">';
+            echo '</h4>';
+
+            // Add Get cloud link and icons
+            echo '<div class="maxi-dashboard_header-actions">';
+            echo '<a href="https://maxiblocks.com/pricing/" target="_blank" class="maxi-dashboard_get-cloud-link">' . esc_html__('Get cloud', 'maxi-blocks') . '</a>';
+            echo '<div class="maxi-dashboard_header-icons">';
+            echo '<a href=" https://maxiblocks.com/go/help-desk/" target="_blank" class="maxi-dashboard_header-icon"><img src="' .
+                esc_url(MAXI_PLUGIN_URL_PATH . 'img/maxi_help_documents_icon.svg') .
+                '" alt="MaxiBlocks documentation" width="24" height="24"></a>';
+            echo '<a href="https://maxiblocks.com/contact/" target="_blank" class="maxi-dashboard_header-icon"><img src="' .
+                esc_url(MAXI_PLUGIN_URL_PATH . 'img/maxi_support_icon.svg') .
+                '" alt="MaxiBlocks contact" width="24" height="24"></a>';
+            echo '</div>'; // maxi-dashboard_header-icons
+            echo '</div>'; // maxi-dashboard_header-actions
+            echo '</header>';
+
+            echo '<form action="options.php" method="post" class="maxi-dashboard_form">';
             settings_fields('maxi-blocks-settings-group');
             do_settings_sections('maxi-blocks-settings-group');
             echo '<div class="maxi-dashboard_main">';

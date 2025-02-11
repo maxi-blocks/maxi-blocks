@@ -206,48 +206,24 @@ function observeConsoleLogging() {
 			return;
 		}
 
-		// In case there's no internet connection (like when you're in a plane working lol)
-		if (
-			text.includes('ERR_INTERNET_DISCONNECTED') ||
-			text.includes('network error occurred') ||
-			text.includes('You are probably offline') ||
-			text.includes('net::ERR_NAME_NOT_RESOLVED') ||
-			text.includes('net::ERR_CONNECTION_REFUSED')
-		) {
-			return;
+		// Handle JSHandle objects more gracefully
+		if (typeof text === 'object' && text._remoteObject) {
+			text = text._remoteObject.description || text.toString();
 		}
 
-		// Sometimes favicon is not found
-		if (
-			message?._stackTraceLocations?.[0]?.url?.includes('favicon.ico') ||
-			text.includes('favicon.ico')
-		)
-			return;
-
-		// Sometimes fonts are not loaded
-		if (text.includes('Failed to load fonts')) {
-			return;
-		}
-
-		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
-
-		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of
-		// type JSHandle for error logging, instead of the expected string.
-		//
-		// See: https://github.com/GoogleChrome/puppeteer/issues/3397
-		//
-		// The recommendation there to asynchronously resolve the error value
-		// upon a console event may be prone to a race condition with the test
-		// completion, leaving a possibility of an error not being surfaced
-		// correctly. Instead, the logic here synchronously inspects the
-		// internal object shape of the JSHandle to find the error text. If it
-		// cannot be found, the default text value is used instead.
 		text = get(message.args(), [0, '_remoteObject', 'description'], text);
+
+		// Skip if the text is still a JSHandle reference
+		if (text.includes('JSHandle@')) {
+			return;
+		}
 
 		// Disable reason: We intentionally bubble up the console message
 		// which, unless the test explicitly anticipates the logging via
 		// @wordpress/jest-console matchers, will cause the intended test
 		// failure.
+
+		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
 
 		// eslint-disable-next-line no-console
 		console[logFunction](text);

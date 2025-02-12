@@ -1,7 +1,10 @@
 @import './src/css/backend-variables.scss';
 
-body.toplevel_page_maxi-blocks-dashboard #wpfooter {
-	position: static;
+body.toplevel_page_maxi-blocks-dashboard {
+	background-color: #fff !important;
+	#wpfooter {
+		position: static;
+	}
 }
 
 body.toplevel_page_maxi-blocks-dashboard {
@@ -23,7 +26,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 		.maxi-dashboard_wrap {
 			background-color: #fff;
 			border: 18px solid #000000;
-			max-width: 94%;
+			max-width: 1720px;
+			width: 95%;
 			margin: 30px auto 0;
 			border-radius: 25px;
 			& * {

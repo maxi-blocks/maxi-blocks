@@ -359,6 +359,12 @@ if (!$is_test_environment) {
         });
     }
 } else {
+    // Debug environment variables safely
+    error_log('Debug Environment Detection:');
+    error_log('GITHUB_ACTIONS: ' . (getenv('GITHUB_ACTIONS') ? 'true' : 'false'));
+    error_log('CI: ' . (getenv('CI') ? 'true' : 'false'));
+    error_log('WP_ENV: ' . (getenv('WP_ENV') ? 'true' : 'false'));
+
     // Set quick start as completed for test environments
     update_option('maxi_blocks_quick_start_completed', true);
 }

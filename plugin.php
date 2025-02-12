@@ -339,6 +339,16 @@ $is_test_environment = (
 );
 
 if (!$is_test_environment) {
+    // Debug environment variables safely
+    error_log('Not a test environment!');
+    error_log('Debug Environment Detection:');
+    error_log('GITHUB_ACTIONS: ' . (getenv('GITHUB_ACTIONS') ? 'true' : 'false'));
+    error_log('CI: ' . (getenv('CI') ? 'true' : 'false'));
+    error_log('WP_ENV: ' . (getenv('WP_ENV') ? 'true' : 'false'));
+    error_log('$_ENV[GITHUB_ACTIONS]: ' . $_ENV['GITHUB_ACTIONS']);
+    error_log('$_SERVER[GITHUB_ACTIONS]: ' . $_SERVER['GITHUB_ACTIONS']);
+    error_log('$_ENV[CI]: ' . $_ENV['CI']);
+    error_log('$_SERVER[CI]: ' . $_SERVER['CI']);
     require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-quick-start-register.php';
 
     if (class_exists('MaxiBlocks_QuickStart_Register')) {
@@ -359,11 +369,10 @@ if (!$is_test_environment) {
         });
     }
 } else {
-    // Debug environment variables safely
-    error_log('Debug Environment Detection:');
-    error_log('GITHUB_ACTIONS: ' . (getenv('GITHUB_ACTIONS') ? 'true' : 'false'));
-    error_log('CI: ' . (getenv('CI') ? 'true' : 'false'));
-    error_log('WP_ENV: ' . (getenv('WP_ENV') ? 'true' : 'false'));
+
+    if (get_transient('maxi_blocks_activation_redirect')) {
+        delete_transient('maxi_blocks_activation_redirect');
+    }
 
     // Set quick start as completed for test environments
     update_option('maxi_blocks_quick_start_completed', true);

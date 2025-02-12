@@ -344,11 +344,21 @@ if (!$is_test_environment) {
     error_log('Debug Environment Detection:');
     error_log('GITHUB_ACTIONS: ' . (getenv('GITHUB_ACTIONS') ? 'true' : 'false'));
     error_log('CI: ' . (getenv('CI') ? 'true' : 'false'));
-    error_log('WP_ENV: ' . (getenv('WP_ENV') ? 'true' : 'false'));
-    error_log('$_ENV[GITHUB_ACTIONS]: ' . $_ENV['GITHUB_ACTIONS']);
-    error_log('$_SERVER[GITHUB_ACTIONS]: ' . $_SERVER['GITHUB_ACTIONS']);
-    error_log('$_ENV[CI]: ' . $_ENV['CI']);
-    error_log('$_SERVER[CI]: ' . $_SERVER['CI']);
+
+    // Filter and log $_ENV
+    error_log('$_ENV contents:');
+    $filtered_env = array_filter($_ENV, function ($key) {
+        return strpos($key, 'TYPESENSE_API') === false;
+    }, ARRAY_FILTER_USE_KEY);
+    error_log(print_r($filtered_env, true));
+
+    // Filter and log $_SERVER
+    error_log('$_SERVER contents:');
+    $filtered_server = array_filter($_SERVER, function ($key) {
+        return strpos($key, 'TYPESENSE_API') === false;
+    }, ARRAY_FILTER_USE_KEY);
+    error_log(print_r($filtered_server, true));
+
     require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-quick-start-register.php';
 
     if (class_exists('MaxiBlocks_QuickStart_Register')) {

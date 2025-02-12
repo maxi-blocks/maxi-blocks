@@ -369,7 +369,7 @@ if (!$is_test_environment) {
         });
     }
 } else {
-
+    error_log('Test environment detected!');
     if (get_transient('maxi_blocks_activation_redirect')) {
         delete_transient('maxi_blocks_activation_redirect');
     }

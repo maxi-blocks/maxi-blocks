@@ -6,7 +6,7 @@
  * Description: A powerful page builder for WordPress Gutenberg with a vast library of free web templates, icons & patterns. Open source and free to build. Anything you create with MaxiBlocks is yours to keep. There's no lock-in, no domain restrictions or license keys to keep track of. All blocks and features are free to use. Save time, get advanced designs & more with the Pro template library upgrade.
  * Author: MaxiBlocks
  * Author URI: https://maxiblocks.com/go/plugin-author
- * Version: 2.0.6
+ * Version: 2.0.7
  * Requires at least: 6.2.2
  * Requires PHP: 8.0
  * License: GPLv3 or later

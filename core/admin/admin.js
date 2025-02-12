@@ -480,4 +480,71 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			autoResize(textarea);
 		});
 	});
+
+	// Handle admin menu active states
+	function setAdminMenuActive() {
+		const adminMenu = document.querySelector(
+			'#toplevel_page_maxi-blocks-dashboard'
+		);
+		if (!adminMenu) return;
+
+		// Get the current tab from URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const currentTab = urlParams.get('tab');
+		const currentPage = urlParams.get('page');
+
+		// Remove all current classes first
+		const allMenuItems = adminMenu.querySelectorAll('li');
+		allMenuItems.forEach(item => {
+			item.classList.remove('current');
+			const anchor = item.querySelector('a');
+			if (anchor) {
+				anchor.classList.remove('current');
+				anchor.setAttribute('aria-current', 'false');
+			}
+		});
+
+		// Find and set the active menu item
+		const menuItems = adminMenu.querySelectorAll('a');
+		menuItems.forEach(link => {
+			let isActive = false;
+
+			// Special case for Quick Start
+			if (
+				currentPage === 'maxi-blocks-quick-start' &&
+				link.href.includes('maxi-blocks-quick-start')
+			) {
+				isActive = true;
+			}
+			// Handle other menu items
+			else if (currentTab) {
+				// Check if the link contains the current tab
+				const tabInUrl = link.href.match(/tab=([^&]*)/);
+				if (tabInUrl) {
+					isActive = tabInUrl[1] === currentTab;
+				}
+			}
+			// Handle Welcome page (no tab)
+			else if (
+				currentPage === 'maxi-blocks-dashboard' &&
+				link.href.includes('maxi-blocks-dashboard') &&
+				!link.href.includes('tab=')
+			) {
+				isActive = true;
+			}
+
+			if (isActive) {
+				// Set active state
+				const menuItem = link.closest('li');
+				if (menuItem) {
+					menuItem.classList.add('current');
+					link.classList.add('current');
+					link.setAttribute('aria-current', 'page');
+				}
+			}
+		});
+	}
+
+	// Call the function on page load
+	setAdminMenuActive();
 });

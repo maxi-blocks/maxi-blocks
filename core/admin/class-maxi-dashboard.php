@@ -234,34 +234,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
             add_submenu_page(
                 self::$maxi_slug_dashboard,
-                __('Settings', 'maxi-blocks'),
-                __('Settings', 'maxi-blocks'),
+                __('Quick start', 'maxi-blocks'),
+                __('Quick start', 'maxi-blocks'),
                 'manage_options',
-                'admin.php?page=' .
-                    self::$maxi_slug_dashboard .
-                    '&tab=maxi_blocks_settings',
-                '',
-                null,
-            );
-            add_submenu_page(
-                self::$maxi_slug_dashboard,
-                __('Maxi AI', 'maxi-blocks'),
-                __('Maxi AI', 'maxi-blocks'),
-                'manage_options',
-                'admin.php?page=' .
-                    self::$maxi_slug_dashboard .
-                    '&tab=maxi_blocks_maxi_ai',
-                '',
-                null,
-            );
-            add_submenu_page(
-                self::$maxi_slug_dashboard,
-                __('Pro library', 'maxi-blocks'),
-                __('Pro library', 'maxi-blocks'),
-                'manage_options',
-                'admin.php?page=' .
-                    self::$maxi_slug_dashboard .
-                    '&tab=maxi_blocks_pro',
+                esc_url(admin_url('admin.php?page=maxi-blocks-quick-start')),
                 '',
                 null,
             );
@@ -278,12 +254,34 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
             add_submenu_page(
                 self::$maxi_slug_dashboard,
-                __('Status Report', 'maxi-blocks'),
-                __('Status', 'maxi-blocks'),
+                __('Maxi AI', 'maxi-blocks'),
+                __('Maxi AI', 'maxi-blocks'),
+                'manage_options',
+                'admin.php?page=' .
+                    self::$maxi_slug_dashboard .
+                    '&tab=maxi_blocks_maxi_ai',
+                '',
+                null,
+            );
+            add_submenu_page(
+                self::$maxi_slug_dashboard,
+                __('System status', 'maxi-blocks'),
+                __('System status', 'maxi-blocks'),
                 'manage_options',
                 'admin.php?page=' .
                     self::$maxi_slug_dashboard .
                     '&tab=maxi_blocks_status',
+                '',
+                null,
+            );
+            add_submenu_page(
+                self::$maxi_slug_dashboard,
+                __('Settings', 'maxi-blocks'),
+                __('Settings', 'maxi-blocks'),
+                'manage_options',
+                'admin.php?page=' .
+                    self::$maxi_slug_dashboard .
+                    '&tab=maxi_blocks_settings',
                 '',
                 null,
             );
@@ -294,17 +292,20 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             $settings_tabs = [
                 self::$maxi_prefix . 'start' => __('Welcome', 'maxi-blocks'),
-                self::$maxi_prefix . 'settings' => __(
-                    'Settings',
-                    'maxi-blocks',
-                ),
-                self::$maxi_prefix . 'maxi_ai' => __('Maxi AI', 'maxi-blocks'),
-                self::$maxi_prefix . 'pro' => __('Pro library', 'maxi-blocks'),
+                'quick_start' => [
+                    'label' => __('Quick start', 'maxi-blocks'),
+                    'url' => esc_url(admin_url('admin.php?page=maxi-blocks-quick-start'))
+                ],
                 self::$maxi_prefix . 'starter_sites' => __(
                     'Starter sites',
                     'maxi-blocks',
                 ),
-                self::$maxi_prefix . 'status' => __('Status', 'maxi-blocks'),
+                self::$maxi_prefix . 'maxi_ai' => __('Maxi AI', 'maxi-blocks'),
+                self::$maxi_prefix . 'status' => __('System status', 'maxi-blocks'),
+                self::$maxi_prefix . 'settings' => __(
+                    'Settings',
+                    'maxi-blocks',
+                ),
             ];
 
             if (isset($_GET['tab'])) {
@@ -323,22 +324,35 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '">';
             echo '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
 
-            foreach ($settings_tabs as $tab_page => $tab_name) {
+            foreach ($settings_tabs as $tab_page => $tab_info) {
                 $active_tab =
                     $current_tab == $tab_page
                         ? 'maxi-dashboard_nav-tab__active nav-tab-active'
                         : '';
 
-                echo '<a class="maxi-dashboard_nav-tab nav-tab ' .
-                    esc_attr($tab_page) .
-                    esc_attr($active_tab) .
-                    '" href="?page=' .
-                    esc_attr(self::$maxi_slug_dashboard) .
-                    '&tab=' .
-                    esc_attr($tab_page) .
-                    '">' .
-                    wp_kses($tab_name, $this->maxi_blocks_allowed_html()) .
-                    '</a>';
+                if (is_array($tab_info)) {
+                    // Handle Quick Start special case
+                    echo '<a class="maxi-dashboard_nav-tab nav-tab ' .
+                        esc_attr($tab_page) .
+                        esc_attr($active_tab) .
+                        '" href="' .
+                        $tab_info['url'] .
+                        '">' .
+                        wp_kses($tab_info['label'], $this->maxi_blocks_allowed_html()) .
+                        '</a>';
+                } else {
+                    // Handle regular tabs
+                    echo '<a class="maxi-dashboard_nav-tab nav-tab ' .
+                        esc_attr($tab_page) .
+                        esc_attr($active_tab) .
+                        '" href="?page=' .
+                        esc_attr(self::$maxi_slug_dashboard) .
+                        '&tab=' .
+                        esc_attr($tab_page) .
+                        '">' .
+                        wp_kses($tab_info, $this->maxi_blocks_allowed_html()) .
+                        '</a>';
+                }
             }
             echo '</h4>';
 
@@ -370,11 +384,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 } elseif ($tab === self::$maxi_prefix . 'settings') {
                     echo wp_kses(
                         $this->maxi_blocks_settings(),
-                        maxi_blocks_allowed_html(),
-                    );
-                } elseif ($tab === self::$maxi_prefix . 'pro') {
-                    echo wp_kses(
-                        $this->maxi_blocks_pro(),
                         maxi_blocks_allowed_html(),
                     );
                 } elseif ($tab === self::$maxi_prefix . 'maxi_ai') {
@@ -947,170 +956,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
             $content .= '</div>'; // maxi-dashboard_main-content
 
-            return $content;
-        }
-
-        public function maxi_blocks_pro()
-        {
-            $current_user = wp_get_current_user();
-            $user_name = $current_user->user_firstname;
-            $content =
-                '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-pro-library">';
-            $content .=
-                '<div class="maxi-dashboard_main-content_accordion" id="maxi-dashboard_main-content_pro-not-pro">';
-
-            $content .= '<div id="maxi-dashboard_main-content_not-pro">';
-            $content .=
-                '<h1>' .
-                __(
-                    'Thousands of premium templates to work faster',
-                    'maxi-blocks',
-                ) .
-                '</h1>';
-            $content .=
-                '<h2>' .
-                __(
-                    'Unlimited downloads. Unlimited sites. No feature lock-in.',
-                    'maxi-blocks',
-                ) .
-                '</h2>';
-            $content .=
-                '<p>' .
-                __(
-                    'Find inspiration, or add variety to your designs. Boost your productivity and grow your audience. Join our community of creators who love to build fast, beautiful, responsive websites.',
-                    'maxi-blocks',
-                ) .
-                '</p>';
-            $content .=
-                '<h3>' .
-                __('Let\'s create something amazing with Maxi', 'maxi-blocks') .
-                '</h3>';
-            $content .= '<div class="sign-up_button-wrap">';
-            $content .=
-                '<a href="https://maxiblocks.com/go/pricing" target="_blank" class="sign-up_button">' .
-                __('Sign up', 'maxi-blocks') .
-                '</a>';
-            $content .=
-                '<br/><br/><br/><p>' .
-                __('Already have an account? ', 'maxi-blocks');
-            $content .= '</p>';
-            $content .= '<p>Sign in from the template library like this.</p>';
-            $content .=
-                '<p>Step 1. Launch template library from the page edit screen.</p>';
-            $content .=
-                '<img class="maxi-dashboard-how-to-image" src="' .
-                esc_url(MAXI_PLUGIN_URL_PATH) .
-                'img/how-to-log-in-1.png"/>';
-            $content .= '<p>Step 2. Add email and sign in.</p>';
-            $content .=
-                '<img class="maxi-dashboard-how-to-image" src="' .
-                esc_url(MAXI_PLUGIN_URL_PATH) .
-                'img/how-to-log-in-2.png"/>';
-            $content .= '</div>';
-            $content .= '<ul class="not_loggedin-bottom-menu">';
-            $content .=
-                '<li><a href="https://maxiblocks.com/go/help-desk" target="_blank">' .
-                __('help desk', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://maxiblocks.com/go/pro-library" target="_blank">' .
-                __('pro library', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href=" https://maxiblocks.com/go/demo-library" target="_blank">' .
-                __('demo library', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://www.youtube.com/@maxiblocks" target="_blank">' .
-                __('youtube', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://maxiblocks.com" target="_blank">' .
-                __('maxiblocks.com', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://twitter.com/maxiblocks" target="_blank">' .
-                __('twitter', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">' .
-                __('discord community', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://maxiblocks.com/go/roadmap" target="_blank">' .
-                __('roadmap', 'maxi-blocks') .
-                '</a></li>';
-            $content .= '</ul>';
-
-            $content .= '</div>'; // maxi-dashboard_main-content_not-pro
-            $content .=
-                '<div id="maxi-dashboard_main-content_pro" class="maxi-dashboard_main-content-pro-library-logged-in">';
-            $content .= '<h2>' . __('Hi ', 'maxi-blocks');
-            $content .= '<span>' . __('[username]', 'maxi-blocks') . '</span>';
-            $content .= '</h2>';
-            $content .= '<h2>' . esc_html($user_name) . '</h2>';
-            $content .=
-                '<h1>' .
-                __(
-                    "You're signed in. Pro library is connected.",
-                    'maxi-blocks',
-                ) .
-                '</h1>';
-            $content .=
-                '<h3>' . __('Browse for templates', 'maxi-blocks') . '</h3>';
-            $content .= '<ul>';
-            $content .=
-                '<li>' .
-                __(
-                    '-  Create a new page to launch the editing experience',
-                    'maxi-blocks',
-                ) .
-                '</li>';
-            $content .=
-                '<li>' .
-                __(
-                    '-  Open master toolbar from the square MaxiBlocks launcher icon',
-                    'maxi-blocks',
-                ) .
-                '</li>';
-            $content .=
-                '<li>' .
-                __(
-                    '-  Choose "Template library" and select the blue "Pro" tab to start browsing',
-                    'maxi-blocks',
-                ) .
-                '</li>';
-            $content .= '</ul>';
-            $content .= '<h3>' . __('Support links', 'maxi-blocks') . '</h3>';
-            $content .= '<ul class="loggedin-bottom-menu">';
-            $content .=
-                '<li><a href="https://maxiblocks.com/go/help-desk" target="_blank">' .
-                __('Help desk', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://www.youtube.com/@maxiblocks" target="_blank">' .
-                __('YouTube', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://maxiblocks.com" target="_blank">' .
-                __('maxiblocks.com', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://maxiblocks.com/go/roadmap" target="_blank">' .
-                __('Roadmap', 'maxi-blocks') .
-                '</a></li>';
-            $content .= '</ul>';
-            $content .= '<h4>' . __('Community', 'maxi-blocks') . '</h4>';
-            $content .= '<ul class="loggedin-bottom-menu">';
-            $content .=
-                '<li><a href="https://twitter.com/maxiblocks" target="_blank">' .
-                __('Twitter', 'maxi-blocks') .
-                '</a></li>';
-            $content .=
-                '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">' .
-                __('Discord community', 'maxi-blocks') .
-                '</a></li>';
-            $content .= '</ul>';
             return $content;
         }
 
@@ -1916,7 +1761,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'maxi-blocks-dashboard', // Dashboard
                     'maxi-blocks-templates', // Templates
                     'maxi-blocks-style-cards', // Style Cards
-                    'maxi-blocks-pro', // Pro library
                     'maxi-blocks-starter-sites', // Starter Sites
                     'maxi-blocks-settings', // Settings
                     'admin.php?page=' .

@@ -342,22 +342,14 @@ if (!$is_test_environment) {
     // Debug environment variables safely
     error_log('Not a test environment!');
     error_log('Debug Environment Detection:');
-    error_log('GITHUB_ACTIONS: ' . (getenv('GITHUB_ACTIONS') ? 'true' : 'false'));
-    error_log('CI: ' . (getenv('CI') ? 'true' : 'false'));
 
-    // Filter and log $_ENV
-    error_log('$_ENV contents:');
-    $filtered_env = array_filter($_ENV, function ($key) {
+    // Get and log all environment variables
+    error_log('All available environment variables:');
+    $all_env = getenv();
+    $filtered_env = array_filter($all_env, function ($key) {
         return strpos($key, 'TYPESENSE_API') === false;
     }, ARRAY_FILTER_USE_KEY);
     error_log(print_r($filtered_env, true));
-
-    // Filter and log $_SERVER
-    error_log('$_SERVER contents:');
-    $filtered_server = array_filter($_SERVER, function ($key) {
-        return strpos($key, 'TYPESENSE_API') === false;
-    }, ARRAY_FILTER_USE_KEY);
-    error_log(print_r($filtered_server, true));
 
     require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-quick-start-register.php';
 

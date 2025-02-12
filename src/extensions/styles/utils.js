@@ -316,7 +316,7 @@ export const isValidNumber = val => {
 		return Number.isFinite(val);
 	}
 
-	if (typeof val === 'string') {
+	if (typeof val === 'string' && val.trim() !== '') {
 		const parsed = +val;
 		return Number.isFinite(parsed);
 	}

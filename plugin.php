@@ -331,10 +331,11 @@ if (get_template() === 'maxiblocks-go') {
 // Check if we're in a test environment
 $is_test_environment = (
     !empty(getenv('GITHUB_ACTIONS')) ||
+    !empty($_ENV['GITHUB_ACTIONS'] ?? '') ||
+    !empty($_SERVER['GITHUB_ACTIONS'] ?? '') ||
     !empty(getenv('CI')) ||
-    !empty(getenv('E2E_TESTING')) ||
-    defined('RUNNING_TESTS') ||
-    !empty(getenv('PUPPETEER_EXECUTABLE_PATH'))
+    !empty($_ENV['CI'] ?? '') ||
+    !empty($_SERVER['CI'] ?? '')
 );
 
 if (!$is_test_environment) {

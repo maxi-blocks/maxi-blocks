@@ -74,10 +74,12 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             $site_text_dir = is_rtl() ? 'rtl' : 'ltr';
 
             $content = '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-status">';
+            $content .= '<div class="maxi-dashboard_main-content-settings">';
 
             // System Report Header
-            $content .= '<h2>' . __('System Status', 'maxi-blocks') . '</h2>';
+            $content .= '<h1>' . __('System status', 'maxi-blocks') . '</h1>';
             $content .= '<p>' . __('This report provides information about your WordPress environment and server configuration.', 'maxi-blocks') . '</p>';
+
 
             // Copy Report Button
             $content .= '<button type="button" id="maxi-copy-report" class="button button-primary maxi-dashboard_copy-report-button">' . __('Copy report to clipboard', 'maxi-blocks') . '</button>';
@@ -118,6 +120,8 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
                 'openssl' => $openssl,
             ]);
             $content .= '</textarea>';
+
+            $content .= '</div>';
 
             // Start Status Table
             $content .= '<table class="maxi-status-table">';

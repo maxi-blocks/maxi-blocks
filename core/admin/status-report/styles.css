@@ -81,28 +81,26 @@
 #maxi-copy-report,
 #maxi-download-report {
 	display: inline-block;
-	font-size: 16px;
-	line-height: 20px;
-	margin: 0;
-	padding: 12px 24px;
-	background-color: #ff4a17;
-	color: #ffffff !important;
+	background: #000000;
+	color: #fff !important;
 	border: none;
 	text-decoration: none;
-	border-radius: 4px;
-	font-weight: 500;
-	transition: background-color 0.2s ease;
+	padding: 5px 50px;
+	font-size: 19px;
+	font-weight: 700;
+	border-radius: 26px;
+	text-decoration: none;
+	transition: all 0.5s ease;
+	margin-top: 30px;
 }
 
 #maxi-copy-report:hover,
 #maxi-download-report:hover {
-	background-color: #e63e0f;
-	color: #ffffff;
+	opacity: 0.5;
 }
 
 #maxi-copy-report:focus {
 	outline: none;
-	box-shadow: 0 0 0 2px #fff, 0 0 0 4px #ff4a17;
 	color: #ffffff;
 }
 

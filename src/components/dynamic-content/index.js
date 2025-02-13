@@ -427,6 +427,7 @@ const DynamicContent = props => {
 								'dc-type': getDefaultAttribute('dc-type'),
 							})
 						}
+						className='maxi-dc-type'
 					/>
 					{isEmpty(postIdOptions) &&
 					!['settings', 'cart'].includes(type) &&
@@ -466,6 +467,7 @@ const DynamicContent = props => {
 												),
 										})
 									}
+									className='maxi-dc-relation'
 								/>
 							)}
 							{['users'].includes(type) && relation === 'by-id' && (
@@ -488,6 +490,7 @@ const DynamicContent = props => {
 												),
 										})
 									}
+									className='maxi-dc-author'
 								/>
 							)}
 							{((relation !== 'current-archive' &&
@@ -523,6 +526,7 @@ const DynamicContent = props => {
 												: postIdOptions[0].value,
 										})
 									}
+									className='maxi-dc-id'
 								/>
 							)}
 							{((orderTypes.includes(type) &&
@@ -658,6 +662,7 @@ const DynamicContent = props => {
 														?.value,
 											})
 										}
+										className='maxi-dc-field'
 									/>
 								)}
 							{showSubField && (
@@ -678,6 +683,7 @@ const DynamicContent = props => {
 													?.value,
 										})
 									}
+									className='maxi-dc-sub-field'
 								/>
 							)}
 							{limitTypes.includes(type) &&

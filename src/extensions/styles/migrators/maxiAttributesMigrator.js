@@ -8,15 +8,15 @@ import { getBlockData, getBlockNameFromUniqueID } from '@extensions/attributes';
  */
 import { isNil } from 'lodash';
 
-const name = 'maxiAttributes Migrator';
-
-const maxiVersions = [
+// Constants
+const NAME = 'maxiAttributes';
+const VALID_VERSIONS = new Set([
 	'0.1',
 	'0.0.1 SC1',
 	'0.0.1-SC1',
 	'0.0.1-SC2',
 	'0.0.1-SC3',
-];
+]);
 
 const isEligible = blockAttributes => {
 	const {
@@ -25,32 +25,28 @@ const isEligible = blockAttributes => {
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;
 
+	// Get block data only if necessary
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockData = getBlockData(blockName);
 
-	if (
-		'maxiAttributes' in blockData &&
-		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin)
-	)
-		return true;
+	// Early return if no maxiAttributes
+	if (!('maxiAttributes' in blockData)) return false;
 
-	return false;
+	return !maxiVersionOrigin || VALID_VERSIONS.has(maxiVersionCurrent);
 };
 
 const migrate = newAttributes => {
-	const { uniqueID } = newAttributes;
-
-	const blockName = getBlockNameFromUniqueID(uniqueID);
-	const blockData = getBlockData(blockName);
+	const blockData = getBlockData(getBlockNameFromUniqueID(newAttributes.uniqueID));
 	const { maxiAttributes } = blockData;
 
-	const newMaxiAttributes = {};
+	// Direct property assignment for better performance
+	for (const [key, value] of Object.entries(maxiAttributes)) {
+		if (isNil(newAttributes[key])) {
+			newAttributes[key] = value;
+		}
+	}
 
-	Object.entries(maxiAttributes).forEach(([key, value]) => {
-		if (isNil(newAttributes[key])) newMaxiAttributes[key] = value;
-	});
-
-	return { ...newAttributes, ...newMaxiAttributes };
+	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

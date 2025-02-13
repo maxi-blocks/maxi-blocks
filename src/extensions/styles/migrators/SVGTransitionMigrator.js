@@ -1,19 +1,41 @@
+/**
+ * Internal dependencies
+ */
 import { getBlockNameFromUniqueID } from '@extensions/attributes';
 import getTransitionData from '@extensions/styles/transitions/getTransitionData';
 import transitionAttributesCreator from '@extensions/styles/transitions/transitionAttributesCreator';
+
+/**
+ * External dependencies
+ */
 import { isEqual } from 'lodash';
 
-const name = 'SVG Transition Migrator';
+// Constants
+const NAME = 'SVG Transition';
+
+// Cache for block data to avoid repeated lookups
+const blockDataCache = new Map();
+
+const getBlockData = uniqueID => {
+	if (blockDataCache.has(uniqueID)) {
+		return blockDataCache.get(uniqueID);
+	}
+	const blockName = getBlockNameFromUniqueID(uniqueID);
+	const data = getTransitionData(blockName);
+	blockDataCache.set(uniqueID, data);
+	return data;
+};
 
 const isEligible = blockAttributes => {
 	const { uniqueID, transition } = blockAttributes;
+
+	// Early return for quick fails
 	if (!transition) return false;
 
-	const blockName = getBlockNameFromUniqueID(uniqueID);
-	const blockDataTransition = getTransitionData(blockName);
-
+	const blockDataTransition = getBlockData(uniqueID);
 	if (!blockDataTransition) return false;
 
+	// Compare sorted keys for accurate comparison
 	return !isEqual(
 		Object.keys(blockDataTransition.block).sort(),
 		Object.keys(transition.block).sort()
@@ -21,24 +43,28 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	const { uniqueID, 'transition-change-all': transitionChangeAll } =
-		newAttributes;
-	const blockName = getBlockNameFromUniqueID(uniqueID);
-	const blockDataTransition = getTransitionData(blockName);
+	const {
+		uniqueID,
+		transition,
+		'transition-change-all': transitionChangeAll
+	} = newAttributes;
 
+	const blockDataTransition = getBlockData(uniqueID);
 	const defaultAttributes = transitionAttributesCreator({
 		transition: blockDataTransition,
 	}).transition.default.block;
 
-	Object.keys(blockDataTransition.block).forEach(transitionName => {
-		if (!newAttributes.transition.block[transitionName]) {
-			newAttributes.transition.block[transitionName] = transitionChangeAll
-				? Object.values(newAttributes.transition.block)[0]
+
+	for (const transitionName of Object.keys(blockDataTransition.block)) {
+		if (!transition.block[transitionName]) {
+			// Direct property mutation for better performance
+			transition.block[transitionName] = transitionChangeAll
+				? Object.values(transition.block)[0]
 				: defaultAttributes[transitionName];
 		}
-	});
+	}
 
 	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

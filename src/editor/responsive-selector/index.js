@@ -9,7 +9,6 @@ import { useCallback, useEffect, useRef } from '@wordpress/element';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -18,9 +17,12 @@ import classnames from 'classnames';
 import MaxiStyleCardsEditorPopUp from '@editor/style-cards';
 import { Button, Icon } from '@components';
 import { setScreenSize } from '@extensions/styles';
-import { getIsSiteEditor, getSiteEditorIframeBody } from '@extensions/fse';
+import {
+	getIsSiteEditor,
+	getSiteEditorIframeBody,
+	getIsTemplatePart,
+} from '@extensions/fse';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
-import { getPageFonts, loadFonts } from '@extensions/text/fonts';
 
 /**
  * Styles
@@ -65,9 +67,10 @@ const ResponsiveButton = ({
 		<div className={classes}>
 			<Button
 				className='maxi-responsive-selector__button-item'
-				onClick={() =>
-					setScreenSize(isBaseBreakpoint ? 'general' : target)
-				}
+				onClick={() => {
+					if (getIsTemplatePart()) setScreenSize(target);
+					else setScreenSize(isBaseBreakpoint ? 'general' : target);
+				}}
 				aria-pressed={getIsPressed()}
 			>
 				<div>
@@ -178,37 +181,58 @@ const ResponsiveSelector = props => {
 		});
 	});
 
-	// TODO: check if it can be reduced to avoid the amount of resources used (MVP)
 	const onChangeNativeResponsive = useCallback(button => {
 		button.addEventListener('click', e => {
-			const { target } = e;
-			const value = target.innerText;
-			const maxiValue =
-				(value === 'Desktop' && 'general') ||
-				(value === 'Tablet' && 's') ||
-				(value === 'Mobile' && 'xs');
+			const responsiveDiv = document.querySelector(
+				'.editor-preview-dropdown'
+			);
+			if (!responsiveDiv) return;
 
-			const editorWrapper =
-				document.querySelector('.edit-post-visual-editor') ||
-				document.querySelector('.edit-site-visual-editor') ||
-				document.querySelector('.editor-visual-editor');
+			setTimeout(() => {
+				const deviceClass = responsiveDiv.className.match(
+					/editor-preview-dropdown--(mobile|tablet|desktop)/i
+				);
+				const value = deviceClass ? deviceClass[1] : 'desktop';
 
-			editorWrapper.setAttribute('maxi-blocks-responsive', maxiValue);
-			editorWrapper.removeAttribute('maxi-blocks-responsive-width');
+				const maxiValue =
+					(value === 'desktop' && baseBreakpoint) ||
+					(value === 'tablet' && 's') ||
+					(value === 'mobile' && 'xs');
 
-			if (value === 'Desktop') editorWrapper.style.width = '';
+				const editorWrapper =
+					document.querySelector('.edit-post-visual-editor') ||
+					document.querySelector('.edit-site-visual-editor') ||
+					document.querySelector('.editor-visual-editor');
 
-			setMaxiDeviceType({
-				deviceType: maxiValue,
-				isGutenbergButton: true,
-			});
+				editorWrapper.setAttribute('maxi-blocks-responsive', maxiValue);
+				editorWrapper.removeAttribute('maxi-blocks-responsive-width');
+
+				if (value === 'desktop') {
+					const responsiveToolbar = document.querySelector(
+						'.maxi-responsive-selector'
+					);
+					if (responsiveToolbar) {
+						editorWrapper.style.width = '';
+						const baseButton = responsiveToolbar.querySelector(
+							'div.maxi-responsive-selector__base button'
+						);
+						if (baseButton) baseButton.click();
+					}
+				}
+
+				setMaxiDeviceType({
+					deviceType: maxiValue,
+					isGutenbergButton: true,
+					changeSize: false,
+				});
+			}, 100);
 		});
 	});
 
 	useEffect(() => {
-		const previewButton = document.querySelector(
-			'.block-editor-post-preview__button-toggle'
-		);
+		const previewButton =
+			document.querySelector('.editor-preview-dropdown__toggle') ||
+			document.querySelector('.block-editor-post-preview__button-toggle');
 
 		if (previewButton) {
 			const config = {
@@ -221,20 +245,27 @@ const ResponsiveSelector = props => {
 				mutationsList.forEach(mutation => {
 					if (mutation.type === 'attributes') {
 						if (mutation.attributeName === 'aria-expanded') {
-							const node = document.querySelector(
-								'.block-editor-post-preview__dropdown-content'
-							);
-							const repeatedNode = document.querySelector(
-								'#maxi-blocks__responsive-toolbar'
-							);
-
-							if (node && !repeatedNode) {
-								// Actions on default responsive values
-								const responsiveButtons = Array.from(
-									node.querySelectorAll(
-										'.block-editor-post-preview__button-resize'
-									)
+							const node =
+								document.querySelector(
+									'.components-dropdown-menu__menu'
+								) ||
+								document.querySelector(
+									'.block-editor-post-preview__dropdown-content'
 								);
+
+							if (node) {
+								// Actions on default responsive values
+								const responsiveButtons =
+									Array.from(
+										node.querySelectorAll(
+											'.components-menu-items-choice'
+										)
+									) ||
+									Array.from(
+										node.querySelectorAll(
+											'.block-editor-post-preview__button-resize'
+										)
+									);
 
 								responsiveButtons.forEach(
 									onChangeNativeResponsive
@@ -246,9 +277,7 @@ const ResponsiveSelector = props => {
 			};
 
 			const observer = new MutationObserver(callback);
-
 			observer.observe(previewButton, config);
-
 			return () => observer.disconnect();
 		}
 

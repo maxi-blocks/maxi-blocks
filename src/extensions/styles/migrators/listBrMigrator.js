@@ -1,6 +1,11 @@
-const name = 'List BR';
+// Constants
+const NAME = 'List BR';
+const LI_PATTERN = /<li>.*<\/li><li>/g;
+const LI_REPLACE = /<\/li><li>/g;
+const LI_REPLACEMENT = '</li><br><li>';
 
-const maxiVersions = [
+// Pre-compile version set for O(1) lookup
+const VERSIONS = new Set([
 	'0.1',
 	'0.0.1-SC1',
 	'0.0.1-SC2',
@@ -33,7 +38,7 @@ const maxiVersions = [
 	'1.5.7',
 	'1.5.8',
 	'1.6.0',
-];
+]);
 
 const isEligible = blockAttributes => {
 	const {
@@ -43,17 +48,17 @@ const isEligible = blockAttributes => {
 		'maxi-version-current': maxiVersionCurrent,
 	} = blockAttributes;
 
-	return (
-		isList &&
-		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin) &&
-		content.match(/<li>.*<\/li><li>/g)
-	);
+	// Early returns for quick fails
+	if (!isList || !content) return false;
+	if (!maxiVersionOrigin && !VERSIONS.has(maxiVersionCurrent)) return false;
+
+	return content.match(LI_PATTERN) !== null;
 };
 
 const migrate = newAttributes => {
-	const { content } = newAttributes;
-	newAttributes.content = content.replace(/<\/li><li>/g, '</li><br><li>');
+	// Direct string replacement for better performance
+	newAttributes.content = newAttributes.content.replace(LI_REPLACE, LI_REPLACEMENT);
 	return newAttributes;
 };
 
-export default { name, isEligible, migrate };
+export default { name: NAME, isEligible, migrate };

@@ -18,7 +18,7 @@
 		"ecmaVersion": 11,
 		"sourceType": "module"
 	},
-	"plugins": ["react", "import"],
+	"plugins": ["react", "import", "@limegrass/import-alias"],
 	"settings": {
 		"import/resolver": {
 			"webpack": {
@@ -92,6 +92,12 @@
 		"react/jsx-props-no-spreading": "off",
 		"import/no-extraneous-dependencies": "off",
 		"import/first": "off",
-		"import/order": "off" // Needs to be organized
+		"import/order": "off", // Needs to be organized
+		"@limegrass/import-alias/import-alias": [
+			"error",
+			{
+				"relativeImportOverrides": [{ "path": ".", "depth": 0 }]
+			}
+		]
 	}
 }

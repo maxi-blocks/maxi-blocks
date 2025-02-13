@@ -74,38 +74,38 @@ const actions = {
 		};
 		const deviceType = getDeviceType();
 
-		if (!isGutenbergButton) {
-			const setPreviewDeviceType = deviceType => {
-				// First, try to use the new preferred method if it exists
-				if (
-					dispatch('core/editor') &&
-					dispatch('core/editor').setDeviceType
-				) {
-					dispatch('core/editor').setDeviceType(deviceType);
+		const setPreviewDeviceType = deviceType => {
+			// First, try to use the new preferred method if it exists
+			if (
+				dispatch('core/editor') &&
+				dispatch('core/editor').setDeviceType
+			) {
+				dispatch('core/editor').setDeviceType(deviceType);
+			} else {
+				// Determine if we are in the site editor or post editor as a fallback
+				const isSiteEditor = getIsSiteEditor(); // Ensure you have implemented this check
+				const editorStore = isSiteEditor
+					? 'core/edit-site'
+					: 'core/edit-post';
+
+				// Check and call the deprecated method if available
+				const storeDispatch = dispatch(editorStore);
+				if (storeDispatch.__experimentalSetPreviewDeviceType) {
+					storeDispatch.__experimentalSetPreviewDeviceType(
+						deviceType
+					);
 				} else {
-					// Determine if we are in the site editor or post editor as a fallback
-					const isSiteEditor = getIsSiteEditor(); // Ensure you have implemented this check
-					const editorStore = isSiteEditor
-						? 'core/edit-site'
-						: 'core/edit-post';
-
-					// Check and call the deprecated method if available
-					const storeDispatch = dispatch(editorStore);
-					if (storeDispatch.__experimentalSetPreviewDeviceType) {
-						storeDispatch.__experimentalSetPreviewDeviceType(
-							deviceType
-						);
-					} else {
-						console.error(
-							__(
-								'Unable to set the preview device type. The required method is not available.',
-								'maxi-blocks'
-							)
-						);
-					}
+					console.error(
+						__(
+							'Unable to set the preview device type. The required method is not available.',
+							'maxi-blocks'
+						)
+					);
 				}
-			};
+			}
+		};
 
+		if (!isGutenbergButton) {
 			setPreviewDeviceType('Desktop');
 		}
 
@@ -152,13 +152,6 @@ const actions = {
 		return {
 			type: 'REMOVE_DEPRECATED_BLOCK',
 			uniqueID,
-		};
-	},
-	blockWantsToRender(uniqueID, clientId) {
-		return {
-			type: 'BLOCK_WANTS_TO_RENDER',
-			uniqueID,
-			clientId,
 		};
 	},
 	blockHasBeenRendered(uniqueID) {

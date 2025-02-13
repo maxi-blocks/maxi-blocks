@@ -5,16 +5,16 @@ import {
 	createNewPost,
 	setClipboardData,
 	pressKeyWithModifier,
-	openPreviewPage,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
 import { siteCodeEditor } from './content';
+import { openPreviewPage } from '../../utils';
 
 describe('Dynamic content', () => {
-	it.skip('Should return site DC content', async () => {
+	it('Should return site DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data
@@ -35,16 +35,29 @@ describe('Dynamic content', () => {
 
 		// Check backend
 		const expectedResults = {
-			'text-maxi-1se8ef1z-u': 'maxi-blocks',
-			'text-maxi-2se8ef1z-u': 'No content found',
-			'text-maxi-3se8ef1z-u': 'http://localhost:8889',
-			'text-maxi-4se8ef1z-u': 'wordpress@example.com',
-			'text-maxi-5se8ef1z-u': 'en_US',
+			'text-dc-title-1': 'maxi-blocks',
+			'text-dc-description-1': 'No content found',
+			'text-dc-url-1': 'http://localhost:8889',
+			'text-dc-email-1': 'wordpress@example.com',
+			'text-dc-language-1': 'en_US',
+		};
+
+		const expectedButtonResults = {
+			'button-dc-title': 'maxi-blocks',
+			'button-dc-description': 'No content found',
+			'button-dc-email': 'wordpress@example.com',
 		};
 
 		const getBackResults = async (block, expect) =>
 			page.$eval(
-				`.maxi-text-block[uniqueid="${block}"] .maxi-text-block__content`,
+				`.${block}.maxi-text-block .maxi-text-block__content`,
+				(el, _expect) => el.innerText === _expect,
+				expect
+			);
+
+		const getButtonResults = async (block, expect) =>
+			page.$eval(
+				`.${block}.maxi-button-block .maxi-button-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect
 			);
@@ -52,13 +65,16 @@ describe('Dynamic content', () => {
 		const results = Object.entries(expectedResults).map(
 			async ([block, expect]) => getBackResults(block, expect)
 		);
+		const buttonResults = Object.entries(expectedButtonResults).map(
+			async ([block, expect]) => getButtonResults(block, expect)
+		);
 
 		expect(results.every(result => result)).toBe(true);
-
+		expect(buttonResults.every(result => result)).toBe(true);
 		// Check frontend
-		const previewPage = await openPreviewPage();
+		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector(
-			'#text-maxi-1se8ef1z-u.maxi-text-block .maxi-text-block__content',
+			'.text-dc-title-1.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
 			}
@@ -67,7 +83,14 @@ describe('Dynamic content', () => {
 
 		const getFrontResults = async (block, expect) =>
 			previewPage.$eval(
-				`#${block}.maxi-text-block .maxi-text-block__content`,
+				`.${block}.maxi-text-block .maxi-text-block__content`,
+				(el, _expect) => el.innerText === _expect,
+				expect
+			);
+
+		const getFrontButtonResults = async (block, expect) =>
+			previewPage.$eval(
+				`.${block}.maxi-button-block .maxi-button-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect
 			);
@@ -75,7 +98,11 @@ describe('Dynamic content', () => {
 		const frontResults = Object.entries(expectedResults).map(
 			async ([block, expect]) => getFrontResults(block, expect)
 		);
+		const frontButtonResults = Object.entries(expectedButtonResults).map(
+			async ([block, expect]) => getFrontButtonResults(block, expect)
+		);
 
 		expect(frontResults.every(result => result)).toBe(true);
+		expect(frontButtonResults.every(result => result)).toBe(true);
 	});
 });

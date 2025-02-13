@@ -441,8 +441,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Action buttons
             $content .= '<div class="welcome-actions">';
-            $content .= '<a href="#" class="button button-primary quick-start">' . __('Quick start', 'maxi-blocks') . '</a>';
-            $content .= '<a href="#" class="button button-secondary create-new">' . __('Create new page', 'maxi-blocks') . '</a>';
+            $content .= '<a href="' . esc_url(admin_url('admin.php?page=maxi-blocks-quick-start')) . '" target="_blank" class="button button-primary quick-start">' . __('Quick start', 'maxi-blocks') . '</a>';
+            $content .= '<a href="' . esc_url(admin_url('post-new.php?post_type=page')) . '" target="_blank" class="button button-secondary create-new">' . __('Create new page', 'maxi-blocks') . '</a>';
             $content .= '</div>';
             $content .= '</div>'; // welcome-header
 
@@ -553,20 +553,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function maxi_blocks_settings()
         {
+            $content = '<div class="maxi-dashboard_main-content">';
+
+            // Add new header section
+            $content .= '<div class="maxi-dashboard_main-content-settings">';
+            $content .= '<h1>' . __('Settings', 'maxi-blocks') . '</h1>';
+            $content .= '<p>' . __('Customise MaxiBlocks, manage fonts, APIs, and access support.', 'maxi-blocks') . '</p>';
+            $content .= '</div>';
+
+            $content .= '<div class="maxi-dashboard_main-content_accordion_wrapper">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion">';
+
             $font_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
             $font_uploads_dir_size = round(
                 $this->get_folder_size($font_uploads_dir) / 1048576,
                 2,
             );
-
-            $content = '<div class="maxi-dashboard_main-content">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion">';
-
-            if (isset($_GET['settings-updated'])) {
-                //phpcs:ignore
-                $content .=
-                    '<h2>' . __('Successfully done', 'maxi-blocks') . '</h2>';
-            }
 
             $content .= $this->generate_item_header(
                 __('Editor preferences', 'maxi-blocks'),
@@ -947,6 +949,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_blocks_maxi_ai()
         {
             $content = '<div class="maxi-dashboard_main-content">';
+            $content .= '<div class="maxi-dashboard_main-content-settings maxi-dashboard_main-content-maxi-ai">';
+            $content .= '<h1>' . __('Maxi AI', 'maxi-blocks') . '</h1>';
+            $content .= '<p>' . __('General setting for Maxi AI writer', 'maxi-blocks') . '</p>';
+            $content .= '</div>';
+
+            $content .= '<div class="maxi-dashboard_main-content_accordion_wrapper">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
             $content .= $this->generate_item_header(

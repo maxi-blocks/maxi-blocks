@@ -329,10 +329,14 @@ if (get_template() === 'maxiblocks-go') {
 //======================================================================
 // Check if we're in a test environment using .env file
 $is_test_environment = false;
-$env_file = '.env';
+$env_file = dirname(__FILE__) . '/.env';
+
 if (file_exists($env_file)) {
-    $env_config = parse_ini_file($env_file);
-    $is_test_environment = isset($env_config['GITHUB_ENV_TEST']) && $env_config['GITHUB_ENV_TEST'] === true;
+    $env_config = @parse_ini_file($env_file);
+    if ($env_config !== false) {
+        $is_test_environment = isset($env_config['GITHUB_ENV_TEST']) &&
+            in_array($env_config['GITHUB_ENV_TEST'], [1, '1', true, 'true'], true);
+    }
 }
 
 if (!$is_test_environment) {

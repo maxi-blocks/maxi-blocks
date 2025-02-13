@@ -456,37 +456,37 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'title' => __('Understanding full site editing in WordPress', 'maxi-blocks'),
                     'description' => __('Learn what full site editing (FSE) is in WordPress and how it changes the way you design and customize your website using blocks.', 'maxi-blocks'),
                     'image' => MAXI_PLUGIN_URL_PATH . 'img/what-is-full-site-editing-in-wordpress.jpg',
-                    'link' => 'https://www.youtube.com/watch?v=example1'
+                    'link' => 'https://youtu.be/vd9foamWlZ4?si=E3vWph2ybOOng9CH'
                 ],
                 [
                     'title' => __('Step-by-step: how to add a new page in WordPress', 'maxi-blocks'),
                     'description' => __('A quick guide to creating and managing new pages in WordPress, perfect for beginners looking to build their site.', 'maxi-blocks'),
                     'image' => MAXI_PLUGIN_URL_PATH . 'img/how-to-add-a-page-in-wordpress.jpg',
-                    'link' => 'https://www.youtube.com/watch?v=example2'
+                    'link' => 'https://youtu.be/fchhWrc_ubs?si=ImMmTIK5--Qiw-jO'
                 ],
                 [
                     'title' => __('How to set a page as your homepage in WordPress', 'maxi-blocks'),
                     'description' => __('Want a custom homepage? This tutorial shows you how to set any page as your homepage in just a few clicks.', 'maxi-blocks'),
                     'image' => MAXI_PLUGIN_URL_PATH . 'img/how-to-set-a-page-as-homepage-in-wordpress.jpg',
-                    'link' => 'https://www.youtube.com/watch?v=example3'
+                    'link' => 'https://youtu.be/fchhWrc_ubs?si=IYB_3Ou26-RPOD7n'
                 ],
                 [
                     'title' => __('How to edit and customise the footer in WordPress', 'maxi-blocks'),
                     'description' => __('Need to change the footer? This guide helps you through the steps to edit and personalize your footer section.', 'maxi-blocks'),
                     'image' => MAXI_PLUGIN_URL_PATH . 'img/wordpress-how-to-change-footer.jpg',
-                    'link' => 'https://www.youtube.com/watch?v=example4'
+                    'link' => 'https://youtu.be/DMDrmpNO6gc?si=dtFr6q4y94TMk48y'
                 ],
                 [
                     'title' => __('How to create and manage navigation menus in WordPress', 'maxi-blocks'),
                     'description' => __('Design your site\'s main navigation. Learn how to create and organize your WordPress for a better user experience.', 'maxi-blocks'),
                     'image' => MAXI_PLUGIN_URL_PATH . 'img/wordpress-navigation-menu.jpg',
-                    'link' => 'https://www.youtube.com/watch?v=example5'
+                    'link' => 'https://youtu.be/ikZRr4YpzIs?si=1RNdjYYrCTCogvU4'
                 ],
                 [
                     'title' => __('How to add and format content in WordPress', 'maxi-blocks'),
                     'description' => __('Learn how to add text, images, and other content to your WordPress pages and posts. A guide to create engaging layouts.', 'maxi-blocks'),
                     'image' => MAXI_PLUGIN_URL_PATH . 'img/how-to-add-content-to-wordpress.jpg',
-                    'link' => 'https://www.youtube.com/watch?v=example6'
+                    'link' => 'https://youtu.be/aiWvSUuyDfo?si=W8lvYj4wFiJLbKNf'
                 ]
             ];
 

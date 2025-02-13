@@ -1035,5 +1035,78 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 
             return $log_content;
         }
+
+        /**
+         * Check only critical system requirements
+         *
+         * @return array Array of critical warnings
+         */
+        public function check_critical_requirements()
+        {
+            $warnings = [];
+
+            // Check PHP Version
+            $php_version = phpversion();
+            $required_php = '9.0';
+            if (version_compare($php_version, $required_php, '<')) {
+                $warnings[] = [
+                    'setting' => 'PHP Version',
+                    'recommended' => $required_php . '+',
+                    'actual' => $php_version
+                ];
+            }
+
+            // Check Database Type
+            global $wpdb;
+            $db_version = $wpdb->db_version();
+            $required_mysql = '5.6';
+            if (version_compare($db_version, $required_mysql, '<')) {
+                $warnings[] = [
+                    'setting' => 'Database Type',
+                    'recommended' => 'MySQL ' . $required_mysql . '+',
+                    'actual' => 'MySQL ' . $db_version
+                ];
+            }
+
+            // Check WordPress AJAX
+            if (!$this->test_ajax_status()) {
+                $warnings[] = [
+                    'setting' => 'WordPress AJAX',
+                    'recommended' => 'Working',
+                    'actual' => 'Not working'
+                ];
+            }
+
+            // Check DB Tables
+            global $wpdb;
+            $tables_to_check = [
+                $wpdb->prefix . 'maxi_blocks_general' => 'General Table',
+                $wpdb->prefix . 'maxi_blocks_styles_blocks' => 'Styles Table',
+                $wpdb->prefix . 'maxi_blocks_custom_data_blocks' => 'Custom Data Table'
+            ];
+
+            foreach ($tables_to_check as $table => $name) {
+                if (!$this->table_exists($table)) {
+                    $warnings[] = [
+                        'setting' => $name,
+                        'recommended' => 'Present',
+                        'actual' => 'Missing'
+                    ];
+                }
+            }
+
+            return $warnings;
+        }
+
+        /**
+         * Helper method to check if table exists
+         */
+        private function table_exists($table)
+        {
+            global $wpdb;
+            $query = $wpdb->prepare("SHOW TABLES LIKE %s", $table);
+            return $wpdb->get_var($query) === $table;
+        }
+
     }
 endif;

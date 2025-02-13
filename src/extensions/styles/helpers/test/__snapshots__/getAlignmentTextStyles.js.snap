@@ -25,3 +25,17 @@ exports[`getAlignmentTextStyles Get a correct alignment text styles 1`] = `
   },
 }
 `;
+
+exports[`getAlignmentTextStyles Get a correct alignment text styles for a list 1`] = `
+{
+  "general": {
+    "list-style-position": "inside",
+  },
+  "l": {
+    "text-align": "justify",
+  },
+  "xxl": {
+    "list-style-position": "inside",
+  },
+}
+`;

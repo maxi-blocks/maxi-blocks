@@ -67,4 +67,12 @@ describe('getHasCustomFormat', () => {
 
 		expect(result).toBeTruthy();
 	});
+
+	it('Should work with empty format value', () => {
+		const formatValue = {};
+		const isHover = false;
+
+		const result = getHasCustomFormat(formatValue, isHover);
+		expect(result).toBeFalsy();
+	});
 });

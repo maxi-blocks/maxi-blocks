@@ -2837,3 +2837,32 @@ exports[`getBackgroundStyles Should return an empty object if the position value
   },
 }
 `;
+
+exports[`getBackgroundStyles Should work for button background 1`] = `
+{
+  "background": {
+    "general": {
+      "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.85))",
+    },
+    "l": {
+      "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
+    },
+    "label": "Background Color",
+    "m": {
+      "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
+    },
+    "s": {
+      "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
+    },
+    "xl": {
+      "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.85))",
+    },
+    "xs": {
+      "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-7,8,18,25),1))",
+    },
+    "xxl": {
+      "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.85))",
+    },
+  },
+}
+`;

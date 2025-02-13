@@ -77,6 +77,59 @@ exports[`createSelectors Should create selectors 1`] = `
 }
 `;
 
+exports[`createSelectors Should create selectors with only pseudo elements 1`] = `
+{
+  "after button": {
+    "canvas hover": {
+      "label": "button ::after on canvas hover",
+      "target": ":hover buttonClassName::after",
+    },
+    "hover": {
+      "label": "button ::after on hover",
+      "target": "buttonClassName:hover::after",
+    },
+    "normal": {
+      "label": "button ::after",
+      "target": "buttonClassName::after",
+    },
+  },
+  "after canvas": {
+    "hover": {
+      "label": "canvas ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": {
+      "label": "canvas ::after",
+      "target": "::after",
+    },
+  },
+  "before button": {
+    "canvas hover": {
+      "label": "button ::before on canvas hover",
+      "target": ":hover buttonClassName::before",
+    },
+    "hover": {
+      "label": "button ::before on hover",
+      "target": "buttonClassName:hover::before",
+    },
+    "normal": {
+      "label": "button ::before",
+      "target": "buttonClassName::before",
+    },
+  },
+  "before canvas": {
+    "hover": {
+      "label": "canvas ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": {
+      "label": "canvas ::before",
+      "target": "::before",
+    },
+  },
+}
+`;
+
 exports[`createSelectors Should create selectors without pseudo elements 1`] = `
 {
   "button": {

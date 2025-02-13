@@ -42,3 +42,20 @@ exports[`getShapeDividerStyles Get a correct shape divider styles 2`] = `
   },
 }
 `;
+
+exports[`getShapeDividerStyles Should work when block has padding 1`] = `
+{
+  "general": {
+    "height": "1px",
+    "opacity": 1,
+    "top": "-10px",
+  },
+  "l": {},
+  "label": "Shape Divider",
+  "m": {},
+  "s": {},
+  "xl": {},
+  "xs": {},
+  "xxl": {},
+}
+`;

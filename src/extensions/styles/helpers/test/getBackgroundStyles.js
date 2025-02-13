@@ -1578,4 +1578,58 @@ describe('getBackgroundStyles', () => {
 
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Should work for button background', () => {
+		const object = {
+			'button-background-active-media-general': 'color',
+			'button-background-color-clip-path-general': 'none',
+			'button-background-color-clip-path-status-general': false,
+			'button-background-color-wrapper-height-general': 100,
+			'button-background-color-wrapper-height-unit-general': '%',
+			'button-background-color-wrapper-position-bottom-unit-general':
+				'px',
+			'button-background-color-wrapper-position-left-unit-general': 'px',
+			'button-background-color-wrapper-position-right-unit-general': 'px',
+			'button-background-color-wrapper-position-sync-general': 'all',
+			'button-background-color-wrapper-position-top-unit-general': 'px',
+			'button-background-color-wrapper-width-general': 100,
+			'button-background-color-wrapper-width-unit-general': '%',
+			'button-background-gradient-clip-path-general': 'none',
+			'button-background-gradient-clip-path-status-general': false,
+			'button-background-gradient-opacity-general': 1,
+			'button-background-gradient-wrapper-height-general': 100,
+			'button-background-gradient-wrapper-height-unit-general': '%',
+			'button-background-gradient-wrapper-position-bottom-unit-general':
+				'px',
+			'button-background-gradient-wrapper-position-left-unit-general':
+				'px',
+			'button-background-gradient-wrapper-position-right-unit-general':
+				'px',
+			'button-background-gradient-wrapper-position-sync-general': 'all',
+			'button-background-gradient-wrapper-position-top-unit-general':
+				'px',
+			'button-background-gradient-wrapper-width-general': 100,
+			'button-background-gradient-wrapper-width-unit-general': '%',
+			'button-background-palette-color-general': 8,
+			'button-background-palette-color-general-hover': 6,
+			'button-background-palette-color-l': 7,
+			'button-background-palette-color-xl': 8,
+			'button-background-palette-opacity-general': 0.85,
+			'button-background-palette-opacity-l': 1,
+			'button-background-palette-opacity-xl': 0.85,
+			'button-background-palette-sc-status-general': false,
+			'button-background-palette-status-general': true,
+			'button-background-palette-status-general-hover': true,
+			'button-background-status-hover': false,
+		};
+
+		const result = getBackgroundStyles({
+			...object,
+			isButton: true,
+			prefix: 'button-',
+			blockStyle: 'light',
+		});
+
+		expect(result).toMatchSnapshot();
+	});
 });

@@ -1,17 +1,51 @@
-import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
-
 jest.mock('@wordpress/data', () => {
+	const attributes = {
+		'test-general': 1,
+		'test-general-hover': 10,
+		'test-xxl': 2,
+		'test-xxl-hover': 20,
+		// Removed for General tests
+		// 'test-xl': 3,
+		// 'test-xl-hover': 30,
+		'test-l': 4,
+		'test-l-hover': 40,
+		'test-m': 5,
+		'test-m-hover': 50,
+		'test-s': 6,
+		'test-s-hover': 60,
+		'test-xs': 7,
+		'test-xs-hover': 70,
+	};
+
+	let counter = 0;
+
 	return {
 		select: jest.fn(() => {
 			return {
-				getSelectedBlockCount: jest.fn(() => 1),
+				getSelectedBlockCount: jest.fn(() => {
+					counter += 1;
+					return [1, 2].includes(counter) ? 2 : 1;
+				}),
 				receiveBaseBreakpoint: jest.fn(() => 'xl'),
 				receiveMaxiDeviceType: jest.fn(() => 'general'),
+				getSelectedBlockClientId: jest.fn(() => '1'),
+				getSelectedBlockClientIds: jest.fn(() => ['1', '2']),
+				getBlockAttributes: jest.fn(clientId => {
+					// For test case with multiple blocks and different attributes
+					if (counter === 2) {
+						return clientId === '1'
+							? { 'test-general': 1 }
+							: { 'test-general': 2 };
+					}
+
+					return attributes;
+				}),
 			};
 		}),
 	};
 });
 
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 import { select } from '@wordpress/data';
 
 const attributes = {
@@ -33,6 +67,27 @@ const attributes = {
 };
 
 describe('getLastBreakpointAttribute', () => {
+	// These two tests should be called first and second because they use a different
+	// getSelectedBlockCount mock. Can't use mockImplementation because select is called
+	// only once when the getLastBreakpointAttribute is imported, so it will always have values from jest.doMock.
+	test('Should return the correct value when multiple blocks are selected and all have equal target attribute value', () => {
+		const result = getLastBreakpointAttribute({
+			target: 'test',
+			breakpoint: 'general',
+		});
+
+		expect(result).toBe(1);
+	});
+
+	test('Should return null when multiple blocks are selected and the target attribute value is different', () => {
+		const result = getLastBreakpointAttribute({
+			target: 'test',
+			breakpoint: 'general',
+		});
+
+		expect(result).toBe(null);
+	});
+
 	test('Should return General value', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',

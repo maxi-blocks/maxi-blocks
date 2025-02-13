@@ -4,7 +4,18 @@ jest.mock('@wordpress/blocks', () => jest.fn());
 jest.mock('src/components/block-inserter/index.js', () => jest.fn());
 jest.mock('@extensions/attributes/getBlockData.js', () => jest.fn());
 jest.mock('src/components/transform-control/utils.js', () => ({
-	getTransformSelectors: jest.fn(),
+	getTransformSelectors: jest.fn(() => ({
+		canvas: {
+			normal: {
+				label: 'canvas',
+				target: '',
+			},
+			hover: {
+				label: 'canvas',
+				target: ':hover',
+			},
+		},
+	})),
 }));
 jest.mock('src/extensions/DC/constants.js', () => ({}));
 
@@ -247,8 +258,47 @@ describe('styleCleaner', () => {
 					},
 				},
 			},
+			'transform-scale-general': {
+				canvas: {
+					normal: {
+						x: 117.5,
+						y: 110,
+					},
+					hover: {
+						x: 110,
+						y: 120,
+					},
+				},
+			},
+			'transform-translate-general': {
+				canvas: {
+					normal: {
+						x: 33,
+						y: 20,
+						'x-unit': '%',
+						'y-unit': '%',
+					},
+				},
+			},
+			'advanced-css-general': '.test { color: red; }',
+		};
+		const data = {
+			customCss: {
+				selectors: {
+					canvas: {
+						normal: {
+							target: '',
+						},
+						hover: {
+							target: ':hover',
+						},
+					},
+				},
+			},
 		};
 
-		expect(styleProcessor(obj, {}, props)).toMatchSnapshot();
+		expect(styleProcessor(obj, data, props)).toMatchSnapshot();
+		props['hover-type'] = 'text';
+		expect(styleProcessor(obj, data, props)).toMatchSnapshot();
 	});
 });

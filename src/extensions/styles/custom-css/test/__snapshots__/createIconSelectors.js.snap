@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createIconSelectors Should create selectors 1`] = `
+{
+  "after icon": {
+    "canvas hover": {
+      "label": "icon ::after on canvas hover",
+      "target": ":hover iconClassName::after",
+    },
+    "hover": {
+      "label": "icon ::after on hover",
+      "target": "iconClassName:hover::after",
+    },
+    "normal": {
+      "label": "icon ::after",
+      "target": "iconClassName::after",
+    },
+  },
+  "before icon": {
+    "canvas hover": {
+      "label": "icon ::before on canvas hover",
+      "target": ":hover iconClassName::before",
+    },
+    "hover": {
+      "label": "icon ::before on hover",
+      "target": "iconClassName:hover::before",
+    },
+    "normal": {
+      "label": "icon ::before",
+      "target": "iconClassName::before",
+    },
+  },
+  "icon": {
+    "canvasHover": {
+      "label": "icon on canvas hover",
+      "target": ":hover iconClassName",
+    },
+    "canvasHoverInsideSvg": {
+      "label": "everything inside svg on canvas hover (:hover svg > *)",
+      "target": ":hover iconClassName svg > *",
+    },
+    "canvasHoverPath": {
+      "label": "svg's path on canvas hover",
+      "target": ":hover iconClassName svg path",
+    },
+    "canvasHoverSvg": {
+      "label": "icon's svg on canvas hover",
+      "target": ":hover iconClassName svg",
+    },
+    "hover": {
+      "label": "icon on hover",
+      "target": "iconClassName:hover",
+    },
+    "hoverInsideSvg": {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": "iconClassName:hover svg > *",
+    },
+    "hoverPath": {
+      "label": "svg's path on hover",
+      "target": "iconClassName:hover svg path",
+    },
+    "hoverSvg": {
+      "label": "icon's svg on hover",
+      "target": "iconClassName:hover svg",
+    },
+    "insideSvg": {
+      "label": "everything inside svg (svg > *)",
+      "target": "iconClassName svg > *",
+    },
+    "normal": {
+      "label": "icon",
+      "target": "iconClassName",
+    },
+    "path": {
+      "label": "svg's path",
+      "target": "iconClassName svg path",
+    },
+    "svg": {
+      "label": "icon's svg",
+      "target": "iconClassName svg",
+    },
+  },
+}
+`;

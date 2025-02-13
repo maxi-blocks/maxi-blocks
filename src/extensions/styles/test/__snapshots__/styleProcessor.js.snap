@@ -18,6 +18,11 @@ exports[`styleCleaner Returns cleaned styles obj 1`] = `
         "box-shadow": "0px 0px 0px 0px var(--maxi-light-color-1)",
       },
     },
+    "transform": {
+      "general": {
+        "transform": "scaleX(1.175) scaleY(1.1) translateX(33%) translateY(20%) ",
+      },
+    },
     "transition": {
       "general": {
         "transition": "box-shadow 0.3s 0s ease",
@@ -39,6 +44,106 @@ exports[`styleCleaner Returns cleaned styles obj 1`] = `
         "left": "calc(1px)",
         "top": "calc(1px)",
         "width": "calc(50% + 4px)",
+      },
+    },
+  },
+  " .test": {
+    "advancedCss": {
+      "general": {
+        "css": "color: red;",
+      },
+    },
+  },
+  " > .maxi-background-displayer": {
+    "border": {
+      "general": {
+        "border-bottom-width": "2px",
+        "border-color": "var(--maxi-light-color-2)",
+        "border-left-width": "2px",
+        "border-right-width": "2px",
+        "border-style": "solid",
+        "border-top-width": "2px",
+      },
+    },
+  },
+  ":hover": {
+    "border": {
+      "general": {
+        "border-color": "var(--maxi-light-color-6)",
+      },
+    },
+    "boxShadow": {
+      "general": {
+        "box-shadow": "5px 5px 0px 0px var(--maxi-light-color-6)",
+      },
+    },
+  },
+  ":hover > .maxi-background-displayer": {
+    "border": {
+      "general": {
+        "border-color": "var(--maxi-light-color-6)",
+      },
+    },
+    "size": {
+      "general": {
+        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
+      },
+    },
+  },
+}
+`;
+
+exports[`styleCleaner Returns cleaned styles obj 2`] = `
+{
+  "": {
+    "border": {
+      "general": {
+        "border-bottom-width": "2px",
+        "border-color": "var(--maxi-light-color-2)",
+        "border-left-width": "2px",
+        "border-right-width": "2px",
+        "border-style": "solid",
+        "border-top-width": "2px",
+      },
+    },
+    "boxShadow": {
+      "general": {
+        "box-shadow": "0px 0px 0px 0px var(--maxi-light-color-1)",
+      },
+    },
+    "transform": {
+      "general": {
+        "transform": "scaleX(1.175) scaleY(1.1) translateX(33%) translateY(20%) ",
+      },
+    },
+    "transition": {
+      "general": {
+        "transition": "box-shadow 0.3s 0s ease",
+      },
+    },
+  },
+  " .maxi-container-arrow": {
+    "shadow": {
+      "general": {
+        "filter": "drop-shadow(0px 0px 0px var(--maxi-light-color-1))",
+      },
+    },
+  },
+  " .maxi-container-arrow .maxi-container-arrow--content:before": {
+    "border": {
+      "general": {
+        "background": "var(--maxi-undefined-color-2)",
+        "height": "calc(50% + 4px)",
+        "left": "calc(1px)",
+        "top": "calc(1px)",
+        "width": "calc(50% + 4px)",
+      },
+    },
+  },
+  " .test": {
+    "advancedCss": {
+      "general": {
+        "css": "color: red;",
       },
     },
   },

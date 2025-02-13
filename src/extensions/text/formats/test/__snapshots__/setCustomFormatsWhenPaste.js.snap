@@ -1,0 +1,659 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`setCustomFormatsWhenPaste Should update custom formats when pasting text with core/bold 1`] = `
+{
+  "content": "Hello <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">world</maxi-blocks/text-custom>!",
+  "custom-formats": {
+    "maxi-text-block__custom-format--0": {
+      "font-weight-general": "700",
+    },
+  },
+  "formatValue": {
+    "activeFormats": [
+      {
+        "attributes": {
+          "className": "maxi-text-block__custom-format--0",
+        },
+        "type": "maxi-blocks/text-custom",
+      },
+    ],
+    "end": 11,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      ,
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 6,
+    "text": "Hello world!",
+  },
+}
+`;
+
+exports[`setCustomFormatsWhenPaste Should update custom formats when pasting text with core/italic 1`] = `
+{
+  "content": "Hello <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">world</maxi-blocks/text-custom>!",
+  "custom-formats": {
+    "maxi-text-block__custom-format--0": {
+      "font-style-general": "italic",
+    },
+  },
+  "formatValue": {
+    "activeFormats": [
+      {
+        "attributes": {
+          "className": "maxi-text-block__custom-format--0",
+        },
+        "type": "maxi-blocks/text-custom",
+      },
+    ],
+    "end": 11,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      ,
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 6,
+    "text": "Hello world!",
+  },
+}
+`;
+
+exports[`setCustomFormatsWhenPaste Should update custom formats when pasting text with core/link 1`] = `
+{
+  "content": "Hello <maxi-blocks/text-link url="http://test.com"><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">world!</maxi-blocks/text-custom></maxi-blocks/text-link>",
+  "custom-formats": {
+    "maxi-text-block__custom-format--0": {
+      "text-decoration-general": "underline",
+    },
+  },
+  "formatValue": {
+    "activeFormats": [
+      {
+        "attributes": {
+          "url": "http://test.com",
+        },
+        "type": "maxi-blocks/text-link",
+      },
+      {
+        "attributes": {
+          "className": "maxi-text-block__custom-format--0",
+        },
+        "type": "maxi-blocks/text-custom",
+      },
+    ],
+    "end": 12,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      [
+        {
+          "attributes": {
+            "url": "http://test.com",
+          },
+          "type": "maxi-blocks/text-link",
+        },
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "url": "http://test.com",
+          },
+          "type": "maxi-blocks/text-link",
+        },
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "url": "http://test.com",
+          },
+          "type": "maxi-blocks/text-link",
+        },
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "url": "http://test.com",
+          },
+          "type": "maxi-blocks/text-link",
+        },
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "url": "http://test.com",
+          },
+          "type": "maxi-blocks/text-link",
+        },
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "url": "http://test.com",
+          },
+          "type": "maxi-blocks/text-link",
+        },
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 6,
+    "text": "Hello world!",
+  },
+}
+`;
+
+exports[`setCustomFormatsWhenPaste Should update custom formats when pasting text with core/strikethrough 1`] = `
+{
+  "content": "Hello <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">world</maxi-blocks/text-custom>!",
+  "custom-formats": {
+    "maxi-text-block__custom-format--0": {
+      "text-decoration-general": "line-through",
+    },
+  },
+  "formatValue": {
+    "activeFormats": [
+      {
+        "attributes": {
+          "className": "maxi-text-block__custom-format--0",
+        },
+        "type": "maxi-blocks/text-custom",
+      },
+    ],
+    "end": 11,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      ,
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 6,
+    "text": "Hello world!",
+  },
+}
+`;
+
+exports[`setCustomFormatsWhenPaste Should update custom formats when pasting text with core/subscript 1`] = `
+{
+  "content": "Hello <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">world</maxi-blocks/text-custom>!",
+  "custom-formats": {
+    "maxi-text-block__custom-format--0": {
+      "vertical-align-general": "sub",
+    },
+  },
+  "formatValue": {
+    "activeFormats": [
+      {
+        "attributes": {
+          "className": "maxi-text-block__custom-format--0",
+        },
+        "type": "maxi-blocks/text-custom",
+      },
+    ],
+    "end": 11,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      ,
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 6,
+    "text": "Hello world!",
+  },
+}
+`;
+
+exports[`setCustomFormatsWhenPaste Should update custom formats when pasting text with core/superscript 1`] = `
+{
+  "content": "Hello <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">world</maxi-blocks/text-custom>!",
+  "custom-formats": {
+    "maxi-text-block__custom-format--0": {
+      "vertical-align-general": "super",
+    },
+  },
+  "formatValue": {
+    "activeFormats": [
+      {
+        "attributes": {
+          "className": "maxi-text-block__custom-format--0",
+        },
+        "type": "maxi-blocks/text-custom",
+      },
+    ],
+    "end": 11,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      ,
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 6,
+    "text": "Hello world!",
+  },
+}
+`;
+
+exports[`setCustomFormatsWhenPaste Should update custom formats when pasting text with core/underline 1`] = `
+{
+  "content": "Hello <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">world</maxi-blocks/text-custom>!",
+  "custom-formats": {
+    "maxi-text-block__custom-format--0": {
+      "font-decoration-general": "underline",
+    },
+  },
+  "formatValue": {
+    "activeFormats": [
+      {
+        "attributes": {
+          "className": "maxi-text-block__custom-format--0",
+        },
+        "type": "maxi-blocks/text-custom",
+      },
+    ],
+    "end": 11,
+    "formats": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      [
+        {
+          "attributes": {
+            "className": "maxi-text-block__custom-format--0",
+          },
+          "type": "maxi-blocks/text-custom",
+        },
+      ],
+      ,
+    ],
+    "replacements": [
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ],
+    "start": 6,
+    "text": "Hello world!",
+  },
+}
+`;

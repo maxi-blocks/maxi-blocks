@@ -15,4 +15,15 @@ describe('getAlignmentTextStyles', () => {
 		const result = getAlignmentTextStyles(object);
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Get a correct alignment text styles for a list', () => {
+		const object = {
+			'text-alignment-general': 'right',
+			'text-alignment-xxl': 'center',
+			'text-alignment-l': 'justify',
+		};
+
+		const result = getAlignmentTextStyles(object, 'list');
+		expect(result).toMatchSnapshot();
+	});
 });

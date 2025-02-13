@@ -170,27 +170,20 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             }
 
             // Frontend Assets Section
-            $assets = $this->get_frontend_assets();
-            $content .= '<tr><th colspan="4">' . __('Frontend Assets', 'maxi-blocks') . '</th></tr>';
-
-            // CSS Files
-            $content .= '<tr><td colspan="4" class="plugin-section">';
-            $content .= '<strong>' . __('CSS Files', 'maxi-blocks') . ' (' . count($assets['css']) . ')</strong><br>';
-            foreach ($assets['css'] as $css) {
-                $content .= esc_html($css) . '<br>';
-            }
-            $content .= '</td></tr>';
-
-            // JavaScript Files
-            $content .= '<tr><td colspan="4" class="plugin-section">';
-            $content .= '<strong>' . __('JavaScript Files', 'maxi-blocks') . ' (' . count($assets['js']) . ')</strong><br>';
-            foreach ($assets['js'] as $js) {
-                $content .= esc_html($js) . '<br>';
-            }
-            $content .= '</td></tr>';
+            $content .= '<tbody id="maxi-frontend-assets"></tbody>';
 
             $content .= '</table>';
             $content .= '</div>'; // maxi-dashboard_main-content
+
+            // Add translations for JavaScript
+            wp_localize_script('maxi-status-report', 'MaxiSystemReport', [
+                'i18n' => [
+                    'frontendAssets' => __('Frontend Assets', 'maxi-blocks'),
+                    'cssFiles' => __('CSS Files', 'maxi-blocks'),
+                    'jsFiles' => __('JavaScript Files', 'maxi-blocks'),
+                    'errorLoadingAssets' => __('Error loading frontend assets', 'maxi-blocks'),
+                ]
+            ]);
 
             return $content;
         }
@@ -948,23 +941,12 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             }
 
             // Frontend Assets
-            $assets = $this->get_frontend_assets();
             $report .= "\n--- Frontend Assets ---\n";
-
-            $report .= "CSS Files (" . count($assets['css']) . "):\n";
-            foreach ($assets['css'] as $css) {
-                $report .= "- " . $css . "\n";
-            }
-            $report .= "\n";
-
-            $report .= "JavaScript Files (" . count($assets['js']) . "):\n";
-            foreach ($assets['js'] as $js) {
-                $report .= "- " . $js . "\n";
-            }
-            $report .= "\n";
+            $report .= "Loading...\n";
 
             $report .= "\n====== END SYSTEM REPORT ======";
 
+            // Add back the WordPress Directories Permissions section
             $report .= "\nWordPress Directories Permissions:\n";
             $report .= "WP Directory: " . ABSPATH . " (" . $this->get_directory_permission(ABSPATH) . ")\n";
             $report .= "WP Content Directory: " . WP_CONTENT_DIR . " (" . $this->get_directory_permission(WP_CONTENT_DIR) . ")\n";
@@ -1023,9 +1005,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             return sprintf('%s | %s | %s', $mode, $readable, $writable);
         }
 
-        /**
-         * Helper method to get debug log content
-         */
+        // Keep the get_debug_log_content method
         private function get_debug_log_content()
         {
             if (!defined('WP_DEBUG_LOG') || !WP_DEBUG_LOG) {
@@ -1054,140 +1034,6 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
             }
 
             return $log_content;
-        }
-
-        // Add this method to get frontend assets
-        private function get_frontend_assets()
-        {
-            try {
-                $ajax_url = admin_url('admin-ajax.php');
-
-                $response = wp_remote_post($ajax_url, [
-                    'timeout' => 30,
-                    'body' => [
-                        'action' => 'maxi_get_frontend_assets'
-                    ],
-                    'cookies' => $_COOKIE
-                ]);
-
-                if (is_wp_error($response)) {
-                    return [
-                        'css' => [__('Error fetching assets', 'maxi-blocks')],
-                        'js' => [__('Error fetching assets', 'maxi-blocks')]
-                    ];
-                }
-
-                $response_body = wp_remote_retrieve_body($response);
-                $data = json_decode($response_body, true);
-
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    return [
-                        'css' => [__('Invalid response format', 'maxi-blocks')],
-                        'js' => [__('Invalid response format', 'maxi-blocks')]
-                    ];
-                }
-
-                if (!isset($data['data'])) {
-                    return [
-                        'css' => [__('No data in response', 'maxi-blocks')],
-                        'js' => [__('No data in response', 'maxi-blocks')]
-                    ];
-                }
-
-                return $data['data'];
-
-            } catch (Exception $e) {
-                return [
-                    'css' => [__('Error processing assets', 'maxi-blocks')],
-                    'js' => [__('Error processing assets', 'maxi-blocks')]
-                ];
-            }
-        }
-
-        /**
-         * Check only critical system requirements
-         *
-         * @return array Array of critical warnings
-         */
-        public function check_critical_requirements()
-        {
-            $warnings = [];
-
-            // Check PHP Version
-            $php_version = phpversion();
-            $required_php = '9.0';
-            if (version_compare($php_version, $required_php, '<')) {
-                $warnings[] = [
-                    'setting' => 'PHP Version',
-                    'recommended' => $required_php . '+',
-                    'actual' => $php_version
-                ];
-            }
-
-            // Check Database Type
-            global $wpdb;
-            $db_version = $wpdb->db_version();
-            $required_mysql = '5.6';
-            if (version_compare($db_version, $required_mysql, '<')) {
-                $warnings[] = [
-                    'setting' => 'Database Type',
-                    'recommended' => 'MySQL ' . $required_mysql . '+',
-                    'actual' => 'MySQL ' . $db_version
-                ];
-            }
-
-            // Check WordPress AJAX
-            if (!$this->test_ajax_status()) {
-                $warnings[] = [
-                    'setting' => 'WordPress AJAX',
-                    'recommended' => 'Working',
-                    'actual' => 'Not working'
-                ];
-            }
-
-            // Check DB Tables
-            global $wpdb;
-            $tables_to_check = [
-                $wpdb->prefix . 'maxi_blocks_general' => 'General Table',
-                $wpdb->prefix . 'maxi_blocks_styles_blocks' => 'Styles Table',
-                $wpdb->prefix . 'maxi_blocks_custom_data_blocks' => 'Custom Data Table'
-            ];
-
-            foreach ($tables_to_check as $table => $name) {
-                if (!$this->table_exists($table)) {
-                    $warnings[] = [
-                        'setting' => $name,
-                        'recommended' => 'Present',
-                        'actual' => 'Missing'
-                    ];
-                }
-            }
-
-            return $warnings;
-        }
-
-        /**
-         * Helper method to check if table exists
-         */
-        private function table_exists($table)
-        {
-            global $wpdb;
-            $query = $wpdb->prepare("SHOW TABLES LIKE %s", $table);
-            return $wpdb->get_var($query) === $table;
-        }
-
-        /**
-         * Helper method to test if AJAX is working
-         */
-        private function test_ajax_works()
-        {
-            $admin_ajax = admin_url('admin-ajax.php');
-            $response = wp_remote_post($admin_ajax, [
-                'timeout' => 5,
-                'body' => ['action' => 'maxi_test_ajax']
-            ]);
-
-            return !is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200;
         }
     }
 endif;

@@ -232,13 +232,15 @@ body.toplevel_page_maxi-blocks-dashboard {
 					}
 				}
 				&-start {
-					padding-top: 34px;
+					padding-top: 95px;
 					h1 {
-						margin-bottom: 27px;
-						font-size: 50px;
+						margin-bottom: 18px;
+						font-size: 47px;
 					}
 					h2 {
-						margin-bottom: 30px;
+						margin-bottom: 15px;
+						font-size: 30px;
+						font-weight: 700;
 					}
 					& > h3 {
 						padding-top: 0;
@@ -249,8 +251,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 					}
 					p {
 						font-size: 16px;
-						color: #5e5656;
-						margin-bottom: 30px !important;
+						color: #999999;
+						margin-bottom: 0 !important;
+						max-width: 600px;
+						margin: 0 auto;
 					}
 				}
 				&-pro-library {
@@ -824,7 +828,7 @@ body.site-editor-php
 
 	.welcome-header {
 		text-align: center;
-		margin-bottom: 40px;
+		margin-bottom: 85px;
 
 		h1 {
 			margin-bottom: 27px;
@@ -845,6 +849,7 @@ body.site-editor-php
 			display: flex;
 			gap: 16px;
 			justify-content: center;
+			margin-top: 29px;
 
 			.button {
 				padding: 5px 50px;
@@ -882,7 +887,7 @@ body.site-editor-php
 
 	.learn-section {
 		text-align: center;
-		margin: 60px 0;
+		margin: 80px 0 85px;
 
 		h2 {
 			font-size: 32px;
@@ -901,6 +906,16 @@ body.site-editor-php
 			gap: 24px;
 			margin: 40px 0;
 
+			// Add a separator between the first and second rows
+			&::after {
+				content: '';
+				height: 8px;
+				background-color: #f6f5f8;
+				border-radius: 4px;
+				grid-column: 1 / -1; // Span across all columns
+				margin: 16px 0; // Add some margin for spacing
+			}
+
 			.video-item {
 				text-align: left;
 
@@ -913,8 +928,7 @@ body.site-editor-php
 				.video-thumbnail {
 					aspect-ratio: 16/9;
 					background: #f5f5f5;
-					border-radius: 8px;
-					margin-bottom: 16px;
+					margin-bottom: 28px;
 					overflow: hidden;
 
 					img {
@@ -925,27 +939,29 @@ body.site-editor-php
 				}
 
 				h3 {
-					font-size: 18px;
-					margin-bottom: 8px;
+					font-size: 20px;
+					margin-bottom: 13px;
 				}
 
 				p {
-					font-size: 14px;
+					font-size: 16px;
+					line-height: 27px;
 					margin-bottom: 0;
 				}
 			}
 		}
 
 		.more-videos {
-			margin-top: 40px;
+			margin-top: 65px;
 
 			.button {
-				padding: 12px 24px;
-				font-size: 16px;
+				padding: 6px 30px;
+				font-size: 18px;
 				background: #000000;
 				color: #fff;
 				border: none;
-				border-radius: 26px;
+				border-radius: 27px;
+				font-weight: 700;
 			}
 		}
 	}

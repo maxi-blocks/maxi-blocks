@@ -512,7 +512,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // video-grid
 
             $content .= '<div class="more-videos">';
-            $content .= '<button class="button button-secondary">' . __('More videos', 'maxi-blocks') . '</button>';
+            $content .= '<a href="https://www.youtube.com/watch?v=vd9foamWlZ4&list=PLyq6BtMKKWufXgUBJQ7e4w4jskjTsnQ1h" target="_blank" class="button">' . __('More videos', 'maxi-blocks') . '</a>';
             $content .= '</div>';
 
             $content .= '</div>'; // learn-section

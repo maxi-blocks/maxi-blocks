@@ -78,4 +78,103 @@ document.addEventListener('DOMContentLoaded', function maxiStatusReport() {
 			document.body.removeChild(a);
 		});
 	}
+
+	// Load frontend assets asynchronously
+	const frontendAssetsSection = document.getElementById(
+		'maxi-frontend-assets'
+	);
+	if (frontendAssetsSection) {
+		frontendAssetsSection.innerHTML =
+			'<tr><td colspan="4">' +
+			'<div class="maxi-loading">Loading frontend assets...</div>' +
+			'</td></tr>';
+
+		fetch(ajaxurl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: 'action=maxi_get_frontend_assets',
+		})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success && data.data) {
+					// Update table content
+					let content = `<tr><th colspan="4">${MaxiSystemReport.i18n.frontendAssets}</th></tr>`;
+
+					// CSS Files
+					content += '<tr><td colspan="4" class="plugin-section">';
+					content += `<strong>${MaxiSystemReport.i18n.cssFiles} (${data.data.css.length})</strong><br>`;
+					data.data.css.forEach(css => {
+						content += `${css}<br>`;
+					});
+					content += '</td></tr>';
+
+					// JavaScript Files
+					content += '<tr><td colspan="4" class="plugin-section">';
+					content += `<strong>${MaxiSystemReport.i18n.jsFiles} (${data.data.js.length})</strong><br>`;
+					data.data.js.forEach(js => {
+						content += `${js}<br>`;
+					});
+					content += '</td></tr>';
+
+					frontendAssetsSection.innerHTML = content;
+
+					// Update report text content
+					if (reportContent) {
+						let text = reportContent.value;
+						const assetsSection = '\n--- Frontend Assets ---\n';
+						const endReport = '\n====== END SYSTEM REPORT ======';
+
+						// Generate new assets text
+						let newAssetsText = assetsSection;
+						newAssetsText += `\nCSS Files (${data.data.css.length}):\n`;
+						data.data.css.forEach(css => {
+							newAssetsText += `- ${css}\n`;
+						});
+						newAssetsText += `\nJavaScript Files (${data.data.js.length}):\n`;
+						data.data.js.forEach(js => {
+							newAssetsText += `- ${js}\n`;
+						});
+
+						// Replace the loading placeholder with actual content
+						const startIndex = text.indexOf(assetsSection);
+						const endIndex = text.indexOf(endReport);
+						if (startIndex !== -1 && endIndex !== -1) {
+							text =
+								text.substring(0, startIndex) +
+								newAssetsText +
+								text.substring(endIndex);
+							reportContent.value = text;
+						}
+					}
+				} else {
+					frontendAssetsSection.innerHTML = `<tr><td colspan="4" class="error">${MaxiSystemReport.i18n.errorLoadingAssets}</td></tr>`;
+
+					// Update error in report text
+					if (reportContent) {
+						let text = reportContent.value;
+						text = text.replace(
+							/--- Frontend Assets ---\n.*?\n(?=====)/s,
+							`--- Frontend Assets ---\n${MaxiSystemReport.i18n.errorLoadingAssets}\n\n`
+						);
+						reportContent.value = text;
+					}
+				}
+			})
+			.catch(error => {
+				frontendAssetsSection.innerHTML = `<tr><td colspan="4" class="error">${MaxiSystemReport.i18n.errorLoadingAssets}</td></tr>`;
+				console.error('Error loading frontend assets:', error);
+
+				// Update error in report text
+				if (reportContent) {
+					let text = reportContent.value;
+					text = text.replace(
+						/--- Frontend Assets ---\n.*?\n(?=====)/s,
+						`--- Frontend Assets ---\n${MaxiSystemReport.i18n.errorLoadingAssets}\n\n`
+					);
+					reportContent.value = text;
+				}
+			});
+	}
 });

@@ -124,7 +124,7 @@
 					height: 16px;
 				}
 				span {
-					font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 					font-size: 9px;
 					line-height: 100%;
 				}
@@ -147,7 +147,7 @@
 				h2 {
 					color: #282828;
 					font-size: 16px;
-					font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 					font-weight: 500;
 					letter-spacing: -0.5px;
 					margin-bottom: 0;
@@ -467,7 +467,7 @@
 		border-bottom: 1px solid #dbdde6;
 		margin: 0;
 		background-color: #fff;
-		font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 		font-size: 16px;
 		font-weight: 500;
 		line-height: 1;
@@ -489,7 +489,7 @@
 			padding: 0;
 			background-color: transparent;
 			color: #ff4a17;
-			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			text-decoration: none;
 			font-size: 14px;
 			cursor: pointer;
@@ -526,7 +526,7 @@
 			align-items: center;
 			justify-content: center;
 			color: #ff4a17;
-			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			font-size: 18px;
 			word-spacing: 0;
 			text-decoration: none;
@@ -568,7 +568,7 @@
 			background-color: #eaf3f7;
 			color: #081219;
 			font-size: 14px;
-			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			font-weight: 400;
 			cursor: pointer;
 			transition: 0.1s;
@@ -625,7 +625,7 @@
 					line-height: 36px;
 					color: #081219;
 					font-weight: 700;
-					font-family: 'Roboto';
+					font-family: 'Inter';
 					margin: 0 0 15px;
 				}
 				h3 {
@@ -633,7 +633,7 @@
 					line-height: 24px;
 					color: #081219;
 					font-weight: 500;
-					font-family: 'Roboto';
+					font-family: 'Inter';
 				}
 				.maxi-cloud-masonry {
 					.maxi-cloud-container__details-popup_item {
@@ -648,7 +648,7 @@
 				margin: 0 0 25px;
 				font-size: 16px;
 				font-weight: 400;
-				font-family: 'Roboto';
+				font-family: 'Inter';
 			}
 
 			&_actions {
@@ -730,7 +730,7 @@
 					padding: 5px 22px 15px;
 					color: #081219;
 					font-weight: 500;
-					font-family: 'Roboto';
+					font-family: 'Inter';
 				}
 			}
 
@@ -756,7 +756,7 @@
 			background-color: #fff;
 			border-top: 1px solid #dbdde6;
 			border-bottom: 1px solid #dbdde6;
-			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			&__title {
 				position: relative;
 				border-bottom: 1px solid #dbdde6;
@@ -839,7 +839,7 @@
 				border-radius: 0;
 				color: var(--maxi-black-1-color);
 				background-color: #fff;
-				font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 				font-size: 12px;
 				font-weight: normal;
 				text-align: center;
@@ -971,7 +971,7 @@
 							flex-direction: column;
 
 							&__title {
-								font-family: 'Roboto', Helvetica, Arial, Lucida,
+								font-family: 'Inter', Helvetica, Arial, Lucida,
 									sans-serif;
 								font-weight: 500;
 								text-align: center;
@@ -992,7 +992,7 @@
 								border: 2px solid #007cba;
 								border-radius: 0;
 								color: #081219;
-								font-family: 'Roboto', Helvetica, Arial, Lucida,
+								font-family: 'Inter', Helvetica, Arial, Lucida,
 									sans-serif !important;
 								font-weight: 400;
 								line-height: 100%;
@@ -1120,7 +1120,7 @@
 						margin-right: 0;
 						color: #081219;
 						background-color: transparent;
-						font-family: 'Roboto', Helvetica, Arial, Lucida,
+						font-family: 'Inter', Helvetica, Arial, Lucida,
 							sans-serif !important;
 						font-size: 12px;
 						font-weight: normal;
@@ -1245,7 +1245,7 @@
 							border-radius: 0;
 							background: #fff;
 							color: #081219;
-							font-family: 'Roboto', Helvetica, Arial, Lucida,
+							font-family: 'Inter', Helvetica, Arial, Lucida,
 								sans-serif !important;
 							font-size: 12px;
 							transition: all 0.5s;
@@ -1259,7 +1259,7 @@
 					}
 				}
 				.components-checkbox-control {
-					font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 					font-size: 11px;
 					font-weight: 400;
 					&__input {
@@ -1379,7 +1379,7 @@
 						padding: 8px;
 						box-shadow: none;
 						color: #151617;
-						font-family: 'Roboto', Helvetica, Arial, Lucida,
+						font-family: 'Inter', Helvetica, Arial, Lucida,
 							sans-serif !important;
 						font-weight: 500;
 						font-size: 13px;
@@ -1519,7 +1519,7 @@
 							box-shadow: none;
 							color: var(--maxi-black-1-color);
 							background-color: #f5f5f5;
-							font-family: 'Roboto', Helvetica, Arial, Lucida,
+							font-family: 'Inter', Helvetica, Arial, Lucida,
 								sans-serif !important;
 							font-size: 12px;
 							font-weight: normal;
@@ -1586,7 +1586,7 @@
 							box-shadow: none;
 							color: var(--maxi-black-1-color);
 							background-color: #fff;
-							font-family: 'Roboto', Helvetica, Arial, Lucida,
+							font-family: 'Inter', Helvetica, Arial, Lucida,
 								sans-serif !important;
 							font-size: 12px;
 							font-weight: normal;
@@ -1872,7 +1872,7 @@
 			margin-right: 15px;
 			color: #081219;
 			background-color: transparent;
-			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			font-size: 12px;
 			font-weight: normal;
 			cursor: pointer;
@@ -1959,7 +1959,7 @@
 		color: #141516;
 		color: var(--maxi-black-1-color);
 		background-color: #fff;
-		font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 		font-size: 12px;
 		font-weight: 400;
 		text-align: center;
@@ -2103,7 +2103,7 @@
 				margin: 0 5px 0 0;
 				background-color: #edf6fa;
 				font-size: 13px;
-				font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 				color: #081219;
 				transition: all 0.1s;
 				line-height: 28px;
@@ -2190,7 +2190,7 @@
 		}
 		.ais-Stats-text {
 			color: #081219;
-			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			font-weight: 500;
 			font-size: 12px;
 			strong {
@@ -2302,7 +2302,7 @@
 			}
 			.ais-Stats-text {
 				color: #081219;
-				font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 				font-weight: 500;
 				font-size: 12px;
 				strong {
@@ -3126,7 +3126,7 @@ body .maxi-hidden {
 				line-height: 36px !important;
 				color: #081219 !important;
 				font-weight: 700 !important;
-				font-family: 'Roboto';
+				font-family: 'Inter';
 				text-align: center;
 				margin-bottom: 0 !important;
 				padding: 0 230px;
@@ -3137,7 +3137,7 @@ body .maxi-hidden {
 				line-height: 20px !important;
 				color: #939fa7 !important;
 				font-weight: 400 !important;
-				font-family: 'Roboto' !important;
+				font-family: 'Inter' !important;
 				text-align: center;
 				margin-top: 20px !important;
 			}

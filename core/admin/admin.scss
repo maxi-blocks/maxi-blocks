@@ -31,7 +31,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 			margin: 30px auto 0;
 			border-radius: 25px;
 			& * {
-				font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			}
 		}
 	}
@@ -852,7 +852,6 @@ body.site-editor-php
 				font-weight: 700;
 				border-radius: 26px;
 				text-decoration: none;
-				letter-spacing: 0.5px;
 				transition: all 0.5s ease;
 				&.quick-start {
 					background: #000000;

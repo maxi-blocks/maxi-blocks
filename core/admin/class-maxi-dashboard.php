@@ -106,6 +106,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 );
                 wp_enqueue_style('maxi-admin-roboto');
 
+                // Register and enqueue Inter font styles
+                wp_register_style(
+                    'maxi-admin-inter',
+                    plugin_dir_url(__FILE__) . 'fonts/inter/style.css',
+                    [],
+                    MAXI_PLUGIN_VERSION,
+                );
+                wp_enqueue_style('maxi-admin-inter');
+
                 wp_register_style(
                     'maxi-admin',
                     MAXI_PLUGIN_URL_PATH . 'build/admin.css',

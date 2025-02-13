@@ -283,8 +283,9 @@ if (class_exists('MaxiBlocks_ImageCrop')) {
 // MaxiBlocks API
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
+MaxiBlocks_API::register();
 if (class_exists('MaxiBlocks_API')) {
-    MaxiBlocks_API::register();
+    add_action('plugins_loaded', array('MaxiBlocks_API', 'register'));
 }
 
 //======================================================================
@@ -321,4 +322,40 @@ if (get_template() === 'maxiblocks-go') {
         require_once MAXI_PLUGIN_DIR_PATH . 'core/maxiblocks-go/maxiblocks-go.php';
     }
 
+}
+
+//======================================================================
+// MaxiBlocks Onboarding
+//======================================================================
+// Check if we're in a test environment using .env file
+$is_test_environment = false;
+$env_file = dirname(__FILE__) . '/.env';
+
+if (file_exists($env_file)) {
+    $env_config = @parse_ini_file($env_file);
+    if ($env_config !== false) {
+        $is_test_environment = isset($env_config['GITHUB_ENV_TEST']) &&
+            in_array($env_config['GITHUB_ENV_TEST'], [1, '1', true, 'true'], true);
+    }
+}
+
+if (!$is_test_environment) {
+    require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-quick-start-register.php';
+    if (class_exists('MaxiBlocks_QuickStart_Register')) {
+        MaxiBlocks_QuickStart_Register::register();
+
+        // Register activation hook
+        register_activation_hook(__FILE__, ['MaxiBlocks_QuickStart_Register', 'activate']);
+
+        // Handle redirect after activation
+        add_action('admin_init', function () {
+            if (get_transient('maxi_blocks_activation_redirect')) {
+                delete_transient('maxi_blocks_activation_redirect');
+                if (!isset($_GET['activate-multi'])) {
+                    wp_safe_redirect(admin_url('admin.php?page=maxi-blocks-quick-start'));
+                    exit;
+                }
+            }
+        });
+    }
 }

@@ -37,6 +37,7 @@ jobs:
                   touch .env
                   echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
                   echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
+                  echo "GITHUB_ENV_TEST=true" >> .env
             - name: Build
               run: npm run build
             - name: reset package-lock.json
@@ -61,6 +62,6 @@ jobs:
               run: |
                   echo "=== WordPress Debug Log ==="
                   WP_PATH="$(npm run wp-env install-path --silent)"
-                  find "$WP_PATH" -name debug.log -type f -exec cat {} \; || echo "Debug log not found"
+                  find "$WP_PATH" -name debug.log -type f -exec cat {} \; || echo "No debug logs found"
             - name: Running the tests
               run: npm run test:e2e

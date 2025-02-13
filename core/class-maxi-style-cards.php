@@ -725,8 +725,20 @@ class MaxiBlocks_StyleCards
             $default_sc = json_decode(self::get_default_style_card(), true);
             $default_maxi_sc = $default_sc['sc_maxi'];
 
-            // Parse imported SC
-            $imported_sc = json_decode($sc_content, true);
+            // Try to decode once
+            $first_decode = json_decode($sc_content, true);
+
+            // If still a string, try second decode
+            if (is_string($first_decode)) {
+                $imported_sc = json_decode($first_decode, true);
+            } else {
+                $imported_sc = $first_decode;
+            }
+
+            // If still not an array, check for JSON errors
+            if (!is_array($imported_sc)) {
+                return false;
+            }
 
             // Deep merge default with imported
             $new_sc = array_replace_recursive($default_maxi_sc, $imported_sc);

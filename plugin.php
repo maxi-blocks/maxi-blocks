@@ -327,32 +327,16 @@ if (get_template() === 'maxiblocks-go') {
 //======================================================================
 // MaxiBlocks Onboarding
 //======================================================================
-
-// Check if we're in a test environment
-$is_test_environment = (
-    !empty(getenv('GITHUB_ACTIONS')) ||
-    !empty($_ENV['GITHUB_ACTIONS'] ?? '') ||
-    !empty($_SERVER['GITHUB_ACTIONS'] ?? '') ||
-    !empty(getenv('CI')) ||
-    !empty($_ENV['CI'] ?? '') ||
-    !empty($_SERVER['CI'] ?? '')
-);
+// Check if we're in a test environment using .env file
+$is_test_environment = false;
+$env_file = '.env';
+if (file_exists($env_file)) {
+    $env_config = parse_ini_file($env_file);
+    $is_test_environment = isset($env_config['GITHUB_ENV_TEST']) && $env_config['GITHUB_ENV_TEST'] === true;
+}
 
 if (!$is_test_environment) {
-    // Debug environment variables safely
-    error_log('Not a test environment!');
-    error_log('Debug Environment Detection:');
-
-    // Get and log all environment variables
-    error_log('All available environment variables:');
-    $all_env = getenv();
-    $filtered_env = array_filter($all_env, function ($key) {
-        return strpos($key, 'TYPESENSE_API') === false;
-    }, ARRAY_FILTER_USE_KEY);
-    error_log(print_r($filtered_env, true));
-
     require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-quick-start-register.php';
-
     if (class_exists('MaxiBlocks_QuickStart_Register')) {
         MaxiBlocks_QuickStart_Register::register();
 
@@ -370,12 +354,4 @@ if (!$is_test_environment) {
             }
         });
     }
-} else {
-    error_log('Test environment detected!');
-    if (get_transient('maxi_blocks_activation_redirect')) {
-        delete_transient('maxi_blocks_activation_redirect');
-    }
-
-    // Set quick start as completed for test environments
-    update_option('maxi_blocks_quick_start_completed', true);
 }

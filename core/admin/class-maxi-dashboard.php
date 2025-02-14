@@ -532,7 +532,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<div class="cta-item">';
             $content .= '<img src="' . esc_url(MAXI_PLUGIN_URL_PATH . 'img/maxiblocks-email.svg') . '" alt="' . esc_attr__('Never Miss an Update', 'maxi-blocks') . '" class="cta-icon">';
             $content .= '<h3>' . __('Never miss an update', 'maxi-blocks') . '</h3>';
-            $content .= '<p>' . __('Get new patterns, tips, and updates—in spam.', 'maxi-blocks') . '</p>';
+            $content .= '<p>' . __('Get new patterns, tips, and updates—no spam.', 'maxi-blocks') . '</p>';
             $content .= '<a href="https://maxiblocks.com/go/notify-me" target="_blank" class="button">' . __('Notify me', 'maxi-blocks') . '</a>';
             $content .= '</div>';
 

@@ -32,9 +32,8 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	 than .some()
 	let hasBottomGap = false;
-	for (let i = 0; i < BREAKPOINTS.length; i++) {
+	for (let i = 0; i < BREAKPOINTS.length; i += 1) {
 		if (newAttributes[`bottom-gap-${BREAKPOINTS[i]}`]) {
 			hasBottomGap = true;
 			break;

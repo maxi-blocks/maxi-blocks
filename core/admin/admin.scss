@@ -107,10 +107,11 @@ body.toplevel_page_maxi-blocks-dashboard {
 				border-radius: 26px;
 				font-size: 18px;
 				font-weight: 700;
-				transition: background-color 0.2s ease;
+				transition: background 0.3s ease, transform 0.2s ease;
 
 				&:hover {
 					background: #f066ff !important;
+					transform: scale(1.035);
 				}
 			}
 
@@ -128,10 +129,11 @@ body.toplevel_page_maxi-blocks-dashboard {
 					height: 51px;
 					background: #f5f5f5;
 					border-radius: 100%;
-					transition: background-color 0.2s ease;
+					transition: background-color 0.5s ease;
 
 					&:hover {
-						background: #eee;
+						background: #d0f2af;
+						transform: scale(1.035);
 					}
 
 					img {
@@ -255,6 +257,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					color: #82c251;
 					&:hover {
 						color: #f066ff;
+
 						/*******************************
 						opacity: 0.5;
 						*******************************/
@@ -641,7 +644,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 									font-weight: 700;
 									height: auto;
 									line-height: 1.6;
-									transition: all 0.3s ease;
+									transition: background 0.3s ease,
+										transform 0.2s ease;
 
 									&:hover {
 										background: #8e44ad;
@@ -681,7 +685,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 						.status-ok span {
 							background: white;
-							color: #3dd168;
+							color: #82c251;
 							padding: 0px;
 							font-size: 14px;
 							font-weight: 700;
@@ -690,8 +694,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 							position: relative;
 
 							&::before {
-								content: '✅';
-								color: #3dd168;
+								content: '\2713'; /* Unicode for check mark */
+								color: #82c251;
 								margin-right: 8px;
 								margin-left: 12px;
 								font-size: 14px;
@@ -699,13 +703,25 @@ body.toplevel_page_maxi-blocks-dashboard {
 						}
 
 						.status-warning span {
-							background: #ffde3e;
-							color: black;
-							padding: 10px 15px;
+							background: none;
+							color: #ff4a17;
+							padding: 0;
 							font-size: 14px;
 							font-weight: 700;
-							border-radius: 26px;
+
 							text-decoration: none;
+							position: relative;
+
+							&::before {
+								content: '✖'; /* Unicode for cross mark */
+								color: #ff4a17; /* Match the text color */
+								margin-right: 8px; /* Increased space between the cross and text */
+
+								top: 50%; /* Center vertically */
+								transform: translateY(
+									-50%
+								); /* Adjust for vertical centering */
+							}
 						}
 					}
 
@@ -965,7 +981,7 @@ body.site-editor-php
 				font-weight: 700;
 				border-radius: 26px;
 				text-decoration: none;
-				transition: all 0.2s ease;
+				transition: background 0.1s ease, transform 0.3s ease;
 				box-shadow: none;
 
 				// Universal hover for all .button variants
@@ -984,7 +1000,7 @@ body.site-editor-php
 					color: #fff;
 					border: none;
 					padding: 5px 25px;
-					transition: background 0.3s ease, transform 0.2s ease;
+					transition: background 0.1s ease, transform 0.3s ease;
 
 					&:hover {
 						background: #ff9700 !important;
@@ -1034,7 +1050,7 @@ body.site-editor-php
 				text-align: left;
 				position: relative;
 				z-index: 2;
-				transition: transform 0.2s ease, border 0.3s ease;
+				transition: border 0.3s ease;
 				border: 2px solid #f6f5f8;
 				border-radius: 20px;
 				padding: 20px;
@@ -1045,6 +1061,10 @@ body.site-editor-php
 
 				&:hover {
 					border: 2px solid #d0f2af;
+					& > * {
+						opacity: 0.7;
+						transition: opacity 0.3s ease;
+					}
 				}
 
 				.video-thumbnail {
@@ -1059,9 +1079,6 @@ body.site-editor-php
 						width: 100%;
 						height: 100%;
 						object-fit: cover;
-					}
-					&:hover {
-						border: 2px solid #d0f2af;
 					}
 				}
 
@@ -1090,10 +1107,12 @@ body.site-editor-php
 				border-radius: 27px;
 				font-weight: 700;
 				box-shadow: none;
+				overflow: hidden;
 				transition: background 0.3s ease, transform 0.2s ease;
 
 				&:hover {
 					background: #cc66ff !important;
+					color: #fff;
 				}
 			}
 		}
@@ -1144,6 +1163,7 @@ body.site-editor-php
 
 				&:hover {
 					background: #a299c4 !important;
+					color: #fff;
 				}
 			}
 			&:nth-child(2) {

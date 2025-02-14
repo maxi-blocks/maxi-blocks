@@ -88,7 +88,7 @@
     font-weight: 700;
     border-radius: 26px;
     text-decoration: none;
-    transition: all 0.5s ease;
+	transition: background 0.3s ease, transform 0.2s ease;
     margin-top: 30px;
 }
 #maxi-copy-report:hover,

@@ -1,4 +1,5 @@
 import { getClosestAvailableFontWeight } from '@components/typography-control/utils';
+import { select } from '@wordpress/data';
 
 jest.mock('@wordpress/data', () => {
 	return {
@@ -34,5 +35,20 @@ describe('getClosestAvailableFontWeight', () => {
 		const result = getClosestAvailableFontWeight(font, targetWeight);
 
 		expect(result).toBe('100');
+	});
+
+	it('Should use the default weight if the target weight is not available', () => {
+		select.mockImplementation(() => ({
+			getFont: () => ({
+				files: {},
+			}),
+		}));
+
+		const targetWeight = '900';
+		const font = 'Roboto';
+
+		const result = getClosestAvailableFontWeight(font, targetWeight);
+
+		expect(result).toBe(900);
 	});
 });

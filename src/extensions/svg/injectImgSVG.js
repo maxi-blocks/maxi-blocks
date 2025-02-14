@@ -15,7 +15,12 @@ import getSVGRatio from './getSVGRatio';
 import { isObject, isEmpty, isElement } from 'lodash';
 
 /**
- * Utils
+ * Injects an image into an SVG element
+ * @param {string|Element} svg           - The SVG element to inject the image into
+ * @param {Object|string}  SVGData       - The data to inject into the SVG element
+ * @param {boolean}        removeMode    - Whether to remove the image from the SVG element
+ * @param {string}         blockUniqueID - The unique ID of the block
+ * @returns {Element} The SVG element with the image injected
  */
 const injectImgSVG = (
 	svg,

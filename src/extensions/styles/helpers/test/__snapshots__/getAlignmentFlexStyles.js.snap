@@ -25,3 +25,17 @@ exports[`getAlignmentFlexStyles Get a correct alignment flex styles 1`] = `
   },
 }
 `;
+
+exports[`getAlignmentFlexStyles Get a correct alignment flex styles for a list 1`] = `
+{
+  "general": {
+    "justify-content": "flex-end",
+  },
+  "l": {
+    "justify-content": "center",
+  },
+  "xxl": {
+    "justify-content": "center",
+  },
+}
+`;

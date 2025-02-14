@@ -30,7 +30,15 @@ const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * Clean BackgroundControl object for being delivered for styling
  *
- * @param {Object} background BackgroundControl related object
+ * @param {boolean}        isButton                Whether the block is a button
+ * @param {string}         prefix                  The prefix for the block
+ * @param {'light'|'dark'} blockStyle              The block style
+ * @param {boolean}        isIcon                  Whether the styles are for an icon
+ * @param {boolean}        isIconInherit           Whether the icon inherits the color from the button
+ * @param {string}         breakpoint              The breakpoint
+ * @param {Object}         scValues                The SC values
+ * @param {string}         backgroundColorProperty The background color property
+ * @param {Object}         props                   The attributes
  */
 export const getColorBackgroundObject = ({
 	isHover = false,
@@ -181,6 +189,19 @@ export const getColorBackgroundObject = ({
 	return response;
 };
 
+/**
+ * Get gradient background object
+ *
+ * @param {boolean}        isHover       Whether the styles are for a hover state
+ * @param {string}         prefix        The prefix for the block
+ * @param {string}         breakpoint    The breakpoint
+ * @param {boolean}        isIcon        Whether the styles are for an icon
+ * @param {'light'|'dark'} blockStyle    The block style
+ * @param {boolean}        isButton      Whether the block is a button
+ * @param {boolean}        isIconInherit Whether the icon inherits the color from the button
+ * @param {Object}         scValues      The SC values
+ * @param {Object}         props         The attributes
+ */
 export const getGradientBackgroundObject = ({
 	isHover = false,
 	prefix = '',
@@ -301,6 +322,16 @@ export const getGradientBackgroundObject = ({
 	return response;
 };
 
+/**
+ * Get image background object
+ *
+ * @param {boolean} isHover               Whether the styles are for a hover state
+ * @param {string}  prefix                The prefix for the attributes
+ * @param {string}  breakpoint            The breakpoint
+ * @param {boolean} isParallax            Whether the background is a parallax
+ * @param {boolean} ignoreMediaAttributes Whether to ignore media attributes
+ * @param {Object}  props                 The attributes
+ */
 export const getImageBackgroundObject = ({
 	isHover = false,
 	prefix = '',
@@ -516,6 +547,14 @@ export const getImageBackgroundObject = ({
 	return response;
 };
 
+/**
+ * Get video background object
+ *
+ * @param {boolean} isHover    Whether the styles are for a hover state
+ * @param {string}  prefix     The prefix for the attributes
+ * @param {string}  breakpoint The breakpoint
+ * @param {Object}  props      The attributes
+ */
 export const getVideoBackgroundObject = ({
 	isHover = false,
 	prefix = '',
@@ -564,6 +603,15 @@ export const getVideoBackgroundObject = ({
 	return response;
 };
 
+/**
+ * Get background layers wrapper object
+ *
+ * @param {string}  breakpoint            The breakpoint
+ * @param {boolean} isHover               Whether the styles are for a hover state
+ * @param {string}  prefix                The prefix for the attributes
+ * @param {boolean} setSameWidthAndHeight Whether to set the same width and height
+ * @param {Object}  props                 The attributes
+ */
 const getWrapperObject = ({
 	breakpoint,
 	isHover = false,
@@ -628,6 +676,14 @@ const getWrapperObject = ({
 	return !isEmpty(response[breakpoint]) ? response : {};
 };
 
+/**
+ * Get SVG background object
+ *
+ * @param {'light'|'dark'} blockStyle The block style
+ * @param {string}         breakpoint The breakpoint
+ * @param {boolean}        isHover    Whether the styles are for a hover state
+ * @param {Object}         props      The attributes
+ */
 const getSVGBackgroundObject = ({
 	blockStyle,
 	breakpoint,
@@ -658,6 +714,18 @@ const getSVGBackgroundObject = ({
 	return response;
 };
 
+/**
+ * Get background layers
+ *
+ * @param {Object}         response              The response object
+ * @param {Array}          layers                The layers
+ * @param {string}         target                The target html element
+ * @param {boolean}        isHover               Whether the styles are for a hover state
+ * @param {'light'|'dark'} blockStyle            The block style
+ * @param {string}         prefix                The prefix for the attributes
+ * @param {string}         breakpoint            The breakpoint
+ * @param {boolean}        ignoreMediaAttributes Whether to ignore media attributes
+ */
 const getBackgroundLayers = ({
 	response,
 	layers,
@@ -1011,6 +1079,14 @@ const getBackgroundLayers = ({
 	return response;
 };
 
+/**
+ * Get general background styles
+ *
+ * @param {Object}         props       The attributes
+ * @param {Object}         borderProps The border attributes
+ * @param {'light'|'dark'} blockStyle  The block style
+ * @param {boolean}        isHover     Whether the styles are for a hover state
+ */
 const getGeneralBackgroundStyles = (
 	props,
 	borderProps,
@@ -1151,6 +1227,16 @@ const getGeneralBackgroundStyles = (
 	return { border, ...(!isEmpty(size) && { size }) };
 };
 
+/**
+ * Get basic response object
+ *
+ * @param {string}         target          The target html element
+ * @param {boolean}        isHover         Whether the styles are for a hover state
+ * @param {string}         prefix          The prefix for the attributes
+ * @param {'light'|'dark'} blockStyle      The block style
+ * @param {Object}         rowBorderRadius The row border radius
+ * @param {Object}         props           The attributes
+ */
 const getBasicResponseObject = ({
 	target,
 	isHover,
@@ -1200,6 +1286,17 @@ const getBasicResponseObject = ({
 	};
 };
 
+/**
+ * Get block background styles
+ *
+ * @param {string}         target                The target html element
+ * @param {boolean}        isHover               Whether the styles are for a hover state
+ * @param {string}         prefix                The prefix for the attributes
+ * @param {'light'|'dark'} blockStyle            The block style
+ * @param {Object}         rowBorderRadius       The row border radius
+ * @param {boolean}        ignoreMediaAttributes Whether to ignore media attributes
+ * @param {Object}         props                 The attributes
+ */
 export const getBlockBackgroundStyles = ({
 	target: rawTarget,
 	isHover = false,
@@ -1261,6 +1358,17 @@ export const getBlockBackgroundStyles = ({
 	return response;
 };
 
+/**
+ * Get background styles
+ *
+ * @param {boolean}        isHover       Whether the styles are for a hover state
+ * @param {string}         prefix        The prefix for the attributes
+ * @param {boolean}        isButton      Whether the block is a button
+ * @param {'light'|'dark'} blockStyle    The block style
+ * @param {boolean}        isIconInherit Whether the icon inherits the color from the button
+ * @param {Object}         scValues      The SC values
+ * @param {Object}         props         The attributes
+ */
 export const getBackgroundStyles = ({
 	isHover = false,
 	prefix = '',

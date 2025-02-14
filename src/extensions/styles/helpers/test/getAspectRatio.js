@@ -17,6 +17,12 @@ describe('getAspectRatio', () => {
 		);
 	});
 
+	it('Should return "3 / 2" for input "ar32"', () => {
+		expect(getAspectRatio('ar32').ratio.general['aspect-ratio']).toBe(
+			'3 / 2'
+		);
+	});
+
 	it('Should return custom aspect ratio for input "custom" with "1.7778"', () => {
 		const customRatio = '1.7778';
 		expect(

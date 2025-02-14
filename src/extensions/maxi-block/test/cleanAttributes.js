@@ -109,7 +109,7 @@ describe('cleanAttributes', () => {
 		});
 
 		const expectedResult = {
-			'test-xxl': undefined,
+			'test-xxl': 100,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1412,7 +1412,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-xxl': undefined,
+			'test-xxl': '%',
 			'test-xl': undefined,
 		};
 
@@ -1556,7 +1556,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-xxl': undefined,
+			'test-xxl': 'none',
 			'test-xl': undefined,
 		};
 

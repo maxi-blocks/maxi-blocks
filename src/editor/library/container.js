@@ -411,13 +411,13 @@ const LibraryContainer = props => {
 	} = props;
 
 	useEffect(() => {
-        if (type === 'patterns') {
-            setTimeout(() => {
-				let input = document.querySelector('.ais-SearchBox-input');
+		if (type === 'patterns') {
+			setTimeout(() => {
+				const input = document.querySelector('.ais-SearchBox-input');
 				input?.focus();
-            }, 0);
-        }
-    }, [type]);
+			}, 0);
+		}
+	}, [type]);
 
 	const {
 		styleCards,

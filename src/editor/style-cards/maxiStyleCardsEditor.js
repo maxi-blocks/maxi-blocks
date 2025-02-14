@@ -59,7 +59,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			const { key: activeSCKey, value: activeSCValue } = activeStyleCard;
 			const savedStyleCards = receiveSavedMaxiStyleCards();
 			const selectedStyleCard = receiveMaxiSelectedStyleCard();
-			const { key: selectedSCKey, value: selectedSCValue } = selectedStyleCard;
+			const { key: selectedSCKey, value: selectedSCValue } =
+				selectedStyleCard;
 
 			// Create new values object
 			const newValues = {
@@ -84,7 +85,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		},
 		[], // Empty dependency array
 		{
-			equalityCheck: (a, b) => isEqual(a, b)
+			equalityCheck: (a, b) => isEqual(a, b),
 		}
 	);
 

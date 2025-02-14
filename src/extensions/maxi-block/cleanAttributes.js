@@ -21,7 +21,7 @@ import {
 /**
  * External dependencies
  */
-import { isEqual, isNil, isPlainObject, pickBy, toNumber } from 'lodash';
+import { isEqual, isNil, isPlainObject, toNumber } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -83,6 +83,7 @@ const flatSameAsPrev = (
 		const isXXL = breakpoint === 'xxl';
 		const isHover = getIsHoverAttribute(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
+
 		if (isXXL) {
 			const generalKey = getAttributeKey(
 				simpleLabel,
@@ -93,90 +94,80 @@ const flatSameAsPrev = (
 			const generalAttr = attributes[generalKey];
 
 			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
-				if (allowXXLOverGeneral) return;
-
-				const generalDefaultValue =
-					defaultAttributes?.[generalKey] ??
-					getDefaultAttribute(generalKey, clientId, true);
-
-				// Covers a concrete situation where we've got XXL and XL
-				// values by default, but General is undefined. An example
-				// is Row Maxi `max-width-unit` attribute.
-				if (key in newAttributes && isNil(generalDefaultValue)) {
-					result[key] = undefined;
-
+				if (allowXXLOverGeneral) {
+					result[key] = value;
 					return;
 				}
-
-				if (isEqual(generalAttr, value)) {
-					result[key] = undefined;
-
-					return;
-				}
-
-				const defaultAttribute =
+				// Only set to undefined if the value is the default value
+				const defaultValue =
 					defaultAttributes?.[key] ??
 					getDefaultAttribute(key, clientId, true);
 
-				result[key] = defaultAttribute;
-			}
-		} else {
-			let breakpointLock = false;
-
-			const higherBreakpoints = breakpoints.slice(
-				0,
-				breakpoints.indexOf(breakpoint)
-			);
-
-			higherBreakpoints.reverse().forEach(breakpoint => {
-				if (!breakpointLock) {
-					const label = getAttributeKey(
-						simpleLabel,
-						isHover,
-						'',
-						breakpoint
-					);
-					const attribute =
-						label in newAttributes
-							? newAttributes[label]
-							: attributes?.[label];
-					const defaultAttribute =
-						defaultAttributes?.[label] ??
-						getDefaultAttribute(label, clientId, true);
-
-					if (isEqual(value, attribute)) {
-						if (isEqual(value, defaultAttribute))
-							result[key] = undefined;
-						else if (breakpoint === 'general') {
-							const generalAttr =
-								attributes[
-									getAttributeKey(
-										simpleLabel,
-										isHover,
-										'',
-										'general'
-									)
-								];
-
-							if (
-								!isNil(generalAttr) &&
-								isEqual(generalAttr, value)
-							) {
-								result[key] = undefined;
-							}
-						} else if (breakpoint !== 'general') {
-							const currentDefaultAttribute =
-								defaultAttributes?.[key] ??
-								getDefaultAttribute(key, clientId, true);
-
-							if (!isEqual(value, currentDefaultAttribute))
-								result[key] = defaultAttribute;
-							else result[key] = currentDefaultAttribute;
-						} else if (!isNil(attribute)) breakpointLock = true;
-					} else if (!isNil(attribute)) breakpointLock = true;
+				if (isEqual(value, defaultValue)) {
+					result[key] = undefined;
+				} else {
+					result[key] = value;
 				}
-			});
+			} else {
+				result[key] = value;
+			}
+			return;
 		}
+		let breakpointLock = false;
+
+		const higherBreakpoints = breakpoints.slice(
+			0,
+			breakpoints.indexOf(breakpoint)
+		);
+
+		higherBreakpoints.reverse().forEach(breakpoint => {
+			if (!breakpointLock) {
+				const label = getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					breakpoint
+				);
+				const attribute =
+					label in newAttributes
+						? newAttributes[label]
+						: attributes?.[label];
+				const defaultAttribute =
+					defaultAttributes?.[label] ??
+					getDefaultAttribute(label, clientId, true);
+
+				if (isEqual(value, attribute)) {
+					if (isEqual(value, defaultAttribute))
+						result[key] = undefined;
+					else if (breakpoint === 'general') {
+						const generalAttr =
+							attributes[
+								getAttributeKey(
+									simpleLabel,
+									isHover,
+									'',
+									'general'
+								)
+							];
+
+						if (
+							!isNil(generalAttr) &&
+							isEqual(generalAttr, value)
+						) {
+							result[key] = undefined;
+						}
+					} else if (breakpoint !== 'general') {
+						const currentDefaultAttribute =
+							defaultAttributes?.[key] ??
+							getDefaultAttribute(key, clientId, true);
+
+						if (!isEqual(value, currentDefaultAttribute))
+							result[key] = defaultAttribute;
+						else result[key] = currentDefaultAttribute;
+					} else if (!isNil(attribute)) breakpointLock = true;
+				} else if (!isNil(attribute)) breakpointLock = true;
+			}
+		});
 	});
 
 	return result;
@@ -659,6 +650,7 @@ const cleanAttributes = ({
 			allowXXLOverGeneral
 		),
 	};
+
 	result = {
 		...result,
 		...flatWithGeneral(
@@ -670,37 +662,21 @@ const cleanAttributes = ({
 			allowXXLOverGeneral
 		),
 	};
+
 	result = {
 		...result,
 		...flatNewAttributes(result, attributes, clientId, defaultAttributes),
 	};
+
 	result = {
 		...result,
 		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
 	};
+
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
-
-	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
-		pickBy(result, (value, key) => {
-			const breakpoint = getBreakpointFromAttribute(key);
-			const simpleLabel = getSimpleLabel(key, breakpoint);
-			const higherAttr = getLastBreakpointAttribute({
-				target: simpleLabel,
-				attributes,
-				breakpoint: breakpoints[breakpoints.indexOf(breakpoint) - 1],
-			});
-
-			return (
-				value !== attributes[key] &&
-				(isNil(higherAttr) || attributes[key] !== higherAttr)
-			);
-		}),
-		// For IB we need to check default attributes of target block, while saving previous attributes of trigger block, thus we have two clientIds
-		targetClientId ?? clientId
-	);
 
 	return result;
 };

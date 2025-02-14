@@ -69,8 +69,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 				font-size: 20px;
 				margin: 0;
 				padding: 8px 16px;
-				color: #a6a6a6;
-				font-weight: 300;
+				color: #838383;
+				font-weight: 400;
 				transition: all 0.5s ease;
 				outline: none;
 				box-shadow: none;
@@ -110,7 +110,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				transition: background-color 0.2s ease;
 
 				&:hover {
-					opacity: 0.9;
+					background: #f066ff !important;
 				}
 			}
 
@@ -199,7 +199,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 					p {
 						font-size: 20px !important;
-						color: #999 !important;
+						color: #838383 !important;
 						max-width: 510px;
 						margin: 0 auto !important;
 					}
@@ -246,15 +246,18 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 				ol {
 					margin: 4px 0 17px 43px;
-					color: #a39ac6;
+					color: #999999;
 					li {
 						font-size: 16px;
 					}
 				}
 				a {
-					color: var(--maxi-primary-color);
+					color: #82c251;
 					&:hover {
+						color: #f066ff;
+						/*******************************
 						opacity: 0.5;
+						*******************************/
 					}
 				}
 				&-start {
@@ -387,8 +390,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 					margin: 0 auto;
 					&_wrapper {
 						background-color: #f2f1f8;
-						padding-top: 60px;
-						padding-bottom: 60px;
+						padding-top: 100px;
+						padding-bottom: 100px;
 					}
 					&#maxi-dashboard_main-content_starter-sites {
 						max-width: 100%;
@@ -399,12 +402,14 @@ body.toplevel_page_maxi-blocks-dashboard {
 					}
 					h4 {
 						font-size: 16px;
-						margin: 0 0 2px;
+						font-weight: 700;
+						color: #88c14e;
+						margin: 0 0 10px;
 					}
 					p {
 						margin: 0 0 10px;
 						font-size: 16px;
-						color: #a39ac6;
+						color: #999999;
 						&:last-child {
 							margin: 0;
 						}
@@ -412,7 +417,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					&-item {
 						width: 100%;
 						background: white;
-						border: 1px solid #a39ac6;
+						border: 2px solid #e9e6f8;
 						overflow: hidden;
 						margin-bottom: 15px;
 						border-radius: 10px;
@@ -429,7 +434,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							transition: all 0.3s ease;
 
 							h3 {
-								font-size: 24px !important;
+								font-size: 20px !important;
 								font-weight: 700;
 								color: #000;
 								margin: 0;
@@ -454,7 +459,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							display: none;
 
 							&-switcher__label {
-								color: #a39ac6;
+								color: #999999;
 							}
 
 							&-switcher__dropdown {
@@ -478,10 +483,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 								~ .maxi-dashboard_main-content_accordion-item-content {
 									display: block;
-									border-top-width: 1px;
-									border-color: #d1cde3;
+									border-top-width: 3px;
+									border-color: #f2f1f8;
 									max-height: 10000vh;
-									padding: 21px 25px 19px 34px;
+									padding: 25px 25px 20px 34px;
 								}
 							}
 						}
@@ -497,7 +502,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							&-setting {
 								display: flex;
 								flex-wrap: wrap;
-								border-bottom: 1px solid #d1cde3;
+								border-bottom: 3px dotted #f2f1f8;
 								padding: 16px 0;
 
 								&:last-child {
@@ -517,14 +522,14 @@ body.toplevel_page_maxi-blocks-dashboard {
 								h4 {
 									font-size: 16px;
 									font-weight: 700;
-									color: #000;
-									margin: 0 0 4px;
+									color: #88c14e;
+									margin: 0 0 10px;
 								}
 
 								p {
 									font-size: 16px !important;
-									color: #a39ac6 !important;
-									line-height: 1.6 !important;
+									color: #838383 !important;
+									line-height: 2 !important;
 									margin: 0 !important;
 								}
 							}
@@ -625,7 +630,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							.submit {
 								padding: 15px 0 0;
 								margin: 24px 0 0;
-								text-align: right;
+								text-align: left;
 
 								.button-primary {
 									background: #000;
@@ -639,7 +644,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 									transition: all 0.3s ease;
 
 									&:hover {
-										background: #333;
+										background: #8e44ad;
 									}
 								}
 							}
@@ -651,19 +656,21 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 				&-status {
 					.maxi-status-table {
-						width: 100%;
+						padding: 20px !important;
 						border-collapse: collapse;
-						margin-top: 20px;
+						background-color: #ffffff;
 
 						th {
-							background: #f8f9fa;
+							background: #000000;
 							padding: 12px;
 							text-align: left;
 							border-bottom: 1px solid #dee2e6;
+							color: white;
+							padding: 20px;
 						}
 
 						td {
-							padding: 12px;
+							padding: 20px;
 							border-bottom: 1px solid #dee2e6;
 						}
 
@@ -673,18 +680,38 @@ body.toplevel_page_maxi-blocks-dashboard {
 						}
 
 						.status-ok span {
-							background: #28a745;
-							color: white;
-							padding: 4px 8px;
-							border-radius: 3px;
+							background: white;
+							color: #3dd168;
+							padding: 0px;
+							font-size: 14px;
+							font-weight: 700;
+							border-radius: 26px;
+							text-decoration: none;
+							position: relative;
+
+							&::before {
+								content: '✅';
+								color: #3dd168;
+								margin-right: 8px;
+								margin-left: 12px;
+								font-size: 14px;
+							}
 						}
 
 						.status-warning span {
-							background: #ffc107;
-							color: #000;
-							padding: 4px 8px;
-							border-radius: 3px;
+							background: #ffde3e;
+							color: black;
+							padding: 10px 15px;
+							font-size: 14px;
+							font-weight: 700;
+							border-radius: 26px;
+							text-decoration: none;
 						}
+					}
+
+					.wrapper {
+						padding: 50px; // Example padding for the wrapper
+						background-color: #f2f1f8; // Optional background color
 					}
 				}
 			}
@@ -938,8 +965,14 @@ body.site-editor-php
 				font-weight: 700;
 				border-radius: 26px;
 				text-decoration: none;
-				transition: all 0.5s ease;
+				transition: all 0.2s ease;
 				box-shadow: none;
+
+				// Universal hover for all .button variants
+				&:hover {
+					background: #43a047 !important;
+				}
+
 				&.quick-start {
 					background: #000000;
 					color: #fff;
@@ -951,6 +984,11 @@ body.site-editor-php
 					color: #fff;
 					border: none;
 					padding: 5px 25px;
+					transition: background 0.3s ease, transform 0.2s ease;
+
+					&:hover {
+						background: #ff9700 !important;
+					}
 				}
 			}
 		}
@@ -979,46 +1017,34 @@ body.site-editor-php
 		p {
 			font-size: 16px !important;
 			color: #999999;
-			margin-bottom: 40px;
+			margin-bottom: 50px;
 		}
 
 		.video-grid {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
 			gap: 24px 24px;
-			margin: 40px 0;
+			margin: 30px 0;
 			position: relative;
 
 			&::before {
-				content: '';
-				position: absolute;
-				left: 0;
-				right: 0;
-				top: calc(50% - 8px);
-				height: 8px;
-				background-color: #f6f5f8;
-				border-radius: 4px;
-				z-index: 1;
-				margin: 13px 0;
 			}
 
 			.video-item {
 				text-align: left;
 				position: relative;
 				z-index: 2;
-
-				&:nth-child(-n + 3) {
-					margin-bottom: 48px;
-				}
-
-				&:nth-child(n + 4) {
-					margin-top: 42px;
-				}
-
-				a,
-				a * {
+				transition: transform 0.2s ease, border 0.3s ease;
+				border: 2px solid #f6f5f8;
+				border-radius: 20px;
+				padding: 20px;
+				text-decoration: none;
+				a {
 					text-decoration: none;
-					transition: all 0.5s ease;
+				}
+
+				&:hover {
+					border: 2px solid #d0f2af;
 				}
 
 				.video-thumbnail {
@@ -1026,11 +1052,16 @@ body.site-editor-php
 					background: #f5f5f5;
 					margin-bottom: 28px;
 					overflow: hidden;
+					transition: transform 0.2s ease, border 0.3s ease;
+					border: 2px solid #fff;
 
 					img {
 						width: 100%;
 						height: 100%;
 						object-fit: cover;
+					}
+					&:hover {
+						border: 2px solid #d0f2af;
 					}
 				}
 
@@ -1059,6 +1090,11 @@ body.site-editor-php
 				border-radius: 27px;
 				font-weight: 700;
 				box-shadow: none;
+				transition: background 0.3s ease, transform 0.2s ease;
+
+				&:hover {
+					background: #cc66ff !important;
+				}
 			}
 		}
 	}
@@ -1088,7 +1124,7 @@ body.site-editor-php
 
 			p {
 				font-size: 18px !important;
-				color: #999999 !important;
+				color: #838383 !important;
 				font-size: 18px !important;
 				line-height: 27px !important;
 			}
@@ -1104,6 +1140,11 @@ body.site-editor-php
 				text-decoration: none;
 				margin-top: 18px;
 				box-shadow: none;
+				transition: background 0.3s ease, transform 0.2s ease;
+
+				&:hover {
+					background: #a299c4 !important;
+				}
 			}
 			&:nth-child(2) {
 				.button {

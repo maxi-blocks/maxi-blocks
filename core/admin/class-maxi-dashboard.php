@@ -1791,12 +1791,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'timeout' => 30,
                     'sslverify' => false,
                     'headers' => [
-                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                    ]
+                        'User-Agent' =>
+                            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    ],
                 ]);
 
                 if (is_wp_error($response)) {
-                    wp_send_json_error(['message' => 'Failed to fetch frontend']);
+                    wp_send_json_error([
+                        'message' => 'Failed to fetch frontend',
+                    ]);
                     return;
                 }
 
@@ -1830,14 +1833,19 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
 
                 // Clean up URLs
-                $css_files = array_values(array_filter(array_unique($css_files)));
+                $css_files = array_values(
+                    array_filter(array_unique($css_files)),
+                );
                 $js_files = array_values(array_filter(array_unique($js_files)));
 
                 wp_send_json_success([
-                    'css' => $css_files ?: [__('No CSS files found', 'maxi-blocks')],
-                    'js' => $js_files ?: [__('No JavaScript files found', 'maxi-blocks')]
+                    'css' => $css_files ?: [
+                        __('No CSS files found', 'maxi-blocks'),
+                    ],
+                    'js' => $js_files ?: [
+                        __('No JavaScript files found', 'maxi-blocks'),
+                    ],
                 ]);
-
             } catch (Exception $e) {
                 wp_send_json_error(['message' => 'Internal error']);
             }

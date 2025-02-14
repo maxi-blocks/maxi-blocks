@@ -76,34 +76,31 @@
 
 #maxi-copy-report-content {
 	display: none;
-}
-
-#maxi-copy-report,
+}#maxi-copy-report,
 #maxi-download-report {
-	display: inline-block;
-	background: #000000;
-	color: #fff !important;
-	border: none;
-	text-decoration: none;
-	padding: 5px 50px;
-	font-size: 19px;
-	font-weight: 700;
-	border-radius: 26px;
-	text-decoration: none;
-	transition: all 0.5s ease;
-	margin-top: 30px;
+    display: inline-block;
+    background: #000000;
+    color: #fff !important;
+    border: none;
+    text-decoration: none;
+    padding: 5px 50px;
+    font-size: 19px;
+    font-weight: 700;
+    border-radius: 26px;
+    text-decoration: none;
+    transition: all 0.5s ease;
+    margin-top: 30px;
 }
-
 #maxi-copy-report:hover,
 #maxi-download-report:hover {
-	opacity: 0.5;
+	background: #ffc107;
 }
 
 #maxi-copy-report:focus {
-	outline: none;
-	color: #ffffff;
+    outline: none;
+    color: #ffffff;
 }
 
 #maxi-download-report {
-	margin-left: 10px !important;
+    margin-left: 10px !important;
 }

@@ -21,7 +21,7 @@ import {
 /**
  * External dependencies
  */
-import { isEqual, isNil, isPlainObject, toNumber } from 'lodash';
+import { isEqual, isNil, isPlainObject, toNumber, pickBy } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -678,6 +678,24 @@ const cleanAttributes = ({
 		...preserveBaseBreakpoint(result, attributes),
 	};
 
+	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
+		pickBy(result, (value, key) => {
+			const breakpoint = getBreakpointFromAttribute(key);
+			const simpleLabel = getSimpleLabel(key, breakpoint);
+			const higherAttr = getLastBreakpointAttribute({
+				target: simpleLabel,
+				attributes,
+				breakpoint: breakpoints[breakpoints.indexOf(breakpoint) - 1],
+			});
+
+			return (
+				value !== attributes[key] &&
+				(isNil(higherAttr) || attributes[key] !== higherAttr)
+			);
+		}),
+		// For IB we need to check default attributes of target block, while saving previous attributes of trigger block, thus we have two clientIds
+		targetClientId ?? clientId
+	);
 	return result;
 };
 

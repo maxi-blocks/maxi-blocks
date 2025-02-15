@@ -543,18 +543,23 @@ body.toplevel_page_maxi-blocks-dashboard {
 									margin-bottom: 5px;
 									input,
 									textarea {
-										border-radius: 0;
-										border-color: #dbdde6;
+										border-radius: 20px;
+										border: 2px solid #d0f2af !important;
+										padding: 10px 20px;
+										box-sizing: border-box;
 									}
 
 									textarea {
 										resize: none;
+										margin-top: 10px;
 										min-height: 100px;
+										width: 100% !important;
+										min-width: 700px;
 									}
 
 									label:not(label[for='maxi-breakpoint-maxi-versions']) {
 										text-transform: uppercase;
-										width: 20px;
+
 										display: inline-block;
 									}
 								}

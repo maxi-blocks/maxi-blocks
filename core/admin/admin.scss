@@ -708,24 +708,18 @@ body.toplevel_page_maxi-blocks-dashboard {
 						}
 
 						.status-warning span {
-							background: none;
-							color: #ff4a17;
-							padding: 0;
+							background: #e0a801;
+							color: #000;
+							padding: 4px 8px;
+							border-radius: 3px;
 							font-size: 14px;
 							font-weight: 700;
-
-							text-decoration: none;
 							position: relative;
 
 							&::before {
 								content: '✖'; /* Unicode for cross mark */
-								color: #ff4a17; /* Match the text color */
-								margin-right: 8px; /* Increased space between the cross and text */
-
-								top: 50%; /* Center vertically */
-								transform: translateY(
-									-50%
-								); /* Adjust for vertical centering */
+								color: #000; /* Changed to black to match new text color */
+								margin-right: 8px;
 							}
 						}
 					}

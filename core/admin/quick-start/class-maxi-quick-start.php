@@ -627,19 +627,19 @@ class MaxiBlocks_QuickStart {
 
                         <ul class="theme-features">
                             <li><span class="dashicons dashicons-yes"></span> <?php _e(
-                            	'Full Site Editing Ready',
+                            	'Full site editing ready',
                             	'maxi-blocks',
                             ); ?></li>
                             <li><span class="dashicons dashicons-yes"></span> <?php _e(
-                            	'Block Patterns Library',
+                            	'Block patterns library',
                             	'maxi-blocks',
                             ); ?></li>
                             <li><span class="dashicons dashicons-yes"></span> <?php _e(
-                            	'Global Style System',
+                            	'Global style system',
                             	'maxi-blocks',
                             ); ?></li>
                             <li><span class="dashicons dashicons-yes"></span> <?php _e(
-                            	'Responsive Design',
+                            	'Responsive design',
                             	'maxi-blocks',
                             ); ?></li>
                         </ul>
@@ -657,7 +657,7 @@ class MaxiBlocks_QuickStart {
                                 	'https://wordpress.org/themes/maxiblocks-go/',
                                 ); ?>"
                                    class="button button-primary" target="_blank">
-                                    <?php _e('Install Theme', 'maxi-blocks'); ?>
+                                    <?php _e('Install theme', 'maxi-blocks'); ?>
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -692,13 +692,15 @@ class MaxiBlocks_QuickStart {
 
         <div class="maxi-quick-start-section">
             <div class="site-logo-wrapper">
-                <h3><?php _e('Site logo', 'maxi-blocks'); ?></h3>
-                <p class="description">
-                    <?php _e(
-                    	'Appears in your site header. For best results, use a transparent PNG that\'s at least 250 × 100 px.',
-                    	'maxi-blocks',
-                    ); ?>
-                </p>
+                <div class="site-logo-info">
+                    <h3><?php _e('Site logo', 'maxi-blocks'); ?></h3>
+                    <p class="description">
+                        <?php _e(
+                        	'Appears in your site header. For best results, use a transparent PNG that\'s at least 250 × 100 px.',
+                        	'maxi-blocks',
+                        ); ?>
+                    </p>
+                </div>
 
                 <?php
                 $custom_logo_id = get_theme_mod('custom_logo');
@@ -734,13 +736,17 @@ class MaxiBlocks_QuickStart {
             </div>
 
             <div class="site-icon-wrapper">
-                <h3><?php _e('Site icon', 'maxi-blocks'); ?></h3>
-                <p class="description">
-                    <?php _e(
-                    	'Appears in browser tabs, bookmarks, and mobile devices. Upload a square PNG or JPG file at least 512 × 512 px. WordPress will automatically generate all required favicon sizes.',
-                    	'maxi-blocks',
-                    ); ?>
-                </p>
+                <div class="site-icon-info">
+                    <div class="site-icon-info-text">
+                        <h3><?php _e('Site icon', 'maxi-blocks'); ?></h3>
+                        <p class="description">
+                            <?php _e(
+                            	'Used in browser tabs, bookmarks, and mobile devices. Upload a square PNG or JPG (at least 512 × 512 px). WordPress will then generate all required favicon sizes.',
+                            	'maxi-blocks',
+                            ); ?>
+                        </p>
+                    </div>
+                </div>
 
                 <?php
                 $site_icon_id = get_option('site_icon');
@@ -767,7 +773,7 @@ class MaxiBlocks_QuickStart {
                     <button type="button" class="button" id="upload-site-icon">
                         <?php echo $site_icon_id
                         	? __('Change Site Icon', 'maxi-blocks')
-                        	: __('Upload Site icon', 'maxi-blocks'); ?>
+                        	: __('Upload site icon', 'maxi-blocks'); ?>
                     </button>
                     <?php if ($site_icon_id): ?>
                         <button type="button" class="button remove-site-icon" id="remove-site-icon">
@@ -1012,12 +1018,37 @@ class MaxiBlocks_QuickStart {
             	'maxi-blocks',
             ); ?>
         </p>
-
-        <div class="maxi-quick-start-section">
-            <button type="button" class="button button-primary" id="choose-starter-site">
+        <div class="starter-site-benefits-wrapper">
+            <h3 class="benefits-title"><?php _e(
+            	'Why choose a starter site?',
+            	'maxi-blocks',
+            ); ?></h3>
+            <ul class="benefits-list">
+                <li><?php _e(
+                	'✅ Saves time – No need to build your site from the ground up.',
+                	'maxi-blocks',
+                ); ?></li>
+                <li><?php _e(
+                	'✅ Customisable – Easily adjust text, images, and colours to match your brand.',
+                	'maxi-blocks',
+                ); ?></li>
+                <li><?php _e(
+                	'✅ Optimised for speed, responsiveness, and user experience.',
+                	'maxi-blocks',
+                ); ?></li>
+            </ul>
+            <p class="benefits-note">
+                <?php _e(
+                	'Not sure which one to pick? No worries! You can change or customise it later. If you\'d rather start with a blank canvas, you can skip this step.',
+                	'maxi-blocks',
+                ); ?>
+            </p>
+            <button type="button" class="button button-primary maxi-choose-starter-button" id="choose-starter-site">
                 <?php _e('Choose starter site', 'maxi-blocks'); ?>
             </button>
+        </div>
 
+        <div class="maxi-quick-start-section">
             <div id="starter-site-preview" class="starter-site-preview hidden">
                 <img src="" alt="Selected starter site preview" />
                 <h3 class="selected-site-name"></h3>

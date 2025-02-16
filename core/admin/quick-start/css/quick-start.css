@@ -9,7 +9,7 @@
 }
 .maxi-quick-start-wrapper {
 	max-width: 1200px;
-	margin: 96px auto;
+	margin: 80px auto;
 }
 
 .maxi-quick-start-wrapper_inside {
@@ -609,7 +609,7 @@ select[name="permalink_structure"]:focus {
     border-left-width: 4px;
     border-left-color: var(--maxi-admin-orange) !important;
     margin: 30px 15px 2px 0px !important;
-    padding: 1px 12px;
+    padding: 22px 22px 22px 34px;
     border-radius: 0 10px 10px 0;
 }
 
@@ -1073,5 +1073,114 @@ select[name="permalink_structure"]:focus {
     background: var(--maxi-admin-pink-hover);
     border: 2px solid var(--maxi-admin-pink-hover);
     color: var(--maxi-admin-white);
+}
+
+/* Header styles */
+.maxi-dashboard_header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom: 2px solid var(--maxi-admin-black);
+    background-color: var(--maxi-admin-white);
+    padding: 15px 23px;
+}
+
+/* Logo section */
+.maxi-dashboard_logo {
+    width: 190px;
+    height: auto;
+}
+
+/* Header actions section */
+.maxi-dashboard_header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Get cloud button */
+.maxi-dashboard_get-cloud-link {
+    padding: 17px 33px;
+    background: var(--maxi-admin-pink-purple);
+    color: var(--maxi-admin-black);
+    text-decoration: none;
+    border-radius: 26px;
+    font-size: 18px;
+    font-weight: 700;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.maxi-dashboard_get-cloud-link:hover {
+    background: var(--maxi-admin-pink-hover) !important;
+    transform: scale(1.035);
+    color: var(--maxi-admin-black) !important;
+}
+
+/* Icons container */
+.maxi-dashboard_header-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Header icons */
+.maxi-dashboard_header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 51px;
+    height: 51px;
+    background: var(--maxi-admin-light-grey);
+    border-radius: 100%;
+    transition: background-color 0.5s ease;
+}
+
+.maxi-dashboard_header-icon:hover {
+    background: var(--maxi-admin-mint);
+    transform: scale(1.035);
+}
+
+.maxi-dashboard_header-icon img {
+    width: 25px;
+    height: 25px;
+}
+
+/* Header title */
+.maxi-dashboard_title {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--maxi-admin-black);
+    margin-bottom: 25px !important;
+    padding: 0;
+}
+
+/* Title section */
+.maxi-dashboard_title-section {
+    text-align: center;
+    padding: 80px 20px 0 20px;
+    background: var(--maxi-admin-white);
+    margin-top: 30px;
+}
+
+.maxi-dashboard_title {
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--maxi-admin-black);
+    margin: 0 0 20px 0;
+    padding: 0;
+}
+
+.maxi-dashboard_description {
+    font-size: 20px;
+    color: var(--maxi-admin-black-text);
+    margin: 0 auto;
+    padding: 0;
+    font-weight: 400;
+    max-width: 450px;
+    text-align: center;
 }
 

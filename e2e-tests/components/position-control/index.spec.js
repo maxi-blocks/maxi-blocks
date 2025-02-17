@@ -120,7 +120,7 @@ describe('PositionControl', () => {
 			input => input.value
 		);
 
-		expect(positionSSelector).toStrictEqual('fixed');
+		expect(positionSSelector).toStrictEqual('relative');
 
 		const positionSGeneralValue = await page.$$eval(
 			'.maxi-axis-control .maxi-advanced-number-control input',
@@ -143,7 +143,7 @@ describe('PositionControl', () => {
 			input => input.value
 		);
 
-		expect(positionXsSelector).toStrictEqual('fixed');
+		expect(positionXsSelector).toStrictEqual('relative');
 
 		const positionXsGeneralValue = await page.$$eval(
 			'.maxi-axis-control .maxi-advanced-number-control input',

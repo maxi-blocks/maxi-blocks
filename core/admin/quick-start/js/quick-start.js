@@ -284,6 +284,33 @@ jQuery(document).ready(function ($) {
 			}
 		},
 
+		nextStep() {
+			const currentStep =
+				new URLSearchParams(window.location.search).get('step') ||
+				'quick_start';
+			const steps = [
+				'quick_start',
+				'theme',
+				'brand_identity',
+				'starter_site',
+				'finish',
+			];
+			let currentIndex = steps.indexOf(currentStep);
+
+			if (
+				currentStep === 'brand_identity' &&
+				maxiQuickStart.initialThemeWasMaxiBlocksGo
+			) {
+				currentIndex = steps.indexOf('theme');
+			}
+
+			if (currentIndex < steps.length - 1) {
+				window.location.href = `?page=maxi-blocks-quick-start&step=${
+					steps[currentIndex + 1]
+				}`;
+			}
+		},
+
 		previousStep() {
 			const currentStep =
 				new URLSearchParams(window.location.search).get('step') ||
@@ -291,14 +318,14 @@ jQuery(document).ready(function ($) {
 			const steps = [
 				'quick_start',
 				'theme',
-				'design',
+				'brand_identity',
 				'starter_site',
 				'finish',
 			];
 			let currentIndex = steps.indexOf(currentStep);
 
 			if (
-				currentStep === 'design' &&
+				currentStep === 'brand_identity' &&
 				maxiQuickStart.initialThemeWasMaxiBlocksGo
 			) {
 				currentIndex = steps.indexOf('theme') + 1;
@@ -377,7 +404,7 @@ jQuery(document).ready(function ($) {
 				},
 				success: response => {
 					if (response.success) {
-						this.saveProgress('design');
+						this.saveProgress('brand_identity');
 						this.nextStep();
 					} else {
 						this.showError(

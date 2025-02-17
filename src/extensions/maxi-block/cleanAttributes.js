@@ -82,25 +82,25 @@ const flatSameAsPrev = (
 			return;
 		}
 
-		// Handle hover attributes
-		if (key.includes('-hover-') || key.endsWith('-hover')) {
-			const generalKey = key.replace(
-				new RegExp(`-${breakpoint}(-hover|-hover-.*)`),
-				'-general$1'
-			);
-			const generalValue = attributes[generalKey];
-
-			result[key] = isEqual(value, generalValue) ? undefined : value;
-			processedKeys.add(key);
-			return;
-		}
-
 		// Handle status attributes
 		if (key.includes('-status-')) {
-			const generalKey = key.replace(/-[^-]+-status-/, '-status-general');
-			const generalValue = attributes[generalKey];
+			const generalStatusKey = key.replace(
+				/-[^-]+-status-/,
+				'-status-general'
+			);
+			const generalValue = attributes[generalStatusKey];
 
-			result[key] = isEqual(value, generalValue) ? undefined : value;
+			// For status attributes, preserve the value if it's explicitly set in newAttributes
+			result[key] = value;
+
+			// Only set related XS status to undefined if we're handling S breakpoint
+			if (breakpoint === 's') {
+				const xsKey = key.replace('-s-', '-xs-');
+				if (attributes[xsKey] === value) {
+					result[xsKey] = undefined;
+				}
+			}
+
 			processedKeys.add(key);
 			return;
 		}
@@ -117,19 +117,33 @@ const flatSameAsPrev = (
 			const generalValue = attributes[`${baseKey}-general`];
 			const generalUnit = attributes[`${baseKey}-unit-general`];
 
-			if (breakpoint === 'xxl' && !allowXXLOverGeneral) {
-				if (
-					isEqual(currentValue, generalValue) &&
-					isEqual(currentUnit, generalUnit)
-				) {
-					result[valueKey] = undefined;
-					result[unitKey] = undefined;
+			if (breakpoint === 'xxl') {
+				if (!allowXXLOverGeneral && !isNil(generalValue)) {
+					const valuesMatch = isEqual(currentValue, generalValue);
+					const unitsMatch = isEqual(currentUnit, generalUnit);
+
+					if (valuesMatch && unitsMatch) {
+						result[valueKey] = undefined;
+						result[unitKey] = undefined;
+
+						// Set XL value when XXL matches general
+						if (currentValue !== undefined) {
+							result[`${baseKey}-xl`] = currentValue;
+						}
+					} else {
+						result[valueKey] = currentValue;
+						if (currentUnit !== undefined) {
+							result[unitKey] = currentUnit;
+						}
+					}
 				} else {
 					result[valueKey] = currentValue;
-					if (currentUnit) result[unitKey] = currentUnit;
+					if (currentUnit !== undefined) {
+						result[unitKey] = currentUnit;
+					}
 				}
 			} else {
-				// For non-XXL breakpoints, preserve values unless they match general
+				// For non-XXL breakpoints
 				const shouldPreserve = getShouldPreserveAttribute(
 					attributes,
 					breakpoint,
@@ -138,14 +152,12 @@ const flatSameAsPrev = (
 					newAttributes
 				);
 
-				if (shouldPreserve) {
+				if (shouldPreserve || !isEqual(currentValue, generalValue)) {
 					result[valueKey] = currentValue;
-					if (currentUnit) result[unitKey] = currentUnit;
-				} else {
-					if (isEqual(currentValue, generalValue)) {
-						result[valueKey] = currentValue;
-					}
-					if (currentUnit && !isEqual(currentUnit, generalUnit)) {
+					if (
+						currentUnit !== undefined &&
+						!isEqual(currentUnit, generalUnit)
+					) {
 						result[unitKey] = currentUnit;
 					}
 				}

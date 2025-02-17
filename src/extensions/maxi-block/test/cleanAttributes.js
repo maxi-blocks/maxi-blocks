@@ -1398,6 +1398,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
+			'test-unit-xxl': undefined,
 			'test-xxl': undefined,
 			'test-xl': '%',
 		};
@@ -1526,6 +1527,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
+			'test-unit-xxl': undefined,
 			'test-xxl': undefined,
 			'test-xl': 'none',
 		};
@@ -1695,6 +1697,7 @@ describe('cleanAttributes', () => {
 			'font-size-unit-general': 'em',
 			'font-size-unit-xl': 'em',
 			'font-size-unit-xxl': 'px',
+			'font-xxl': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

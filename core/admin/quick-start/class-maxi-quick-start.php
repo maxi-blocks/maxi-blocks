@@ -1020,7 +1020,7 @@ class MaxiBlocks_QuickStart {
    ); ?></h3>
 			<ul class="benefits-list">
 				<li><?php _e(
-    	'✅ Saves Time – No need to build your site from the ground up.',
+    	'✅ Saves time – No need to build your site from the ground up.',
     	'maxi-blocks',
     ); ?></li>
 				<li><?php _e(
@@ -1028,7 +1028,7 @@ class MaxiBlocks_QuickStart {
     	'maxi-blocks',
     ); ?></li>
 				<li><?php _e(
-    	'✅ Designed for Performance – Optimised for speed, responsiveness, and user experience.',
+    	'✅ Optimised for speed, responsiveness, and user experience.',
     	'maxi-blocks',
     ); ?></li>
 			</ul>

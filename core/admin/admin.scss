@@ -537,7 +537,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								p {
 									font-size: 16px !important;
 									color: var(
-										--maxi-admin-black-hover
+										--maxi-admin-black-text
 									) !important;
 									line-height: 2 !important;
 									margin: 0 !important;
@@ -555,6 +555,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 											var(--maxi-admin-border-light) !important;
 										padding: 10px 20px;
 										box-sizing: border-box;
+										min-width: 900px;
 									}
 
 									textarea {
@@ -562,7 +563,6 @@ body.toplevel_page_maxi-blocks-dashboard {
 										margin-top: 10px;
 										min-height: 100px;
 										width: 100% !important;
-										min-width: 700px;
 									}
 
 									label:not(label[for='maxi-breakpoint-maxi-versions']) {
@@ -726,8 +726,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 						}
 
 						.status-warning span {
-							background: var(--maxi-admin-light-orange);
-							color: var(--maxi-admin-black);
+							background: none !important;
+							color: var(--maxi-admin-orange);
 							padding: 4px 8px;
 							border-radius: 3px;
 							font-size: 14px;
@@ -737,7 +737,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							&::before {
 								content: '✖'; /* Unicode for cross mark */
 								color: var(
-									--maxi-admin-black
+									--maxi-admin-orange
 								); /* Changed to black to match new text color */
 								margin-right: 8px;
 							}

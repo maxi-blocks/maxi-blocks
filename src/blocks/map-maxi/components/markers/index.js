@@ -18,17 +18,21 @@ import L from 'leaflet';
 
 const Markers = props => {
 	const { attributes, maxiSetAttributes, setIsDraggingMarker } = props;
+
 	const {
 		'map-marker-heading-level': mapMarkerHeadingLevel,
 		'map-marker-icon': mapMarkerIcon,
 		'map-markers': mapMarkers,
+		'svg-width-general': svgWidthGeneral,
 	} = attributes;
 
 	if (isEmpty(mapMarkers)) return null;
 
 	const markerIcon = L.divIcon({
 		html: mapMarkerIcon,
-		iconSize: [null, null],
+		iconSize: [svgWidthGeneral, svgWidthGeneral],
+		iconAnchor: [svgWidthGeneral / 2, svgWidthGeneral],
+		popupAnchor: [0, -svgWidthGeneral],
 	});
 
 	const handleRemoveMarker = (event, index) => {

@@ -696,6 +696,7 @@ const cleanAttributes = ({
 		// For IB we need to check default attributes of target block, while saving previous attributes of trigger block, thus we have two clientIds
 		targetClientId ?? clientId
 	);
+
 	return result;
 };
 

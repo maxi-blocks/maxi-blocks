@@ -168,7 +168,7 @@ describe('cleanAttributes', () => {
 		expect(result).toStrictEqual(expectedResult);
 	});
 
-	it('Color layer object with defaultAttributes object', () => {
+	it('Should preserve status and value attributes when explicitly set in newAttributes', () => {
 		const newAttributes = {
 			'test-status-m': true,
 			'test-m': 4,
@@ -197,6 +197,179 @@ describe('cleanAttributes', () => {
 			'test-m': 4,
 			'test-status-m': true,
 			'test-unit-m': 'px',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should preserve S breakpoint values while unsetting XS attributes when they match', () => {
+		const newAttributes = {
+			'test-status-s': true,
+			'test-s': 8,
+		};
+		const attributes = {
+			'test-status-general': true,
+			'test-m': 4,
+			'test-general': 4,
+			'test-status-xs': true,
+			'test-xs': 8,
+		};
+		const defaultAttributes = {
+			'test-status-general': true,
+			'test-general': 4,
+		};
+
+		const result = cleanAttributes({
+			newAttributes,
+			attributes,
+			defaultAttributes,
+		});
+
+		const expectedResult = {
+			'test-s': 8,
+			'test-status-s': true,
+			'test-status-xs': undefined,
+			'test-xs': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should set hover attributes to undefined when they match general values', () => {
+		const newAttributes = {
+			'test-s-hover': '4',
+		};
+		const attributes = {
+			'test-general-hover': '4',
+		};
+
+		const result = cleanAttributes({
+			newAttributes,
+			attributes,
+		});
+
+		const expectedResult = {
+			'test-s-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should preserve XXL values and units when explicitly set', () => {
+		const obj = {
+			newAttributes: {
+				'test-general': '15',
+				'test-unit-general': 'px',
+				'test-xxl': '23',
+				'test-unit-xxl': 'px',
+			},
+			attributes: {
+				'test-general': '15',
+				'test-unit-general': 'px',
+				'test-xxl': '23',
+				'test-unit-xxl': 'px',
+			},
+			defaultAttributes: {
+				'test-general': '15',
+				'test-unit-general': 'px',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': '15',
+			'test-m': '15',
+			'test-unit-general': 'px',
+			'test-unit-xxl': undefined,
+			'test-xxl': '23',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should preserve XXL values when using percentage units', () => {
+		const obj = {
+			newAttributes: {
+				'test-xxl': '%',
+			},
+			attributes: {
+				'test-general': '%',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-xxl': '%',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should preserve XXL values when using "none" as value', () => {
+		const obj = {
+			newAttributes: {
+				'test-xxl': 'none',
+			},
+			attributes: {
+				'test-general': 'none',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-xxl': 'none',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should handle unit changes across breakpoints with allowXXLOverGeneral flag', () => {
+		const obj = {
+			newAttributes: {
+				'font-size-unit-general': 'em',
+				'font-size-unit-xxl': 'px',
+			},
+			attributes: {
+				'font-size-unit-general': 'px',
+				'font-size-unit-xxl': 'em',
+			},
+			defaultAttributes: {},
+			allowXXLOverGeneral: true,
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'font-size-unit-general': 'em',
+			'font-size-unit-m': 'em',
+			'font-size-unit-xxl': 'px',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should preserve opacity values when explicitly set for specific breakpoints', () => {
+		const obj = {
+			newAttributes: {
+				'border-palette-opacity-s': 0.45,
+			},
+			attributes: {
+				'border-palette-opacity-general': 0.45,
+			},
+			defaultAttributes: {
+				'border-palette-opacity-general': 100,
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'border-palette-opacity-s': 0.45,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -283,39 +456,6 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-general': 7,
 			'test-m': undefined,
-		};
-
-		expect(result).toStrictEqual(expectedResult);
-	});
-
-	it('On changing S attribute to the same than XS, having different attributes for general and XS, XS should disappear', () => {
-		const newAttributes = {
-			'test-status-s': true,
-			'test-s': 8,
-		};
-		const attributes = {
-			'test-status-general': true,
-			'test-m': 4,
-			'test-general': 4,
-			'test-status-xs': true,
-			'test-xs': 8,
-		};
-		const defaultAttributes = {
-			'test-status-general': true,
-			'test-general': 4,
-		};
-
-		const result = cleanAttributes({
-			newAttributes,
-			attributes,
-			defaultAttributes,
-		});
-
-		const expectedResult = {
-			'test-s': 8,
-			'test-status-s': undefined,
-			'test-status-xs': undefined,
-			'test-xs': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -752,7 +892,7 @@ describe('cleanAttributes', () => {
 		};
 		const expectedSecondRound = {
 			'test-m': undefined,
-			'test-xl': undefined,
+			'test-xl': 4,
 		};
 		const expectedThirdRound = {
 			'test-m': 4,
@@ -1134,7 +1274,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'border-palette-opacity-s': undefined,
+			'border-palette-opacity-s': 0.45,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1283,9 +1423,9 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-general': '15',
 			'test-unit-general': 'px',
+			'test-unit-xxl': undefined,
 			'test-xl': '15',
 			'test-xxl': '23',
-			'test-unit-xxl': 'px',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1398,9 +1538,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-unit-xxl': undefined,
-			'test-xxl': undefined,
-			'test-xl': '%',
+			'test-xxl': '%',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1527,9 +1665,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-unit-xxl': undefined,
-			'test-xxl': undefined,
-			'test-xl': 'none',
+			'test-xxl': 'none',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1697,7 +1833,6 @@ describe('cleanAttributes', () => {
 			'font-size-unit-general': 'em',
 			'font-size-unit-xl': 'em',
 			'font-size-unit-xxl': 'px',
-			'font-xxl': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

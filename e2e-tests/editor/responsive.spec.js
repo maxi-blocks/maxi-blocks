@@ -184,7 +184,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('On change attributes from XXL responsive and some of them that have default on general, just "general" attributes change', async () => {
+	it('On change attributes from XXL responsive and some of them that have default on general, we should have all attributes changed', async () => {
 		await changeResponsive(page, 'xxl');
 
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
@@ -195,12 +195,12 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xxl': 'solid',
-			'border-top-width-xxl': undefined,
-			'border-right-width-xxl': undefined,
-			'border-bottom-width-xxl': undefined,
-			'border-left-width-xxl': undefined,
-			'border-sync-width-xxl': undefined,
-			'border-unit-width-xxl': undefined,
+			'border-top-width-xxl': 2,
+			'border-right-width-xxl': 2,
+			'border-bottom-width-xxl': 2,
+			'border-left-width-xxl': 2,
+			'border-sync-width-xxl': 'all',
+			'border-unit-width-xxl': 'px',
 			'border-style-general': 'none',
 			'border-top-width-general': 2,
 			'border-right-width-general': 2,

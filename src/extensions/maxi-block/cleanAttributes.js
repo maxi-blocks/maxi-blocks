@@ -82,6 +82,47 @@ const flatSameAsPrev = (
 			return;
 		}
 
+		// Handle hover attributes
+		if (key.includes('-hover')) {
+			const generalHoverKey = key.replace(
+				new RegExp(`-${breakpoint}(-hover)`),
+				'-general$1'
+			);
+			const generalValue = attributes[generalHoverKey];
+
+			if (isEqual(value, generalValue)) {
+				result[key] = undefined;
+			} else {
+				result[key] = value;
+			}
+			processedKeys.add(key);
+			return;
+		}
+
+		// Handle unit-value pairs for XXL breakpoint
+		if (breakpoint === 'xxl') {
+			const isUnit = key.includes('-unit-');
+			const baseKey = key
+				.replace(/-unit-[^-]+$/, '')
+				.replace(/-[^-]+$/, '');
+			const valueKey = `${baseKey}-xxl`;
+			const unitKey = `${baseKey}-unit-xxl`;
+
+			// Always preserve XXL unit when it's explicitly set
+			if (isUnit) {
+				result[key] = value;
+			} else {
+				result[key] = value;
+				if (newAttributes[unitKey]) {
+					result[unitKey] = newAttributes[unitKey];
+				}
+			}
+
+			processedKeys.add(valueKey);
+			processedKeys.add(unitKey);
+			return;
+		}
+
 		// Handle status attributes
 		if (key.includes('-status-')) {
 			const generalStatusKey = key.replace(

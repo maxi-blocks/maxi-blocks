@@ -36,9 +36,6 @@ const handleSetAttributes = ({
 
 		if (!breakpoint) return;
 
-		const isHigherThanBase =
-			breakpoints.indexOf(breakpoint) <
-			breakpoints.indexOf(baseBreakpoint);
 		const attrLabelOnGeneral = `${key.slice(
 			0,
 			key.lastIndexOf('-')
@@ -47,6 +44,10 @@ const handleSetAttributes = ({
 			0,
 			key.lastIndexOf('-')
 		)}-${baseBreakpoint}`;
+
+		const isHigherThanBase =
+			breakpoints.indexOf(breakpoint) <
+			breakpoints.indexOf(baseBreakpoint);
 
 		if (!isHigherThanBase) return;
 
@@ -73,8 +74,9 @@ const handleSetAttributes = ({
 			(!attrExistOnGeneral || needsGeneralAttr) &&
 			!attrExistOnObjOnGeneral &&
 			breakpoint === 'xxl'
-		)
+		) {
 			response[attrLabelOnGeneral] = value;
+		}
 
 		if (breakpoint === 'xxl' && needsGeneralAttr) return;
 

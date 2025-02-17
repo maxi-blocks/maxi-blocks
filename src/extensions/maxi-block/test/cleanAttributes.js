@@ -52,11 +52,13 @@ describe('cleanAttributes', () => {
 		const obj = {
 			newAttributes: {
 				'test-m': 100,
+				'test-unit-m': 'px',
 			},
-
 			attributes: {
 				'test-general': 100,
+				'test-unit-general': 'px',
 				'test-m': 99,
+				'test-unit-m': 'px',
 			},
 			defaultAttributes: {},
 		};
@@ -64,7 +66,8 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-m': undefined,
+			'test-m': 100,
+			'test-unit-m': 'px',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -87,7 +90,7 @@ describe('cleanAttributes', () => {
 			defaultAttributes: {},
 		});
 		const expectedResult = {
-			'test-m': undefined,
+			'test-m': 99,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -96,20 +99,24 @@ describe('cleanAttributes', () => {
 	it('Should return XXL value as default, as is equal as its closest valid attribute (general)', () => {
 		const newAttributes = {
 			'test-xxl': 100,
+			'test-unit-xxl': 'px',
 		};
 
 		const attributes = {
 			'test-general': 100,
+			'test-unit-general': 'px',
 		};
 
 		const result = cleanAttributes({
 			newAttributes,
 			attributes,
 			defaultAttributes: {},
+			allowXXLOverGeneral: true,
 		});
 
 		const expectedResult = {
 			'test-xxl': 100,
+			'test-unit-xxl': 'px',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -165,17 +172,20 @@ describe('cleanAttributes', () => {
 		const newAttributes = {
 			'test-status-m': true,
 			'test-m': 4,
+			'test-unit-m': 'px',
 		};
 		const attributes = {
 			'test-status-general': true,
 			'test-general': 4,
-
+			'test-unit-general': 'px',
 			'test-m': 7,
+			'test-unit-m': 'px',
 			'test-status-m': true,
 		};
 		const defaultAttributes = {
 			'test-status-general': true,
 			'test-general': 4,
+			'test-unit-general': 'px',
 		};
 
 		const result = cleanAttributes({
@@ -184,8 +194,9 @@ describe('cleanAttributes', () => {
 			defaultAttributes,
 		});
 		const expectedResult = {
-			'test-status-m': undefined,
-			'test-m': undefined,
+			'test-m': 4,
+			'test-status-m': true,
+			'test-unit-m': 'px',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -302,9 +313,9 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-s': 8,
-			'test-xs': undefined,
 			'test-status-s': undefined,
 			'test-status-xs': undefined,
+			'test-xs': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1248,29 +1259,22 @@ describe('cleanAttributes', () => {
 	});
 
 	it('Random test 8', () => {
-		select.mockImplementation(
-			jest.fn(() => {
-				return {
-					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
-					getSelectedBlockCount: jest.fn(() => 1),
-				};
-			})
-		);
-
 		const obj = {
 			newAttributes: {
 				'test-general': '15',
+				'test-unit-general': 'px',
 				'test-xxl': '23',
+				'test-unit-xxl': 'px',
 			},
 			attributes: {
 				'test-general': '15',
+				'test-unit-general': 'px',
 				'test-xxl': '23',
+				'test-unit-xxl': 'px',
 			},
 			defaultAttributes: {
 				'test-general': '15',
-				'test-xxl': '23',
+				'test-unit-general': 'px',
 			},
 		};
 
@@ -1278,8 +1282,10 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': '15',
+			'test-unit-general': 'px',
 			'test-xl': '15',
 			'test-xxl': '23',
+			'test-unit-xxl': 'px',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1328,9 +1334,9 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 20,
-			'test-xxl': 24,
-			'test-xl': 20,
 			'test-m': 20,
+			'test-xl': 20,
+			'test-xxl': 24,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1379,41 +1385,21 @@ describe('cleanAttributes', () => {
 	});
 
 	it('Random test 11', () => {
-		select.mockImplementation(
-			jest.fn(() => {
-				return {
-					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
-					getSelectedBlockCount: jest.fn(() => 1),
-				};
-			})
-		);
-
 		const obj = {
 			newAttributes: {
 				'test-xxl': '%',
-				'test-xl': '%',
 			},
 			attributes: {
 				'test-general': '%',
-				'test-xxl': 'px',
-				'test-xl': undefined,
-				'test-l': undefined,
 			},
-			defaultAttributes: {
-				'test-general': undefined,
-				'test-l': '%',
-				'test-xl': 'px',
-				'test-xxl': 'px',
-			},
+			defaultAttributes: {},
 		};
 
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-xxl': '%',
-			'test-xl': undefined,
+			'test-xxl': undefined,
+			'test-xl': '%',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1527,37 +1513,21 @@ describe('cleanAttributes', () => {
 	});
 
 	it('Random test 15', () => {
-		select.mockImplementation(
-			jest.fn(() => {
-				return {
-					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					receiveMaxiDeviceType: jest.fn(() => 'general'),
-					getPrevSavedAttrs: jest.fn(() => ({ prevSavedAttrs: [] })),
-					getSelectedBlockCount: jest.fn(() => 1),
-				};
-			})
-		);
-
 		const obj = {
 			newAttributes: {
 				'test-xxl': 'none',
-				'test-xl': 'none',
 			},
 			attributes: {
 				'test-general': 'none',
-				'test-xxl': 'axis',
 			},
-			defaultAttributes: {
-				'test-general': 'axis',
-				'test-xxl': 'axis',
-			},
+			defaultAttributes: {},
 		};
 
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-xxl': 'none',
-			'test-xl': undefined,
+			'test-xxl': undefined,
+			'test-xl': 'none',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1643,19 +1613,17 @@ describe('cleanAttributes', () => {
 	});
 
 	it('Should save responsive hover attributes same as general as undefined', () => {
-		const obj = {
-			newAttributes: {
-				'test-s-hover': '4',
-			},
-			attributes: {
-				'test-general': '5',
-				'test-general-hover': '4',
-				'test-s-hover': '3',
-			},
-			defaultAttributes: {},
+		const newAttributes = {
+			'test-s-hover': '4',
+		};
+		const attributes = {
+			'test-general-hover': '4',
 		};
 
-		const result = cleanAttributes(obj);
+		const result = cleanAttributes({
+			newAttributes,
+			attributes,
+		});
 
 		const expectedResult = {
 			'test-s-hover': undefined,

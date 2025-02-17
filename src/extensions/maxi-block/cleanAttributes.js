@@ -71,103 +71,89 @@ const flatSameAsPrev = (
 	allowXXLOverGeneral
 ) => {
 	const result = {};
+	const processedKeys = new Set();
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
-		const breakpoint = getBreakpointFromAttribute(key);
+		if (processedKeys.has(key)) return;
 
+		const breakpoint = getBreakpointFromAttribute(key);
 		if (!breakpoint || breakpoint === 'general') {
 			result[key] = value;
 			return;
 		}
 
-		const isXXL = breakpoint === 'xxl';
-		const isHover = getIsHoverAttribute(key);
-		const simpleLabel = getSimpleLabel(key, breakpoint);
-
-		if (isXXL) {
-			const generalKey = getAttributeKey(
-				simpleLabel,
-				isHover,
-				'',
-				'general'
+		// Handle hover attributes
+		if (key.includes('-hover-') || key.endsWith('-hover')) {
+			const generalKey = key.replace(
+				new RegExp(`-${breakpoint}(-hover|-hover-.*)`),
+				'-general$1'
 			);
-			const generalAttr = attributes[generalKey];
+			const generalValue = attributes[generalKey];
 
-			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
-				if (allowXXLOverGeneral) {
-					result[key] = value;
-					return;
-				}
-				// Only set to undefined if the value is the default value
-				const defaultValue =
-					defaultAttributes?.[key] ??
-					getDefaultAttribute(key, clientId, true);
-
-				if (isEqual(value, defaultValue)) {
-					result[key] = undefined;
-				} else {
-					result[key] = value;
-				}
-			} else {
-				result[key] = value;
-			}
+			result[key] = isEqual(value, generalValue) ? undefined : value;
+			processedKeys.add(key);
 			return;
 		}
-		let breakpointLock = false;
 
-		const higherBreakpoints = breakpoints.slice(
-			0,
-			breakpoints.indexOf(breakpoint)
-		);
+		// Handle status attributes
+		if (key.includes('-status-')) {
+			const generalKey = key.replace(/-[^-]+-status-/, '-status-general');
+			const generalValue = attributes[generalKey];
 
-		higherBreakpoints.reverse().forEach(breakpoint => {
-			if (!breakpointLock) {
-				const label = getAttributeKey(
-					simpleLabel,
-					isHover,
-					'',
-					breakpoint
+			result[key] = isEqual(value, generalValue) ? undefined : value;
+			processedKeys.add(key);
+			return;
+		}
+
+		// Handle unit-value pairs
+		const isUnit = key.includes('-unit-');
+		const baseKey = key.replace(/-unit-[^-]+$/, '').replace(/-[^-]+$/, '');
+		const valueKey = isUnit ? `${baseKey}-${breakpoint}` : key;
+		const unitKey = isUnit ? key : `${baseKey}-unit-${breakpoint}`;
+
+		if (!processedKeys.has(valueKey) && !processedKeys.has(unitKey)) {
+			const currentValue = newAttributes[valueKey];
+			const currentUnit = newAttributes[unitKey];
+			const generalValue = attributes[`${baseKey}-general`];
+			const generalUnit = attributes[`${baseKey}-unit-general`];
+
+			if (breakpoint === 'xxl' && !allowXXLOverGeneral) {
+				if (
+					isEqual(currentValue, generalValue) &&
+					isEqual(currentUnit, generalUnit)
+				) {
+					result[valueKey] = undefined;
+					result[unitKey] = undefined;
+				} else {
+					result[valueKey] = currentValue;
+					if (currentUnit) result[unitKey] = currentUnit;
+				}
+			} else {
+				// For non-XXL breakpoints, preserve values unless they match general
+				const shouldPreserve = getShouldPreserveAttribute(
+					attributes,
+					breakpoint,
+					valueKey,
+					currentValue,
+					newAttributes
 				);
-				const attribute =
-					label in newAttributes
-						? newAttributes[label]
-						: attributes?.[label];
-				const defaultAttribute =
-					defaultAttributes?.[label] ??
-					getDefaultAttribute(label, clientId, true);
 
-				if (isEqual(value, attribute)) {
-					if (isEqual(value, defaultAttribute))
-						result[key] = undefined;
-					else if (breakpoint === 'general') {
-						const generalAttr =
-							attributes[
-								getAttributeKey(
-									simpleLabel,
-									isHover,
-									'',
-									'general'
-								)
-							];
-
-						if (
-							!isNil(generalAttr) &&
-							isEqual(generalAttr, value)
-						) {
-							result[key] = undefined;
-						}
-					} else if (breakpoint !== 'general') {
-						const currentDefaultAttribute =
-							defaultAttributes?.[key] ??
-							getDefaultAttribute(key, clientId, true);
-
-						if (!isEqual(value, currentDefaultAttribute))
-							result[key] = defaultAttribute;
-						else result[key] = currentDefaultAttribute;
-					} else if (!isNil(attribute)) breakpointLock = true;
-				} else if (!isNil(attribute)) breakpointLock = true;
+				if (shouldPreserve) {
+					result[valueKey] = currentValue;
+					if (currentUnit) result[unitKey] = currentUnit;
+				} else {
+					if (isEqual(currentValue, generalValue)) {
+						result[valueKey] = currentValue;
+					}
+					if (currentUnit && !isEqual(currentUnit, generalUnit)) {
+						result[unitKey] = currentUnit;
+					}
+				}
 			}
-		});
+
+			processedKeys.add(valueKey);
+			processedKeys.add(unitKey);
+		}
 	});
 
 	return result;

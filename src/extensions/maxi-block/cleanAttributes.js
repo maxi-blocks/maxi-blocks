@@ -526,7 +526,9 @@ const flatLowerAttr = (
 		let breakpointLock = false;
 
 		lowerBreakpoints.forEach(breakpoint => {
-			if (breakpointLock) return;
+			if (breakpointLock) {
+				return;
+			}
 
 			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
 			const attribute = attributes?.[label];
@@ -537,15 +539,35 @@ const flatLowerAttr = (
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
 
-			const generalKey = getAttributeKey(
+			const unitKey = `${getAttributeKey(
 				simpleLabel,
 				isHover,
 				'',
-				'general'
-			);
+				'unit'
+			)}-${breakpoint}`;
+			const unitValue = attributes[unitKey];
+			const unitKeyGeneral = `${getAttributeKey(
+				simpleLabel,
+				isHover,
+				'',
+				'unit'
+			)}-general`;
+			const unitValueGeneral = newAttributes[unitKeyGeneral];
+
+			if (
+				unitValue !== undefined &&
+				!isEqual(unitValue, unitValueGeneral)
+			)
+				return;
 
 			if (isEqual(value, attribute)) {
 				if (label in newAttributes && isGeneral) {
+					const generalKey = getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'general'
+					);
 					const generalDefaultValue =
 						defaultAttributes?.[generalKey] ??
 						getDefaultAttribute(generalKey, clientId, true);
@@ -554,29 +576,17 @@ const flatLowerAttr = (
 						result[label] = generalDefaultValue;
 						return;
 					}
-				} else {
-					const unitKey = `${getAttributeKey(
-						simpleLabel,
-						isHover,
-						'',
-						'unit'
-					)}-${breakpoint}`;
-					const unitValue = newAttributes[unitKey];
-					const unitKeyGeneral = `${getAttributeKey(
-						simpleLabel,
-						isHover,
-						'',
-						'unit'
-					)}-general`;
-					const unitValueGeneral = newAttributes[unitKeyGeneral];
-					if (
-						unitValue !== undefined &&
-						!isEqual(unitValue, unitValueGeneral)
-					)
-						result[label] = defaultAttribute;
-				}
+				} else result[label] = defaultAttribute;
+
 				return;
 			}
+
+			const generalKey = getAttributeKey(
+				simpleLabel,
+				isHover,
+				'',
+				'general'
+			);
 
 			const generalAttribute = {
 				...defaultAttributes,
@@ -741,7 +751,6 @@ const cleanAttributes = ({
 		// For IB we need to check default attributes of target block, while saving previous attributes of trigger block, thus we have two clientIds
 		targetClientId ?? clientId
 	);
-
 	return result;
 };
 

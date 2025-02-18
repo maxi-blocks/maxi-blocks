@@ -155,7 +155,7 @@ describe('cleanAttributes', () => {
 		});
 		const expectedResult = {
 			'test-general': 100,
-			'test-xxl': undefined,
+			'test-m': 100,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -214,7 +214,6 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-status-general': true,
 			'test-general': 4,
-			'test-m': undefined,
 			'test-opacity-general': 1,
 			'test-status-m': undefined,
 			'test-opacity-m': undefined,
@@ -662,8 +661,8 @@ describe('cleanAttributes', () => {
 		};
 		const expectedSecondRound = {
 			'test-general': 4,
-			'test-xxl': undefined,
 			'test-l': undefined,
+			'test-xl': 4,
 		};
 		const expectedThirdRound = {
 			'test-general': 5,
@@ -1160,7 +1159,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 'em',
-			'test-xl': undefined,
+			'test-xl': 'px',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1372,7 +1371,6 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-general': '%',
 			'test-xl': '%',
-			'test-l': '%',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1446,7 +1444,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 'full',
-			'test-xxl': undefined,
+			'test-xl': 'full',
 		};
 
 		expect(result).toStrictEqual(expectedResult);

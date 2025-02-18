@@ -359,8 +359,28 @@ const flatWithGeneral = (
 			!isNil(attrOnXXL) &&
 			isEqual(value, attrOnXXL) &&
 			!allowXXLOverGeneral
-		)
-			result[keyOnXXL] = undefined;
+		) {
+			const unitKeyXXL = `${getAttributeKey(
+				simpleLabel,
+				isHover,
+				'',
+				'unit'
+			)}-xxl`;
+			const unitValueXXL = newAttributes[unitKeyXXL];
+			const unitKeyGeneral = `${getAttributeKey(
+				simpleLabel,
+				isHover,
+				'',
+				'unit'
+			)}-general`;
+			const unitValueGeneral = newAttributes[unitKeyGeneral];
+			if (
+				unitValueXXL !== undefined &&
+				!isEqual(unitValueXXL, unitValueGeneral)
+			) {
+				result[keyOnXXL] = undefined;
+			}
+		}
 
 		let breakpointLock = false;
 

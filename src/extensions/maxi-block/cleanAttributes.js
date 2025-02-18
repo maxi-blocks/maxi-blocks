@@ -545,9 +545,6 @@ const flatLowerAttr = (
 			);
 
 			if (isEqual(value, attribute)) {
-				// Covers a concrete situation where we've got XXL and XL
-				// values by default, but General is undefined. An example
-				// is Row Maxi `max-width-unit` attribute.
 				if (label in newAttributes && isGeneral) {
 					const generalDefaultValue =
 						defaultAttributes?.[generalKey] ??
@@ -555,22 +552,30 @@ const flatLowerAttr = (
 
 					if (isNil(generalDefaultValue)) {
 						result[label] = generalDefaultValue;
-
 						return;
 					}
-				} else result[label] = defaultAttribute;
-
-				return;
-			}
-			if (isGeneral) {
-				const baseBreakpoint =
-					select('maxiBlocks').receiveBaseBreakpoint();
-
-				if (breakpoint === baseBreakpoint) {
-					if (label in newAttributes) return;
-					result[label] = defaultAttribute;
-					return;
+				} else {
+					const unitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-${breakpoint}`;
+					const unitValue = newAttributes[unitKey];
+					const unitKeyGeneral = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-general`;
+					const unitValueGeneral = newAttributes[unitKeyGeneral];
+					if (
+						unitValue !== undefined &&
+						!isEqual(unitValue, unitValueGeneral)
+					)
+						result[label] = defaultAttribute;
 				}
+				return;
 			}
 
 			const generalAttribute = {
@@ -603,7 +608,7 @@ const flatLowerAttr = (
 /**
  * Ensures that baseBreakpoint attribute value is the same as general attribute value
  * in case a responsive attribute exists with a different value. This ensures that when switching baseBreakpoint,
- * the value on previous basebBreakpoint will be saved.
+ * the value on previous baseBreakpoint will be saved.
  *
  * Also ensures a new saved attribute with a breakpoint higher than baseBreakpoint returns
  * general value for baseBreakpoint attribute in order to avoid a visual bug between
@@ -718,7 +723,6 @@ const cleanAttributes = ({
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
-
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);

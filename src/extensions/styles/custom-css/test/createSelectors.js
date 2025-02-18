@@ -13,4 +13,8 @@ describe('createSelectors', () => {
 	it('Should create selectors without pseudo elements', () => {
 		expect(createSelectors(selectors, false)).toMatchSnapshot();
 	});
+
+	it('Should create selectors with only pseudo elements', () => {
+		expect(createSelectors(selectors, true, true)).toMatchSnapshot();
+	});
 });

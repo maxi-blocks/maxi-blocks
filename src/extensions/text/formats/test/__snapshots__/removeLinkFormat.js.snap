@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`removeLinkFormat Should remove custom formats when removing partial link 1`] = `
+{
+  "content": "lorem ipsum dolor sit",
+  "custom-formats": {},
+}
+`;
+
+exports[`removeLinkFormat Should remove custom formats when removing partial of whole link 1`] = `
+{
+  "content": "<maxi-blocks/text-link url="https://test.com" title=""><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">lorem </maxi-blocks/text-custom></maxi-blocks/text-link>ipsum <maxi-blocks/text-link url="https://test.com" title=""><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">dolor sit</maxi-blocks/text-custom></maxi-blocks/text-link>",
+  "custom-formats": {
+    "maxi-text-block__custom-format--1": {
+      "text-decoration-general": "underline",
+    },
+  },
+  "text-decoration-general": "",
+}
+`;
+
+exports[`removeLinkFormat Should remove custom formats when removing whole link 1`] = `
+{
+  "content": "lorem ipsum dolor sit",
+  "text-decoration-general": "",
+}
+`;

@@ -7,7 +7,10 @@ import { dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import { loadFonts } from '@extensions/text/fonts';
-import { getSiteEditorIframe, getSiteEditorPreviewIframes } from '@extensions/fse';
+import {
+	getSiteEditorIframe,
+	getSiteEditorPreviewIframes,
+} from '@extensions/fse';
 import getSCVariablesObject from './getSCVariablesObject';
 import getSCStyles from './getSCStyles';
 
@@ -28,7 +31,7 @@ export const createSCStyleString = SCObject => {
 	return response;
 };
 
-const getSCFontsData = obj => {
+export const getSCFontsData = obj => {
 	const response = {};
 	let fontName = '';
 

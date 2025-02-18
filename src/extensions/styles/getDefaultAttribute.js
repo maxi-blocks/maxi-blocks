@@ -25,11 +25,12 @@ const getBlocksName = clientIds => {
 
 	if (clientIds.length === 1) return getBlockName(clientIds[0]);
 
-	const isSameBlockType = clientIds.some((block1, block2) => {
-		return getBlockName(block1) !== getBlockName(block2);
-	});
+	const firstBlockName = getBlockName(clientIds[0]);
+	const isSameBlockType = clientIds.every(
+		clientId => getBlockName(clientId) === firstBlockName
+	);
 
-	if (isSameBlockType) return getBlockName(clientIds[0]);
+	if (isSameBlockType) return firstBlockName;
 
 	return false;
 };

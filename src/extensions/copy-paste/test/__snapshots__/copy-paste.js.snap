@@ -7019,3 +7019,15 @@ exports[`getOrganizedAttributes Should ignore groups, which have names that star
   },
 }
 `;
+
+exports[`getOrganizedAttributes Should ignore groups, which have names that start with underscore 2`] = `
+{
+  "width-general": "80%",
+  "width-l": undefined,
+  "width-m": "100%",
+  "width-s": "50%",
+  "width-xl": undefined,
+  "width-xs": "60%",
+  "width-xxl": "95%",
+}
+`;

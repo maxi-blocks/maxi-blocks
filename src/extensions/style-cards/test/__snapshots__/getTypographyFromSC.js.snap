@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getTypographyFromSC For button type, font family should be the same as the p type if button font family is not defined 1`] = `
+{
+  "font-family-general": "Oswald",
+  "font-size-general": "16px",
+  "font-style-general": "normal",
+  "font-weight-general": "400",
+  "line-height-general": "100%",
+  "text-decoration-general": "unset",
+  "text-transform-general": "unset",
+}
+`;
+
+exports[`getTypographyFromSC Should return an empty object if the style card is not found 1`] = `{}`;
+
+exports[`getTypographyFromSC Should return the typography for specific style card 1`] = `
+{
+  "font-family-general": "Railway",
+  "font-size-general": "24px",
+  "font-style-general": undefined,
+  "font-weight-general": "900",
+  "line-height-general": undefined,
+  "text-decoration-general": "unset",
+  "text-transform-general": "unset",
+}
+`;
+
+exports[`getTypographyFromSC Should return the typography for specific type 1`] = `
+{
+  "font-family-general": "Railway",
+  "font-size-general": undefined,
+  "font-style-general": "normal",
+  "font-weight-general": "400",
+  "line-height-general": "100%",
+  "text-decoration-general": "unset",
+  "text-transform-general": "unset",
+}
+`;
+
+exports[`getTypographyFromSC Should return the typography from the selected style card 1`] = `
+{
+  "font-family-general": "Railway",
+  "font-size-general": "24px",
+  "font-style-general": undefined,
+  "font-weight-general": "900",
+  "line-height-general": undefined,
+  "text-decoration-general": "unset",
+  "text-transform-general": "unset",
+}
+`;

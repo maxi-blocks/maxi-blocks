@@ -380,8 +380,28 @@ const flatWithGeneral = (
 				if (!isEqual(value, defaultAttribute))
 					result[label] = defaultAttribute;
 				else result[label] = undefined;
-			else if (isEqual(value, attribute)) result[label] = undefined;
-			else if (!isNil(attribute)) breakpointLock = true;
+			else if (isEqual(value, attribute)) {
+				const unitKey = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-${breakpoint}`;
+				const unitValue = newAttributes[unitKey];
+				const unitKeyGeneral = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-general`;
+				const unitValueGeneral = newAttributes[unitKeyGeneral];
+				if (
+					unitValue !== undefined &&
+					!isEqual(unitValue, unitValueGeneral)
+				) {
+					result[label] = undefined;
+				}
+			} else if (!isNil(attribute)) breakpointLock = true;
 		});
 	});
 

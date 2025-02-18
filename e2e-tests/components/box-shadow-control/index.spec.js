@@ -205,7 +205,7 @@ describe('BoxShadowControl', () => {
 		const expectSAttributes = {
 			'box-shadow-blur-s': 0,
 			'box-shadow-horizontal-s': 5,
-			'box-shadow-spread-s': undefined,
+			'box-shadow-spread-s': 0,
 			'box-shadow-vertical-s': 6,
 		};
 

@@ -83,6 +83,23 @@ const flatSameAsPrev = (
 		const isXXL = breakpoint === 'xxl';
 		const isHover = getIsHoverAttribute(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
+		const unitKey = `${getAttributeKey(
+			simpleLabel,
+			isHover,
+			'',
+			'unit'
+		)}-${breakpoint}`;
+		const unitValue = newAttributes[unitKey];
+		const unitKeyGeneral = `${getAttributeKey(
+			simpleLabel,
+			isHover,
+			'',
+			'unit'
+		)}-general`;
+		const unitValueGeneral = newAttributes[unitKeyGeneral];
+		if (unitValue !== undefined && !isEqual(unitValue, unitValueGeneral)) {
+			return;
+		}
 		if (isXXL) {
 			const generalKey = getAttributeKey(
 				simpleLabel,
@@ -127,7 +144,6 @@ const flatSameAsPrev = (
 				0,
 				breakpoints.indexOf(breakpoint)
 			);
-
 			higherBreakpoints.reverse().forEach(breakpoint => {
 				if (!breakpointLock) {
 					const label = getAttributeKey(

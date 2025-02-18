@@ -144,6 +144,21 @@ jQuery(document).ready(function ($) {
 		},
 
 		initMediaUploader() {
+			// Add remove button handlers for existing buttons on page load
+			$('.remove-site-logo').on('click', function () {
+				$('input[name="site_logo_id"]').val('');
+				$('.current-site-logo').remove();
+				$('#upload-site-logo').text(maxiQuickStart.strings.uploadLogo);
+				$(this).remove();
+			});
+
+			$('.remove-site-icon').on('click', function () {
+				$('input[name="site_icon_id"]').val('');
+				$('.current-site-icon').remove();
+				$('#upload-site-icon').text(maxiQuickStart.strings.uploadIcon);
+				$(this).remove();
+			});
+
 			// For site logo
 			$('#upload-site-logo').on('click', function (e) {
 				e.preventDefault();

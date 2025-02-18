@@ -755,7 +755,7 @@ class MaxiBlocks_QuickStart {
     if ($site_icon_id) {
     	$icon_url = wp_get_attachment_image_url($site_icon_id, 'full');
     	echo '<div class="current-site-icon">';
-    	echo '<p>' . __('Current site icon:', 'maxi-blocks') . '</p>';
+    	echo '<p>' . __('Current icon:', 'maxi-blocks') . '</p>';
     	echo '<img src="' . esc_url($icon_url) . '" alt="Current site icon" />';
     	echo '</div>';
     }

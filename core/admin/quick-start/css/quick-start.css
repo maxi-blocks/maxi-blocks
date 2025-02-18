@@ -420,55 +420,106 @@ select[name="permalink_structure"]:focus {
 	line-height: 1.4;
 }
 
-.site-logo-wrapper {
+/* Site logo and icon sections */
+.site-logo-wrapper,
+.site-icon-wrapper {
     background-color: var(--maxi-admin-white);
     border: 1px solid var(--maxi-admin-border-light);
     border-radius: 8px;
     padding: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-	margin-top: 30px !important;
+    position: relative; /* For absolute positioning of image */
 }
 
-.site-logo-info {
-    display: flex;
-    flex-direction: column;
-    padding-right: 20px;
-}
-
-.site-logo-info-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.site-logo-wrapper h3 {
+/* Title styling */
+.site-logo-wrapper h3,
+.site-icon-wrapper h3 {
     font-size: 18px;
     color: var(--maxi-admin-pink-purple);
     font-weight: 600;
     margin: 0 0 8px;
+    width: 70%; /* Leave space for image */
 }
 
-.site-logo-wrapper p{
+/* Description text */
+.site-logo-wrapper p,
+.site-icon-wrapper p {
     color: var(--maxi-admin-black-text);
     font-size: 16px;
     line-height: 1.4;
+    margin-bottom: 10px;
+    width: 70%; /* Leave space for image */
 }
+
+/* Controls container */
+.site-logo-controls,
+.site-icon-controls {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 90%; /* Leave space for image */
+}
+
+/* Image positioning */
+.current-site-logo,
+.current-site-icon {
+    position: absolute;
+    top:50%;
+    right: 5px;
+    width: 20%;
+    transform: translateY(-50%); /* Center vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	text-align: center;
+}
+.current-site-icon p {
+    margin-bottom: 10px; /* Add space between text and image */
+    order: -1 	!important; /* This moves the paragraph above the image */
+}
+.current-site-logo img {
+    max-width: 64px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+
+.current-site-icon img {
+    max-width: 64px; /* Fixed smaller size for icon */
+    height: 64px; /* Fixed height to match width */
+    object-fit: contain; /* Maintain aspect ratio */
+    display: block;
+}
+
+/* Button styling */
+.site-logo-controls .button,
+.site-icon-controls .button {
+    margin: 0 !important;
+}
+
 /* Logo preview styles */
 
 .current-site-icon,
 .current-site-logo {
-    margin: 10px 0;
-    padding: 0px 10px 0 10px;
-    background: var(--maxi-admin-light-grey);
-    border-radius: 4px;
     display: inline-block;
+}
+
+.current-site-icon {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    width: 25%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .current-site-icon img {
     max-width: 64px;
     height: auto;
     display: block;
+    margin: 0 auto;
 }
 
 .current-site-logo img {
@@ -486,7 +537,7 @@ select[name="permalink_structure"]:focus {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-	margin-top: 20px !important;
+    margin-top: 0px !important;
 }
 
 #dashboard_system_report > div > div > div.maxi-quick-start-main > div > div.maxi-quick-start-section > div.site-logo-wrapper .button:hover {
@@ -496,7 +547,7 @@ select[name="permalink_structure"]:focus {
 }
 
 #dashboard_system_report button#upload-site-icon {
-    margin-top: 40px !important;
+    margin-top: 0px !important;
 }
 .theme-recommendation {
 	margin: 30px 0;
@@ -660,9 +711,9 @@ select[name="permalink_structure"]:focus {
 .maxi-quick-start-content p.description {
     font-family: Inter, Helvetica, Arial, Lucida, sans-serif;
     font-size: 16px !important;
-	color:var(--maxi-admin-black-text);
-	font-weight: 400;
-	margin-bottom: 10px !important;
+    color:var(--maxi-admin-black-text);
+    font-weight: 400;
+    margin-bottom: 25px !important;
 }
 
 .maxi-status-table {
@@ -805,34 +856,37 @@ select[name="permalink_structure"]:focus {
     border: 1px solid var(--maxi-admin-border-light);
     border-radius: 8px;
     padding: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    position: relative;
     margin-top: 20px;
 }
 
 .site-icon-info {
     display: flex;
     flex-direction: column;
-    padding-right: 20px;
+    width: 90%;
 }
 
-.site-icon-info-text {
+.current-site-icon {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    width: 25%;
+    text-align: center;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.site-icon-wrapper h3 {
-    font-size: 18px;
-    color: var(--maxi-admin-pink-purple);
-    font-weight: 600;
-    margin: 0 0 8px;
+.current-site-icon img {
+    max-width: 64px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }
 
-.site-icon-wrapper p {
-    color: var(--maxi-admin-black-text);
-    font-size: 16px;
-    line-height: 1.4;
+#dashboard_system_report > div > div > div.maxi-quick-start-main > div > div.maxi-quick-start-section > div.site-icon-wrapper .button {
+    margin-top: 20px !important;
+    align-self: flex-start;
 }
 
 #dashboard_system_report > div > div > div.maxi-quick-start-main > div > div.maxi-quick-start-section > div.site-icon-wrapper .button {
@@ -845,7 +899,7 @@ select[name="permalink_structure"]:focus {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-top: 20px !important;
+    margin-top: 0px !important;
 }
 
 #dashboard_system_report > div > div > div.maxi-quick-start-main > div > div.maxi-quick-start-section > div.site-icon-wrapper .button:hover {
@@ -1204,6 +1258,10 @@ select[name="permalink_structure"]:focus {
     font-size: 16px !important;
     margin-top: 10px !important;
     padding: 5px 30px !important;
+}
+#dashboard_system_report button#choose-starter-site {
+    max-width: 250px !important;
+    width: auto !important;
 }
 }
 

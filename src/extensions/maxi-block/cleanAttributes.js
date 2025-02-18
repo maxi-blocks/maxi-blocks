@@ -601,6 +601,19 @@ const flatLowerAttr = (
 				return;
 			}
 
+			if (isGeneral) {
+				const baseBreakpoint =
+					select('maxiBlocks').receiveBaseBreakpoint();
+
+				if (breakpoint === baseBreakpoint) {
+					if (label in newAttributes) return;
+
+					result[label] = defaultAttribute;
+
+					return;
+				}
+			}
+
 			const generalKey = getAttributeKey(
 				simpleLabel,
 				isHover,

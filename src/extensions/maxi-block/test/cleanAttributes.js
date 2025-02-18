@@ -214,6 +214,7 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-status-general': true,
 			'test-general': 4,
+			'test-m': undefined,
 			'test-opacity-general': 1,
 			'test-status-m': undefined,
 			'test-opacity-m': undefined,
@@ -1370,6 +1371,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': '%',
+			'test-l': '%',
 			'test-xl': '%',
 		};
 

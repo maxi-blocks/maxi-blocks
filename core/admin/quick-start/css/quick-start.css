@@ -455,10 +455,11 @@ select[name="permalink_structure"]:focus {
     line-height: 1.4;
 }
 /* Logo preview styles */
+
 .current-site-icon,
 .current-site-logo {
-    margin: 20px 0;
-    padding: 15px;
+    margin: 10px 0;
+    padding: 0px 10px 0 10px;
     background: var(--maxi-admin-light-grey);
     border-radius: 4px;
     display: inline-block;
@@ -471,7 +472,7 @@ select[name="permalink_structure"]:focus {
 }
 
 .current-site-logo img {
-    max-width: 200px;
+    max-width: 100px;
     height: auto;
     display: block;
 }
@@ -608,7 +609,7 @@ select[name="permalink_structure"]:focus {
     border: 1px solid var(--maxi-admin-border-light);
     border-left-width: 4px;
     border-left-color: var(--maxi-admin-orange) !important;
-    margin: 30px 15px 2px 0px !important;
+    margin: 30px 0px 2px 0px !important;
     padding: 22px 22px 22px 34px;
     border-radius: 0 10px 10px 0;
 }
@@ -1182,5 +1183,27 @@ select[name="permalink_structure"]:focus {
     font-weight: 400;
     max-width: 450px;
     text-align: center;
+}
+
+@media only screen and (max-width: 1280px) {
+
+	.maxi-quick-start-sidebar {
+		width: 160px !important;
+		padding: 25px !important;
+		margin-top: 15px !important;
+
+	}
+	.maxi-quick-start-main {
+		flex: 1;
+		padding-left: 40px !important;
+	}
+	#dashboard_system_report .button,
+#dashboard_system_report .button-primary,
+#dashboard_system_report .skip-button {
+    display: inline-block;
+    font-size: 16px !important;
+    margin-top: 10px !important;
+    padding: 5px 30px !important;
+}
 }
 

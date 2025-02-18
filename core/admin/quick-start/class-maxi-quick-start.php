@@ -217,7 +217,7 @@ class MaxiBlocks_QuickStart {
 				'currentLogo' => __('Current Logo:', 'maxi-blocks'),
 				'currentIcon' => __('Current Site Icon:', 'maxi-blocks'),
 				'saveSettings' => __('Save settings', 'maxi-blocks'),
-				'skipToNext' => __('Skip to next step', 'maxi-blocks'),
+				'skipToNext' => __('Skip next', 'maxi-blocks'),
 				'back' => __('Back', 'maxi-blocks'),
 				'continue' => __('Continue', 'maxi-blocks'),
 				'errorActivating' => __(
@@ -524,7 +524,7 @@ class MaxiBlocks_QuickStart {
 				<?php _e('Save settings', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button" data-action="continue">
-				<?php _e('Skip to next step', 'maxi-blocks'); ?>
+				<?php _e('Skip next', 'maxi-blocks'); ?>
 			</button>
 		</div>
 		<?php
@@ -568,7 +568,7 @@ class MaxiBlocks_QuickStart {
 				<?php _e('Save settings', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button" data-action="continue">
-				<?php _e('Skip to next step', 'maxi-blocks'); ?>
+				<?php _e('Skip next', 'maxi-blocks'); ?>
 			</button>
 		</div>
 		<?php
@@ -714,7 +714,7 @@ class MaxiBlocks_QuickStart {
     if ($custom_logo_id) {
     	$logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
     	echo '<div class="current-site-logo">';
-    	echo '<p>' . __('Current Logo:', 'maxi-blocks') . '</p>';
+    	echo '<p>' . __('Current logo:', 'maxi-blocks') . '</p>';
     	echo '<img src="' . esc_url($logo_url) . '" alt="Current site logo" />';
     	echo '</div>';
     }
@@ -755,7 +755,7 @@ class MaxiBlocks_QuickStart {
     if ($site_icon_id) {
     	$icon_url = wp_get_attachment_image_url($site_icon_id, 'full');
     	echo '<div class="current-site-icon">';
-    	echo '<p>' . __('Current Site Icon:', 'maxi-blocks') . '</p>';
+    	echo '<p>' . __('Current site icon:', 'maxi-blocks') . '</p>';
     	echo '<img src="' . esc_url($icon_url) . '" alt="Current site icon" />';
     	echo '</div>';
     }
@@ -787,7 +787,7 @@ class MaxiBlocks_QuickStart {
 				<?php _e('Save settings', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button" data-action="continue">
-				<?php _e('Skip to next step', 'maxi-blocks'); ?>
+				<?php _e('Skip next', 'maxi-blocks'); ?>
 			</button>
 		</div>
 		<?php
@@ -1060,7 +1060,7 @@ class MaxiBlocks_QuickStart {
 				<?php _e('Back', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button" data-action="continue">
-				<?php _e('Skip to next step', 'maxi-blocks'); ?>
+				<?php _e('Skip next', 'maxi-blocks'); ?>
 			</button>
 		</div>
 		<?php

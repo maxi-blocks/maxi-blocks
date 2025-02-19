@@ -1371,8 +1371,18 @@ body.site-editor-php
 		textarea {
 		min-width: 550px !important;
 	}
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_header
+		.maxi-dashboard_header-actions
+		.maxi-dashboard_header-icons {
+		display: none !important;
+	}
 }
-
+@media only screen and (max-width: 900px) {
+	.maxi-dashboard_header-actions {
+		display: none !important;
+	}
+}
 @media only screen and (max-width: 767px) {
 	body.toplevel_page_maxi-blocks-dashboard
 		.maxi-dashboard_form

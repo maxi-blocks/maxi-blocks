@@ -343,14 +343,15 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 			}
 			.maxi-dashboard_main-content_accordion {
-				position: relative; // Maxi AI and Settings accordion background
+				position: relative;
 				z-index: 2;
-				max-width: 1000px;
+				max-width: clamp(280px, 95%, 1000px);
+				width: 95%;
 				margin: 0 auto;
 				&_wrapper {
 					background-color: var(--maxi-admin-light-grey);
-					padding-top: 100px;
-					padding-bottom: 100px;
+					padding-top: clamp(1vw, 8vw, 3vw) !important;
+					padding-bottom: clamp(1vw, 8vw, 4vw) !important;
 				}
 				&#maxi-dashboard_main-content_starter-sites {
 					max-width: 100%;
@@ -496,29 +497,27 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 						&-switcher {
 							&__input {
-								margin-top: 5px;
-								margin-bottom: 5px;
+								margin-top: clamp(5px, 1vw, 10px);
+								margin-bottom: clamp(5px, 1vw, 10px);
+								width: clamp(70vw, 100vw, 60vw) !important;
+
 								input,
 								textarea {
-									border-radius: 10px;
+									border-radius: clamp(8px, 1vw, 12px);
 									border: 2px solid
 										var(--maxi-admin-border-light) !important;
-									padding: 10px 20px;
+									padding: clamp(8px, 1.5vw, 20px)
+										clamp(15px, 2vw, 25px) !important;
 									box-sizing: border-box;
-									min-width: 900px;
+									width: clamp(70vw, 100vw, 60vw);
+									display: block;
 								}
 
 								textarea {
 									resize: none;
-									margin-top: 10px;
-									min-height: 100px;
-									width: 100% !important;
-								}
-
-								label:not(label[for='maxi-breakpoint-maxi-versions']) {
-									text-transform: uppercase;
-
-									display: inline-block;
+									margin-top: clamp(8px, 1vw, 15px);
+									min-height: clamp(80px, 10vw, 120px);
+									display: block;
 								}
 							}
 							&__toggle {
@@ -1214,18 +1213,6 @@ body.site-editor-php
 	.maxi-dashboard_header-icons {
 		display: none !important;
 	}
-	body.toplevel_page_maxi-blocks-dashboard
-		.maxi-dashboard_form
-		.maxi-dashboard_main
-		.maxi-dashboard_main-content_accordion-item-content-switcher__input
-		input,
-	body.toplevel_page_maxi-blocks-dashboard
-		.maxi-dashboard_form
-		.maxi-dashboard_main
-		.maxi-dashboard_main-content_accordion-item-content-switcher__input
-		textarea {
-		min-width: 750px !important;
-	}
 }
 
 @media only screen and (max-width: 1280px) {
@@ -1296,18 +1283,7 @@ body.site-editor-php
 			width: 100% !important;
 		}
 	}
-	body.toplevel_page_maxi-blocks-dashboard
-		.maxi-dashboard_form
-		.maxi-dashboard_main
-		.maxi-dashboard_main-content_accordion-item-content-switcher__input
-		input,
-	body.toplevel_page_maxi-blocks-dashboard
-		.maxi-dashboard_form
-		.maxi-dashboard_main
-		.maxi-dashboard_main-content_accordion-item-content-switcher__input
-		textarea {
-		min-width: 650px !important;
-	}
+
 	.maxi-dashboard_header-actions {
 		display: none !important;
 	}
@@ -1319,18 +1295,7 @@ body.site-editor-php
 			grid-template-columns: repeat(2, 1fr) !important;
 		}
 	}
-	body.toplevel_page_maxi-blocks-dashboard
-		.maxi-dashboard_form
-		.maxi-dashboard_main
-		.maxi-dashboard_main-content_accordion-item-content-switcher__input
-		input,
-	body.toplevel_page_maxi-blocks-dashboard
-		.maxi-dashboard_form
-		.maxi-dashboard_main
-		.maxi-dashboard_main-content_accordion-item-content-switcher__input
-		textarea {
-		min-width: 550px !important;
-	}
+
 	body.toplevel_page_maxi-blocks-dashboard
 		.maxi-dashboard_header
 		.maxi-dashboard_header-actions
@@ -1376,18 +1341,6 @@ body.site-editor-php
 	}
 }
 @media only screen and (max-width: 767px) {
-	body.toplevel_page_maxi-blocks-dashboard
-		.maxi-dashboard_form
-		.maxi-dashboard_main
-		.maxi-dashboard_main-content_accordion-item-content-switcher__input
-		input,
-	body.toplevel_page_maxi-blocks-dashboard
-		.maxi-dashboard_form
-		.maxi-dashboard_main
-		.maxi-dashboard_main-content_accordion-item-content-switcher__input
-		textarea {
-		min-width: 450px !important;
-	}
 	.maxi-dashboard_main-content-start {
 		.video-grid {
 			grid-template-columns: 1fr !important;

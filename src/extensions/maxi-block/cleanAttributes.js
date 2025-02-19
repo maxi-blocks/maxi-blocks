@@ -80,7 +80,6 @@ const flatSameAsPrev = (
 			return;
 		}
 
-		const isXXL = breakpoint === 'xxl';
 		const isHover = getIsHoverAttribute(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const unitKey = `${getAttributeKey(
@@ -100,99 +99,61 @@ const flatSameAsPrev = (
 		if (unitValue !== undefined && !isEqual(unitValue, unitValueGeneral)) {
 			return;
 		}
-		if (isXXL) {
-			const generalKey = getAttributeKey(
-				simpleLabel,
-				isHover,
-				'',
-				'general'
-			);
-			const generalAttr = attributes[generalKey];
 
-			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
-				if (allowXXLOverGeneral) return;
+		let breakpointLock = false;
 
-				const generalDefaultValue =
-					defaultAttributes?.[generalKey] ??
-					getDefaultAttribute(generalKey, clientId, true);
-
-				// Covers a concrete situation where we've got XXL and XL
-				// values by default, but General is undefined. An example
-				// is Row Maxi `max-width-unit` attribute.
-				if (key in newAttributes && isNil(generalDefaultValue)) {
-					result[key] = undefined;
-
-					return;
-				}
-
-				if (isEqual(generalAttr, value)) {
-					result[key] = undefined;
-
-					return;
-				}
-
+		const higherBreakpoints = breakpoints.slice(
+			0,
+			breakpoints.indexOf(breakpoint)
+		);
+		higherBreakpoints.reverse().forEach(breakpoint => {
+			if (!breakpointLock) {
+				const label = getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					breakpoint
+				);
+				const attribute =
+					label in newAttributes
+						? newAttributes[label]
+						: attributes?.[label];
 				const defaultAttribute =
-					defaultAttributes?.[key] ??
-					getDefaultAttribute(key, clientId, true);
+					defaultAttributes?.[label] ??
+					getDefaultAttribute(label, clientId, true);
 
-				result[key] = defaultAttribute;
-			}
-		} else {
-			let breakpointLock = false;
+				if (isEqual(value, attribute)) {
+					if (isEqual(value, defaultAttribute))
+						result[key] = undefined;
+					else if (breakpoint === 'general') {
+						const generalAttr =
+							attributes[
+								getAttributeKey(
+									simpleLabel,
+									isHover,
+									'',
+									'general'
+								)
+							];
 
-			const higherBreakpoints = breakpoints.slice(
-				0,
-				breakpoints.indexOf(breakpoint)
-			);
-			higherBreakpoints.reverse().forEach(breakpoint => {
-				if (!breakpointLock) {
-					const label = getAttributeKey(
-						simpleLabel,
-						isHover,
-						'',
-						breakpoint
-					);
-					const attribute =
-						label in newAttributes
-							? newAttributes[label]
-							: attributes?.[label];
-					const defaultAttribute =
-						defaultAttributes?.[label] ??
-						getDefaultAttribute(label, clientId, true);
-
-					if (isEqual(value, attribute)) {
-						if (isEqual(value, defaultAttribute))
+						if (
+							!isNil(generalAttr) &&
+							isEqual(generalAttr, value)
+						) {
 							result[key] = undefined;
-						else if (breakpoint === 'general') {
-							const generalAttr =
-								attributes[
-									getAttributeKey(
-										simpleLabel,
-										isHover,
-										'',
-										'general'
-									)
-								];
+						}
+					} else if (breakpoint !== 'general') {
+						const currentDefaultAttribute =
+							defaultAttributes?.[key] ??
+							getDefaultAttribute(key, clientId, true);
 
-							if (
-								!isNil(generalAttr) &&
-								isEqual(generalAttr, value)
-							) {
-								result[key] = undefined;
-							}
-						} else if (breakpoint !== 'general') {
-							const currentDefaultAttribute =
-								defaultAttributes?.[key] ??
-								getDefaultAttribute(key, clientId, true);
-
-							if (!isEqual(value, currentDefaultAttribute))
-								result[key] = defaultAttribute;
-							else result[key] = currentDefaultAttribute;
-						} else if (!isNil(attribute)) breakpointLock = true;
+						if (!isEqual(value, currentDefaultAttribute))
+							result[key] = defaultAttribute;
+						else result[key] = currentDefaultAttribute;
 					} else if (!isNil(attribute)) breakpointLock = true;
-				}
-			});
-		}
+				} else if (!isNil(attribute)) breakpointLock = true;
+			}
+		});
 	});
 
 	return result;

@@ -32,7 +32,20 @@ const getTarget = target => {
 export const getResponsiveStyles = styles => {
 	let responsiveStyles = '';
 	for (const [key, value] of Object.entries(styles)) {
-		responsiveStyles += ` ${key}: ${value};`;
+		// Process the value based on the conditions
+		let processedValue = value;
+
+		// Replace 'undefined' with 'px' if it exists in the value
+		if (typeof value === 'string' && value.includes('undefined')) {
+			processedValue = value.replace(/undefined/g, 'px');
+		}
+
+		// If the key is 'line-height' and the value is a number, append 'px'
+		if (key === 'line-height' && /^\d+$/.test(value)) {
+			processedValue += 'px';
+		}
+
+		responsiveStyles += ` ${key}: ${processedValue};`;
 	}
 	return responsiveStyles;
 };

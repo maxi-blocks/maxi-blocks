@@ -97,6 +97,11 @@ const getDefaultAttribute = (
 		);
 	}
 
+	// Replace 'undefined' with 'px' if it exists in the response
+	if (typeof response === 'string' && response.includes('undefined')) {
+		response = response.replace(/undefined/g, 'px');
+	}
+
 	return response;
 };
 

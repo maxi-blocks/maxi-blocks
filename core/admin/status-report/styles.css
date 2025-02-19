@@ -31,39 +31,39 @@
 
 /* Rest of the styles */
 .maxi-status-table th {
-	background: #f8f9fa;
+	background: var(--maxi-admin-light-grey);
 	padding: 12px;
 	text-align: left;
-	border-bottom: 1px solid #dee2e6;
+	border-bottom: 1px solid var(--maxi-admin-border-light);
 }
 
 .maxi-status-table td {
 	padding: 12px;
-	border-bottom: 1px solid #dee2e6;
+	border-bottom: 1px solid var(--maxi-admin-border-light);
 }
 
 .maxi-status-table .header-row td {
 	font-weight: bold;
-	background: #f8f9fa;
+	background: var(--maxi-admin-light-grey);
 }
 
 .maxi-status-table .status-ok span {
-	background: #28a745;
-	color: white;
+	background: var(--maxi-admin-green);
+	color: var(--maxi-admin-white);
 	padding: 4px 8px;
 	border-radius: 3px;
 }
 
 .maxi-status-table .status-warning span {
-	background: #ffc107;
-	color: #000;
+	background: var(--maxi-admin-light-orange);
+	color: var(--maxi-admin-black);
 	padding: 4px 8px;
 	border-radius: 3px;
 }
 
 .maxi-status-table .plugin-section {
 	padding: 15px;
-	background: #f8f9fa;
+	background: var(--maxi-admin-light-grey);
 }
 
 #maxi-copy-report {
@@ -76,11 +76,12 @@
 
 #maxi-copy-report-content {
 	display: none;
-}#maxi-copy-report,
+}
+#maxi-copy-report,
 #maxi-download-report {
     display: inline-block;
-    background: #000000;
-    color: #fff !important;
+    background: var(--maxi-admin-black);
+    color: var(--maxi-admin-white) !important;
     border: none;
     text-decoration: none;
     padding: 5px 50px;
@@ -93,14 +94,29 @@
 }
 #maxi-copy-report:hover,
 #maxi-download-report:hover {
-	background: #ffc107;
+	background: var(--maxi-admin-light-orange);
 }
 
 #maxi-copy-report:focus {
     outline: none;
-    color: #ffffff;
+    color: var(--maxi-admin-white);
 }
 
 #maxi-download-report {
     margin-left: 10px !important;
+}
+
+#maxi-download-report {
+    display: inline-block;
+    background: var(--maxi-admin-black);
+    color: var(--maxi-admin-white) !important;
+    border: none;
+    text-decoration: none;
+    padding: 5px 50px;
+    font-size: 19px;
+    font-weight: 700;
+    border-radius: 26px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 30px;
 }

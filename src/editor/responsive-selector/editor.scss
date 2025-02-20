@@ -222,11 +222,12 @@
 			}
 			.maxi-tabs-control__notification {
 				position: absolute;
-				z-index: 8;
-				top: 0;
-				right: 0;
-				width: 7px;
-				height: 7px;
+				top: 4px;
+				right: 4px;
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				background-color: var(--maxi-primary-color);
 			}
 		}
 		&-wrapper {

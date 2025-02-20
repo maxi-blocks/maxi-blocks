@@ -98,13 +98,19 @@
 			&--active:before {
 				content: '';
 				position: absolute;
-				top: 0;
-				left: 0;
-				width: 10px;
-				height: 10px;
+				top: 50%;
+				left: 2;
 				z-index: 1;
-				border-top: 2px solid var(--maxi-highlight-color);
-				border-left: 2px solid var(--maxi-highlight-color);
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				background-color: var(--maxi-highlight-top-color);
+				margin-left: 5px;
+				transform: translateY(-50%);
+			}
+
+			&.maxi-accordion-control__item__button {
+				padding-left: 25px; /* Add extra padding for the dot */
 			}
 		}
 

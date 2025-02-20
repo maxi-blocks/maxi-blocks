@@ -121,6 +121,8 @@ window.onload = () => {
 					'map-markers': mapMarkers,
 					'map-marker-icon': mapMarkerIcon,
 					'map-marker-heading-level': mapMarkerHeadingLevel,
+					'map-min-zoom': mapMinZoom,
+					'map-max-zoom': mapMaxZoom,
 					ariaLabels,
 				} = item;
 
@@ -129,6 +131,8 @@ window.onload = () => {
 					touchZoom: mapTouchZoom,
 					doubleClickZoom: mapDoubleClickZoom,
 					scrollWheelZoom: mapScrollWheelZoom,
+					minZoom: mapMinZoom,
+					maxZoom: mapMaxZoom,
 				}).setView([mapLatitude, mapLongitude], mapZoom);
 
 				isGoogleScriptsNeeded

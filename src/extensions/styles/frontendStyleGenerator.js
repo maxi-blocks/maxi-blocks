@@ -12,7 +12,23 @@ const getStyles = content => {
 
 	Object.entries(content).forEach(([key, val]) => {
 		if (key.includes('css')) response += `${val}`;
-		else response += `${key}:${val};`;
+		else {
+			let processedValue = val;
+			// Replace 'undefined' with 'px' if it exists in the value
+			if (typeof val === 'string' && val.includes('undefined')) {
+				processedValue = val.replace(/undefined/g, 'px');
+			}
+
+			// If the key is 'line-height' and the value is a number, append 'px'
+			if (key === 'line-height' && /^\d+$/.test(val)) {
+				if (val === '100') {
+					processedValue = '100%';
+				} else {
+					processedValue += 'px';
+				}
+			}
+			response += `${key}:${processedValue};`;
+		}
 	});
 
 	return response;

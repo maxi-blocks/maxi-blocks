@@ -688,7 +688,7 @@ const TypographyControl = props => {
 					label={__('Font size', 'maxi-blocks')}
 					enableUnit
 					unit={getValue('font-size-unit')}
-					defaultUnit={getDefault('font-size-unit') || 'px'}
+					defaultUnit={getDefault('font-size-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}font-size-unit`]: val,
@@ -722,8 +722,8 @@ const TypographyControl = props => {
 					className='maxi-typography-control__line-height'
 					label={__('Line height', 'maxi-blocks')}
 					enableUnit
-					unit={getValue('line-height-unit') || ''}
-					defaultUnit={getDefault('line-height-unit') || 'px'}
+					unit={getValue('line-height-unit')}
+					defaultUnit={getDefault('line-height-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}line-height-unit`]: val,
@@ -760,7 +760,7 @@ const TypographyControl = props => {
 					enableUnit
 					allowedUnits={['px', 'em', 'rem', 'vw']}
 					unit={getValue('letter-spacing-unit')}
-					defaultUnit={getDefault('letter-spacing-unit') || 'px'}
+					defaultUnit={getDefault('letter-spacing-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}letter-spacing-unit`]: val,
@@ -1025,7 +1025,7 @@ const TypographyControl = props => {
 					label={__('Text indent', 'maxi-blocks')}
 					enableUnit
 					unit={getValue('text-indent-unit')}
-					defaultUnit={getDefault('text-indent-unit') || 'px'}
+					defaultUnit={getDefault('text-indent-unit')}
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
@@ -1137,7 +1137,7 @@ const TypographyControl = props => {
 					label={__('Word Spacing', 'maxi-blocks')}
 					enableUnit
 					unit={getValue('word-spacing-unit')}
-					defaultUnit={getDefault('word-spacing-unit') || 'px'}
+					defaultUnit={getDefault('word-spacing-unit')}
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
@@ -1202,7 +1202,7 @@ const TypographyControl = props => {
 						label={__('Bottom gap', 'maxi-blocks')}
 						enableUnit
 						unit={getValue('bottom-gap-unit')}
-						defaultUnit={getDefault('bottom-gap-unit') || 'px'}
+						defaultUnit={getDefault('bottom-gap-unit')}
 						onChangeUnit={val => {
 							onChangeFormat(
 								{

@@ -42,7 +42,11 @@ export const getResponsiveStyles = styles => {
 
 		// If the key is 'line-height' and the value is a number, append 'px'
 		if (key === 'line-height' && /^\d+$/.test(value)) {
-			processedValue += 'px';
+			if (value === '100') {
+				processedValue = '100%';
+			} else {
+				processedValue += 'px';
+			}
 		}
 
 		responsiveStyles += ` ${key}: ${processedValue};`;

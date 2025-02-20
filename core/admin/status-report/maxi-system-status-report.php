@@ -158,7 +158,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$content .= '</div>';
 
 			// Start Status Table
-			$content .= '<div class="wrapper">';
+			$content .= '<div id="maxi-status-wrapper">';
 			$content .= '<table class="maxi-status-table">';
 
 			// MaxiBlocks Plugin Section (moved to top)
@@ -216,7 +216,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$content .= '<tbody id="maxi-frontend-assets"></tbody>';
 
 			$content .= '</table>';
-			$content .= '</div>'; // maxi-dashboard_main-content
+			$content .= '</div>'; // Close maxi-status-wrapper
 
 			// Add translations for JavaScript
 			wp_localize_script('maxi-status-report', 'MaxiSystemReport', [

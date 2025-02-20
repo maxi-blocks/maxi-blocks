@@ -32,7 +32,7 @@ const Markers = props => {
 		html: mapMarkerIcon,
 		iconSize: [svgWidthGeneral, svgWidthGeneral],
 		iconAnchor: [svgWidthGeneral / 2, svgWidthGeneral * 0.9],
-		popupAnchor: [0, -svgWidthGeneral],
+		popupAnchor: [-svgWidthGeneral / 2, -svgWidthGeneral],
 		className: 'maxi-map-marker',
 	});
 

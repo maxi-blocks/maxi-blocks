@@ -23,7 +23,7 @@
 		button {
 			&:hover {
 				svg {
-					fill: #ff4a17;
+					fill: var(--maxi-primary-color);
 				}
 			}
 		}
@@ -54,7 +54,7 @@
 			margin-top: 0px;
 			margin-bottom: 3px;
 			margin-left: -301px;
-			color: #ff4a17;
+			color: var(--maxi-primary-color);
 			padding-left: 8px;
 			background: #fff;
 		}

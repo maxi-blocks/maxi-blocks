@@ -28,7 +28,7 @@ body.maxi-blocks--active select.maxi-select-control__input {
 
 	.maxi-option {
 		&__in-use {
-			color: var(--maxi-green-1-color);
+			color: var(--maxi-highlight-color);
 			font-weight: 500;
 		}
 	}

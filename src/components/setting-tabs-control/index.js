@@ -177,7 +177,7 @@ const SettingTabsControl = props => {
 										viewBox='0 0 9 9'
 									>
 										<path
-											fill='#ff4a17'
+											fill='var(--maxi-primary-color)'
 											d='M4.5 0H9v4.5A4.5 4.5 0 0 1 4.5 9 4.5 4.5 0 0 1 0 4.5 4.5 4.5 0 0 1 4.5 0Z'
 										/>
 									</svg>

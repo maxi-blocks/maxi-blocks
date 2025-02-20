@@ -18,7 +18,7 @@ body.maxi-blocks--active .maxi-block__resizer {
 				height: 15px;
 				border: 2px solid #fff;
 				border-radius: 50%;
-				background: #ff4a17;
+				background: var(--maxi-primary-color);
 				cursor: inherit;
 			}
 
@@ -31,7 +31,7 @@ body.maxi-blocks--active .maxi-block__resizer {
 				display: block;
 				cursor: inherit;
 				position: absolute;
-				background: #ff4a17;
+				background: var(--maxi-primary-color);
 			}
 			&-right {
 				&:before {

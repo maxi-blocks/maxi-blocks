@@ -108,7 +108,7 @@
 
 				svg {
 					pattern ~ path {
-						fill: #ff4a17;
+						fill: var(--maxi-primary-color);
 					}
 				}
 			}
@@ -385,7 +385,7 @@
 				height: 36px;
 
 				svg {
-					fill: #ff4a17;
+					fill: var(--maxi-primary-color);
 					width: 25px;
 					height: 25px;
 				}
@@ -407,11 +407,11 @@
 		&:before,
 		&:after {
 			content: '';
-			border-bottom: 6px solid #ff4a17;
+			border-bottom: 6px solid var(--maxi-primary-color);
 			border-left: 6px solid transparent;
 			border-radius: 50%;
-			border-right: 6px solid #ff4a17;
-			border-top: 6px solid #ff4a17;
+			border-right: 6px solid var(--maxi-primary-color);
+			border-top: 6px solid var(--maxi-primary-color);
 			bottom: 0;
 			box-sizing: border-box;
 			left: 0;
@@ -470,7 +470,7 @@
 			justify-content: center;
 			padding: 0;
 			background-color: transparent;
-			color: #ff4a17;
+			color: var(--maxi-primary-color);
 			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			text-decoration: none;
 			font-size: 14px;
@@ -481,13 +481,13 @@
 				width: 12px;
 				height: 12px;
 				padding: 2px;
-				background-color: #ff4a17;
+				background-color: var(--maxi-primary-color);
 				border-radius: 50%;
 				margin-right: 5px;
 				transition: 0.1s;
 
 				path {
-					fill: #ff4a17;
+					fill: var(--maxi-primary-color);
 					stroke: #fff;
 					transition: 0.1s;
 				}
@@ -506,7 +506,7 @@
 
 		&__logo {
 			display: flex;
-			color: #ff4a17;
+			color: var(--maxi-primary-color);
 			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			font-size: 18px;
 			word-spacing: 0;
@@ -659,7 +659,7 @@
 							border: none;
 						}
 						&__input[type='checkbox']:checked {
-							background: #ff4a17;
+							background: var(--maxi-primary-color);
 							border: none;
 						}
 					}
@@ -674,8 +674,9 @@
 						&--selected {
 							.ais-HierarchicalMenu-link,
 							.ais-Menu-link {
-								border-bottom: 2px solid #ff4a17;
-								color: #ff4a17 !important;
+								border-bottom: 2px solid
+									var(--maxi-primary-color);
+								color: var(--maxi-primary-color) !important;
 							}
 						}
 						.ais-HierarchicalMenu-link,
@@ -686,8 +687,9 @@
 							transition: color 0.5s;
 
 							&:hover {
-								border-bottom: 2px solid #ff4a17;
-								color: #ff4a17;
+								border-bottom: 2px solid
+									var(--maxi-primary-color);
+								color: var(--maxi-primary-color);
 							}
 
 							.ais-HierarchicalMenu-count,
@@ -847,7 +849,7 @@
 
 					strong {
 						margin-right: 3px;
-						color: #ff4a17;
+						color: var(--maxi-primary-color);
 					}
 				}
 			}
@@ -1269,7 +1271,7 @@
 
 							.ais-RefinementList-count,
 							.ais-RefinementList-labelText {
-								color: #ff4a17;
+								color: var(--maxi-primary-color);
 							}
 
 							&:focus {
@@ -1961,7 +1963,7 @@
 				font-weight: 500;
 				font-size: 12px;
 				strong {
-					color: #ff4a17;
+					color: var(--maxi-primary-color);
 				}
 			}
 		}

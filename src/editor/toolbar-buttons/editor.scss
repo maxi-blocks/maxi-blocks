@@ -5,21 +5,41 @@
 		font-family: Inter, sans-serif;
 		font-size: 14px;
 		letter-spacing: 0.5px;
-		color: #081219;
-		background-color: #fff;
+		color: var(--maxi-black-main-color);
+		background-color: var(--maxi-white);
 		margin-left: 10px;
 		border-radius: 3px;
 		float: right;
-		border: 2px solid #dddfe2;
+		border: 2px solid var(--maxi-grey-9-color);
 		box-shadow: none !important;
 		padding: 5px 10px;
 		justify-content: center;
 		min-height: 45px;
 		transition: all 0.5s;
 
+		svg {
+			width: 32px;
+			height: 32px;
+			path,
+			g {
+				fill: var(--maxi-black-main-color);
+				stroke: var(--maxi-black-main-color);
+				transition: all 0.5s;
+			}
+		}
+
 		&[aria-pressed='true'],
 		&:hover {
-			border-color: #ff4a17;
+			border-color: var(--maxi-primary-color);
+			color: var(--maxi-primary-color);
+
+			svg {
+				path,
+				g {
+					fill: var(--maxi-primary-color);
+					stroke: var(--maxi-primary-color);
+				}
+			}
 		}
 	}
 }

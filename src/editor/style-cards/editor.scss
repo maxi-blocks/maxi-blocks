@@ -555,7 +555,7 @@ body .maxi-style-cards__popover {
 
 			&__button {
 				&__button[aria-pressed='true'] {
-					border-bottom-color: #ff4a17;
+					border-bottom-color: var(--maxi-primary-color);
 				}
 			}
 		}

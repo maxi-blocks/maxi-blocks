@@ -5,7 +5,7 @@ import { SVG, Path } from '@wordpress/primitives';
 
 const videoIcon = (
 	<SVG viewBox='0 0 24 24'>
-		<style type='text/css'>{'.st0{fill:#FF4A17;}'}</style>
+		<style type='text/css'>{'.st0{fill:var(--maxi-primary-color);}'}</style>
 		<g>
 			<Path
 				className='st0'

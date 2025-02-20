@@ -7,7 +7,7 @@ const mapIcon = (
 	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
 		<Path
 			fill='none'
-			stroke='#FF4A17'
+			stroke='var(--maxi-primary-color)'
 			strokeLinecap='round'
 			strokeLinejoin='round'
 			strokeWidth='1.5'

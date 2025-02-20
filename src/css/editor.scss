@@ -153,7 +153,7 @@ body {
 			}
 			&:hover {
 				svg {
-					fill: #ff4a17;
+					fill: var(--maxi-primary-color);
 				}
 			}
 		}
@@ -414,7 +414,7 @@ svg path#styleCardBoat_b,
 			opacity: 1;
 
 			&:not(.maxi-block--is-repeater) {
-				border-color: #ff4a17;
+				border-color: var(--maxi-primary-color);
 			}
 		}
 		&:focus {
@@ -552,7 +552,7 @@ html[dir='rtl'] {
 		}
 		&:hover {
 			svg {
-				fill: #ff4a17;
+				fill: var(--maxi-primary-color);
 			}
 		}
 	}

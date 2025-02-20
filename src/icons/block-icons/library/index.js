@@ -6,8 +6,8 @@ import { SVG, Path, G } from '@wordpress/primitives';
 const library = (
 	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
 		<G
-			fill='#FF4A17'
-			stroke='#FF4A17'
+			fill='var(--maxi-primary-color)'
+			stroke='var(--maxi-primary-color)'
 			strokeMiterlimit='10'
 			strokeWidth='.5'
 		>

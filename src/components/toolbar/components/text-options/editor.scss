@@ -137,7 +137,7 @@
 			}
 		}
 		.toolbar-item[aria-pressed='true'] svg path {
-			fill: #ff4a17;
+			fill: var(--maxi-primary-color);
 		}
 
 		&__wrap {

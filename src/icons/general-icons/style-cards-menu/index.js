@@ -10,7 +10,7 @@ const styleCardMenu = (
 				<Path
 					id='styleCardMenu_a'
 					d='M8.307.6l-.092 9.449 7.156 1.315zM4.484 10.661c.061-.031 3.731-.612 3.731-.612L8.307.6z'
-					fill='#ff4a17'
+					fill='var(--maxi-primary-color)'
 				/>
 				<Path
 					id='styleCardMenu_b'

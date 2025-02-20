@@ -49,10 +49,14 @@ const MapContent = props => {
 
 		// To get rid of the grey bars, we need to update the map size
 		const resizeObserver = new ResizeObserver(() => {
-			if (map && !map._isDestroyed) {
-				setTimeout(() => {
-					map.invalidateSize();
-				}, 100);
+			if (map && !map._isDestroyed && map.getContainer()) {
+				requestAnimationFrame(() => {
+					try {
+						map.invalidateSize({ animate: false });
+					} catch (e) {
+						// Ignore errors during resize
+					}
+				});
 			}
 		});
 
@@ -62,13 +66,15 @@ const MapContent = props => {
 
 		if (container) {
 			resizeObserver.observe(container);
-
-			// Cleanup observer when component unmounts
-			return () => {
-				resizeObserver.unobserve(container);
-				resizeObserver.disconnect();
-			};
 		}
+
+		// Cleanup observer
+		return () => {
+			if (container) {
+				resizeObserver.unobserve(container);
+			}
+			resizeObserver.disconnect();
+		};
 	};
 	return (
 		<div

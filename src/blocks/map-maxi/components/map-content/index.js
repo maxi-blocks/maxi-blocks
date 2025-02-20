@@ -45,15 +45,30 @@ const MapContent = props => {
 	const showError = !apiKey && isGoogleMaps;
 
 	const resizeMap = map => {
+		if (!map) return;
+
 		// To get rid of the grey bars, we need to update the map size
-		// https://stackoverflow.com/a/71006998
-		const resizeObserver = new ResizeObserver(() => map?.invalidateSize());
+		const resizeObserver = new ResizeObserver(() => {
+			if (map && !map._isDestroyed) {
+				setTimeout(() => {
+					map.invalidateSize();
+				}, 100);
+			}
+		});
 
 		const container = document.getElementById(
 			`maxi-map-block__container-${uniqueID}`
 		);
 
-		if (container) resizeObserver.observe(container);
+		if (container) {
+			resizeObserver.observe(container);
+
+			// Cleanup observer when component unmounts
+			return () => {
+				resizeObserver.unobserve(container);
+				resizeObserver.disconnect();
+			};
+		}
 	};
 	return (
 		<div

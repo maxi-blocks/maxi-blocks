@@ -31,8 +31,9 @@ const Markers = props => {
 	const markerIcon = L.divIcon({
 		html: mapMarkerIcon,
 		iconSize: [svgWidthGeneral, svgWidthGeneral],
-		iconAnchor: [svgWidthGeneral / 2, svgWidthGeneral],
+		iconAnchor: [svgWidthGeneral / 2, svgWidthGeneral * 0.9],
 		popupAnchor: [0, -svgWidthGeneral],
+		className: 'maxi-map-marker',
 	});
 
 	const handleRemoveMarker = (event, index) => {
@@ -67,8 +68,9 @@ const Markers = props => {
 				icon={markerIcon}
 				draggable
 				eventHandlers={{
-					dragstart: () => {
+					dragstart: event => {
 						setIsDraggingMarker(true);
+						event.target._map.dragging.disable();
 					},
 					dragend: event => {
 						const { lat, lng } = event.target._latlng;
@@ -77,6 +79,7 @@ const Markers = props => {
 							longitude: lng,
 						});
 						setIsDraggingMarker(false);
+						event.target._map.dragging.enable();
 					},
 					mouseover: () => {
 						setIsDraggingMarker(true);

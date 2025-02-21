@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,8 +17,46 @@ import { getMaxiAdminSettingsUrl } from '@blocks/map-maxi/utils';
 /**
  * External dependencies
  */
-import { MapContainer, TileLayer } from 'react-leaflet';
-import { ReactLeafletGoogleLayer } from 'react-leaflet-google-layer';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet.gridlayer.googlemutant';
+
+const GoogleLayer = ({ apiKey }) => {
+	const map = useMap();
+
+	useEffect(() => {
+		let script;
+		if (!window.google || !window.google.maps) {
+			script = document.createElement('script');
+			script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+			script.async = true;
+			script.onload = () => {
+				L.gridLayer
+					.googleMutant({
+						type: 'roadmap',
+						maxZoom: 20,
+					})
+					.addTo(map);
+			};
+			document.head.appendChild(script);
+		} else {
+			L.gridLayer
+				.googleMutant({
+					type: 'roadmap',
+					maxZoom: 20,
+				})
+				.addTo(map);
+		}
+
+		return () => {
+			if (script) {
+				document.head.removeChild(script);
+			}
+		};
+	}, [map, apiKey]);
+
+	return null;
+};
 
 const MapContent = props => {
 	const {
@@ -76,6 +114,7 @@ const MapContent = props => {
 			resizeObserver.disconnect();
 		};
 	};
+
 	return (
 		<div
 			className='maxi-map-block__container'
@@ -91,10 +130,7 @@ const MapContent = props => {
 						whenReady={map => resizeMap(map.target)}
 					>
 						{isGoogleMaps ? (
-							<ReactLeafletGoogleLayer
-								apiKey={apiKey}
-								callback={Function.prototype}
-							/>
+							<GoogleLayer apiKey={apiKey} />
 						) : (
 							<TileLayer
 								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

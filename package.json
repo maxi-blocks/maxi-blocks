@@ -59,6 +59,7 @@
 		"is-mobile": "latest",
 		"langchain": "^0.1.30",
 		"leaflet": "latest",
+		"leaflet.gridlayer.googlemutant": "^0.15.0",
 		"masonry-layout": "latest",
 		"re-resizable": "latest",
 		"react-accessible-accordion": "latest",

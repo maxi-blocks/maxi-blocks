@@ -10,7 +10,7 @@
 			&[aria-pressed='true'],
 			&:hover {
 				background-color: var(--maxi-pastel-green);
-				border-width: 0;
+				border: 1.5px solid var(--maxi-grey);
 				font-weight: 700;
 			}
 		}

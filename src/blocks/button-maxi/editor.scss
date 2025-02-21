@@ -14,10 +14,10 @@ body.maxi-blocks--active .maxi-sidebar {
 			transition: background 0.4s;
 
 			&:focus {
-				background: var(--maxi-grey-3-color);
+				background: var(--maxi-grey);
 			}
 			&:hover {
-				background: var(--maxi-white-4-color);
+				background: var(--maxi-white);
 
 				&::after {
 					content: '';
@@ -30,7 +30,7 @@ body.maxi-blocks--active .maxi-sidebar {
 			&:nth-child(6) {
 				svg {
 					border-radius: 10px;
-					box-shadow: 0 0 8px 0 var(--maxi-grey-7-color);
+					box-shadow: 0 0 8px 0 var(--maxi-grey);
 				}
 			}
 			&:nth-child(n + 7) {

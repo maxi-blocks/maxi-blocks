@@ -226,7 +226,7 @@ body .toolbar-item__popover {
 		max-height: unset !important;
 		min-height: unset;
 		padding: 10px;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--maxi-grey-light) !important;
 		border-radius: 5px !important;
 		color: var(--maxi-grey-dark);
 		background-color: var(--maxi-white);
@@ -236,10 +236,11 @@ body .toolbar-item__popover {
 		&:focus {
 			box-shadow: none;
 			outline: none;
-			border: 1.5px solid var(--maxi-grey-light);
+			border: 1.5px solid var(--maxi-grey-light) !important;
 		}
 		&:hover {
-			color: var(--maxi-grey-dark);
+			color: var(--maxi-grey-dark) !important;
+			border: 1.5px solid var(--maxi-grey-dark) !important;
 		}
 		&:active {
 			color: var(--maxi-grey-dark);
@@ -546,7 +547,7 @@ html[dir='rtl'] {
 		transition: 0.3s;
 
 		svg {
-			fill: #007cba;
+			fill: var(--maxi-primary-color);
 			width: 15px;
 			height: 15px;
 		}
@@ -617,12 +618,10 @@ body.maxi-blocks--active
 
 .maxi-tabs-control__button {
 	&-none {
-		background-color: #ffe0e0 !important; // Light red
 		svg path {
 			fill: var(--maxi-grey-dark);
 		}
 		&.maxi-tabs-control__button--selected {
-			background-color: #ffb0b0 !important; // Darker light red
 			svg path {
 				fill: var(--maxi-secondary-color);
 			}
@@ -643,13 +642,11 @@ body.maxi-blocks--active
 	}
 
 	&-gradient {
-		background-color: #e0e0ff !important; // Light blue
 		svg path {
 			stroke: var(--maxi-grey-dark);
 			fill: none;
 		}
 		&.maxi-tabs-control__button--selected {
-			background-color: #b0b0ff !important; // Darker light blue
 			svg path {
 				stroke: var(--maxi-secondary-color);
 			}
@@ -657,12 +654,10 @@ body.maxi-blocks--active
 	}
 
 	&-image {
-		background-color: #ffe0ff !important; // Light purple
 		svg path {
 			fill: var(--maxi-grey-dark);
 		}
 		&.maxi-tabs-control__button--selected {
-			background-color: #ffb0ff !important; // Darker light purple
 			svg path {
 				fill: var(--maxi-secondary-color);
 			}
@@ -670,12 +665,10 @@ body.maxi-blocks--active
 	}
 
 	&-video {
-		background-color: #ffffe0 !important; // Light yellow
 		svg path {
 			fill: var(--maxi-grey-dark);
 		}
 		&.maxi-tabs-control__button--selected {
-			background-color: #ffffb0 !important; // Darker light yellow
 			svg path {
 				fill: var(--maxi-secondary-color);
 			}
@@ -745,7 +738,6 @@ input.maxi-advanced-number-control__value {
 	}
 
 	&:active {
-		background-color: #b5b5ff !important; // Even darker blue
 	}
 }
 

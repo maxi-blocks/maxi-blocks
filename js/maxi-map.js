@@ -189,7 +189,9 @@ window.onload = () => {
 					[
 						{
 							properties: {
-								src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}`,
+								src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`,
+								async: true,
+								defer: true,
 							},
 						},
 						{

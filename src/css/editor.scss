@@ -50,19 +50,19 @@ h2.gx_error {
 .maxi-sidebar,
 .maxi-sidebar *:not(i),
 .maxi-popover *:not(i) {
-	color: var(--maxi-grey-11-color);
+	color: var(--maxi-grey-dark);
 	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 	font-size: 12px;
 	font-weight: normal;
 }
 
 .block-editor-inserter {
-	color: #fff !important;
+	color: var(--maxi-grey-dark) !important;
 	height: 100%;
 
 	&__toggle {
 		svg {
-			fill: #fff !important;
+			fill: var(--maxi-grey-dark) !important;
 		}
 	}
 }
@@ -142,12 +142,12 @@ body {
 			height: 30px;
 			box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 			border-radius: 0;
-			background: #fff;
+			background: var(--maxi-white);
 			visibility: visible;
 			transition: 0.3s;
 
 			svg {
-				fill: #007cba;
+				fill: var(--maxi-secondary-color);
 				width: 15px;
 				height: 15px;
 			}
@@ -187,7 +187,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	input[type='number'],
 	textarea,
 	select {
-		border-color: var(--maxi-accessibility-grey-1-color);
+		border-color: var(--maxi-accessibility-grey);
 
 		&:focus {
 			border-color: var(--maxi-secondary-color);
@@ -198,7 +198,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	button.maxi-color-control__palette-box,
 	button.maxi-tabs-control__button,
 	.maxi-components-button {
-		border-color: var(--maxi-accessibility-grey-1-color);
+		border-color: var(--maxi-grey-light);
 	}
 	button.maxi-color-control__palette-box--active,
 	button.maxi-color-control__palette-box:focus,
@@ -211,7 +211,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		outline: 2px solid transparent;
 	}
 	.maxi-base-control .components-maxi-control__reset-button {
-		border-color: var(--maxi-accessibility-grey-1-color);
+		border-color: var(--maxi-grey-light);
 	}
 }
 
@@ -226,23 +226,23 @@ body .toolbar-item__popover {
 		max-height: unset !important;
 		min-height: unset;
 		padding: 10px;
-		border: 1.5px solid var(--maxi-grey-1-color);
+		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 5px !important;
-		color: var(--maxi-black-1-color);
-		background-color: #fff;
+		color: var(--maxi-grey-dark);
+		background-color: var(--maxi-white);
 		font-size: 12px;
 		line-height: normal;
 
 		&:focus {
 			box-shadow: none;
 			outline: none;
-			border: 1.5px solid var(--maxi-grey-4-color);
+			border: 1.5px solid var(--maxi-grey-light);
 		}
 		&:hover {
-			color: var(--maxi-black-1-color);
+			color: var(--maxi-grey-dark);
 		}
 		&:active {
-			color: var(--maxi-black-1-color);
+			color: var(--maxi-grey-dark);
 		}
 	}
 	input[type='number'] {
@@ -270,7 +270,7 @@ body .toolbar-item__popover {
 			width: 14px;
 			height: 14px;
 			margin: auto;
-			color: var(--maxi-black-1-color);
+			color: var(--maxi-grey-dark);
 		}
 	}
 	.components-panel {
@@ -278,7 +278,7 @@ body .toolbar-item__popover {
 		border: none;
 	}
 	.components-simple-tooltip {
-		color: #fff;
+		color: var(--maxi-grey-dark);
 	}
 }
 
@@ -311,8 +311,8 @@ body .toolbar-item__popover {
 				background-color: transparent;
 			}
 			&__input {
-				color: #fff;
-				border-color: #80828a;
+				color: var(--maxi-grey-dark);
+				border-color: var(--maxi-grey-light);
 			}
 		}
 	}
@@ -323,7 +323,7 @@ body .toolbar-item__popover {
 		.components-select-control {
 			&__input {
 				&:disabled {
-					background-color: #f2f2f2 !important;
+					background-color: var(--maxi-grey-light) !important;
 				}
 			}
 		}
@@ -384,14 +384,14 @@ svg path#styleCardBoat_b,
 		right: -3px !important;
 		bottom: -1px !important;
 		left: -3px !important;
-		border: 2px solid var(--maxi-light-blue-3-color);
+		border: 2px solid var(--maxi-light-blue-alt);
 		border-radius: 0;
 		box-shadow: none !important;
 		opacity: 0;
 	}
 
 	&.maxi-block--repeater::after {
-		border-color: #7a00df;
+		border-color: var(--maxi-tertiary-color);
 	}
 
 	&.maxi-block--full-width::after {
@@ -541,12 +541,12 @@ html[dir='rtl'] {
 		height: 30px;
 		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 		border-radius: 0;
-		background: #fff;
+		background: var(--maxi-white);
 		visibility: visible;
 		transition: 0.3s;
 
 		svg {
-			fill: #007cba;
+			fill: var(--maxi-secondary-color);
 			width: 15px;
 			height: 15px;
 		}

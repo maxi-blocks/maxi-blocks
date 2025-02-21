@@ -5,25 +5,25 @@
 		font-family: Inter, sans-serif;
 		font-size: 14px;
 		letter-spacing: 0.5px;
-		color: var(--maxi-black-main-color);
+		color: var(--maxi-black);
 		background-color: var(--maxi-white);
 		margin-left: 10px;
-		border-radius: 3px;
+		border-radius: 10px;
 		float: right;
-		border: 2px solid var(--maxi-grey-9-color);
+		border: 2px solid var(--maxi-grey-light);
 		box-shadow: none !important;
-		padding: 5px 10px;
+		padding: 10px 7px;
 		justify-content: center;
 		min-height: 45px;
 		transition: all 0.5s;
 
 		svg {
-			width: 32px;
-			height: 32px;
+			width: 130px;
+			height: auto;
 			path,
 			g {
-				fill: var(--maxi-black-main-color);
-				stroke: var(--maxi-black-main-color);
+				fill: var(--maxi-black);
+				stroke: var(--maxi-black);
 				transition: all 0.5s;
 			}
 		}

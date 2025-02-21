@@ -546,7 +546,7 @@ html[dir='rtl'] {
 		transition: 0.3s;
 
 		svg {
-			fill: var(--maxi-secondary-color);
+			fill: #007cba;
 			width: 15px;
 			height: 15px;
 		}
@@ -613,4 +613,145 @@ body.maxi-blocks--active
 body.maxi-blocks--active
 	.editor-styles-wrapper.block-editor-writing-flow:after {
 	display: none;
+}
+
+.maxi-tabs-control__button {
+	&-none {
+		background-color: #ffe0e0 !important; // Light red
+		svg path {
+			fill: var(--maxi-grey-dark);
+		}
+		&.maxi-tabs-control__button--selected {
+			background-color: #ffb0b0 !important; // Darker light red
+			svg path {
+				fill: var(--maxi-secondary-color);
+			}
+		}
+	}
+
+	&-color {
+		background-color: #e0ffe0 !important; // Light green
+		svg path {
+			fill: var(--maxi-grey-dark);
+		}
+		&.maxi-tabs-control__button--selected {
+			background-color: #b0ffb0 !important; // Darker light green
+			svg path {
+				fill: var(--maxi-secondary-color);
+			}
+		}
+	}
+
+	&-gradient {
+		background-color: #e0e0ff !important; // Light blue
+		svg path {
+			stroke: var(--maxi-grey-dark);
+			fill: none;
+		}
+		&.maxi-tabs-control__button--selected {
+			background-color: #b0b0ff !important; // Darker light blue
+			svg path {
+				stroke: var(--maxi-secondary-color);
+			}
+		}
+	}
+
+	&-image {
+		background-color: #ffe0ff !important; // Light purple
+		svg path {
+			fill: var(--maxi-grey-dark);
+		}
+		&.maxi-tabs-control__button--selected {
+			background-color: #ffb0ff !important; // Darker light purple
+			svg path {
+				fill: var(--maxi-secondary-color);
+			}
+		}
+	}
+
+	&-video {
+		background-color: #ffffe0 !important; // Light yellow
+		svg path {
+			fill: var(--maxi-grey-dark);
+		}
+		&.maxi-tabs-control__button--selected {
+			background-color: #ffffb0 !important; // Darker light yellow
+			svg path {
+				fill: var(--maxi-secondary-color);
+			}
+		}
+	}
+}
+
+// Number input field
+input.maxi-advanced-number-control_value,
+input.maxi-advanced-number-control__value {
+	border: 1.5px solid var(--maxi-grey-light) !important;
+	border-radius: 5px 0 0 5px !important;
+	height: 31px !important;
+	padding: 0 8px !important;
+	width: 55px !important;
+
+	&:hover {
+		border-color: var(--maxi-grey-dark) !important;
+	}
+
+	&:focus {
+		border-color: var(--maxi-secondary-color) !important;
+		outline: none !important;
+	}
+}
+
+// Unit selector
+.maxi-base-control.maxi-dimensions-control__units {
+	select {
+		border: 1.5px solid var(--maxi-grey-light) !important;
+		border-radius: 0 5px 5px 0px !important;
+		height: 31px !important;
+		padding: 0 8px !important;
+		min-width: 45px !important;
+		cursor: pointer !important;
+
+		&:hover {
+			border-color: var(--maxi-grey-dark) !important;
+		}
+
+		&:focus {
+			border-color: var(--maxi-secondary-color) !important;
+			outline: none !important;
+		}
+	}
+}
+
+// Reset button
+.maxi-components-button.maxi-reset-button {
+	width: 31px !important;
+	height: 31px !important;
+	padding: 0 !important;
+	margin-left: 0px !important;
+	border-radius: 5px !important;
+
+	svg {
+		width: 14px !important;
+		height: 14px !important;
+		fill: var(--maxi-grey) !important;
+	}
+
+	&:hover {
+		border-color: var(--maxi-grey-dark) !important;
+		svg {
+			fill: var(--maxi-secondary-color) !important;
+		}
+	}
+
+	&:active {
+		background-color: #b5b5ff !important; // Even darker blue
+	}
+}
+
+// Field wrapper
+.maxi-base-control__field {
+	display: flex !important;
+	align-items: center !important;
+	gap: 0 !important;
 }

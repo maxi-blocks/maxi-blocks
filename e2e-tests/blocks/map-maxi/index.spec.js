@@ -14,6 +14,7 @@ import {
 	openPreviewPage,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	openSidebarTab,
 } from '../../utils';
 import getMapContainer from './utils/getMapContainer';
 import roundMarkersCoords from './utils/roundMarkersCoords';
@@ -178,6 +179,55 @@ describe('Map Maxi', () => {
 
 		await popupTest(map);
 	}, 30000); // Increase timeout for this specific test
+
+	it('Map Maxi OpenStreetMap types work correctly', async () => {
+		// Wait for the map block to be fully loaded
+		await page.waitForSelector('.maxi-map-block');
+
+		// Open the sidebar and configure map tab
+		const accordionTab = await openSidebarTab(
+			page,
+			'style',
+			'configure map'
+		);
+
+		// Get the type select element
+		const typeSelect = await accordionTab.$(
+			'.maxi-map-control__type select'
+		);
+
+		// Test humanitarian type
+		await typeSelect.select('humanitarian');
+		await page.waitForTimeout(1500);
+		let attributes = await getAttributes('map-type');
+		expect(attributes).toBe('humanitarian');
+		let map = await getMapContainer(page);
+		expect(
+			await map.$eval('.leaflet-tile-container', el => el.innerHTML)
+		).toMatchSnapshot('OpenStreetMap humanitarian type');
+
+		// Test cycle type
+		// Open the sidebar and configure map tab
+		const accordionTab2 = await openSidebarTab(
+			page,
+			'style',
+			'configure map'
+		);
+
+		// Get the type select element
+		const typeSelect2 = await accordionTab2.$(
+			'.maxi-map-control__type select'
+		);
+
+		await typeSelect2.select('cycle');
+		await page.waitForTimeout(1500);
+		attributes = await getAttributes('map-type');
+		expect(attributes).toBe('cycle');
+		map = await getMapContainer(page);
+		expect(
+			await map.$eval('.leaflet-tile-container', el => el.innerHTML)
+		).toMatchSnapshot('OpenStreetMap cycle type');
+	}, 30000);
 
 	it('Map Maxi Custom CSS', async () => {
 		await expect(await addCustomCSS(page)).toMatchSnapshot();

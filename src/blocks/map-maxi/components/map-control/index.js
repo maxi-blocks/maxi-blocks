@@ -21,7 +21,59 @@ const MapControl = props => {
 		'map-provider': mapProvider,
 		'map-min-zoom': mapMinZoom,
 		'map-max-zoom': mapMaxZoom,
+		'map-type': mapType,
 	} = attributes;
+
+	const defaultMapType =
+		mapProvider === 'googlemaps' ? 'roadmap' : 'standard';
+	const currentMapType =
+		typeof mapType !== 'undefined' ? mapType : defaultMapType;
+
+	const getMapTypeOptions = () => {
+		if (mapProvider === 'googlemaps') {
+			return [
+				{
+					label: __('Roadmap', 'maxi-blocks'),
+					value: 'roadmap',
+				},
+				{
+					label: __('Satellite', 'maxi-blocks'),
+					value: 'satellite',
+				},
+				{
+					label: __('Hybrid', 'maxi-blocks'),
+					value: 'hybrid',
+				},
+				{
+					label: __('Terrain', 'maxi-blocks'),
+					value: 'terrain',
+				},
+			];
+		}
+
+		return [
+			{
+				label: __('Standard', 'maxi-blocks'),
+				value: 'standard',
+			},
+			{
+				label: __('Humanitarian', 'maxi-blocks'),
+				value: 'humanitarian',
+			},
+			{
+				label: __('Cycle Map', 'maxi-blocks'),
+				value: 'cycle',
+			},
+			{
+				label: __('Transport', 'maxi-blocks'),
+				value: 'transport',
+			},
+		];
+	};
+
+	const handleMapTypeChange = val => {
+		onChange({ 'map-type': val });
+	};
 
 	return (
 		<div className='maxi-map-control'>
@@ -54,7 +106,24 @@ const MapControl = props => {
 						value: 'googlemaps',
 					},
 				]}
-				onChange={val => onChange({ 'map-provider': val })}
+				onChange={val => {
+					// Reset map type when changing provider
+					const newMapType =
+						val === 'googlemaps' ? 'roadmap' : 'standard';
+					onChange({
+						'map-provider': val,
+						'map-type': newMapType,
+					});
+				}}
+			/>
+			<SelectControl
+				__nextHasNoMarginBottom
+				className='maxi-map-control__type'
+				label={__('Map type', 'maxi-blocks')}
+				value={currentMapType}
+				options={getMapTypeOptions()}
+				onChange={handleMapTypeChange}
+				key={`map-type-${mapProvider}-${currentMapType}`}
 			/>
 			<AdvancedNumberControl
 				className='maxi-map-control__min-zoom'

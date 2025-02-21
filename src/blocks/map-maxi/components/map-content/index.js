@@ -21,7 +21,7 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.gridlayer.googlemutant';
 
-const GoogleLayer = ({ apiKey }) => {
+const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 	const map = useMap();
 
 	useEffect(() => {
@@ -34,7 +34,7 @@ const GoogleLayer = ({ apiKey }) => {
 			script.onload = () => {
 				L.gridLayer
 					.googleMutant({
-						type: 'roadmap',
+						type: mapType,
 						maxZoom: 20,
 					})
 					.addTo(map);
@@ -43,7 +43,7 @@ const GoogleLayer = ({ apiKey }) => {
 		} else {
 			L.gridLayer
 				.googleMutant({
-					type: 'roadmap',
+					type: mapType,
 					maxZoom: 20,
 				})
 				.addTo(map);
@@ -54,9 +54,21 @@ const GoogleLayer = ({ apiKey }) => {
 				document.head.removeChild(script);
 			}
 		};
-	}, [map, apiKey]);
+	}, [map, apiKey, mapType]);
 
 	return null;
+};
+
+const getOSMTileLayer = mapType => {
+	const tileUrls = {
+		standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		humanitarian: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+		cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
+		transport:
+			'https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
+	};
+
+	return tileUrls[mapType] || tileUrls.standard;
 };
 
 const MapContent = props => {
@@ -76,6 +88,7 @@ const MapContent = props => {
 		'map-max-zoom': mapMaxZoom,
 		'map-min-zoom': mapMinZoom,
 		'map-zoom': mapZoom,
+		'map-type': mapType = 'roadmap',
 	} = attributes;
 
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
@@ -131,11 +144,11 @@ const MapContent = props => {
 						whenReady={map => resizeMap(map.target)}
 					>
 						{isGoogleMaps ? (
-							<GoogleLayer apiKey={apiKey} />
+							<GoogleLayer apiKey={apiKey} mapType={mapType} />
 						) : (
 							<TileLayer
 								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-								url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+								url={getOSMTileLayer(mapType)}
 							/>
 						)}
 						<MapEventsListener

@@ -73,6 +73,19 @@ window.onload = () => {
 			});
 	};
 
+	const getOSMTileLayer = mapType => {
+		const tileUrls = {
+			standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			humanitarian:
+				'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+			cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
+			transport:
+				'https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
+		};
+
+		return tileUrls[mapType] || tileUrls.standard;
+	};
+
 	const initializeMaps = () => {
 		mapItems.forEach(item => {
 			const {
@@ -90,6 +103,7 @@ window.onload = () => {
 				'map-min-zoom': mapMinZoom,
 				'map-max-zoom': mapMaxZoom,
 				ariaLabels,
+				'map-type': mapType,
 			} = item;
 
 			const map = L.map(`maxi-map-block__container-${uniqueID}`, {
@@ -106,17 +120,14 @@ window.onload = () => {
 			if (isCurrentMapGoogle && apiKey && L.gridLayer.googleMutant) {
 				L.gridLayer
 					.googleMutant({
-						type: 'roadmap',
+						type: mapType || 'roadmap',
 					})
 					.addTo(map);
 			} else {
-				L.tileLayer(
-					'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-					{
-						attribution:
-							'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-					}
-				).addTo(map);
+				L.tileLayer(getOSMTileLayer(mapType || 'standard'), {
+					attribution:
+						'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				}).addTo(map);
 			}
 
 			const markerIcon = L.divIcon({

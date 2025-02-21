@@ -39,7 +39,7 @@
 		.components-custom-gradient-picker__gradient-bar {
 			margin-top: 0;
 			margin-bottom: 8px;
-			border: 1px solid var(--maxi-grey-1-color);
+			border: 1px solid var(--maxi-grey-light);
 		}
 
 		.components-custom-gradient-picker__ui-line {
@@ -52,9 +52,9 @@
 		transition: 0.3s ease all;
 		cursor: pointer;
 		transform-origin: center;
-		padding: 7px 9px;
+		padding: 11px 9px;
 		border-right: 1px solid var(--maxi-secondary-color);
-		background-color: var(--maxi-white-4-color);
+		background-color: var(--maxi-white);
 		text-align: center;
 		border-radius: 5px 0px 0px 5px !important;
 
@@ -72,7 +72,7 @@
 			display: none !important;
 			transition: 0.3s ease all;
 			path {
-				fill: #464a53;
+				fill: var(--maxi-grey-dark);
 			}
 		}
 	}
@@ -95,7 +95,7 @@
 		transition: all 0.5s;
 		cursor: pointer;
 		padding-right: 5px;
-		background-color: #fff;
+		background-color: var(--maxi-white);
 
 		&__wrapper {
 			width: 100%;
@@ -108,7 +108,7 @@
 		&__id {
 			&:before {
 				content: counter(list-items-counter);
-				background: var(--maxi-light-blue-2-color);
+				background: var(--maxi-pastel-green);
 				display: block;
 				padding: 7px 10px 7px 8px;
 				border-right: 1px solid var(--maxi-secondary-color);
@@ -140,7 +140,7 @@
 				transform: translate(-50%, -50%) rotate(45deg);
 				width: 12px;
 				height: 2px;
-				background-color: #fff;
+				background-color: var(--maxi-white);
 			}
 
 			&:after {

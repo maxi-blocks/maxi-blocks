@@ -20,13 +20,13 @@
 			justify-content: center;
 			margin: 0;
 			padding: 3px;
-			border: 1.5px solid var(--maxi-grey-1-color);
+			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			cursor: pointer;
 
 			&[aria-pressed='true'],
 			&:hover {
-				background: var(--maxi-light-blue-2-color);
+				background: var(--maxi-light-blue);
 
 				.clip-path-defaults__clip-path {
 					background-color: var(--maxi-secondary-color);

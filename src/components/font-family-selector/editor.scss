@@ -20,7 +20,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 	.maxi-font-family-selector__control {
 		&__menu {
-			border: 1.5px solid var(--maxi-grey-1-color);
+			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 0;
 			box-shadow: none;
 		}
@@ -35,7 +35,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			}
 		}
 		&__control {
-			border-color: var(--maxi-grey-1-color);
+			border-color: var(--maxi-grey-light);
 			padding: 8px;
 			border-radius: 5px;
 			min-height: unset;
@@ -101,7 +101,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			width: 2px;
 			height: 80%;
 			margin: auto 2px;
-			background-color: var(--maxi-grey-1-color);
+			background-color: var(--maxi-grey-light);
 		}
 	}
 }

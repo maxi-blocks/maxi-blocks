@@ -53,7 +53,7 @@
 		.maxi-tabs-control__button {
 			padding: 8.5px;
 			margin-right: 5px;
-			border: 1.5px solid var(--maxi-grey-1-color);
+			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			&:last-child {
 				margin-right: 0;
@@ -61,8 +61,8 @@
 		}
 
 		.maxi-tabs-control__button[aria-pressed='true'] {
-			background-color: var(--maxi-light-blue-2-color) !important;
-			border-color: var(--maxi-light-blue-2-color) !important;
+			background-color: var(--maxi-light-blue) !important;
+			border-color: var(--maxi-light-blue) !important;
 		}
 		.maxi-tabs-control__button svg:not(.maxi-tabs-control__notification) {
 			height: 100%;
@@ -80,7 +80,7 @@
 		.maxi-scroll-unique-control-slider {
 			width: 2px;
 			height: 400px;
-			background-color: var(--maxi-light-blue-2-color) !important;
+			background-color: var(--maxi-light-blue) !important;
 			border-radius: 5px;
 			padding: 20px 0;
 			margin: 0 20px;
@@ -98,7 +98,7 @@
 				justify-content: center;
 				cursor: grab;
 				outline: none;
-				box-shadow: 0 2px 6px var(--maxi-light-blue-2-color) !important;
+				box-shadow: 0 2px 6px var(--maxi-light-blue) !important;
 				transition: transform 0.1s ease;
 				transform: translateX(-50%);
 				padding: 20px !important;
@@ -163,14 +163,14 @@
 				.maxi-tabs-control__button {
 					padding: 8px;
 					margin-right: 5px;
-					border: 1.5px solid var(--maxi-grey-1-color) !important;
+					border: 1.5px solid var(--maxi-grey-light) !important;
 					border-radius: 4px;
 					font-weight: 400;
 				}
 
 				.maxi-tabs-control__button[aria-pressed='true'] {
-					background-color: var(--maxi-light-blue-2-color) !important;
-					border-color: var(--maxi-light-blue-2-color) !important;
+					background-color: var(--maxi-light-blue) !important;
+					border-color: var(--maxi-light-blue) !important;
 					font-weight: 700;
 				}
 			}

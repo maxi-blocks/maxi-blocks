@@ -8,12 +8,12 @@
 		}
 
 		& > div > div > div {
-			border-color: var(--maxi-grey-1-color);
+			border-color: var(--maxi-grey-light);
 		}
 	}
 
 	&__button {
-		background: var(--maxi-light-blue-2-color);
+		background: var(--maxi-light-blue);
 		color: var(--maxi-black-1-color) !important;
 		&:hover {
 			background: var(--maxi-white-3-color);

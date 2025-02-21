@@ -738,7 +738,7 @@
 							sans-serif !important;
 						font-size: 12px;
 						font-weight: normal;
-						border: 1px solid var(--maxi-grey-1-color);
+						border: 1px solid var(--maxi-grey-light);
 						border-radius: 0;
 						text-align: center;
 						height: 31px;
@@ -1079,8 +1079,8 @@
 						height: 31px;
 						padding: 6px 18px;
 						border: none;
-						border-bottom: 1px solid var(--maxi-grey-1-color);
-						border-right: 1px solid var(--maxi-grey-1-color);
+						border-bottom: 1px solid var(--maxi-grey-light);
+						border-right: 1px solid var(--maxi-grey-light);
 						border-radius: 0;
 						margin-right: 0;
 						color: #081219;
@@ -1479,9 +1479,9 @@
 							width: 100%;
 							height: 31px;
 							padding: 6px 8px;
-							border-bottom: 1px solid var(--maxi-grey-1-color);
-							border-top: 1px solid var(--maxi-grey-1-color);
-							border-right: 1px solid var(--maxi-grey-1-color);
+							border-bottom: 1px solid var(--maxi-grey-light);
+							border-top: 1px solid var(--maxi-grey-light);
+							border-right: 1px solid var(--maxi-grey-light);
 							border-radius: 0;
 							box-shadow: none;
 							color: var(--maxi-black-1-color);
@@ -1710,12 +1710,12 @@
 					}
 					&:first-child {
 						a {
-							border-left: 1px solid var(--maxi-grey-1-color);
+							border-left: 1px solid var(--maxi-grey-light);
 						}
 					}
 					&:last-child {
 						a {
-							border-right: 1px solid var(--maxi-grey-1-color);
+							border-right: 1px solid var(--maxi-grey-light);
 						}
 					}
 				}
@@ -1955,7 +1955,7 @@
 			margin: 0;
 			.ais-Stats {
 				margin-bottom: 0;
-				border-bottom: 1px solid var(--maxi-grey-1-color);
+				border-bottom: 1px solid var(--maxi-grey-light);
 			}
 			.ais-Stats-text {
 				color: #081219;
@@ -2633,7 +2633,7 @@ html[dir='rtl'] {
 		}
 	}
 	.maxi-style-card-settings .maxi-tabs-control__button:first-child {
-		border-right: 1px solid var(--maxi-grey-1-color) !important;
+		border-right: 1px solid var(--maxi-grey-light) !important;
 	}
 	.maxi-style-cards__quick-color-presets__reset {
 		left: 8px;

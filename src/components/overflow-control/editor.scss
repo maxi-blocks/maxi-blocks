@@ -22,7 +22,7 @@
 
 		button {
 			background: #fff;
-			border: 1.5px solid var(--maxi-grey-1-color);
+			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			width: 24px;
 			height: 24px;
@@ -45,7 +45,7 @@
 			}
 
 			&[aria-pressed='true'] {
-				background: var(--maxi-light-blue-2-color) !important;
+				background: var(--maxi-light-blue) !important;
 				svg {
 					path {
 						fill: var(--maxi-secondary-color);

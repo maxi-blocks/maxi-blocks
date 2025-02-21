@@ -10,7 +10,7 @@
 		justify-content: center;
 		width: calc(100% / 8.5);
 		height: 32px;
-		border: 1.5px solid var(--maxi-grey-1-color);
+		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 5px;
 		color: var(--maxi-grey-4-color) !important;
 		background-color: #fff;
@@ -27,7 +27,7 @@
 			}
 		}
 		&[aria-pressed='true'] {
-			background-color: var(--maxi-light-blue-2-color);
+			background-color: var(--maxi-light-blue);
 			border: none;
 			color: var(--maxi-secondary-color) !important;
 			font-weight: 700;

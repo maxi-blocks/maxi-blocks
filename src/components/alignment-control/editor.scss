@@ -14,11 +14,11 @@
 		padding: 8px !important;
 		width: 22.5%;
 		margin-right: 7px;
-		border: 1.5px solid var(--maxi-grey-1-color);
+		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 4px;
 	}
 	.maxi-tabs-control__button[aria-pressed='true'] {
-		background-color: var(--maxi-light-blue-2-color) !important;
+		background-color: var(--maxi-light-blue) !important;
 		border: none !important;
 	}
 }

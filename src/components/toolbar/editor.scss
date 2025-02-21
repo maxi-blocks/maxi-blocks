@@ -45,7 +45,7 @@
 			transform: translateX(-50%);
 			box-shadow: 0px 6px 6px 0 rgb(0 0 0 / 16%);
 			border-radius: 0;
-			border: 1px solid var(--maxi-grey-1-color);
+			border: 1px solid var(--maxi-grey-light);
 
 			&.pinned--true .maxi-breadcrumbs {
 				transform: scaleX(1);
@@ -135,7 +135,7 @@
 				padding-right: 0;
 				background-color: #fff;
 				border-radius: 0;
-				border-right: 1px solid var(--maxi-grey-1-color);
+				border-right: 1px solid var(--maxi-grey-light);
 				cursor: pointer;
 
 				&.toolbar-item__more-settings {
@@ -502,7 +502,7 @@ body .toolbar-item__popover {
 
 	.components-popover__content {
 		background-color: #fff;
-		border: 1px solid var(--maxi-grey-1-color);
+		border: 1px solid var(--maxi-grey-light);
 		border-radius: 0;
 		min-width: auto;
 		padding: 8px 8px 0;
@@ -586,7 +586,7 @@ body .toolbar-item__popover {
 	}
 
 	input[type='number'] {
-		border: 1px solid var(--maxi-grey-1-color) !important;
+		border: 1px solid var(--maxi-grey-light) !important;
 		color: var(--maxi-grey-5-color) !important;
 		flex: 2;
 
@@ -746,7 +746,7 @@ body.rtl .toolbar-item__popover {
 html[dir='rtl'] {
 	.toolbar-item__more-settings {
 		border-left: unset !important;
-		border-right: 1px solid var(--maxi-grey-1-color) !important;
+		border-right: 1px solid var(--maxi-grey-light) !important;
 	}
 	.toolbar-block-custom-label {
 		left: unset !important;

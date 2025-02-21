@@ -253,7 +253,7 @@
 				}
 
 				&[aria-pressed='true'] {
-					background: var(--maxi-light-blue-2-color) !important;
+					background: var(--maxi-light-blue) !important;
 					svg {
 						path {
 							fill: var(--maxi-secondary-color);
@@ -344,7 +344,7 @@
 		.maxi-tabs-control__button {
 			padding: 8px 8px;
 			margin-right: 5px;
-			border: 1.5px solid var(--maxi-grey-1-color);
+			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			transition: all 0.5s;
 			&:last-child {
@@ -353,8 +353,8 @@
 		}
 
 		.maxi-tabs-control__button[aria-pressed='true'] {
-			background-color: var(--maxi-light-blue-2-color) !important;
-			border-color: var(--maxi-light-blue-2-color) !important;
+			background-color: var(--maxi-light-blue) !important;
+			border-color: var(--maxi-light-blue) !important;
 		}
 
 		.maxi-tabs-control__button {

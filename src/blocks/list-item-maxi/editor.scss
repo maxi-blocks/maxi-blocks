@@ -1,14 +1,14 @@
 .maxi-list-item-block {
-	outline: 1.5px dashed var(--maxi-light-blue-3-color) !important;
+	outline: 2px dashed var(--maxi-mid-green) !important;
 
 	&__has-text {
-		outline: 1.5px dashed transparent !important;
+		outline: 2px dashed transparent !important;
 
 		&:hover {
-			outline: 1.5px dashed var(--maxi-grey-7-color) !important;
+			outline: 1.5px solid var(--maxi-tertiary-color) !important;
 		}
 		&.is-selected {
-			outline: 1.5px dashed var(--maxi-light-blue-3-color) !important;
+			outline: 1.5px solid var(--maxi-tertiary-color) !important;
 		}
 	}
 
@@ -27,5 +27,38 @@
 	}
 	&::after {
 		display: none;
+	}
+}
+
+.maxi-block {
+	&.is-selected {
+		outline: 1.5px dashed var(--maxi-mid-green) !important;
+
+		&:hover {
+			outline: 1.5px solid var(--maxi-tertiary-color) !important;
+		}
+	}
+
+	&--backend {
+		&:hover {
+			outline: 1.5px solid var(--maxi-tertiary-colory) !important;
+		}
+	}
+}
+
+.maxi-text-block {
+	&__has-text {
+		outline: 1.5px dashed transparent !important;
+
+		&:hover {
+			outline: 1.5px dashed var(--maxi-primary-color) !important;
+		}
+		&.is-selected {
+			outline: 1.5px dashed var(--maxi-primary-color) !important;
+		}
+	}
+
+	.rich-text:focus * {
+		background-color: transparent !important;
 	}
 }

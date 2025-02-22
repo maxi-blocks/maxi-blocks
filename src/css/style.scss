@@ -108,3 +108,31 @@
 body.maxi-blocks--active .maxi-block--use-sc .entry-content:has(.maxi-block) {
 	margin-block-start: 0;
 }
+
+// Override WordPress core destructive button styles
+.components-button.is-destructive {
+	--wp-components-color-accent: var(--maxi-orange-red) !important;
+	--wp-components-color-accent-darker-10: var(
+		--maxi-secondary-color
+	) !important;
+	--wp-components-color-accent-darker-20: var(
+		--maxi-tertiary-color
+	) !important;
+}
+
+.components-button.is-destructive:not(.is-primary):not(.is-secondary):not(.is-tertiary):not(.is-link) {
+	color: var(--maxi-orange-red) !important;
+
+	&:hover:not(:disabled) {
+		color: var(--maxi-tertiary-color) !important;
+	}
+
+	&:focus:not(:disabled) {
+		box-shadow: 0 0 0 var(--wp-admin-border-width-focus)
+			var(--maxi-orange-red) !important;
+	}
+
+	&:active:not(:disabled) {
+		background: var(--maxi-grey-light) !important;
+	}
+}

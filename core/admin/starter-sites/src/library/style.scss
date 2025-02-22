@@ -12,7 +12,7 @@
 	--maxi-grey-9-color: #dbdde6;
 	--maxi-grey-10-color: #e1e2ea;
 	--maxi-black-1-color: #141516;
-	--maxi-black-2-color: #151617;
+	--maxi-black: #151617;
 	--maxi-white-1-color: #f1f1f1;
 	--maxi-white-2-color: #f9f9f9;
 	--maxi-white-3-color: #fcfcfc;
@@ -269,7 +269,7 @@
 				align-items: center;
 				justify-content: center;
 				width: 100%;
-				color: var(--maxi-black-2-color) !important;
+				color: var(--maxi-black) !important;
 				background: var(--maxi-light-blue-1-color);
 				border: 1px dashed var(--maxi-grey-9-color);
 				padding: 2rem;
@@ -310,7 +310,7 @@
 			width: 100%;
 			height: 66px;
 			flex: 1;
-			color: var(--maxi-black-2-color) !important;
+			color: var(--maxi-black) !important;
 			background: var(--maxi-light-blue-1-color);
 			padding: 5px;
 			border: 1px dashed var(--maxi-grey-9-color);

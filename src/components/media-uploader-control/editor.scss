@@ -17,25 +17,25 @@
 		display: block;
 		text-align: center;
 		box-shadow: none !important;
-		border: 1px solid var(--maxi-grey-9-color);
-		border-radius: 0;
-		color: var(--maxi-black-2-color);
+		border: 1.5px solid var(--maxi-grey-light);
+		border-radius: 5px;
+		color: var(--maxi-grey-dark);
 		transition: all 0.5s;
 		&:hover {
-			border: 1px solid #dddfe2;
-			color: #464a53;
-			background-color: #f2f2f2;
+			border: 1.5px solid var(--maxi-primary-color);
+			color: var(--maxi-black);
+			background-color: var(--maxi-pastel-green);
 		}
 	}
 	&__toggle {
 		display: block;
 		width: 100%;
 		min-height: 90px;
-		background: var(--maxi-light-blue-1-color);
-		border: 1px dashed var(--maxi-grey-9-color);
-		color: var(--maxi-black-2-color) !important;
+		background: var(--maxi-whisper-green);
+		border: 1.5px dashed var(--maxi-grey-light);
+		border-radius: 10px;
+		color: var(--maxi-grey-dark) !important;
 		line-height: 20px;
-		border-radius: 0;
 		padding: 8px 0;
 		text-align: center;
 		margin-right: 0px !important;

@@ -2,7 +2,7 @@
 	.maxi-base-control {
 		flex: 1;
 		&__help {
-			color: #999;
+			color: var(--maxi-grey);
 			font-size: 12px;
 		}
 		.maxi-tabs-control__button--selected svg path {

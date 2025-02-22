@@ -363,13 +363,13 @@ svg path#styleCardBoat_a {
 svg path#styleCardMenu_b,
 svg path#styleCardBoat_b,
 #styleCardBoat_b {
-	stroke: #081219;
+	stroke: var(--maxi-grey-dark);
 }
 .maxi-responsive-close {
 	background-color: rgba(var(--maxi-active-sc-color), 1);
 }
 .maxi-responsive-close:hover svg g {
-	stroke: #fff;
+	stroke: var(--maxi-white);
 }
 
 /*******************************

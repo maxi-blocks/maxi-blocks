@@ -12,14 +12,14 @@
 		height: 32px;
 		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 5px;
-		color: var(--maxi-grey-4-color) !important;
-		background-color: #fff;
+		color: var(--maxi-grey) !important;
+		background-color: var(--maxi-white);
 		transition: all 0.5s;
 		font-weight: 700;
 		margin-right: 7px;
 
 		&:hover {
-			background-color: var(--maxi-grey-3-color);
+			background-color: var(--maxi-grey-light);
 		}
 		&:last-child {
 			.maxi-accordion-control__item__button {

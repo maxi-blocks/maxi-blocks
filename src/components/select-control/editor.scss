@@ -9,8 +9,8 @@ body.maxi-blocks--active select.maxi-select-control__input {
 	border: 1.5px solid var(--maxi-grey-light);
 	border-radius: 5px !important;
 	margin: 0;
-	color: var(--maxi-grey-5-color);
-	background: #fff
+	color: var(--maxi-grey);
+	background: var(--maxi-white)
 		url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>')
 		no-repeat right 8px top 50%;
 	background-size: 9px 9px;
@@ -23,7 +23,7 @@ body.maxi-blocks--active select.maxi-select-control__input {
 	opacity: 1;
 	outline: 0;
 	svg {
-		fill: var(--maxi-grey-4-color);
+		fill: var(--maxi-grey);
 	}
 
 	.maxi-option {
@@ -51,9 +51,9 @@ body.maxi-blocks--active {
 				top: -8px;
 				left: 8px;
 				font-size: 10px !important;
-				color: #8e8c8c;
+				color: var(--maxi-grey);
 				font-style: normal;
-				background: #fff;
+				background: var(--maxi-white);
 				padding: 0 5px;
 				pointer-events: none;
 				box-sizing: border-box;

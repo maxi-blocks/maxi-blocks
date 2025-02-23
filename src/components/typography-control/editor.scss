@@ -6,7 +6,7 @@
 			font-size: 12px;
 		}
 		.maxi-tabs-control__button--selected svg path {
-			fill: var(--maxi-secondary-color);
+			fill: var(--maxi-whisper-green);
 		}
 		.maxi-tabs-control__button {
 			margin-right: 5px;
@@ -15,8 +15,8 @@
 			transition: all 0.5s;
 		}
 		.maxi-tabs-control__button[aria-pressed='true'] {
-			background-color: var(--maxi-light-blue) !important;
-			border-color: var(--maxi-light-blue) !important;
+			background-color: var(--maxi-whisper-green) !important;
+			border-color: var(--maxi-mid-green) !important;
 		}
 	}
 

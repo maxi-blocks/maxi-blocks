@@ -21,7 +21,7 @@
 		margin-top: 2px;
 
 		button {
-			background: #fff;
+			background: var(--maxi-white);
 			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			width: 24px;
@@ -57,7 +57,7 @@
 				width: 14px;
 				height: 14px;
 				path {
-					fill: var(--maxi-grey-4-color);
+					fill: var(--maxi-grey);
 				}
 			}
 		}

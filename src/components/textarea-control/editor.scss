@@ -20,18 +20,18 @@
 	}
 
 	&:focus {
-		border-color: #cbcdcf;
+		border-color: var(--maxi-grey-light);
 	}
 	// Use opacity to work in various editor styles.
 	&::-webkit-input-placeholder {
-		color: rgba(#1e1e1e, 0.62);
+		color: rgba(var(--maxi-grey-dark), 0.62);
 	}
 	&::-moz-placeholder {
 		opacity: 1; // Necessary because Firefox reduces this from 1.
-		color: rgba(#1e1e1e, 0.62);
+		color: rgba(var(--maxi-grey-dark), 0.62);
 	}
 	&:-ms-input-placeholder {
-		color: rgba(#1e1e1e, 0.62);
+		color: rgba(var(--maxi-grey-dark), 0.62);
 	}
 
 	&--disable-resize {

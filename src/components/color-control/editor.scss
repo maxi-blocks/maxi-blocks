@@ -148,20 +148,20 @@
 			border-radius: 50%;
 
 			&--active {
-				background: var(--maxi-light-blue);
+				background: var(--maxi-pastel-green);
 				border: 1.5px solid var(--maxi-secondary-color);
 				box-shadow: none;
 				outline: none;
 
 				&:hover {
-					background: var(--maxi-light-blue);
-					border-color: var(--maxi-light-blue);
+					background: var(--maxi-whisper-green);
+					border-color: var(--maxi-secondary-color) !important;
 				}
 			}
 
 			&:not(&--active):hover {
 				background: var(--maxi-white);
-				border-color: var(--maxi-grey-dark);
+				border-color: var(--maxi-secondary-color);
 			}
 		}
 

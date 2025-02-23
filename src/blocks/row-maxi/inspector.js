@@ -82,16 +82,22 @@ const Inspector = props => {
 								isPrimary
 								items={[
 									{
-										label: __(
-											'Column picker',
-											'maxi-blocks'
-										),
 										content: (
-											<ResponsiveTabsControl
-												breakpoint={deviceType}
-											>
-												<ColumnPicker {...props} />
-											</ResponsiveTabsControl>
+											<>
+												<div className='maxi-row-block__title'>
+													<span>
+														{__(
+															'Column picker',
+															'maxi-blocks'
+														)}
+													</span>
+												</div>
+												<ResponsiveTabsControl
+													breakpoint={deviceType}
+												>
+													<ColumnPicker {...props} />
+												</ResponsiveTabsControl>
+											</>
 										),
 										ignoreIndicator: [
 											`row-pattern-${deviceType}`,

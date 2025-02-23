@@ -11,7 +11,7 @@
 	&__content,
 	> ol,
 	> ul {
-		outline: 1.5px dashed var(--maxi-light-blue-3-color) !important;
+		outline: 1.5px dashed var(--maxi-light-blue-alt) !important;
 
 		a.maxi-text-block--link {
 			text-decoration-skip-ink: auto;
@@ -34,7 +34,7 @@
 			.maxi-text-block__content,
 			> ol,
 			> ul {
-				outline: 1.5px dashed var(--maxi-light-blue-3-color) !important;
+				outline: 1.5px dashed var(--maxi-light-blue-alt) !important;
 			}
 		}
 		.maxi-text-block__content,

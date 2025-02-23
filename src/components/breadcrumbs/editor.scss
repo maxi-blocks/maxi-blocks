@@ -28,7 +28,7 @@
 	}
 
 	&--repeater {
-		background: #7a00df;
+		background: var(--maxi-tertiary-color);
 	}
 
 	&__item {
@@ -44,7 +44,7 @@
 		.maxi-breadcrumbs__item__content {
 			text-decoration: underline;
 			text-underline-offset: 3px;
-			text-decoration-color: rgba(255, 255, 255, 0.6);
+			text-decoration-color: rgba(var(--maxi-white), 0.6);
 			top: -1px;
 			position: relative;
 		}
@@ -52,12 +52,12 @@
 		&:not(:last-child):after {
 			content: '>';
 			padding: 0 4px;
-			color: #fff;
+			color: var(--maxi-white);
 		}
 		&__content {
 			text-decoration: underline;
 			cursor: pointer;
-			color: #fff;
+			color: var(--maxi-white);
 			text-decoration: none;
 			transition: all 0.5s;
 

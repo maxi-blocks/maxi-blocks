@@ -112,6 +112,42 @@
 			&.maxi-accordion-control__item__button {
 				padding-left: 25px; /* Add extra padding for the dot */
 			}
+
+			&.maxi-clip-path-control__handles-button {
+				&[aria-pressed='true'] {
+					background-color: var(--maxi-pastel-green);
+					border-color: var(--maxi-mid-green);
+					color: var(--maxi-black);
+				}
+				&:hover {
+					background-color: var(--maxi-whisper-green);
+				}
+			}
+
+			&.maxi-tabs-control__button-visual,
+			&.maxi-tabs-control__button-edit.points {
+				border: 1.5px solid var(--maxi-grey-light) !important;
+				&[aria-pressed='true'] {
+					background-color: var(--maxi-pastel-green) !important;
+					border-color: var(--maxi-mid-green) !important;
+					color: var(--maxi-black) !important;
+					font-weight: 700;
+				}
+				&:hover {
+					background-color: var(--maxi-whisper-green) !important;
+				}
+				&:last-child {
+					border: 1.5px solid var(--maxi-grey-light) !important;
+				}
+			}
+
+			&.maxi-tabs-control__button-edit.points[aria-pressed='true'],
+			&.maxi-tabs-control__button-visual[aria-pressed='true'] {
+				background-color: var(--maxi-pastel-green) !important;
+				border-color: var(--maxi-mid-green) !important;
+				color: var(--maxi-black) !important;
+				font-weight: 700;
+			}
 		}
 
 		&__notification {

@@ -10,7 +10,7 @@
 			&[aria-pressed='true'],
 			&:hover {
 				background-color: var(--maxi-pastel-green);
-				border: 1.5px solid var(--maxi-grey);
+				border: 1.5px solid var(--maxi-mid-green);
 				font-weight: 700;
 			}
 		}
@@ -61,9 +61,9 @@
 			width: 100%;
 			height: auto;
 			padding: 14px 8px;
-			border-bottom: 1px solid var(--maxi-grey-light);
-			border-top: 1px solid var(--maxi-grey-light);
-			border-right: 1px solid var(--maxi-grey-light);
+			border-bottom: 1.5px solid var(--maxi-grey-light);
+			border-top: 1.5px solid var(--maxi-grey-light);
+			border-right: 1.5px solid var(--maxi-grey-light);
 			border-radius: 0;
 			color: var(--maxi-grey-dark);
 			background-color: var(--maxi-white);
@@ -82,7 +82,7 @@
 				outline: none;
 			}
 			&:active {
-				background-color: var(--maxi-grey-light);
+				background-color: var(--maxi-mid-green);
 			}
 			&[aria-pressed='true'] {
 				color: var(--maxi-black);
@@ -161,7 +161,7 @@
 
 		&--nested {
 			background: var(--maxi-white);
-			border: 1px solid var(--maxi-secondary-color);
+			border: 1.5px solid var(--maxi-secondary-color);
 			padding: 25px 0 0;
 			margin-bottom: 8px;
 			border-radius: 5px;
@@ -175,8 +175,8 @@
 			&__box {
 				position: relative;
 				padding: 8px;
-				border-top: 1px solid var(--maxi-grey-light);
-				border-bottom: 8px solid var(--maxi-grey-light);
+				border-top: 1.5px solid var(--maxi-grey-light);
+				border-bottom: 1.5px solid var(--maxi-grey-light);
 				background-color: var(--maxi-white);
 
 				&:after {
@@ -207,10 +207,10 @@
 	&_has-border-left-right {
 		.maxi-tabs-control__button {
 			&:last-child {
-				border-right: 1px solid var(--maxi-grey-light);
+				border-right: 1.5px solid var(--maxi-grey-light);
 			}
 			&:first-child {
-				border-left: 1px solid var(--maxi-grey-light);
+				border-left: 1.5px solid var(--maxi-grey-light);
 			}
 		}
 	}
@@ -299,8 +299,8 @@ html[dir='rtl'] {
 		left: 5px;
 	}
 	.maxi-settingstab-control .maxi-tabs-control__button:last-child {
-		border-left: 1px solid var(--maxi-grey-light);
-		border-right: 1px solid var(--maxi-grey-light);
+		border-left: 1.5px solid var(--maxi-grey-light);
+		border-right: 1.5px solid var(--maxi-grey-light);
 	}
 	.maxi-block-style-preview {
 		margin-left: unset;

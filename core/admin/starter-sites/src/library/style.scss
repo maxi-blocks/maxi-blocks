@@ -1,28 +1,35 @@
 :root {
-	--maxi-primary-color: #82c251;
-	--maxi-secondary-color: #007cba;
-	--maxi-grey-light: #dbdde6;
-	--maxi-grey-2-color: rgba(180, 180, 180, 0.04);
-	--maxi-grey-3-color: rgba(180, 180, 180, 0.12);
-	--maxi-grey-4-color: rgba(180, 180, 180, 0.4);
-	--maxi-grey-5-color: #464a53;
-	--maxi-grey-6-color: rgba(180, 180, 180, 0.8);
-	--maxi-grey-7-color: #b4b4b4;
-	--maxi-grey-8-color: #f5f5f5;
-	--maxi-grey-9-color: #dbdde6;
-	--maxi-grey-10-color: #e1e2ea;
-	--maxi-black-1-color: #141516;
-	--maxi-black: #151617;
-	--maxi-white-1-color: #f1f1f1;
-	--maxi-white-2-color: #f9f9f9;
-	--maxi-white-3-color: #fcfcfc;
-	--maxi-white-4-color: #f8fbfd;
-	--maxi-accessibility-grey-1-color: #757575;
-	--maxi-light-blue-1-color: #e5f2f8;
-	--maxi-light-blue: #edf6fa;
-	--maxi-light-blue-3-color: #7fbddc;
-	--maxi-highlight-color: #60af87;
-	--maxi-light-yellow-1-color: #faebcc;
+	--maxi-primary-color: #82c251; /* Fresh lime green */
+	--maxi-secondary-color: #43a047; /* Crisp blue accent */
+	--maxi-tertiary-color: #7a00df; /* Rich deep purple accent */
+
+	/* Core Neutrals */
+	--maxi-white: #fff; /* Pure white */
+	--maxi-off-white: #f8f8f8; /* Soft off-white background */
+	--maxi-grey: #b4b4b4; /* Standard grey for text/borders */
+	--maxi-grey-light: #e0e0e0; /* Very light grey background */
+	--maxi-grey-dark: #242424; /* Dark grey for high-contrast elements */
+	--maxi-black: #000; /* True black */
+
+	/* Accessibility */
+	--maxi-accessibility-grey: #757575; /* Medium grey for readability */
+
+	/* Existing Accent Colors */
+	--maxi-light-blue: #e5f2f8; /* Soft light blue background/highlight */
+	--maxi-light-blue-alt: #7fbddc; /* Alternative blue accent */
+	--maxi-highlight-color: #f066ff; /* Vibrant highlight/punctuation */
+	--maxi-light-yellow: #faebcc; /* Gentle light yellow for accents */
+
+	/* New Accent Colors from Image */
+	--maxi-orange-red: #ff4500; /* Vibrant orange-red */
+	--maxi-golden-orange: #f2a600; /* Warm golden-orange */
+	--maxi-bright-yellow: #ffff00; /* Pure, bright yellow */
+	--maxi-deep-golden: #f2b600; /* Rich golden shade */
+	--maxi-bright-purple: #d966ff; /* Bold purple accent */
+	--maxi-pastel-green: #eaf4df; /* Soft pastel green */
+	--maxi-mid-green: #afdb89; /* Midpoint between the two pastel greens */
+	--maxi-whisper-green: #f7fbf2; /* Soft pastel green */
+	--maxi-hot-pink: #ff66ff; /* Vibrant pink highlight */
 }
 
 @keyframes opacityAnimation {

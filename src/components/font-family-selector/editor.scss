@@ -30,8 +30,9 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		&__option {
 			&--is-focused,
 			&--is-selected {
-				background-color: var(--maxi-light-blue);
-				opacity: 0.7;
+				background-color: var(--maxi-pastel-green);
+				color: var(--maxi-black) !important;
+				font-weight: 700 !important;
 				cursor: pointer;
 			}
 		}
@@ -76,7 +77,8 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			transition: 0.5s all;
 
 			&:hover {
-				opacity: 0.8;
+				color: var(--maxi-black) !important;
+				font-weight: 700 !important;
 			}
 			svg {
 				width: 100%;
@@ -92,7 +94,8 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			transition: 0.5s all;
 
 			&:hover {
-				opacity: 0.8;
+				color: var(--maxi-black) !important;
+				font-weight: 700 !important;
 			}
 			svg {
 				fill: var(--maxi-grey);

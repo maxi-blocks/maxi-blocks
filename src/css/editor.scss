@@ -194,6 +194,12 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			box-shadow: 0 0 0 1px var(--maxi-secondary-color);
 			outline: 2px solid transparent;
 		}
+
+		&:hover {
+			border-color: var(--maxi-secondary-color);
+			box-shadow: 0 0 0 1px var(--maxi-secondary-color);
+			outline: 2px solid transparent;
+		}
 	}
 	button.maxi-color-control__palette-box,
 	button.maxi-tabs-control__button,
@@ -324,7 +330,14 @@ body .toolbar-item__popover {
 		.components-select-control {
 			&__input {
 				&:disabled {
-					background-color: var(--maxi-grey-light) !important;
+					background-color: var(--maxi-pastel-green) !important;
+					color: var(--maxi-black) !important;
+					font-weight: 700 !important;
+
+					&:hover {
+						background-color: #b0e57c !important;
+						color: var(--maxi-white) !important;
+					}
 				}
 			}
 		}

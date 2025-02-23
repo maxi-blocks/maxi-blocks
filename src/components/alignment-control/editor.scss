@@ -1,7 +1,7 @@
 .maxi-alignment-control {
 	.maxi-tabs-control__button {
 		svg path {
-			fill: var(--maxi-grey);
+			fill: var(--maxi-black);
 		}
 		&--selected {
 			svg path {
@@ -14,11 +14,11 @@
 		padding: 8px !important;
 		width: 22.5%;
 		margin-right: 7px;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--maxi-mid-green);
 		border-radius: 4px;
 	}
 	.maxi-tabs-control__button[aria-pressed='true'] {
-		background-color: var(--maxi-light-blue) !important;
-		border: none !important;
+		background-color: var(--maxi-whisper-green) !important;
+		border: 1.5px solid var(--maxi-mid-green) !important;
 	}
 }

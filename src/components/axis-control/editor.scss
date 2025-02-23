@@ -20,7 +20,7 @@
 		min-width: 32px;
 		height: 32px;
 		padding: 0;
-		border: 1px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 0;
 		margin-bottom: 0;
 		opacity: 1 !important;
@@ -31,7 +31,7 @@
 	.maxi-tabs-control__button {
 		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
-			stroke: var(--maxi-grey-dark);
+			stroke: var(--maxi-black);
 		}
 	}
 
@@ -41,5 +41,10 @@
 			fill: transparent;
 			stroke: var(--maxi-secondary-color);
 		}
+	}
+
+	.maxi-tabs-control__button--selected {
+		background-color: var(--maxi-whisper-green) !important;
+		border: 1.5px solid var(--maxi-mid-green) !important;
 	}
 }

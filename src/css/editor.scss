@@ -279,7 +279,7 @@ body .toolbar-item__popover {
 		border: none;
 	}
 	.components-simple-tooltip {
-		color: var(--maxi-grey-dark);
+		color: var(--maxi-white);
 	}
 }
 
@@ -629,12 +629,10 @@ body.maxi-blocks--active
 	}
 
 	&-color {
-		background-color: #e0ffe0 !important; // Light green
 		svg path {
 			fill: var(--maxi-grey-dark);
 		}
 		&.maxi-tabs-control__button--selected {
-			background-color: #b0ffb0 !important; // Darker light green
 			svg path {
 				fill: var(--maxi-secondary-color);
 			}

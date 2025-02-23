@@ -5,7 +5,7 @@
 		right: 0;
 		width: 40px;
 		height: 40px;
-		background: #232533;
+		background: var(--maxi-grey-dark);
 
 		.components-button.has-icon {
 			min-width: 40px;
@@ -18,7 +18,7 @@
 		}
 		form,
 		button {
-			background: #fff;
+			background: var(--maxi-white);
 		}
 		button {
 			&:hover {
@@ -31,13 +31,13 @@
 			.block-editor-url-input,
 			button {
 				box-shadow: none;
-				border: 1px solid #d6d8de;
+				border: 1px solid var(--maxi-grey-light);
 			}
 		}
 		svg {
 			width: 20px;
 			height: 20px;
-			fill: #007cba;
+			fill: var(--maxi-primary-color);
 		}
 		.components-base-control__field {
 			margin-bottom: 0;
@@ -56,7 +56,7 @@
 			margin-left: -301px;
 			color: var(--maxi-primary-color);
 			padding-left: 8px;
-			background: #fff;
+			background: var(--maxi-white);
 		}
 		.maxi-editor-url-input__button-modal-line {
 			display: flex;

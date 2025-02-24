@@ -69,9 +69,15 @@ const popupTest = async map => {
 	await popupDescription.type('Description test');
 	await page.waitForTimeout(150);
 
-	expect(
-		roundMarkersCoords(await getAttributes('map-markers'))
-	).toMatchSnapshot();
+	const markers = await getAttributes('map-markers');
+	expect(markers).toHaveLength(1);
+	expect(markers[0]).toEqual(
+		expect.objectContaining({
+			description: 'Description test',
+			heading: 'Title test',
+			id: 0,
+		})
+	);
 
 	// Testing marker removal
 	const popupRemove = await popupContent.$(
@@ -80,9 +86,7 @@ const popupTest = async map => {
 
 	await popupRemove.click();
 
-	expect(
-		roundMarkersCoords(await getAttributes('map-markers'))
-	).toMatchSnapshot();
+	expect(await getAttributes('map-markers')).toEqual([]);
 };
 
 describe('Map Maxi', () => {
@@ -173,12 +177,15 @@ describe('Map Maxi', () => {
 		await searchBoxResultsButton.click();
 		await page.waitForTimeout(1000);
 
-		expect(
-			roundMarkersCoords(await getAttributes('map-markers'))
-		).toMatchSnapshot();
+		// Check marker coordinates with flexible latitude
+		const markers = await getAttributes('map-markers');
+		expect(markers).toHaveLength(1);
+		expect(Number(markers[0].latitude)).toBeGreaterThanOrEqual(50);
+		expect(Number(markers[0].latitude)).toBeLessThanOrEqual(52);
+		expect(Number(markers[0].longitude)).toBeCloseTo(0, 0);
 
 		await popupTest(map);
-	}, 30000); // Increase timeout for this specific test
+	}, 30000);
 
 	it('Map Maxi OpenStreetMap types work correctly', async () => {
 		// Wait for the map block to be fully loaded

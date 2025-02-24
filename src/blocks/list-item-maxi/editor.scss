@@ -35,13 +35,15 @@
 		outline: 1.5px dashed var(--maxi-mid-green) !important;
 
 		&:hover {
+			border-radius: 0 !important;
 			outline: 1.5px solid var(--maxi-tertiary-color) !important;
 		}
 	}
 
 	&--backend {
 		&:hover {
-			outline: 1.5px solid var(--maxi-tertiary-colory) !important;
+			border-radius: 0 !important;
+			outline: 1.5px solid var(--maxi-tertiary-color) !important;
 		}
 	}
 }

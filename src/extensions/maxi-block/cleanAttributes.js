@@ -60,117 +60,6 @@ const getShouldPreserveAttribute = (
 };
 
 /**
- * In case we are saving a breakpoint attribute that has the same value as its
- * previous saved valid attribute, it will be returned to its default value.
- */
-const flatSameAsPrev = (
-	newAttributes,
-	attributes,
-	clientId,
-	defaultAttributes,
-	allowXXLOverGeneral
-) => {
-	const result = {};
-
-	Object.entries(newAttributes).forEach(([key, value]) => {
-		const breakpoint = getBreakpointFromAttribute(key);
-
-		if (!breakpoint || breakpoint === 'general') {
-			result[key] = value;
-			return;
-		}
-
-		const isHover = getIsHoverAttribute(key);
-		const simpleLabel = getSimpleLabel(key, breakpoint);
-		if (!key.includes('unit')) {
-			const unitKey = `${getAttributeKey(
-				simpleLabel,
-				isHover,
-				'',
-				'unit'
-			)}-${breakpoint}`;
-			console.log('unitKey', unitKey);
-			const unitValue = newAttributes[unitKey];
-			console.log('unitValue', unitValue);
-			const unitKeyGeneral = `${getAttributeKey(
-				simpleLabel,
-				isHover,
-				'',
-				'unit'
-			)}-general`;
-			const unitValueGeneral = newAttributes[unitKeyGeneral];
-			if (
-				unitValue !== undefined &&
-				!isEqual(unitValue, unitValueGeneral)
-			) {
-				return;
-			}
-		}
-
-		let breakpointLock = false;
-
-		const higherBreakpoints = breakpoints.slice(
-			0,
-			breakpoints.indexOf(breakpoint)
-		);
-		higherBreakpoints.reverse().forEach(breakpoint => {
-			if (!breakpointLock) {
-				const label = getAttributeKey(
-					simpleLabel,
-					isHover,
-					'',
-					breakpoint
-				);
-				const attribute =
-					label in newAttributes
-						? newAttributes[label]
-						: attributes?.[label];
-				const defaultAttribute =
-					defaultAttributes?.[label] ??
-					getDefaultAttribute(label, clientId, true);
-
-				if (isEqual(value, attribute)) {
-					if (breakpoint === 'general') {
-						const generalAttr =
-							attributes[
-								getAttributeKey(
-									simpleLabel,
-									isHover,
-									'',
-									'general'
-								)
-							];
-
-						if (
-							!isNil(generalAttr) &&
-							isEqual(generalAttr, value)
-						) {
-							result[key] = undefined;
-						}
-					} else if (breakpoint !== 'general') {
-						const currentDefaultAttribute =
-							defaultAttributes?.[key] ??
-							getDefaultAttribute(key, clientId, true);
-						console.log(
-							'currentDefaultAttribute',
-							currentDefaultAttribute
-						);
-						console.log('value', value);
-						console.log('key', key);
-						console.log('breakpoint', breakpoint);
-						if (!isEqual(value, currentDefaultAttribute))
-							result[key] = defaultAttribute;
-						else result[key] = currentDefaultAttribute;
-					} else if (!isNil(attribute)) breakpointLock = true;
-				} else if (!isNil(attribute)) breakpointLock = true;
-			}
-		});
-	});
-
-	return result;
-};
-
-/**
  * In case we save an attribute on general breakpoint, and it coincides
  * with its closest breakpoint attribute with same valid value, we will return
  * this last one to its default value making general value prevail above it.
@@ -290,7 +179,7 @@ const flatWithGeneral = (
 						) === key &&
 						value.toString().startsWith(generalAttr)
 					) {
-						result[key] = undefined;
+						result[key] = value;
 						result[generalKey] = value;
 					}
 
@@ -305,7 +194,7 @@ const flatWithGeneral = (
 
 				if (attr === key && value.toString().startsWith(currentAttr)) {
 					if (currentBreakpoint === 'general') {
-						result[key] = undefined;
+						result[key] = value;
 						result[
 							`${getSimpleLabel(key, attrBreakpoint)}-general`
 						] = value;
@@ -320,30 +209,135 @@ const flatWithGeneral = (
 			result[key] = value;
 			return;
 		}
-		if (breakpoint !== 'general') return;
+		if (breakpoint !== 'general') {
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
+			// Check if current breakpoint is higher than base breakpoint
+			const isHigherBreakpoint =
+				breakpoints.indexOf(breakpoint) <
+				breakpoints.indexOf(baseBreakpoint);
+
+			if (isHigherBreakpoint) {
+				const simpleLabel = getSimpleLabel(key, breakpoint);
+				const isHover = getIsHoverAttribute(key);
+
+				// Get the previous value at the breakpoint we're changing
+				const previousValue = attributes?.[key];
+				const unitKey = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-${breakpoint}`;
+				const previousUnitValue = attributes?.[unitKey];
+				const unitValue = newAttributes[unitKey];
+
+				// Get all breakpoints between current and base (inclusive)
+				const breakpointsToUpdate = breakpoints.slice(
+					breakpoints.indexOf(breakpoint),
+					breakpoints.indexOf(baseBreakpoint) + 1
+				);
+
+				// Update each breakpoint, skipping those with unique values
+				breakpointsToUpdate.forEach(bp => {
+					const bpKey = getAttributeKey(simpleLabel, isHover, '', bp);
+					const bpUnitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-${bp}`;
+
+					// Check if this breakpoint has a unique value
+					const currentBpValue = attributes?.[bpKey];
+					const currentBpUnitValue = attributes?.[bpUnitKey];
+
+					// If current value matches the previous value at the changed breakpoint,
+					// it means this breakpoint was inheriting that value (not unique)
+					const matchesPreviousValue = isEqual(
+						currentBpValue,
+						previousValue
+					);
+					const matchesPreviousUnit = isEqual(
+						currentBpUnitValue,
+						previousUnitValue
+					);
+
+					// Update if this breakpoint was inheriting the value we're changing
+					if (matchesPreviousValue && matchesPreviousUnit) {
+						result[bpKey] = value;
+						if (unitValue) {
+							result[bpUnitKey] = unitValue;
+						}
+					}
+				});
+
+				// Update general only if it matches the previous value at changed breakpoint
+				const generalKey = getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'general'
+				);
+				const generalValue = attributes?.[generalKey];
+				const generalUnitKey = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-general`;
+				const generalUnitValue = attributes?.[generalUnitKey];
+
+				if (
+					isEqual(generalValue, previousValue) &&
+					isEqual(generalUnitValue, previousUnitValue)
+				) {
+					result[generalKey] = value;
+					if (unitValue) {
+						result[generalUnitKey] = unitValue;
+					}
+				}
+			}
+		}
 		const isHover = getIsHoverAttribute(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 
 		let breakpointLock = false;
 
 		breakpoints.forEach(breakpoint => {
-			if (breakpointLock || breakpoint === 'general') return;
+			if (breakpointLock) return;
 
 			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
 			const attribute = { ...attributes, ...newAttributes }?.[label];
 
 			if (isNil(attribute)) return;
 
-			const defaultAttribute =
-				defaultAttributes?.[label] ??
-				getDefaultAttribute(label, clientId, true);
+			if (isNil(attribute) && isEqual(value, attribute)) {
+				const unitKey = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-${breakpoint}`;
+				const unitValue = newAttributes[unitKey];
 
-			if (isNil(attribute) && isEqual(value, attribute))
-				if (!isEqual(value, defaultAttribute))
+				const defaultAttribute =
+					defaultAttributes?.[label] ??
+					getDefaultAttribute(label, clientId, true);
+				const defaultUnitKey = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-general`;
+				const defaultUnitValue = defaultAttributes?.[defaultUnitKey];
+				if (
+					!isEqual(value, defaultAttribute) &&
+					!isEqual(unitValue, defaultUnitValue)
+				)
 					result[label] = defaultAttribute;
 				else result[label] = undefined;
-			else if (isEqual(value, attribute)) {
+			} else if (isEqual(value, attribute)) {
 				const unitKey = `${getAttributeKey(
 					simpleLabel,
 					isHover,
@@ -360,62 +354,12 @@ const flatWithGeneral = (
 				const unitValueGeneral = newAttributes[unitKeyGeneral];
 				if (
 					unitValue !== undefined &&
-					!isEqual(unitValue, unitValueGeneral)
+					isEqual(unitValue, unitValueGeneral)
 				) {
 					result[label] = undefined;
 				}
 			} else if (!isNil(attribute)) breakpointLock = true;
 		});
-	});
-
-	return result;
-};
-
-/**
- * Flat new saving attributes in case they are going to be saved together with same value
- */
-const flatNewAttributes = (
-	newAttributes,
-	attributes,
-	clientId,
-	defaultAttributes
-) => {
-	const result = {};
-
-	Object.entries(newAttributes).forEach(([key, value]) => {
-		const breakpoint = getBreakpointFromAttribute(key);
-
-		if (!breakpoint || breakpoint === 'general') {
-			result[key] = value;
-			return;
-		}
-
-		const isHover = getIsHoverAttribute(key);
-		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const generalKey = getAttributeKey(simpleLabel, isHover, '', 'general');
-		const existsGeneralAttr = generalKey in newAttributes;
-
-		if (!existsGeneralAttr) return;
-
-		const generalAttr = newAttributes[generalKey];
-
-		if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
-			const shouldPreserveAttribute = getShouldPreserveAttribute(
-				attributes,
-				breakpoint,
-				key,
-				value,
-				newAttributes
-			);
-
-			if (shouldPreserveAttribute) result[key] = value;
-			else {
-				const defaultAttribute =
-					defaultAttributes?.[key] ??
-					getDefaultAttribute(key, clientId, true);
-				result[key] = defaultAttribute;
-			}
-		}
 	});
 
 	return result;
@@ -476,9 +420,14 @@ const flatLowerAttr = (
 		const isGeneral = breakpoint === 'general';
 		const isHover = getIsHoverAttribute(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const lowerBreakpoints = breakpoints.slice(
-			breakpoints.indexOf(breakpoint) + 1
-		);
+		const lowerBreakpoints =
+			breakpoint === 'general'
+				? breakpoints.slice(
+						breakpoints.indexOf(
+							select('maxiBlocks').receiveBaseBreakpoint()
+						) + 1
+				  )
+				: breakpoints.slice(breakpoints.indexOf(breakpoint) + 1);
 
 		let breakpointLock = false;
 
@@ -667,21 +616,11 @@ const cleanAttributes = ({
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
 	};
+
 	console.log('result after removeHoverSameAsNormal', result);
 
 	if (!containsBreakpoint) return result;
 
-	// result = {
-	// 	...result,
-	// 	...flatSameAsPrev(
-	// 		result,
-	// 		attributes,
-	// 		clientId,
-	// 		defaultAttributes,
-	// 		allowXXLOverGeneral
-	// 	),
-	// };
-	// console.log('result after flatSameAsPrev', result);
 	result = {
 		...result,
 		...flatWithGeneral(
@@ -693,22 +632,23 @@ const cleanAttributes = ({
 			allowXXLOverGeneral
 		),
 	};
+
 	console.log('result after flatWithGeneral', result);
-	// result = {
-	// 	...result,
-	// 	...flatNewAttributes(result, attributes, clientId, defaultAttributes),
-	// };
-	// console.log('result after flatNewAttributes', result);
+
 	result = {
 		...result,
 		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
 	};
+
 	console.log('result after flatLowerAttr', result);
+
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
+
 	console.log('result after preserveBaseBreakpoint', result);
+
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);
@@ -724,10 +664,9 @@ const cleanAttributes = ({
 				(isNil(higherAttr) || attributes[key] !== higherAttr)
 			);
 		}),
-		// For IB we need to check default attributes of target block, while saving previous attributes of trigger block, thus we have two clientIds
 		targetClientId ?? clientId
 	);
-	console.log('result after savePrevSavedAttrs', result);
+
 	return result;
 };
 

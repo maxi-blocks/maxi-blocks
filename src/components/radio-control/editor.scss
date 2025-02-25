@@ -4,20 +4,26 @@
 	align-items: center;
 	width: 100%;
 	margin-bottom: 10px;
+	background-color: #ffcccc; /* Temporary background */
 
 	.maxi-display-control {
 		width: 100%;
+		background-color: #ccffcc; /* Temporary background */
 	}
 	.maxi-base-control {
+		background-color: #ccccff; /* Temporary background */
 		&__field {
 			width: 100%;
+			background-color: #ffffcc; /* Temporary background */
 		}
 		&__label {
 			flex: 2;
+			background-color: #ffccff; /* Temporary background */
 		}
 	}
 	.maxi-radio-control {
 		width: 100%;
+		background-color: #ccffff; /* Temporary background */
 
 		&__option {
 			flex: 1;
@@ -26,7 +32,7 @@
 			border: 1px solid var(--maxi-grey-light);
 			margin-bottom: 0;
 			color: #464a53;
-			background-color: #fff;
+			background-color: #ffd699; /* Temporary background (changed from #fff) */
 			opacity: 1 !important;
 			transition: all 0.5s;
 
@@ -38,12 +44,13 @@
 			}
 			input {
 				display: none;
+				background-color: #d9b3ff; /* Temporary background */
 
 				&:checked ~ label {
 					position: relative;
 					z-index: 1;
 					border-bottom: 2px solid var(--maxi-secondary-color);
-					background-color: #f8fbfd;
+					background-color: #b3e6ff; /* Temporary background (changed from #f8fbfd) */
 				}
 			}
 			label {
@@ -51,6 +58,7 @@
 				align-items: center;
 				justify-content: center;
 				height: 100%;
+				background-color: #ffb3b3; /* Temporary background */
 			}
 			svg {
 				display: block;
@@ -58,20 +66,25 @@
 				height: 100%;
 				margin: 0;
 				fill: #464a53;
+				background-color: #b3ffb3; /* Temporary background */
 			}
 		}
 	}
 
 	&__full-width {
+		background-color: #e6ccff; /* Temporary background */
 		.maxi-base-control {
+			background-color: #ffcce6; /* Temporary background */
 			&__field {
 				flex-wrap: wrap;
+				background-color: #cce6ff; /* Temporary background */
 			}
 			&__label {
 				display: block;
 				flex: 100% !important;
 				width: 100%;
 				margin: 0 0 5px !important;
+				background-color: #ffe6cc; /* Temporary background */
 			}
 		}
 	}

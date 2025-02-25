@@ -8,7 +8,7 @@
 	padding: 8px 5px !important;
 	border-radius: 50%;
 	margin-left: 4px;
-	background: #fff;
+	background: var(--maxi-white);
 	text-decoration: none;
 	transition: all 0.3s;
 	-webkit-appearance: none;
@@ -18,16 +18,16 @@
 	margin-right: 0 !important;
 
 	&:focus {
-		border-color: var(--maxi-grey-6-color);
+		border-color: var(--maxi-grey);
 	}
 	svg {
 		width: 14px;
 		height: 14px;
 		margin: auto;
-		fill: var(--maxi-grey-6-color);
+		fill: var(--maxi-grey);
 	}
 	&:hover svg {
-		fill: var(--maxi-black-1-color);
+		fill: var(--maxi-black);
 		transition: all 0.3s;
 	}
 	@at-root .rtl #{&} {
@@ -46,7 +46,7 @@
 
 		&:hover svg {
 			transition: all 0.3s;
-			fill: var(--maxi-black-1-color);
+			fill: var(--maxi-black);
 		}
 	}
 }
@@ -62,10 +62,10 @@
 		border-radius: 0;
 
 		&:hover {
-			background: var(--maxi-white-1-color);
+			background: var(--maxi-white);
 		}
 		&:focus {
-			border-color: var(--maxi-grey-6-color);
+			border-color: var(--maxi-grey);
 		}
 	}
 }

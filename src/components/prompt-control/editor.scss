@@ -38,14 +38,21 @@
 				width: 100%;
 				border: 2px solid var(--maxi-secondary-color);
 				color: var(--maxi-secondary-color) !important;
-				background: var(--maxi-light-blue);
+				background: var(--maxi-whisper-green);
 				font-size: 16px !important;
 				font-weight: 700 !important;
 				text-align: center;
 				&:hover {
 					border-color: var(--maxi-primary-color) !important;
-					color: var(--maxi-black-1-color) !important;
-					background: var(--maxi-white-3-color);
+					color: var(--maxi-black) !important;
+					background: var(--maxi-white);
+				}
+				&:disabled {
+					opacity: 0.6;
+					cursor: not-allowed;
+					border-color: var(--maxi-grey) !important;
+					color: var(--maxi-grey-dark) !important;
+					background: var(--maxi-grey-light);
 				}
 			}
 		}

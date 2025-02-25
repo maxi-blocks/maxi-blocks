@@ -60,6 +60,23 @@ const getShouldPreserveAttribute = (
 };
 
 /**
+ * Helper function to check if a key is a unit key
+ */
+const isUnitKey = key => key.includes('-unit');
+
+/**
+ * Helper function to get the linked value key from a unit key
+ */
+const getValueKeyFromUnitKey = key => {
+	// Replace the '-unit-{breakpoint}' with '-{breakpoint}'
+	if (key.includes('-unit-')) {
+		return key.replace('-unit-', '-');
+	}
+	// Handle case where it might be just '-unit' at the end
+	return key.replace('-unit', '');
+};
+
+/**
  * In case we save an attribute on general breakpoint, and it coincides
  * with its closest breakpoint attribute with same valid value, we will return
  * this last one to its default value making general value prevail above it.
@@ -223,14 +240,30 @@ const flatWithGeneral = (
 
 				// Get the previous value at the breakpoint we're changing
 				const previousValue = attributes?.[key];
-				const unitKey = `${getAttributeKey(
-					simpleLabel,
-					isHover,
-					'',
-					'unit'
-				)}-${breakpoint}`;
-				const previousUnitValue = attributes?.[unitKey];
-				const unitValue = newAttributes[unitKey];
+
+				// Handle unit keys and their linked values
+				let previousUnitValue;
+				let unitValue;
+				let valueKey;
+				let previousLinkedValue;
+				let linkedValue;
+
+				if (isUnitKey(key)) {
+					// For unit keys, get the linked value key and its values
+					valueKey = getValueKeyFromUnitKey(key);
+					previousLinkedValue = attributes?.[valueKey];
+					linkedValue = newAttributes[valueKey];
+				} else {
+					// For regular keys, get the unit key and its values
+					const unitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-${breakpoint}`;
+					previousUnitValue = attributes?.[unitKey];
+					unitValue = newAttributes[unitKey];
+				}
 
 				// Get all breakpoints between current and base (inclusive)
 				const breakpointsToUpdate = breakpoints.slice(
@@ -241,16 +274,30 @@ const flatWithGeneral = (
 				// Update each breakpoint, skipping those with unique values
 				breakpointsToUpdate.forEach(bp => {
 					const bpKey = getAttributeKey(simpleLabel, isHover, '', bp);
-					const bpUnitKey = `${getAttributeKey(
-						simpleLabel,
-						isHover,
-						'',
-						'unit'
-					)}-${bp}`;
+
+					// Handle unit keys and their linked values
+					let bpUnitKey;
+					let currentBpUnitValue;
+					let bpValueKey;
+					let currentBpLinkedValue;
+
+					if (isUnitKey(key)) {
+						// For unit keys, get the linked value key and its value
+						bpValueKey = getValueKeyFromUnitKey(bpKey);
+						currentBpLinkedValue = attributes?.[bpValueKey];
+					} else {
+						// For regular keys, get the unit key and its value
+						bpUnitKey = `${getAttributeKey(
+							simpleLabel,
+							isHover,
+							'',
+							'unit'
+						)}-${bp}`;
+						currentBpUnitValue = attributes?.[bpUnitKey];
+					}
 
 					// Check if this breakpoint has a unique value
 					const currentBpValue = attributes?.[bpKey];
-					const currentBpUnitValue = attributes?.[bpUnitKey];
 
 					// If current value matches the previous value at the changed breakpoint,
 					// it means this breakpoint was inheriting that value (not unique)
@@ -258,15 +305,30 @@ const flatWithGeneral = (
 						currentBpValue,
 						previousValue
 					);
-					const matchesPreviousUnit = isEqual(
-						currentBpUnitValue,
-						previousUnitValue
-					);
+
+					let matchesPreviousUnit;
+					if (isUnitKey(key)) {
+						// For unit keys, compare the linked values
+						matchesPreviousUnit = isEqual(
+							currentBpLinkedValue,
+							previousLinkedValue
+						);
+					} else {
+						// For regular keys, compare the unit values
+						matchesPreviousUnit = isEqual(
+							currentBpUnitValue,
+							previousUnitValue
+						);
+					}
 
 					// Update if this breakpoint was inheriting the value we're changing
 					if (matchesPreviousValue && matchesPreviousUnit) {
 						result[bpKey] = value;
-						if (unitValue) {
+						if (isUnitKey(key) && linkedValue !== undefined) {
+							// For unit keys, update the linked value
+							result[bpValueKey] = linkedValue;
+						} else if (!isUnitKey(key) && unitValue) {
+							// For regular keys, update the unit value
 							result[bpUnitKey] = unitValue;
 						}
 					}
@@ -280,20 +342,48 @@ const flatWithGeneral = (
 					'general'
 				);
 				const generalValue = attributes?.[generalKey];
-				const generalUnitKey = `${getAttributeKey(
-					simpleLabel,
-					isHover,
-					'',
-					'unit'
-				)}-general`;
-				const generalUnitValue = attributes?.[generalUnitKey];
 
-				if (
-					isEqual(generalValue, previousValue) &&
-					isEqual(generalUnitValue, previousUnitValue)
-				) {
+				// Handle unit keys and their linked values for general breakpoint
+				let generalUnitKey;
+				let generalUnitValue;
+				let generalValueKey;
+				let generalLinkedValue;
+
+				if (isUnitKey(key)) {
+					// For unit keys, get the linked value key and its value
+					generalValueKey = getValueKeyFromUnitKey(generalKey);
+					generalLinkedValue = attributes?.[generalValueKey];
+				} else {
+					// For regular keys, get the unit key and its value
+					generalUnitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-general`;
+					generalUnitValue = attributes?.[generalUnitKey];
+				}
+
+				let matchesGeneralCondition;
+				if (isUnitKey(key)) {
+					// For unit keys, check if general linked value matches previous linked value
+					matchesGeneralCondition =
+						isEqual(generalValue, previousValue) &&
+						isEqual(generalLinkedValue, previousLinkedValue);
+				} else {
+					// For regular keys, check if general value and unit match previous values
+					matchesGeneralCondition =
+						isEqual(generalValue, previousValue) &&
+						isEqual(generalUnitValue, previousUnitValue);
+				}
+
+				if (matchesGeneralCondition) {
 					result[generalKey] = value;
-					if (unitValue) {
+					if (isUnitKey(key) && linkedValue !== undefined) {
+						// For unit keys, update the linked general value
+						result[generalValueKey] = linkedValue;
+					} else if (!isUnitKey(key) && unitValue) {
+						// For regular keys, update the general unit value
 						result[generalUnitKey] = unitValue;
 					}
 				}
@@ -313,49 +403,119 @@ const flatWithGeneral = (
 			if (isNil(attribute)) return;
 
 			if (isNil(attribute) && isEqual(value, attribute)) {
-				const unitKey = `${getAttributeKey(
-					simpleLabel,
-					isHover,
-					'',
-					'unit'
-				)}-${breakpoint}`;
-				const unitValue = newAttributes[unitKey];
+				// Handle unit keys and their linked values
+				let unitValue;
+				let defaultUnitValue;
+				let valueKey;
+				let linkedValue;
+				let defaultLinkedValue;
+
+				if (isUnitKey(key)) {
+					// For unit keys, get the linked value key and its values
+					valueKey = getValueKeyFromUnitKey(label);
+					linkedValue = attributes[valueKey];
+					const defaultValueKey = getValueKeyFromUnitKey(
+						`${getAttributeKey(
+							simpleLabel,
+							isHover,
+							'',
+							'general'
+						)}`
+					);
+					defaultLinkedValue = defaultAttributes?.[defaultValueKey];
+				} else {
+					// For regular keys, get the unit key and its values
+					const unitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-${breakpoint}`;
+					unitValue = newAttributes[unitKey];
+					const defaultUnitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-general`;
+					defaultUnitValue = defaultAttributes?.[defaultUnitKey];
+				}
 
 				const defaultAttribute =
 					defaultAttributes?.[label] ??
 					getDefaultAttribute(label, clientId, true);
-				const defaultUnitKey = `${getAttributeKey(
-					simpleLabel,
-					isHover,
-					'',
-					'unit'
-				)}-general`;
-				const defaultUnitValue = defaultAttributes?.[defaultUnitKey];
-				if (
-					!isEqual(value, defaultAttribute) &&
-					!isEqual(unitValue, defaultUnitValue)
-				)
+
+				let compareCondition;
+				if (isUnitKey(key)) {
+					// For unit keys, check linked value against default
+					compareCondition =
+						!isEqual(value, defaultAttribute) &&
+						!isEqual(linkedValue, defaultLinkedValue);
+				} else {
+					// For regular keys, check unit value against default
+					compareCondition =
+						!isEqual(value, defaultAttribute) &&
+						!isEqual(unitValue, defaultUnitValue);
+				}
+
+				if (compareCondition) {
 					result[label] = defaultAttribute;
-				else result[label] = undefined;
+				} else {
+					result[label] = undefined;
+				}
 			} else if (isEqual(value, attribute)) {
-				const unitKey = `${getAttributeKey(
-					simpleLabel,
-					isHover,
-					'',
-					'unit'
-				)}-${breakpoint}`;
-				const unitValue = newAttributes[unitKey];
-				const unitKeyGeneral = `${getAttributeKey(
-					simpleLabel,
-					isHover,
-					'',
-					'unit'
-				)}-general`;
-				const unitValueGeneral = newAttributes[unitKeyGeneral];
-				if (
-					unitValue !== undefined &&
-					isEqual(unitValue, unitValueGeneral)
-				) {
+				// Handle unit keys and their linked values
+				let unitValue;
+				let unitValueGeneral;
+				let valueKey;
+				let linkedValue;
+				let linkedValueGeneral;
+
+				if (isUnitKey(key)) {
+					// For unit keys, get the linked value key and its values
+					valueKey = getValueKeyFromUnitKey(label);
+					linkedValue = attributes[valueKey];
+					const valueKeyGeneral = getValueKeyFromUnitKey(
+						`${getAttributeKey(
+							simpleLabel,
+							isHover,
+							'',
+							'general'
+						)}`
+					);
+					linkedValueGeneral = attributes[valueKeyGeneral];
+				} else {
+					// For regular keys, get the unit key and its values
+					const unitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-${breakpoint}`;
+					unitValue = newAttributes[unitKey];
+					const unitKeyGeneral = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-general`;
+					unitValueGeneral = newAttributes[unitKeyGeneral];
+				}
+
+				let compareCondition;
+				if (isUnitKey(key)) {
+					// For unit keys, check if linked value matches general linked value
+					compareCondition =
+						linkedValue !== undefined &&
+						isEqual(linkedValue, linkedValueGeneral);
+				} else {
+					// For regular keys, check if unit value matches general unit value
+					compareCondition =
+						unitValue !== undefined &&
+						isEqual(unitValue, unitValueGeneral);
+				}
+
+				if (compareCondition) {
 					result[label] = undefined;
 				}
 			} else if (!isNil(attribute)) breakpointLock = true;
@@ -445,26 +605,53 @@ const flatLowerAttr = (
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
 
-			const unitKey = `${getAttributeKey(
-				simpleLabel,
-				isHover,
-				'',
-				'unit'
-			)}-${breakpoint}`;
-			const unitValue = attributes[unitKey];
-			const unitKeyGeneral = `${getAttributeKey(
-				simpleLabel,
-				isHover,
-				'',
-				'unit'
-			)}-general`;
-			const unitValueGeneral = newAttributes[unitKeyGeneral];
+			// Handle unit keys and their linked values
+			let unitValue;
+			let unitValueGeneral;
+			let valueKey;
+			let linkedValue;
+			let linkedValueGeneral;
 
-			if (
-				unitValue !== undefined &&
-				!isEqual(unitValue, unitValueGeneral)
-			)
-				return;
+			if (isUnitKey(key)) {
+				// For unit keys, get the linked value key and its values
+				valueKey = getValueKeyFromUnitKey(label);
+				linkedValue = attributes[valueKey];
+				const valueKeyGeneral = getValueKeyFromUnitKey(
+					`${getAttributeKey(simpleLabel, isHover, '', 'general')}`
+				);
+				linkedValueGeneral = newAttributes[valueKeyGeneral];
+			} else {
+				// For regular keys, get the unit key and its values
+				const unitKey = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-${breakpoint}`;
+				unitValue = attributes[unitKey];
+				const unitKeyGeneral = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-general`;
+				unitValueGeneral = newAttributes[unitKeyGeneral];
+			}
+
+			let compareCondition;
+			if (isUnitKey(key)) {
+				// For unit keys, check if linked value matches general linked value
+				compareCondition =
+					linkedValue !== undefined &&
+					!isEqual(linkedValue, linkedValueGeneral);
+			} else {
+				// For regular keys, check if unit value matches general unit value
+				compareCondition =
+					unitValue !== undefined &&
+					!isEqual(unitValue, unitValueGeneral);
+			}
+
+			if (compareCondition) return;
 
 			if (isEqual(value, attribute)) {
 				if (label in newAttributes && isGeneral) {
@@ -617,8 +804,6 @@ const cleanAttributes = ({
 		...removeHoverSameAsNormal(result, attributes),
 	};
 
-	console.log('result after removeHoverSameAsNormal', result);
-
 	if (!containsBreakpoint) return result;
 
 	result = {
@@ -633,21 +818,15 @@ const cleanAttributes = ({
 		),
 	};
 
-	console.log('result after flatWithGeneral', result);
-
 	result = {
 		...result,
 		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
 	};
 
-	console.log('result after flatLowerAttr', result);
-
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
-
-	console.log('result after preserveBaseBreakpoint', result);
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {

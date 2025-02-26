@@ -4,7 +4,7 @@
 		&__wrap {
 			display: flex;
 			align-items: center;
-			border-top: 1px solid #dbdde6;
+			border-top: 1px solid var(--maxi-grey-light);
 
 			.maxi-base-control {
 				.components-range-control {
@@ -23,9 +23,9 @@
 					margin-bottom: 0;
 					height: 36px;
 					&[aria-pressed='true'] {
-						color: #007cba;
-						background-color: #eaf2f6 !important;
-						border-bottom: 3px solid #007cba !important;
+						color: var(--maxi-primary-color);
+						background-color: var(--maxi-white) !important;
+						border-bottom: 3px solid var(--maxi-primary-color) !important;
 					}
 				}
 
@@ -34,13 +34,13 @@
 
 					path {
 						fill: transparent;
-						stroke: #000;
+						stroke: var(--maxi-black);
 					}
 				}
 
 				&.toolbar-item__superscript {
 					path {
-						fill: #000;
+						fill: var(--maxi-black);
 						stroke: transparent;
 					}
 				}
@@ -51,7 +51,7 @@
 				margin: 0;
 
 				&__button {
-					border-color: #dbdde6;
+					border-color: var(--maxi-grey-light);
 					border-style: solid;
 					border-width: 0 1px 0 0;
 				}
@@ -84,7 +84,7 @@
 			}
 
 			.maxi-font-family-selector__control__control {
-				border-color: #dbdde6;
+				border-color: var(--maxi-grey-light);
 				border-style: solid;
 				border-width: 0 1px 0 0;
 				height: 36px;
@@ -120,8 +120,8 @@
 				height: 38px;
 
 				&__button {
-					color: #fff;
-					border-color: #80828a;
+					color: var(--maxi-white);
+					border-color: var(--maxi-grey);
 				}
 			}
 
@@ -146,7 +146,7 @@
 					margin-bottom: 0;
 
 					.maxi-font-family-selector__control__control:hover {
-						background-color: var(--maxi-grey-3-color);
+						background-color: var(--maxi-grey);
 						cursor: pointer;
 					}
 				}
@@ -173,7 +173,7 @@
 
 					path {
 						fill: transparent;
-						stroke: #000;
+						stroke: var(--maxi-black);
 					}
 				}
 			}

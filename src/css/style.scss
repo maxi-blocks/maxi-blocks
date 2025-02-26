@@ -48,13 +48,13 @@
 		align-items: center;
 		justify-content: center;
 		background-color: rgba(0, 0, 0, 0.5);
-		box-shadow: inset 0 0 0px 1px #fff;
+		box-shadow: inset 0 0 0px 1px var(--maxi-white);
 
 		p {
 			padding: 10px;
 			margin: auto;
-			color: #fff;
-			background-color: rgba(0, 0, 0, 1);
+			color: var(--maxi-white);
+			background-color: var(--maxi-black);
 			font-family: Inter, sans-serif;
 			font-size: 14px;
 			text-align: center;

@@ -242,11 +242,11 @@ body .toolbar-item__popover {
 		&:focus {
 			box-shadow: none;
 			outline: none;
-			border: 1.5px solid var(--maxi-grey-light) !important;
+			border: 1.5px solid var(--maxi-grey) !important;
 		}
 		&:hover {
 			color: var(--maxi-grey-dark) !important;
-			border: 1.5px solid var(--maxi-grey-dark) !important;
+			border: 1.5px solid var(--maxi-primary-color) !important;
 		}
 		&:active {
 			color: var(--maxi-grey-dark);
@@ -290,7 +290,6 @@ body .toolbar-item__popover {
 }
 
 body.maxi-blocks--active .components-tooltip {
-	opacity: 0.95 !important;
 	pointer-events: none;
 }
 
@@ -307,7 +306,7 @@ body .toolbar-item__popover {
 	input[type='number'],
 	textarea,
 	select {
-		border-color: #80828a;
+		border-color: var(--maxi-grey);
 	}
 	input[type='number'] {
 		padding-right: 0;
@@ -335,7 +334,7 @@ body .toolbar-item__popover {
 					font-weight: 700 !important;
 
 					&:hover {
-						background-color: #b0e57c !important;
+						background-color: var(--maxi-mid-green) !important;
 						color: var(--maxi-white) !important;
 					}
 				}

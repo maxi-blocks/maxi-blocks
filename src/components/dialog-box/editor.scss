@@ -82,7 +82,8 @@
 
 	button {
 		height: auto !important;
-		border: 1px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--maxi-grey-light) !important;
+		border-radius: 5px !important;
 		color: var(--maxi-black);
 		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 		font-size: 12px;

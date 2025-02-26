@@ -6,22 +6,22 @@
 		justify-content: center;
 		width: 100%;
 		min-height: 120px;
-		color: #464a53;
-		background-color: rgba(229, 242, 248, 0.7);
+		color: var(--maxi-grey-dark);
+		background-color: var(--maxi-light-blue);
 		font-size: 13px;
-		border: 1px solid #dbdde6;
+		border: 1px solid var(--maxi-grey-light);
 		border-radius: 3px;
 		box-shadow: none !important;
 
 		.maxi-block-library__modal-button {
 			padding: 0 10px 0 0;
 			overflow: hidden;
-			color: #fff;
+			color: var(--maxi-white);
 			background: var(--maxi-secondary-color);
 			font-family: Inter, sans-serif;
 			font-size: 12px;
 			font-weight: 500;
-			border: 1px solid #dbdde6;
+			border: 1px solid var(--maxi-grey-light);
 			transition: all 0.1s;
 
 			svg {
@@ -29,8 +29,8 @@
 				height: 36px;
 				padding: 8px;
 				margin-right: 10px;
-				background-color: #fff;
-				border-right: 1px solid #dbdde6;
+				background-color: var(--maxi-white);
+				border-right: 1px solid var(--maxi-grey-light);
 				transition: all 0.1s;
 				path {
 					fill: var(--maxi-secondary-color);
@@ -38,7 +38,7 @@
 			}
 
 			&:hover {
-				background: #fff !important;
+				background: var(--maxi-white) !important;
 				color: var(--maxi-secondary-color) !important;
 				border-color: var(--maxi-secondary-color);
 				svg {
@@ -72,7 +72,7 @@
 	&__replace-icon {
 		width: 30px;
 		height: 30px;
-		background: #fff;
+		background: var(--maxi-white);
 		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 		visibility: visible;
 		transition: 0.3s;

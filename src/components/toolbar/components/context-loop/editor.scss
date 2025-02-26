@@ -28,27 +28,27 @@
 		}
 	}
 	.maxi-axis-control {
-		color: #fff;
+		color: var(--maxi-white);
 		&__content {
 			&__item {
 				&__checkbox {
 					input {
-						border: 2px solid #80828a;
-						background-color: #242433;
+						border: 2px solid var(--maxi-grey-light);
+						background-color: var(--maxi-grey-dark);
 						&:focus {
-							border-color: #80828a;
+							border-color: var(--maxi-grey-light);
 						}
 					}
 				}
 				&__sync {
 					margin-top: 35px;
-					border-color: #80828a;
+					border-color: var(--maxi-grey-light);
 					button {
 						&[aria-pressed='true'] {
-							background: #4f515c !important;
+							background: var(--maxi-grey-dark) !important;
 						}
 						svg {
-							fill: #fff;
+							fill: var(--maxi-white);
 						}
 					}
 				}

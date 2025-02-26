@@ -25,13 +25,13 @@
 			&--toolbar {
 				&:hover {
 					svg path {
-						fill: #fff;
+						fill: var(--maxi-white);
 					}
 				}
 
 				&[aria-pressed='true'] {
 					svg path {
-						fill: #fff;
+						fill: var(--maxi-white);
 					}
 				}
 

@@ -47,9 +47,9 @@ body.maxi-blocks--active .maxi-text-control {
 			top: -8px;
 			left: 8px;
 			font-size: 10px !important;
-			color: #8e8c8c;
+			color: var(--maxi-grey);
 			font-style: normal;
-			background: #fff;
+			background: var(--maxi-white);
 			padding: 0 5px;
 			pointer-events: none;
 			box-sizing: border-box;

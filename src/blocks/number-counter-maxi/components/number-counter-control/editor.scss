@@ -1,8 +1,8 @@
 .maxi-number-counter-control {
 	&__alert-warning {
-		color: #8a6d3b !important;
-		background-color: #fcf8e3;
-		border: 1px solid var(--maxi-light-yellow-1-color);
+		color: var(--maxi-grey-dark) !important;
+		background: var(--maxi-light-yellow);
+		border: 1px solid var(--maxi-golden-orange);
 		padding: 0.5rem;
 		margin-bottom: 8px;
 		font-size: 12px !important;

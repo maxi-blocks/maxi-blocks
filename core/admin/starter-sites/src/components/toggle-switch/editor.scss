@@ -83,8 +83,8 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			box-sizing: border-box;
 			width: 18px;
 			height: 18px;
-			background-color: #fff;
-			border: 1px solid var(--maxi-grey-6-color);
+			background-color: var(--maxi-white);
+			border: 1px solid var(--maxi-grey);
 			border-radius: 50%;
 			transition: 0.1s transform ease;
 		}

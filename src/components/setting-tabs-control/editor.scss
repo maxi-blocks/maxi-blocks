@@ -98,13 +98,13 @@
 			&--active:before {
 				content: '';
 				position: absolute;
-				top: 50%;
-				left: 2;
+				top: 5px !important;
+				left: -2px !important;
 				z-index: 1;
 				width: 6px;
 				height: 6px;
 				border-radius: 50%;
-				background-color: var(--maxi-secondary-color);
+				background-color: var(--maxi-light-blue-alt);
 				margin-left: 5px;
 				transform: translateY(-50%);
 			}

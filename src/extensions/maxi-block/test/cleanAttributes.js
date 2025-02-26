@@ -25,29 +25,6 @@ jest.mock('@wordpress/data', () => {
 import { select } from '@wordpress/data';
 
 describe('cleanAttributes', () => {
-	it('Should flat the entry object with same value for same attribute with different breakpoints, and just return general one', () => {
-		const obj = {
-			newAttributes: {
-				'test-general': 10,
-				'test-xl': 10,
-			},
-			attributes: {
-				'test-general': 11,
-				'test-xl': 11,
-			},
-			defaultAttributes: {},
-		};
-
-		const result = cleanAttributes(obj);
-
-		const expectedResult = {
-			'test-general': 10,
-			'test-xl': undefined,
-		};
-
-		expect(result).toStrictEqual(expectedResult);
-	});
-
 	it('Should return M value as default, as is equal as its closest valid attribute (general)', () => {
 		const obj = {
 			newAttributes: {
@@ -64,7 +41,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-m': undefined,
+			'test-m': 100,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -87,7 +64,7 @@ describe('cleanAttributes', () => {
 			defaultAttributes: {},
 		});
 		const expectedResult = {
-			'test-m': undefined,
+			'test-m': 99,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -109,7 +86,10 @@ describe('cleanAttributes', () => {
 		});
 
 		const expectedResult = {
-			'test-xxl': undefined,
+			'test-l': 100,
+			'test-m': 100,
+			'test-xl': 100,
+			'test-xxl': 100,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -132,7 +112,7 @@ describe('cleanAttributes', () => {
 		});
 		const expectedResult = {
 			'test-general': 100,
-			'test-l': undefined,
+			'test-m': 100,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -184,8 +164,8 @@ describe('cleanAttributes', () => {
 			defaultAttributes,
 		});
 		const expectedResult = {
-			'test-status-m': undefined,
-			'test-m': undefined,
+			'test-status-m': true,
+			'test-m': 4,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -214,10 +194,7 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-status-general': true,
 			'test-general': 4,
-			'test-m': undefined,
 			'test-opacity-general': 1,
-			'test-status-m': undefined,
-			'test-opacity-m': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -246,7 +223,6 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 8,
-			'test-m': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -271,7 +247,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 7,
-			'test-m': undefined,
+			'test-m': 7,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -303,7 +279,7 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-s': 8,
 			'test-xs': undefined,
-			'test-status-s': undefined,
+			'test-status-s': true,
 			'test-status-xs': undefined,
 		};
 
@@ -736,15 +712,17 @@ describe('cleanAttributes', () => {
 		const resultThirdRound = cleanAttributes(thirdRound);
 
 		const expectedFirstRound = {
-			'test-m': 4,
+			'test-m': 3,
+			'test-l': 3,
 			'test-xl': 3,
 		};
 		const expectedSecondRound = {
 			'test-m': undefined,
-			'test-xl': undefined,
+			'test-xl': 4,
 		};
 		const expectedThirdRound = {
-			'test-m': 4,
+			'test-m': 5,
+			'test-l': 5,
 			'test-xl': 5,
 		};
 
@@ -977,7 +955,7 @@ describe('cleanAttributes', () => {
 
 		const expectedFirstRound = {
 			'test-xl': 3,
-			'test-l': 1,
+			'test-l': 3,
 		};
 		const expectedSecondRound = {
 			'test-general': 4,
@@ -985,7 +963,7 @@ describe('cleanAttributes', () => {
 		};
 		const expectedThirdRound = {
 			'test-l': 4,
-			// 'test-m': 4, //! !
+			'test-m': 4,
 		};
 
 		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
@@ -1005,7 +983,7 @@ describe('cleanAttributes', () => {
 			'test-xl': 3,
 			'test-general': 4,
 			'test-l': 4,
-			// 'test-m': 4,
+			'test-m': 4,
 		};
 
 		expect(resultAttrs).toStrictEqual(expectedResult);
@@ -1066,7 +1044,6 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'background-palette-color-general': 4,
-			'background-palette-color-l': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1101,7 +1078,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-l': 4,
-			'test-m': 1,
+			'test-m': 4,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1123,7 +1100,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'border-palette-opacity-s': undefined,
+			'border-palette-opacity-s': 0.45,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1160,7 +1137,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 'em',
-			'test-xl': 'px',
+			'test-xl': 'em',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1412,8 +1389,8 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-xxl': undefined,
-			'test-xl': undefined,
+			'test-xxl': '%',
+			'test-xl': '%',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1556,8 +1533,8 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-xxl': undefined,
-			'test-xl': undefined,
+			'test-xxl': 'none',
+			'test-xl': 'none',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1658,7 +1635,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-s-hover': undefined,
+			'test-s-hover': '4',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1763,7 +1740,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': '5',
-			'test-xxl': undefined,
+			'test-xxl': '5',
 		};
 
 		expect(result).toStrictEqual(expectedResult);

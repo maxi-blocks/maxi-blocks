@@ -93,15 +93,21 @@ const MapContent = props => {
 
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
-	const [mapInstance, setMapInstance] = useState(null);
 
 	const showError = !apiKey && isGoogleMaps;
 
+	// Setup resize handler without returning a cleanup function
 	const resizeMap = map => {
 		if (!map) return;
 
-		setMapInstance(map);
-		// To get rid of the grey bars, we need to update the map size
+		// Get container element
+		const container = document.getElementById(
+			`maxi-map-block__container-${uniqueID}`
+		);
+
+		if (!container) return;
+
+		// Create and use resize observer
 		const resizeObserver = new ResizeObserver(() => {
 			if (map && !map._isDestroyed && map.getContainer()) {
 				requestAnimationFrame(() => {
@@ -118,23 +124,14 @@ const MapContent = props => {
 			}
 		});
 
-		const container = document.getElementById(
-			`maxi-map-block__container-${uniqueID}`
-		);
+		// Start observing
+		resizeObserver.observe(container);
 
-		if (container) {
-			resizeObserver.observe(container);
-		}
-
-		// Cleanup function
-		const cleanup = () => {
-			if (container) {
-				resizeObserver.unobserve(container);
-				resizeObserver.disconnect();
-			}
-		};
-
-		return cleanup;
+		// Attach cleanup to map's remove event
+		map.on('remove', () => {
+			resizeObserver.unobserve(container);
+			resizeObserver.disconnect();
+		});
 	};
 
 	return (

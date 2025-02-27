@@ -400,8 +400,6 @@ const flatWithGeneral = (
 			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
 			const attribute = { ...attributes, ...newAttributes }?.[label];
 
-			if (isNil(attribute)) return;
-
 			if (isNil(attribute) && isEqual(value, attribute)) {
 				// Handle unit keys and their linked values
 				let unitValue;
@@ -461,61 +459,6 @@ const flatWithGeneral = (
 				if (compareCondition) {
 					result[label] = defaultAttribute;
 				} else {
-					result[label] = undefined;
-				}
-			} else if (isEqual(value, attribute)) {
-				// Handle unit keys and their linked values
-				let unitValue;
-				let unitValueGeneral;
-				let valueKey;
-				let linkedValue;
-				let linkedValueGeneral;
-
-				if (isUnitKey(key)) {
-					// For unit keys, get the linked value key and its values
-					valueKey = getValueKeyFromUnitKey(label);
-					linkedValue = attributes[valueKey];
-					const valueKeyGeneral = getValueKeyFromUnitKey(
-						`${getAttributeKey(
-							simpleLabel,
-							isHover,
-							'',
-							'general'
-						)}`
-					);
-					linkedValueGeneral = attributes[valueKeyGeneral];
-				} else {
-					// For regular keys, get the unit key and its values
-					const unitKey = `${getAttributeKey(
-						simpleLabel,
-						isHover,
-						'',
-						'unit'
-					)}-${breakpoint}`;
-					unitValue = newAttributes[unitKey];
-					const unitKeyGeneral = `${getAttributeKey(
-						simpleLabel,
-						isHover,
-						'',
-						'unit'
-					)}-general`;
-					unitValueGeneral = newAttributes[unitKeyGeneral];
-				}
-
-				let compareCondition;
-				if (isUnitKey(key)) {
-					// For unit keys, check if linked value matches general linked value
-					compareCondition =
-						linkedValue !== undefined &&
-						isEqual(linkedValue, linkedValueGeneral);
-				} else {
-					// For regular keys, check if unit value matches general unit value
-					compareCondition =
-						unitValue !== undefined &&
-						isEqual(unitValue, unitValueGeneral);
-				}
-
-				if (compareCondition) {
 					result[label] = undefined;
 				}
 			} else if (!isNil(attribute)) breakpointLock = true;
@@ -633,10 +576,14 @@ const flatLowerAttr = (
 					'unit'
 				)}-general`;
 				unitValueGeneral = newAttributes[unitKeyGeneral];
-				const unitKeyDefault = attributes[unitKeyGeneral];
+				const unitValueDefault = attributes[unitKeyGeneral];
 
-				if (unitValue === undefined && unitKeyDefault !== undefined) {
-					unitValue = unitKeyDefault;
+				if (
+					value !== attribute &&
+					unitValue === undefined &&
+					unitValueDefault !== undefined
+				) {
+					unitValue = unitValueDefault;
 					result[unitKey] = unitValue;
 				}
 			}
@@ -806,7 +753,6 @@ const cleanAttributes = ({
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
 	};
-
 	if (!containsBreakpoint) return result;
 
 	result = {

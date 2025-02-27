@@ -171,7 +171,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectMargin = {
 			'margin-top-general': '100',
-			'margin-top-xxl': undefined,
+			'margin-top-xxl': '100',
 		};
 
 		const marginResult = await getAttributes([
@@ -195,12 +195,12 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xxl': 'solid',
-			'border-top-width-xxl': undefined,
-			'border-right-width-xxl': undefined,
-			'border-bottom-width-xxl': undefined,
-			'border-left-width-xxl': undefined,
-			'border-sync-width-xxl': undefined,
-			'border-unit-width-xxl': undefined,
+			'border-top-width-xxl': 2,
+			'border-right-width-xxl': 2,
+			'border-bottom-width-xxl': 2,
+			'border-left-width-xxl': 2,
+			'border-sync-width-xxl': 'all',
+			'border-unit-width-xxl': 'px',
 			'border-style-general': 'none',
 			'border-top-width-general': 2,
 			'border-right-width-general': 2,
@@ -263,9 +263,9 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '10',
+			'margin-top-general': '20',
 			'margin-top-xl': '20',
-			'margin-top-m': '10',
+			'margin-top-m': '20',
 		};
 
 		await page.waitForTimeout(300);
@@ -317,9 +317,9 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '10',
+			'margin-top-general': '20',
 			'margin-top-xl': '20',
-			'margin-top-m': '10',
+			'margin-top-m': '20',
 		};
 
 		await page.waitForTimeout(300);
@@ -472,7 +472,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectMargin = {
 			'margin-top-general': '123',
-			'margin-top-xxl': undefined,
+			'margin-top-xxl': '123',
 		};
 
 		await page.waitForTimeout(300);
@@ -525,7 +525,7 @@ describe('Responsive attributes mechanisms', () => {
 		const expectRadiusOnXl = {
 			'border-top-left-radius-general': 100,
 			'border-top-left-radius-xl': 150,
-			'border-top-left-radius-m': 100,
+			'border-top-left-radius-m': 150,
 		};
 
 		await page.waitForTimeout(500);
@@ -701,8 +701,8 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectPaddingOnXl = {
 			'padding-top-general': '10',
-			'padding-top-xxl': undefined,
-			'padding-top-xl': undefined,
+			'padding-top-xxl': '10',
+			'padding-top-xl': '10',
 		};
 
 		const paddingOnXl = await getAttributes([

@@ -374,14 +374,14 @@ const ResponsiveSelector = props => {
 			<div className='action-buttons'>
 				<Button
 					className='action-buttons__button'
-					aria-label={__('Template library', 'maxi-blocks')}
+					aria-label={__('Cloud library', 'maxi-blocks')}
 					onClick={() => addCloudLibrary()}
 				>
 					<Icon
 						className='template-library-cloud-icon'
 						icon={cloudLib}
 					/>
-					<span>{__('Template library', 'maxi-blocks')}</span>
+					<span>{__('Cloud library', 'maxi-blocks')}</span>
 				</Button>
 			</div>
 			<MaxiStyleCardsEditorPopUp ref={settingsRef} />

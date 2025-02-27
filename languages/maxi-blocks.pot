@@ -28,7 +28,7 @@ msgstr ""
 
 #. Description of the plugin
 #: plugin.php
-msgid "A powerful page builder for WordPress Gutenberg with a vast library of free web templates, icons & patterns. Open source and free to build. Anything you create with MaxiBlocks is yours to keep. There's no lock-in, no domain restrictions or license keys to keep track of. All blocks and features are free to use. Save time, get advanced designs & more with the Pro template library upgrade."
+msgid "A powerful page builder for WordPress Gutenberg with a vast library of free web templates, icons & patterns. Open source and free to build. Anything you create with MaxiBlocks is yours to keep. There's no lock-in, no domain restrictions or license keys to keep track of. All blocks and features are free to use. Save time, get advanced designs & more with the Pro Cloud library upgrade."
 msgstr ""
 
 #. Author URI of the plugin
@@ -370,7 +370,7 @@ msgid "Enables indicators that shows the modified settings on MaxiBlocks blocks 
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:578
-msgid "Template library and Style Cards"
+msgid "Cloud library and Style Cards"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:582
@@ -386,7 +386,7 @@ msgid "Choose your favourite Style Card from 100 shown in the library."
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:605
-msgid "Browse the template library to find a good page or pattern."
+msgid "Browse the Cloud library to find a good page or pattern."
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:612
@@ -410,7 +410,7 @@ msgid " - We’re dying to see what you create. "
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:645
-msgid "Our next goal is to launch the MaxiBlocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap."
+msgid "Our next goal is to launch the MaxiBlocks Pro Cloud library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap."
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:652
@@ -512,7 +512,7 @@ msgid "-  Open master toolbar from the square MaxiBlocks launcher icon"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:758
-msgid "-  Choose \"Template library\" and select the blue \"Pro\" tab to start browsing"
+msgid "-  Choose \"Cloud library\" and select the blue \"Pro\" tab to start browsing"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:764
@@ -2178,7 +2178,7 @@ msgstr ""
 #: src/editor/library/toolbar.js:402
 #: src/editor/responsive-selector/index.js:385
 #: src/editor/responsive-selector/index.js:392
-msgid "Template library"
+msgid "Cloud library"
 msgstr ""
 
 #: build/index.js:15
@@ -2385,7 +2385,7 @@ msgstr ""
 #: build/index.js:15
 #: src/blocks/cloud-maxi/index.js:24
 #: src/editor/library/index.js:73
-msgid "Template Library Maxi"
+msgid "Cloud Library Maxi"
 msgstr ""
 
 #: build/index.js:15
@@ -4930,7 +4930,7 @@ msgstr ""
 
 #: build/index.js:15
 #: src/blocks/cloud-maxi/edit.js:28
-msgid "Template Library block preview"
+msgid "Cloud Library block preview"
 msgstr ""
 
 #: build/index.js:15

@@ -384,7 +384,7 @@ class MaxiBlocks_QuickStart {
 				   name="site_title"
 				   class="regular-text"
 				   placeholder="<?php esc_attr_e(
-       	'Example: MaxiBlocks template library',
+       	'Example: MaxiBlocks cloud library',
        	'maxi-blocks',
        ); ?>"
 				   value="<?php echo esc_attr(get_option('blogname')); ?>" />

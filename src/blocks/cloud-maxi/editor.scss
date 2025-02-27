@@ -2,7 +2,7 @@
  * Editor styles for the admin
  */
 
-$white: #fff;
+$white: var(--maxi-white);
 
 .maxi-block-library__modal {
 	width: 80%;
@@ -10,7 +10,7 @@ $white: #fff;
 	max-width: 90%;
 
 	.components-modal__content {
-		background: #f2f2f2;
+		background: var(--maxi-cloud-primary-whisper);
 		padding: 0;
 		overflow-x: hidden;
 		min-height: 100%;
@@ -32,7 +32,7 @@ $white: #fff;
 	.components-tab-panel__tab-content {
 		background: $white;
 		padding: 35px;
-		border-top: 1px solid #e2e4e7;
+		border-top: 1px solid var(--maxi-grey-light);
 	}
 
 	.components-tab-panel__tabs {
@@ -55,7 +55,7 @@ $white: #fff;
 	.components-tab-panel__tabs .maxi-block-library__modal-active-tab {
 		font-weight: 600;
 		background: $white;
-		border: 1px solid #e2e4e7;
+		border: 1px solid var(--maxi-grey-light);
 		border-bottom: none;
 	}
 
@@ -68,7 +68,7 @@ $white: #fff;
 	}
 
 	.maxi-block-library__modal-header {
-		background: #f2f2f2;
+		background: var(--maxi-grey-light);
 		padding: 20px;
 		margin-bottom: 20px;
 		display: grid;
@@ -153,16 +153,16 @@ $white: #fff;
 
 	.maxi-cloud-design-inside {
 		transition: 0.2s ease;
-		border: solid 1px #cccccc;
+		border: solid 1px var(--maxi-grey-light);
 
 		&:hover {
-			box-shadow: 0px 0px 0px 8px #ececec;
+			box-shadow: 0px 0px 0px 8px var(--maxi-grey-light);
 		}
 	}
 
 	.maxi-cloud-design-info {
 		background: $white;
-		border-top: solid 1px #ccc;
+		border-top: solid 1px var(--maxi-grey-light);
 		text-align: left;
 		position: relative;
 		padding: 12px;
@@ -195,27 +195,28 @@ $white: #fff;
 	button.maxi-cloud-favorite-button:hover {
 		background: $white;
 		border: none;
-		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px $white,
-			0 1px 1px rgba(25, 30, 35, 0.2);
+		box-shadow: inset 0 0 0 1px var(--maxi-grey-light),
+			inset 0 0 0 2px $white, 0 1px 1px rgba(25, 30, 35, 0.2);
 	}
 
 	.components-button-group
 		.components-button.maxi-cloud-favorite-button:focus {
-		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px $white,
-			0 1px 1px rgba(25, 30, 35, 0.2);
+		box-shadow: inset 0 0 0 1px var(--maxi-grey-light),
+			inset 0 0 0 2px $white, 0 1px 1px rgba(25, 30, 35, 0.2);
 		background: $white;
 	}
 
 	button.components-button.is-default:active:enabled {
-		box-shadow: inset 0 0 0 1px #ccd0d4, inset 0 0 0 2px $white;
+		box-shadow: inset 0 0 0 1px var(--maxi-grey-light),
+			inset 0 0 0 2px $white;
 	}
 
 	.maxi-cloud-icon-favorite {
-		fill: #888;
+		fill: var(--maxi-grey);
 	}
 
 	.maxi-cloud-icon-favorite-active {
-		fill: #f9569b;
+		fill: var(--maxi-cloud-primary-contrast);
 	}
 
 	.maxi-cloud-zoom-button {
@@ -273,11 +274,11 @@ $white: #fff;
 	justify-content: center;
 	width: 100%;
 	min-height: 120px;
-	color: #464a53;
-	background-color: rgba(229, 242, 248, 0.7);
+	color: var(--maxi-grey-dark);
+	background-color: var(--maxi-cloud-primary-whisper);
 	font-size: 13px;
-	border: 1px solid #dbdde6;
-	border-radius: 3px;
+	border: 1px solid var(--maxi-cloud-primary-light);
+	border-radius: 10px;
 	box-shadow: none !important;
 	.components-placeholder__instructions {
 		margin-bottom: 1.4em;
@@ -289,57 +290,32 @@ $white: #fff;
 
 	button.maxi-block-library__modal-button__placeholder {
 		overflow: hidden;
-		color: #fff;
-		background: var(--maxi-secondary-color);
+		color: var(--maxi-white);
+		background: var(--maxi-cloud-primary);
 		font-family: Inter, sans-serif;
 		font-size: 12px;
-		font-weight: 500;
-		padding: 0 10px 0 0;
-		border: 1px solid #dbdde6;
+		font-weight: 800;
+		padding: 10px;
+		border: 1px solid var(--maxi-grey-light);
 		transition: all 0.1s;
+		border-radius: 18px;
+
 		svg {
-			-webkit-box-sizing: border-box;
-			box-sizing: border-box;
-			width: 36px;
-			height: 36px;
-			padding: 8px;
-			border-right: 1px solid #dbdde6;
 			margin-right: 10px;
-			background-color: #fff;
-			transition: all 0.1s;
-			path {
-				fill: none !important;
-				stroke: var(--maxi-secondary-color);
-				&:first-child {
-					display: none;
-				}
-			}
 		}
 
 		&:hover {
-			background: #fff !important;
-			color: var(--maxi-secondary-color) !important;
-			border-color: var(--maxi-secondary-color);
-			svg {
-				border-color: var(--maxi-secondary-color);
-				transform: scale(1.1);
-			}
+			background: var(--maxi-white) !important;
+			color: var(--maxi-cloud-primary-contrast) !important;
+			border-color: var(--maxi-tertiary-color);
 		}
 
 		&--small {
 			padding: 0;
 			transition: none;
-			svg {
-				margin: auto;
-				border-right: none;
-			}
 		}
 		&--smaller {
 			height: 30px;
-			svg {
-				width: 30px;
-				height: 30px;
-			}
 		}
 	}
 

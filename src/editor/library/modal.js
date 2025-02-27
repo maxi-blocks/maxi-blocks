@@ -62,7 +62,7 @@ const CloudPlaceholder = forwardRef((props, ref) => {
 				className='maxi-library-block__select__icon'
 				icon={cloudLib}
 			/>
-			{!isBlockSmall && __('Template library', 'maxi-blocks')}
+			{!isBlockSmall && __('Cloud library', 'maxi-blocks')}
 		</Button>
 	);
 });

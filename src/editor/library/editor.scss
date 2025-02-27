@@ -523,7 +523,6 @@
 
 		&__logo {
 			display: flex;
-			color: var(--maxi-primary-color);
 			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			font-size: 18px;
 			word-spacing: 0;
@@ -534,7 +533,7 @@
 			& svg {
 				display: block;
 				height: 30px;
-				width: 30px;
+				width: auto;
 				margin-right: 10px;
 			}
 		}
@@ -1520,10 +1519,11 @@
 								right: -1px;
 								top: -1px;
 								bottom: -1px;
-								background-color: var(--maxi-primary-color);
+								background-color: var(--maxi-cloud-primary);
 								z-index: -1;
 								transition: 0.1s;
 								opacity: 0;
+								border-radius: inherit; /* Inherit border radius from parent */
 							}
 							&:after {
 								content: '';
@@ -1549,9 +1549,18 @@
 						}
 						&:first-child {
 							a {
+								border-top-left-radius: 18px;
+								border-bottom-left-radius: 18px;
 								&::after {
 									display: none;
 								}
+							}
+						}
+						&:last-child {
+							a {
+								border-top-right-radius: 18px;
+								border-bottom-right-radius: 18px;
+								border-right: none;
 							}
 						}
 						&--selected {
@@ -1565,12 +1574,6 @@
 								&::after {
 									opacity: 1;
 								}
-							}
-						}
-
-						&:last-child {
-							a {
-								border-right: none;
 							}
 						}
 					}
@@ -1677,7 +1680,7 @@
 				.ais-InfiniteHits-item {
 					background: var(--maxi-white);
 					&-pro {
-						background: var(--maxi-grey-light);
+						background: var(--maxi-cloud-primary-whisper);
 					}
 					.maxi-cloud-masonry-card__button {
 						background-color: var(--maxi-light-blue);

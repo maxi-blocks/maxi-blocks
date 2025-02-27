@@ -575,7 +575,6 @@ const flatLowerAttr = (
 			result[key] = value;
 			return;
 		}
-		// if (breakpoint === 'xxl') return;
 
 		const isGeneral = breakpoint === 'general';
 		const isHover = getIsHoverAttribute(key);
@@ -598,13 +597,11 @@ const flatLowerAttr = (
 
 			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
 			const attribute = attributes?.[label];
-
 			if (isNil(attribute)) return;
 
 			const defaultAttribute =
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
-
 			// Handle unit keys and their linked values
 			let unitValue;
 			let unitValueGeneral;
@@ -636,6 +633,12 @@ const flatLowerAttr = (
 					'unit'
 				)}-general`;
 				unitValueGeneral = newAttributes[unitKeyGeneral];
+				const unitKeyDefault = attributes[unitKeyGeneral];
+
+				if (unitValue === undefined) {
+					unitValue = unitKeyDefault;
+					result[unitKey] = unitValue;
+				}
 			}
 
 			let compareCondition;
@@ -799,10 +802,13 @@ const cleanAttributes = ({
 
 	let result = { ...newAttributes };
 
+	console.log('result before', result);
+
 	result = {
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
 	};
+	console.log('result after removeHoverSameAsNormal', result);
 
 	if (!containsBreakpoint) return result;
 
@@ -817,17 +823,17 @@ const cleanAttributes = ({
 			allowXXLOverGeneral
 		),
 	};
-
+	console.log('result after flatWithGeneral', result);
 	result = {
 		...result,
 		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
 	};
-
+	console.log('result after flatLowerAttr', result);
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
-
+	console.log('result after preserveBaseBreakpoint', result);
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);
@@ -845,7 +851,7 @@ const cleanAttributes = ({
 		}),
 		targetClientId ?? clientId
 	);
-
+	console.log('result after dispatch', result);
 	return result;
 };
 

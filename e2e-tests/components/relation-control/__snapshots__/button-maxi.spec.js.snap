@@ -707,8 +707,8 @@ exports[`Button Maxi hover simple actions Button typography 1`] = `
       "letter-spacing-unit-xl": "px",
       "letter-spacing-xl": 15,
       "line-height-general": 60,
-      "line-height-unit-general": "%",
-      "line-height-unit-xl": "%",
+      "line-height-unit-general": "px",
+      "line-height-unit-xl": "px",
       "line-height-xl": 60,
       "palette-color-general": 8,
       "palette-color-xl": 8,
@@ -741,7 +741,7 @@ exports[`Button Maxi hover simple actions Button typography 1`] = `
           "font-style": "italic",
           "font-weight": "",
           "letter-spacing": "15px",
-          "line-height": "60%",
+          "line-height": "60px",
           "text-decoration": "underline",
           "text-indent": "20px",
           "text-orientation": "sideways",
@@ -770,7 +770,7 @@ exports[`Button Maxi hover simple actions Button typography 1`] = `
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
+exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60px; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
 
 exports[`Button Maxi hover simple actions Button typography 3`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__content { transition: all 0s ease 0s, color 0.3s ease 0s, font-size 0.3s ease 0s, line-height 0.3s ease 0s, letter-spacing 0.3s ease 0s, font-weight 0.3s ease 0s, text-transform 0.3s ease 0s, font-style 0.3s ease 0s, text-decoration 0.3s ease 0s, text-indent 0.3s ease 0s, writing-mode 0.3s ease 0s, text-orientation 0.3s ease 0s, direction 0.3s ease 0s;}"`;
 

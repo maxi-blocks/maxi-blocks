@@ -630,7 +630,7 @@
 				font-weight: 400;
 				border-bottom: 1px solid var(--maxi-grey-light);
 				border-radius: 0;
-				padding: 6px;
+				padding: 10px;
 				box-shadow: none;
 				margin-bottom: 0;
 				cursor: pointer;
@@ -894,7 +894,7 @@
 						position: relative;
 						z-index: 1;
 						transition: all 0.5s;
-						padding: 6px;
+						padding: 10px;
 						height: 100%;
 						overflow: hidden;
 
@@ -1591,16 +1591,17 @@
 					cursor: pointer;
 					transition: 1s;
 					animation: 1s ease-out 0s 1 fadeIn;
+					border-radius: 8px;
 
 					.maxi-cloud-masonry-card {
 						& > .maxi-components-button {
 							height: auto;
-							padding: 6px;
+							padding: 10px;
 							display: block;
 							width: 100%;
 						}
 						&__patterns {
-							padding: 6px;
+							padding: 10px;
 							.maxi-cloud-masonry-card__button {
 								margin-right: 0;
 							}
@@ -1679,32 +1680,41 @@
 			.ais-InfiniteHits-list {
 				.ais-InfiniteHits-item {
 					background: var(--maxi-white);
-					&-pro {
-						background: var(--maxi-cloud-primary-whisper);
-					}
-					.maxi-cloud-masonry-card__button {
-						background-color: var(--maxi-light-blue);
-						color: var(--maxi-grey-dark);
-						&-go-pro {
-							border: 1px solid var(--maxi-primary-color);
-						}
+					border-radius: 8px;
+					overflow: hidden;
+					transition: border-color 0.3s ease;
 
-						&-go-pro:hover {
-							color: var(--maxi-white) !important;
-							background-color: var(
-								--maxi-primary-color
-							) !important;
-							border-color: var(--maxi-primary-color) !important;
+					&-pro {
+						background: var(--maxi-off-white);
+					}
+
+					// Common button styles
+					.maxi-cloud-masonry-card__button {
+						background-color: var(
+							--maxi-cloud-primary-whisper
+						) !important;
+						color: var(--maxi-black);
+						border-radius: 30px;
+						transition: all 0.3s ease;
+
+						&-go-pro {
+							border: 1px solid var(--maxi-cloud-primary);
+
+							&:hover {
+								color: var(--maxi-white) !important;
+								border-color: var(
+									--maxi-primary-color
+								) !important;
+							}
 						}
 					}
+
+					// Hover states
 					&:hover {
-						border-color: var(--maxi-primary-color);
-						box-shadow: 0 0 0 1px var(--maxi-primary-color);
+						border-color: var(--maxi-cloud-primary) !important;
 
 						.maxi-cloud-masonry-card__button {
-							border-color: var(--maxi-primary-color);
-							box-shadow: 0 0 0 1px var(--maxi-primary-color);
-							color: var(--maxi-primary-color);
+							border-color: var(--maxi-cloud-primary) !important;
 						}
 					}
 				}
@@ -1750,15 +1760,15 @@
 				width: auto;
 				height: 31px;
 				padding: 6px 18px;
-				background-color: var(--maxi-light-blue);
+				background-color: var(--maxi-cloud-primary-whisper);
 				color: var(--maxi-grey-dark);
-				border: 1px solid var(--maxi-primary-color);
+				border: 1px solid var(--maxi-cloud-primary);
 				transition: 0.1s;
 				z-index: 100000;
 				&:hover {
-					background-color: var(--maxi-primary-color);
+					background-color: var(--maxi-cloud-primary);
 					color: var(--maxi-white);
-					border-color: var(--maxi-primary-color);
+					border-color: var(--maxi-cloud-primary);
 				}
 			}
 			&__button-connect-pro {
@@ -1802,6 +1812,7 @@
 			margin: 0 0 1rem;
 			background-color: var(--maxi-white);
 			position: relative;
+			border-radius: 8px;
 
 			.maxi-cloud-masonry-card {
 				&__button-icon,
@@ -1836,7 +1847,7 @@
 				&__buttons {
 					display: flex;
 					align-items: center;
-					margin-top: 8px;
+					margin-top: 10px;
 				}
 				&__button {
 					display: inline-flex;
@@ -1862,7 +1873,9 @@
 						background-color: var(--maxi-primary-color);
 						&:hover {
 							color: var(--maxi-primary-color) !important;
-							background-color: var(--maxi-light-blue) !important;
+							background-color: var(
+								--maxi-bright-yellow
+							) !important;
 						}
 					}
 					&.saved {
@@ -2151,13 +2164,13 @@
 						&-item {
 							a {
 								min-width: 85px;
-								padding: 6px;
+								padding: 10px;
 							}
 						}
 					}
 					&__button {
 						&-go-pro {
-							padding: 6px;
+							padding: 10px;
 						}
 					}
 					&__text_pro {
@@ -2258,7 +2271,7 @@
 						&-item {
 							a {
 								min-width: 76px;
-								padding: 6px;
+								padding: 10px;
 								font-size: 11px;
 							}
 						}

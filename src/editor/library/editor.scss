@@ -100,8 +100,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 			transition: all 0.5s;
 
 			&:hover {
-				background: var(--maxi-cloud-hover-pink);
-				border-color: var(--maxi-cloud-hover-pink-deep);
+				background: var(--maxi-cloud-hover);
+				border-color: var(--maxi-cloud-hover-deep);
 			}
 
 			// SVG styles in preview
@@ -183,25 +183,25 @@ $border-light: 1px solid var(--maxi-grey-light);
 				color: var(--maxi-grey-dark);
 				background-color: var(--maxi-cloud-primary-whisper);
 				border: 0;
-				border-radius: 3px;
+				border-radius: 30px;
 				padding: 8px 6px 4px;
 				cursor: pointer;
 				outline: none;
 				&_active {
 					svg {
 						path {
-							fill: var(--maxi-secondary-color);
+							fill: var(--maxi-cloud-primary);
 						}
 					}
 					span {
-						color: var(--maxi-secondary-color);
+						color: var(--maxi-cloud-primary);
 					}
 				}
 				&-fullwidth {
 					&.maxi-cloud-toolbar__button_active {
 						svg {
 							path {
-								stroke: var(--maxi-secondary-color);
+								stroke: var(--maxi-cloud-primary);
 							}
 						}
 					}
@@ -219,7 +219,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 				&_active,
 				&:hover {
-					box-shadow: inset 0 0 0px 2px var(--maxi-secondary-color);
+					box-shadow: inset 0 0 0px 1px var(--maxi-cloud-primary);
 				}
 			}
 			&__responsive-buttons {
@@ -227,6 +227,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 				justify-content: center;
 				column-gap: 10px;
 				width: 33.33%;
+
+				// Target buttons directly inside responsive-buttons
+				.maxi-cloud-toolbar__button {
+					border-radius: 8px;
+				}
 			}
 			&__buttons-group {
 				display: flex;
@@ -315,22 +320,40 @@ $border-light: 1px solid var(--maxi-grey-light);
 				position: absolute;
 				right: 14px;
 				left: auto;
-				top: 4px;
+				top: 10px !important;
 				padding: 0;
 				box-shadow: none;
 				min-width: 25px;
 				width: 25px;
-				height: 36px;
+				height: 25px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: var(--maxi-black);
+				border-radius: 50%;
+				transition: background-color 0.3s ease;
+				font-size: 14px;
+				font-weight: bold;
+				color: var(--maxi-white);
+				text-decoration: none;
+
+				&::before {
+					content: '×';
+					font-size: 22px;
+					position: relative;
+					left: 0.5px;
+					padding-bottom: 5px; /* Added padding instead of line-height */
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
 
 				svg {
-					fill: var(--maxi-primary-color);
-					width: 25px;
-					height: 25px;
+					display: none;
 				}
+
 				&:hover {
-					svg {
-						fill: var(--maxi-grey-dark);
-					}
+					background-color: var(--maxi-grey-dark);
 				}
 			}
 		}
@@ -408,7 +431,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			justify-content: center;
 			padding: 0;
 			background-color: transparent;
-			color: var(--maxi-primary-color);
+			color: var(--maxi-cloud-primary);
 			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			text-decoration: none;
 			font-size: 14px;
@@ -419,13 +442,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 				width: 12px;
 				height: 12px;
 				padding: 2px;
-				background-color: var(--maxi-primary-color);
+				background-color: var(--maxi-cloud-primary);
 				border-radius: 50%;
 				margin-right: 5px;
 				transition: 0.1s;
 
 				path {
-					fill: var(--maxi-primary-color);
+					fill: var(--maxi-cloud-primary);
 					stroke: var(--maxi-white);
 					transition: 0.1s;
 				}
@@ -495,7 +518,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			outline: 0;
 
 			&:not(&--disabled):hover {
-				background-color: var(--maxi-cloud-hover-pink);
+				background-color: var(--maxi-cloud-hover);
 				color: var(--maxi-white);
 			}
 
@@ -608,7 +631,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						}
 
 						&__input[type='checkbox']:checked {
-							background: var(--maxi-primary-color);
+							background: var(--maxi-cloud-primary);
 							border: none;
 						}
 					}
@@ -1092,7 +1115,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							top: -1px;
 							bottom: -1px;
 							display: block;
-							background-color: var(--maxi-primary-color);
+							background-color: var(--maxi-cloud-primary);
 							transition: 0.1s;
 							opacity: 0;
 						}
@@ -1163,7 +1186,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						.ais-SearchBox-reset {
 							position: absolute;
 							top: 50%;
-							right: 1px;
+							right: 5px;
 							display: block;
 							padding: 2px 6px;
 							border: none;
@@ -1176,7 +1199,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							cursor: pointer;
 							outline: 0;
 							&:hover {
-								color: var(--maxi-primary-color);
+								color: var(--maxi-cloud-primary);
 							}
 						}
 						.ais-SearchBox-input {
@@ -1185,7 +1208,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							min-height: 36px;
 							padding: 5px 10px;
 							border: 1px solid var(--maxi-grey-light);
-							border-radius: 0;
+							border-radius: 20px;
 							background: var(--maxi-white);
 							color: var(--maxi-grey-dark);
 							font-family: 'Inter', Helvetica, Arial, Lucida,
@@ -1194,7 +1217,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							transition: all 0.5s;
 							&:hover,
 							&:focus {
-								border-color: var(--maxi-grey-dark);
+								border-color: var(--maxi-cloud-primary-light);
 								box-shadow: none;
 								outline: none;
 							}
@@ -1278,11 +1301,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 						outline: none;
 
 						&:focus {
-							box-shadow: inset 0 0 0 1px var(--maxi-grey-dark);
+							box-shadow: inset 0 0 0 1px
+								var(--maxi-cloud-primary-light);
 						}
 
 						&:hover {
-							background-color: var(--maxi-light-blue);
+							background-color: var(--maxi-cloud-primary-whisper);
 							box-shadow: none;
 						}
 						.ais-RefinementList-checkbox {
@@ -1418,7 +1442,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						margin-top: -1px;
 						a {
 							color: var(--maxi-black-1-color);
-							background-color: var(--maxi-grey-light);
+							background-color: var(--maxi-cloud-primary-whisper);
 							font-family: 'Inter', Helvetica, Arial, Lucida,
 								sans-serif;
 							font-size: 12px;
@@ -1434,12 +1458,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 							position: relative;
 							z-index: 1;
 							&:hover {
-								border-color: var(--maxi-grey-dark);
+								border-color: var(--maxi-cloud-primary-light);
 							}
 						}
 						&--selected {
 							a {
-								border-color: var(--maxi-grey-dark);
+								border-color: var(--maxi-cloud-primary-light);
 								font-weight: 500;
 							}
 						}
@@ -1581,12 +1605,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 						border: 1px solid var(--maxi-grey-light);
 					}
 					&:hover {
-						border-color: var(--maxi-primary-color);
-						box-shadow: 0 0 0 1px var(--maxi-primary-color);
+						border-color: var(--maxi-cloud-primary);
+						box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
 						.maxi-cloud-masonry-card__button {
-							border-color: var(--maxi-primary-color);
-							box-shadow: 0 0 0 1px var(--maxi-primary-color);
-							color: var(--maxi-primary-color);
+							border-color: var(--maxi-cloud-primary);
+							box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
+							color: var(--maxi-cloud-primary);
 						}
 					}
 				}
@@ -1664,23 +1688,24 @@ $border-light: 1px solid var(--maxi-grey-light);
 						) !important;
 						color: var(--maxi-black) !important;
 						border-radius: 30px;
-						border: var(--maxi-cloud-primary) !important;
+						box-shadow: 0 0 0 1px var(--maxi-cloud-primary-light);
 						transition: all 0.3s ease;
 
 						/* Hover state for all buttons */
 						&:hover {
-							background-color: var(--maxi-hot-pink) !important;
-							border-color: solid var(--maxi-hot-pink) !important;
+							background-color: var(
+								--maxi-cloud-hover
+							) !important;
+							box-shadow: 0 0 0 1px var(--maxi-cloud-hover);
 							color: var(--maxi-white) !important;
 						}
 					}
 
 					/* Card hover state */
 					&:hover {
-						background: var(--maxi-off-white) !important;
-						border-color: var(--maxi-cloud-primary);
-						-webkit-box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
-						box-shadow: 0 0 0 1px var(--maxi-cloud-primaryr);
+						background: var(
+							--maxi-cloud-primary-whisper
+						) !important;
 					}
 				}
 			}
@@ -1966,7 +1991,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				font-weight: 500;
 				font-size: 12px;
 				strong {
-					color: var(--maxi-primary-color);
+					color: var(--maxi-cloud-primary);
 				}
 			}
 		}

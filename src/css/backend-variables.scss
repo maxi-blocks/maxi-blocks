@@ -4,13 +4,16 @@
 	--maxi-secondary-color: #43a047; /* Crisp blue accent */
 	--maxi-tertiary-color: #7a00df; /* Rich deep purple accent */
 
-	/* Core Clouds */
-	--maxi-cloud-primary: #7a57c1; /* Refined, modern purple with approachability */
-	--maxi-cloud-primary-light: #c3b4e3; /* Soft, elegant pastel purple */
-	--maxi-cloud-primary-bright: #8d6ae3; /* A lively but sophisticated shade */
-	--maxi-cloud-primary-whisper: #f3effb; /* Ultra-soft, neutral lavender */
-	--maxi-cloud-primary-contrast: #5a3d99; /* A deep but not too harsh contrast */
-	--maxi-cloud-hover-pink: #e84c8b; /* Confident, energetic pink with a professional feel */
+	/* Core Colors */
+	--maxi-cloud-primary: #9a8cf3; /* Soft, pastel lavender-purple – modern and approachable */
+	--maxi-cloud-primary-light: #e1dbfe; /* Lighter pastel version, now more distinct from whisper */
+	--maxi-cloud-primary-bright: #7e6ee8; /* A more saturated but still refined shade */
+	--maxi-cloud-primary-whisper: #f5f3fe; /* Slightly darker off-white for backgrounds */
+	--maxi-cloud-primary-contrast: #3a3a3a; /* Dark neutral for text and contrast */
+
+	/* Accent & Hover Colors */
+	--maxi-cloud-hover: #b06bf7; /* Vibrant lavender-purple for hover effects */
+	--maxi-cloud-hover-deep: #954dd1; /* Slightly deeper version for active states */
 
 	/* Core Neutrals */
 	--maxi-white: #fff; /* Pure white */

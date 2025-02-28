@@ -253,7 +253,7 @@
 				}
 
 				&[aria-pressed='true'] {
-					background: var(--maxi-light-blue) !important;
+					background: var(--maxi-pastel-green) !important;
 					svg {
 						path {
 							fill: var(--maxi-secondary-color);
@@ -353,8 +353,8 @@
 		}
 
 		.maxi-tabs-control__button[aria-pressed='true'] {
-			background-color: var(--maxi-light-blue) !important;
-			border-color: var(--maxi-light-blue) !important;
+			background-color: var(--maxi-whisper-green) !important;
+			border-color: var(--maxi-whisper-green) !important;
 		}
 
 		.maxi-tabs-control__button {

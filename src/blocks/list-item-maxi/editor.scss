@@ -8,7 +8,7 @@
 			outline: 1.5px solid var(--maxi-mid-green) !important;
 		}
 		&.is-selected {
-			outline: 1.5px solid var(--maxi-light-blue-alt) !important;
+			outline: 1.5px solid var(--maxi-whisper-green-alt) !important;
 		}
 	}
 
@@ -32,7 +32,7 @@
 
 .maxi-block {
 	&.is-selected {
-		outline: 1.5px dashed var(--maxi-light-blue-alt) !important;
+		outline: 1.5px dashed var(--maxi-whisper-green-alt) !important;
 
 		&:hover {
 			border-radius: 0 !important;

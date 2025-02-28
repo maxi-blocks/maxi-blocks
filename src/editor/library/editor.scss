@@ -1679,43 +1679,41 @@
 		&__patterns {
 			.ais-InfiniteHits-list {
 				.ais-InfiniteHits-item {
+					/* Card base styles */
 					background: var(--maxi-white);
-					border-radius: 8px;
+					border-radius: 10px;
 					overflow: hidden;
-					transition: border-color 0.3s ease;
+					transition: all 0.3s ease;
 
+					/* Pro version card style */
 					&-pro {
 						background: var(--maxi-off-white);
 					}
 
-					// Common button styles
+					/* Common button styles for both buttons */
 					.maxi-cloud-masonry-card__button {
 						background-color: var(
 							--maxi-cloud-primary-whisper
 						) !important;
-						color: var(--maxi-black);
+						color: var(--maxi-black) !important;
 						border-radius: 30px;
+						border: var(--maxi-cloud-primary) !important;
 						transition: all 0.3s ease;
 
-						&-go-pro {
-							border: 1px solid var(--maxi-cloud-primary);
-
-							&:hover {
-								color: var(--maxi-white) !important;
-								border-color: var(
-									--maxi-primary-color
-								) !important;
-							}
+						/* Hover state for all buttons */
+						&:hover {
+							background-color: var(--maxi-hot-pink) !important;
+							border-color: solid var(--maxi-hot-pink) !important;
+							color: var(--maxi-white) !important;
 						}
 					}
 
-					// Hover states
+					/* Card hover state */
 					&:hover {
-						border-color: var(--maxi-cloud-primary) !important;
-
-						.maxi-cloud-masonry-card__button {
-							border-color: var(--maxi-cloud-primary) !important;
-						}
+						background: var(--maxi-off-white) !important;
+						border-color: var(--maxi-cloud-primary);
+						-webkit-box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
+						box-shadow: 0 0 0 1px var(--maxi-cloud-primaryr);
 					}
 				}
 			}

@@ -21,9 +21,6 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.gridlayer.googlemutant';
 
-// Debug utility - set to true during development, false in production
-const DEBUG_MODE = true;
-
 const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 	const map = useMap();
 
@@ -154,53 +151,6 @@ const MapContent = props => {
 		}
 
 		if (!container) return;
-
-		// Debug map properties related to interaction and events
-		if (DEBUG_MODE) {
-			// eslint-disable-next-line no-console
-			console.log('Map debug info:', {
-				// Container info
-				container: container.id,
-				containerInIframe:
-					window !== container.ownerDocument.defaultView,
-
-				// Map state
-				mapExists: !!map,
-				mapCenter: map.getCenter(),
-				mapZoom: map.getZoom(),
-				mapSize: map.getSize(),
-				mapPixelOrigin: map.getPixelOrigin(),
-
-				// Interaction settings
-				dragging: map.options.dragging,
-				touchZoom: map.options.touchZoom,
-				doubleClickZoom: map.options.doubleClickZoom,
-				scrollWheelZoom: map.options.scrollWheelZoom,
-				boxZoom: map.options.boxZoom,
-				keyboard: map.options.keyboard,
-				inertia: map.options.inertia,
-				zoomControl: map.options.zoomControl,
-
-				// Handlers status
-				dragEnabled: map.dragging && map.dragging.enabled(),
-				touchZoomEnabled: map.touchZoom && map.touchZoom.enabled(),
-				doubleClickZoomEnabled:
-					map.doubleClickZoom && map.doubleClickZoom.enabled(),
-				scrollWheelZoomEnabled:
-					map.scrollWheelZoom && map.scrollWheelZoom.enabled(),
-				boxZoomEnabled: map.boxZoom && map.boxZoom.enabled(),
-				keyboardEnabled: map.keyboard && map.keyboard.enabled(),
-
-				// DOM info
-				mapPane: map.getPane('mapPane') ? 'exists' : 'missing',
-				tilePane: map.getPane('tilePane') ? 'exists' : 'missing',
-				overlayPane: map.getPane('overlayPane') ? 'exists' : 'missing',
-
-				// Event capture
-				hasInteraction: map._handlers && map._handlers.length > 0,
-				handlerCount: map._handlers ? map._handlers.length : 0,
-			});
-		}
 
 		// Fix for iframe-specific issues
 		const isInIframe = window !== container.ownerDocument.defaultView;
@@ -679,6 +629,7 @@ const MapContent = props => {
 							])}
 							maxiSetAttributes={maxiSetAttributes}
 							setIsDraggingMarker={setIsDraggingMarker}
+							uniqueID={uniqueID}
 						/>
 						<SearchBox
 							mapMarkers={mapMarkers}

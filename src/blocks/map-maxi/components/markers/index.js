@@ -17,7 +17,8 @@ import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 
 const Markers = props => {
-	const { attributes, maxiSetAttributes, setIsDraggingMarker } = props;
+	const { attributes, maxiSetAttributes, setIsDraggingMarker, uniqueID } =
+		props;
 
 	const {
 		'map-marker-heading-level': mapMarkerHeadingLevel,
@@ -58,6 +59,8 @@ const Markers = props => {
 		});
 	};
 
+	const editorIframe = document.querySelector('iframe[name="editor-canvas"]');
+
 	return mapMarkers.map((marker, index) => {
 		const { id, latitude, longitude } = marker;
 
@@ -71,6 +74,22 @@ const Markers = props => {
 					dragstart: event => {
 						setIsDraggingMarker(true);
 						event.target._map.dragging.disable();
+
+						if (editorIframe && editorIframe.contentDocument) {
+							const container =
+								editorIframe.contentDocument.getElementById(
+									`maxi-map-block__container-${uniqueID}`
+								);
+							container.addEventListener('mouseup', () => {
+								const { lat, lng } = event.target._latlng;
+								updateMarkers(index, {
+									latitude: lat,
+									longitude: lng,
+								});
+								setIsDraggingMarker(false);
+								event.target._map.dragging.enable();
+							});
+						}
 					},
 					dragend: event => {
 						const { lat, lng } = event.target._latlng;

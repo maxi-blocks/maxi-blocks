@@ -57,7 +57,7 @@
 					max-width: 152px;
 					height: auto;
 					max-height: 48px;
-					fill: var(--maxi-whisper-green-alt);
+					fill: var(--maxi-light-blue-alt);
 				}
 			}
 		}
@@ -67,7 +67,7 @@
 		.editor-styles-wrapper & {
 			&.is-selected {
 				&::after {
-					border-color: var(--maxi-whisper-green-alt) !important;
+					border-color: var(--maxi-light-blue-alt) !important;
 				}
 			}
 			&::after {

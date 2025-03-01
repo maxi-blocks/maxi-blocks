@@ -353,7 +353,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 
 				&:hover {
-					background-color: var(--maxi-tertiary-color);
+					background-color: var(--maxi-grey-dark);
 				}
 			}
 		}
@@ -739,11 +739,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 							right: -1px;
 							top: -1px;
 							bottom: -1px;
-							background-color: var(--maxi-cloud-primary);
+							background-color: var(--maxi-primary-color);
 							z-index: -1;
 							transition: 0.1s;
 							opacity: 0;
-							border-radius: inherit; /* Inherit border radius from parent */
 						}
 
 						&:after {
@@ -759,27 +758,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 							opacity: 0;
 						}
 
-						&:first-child {
-							border-top-left-radius: 18px;
-							border-bottom-left-radius: 18px;
-
-							&::after {
-								display: none;
-							}
-						}
-
-						&:last-child {
-							border-top-right-radius: 18px;
-							border-bottom-right-radius: 18px;
-							border-right: 1px solid var(--maxi-grey-light);
-						}
-
 						&:hover,
 						&___pressed {
 							font-weight: 500;
 							color: var(--maxi-white);
-							border-color: var(--maxi-cloud-primary);
-							box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
 
 							&::before {
 								opacity: 1;
@@ -1099,40 +1081,44 @@ $border-light: 1px solid var(--maxi-grey-light);
 					display: flex;
 					margin-bottom: 8px;
 					.maxi-cloud-container__content-svg-shape__button {
-						width: auto;
-						color: var(--maxi-black-1-color);
-						background-color: var(--maxi-white);
+						position: relative;
+						z-index: 1;
+						width: 100%;
+						height: 31px;
+						padding: 6px 18px;
+						border: none;
+						border-bottom: 1px solid var(--maxi-grey-light);
+						border-right: 1px solid var(--maxi-grey-light);
+						border-radius: 0;
+						margin-right: 0;
+						color: var(--maxi-grey-dark);
+						background-color: transparent;
 						font-family: 'Inter', Helvetica, Arial, Lucida,
 							sans-serif;
 						font-size: 12px;
 						font-weight: normal;
-						border: 1px solid var(--maxi-grey-light);
-						border-radius: 0;
-						text-align: center;
-						height: 31px;
-						min-width: 88px;
-						padding: 6px 18px;
-						text-decoration: none;
-						box-shadow: none;
 						cursor: pointer;
-						position: relative;
-						z-index: 1;
-
+						outline: 0;
+						&:last-child {
+							margin-right: 0;
+							border-right: 0;
+						}
+						&:first-child {
+							border-left: 0;
+						}
 						&::before {
 							content: '';
-							display: block;
 							position: absolute;
+							z-index: -1;
 							left: -1px;
 							right: -1px;
 							top: -1px;
 							bottom: -1px;
+							display: block;
 							background-color: var(--maxi-cloud-primary);
-							z-index: -1;
 							transition: 0.1s;
 							opacity: 0;
-							border-radius: inherit; /* Inherit border radius from parent */
 						}
-
 						&:after {
 							content: '';
 							position: absolute;
@@ -1140,39 +1126,46 @@ $border-light: 1px solid var(--maxi-grey-light);
 							left: -1px;
 							top: -1px;
 							bottom: -1px;
-							width: 1px;
 							display: block;
+							width: 1px;
 							background-color: var(--maxi-white);
 							opacity: 0;
 						}
-
 						&:first-child {
-							border-top-left-radius: 18px;
-							border-bottom-left-radius: 18px;
-
 							&::after {
-								display: none;
+								opacity: 0 !important;
 							}
 						}
-
-						&:last-child {
-							border-top-right-radius: 18px;
-							border-bottom-right-radius: 18px;
-							border-right: 1px solid var(--maxi-grey-light);
-						}
-
-						&:hover,
 						&___pressed {
-							font-weight: 500;
 							color: var(--maxi-white);
-							border-color: var(--maxi-cloud-primary);
-							box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
-
+							font-weight: 500;
+							border-bottom: 1px solid;
+							&::after {
+								opacity: 1;
+							}
 							&::before {
 								opacity: 1;
 							}
-
+						}
+						&___inactive {
+							pointer-events: none !important;
+							color: var(--maxi-grey-light);
 							&:after {
+								top: 50%;
+								left: 50%;
+								width: 109%;
+								height: 1px;
+								background-color: var(--maxi-grey-light);
+								transform: translate(-50%, -50%) rotate(-21deg);
+								opacity: 1;
+							}
+						}
+						&:hover {
+							color: var(--maxi-white);
+							&::before {
+								opacity: 1;
+							}
+							&::after {
 								opacity: 1;
 							}
 						}
@@ -1236,28 +1229,23 @@ $border-light: 1px solid var(--maxi-grey-light);
 					font-size: 11px;
 					font-weight: 400;
 					&__input {
-						border-radius: 3px;
+						border-radius: 0;
 						border-color: var(--maxi-grey-light);
 						margin: 0;
-						background-color: var(--maxi-whisper-green) !important;
 					}
 					&__input-container {
 						margin-right: 5px;
 						margin-left: 8px;
-
 						svg {
 							width: 15px;
 							height: 15px;
-							margin-left: 3px;
-							margin-top: 1px;
-							fill: var(--maxi-black);
-							stroke: var(--maxi-black);
 						}
 					}
 					&__input,
 					&__input-container {
 						width: 15px;
 						height: 15px;
+						box-shadow: none;
 					}
 					&__label {
 						color: var(--maxi-grey-dark);
@@ -1563,7 +1551,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							a {
 								border-top-right-radius: 18px;
 								border-bottom-right-radius: 18px;
-								border-right: 1px solid var(--maxi-grey-light);
+								border-right: none;
 							}
 						}
 						&--selected {
@@ -1617,12 +1605,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 						border: 1px solid var(--maxi-grey-light);
 					}
 					&:hover {
-						border-color: var(--maxi-cloud-primary) !important;
-						box-shadow: 0 0 0 1px var(--maxi-cloud-primary) !important;
+						border-color: var(--maxi-cloud-primary);
+						box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
 						.maxi-cloud-masonry-card__button {
-							border-color: var(--maxi-cloud-primary) !important;
-							box-shadow: 0 0 0 1px var(--maxi-cloud-primary) !important;
-							color: var(--maxi-cloud-primary) !important;
+							border-color: var(--maxi-cloud-primary);
+							box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
+							color: var(--maxi-cloud-primary);
 						}
 					}
 				}
@@ -1715,7 +1703,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 					/* Card hover state */
 					&:hover {
-						background: var(--maxi-off-white) !important;
+						background: var(--maxi-cloud-hover) !important;
 					}
 				}
 			}
@@ -1763,10 +1751,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				background-color: var(--maxi-cloud-primary-whisper);
 				color: var(--maxi-grey-dark);
 				border: 1px solid var(--maxi-cloud-primary);
-				border-radius: 30px;
 				transition: 0.1s;
 				z-index: 100000;
-				margin-left: -20px;
 				&:hover {
 					background-color: var(--maxi-cloud-primary);
 					color: var(--maxi-white);
@@ -2693,61 +2679,5 @@ html[dir='rtl'] {
 	.maxi-cloud-container__patterns__sidebar
 		svg.components-checkbox-control__checked {
 		right: 0;
-	}
-}
-
-/* SVG specific hover styles */
-.maxi-library-modal
-	.maxi-cloud-container__content-svg-shape
-	.ais-InfiniteHits-list
-	.ais-InfiniteHits-item:hover {
-	z-index: 9;
-
-	&::after {
-		background-color: var(--maxi-light-blue);
-		border-color: var(--maxi-cloud-primary) !important;
-		box-shadow: 0 0 0 1px var(--maxi-cloud-primary) !important;
-		transform: scale(1.05);
-	}
-
-	.maxi-cloud-masonry-card__svg-container {
-		transform: translateY(0);
-
-		&__title {
-			transform: translate(0px, -9px);
-			color: var(--maxi-cloud-primary) !important;
-		}
-
-		span {
-			transition: 0.3s;
-			transition-delay: 0.3s;
-			transition-property: opacity;
-			opacity: 1;
-			border-color: var(--maxi-cloud-primary) !important;
-			color: var(--maxi-cloud-primary) !important;
-
-			&:hover {
-				color: var(--maxi-white) !important;
-				background-color: var(--maxi-cloud-primary) !important;
-			}
-		}
-	}
-
-	svg path,
-	svg g,
-	svg [data-stroke] {
-		stroke: var(--maxi-cloud-primary) !important;
-	}
-}
-
-// SVG icon specific hover styles
-.maxi-library-modal
-	.maxi-cloud-container__svg-icon
-	.ais-InfiniteHits-list
-	.ais-InfiniteHits-item:hover {
-	svg path,
-	svg g,
-	svg [data-stroke] {
-		stroke: var(--maxi-cloud-primary) !important;
 	}
 }

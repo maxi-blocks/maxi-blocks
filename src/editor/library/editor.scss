@@ -37,6 +37,17 @@ $border-light: 1px solid var(--maxi-grey-light);
 			width: 100%;
 			flex: 5;
 			display: flex;
+			align-items: center;
+
+			// Add button hover styles
+			.maxi-cloud-masonry-card__button {
+				transition: all 0.3s ease;
+
+				&:hover {
+					// border-color: var(--maxi-cloud-primary);
+					// background-color: var(--maxi-cloud-primary-whisper);
+				}
+			}
 
 			&__load-library {
 				// Load library button styles
@@ -353,7 +364,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 
 				&:hover {
-					background-color: var(--maxi-grey-dark);
+					background-color: var(--maxi-cloud-hover);
 				}
 			}
 		}
@@ -404,7 +415,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 		justify-content: space-between;
 		width: 100%;
 		height: 46px;
-		padding: 5px 43px 5px 8px;
+		padding: 7px 43px 5px 14px;
 		background-color: var(--maxi-white);
 		border-bottom: 1px solid var(--maxi-grey-light);
 		margin: 0;
@@ -753,6 +764,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							z-index: -1;
 							transition: 0.1s;
 							opacity: 0;
+							border-radius: inherit; /* Add border radius to match parent */
 						}
 
 						&:after {
@@ -780,6 +792,17 @@ $border-light: 1px solid var(--maxi-grey-light);
 							&:after {
 								opacity: 1;
 							}
+						}
+
+						/* Add border radius to first and last buttons */
+						&:first-child {
+							border-top-left-radius: 18px;
+							border-bottom-left-radius: 18px;
+						}
+
+						&:last-child {
+							border-top-right-radius: 18px;
+							border-bottom-right-radius: 18px;
 						}
 					}
 				}
@@ -875,12 +898,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 					position: relative;
 					border: none !important;
 					box-shadow: none !important;
-
+					//pattern card
 					.maxi-cloud-masonry-card {
 						position: relative;
 						z-index: 1;
 						transition: all 0.5s;
-						padding: 10px;
+						padding: 12px 12px 20px 12px;
 						height: 100%;
 						overflow: hidden;
 
@@ -890,7 +913,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 								height: 50px;
 							}
 						}
-
+						//svg card
 						&__svg-container {
 							position: relative;
 							z-index: 1;
@@ -904,10 +927,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 							&__title {
 								font-family: 'Inter', Helvetica, Arial, Lucida,
 									sans-serif;
-								font-weight: 500;
+								font-weight: 800;
 								text-align: center;
-								font-size: 14px;
-								margin-bottom: 7px;
+								font-size: 12px;
+								margin-bottom: 4px;
 								transition: 0.3s;
 							}
 
@@ -915,27 +938,29 @@ $border-light: 1px solid var(--maxi-grey-light);
 								background-color: transparent !important;
 								text-align: center;
 								width: 64px;
-								margin-bottom: 15px;
+								margin-bottom: 12px;
 							}
-
+							//span to show button on hover
 							span {
 								position: relative;
-								// border: 2px solid var(--maxi-orange-red);
-								border-radius: 0;
+								border: 1.5px solid
+									var(--maxi-cloud-primary-light);
+								border-radius: 20px;
 								color: var(--maxi-grey-dark);
 								font-family: 'Inter', Helvetica, Arial, Lucida,
 									sans-serif;
-								font-weight: 400;
+								font-weight: 600;
 								line-height: 100%;
-								padding: 8px 7px;
+								padding: 8px 35px;
 								transition: 0s;
 								opacity: 0;
+								margin-top: -5px;
+								margin-bottom: -5px;
 
 								&:before {
 									content: '';
 									position: absolute;
 									display: block;
-									// background-color: var(--maxi-orange-red);
 									transition: 0.1s;
 									opacity: 0;
 									top: 0;
@@ -948,6 +973,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 								&:hover {
 									transition-delay: 0s !important;
 									color: var(--maxi-white);
+									background-color: var(--maxi-cloud-primary);
 
 									&::before {
 										opacity: 1;
@@ -976,6 +1002,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						border: 1px solid var(--maxi-grey-light);
 						transition: 0.3s;
 						z-index: 0;
+						border-radius: 10px;
 					}
 
 					&:hover {
@@ -997,12 +1024,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 								}
 							}
 						}
-
+						//hidden icon hover
 						&::after {
-							// background-color: var(--maxi-light-blue);
-							// border-color: var(--maxi-orange-red);
-							// box-shadow: 0 0 0 1px var(--maxi-orange-red);
-							// transform: scale(1.05);
+							background-color: var(--maxi-off-white);
+							border-color: var(--maxi-cloud-primary-light);
+							box-shadow: 0 0 0 1px
+								var(--maxi-cloud-primary-light);
+							transform: scale(1.03);
 						}
 					}
 				}
@@ -1245,10 +1273,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					&__input-container {
 						margin-right: 5px;
-						margin-left: 8px;
+						margin-left: 10px;
 						svg {
 							width: 15px;
 							height: 15px;
+							display: flex;
+							padding: 2px 0 0 2px;
 						}
 					}
 					&__input,
@@ -1259,7 +1289,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					&__label {
 						color: var(--maxi-grey-dark);
-						margin-top: -3px;
+						margin-top: -1px;
+						margin-bottom: 5px;
 					}
 					.components-base-control__help {
 						margin: 0 8px 8px;
@@ -1283,11 +1314,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 					align-items: center;
 					&--selected {
 						a {
-							background-color: var(--maxi-grey-light);
+							background-color: var(--maxi-off-white);
 
 							.ais-RefinementList-count,
 							.ais-RefinementList-labelText {
-								// color: var(--maxi-orange-red);
+								color: var(--maxi-orange-red);
 							}
 
 							&:focus {
@@ -1426,7 +1457,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						a {
 							&:focus {
 								box-shadow: inset 0 0 0 1px
-									var(--maxi-grey-dark);
+									var(--maxi-cloud-primary-light);
 							}
 						}
 					}
@@ -1468,12 +1499,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 							position: relative;
 							z-index: 1;
 							&:hover {
-								border-color: var(--maxi-cloud-primary-light);
+								border-color: var(--maxi-cloud-hover);
 							}
 						}
 						&--selected {
 							a {
-								border-color: var(--maxi-cloud-primary-light);
+								border-color: var(--maxi-cloud-hover-deep);
 								font-weight: 500;
 							}
 						}
@@ -1603,24 +1634,47 @@ $border-light: 1px solid var(--maxi-grey-light);
 						}
 						&__patterns {
 							padding: 10px;
+							//button for patterns preview and go pro base
 							.maxi-cloud-masonry-card__button {
 								margin-right: 0;
+								border: 1px solid var(--maxi-grey-light);
+								color: var(--maxi-grey-dark);
+								font-weight: bold;
+								border-radius: 30px;
+								min-width: 90px;
+								padding: 5px 10px;
+								text-align: center !important;
+								display: flex !important;
+								justify-content: center !important;
+								align-items: center !important;
+								transition: all 0.3s ease; // Add transition
+
+								&:hover {
+									background-color: var(--maxi-cloud-primary);
+									color: var(--maxi-white);
+								}
+							}
+						}
+						/* Common button styles for both buttons */
+
+						// aligmnent of the patterns 2 buttons
+						&__buttons {
+							display: flex;
+							align-items: center;
+							margin-top: 10px;
+						}
+						&__button {
+							&-go-pro {
 							}
 						}
 					}
 
-					.maxi-cloud-masonry-card__image {
-						padding: 0;
-						background: var(--maxi-white);
-						border: 1px solid var(--maxi-grey-light);
-					}
+					//Button hover on card
 					&:hover {
-						border-color: var(--maxi-cloud-primary);
-						box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
+						box-shadow: 0 0 0 1px var(--maxi-cloud-primary-light);
 						.maxi-cloud-masonry-card__button {
-							border-color: var(--maxi-cloud-primary);
-							box-shadow: 0 0 0 1px var(--maxi-cloud-primary);
-							color: var(--maxi-cloud-primary);
+							box-shadow: 0 0 0 1px
+								var(--maxi-cloud-primary-light);
 						}
 					}
 				}
@@ -1691,30 +1745,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 						background: var(--maxi-off-white);
 					}
 
-					/* Common button styles for both buttons */
-					.maxi-cloud-masonry-card__button {
-						background-color: var(
-							--maxi-cloud-primary-whisper
-						) !important;
-						color: var(--maxi-black) !important;
-						border-radius: 30px;
-						box-shadow: 0 0 0 0.5px var(--maxi-cloud-primary-light);
-						transition: all 0.3s ease;
-
-						/* Hover state for all buttons */
-						&:hover {
-							background-color: var(
-								--maxi-cloud-hover
-							) !important;
-							box-shadow: 0 0 0 1px var(--maxi-cloud-hover);
-							color: var(--maxi-white) !important;
-						}
-					}
-
 					/* Card hover state */
 					&:hover {
 						background: var(--maxi-cloud-hover) !important;
 					}
+				}
+				.maxi-cloud-masonry-card__image {
+					padding: 0;
+					background: var(--maxi-white);
+					border: 1px solid var(--maxi-grey-light);
 				}
 			}
 			&__content-patterns {
@@ -1758,11 +1797,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 				width: auto;
 				height: 31px;
 				padding: 6px 18px;
+				border-radius: 30px;
 				background-color: var(--maxi-cloud-primary-whisper);
 				color: var(--maxi-grey-dark);
 				border: 1px solid var(--maxi-cloud-primary);
 				transition: 0.1s;
 				z-index: 100000;
+				margin-left: -20px;
 				&:hover {
 					background-color: var(--maxi-cloud-primary);
 					color: var(--maxi-white);
@@ -1792,7 +1833,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					position: absolute;
 					bottom: -14px;
 					padding: 5px;
-					// color: var(--maxi-orange-red);
+					color: #f2a600;
 					background: var(--maxi-white);
 					font-style: italic;
 					font-size: 12px;
@@ -1804,11 +1845,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 .ais-InfiniteHits-list {
 	display: grid;
-	grid-column-gap: 1rem;
-	margin-top: 1rem;
+	grid-column-gap: 0.6rem;
+	margin-top: 0.6rem;
 
 	.ais-InfiniteHits-item {
-		margin: 0 0 1rem;
+		margin: 0 0 0.6rem;
 		background-color: var(--maxi-white);
 		position: relative;
 		border-radius: 8px;
@@ -1841,45 +1882,6 @@ $border-light: 1px solid var(--maxi-grey-light);
 				img {
 					display: block;
 					width: 100%;
-				}
-			}
-			&__buttons {
-				display: flex;
-				align-items: center;
-				margin-top: 10px;
-			}
-			&__button {
-				display: inline-flex;
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
-				margin: 0 5px 0 0;
-				padding: 0 10px;
-				color: var(--maxi-grey-dark);
-				border: 1px solid var(--maxi-grey-light);
-				background-color: var(--maxi-light-blue);
-				transition: all 0.1s;
-				height: 30px;
-				line-height: 28px;
-				font-weight: 400;
-				border-radius: 0;
-				&:hover {
-					color: var(--maxi-white) !important;
-					// background-color: var(--maxi-orange-red);
-				}
-				&-go-pro {
-					min-width: 67px;
-					text-align: center;
-					color: var(--maxi-white);
-					// background-color: var(--maxi-orange-red);
-					&:hover {
-						// color: var(--maxi-orange-red) !important;
-						background-color: var(--maxi-bright-yellow) !important;
-					}
-				}
-				&.saved {
-					opacity: 0.4;
-				}
-				&.saved {
-					opacity: 0.4;
 				}
 			}
 
@@ -1918,14 +1920,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 		.ais-Stats {
 			display: flex;
 			align-items: center;
-			height: 53px;
+			height: 33px;
 			padding: 0 8px;
 		}
 		.ais-InfiniteHits {
 			height: calc(100% - 31px);
 			overflow-x: hidden;
 			overflow-y: scroll;
-			padding: 8px 8px 6px;
+			padding: 10px 12px 6px;
 
 			&::-webkit-scrollbar {
 				width: 5px;
@@ -2572,15 +2574,6 @@ html[dir='rtl'] {
 		.components-button {
 		left: 4px;
 		right: unset;
-	}
-	.maxi-library-modal
-		.maxi-cloud-container__patterns__top-menu
-		.maxi-cloud-container__content-svg-shape__button {
-		margin-right: 0;
-		margin-left: 15px;
-	}
-	.maxi-library-modal .maxi-cloud-toolbar {
-		padding: 5px 8px 5px 43px;
 	}
 	.maxi-library-modal
 		.maxi-cloud-container__svg-shape

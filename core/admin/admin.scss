@@ -345,7 +345,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 			.maxi-dashboard_main-content_accordion {
 				position: relative;
 				z-index: 2;
-				max-width: clamp(280px, 95%, 1000px);
+				// max-width: clamp(280px, 95%, 1000px);
 				width: 95%;
 				margin: 0 auto;
 				&_wrapper {
@@ -424,7 +424,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 						&-switcher__dropdown {
 							select {
-								border-radius: clamp(8px, 1vw, 12px);
+								border-radius: 10px;
 								border: 2px solid var(--maxi-admin-border-light) !important;
 								padding: clamp(4px, 1vw, 12px)
 									clamp(15px, 2vw, 25px) !important;
@@ -509,11 +509,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 								input,
 								textarea {
-									border-radius: clamp(8px, 1vw, 12px);
+									border-radius: 10px;
 									border: 2px solid
 										var(--maxi-admin-border-light) !important;
-									padding: clamp(8px, 1.5vw, 20px)
-										clamp(15px, 2vw, 25px) !important;
+									padding: 10px;
 									box-sizing: border-box;
 									width: clamp(70vw, 100vw, 45vw);
 									display: block;
@@ -1004,8 +1003,8 @@ body.site-editor-php
 			margin: 30px 0;
 			position: relative;
 
-			&::before {
-			}
+			// &::before {
+			// }
 
 			.video-item {
 				text-align: left;

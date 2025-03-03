@@ -920,25 +920,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $visible_input_class = str_replace('_', '-', $option).'-visible-input';
 
             if ($type === 'textarea') {
-                $visible_input = $is_api_input
-                    ? "<textarea class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\">{$input_value}</textarea>"
-                    : "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$input_value}</textarea>";
+                $visible_input = "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$input_value}</textarea>";
             } else {
-                $visible_input = $is_api_input
-                    ? "<input class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>"
-                    : "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"{$type}\" value=\"{$input_value}\"/>";
+                // For API inputs, use a regular input with the name attribute
+                $visible_input = "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>";
             }
-
-            $hidden_input = $is_api_input
-                ? "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"hidden\" value=\"{$input_value}\"/>"
-                : "";
 
             $input = <<<HTML
         <div class="maxi-dashboard_main-content_accordion-item-content-switcher">
             <span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
             <div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">
                 {$visible_input}
-                {$hidden_input}
             </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher__input -->
         </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher -->
     HTML;
@@ -1102,6 +1094,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $args_ai_description = array(
                 'type' => 'string',
             );
+            // Add arguments for API keys
+            $args_api_key = array(
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+            );
 
             // List of settings and corresponding arguments
             $settings = array(
@@ -1113,8 +1110,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'allow_svg_json_uploads' => $args,
                 'hide_tooltips' => $args,
                 'swap_cloud_images' => $args,
-                'google_api_key_option' => null,
-                'openai_api_key_option' => null,
+                'google_api_key_option' => $args_api_key,
+                'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,
                 'maxi_ai_site_description' => $args_ai_description,
                 'maxi_ai_audience' => $args_ai_description,

@@ -113,6 +113,10 @@ window.onload = () => {
 				? mapMaxZoom
 				: Math.min(mapMaxZoom, 18);
 
+			// Calculate default zoom as middle value between min and max if mapZoom is undefined
+			const defaultZoom = Math.floor((mapMinZoom + adjustedMaxZoom) / 2);
+			const zoomLevel = mapZoom !== undefined ? mapZoom : defaultZoom;
+
 			const map = L.map(`maxi-map-block__container-${uniqueID}`, {
 				dragging: mapDragging,
 				touchZoom: mapTouchZoom,
@@ -120,20 +124,18 @@ window.onload = () => {
 				scrollWheelZoom: mapScrollWheelZoom,
 				minZoom: mapMinZoom,
 				maxZoom: adjustedMaxZoom,
-			}).setView([mapLatitude, mapLongitude], mapZoom);
+			}).setView([mapLatitude, mapLongitude], zoomLevel);
 
 			if (isCurrentMapGoogle && apiKey && L.gridLayer.googleMutant) {
 				L.gridLayer
 					.googleMutant({
 						type: mapType || 'roadmap',
-						maxZoom: adjustedMaxZoom,
 					})
 					.addTo(map);
 			} else {
 				L.tileLayer(getOSMTileLayer(mapType || 'standard'), {
 					attribution:
 						'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-					maxZoom: adjustedMaxZoom,
 				}).addTo(map);
 			}
 

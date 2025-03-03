@@ -35,7 +35,7 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 				L.gridLayer
 					.googleMutant({
 						type: mapType,
-						maxZoom: 20,
+						maxZoom: 22,
 					})
 					.addTo(map);
 			};
@@ -44,7 +44,7 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 			L.gridLayer
 				.googleMutant({
 					type: mapType,
-					maxZoom: 20,
+					maxZoom: 22,
 				})
 				.addTo(map);
 		}

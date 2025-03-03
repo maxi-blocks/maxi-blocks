@@ -2,6 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -21,8 +22,27 @@ const MapControl = props => {
 		'map-provider': mapProvider,
 		'map-min-zoom': mapMinZoom,
 		'map-max-zoom': mapMaxZoom,
+		'map-zoom': mapZoom,
 		'map-type': mapType,
 	} = attributes;
+
+	// Ensure correct max zoom on initial load
+	useEffect(() => {
+		if (mapProvider === 'openstreetmap' && mapMaxZoom > 19) {
+			const newMaxZoom = 19;
+			const adjustedZoom = mapZoom > newMaxZoom ? newMaxZoom : mapZoom;
+
+			// Ensure min zoom is not higher than max zoom - 1
+			const adjustedMinZoom =
+				mapMinZoom >= newMaxZoom ? newMaxZoom - 1 : mapMinZoom;
+
+			onChange({
+				'map-max-zoom': newMaxZoom,
+				'map-zoom': adjustedZoom,
+				'map-min-zoom': adjustedMinZoom,
+			});
+		}
+	}, []);
 
 	const defaultMapType =
 		mapProvider === 'googlemaps' ? 'roadmap' : 'standard';
@@ -75,6 +95,34 @@ const MapControl = props => {
 		onChange({ 'map-type': val });
 	};
 
+	const handleProviderChange = val => {
+		// Reset map type when changing provider
+		const newMapType = val === 'googlemaps' ? 'roadmap' : 'standard';
+
+		// Adjust max zoom based on provider
+		const newMaxZoom = val === 'googlemaps' ? 22 : 19;
+
+		// Only adjust zoom if switching to OpenStreetMap and current zoom is too high
+		const currentZoom = attributes['map-zoom'];
+		const adjustedZoom =
+			val === 'openstreetmap' && currentZoom > 19 ? 19 : currentZoom;
+
+		// Ensure min zoom is not higher than max zoom - 1
+		const currentMinZoom = attributes['map-min-zoom'];
+		const adjustedMinZoom =
+			val === 'openstreetmap' && currentMinZoom >= 19
+				? 18
+				: currentMinZoom;
+
+		onChange({
+			'map-provider': val,
+			'map-type': newMapType,
+			'map-max-zoom': newMaxZoom,
+			'map-zoom': adjustedZoom,
+			'map-min-zoom': adjustedMinZoom,
+		});
+	};
+
 	return (
 		<div className='maxi-map-control'>
 			{!hasApiKey && mapProvider === 'googlemaps' && (
@@ -106,15 +154,7 @@ const MapControl = props => {
 						value: 'googlemaps',
 					},
 				]}
-				onChange={val => {
-					// Reset map type when changing provider
-					const newMapType =
-						val === 'googlemaps' ? 'roadmap' : 'standard';
-					onChange({
-						'map-provider': val,
-						'map-type': newMapType,
-					});
-				}}
+				onChange={handleProviderChange}
 			/>
 			<SelectControl
 				__nextHasNoMarginBottom
@@ -129,7 +169,7 @@ const MapControl = props => {
 				className='maxi-map-control__min-zoom'
 				label={__('Minimum zoom', 'maxi-blocks')}
 				min={1}
-				max={mapMaxZoom - 1 || 21}
+				max={mapMaxZoom - 1 || mapProvider === 'googlemaps' ? 21 : 18}
 				initial={1}
 				step={1}
 				value={mapMinZoom}
@@ -145,7 +185,7 @@ const MapControl = props => {
 				className='maxi-map-control__max-zoom'
 				label={__('Maximum zoom', 'maxi-blocks')}
 				min={mapMinZoom + 1 || 2}
-				max={22}
+				max={mapProvider === 'googlemaps' ? 22 : 19}
 				initial={1}
 				step={1}
 				value={mapMaxZoom}

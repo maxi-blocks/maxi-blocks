@@ -568,14 +568,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 			border-width: 0;
 		}
 
-		&__preview-iframe-wrap {
+		&__preview-iframe_wrap,
+		&__preview-iframe_wrap > div {
 			height: 100%;
 			width: 100%;
 			position: relative;
 			background-color: var(--maxi-white);
 		}
 
-		&__preview-iframe-main-wrap {
+		&__preview-iframe_main-wrap {
 			position: relative;
 			top: 0;
 			width: 100%;
@@ -583,7 +584,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			border: 0;
 		}
 
-		&__preview-iframe-space {
+		&__preview-iframe_space {
 			display: block;
 			width: 100%;
 		}

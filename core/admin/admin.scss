@@ -190,6 +190,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 					text-align: center;
 					margin-top: 96px;
 					margin-bottom: 42px; // System status + Maxi AI + Settings background behind intro text and subtext
+					+ .maxi-dashboard_main-content_accordion_wrapper {
+						width: 100%;
+					}
 
 					h1 {
 						font-size: 50px !important;

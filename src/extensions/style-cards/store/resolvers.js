@@ -4,7 +4,6 @@ import { receiveMaxiStyleCards, sendMaxiStyleCards } from './actions';
 import { getActiveColourFromSC } from '@editor/style-cards/utils';
 
 import { isEmpty } from 'lodash';
-import { dispatch } from '@wordpress/data';
 
 const resolvers = {
 	*receiveMaxiStyleCards() {

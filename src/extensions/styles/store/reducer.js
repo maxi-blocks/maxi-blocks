@@ -5,9 +5,20 @@ import styleGenerator from '@extensions/styles/styleGenerator';
 import controls from './controls';
 import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
 import { omit } from 'lodash';
-import { select } from '@wordpress/data';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+// Helper function to chunk large style objects
+const chunkStylesIntoChunks = (styles, size) => {
+	const chunks = [];
+	const entries = Object.entries(styles);
+
+	for (let i = 0; i < entries.length; i += size) {
+		chunks.push(Object.fromEntries(entries.slice(i, i + size)));
+	}
+
+	return chunks;
+};
 
 /**
  * Reducer managing the styles
@@ -28,16 +39,18 @@ function reducer(
 	},
 	action
 ) {
-
 	switch (action.type) {
 		case 'UPDATE_STYLES': {
 			const chunkSize = 100;
 			const chunks = chunkStylesIntoChunks(action.styles, chunkSize);
 
-			const updatedStyles = chunks.reduce((acc, chunk) => ({
-				...acc,
-				...chunk
-			}), state.styles);
+			const updatedStyles = chunks.reduce(
+				(acc, chunk) => ({
+					...acc,
+					...chunk,
+				}),
+				state.styles
+			);
 
 			return { ...state, styles: updatedStyles };
 		}
@@ -46,11 +59,9 @@ function reducer(
 				styles: state.styles,
 				isUpdate: action.isUpdate,
 			});
-			return Object.assign({}, state, { isUpdate: action.isUpdate });
+			return { ...state, isUpdate: action.isUpdate };
 		case 'REMOVE_STYLES':
-			return Object.assign({}, state, {
-				styles: omit(state.styles, action.targets),
-			});
+			return { ...state, styles: omit(state.styles, action.targets) };
 		case 'SAVE_PREV_SAVED_ATTRS':
 			return {
 				...state,
@@ -60,15 +71,18 @@ function reducer(
 		case 'SAVE_CSS_CACHE': {
 			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
 
-			const breakpointStyles = BREAKPOINTS.reduce((acc, breakpoint) => ({
-				...acc,
-				[breakpoint]: styleGenerator(
-					stylesObj,
-					isIframe,
-					isSiteEditor,
-					breakpoint
-				),
-			}), {});
+			const breakpointStyles = BREAKPOINTS.reduce(
+				(acc, breakpoint) => ({
+					...acc,
+					[breakpoint]: styleGenerator(
+						stylesObj,
+						isIframe,
+						isSiteEditor,
+						breakpoint
+					),
+				}),
+				{}
+			);
 
 			const updatedCache = {
 				...state.cssCache,
@@ -89,40 +103,27 @@ function reducer(
 		case 'SAVE_RAW_CSS_CACHE': {
 			const { uniqueID, stylesContent } = action;
 
-			return Object.assign({}, state, {
-				cssCache: Object.assign({}, state.cssCache, {
-					[uniqueID]: Object.assign({}, state.cssCache[uniqueID], stylesContent),
-				}),
-			});
+			return {
+				...state,
+				cssCache: {
+					...state.cssCache,
+					[uniqueID]: {
+						...state.cssCache[uniqueID],
+						...stylesContent,
+					},
+				},
+			};
 		}
 		case 'REMOVE_CSS_CACHE': {
 			const { uniqueID } = action;
 
-			return Object.assign({}, state, {
-				cssCache: omit(state.cssCache, [uniqueID]),
-			});
+			return { ...state, cssCache: omit(state.cssCache, [uniqueID]) };
 		}
 		case 'SAVE_BLOCK_MARGIN_VALUE':
-			return Object.assign({}, state, {
-				blockMarginValue: action.blockMarginValue,
-			});
+			return { ...state, blockMarginValue: action.blockMarginValue };
 		default:
 			return state;
 	}
 }
-
-// Helper function to chunk large style objects
-const chunkStylesIntoChunks = (styles, size) => {
-	const chunks = [];
-	const entries = Object.entries(styles);
-
-	for (let i = 0; i < entries.length; i += size) {
-		chunks.push(
-			Object.fromEntries(entries.slice(i, i + size))
-		);
-	}
-
-	return chunks;
-};
 
 export default reducer;

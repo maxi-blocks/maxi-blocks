@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createTransitionObj Creates default transition object 1`] = `
+{
+  "easing-general": "ease",
+  "easing-l": undefined,
+  "easing-m": undefined,
+  "easing-s": undefined,
+  "easing-xl": undefined,
+  "easing-xs": undefined,
+  "easing-xxl": undefined,
+  "transition-delay-general": 0,
+  "transition-delay-l": undefined,
+  "transition-delay-m": undefined,
+  "transition-delay-s": undefined,
+  "transition-delay-xl": undefined,
+  "transition-delay-xs": undefined,
+  "transition-delay-xxl": undefined,
+  "transition-duration-general": 0.3,
+  "transition-duration-l": undefined,
+  "transition-duration-m": undefined,
+  "transition-duration-s": undefined,
+  "transition-duration-xl": undefined,
+  "transition-duration-xs": undefined,
+  "transition-duration-xxl": undefined,
+  "transition-status-general": true,
+  "transition-status-l": undefined,
+  "transition-status-m": undefined,
+  "transition-status-s": undefined,
+  "transition-status-xl": undefined,
+  "transition-status-xs": undefined,
+  "transition-status-xxl": undefined,
+}
+`;

@@ -1651,6 +1651,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 								&:hover {
 									background-color: var(--maxi-cloud-primary);
+									border: 1px solid var(--maxi-cloud-primary);
 									color: var(--maxi-white);
 								}
 							}
@@ -1683,12 +1684,44 @@ $border-light: 1px solid var(--maxi-grey-light);
 		&__sc {
 			.ais-InfiniteHits-list {
 				.ais-InfiniteHits-item {
-					.maxi-cloud-masonry-card__image {
-						border: none;
-					}
-					.maxi-cloud-masonry-card__saved {
-						opacity: 0.4;
-						pointer-events: none;
+					.maxi-cloud-masonry-card {
+						// Add button styles for SC content section
+						&__button {
+							margin-right: 0;
+							border: 1px solid var(--maxi-grey-light);
+							color: var(--maxi-grey-dark);
+							font-weight: bold;
+							border-radius: 30px;
+							min-width: 90px;
+							padding: 5px 10px;
+							text-align: center !important;
+							display: flex !important;
+							justify-content: center !important;
+							align-items: center !important;
+							transition: all 0.3s ease;
+
+							&:hover {
+								background-color: var(--maxi-cloud-primary);
+								border: 1px solid var(--maxi-cloud-primary);
+								color: var(--maxi-white);
+							}
+						}
+
+						// Add button container styles if needed
+						&__buttons {
+							display: flex;
+							align-items: center;
+							margin-top: 10px;
+						}
+
+						&__image {
+							border: none;
+						}
+
+						&__saved {
+							opacity: 0.4;
+							pointer-events: none;
+						}
 					}
 				}
 			}
@@ -1747,7 +1780,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 					/* Card hover state */
 					&:hover {
-						background: var(--maxi-cloud-hover) !important;
+						background: var(--maxi-off-white) !important;
 					}
 				}
 				.maxi-cloud-masonry-card__image {
@@ -2667,5 +2700,53 @@ html[dir='rtl'] {
 	.maxi-cloud-container__patterns__sidebar
 		svg.components-checkbox-control__checked {
 		right: 0;
+	}
+}
+
+.maxi-cloud-container {
+	&__sc {
+		.ais-InfiniteHits-list {
+			.ais-InfiniteHits-item {
+				.maxi-cloud-masonry-card {
+					// Add button styles for SC content section
+					&__button {
+						margin-right: 0;
+						border: 1px solid var(--maxi-grey-light);
+						color: var(--maxi-grey-dark);
+						font-weight: bold;
+						border-radius: 30px;
+						min-width: 90px;
+						padding: 5px 10px;
+						text-align: center !important;
+						display: flex !important;
+						justify-content: center !important;
+						align-items: center !important;
+						transition: all 0.3s ease;
+
+						&:hover {
+							background-color: var(--maxi-cloud-primary);
+							border: 1px solid var(--maxi-cloud-primary);
+							color: var(--maxi-white);
+						}
+					}
+
+					// Add button container styles if needed
+					&__buttons {
+						display: flex;
+						align-items: center;
+						margin-top: 10px;
+					}
+
+					&__image {
+						border: none;
+					}
+
+					&__saved {
+						opacity: 0.4;
+						pointer-events: none;
+					}
+				}
+			}
+		}
 	}
 }

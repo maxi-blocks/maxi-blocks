@@ -39,7 +39,7 @@
 			.maxi-accordion-control__item__button {
 				border-bottom: 1px solid var(--maxi-grey-light);
 				&[aria-expanded='true'] {
-					border-color: transparent;
+					// border-color: transparent;
 				}
 			}
 		}

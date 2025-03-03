@@ -165,8 +165,8 @@ body {
 	button {
 		border: 1.5px solid var(--maxi-grey-light) !important;
 		&:not(:disabled):hover {
-			background-color: var(--maxi-pastel-green);
-			border-color: var(--maxi-grey-light) !important;
+			background-color: var(--maxi-cloud-primary-whisper);
+			border-color: var(--maxi-cloud-primary-light) !important;
 		}
 	}
 }
@@ -362,7 +362,7 @@ body .maxi-style-cards__popover {
 				justify-content: center;
 				transition: all 0.5s;
 				border: 1.5px solid var(--maxi-grey-light);
-				border-radius: 5px;
+				border-radius: 30px;
 				padding: 8px;
 				color: var(--maxi-grey-dark);
 			}

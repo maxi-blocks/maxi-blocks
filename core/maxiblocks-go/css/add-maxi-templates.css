@@ -18,7 +18,7 @@
 }
 
 .maxiblocks-go-notice.maxiblocks-go-notice--templates .maxiblocks-go-notice__actions .maxiblocks-go-button {
-	background-color: #ff4a17;
+	background-color:  var(--maxi-primary-color);
 }
 
 .maxiblocks-go-notice.maxiblocks-go-notice--templates .maxiblocks-go-notice__dismiss {

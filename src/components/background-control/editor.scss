@@ -7,10 +7,10 @@
 			&-color,
 			&-gradient {
 				padding: 10px;
-				border: 1px solid var(--maxi-grey-1-color);
+				border: 1px solid var(--maxi-grey-light);
 				border-radius: 4px;
 				&.maxi-tabs-control__button--selected {
-					background-color: var(--maxi-light-blue-2-color);
+					background-color: var(--maxi-whisper-green);
 					border-color: transparent;
 				}
 			}
@@ -44,7 +44,7 @@
 	}
 	.parallax-direction {
 		.maxi-tabs-control__button {
-			border: 1px solid var(--maxi-grey-1-color);
+			border: 1px solid var(--maxi-grey-light);
 			border-radius: 3px;
 			color: var(--maxi-grey-11-color);
 			background-color: #fff;
@@ -54,7 +54,7 @@
 			&[aria-pressed='true'],
 			&:active,
 			&:hover {
-				background-color: var(--maxi-light-blue-2-color);
+				background-color: var(--maxi-whisper-green);
 				color: var(--maxi-secondary-color);
 			}
 		}
@@ -75,14 +75,14 @@
 	.maxi-background-layer {
 		&__preview {
 			display: block;
-			width: 25px;
-			height: 25px;
-			margin: auto;
-			border: 1px solid var(--maxi-black-2-color);
+			width: 20px;
+			height: 20px;
+			margin: 3px 7px 0 0 !important;
+			border: 1px solid var(--maxi-black);
 			opacity: 1;
 			float: left;
 			border-radius: 0;
-			margin-right: 5px;
+			margin-right: 3px;
 			background-size: cover !important;
 
 			svg {
@@ -98,6 +98,12 @@
 			align-items: center;
 			border: 1px solid var(--maxi-secondary-color);
 			z-index: 0;
+
+			.maxi-background-layer__title__text {
+				display: flex;
+				align-items: center;
+				min-height: 25px;
+			}
 		}
 
 		&__content {
@@ -132,14 +138,14 @@
 				display: block;
 				width: 17px;
 				height: 17px;
-				margin: auto 0 auto auto;
+				margin: auto 2px auto auto;
 				cursor: move;
 
 				svg {
-					width: 17px;
-					height: 17px;
+					width: 15px;
+					height: 15px;
 					path {
-						fill: #000;
+						fill: var(--maxi-black);
 					}
 				}
 			}
@@ -147,7 +153,7 @@
 				display: block;
 				width: 22px;
 				height: 22px;
-				margin: auto 7px auto 5px;
+				margin: auto 5px auto 5px;
 				cursor: pointer;
 				position: relative;
 
@@ -158,13 +164,13 @@
 
 				&--block {
 					path {
-						stroke: var(--maxi-black-1-color);
+						stroke: var(--maxi-black);
 					}
 				}
 				&:after {
 					content: '';
 					display: block;
-					background-color: var(--maxi-grey-10-color);
+					background-color: var(--maxi-grey-dark);
 					width: 0;
 					height: 1px;
 					position: absolute;
@@ -178,11 +184,47 @@
 						width: 23px;
 					}
 					path {
-						stroke: var(--maxi-grey-10-color);
+						stroke: var(--maxi-grey-dark);
 					}
 				}
 			}
 		}
+	}
+
+	.maxi-list-item-control__arrow {
+		width: 25px;
+		-webkit-transition: 0.3s ease all;
+		transition: 0.3s ease all;
+		cursor: pointer;
+		-webkit-transform-origin: center;
+		-ms-transform-origin: center;
+		transform-origin: center;
+		padding: 11px 0px;
+		border-right: 1px solid var(--maxi-secondary-color);
+		background-color: var(--maxi-white);
+		text-align: center;
+		border-radius: 5px 0px 0px 5px !important;
+
+		svg {
+			width: 8px;
+			height: 16px;
+			transform: rotate(-90deg);
+			path {
+				fill: var(--maxi-black);
+			}
+		}
+	}
+
+	.maxi-list-item-control__title__id:before {
+		content: counter(list-items-counter);
+		background: var(--maxi-pastel-green);
+		display: block;
+		padding: 7px 6px 7px 6px !important;
+		border-right: 1px solid var(--maxi-secondary-color);
+		margin-right: 5px !important;
+		counter-increment: list-items-counter 1;
+		font-size: 14px;
+		font-weight: 700;
 	}
 }
 .maxi-background-control__image-layer .maxi-toggle-switch {
@@ -196,12 +238,12 @@
 	width: 100%;
 	height: auto;
 	padding: 14px 8px;
-	border-bottom: 1px solid var(--maxi-grey-1-color);
-	border-top: 1px solid var(--maxi-grey-1-color);
-	border-right: 1px solid var(--maxi-grey-1-color);
+	border-bottom: 1px solid var(--maxi-grey-light);
+	border-top: 1px solid var(--maxi-grey-light);
+	border-right: 1px solid var(--maxi-grey-light);
 	border-radius: 0;
-	color: var(--maxi-grey-11-color);
-	background-color: #fff;
+	color: var(--maxi-grey-dark);
+	background-color: var(--maxi-white);
 	text-align: center;
 }
 
@@ -209,7 +251,7 @@
 	border-right: none;
 }
 .parallax-direction .maxi-tabs-control__button hover {
-	background-color: var(--maxi-grey-3-color);
+	background-color: var(--maxi-grey-light);
 	cursor: pointer;
 }
 .parallax-direction .maxi-tabs-control__button focus:not(:disabled) {
@@ -217,5 +259,5 @@
 	outline: none;
 }
 .parallax-direction .maxi-tabs-control__button active {
-	background-color: var(--maxi-grey-3-color);
+	background-color: var(--maxi-grey-light);
 }

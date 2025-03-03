@@ -21,7 +21,7 @@ import { registerBlockType } from '@wordpress/blocks';
  * Register the Layout block
  */
 registerBlockType('maxi-blocks/maxi-cloud', {
-	title: __('Template Library Maxi', 'maxi-blocks'),
+	title: __('Cloud library Maxi', 'maxi-blocks'),
 	description: __('Find templates or patterns', 'maxi-blocks'),
 	icon: library,
 	category: 'maxi-blocks',

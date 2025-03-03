@@ -26,10 +26,10 @@
 	width: 400px;
 	height: auto;
 	padding: 25px 30px;
-	border: 1px solid #dbdde6;
+	border: 1px solid var(--maxi-grey-light);
 	border-radius: 3px;
 	margin: auto;
-	background: #fff;
+	background: var(--maxi-white);
 	animation: scale 0.2s ease-in-out;
 	.maxi-dialog-close-button {
 		position: absolute;
@@ -42,10 +42,10 @@
 			background-color: rgba(var(--maxi-active-sc-color), 1);
 			border-radius: 50%;
 			&:hover {
-				background-color: #232533;
+				background-color: var(--maxi-black);
 			}
 			path {
-				stroke: #fff;
+				stroke: var(--maxi-white);
 			}
 		}
 	}
@@ -70,8 +70,8 @@
 	align-items: center;
 	height: calc(100% - 50px);
 	padding: 10px 0;
-	color: #151617;
-	font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+	color: var(--maxi-black);
+	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 	font-size: 12px;
 	text-align: center;
 }
@@ -82,15 +82,16 @@
 
 	button {
 		height: auto !important;
-		border: 1px solid #e1e2ea;
-		color: #151617;
-		font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+		border: 1.5px solid var(--maxi-grey-light) !important;
+		border-radius: 5px !important;
+		color: var(--maxi-black);
+		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 		font-size: 12px;
 		transition: all 0.1s;
 
 		&:hover {
 			background-color: rgba(var(--maxi-active-sc-color), 1);
-			color: #fff;
+			color: var(--maxi-white);
 			border: 1px solid rgba(var(--maxi-active-sc-color), 1);
 		}
 	}

@@ -106,27 +106,34 @@ window.onload = () => {
 				'map-type': mapType,
 			} = item;
 
+			const isCurrentMapGoogle = item['map-provider'] === 'googlemaps';
+
+			// Ensure max zoom is appropriate for the provider
+			const adjustedMaxZoom = isCurrentMapGoogle
+				? mapMaxZoom
+				: Math.min(mapMaxZoom, 18);
+
 			const map = L.map(`maxi-map-block__container-${uniqueID}`, {
 				dragging: mapDragging,
 				touchZoom: mapTouchZoom,
 				doubleClickZoom: mapDoubleClickZoom,
 				scrollWheelZoom: mapScrollWheelZoom,
 				minZoom: mapMinZoom,
-				maxZoom: mapMaxZoom,
+				maxZoom: adjustedMaxZoom,
 			}).setView([mapLatitude, mapLongitude], mapZoom);
-
-			const isCurrentMapGoogle = item['map-provider'] === 'googlemaps';
 
 			if (isCurrentMapGoogle && apiKey && L.gridLayer.googleMutant) {
 				L.gridLayer
 					.googleMutant({
 						type: mapType || 'roadmap',
+						maxZoom: adjustedMaxZoom,
 					})
 					.addTo(map);
 			} else {
 				L.tileLayer(getOSMTileLayer(mapType || 'standard'), {
 					attribution:
 						'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+					maxZoom: adjustedMaxZoom,
 				}).addTo(map);
 			}
 

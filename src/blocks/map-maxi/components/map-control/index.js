@@ -28,8 +28,8 @@ const MapControl = props => {
 
 	// Ensure correct max zoom on initial load
 	useEffect(() => {
-		if (mapProvider === 'openstreetmap' && mapMaxZoom > 19) {
-			const newMaxZoom = 19;
+		if (mapProvider === 'openstreetmap' && mapMaxZoom > 18) {
+			const newMaxZoom = 18;
 			const adjustedZoom = mapZoom > newMaxZoom ? newMaxZoom : mapZoom;
 
 			// Ensure min zoom is not higher than max zoom - 1
@@ -100,17 +100,17 @@ const MapControl = props => {
 		const newMapType = val === 'googlemaps' ? 'roadmap' : 'standard';
 
 		// Adjust max zoom based on provider
-		const newMaxZoom = val === 'googlemaps' ? 22 : 19;
+		const newMaxZoom = val === 'googlemaps' ? 22 : 18;
 
 		// Only adjust zoom if switching to OpenStreetMap and current zoom is too high
 		const currentZoom = attributes['map-zoom'];
 		const adjustedZoom =
-			val === 'openstreetmap' && currentZoom > 19 ? 19 : currentZoom;
+			val === 'openstreetmap' && currentZoom > 18 ? 18 : currentZoom;
 
 		// Ensure min zoom is not higher than max zoom - 1
 		const currentMinZoom = attributes['map-min-zoom'];
 		const adjustedMinZoom =
-			val === 'openstreetmap' && currentMinZoom >= 19
+			val === 'openstreetmap' && currentMinZoom >= 18
 				? 18
 				: currentMinZoom;
 
@@ -185,7 +185,7 @@ const MapControl = props => {
 				className='maxi-map-control__max-zoom'
 				label={__('Maximum zoom', 'maxi-blocks')}
 				min={mapMinZoom + 1 || 2}
-				max={mapProvider === 'googlemaps' ? 22 : 19}
+				max={mapProvider === 'googlemaps' ? 22 : 18}
 				initial={1}
 				step={1}
 				value={mapMaxZoom}

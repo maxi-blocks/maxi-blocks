@@ -17,7 +17,7 @@ import { getMaxiAdminSettingsUrl } from '@blocks/map-maxi/utils';
 /**
  * External dependencies
  */
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.gridlayer.googlemutant';
 
@@ -26,13 +26,23 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 
 	useEffect(() => {
 		let script;
+		let googleLayer;
+
+		// Clear existing layers
+		map.eachLayer(layer => {
+			if (layer._url === undefined) {
+				// Not a tile layer
+				map.removeLayer(layer);
+			}
+		});
+
 		if (!window.google || !window.google.maps) {
 			script = document.createElement('script');
 			script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
 			script.async = true;
 			script.defer = true;
 			script.onload = () => {
-				L.gridLayer
+				googleLayer = L.gridLayer
 					.googleMutant({
 						type: mapType,
 						maxZoom: 22,
@@ -41,7 +51,7 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 			};
 			document.head.appendChild(script);
 		} else {
-			L.gridLayer
+			googleLayer = L.gridLayer
 				.googleMutant({
 					type: mapType,
 					maxZoom: 22,
@@ -53,22 +63,50 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 			if (script) {
 				document.head.removeChild(script);
 			}
+			if (googleLayer) {
+				map.removeLayer(googleLayer);
+			}
 		};
 	}, [map, apiKey, mapType]);
 
 	return null;
 };
 
-const getOSMTileLayer = mapType => {
-	const tileUrls = {
-		standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-		humanitarian: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
-		cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
-		transport:
-			'https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
-	};
+const OSMLayer = ({ mapType = 'standard' }) => {
+	const map = useMap();
 
-	return tileUrls[mapType] || tileUrls.standard;
+	useEffect(() => {
+		// Clear existing tile layers
+		map.eachLayer(layer => {
+			if (layer._url !== undefined) {
+				// Is a tile layer
+				map.removeLayer(layer);
+			}
+		});
+
+		const tileUrls = {
+			standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			humanitarian:
+				'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+			cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
+			transport:
+				'https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
+		};
+
+		const url = tileUrls[mapType] || tileUrls.standard;
+
+		const osmLayer = L.tileLayer(url, {
+			attribution:
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			maxZoom: 18,
+		}).addTo(map);
+
+		return () => {
+			map.removeLayer(osmLayer);
+		};
+	}, [map, mapType]);
+
+	return null;
 };
 
 const MapContent = props => {
@@ -93,14 +131,12 @@ const MapContent = props => {
 
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
-	const [mapInstance, setMapInstance] = useState(null);
 
 	const showError = !apiKey && isGoogleMaps;
 
 	const resizeMap = map => {
 		if (!map) return;
 
-		setMapInstance(map);
 		// To get rid of the grey bars, we need to update the map size
 		const resizeObserver = new ResizeObserver(() => {
 			if (map && !map._isDestroyed && map.getContainer()) {
@@ -127,14 +163,12 @@ const MapContent = props => {
 		}
 
 		// Cleanup function
-		const cleanup = () => {
+		return () => {
 			if (container) {
 				resizeObserver.unobserve(container);
 				resizeObserver.disconnect();
 			}
 		};
-
-		return cleanup;
 	};
 
 	return (
@@ -145,9 +179,12 @@ const MapContent = props => {
 			{!showError && (
 				<>
 					<MapContainer
+						key={`map-container-${uniqueID}`}
 						center={[mapLatitude, mapLongitude]}
 						minZoom={mapMinZoom}
-						maxZoom={mapMaxZoom}
+						maxZoom={
+							isGoogleMaps ? mapMaxZoom : Math.min(mapMaxZoom, 18)
+						}
 						zoom={mapZoom}
 						whenReady={map => resizeMap(map.target)}
 						tap={false}
@@ -161,10 +198,7 @@ const MapContent = props => {
 						{isGoogleMaps ? (
 							<GoogleLayer apiKey={apiKey} mapType={mapType} />
 						) : (
-							<TileLayer
-								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-								url={getOSMTileLayer(mapType)}
-							/>
+							<OSMLayer mapType={mapType} />
 						)}
 						<MapEventsListener
 							isAddingMarker={isAddingMarker}

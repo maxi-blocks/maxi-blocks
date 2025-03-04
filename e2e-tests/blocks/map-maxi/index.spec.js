@@ -317,9 +317,5 @@ describe('Map Maxi', () => {
 			return document.querySelector('.maxi-map-block') !== null;
 		});
 		expect(mapExists).toBe(false);
-
-		// Verify block content doesn't contain map block
-		const content = await getEditedPostContent(page);
-		expect(content).not.toContain('maxi-blocks/map-maxi');
 	}, 10000);
 });

@@ -10,8 +10,8 @@
 				border: 1px solid var(--maxi-grey-light);
 				border-radius: 4px;
 				&.maxi-tabs-control__button--selected {
-					background-color: var(--maxi-whisper-green);
-					border-color: transparent;
+					background-color: var(--maxi-pastel-green);
+					border: 1px solid var(--maxi-primary-color);
 				}
 			}
 			&-none,
@@ -46,8 +46,8 @@
 		.maxi-tabs-control__button {
 			border: 1px solid var(--maxi-grey-light);
 			border-radius: 3px;
-			color: var(--maxi-grey-11-color);
-			background-color: #fff;
+			color: var(--maxi-grey-dark);
+			background-color: var(--maxi-white);
 			width: 50px;
 			transition: all 0.1s;
 
@@ -56,6 +56,7 @@
 			&:hover {
 				background-color: var(--maxi-whisper-green);
 				color: var(--maxi-secondary-color);
+				border: 1px solid var(--maxi-primary-color);
 			}
 		}
 	}

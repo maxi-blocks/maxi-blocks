@@ -7,11 +7,19 @@
 			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 
+			svg {
+				fill: var(--maxi-secondary-color);
+			}
+
 			&[aria-pressed='true'],
 			&:hover {
 				background-color: var(--maxi-pastel-green);
 				border: 1.5px solid var(--maxi-mid-green);
 				font-weight: 700;
+
+				svg {
+					fill: var(--maxi-primary-color) !important;
+				}
 			}
 		}
 	}

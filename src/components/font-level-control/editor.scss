@@ -12,14 +12,15 @@
 		height: 32px;
 		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 5px;
-		color: var(--maxi-grey) !important;
+		color: var(--maxi-grey-dark) !important;
 		background-color: var(--maxi-white);
 		transition: all 0.5s;
 		font-weight: 700;
 		margin-right: 7px;
 
 		&:hover {
-			background-color: var(--maxi-grey-light);
+			background-color: var(--maxi-pastel-green);
+			border: 1.5px solid var(--maxi-secondary-color) !important;
 		}
 		&:last-child {
 			.maxi-accordion-control__item__button {
@@ -28,7 +29,7 @@
 		}
 		&[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green);
-			border: none;
+			border: 1.5px solid var(--maxi-secondary-color) !important;
 			color: var(--maxi-secondary-color) !important;
 			font-weight: 700;
 		}

@@ -3,6 +3,9 @@
 		svg path {
 			fill: var(--maxi-black);
 		}
+		&:hover svg path {
+			fill: var(--maxi-secondary-color);
+		}
 		&--selected {
 			svg path {
 				fill: var(--maxi-secondary-color);

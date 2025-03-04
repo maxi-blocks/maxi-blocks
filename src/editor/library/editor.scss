@@ -53,8 +53,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				// Load library button styles
 				width: 100%;
 				padding: 2rem;
-				background: var(--maxi-cloud-primary-whisper);
-				border: 1.5px solid var(--maxi-cloud-primary-light);
+				background: var(--maxi-whisper-green);
+				border: 1.5px solid var(--maxi-mid-green);
 				color: var(--maxi-black);
 				transition: all 0.5s;
 				display: flex; // Simplified from separate align/justify
@@ -64,6 +64,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				&:hover {
 					background: var(--maxi-pastel-green);
 					border-color: var(--maxi-secondary-color);
+					color: var(--maxi-black);
+					font-weight: 800;
 				}
 			}
 
@@ -105,14 +107,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 			padding: 5px;
 
 			// Preview theme styles
-			background: var(--maxi-cloud-primary-whisper);
-			border: 1.5px solid var(--maxi-cloud-primary-light);
+			background: var(--maxi-whisper-green);
+			border: 1.5px solid var(--maxi-mid-green);
 			color: var(--maxi-black);
 			transition: all 0.5s;
 
 			&:hover {
-				background: var(--maxi-cloud-hover);
-				border-color: var(--maxi-cloud-hover-deep);
+				background: var(--maxi-pastel-green);
+				border-color: var(--maxi-primary-color);
 			}
 
 			// SVG styles in preview
@@ -735,7 +737,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 					.maxi-cloud-container__content-svg-shape__button {
 						width: auto;
-						color: var(--maxi-black-1-color);
+						color: var(--maxi-black);
 						background-color: var(--maxi-white);
 						font-family: 'Inter', Helvetica, Arial, Lucida,
 							sans-serif;
@@ -1483,7 +1485,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						margin-bottom: 0;
 						margin-top: -1px;
 						a {
-							color: var(--maxi-black-1-color);
+							color: var(--maxi-black);
 							background-color: var(--maxi-cloud-primary-whisper);
 							font-family: 'Inter', Helvetica, Arial, Lucida,
 								sans-serif;
@@ -1536,7 +1538,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							border-right: 1px solid var(--maxi-grey-light);
 							border-radius: 0;
 							box-shadow: none;
-							color: var(--maxi-black-1-color);
+							color: var(--maxi-black);
 							background-color: var(--maxi-white);
 							font-family: 'Inter', Helvetica, Arial, Lucida,
 								sans-serif;

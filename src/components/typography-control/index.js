@@ -722,7 +722,7 @@ const TypographyControl = props => {
 					className='maxi-typography-control__line-height'
 					label={__('Line height', 'maxi-blocks')}
 					enableUnit
-					unit={getValue('line-height-unit') || ''}
+					unit={getValue('line-height-unit')}
 					defaultUnit={getDefault('line-height-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({

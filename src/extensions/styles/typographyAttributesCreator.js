@@ -23,21 +23,18 @@ const typographyAttributesCreator = (
 			}),
 			'font-size-unit': {
 				type: 'string',
-				default: 'px',
 			},
 			'font-size': {
 				type: 'number',
 			},
 			'line-height-unit': {
 				type: 'string',
-				default: 'px',
 			},
 			'line-height': {
 				type: 'number',
 			},
 			'letter-spacing-unit': {
 				type: 'string',
-				default: 'px',
 			},
 			'letter-spacing': {
 				type: 'number',
@@ -59,7 +56,6 @@ const typographyAttributesCreator = (
 			},
 			'text-indent-unit': {
 				type: 'string',
-				default: 'px',
 			},
 			'text-shadow': {
 				type: 'string',
@@ -91,7 +87,6 @@ const typographyAttributesCreator = (
 				},
 				'bottom-gap-unit': {
 					type: 'string',
-					default: 'px',
 				},
 			}),
 		},

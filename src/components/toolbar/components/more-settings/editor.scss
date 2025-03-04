@@ -21,8 +21,9 @@
 		margin-left: 0 !important;
 		margin-top: 15px;
 		transform: translate(3px, -13px);
-		background-color: white;
+		background-color: var(--maxi-white);
 		font-family: 'Inter', sans-serif !important;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
 		.maxi-reusableblocks__blocks-selector,
 		.maxi-text-generator__generator,
@@ -63,7 +64,8 @@
 				float: right;
 			}
 			&:hover {
-				background-color: #eaf2f6;
+				background-color: var(--maxi-whisper-green);
+				color: var(--maxi-primary-color) !important;
 			}
 			&::after {
 				content: '';

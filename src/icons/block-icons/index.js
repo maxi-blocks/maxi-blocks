@@ -23,7 +23,7 @@ export { default as iconBox } from './icon-box';
 export { default as selectIcon } from './select-icon';
 export { default as iconList } from './icon-list';
 export { default as imageBox } from './image-box';
-export { default as library } from './library';
+export { default as library } from './library-small';
 export { default as logoWhite } from './logo-white';
 export { default as mapIcon } from './map-icon';
 export { default as numberCounterIcon } from './number-counter-icon';

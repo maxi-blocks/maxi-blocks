@@ -43,7 +43,7 @@
 			top: -23px;
 			left: 50%;
 			transform: translateX(-50%);
-			box-shadow: 0px 6px 6px 0 rgb(0 0 0 / 16%);
+			box-shadow: 0px 6px 8px 0 rgba(0, 0, 0, 0.08);
 			border-radius: 0;
 			border: 1px solid var(--maxi-grey-light);
 
@@ -233,7 +233,7 @@
 
 					&:hover,
 					&[aria-expanded='true'] {
-						background-color: var(--maxi-grey);
+						background-color: var(--maxi-pastel-green) !important;
 						.toolbar-item__icon {
 							ellipse,
 							circle,
@@ -241,7 +241,7 @@
 							rect,
 							polyline,
 							path {
-								fill: var(--maxi-secondary-color);
+								fill: var(--maxi-secondary-color) !important;
 							}
 						}
 					}
@@ -277,7 +277,7 @@
 
 					&:hover,
 					&[aria-expanded='true'] {
-						background-color: var(--maxi-grey-light);
+						background-color: var(--maxi-pastel-green);
 						.toolbar-item__icon {
 							ellipse,
 							circle,
@@ -326,7 +326,7 @@
 					width: 1rem;
 					height: 1rem;
 					margin: auto;
-					fill: var(--maxi-black-1-color);
+					fill: var(--maxi-whisper-green);
 
 					ellipse,
 					circle,
@@ -350,6 +350,38 @@
 					stroke: var(--maxi-black);
 				}
 			}
+		}
+	}
+
+	.components-button {
+		font-family: 'Inter', sans-serif !important;
+
+		&:hover {
+			color: var(--maxi-primary-color) !important;
+		}
+	}
+	.maxi-responsive-tabs-control {
+		.maxi-tabs-control {
+			margin-right: 0;
+			margin-left: 0;
+
+			&__button {
+				&:first-child {
+					border-radius: 10px 0 0 10px;
+				}
+
+				&:last-child {
+					border-right: 1px solid var(--maxi-grey-light);
+					border-radius: 0 10px 10px 0;
+				}
+			}
+		}
+	}
+
+	.maxi-color-control__palette-box {
+		&--active {
+			background-color: var(--maxi-pastel-green) !important;
+			border: 1.5px solid var(--maxi-secondary-color) !important;
 		}
 	}
 }
@@ -378,7 +410,7 @@ body .toolbar-item__popover {
 			opacity: 1 !important;
 			min-width: 40px;
 			height: 30px;
-			background-color: rgba(33, 141, 250, 0);
+			background-color: var(--maxi-black);
 			font-size: 13px;
 			line-height: 13px;
 			color: var(--maxi-white);
@@ -420,7 +452,7 @@ body .toolbar-item__popover {
 			input {
 				display: none;
 				&:checked ~ label {
-					background-color: var(--maxi-grey);
+					background-color: var(--maxi-pastel-green);
 					position: relative;
 					z-index: 1;
 					border: 2px solid var(--maxi-grey-light);
@@ -469,7 +501,7 @@ body .toolbar-item__popover {
 
 			.components-range-control__number {
 				background-color: transparent;
-				color: var(--maxi-black-1-color);
+				color: var(--maxi-black);
 				border-color: var(--maxi-grey) !important;
 			}
 
@@ -489,14 +521,14 @@ body .toolbar-item__popover {
 					}
 
 					svg {
-						fill: var(--maxi-black-1-color) !important;
+						fill: var(--maxi-black) !important;
 					}
 				}
 			}
 		}
 
 		&__label {
-			color: var(--maxi-black-1-color);
+			color: var(--maxi-black);
 		}
 	}
 
@@ -505,9 +537,9 @@ body .toolbar-item__popover {
 		border: 1px solid var(--maxi-grey-light);
 		border-radius: 0;
 		min-width: auto;
-		padding: 8px 8px 0;
+		padding: 12px 11px 0 14px;
 		overflow: visible !important;
-		box-shadow: 0 -2px 6px 0px rgb(0, 0, 0, 0.1);
+		box-shadow: 0 -2px 8px 0px rgba(0, 0, 0, 0.05);
 		margin-left: -2px;
 		outline: none;
 
@@ -518,6 +550,11 @@ body .toolbar-item__popover {
 		.maxi-color-control {
 			margin-bottom: 10px;
 			color: var(--maxi-white);
+
+			button.maxi-components-button.maxi-reset-button {
+				margin-top: -4px !important;
+			}
+
 			.components-custom-gradient-picker {
 				.components-base-control__field {
 					margin-bottom: 10px;
@@ -548,11 +585,11 @@ body .toolbar-item__popover {
 				}
 			}
 			&__items {
-				color: var(--maxi-white);
+				color: var(--maxi-white-1);
 
 				.maxi-tabs-control__button {
 					border-color: var(--maxi-grey);
-					background-color: var(--maxi-grey-dark);
+					background-color: var(--maxi-grey);
 				}
 
 				input {
@@ -636,8 +673,8 @@ body .toolbar-item__popover {
 
 	&__advanced-button {
 		position: absolute;
-		top: -20px !important;
-		right: -19px !important;
+		top: -10px !important;
+		right: -10px !important;
 		transform: translate(0, 0);
 		background-color: var(--maxi-primary-color);
 		border-radius: 50%;
@@ -645,6 +682,10 @@ body .toolbar-item__popover {
 		padding: 0 !important;
 		height: 22px;
 		left: auto !important;
+
+		&:hover {
+			background-color: var(--maxi-secondary-color);
+		}
 
 		svg {
 			fill: var(--maxi-white);
@@ -686,7 +727,7 @@ body .toolbar-item__popover {
 
 			&[aria-pressed='true'] {
 				color: var(--maxi-primary-color);
-				background-color: var(--maxi-grey) !important;
+				background-color: var(--maxi-whisper-green) !important;
 			}
 		}
 	}

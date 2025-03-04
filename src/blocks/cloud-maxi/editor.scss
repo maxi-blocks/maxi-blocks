@@ -295,13 +295,13 @@ $white: var(--maxi-white);
 		font-family: Inter, sans-serif;
 		font-size: 12px;
 		font-weight: 800;
-		padding: 10px;
+		padding: 22px 22px 22px 20px;
 		border: 1px solid var(--maxi-grey-light);
 		transition: all 0.1s;
 		border-radius: 18px;
 
 		svg {
-			margin-right: 10px;
+			margin-right: 8px;
 		}
 
 		&:hover {

@@ -289,4 +289,37 @@ describe('Map Maxi', () => {
 	it('Map Maxi Custom CSS', async () => {
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);
+
+	it('Map Maxi can be removed', async () => {
+		// Verify map exists
+		const map = await getMapContainer(page);
+		expect(map).not.toBeNull();
+
+		// Select the block
+		await page.click('.maxi-map-block');
+
+		// Open more settings menu
+		await page.$eval(
+			'.toolbar-wrapper .toolbar-item.toolbar-item__more-settings button',
+			button => button.click()
+		);
+
+		// Click delete button in popover
+		await page.$eval(
+			'.components-popover__content .toolbar-item__delete button',
+			button => button.click()
+		);
+
+		await page.waitForTimeout(500);
+
+		// Verify map no longer exists
+		const mapExists = await page.evaluate(() => {
+			return document.querySelector('.maxi-map-block') !== null;
+		});
+		expect(mapExists).toBe(false);
+
+		// Verify block content doesn't contain map block
+		const content = await getEditedPostContent(page);
+		expect(content).not.toContain('maxi-blocks/map-maxi');
+	}, 10000);
 });

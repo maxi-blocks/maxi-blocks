@@ -142,7 +142,7 @@
 			height: 30px;
 			padding: 0;
 			border: none !important;
-			box-shadow: 0 0 0 1px var(--maxi-grey-light);
+			box-shadow: 0 0 0 1px var(--maxi-grey);
 			margin: 0;
 			background-color: var(--maxi-white);
 			cursor: pointer;
@@ -172,8 +172,8 @@
 		}
 
 		&-item {
-			width: 25px;
-			height: 25px;
+			width: 24px;
+			height: 24px;
 			border-radius: 50%;
 			display: flex;
 			align-items: center;

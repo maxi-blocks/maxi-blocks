@@ -3,7 +3,7 @@
  */
 import { SVG, Path } from '@wordpress/primitives';
 
-const library = (
+const librarySmall = (
 	<SVG
 		xmlns='http://www.w3.org/2000/svg'
 		viewBox='0 0 24 24'
@@ -22,4 +22,4 @@ const library = (
 	</SVG>
 );
 
-export default library;
+export default librarySmall;

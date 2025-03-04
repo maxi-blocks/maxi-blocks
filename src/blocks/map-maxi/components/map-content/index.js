@@ -185,7 +185,7 @@ const MapContent = props => {
 						maxZoom={
 							isGoogleMaps ? mapMaxZoom : Math.min(mapMaxZoom, 18)
 						}
-						zoom={mapZoom}
+						zoom={mapZoom || 4}
 						whenReady={map => resizeMap(map.target)}
 						tap={false}
 						dragging

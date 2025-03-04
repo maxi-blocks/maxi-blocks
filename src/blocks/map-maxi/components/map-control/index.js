@@ -22,7 +22,7 @@ const MapControl = props => {
 		'map-provider': mapProvider,
 		'map-min-zoom': mapMinZoom,
 		'map-max-zoom': mapMaxZoom,
-		'map-zoom': mapZoom,
+		'map-zoom': mapZoom = 4,
 		'map-type': mapType,
 	} = attributes;
 
@@ -38,7 +38,7 @@ const MapControl = props => {
 
 			onChange({
 				'map-max-zoom': newMaxZoom,
-				'map-zoom': adjustedZoom,
+				'map-zoom': adjustedZoom || 4,
 				'map-min-zoom': adjustedMinZoom,
 			});
 		}

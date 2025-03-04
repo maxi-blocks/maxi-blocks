@@ -399,7 +399,7 @@ const LibraryToolbar = props => {
 					{library}
 					{type === 'svg' && __('', 'maxi-blocks')}
 					{type === 'patterns' && __('', 'maxi-blocks')}
-					{type === 'sc' && __('Style cards', 'maxi-blocks')}
+					{type === 'sc' && __('', 'maxi-blocks')}
 					{type.includes('shape') &&
 						__('Shape library', 'maxi-blocks')}
 					{type.includes('button') &&

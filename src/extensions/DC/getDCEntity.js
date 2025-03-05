@@ -36,14 +36,79 @@ const getRandomEntity = (entities, accumulator) => {
 	return entities[randomIndex];
 };
 
-const getPostBySlug = async slug => {
-	const posts = await select('core').getEntityRecords('postType', 'post', {
-		slug,
-		per_page: 1,
+// Helper function to create a delay
+const delay = ms =>
+	new Promise(resolve => {
+		setTimeout(resolve, ms);
 	});
+
+// Function to retry an async operation with exponential backoff
+const retryOperation = async (
+	operation,
+	maxRetries = 3,
+	initialDelay = 300
+) => {
+	let retries = 0;
+	let currentDelay = initialDelay;
+
+	// eslint-disable-next-line no-constant-condition
+	while (retries < maxRetries) {
+		try {
+			// eslint-disable-next-line no-await-in-loop
+			const result = await operation();
+
+			// If we have a result, return it immediately
+			if (result && (Array.isArray(result) ? result.length > 0 : true)) {
+				return result;
+			}
+
+			// eslint-disable-next-line no-await-in-loop
+			await delay(currentDelay);
+			retries += 1;
+			currentDelay *= 2; // Exponential backoff
+		} catch (error) {
+			// eslint-disable-next-line no-await-in-loop
+			await delay(currentDelay);
+			retries += 1;
+			currentDelay *= 2;
+		}
+	}
+
+	// Last attempt after all retries
+	return operation();
+};
+
+const getPostBySlug = async slug => {
+	// First try with the exact slug, with retries
+	const getPostsOperation = () =>
+		select('core').getEntityRecords('postType', 'post', {
+			slug,
+			per_page: 1,
+		});
+
+	const posts = await retryOperation(getPostsOperation);
 
 	if (posts && posts.length > 0) {
 		return posts[0];
+	}
+
+	// If no post found and slug ends with a pattern like "-4", try without the suffix
+	const numericSuffixMatch = slug.match(/-(\d+)$/);
+	if (numericSuffixMatch) {
+		const slugWithoutSuffix = slug.replace(/-\d+$/, '');
+		const getPostsWithoutSuffixOperation = () =>
+			select('core').getEntityRecords('postType', 'post', {
+				slug: slugWithoutSuffix,
+				per_page: 1,
+			});
+
+		const postsWithoutSuffix = await retryOperation(
+			getPostsWithoutSuffixOperation
+		);
+
+		if (postsWithoutSuffix && postsWithoutSuffix.length > 0) {
+			return postsWithoutSuffix[0];
+		}
 	}
 
 	return null;
@@ -141,6 +206,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 		orderBy,
 		order,
 		accumulator,
+		field,
 	} = dataRequest;
 
 	const contentError = getDCErrors(type, error, show, relation);
@@ -403,6 +469,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 				'page',
 			];
 			const currentTemplateType = getCurrentTemplateSlug();
+
 			if (
 				(type.includes(currentTemplateType) &&
 					allowedTemplateTypesCurrent.includes(
@@ -576,6 +643,56 @@ const getDCEntity = async (dataRequest, clientId) => {
 				});
 				const taxonomy = taxonomies.find(tax => tax.slug === type);
 				if (taxonomy) return taxonomy;
+			}
+			if (field === 'tags') {
+				// Check if we're in a single post template in FSE
+				if (isFSE && currentTemplateType.includes('single-post-')) {
+					// Extract the post slug from the template name
+					const postSlug = currentTemplateType.replace(
+						'single-post-',
+						''
+					);
+
+					// Get the post by slug
+					const post = await getPostBySlug(postSlug);
+
+					if (post) {
+						// First try to get tags using post ID
+						const postTags = await resolveSelect(
+							'core'
+						).getEntityRecords('taxonomy', 'post_tag', {
+							post: post.id,
+							per_page: -1, // Get all tags for this post
+						});
+
+						// If we have tags from the post ID method, return them
+						if (postTags && postTags.length > 0) {
+							return postTags;
+						}
+
+						// If no tags returned but post has tag IDs, fetch them directly
+						if (post.tags && post.tags.length > 0) {
+							const tagsByIds = await resolveSelect(
+								'core'
+							).getEntityRecords('taxonomy', 'post_tag', {
+								include: post.tags,
+								per_page: -1,
+							});
+
+							if (tagsByIds && tagsByIds.length > 0) {
+								return tagsByIds;
+							}
+						}
+					}
+				}
+
+				// Fallback to generic tags if not in a single post template or if post tags couldn't be retrieved
+				const tags = await resolveSelect('core').getEntityRecords(
+					'taxonomy',
+					'post_tag',
+					{ per_page: 2 }
+				);
+				return tags;
 			}
 		} else {
 			const entity = await resolveSelect('core').getEditedEntityRecord(

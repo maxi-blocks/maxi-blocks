@@ -891,6 +891,7 @@ class MaxiBlocks_DynamicContent
                 $link = self::get_field_link(
                     $post->post_author,
                     $attributes['dc-field'],
+                    $attributes['dc-link-target'],
                 );
             }
         } elseif (
@@ -1830,11 +1831,26 @@ class MaxiBlocks_DynamicContent
         return ['rel' => $rel, 'target' => $target];
     }
 
-    public function get_field_link($item, $field)
+    public function get_field_link($item, $field, $dc_link_target)
     {
+        error_log('field '. $field);
+        error_log('dc_link_target '. $dc_link_target);
+        error_log('item '. $item);
         switch ($field) {
             case 'author':
-                return get_author_posts_url($item);
+                switch ($dc_link_target) {
+                    case 'author_email':
+                        $email = sanitize_email(get_the_author_meta('user_email', $item));
+                        error_log('email '. $email);
+                        $link = $this->xor_obfuscate_email($email);
+                        break;
+                    case 'author_site':
+                        $link = get_the_author_meta('user_url', $item);
+                        break;
+                    default:
+                        $link = get_author_posts_url($item);
+                }
+                return $link;
             case 'categories':
             case 'tags':
                 return get_term_link($item);
@@ -1852,11 +1868,12 @@ class MaxiBlocks_DynamicContent
         $link_status,
         $field,
         $dc_post_taxonomy_links_status,
-        $linkSettings = null
+        $linkSettings = null,
+        $dc_link_target = null
     ) {
         // Need to support $dc_post_taxonomy_links_status for blocks that were not migrated (up until 1.7.2 version included)
         if ($link_status || $dc_post_taxonomy_links_status) {
-            $href = 'href="' . $this->get_field_link($item, $field) . '"';
+            $href = 'href="' . $this->get_field_link($item, $field, $dc_link_target) . '"';
             $rel = '';
             $target = ' target="_self"';
 
@@ -1914,6 +1931,7 @@ class MaxiBlocks_DynamicContent
                 $dc_field,
                 $dc_post_taxonomy_links_status,
                 $linkSettings,
+                $dc_link_target,
             );
         }
 
@@ -1932,6 +1950,7 @@ class MaxiBlocks_DynamicContent
             'dc-link-status' => $dc_link_status,
             'dc-accumulator' => $dc_accumulator,
             'dc-keep-only-text-content' => $dc_keep_only_text_content,
+            'dc-link-target' => $dc_link_target,
         ] = $attributes;
 
 
@@ -1994,7 +2013,7 @@ class MaxiBlocks_DynamicContent
 
 
         if ($dc_field === 'author') {
-            $content = $this->get_user_field_value($post->post_author, $dc_sub_field ?? $dc_field, $dc_limit);
+            $content = $this->get_user_field_value($post->post_author, $dc_sub_field ?? $dc_field, $dc_limit, $dc_link_target);
 
             $post_data = $this->get_post_taxonomy_item_content(
                 $post->post_author,
@@ -2097,6 +2116,7 @@ class MaxiBlocks_DynamicContent
             'dc-limit' => $dc_limit,
             'dc-sub-field' => $dc_sub_field,
             'dc-type' => $dc_type,
+            'dc-link-target' => $dc_link_target,
         ] = $attributes;
 
         // Ensure 'dc-field' exists in $attributes to avoid "Undefined array key"
@@ -2123,10 +2143,10 @@ class MaxiBlocks_DynamicContent
         }
         $user_id = $user->ID;
 
-        return $this->get_user_field_value($user_id, $dc_sub_field ?? $dc_field, $dc_limit);
+        return $this->get_user_field_value($user_id, $dc_sub_field ?? $dc_field, $dc_limit, $dc_link_target);
     }
 
-    public function get_user_field_value($user_id, $dc_field, $dc_limit)
+    public function get_user_field_value($user_id, $dc_field, $dc_limit, $dc_link_target)
     {
         $user = get_user_by('id', $user_id);
         if (!$user) {
@@ -2138,6 +2158,14 @@ class MaxiBlocks_DynamicContent
         }, get_user_meta($user_id));
         $user_data = array_merge((array) $user->data, $user_meta);
 
+        // Ensure $user is an object and $user->data exists and is an object
+        if (
+            !is_object($user) ||
+            !isset($user->data) ||
+            !is_object($user->data)
+        ) {
+            return 0;
+        }
         $user_dictionary = [
             'author' => 'display_name',
             'name' => 'display_name',
@@ -2149,17 +2177,11 @@ class MaxiBlocks_DynamicContent
             'archive-type' => __('author', 'maxi-blocks'),
         ];
 
-        // Ensure $user is an object and $user->data exists and is an object
-        if (
-            !is_object($user) ||
-            !isset($user->data) ||
-            !is_object($user->data)
-        ) {
-            return 0;
-        }
-
         // Check if the property exists in $user->data
         $property = $user_dictionary[$dc_field] ?? $dc_field;
+        error_log('==================');
+        error_log('property '. $property);
+        error_log('$dc_link_target '. $dc_link_target);
         if ($dc_field === 'archive-type' || $dc_field === 'link') {
             return $property;
         }
@@ -2172,6 +2194,29 @@ class MaxiBlocks_DynamicContent
         if ($dc_field === 'description' || $dc_field === 'name') {
             $value = self::get_limited_string($value, $dc_limit);
         }
+
+        if ($dc_link_target === 'author_email' || $dc_link_target === 'author_site') {
+            $link = self::get_field_link(
+                $user_id,
+                $dc_field,
+                $dc_link_target,
+            );
+            if ($link) {
+                if ($dc_link_target === 'author_email') {
+                    $href = 'mailto:'.$link;
+                } else {
+                    $href = $link;
+                }
+                $value = '<a href="' .
+                $href .
+                '" class="maxi-link-wrapper"><span>' .
+                $value .
+                '</span></a>';
+            }
+        }
+
+
+        error_log('value '. $value);
 
         return $value;
     }

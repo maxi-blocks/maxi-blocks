@@ -194,6 +194,7 @@ const SCAccordion = props => {
 					breakpoint={breakpoint}
 					isStyleCards
 					onChange={obj => {
+						console.log('TypographyControl obj', obj);
 						onChangeValue({ typography: obj }, groupAttr);
 					}}
 					hideTextShadow

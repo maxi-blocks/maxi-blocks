@@ -32,6 +32,11 @@
 		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
 			stroke: var(--maxi-grey-dark);
+			transition: stroke 0.3s ease;
+		}
+
+		&:hover svg:not(.maxi-tabs-control__notification) path {
+			stroke: var(--maxi-secondary-color);
 		}
 	}
 

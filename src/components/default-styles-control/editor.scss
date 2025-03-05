@@ -18,12 +18,14 @@
 
 			path {
 				fill: var(--maxi-secondary-color);
+				stroke: var(--maxi-secondary-color);
 			}
 			&:first-child,
 			&:nth-child-4 {
 				svg {
 					path {
 						fill: var(--maxi-secondary-color);
+						stroke: var(--maxi-secondary-color);
 					}
 				}
 			}
@@ -37,6 +39,14 @@
 
 		&:hover {
 			background-color: var(--maxi-pastel-green);
+			stroke: var(--maxi-secondary-color);
+
+			svg {
+				path {
+					stroke: var(--maxi-secondary-color) !important;
+					fill: var(--maxi-secondary-color) !important;
+				}
+			}
 		}
 
 		&__icon {

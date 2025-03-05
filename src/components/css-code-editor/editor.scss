@@ -7,6 +7,7 @@
 		font-family: monospace !important;
 		flex: 1 0 100%;
 		direction: ltr;
+		border-radius: 10px;
 
 		textarea {
 			background-color: var(--maxi-white);
@@ -47,9 +48,15 @@
 
 		.components-button {
 			height: 24px;
-			background-color: var(--maxi-grey);
-			border: 1px solid var(--maxi-grey-light);
-			border-radius: 0;
+			background-color: var(--maxi-pastel-green);
+			border: 1px solid var(--maxi-mid-green);
+			border-radius: 30px;
+
+			&:hover {
+				background-color: var(--maxi-mid-green);
+				color: var(--maxi-white);
+				border-color: var(--maxi-primary-color);
+			}
 		}
 	}
 }

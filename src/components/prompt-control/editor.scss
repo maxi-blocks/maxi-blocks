@@ -16,7 +16,7 @@
 			.maxi-components-button {
 				height: auto;
 				padding: 0;
-				color: var(--maxi-black-1-color);
+				color: var(--maxi-black);
 			}
 		}
 	}
@@ -36,16 +36,17 @@
 			.maxi-components-button {
 				justify-content: center;
 				width: 100%;
-				border: 2px solid var(--maxi-secondary-color);
+				border: 1.5px solid var(--maxi-secondary-color);
 				color: var(--maxi-secondary-color) !important;
 				background: var(--maxi-whisper-green);
 				font-size: 16px !important;
 				font-weight: 700 !important;
+				border-radius: 30px;
 				text-align: center;
 				&:hover {
 					border-color: var(--maxi-primary-color) !important;
-					color: var(--maxi-black) !important;
-					background: var(--maxi-white);
+					color: var(--maxi-white) !important;
+					background: var(--maxi-mid-green);
 				}
 				&:disabled {
 					opacity: 0.6;
@@ -54,6 +55,30 @@
 					color: var(--maxi-grey-dark) !important;
 					background: var(--maxi-grey-light);
 				}
+			}
+		}
+	}
+
+	&__buttons {
+		.maxi-components-button {
+			height: auto;
+			padding: 8px 16px !important;
+			color: var(--maxi-black);
+			background: var(--maxi-white);
+			border: 1.5px solid var(--maxi-secondary-color);
+			border-radius: 4px;
+			font-weight: 600;
+			transition: all 0.2s ease-in-out;
+
+			&:hover {
+				background: var(--maxi-secondary-color);
+				color: var(--maxi-white);
+				cursor: pointer;
+			}
+
+			&:focus {
+				outline: none;
+				box-shadow: 0 0 0 2px var(--maxi-highlight-color);
 			}
 		}
 	}

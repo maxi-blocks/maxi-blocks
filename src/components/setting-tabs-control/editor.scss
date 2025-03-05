@@ -29,6 +29,7 @@
 			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested) {
 				&[aria-pressed='true'] {
 					border-top: 2px solid var(--maxi-black) !important;
+					background-color: var(--maxi-whisper-green);
 				}
 			}
 		}
@@ -43,7 +44,7 @@
 
 			.maxi-tabs-control__button {
 				&:hover {
-					background-color: var(--maxi-whisper-green);
+					background-color: var(--maxi-pastel-green);
 				}
 				&:focus:not(:disabled) {
 					background-color: var(--maxi-white);
@@ -82,7 +83,7 @@
 				border-right: none;
 			}
 			&:hover {
-				background-color: var(--maxi-whisper-green);
+				background-color: var(--maxi-pastel-green);
 				cursor: pointer;
 			}
 			&:focus:not(:disabled) {

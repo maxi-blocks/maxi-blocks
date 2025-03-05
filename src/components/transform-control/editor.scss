@@ -61,13 +61,17 @@
 
 			&:after {
 				content: '';
+				display: block;
 				position: absolute;
-				top: 0;
+				top: 50%;
 				left: 50%;
-				transform: translateX(-50%);
-				width: 1px;
-				height: 100%;
-				border: 1px solid var(--maxi-grey-light);
+				transform: translate(-50%, -50%);
+				width: 10px;
+				height: 10px;
+				border: 2px solid var(--maxi-white);
+				border-radius: 50%;
+				background: var(--maxi-primary-color);
+				cursor: inherit;
 			}
 
 			&__placeholder,
@@ -354,7 +358,7 @@
 
 		.maxi-tabs-control__button[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green) !important;
-			border-color: var(--maxi-whisper-green) !important;
+			border-color: var(--maxi-secondary-color) !important;
 		}
 
 		.maxi-tabs-control__button {

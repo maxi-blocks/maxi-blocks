@@ -8,10 +8,23 @@
 	&__block-access {
 		margin-bottom: 10px;
 	}
+	&__title-spacing {
+		margin-top: 20px;
+	}
+	&__interaction-builder {
+		margin-top: 10px;
+	}
 	.maxi-list-item-control__title__wrapper {
 		overflow: hidden;
 		max-width: 190px;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+	.maxi-base-control {
+		margin-bottom: 10px;
+		margin-top: 10px;
+		&__label {
+			margin-top: 5px !important;
+		}
 	}
 }

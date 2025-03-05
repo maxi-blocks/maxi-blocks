@@ -2,9 +2,10 @@ body.maxi-blocks--active .maxi-block__resizer {
 	.maxi-resizable {
 		&__handle {
 			display: none;
-			width: 15px;
-			height: 15px;
+			width: 20px;
+			height: 20px;
 			z-index: 20;
+			position: absolute;
 			&--show {
 				display: block;
 			}
@@ -12,16 +13,13 @@ body.maxi-blocks--active .maxi-block__resizer {
 				content: '';
 				display: block;
 				position: absolute;
-				top: calc(50% - #{ceil(15px / 2)});
-				right: calc(50% - #{ceil(15px / 2)});
-				width: 10px;
-				height: 10px;
+				width: 20px;
+				height: 20px;
 				border: 2px solid var(--maxi-white);
 				border-radius: 50%;
 				background: var(--maxi-primary-color);
 				cursor: inherit;
 			}
-
 			&--repeater:after {
 				background: var(--maxi-tertiary-color);
 			}
@@ -33,37 +31,26 @@ body.maxi-blocks--active .maxi-block__resizer {
 				position: absolute;
 				background: var(--maxi-primary-color);
 			}
+
 			&-right {
-				&:before {
-					top: 50%;
-					right: calc(50% - 2px);
-					transform: translateY(-50%);
-					width: 4px;
-				}
+				right: 0;
+				top: 50%;
+				transform: translate(50%, -50%);
 			}
 			&-left {
-				&:before {
-					top: 50%;
-					left: calc(50% - 2px);
-					transform: translateY(-50%);
-					width: 4px;
-				}
+				left: 0;
+				top: 50%;
+				transform: translate(-50%, -50%);
 			}
 			&-top {
-				&:before {
-					top: calc(50% - 2px);
-					left: 50%;
-					transform: translateX(-50%);
-					height: 4px;
-				}
+				top: 0;
+				left: 50%;
+				transform: translate(-50%, -50%);
 			}
 			&-bottom {
-				&:before {
-					bottom: calc(50% - 2px);
-					left: 50%;
-					transform: translateX(-50%);
-					height: 4px;
-				}
+				bottom: 0;
+				left: 50%;
+				transform: translate(-50%, 50%);
 			}
 		}
 		&__side-handle {

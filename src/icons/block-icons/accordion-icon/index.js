@@ -15,7 +15,7 @@ const accordionIcon = (
 		style={{ enableBackground: 'new 0 0 24 24' }}
 		xmlSpace='preserve'
 	>
-		<style type='text/css'>{'.st0{fill:#FF4A17}'}</style>
+		<style type='text/css'>{'.st0{fill:var(--maxi-primary-color)}'}</style>
 		<G>
 			<Path
 				className='st0'

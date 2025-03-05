@@ -7,7 +7,7 @@
  * Import dependencies.
  */
 import edit from './edit';
-import { library } from '@maxi-icons';
+import { library, librarySmall } from '@maxi-icons';
 import './style.scss';
 import './editor.scss';
 
@@ -21,9 +21,9 @@ import { registerBlockType } from '@wordpress/blocks';
  * Register the Layout block
  */
 registerBlockType('maxi-blocks/maxi-cloud', {
-	title: __('Template Library Maxi', 'maxi-blocks'),
+	title: __('Cloud library Maxi', 'maxi-blocks'),
 	description: __('Find templates or patterns', 'maxi-blocks'),
-	icon: library,
+	icon: librarySmall,
 	category: 'maxi-blocks',
 	example: {
 		attributes: {

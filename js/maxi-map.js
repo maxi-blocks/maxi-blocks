@@ -35,10 +35,9 @@ window.onload = () => {
 		}
 	}
 
-	const isGoogleProvider = mapItems.some(
-		item => item['map-provider'] === 'googlemaps'
+	const isGoogleScriptsNeeded = mapItems.some(
+		item => item['map-provider'] === 'googlemaps' && apiKey
 	);
-	const isGoogleScriptsNeeded = isGoogleProvider && apiKey;
 
 	const loadElement = (elementName, properties, callback) => {
 		const element = document.createElement(elementName);
@@ -55,7 +54,7 @@ window.onload = () => {
 	const loadElements = (elements, callback) => {
 		const promises = elements.map(element => {
 			if (!element) {
-				return;
+				return Promise.resolve();
 			}
 
 			const elementName = element.elementName ?? 'script';
@@ -70,19 +69,120 @@ window.onload = () => {
 				callback();
 			})
 			.catch(error => {
-				console.log(error);
+				console.error('Error loading elements:', error);
 			});
 	};
 
+	const getOSMTileLayer = mapType => {
+		const tileUrls = {
+			standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			humanitarian:
+				'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+			cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
+			transport:
+				'https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
+		};
+
+		return tileUrls[mapType] || tileUrls.standard;
+	};
+
+	const initializeMaps = () => {
+		mapItems.forEach(item => {
+			const {
+				id: uniqueID,
+				'map-dragging': mapDragging,
+				'map-touch-zoom': mapTouchZoom,
+				'map-double-click-zoom': mapDoubleClickZoom,
+				'map-scroll-wheel-zoom': mapScrollWheelZoom,
+				'map-latitude': mapLatitude,
+				'map-longitude': mapLongitude,
+				'map-zoom': mapZoom,
+				'map-markers': mapMarkers,
+				'map-marker-icon': mapMarkerIcon,
+				'map-marker-heading-level': mapMarkerHeadingLevel,
+				'map-min-zoom': mapMinZoom,
+				'map-max-zoom': mapMaxZoom,
+				ariaLabels,
+				'map-type': mapType,
+			} = item;
+
+			const isCurrentMapGoogle = item['map-provider'] === 'googlemaps';
+
+			// Ensure max zoom is appropriate for the provider
+			const adjustedMaxZoom = isCurrentMapGoogle
+				? mapMaxZoom
+				: Math.min(mapMaxZoom, 18);
+
+			// Calculate default zoom as middle value between min and max if mapZoom is undefined
+			const defaultZoom = Math.floor((mapMinZoom + adjustedMaxZoom) / 2);
+			const zoomLevel = mapZoom !== undefined ? mapZoom : defaultZoom;
+
+			const map = L.map(`maxi-map-block__container-${uniqueID}`, {
+				dragging: mapDragging,
+				touchZoom: mapTouchZoom,
+				doubleClickZoom: mapDoubleClickZoom,
+				scrollWheelZoom: mapScrollWheelZoom,
+				minZoom: mapMinZoom,
+				maxZoom: adjustedMaxZoom,
+			}).setView([mapLatitude, mapLongitude], zoomLevel);
+
+			if (isCurrentMapGoogle && apiKey && L.gridLayer.googleMutant) {
+				L.gridLayer
+					.googleMutant({
+						type: mapType || 'roadmap',
+					})
+					.addTo(map);
+			} else {
+				L.tileLayer(getOSMTileLayer(mapType || 'standard'), {
+					attribution:
+						'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				}).addTo(map);
+			}
+
+			const markerIcon = L.divIcon({
+				html: mapMarkerIcon,
+				iconSize: [null, null],
+			});
+
+			mapMarkers?.forEach(marker => {
+				const { latitude, longitude, heading, description } = marker;
+
+				const ariaLabel = ariaLabels?.popup
+					? `aria-label='${ariaLabels.popup}'`
+					: '';
+				const popupContent = `
+				<div class='maxi-map-block__popup' ${ariaLabel}>
+					<div class='maxi-map-block__popup__content'>
+					${
+						heading &&
+						`<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>`
+					}
+					${
+						description &&
+						`<p class='maxi-map-block__popup__content__description'>${description}</p>`
+					}
+					</div>
+				</div>
+				`;
+
+				if (heading === '' && description === '') {
+					L.marker([latitude, longitude], {
+						icon: markerIcon,
+					}).addTo(map);
+				} else
+					L.marker([latitude, longitude], {
+						icon: markerIcon,
+					})
+						.addTo(map)
+						.bindPopup(popupContent)
+						.openPopup();
+			});
+		});
+	};
+
+	// First load Leaflet CSS and core
 	loadElements(
 		[
-			isGoogleScriptsNeeded && {
-				properties: {
-					src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=Function.prototype`,
-					async: true,
-					defer: true,
-				},
-			},
 			{
 				elementName: 'link',
 				properties: {
@@ -101,90 +201,30 @@ window.onload = () => {
 					crossOrigin: '',
 				},
 			},
-			isGoogleScriptsNeeded && {
-				properties: {
-					src: 'https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js',
-				},
-			},
 		],
 		() => {
-			mapItems.map(item => {
-				const {
-					id: uniqueID,
-					'map-dragging': mapDragging,
-					'map-touch-zoom': mapTouchZoom,
-					'map-double-click-zoom': mapDoubleClickZoom,
-					'map-scroll-wheel-zoom': mapScrollWheelZoom,
-					'map-latitude': mapLatitude,
-					'map-longitude': mapLongitude,
-					'map-zoom': mapZoom,
-					'map-markers': mapMarkers,
-					'map-marker-icon': mapMarkerIcon,
-					'map-marker-heading-level': mapMarkerHeadingLevel,
-					ariaLabels,
-				} = item;
-
-				const map = L.map(`maxi-map-block__container-${uniqueID}`, {
-					dragging: mapDragging,
-					touchZoom: mapTouchZoom,
-					doubleClickZoom: mapDoubleClickZoom,
-					scrollWheelZoom: mapScrollWheelZoom,
-				}).setView([mapLatitude, mapLongitude], mapZoom);
-
-				isGoogleScriptsNeeded
-					? L.gridLayer
-							.googleMutant({
-								type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-							})
-							.addTo(map)
-					: L.tileLayer(
-							'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-							{
-								attribution:
-									'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-							}
-					  ).addTo(map);
-
-				const markerIcon = L.divIcon({
-					html: mapMarkerIcon,
-					iconSize: [null, null],
-				});
-
-				mapMarkers?.map(marker => {
-					const { latitude, longitude, heading, description } =
-						marker;
-
-					const ariaLabel = ariaLabels?.popup
-						? `aria-label='${ariaLabels.popup}'`
-						: '';
-					const popupContent = `
-					<div class='maxi-map-block__popup' ${ariaLabel}>
-						<div class='maxi-map-block__popup__content'>
-						${
-							heading &&
-							`<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>`
-						}
-						${
-							description &&
-							`<p class='maxi-map-block__popup__content__description'>${description}</p>`
-						}
-						</div>
-					</div>
-					`;
-
-					if (heading === '' && description === '') {
-						L.marker([latitude, longitude], {
-							icon: markerIcon,
-						}).addTo(map);
-					} else
-						L.marker([latitude, longitude], {
-							icon: markerIcon,
-						})
-							.addTo(map)
-							.bindPopup(popupContent)
-							.openPopup();
-				});
-			});
+			// Then load Google Maps and Mutant if needed
+			if (isGoogleScriptsNeeded) {
+				loadElements(
+					[
+						{
+							properties: {
+								src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`,
+								async: true,
+								defer: true,
+							},
+						},
+						{
+							properties: {
+								src: 'https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js',
+							},
+						},
+					],
+					initializeMaps
+				);
+			} else {
+				initializeMaps();
+			}
 		}
 	);
 };

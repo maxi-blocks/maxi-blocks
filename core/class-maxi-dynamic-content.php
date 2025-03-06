@@ -797,6 +797,7 @@ class MaxiBlocks_DynamicContent
 
             if ($dc_link_status) {
                 $content = self::render_dc_link($attributes, $content);
+                error_log('content after render_dc_link '. $content);
             }
         }
 
@@ -883,7 +884,7 @@ class MaxiBlocks_DynamicContent
 
         if (
             array_key_exists('dc-link-target', $attributes) &&
-            $attributes['dc-link-target'] === 'author'
+            $attributes['dc-link-target']
         ) {
             if (empty($post) || !isset($post->post_author)) {
                 $link = '';
@@ -894,6 +895,7 @@ class MaxiBlocks_DynamicContent
                     $attributes['dc-link-target'],
                 );
             }
+
         } elseif (
             array_key_exists('dc-type', $attributes) &&
             $attributes['dc-type'] === 'settings'
@@ -1833,15 +1835,12 @@ class MaxiBlocks_DynamicContent
 
     public function get_field_link($item, $field, $dc_link_target)
     {
-        error_log('field '. $field);
-        error_log('dc_link_target '. $dc_link_target);
-        error_log('item '. $item);
         switch ($field) {
             case 'author':
+                error_log('dc_link_target '. $dc_link_target);
                 switch ($dc_link_target) {
                     case 'author_email':
                         $email = sanitize_email(get_the_author_meta('user_email', $item));
-                        error_log('email '. $email);
                         $link = $this->xor_obfuscate_email($email);
                         break;
                     case 'author_site':
@@ -2179,9 +2178,6 @@ class MaxiBlocks_DynamicContent
 
         // Check if the property exists in $user->data
         $property = $user_dictionary[$dc_field] ?? $dc_field;
-        error_log('==================');
-        error_log('property '. $property);
-        error_log('$dc_link_target '. $dc_link_target);
         if ($dc_field === 'archive-type' || $dc_field === 'link') {
             return $property;
         }
@@ -2194,29 +2190,6 @@ class MaxiBlocks_DynamicContent
         if ($dc_field === 'description' || $dc_field === 'name') {
             $value = self::get_limited_string($value, $dc_limit);
         }
-
-        if ($dc_link_target === 'author_email' || $dc_link_target === 'author_site') {
-            $link = self::get_field_link(
-                $user_id,
-                $dc_field,
-                $dc_link_target,
-            );
-            if ($link) {
-                if ($dc_link_target === 'author_email') {
-                    $href = 'mailto:'.$link;
-                } else {
-                    $href = $link;
-                }
-                $value = '<a href="' .
-                $href .
-                '" class="maxi-link-wrapper"><span>' .
-                $value .
-                '</span></a>';
-            }
-        }
-
-
-        error_log('value '. $value);
 
         return $value;
     }

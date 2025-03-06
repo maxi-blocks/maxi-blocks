@@ -490,7 +490,7 @@ export const linkFieldsOptions = {
 	],
 	author: [
 		{
-			label: __('Author', 'maxi-blocks'),
+			label: __('Author profile page', 'maxi-blocks'),
 			value: 'author',
 		},
 		{ label: __('Author email', 'maxi-blocks'), value: 'author_email' },

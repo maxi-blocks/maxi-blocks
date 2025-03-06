@@ -28,5 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		// Update the href and text content to display the real email
 		emailLink.setAttribute('href', `mailto:${decodedEmail}`);
+		if (emailLink.getAttribute('title') === encodedEmail) {
+			emailLink.setAttribute('title', decodedEmail);
+		}
 	});
 });

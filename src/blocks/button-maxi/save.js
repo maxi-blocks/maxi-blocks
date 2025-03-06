@@ -30,6 +30,7 @@ const save = props => {
 		'dc-status': dcStatus,
 		'dc-link-status': dcLinkStatus,
 		'dc-field': dcField,
+		'dc-link-target': dcLinkTarget,
 		ariaLabels = {},
 	} = props.attributes;
 
@@ -69,6 +70,9 @@ const save = props => {
 				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 				{...(ariaLabels.button && { 'aria-label': ariaLabels.button })}
+				{...(dcLinkTarget === 'author_email' && {
+					'data-email-obfuscated': true,
+				})}
 			>
 				{!iconOnly && (
 					<RichText.Content

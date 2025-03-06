@@ -980,6 +980,9 @@ class MaxiBlocks_DynamicContent
 
         if (gettype($link) === 'string') {
             $content = str_replace('$link-to-replace', $link, $content);
+            if ($dc_link_target === 'author_email') {
+                $content = preg_replace('/\surl="[^"]*"/', '', $content);
+            }
         }
 
         return $content;

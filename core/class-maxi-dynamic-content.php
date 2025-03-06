@@ -797,7 +797,6 @@ class MaxiBlocks_DynamicContent
 
             if ($dc_link_status) {
                 $content = self::render_dc_link($attributes, $content);
-                error_log('content after render_dc_link '. $content);
             }
         }
 
@@ -884,7 +883,8 @@ class MaxiBlocks_DynamicContent
 
         if (
             array_key_exists('dc-link-target', $attributes) &&
-            $attributes['dc-link-target']
+            str_contains($attributes['dc-link-target'], 'author') &&
+            $attributes['dc-type'] !== 'users'
         ) {
             if (empty($post) || !isset($post->post_author)) {
                 $link = '';
@@ -1837,7 +1837,6 @@ class MaxiBlocks_DynamicContent
     {
         switch ($field) {
             case 'author':
-                error_log('dc_link_target '. $dc_link_target);
                 switch ($dc_link_target) {
                     case 'author_email':
                         $email = sanitize_email(get_the_author_meta('user_email', $item));

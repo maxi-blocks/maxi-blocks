@@ -8,7 +8,7 @@
 function xorDecode(encodedEmail, key = 'K') {
 	const obfuscatedEmail = atob(encodedEmail, 'base64'); // Decode base64
 	let email = '';
-	for (let i = 0; i < obfuscatedEmail.length; i++) {
+	for (let i = 0; i < obfuscatedEmail.length; i += 1) {
 		email += String.fromCharCode(
 			// eslint-disable-next-line no-bitwise
 			obfuscatedEmail.charCodeAt(i) ^ key.charCodeAt(i % key.length)

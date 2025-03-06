@@ -241,7 +241,7 @@
 							rect,
 							polyline,
 							path {
-								fill: var(--maxi-secondary-color) !important;
+								fill: var(--maxi-secondary-color);
 							}
 						}
 					}
@@ -297,17 +297,9 @@
 					}
 				}
 
-				&__alignment:not(.maxi-dropdown),
-				&__bold,
-				&__italic {
-					height: auto;
-					width: 2rem;
-				}
-
 				&__bold,
 				&__italic {
 					&:hover path {
-						fill: transparent !important;
 						stroke: var(--maxi-secondary-color);
 					}
 				}
@@ -326,8 +318,6 @@
 					width: 1rem;
 					height: 1rem;
 					margin: auto;
-					fill: var(--maxi-whisper-green);
-
 					ellipse,
 					circle,
 					line,
@@ -335,8 +325,8 @@
 					polyline,
 					path {
 						transition: 0.3s;
-						fill: var(--maxi-black);
-						stroke: transparent;
+						// fill: var(--maxi-black);
+						// stroke: transparent;
 					}
 				}
 
@@ -473,8 +463,8 @@ body .toolbar-item__popover {
 	&:before,
 	&:after {
 		border-color: var(--maxi-grey-dark) !important;
-		border-left-color: transparent !important;
-		border-right-color: transparent !important;
+		// border-left-color: transparent !important;
+		// border-right-color: transparent !important;
 		z-index: -1;
 		display: none;
 	}

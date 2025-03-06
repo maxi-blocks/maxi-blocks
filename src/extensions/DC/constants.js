@@ -272,12 +272,7 @@ const buttonMediaFields = [
 	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
 ];
 
-const buttonAuthorFields = [
-	...generalUsersFields.filter(option =>
-		['title', 'tagline', 'email'].includes(option.value)
-	),
-	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
-];
+const buttonAuthorFields = generalUsersFields;
 
 const buttonCategoryFields = [
 	...generalCategoryFields.filter(option =>
@@ -490,9 +485,11 @@ export const linkFieldsOptions = {
 	],
 	author: [
 		{
-			label: __('Author', 'maxi-blocks'),
+			label: __('Author profile page', 'maxi-blocks'),
 			value: 'author',
 		},
+		{ label: __('Author email', 'maxi-blocks'), value: 'author_email' },
+		{ label: __('Author site', 'maxi-blocks'), value: 'author_site' },
 	],
 };
 

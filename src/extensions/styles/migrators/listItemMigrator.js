@@ -7,10 +7,7 @@ import { RichText } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import {
-	getMaxiBlockAttributes,
-	MaxiBlock,
-} from '@components/maxi-block';
+import { getMaxiBlockAttributes, MaxiBlock } from '@components/maxi-block';
 
 /**
  * External dependencies
@@ -43,7 +40,9 @@ const migrate = newAttributes => {
 	// Use traditional for loop for better performance
 	for (let i = 0; i < matches.length; i++) {
 		const liContent = matches[i].replace(LI_CLEAN_REGEX, '');
-		newInnerBlocks[i] = createBlock(LIST_ITEM_BLOCK, { content: liContent });
+		newInnerBlocks[i] = createBlock(LIST_ITEM_BLOCK, {
+			content: liContent,
+		});
 	}
 
 	return [newAttributes, newInnerBlocks];
@@ -61,14 +60,18 @@ const save = props => {
 	} = props.attributes;
 
 	// Compute values once
-	const value = dcStatus ? '$text-to-replace' : content?.replace(BR_REGEX, '<br />');
+	const value = dcStatus
+		? '$text-to-replace'
+		: content?.replace(BR_REGEX, '<br />');
 	const tagName = isList && !dcStatus ? typeOfList : textLevel;
 
 	// Prepare props conditionally
-	const extraProps = !dcStatus ? {
-		reversed: !!listReversed,
-		start: listStart,
-	} : {};
+	const extraProps = !dcStatus
+		? {
+				reversed: !!listReversed,
+				start: listStart,
+		  }
+		: {};
 
 	return (
 		<MaxiBlock.save

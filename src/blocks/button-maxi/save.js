@@ -30,6 +30,8 @@ const save = props => {
 		'dc-status': dcStatus,
 		'dc-link-status': dcLinkStatus,
 		'dc-field': dcField,
+		'dc-link-target': dcLinkTarget,
+		'dc-sub-field': dcSubField,
 		ariaLabels = {},
 	} = props.attributes;
 
@@ -57,7 +59,8 @@ const save = props => {
 		iconContent && `maxi-button-block__button--icon-${iconPosition}`
 	);
 
-	const showDCContent = dcStatus && dcField !== 'static_text';
+	const showDCContent =
+		dcStatus && dcField !== 'static_text' && dcSubField !== 'static_text';
 
 	return (
 		<MaxiBlock.save
@@ -69,6 +72,9 @@ const save = props => {
 				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 				{...(ariaLabels.button && { 'aria-label': ariaLabels.button })}
+				{...(dcLinkTarget === 'author_email' && {
+					'data-email-obfuscated': true,
+				})}
 			>
 				{!iconOnly && (
 					<RichText.Content

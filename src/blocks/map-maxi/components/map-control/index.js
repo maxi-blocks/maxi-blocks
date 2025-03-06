@@ -169,7 +169,7 @@ const MapControl = props => {
 				className='maxi-map-control__min-zoom'
 				label={__('Minimum zoom', 'maxi-blocks')}
 				min={1}
-				max={mapMaxZoom - 1 || mapProvider === 'googlemaps' ? 21 : 18}
+				max={mapMaxZoom - 1 || (mapProvider === 'googlemaps' ? 21 : 18)}
 				initial={1}
 				step={1}
 				value={mapMinZoom}

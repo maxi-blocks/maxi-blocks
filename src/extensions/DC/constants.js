@@ -272,12 +272,7 @@ const buttonMediaFields = [
 	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
 ];
 
-const buttonAuthorFields = [
-	...generalUsersFields.filter(option =>
-		['title', 'tagline', 'email'].includes(option.value)
-	),
-	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
-];
+const buttonAuthorFields = generalUsersFields;
 
 const buttonCategoryFields = [
 	...generalCategoryFields.filter(option =>

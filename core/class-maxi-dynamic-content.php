@@ -980,7 +980,7 @@ class MaxiBlocks_DynamicContent
 
         if (gettype($link) === 'string') {
             $content = str_replace('$link-to-replace', $link, $content);
-            if ($dc_link_target === 'author_email') {
+            if (isset($dc_link_target) && $dc_link_target === 'author_email') {
                 $content = preg_replace('/\surl="[^"]*"/', '', $content);
             }
         }
@@ -998,9 +998,10 @@ class MaxiBlocks_DynamicContent
             'dc-link-status' => $dc_link_status,
             'dc-link-target' => $dc_link_target,
             'dc-accumulator' => $dc_accumulator,
+            'dc-sub-field' => $dc_sub_field,
         ] = $attributes;
 
-        if (!isset($dc_field) || $dc_field === 'static_text') {
+        if (!isset($dc_field) || $dc_field === 'static_text' || $dc_sub_field === 'static_text') {
             $post = $this->get_post($attributes);
 
             if (!empty($post)) {

@@ -1,7 +1,7 @@
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	.maxi-toggle-switch__toggle {
 		&__track {
-			border-color: var(--maxi-accessibility-grey-1-color);
+			border-color: var(--maxi-accessibility-grey);
 		}
 		input[type='checkbox'] {
 			&:focus + .maxi-toggle-switch__toggle__track {

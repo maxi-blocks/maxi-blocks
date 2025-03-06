@@ -37,7 +37,7 @@
 		transition: all 0s ease;
 
 		&--repeater {
-			background: var(--maxi-purple-2-color) !important;
+			background: var(--maxi-tertiary-color) !important;
 		}
 
 		&:hover,
@@ -57,8 +57,8 @@
 
 	&__dropdown {
 		&-selector {
-			background: var(--maxi-orange-color);
-			border: black 2px solid;
+			background: var(--maxi-primary-color);
+			border: 2px solid var(--maxi-black);
 		}
 
 		&-content {
@@ -121,8 +121,8 @@
 	// 		width: 25px;
 	// 		height: 25px;
 	// 		margin: auto;
-	// 		background: var(--maxi-black-1-color) !important;
-	// 		border: 1px solid var(--maxi-white-3-color);
+	// 		background: var(--maxi-black) !important;
+	// 		border: 1px solid var(--maxi-white);
 	// 		svg {
 	// 			width: 24px;
 	// 			height: 24px;

@@ -7,7 +7,7 @@
 	&__empty {
 		&.is-selected {
 			&::after {
-				border-color: var(--maxi-whisper-green-alt) !important;
+				border-color: var(--maxi-whisper-green) !important;
 			}
 		}
 		&::after {

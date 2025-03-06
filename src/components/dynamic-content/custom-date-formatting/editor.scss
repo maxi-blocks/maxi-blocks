@@ -34,7 +34,7 @@
 			border: 1px solid var(--maxi-grey-light);
 
 			&:hover {
-				border-color: var(--maxi-grey-5-color);
+				border-color: var(--maxi-grey);
 			}
 		}
 	}
@@ -47,7 +47,7 @@
 			min-height: unset;
 			max-height: unset !important;
 			border: 1px solid var(--maxi-grey-light);
-			color: var(--maxi-grey-5-color);
+			color: var(--maxi-grey);
 			font-size: 12px;
 			line-height: 14px;
 			width: 100%;

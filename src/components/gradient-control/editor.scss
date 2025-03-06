@@ -2,7 +2,7 @@
 	position: relative;
 
 	.components-custom-gradient-picker__control-point-button {
-		border: 1px solid var(--maxi-grey-6-color);
+		border: 1px solid var(--maxi-grey-dark);
 	}
 
 	.components-angle-picker-control {
@@ -48,11 +48,11 @@
 			width: 31px;
 
 			&:hover {
-				background-color: var(--maxi-grey-3-color);
+				background-color: var(--maxi-grey);
 				box-shadow: none !important;
 			}
 			&:focus {
-				border-color: var(--maxi-grey-6-color);
+				border-color: var(--maxi-grey-dark);
 				box-shadow: none !important;
 			}
 		}

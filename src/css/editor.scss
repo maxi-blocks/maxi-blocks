@@ -232,7 +232,7 @@ body .toolbar-item__popover {
 		max-height: unset !important;
 		min-height: unset;
 		padding: 10px;
-		border: 1.5px solid var(--maxi-grey-light) !important;
+		// border: 1.5px solid var(--maxi-grey-light) !important;
 		border-radius: 5px !important;
 		color: var(--maxi-grey-dark);
 		background-color: var(--maxi-white);
@@ -242,7 +242,7 @@ body .toolbar-item__popover {
 		&:focus {
 			box-shadow: none;
 			outline: none;
-			border: 1.5px solid var(--maxi-grey) !important;
+			// border: 1.5px solid var(--maxi-grey) !important;
 		}
 		&:hover {
 			color: var(--maxi-grey-dark) !important;

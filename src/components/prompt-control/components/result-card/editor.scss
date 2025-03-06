@@ -94,7 +94,7 @@
 	}
 
 	& &__content-length {
-		color: var(--maxi-grey-9-color);
+		color: var(--maxi-grey-dark);
 		text-align: end;
 	}
 
@@ -115,6 +115,10 @@
 
 		.maxi-components-button {
 			padding: 0;
+
+			&:hover {
+				color: var(--maxi-primary-color);
+			}
 		}
 	}
 

@@ -7,7 +7,7 @@
 
 	&-history-buttons {
 		padding-left: 10px;
-		column-gap: 20px;
+		column-gap: 5px;
 	}
 
 	&-history-tab,
@@ -62,23 +62,25 @@
 	&__buttons {
 		.maxi-components-button {
 			height: auto;
-			padding: 8px 16px !important;
-			color: var(--maxi-black);
-			background: var(--maxi-white);
+			padding: 4px 8px !important;
+			width: auto;
 			border: 1.5px solid var(--maxi-secondary-color);
-			border-radius: 4px;
-			font-weight: 600;
-			transition: all 0.2s ease-in-out;
+			color: var(--maxi-secondary-color) !important;
+			background: var(--maxi-whisper-green);
+			font-size: 12px !important;
+			font-weight: 600 !important;
+			border-radius: 30px;
+			text-align: center;
+			cursor: pointer;
 
 			&:hover {
-				background: var(--maxi-secondary-color);
-				color: var(--maxi-white);
-				cursor: pointer;
+				background: var(--maxi-pastel-green);
+				border-color: var(--maxi-secondary-color);
 			}
 
 			&:focus {
 				outline: none;
-				box-shadow: 0 0 0 2px var(--maxi-highlight-color);
+				box-shadow: 0 0 0 2px var(--maxi-cloud-primary-light);
 			}
 		}
 	}

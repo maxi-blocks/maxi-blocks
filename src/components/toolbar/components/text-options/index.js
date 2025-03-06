@@ -339,6 +339,7 @@ const TextOptions = props => {
 								</div>
 								<div className='toolbar-item__typography-control__extra-text-options'>
 									<AlignmentControl
+										className='maxi-alignment-control'
 										{...getGroupAttributes(
 											props,
 											'textAlignment'

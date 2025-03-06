@@ -747,6 +747,20 @@ body .toolbar-item__popover {
 			width: 3.5rem;
 		}
 	}
+	.toolbar-item__typography-control__extra-text-options {
+		.maxi-alignment-control {
+			display: flex;
+			gap: 0;
+
+			button {
+				border-radius: 4px !important;
+				width: 40px !important;
+				&:not(:last-child) {
+					border-radius: 4px !important;
+				}
+			}
+		}
+	}
 }
 
 body.rtl .toolbar-item__popover {

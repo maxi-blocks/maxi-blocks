@@ -43,6 +43,21 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             ]);
 
             add_action('maxi_blocks_db_tables_created', [$this, 'update_settings_on_install']);
+
+            // Add filter to preserve API key values
+            add_filter('pre_update_option_google_api_key_option', [$this, 'preserve_api_key_value'], 10, 2);
+            add_filter('pre_update_option_openai_api_key_option', [$this, 'preserve_api_key_value'], 10, 2);
+        }
+
+        /**
+         * Preserve API key value if new value is empty
+         */
+        public function preserve_api_key_value($new_value, $old_value)
+        {
+            if (empty($new_value) && !empty($old_value)) {
+                return $old_value;
+            }
+            return $new_value;
         }
 
         public function update_settings_on_install()

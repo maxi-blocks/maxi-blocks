@@ -27,3 +27,49 @@
 	--maxi-admin-green-hover: #00a32a;
 	--maxi-admin-mint-hover: #7cb342;
 }
+
+:root {
+	/* Core Builder */
+	--maxi-primary-color: #82c251; /* Fresh lime green */
+	--maxi-secondary-color: #43a047; /* Crisp  accent */
+	--maxi-tertiary-color: #7a00df; /* Rich deep purple accent */
+
+	/* Core Colors */
+	--maxi-cloud-primary: #9a8cf3; /* Soft, pastel lavender-purple – modern and approachable */
+	--maxi-cloud-primary-light: #e1dbfe; /* Lighter pastel version, now more distinct from whisper */
+	--maxi-cloud-primary-bright: #7e6ee8; /* A more saturated but still refined shade */
+	--maxi-cloud-primary-whisper: #f5f3fe; /* Slightly darker off-white for backgrounds */
+	--maxi-cloud-primary-contrast: #3a3a3a; /* Dark neutral for text and contrast */
+
+	/* Accent & Hover Colors */
+	--maxi-cloud-hover: #b06bf7; /* Vibrant lavender-purple for hover effects */
+	--maxi-cloud-hover-deep: #954dd1; /* Slightly deeper version for active states */
+
+	/* Core Neutrals */
+	--maxi-white: #fff; /* Pure white */
+	--maxi-off-white: #f8f8f8; /* Soft off-white background */
+	--maxi-grey: #b4b4b4; /* Standard grey for text/borders */
+	--maxi-grey-light: #e0e0e0; /* Very light grey background */
+	--maxi-grey-dark: #242424; /* Dark grey for high-contrast elements */
+	--maxi-black: #000; /* True black */
+
+	/* Accessibility */
+	--maxi-accessibility-grey: #757575; /* Medium grey for readability */
+
+	/* Existing Accent Colors */
+	--maxi-light-blue: #e5f2f8; /* Soft light blue background/highlight */
+	--maxi-light-blue-alt: #7fbddc; /* Alternative blue accent */
+	--maxi-highlight-color: #f066ff; /* Vibrant highlight/punctuation */
+	--maxi-light-yellow: #f7f5df; /* Gentle light yellow for accents */
+
+	/* New Accent Brand Colors */
+	--maxi-orange-red: #ff4500; /* Vibrant orange-red */
+	--maxi-golden-orange: #f2a600; /* Warm golden-orange */
+	--maxi-bright-yellow: #ffff00; /* Pure, bright yellow */
+	--maxi-deep-golden: #f2b600; /* Rich golden shade */
+
+	--maxi-pastel-green: #eaf4df; /* Soft pastel green */
+	--maxi-mid-green: #afdb89; /* Midpoint between the two pastel greens */
+	--maxi-whisper-green: #f7fbf2; /* Soft pastel green */
+	--maxi-hot-pink: #ff66ff; /* Vibrant pink highlight */
+}

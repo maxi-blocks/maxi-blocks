@@ -26,12 +26,14 @@
 			align-items: center;
 			justify-content: center;
 			margin-right: 10px;
-			width: 16px;
-			height: 16px;
-			min-width: 16px;
+			width: 20px;
+			height: 20px;
+			min-width: 20px;
 			font-size: 12px !important;
 			border-radius: 50%;
 			border: 1px solid var(--maxi-grey-light);
+			padding-top: 2px;
+			padding-right: 1px;
 
 			&:hover {
 				border-color: var(--maxi-grey);

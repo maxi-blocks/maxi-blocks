@@ -299,6 +299,9 @@ $white: var(--maxi-white);
 		border: 1px solid var(--maxi-grey-light);
 		transition: all 0.1s;
 		border-radius: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
 		svg {
 			margin-right: 8px;

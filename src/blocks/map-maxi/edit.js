@@ -26,7 +26,11 @@ class edit extends MaxiBlockComponent {
 	constructor(...args) {
 		super(...args);
 
-		this.state.googleApiKey = '';
+		this.state = {
+			...this.state,
+			googleApiKey: '',
+			isApiKeyLoading: true,
+		};
 	}
 
 	get getStylesObject() {
@@ -66,20 +70,26 @@ class edit extends MaxiBlockComponent {
 		receiveMaxiSettings()
 			.then(maxiSettings => {
 				const googleApiKey = maxiSettings?.google_api_key;
-				this.setState({ googleApiKey });
+				this.setState({
+					googleApiKey,
+					isApiKeyLoading: false,
+				});
 			})
-			.catch(() => console.error('MaxiBlocks: Could not load settings'));
+			.catch(() => {
+				this.setState({ isApiKeyLoading: false });
+			});
 	}
 
 	render() {
 		const { attributes, isSelected } = this.props;
 		const { uniqueID, 'map-provider': mapProvider } = attributes;
+		const { googleApiKey, isApiKeyLoading } = this.state;
 
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				apiKey={this.state.googleApiKey}
+				apiKey={googleApiKey}
 				setShowLoader={value => this.setState({ showLoader: value })}
 			/>,
 			<Toolbar
@@ -92,16 +102,18 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-map--${uniqueID}`}
 				ref={this.blockRef}
 				className='maxi-map-block'
-				showLoader={this.state.showLoader}
+				showLoader={this.state.showLoader || isApiKeyLoading}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<MapContent
-					{...this.props}
-					apiKey={this.state.googleApiKey}
-					isFirstClick={this.state.isFirstClick}
-					isGoogleMaps={mapProvider === 'googlemaps'}
-					isSelected={isSelected}
-				/>
+				{!isApiKeyLoading && (
+					<MapContent
+						{...this.props}
+						apiKey={googleApiKey}
+						isFirstClick={this.state.isFirstClick}
+						isGoogleMaps={mapProvider === 'googlemaps'}
+						isSelected={isSelected}
+					/>
+				)}
 			</MaxiBlock>,
 		];
 	}

@@ -81,6 +81,8 @@ const Inspector = props => {
 														attributes[
 															'map-max-zoom'
 														],
+													'map-type':
+														attributes['map-type'],
 												}}
 												onChange={obj =>
 													maxiSetAttributes(obj)

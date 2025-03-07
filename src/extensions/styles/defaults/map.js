@@ -3,6 +3,9 @@ const map = {
 		type: 'string',
 		default: 'openstreetmap', // or googlemaps
 	},
+	'map-type': {
+		type: 'string',
+	},
 	'map-latitude': {
 		type: 'number',
 		default: 52.514477,

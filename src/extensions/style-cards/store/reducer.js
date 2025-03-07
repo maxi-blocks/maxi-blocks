@@ -10,7 +10,7 @@ import standardSC from '@maxi-core/defaults/defaultSC.json';
  */
 import { cloneDeep, merge } from 'lodash';
 
-const getNewActiveStyleCards = (styleCards, cardKey) => {
+export const getNewActiveStyleCards = (styleCards, cardKey) => {
 	const newStyleCards = cloneDeep(styleCards);
 
 	Object.entries(newStyleCards).forEach(([key, value]) => {
@@ -40,7 +40,7 @@ export const getNewSelectedStyleCards = (styleCards, cardKey) => {
 	return newStyleCards;
 };
 
-const removeStyleCard = (styleCards, cardKey) => {
+export const removeStyleCard = (styleCards, cardKey) => {
 	const newStyleCards = { ...getNewActiveStyleCards(styleCards, 'sc_maxi') };
 
 	Object.keys(newStyleCards).forEach(key => {

@@ -97,7 +97,7 @@
 			&[aria-pressed='true'] {
 				color: var(--maxi-black);
 				font-weight: 700;
-				background-color: var(--maxi-whisper-green);
+				background-color: var(--maxi-whisper-green) !important;
 			}
 			svg:not(.maxi-tabs-control__notification) {
 				display: block;

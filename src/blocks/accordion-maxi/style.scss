@@ -2,3 +2,9 @@
 	display: flex;
 	flex-direction: column;
 }
+[class*='maxi-border-status-active'],
+[class*='maxi-background-status-active'],
+[class*='maxi-box-shadow-status-active'] {
+	margin-top: 10px !important;
+	margin-bottom: 5px !important;
+}

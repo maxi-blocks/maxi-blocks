@@ -85,17 +85,19 @@
 			&:hover {
 				background-color: var(--maxi-pastel-green);
 				cursor: pointer;
+				color: var(--maxi-primary-color);
 			}
 			&:focus:not(:disabled) {
 				box-shadow: none;
 				outline: none;
 			}
 			&:active {
-				background-color: var(--maxi-mid-green);
+				background-color: var(--maxi-whisper-green) !important;
 			}
 			&[aria-pressed='true'] {
 				color: var(--maxi-black);
 				font-weight: 700;
+				background-color: var(--maxi-whisper-green);
 			}
 			svg:not(.maxi-tabs-control__notification) {
 				display: block;

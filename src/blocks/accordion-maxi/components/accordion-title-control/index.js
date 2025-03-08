@@ -13,10 +13,7 @@ import {
 	TypographyControl,
 	ToggleSwitch,
 } from '@components';
-import {
-	getAttributeKey,
-	getAttributeValue,
-} from '@extensions/styles';
+import { getAttributeKey, getAttributeValue } from '@extensions/styles';
 
 const TitleSettings = props => {
 	const { onChange, clientId, bgPrefix, isHover = false, breakpoint } = props;
@@ -144,9 +141,12 @@ const AccordionTitleSettings = props => {
 				/>
 			)}
 			<SettingTabsControl
+				className='maxi-accordion-title-control__state-tabs'
+				disablePadding
 				depth={2}
 				items={[
 					{
+						className: 'maxi-accordion-title-control__normal-state',
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
 							<TitleSettings
@@ -161,6 +161,7 @@ const AccordionTitleSettings = props => {
 						content: (
 							<>
 								<ToggleSwitch
+									className='maxi-accordion-title-control__hover-toggle'
 									label={__('Enable hover', 'maxi-blocks')}
 									selected={
 										props['title-typography-status-hover']
@@ -188,6 +189,7 @@ const AccordionTitleSettings = props => {
 						content: (
 							<>
 								<ToggleSwitch
+									className='maxi-accordion-title-control__active-toggle'
 									label={__('Enable active', 'maxi-blocks')}
 									selected={
 										props['title-typography-status-active']

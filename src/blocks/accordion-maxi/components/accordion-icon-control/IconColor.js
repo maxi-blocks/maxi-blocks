@@ -7,10 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { ColorControl } from '@components';
-import {
-	getAttributeValue,
-	getColorRGBAString,
-} from '@extensions/styles';
+import { getAttributeValue, getColorRGBAString } from '@extensions/styles';
 import { setSVGContent, setSVGContentHover } from '@extensions/svg';
 
 const IconColor = props => {

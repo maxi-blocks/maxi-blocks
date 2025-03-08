@@ -14,7 +14,10 @@ import { capitalize } from 'lodash';
 import Button from '@components/button';
 import ReactSelectControl from '@components/react-select-control';
 import TextareaControl from '@components/textarea-control';
-import { MODIFY_OPTIONS, LANGUAGES } from '@components/prompt-control/constants';
+import {
+	MODIFY_OPTIONS,
+	LANGUAGES,
+} from '@components/prompt-control/constants';
 
 /**
  * Styles

@@ -102,6 +102,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 			/>
 			{skin === 'icon-reveal' && (
 				<SettingTabsControl
+					className='maxi-skin-control__reveal-action-tabs'
 					label={__('Reveal action', 'maxi-blocks')}
 					type='buttons'
 					selected={iconRevealAction}

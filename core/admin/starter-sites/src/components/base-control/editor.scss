@@ -1,0 +1,30 @@
+.maxi-base-control {
+	&__disable {
+		opacity: 0.3;
+		pointer-events: none;
+	}
+	&__field {
+		display: flex !important;
+		align-items: center;
+		margin-bottom: 8px;
+		.maxi-base-control__field {
+			margin-bottom: 0;
+		}
+	}
+
+	&__label {
+		display: inline-block;
+		flex: 1;
+		min-height: 18px;
+		margin: 0;
+	}
+
+	&__help {
+		margin-top: -8px;
+		font-style: italic;
+	}
+
+	.components-visually-hidden {
+		display: none;
+	}
+}

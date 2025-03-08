@@ -8,7 +8,7 @@ const textBox = (
 		<defs>
 			<Path
 				id='text_box__a'
-				stroke='#ff4a17'
+				stroke='var(--maxi-primary-color)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'

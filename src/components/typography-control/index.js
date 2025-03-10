@@ -563,6 +563,8 @@ const TypographyControl = props => {
 		return getIsValid(value, true) ? value : 1;
 	};
 
+	console.log('getValue true', getValue('line-height', true));
+	console.log('getValue false', getValue('line-height', false));
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>
 			<div className={classes}>

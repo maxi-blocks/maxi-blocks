@@ -77,30 +77,35 @@ const getLastBreakpointAttributeSingle = (
 		);
 	const maxiBlocksStore = select('maxiBlocks');
 
-	const currentBreakpoint =
-		maxiBlocksStore?.receiveMaxiDeviceType() ?? 'general';
+	// const currentBreakpoint =
+	// 	maxiBlocksStore?.receiveMaxiDeviceType() ?? 'general';
 	const baseBreakpoint = maxiBlocksStore?.receiveBaseBreakpoint();
+	// if (target.includes('line-height')) {
+	// 	console.log('========================');
+	// 	console.log('target', target);
+	// 	console.log('baseBreakpoint', baseBreakpoint);
+	// }
 
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
 	// give priority to baseBreakpoint attribute just when the currentBreakpoint it's 'general'
 	// or the baseBreakpoint is different from 'xxl' and currentBreakpoint
-	if (
-		!forceUseBreakpoint &&
-		breakpoint === 'general' &&
-		(currentBreakpoint === 'general' ||
-			(baseBreakpoint !== 'xxl' && currentBreakpoint !== baseBreakpoint))
-	) {
-		const baseBreakpointAttr = getLastBreakpointAttributeSingle(
-			target,
-			baseBreakpoint,
-			attributes,
-			isHover,
-			avoidXXL,
-			keys
-		);
+	// if (
+	// 	!forceUseBreakpoint &&
+	// 	breakpoint === 'general' &&
+	// 	(currentBreakpoint === 'general' ||
+	// 		(baseBreakpoint !== 'xxl' && currentBreakpoint !== baseBreakpoint))
+	// ) {
+	// 	const baseBreakpointAttr = getLastBreakpointAttributeSingle(
+	// 		target,
+	// 		baseBreakpoint,
+	// 		attributes,
+	// 		isHover,
+	// 		avoidXXL,
+	// 		keys
+	// 	);
 
-		if (attrFilter(baseBreakpointAttr)) return baseBreakpointAttr;
-	}
+	// 	if (attrFilter(baseBreakpointAttr)) return baseBreakpointAttr;
+	// }
 
 	let currentAttr = getValueFromKeys(
 		attr[
@@ -110,33 +115,53 @@ const getLastBreakpointAttributeSingle = (
 		],
 		keys
 	);
+	// if (target.includes('line-height')) {
+	// 	console.log('currentAttr', currentAttr);
+	// }
 
-	if (
-		attrFilter(currentAttr) &&
-		(baseBreakpoint !== 'xxl' || breakpoint === 'xxl')
-	)
-		return currentAttr;
+	if (attrFilter(currentAttr)) return currentAttr;
 
 	let breakpointPosition = breakpoints.indexOf(breakpoint);
+	const baseBreakpointPosition = breakpoints.indexOf(baseBreakpoint);
+
+	// if (target.includes('line-height')) {
+	// 	console.log('breakpointPosition', breakpointPosition);
+	// }
 
 	while (
 		breakpointPosition > 0 &&
+		breakpointPosition > baseBreakpointPosition &&
 		!isNumber(currentAttr) &&
 		!isBoolean(currentAttr) &&
 		(isEmpty(currentAttr) || isNil(currentAttr))
 	) {
 		breakpointPosition -= 1;
 
-		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
-			currentAttr = getValueFromKeys(
-				attr[
-					`${!isEmpty(target) ? `${target}-` : ''}${
-						breakpoints[breakpointPosition]
-					}${isHover ? '-hover' : ''}`
-				],
-				keys
-			);
+		currentAttr = getValueFromKeys(
+			attr[
+				`${!isEmpty(target) ? `${target}-` : ''}${
+					breakpoints[breakpointPosition]
+				}${isHover ? '-hover' : ''}`
+			],
+			keys
+		);
+		// if (target.includes('line-height')) {
+		// 	console.log('currentAttr by breakpointPosition', currentAttr);
+		// }
 	}
+	// if (breakpointPosition < baseBreakpointPosition) {
+	// 	currentAttr = getValueFromKeys(
+	// 		attr[
+	// 			`${!isEmpty(target) ? `${target}-` : ''}${
+	// 				breakpoints[breakpointPosition]
+	// 			}${isHover ? '-hover' : ''}`
+	// 		],
+	// 		keys
+	// 	);
+	// 	if (isEmpty(currentAttr) || isNil(currentAttr)) {
+	// 		currentAttr = null;
+	// 	}
+	// }
 
 	if (isHover && !attrFilter(currentAttr))
 		currentAttr = getLastBreakpointAttributeSingle(
@@ -147,7 +172,9 @@ const getLastBreakpointAttributeSingle = (
 			avoidXXL,
 			keys
 		);
-
+	// if (target.includes('line-height')) {
+	// 	console.log('currentAttr after isHover', currentAttr);
+	// }
 	// Helps responsive API: when breakpoint is general and the attribute is undefined,
 	// check for the win selected breakpoint
 	if (!currentAttr && breakpoint === 'general' && baseBreakpoint)
@@ -159,7 +186,9 @@ const getLastBreakpointAttributeSingle = (
 			baseBreakpoint === 'xxl' ? false : avoidXXL,
 			keys
 		);
-
+	// if (target.includes('line-height')) {
+	// 	console.log('currentAttr after baseBreakpoint', currentAttr);
+	// }
 	return currentAttr;
 };
 

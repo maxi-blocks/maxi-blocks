@@ -28,6 +28,11 @@ const handleSetAttributes = ({
 	allowXXLOverGeneral = false,
 }) => {
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
+	console.log('===============handleSetAttributes==================');
+	console.log('obj', obj);
+	console.log('attributes', attributes);
+	console.log('defaultAttributes', defaultAttributes);
+	console.log('allowXXLOverGeneral', allowXXLOverGeneral);
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
@@ -35,10 +40,15 @@ const handleSetAttributes = ({
 		const breakpoint = getBreakpointFromAttribute(key);
 
 		if (!breakpoint) return;
+		console.log('breakpoint', breakpoint);
 
 		const isHigherThanBase =
 			breakpoints.indexOf(breakpoint) <
 			breakpoints.indexOf(baseBreakpoint);
+		console.log('isHigherThanBase', isHigherThanBase);
+
+		if (!isHigherThanBase) return;
+
 		const attrLabelOnGeneral = `${key.slice(
 			0,
 			key.lastIndexOf('-')
@@ -48,26 +58,28 @@ const handleSetAttributes = ({
 			key.lastIndexOf('-')
 		)}-${baseBreakpoint}`;
 
-		if (!isHigherThanBase) return;
-
 		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
+		console.log('attrOnBaseBreakpoint', attrOnBaseBreakpoint);
 		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
+		console.log('attrExistOnBaseBreakpoint', attrExistOnBaseBreakpoint);
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
 			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
-
+		console.log('defaultGeneralAttribute', defaultGeneralAttribute);
 		if (attrExistOnBaseBreakpoint && breakpoint !== 'general') return;
 
 		const attrExistOnGeneral = !isNil(
 			attributes?.[attrLabelOnGeneral],
 			true
 		);
+		console.log('attrExistOnGeneral', attrExistOnGeneral);
 		const attrExistOnObjOnGeneral = attrLabelOnGeneral in obj;
+		console.log('attrExistOnObjOnGeneral', attrExistOnObjOnGeneral);
 
 		// When changing a number that needs more than 2 digits, it is saved digit by digit
 		// Need to make both be saved in same conditions
-		const needsGeneralAttr =
-			attributes?.[attrLabelOnGeneral] === attributes?.[key];
+		// const needsGeneralAttr =
+		// 	attributes?.[attrLabelOnGeneral] === attributes?.[key];
 
 		// if (
 		// 	(!attrExistOnGeneral || needsGeneralAttr) &&
@@ -76,7 +88,7 @@ const handleSetAttributes = ({
 		// )
 		// 	response[attrLabelOnGeneral] = value;
 
-		if (breakpoint === 'xxl' && needsGeneralAttr) return;
+		// if (breakpoint === 'xxl' && needsGeneralAttr) return;
 
 		const existHigherBreakpointAttribute = breakpoints
 			.slice(0, breakpoints.indexOf(baseBreakpoint))
@@ -126,8 +138,13 @@ const handleSetAttributes = ({
 			breakpoint === 'general' &&
 			(!attrExistOnBaseBreakpoint ||
 				defaultOnBaseBreakpointAttribute === attrOnBaseBreakpoint)
-		)
+		) {
 			response[attrLabelOnBaseBreakpoint] = value;
+			console.log(
+				'response after setting attrLabelOnBaseBreakpoint 1',
+				response
+			);
+		}
 
 		if (!attrExistOnGeneral) return;
 
@@ -136,6 +153,10 @@ const handleSetAttributes = ({
 			defaultOnBaseBreakpointAttribute === value
 		) {
 			response[attrLabelOnBaseBreakpoint] = value;
+			console.log(
+				'response after setting attrLabelOnBaseBreakpoint 2',
+				response
+			);
 
 			return;
 		}
@@ -150,12 +171,22 @@ const handleSetAttributes = ({
 
 		if (breakpoint === 'general') {
 			response[attrLabelOnBaseBreakpoint] = value;
+			console.log(
+				'response after setting attrLabelOnBaseBreakpoint 3',
+				response
+			);
 
 			return;
 		}
 
 		response[attrLabelOnBaseBreakpoint] = attributes?.[attrLabelOnGeneral];
+		console.log(
+			'response after setting attrLabelOnBaseBreakpoint 4',
+			response
+		);
 	});
+
+	console.log('response before cleaning', response);
 
 	const cleanedResponse = cleanAttributes({
 		newAttributes: response,
@@ -165,7 +196,17 @@ const handleSetAttributes = ({
 		defaultAttributes,
 		allowXXLOverGeneral,
 	});
-	return onChange(cleanedResponse);
+	console.log('cleanedResponse', cleanedResponse);
+	console.log('=============== End handleSetAttributes ===================');
+	// clean general from cleanedResponse
+	const cleanedResponseWithoutGeneral = Object.fromEntries(
+		Object.entries(cleanedResponse).filter(
+			([key]) => !key.includes('general')
+		)
+	);
+	console.log('cleanedResponseWithoutGeneral', cleanedResponseWithoutGeneral);
+
+	return onChange(cleanedResponseWithoutGeneral);
 };
 
 export default handleSetAttributes;

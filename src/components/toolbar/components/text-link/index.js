@@ -268,9 +268,11 @@ const TextLink = props => {
 		'dc-status': dcStatus = false,
 		'dc-field': dcField = '',
 		linkSettings,
+		subField,
 	} = props;
 
-	const isDynamicContent = dcStatus && dcField !== 'static_text';
+	const isDynamicContent =
+		dcStatus && dcField !== 'static_text' && subField !== 'static_text';
 
 	let formatValue;
 

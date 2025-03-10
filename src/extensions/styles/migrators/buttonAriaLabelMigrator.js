@@ -59,7 +59,12 @@ const save = props => {
 	);
 
 	return (
-		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name: 'maxi-blocks/button-maxi' })}>
+		<MaxiBlock.save
+			{...getMaxiBlockAttributes({
+				...props,
+				name: 'maxi-blocks/button-maxi',
+			})}
+		>
 			<Button
 				className={buttonClasses}
 				{...(!isEmpty(linkProps?.href) && linkProps)}

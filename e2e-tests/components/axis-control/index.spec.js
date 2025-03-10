@@ -309,7 +309,7 @@ describe('AxisControl', () => {
 			await page.keyboard.press('ArrowUp', { delay: 350 });
 
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
-				undefined
+				`${value}`
 			);
 		}
 	});

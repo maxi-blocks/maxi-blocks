@@ -440,20 +440,24 @@ const TypographyControl = props => {
 	};
 
 	const getSCValue = ({ SC, target, blockStyle, SCEntry }) => {
-		console.log('SC', SC);
 		const styleCardEntry =
 			SC?.[blockStyle]?.styleCard?.[SCEntry] ||
 			SC?.[blockStyle]?.defaultStyleCard?.[SCEntry];
-
+		console.log('========= getSCValue =========');
+		console.log('target', target);
 		console.log('styleCardEntry', styleCardEntry);
 		const value = styleCardEntry?.[target];
+		console.log('value', value);
+		console.log('========= END getSCValue =========');
 
 		return value;
 	};
 
 	const getValue = (target, avoidSC = false) => {
 		if (!isStyleCards && target.includes('-unit')) {
-			console.log('======== getValue=========', target);
+			if (target === 'line-height-unit') {
+				console.log('======== getValue =========');
+			}
 			const connectedTarget = target.replace('-unit', '');
 			const connectedValue = getTypographyValue({
 				disableFormats,
@@ -468,7 +472,9 @@ const TypographyControl = props => {
 				styleCardPrefix,
 				prefix,
 			});
-			console.log('connectedValue', connectedValue);
+			if (target === 'line-height-unit') {
+				console.log('connectedValue', connectedValue);
+			}
 
 			const prop = `${prefix}${target}`;
 
@@ -480,18 +486,35 @@ const TypographyControl = props => {
 				blockStyle,
 				SCEntry: textLevel,
 			});
-			console.log('scValue', scValue);
+			if (target === 'line-height-unit') {
+				console.log('scValue', scValue);
+			}
 			// If connected value matches SC default, prioritize SC unit
 			if (connectedValue === scValue) {
+				if (target === 'line-height-unit')
+					console.log(
+						`${prefix}${prop}-${
+							breakpoint === 'general'
+								? baseBreakpoint
+								: breakpoint
+						}`
+					);
+
 				const scUnitValue = getSCValue({
-					target: `${prefix}${prop}-${
+					SC: styleCard,
+					target: `${prefix}${target}-${
 						breakpoint === 'general' ? baseBreakpoint : breakpoint
 					}`,
-					SC: styleCard,
-					SCStyle: blockStyle,
-					groupAttr: textLevel,
+					blockStyle,
+					SCEntry: textLevel,
 				});
+				if (target === 'line-height-unit') {
+					console.log('scUnitValue', scUnitValue);
+				}
 				if (scUnitValue !== undefined) {
+					if (target === 'line-height-unit') {
+						console.log('return scUnitValue', scUnitValue);
+					}
 					return scUnitValue;
 				}
 			}

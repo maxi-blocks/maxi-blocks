@@ -17,7 +17,7 @@ const prompt = ({ props }) => {
 
 	return (
 		!isList && {
-			label: __('Prompt', 'maxi-blocks'),
+			label: __('Maxi AI writer', 'maxi-blocks'),
 			content: (
 				<PromptControl
 					clientId={clientId}

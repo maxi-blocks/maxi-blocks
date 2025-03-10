@@ -24,6 +24,7 @@ const typography = ({
 	allowLink = false,
 	globalProps,
 	hoverGlobalProps,
+	textLevel,
 	depth = 2,
 	inlineTarget = '.maxi-text-block__content',
 	prefix = '',
@@ -40,7 +41,6 @@ const typography = ({
 	} = props;
 	const {
 		blockStyle,
-		textLevel,
 		isList,
 		[`${prefix}typography-status-hover`]: typographyHoverStatus,
 	} = attributes;
@@ -92,7 +92,7 @@ const typography = ({
 								disableCustomFormats={disableCustomFormats}
 								blockStyle={blockStyle}
 								styleCardPrefix={styleCardPrefix}
-								textLevel={textLevel}
+								textLevel={textLevel || attributes?.textLevel}
 								inlineTarget={inlineTarget}
 								isList={isList}
 								allowLink={allowLink}

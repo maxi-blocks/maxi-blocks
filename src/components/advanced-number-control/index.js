@@ -98,7 +98,7 @@ const AdvancedNumberControl = props => {
 		enableAuto = false,
 		autoLabel,
 		onReset,
-		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
+		allowedUnits = [undefined, 'px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
 		inputType = 'number',
@@ -137,11 +137,11 @@ const AdvancedNumberControl = props => {
 		const options = [];
 
 		allowedUnits.forEach(unit => {
-			// In case allowedUnits is not defined but minMaxSettings is
-			// with less than default allowedUnit items, it takes minMaxSettings
-			// as the one which checks if some unit is allowed
-			if (unit in minMaxSettings)
+			if (unit === undefined) {
+				options.push({ label: 'Default', value: 'default' });
+			} else if (unit in minMaxSettings) {
 				options.push({ label: unit.toUpperCase(), value: unit });
+			}
 		});
 
 		return options;

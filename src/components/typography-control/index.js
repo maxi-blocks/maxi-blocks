@@ -439,8 +439,64 @@ const TypographyControl = props => {
 		},
 	};
 
-	const getValue = (target, avoidSC = false) =>
-		getTypographyValue({
+	const getSCValue = ({ SC, target, blockStyle, SCEntry }) => {
+		console.log('SC', SC);
+		const styleCardEntry =
+			SC?.[blockStyle]?.styleCard?.[SCEntry] ||
+			SC?.[blockStyle]?.defaultStyleCard?.[SCEntry];
+
+		console.log('styleCardEntry', styleCardEntry);
+		const value = styleCardEntry?.[target];
+
+		return value;
+	};
+
+	const getValue = (target, avoidSC = false) => {
+		if (!isStyleCards && target.includes('-unit')) {
+			console.log('======== getValue=========', target);
+			const connectedTarget = target.replace('-unit', '');
+			const connectedValue = getTypographyValue({
+				disableFormats,
+				prop: `${prefix}${connectedTarget}`,
+				breakpoint,
+				typography,
+				isHover,
+				formatValue,
+				textLevel,
+				blockStyle,
+				styleCard,
+				styleCardPrefix,
+				prefix,
+			});
+			console.log('connectedValue', connectedValue);
+
+			const prop = `${prefix}${target}`;
+
+			const scValue = getSCValue({
+				SC: styleCard,
+				target: `${prefix}${connectedTarget}-${
+					breakpoint === 'general' ? baseBreakpoint : breakpoint
+				}`,
+				blockStyle,
+				SCEntry: textLevel,
+			});
+			console.log('scValue', scValue);
+			// If connected value matches SC default, prioritize SC unit
+			if (connectedValue === scValue) {
+				const scUnitValue = getSCValue({
+					target: `${prefix}${prop}-${
+						breakpoint === 'general' ? baseBreakpoint : breakpoint
+					}`,
+					SC: styleCard,
+					SCStyle: blockStyle,
+					groupAttr: textLevel,
+				});
+				if (scUnitValue !== undefined) {
+					return scUnitValue;
+				}
+			}
+		}
+		return getTypographyValue({
 			disableFormats,
 			prop: `${prefix}${target}`,
 			breakpoint,
@@ -454,6 +510,7 @@ const TypographyControl = props => {
 			prefix,
 			avoidSC,
 		});
+	};
 
 	const getDefault = (target, keepBreakpoint = false) => {
 		const prop = `${prefix}${target}`;
@@ -464,6 +521,43 @@ const TypographyControl = props => {
 				!keepBreakpoint &&
 				baseBreakpoint) ||
 			breakpoint;
+
+		// Special handling for unit targets
+		if (!isStyleCards && target.includes('-unit')) {
+			const connectedTarget = target.replace('-unit', '');
+			const connectedValue = getTypographyValue({
+				disableFormats,
+				prop: `${prefix}${connectedTarget}`,
+				breakpoint,
+				typography,
+				isHover,
+				formatValue,
+				textLevel,
+				blockStyle,
+				styleCard,
+				styleCardPrefix,
+				prefix,
+			});
+
+			const scDefaultValue = getDefaultSCValue({
+				target: `${prefix}${connectedTarget}-${currentBreakpoint}`,
+				SC: styleCard,
+				SCStyle: blockStyle,
+				groupAttr: textLevel,
+			});
+			// If connected value matches SC default, prioritize SC unit
+			if (connectedValue === scDefaultValue) {
+				const scUnitValue = getDefaultSCValue({
+					target: `${prop}-${currentBreakpoint}`,
+					SC: styleCard,
+					SCStyle: blockStyle,
+					groupAttr: textLevel,
+				});
+				if (scUnitValue !== undefined) {
+					return scUnitValue;
+				}
+			}
+		}
 
 		let defaultAttribute = !isStyleCards
 			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
@@ -562,6 +656,8 @@ const TypographyControl = props => {
 
 		return getIsValid(value, true) ? value : 1;
 	};
+
+	console.log('SC getValue line-height-unit', getValue('line-height-unit'));
 
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>

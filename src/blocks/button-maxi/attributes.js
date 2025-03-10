@@ -63,6 +63,10 @@ const attributes = {
 			type: 'number',
 			default: 1,
 		},
+		'line-height-unit-general': {
+			type: 'string',
+			default: '%',
+		},
 	},
 	...attributesData.typographyHover,
 	...prefixAttributesCreator({

@@ -32,7 +32,6 @@ const handleSetAttributes = ({
 	console.log('obj', obj);
 	console.log('attributes', attributes);
 	console.log('defaultAttributes', defaultAttributes);
-	console.log('allowXXLOverGeneral', allowXXLOverGeneral);
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
@@ -59,22 +58,17 @@ const handleSetAttributes = ({
 		)}-${baseBreakpoint}`;
 
 		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
-		console.log('attrOnBaseBreakpoint', attrOnBaseBreakpoint);
 		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
-		console.log('attrExistOnBaseBreakpoint', attrExistOnBaseBreakpoint);
 		const defaultGeneralAttribute =
 			defaultAttributes?.[attrLabelOnGeneral] ??
 			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
-		console.log('defaultGeneralAttribute', defaultGeneralAttribute);
 		if (attrExistOnBaseBreakpoint && breakpoint !== 'general') return;
 
 		const attrExistOnGeneral = !isNil(
 			attributes?.[attrLabelOnGeneral],
 			true
 		);
-		console.log('attrExistOnGeneral', attrExistOnGeneral);
 		const attrExistOnObjOnGeneral = attrLabelOnGeneral in obj;
-		console.log('attrExistOnObjOnGeneral', attrExistOnObjOnGeneral);
 
 		// When changing a number that needs more than 2 digits, it is saved digit by digit
 		// Need to make both be saved in same conditions
@@ -90,49 +84,52 @@ const handleSetAttributes = ({
 
 		// if (breakpoint === 'xxl' && needsGeneralAttr) return;
 
-		const existHigherBreakpointAttribute = breakpoints
-			.slice(0, breakpoints.indexOf(baseBreakpoint))
-			.some(
-				breakpoint =>
-					!isNil(
-						attributes?.[
-							`${key.slice(
-								0,
-								key.lastIndexOf('-')
-							)}-${breakpoint}`
-						]
-					)
-			);
+		// const existHigherBreakpointAttribute = breakpoints
+		// 	.slice(0, breakpoints.indexOf(baseBreakpoint))
+		// 	.some(
+		// 		breakpoint =>
+		// 			!isNil(
+		// 				attributes?.[
+		// 					`${key.slice(
+		// 						0,
+		// 						key.lastIndexOf('-')
+		// 					)}-${breakpoint}`
+		// 				]
+		// 			)
+		// 	);
 
-		if (
-			!attrExistOnBaseBreakpoint &&
-			baseBreakpoint !== 'xxl' &&
-			(breakpoint === 'general' || !existHigherBreakpointAttribute)
-		) {
-			// Checks if the higher breakpoint attribute is not on XXL
-			if (
-				!breakpoints
-					.slice(0, breakpoints.indexOf(baseBreakpoint))
-					.some(
-						breakpoint =>
-							breakpoint !== 'xxl' &&
-							!isNil(
-								attributes?.[
-									`${key.slice(
-										0,
-										key.lastIndexOf('-')
-									)}-${breakpoint}`
-								]
-							)
-					)
-			)
-				return;
-		}
+		// if (
+		// 	!attrExistOnBaseBreakpoint &&
+		// 	baseBreakpoint !== 'xxl' &&
+		// 	(breakpoint === 'general' || !existHigherBreakpointAttribute)
+		// ) {
+		// 	// Checks if the higher breakpoint attribute is not on XXL
+		// 	if (
+		// 		!breakpoints
+		// 			.slice(0, breakpoints.indexOf(baseBreakpoint))
+		// 			.some(
+		// 				breakpoint =>
+		// 					breakpoint !== 'xxl' &&
+		// 					!isNil(
+		// 						attributes?.[
+		// 							`${key.slice(
+		// 								0,
+		// 								key.lastIndexOf('-')
+		// 							)}-${breakpoint}`
+		// 						]
+		// 					)
+		// 			)
+		// 	)
+		// 		return;
+		// }
 
 		const defaultOnBaseBreakpointAttribute =
 			defaultAttributes?.[attrLabelOnBaseBreakpoint] ??
 			getDefaultAttribute(attrLabelOnBaseBreakpoint, clientId, true);
-
+		console.log(
+			'defaultOnBaseBreakpointAttribute',
+			defaultOnBaseBreakpointAttribute
+		);
 		if (
 			!attrExistOnGeneral &&
 			breakpoint === 'general' &&

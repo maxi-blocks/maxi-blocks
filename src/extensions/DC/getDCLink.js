@@ -51,44 +51,43 @@ const getDCLink = async (dataRequest, clientId) => {
 
 	if (linkTarget.includes('author')) {
 		let userId = author;
-		if (field === 'author_avatar') {
-			if (relation === 'current') {
-				const isFSE = select('core/edit-site') !== undefined;
-				if (isFSE) {
-					const currentTemplateType = getCurrentTemplateSlug();
-					if (
-						currentTemplateType.includes('single-post-') &&
-						type === 'posts'
-					) {
-						const postSlug = currentTemplateType.replace(
-							'single-post-',
-							''
-						);
-						const post = await getPostBySlug(postSlug);
-						if (post) {
-							userId = post.author;
-						}
-					}
-				} else {
-					const postId = select('core/editor').getCurrentPostId();
-					const post = await resolveSelect('core').getEntityRecord(
-						'postType',
-						'post',
-						postId
+		if (relation === 'current') {
+			const isFSE = select('core/edit-site') !== undefined;
+			if (isFSE) {
+				const currentTemplateType = getCurrentTemplateSlug();
+				if (
+					currentTemplateType.includes('single-post-') &&
+					type === 'posts'
+				) {
+					const postSlug = currentTemplateType.replace(
+						'single-post-',
+						''
 					);
-					userId = post.author;
+					const post = await getPostBySlug(postSlug);
+					if (post) {
+						userId = post.author;
+					}
 				}
 			} else {
+				const postId = select('core/editor').getCurrentPostId();
 				const post = await resolveSelect('core').getEntityRecord(
 					'postType',
-					nameDictionary[type] ?? type,
-					dataRequest.id
+					'post',
+					postId
 				);
-				if (post?.author) {
-					userId = post.author;
-				}
+				userId = post.author;
+			}
+		} else {
+			const post = await resolveSelect('core').getEntityRecord(
+				'postType',
+				nameDictionary[type] ?? type,
+				dataRequest.id
+			);
+			if (post?.author) {
+				userId = post.author;
 			}
 		}
+
 		if (!userId) {
 			return null;
 		}

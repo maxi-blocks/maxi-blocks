@@ -882,6 +882,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if (
+            $attributes['dc-field'] !== 'author_avatar' &&
             array_key_exists('dc-link-target', $attributes) &&
             str_contains($attributes['dc-link-target'], 'author') &&
             $attributes['dc-type'] !== 'users'
@@ -967,6 +968,23 @@ class MaxiBlocks_DynamicContent
                 return '';
             }
             $link = wc_get_cart_url();
+        } elseif (array_key_exists('dc-field', $attributes) && $attributes['dc-field'] === 'author_avatar' && array_key_exists('dc-link-target', $attributes) && str_contains($attributes['dc-link-target'], 'author')) {
+            $dc_link_target = $attributes['dc-link-target'];
+            $post_id = $attributes['dc-id'] ?? $post->ID;
+            $author_id = get_post_field('post_author', $post_id);
+            if (!empty($post) && isset($author_id)) {
+                switch ($dc_link_target) {
+                    case 'author_email':
+                        $email = sanitize_email(get_the_author_meta('user_email', $author_id));
+                        $link = $this->xor_obfuscate_email($email);
+                        break;
+                    case 'author_site':
+                        $link = get_the_author_meta('user_url', $author_id);
+                        break;
+                    default:
+                        $link = get_author_posts_url($author_id);
+                }
+            }
         } else {
             if (empty($post)) {
                 return $content;
@@ -980,9 +998,10 @@ class MaxiBlocks_DynamicContent
 
         if (gettype($link) === 'string') {
             $content = str_replace('$link-to-replace', $link, $content);
-            if (isset($dc_link_target) && $dc_link_target === 'author_email') {
-                $content = preg_replace('/\surl="[^"]*"/', '', $content);
-            }
+        }
+
+        if (isset($attributes['dc-link-target']) && $attributes['dc-link-target'] === 'author_email') {
+            $content = preg_replace('/\s*url="[^"]*?"/', '', $content);
         }
 
         return $content;

@@ -8,7 +8,7 @@ import { resolveSelect, select } from '@wordpress/data';
  */
 import getDCEntity from './getDCEntity';
 import { getCartUrl, getProductData } from './getWooCommerceData';
-import { inlineLinkFields } from './constants';
+import { inlineLinkFields, nameDictionary } from './constants';
 
 const getProductsLink = async (dataRequest, data) => {
 	const productData = await getProductData(data?.id);
@@ -43,14 +43,51 @@ const cache = {};
 const MAX_CACHE_SIZE = 200;
 
 const getDCLink = async (dataRequest, clientId) => {
-	const { type, linkTarget, author } = dataRequest;
-
+	const { type, linkTarget, author, field } = dataRequest;
 	if (type === 'cart') {
 		return getCartUrl();
 	}
 
 	if (linkTarget === 'author') {
-		return getPostAuthorLink(author);
+		let userId = author;
+		if (field === 'author_avatar') {
+			const post = await resolveSelect('core').getEntityRecord(
+				'postType',
+				nameDictionary[type] ?? type,
+				dataRequest.id
+			);
+			if (post?.author) {
+				userId = post.author;
+			}
+		}
+		return getPostAuthorLink(userId);
+	}
+	if (linkTarget === 'author_email' || linkTarget === 'author_site') {
+		const { getUser } = resolveSelect('core');
+		const { id } = dataRequest;
+
+		let userId;
+		if (field === 'author_avatar') {
+			const post = await resolveSelect('core').getEntityRecord(
+				'postType',
+				nameDictionary[type] ?? type,
+				dataRequest.id
+			);
+			if (post?.author) {
+				userId = post.author;
+			}
+		} else {
+			userId = author ?? id;
+		}
+
+		if (!userId) {
+			return null;
+		}
+
+		const user = await getUser(userId);
+		const userTarget = linkTarget === 'author_email' ? 'email' : 'url';
+
+		return user?.[userTarget];
 	}
 
 	if (inlineLinkFields.includes(linkTarget)) {

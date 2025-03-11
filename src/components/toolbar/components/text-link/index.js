@@ -324,7 +324,6 @@ const TextLink = props => {
 				</ToolbarContext.Consumer>
 			</ToolbarPopover>
 		);
-
 	return <Link {...props} />;
 };
 

@@ -467,7 +467,7 @@ export const linkTypesOptions = {
 };
 
 // Fields that can have their own links
-export const linkFields = ['categories', 'tags', 'author'];
+export const linkFields = ['categories', 'tags', 'author', 'author_avatar'];
 export const inlineLinkFields = ['categories', 'tags'];
 
 export const linkFieldsOptions = {
@@ -484,6 +484,14 @@ export const linkFieldsOptions = {
 		},
 	],
 	author: [
+		{
+			label: __('Author profile page', 'maxi-blocks'),
+			value: 'author',
+		},
+		{ label: __('Author email', 'maxi-blocks'), value: 'author_email' },
+		{ label: __('Author site', 'maxi-blocks'), value: 'author_site' },
+	],
+	author_avatar: [
 		{
 			label: __('Author profile page', 'maxi-blocks'),
 			value: 'author',

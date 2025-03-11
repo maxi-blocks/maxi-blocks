@@ -267,20 +267,11 @@ const getDCEntity = async (dataRequest, clientId) => {
 		}
 	}
 
-	if (
-		['users'].includes(type) ||
-		linkTarget === 'author_email' ||
-		linkTarget === 'author_site'
-	) {
+	if (['users'].includes(type)) {
 		let user;
-		if (
-			type === 'users' ||
-			linkTarget === 'author_email' ||
-			linkTarget === 'author_site'
-		)
-			dataRequest.id = author ?? id;
-
 		const { getUser } = resolveSelect('core');
+
+		if (type === 'users') dataRequest.id = author ?? id;
 
 		if (relation === 'random') {
 			const users = await resolveSelect('core').getUsers({

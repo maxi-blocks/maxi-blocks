@@ -43,7 +43,7 @@ const cache = {};
 const MAX_CACHE_SIZE = 200;
 
 const getDCLink = async (dataRequest, clientId) => {
-	const { type, linkTarget, author, field } = dataRequest;
+	const { type, linkTarget, author, field, relation } = dataRequest;
 	if (type === 'cart') {
 		return getCartUrl();
 	}
@@ -51,13 +51,28 @@ const getDCLink = async (dataRequest, clientId) => {
 	if (linkTarget === 'author') {
 		let userId = author;
 		if (field === 'author_avatar') {
-			const post = await resolveSelect('core').getEntityRecord(
-				'postType',
-				nameDictionary[type] ?? type,
-				dataRequest.id
-			);
-			if (post?.author) {
-				userId = post.author;
+			if (relation === 'current') {
+				const isFSE = select('core/edit-site') !== undefined;
+				if (isFSE) {
+				} else {
+					const postId = select('core/editor').getCurrentPostId();
+					const post = await resolveSelect('core').getEntityRecord(
+						'postType',
+						'post',
+						postId
+					);
+					userId = post.author;
+				}
+			} else {
+				console.log('dataRequest: ', dataRequest);
+				const post = await resolveSelect('core').getEntityRecord(
+					'postType',
+					nameDictionary[type] ?? type,
+					dataRequest.id
+				);
+				if (post?.author) {
+					userId = post.author;
+				}
 			}
 		}
 		return getPostAuthorLink(userId);
@@ -65,16 +80,31 @@ const getDCLink = async (dataRequest, clientId) => {
 	if (linkTarget === 'author_email' || linkTarget === 'author_site') {
 		const { getUser } = resolveSelect('core');
 		const { id } = dataRequest;
+		console.log('dataRequest: ', dataRequest);
 
 		let userId;
 		if (field === 'author_avatar') {
-			const post = await resolveSelect('core').getEntityRecord(
-				'postType',
-				nameDictionary[type] ?? type,
-				dataRequest.id
-			);
-			if (post?.author) {
-				userId = post.author;
+			if (relation === 'current') {
+				const isFSE = select('core/edit-site') !== undefined;
+				if (isFSE) {
+				} else {
+					const postId = select('core/editor').getCurrentPostId();
+					const post = await resolveSelect('core').getEntityRecord(
+						'postType',
+						'post',
+						postId
+					);
+					userId = post.author;
+				}
+			} else {
+				const post = await resolveSelect('core').getEntityRecord(
+					'postType',
+					nameDictionary[type] ?? type,
+					dataRequest.id
+				);
+				if (post?.author) {
+					userId = post.author;
+				}
 			}
 		} else {
 			userId = author ?? id;

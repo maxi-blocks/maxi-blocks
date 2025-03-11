@@ -882,7 +882,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if (
-            $attributes['dc-field'] !== 'author_avatar' &&
+            (!array_key_exists('dc-link-target', $attributes) || $attributes['dc-field'] !== 'author_avatar') &&
             array_key_exists('dc-link-target', $attributes) &&
             str_contains($attributes['dc-link-target'], 'author') &&
             $attributes['dc-type'] !== 'users'
@@ -970,8 +970,14 @@ class MaxiBlocks_DynamicContent
             $link = wc_get_cart_url();
         } elseif (array_key_exists('dc-field', $attributes) && $attributes['dc-field'] === 'author_avatar' && array_key_exists('dc-link-target', $attributes) && str_contains($attributes['dc-link-target'], 'author')) {
             $dc_link_target = $attributes['dc-link-target'];
-            $post_id = $attributes['dc-id'] ?? $post->ID;
+            if (array_key_exists('dc-relation', $attributes) && $attributes['dc-relation'] === 'current') {
+                $post_id = get_queried_object_id();
+            } else {
+                $post_id = $attributes['dc-id'] ?? $post->ID;
+            }
+            error_log('post_id: ' . $post_id);
             $author_id = get_post_field('post_author', $post_id);
+            error_log('author_id: ' . $author_id);
             if (!empty($post) && isset($author_id)) {
                 switch ($dc_link_target) {
                     case 'author_email':

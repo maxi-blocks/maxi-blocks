@@ -443,96 +443,9 @@ const TypographyControl = props => {
 		const styleCardEntry =
 			SC?.[blockStyle]?.styleCard?.[SCEntry] ||
 			SC?.[blockStyle]?.defaultStyleCard?.[SCEntry];
-		console.log('========= getSCValue =========');
-		console.log('target', target);
-		console.log('styleCardEntry', styleCardEntry);
 		const value = styleCardEntry?.[target];
-		console.log('value', value);
-		console.log('========= END getSCValue =========');
 
 		return value;
-	};
-
-	const getValue = (target, avoidSC = false) => {
-		if (!isStyleCards && target.includes('-unit')) {
-			if (target === 'line-height-unit') {
-				console.log('======== getValue =========');
-			}
-			const connectedTarget = target.replace('-unit', '');
-			const connectedValue = getTypographyValue({
-				disableFormats,
-				prop: `${prefix}${connectedTarget}`,
-				breakpoint,
-				typography,
-				isHover,
-				formatValue,
-				textLevel,
-				blockStyle,
-				styleCard,
-				styleCardPrefix,
-				prefix,
-			});
-			if (target === 'line-height-unit') {
-				console.log('connectedValue', connectedValue);
-			}
-
-			const prop = `${prefix}${target}`;
-
-			const scValue = getSCValue({
-				SC: styleCard,
-				target: `${prefix}${connectedTarget}-${
-					breakpoint === 'general' ? baseBreakpoint : breakpoint
-				}`,
-				blockStyle,
-				SCEntry: textLevel,
-			});
-			if (target === 'line-height-unit') {
-				console.log('scValue', scValue);
-			}
-			// If connected value matches SC default, prioritize SC unit
-			if (connectedValue === scValue) {
-				if (target === 'line-height-unit')
-					console.log(
-						`${prefix}${prop}-${
-							breakpoint === 'general'
-								? baseBreakpoint
-								: breakpoint
-						}`
-					);
-
-				const scUnitValue = getSCValue({
-					SC: styleCard,
-					target: `${prefix}${target}-${
-						breakpoint === 'general' ? baseBreakpoint : breakpoint
-					}`,
-					blockStyle,
-					SCEntry: textLevel,
-				});
-				if (target === 'line-height-unit') {
-					console.log('scUnitValue', scUnitValue);
-				}
-				if (scUnitValue !== undefined) {
-					if (target === 'line-height-unit') {
-						console.log('return scUnitValue', scUnitValue);
-					}
-					return scUnitValue;
-				}
-			}
-		}
-		return getTypographyValue({
-			disableFormats,
-			prop: `${prefix}${target}`,
-			breakpoint,
-			typography,
-			isHover,
-			formatValue,
-			textLevel,
-			blockStyle,
-			styleCard,
-			styleCardPrefix,
-			prefix,
-			avoidSC,
-		});
 	};
 
 	const getDefault = (target, keepBreakpoint = false) => {
@@ -601,6 +514,78 @@ const TypographyControl = props => {
 		}
 
 		return defaultAttribute;
+	};
+
+	const getValue = (target, avoidSC = false) => {
+		if (!isStyleCards && target.includes('-unit')) {
+			const connectedTarget = target.replace('-unit', '');
+			const connectedValue = getTypographyValue({
+				disableFormats,
+				prop: `${prefix}${connectedTarget}`,
+				breakpoint,
+				typography,
+				isHover,
+				formatValue,
+				textLevel,
+				blockStyle,
+				styleCard,
+				styleCardPrefix,
+				prefix,
+			});
+
+			const currentValue = getTypographyValue({
+				disableFormats,
+				prop: `${prefix}${target}`,
+				breakpoint,
+				typography,
+				isHover,
+				formatValue,
+				textLevel,
+				blockStyle,
+				styleCard,
+				styleCardPrefix,
+				prefix,
+				avoidSC,
+			});
+			const defaultValue = getDefault(target);
+			const scValue = getSCValue({
+				SC: styleCard,
+				target: `${prefix}${connectedTarget}-${
+					breakpoint === 'general' ? baseBreakpoint : breakpoint
+				}`,
+				blockStyle,
+				SCEntry: textLevel,
+			});
+			// If connected value matches SC value, prioritize SC unit
+			if (currentValue === defaultValue && connectedValue === scValue) {
+				const scUnitValue = getSCValue({
+					SC: styleCard,
+					target: `${prefix}${target}-${
+						breakpoint === 'general' ? baseBreakpoint : breakpoint
+					}`,
+					blockStyle,
+					SCEntry: textLevel,
+				});
+
+				if (scUnitValue !== undefined) {
+					return scUnitValue;
+				}
+			}
+		}
+		return getTypographyValue({
+			disableFormats,
+			prop: `${prefix}${target}`,
+			breakpoint,
+			typography,
+			isHover,
+			formatValue,
+			textLevel,
+			blockStyle,
+			styleCard,
+			styleCardPrefix,
+			prefix,
+			avoidSC,
+		});
 	};
 
 	const getInlineTarget = tag => {
@@ -679,8 +664,6 @@ const TypographyControl = props => {
 
 		return getIsValid(value, true) ? value : 1;
 	};
-
-	console.log('SC getValue line-height-unit', getValue('line-height-unit'));
 
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>

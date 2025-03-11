@@ -89,33 +89,65 @@ const flatWithGeneral = (
 	defaultAttributes,
 	allowXXLOverGeneral
 ) => {
+	console.log('=============== flatWithGeneral ===================');
+	console.log('flatWithGeneral - Input parameters:', {
+		newAttributes,
+		attributes,
+		clientId,
+		targetClientId,
+		defaultAttributes,
+		allowXXLOverGeneral,
+	});
+
 	const result = {};
 
-	// This is an array of attributes labels used by handleSetAttributes to determine
-	// if the new attributes are containing attributes that were saved just before and are
-	// the same value but with new added content. For example, it happens with numbers coming
-	// from ANC, that they are saved more than once while writing the whole number.
 	const { prevSavedAttrs, prevSavedAttrsClientId } =
 		select('maxiBlocks/styles').getPrevSavedAttrs();
 
+	console.log('flatWithGeneral - Previous saved attributes:', {
+		prevSavedAttrs,
+		prevSavedAttrsClientId,
+	});
+
 	Object.entries(newAttributes).forEach(([key, value]) => {
-		if (isNil(value)) return;
+		console.log('flatWithGeneral - Processing attribute:', {
+			key,
+			value,
+		});
+
+		if (isNil(value)) {
+			console.log('flatWithGeneral - Skipping nil value for key:', key);
+			return;
+		}
 
 		const breakpoint = getBreakpointFromAttribute(key);
 		const currentClientId = targetClientId ?? clientId;
 
+		console.log('flatWithGeneral - Attribute details:', {
+			breakpoint,
+			currentClientId,
+		});
+
 		if (prevSavedAttrsClientId === currentClientId) {
+			console.log(
+				'flatWithGeneral - Processing previous saved attributes for matching clientId'
+			);
+
 			prevSavedAttrs.forEach(attr => {
 				const prevValue = attributes[attr];
 				const attrBreakpoint = getBreakpointFromAttribute(attr);
 
-				/**
-				 * In case if after cleaning lower breakpoint attributes,
-				 * because they were the same with higher, on the next iteration
-				 * if higher attribute different from the previous one by number of digits(1 less or more) or
-				 * by value(1 less or more), cleaned lower breakpoint attribute will be restored.
-				 */
+				console.log('flatWithGeneral - Previous attribute details:', {
+					attr,
+					prevValue,
+					attrBreakpoint,
+				});
+
 				if (attr === key && !isNil(prevValue)) {
+					console.log(
+						'flatWithGeneral - Found matching previous attribute'
+					);
+
 					const recursiveSum = attrValue => {
 						if (isNil(attrValue)) return 0;
 
@@ -132,6 +164,11 @@ const flatWithGeneral = (
 					const prevValueSum = recursiveSum(prevValue);
 					const valueSum = recursiveSum(value);
 
+					console.log('flatWithGeneral - Value sums:', {
+						prevValueSum,
+						valueSum,
+					});
+
 					const isChangingDigitsNumber = (firstValue, secondValue) =>
 						firstValue.toString().length + 1 ===
 							secondValue.toString().length &&
@@ -145,6 +182,10 @@ const flatWithGeneral = (
 						isChangingDigitsNumber(prevValueSum, valueSum) ||
 						isChangingDigitsNumber(valueSum, prevValueSum)
 					) {
+						console.log(
+							'flatWithGeneral - Number adjustment detected'
+						);
+
 						const simpleLabel = getSimpleLabel(
 							attr,
 							attrBreakpoint
@@ -159,25 +200,57 @@ const flatWithGeneral = (
 
 							const label = `${simpleLabel}-${breakpoint}`;
 
+							console.log(
+								'flatWithGeneral - Processing breakpoint:',
+								{
+									breakpoint,
+									label,
+								}
+							);
+
 							if (
 								prevSavedAttrs.includes(label) &&
 								isNil(prevSavedAttrs[label]) &&
 								isNil(attributes[label]) &&
 								isNil(newAttributes[label])
-							)
+							) {
+								console.log(
+									'flatWithGeneral - Restoring previous value for label:',
+									label
+								);
 								result[label] = prevValue;
+							}
 						});
 					}
 				}
 
-				if (attr in newAttributes) return;
+				if (attr in newAttributes) {
+					console.log(
+						'flatWithGeneral - Attribute exists in newAttributes:',
+						attr
+					);
+					return;
+				}
 
 				const currentBreakpoint =
 					select('maxiBlocks').receiveMaxiDeviceType();
 
+				console.log(
+					'flatWithGeneral - Current device breakpoint:',
+					currentBreakpoint
+				);
+
 				if (attrBreakpoint === 'general') {
 					const isHover = getIsHoverAttribute(attr);
 					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
+
+					console.log(
+						'flatWithGeneral - Processing general breakpoint:',
+						{
+							isHover,
+							simpleLabel,
+						}
+					);
 
 					const generalKey = getAttributeKey(
 						simpleLabel,
@@ -196,6 +269,13 @@ const flatWithGeneral = (
 						) === key &&
 						value.toString().startsWith(generalAttr)
 					) {
+						console.log(
+							'flatWithGeneral - Updating general attributes:',
+							{
+								key,
+								generalKey,
+							}
+						);
 						result[key] = value;
 						result[generalKey] = value;
 					}
@@ -209,7 +289,16 @@ const flatWithGeneral = (
 					attributes,
 				});
 
+				console.log(
+					'flatWithGeneral - Current attribute value:',
+					currentAttr
+				);
+
 				if (attr === key && value.toString().startsWith(currentAttr)) {
+					console.log(
+						'flatWithGeneral - Value matches current attribute'
+					);
+
 					if (currentBreakpoint === 'general') {
 						result[key] = value;
 						result[
@@ -223,23 +312,48 @@ const flatWithGeneral = (
 		}
 
 		if (!breakpoint) {
+			console.log('flatWithGeneral - No breakpoint for key:', key);
 			result[key] = value;
 			return;
 		}
 		if (breakpoint !== 'general') {
 			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
+			console.log(
+				'flatWithGeneral - Processing non-general breakpoint:',
+				{
+					breakpoint,
+					baseBreakpoint,
+				}
+			);
+
 			// Check if current breakpoint is higher than base breakpoint
 			const isHigherBreakpoint =
 				breakpoints.indexOf(breakpoint) <
 				breakpoints.indexOf(baseBreakpoint);
 
+			console.log('flatWithGeneral - Breakpoint comparison:', {
+				isHigherBreakpoint,
+				breakpointIndex: breakpoints.indexOf(breakpoint),
+				baseBreakpointIndex: breakpoints.indexOf(baseBreakpoint),
+			});
+
 			if (isHigherBreakpoint) {
 				const simpleLabel = getSimpleLabel(key, breakpoint);
 				const isHover = getIsHoverAttribute(key);
 
+				console.log('flatWithGeneral - Processing higher breakpoint:', {
+					simpleLabel,
+					isHover,
+				});
+
 				// Get the previous value at the breakpoint we're changing
 				const previousValue = attributes?.[key];
+
+				console.log('flatWithGeneral - Previous value:', {
+					key,
+					previousValue,
+				});
 
 				// Handle unit keys and their linked values
 				let previousUnitValue;
@@ -253,6 +367,12 @@ const flatWithGeneral = (
 					valueKey = getValueKeyFromUnitKey(key);
 					previousLinkedValue = attributes?.[valueKey];
 					linkedValue = newAttributes[valueKey];
+
+					console.log('flatWithGeneral - Unit key processing:', {
+						valueKey,
+						previousLinkedValue,
+						linkedValue,
+					});
 				} else {
 					// For regular keys, get the unit key and its values
 					const unitKey = `${getAttributeKey(
@@ -263,6 +383,12 @@ const flatWithGeneral = (
 					)}-${breakpoint}`;
 					previousUnitValue = attributes?.[unitKey];
 					unitValue = newAttributes[unitKey];
+
+					console.log('flatWithGeneral - Regular key processing:', {
+						unitKey,
+						previousUnitValue,
+						unitValue,
+					});
 				}
 
 				// Get all breakpoints between current and base (inclusive)
@@ -271,9 +397,23 @@ const flatWithGeneral = (
 					breakpoints.indexOf(baseBreakpoint) + 1
 				);
 
+				console.log('flatWithGeneral - Breakpoints to update:', {
+					breakpointsToUpdate,
+					from: breakpoint,
+					to: baseBreakpoint,
+				});
+
 				// Update each breakpoint, skipping those with unique values
 				breakpointsToUpdate.forEach(bp => {
 					const bpKey = getAttributeKey(simpleLabel, isHover, '', bp);
+
+					console.log(
+						'flatWithGeneral - Processing update breakpoint:',
+						{
+							bp,
+							bpKey,
+						}
+					);
 
 					// Handle unit keys and their linked values
 					let bpUnitKey;
@@ -285,6 +425,11 @@ const flatWithGeneral = (
 						// For unit keys, get the linked value key and its value
 						bpValueKey = getValueKeyFromUnitKey(bpKey);
 						currentBpLinkedValue = attributes?.[bpValueKey];
+
+						console.log('flatWithGeneral - Breakpoint unit key:', {
+							bpValueKey,
+							currentBpLinkedValue,
+						});
 					} else {
 						// For regular keys, get the unit key and its value
 						bpUnitKey = `${getAttributeKey(
@@ -294,10 +439,23 @@ const flatWithGeneral = (
 							'unit'
 						)}-${bp}`;
 						currentBpUnitValue = attributes?.[bpUnitKey];
+
+						console.log(
+							'flatWithGeneral - Breakpoint regular key:',
+							{
+								bpUnitKey,
+								currentBpUnitValue,
+							}
+						);
 					}
 
 					// Check if this breakpoint has a unique value
 					const currentBpValue = attributes?.[bpKey];
+
+					console.log('flatWithGeneral - Current breakpoint value:', {
+						currentBpValue,
+						previousValue,
+					});
 
 					// If current value matches the previous value at the changed breakpoint,
 					// it means this breakpoint was inheriting that value (not unique)
@@ -321,15 +479,42 @@ const flatWithGeneral = (
 						);
 					}
 
+					console.log('flatWithGeneral - Value comparisons:', {
+						matchesPreviousValue,
+						matchesPreviousUnit,
+					});
+
 					// Update if this breakpoint was inheriting the value we're changing
 					if (matchesPreviousValue && matchesPreviousUnit) {
+						console.log(
+							'flatWithGeneral - Updating inherited value:',
+							{
+								bpKey,
+								value,
+							}
+						);
+
 						result[bpKey] = value;
 						if (isUnitKey(key) && linkedValue !== undefined) {
 							// For unit keys, update the linked value
 							result[bpValueKey] = linkedValue;
+							console.log(
+								'flatWithGeneral - Updated linked value:',
+								{
+									bpValueKey,
+									linkedValue,
+								}
+							);
 						} else if (!isUnitKey(key) && unitValue) {
 							// For regular keys, update the unit value
 							result[bpUnitKey] = unitValue;
+							console.log(
+								'flatWithGeneral - Updated unit value:',
+								{
+									bpUnitKey,
+									unitValue,
+								}
+							);
 						}
 					}
 				});
@@ -395,12 +580,27 @@ const flatWithGeneral = (
 		let breakpointLock = false;
 
 		breakpoints.forEach(breakpoint => {
-			if (breakpointLock) return;
+			if (breakpointLock) {
+				console.log(
+					'flatWithGeneral - Breakpoint locked, skipping:',
+					breakpoint
+				);
+				return;
+			}
 
 			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
 			const attribute = { ...attributes, ...newAttributes }?.[label];
 
+			console.log('flatWithGeneral - Processing breakpoint iteration:', {
+				breakpoint,
+				label,
+				attribute,
+				value,
+			});
+
 			if (isNil(attribute) && isEqual(value, attribute)) {
+				console.log('flatWithGeneral - Nil attribute match found');
+
 				// Handle unit keys and their linked values
 				let unitValue;
 				let defaultUnitValue;
@@ -421,6 +621,13 @@ const flatWithGeneral = (
 						)}`
 					);
 					defaultLinkedValue = defaultAttributes?.[defaultValueKey];
+
+					console.log('flatWithGeneral - Unit key values:', {
+						valueKey,
+						linkedValue,
+						defaultValueKey,
+						defaultLinkedValue,
+					});
 				} else {
 					// For regular keys, get the unit key and its values
 					const unitKey = `${getAttributeKey(
@@ -437,11 +644,23 @@ const flatWithGeneral = (
 						'unit'
 					)}-general`;
 					defaultUnitValue = defaultAttributes?.[defaultUnitKey];
+
+					console.log('flatWithGeneral - Regular key values:', {
+						unitKey,
+						unitValue,
+						defaultUnitKey,
+						defaultUnitValue,
+					});
 				}
 
 				const defaultAttribute =
 					defaultAttributes?.[label] ??
 					getDefaultAttribute(label, clientId, true);
+
+				console.log('flatWithGeneral - Default attribute:', {
+					label,
+					defaultAttribute,
+				});
 
 				let compareCondition;
 				if (isUnitKey(key)) {
@@ -456,15 +675,35 @@ const flatWithGeneral = (
 						!isEqual(unitValue, defaultUnitValue);
 				}
 
+				console.log('flatWithGeneral - Compare condition:', {
+					compareCondition,
+					isUnitKey: isUnitKey(key),
+				});
+
 				if (compareCondition) {
+					console.log(
+						'flatWithGeneral - Setting default attribute:',
+						{
+							label,
+							defaultAttribute,
+						}
+					);
 					result[label] = defaultAttribute;
 				} else {
+					console.log('flatWithGeneral - Setting undefined:', label);
 					result[label] = undefined;
 				}
-			} else if (!isNil(attribute)) breakpointLock = true;
+			} else if (!isNil(attribute)) {
+				console.log('flatWithGeneral - Setting breakpoint lock:', {
+					breakpoint,
+					attribute,
+				});
+				breakpointLock = true;
+			}
 		});
 	});
 
+	console.log('flatWithGeneral - Final result:', result);
 	return result;
 };
 

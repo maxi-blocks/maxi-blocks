@@ -9,6 +9,7 @@ import { resolveSelect, select } from '@wordpress/data';
 import getDCEntity from './getDCEntity';
 import { getCartUrl, getProductData } from './getWooCommerceData';
 import { inlineLinkFields, nameDictionary } from './constants';
+import { getCurrentTemplateSlug, getPostBySlug } from './utils';
 
 const getProductsLink = async (dataRequest, data) => {
 	const productData = await getProductData(data?.id);
@@ -48,45 +49,26 @@ const getDCLink = async (dataRequest, clientId) => {
 		return getCartUrl();
 	}
 
-	if (linkTarget === 'author') {
+	if (linkTarget.includes('author')) {
 		let userId = author;
 		if (field === 'author_avatar') {
 			if (relation === 'current') {
 				const isFSE = select('core/edit-site') !== undefined;
 				if (isFSE) {
-				} else {
-					const postId = select('core/editor').getCurrentPostId();
-					const post = await resolveSelect('core').getEntityRecord(
-						'postType',
-						'post',
-						postId
-					);
-					userId = post.author;
-				}
-			} else {
-				console.log('dataRequest: ', dataRequest);
-				const post = await resolveSelect('core').getEntityRecord(
-					'postType',
-					nameDictionary[type] ?? type,
-					dataRequest.id
-				);
-				if (post?.author) {
-					userId = post.author;
-				}
-			}
-		}
-		return getPostAuthorLink(userId);
-	}
-	if (linkTarget === 'author_email' || linkTarget === 'author_site') {
-		const { getUser } = resolveSelect('core');
-		const { id } = dataRequest;
-		console.log('dataRequest: ', dataRequest);
-
-		let userId;
-		if (field === 'author_avatar') {
-			if (relation === 'current') {
-				const isFSE = select('core/edit-site') !== undefined;
-				if (isFSE) {
+					const currentTemplateType = getCurrentTemplateSlug();
+					if (
+						currentTemplateType.includes('single-post-') &&
+						type === 'posts'
+					) {
+						const postSlug = currentTemplateType.replace(
+							'single-post-',
+							''
+						);
+						const post = await getPostBySlug(postSlug);
+						if (post) {
+							userId = post.author;
+						}
+					}
 				} else {
 					const postId = select('core/editor').getCurrentPostId();
 					const post = await resolveSelect('core').getEntityRecord(
@@ -106,13 +88,14 @@ const getDCLink = async (dataRequest, clientId) => {
 					userId = post.author;
 				}
 			}
-		} else {
-			userId = author ?? id;
 		}
-
 		if (!userId) {
 			return null;
 		}
+
+		if (linkTarget === 'author') return getPostAuthorLink(userId);
+
+		const { getUser } = resolveSelect('core');
 
 		const user = await getUser(userId);
 		const userTarget = linkTarget === 'author_email' ? 'email' : 'url';

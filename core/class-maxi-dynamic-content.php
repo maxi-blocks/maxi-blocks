@@ -975,9 +975,7 @@ class MaxiBlocks_DynamicContent
             } else {
                 $post_id = $attributes['dc-id'] ?? $post->ID;
             }
-            error_log('post_id: ' . $post_id);
             $author_id = get_post_field('post_author', $post_id);
-            error_log('author_id: ' . $author_id);
             if (!empty($post) && isset($author_id)) {
                 switch ($dc_link_target) {
                     case 'author_email':

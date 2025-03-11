@@ -886,7 +886,7 @@ class MaxiBlocks_DynamicContent
             str_contains($attributes['dc-link-target'], 'author') &&
             $attributes['dc-type'] !== 'users'
         ) {
-            if (empty($post) || !isset($post->post_author)) {
+            if (empty($post) || !isset($post->post_author) || !isset($attributes['dc-field'])) {
                 $link = '';
             } else {
                 $link = self::get_field_link(
@@ -1000,7 +1000,6 @@ class MaxiBlocks_DynamicContent
             'dc-accumulator' => $dc_accumulator,
             'dc-sub-field' => $dc_sub_field,
         ] = $attributes;
-
         if (!isset($dc_field) || $dc_field === 'static_text' || $dc_sub_field === 'static_text') {
             $post = $this->get_post($attributes);
 

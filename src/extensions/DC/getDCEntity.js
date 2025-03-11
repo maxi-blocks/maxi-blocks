@@ -207,6 +207,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 		order,
 		accumulator,
 		field,
+		linkTarget,
 	} = dataRequest;
 
 	const contentError = getDCErrors(type, error, show, relation);
@@ -266,9 +267,18 @@ const getDCEntity = async (dataRequest, clientId) => {
 		}
 	}
 
-	if (['users'].includes(type)) {
+	if (
+		['users'].includes(type) ||
+		linkTarget === 'author_email' ||
+		linkTarget === 'author_site'
+	) {
 		let user;
-		if (type === 'users') dataRequest.id = author ?? id;
+		if (
+			type === 'users' ||
+			linkTarget === 'author_email' ||
+			linkTarget === 'author_site'
+		)
+			dataRequest.id = author ?? id;
 
 		const { getUser } = resolveSelect('core');
 

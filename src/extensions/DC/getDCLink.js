@@ -98,7 +98,11 @@ const getDCLink = async (dataRequest, clientId) => {
 		return getProductsLink(dataRequest, data);
 	}
 
-	if (type === 'users') {
+	if (
+		type === 'users' ||
+		linkTarget === 'author_email' ||
+		linkTarget === 'author_site'
+	) {
 		return getUserLink(dataRequest, data);
 	}
 

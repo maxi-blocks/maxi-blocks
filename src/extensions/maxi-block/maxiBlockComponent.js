@@ -57,10 +57,9 @@ import compareVersions from './compareVersions';
 /**
  * External dependencies
  */
-import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
+import _, { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
-import _ from 'lodash';
 
 /**
  * Constants

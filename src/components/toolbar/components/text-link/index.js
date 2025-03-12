@@ -291,8 +291,6 @@ const TextLink = props => {
 
 	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
 
-	console.log('dcStatus', dcStatus);
-
 	if (!dcStatus)
 		return (
 			<ToolbarPopover

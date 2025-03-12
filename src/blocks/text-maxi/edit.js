@@ -186,6 +186,9 @@ class edit extends MaxiBlockComponent {
 			// onRemove={onRemove}
 		};
 
+		const showDCContent =
+			dcStatus && dcField !== 'static_text' && subField !== 'static_text';
+
 		return [
 			<TextContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
@@ -195,12 +198,7 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
-						if (
-							(!dcStatus ||
-								dcField === 'static_text' ||
-								subField === 'static_text') &&
-							!isList
-						)
+						if (!showDCContent && !isList)
 							this.state.onChangeFormat?.(newFormatValue);
 
 						onChangeRichText({
@@ -215,11 +213,7 @@ class edit extends MaxiBlockComponent {
 			>
 				<Inspector
 					key={`block-settings-${uniqueID}`}
-					disableCustomFormats={
-						dcStatus &&
-						(dcField !== 'static_text' ||
-							subField !== 'static_text')
-					}
+					disableCustomFormats={dcStatus}
 					setShowLoader={value =>
 						this.setState({ showLoader: value })
 					}
@@ -230,11 +224,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
-					disableCustomFormats={
-						dcStatus &&
-						(dcField !== 'static_text' ||
-							subField !== 'static_text')
-					}
+					disableCustomFormats={dcStatus}
 					setShowLoader={value =>
 						this.setState({ showLoader: value })
 					}
@@ -251,72 +241,63 @@ class edit extends MaxiBlockComponent {
 					{...getMaxiBlockAttributes(this.props)}
 					showLoader={this.state.showLoader}
 				>
-					{(!dcStatus ||
-						dcField === 'static_text' ||
-						subField === 'static_text') &&
-						!isList && (
-							<RichText
-								tagName={textLevel}
-								__unstableEmbedURLOnPaste
-								withoutInteractiveFormatting
-								preserveWhiteSpace
-								multiline={false}
-								{...commonProps}
-							>
-								{richTextValues => {
-									onChangeRichText({
-										attributes,
-										maxiSetAttributes,
-										oldFormatValue: this.state.formatValue,
-										onChange: newState => {
-											if (this.typingTimeoutFormatValue) {
-												clearTimeout(
-													this
-														.typingTimeoutFormatValue
-												);
-											}
+					{!showDCContent && !isList && (
+						<RichText
+							tagName={textLevel}
+							__unstableEmbedURLOnPaste
+							withoutInteractiveFormatting
+							preserveWhiteSpace
+							multiline={false}
+							{...commonProps}
+						>
+							{richTextValues => {
+								onChangeRichText({
+									attributes,
+									maxiSetAttributes,
+									oldFormatValue: this.state.formatValue,
+									onChange: newState => {
+										if (this.typingTimeoutFormatValue) {
+											clearTimeout(
+												this.typingTimeoutFormatValue
+											);
+										}
 
-											this.typingTimeoutFormatValue =
-												setTimeout(() => {
-													this.setState(newState);
-												}, 10);
-										},
-										richTextValues,
-									});
-								}}
-							</RichText>
-						)}
-					{dcStatus &&
-						dcField !== 'static_text' &&
-						subField !== 'static_text' && (
-							<DCTagName className={className}>
-								{dcContainsHTML ? (
-									<RawHTML>{dcContent}</RawHTML>
-								) : (
-									dcContent
-								)}
-							</DCTagName>
-						)}
-					{(!dcStatus ||
-						dcField === 'static_text' ||
-						subField === 'static_text') &&
-						isList && (
-							<ListContext.Provider
-								value={getGroupAttributes(attributes, [
-									'typography',
-									'link',
-								])}
-							>
-								<List
-									typeOfList={typeOfList}
-									className={className}
-									start={listStart}
-									reversed={listReversed}
-									clientId={clientId}
-									hasInnerBlocks={hasInnerBlocks}
-								/>
-							</ListContext.Provider>
-						)}
+										this.typingTimeoutFormatValue =
+											setTimeout(() => {
+												this.setState(newState);
+											}, 10);
+									},
+									richTextValues,
+								});
+							}}
+						</RichText>
+					)}
+					{showDCContent && (
+						<DCTagName className={className}>
+							{dcContainsHTML ? (
+								<RawHTML>{dcContent}</RawHTML>
+							) : (
+								dcContent
+							)}
+						</DCTagName>
+					)}
+					{!showDCContent && isList && (
+						<ListContext.Provider
+							value={getGroupAttributes(attributes, [
+								'typography',
+								'link',
+							])}
+						>
+							<List
+								typeOfList={typeOfList}
+								className={className}
+								start={listStart}
+								reversed={listReversed}
+								clientId={clientId}
+								hasInnerBlocks={hasInnerBlocks}
+							/>
+						</ListContext.Provider>
+					)}
 				</MaxiBlock>
 			</TextContext.Provider>,
 		];

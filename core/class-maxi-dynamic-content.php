@@ -882,7 +882,7 @@ class MaxiBlocks_DynamicContent
         }
 
         if (
-            (!array_key_exists('dc-link-target', $attributes) || $attributes['dc-field'] !== 'author_avatar') &&
+            (!array_key_exists('dc-link-target', $attributes) || (array_key_exists('dc-field', $attributes) && $attributes['dc-field'] !== 'author_avatar')) &&
             array_key_exists('dc-link-target', $attributes) &&
             str_contains($attributes['dc-link-target'], 'author') &&
             $attributes['dc-type'] !== 'users'

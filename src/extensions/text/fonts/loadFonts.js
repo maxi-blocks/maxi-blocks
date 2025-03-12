@@ -1,130 +1,43 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, resolveSelect, select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * External dependencies
  */
 import { isEmpty, uniq } from 'lodash';
-import { fontUrlCache, getStorageCache, setStorageCache, cleanUrl } from './fontCacheUtils';
-
-const buildFontStyleString = fontStyle => {
-	return fontStyle === 'italic' ? 'ital,' : '';
-};
-
-const normalizeWeights = fontWeight => {
-	const weights = Array.isArray(fontWeight)
-		? fontWeight
-		: fontWeight.split(',');
-	const res = Array.from(new Set(weights));
-	return res.sort((a, b) => a - b);
-};
-
-const getMultipleWeightsString = (weights, fontStyle) => {
-	let result = 'wght@';
-	weights.forEach(weight => {
-		if (fontStyle === 'italic') {
-			result += `0,${weight};1,${weight};`;
-		} else {
-			result += `${weight};`;
-		}
-	});
-	return result.slice(0, -1);
-};
-
-const getSingleWeightString = (weight, fontStyle) => {
-	if (fontStyle === 'italic') {
-		return `wght@0,${weight};1,${weight}`;
-	}
-	return `wght@${weight}`;
-};
-
-const getDefaultWeightString = fontStyle => {
-	return fontStyle === 'italic' ? 'wght@0,400;1,400' : 'wght@400';
-};
-
-const buildFontWeightString = (fontWeight, fontStyle) => {
-	if (!fontWeight) {
-		return getDefaultWeightString(fontStyle);
-	}
-
-	const weights = normalizeWeights(fontWeight);
-
-	if (weights.length > 1) {
-		return getMultipleWeightsString(weights, fontStyle);
-	}
-
-	return getSingleWeightString(weights[0], fontStyle);
-};
-
-
-// Batch font loading queue
-const fontQueue = new Map();
-let batchTimeout = null;
-const BATCH_DELAY = 50; // ms to wait for batching
-
-const processFontQueue = async () => {
-	if (fontQueue.size === 0) return;
-
-	const fonts = Array.from(fontQueue.keys());
-
-	// Process all fonts in parallel
-	const results = await Promise.all(
-		Array.from(fontQueue.entries()).map(async ([fontName, { resolve, reject, fontData }]) => {
-			try {
-				const url = await getFontUrl(fontName, fontData);
-				resolve(url);
-			} catch (error) {
-				reject(error);
-			}
-		})
-	);
-
-	fontQueue.clear();
-};
-
-const queueFontLoad = (fontName, fontData) => {
-	if (batchTimeout) clearTimeout(batchTimeout);
-
-	const promise = new Promise((resolve, reject) => {
-		fontQueue.set(fontName, { resolve, reject, fontData });
-	});
-
-	batchTimeout = setTimeout(processFontQueue, BATCH_DELAY);
-	return promise;
-};
-
-const buildFontString = (weight = '400', style = 'normal') => {
-	if (style === 'italic') {
-		return `ital,wght@0,${weight};1,${weight}`;
-	}
-	return `wght@${weight}`;
-};
+import {
+	fontUrlCache,
+	getStorageCache,
+	setStorageCache,
+	cleanUrl,
+} from './fontCacheUtils';
 
 const buildFontUrl = async (fontName, fontData = {}) => {
-
 	// Check if we need to use local fonts
 	if (window.maxiBlocksMain?.local_fonts) {
-		const encodedFontName = encodeURIComponent(fontName).replace(/%20/g, '+').toLowerCase();
+		const encodedFontName = encodeURIComponent(fontName).replace(
+			/%20/g,
+			'+'
+		);
 
-		try {
-			const response = await fetch(`/wp-json/maxi-blocks/v1.0/get-font-url/${encodedFontName}`, {
+		const response = await fetch(
+			`/wp-json/maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
+			{
 				credentials: 'same-origin',
 				headers: {
 					'X-WP-Nonce': window.wpApiSettings?.nonce,
-				}
-			});
-
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+				},
 			}
+		);
 
-			const text = await response.text();
-			return cleanUrl(text);
-		} catch (error) {
-			throw error;
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
 		}
+
+		const text = await response.text();
+		return cleanUrl(text);
 	}
 
 	// For remote fonts (Google or Bunny)
@@ -133,36 +46,59 @@ const buildFontUrl = async (fontName, fontData = {}) => {
 		: fontData.weight || '400';
 	const style = fontData.style || 'normal';
 
-	const api_url = window.maxiBlocksMain?.bunny_fonts
+	const apiUrl = window.maxiBlocksMain?.bunny_fonts
 		? 'https://fonts.bunny.net'
 		: 'https://fonts.googleapis.com';
 
-	const fontString = style === 'italic'
-		? `ital,wght@0,${weight};1,${weight}`
-		: `wght@${weight}`;
+	const fontString =
+		style === 'italic'
+			? `ital,wght@0,${weight};1,${weight}`
+			: `wght@${weight}`;
 
-	const url = `${api_url}/css2?family=${encodeURIComponent(fontName)}:${fontString}&display=swap`;
+	const url = `${apiUrl}/css2?family=${encodeURIComponent(
+		fontName
+	)}:${fontString}&display=swap`;
 	return url;
 };
 
-const isCacheValid = (url) => {
+const isCacheValid = async url => {
 	if (!url) return false;
 
 	// Check if URL matches current font provider settings
 	const isLocalFont = window.maxiBlocksMain?.local_fonts;
 	const isBunnyFont = window.maxiBlocksMain?.bunny_fonts;
 
+	// First check the URL pattern
+	let isValidPattern = false;
 	if (isLocalFont) {
-		// Local font URLs should be from our WordPress site
-		return url.includes(window.location.origin);
+		isValidPattern = url.includes(window.location.origin);
+	} else if (isBunnyFont) {
+		isValidPattern = url.includes('fonts.bunny.net');
+	} else {
+		isValidPattern = url.includes('fonts.googleapis.com');
 	}
 
-	if (isBunnyFont) {
-		return url.includes('fonts.bunny.net');
-	}
+	if (!isValidPattern) return false;
 
-	// Default to Google Fonts
-	return url.includes('fonts.googleapis.com');
+	// Then check if the URL is actually accessible
+	try {
+		// Using AbortController to cancel the request if it fails
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+
+		const response = await fetch(url, {
+			method: 'HEAD',
+			signal: controller.signal,
+			// Prevent the browser from logging failed requests
+			cache: 'no-store',
+		}).catch(() => ({ ok: false })); // Silently handle network errors
+
+		clearTimeout(timeoutId);
+		return response.ok;
+	} catch {
+		// Silently return false for any errors
+		return false;
+	}
 };
 
 const getFontUrl = async (fontName, fontData = {}) => {
@@ -170,8 +106,9 @@ const getFontUrl = async (fontName, fontData = {}) => {
 		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
 
 		// Check cache first
-		const cached = fontUrlCache.get(requestKey) || getStorageCache(requestKey);
-		if (cached && isCacheValid(cached)) {
+		const cached =
+			fontUrlCache.get(requestKey) || getStorageCache(requestKey);
+		if (cached && (await isCacheValid(cached))) {
 			return cached;
 		}
 
@@ -181,16 +118,17 @@ const getFontUrl = async (fontName, fontData = {}) => {
 			localStorage.removeItem(`maxi_font_${requestKey}`);
 		}
 
-		// Build and cache the URL
+		// Build and validate the URL
 		const fontUrl = await buildFontUrl(fontName, fontData);
 
-		// Only cache if the URL is valid for current settings
-		if (isCacheValid(fontUrl)) {
+		// Validate the URL before returning and caching
+		if (await isCacheValid(fontUrl)) {
 			fontUrlCache.set(requestKey, fontUrl);
 			setStorageCache(requestKey, fontUrl);
+			return fontUrl;
 		}
 
-		return fontUrl;
+		throw new Error(`Invalid font URL: ${fontUrl}`);
 	} catch (error) {
 		console.error('Error getting font URL:', error);
 		throw error;
@@ -206,19 +144,19 @@ const getFontID = (fontName, fontData) => {
 
 const getFontElement = async (fontName, fontData, url) => {
 	// Get the URL if not provided (ensures consistent URL generation)
-	let fontUrl = url || await getFontUrl(fontName, fontData);
+	let fontUrl = url || (await getFontUrl(fontName, fontData));
 
 	// Clean the URL one final time before creating the element
 	fontUrl = cleanUrl(fontUrl);
 
-	const style_element = document.createElement('link');
-	style_element.rel = 'stylesheet';
-	style_element.href = fontUrl;
-	style_element.type = 'text/css';
-	style_element.media = 'all';
-	style_element.id = getFontID(fontName, fontData);
+	const styleElement = document.createElement('link');
+	styleElement.rel = 'stylesheet';
+	styleElement.href = fontUrl;
+	styleElement.type = 'text/css';
+	styleElement.media = 'all';
+	styleElement.id = getFontID(fontName, fontData);
 
-	return style_element;
+	return styleElement;
 };
 
 /**
@@ -291,7 +229,6 @@ const loadFonts = (
 			if (isEmpty(fontFiles)) return;
 
 			const loadBackendFont = async (fontName, fontData) => {
-
 				const fontId = getFontID(fontName, fontData);
 
 				if (target.head.querySelector(`#${fontId}`) !== null) {
@@ -302,9 +239,15 @@ const loadFonts = (
 
 				try {
 					const url = await getFontUrl(fontName, fontData);
-					const styleElement = await getFontElement(fontName, fontData, url);
+					const styleElement = await getFontElement(
+						fontName,
+						fontData,
+						url
+					);
 
-					const oldStyleElement = target.getElementById(styleElement.id);
+					const oldStyleElement = target.getElementById(
+						styleElement.id
+					);
 					if (oldStyleElement) {
 						if (setIsLoading) {
 							if (oldStyleElement.sheet) {

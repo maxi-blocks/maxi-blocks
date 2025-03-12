@@ -59,7 +59,7 @@ class MaxiBlocks_Local_Fonts
         $font_api_url = $use_bunny_fonts
             ? 'https://fonts.bunny.net'
             : 'https://fonts.googleapis.com';
-
+        // Use the original font name for the URL to maintain proper capitalization
         $font_url =
             $font_api_url . '/css2?family=' . str_replace(' ', '+', $font_name);
 

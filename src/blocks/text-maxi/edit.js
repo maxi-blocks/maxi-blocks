@@ -30,7 +30,6 @@ import onMerge from './utils';
 import {
 	onChangeRichText,
 	processContent,
-	handleSplit,
 	TextContext,
 	ListContext,
 } from '@extensions/text/formats';

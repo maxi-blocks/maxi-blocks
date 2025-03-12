@@ -94,6 +94,7 @@ class edit extends MaxiBlockComponent {
 			content: dcContent,
 			field: dcField,
 			subField,
+			linkTarget: dcLinkTarget,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
 			this.props.contextLoopContext?.contextLoop

@@ -332,24 +332,9 @@ const currentlyLoadingIds = [];
 const loadFontsInEditor = (objFont, setShowLoader) => {
 	const iframeEditor = document.querySelector('iframe[name="editor-canvas"]');
 
-	const setIsLoading = (isLoading, fontId) => {
-		if (isLoading) {
-			currentlyLoadingIds.push(fontId);
-		} else {
-			const index = currentlyLoadingIds.indexOf(fontId);
-			if (index > -1) {
-				currentlyLoadingIds.splice(index, 1);
-			}
-		}
-
-		if (setShowLoader) {
-			setShowLoader(currentlyLoadingIds.length > 0);
-		}
-	};
-
 	if (iframeEditor) {
 		loadFonts(objFont, true, iframeEditor.contentDocument);
-	} else loadFonts(objFont, true, undefined, setIsLoading);
+	} else loadFonts(objFont, true, undefined);
 };
 
 export { loadFontsInEditor, loadFonts };

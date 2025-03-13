@@ -11,6 +11,7 @@ import {
 	getDCOrder,
 	getRelationKeyForId,
 	getCurrentTemplateSlug,
+	getPostBySlug,
 } from './utils';
 import { getCartData } from './getWooCommerceData';
 import { kindDictionary, nameDictionary, orderRelations } from './constants';
@@ -34,84 +35,6 @@ const getRandomEntity = (entities, accumulator) => {
 	const randomIndex = getSeededRandomIndex(seed, entities.length);
 
 	return entities[randomIndex];
-};
-
-// Helper function to create a delay
-const delay = ms =>
-	new Promise(resolve => {
-		setTimeout(resolve, ms);
-	});
-
-// Function to retry an async operation with exponential backoff
-const retryOperation = async (
-	operation,
-	maxRetries = 3,
-	initialDelay = 300
-) => {
-	let retries = 0;
-	let currentDelay = initialDelay;
-
-	// eslint-disable-next-line no-constant-condition
-	while (retries < maxRetries) {
-		try {
-			// eslint-disable-next-line no-await-in-loop
-			const result = await operation();
-
-			// If we have a result, return it immediately
-			if (result && (Array.isArray(result) ? result.length > 0 : true)) {
-				return result;
-			}
-
-			// eslint-disable-next-line no-await-in-loop
-			await delay(currentDelay);
-			retries += 1;
-			currentDelay *= 2; // Exponential backoff
-		} catch (error) {
-			// eslint-disable-next-line no-await-in-loop
-			await delay(currentDelay);
-			retries += 1;
-			currentDelay *= 2;
-		}
-	}
-
-	// Last attempt after all retries
-	return operation();
-};
-
-const getPostBySlug = async slug => {
-	// First try with the exact slug, with retries
-	const getPostsOperation = () =>
-		select('core').getEntityRecords('postType', 'post', {
-			slug,
-			per_page: 1,
-		});
-
-	const posts = await retryOperation(getPostsOperation);
-
-	if (posts && posts.length > 0) {
-		return posts[0];
-	}
-
-	// If no post found and slug ends with a pattern like "-4", try without the suffix
-	const numericSuffixMatch = slug.match(/-(\d+)$/);
-	if (numericSuffixMatch) {
-		const slugWithoutSuffix = slug.replace(/-\d+$/, '');
-		const getPostsWithoutSuffixOperation = () =>
-			select('core').getEntityRecords('postType', 'post', {
-				slug: slugWithoutSuffix,
-				per_page: 1,
-			});
-
-		const postsWithoutSuffix = await retryOperation(
-			getPostsWithoutSuffixOperation
-		);
-
-		if (postsWithoutSuffix && postsWithoutSuffix.length > 0) {
-			return postsWithoutSuffix[0];
-		}
-	}
-
-	return null;
 };
 
 const getAuthorBySlug = async slug => {
@@ -268,9 +191,9 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 	if (['users'].includes(type)) {
 		let user;
-		if (type === 'users') dataRequest.id = author ?? id;
-
 		const { getUser } = resolveSelect('core');
+
+		if (type === 'users') dataRequest.id = author ?? id;
 
 		if (relation === 'random') {
 			const users = await resolveSelect('core').getUsers({

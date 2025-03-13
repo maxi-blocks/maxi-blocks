@@ -23,7 +23,9 @@ const buildFontUrl = async (fontName, fontData = {}) => {
 		);
 
 		const response = await fetch(
-			`/wp-json/maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
+			`${
+				window.wpApiSettings?.root ?? '/wp-json/'
+			}maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
 			{
 				credentials: 'same-origin',
 				headers: {
@@ -328,7 +330,6 @@ const loadFonts = (
 	return null;
 };
 
-const currentlyLoadingIds = [];
 const loadFontsInEditor = (objFont, setShowLoader) => {
 	const iframeEditor = document.querySelector('iframe[name="editor-canvas"]');
 

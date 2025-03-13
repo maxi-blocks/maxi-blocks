@@ -1,16 +1,13 @@
 /**
  * Internal dependencies
  */
-import {
-	fontUrlCache,
-	getStorageCache,
-	setStorageCache,
-	cleanUrl,
-} from '@extensions/text/fonts/fontCacheUtils';
+import { cleanUrl } from '@extensions/text/fonts/fontCacheUtils';
 
 const fetchFontUrl = async encodedFontName => {
 	const response = await fetch(
-		`/wp-json/maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
+		`${
+			window.wpApiSettings?.root ?? '/wp-json/'
+		}maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
 		{
 			credentials: 'same-origin',
 			headers: {

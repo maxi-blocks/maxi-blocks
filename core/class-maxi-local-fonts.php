@@ -46,6 +46,8 @@ class MaxiBlocks_Local_Fonts
             return false;
         }
 
+        error_log($font_name);
+
         $font_name_sanitized = $this->sanitize_font_name($font_name);
         $font_dir = $this->fonts_upload_dir . '/' . $font_name_sanitized;
 
@@ -62,6 +64,8 @@ class MaxiBlocks_Local_Fonts
         // Use the original font name for the URL to maintain proper capitalization
         $font_url =
             $font_api_url . '/css2?family=' . str_replace(' ', '+', $font_name);
+
+        error_log($font_url);
 
         // Generate complete font URL with weights/styles
         $font_url = $this->generate_font_url($font_url, $font_data);

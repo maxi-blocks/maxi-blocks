@@ -38,16 +38,6 @@ const resolvers = {
 	getFontUrl:
 		(fontName, fontData) =>
 		async ({ dispatch }) => {
-			const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
-
-			// Try to get from cache first
-			const cached =
-				fontUrlCache.get(requestKey) || getStorageCache(requestKey);
-			if (cached) {
-				dispatch.setFontUrl(fontName, fontData, cached);
-				return cached;
-			}
-
 			const encodedFontName = encodeURIComponent(fontName).replace(
 				/%20/g,
 				'+'
@@ -56,10 +46,6 @@ const resolvers = {
 			const promise = (async () => {
 				try {
 					const fontUrl = await fetchFontUrl(encodedFontName);
-
-					// Cache the successful response
-					fontUrlCache.set(requestKey, fontUrl);
-					setStorageCache(requestKey, fontUrl);
 
 					dispatch.setFontUrl(fontName, fontData, fontUrl);
 					return fontUrl;

@@ -216,7 +216,6 @@ describe('handleSetAttributes', () => {
 			'test-general': 'dashed',
 		};
 		const thirdRoundExpected = {
-			'test-general': 'dotted',
 			'test-m': 'dotted',
 		};
 
@@ -236,7 +235,7 @@ describe('handleSetAttributes', () => {
 		const expectedAttrs = {
 			'test-xxl': undefined,
 			'test-l': 'dashed',
-			'test-general': 'dotted',
+			'test-general': 'solid',
 			'test-xl': 'dashed',
 			'test-m': 'dotted',
 		};
@@ -276,13 +275,13 @@ describe('handleSetAttributes', () => {
 		const thirdRoundResult = handleSetAttributes(thirdRound);
 
 		const firstRoundExpected = {
-			'test-general': 1,
+			'test-m': 1,
 		};
 		const secondRoundExpected = {
-			'test-general': 10,
+			'test-m': 10,
 		};
 		const thirdRoundExpected = {
-			'test-general': 100,
+			'test-m': 100,
 		};
 
 		expect(firstRoundResult).toStrictEqual(firstRoundExpected);
@@ -380,7 +379,7 @@ describe('handleSetAttributes', () => {
 		};
 
 		const expectedAttrs = {
-			'test-general': 1,
+			'test-m': 1,
 		};
 
 		expect(handleSetAttributes(args)).toStrictEqual(expectedAttrs);

@@ -104,6 +104,42 @@ const navigationExists = styleCard => {
 	return styleCard?.value?.dark?.defaultStyleCard?.navigation !== undefined;
 };
 
+const addMissingButtonXXLLineHeight = styleCard => {
+	['dark', 'light'].forEach(style => {
+		const styleValue = styleCard?.value?.[style];
+		if (
+			styleValue &&
+			styleValue.defaultStyleCard &&
+			styleValue.defaultStyleCard.button
+		) {
+			const { button } = styleValue.defaultStyleCard;
+
+			// Check if line-height-xxl is missing
+			if (
+				button['line-height-general'] &&
+				button['line-height-xl'] &&
+				(!button['line-height-xxl'] || !button['line-height-unit-xxl'])
+			) {
+				// Add missing line-height-xxl based on existing values
+				if (!button['line-height-xxl']) {
+					// Use the same value as line-height-xl or line-height-general
+					button['line-height-xxl'] =
+						button['line-height-xl'] ||
+						button['line-height-general'];
+				}
+
+				// Add missing line-height-unit-xxl based on existing values
+				if (!button['line-height-unit-xxl']) {
+					// Use the same unit as line-height-xl-unit or line-height-general-unit
+					button['line-height-unit-xxl'] =
+						button['line-height-unit-xl'] ||
+						button['line-height-unit-general'];
+				}
+			}
+		}
+	});
+};
+
 const addNavigationToStyleCards = styleCard => {
 	['dark', 'light'].forEach(style => {
 		const styleValue = styleCard?.value?.[style];
@@ -136,20 +172,42 @@ const addNavigationToStyleCards = styleCard => {
 // Usage
 export const receiveMaxiStyleCards = state => {
 	if (state.styleCards) {
+		// Fix missing button line-height-xxl values in all style cards
+		Object.values(state.styleCards).forEach(styleCard => {
+			if (!navigationExists(styleCard)) {
+				addNavigationToStyleCards(styleCard);
+			}
+			addMissingButtonXXLLineHeight(styleCard);
+		});
 		return state.styleCards;
 	}
 	return false;
 };
 
 export const receiveSavedMaxiStyleCards = state => {
-	if (state.savedStyleCards) return state.savedStyleCards;
+	if (state.savedStyleCards) {
+		// Fix missing button line-height-xxl values in all saved style cards
+		Object.values(state.savedStyleCards).forEach(styleCard => {
+			if (!navigationExists(styleCard)) {
+				addNavigationToStyleCards(styleCard);
+			}
+			addMissingButtonXXLLineHeight(styleCard);
+		});
+		return state.savedStyleCards;
+	}
 
 	return false;
 };
 
 export const receiveMaxiActiveStyleCard = state => {
 	if (state.savedStyleCards) {
-		return getActiveStyleCard(state.savedStyleCards);
+		const activeStyleCard = getActiveStyleCard(state.savedStyleCards);
+		if (!navigationExists(activeStyleCard)) {
+			addNavigationToStyleCards(activeStyleCard);
+		}
+		// Fix missing button line-height-xxl values
+		addMissingButtonXXLLineHeight(activeStyleCard);
+		return activeStyleCard;
 	}
 	return false;
 };
@@ -160,6 +218,8 @@ export const receiveMaxiSelectedStyleCard = state => {
 		if (!navigationExists(selectedStyleCard)) {
 			addNavigationToStyleCards(selectedStyleCard);
 		}
+		// Fix missing button line-height-xxl values
+		addMissingButtonXXLLineHeight(selectedStyleCard);
 		return selectedStyleCard;
 	}
 	return false;

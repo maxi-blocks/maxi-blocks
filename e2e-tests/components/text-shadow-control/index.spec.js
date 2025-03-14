@@ -53,7 +53,7 @@ describe('TextShadowControl', () => {
 			);
 			await page.waitForTimeout(200);
 
-			expect(await getAttributes('text-shadow-general')).toStrictEqual(
+			expect(await getAttributes('text-shadow-xl')).toStrictEqual(
 				setting
 			);
 		}
@@ -87,7 +87,7 @@ describe('TextShadowControl', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('text-shadow-general')).toStrictEqual(
+		expect(await getAttributes('text-shadow-xl')).toStrictEqual(
 			'34px 12px 54px rgba(var(--maxi-light-color-8,150,176,203),0.21)'
 		);
 

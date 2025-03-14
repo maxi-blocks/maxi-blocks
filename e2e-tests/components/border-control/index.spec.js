@@ -39,16 +39,16 @@ describe('BorderControl', () => {
 		});
 
 		const expectMargin = {
-			'border-bottom-left-radius-general': 44,
-			'border-bottom-right-radius-general': 96,
-			'border-top-left-radius-general': 56,
-			'border-top-right-radius-general': 15,
+			'border-bottom-left-radius-xl': 44,
+			'border-bottom-right-radius-xl': 96,
+			'border-top-left-radius-xl': 56,
+			'border-top-right-radius-xl': 15,
 		};
 		const marginResult = await getAttributes([
-			'border-bottom-left-radius-general',
-			'border-bottom-right-radius-general',
-			'border-top-left-radius-general',
-			'border-top-right-radius-general',
+			'border-bottom-left-radius-xl',
+			'border-bottom-right-radius-xl',
+			'border-top-left-radius-xl',
+			'border-top-right-radius-xl',
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
@@ -64,7 +64,7 @@ describe('BorderControl', () => {
 			);
 
 			const attributes = await getBlockAttributes();
-			const borderAttribute = attributes['border-style-general'];
+			const borderAttribute = attributes['border-style-xl'];
 
 			expect(borderAttribute).toStrictEqual(expectAttributes[i]);
 		}
@@ -75,9 +75,7 @@ describe('BorderControl', () => {
 
 		await borderType.select('groove');
 
-		expect(await getAttributes('border-style-general')).toStrictEqual(
-			'groove'
-		);
+		expect(await getAttributes('border-style-xl')).toStrictEqual('groove');
 
 		// color
 		await editColorControl({
@@ -87,18 +85,14 @@ describe('BorderControl', () => {
 			colorPalette: 4,
 		});
 
-		expect(
-			await getAttributes('border-palette-color-general')
-		).toStrictEqual(4);
+		expect(await getAttributes('border-palette-color-xl')).toStrictEqual(4);
 
 		const selector = await borderAccordion.$(
 			'.maxi-border-control .maxi-base-control__field select'
 		);
 		await selector.select('dotted');
 
-		expect(await getAttributes('border-style-general')).toStrictEqual(
-			'dotted'
-		);
+		expect(await getAttributes('border-style-xl')).toStrictEqual('dotted');
 
 		// check responsive border
 		const responsiveBorder = await addResponsiveTest({
@@ -144,33 +138,33 @@ describe('BorderControl', () => {
 		);
 
 		const expectBorder = {
-			'border-bottom-width-general': 2,
-			'border-bottom-width-general-hover': undefined,
-			'border-color-general': undefined,
-			'border-color-general-hover': undefined,
-			'border-left-width-general': 2,
-			'border-left-width-general-hover': undefined,
-			'border-right-width-general': 2,
-			'border-right-width-general-hover': undefined,
-			'border-style-general': 'none',
-			'border-style-general-hover': undefined,
-			'border-top-width-general': 2,
-			'border-top-width-general-hover': undefined,
+			'border-bottom-width-xl': 2,
+			'border-bottom-width-xl-hover': undefined,
+			'border-color-xl': undefined,
+			'border-color-xl-hover': undefined,
+			'border-left-width-xl': 2,
+			'border-left-width-xl-hover': undefined,
+			'border-right-width-xl': 2,
+			'border-right-width-xl-hover': undefined,
+			'border-style-xl': 'none',
+			'border-style-xl-hover': undefined,
+			'border-top-width-xl': 2,
+			'border-top-width-xl-hover': undefined,
 		};
 
 		const borderResult = await getAttributes([
-			'border-color-general',
-			'border-color-general-hover',
-			'border-style-general',
-			'border-style-general-hover',
-			'border-top-width-general',
-			'border-top-width-general-hover',
-			'border-right-width-general',
-			'border-right-width-general-hover',
-			'border-bottom-width-general',
-			'border-bottom-width-general-hover',
-			'border-left-width-general',
-			'border-left-width-general-hover',
+			'border-color-xl',
+			'border-color-xl-hover',
+			'border-style-xl',
+			'border-style-xl-hover',
+			'border-top-width-xl',
+			'border-top-width-xl-hover',
+			'border-right-width-xl',
+			'border-right-width-xl-hover',
+			'border-bottom-width-xl',
+			'border-bottom-width-xl-hover',
+			'border-left-width-xl',
+			'border-left-width-xl-hover',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -191,9 +185,7 @@ describe('BorderControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('59', { delay: 350 });
 
-		expect(await getAttributes('border-left-width-general')).toStrictEqual(
-			59
-		);
+		expect(await getAttributes('border-left-width-xl')).toStrictEqual(59);
 
 		// check border radius
 		await page.$eval(
@@ -205,7 +197,7 @@ describe('BorderControl', () => {
 		await page.keyboard.type('26', { delay: 350 });
 
 		expect(
-			await getAttributes('border-bottom-left-radius-general')
+			await getAttributes('border-bottom-left-radius-xl')
 		).toStrictEqual(26);
 
 		// change style
@@ -235,9 +227,7 @@ describe('BorderControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('border-left-width-general')).toStrictEqual(
-			2
-		);
+		expect(await getAttributes('border-left-width-xl')).toStrictEqual(2);
 
 		await page.$eval(
 			'.maxi-axis-control__border .maxi-axis-control__content__item__border-radius .maxi-reset-button',
@@ -245,7 +235,7 @@ describe('BorderControl', () => {
 		);
 
 		expect(
-			await getAttributes('border-bottom-left-radius-general')
+			await getAttributes('border-bottom-left-radius-xl')
 		).toStrictEqual(undefined);
 	});
 
@@ -258,9 +248,7 @@ describe('BorderControl', () => {
 			buttons => buttons[1].click()
 		);
 
-		expect(await getAttributes('border-style-general')).toStrictEqual(
-			'solid'
-		);
+		expect(await getAttributes('border-style-xl')).toStrictEqual('solid');
 
 		// s
 		await changeResponsive(page, 's');
@@ -304,9 +292,7 @@ describe('BorderControl', () => {
 			buttons => buttons[1].click()
 		);
 
-		expect(await getAttributes('border-style-general')).toStrictEqual(
-			'solid'
-		);
+		expect(await getAttributes('border-style-xl')).toStrictEqual('solid');
 
 		// s
 		await changeResponsive(page, 's');

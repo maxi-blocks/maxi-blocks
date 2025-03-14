@@ -33,21 +33,21 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectAttributes = {
-			'box-shadow-blur-general': 50,
-			'box-shadow-color-general': undefined,
-			'box-shadow-horizontal-general': 0,
-			'box-shadow-spread-general': 0,
+			'box-shadow-blur-xl': 50,
+			'box-shadow-color-xl': undefined,
+			'box-shadow-horizontal-xl': 0,
+			'box-shadow-spread-xl': 0,
 			'box-shadow-status-hover': false,
-			'box-shadow-vertical-general': 30,
+			'box-shadow-vertical-xl': 30,
 		};
 
 		const typographyAttributes = await getAttributes([
-			'box-shadow-blur-general',
-			'box-shadow-color-general',
-			'box-shadow-horizontal-general',
-			'box-shadow-spread-general',
+			'box-shadow-blur-xl',
+			'box-shadow-color-xl',
+			'box-shadow-horizontal-xl',
+			'box-shadow-spread-xl',
 			'box-shadow-status-hover',
-			'box-shadow-vertical-general',
+			'box-shadow-vertical-xl',
 		]);
 
 		expect(typographyAttributes).toStrictEqual(expectAttributes);
@@ -82,17 +82,17 @@ describe('BoxShadowControl', () => {
 		await page.keyboard.press('Enter');
 
 		const expectChanges = {
-			'box-shadow-blur-general': 10,
-			'box-shadow-horizontal-general': 30,
-			'box-shadow-spread-general': 60,
-			'box-shadow-vertical-general': 40,
+			'box-shadow-blur-xl': 10,
+			'box-shadow-horizontal-xl': 30,
+			'box-shadow-spread-xl': 60,
+			'box-shadow-vertical-xl': 40,
 		};
 
 		const boxShadowAttributes = await getAttributes([
-			'box-shadow-blur-general',
-			'box-shadow-horizontal-general',
-			'box-shadow-spread-general',
-			'box-shadow-vertical-general',
+			'box-shadow-blur-xl',
+			'box-shadow-horizontal-xl',
+			'box-shadow-spread-xl',
+			'box-shadow-vertical-xl',
 		]);
 
 		expect(boxShadowAttributes).toStrictEqual(expectChanges);
@@ -130,25 +130,25 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectBoxShadow = {
-			'box-shadow-blur-general': 0,
-			'box-shadow-blur-general-hover': undefined,
-			'box-shadow-horizontal-general': 0,
-			'box-shadow-horizontal-general-hover': undefined,
-			'box-shadow-spread-general': 0,
-			'box-shadow-spread-general-hover': undefined,
-			'box-shadow-vertical-general': 0,
-			'box-shadow-vertical-general-hover': undefined,
+			'box-shadow-blur-xl': 0,
+			'box-shadow-blur-xl-hover': undefined,
+			'box-shadow-horizontal-xl': 0,
+			'box-shadow-horizontal-xl-hover': undefined,
+			'box-shadow-spread-xl': 0,
+			'box-shadow-spread-xl-hover': undefined,
+			'box-shadow-vertical-xl': 0,
+			'box-shadow-vertical-xl-hover': undefined,
 		};
 
 		const boxShadowResult = await getAttributes([
-			'box-shadow-blur-general',
-			'box-shadow-blur-general-hover',
-			'box-shadow-horizontal-general',
-			'box-shadow-horizontal-general-hover',
-			'box-shadow-spread-general',
-			'box-shadow-spread-general-hover',
-			'box-shadow-vertical-general',
-			'box-shadow-vertical-general-hover',
+			'box-shadow-blur-xl',
+			'box-shadow-blur-xl-hover',
+			'box-shadow-horizontal-xl',
+			'box-shadow-horizontal-xl-hover',
+			'box-shadow-spread-xl',
+			'box-shadow-spread-xl-hover',
+			'box-shadow-vertical-xl',
+			'box-shadow-vertical-xl-hover',
 		]);
 
 		expect(boxShadowResult).toStrictEqual(expectBoxShadow);
@@ -175,21 +175,21 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectAttributes = {
-			'box-shadow-blur-general': 50,
-			'box-shadow-color-general': undefined,
-			'box-shadow-horizontal-general': 0,
-			'box-shadow-spread-general': 0,
+			'box-shadow-blur-xl': 50,
+			'box-shadow-color-xl': undefined,
+			'box-shadow-horizontal-xl': 0,
+			'box-shadow-spread-xl': 0,
 			'box-shadow-status-hover': true,
-			'box-shadow-vertical-general': 30,
+			'box-shadow-vertical-xl': 30,
 		};
 
 		const typographyAttributes = await getAttributes([
-			'box-shadow-blur-general',
-			'box-shadow-color-general',
-			'box-shadow-horizontal-general',
-			'box-shadow-spread-general',
+			'box-shadow-blur-xl',
+			'box-shadow-color-xl',
+			'box-shadow-horizontal-xl',
+			'box-shadow-spread-xl',
 			'box-shadow-status-hover',
-			'box-shadow-vertical-general',
+			'box-shadow-vertical-xl',
 		]);
 
 		expect(typographyAttributes).toStrictEqual(expectAttributes);

@@ -35,7 +35,7 @@ describe('DefaultStylesControl', () => {
 			);
 
 			const attributes = await getBlockAttributes();
-			const borderAttribute = attributes['border-style-general'];
+			const borderAttribute = attributes['border-style-xl'];
 
 			expect(borderAttribute).toStrictEqual(expectAttributes[i]);
 		}

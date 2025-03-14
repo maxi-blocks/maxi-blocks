@@ -86,23 +86,23 @@ describe('NumberCounterControl', () => {
 
 		// expect
 		const numberResult = await getAttributes([
-			'number-counter-width-general',
-			'number-counter-width-unit-general',
+			'number-counter-width-xl',
+			'number-counter-width-unit-xl',
 			'number-counter-duration',
 			'number-counter-end',
 			'number-counter-start',
 			'number-counter-stroke',
-			'number-counter-title-font-size-general',
+			'number-counter-title-font-size-xl',
 		]);
 
 		const expectAttributes = {
-			'number-counter-width-general': '31',
-			'number-counter-width-unit-general': '%',
+			'number-counter-width-xl': '31',
+			'number-counter-width-unit-xl': '%',
 			'number-counter-duration': 10,
 			'number-counter-end': 50,
 			'number-counter-start': 20,
 			'number-counter-stroke': 50,
-			'number-counter-title-font-size-general': 19,
+			'number-counter-title-font-size-xl': 19,
 		};
 
 		expect(numberResult).toStrictEqual(expectAttributes);
@@ -159,14 +159,14 @@ describe('NumberCounterControl', () => {
 
 		// expect
 		const colorResult = await getAttributes([
-			'number-counter-text-palette-color-general',
-			'number-counter-circle-bar-palette-color-general',
+			'number-counter-text-palette-color-xl',
+			'number-counter-circle-bar-palette-color-xl',
 			'number-counter-circle-background-palette-color',
 		]);
 
 		const expectedColorAttributes = {
-			'number-counter-text-palette-color-general': 4,
-			'number-counter-circle-bar-palette-color-general': 2,
+			'number-counter-text-palette-color-xl': 4,
+			'number-counter-circle-bar-palette-color-xl': 2,
 			'number-counter-circle-background-palette-color': 3,
 		};
 
@@ -181,7 +181,7 @@ describe('NumberCounterControl', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(100);
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
+		expect(await getAttributes('font-family-xl')).toStrictEqual(
 			'Montserrat'
 		);
 
@@ -238,7 +238,7 @@ describe('NumberCounterControl', () => {
 		);
 
 		expect(
-			await getAttributes('number-counter-width-auto-general')
+			await getAttributes('number-counter-width-auto-xl')
 		).toStrictEqual(true);
 
 		// responsive s

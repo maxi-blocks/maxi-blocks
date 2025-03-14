@@ -64,7 +64,7 @@ describe('Shape divider', () => {
 		await page.keyboard.type('88', { delay: 350 });
 
 		expect(
-			await getAttributes('shape-divider-top-opacity-general')
+			await getAttributes('shape-divider-top-opacity-xl')
 		).toStrictEqual(0.88);
 
 		await editColorControl({
@@ -77,7 +77,7 @@ describe('Shape divider', () => {
 		});
 
 		expect(
-			await getAttributes('shape-divider-top-palette-color-general')
+			await getAttributes('shape-divider-top-palette-color-xl')
 		).toStrictEqual(5);
 
 		await page.waitForTimeout(500);
@@ -91,7 +91,7 @@ describe('Shape divider', () => {
 		await page.keyboard.type('70', { delay: 350 });
 
 		expect(
-			await getAttributes('shape-divider-top-height-general')
+			await getAttributes('shape-divider-top-height-xl')
 		).toStrictEqual(70);
 
 		// Bottom shape
@@ -128,7 +128,7 @@ describe('Shape divider', () => {
 		await page.keyboard.type('44', { delay: 350 });
 
 		expect(
-			await getAttributes('shape-divider-bottom-opacity-general')
+			await getAttributes('shape-divider-bottom-opacity-xl')
 		).toStrictEqual(0.44);
 
 		await editColorControl({
@@ -141,7 +141,7 @@ describe('Shape divider', () => {
 		});
 
 		expect(
-			await getAttributes('shape-divider-bottom-palette-color-general')
+			await getAttributes('shape-divider-bottom-palette-color-xl')
 		).toStrictEqual(7);
 
 		// Divider height
@@ -154,7 +154,7 @@ describe('Shape divider', () => {
 		await page.keyboard.type('254', { delay: 350 });
 
 		expect(
-			await getAttributes('shape-divider-bottom-height-general')
+			await getAttributes('shape-divider-bottom-height-xl')
 		).toStrictEqual(254);
 	});
 	it('Checking the shape divider responsive', async () => {

@@ -39,7 +39,7 @@ describe('Divider alignment from Toolbar', () => {
 
 		await selector.select('vertical');
 
-		expect(await getAttributes('line-orientation-general')).toStrictEqual(
+		expect(await getAttributes('line-orientation-xl')).toStrictEqual(
 			'vertical'
 		);
 

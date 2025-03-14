@@ -40,25 +40,25 @@ describe('PositionControl', () => {
 		});
 
 		const expectPosition = {
-			'position-top-general': '56',
-			'position-bottom-general': '56',
-			'position-left-general': '56',
-			'position-right-general': '56',
-			'position-top-unit-general': '%',
-			'position-bottom-unit-general': '%',
-			'position-left-unit-general': '%',
-			'position-right-unit-general': '%',
+			'position-top-xl': '56',
+			'position-bottom-xl': '56',
+			'position-left-xl': '56',
+			'position-right-xl': '56',
+			'position-top-unit-xl': '%',
+			'position-bottom-unit-xl': '%',
+			'position-left-unit-xl': '%',
+			'position-right-unit-xl': '%',
 		};
 
 		const positionResult = await getAttributes([
-			'position-top-general',
-			'position-bottom-general',
-			'position-left-general',
-			'position-right-general',
-			'position-top-unit-general',
-			'position-bottom-unit-general',
-			'position-left-unit-general',
-			'position-right-unit-general',
+			'position-top-xl',
+			'position-bottom-xl',
+			'position-left-xl',
+			'position-right-xl',
+			'position-top-unit-xl',
+			'position-bottom-unit-xl',
+			'position-left-unit-xl',
+			'position-right-unit-xl',
 		]);
 
 		expect(positionResult).toStrictEqual(expectPosition);
@@ -73,7 +73,7 @@ describe('PositionControl', () => {
 			values: '56',
 		});
 
-		expect(await getAttributes('position-top-general')).toStrictEqual('56');
+		expect(await getAttributes('position-top-xl')).toStrictEqual('56');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('relative');
@@ -206,7 +206,7 @@ describe('PositionControl', () => {
 			values: '44',
 		});
 
-		expect(await getAttributes('position-top-general')).toStrictEqual('44');
+		expect(await getAttributes('position-top-xl')).toStrictEqual('44');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('sticky');
@@ -218,7 +218,7 @@ describe('PositionControl', () => {
 			values: '12',
 		});
 
-		expect(await getAttributes('position-top-general')).toStrictEqual('12');
+		expect(await getAttributes('position-top-xl')).toStrictEqual('12');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

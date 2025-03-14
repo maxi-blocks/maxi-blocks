@@ -38,9 +38,7 @@ describe('Text margin', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('66', { delay: 350 });
 
-		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
-			'66'
-		);
+		expect(await getAttributes('margin-bottom-xl')).toStrictEqual('66');
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'margin padding');

@@ -50,7 +50,7 @@ describe('ClipPathControl', () => {
 			click[1].click()
 		);
 
-		expect(await getAttributes('clip-path-general')).toStrictEqual(
+		expect(await getAttributes('clip-path-xl')).toStrictEqual(
 			'polygon(50% 0%, 0% 100%, 100% 100%)'
 		);
 
@@ -62,7 +62,7 @@ describe('ClipPathControl', () => {
 
 		await selectType(page, 'inset');
 
-		expect(await getAttributes('clip-path-general')).toStrictEqual(
+		expect(await getAttributes('clip-path-xl')).toStrictEqual(
 			'inset(15% 5% 15% 5%)'
 		);
 
@@ -97,7 +97,7 @@ describe('ClipPathControl', () => {
 			newNumber: '64',
 		});
 
-		expect(await getAttributes('clip-path-general')).toStrictEqual(
+		expect(await getAttributes('clip-path-xl')).toStrictEqual(
 			'inset(28px 10% 25px 64%)'
 		);
 

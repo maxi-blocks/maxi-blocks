@@ -39,13 +39,13 @@ describe('GradientControl', () => {
 		await selector.select('radial-gradient');
 
 		expect(
-			await getAttributes('button-background-gradient-general')
+			await getAttributes('button-background-gradient-xl')
 		).toStrictEqual(
 			'radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)'
 		);
 
 		expect(
-			await getAttributes('button-background-active-media-general')
+			await getAttributes('button-background-active-media-xl')
 		).toStrictEqual('gradient');
 	});
 });

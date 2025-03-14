@@ -31,7 +31,7 @@ describe('OpacityControl', () => {
 			newNumber: '19',
 		});
 
-		expect(await getAttributes('opacity-general')).toStrictEqual(0.19);
+		expect(await getAttributes('opacity-xl')).toStrictEqual(0.19);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 

@@ -35,7 +35,7 @@ describe('Text strikethrough', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-decoration-general')).toStrictEqual(
+		expect(await getAttributes('text-decoration-xl')).toStrictEqual(
 			'line-through'
 		);
 

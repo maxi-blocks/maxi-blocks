@@ -47,7 +47,7 @@ describe('TypographyControl', () => {
 		await page.keyboard.type('Montserrat', { delay: 350 });
 		await page.keyboard.press('Enter');
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
+		expect(await getAttributes('font-family-xl')).toStrictEqual(
 			'Montserrat'
 		);
 	});
@@ -119,9 +119,7 @@ describe('TypographyControl', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('color-general')).toStrictEqual(
-			'rgb(250,250,3)'
-		);
+		expect(await getAttributes('color-xl')).toStrictEqual('rgb(250,250,3)');
 
 		// Check responsive palette opacity
 		const accordionPanel = await openSidebarTab(
@@ -146,9 +144,7 @@ describe('TypographyControl', () => {
 			'typography'
 		);
 
-		expect(await getAttributes('palette-status-general')).toStrictEqual(
-			true
-		);
+		expect(await getAttributes('palette-status-xl')).toStrictEqual(true);
 
 		// s
 		await changeResponsive(page, 's');
@@ -209,29 +205,29 @@ describe('TypographyControl', () => {
 		await page.waitForTimeout(200);
 
 		const typographyResult = await getAttributes([
-			'font-style-general',
-			'font-weight-general',
-			'text-decoration-general',
-			'text-transform-general',
-			'text-orientation-general',
-			'text-direction-general',
-			'text-indent-general',
-			'white-space-general',
-			'word-spacing-general',
-			'bottom-gap-general',
+			'font-style-xl',
+			'font-weight-xl',
+			'text-decoration-xl',
+			'text-transform-xl',
+			'text-orientation-xl',
+			'text-direction-xl',
+			'text-indent-xl',
+			'white-space-xl',
+			'word-spacing-xl',
+			'bottom-gap-xl',
 		]);
 
 		const expectedAttributesTwo = {
-			'font-style-general': 'italic',
-			'font-weight-general': '300',
-			'text-decoration-general': 'overline',
-			'text-transform-general': 'capitalize',
-			'text-orientation-general': 'mixed',
-			'text-direction-general': 'ltr',
-			'text-indent-general': 44,
-			'white-space-general': 'pre',
-			'word-spacing-general': 20,
-			'bottom-gap-general': 15,
+			'font-style-xl': 'italic',
+			'font-weight-xl': '300',
+			'text-decoration-xl': 'overline',
+			'text-transform-xl': 'capitalize',
+			'text-orientation-xl': 'mixed',
+			'text-direction-xl': 'ltr',
+			'text-indent-xl': 44,
+			'white-space-xl': 'pre',
+			'word-spacing-xl': 20,
+			'bottom-gap-xl': 15,
 		};
 
 		expect(typographyResult).toStrictEqual(expectedAttributesTwo);

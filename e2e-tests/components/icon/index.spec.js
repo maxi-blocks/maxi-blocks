@@ -51,7 +51,7 @@ describe('Svg Icon Maxi default size', () => {
 
 		await page.waitForTimeout(300);
 
-		expect(await getAttributes('svg-width-general')).toStrictEqual('10');
+		expect(await getAttributes('svg-width-xl')).toStrictEqual('10');
 
 		await openSidebarTab(page, 'style', 'height width');
 
@@ -61,6 +61,6 @@ describe('Svg Icon Maxi default size', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('svg-width-general')).toStrictEqual('64');
+		expect(await getAttributes('svg-width-xl')).toStrictEqual('64');
 	});
 });

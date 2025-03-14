@@ -30,7 +30,7 @@ describe('Column pattern from Toolbar', () => {
 		);
 		await page.waitForSelector('.maxi-column-block');
 
-		expect(await getAttributes('row-pattern-general')).toStrictEqual('1');
+		expect(await getAttributes('row-pattern-xl')).toStrictEqual('1');
 
 		await page.waitForTimeout(500);
 		// toolbar patterns
@@ -46,7 +46,7 @@ describe('Column pattern from Toolbar', () => {
 			button => button[1].click()
 		);
 
-		expect(await getAttributes('row-pattern-general')).toStrictEqual('1-1');
+		expect(await getAttributes('row-pattern-xl')).toStrictEqual('1-1');
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'column picker');

@@ -31,7 +31,7 @@ describe('ZIndexControl', () => {
 			newNumber: '20',
 		});
 
-		expect(await getAttributes('z-index-general')).toStrictEqual(20);
+		expect(await getAttributes('z-index-xl')).toStrictEqual(20);
 
 		// check responsive origin
 		const responsiveResultOrigin = await addResponsiveTest({

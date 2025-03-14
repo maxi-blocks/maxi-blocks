@@ -2,7 +2,22 @@
 
 exports[`Custom-Css-Control Checking the custom-css 1`] = `"body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u{ flex-direction: column; background: red;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="xl"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="l"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u{ flex-direction: column; background: red;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::before{ background: red;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="xl"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="l"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::before{ background: red;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::after{ background: red;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="xl"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="l"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.group-maxi-1se8ef1z-u::after{ background: red;}"`;
 
-exports[`Custom-Css-Control Checking the custom-css Validation 1`] = `undefined`;
+exports[`Custom-Css-Control Checking the custom-css Validation 1`] = `
+{
+  "after group": {
+    "hover": "background: red",
+    "normal": "background: red",
+  },
+  "before group": {
+    "hover": "background: red",
+    "normal": "background: red",
+  },
+  "group": {
+    "hover": "background: red",
+    "normal": "background: red",
+  },
+}
+`;
 
 exports[`Custom-Css-Control Checking the custom-css Validation 2`] = `
 {

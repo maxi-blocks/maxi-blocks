@@ -42,7 +42,7 @@ describe('Text options', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('font-size-general')).toStrictEqual(19);
+		expect(await getAttributes('font-size-xl')).toStrictEqual(19);
 
 		// line height
 		await page.$eval(
@@ -53,7 +53,7 @@ describe('Text options', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('24', { delay: 350 });
 
-		expect(await getAttributes('line-height-general')).toStrictEqual(24);
+		expect(await getAttributes('line-height-xl')).toStrictEqual(24);
 
 		// letter spacing
 		await page.$eval(
@@ -64,7 +64,7 @@ describe('Text options', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('12', { delay: 350 });
 
-		expect(await getAttributes('letter-spacing-general')).toStrictEqual(12);
+		expect(await getAttributes('letter-spacing-xl')).toStrictEqual(12);
 
 		// font family
 		const fontFamily = await page.$(
@@ -75,9 +75,7 @@ describe('Text options', () => {
 		await page.keyboard.type('Lato', { delay: 350 });
 		await page.keyboard.press('Enter');
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
-			'Lato'
-		);
+		expect(await getAttributes('font-family-xl')).toStrictEqual('Lato');
 
 		// text alignment center
 		await page.$eval(
@@ -85,7 +83,7 @@ describe('Text options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+		expect(await getAttributes('text-alignment-xl')).toStrictEqual(
 			'center'
 		);
 
@@ -95,9 +93,7 @@ describe('Text options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
-			'right'
-		);
+		expect(await getAttributes('text-alignment-xl')).toStrictEqual('right');
 
 		// text alignment justify
 		await page.$eval(
@@ -105,7 +101,7 @@ describe('Text options', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+		expect(await getAttributes('text-alignment-xl')).toStrictEqual(
 			'justify'
 		);
 

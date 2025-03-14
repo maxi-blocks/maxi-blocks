@@ -32,11 +32,11 @@ describe('Responsive attributes mechanisms', () => {
 		await selector.select('solid');
 
 		const expectBorder = {
-			'border-style-general': 'solid',
-			'border-top-width-general': 2,
-			'border-right-width-general': 2,
-			'border-bottom-width-general': 2,
-			'border-left-width-general': 2,
+			'border-style-xl': 'solid',
+			'border-top-width-xl': 2,
+			'border-right-width-xl': 2,
+			'border-bottom-width-xl': 2,
+			'border-left-width-xl': 2,
 			'border-style-m': undefined,
 			'border-top-width-m': undefined,
 			'border-right-width-m': undefined,
@@ -45,11 +45,11 @@ describe('Responsive attributes mechanisms', () => {
 		};
 
 		const borderResult = await getAttributes([
-			'border-style-general',
-			'border-top-width-general',
-			'border-right-width-general',
-			'border-bottom-width-general',
-			'border-left-width-general',
+			'border-style-xl',
+			'border-top-width-xl',
+			'border-right-width-xl',
+			'border-bottom-width-xl',
+			'border-left-width-xl',
 			'border-style-m',
 			'border-top-width-m',
 			'border-right-width-m',
@@ -75,12 +75,10 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const firstExpect = {
-			'border-palette-status-general': false,
+			'border-palette-status-xl': false,
 		};
 
-		const firstResult = await getAttributes([
-			'border-palette-status-general',
-		]);
+		const firstResult = await getAttributes(['border-palette-status-xl']);
 
 		expect(firstResult).toStrictEqual(firstExpect);
 
@@ -90,12 +88,12 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const secondExpect = {
-			'border-palette-status-general': true,
+			'border-palette-status-xl': true,
 			'border-palette-status-m': undefined,
 		};
 
 		const secondResult = await getAttributes([
-			'border-palette-status-general',
+			'border-palette-status-xl',
 			'border-palette-status-m',
 		]);
 
@@ -112,13 +110,13 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectBorder = {
-			'border-style-general': 'solid',
-			'border-top-width-general': 2,
-			'border-right-width-general': 2,
-			'border-bottom-width-general': 2,
-			'border-left-width-general': 2,
-			'border-sync-width-general': 'all',
-			'border-unit-width-general': 'px',
+			'border-style-xl': 'solid',
+			'border-top-width-xl': 2,
+			'border-right-width-xl': 2,
+			'border-bottom-width-xl': 2,
+			'border-left-width-xl': 2,
+			'border-sync-width-xl': 'all',
+			'border-unit-width-xl': 'px',
 			'border-style-m': undefined,
 			'border-top-width-m': undefined,
 			'border-right-width-m': undefined,
@@ -129,13 +127,13 @@ describe('Responsive attributes mechanisms', () => {
 		};
 
 		const borderResult = await getAttributes([
-			'border-style-general',
-			'border-top-width-general',
-			'border-right-width-general',
-			'border-bottom-width-general',
-			'border-left-width-general',
-			'border-sync-width-general',
-			'border-unit-width-general',
+			'border-style-xl',
+			'border-top-width-xl',
+			'border-right-width-xl',
+			'border-bottom-width-xl',
+			'border-left-width-xl',
+			'border-sync-width-xl',
+			'border-unit-width-xl',
 			'border-style-m',
 			'border-top-width-m',
 			'border-right-width-m',
@@ -170,12 +168,12 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(300);
 
 		const expectMargin = {
-			'margin-top-general': '100',
+			'margin-top-xl': '100',
 			'margin-top-xxl': '100',
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-xl',
 			'margin-top-xxl',
 		]);
 
@@ -201,11 +199,11 @@ describe('Responsive attributes mechanisms', () => {
 			'border-left-width-xxl': 2,
 			'border-sync-width-xxl': 'all',
 			'border-unit-width-xxl': 'px',
-			'border-style-general': 'none',
-			'border-top-width-general': 2,
-			'border-right-width-general': 2,
-			'border-bottom-width-general': 2,
-			'border-left-width-general': 2,
+			'border-style-xl': 'none',
+			'border-top-width-xl': 2,
+			'border-right-width-xl': 2,
+			'border-bottom-width-xl': 2,
+			'border-left-width-xl': 2,
 		};
 
 		const borderResult = await getAttributes([
@@ -216,11 +214,11 @@ describe('Responsive attributes mechanisms', () => {
 			'border-left-width-xxl',
 			'border-sync-width-xxl',
 			'border-unit-width-xxl',
-			'border-style-general',
-			'border-top-width-general',
-			'border-right-width-general',
-			'border-bottom-width-general',
-			'border-left-width-general',
+			'border-style-xl',
+			'border-top-width-xl',
+			'border-right-width-xl',
+			'border-bottom-width-xl',
+			'border-left-width-xl',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -263,7 +261,7 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '20',
+			'margin-top-xl': '20',
 			'margin-top-xl': '20',
 			'margin-top-m': '20',
 		};
@@ -271,7 +269,7 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(300);
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-xl',
 			'margin-top-xl',
 			'margin-top-m',
 		]);
@@ -317,7 +315,7 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '20',
+			'margin-top-xl': '20',
 			'margin-top-xl': '20',
 			'margin-top-m': '20',
 		};
@@ -325,7 +323,7 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(300);
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-xl',
 			'margin-top-xl',
 			'margin-top-m',
 		]);
@@ -359,14 +357,14 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xxl': 'solid',
-			'border-style-general': 'dotted',
+			'border-style-xl': 'dotted',
 			'border-style-xl': 'dashed',
 			'border-style-m': 'dotted',
 		};
 
 		const borderResult = await getAttributes([
 			'border-style-xxl',
-			'border-style-general',
+			'border-style-xl',
 			'border-style-xl',
 			'border-style-m',
 		]);
@@ -436,13 +434,13 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectMargin = {
-			'margin-top-general': '10',
+			'margin-top-xl': '10',
 			'margin-top-xl': '20',
 			'margin-top-m': '10',
 		};
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-xl',
 			'margin-top-xl',
 			'margin-top-m',
 		]);
@@ -471,14 +469,14 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-general': '123',
+			'margin-top-xl': '123',
 			'margin-top-xxl': '123',
 		};
 
 		await page.waitForTimeout(300);
 
 		const marginResult = await getAttributes([
-			'margin-top-general',
+			'margin-top-xl',
 			'margin-top-xxl',
 		]);
 
@@ -497,14 +495,14 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('100', { delay: 300 });
 
 		const expectRadiusOnM = {
-			'border-top-left-radius-general': 100,
+			'border-top-left-radius-xl': 100,
 			'border-top-left-radius-m': undefined,
 		};
 
 		await page.waitForTimeout(500);
 
 		const radiusOnM = await getAttributes([
-			'border-top-left-radius-general',
+			'border-top-left-radius-xl',
 			'border-top-left-radius-m',
 		]);
 
@@ -523,7 +521,7 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('150', { delay: 300 });
 
 		const expectRadiusOnXl = {
-			'border-top-left-radius-general': 100,
+			'border-top-left-radius-xl': 100,
 			'border-top-left-radius-xl': 150,
 			'border-top-left-radius-m': 150,
 		};
@@ -531,7 +529,7 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const radiusOnXl = await getAttributes([
-			'border-top-left-radius-general',
+			'border-top-left-radius-xl',
 			'border-top-left-radius-m',
 			'border-top-left-radius-xl',
 		]);
@@ -545,7 +543,7 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectResetRadiusOnXl = {
-			'border-top-left-radius-general': 100,
+			'border-top-left-radius-xl': 100,
 			'border-top-left-radius-m': '',
 			'border-top-left-radius-xl': undefined,
 		};
@@ -553,7 +551,7 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const resetRadiusOnXl = await getAttributes([
-			'border-top-left-radius-general',
+			'border-top-left-radius-xl',
 			'border-top-left-radius-m',
 			'border-top-left-radius-xl',
 		]);
@@ -571,7 +569,7 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectResetRadiusOnM = {
-			'border-top-left-radius-general': undefined,
+			'border-top-left-radius-xl': undefined,
 			'border-top-left-radius-m': undefined,
 			'border-top-left-radius-xl': undefined,
 		};
@@ -579,7 +577,7 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const resetRadiusOnM = await getAttributes([
-			'border-top-left-radius-general',
+			'border-top-left-radius-xl',
 			'border-top-left-radius-m',
 			'border-top-left-radius-xl',
 		]);
@@ -613,12 +611,12 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectPaddingOnM = {
-			'button-padding-top-general': '10',
+			'button-padding-top-xl': '10',
 			'button-padding-top-xl': '10',
 		};
 
 		const paddingOnM = await getAttributes([
-			'button-padding-top-general',
+			'button-padding-top-xl',
 			'button-padding-top-xl',
 		]);
 
@@ -629,13 +627,13 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectPaddingOnXl = {
-			'button-padding-top-general': '10',
+			'button-padding-top-xl': '10',
 			'button-padding-top-xl': '10',
 			'button-padding-top-xxl': '23',
 		};
 
 		const paddingOnXl = await getAttributes([
-			'button-padding-top-general',
+			'button-padding-top-xl',
 			'button-padding-top-xl',
 			'button-padding-top-xxl',
 		]);
@@ -657,13 +655,13 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectPaddingAfterReset = {
-			'button-padding-top-general': '15',
+			'button-padding-top-xl': '15',
 			'button-padding-top-xl': '15',
 			'button-padding-top-xxl': '23',
 		};
 
 		const paddingAfterReset = await getAttributes([
-			'button-padding-top-general',
+			'button-padding-top-xl',
 			'button-padding-top-xl',
 			'button-padding-top-xxl',
 		]);
@@ -700,13 +698,13 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectPaddingOnXl = {
-			'padding-top-general': '10',
+			'padding-top-xl': '10',
 			'padding-top-xxl': '10',
 			'padding-top-xl': '10',
 		};
 
 		const paddingOnXl = await getAttributes([
-			'padding-top-general',
+			'padding-top-xl',
 			'padding-top-xxl',
 			'padding-top-xl',
 		]);
@@ -729,13 +727,13 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(300);
 
 		const expectPaddingOnXxl = {
-			'padding-top-general': '15',
+			'padding-top-xl': '15',
 			'padding-top-xl': '10',
 			'padding-top-xxl': '15',
 		};
 
 		const paddingOnXxl = await getAttributes([
-			'padding-top-general',
+			'padding-top-xl',
 			'padding-top-xl',
 			'padding-top-xxl',
 		]);

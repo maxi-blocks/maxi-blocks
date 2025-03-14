@@ -25,14 +25,12 @@ describe('OverflowControl', () => {
 
 		await selectorX[0].select('hidden');
 
-		expect(await getAttributes('overflow-x-general')).toStrictEqual(
-			'hidden'
-		);
+		expect(await getAttributes('overflow-x-xl')).toStrictEqual('hidden');
 
 		const selectorY = await page.$$('.maxi-overflow-control select');
 		await selectorY[1].select('auto');
 
-		expect(await getAttributes('overflow-y-general')).toStrictEqual('auto');
+		expect(await getAttributes('overflow-y-xl')).toStrictEqual('auto');
 	});
 
 	it('Checking the overflow responsive', async () => {

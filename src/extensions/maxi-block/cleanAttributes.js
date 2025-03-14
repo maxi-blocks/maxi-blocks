@@ -100,6 +100,7 @@ const flatWithGeneral = (
 		}
 
 		const breakpoint = getBreakpointFromAttribute(key);
+
 		const currentClientId = targetClientId ?? clientId;
 
 		if (prevSavedAttrsClientId === currentClientId) {
@@ -146,8 +147,9 @@ const flatWithGeneral = (
 							if (
 								breakpoint === attrBreakpoint ||
 								breakpoint === 'general'
-							)
+							) {
 								return;
+							}
 
 							const label = `${simpleLabel}-${breakpoint}`;
 
@@ -314,6 +316,20 @@ const flatWithGeneral = (
 							currentBpUnitValue,
 							previousUnitValue
 						);
+					}
+
+					// Special handling for margin and padding - always propagate changes down
+					const isMarginOrPadding =
+						simpleLabel.startsWith('margin-') ||
+						simpleLabel.startsWith('padding-');
+					if (isMarginOrPadding) {
+						result[bpKey] = value;
+						if (isUnitKey(key) && linkedValue !== undefined) {
+							result[bpValueKey] = linkedValue;
+						} else if (!isUnitKey(key) && unitValue) {
+							result[bpUnitKey] = unitValue;
+						}
+						return;
 					}
 
 					// Update if this breakpoint was inheriting the value we're changing
@@ -747,13 +763,11 @@ const cleanAttributes = ({
 	);
 
 	let result = { ...newAttributes };
-	console.log('result', result);
 
 	result = {
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
 	};
-	console.log('result after removeHoverSameAsNormal', result);
 	if (!containsBreakpoint) return result;
 
 	result = {
@@ -767,35 +781,53 @@ const cleanAttributes = ({
 			allowXXLOverGeneral
 		),
 	};
-	console.log('result after flatWithGeneral', result);
 	result = {
 		...result,
 		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
 	};
-	console.log('result after flatLowerAttr', result);
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
-	console.log('result after preserveBaseBreakpoint', result);
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);
 			const simpleLabel = getSimpleLabel(key, breakpoint);
-			const higherAttr = getLastBreakpointAttribute({
-				target: simpleLabel,
-				attributes,
-				breakpoint: breakpoints[breakpoints.indexOf(breakpoint) - 1],
-			});
 
-			return (
-				value !== attributes[key] &&
-				(isNil(higherAttr) || attributes[key] !== higherAttr)
+			// Get all related breakpoint attributes for this property
+			const relatedBreakpointAttrs = breakpoints.reduce((acc, bp) => {
+				const bpKey = getAttributeKey(
+					simpleLabel,
+					getIsHoverAttribute(key),
+					'',
+					bp
+				);
+				if (bpKey in result || bpKey in attributes) {
+					acc[bpKey] = result[bpKey] ?? attributes[bpKey];
+				}
+				return acc;
+			}, {});
+
+			// If this is a unit key, also include the linked value attributes
+			if (isUnitKey(key)) {
+				Object.keys(relatedBreakpointAttrs).forEach(bpKey => {
+					const valueBpKey = getValueKeyFromUnitKey(bpKey);
+					if (valueBpKey in result || valueBpKey in attributes) {
+						relatedBreakpointAttrs[valueBpKey] =
+							result[valueBpKey] ?? attributes[valueBpKey];
+					}
+				});
+			}
+
+			// Include all related breakpoint attributes if any have changed
+			const hasChanged = Object.entries(relatedBreakpointAttrs).some(
+				([attrKey, attrValue]) => attrValue !== attributes[attrKey]
 			);
+
+			return hasChanged;
 		}),
 		targetClientId ?? clientId
 	);
-	console.log('result after savePrevSavedAttrs', result);
 	return result;
 };
 

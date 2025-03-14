@@ -646,7 +646,7 @@ describe('FlexSettings', () => {
 					columnGapValue: 77,
 					columnGapUnit: 'em',
 				},
-				'general'
+				'xl'
 			)
 		).toBe(true);
 

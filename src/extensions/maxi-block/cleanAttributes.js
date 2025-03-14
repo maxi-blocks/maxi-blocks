@@ -747,11 +747,13 @@ const cleanAttributes = ({
 	);
 
 	let result = { ...newAttributes };
+	console.log('result', result);
 
 	result = {
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
 	};
+	console.log('result after removeHoverSameAsNormal', result);
 	if (!containsBreakpoint) return result;
 
 	result = {
@@ -765,14 +767,17 @@ const cleanAttributes = ({
 			allowXXLOverGeneral
 		),
 	};
+	console.log('result after flatWithGeneral', result);
 	result = {
 		...result,
 		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
 	};
+	console.log('result after flatLowerAttr', result);
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
+	console.log('result after preserveBaseBreakpoint', result);
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);
@@ -790,6 +795,7 @@ const cleanAttributes = ({
 		}),
 		targetClientId ?? clientId
 	);
+	console.log('result after savePrevSavedAttrs', result);
 	return result;
 };
 

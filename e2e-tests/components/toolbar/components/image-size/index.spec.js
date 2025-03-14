@@ -31,6 +31,6 @@ describe.skip('Image size', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('font-weight-general')).toStrictEqual(700);
+		expect(await getAttributes('font-weight-xl')).toStrictEqual(700);
 	});
 });

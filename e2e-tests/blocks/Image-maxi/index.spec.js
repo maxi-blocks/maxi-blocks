@@ -101,7 +101,7 @@ describe.skip('Image Maxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(200);
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
+		expect(await getAttributes('font-family-xl')).toStrictEqual(
 			'Montserrat'
 		);
 
@@ -113,9 +113,7 @@ describe.skip('Image Maxi', () => {
 			colorPalette: 4,
 		});
 
-		expect(await getAttributes('link-palette-color-general')).toStrictEqual(
-			4
-		);
+		expect(await getAttributes('link-palette-color-xl')).toStrictEqual(4);
 
 		// alignment
 		await accordionPanel.$$eval(
@@ -123,7 +121,7 @@ describe.skip('Image Maxi', () => {
 			alignment => alignment[1].click()
 		);
 
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+		expect(await getAttributes('text-alignment-xl')).toStrictEqual(
 			'center'
 		);
 
@@ -139,15 +137,15 @@ describe.skip('Image Maxi', () => {
 		});
 
 		const attributes = await getAttributes([
-			'font-size-general',
-			'line-height-general',
-			'letter-spacing-general',
+			'font-size-xl',
+			'line-height-xl',
+			'letter-spacing-xl',
 		]);
 
 		const expectedAttributesTwo = {
-			'font-size-general': 19,
-			'line-height-general': 4,
-			'letter-spacing-general': 11,
+			'font-size-xl': 19,
+			'line-height-xl': 4,
+			'letter-spacing-xl': 11,
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
@@ -167,17 +165,17 @@ describe.skip('Image Maxi', () => {
 		});
 
 		const result = await getAttributes([
-			'font-style-general',
-			'font-weight-general',
-			'text-decoration-general',
-			'text-transform-general',
+			'font-style-xl',
+			'font-weight-xl',
+			'text-decoration-xl',
+			'text-transform-xl',
 		]);
 
 		const expectedAttributes = {
-			'font-style-general': 'italic',
-			'font-weight-general': '300',
-			'text-decoration-general': 'overline',
-			'text-transform-general': 'capitalize',
+			'font-style-xl': 'italic',
+			'font-weight-xl': '300',
+			'text-decoration-xl': 'overline',
+			'text-transform-xl': 'capitalize',
 		};
 
 		expect(result).toStrictEqual(expectedAttributes);
@@ -212,7 +210,7 @@ describe.skip('Image Maxi', () => {
 			);
 			await page.waitForTimeout(200);
 
-			expect(await getAttributes('text-shadow-general')).toStrictEqual(
+			expect(await getAttributes('text-shadow-xl')).toStrictEqual(
 				setting
 			);
 		}
@@ -267,17 +265,17 @@ describe.skip('Image Maxi', () => {
 		});
 
 		const expectedValues = {
-			'link-palette-color-general': 2,
-			'link-hover-palette-color-general': 3,
-			'link-active-palette-color-general': 4,
-			'link-visited-palette-color-general': 5,
+			'link-palette-color-xl': 2,
+			'link-hover-palette-color-xl': 3,
+			'link-active-palette-color-xl': 4,
+			'link-visited-palette-color-xl': 5,
 		};
 
 		const linkAttributes = await getAttributes([
-			'link-palette-color-general',
-			'link-hover-palette-color-general',
-			'link-active-palette-color-general',
-			'link-visited-palette-color-general',
+			'link-palette-color-xl',
+			'link-hover-palette-color-xl',
+			'link-active-palette-color-xl',
+			'link-visited-palette-color-xl',
 		]);
 
 		expect(linkAttributes).toStrictEqual(expectedValues);
@@ -318,16 +316,14 @@ describe.skip('Image Maxi', () => {
 		);
 
 		expect(checkFrontend).toMatchSnapshot();
-		expect(await getAttributes('caption-gap-general')).toStrictEqual(5);
+		expect(await getAttributes('caption-gap-xl')).toStrictEqual(5);
 
 		const gapSelector = await page.$(
 			'.maxi-image-inspector__caption-gap select'
 		);
 
 		await gapSelector.select('px');
-		expect(await getAttributes('caption-gap-unit-general')).toStrictEqual(
-			'px'
-		);
+		expect(await getAttributes('caption-gap-unit-xl')).toStrictEqual('px');
 	});
 
 	it('Image alt tag', async () => {

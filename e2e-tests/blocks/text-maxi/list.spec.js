@@ -76,7 +76,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-indent-general')).toStrictEqual(31);
+		expect(await getAttributes('list-indent-xl')).toStrictEqual(31);
 
 		// List gap
 		await editAdvancedNumberControl({
@@ -87,7 +87,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-gap-general')).toStrictEqual(21);
+		expect(await getAttributes('list-gap-xl')).toStrictEqual(21);
 
 		// Paragraph spacing
 		await editAdvancedNumberControl({
@@ -100,9 +100,9 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(
-			await getAttributes('list-paragraph-spacing-general')
-		).toStrictEqual(44);
+		expect(await getAttributes('list-paragraph-spacing-xl')).toStrictEqual(
+			44
+		);
 
 		// Marker size
 		await editAdvancedNumberControl({
@@ -113,9 +113,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
-			11
-		);
+		expect(await getAttributes('list-marker-size-xl')).toStrictEqual(11);
 
 		// Marker indent
 		await editAdvancedNumberControl({
@@ -128,9 +126,9 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(
-			await getAttributes('list-marker-line-height-general')
-		).toStrictEqual(46);
+		expect(await getAttributes('list-marker-line-height-xl')).toStrictEqual(
+			46
+		);
 
 		// Text Position
 		const textPosition = await page.$(
@@ -140,7 +138,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-text-position-general')).toStrictEqual(
+		expect(await getAttributes('list-text-position-xl')).toStrictEqual(
 			'sub'
 		);
 	});
@@ -156,10 +154,8 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-indent-general')).toStrictEqual(3);
-		expect(await getAttributes('list-indent-unit-general')).toStrictEqual(
-			'em'
-		);
+		expect(await getAttributes('list-indent-xl')).toStrictEqual(3);
+		expect(await getAttributes('list-indent-unit-xl')).toStrictEqual('em');
 
 		// List gap
 		await editAdvancedNumberControl({
@@ -171,8 +167,8 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-gap-general')).toStrictEqual(21);
-		expect(await getAttributes('list-gap-unit-general')).toStrictEqual('%');
+		expect(await getAttributes('list-gap-xl')).toStrictEqual(21);
+		expect(await getAttributes('list-gap-unit-xl')).toStrictEqual('%');
 
 		// Paragraph spacing
 		await editAdvancedNumberControl({
@@ -186,11 +182,11 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
+		expect(await getAttributes('list-paragraph-spacing-xl')).toStrictEqual(
+			44
+		);
 		expect(
-			await getAttributes('list-paragraph-spacing-general')
-		).toStrictEqual(44);
-		expect(
-			await getAttributes('list-paragraph-spacing-unit-general')
+			await getAttributes('list-paragraph-spacing-unit-xl')
 		).toStrictEqual('px');
 
 		// Marker size
@@ -203,12 +199,10 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
-			11
+		expect(await getAttributes('list-marker-size-xl')).toStrictEqual(11);
+		expect(await getAttributes('list-marker-size-unit-xl')).toStrictEqual(
+			'px'
 		);
-		expect(
-			await getAttributes('list-marker-size-unit-general')
-		).toStrictEqual('px');
 
 		// Marker indent
 		await editAdvancedNumberControl({
@@ -222,11 +216,11 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
+		expect(await getAttributes('list-marker-line-height-xl')).toStrictEqual(
+			16
+		);
 		expect(
-			await getAttributes('list-marker-line-height-general')
-		).toStrictEqual(16);
-		expect(
-			await getAttributes('list-marker-line-height-unit-general')
+			await getAttributes('list-marker-line-height-unit-xl')
 		).toStrictEqual('vw');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -257,7 +251,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-indent-general')).toStrictEqual(31);
+		expect(await getAttributes('list-indent-xl')).toStrictEqual(31);
 
 		// List gap
 		await editAdvancedNumberControl({
@@ -268,7 +262,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-gap-general')).toStrictEqual(21);
+		expect(await getAttributes('list-gap-xl')).toStrictEqual(21);
 
 		// Paragraph spacing
 		await editAdvancedNumberControl({
@@ -281,9 +275,9 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(
-			await getAttributes('list-paragraph-spacing-general')
-		).toStrictEqual(44);
+		expect(await getAttributes('list-paragraph-spacing-xl')).toStrictEqual(
+			44
+		);
 
 		// Marker size
 		await editAdvancedNumberControl({
@@ -294,9 +288,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
-			11
-		);
+		expect(await getAttributes('list-marker-size-xl')).toStrictEqual(11);
 
 		// Marker indent
 		await editAdvancedNumberControl({
@@ -309,9 +301,9 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(
-			await getAttributes('list-marker-line-height-general')
-		).toStrictEqual(46);
+		expect(await getAttributes('list-marker-line-height-xl')).toStrictEqual(
+			46
+		);
 
 		// Text Position
 		const textPosition = await page.$(
@@ -321,7 +313,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-text-position-general')).toStrictEqual(
+		expect(await getAttributes('list-text-position-xl')).toStrictEqual(
 			'sub'
 		);
 	});
@@ -512,9 +504,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
-			40
-		);
+		expect(await getAttributes('list-marker-indent-xl')).toStrictEqual(40);
 
 		await page.waitForTimeout(500);
 
@@ -527,7 +517,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
+		expect(await getAttributes('list-indent-xl')).toStrictEqual(23);
 
 		// Check styles on rtl
 		await openSidebarTab(page, 'style', 'typography');
@@ -541,9 +531,7 @@ describe('List in Text-maxi', () => {
 
 		page.waitForTimeout(500);
 
-		expect(await getAttributes('text-direction-general')).toStrictEqual(
-			'rtl'
-		);
+		expect(await getAttributes('text-direction-xl')).toStrictEqual('rtl');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -583,9 +571,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
-			4
-		);
+		expect(await getAttributes('list-marker-size-xl')).toStrictEqual(4);
 
 		// Change marker color
 		await editColorControl({
@@ -606,9 +592,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
-			10
-		);
+		expect(await getAttributes('list-marker-indent-xl')).toStrictEqual(10);
 
 		// Change text indent
 		await editAdvancedNumberControl({
@@ -619,7 +603,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
+		expect(await getAttributes('list-indent-xl')).toStrictEqual(23);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
@@ -629,9 +613,9 @@ describe('List in Text-maxi', () => {
 		);
 		await textStylePosition.select('outside');
 
-		expect(
-			await getAttributes('list-style-position-general')
-		).toStrictEqual('outside');
+		expect(await getAttributes('list-style-position-xl')).toStrictEqual(
+			'outside'
+		);
 
 		// Change marker height
 		await editAdvancedNumberControl({
@@ -642,9 +626,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-height-general')).toStrictEqual(
-			20
-		);
+		expect(await getAttributes('list-marker-height-xl')).toStrictEqual(20);
 
 		await page.waitForTimeout(500);
 
@@ -659,9 +641,9 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(
-			await getAttributes('list-marker-line-height-general')
-		).toStrictEqual(20);
+		expect(await getAttributes('list-marker-line-height-xl')).toStrictEqual(
+			20
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -679,9 +661,7 @@ describe('List in Text-maxi', () => {
 
 		page.waitForTimeout(500);
 
-		expect(await getAttributes('text-direction-general')).toStrictEqual(
-			'rtl'
-		);
+		expect(await getAttributes('text-direction-xl')).toStrictEqual('rtl');
 
 		await openSidebarTab(page, 'style', 'list options');
 
@@ -697,12 +677,10 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
-			40
+		expect(await getAttributes('list-marker-indent-xl')).toStrictEqual(40);
+		expect(await getAttributes('list-marker-indent-unit-xl')).toStrictEqual(
+			'px'
 		);
-		expect(
-			await getAttributes('list-marker-indent-unit-general')
-		).toStrictEqual('px');
 
 		// Change text indent
 		await editAdvancedNumberControl({
@@ -713,7 +691,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
+		expect(await getAttributes('list-indent-xl')).toStrictEqual(23);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -741,7 +719,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
+		expect(await getAttributes('list-indent-xl')).toStrictEqual(23);
 
 		// Change marker indent
 		await editAdvancedNumberControl({
@@ -752,9 +730,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
-			40
-		);
+		expect(await getAttributes('list-marker-indent-xl')).toStrictEqual(40);
 
 		// Change marker size
 		await editAdvancedNumberControl({
@@ -765,9 +741,7 @@ describe('List in Text-maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
-			4
-		);
+		expect(await getAttributes('list-marker-size-xl')).toStrictEqual(4);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -789,10 +763,10 @@ describe('List in Text-maxi', () => {
 		await page.waitForTimeout(500);
 
 		expect(
-			await getAttributes('list-marker-vertical-offset-general')
+			await getAttributes('list-marker-vertical-offset-xl')
 		).toStrictEqual(20);
 		expect(
-			await getAttributes('list-marker-vertical-offset-unit-general')
+			await getAttributes('list-marker-vertical-offset-unit-xl')
 		).toStrictEqual('em');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

@@ -5,36 +5,29 @@ exports[`Divider Maxi hover simple actions Divider shadow 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "divider-box-shadow-blur-general": 44,
-      "divider-box-shadow-blur-unit-general": "px",
       "divider-box-shadow-blur-unit-xl": "px",
       "divider-box-shadow-blur-xl": 44,
-      "divider-box-shadow-horizontal-general": 22,
-      "divider-box-shadow-horizontal-unit-general": "px",
       "divider-box-shadow-horizontal-unit-xl": "px",
       "divider-box-shadow-horizontal-xl": 22,
-      "divider-box-shadow-inset-general": false,
       "divider-box-shadow-inset-xl": false,
-      "divider-box-shadow-palette-color-general": 8,
       "divider-box-shadow-palette-color-xl": 8,
-      "divider-box-shadow-palette-opacity-general": 0.11,
       "divider-box-shadow-palette-opacity-xl": 0.11,
-      "divider-box-shadow-palette-sc-status-general": false,
       "divider-box-shadow-palette-sc-status-xl": false,
-      "divider-box-shadow-palette-status-general": true,
       "divider-box-shadow-palette-status-xl": true,
-      "divider-box-shadow-spread-general": 55,
-      "divider-box-shadow-spread-unit-general": "px",
       "divider-box-shadow-spread-unit-xl": "px",
       "divider-box-shadow-spread-xl": 55,
-      "divider-box-shadow-vertical-general": 33,
-      "divider-box-shadow-vertical-unit-general": "px",
       "divider-box-shadow-vertical-unit-xl": "px",
       "divider-box-shadow-vertical-xl": 33,
     },
     "css": {
       "general": {
         "breakpoint": null,
+        "styles": {
+          "box-shadow": "0px 0px 0px 0px rgba(var(--maxi-light-color-undefined),1)",
+        },
+      },
+      "xl": {
+        "breakpoint": 1920,
         "styles": {
           "box-shadow": "22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11)",
         },
@@ -59,7 +52,7 @@ exports[`Divider Maxi hover simple actions Divider shadow 1`] = `
 ]
 `;
 
-exports[`Divider Maxi hover simple actions Divider shadow 2`] = `" body.maxi-blocks--active #divider-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-divider-block__divider { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11);}"`;
+exports[`Divider Maxi hover simple actions Divider shadow 2`] = `" body.maxi-blocks--active #divider-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-divider-block__divider { box-shadow: 0px 0px 0px 0px rgba(var(--maxi-light-color-undefined),1);}@media screen and (max-width: 1920px) { body.maxi-blocks--active #divider-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-divider-block__divider { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11);}}"`;
 
 exports[`Divider Maxi hover simple actions Divider shadow 3`] = `"body.maxi-blocks--active #divider-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-divider-block__divider { transition: all 0s ease 0s, box-shadow 0.3s ease 0s;}"`;
 
@@ -70,20 +63,12 @@ exports[`Divider Maxi hover simple actions Line settings 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "divider-border-palette-color-general": 8,
       "divider-border-palette-color-xl": 8,
-      "divider-border-palette-opacity-general": 0.5,
       "divider-border-palette-opacity-xl": 0.5,
-      "divider-border-palette-sc-status-general": false,
       "divider-border-palette-sc-status-xl": false,
-      "divider-border-palette-status-general": true,
       "divider-border-palette-status-xl": true,
-      "divider-border-style-general": "dashed",
       "divider-border-style-xl": "dashed",
-      "divider-border-top-width-general": 22,
       "divider-border-top-width-xl": 22,
-      "divider-width-general": 11,
-      "divider-width-unit-general": "%",
       "divider-width-xl": 11,
     },
     "css": {
@@ -95,7 +80,13 @@ exports[`Divider Maxi hover simple actions Line settings 1`] = `
           "border-top-style": "dashed",
           "border-top-width": "22px",
           "height": "22px",
-          "width": "11%",
+          "width": "11px",
+        },
+      },
+      "xxl": {
+        "breakpoint": 1921,
+        "styles": {
+          "border-top-style": "solid",
         },
       },
     },
@@ -117,7 +108,7 @@ exports[`Divider Maxi hover simple actions Line settings 1`] = `
 ]
 `;
 
-exports[`Divider Maxi hover simple actions Line settings 2`] = `" body.maxi-blocks--active #divider-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
+exports[`Divider Maxi hover simple actions Line settings 2`] = `" body.maxi-blocks--active #divider-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-divider-block__divider { width: 11px; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}@media screen and (min-width: 1922px) { body.maxi-blocks--active #divider-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-divider-block__divider { border-top-style: solid;}}"`;
 
 exports[`Divider Maxi hover simple actions Line settings 3`] = `"body.maxi-blocks--active #divider-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-divider-block__divider { transition: all 0s ease 0s, border-color 0.3s ease 0s, border-top-style 0.3s ease 0s, border-right-style 0.3s ease 0s, border-top-width 0.3s ease 0s, height 0.3s ease 0s, width 0.3s ease 0s;}"`;
 

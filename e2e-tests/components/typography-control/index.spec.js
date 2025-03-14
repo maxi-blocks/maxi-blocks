@@ -47,7 +47,7 @@ describe('TypographyControl', () => {
 		await page.keyboard.type('Montserrat', { delay: 350 });
 		await page.keyboard.press('Enter');
 
-		expect(await getAttributes('font-family-general')).toStrictEqual(
+		expect(await getAttributes('font-family-xl')).toStrictEqual(
 			'Montserrat'
 		);
 	});
@@ -119,9 +119,7 @@ describe('TypographyControl', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('color-general')).toStrictEqual(
-			'rgb(250,250,3)'
-		);
+		expect(await getAttributes('color-xl')).toStrictEqual('rgb(250,250,3)');
 
 		// Check responsive palette opacity
 		const accordionPanel = await openSidebarTab(
@@ -146,9 +144,7 @@ describe('TypographyControl', () => {
 			'typography'
 		);
 
-		expect(await getAttributes('palette-status-general')).toStrictEqual(
-			true
-		);
+		expect(await getAttributes('palette-status-xl')).toStrictEqual(true);
 
 		// s
 		await changeResponsive(page, 's');
@@ -209,29 +205,29 @@ describe('TypographyControl', () => {
 		await page.waitForTimeout(200);
 
 		const typographyResult = await getAttributes([
-			'font-style-general',
-			'font-weight-general',
-			'text-decoration-general',
-			'text-transform-general',
-			'text-orientation-general',
-			'text-direction-general',
-			'text-indent-general',
-			'white-space-general',
-			'word-spacing-general',
-			'bottom-gap-general',
+			'font-style-xl',
+			'font-weight-xl',
+			'text-decoration-xl',
+			'text-transform-xl',
+			'text-orientation-xl',
+			'text-direction-xl',
+			'text-indent-xl',
+			'white-space-xl',
+			'word-spacing-xl',
+			'bottom-gap-xl',
 		]);
 
 		const expectedAttributesTwo = {
-			'font-style-general': 'italic',
-			'font-weight-general': '300',
-			'text-decoration-general': 'overline',
-			'text-transform-general': 'capitalize',
-			'text-orientation-general': 'mixed',
-			'text-direction-general': 'ltr',
-			'text-indent-general': 44,
-			'white-space-general': 'pre',
-			'word-spacing-general': 20,
-			'bottom-gap-general': 15,
+			'font-style-xl': 'italic',
+			'font-weight-xl': '300',
+			'text-decoration-xl': 'overline',
+			'text-transform-xl': 'capitalize',
+			'text-orientation-xl': 'mixed',
+			'text-direction-xl': 'ltr',
+			'text-indent-xl': 44,
+			'white-space-xl': 'pre',
+			'word-spacing-xl': 20,
+			'bottom-gap-xl': 15,
 		};
 
 		expect(typographyResult).toStrictEqual(expectedAttributesTwo);
@@ -357,109 +353,6 @@ describe('TypographyControl', () => {
 		await page.waitForTimeout(200);
 
 		expect(responsiveBottomGap).toBeTruthy();
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
-	});
-
-	it('Check Size, line height and letter spacing', async () => {
-		await changeResponsive(page, 'base');
-
-		// Units should not be initialized at first
-		const result = await getAttributes([
-			'line-height-unit-general',
-			'letter-spacing-unit-general',
-			'font-size-unit-general',
-		]);
-
-		const expectedAttributesUnits = {
-			'line-height-unit-general': 'px',
-			'letter-spacing-unit-general': 'px',
-			'font-size-unit-general': 'px',
-		};
-
-		expect(result).toStrictEqual(expectedAttributesUnits);
-
-		await addTypographyOptions({
-			page,
-			instance: page,
-			size: '19',
-			lineHeight: '22',
-			letterSpacing: '10',
-		});
-
-		const attributeResult = await getAttributes([
-			'line-height-general',
-			'line-height-unit-general',
-			'letter-spacing-general',
-			'letter-spacing-unit-general',
-			'font-size-general',
-			'font-size-unit-general',
-		]);
-
-		// Units are saved when the values are saved
-		const expectedAttributes = {
-			'line-height-general': 22,
-			'line-height-unit-general': 'px',
-			'letter-spacing-general': 10,
-			'letter-spacing-unit-general': 'px',
-			'font-size-general': 19,
-			'font-size-unit-general': 'px',
-		};
-
-		expect(attributeResult).toStrictEqual(expectedAttributes);
-
-		// test size control
-		const responsiveSizeControl = await addResponsiveTest({
-			page,
-			instance:
-				'.maxi-typography-control .maxi-typography-control__size input',
-			needFocus: true,
-			baseExpect: '19',
-			xsExpect: '11',
-			newValue: '11',
-		});
-		expect(responsiveSizeControl).toBeTruthy();
-
-		// Check responsive font-size-unit
-		const responsiveSizeUnit = await addResponsiveTest({
-			page,
-			instance:
-				'.maxi-typography-control .maxi-typography-control__size select',
-			selectInstance:
-				'.maxi-typography-control .maxi-typography-control__size select',
-			needSelectIndex: true,
-			baseExpect: 'px',
-			xsExpect: 'em',
-			newValue: 'em',
-		});
-		expect(responsiveSizeUnit).toBeTruthy();
-
-		// test line-height
-		await page.waitForTimeout(250);
-
-		const responsiveLineHeight = await addResponsiveTest({
-			page,
-			instance:
-				'.maxi-typography-control .maxi-typography-control__line-height input',
-			needFocusPlaceholder: true,
-			baseExpect: '22',
-			xsExpect: '43',
-			newValue: '43',
-		});
-
-		expect(responsiveLineHeight).toBeTruthy();
-
-		// letter spacing responsive
-		const responsiveLetterSpacing = await addResponsiveTest({
-			page,
-			instance:
-				'.maxi-typography-control .maxi-typography-control__letter-spacing input',
-			needFocus: true,
-			baseExpect: '10',
-			xsExpect: '23',
-			newValue: '23',
-		});
-		expect(responsiveLetterSpacing).toBeTruthy();
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

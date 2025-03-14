@@ -110,16 +110,16 @@ describe('Button Maxi', () => {
 		);
 
 		const attributes = await getAttributes([
-			'icon-width-general',
-			'icon-stroke-general',
-			'icon-spacing-general',
+			'icon-width-xl',
+			'icon-stroke-xl',
+			'icon-spacing-xl',
 			'icon-position',
 		]);
 
 		const expectedAttributesTwo = {
-			'icon-width-general': '343',
-			'icon-stroke-general': 2,
-			'icon-spacing-general': 20,
+			'icon-width-xl': '343',
+			'icon-stroke-xl': 3,
+			'icon-spacing-xl': 20,
 			'icon-position': 'bottom',
 		};
 
@@ -154,7 +154,7 @@ describe('Button Maxi', () => {
 		});
 
 		expect(
-			await getAttributes('icon-border-palette-color-general')
+			await getAttributes('icon-border-palette-color-xl')
 		).toStrictEqual(6);
 
 		// border
@@ -163,7 +163,7 @@ describe('Button Maxi', () => {
 			button => button[2].click()
 		);
 
-		expect(await getAttributes('icon-border-style-general')).toStrictEqual(
+		expect(await getAttributes('icon-border-style-xl')).toStrictEqual(
 			'dashed'
 		);
 
@@ -176,7 +176,7 @@ describe('Button Maxi', () => {
 		});
 
 		expect(
-			await getAttributes('icon-border-palette-color-general')
+			await getAttributes('icon-border-palette-color-xl')
 		).toStrictEqual(4);
 
 		// border width
@@ -189,7 +189,7 @@ describe('Button Maxi', () => {
 		await page.keyboard.type('59', { delay: 350 });
 
 		expect(
-			await getAttributes('icon-border-bottom-width-general')
+			await getAttributes('icon-border-bottom-width-xl')
 		).toStrictEqual(59);
 
 		// check border radius
@@ -202,7 +202,7 @@ describe('Button Maxi', () => {
 		await page.keyboard.type('26', { delay: 350 });
 
 		expect(
-			await getAttributes('icon-border-bottom-right-radius-general')
+			await getAttributes('icon-border-bottom-right-radius-xl')
 		).toStrictEqual(26);
 
 		// icon padding
@@ -214,9 +214,9 @@ describe('Button Maxi', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('33', { delay: 350 });
 
-		expect(
-			await getAttributes('icon-padding-bottom-general')
-		).toStrictEqual('33');
+		expect(await getAttributes('icon-padding-bottom-xl')).toStrictEqual(
+			'33'
+		);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -248,12 +248,8 @@ describe('Button Maxi', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('4', { delay: 350 });
 
-		expect(await getAttributes('icon-stroke-general-hover')).toStrictEqual(
-			4
-		);
-		expect(await getAttributes('icon-width-general-hover')).toStrictEqual(
-			'245'
-		);
+		expect(await getAttributes('icon-stroke-xl-hover')).toStrictEqual(4);
+		expect(await getAttributes('icon-width-xl-hover')).toStrictEqual('245');
 
 		// select border
 		await page.$eval('button.maxi-tabs-control__button-border', button =>
@@ -265,9 +261,9 @@ describe('Button Maxi', () => {
 			button => button[3].click()
 		);
 
-		expect(
-			await getAttributes('icon-border-style-general-hover')
-		).toStrictEqual('dotted');
+		expect(await getAttributes('icon-border-style-xl-hover')).toStrictEqual(
+			'dotted'
+		);
 
 		// border color
 		await editColorControl({
@@ -278,7 +274,7 @@ describe('Button Maxi', () => {
 		});
 
 		expect(
-			await getAttributes('icon-border-palette-color-general-hover')
+			await getAttributes('icon-border-palette-color-xl-hover')
 		).toStrictEqual(5);
 
 		// border width
@@ -291,7 +287,7 @@ describe('Button Maxi', () => {
 		await page.keyboard.type('70', { delay: 350 });
 
 		expect(
-			await getAttributes('icon-border-bottom-width-general-hover')
+			await getAttributes('icon-border-bottom-width-xl-hover')
 		).toStrictEqual(70);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();

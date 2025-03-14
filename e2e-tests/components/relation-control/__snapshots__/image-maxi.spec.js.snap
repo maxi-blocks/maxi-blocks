@@ -5,12 +5,11 @@ exports[`Image Maxi hover simple actions Alignment 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "alignment-general": "right",
       "alignment-xl": "right",
     },
     "css": {
-      "general": {
-        "breakpoint": null,
+      "xl": {
+        "breakpoint": 1920,
         "styles": {
           "justify-content": "flex-end",
         },
@@ -34,4 +33,4 @@ exports[`Image Maxi hover simple actions Alignment 1`] = `
 ]
 `;
 
-exports[`Image Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #image-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-image-block-wrapper { justify-content: flex-end;}"`;
+exports[`Image Maxi hover simple actions Alignment 2`] = `"@media screen and (max-width: 1920px) { body.maxi-blocks--active #image-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-image-block-wrapper { justify-content: flex-end;}}"`;

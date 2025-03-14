@@ -59,13 +59,13 @@ const attributes = {
 	},
 	...{
 		...attributesData.typography,
-		'line-height-unit-general': {
-			type: 'string',
-			default: '%',
-		},
 		'palette-color-general': {
 			type: 'number',
 			default: 1,
+		},
+		'line-height-unit-general': {
+			type: 'string',
+			default: '%',
 		},
 	},
 	...attributesData.typographyHover,

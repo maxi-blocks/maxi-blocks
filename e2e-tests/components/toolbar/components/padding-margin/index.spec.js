@@ -48,9 +48,9 @@ describe('Padding from Toolbar', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('123', { delay: 350 });
 
-		expect(
-			await getAttributes('icon-padding-bottom-general')
-		).toStrictEqual('123');
+		expect(await getAttributes('icon-padding-bottom-xl')).toStrictEqual(
+			'123'
+		);
 
 		// Check changes in sidebar
 

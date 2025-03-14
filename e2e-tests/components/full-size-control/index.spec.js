@@ -31,7 +31,7 @@ describe('FullSizeControl', () => {
 			use => use.click()
 		);
 
-		expect(await getAttributes('full-width-general')).toStrictEqual(true);
+		expect(await getAttributes('full-width-xl')).toStrictEqual(true);
 
 		const inputs = await accordionPanel.$(
 			'.maxi-full-size-control .maxi-full-size-control__height .maxi-advanced-number-control__value'
@@ -97,8 +97,8 @@ describe('FullSizeControl', () => {
 		await selectorHeight.select('vh');
 		await selectorWidth.select('vh');
 
-		expect(await getAttributes('height-unit-general')).toStrictEqual('vh');
-		expect(await getAttributes('min-width-unit-general')).toStrictEqual('');
+		expect(await getAttributes('height-unit-xl')).toStrictEqual('vh');
+		expect(await getAttributes('min-width-unit-xl')).toStrictEqual('');
 
 		const selector = await page.$$(
 			'.maxi-full-size-control .maxi-dimensions-control__units select'
@@ -111,15 +111,15 @@ describe('FullSizeControl', () => {
 		}
 
 		const expectSize = {
-			'max-height-unit-general': 'em',
-			'min-height-unit-general': 'em',
-			'min-width-unit-general': 'em',
+			'max-height-unit-xl': 'em',
+			'min-height-unit-xl': 'em',
+			'min-width-unit-xl': 'em',
 		};
 
 		const result = await getAttributes([
-			'max-height-unit-general',
-			'min-height-unit-general',
-			'min-width-unit-general',
+			'max-height-unit-xl',
+			'min-height-unit-xl',
+			'min-width-unit-xl',
 		]);
 
 		expect(result).toStrictEqual(expectSize);
@@ -156,7 +156,7 @@ describe('FullSizeControl', () => {
 		);
 
 		// forceAspectRatioInput
-		expect(await getAttributes('force-aspect-ratio-general')).toStrictEqual(
+		expect(await getAttributes('force-aspect-ratio-xl')).toStrictEqual(
 			true
 		);
 

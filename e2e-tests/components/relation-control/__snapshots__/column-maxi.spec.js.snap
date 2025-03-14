@@ -5,9 +5,7 @@ exports[`Column Maxi hover simple actions Column size 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "column-size-general": 50,
       "column-size-xl": 50,
-      "justify-content-general": "space-between",
       "justify-content-xl": "space-between",
     },
     "css": {

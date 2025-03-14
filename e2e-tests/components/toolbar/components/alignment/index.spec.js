@@ -62,16 +62,14 @@ describe('AlignmentControl', () => {
 			await changeAlignment(page, i !== 3 ? i + 1 : 0);
 
 			const attributes = await getBlockAttributes();
-			const attribute = attributes['text-alignment-general'];
+			const attribute = attributes['text-alignment-xl'];
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
 	});
 
 	it('Checking alignment in toolbar responsive', async () => {
 		// check general
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
-			'left'
-		);
+		expect(await getAttributes('text-alignment-xl')).toStrictEqual('left');
 
 		// responsive s
 		await changeResponsive(page, 's');

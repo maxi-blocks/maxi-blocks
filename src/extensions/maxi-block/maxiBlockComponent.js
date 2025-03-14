@@ -975,14 +975,6 @@ class MaxiBlockComponent extends Component {
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		const isBlockCopied =
-			!select('maxiBlocks/blocks').getIsNewBlock(
-				this.props.attributes.uniqueID
-			) &&
-			select('maxiBlocks/blocks')
-				.getLastInsertedBlocks()
-				.includes(this.props.clientId);
-
 		if (!getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
@@ -1482,6 +1474,7 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				uniqueID
 			);
+
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
 		}
 

@@ -5,13 +5,9 @@ exports[`Button Maxi hover simple actions Button background 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "button-background-palette-color-general": 8,
       "button-background-palette-color-xl": 8,
-      "button-background-palette-opacity-general": 0.5,
       "button-background-palette-opacity-xl": 0.5,
-      "button-background-palette-sc-status-general": false,
       "button-background-palette-sc-status-xl": false,
-      "button-background-palette-status-general": true,
       "button-background-palette-status-xl": true,
     },
     "css": {
@@ -52,13 +48,9 @@ exports[`Button Maxi hover simple actions Button background and shadow 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "button-background-palette-color-general": 8,
       "button-background-palette-color-xl": 8,
-      "button-background-palette-opacity-general": 0.5,
       "button-background-palette-opacity-xl": 0.5,
-      "button-background-palette-sc-status-general": false,
       "button-background-palette-sc-status-xl": false,
-      "button-background-palette-status-general": true,
       "button-background-palette-status-xl": true,
     },
     "css": {
@@ -88,27 +80,15 @@ exports[`Button Maxi hover simple actions Button background and shadow 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "button-box-shadow-blur-general": 50,
-      "button-box-shadow-blur-unit-general": "px",
       "button-box-shadow-blur-unit-xl": "px",
       "button-box-shadow-blur-xl": 50,
-      "button-box-shadow-horizontal-general": 0,
-      "button-box-shadow-horizontal-unit-general": "px",
       "button-box-shadow-horizontal-unit-xl": "px",
       "button-box-shadow-horizontal-xl": 0,
-      "button-box-shadow-inset-general": false,
       "button-box-shadow-inset-xl": false,
-      "button-box-shadow-palette-color-general": 4,
       "button-box-shadow-palette-color-xl": 4,
-      "button-box-shadow-palette-opacity-general": 0.23,
       "button-box-shadow-palette-opacity-xl": 0.23,
-      "button-box-shadow-palette-status-general": true,
-      "button-box-shadow-spread-general": 0,
-      "button-box-shadow-spread-unit-general": "px",
       "button-box-shadow-spread-unit-xl": "px",
       "button-box-shadow-spread-xl": 0,
-      "button-box-shadow-vertical-general": 30,
-      "button-box-shadow-vertical-unit-general": "px",
       "button-box-shadow-vertical-unit-xl": "px",
       "button-box-shadow-vertical-xl": 30,
     },
@@ -116,7 +96,13 @@ exports[`Button Maxi hover simple actions Button background and shadow 1`] = `
       "general": {
         "breakpoint": null,
         "styles": {
-          "box-shadow": "0px 30px 50px 0px rgba(var(--maxi-light-color-4,255,74,23),0.23)",
+          "box-shadow": "0px 0px 0px 0px rgba(var(--maxi-light-color-undefined),1)",
+        },
+      },
+      "xl": {
+        "breakpoint": 1920,
+        "styles": {
+          "box-shadow": "0px 30px 50px 0px rgba(var(--maxi-light-color-undefined),1)",
         },
       },
     },
@@ -139,7 +125,7 @@ exports[`Button Maxi hover simple actions Button background and shadow 1`] = `
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button background and shadow 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button:not(:hover) { box-shadow: 0px 30px 50px 0px rgba(var(--maxi-light-color-4,255,74,23),0.23);}"`;
+exports[`Button Maxi hover simple actions Button background and shadow 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button:not(:hover) { box-shadow: 0px 0px 0px 0px rgba(var(--maxi-light-color-undefined),1);}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button:not(:hover) { box-shadow: 0px 30px 50px 0px rgba(var(--maxi-light-color-undefined),1);}}"`;
 
 exports[`Button Maxi hover simple actions Button background and shadow 3`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { transition: background 0.3s ease 0s, box-shadow 0.3s ease 0s,  background 0.3s ease 0s;}"`;
 
@@ -150,35 +136,20 @@ exports[`Button Maxi hover simple actions Button border 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "button-border-bottom-left-radius-general": 11,
       "button-border-bottom-left-radius-xl": 11,
-      "button-border-bottom-right-radius-general": 11,
       "button-border-bottom-right-radius-xl": 11,
-      "button-border-bottom-width-general": 2,
       "button-border-bottom-width-xl": 2,
-      "button-border-left-width-general": 2,
       "button-border-left-width-xl": 2,
-      "button-border-palette-color-general": 8,
       "button-border-palette-color-xl": 8,
-      "button-border-palette-opacity-general": 0.5,
       "button-border-palette-opacity-xl": 0.5,
-      "button-border-palette-sc-status-general": false,
       "button-border-palette-sc-status-xl": false,
-      "button-border-palette-status-general": true,
       "button-border-palette-status-xl": true,
-      "button-border-right-width-general": 2,
       "button-border-right-width-xl": 2,
-      "button-border-style-general": "solid",
       "button-border-style-xl": "solid",
-      "button-border-sync-width-general": "all",
       "button-border-sync-width-xl": "all",
-      "button-border-top-left-radius-general": 11,
       "button-border-top-left-radius-xl": 11,
-      "button-border-top-right-radius-general": 11,
       "button-border-top-right-radius-xl": 11,
-      "button-border-top-width-general": 2,
       "button-border-top-width-xl": 2,
-      "button-border-unit-width-general": "",
       "button-border-unit-width-xl": "",
     },
     "css": {
@@ -195,6 +166,12 @@ exports[`Button Maxi hover simple actions Button border 1`] = `
           "border-top-left-radius": "11px",
           "border-top-right-radius": "11px",
           "border-top-width": "2px",
+        },
+      },
+      "xxl": {
+        "breakpoint": 1921,
+        "styles": {
+          "border": "none",
         },
       },
     },
@@ -217,7 +194,7 @@ exports[`Button Maxi hover simple actions Button border 1`] = `
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button border 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2px; border-bottom-width: 2px; border-right-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}"`;
+exports[`Button Maxi hover simple actions Button border 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2px; border-bottom-width: 2px; border-right-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}@media screen and (min-width: 1922px) { body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { border: none;}}"`;
 
 exports[`Button Maxi hover simple actions Button border 3`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { transition: background 0.3s ease 0s, border-color 0.3s ease 0s, border-style 0.3s ease 0s, border-top-width 0.3s ease 0s, border-right-width 0.3s ease 0s, border-bottom-width 0.3s ease 0s, border-left-width 0.3s ease 0s, border-top-left-radius 0.3s ease 0s, border-top-right-radius 0.3s ease 0s, border-bottom-right-radius 0.3s ease 0s, border-bottom-left-radius 0.3s ease 0s;}"`;
 
@@ -228,40 +205,22 @@ exports[`Button Maxi hover simple actions Button icon 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "icon-background-palette-color-general": 5,
       "icon-background-palette-color-xl": 5,
-      "icon-background-palette-opacity-general": 0.43,
       "icon-background-palette-opacity-xl": 0.43,
-      "icon-background-palette-sc-status-general": false,
       "icon-background-palette-sc-status-xl": false,
-      "icon-background-palette-status-general": true,
       "icon-background-palette-status-xl": true,
       "icon-content": "<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="5" data-stroke data-hover-stroke stroke="var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>",
-      "icon-padding-bottom-general": "44",
-      "icon-padding-bottom-unit-general": "px",
       "icon-padding-bottom-xl": "44",
-      "icon-padding-left-general": "44",
-      "icon-padding-left-unit-general": "px",
       "icon-padding-left-xl": "44",
-      "icon-padding-right-general": "44",
-      "icon-padding-right-unit-general": "px",
       "icon-padding-right-xl": "44",
-      "icon-padding-top-general": "44",
-      "icon-padding-top-unit-general": "px",
       "icon-padding-top-xl": "44",
-      "icon-padding-unit-general": "%",
       "icon-padding-unit-xl": "%",
-      "icon-spacing-general": 33,
-      "icon-spacing-unit-general": "%",
       "icon-spacing-xl": 33,
-      "icon-stroke-general": 5,
       "icon-stroke-palette-color": 8,
       "icon-stroke-palette-opacity": 0.75,
       "icon-stroke-palette-sc-status": false,
       "icon-stroke-palette-status": true,
       "icon-stroke-xl": 5,
-      "icon-width-general": "11",
-      "icon-width-unit-general": "%",
       "icon-width-unit-xl": "%",
       "icon-width-xl": "11",
     },
@@ -270,38 +229,56 @@ exports[`Button Maxi hover simple actions Button icon 1`] = `
         "general": {
           "breakpoint": null,
           "styles": {
-            "background": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
-            "background-color": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
-            "padding-bottom": "44px",
-            "padding-left": "44px",
-            "padding-right": "44px",
-            "padding-top": "44px",
+            "padding-bottom": "44undefined",
+            "padding-left": "44undefined",
+            "padding-right": "44undefined",
+            "padding-top": "44undefined",
           },
         },
         "l": {
           "breakpoint": 1366,
-          "styles": {},
+          "styles": {
+            "padding-bottom": "44undefined",
+            "padding-left": "44undefined",
+            "padding-right": "44undefined",
+            "padding-top": "44undefined",
+          },
         },
         "m": {
           "breakpoint": 1024,
-          "styles": {},
+          "styles": {
+            "padding-bottom": "44undefined",
+            "padding-left": "44undefined",
+            "padding-right": "44undefined",
+            "padding-top": "44undefined",
+          },
         },
         "s": {
           "breakpoint": 767,
-          "styles": {},
+          "styles": {
+            "padding-bottom": "44undefined",
+            "padding-left": "44undefined",
+            "padding-right": "44undefined",
+            "padding-top": "44undefined",
+          },
         },
         "xl": {
           "breakpoint": 1920,
           "styles": {
-            "padding-bottom": "44px",
-            "padding-left": "44px",
-            "padding-right": "44px",
-            "padding-top": "44px",
+            "padding-bottom": "44undefined",
+            "padding-left": "44undefined",
+            "padding-right": "44undefined",
+            "padding-top": "44undefined",
           },
         },
         "xs": {
           "breakpoint": 480,
-          "styles": {},
+          "styles": {
+            "padding-bottom": "44undefined",
+            "padding-left": "44undefined",
+            "padding-right": "44undefined",
+            "padding-top": "44undefined",
+          },
         },
         "xxl": {
           "breakpoint": 1921,
@@ -351,21 +328,11 @@ exports[`Button Maxi hover simple actions Button icon 1`] = `
             "width": "11%",
           },
         },
-        "xxl": {
-          "breakpoint": 1921,
-          "styles": {
-            "height": "11%",
-            "width": "11%",
-          },
-        },
       },
       "  .maxi-button-block__button  .maxi-button-block__icon svg > *": {
         "general": {
           "breakpoint": null,
-          "styles": {
-            "background": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
-            "background-color": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
-          },
+          "styles": {},
         },
         "l": {
           "breakpoint": 1366,
@@ -423,9 +390,7 @@ exports[`Button Maxi hover simple actions Button icon 1`] = `
       "  .maxi-button-block__button  .maxi-button-block__icon svg path": {
         "general": {
           "breakpoint": null,
-          "styles": {
-            "stroke-width": 5,
-          },
+          "styles": {},
         },
         "xl": {
           "breakpoint": 1920,
@@ -545,56 +510,39 @@ exports[`Button Maxi hover simple actions Button icon 1`] = `
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button icon 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path {}} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { padding-left: 44px; padding-bottom: 44px; padding-right: 44px; padding-top: 44px; background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon {}} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}"`;
+exports[`Button Maxi hover simple actions Button icon 2`] = `"@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;}} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { padding-left: 44undefined; padding-bottom: 44undefined; padding-right: 44undefined; padding-top: 44undefined;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;}}"`;
 
-exports[`Button Maxi hover simple actions Button icon 3`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}"`;
+exports[`Button Maxi hover simple actions Button icon 3`] = `"@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}"`;
 
-exports[`Button Maxi hover simple actions Button icon 4`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (min-width: 1922px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}}"`;
+exports[`Button Maxi hover simple actions Button icon 4`] = `"@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) * { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^="none"]) { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}}"`;
 
 exports[`Button Maxi hover simple actions Button margin/padding 1`] = `
 [
   {
     "action": "hover",
     "attributes": {
-      "button-margin-bottom-general": "1",
-      "button-margin-bottom-unit-general": "px",
       "button-margin-bottom-xl": "1",
-      "button-margin-left-general": "1",
-      "button-margin-left-unit-general": "px",
       "button-margin-left-xl": "1",
-      "button-margin-right-general": "1",
-      "button-margin-right-unit-general": "px",
       "button-margin-right-xl": "1",
-      "button-margin-top-general": "1",
-      "button-margin-top-unit-general": "px",
       "button-margin-top-xl": "1",
-      "button-padding-bottom-general": "2",
-      "button-padding-bottom-unit-general": "px",
       "button-padding-bottom-xl": "2",
-      "button-padding-left-general": "2",
-      "button-padding-left-unit-general": "px",
       "button-padding-left-xl": "2",
-      "button-padding-right-general": "2",
-      "button-padding-right-unit-general": "px",
       "button-padding-right-xl": "2",
-      "button-padding-sync-general": "all",
       "button-padding-sync-xl": "all",
-      "button-padding-top-general": "2",
-      "button-padding-top-unit-general": "px",
       "button-padding-top-xl": "2",
     },
     "css": {
       "general": {
         "breakpoint": null,
         "styles": {
-          "margin-bottom": "1px",
-          "margin-left": "1px",
-          "margin-right": "1px",
-          "margin-top": "1px",
-          "padding-bottom": "2px",
-          "padding-left": "2px",
-          "padding-right": "2px",
-          "padding-top": "2px",
+          "margin-bottom": "1undefined",
+          "margin-left": "1undefined",
+          "margin-right": "1undefined",
+          "margin-top": "1undefined",
+          "padding-bottom": "2undefined",
+          "padding-left": "2undefined",
+          "padding-right": "2undefined",
+          "padding-top": "2undefined",
         },
       },
     },
@@ -616,7 +564,7 @@ exports[`Button Maxi hover simple actions Button margin/padding 1`] = `
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button margin/padding 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { padding-left: 2px; padding-bottom: 2px; padding-right: 2px; padding-top: 2px; margin-left: 1px; margin-bottom: 1px; margin-right: 1px; margin-top: 1px;}"`;
+exports[`Button Maxi hover simple actions Button margin/padding 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { padding-left: 2undefined; padding-bottom: 2undefined; padding-right: 2undefined; padding-top: 2undefined; margin-left: 1undefined; margin-bottom: 1undefined; margin-right: 1undefined; margin-top: 1undefined;}"`;
 
 exports[`Button Maxi hover simple actions Button margin/padding 3`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { transition: background 0.3s ease 0s, margin-top 0.3s ease 0s, margin-right 0.3s ease 0s, margin-bottom 0.3s ease 0s, margin-left 0.3s ease 0s, padding-top 0.3s ease 0s, padding-right 0.3s ease 0s, padding-bottom 0.3s ease 0s, padding-left 0.3s ease 0s;}"`;
 
@@ -627,36 +575,29 @@ exports[`Button Maxi hover simple actions Button shadow 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "button-box-shadow-blur-general": 44,
-      "button-box-shadow-blur-unit-general": "px",
       "button-box-shadow-blur-unit-xl": "px",
       "button-box-shadow-blur-xl": 44,
-      "button-box-shadow-horizontal-general": 22,
-      "button-box-shadow-horizontal-unit-general": "px",
       "button-box-shadow-horizontal-unit-xl": "px",
       "button-box-shadow-horizontal-xl": 22,
-      "button-box-shadow-inset-general": false,
       "button-box-shadow-inset-xl": false,
-      "button-box-shadow-palette-color-general": 8,
       "button-box-shadow-palette-color-xl": 8,
-      "button-box-shadow-palette-opacity-general": 0.11,
       "button-box-shadow-palette-opacity-xl": 0.11,
-      "button-box-shadow-palette-sc-status-general": false,
       "button-box-shadow-palette-sc-status-xl": false,
-      "button-box-shadow-palette-status-general": true,
       "button-box-shadow-palette-status-xl": true,
-      "button-box-shadow-spread-general": 55,
-      "button-box-shadow-spread-unit-general": "px",
       "button-box-shadow-spread-unit-xl": "px",
       "button-box-shadow-spread-xl": 55,
-      "button-box-shadow-vertical-general": 33,
-      "button-box-shadow-vertical-unit-general": "px",
       "button-box-shadow-vertical-unit-xl": "px",
       "button-box-shadow-vertical-xl": 33,
     },
     "css": {
       "general": {
         "breakpoint": null,
+        "styles": {
+          "box-shadow": "0px 0px 0px 0px rgba(var(--maxi-light-color-4,255,74,23),1)",
+        },
+      },
+      "xl": {
+        "breakpoint": 1920,
         "styles": {
           "box-shadow": "22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11)",
         },
@@ -681,7 +622,7 @@ exports[`Button Maxi hover simple actions Button shadow 1`] = `
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button shadow 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11);}"`;
+exports[`Button Maxi hover simple actions Button shadow 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { box-shadow: 0px 0px 0px 0px rgba(var(--maxi-light-color-4,255,74,23),1);}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11);}}"`;
 
 exports[`Button Maxi hover simple actions Button shadow 3`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button { transition: background 0.3s ease 0s, box-shadow 0.3s ease 0s;}"`;
 
@@ -692,43 +633,24 @@ exports[`Button Maxi hover simple actions Button typography 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "color-general": null,
       "color-xl": null,
-      "font-size-general": 24,
-      "font-size-unit-general": "px",
       "font-size-unit-xl": "px",
       "font-size-xl": 24,
-      "font-style-general": "italic",
       "font-style-xl": "italic",
-      "font-weight-general": "",
       "font-weight-xl": "",
-      "letter-spacing-general": 15,
-      "letter-spacing-unit-general": "px",
       "letter-spacing-unit-xl": "px",
       "letter-spacing-xl": 15,
-      "line-height-general": 60,
-      "line-height-unit-general": "px",
-      "line-height-unit-xl": "px",
+      "line-height-unit-xl": "%",
       "line-height-xl": 60,
-      "palette-color-general": 8,
       "palette-color-xl": 8,
-      "palette-opacity-general": 0.5,
       "palette-opacity-xl": 0.5,
-      "palette-sc-status-general": false,
       "palette-sc-status-xl": false,
-      "palette-status-general": true,
       "palette-status-xl": true,
-      "text-decoration-general": "underline",
       "text-decoration-xl": "underline",
-      "text-direction-general": "rtl",
       "text-direction-xl": "rtl",
-      "text-indent-general": 20,
-      "text-indent-unit-general": "px",
       "text-indent-unit-xl": "px",
       "text-indent-xl": 20,
-      "text-orientation-general": "sideways",
       "text-orientation-xl": "sideways",
-      "text-transform-general": "capitalize",
       "text-transform-xl": "capitalize",
     },
     "css": {
@@ -736,12 +658,17 @@ exports[`Button Maxi hover simple actions Button typography 1`] = `
         "breakpoint": null,
         "styles": {
           "color": "var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+        },
+      },
+      "xl": {
+        "breakpoint": 1920,
+        "styles": {
           "direction": "rtl",
           "font-size": "24px",
           "font-style": "italic",
           "font-weight": "",
           "letter-spacing": "15px",
-          "line-height": "60px",
+          "line-height": "60%",
           "text-decoration": "underline",
           "text-indent": "20px",
           "text-orientation": "sideways",
@@ -770,8 +697,8 @@ exports[`Button Maxi hover simple actions Button typography 1`] = `
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60px; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
+exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__content { color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__button .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px;}}"`;
 
-exports[`Button Maxi hover simple actions Button typography 3`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__content { transition: all 0s ease 0s, color 0.3s ease 0s, font-size 0.3s ease 0s, line-height 0.3s ease 0s, letter-spacing 0.3s ease 0s, font-weight 0.3s ease 0s, text-transform 0.3s ease 0s, font-style 0.3s ease 0s, text-decoration 0.3s ease 0s, text-indent 0.3s ease 0s, writing-mode 0.3s ease 0s, text-orientation 0.3s ease 0s, direction 0.3s ease 0s;}"`;
+exports[`Button Maxi hover simple actions Button typography 3`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__content { transition: all 0s ease 0s, color 0.3s ease 0s;}"`;
 
-exports[`Button Maxi hover simple actions Button typography 4`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__content { transition: all 0s ease 0s, color 0.3s ease 0s, font-size 0.3s ease 0s, line-height 0.3s ease 0s, letter-spacing 0.3s ease 0s, font-weight 0.3s ease 0s, text-transform 0.3s ease 0s, font-style 0.3s ease 0s, text-decoration 0.3s ease 0s, text-indent 0.3s ease 0s, writing-mode 0.3s ease 0s, text-orientation 0.3s ease 0s, direction 0.3s ease 0s;}"`;
+exports[`Button Maxi hover simple actions Button typography 4`] = `"body.maxi-blocks--active #button-maxi-1se8ef1z-u[data-maxi-relations="true"] .maxi-button-block__content { transition: all 0s ease 0s, color 0.3s ease 0s;}"`;

@@ -27,6 +27,7 @@ const save = props => {
 		'dc-status': dcStatus,
 		'dc-field': dcField,
 		ariaLabels = {},
+		'dc-sub-field': dcSubField,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/text-maxi';
@@ -50,18 +51,25 @@ const save = props => {
 				<RichText.Content
 					className={className}
 					value={
-						dcStatus && dcField !== 'static_text'
+						dcStatus &&
+						dcField !== 'static_text' &&
+						dcSubField !== 'static_text'
 							? '$text-to-replace'
 							: value
 					}
 					// TODO: avoid DC for lists
 					tagName={
-						isList && (!dcStatus || dcField === 'static_text')
+						isList &&
+						(!dcStatus ||
+							dcField === 'static_text' ||
+							dcSubField === 'static_text')
 							? typeOfList
 							: textLevel
 					}
 					aria-label={ariaLabels.text}
-					{...((!dcStatus || dcField === 'static_text') && {
+					{...((!dcStatus ||
+						dcField === 'static_text' ||
+						dcSubField === 'static_text') && {
 						reversed: !!listReversed,
 						start: listStart,
 					})}

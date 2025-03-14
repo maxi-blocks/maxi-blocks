@@ -77,7 +77,7 @@ const Link = props => {
 			linkElementOptions,
 		};
 	}, [blockName]);
-	const showLinkElemetSelect = !!linkElements;
+	const showLinkElementSelect = !!linkElements;
 
 	useEffect(() => {
 		if (dcLinkStatus) {
@@ -236,7 +236,7 @@ const Link = props => {
 									)}
 							</>
 						)}
-						{showLinkElemetSelect && (
+						{showLinkElementSelect && (
 							<SelectControl
 								label={__('Apply link on', 'maxi-blocks')}
 								value={linkSettings?.linkElement}

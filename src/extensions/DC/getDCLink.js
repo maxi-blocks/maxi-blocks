@@ -8,7 +8,8 @@ import { resolveSelect, select } from '@wordpress/data';
  */
 import getDCEntity from './getDCEntity';
 import { getCartUrl, getProductData } from './getWooCommerceData';
-import { inlineLinkFields } from './constants';
+import { inlineLinkFields, nameDictionary } from './constants';
+import { getCurrentTemplateSlug, getPostBySlug } from './utils';
 
 const getProductsLink = async (dataRequest, data) => {
 	const productData = await getProductData(data?.id);
@@ -43,14 +44,62 @@ const cache = {};
 const MAX_CACHE_SIZE = 200;
 
 const getDCLink = async (dataRequest, clientId) => {
-	const { type, linkTarget, author } = dataRequest;
-
+	const { type, linkTarget, author, field, relation } = dataRequest;
 	if (type === 'cart') {
 		return getCartUrl();
 	}
 
-	if (linkTarget === 'author') {
-		return getPostAuthorLink(author);
+	if (linkTarget.includes('author')) {
+		let userId = author;
+		if (relation === 'current') {
+			const isFSE = select('core/edit-site') !== undefined;
+			if (isFSE) {
+				const currentTemplateType = getCurrentTemplateSlug();
+				if (
+					currentTemplateType.includes('single-post-') &&
+					type === 'posts'
+				) {
+					const postSlug = currentTemplateType.replace(
+						'single-post-',
+						''
+					);
+					const post = await getPostBySlug(postSlug);
+					if (post) {
+						userId = post.author;
+					}
+				}
+			} else {
+				const postId = select('core/editor').getCurrentPostId();
+				const post = await resolveSelect('core').getEntityRecord(
+					'postType',
+					'post',
+					postId
+				);
+				userId = post.author;
+			}
+		} else {
+			const post = await resolveSelect('core').getEntityRecord(
+				'postType',
+				nameDictionary[type] ?? type,
+				dataRequest.id
+			);
+			if (post?.author) {
+				userId = post.author;
+			}
+		}
+
+		if (!userId) {
+			return null;
+		}
+
+		if (linkTarget === 'author') return getPostAuthorLink(userId);
+
+		const { getUser } = resolveSelect('core');
+
+		const user = await getUser(userId);
+		const userTarget = linkTarget === 'author_email' ? 'email' : 'url';
+
+		return user?.[userTarget];
 	}
 
 	if (inlineLinkFields.includes(linkTarget)) {
@@ -98,7 +147,11 @@ const getDCLink = async (dataRequest, clientId) => {
 		return getProductsLink(dataRequest, data);
 	}
 
-	if (type === 'users') {
+	if (
+		type === 'users' ||
+		linkTarget === 'author_email' ||
+		linkTarget === 'author_site'
+	) {
 		return getUserLink(dataRequest, data);
 	}
 

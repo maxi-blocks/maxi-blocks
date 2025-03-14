@@ -57,10 +57,9 @@ import compareVersions from './compareVersions';
 /**
  * External dependencies
  */
-import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
+import _, { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
-import _ from 'lodash';
 
 /**
  * Constants
@@ -975,14 +974,6 @@ class MaxiBlockComponent extends Component {
 
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
-
-		const isBlockCopied =
-			!select('maxiBlocks/blocks').getIsNewBlock(
-				this.props.attributes.uniqueID
-			) &&
-			select('maxiBlocks/blocks')
-				.getLastInsertedBlocks()
-				.includes(this.props.clientId);
 
 		if (!getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({

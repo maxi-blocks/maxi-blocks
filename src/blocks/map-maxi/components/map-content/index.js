@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,8 +17,97 @@ import { getMaxiAdminSettingsUrl } from '@blocks/map-maxi/utils';
 /**
  * External dependencies
  */
-import { MapContainer, TileLayer } from 'react-leaflet';
-import { ReactLeafletGoogleLayer } from 'react-leaflet-google-layer';
+import { MapContainer, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet.gridlayer.googlemutant';
+
+const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
+	const map = useMap();
+
+	useEffect(() => {
+		let script;
+		let googleLayer;
+
+		// Clear existing layers
+		map.eachLayer(layer => {
+			if (layer._url === undefined) {
+				// Not a tile layer
+				map.removeLayer(layer);
+			}
+		});
+
+		if (!window.google || !window.google.maps) {
+			script = document.createElement('script');
+			script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
+			script.async = true;
+			script.defer = true;
+			script.onload = () => {
+				googleLayer = L.gridLayer
+					.googleMutant({
+						type: mapType,
+						maxZoom: 22,
+					})
+					.addTo(map);
+			};
+			document.head.appendChild(script);
+		} else {
+			googleLayer = L.gridLayer
+				.googleMutant({
+					type: mapType,
+					maxZoom: 22,
+				})
+				.addTo(map);
+		}
+
+		return () => {
+			if (script) {
+				document.head.removeChild(script);
+			}
+			if (googleLayer) {
+				map.removeLayer(googleLayer);
+			}
+		};
+	}, [map, apiKey, mapType]);
+
+	return null;
+};
+
+const OSMLayer = ({ mapType = 'standard' }) => {
+	const map = useMap();
+
+	useEffect(() => {
+		// Clear existing tile layers
+		map.eachLayer(layer => {
+			if (layer._url !== undefined) {
+				// Is a tile layer
+				map.removeLayer(layer);
+			}
+		});
+
+		const tileUrls = {
+			standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			humanitarian:
+				'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+			cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
+			transport:
+				'https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
+		};
+
+		const url = tileUrls[mapType] || tileUrls.standard;
+
+		const osmLayer = L.tileLayer(url, {
+			attribution:
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			maxZoom: 18,
+		}).addTo(map);
+
+		return () => {
+			map.removeLayer(osmLayer);
+		};
+	}, [map, mapType]);
+
+	return null;
+};
 
 const MapContent = props => {
 	const {
@@ -37,6 +126,7 @@ const MapContent = props => {
 		'map-max-zoom': mapMaxZoom,
 		'map-min-zoom': mapMinZoom,
 		'map-zoom': mapZoom,
+		'map-type': mapType = 'roadmap',
 	} = attributes;
 
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
@@ -45,16 +135,42 @@ const MapContent = props => {
 	const showError = !apiKey && isGoogleMaps;
 
 	const resizeMap = map => {
+		if (!map) return;
+
 		// To get rid of the grey bars, we need to update the map size
-		// https://stackoverflow.com/a/71006998
-		const resizeObserver = new ResizeObserver(() => map?.invalidateSize());
+		const resizeObserver = new ResizeObserver(() => {
+			if (map && !map._isDestroyed && map.getContainer()) {
+				requestAnimationFrame(() => {
+					try {
+						map.invalidateSize({
+							animate: false,
+							pan: false,
+							duration: 0,
+						});
+					} catch (e) {
+						// Ignore errors during resize
+					}
+				});
+			}
+		});
 
 		const container = document.getElementById(
 			`maxi-map-block__container-${uniqueID}`
 		);
 
-		if (container) resizeObserver.observe(container);
+		if (container) {
+			resizeObserver.observe(container);
+		}
+
+		// Cleanup function
+		return () => {
+			if (container) {
+				resizeObserver.unobserve(container);
+				resizeObserver.disconnect();
+			}
+		};
 	};
+
 	return (
 		<div
 			className='maxi-map-block__container'
@@ -63,22 +179,26 @@ const MapContent = props => {
 			{!showError && (
 				<>
 					<MapContainer
+						key={`map-container-${uniqueID}`}
 						center={[mapLatitude, mapLongitude]}
 						minZoom={mapMinZoom}
-						maxZoom={mapMaxZoom}
-						zoom={mapZoom}
+						maxZoom={
+							isGoogleMaps ? mapMaxZoom : Math.min(mapMaxZoom, 18)
+						}
+						zoom={mapZoom || 4}
 						whenReady={map => resizeMap(map.target)}
+						tap={false}
+						dragging
+						touchZoom
+						doubleClickZoom
+						scrollWheelZoom
+						zoomControl
+						trackResize
 					>
 						{isGoogleMaps ? (
-							<ReactLeafletGoogleLayer
-								apiKey={apiKey}
-								callback={Function.prototype}
-							/>
+							<GoogleLayer apiKey={apiKey} mapType={mapType} />
 						) : (
-							<TileLayer
-								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-								url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-							/>
+							<OSMLayer mapType={mapType} />
 						)}
 						<MapEventsListener
 							isAddingMarker={isAddingMarker}

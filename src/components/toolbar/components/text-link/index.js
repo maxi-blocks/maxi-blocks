@@ -266,11 +266,8 @@ const TextLink = props => {
 		blockName,
 		isCaptionToolbar = false,
 		'dc-status': dcStatus = false,
-		'dc-field': dcField = '',
 		linkSettings,
 	} = props;
-
-	const isDynamicContent = dcStatus && dcField !== 'static_text';
 
 	let formatValue;
 
@@ -294,7 +291,7 @@ const TextLink = props => {
 
 	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
 
-	if (!isDynamicContent)
+	if (!dcStatus)
 		return (
 			<ToolbarPopover
 				icon={toolbarLink}
@@ -322,7 +319,6 @@ const TextLink = props => {
 				</ToolbarContext.Consumer>
 			</ToolbarPopover>
 		);
-
 	return <Link {...props} />;
 };
 

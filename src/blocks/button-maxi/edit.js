@@ -18,10 +18,7 @@ import Toolbar from '@components/toolbar';
 import IconToolbar from '@components/toolbar/iconToolbar';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
-import {
-	getGroupAttributes,
-	getIconPositionClass,
-} from '@extensions/styles';
+import { getGroupAttributes, getIconPositionClass } from '@extensions/styles';
 import { getSVGWidthHeightRatio } from '@extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
@@ -96,6 +93,8 @@ class edit extends MaxiBlockComponent {
 			status: dcStatus,
 			content: dcContent,
 			field: dcField,
+			subField,
+			linkTarget: dcLinkTarget,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
 			this.props.contextLoopContext?.contextLoop
@@ -115,7 +114,8 @@ class edit extends MaxiBlockComponent {
 			border: '.maxi-button-block__button',
 			boxShadow: '.maxi-button-block__button',
 		};
-		const showDCContent = dcStatus && dcField !== 'static_text';
+		const showDCContent =
+			dcStatus && dcField !== 'static_text' && subField !== 'static_text';
 
 		return [
 			<Inspector

@@ -28,7 +28,6 @@ const handleSetAttributes = ({
 	allowXXLOverGeneral = false,
 }) => {
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
-	console.log('response at the beginning', response);
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
 	Object.entries(response).forEach(([key, value]) => {
@@ -81,10 +80,6 @@ const handleSetAttributes = ({
 				defaultOnBaseBreakpointAttribute === attrOnBaseBreakpoint)
 		) {
 			response[attrLabelOnBaseBreakpoint] = value;
-			console.log(
-				'response after setting attrLabelOnBaseBreakpoint 1',
-				response
-			);
 		}
 
 		if (!attrExistOnGeneral) return;
@@ -94,27 +89,17 @@ const handleSetAttributes = ({
 			defaultOnBaseBreakpointAttribute === value
 		) {
 			response[attrLabelOnBaseBreakpoint] = value;
-			console.log(
-				'response after setting attrLabelOnBaseBreakpoint 2',
-				response
-			);
+
 			return;
 		}
 
 		if (
 			attributes?.[attrLabelOnGeneral] === value &&
 			defaultGeneralAttribute === value
-		)
-			return;
-
-		// response[attrLabelOnBaseBreakpoint] = attributes?.[attrLabelOnGeneral];
-		console.log(
-			'response after setting attrLabelOnBaseBreakpoint 4',
-			response
-		);
+		) {
+			// Do nothing, skip this iteration
+		}
 	});
-
-	console.log('response before cleaning', response);
 
 	const cleanedResponse = cleanAttributes({
 		newAttributes: response,
@@ -124,7 +109,6 @@ const handleSetAttributes = ({
 		defaultAttributes,
 		allowXXLOverGeneral,
 	});
-	console.log('cleanedResponse', cleanedResponse);
 
 	return onChange(cleanedResponse);
 };

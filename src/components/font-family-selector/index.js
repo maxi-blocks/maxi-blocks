@@ -74,8 +74,7 @@ const FontFamilySelector = props => {
 	const classes = classnames('maxi-font-family-selector', className);
 
 	return (
-		<BaseControl
-					__nextHasNoMarginBottom>
+		<BaseControl __nextHasNoMarginBottom>
 			<Select
 				className={classes}
 				classNamePrefix='maxi-font-family-selector__control'

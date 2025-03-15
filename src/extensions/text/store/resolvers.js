@@ -1,25 +1,20 @@
 /**
- * WordPress dependencies
- */
-import apiFetch from '@wordpress/api-fetch';
-
-/**
  * Internal dependencies
  */
-import { fontUrlCache, getStorageCache, setStorageCache, cleanUrl } from '../fonts/fontCacheUtils';
+import { cleanUrl } from '@extensions/text/fonts/fontCacheUtils';
 
-// Cache for font URLs and active timers
-const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
-
-const originalApiFetch = apiFetch;
-
-const fetchFontUrl = async (encodedFontName) => {
-	const response = await fetch(`/wp-json/maxi-blocks/v1.0/get-font-url/${encodedFontName}`, {
-		credentials: 'same-origin',
-		headers: {
-			'X-WP-Nonce': window.wpApiSettings?.nonce,
+const fetchFontUrl = async encodedFontName => {
+	const response = await fetch(
+		`${
+			window.wpApiSettings?.root ?? '/wp-json/'
+		}maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
+		{
+			credentials: 'same-origin',
+			headers: {
+				'X-WP-Nonce': window.wpApiSettings?.nonce,
+			},
 		}
-	});
+	);
 
 	if (!response.ok) {
 		throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,51 +24,34 @@ const fetchFontUrl = async (encodedFontName) => {
 	const cleanedUrl = cleanUrl(text);
 
 	// Validate URL
-	try {
-		new URL(cleanedUrl);
-		return cleanedUrl;
-	} catch (e) {
+	if (!URL.canParse(cleanedUrl)) {
 		console.error('Invalid URL received:', text);
 		throw new Error('Invalid font URL received from server');
 	}
+	return cleanedUrl;
 };
 
 const resolvers = {
 	getFontUrl:
 		(fontName, fontData) =>
 		async ({ dispatch }) => {
-			const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
-
-			// Try to get from cache first
-			const cached = fontUrlCache.get(requestKey) || getStorageCache(requestKey);
-			if (cached) {
-				dispatch.setFontUrl(fontName, fontData, cached);
-				return cached;
-			}
-
-			// Check for pending request
-			if (pendingRequests.has(requestKey)) {
-				return pendingRequests.get(requestKey);
-			}
-
-			const encodedFontName = encodeURIComponent(fontName).replace(/%20/g, '+');
+			const encodedFontName = encodeURIComponent(fontName).replace(
+				/%20/g,
+				'+'
+			);
 
 			const promise = (async () => {
 				try {
 					const fontUrl = await fetchFontUrl(encodedFontName);
 
-					// Cache the successful response
-					fontUrlCache.set(requestKey, fontUrl);
-					setStorageCache(requestKey, fontUrl);
-
 					dispatch.setFontUrl(fontName, fontData, fontUrl);
 					return fontUrl;
-				} finally {
-					pendingRequests.delete(requestKey);
+				} catch (error) {
+					console.error('Error fetching font URL:', error);
+					throw error;
 				}
 			})();
 
-			pendingRequests.set(requestKey, promise);
 			return promise;
 		},
 };

@@ -30,7 +30,6 @@ import onMerge from './utils';
 import {
 	onChangeRichText,
 	processContent,
-	handleSplit,
 	TextContext,
 	ListContext,
 } from '@extensions/text/formats';
@@ -156,6 +155,7 @@ class edit extends MaxiBlockComponent {
 			content: dcContent,
 			containsHtml: dcContainsHTML,
 			field: dcField,
+			subField,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
 			this.props?.contextLoopContext?.contextLoop
@@ -185,6 +185,9 @@ class edit extends MaxiBlockComponent {
 			// onRemove={onRemove}
 		};
 
+		const showDCContent =
+			dcStatus && dcField !== 'static_text' && subField !== 'static_text';
+
 		return [
 			<TextContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
@@ -194,7 +197,7 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
-						if ((!dcStatus || dcField === 'static_text') && !isList)
+						if (!showDCContent && !isList)
 							this.state.onChangeFormat?.(newFormatValue);
 
 						onChangeRichText({
@@ -209,7 +212,7 @@ class edit extends MaxiBlockComponent {
 			>
 				<Inspector
 					key={`block-settings-${uniqueID}`}
-					disableCustomFormats={dcStatus && dcField !== 'static_text'}
+					disableCustomFormats={dcStatus}
 					setShowLoader={value =>
 						this.setState({ showLoader: value })
 					}
@@ -220,7 +223,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
-					disableCustomFormats={dcStatus && dcField !== 'static_text'}
+					disableCustomFormats={dcStatus}
 					setShowLoader={value =>
 						this.setState({ showLoader: value })
 					}
@@ -237,7 +240,7 @@ class edit extends MaxiBlockComponent {
 					{...getMaxiBlockAttributes(this.props)}
 					showLoader={this.state.showLoader}
 				>
-					{(!dcStatus || dcField === 'static_text') && !isList && (
+					{!showDCContent && !isList && (
 						<RichText
 							tagName={textLevel}
 							__unstableEmbedURLOnPaste
@@ -268,7 +271,7 @@ class edit extends MaxiBlockComponent {
 							}}
 						</RichText>
 					)}
-					{dcStatus && dcField !== 'static_text' && (
+					{showDCContent && (
 						<DCTagName className={className}>
 							{dcContainsHTML ? (
 								<RawHTML>{dcContent}</RawHTML>
@@ -277,7 +280,7 @@ class edit extends MaxiBlockComponent {
 							)}
 						</DCTagName>
 					)}
-					{(!dcStatus || dcField === 'static_text') && isList && (
+					{!showDCContent && isList && (
 						<ListContext.Provider
 							value={getGroupAttributes(attributes, [
 								'typography',

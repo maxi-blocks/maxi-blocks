@@ -50,15 +50,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	}
 
 	const filteredDataRequest = { ...dataRequest };
-	const keysToRemove = [
-		'content',
-		'customDelimiterStatus',
-		'customFormat',
-		'linkTarget',
-		'linkUrl',
-		'linkStatus',
-		'field',
-	];
+	const keysToRemove = ['content', 'customDelimiterStatus', 'customFormat'];
 	keysToRemove.forEach(key => delete filteredDataRequest[key]);
 
 	const cacheKey = JSON.stringify(filteredDataRequest);

@@ -293,16 +293,8 @@ const flatWithGeneral = (
 						currentBpUnitValue = attributes?.[bpUnitKey];
 					}
 
-					// Check if this breakpoint has a unique value
-					const currentBpValue = attributes?.[bpKey];
-
 					// If current value matches the previous value at the changed breakpoint,
 					// it means this breakpoint was inheriting that value (not unique)
-					const matchesPreviousValue = isEqual(
-						currentBpValue,
-						previousValue
-					);
-
 					let matchesPreviousUnit;
 					if (isUnitKey(key)) {
 						// For unit keys, compare the linked values
@@ -331,6 +323,14 @@ const flatWithGeneral = (
 						}
 						return;
 					}
+
+					// Check if this breakpoint has a unique value
+					const currentBpValue = attributes?.[bpKey];
+
+					const matchesPreviousValue = isEqual(
+						currentBpValue,
+						previousValue
+					);
 
 					// Update if this breakpoint was inheriting the value we're changing
 					if (matchesPreviousValue && matchesPreviousUnit) {
@@ -751,6 +751,68 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 	return result;
 };
 
+const propagateXXL = (result, attributes) => {
+	const newResult = { ...result };
+	const currentAttributes = { ...attributes };
+
+	Object.entries(result).forEach(([key, value]) => {
+		const breakpoint = getBreakpointFromAttribute(key);
+		if (breakpoint !== 'xxl') return;
+
+		const isHover = getIsHoverAttribute(key);
+		const simpleLabel = getSimpleLabel(key, breakpoint);
+		const isUnit = isUnitKey(key);
+
+		// Get xl values
+		const xlKey = getAttributeKey(simpleLabel, isHover, '', 'xl');
+		const xlValue = currentAttributes[xlKey];
+
+		const xlUnitKey = isUnit ? undefined : `${xlKey}-unit`;
+
+		if (isUnit) {
+			// Handle unit changes
+			const xlValueKey = getValueKeyFromUnitKey(xlKey);
+			const xlLinkedValue = currentAttributes[xlValueKey];
+			const xxlValueKey = getValueKeyFromUnitKey(key);
+			const xxlValue = currentAttributes[xxlValueKey];
+
+			// Only propagate unit if values match and units are different
+			if (
+				isEqual(xlLinkedValue, xxlValue) &&
+				!isEqual(currentAttributes[xlKey], value)
+			) {
+				newResult[xlKey] = value;
+			}
+		} else {
+			// Handle value changes
+			const xxlOldValue = currentAttributes[key];
+			// Get the current XXL unit from either the new change or current attributes
+			const xxlUnitKey = `${key}-unit`;
+			const xxlUnit = result[xxlUnitKey] ?? currentAttributes[xxlUnitKey];
+			// Get the current XL unit
+			const xlUnitKey = `${xlKey}-unit`;
+			const xlUnit = currentAttributes[xlUnitKey];
+
+			// Only propagate if values match AND units match
+			if (isEqual(xlValue, xxlOldValue) && isEqual(xlUnit, xxlUnit)) {
+				newResult[xlKey] = value;
+				// Keep the existing XL unit
+				newResult[xlUnitKey] = xlUnit;
+			}
+		}
+
+		// If XL was changed in this iteration, update it in currentAttributes for next iterations
+		if (newResult[xlKey] !== undefined) {
+			currentAttributes[xlKey] = newResult[xlKey];
+			if (newResult[xlUnitKey] !== undefined) {
+				currentAttributes[xlUnitKey] = newResult[xlUnitKey];
+			}
+		}
+	});
+
+	return newResult;
+};
+
 const cleanAttributes = ({
 	newAttributes,
 	attributes,
@@ -789,6 +851,10 @@ const cleanAttributes = ({
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
+	};
+	result = {
+		...result,
+		...propagateXXL(result, attributes),
 	};
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {

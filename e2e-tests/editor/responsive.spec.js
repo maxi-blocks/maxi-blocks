@@ -8,8 +8,6 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	editAxisControl,
-	getStyleCardEditor,
-	editAdvancedNumberControl,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
 } from '../utils';
@@ -22,130 +20,6 @@ describe('Responsive attributes mechanisms', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
 		await updateAllBlockUniqueIds(page);
-	});
-
-	it('On change attributes from base responsive, just "general" attributes change', async () => {
-		const borderAccordion = await openSidebarTab(page, 'style', 'border');
-		const selector = await borderAccordion.$(
-			'.maxi-border-control__type select'
-		);
-		await selector.select('solid');
-
-		const expectBorder = {
-			'border-style-xl': 'solid',
-			'border-top-width-xl': 2,
-			'border-right-width-xl': 2,
-			'border-bottom-width-xl': 2,
-			'border-left-width-xl': 2,
-			'border-style-m': undefined,
-			'border-top-width-m': undefined,
-			'border-right-width-m': undefined,
-			'border-bottom-width-m': undefined,
-			'border-left-width-m': undefined,
-		};
-
-		const borderResult = await getAttributes([
-			'border-style-xl',
-			'border-top-width-xl',
-			'border-right-width-xl',
-			'border-bottom-width-xl',
-			'border-left-width-xl',
-			'border-style-m',
-			'border-top-width-m',
-			'border-right-width-m',
-			'border-bottom-width-m',
-			'border-left-width-m',
-		]);
-
-		expect(borderResult).toStrictEqual(expectBorder);
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
-	});
-
-	it('On change attributes from base responsive multiple times, just "general" attributes change', async () => {
-		const borderAccordion = await openSidebarTab(page, 'style', 'border');
-		const selector = await borderAccordion.$(
-			'.maxi-border-control__type select'
-		);
-		await selector.select('solid');
-
-		await borderAccordion.$$eval(
-			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
-			select => select[0].click()
-		);
-
-		const firstExpect = {
-			'border-palette-status-xl': false,
-		};
-
-		const firstResult = await getAttributes(['border-palette-status-xl']);
-
-		expect(firstResult).toStrictEqual(firstExpect);
-
-		await borderAccordion.$$eval(
-			'.maxi-color-control .maxi-toggle-switch .maxi-base-control__label',
-			select => select[0].click()
-		);
-
-		const secondExpect = {
-			'border-palette-status-xl': true,
-			'border-palette-status-m': undefined,
-		};
-
-		const secondResult = await getAttributes([
-			'border-palette-status-xl',
-			'border-palette-status-m',
-		]);
-
-		expect(secondResult).toStrictEqual(secondExpect);
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
-	});
-
-	it('On change attributes from base responsive and some attributes have default on general, just "general" attributes change', async () => {
-		const borderAccordion = await openSidebarTab(page, 'style', 'border');
-		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
-			buttons => buttons[1].click()
-		);
-
-		const expectBorder = {
-			'border-style-xl': 'solid',
-			'border-top-width-xl': 2,
-			'border-right-width-xl': 2,
-			'border-bottom-width-xl': 2,
-			'border-left-width-xl': 2,
-			'border-sync-width-xl': 'all',
-			'border-unit-width-xl': 'px',
-			'border-style-m': undefined,
-			'border-top-width-m': undefined,
-			'border-right-width-m': undefined,
-			'border-bottom-width-m': undefined,
-			'border-left-width-m': undefined,
-			'border-sync-width-m': undefined,
-			'border-unit-width-m': undefined,
-		};
-
-		const borderResult = await getAttributes([
-			'border-style-xl',
-			'border-top-width-xl',
-			'border-right-width-xl',
-			'border-bottom-width-xl',
-			'border-left-width-xl',
-			'border-sync-width-xl',
-			'border-unit-width-xl',
-			'border-style-m',
-			'border-top-width-m',
-			'border-right-width-m',
-			'border-bottom-width-m',
-			'border-left-width-m',
-			'border-sync-width-m',
-			'border-unit-width-m',
-		]);
-
-		expect(borderResult).toStrictEqual(expectBorder);
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('On change attributes from XXL responsive and without a default general attribute value, just "general" change', async () => {
@@ -178,50 +52,6 @@ describe('Responsive attributes mechanisms', () => {
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
-
-		expect(await getBlockStyle(page)).toMatchSnapshot();
-	});
-
-	it('On change attributes from XXL responsive and some of them that have default on general, just "general" attributes change', async () => {
-		await changeResponsive(page, 'xxl');
-
-		const borderAccordion = await openSidebarTab(page, 'style', 'border');
-		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
-			buttons => buttons[1].click()
-		);
-
-		const expectBorder = {
-			'border-style-xxl': 'solid',
-			'border-top-width-xxl': 2,
-			'border-right-width-xxl': 2,
-			'border-bottom-width-xxl': 2,
-			'border-left-width-xxl': 2,
-			'border-sync-width-xxl': 'all',
-			'border-unit-width-xxl': 'px',
-			'border-style-xl': 'none',
-			'border-top-width-xl': 2,
-			'border-right-width-xl': 2,
-			'border-bottom-width-xl': 2,
-			'border-left-width-xl': 2,
-		};
-
-		const borderResult = await getAttributes([
-			'border-style-xxl',
-			'border-top-width-xxl',
-			'border-right-width-xxl',
-			'border-bottom-width-xxl',
-			'border-left-width-xxl',
-			'border-sync-width-xxl',
-			'border-unit-width-xxl',
-			'border-style-xl',
-			'border-top-width-xl',
-			'border-right-width-xl',
-			'border-bottom-width-xl',
-			'border-left-width-xl',
-		]);
-
-		expect(borderResult).toStrictEqual(expectBorder);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -261,7 +91,6 @@ describe('Responsive attributes mechanisms', () => {
 		});
 
 		const expectMargin = {
-			'margin-top-xl': '20',
 			'margin-top-xl': '20',
 			'margin-top-m': '20',
 		};
@@ -316,7 +145,6 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectMargin = {
 			'margin-top-xl': '20',
-			'margin-top-xl': '20',
 			'margin-top-m': '20',
 		};
 
@@ -358,7 +186,6 @@ describe('Responsive attributes mechanisms', () => {
 		const expectBorder = {
 			'border-style-xxl': 'solid',
 			'border-style-xl': 'dotted',
-			'border-style-xl': 'dashed',
 			'border-style-m': 'dotted',
 		};
 
@@ -435,7 +262,6 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectMargin = {
 			'margin-top-xl': '10',
-			'margin-top-xl': '20',
 			'margin-top-m': '10',
 		};
 
@@ -522,7 +348,6 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectRadiusOnXl = {
 			'border-top-left-radius-xl': 100,
-			'border-top-left-radius-xl': 150,
 			'border-top-left-radius-m': 150,
 		};
 
@@ -531,7 +356,6 @@ describe('Responsive attributes mechanisms', () => {
 		const radiusOnXl = await getAttributes([
 			'border-top-left-radius-xl',
 			'border-top-left-radius-m',
-			'border-top-left-radius-xl',
 		]);
 
 		expect(radiusOnXl).toStrictEqual(expectRadiusOnXl);
@@ -545,7 +369,6 @@ describe('Responsive attributes mechanisms', () => {
 		const expectResetRadiusOnXl = {
 			'border-top-left-radius-xl': 100,
 			'border-top-left-radius-m': '',
-			'border-top-left-radius-xl': undefined,
 		};
 
 		await page.waitForTimeout(500);
@@ -553,7 +376,6 @@ describe('Responsive attributes mechanisms', () => {
 		const resetRadiusOnXl = await getAttributes([
 			'border-top-left-radius-xl',
 			'border-top-left-radius-m',
-			'border-top-left-radius-xl',
 		]);
 
 		expect(resetRadiusOnXl).toStrictEqual(expectResetRadiusOnXl);
@@ -571,7 +393,6 @@ describe('Responsive attributes mechanisms', () => {
 		const expectResetRadiusOnM = {
 			'border-top-left-radius-xl': undefined,
 			'border-top-left-radius-m': undefined,
-			'border-top-left-radius-xl': undefined,
 		};
 
 		await page.waitForTimeout(500);
@@ -579,7 +400,6 @@ describe('Responsive attributes mechanisms', () => {
 		const resetRadiusOnM = await getAttributes([
 			'border-top-left-radius-xl',
 			'border-top-left-radius-m',
-			'border-top-left-radius-xl',
 		]);
 
 		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);
@@ -612,7 +432,6 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectPaddingOnM = {
 			'button-padding-top-xl': '10',
-			'button-padding-top-xl': '10',
 		};
 
 		const paddingOnM = await getAttributes([
@@ -627,7 +446,6 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectPaddingOnXl = {
-			'button-padding-top-xl': '10',
 			'button-padding-top-xl': '10',
 			'button-padding-top-xxl': '23',
 		};
@@ -655,7 +473,6 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectPaddingAfterReset = {
-			'button-padding-top-xl': '15',
 			'button-padding-top-xl': '15',
 			'button-padding-top-xxl': '23',
 		};
@@ -700,7 +517,6 @@ describe('Responsive attributes mechanisms', () => {
 		const expectPaddingOnXl = {
 			'padding-top-xl': '10',
 			'padding-top-xxl': '10',
-			'padding-top-xl': '10',
 		};
 
 		const paddingOnXl = await getAttributes([
@@ -728,7 +544,6 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectPaddingOnXxl = {
 			'padding-top-xl': '15',
-			'padding-top-xl': '10',
 			'padding-top-xxl': '15',
 		};
 

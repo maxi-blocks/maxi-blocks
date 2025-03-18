@@ -189,17 +189,13 @@ describe('AxisControl', () => {
 			'margin-bottom-xl': '66',
 			'margin-left-xl': '77',
 			'margin-right-xl': '77',
-			'margin-left-unit-xl': 'px',
 			'margin-bottom-unit-xl': '%',
 			'margin-top-unit-xl': '%',
-			'margin-right-unit-xl': 'px',
 		};
 
 		const resultAxis = await getAttributes([
-			'margin-left-unit-xl',
 			'margin-bottom-unit-xl',
 			'margin-top-unit-xl',
-			'margin-right-unit-xl',
 			'margin-bottom-xl',
 			'margin-left-xl',
 			'margin-right-xl',
@@ -221,10 +217,8 @@ describe('AxisControl', () => {
 			'margin-bottom-xl': '55',
 			'margin-left-xl': '33',
 			'margin-right-xl': '77',
-			'margin-left-unit-xl': 'px',
 			'margin-bottom-unit-xl': '%',
 			'margin-top-unit-xl': 'px',
-			'margin-right-unit-xl': 'px',
 		};
 
 		const resultSyncOptionNone = await getAttributes([
@@ -232,10 +226,8 @@ describe('AxisControl', () => {
 			'margin-bottom-xl',
 			'margin-left-xl',
 			'margin-right-xl',
-			'margin-left-unit-xl',
 			'margin-bottom-unit-xl',
 			'margin-top-unit-xl',
-			'margin-right-unit-xl',
 		]);
 
 		expect(resultSyncOptionNone).toStrictEqual(expectSyncOptionNone);

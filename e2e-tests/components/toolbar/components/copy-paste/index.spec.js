@@ -264,7 +264,7 @@ describe('CopyPaste from Toolbar', () => {
 			'border-bottom-right-radius-xl': 96,
 			'border-top-left-radius-xl': 56,
 			'border-top-right-radius-xl': 15,
-			'box-shadow-blur-xl': 0,
+			'box-shadow-blur-xl': undefined,
 			'box-shadow-color-xl': undefined,
 			'margin-top-xl': '24',
 			'margin-right-xl': '24',
@@ -278,10 +278,10 @@ describe('CopyPaste from Toolbar', () => {
 			'padding-right-xl': undefined,
 			'padding-bottom-xl': undefined,
 			'padding-left-xl': undefined,
-			'padding-top-unit-xl': 'px',
-			'padding-right-unit-xl': 'px',
-			'padding-bottom-unit-xl': 'px',
-			'padding-left-unit-xl': 'px',
+			'padding-top-unit-xl': undefined,
+			'padding-right-unit-xl': undefined,
+			'padding-bottom-unit-xl': undefined,
+			'padding-left-unit-xl': undefined,
 		};
 		const attributesResult = await getAttributes(
 			Object.keys(expectAttributes)

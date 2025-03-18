@@ -796,8 +796,10 @@ const propagateXXL = (result, attributes) => {
 			// Only propagate if values match AND units match
 			if (isEqual(xlValue, xxlOldValue) && isEqual(xlUnit, xxlUnit)) {
 				newResult[xlKey] = value;
-				// Keep the existing XL unit
-				newResult[xlUnitKey] = xlUnit;
+				// Keep the existing XL unit only if it exists
+				if (xlUnit !== undefined) {
+					newResult[xlUnitKey] = xlUnit;
+				}
 			}
 		}
 

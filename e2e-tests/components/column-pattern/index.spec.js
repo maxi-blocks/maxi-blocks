@@ -31,11 +31,13 @@ describe('ColumnPattern', () => {
 		);
 
 		// check default values
-		expect(await getAttributes('column-gap-xl')).toStrictEqual(2.5);
-		expect(await getAttributes('column-gap-unit-xl')).toStrictEqual('%');
+		expect(await getAttributes('column-gap-general')).toStrictEqual(2.5);
+		expect(await getAttributes('column-gap-unit-general')).toStrictEqual(
+			'%'
+		);
 
-		expect(await getAttributes('row-gap-xl')).toStrictEqual(20);
-		expect(await getAttributes('row-gap-unit-xl')).toStrictEqual('px');
+		expect(await getAttributes('row-gap-general')).toStrictEqual(20);
+		expect(await getAttributes('row-gap-unit-general')).toStrictEqual('px');
 
 		// select column
 		await accordionControl.$eval(

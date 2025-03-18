@@ -53,11 +53,18 @@ const ColumnPattern = props => {
 		toolbar = false,
 	} = props;
 
-	const [numCol, setNumCol] = useState(
-		!isNil(props['row-pattern-general'])
+	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+
+	const [numCol, setNumCol] = useState(() => {
+		const baseBreakpointPattern =
+			props[getAttributeKey('row-pattern', false, false, baseBreakpoint)];
+		if (!isNil(baseBreakpointPattern)) {
+			return getNumCol(baseBreakpointPattern);
+		}
+		return !isNil(props['row-pattern-general'])
 			? getNumCol(props['row-pattern-general'])
-			: 1
-	);
+			: 1;
+	});
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPattern);
@@ -78,6 +85,18 @@ const ColumnPattern = props => {
 	useEffect(() => {
 		if (props['row-pattern-general']) {
 			setNumCol(getNumCol(props['row-pattern-general']));
+			setNumCol(
+				getNumCol(
+					props[
+						getAttributeKey(
+							'row-pattern',
+							false,
+							false,
+							baseBreakpoint
+						)
+					]
+				)
+			);
 		}
 	}, [breakpoint, props['row-pattern-general']]);
 

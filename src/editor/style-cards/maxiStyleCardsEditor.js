@@ -12,7 +12,7 @@ import { Popover } from '@wordpress/components';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, merge } from 'lodash';
+import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
 
 /**
  * Internal dependencies
@@ -27,6 +27,7 @@ import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import MaxiModal from '@editor/library/modal';
 import { exportStyleCard, getActiveColourFromSC } from './utils';
 import { updateSCOnEditor } from '@extensions/style-cards';
+import { handleSetAttributes } from '@extensions/maxi-block';
 import standardSC from '@maxi-core/defaults/defaultSC.json';
 
 /**
@@ -167,20 +168,50 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	};
 
 	const onChangeValue = (obj, type) => {
-		const newSC = { ...selectedSCValue };
-		if (!newSC[currentSCStyle]) newSC[currentSCStyle] = {};
-		if (!newSC[currentSCStyle].styleCard)
-			newSC[currentSCStyle].styleCard = {};
-		if (!newSC[currentSCStyle].styleCard[type])
-			newSC[currentSCStyle].styleCard[type] = {};
+		let newSC = { ...selectedSCValue };
+		const isTypography = Object.keys(obj)[0] === 'typography';
 
-		Object.assign(newSC[currentSCStyle].styleCard[type], obj);
+		const newObj = handleSetAttributes({
+			obj: isTypography ? obj.typography : obj,
+			attributes: {
+				...selectedSCValue[currentSCStyle].defaultStyleCard[type],
+				...selectedSCValue[currentSCStyle].styleCard[type],
+			},
+			defaultAttributes:
+				selectedSCValue[currentSCStyle].defaultStyleCard[type],
+			onChange: response => response,
+		});
+
+		Object.entries(newObj).forEach(([prop, value]) => {
+			if (isTypography) {
+				if (isNil(value)) {
+					delete selectedSCValue[currentSCStyle].styleCard?.[type]?.[
+						prop
+					];
+				}
+			}
+
+			newSC = {
+				...newSC,
+				[currentSCStyle]: {
+					...newSC[currentSCStyle],
+					styleCard: {
+						...newSC[currentSCStyle].styleCard,
+						[type]: {
+							...newSC[currentSCStyle].styleCard[type],
+							[prop]: value,
+						},
+					},
+				},
+			};
+		});
 
 		const newStyleCards = {
 			...styleCards,
-			[selectedSCKey]: newSC,
+			[selectedSCKey]: {
+				...newSC,
+			},
 		};
-
 		saveMaxiStyleCards(newStyleCards);
 		updateSCOnEditor(newSC, activeSCColour);
 	};

@@ -493,6 +493,7 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 	const result = { ...newAttributes };
 
 	Object.entries(newAttributes).forEach(([key]) => {
+		if (key.includes('-global')) return;
 		const breakpoint = getBreakpointFromAttribute(key);
 		// If hover value is on responsive there is possibly hover value on higher breakpoint
 		// that will overwrite the responsive value if it is deleted,

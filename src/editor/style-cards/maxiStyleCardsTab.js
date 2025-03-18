@@ -67,14 +67,14 @@ const GlobalColor = props => {
 				selected={
 					processSCAttribute(SC, globalAttr, groupAttr) || false
 				}
-				onChange={val => {
+				onChange={val =>
 					onChangeValue(
 						{
 							[globalAttr]: val,
 						},
 						groupAttr
-					);
-				}}
+					)
+				}
 			/>
 			{processSCAttribute(SC, globalAttr, groupAttr) && (
 				<>

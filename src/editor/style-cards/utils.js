@@ -113,11 +113,14 @@ export const getDefaultSCAttribute = (SC, attr, type) => {
 };
 
 export const processSCAttribute = (SC, attr, type) => {
-	if (!SC || !attr) return null;
+	if (!isEmpty(SC)) {
+		const value = SC.styleCard?.[type]?.[attr];
+		if (!isNil(value)) return value;
 
-	return (
-		SC?.styleCard?.[type]?.[attr] ?? getDefaultSCAttribute(SC, attr, type)
-	);
+		return getDefaultSCAttribute(SC, attr, type);
+	}
+
+	return null;
 };
 
 export const processSCAttributes = (SC, attr, type) => {

@@ -169,6 +169,29 @@ const addNavigationToStyleCards = styleCard => {
 	});
 };
 
+const removeH6LineHeightUnitL = styleCard => {
+	['dark', 'light'].forEach(style => {
+		const styleValue = styleCard?.value?.[style];
+		if (
+			styleValue &&
+			styleValue.defaultStyleCard &&
+			styleValue.defaultStyleCard.h6
+		) {
+			const { h6 } = styleValue.defaultStyleCard;
+
+			// Check if line-height-unit-l equals line-height-unit-xl
+			if (
+				h6['line-height-unit-l'] &&
+				h6['line-height-unit-xl'] &&
+				h6['line-height-unit-l'] === h6['line-height-unit-xl']
+			) {
+				// Remove line-height-unit-l since it equals line-height-unit-xl
+				delete h6['line-height-unit-l'];
+			}
+		}
+	});
+};
+
 // Usage
 export const receiveMaxiStyleCards = state => {
 	if (state.styleCards) {
@@ -178,6 +201,7 @@ export const receiveMaxiStyleCards = state => {
 				addNavigationToStyleCards(styleCard);
 			}
 			addMissingButtonXXLLineHeight(styleCard);
+			removeH6LineHeightUnitL(styleCard);
 		});
 		return state.styleCards;
 	}
@@ -192,6 +216,7 @@ export const receiveSavedMaxiStyleCards = state => {
 				addNavigationToStyleCards(styleCard);
 			}
 			addMissingButtonXXLLineHeight(styleCard);
+			removeH6LineHeightUnitL(styleCard);
 		});
 		return state.savedStyleCards;
 	}
@@ -207,6 +232,7 @@ export const receiveMaxiActiveStyleCard = state => {
 		}
 		// Fix missing button line-height-xxl values
 		addMissingButtonXXLLineHeight(activeStyleCard);
+		removeH6LineHeightUnitL(activeStyleCard);
 		return activeStyleCard;
 	}
 	return false;
@@ -220,6 +246,7 @@ export const receiveMaxiSelectedStyleCard = state => {
 		}
 		// Fix missing button line-height-xxl values
 		addMissingButtonXXLLineHeight(selectedStyleCard);
+		removeH6LineHeightUnitL(selectedStyleCard);
 		return selectedStyleCard;
 	}
 	return false;

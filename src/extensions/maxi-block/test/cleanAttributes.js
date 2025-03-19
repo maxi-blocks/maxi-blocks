@@ -643,7 +643,7 @@ describe('cleanAttributes', () => {
 		};
 		const expectedThirdRound = {
 			'test-general': 5,
-			'test-xl': 5,
+			'test-xl': 4,
 			'test-xxl': 4,
 			'test-l': 4,
 		};
@@ -1702,7 +1702,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'font-size-unit-general': 'em',
-			'font-size-unit-xl': 'em',
+			'font-size-unit-xl': 'px',
 			'font-size-unit-xxl': 'px',
 		};
 

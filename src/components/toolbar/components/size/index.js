@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
+import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
@@ -50,6 +50,17 @@ const Size = props => {
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
 
+	const useBreakpoint =
+		breakpoint === 'general'
+			? select('maxiBlocks').receiveBaseBreakpoint()
+			: breakpoint;
+	const showAdvancedOptions =
+		breakpoint === 'general'
+			? props[`full-width-${useBreakpoint}`] === undefined
+				? !props['full-width-general']
+				: !props[`full-width-${useBreakpoint}`]
+			: !props[`full-width-${useBreakpoint}`];
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__size'
@@ -63,50 +74,55 @@ const Size = props => {
 					<div>
 						<ToggleSwitch
 							label={__('Enable full width', 'maxi-blocks')}
-							selected={props[`full-width-${breakpoint}`]}
+							selected={
+								breakpoint === 'general'
+									? props[`full-width-${useBreakpoint}`] ===
+									  undefined
+										? props['full-width-general']
+										: props[`full-width-${useBreakpoint}`]
+									: props[`full-width-${useBreakpoint}`]
+							}
 							onChange={val => {
 								onChange({
-									[`full-width-${breakpoint}`]: val,
+									[`full-width-${useBreakpoint}`]: val,
 								});
 							}}
 						/>
 					</div>
 				)}
-				{!props[`full-width-${breakpoint}`] && (
+				{showAdvancedOptions && (
 					<>
 						<AdvancedNumberControl
 							label={__('Width', 'maxi-blocks')}
 							enableUnit
 							unit={getLastBreakpointAttribute({
 								target: 'width-unit',
-								breakpoint,
+								breakpoint: useBreakpoint,
 								attributes: props,
 							})}
 							onChangeUnit={val =>
 								onChange({
-									[`width-unit-${breakpoint}`]: val,
+									[`width-unit-${useBreakpoint}`]: val,
 								})
 							}
 							value={getLastBreakpointAttribute({
 								target: 'width',
-								breakpoint,
+								breakpoint: useBreakpoint,
 								attributes: props,
 							})}
 							allowedUnits={['px', 'em', 'vw', '%']}
 							onChangeValue={val =>
 								onChange({
-									[`width-${breakpoint}`]: val,
+									[`width-${useBreakpoint}`]: val,
 								})
 							}
 							onReset={() =>
 								onChange({
-									[`width-${breakpoint}`]:
+									[`width-${useBreakpoint}`]:
+										getDefaultAttribute('width-general'),
+									[`width-unit-${useBreakpoint}`]:
 										getDefaultAttribute(
-											`width-${breakpoint}`
-										),
-									[`width-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`width-unit-${breakpoint}`
+											'width-unit-general'
 										),
 									isReset: true,
 								})
@@ -119,24 +135,24 @@ const Size = props => {
 									enableUnit
 									unit={getLastBreakpointAttribute({
 										target: 'max-width-unit',
-										breakpoint,
+										breakpoint: useBreakpoint,
 										attributes: props,
 									})}
 									onChangeUnit={val =>
 										onChange({
-											[`max-width-unit-${breakpoint}`]:
+											[`max-width-unit-${useBreakpoint}`]:
 												val,
 										})
 									}
 									onReset={() =>
 										onChange({
-											[`max-width-${breakpoint}`]:
+											[`max-width-${useBreakpoint}`]:
 												getDefaultAttribute(
-													`max-width-${breakpoint}`
+													'max-width-general'
 												),
-											[`max-width-unit-${breakpoint}`]:
+											[`max-width-unit-${useBreakpoint}`]:
 												getDefaultAttribute(
-													`max-width-unit-${breakpoint}`
+													'max-width-unit-general'
 												),
 											isReset: true,
 										})
@@ -148,7 +164,7 @@ const Size = props => {
 									})}
 									onChangeValue={val =>
 										onChange({
-											[`max-width-${breakpoint}`]: val,
+											[`max-width-${useBreakpoint}`]: val,
 										})
 									}
 								/>

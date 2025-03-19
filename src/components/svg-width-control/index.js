@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 import {
 	getAttributeKey,
 	getAttributeValue,
@@ -42,33 +43,62 @@ const SvgWidthControl = props => {
 
 	const classes = classnames('maxi-svg-width-control', className);
 
-	const widthAttrLabel = `${prefix}width-${breakpoint}${
+	const useBreakpoint =
+		breakpoint === 'general'
+			? select('maxiBlocks').receiveBaseBreakpoint()
+			: breakpoint;
+
+	const widthAttrLabel = `${prefix}width-${useBreakpoint}${
 		isHover ? '-hover' : ''
 	}`;
-	const width = props[widthAttrLabel];
-	const defaultWidth = getDefaultAttribute(widthAttrLabel);
-	const placeholderWidth = getLastBreakpointAttribute({
-		target: `${prefix}width`,
-		breakpoint,
-		isHover,
-		attributes: props,
-	});
-	const widthUnit = getLastBreakpointAttribute({
-		target: `${prefix}width-unit`,
-		breakpoint,
-		isHover,
-		attributes: props,
-	});
+	const defaultWidthAttrLabel = `${prefix}width-general${
+		isHover ? '-hover' : ''
+	}`;
+	const width = props[widthAttrLabel] || props[defaultWidthAttrLabel];
+	const defaultWidth = getDefaultAttribute(defaultWidthAttrLabel);
+	const placeholderWidth =
+		getLastBreakpointAttribute({
+			target: `${prefix}width`,
+			useBreakpoint,
+			isHover,
+			attributes: props,
+		}) ||
+		getLastBreakpointAttribute({
+			target: `${prefix}width`,
+			breakpoint: 'general',
+			isHover,
+			attributes: props,
+		});
+	const widthUnit =
+		getLastBreakpointAttribute({
+			target: `${prefix}width-unit`,
+			useBreakpoint,
+			isHover,
+			attributes: props,
+		}) ||
+		getLastBreakpointAttribute({
+			target: `${prefix}width-unit`,
+			breakpoint: 'general',
+			isHover,
+			attributes: props,
+		});
 	const defaultWidthUnit = getDefaultAttribute(
-		`${prefix}width-unit-${breakpoint}${isHover ? '-hover' : ''}`
+		`${prefix}width-unit-general${isHover ? '-hover' : ''}`
 	);
 
-	const heightFitContent = getLastBreakpointAttribute({
-		target: `${prefix}width-fit-content`,
-		breakpoint,
-		isHover,
-		attributes: props,
-	});
+	const heightFitContent =
+		getLastBreakpointAttribute({
+			target: `${prefix}width-fit-content`,
+			useBreakpoint,
+			isHover,
+			attributes: props,
+		}) ||
+		getLastBreakpointAttribute({
+			target: `${prefix}width-fit-content`,
+			breakpoint: 'general',
+			isHover,
+			attributes: props,
+		});
 
 	return (
 		<div className={classes}>
@@ -80,8 +110,12 @@ const SvgWidthControl = props => {
 					const newVal = val !== undefined && val !== '' ? val : '';
 
 					onChange({
-						[getAttributeKey('width', isHover, prefix, breakpoint)]:
-							newVal,
+						[getAttributeKey(
+							'width',
+							isHover,
+							prefix,
+							useBreakpoint
+						)]: newVal,
 					});
 				}}
 				enableUnit
@@ -93,7 +127,7 @@ const SvgWidthControl = props => {
 							'width-unit',
 							isHover,
 							prefix,
-							breakpoint
+							useBreakpoint
 						)]: val,
 					});
 
@@ -107,13 +141,17 @@ const SvgWidthControl = props => {
 				step={1}
 				onReset={() =>
 					onChange({
-						[getAttributeKey('width', isHover, prefix, breakpoint)]:
-							defaultWidth,
+						[getAttributeKey(
+							'width',
+							isHover,
+							prefix,
+							useBreakpoint
+						)]: defaultWidth,
 						[getAttributeKey(
 							'width-unit',
 							isHover,
 							prefix,
-							breakpoint
+							useBreakpoint
 						)]: defaultWidthUnit,
 						isReset: true,
 					})
@@ -142,7 +180,7 @@ const SvgWidthControl = props => {
 								'width-fit-content',
 								isHover,
 								prefix,
-								breakpoint
+								useBreakpoint
 							)]: val,
 							...((val ||
 								!shouldSetPreserveAspectRatio(

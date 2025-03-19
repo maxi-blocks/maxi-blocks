@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -24,6 +25,11 @@ const SvgWidth = props => {
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
+	const useBreakpoint =
+		breakpoint === 'general'
+			? select('maxiBlocks').receiveBaseBreakpoint()
+			: breakpoint;
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__svg-size'
@@ -36,7 +42,7 @@ const SvgWidth = props => {
 					{...props}
 					onChange={onChange}
 					prefix='svg-'
-					breakpoint={breakpoint}
+					breakpoint={useBreakpoint}
 					resizableObject={resizableObject}
 				/>
 				{type !== 'Shape' && (
@@ -44,7 +50,7 @@ const SvgWidth = props => {
 						{...props}
 						content={props.content}
 						onChange={onChange}
-						breakpoint={breakpoint}
+						breakpoint={useBreakpoint}
 						prefix='svg-'
 					/>
 				)}

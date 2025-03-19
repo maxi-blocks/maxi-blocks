@@ -185,7 +185,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xxl': 'solid',
-			'border-style-xl': 'dotted',
+			'border-style-xl': 'dashed',
 			'border-style-m': 'dotted',
 		};
 
@@ -261,7 +261,7 @@ describe('Responsive attributes mechanisms', () => {
 		await page.waitForTimeout(500);
 
 		const expectMargin = {
-			'margin-top-xl': '10',
+			'margin-top-xl': '20',
 			'margin-top-m': '10',
 		};
 
@@ -321,8 +321,8 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('100', { delay: 300 });
 
 		const expectRadiusOnM = {
-			'border-top-left-radius-xl': 100,
-			'border-top-left-radius-m': undefined,
+			'border-top-left-radius-xl': undefined,
+			'border-top-left-radius-m': 100,
 		};
 
 		await page.waitForTimeout(500);

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -30,6 +31,11 @@ const DisplayControl = props => {
 		defaultDisplay = 'inherit',
 	} = props;
 
+	const useBreakpoint =
+		breakpoint === 'general'
+			? select('maxiBlocks').receiveBaseBreakpoint()
+			: breakpoint;
+
 	const classes = classnames('maxi-display-control', className);
 
 	const isHide = () => {
@@ -51,20 +57,20 @@ const DisplayControl = props => {
 	};
 
 	const getValue = () => {
-		if (props[`display-${breakpoint}`] === 'none') return 'none';
+		if (props[`display-${useBreakpoint}`] === 'none') return 'none';
 
 		const isPrevHide = isHide();
 		if (
 			isPrevHide &&
-			(isNil(props[`display-${breakpoint}`]) ||
-				props[`display-${breakpoint}`] === '')
+			(isNil(props[`display-${useBreakpoint}`]) ||
+				props[`display-${useBreakpoint}`] === '')
 		)
 			return 'none';
 
 		if (
 			isPrevHide &&
-			(!isNil(props[`display-${breakpoint}`]) ||
-				props[`display-${breakpoint}`] !== '')
+			(!isNil(props[`display-${useBreakpoint}`]) ||
+				props[`display-${useBreakpoint}`] !== '')
 		)
 			return defaultDisplay;
 
@@ -94,7 +100,9 @@ const DisplayControl = props => {
 				items={getOptions()}
 				onChange={val =>
 					onChange({
-						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
+						[`display-${useBreakpoint}`]: !isEmpty(val)
+							? val
+							: null,
 					})
 				}
 				hasBorder

@@ -36,10 +36,10 @@ describe('FontLevelControl', () => {
 
 		await page.waitForTimeout(150);
 
-		const fontLevel = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'];
+		const fontLevel = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
 		for (let i = 0; i < fontLevelControl.length; i += 1) {
-			const setting = fontLevelControl[i !== 6 ? i + 1 : 0];
+			const setting = fontLevelControl[i];
 
 			await setting.click();
 
@@ -55,7 +55,7 @@ describe('FontLevelControl', () => {
 			const paletteColor = attributes['palette-color-xl'];
 
 			expect(text).toStrictEqual(fontLevel[i]);
-			expect(paletteColor).toStrictEqual(i !== 6 ? 5 : 3);
+			expect(paletteColor).toStrictEqual(fontLevel[i] === 'p' ? 3 : 5);
 		}
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();

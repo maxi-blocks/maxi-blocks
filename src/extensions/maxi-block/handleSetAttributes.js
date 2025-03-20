@@ -50,26 +50,16 @@ const handleSetAttributes = ({
 
 		if (!isHigherThanBase) return;
 
-		// Special handling for palette-status attributes
-		if (key.startsWith('palette-status')) {
-			// Skip further processing for palette-status attributes
-			return;
-		}
-
-		const attrLabelOnGeneral = `${key.slice(
-			0,
-			key.lastIndexOf('-')
-		)}-general`;
-		const attrLabelOnBaseBreakpoint = `${key.slice(
-			0,
-			key.lastIndexOf('-')
-		)}-${baseBreakpoint}`;
+		const attrLabelOnGeneral = key.includes('general')
+			? key
+			: `${key.slice(0, key.lastIndexOf('-'))}-general`;
+		const attrLabelOnBaseBreakpoint = key.includes('general')
+			? key.replace('general', baseBreakpoint)
+			: key.replace(breakpoint, baseBreakpoint);
 
 		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
 		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
-		const defaultGeneralAttribute =
-			defaultAttributes?.[attrLabelOnGeneral] ??
-			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
+
 		if (attrExistOnBaseBreakpoint && breakpoint !== 'general') return;
 
 		const attrExistOnGeneral = !isNil(
@@ -96,14 +86,6 @@ const handleSetAttributes = ({
 			defaultOnBaseBreakpointAttribute === value
 		) {
 			response[attrLabelOnBaseBreakpoint] = value;
-			return;
-		}
-
-		if (
-			attributes?.[attrLabelOnGeneral] === value &&
-			defaultGeneralAttribute === value
-		) {
-			// Do nothing, skip this iteration
 		}
 	});
 

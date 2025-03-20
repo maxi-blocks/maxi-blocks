@@ -60,12 +60,20 @@ const TextLevel = props => {
 			icon={levelIcon(textLevel)}
 		>
 			<FontLevelControl
-				{...getGroupAttributes(props, [
-					'typography',
-					'typographyHover',
-				])}
+				{...getGroupAttributes(
+					props,
+					['typography', 'typographyHover'],
+					true
+				)}
 				value={textLevel}
-				onChange={onChange}
+				onChange={obj => {
+					const filteredObj = Object.fromEntries(
+						Object.entries(obj).filter(
+							([key, value]) => value !== undefined
+						)
+					);
+					onChange(filteredObj);
+				}}
 			/>
 		</ToolbarPopover>
 	);

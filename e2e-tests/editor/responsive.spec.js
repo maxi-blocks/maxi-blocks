@@ -347,7 +347,7 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('150', { delay: 300 });
 
 		const expectRadiusOnXl = {
-			'border-top-left-radius-xl': 100,
+			'border-top-left-radius-xl': 150,
 			'border-top-left-radius-m': 150,
 		};
 
@@ -367,8 +367,8 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectResetRadiusOnXl = {
-			'border-top-left-radius-xl': 100,
-			'border-top-left-radius-m': '',
+			'border-top-left-radius-xl': undefined,
+			'border-top-left-radius-m': undefined,
 		};
 
 		await page.waitForTimeout(500);

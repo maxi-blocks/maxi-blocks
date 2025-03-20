@@ -30,6 +30,7 @@ const handleSetAttributes = ({
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
+	// First pass: handle general -> baseBreakpoint conversion
 	Object.entries(response).forEach(([key, value]) => {
 		if (key.includes('general')) {
 			const baseBreakpointKey = key.replace('general', baseBreakpoint);
@@ -38,9 +39,9 @@ const handleSetAttributes = ({
 		}
 	});
 
+	// Second pass: handle breakpoint attributes
 	Object.entries(obj).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
-
 		if (!breakpoint) return;
 
 		const isHigherThanBase =
@@ -48,6 +49,12 @@ const handleSetAttributes = ({
 			breakpoints.indexOf(baseBreakpoint);
 
 		if (!isHigherThanBase) return;
+
+		// Special handling for palette-status attributes
+		if (key.startsWith('palette-status')) {
+			// Skip further processing for palette-status attributes
+			return;
+		}
 
 		const attrLabelOnGeneral = `${key.slice(
 			0,
@@ -89,7 +96,6 @@ const handleSetAttributes = ({
 			defaultOnBaseBreakpointAttribute === value
 		) {
 			response[attrLabelOnBaseBreakpoint] = value;
-
 			return;
 		}
 

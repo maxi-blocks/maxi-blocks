@@ -118,7 +118,7 @@ describe('Button Maxi', () => {
 
 		const expectedAttributesTwo = {
 			'icon-width-xl': '343',
-			'icon-stroke-xl': 3,
+			'icon-stroke-xl': 2,
 			'icon-spacing-xl': 20,
 			'icon-position': 'bottom',
 		};

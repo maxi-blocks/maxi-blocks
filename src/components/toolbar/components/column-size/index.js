@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -29,6 +30,11 @@ const ColumnSize = props => {
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
+	const useBreakpoint =
+		breakpoint === 'general'
+			? select('maxiBlocks').receiveBaseBreakpoint()
+			: breakpoint;
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__column-size'
@@ -41,12 +47,12 @@ const ColumnSize = props => {
 					label={__('Column size (%)', 'maxi-blocks')}
 					value={getLastBreakpointAttribute({
 						target: 'column-size',
-						breakpoint,
+						breakpoint: useBreakpoint,
 						attributes: props,
 					})}
 					onChangeValue={val => {
 						onChange({
-							[`column-size-${breakpoint}`]:
+							[`column-size-${useBreakpoint}`]:
 								val !== undefined && val !== '' ? val : '',
 						});
 					}}
@@ -55,7 +61,7 @@ const ColumnSize = props => {
 					step={0.1}
 					onReset={() =>
 						onChange({
-							[`column-size-${breakpoint}`]:
+							[`column-size-${useBreakpoint}`]:
 								getColumnDefaultValue(
 									rowPattern,
 									{
@@ -65,7 +71,7 @@ const ColumnSize = props => {
 										),
 									},
 									clientId,
-									breakpoint
+									useBreakpoint
 								),
 							isReset: true,
 						})

@@ -55,7 +55,10 @@ describe('Column Maxi', () => {
 		);
 
 		await pressKeyWithModifier('ctrl', 'a');
-		await page.keyboard.type('50', { delay: 350 });
+		await page.waitForTimeout(300);
+		await page.keyboard.press('Delete');
+		await page.waitForTimeout(300);
+		await page.keyboard.type('50', { delay: 300 });
 
 		expect(await getAttributes('column-size-xl')).toStrictEqual(50);
 
@@ -75,7 +78,7 @@ describe('Column Maxi', () => {
 			select => select.value
 		);
 
-		expect(columnSizeInput).toStrictEqual('100');
+		expect(columnSizeInput).toStrictEqual('50');
 
 		await page.$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -114,7 +117,7 @@ describe('Column Maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(responsiveMOption).toStrictEqual('100');
+		expect(responsiveMOption).toStrictEqual('50');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -129,7 +132,7 @@ describe('Column Maxi', () => {
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);
-		await page.waitForTimeout(300);
+		await page.waitForTimeout(500);
 		await page.waitForSelector('.maxi-column-block');
 
 		await updateAllBlockUniqueIds(page);

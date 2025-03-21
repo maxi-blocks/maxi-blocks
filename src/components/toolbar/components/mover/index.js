@@ -89,15 +89,22 @@ const Mover = props => {
 			if (isDragging.current) {
 				stopDraggingBlocks();
 				if (srcRootClientId) {
-					const { blockStyle } = getBlockAttributes(srcRootClientId);
-
-					updateBlockAttributes(clientId, {
-						blockStyle,
-					});
+					const attributes = getBlockAttributes(srcRootClientId);
+					if (attributes?.blockStyle) {
+						updateBlockAttributes(clientId, {
+							blockStyle: attributes.blockStyle,
+						});
+					}
 				}
 			}
 		};
-	}, []);
+	}, [
+		clientId,
+		getBlockAttributes,
+		srcRootClientId,
+		stopDraggingBlocks,
+		updateBlockAttributes,
+	]);
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 

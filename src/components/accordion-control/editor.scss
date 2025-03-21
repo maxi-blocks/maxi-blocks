@@ -9,7 +9,8 @@
 		&[data-name='arrows'],
 		&[data-name='box shadow'],
 		&[data-name='icon'],
-		&[data-name='border'] {
+		&[data-name='border'],
+		&[data-name='active icon'] {
 			.maxi-accordion-control__item__panel {
 				padding: 0;
 			}

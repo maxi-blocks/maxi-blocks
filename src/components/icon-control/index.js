@@ -683,9 +683,16 @@ const IconControl = props => {
 		type = 'button-icon',
 		prefix = '',
 		[`${prefix}icon-content`]: iconContent,
+		disablePadding = false,
 	} = props;
 
-	const classes = classnames('maxi-icon-control', className);
+	const classes = classnames(
+		'maxi-icon-control',
+		className,
+		disablePadding
+			? 'maxi-accordion-control__item__panel--disable-padding'
+			: ''
+	);
 
 	return (
 		<div className={classes}>

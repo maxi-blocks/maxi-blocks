@@ -65,9 +65,11 @@ describe('Svg width control', () => {
 			selectInstance: '.maxi-advanced-number-control select',
 			needSelectIndex: true,
 			baseExpect: '%',
-			xsExpect: 'px',
+			xsExpect: '%',
 			newValue: 'px',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(responsiveSelectResult).toBeTruthy();
 	});

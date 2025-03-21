@@ -67,11 +67,11 @@ const AccordionLineControl = props => {
 				depth={3}
 				items={[
 					{
-						label: __('Normal state', 'maxi-blocks'),
+						label: __('Normal', 'maxi-blocks'),
 						content: <DividerControl {...props} disableRTC />,
 					},
 					{
-						label: __('Hover state', 'maxi-blocks'),
+						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch
@@ -97,7 +97,7 @@ const AccordionLineControl = props => {
 						),
 					},
 					{
-						label: __('Active state', 'maxi-blocks'),
+						label: __('Active', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch

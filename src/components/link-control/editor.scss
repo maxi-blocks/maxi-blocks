@@ -7,6 +7,11 @@
 				display: none;
 			}
 		}
+		.block-editor-link-control__search-item-top {
+			button.has-icon:not(:last-child) {
+				display: none;
+			}
+		}
 	}
 	.block-editor-link-control__search-item {
 		&-top {

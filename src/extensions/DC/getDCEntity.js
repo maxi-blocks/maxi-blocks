@@ -11,6 +11,7 @@ import {
 	getDCOrder,
 	getRelationKeyForId,
 	getCurrentTemplateSlug,
+	getPostBySlug,
 } from './utils';
 import { getCartData } from './getWooCommerceData';
 import { kindDictionary, nameDictionary, orderRelations } from './constants';
@@ -34,19 +35,6 @@ const getRandomEntity = (entities, accumulator) => {
 	const randomIndex = getSeededRandomIndex(seed, entities.length);
 
 	return entities[randomIndex];
-};
-
-const getPostBySlug = async slug => {
-	const posts = await select('core').getEntityRecords('postType', 'post', {
-		slug,
-		per_page: 1,
-	});
-
-	if (posts && posts.length > 0) {
-		return posts[0];
-	}
-
-	return null;
 };
 
 const getAuthorBySlug = async slug => {
@@ -141,6 +129,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 		orderBy,
 		order,
 		accumulator,
+		field,
 	} = dataRequest;
 
 	const contentError = getDCErrors(type, error, show, relation);
@@ -202,9 +191,9 @@ const getDCEntity = async (dataRequest, clientId) => {
 
 	if (['users'].includes(type)) {
 		let user;
-		if (type === 'users') dataRequest.id = author ?? id;
-
 		const { getUser } = resolveSelect('core');
+
+		if (type === 'users') dataRequest.id = author ?? id;
 
 		if (relation === 'random') {
 			const users = await resolveSelect('core').getUsers({
@@ -403,6 +392,7 @@ const getDCEntity = async (dataRequest, clientId) => {
 				'page',
 			];
 			const currentTemplateType = getCurrentTemplateSlug();
+
 			if (
 				(type.includes(currentTemplateType) &&
 					allowedTemplateTypesCurrent.includes(
@@ -576,6 +566,56 @@ const getDCEntity = async (dataRequest, clientId) => {
 				});
 				const taxonomy = taxonomies.find(tax => tax.slug === type);
 				if (taxonomy) return taxonomy;
+			}
+			if (field === 'tags') {
+				// Check if we're in a single post template in FSE
+				if (isFSE && currentTemplateType.includes('single-post-')) {
+					// Extract the post slug from the template name
+					const postSlug = currentTemplateType.replace(
+						'single-post-',
+						''
+					);
+
+					// Get the post by slug
+					const post = await getPostBySlug(postSlug);
+
+					if (post) {
+						// First try to get tags using post ID
+						const postTags = await resolveSelect(
+							'core'
+						).getEntityRecords('taxonomy', 'post_tag', {
+							post: post.id,
+							per_page: -1, // Get all tags for this post
+						});
+
+						// If we have tags from the post ID method, return them
+						if (postTags && postTags.length > 0) {
+							return postTags;
+						}
+
+						// If no tags returned but post has tag IDs, fetch them directly
+						if (post.tags && post.tags.length > 0) {
+							const tagsByIds = await resolveSelect(
+								'core'
+							).getEntityRecords('taxonomy', 'post_tag', {
+								include: post.tags,
+								per_page: -1,
+							});
+
+							if (tagsByIds && tagsByIds.length > 0) {
+								return tagsByIds;
+							}
+						}
+					}
+				}
+
+				// Fallback to generic tags if not in a single post template or if post tags couldn't be retrieved
+				const tags = await resolveSelect('core').getEntityRecords(
+					'taxonomy',
+					'post_tag',
+					{ per_page: 2 }
+				);
+				return tags;
 			}
 		} else {
 			const entity = await resolveSelect('core').getEditedEntityRecord(

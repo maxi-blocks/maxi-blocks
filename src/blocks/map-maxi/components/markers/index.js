@@ -18,30 +18,41 @@ import L from 'leaflet';
 
 const Markers = props => {
 	const { attributes, maxiSetAttributes, setIsDraggingMarker } = props;
+
 	const {
 		'map-marker-heading-level': mapMarkerHeadingLevel,
 		'map-marker-icon': mapMarkerIcon,
 		'map-markers': mapMarkers,
+		'svg-width-general': svgWidthGeneral,
 	} = attributes;
 
 	if (isEmpty(mapMarkers)) return null;
 
 	const markerIcon = L.divIcon({
 		html: mapMarkerIcon,
-		iconSize: [null, null],
+		iconSize: [svgWidthGeneral, svgWidthGeneral],
+		iconAnchor: [svgWidthGeneral / 2, svgWidthGeneral * 0.9],
+		popupAnchor: [-svgWidthGeneral / 2, -svgWidthGeneral],
+		className: 'maxi-map-marker',
 	});
 
 	const handleRemoveMarker = (event, index) => {
 		event.stopPropagation();
 
-		const updatedMarkers = [...mapMarkers];
+		const updatedMarkers = JSON.parse(JSON.stringify(mapMarkers));
 		updatedMarkers.splice(index, 1);
 		maxiSetAttributes({
 			'map-markers': updatedMarkers,
 		});
 	};
 
-	const updateMarkers = updatedMarkers => {
+	const updateMarkers = (index, updates) => {
+		const updatedMarkers = JSON.parse(JSON.stringify(mapMarkers));
+		updatedMarkers[index] = {
+			...updatedMarkers[index],
+			...updates,
+		};
+
 		maxiSetAttributes({
 			'map-markers': updatedMarkers,
 		});
@@ -57,21 +68,18 @@ const Markers = props => {
 				icon={markerIcon}
 				draggable
 				eventHandlers={{
-					dragstart: () => {
+					dragstart: event => {
 						setIsDraggingMarker(true);
+						event.target._map.dragging.disable();
 					},
 					dragend: event => {
 						const { lat, lng } = event.target._latlng;
-
-						const updatedMarkers = [...mapMarkers];
-						updatedMarkers[index] = {
-							...updatedMarkers[index],
+						updateMarkers(index, {
 							latitude: lat,
 							longitude: lng,
-						};
-
-						updateMarkers(updatedMarkers);
+						});
 						setIsDraggingMarker(false);
+						event.target._map.dragging.enable();
 					},
 					mouseover: () => {
 						setIsDraggingMarker(true);
@@ -86,10 +94,7 @@ const Markers = props => {
 								value={marker.heading}
 								tagName={mapMarkerHeadingLevel}
 								onChange={content => {
-									const updatedMarkers = [...mapMarkers];
-									updatedMarkers[index].heading = content;
-
-									updateMarkers(updatedMarkers);
+									updateMarkers(index, { heading: content });
 								}}
 								placeholder={__('Title', 'maxi-blocks')}
 								withoutInteractiveFormatting
@@ -98,10 +103,9 @@ const Markers = props => {
 								className='maxi-map-block__popup__content__description'
 								value={marker.description}
 								onChange={content => {
-									const updatedMarkers = [...mapMarkers];
-									updatedMarkers[index].description = content;
-
-									updateMarkers(updatedMarkers);
+									updateMarkers(index, {
+										description: content,
+									});
 								}}
 								placeholder={__('Description', 'maxi-blocks')}
 								withoutInteractiveFormatting

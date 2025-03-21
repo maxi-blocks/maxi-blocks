@@ -48,7 +48,7 @@ describe('Video overlay control', () => {
 			colorPalette: 8,
 		});
 		expect(
-			await getAttributes('overlay-background-palette-color-general')
+			await getAttributes('overlay-background-palette-color-xl')
 		).toStrictEqual(8);
 
 		// Opacity
@@ -63,7 +63,7 @@ describe('Video overlay control', () => {
 		await page.waitForTimeout(350);
 
 		expect(
-			await getAttributes('overlay-background-palette-opacity-general')
+			await getAttributes('overlay-background-palette-opacity-xl')
 		).toStrictEqual(0.33);
 
 		// Hide image(icon only)

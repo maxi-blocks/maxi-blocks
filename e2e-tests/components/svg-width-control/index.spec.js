@@ -45,9 +45,11 @@ describe('Svg width control', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.press('Backspace');
+		await page.waitForTimeout(500);
 		await page.keyboard.type('37', { delay: 350 });
 
-		expect(await getAttributes('svg-width-general')).toStrictEqual('37');
+		expect(await getAttributes('svg-width-xl')).toStrictEqual('37');
 
 		const unitSelector = await accordionPanel.$(
 			'.maxi-advanced-number-control select'
@@ -55,9 +57,7 @@ describe('Svg width control', () => {
 
 		await unitSelector.select('%');
 
-		expect(await getAttributes('svg-width-unit-general')).toStrictEqual(
-			'%'
-		);
+		expect(await getAttributes('svg-width-unit-xl')).toStrictEqual('%');
 
 		const responsiveSelectResult = await addResponsiveTest({
 			page,
@@ -65,9 +65,11 @@ describe('Svg width control', () => {
 			selectInstance: '.maxi-advanced-number-control select',
 			needSelectIndex: true,
 			baseExpect: '%',
-			xsExpect: 'px',
+			xsExpect: '%',
 			newValue: 'px',
 		});
+
+		await page.waitForTimeout(500);
 
 		expect(responsiveSelectResult).toBeTruthy();
 	});

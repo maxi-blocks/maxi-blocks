@@ -41,7 +41,7 @@ describe('Svg stroke width control', () => {
 			newNumber: '3',
 		});
 
-		expect(await getAttributes('svg-stroke-general')).toStrictEqual(3);
+		expect(await getAttributes('svg-stroke-xl')).toStrictEqual(3);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
@@ -71,7 +71,7 @@ describe('Svg stroke width control', () => {
 			'.maxi-advanced-number-control input',
 			input => input.placeholder
 		);
-		expect(sStrokeValue).toStrictEqual('1');
+		expect(sStrokeValue).toStrictEqual('3');
 
 		await changeResponsive(page, 'm');
 

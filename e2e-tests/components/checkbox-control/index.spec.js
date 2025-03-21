@@ -35,8 +35,8 @@ describe('CheckBoxControl', () => {
 			checkBox => checkBox.click()
 		);
 
-		expect(await getAttributes('full-width-general')).toStrictEqual(true);
-		expect(await getAttributes('force-aspect-ratio-general')).toStrictEqual(
+		expect(await getAttributes('full-width-xl')).toStrictEqual(true);
+		expect(await getAttributes('force-aspect-ratio-xl')).toStrictEqual(
 			true
 		);
 	});

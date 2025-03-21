@@ -38,13 +38,13 @@ describe('Divider Maxi', () => {
 		await page.waitForTimeout(150);
 		await alignmentSelectors[2].select('flex-start');
 
-		expect(await getAttributes('line-orientation-general')).toStrictEqual(
+		expect(await getAttributes('line-orientation-xl')).toStrictEqual(
 			'vertical'
 		);
-		expect(await getAttributes('line-vertical-general')).toStrictEqual(
+		expect(await getAttributes('line-vertical-xl')).toStrictEqual(
 			'flex-start'
 		);
-		expect(await getAttributes('line-horizontal-general')).toStrictEqual(
+		expect(await getAttributes('line-horizontal-xl')).toStrictEqual(
 			'flex-start'
 		);
 
@@ -124,7 +124,7 @@ describe('Divider Maxi', () => {
 		);
 
 		await alignmentSelectors.select('horizontal');
-		expect(await getAttributes('line-orientation-general')).toStrictEqual(
+		expect(await getAttributes('line-orientation-xl')).toStrictEqual(
 			'horizontal'
 		);
 

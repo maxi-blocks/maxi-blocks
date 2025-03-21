@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -27,7 +28,12 @@ const ToolbarColumnPattern = props => {
 		getInnerBlocksPositions,
 	} = props;
 
-	if (blockName !== 'maxi-blocks/row-maxi' || !props['row-pattern-general'])
+	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+
+	if (
+		blockName !== 'maxi-blocks/row-maxi' ||
+		!props[`row-pattern-${baseBreakpoint}`]
+	)
 		return null;
 
 	return (

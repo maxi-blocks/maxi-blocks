@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -42,6 +43,11 @@ const OpacityControl = props => {
 		disableLabel = false,
 	} = props;
 
+	const useBreakpoint =
+		breakpoint === 'general'
+			? select('maxiBlocks').receiveBaseBreakpoint()
+			: breakpoint;
+
 	const getOpacityAttributeKey = () =>
 		getAttributeKey('opacity', isHover, prefix, breakpoint);
 
@@ -60,7 +66,10 @@ const OpacityControl = props => {
 				const val = !isNil(rawVal) ? round(rawVal / 100, 2) : 0;
 
 				if (isFunction(onChangeOpacity)) return onChangeOpacity(val);
-				return onChange({ [getOpacityAttributeKey()]: val });
+				return onChange({
+					[getOpacityAttributeKey()]: val,
+					[`opacity-${useBreakpoint}`]: val,
+				});
 			}}
 			min={0}
 			max={100}

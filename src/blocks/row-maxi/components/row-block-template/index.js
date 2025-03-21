@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch } from '@wordpress/data';
+import { useDispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -28,6 +28,8 @@ const RowBlockTemplate = ({
 }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
+	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+
 	return (
 		<>
 			<div className='maxi-row-block__title'>
@@ -46,6 +48,8 @@ const RowBlockTemplate = ({
 							onClick={() => {
 								maxiSetAttributes({
 									'row-pattern-general': template.name,
+									[`row-pattern-${baseBreakpoint}`]:
+										template.name,
 									'row-pattern-m': template.responsiveLayout,
 								});
 								loadColumnsTemplate(

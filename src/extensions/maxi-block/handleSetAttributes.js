@@ -28,33 +28,37 @@ const handleSetAttributes = ({
 	allowXXLOverGeneral = false,
 }) => {
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
-
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
+	// First pass: handle general -> baseBreakpoint conversion
+	Object.entries(response).forEach(([key, value]) => {
+		if (key.includes('general')) {
+			const baseBreakpointKey = key.replace('general', baseBreakpoint);
+			response[baseBreakpointKey] = value;
+			delete response[key];
+		}
+	});
+
+	// Second pass: handle breakpoint attributes
 	Object.entries(obj).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
-
 		if (!breakpoint) return;
 
 		const isHigherThanBase =
 			breakpoints.indexOf(breakpoint) <
 			breakpoints.indexOf(baseBreakpoint);
-		const attrLabelOnGeneral = `${key.slice(
-			0,
-			key.lastIndexOf('-')
-		)}-general`;
-		const attrLabelOnBaseBreakpoint = `${key.slice(
-			0,
-			key.lastIndexOf('-')
-		)}-${baseBreakpoint}`;
 
 		if (!isHigherThanBase) return;
 
+		const attrLabelOnGeneral = key.includes('general')
+			? key
+			: `${key.slice(0, key.lastIndexOf('-'))}-general`;
+		const attrLabelOnBaseBreakpoint = key.includes('general')
+			? key.replace('general', baseBreakpoint)
+			: key.replace(breakpoint, baseBreakpoint);
+
 		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
 		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
-		const defaultGeneralAttribute =
-			defaultAttributes?.[attrLabelOnGeneral] ??
-			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
 		if (attrExistOnBaseBreakpoint && breakpoint !== 'general') return;
 
@@ -62,72 +66,18 @@ const handleSetAttributes = ({
 			attributes?.[attrLabelOnGeneral],
 			true
 		);
-		const attrExistOnObjOnGeneral = attrLabelOnGeneral in obj;
-
-		// When changing a number that needs more than 2 digits, it is saved digit by digit
-		// Need to make both be saved in same conditions
-		const needsGeneralAttr =
-			attributes?.[attrLabelOnGeneral] === attributes?.[key];
-
-		if (
-			(!attrExistOnGeneral || needsGeneralAttr) &&
-			!attrExistOnObjOnGeneral &&
-			breakpoint === 'xxl'
-		)
-			response[attrLabelOnGeneral] = value;
-
-		if (breakpoint === 'xxl' && needsGeneralAttr) return;
-
-		const existHigherBreakpointAttribute = breakpoints
-			.slice(0, breakpoints.indexOf(baseBreakpoint))
-			.some(
-				breakpoint =>
-					!isNil(
-						attributes?.[
-							`${key.slice(
-								0,
-								key.lastIndexOf('-')
-							)}-${breakpoint}`
-						]
-					)
-			);
-
-		if (
-			!attrExistOnBaseBreakpoint &&
-			baseBreakpoint !== 'xxl' &&
-			(breakpoint === 'general' || !existHigherBreakpointAttribute)
-		) {
-			// Checks if the higher breakpoint attribute is not on XXL
-			if (
-				!breakpoints
-					.slice(0, breakpoints.indexOf(baseBreakpoint))
-					.some(
-						breakpoint =>
-							breakpoint !== 'xxl' &&
-							!isNil(
-								attributes?.[
-									`${key.slice(
-										0,
-										key.lastIndexOf('-')
-									)}-${breakpoint}`
-								]
-							)
-					)
-			)
-				return;
-		}
 
 		const defaultOnBaseBreakpointAttribute =
 			defaultAttributes?.[attrLabelOnBaseBreakpoint] ??
 			getDefaultAttribute(attrLabelOnBaseBreakpoint, clientId, true);
-
 		if (
 			!attrExistOnGeneral &&
 			breakpoint === 'general' &&
 			(!attrExistOnBaseBreakpoint ||
 				defaultOnBaseBreakpointAttribute === attrOnBaseBreakpoint)
-		)
+		) {
 			response[attrLabelOnBaseBreakpoint] = value;
+		}
 
 		if (!attrExistOnGeneral) return;
 
@@ -136,25 +86,7 @@ const handleSetAttributes = ({
 			defaultOnBaseBreakpointAttribute === value
 		) {
 			response[attrLabelOnBaseBreakpoint] = value;
-
-			return;
 		}
-
-		if (
-			attributes?.[attrLabelOnGeneral] === value &&
-			defaultGeneralAttribute === value
-		)
-			return;
-
-		if (breakpoint !== 'general' && attrExistOnObjOnGeneral) return;
-
-		if (breakpoint === 'general') {
-			response[attrLabelOnBaseBreakpoint] = value;
-
-			return;
-		}
-
-		response[attrLabelOnBaseBreakpoint] = attributes?.[attrLabelOnGeneral];
 	});
 
 	const cleanedResponse = cleanAttributes({

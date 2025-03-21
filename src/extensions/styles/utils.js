@@ -247,7 +247,9 @@ export const getSimpleLabel = (key, breakpoint) =>
  * @param {string} key The attribute key
  * @returns {boolean} True if the attribute key is a hover attribute, false otherwise
  */
-export const getIsHoverAttribute = key => key.includes('-hover');
+export const getIsHoverAttribute = key => {
+	return key.includes('-hover');
+};
 
 /**
  * Checks if an attribute exists on a responsive breakpoint

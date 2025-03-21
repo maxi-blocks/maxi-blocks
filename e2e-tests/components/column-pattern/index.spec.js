@@ -56,7 +56,7 @@ describe('ColumnPattern', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(await getAttributes('row-pattern-general')).toStrictEqual('1-1');
+		expect(await getAttributes('row-pattern-xl')).toStrictEqual('1-1');
 
 		// row gap
 		await editAdvancedNumberControl({
@@ -78,13 +78,11 @@ describe('ColumnPattern', () => {
 			newValue: 'em',
 		});
 
-		expect(await getAttributes('column-gap-general')).toStrictEqual(32);
-		expect(await getAttributes('column-gap-unit-general')).toStrictEqual(
-			'em'
-		);
+		expect(await getAttributes('column-gap-xl')).toStrictEqual(32);
+		expect(await getAttributes('column-gap-unit-xl')).toStrictEqual('em');
 
-		expect(await getAttributes('row-gap-general')).toStrictEqual(14);
-		expect(await getAttributes('row-gap-unit-general')).toStrictEqual('%');
+		expect(await getAttributes('row-gap-xl')).toStrictEqual(14);
+		expect(await getAttributes('row-gap-unit-xl')).toStrictEqual('%');
 	});
 
 	it('Check responsive row-pattern', async () => {

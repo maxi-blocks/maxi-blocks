@@ -59,15 +59,15 @@ describe('Divider line from Toolbar', () => {
 		await page.keyboard.type('45', { delay: 350 });
 
 		const expectDivider = {
-			'divider-border-style-general': 'dashed',
-			'divider-border-top-width-general': 12,
-			'divider-width-general': 45,
+			'divider-border-style-xl': 'dashed',
+			'divider-border-top-width-xl': 12,
+			'divider-width-xl': 45,
 		};
 
 		const dividerResult = await getAttributes([
-			'divider-border-style-general',
-			'divider-border-top-width-general',
-			'divider-width-general',
+			'divider-border-style-xl',
+			'divider-border-top-width-xl',
+			'divider-width-xl',
 		]);
 
 		expect(dividerResult).toStrictEqual(expectDivider);

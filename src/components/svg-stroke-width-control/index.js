@@ -17,6 +17,7 @@ import { setSVGStrokeWidth } from '@extensions/svg';
  * External dependencies
  */
 import classnames from 'classnames';
+import { select } from '@wordpress/data';
 
 /**
  * Component
@@ -34,14 +35,22 @@ const SvgStrokeWidthControl = props => {
 
 	const classes = classnames('maxi-svg-stroke-width-control', className);
 
-	const strokeAttrLabel = `${prefix}stroke-${breakpoint}${
+	const useBreakpoint =
+		breakpoint === 'general'
+			? select('maxiBlocks').receiveBaseBreakpoint()
+			: breakpoint;
+
+	const strokeAttrLabel = `${prefix}stroke-${useBreakpoint}${
 		isHover ? '-hover' : ''
 	}`;
-	const stroke = props[strokeAttrLabel];
+	const defaultStrokeAttrLabel = `${prefix}stroke-general${
+		isHover ? '-hover' : ''
+	}`;
+	const stroke = props[strokeAttrLabel] || props[defaultStrokeAttrLabel];
 	const defaultStroke = getDefaultAttribute(strokeAttrLabel);
 	const placeholderStroke = getLastBreakpointAttribute({
 		target: `${prefix}stroke`,
-		breakpoint,
+		breakpoint: 'general',
 		attributes: props,
 		isHover,
 	});

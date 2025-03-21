@@ -44,13 +44,13 @@ describe('Background color from Toolbar', () => {
 		await page.keyboard.type('22', { delay: 350 });
 
 		const expectBackgroundColor = {
-			'button-background-palette-color-general': 3,
-			'button-background-palette-opacity-general': 0.22,
+			'button-background-palette-color-xl': 3,
+			'button-background-palette-opacity-xl': 0.22,
 		};
 
 		const backgroundColorResult = await getAttributes([
-			'button-background-palette-color-general',
-			'button-background-palette-opacity-general',
+			'button-background-palette-color-xl',
+			'button-background-palette-opacity-xl',
 		]);
 
 		expect(backgroundColorResult).toStrictEqual(expectBackgroundColor);

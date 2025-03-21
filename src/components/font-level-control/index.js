@@ -59,12 +59,8 @@ const FontLevelControl = props => {
 	};
 
 	const getNewColor = (newLevel, currentColor) => {
-		const { lastLevel } = state;
-
-		if (lastLevel !== 'p' && newLevel === 'p' && currentColor === 5)
-			return 3;
-		if (lastLevel === 'p' && newLevel.includes('h') && currentColor === 3)
-			return 5;
+		if (newLevel === 'p') return 3;
+		if (newLevel.includes('h')) return 5;
 		return currentColor;
 	};
 

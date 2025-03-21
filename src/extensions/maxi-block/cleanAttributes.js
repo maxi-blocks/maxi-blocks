@@ -23,7 +23,7 @@ import {
  */
 import { isEqual, isNil, isPlainObject, pickBy, toNumber } from 'lodash';
 
-const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getShouldPreserveAttribute = (
 	attributes,
@@ -60,126 +60,20 @@ const getShouldPreserveAttribute = (
 };
 
 /**
- * In case we are saving a breakpoint attribute that has the same value as its
- * previous saved valid attribute, it will be returned to its default value.
+ * Helper function to check if a key is a unit key
  */
-const flatSameAsPrev = (
-	newAttributes,
-	attributes,
-	clientId,
-	defaultAttributes,
-	allowXXLOverGeneral
-) => {
-	const result = {};
+const isUnitKey = key => key.includes('-unit');
 
-	Object.entries(newAttributes).forEach(([key, value]) => {
-		const breakpoint = getBreakpointFromAttribute(key);
-
-		if (!breakpoint || breakpoint === 'general') {
-			result[key] = value;
-			return;
-		}
-
-		const isXXL = breakpoint === 'xxl';
-		const isHover = getIsHoverAttribute(key);
-		const simpleLabel = getSimpleLabel(key, breakpoint);
-		if (isXXL) {
-			const generalKey = getAttributeKey(
-				simpleLabel,
-				isHover,
-				'',
-				'general'
-			);
-			const generalAttr = attributes[generalKey];
-
-			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
-				if (allowXXLOverGeneral) return;
-
-				const generalDefaultValue =
-					defaultAttributes?.[generalKey] ??
-					getDefaultAttribute(generalKey, clientId, true);
-
-				// Covers a concrete situation where we've got XXL and XL
-				// values by default, but General is undefined. An example
-				// is Row Maxi `max-width-unit` attribute.
-				if (key in newAttributes && isNil(generalDefaultValue)) {
-					result[key] = undefined;
-
-					return;
-				}
-
-				if (isEqual(generalAttr, value)) {
-					result[key] = undefined;
-
-					return;
-				}
-
-				const defaultAttribute =
-					defaultAttributes?.[key] ??
-					getDefaultAttribute(key, clientId, true);
-
-				result[key] = defaultAttribute;
-			}
-		} else {
-			let breakpointLock = false;
-
-			const higherBreakpoints = breakpoints.slice(
-				0,
-				breakpoints.indexOf(breakpoint)
-			);
-
-			higherBreakpoints.reverse().forEach(breakpoint => {
-				if (!breakpointLock) {
-					const label = getAttributeKey(
-						simpleLabel,
-						isHover,
-						'',
-						breakpoint
-					);
-					const attribute =
-						label in newAttributes
-							? newAttributes[label]
-							: attributes?.[label];
-					const defaultAttribute =
-						defaultAttributes?.[label] ??
-						getDefaultAttribute(label, clientId, true);
-
-					if (isEqual(value, attribute)) {
-						if (isEqual(value, defaultAttribute))
-							result[key] = undefined;
-						else if (breakpoint === 'general') {
-							const generalAttr =
-								attributes[
-									getAttributeKey(
-										simpleLabel,
-										isHover,
-										'',
-										'general'
-									)
-								];
-
-							if (
-								!isNil(generalAttr) &&
-								isEqual(generalAttr, value)
-							) {
-								result[key] = undefined;
-							}
-						} else if (breakpoint !== 'general') {
-							const currentDefaultAttribute =
-								defaultAttributes?.[key] ??
-								getDefaultAttribute(key, clientId, true);
-
-							if (!isEqual(value, currentDefaultAttribute))
-								result[key] = defaultAttribute;
-							else result[key] = currentDefaultAttribute;
-						} else if (!isNil(attribute)) breakpointLock = true;
-					} else if (!isNil(attribute)) breakpointLock = true;
-				}
-			});
-		}
-	});
-
-	return result;
+/**
+ * Helper function to get the linked value key from a unit key
+ */
+const getValueKeyFromUnitKey = key => {
+	// Replace the '-unit-{breakpoint}' with '-{breakpoint}'
+	if (key.includes('-unit-')) {
+		return key.replace('-unit-', '-');
+	}
+	// Handle case where it might be just '-unit' at the end
+	return key.replace('-unit', '');
 };
 
 /**
@@ -197,17 +91,16 @@ const flatWithGeneral = (
 ) => {
 	const result = {};
 
-	// This is an array of attributes labels used by handleSetAttributes to determine
-	// if the new attributes are containing attributes that were saved just before and are
-	// the same value but with new added content. For example, it happens with numbers coming
-	// from ANC, that they are saved more than once while writing the whole number.
 	const { prevSavedAttrs, prevSavedAttrsClientId } =
 		select('maxiBlocks/styles').getPrevSavedAttrs();
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
-		if (isNil(value)) return;
+		if (isNil(value)) {
+			return;
+		}
 
 		const breakpoint = getBreakpointFromAttribute(key);
+
 		const currentClientId = targetClientId ?? clientId;
 
 		if (prevSavedAttrsClientId === currentClientId) {
@@ -215,12 +108,6 @@ const flatWithGeneral = (
 				const prevValue = attributes[attr];
 				const attrBreakpoint = getBreakpointFromAttribute(attr);
 
-				/**
-				 * In case if after cleaning lower breakpoint attributes,
-				 * because they were the same with higher, on the next iteration
-				 * if higher attribute different from the previous one by number of digits(1 less or more) or
-				 * by value(1 less or more), cleaned lower breakpoint attribute will be restored.
-				 */
 				if (attr === key && !isNil(prevValue)) {
 					const recursiveSum = attrValue => {
 						if (isNil(attrValue)) return 0;
@@ -256,12 +143,13 @@ const flatWithGeneral = (
 							attrBreakpoint
 						);
 
-						['xxl', ...breakpoints].forEach(breakpoint => {
+						breakpoints.forEach(breakpoint => {
 							if (
 								breakpoint === attrBreakpoint ||
 								breakpoint === 'general'
-							)
+							) {
 								return;
+							}
 
 							const label = `${simpleLabel}-${breakpoint}`;
 
@@ -270,13 +158,16 @@ const flatWithGeneral = (
 								isNil(prevSavedAttrs[label]) &&
 								isNil(attributes[label]) &&
 								isNil(newAttributes[label])
-							)
+							) {
 								result[label] = prevValue;
+							}
 						});
 					}
 				}
 
-				if (attr in newAttributes) return;
+				if (attr in newAttributes) {
+					return;
+				}
 
 				const currentBreakpoint =
 					select('maxiBlocks').receiveMaxiDeviceType();
@@ -302,7 +193,7 @@ const flatWithGeneral = (
 						) === key &&
 						value.toString().startsWith(generalAttr)
 					) {
-						result[key] = undefined;
+						result[key] = value;
 						result[generalKey] = value;
 					}
 
@@ -317,7 +208,7 @@ const flatWithGeneral = (
 
 				if (attr === key && value.toString().startsWith(currentAttr)) {
 					if (currentBreakpoint === 'general') {
-						result[key] = undefined;
+						result[key] = value;
 						result[
 							`${getSimpleLabel(key, attrBreakpoint)}-general`
 						] = value;
@@ -332,97 +223,261 @@ const flatWithGeneral = (
 			result[key] = value;
 			return;
 		}
-		if (breakpoint !== 'general') return;
+		if (breakpoint !== 'general') {
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
+			// Check if current breakpoint is higher than base breakpoint
+			const isHigherBreakpoint =
+				breakpoints.indexOf(breakpoint) <
+				breakpoints.indexOf(baseBreakpoint);
+
+			if (isHigherBreakpoint) {
+				const simpleLabel = getSimpleLabel(key, breakpoint);
+				const isHover = getIsHoverAttribute(key);
+
+				// Get the previous value at the breakpoint we're changing
+				const previousValue = attributes?.[key];
+
+				// Handle unit keys and their linked values
+				let previousUnitValue;
+				let unitValue;
+				let valueKey;
+				let previousLinkedValue;
+				let linkedValue;
+
+				if (isUnitKey(key)) {
+					// For unit keys, get the linked value key and its values
+					valueKey = getValueKeyFromUnitKey(key);
+					previousLinkedValue = attributes?.[valueKey];
+					linkedValue = newAttributes[valueKey];
+				} else {
+					// For regular keys, get the unit key and its values
+					const unitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-${breakpoint}`;
+					previousUnitValue = attributes?.[unitKey];
+					unitValue = newAttributes[unitKey];
+				}
+
+				// Get all breakpoints between current and base (inclusive)
+				const breakpointsToUpdate = breakpoints.slice(
+					breakpoints.indexOf(breakpoint),
+					breakpoints.indexOf(baseBreakpoint) + 1
+				);
+
+				// Update each breakpoint, skipping those with unique values
+				breakpointsToUpdate.forEach(bp => {
+					const bpKey = getAttributeKey(simpleLabel, isHover, '', bp);
+
+					// Handle unit keys and their linked values
+					let bpUnitKey;
+					let currentBpUnitValue;
+					let bpValueKey;
+					let currentBpLinkedValue;
+
+					if (isUnitKey(key)) {
+						// For unit keys, get the linked value key and its value
+						bpValueKey = getValueKeyFromUnitKey(bpKey);
+						currentBpLinkedValue = attributes?.[bpValueKey];
+					} else {
+						// For regular keys, get the unit key and its value
+						bpUnitKey = `${getAttributeKey(
+							simpleLabel,
+							isHover,
+							'',
+							'unit'
+						)}-${bp}`;
+						currentBpUnitValue = attributes?.[bpUnitKey];
+					}
+
+					// If current value matches the previous value at the changed breakpoint,
+					// it means this breakpoint was inheriting that value (not unique)
+					let matchesPreviousUnit;
+					if (isUnitKey(key)) {
+						// For unit keys, compare the linked values
+						matchesPreviousUnit = isEqual(
+							currentBpLinkedValue,
+							previousLinkedValue
+						);
+					} else {
+						// For regular keys, compare the unit values
+						matchesPreviousUnit = isEqual(
+							currentBpUnitValue,
+							previousUnitValue
+						);
+					}
+
+					// Special handling for margin and padding - always propagate changes down
+					const isMarginOrPadding =
+						simpleLabel.startsWith('margin-') ||
+						simpleLabel.startsWith('padding-');
+					if (isMarginOrPadding) {
+						result[bpKey] = value;
+						if (isUnitKey(key) && linkedValue !== undefined) {
+							result[bpValueKey] = linkedValue;
+						} else if (!isUnitKey(key) && unitValue) {
+							result[bpUnitKey] = unitValue;
+						}
+						return;
+					}
+
+					// Check if this breakpoint has a unique value
+					const currentBpValue = attributes?.[bpKey];
+
+					const matchesPreviousValue = isEqual(
+						currentBpValue,
+						previousValue
+					);
+
+					// Update if this breakpoint was inheriting the value we're changing
+					if (matchesPreviousValue && matchesPreviousUnit) {
+						result[bpKey] = value;
+						if (isUnitKey(key) && linkedValue !== undefined) {
+							// For unit keys, update the linked value
+							result[bpValueKey] = linkedValue;
+						} else if (!isUnitKey(key) && unitValue) {
+							// For regular keys, update the unit value
+							result[bpUnitKey] = unitValue;
+						}
+					}
+				});
+
+				// Update general only if it matches the previous value at changed breakpoint
+				const generalKey = getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'general'
+				);
+				const generalValue = attributes?.[generalKey];
+
+				// Handle unit keys and their linked values for general breakpoint
+				let generalUnitKey;
+				let generalUnitValue;
+				let generalValueKey;
+				let generalLinkedValue;
+
+				if (isUnitKey(key)) {
+					// For unit keys, get the linked value key and its value
+					generalValueKey = getValueKeyFromUnitKey(generalKey);
+					generalLinkedValue = attributes?.[generalValueKey];
+				} else {
+					// For regular keys, get the unit key and its value
+					generalUnitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-general`;
+					generalUnitValue = attributes?.[generalUnitKey];
+				}
+
+				let matchesGeneralCondition;
+				if (isUnitKey(key)) {
+					// For unit keys, check if general linked value matches previous linked value
+					matchesGeneralCondition =
+						isEqual(generalValue, previousValue) &&
+						isEqual(generalLinkedValue, previousLinkedValue);
+				} else {
+					// For regular keys, check if general value and unit match previous values
+					matchesGeneralCondition =
+						isEqual(generalValue, previousValue) &&
+						isEqual(generalUnitValue, previousUnitValue);
+				}
+
+				if (matchesGeneralCondition) {
+					result[generalKey] = value;
+					if (isUnitKey(key) && linkedValue !== undefined) {
+						// For unit keys, update the linked general value
+						result[generalValueKey] = linkedValue;
+					} else if (!isUnitKey(key) && unitValue) {
+						// For regular keys, update the general unit value
+						result[generalUnitKey] = unitValue;
+					}
+				}
+			}
+		}
 		const isHover = getIsHoverAttribute(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const keyOnXXL = getAttributeKey(simpleLabel, isHover, '', 'xxl');
-		const attrOnXXL = attributes[keyOnXXL];
-
-		if (
-			!isNil(attrOnXXL) &&
-			isEqual(value, attrOnXXL) &&
-			!allowXXLOverGeneral
-		)
-			result[keyOnXXL] = undefined;
 
 		let breakpointLock = false;
 
 		breakpoints.forEach(breakpoint => {
-			if (breakpointLock || breakpoint === 'general') return;
+			if (breakpointLock) {
+				return;
+			}
 
 			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
 			const attribute = { ...attributes, ...newAttributes }?.[label];
 
-			if (isNil(attribute)) return;
+			if (isNil(attribute) && isEqual(value, attribute)) {
+				// Handle unit keys and their linked values
+				let unitValue;
+				let defaultUnitValue;
+				let valueKey;
+				let linkedValue;
+				let defaultLinkedValue;
 
-			const defaultAttribute =
-				defaultAttributes?.[label] ??
-				getDefaultAttribute(label, clientId, true);
-
-			if (isNil(attribute) && isEqual(value, attribute))
-				if (!isEqual(value, defaultAttribute))
-					result[label] = defaultAttribute;
-				else result[label] = undefined;
-			else if (isEqual(value, attribute)) result[label] = undefined;
-			else if (!isNil(attribute)) breakpointLock = true;
-		});
-	});
-
-	return result;
-};
-
-/**
- * Flat new saving attributes in case they are going to be saved together with same value
- */
-const flatNewAttributes = (
-	newAttributes,
-	attributes,
-	clientId,
-	defaultAttributes
-) => {
-	const result = {};
-
-	Object.entries(newAttributes).forEach(([key, value]) => {
-		const breakpoint = getBreakpointFromAttribute(key);
-
-		if (!breakpoint || breakpoint === 'general') {
-			result[key] = value;
-			return;
-		}
-
-		const isHover = getIsHoverAttribute(key);
-		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const generalKey = getAttributeKey(simpleLabel, isHover, '', 'general');
-		const existsGeneralAttr = generalKey in newAttributes;
-
-		if (!existsGeneralAttr) return;
-
-		const generalAttr = newAttributes[generalKey];
-
-		if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
-			const shouldPreserveAttribute = getShouldPreserveAttribute(
-				attributes,
-				breakpoint,
-				key,
-				value,
-				newAttributes
-			);
-
-			if (shouldPreserveAttribute) result[key] = value;
-			else {
-				if (breakpoint === 'xxl' && value === generalAttr) {
-					result[key] = undefined;
-					return;
+				if (isUnitKey(key)) {
+					// For unit keys, get the linked value key and its values
+					valueKey = getValueKeyFromUnitKey(label);
+					linkedValue = attributes[valueKey];
+					const defaultValueKey = getValueKeyFromUnitKey(
+						`${getAttributeKey(
+							simpleLabel,
+							isHover,
+							'',
+							'general'
+						)}`
+					);
+					defaultLinkedValue = defaultAttributes?.[defaultValueKey];
+				} else {
+					// For regular keys, get the unit key and its values
+					const unitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-${breakpoint}`;
+					unitValue = newAttributes[unitKey];
+					const defaultUnitKey = `${getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'unit'
+					)}-general`;
+					defaultUnitValue = defaultAttributes?.[defaultUnitKey];
 				}
 
 				const defaultAttribute =
-					defaultAttributes?.[key] ??
-					getDefaultAttribute(key, clientId, true);
+					defaultAttributes?.[label] ??
+					getDefaultAttribute(label, clientId, true);
 
-				result[key] = defaultAttribute;
+				let compareCondition;
+				if (isUnitKey(key)) {
+					// For unit keys, check linked value against default
+					compareCondition =
+						!isEqual(value, defaultAttribute) &&
+						!isEqual(linkedValue, defaultLinkedValue);
+				} else {
+					// For regular keys, check unit value against default
+					compareCondition =
+						!isEqual(value, defaultAttribute) &&
+						!isEqual(unitValue, defaultUnitValue);
+				}
+
+				if (compareCondition) {
+					result[label] = defaultAttribute;
+				} else {
+					result[label] = undefined;
+				}
+			} else if (!isNil(attribute)) {
+				breakpointLock = true;
 			}
-		}
+		});
 	});
 
 	return result;
@@ -438,6 +493,7 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 	const result = { ...newAttributes };
 
 	Object.entries(newAttributes).forEach(([key]) => {
+		if (key.includes('-global')) return;
 		const breakpoint = getBreakpointFromAttribute(key);
 		// If hover value is on responsive there is possibly hover value on higher breakpoint
 		// that will overwrite the responsive value if it is deleted,
@@ -478,28 +534,124 @@ const flatLowerAttr = (
 			result[key] = value;
 			return;
 		}
-		if (breakpoint === 'xxl') return;
 
 		const isGeneral = breakpoint === 'general';
 		const isHover = getIsHoverAttribute(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const lowerBreakpoints = breakpoints.slice(
-			breakpoints.indexOf(breakpoint) + 1
-		);
+		const lowerBreakpoints =
+			breakpoint === 'general'
+				? breakpoints.slice(
+						breakpoints.indexOf(
+							select('maxiBlocks').receiveBaseBreakpoint()
+						) + 1
+				  )
+				: breakpoints.slice(breakpoints.indexOf(breakpoint) + 1);
 
 		let breakpointLock = false;
 
 		lowerBreakpoints.forEach(breakpoint => {
-			if (breakpointLock) return;
+			if (breakpointLock) {
+				return;
+			}
 
 			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
 			const attribute = attributes?.[label];
-
 			if (isNil(attribute)) return;
 
 			const defaultAttribute =
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
+			// Handle unit keys and their linked values
+			let unitValue;
+			let unitValueGeneral;
+			let valueKey;
+			let linkedValue;
+			let linkedValueGeneral;
+
+			if (isUnitKey(key)) {
+				// For unit keys, get the linked value key and its values
+				valueKey = getValueKeyFromUnitKey(label);
+				linkedValue = attributes[valueKey];
+				const valueKeyGeneral = getValueKeyFromUnitKey(
+					`${getAttributeKey(simpleLabel, isHover, '', 'general')}`
+				);
+				linkedValueGeneral = newAttributes[valueKeyGeneral];
+			} else {
+				// For regular keys, get the unit key and its values
+				const unitKey = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-${breakpoint}`;
+				unitValue = attributes[unitKey];
+				const unitKeyGeneral = `${getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'unit'
+				)}-general`;
+				unitValueGeneral = newAttributes[unitKeyGeneral];
+				const unitValueDefault = attributes[unitKeyGeneral];
+
+				if (
+					value !== attribute &&
+					unitValue === undefined &&
+					unitValueDefault !== undefined
+				) {
+					unitValue = unitValueDefault;
+					result[unitKey] = unitValue;
+				}
+			}
+
+			let compareCondition;
+			if (isUnitKey(key)) {
+				// For unit keys, check if linked value matches general linked value
+				compareCondition =
+					linkedValue !== undefined &&
+					!isEqual(linkedValue, linkedValueGeneral);
+			} else {
+				// For regular keys, check if unit value matches general unit value
+				compareCondition =
+					unitValue !== undefined &&
+					!isEqual(unitValue, unitValueGeneral);
+			}
+
+			if (compareCondition) return;
+
+			if (isEqual(value, attribute)) {
+				if (label in newAttributes && isGeneral) {
+					const generalKey = getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						'general'
+					);
+					const generalDefaultValue =
+						defaultAttributes?.[generalKey] ??
+						getDefaultAttribute(generalKey, clientId, true);
+
+					if (isNil(generalDefaultValue)) {
+						result[label] = generalDefaultValue;
+						return;
+					}
+				} else result[label] = defaultAttribute;
+
+				return;
+			}
+
+			if (isGeneral) {
+				const baseBreakpoint =
+					select('maxiBlocks').receiveBaseBreakpoint();
+
+				if (breakpoint === baseBreakpoint) {
+					if (label in newAttributes) return;
+
+					result[label] = defaultAttribute;
+
+					return;
+				}
+			}
 
 			const generalKey = getAttributeKey(
 				simpleLabel,
@@ -507,35 +659,6 @@ const flatLowerAttr = (
 				'',
 				'general'
 			);
-
-			if (isEqual(value, attribute)) {
-				// Covers a concrete situation where we've got XXL and XL
-				// values by default, but General is undefined. An example
-				// is Row Maxi `max-width-unit` attribute.
-				if (label in newAttributes && isGeneral) {
-					const generalDefaultValue =
-						defaultAttributes?.[generalKey] ??
-						getDefaultAttribute(generalKey, clientId, true);
-
-					if (isNil(generalDefaultValue)) {
-						result[label] = generalDefaultValue;
-
-						return;
-					}
-				} else result[label] = defaultAttribute;
-
-				return;
-			}
-			if (isGeneral) {
-				const baseBreakpoint =
-					select('maxiBlocks').receiveBaseBreakpoint();
-
-				if (breakpoint === baseBreakpoint) {
-					if (label in newAttributes) return;
-					result[label] = defaultAttribute;
-					return;
-				}
-			}
 
 			const generalAttribute = {
 				...defaultAttributes,
@@ -567,7 +690,7 @@ const flatLowerAttr = (
 /**
  * Ensures that baseBreakpoint attribute value is the same as general attribute value
  * in case a responsive attribute exists with a different value. This ensures that when switching baseBreakpoint,
- * the value on previous basebBreakpoint will be saved.
+ * the value on previous baseBreakpoint will be saved.
  *
  * Also ensures a new saved attribute with a breakpoint higher than baseBreakpoint returns
  * general value for baseBreakpoint attribute in order to avoid a visual bug between
@@ -628,6 +751,70 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 	return result;
 };
 
+const propagateXXL = (result, attributes) => {
+	const newResult = { ...result };
+	const currentAttributes = { ...attributes };
+
+	Object.entries(result).forEach(([key, value]) => {
+		const breakpoint = getBreakpointFromAttribute(key);
+		if (breakpoint !== 'xxl') return;
+
+		const isHover = getIsHoverAttribute(key);
+		const simpleLabel = getSimpleLabel(key, breakpoint);
+		const isUnit = isUnitKey(key);
+
+		// Get xl values
+		const xlKey = getAttributeKey(simpleLabel, isHover, '', 'xl');
+		const xlValue = currentAttributes[xlKey];
+
+		const xlUnitKey = isUnit ? undefined : `${xlKey}-unit`;
+
+		if (isUnit) {
+			// Handle unit changes
+			const xlValueKey = getValueKeyFromUnitKey(xlKey);
+			const xlLinkedValue = currentAttributes[xlValueKey];
+			const xxlValueKey = getValueKeyFromUnitKey(key);
+			const xxlValue = currentAttributes[xxlValueKey];
+
+			// Only propagate unit if values match and units are different
+			if (
+				isEqual(xlLinkedValue, xxlValue) &&
+				!isEqual(currentAttributes[xlKey], value)
+			) {
+				newResult[xlKey] = value;
+			}
+		} else {
+			// Handle value changes
+			const xxlOldValue = currentAttributes[key];
+			// Get the current XXL unit from either the new change or current attributes
+			const xxlUnitKey = `${key}-unit`;
+			const xxlUnit = result[xxlUnitKey] ?? currentAttributes[xxlUnitKey];
+			// Get the current XL unit
+			const xlUnitKey = `${xlKey}-unit`;
+			const xlUnit = currentAttributes[xlUnitKey];
+
+			// Only propagate if values match AND units match
+			if (isEqual(xlValue, xxlOldValue) && isEqual(xlUnit, xxlUnit)) {
+				newResult[xlKey] = value;
+				// Keep the existing XL unit only if it exists
+				if (xlUnit !== undefined) {
+					newResult[xlUnitKey] = xlUnit;
+				}
+			}
+		}
+
+		// If XL was changed in this iteration, update it in currentAttributes for next iterations
+		if (newResult[xlKey] !== undefined) {
+			currentAttributes[xlKey] = newResult[xlKey];
+			if (newResult[xlUnitKey] !== undefined) {
+				currentAttributes[xlUnitKey] = newResult[xlUnitKey];
+			}
+		}
+	});
+
+	return newResult;
+};
+
 const cleanAttributes = ({
 	newAttributes,
 	attributes,
@@ -646,19 +833,8 @@ const cleanAttributes = ({
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
 	};
-
 	if (!containsBreakpoint) return result;
 
-	result = {
-		...result,
-		...flatSameAsPrev(
-			result,
-			attributes,
-			clientId,
-			defaultAttributes,
-			allowXXLOverGeneral
-		),
-	};
 	result = {
 		...result,
 		...flatWithGeneral(
@@ -672,36 +848,55 @@ const cleanAttributes = ({
 	};
 	result = {
 		...result,
-		...flatNewAttributes(result, attributes, clientId, defaultAttributes),
-	};
-	result = {
-		...result,
 		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
 	};
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
-
+	result = {
+		...result,
+		...propagateXXL(result, attributes),
+	};
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);
 			const simpleLabel = getSimpleLabel(key, breakpoint);
-			const higherAttr = getLastBreakpointAttribute({
-				target: simpleLabel,
-				attributes,
-				breakpoint: breakpoints[breakpoints.indexOf(breakpoint) - 1],
-			});
 
-			return (
-				value !== attributes[key] &&
-				(isNil(higherAttr) || attributes[key] !== higherAttr)
+			// Get all related breakpoint attributes for this property
+			const relatedBreakpointAttrs = breakpoints.reduce((acc, bp) => {
+				const bpKey = getAttributeKey(
+					simpleLabel,
+					getIsHoverAttribute(key),
+					'',
+					bp
+				);
+				if (bpKey in result || bpKey in attributes) {
+					acc[bpKey] = result[bpKey] ?? attributes[bpKey];
+				}
+				return acc;
+			}, {});
+
+			// If this is a unit key, also include the linked value attributes
+			if (isUnitKey(key)) {
+				Object.keys(relatedBreakpointAttrs).forEach(bpKey => {
+					const valueBpKey = getValueKeyFromUnitKey(bpKey);
+					if (valueBpKey in result || valueBpKey in attributes) {
+						relatedBreakpointAttrs[valueBpKey] =
+							result[valueBpKey] ?? attributes[valueBpKey];
+					}
+				});
+			}
+
+			// Include all related breakpoint attributes if any have changed
+			const hasChanged = Object.entries(relatedBreakpointAttrs).some(
+				([attrKey, attrValue]) => attrValue !== attributes[attrKey]
 			);
+
+			return hasChanged;
 		}),
-		// For IB we need to check default attributes of target block, while saving previous attributes of trigger block, thus we have two clientIds
 		targetClientId ?? clientId
 	);
-
 	return result;
 };
 

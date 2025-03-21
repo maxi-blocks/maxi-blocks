@@ -24,7 +24,7 @@ describe('Button', () => {
 			click[1].click()
 		);
 
-		expect(await getAttributes('text-alignment-general')).toStrictEqual(
+		expect(await getAttributes('text-alignment-xl')).toStrictEqual(
 			'center'
 		);
 

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -24,6 +25,11 @@ import {
 const ColumnSizeControl = props => {
 	const { breakpoint, rowPattern, clientId, onChange } = props;
 
+	const useBreakpoint =
+		breakpoint === 'general'
+			? select('maxiBlocks').receiveBaseBreakpoint()
+			: breakpoint;
+
 	return (
 		<>
 			<ToggleSwitch
@@ -31,30 +37,30 @@ const ColumnSizeControl = props => {
 				className='maxi-column-inspector__fit-content'
 				selected={getLastBreakpointAttribute({
 					target: 'column-fit-content',
-					breakpoint,
+					breakpoint: useBreakpoint,
 					attributes: props,
 				})}
 				onChange={val => {
 					onChange({
-						[`column-fit-content-${breakpoint}`]: val,
+						[`column-fit-content-${useBreakpoint}`]: val,
 					});
 				}}
 			/>
 			{!getLastBreakpointAttribute({
 				target: 'column-fit-content',
-				breakpoint,
+				breakpoint: useBreakpoint,
 				attributes: props,
 			}) && (
 				<AdvancedNumberControl
 					label={__('Column size (%)', 'maxi-blocks')}
 					value={getLastBreakpointAttribute({
 						target: 'column-size',
-						breakpoint,
+						breakpoint: useBreakpoint,
 						attributes: props,
 					})}
 					onChangeValue={val => {
 						onChange({
-							[`column-size-${breakpoint}`]:
+							[`column-size-${useBreakpoint}`]:
 								val !== undefined && val !== '' ? val : '',
 						});
 					}}
@@ -68,17 +74,17 @@ const ColumnSizeControl = props => {
 								...getGroupAttributes(props, 'columnSize'),
 							},
 							clientId,
-							breakpoint
+							useBreakpoint
 						);
 
 						onChange({
-							[`column-size-${breakpoint}`]:
+							[`column-size-${useBreakpoint}`]:
 								val !== undefined && val !== '' ? val : '',
 							isReset: true,
 						});
 					}}
 					initialPosition={getDefaultAttribute(
-						`column-size-${breakpoint}`,
+						`column-size-${useBreakpoint}`,
 						clientId
 					)}
 				/>
@@ -88,7 +94,7 @@ const ColumnSizeControl = props => {
 				label={__('Vertical align', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
 					target: 'justify-content',
-					breakpoint,
+					breakpoint: useBreakpoint,
 					attributes: props,
 				})}
 				defaultValue={getDefaultAttribute(
@@ -118,7 +124,7 @@ const ColumnSizeControl = props => {
 				]}
 				onChange={verticalAlign =>
 					onChange({
-						[`justify-content-${breakpoint}`]: verticalAlign,
+						[`justify-content-${useBreakpoint}`]: verticalAlign,
 					})
 				}
 				onReset={() => {
@@ -127,13 +133,13 @@ const ColumnSizeControl = props => {
 							'justify-content',
 							false,
 							'',
-							breakpoint
+							useBreakpoint
 						)]: getDefaultAttribute(
 							getAttributeKey(
 								'justify-content',
 								false,
 								'',
-								breakpoint
+								useBreakpoint
 							)
 						),
 						isReset: true,

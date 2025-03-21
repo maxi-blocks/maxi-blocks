@@ -55,16 +55,19 @@ describe('Column Maxi', () => {
 		);
 
 		await pressKeyWithModifier('ctrl', 'a');
-		await page.keyboard.type('50', { delay: 350 });
+		await page.waitForTimeout(300);
+		await page.keyboard.press('Delete');
+		await page.waitForTimeout(300);
+		await page.keyboard.type('50', { delay: 300 });
 
-		expect(await getAttributes('column-size-general')).toStrictEqual(50);
+		expect(await getAttributes('column-size-xl')).toStrictEqual(50);
 
 		const selector = await page.$(
 			'.maxi-accordion-control__item__panel .maxi-base-control__field select'
 		);
 		await selector.select('center');
 
-		expect(await getAttributes('justify-content-general')).toStrictEqual(
+		expect(await getAttributes('justify-content-xl')).toStrictEqual(
 			'center'
 		);
 
@@ -75,7 +78,7 @@ describe('Column Maxi', () => {
 			select => select.value
 		);
 
-		expect(columnSizeInput).toStrictEqual('100');
+		expect(columnSizeInput).toStrictEqual('50');
 
 		await page.$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -114,7 +117,7 @@ describe('Column Maxi', () => {
 
 		await page.waitForTimeout(500);
 
-		expect(responsiveMOption).toStrictEqual('100');
+		expect(responsiveMOption).toStrictEqual('50');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -129,7 +132,7 @@ describe('Column Maxi', () => {
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);
-		await page.waitForTimeout(300);
+		await page.waitForTimeout(500);
 		await page.waitForSelector('.maxi-column-block');
 
 		await updateAllBlockUniqueIds(page);
@@ -158,16 +161,16 @@ describe('Column Maxi', () => {
 		});
 
 		const expectBorder = {
-			'border-bottom-left-radius-general': 25,
-			'border-bottom-right-radius-general': 24,
-			'border-top-left-radius-general': 16,
-			'border-top-right-radius-general': 15,
+			'border-bottom-left-radius-xl': 25,
+			'border-bottom-right-radius-xl': 24,
+			'border-top-left-radius-xl': 16,
+			'border-top-right-radius-xl': 15,
 		};
 		const borderResult = await getAttributes([
-			'border-bottom-left-radius-general',
-			'border-bottom-right-radius-general',
-			'border-top-left-radius-general',
-			'border-top-right-radius-general',
+			'border-bottom-left-radius-xl',
+			'border-bottom-right-radius-xl',
+			'border-top-left-radius-xl',
+			'border-top-right-radius-xl',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -196,16 +199,16 @@ describe('Column Maxi', () => {
 		});
 
 		const expectHoverBorder = {
-			'border-bottom-left-radius-general-hover': 12,
-			'border-bottom-right-radius-general-hover': 55,
-			'border-top-left-radius-general-hover': 33,
-			'border-top-right-radius-general-hover': 25,
+			'border-bottom-left-radius-xl-hover': 12,
+			'border-bottom-right-radius-xl-hover': 55,
+			'border-top-left-radius-xl-hover': 33,
+			'border-top-right-radius-xl-hover': 25,
 		};
 		const borderHoverResult = await getAttributes([
-			'border-bottom-left-radius-general-hover',
-			'border-bottom-right-radius-general-hover',
-			'border-top-left-radius-general-hover',
-			'border-top-right-radius-general-hover',
+			'border-bottom-left-radius-xl-hover',
+			'border-bottom-right-radius-xl-hover',
+			'border-top-left-radius-xl-hover',
+			'border-top-right-radius-xl-hover',
 		]);
 		expect(borderHoverResult).toStrictEqual(expectHoverBorder);
 

@@ -75,7 +75,7 @@ const background = ({
 			<SettingTabsControl
 				items={[
 					{
-						label: __('Normal state', 'maxi-blocks'),
+						label: __('Normal', 'maxi-blocks'),
 						content: (
 							<BackgroundControl
 								{...getGroupAttributes(
@@ -99,7 +99,7 @@ const background = ({
 						),
 					},
 					{
-						label: __('Hover state', 'maxi-blocks'),
+						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<>
 								<ManageHoverTransitions />
@@ -144,7 +144,7 @@ const background = ({
 						extraIndicators: [`${prefix}background-status-hover`],
 					},
 					enableActiveState && {
-						label: 'Active state',
+						label: 'Active',
 						content: (
 							<>
 								<ToggleSwitch

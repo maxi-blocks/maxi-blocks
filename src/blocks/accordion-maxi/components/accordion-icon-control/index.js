@@ -54,7 +54,7 @@ const AccordionIconSettings = props => {
 				disablePadding
 				items={[
 					props['icon-content'] !== '' && {
-						label: __('Normal state', 'maxi-blocks'),
+						label: __('Normal', 'maxi-blocks'),
 						content: props['icon-content'] !== '' && (
 							<IconControl
 								{...props}
@@ -68,7 +68,7 @@ const AccordionIconSettings = props => {
 					},
 					(props['active-icon-content'] !== '' ||
 						props['icon-content'] !== '') && {
-						label: __('Hover state', 'maxi-blocks'),
+						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch
@@ -97,7 +97,7 @@ const AccordionIconSettings = props => {
 						),
 					},
 					props['active-icon-content'] !== '' && {
-						label: __('Active state', 'maxi-blocks'),
+						label: __('Active', 'maxi-blocks'),
 						content: (
 							<IconControl
 								{...props}

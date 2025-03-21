@@ -147,7 +147,7 @@ const AccordionTitleSettings = props => {
 				items={[
 					{
 						className: 'maxi-accordion-title-control__normal-state',
-						label: __('Normal state', 'maxi-blocks'),
+						label: __('Normal', 'maxi-blocks'),
 						content: (
 							<TitleSettings
 								{...props}
@@ -157,7 +157,7 @@ const AccordionTitleSettings = props => {
 						),
 					},
 					{
-						label: __('Hover state', 'maxi-blocks'),
+						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch
@@ -185,7 +185,7 @@ const AccordionTitleSettings = props => {
 						),
 					},
 					{
-						label: __('Active state', 'maxi-blocks'),
+						label: __('Active', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch

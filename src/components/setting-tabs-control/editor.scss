@@ -28,7 +28,7 @@
 		& > .maxi-tabs-control {
 			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested) {
 				&[aria-pressed='true'] {
-					border-top: 2px solid var(--maxi-black) !important;
+					border-bottom: 2px solid var(--maxi-black) !important;
 					background-color: var(--maxi-whisper-green);
 				}
 			}

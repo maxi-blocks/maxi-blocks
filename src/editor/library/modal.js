@@ -223,7 +223,7 @@ const MaxiModal = props => {
 						className='maxi-style-cards__sc__more-sc--add-more'
 						onClick={onClick}
 					>
-						<span>{__('Browse style cards', 'maxi-blocks')}</span>
+						{__('Browse style cards', 'maxi-blocks')}
 					</Button>
 				)}
 				{type === 'svg' && forceHide && (

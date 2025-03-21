@@ -1839,7 +1839,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				border: 1px solid var(--maxi-cloud-primary);
 				transition: 0.1s;
 				z-index: 100000;
-				margin-left: -20px;
+
 				&:hover {
 					background-color: var(--maxi-cloud-primary);
 					color: var(--maxi-white);
@@ -1860,7 +1860,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				margin-right: -15px;
 				input {
 					margin-top: 10px;
-					margin-right: -5px;
+					margin-right: -15px;
 					padding: 1px 8px 2px !important;
 					border: 1px solid var(--maxi-grey-light) !important;
 					border-radius: 0 !important;

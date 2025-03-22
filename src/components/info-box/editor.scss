@@ -1,8 +1,8 @@
 .maxi-warning-box {
 	position: relative;
 	padding: 1rem;
-	background: #fcf8e3;
-	color: #8a6d3b !important;
+	background: var(--maxi-light-yellow);
+	color: var(--maxi-grey-dark) !important;
 
 	&__links {
 		margin-top: 10px;
@@ -15,7 +15,7 @@
 			text-decoration: underline;
 			font-size: 11px !important;
 			cursor: pointer;
-			color: #000 !important;
+			color: var(--maxi-grey-dark) !important;
 			margin-right: 5px;
 			transition: all 0.5s;
 
@@ -23,8 +23,7 @@
 				margin-right: 0;
 			}
 			&:hover {
-				color: #000 !important;
-				opacity: 0.6;
+				color: var(--maxi-tertiary-color) !important;
 			}
 		}
 	}
@@ -38,7 +37,8 @@
 }
 .maxi-accordion-control__item__panel {
 	.maxi-warning-box {
-		border: 1px solid var(--maxi-light-yellow-1-color);
+		border: 1px solid var(--maxi-bright-yellow);
 		margin-bottom: 8px;
+		border-radius: 7px !important;
 	}
 }

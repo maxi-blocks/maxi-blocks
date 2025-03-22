@@ -8,7 +8,7 @@ const toggle = (
 		<defs>
 			<Path
 				id='toggle__a'
-				stroke='#ff4a17'
+				stroke='var(--maxi-primary-color)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'
@@ -17,7 +17,7 @@ const toggle = (
 			/>
 			<Path
 				id='toggle__b'
-				stroke='#ff4a17'
+				stroke='var(--maxi-primary-color)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'
@@ -26,7 +26,7 @@ const toggle = (
 			/>
 			<Path
 				id='toggle__c'
-				stroke='#ff4a17'
+				stroke='var(--maxi-primary-color)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'
@@ -35,7 +35,7 @@ const toggle = (
 			/>
 			<Path
 				id='toggle__d'
-				stroke='#ff4a17'
+				stroke='var(--maxi-primary-color)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'

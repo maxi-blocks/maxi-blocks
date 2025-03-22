@@ -15,7 +15,7 @@ const styleCardBoat = (
 					id='styleCardBoat_a'
 					data-name='Path 342'
 					d='M14.58.75l-.164,16.958,12.842,2.36ZM7.72,18.806c.11-.055,6.7-1.1,6.7-1.1L14.58.75Z'
-					fill='#ff4a17'
+					fill='var(--maxi-primary-color)'
 				/>
 				<Path
 					id='styleCardBoat_b'

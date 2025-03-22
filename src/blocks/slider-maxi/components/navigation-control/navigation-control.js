@@ -42,7 +42,7 @@ const NavigationIconsControl = props => {
 			hasMarginBottom
 			items={[
 				{
-					label: __('Normal state', 'maxi-blocks'),
+					label: __('Normal', 'maxi-blocks'),
 					content: (
 						<NavigationIconControl
 							{...props}
@@ -72,7 +72,7 @@ const NavigationIconsControl = props => {
 					),
 				},
 				{
-					label: __('Hover state', 'maxi-blocks'),
+					label: __('Hover', 'maxi-blocks'),
 					content: (
 						<>
 							<ToggleSwitch
@@ -102,7 +102,7 @@ const NavigationIconsControl = props => {
 					),
 				},
 				prefix.includes('dot') && {
-					label: __('Active state', 'maxi-blocks'),
+					label: __('Active', 'maxi-blocks'),
 					content: (
 						<>
 							<ToggleSwitch

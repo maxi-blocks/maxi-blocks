@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="17.5" viewBox="0 0 16 17.5">
-  <g id="Align-just" transform="translate(0 0.75)">
-    <path id="Path_241" data-name="Path 241" d="M17.5,1.5H1.5" transform="translate(-1.5 -1.5)" fill="none" stroke="#141516" stroke-linejoin="round" stroke-width="1.5"/>
-    <path id="Path_242" data-name="Path 242" d="M17.5,5.4H1.5" transform="translate(-1.5 -1.5)" fill="none" stroke="#141516" stroke-linejoin="round" stroke-width="1.5"/>
-    <path id="Path_243" data-name="Path 243" d="M17.5,9.2H1.5" transform="translate(-1.5 -1.5)" fill="none" stroke="#141516" stroke-linejoin="round" stroke-width="1.5"/>
-    <path id="Path_244" data-name="Path 244" d="M17.5,13.1H1.5" transform="translate(-1.5 -1.5)" fill="none" stroke="#141516" stroke-linejoin="round" stroke-width="1.5"/>
-    <path id="Path_245" data-name="Path 245" d="M17.5,17.5H1.5" transform="translate(-1.5 -1.5)" fill="none" stroke="#141516" stroke-linejoin="round" stroke-width="1.5"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 17.5" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" xmlns:v="https://vecta.io/nano"><path d="M15.2.8H.8m14.4 3.9H.8m14.4 3.7H.8m14.4 4H.8m14.4 4.4H.8"/></svg>

@@ -156,7 +156,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	};
 
 	const canBeApplied = (keySC, activeSCKey) => {
-		if (canBeSaved(keySC) || keySC !== activeSCKey) return true;
+		if (keySC !== activeSCKey) return true;
 
 		return false;
 	};

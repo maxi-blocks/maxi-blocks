@@ -519,6 +519,7 @@ const TypographyControl = props => {
 	const getValue = (target, avoidSC = false) => {
 		if (!isStyleCards && target.includes('-unit')) {
 			const connectedTarget = target.replace('-unit', '');
+
 			const connectedValue = getTypographyValue({
 				disableFormats,
 				prop: `${prefix}${connectedTarget}`,
@@ -550,19 +551,18 @@ const TypographyControl = props => {
 			const defaultValue = getDefault(target);
 			const scValue = getSCValue({
 				SC: styleCard,
-				target: `${prefix}${connectedTarget}-${
-					breakpoint === 'general' ? baseBreakpoint : breakpoint
-				}`,
+				target: `${prefix}${connectedTarget}-${breakpoint}`,
 				blockStyle,
 				SCEntry: textLevel,
 			});
 			// If connected value matches SC value, prioritize SC unit
-			if (currentValue === defaultValue && connectedValue === scValue) {
+			if (
+				currentValue === defaultValue &&
+				(connectedValue === scValue || scValue === undefined)
+			) {
 				const scUnitValue = getSCValue({
 					SC: styleCard,
-					target: `${prefix}${target}-${
-						breakpoint === 'general' ? baseBreakpoint : breakpoint
-					}`,
+					target: `${prefix}${target}-${breakpoint}`,
 					blockStyle,
 					SCEntry: textLevel,
 				});

@@ -116,8 +116,14 @@ const AdvancedNumberControl = props => {
 	const latestValueRef = useRef(currentValue);
 
 	useEffect(() => {
-		setCurrentValue(trim(value));
-		latestValueRef.current = trim(value);
+		const formattedValue =
+			typeof value === 'number'
+				? parseFloat(value.toFixed(10))
+				: trim(value);
+
+		setCurrentValue(formattedValue);
+		latestValueRef.current =
+			typeof value === 'number' ? value.toString() : trim(value);
 	}, [value]);
 
 	const classes = classnames(
@@ -208,10 +214,17 @@ const AdvancedNumberControl = props => {
 			if (value !== '' && +value !== 0 && +value < min) value = min;
 		}
 
-		const result =
-			value === '' || optionType === 'string' ? value.toString() : +value;
+		let result;
+		if (value === '' || optionType === 'string') {
+			result = value.toString();
+		} else {
+			// Fix floating-point precision
+			const numValue = +value;
+			result = parseFloat(numValue.toFixed(10));
+		}
 
-		latestValueRef.current = result;
+		latestValueRef.current =
+			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
 		handleChange(result);
 	};

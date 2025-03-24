@@ -448,6 +448,7 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 			const normalValue = getValue(getNormalAttributeKey(key));
 
 			if (
+				!hoverKey.includes('menu-item-sub-bg-hover') &&
 				isEqual(hoverValue, normalValue) &&
 				!isNil(hoverValue) &&
 				!getDefaultAttribute(hoverKey)
@@ -682,7 +683,6 @@ const cleanAttributes = ({
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
-
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);

@@ -439,21 +439,14 @@ const TypographyControl = props => {
 		},
 	};
 
-	const getValue = (target, avoidSC = false) =>
-		getTypographyValue({
-			disableFormats,
-			prop: `${prefix}${target}`,
-			breakpoint,
-			typography,
-			isHover,
-			formatValue,
-			textLevel,
-			blockStyle,
-			styleCard,
-			styleCardPrefix,
-			prefix,
-			avoidSC,
-		});
+	const getSCValue = ({ SC, target, blockStyle, SCEntry }) => {
+		const styleCardEntry =
+			SC?.[blockStyle]?.styleCard?.[SCEntry] ||
+			SC?.[blockStyle]?.defaultStyleCard?.[SCEntry];
+		const value = styleCardEntry?.[target];
+
+		return value;
+	};
 
 	const getDefault = (target, keepBreakpoint = false) => {
 		const prop = `${prefix}${target}`;
@@ -464,6 +457,43 @@ const TypographyControl = props => {
 				!keepBreakpoint &&
 				baseBreakpoint) ||
 			breakpoint;
+
+		// Special handling for unit targets
+		if (!isStyleCards && target.includes('-unit')) {
+			const connectedTarget = target.replace('-unit', '');
+			const connectedValue = getTypographyValue({
+				disableFormats,
+				prop: `${prefix}${connectedTarget}`,
+				breakpoint,
+				typography,
+				isHover,
+				formatValue,
+				textLevel,
+				blockStyle,
+				styleCard,
+				styleCardPrefix,
+				prefix,
+			});
+
+			const scDefaultValue = getDefaultSCValue({
+				target: `${prefix}${connectedTarget}-${currentBreakpoint}`,
+				SC: styleCard,
+				SCStyle: blockStyle,
+				groupAttr: textLevel,
+			});
+			// If connected value matches SC default, prioritize SC unit
+			if (connectedValue === scDefaultValue) {
+				const scUnitValue = getDefaultSCValue({
+					target: `${prop}-${currentBreakpoint}`,
+					SC: styleCard,
+					SCStyle: blockStyle,
+					groupAttr: textLevel,
+				});
+				if (scUnitValue !== undefined) {
+					return scUnitValue;
+				}
+			}
+		}
 
 		let defaultAttribute = !isStyleCards
 			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
@@ -484,6 +514,78 @@ const TypographyControl = props => {
 		}
 
 		return defaultAttribute;
+	};
+
+	const getValue = (target, avoidSC = false) => {
+		if (!isStyleCards && target.includes('-unit')) {
+			const connectedTarget = target.replace('-unit', '');
+			const connectedValue = getTypographyValue({
+				disableFormats,
+				prop: `${prefix}${connectedTarget}`,
+				breakpoint,
+				typography,
+				isHover,
+				formatValue,
+				textLevel,
+				blockStyle,
+				styleCard,
+				styleCardPrefix,
+				prefix,
+			});
+
+			const currentValue = getTypographyValue({
+				disableFormats,
+				prop: `${prefix}${target}`,
+				breakpoint,
+				typography,
+				isHover,
+				formatValue,
+				textLevel,
+				blockStyle,
+				styleCard,
+				styleCardPrefix,
+				prefix,
+				avoidSC,
+			});
+			const defaultValue = getDefault(target);
+			const scValue = getSCValue({
+				SC: styleCard,
+				target: `${prefix}${connectedTarget}-${
+					breakpoint === 'general' ? baseBreakpoint : breakpoint
+				}`,
+				blockStyle,
+				SCEntry: textLevel,
+			});
+			// If connected value matches SC value, prioritize SC unit
+			if (currentValue === defaultValue && connectedValue === scValue) {
+				const scUnitValue = getSCValue({
+					SC: styleCard,
+					target: `${prefix}${target}-${
+						breakpoint === 'general' ? baseBreakpoint : breakpoint
+					}`,
+					blockStyle,
+					SCEntry: textLevel,
+				});
+
+				if (scUnitValue !== undefined) {
+					return scUnitValue;
+				}
+			}
+		}
+		return getTypographyValue({
+			disableFormats,
+			prop: `${prefix}${target}`,
+			breakpoint,
+			typography,
+			isHover,
+			formatValue,
+			textLevel,
+			blockStyle,
+			styleCard,
+			styleCardPrefix,
+			prefix,
+			avoidSC,
+		});
 	};
 
 	const getInlineTarget = tag => {

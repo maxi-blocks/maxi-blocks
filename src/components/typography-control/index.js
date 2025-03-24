@@ -690,9 +690,17 @@ const TypographyControl = props => {
 					unit={getValue('font-size-unit')}
 					defaultUnit={getDefault('font-size-unit')}
 					onChangeUnit={val => {
+						const currentValue = getValue('font-size');
+						const { min, max } = minMaxSettings[val] || {};
+						const newValue =
+							max && currentValue > max
+								? max
+								: min && currentValue < min
+								? min
+								: currentValue;
 						onChangeFormat({
 							[`${prefix}font-size-unit`]: val,
-							[`${prefix}font-size`]: getValue('font-size'),
+							[`${prefix}font-size`]: newValue,
 						});
 					}}
 					placeholder={getValue('font-size')}
@@ -725,9 +733,18 @@ const TypographyControl = props => {
 					unit={getValue('line-height-unit') || ''}
 					defaultUnit={getDefault('line-height-unit')}
 					onChangeUnit={val => {
+						const currentValue = getValue('line-height');
+						const { min, max } =
+							minMaxSettingsLineHeight[val] || {};
+						const newValue =
+							max && currentValue > max
+								? max
+								: min && currentValue < min
+								? min
+								: currentValue;
 						onChangeFormat({
 							[`${prefix}line-height-unit`]: val,
-							[`${prefix}line-height`]: getValue('line-height'),
+							[`${prefix}line-height`]: newValue,
 						});
 					}}
 					placeholder={getValue('line-height')}
@@ -762,10 +779,18 @@ const TypographyControl = props => {
 					unit={getValue('letter-spacing-unit')}
 					defaultUnit={getDefault('letter-spacing-unit')}
 					onChangeUnit={val => {
+						const currentValue = getValue('letter-spacing');
+						const { min, max } =
+							minMaxSettingsLetterSpacing[val] || {};
+						const newValue =
+							max && currentValue > max
+								? max
+								: min && currentValue < min
+								? min
+								: currentValue;
 						onChangeFormat({
 							[`${prefix}letter-spacing-unit`]: val,
-							[`${prefix}letter-spacing`]:
-								getValue('letter-spacing'),
+							[`${prefix}letter-spacing`]: newValue,
 						});
 					}}
 					placeholder={getValue('letter-spacing')}
@@ -1027,11 +1052,18 @@ const TypographyControl = props => {
 					unit={getValue('text-indent-unit')}
 					defaultUnit={getDefault('text-indent-unit')}
 					onChangeUnit={val => {
+						const currentValue = getValue('text-indent');
+						const { min, max } = minMaxSettings[val] || {};
+						const newValue =
+							max && currentValue > max
+								? max
+								: min && currentValue < min
+								? min
+								: currentValue;
 						onChangeFormat(
 							{
 								[`${prefix}text-indent-unit`]: val,
-								[`${prefix}text-indent`]:
-									getValue('text-indent'),
+								[`${prefix}text-indent`]: newValue,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -1139,11 +1171,18 @@ const TypographyControl = props => {
 					unit={getValue('word-spacing-unit')}
 					defaultUnit={getDefault('word-spacing-unit')}
 					onChangeUnit={val => {
+						const currentValue = getValue('word-spacing');
+						const { min, max } = minMaxSettings[val] || {};
+						const newValue =
+							max && currentValue > max
+								? max
+								: min && currentValue < min
+								? min
+								: currentValue;
 						onChangeFormat(
 							{
 								[`${prefix}word-spacing-unit`]: val,
-								[`${prefix}word-spacing`]:
-									getValue('word-spacing'),
+								[`${prefix}word-spacing`]: newValue,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -1204,11 +1243,16 @@ const TypographyControl = props => {
 						unit={getValue('bottom-gap-unit')}
 						defaultUnit={getDefault('bottom-gap-unit')}
 						onChangeUnit={val => {
+							const currentValue = getValue('bottom-gap');
+							const maxValue = minMaxSettings[val]?.max;
+							const newValue =
+								maxValue && currentValue > maxValue
+									? maxValue
+									: currentValue;
 							onChangeFormat(
 								{
 									[`${prefix}bottom-gap-unit`]: val,
-									[`${prefix}bottom-gap`]:
-										getValue('bottom-gap'),
+									[`${prefix}bottom-gap`]: newValue,
 								},
 								{ forceDisableCustomFormats: true }
 							);

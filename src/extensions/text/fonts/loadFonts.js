@@ -109,6 +109,9 @@ const loadFonts = async (
 	setIsLoading
 ) => {
 	if (typeof font === 'object' && font !== null) {
+		if (!backendOnly)
+			dispatch('maxiBlocks/text').updateFonts(JSON.stringify(font));
+
 		await Promise.all(
 			Object.entries(font).map(async ([fontName, fontData]) => {
 				if (!fontName || fontName === 'undefined') return;
@@ -279,9 +282,6 @@ const loadFonts = async (
 				);
 			})
 		);
-
-		if (!backendOnly)
-			dispatch('maxiBlocks/text').updateFonts(JSON.stringify(font));
 	}
 
 	return null;

@@ -983,7 +983,7 @@ class MaxiBlockComponent extends Component {
 				.getLastInsertedBlocks()
 				.includes(this.props.clientId);
 
-		if (!getIsIDTrulyUnique(idToCheck)) {
+		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});

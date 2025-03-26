@@ -346,7 +346,7 @@ const AdvancedNumberControl = props => {
 										: ''
 									: ''
 							}`}
-							value={rangeValue || placeholder}
+							value={rangeValue ?? placeholder}
 							onChange={val => {
 								const result =
 									optionType === 'string'

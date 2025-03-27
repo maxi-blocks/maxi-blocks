@@ -131,33 +131,18 @@ const flatSameAsPrev = (
 						getDefaultAttribute(label, clientId, true);
 
 					if (isEqual(value, attribute)) {
-						if (isEqual(value, defaultAttribute))
+						if (isEqual(value, defaultAttribute)) {
 							result[key] = undefined;
-						else if (breakpoint === 'general') {
-							const generalAttr =
-								attributes[
-									getAttributeKey(
-										simpleLabel,
-										isHover,
-										'',
-										'general'
-									)
-								];
-
-							if (
-								!isNil(generalAttr) &&
-								isEqual(generalAttr, value)
-							) {
-								result[key] = undefined;
-							}
 						} else if (breakpoint !== 'general') {
 							const currentDefaultAttribute =
 								defaultAttributes?.[key] ??
 								getDefaultAttribute(key, clientId, true);
 
-							if (!isEqual(value, currentDefaultAttribute))
+							if (isEqual(value, currentDefaultAttribute)) {
 								result[key] = defaultAttribute;
-							else result[key] = currentDefaultAttribute;
+							} else {
+								result[key] = currentDefaultAttribute;
+							}
 						} else if (!isNil(attribute)) breakpointLock = true;
 					} else if (!isNil(attribute)) breakpointLock = true;
 				}
@@ -487,31 +472,6 @@ const flatLowerAttr = (
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
 
-			const generalKey = getAttributeKey(
-				simpleLabel,
-				isHover,
-				'',
-				'general'
-			);
-
-			if (isEqual(value, attribute)) {
-				// Covers a concrete situation where we've got XXL and XL
-				// values by default, but General is undefined. An example
-				// is Row Maxi `max-width-unit` attribute.
-				if (label in newAttributes && isGeneral) {
-					const generalDefaultValue =
-						defaultAttributes?.[generalKey] ??
-						getDefaultAttribute(generalKey, clientId, true);
-
-					if (isNil(generalDefaultValue)) {
-						result[label] = generalDefaultValue;
-
-						return;
-					}
-				} else result[label] = defaultAttribute;
-
-				return;
-			}
 			if (isGeneral) {
 				const baseBreakpoint =
 					select('maxiBlocks').receiveBaseBreakpoint();
@@ -521,7 +481,15 @@ const flatLowerAttr = (
 					result[label] = defaultAttribute;
 					return;
 				}
+				return;
 			}
+
+			const generalKey = getAttributeKey(
+				simpleLabel,
+				isHover,
+				'',
+				'general'
+			);
 
 			const generalAttribute = {
 				...defaultAttributes,
@@ -632,7 +600,6 @@ const cleanAttributes = ({
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
 	};
-
 	if (!containsBreakpoint) return result;
 
 	result = {
@@ -645,7 +612,6 @@ const cleanAttributes = ({
 			allowXXLOverGeneral
 		),
 	};
-
 	result = {
 		...result,
 		...flatWithGeneral(
@@ -661,17 +627,14 @@ const cleanAttributes = ({
 		...result,
 		...flatNewAttributes(result, attributes, clientId, defaultAttributes),
 	};
-
 	result = {
 		...result,
 		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
 	};
-
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
-
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);
@@ -690,7 +653,6 @@ const cleanAttributes = ({
 		// For IB we need to check default attributes of target block, while saving previous attributes of trigger block, thus we have two clientIds
 		targetClientId ?? clientId
 	);
-
 	return result;
 };
 

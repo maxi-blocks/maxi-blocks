@@ -234,6 +234,7 @@ const Inspector = props => {
 									...(!iconOnly && {
 										...inspectorTabs.typography({
 											props,
+											textLevel: 'button',
 											styleCardPrefix: 'button',
 											hideAlignment: true,
 											disableCustomFormats: true,

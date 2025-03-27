@@ -45,7 +45,7 @@ const VERSIONS = new Set([
 ]);
 
 // Pre-define attribute templates for better performance
-const createDefaultAttribute = (defaultValue) => ({
+const createDefaultAttribute = defaultValue => ({
 	type: 'number',
 	default: defaultValue,
 });
@@ -119,7 +119,7 @@ const migrate = attributes => {
 	});
 
 	// Delete old attributes
-	const attributesToDelete = Object.keys(attributes()).filter(key =>
+	const attributesToDelete = Object.keys(attributes).filter(key =>
 		prefixes.some(prefix => key.startsWith(prefix))
 	);
 

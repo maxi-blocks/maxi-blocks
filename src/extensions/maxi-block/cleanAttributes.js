@@ -684,7 +684,6 @@ const cleanAttributes = ({
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
-
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);

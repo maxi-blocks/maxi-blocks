@@ -242,7 +242,7 @@ const AdvancedNumberControl = props => {
 		? rawPreferredValues.map(transformRangePreferredValue)
 		: rawPreferredValues;
 
-	const rangeValue = +preferredValues.find(val => /\d/.test(val)) || 0;
+	const rangeValue = +preferredValues.find(val => /\d/.test(val)) || null;
 
 	const [showHelpContent, setShowHelpContent] = useState(false);
 
@@ -346,7 +346,7 @@ const AdvancedNumberControl = props => {
 										: ''
 									: ''
 							}`}
-							value={rangeValue ?? placeholder}
+							value={rangeValue ?? placeholder ?? 0}
 							onChange={val => {
 								const result =
 									optionType === 'string'

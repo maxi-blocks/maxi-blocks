@@ -170,7 +170,7 @@ const flatSameAsPrev = (
 							) {
 								result[key] = undefined;
 							}
-						} else if (breakpoint !== 'general') {
+						} else if (!isStyleCard && breakpoint !== 'general') {
 							const currentDefaultAttribute =
 								defaultAttributes?.[key] ??
 								getDefaultAttribute(key, clientId, true);

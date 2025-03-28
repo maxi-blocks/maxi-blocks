@@ -64,7 +64,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-m': 100,
+			'test-m': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -155,7 +155,7 @@ describe('cleanAttributes', () => {
 		});
 		const expectedResult = {
 			'test-general': 100,
-			'test-m': 100,
+			'test-xxl': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -646,8 +646,8 @@ describe('cleanAttributes', () => {
 			},
 			attributes: {
 				'test-general': 4,
+				'test-xxl': undefined,
 				'test-l': undefined,
-				'test-xxl': 4,
 			},
 		};
 
@@ -661,12 +661,13 @@ describe('cleanAttributes', () => {
 		};
 		const expectedSecondRound = {
 			'test-general': 4,
-			'test-xl': 4,
+			'test-xxl': undefined,
 			'test-l': undefined,
 		};
 		const expectedThirdRound = {
 			'test-general': 5,
 			'test-xl': 5,
+			'test-xxl': 4,
 			'test-l': 4,
 		};
 
@@ -713,7 +714,7 @@ describe('cleanAttributes', () => {
 			attributes: {
 				'test-general': 4,
 				'test-m': undefined,
-				'test-xl': 4,
+				'test-xl': undefined,
 			},
 		};
 
@@ -739,7 +740,7 @@ describe('cleanAttributes', () => {
 		};
 		const expectedSecondRound = {
 			'test-m': undefined,
-			'test-xl': 4,
+			'test-xl': undefined,
 		};
 		const expectedThirdRound = {
 			'test-m': 4,
@@ -803,6 +804,7 @@ describe('cleanAttributes', () => {
 			attributes: {
 				'test-xl': 10,
 				'test-m': 4,
+				'test-s': undefined,
 				'test-xs': 1,
 			},
 		};
@@ -1119,7 +1121,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'border-palette-opacity-s': 0.45,
+			'border-palette-opacity-s': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1409,7 +1411,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-xxl': undefined,
-			'test-xl': '%',
+			'test-xl': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1442,7 +1444,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 'full',
-			'test-xl': 'full',
+			'test-xxl': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1552,8 +1554,8 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-xxl': 'none',
-			'test-xl': 'none',
+			'test-xxl': undefined,
+			'test-xl': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1589,8 +1591,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-m': '15',
-			'test-xl': '5',
+			'test-m': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -1639,7 +1640,7 @@ describe('cleanAttributes', () => {
 		expect(result).toStrictEqual(expectedResult);
 	});
 
-	it('Should save responsive hover attributes same as general', () => {
+	it('Should save responsive hover attributes same as general as undefined', () => {
 		const obj = {
 			newAttributes: {
 				'test-s-hover': '4',
@@ -1655,7 +1656,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-s-hover': '4',
+			'test-s-hover': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

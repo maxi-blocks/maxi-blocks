@@ -68,7 +68,8 @@ const flatSameAsPrev = (
 	attributes,
 	clientId,
 	defaultAttributes,
-	allowXXLOverGeneral
+	allowXXLOverGeneral,
+	isStyleCard
 ) => {
 	const result = {};
 
@@ -102,8 +103,27 @@ const flatSameAsPrev = (
 				// Covers a concrete situation where we've got XXL and XL
 				// values by default, but General is undefined. An example
 				// is Row Maxi `max-width-unit` attribute.
-				if (key in newAttributes && isNil(generalDefaultValue)) {
+				if (
+					!isStyleCard &&
+					key in newAttributes &&
+					isNil(generalDefaultValue)
+				) {
 					result[key] = undefined;
+					return;
+				}
+
+				if (!isStyleCard && isEqual(generalAttr, value)) {
+					result[key] = undefined;
+
+					return;
+				}
+
+				if (!isStyleCard) {
+					const defaultAttribute =
+						defaultAttributes?.[key] ??
+						getDefaultAttribute(key, clientId, true);
+
+					result[key] = defaultAttribute;
 				}
 			}
 		} else {
@@ -131,18 +151,33 @@ const flatSameAsPrev = (
 						getDefaultAttribute(label, clientId, true);
 
 					if (isEqual(value, attribute)) {
-						if (isEqual(value, defaultAttribute)) {
+						if (isEqual(value, defaultAttribute))
 							result[key] = undefined;
+						else if (!isStyleCard && breakpoint === 'general') {
+							const generalAttr =
+								attributes[
+									getAttributeKey(
+										simpleLabel,
+										isHover,
+										'',
+										'general'
+									)
+								];
+
+							if (
+								!isNil(generalAttr) &&
+								isEqual(generalAttr, value)
+							) {
+								result[key] = undefined;
+							}
 						} else if (breakpoint !== 'general') {
 							const currentDefaultAttribute =
 								defaultAttributes?.[key] ??
 								getDefaultAttribute(key, clientId, true);
 
-							if (isEqual(value, currentDefaultAttribute)) {
+							if (!isEqual(value, currentDefaultAttribute))
 								result[key] = defaultAttribute;
-							} else {
-								result[key] = currentDefaultAttribute;
-							}
+							else result[key] = currentDefaultAttribute;
 						} else if (!isNil(attribute)) breakpointLock = true;
 					} else if (!isNil(attribute)) breakpointLock = true;
 				}
@@ -164,7 +199,8 @@ const flatWithGeneral = (
 	clientId,
 	targetClientId,
 	defaultAttributes,
-	allowXXLOverGeneral
+	allowXXLOverGeneral,
+	isStyleCard
 ) => {
 	const result = {};
 
@@ -241,9 +277,8 @@ const flatWithGeneral = (
 								isNil(prevSavedAttrs[label]) &&
 								isNil(attributes[label]) &&
 								isNil(newAttributes[label])
-							) {
+							)
 								result[label] = prevValue;
-							}
 						});
 					}
 				}
@@ -294,9 +329,8 @@ const flatWithGeneral = (
 							`${getSimpleLabel(key, attrBreakpoint)}-general`
 						] = value;
 					}
-					if (currentBreakpoint === attrBreakpoint) {
+					if (currentBreakpoint === attrBreakpoint)
 						result[key] = value;
-					}
 				}
 			});
 		}
@@ -305,12 +339,22 @@ const flatWithGeneral = (
 			result[key] = value;
 			return;
 		}
-		if (breakpoint !== 'general') {
-			return;
-		}
+		if (breakpoint !== 'general') return;
 
 		const isHover = getIsHoverAttribute(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
+
+		if (!isStyleCard) {
+			const keyOnXXL = getAttributeKey(simpleLabel, isHover, '', 'xxl');
+			const attrOnXXL = attributes[keyOnXXL];
+
+			if (
+				!isNil(attrOnXXL) &&
+				isEqual(value, attrOnXXL) &&
+				!allowXXLOverGeneral
+			)
+				result[keyOnXXL] = undefined;
+		}
 
 		let breakpointLock = false;
 
@@ -327,14 +371,11 @@ const flatWithGeneral = (
 				getDefaultAttribute(label, clientId, true);
 
 			if (isNil(attribute) && isEqual(value, attribute))
-				if (!isEqual(value, defaultAttribute)) {
+				if (!isEqual(value, defaultAttribute))
 					result[label] = defaultAttribute;
-				} else {
-					result[label] = undefined;
-				}
-			else if (isEqual(value, attribute)) {
-				result[label] = undefined;
-			} else if (!isNil(attribute)) breakpointLock = true;
+				else result[label] = undefined;
+			else if (isEqual(value, attribute)) result[label] = undefined;
+			else if (!isNil(attribute)) breakpointLock = true;
 		});
 	});
 
@@ -438,7 +479,8 @@ const flatLowerAttr = (
 	newAttributes,
 	attributes,
 	clientId,
-	defaultAttributes
+	defaultAttributes,
+	isStyleCard
 ) => {
 	const result = {};
 
@@ -472,6 +514,34 @@ const flatLowerAttr = (
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
 
+			if (isStyleCard) {
+				const generalKey = getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'general'
+				);
+
+				if (isEqual(value, attribute)) {
+					// Covers a concrete situation where we've got XXL and XL
+					// values by default, but General is undefined. An example
+					// is Row Maxi `max-width-unit` attribute.
+					if (label in newAttributes && isGeneral) {
+						const generalDefaultValue =
+							defaultAttributes?.[generalKey] ??
+							getDefaultAttribute(generalKey, clientId, true);
+
+						if (isNil(generalDefaultValue)) {
+							result[label] = generalDefaultValue;
+
+							return;
+						}
+					} else result[label] = defaultAttribute;
+
+					return;
+				}
+			}
+
 			if (isGeneral) {
 				const baseBreakpoint =
 					select('maxiBlocks').receiveBaseBreakpoint();
@@ -481,7 +551,7 @@ const flatLowerAttr = (
 					result[label] = defaultAttribute;
 					return;
 				}
-				return;
+				if (isStyleCard) return;
 			}
 
 			const generalKey = getAttributeKey(
@@ -521,7 +591,7 @@ const flatLowerAttr = (
 /**
  * Ensures that baseBreakpoint attribute value is the same as general attribute value
  * in case a responsive attribute exists with a different value. This ensures that when switching baseBreakpoint,
- * the value on previous basebBreakpoint will be saved.
+ * the value on previous baseBreakpoint will be saved.
  *
  * Also ensures a new saved attribute with a breakpoint higher than baseBreakpoint returns
  * general value for baseBreakpoint attribute in order to avoid a visual bug between
@@ -589,6 +659,7 @@ const cleanAttributes = ({
 	targetClientId,
 	defaultAttributes,
 	allowXXLOverGeneral = false,
+	isStyleCard = false,
 }) => {
 	const containsBreakpoint = Object.keys(newAttributes).some(
 		key => !!getBreakpointFromAttribute(key)
@@ -609,7 +680,8 @@ const cleanAttributes = ({
 			attributes,
 			clientId,
 			defaultAttributes,
-			allowXXLOverGeneral
+			allowXXLOverGeneral,
+			isStyleCard
 		),
 	};
 	result = {
@@ -620,7 +692,8 @@ const cleanAttributes = ({
 			clientId,
 			targetClientId,
 			defaultAttributes,
-			allowXXLOverGeneral
+			allowXXLOverGeneral,
+			isStyleCard
 		),
 	};
 	result = {
@@ -629,7 +702,13 @@ const cleanAttributes = ({
 	};
 	result = {
 		...result,
-		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
+		...flatLowerAttr(
+			result,
+			attributes,
+			clientId,
+			defaultAttributes,
+			isStyleCard
+		),
 	};
 	result = {
 		...result,

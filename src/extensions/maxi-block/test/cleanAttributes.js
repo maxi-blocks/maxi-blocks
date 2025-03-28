@@ -302,9 +302,9 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-s': 8,
-			'test-xs': undefined,
 			'test-status-s': undefined,
 			'test-status-xs': undefined,
+			'test-xs': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

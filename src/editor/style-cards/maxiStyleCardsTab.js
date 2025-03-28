@@ -777,7 +777,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						),
 					},
 					{
-						label: __('Typography globals', 'maxi-blocks'),
+						label: __('Headings globals', 'maxi-blocks'),
 						classNameItem: 'maxi-blocks-sc__type--heading',
 						content: (
 							<SettingTabsControl

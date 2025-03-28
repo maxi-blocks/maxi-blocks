@@ -15,7 +15,7 @@ const titleExtra = (
 		<defs>
 			<Path
 				id='a'
-				stroke='#ff4a17'
+				stroke='var(--maxi-primary-color)'
 				strokeWidth={1}
 				strokeLinejoin='round'
 				strokeLinecap='round'

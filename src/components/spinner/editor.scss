@@ -1,6 +1,6 @@
 .maxi-spinner {
 	display: inline-block;
-	background-color: #a2a9b0;
+	background-color: var(--maxi-grey-light);
 	width: 20px;
 	height: 20px;
 	opacity: 0.7;
@@ -11,7 +11,7 @@
 	&::before {
 		content: '';
 		position: absolute;
-		background-color: #fff;
+		background-color: var(--maxi-white);
 		top: 3px;
 		left: 3px;
 		width: 4px;

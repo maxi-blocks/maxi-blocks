@@ -1,9 +1,10 @@
 $arrow-triangle-base-size: 14px;
 $border-width: 1px;
-$white: #fff;
-$gray-400: #d3d4d7;
-$gray-900: #1e1e1e;
-$shadow-popover: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 4px 11px rgba(0, 0, 0, 0.1);
+$white: var(--maxi-white);
+$gray-400: var(--maxi-grey-light);
+$gray-900: var(--maxi-grey-dark);
+$shadow-popover: 0 0 0 1px rgba(var(--maxi-black), 0.2),
+	0 4px 11px rgba(var(--maxi-black), 0.1);
 $radius-block-ui: 3px;
 $panel-header-height: 32px;
 $grid-unit-20: 20px;

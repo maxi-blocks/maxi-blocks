@@ -4,11 +4,15 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const strikethrough = (
-	<SVG width={15.291} height={15.324} viewBox='0 0 15.291 15.324'>
-		<g strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5}>
-			<Path d='M11.869 4.576C11.61 2.852 10.231.439 6.611.783c-2.586.259-3.1 1.983-2.844 3.448.172 1.121.517 1.638 3.706 3.189 3.965 1.81 5.689 3.879 3.1 6.12-2.241 1.9-7.326 1.207-7.154-2.241' />
-			<Path transform='translate(.75 7.593)' d='M13.791 0L0 0' />
-		</g>
+	<SVG
+		viewBox='0 0 15.3 15.3'
+		stroke='#141516'
+		strokeLinecap='round'
+		strokeLinejoin='round'
+		strokeWidth={1.5}
+	>
+		<Path d='M11.9 4.6C11.6 2.9 10.3.5 6.6.8c-2.6.3-3.1 2-2.8 3.4.2 1.1.5 1.6 3.7 3.2 4 1.8 5.7 3.9 3.1 6.1-2.2 1.9-7.3 1.2-7.2-2.2' />
+		<Path d='M14.5 7.6H.8' />
 	</SVG>
 );
 

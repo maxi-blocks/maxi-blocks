@@ -123,6 +123,27 @@ const actions = {
 		};
 	},
 	copyStyles(copiedStyles) {
+		// Try modern clipboard API first
+		if (navigator?.clipboard?.writeText) {
+			navigator.clipboard
+				.writeText(JSON.stringify(copiedStyles))
+				.catch(err =>
+					console.error('Failed to copy to clipboard:', err)
+				);
+		} else {
+			// Fallback to execCommand
+			const textArea = document.createElement('textarea');
+			textArea.value = JSON.stringify(copiedStyles);
+			document.body.appendChild(textArea);
+			textArea.select();
+			try {
+				document.execCommand('copy');
+			} catch (err) {
+				console.error('Failed to copy to clipboard:', err);
+			}
+			document.body.removeChild(textArea);
+		}
+
 		return {
 			type: 'COPY_STYLES',
 			copiedStyles,

@@ -304,6 +304,7 @@ describe('cleanAttributes', () => {
 			'test-s': 8,
 			'test-status-s': undefined,
 			'test-status-xs': undefined,
+			'test-xs': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -818,6 +819,7 @@ describe('cleanAttributes', () => {
 		};
 		const expectedSecondRound = {
 			'test-m': 4,
+			'test-s': undefined,
 		};
 		const expectedThirdRound = {
 			'test-m': 5,

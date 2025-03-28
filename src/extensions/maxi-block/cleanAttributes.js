@@ -374,7 +374,8 @@ const flatWithGeneral = (
 				if (!isEqual(value, defaultAttribute))
 					result[label] = defaultAttribute;
 				else result[label] = undefined;
-			else if (isEqual(value, attribute)) result[label] = undefined;
+			else if (!isStyleCard && isEqual(value, attribute))
+				result[label] = undefined;
 			else if (!isNil(attribute)) breakpointLock = true;
 		});
 	});
@@ -514,7 +515,7 @@ const flatLowerAttr = (
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
 
-			if (isStyleCard) {
+			if (!isStyleCard) {
 				const generalKey = getAttributeKey(
 					simpleLabel,
 					isHover,
@@ -666,11 +667,13 @@ const cleanAttributes = ({
 	);
 
 	let result = { ...newAttributes };
+	// console.log('result', result);
 
 	result = {
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
 	};
+	// console.log('result after removeHoverSameAsNormal', result);
 	if (!containsBreakpoint) return result;
 
 	result = {
@@ -684,6 +687,7 @@ const cleanAttributes = ({
 			isStyleCard
 		),
 	};
+	// console.log('result after flatSameAsPrev', result);
 	result = {
 		...result,
 		...flatWithGeneral(
@@ -696,10 +700,12 @@ const cleanAttributes = ({
 			isStyleCard
 		),
 	};
+	// console.log('result after flatWithGeneral', result);
 	result = {
 		...result,
 		...flatNewAttributes(result, attributes, clientId, defaultAttributes),
 	};
+	// console.log('result after flatNewAttributes', result);
 	result = {
 		...result,
 		...flatLowerAttr(
@@ -710,10 +716,12 @@ const cleanAttributes = ({
 			isStyleCard
 		),
 	};
+	// console.log('result after flatLowerAttr', result);
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes),
 	};
+	// console.log('result after preserveBaseBreakpoint', result);
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);

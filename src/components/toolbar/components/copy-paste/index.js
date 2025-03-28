@@ -391,53 +391,6 @@ const CopyPaste = props => {
 		}
 	};
 
-	const onSpecialPasteFromClipboard = async () => {
-		try {
-			const clipboardText = await readFromClipboard();
-
-			if (!clipboardText || clipboardText.trim() === '') {
-				console.error('No valid styles');
-				return;
-			}
-
-			let clipboardData;
-			try {
-				clipboardData = JSON.parse(clipboardText.trim());
-			} catch (err) {
-				console.error('No valid styles');
-				return;
-			}
-
-			if (!clipboardData || typeof clipboardData !== 'object') {
-				console.error('No valid styles');
-				return;
-			}
-
-			let res = {};
-
-			Object.entries(specialPaste).forEach(([tab, keys]) => {
-				keys.forEach(key => {
-					res = {
-						...res,
-						...(isString(key)
-							? clipboardData[tab][key]
-							: clipboardData[tab][Object.keys(key)[0]][
-									Object.values(key)[0]
-							  ]),
-					};
-				});
-			});
-
-			setSpecialPaste(getDefaultSpecialPaste(organizedAttributes));
-			closeMoreSettings();
-			handleAttributesOnPaste(res);
-			updateBlockAttributes(clientId, res);
-			onPasteStylesIntoRepeaterBlock();
-		} catch (err) {
-			console.error('No valid styles');
-		}
-	};
-
 	const getTabItems = () => {
 		const response = [];
 
@@ -529,76 +482,34 @@ const CopyPaste = props => {
 			</Button>
 			{!isEmpty(copiedStyles) &&
 				!isEqual(currentOrganizedAttributes, organizedAttributes) && (
-					<>
-						<Dropdown
-							className='maxi-copypaste__copy-selector'
-							contentClassName='maxi-more-settings__popover maxi-dropdown__child-content maxi-copy-paste__popover'
-							position='right bottom'
-							renderToggle={({ onToggle }) => (
+					<Dropdown
+						className='maxi-copypaste__copy-selector'
+						contentClassName='maxi-more-settings__popover maxi-dropdown__child-content maxi-copy-paste__popover'
+						position='right bottom'
+						renderToggle={({ onToggle }) => (
+							<Button
+								className='toolbar-item__copy-paste__popover__button'
+								onClick={onToggle}
+							>
+								{__('Paste special - select', 'maxi-blocks')}
+							</Button>
+						)}
+						renderContent={() => (
+							<form>
+								<SettingTabsControl
+									target='sidebar-settings-tabs'
+									disablePadding
+									items={getTabItems()}
+								/>
 								<Button
-									className='toolbar-item__copy-paste__popover__button'
-									onClick={onToggle}
+									className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
+									onClick={onSpecialPaste}
 								>
-									{__(
-										'Paste special - select',
-										'maxi-blocks'
-									)}
+									{__('Paste special style', 'maxi-blocks')}
 								</Button>
-							)}
-							renderContent={() => (
-								<form>
-									<SettingTabsControl
-										target='sidebar-settings-tabs'
-										disablePadding
-										items={getTabItems()}
-									/>
-									<Button
-										className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
-										onClick={onSpecialPaste}
-									>
-										{__(
-											'Paste special style',
-											'maxi-blocks'
-										)}
-									</Button>
-								</form>
-							)}
-						/>
-						<Dropdown
-							className='maxi-copypaste__copy-selector'
-							contentClassName='maxi-more-settings__popover maxi-dropdown__child-content maxi-copy-paste__popover'
-							position='right bottom'
-							renderToggle={({ onToggle }) => (
-								<Button
-									className='toolbar-item__copy-paste__popover__button'
-									onClick={onToggle}
-								>
-									{__(
-										'Paste special from clipboard - select',
-										'maxi-blocks'
-									)}
-								</Button>
-							)}
-							renderContent={() => (
-								<form>
-									<SettingTabsControl
-										target='sidebar-settings-tabs'
-										disablePadding
-										items={getTabItems()}
-									/>
-									<Button
-										className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
-										onClick={onSpecialPasteFromClipboard}
-									>
-										{__(
-											'Paste special style from clipboard',
-											'maxi-blocks'
-										)}
-									</Button>
-								</form>
-							)}
-						/>
-					</>
+							</form>
+						)}
+					/>
 				)}
 			<Button
 				className='toolbar-item__copy-paste__popover__button'

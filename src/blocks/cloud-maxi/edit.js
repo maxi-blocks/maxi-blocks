@@ -25,7 +25,7 @@ class edit extends Component {
 				<img
 					// eslint-disable-next-line no-undef
 					src={previews.library_preview}
-					alt={__('Template Library block preview', 'maxi-blocks')}
+					alt={__('Cloud library block preview', 'maxi-blocks')}
 				/>
 			);
 

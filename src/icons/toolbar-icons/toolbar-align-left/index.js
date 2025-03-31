@@ -4,13 +4,14 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const toolbarAlignLeft = (
-	<SVG width={16} height={17.5} viewBox='0 0 16 17.5'>
-		<Path
-			d='M10.2 0H0m16 3.9H0m10.2 3.8H0m16 3.9H0M10.2 16H0'
-			strokeLinejoin='round'
-			strokeWidth={1.5}
-			transform='translate(0 .75)'
-		/>
+	<SVG
+		viewBox='0 0 16 17.5'
+		stroke='#081219'
+		strokeLinecap='round'
+		strokeLinejoin='round'
+		strokeWidth={1.5}
+	>
+		<Path d='M9.4.8H1m14 3.9H1m8.4 3.7H1m14 4H1m8.4 4.4H1' />
 	</SVG>
 );
 

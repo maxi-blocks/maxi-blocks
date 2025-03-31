@@ -1,6 +1,6 @@
 .maxi-image-url-upload {
 	& &__error {
-		color: #ff3333;
+		color: var(--maxi-orange-red);
 		font-weight: bold;
 		padding: 4px 8px;
 	}

@@ -123,27 +123,6 @@ const actions = {
 		};
 	},
 	copyStyles(copiedStyles) {
-		// Try modern clipboard API first
-		if (navigator?.clipboard?.writeText) {
-			navigator.clipboard
-				.writeText(JSON.stringify(copiedStyles))
-				.catch(err =>
-					console.error('Failed to copy to clipboard:', err)
-				);
-		} else {
-			// Fallback to execCommand
-			const textArea = document.createElement('textarea');
-			textArea.value = JSON.stringify(copiedStyles);
-			document.body.appendChild(textArea);
-			textArea.select();
-			try {
-				document.execCommand('copy');
-			} catch (err) {
-				console.error('Failed to copy to clipboard:', err);
-			}
-			document.body.removeChild(textArea);
-		}
-
 		return {
 			type: 'COPY_STYLES',
 			copiedStyles,
@@ -198,6 +177,24 @@ const actions = {
 		return {
 			type: 'SET_IS_IFRAME_OBSERVER_SET',
 			isIframeObserverSet,
+		};
+	},
+	setMaxiBlocksProStatus(data) {
+		return {
+			type: 'SET_MAXI_BLOCKS_PRO_STATUS',
+			data,
+		};
+	},
+	getMaxiBlocksSavedStyles() {
+		return {
+			type: 'GET_MAXI_BLOCKS_SAVED_STYLES',
+		};
+	},
+	setMaxiBlocksSavedStyles(styles) {
+		console.log('styles in actions', styles);
+		return {
+			type: 'SET_MAXI_BLOCKS_SAVED_STYLES',
+			styles,
 		};
 	},
 };

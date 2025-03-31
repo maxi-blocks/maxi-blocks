@@ -368,7 +368,7 @@ describe('CopyPaste from Toolbar', () => {
 		// select paste nested blocks
 		await page.$$eval(
 			'.components-popover__content .toolbar-item__copy-paste__popover button',
-			button => button[5].click()
+			button => button[6].click()
 		);
 		await page.waitForTimeout(1500);
 		await updateAllBlockUniqueIds(page);

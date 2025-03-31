@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import actions from './actions';
 
 const resolvers = {
@@ -16,6 +19,15 @@ const resolvers = {
 	*receiveMaxiDeviceType() {
 		const maxiDeviceType = yield actions.receiveMaxiDeviceType();
 		return actions.sendMaxiDeviceType(maxiDeviceType);
+	},
+	*receiveMaxiBlocksSavedStyles() {
+		try {
+			const savedStyles = yield actions.getMaxiBlocksSavedStyles();
+			return actions.setMaxiBlocksSavedStyles(savedStyles || {});
+		} catch (err) {
+			console.error('Error loading saved styles:', err);
+			return actions.setMaxiBlocksSavedStyles({});
+		}
 	},
 };
 

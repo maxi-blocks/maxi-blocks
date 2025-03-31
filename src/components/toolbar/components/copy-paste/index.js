@@ -30,6 +30,7 @@ import {
 	getInitialColumn,
 } from '@extensions/repeater/utils';
 import RepeaterContext from '@blocks/row-maxi/repeaterContext';
+import { openSidebarAccordion } from '@extensions/inspector';
 
 /**
  * External dependencies
@@ -64,6 +65,23 @@ const CopyPaste = props => {
 	const { blockName, clientId, closeMoreSettings, copyPasteMapping } = props;
 
 	const repeaterContext = useContext(RepeaterContext);
+	const [pasteButtonText, setPasteButtonText] = useState(
+		__('Paste styles from clipboard - all', 'maxi-blocks')
+	);
+
+	const { setMaxiBlocksSavedStyles } = useDispatch('maxiBlocks');
+	const savedStyles = useSelect(select =>
+		select('maxiBlocks').receiveMaxiBlocksSavedStyles()
+	);
+
+	const setErrorMessage = message => {
+		setPasteButtonText(message);
+		setTimeout(() => {
+			setPasteButtonText(
+				__('Paste styles from clipboard - all', 'maxi-blocks')
+			);
+		}, 3000);
+	};
 
 	const {
 		attributes,
@@ -159,7 +177,7 @@ const CopyPaste = props => {
 	const onCopyStylesToClipboard = async () => {
 		try {
 			// Copy to system clipboard using native API
-			await navigator.clipboard.writeText(
+			await navigator?.clipboard?.writeText(
 				JSON.stringify(blockAttributes)
 			);
 			closeMoreSettings();
@@ -346,16 +364,15 @@ const CopyPaste = props => {
 			const trimmedContent = clipboardText.trim();
 
 			if (!trimmedContent || trimmedContent === '') {
-				console.error('No valid styles - empty content');
+				setErrorMessage(__('Empty clipboard', 'maxi-blocks'));
 				return;
 			}
 
-			// Basic JSON validation before parsing
 			if (
 				!trimmedContent.startsWith('{') ||
 				!trimmedContent.endsWith('}')
 			) {
-				console.error('Invalid JSON format - content:', trimmedContent);
+				setErrorMessage(__('Invalid clipboard format', 'maxi-blocks'));
 				return;
 			}
 
@@ -363,15 +380,12 @@ const CopyPaste = props => {
 			try {
 				clipboardData = JSON.parse(trimmedContent);
 			} catch (err) {
-				console.error('JSON parse error:', err);
-				console.error('Failed content:', trimmedContent);
-				console.error('No valid styles');
+				setErrorMessage(__('Invalid clipboard data', 'maxi-blocks'));
 				return;
 			}
 
 			if (!clipboardData || typeof clipboardData !== 'object') {
-				console.error('Invalid data format:', clipboardData);
-				console.error('No valid styles');
+				setErrorMessage(__('Invalid data format', 'maxi-blocks'));
 				return;
 			}
 
@@ -385,9 +399,11 @@ const CopyPaste = props => {
 			handleAttributesOnPaste(styles);
 			updateBlockAttributes(clientId, styles);
 			onPasteStylesIntoRepeaterBlock();
+			setPasteButtonText(
+				__('Paste styles from clipboard - all', 'maxi-blocks')
+			);
 		} catch (err) {
-			console.error('General error:', err);
-			console.error('No valid styles');
+			setErrorMessage(__('Failed to read clipboard', 'maxi-blocks'));
 		}
 	};
 
@@ -521,7 +537,38 @@ const CopyPaste = props => {
 				className='toolbar-item__copy-paste__popover__button'
 				onClick={onPasteStylesFromClipboard}
 			>
-				{__('Paste styles from clipboard - all', 'maxi-blocks')}
+				{pasteButtonText ===
+				__('Paste styles from clipboard - all', 'maxi-blocks') ? (
+					pasteButtonText
+				) : (
+					<span className='toolbar-item__copy-paste__popover__button--error'>
+						{pasteButtonText}
+					</span>
+				)}
+			</Button>
+			<Button
+				className='toolbar-item__copy-paste__popover__button'
+				onClick={async () => {
+					// Save current style as Style 1
+					console.log('savedStyles', savedStyles);
+					const currentStyles = savedStyles || {};
+					console.log('currentStyles', currentStyles);
+					const updatedStyles = {
+						...currentStyles,
+						'Style 1': blockAttributes,
+					};
+					try {
+						console.log('updatedStyles', updatedStyles);
+						await setMaxiBlocksSavedStyles(updatedStyles);
+						// Open sidebar and navigate to saved styles tab
+						openSidebarAccordion(0, 'copy and paste styles');
+						closeMoreSettings();
+					} catch (err) {
+						console.error('Error saving style:', err);
+					}
+				}}
+			>
+				{__('Save style', 'maxi-blocks')}
 			</Button>
 			{hasInnerBlocks && (
 				<Button

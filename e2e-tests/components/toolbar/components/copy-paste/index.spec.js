@@ -16,8 +16,11 @@ import {
 
 describe('CopyPaste from Toolbar', () => {
 	it('Should copy and paste bulk styles', async () => {
+		// Mock console.error to ignore clipboard errors
+		const consoleErrorSpy = jest.spyOn(console, 'error');
+		consoleErrorSpy.mockImplementation(() => {});
+
 		await createNewPost();
-		await page.waitForTimeout(1000);
 		await insertMaxiBlock(page, 'Text Maxi');
 
 		await updateAllBlockUniqueIds(page);
@@ -52,6 +55,11 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
+		// Wait for popover to be visible
+		await page.waitForSelector(
+			'.components-popover__content .toolbar-item__copy-paste__popover'
+		);
+
 		// select copy style
 		await page.$eval(
 			'.components-popover__content .toolbar-item__copy-paste__popover button',
@@ -69,11 +77,11 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		// select copy/paste
-		await page.$eval(
-			'.components-popover__content .maxi-copypaste__copy-selector button',
-			button => button.click()
+		// Wait for popover to be visible
+		await page.waitForSelector(
+			'.components-popover__content .toolbar-item__copy-paste__popover'
 		);
+		await page.waitForTimeout(1000);
 
 		// select paste
 		await page.$$eval(
@@ -104,6 +112,9 @@ describe('CopyPaste from Toolbar', () => {
 		]);
 
 		expect(positionResult).toStrictEqual(expectPosition);
+
+		// Restore console.error
+		consoleErrorSpy.mockRestore();
 	});
 	it('Should copy and paste styles with special paste', async () => {
 		await insertMaxiBlock(page, 'Group Maxi');
@@ -357,7 +368,7 @@ describe('CopyPaste from Toolbar', () => {
 		// select paste nested blocks
 		await page.$$eval(
 			'.components-popover__content .toolbar-item__copy-paste__popover button',
-			button => button[3].click()
+			button => button[5].click()
 		);
 		await page.waitForTimeout(1500);
 		await updateAllBlockUniqueIds(page);

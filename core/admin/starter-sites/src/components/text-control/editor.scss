@@ -8,20 +8,20 @@ body.maxi-blocks--active .maxi-text-control {
 		max-height: unset !important;
 		padding: 2px 8px;
 		border-radius: 5px;
-		background-color: rgba(33, 141, 250, 0);
+		background-color: var(--maxi-grey);
 		border: 1px solid var(--maxi-grey-light);
 		font-size: 13px;
-		color: #464a53;
+		color: var(--maxi-black);
 		font-weight: 500;
 		flex: 1;
 
 		&:focus {
-			border-color: var(--maxi-grey-6-color);
+			border-color: var(--maxi-grey);
 		}
 	}
 
 	&__validation-text {
-		color: #ff0000;
+		color: var(--maxi-orange-red);
 		width: 100%;
 		text-align: right;
 	}

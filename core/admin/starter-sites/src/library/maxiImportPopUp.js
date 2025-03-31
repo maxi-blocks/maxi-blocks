@@ -16,9 +16,17 @@ import ToggleSwitch from '../components/toggle-switch';
  */
 import { useState, useEffect } from 'react';
 
+/**
+ * Helper function to check if a value is valid (not empty, null, or undefined)
+ */
 const isValidValue = value =>
 	value !== '' && value != null && value !== undefined;
 
+/**
+ * Returns description text for different template types
+ * @param {string} name - Template name
+ * @returns {string} Description text
+ */
 const getTemplateDescription = name => {
 	if (name.toLowerCase().includes('404')) {
 		return __(
@@ -47,7 +55,15 @@ const getTemplateDescription = name => {
 	return '';
 };
 
-// Add CSS for the loading animation
+/**
+ * CSS styles for loading animation and UI elements
+ * Includes styles for:
+ * - Loading spinner animation
+ * - Close links
+ * - Warning messages
+ * - Install links
+ * - Disabled states
+ */
 const loadingButtonStyles = `
 	@keyframes rotate {
 		100% { transform: rotate(360deg); }
@@ -112,7 +128,23 @@ const loadingButtonStyles = `
 	}
 `;
 
+/**
+ * Main Import Popup Component
+ * Handles the import interface for WordPress starter sites
+ *
+ * @param {Object} props
+ * @param {boolean} props.isQuickStart - Whether this is part of quick start workflow
+ * @param {string} props.url - URL of the starter site
+ * @param {string} props.title - Title of the starter site
+ * @param {Array} props.templates - Available templates
+ * @param {Array} props.pages - Available pages
+ * @param {Array} props.patterns - Available patterns
+ * @param {Object} props.sc - Style Card data
+ * @param {Object} props.contentXML - XML content data
+ * @param {Function} props.onRequestClose - Callback to close popup
+ */
 const MaxiImportPopUp = props => {
+	// Destructure props
 	const {
 		isQuickStart,
 		url,
@@ -120,23 +152,34 @@ const MaxiImportPopUp = props => {
 		cost,
 		templates,
 		pages,
-
 		patterns,
 		sc,
 		contentXML,
 		onRequestClose,
 	} = props;
 
-	// Add check for WordPress Importer status from localized data
+	/**
+	 * State Management
+	 */
+	// Check WordPress Importer plugin status
 	const wpImporterStatus =
 		window.maxiStarterSites?.wpImporterStatus || 'missing';
 
-	// Move themeType state declaration before selectedItems
+	// Track theme type (block or classic)
 	const [themeType, setThemeType] = useState({
 		isBlockTheme: true,
 		themeName: '',
 	});
 
+	/**
+	 * Initialize selected items state
+	 * Tracks what user has selected to import:
+	 * - templates
+	 * - pages
+	 * - patterns
+	 * - style card
+	 * - content XML
+	 */
 	const [selectedItems, setSelectedItems] = useState(() => {
 		const initialState = {
 			templates: {},
@@ -164,13 +207,19 @@ const MaxiImportPopUp = props => {
 		return initialState;
 	});
 
-	const [importStatus, setImportStatus] = useState('idle'); // 'idle' | 'loading' | 'done'
+	/**
+	 * Track various status states
+	 */
+	const [importStatus, setImportStatus] = useState('idle');
 	const [installingImporter, setInstallingImporter] = useState(false);
 	const [wpImporterStatusState, setWpImporterStatusState] = useState(
 		window.maxiStarterSites?.wpImporterStatus || 'missing'
 	);
 
-	// Add polling effect
+	/**
+	 * Effect to poll for WordPress Importer plugin status
+	 * Checks every 2 seconds until plugin is active
+	 */
 	useEffect(() => {
 		let pollTimer;
 
@@ -210,6 +259,11 @@ const MaxiImportPopUp = props => {
 		};
 	}, [wpImporterStatusState]);
 
+	/**
+	 * Handler Functions
+	 */
+
+	// Update importer plugin status
 	const updateImporterStatus = newStatus => {
 		setWpImporterStatusState(newStatus);
 		// Update the window variable to keep it in sync
@@ -219,6 +273,7 @@ const MaxiImportPopUp = props => {
 		};
 	};
 
+	// Handle individual toggle changes
 	const handleToggleChange = (type, name, value) => {
 		// Prevent changing contentXML if plugin is not active
 		if (type === 'contentXML' && wpImporterStatus !== 'active') {
@@ -246,6 +301,7 @@ const MaxiImportPopUp = props => {
 		}
 	};
 
+	// Handle "Toggle All" functionality
 	const handleToggleAll = value => {
 		setSelectedItems(prevState => {
 			const newState = { ...prevState };
@@ -285,6 +341,7 @@ const MaxiImportPopUp = props => {
 		});
 	};
 
+	// Check if all items are selected
 	const areAllItemsSelected = selectedItems => {
 		// Check templates
 		const templatesSelected = templates
@@ -317,6 +374,7 @@ const MaxiImportPopUp = props => {
 		);
 	};
 
+	// Check if any items are selected
 	const hasAnySelection = selectedItems => {
 		// Check templates
 		const hasTemplates = templates
@@ -340,6 +398,10 @@ const MaxiImportPopUp = props => {
 		return hasTemplates || hasPages || hasPatterns || hasSC || hasXML;
 	};
 
+	/**
+	 * Import Handler
+	 * Processes selected items and sends to WordPress API
+	 */
 	const onClickImport = selectedItems => {
 		setImportStatus('loading');
 
@@ -436,6 +498,10 @@ const MaxiImportPopUp = props => {
 			});
 	};
 
+	/**
+	 * WordPress Importer Plugin Installation
+	 * Handles installing and activating the importer plugin
+	 */
 	const installAndActivateImporter = async () => {
 		setInstallingImporter(true);
 		try {
@@ -457,7 +523,11 @@ const MaxiImportPopUp = props => {
 		}
 	};
 
-	// Update the warning message JSX
+	/**
+	 * UI Components
+	 */
+
+	// Warning message component
 	const renderWarningMessage = () => (
 		<div className='maxi-cloud-container__import-popup_warning-message'>
 			<p>
@@ -482,7 +552,10 @@ const MaxiImportPopUp = props => {
 		</div>
 	);
 
-	// Update templates when theme type is confirmed
+	/**
+	 * Theme Type Check Effect
+	 * Checks if current theme is block-based or classic
+	 */
 	useEffect(() => {
 		const checkThemeType = async () => {
 			try {
@@ -513,12 +586,15 @@ const MaxiImportPopUp = props => {
 		checkThemeType();
 	}, []);
 
-	// Add this helper function to check if templates section should be disabled
+	// Helper function for template section state
 	const isTemplatesSectionDisabled = () => {
 		return !themeType.isBlockTheme;
 	};
 
-	// Add this new function to handle theme installation/activation
+	/**
+	 * Theme Installation Handler
+	 * Handles installing/activating the MaxiBlocks Go theme
+	 */
 	const handleThemeAction = async () => {
 		try {
 			const response = await apiFetch({
@@ -539,6 +615,9 @@ const MaxiImportPopUp = props => {
 		}
 	};
 
+	/**
+	 * Render Component
+	 */
 	return (
 		<div className='maxi-cloud-container__import-popup_main-wrap'>
 			<style>{loadingButtonStyles}</style>
@@ -557,16 +636,19 @@ const MaxiImportPopUp = props => {
 						)}
 					</p>
 				</div>
+
+				{/* Move Toggle All switch here, after warning but before sections */}
+				<div className='maxi-cloud-container__import-popup_toggle-all'>
+					<ToggleSwitch
+						label={__('Toggle all on/off', 'maxi-blocks')}
+						selected={areAllItemsSelected(selectedItems)}
+						onChange={handleToggleAll}
+					/>
+				</div>
+
 				<div className='maxi-cloud-container__import-popup_sections-container'>
 					{/* General section */}
 					<div className='maxi-cloud-container__import-popup_section'>
-						<div className='maxi-cloud-container__import-popup_toggle-all'>
-							<ToggleSwitch
-								label={__('Toggle all on/off', 'maxi-blocks')}
-								selected={areAllItemsSelected(selectedItems)}
-								onChange={handleToggleAll}
-							/>
-						</div>
 						<h3 className='maxi-cloud-container__import-popup_section-title'>
 							{__('General', 'maxi-blocks')}
 						</h3>

@@ -31,12 +31,16 @@ import classnames from 'classnames';
 import { isEmpty, unescape } from 'lodash';
 import { arrowIcon } from '../icons';
 
-// Keep all the necessary functions and constants
+// API configuration for Typesense search
 const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
 
+/**
+ * Results count component - displays number of search results
+ */
 const resultsCount = {
 	stats(nbHits) {
+		// Format the number of hits into a readable string
 		const resultsString = nbHits.toLocaleString();
 		return (
 			<span>
@@ -52,7 +56,12 @@ const resultsCount = {
 	},
 };
 
+/**
+ * Navigation/Header Area
+ * Shows: Back button, "Acupuncture", "Free" navigation breadcrumbs, and close (X) button
+ */
 const MenuSelect = ({ items, currentRefinement, refine }) => {
+	// Find Pro and Free elements from items array, or create defaults if not found
 	const proElement = items.find(element => element.label === 'Pro') || {
 		label: 'Pro',
 		value: 'Pro',
@@ -121,6 +130,12 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 	);
 };
 
+/**
+ * HierarchicalMenu Component - Renders nested category menu
+ * @param {Object} props
+ * @param {Array} props.items - Menu items to display
+ * @param {Function} props.refine - Function to update filters
+ */
 const HierarchicalMenu = ({ items, refine }) =>
 	!isEmpty(items) && (
 		<ul>
@@ -167,6 +182,10 @@ const HierarchicalMenu = ({ items, refine }) =>
 		</ul>
 	);
 
+/**
+ * ClearRefinements Component - Button to clear all filters
+ * Also triggers a click on patterns button after clearing
+ */
 const ClearRefinements = ({ items, refine }) => (
 	<div className='ais-ClearRefinements'>
 		<button
@@ -187,6 +206,9 @@ const ClearRefinements = ({ items, refine }) => (
 	</div>
 );
 
+/**
+ * Hidden clear refinements button
+ */
 const ClearRefinementsHidden = ({ items, refine }) => (
 	<div className='ais-ClearRefinements maxi-hidden maxi-clear-for-type'>
 		<button
@@ -200,6 +222,7 @@ const ClearRefinementsHidden = ({ items, refine }) => (
 	</div>
 );
 
+// Connect components to InstantSearch functionality
 const CustomMenuSelect = connectMenu(MenuSelect);
 const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
@@ -207,6 +230,10 @@ const CustomClearRefinementsHidden = connectCurrentRefinements(
 	ClearRefinementsHidden
 );
 
+/**
+ * Configure Typesense search adapter
+ * @param {string} params - Search parameters
+ */
 const typesenseInstantsearchAdapter = params => {
 	return new TypesenseInstantSearchAdapter({
 		server: {
@@ -226,6 +253,7 @@ const typesenseInstantsearchAdapter = params => {
 	});
 };
 
+// Initialize search client for starter sites
 const searchClientStarterSites = (() => {
 	try {
 		return typesenseInstantsearchAdapter(
@@ -237,6 +265,10 @@ const searchClientStarterSites = (() => {
 	}
 })();
 
+/**
+ * Main Preview Area
+ * Shows: Large preview image of the starter site
+ */
 const starterSitesResults = ({
 	hit,
 	onClickConnect,
@@ -268,6 +300,14 @@ const starterSitesResults = ({
 	);
 };
 
+/**
+ * Details Popup Component
+ * Shows:
+ * 1. Title "Acupuncture"
+ * 2. Description text
+ * 3. Action buttons (Live preview, Go Pro)
+ * 4. Pages preview grid (showing Home Page, Blog Page, About Page, etc.)
+ */
 const MaxiDetailsPopUp = ({
 	url,
 	title,
@@ -283,12 +323,10 @@ const MaxiDetailsPopUp = ({
 	onRequestClose,
 	description,
 }) => {
-	const firstPage = pages?.[0];
-	const firstTemplate = templates?.[0];
-	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
+	// State for showing import dialog
 	const [showImport, setShowImport] = React.useState(false);
 
-	// Add event listener for closing details popup
+	// Setup event listener for closing popup
 	React.useEffect(() => {
 		const handleCloseDetailsPopup = () => {
 			if (onRequestClose) onRequestClose();
@@ -307,17 +345,16 @@ const MaxiDetailsPopUp = ({
 		};
 	}, [onRequestClose]);
 
-	const handleImportClick = () => {
-		setShowImport(true);
-	};
-
-	const handleImportClose = () => {
-		setShowImport(false);
-	};
-
+	// Handler functions
+	const handleImportClick = () => setShowImport(true);
+	const handleImportClose = () => setShowImport(false);
 	const handleGoProClick = () => {
 		window.open('https://maxiblocks.com/go/pro-library', '_blank');
 	};
+
+	const firstPage = pages?.[0];
+	const firstTemplate = templates?.[0];
+	const mainPreviewImage = firstPage?.screenshot || firstTemplate?.screenshot;
 
 	return (
 		<>
@@ -338,7 +375,7 @@ const MaxiDetailsPopUp = ({
 			) : (
 				<div className='maxi-cloud-container__details-popup_main-wrap'>
 					<div className='maxi-cloud-container__details-popup_columns'>
-						{/* Left column - Preview */}
+						{/* Left Column - Main Preview Image */}
 						<div className='maxi-cloud-container__details-popup_column-left'>
 							{mainPreviewImage && (
 								<div className='maxi-cloud-container__details-popup_main-preview'>
@@ -347,13 +384,83 @@ const MaxiDetailsPopUp = ({
 							)}
 						</div>
 
-						{/* Right column - Content */}
+						{/* Right Column - Content */}
 						<div className='maxi-cloud-container__details-popup_column-right'>
+							{/* Title and Description */}
 							<h2>{title}</h2>
 							<p className='maxi-cloud-container__details-popup_description'>
 								{description}
 							</p>
 
+							{/* Combined Pages, Templates, and Patterns Section */}
+							<div className='maxi-cloud-container__details-popup_section'>
+								{/* Pages Section */}
+								<h3 className='maxi-cloud-container__details-popup_section-title'>
+									{__(
+										'Pages in this starter site',
+										'maxi-blocks'
+									)}{' '}
+									({pages?.length || 0})
+								</h3>
+								<div className='items-grid'>
+									{pages?.map(page => (
+										<div
+											key={page.name}
+											className='maxi-cloud-container__details-popup_item'
+										>
+											<span>{page.name}</span>
+										</div>
+									))}
+								</div>
+
+								{/* Templates Section */}
+								{templates?.length > 0 && (
+									<>
+										<h3 className='maxi-cloud-container__details-popup_section-title'>
+											{__(
+												'Templates in this starter site',
+												'maxi-blocks'
+											)}{' '}
+											({templates.length})
+										</h3>
+										<div className='items-grid'>
+											{templates.map(template => (
+												<div
+													key={template.name}
+													className='maxi-cloud-container__details-popup_item'
+												>
+													<span>{template.name}</span>
+												</div>
+											))}
+										</div>
+									</>
+								)}
+
+								{/* Patterns Section */}
+								{patterns?.length > 0 && (
+									<>
+										<h3 className='maxi-cloud-container__details-popup_section-title'>
+											{__(
+												'Patterns in this starter site',
+												'maxi-blocks'
+											)}{' '}
+											({patterns.length})
+										</h3>
+										<div className='items-grid'>
+											{patterns.map(pattern => (
+												<div
+													key={pattern.name}
+													className='maxi-cloud-container__details-popup_item'
+												>
+													<span>{pattern.name}</span>
+												</div>
+											))}
+										</div>
+									</>
+								)}
+							</div>
+
+							{/* Action Buttons - Moved here after patterns section */}
 							<div className='maxi-cloud-container__details-popup_actions'>
 								<a
 									href={url}
@@ -385,85 +492,6 @@ const MaxiDetailsPopUp = ({
 									</button>
 								)}
 							</div>
-
-							{/* Pages section */}
-							<div className='maxi-cloud-container__details-popup_section'>
-								<h3 className='maxi-cloud-container__details-popup_section-title'>
-									{__(
-										'Pages in this starter site',
-										'maxi-blocks'
-									)}{' '}
-									({pages?.length || 0})
-								</h3>
-								<div className='maxi-cloud-masonry'>
-									{pages?.map(page => (
-										<div
-											key={page.name}
-											className='maxi-cloud-container__details-popup_item'
-										>
-											<img
-												src={page.screenshot}
-												alt={page.name}
-											/>
-											<span>{page.name}</span>
-										</div>
-									))}
-								</div>
-							</div>
-
-							{/* Templates section */}
-							{templates?.length > 0 && (
-								<div className='maxi-cloud-container__details-popup_section'>
-									<h3 className='maxi-cloud-container__details-popup_section-title'>
-										{__(
-											'Templates in this starter site',
-											'maxi-blocks'
-										)}{' '}
-										({templates.length})
-									</h3>
-									<div className='maxi-cloud-masonry'>
-										{templates.map(template => (
-											<div
-												key={template.name}
-												className='maxi-cloud-container__details-popup_item'
-											>
-												<img
-													src={template.screenshot}
-													alt={template.name}
-												/>
-												<span>{template.name}</span>
-											</div>
-										))}
-									</div>
-								</div>
-							)}
-
-							{/* Patterns section */}
-							{patterns?.length > 0 && (
-								<div className='maxi-cloud-container__details-popup_section'>
-									<h3 className='maxi-cloud-container__details-popup_section-title'>
-										{__(
-											'Patterns in this starter site',
-											'maxi-blocks'
-										)}{' '}
-										({patterns.length})
-									</h3>
-									<div className='maxi-cloud-masonry'>
-										{patterns.map(pattern => (
-											<div
-												key={pattern.name}
-												className='maxi-cloud-container__details-popup_item'
-											>
-												<img
-													src={pattern.screenshot}
-													alt={pattern.name}
-												/>
-												<span>{pattern.name}</span>
-											</div>
-										))}
-									</div>
-								</div>
-							)}
 						</div>
 					</div>
 				</div>
@@ -472,6 +500,10 @@ const MaxiDetailsPopUp = ({
 	);
 };
 
+/**
+ * Gets default menu cost from URL parameters
+ * Used to set initial filter state
+ */
 const getDefaultMenuCost = () => {
 	const urlParams = new URLSearchParams(window.location.search);
 	const cost = urlParams?.get('plan');
@@ -486,11 +518,15 @@ const getDefaultMenuCost = () => {
 };
 
 /**
- * Component
+ * Main Container Component
+ * Handles the overall layout and view switching between:
+ * - Preview mode (showing details popup)
+ * - Import mode
+ * - Starter sites listing
  */
 const LibraryContainer = props => {
 	const {
-		type,
+		type, // View type: 'preview', 'starter-sites', or import mode
 		url,
 		title,
 		templates,
@@ -509,10 +545,12 @@ const LibraryContainer = props => {
 		description,
 	} = props;
 
+	// Periodically run masonry layout generator
 	useInterval(masonryGenerator, 100);
 
 	return (
 		<div className='maxi-cloud-container'>
+			{/* Import popup */}
 			{isImport && (
 				<div className='maxi-cloud-container__import'>
 					<MaxiImportPopUp
@@ -532,6 +570,7 @@ const LibraryContainer = props => {
 				</div>
 			)}
 
+			{/* Preview/details popup */}
 			{type === 'preview' && !isImport && (
 				<div className='maxi-cloud-container__patterns maxi-cloud-container__details'>
 					<MaxiDetailsPopUp
@@ -552,6 +591,7 @@ const LibraryContainer = props => {
 				</div>
 			)}
 
+			{/* Starter sites listing with search */}
 			{type === 'starter-sites' && (
 				<div className='maxi-cloud-container__patterns'>
 					<InstantSearch

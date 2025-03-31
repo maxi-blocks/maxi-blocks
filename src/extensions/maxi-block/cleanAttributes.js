@@ -123,7 +123,11 @@ const flatSameAsPrev = (
 						defaultAttributes?.[key] ??
 						getDefaultAttribute(key, clientId, true);
 
-					result[key] = defaultAttribute;
+					if (
+						defaultAttribute !== null &&
+						defaultAttribute !== undefined
+					)
+						result[key] = defaultAttribute;
 				}
 			}
 		} else {
@@ -431,7 +435,8 @@ const flatNewAttributes = (
 					defaultAttributes?.[key] ??
 					getDefaultAttribute(key, clientId, true);
 
-				result[key] = defaultAttribute;
+				if (defaultAttribute !== null && defaultAttribute !== undefined)
+					result[key] = defaultAttribute;
 			}
 		}
 	});

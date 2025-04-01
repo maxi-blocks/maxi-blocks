@@ -612,27 +612,9 @@ const preserveBaseBreakpoint = (
 ) => {
 	const result = {};
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
-	console.log('===============preserveBaseBreakpoint===============');
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
-		console.log('breakpoint:', breakpoint);
-		console.log('key:', key);
-		console.log('value:', value);
-
-		console.log(
-			'attrExistsOnResponsive:',
-			attrExistsOnResponsive(
-				{ ...attributes, ...newAttributes },
-				key,
-				baseBreakpoint
-			)
-		);
-		console.log('value:', value);
-		console.log(
-			'breakpoint === baseBreakpoint:',
-			breakpoint === baseBreakpoint
-		);
 
 		if (
 			!breakpoint ||
@@ -642,14 +624,11 @@ const preserveBaseBreakpoint = (
 					key,
 					baseBreakpoint
 				) &&
-				!key.includes('unit') &&
 				!isStyleCard) ||
 			breakpoint === baseBreakpoint ||
 			isNil(value)
-		) {
-			console.log('returning');
+		)
 			return;
-		}
 
 		const isHover = getIsHoverAttribute(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
@@ -698,12 +677,10 @@ const cleanAttributes = ({
 	);
 
 	let result = { ...newAttributes };
-	console.log('Cleaning attributes:', result);
 	result = {
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
 	};
-	console.log('After removing hover same as normal:', result);
 	if (!containsBreakpoint) return result;
 
 	result = {
@@ -717,7 +694,6 @@ const cleanAttributes = ({
 			isStyleCard
 		),
 	};
-	console.log('After flatSameAsPrev:', result);
 	result = {
 		...result,
 		...flatWithGeneral(
@@ -730,7 +706,6 @@ const cleanAttributes = ({
 			isStyleCard
 		),
 	};
-	console.log('After flatWithGeneral:', result);
 	result = {
 		...result,
 		...flatNewAttributes(result, attributes, clientId, defaultAttributes),
@@ -745,12 +720,10 @@ const cleanAttributes = ({
 			isStyleCard
 		),
 	};
-	console.log('After flatLowerAttr:', result);
 	result = {
 		...result,
 		...preserveBaseBreakpoint(result, attributes, isStyleCard),
 	};
-	console.log('After preserveBaseBreakpoint:', result);
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
 		pickBy(result, (value, key) => {
 			const breakpoint = getBreakpointFromAttribute(key);

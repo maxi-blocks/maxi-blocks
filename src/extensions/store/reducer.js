@@ -64,6 +64,24 @@ const breakpointResizer = ({
 		);
 	});
 
+	let newEditorIframeBody = editorWrapper;
+
+	if (editorWrapper?.classList.contains('is-iframed')) {
+		const iframe = editorWrapper.querySelector(
+			'iframe[name="editor-canvas"]'
+		);
+		if (iframe) {
+			newEditorIframeBody = iframe.contentDocument.body;
+		}
+	}
+
+	if (newEditorIframeBody) {
+		newEditorIframeBody.setAttribute(
+			'maxi-blocks-responsive',
+			size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints)
+		);
+	}
+
 	if (changeSize) {
 		const winHeight = window.outerWidth;
 		const responsiveWidth =

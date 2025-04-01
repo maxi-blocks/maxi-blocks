@@ -24,4 +24,6 @@ const store = createReduxStore('maxiBlocks', {
 	resolvers,
 });
 
+console.log('Registering store with controls:', controls);
 register(store);
+console.log('Store registered successfully.');

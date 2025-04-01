@@ -33,18 +33,6 @@ const SavedStyles = props => {
 			setIsLoading(true);
 			try {
 				await getMaxiBlocksSavedStyles();
-				// Save current style as Style 1 if it doesn't exist
-				const currentStyles = savedStyles || {};
-				if (!currentStyles['Style 1']) {
-					const updatedStyles = {
-						...currentStyles,
-						'Style 1': attributes,
-					};
-					await setMaxiBlocksSavedStyles({
-						styles: updatedStyles,
-					});
-					setSelectedStyle('Style 1');
-				}
 			} catch (err) {
 				console.error('Error loading saved styles:', err);
 			}

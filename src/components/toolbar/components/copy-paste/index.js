@@ -568,7 +568,7 @@ const CopyPaste = props => {
 					}
 				}}
 			>
-				{__('Save style', 'maxi-blocks')}
+				{__('Save styles', 'maxi-blocks')}
 			</Button>
 			{hasInnerBlocks && (
 				<Button

@@ -260,6 +260,10 @@ const reducer = (
 				savedStyles: action.styles || {},
 			};
 		case 'SET_MAXI_BLOCKS_SAVED_STYLES':
+			console.log(
+				'SET_MAXI_BLOCKS_SAVED_STYLES reducer received:',
+				action
+			);
 			return {
 				...state,
 				savedStyles: action.styles,

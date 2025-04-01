@@ -38,7 +38,15 @@ const controls = {
 		});
 		return response ? JSON.parse(response) : {};
 	},
-	async SET_MAXI_BLOCKS_SAVED_STYLES({ styles }) {
+	async SET_MAXI_BLOCKS_SAVED_STYLES(styles) {
+		console.log(
+			'SET_MAXI_BLOCKS_SAVED_STYLES function called with styles:',
+			styles
+		);
+		if (!styles) {
+			console.log('No styles provided to SET_MAXI_BLOCKS_SAVED_STYLES');
+			return;
+		}
 		console.log('styles in controls', styles);
 		const stringifiedStyles = JSON.stringify(styles);
 		console.log('stringifiedStyles', stringifiedStyles);

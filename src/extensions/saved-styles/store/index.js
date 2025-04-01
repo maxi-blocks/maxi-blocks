@@ -6,17 +6,13 @@ import { createReduxStore, register } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import reducer from './reducer';
 import actions from './actions';
-import selectors from './selectors';
 import controls from './controls';
+import reducer from './reducer';
 import resolvers from './resolvers';
+import selectors from './selectors';
 
-/**
- * Register Store
- */
-
-const store = createReduxStore('maxiBlocks', {
+const store = createReduxStore('maxiBlocks/saved-styles', {
 	reducer,
 	actions,
 	selectors,
@@ -25,3 +21,5 @@ const store = createReduxStore('maxiBlocks', {
 });
 
 register(store);
+
+export default store;

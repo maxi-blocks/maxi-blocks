@@ -185,17 +185,6 @@ const actions = {
 			data,
 		};
 	},
-	getMaxiBlocksSavedStyles() {
-		return {
-			type: 'GET_MAXI_BLOCKS_SAVED_STYLES',
-		};
-	},
-	setMaxiBlocksSavedStyles(styles) {
-		console.log('styles in actions', styles);
-		return {
-			type: 'SET_MAXI_BLOCKS_SAVED_STYLES',
-			styles,
-		};
-	},
 };
+
 export default actions;

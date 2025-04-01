@@ -10,10 +10,11 @@ import { useSelect, useDispatch } from '@wordpress/data';
  */
 import Button from '@components/button';
 import Select from '@components/select-control';
+import '@extensions/saved-styles/store';
 import './editor.scss';
 
 const SavedStyles = props => {
-	const { attributes, maxiSetAttributes } = props;
+	const { maxiSetAttributes } = props;
 	const [selectedStyle, setSelectedStyle] = useState('');
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [newName, setNewName] = useState('');
@@ -21,11 +22,13 @@ const SavedStyles = props => {
 
 	const { savedStyles } = useSelect(select => ({
 		savedStyles:
-			select('maxiBlocks').receiveMaxiBlocksSavedStyles()?.styles || {},
+			select('maxiBlocks/saved-styles').receiveMaxiBlocksSavedStyles() ||
+			{},
 	}));
 
-	const { getMaxiBlocksSavedStyles, setMaxiBlocksSavedStyles } =
-		useDispatch('maxiBlocks');
+	const { getMaxiBlocksSavedStyles, setMaxiBlocksSavedStyles } = useDispatch(
+		'maxiBlocks/saved-styles'
+	);
 
 	// Load saved styles on component mount
 	useEffect(() => {
@@ -40,6 +43,17 @@ const SavedStyles = props => {
 		};
 		loadStyles();
 	}, []);
+
+	// Set first style as selected when styles are loaded
+	useEffect(() => {
+		if (
+			savedStyles &&
+			Object.keys(savedStyles).length > 0 &&
+			!selectedStyle
+		) {
+			setSelectedStyle(Object.keys(savedStyles)[0]);
+		}
+	}, [savedStyles]);
 
 	// Function to copy selected style to clipboard
 	const copyStyleToClipboard = async () => {
@@ -64,9 +78,7 @@ const SavedStyles = props => {
 			delete currentStyles[selectedStyle];
 			currentStyles[newName] = styleData;
 
-			await setMaxiBlocksSavedStyles({
-				styles: currentStyles,
-			});
+			await setMaxiBlocksSavedStyles(currentStyles);
 			setIsRenaming(false);
 			setNewName('');
 			setSelectedStyle(newName);
@@ -85,9 +97,7 @@ const SavedStyles = props => {
 			const currentStyles = { ...savedStyles };
 			delete currentStyles[selectedStyle];
 
-			await setMaxiBlocksSavedStyles({
-				styles: currentStyles,
-			});
+			await setMaxiBlocksSavedStyles(currentStyles);
 			setSelectedStyle('');
 		} catch (err) {
 			console.error('Error deleting style:', err);
@@ -149,7 +159,7 @@ const SavedStyles = props => {
 						}))}
 						disabled={isLoading}
 					/>
-					{selectedStyle && (
+					{selectedStyle && savedStyles[selectedStyle] && (
 						<div className='maxi-saved-styles-control__buttons'>
 							<Button onClick={applyStyle} disabled={isLoading}>
 								{__('Apply', 'maxi-blocks')}

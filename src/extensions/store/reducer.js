@@ -128,7 +128,6 @@ const reducer = (
 		isIframeObserverSet: false,
 		blockName: {},
 		uniqueID: {},
-		savedStyles: {},
 	},
 	action
 ) => {
@@ -253,20 +252,6 @@ const reducer = (
 			return {
 				...state,
 				isIframeObserverSet: action.isIframeObserverSet,
-			};
-		case 'GET_MAXI_BLOCKS_SAVED_STYLES':
-			return {
-				...state,
-				savedStyles: action.styles || {},
-			};
-		case 'SET_MAXI_BLOCKS_SAVED_STYLES':
-			console.log(
-				'SET_MAXI_BLOCKS_SAVED_STYLES reducer received:',
-				action
-			);
-			return {
-				...state,
-				savedStyles: action.styles,
 			};
 		default:
 			return state;

@@ -69,9 +69,9 @@ const CopyPaste = props => {
 		__('Paste styles from clipboard - all', 'maxi-blocks')
 	);
 
-	const { setMaxiBlocksSavedStyles } = useDispatch('maxiBlocks');
+	const { setMaxiBlocksSavedStyles } = useDispatch('maxiBlocks/saved-styles');
 	const savedStyles = useSelect(select =>
-		select('maxiBlocks').receiveMaxiBlocksSavedStyles()
+		select('maxiBlocks/saved-styles').receiveMaxiBlocksSavedStyles()
 	);
 
 	const setErrorMessage = message => {

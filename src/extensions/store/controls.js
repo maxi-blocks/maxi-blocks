@@ -32,35 +32,6 @@ const controls = {
 			? 'general'
 			: originalDeviceType;
 	},
-	async GET_MAXI_BLOCKS_SAVED_STYLES() {
-		const response = await apiFetch({
-			path: '/maxi-blocks/v1.0/saved-styles',
-		});
-		return response ? JSON.parse(response) : {};
-	},
-	async SET_MAXI_BLOCKS_SAVED_STYLES(styles) {
-		console.log(
-			'SET_MAXI_BLOCKS_SAVED_STYLES function called with styles:',
-			styles
-		);
-		if (!styles) {
-			console.log('No styles provided to SET_MAXI_BLOCKS_SAVED_STYLES');
-			return;
-		}
-		console.log('styles in controls', styles);
-		const stringifiedStyles = JSON.stringify(styles);
-		console.log('stringifiedStyles', stringifiedStyles);
-		await apiFetch({
-			path: '/maxi-blocks/v1.0/saved-styles',
-			method: 'POST',
-			data: {
-				stringifiedStyles,
-			},
-		}).catch(err => {
-			console.error('Error saving styles. Code error: ', err);
-		});
-		return { styles };
-	},
 };
 
 export default controls;

@@ -1324,11 +1324,7 @@ class MaxiBlockComponent extends Component {
 		iframeDocument.body.classList.add('maxi-blocks--active');
 		editorWrapper.setAttribute(
 			'maxi-blocks-responsive',
-			currentBreakpoint === 'general'
-				? select('maxiBlocks').receiveBaseBreakpoint()
-				: currentBreakpoint === 's'
-				? 's'
-				: 'xs'
+			currentBreakpoint === 's' ? 's' : 'xs'
 		);
 		iframeDocument.documentElement.style.scrollbarWidth = 'none';
 	}

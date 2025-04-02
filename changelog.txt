@@ -1,3 +1,27 @@
+_Updates 3 Apr 2025_
+MaxiBlocks v2.0.9
+* Update: Enhanced Single Post templates with author email and site link functionality.
+* Update: Expanded Dynamic Content (DC) capabilities for Button block in Site Editor with additional author options.
+* Update: Improved unit synchronization between Style Cards and Block settings for better consistency.
+* Update: Strengthened plugin testing infrastructure with comprehensive unit test coverage.
+* Fix: Resolved bottom margin migration issues for legacy patterns.
+* Fix: Corrected tag display functionality in imported Single Post templates.
+* Fix: Enhanced Map block compatibility for multiple instances with different service providers.
+* Fix: Improved Map block marker title and description handling for duplicated maps.
+* Fix: Optimized Map block zoom controls on frontend.
+* Fix: Adjusted Map block marker positioning for enlarged markers.
+* Fix: Resolved local font loading issues in specific scenarios.
+* Fix: Enhanced email obfuscation security in Button block frontend display.
+* Fix: Corrected static text rendering for DC author fields in Single Post templates.
+* Fix: Improved block drag-and-drop stability.
+* Fix: Enhanced style consistency for copied and detached synced blocks.
+* Fix: Optimized scrolling migration for legacy patterns.
+* Fix: Improved range control and decimal value handling in advanced number control.
+* Fix: Enhanced sub-item background hover colour functionality in Style Card.
+* Fix: Optimized unit value handling when exceeding new unit range limits.
+* Fix: Improved Save/Activate button functionality in Style Cards editor.
+* Fix: Resolved responsive values resetting when the values are the same on different breakpoints.
+
 _Updates 14 Feb 2025_
 MaxiBlocks v2.0.8
 * Fix: Corrected import error when handling patterns from legacy MaxiBlocks versions (0.0.1 and 0.1).

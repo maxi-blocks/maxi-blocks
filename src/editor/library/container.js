@@ -411,13 +411,13 @@ const LibraryContainer = props => {
 	} = props;
 
 	useEffect(() => {
-        if (type === 'patterns') {
-            setTimeout(() => {
-				let input = document.querySelector('.ais-SearchBox-input');
+		if (type === 'patterns') {
+			setTimeout(() => {
+				const input = document.querySelector('.ais-SearchBox-input');
 				input?.focus();
-            }, 0);
-        }
-    }, [type]);
+			}, 0);
+		}
+	}, [type]);
 
 	const {
 		styleCards,
@@ -853,16 +853,28 @@ const LibraryContainer = props => {
 						'padding-bottom-general': 5,
 						'padding-bottom-unit-general': 'px',
 						'padding-bottom-xxl': 20,
+						'padding-bottom-xl': 5,
 						'padding-left-general': 15,
 						'padding-left-unit-general': 'px',
 						'padding-left-xxl': 20,
+						'padding-left-xl': 15,
 						'padding-right-general': 15,
 						'padding-right-unit-general': 'px',
 						'padding-right-xxl': 20,
+						'padding-right-xl': 15,
 						'padding-sync-general': 'axis',
 						'padding-top-general': 5,
 						'padding-top-unit-general': 'px',
 						'padding-top-xxl': 10,
+						'padding-top-xl': 5,
+						'padding-top-unit-xxl': 'px',
+						'padding-right-unit-xxl': 'px',
+						'padding-bottom-unit-xxl': 'px',
+						'padding-left-unit-xxl': 'px',
+						'padding-top-unit-xl': 'px',
+						'padding-right-unit-xl': 'px',
+						'padding-bottom-unit-xl': 'px',
+						'padding-left-unit-xl': 'px',
 						'remove-hover-underline': true,
 						'show-mobile-down-from': 1024,
 						'text-decoration-general': 'unset',
@@ -1016,16 +1028,28 @@ const LibraryContainer = props => {
 						'padding-bottom-general': 5,
 						'padding-bottom-unit-general': 'px',
 						'padding-bottom-xxl': 20,
+						'padding-bottom-xl': 5,
 						'padding-left-general': 15,
 						'padding-left-unit-general': 'px',
 						'padding-left-xxl': 20,
+						'padding-left-xl': 15,
 						'padding-right-general': 15,
 						'padding-right-unit-general': 'px',
 						'padding-right-xxl': 20,
+						'padding-right-xl': 15,
 						'padding-sync-general': 'axis',
 						'padding-top-general': 5,
 						'padding-top-unit-general': 'px',
 						'padding-top-xxl': 10,
+						'padding-top-xl': 5,
+						'padding-top-unit-xxl': 'px',
+						'padding-right-unit-xxl': 'px',
+						'padding-bottom-unit-xxl': 'px',
+						'padding-left-unit-xxl': 'px',
+						'padding-top-unit-xl': 'px',
+						'padding-right-unit-xl': 'px',
+						'padding-bottom-unit-xl': 'px',
+						'padding-left-unit-xl': 'px',
 						'remove-hover-underline': true,
 						'show-mobile-down-from': 1024,
 						'text-decoration-general': 'unset',

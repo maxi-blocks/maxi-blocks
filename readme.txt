@@ -173,6 +173,9 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 3 Apr 2025_
+MaxiBlocks v2.0.9
+
 _Updates 14 Feb 2025_
 MaxiBlocks v2.0.8
 * Fix: Corrected import error when handling patterns from legacy MaxiBlocks versions (0.0.1 and 0.1).
@@ -199,22 +202,6 @@ _Updates 24 Dec 2024_
 MaxiBlocks v2.0.6
 * Fix: Restored missing author display functionality in Dynamic Content on frontend.
 * Fix: Resolved link settings freeze issue in Dynamic Content.
-
-_Updates 23 Dec 2024_
-MaxiBlocks v2.0.5
-* Update: Switched Templates, Icons, and Style Cards libraries to a self-hosted server to improve speed and stability.
-* Update: Implemented rem units support in typography control for better responsive design and accessibility.
-* Update: Enhanced Dynamic Content with additional author fields for more comprehensive content display.
-* Update: Redesigned Button icon presets for improved usability and visual appeal.
-* Fix: Enhanced Interaction Builder performance by optimizing action dropdown updates during block switching.
-* Fix: Eliminated horizontal scrollbar appearance in Editor Experience for cleaner interface.
-* Fix: Implemented "Switch tone" button visibility for Theme items in Templates library.
-* Fix: Synchronized maximum values between Toolbar and Sidebar settings for line height consistency.
-* Fix: Resolved pagination count calculation issues in specific scenarios.
-* Fix: Optimized template library image upload process for slow server environments.
-* Fix: Addressed sidebar styles persistence issues during open and close actions.
-* Fix: Eliminated incorrect autocomplete tooltip for date formatting options.
-
 
 == Upgrade Notice ==
 

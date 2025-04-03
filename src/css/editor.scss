@@ -571,6 +571,13 @@ body[maxi-blocks-responsive]:not(.branch-6-6):not(.branch-6-7):not(.branch-6-8) 
 	}
 }
 
+body.maxi-blocks--active.branch-6-8
+	.editor-visual-editor.is-scrollable
+	.block-editor-block-canvas
+	> .block-editor-writing-flow {
+	overflow-y: auto;
+}
+
 /** Fix templates padding in the editor */
 
 body.maxi-blocks--active .editor-styles-wrapper .has-global-padding,

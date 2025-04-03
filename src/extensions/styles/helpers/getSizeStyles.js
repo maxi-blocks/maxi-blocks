@@ -21,6 +21,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  * @param {Object} obj Block size properties
  */
 const getSizeStyles = (obj, prefix = '') => {
+	console.log('getSizeStyles', obj);
 	const response = {};
 
 	const getValue = (target, breakpoint) => {
@@ -35,6 +36,8 @@ const getSizeStyles = (obj, prefix = '') => {
 				breakpoint,
 				attributes: obj,
 			});
+			console.log('target', target);
+			console.log('fullWidth', fullWidth);
 
 			if ((target === 'width' || target === 'min-width') && fullWidth) {
 				return null;

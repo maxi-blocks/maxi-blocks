@@ -29,23 +29,22 @@ const VERSIONS = new Set([
 	'2.0.2',
 	'2.0.1',
 	'2.0.0',
+	'1.9.9',
+	'1.9.8',
+	'1.9.7',
+	'1.9.6',
+	'1.9.5',
+	'1.9.4',
 ]);
 
-const isEligible = blockAttributes =>
-	VERSIONS.has(blockAttributes['maxi-version-current']) ||
-	!blockAttributes['maxi-version-origin'];
+const isEligible = blockAttributes => {
+	if (blockAttributes.name !== 'maxi-blocks/button-maxi') return false;
+	if (blockAttributes['dc-link-target'] !== 'author_email') return false;
 
-const migrate = attributes => {
-	const { 'dc-link-target': dcLinkTarget } = attributes;
-
-	if (dcLinkTarget !== 'author_email') {
-		return attributes;
-	}
-
-	return {
-		...attributes,
-		'data-email-obfuscated': 'true',
-	};
+	return (
+		VERSIONS.has(blockAttributes['maxi-version-current']) ||
+		!blockAttributes['maxi-version-origin']
+	);
 };
 
 const save = props => {
@@ -121,4 +120,4 @@ const save = props => {
 	);
 };
 
-export default { save, isEligible, migrate, name: NAME };
+export default { save, isEligible, name: NAME };

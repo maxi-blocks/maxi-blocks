@@ -29,6 +29,7 @@ import {
 	blockMigrator,
 	buttonIconTransitionMigrator,
 	buttonAriaLabelMigrator,
+	buttonEmailObfuscatedMigrator,
 } from '@extensions/styles/migrators';
 
 /**
@@ -50,7 +51,11 @@ registerBlockType(metadata, {
 		save,
 		prefix: 'button-',
 		selectors: customCss.selectors,
-		migrators: [buttonIconTransitionMigrator, buttonAriaLabelMigrator],
+		migrators: [
+			buttonIconTransitionMigrator,
+			buttonAriaLabelMigrator,
+			buttonEmailObfuscatedMigrator,
+		],
 	}),
 	customCss,
 	scProps,

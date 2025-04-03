@@ -116,8 +116,14 @@ const AdvancedNumberControl = props => {
 	const latestValueRef = useRef(currentValue);
 
 	useEffect(() => {
-		setCurrentValue(trim(value));
-		latestValueRef.current = trim(value);
+		const formattedValue =
+			typeof value === 'number'
+				? parseFloat(value.toFixed(10))
+				: trim(value);
+
+		setCurrentValue(formattedValue);
+		latestValueRef.current =
+			typeof value === 'number' ? value.toString() : trim(value);
 	}, [value]);
 
 	const classes = classnames(
@@ -208,10 +214,17 @@ const AdvancedNumberControl = props => {
 			if (value !== '' && +value !== 0 && +value < min) value = min;
 		}
 
-		const result =
-			value === '' || optionType === 'string' ? value.toString() : +value;
+		let result;
+		if (value === '' || optionType === 'string') {
+			result = value.toString();
+		} else {
+			// Fix floating-point precision
+			const numValue = +value;
+			result = parseFloat(numValue.toFixed(10));
+		}
 
-		latestValueRef.current = result;
+		latestValueRef.current =
+			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
 		handleChange(result);
 	};
@@ -229,7 +242,7 @@ const AdvancedNumberControl = props => {
 		? rawPreferredValues.map(transformRangePreferredValue)
 		: rawPreferredValues;
 
-	const rangeValue = +preferredValues.find(val => /\d/.test(val)) || 0;
+	const rangeValue = +preferredValues.find(val => /\d/.test(val)) || null;
 
 	const [showHelpContent, setShowHelpContent] = useState(false);
 
@@ -295,8 +308,6 @@ const AdvancedNumberControl = props => {
 							options={getOptions()}
 							value={unit}
 							onChange={val => {
-								onChangeUnit(val);
-
 								if (value > minMaxSettings[val]?.max) {
 									onChangeValue(
 										optionType === 'string'
@@ -307,6 +318,7 @@ const AdvancedNumberControl = props => {
 										val
 									);
 								}
+								onChangeUnit(val);
 							}}
 						/>
 					)}
@@ -334,7 +346,7 @@ const AdvancedNumberControl = props => {
 										: ''
 									: ''
 							}`}
-							value={rangeValue}
+							value={rangeValue ?? placeholder ?? 0}
 							onChange={val => {
 								const result =
 									optionType === 'string'

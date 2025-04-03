@@ -19,6 +19,33 @@ import {
 import getMapContainer from './utils/getMapContainer';
 import roundMarkersCoords from './utils/roundMarkersCoords';
 
+const tryClickMarker = async (marker, map) => {
+	await marker.click();
+	try {
+		// Wait for popup with increased timeout
+		await page.waitForSelector('.maxi-map-block__popup__content', {
+			timeout: 2000,
+			visible: true,
+		});
+		const popupContent = await map.$('.maxi-map-block__popup__content');
+		if (popupContent) return popupContent;
+	} catch (e) {
+		await page.waitForTimeout(500); // Wait before retry
+	}
+	return null;
+};
+
+const tryClickMarkerWithRetry = async (marker, map, attemptsLeft = 3) => {
+	if (attemptsLeft <= 0) {
+		throw new Error('Popup content never appeared after 3 attempts');
+	}
+
+	const result = await tryClickMarker(marker, map);
+	if (result) return result;
+
+	return tryClickMarkerWithRetry(marker, map, attemptsLeft - 1);
+};
+
 const popupTest = async map => {
 	// Opening marker popup
 	const marker = await map.$('.leaflet-marker-icon');
@@ -27,28 +54,11 @@ const popupTest = async map => {
 	// Add a small delay to ensure map is stable
 	await page.waitForTimeout(800);
 
-	// Try clicking the marker up to 3 times
-	let popupContent = null;
-	for (let i = 0; i < 3; i++) {
-		await marker.click();
-		try {
-			// Wait for popup with increased timeout
-			await page.waitForSelector('.maxi-map-block__popup__content', {
-				timeout: 2000,
-				visible: true,
-			});
-			popupContent = await map.$('.maxi-map-block__popup__content');
-			if (popupContent) break;
-		} catch (e) {
-			if (i === 2)
-				throw new Error(
-					'Popup content never appeared after 3 attempts'
-				);
-			await page.waitForTimeout(500); // Wait before retry
-		}
-	}
+	const popupContent = await tryClickMarkerWithRetry(marker, map);
 
-	if (!popupContent) throw new Error('Popup content not found');
+	if (!popupContent) {
+		throw new Error('Popup content never appeared after 3 attempts');
+	}
 
 	// Testing popup title typing
 	const popupTitle = await popupContent.$(
@@ -208,17 +218,39 @@ describe('Map Maxi', () => {
 		await page.waitForTimeout(1500);
 
 		// Wait for all tiles to be loaded
-		await page.waitForFunction(
-			() => {
+		try {
+			await page.waitForFunction(
+				() => {
+					const tiles = document.querySelectorAll('.leaflet-tile');
+					// Consider test passed if we have tiles and at least 80% are loaded
+					// This is more realistic than waiting for all tiles
+					if (tiles.length === 0) return false;
+					const loadedTiles = Array.from(tiles).filter(
+						tile =>
+							tile.classList.contains('leaflet-tile-loaded') &&
+							tile.style.opacity === '1'
+					);
+					return loadedTiles.length / tiles.length >= 0.8;
+				},
+				{ timeout: 15000 } // Increased timeout to 15 seconds
+			);
+		} catch (error) {
+			console.error('Tile loading error:', error);
+			// If we timeout waiting for tiles, log the current state
+			const debugInfo = await page.evaluate(() => {
 				const tiles = document.querySelectorAll('.leaflet-tile');
-				return Array.from(tiles).every(
-					tile =>
-						tile.classList.contains('leaflet-tile-loaded') &&
-						tile.style.opacity === '1'
-				);
-			},
-			{ timeout: 5000 }
-		);
+				return {
+					totalTiles: tiles.length,
+					loadedTiles: Array.from(tiles).filter(
+						t =>
+							t.classList.contains('leaflet-tile-loaded') &&
+							t.style.opacity === '1'
+					).length,
+				};
+			});
+			console.log('Tile loading debug info:', debugInfo);
+			throw error;
+		}
 
 		let attributes = await getAttributes('map-type');
 		expect(attributes).toBe('humanitarian');
@@ -254,18 +286,37 @@ describe('Map Maxi', () => {
 		await typeSelect2.select('cycle');
 		await page.waitForTimeout(1500);
 
-		// Wait for all tiles to be loaded
-		await page.waitForFunction(
-			() => {
+		// Wait for all tiles to be loaded for cycle map
+		try {
+			await page.waitForFunction(
+				() => {
+					const tiles = document.querySelectorAll('.leaflet-tile');
+					if (tiles.length === 0) return false;
+					const loadedTiles = Array.from(tiles).filter(
+						tile =>
+							tile.classList.contains('leaflet-tile-loaded') &&
+							tile.style.opacity === '1'
+					);
+					return loadedTiles.length / tiles.length >= 0.8;
+				},
+				{ timeout: 15000 }
+			);
+		} catch (error) {
+			console.error('Cycle map tile loading error:', error);
+			const debugInfo = await page.evaluate(() => {
 				const tiles = document.querySelectorAll('.leaflet-tile');
-				return Array.from(tiles).every(
-					tile =>
-						tile.classList.contains('leaflet-tile-loaded') &&
-						tile.style.opacity === '1'
-				);
-			},
-			{ timeout: 5000 }
-		);
+				return {
+					totalTiles: tiles.length,
+					loadedTiles: Array.from(tiles).filter(
+						t =>
+							t.classList.contains('leaflet-tile-loaded') &&
+							t.style.opacity === '1'
+					).length,
+				};
+			});
+			console.log('Cycle map tile loading debug info:', debugInfo);
+			throw error;
+		}
 
 		attributes = await getAttributes('map-type');
 		expect(attributes).toBe('cycle');

@@ -26,6 +26,7 @@ const handleSetAttributes = ({
 	targetClientId = null,
 	defaultAttributes,
 	allowXXLOverGeneral = false,
+	isStyleCard = false,
 }) => {
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
 
@@ -95,7 +96,9 @@ const handleSetAttributes = ({
 		if (
 			!attrExistOnBaseBreakpoint &&
 			baseBreakpoint !== 'xxl' &&
-			(breakpoint === 'general' || !existHigherBreakpointAttribute)
+			(breakpoint === 'general' ||
+				!existHigherBreakpointAttribute ||
+				isStyleCard)
 		) {
 			// Checks if the higher breakpoint attribute is not on XXL
 			if (
@@ -164,6 +167,7 @@ const handleSetAttributes = ({
 		targetClientId,
 		defaultAttributes,
 		allowXXLOverGeneral,
+		isStyleCard,
 	});
 
 	return onChange(cleanedResponse);

@@ -30,10 +30,10 @@ const isEligible = blockAttributes => {
 	const { uniqueID, transition } = blockAttributes;
 
 	// Early return for quick fails
-	if (!transition) return false;
+	if (!transition || !transition.block) return false;
 
 	const blockDataTransition = getBlockData(uniqueID);
-	if (!blockDataTransition) return false;
+	if (!blockDataTransition || !blockDataTransition.block) return false;
 
 	// Compare sorted keys for accurate comparison
 	return !isEqual(
@@ -46,14 +46,13 @@ const migrate = newAttributes => {
 	const {
 		uniqueID,
 		transition,
-		'transition-change-all': transitionChangeAll
+		'transition-change-all': transitionChangeAll,
 	} = newAttributes;
 
 	const blockDataTransition = getBlockData(uniqueID);
 	const defaultAttributes = transitionAttributesCreator({
 		transition: blockDataTransition,
 	}).transition.default.block;
-
 
 	for (const transitionName of Object.keys(blockDataTransition.block)) {
 		if (!transition.block[transitionName]) {

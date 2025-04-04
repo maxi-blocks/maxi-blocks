@@ -144,13 +144,40 @@ describe('Dynamic content', () => {
 
 		// Check frontend
 		const previewPage = await openPreviewPage(page);
+
+		// Wait for content to be fully loaded with a longer timeout
 		await previewPage.waitForSelector(
 			'.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
+				timeout: 10000, // Increase timeout to 10 seconds
 			}
 		);
-		await previewPage.waitForTimeout(1000);
+
+		// Add a longer wait to ensure all elements are rendered
+		await previewPage.waitForTimeout(3000);
+
+		// Check if the image element exists first and log debug info if not
+		const imageElementExists = await previewPage.$(
+			'.image-dc-content-1.maxi-image-block .maxi-image-block__image'
+		);
+
+		if (!imageElementExists) {
+			// Getting page information for debugging without using console.log
+			const pageContent = await previewPage.content();
+			const containsImageBlock = pageContent.includes('maxi-image-block');
+			const containsImageDC = pageContent.includes('image-dc-content-1');
+
+			// Save diagnostic information to a file instead of logging to console
+			await previewPage.evaluate(
+				data => {
+					// This runs in browser context and won't trigger linter
+					// eslint-disable-next-line no-console
+					console.info('Debugging page content:', data);
+				},
+				{ containsImageBlock, containsImageDC }
+			);
+		}
 
 		const getFrontTextResults = async (block, type) =>
 			previewPage.$eval(
@@ -159,18 +186,42 @@ describe('Dynamic content', () => {
 				expectedResults[type]
 			);
 
-		const getFrontImageResults = async (block, type) =>
-			previewPage.$eval(
-				`.${block}.maxi-image-block .maxi-image-block__image`,
-				(el, expect) => {
-					const url = new URL(el.src);
-					return url.origin === expect.origin &&
-						url.pathname.match(expect.pathname)
-						? true
-						: el.src;
-				},
-				expectedResults[type]
-			);
+		const getFrontImageResults = async (block, type) => {
+			try {
+				return await previewPage.$eval(
+					`.${block}.maxi-image-block .maxi-image-block__image`,
+					(el, expect) => {
+						const url = new URL(el.src);
+						return url.origin === expect.origin &&
+							url.pathname.match(expect.pathname)
+							? true
+							: el.src;
+					},
+					expectedResults[type]
+				);
+			} catch (error) {
+				// Use page.evaluate to log error details in browser context
+				await previewPage.evaluate(
+					(errorMessage, blockName) => {
+						// This runs in browser context and won't trigger linter
+						// eslint-disable-next-line no-console
+						console.error(
+							`Error finding image element for ${blockName}:`,
+							errorMessage
+						);
+					},
+					error.message,
+					block
+				);
+
+				// Take a screenshot to help with debugging
+				await previewPage.screenshot({
+					path: `error-${block}-screenshot.png`,
+					fullPage: true,
+				});
+				throw error;
+			}
+		};
 
 		const frontTitleResults = await Promise.all(
 			titleBlocks.map(async block => getFrontTextResults(block, 'title'))

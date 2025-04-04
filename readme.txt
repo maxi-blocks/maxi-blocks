@@ -173,7 +173,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 3 Apr 2025_
+_Updates 7 Apr 2025_
 MaxiBlocks v2.0.9
 * Update: Enhanced Single Post templates with author email and site link functionality.
 * Update: Expanded Dynamic Content (DC) capabilities for Button block in Site Editor with additional author options.
@@ -193,6 +193,7 @@ MaxiBlocks v2.0.9
 * Fix: Optimized scrolling migration for legacy patterns.
 * Fix: Improved range control and decimal value handling in advanced number control.
 * Fix: Enhanced sub-item background hover colour functionality in Style Card.
+* Fix: Resolved svg transition migration issues for legacy patterns.
 * Fix: Optimized unit value handling when exceeding new unit range limits.
 * Fix: Improved Save/Activate button functionality in Style Cards editor.
 * Fix: Resolved responsive values resetting when the values are the same on different breakpoints.

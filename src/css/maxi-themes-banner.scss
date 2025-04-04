@@ -182,10 +182,16 @@ html[dir='rtl'] {
 * Fix WordPress 6.6 double scrollbar issue
 *******************************/
 
-body.maxi-blocks--active.version-6-6:not(.site-editor-php) {
+body.maxi-blocks--active.branch-6-6:not(.site-editor-php) {
 	.editor-visual-editor {
 		> .components-resizable-box__container.editor-resizable-editor {
 			height: auto !important;
 		}
+	}
+}
+
+body.maxi-blocks--active.branch-6-8.site-editor-php {
+	.interface-interface-skeleton__content {
+		overflow-y: hidden;
 	}
 }

@@ -22,6 +22,7 @@ const SavedStyles = props => {
 	const [newName, setNewName] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [localSavedStyles, setLocalSavedStyles] = useState({});
+	const [copySuccess, setCopySuccess] = useState(false);
 
 	// Load saved styles on component mount
 	useEffect(() => {
@@ -76,6 +77,14 @@ const SavedStyles = props => {
 		try {
 			const styleData = localSavedStyles[selectedStyle];
 			await navigator.clipboard.writeText(JSON.stringify(styleData));
+
+			// Set copy success state
+			setCopySuccess(true);
+
+			// Reset after 3 seconds
+			setTimeout(() => {
+				setCopySuccess(false);
+			}, 3000);
 		} catch (err) {
 			console.error('Failed to copy style:', err);
 		}
@@ -225,9 +234,11 @@ const SavedStyles = props => {
 							</Button>
 							<Button
 								onClick={copyStyleToClipboard}
-								disabled={isLoading}
+								disabled={isLoading || copySuccess}
 							>
-								{__('Copy', 'maxi-blocks')}
+								{copySuccess
+									? __('Done', 'maxi-blocks')
+									: __('Copy', 'maxi-blocks')}
 							</Button>
 							<Button
 								onClick={() => {

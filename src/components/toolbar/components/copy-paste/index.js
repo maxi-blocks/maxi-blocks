@@ -573,6 +573,7 @@ const CopyPaste = props => {
 					const timeStr = now.toLocaleTimeString([], {
 						hour: '2-digit',
 						minute: '2-digit',
+						hour12: false,
 					});
 
 					// Find next available style number

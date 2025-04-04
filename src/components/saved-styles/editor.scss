@@ -1,0 +1,56 @@
+.maxi-saved-styles-control {
+	padding: 5px;
+
+	&__rename {
+		margin-bottom: 10px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		input {
+			padding: 8px;
+			border-radius: 4px;
+			border: 1px solid #ccc;
+			margin-bottom: 8px;
+		}
+
+		button {
+			background: var(--maxi-light-blue-2-color);
+			border: 1px solid var(--maxi-grey-1-color);
+			border-radius: 4px;
+			text-align: center;
+			&:last-child {
+				margin-left: 10px;
+			}
+			&:hover {
+				transition: all 0.3s ease;
+				background: var(--maxi-grey-2-color);
+			}
+		}
+	}
+
+	&__buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-top: 10px;
+		button {
+			background: var(--maxi-light-blue-2-color);
+			border: 1px solid var(--maxi-grey-1-color);
+			border-radius: 4px;
+			&:hover {
+				transition: all 0.3s ease;
+				background: var(--maxi-grey-2-color);
+			}
+		}
+	}
+
+	&__count {
+		text-align: right !important;
+		margin-top: -3px;
+		font-size: 10px !important;
+		color: var(--maxi-grey-7-color) !important;
+		text-align: center;
+		margin-bottom: 8px;
+	}
+}

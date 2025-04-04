@@ -5,6 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { __experimentalLinkControl as NativeLinkControl } from '@wordpress/block-editor';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -30,6 +31,23 @@ const LinkControl = ({
 	onChangeLink,
 	onRemoveLink,
 }) => {
+	// Add effect to disable browser autocomplete
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			const linkInputs = document.querySelectorAll(
+				'.maxi-link-control input[type="text"]'
+			);
+			linkInputs.forEach(input => {
+				input.setAttribute('autocomplete', 'off');
+				input.setAttribute('autocorrect', 'off');
+				input.setAttribute('autocapitalize', 'off');
+				input.setAttribute('spellcheck', 'false');
+			});
+		}, 100);
+
+		return () => clearTimeout(timer);
+	}, []);
+
 	return (
 		<div
 			className={classnames(

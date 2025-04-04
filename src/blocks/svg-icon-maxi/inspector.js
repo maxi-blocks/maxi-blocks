@@ -17,10 +17,7 @@ import SvgStrokeWidthControl from '@components/svg-stroke-width-control';
 import SvgWidthControl from '@components/svg-width-control';
 import SvgAltControl from './components/svg-alt-control';
 import SvgColorControl from './components/svg-color-control';
-import {
-	getColorRGBAString,
-	getGroupAttributes,
-} from '@extensions/styles';
+import { getColorRGBAString, getGroupAttributes } from '@extensions/styles';
 import { setSVGContentWithBlockStyle } from '@extensions/svg';
 import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
@@ -300,6 +297,9 @@ const Inspector = props => {
 									...inspectorTabs.marginPadding({
 										props,
 										prefix: 'svg-',
+									}),
+									...inspectorTabs.savedStyles({
+										props,
 									}),
 								]}
 							/>

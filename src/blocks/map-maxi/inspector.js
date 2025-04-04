@@ -196,6 +196,9 @@ const Inspector = props => {
 											/>
 										),
 									},
+									...inspectorTabs.savedStyles({
+										props,
+									}),
 								]}
 							/>
 						),

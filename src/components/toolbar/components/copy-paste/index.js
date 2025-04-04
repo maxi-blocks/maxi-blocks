@@ -2,8 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch, useSelect } from '@wordpress/data';
-import { useContext, useState } from '@wordpress/element';
+import { select, useSelect, useDispatch, dispatch } from '@wordpress/data';
+import { useContext, useState, useEffect } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -68,11 +69,28 @@ const CopyPaste = props => {
 	const [pasteButtonText, setPasteButtonText] = useState(
 		__('Paste styles from clipboard - all', 'maxi-blocks')
 	);
+	const [savedStyles, setSavedStyles] = useState({});
 
-	const { setMaxiBlocksSavedStyles } = useDispatch('maxiBlocks/saved-styles');
-	const savedStyles = useSelect(select =>
-		select('maxiBlocks/saved-styles').receiveMaxiBlocksSavedStyles()
-	);
+	// Load saved styles on component mount
+	useEffect(() => {
+		const loadSavedStyles = async () => {
+			try {
+				const response = await apiFetch({
+					path: '/maxi-blocks/v1.0/saved-styles',
+				});
+
+				const parsedResponse =
+					typeof response === 'string'
+						? JSON.parse(response)
+						: response;
+
+				setSavedStyles(parsedResponse || {});
+			} catch (err) {
+				console.error('Error loading saved styles:', err);
+			}
+		};
+		loadSavedStyles();
+	}, []);
 
 	const setErrorMessage = message => {
 		setPasteButtonText(message);
@@ -549,17 +567,70 @@ const CopyPaste = props => {
 			<Button
 				className='toolbar-item__copy-paste__popover__button'
 				onClick={async () => {
-					// Save current style as Style 1
-					console.log('savedStyles', savedStyles);
+					// Get current time and date
+					const now = new Date();
+					const dateStr = now.toLocaleDateString();
+					const timeStr = now.toLocaleTimeString([], {
+						hour: '2-digit',
+						minute: '2-digit',
+					});
+
+					// Find next available style number
 					const currentStyles = savedStyles || {};
-					console.log('currentStyles', currentStyles);
+					const styleNumbers = Object.keys(currentStyles)
+						.map(key => {
+							const match = key.match(/Style (\d+)/);
+							return match ? parseInt(match[1], 10) : 0;
+						})
+						.filter(num => !Number.isNaN(num));
+
+					const nextStyleNumber =
+						styleNumbers.length > 0
+							? Math.max(...styleNumbers) + 1
+							: 1;
+
+					// Create new style name with number and timestamp
+					const newStyleName = `Style ${nextStyleNumber} - ${dateStr} ${timeStr}`;
+
+					// Check if we've reached the maximum number of styles (100)
+					const MAX_SAVED_STYLES = 100;
+					if (Object.keys(currentStyles).length >= MAX_SAVED_STYLES) {
+						// Show an error notification
+						dispatch('core/notices').createNotice(
+							'error',
+							__(
+								'Maximum number of saved styles (100) reached. Please delete some styles before saving new ones.',
+								'maxi-blocks'
+							),
+							{
+								type: 'snackbar',
+								isDismissible: true,
+							}
+						);
+						return;
+					}
+
 					const updatedStyles = {
 						...currentStyles,
-						'Style 1': blockAttributes,
+						[newStyleName]: blockAttributes,
 					};
+
 					try {
-						console.log('updatedStyles', updatedStyles);
-						await setMaxiBlocksSavedStyles(updatedStyles);
+						// Call the API directly
+						await apiFetch({
+							path: '/maxi-blocks/v1.0/saved-styles',
+							method: 'POST',
+							data: {
+								styles: JSON.stringify(updatedStyles),
+							},
+						});
+
+						// Update local state
+						setSavedStyles(updatedStyles);
+
+						// Set global variable for the saved-styles component to use
+						window.maxiLastSavedStyleName = newStyleName;
+
 						// Open sidebar and navigate to saved styles tab
 						openSidebarAccordion(0, 'copy and paste styles');
 						closeMoreSettings();

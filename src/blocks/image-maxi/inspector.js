@@ -453,7 +453,9 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: 'image-',
+									}),
+									...inspectorTabs.savedStyles({
+										props,
 									}),
 								]}
 							/>

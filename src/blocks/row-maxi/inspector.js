@@ -126,6 +126,9 @@ const Inspector = props => {
 										isRepeaterInherited,
 										updateInnerBlocksPositions,
 									}),
+									...inspectorTabs.savedStyles({
+										props,
+									}),
 								]}
 							/>
 						),

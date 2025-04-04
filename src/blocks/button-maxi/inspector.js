@@ -291,6 +291,9 @@ const Inspector = props => {
 										props,
 										prefix: 'button-',
 									}),
+									...inspectorTabs.savedStyles({
+										props,
+									}),
 								]}
 							/>
 						),
@@ -376,6 +379,9 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.position({
+										props,
+									}),
+									...inspectorTabs.savedStyles({
 										props,
 									}),
 									deviceType !== 'general' && {

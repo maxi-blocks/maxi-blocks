@@ -179,12 +179,6 @@ const actions = {
 			isIframeObserverSet,
 		};
 	},
-	setMaxiBlocksProStatus(data) {
-		return {
-			type: 'SET_MAXI_BLOCKS_PRO_STATUS',
-			data,
-		};
-	},
 };
 
 export default actions;

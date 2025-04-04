@@ -13,12 +13,14 @@ import {
 	getSiteEditorIframeBody,
 	getSiteEditorIframe,
 } from '@extensions/fse';
+import downloadTextFile from './downloadTextFile';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isString } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
+import getDefaultSCAttribute from './getDefaultSCAttribute';
 
 /**
  * Utils
@@ -76,40 +78,15 @@ export const showMaxiSCAppliedActiveSnackbar = nameSC => {
 	);
 };
 
-export const downloadTextFile = (data, fileName) => {
-	const a = document.createElement('a');
-	document.body.appendChild(a);
-	a.style = 'display: none';
-
-	// Need stringify twice to get 'text/plain' mime type
-	const json = JSON.stringify(JSON.stringify(data));
-	const blob = new Blob([json], { type: 'text/plain' });
-	const url = window.URL.createObjectURL(blob);
-
-	a.href = url;
-	a.download = fileName;
-	a.click();
-	document.body.removeChild(a);
-};
-
+/**
+ * Export the style card
+ * @param {Object} data     - The data to export
+ * @param {string} fileName - The name of the file to export
+ * @returns {void}
+ */
 export const exportStyleCard = (data, fileName) => {
 	const reducedSC = diff(standardSC?.sc_maxi, data);
 	downloadTextFile(reducedSC, fileName);
-};
-
-export const getDefaultSCAttribute = (SC, attr, type) => {
-	if (!isEmpty(SC)) {
-		const defaultValue = SC.defaultStyleCard?.[type]?.[attr];
-		if (!isNil(defaultValue)) {
-			if (isString(defaultValue) && defaultValue.includes('var')) {
-				const colorNumber = defaultValue.match(/color-\d/);
-				const colorValue = SC.defaultStyleCard[colorNumber];
-				if (!isNil(colorValue)) return colorValue;
-			} else return defaultValue;
-		}
-	}
-
-	return null;
 };
 
 export const processSCAttribute = (SC, attr, type) => {

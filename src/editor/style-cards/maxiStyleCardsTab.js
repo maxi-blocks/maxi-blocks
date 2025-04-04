@@ -23,7 +23,6 @@ import AdvancedNumberControl from '@components/advanced-number-control';
 import PaddingControl from '@components/padding-control';
 import {
 	processSCAttribute,
-	getDefaultSCAttribute,
 	showHideHamburgerNavigation,
 	processSCAttributes,
 	removeNavigationHoverUnderline,
@@ -32,6 +31,7 @@ import {
 	getDefaultSCValue,
 	getTypographyFromSC,
 } from '@extensions/style-cards';
+import getDefaultSCAttribute from './getDefaultSCAttribute';
 
 /**
  * Icons

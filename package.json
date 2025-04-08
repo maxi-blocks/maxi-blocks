@@ -61,7 +61,7 @@
 		"leaflet": "latest",
 		"leaflet.gridlayer.googlemutant": "^0.15.0",
 		"masonry-layout": "latest",
-		"re-resizable": "^6.11.2",
+		"re-resizable": "latest",
 		"react-accessible-accordion": "latest",
 		"react-color": "latest",
 		"react-compound-slider": "latest",

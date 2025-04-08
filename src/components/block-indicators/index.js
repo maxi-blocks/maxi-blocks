@@ -167,11 +167,23 @@ const Indicator = props => {
 					right: dir === getDirection('right'),
 					bottom: dir === 'top' || dir === 'bottom',
 					left: dir === getDirection('left'),
+					topRight: false,
+					bottomRight: false,
+					bottomLeft: false,
+					topLeft: false,
 				}}
 				defaultSize={size}
 				size={size}
 				handleWrapperStyle={handleStyles}
 				handleStyles={handleStyles}
+				onMouseDown={e => {
+					e.preventDefault();
+					e.stopPropagation();
+				}}
+				onTouchStart={e => {
+					e.preventDefault();
+					e.stopPropagation();
+				}}
 				onResizeStart={e => {
 					e.preventDefault();
 					e.stopPropagation();
@@ -187,6 +199,8 @@ const Indicator = props => {
 					e.stopPropagation();
 					handleOnResizeStop(type, e, ref);
 				}}
+				grid={[1, 1]}
+				snapGap={1}
 			>
 				{content}
 			</Resizable>

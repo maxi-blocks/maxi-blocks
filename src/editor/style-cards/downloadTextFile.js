@@ -12,6 +12,7 @@ const downloadTextFile = (data, fileName) => {
 	a.download = fileName;
 	a.click();
 	document.body.removeChild(a);
+	window.URL.revokeObjectURL(url);
 };
 
 export default downloadTextFile;

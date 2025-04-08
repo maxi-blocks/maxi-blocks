@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.0.8\n"
+"Project-Id-Version: MaxiBlocks 2.0.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-14T12:22:38+00:00\n"
+"POT-Creation-Date: 2025-04-04T11:43:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: maxi-blocks\n"
@@ -36,38 +36,38 @@ msgstr ""
 msgid "https://maxiblocks.com/go/plugin-author"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:115
+#: core/admin/class-maxi-dashboard.php:130
 msgid "Validating..."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:116
+#: core/admin/class-maxi-dashboard.php:131
 msgid "Please add your API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:117
+#: core/admin/class-maxi-dashboard.php:132
 msgid "Invalid API Key, please check your key and try again"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:118
+#: core/admin/class-maxi-dashboard.php:133
 msgid "Referer not allowed, please allow your domain for that key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:119
+#: core/admin/class-maxi-dashboard.php:134
 msgid "Only alphabet, number, \"_\", \"$\", \".\", \"[\", and \"]\" are allowed in the API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:120
+#: core/admin/class-maxi-dashboard.php:135
 msgid "Error validating API Key, please try again later"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:152
-#: core/admin/class-maxi-dashboard.php:193
+#: core/admin/class-maxi-dashboard.php:167
+#: core/admin/class-maxi-dashboard.php:208
 msgid "Start"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:160
-#: core/admin/class-maxi-dashboard.php:161
-#: core/admin/class-maxi-dashboard.php:197
+#: core/admin/class-maxi-dashboard.php:175
+#: core/admin/class-maxi-dashboard.php:176
+#: core/admin/class-maxi-dashboard.php:212
 #: build/index.js:15
 #: src/blocks/accordion-maxi/inspector.js:87
 #: src/blocks/button-maxi/inspector.js:207
@@ -94,532 +94,534 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:171
-#: core/admin/class-maxi-dashboard.php:172
-#: core/admin/class-maxi-dashboard.php:201
+#: core/admin/class-maxi-dashboard.php:186
+#: core/admin/class-maxi-dashboard.php:187
+#: core/admin/class-maxi-dashboard.php:216
 msgid "Maxi AI"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:180
-#: core/admin/class-maxi-dashboard.php:181
-#: core/admin/class-maxi-dashboard.php:205
+#: core/admin/class-maxi-dashboard.php:195
+#: core/admin/class-maxi-dashboard.php:196
+#: core/admin/class-maxi-dashboard.php:220
 msgid "Pro library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:223
+#: core/admin/class-maxi-dashboard.php:238
 msgid "MaxiBlocks Logo"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:288
+#: core/admin/class-maxi-dashboard.php:303
 msgid "Hello, "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:290
+#: core/admin/class-maxi-dashboard.php:305
 msgid "Hello, friend"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:296
+#: core/admin/class-maxi-dashboard.php:311
 msgid "Future-proof your web design with the modern page builder that blends simplicity and power"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:303
+#: core/admin/class-maxi-dashboard.php:318
 msgid "MaxiBlocks is a no-code visual page builder that can create responsive, fast-loading webpages using an integrated design library."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:310
+#: core/admin/class-maxi-dashboard.php:325
 msgid "You can choose from over 1,800 patterns, 100 page templates, and 13,400 SVG icons to kickstart page building and bring your creative vision to life."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:317
+#: core/admin/class-maxi-dashboard.php:332
 msgid "No locked blocks"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:321
+#: core/admin/class-maxi-dashboard.php:336
 msgid "We refuse to hold basic features hostage just to sell the “full-version.” Everyone gets access to all page builder features, custom blocks and settings completely free. There's no lock-in by design."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:328
+#: core/admin/class-maxi-dashboard.php:343
 msgid "Goodbye license keys"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:332
+#: core/admin/class-maxi-dashboard.php:347
 msgid "Plus, we’re on a mission to make licence keys and domain restrictions go extinct, just like dinosaurs (except without the cool bones). With MaxiBlocks you get unlimited sites and unlimited downloads."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:339
+#: core/admin/class-maxi-dashboard.php:354
 msgid "Packed with free goodies"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:343
+#: core/admin/class-maxi-dashboard.php:358
 msgid "Get started with 200 free templates, 13.4k icons and 100 style cards. You don't even need an account. Just open a page and start building."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:350
+#: core/admin/class-maxi-dashboard.php:365
 msgid "Loved by page builder enthusiasts, web designers, and template users, Maxi is here to make your life easier"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:357
+#: core/admin/class-maxi-dashboard.php:372
 msgid "Go next-level with pro templates"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:364
+#: core/admin/class-maxi-dashboard.php:379
 msgid "If you're loving MaxiBlocks and want to support us, consider joining the Pro library. Find inspiration, get more variety and work faster with 1700 production-ready Pro templates."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:371
+#: core/admin/class-maxi-dashboard.php:386
 msgid "It’s like having a dedicated professional designer crafting unique designs exclusively for you."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:378
+#: core/admin/class-maxi-dashboard.php:393
 msgid "Our experienced team has created thousands of responsive designs using Maxi, so we know what works. Tap into a huge designer-made asset library that can literally double your output."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:385
+#: core/admin/class-maxi-dashboard.php:400
 msgid "Copy, remix, and learn as you go - it's all possible with MaxiBlocks."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:397
+#: core/admin/class-maxi-dashboard.php:412
 msgid "News and stories for creators."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:398
+#: core/admin/class-maxi-dashboard.php:413
 msgid "Read the blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:403
+#: core/admin/class-maxi-dashboard.php:418
 msgid "Get a summary of stories you missed."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:404
+#: core/admin/class-maxi-dashboard.php:419
 msgid "Notify me"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:409
+#: core/admin/class-maxi-dashboard.php:424
 msgid "Your thoughts can inspire others."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:410
+#: core/admin/class-maxi-dashboard.php:425
 msgid "Give a quick review"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:432
+#: core/admin/class-maxi-dashboard.php:447
 msgid "Successfully done"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:436
+#: core/admin/class-maxi-dashboard.php:451
 msgid "Editor preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:440
+#: core/admin/class-maxi-dashboard.php:455
 msgid "Hide interface tooltips"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:444
+#: core/admin/class-maxi-dashboard.php:459
 msgid "Hide tooltips on mouse-hover."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:448
-#: core/admin/class-maxi-dashboard.php:523
+#: core/admin/class-maxi-dashboard.php:463
+#: core/admin/class-maxi-dashboard.php:538
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:585
+#: src/editor/style-cards/maxiStyleCardsEditor.js:587
 msgid "Save changes"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:453
+#: core/admin/class-maxi-dashboard.php:468
 msgid "Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:455
+#: core/admin/class-maxi-dashboard.php:470
 msgid "Create Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:456
+#: core/admin/class-maxi-dashboard.php:471
 msgid "To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:457
+#: core/admin/class-maxi-dashboard.php:472
 msgid "To create an API key, you will need to do the following:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:459
+#: core/admin/class-maxi-dashboard.php:474
 msgid "Create a Google Cloud Platform account, if you don’t already have one."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:460
+#: core/admin/class-maxi-dashboard.php:475
 msgid "Create a new Google Cloud Platform project."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:461
+#: core/admin/class-maxi-dashboard.php:476
 msgid "Enable Google Maps Platform APIs."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:462
+#: core/admin/class-maxi-dashboard.php:477
 msgid "Generate an API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:464
+#: core/admin/class-maxi-dashboard.php:479
 msgid "To make this process easy, launch"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:466
+#: core/admin/class-maxi-dashboard.php:481
 msgid "Google Maps API Quickstart"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:468
+#: core/admin/class-maxi-dashboard.php:483
 msgid "which will handle the setup of your account and generate the API key that you can insert below."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:470
+#: core/admin/class-maxi-dashboard.php:485
 msgid "Insert Google Maps API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:477
+#: core/admin/class-maxi-dashboard.php:492
 msgid "Fonts and files"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:482
+#: core/admin/class-maxi-dashboard.php:497
 msgid "Use Bunny Fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:484
+#: core/admin/class-maxi-dashboard.php:499
 msgid "Bunny Fonts: Privacy-friendly, GDPR compliant. Global CDN for fast loading. Wide selection of fonts available."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:485
+#: core/admin/class-maxi-dashboard.php:500
 msgid "Google Fonts: Extensive font selection. Potential privacy concerns when using Google's CDN."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:489
+#: core/admin/class-maxi-dashboard.php:504
 msgid "Serve Bunny Fonts locally"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:490
+#: core/admin/class-maxi-dashboard.php:505
 msgid "Serve Bunny Fonts from CDN: Fastest option. Uses external CDN. No local storage required."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:491
+#: core/admin/class-maxi-dashboard.php:506
 msgid "Serve Bunny Fonts locally: Privacy-focused. May impact server performance. Requires local storage."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:494
+#: core/admin/class-maxi-dashboard.php:509
 msgid "Serve Google Fonts locally"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:495
+#: core/admin/class-maxi-dashboard.php:510
 msgid "Serve from Google CDN: Fastest option. Uses Google's CDN. Potential privacy (GDPR) implications."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:496
+#: core/admin/class-maxi-dashboard.php:511
 msgid "Serve Google Fonts locally: Blocks Google tracking. May impact server performance. Requires local storage."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:503
+#: core/admin/class-maxi-dashboard.php:518
 msgid "Size of the local fonts:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:506
+#: core/admin/class-maxi-dashboard.php:521
 msgid "MB"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:513
+#: core/admin/class-maxi-dashboard.php:528
 msgid "Remove local fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:529
+#: core/admin/class-maxi-dashboard.php:544
 msgid "Documentation & support"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:533
+#: core/admin/class-maxi-dashboard.php:548
 msgid "Read the "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:536
+#: core/admin/class-maxi-dashboard.php:551
 msgid "help center documentation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:539
+#: core/admin/class-maxi-dashboard.php:554
 msgid " for self-service."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:545
+#: core/admin/class-maxi-dashboard.php:560
 msgid "Troubleshooting"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:549
+#: core/admin/class-maxi-dashboard.php:564
 msgid "Site health info report"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:553
+#: core/admin/class-maxi-dashboard.php:568
 msgid "The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:560
+#: core/admin/class-maxi-dashboard.php:575
 msgid "Go to site health info"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:566
+#: core/admin/class-maxi-dashboard.php:581
 msgid "Experimental preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:568
+#: core/admin/class-maxi-dashboard.php:583
 msgid "Enable settings indicators"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:569
+#: core/admin/class-maxi-dashboard.php:584
 msgid "Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:578
+#: core/admin/class-maxi-dashboard.php:593
 msgid "Template library and Style Cards"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:582
+#: core/admin/class-maxi-dashboard.php:597
 msgid "Even the best designers use page templates to save time. The trick is to change styles without wasting hours choosing colours and fonts. You need a shortcut. You need a Style Card."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:590
+#: core/admin/class-maxi-dashboard.php:605
 msgid "Style Cards change 15 design elements in sync. It works like this:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:598
+#: core/admin/class-maxi-dashboard.php:613
 msgid "Choose your favourite Style Card from 100 shown in the library."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:605
+#: core/admin/class-maxi-dashboard.php:620
 msgid "Browse the template library to find a good page or pattern."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:612
+#: core/admin/class-maxi-dashboard.php:627
 msgid "Insert and watch how templates instantly match your chosen style."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:622
+#: core/admin/class-maxi-dashboard.php:637
 msgid "MaxiBlocks is free and open source"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:626
+#: core/admin/class-maxi-dashboard.php:641
 msgid "Whatever you create with MaxiBlocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don’t forget to share your pages with the hashtag"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:633
+#: core/admin/class-maxi-dashboard.php:648
 msgid "#maxiblocks"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:637
+#: core/admin/class-maxi-dashboard.php:652
 msgid " - We’re dying to see what you create. "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:645
+#: core/admin/class-maxi-dashboard.php:660
 msgid "Our next goal is to launch the MaxiBlocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:652
+#: core/admin/class-maxi-dashboard.php:667
 msgid "Learn more about MaxiBlocks Pro."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:664
-#: core/admin/class-maxi-dashboard.php:769
+#: core/admin/class-maxi-dashboard.php:679
+#: core/admin/class-maxi-dashboard.php:784
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-control/index.js:56
 msgid "Roadmap"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:668
+#: core/admin/class-maxi-dashboard.php:683
 msgid "There’s a grand plan and we need your help. Share your suggestions or vote on what to build next. "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:675
+#: core/admin/class-maxi-dashboard.php:690
 msgid "See what's planned in the roadmap."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:701
+#: core/admin/class-maxi-dashboard.php:716
 msgid "Thousands of premium templates to work faster"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:702
+#: core/admin/class-maxi-dashboard.php:717
 msgid "Unlimited downloads. Unlimited sites. No feature lock-in."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:703
+#: core/admin/class-maxi-dashboard.php:718
 msgid "Find inspiration, or add variety to your designs. Boost your productivity and grow your audience. Join our community of creators who love to build fast, beautiful, responsive websites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:704
+#: core/admin/class-maxi-dashboard.php:719
 msgid "Let’s create something amazing with Maxi"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:706
+#: core/admin/class-maxi-dashboard.php:721
 msgid "Sign up"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:707
+#: core/admin/class-maxi-dashboard.php:722
 msgid "Already have an account? "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:716
+#: core/admin/class-maxi-dashboard.php:731
 msgid "help desk"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:717
+#: core/admin/class-maxi-dashboard.php:732
 msgid "pro library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:718
+#: core/admin/class-maxi-dashboard.php:733
 msgid "demo library"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:719
+#: core/admin/class-maxi-dashboard.php:734
 msgid "youtube"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:720
-#: core/admin/class-maxi-dashboard.php:768
+#: core/admin/class-maxi-dashboard.php:735
+#: core/admin/class-maxi-dashboard.php:783
 msgid "maxiblocks.com"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:721
+#: core/admin/class-maxi-dashboard.php:736
 msgid "twitter"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:722
+#: core/admin/class-maxi-dashboard.php:737
 msgid "discord community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:723
+#: core/admin/class-maxi-dashboard.php:738
 msgid "roadmap"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:730
+#: core/admin/class-maxi-dashboard.php:745
 msgid "Hi "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:733
+#: core/admin/class-maxi-dashboard.php:748
 msgid "[username]"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:739
+#: core/admin/class-maxi-dashboard.php:754
 msgid "You're signed in. Pro library is connected."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:740
+#: core/admin/class-maxi-dashboard.php:755
 msgid "Browse for templates"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:744
+#: core/admin/class-maxi-dashboard.php:759
 msgid "-  Create a new page to launch the editing experience"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:751
+#: core/admin/class-maxi-dashboard.php:766
 msgid "-  Open master toolbar from the square MaxiBlocks launcher icon"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:758
+#: core/admin/class-maxi-dashboard.php:773
 msgid "-  Choose \"Template library\" and select the blue \"Pro\" tab to start browsing"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:764
+#: core/admin/class-maxi-dashboard.php:779
 msgid "Support links"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:766
+#: core/admin/class-maxi-dashboard.php:781
 msgid "Help desk"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:767
+#: core/admin/class-maxi-dashboard.php:782
 msgid "YouTube"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:771
+#: core/admin/class-maxi-dashboard.php:786
 msgid "Community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:773
+#: core/admin/class-maxi-dashboard.php:788
 msgid "Twitter"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:774
+#: core/admin/class-maxi-dashboard.php:789
 msgid "Discord community"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:785
+#: core/admin/class-maxi-dashboard.php:800
 msgid "Integrations"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:787
+#: core/admin/class-maxi-dashboard.php:802
 msgid "Insert OpenAI API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:790
+#: core/admin/class-maxi-dashboard.php:805
 msgid "ChatGPT AI Model"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:798
+#: core/admin/class-maxi-dashboard.php:813
 msgid "Website identity"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:801
+#: core/admin/class-maxi-dashboard.php:816
 msgid "Tell us about your site"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:802
+#: core/admin/class-maxi-dashboard.php:817
 msgid ""
 "What is the primary goal of your website? (e.g. shopping platform, offering\n"
 "\t\t\t\tservices, showcasing work, journaling)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:805
+#: core/admin/class-maxi-dashboard.php:820
 msgid "Example: Hairdresser, Plumber, Marketing agency"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:809
+#: core/admin/class-maxi-dashboard.php:824
 msgid "Who is your target audience?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:810
+#: core/admin/class-maxi-dashboard.php:825
 msgid "Group of people you want to connect with or offer services to."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:812
+#: core/admin/class-maxi-dashboard.php:827
 msgid "Example: Ladies who need haircuts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:816
+#: core/admin/class-maxi-dashboard.php:831
 msgid "What is the goal of the website?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:817
-#: core/admin/class-maxi-dashboard.php:824
+#: core/admin/class-maxi-dashboard.php:832
+#: core/admin/class-maxi-dashboard.php:839
 msgid "Enter as many as you like. Separate with commas."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:819
-#: core/admin/class-maxi-dashboard.php:840
+#: core/admin/class-maxi-dashboard.php:834
+#: core/admin/class-maxi-dashboard.php:855
 msgid "Example: Get bookings, write a blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:823
+#: core/admin/class-maxi-dashboard.php:838
 msgid "What services do you offer?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:826
+#: core/admin/class-maxi-dashboard.php:841
 msgid "Example: Hair cuts, blow dries, beard shave"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:830
+#: core/admin/class-maxi-dashboard.php:845
 msgid "What is your website or business name?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:831
+#: core/admin/class-maxi-dashboard.php:846
 msgid "The name will be used for writing content. Optional. Takes WordPress Site Title by default"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:833
+#: core/admin/class-maxi-dashboard.php:848
 msgid "Example: Mary's fabulous hair studio"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:837
+#: core/admin/class-maxi-dashboard.php:852
 msgid "Anything else we should know?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:838
+#: core/admin/class-maxi-dashboard.php:853
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
@@ -639,16 +641,16 @@ msgstr ""
 msgid "Error in render_pagination for uniqueID "
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1070
-#: core/class-maxi-dynamic-content.php:2149
+#: core/class-maxi-dynamic-content.php:1099
+#: core/class-maxi-dynamic-content.php:2201
 msgid "author"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1072
+#: core/class-maxi-dynamic-content.php:1101
 msgid "date"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:2529
+#: core/class-maxi-dynamic-content.php:2572
 msgid "Failed to create DateTime object: "
 msgstr ""
 
@@ -690,7 +692,7 @@ msgstr ""
 #: build/index.js:1
 #: build/index.js:15
 #: src/components/toolbar/components/link/index.js:128
-#: src/components/toolbar/components/text-link/index.js:301
+#: src/components/toolbar/components/text-link/index.js:298
 #: src/components/typography-control/index.js:90
 #: src/extensions/DC/constants.js:221
 #: src/extensions/DC/constants.js:236
@@ -738,21 +740,20 @@ msgstr ""
 #: src/extensions/DC/constants.js:25
 #: src/extensions/DC/constants.js:197
 #: src/extensions/DC/constants.js:225
-#: src/extensions/DC/constants.js:493
 msgid "Author"
 msgstr ""
 
 #: build/index.js:1
 #: src/extensions/DC/constants.js:26
 #: src/extensions/DC/constants.js:204
-#: src/extensions/DC/constants.js:347
+#: src/extensions/DC/constants.js:342
 msgid "Categories"
 msgstr ""
 
 #: build/index.js:1
 #: src/extensions/DC/constants.js:27
 #: src/extensions/DC/constants.js:205
-#: src/extensions/DC/constants.js:348
+#: src/extensions/DC/constants.js:343
 msgid "Tags"
 msgstr ""
 
@@ -827,7 +828,7 @@ msgstr ""
 #: build/index.js:15
 #: src/blocks/accordion-maxi/inspector.js:111
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:37
-#: src/blocks/map-maxi/components/markers/index.js:94
+#: src/blocks/map-maxi/components/markers/index.js:99
 #: src/blocks/pane-maxi/edit.js:248
 #: src/extensions/DC/constants.js:185
 #: src/extensions/DC/constants.js:209
@@ -861,22 +862,21 @@ msgstr ""
 #: src/extensions/DC/constants.js:258
 #: src/extensions/DC/constants.js:265
 #: src/extensions/DC/constants.js:272
-#: src/extensions/DC/constants.js:279
-#: src/extensions/DC/constants.js:286
-#: src/extensions/DC/constants.js:293
-#: src/extensions/DC/constants.js:361
-#: src/extensions/DC/constants.js:389
+#: src/extensions/DC/constants.js:281
+#: src/extensions/DC/constants.js:288
+#: src/extensions/DC/constants.js:356
+#: src/extensions/DC/constants.js:384
 msgid "Static text"
 msgstr ""
 
 #: build/index.js:1
 #: build/index.js:15
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:72
-#: src/blocks/map-maxi/components/markers/index.js:106
+#: src/blocks/map-maxi/components/markers/index.js:110
 #: src/extensions/DC/constants.js:210
 #: src/extensions/DC/constants.js:219
 #: src/extensions/DC/constants.js:243
-#: src/extensions/DC/constants.js:334
+#: src/extensions/DC/constants.js:329
 msgid "Description"
 msgstr ""
 
@@ -928,7 +928,7 @@ msgstr ""
 #: src/components/relation-control/index.js:407
 #: src/extensions/DC/constants.js:229
 #: src/extensions/DC/constants.js:242
-#: src/extensions/DC/constants.js:333
+#: src/extensions/DC/constants.js:328
 msgid "Name"
 msgstr ""
 
@@ -969,7 +969,7 @@ msgstr ""
 
 #: build/index.js:1
 #: src/extensions/DC/constants.js:244
-#: src/extensions/DC/constants.js:339
+#: src/extensions/DC/constants.js:334
 msgid "Slug"
 msgstr ""
 
@@ -986,17 +986,17 @@ msgid "Count"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:297
+#: src/extensions/DC/constants.js:292
 msgid "Featured media"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:298
+#: src/extensions/DC/constants.js:293
 msgid "Author's avatar"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:302
+#: src/extensions/DC/constants.js:297
 msgid "Logo"
 msgstr ""
 
@@ -1005,202 +1005,212 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:170
 #: src/components/media-uploader-control/index.js:114
 #: src/components/media-uploader-control/index.js:155
-#: src/extensions/DC/constants.js:305
+#: src/extensions/DC/constants.js:300
 msgid "Image"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:308
+#: src/extensions/DC/constants.js:303
 msgid "Avatar"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:336
+#: src/extensions/DC/constants.js:331
 msgid "Short description"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:340
+#: src/extensions/DC/constants.js:335
 msgid "SKU"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:341
+#: src/extensions/DC/constants.js:336
 msgid "Review count"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:342
+#: src/extensions/DC/constants.js:337
 msgid "Average rating"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:343
+#: src/extensions/DC/constants.js:338
 msgid "Price"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:344
+#: src/extensions/DC/constants.js:339
 msgid "Regular price"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:345
+#: src/extensions/DC/constants.js:340
 msgid "Sale price"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:346
+#: src/extensions/DC/constants.js:341
 msgid "Price range"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:365
+#: src/extensions/DC/constants.js:360
 msgid "Featured image"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:366
+#: src/extensions/DC/constants.js:361
 msgid "Gallery image"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:370
+#: src/extensions/DC/constants.js:365
 msgid "Total price"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:371
+#: src/extensions/DC/constants.js:366
 msgid "Total tax"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:372
+#: src/extensions/DC/constants.js:367
 msgid "Total shipping"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:374
+#: src/extensions/DC/constants.js:369
 msgid "Total shipping tax"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:377
+#: src/extensions/DC/constants.js:372
 msgid "Total discount"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:378
+#: src/extensions/DC/constants.js:373
 msgid "Total items"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:380
+#: src/extensions/DC/constants.js:375
 msgid "Total items tax"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:383
+#: src/extensions/DC/constants.js:378
 msgid "Total fees"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:384
+#: src/extensions/DC/constants.js:379
 msgid "Total fees tax"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:393
+#: src/extensions/DC/constants.js:388
 msgid "Static"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:466
+#: src/extensions/DC/constants.js:461
 msgid "Add to cart"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:469
+#: src/extensions/DC/constants.js:464
+#: src/extensions/DC/constants.js:491
+#: src/extensions/DC/constants.js:499
 msgid "Author email"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:470
+#: src/extensions/DC/constants.js:465
+#: src/extensions/DC/constants.js:492
+#: src/extensions/DC/constants.js:500
 msgid "Author site"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:481
+#: src/extensions/DC/constants.js:476
 msgid "Categories links"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:487
+#: src/extensions/DC/constants.js:482
 msgid "Tags links"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:638
+#: src/extensions/DC/constants.js:488
+#: src/extensions/DC/constants.js:496
+msgid "Author profile page"
+msgstr ""
+
+#: build/index.js:1
+#: src/extensions/DC/constants.js:643
 msgid "Sorry, there is no next post, please choose something else."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:642
+#: src/extensions/DC/constants.js:647
 msgid "Sorry, there is no previous post, please choose something else."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:646
+#: src/extensions/DC/constants.js:651
 msgid "Value is not an object."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:647
+#: src/extensions/DC/constants.js:652
 msgid "Sorry, this author has no posts yet, please choose something else."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:651
+#: src/extensions/DC/constants.js:656
 msgid "Sorry, you do not have any images yet, please choose something else."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:655
+#: src/extensions/DC/constants.js:660
 msgid "Sorry, you do not have any tags yet, please choose something else."
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:705
+#: src/extensions/DC/constants.js:710
 msgid "By date"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:706
+#: src/extensions/DC/constants.js:711
 msgid "Alphabetical"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:713
+#: src/extensions/DC/constants.js:718
 msgid "New/old"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:714
+#: src/extensions/DC/constants.js:719
 msgid "Old/new"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:717
+#: src/extensions/DC/constants.js:722
 msgid "A/Z"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:718
+#: src/extensions/DC/constants.js:723
 msgid "Z/A"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/constants.js:797
+#: src/extensions/DC/constants.js:802
 msgid "ACF"
 msgstr ""
 
@@ -1250,7 +1260,7 @@ msgid "Get the current archive's posts"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/maxi-block/maxiBlockComponent.js:925
+#: src/extensions/maxi-block/maxiBlockComponent.js:924
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 
@@ -1292,7 +1302,7 @@ msgstr ""
 
 #: build/index.js:1
 #: build/index.js:15
-#: src/components/advanced-number-control/index.js:244
+#: src/components/advanced-number-control/index.js:257
 #: src/components/background-control/imageLayer.js:96
 msgid "Auto"
 msgstr ""
@@ -1675,7 +1685,7 @@ msgstr ""
 #: src/components/dynamic-content/index.js:165
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
-#: src/components/typography-control/index.js:955
+#: src/components/typography-control/index.js:1082
 msgid "None"
 msgstr ""
 
@@ -1806,13 +1816,13 @@ msgid "d.m.Y t"
 msgstr ""
 
 #: build/index.js:15
-#: src/extensions/DC/getDCContent.js:87
-#: src/extensions/DC/getDCContent.js:92
+#: src/extensions/DC/getDCContent.js:79
+#: src/extensions/DC/getDCContent.js:84
 msgid ": example value"
 msgstr ""
 
 #: build/index.js:15
-#: src/extensions/DC/getDCContent.js:89
+#: src/extensions/DC/getDCContent.js:81
 msgid "ACF: example value"
 msgstr ""
 
@@ -2346,39 +2356,39 @@ msgstr ""
 
 #: build/index.js:15
 #: src/editor/library/container.js:389
-#: src/editor/library/container.js:1532
+#: src/editor/library/container.js:1556
 msgid "Clear filters"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1221
-#: src/editor/library/container.js:1340
-#: src/editor/library/container.js:1353
+#: src/editor/library/container.js:1245
+#: src/editor/library/container.js:1364
+#: src/editor/library/container.js:1377
 msgid "All icons"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1231
-#: src/editor/library/container.js:1265
-#: src/editor/library/container.js:1276
-#: src/editor/library/container.js:1285
-#: src/editor/library/container.js:1364
-#: src/editor/library/container.js:1375
+#: src/editor/library/container.js:1255
+#: src/editor/library/container.js:1289
+#: src/editor/library/container.js:1300
+#: src/editor/library/container.js:1309
+#: src/editor/library/container.js:1388
+#: src/editor/library/container.js:1399
 msgid "Find"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1168
+#: src/editor/library/container.js:1192
 msgid "Tablet / iPad simulator | Viewport 768px x 1024px"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1177
+#: src/editor/library/container.js:1201
 msgid "Mobile / iPhone simulator | Viewport 390px x 844px"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/library/container.js:1139
+#: src/editor/library/container.js:1163
 msgid "Swap stock images for placeholders to save disk space"
 msgstr ""
 
@@ -2558,7 +2568,7 @@ msgid "Border radius"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/font-family-selector/index.js:84
+#: src/components/font-family-selector/index.js:83
 msgid "Search…"
 msgstr ""
 
@@ -2679,7 +2689,7 @@ msgstr ""
 #: src/components/typography-control/index.js:177
 #: src/components/typography-control/index.js:222
 #: src/components/typography-control/index.js:270
-#: src/components/typography-control/index.js:617
+#: src/components/typography-control/index.js:719
 msgid "Font"
 msgstr ""
 
@@ -2689,179 +2699,179 @@ msgstr ""
 #: src/blocks/list-item-maxi/data.js:110
 #: src/blocks/text-maxi/data.js:180
 #: src/components/inspector-tabs/inspector-alignment.js:33
-#: src/components/typography-control/index.js:679
+#: src/components/typography-control/index.js:781
 msgid "Alignment"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:688
+#: src/components/typography-control/index.js:790
 msgid "Font size"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:723
+#: src/components/typography-control/index.js:833
 msgid "Line height"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:759
+#: src/components/typography-control/index.js:878
 msgid "Letter spacing"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:826
+#: src/components/typography-control/index.js:953
 msgid "Text transform"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:833
-#: src/components/typography-control/index.js:873
-#: src/components/typography-control/index.js:909
+#: src/components/typography-control/index.js:960
+#: src/components/typography-control/index.js:1000
+#: src/components/typography-control/index.js:1036
 msgid "Default"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:837
+#: src/components/typography-control/index.js:964
 msgid "Capitalize"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:841
+#: src/components/typography-control/index.js:968
 msgid "Uppercase"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:845
+#: src/components/typography-control/index.js:972
 msgid "Lowercase"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/text-maxi/components/list-options-control/index.js:754
-#: src/components/typography-control/index.js:866
+#: src/components/typography-control/index.js:993
 msgid "Style"
 msgstr ""
 
 #: build/index.js:15
 #: src/components/toolbar/components/text-italic/index.js:58
-#: src/components/typography-control/index.js:877
+#: src/components/typography-control/index.js:1004
 msgid "Italic"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:881
+#: src/components/typography-control/index.js:1008
 msgid "Oblique"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:902
+#: src/components/typography-control/index.js:1029
 msgid "Text decoration"
 msgstr ""
 
 #: build/index.js:15
 #: src/components/toolbar/components/text-format-overline/index.js:111
-#: src/components/typography-control/index.js:913
+#: src/components/typography-control/index.js:1040
 msgid "Overline"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:917
+#: src/components/typography-control/index.js:1044
 msgid "Line through"
 msgstr ""
 
 #: build/index.js:15
 #: src/components/toolbar/components/text-format-underline/index.js:74
-#: src/components/typography-control/index.js:921
+#: src/components/typography-control/index.js:1048
 msgid "Underline"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:925
+#: src/components/typography-control/index.js:1052
 msgid "Underline overline"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:948
+#: src/components/typography-control/index.js:1075
 msgid "Text orientation"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:959
+#: src/components/typography-control/index.js:1086
 msgid "Mixed"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:963
+#: src/components/typography-control/index.js:1090
 msgid "Upright"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:967
+#: src/components/typography-control/index.js:1094
 msgid "Sideways"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:991
+#: src/components/typography-control/index.js:1118
 msgid "Text direction"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:998
+#: src/components/typography-control/index.js:1125
 msgid "Left to right"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1002
+#: src/components/typography-control/index.js:1129
 msgid "Right to left"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/text-maxi/components/list-options-control/index.js:178
-#: src/components/typography-control/index.js:1025
+#: src/components/typography-control/index.js:1152
 msgid "Text indent"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1089
+#: src/components/typography-control/index.js:1223
 msgid "White space"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1096
+#: src/components/typography-control/index.js:1230
 msgid "Normal"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1100
+#: src/components/typography-control/index.js:1234
 msgid "No wrap"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1104
+#: src/components/typography-control/index.js:1238
 msgid "Pre"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1108
+#: src/components/typography-control/index.js:1242
 msgid "Pre line"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1112
+#: src/components/typography-control/index.js:1246
 msgid "Pre wrap"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1116
+#: src/components/typography-control/index.js:1250
 msgid "Break spaces"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1137
+#: src/components/typography-control/index.js:1271
 msgid "Word Spacing"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/typography-control/index.js:1202
+#: src/components/typography-control/index.js:1343
 msgid "Bottom gap"
 msgstr ""
 
@@ -3027,7 +3037,7 @@ msgstr ""
 #: build/index.js:15
 #: src/components/dialog-box/index.js:79
 #: src/components/image-url/index.js:106
-#: src/editor/style-cards/maxiStyleCardsEditor.js:433
+#: src/editor/style-cards/maxiStyleCardsEditor.js:435
 msgid "Close"
 msgstr ""
 
@@ -3467,9 +3477,9 @@ msgstr ""
 #: src/components/prompt-control/components/history-buttons/index.js:84
 #: src/components/prompt-control/components/result-card/index.js:311
 #: src/components/repeater/index.js:83
-#: src/editor/style-cards/maxiStyleCardsEditor.js:551
-#: src/editor/style-cards/maxiStyleCardsEditor.js:593
-#: src/editor/style-cards/maxiStyleCardsEditor.js:705
+#: src/editor/style-cards/maxiStyleCardsEditor.js:553
+#: src/editor/style-cards/maxiStyleCardsEditor.js:595
+#: src/editor/style-cards/maxiStyleCardsEditor.js:707
 msgid "Cancel"
 msgstr ""
 
@@ -3981,17 +3991,17 @@ msgid "Apply link on"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/mover/index.js:155
+#: src/components/toolbar/components/mover/index.js:162
 msgid "Mover"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/mover/index.js:195
+#: src/components/toolbar/components/mover/index.js:202
 msgid "Move up"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/mover/index.js:201
+#: src/components/toolbar/components/mover/index.js:208
 msgid "Move down"
 msgstr ""
 
@@ -4209,8 +4219,8 @@ msgstr ""
 #: src/components/prompt-control/components/result-card/index.js:312
 #: src/components/prompt-control/components/result-card/index.js:318
 #: src/components/toolbar/components/delete/index.js:49
-#: src/editor/style-cards/maxiStyleCardsEditor.js:552
-#: src/editor/style-cards/maxiStyleCardsEditor.js:561
+#: src/editor/style-cards/maxiStyleCardsEditor.js:554
+#: src/editor/style-cards/maxiStyleCardsEditor.js:563
 msgid "Delete"
 msgstr ""
 
@@ -4736,13 +4746,13 @@ msgstr ""
 
 #: build/index.js:15
 #: src/components/prompt-control/components/history-buttons/index.js:70
-#: src/editor/style-cards/maxiStyleCardsEditor.js:477
+#: src/editor/style-cards/maxiStyleCardsEditor.js:479
 msgid "Import"
 msgstr ""
 
 #: build/index.js:15
 #: src/components/prompt-control/components/history-buttons/index.js:76
-#: src/editor/style-cards/maxiStyleCardsEditor.js:498
+#: src/editor/style-cards/maxiStyleCardsEditor.js:500
 msgid "Export"
 msgstr ""
 
@@ -4784,7 +4794,7 @@ msgstr ""
 
 #: build/index.js:15
 #: src/components/inspector-tabs/inspector-prompt.js:20
-msgid "Prompt"
+msgid "Maxi AI writer"
 msgstr ""
 
 #: build/index.js:15
@@ -4808,7 +4818,7 @@ msgid "Change setting"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/inspector-tabs/inspector-responsive-info-box.js:20
+#: src/components/inspector-tabs/inspector-responsive-info-box.js:23
 msgid "Responsive mode activated. Edits apply exclusively to selected break points. Return to \"Your size\" for global editing (recommended)."
 msgstr ""
 
@@ -4854,7 +4864,7 @@ msgid "Quick styles"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/button-maxi/inspector.js:298
+#: src/blocks/button-maxi/inspector.js:299
 #: src/blocks/divider-maxi/inspector.js:280
 #: src/blocks/image-maxi/inspector.js:463
 #: src/blocks/number-counter-maxi/inspector.js:120
@@ -4865,14 +4875,14 @@ msgstr ""
 
 #: build/index.js:15
 #: src/blocks/accordion-maxi/inspector.js:220
-#: src/blocks/button-maxi/inspector.js:324
+#: src/blocks/button-maxi/inspector.js:325
 #: src/blocks/column-maxi/inspector.js:98
 #: src/blocks/container-maxi/inspector.js:122
 #: src/blocks/divider-maxi/inspector.js:307
 #: src/blocks/group-maxi/inspector.js:70
 #: src/blocks/image-maxi/inspector.js:491
 #: src/blocks/list-item-maxi/inspector.js:79
-#: src/blocks/map-maxi/inspector.js:202
+#: src/blocks/map-maxi/inspector.js:204
 #: src/blocks/number-counter-maxi/inspector.js:146
 #: src/blocks/pane-maxi/inspector.js:149
 #: src/blocks/row-maxi/inspector.js:135
@@ -5246,7 +5256,7 @@ msgid "Release to drop a marker here"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/markers/index.js:113
+#: src/blocks/map-maxi/components/markers/index.js:117
 msgid "Remove this marker"
 msgstr ""
 
@@ -5266,47 +5276,87 @@ msgid "Find locations"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/map-content/index.js:116
+#: src/blocks/map-maxi/components/map-content/index.js:236
 msgid "Oops, you can not see the map because you have not set your Google map API key, please navigate to the MaxiBlocks "
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/map-content/index.js:125
+#: src/blocks/map-maxi/components/map-content/index.js:245
 msgid "Settings > Google Maps API key"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/map-control/index.js:30
+#: src/blocks/map-maxi/components/map-control/index.js:130
 msgid "You have not set your Google map API key, please navigate to the Maxi Block Options and set it"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/map-control/index.js:36
+#: src/blocks/map-maxi/components/map-control/index.js:136
 msgid "Maxi Block Settings"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/map-control/index.js:45
+#: src/blocks/map-maxi/components/map-control/index.js:145
 msgid "Map service provider"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/map-control/index.js:49
+#: src/blocks/map-maxi/components/map-control/index.js:149
 msgid "Open Street Map"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/map-control/index.js:53
+#: src/blocks/map-maxi/components/map-control/index.js:153
 msgid "Google Maps Api"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/map-control/index.js:61
+#: src/blocks/map-maxi/components/map-control/index.js:162
+msgid "Map type"
+msgstr ""
+
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-control/index.js:60
+msgid "Satellite"
+msgstr ""
+
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-control/index.js:64
+msgid "Hybrid"
+msgstr ""
+
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-control/index.js:68
+msgid "Terrain"
+msgstr ""
+
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-control/index.js:76
+msgid "Standard"
+msgstr ""
+
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-control/index.js:80
+msgid "Humanitarian"
+msgstr ""
+
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-control/index.js:84
+msgid "Cycle Map"
+msgstr ""
+
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-control/index.js:88
+msgid "Transport"
+msgstr ""
+
+#: build/index.js:15
+#: src/blocks/map-maxi/components/map-control/index.js:170
 msgid "Minimum zoom"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/components/map-control/index.js:77
+#: src/blocks/map-maxi/components/map-control/index.js:186
 msgid "Maximum zoom"
 msgstr ""
 
@@ -5362,22 +5412,22 @@ msgid "Configure map"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/inspector.js:93
+#: src/blocks/map-maxi/inspector.js:95
 msgid "Map marker"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/inspector.js:117
+#: src/blocks/map-maxi/inspector.js:119
 msgid "Marker pop-up text"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/inspector.js:150
+#: src/blocks/map-maxi/inspector.js:152
 msgid "Marker pop-up"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/map-maxi/inspector.js:183
+#: src/blocks/map-maxi/inspector.js:185
 msgid "Map interaction"
 msgstr ""
 
@@ -6035,91 +6085,91 @@ msgstr ""
 
 #: build/index.js:15
 #: src/editor/style-cards/maxiStyleCardsTab.js:780
-msgid "Typography globals"
+msgid "Headings globals"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:317
+#: src/editor/style-cards/maxiStyleCardsEditor.js:319
 msgid "Template"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:422
+#: src/editor/style-cards/maxiStyleCardsEditor.js:424
 msgid "Active style card"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:504
+#: src/editor/style-cards/maxiStyleCardsEditor.js:506
 msgid "Style card editor"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:506
+#: src/editor/style-cards/maxiStyleCardsEditor.js:508
 msgid "Preview, edit or activate style card"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:515
+#: src/editor/style-cards/maxiStyleCardsEditor.js:517
 msgid "Imported card already exists."
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:529
+#: src/editor/style-cards/maxiStyleCardsEditor.js:531
 msgid "Type to search…"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:576
+#: src/editor/style-cards/maxiStyleCardsEditor.js:578
 msgid "Customise card"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:577
+#: src/editor/style-cards/maxiStyleCardsEditor.js:579
 msgid "Copy card"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:594
+#: src/editor/style-cards/maxiStyleCardsEditor.js:596
 msgid "Activate"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:604
+#: src/editor/style-cards/maxiStyleCardsEditor.js:606
 msgid "Activate now"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:607
+#: src/editor/style-cards/maxiStyleCardsEditor.js:609
 msgid "Save and activate now"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:617
+#: src/editor/style-cards/maxiStyleCardsEditor.js:619
 msgid "Style core blocks within Maxi containers"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:633
+#: src/editor/style-cards/maxiStyleCardsEditor.js:635
 msgid "Create new style from"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:641
+#: src/editor/style-cards/maxiStyleCardsEditor.js:643
 msgid "Short memorable name*"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:700
+#: src/editor/style-cards/maxiStyleCardsEditor.js:702
 msgid "Create"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:732
+#: src/editor/style-cards/maxiStyleCardsEditor.js:734
 msgid "Light tone globals"
 msgstr ""
 
 #: build/index.js:15
-#: src/editor/style-cards/maxiStyleCardsEditor.js:748
+#: src/editor/style-cards/maxiStyleCardsEditor.js:750
 msgid "Dark tone globals"
 msgstr ""
 

@@ -44,11 +44,10 @@ const cache = {};
 const MAX_CACHE_SIZE = 200;
 
 const getDCLink = async (dataRequest, clientId) => {
-	const { type, linkTarget, author, field, relation } = dataRequest;
+	const { type, linkTarget, author, relation } = dataRequest;
 	if (type === 'cart') {
 		return getCartUrl();
 	}
-
 	if (linkTarget.includes('author')) {
 		let userId = author;
 		if (relation === 'current') {
@@ -75,16 +74,33 @@ const getDCLink = async (dataRequest, clientId) => {
 					'post',
 					postId
 				);
-				userId = post.author;
+				if (post?.author) {
+					userId = post.author;
+				}
 			}
 		} else {
-			const post = await resolveSelect('core').getEntityRecord(
-				'postType',
-				nameDictionary[type] ?? type,
-				dataRequest.id
-			);
-			if (post?.author) {
-				userId = post.author;
+			const data = await getDCEntity(dataRequest, clientId);
+
+			if (data?.author) {
+				userId = data.author;
+			} else if (data?.id) {
+				const post = await resolveSelect('core').getEntityRecord(
+					'postType',
+					nameDictionary[type] ?? type,
+					data.id
+				);
+				if (post?.author) {
+					userId = post.author;
+				}
+			} else if (dataRequest?.id) {
+				const post = await resolveSelect('core').getEntityRecord(
+					'postType',
+					nameDictionary[type] ?? type,
+					dataRequest.id
+				);
+				if (post?.author) {
+					userId = post.author;
+				}
 			}
 		}
 

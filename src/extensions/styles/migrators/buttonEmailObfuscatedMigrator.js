@@ -2,24 +2,51 @@
  * WordPress dependencies
  */
 import { RawHTML } from '@wordpress/element';
+import { RichText } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
-import { Button } from '@components';
-import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
-import getAreaLabel from './utils';
+import Button from '@components/button';
+import { getMaxiBlockAttributes, MaxiBlock } from '@components/maxi-block';
+import getAreaLabel from '@blocks/button-maxi/utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isNil, isEmpty } from 'lodash';
-import { RichText } from '@wordpress/block-editor';
 
-/**
- * Save
- */
+// Constants
+const NAME = 'Button Email Obfuscated';
+const VERSIONS = new Set([
+	'2.0.8',
+	'2.0.7',
+	'2.0.6',
+	'2.0.5',
+	'2.0.4',
+	'2.0.3',
+	'2.0.2',
+	'2.0.1',
+	'2.0.0',
+	'1.9.9',
+	'1.9.8',
+	'1.9.7',
+	'1.9.6',
+	'1.9.5',
+	'1.9.4',
+]);
+
+const isEligible = blockAttributes => {
+	if (blockAttributes.name !== 'maxi-blocks/button-maxi') return false;
+	if (blockAttributes['dc-link-target'] !== 'author_email') return false;
+
+	return (
+		VERSIONS.has(blockAttributes['maxi-version-current']) ||
+		!blockAttributes['maxi-version-origin']
+	);
+};
+
 const save = props => {
 	const {
 		linkSettings,
@@ -30,7 +57,6 @@ const save = props => {
 		'dc-status': dcStatus,
 		'dc-link-status': dcLinkStatus,
 		'dc-field': dcField,
-		'dc-link-target': dcLinkTarget,
 		'dc-sub-field': dcSubField,
 		ariaLabels = {},
 	} = props.attributes;
@@ -72,9 +98,6 @@ const save = props => {
 				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 				{...(ariaLabels.button && { 'aria-label': ariaLabels.button })}
-				{...(dcLinkTarget === 'author_email' && {
-					'data-email-obfuscated': true,
-				})}
 			>
 				{!iconOnly && (
 					<RichText.Content
@@ -97,4 +120,4 @@ const save = props => {
 	);
 };
 
-export default save;
+export default { save, isEligible, name: NAME };

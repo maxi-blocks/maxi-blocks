@@ -123,7 +123,19 @@ const BlockResizer = memo(
 				enable={enable}
 				handleClasses={handleClasses}
 				handleWrapperClass={handlesWrapperClassName}
+				onResizeStart={e => {
+					e.preventDefault();
+					e.stopPropagation();
+					props.onResizeStart?.(e);
+				}}
+				onResize={(e, direction, refToElement, delta) => {
+					e.preventDefault();
+					e.stopPropagation();
+					props.onResize?.(e, direction, refToElement, delta);
+				}}
 				onResizeStop={(e, direction, refToElement, ...rest) => {
+					e.preventDefault();
+					e.stopPropagation();
 					onResizeStop?.(e, direction, refToElement, ...rest);
 					if (cleanStyles) stylesCleaner(refToElement);
 				}}

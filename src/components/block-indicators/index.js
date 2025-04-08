@@ -172,11 +172,21 @@ const Indicator = props => {
 				size={size}
 				handleWrapperStyle={handleStyles}
 				handleStyles={handleStyles}
-				onResizeStart={() => {
+				onResizeStart={e => {
+					e.preventDefault();
+					e.stopPropagation();
 					dragTime.current = isBlockSelected ? Date.now() : null;
 				}}
-				onResize={(e, dir, ref) => handleOnResize(type, e, ref)}
-				onResizeStop={(e, dir, ref) => handleOnResizeStop(type, e, ref)}
+				onResize={(e, dir, ref) => {
+					e.preventDefault();
+					e.stopPropagation();
+					handleOnResize(type, e, ref);
+				}}
+				onResizeStop={(e, dir, ref) => {
+					e.preventDefault();
+					e.stopPropagation();
+					handleOnResizeStop(type, e, ref);
+				}}
 			>
 				{content}
 			</Resizable>

@@ -43,22 +43,6 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	maxiBlockDidMount() {
-		const { attributes, maxiSetAttributes } = this.props;
-
-		// Ensure size attributes are set and persist
-		const sizeAttributes = {};
-		Object.entries(maxiAttributes).forEach(([key, value]) => {
-			if (attributes[key] === undefined && value !== undefined) {
-				sizeAttributes[key] = value;
-			}
-		});
-
-		if (Object.keys(sizeAttributes).length > 0) {
-			maxiSetAttributes(sizeAttributes);
-		}
-	}
-
 	state = {
 		displayHandlers: false,
 		innerBlocksPositions: {},
@@ -70,29 +54,11 @@ class edit extends MaxiBlockComponent {
 
 	isRepeaterInherited = !!this.context?.repeaterStatus;
 
-	maxiBlockDidUpdate(prevProps) {
+	maxiBlockDidUpdate() {
 		if (this.state.displayHandlers && !this.props.isSelected) {
 			this.setState({
 				displayHandlers: false,
 			});
-		}
-
-		// Ensure size attributes are preserved
-		const { attributes, maxiSetAttributes } = this.props;
-		const sizeAttributes = {};
-
-		Object.entries(maxiAttributes).forEach(([key, value]) => {
-			if (
-				attributes[key] === undefined &&
-				value !== undefined &&
-				prevProps.attributes[key] !== undefined
-			) {
-				sizeAttributes[key] = prevProps.attributes[key];
-			}
-		});
-
-		if (Object.keys(sizeAttributes).length > 0) {
-			maxiSetAttributes(sizeAttributes);
 		}
 
 		this.isRepeaterInherited = !!this.context?.repeaterStatus;

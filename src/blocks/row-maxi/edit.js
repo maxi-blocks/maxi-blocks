@@ -46,6 +46,7 @@ class edit extends MaxiBlockComponent {
 	state = {
 		displayHandlers: false,
 		innerBlocksPositions: {},
+		initialWidth: null,
 	};
 
 	columnsSize = {};
@@ -54,11 +55,54 @@ class edit extends MaxiBlockComponent {
 
 	isRepeaterInherited = !!this.context?.repeaterStatus;
 
+	maxiBlockDidMount() {
+		const { attributes } = this.props;
+		const initialWidth = {};
+
+		['', '-xxl', '-xl', '-l', '-m', '-s', '-xs'].forEach(breakpoint => {
+			const key = `max-width${breakpoint}`;
+			const unitKey =
+				breakpoint === ''
+					? 'max-width-unit-general'
+					: `max-width-unit${breakpoint}`;
+
+			if (attributes[key] !== undefined) {
+				initialWidth[key] = attributes[key];
+				if (attributes[unitKey] !== undefined) {
+					initialWidth[unitKey] = attributes[unitKey];
+				}
+			}
+		});
+
+		if (Object.keys(initialWidth).length > 0) {
+			this.setState({ initialWidth });
+		}
+	}
+
 	maxiBlockDidUpdate() {
-		if (this.state.displayHandlers && !this.props.isSelected) {
+		const { displayHandlers, initialWidth } = this.state;
+		const { attributes, maxiSetAttributes, isSelected } = this.props;
+
+		if (displayHandlers && !isSelected) {
 			this.setState({
 				displayHandlers: false,
 			});
+		}
+
+		if (initialWidth && Object.keys(initialWidth).length > 0) {
+			const missingAttributes = {};
+			let needsUpdate = false;
+
+			Object.entries(initialWidth).forEach(([key, value]) => {
+				if (attributes[key] === undefined) {
+					missingAttributes[key] = value;
+					needsUpdate = true;
+				}
+			});
+
+			if (needsUpdate) {
+				maxiSetAttributes(missingAttributes);
+			}
 		}
 
 		this.isRepeaterInherited = !!this.context?.repeaterStatus;

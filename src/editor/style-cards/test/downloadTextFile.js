@@ -18,6 +18,7 @@ describe('downloadTextFile', () => {
 
 		mockURL = 'blob:mock-url';
 		window.URL.createObjectURL = jest.fn(() => mockURL);
+		window.URL.revokeObjectURL = jest.fn();
 	});
 
 	afterEach(() => {

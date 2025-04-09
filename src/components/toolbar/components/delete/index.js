@@ -38,7 +38,6 @@ const Delete = props => {
 					}}
 				>
 					{__('Remove block', 'maxi-blocks')}
-					<span>Shift+Alt+Z</span>
 				</Button>
 			</div>
 		);

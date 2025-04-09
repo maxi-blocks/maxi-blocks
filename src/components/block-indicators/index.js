@@ -39,7 +39,6 @@ const Indicator = props => {
 		onChange,
 		cleanInlineStyles,
 		isBlockSelected,
-		clientId,
 	} = props;
 
 	const [value, setValue] = useState(val);
@@ -120,13 +119,44 @@ const Indicator = props => {
 	const avoidResizing = () =>
 		!isNumber(dragTime.current) || Date.now() - dragTime.current < 150;
 
+	const getBlockClientId = event => {
+		// Method 1: Try to get clientId from event
+		if (event && event.target) {
+			const blockEl = event.target.closest('[data-block]');
+			if (blockEl) {
+				return blockEl.getAttribute('data-block');
+			}
+		}
+
+		// Method 2: Try to find parent .maxi-block-indicators element
+		try {
+			// Start from document and find parent block
+			const indicatorsEl = document.querySelector(
+				'.maxi-block-indicators'
+			);
+			if (indicatorsEl) {
+				const parentBlock = indicatorsEl.closest('[data-block]');
+				if (parentBlock) {
+					return parentBlock.getAttribute('data-block');
+				}
+			}
+		} catch (error) {
+			// Silent fail
+		}
+
+		return null;
+	};
+
 	const handleOnResize = (type, e, ref) => {
 		// Avoids triggering on click
 		if (avoidResizing()) return;
 
-		// Select the block if it's not already selected
-		if (!isBlockSelected && clientId) {
-			selectBlock(clientId);
+		// Get block clientId
+		const blockClientId = getBlockClientId(e);
+
+		// Select the block if it's not already selected and we have a clientId
+		if (!isBlockSelected && blockClientId) {
+			selectBlock(blockClientId);
 		}
 
 		const newValue = handleChanges(e, ref);
@@ -157,9 +187,12 @@ const Indicator = props => {
 		// Always set drag time for consistency
 		dragTime.current = Date.now();
 
-		// Select the block if it's not already selected
-		if (!isBlockSelected && clientId) {
-			selectBlock(clientId);
+		// Get block clientId
+		const blockClientId = getBlockClientId(e);
+
+		// Select the block if it's not already selected and we have a clientId
+		if (!isBlockSelected && blockClientId) {
+			selectBlock(blockClientId);
 		}
 	};
 

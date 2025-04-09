@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useState, useEffect, useRef } from '@wordpress/element';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -38,10 +39,12 @@ const Indicator = props => {
 		onChange,
 		cleanInlineStyles,
 		isBlockSelected,
+		clientId,
 	} = props;
 
 	const [value, setValue] = useState(val);
 	const dragTime = useRef(null);
+	const { selectBlock } = dispatch('core/block-editor');
 
 	useEffect(() => {
 		if (+value !== +val) setValue(val);
@@ -121,6 +124,11 @@ const Indicator = props => {
 		// Avoids triggering on click
 		if (avoidResizing()) return;
 
+		// Select the block if it's not already selected
+		if (!isBlockSelected && clientId) {
+			selectBlock(clientId);
+		}
+
 		const newValue = handleChanges(e, ref);
 
 		insertInlineStyles({
@@ -140,6 +148,19 @@ const Indicator = props => {
 			[`${type}-${dir}-${breakpoint}`]: `${newValue}`,
 		});
 		cleanInlineStyles();
+	};
+
+	const handleOnResizeStart = e => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		// Always set drag time for consistency
+		dragTime.current = Date.now();
+
+		// Select the block if it's not already selected
+		if (!isBlockSelected && clientId) {
+			selectBlock(clientId);
+		}
 	};
 
 	const showContent =
@@ -184,11 +205,7 @@ const Indicator = props => {
 					e.preventDefault();
 					e.stopPropagation();
 				}}
-				onResizeStart={e => {
-					e.preventDefault();
-					e.stopPropagation();
-					dragTime.current = isBlockSelected ? Date.now() : null;
-				}}
+				onResizeStart={handleOnResizeStart}
 				onResize={(e, dir, ref) => {
 					e.preventDefault();
 					e.stopPropagation();
@@ -209,7 +226,7 @@ const Indicator = props => {
 };
 
 const MainIndicator = props => {
-	const { type, breakpoint, avoidIndicators } = props;
+	const { type, breakpoint, avoidIndicators, clientId } = props;
 
 	return ['top', 'right', 'bottom', 'left'].map(dir => {
 		if (avoidIndicators[type] && avoidIndicators[type].includes(dir))
@@ -240,6 +257,7 @@ const MainIndicator = props => {
 				dir={dir}
 				type={type}
 				breakpoint={breakpoint}
+				clientId={clientId}
 				{...props}
 			/>
 		);
@@ -247,15 +265,15 @@ const MainIndicator = props => {
 };
 
 const BlockIndicators = props => {
-	const { children, className } = props;
+	const { children, className, clientId } = props;
 
 	const classes = classnames('maxi-block-indicators', className);
 
 	return (
 		<div className={classes}>
-			<MainIndicator type='margin' {...props} />
+			<MainIndicator type='margin' clientId={clientId} {...props} />
 			{children}
-			<MainIndicator type='padding' {...props} />
+			<MainIndicator type='padding' clientId={clientId} {...props} />
 		</div>
 	);
 };

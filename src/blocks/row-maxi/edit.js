@@ -59,12 +59,9 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const initialWidth = {};
 
-		['', '-xxl', '-xl', '-l', '-m', '-s', '-xs'].forEach(breakpoint => {
-			const key = `max-width${breakpoint}`;
-			const unitKey =
-				breakpoint === ''
-					? 'max-width-unit-general'
-					: `max-width-unit${breakpoint}`;
+		['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+			const key = `max-width-${breakpoint}`;
+			const unitKey = `max-width-unit-${breakpoint}`;
 
 			if (attributes[key] !== undefined) {
 				initialWidth[key] = attributes[key];
@@ -73,6 +70,17 @@ class edit extends MaxiBlockComponent {
 				}
 			}
 		});
+
+		// If there are width values but no general key, use xxl value for general
+		if (
+			Object.keys(initialWidth).length > 0 &&
+			!initialWidth['max-width-general'] &&
+			initialWidth['max-width-xxl']
+		) {
+			initialWidth['max-width-general'] = initialWidth['max-width-xl'];
+			initialWidth['max-width-unit-general'] =
+				initialWidth['max-width-unit-xxl'] || 'px';
+		}
 
 		if (Object.keys(initialWidth).length > 0) {
 			this.setState({ initialWidth });

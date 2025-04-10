@@ -59,7 +59,7 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const initialWidth = {};
 
-		['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+		['xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
 			const key = `max-width-${breakpoint}`;
 			const unitKey = `max-width-unit-${breakpoint}`;
 
@@ -70,17 +70,6 @@ class edit extends MaxiBlockComponent {
 				}
 			}
 		});
-
-		// If there are width values but no general key, use xl value for general
-		if (
-			Object.keys(initialWidth).length > 0 &&
-			!initialWidth['max-width-general'] &&
-			initialWidth['max-width-xxl']
-		) {
-			initialWidth['max-width-general'] = initialWidth['max-width-xl'];
-			initialWidth['max-width-unit-general'] =
-				initialWidth['max-width-unit-xxl'] || 'px';
-		}
 
 		if (Object.keys(initialWidth).length > 0) {
 			this.setState({ initialWidth });
@@ -101,9 +90,32 @@ class edit extends MaxiBlockComponent {
 			const missingAttributes = {};
 			let needsUpdate = false;
 
+			// Check for attributes that are undefined or should be restored
 			Object.entries(initialWidth).forEach(([key, value]) => {
 				if (attributes[key] === undefined) {
 					missingAttributes[key] = value;
+					needsUpdate = true;
+				}
+			});
+
+			// Check for specific breakpoints that may have lost their width values
+			// We'll preserve each breakpoint's original width without forcing values from other breakpoints
+			['xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+				const key = `max-width-${breakpoint}`;
+				const unitKey = `max-width-unit-${breakpoint}`;
+
+				// If we have a stored value and the current value doesn't match or is missing
+				if (
+					initialWidth[key] &&
+					(attributes[key] !== initialWidth[key] ||
+						attributes[key] === undefined)
+				) {
+					missingAttributes[key] = initialWidth[key];
+
+					if (initialWidth[unitKey]) {
+						missingAttributes[unitKey] = initialWidth[unitKey];
+					}
+
 					needsUpdate = true;
 				}
 			});

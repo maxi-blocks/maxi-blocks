@@ -88,6 +88,141 @@ const setCachedData = (cacheKey, data) => {
 	};
 };
 
+/**
+ * Fetches entity records with pagination support to handle more than 100 items
+ *
+ * @param {string} entityType The entity type to fetch (e.g., 'taxonomy', 'postType')
+ * @param {string} entityName The entity name to fetch (e.g., 'category', 'post')
+ * @param {Object} args       Arguments for the fetch request
+ * @param {number} maxPages   Maximum number of pages to fetch (default 20 - 2000 items)
+ * @return {Promise<Array>} Array of entity records
+ */
+const paginatedEntityFetch = async (
+	entityType,
+	entityName,
+	args = {},
+	maxPages = 20
+) => {
+	const { getEntityRecords } = resolveSelect(coreStore);
+
+	// Set optimized arguments with required fields only
+	const optimizedArgs = {
+		...args,
+		_fields: ['id', 'name', 'title'], // Only fetch required fields
+		orderby: 'id', // Optimize DB query
+		per_page: 100, // Maximum allowed by WP REST API
+	};
+
+	// Add timeout protection
+	const timeoutDuration = 2000;
+	const timeoutPromise = new Promise((_, reject) => {
+		setTimeout(() => {
+			reject(new Error('Timeout'));
+		}, timeoutDuration);
+	});
+
+	try {
+		// First attempt to fetch page 1 with timeout
+		const initialData = await Promise.race([
+			getEntityRecords(entityType, entityName, optimizedArgs),
+			timeoutPromise,
+		]);
+
+		// If we don't have data or have less than 100 items, we're done
+		if (!initialData || initialData.length < 100) {
+			return initialData || [];
+		}
+
+		// We have 100 items, so there might be more pages
+		const allData = [...initialData];
+
+		// Function to fetch additional pages
+		const fetchAdditionalPages = async () => {
+			// Create requests for page 2
+			const page2Request = getEntityRecords(entityType, entityName, {
+				...optimizedArgs,
+				page: 2,
+			}).catch(error => {
+				console.error('Error fetching page 2:', error);
+				return [];
+			});
+
+			// Wait for page 2 to complete
+			const page2Data = await page2Request;
+
+			// If page 2 doesn't exist or is empty, we're done
+			if (!page2Data || page2Data.length === 0) {
+				return allData;
+			}
+
+			// Add page 2 data
+			allData.push(...page2Data);
+
+			// If page 2 has less than 100 items, we're done
+			if (page2Data.length < 100) {
+				return allData;
+			}
+
+			// Create requests for remaining pages
+			const remainingRequests = [];
+			for (let page = 3; page <= maxPages; page += 1) {
+				remainingRequests.push(
+					getEntityRecords(entityType, entityName, {
+						...optimizedArgs,
+						page,
+					}).catch(error => {
+						console.error(`Error fetching page ${page}:`, error);
+						return [];
+					})
+				);
+			}
+
+			// Wait for all remaining requests to complete
+			const remainingResults = await Promise.allSettled(
+				remainingRequests
+			);
+
+			// Process the results
+			for (let i = 0; i < remainingResults.length; i += 1) {
+				const result = remainingResults[i];
+				if (
+					result.status === 'fulfilled' &&
+					Array.isArray(result.value)
+				) {
+					// Add the data
+					allData.push(...result.value);
+
+					// If this page has less than 100 items, we've found the last page
+					// and can stop checking further pages
+					if (result.value.length < 100) {
+						break;
+					}
+				} else {
+					// Stop on first error
+					break;
+				}
+			}
+
+			return allData;
+		};
+
+		// Execute the function to fetch additional pages
+		return await fetchAdditionalPages();
+	} catch (error) {
+		if (error.message === 'Timeout') {
+			console.warn(
+				`Timeout fetching ${entityType}/${entityName}, returning empty array`
+			);
+			return [];
+		}
+		console.error(
+			`Error in paginatedEntityFetch for ${entityType}/${entityName}:`,
+			error
+		);
+		return [];
+	}
+};
+
 export const getIdOptions = async (
 	type,
 	relation,
@@ -108,7 +243,6 @@ export const getIdOptions = async (
 	const args = {
 		per_page: relation === 'by-id' ? -1 : paginationPerPage * 3 || -1,
 	};
-	const { getEntityRecords } = resolveSelect(coreStore);
 
 	try {
 		if (relation.includes('by-custom-taxonomy')) {
@@ -116,7 +250,7 @@ export const getIdOptions = async (
 			const cacheKey = `customTaxonomy.${taxonomy}`;
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('taxonomy', taxonomy, args);
+				data = await paginatedEntityFetch('taxonomy', taxonomy, args);
 				setCachedData(cacheKey, data);
 			}
 		} else if (['users'].includes(type) || relation === 'by-author') {
@@ -139,126 +273,14 @@ export const getIdOptions = async (
 			data = getCachedData(cacheKey);
 
 			if (!data) {
-				// 1. Add request timeout with shorter duration (1 second)
-				const timeoutPromise = new Promise((_, reject) =>
-					setTimeout(() => reject(new Error('Timeout')), 1000)
+				data = await paginatedEntityFetch(
+					'taxonomy',
+					categoryType,
+					args
 				);
 
-				try {
-					// 2. Limit fields to only what we need
-					const optimizedArgs = {
-						...args,
-						_fields: ['id', 'name'], // Only fetch required fields
-						orderby: 'id', // Optimize DB query
-						per_page: 100, // Maximum allowed by WP REST API
-					};
-
-					// First attempt to fetch with timeout
-					let initialData = await Promise.race([
-						getEntityRecords(
-							'taxonomy',
-							categoryType,
-							optimizedArgs
-						),
-						timeoutPromise,
-					]);
-
-					// If we got initial data and it has a length of 100, there might be more
-					if (initialData && initialData.length === 100) {
-						// getTotalEntityRecords is not available, so we need a different approach
-						// We'll use a safer approach with controlled pagination
-						try {
-							// Try to fetch page 2 to see if more data exists
-							const page2Data = await getEntityRecords(
-								'taxonomy',
-								categoryType,
-								{
-									...optimizedArgs,
-									page: 2,
-								}
-							);
-
-							// If we got data from page 2, then we have more pages
-							if (page2Data && page2Data.length > 0) {
-								// Start with what we found on page 2
-								const allAdditionalData = [...page2Data];
-
-								// If page 2 had exactly 100 items, there might be more pages
-								const moreRequests = [];
-
-								// Add requests for additional pages, but cap at 20 pages (2000 items) total for safety
-								// Start from page 3 since we already have pages 1 and 2
-								if (page2Data.length === 100) {
-									for (let page = 3; page <= 20; page += 1) {
-										moreRequests.push(
-											getEntityRecords(
-												'taxonomy',
-												categoryType,
-												{
-													...optimizedArgs,
-													page,
-												}
-											)
-										);
-									}
-
-									// Fetch all additional pages in parallel
-									const additionalResults =
-										await Promise.allSettled(moreRequests);
-
-									// Process the results
-									for (const result of additionalResults) {
-										if (
-											result.status === 'fulfilled' &&
-											Array.isArray(result.value)
-										) {
-											// Add the data
-											allAdditionalData.push(
-												...result.value
-											);
-
-											// If a page has less than 100 items, we've found the last page
-											// and can stop checking further pages
-											if (result.value.length < 100) {
-												break;
-											}
-										} else {
-											// Stop on first error
-											break;
-										}
-									}
-								}
-
-								// Merge all data
-								initialData = [
-									...initialData,
-									...allAdditionalData,
-								];
-							}
-						} catch (error) {
-							console.error(
-								'Error fetching additional pages:',
-								error
-							);
-							// Continue with what we have
-						}
-					}
-
-					data = initialData;
-
-					if (data) {
-						setCachedData(cacheKey, data);
-					}
-				} catch (error) {
-					if (error.message === 'Timeout') {
-						// 4. Return cached data even if expired
-						data = cache[cacheKey]?.data || [];
-					} else {
-						console.error(
-							`Category fetch error for ${cacheKey}:`,
-							error
-						);
-					}
+				if (data) {
+					setCachedData(cacheKey, data);
 				}
 			}
 		} else if (
@@ -271,21 +293,21 @@ export const getIdOptions = async (
 			const cacheKey = `tags.${tagType}`;
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('taxonomy', tagType, args);
+				data = await paginatedEntityFetch('taxonomy', tagType, args);
 				setCachedData(cacheKey, data);
 			}
 		} else if (isCustomTaxonomy) {
 			const cacheKey = `customTaxonomy.${type}`;
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('taxonomy', type, args);
+				data = await paginatedEntityFetch('taxonomy', type, args);
 				setCachedData(cacheKey, data);
 			}
 		} else if (isCustomPostType) {
 			const cacheKey = `customPostType.${type}`;
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('postType', type, args);
+				data = await paginatedEntityFetch('postType', type, args);
 				setCachedData(cacheKey, data);
 			}
 		} else if (relation === 'current-archive') {
@@ -300,13 +322,17 @@ export const getIdOptions = async (
 						currentTemplateType
 					)
 				) {
-					data = await getEntityRecords(
+					data = await paginatedEntityFetch(
 						'taxonomy',
 						currentTemplateType,
 						args
 					);
 				} else {
-					data = await getEntityRecords('taxonomy', 'category', args);
+					data = await paginatedEntityFetch(
+						'taxonomy',
+						'category',
+						args
+					);
 				}
 				setCachedData(cacheKey, data);
 			}
@@ -314,7 +340,7 @@ export const getIdOptions = async (
 			const cacheKey = 'currentArchive.archive';
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('taxonomy', 'category', args);
+				data = await paginatedEntityFetch('taxonomy', 'category', args);
 				setCachedData(cacheKey, data);
 			}
 		} else {
@@ -328,7 +354,7 @@ export const getIdOptions = async (
 			const cacheKey = `postType.${postType}`;
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('postType', postType, args);
+				data = await paginatedEntityFetch('postType', postType, args);
 				setCachedData(cacheKey, data);
 			}
 		}

@@ -105,7 +105,10 @@ const Indicator = props => {
 	};
 
 	const handleChanges = (e, ref) => {
-		e.preventDefault();
+		// Only preventDefault for non-touch events to avoid passive listener issues
+		if (!e.touches) {
+			e.preventDefault();
+		}
 
 		const newValue = isVertical
 			? round(ref.getBoundingClientRect().height)
@@ -181,7 +184,8 @@ const Indicator = props => {
 	};
 
 	const handleOnResizeStart = e => {
-		e.preventDefault();
+		// Don't use preventDefault here as it causes issues with passive listeners
+		// Just use stopPropagation to prevent event bubbling
 		e.stopPropagation();
 
 		// Always set drag time for consistency
@@ -235,17 +239,23 @@ const Indicator = props => {
 					e.stopPropagation();
 				}}
 				onTouchStart={e => {
-					e.preventDefault();
+					// Don't use preventDefault for touch events
 					e.stopPropagation();
 				}}
 				onResizeStart={handleOnResizeStart}
 				onResize={(e, dir, ref) => {
-					e.preventDefault();
+					// Only preventDefault for non-touch events
+					if (!e.touches) {
+						e.preventDefault();
+					}
 					e.stopPropagation();
 					handleOnResize(type, e, ref);
 				}}
 				onResizeStop={(e, dir, ref) => {
-					e.preventDefault();
+					// Only preventDefault for non-touch events
+					if (!e.touches) {
+						e.preventDefault();
+					}
 					e.stopPropagation();
 					handleOnResizeStop(type, e, ref);
 				}}

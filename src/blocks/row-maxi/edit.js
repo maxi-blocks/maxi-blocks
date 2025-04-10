@@ -71,7 +71,7 @@ class edit extends MaxiBlockComponent {
 			}
 		});
 
-		// If there are width values but no general key, use xxl value for general
+		// If there are width values but no general key, use xl value for general
 		if (
 			Object.keys(initialWidth).length > 0 &&
 			!initialWidth['max-width-general'] &&

@@ -141,6 +141,57 @@ const DividerControl = props => {
 		isHover,
 	});
 
+	const handleLineWeightChange = val => {
+		// Sync both horizontal and vertical line weights
+		onChange({
+			[getAttributeKey(
+				'divider-border-top-width',
+				isHover,
+				prefix,
+				breakpoint
+			)]: val,
+			[getAttributeKey(
+				'divider-border-right-width',
+				isHover,
+				prefix,
+				breakpoint
+			)]: val,
+		});
+	};
+
+	const handleLineWeightReset = () => {
+		const defaultWidth = getDefaultAttribute(
+			`divider-border-top-width-${breakpoint}`
+		);
+
+		onChange({
+			[getAttributeKey(
+				'divider-border-top-width',
+				isHover,
+				prefix,
+				breakpoint
+			)]: defaultWidth,
+			[getAttributeKey(
+				'divider-border-right-width',
+				isHover,
+				prefix,
+				breakpoint
+			)]: defaultWidth,
+			isReset: true,
+		});
+	};
+
+	// Get the current line weight value based on orientation
+	const currentLineWeight = getLastBreakpointAttribute({
+		target:
+			lineOrientation === 'vertical'
+				? `${prefix}divider-border-right-width`
+				: `${prefix}divider-border-top-width`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
 	return (
 		<>
 			<DefaultDividersControl
@@ -373,72 +424,14 @@ const DividerControl = props => {
 						/>
 						<AdvancedNumberControl
 							label={__('Line weight', 'maxi-blocks')}
-							enableUnit
-							allowedUnits={['px', 'em', 'vw']}
-							unit={getLastBreakpointAttribute({
-								target: `${prefix}divider-border-top-unit`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							onChangeUnit={val =>
-								onChange({
-									[getAttributeKey(
-										'divider-border-top-unit',
-										isHover,
-										prefix,
-										breakpoint
-									)]: val,
-								})
-							}
-							onChange={val =>
-								onChange({
-									[getAttributeKey(
-										'divider-border-top-width',
-										isHover,
-										prefix,
-										breakpoint
-									)]: val,
-								})
-							}
-							value={getLastBreakpointAttribute({
-								target: `${prefix}divider-border-top-width`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							onChangeValue={val =>
-								onChange({
-									[getAttributeKey(
-										'divider-border-top-width',
-										isHover,
-										prefix,
-										breakpoint
-									)]: val,
-								})
-							}
-							onReset={() =>
-								onChange({
-									[getAttributeKey(
-										'divider-border-top-width',
-										isHover,
-										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
-										`divider-border-top-width-${breakpoint}`
-									),
-									[getAttributeKey(
-										'divider-border-top-unit',
-										isHover,
-										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
-										`divider-border-top-unit-${breakpoint}`
-									),
-									isReset: true,
-								})
-							}
-							minMaxSettings={minMaxSettings}
+							value={currentLineWeight}
+							onChangeValue={handleLineWeightChange}
+							onReset={handleLineWeightReset}
+							min={0}
+							max={100}
+							initialPosition={getDefaultAttribute(
+								`divider-border-top-width-${breakpoint}`
+							)}
 						/>
 					</>
 				)}
@@ -447,7 +440,7 @@ const DividerControl = props => {
 					lineOrientation === undefined) && (
 					<>
 						<AdvancedNumberControl
-							label={__('Size', 'maxi-blocks')}
+							label={__('Line size', 'maxi-blocks')}
 							value={getLastBreakpointAttribute({
 								target: `${prefix}divider-height`,
 								breakpoint,
@@ -487,43 +480,14 @@ const DividerControl = props => {
 							)}
 						/>
 						<AdvancedNumberControl
-							label={__('Weight', 'maxi-blocks')}
-							value={getLastBreakpointAttribute({
-								target: `${prefix}divider-border-right-width`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							onChangeValue={val => {
-								onChange({
-									[getAttributeKey(
-										'divider-border-right-width',
-										isHover,
-										prefix,
-										breakpoint
-									)]:
-										val !== undefined && val !== ''
-											? val
-											: '',
-								});
-							}}
+							label={__('Line weight', 'maxi-blocks')}
+							value={currentLineWeight}
+							onChangeValue={handleLineWeightChange}
+							onReset={handleLineWeightReset}
 							min={0}
 							max={100}
-							onReset={() =>
-								onChange({
-									[getAttributeKey(
-										'divider-border-right-width',
-										isHover,
-										prefix,
-										breakpoint
-									)]: getDefaultAttribute(
-										`divider-border-right-width-${breakpoint}`
-									),
-									isReset: true,
-								})
-							}
 							initialPosition={getDefaultAttribute(
-								`divider-border-right-width-${breakpoint}`
+								`divider-border-top-width-${breakpoint}`
 							)}
 						/>
 					</>

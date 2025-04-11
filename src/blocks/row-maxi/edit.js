@@ -46,7 +46,6 @@ class edit extends MaxiBlockComponent {
 	state = {
 		displayHandlers: false,
 		innerBlocksPositions: {},
-		initialWidth: null,
 	};
 
 	columnsSize = {};
@@ -56,14 +55,24 @@ class edit extends MaxiBlockComponent {
 	isRepeaterInherited = !!this.context?.repeaterStatus;
 
 	maxiBlockDidMount() {
-		const { attributes } = this.props;
+		const { attributes, maxiSetAttributes } = this.props;
 		const initialWidth = {};
+		const fullWidthGeneral = attributes['full-width-general'];
 
 		['xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+			const fullWidthBreakpoint = attributes[`full-width-${breakpoint}`];
 			const key = `max-width-${breakpoint}`;
-			const unitKey = `max-width-unit-${breakpoint}`;
 
-			if (attributes[key] !== undefined) {
+			const needsUpdate =
+				attributes[key] !== undefined &&
+				((fullWidthBreakpoint === undefined &&
+					fullWidthGeneral === undefined) ||
+					fullWidthBreakpoint === false ||
+					(fullWidthBreakpoint === undefined &&
+						fullWidthGeneral === false));
+			if (needsUpdate) {
+				const unitKey = `max-width-unit-${breakpoint}`;
+
 				initialWidth[key] = attributes[key];
 				if (attributes[unitKey] !== undefined) {
 					initialWidth[unitKey] = attributes[unitKey];
@@ -72,57 +81,18 @@ class edit extends MaxiBlockComponent {
 		});
 
 		if (Object.keys(initialWidth).length > 0) {
-			this.setState({ initialWidth });
+			maxiSetAttributes(initialWidth);
 		}
 	}
 
 	maxiBlockDidUpdate() {
-		const { displayHandlers, initialWidth } = this.state;
-		const { attributes, maxiSetAttributes, isSelected } = this.props;
+		const { displayHandlers } = this.state;
+		const { isSelected } = this.props;
 
 		if (displayHandlers && !isSelected) {
 			this.setState({
 				displayHandlers: false,
 			});
-		}
-
-		if (initialWidth && Object.keys(initialWidth).length > 0) {
-			const missingAttributes = {};
-			let needsUpdate = false;
-
-			// Check for attributes that are undefined or should be restored
-			Object.entries(initialWidth).forEach(([key, value]) => {
-				if (attributes[key] === undefined) {
-					missingAttributes[key] = value;
-					needsUpdate = true;
-				}
-			});
-
-			// Check for specific breakpoints that may have lost their width values
-			// We'll preserve each breakpoint's original width without forcing values from other breakpoints
-			['xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
-				const key = `max-width-${breakpoint}`;
-				const unitKey = `max-width-unit-${breakpoint}`;
-
-				// If we have a stored value and the current value doesn't match or is missing
-				if (
-					initialWidth[key] &&
-					(attributes[key] !== initialWidth[key] ||
-						attributes[key] === undefined)
-				) {
-					missingAttributes[key] = initialWidth[key];
-
-					if (initialWidth[unitKey]) {
-						missingAttributes[unitKey] = initialWidth[unitKey];
-					}
-
-					needsUpdate = true;
-				}
-			});
-
-			if (needsUpdate) {
-				maxiSetAttributes(missingAttributes);
-			}
 		}
 
 		this.isRepeaterInherited = !!this.context?.repeaterStatus;

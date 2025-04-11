@@ -21,8 +21,6 @@ import {
 import data from './data';
 
 const getNormalObject = props => {
-	const sizeAttrs = getGroupAttributes(props, 'size');
-
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -41,7 +39,7 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 		}),
 		size: getSizeStyles({
-			...sizeAttrs,
+			...getGroupAttributes(props, 'size'),
 		}),
 		margin: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'margin') },

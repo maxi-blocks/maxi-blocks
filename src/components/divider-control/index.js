@@ -159,9 +159,30 @@ const DividerControl = props => {
 		});
 	};
 
+	const handleLineWeightUnitChange = val => {
+		// Sync both horizontal and vertical line weight units
+		onChange({
+			[getAttributeKey(
+				'divider-border-top-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: val,
+			[getAttributeKey(
+				'divider-border-right-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: val,
+		});
+	};
+
 	const handleLineWeightReset = () => {
 		const defaultWidth = getDefaultAttribute(
 			`divider-border-top-width-${breakpoint}`
+		);
+		const defaultUnit = getDefaultAttribute(
+			`divider-border-top-unit-${breakpoint}`
 		);
 
 		onChange({
@@ -177,6 +198,18 @@ const DividerControl = props => {
 				prefix,
 				breakpoint
 			)]: defaultWidth,
+			[getAttributeKey(
+				'divider-border-top-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: defaultUnit,
+			[getAttributeKey(
+				'divider-border-right-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: defaultUnit,
 			isReset: true,
 		});
 	};
@@ -187,6 +220,16 @@ const DividerControl = props => {
 			lineOrientation === 'vertical'
 				? `${prefix}divider-border-right-width`
 				: `${prefix}divider-border-top-width`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const currentLineWeightUnit = getLastBreakpointAttribute({
+		target:
+			lineOrientation === 'vertical'
+				? `${prefix}divider-border-right-unit`
+				: `${prefix}divider-border-top-unit`,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -424,14 +467,14 @@ const DividerControl = props => {
 						/>
 						<AdvancedNumberControl
 							label={__('Line weight', 'maxi-blocks')}
+							enableUnit
+							allowedUnits={['px', 'em', 'vw']}
+							unit={currentLineWeightUnit}
+							onChangeUnit={handleLineWeightUnitChange}
 							value={currentLineWeight}
 							onChangeValue={handleLineWeightChange}
 							onReset={handleLineWeightReset}
-							min={0}
-							max={100}
-							initialPosition={getDefaultAttribute(
-								`divider-border-top-width-${breakpoint}`
-							)}
+							minMaxSettings={minMaxSettings}
 						/>
 					</>
 				)}
@@ -481,14 +524,14 @@ const DividerControl = props => {
 						/>
 						<AdvancedNumberControl
 							label={__('Line weight', 'maxi-blocks')}
+							enableUnit
+							allowedUnits={['px', 'em', 'vw']}
+							unit={currentLineWeightUnit}
+							onChangeUnit={handleLineWeightUnitChange}
 							value={currentLineWeight}
 							onChangeValue={handleLineWeightChange}
 							onReset={handleLineWeightReset}
-							min={0}
-							max={100}
-							initialPosition={getDefaultAttribute(
-								`divider-border-top-width-${breakpoint}`
-							)}
+							minMaxSettings={minMaxSettings}
 						/>
 					</>
 				)}

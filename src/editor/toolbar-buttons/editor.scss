@@ -52,6 +52,15 @@ body.maxi-blocks--active .edit-post-header-toolbar {
 	}
 }
 
+// fix for 6.8
+body.branch-6-8 {
+	.edit-site {
+		.maxi-toolbar-layout__button {
+			left: 245px;
+		}
+	}
+}
+
 @media only screen and (max-width: 781px) {
 	.edit-site {
 		.maxi-toolbar-layout__button {

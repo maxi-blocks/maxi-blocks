@@ -26,6 +26,7 @@ import {
 } from '@editor/style-cards/utils';
 // TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 // import isPostEditor from './isPostEditor';
+import './disableDragging'; // Disable WordPress 6.8 default dragging for Maxi blocks
 
 /**
  * External dependencies

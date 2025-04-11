@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useState, useEffect, useRef } from '@wordpress/element';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -42,6 +43,7 @@ const Indicator = props => {
 
 	const [value, setValue] = useState(val);
 	const dragTime = useRef(null);
+	const { selectBlock } = dispatch('core/block-editor');
 
 	useEffect(() => {
 		if (+value !== +val) setValue(val);
@@ -103,7 +105,10 @@ const Indicator = props => {
 	};
 
 	const handleChanges = (e, ref) => {
-		e.preventDefault();
+		// Only preventDefault for non-touch events to avoid passive listener issues
+		if (!e.touches) {
+			e.preventDefault();
+		}
 
 		const newValue = isVertical
 			? round(ref.getBoundingClientRect().height)
@@ -117,9 +122,45 @@ const Indicator = props => {
 	const avoidResizing = () =>
 		!isNumber(dragTime.current) || Date.now() - dragTime.current < 150;
 
+	const getBlockClientId = event => {
+		// Method 1: Try to get clientId from event
+		if (event && event.target) {
+			const blockEl = event.target.closest('[data-block]');
+			if (blockEl) {
+				return blockEl.getAttribute('data-block');
+			}
+		}
+
+		// Method 2: Try to find parent .maxi-block-indicators element
+		try {
+			// Start from document and find parent block
+			const indicatorsEl = document.querySelector(
+				'.maxi-block-indicators'
+			);
+			if (indicatorsEl) {
+				const parentBlock = indicatorsEl.closest('[data-block]');
+				if (parentBlock) {
+					return parentBlock.getAttribute('data-block');
+				}
+			}
+		} catch (error) {
+			// Silent fail
+		}
+
+		return null;
+	};
+
 	const handleOnResize = (type, e, ref) => {
 		// Avoids triggering on click
 		if (avoidResizing()) return;
+
+		// Get block clientId
+		const blockClientId = getBlockClientId(e);
+
+		// Select the block if it's not already selected and we have a clientId
+		if (!isBlockSelected && blockClientId) {
+			selectBlock(blockClientId);
+		}
 
 		const newValue = handleChanges(e, ref);
 
@@ -140,6 +181,23 @@ const Indicator = props => {
 			[`${type}-${dir}-${breakpoint}`]: `${newValue}`,
 		});
 		cleanInlineStyles();
+	};
+
+	const handleOnResizeStart = e => {
+		// Don't use preventDefault here as it causes issues with passive listeners
+		// Just use stopPropagation to prevent event bubbling
+		e.stopPropagation();
+
+		// Always set drag time for consistency
+		dragTime.current = Date.now();
+
+		// Get block clientId
+		const blockClientId = getBlockClientId(e);
+
+		// Select the block if it's not already selected and we have a clientId
+		if (!isBlockSelected && blockClientId) {
+			selectBlock(blockClientId);
+		}
 	};
 
 	const showContent =
@@ -167,16 +225,42 @@ const Indicator = props => {
 					right: dir === getDirection('right'),
 					bottom: dir === 'top' || dir === 'bottom',
 					left: dir === getDirection('left'),
+					topRight: false,
+					bottomRight: false,
+					bottomLeft: false,
+					topLeft: false,
 				}}
 				defaultSize={size}
 				size={size}
 				handleWrapperStyle={handleStyles}
 				handleStyles={handleStyles}
-				onResizeStart={() => {
-					dragTime.current = isBlockSelected ? Date.now() : null;
+				onMouseDown={e => {
+					e.preventDefault();
+					e.stopPropagation();
 				}}
-				onResize={(e, dir, ref) => handleOnResize(type, e, ref)}
-				onResizeStop={(e, dir, ref) => handleOnResizeStop(type, e, ref)}
+				onTouchStart={e => {
+					// Don't use preventDefault for touch events
+					e.stopPropagation();
+				}}
+				onResizeStart={handleOnResizeStart}
+				onResize={(e, dir, ref) => {
+					// Only preventDefault for non-touch events
+					if (!e.touches) {
+						e.preventDefault();
+					}
+					e.stopPropagation();
+					handleOnResize(type, e, ref);
+				}}
+				onResizeStop={(e, dir, ref) => {
+					// Only preventDefault for non-touch events
+					if (!e.touches) {
+						e.preventDefault();
+					}
+					e.stopPropagation();
+					handleOnResizeStop(type, e, ref);
+				}}
+				grid={[1, 1]}
+				snapGap={1}
 			>
 				{content}
 			</Resizable>
@@ -185,7 +269,7 @@ const Indicator = props => {
 };
 
 const MainIndicator = props => {
-	const { type, breakpoint, avoidIndicators } = props;
+	const { type, breakpoint, avoidIndicators, clientId } = props;
 
 	return ['top', 'right', 'bottom', 'left'].map(dir => {
 		if (avoidIndicators[type] && avoidIndicators[type].includes(dir))
@@ -216,6 +300,7 @@ const MainIndicator = props => {
 				dir={dir}
 				type={type}
 				breakpoint={breakpoint}
+				clientId={clientId}
 				{...props}
 			/>
 		);
@@ -223,15 +308,15 @@ const MainIndicator = props => {
 };
 
 const BlockIndicators = props => {
-	const { children, className } = props;
+	const { children, className, clientId } = props;
 
 	const classes = classnames('maxi-block-indicators', className);
 
 	return (
 		<div className={classes}>
-			<MainIndicator type='margin' {...props} />
+			<MainIndicator type='margin' clientId={clientId} {...props} />
 			{children}
-			<MainIndicator type='padding' {...props} />
+			<MainIndicator type='padding' clientId={clientId} {...props} />
 		</div>
 	);
 };

@@ -10,6 +10,20 @@ import { select } from '@wordpress/data';
  */
 import { isEmpty, isEqual } from 'lodash';
 
+// Add requestIdleCallback polyfill
+const requestIdleCallbackPolyfill = callback => {
+	const start = Date.now();
+	return setTimeout(() => {
+		callback({
+			didTimeout: false,
+			timeRemaining: () => Math.max(0, 50 - (Date.now() - start)),
+		});
+	}, 1);
+};
+
+const requestIdle = window.requestIdleCallback || requestIdleCallbackPolyfill;
+const cancelIdle = window.cancelIdleCallback || clearTimeout;
+
 /**
  * Internal dependencies
  */
@@ -39,6 +53,8 @@ import withMaxiDC from '@extensions/DC/withMaxiDC';
 class edit extends MaxiBlockComponent {
 	static contextType = RepeaterContext;
 
+	_widthMigrationCallback = null;
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -54,39 +70,63 @@ class edit extends MaxiBlockComponent {
 
 	isRepeaterInherited = !!this.context?.repeaterStatus;
 
-	maxiBlockDidMount() {
-		const rowPatternCheck =
-			this.props.attributes['row-pattern'] !== undefined;
-		if (rowPatternCheck) {
-			return;
-		}
+	// Add new method to handle width migration
+	handleWidthMigration = () => {
 		const { attributes, maxiSetAttributes } = this.props;
-		const initialWidth = {};
 		const fullWidthGeneral = attributes['full-width-general'];
 
-		['xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
+		// Only proceed if we need to update something
+		if (fullWidthGeneral !== undefined && fullWidthGeneral !== false) {
+			return;
+		}
+
+		// Cache the breakpoints that need updates
+		const updates = {};
+		const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+		for (const breakpoint of breakpoints) {
 			const fullWidthBreakpoint = attributes[`full-width-${breakpoint}`];
-			const key = `max-width-${breakpoint}`;
+			const needsUpdate = !(
+				fullWidthBreakpoint === true ||
+				(fullWidthBreakpoint === undefined && fullWidthGeneral === true)
+			);
 
-			const needsUpdate =
-				attributes[key] !== undefined &&
-				((fullWidthBreakpoint === undefined &&
-					fullWidthGeneral === undefined) ||
-					fullWidthBreakpoint === false ||
-					(fullWidthBreakpoint === undefined &&
-						fullWidthGeneral === false));
 			if (needsUpdate) {
-				const unitKey = `max-width-unit-${breakpoint}`;
+				const key = `max-width-${breakpoint}`;
+				const value = attributes[key];
 
-				initialWidth[key] = attributes[key];
-				if (attributes[unitKey] !== undefined) {
-					initialWidth[unitKey] = attributes[unitKey];
+				if (value !== undefined) {
+					updates[key] = value;
+
+					const unitKey = `max-width-unit-${breakpoint}`;
+					if (attributes[unitKey] !== undefined) {
+						updates[unitKey] = attributes[unitKey];
+					}
 				}
 			}
-		});
+		}
 
-		if (Object.keys(initialWidth).length > 0) {
-			maxiSetAttributes(initialWidth);
+		// Only call maxiSetAttributes if we have updates
+		if (Object.keys(updates).length > 0) {
+			maxiSetAttributes(updates);
+		}
+	};
+
+	maxiBlockDidMount() {
+		// Early return if row pattern exists
+		if (this.props.attributes['row-pattern'] !== undefined) {
+			return;
+		}
+
+		// Schedule width migration to run after initial render
+		this._widthMigrationCallback = requestIdle(() => {
+			this.handleWidthMigration();
+		});
+	}
+
+	componentWillUnmount() {
+		if (this._widthMigrationCallback) {
+			cancelIdle(this._widthMigrationCallback);
 		}
 	}
 

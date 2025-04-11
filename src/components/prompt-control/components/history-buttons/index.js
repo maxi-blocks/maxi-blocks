@@ -9,7 +9,7 @@ import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
  */
 import Button from '@components/button';
 import DialogBox from '@components/dialog-box';
-import { downloadTextFile } from '@editor/style-cards/utils';
+import downloadTextFile from '@editor/style-cards/downloadTextFile';
 
 /**
  * External dependencies

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils exportStyleCard Should handle empty data 1`] = `
+{
+  "dark": undefined,
+  "gutenberg_blocks_status": undefined,
+  "light": undefined,
+  "name": undefined,
+  "status": undefined,
+}
+`;

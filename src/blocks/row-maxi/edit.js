@@ -55,6 +55,11 @@ class edit extends MaxiBlockComponent {
 	isRepeaterInherited = !!this.context?.repeaterStatus;
 
 	maxiBlockDidMount() {
+		const rowPatternCheck =
+			this.props.attributes['row-pattern'] !== undefined;
+		if (rowPatternCheck) {
+			return;
+		}
 		const { attributes, maxiSetAttributes } = this.props;
 		const initialWidth = {};
 		const fullWidthGeneral = attributes['full-width-general'];

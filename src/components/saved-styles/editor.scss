@@ -1,0 +1,62 @@
+.maxi-saved-styles-control {
+	padding: 5px;
+
+	&__rename {
+		margin-bottom: 10px;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+
+		input {
+			padding: 8px;
+			border-radius: 4px;
+
+			margin-bottom: 8px;
+		}
+
+		button {
+			border-radius: 4px;
+			text-align: center;
+
+			&:last-child {
+				margin-left: 1px;
+			}
+			&:hover {
+				transition: all 0.3s ease;
+			}
+		}
+	}
+
+	&__buttons {
+		display: flex;
+		flex-direction: row;
+		gap: 4px;
+		margin-top: 10px;
+
+		.maxi-components-button.components-button {
+			background: var(--maxi-light-blue-2-color);
+			border: 1px solid var(--maxi-grey-1-color);
+			border-radius: 10px !important;
+			padding: 6px 12px !important;
+			height: 36px !important;
+			min-width: auto !important;
+			display: inline-flex !important;
+			align-items: center;
+			justify-content: center;
+
+			&:hover {
+				transition: all 0.3s ease;
+				background: var(--maxi-grey-2-color);
+			}
+		}
+	}
+
+	&__count {
+		text-align: right !important;
+		margin-top: -3px;
+		font-size: 10px !important;
+		color: var(--maxi-grey-7-color) !important;
+		text-align: center;
+		margin-bottom: 2px;
+	}
+}

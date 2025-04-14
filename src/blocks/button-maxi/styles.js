@@ -23,7 +23,6 @@ import {
 import data from './data';
 
 const getWrapperObject = props => {
-	// console.log('getWrapperObject props', props);
 	const response = {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
@@ -116,17 +115,6 @@ const getHoverWrapperObject = props => {
 };
 
 const getNormalObject = props => {
-	// console.log('props', props);
-	// console.log(
-	// 	'padding',
-	// 	getMarginPaddingStyles({
-	// 		obj: {
-	// 			...getGroupAttributes(props, 'padding', false, 'button-'),
-	// 		},
-	// 		prefix: 'button-',
-	// 	})
-	// );
-	// console.log('props.blockStyle', props.blockStyle);
 	const response = {
 		size: getSizeStyles(
 			{
@@ -320,8 +308,6 @@ const getStyles = (props, scValues, iconWidthHeightRatio) => {
 			props
 		),
 	};
-
-	console.log('response', response);
 
 	return response;
 };

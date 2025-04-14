@@ -466,15 +466,6 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { uniqueID } = this.props.attributes;
 
-		console.log(
-			'[UPDATE] Block attributes before/after:',
-			JSON.stringify({
-				prevBlockStyle: prevProps.attributes.blockStyle,
-				currentBlockStyle: this.props.attributes.blockStyle,
-				uniqueID,
-			})
-		);
-
 		if (!shouldDisplayStyles) {
 			!this.isReusable &&
 				this.displayStyles(

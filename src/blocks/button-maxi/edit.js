@@ -90,7 +90,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	// Apply xxl padding only for new button blocks
-	componentDidMount() {
+	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
 
 		// First check if this is a new button (empty content and empty icon)

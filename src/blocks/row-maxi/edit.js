@@ -74,15 +74,39 @@ class edit extends MaxiBlockComponent {
 	handleWidthMigration = () => {
 		const { attributes, maxiSetAttributes } = this.props;
 		const fullWidthGeneral = attributes['full-width-general'];
+		const sizeAdvancedOptions = attributes['size-advanced-options'];
 
 		// Only proceed if we need to update something
-		if (fullWidthGeneral !== undefined && fullWidthGeneral !== false) {
+		if (
+			!sizeAdvancedOptions ||
+			(fullWidthGeneral !== undefined && fullWidthGeneral !== false)
+		) {
 			return;
 		}
 
 		// Cache the breakpoints that need updates
 		const updates = {};
 		const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+		// Default values for each breakpoint
+		const defaultValues = {
+			xxl: '1690',
+			xl: '1170',
+			l: '90',
+			m: '90',
+			s: '90',
+			xs: '90',
+		};
+
+		// Default units for each breakpoint
+		const defaultUnits = {
+			xxl: 'px',
+			xl: 'px',
+			l: '%',
+			m: '%',
+			s: '%',
+			xs: '%',
+		};
 
 		for (const breakpoint of breakpoints) {
 			const fullWidthBreakpoint = attributes[`full-width-${breakpoint}`];
@@ -102,10 +126,31 @@ class edit extends MaxiBlockComponent {
 					if (attributes[unitKey] !== undefined) {
 						updates[unitKey] = attributes[unitKey];
 					}
+				} else {
+					// Apply default value and unit if max-width is undefined
+					updates[key] = defaultValues[breakpoint];
+
+					const unitKey = `max-width-unit-${breakpoint}`;
+					updates[unitKey] = defaultUnits[breakpoint];
 				}
 			}
 		}
 
+		// Set general values based on the base breakpoint only if xxl is undefined
+		if (attributes['max-width-xxl'] === undefined) {
+			// Get the current base breakpoint
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+			// Use the value from base breakpoint, or fallback to default
+			const baseValue =
+				updates[`max-width-${baseBreakpoint}`] ||
+				defaultValues[baseBreakpoint];
+			const baseUnit =
+				updates[`max-width-unit-${baseBreakpoint}`] ||
+				defaultUnits[baseBreakpoint];
+
+			updates['max-width-general'] = baseValue;
+			updates['max-width-unit-general'] = baseUnit;
+		}
 		// Only call maxiSetAttributes if we have updates
 		if (Object.keys(updates).length > 0) {
 			maxiSetAttributes(updates);
@@ -114,7 +159,10 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidMount() {
 		// Early return if row pattern exists
-		if (this.props.attributes['row-pattern'] !== undefined) {
+		if (
+			this.props.attributes['row-pattern'] !== undefined ||
+			this.props.attributes['row-pattern-general'] !== undefined
+		) {
 			return;
 		}
 

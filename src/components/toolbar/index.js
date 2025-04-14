@@ -201,11 +201,11 @@ const MaxiToolbar = memo(
 			inlineStylesTargets
 		);
 
-		const lineOrientation = getLastBreakpointAttribute(
-			'line-orientation',
+		const lineOrientation = getLastBreakpointAttribute({
+			target: 'line-orientation',
 			breakpoint,
-			attributes
-		);
+			attributes,
+		});
 
 		return (
 			isSelected &&
@@ -714,18 +714,8 @@ const MaxiToolbar = memo(
 							onChange={obj => maxiSetAttributes(obj)}
 						/>
 						<DividerAlignment
-							{...getGroupAttributes(attributes, 'divider')}
-							lineOrientation={lineOrientation}
-							lineVertical={getLastBreakpointAttribute(
-								'line-vertical',
-								breakpoint,
-								attributes
-							)}
-							lineHorizontal={getLastBreakpointAttribute(
-								'line-horizontal',
-								breakpoint,
-								attributes
-							)}
+							attributes={attributes}
+							breakpoint={breakpoint}
 							blockName={name}
 							onChangeOrientation={lineOrientation =>
 								maxiSetAttributes({

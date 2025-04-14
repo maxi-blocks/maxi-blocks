@@ -10,6 +10,7 @@ import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
 import Icon from '@components/icon';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * Styles & Icons
@@ -28,9 +29,8 @@ import {
 const DividerAlignment = props => {
 	const {
 		blockName,
-		lineOrientation,
-		lineVertical,
-		lineHorizontal,
+		attributes,
+		breakpoint,
 		onChangeOrientation,
 		onChangeVertical,
 		onChangeHorizontal,
@@ -54,6 +54,24 @@ const DividerAlignment = props => {
 			{ label: __('Bottom', 'maxi-blocks'), value: 'flex-end' },
 		];
 	};
+
+	const lineOrientation = getLastBreakpointAttribute({
+		target: 'line-orientation',
+		breakpoint,
+		attributes,
+	});
+
+	const lineVertical = getLastBreakpointAttribute({
+		target: 'line-vertical',
+		breakpoint,
+		attributes,
+	});
+
+	const lineHorizontal = getLastBreakpointAttribute({
+		target: 'line-horizontal',
+		breakpoint,
+		attributes,
+	});
 
 	return (
 		<ToolbarPopover

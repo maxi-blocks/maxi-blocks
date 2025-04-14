@@ -9,13 +9,23 @@
 const getDefaultSCValue = ({ target, SC: rawSC, SCStyle, groupAttr }) => {
 	const SC = rawSC[SCStyle]?.defaultStyleCard || rawSC.defaultStyleCard;
 
-	if (groupAttr && SC[groupAttr]) return SC[groupAttr][target];
+	if (!SC) return null;
 
-	return Object.values(SC).filter(group => {
+	if (groupAttr && SC[groupAttr]) {
+		const result = SC[groupAttr][target];
+		return result === undefined ? null : result;
+	}
+
+	const result = Object.values(SC).filter(group => {
 		if (group[target]) return group[target];
-
 		return false;
-	})[0][target];
+	});
+	if (result.length > 0) {
+		const value = result[0][target];
+		return value === undefined ? null : value;
+	}
+
+	return null;
 };
 
 export default getDefaultSCValue;

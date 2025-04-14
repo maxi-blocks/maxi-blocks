@@ -345,7 +345,9 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Force update when selection state changes
-		if (this.props.isSelected !== nextProps.isSelected) return true;
+		if (this.props.isSelected !== nextProps.isSelected) {
+			return true;
+		}
 
 		// Ensures rendering when breakpoint changes
 		const wasBreakpointChanged =
@@ -409,7 +411,6 @@ class MaxiBlockComponent extends Component {
 	 */
 	getSnapshotBeforeUpdate(prevProps, prevState) {
 		if (this.isPatternsPreview || this.templateModal) return false;
-
 		// If deviceType or baseBreakpoint changes, render styles
 		const wasBreakpointChanged =
 			this.props.deviceType !== prevProps.deviceType ||
@@ -464,6 +465,15 @@ class MaxiBlockComponent extends Component {
 
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { uniqueID } = this.props.attributes;
+
+		console.log(
+			'[UPDATE] Block attributes before/after:',
+			JSON.stringify({
+				prevBlockStyle: prevProps.attributes.blockStyle,
+				currentBlockStyle: this.props.attributes.blockStyle,
+				uniqueID,
+			})
+		);
 
 		if (!shouldDisplayStyles) {
 			!this.isReusable &&
@@ -824,7 +834,6 @@ class MaxiBlockComponent extends Component {
 
 		if (blockStyle !== newBlockStyle) {
 			this.props.attributes.blockStyle = newBlockStyle;
-
 			return true;
 		}
 

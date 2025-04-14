@@ -169,9 +169,25 @@ class edit extends MaxiBlockComponent {
 										}
 
 										this.typingTimeout = setTimeout(() => {
+											// Preserve blockStyle during typing if it exists
+											const preservedBlockStyle =
+												attributes.blockStyle;
+
 											maxiSetAttributes({
 												buttonContent,
 											});
+
+											// If blockStyle was lost during the setAttribute operation, restore it
+											if (
+												preservedBlockStyle &&
+												attributes.blockStyle !==
+													preservedBlockStyle
+											) {
+												maxiSetAttributes({
+													blockStyle:
+														preservedBlockStyle,
+												});
+											}
 										}, 100);
 									}}
 									placeholder={__(

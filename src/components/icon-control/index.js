@@ -401,7 +401,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 					/>
 				))}
 			{(iconStyle === 'border' ||
-				inlineTarget.includes('button-block')) && (
+				inlineTarget?.includes('button-block')) && (
 				<BorderControl
 					{...getGroupAttributes(
 						props,

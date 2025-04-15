@@ -1,3 +1,11 @@
+_Updates 15 Apr 2025_
+MaxiBlocks v2.1.0
+* Update: Enhanced WordPress 6.8 compatibility with comprehensive fixes, ensuring stable plugin performance across all features.
+* Update: Expanded plugin testing infrastructure with comprehensive unit test coverage, improving overall code reliability and stability.
+* Update: Refined Divider Maxi block behavior by synchronizing line width values between horizontal and vertical positions for consistent visual appearance.
+* Fix: Aligned line position values between toolbar and sidebar settings in Divider Maxi block, resolving inconsistencies in the editing experience.
+* Fix: Removed displaced autocomplete pop-up for link inputs, providing a cleaner and more predictable interface when adding links.
+
 _Updates 7 Apr 2025_
 MaxiBlocks v2.0.9
 * Update: Enhanced Single Post templates with author email and site link functionality.

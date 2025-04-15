@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 2.0.9
+Stable tag: 2.1.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,14 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 15 Apr 2025_
+MaxiBlocks v2.1.0
+* Update: Enhanced WordPress 6.8 compatibility with comprehensive fixes, ensuring stable plugin performance across all features.
+* Update: Expanded plugin testing infrastructure with comprehensive unit test coverage, improving overall code reliability and stability.
+* Update: Refined Divider Maxi block behavior by synchronizing line width values between horizontal and vertical positions for consistent visual appearance.
+* Fix: Aligned line position values between toolbar and sidebar settings in Divider Maxi block, resolving inconsistencies in the editing experience.
+* Fix: Removed displaced autocomplete pop-up for link inputs, providing a cleaner and more predictable interface when adding links.
+
 _Updates 7 Apr 2025_
 MaxiBlocks v2.0.9
 * Update: Enhanced Single Post templates with author email and site link functionality.
@@ -219,11 +227,6 @@ MaxiBlocks v2.0.7
 * Fix: Corrected initial width rendering of template parts when loading SE.
 * Fix: Improved MaxiBlocks toolbar compatibility with WordPress Distraction-free and Spotlight editor modes.
 * Fix: Enhanced responsive background colour changes through improved toolbar settings functionality in responsive mode.
-
-_Updates 24 Dec 2024_
-MaxiBlocks v2.0.6
-* Fix: Restored missing author display functionality in Dynamic Content on frontend.
-* Fix: Resolved link settings freeze issue in Dynamic Content.
 
 == Upgrade Notice ==
 

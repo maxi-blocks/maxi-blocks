@@ -42,6 +42,9 @@ class edit extends MaxiBlockComponent {
 		super(...args);
 
 		this.iconRef = createRef(null);
+
+		// Track if this is a new block with no xxl padding values set yet
+		this.initialBlockSetupDone = false;
 	}
 
 	scProps = {
@@ -83,6 +86,44 @@ class edit extends MaxiBlockComponent {
 		Array.from(this.blockRef.current.children[0].children).forEach(el => {
 			if (el.style.whiteSpace) el.style.whiteSpace = null;
 		});
+	}
+
+	// Apply xxl padding only for new button blocks
+	maxiBlockDidMount() {
+		const { attributes, maxiSetAttributes } = this.props;
+
+		// First check if this is a new button (empty content and empty icon)
+		const isNewButton =
+			attributes.buttonContent === undefined &&
+			!attributes['dc-status'] &&
+			attributes['icon-content'] === '';
+
+		// Only set xxl padding for new buttons
+		if (isNewButton && !this.initialBlockSetupDone) {
+			this.initialBlockSetupDone = true;
+
+			// Check if xxl padding attributes exist, use defaults if not
+			const xxlPaddingTop = attributes['button-padding-top-xxl']
+				? attributes['button-padding-top-xxl']
+				: '23';
+			const xxlPaddingRight = attributes['button-padding-right-xxl']
+				? attributes['button-padding-right-xxl']
+				: '55';
+			const xxlPaddingBottom = attributes['button-padding-bottom-xxl']
+				? attributes['button-padding-bottom-xxl']
+				: '23';
+			const xxlPaddingLeft = attributes['button-padding-left-xxl']
+				? attributes['button-padding-left-xxl']
+				: '55';
+
+			// Set the xxl padding values
+			maxiSetAttributes({
+				'button-padding-top-xxl': xxlPaddingTop,
+				'button-padding-right-xxl': xxlPaddingRight,
+				'button-padding-bottom-xxl': xxlPaddingBottom,
+				'button-padding-left-xxl': xxlPaddingLeft,
+			});
+		}
 	}
 
 	render() {
@@ -167,9 +208,25 @@ class edit extends MaxiBlockComponent {
 										}
 
 										this.typingTimeout = setTimeout(() => {
+											// Preserve blockStyle during typing if it exists
+											const preservedBlockStyle =
+												attributes.blockStyle;
+
 											maxiSetAttributes({
 												buttonContent,
 											});
+
+											// If blockStyle was lost during the setAttribute operation, restore it
+											if (
+												preservedBlockStyle &&
+												attributes.blockStyle !==
+													preservedBlockStyle
+											) {
+												maxiSetAttributes({
+													blockStyle:
+														preservedBlockStyle,
+												});
+											}
 										}, 100);
 									}}
 									placeholder={__(

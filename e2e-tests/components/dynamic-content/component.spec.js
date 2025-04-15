@@ -289,7 +289,7 @@ describe('Dynamic content component for image blocks', () => {
 		const url = new URL(imageUrl);
 		expect(url.origin).toBe('http://localhost:8889');
 		expect(url.pathname).toMatch(
-			/^\/wp-content\/uploads\/\d{4}\/\d{2}\/foo\.webp$/
+			/^\/wp-content\/uploads\/\d{4}\/\d{2}\/foo(-\d+)?\.webp$/
 		);
 
 		// Select "Get by date" as relation
@@ -306,7 +306,7 @@ describe('Dynamic content component for image blocks', () => {
 		const url1 = new URL(imageUrl1);
 		expect(url1.origin).toBe('http://localhost:8889');
 		expect(url1.pathname).toMatch(
-			/^\/wp-content\/uploads\/\d{4}\/\d{2}\/foo\.webp$/
+			/^\/wp-content\/uploads\/\d{4}\/\d{2}\/foo(-\d+)?\.webp$/
 		);
 	});
 });

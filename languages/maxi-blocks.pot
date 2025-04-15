@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.0.9\n"
+"Project-Id-Version: MaxiBlocks 2.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-04T11:43:20+00:00\n"
+"POT-Creation-Date: 2025-04-15T13:39:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: maxi-blocks\n"
@@ -1681,7 +1681,7 @@ msgstr ""
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:128
 #: src/blocks/video-maxi/components/video-control/index.js:142
 #: src/components/background-control/imageLayer.js:122
-#: src/components/divider-control/index.js:159
+#: src/components/divider-control/index.js:253
 #: src/components/dynamic-content/index.js:165
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
@@ -2558,7 +2558,7 @@ msgstr ""
 
 #: build/index.js:15
 #: src/components/border-control/index.js:326
-#: src/components/divider-control/index.js:157
+#: src/components/divider-control/index.js:251
 msgid "Add border line"
 msgstr ""
 
@@ -3059,59 +3059,49 @@ msgid "Hide"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/divider-control/index.js:161
+#: src/components/divider-control/index.js:255
 msgid "Dotted"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/divider-control/index.js:165
+#: src/components/divider-control/index.js:259
 msgid "Dashed"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/divider-control/index.js:169
+#: src/components/divider-control/index.js:263
 msgid "Solid"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/divider-control/index.js:173
+#: src/components/divider-control/index.js:267
 msgid "Double"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/divider-control/index.js:214
+#: src/components/divider-control/index.js:308
 msgid "Line radius"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:294
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:510
-#: src/components/divider-control/index.js:230
+#: src/components/divider-control/index.js:324
 #: src/editor/style-cards/maxiStyleCardsTab.js:529
 msgid "Divider"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/divider-control/index.js:317
+#: src/components/divider-control/index.js:411
+#: src/components/divider-control/index.js:486
 #: src/components/toolbar/components/divider-line/index.js:131
 msgid "Line size"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/divider-control/index.js:375
+#: src/components/divider-control/index.js:469
+#: src/components/divider-control/index.js:526
 msgid "Line weight"
-msgstr ""
-
-#: build/index.js:15
-#: src/components/divider-control/index.js:450
-#: src/components/toolbar/components/divider-line/index.js:205
-#: src/components/toolbar/components/size/index.js:56
-msgid "Size"
-msgstr ""
-
-#: build/index.js:15
-#: src/components/divider-control/index.js:490
-msgid "Weight"
 msgstr ""
 
 #: build/index.js:15
@@ -3265,32 +3255,32 @@ msgid "Icon padding"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:41
+#: src/components/link-control/index.js:59
 msgid "Search or type URL"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:53
+#: src/components/link-control/index.js:71
 msgid "Open in new tab"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:58
+#: src/components/link-control/index.js:76
 msgid "\"nofollow\""
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:64
+#: src/components/link-control/index.js:82
 msgid "\"sponsored\""
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:68
+#: src/components/link-control/index.js:86
 msgid "\"UGC\""
 msgstr ""
 
 #: build/index.js:15
-#: src/components/link-control/index.js:100
+#: src/components/link-control/index.js:118
 msgid "Remove link"
 msgstr ""
 
@@ -3923,30 +3913,36 @@ msgid "Divider style"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/divider-alignment/index.js:61
+#: src/components/toolbar/components/divider-line/index.js:205
+#: src/components/toolbar/components/size/index.js:56
+msgid "Size"
+msgstr ""
+
+#: build/index.js:15
+#: src/components/toolbar/components/divider-alignment/index.js:79
 msgid "Divider alignment"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/divider-maxi/inspector.js:65
-#: src/components/toolbar/components/divider-alignment/index.js:68
+#: src/components/toolbar/components/divider-alignment/index.js:86
 msgid "Line orientation"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/divider-maxi/inspector.js:84
-#: src/components/toolbar/components/divider-alignment/index.js:71
+#: src/components/toolbar/components/divider-alignment/index.js:89
 msgid "Horizontal"
 msgstr ""
 
 #: build/index.js:15
 #: src/blocks/divider-maxi/inspector.js:91
-#: src/components/toolbar/components/divider-alignment/index.js:75
+#: src/components/toolbar/components/divider-alignment/index.js:93
 msgid "Vertical"
 msgstr ""
 
 #: build/index.js:15
-#: src/components/toolbar/components/divider-alignment/index.js:86
+#: src/components/toolbar/components/divider-alignment/index.js:104
 msgid "Vertical position"
 msgstr ""
 
@@ -4218,7 +4214,7 @@ msgstr ""
 #: build/index.js:15
 #: src/components/prompt-control/components/result-card/index.js:312
 #: src/components/prompt-control/components/result-card/index.js:318
-#: src/components/toolbar/components/delete/index.js:49
+#: src/components/toolbar/components/delete/index.js:51
 #: src/editor/style-cards/maxiStyleCardsEditor.js:554
 #: src/editor/style-cards/maxiStyleCardsEditor.js:563
 msgid "Delete"
@@ -4933,7 +4929,7 @@ msgid "To edit this block please use a desktop browser"
 msgstr ""
 
 #: build/index.js:15
-#: src/blocks/button-maxi/edit.js:177
+#: src/blocks/button-maxi/edit.js:233
 #: src/blocks/search-maxi/components/button-control/index.js:46
 msgid "Button text"
 msgstr ""
@@ -7336,8 +7332,8 @@ msgstr ""
 msgid "Columns Handlers"
 msgstr ""
 
-#: src/editor/style-cards/utils.js:40
-#: src/editor/style-cards/utils.js:72
+#: src/editor/style-cards/utils.js:42
+#: src/editor/style-cards/utils.js:74
 msgid "View"
 msgstr ""
 

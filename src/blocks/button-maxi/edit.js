@@ -15,7 +15,6 @@ import classnames from 'classnames';
  */
 import Inspector from './inspector';
 import Toolbar from '@components/toolbar';
-import IconToolbar from '@components/toolbar/iconToolbar';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { getGroupAttributes, getIconPositionClass } from '@extensions/styles';
@@ -94,7 +93,6 @@ class edit extends MaxiBlockComponent {
 			content: dcContent,
 			field: dcField,
 			subField,
-			linkTarget: dcLinkTarget,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
 			this.props.contextLoopContext?.contextLoop
@@ -184,26 +182,13 @@ class edit extends MaxiBlockComponent {
 						</>
 					)}
 					{attributes['icon-content'] && (
-						<>
-							<IconToolbar
-								key={`icon-toolbar-${uniqueID}`}
-								ref={
-									attributes['icon-position'] === 'top' ||
-									attributes['icon-position'] === 'bottom'
-										? this.blockRef
-										: this.iconRef
-								}
-								{...this.props}
-								propsToAvoid={['buttonContent', 'formatValue']}
-							/>
-							<IconWrapper
-								ref={this.iconRef}
-								uniqueID={uniqueID}
-								className='maxi-button-block__icon'
-							>
-								<RawHTML>{attributes['icon-content']}</RawHTML>
-							</IconWrapper>
-						</>
+						<IconWrapper
+							ref={this.iconRef}
+							uniqueID={uniqueID}
+							className='maxi-button-block__icon'
+						>
+							<RawHTML>{attributes['icon-content']}</RawHTML>
+						</IconWrapper>
 					)}
 				</div>
 			</MaxiBlock>,

@@ -25,13 +25,12 @@ const PaddingMargin = props => {
 		breakpoint,
 		disableMargin = false,
 		disablePadding = false,
-		isIconToolbar = false,
 		marginTarget = 'margin',
 		onChange,
 		paddingTarget = 'padding',
 	} = props;
 
-	if (blockName !== 'maxi-blocks/button-maxi' && !isIconToolbar) return null;
+	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
 	return (
 		<ToolbarPopover
@@ -39,15 +38,12 @@ const PaddingMargin = props => {
 			tooltip={__('Padding', 'maxi-blocks')}
 			position='bottom center'
 			icon={toolbarPadding}
-			advancedOptions={isIconToolbar ? 'icon' : 'margin / padding'}
+			advancedOptions='margin / padding'
 		>
 			<div className='toolbar-item__padding-margin__popover'>
 				{!disablePadding && (
 					<AxisControl
-						{...getGroupAttributes(
-							props,
-							isIconToolbar ? 'iconPadding' : 'padding'
-						)}
+						{...getGroupAttributes(props, 'padding')}
 						label={__('Icon padding', 'maxi-blocks')}
 						onChange={onChange}
 						breakpoint={breakpoint}

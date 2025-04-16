@@ -369,13 +369,8 @@ msgstr ""
 msgid "Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings"
 msgstr ""
 
-<<<<<<< HEAD
-#: core/admin/class-maxi-dashboard.php:578
-msgid "Cloud library and Style Cards"
-=======
 #: core/admin/class-maxi-dashboard.php:593
 msgid "Template library and Style Cards"
->>>>>>> 78017fe4978e34db292e337d502211fe79ae0d44
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:597
@@ -390,13 +385,8 @@ msgstr ""
 msgid "Choose your favourite Style Card from 100 shown in the library."
 msgstr ""
 
-<<<<<<< HEAD
-#: core/admin/class-maxi-dashboard.php:605
-msgid "Browse the Cloud library to find a good page or pattern."
-=======
 #: core/admin/class-maxi-dashboard.php:620
 msgid "Browse the template library to find a good page or pattern."
->>>>>>> 78017fe4978e34db292e337d502211fe79ae0d44
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:627
@@ -419,13 +409,8 @@ msgstr ""
 msgid " - We’re dying to see what you create. "
 msgstr ""
 
-<<<<<<< HEAD
-#: core/admin/class-maxi-dashboard.php:645
-msgid "Our next goal is to launch the MaxiBlocks Pro Cloud library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap."
-=======
 #: core/admin/class-maxi-dashboard.php:660
 msgid "Our next goal is to launch the MaxiBlocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap."
->>>>>>> 78017fe4978e34db292e337d502211fe79ae0d44
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:667
@@ -528,13 +513,8 @@ msgstr ""
 msgid "-  Open master toolbar from the square MaxiBlocks launcher icon"
 msgstr ""
 
-<<<<<<< HEAD
-#: core/admin/class-maxi-dashboard.php:758
-msgid "-  Choose \"Cloud library\" and select the blue \"Pro\" tab to start browsing"
-=======
 #: core/admin/class-maxi-dashboard.php:773
 msgid "-  Choose \"Template library\" and select the blue \"Pro\" tab to start browsing"
->>>>>>> 78017fe4978e34db292e337d502211fe79ae0d44
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:779

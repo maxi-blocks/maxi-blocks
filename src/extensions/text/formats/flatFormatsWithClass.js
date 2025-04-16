@@ -211,7 +211,10 @@ export const removeUnnecessaryFormats = ({
 
 	return {
 		formatValue: newFormatValue,
-		typography: changedTypography,
+		typography: {
+			...typography,
+			...changedTypography,
+		},
 		content: newContent,
 	};
 };

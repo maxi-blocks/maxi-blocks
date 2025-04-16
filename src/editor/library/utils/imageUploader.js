@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { dispatch, resolveSelect } from '@wordpress/data';
-import { uploadMedia } from '@wordpress/media-utils';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * External dependencies
@@ -13,6 +13,35 @@ import { isEmpty } from 'lodash';
 const validateCommentStatus = status => {
 	const validStatuses = ['open', 'closed'];
 	return validStatuses.includes(status) ? status : 'closed';
+};
+
+/**
+ * Custom media uploader that properly sets Content-Disposition headers
+ * @param {File} file - File object to upload
+ * @returns {Promise<Object>} - Upload response
+ */
+const customMediaUpload = async file => {
+	// Create FormData with proper Content-Disposition
+	const formData = new FormData();
+	formData.append('file', file);
+
+	try {
+		// Use WordPress apiFetch to make the request
+		const response = await apiFetch({
+			path: '/wp/v2/media',
+			method: 'POST',
+			body: formData,
+			// This is crucial - we let the browser set the Content-Type and boundaries
+			headers: {
+				// Explicitly omitting Content-Type to let browser set it with boundary
+			},
+		});
+
+		return response;
+	} catch (error) {
+		console.error('Media upload failed:', error);
+		throw error;
+	}
 };
 
 export const placeholderUploader = async () => {
@@ -37,41 +66,46 @@ export const placeholderUploader = async () => {
 		).receiveMaxiSettings();
 
 		// In case the image is not found, let's fetch it from the Cloud server
-		const placeholderBlob = await fetch(placeholderURL)
-			.then(res => res.blob())
-			.catch(err => {
-				console.warn(
-					__(
-						`The Cloud server is down, using the placeholder image. Error: ${err}`,
-						'maxi-blocks'
-					)
-				);
+		const placeholderResponse = await fetch(placeholderURL).catch(err => {
+			console.warn(
+				__(
+					`The Cloud server is down, using the placeholder image. Error: ${err}`,
+					'maxi-blocks'
+				)
+			);
+			return false;
+		});
 
-				return false;
-			});
+		if (!placeholderResponse || !placeholderResponse.ok) return null;
 
-		let response = false;
+		// Get the blob data
+		const placeholderBlob = await placeholderResponse.blob();
+		if (!placeholderBlob) return null;
 
 		const maxiTerms = await getEntityRecords('taxonomy', 'maxi-image-type');
 		const maxiTermId = maxiTerms[0].id;
 
-		await uploadMedia({
-			filesList: [
-				new File([placeholderBlob], 'maxi-pattern-placeholder.jpg', {
-					type: 'image/jpeg',
-				}),
-			],
-			onFileChange: data => {
-				[response] = data;
-			},
-			onError: err =>
-				console.warn(
-					__(
-						`Can't upload the placeholder image, check directory's permissions. Error: ${err}`,
-						'maxi-blocks'
-					)
-				),
+		// Create file object
+		const fileName = 'maxi-pattern-placeholder.jpg';
+		const file = new File([placeholderBlob], fileName, {
+			type: 'image/jpeg',
 		});
+
+		// Use custom media upload function instead of WordPress uploadMedia
+		let response;
+		try {
+			response = await customMediaUpload(file);
+		} catch (error) {
+			console.error(
+				__(
+					`Can't upload the placeholder image, check directory's permissions. Error: ${error}`,
+					'maxi-blocks'
+				)
+			);
+			return null;
+		}
+
+		if (!response) return null;
 
 		// Check if comment_status is empty and set it to 'closed' if needed
 		const updatedCommentStatus = response?.comment_status ?? 'closed';
@@ -80,7 +114,7 @@ export const placeholderUploader = async () => {
 		const validatedCommentStatus =
 			validateCommentStatus(updatedCommentStatus);
 
-		const saveResult = await dispatch('core').saveEntityRecord(
+		await dispatch('core').saveEntityRecord(
 			'postType',
 			'attachment',
 			{
@@ -91,7 +125,10 @@ export const placeholderUploader = async () => {
 			{ throwOnError: true }
 		);
 
-		return response;
+		return {
+			id: response.id,
+			url: response?.source_url || response?.guid?.rendered,
+		};
 	} catch (err) {
 		console.error(
 			__(`Error uploading the placeholder image: ${err}`, 'maxi-blocks'),
@@ -168,60 +205,45 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	}
 
 	// In case the image is not found, let's fetch it from the Cloud server
-	const imageBlob = await fetch(imageSrc)
-		.then(res => res.blob())
-		.catch(err => {
-			console.warn(
-				__(
-					`The Cloud server is down, using the placeholder image. Error: ${err}`,
-					'maxi-blocks'
-				)
-			);
-			return false;
-		});
+	const imageResponse = await fetch(imageSrc).catch(err => {
+		console.warn(
+			__(
+				`The Cloud server is down, using the placeholder image. Error: ${err}`,
+				'maxi-blocks'
+			)
+		);
+		return false;
+	});
 
+	if (!imageResponse || !imageResponse.ok) return placeholderUploader();
+
+	// Get the blob data
+	const imageBlob = await imageResponse.blob();
 	if (!imageBlob) return placeholderUploader();
 
 	const maxiTerms = await getEntityRecords('taxonomy', 'maxi-image-type');
 	const maxiTermId = maxiTerms[0].id;
 
-	let response;
-	let isComplete = false;
-
-	const uploadPromise = new Promise((resolve, reject) => {
-		uploadMedia({
-			filesList: [
-				new File([imageBlob], fileName, {
-					type: mimeType,
-				}),
-			],
-			onFileChange: data => {
-				const [firstItem] = data;
-				if (!firstItem?.url?.startsWith('blob:')) {
-					response = firstItem;
-					isComplete = true;
-					resolve(response);
-				}
-			},
-			onError: err => {
-				console.warn(
-					__(
-						`The original image not found (404) on the Cloud Site, using the placeholder image. Error: ${err.code}, ${err.message}`,
-						'maxi-blocks'
-					)
-				);
-				reject(err);
-			},
-		});
+	// Create file object
+	const file = new File([imageBlob], fileName, {
+		type: mimeType || 'image/jpeg',
 	});
 
+	// Use custom upload function
+	let response;
 	try {
-		await uploadPromise;
-	} catch (err) {
+		response = await customMediaUpload(file);
+	} catch (error) {
+		console.warn(
+			__(
+				`The original image not found (404) on the Cloud Site, using the placeholder image. Error: ${error.code}, ${error.message}`,
+				'maxi-blocks'
+			)
+		);
 		return placeholderUploader();
 	}
 
-	if (!response || !isComplete) return placeholderUploader();
+	if (!response) return placeholderUploader();
 
 	const validatedCommentStatus = validateCommentStatus(
 		response?.comment_status
@@ -241,7 +263,8 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	return {
 		id: response.id,
 		url:
-			response?.media_details?.sizes?.full?.source_url ??
+			response?.source_url ||
+			response?.media_details?.sizes?.full?.source_url ||
 			response.guid?.rendered,
 	};
 };

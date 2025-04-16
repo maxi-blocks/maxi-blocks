@@ -494,18 +494,35 @@ const LibraryContainer = props => {
 		'post_title, svg_tag.lvl0, svg_tag.lvl1, svg_tag.lvl2, svg_category'
 	).searchClient;
 
-	const { receiveMaxiSettings } = select('maxiBlocks');
+	// Get swap option from cookie
+	const getCookieSwapOption = () => {
+		const cookies = document.cookie.split(';');
+		for (let cookie of cookies) {
+			cookie = cookie.trim();
+			if (cookie.startsWith('maxi_swap_cloud_images=')) {
+				return (
+					cookie.substring('maxi_swap_cloud_images='.length) ===
+					'true'
+				);
+			}
+		}
+		// Default to false if cookie doesn't exist
+		return false;
+	};
 
-	const maxiSettings = receiveMaxiSettings();
-	const swapOption = maxiSettings?.swap_cloud_images;
+	// Set swap option to cookie (30 days expiration)
+	const setCookieSwapOption = value => {
+		const expirationDate = new Date();
+		expirationDate.setDate(expirationDate.getDate() + 30);
+		document.cookie = `maxi_swap_cloud_images=${value}; expires=${expirationDate.toUTCString()}; path=/`;
+	};
 
-	const [isSwapChecked, setSwapChecked] = useState(swapOption);
-
-	const { saveMaxiSetting } = useDispatch('maxiBlocks');
+	const [isSwapChecked, setSwapChecked] = useState(getCookieSwapOption());
 
 	useEffect(() => {
-		setSwapChecked(swapOption);
-	}, [swapOption]);
+		// Initialize from cookie
+		setSwapChecked(getCookieSwapOption());
+	}, []);
 
 	const getShapeType = type => {
 		switch (type) {
@@ -1167,7 +1184,7 @@ const LibraryContainer = props => {
 				checked={isSwapChecked}
 				onChange={val => {
 					setSwapChecked(val);
-					saveMaxiSetting('swap_cloud_images', val);
+					setCookieSwapOption(val);
 				}}
 				__nextHasNoMarginBottom
 			/>

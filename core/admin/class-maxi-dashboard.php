@@ -277,7 +277,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         $this->maxi_blocks_pro(),
                         maxi_blocks_allowed_html()
                     );
-                } elseif($tab === self::$maxi_prefix.'maxi_ai') {
+                } elseif ($tab === self::$maxi_prefix.'maxi_ai') {
                     echo wp_kses(
                         $this->maxi_blocks_maxi_ai(),
                         maxi_blocks_allowed_html()
@@ -1024,12 +1024,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $dropdown .= '<option value="">'.__('', 'maxi-blocks').'</option>';
             } else {
                 // For other dropdowns, process the static list
-                if(($key = array_search($option_value, $list)) !== false) {
+                if (($key = array_search($option_value, $list)) !== false) {
                     unset($list[$key]);
                     array_unshift($list, $option_value);
                 }
 
-                foreach($list as $value) {
+                foreach ($list as $value) {
                     $dropdown .= '<option value="'.$value.'">'.$value.'</option>';
                 }
             }
@@ -1051,12 +1051,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $description;
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
 
-            if($type === 'dropdown') {
+            if ($type === 'dropdown') {
                 $content .= $this->generate_custom_dropdown($option, $args);
-            } elseif($type === 'text' || $type === 'password' || $type === 'textarea') {
+            } elseif ($type === 'text' || $type === 'password' || $type === 'textarea') {
                 $is_api_input = $type === 'password';
 
-                if($is_api_input) {
+                if ($is_api_input) {
                     $api_name = str_replace('_api_key_option', '', $option);
                     $content .='<div id="maxi-api-test"></div>';
                 }
@@ -1065,7 +1065,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 $content .= $this->generate_input($option, $function, $type, $args);
 
-                if(str_contains($option, 'api_key_option')) {
+                if (str_contains($option, 'api_key_option')) {
                     $content .='<div id="maxi-api-test__validation-message"></div>';
                 }
             } else {
@@ -1124,7 +1124,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'remove_local_fonts' => $args,
                 'allow_svg_json_uploads' => $args,
                 'hide_tooltips' => $args,
-                'swap_cloud_images' => $args,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,
@@ -1147,7 +1146,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 // delete_option($setting_name);
 
                 register_setting('maxi-blocks-settings-group', $setting_name, $setting_args);
-                if(isset($setting_args['default'])) {
+                if (isset($setting_args['default'])) {
                     add_option($setting_name, $setting_args['default']);
                 }
             }
@@ -1227,7 +1226,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function remove_local_fonts()
         {
-            if((bool) get_option('remove_local_fonts')) {
+            if ((bool) get_option('remove_local_fonts')) {
                 $fonts_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
                 $this->delete_all_files($fonts_uploads_dir);
                 update_option('remove_local_fonts', 0);

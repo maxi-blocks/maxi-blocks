@@ -262,12 +262,7 @@ const LinkContent = props => {
 };
 
 const TextLink = props => {
-	const {
-		blockName,
-		isCaptionToolbar = false,
-		'dc-status': dcStatus = false,
-		linkSettings,
-	} = props;
+	const { blockName, 'dc-status': dcStatus = false, linkSettings } = props;
 
 	let formatValue;
 
@@ -289,7 +284,7 @@ const TextLink = props => {
 			});
 		});
 
-	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
 	if (!dcStatus)
 		return (

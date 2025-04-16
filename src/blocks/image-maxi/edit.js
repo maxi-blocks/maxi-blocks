@@ -25,7 +25,6 @@ import Placeholder from '@components/placeholder';
 import RawHTML from '@components/raw-html';
 import MaxiPopoverButton from '@components/maxi-popover-button';
 import MaxiBlock from '@components/maxi-block/maxiBlock';
-import CaptionToolbar from '@components/toolbar/captionToolbar';
 import getStyles from './styles';
 import {
 	getGroupAttributes,
@@ -440,77 +439,60 @@ class edit extends MaxiBlockComponent {
 							onResizeStop={handleOnResizeStop}
 						>
 							{captionType !== 'none' &&
-								captionPosition === 'top' && (
-									<>
-										<CaptionToolbar
-											key={`caption-toolbar-${uniqueID}`}
-											ref={this.textRef}
-											setShowLoader={value =>
-												this.setState({
-													showLoader: value,
-												})
-											}
-											{...this.props}
-										/>
-										{dcStatus ? (
-											<figcaption className='maxi-image-block__caption'>
-												{dcMediaCaption &&
-												!isEmpty(dcMediaCaption)
-													? dcMediaCaption
-													: __(
-															'No content found',
-															'maxi-blocks'
-													  )}
-											</figcaption>
-										) : (
-											<RichText
-												ref={this.textRef}
-												className='maxi-image-block__caption'
-												value={captionContent}
-												onChange={processContent}
-												tagName='figcaption'
-												placeholder={__(
-													'Set your Image Maxi caption here…',
+								captionPosition === 'top' &&
+								(dcStatus ? (
+									<figcaption className='maxi-image-block__caption'>
+										{dcMediaCaption &&
+										!isEmpty(dcMediaCaption)
+											? dcMediaCaption
+											: __(
+													'No content found',
 													'maxi-blocks'
-												)}
-												__unstableEmbedURLOnPaste
-												__unstableAllowPrefixTransformations
-											>
-												{richTextValues =>
-													onChangeRichText({
-														attributes,
-														maxiSetAttributes,
-														oldFormatValue:
-															this.state
-																.formatValue,
-														onChange: newState => {
-															if (
-																this
-																	.typingTimeoutFormatValue
-															) {
-																clearTimeout(
-																	this
-																		.typingTimeoutFormatValue
-																);
-															}
-
-															this.typingTimeoutFormatValue =
-																setTimeout(
-																	() => {
-																		this.setState(
-																			newState
-																		);
-																	},
-																	10
-																);
-														},
-														richTextValues,
-													})
-												}
-											</RichText>
+											  )}
+									</figcaption>
+								) : (
+									<RichText
+										ref={this.textRef}
+										className='maxi-image-block__caption'
+										value={captionContent}
+										onChange={processContent}
+										tagName='figcaption'
+										placeholder={__(
+											'Set your Image Maxi caption here…',
+											'maxi-blocks'
 										)}
-									</>
-								)}
+										__unstableEmbedURLOnPaste
+										__unstableAllowPrefixTransformations
+									>
+										{richTextValues =>
+											onChangeRichText({
+												attributes,
+												maxiSetAttributes,
+												oldFormatValue:
+													this.state.formatValue,
+												onChange: newState => {
+													if (
+														this
+															.typingTimeoutFormatValue
+													) {
+														clearTimeout(
+															this
+																.typingTimeoutFormatValue
+														);
+													}
+
+													this.typingTimeoutFormatValue =
+														setTimeout(() => {
+															this.setState(
+																newState
+															);
+														}, 10);
+												},
+												richTextValues,
+											})
+										}
+									</RichText>
+								))}
 							<HoverPreview
 								key={`hover-preview-${uniqueID}`}
 								wrapperClassName={wrapperClassName}
@@ -547,77 +529,60 @@ class edit extends MaxiBlockComponent {
 								)}
 							</HoverPreview>
 							{captionType !== 'none' &&
-								captionPosition === 'bottom' && (
-									<>
-										<CaptionToolbar
-											key={`caption-toolbar-${uniqueID}`}
-											ref={this.textRef}
-											setShowLoader={value =>
-												this.setState({
-													showLoader: value,
-												})
-											}
-											{...this.props}
-										/>
-										{dcStatus ? (
-											<figcaption className='maxi-image-block__caption'>
-												{dcMediaCaption &&
-												!isEmpty(dcMediaCaption)
-													? dcMediaCaption
-													: __(
-															'No content found',
-															'maxi-blocks'
-													  )}
-											</figcaption>
-										) : (
-											<RichText
-												ref={this.textRef}
-												className='maxi-image-block__caption'
-												value={captionContent}
-												onChange={processContent}
-												tagName='figcaption'
-												placeholder={__(
-													'Set your Image Maxi caption here…',
+								captionPosition === 'bottom' &&
+								(dcStatus ? (
+									<figcaption className='maxi-image-block__caption'>
+										{dcMediaCaption &&
+										!isEmpty(dcMediaCaption)
+											? dcMediaCaption
+											: __(
+													'No content found',
 													'maxi-blocks'
-												)}
-												__unstableEmbedURLOnPaste
-												__unstableAllowPrefixTransformations
-											>
-												{richTextValues =>
-													onChangeRichText({
-														attributes,
-														maxiSetAttributes,
-														oldFormatValue:
-															this.state
-																.formatValue,
-														onChange: newState => {
-															if (
-																this
-																	.typingTimeoutFormatValue
-															) {
-																clearTimeout(
-																	this
-																		.typingTimeoutFormatValue
-																);
-															}
-
-															this.typingTimeoutFormatValue =
-																setTimeout(
-																	() => {
-																		this.setState(
-																			newState
-																		);
-																	},
-																	10
-																);
-														},
-														richTextValues,
-													})
-												}
-											</RichText>
+											  )}
+									</figcaption>
+								) : (
+									<RichText
+										ref={this.textRef}
+										className='maxi-image-block__caption'
+										value={captionContent}
+										onChange={processContent}
+										tagName='figcaption'
+										placeholder={__(
+											'Set your Image Maxi caption here…',
+											'maxi-blocks'
 										)}
-									</>
-								)}
+										__unstableEmbedURLOnPaste
+										__unstableAllowPrefixTransformations
+									>
+										{richTextValues =>
+											onChangeRichText({
+												attributes,
+												maxiSetAttributes,
+												oldFormatValue:
+													this.state.formatValue,
+												onChange: newState => {
+													if (
+														this
+															.typingTimeoutFormatValue
+													) {
+														clearTimeout(
+															this
+																.typingTimeoutFormatValue
+														);
+													}
+
+													this.typingTimeoutFormatValue =
+														setTimeout(() => {
+															this.setState(
+																newState
+															);
+														}, 10);
+												},
+												richTextValues,
+											})
+										}
+									</RichText>
+								))}
 						</BlockResizer>
 					) : (
 						<div className='maxi-image-block__placeholder'>

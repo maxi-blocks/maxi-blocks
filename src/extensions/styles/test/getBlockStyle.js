@@ -1,4 +1,4 @@
-import getBlockStyle from '../getBlockStyle';
+import getBlockStyle from '@extensions/styles/getBlockStyle';
 import { select } from '@wordpress/data';
 
 jest.mock('@wordpress/data', () => ({
@@ -18,59 +18,90 @@ describe('getBlockStyle', () => {
 		select.mockReturnValue(mockBlockEditorStore);
 	});
 
-	it('Returns blockStyle from root attributes if available', () => {
+	it('Returns blockStyle from current block if available', () => {
+		// First check current block
+		mockBlockEditorStore.getBlockAttributes.mockReturnValue({
+			blockStyle: 'light',
+		});
+
+		const result = getBlockStyle('test-id');
+
+		expect(result).toBe('light');
+		// Should check current block first
+		expect(mockBlockEditorStore.getBlockAttributes).toHaveBeenCalledWith(
+			'test-id'
+		);
+		// Should not need to check root if current block has style
+		expect(
+			mockBlockEditorStore.getBlockHierarchyRootClientId
+		).not.toHaveBeenCalled();
+	});
+
+	it('Returns blockStyle from root attributes if current block has no style', () => {
+		// First returns undefined for current block attributes
+		mockBlockEditorStore.getBlockAttributes.mockReturnValueOnce({});
 		mockBlockEditorStore.getBlockHierarchyRootClientId.mockReturnValue(
 			'root-id'
 		);
-		mockBlockEditorStore.getBlockAttributes.mockReturnValue({
+		// Then returns dark style for root attributes
+		mockBlockEditorStore.getBlockAttributes.mockReturnValueOnce({
 			blockStyle: 'dark',
 		});
 
 		const result = getBlockStyle('test-id');
 
 		expect(result).toBe('dark');
+		// Check that it was called with test-id first for current block
+		expect(mockBlockEditorStore.getBlockAttributes).toHaveBeenNthCalledWith(
+			1,
+			'test-id'
+		);
 		expect(
 			mockBlockEditorStore.getBlockHierarchyRootClientId
 		).toHaveBeenCalledWith('test-id');
-		expect(mockBlockEditorStore.getBlockAttributes).toHaveBeenCalledWith(
+		// Then check root block
+		expect(mockBlockEditorStore.getBlockAttributes).toHaveBeenNthCalledWith(
+			2,
 			'root-id'
-		);
-	});
-
-	it('Returns blockStyle from current block if available', () => {
-		mockBlockEditorStore.getBlockHierarchyRootClientId.mockReturnValue(
-			'root-id'
-		);
-		mockBlockEditorStore.getBlockAttributes
-			.mockReturnValueOnce({}) // root attributes
-			.mockReturnValueOnce({ blockStyle: 'dark' }); // current block attributes
-
-		const result = getBlockStyle('test-id');
-
-		expect(result).toBe('dark');
-		expect(mockBlockEditorStore.getBlockAttributes).toHaveBeenCalledWith(
-			'test-id'
 		);
 	});
 
 	it('Returns "light" as default if no blockStyle is found', () => {
+		// First check current block, no style
+		mockBlockEditorStore.getBlockAttributes.mockReturnValueOnce({});
 		mockBlockEditorStore.getBlockHierarchyRootClientId.mockReturnValue(
 			'root-id'
 		);
-		mockBlockEditorStore.getBlockAttributes.mockReturnValue({});
+		// Then check root block, no style
+		mockBlockEditorStore.getBlockAttributes.mockReturnValueOnce({});
 
 		const result = getBlockStyle('test-id');
 
 		expect(result).toBe('light');
 	});
 
+	it('Skips root check if root is same as current block', () => {
+		// Current block has no style
+		mockBlockEditorStore.getBlockAttributes.mockReturnValueOnce({});
+		// Root is same as current block
+		mockBlockEditorStore.getBlockHierarchyRootClientId.mockReturnValue(
+			'test-id'
+		);
+
+		const result = getBlockStyle('test-id');
+
+		expect(result).toBe('light');
+		// Should check attributes only once
+		expect(mockBlockEditorStore.getBlockAttributes).toHaveBeenCalledTimes(
+			1
+		);
+	});
+
 	it('Uses selected block id if no clientId is provided', () => {
 		mockBlockEditorStore.getSelectedBlockClientId.mockReturnValue(
 			'selected-id'
 		);
-		mockBlockEditorStore.getBlockHierarchyRootClientId.mockReturnValue(
-			'root-id'
-		);
+		// Selected block has style
 		mockBlockEditorStore.getBlockAttributes.mockReturnValue({
 			blockStyle: 'dark',
 		});
@@ -80,9 +111,9 @@ describe('getBlockStyle', () => {
 		expect(
 			mockBlockEditorStore.getSelectedBlockClientId
 		).toHaveBeenCalled();
-		expect(
-			mockBlockEditorStore.getBlockHierarchyRootClientId
-		).toHaveBeenCalledWith('selected-id');
+		expect(mockBlockEditorStore.getBlockAttributes).toHaveBeenCalledWith(
+			'selected-id'
+		);
 		expect(result).toBe('dark');
 	});
 
@@ -91,9 +122,7 @@ describe('getBlockStyle', () => {
 		mockBlockEditorStore.getFirstMultiSelectedBlockClientId.mockReturnValue(
 			'multi-selected-id'
 		);
-		mockBlockEditorStore.getBlockHierarchyRootClientId.mockReturnValue(
-			'root-id'
-		);
+		// Multi-selected block has style
 		mockBlockEditorStore.getBlockAttributes.mockReturnValue({
 			blockStyle: 'dark',
 		});
@@ -103,17 +132,17 @@ describe('getBlockStyle', () => {
 		expect(
 			mockBlockEditorStore.getFirstMultiSelectedBlockClientId
 		).toHaveBeenCalled();
-		expect(
-			mockBlockEditorStore.getBlockHierarchyRootClientId
-		).toHaveBeenCalledWith('multi-selected-id');
+		expect(mockBlockEditorStore.getBlockAttributes).toHaveBeenCalledWith(
+			'multi-selected-id'
+		);
 		expect(result).toBe('dark');
 	});
 
 	it('Handles undefined block attributes', () => {
+		mockBlockEditorStore.getBlockAttributes.mockReturnValue(undefined);
 		mockBlockEditorStore.getBlockHierarchyRootClientId.mockReturnValue(
 			'root-id'
 		);
-		mockBlockEditorStore.getBlockAttributes.mockReturnValue(undefined);
 
 		const result = getBlockStyle('test-id');
 
@@ -121,10 +150,10 @@ describe('getBlockStyle', () => {
 	});
 
 	it('Handles null block attributes', () => {
+		mockBlockEditorStore.getBlockAttributes.mockReturnValue(null);
 		mockBlockEditorStore.getBlockHierarchyRootClientId.mockReturnValue(
 			'root-id'
 		);
-		mockBlockEditorStore.getBlockAttributes.mockReturnValue(null);
 
 		const result = getBlockStyle('test-id');
 

@@ -23,7 +23,6 @@ import AdvancedNumberControl from '@components/advanced-number-control';
 import PaddingControl from '@components/padding-control';
 import {
 	processSCAttribute,
-	getDefaultSCAttribute,
 	showHideHamburgerNavigation,
 	processSCAttributes,
 	removeNavigationHoverUnderline,
@@ -32,6 +31,7 @@ import {
 	getDefaultSCValue,
 	getTypographyFromSC,
 } from '@extensions/style-cards';
+import getDefaultSCAttribute from './getDefaultSCAttribute';
 
 /**
  * Icons
@@ -777,7 +777,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						),
 					},
 					{
-						label: __('Typography globals', 'maxi-blocks'),
+						label: __('Headings globals', 'maxi-blocks'),
 						classNameItem: 'maxi-blocks-sc__type--heading',
 						content: (
 							<SettingTabsControl

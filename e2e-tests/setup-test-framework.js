@@ -194,6 +194,9 @@ function observeConsoleLogging() {
 		if (text.includes('Error during WebSocket handshake')) {
 			return;
 		}
+		if (text.includes('net::ERR_CERT_DATE_INVALID')) {
+			return;
+		}
 
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (
@@ -218,6 +221,14 @@ function observeConsoleLogging() {
 			text.includes('favicon.ico')
 		)
 			return;
+
+		// for fonts when server is down
+		if (
+			text.includes('Error getting font URL') ||
+			text.includes('Error loading font')
+		) {
+			return;
+		}
 
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
 

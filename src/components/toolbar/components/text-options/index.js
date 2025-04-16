@@ -181,11 +181,10 @@ const TextOptions = props => {
 		prefix = '',
 		styleCards = false,
 		styleCardPrefix,
-		isCaptionToolbar = false,
 		setShowLoader,
 	} = props;
 
-	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
 	const { formatValue, onChangeTextFormat } = useContext(TextContext);
 	const listContext = useContext(ListContext);
@@ -311,7 +310,7 @@ const TextOptions = props => {
 			<ToolbarPopover
 				tooltip={__('Edit text', 'maxi-blocks')}
 				text={__('Edit', 'maxi-blocks')}
-				advancedOptions={isCaptionToolbar ? 'caption' : 'typography'}
+				advancedOptions='typography'
 			>
 				<div className='toolbar-item__popover__font-options'>
 					<ResponsiveTabsControl

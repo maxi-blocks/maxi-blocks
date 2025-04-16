@@ -3,6 +3,11 @@
  */
 import getTemplatePartChooseList from './getTemplatePartChooseList';
 
+/**
+ * Get the iframe of the template view
+ * @param {string} uniqueID
+ * @returns {Object|null} The iframe of the template view or null if no iframe is found
+ */
 const getTemplateViewIframe = uniqueID => {
 	let templateViewIframe = null;
 

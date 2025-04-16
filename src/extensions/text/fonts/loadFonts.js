@@ -13,97 +13,15 @@ import {
 	setStorageCache,
 	cleanUrl,
 } from './fontCacheUtils';
+import { buildFontUrl, isCacheValid } from './loadFontUtils';
 
-const buildFontUrl = async (fontName, fontData = {}) => {
-	// Check if we need to use local fonts
-	if (window.maxiBlocksMain?.local_fonts) {
-		const encodedFontName = encodeURIComponent(fontName).replace(
-			/%20/g,
-			'+'
-		);
-
-		const response = await fetch(
-			`${
-				window.wpApiSettings?.root ?? '/wp-json/'
-			}maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
-			{
-				credentials: 'same-origin',
-				headers: {
-					'X-WP-Nonce': window.wpApiSettings?.nonce,
-				},
-			}
-		);
-
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
-
-		const text = await response.text();
-		return cleanUrl(text);
-	}
-
-	// For remote fonts (Google or Bunny)
-	const weight = Array.isArray(fontData.weight)
-		? fontData.weight.join(',')
-		: fontData.weight || '400';
-	const style = fontData.style || 'normal';
-
-	const apiUrl = window.maxiBlocksMain?.bunny_fonts
-		? 'https://fonts.bunny.net'
-		: 'https://fonts.googleapis.com';
-
-	const fontString =
-		style === 'italic'
-			? `ital,wght@0,${weight};1,${weight}`
-			: `wght@${weight}`;
-
-	const url = `${apiUrl}/css2?family=${encodeURIComponent(
-		fontName
-	)}:${fontString}&display=swap`;
-	return url;
-};
-
-const isCacheValid = async url => {
-	if (!url) return false;
-
-	// Check if URL matches current font provider settings
-	const isLocalFont = window.maxiBlocksMain?.local_fonts;
-	const isBunnyFont = window.maxiBlocksMain?.bunny_fonts;
-
-	// First check the URL pattern
-	let isValidPattern = false;
-	if (isLocalFont) {
-		isValidPattern = url.includes(window.location.origin);
-	} else if (isBunnyFont) {
-		isValidPattern = url.includes('fonts.bunny.net');
-	} else {
-		isValidPattern = url.includes('fonts.googleapis.com');
-	}
-
-	if (!isValidPattern) return false;
-
-	// Then check if the URL is actually accessible
-	try {
-		// Using AbortController to cancel the request if it fails
-		const controller = new AbortController();
-		const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
-
-		const response = await fetch(url, {
-			method: 'HEAD',
-			signal: controller.signal,
-			// Prevent the browser from logging failed requests
-			cache: 'no-store',
-		}).catch(() => ({ ok: false })); // Silently handle network errors
-
-		clearTimeout(timeoutId);
-		return response.ok;
-	} catch {
-		// Silently return false for any errors
-		return false;
-	}
-};
-
-const getFontUrl = async (fontName, fontData = {}) => {
+/**
+ * Get the font URL from cache or build it and save it to cache
+ * @param {string} fontName - The font name
+ * @param {Object} fontData - The font data
+ * @returns {Promise<string>} The font URL
+ */
+export const getFontUrl = async (fontName, fontData = {}) => {
 	try {
 		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
 
@@ -137,6 +55,12 @@ const getFontUrl = async (fontName, fontData = {}) => {
 	}
 };
 
+/**
+ * Get the font ID
+ * @param {string} fontName - The font name
+ * @param {Object} fontData - The font data
+ * @returns {string} The font ID
+ */
 const getFontID = (fontName, fontData) => {
 	const normalizeFontName = name => name.toLowerCase().replace(/\s/g, '-');
 	return `maxi-blocks-styles-font-${normalizeFontName(fontName)}-${
@@ -144,6 +68,13 @@ const getFontID = (fontName, fontData) => {
 	}-${fontData.style}`;
 };
 
+/**
+ * Get the font element
+ * @param {string} fontName - The font name
+ * @param {Object} fontData - The font data
+ * @param {string} url      - The font URL
+ * @returns {Promise<HTMLElement>} The font element
+ */
 const getFontElement = async (fontName, fontData, url) => {
 	// Get the URL if not provided (ensures consistent URL generation)
 	let fontUrl = url || (await getFontUrl(fontName, fontData));
@@ -171,165 +102,196 @@ const getFontElement = async (fontName, fontData, url) => {
  * @param {HTMLElement}      target       Element, where the font will be loaded
  * @param {CallableFunction} setIsLoading Function to set loading state
  */
-const loadFonts = (
+const loadFonts = async (
 	font,
 	backendOnly = true,
 	target = document,
 	setIsLoading
 ) => {
 	if (typeof font === 'object' && font !== null) {
-		Object.entries(font).forEach(([fontName, fontData]) => {
-			if (!fontName || fontName === 'undefined') return;
+		if (!backendOnly)
+			dispatch('maxiBlocks/text').updateFonts(JSON.stringify(font));
 
-			const fontWeight = fontData?.weight || '400';
-			const fontStyle = fontData?.style;
+		await Promise.all(
+			Object.entries(font).map(async ([fontName, fontData]) => {
+				if (!fontName || fontName === 'undefined') return;
 
-			let fontWeightArr = [];
-			let fontDataNew;
+				const fontWeight = fontData?.weight || '400';
+				const fontStyle = fontData?.style;
 
-			if (Array.isArray(fontWeight)) {
-				font[fontName].weight = uniq(fontWeight).join();
-				fontWeightArr = fontWeight;
-			} else if (typeof fontWeight === 'string') {
-				fontWeightArr = uniq(fontWeight.split(',')).filter(
-					weight => !isEmpty(weight)
-				);
-				fontDataNew = {
-					...fontData,
-					...{ weight: fontWeightArr.join() },
-				};
-				font[fontName].weight = fontWeightArr.join();
-			} else {
-				fontWeightArr = [fontWeight];
-				fontDataNew = { ...fontData, ...{ weight: fontWeight } };
-			}
+				let fontWeightArr = [];
+				let fontDataNew;
 
-			fontDataNew = {
-				...fontDataNew,
-				...{ display: 'swap' },
-			};
-
-			let fontStyleArr = [];
-
-			if (Array.isArray(fontStyle) && !isEmpty(fontStyle)) {
-				font[fontName].style = uniq(fontStyle).join();
-			} else if (typeof fontStyle === 'string') {
-				fontStyleArr = uniq(fontStyle.split(',')).filter(
-					style => !isEmpty(style)
-				);
-
-				font[fontName].style = fontStyleArr.join();
-			} else {
-				fontStyleArr = ['normal'];
-			}
-
-			if (isEmpty(fontDataNew.style)) delete fontDataNew.style;
-
-			const fontFiles =
-				select('maxiBlocks/text').getFont(fontName)?.files;
-
-			if (isEmpty(fontFiles)) return;
-
-			const loadBackendFont = async (fontName, fontData) => {
-				const fontId = getFontID(fontName, fontData);
-
-				if (target.head.querySelector(`#${fontId}`) !== null) {
-					return;
+				if (Array.isArray(fontWeight)) {
+					font[fontName].weight = uniq(fontWeight).join();
+					fontWeightArr = fontWeight;
+				} else if (typeof fontWeight === 'string') {
+					fontWeightArr = uniq(fontWeight.split(',')).filter(
+						weight => !isEmpty(weight)
+					);
+					fontDataNew = {
+						...fontData,
+						...{ weight: fontWeightArr.join() },
+					};
+					font[fontName].weight = fontWeightArr.join();
+				} else {
+					fontWeightArr = [fontWeight];
+					fontDataNew = { ...fontData, ...{ weight: fontWeight } };
 				}
 
-				if (setIsLoading) setIsLoading(true, fontId);
+				fontDataNew = {
+					...fontDataNew,
+					...{ display: 'swap' },
+				};
 
-				try {
-					const url = await getFontUrl(fontName, fontData);
-					const styleElement = await getFontElement(
-						fontName,
-						fontData,
-						url
+				let fontStyleArr = [];
+
+				if (Array.isArray(fontStyle) && !isEmpty(fontStyle)) {
+					font[fontName].style = uniq(fontStyle).join();
+				} else if (typeof fontStyle === 'string') {
+					fontStyleArr = uniq(fontStyle.split(',')).filter(
+						style => !isEmpty(style)
 					);
 
-					const oldStyleElement = target.getElementById(
-						styleElement.id
-					);
-					if (oldStyleElement) {
-						if (setIsLoading) {
-							if (oldStyleElement.sheet) {
-								setIsLoading(false, fontId);
-							} else {
-								oldStyleElement.onload = () => {
-									setIsLoading(false, fontId);
-								};
-							}
-						}
+					font[fontName].style = fontStyleArr.join();
+				} else {
+					fontStyleArr = ['normal'];
+				}
+
+				if (isEmpty(fontDataNew.style)) delete fontDataNew.style;
+
+				const fontFiles =
+					select('maxiBlocks/text').getFont(fontName)?.files;
+
+				if (isEmpty(fontFiles)) return;
+
+				const loadBackendFont = async (fontName, fontData) => {
+					const fontId = getFontID(fontName, fontData);
+
+					if (target.head.querySelector(`#${fontId}`) !== null) {
 						return;
 					}
 
-					if (setIsLoading) {
-						styleElement.onload = () => {
-							setIsLoading(false, fontId);
-						};
-					}
+					if (setIsLoading) setIsLoading(true, fontId);
 
-					target.head.appendChild(styleElement);
-				} catch (error) {
-					console.error('Error loading font:', error);
-				}
-			};
-
-			const getWeightFile = (weight, style) =>
-				style === 'italic'
-					? `${weight === '400' ? '' : weight}italic`
-					: weight;
-
-			/**
-			 * Returns font weight from weightFile
-			 *
-			 * @example getWeight('100italic') // returns 100;
-			 */
-			const getWeight = weightFile => {
-				const weightStr = weightFile.replace(/\D+/, '');
-
-				return isEmpty(weightStr) ? '400' : weightStr;
-			};
-
-			fontWeightArr.forEach(weight => {
-				fontStyleArr.forEach(currentFontStyle => {
-					let weightFile = getWeightFile(weight, currentFontStyle);
-					if (!(weightFile in fontFiles)) {
-						weightFile = '400';
-						const newFontWeightArr = uniq(fontWeightArr).filter(
-							value => {
-								return value !== weight;
-							}
+					try {
+						const url = await getFontUrl(fontName, fontData);
+						const styleElement = await getFontElement(
+							fontName,
+							fontData,
+							url
 						);
 
-						newFontWeightArr.push(weightFile);
-
-						const newFontWeight = uniq(newFontWeightArr).join();
-						font[fontName].weight = newFontWeight;
-					}
-
-					Object.entries(fontFiles).forEach(variant => {
-						if (variant[0].toString() === weightFile) {
-							fontDataNew = {
-								...fontData,
-								...{ style: currentFontStyle },
-								...{ weight: getWeight(weightFile) },
-							};
-
-							loadBackendFont(fontName, fontDataNew);
+						const oldStyleElement = target.getElementById(
+							styleElement.id
+						);
+						if (oldStyleElement) {
+							if (setIsLoading) {
+								if (oldStyleElement.sheet) {
+									setIsLoading(false, fontId);
+								} else {
+									oldStyleElement.onload = () => {
+										setIsLoading(false, fontId);
+									};
+								}
+							}
+							return;
 						}
-					});
-				});
-			});
-		});
 
-		if (!backendOnly)
-			dispatch('maxiBlocks/text').updateFonts(JSON.stringify(font));
+						if (setIsLoading) {
+							styleElement.onload = () => {
+								setIsLoading(false, fontId);
+							};
+						}
+
+						target.head.appendChild(styleElement);
+					} catch (error) {
+						console.error('Error loading font:', error);
+					}
+				};
+
+				const getWeightFile = (weight, style) =>
+					style === 'italic'
+						? `${weight === '400' ? '' : weight}italic`
+						: weight;
+
+				/**
+				 * Returns font weight from weightFile
+				 *
+				 * @example getWeight('100italic') // returns 100;
+				 */
+				const getWeight = weightFile => {
+					const weightStr = weightFile.replace(/\D+/, '');
+
+					return isEmpty(weightStr) ? '400' : weightStr;
+				};
+
+				await Promise.all(
+					fontWeightArr.map(async weight =>
+						Promise.all(
+							fontStyleArr.map(async currentFontStyle => {
+								let weightFile = getWeightFile(
+									weight,
+									currentFontStyle
+								);
+								if (!(weightFile in fontFiles)) {
+									weightFile = '400';
+									const newFontWeightArr = uniq(
+										fontWeightArr
+									).filter(value => {
+										return value !== weight;
+									});
+
+									newFontWeightArr.push(weightFile);
+
+									const newFontWeight =
+										uniq(newFontWeightArr).join();
+									font[fontName].weight = newFontWeight;
+								}
+
+								await Promise.all(
+									Object.entries(fontFiles).map(
+										async variant => {
+											if (
+												variant[0].toString() ===
+												weightFile
+											) {
+												fontDataNew = {
+													...fontData,
+													...{
+														style: currentFontStyle,
+													},
+													...{
+														weight: getWeight(
+															weightFile
+														),
+													},
+												};
+
+												await loadBackendFont(
+													fontName,
+													fontDataNew
+												);
+											}
+										}
+									)
+								);
+							})
+						)
+					)
+				);
+			})
+		);
 	}
 
 	return null;
 };
 
+/**
+ * Load the fonts in the editor
+ * @param {Object}           objFont       - The font object
+ * @param {CallableFunction} setShowLoader - The function to set the loading state
+ */
 const loadFontsInEditor = (objFont, setShowLoader) => {
 	const iframeEditor = document.querySelector('iframe[name="editor-canvas"]');
 

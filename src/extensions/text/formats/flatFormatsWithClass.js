@@ -209,12 +209,25 @@ export const removeUnnecessaryFormats = ({
 			preserveWhiteSpace: false,
 		});
 
+	// Determine if we're dealing with a property that needs preservation
+	// Only preserve typography for specific formatting properties (bold, italic)
+	const isFontProperty =
+		value &&
+		(value['font-weight'] || // Bold
+			value['font-style']); // Italic
+
+	// If it's a font property we want to preserve, merge with original typography
+	// Otherwise, use the original behavior (just changedTypography)
+	const finalTypography = isFontProperty
+		? {
+				...typography, // Preserve original typography
+				...changedTypography, // Apply changes on top
+		  }
+		: changedTypography; // Use original behavior for other properties
+
 	return {
 		formatValue: newFormatValue,
-		typography: {
-			...typography,
-			...changedTypography,
-		},
+		typography: finalTypography,
 		content: newContent,
 	};
 };

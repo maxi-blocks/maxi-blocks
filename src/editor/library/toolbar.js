@@ -395,18 +395,7 @@ const LibraryToolbar = props => {
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
 				// eslint-disable-next-line jsx-a11y/anchor-is-valid
-				<a className='maxi-cloud-toolbar__logo'>
-					{library}
-					{type === 'svg' && __('', 'maxi-blocks')}
-					{type === 'patterns' && __('', 'maxi-blocks')}
-					{type === 'sc' && __('', 'maxi-blocks')}
-					{type.includes('shape') &&
-						__('Shape library', 'maxi-blocks')}
-					{type.includes('button') &&
-						__('Button icon library', 'maxi-blocks')}
-					{type.includes('video') &&
-						__('Video icon library', 'maxi-blocks')}
-				</a>
+				<a className='maxi-cloud-toolbar__logo'>{library}</a>
 			)}
 			{(type === 'preview' || type === 'switch-tone') && (
 				<>

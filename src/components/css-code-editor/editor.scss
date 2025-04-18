@@ -30,10 +30,10 @@
 		padding-right: 5px;
 		font-style: italic;
 		&.not-valid {
-			border-left: 2px solid var(--maxi-primary-color);
+			border-left: 2px solid var(--maxi-orange-red);
 		}
 		&.valid {
-			border-left: 2px solid var(--maxi-tertiary-color);
+			border-left: 2px solid var(--maxi-primary-color);
 		}
 	}
 
@@ -53,9 +53,9 @@
 			border-radius: 30px;
 
 			&:hover {
-				background-color: var(--maxi-mid-green);
-				color: var(--maxi-white);
-				border-color: var(--maxi-primary-color);
+				background-color: var(--maxi-mid-green) !important;
+				color: var(--maxi-white) !important;
+				border-color: var(--maxi-primary-color) !important;
 			}
 		}
 	}

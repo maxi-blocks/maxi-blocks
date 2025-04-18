@@ -17,7 +17,7 @@ body.maxi-blocks--active .maxi-sidebar {
 				background: var(--maxi-grey);
 			}
 			&:hover {
-				background: var(--maxi-white);
+				border: 1.5px solid var(--maxi-primary-color);
 
 				&::after {
 					content: '';

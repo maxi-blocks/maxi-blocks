@@ -16,9 +16,12 @@
 		height: 32px;
 		padding: 8px !important;
 		width: 22.5%;
-		margin-right: 7px;
+		margin-right: 9px;
 		border: 1.5px solid var(--maxi-mid-green);
 		border-radius: 4px;
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 	.maxi-tabs-control__button[aria-pressed='true'] {
 		background-color: var(--maxi-whisper-green) !important;

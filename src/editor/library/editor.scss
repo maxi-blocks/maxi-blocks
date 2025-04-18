@@ -352,9 +352,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 				&::before {
 					content: '×';
-					font-size: 22px;
+					font-size: 20px;
 					position: relative;
-					left: 0.5px;
+					left: 0;
+					top: 2px;
 					padding-bottom: 5px; /* Added padding instead of line-height */
 					display: flex;
 					align-items: center;

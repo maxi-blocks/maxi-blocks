@@ -71,7 +71,7 @@
 		}
 	}
 	.maxi-scroll-unique-control {
-		margin: 40px 0;
+		margin: 20px 0 5px;
 
 		&__slider-wrapper {
 			position: relative;
@@ -186,6 +186,10 @@
 			.maxi-tabs-content {
 				padding-top: 10px;
 			}
+		}
+
+		.maxi-advanced-number-control {
+			margin-top: 15px;
 		}
 	}
 	.maxi-scroll-combinations-select .maxi-base-control__field {

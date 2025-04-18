@@ -131,7 +131,7 @@
 			justify-content: space-between;
 			align-items: center;
 			margin-bottom: 0;
-			gap: 1px;
+			gap: 4px;
 		}
 
 		&-box {
@@ -155,18 +155,18 @@
 
 			&:hover {
 				border: none !important;
-				box-shadow: 0 0 0 1px var(--maxi-secondary-color);
+				box-shadow: 0 0 0 2px var(--maxi-secondary-color);
 			}
 
 			&--active {
 				background: var(--maxi-pastel-green);
 				border: none;
-				box-shadow: 0 0 0 1px var(--maxi-secondary-color);
+				box-shadow: 0 0 0 3px var(--maxi-secondary-color);
 				outline: none;
 
 				&:hover {
 					background: var(--maxi-pastel-green) !important;
-					box-shadow: 0 0 0 1px var(--maxi-secondary-color) !important;
+					box-shadow: 0 0 0 3px var(--maxi-secondary-color) !important;
 				}
 			}
 		}

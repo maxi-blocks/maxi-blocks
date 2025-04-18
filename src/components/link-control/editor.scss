@@ -153,10 +153,8 @@
 
 			.components-button.is-tertiary {
 				color: var(--maxi-primary-color);
-
-				&:hover {
-					background: var(--maxi-grey);
-				}
+				border: 1px solid var(--maxi-grey-light) !important;
+				border-radius: 60px !important;
 			}
 
 			// WP 6.2.2 and lower support
@@ -288,4 +286,9 @@
 			justify-content: space-between;
 		}
 	}
+}
+
+.maxi-toolbar__popover
+	.components-button.maxi-link-control__link-destroyer:hover {
+	color: var(--maxi-white) !important;
 }

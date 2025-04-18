@@ -171,7 +171,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 						color: var(--maxi-secondary-color);
 					}
 					&.api-error {
-						color: var(--maxi-primary-color);
+						color: var(--maxi-orange-red);
 					}
 				}
 			}
@@ -181,7 +181,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					width: 100%; //  seems only System status has this
 				}
 				&-start {
-					width: 100%; // Welomce background space title and subtext
+					width: 100%; // Welcome background space title and subtext
 				}
 				&-starter-sites {
 					width: 100%;
@@ -519,6 +519,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 									box-sizing: border-box;
 									width: clamp(70vw, 100vw, 45vw);
 									display: block;
+									max-width: 95%;
 								}
 
 								textarea {

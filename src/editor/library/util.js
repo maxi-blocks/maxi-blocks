@@ -58,10 +58,10 @@ export const fitSvg = svgCode => {
 
 export const svgAttributesReplacer = (svgCode, target = 'svg') => {
 	const fillRegExp = /fill:[^n]+?(?=})/g;
-	const fillStr = 'fill:var(--maxi-primary-color)';
+	const fillStr = 'fill:var(--maxi-icon-block-orange)';
 
 	const fillRegExp2 = /[^-]fill="[^n]+?(?=")/g;
-	const fillStr2 = ' fill="var(--maxi-primary-color)';
+	const fillStr2 = ' fill="var(--maxi-icon-block-orange)';
 
 	const strokeRegExp = /stroke:[^n]+?(?=})/g;
 	const strokeStr = 'stroke:#081219';

@@ -54,6 +54,9 @@ h2.gx_error {
 	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 	// font-size: 12px;
 	font-weight: normal;
+	.block-editor-block-card__name {
+		padding: 0 !important;
+	}
 }
 
 .block-editor-inserter {

@@ -161,12 +161,12 @@
 			&--active {
 				background: var(--maxi-pastel-green);
 				border: none;
-				box-shadow: 0 0 0 3px var(--maxi-secondary-color);
+				box-shadow: 0 0 0 2px var(--maxi-secondary-color);
 				outline: none;
 
 				&:hover {
 					background: var(--maxi-pastel-green) !important;
-					box-shadow: 0 0 0 3px var(--maxi-secondary-color) !important;
+					box-shadow: 0 0 0 2px var(--maxi-secondary-color) !important;
 				}
 			}
 		}

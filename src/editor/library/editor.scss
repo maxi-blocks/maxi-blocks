@@ -7,6 +7,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 	min-height: 90%;
 	max-width: 90%;
 	overflow-y: auto;
+	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+	font-weight: 600;
 
 	@keyframes fadeIn {
 		0% {
@@ -152,8 +154,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 			overflow-y: clip;
 			background: repeating-linear-gradient(
 				-45deg,
-				var(--maxi-cloud-primary-whisper),
-				var(--maxi-cloud-primary-whisper) 20px,
+				var(--maxi-cloud-preview-gradient),
+				var(--maxi-cloud-preview-gradient) 20px,
 				var(--maxi-white) 0,
 				var(--maxi-white) 40px
 			) !important;
@@ -331,7 +333,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 			.components-button {
 				position: absolute;
-				right: 14px;
+				right: 10px;
 				left: auto;
 				top: 10px !important;
 				padding: 0;
@@ -355,7 +357,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					font-size: 20px;
 					position: relative;
 					left: 0;
-					top: 2px;
+					top: 1px;
 					padding-bottom: 5px; /* Added padding instead of line-height */
 					display: flex;
 					align-items: center;
@@ -504,6 +506,37 @@ $border-light: 1px solid var(--maxi-grey-light);
 		height: 100%;
 		margin: 0;
 		overflow: hidden;
+		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+
+		.use-placeholder-all-images {
+			margin-top: 1rem;
+
+			.components-base-control__help {
+				font-size: 11px;
+				margin-top: 5px;
+			}
+
+			.components-checkbox-control {
+				&__label {
+					font-size: 12px;
+				}
+
+				&__input-container {
+					margin-right: 10px;
+				}
+
+				&__input[type='checkbox'] {
+					background: var(--maxi-grey-light);
+					padding: 9px !important;
+					border: none;
+				}
+
+				&__input[type='checkbox']:checked {
+					background: var(--maxi-cloud-primary);
+					border: none;
+				}
+			}
+		}
 
 		&__content-svg-shape,
 		&__patterns {
@@ -632,36 +665,6 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 				ul {
 					margin: 0 0 8px;
-				}
-
-				.use-placeholder-all-images {
-					margin-top: 1rem;
-
-					.components-base-control__help {
-						font-size: 11px;
-						margin-top: 5px;
-					}
-
-					.components-checkbox-control {
-						&__label {
-							font-weight: bold;
-							font-size: 12px;
-						}
-
-						&__input-container {
-							margin-right: 5px;
-						}
-
-						&__input[type='checkbox'] {
-							background: var(--maxi-grey-light);
-							border: none;
-						}
-
-						&__input[type='checkbox']:checked {
-							background: var(--maxi-cloud-primary);
-							border: none;
-						}
-					}
 				}
 
 				.ais-HierarchicalMenu-list,
@@ -1095,11 +1098,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 				left: 0;
 				right: 0;
 				max-width: 400px;
-				border-radius: 50%;
+				border-radius: 5px;
 				margin: 0 auto;
 				color: var(--maxi-white);
-				background: var(--maxi-light-blue);
-				font-size: 16px;
+				background: var(--maxi-cloud-iframe-border);
+				font-size: 15px;
 				text-align: center;
 			}
 
@@ -1640,10 +1643,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 							padding: 10px;
 							//button for patterns preview and go pro base
 							.maxi-cloud-masonry-card__button {
+								font-family: 'Inter', Helvetica, Arial, Lucida,
+									sans-serif;
+								font-weight: 600;
 								margin-right: 0;
 								border: 1px solid var(--maxi-grey-light);
 								color: var(--maxi-grey-dark);
-								font-weight: bold;
 								border-radius: 30px;
 								min-width: 90px;
 								padding: 5px 10px;

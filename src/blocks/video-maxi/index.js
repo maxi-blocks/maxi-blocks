@@ -19,6 +19,7 @@ import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
  * Styles and icons
  */
 import './style.scss';
+import './editor.scss';
 import { videoIcon } from '@maxi-icons';
 
 /**

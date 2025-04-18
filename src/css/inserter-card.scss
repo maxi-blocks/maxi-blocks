@@ -21,19 +21,19 @@
 		.block-editor-block-card {
 			position: relative;
 			padding: 8px;
-			color: #fff;
-			background: #fff;
+			color: var(--maxi-grey-dark);
 			letter-spacing: 0;
 
 			&__content,
 			> div.components-flex {
-				margin: 0 0 0 8px;
+				margin: 0 0 0 6px;
 			}
 			&__title {
-				margin: 0 0 2px;
-				font-size: 14px;
-				font-weight: 500;
-				line-height: 14px;
+				margin: 1.5px 0 0 0;
+				font-size: 13px;
+				font-weight: 600;
+				line-height: 1;
+				text-transform: uppercase;
 			}
 			&__description {
 				display: none;

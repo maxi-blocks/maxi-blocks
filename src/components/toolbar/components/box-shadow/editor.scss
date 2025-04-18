@@ -16,6 +16,25 @@
 			}
 		}
 
+		&__default {
+			width: 1.5rem;
+			height: 0.5rem;
+			background: var(--maxi-white);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 0 auto;
+			&__total {
+				box-shadow: 0px 0px 5px 0px var(--maxi-grey);
+			}
+			&__bottom {
+				box-shadow: 0px 4px 8px -2px var(--maxi-grey);
+			}
+			&__solid {
+				box-shadow: 1px 2px 0px 0px var(--maxi-grey);
+			}
+		}
+
 		.maxi-default-styles-control {
 			display: inline-block;
 			vertical-align: middle;

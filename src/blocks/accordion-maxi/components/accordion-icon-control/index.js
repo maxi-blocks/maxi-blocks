@@ -12,6 +12,7 @@ import ToggleSwitch from '@components/toggle-switch';
 import IconControl from '@components/icon-control';
 import MaxiModal from '@editor/library/modal';
 import { getIconWithColor } from '@extensions/styles';
+import IconColor from '@components/icon-color';
 
 const AccordionIconSettings = props => {
 	const { onChange, blockStyle, svgTypeActive, breakpoint } = props;
@@ -45,10 +46,15 @@ const AccordionIconSettings = props => {
 				icon={props['active-icon-content']}
 				label='Active icon'
 			/>
+			<IconColor
+				{...props}
+				getIconWithColor={args => getIconWithColor(props, args, '')}
+			/>
 			<SettingTabsControl
+				disablePadding
 				items={[
 					props['icon-content'] !== '' && {
-						label: __('Normal state', 'maxi-blocks'),
+						label: __('Normal', 'maxi-blocks'),
 						content: props['icon-content'] !== '' && (
 							<IconControl
 								{...props}
@@ -56,12 +62,13 @@ const AccordionIconSettings = props => {
 									getIconWithColor(props, args, '')
 								}
 								disableHeightFitContent
+								className='maxi-icon-background-tabs'
 							/>
 						),
 					},
 					(props['active-icon-content'] !== '' ||
 						props['icon-content'] !== '') && {
-						label: __('Hover state', 'maxi-blocks'),
+						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch
@@ -90,7 +97,7 @@ const AccordionIconSettings = props => {
 						),
 					},
 					props['active-icon-content'] !== '' && {
-						label: __('Active state', 'maxi-blocks'),
+						label: __('Active', 'maxi-blocks'),
 						content: (
 							<IconControl
 								{...props}

@@ -1,13 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15.585" height="15.585" viewBox="0 0 15.585 15.585">
-  <defs>
-    <clipPath id="clip-path">
-      <rect id="Rectangle_493" data-name="Rectangle 493" width="15.585" height="15.585" transform="translate(0 0)" fill="none"/>
-    </clipPath>
-  </defs>
-  <g id="Group_935" data-name="Group 935" transform="translate(0 0)">
-    <g id="Group_934" data-name="Group 934" clip-path="url(#clip-path)">
-      <line id="Line_697" data-name="Line 697" x1="14.085" transform="translate(0.75 14.835)" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-      <path id="Path_271" data-name="Path 271" d="M12.018.75V7.529c0,3.609-1.849,5.106-4.314,5.106-2.377,0-4.137-1.409-4.137-5.018V.75" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-    </g>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.6 15.6" fill="none" stroke="#141516" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" xmlns:v="https://vecta.io/nano"><path d="M14.8 14.8H.8M12 .8v6.8c0 3.6-1.8 5.1-4.3 5.1s-4.1-1.4-4.1-5V.8"/></svg>

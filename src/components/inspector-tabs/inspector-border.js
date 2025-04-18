@@ -57,7 +57,7 @@ const border = ({
 			<SettingTabsControl
 				items={[
 					{
-						label: __('Normal state', 'maxi-blocks'),
+						label: __('Normal', 'maxi-blocks'),
 						content: (
 							<BorderControl
 								{...getGroupAttributes(
@@ -84,7 +84,7 @@ const border = ({
 						),
 					},
 					{
-						label: __('Hover state', 'maxi-blocks'),
+						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<>
 								<ManageHoverTransitions />
@@ -129,7 +129,7 @@ const border = ({
 						extraIndicators: [`${prefix}border-status-hover`],
 					},
 					enableActiveState && {
-						label: __('Active state', 'maxi-blocks'),
+						label: __('Active', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch

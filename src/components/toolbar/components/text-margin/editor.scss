@@ -4,7 +4,7 @@
 			line,
 			path {
 				fill: transparent !important;
-				stroke: #000 !important;
+				stroke: var(--maxi-black) !important;
 			}
 		}
 		&__popover {
@@ -35,7 +35,7 @@
 				}
 			}
 			.maxi-axis-control__content__item {
-				border-bottom: 1px solid var(--maxi-grey-4-color);
+				border-bottom: 1px solid var(--maxi-grey);
 				margin-bottom: 5px;
 				padding-bottom: 5px;
 				&:last-child {

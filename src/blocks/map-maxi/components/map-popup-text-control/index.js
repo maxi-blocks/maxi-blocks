@@ -32,12 +32,14 @@ const MapPopupTextControl = ({
 
 	return (
 		<SettingTabsControl
+			disablePadding
+			className='maxi-map-popup-text-settings'
 			items={[
 				{
 					label: __('Title', 'maxi-blocks'),
 					content: (
 						<>
-							<span>
+							<span className='maxi-map-popup-title-label'>
 								{__('Marker title text', 'maxi-blocks')}
 							</span>
 							<FontLevelControl
@@ -72,7 +74,7 @@ const MapPopupTextControl = ({
 					label: __('Description', 'maxi-blocks'),
 					content: (
 						<>
-							<span>
+							<span className='maxi-map-popup-description-label'>
 								{__('Marker description text', 'maxi-blocks')}
 							</span>
 							<TypographyControl

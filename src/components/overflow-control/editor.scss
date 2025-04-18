@@ -21,8 +21,8 @@
 		margin-top: 2px;
 
 		button {
-			background: #fff;
-			border: 1.5px solid var(--maxi-grey-1-color);
+			background: var(--maxi-white);
+			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			width: 24px;
 			height: 24px;
@@ -45,7 +45,20 @@
 			}
 
 			&[aria-pressed='true'] {
-				background: var(--maxi-light-blue-2-color) !important;
+				background: var(--maxi-whisper-green) !important;
+				border: 1px solid var(--maxi-mid-green);
+
+				&:hover {
+					background: var(--maxi-pastel-green) !important;
+					border: 1px solid var(--maxi-primary-color);
+
+					svg {
+						path {
+							fill: var(--maxi-primary-color);
+						}
+					}
+				}
+
 				svg {
 					path {
 						fill: var(--maxi-secondary-color);
@@ -57,7 +70,7 @@
 				width: 14px;
 				height: 14px;
 				path {
-					fill: var(--maxi-grey-4-color);
+					fill: var(--maxi-grey);
 				}
 			}
 		}

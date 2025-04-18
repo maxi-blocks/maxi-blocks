@@ -422,6 +422,7 @@ const VideoIconControl = props => {
 						},
 					]}
 					depth={2}
+					disablePadding
 				/>
 			)}
 		</>

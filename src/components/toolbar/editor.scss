@@ -119,7 +119,7 @@
 				}
 			}
 
-			button:focus {
+			button:not(.maxi-color-control__palette-box):focus {
 				outline: none;
 				box-shadow: none;
 			}

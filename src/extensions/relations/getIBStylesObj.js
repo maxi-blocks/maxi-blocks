@@ -17,7 +17,7 @@ const getIBStylesObj = ({
 
 	const newGroupAttributes = getGroupAttributes(
 		attributes,
-		selectedSettings.attrGroupName,
+		selectedSettings?.attrGroupName,
 		false,
 		prefix
 	);

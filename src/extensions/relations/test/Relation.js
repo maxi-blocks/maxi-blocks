@@ -2015,6 +2015,7 @@ describe('Relation class', () => {
 		let mockObserver;
 		let mockBlockTargetEl;
 		let observerCallback;
+		let OriginalObserver;
 
 		beforeEach(() => {
 			// Mock MutationObserver
@@ -2022,6 +2023,7 @@ describe('Relation class', () => {
 				observe: jest.fn(),
 			};
 
+			OriginalObserver = global.MutationObserver;
 			global.MutationObserver = jest.fn(callback => {
 				observerCallback = callback;
 				return mockObserver;
@@ -2038,6 +2040,10 @@ describe('Relation class', () => {
 
 		afterEach(() => {
 			jest.restoreAllMocks();
+		});
+
+		afterAll(() => {
+			global.MutationObserver = OriginalObserver;
 		});
 
 		test('should create a MutationObserver', () => {

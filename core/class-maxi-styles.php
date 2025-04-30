@@ -1507,6 +1507,7 @@ class MaxiBlocks_Styles
         } else {
             $post = get_post($id);
         }
+
         // Fetch blocks from template parts.
         $template_id = $this->get_id(true);
         $blocks = $this->fetch_blocks_by_template_id($template_id);

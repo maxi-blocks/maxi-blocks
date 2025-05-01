@@ -381,7 +381,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
          */
         private function get_current_template_type()
         {
-            if (get_page_template_slug()) {
+            if (get_page_template_slug() && !is_archive()) {
                 return get_page_template_slug();
             }
             if (is_front_page() && is_home()) {
@@ -430,6 +430,21 @@ if (!class_exists('MaxiBlocks_Blocks')):
                     }
                     return 'tag';
                 } elseif (is_author()) {
+                    // Check for author-specific templates
+                    $author = get_queried_object();
+                    if ($author) {
+                        // Check for author-{nicename}.php template
+                        $template = 'author-' . $author->user_nicename;
+                        if (get_block_template(get_stylesheet() . '//' . $template)) {
+                            return $template;
+                        }
+
+                        // Check for author-{id}.php template
+                        $template = 'author-' . $author->ID;
+                        if (get_block_template(get_stylesheet() . '//' . $template)) {
+                            return $template;
+                        }
+                    }
                     return 'author';
                 } elseif (is_date()) {
                     return 'date';

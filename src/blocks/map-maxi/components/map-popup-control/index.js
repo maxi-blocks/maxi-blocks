@@ -33,7 +33,9 @@ const MapPopupControl = props => {
 				clientId={clientId}
 				breakpoint={deviceType}
 			/>
-			<span>{__('Box shadow', 'maxi-blocks')}</span>
+			<span className='maxi-map-popup-control-box-shadow-label'>
+				{__('Box shadow', 'maxi-blocks')}
+			</span>
 			<BoxShadowControl
 				{...getGroupAttributes(attributes, 'boxShadow', false, prefix)}
 				prefix={prefix}

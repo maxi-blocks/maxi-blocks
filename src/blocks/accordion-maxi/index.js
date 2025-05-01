@@ -20,6 +20,7 @@ import blockMigrator from '@extensions/styles/migrators/blockMigrator';
  * Styles and icons
  */
 import './style.scss';
+import './editor.scss';
 import { accordionIcon } from '@maxi-icons';
 
 /**

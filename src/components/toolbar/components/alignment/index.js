@@ -30,11 +30,11 @@ const ALLOWED_BLOCKS = [
 const TEXT_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 
 const Alignment = props => {
-	const { blockName, onChange, breakpoint, isCaptionToolbar = false } = props;
+	const { blockName, onChange, breakpoint } = props;
 
-	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-	const isText = TEXT_BLOCKS.includes(blockName) || isCaptionToolbar;
+	const isText = TEXT_BLOCKS.includes(blockName);
 
 	return (
 		<Dropdown

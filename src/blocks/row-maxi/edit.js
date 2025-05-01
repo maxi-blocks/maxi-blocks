@@ -10,6 +10,20 @@ import { select } from '@wordpress/data';
  */
 import { isEmpty, isEqual } from 'lodash';
 
+// Add requestIdleCallback polyfill
+const requestIdleCallbackPolyfill = callback => {
+	const start = Date.now();
+	return setTimeout(() => {
+		callback({
+			didTimeout: false,
+			timeRemaining: () => Math.max(0, 50 - (Date.now() - start)),
+		});
+	}, 1);
+};
+
+const requestIdle = window.requestIdleCallback || requestIdleCallbackPolyfill;
+const cancelIdle = window.cancelIdleCallback || clearTimeout;
+
 /**
  * Internal dependencies
  */
@@ -39,6 +53,8 @@ import withMaxiDC from '@extensions/DC/withMaxiDC';
 class edit extends MaxiBlockComponent {
 	static contextType = RepeaterContext;
 
+	_widthMigrationCallback = null;
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -54,8 +70,119 @@ class edit extends MaxiBlockComponent {
 
 	isRepeaterInherited = !!this.context?.repeaterStatus;
 
+	// Add new method to handle width migration
+	handleWidthMigration = () => {
+		const { attributes, maxiSetAttributes } = this.props;
+		const fullWidthGeneral = attributes['full-width-general'];
+		const sizeAdvancedOptions = attributes['size-advanced-options'];
+
+		// Only proceed if we need to update something
+		if (
+			!sizeAdvancedOptions ||
+			(fullWidthGeneral !== undefined && fullWidthGeneral !== false)
+		) {
+			return;
+		}
+
+		// Cache the breakpoints that need updates
+		const updates = {};
+		const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+		// Default values for each breakpoint
+		const defaultValues = {
+			xxl: '1690',
+			xl: '1170',
+			l: '90',
+			m: '90',
+			s: '90',
+			xs: '90',
+		};
+
+		// Default units for each breakpoint
+		const defaultUnits = {
+			xxl: 'px',
+			xl: 'px',
+			l: '%',
+			m: '%',
+			s: '%',
+			xs: '%',
+		};
+
+		for (const breakpoint of breakpoints) {
+			const fullWidthBreakpoint = attributes[`full-width-${breakpoint}`];
+			const needsUpdate = !(
+				fullWidthBreakpoint === true ||
+				(fullWidthBreakpoint === undefined && fullWidthGeneral === true)
+			);
+
+			if (needsUpdate) {
+				const key = `max-width-${breakpoint}`;
+				const value = attributes[key];
+
+				if (value !== undefined) {
+					updates[key] = value;
+
+					const unitKey = `max-width-unit-${breakpoint}`;
+					if (attributes[unitKey] !== undefined) {
+						updates[unitKey] = attributes[unitKey];
+					}
+				} else {
+					// Apply default value and unit if max-width is undefined
+					updates[key] = defaultValues[breakpoint];
+
+					const unitKey = `max-width-unit-${breakpoint}`;
+					updates[unitKey] = defaultUnits[breakpoint];
+				}
+			}
+		}
+
+		// Set general values based on the base breakpoint only if xxl is undefined
+		if (attributes['max-width-xxl'] === undefined) {
+			// Get the current base breakpoint
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+			// Use the value from base breakpoint, or fallback to default
+			const baseValue =
+				updates[`max-width-${baseBreakpoint}`] ||
+				defaultValues[baseBreakpoint];
+			const baseUnit =
+				updates[`max-width-unit-${baseBreakpoint}`] ||
+				defaultUnits[baseBreakpoint];
+
+			updates['max-width-general'] = baseValue;
+			updates['max-width-unit-general'] = baseUnit;
+		}
+		// Only call maxiSetAttributes if we have updates
+		if (Object.keys(updates).length > 0) {
+			maxiSetAttributes(updates);
+		}
+	};
+
+	maxiBlockDidMount() {
+		// Early return if row pattern exists
+		if (
+			this.props.attributes['row-pattern'] !== undefined ||
+			this.props.attributes['row-pattern-general'] !== undefined
+		) {
+			return;
+		}
+
+		// Schedule width migration to run after initial render
+		this._widthMigrationCallback = requestIdle(() => {
+			this.handleWidthMigration();
+		});
+	}
+
+	componentWillUnmount() {
+		if (this._widthMigrationCallback) {
+			cancelIdle(this._widthMigrationCallback);
+		}
+	}
+
 	maxiBlockDidUpdate() {
-		if (this.state.displayHandlers && !this.props.isSelected) {
+		const { displayHandlers } = this.state;
+		const { isSelected } = this.props;
+
+		if (displayHandlers && !isSelected) {
 			this.setState({
 				displayHandlers: false,
 			});

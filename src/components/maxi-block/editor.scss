@@ -8,4 +8,21 @@
 			box-shadow: 0px 0px 5px 5px rgba(241, 239, 238, 0.75);
 		}
 	}
+	// Disable default WordPress 6.8 dragging behavior for Maxi blocks
+	-webkit-user-drag: none !important;
+	user-drag: none !important;
+	-webkit-touch-callout: default !important;
+}
+
+// Ensure dragging is disabled for selected blocks too
+.block-editor-block-list__block.is-selected.maxi-block:not(.is-dragging) {
+	-webkit-user-drag: none !important;
+	user-drag: none !important;
+	touch-action: auto !important;
+}
+
+// Only enable dragging when our Mover component sets draggable="true"
+.maxi-block[draggable='true'] {
+	-webkit-user-drag: auto !important;
+	user-drag: auto !important;
 }

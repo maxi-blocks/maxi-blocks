@@ -28,7 +28,10 @@ import {
 	updateRelationsInColumn,
 	updateSVG,
 } from '@extensions/repeater';
-import { findBlockPosition, getBlockPosition } from '@extensions/repeater/utils';
+import {
+	findBlockPosition,
+	getBlockPosition,
+} from '@extensions/repeater/utils';
 import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 
 /**
@@ -147,92 +150,121 @@ const withMaxiProps = createHigherOrderComponent(
 				return null;
 			}, [blockIndex, blockRootClientId, parentColumnClientId]);
 
-			const maxiSetAttributes = useCallback(obj =>
-				handleSetAttributes({
-					obj,
+			const maxiSetAttributes = useCallback(
+				obj => {
+					// First, check if we already have a blockStyle that needs to be preserved
+					const originalBlockStyle = attributes.blockStyle;
+
+					return handleSetAttributes({
+						obj,
+						attributes,
+						clientId,
+						onChange: newAttributes => {
+							// Ensure that blockStyle is preserved in all cases where it's not explicitly changed
+							if (
+								originalBlockStyle &&
+								!('blockStyle' in newAttributes) &&
+								!('blockStyle' in obj)
+							) {
+								// Preserve the original blockStyle if it's not being explicitly changed
+								newAttributes.blockStyle = originalBlockStyle;
+							}
+
+							if (!repeaterContext?.repeaterStatus) {
+								return setAttributes(newAttributes);
+							}
+
+							const innerBlocksPositions =
+								repeaterContext?.getInnerBlocksPositions();
+
+							const clientIds =
+								innerBlocksPositions?.[
+									getBlockPosition(
+										clientId,
+										innerBlocksPositions
+									)
+								];
+
+							if (clientIds) {
+								clientIds.forEach(currentClientId => {
+									if (currentClientId === clientId) return;
+
+									const currentBlock =
+										getBlock(currentClientId);
+									if (!currentBlock) return;
+									const currentAttributes =
+										currentBlock?.attributes;
+
+									const nonExcludedAttributes =
+										excludeAttributes(
+											newAttributes,
+											currentAttributes,
+											copyPasteMapping,
+											true,
+											currentBlock.name,
+											contextLoopContext?.contextLoop?.[
+												'cl-status'
+											] && ['dc-id']
+										);
+
+									updateNCLimits(
+										nonExcludedAttributes,
+										currentAttributes
+									);
+
+									updateSVG(
+										nonExcludedAttributes,
+										currentAttributes
+									);
+
+									const columnClientId =
+										innerBlocksPositions?.[[-1]]?.[
+											innerBlocksPositions?.[
+												blockPositionFromColumn
+											]?.indexOf(clientId)
+										];
+
+									const currentPosition = getBlockPosition(
+										currentClientId,
+										innerBlocksPositions
+									);
+									const currentColumnClientId =
+										innerBlocksPositions?.[[-1]]?.[
+											innerBlocksPositions?.[
+												currentPosition
+											]?.indexOf(currentClientId)
+										];
+
+									updateRelationsInColumn(
+										nonExcludedAttributes,
+										columnClientId,
+										currentColumnClientId,
+										innerBlocksPositions
+									);
+
+									if (!isEmpty(nonExcludedAttributes)) {
+										updateBlockAttributes(
+											currentClientId,
+											nonExcludedAttributes
+										);
+										markNextChangeAsNotPersistent();
+									}
+								});
+							}
+
+							return setAttributes(newAttributes);
+						},
+					});
+				},
+				[
 					attributes,
 					clientId,
-					onChange: obj => {
-						if (!repeaterContext?.repeaterStatus) {
-							return setAttributes(obj);
-						}
-
-						const innerBlocksPositions =
-							repeaterContext?.getInnerBlocksPositions();
-
-						const clientIds =
-							innerBlocksPositions?.[
-								getBlockPosition(clientId, innerBlocksPositions)
-							];
-
-						if (clientIds) {
-							clientIds.forEach(currentClientId => {
-								if (currentClientId === clientId) return;
-
-								const currentBlock = getBlock(currentClientId);
-								if (!currentBlock) return;
-								const currentAttributes =
-									currentBlock?.attributes;
-
-								const nonExcludedAttributes = excludeAttributes(
-									obj,
-									currentAttributes,
-									copyPasteMapping,
-									true,
-									currentBlock.name,
-									contextLoopContext?.contextLoop?.[
-										'cl-status'
-									] && ['dc-id']
-								);
-
-								updateNCLimits(
-									nonExcludedAttributes,
-									currentAttributes
-								);
-
-								updateSVG(
-									nonExcludedAttributes,
-									currentAttributes
-								);
-
-								const columnClientId =
-									innerBlocksPositions?.[[-1]]?.[
-										innerBlocksPositions?.[
-											blockPositionFromColumn
-										]?.indexOf(clientId)
-									];
-
-								const currentPosition = getBlockPosition(
-									currentClientId,
-									innerBlocksPositions
-								);
-								const currentColumnClientId =
-									innerBlocksPositions?.[[-1]]?.[
-										innerBlocksPositions?.[
-											currentPosition
-										]?.indexOf(currentClientId)
-									];
-
-								updateRelationsInColumn(
-									nonExcludedAttributes,
-									columnClientId,
-									currentColumnClientId,
-									innerBlocksPositions
-								);
-
-								if (!isEmpty(nonExcludedAttributes)) {
-									updateBlockAttributes(
-										currentClientId,
-										nonExcludedAttributes
-									);
-									markNextChangeAsNotPersistent();
-								}
-							});
-						}
-
-						return setAttributes(obj);
-					},
-				})
+					setAttributes,
+					repeaterContext,
+					copyPasteMapping,
+					contextLoopContext,
+					blockPositionFromColumn,
+				]
 			);
 
 			const ref = useRef(null);

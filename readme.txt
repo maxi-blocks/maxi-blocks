@@ -4,9 +4,9 @@ Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaa
 Tags: block, blocks, gutenberg blocks, page builder, template library
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 2.0.9
+Stable tag: 2.1.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,39 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 15 Apr 2025_
+MaxiBlocks v2.1.0
+* Update: Enhanced WordPress 6.8 compatibility with comprehensive fixes, ensuring stable plugin performance across all features.
+* Update: Expanded plugin testing infrastructure with comprehensive unit test coverage, improving overall code reliability and stability.
+* Update: Refined Divider Maxi block behaviour by synchronizing line width values between horizontal and vertical positions for consistent visual appearance.
+* Fix: Aligned line position values between toolbar and sidebar settings in Divider Maxi block, resolving inconsistencies in the editing experience.
+* Fix: Removed displaced autocomplete pop-up for link inputs, providing a cleaner and more predictable interface when adding links.
+
+_Updates 7 Apr 2025_
+MaxiBlocks v2.0.9
+* Update: Enhanced Single Post templates with author email and site link functionality.
+* Update: Expanded Dynamic Content (DC) capabilities for Button block in Site Editor with additional author options.
+* Update: Improved unit synchronization between Style Cards and Block settings for better consistency.
+* Update: Strengthened plugin testing infrastructure with comprehensive unit test coverage.
+* Fix: Resolved bottom margin migration issues for legacy patterns.
+* Fix: Corrected tag display functionality in imported Single Post templates.
+* Fix: Enhanced Map block compatibility for multiple instances with different service providers.
+* Fix: Improved Map block marker title and description handling for duplicated maps.
+* Fix: Optimized Map block zoom controls on frontend.
+* Fix: Adjusted Map block marker positioning for enlarged markers.
+* Fix: Resolved local font loading issues in specific scenarios.
+* Fix: Enhanced email obfuscation security in Button block frontend display.
+* Fix: Corrected static text rendering for DC author fields in Single Post templates.
+* Fix: Improved block drag-and-drop stability.
+* Fix: Enhanced style consistency for copied and detached synced blocks.
+* Fix: Optimized scrolling migration for legacy patterns.
+* Fix: Improved range control and decimal value handling in advanced number control.
+* Fix: Enhanced sub-item background hover colour functionality in Style Card.
+* Fix: Resolved svg transition migration issues for legacy patterns.
+* Fix: Optimized unit value handling when exceeding new unit range limits.
+* Fix: Improved Save/Activate button functionality in Style Cards editor.
+* Fix: Resolved responsive values resetting when the values are the same on different breakpoints.
+
 _Updates 14 Feb 2025_
 MaxiBlocks v2.0.8
 * Fix: Corrected import error when handling patterns from legacy MaxiBlocks versions (0.0.1 and 0.1).
@@ -194,27 +227,6 @@ MaxiBlocks v2.0.7
 * Fix: Corrected initial width rendering of template parts when loading SE.
 * Fix: Improved MaxiBlocks toolbar compatibility with WordPress Distraction-free and Spotlight editor modes.
 * Fix: Enhanced responsive background colour changes through improved toolbar settings functionality in responsive mode.
-
-_Updates 24 Dec 2024_
-MaxiBlocks v2.0.6
-* Fix: Restored missing author display functionality in Dynamic Content on frontend.
-* Fix: Resolved link settings freeze issue in Dynamic Content.
-
-_Updates 23 Dec 2024_
-MaxiBlocks v2.0.5
-* Update: Switched Templates, Icons, and Style Cards libraries to a self-hosted server to improve speed and stability.
-* Update: Implemented rem units support in typography control for better responsive design and accessibility.
-* Update: Enhanced Dynamic Content with additional author fields for more comprehensive content display.
-* Update: Redesigned Button icon presets for improved usability and visual appeal.
-* Fix: Enhanced Interaction Builder performance by optimizing action dropdown updates during block switching.
-* Fix: Eliminated horizontal scrollbar appearance in Editor Experience for cleaner interface.
-* Fix: Implemented "Switch tone" button visibility for Theme items in Templates library.
-* Fix: Synchronized maximum values between Toolbar and Sidebar settings for line height consistency.
-* Fix: Resolved pagination count calculation issues in specific scenarios.
-* Fix: Optimized template library image upload process for slow server environments.
-* Fix: Addressed sidebar styles persistence issues during open and close actions.
-* Fix: Eliminated incorrect autocomplete tooltip for date formatting options.
-
 
 == Upgrade Notice ==
 

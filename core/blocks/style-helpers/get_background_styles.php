@@ -1,6 +1,6 @@
 <?php
 
-function get_color_background_object($args)
+function get_color_background_object(array $args)
 {
     $is_hover = $args['is_hover'] ?? false;
     $prefix = $args['prefix'] ?? '';
@@ -156,7 +156,7 @@ function get_color_background_object($args)
 }
 
 
-function get_gradient_background_object($options)
+function get_gradient_background_object(array $options)
 {
     $is_hover = $options['is_hover'] ?? false;
     $prefix = $options['prefix'] ?? '';

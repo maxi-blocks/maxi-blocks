@@ -26,7 +26,7 @@ function get_attribute_value(string $target, array $props, bool $isHover, ?strin
 	return $value;
 }
 
-function get_attributes_value($args) {
+function get_attributes_value(array $args) {
 	$target = $args['target'];
 	$props = $args['props'];
 	$isHover = $args['isHover'] ?? false;

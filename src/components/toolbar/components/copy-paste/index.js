@@ -52,6 +52,15 @@ import {
 import './editor.scss';
 
 /**
+ * Helper function to normalize block names for comparison
+ */
+const normalizeBlockName = name => {
+	if (!name) return '';
+	// Strip 'maxi-blocks/' prefix if present
+	return name.replace('maxi-blocks/', '');
+};
+
+/**
  * Component
  */
 
@@ -196,7 +205,10 @@ const CopyPaste = props => {
 		try {
 			// Copy to system clipboard using native API
 			await navigator?.clipboard?.writeText(
-				JSON.stringify(blockAttributes)
+				JSON.stringify({
+					blockType: blockName,
+					styles: blockAttributes,
+				})
 			);
 			closeMoreSettings();
 		} catch (err) {
@@ -231,8 +243,44 @@ const CopyPaste = props => {
 	};
 
 	const onPasteStyles = () => {
+		// Handle both formats - direct styles object or {blockType, styles} format
+		const styleData = copiedStyles.styles
+			? copiedStyles.styles
+			: copiedStyles;
+
+		// Only check block type if we're using the new format
+		if (copiedStyles.blockType) {
+			// Compare normalized block names for more flexibility
+			const normalizedStyleBlockType = normalizeBlockName(
+				copiedStyles.blockType
+			);
+			const normalizedCurrentBlockType = normalizeBlockName(blockName);
+
+			if (normalizedStyleBlockType !== normalizedCurrentBlockType) {
+				const blockTypeName = copiedStyles.blockType.replace(
+					'maxi-blocks/',
+					''
+				);
+				dispatch('core/notices').createNotice(
+					'error',
+					`${__(
+						'The copied style is for',
+						'maxi-blocks'
+					)} ${blockTypeName} ${__(
+						'blocks and cannot be applied to this block.',
+						'maxi-blocks'
+					)}`,
+					{
+						type: 'snackbar',
+						isDismissible: true,
+					}
+				);
+				return;
+			}
+		}
+
 		const styles = excludeAttributes(
-			copiedStyles,
+			styleData,
 			attributes,
 			copyPasteMapping
 		);
@@ -407,8 +455,36 @@ const CopyPaste = props => {
 				return;
 			}
 
+			// Handle the new style format with blockType and styles properties
+			const styleData = clipboardData.styles
+				? clipboardData.styles
+				: clipboardData;
+
+			// Check if the style was created for a specific block type and doesn't match current block
+			if (clipboardData.blockType) {
+				const normalizedStyleBlockType = normalizeBlockName(
+					clipboardData.blockType
+				);
+				const normalizedCurrentBlockType =
+					normalizeBlockName(blockName);
+
+				if (normalizedStyleBlockType !== normalizedCurrentBlockType) {
+					const blockTypeName = clipboardData.blockType.replace(
+						'maxi-blocks/',
+						''
+					);
+					setErrorMessage(
+						`${__(
+							'Style is for',
+							'maxi-blocks'
+						)} ${blockTypeName} ${__('block type', 'maxi-blocks')}`
+					);
+					return;
+				}
+			}
+
 			const styles = excludeAttributes(
-				clipboardData,
+				styleData,
 				attributes,
 				copyPasteMapping
 			);
@@ -613,7 +689,10 @@ const CopyPaste = props => {
 
 					const updatedStyles = {
 						...currentStyles,
-						[newStyleName]: blockAttributes,
+						[newStyleName]: {
+							blockType: blockName,
+							styles: blockAttributes,
+						},
 					};
 
 					try {
@@ -631,6 +710,7 @@ const CopyPaste = props => {
 
 						// Set global variable for the saved-styles component to use
 						window.maxiLastSavedStyleName = newStyleName;
+						window.maxiLastSavedStyleBlockType = blockName;
 
 						// Open sidebar and navigate to saved styles tab
 						openSidebarAccordion(0, 'copy and paste styles');

@@ -712,8 +712,21 @@ const CopyPaste = props => {
 						window.maxiLastSavedStyleName = newStyleName;
 						window.maxiLastSavedStyleBlockType = blockName;
 
-						// Open sidebar and navigate to saved styles tab
-						openSidebarAccordion(0, 'copy and paste styles');
+						// Only open the sidebar if it's not already open on the "copy and paste styles" accordion
+						const currentAccordion =
+							select('maxiBlocks').receiveInspectorPath()?.[1]
+								?.value;
+						const accordionName = 'copy and paste styles';
+						const accordionUid = accordionName.replace(
+							/[^a-zA-Z0-9]+/g,
+							''
+						);
+
+						// If the current accordion is not already the "copy and paste styles", open it
+						if (currentAccordion !== accordionUid) {
+							openSidebarAccordion(0, accordionName);
+						}
+
 						closeMoreSettings();
 					} catch (err) {
 						console.error('Error saving style:', err);

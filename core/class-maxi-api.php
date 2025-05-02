@@ -1198,35 +1198,12 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wpdb;
 
-            // First check if styles exist in the new field name
             $saved_styles = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
                     'maxi_saved_styles',
                 ),
             );
-
-            // If not, check for styles in the old field name
-            if (!$saved_styles) {
-                $old_saved_styles = $wpdb->get_var(
-                    $wpdb->prepare(
-                        "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
-                        'saved_styles',
-                    ),
-                );
-
-                // If styles exist in the old field, migrate them to the new field
-                if ($old_saved_styles) {
-                    $wpdb->replace($wpdb->prefix . 'maxi_blocks_general', [
-                        'id' => 'maxi_saved_styles',
-                        'object' => $old_saved_styles,
-                    ]);
-                    // Optionally delete the old field
-                    // $wpdb->delete($wpdb->prefix . 'maxi_blocks_general', ['id' => 'saved_styles']);
-
-                    $saved_styles = $old_saved_styles;
-                }
-            }
 
             if (!$saved_styles) {
                 return '{}';

@@ -271,7 +271,8 @@ const SavedStyles = props => {
 		name,
 	}));
 
-	const stylesCount = Object.keys(localSavedStyles).length;
+	const filteredStylesCount = Object.keys(filteredStyles).length;
+	const totalStylesCount = Object.keys(localSavedStyles).length;
 
 	return (
 		<div className='maxi-saved-styles-control'>
@@ -306,12 +307,22 @@ const SavedStyles = props => {
 				</div>
 			) : (
 				<>
-					<div className='maxi-saved-styles-control__count'>
-						{stylesCount}
-						{__(' out of', 'maxi-blocks')} {MAX_SAVED_STYLES}
-					</div>
+					{filteredStylesCount > 0 && (
+						<div className='maxi-saved-styles-control__count'>
+							{filteredStylesCount}
+							{blockName
+								? ` ${__(
+										'block-specific out of',
+										'maxi-blocks'
+								  )} `
+								: ' '}
+							{totalStylesCount}
+							{__(' total', 'maxi-blocks')} (
+							{__('max', 'maxi-blocks')} {MAX_SAVED_STYLES})
+						</div>
+					)}
 
-					{Object.keys(filteredStyles).length > 0 ? (
+					{filteredStylesCount > 0 ? (
 						<>
 							<SelectControl
 								label={__('Select style', 'maxi-blocks')}

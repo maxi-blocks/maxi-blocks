@@ -272,10 +272,26 @@ const SavedStyles = props => {
 		}
 	};
 
-	const savedStylesList = Object.keys(filteredStyles).map(name => ({
-		id: name,
-		name,
-	}));
+	const savedStylesList = Object.keys(filteredStyles).map(name => {
+		const styleData = filteredStyles[name];
+
+		// If showing all styles and the style has a blockType, include it in the label
+		let label = name;
+		if (showAllStyles && styleData.blockType) {
+			// Format block name: remove "-maxi", capitalize first letter, add colon
+			const blockTypeName = normalizeBlockName(styleData.blockType)
+				.replace('-maxi', '') // Remove -maxi part
+				.replace(/^./, match => match.toUpperCase()); // Capitalize first letter
+
+			label = `${blockTypeName}: ${name}`; // Add colon after block name instead of using []
+		}
+
+		return {
+			id: name,
+			name,
+			label,
+		};
+	});
 
 	const filteredStylesCount = Object.keys(filteredStyles).length;
 	const totalStylesCount = Object.keys(localSavedStyles).length;
@@ -371,7 +387,7 @@ const SavedStyles = props => {
 								value={selectedStyle}
 								onChange={value => setSelectedStyle(value)}
 								options={savedStylesList.map(style => ({
-									label: style.name,
+									label: style.label,
 									value: style.name,
 								}))}
 								disabled={isLoading}

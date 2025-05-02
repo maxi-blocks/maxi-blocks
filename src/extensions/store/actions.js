@@ -27,13 +27,6 @@ const actions = {
 			settings,
 		};
 	},
-	saveMaxiSetting(setting, value) {
-		return {
-			type: 'SAVE_GENERAL_SETTING',
-			setting,
-			value,
-		};
-	},
 	sendMaxiBreakpoints(breakpoints) {
 		return {
 			type: 'SEND_BREAKPOINTS',

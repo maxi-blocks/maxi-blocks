@@ -45,11 +45,10 @@ const TextColor = props => {
 		isList,
 		textLevel,
 		styleCard,
-		isCaptionToolbar = false,
 		disableCustomFormats,
 	} = props;
 
-	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
 	const { formatValue, onChangeTextFormat } = useContext(TextContext);
 	const listContext = useContext(ListContext);

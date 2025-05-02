@@ -191,69 +191,11 @@ class Relation {
 		);
 	}
 
-	getCurrentBreakpoint() {
-		const winWidth = this.mainWindow.innerWidth;
-
-		let currentBreakpoint = 'general';
-
-		Object.entries(this.breakpointsObj).forEach(([breakpoint, value]) => {
-			if (!['general', 'xxl'].includes(breakpoint)) {
-				if (breakpoint === 'general') return;
-
-				if (winWidth <= this.breakpointsObj.xl)
-					currentBreakpoint = breakpoint;
-			}
-			if (winWidth <= value) currentBreakpoint = breakpoint;
-		});
-
-		return currentBreakpoint;
-	}
-
 	getLastUsableBreakpoint(currentBreakpoint, callback) {
 		return [...this.breakpoints]
 			.splice(0, this.breakpoints.indexOf(currentBreakpoint) + 1)
 			.reverse()
 			.find(breakpoint => callback(breakpoint));
-	}
-
-	getTransitionTimeout() {
-		const currentBreakpoint = this.getCurrentBreakpoint();
-
-		const getTransitionValue = (effects, prop) =>
-			effects[
-				`transition-${prop}-${this.getLastUsableBreakpoint(
-					currentBreakpoint,
-					breakpoint =>
-						Object.prototype.hasOwnProperty.call(
-							effects,
-							`transition-${prop}-${breakpoint}`
-						)
-				)}`
-			];
-
-		return this.effects.reduce((promise, effects) => {
-			if (effects.disableTransition) return promise;
-
-			let transitionTimeout = 0;
-			[effects, effects?.out].forEach(effects => {
-				if (!effects) return;
-
-				const transitionDuration = getTransitionValue(
-					effects,
-					'duration'
-				);
-				const transitionDelay = getTransitionValue(effects, 'delay');
-				const transitionTimeoutTemp =
-					(transitionDuration + transitionDelay) * 1000;
-
-				transitionTimeout = Math.max(
-					transitionTimeout,
-					transitionTimeoutTemp
-				);
-			});
-
-			return Math.max(promise, transitionTimeout);
-		}, 0);
 	}
 
 	setIsPreview(isPreview) {

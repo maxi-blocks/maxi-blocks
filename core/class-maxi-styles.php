@@ -296,7 +296,7 @@ class MaxiBlocks_Styles
         $template_slug = get_page_template_slug();
         $template_id = $this->get_template_name() . '//';
 
-        if ($template_slug != '' && $template_slug !== false) {
+        if (!is_archive() && $template_slug != '' && $template_slug !== false) {
             if (is_search()) {
                 $template_id .= 'search';
             } else {
@@ -1507,6 +1507,7 @@ class MaxiBlocks_Styles
         } else {
             $post = get_post($id);
         }
+
         // Fetch blocks from template parts.
         $template_id = $this->get_id(true);
         $blocks = $this->fetch_blocks_by_template_id($template_id);

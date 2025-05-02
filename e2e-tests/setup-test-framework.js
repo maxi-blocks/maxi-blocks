@@ -222,6 +222,14 @@ function observeConsoleLogging() {
 		)
 			return;
 
+		// for fonts when server is down
+		if (
+			text.includes('Error getting font URL') ||
+			text.includes('Error loading font')
+		) {
+			return;
+		}
+
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
 
 		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of

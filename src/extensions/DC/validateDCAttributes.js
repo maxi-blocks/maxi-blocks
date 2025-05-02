@@ -8,8 +8,14 @@ const getValidatedDCAttributes = async (
 	contextLoop,
 	isCL = false
 ) => {
+	// Ensure we have a previousRelation property
+	const attributesWithPrev = {
+		...attributes,
+		previousRelation: attributes.relation, // Set current relation as previous
+	};
+
 	const dcOptions = await getDCOptions(
-		attributes,
+		attributesWithPrev,
 		attributes.id,
 		contentType,
 		isCL,

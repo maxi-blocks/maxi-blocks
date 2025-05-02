@@ -78,6 +78,8 @@ exports[`Divider Maxi hover simple actions Line settings 1`] = `
       "divider-border-palette-sc-status-xl": false,
       "divider-border-palette-status-general": true,
       "divider-border-palette-status-xl": true,
+      "divider-border-right-width-general": 22,
+      "divider-border-right-width-xl": 22,
       "divider-border-style-general": "dashed",
       "divider-border-style-xl": "dashed",
       "divider-border-top-width-general": 22,

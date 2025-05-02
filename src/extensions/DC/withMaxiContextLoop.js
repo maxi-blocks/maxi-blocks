@@ -218,6 +218,9 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					'cl-'
 				);
 
+				// Add previousRelation parameter
+				dataRequest.previousRelation = dataRequest.relation;
+
 				const { newValues } =
 					(await getDCOptions(
 						dataRequest,
@@ -226,8 +229,9 @@ const withMaxiContextLoop = createHigherOrderComponent(
 						true,
 						{
 							'cl-status': contextLoopAttributes['cl-status'],
-							'cl-pagination-per-page': contextLoopAttributes['cl-pagination-per-page']
-						},
+							'cl-pagination-per-page':
+								contextLoopAttributes['cl-pagination-per-page'],
+						}
 					)) ?? {};
 
 				if (!isEmpty(newValues)) {

@@ -466,6 +466,7 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 			if (
 				!hoverKey.includes('menu-item-sub-bg-hover') &&
 				!hoverKey.includes('link-hover-palette-sc-status') &&
+				!hoverKey.includes('menu-item-hover') &&
 				isEqual(hoverValue, normalValue) &&
 				!isNil(hoverValue) &&
 				!getDefaultAttribute(hoverKey)

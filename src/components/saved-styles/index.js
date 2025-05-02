@@ -42,6 +42,7 @@ const SavedStyles = props => {
 	const [localSavedStyles, setLocalSavedStyles] = useState({});
 	const [copySuccess, setCopySuccess] = useState(false);
 	const [filteredStyles, setFilteredStyles] = useState({});
+	const [showAllStyles, setShowAllStyles] = useState(false); // Control whether to show all styles
 
 	// Helper function to normalize block names for comparison
 	const normalizeBlockName = name => {
@@ -51,14 +52,14 @@ const SavedStyles = props => {
 	};
 
 	// Filter styles by block type
-	const filterStylesByBlockType = styles => {
+	const filterStylesByBlockType = (styles, forceShowAll = false) => {
 		if (!styles || Object.keys(styles).length === 0) {
 			setFilteredStyles({});
 			return;
 		}
 
-		// If no blockName is provided, show all styles
-		if (!blockName) {
+		// If no blockName is provided or showAllStyles is true, show all styles
+		if (!blockName || forceShowAll || showAllStyles) {
 			setFilteredStyles(styles);
 			return;
 		}
@@ -141,10 +142,15 @@ const SavedStyles = props => {
 		loadStyles();
 	}, []);
 
-	// Filter styles when blockName changes
+	// Filter styles when blockName changes or showAllStyles toggle changes
 	useEffect(() => {
 		filterStylesByBlockType(localSavedStyles);
-	}, [blockName, localSavedStyles]);
+	}, [blockName, showAllStyles]);
+
+	// Toggle between showing all styles and block-specific styles
+	const toggleStylesView = () => {
+		setShowAllStyles(!showAllStyles);
+	};
 
 	// Set first style as selected when styles are loaded
 	useEffect(() => {
@@ -273,6 +279,19 @@ const SavedStyles = props => {
 
 	const filteredStylesCount = Object.keys(filteredStyles).length;
 	const totalStylesCount = Object.keys(localSavedStyles).length;
+	const hasBlockSpecificStyles =
+		blockName &&
+		Object.values(localSavedStyles).some(styleData => {
+			if (!styleData.blockType) return false;
+			const normalizedStyleBlockType = normalizeBlockName(
+				styleData.blockType
+			);
+			const normalizedCurrentBlockType = normalizeBlockName(blockName);
+			return (
+				styleData.blockType === blockName ||
+				normalizedStyleBlockType === normalizedCurrentBlockType
+			);
+		});
 
 	return (
 		<div className='maxi-saved-styles-control'>
@@ -307,20 +326,43 @@ const SavedStyles = props => {
 				</div>
 			) : (
 				<>
-					{filteredStylesCount > 0 && (
-						<div className='maxi-saved-styles-control__count'>
-							{filteredStylesCount}
-							{blockName
-								? ` ${__(
-										'block-specific out of',
-										'maxi-blocks'
-								  )} `
-								: ' '}
-							{totalStylesCount}
-							{__(' total', 'maxi-blocks')} (
-							{__('max', 'maxi-blocks')} {MAX_SAVED_STYLES})
-						</div>
-					)}
+					{/* Filter toggle button and count display */}
+					<div className='maxi-saved-styles-control__header'>
+						{blockName && hasBlockSpecificStyles && (
+							<div className='maxi-saved-styles-control__filter-toggle'>
+								<Button
+									className='maxi-saved-styles-control__filter-button'
+									onClick={toggleStylesView}
+									isSmall
+								>
+									{showAllStyles
+										? __(
+												'Show block-specific',
+												'maxi-blocks'
+										  )
+										: __('Show all', 'maxi-blocks')}
+								</Button>
+							</div>
+						)}
+
+						{filteredStylesCount > 0 && (
+							<div className='maxi-saved-styles-control__count'>
+								{blockName && !showAllStyles
+									? `${filteredStylesCount} ${__(
+											'block-specific of',
+											'maxi-blocks'
+									  )} ${totalStylesCount} ${__(
+											'total',
+											'maxi-blocks'
+									  )}`
+									: `${totalStylesCount} ${__(
+											'styles',
+											'maxi-blocks'
+									  )}`}{' '}
+								({__('max', 'maxi-blocks')} {MAX_SAVED_STYLES})
+							</div>
+						)}
+					</div>
 
 					{filteredStylesCount > 0 ? (
 						<>
@@ -374,10 +416,12 @@ const SavedStyles = props => {
 						</>
 					) : (
 						<div className='maxi-saved-styles-control__no-styles'>
-							{__(
-								'No styles available for this block type.',
-								'maxi-blocks'
-							)}
+							{blockName && !showAllStyles
+								? __(
+										'No styles available for this block type.',
+										'maxi-blocks'
+								  )
+								: __('No styles available.', 'maxi-blocks')}
 							<p className='maxi-saved-styles-control__help-text'>
 								{__(
 									'Use "Save styles" in the toolbar to create styles for this block.',

@@ -1,6 +1,28 @@
 .maxi-saved-styles-control {
 	padding: 5px;
 
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 8px;
+	}
+
+	&__filter-toggle {
+		.maxi-saved-styles-control__filter-button.components-button {
+			background: var(--maxi-light-blue-1-color);
+			border: 1px solid var(--maxi-grey-1-color);
+			border-radius: 4px;
+			font-size: 11px;
+			padding: 2px 8px;
+			height: auto;
+
+			&:hover {
+				background: var(--maxi-light-blue-2-color);
+			}
+		}
+	}
+
 	&__rename {
 		margin-bottom: 10px;
 		display: flex;
@@ -53,11 +75,8 @@
 
 	&__count {
 		text-align: right !important;
-		margin-top: -3px;
 		font-size: 10px !important;
 		color: var(--maxi-grey-7-color) !important;
-		text-align: center;
-		margin-bottom: 2px;
 	}
 
 	&__no-styles {

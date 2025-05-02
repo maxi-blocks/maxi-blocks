@@ -49,7 +49,8 @@
 		}
 	}
 
-	&__buttons {
+	&__buttons,
+	&__rename-buttons {
 		display: flex;
 		flex-direction: row;
 		gap: 4px;
@@ -80,18 +81,18 @@
 	}
 
 	&__no-styles {
+		font-weight: 500 !important;
 		margin-top: 10px;
 		padding: 10px;
-		background-color: #f8f8f8;
+		background-color: var(--maxi-grey-8-color);
 		border-radius: 4px;
-		font-style: italic;
-		color: #555;
+		color: var(--maxi-grey-11-color);
 	}
 
 	&__help-text {
+		font-weight: 400 !important;
 		margin-top: 8px;
 		font-size: 12px;
-		font-style: normal;
-		color: #757575;
+		color: var(--maxi-grey-11-color);
 	}
 }

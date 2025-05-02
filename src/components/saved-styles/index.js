@@ -39,7 +39,7 @@ const SavedStyles = props => {
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [newName, setNewName] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
-	const [localSavedStyles, setLocalSavedStyles] = useState({});
+	const [dbSavedStyles, setDbSavedStyles] = useState({});
 	const [copySuccess, setCopySuccess] = useState(false);
 	const [filteredStyles, setFilteredStyles] = useState({});
 	const [showAllStyles, setShowAllStyles] = useState(false); // Control whether to show all styles
@@ -111,6 +111,23 @@ const SavedStyles = props => {
 		}
 	};
 
+	// Save styles to database via API
+	const saveStylesToDatabase = async styles => {
+		try {
+			await apiFetch({
+				path: '/maxi-blocks/v1.0/saved-styles',
+				method: 'POST',
+				data: {
+					styles: JSON.stringify(styles),
+				},
+			});
+			return true;
+		} catch (err) {
+			console.error('Error saving styles to database:', err);
+			return false;
+		}
+	};
+
 	// Load saved styles on component mount
 	useEffect(() => {
 		const loadStyles = async () => {
@@ -128,13 +145,13 @@ const SavedStyles = props => {
 
 				// Store all styles
 				const allStyles = parsedResponse || {};
-				setLocalSavedStyles(allStyles);
+				setDbSavedStyles(allStyles);
 
 				// Filter styles for current block type
 				filterStylesByBlockType(allStyles);
 			} catch (err) {
 				console.error('Error loading saved styles:', err);
-				setLocalSavedStyles({});
+				setDbSavedStyles({});
 				setFilteredStyles({});
 			}
 			setIsLoading(false);
@@ -144,7 +161,7 @@ const SavedStyles = props => {
 
 	// Filter styles when blockName changes or showAllStyles toggle changes
 	useEffect(() => {
-		filterStylesByBlockType(localSavedStyles);
+		filterStylesByBlockType(dbSavedStyles);
 	}, [blockName, showAllStyles]);
 
 	// Toggle between showing all styles and block-specific styles
@@ -167,10 +184,10 @@ const SavedStyles = props => {
 
 	// Function to copy selected style to clipboard
 	const copyStyleToClipboard = async () => {
-		if (!selectedStyle || !localSavedStyles) return;
+		if (!selectedStyle || !dbSavedStyles) return;
 
 		try {
-			const styleData = localSavedStyles[selectedStyle];
+			const styleData = dbSavedStyles[selectedStyle];
 			const dataToCopy = styleData.styles || styleData; // Handle both formats
 			await navigator.clipboard.writeText(JSON.stringify(dataToCopy));
 
@@ -188,29 +205,25 @@ const SavedStyles = props => {
 
 	// Function to handle rename
 	const handleRename = async () => {
-		if (!selectedStyle || !newName || !localSavedStyles) return;
+		if (!selectedStyle || !newName || !dbSavedStyles) return;
 
 		setIsLoading(true);
 		try {
-			const currentStyles = { ...localSavedStyles };
+			const currentStyles = { ...dbSavedStyles };
 			const styleData = currentStyles[selectedStyle];
 			delete currentStyles[selectedStyle];
 			currentStyles[newName] = styleData;
 
-			// Call the API directly
-			await apiFetch({
-				path: '/maxi-blocks/v1.0/saved-styles',
-				method: 'POST',
-				data: {
-					styles: JSON.stringify(currentStyles),
-				},
-			});
+			// Save to database
+			const success = await saveStylesToDatabase(currentStyles);
 
-			setLocalSavedStyles(currentStyles);
-			filterStylesByBlockType(currentStyles);
-			setIsRenaming(false);
-			setNewName('');
-			setSelectedStyle(newName);
+			if (success) {
+				setDbSavedStyles(currentStyles);
+				filterStylesByBlockType(currentStyles);
+				setIsRenaming(false);
+				setNewName('');
+				setSelectedStyle(newName);
+			}
 		} catch (err) {
 			console.error('Error renaming style:', err);
 		}
@@ -219,25 +232,21 @@ const SavedStyles = props => {
 
 	// Function to handle delete
 	const handleDelete = async () => {
-		if (!selectedStyle || !localSavedStyles) return;
+		if (!selectedStyle || !dbSavedStyles) return;
 
 		setIsLoading(true);
 		try {
-			const currentStyles = { ...localSavedStyles };
+			const currentStyles = { ...dbSavedStyles };
 			delete currentStyles[selectedStyle];
 
-			// Call the API directly
-			await apiFetch({
-				path: '/maxi-blocks/v1.0/saved-styles',
-				method: 'POST',
-				data: {
-					styles: JSON.stringify(currentStyles),
-				},
-			});
+			// Save to database
+			const success = await saveStylesToDatabase(currentStyles);
 
-			setLocalSavedStyles(currentStyles);
-			filterStylesByBlockType(currentStyles);
-			setSelectedStyle('');
+			if (success) {
+				setDbSavedStyles(currentStyles);
+				filterStylesByBlockType(currentStyles);
+				setSelectedStyle('');
+			}
 		} catch (err) {
 			console.error('Error deleting style:', err);
 		}
@@ -246,9 +255,9 @@ const SavedStyles = props => {
 
 	// Function to apply selected style
 	const applyStyle = () => {
-		if (!selectedStyle || !localSavedStyles) return;
+		if (!selectedStyle || !dbSavedStyles) return;
 
-		const styleData = localSavedStyles[selectedStyle];
+		const styleData = dbSavedStyles[selectedStyle];
 		// Get actual style data (handle both old and new format)
 		const actualStyleData = styleData.styles || styleData;
 
@@ -294,20 +303,7 @@ const SavedStyles = props => {
 	});
 
 	const filteredStylesCount = Object.keys(filteredStyles).length;
-	const totalStylesCount = Object.keys(localSavedStyles).length;
-	const hasBlockSpecificStyles =
-		blockName &&
-		Object.values(localSavedStyles).some(styleData => {
-			if (!styleData.blockType) return false;
-			const normalizedStyleBlockType = normalizeBlockName(
-				styleData.blockType
-			);
-			const normalizedCurrentBlockType = normalizeBlockName(blockName);
-			return (
-				styleData.blockType === blockName ||
-				normalizedStyleBlockType === normalizedCurrentBlockType
-			);
-		});
+	const totalStylesCount = Object.keys(dbSavedStyles).length;
 
 	return (
 		<div className='maxi-saved-styles-control'>
@@ -344,7 +340,8 @@ const SavedStyles = props => {
 				<>
 					{/* Filter toggle button and count display */}
 					<div className='maxi-saved-styles-control__header'>
-						{blockName && hasBlockSpecificStyles && (
+						{/* Always show the toggle button if there are any styles, regardless of block-specific status */}
+						{blockName && totalStylesCount > 0 && (
 							<div className='maxi-saved-styles-control__filter-toggle'>
 								<Button
 									className='maxi-saved-styles-control__filter-button'

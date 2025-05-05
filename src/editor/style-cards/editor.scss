@@ -230,7 +230,6 @@ body .maxi-style-cards__popover {
 
 	.maxi-style-cards__quick-color-presets {
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
 		margin-bottom: 8px;
 
@@ -252,6 +251,9 @@ body .maxi-style-cards__popover {
 			&:hover {
 				background: var(--maxi-white-1-color);
 				border-color: var(--maxi-grey-6-color);
+				&.maxi-style-cards__quick-color-presets__box--add {
+					background-color: #fff;
+				}
 			}
 			&--active {
 				border: 2px solid var(--maxi-primary-color);
@@ -263,6 +265,13 @@ body .maxi-style-cards__popover {
 				border-radius: 50% !important;
 			}
 		}
+	}
+	.maxi-color-control__palette-box {
+		width: 32px;
+		height: 32px;
+	}
+	.maxi-color-control__palette-container {
+		gap: 8px;
 	}
 	.maxi-style-cards__quick-color-presets__reset {
 		position: absolute;

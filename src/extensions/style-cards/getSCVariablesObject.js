@@ -31,6 +31,18 @@ const getColorString = (obj, target, style) => {
 		: color;
 };
 
+const getCustomColorString = (customColors, colorId, opacity = 1) => {
+	if (!customColors || !customColors.length) return null;
+
+	const customColor = customColors.find(color => color.id === colorId);
+
+	if (customColor) {
+		return `rgba(${customColor.value}, ${opacity})`;
+	}
+
+	return null;
+};
+
 const getParsedObj = obj => {
 	const newObj = { ...cloneDeep(obj) };
 

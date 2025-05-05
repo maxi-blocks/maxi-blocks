@@ -39,7 +39,7 @@ class MaxiBlocks_Local_Fonts
         $this->fonts_upload_dir = wp_upload_dir()['basedir'] . '/maxi/fonts';
     }
 
-    public function process_single_font($font_name, $font_data = null)
+    public function process_single_font(string $font_name, ?array $font_data = null)
     {
         // Check if fonts are disabled
         if (!(bool) get_option('local_fonts')) {

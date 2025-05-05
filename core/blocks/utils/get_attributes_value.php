@@ -2,7 +2,7 @@
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_attribute_key.php';
 
-function get_attribute_value($target, $props, $isHover, $breakpoint = null, $prefix = '', $allow_nil = false) {
+function get_attribute_value(string $target, array $props, bool $isHover, ?string $breakpoint = null, string $prefix = '', bool $allow_nil = false) {
 	$attributes_key = get_attribute_key($target, $isHover, $prefix, $breakpoint);
 
 	$value = null;
@@ -26,7 +26,7 @@ function get_attribute_value($target, $props, $isHover, $breakpoint = null, $pre
 	return $value;
 }
 
-function get_attributes_value($args) {
+function get_attributes_value(array $args) {
 	$target = $args['target'];
 	$props = $args['props'];
 	$isHover = $args['isHover'] ?? false;

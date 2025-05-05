@@ -1,0 +1,203 @@
+// Add styles for custom color editing
+.maxi-style-cards__quick-color-presets {
+	&__inline-picker {
+		position: relative;
+		background-color: #fff;
+		border: 1px solid var(--maxi-grey-1-color);
+		border-radius: 4px;
+		padding: 12px;
+		margin-top: 10px;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		z-index: 100;
+		width: 100%;
+
+		// Ensure the picker is displayed prominently
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		// Apply active styling when it's also active
+		&.maxi-style-cards__quick-color-presets__box--active {
+			background-color: var(--maxi-light-blue-2-color);
+			border-color: var(--maxi-light-blue-4-color);
+			box-shadow: 0 0 0 2px var(--maxi-light-blue-3-color);
+		}
+
+		.maxi-style-cards__quick-color-presets__name-input {
+			margin-bottom: 10px;
+
+			.components-base-control__field {
+				margin-bottom: 5px;
+			}
+		}
+
+		.components-color-picker {
+			position: relative;
+			z-index: 999;
+		}
+
+		.maxi-style-cards__quick-color-presets__cancel {
+			align-self: flex-end;
+			margin-top: 10px;
+		}
+	}
+
+	&__box {
+		&--add {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #f8f8f8;
+			transition: background-color 0.2s;
+
+			&:hover {
+				background-color: #efefef;
+			}
+
+			&__add-icon {
+				font-size: 16px;
+				font-weight: bold;
+				color: var(--maxi-grey-6-color);
+			}
+		}
+
+		&--custom {
+			position: relative;
+
+			// Animation for newly added colors
+			&:last-child {
+				animation: highlight-new-color 0.6s ease-in-out;
+				z-index: 10;
+			}
+
+			&:hover {
+				.maxi-style-cards__quick-color-presets__box__name-tooltip {
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+
+			&.maxi-style-cards__quick-color-presets__box--editing {
+				background-color: var(--maxi-light-yellow-1-color);
+				border-color: var(--maxi-light-yellow-5-color);
+				box-shadow: 0 0 0 2px var(--maxi-light-yellow-3-color);
+				z-index: 1;
+			}
+		}
+
+		&--active {
+			background: var(--maxi-light-blue-2-color);
+			border: 1px solid var(--maxi-grey-11-color);
+			box-shadow: none;
+			outline: none;
+
+			&:hover {
+				background: var(--maxi-light-blue-3-color);
+				border-color: var(--maxi-light-blue-3-color);
+			}
+		}
+
+		&__name-tooltip {
+			position: absolute;
+			bottom: -25px;
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: rgba(0, 0, 0, 0.8);
+			color: white;
+			padding: 3px 8px;
+			border-radius: 3px;
+			font-size: 11px;
+			white-space: nowrap;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.2s ease-in-out;
+			z-index: 2;
+
+			&:after {
+				content: '';
+				position: absolute;
+				top: -5px;
+				left: 50%;
+				transform: translateX(-50%);
+				border-width: 0 5px 5px;
+				border-style: solid;
+				border-color: transparent transparent rgba(0, 0, 0, 0.8);
+			}
+		}
+	}
+}
+
+// Enhance the inline color picker
+.maxi-style-cards__inline-color-picker {
+	// Keep color picker open when clicked
+	&:focus-within,
+	&:focus,
+	&:active {
+		outline: none;
+		box-shadow: none;
+	}
+
+	.react-colorful {
+		position: relative;
+		z-index: 9999;
+		// Prevent event bubbling that could close the picker
+		pointer-events: auto !important;
+	}
+
+	.components-popover {
+		// Make popover persist and prevent click propagation
+		position: absolute !important;
+		z-index: 10000 !important;
+
+		// Improve positioning to prevent it from closing
+		top: 0 !important;
+		left: 0 !important;
+
+		// This helps isolate the popover from parent click events
+		.components-popover__content {
+			pointer-events: auto !important;
+		}
+	}
+
+	.react-colorful__saturation {
+		margin-bottom: 15px;
+		// Make saturation area larger and more usable
+		min-height: 150px !important;
+	}
+
+	.react-colorful__interactive:focus {
+		box-shadow: 0 0 0 2px var(--maxi-light-blue-2-color);
+	}
+
+	// Ensure color fields stay visible
+	input[type='text'] {
+		z-index: 10001;
+		position: relative;
+	}
+
+	// Prevent panel clicks from closing the form
+	.components-color-picker {
+		pointer-events: auto !important;
+
+		.components-base-control {
+			margin-bottom: 8px;
+		}
+	}
+}
+
+// Add animation for newly added custom colors
+@keyframes highlight-new-color {
+	0% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+	}
+	50% {
+		transform: scale(1.2);
+		box-shadow: 0 0 0 4px rgba(0, 112, 243, 0.4);
+	}
+	100% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+	}
+}

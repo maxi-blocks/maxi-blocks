@@ -3,6 +3,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -40,6 +41,9 @@ const ColorPaletteControl = props => {
 		globalPaletteOpacity,
 	} = props;
 
+	// Use local state for custom colors that will be updated via event listener
+	const [localCustomColors, setLocalCustomColors] = useState([]);
+
 	// Get custom colors from the active style card
 	const customColors = useSelect(select => {
 		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
@@ -47,6 +51,35 @@ const ColorPaletteControl = props => {
 		const { value: activeSCValue } = activeStyleCard;
 
 		return activeSCValue?.light?.styleCard?.color?.customColors || [];
+	}, []);
+
+	// Set local custom colors initially from props
+	useEffect(() => {
+		setLocalCustomColors(customColors);
+	}, [customColors]);
+
+	// Add event listener for custom color updates
+	useEffect(() => {
+		const handleCustomColorsUpdated = event => {
+			// Update local custom colors from the event
+			if (event?.detail?.customColors) {
+				setLocalCustomColors(event.detail.customColors);
+			}
+		};
+
+		// Listen for custom colors updated event
+		document.addEventListener(
+			'maxi-blocks-sc-custom-colors-updated',
+			handleCustomColorsUpdated
+		);
+
+		// Clean up
+		return () => {
+			document.removeEventListener(
+				'maxi-blocks-sc-custom-colors-updated',
+				handleCustomColorsUpdated
+			);
+		};
 	}, []);
 
 	const paletteStatus = globalStatus && !paletteSCStatus;
@@ -65,6 +98,10 @@ const ColorPaletteControl = props => {
 
 		return false;
 	};
+
+	// Use the local state for rendering custom colors
+	const customColorsToRender =
+		localCustomColors.length > 0 ? localCustomColors : customColors;
 
 	return (
 		<div className='maxi-color-control__palette'>
@@ -105,8 +142,8 @@ const ColorPaletteControl = props => {
 					))}
 
 					{/* Custom Colors */}
-					{!isEmpty(customColors) &&
-						customColors.map(customColor => (
+					{!isEmpty(customColorsToRender) &&
+						customColorsToRender.map(customColor => (
 							<button
 								key={`maxi-color-control__palette-box__${customColor.id}`}
 								type='button'

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -32,6 +32,7 @@ import {
 	getDefaultSCValue,
 	getTypographyFromSC,
 } from '@extensions/style-cards';
+import { updateCustomColorVariables } from '@extensions/style-cards/updateSCOnEditor';
 import getDefaultSCAttribute from './getDefaultSCAttribute';
 
 /**
@@ -344,35 +345,113 @@ const SCAccordion = props => {
 const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
 	const [customColorName, setCustomColorName] = useState('');
-	const [showAddCustomColor, setShowAddCustomColor] = useState(false);
+	const [isAddingCustomColor, setIsAddingCustomColor] = useState(false);
+	const [tempColorValue, setTempColorValue] = useState('rgba(255, 0, 0, 1)');
+	const [activeCustomColor, setActiveCustomColor] = useState(null);
+	const [customColors, setCustomColors] = useState(
+		processSCAttribute(SC, 'customColors', 'color') || []
+	);
 
-	// Get custom colors from the SC or initialize an empty array
-	const customColors = processSCAttribute(SC, 'customColors', 'color') || [];
+	// Add this useEffect to keep custom colors in sync with the SC
+	useEffect(() => {
+		const scCustomColors =
+			processSCAttribute(SC, 'customColors', 'color') || [];
+		setCustomColors(scCustomColors);
+	}, [SC]);
 
 	// Function to add a custom color
-	const addCustomColor = colorValue => {
-		const newCustomColors = [
-			...customColors,
-			{
+	const addCustomColor = (colorValue, name = '', shouldClose = true) => {
+		// Get RGB value from color
+		let colorVal = colorValue;
+		// Clean up RGB format if needed
+		if (colorValue.startsWith('rgb')) {
+			colorVal = colorValue
+				.replace(/^rgba?\(|\)$/g, '')
+				.split(',')
+				.slice(0, 3)
+				.join(',');
+		}
+
+		// If editing an existing color, update it
+		if (activeCustomColor) {
+			const newCustomColors = customColors.map(color =>
+				color.id === activeCustomColor.id
+					? {
+							...color,
+							name: customColorName || color.name,
+							value: colorVal,
+					  }
+					: color
+			);
+
+			// Update the SC object
+			onChangeValue({ customColors: newCustomColors }, 'color');
+
+			// Directly update CSS variables for immediate effect
+			updateCustomColorVariables(newCustomColors);
+
+			// Dispatch events to update all UI components
+			document.dispatchEvent(
+				new CustomEvent('maxi-blocks-sc-custom-colors-updated', {
+					detail: { customColors: newCustomColors },
+				})
+			);
+			document.dispatchEvent(new CustomEvent('maxi-blocks-sc-updated'));
+			document.dispatchEvent(
+				new CustomEvent('maxi-blocks-inspector-palette-updated')
+			);
+
+			// Reset state only if explicitly requested
+			if (shouldClose) {
+				setActiveCustomColor(null);
+				setCustomColorName('');
+				setIsAddingCustomColor(false);
+			}
+		}
+		// Adding a new color
+		else {
+			// Create new custom color with a unique timestamp-based ID
+			const newCustomColor = {
 				id: `custom-${Date.now()}`,
-				name: customColorName || __('Custom color', 'maxi-blocks'),
-				value: colorValue.replace('rgb(', '').replace(')', ''),
-			},
-		];
+				name:
+					customColorName ||
+					name ||
+					__('Custom color', 'maxi-blocks'),
+				value: colorVal,
+			};
 
-		onChangeValue(
-			{
-				customColors: newCustomColors,
-			},
-			'color'
-		);
+			// Create new array with the added color
+			const newCustomColors = [...customColors, newCustomColor];
 
-		// Reset form
-		setCustomColorName('');
-		setShowAddCustomColor(false);
+			// Update the SC object
+			onChangeValue({ customColors: newCustomColors }, 'color');
+
+			// Force update the customColors state variable to ensure UI refresh
+			setCustomColors(newCustomColors);
+
+			// Directly update CSS variables for immediate effect
+			updateCustomColorVariables(newCustomColors);
+
+			// Dispatch events to update all UI components
+			document.dispatchEvent(
+				new CustomEvent('maxi-blocks-sc-custom-colors-updated', {
+					detail: { customColors: newCustomColors },
+				})
+			);
+			document.dispatchEvent(new CustomEvent('maxi-blocks-sc-updated'));
+			document.dispatchEvent(
+				new CustomEvent('maxi-blocks-inspector-palette-updated')
+			);
+
+			// For adding new colors, always close the picker to show the result
+			if (shouldClose) {
+				setCustomColorName('');
+				setIsAddingCustomColor(false);
+			}
+		}
 	};
 
-	// Function to remove a custom color
+	// Update the removeCustomColor function to also update the local state
 	const removeCustomColor = colorId => {
 		const newCustomColors = customColors.filter(
 			color => color.id !== colorId
@@ -384,6 +463,31 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			},
 			'color'
 		);
+
+		// Update local state
+		setCustomColors(newCustomColors);
+
+		// Dispatch custom event to update all color pickers
+		document.dispatchEvent(
+			new CustomEvent('maxi-blocks-sc-custom-colors-updated', {
+				detail: { customColors: newCustomColors },
+			})
+		);
+
+		// Force SC update
+		document.dispatchEvent(new CustomEvent('maxi-blocks-sc-updated'));
+
+		// Broadcast to inspector palette controls
+		document.dispatchEvent(
+			new CustomEvent('maxi-blocks-inspector-palette-updated')
+		);
+	};
+
+	// Add this function to handle editing an existing custom color
+	const editCustomColor = customColor => {
+		setActiveCustomColor(customColor);
+		setCustomColorName(customColor.name);
+		setIsAddingCustomColor(true);
 	};
 
 	const headingItems = () =>
@@ -709,9 +813,15 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											key={`maxi-style-cards__quick-color-presets__box__${customColor.id}`}
 											className={classnames(
 												'maxi-style-cards__quick-color-presets__box',
-												'maxi-style-cards__quick-color-presets__box--custom'
+												'maxi-style-cards__quick-color-presets__box--custom',
+												activeCustomColor?.id ===
+													customColor.id &&
+													'maxi-style-cards__quick-color-presets__box--editing'
 											)}
 											title={customColor.name}
+											onClick={() =>
+												editCustomColor(customColor)
+											}
 										>
 											<span
 												className='maxi-style-cards__quick-color-presets__box__item'
@@ -724,11 +834,12 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											</span>
 											<button
 												className='maxi-style-cards__quick-color-presets__box__remove'
-												onClick={() =>
+												onClick={e => {
+													e.stopPropagation(); // Prevent triggering the parent onClick
 													removeCustomColor(
 														customColor.id
-													)
-												}
+													);
+												}}
 												aria-label={__(
 													'Remove custom color',
 													'maxi-blocks'
@@ -741,11 +852,12 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									))}
 
 									{/* Add custom color button */}
-									{!showAddCustomColor && (
+									{!isAddingCustomColor ? (
+										// Show add button when not adding a color
 										<div
 											className='maxi-style-cards__quick-color-presets__box maxi-style-cards__quick-color-presets__box--add'
 											onClick={() =>
-												setShowAddCustomColor(true)
+												setIsAddingCustomColor(true)
 											}
 											title={__(
 												'Add custom color',
@@ -756,146 +868,181 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 												+
 											</span>
 										</div>
+									) : (
+										// Show inline color picker when adding a color
+										<div className='maxi-style-cards__quick-color-presets__inline-picker maxi-style-cards__quick-color-presets__box--active'>
+											<TextControl
+												label={__(
+													activeCustomColor
+														? 'Edit name'
+														: 'Color name',
+													'maxi-blocks'
+												)}
+												value={customColorName}
+												onChange={value =>
+													setCustomColorName(value)
+												}
+												placeholder={__(
+													'Enter color name',
+													'maxi-blocks'
+												)}
+												className='maxi-style-cards__quick-color-presets__name-input'
+											/>
+											<ColorControl
+												className='maxi-style-cards__inline-color-picker'
+												label={__(
+													'Select color',
+													'maxi-blocks'
+												)}
+												color={
+													activeCustomColor
+														? `rgba(${activeCustomColor.value}, 1)`
+														: tempColorValue ||
+														  'rgba(255, 0, 0, 1)'
+												}
+												onChange={({ color }) => {
+													// Update the preview immediately
+													setTempColorValue(color);
+												}}
+												blockStyle={SCStyle}
+												disableOpacity={false}
+												disableGradient
+												disablePalette
+												disableColorDisplay={false}
+											/>
+											<div className='maxi-style-cards__add-custom-color-actions'>
+												<Button
+													className='maxi-style-cards__quick-color-presets__cancel'
+													onClick={() => {
+														setTempColorValue('');
+														setActiveCustomColor(
+															null
+														);
+														setCustomColorName('');
+														setIsAddingCustomColor(
+															false
+														);
+													}}
+													isSmall
+													isSecondary
+												>
+													{__(
+														'Cancel',
+														'maxi-blocks'
+													)}
+												</Button>
+												<Button
+													className='maxi-style-cards__quick-color-presets__add'
+													onClick={() => {
+														// Add the color with current values
+														addCustomColor(
+															tempColorValue ||
+																'rgba(255, 0, 0, 1)',
+															customColorName,
+															true
+														);
+													}}
+													isSmall
+													isPrimary
+													disabled={!tempColorValue}
+												>
+													{activeCustomColor
+														? __(
+																'Update',
+																'maxi-blocks'
+														  )
+														: __(
+																'Add',
+																'maxi-blocks'
+														  )}
+												</Button>
+											</div>
+										</div>
 									)}
 								</div>
 
 								{/* Standard palette color editing */}
-								<>
-									<ColorControl
-										className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}
-										color={`rgba(${processSCAttribute(
-											SC,
-											quickColorPreset,
-											'color'
-										)}, 1)`}
-										defaultColorAttributes={{
-											defaultColor: `rgba(${processSCAttribute(
+								{!isAddingCustomColor && (
+									<>
+										<ColorControl
+											className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}
+											color={`rgba(${processSCAttribute(
 												SC,
 												quickColorPreset,
 												'color'
-											)}, 1)`,
-										}}
-										onChange={({ color }) =>
-											onChangeValue(
-												{
-													[`${quickColorPreset}`]:
-														color
-															.replace('rgb(', '')
-															.replace(')', ''),
-												},
-												'color'
-											)
-										}
-										avoidBreakpointForDefault
-										blockStyle={SCStyle}
-										disableColorDisplay
-										disableOpacity
-										disableGradient
-										disablePalette
-									/>
-									<div className='maxi-style-cards__quick-color-presets__reset'>
-										<span
-											className='maxi-style-cards__quick-color-presets__reset-button__preview'
-											style={{
-												background: `rgba(${getDefaultSCAttribute(
+											)}, 1)`}
+											defaultColorAttributes={{
+												defaultColor: `rgba(${processSCAttribute(
 													SC,
 													quickColorPreset,
 													'color'
 												)}, 1)`,
 											}}
-										/>
-										<Button
-											disabled={
-												processSCAttribute(
-													SC,
-													quickColorPreset,
-													'color'
-												) ===
-												SC.defaultStyleCard.color[
-													quickColorPreset
-												]
-											}
-											className='maxi-style-cards__quick-color-presets__reset-button'
-											onClick={() =>
+											onChange={({ color }) =>
 												onChangeValue(
 													{
 														[`${quickColorPreset}`]:
-															SC.defaultStyleCard
-																.color[
-																quickColorPreset
-															],
+															color
+																.replace(
+																	'rgb(',
+																	''
+																)
+																.replace(
+																	')',
+																	''
+																),
 													},
 													'color'
 												)
 											}
-										>
-											<Icon icon={reset} />
-										</Button>
-									</div>
-								</>
-
-								{/* Custom color add form */}
-								{showAddCustomColor && (
-									<div className='maxi-style-cards__add-custom-color-form'>
-										<TextControl
-											label={__(
-												'Color name',
-												'maxi-blocks'
-											)}
-											value={customColorName}
-											onChange={value =>
-												setCustomColorName(value)
-											}
-											placeholder={__(
-												'Enter color name',
-												'maxi-blocks'
-											)}
-										/>
-										<ColorControl
-											label={__(
-												'Select color',
-												'maxi-blocks'
-											)}
-											className='maxi-style-cards__custom-color-picker'
-											onChange={({ color }) =>
-												addCustomColor(color)
-											}
+											avoidBreakpointForDefault
 											blockStyle={SCStyle}
+											disableColorDisplay
 											disableOpacity
 											disableGradient
+											disablePalette
 										/>
-										<div className='maxi-style-cards__add-custom-color-actions'>
-											<Button
-												className='maxi-style-cards__add-custom-color-cancel'
-												onClick={() => {
-													setShowAddCustomColor(
-														false
-													);
-													setCustomColorName('');
+										<div className='maxi-style-cards__quick-color-presets__reset'>
+											<span
+												className='maxi-style-cards__quick-color-presets__reset-button__preview'
+												style={{
+													background: `rgba(${getDefaultSCAttribute(
+														SC,
+														quickColorPreset,
+														'color'
+													)}, 1)`,
 												}}
-											>
-												{__('Cancel', 'maxi-blocks')}
-											</Button>
+											/>
 											<Button
-												className='maxi-style-cards__add-custom-color-submit'
-												onClick={() => {
-													// Simulate ColorControl onChange event that would normally provide a color
-													const colorInput =
-														document.querySelector(
-															'.maxi-style-cards__custom-color-picker .react-colorful input[type="text"]'
-														);
-													if (colorInput) {
-														const color =
-															colorInput.value;
-														addCustomColor(color);
-													}
-												}}
-												disabled={!customColorName}
+												disabled={
+													processSCAttribute(
+														SC,
+														quickColorPreset,
+														'color'
+													) ===
+													SC.defaultStyleCard.color[
+														quickColorPreset
+													]
+												}
+												className='maxi-style-cards__quick-color-presets__reset-button'
+												onClick={() =>
+													onChangeValue(
+														{
+															[`${quickColorPreset}`]:
+																SC
+																	.defaultStyleCard
+																	.color[
+																	quickColorPreset
+																],
+														},
+														'color'
+													)
+												}
 											>
-												{__('Add', 'maxi-blocks')}
+												<Icon icon={reset} />
 											</Button>
 										</div>
-									</div>
+									</>
 								)}
 							</>
 						),

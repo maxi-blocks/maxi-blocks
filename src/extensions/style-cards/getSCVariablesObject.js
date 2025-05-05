@@ -13,7 +13,7 @@ import replaceUndefinedWithNull from './utils';
 /**
  * External dependencies
  */
-import { cloneDeep, merge, times, isEmpty } from 'lodash';
+import { cloneDeep, merge, times, isEmpty, isString } from 'lodash';
 
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
@@ -29,18 +29,6 @@ const getColorString = (obj, target, style) => {
 				opacity: paletteOpacity,
 		  })
 		: color;
-};
-
-const getCustomColorString = (customColors, colorId, opacity = 1) => {
-	if (!customColors || !customColors.length) return null;
-
-	const customColor = customColors.find(color => color.id === colorId);
-
-	if (customColor) {
-		return `rgba(${customColor.value}, ${opacity})`;
-	}
-
-	return null;
 };
 
 const getParsedObj = obj => {
@@ -138,6 +126,18 @@ const getSCVariablesObject = (
 		rawActiveSCColour ?? getActiveColourFromSC(styleCards, 4);
 
 	styles.forEach(style => {
+		// Add custom colors as CSS variables
+		if (
+			SC[style].color?.customColors &&
+			SC[style].color.customColors.length > 0
+		) {
+			SC[style].color.customColors.forEach(customColor => {
+				// For each custom color, create a color variable using its ID
+				response[`--maxi-${style}-color-${customColor.id}`] =
+					customColor.value;
+			});
+		}
+
 		elements.forEach(element => {
 			const obj = getParsedObj(SC[style][element]);
 			if (!elementsForColor.includes(element))
@@ -256,12 +256,38 @@ const getSCVariablesObject = (
 					});
 				});
 
-			if (obj['color-global'])
-				response[`--maxi-${style}-${element}-color`] = getColorString(
-					obj,
-					null,
-					style
-				);
+			// Process palette colors, with special handling for custom colors
+			if (obj['color-global']) {
+				const paletteColor = obj['palette-color'];
+
+				// Check if this is a custom color (string starting with 'custom-')
+				if (
+					isString(paletteColor) &&
+					paletteColor.startsWith('custom-') &&
+					SC[style].color?.customColors
+				) {
+					// Find the custom color in the customColors array
+					const customColor = SC[style].color.customColors.find(
+						cc => cc.id === paletteColor
+					);
+
+					if (customColor) {
+						// Use the custom color directly with opacity
+						response[`--maxi-${style}-${element}-color`] = `rgba(${
+							customColor.value
+						}, ${obj['palette-opacity'] || 1})`;
+					} else {
+						// If custom color is not found, use the standard method
+						response[`--maxi-${style}-${element}-color`] =
+							getColorString(obj, null, style);
+					}
+				} else {
+					// Standard palette color
+					response[`--maxi-${style}-${element}-color`] =
+						getColorString(obj, null, style);
+				}
+			}
+
 			switch (element) {
 				case 'button':
 					if (obj['background-color-global'])

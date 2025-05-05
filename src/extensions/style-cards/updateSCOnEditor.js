@@ -31,6 +31,67 @@ export const createSCStyleString = SCObject => {
 	return response;
 };
 
+/**
+ * Updates CSS custom properties for custom colors immediately
+ * This function allows custom colors to be used right away without saving
+ *
+ * @param {Array} customColors Array of custom color objects
+ * @param {Array} elements     DOM elements to update (defaults to document and site editor iframe)
+ */
+export const updateCustomColorVariables = (
+	customColors,
+	rawElements = [document, getSiteEditorIframe()]
+) => {
+	if (!customColors || !customColors.length) return;
+
+	const elements = isArray(rawElements) ? rawElements : [rawElements];
+
+	elements.forEach(element => {
+		if (!element) return;
+
+		// Find or create the custom colors style element
+		let customColorsStyleEl = element.getElementById(
+			'maxi-blocks-custom-colors-css'
+		);
+
+		if (!customColorsStyleEl) {
+			customColorsStyleEl = element.createElement('style');
+			customColorsStyleEl.id = 'maxi-blocks-custom-colors-css';
+
+			// Get the head element
+			const elementHead = Array.from(
+				element.querySelectorAll('head')
+			).pop();
+			elementHead?.appendChild(customColorsStyleEl);
+		}
+
+		// Create CSS for custom colors (for both light and dark themes)
+		let cssString = '';
+
+		customColors.forEach(color => {
+			// Add variables for light theme
+			cssString += `
+				--maxi-light-color-${color.id}: ${color.value};
+				--maxi-light-${color.id}: var(--maxi-light-color-${color.id});
+			`;
+
+			// Add variables for dark theme
+			cssString += `
+				--maxi-dark-color-${color.id}: ${color.value};
+				--maxi-dark-${color.id}: var(--maxi-dark-color-${color.id});
+			`;
+		});
+
+		// Update the style element content
+		customColorsStyleEl.innerHTML = `:root{${cssString}}`;
+	});
+
+	// Dispatch an event to let the editor know custom colors have been updated
+	document.dispatchEvent(
+		new CustomEvent('maxi-blocks-custom-colors-updated')
+	);
+};
+
 export const getSCFontsData = obj => {
 	const response = {};
 	let fontName = '';
@@ -155,6 +216,14 @@ const updateSCOnEditor = (
 
 			if (!isEmpty(allSCFonts)) {
 				loadFonts(allSCFonts, false, element);
+			}
+
+			// Also make sure custom colors are available
+			if (styleCards?.light?.styleCard?.color?.customColors) {
+				updateCustomColorVariables(
+					styleCards.light.styleCard.color.customColors,
+					element
+				);
 			}
 		});
 	}

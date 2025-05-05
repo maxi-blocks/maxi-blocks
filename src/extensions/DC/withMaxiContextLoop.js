@@ -218,6 +218,9 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					'cl-'
 				);
 
+				// Add previousRelation parameter
+				dataRequest.previousRelation = dataRequest.relation;
+
 				const { newValues } =
 					(await getDCOptions(
 						dataRequest,

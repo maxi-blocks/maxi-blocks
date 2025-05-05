@@ -67,10 +67,37 @@ const ColorPaletteControl = props => {
 			}
 		};
 
+		// Add event listener for immediate updates from style card editor
+		const handleImmediateColorUpdate = event => {
+			if (event?.detail?.colorId && event?.detail?.colorValue) {
+				// Update the specific color in our local state
+				setLocalCustomColors(prevColors => {
+					return prevColors.map(color => {
+						if (color.id === event.detail.colorId) {
+							return {
+								...color,
+								value: event.detail.colorValue,
+								...(event.detail.colorName && {
+									name: event.detail.colorName,
+								}),
+							};
+						}
+						return color;
+					});
+				});
+			}
+		};
+
 		// Listen for custom colors updated event
 		document.addEventListener(
 			'maxi-blocks-sc-custom-colors-updated',
 			handleCustomColorsUpdated
+		);
+
+		// Listen for immediate color updates from the style card editor
+		document.addEventListener(
+			'maxi-custom-color-immediate-update',
+			handleImmediateColorUpdate
 		);
 
 		// Clean up
@@ -78,6 +105,10 @@ const ColorPaletteControl = props => {
 			document.removeEventListener(
 				'maxi-blocks-sc-custom-colors-updated',
 				handleCustomColorsUpdated
+			);
+			document.removeEventListener(
+				'maxi-custom-color-immediate-update',
+				handleImmediateColorUpdate
 			);
 		};
 	}, []);

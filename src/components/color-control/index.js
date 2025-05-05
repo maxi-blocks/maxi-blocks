@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -59,46 +59,109 @@ const ColorControl = props => {
 		avoidBreakpointForDefault = false,
 	} = props;
 
+	// Add forceUpdate state to trigger component re-renders
+	const [forceUpdate, setForceUpdate] = useState(0);
+
 	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
-		useSelect(select => {
-			const { receiveSelectedStyleCardValue } = select(
-				'maxiBlocks/style-cards'
+		useSelect(
+			select => {
+				const { receiveSelectedStyleCardValue } = select(
+					'maxiBlocks/style-cards'
+				);
+
+				const prefix = globalProps?.target
+					? isHover && !globalProps?.target.includes('hover')
+						? `hover-${globalProps?.target}-`
+						: `${globalProps?.target}-`
+					: '';
+
+				const globalStatus = globalProps
+					? receiveSelectedStyleCardValue(
+							`${prefix}color-global`,
+							globalProps ? getBlockStyle(clientId) : null,
+							globalProps?.type
+					  )
+					: false;
+				const globalPaletteColor = globalProps
+					? receiveSelectedStyleCardValue(
+							`${prefix}palette-color`,
+							globalProps ? getBlockStyle(clientId) : null,
+							globalProps?.type
+					  )
+					: false;
+				const globalPaletteOpacity = globalProps
+					? receiveSelectedStyleCardValue(
+							`${prefix}palette-opacity`,
+							globalProps ? getBlockStyle(clientId) : null,
+							globalProps?.type
+					  )
+					: false;
+
+				return {
+					globalStatus,
+					globalPaletteColor,
+					globalPaletteOpacity: globalPaletteOpacity || 1,
+				};
+			},
+			[forceUpdate]
+		); // Add forceUpdate as a dependency
+
+	// Listen for custom color updates
+	useEffect(() => {
+		// Handler for custom color immediate updates
+		const handleCustomColorUpdate = event => {
+			if (event?.detail?.colorId) {
+				// If this control uses the updated color, force a re-render
+				if (paletteColor === event.detail.colorId) {
+					setForceUpdate(prev => prev + 1);
+				}
+			}
+		};
+
+		// Handler for all inspector palette updates
+		const handleInspectorPaletteUpdate = () => {
+			// Force a re-render to reflect any changes
+			setForceUpdate(prev => prev + 1);
+		};
+
+		// Add event listeners
+		document.addEventListener(
+			'maxi-custom-color-immediate-update',
+			handleCustomColorUpdate
+		);
+		document.addEventListener(
+			'maxi-blocks-inspector-palette-updated',
+			handleInspectorPaletteUpdate
+		);
+		document.addEventListener(
+			'maxi-blocks-sc-custom-colors-updated',
+			handleInspectorPaletteUpdate
+		);
+		document.addEventListener(
+			'maxi-blocks-color-control-updated',
+			handleInspectorPaletteUpdate
+		);
+
+		// Clean up on unmount
+		return () => {
+			document.removeEventListener(
+				'maxi-custom-color-immediate-update',
+				handleCustomColorUpdate
 			);
-
-			const prefix = globalProps?.target
-				? isHover && !globalProps?.target.includes('hover')
-					? `hover-${globalProps?.target}-`
-					: `${globalProps?.target}-`
-				: '';
-
-			const globalStatus = globalProps
-				? receiveSelectedStyleCardValue(
-						`${prefix}color-global`,
-						globalProps ? getBlockStyle(clientId) : null,
-						globalProps?.type
-				  )
-				: false;
-			const globalPaletteColor = globalProps
-				? receiveSelectedStyleCardValue(
-						`${prefix}palette-color`,
-						globalProps ? getBlockStyle(clientId) : null,
-						globalProps?.type
-				  )
-				: false;
-			const globalPaletteOpacity = globalProps
-				? receiveSelectedStyleCardValue(
-						`${prefix}palette-opacity`,
-						globalProps ? getBlockStyle(clientId) : null,
-						globalProps?.type
-				  )
-				: false;
-
-			return {
-				globalStatus,
-				globalPaletteColor,
-				globalPaletteOpacity: globalPaletteOpacity || 1,
-			};
-		});
+			document.removeEventListener(
+				'maxi-blocks-inspector-palette-updated',
+				handleInspectorPaletteUpdate
+			);
+			document.removeEventListener(
+				'maxi-blocks-sc-custom-colors-updated',
+				handleInspectorPaletteUpdate
+			);
+			document.removeEventListener(
+				'maxi-blocks-color-control-updated',
+				handleInspectorPaletteUpdate
+			);
+		};
+	}, [paletteColor]);
 
 	const blockStyle = rawBlockStyle
 		? rawBlockStyle.replace('maxi-', '')

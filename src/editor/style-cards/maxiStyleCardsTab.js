@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { dispatch } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -471,14 +472,16 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 
 		const updatedName = newName !== null ? newName : customColorName;
 
+		// Create the updated color object
+		const updatedCustomColor = {
+			...activeCustomColor,
+			name: updatedName || activeCustomColor.name,
+			value: colorVal,
+		};
+
+		// Create the updated colors array
 		const newCustomColors = customColors.map(color =>
-			color.id === activeCustomColor.id
-				? {
-						...color,
-						name: updatedName || color.name,
-						value: colorVal,
-				  }
-				: color
+			color.id === activeCustomColor.id ? updatedCustomColor : color
 		);
 
 		// Update the SC object
@@ -486,25 +489,265 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 
 		// Update local state
 		setCustomColors(newCustomColors);
-		setActiveCustomColor({
-			...activeCustomColor,
-			name: updatedName || activeCustomColor.name,
-			value: colorVal,
-		});
+		setActiveCustomColor(updatedCustomColor);
 
-		// Directly update CSS variables for immediate effect
+		// Direct DOM manipulation to immediately update all instances of the custom color
+		// This section directly updates all UI elements that use the custom color
+
+		// 1. Update CSS custom properties directly in the document
+		const updateCustomProperties = () => {
+			// Define the custom CSS properties that need to be updated for both light and dark themes
+			const colorProperties = [
+				`--maxi-light-color-${updatedCustomColor.id}: ${colorVal};`,
+				`--maxi-light-${updatedCustomColor.id}: var(--maxi-light-color-${updatedCustomColor.id});`,
+				`--maxi-dark-color-${updatedCustomColor.id}: ${colorVal};`,
+				`--maxi-dark-${updatedCustomColor.id}: var(--maxi-dark-color-${updatedCustomColor.id});`,
+			];
+
+			// Direct CSS variable update on the document root
+			colorProperties.forEach(property => {
+				const [name, value] = property.split(':');
+				document.documentElement.style.setProperty(
+					name.trim(),
+					value.trim().replace(';', '')
+				);
+			});
+
+			// Create an additional style element for extra certainty
+			let styleEl = document.getElementById(
+				'maxi-blocks-custom-color-immediate-update'
+			);
+			if (!styleEl) {
+				styleEl = document.createElement('style');
+				styleEl.id = 'maxi-blocks-custom-color-immediate-update';
+				document.head.appendChild(styleEl);
+			}
+
+			// Insert or update the CSS rule with highest specificity overrides
+			styleEl.textContent = `
+				:root {
+					--maxi-light-color-${updatedCustomColor.id}: ${colorVal} !important;
+					--maxi-light-${updatedCustomColor.id}: var(--maxi-light-color-${updatedCustomColor.id}) !important;
+					--maxi-dark-color-${updatedCustomColor.id}: ${colorVal} !important;
+					--maxi-dark-${updatedCustomColor.id}: var(--maxi-dark-color-${updatedCustomColor.id}) !important;
+				}
+
+				/* Target specific custom color elements */
+				[data-item="${updatedCustomColor.id}"] .maxi-color-control__palette-item {
+					background: rgba(${colorVal}, 1) !important;
+				}
+
+				/* Force inspector color palettes to update */
+				.components-popover .maxi-color-control__palette-box--custom[data-item="${updatedCustomColor.id}"] .maxi-color-control__palette-item {
+					background: rgba(${colorVal}, 1) !important;
+				}
+
+				/* Generic fallback selector for any custom color elements */
+				.maxi-color-control__palette-box--custom[data-item="${updatedCustomColor.id}"] .maxi-color-control__palette-item {
+					background: rgba(${colorVal}, 1) !important;
+				}
+			`;
+
+			// Force the browser to synchronously apply style changes
+			(() => document.body.offsetHeight)();
+		};
+
+		// 2. Update all DOM elements with this color
+		const updateDOMElements = () => {
+			// Target ALL instances of custom color swatches by their color ID
+			const allCustomColorSwatches = document.querySelectorAll(
+				`[data-item="${updatedCustomColor.id}"]`
+			);
+
+			// Force update all matching elements
+			allCustomColorSwatches.forEach(element => {
+				// Find the color swatch element and force update
+				const swatch = element.querySelector(
+					'.maxi-color-control__palette-item'
+				);
+				if (swatch) {
+					swatch.style.background = `rgba(${colorVal}, 1)`;
+					// Force a repaint by adding and removing a class
+					swatch.classList.add('maxi-color-control__force-update');
+					setTimeout(
+						() =>
+							swatch.classList.remove(
+								'maxi-color-control__force-update'
+							),
+						10
+					);
+				}
+
+				// Update title/tooltip
+				if (updatedName) {
+					element.setAttribute('title', updatedName);
+					element.setAttribute(
+						'aria-label',
+						`Custom color: ${updatedName}`
+					);
+				}
+			});
+
+			// Find inspector palette elements - they might be in different DOM hierarchy
+			const inspectorPalette = document.querySelectorAll(
+				'.components-popover .maxi-color-control__palette-box--custom'
+			);
+			inspectorPalette.forEach(element => {
+				const customId = element.getAttribute('data-item');
+				if (customId === updatedCustomColor.id) {
+					const swatch = element.querySelector(
+						'.maxi-color-control__palette-item'
+					);
+					if (swatch) {
+						// Forcefully update the style and add !important
+						swatch.setAttribute(
+							'style',
+							`background: rgba(${colorVal}, 1) !important`
+						);
+
+						// Create a small animation to force repaint
+						swatch.animate([{ opacity: 0.99 }, { opacity: 1 }], {
+							duration: 10,
+						});
+					}
+
+					// Update name/title if needed
+					if (updatedName) {
+						element.setAttribute('title', updatedName);
+						element.setAttribute(
+							'aria-label',
+							`Custom color: ${updatedName}`
+						);
+					}
+				}
+			});
+
+			// Use MutationObserver to catch newly rendered color pickers
+			if (!window.maxiColorObserver) {
+				window.maxiColorObserver = new MutationObserver(mutations => {
+					mutations.forEach(mutation => {
+						if (mutation.addedNodes.length) {
+							// Check if added nodes contain our custom color
+							mutation.addedNodes.forEach(node => {
+								if (node.nodeType === Node.ELEMENT_NODE) {
+									const customSwatches =
+										node.querySelectorAll(
+											`[data-item="${updatedCustomColor.id}"] .maxi-color-control__palette-item`
+										);
+
+									customSwatches.forEach(swatch => {
+										swatch.style.background = `rgba(${colorVal}, 1)`;
+									});
+								}
+							});
+						}
+					});
+				});
+
+				// Start observing the document for color picker related changes
+				window.maxiColorObserver.observe(document.body, {
+					childList: true,
+					subtree: true,
+				});
+			}
+		};
+
+		// Run the direct DOM updates
+		updateCustomProperties();
+		updateDOMElements();
+
+		// Force a redraw of the entire document to ensure all CSS changes apply
+		document.body.style.display = 'none';
+		(() => document.body.offsetHeight)(); // Trigger a reflow
+		document.body.style.display = '';
+
+		// After a short delay, try to update any newly rendered elements
+		setTimeout(() => {
+			updateDOMElements();
+
+			// Additionally, dispatch an event that inspector components can listen for
+			document.dispatchEvent(
+				new CustomEvent('maxi-custom-color-immediate-update', {
+					detail: {
+						colorId: updatedCustomColor.id,
+						colorValue: colorVal,
+						colorName: updatedName,
+					},
+					bubbles: true,
+				})
+			);
+		}, 50);
+
+		// Apply the update through the normal StyleCard mechanism as well
 		updateCustomColorVariables(newCustomColors);
 
-		// Dispatch events to update all UI components
+		// Dispatch multiple targeted events to ensure all components update
 		document.dispatchEvent(
 			new CustomEvent('maxi-blocks-sc-custom-colors-updated', {
-				detail: { customColors: newCustomColors },
+				detail: {
+					customColors: newCustomColors,
+					updatedColorId: activeCustomColor.id,
+					updatedColor: updatedCustomColor,
+				},
 			})
 		);
-		document.dispatchEvent(new CustomEvent('maxi-blocks-sc-updated'));
+
+		// Force the global style update to propagate
 		document.dispatchEvent(
-			new CustomEvent('maxi-blocks-inspector-palette-updated')
+			new CustomEvent('maxi-blocks-sc-updated', {
+				detail: {
+					type: 'custom-color',
+					colorId: activeCustomColor.id,
+				},
+			})
 		);
+
+		// Special event for Inspector palette controls
+		document.dispatchEvent(
+			new CustomEvent('maxi-blocks-inspector-palette-updated', {
+				detail: {
+					customColors: newCustomColors,
+					updatedColor: updatedCustomColor,
+				},
+			})
+		);
+
+		// Color control component update
+		document.dispatchEvent(
+			new CustomEvent('maxi-blocks-color-control-updated', {
+				detail: {
+					customColors: newCustomColors,
+					updatedColorId: activeCustomColor.id,
+				},
+			})
+		);
+
+		// Also trigger a general palette update event
+		document.dispatchEvent(new CustomEvent('maxi-blocks-palette-updated'));
+
+		// Force a browser repaint to ensure visual updates
+		document.body.style.zoom = '99.99%';
+		setTimeout(() => {
+			document.body.style.zoom = '100%';
+		}, 10);
+
+		// FORCE SAVE: Get the Style Cards store dispatch functions and force save the changes
+		try {
+			// Get the current SC from Redux store
+			const styleCardsStore = dispatch('maxiBlocks/style-cards');
+
+			// Save the SC to the database and force update
+			if (
+				styleCardsStore &&
+				styleCardsStore.saveMaxiStyleCards &&
+				styleCardsStore.saveSCStyles
+			) {
+				// Force save to apply changes everywhere
+				styleCardsStore.saveSCStyles(true);
+			}
+		} catch (error) {
+			console.error('Error saving style card changes:', error);
+		}
 	};
 
 	// Updated function to handle selection of predefined color presets

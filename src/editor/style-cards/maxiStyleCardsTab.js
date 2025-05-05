@@ -541,6 +541,14 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		);
 	};
 
+	// Updated function to handle selection of predefined color presets
+	const handlePresetColorSelect = item => {
+		setQuickColorPreset(item);
+		// Clear any active custom color selection when selecting a preset
+		setActiveCustomColor(null);
+		setIsAddingCustomColor(false);
+	};
+
 	const headingItems = () =>
 		[1, 2, 3, 4, 5, 6].map(item => {
 			return {
@@ -832,11 +840,12 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											className={classnames(
 												'maxi-style-cards__quick-color-presets__box',
 												quickColorPreset === item &&
+													!activeCustomColor &&
 													'maxi-style-cards__quick-color-presets__box--active'
 											)}
 											data-item={item}
 											onClick={e =>
-												setQuickColorPreset(
+												handlePresetColorSelect(
 													+e.currentTarget.dataset
 														.item
 												)
@@ -870,9 +879,11 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													'maxi-style-cards__quick-color-presets__box--active'
 											)}
 											title={customColor.name}
-											onClick={() =>
-												editCustomColor(customColor)
-											}
+											onClick={() => {
+												editCustomColor(customColor);
+												// Clear predefined color selection
+												setQuickColorPreset(null);
+											}}
 										>
 											<span
 												className='maxi-style-cards__quick-color-presets__box__item'
@@ -890,6 +901,16 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													removeCustomColor(
 														customColor.id
 													);
+													// If removing active color, reset to first color preset
+													if (
+														activeCustomColor?.id ===
+														customColor.id
+													) {
+														setActiveCustomColor(
+															null
+														);
+														setQuickColorPreset(1);
+													}
 												}}
 												aria-label={__(
 													'Remove custom color',
@@ -907,9 +928,12 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										// Show add button when not adding a color
 										<div
 											className='maxi-style-cards__quick-color-presets__box maxi-style-cards__quick-color-presets__box--add'
-											onClick={() =>
-												setIsAddingCustomColor(true)
-											}
+											onClick={() => {
+												setIsAddingCustomColor(true);
+												// Clear any active selections
+												setActiveCustomColor(null);
+												setQuickColorPreset(null);
+											}}
 											title={__(
 												'Add custom color',
 												'maxi-blocks'
@@ -990,6 +1014,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 															setIsAddingCustomColor(
 																false
 															);
+															// Reset to first color preset
+															setQuickColorPreset(
+																1
+															);
 														}}
 														isSmall
 														isSecondary
@@ -1023,8 +1051,8 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									)}
 								</div>
 
-								{/* Standard palette color editing */}
-								{!isAddingCustomColor && (
+								{/* Standard palette color editing - only show when not editing a custom color */}
+								{!isAddingCustomColor && !activeCustomColor && (
 									<>
 										<ColorControl
 											className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}

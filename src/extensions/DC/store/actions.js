@@ -62,6 +62,14 @@ const actions = {
 			acfFields,
 		};
 	},
+	*loadIntegrationOptions() {
+		const integrationPluginList = yield { type: 'GET_INTEGRATION_PLUGINS' };
+
+		return {
+			type: 'SET_INTEGRATION_OPTIONS',
+			integrationPlugins: integrationPluginList,
+		};
+	},
 };
 
 export default actions;

@@ -40,6 +40,30 @@ const selectors = {
 	getACFFields: (state, groupId) => {
 		return state?.acfFields?.[groupId];
 	},
+	getIntegrationPlugins: state => {
+		return state?.integrationPlugins || [];
+	},
+	isIntegrationListLoaded: state => {
+		return !!state?.integrationListLoaded;
+	},
+	hasIntegration: (state, pluginName) => {
+		return state?.integrationPlugins?.includes(pluginName) || false;
+	},
+	getSourceOptions: state => {
+		return state?.sourceOptions || [];
+	},
+	getGeneralTypeOptions: state => {
+		return state?.generalTypeOptions || [];
+	},
+	getImageTypeOptions: state => {
+		return state?.imageTypeOptions || [];
+	},
+	getACFTypeOptions: state => {
+		return state?.acfTypeOptions || [];
+	},
+	getTypeOptions: state => {
+		return state?.typeOptions || {};
+	},
 };
 
 export default selectors;

@@ -11,7 +11,6 @@ import {
 	fieldOptions,
 	relationOptions,
 	orderByRelations,
-	getHaveLoadedIntegrationsOptions,
 	currentEntityTypes,
 	nameDictionary,
 	relationDictionary,
@@ -523,7 +522,7 @@ export const validationsValues = (
 		...(typeResult &&
 			!typeResult.includes(variableValue) &&
 			// Only validate type of DC once all integrations have loaded
-			getHaveLoadedIntegrationsOptions() && {
+			select('maxiBlocks/dynamic-content').isIntegrationListLoaded() && {
 				[`${prefix}type`]: typeResult[0],
 			}),
 		...(linkTargetResult &&

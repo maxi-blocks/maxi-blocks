@@ -7,7 +7,6 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { typeOptions } from './constants';
 
 /**
  * External dependencies
@@ -58,7 +57,11 @@ const getTypes = (
 			: [];
 
 	const defaultOptions =
-		source === 'acf' ? typeOptions.acf : typeOptions[contentType];
+		source === 'acf'
+			? select('maxiBlocks/dynamic-content').getACFTypeOptions()
+			: select('maxiBlocks/dynamic-content').getTypeOptions()[
+					contentType
+			  ];
 
 	if (group) {
 		return isEmpty(customPostTypes)

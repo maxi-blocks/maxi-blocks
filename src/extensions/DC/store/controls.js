@@ -1,12 +1,15 @@
 import { resolveSelect } from '@wordpress/data';
+import apiFetch from '@wordpress/api-fetch';
 
 let postTypesCache = null;
 let taxonomiesCache = null;
+let integrationPluginsCache = null;
 
 // Clear cache on each editor load
 const clearCache = () => {
 	postTypesCache = null;
 	taxonomiesCache = null;
+	integrationPluginsCache = null;
 };
 
 // Hook into the editor initialization
@@ -36,6 +39,23 @@ const controls = {
 		});
 		taxonomiesCache = taxonomies;
 		return taxonomies;
+	},
+	GET_INTEGRATION_PLUGINS: async () => {
+		if (integrationPluginsCache) {
+			return integrationPluginsCache;
+		}
+
+		try {
+			const response = await apiFetch({
+				path: '/maxi-blocks/v1.0/get-active-integration-plugins',
+				method: 'GET',
+			});
+			integrationPluginsCache = response || [];
+			return integrationPluginsCache;
+		} catch (error) {
+			console.error('Error loading integration plugins:', error);
+			return [];
+		}
 	},
 };
 

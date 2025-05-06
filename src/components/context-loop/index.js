@@ -22,23 +22,15 @@ import TypographyControl from '@components/typography-control';
 import ColorControl from '@components/color-control';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import FlexSettingsControl from '@components/flex-settings-control';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '@extensions/styles';
+import { getDefaultAttribute, getGroupAttributes } from '@extensions/styles';
 import {
 	orderByRelations,
 	orderByOptions,
 	orderOptions,
 	orderRelations,
 	relationOptions,
-	sourceOptions,
 } from '@extensions/DC/constants';
-import {
-	getCLAttributes,
-	getDCOptions,
-	LoopContext,
-} from '@extensions/DC';
+import { getCLAttributes, getDCOptions, LoopContext } from '@extensions/DC';
 import {
 	getRelationOptions,
 	validationsValues,
@@ -122,13 +114,14 @@ const ContextLoop = props => {
 
 	const clPaginationPrefix = 'cl-pagination-';
 
-	const { relationTypes, orderTypes } = useSelect(select => {
-		const { getRelationTypes, getOrderTypes } = select(
+	const { relationTypes, orderTypes, sourceOptions } = useSelect(select => {
+		const { getRelationTypes, getOrderTypes, getSourceOptions } = select(
 			'maxiBlocks/dynamic-content'
 		);
 		return {
 			relationTypes: getRelationTypes(),
 			orderTypes: getOrderTypes(),
+			sourceOptions: getSourceOptions(),
 		};
 	}, []);
 

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, select } from '@wordpress/data';
+import { dispatch, select, resolveSelect } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -37,6 +37,42 @@ const fetchAndUpdateDCData = async (
 
 	const { content, type, field, id, linkTarget, containsHTML } =
 		dynamicContentProps;
+
+	// Check if the type is a custom taxonomy and validate ID
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+
+	if (customTaxonomies.includes(type) && id) {
+		// Fetch valid terms for this taxonomy
+		try {
+			const terms = await resolveSelect('core').getEntityRecords(
+				'taxonomy',
+				type,
+				{
+					per_page: 100,
+					hide_empty: false,
+				}
+			);
+
+			// Check if the current ID exists in the taxonomy
+			const validTerm = terms?.find(term => term.id === Number(id));
+
+			// If ID doesn't exist in this taxonomy, reset it
+			if (!validTerm && terms && terms.length > 0) {
+				// Update with the first available term ID
+				const newId = terms[0].id;
+				onChange({
+					'dc-id': newId,
+				});
+
+				// Update the dynamicContentProps with the new ID
+				dynamicContentProps.id = newId;
+			}
+		} catch (error) {
+			// Silent error handling
+		}
+	}
 
 	if (
 		!isNil(type) &&

@@ -33,7 +33,6 @@ import {
 	getCurrentTemplateSlug,
 } from '@extensions/DC/utils';
 import {
-	fieldOptions,
 	limitOptions,
 	limitFields,
 	orderOptions,
@@ -419,12 +418,14 @@ const DynamicContent = props => {
 								'dc-type': value,
 								'dc-show': 'current',
 								'dc-error': '',
+								'dc-id': null,
 								...validatedAttributes,
 							});
 						}}
 						onReset={() =>
 							changeProps({
 								'dc-type': getDefaultAttribute('dc-type'),
+								'dc-id': null,
 							})
 						}
 						className='maxi-dc-type'

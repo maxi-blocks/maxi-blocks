@@ -107,6 +107,7 @@ export const getIdOptions = async (
 	let data;
 	const args = {
 		per_page: relation === 'by-id' ? -1 : paginationPerPage * 3 || -1,
+		hide_empty: false,
 	};
 	const { getEntityRecords } = resolveSelect(coreStore);
 
@@ -126,76 +127,35 @@ export const getIdOptions = async (
 				setCachedData('users', data);
 			}
 		} else if (
-			['categories', 'product_categories'].includes(type) ||
-			relation === 'by-category'
+			[
+				'tags',
+				'categories',
+				'product_tags',
+				'product_categories',
+			].includes(type)
 		) {
-			const categoryType = ['products', 'product_categories'].includes(
-				type
-			)
-				? 'product_cat'
-				: 'category';
-			const cacheKey = `categories.${categoryType}`;
-
-			data = getCachedData(cacheKey);
-
-			if (!data) {
-				// 1. Add request timeout with shorter duration (1 second)
-				const timeoutPromise = new Promise((_, reject) =>
-					setTimeout(() => reject(new Error('Timeout')), 1000)
-				);
-
-				try {
-					// 2. Limit fields to only what we need
-					const optimizedArgs = {
-						...args,
-						_fields: ['id', 'name'], // Only fetch required fields
-						orderby: 'id', // Optimize DB query
-						per_page: 100, // Limit initial load
-					};
-
-					// 3. Race between timeout and actual request
-					data = await Promise.race([
-						getEntityRecords(
-							'taxonomy',
-							categoryType,
-							optimizedArgs
-						),
-						timeoutPromise,
-					]);
-
-					if (data) {
-						setCachedData(cacheKey, data);
-					}
-				} catch (error) {
-					if (error.message === 'Timeout') {
-						// 4. Return cached data even if expired
-						data = cache[cacheKey]?.data || [];
-					} else {
-						console.error(
-							`Category fetch error for ${cacheKey}:`,
-							error
-						);
-					}
-				}
-			}
-		} else if (
-			['tags', 'product_tags'].includes(type) ||
-			relation === 'by-tag'
-		) {
-			const tagType = ['products', 'product_tags'].includes(type)
-				? 'product_tag'
-				: 'post_tag';
-			const cacheKey = `tags.${tagType}`;
+			const taxonomyMap = {
+				tags: 'post_tag',
+				categories: 'category',
+				product_tags: 'product_tag',
+				product_categories: 'product_cat',
+			};
+			const taxonomy = taxonomyMap[type];
+			const cacheKey = `${type}`;
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('taxonomy', tagType, args);
+				data = await getEntityRecords('taxonomy', taxonomy, args);
 				setCachedData(cacheKey, data);
 			}
 		} else if (isCustomTaxonomy) {
 			const cacheKey = `customTaxonomy.${type}`;
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('taxonomy', type, args);
+				data = await getEntityRecords('taxonomy', type, {
+					...args,
+					context: 'view',
+				});
+
 				setCachedData(cacheKey, data);
 			}
 		} else if (isCustomPostType) {
@@ -363,11 +323,8 @@ const getDCOptions = async (
 					idTypes.current = data[0].id;
 				}
 			} else if (!id) {
-				// For context loop (cl-status=true), only set ID to undefined if it doesn't exist
-				// This preserves existing IDs when clicking on blocks with context loop enabled
 				newValues[`${prefix}id`] = undefined;
 			}
-			// If ID exists and clStatus is true, we don't modify it - keeping the existing ID
 		}
 
 		if (!isCL) {

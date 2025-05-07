@@ -2474,6 +2474,7 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
+			'font-weight-general': '800',
 			'custom-formats': {
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
@@ -2581,6 +2582,7 @@ describe('setFormatWithClass', () => {
 		});
 
 		const expectedResult = {
+			'font-weight-general': '800',
 			'custom-formats': {},
 			content: 'Testing Text Maxi',
 		};

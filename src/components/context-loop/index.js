@@ -64,7 +64,8 @@ const ContextLoop = props => {
 		blockName,
 	} = props;
 
-	const { contextLoop } = useContext(LoopContext);
+	const context = useContext(LoopContext) || {};
+	const { contextLoop = {} } = context;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);

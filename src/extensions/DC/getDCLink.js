@@ -40,14 +40,17 @@ const getUserLink = (dataRequest, data) => {
 	return data?.link;
 };
 
-const cache = {};
+// Exporting for testing purposes
+export const cache = {};
 const MAX_CACHE_SIZE = 200;
 
 const getDCLink = async (dataRequest, clientId) => {
 	const { type, linkTarget, author, relation } = dataRequest;
+
 	if (type === 'cart') {
 		return getCartUrl();
 	}
+
 	if (linkTarget.includes('author')) {
 		let userId = author;
 		if (relation === 'current') {

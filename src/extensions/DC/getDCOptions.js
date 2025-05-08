@@ -127,24 +127,69 @@ export const getIdOptions = async (
 				setCachedData('users', data);
 			}
 		} else if (
-			[
-				'tags',
-				'categories',
-				'product_tags',
-				'product_categories',
-			].includes(type)
+			['categories', 'product_categories'].includes(type) ||
+			relation === 'by-category'
 		) {
-			const taxonomyMap = {
-				tags: 'post_tag',
-				categories: 'category',
-				product_tags: 'product_tag',
-				product_categories: 'product_cat',
-			};
-			const taxonomy = taxonomyMap[type];
-			const cacheKey = `${type}`;
+			const categoryType = ['products', 'product_categories'].includes(
+				type
+			)
+				? 'product_cat'
+				: 'category';
+			const cacheKey = `categories.${categoryType}`;
+
+			data = getCachedData(cacheKey);
+
+			if (!data) {
+				// 1. Add request timeout with shorter duration (1 second)
+				const timeoutPromise = new Promise((_, reject) =>
+					setTimeout(() => reject(new Error('Timeout')), 1000)
+				);
+
+				try {
+					// 2. Limit fields to only what we need
+					const optimizedArgs = {
+						...args,
+						_fields: ['id', 'name'], // Only fetch required fields
+						orderby: 'id', // Optimize DB query
+						per_page: 100, // Limit initial load
+					};
+
+					// 3. Race between timeout and actual request
+					data = await Promise.race([
+						getEntityRecords(
+							'taxonomy',
+							categoryType,
+							optimizedArgs
+						),
+						timeoutPromise,
+					]);
+
+					if (data) {
+						setCachedData(cacheKey, data);
+					}
+				} catch (error) {
+					if (error.message === 'Timeout') {
+						// 4. Return cached data even if expired
+						data = cache[cacheKey]?.data || [];
+					} else {
+						console.error(
+							`Category fetch error for ${cacheKey}:`,
+							error
+						);
+					}
+				}
+			}
+		} else if (
+			['tags', 'product_tags'].includes(type) ||
+			relation === 'by-tag'
+		) {
+			const tagType = ['products', 'product_tags'].includes(type)
+				? 'product_tag'
+				: 'post_tag';
+			const cacheKey = `tags.${tagType}`;
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('taxonomy', taxonomy, args);
+				data = await getEntityRecords('taxonomy', tagType, args);
 				setCachedData(cacheKey, data);
 			}
 		} else if (isCustomTaxonomy) {

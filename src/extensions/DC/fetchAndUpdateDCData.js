@@ -46,22 +46,45 @@ const fetchAndUpdateDCData = async (
 	if (customTaxonomies.includes(type) && id) {
 		// Fetch valid terms for this taxonomy
 		try {
-			const terms = await resolveSelect('core').getEntityRecords(
-				'taxonomy',
-				type,
-				{
-					per_page: 100,
-					hide_empty: false,
+			// Recursive function to fetch all terms
+			const fetchAllTerms = async (page = 1, accumulator = []) => {
+				const terms = await resolveSelect('core').getEntityRecords(
+					'taxonomy',
+					type,
+					{
+						per_page: 100,
+						page,
+						hide_empty: false,
+					}
+				);
+
+				// If no terms or empty array, return accumulated results
+				if (!terms || terms.length === 0) {
+					return accumulator;
 				}
-			);
+
+				// Combine current results with accumulator
+				const updatedResults = [...accumulator, ...terms];
+
+				// If we received fewer terms than requested, we've reached the end
+				if (terms.length < 100) {
+					return updatedResults;
+				}
+
+				// Otherwise, fetch the next page
+				return fetchAllTerms(page + 1, updatedResults);
+			};
+
+			// Get all terms
+			const allTerms = await fetchAllTerms();
 
 			// Check if the current ID exists in the taxonomy
-			const validTerm = terms?.find(term => term.id === Number(id));
+			const validTerm = allTerms.find(term => term.id === Number(id));
 
 			// If ID doesn't exist in this taxonomy, reset it
-			if (!validTerm && terms && terms.length > 0) {
+			if (!validTerm && allTerms.length > 0) {
 				// Update with the first available term ID
-				const newId = terms[0].id;
+				const newId = allTerms[0].id;
 				onChange({
 					'dc-id': newId,
 				});

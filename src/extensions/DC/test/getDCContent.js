@@ -252,4 +252,74 @@ describe('getDCContent', () => {
 		// getDCEntity should be called only once due to caching
 		expect(getDCEntity).toHaveBeenCalledTimes(1);
 	});
+
+	it('should handle custom taxonomy types', async () => {
+		getDCEntity.mockResolvedValue({ average: '4.5' });
+		select.mockReturnValue({
+			...select(),
+			getCustomTaxonomies: jest.fn(() => ['rating']),
+		});
+
+		const dataRequest = { field: 'average', type: 'rating' };
+
+		const result = await getDCContent(dataRequest);
+
+		expect(select().getCustomTaxonomies).toHaveBeenCalled();
+		expect(result).toBe('4.5');
+	});
+
+	it('should handle custom taxonomy fields', async () => {
+		getDCEntity.mockResolvedValue({
+			title: 'Custom taxonomy title',
+			rating: 1, // id of the rating taxonomy
+		});
+		select.mockReturnValue({
+			...select(),
+			getCustomTaxonomies: jest.fn(() => ['rating']),
+		});
+		utils.getTaxonomyContent.mockResolvedValue('4.5');
+
+		const dataRequest = {
+			field: 'rating',
+			type: 'post',
+			delimiterContent: '|',
+			linkTarget: 'post',
+		};
+
+		const result = await getDCContent(dataRequest);
+
+		expect(select().getCustomTaxonomies).toHaveBeenCalled();
+		expect(utils.getTaxonomyContent).toHaveBeenCalledWith(
+			1,
+			dataRequest.delimiterContent,
+			false,
+			'rating'
+		);
+		expect(result).toBe('4.5');
+	});
+
+	it('should handle relation current', async () => {
+		getDCEntity.mockResolvedValue(null);
+
+		const dataRequest = {
+			relation: 'current',
+			source: 'acf',
+			field: 'title',
+		};
+
+		const result = await getDCContent(dataRequest);
+
+		// Includes the field name
+		expect(result).toMatch(new RegExp(`(${dataRequest.field})`, 'i'));
+
+		const dataRequest2 = {
+			relation: 'current',
+			field: 'content',
+		};
+
+		const result2 = await getDCContent(dataRequest2);
+
+		// Includes the field name
+		expect(result2).toMatch(new RegExp(`(${dataRequest2.field})`, 'i'));
+	});
 });

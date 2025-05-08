@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, select } from '@wordpress/data';
+import { dispatch, select, resolveSelect } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -37,6 +37,65 @@ const fetchAndUpdateDCData = async (
 
 	const { content, type, field, id, linkTarget, containsHTML } =
 		dynamicContentProps;
+
+	// Check if the type is a custom taxonomy and validate ID
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+
+	if (customTaxonomies.includes(type) && id) {
+		// Fetch valid terms for this taxonomy
+		try {
+			// Recursive function to fetch all terms
+			const fetchAllTerms = async (page = 1, accumulator = []) => {
+				const terms = await resolveSelect('core').getEntityRecords(
+					'taxonomy',
+					type,
+					{
+						per_page: 100,
+						page,
+						hide_empty: false,
+					}
+				);
+
+				// If no terms or empty array, return accumulated results
+				if (!terms || terms.length === 0) {
+					return accumulator;
+				}
+
+				// Combine current results with accumulator
+				const updatedResults = [...accumulator, ...terms];
+
+				// If we received fewer terms than requested, we've reached the end
+				if (terms.length < 100) {
+					return updatedResults;
+				}
+
+				// Otherwise, fetch the next page
+				return fetchAllTerms(page + 1, updatedResults);
+			};
+
+			// Get all terms
+			const allTerms = await fetchAllTerms();
+
+			// Check if the current ID exists in the taxonomy
+			const validTerm = allTerms.find(term => term.id === Number(id));
+
+			// If ID doesn't exist in this taxonomy, reset it
+			if (!validTerm && allTerms.length > 0) {
+				// Update with the first available term ID
+				const newId = allTerms[0].id;
+				onChange({
+					'dc-id': newId,
+				});
+
+				// Update the dynamicContentProps with the new ID
+				dynamicContentProps.id = newId;
+			}
+		} catch (error) {
+			// Silent error handling
+		}
+	}
 
 	if (
 		!isNil(type) &&

@@ -195,7 +195,11 @@ export const getIdOptions = async (
 			const cacheKey = `customTaxonomy.${type}`;
 			data = getCachedData(cacheKey);
 			if (!data) {
-				data = await getEntityRecords('taxonomy', type, args);
+				data = await getEntityRecords('taxonomy', type, {
+					...args,
+					context: 'view',
+				});
+
 				setCachedData(cacheKey, data);
 			}
 		} else if (isCustomPostType) {
@@ -363,11 +367,8 @@ const getDCOptions = async (
 					idTypes.current = data[0].id;
 				}
 			} else if (!id) {
-				// For context loop (cl-status=true), only set ID to undefined if it doesn't exist
-				// This preserves existing IDs when clicking on blocks with context loop enabled
 				newValues[`${prefix}id`] = undefined;
 			}
-			// If ID exists and clStatus is true, we don't modify it - keeping the existing ID
 		}
 
 		if (!isCL) {

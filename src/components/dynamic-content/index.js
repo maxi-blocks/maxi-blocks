@@ -33,7 +33,6 @@ import {
 	getCurrentTemplateSlug,
 } from '@extensions/DC/utils';
 import {
-	fieldOptions,
 	limitOptions,
 	limitFields,
 	orderOptions,

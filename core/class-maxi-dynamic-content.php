@@ -863,7 +863,7 @@ class MaxiBlocks_DynamicContent
             $is_product =
                 $attributes['dc-type'] === 'products' ||
                 $attributes['dc-type'] === 'cart';
-            $item_id = $is_product ? $post->get_id() : $post->ID;
+            $item_id = $is_product && method_exists($post, 'get_id') ? $post->get_id() : $post->ID;
             if ($this->is_repeated_post($item_id, $dc_accumulator)) {
                 return '';
             }
@@ -944,7 +944,7 @@ class MaxiBlocks_DynamicContent
                 empty($post) ||
                 (isset($attributes['dc-id']) &&
                     $this->is_repeated_post(
-                        $attributes['dc-id'],
+                        method_exists($post, 'get_id') ? $post->get_id() : $post->ID,
                         $dc_accumulator,
                     ))
             ) {
@@ -954,9 +954,9 @@ class MaxiBlocks_DynamicContent
                 array_key_exists('dc-link-target', $attributes) &&
                 $attributes['dc-link-target'] === 'add_to_cart'
             ) {
-                $link = $post->add_to_cart_url();
+                $link = method_exists($post, 'add_to_cart_url') ? $post->add_to_cart_url() : get_permalink(method_exists($post, 'get_id') ? $post->get_id() : $post->ID);
             } else {
-                $link = get_permalink($post->get_id());
+                $link = get_permalink(method_exists($post, 'get_id') ? $post->get_id() : $post->ID);
             }
         } elseif (
             array_key_exists('dc-type', $attributes) &&
@@ -1030,7 +1030,7 @@ class MaxiBlocks_DynamicContent
                 $is_product =
                     $attributes['dc-type'] === 'products' ||
                     $attributes['dc-type'] === 'cart';
-                $item_id = $is_product ? $post->get_id() : $post->ID;
+                $item_id = $is_product ? (method_exists($post, 'get_id') ? $post->get_id() : $post->ID) : $post->ID;
 
                 if ($this->is_repeated_post($item_id, $dc_accumulator)) {
                     return '';
@@ -1231,7 +1231,7 @@ class MaxiBlocks_DynamicContent
             $product = self::get_post($attributes);
             if (
                 !empty($product) &&
-                $this->is_repeated_post($product->get_id(), $dc_accumulator)
+                $this->is_repeated_post(method_exists($product, 'get_id') ? $product->get_id() : $product->ID, $dc_accumulator)
             ) {
                 return '';
             }
@@ -2311,7 +2311,7 @@ class MaxiBlocks_DynamicContent
         $product = $this->get_post($attributes);
 
         if (!empty($product)) {
-            if ($this->is_repeated_post($product->get_id(), $dc_accumulator)) {
+            if ($this->is_repeated_post(method_exists($product, 'get_id') ? $product->get_id() : $product->ID, $dc_accumulator)) {
                 return '';
             }
             switch ($dc_field) {
@@ -2319,49 +2319,70 @@ class MaxiBlocks_DynamicContent
                 case 'slug':
                 case 'sku':
                 case 'review_count':
-                    return strval($product->get_data()[$dc_field]);
+                    return method_exists($product, 'get_data') ? strval($product->get_data()[$dc_field]) : '';
                 case 'average_rating':
-                    if (empty($product->get_average_rating())) {
+                    if (!method_exists($product, 'get_average_rating') || empty($product->get_average_rating())) {
                         $this->is_empty = true;
+                        return '';
                     }
                     return strval($product->get_average_rating());
                 case 'price':
                 case 'regular_price':
+                    if (!method_exists($product, 'get_data')) {
+                        $this->is_empty = true;
+                        return '';
+                    }
                     $price = $product->get_data()[$dc_field];
                     if (empty($price)) {
                         $this->is_empty = true;
                     }
-                    return wp_strip_all_tags(wc_price($price));
+                    return wp_strip_all_tags(function_exists('wc_price') ? wc_price($price) : $price);
                 case 'sale_price':
+                    if (!method_exists($product, 'get_sale_price')) {
+                        $this->is_empty = true;
+                        return '';
+                    }
                     $price = $product->get_sale_price();
                     if (empty($price)) {
                         $this->is_empty = true;
                     }
-                    if ($product->is_on_sale()) {
-                        return wp_strip_all_tags(wc_price($price));
+                    if (method_exists($product, 'is_on_sale') && $product->is_on_sale()) {
+                        return wp_strip_all_tags(function_exists('wc_price') ? wc_price($price) : $price);
                     }
 
-                    return wp_strip_all_tags(wc_price($product->get_price()));
+                    return wp_strip_all_tags(function_exists('wc_price') ? wc_price(method_exists($product, 'get_price') ? $product->get_price() : 0) : (method_exists($product, 'get_price') ? $product->get_price() : 0));
                 case 'price_range':
+                    if (!method_exists($product, 'is_type') || !method_exists($product, 'get_variation_price')) {
+                        $this->is_empty = true;
+                        return '';
+                    }
                     if ($product->is_type('variable')) {
                         $min_price = $product->get_variation_price('min', true);
                         $max_price = $product->get_variation_price('max', true);
 
                         if ($min_price !== $max_price) {
-                            return wc_format_price_range(
+                            return function_exists('wc_format_price_range') ? wc_format_price_range(
                                 $min_price,
                                 $max_price,
-                            );
+                            ) : $min_price . ' - ' . $max_price;
                         }
                     }
 
-                    return wp_strip_all_tags(wc_price($product->get_price()));
+                    return wp_strip_all_tags(function_exists('wc_price') ? wc_price(method_exists($product, 'get_price') ? $product->get_price() : 0) : (method_exists($product, 'get_price') ? $product->get_price() : 0));
                 case 'description':
+                    if (!method_exists($product, 'get_description')) {
+                        $this->is_empty = true;
+                        return '';
+                    }
                     return self::get_limited_string(
                         $product->get_description(),
                         $dc_limit,
                     );
                 case 'short_description':
+                    if (!method_exists($product, 'get_short_description')) {
+                        $this->is_empty = true;
+                        return '';
+                    }
                     return self::get_limited_string(
                         $product->get_short_description(),
                         $dc_limit,
@@ -2375,12 +2396,20 @@ class MaxiBlocks_DynamicContent
 
                     return self::get_post_taxonomy_content(
                         $attributes,
-                        $product->get_id(),
+                        method_exists($product, 'get_id') ? $product->get_id() : $product->ID,
                         $field_name_to_taxonomy[$dc_field],
                     );
                 case 'featured_media':
+                    if (!method_exists($product, 'get_image_id')) {
+                        $this->is_empty = true;
+                        return '';
+                    }
                     return (int) $product->get_image_id();
                 case 'gallery':
+                    if (!method_exists($product, 'get_gallery_image_ids')) {
+                        $this->is_empty = true;
+                        return '';
+                    }
                     return $product->get_gallery_image_ids()[
                         $dc_image_accumulator
                     ];
@@ -2397,7 +2426,7 @@ class MaxiBlocks_DynamicContent
             'dc-limit' => $dc_limit,
         ] = $attributes;
 
-        if (!WC()->cart) {
+        if (!function_exists('WC') || !WC()->cart) {
             return null;
         }
 
@@ -2424,14 +2453,14 @@ class MaxiBlocks_DynamicContent
             case 'total_fees':
             case 'total_fees_tax':
                 if (
-                    empty(WC()->cart->get_totals()[$field_to_totals[$dc_field]])
+                    !function_exists('WC') || empty(WC()->cart->get_totals()[$field_to_totals[$dc_field]])
                 ) {
                     $this->is_empty = true;
                 }
                 return wp_strip_all_tags(
-                    wc_price(
-                        WC()->cart->get_totals()[$field_to_totals[$dc_field]],
-                    ),
+                    function_exists('wc_price') ? wc_price(
+                        function_exists('WC') ? WC()->cart->get_totals()[$field_to_totals[$dc_field]] : 0,
+                    ) : '0',
                 );
             default:
                 return null;

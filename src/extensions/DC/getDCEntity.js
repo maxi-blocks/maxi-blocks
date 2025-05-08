@@ -644,6 +644,51 @@ const getDCEntity = async (dataRequest, clientId) => {
 		return termsEntity?.[0];
 	}
 
+	// Handle custom taxonomies directly
+	const customTaxonomies = select(
+		'maxiBlocks/dynamic-content'
+	).getCustomTaxonomies();
+	if (customTaxonomies.includes(type) && relation === 'by-id') {
+		try {
+			// Debug: log list of available terms for this taxonomy
+			const allTerms = await resolveSelect('core').getEntityRecords(
+				'taxonomy',
+				type,
+				{
+					per_page: 100,
+					hide_empty: false,
+				}
+			);
+
+			// Find the term by ID directly from the fetched terms
+			const matchingTerm = allTerms?.find(term => term.id === Number(id));
+
+			if (matchingTerm) {
+				return matchingTerm;
+			}
+
+			// If we got terms but didn't find a matching ID, check if the ID passed is actually correct
+			if (allTerms && allTerms.length > 0) {
+				console.warn(
+					`Term ID ${id} not found in taxonomy ${type}. Available IDs:`,
+					allTerms.map(term => ({ id: term.id, name: term.name }))
+				);
+			}
+
+			return null;
+		} catch (error) {
+			console.error('Error fetching custom taxonomy term:', error);
+			console.error('Error details:', {
+				message: error.message || 'Unknown error',
+				stack: error.stack,
+				type: error.constructor.name,
+				taxonomy: type,
+				id,
+			});
+			return null;
+		}
+	}
+
 	const existingPost = await resolveSelect('core').getEntityRecords(
 		getKind(type),
 		nameDictionary[type] ?? type,

@@ -418,14 +418,12 @@ const DynamicContent = props => {
 								'dc-type': value,
 								'dc-show': 'current',
 								'dc-error': '',
-								'dc-id': null,
 								...validatedAttributes,
 							});
 						}}
 						onReset={() =>
 							changeProps({
 								'dc-type': getDefaultAttribute('dc-type'),
-								'dc-id': null,
 							})
 						}
 						className='maxi-dc-type'

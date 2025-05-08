@@ -107,7 +107,6 @@ export const getIdOptions = async (
 	let data;
 	const args = {
 		per_page: relation === 'by-id' ? -1 : paginationPerPage * 3 || -1,
-		hide_empty: false,
 	};
 	const { getEntityRecords } = resolveSelect(coreStore);
 

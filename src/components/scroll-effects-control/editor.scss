@@ -3,7 +3,7 @@
 		flex: 1;
 		&__help {
 			color: var(--maxi-grey);
-			font-size: 12px;
+			font-size: 14px !important;
 		}
 		.maxi-tabs-control__button {
 			&:not(.maxi-tabs-control__button-rotate) {
@@ -120,7 +120,6 @@
 					background-color: var(--maxi-pastel-green);
 					padding: 4px 20px;
 					border-radius: 20px;
-					font-size: 0.8em;
 					width: 200px;
 				}
 

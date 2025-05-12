@@ -43,7 +43,7 @@
 		top: 0;
 		right: 0;
 		padding: 1px 1px 1px 8px !important;
-
+		margin-top: -6px !important;
 		&:hover svg {
 			transition: all 0.3s;
 			fill: var(--maxi-black);

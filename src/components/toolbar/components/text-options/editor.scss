@@ -39,13 +39,14 @@
 					padding: 5px 10px;
 					margin-bottom: 0;
 					height: 36px;
+					fill: none !important;
 
 					// Active button state
 					&[aria-pressed='true'] {
-						color: var(
-							--maxi-primary-color
-						); // Changes text color when active
+						color: var(--maxi-primary-color);
+						// Changes text color when active
 						background-color: var(--maxi-white) !important;
+						fill: none !important;
 						border-bottom: 3px solid var(--maxi-primary-color) !important; // Adds highlight bar
 					}
 				}
@@ -186,9 +187,6 @@
 					height: 14px;
 				}
 			}
-		}
-		.toolbar-item[aria-pressed='true'] svg path {
-			fill: var(--maxi-primary-color);
 		}
 
 		&__wrap {

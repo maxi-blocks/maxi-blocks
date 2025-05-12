@@ -548,7 +548,7 @@ const getWPNativeStyles = ({
 				if (marginSentence)
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-				const selectors = [
+				const selectors = compact([
 					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level}`,
 					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}`,
 					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a`,
@@ -579,9 +579,11 @@ const getWPNativeStyles = ({
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-query-pagination-numbers a`,
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-query-pagination-numbers span`,
-				].join(', ');
+				]).join(', ');
 
-				addedResponse += `${selectors} {${sentences?.join(' ')}}`;
+				if (selectors && sentences?.length > 0) {
+					addedResponse += `${selectors} {${sentences?.join(' ')}}`;
+				}
 
 				// fix for .has-small-font-size
 				if (level === 'p') {
@@ -590,25 +592,29 @@ const getWPNativeStyles = ({
 				}
 
 				// In case the level is paragraph, we add the same styles for lists
-				if (level === 'p')
+				if (level === 'p' && sentences?.length > 0)
 					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} li.${nativeWPPrefix} {${sentences?.join(
 						' '
 					)}}`;
 
 				// In case the level is paragraph, we add the same styles for span data-rich-text-placeholder on backend
-				if (level === 'p' && style === 'light')
+				if (level === 'p' && style === 'light' && sentences?.length > 0)
 					addedResponse += `${prefix} ${secondPrefix} p > span[data-rich-text-placeholder]::after {${sentences?.join(
 						' '
 					)}}`;
 
 				// In case the level is H1, we add the same styles the backends titles
-				if (level === 'h1' && style === 'light')
+				if (
+					level === 'h1' &&
+					style === 'light' &&
+					sentences?.length > 0
+				)
 					addedResponse += `${prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {${sentences?.join(
 						' '
 					)}}`;
 
 				// Adds margin-bottom sentence to all elements except the last one
-				if (marginSentence)
+				if (marginSentence && selectors)
 					addedResponse += `:is(${selectors}):not(:last-child) {
 						${marginSentence}
 					}`;

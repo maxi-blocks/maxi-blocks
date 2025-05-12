@@ -1434,6 +1434,9 @@ class MaxiBlockComponent extends Component {
 		let styleContent;
 		let styles;
 
+		// Ensure we always have a valid block style
+		const blockStyle = this.props.attributes?.blockStyle || 'light';
+
 		const originVersion = this.props.attributes?.['maxi-version-origin'];
 		const currentVersion = this.props.attributes?.['maxi-version-current'];
 		const isOriginVersionBelow156 = originVersion
@@ -1457,7 +1460,6 @@ class MaxiBlockComponent extends Component {
 
 			if (cssCache) {
 				styleContent = cssCache[currentBreakpoint];
-				const { blockStyle } = this.props.attributes;
 				const previousBlockStyle =
 					blockStyle === 'light' ? 'dark' : 'light';
 				const previousBlockStyleRegex = new RegExp(

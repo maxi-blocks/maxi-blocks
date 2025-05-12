@@ -126,6 +126,19 @@
 				&-label-delete {
 					display: flex;
 					cursor: pointer;
+					align-items: center;
+					svg {
+						width: 17px;
+						height: 17px;
+						path {
+							fill: var(--maxi-grey);
+							transition: fill 0.3s ease;
+						}
+					}
+
+					&:hover svg path {
+						fill: var(--maxi-secondary-color) !important;
+					}
 				}
 			}
 

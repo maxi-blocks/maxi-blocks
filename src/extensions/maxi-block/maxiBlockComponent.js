@@ -310,12 +310,31 @@ class MaxiBlockComponent extends Component {
 		receiveMaxiSettings()
 			.then(settings => {
 				const maxiVersion = settings.maxi_version;
+				const { updateBlockAttributes } = dispatch('core/block-editor');
+				const {
+					'maxi-version-current': maxiVersionCurrent,
+					'maxi-version-origin': maxiVersionOrigin,
+				} = this.props.attributes;
 
-				if (maxiVersion !== maxiVersionCurrent)
-					this.props.attributes['maxi-version-current'] = maxiVersion;
+				// Only update if we have a valid version from settings
+				if (maxiVersion) {
+					const updates = {};
 
-				if (!maxiVersionOrigin)
-					this.props.attributes['maxi-version-origin'] = maxiVersion;
+					// Update current version if different
+					if (maxiVersion !== maxiVersionCurrent) {
+						updates['maxi-version-current'] = maxiVersion;
+					}
+
+					// Set origin version if not set
+					if (!maxiVersionOrigin) {
+						updates['maxi-version-origin'] = maxiVersion;
+					}
+
+					// Only dispatch if we have updates
+					if (Object.keys(updates).length > 0) {
+						updateBlockAttributes(this.props.clientId, updates);
+					}
+				}
 			})
 			.catch(error =>
 				console.error('MaxiBlocks: Could not load settings', error)

@@ -1,6 +1,4 @@
 .maxi-clip-path-control {
-	/* TEMPORARY BACKGROUND COLORS FOR VISUALIZATION - TO BE REMOVED */
-
 	.clip-path-defaults {
 		display: flex;
 		flex-wrap: wrap;
@@ -58,11 +56,9 @@
 	}
 
 	.maxi-clip-path-controller {
-		background-color: #ff0088 !important; /* bright pink */
 		display: flex;
 		position: relative;
 		&__handle {
-			background-color: #8800ff !important; /* bright purple */
 			display: flex;
 			align-items: center;
 			padding-bottom: 0.75rem;
@@ -107,7 +103,6 @@
 			}
 		}
 		&__item {
-			background-color: #00ff88 !important; /* bright mint */
 			width: 100%;
 			.maxi-base-control {
 				margin-bottom: 5px;
@@ -128,20 +123,21 @@
 	}
 
 	.maxi-clip-path-visual-editor-wrapper {
-		background-color: #88ff00 !important; /* bright lime */
 		border: 2px solid var(--maxi-secondary-color) !important;
 		border-radius: 5px;
 	}
 	.maxi-clip-path-visual-editor {
-		background-color: #0088ff !important; /* bright blue */
+		background-color: var(--maxi-white) !important;
 		position: relative;
 		width: 100%;
 		margin: 10px 10px 10px 0;
 		min-height: 291px;
 		overflow: hidden;
+		border: 1px solid var(--maxi-grey-light);
+		border-radius: 6px;
 
 		&__preview {
-			background-color: #ff0000 !important; /* bright red */
+			background-color: var(--maxi-pastel-green) !important;
 			position: absolute;
 			top: 0px;
 			left: 0px;
@@ -151,7 +147,7 @@
 	}
 
 	.maxi-clip-path-button {
-		background-color: #ff00dd !important; /* bright fuchsia */
+		background-color: var(--maxi-secondary-color);
 		position: absolute;
 		transform: translate(-50%, -50%);
 		width: 0.5rem;
@@ -161,11 +157,9 @@
 		cursor: crosshair;
 
 		&--radius {
-			background-color: #dd00ff !important; /* bright violet */
 			clip-path: circle(50% at 50% 50%);
 
 			&__hidden {
-				background-color: #00ddff !important; /* bright turquoise */
 				position: absolute;
 				transform: translate(-50%, -50%);
 				border-radius: 50%;
@@ -184,6 +178,24 @@
 	}
 }
 
+.maxi-clip-path-add-point-button {
+	background-color: var(--maxi-white) !important;
+	border-color: var(--maxi-grey-light) !important;
+	border: 1.5px solid var(--maxi-grey-light) !important;
+	color: var(--maxi-black) !important;
+	font-weight: 700;
+	border-radius: 6px;
+	margin-bottom: 20px !important;
+
+	&:hover {
+		background-color: var(--maxi-whisper-green) !important;
+		border-color: var(--maxi-secondary-color) !important;
+	}
+}
+
+.maxi-clip-path-control .button {
+	border-radius: 6px;
+}
 /*******************************
 * RTL
 *******************************/

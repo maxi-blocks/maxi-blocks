@@ -13,6 +13,16 @@ const getDefaultDCValue = (target, obj) => {
 	return isFunction(defaultValue) ? defaultValue(obj) : defaultValue;
 };
 
+/**
+ * Combines dynamic content values with context loop values
+ *
+ * Note that this function should be called with group attributes of DC
+ * meaning that the missing attributes in DC object should be provided as undefined
+ *
+ * @param {Object} dynamicContent - Dynamic content object
+ * @param {Object} contextLoop    - Context loop object
+ * @returns {Object} DC values
+ */
 const getDCValues = (dynamicContent, contextLoop) => {
 	const getDCValue = (target, obj) => {
 		const contextLoopStatus = !!contextLoop?.['cl-status'];

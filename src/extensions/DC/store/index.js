@@ -27,5 +27,4 @@ register(store);
 
 dispatch('maxiBlocks/dynamic-content').loadCustomPostTypes();
 dispatch('maxiBlocks/dynamic-content').loadCustomTaxonomies();
-dispatch('maxiBlocks/dynamic-content').loadCustomFields();
 dispatch('maxiBlocks/dynamic-content').loadIntegrationOptions();

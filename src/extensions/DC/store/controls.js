@@ -6,7 +6,7 @@ let taxonomiesCache = null;
 let integrationPluginsCache = null;
 
 // Clear cache on each editor load
-const clearCache = () => {
+export const clearCache = () => {
 	postTypesCache = null;
 	taxonomiesCache = null;
 	integrationPluginsCache = null;

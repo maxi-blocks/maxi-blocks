@@ -2,7 +2,6 @@ import {
 	limitTypes,
 	orderTypes,
 	relationTypes,
-	WCTypeOptions,
 } from '@extensions/DC/constants';
 import { __ } from '@wordpress/i18n';
 import {
@@ -10,6 +9,7 @@ import {
 	generalTypeOptions,
 	imageTypeOptions,
 	ACFTypeOptions,
+	WCTypeOptions,
 } from './initConstants';
 
 const createTypeOptions = (

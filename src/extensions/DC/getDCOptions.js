@@ -96,13 +96,17 @@ export const getIdOptions = async (
 	isCustomTaxonomy,
 	paginationPerPage = null
 ) => {
-	if (![...idTypes].includes(type) && !isCustomPostType && !isCustomTaxonomy) {
+	if (
+		![...idTypes].includes(type) &&
+		!isCustomPostType &&
+		!isCustomTaxonomy
+	) {
 		return false;
 	}
 
 	let data;
 	const args = {
-		per_page: relation === 'by-id' ? -1 : (paginationPerPage * 3 || -1)
+		per_page: relation === 'by-id' ? -1 : paginationPerPage * 3 || -1,
 	};
 	const { getEntityRecords } = resolveSelect(coreStore);
 
@@ -125,7 +129,9 @@ export const getIdOptions = async (
 			['categories', 'product_categories'].includes(type) ||
 			relation === 'by-category'
 		) {
-			const categoryType = ['products', 'product_categories'].includes(type)
+			const categoryType = ['products', 'product_categories'].includes(
+				type
+			)
 				? 'product_cat'
 				: 'category';
 			const cacheKey = `categories.${categoryType}`;
@@ -143,14 +149,18 @@ export const getIdOptions = async (
 					const optimizedArgs = {
 						...args,
 						_fields: ['id', 'name'], // Only fetch required fields
-						orderby: 'id',  // Optimize DB query
-						per_page: 100   // Limit initial load
+						orderby: 'id', // Optimize DB query
+						per_page: 100, // Limit initial load
 					};
 
 					// 3. Race between timeout and actual request
 					data = await Promise.race([
-						getEntityRecords('taxonomy', categoryType, optimizedArgs),
-						timeoutPromise
+						getEntityRecords(
+							'taxonomy',
+							categoryType,
+							optimizedArgs
+						),
+						timeoutPromise,
 					]);
 
 					if (data) {
@@ -161,11 +171,13 @@ export const getIdOptions = async (
 						// 4. Return cached data even if expired
 						data = cache[cacheKey]?.data || [];
 					} else {
-						console.error(`Category fetch error for ${cacheKey}:`, error);
+						console.error(
+							`Category fetch error for ${cacheKey}:`,
+							error
+						);
 					}
 				}
 			}
-
 		} else if (
 			['tags', 'product_tags'].includes(type) ||
 			relation === 'by-tag'
@@ -201,7 +213,9 @@ export const getIdOptions = async (
 				if (currentTemplateType === 'author') {
 					data = await fetchUsers();
 				} else if (
-					['category', 'tag', 'taxonomy'].includes(currentTemplateType)
+					['category', 'tag', 'taxonomy'].includes(
+						currentTemplateType
+					)
 				) {
 					data = await getEntityRecords(
 						'taxonomy',
@@ -247,7 +261,10 @@ const getDCOptions = async (
 	postIdOptions,
 	contentType,
 	isCL = false,
-	{ 'cl-status': clStatus, 'cl-pagination-per-page': clPaginationPerPage } = {},
+	{
+		'cl-status': clStatus,
+		'cl-pagination-per-page': clPaginationPerPage,
+	} = {}
 ) => {
 	let isCustomPostType = false;
 	let isCustomTaxonomy = false;
@@ -345,9 +362,12 @@ const getDCOptions = async (
 					newValues[`${prefix}id`] = Number(data[0].id);
 					idTypes.current = data[0].id;
 				}
-			} else {
+			} else if (!id) {
+				// For context loop (cl-status=true), only set ID to undefined if it doesn't exist
+				// This preserves existing IDs when clicking on blocks with context loop enabled
 				newValues[`${prefix}id`] = undefined;
 			}
+			// If ID exists and clStatus is true, we don't modify it - keeping the existing ID
 		}
 
 		if (!isCL) {

@@ -1494,12 +1494,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
 
                 foreach ($list as $value) {
-                    $dropdown .=
-                        '<option value="' .
-                        $value .
-                        '">' .
-                        $value .
-                        '</option>';
+                    $dropdown .= '<option value="'.$value.'">'.$value.'</option>';
                 }
             }
 
@@ -1529,11 +1524,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if ($type === 'dropdown') {
                 $content .= $this->generate_custom_dropdown($option, $args);
-            } elseif (
-                $type === 'text' ||
-                $type === 'password' ||
-                $type === 'textarea'
-            ) {
+            } elseif ($type === 'text' || $type === 'password' || $type === 'textarea') {
                 $is_api_input = $type === 'password';
 
                 if ($is_api_input) {
@@ -1551,8 +1542,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 );
 
                 if (str_contains($option, 'api_key_option')) {
-                    $content .=
-                        '<div id="maxi-api-test__validation-message"></div>';
+                    $content .='<div id="maxi-api-test__validation-message"></div>';
                 }
             } else {
                 $content .= $this->generate_toggle($option, $function);
@@ -1605,9 +1595,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'remove_local_fonts' => $args,
                 'allow_svg_json_uploads' => $args,
                 'hide_tooltips' => $args,
-                'swap_cloud_images' => $args,
-                'google_api_key_option' => null,
-                'openai_api_key_option' => null,
+                'google_api_key_option' => $args_api_key,
+                'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,
                 'maxi_ai_site_description' => $args_ai_description,
                 'maxi_ai_audience' => $args_ai_description,
@@ -1627,11 +1616,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 // unregister_setting('maxi-blocks-settings-group', $setting_name);
                 // delete_option($setting_name);
 
-                register_setting(
-                    'maxi-blocks-settings-group',
-                    $setting_name,
-                    $setting_args,
-                );
+                register_setting('maxi-blocks-settings-group', $setting_name, $setting_args);
                 if (isset($setting_args['default'])) {
                     add_option($setting_name, $setting_args['default']);
                 }

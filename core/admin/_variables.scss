@@ -2,18 +2,18 @@
 :root {
 	--maxi-admin-white: #ffffff;
 	--maxi-admin-black-text: #666666;
-	--maxi-admin-light-grey: #f2f1f8;
+	--maxi-admin-light-grey: #f3fbf7;
 	--maxi-admin-black: #000000;
-	--maxi-admin-orange: var(--maxi-primary-color);
+	--maxi-admin-orange: #2c8a46;
 	--maxi-admin-light-orange: #f5b500;
 	--maxi-admin-yellow: #e8ea00;
-	--maxi-admin-border-light: #e9e6f8;
+	--maxi-admin-border-light: #e6f3ed;
 
 	--maxi-admin-grey: #999999;
-	--maxi-admin-purple: #a299c4;
-	--maxi-admin-pink-purple: #9a8cf3;
-	--maxi-admin-green: #82c251;
-	--maxi-admin-mint: #d0f2af;
+	--maxi-admin-purple: #000;
+	--maxi-admin-pink-purple: #2c8a46;
+	--maxi-admin-green: #2c8a46;
+	--maxi-admin-mint: #f3fbf7;
 
 	/* Hover States */
 	--maxi-admin-white-hover: #f5f5f5;
@@ -22,10 +22,10 @@
 	--maxi-admin-light-orange-hover: #ff9700;
 	--maxi-admin-yellow-hover: #ffde3e;
 
-	--maxi-admin-purple-hover: #8e44ad;
-	--maxi-admin-pink-hover: #f066ff;
-	--maxi-admin-green-hover: #00a32a;
-	--maxi-admin-mint-hover: #7cb342;
+	--maxi-admin-purple-hover: #b06bf7;
+	--maxi-admin-pink-hover: #ff66ff;
+	--maxi-admin-green-hover: #2c8a46;
+	--maxi-admin-mint-hover: #e3f3ea;
 }
 
 :root {

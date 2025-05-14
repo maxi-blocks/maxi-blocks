@@ -1586,6 +1586,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'string',
             ];
 
+			 // Add arguments for API keys
+			 $args_api_key = array(
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+            );
+
             // List of settings and corresponding arguments
             $settings = [
                 'accessibility_option' => $args,

@@ -781,3 +781,13 @@ input.maxi-advanced-number-control__value {
 .maxi-video-block-icon {
 	fill: var(--maxi-primary-color) !important;
 }
+
+// Transitions
+body {
+	.maxi-settingstab-control {
+		button,
+		input {
+			transition: all 0.3s ease;
+		}
+	}
+}

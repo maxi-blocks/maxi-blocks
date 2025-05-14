@@ -79,6 +79,10 @@
 	.editor-styles-wrapper & .maxi-block__resizer {
 		flex-shrink: unset !important;
 	}
+
+	button svg {
+		transition: all 0.3s ease;
+	}
 }
 
 /*******************************

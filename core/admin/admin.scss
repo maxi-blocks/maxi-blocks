@@ -680,9 +680,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 						&::before {
 							content: '✖'; /* Unicode for cross mark */
-							color: var(
-								--maxi-admin-orange
-							); /* Changed to black to match new text color */
+							color: var(--maxi-admin-orange);
 							margin-right: 8px;
 						}
 					}

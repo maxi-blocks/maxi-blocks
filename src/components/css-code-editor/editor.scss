@@ -1,18 +1,30 @@
-.maxi-css-code-editor {
+body.maxi-blocks--active .maxi-css-code-editor {
 	.w-tc-editor {
 		margin: 8px 8px 0 0;
 		width: 100%;
 		background-color: var(--maxi-white);
 		border: 1px solid var(--maxi-grey-light);
+		border-radius: 10px;
 		font-family: monospace !important;
 		flex: 1 0 100%;
 		direction: ltr;
 		border-radius: 10px;
+		transition: all 0.3s ease;
 
 		textarea {
 			background-color: var(--maxi-white);
 			font-family: monospace !important;
+			&:hover {
+				border: none !important;
+			}
 		}
+		&:hover {
+			border: 1px solid var(--maxi-primary-color) !important;
+		}
+	}
+	button.components-button[class*='maxi-advanced-css-control']:hover,
+	button.components-button[class*='maxi-css-code-editor']:hover {
+		color: inherit !important;
 	}
 	code {
 		padding: 0;

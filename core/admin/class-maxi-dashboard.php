@@ -1043,7 +1043,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description =
                 '<h4>' .
-                __('OpenAI API Key (for ChatGPT)', 'maxi-blocks') .
+                __('Insert OpenAI API Key here', 'maxi-blocks') .
                 '</h4>';
             $content .= $this->generate_setting(
                 $description,

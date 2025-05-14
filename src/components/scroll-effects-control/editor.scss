@@ -62,7 +62,7 @@
 
 		.maxi-tabs-control__button[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green) !important;
-			border-color: var(--maxi-mid-green) !important;
+			border-color: var(--maxi-primary-green) !important;
 		}
 		.maxi-tabs-control__button svg:not(.maxi-tabs-control__notification) {
 			height: 100%;
@@ -191,7 +191,7 @@
 
 				.maxi-tabs-control__button[aria-pressed='true'] {
 					background-color: var(--maxi-pastel-green) !important;
-					border-color: var(--maxi-mid-green) !important;
+					border-color: var(--maxi-primary-green) !important;
 					font-weight: 700;
 				}
 			}

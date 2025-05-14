@@ -147,7 +147,7 @@
 				border: 1.5px solid var(--maxi-grey-light) !important;
 				&[aria-pressed='true'] {
 					background-color: var(--maxi-pastel-green) !important;
-					border-color: var(--maxi-mid-green) !important;
+					border-color: var(--maxi-primary-green) !important;
 					color: var(--maxi-black) !important;
 					font-weight: 700;
 					border-radius: 6px !important;
@@ -167,7 +167,7 @@
 			&.maxi-tabs-control__button-edit.points[aria-pressed='true'],
 			&.maxi-tabs-control__button-visual[aria-pressed='true'] {
 				background-color: var(--maxi-whisper-green) !important;
-				border-color: var(--maxi-mid-green) !important;
+				border-color: var(--maxi-primary-green) !important;
 				color: var(--maxi-black) !important;
 				font-weight: 700;
 				border-radius: 6px !important;

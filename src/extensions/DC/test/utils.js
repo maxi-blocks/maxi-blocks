@@ -21,19 +21,52 @@ jest.mock('@wordpress/i18n', () => ({
 	__: jest.fn(text => text),
 }));
 
-jest.mock('@extensions/DC/constants', () => ({
-	linkTypesOptions: {
-		posts: [
-			{ label: 'Post link', value: 'post' },
-			{ label: 'Author link', value: 'author' },
+jest.mock('@extensions/DC/constants', () => {
+	const mockFieldOptions = {
+		text: {
+			posts: [{ label: 'Title', value: 'title' }],
+			categories: [{ label: 'Name', value: 'name' }],
+		},
+		image: {
+			posts: [{ label: 'Featured image', value: 'featured_media' }],
+			categories: [{ label: 'Category image', value: 'category_image' }],
+		},
+	};
+
+	const mockRelationOptions = {
+		text: {
+			posts: [
+				{ label: 'Get latest', value: 'latest' },
+				{ label: 'Get oldest', value: 'oldest' },
+			],
+			categories: [{ label: 'Get top level', value: 'top-level' }],
+		},
+	};
+
+	return {
+		...jest.requireActual('@extensions/DC/constants'),
+		fieldOptions: mockFieldOptions,
+		relationOptions: mockRelationOptions,
+		postTypeRelationOptions: [
+			{ label: 'Get latest', value: 'latest' },
+			{ label: 'Get oldest', value: 'oldest' },
 		],
-		pages: [{ label: 'Page link', value: 'page' }],
-	},
-	linkFieldsOptions: {
-		title: [{ label: 'Title link', value: 'title_link' }],
-		content: [{ label: 'Content link', value: 'content_link' }],
-	},
-}));
+		taxonomyRelationOptions: [
+			{ label: 'Get hierarchical', value: 'hierarchical' },
+		],
+		linkTypesOptions: {
+			posts: [
+				{ label: 'Post link', value: 'post' },
+				{ label: 'Author link', value: 'author' },
+			],
+			pages: [{ label: 'Page link', value: 'page' }],
+		},
+		linkFieldsOptions: {
+			title: [{ label: 'Title link', value: 'title_link' }],
+			content: [{ label: 'Content link', value: 'content_link' }],
+		},
+	};
+});
 
 /**
  * Internal dependencies
@@ -630,43 +663,6 @@ describe('getFields', () => {
 
 		expect(result).toEqual([{ label: 'Title', value: 'title' }]);
 	});
-});
-
-// Mock additional dependencies for getRelationOptions tests
-jest.doMock('@extensions/DC/constants', () => {
-	const mockFieldOptions = {
-		text: {
-			posts: [{ label: 'Title', value: 'title' }],
-			categories: [{ label: 'Name', value: 'name' }],
-		},
-		image: {
-			posts: [{ label: 'Featured image', value: 'featured_media' }],
-			categories: [{ label: 'Category image', value: 'category_image' }],
-		},
-	};
-
-	const mockRelationOptions = {
-		text: {
-			posts: [
-				{ label: 'Get latest', value: 'latest' },
-				{ label: 'Get oldest', value: 'oldest' },
-			],
-			categories: [{ label: 'Get top level', value: 'top-level' }],
-		},
-	};
-
-	return {
-		...jest.requireActual('@extensions/DC/constants'),
-		fieldOptions: mockFieldOptions,
-		relationOptions: mockRelationOptions,
-		postTypeRelationOptions: [
-			{ label: 'Get latest', value: 'latest' },
-			{ label: 'Get oldest', value: 'oldest' },
-		],
-		taxonomyRelationOptions: [
-			{ label: 'Get hierarchical', value: 'hierarchical' },
-		],
-	};
 });
 
 describe('getRelationOptions', () => {

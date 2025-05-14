@@ -262,6 +262,18 @@ describe('DC utility string manipulation functions', () => {
 					label: 'Selected entity',
 					value: 'entity',
 				},
+				{
+					label: 'Post link',
+					value: 'post',
+				},
+				{
+					label: 'Author link',
+					value: 'author',
+				},
+				{
+					label: 'Title link',
+					value: 'title_link',
+				},
 			]);
 		});
 
@@ -272,6 +284,18 @@ describe('DC utility string manipulation functions', () => {
 				{
 					label: 'Selected entity',
 					value: 'entity',
+				},
+				{
+					label: 'Post link',
+					value: 'post',
+				},
+				{
+					label: 'Author link',
+					value: 'author',
+				},
+				{
+					label: 'Title link',
+					value: 'title_link',
 				},
 			]);
 		});
@@ -285,11 +309,31 @@ describe('DC utility string manipulation functions', () => {
 					label: 'Selected entity',
 					value: 'entity',
 				},
+				{
+					label: 'Post link',
+					value: 'post',
+				},
+				{
+					label: 'Author link',
+					value: 'author',
+				},
+				{
+					label: 'Content link',
+					value: 'content_link',
+				},
 			]);
 			expect(pagesResult).toEqual([
 				{
 					label: 'Selected entity',
 					value: 'entity',
+				},
+				{
+					label: 'Page link',
+					value: 'page',
+				},
+				{
+					label: 'Content link',
+					value: 'content_link',
 				},
 			]);
 		});
@@ -503,25 +547,6 @@ describe('getCurrentTemplateSlug', () => {
 
 		expect(result).toBe('single-post');
 	});
-});
-
-// Mock the non-exported functions used by getFields
-jest.mock('@extensions/DC/constants', () => {
-	const mockFieldOptions = {
-		text: {
-			posts: [{ label: 'Title', value: 'title' }],
-			categories: [{ label: 'Name', value: 'name' }],
-		},
-		image: {
-			posts: [{ label: 'Featured image', value: 'featured_media' }],
-			categories: [{ label: 'Category image', value: 'category_image' }],
-		},
-	};
-
-	return {
-		...jest.requireActual('@extensions/DC/constants'),
-		fieldOptions: mockFieldOptions,
-	};
 });
 
 describe('getFields', () => {

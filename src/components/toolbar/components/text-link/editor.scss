@@ -1,4 +1,4 @@
-.toolbar-item__popover {
+body .toolbar-item__popover {
 	.components-form-toggle {
 		&.is-checked {
 			.components-form-toggle__track {
@@ -44,5 +44,8 @@
 	}
 	.toolbar-popover-link-destroyer {
 		background: var(--maxi-white);
+	}
+	input[type='text'].components-input-control__input:hover {
+		border: none !important;
 	}
 }

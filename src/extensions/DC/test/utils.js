@@ -670,8 +670,8 @@ describe('getFields', () => {
 		mockGetCustomTaxonomies.mockReturnValue([]);
 
 		// No FSE mode
-		const originalMock = select.mockImplementation;
-		select.mockImplementation = jest.fn(store => {
+		const originalMock = select.getMockImplementation();
+		select.mockImplementation(store => {
 			if (store === 'maxiBlocks/dynamic-content') {
 				return {
 					getCustomPostTypes: mockGetCustomPostTypes,
@@ -684,7 +684,7 @@ describe('getFields', () => {
 		const result = getFields('text', 'posts');
 
 		// Restore original mock
-		select.mockImplementation = originalMock;
+		select.mockImplementation(originalMock);
 
 		expect(result).toEqual([{ label: 'Title', value: 'title' }]);
 	});

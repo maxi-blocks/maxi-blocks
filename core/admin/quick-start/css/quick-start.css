@@ -123,7 +123,6 @@
 	align-items: center;
 	justify-content: center;
 	line-height: 1;
-	padding-bottom: 2px;
 }
 
 .maxi-quick-start-steps-nav .step.warning {
@@ -758,6 +757,13 @@ select[name="permalink_structure"]:focus {
 
 .maxi-status-table td:nth-child(3) {
 	width: 25%;
+	word-break: break-word;
+	/* Breaks words at any character when needed */
+	overflow-wrap: break-word;
+	/* Alternative that works for more browsers */
+	word-wrap: break-word;
+	/* Legacy property for older browsers */
+	hyphens: auto;
 }
 
 .maxi-status-table td:nth-child(4) {

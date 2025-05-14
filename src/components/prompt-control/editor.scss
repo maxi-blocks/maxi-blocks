@@ -24,11 +24,13 @@
 	&-generate-tab {
 		padding-top: 8px;
 		.maxi-react-select-control {
+			z-index: 10000;
 			& > label {
 				display: block;
 				margin-bottom: 3px;
 			}
 			& > div > div {
+				z-index: 10000;
 				border-color: var(--maxi-grey-light);
 			}
 		}

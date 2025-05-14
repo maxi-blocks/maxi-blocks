@@ -15,15 +15,15 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import Icon from '../../components/icon';
-import Button from '../../components/button';
-import frontendStyleGenerator from '../../extensions/styles/frontendStyleGenerator';
-import { processCss } from '../../extensions/styles/store/controls';
+import Icon from '@components/icon';
+import Button from '@components/button';
+import frontendStyleGenerator from '@extensions/styles/frontendStyleGenerator';
+import { processCss } from '@extensions/styles/store/controls';
 
 /**
  * Icons
  */
-import { cloudLib, closeIcon } from '../../icons';
+import { cloudLib, closeIcon } from '@maxi-icons';
 
 const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 	const { isRTL, currentPostTitle, postContent, postType } = useSelect(
@@ -306,7 +306,7 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 			noArrow
 			resize
 			position={isRTL ? 'bottom left right' : 'bottom right left'}
-			className='maxi-style-cards__popover maxi-sidebar'
+			className='maxi-style-cards__popover maxi-sidebar maxi-export-popover'
 			focusOnMount
 			strategy='fixed'
 		>

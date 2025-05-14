@@ -489,17 +489,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // welcome-header
 
             // Placeholder image section
-            $content .= '<div class="welcome-preview">';
-            $content .=
-                '<img src="' .
-                esc_url(
-                    MAXI_PLUGIN_URL_PATH .
-                        'img/maxi-dashboard-video-placeholder.jpg',
-                ) .
-                '" alt="' .
-                esc_attr__('MaxiBlocks preview', 'maxi-blocks') .
-                '" class="preview-placeholder">';
-            $content .= '</div>';
+            //  $content .= '<div class="welcome-preview">';
+            // $content .=
+            //     '<img src="' .
+            //     esc_url(
+            //         MAXI_PLUGIN_URL_PATH .
+            //             'img/maxi-dashboard-video-placeholder.jpg',
+            //     ) .
+            //     '" alt="' .
+            //     esc_attr__('MaxiBlocks preview', 'maxi-blocks') .
+            //     '" class="preview-placeholder">';
+            // $content .= '</div>';
 
             // Learn by watching section
             $content .= '<div class="learn-section">';
@@ -759,6 +759,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $this->generate_setting($description, 'hide_tooltips');
 
             $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
+            $this->add_hidden_api_fields();
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -833,7 +834,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'password',
             );
 
-            $content .= get_submit_button();
+            $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
+            $this->add_hidden_api_fields();
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -943,6 +945,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
+            $this->add_hidden_api_fields();
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -1006,6 +1009,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
 
             $content .= get_submit_button();
+            $this->add_hidden_api_fields();
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -1039,7 +1043,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description =
                 '<h4>' .
-                __('Insert OpenAI API Key here', 'maxi-blocks') .
+                __('OpenAI API Key (for ChatGPT)', 'maxi-blocks') .
                 '</h4>';
             $content .= $this->generate_setting(
                 $description,
@@ -1059,6 +1063,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
 
             $content .= get_submit_button();
+            $this->add_hidden_api_fields();
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -1214,6 +1219,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
 
             $content .= get_submit_button();
+            $this->add_hidden_api_fields();
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -1364,47 +1370,30 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $toggle;
         }
 
-        public function generate_input(
-            $option,
-            $function = '',
-            $type = 'text',
-            $args = []
-        ) {
-            $is_api_input = isset($args['is_api_input'])
-                ? $args['is_api_input']
-                : false;
-            $placeholder = isset($args['placeholder'])
-                ? $args['placeholder']
-                : '';
+        public function generate_input($option, $function = '', $type = 'text', $args = [])
+        {
+            $is_api_input = isset($args['is_api_input']) ? $args['is_api_input'] : false;
+            $placeholder = isset($args['placeholder']) ? $args['placeholder'] : '';
 
             $input_value = get_option($option);
 
-            $visible_input_class =
-                str_replace('_', '-', $option) . '-visible-input';
+            $visible_input_class = str_replace('_', '-', $option).'-visible-input';
 
             if ($type === 'textarea') {
-                $visible_input = $is_api_input
-                    ? "<textarea class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\">{$input_value}</textarea>"
-                    : "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$input_value}</textarea>";
+                $visible_input = "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$input_value}</textarea>";
             } else {
-                $visible_input = $is_api_input
-                    ? "<input class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>"
-                    : "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"{$type}\" value=\"{$input_value}\"/>";
+                // Always keep the name attribute for all inputs
+                $visible_input = "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>";
             }
 
-            $hidden_input = $is_api_input
-                ? "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\" type=\"hidden\" value=\"{$input_value}\"/>"
-                : '';
-
             $input = <<<HTML
-			    <div class="maxi-dashboard_main-content_accordion-item-content-switcher">
-			        <span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
-			        <div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">
-			            {$visible_input}
-			            {$hidden_input}
-			        </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher__input -->
-			    </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher -->
-			HTML;
+                <div class="maxi-dashboard_main-content_accordion-item-content-switcher">
+                    <span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
+                    <div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">
+                        {$visible_input}
+                    </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher__input -->
+                </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher -->
+            HTML;
 
             return $input;
         }
@@ -1915,6 +1904,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             } catch (Exception $e) {
                 wp_send_json_error(['message' => 'Internal error']);
             }
+        }
+
+        public function add_hidden_api_fields() {
+            $google_api_key = get_option('google_api_key_option', '');
+            $openai_api_key = get_option('openai_api_key_option', '');
+
+            echo '<input type="hidden" name="google_api_key_option" value="' . esc_attr($google_api_key) . '">';
+            echo '<input type="hidden" name="openai_api_key_option" value="' . esc_attr($openai_api_key) . '">';
         }
     }
 endif;

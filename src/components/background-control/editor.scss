@@ -181,6 +181,7 @@
 					transition: 0.3s;
 				}
 				&--none {
+					opacity: 0.6;
 					&:after {
 						width: 23px;
 					}

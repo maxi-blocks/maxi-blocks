@@ -342,6 +342,16 @@ const SCAccordion = props => {
 
 const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
+	const [customColors, setCustomColors] = useState(
+		SC?.color?.customColors || []
+	);
+	const [selectedCustomColorIndex, setSelectedCustomColorIndex] =
+		useState(-1);
+
+	const getColorId = (color, index) => {
+		// Create a unique ID from the color by replacing non-alphanumeric characters and adding index
+		return `${color.replace(/[^a-zA-Z0-9]/g, '')}-${index}`;
+	};
 
 	const headingItems = () =>
 		[1, 2, 3, 4, 5, 6].map(item => {
@@ -730,6 +740,138 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										<Icon icon={reset} />
 									</Button>
 								</div>
+							</>
+						),
+					},
+					{
+						label: __('Custom colours', 'maxi-blocks'),
+						classNameItem:
+							'maxi-blocks-sc__type--custom-color-presets maxi-blocks-sc__type--color',
+						content: (
+							<>
+								<div className='maxi-style-cards__custom-color-presets'>
+									{customColors.map((colorValue, index) => (
+										<div
+											key={`maxi-style-cards__custom-color-presets__box-${getColorId(
+												colorValue,
+												index
+											)}`}
+											className={classnames(
+												'maxi-style-cards__custom-color-presets__box',
+												selectedCustomColorIndex ===
+													index &&
+													'maxi-style-cards__custom-color-presets__box--active'
+											)}
+											onClick={() => {
+												setSelectedCustomColorIndex(
+													index
+												);
+											}}
+										>
+											<span
+												className='maxi-style-cards__custom-color-presets__box__item'
+												style={{
+													background: colorValue,
+												}}
+											/>
+											<Button
+												className='maxi-style-cards__custom-color-presets__remove-button'
+												onClick={e => {
+													e.stopPropagation();
+													const newCustomColors = [
+														...customColors,
+													];
+													newCustomColors.splice(
+														index,
+														1
+													);
+													setCustomColors(
+														newCustomColors
+													);
+													onChangeValue(
+														{
+															customColors:
+																newCustomColors,
+														},
+														'color'
+													);
+													if (
+														selectedCustomColorIndex ===
+														index
+													) {
+														setSelectedCustomColorIndex(
+															-1
+														);
+													} else if (
+														selectedCustomColorIndex >
+														index
+													) {
+														setSelectedCustomColorIndex(
+															selectedCustomColorIndex -
+																1
+														);
+													}
+												}}
+											>
+												-
+											</Button>
+										</div>
+									))}
+									<Button
+										className='maxi-style-cards__custom-color-presets__add-button'
+										onClick={() => {
+											const newColor =
+												'rgba(126, 211, 33, 1)';
+											const newCustomColors = [
+												...customColors,
+												newColor,
+											];
+											setCustomColors(newCustomColors);
+											setSelectedCustomColorIndex(
+												newCustomColors.length - 1
+											);
+											onChangeValue(
+												{
+													customColors:
+														newCustomColors,
+												},
+												'color'
+											);
+										}}
+									>
+										+
+									</Button>
+								</div>
+								{selectedCustomColorIndex >= 0 && (
+									<ColorControl
+										className='maxi-style-cards-control__sc__custom-color'
+										color={
+											customColors[
+												selectedCustomColorIndex
+											]
+										}
+										onChange={({ color }) => {
+											const newCustomColors = [
+												...customColors,
+											];
+											newCustomColors[
+												selectedCustomColorIndex
+											] = color;
+											setCustomColors(newCustomColors);
+											onChangeValue(
+												{
+													customColors:
+														newCustomColors,
+												},
+												'color'
+											);
+										}}
+										blockStyle={SCStyle}
+										disableOpacity
+										disableGradient
+										disablePalette
+									/>
+								)}
 							</>
 						),
 					},

@@ -59,46 +59,53 @@ const ColorControl = props => {
 		avoidBreakpointForDefault = false,
 	} = props;
 
-	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
-		useSelect(select => {
-			const { receiveSelectedStyleCardValue } = select(
-				'maxiBlocks/style-cards'
-			);
+	const {
+		globalStatus,
+		globalPaletteColor,
+		globalPaletteOpacity,
+		customColors,
+	} = useSelect(select => {
+		const { receiveSelectedStyleCardValue } = select(
+			'maxiBlocks/style-cards'
+		);
 
-			const prefix = globalProps?.target
-				? isHover && !globalProps?.target.includes('hover')
-					? `hover-${globalProps?.target}-`
-					: `${globalProps?.target}-`
-				: '';
+		const prefix = globalProps?.target
+			? isHover && !globalProps?.target.includes('hover')
+				? `hover-${globalProps?.target}-`
+				: `${globalProps?.target}-`
+			: '';
 
-			const globalStatus = globalProps
-				? receiveSelectedStyleCardValue(
-						`${prefix}color-global`,
-						globalProps ? getBlockStyle(clientId) : null,
-						globalProps?.type
-				  )
-				: false;
-			const globalPaletteColor = globalProps
-				? receiveSelectedStyleCardValue(
-						`${prefix}palette-color`,
-						globalProps ? getBlockStyle(clientId) : null,
-						globalProps?.type
-				  )
-				: false;
-			const globalPaletteOpacity = globalProps
-				? receiveSelectedStyleCardValue(
-						`${prefix}palette-opacity`,
-						globalProps ? getBlockStyle(clientId) : null,
-						globalProps?.type
-				  )
-				: false;
+		const globalStatus = globalProps
+			? receiveSelectedStyleCardValue(
+					`${prefix}color-global`,
+					globalProps ? getBlockStyle(clientId) : null,
+					globalProps?.type
+			  )
+			: false;
+		const globalPaletteColor = globalProps
+			? receiveSelectedStyleCardValue(
+					`${prefix}palette-color`,
+					globalProps ? getBlockStyle(clientId) : null,
+					globalProps?.type
+			  )
+			: false;
+		const globalPaletteOpacity = globalProps
+			? receiveSelectedStyleCardValue(
+					`${prefix}palette-opacity`,
+					globalProps ? getBlockStyle(clientId) : null,
+					globalProps?.type
+			  )
+			: false;
+		const customColors =
+			receiveSelectedStyleCardValue('customColors', null, 'color') || [];
 
-			return {
-				globalStatus,
-				globalPaletteColor,
-				globalPaletteOpacity: globalPaletteOpacity || 1,
-			};
-		});
+		return {
+			globalStatus,
+			globalPaletteColor,
+			globalPaletteOpacity: globalPaletteOpacity || 1,
+			customColors,
+		};
+	});
 
 	const blockStyle = rawBlockStyle
 		? rawBlockStyle.replace('maxi-', '')
@@ -200,11 +207,24 @@ const ColorControl = props => {
 					color,
 				});
 			else {
-				const defaultColor = `rgba(${getPaletteColor({
-					clientId,
-					color: paletteColor || defaultColorAttr.paletteColor,
-					blockStyle,
-				})},${paletteOpacity || 1})`;
+				let defaultColor;
+
+				if (
+					typeof paletteColor === 'string' &&
+					paletteColor.startsWith('custom-')
+				) {
+					const customIndex = parseInt(
+						paletteColor.replace('custom-', ''),
+						10
+					);
+					defaultColor = customColors[customIndex] || '';
+				} else {
+					defaultColor = `rgba(${getPaletteColor({
+						clientId,
+						color: paletteColor || defaultColorAttr.paletteColor,
+						blockStyle,
+					})},${paletteOpacity || 1})`;
+				}
 
 				onChange({
 					paletteStatus,
@@ -298,11 +318,23 @@ const ColorControl = props => {
 								paletteStatus: !val,
 								// If palette is disabled, set custom color from palette one
 								...(val && {
-									color: `rgba(${getPaletteColor({
-										clientId,
-										color: paletteColor,
-										blockStyle,
-									})},${paletteOpacity || 1})`,
+									color:
+										typeof paletteColor === 'string' &&
+										paletteColor.startsWith('custom-')
+											? customColors[
+													parseInt(
+														paletteColor.replace(
+															'custom-',
+															''
+														),
+														10
+													)
+											  ] || ''
+											: `rgba(${getPaletteColor({
+													clientId,
+													color: paletteColor,
+													blockStyle,
+											  })},${paletteOpacity || 1})`,
 								}),
 								// If palette is set, save the custom color opacity
 								...(!disableOpacity &&

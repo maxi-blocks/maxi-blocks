@@ -310,7 +310,7 @@ const getCustomTaxonomyFields = type => {
 	}
 	addField('Count', 'count');
 	addField('Link', 'link');
-	if (getCurrentTemplateSlug().includes(type)) {
+	if (getCurrentTemplateSlug()?.includes(type)) {
 		addField("Archive type's name", 'archive-type');
 	}
 

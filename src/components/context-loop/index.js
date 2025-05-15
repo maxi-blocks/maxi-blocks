@@ -198,6 +198,7 @@ const ContextLoop = props => {
 				postIdOptions,
 				relation,
 				author,
+				previousRelation: relation,
 			};
 
 			const postIDSettings = await getDCOptions(
@@ -207,6 +208,7 @@ const ContextLoop = props => {
 				true,
 				{
 					'cl-pagination-per-page': paginationPerPage,
+					'cl-status': status,
 				}
 			);
 

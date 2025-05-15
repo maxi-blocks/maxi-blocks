@@ -29,3 +29,6 @@ coverage
 
 # Ignore for security reasons
 .env
+
+# Ignore Cursor rules
+.cursorrules

@@ -235,6 +235,7 @@ const DynamicContent = props => {
 					postIdOptions,
 					relation,
 					author,
+					previousRelation: relation,
 				};
 
 				const postIDSettings = await getDCOptions(

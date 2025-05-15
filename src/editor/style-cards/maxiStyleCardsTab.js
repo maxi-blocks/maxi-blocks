@@ -342,24 +342,46 @@ const SCAccordion = props => {
 
 const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
-	// Use a local reference to ensure custom colors are always accessible
-	const availableCustomColors =
-		SC?.[SCStyle]?.styleCard?.color?.customColors ||
-		SC?.color?.customColors ||
-		[];
 
+	// Enhanced custom colors retrieval logic that checks all possible locations
+	const getAvailableCustomColors = (styleCard, style) => {
+		if (!styleCard) return [];
+
+		// Check multiple possible locations for custom colors in order of specificity
+		return (
+			// 1. Check current style context first
+			styleCard[style]?.styleCard?.color?.customColors ||
+			// 2. Check style card's color object (backward compatibility)
+			styleCard.color?.customColors ||
+			// 3. Check default style card
+			styleCard[style]?.defaultStyleCard?.color?.customColors ||
+			// 4. Check opposite style (light/dark)
+			styleCard[style === 'light' ? 'dark' : 'light']?.styleCard?.color
+				?.customColors ||
+			// 5. Fall back to empty array if no custom colors found
+			[]
+		);
+	};
+
+	// Use enhanced retrieval function
+	const availableCustomColors = getAvailableCustomColors(SC, SCStyle);
+
+	// Local state for custom colors
 	const [customColors, setCustomColors] = useState(availableCustomColors);
 
 	// Effect to update custom colors when SC changes
 	useEffect(() => {
-		const newCustomColors =
-			SC?.[SCStyle]?.styleCard?.color?.customColors ||
-			SC?.color?.customColors ||
-			[];
-		setCustomColors(newCustomColors);
+		const newCustomColors = getAvailableCustomColors(SC, SCStyle);
 
-		// Force update on the store for immediate availability
-		if (newCustomColors.length > 0) {
+		// Only update if we actually have custom colors or if the arrays are different
+		const shouldUpdate =
+			newCustomColors.length > 0 ||
+			JSON.stringify(newCustomColors) !== JSON.stringify(customColors);
+
+		if (shouldUpdate) {
+			setCustomColors(newCustomColors);
+
+			// Force update on the store for immediate availability
 			onChangeValue(
 				{
 					customColors: newCustomColors,
@@ -368,6 +390,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			);
 		}
 	}, [SC, SCStyle]);
+
 	const [selectedCustomColorIndex, setSelectedCustomColorIndex] =
 		useState(-1);
 

@@ -60,27 +60,35 @@ const getParsedObj = obj => {
 };
 
 /**
- * Extract RGB values from a color string
+ * Extract RGB values from a color string to use in CSS variables
+ *
+ * @param {string} colorValue - The color string (rgba, hex, etc.)
+ * @return {string} The RGB values as a comma-separated string
  */
 const extractRGBValues = colorValue => {
-	// Check if it's an rgba/rgb format
-	const rgbaMatch = colorValue.match(
-		/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/
-	);
-	if (rgbaMatch) {
-		return `${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}`;
-	}
+	// Extract RGB values if it's an rgba format
+	if (colorValue.startsWith('rgba(') || colorValue.startsWith('rgb(')) {
+		const matches = colorValue.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+		if (matches && matches.length >= 4) {
+			return `${matches[1]}, ${matches[2]}, ${matches[3]}`;
+		}
+	} else if (colorValue.startsWith('#')) {
+		// Convert HEX to RGB
+		const hex = colorValue.slice(1);
+		// Handle both 3-digit and 6-digit hex codes
+		const fullHex =
+			hex.length === 3
+				? `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`
+				: hex;
 
-	// If it's a hex color, convert to RGB
-	if (colorValue.startsWith('#')) {
-		const hex = colorValue.replace('#', '');
-		const r = parseInt(hex.substr(0, 2), 16);
-		const g = parseInt(hex.substr(2, 2), 16);
-		const b = parseInt(hex.substr(4, 2), 16);
+		// Parse hex values to RGB without bitwise operations
+		const r = parseInt(fullHex.substring(0, 2), 16);
+		const g = parseInt(fullHex.substring(2, 4), 16);
+		const b = parseInt(fullHex.substring(4, 6), 16);
 		return `${r}, ${g}, ${b}`;
 	}
 
-	// Return as is if we can't extract RGB values
+	// Return as is if no pattern matches
 	return colorValue;
 };
 
@@ -399,15 +407,22 @@ const getSCVariablesObject = (
 				}
 			});
 
-			// Add custom colors to CSS variables
-			const customColors = SC[style].color.customColors || [];
-			customColors.forEach((colorValue, index) => {
-				if (!colorValue) return; // Skip empty colors
+			// Add custom colors to CSS variables - Enhanced handling
+			const customColors =
+				styleCards?.[style]?.styleCard?.color?.customColors ||
+				styleCards?.color?.customColors ||
+				SC[style].color.customColors ||
+				[];
 
-				// Extract RGB values from the custom color
-				response[`--maxi-${style}-color-custom-${index}`] =
-					extractRGBValues(colorValue);
-			});
+			if (customColors.length > 0) {
+				customColors.forEach((colorValue, index) => {
+					if (!colorValue) return; // Skip empty colors
+
+					// Add the CSS variable with extracted RGB values
+					response[`--maxi-${style}-color-custom-${index}`] =
+						extractRGBValues(colorValue);
+				});
+			}
 		}
 	});
 

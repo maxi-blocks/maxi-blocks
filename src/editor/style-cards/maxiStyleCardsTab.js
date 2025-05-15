@@ -954,8 +954,17 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									<Button
 										className='maxi-style-cards__custom-color-presets__add-button'
 										onClick={() => {
-											const newColor =
-												'rgba(126, 211, 33, 1)';
+											// Generate random RGB values
+											const r = Math.floor(
+												Math.random() * 256
+											);
+											const g = Math.floor(
+												Math.random() * 256
+											);
+											const b = Math.floor(
+												Math.random() * 256
+											);
+											const newColor = `rgba(${r}, ${g}, ${b}, 1)`;
 											const newCustomColors = [
 												...customColors,
 												newColor,

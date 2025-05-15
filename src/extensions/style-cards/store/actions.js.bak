@@ -1,0 +1,120 @@
+/**
+ * Internal dependencies
+ */
+import * as actionTypes from './action-types';
+
+/**
+ * Action for updating the style cards in the editor
+ */
+export const updateBlockStyleCards = blockStyleCards => ({
+	type: actionTypes.UPDATE_BLOCK_STYLE_CARDS,
+	blockStyleCards,
+});
+
+/**
+ * Action for getting the active SC
+ */
+export const getActiveStyleCard = styleCards => ({
+	type: actionTypes.GET_ACTIVE_STYLE_CARD,
+	styleCards,
+});
+
+/**
+ * Action to initialize the SC
+ */
+export const setInitSC = styleCards => ({
+	type: actionTypes.SET_INIT_SC,
+	styleCards,
+});
+
+/**
+ * Action for saving the selected SC
+ */
+export const saveMaxiSelectedStyleCard = selectedStyleCardObject => ({
+	type: actionTypes.SAVE_MAXI_SELECTED_STYLE_CARD,
+	selectedStyleCardObject,
+});
+
+/**
+ * Action for saving maxi style cards after modifying values
+ */
+export const saveMaxiStyleCards = styleCards => ({
+	type: actionTypes.SAVE_MAXI_STYLE_CARDS,
+	styleCards,
+});
+
+/**
+ * Action for updating the editor
+ */
+export const updateSCOnEditor = (sc, activeSCColour) => ({
+	type: actionTypes.UPDATE_SC_ON_EDITOR,
+	sc,
+	activeSCColour,
+});
+
+/**
+ * Action for clearing the data or when we're on "initial style card".
+ */
+export const removeMaxiStyleCards = styleCardKey => ({
+	type: actionTypes.REMOVE_MAXI_STYLE_CARDS,
+	styleCardKey,
+});
+
+export function receiveMaxiStyleCards() {
+	return {
+		type: 'RECEIVE_STYLE_CARDS',
+	};
+}
+
+export function saveMaxiStyleCards(styleCards, isUpdate = false) {
+	return {
+		type: 'SAVE_STYLE_CARDS',
+		styleCards,
+		isUpdate,
+	};
+}
+
+export function setActiveStyleCard(cardKey) {
+	return {
+		type: 'SET_ACTIVE_STYLE_CARD',
+		cardKey,
+	};
+}
+
+export function setSelectedStyleCard(cardKey) {
+	return {
+		type: 'SET_SELECTED_STYLE_CARD',
+		cardKey,
+	};
+}
+
+export function removeStyleCard(cardKey) {
+	return {
+		type: 'REMOVE_STYLE_CARD',
+		cardKey,
+	};
+}
+
+export function saveSCStyles(isUpdate) {
+	return {
+		type: 'UPDATE_STYLE_CARD',
+		isUpdate,
+	};
+}
+
+export function resetSC() {
+	return {
+		type: 'RESET_STYLE_CARDS',
+	};
+}
+
+/**
+ * Action for saving custom colors to the Redux store
+ * This helps ensure typography components can access custom colors
+ */
+export function saveCustomColors(customColors) {
+	return {
+		type: 'SAVE_CUSTOM_COLORS',
+		customColors,
+	};
+}

@@ -141,21 +141,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				selectedSCValue?.dark?.styleCard?.color?.customColors ||
 				[];
 			setOriginalCustomColors([...customColors]);
-			console.log(
-				'DEBUG: Set originalCustomColors on SC change:',
-				customColors
-			);
 		}
 	}, [selectedSCKey]);
 
 	const canBeSaved = keySC => {
 		// Check if style card exists in both current and saved states
 		if (!styleCards[keySC] || !savedStyleCards[keySC]) {
-			console.log(
-				'DEBUG: Missing style cards',
-				!!styleCards[keySC],
-				!!savedStyleCards[keySC]
-			);
 			return false;
 		}
 
@@ -166,58 +157,14 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			styleCards[keySC]?.dark?.styleCard?.color?.customColors ||
 			[];
 
-		const savedCustomColors =
-			savedStyleCards[keySC]?.color?.customColors ||
-			savedStyleCards[keySC]?.light?.styleCard?.color?.customColors ||
-			savedStyleCards[keySC]?.dark?.styleCard?.color?.customColors ||
-			[];
-
-		// Debug logs
-		console.log('DEBUG canBeSaved - Current SC key:', keySC);
-		console.log(
-			'DEBUG canBeSaved - Current custom colors:',
-			currentCustomColors
-		);
-		console.log(
-			'DEBUG canBeSaved - Saved custom colors:',
-			savedCustomColors
-		);
-		console.log(
-			'DEBUG canBeSaved - Original custom colors:',
-			originalCustomColors
-		);
-		console.log(
-			'DEBUG canBeSaved - styleCards structure:',
-			styleCards[keySC]?.light?.styleCard?.color
-		);
-		console.log(
-			'DEBUG canBeSaved - savedStyleCards structure:',
-			savedStyleCards[keySC]?.light?.styleCard?.color
-		);
-
 		// Check if custom colors have changed from original
 		const customColorsChanged =
 			JSON.stringify(currentCustomColors) !==
 			JSON.stringify(originalCustomColors);
 
-		console.log(
-			'DEBUG canBeSaved - customColorsChanged (vs original):',
-			customColorsChanged
-		);
-
 		if (customColorsChanged) {
 			return true;
 		}
-
-		// Normal comparison between styleCards and savedStyleCards
-		const savedComparison =
-			JSON.stringify(currentCustomColors) !==
-			JSON.stringify(savedCustomColors);
-
-		console.log(
-			'DEBUG canBeSaved - customColorsChanged (vs saved):',
-			savedComparison
-		);
 
 		// Compare the general styleCards (without customColors specifically)
 		const currentSC = {
@@ -238,16 +185,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		// Use general objects comparison for other changes
 		const otherChanges = !isEqual(currentSC, savedSC);
 
-		console.log(
-			'DEBUG canBeSaved - gutenbergStatusChanged:',
-			gutenbergStatusChanged
-		);
-		console.log('DEBUG canBeSaved - otherChanges:', otherChanges);
-		console.log(
-			'DEBUG canBeSaved - final result:',
-			customColorsChanged || otherChanges || gutenbergStatusChanged
-		);
-
 		return customColorsChanged || otherChanges || gutenbergStatusChanged;
 	};
 
@@ -264,16 +201,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	};
 
 	const onChangeValue = (obj, type) => {
-		console.log('DEBUG onChangeValue - obj:', obj, 'type:', type);
-
 		let newSC = { ...selectedSCValue };
 		// Special case for customColors
 		if (type === 'color' && 'customColors' in obj) {
-			console.log(
-				'DEBUG onChangeValue - Inside customColors condition',
-				obj.customColors
-			);
-
 			// Create the color object if it doesn't exist
 			if (!newSC.color) {
 				newSC.color = {};
@@ -296,47 +226,17 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			newSC.light.styleCard.color.customColors = [...obj.customColors];
 			newSC.dark.styleCard.color.customColors = [...obj.customColors];
 
-			console.log(
-				'DEBUG onChangeValue - Updated newSC:',
-				newSC.color.customColors,
-				newSC.light.styleCard.color.customColors,
-				newSC.dark.styleCard.color.customColors
-			);
-
 			// Create a new styleCards object with the updated SC
 			const newStyleCards = {
 				...styleCards,
 				[selectedSCKey]: newSC,
 			};
 
-			console.log(
-				'DEBUG onChangeValue - Calling saveMaxiStyleCards with updated colors'
-			);
 			// This updates the UI styleCards state but doesn't save to database
 			saveMaxiStyleCards(newStyleCards);
 
 			// Update the editor preview
 			updateSCOnEditor(newSC, activeSCColour, [document], true);
-
-			// For debugging, check styleCards and savedStyleCards right after saving
-			setTimeout(() => {
-				console.log(
-					'DEBUG onChangeValue - After save, styleCards:',
-					styleCards[selectedSCKey]?.color?.customColors,
-					styleCards[selectedSCKey]?.light?.styleCard?.color
-						?.customColors
-				);
-				console.log(
-					'DEBUG onChangeValue - After save, savedStyleCards:',
-					savedStyleCards[selectedSCKey]?.color?.customColors,
-					savedStyleCards[selectedSCKey]?.light?.styleCard?.color
-						?.customColors
-				);
-				console.log(
-					'DEBUG canBeSaved result after update:',
-					canBeSaved(selectedSCKey)
-				);
-			}, 100);
 
 			return;
 		}
@@ -517,10 +417,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		// Update originalCustomColors to match the newly saved colors
 		setOriginalCustomColors([...customColors]);
-		console.log(
-			'DEBUG: saveCurrentSC updated originalCustomColors to:',
-			customColors
-		);
 	};
 
 	const deleteSC = () => {
@@ -820,32 +716,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 							<Button
 								className='maxi-style-cards__sc__actions--save'
 								disabled={!canBeSaved(selectedSCKey)}
-								onClick={() => {
-									console.log('DEBUG: Save button clicked');
-									saveCurrentSC();
-								}}
+								onClick={saveCurrentSC}
 							>
 								{__('Save changes', 'maxi-blocks')}
-								<div style={{ display: 'none' }}>
-									{console.log(
-										'DEBUG: Save button render, canBeSaved result:',
-										canBeSaved(selectedSCKey)
-									)}
-									{console.log(
-										'DEBUG: styleCards custom colors:',
-										styleCards[selectedSCKey]?.color
-											?.customColors,
-										styleCards[selectedSCKey]?.light
-											?.styleCard?.color?.customColors
-									)}
-									{console.log(
-										'DEBUG: savedStyleCards custom colors:',
-										savedStyleCards[selectedSCKey]?.color
-											?.customColors,
-										savedStyleCards[selectedSCKey]?.light
-											?.styleCard?.color?.customColors
-									)}
-								</div>
 							</Button>
 						)}
 						<DialogBox

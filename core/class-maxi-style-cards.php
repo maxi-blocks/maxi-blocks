@@ -121,6 +121,154 @@ class MaxiBlocks_StyleCards
     }
 
     /**
+     * Process custom colors from style cards and add them to the CSS variables
+     *
+     * @param string $style The CSS variables string
+     * @param array|string $style_card_obj The style card object or JSON string
+     * @return string The modified CSS variables string with custom colors
+     */
+    public function process_custom_colors($style, $style_card_obj)
+    {
+        // If style is empty or not a string, return it as is
+        if (empty($style) || !is_string($style)) {
+            return $style;
+        }
+
+        // Check if style_card_obj is a string (JSON), convert it to array
+        if (is_string($style_card_obj)) {
+            $style_card_obj = json_decode($style_card_obj, true);
+
+            // If JSON decoding failed, return the original style
+            if (json_last_error() !== JSON_ERROR_NONE || !is_array($style_card_obj)) {
+                return $style;
+            }
+        }
+
+        // If it's still not an array after potential conversion, return the original style
+        if (!is_array($style_card_obj)) {
+            return $style;
+        }
+
+        // Get the active style card
+        $active_style_card = null;
+
+        foreach ($style_card_obj as $key => $value) {
+            if (is_array($value) && isset($value['status']) && $value['status'] === 'active') {
+                $active_style_card = $value;
+                break;
+            }
+        }
+
+        if (!$active_style_card) {
+            // If no active card found, use the first one as fallback
+            $first_key = array_key_first($style_card_obj);
+            $active_style_card = $style_card_obj[$first_key] ?? null;
+
+            // If still no active card, return original style
+            if (!$active_style_card) {
+                return $style;
+            }
+        }
+
+        // Extract custom colors from the active style card
+        $custom_colors = [];
+
+        // Try to get custom colors from various possible locations
+        if (isset($active_style_card['light']['styleCard']['color']['customColors']) &&
+            is_array($active_style_card['light']['styleCard']['color']['customColors'])) {
+            $custom_colors['light'] = $active_style_card['light']['styleCard']['color']['customColors'];
+        }
+
+        if (isset($active_style_card['dark']['styleCard']['color']['customColors']) &&
+            is_array($active_style_card['dark']['styleCard']['color']['customColors'])) {
+            $custom_colors['dark'] = $active_style_card['dark']['styleCard']['color']['customColors'];
+        }
+
+        if (isset($active_style_card['color']['customColors']) &&
+            is_array($active_style_card['color']['customColors'])) {
+            // If we don't have specific light/dark colors, use the general ones for both
+            if (empty($custom_colors['light'])) {
+                $custom_colors['light'] = $active_style_card['color']['customColors'];
+            }
+            if (empty($custom_colors['dark'])) {
+                $custom_colors['dark'] = $active_style_card['color']['customColors'];
+            }
+        }
+
+        // If no custom colors found in any location, return the original style
+        if (empty($custom_colors)) {
+            return $style;
+        }
+
+        // Find the position to insert the custom colors
+        $insert_pos = strrpos($style, '}');
+        if ($insert_pos === false) {
+            $insert_pos = strlen($style);
+        }
+
+        // Build the custom colors CSS variables
+        $custom_color_vars = '';
+
+        // Process light style custom colors
+        if (!empty($custom_colors['light'])) {
+            foreach ($custom_colors['light'] as $index => $color_value) {
+                if (empty($color_value)) continue; // Skip empty colors
+
+                // Extract RGB values if it's an rgba format
+                $rgb_values = $this->extract_rgb_values($color_value);
+
+                // Add the CSS variable
+                $custom_color_vars .= "--maxi-light-color-custom-{$index}:{$rgb_values};";
+            }
+        }
+
+        // Process dark style custom colors
+        if (!empty($custom_colors['dark'])) {
+            foreach ($custom_colors['dark'] as $index => $color_value) {
+                if (empty($color_value)) continue; // Skip empty colors
+
+                // Extract RGB values if it's an rgba format
+                $rgb_values = $this->extract_rgb_values($color_value);
+
+                // Add the CSS variable
+                $custom_color_vars .= "--maxi-dark-color-custom-{$index}:{$rgb_values};";
+            }
+        }
+
+        // Insert the custom colors before the closing brace
+        $modified_style = substr_replace($style, $custom_color_vars, $insert_pos, 0);
+
+        return $modified_style;
+    }
+
+    /**
+     * Extract RGB values from a color string
+     *
+     * @param string $color_value The color string (rgba, hex, etc.)
+     * @return string The RGB values as a comma-separated string
+     */
+    private function extract_rgb_values($color_value)
+    {
+        // Extract RGB values if it's an rgba format
+        if (preg_match('/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/', $color_value, $matches)) {
+            return "{$matches[1]}, {$matches[2]}, {$matches[3]}";
+        } elseif (strpos($color_value, '#') === 0) {
+            // Convert HEX to RGB
+            $hex = ltrim($color_value, '#');
+            if (strlen($hex) === 3) {
+                $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
+            }
+            $r = hexdec(substr($hex, 0, 2));
+            $g = hexdec(substr($hex, 2, 2));
+            $b = hexdec(substr($hex, 4, 2));
+            return "$r, $g, $b";
+        } else {
+            // Use as is for other formats
+            return $color_value;
+        }
+    }
+
+    /**
      * Get SC
      */
     public function get_style_card_variables()
@@ -158,6 +306,14 @@ class MaxiBlocks_StyleCards
             }
 
             return false;
+        }
+
+        // Process and add custom colors to the style variables
+        $current_style_cards = self::get_maxi_blocks_current_style_cards();
+
+        // Only process custom colors if current_style_cards is available
+        if ($current_style_cards) {
+            $style = $this->process_custom_colors($style, $current_style_cards);
         }
 
         return $style;
@@ -249,6 +405,12 @@ class MaxiBlocks_StyleCards
             $maxi_blocks_style_cards_current &&
             !empty($maxi_blocks_style_cards_current)
         ) {
+            // Validate that it's a JSON string
+            $decoded = json_decode($maxi_blocks_style_cards_current, true);
+            if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+                // If not valid JSON, return default style card instead
+                return self::get_default_style_card();
+            }
             return $maxi_blocks_style_cards_current;
         } else {
             $default_style_card = self::get_default_style_card();
@@ -264,6 +426,15 @@ class MaxiBlocks_StyleCards
                     'style_cards_current'
                 )
             );
+
+            // Validate the retrieved default style card is valid JSON
+            if ($maxi_blocks_style_cards_current) {
+                $decoded = json_decode($maxi_blocks_style_cards_current, true);
+                if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+                    return false;
+                }
+            }
+
             return $maxi_blocks_style_cards_current;
         }
     }
@@ -276,16 +447,35 @@ class MaxiBlocks_StyleCards
             return false;
         }
 
-        $maxi_blocks_style_cards_array = json_decode(
-            $maxi_blocks_style_cards,
-            true
-        );
+        // If it's already an array, use it directly
+        if (is_array($maxi_blocks_style_cards)) {
+            $maxi_blocks_style_cards_array = $maxi_blocks_style_cards;
+        } else {
+            // Otherwise, decode the JSON string
+            $maxi_blocks_style_cards_array = json_decode(
+                $maxi_blocks_style_cards,
+                true
+            );
 
+            // Check if decoding was successful
+            if (json_last_error() !== JSON_ERROR_NONE || !is_array($maxi_blocks_style_cards_array)) {
+                return false;
+            }
+        }
+
+        // Find the active style card
         foreach ($maxi_blocks_style_cards_array as $key => $sc) {
-            if ($sc['status'] === 'active') {
+            if (is_array($sc) && isset($sc['status']) && $sc['status'] === 'active') {
                 return $sc;
             }
         }
+
+        // If no active card found, return the first one as fallback
+        if (!empty($maxi_blocks_style_cards_array)) {
+            $first_key = array_key_first($maxi_blocks_style_cards_array);
+            return $maxi_blocks_style_cards_array[$first_key] ?? false;
+        }
+
         return false;
     }
 

@@ -4,6 +4,60 @@
 import getBlockStyle from '@extensions/styles/getBlockStyle';
 import getActiveStyleCard from './getActiveStyleCard';
 
+/**
+ * Fallback function to get custom color from CSS variables
+ */
+const getCustomColorFromCSS = (blockStyle, customIndex) => {
+	// Try with the specified block style first
+	const cssValueSpecific = getComputedStyle(document.documentElement)
+		.getPropertyValue(`--maxi-${blockStyle}-color-custom-${customIndex}`)
+		.trim();
+
+	if (cssValueSpecific) {
+		return cssValueSpecific;
+	}
+
+	// Try with the opposite block style (light/dark) as a fallback
+	const oppositeStyle = blockStyle === 'light' ? 'dark' : 'light';
+	const cssValueOpposite = getComputedStyle(document.documentElement)
+		.getPropertyValue(`--maxi-${oppositeStyle}-color-custom-${customIndex}`)
+		.trim();
+
+	if (cssValueOpposite) {
+		return cssValueOpposite;
+	}
+
+	// Fallback to a default color
+	return '0, 0, 0';
+};
+
+/**
+ * Extract RGB values from a color string
+ */
+const extractRGBValues = colorString => {
+	if (!colorString) return '0, 0, 0';
+
+	// Check if it's an rgba format
+	const rgbaMatch = colorString.match(
+		/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/
+	);
+	if (rgbaMatch) {
+		return `${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}`;
+	}
+
+	// If it's a hex color, convert to RGB
+	if (colorString.startsWith('#')) {
+		const hex = colorString.replace('#', '');
+		const r = parseInt(hex.substr(0, 2), 16);
+		const g = parseInt(hex.substr(2, 2), 16);
+		const b = parseInt(hex.substr(4, 2), 16);
+		return `${r}, ${g}, ${b}`;
+	}
+
+	// Return the color as is if we can't extract RGB values
+	return colorString;
+};
+
 const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 	const activeStyleCard = getActiveStyleCard();
 	const blockStyle = rawBlockStyle ?? getBlockStyle(clientId);
@@ -16,9 +70,7 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 		// Check if it's a custom color
 		if (typeof color === 'string' && color.startsWith('custom-')) {
 			const customIndex = parseInt(color.replace('custom-', ''), 10);
-			return getComputedStyle(document.documentElement).getPropertyValue(
-				`--maxi-${blockStyle}-color-custom-${customIndex}`
-			);
+			return getCustomColorFromCSS(blockStyle, customIndex);
 		}
 
 		return getComputedStyle(document.documentElement).getPropertyValue(
@@ -32,57 +84,46 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 	if (typeof color === 'string' && color.startsWith('custom-')) {
 		const customIndex = parseInt(color.replace('custom-', ''), 10);
 
-		// Try to get custom colors from multiple possible locations for better compatibility
+		// Try to get custom colors from multiple possible locations in order of specificity
+		const customColorsLocations = [
+			SCValue[blockStyle]?.styleCard?.color?.customColors,
+			SCValue[blockStyle]?.defaultStyleCard?.color?.customColors,
+			// Try the opposite style as well (light/dark)
+			SCValue[blockStyle === 'light' ? 'dark' : 'light']?.styleCard?.color
+				?.customColors,
+			SCValue[blockStyle === 'light' ? 'dark' : 'light']?.defaultStyleCard
+				?.color?.customColors,
+			// Fallback to general color storage if available
+			SCValue.color?.customColors,
+		];
+
+		// Find first non-empty custom colors array
 		const customColors =
-			SCValue[blockStyle]?.styleCard?.color?.customColors ||
-			SCValue[blockStyle]?.defaultStyleCard?.color?.customColors ||
-			SCValue.light?.styleCard?.color?.customColors ||
-			SCValue.dark?.styleCard?.color?.customColors ||
-			SCValue.color?.customColors ||
-			[];
+			customColorsLocations.find(
+				colors => Array.isArray(colors) && colors.length > 0
+			) || [];
 
+		// If the specific custom color exists in the array
 		if (customColors[customIndex]) {
-			// Extract RGB values from the custom color (which is in rgba format)
-			const colorString = customColors[customIndex];
-
-			// Check if it's an rgba format
-			const rgbaMatch = colorString.match(
-				/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/
-			);
-			if (rgbaMatch) {
-				return `${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}`;
-			}
-
-			// If it's a hex color, convert to RGB
-			if (colorString.startsWith('#')) {
-				const hex = colorString.replace('#', '');
-				const r = parseInt(hex.substr(0, 2), 16);
-				const g = parseInt(hex.substr(2, 2), 16);
-				const b = parseInt(hex.substr(4, 2), 16);
-				return `${r}, ${g}, ${b}`;
-			}
-
-			// Return the color as is if we can't extract RGB values
-			return customColors[customIndex];
+			return extractRGBValues(customColors[customIndex]);
 		}
 
 		// If we can't find the custom color in the style card, try to get it from CSS variables
-		const cssVarValue = getComputedStyle(document.documentElement)
-			.getPropertyValue(
-				`--maxi-${blockStyle}-color-custom-${customIndex}`
-			)
-			.trim();
-
-		if (cssVarValue) {
-			return cssVarValue;
-		}
-
-		return '0, 0, 0'; // Default black if custom color not found
+		return getCustomColorFromCSS(blockStyle, customIndex);
 	}
 
+	// Return color value from styleCard or defaultStyleCard with better fallbacks
 	return (
 		SCValue[blockStyle]?.styleCard?.color?.[color] ||
-		SCValue[blockStyle]?.defaultStyleCard?.color?.[color]
+		SCValue[blockStyle]?.defaultStyleCard?.color?.[color] ||
+		// Try opposite style as fallback
+		SCValue[blockStyle === 'light' ? 'dark' : 'light']?.styleCard?.color?.[
+			color
+		] ||
+		SCValue[blockStyle === 'light' ? 'dark' : 'light']?.defaultStyleCard
+			?.color?.[color] ||
+		// Default fallback
+		'0, 0, 0'
 	);
 };
 

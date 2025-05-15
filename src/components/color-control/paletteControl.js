@@ -106,6 +106,9 @@ const ColorPaletteControl = props => {
 					{/* Custom palette colors */}
 					{customColors.length > 0 && (
 						<div className='maxi-color-control__palette-custom'>
+							<div className='maxi-color-control__palette-custom-header'>
+								{__('Custom colours', 'maxi-blocks')}
+							</div>
 							{customColors.map((color, index) => (
 								<button
 									key={`maxi-color-control__palette-custom-box-${getColorId(

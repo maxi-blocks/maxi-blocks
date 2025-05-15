@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -342,9 +342,32 @@ const SCAccordion = props => {
 
 const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
-	const [customColors, setCustomColors] = useState(
-		SC?.color?.customColors || []
-	);
+	// Use a local reference to ensure custom colors are always accessible
+	const availableCustomColors =
+		SC?.[SCStyle]?.styleCard?.color?.customColors ||
+		SC?.color?.customColors ||
+		[];
+
+	const [customColors, setCustomColors] = useState(availableCustomColors);
+
+	// Effect to update custom colors when SC changes
+	useEffect(() => {
+		const newCustomColors =
+			SC?.[SCStyle]?.styleCard?.color?.customColors ||
+			SC?.color?.customColors ||
+			[];
+		setCustomColors(newCustomColors);
+
+		// Force update on the store for immediate availability
+		if (newCustomColors.length > 0) {
+			onChangeValue(
+				{
+					customColors: newCustomColors,
+				},
+				'color'
+			);
+		}
+	}, [SC, SCStyle]);
 	const [selectedCustomColorIndex, setSelectedCustomColorIndex] =
 		useState(-1);
 
@@ -788,6 +811,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													setCustomColors(
 														newCustomColors
 													);
+													// Save changes immediately so they're available in all components
 													onChangeValue(
 														{
 															customColors:
@@ -830,6 +854,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											setSelectedCustomColorIndex(
 												newCustomColors.length - 1
 											);
+											// Ensure custom colors are saved to the Style Card properly
 											onChangeValue(
 												{
 													customColors:
@@ -858,6 +883,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 												selectedCustomColorIndex
 											] = color;
 											setCustomColors(newCustomColors);
+											// Update immediately to ensure changes are saved and displayed in all color pickers
 											onChangeValue(
 												{
 													customColors:

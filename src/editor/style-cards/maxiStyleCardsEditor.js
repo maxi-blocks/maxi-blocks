@@ -169,6 +169,38 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const onChangeValue = (obj, type) => {
 		let newSC = { ...selectedSCValue };
+		// Special case for customColors
+		if (type === 'color' && 'customColors' in obj) {
+			// Create the color object if it doesn't exist
+			if (!newSC[currentSCStyle].styleCard.color) {
+				newSC[currentSCStyle].styleCard.color = {};
+			}
+
+			// Set the customColors directly and ensure all style cards have this value for immediate access
+			// Use both light and dark styles to ensure consistency
+			newSC.light.styleCard.color = {
+				...newSC.light.styleCard.color,
+				customColors: obj.customColors,
+			};
+
+			newSC.dark.styleCard.color = {
+				...newSC.dark.styleCard.color,
+				customColors: obj.customColors,
+			};
+
+			const newStyleCards = {
+				...styleCards,
+				[selectedSCKey]: {
+					...newSC,
+				},
+			};
+
+			// Make sure to save immediately with update flag true
+			saveMaxiStyleCards(newStyleCards, true);
+			updateSCOnEditor(newSC, activeSCColour);
+			return;
+		}
+
 		const isTypography = Object.keys(obj)[0] === 'typography';
 
 		const newObj = handleSetAttributes({
@@ -665,6 +697,16 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 										} else {
 											setCardAlreadyExists(false);
 											setImportedCardExists(false);
+											// Get any custom colors from the selected style card
+											const customColors =
+												selectedSCValue.light?.styleCard
+													?.color?.customColors ||
+												selectedSCValue.dark?.styleCard
+													?.color?.customColors ||
+												selectedSCValue.color
+													?.customColors ||
+												[];
+
 											const newStyleCard = {
 												name: styleCardName,
 												status: '',
@@ -680,7 +722,19 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 														...selectedSCValue.dark
 															.styleCard,
 													},
-													styleCard: {},
+													styleCard: {
+														// Initialize with custom colors if they exist
+														color:
+															customColors.length >
+															0
+																? {
+																		customColors:
+																			[
+																				...customColors,
+																			],
+																  }
+																: {},
+													},
 												},
 												light: {
 													defaultStyleCard: {
@@ -689,7 +743,19 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 														...selectedSCValue.light
 															.styleCard,
 													},
-													styleCard: {},
+													styleCard: {
+														// Initialize with custom colors if they exist
+														color:
+															customColors.length >
+															0
+																? {
+																		customColors:
+																			[
+																				...customColors,
+																			],
+																  }
+																: {},
+													},
 												},
 												type: 'user',
 												updated: currentDate,

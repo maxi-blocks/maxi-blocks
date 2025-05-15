@@ -219,13 +219,29 @@ export const receiveSelectedStyleCardValue = (
 	blockStyle,
 	SCEntry
 ) => {
-	if (state.styleCards)
-		return getSCValues(
-			getActiveStyleCard(state.styleCards, true),
-			rawTarget,
-			blockStyle,
-			SCEntry
-		);
+	if (!state.styleCards) return false;
 
-	return false;
+	// Special case for custom colors
+	if (
+		rawTarget === 'customColors' &&
+		blockStyle === null &&
+		SCEntry === 'color'
+	) {
+		const selectedSC = getActiveStyleCard(state.styleCards, true);
+
+		// Try to get custom colors from various possible locations
+		return (
+			selectedSC.value?.light?.styleCard?.color?.customColors ||
+			selectedSC.value?.dark?.styleCard?.color?.customColors ||
+			selectedSC.value?.color?.customColors ||
+			[]
+		);
+	}
+
+	return getSCValues(
+		getActiveStyleCard(state.styleCards, true),
+		rawTarget,
+		blockStyle,
+		SCEntry
+	);
 };

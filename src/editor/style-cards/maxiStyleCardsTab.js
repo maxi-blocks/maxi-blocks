@@ -345,10 +345,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 
 	// Enhanced custom colors retrieval logic that checks all possible locations
 	const getAvailableCustomColors = (styleCard, style) => {
-		console.log('[DEBUG] Getting custom colors, style:', style);
-
 		if (!styleCard) {
-			console.log('[DEBUG] styleCard is undefined/null');
 			return [];
 		}
 
@@ -360,10 +357,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		if (typeof receiveMaxiSelectedStyleCardValue === 'function') {
 			storeColors =
 				receiveMaxiSelectedStyleCardValue('customColors') || [];
-			console.log(
-				'[DEBUG] Colors from store:',
-				JSON.stringify(storeColors).substring(0, 100)
-			);
 		}
 
 		// If we got colors from the store, use those
@@ -372,21 +365,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		}
 
 		// Otherwise fall back to checking the style card object directly
-		// Log possible locations
-		console.log('[DEBUG] Checking SC object directly. Paths:', {
-			stylePath: styleCard[style]?.styleCard?.color?.customColors
-				? 'Found'
-				: 'None',
-			rootPath: styleCard.color?.customColors ? 'Found' : 'None',
-			defaultPath: styleCard[style]?.defaultStyleCard?.color?.customColors
-				? 'Found'
-				: 'None',
-			oppositePath: styleCard[style === 'light' ? 'dark' : 'light']
-				?.styleCard?.color?.customColors
-				? 'Found'
-				: 'None',
-		});
-
 		// Check multiple possible locations for custom colors in order of specificity
 		const colors =
 			// 1. Check current style context first
@@ -401,10 +379,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			// 5. Fall back to empty array if no custom colors found
 			[];
 
-		console.log(
-			'[DEBUG] Found colors:',
-			JSON.stringify(colors).substring(0, 100)
-		);
 		return colors;
 	};
 
@@ -946,7 +920,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 														);
 													}
 
-													// Update the Redux store too
+													// Update the Redux store too - IMPORTANT: This makes the Save button active
 													onChangeValue(
 														{
 															customColors:
@@ -1044,7 +1018,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 												);
 											}
 
-											// Update the Redux store too
+											// Update the Redux store too - IMPORTANT: This is what makes the Save button active
 											onChangeValue(
 												{
 													customColors:
@@ -1081,6 +1055,35 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											tempSC.color.customColors =
 												newCustomColors;
 
+											// Also update the styleCard objects directly
+											if (!tempSC.light)
+												tempSC.light = {
+													styleCard: { color: {} },
+												};
+											if (!tempSC.light.styleCard)
+												tempSC.light.styleCard = {
+													color: {},
+												};
+											if (!tempSC.light.styleCard.color)
+												tempSC.light.styleCard.color =
+													{};
+											tempSC.light.styleCard.color.customColors =
+												[...newCustomColors];
+
+											if (!tempSC.dark)
+												tempSC.dark = {
+													styleCard: { color: {} },
+												};
+											if (!tempSC.dark.styleCard)
+												tempSC.dark.styleCard = {
+													color: {},
+												};
+											if (!tempSC.dark.styleCard.color)
+												tempSC.dark.styleCard.color =
+													{};
+											tempSC.dark.styleCard.color.customColors =
+												[...newCustomColors];
+
 											// Preview the change in the editor
 											const { updateSCOnEditor } =
 												window.wp.data.select(
@@ -1098,7 +1101,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 												);
 											}
 
-											// Update the Redux store too
+											// Update the Redux store too - IMPORTANT: This makes the Save button active
 											onChangeValue(
 												{
 													customColors:

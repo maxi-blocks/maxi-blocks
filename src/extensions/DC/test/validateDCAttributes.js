@@ -77,7 +77,7 @@ describe('getValidatedDCAttributes', () => {
 		);
 
 		expect(getDCOptions).toHaveBeenCalledWith(
-			attributes,
+			{ ...attributes, previousRelation: attributes.relation },
 			attributes.id,
 			contentType,
 			isCL,

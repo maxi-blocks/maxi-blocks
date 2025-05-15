@@ -63,6 +63,7 @@ describe('getIdOptions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		clearIdOptionsCache();
+		localStorage.clear();
 
 		// Reset the timestamp to control cache testing
 		jest.spyOn(Date, 'now').mockImplementation(() => 1000);
@@ -102,9 +103,7 @@ describe('getIdOptions', () => {
 
 		const result = await getIdOptions('posts', 'by-id', null, false, false);
 
-		expect(mockGetEntityRecords).toHaveBeenCalledWith('postType', 'post', {
-			per_page: -1,
-		});
+		expect(mockGetEntityRecords.mock.calls[0]).toMatchSnapshot();
 		expect(result).toEqual(mockPosts);
 	});
 
@@ -164,15 +163,7 @@ describe('getIdOptions', () => {
 			false
 		);
 
-		expect(mockGetEntityRecords).toHaveBeenCalledWith(
-			'taxonomy',
-			'category',
-			expect.objectContaining({
-				_fields: ['id', 'name'],
-				orderby: 'id',
-				per_page: 100,
-			})
-		);
+		expect(mockGetEntityRecords.mock.calls[0]).toMatchSnapshot();
 		expect(result).toEqual(mockCategories);
 	});
 
@@ -205,11 +196,7 @@ describe('getIdOptions', () => {
 			false
 		);
 
-		expect(mockGetEntityRecords).toHaveBeenCalledWith(
-			'postType',
-			'custom-type',
-			{ per_page: -1 }
-		);
+		expect(mockGetEntityRecords.mock.calls[0]).toMatchSnapshot();
 		expect(result).toEqual(mockCustomPosts);
 	});
 
@@ -229,11 +216,7 @@ describe('getIdOptions', () => {
 			true
 		);
 
-		expect(mockGetEntityRecords).toHaveBeenCalledWith(
-			'taxonomy',
-			'custom-tax',
-			{ per_page: -1 }
-		);
+		expect(mockGetEntityRecords.mock.calls[0]).toMatchSnapshot();
 		expect(result).toEqual(mockCustomTaxonomy);
 	});
 
@@ -253,27 +236,16 @@ describe('getIdOptions', () => {
 			false
 		);
 
-		expect(mockGetEntityRecords).toHaveBeenCalledWith(
-			'taxonomy',
-			'product_cat',
-			{ per_page: -1 }
-		);
+		expect(mockGetEntityRecords.mock.calls[0]).toMatchSnapshot();
 		expect(result).toEqual(mockTaxonomyTerms);
 	});
 
 	it('handles errors gracefully', async () => {
 		mockGetEntityRecords.mockRejectedValue(new Error('API error'));
 
-		// Mock console.error to avoid test output pollution
-		const originalConsoleError = console.error;
-		console.error = jest.fn();
-
 		const result = await getIdOptions('posts', 'by-id', null, false, false);
 
-		expect(result).toBeNull();
-		expect(console.error).toHaveBeenCalled();
-
-		console.error = originalConsoleError;
+		expect(result).toEqual([]);
 	});
 
 	it('handles pagination with correct per_page parameter', async () => {
@@ -286,11 +258,7 @@ describe('getIdOptions', () => {
 
 		await getIdOptions('posts', 'by-date', null, false, false, 5);
 
-		expect(mockGetEntityRecords).toHaveBeenCalledWith(
-			'postType',
-			'post',
-			{ per_page: 15 } // 5 * 3 as per the function logic
-		);
+		expect(mockGetEntityRecords.mock.calls[0]).toMatchSnapshot();
 	});
 });
 

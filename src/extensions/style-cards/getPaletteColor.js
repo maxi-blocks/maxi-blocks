@@ -86,15 +86,17 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 
 		// Try to get custom colors from multiple possible locations in order of specificity
 		const customColorsLocations = [
+			// First check current style
 			SCValue[blockStyle]?.styleCard?.color?.customColors,
+			// Then try the color root object (backward compatibility)
+			SCValue.color?.customColors,
+			// Then try defaultStyleCard
 			SCValue[blockStyle]?.defaultStyleCard?.color?.customColors,
-			// Try the opposite style as well (light/dark)
+			// Try the opposite style (light/dark)
 			SCValue[blockStyle === 'light' ? 'dark' : 'light']?.styleCard?.color
 				?.customColors,
 			SCValue[blockStyle === 'light' ? 'dark' : 'light']?.defaultStyleCard
 				?.color?.customColors,
-			// Fallback to general color storage if available
-			SCValue.color?.customColors,
 		];
 
 		// Find first non-empty custom colors array

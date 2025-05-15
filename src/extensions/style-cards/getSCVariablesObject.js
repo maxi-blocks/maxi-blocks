@@ -408,10 +408,18 @@ const getSCVariablesObject = (
 			});
 
 			// Add custom colors to CSS variables - Enhanced handling
+			// Try to get from all possible locations in priority order
 			const customColors =
 				styleCards?.[style]?.styleCard?.color?.customColors ||
 				styleCards?.color?.customColors ||
-				SC[style].color.customColors ||
+				styleCards?.[style]?.defaultStyleCard?.color?.customColors ||
+				SC[style]?.styleCard?.color?.customColors ||
+				SC?.color?.customColors ||
+				SC[style]?.defaultStyleCard?.color?.customColors ||
+				SC[style === 'light' ? 'dark' : 'light']?.styleCard?.color
+					?.customColors ||
+				SC[style === 'light' ? 'dark' : 'light']?.defaultStyleCard
+					?.color?.customColors ||
 				[];
 
 			if (customColors.length > 0) {

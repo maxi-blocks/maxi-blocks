@@ -176,7 +176,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				newSC[currentSCStyle].styleCard.color = {};
 			}
 
-			// Set the customColors directly and ensure all style cards have this value for immediate access
+			// Set the customColors directly in the SC object, but don't save to Redux store yet
 			// Use both light and dark styles to ensure consistency
 			newSC.light.styleCard.color = {
 				...newSC.light.styleCard.color,
@@ -194,16 +194,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			}
 			newSC.color.customColors = [...obj.customColors];
 
-			const newStyleCards = {
-				...styleCards,
-				[selectedSCKey]: {
-					...newSC,
-				},
-			};
-
-			// Make sure to save immediately with update flag true
-			saveMaxiStyleCards(newStyleCards, true);
-			updateSCOnEditor(newSC, activeSCColour);
+			// Update UI only without saving to Redux store yet
+			// This allows users to preview custom colors but requires them to click "Save changes"
+			updateSCOnEditor(newSC, activeSCColour, [document], true);
 			return;
 		}
 
@@ -303,22 +296,98 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const saveCurrentSC = () => {
 		const isChosenActive = selectedSCValue?.status === 'active';
+
+		console.log(
+			'[DEBUG-SAVE] Starting saveCurrentSC. Selected key:',
+			selectedSCKey
+		);
+
+		// Get custom colors from UI state via getAvailableCustomColors function
+		// Get it via maxiStyleCardsTab reference if possible
+		let customColors = [];
+
+		// Try to get customColors from the style card tab
+		const styleCardsTab = document.querySelector(
+			'.maxi-blocks-sc__type--custom-color-presets'
+		);
+		if (styleCardsTab) {
+			// This is a hack to access React component state - we're adding a data attribute
+			const customColorItems = styleCardsTab.querySelectorAll(
+				'.maxi-style-cards__custom-color-presets__box__item'
+			);
+			if (customColorItems && customColorItems.length > 0) {
+				customColors = Array.from(customColorItems).map(item => {
+					return item.style.background;
+				});
+				console.log(
+					'[DEBUG-SAVE] Got colors from DOM:',
+					JSON.stringify(customColors).substring(0, 100)
+				);
+			}
+		}
+
+		// If we couldn't get colors from UI, try to get them from the selectedSCValue
+		if (customColors.length === 0) {
+			customColors =
+				selectedSCValue.light?.styleCard?.color?.customColors ||
+				selectedSCValue.dark?.styleCard?.color?.customColors ||
+				selectedSCValue.color?.customColors ||
+				[];
+			console.log(
+				'[DEBUG-SAVE] Got colors from selectedSCValue:',
+				JSON.stringify(customColors).substring(0, 100)
+			);
+		}
+
+		// Create a new SC value with updated custom colors
+		const updatedSCValue = { ...selectedSCValue };
+
+		// Ensure custom colors are in all locations
+		// Root level
+		if (!updatedSCValue.color) {
+			updatedSCValue.color = {};
+		}
+		updatedSCValue.color.customColors = [...customColors];
+
+		// Light style
+		if (!updatedSCValue.light)
+			updatedSCValue.light = { styleCard: {}, defaultStyleCard: {} };
+		if (!updatedSCValue.light.styleCard)
+			updatedSCValue.light.styleCard = {};
+		if (!updatedSCValue.light.styleCard.color)
+			updatedSCValue.light.styleCard.color = {};
+		updatedSCValue.light.styleCard.color.customColors = [...customColors];
+
+		// Dark style
+		if (!updatedSCValue.dark)
+			updatedSCValue.dark = { styleCard: {}, defaultStyleCard: {} };
+		if (!updatedSCValue.dark.styleCard) updatedSCValue.dark.styleCard = {};
+		if (!updatedSCValue.dark.styleCard.color)
+			updatedSCValue.dark.styleCard.color = {};
+		updatedSCValue.dark.styleCard.color.customColors = [...customColors];
+
+		console.log(
+			'[DEBUG-SAVE] Updated SC with colors in all locations. customColors count:',
+			customColors.length
+		);
+
 		const newStyleCards = {
 			...styleCards,
 			[selectedSCKey]: {
-				...selectedSCValue,
+				...updatedSCValue,
 				...{ status: isChosenActive ? 'active' : '' },
 			},
 		};
 
 		if (isChosenActive) {
-			setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
+			setActiveSCColour(getActiveColourFromSC(updatedSCValue, 4));
 			updateSCOnEditor(
-				selectedSCValue,
-				getActiveColourFromSC(selectedSCValue, 4)
+				updatedSCValue,
+				getActiveColourFromSC(updatedSCValue, 4)
 			);
 		}
 
+		console.log('[DEBUG-SAVE] Saving style cards to Redux');
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(isChosenActive);
 	};

@@ -40,12 +40,39 @@ const ColorPaletteControl = props => {
 	} = props;
 
 	const { customColors } = useSelect(select => {
-		const { receiveSelectedStyleCardValue } = select(
-			'maxiBlocks/style-cards'
+		const {
+			receiveSelectedStyleCardValue,
+			receiveMaxiSelectedStyleCardValue,
+		} = select('maxiBlocks/style-cards');
+
+		// Try multiple strategies to get custom colors in order of preference
+		// First check if we can get them directly from receiveSelectedStyleCardValue
+		let colors = receiveSelectedStyleCardValue(
+			'customColors',
+			null,
+			'color'
 		);
 
-		const colors =
-			receiveSelectedStyleCardValue('customColors', null, 'color') || [];
+		// If that fails, try the direct selector
+		if (!colors || colors.length === 0) {
+			colors = receiveMaxiSelectedStyleCardValue('customColors') || [];
+		}
+
+		// If still no colors, try to get the styleCard directly
+		if (!colors || colors.length === 0) {
+			const styleCard = select(
+				'maxiBlocks/style-cards'
+			).receiveMaxiSelectedStyleCard();
+
+			if (styleCard && styleCard.value) {
+				// Check multiple possible locations for custom colors
+				colors =
+					styleCard.value.light?.styleCard?.color?.customColors ||
+					styleCard.value.dark?.styleCard?.color?.customColors ||
+					styleCard.value.color?.customColors ||
+					[];
+			}
+		}
 
 		return {
 			customColors: colors,

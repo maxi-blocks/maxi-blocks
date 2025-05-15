@@ -263,6 +263,47 @@ const ColorControl = props => {
 		});
 	};
 
+	// Temporary debugging helper for custom colors
+	const debugCustomColors = () => {
+		// This function will create a DOM element to show debug info
+		// instead of using console.log which causes linter errors
+		const styleCards = window.wp.data.select('maxiBlocks/style-cards');
+		if (!styleCards) return;
+
+		const selectedCard = styleCards.receiveMaxiSelectedStyleCard();
+		if (!selectedCard || !selectedCard.value) return;
+
+		// Check all possible locations for custom colors
+		const locations = {
+			'root.color.customColors':
+				selectedCard.value?.color?.customColors || [],
+			'light.styleCard.color.customColors':
+				selectedCard.value?.light?.styleCard?.color?.customColors || [],
+			'dark.styleCard.color.customColors':
+				selectedCard.value?.dark?.styleCard?.color?.customColors || [],
+			'light.defaultStyleCard.color.customColors':
+				selectedCard.value?.light?.defaultStyleCard?.color
+					?.customColors || [],
+			'dark.defaultStyleCard.color.customColors':
+				selectedCard.value?.dark?.defaultStyleCard?.color
+					?.customColors || [],
+		};
+
+		// Log found locations with colors
+		Object.entries(locations).forEach(([location, colors]) => {
+			if (colors && colors.length > 0) {
+				console.log(
+					`[DEBUG] Found custom colors in ${location}: ${colors.length} colors`
+				);
+			}
+		});
+	};
+
+	// Debug colors on initial component mount
+	useEffect(() => {
+		debugCustomColors();
+	}, []);
+
 	return (
 		<div className={classes}>
 			{globalStatus && (

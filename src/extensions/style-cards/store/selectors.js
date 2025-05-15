@@ -233,13 +233,18 @@ export const receiveSelectedStyleCardValue = (
 	) {
 		const selectedSC = getActiveStyleCard(state.styleCards, true);
 
-		// Try to get custom colors from various possible locations
-		return (
+		// Enhanced: Check all possible locations for custom colors
+		// First try the most commonly stored locations, then try any other possible fallbacks
+		const customColors =
 			selectedSC.value?.light?.styleCard?.color?.customColors ||
 			selectedSC.value?.dark?.styleCard?.color?.customColors ||
 			selectedSC.value?.color?.customColors ||
-			[]
-		);
+			// Fallbacks for additional locations:
+			selectedSC.value?.light?.defaultStyleCard?.color?.customColors ||
+			selectedSC.value?.dark?.defaultStyleCard?.color?.customColors ||
+			[];
+
+		return customColors;
 	}
 
 	return getSCValues(
@@ -266,6 +271,9 @@ export const receiveMaxiSelectedStyleCardValue = (
 			value.light?.styleCard?.color?.customColors ||
 			value.dark?.styleCard?.color?.customColors ||
 			value.color?.customColors ||
+			// Add fallbacks for additional locations
+			value.light?.defaultStyleCard?.color?.customColors ||
+			value.dark?.defaultStyleCard?.color?.customColors ||
 			[];
 
 		return customColors;

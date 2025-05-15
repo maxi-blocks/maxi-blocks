@@ -13,6 +13,14 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 		!activeStyleCard.value ||
 		Object.keys(activeStyleCard.value).length === 0
 	) {
+		// Check if it's a custom color
+		if (typeof color === 'string' && color.startsWith('custom-')) {
+			const customIndex = parseInt(color.replace('custom-', ''), 10);
+			return getComputedStyle(document.documentElement).getPropertyValue(
+				`--maxi-${blockStyle}-color-custom-${customIndex}`
+			);
+		}
+
 		return getComputedStyle(document.documentElement).getPropertyValue(
 			`--maxi-${blockStyle}-color-${color}`
 		);
@@ -23,7 +31,15 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 	// Handle custom colors
 	if (typeof color === 'string' && color.startsWith('custom-')) {
 		const customIndex = parseInt(color.replace('custom-', ''), 10);
-		const customColors = SCValue.color?.customColors || [];
+
+		// Try to get custom colors from multiple possible locations for better compatibility
+		const customColors =
+			SCValue[blockStyle]?.styleCard?.color?.customColors ||
+			SCValue[blockStyle]?.defaultStyleCard?.color?.customColors ||
+			SCValue.light?.styleCard?.color?.customColors ||
+			SCValue.dark?.styleCard?.color?.customColors ||
+			SCValue.color?.customColors ||
+			[];
 
 		if (customColors[customIndex]) {
 			// Extract RGB values from the custom color (which is in rgba format)
@@ -48,6 +64,17 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 
 			// Return the color as is if we can't extract RGB values
 			return customColors[customIndex];
+		}
+
+		// If we can't find the custom color in the style card, try to get it from CSS variables
+		const cssVarValue = getComputedStyle(document.documentElement)
+			.getPropertyValue(
+				`--maxi-${blockStyle}-color-custom-${customIndex}`
+			)
+			.trim();
+
+		if (cssVarValue) {
+			return cssVarValue;
 		}
 
 		return '0, 0, 0'; // Default black if custom color not found

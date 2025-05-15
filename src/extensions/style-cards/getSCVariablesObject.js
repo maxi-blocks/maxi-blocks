@@ -366,10 +366,39 @@ const getSCVariablesObject = (
 			}
 		});
 		if (SC[style].color) {
+			// Add standard palette colors
 			times(8, n => {
 				if (SC[style].color[n + 1]) {
 					response[`--maxi-${style}-color-${n + 1}`] =
 						SC[style].color[n + 1];
+				}
+			});
+
+			// Add custom colors
+			const customColors = SC[style].color.customColors || [];
+			customColors.forEach((colorValue, index) => {
+				// Extract RGB values from the custom color
+				const rgbaMatch = colorValue.match(
+					/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/
+				);
+
+				if (rgbaMatch) {
+					response[
+						`--maxi-${style}-color-custom-${index}`
+					] = `${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}`;
+				} else if (colorValue.startsWith('#')) {
+					// Convert hex to RGB
+					const hex = colorValue.replace('#', '');
+					const r = parseInt(hex.substr(0, 2), 16);
+					const g = parseInt(hex.substr(2, 2), 16);
+					const b = parseInt(hex.substr(4, 2), 16);
+					response[
+						`--maxi-${style}-color-custom-${index}`
+					] = `${r}, ${g}, ${b}`;
+				} else {
+					// Use as is if we can't extract RGB
+					response[`--maxi-${style}-color-custom-${index}`] =
+						colorValue;
 				}
 			});
 		}

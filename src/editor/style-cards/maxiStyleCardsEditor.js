@@ -188,6 +188,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				customColors: obj.customColors,
 			};
 
+			// Also add customColors to the base color object for backward compatibility
+			if (!newSC.color) {
+				newSC.color = {};
+			}
+			newSC.color.customColors = [...obj.customColors];
+
 			const newStyleCards = {
 				...styleCards,
 				[selectedSCKey]: {

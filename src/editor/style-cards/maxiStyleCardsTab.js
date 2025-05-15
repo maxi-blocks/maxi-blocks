@@ -819,6 +819,22 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 														},
 														'color'
 													);
+
+													// Force update of CSS variables in the editor
+													const { updateSCOnEditor } =
+														window.wp.data.select(
+															'maxiBlocks/style-cards'
+														) || {};
+													if (
+														typeof updateSCOnEditor ===
+														'function'
+													) {
+														updateSCOnEditor(
+															SC,
+															null,
+															[document]
+														);
+													}
 													if (
 														selectedCustomColorIndex ===
 														index
@@ -891,6 +907,20 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 												},
 												'color'
 											);
+
+											// Force update of CSS variables in the editor
+											const { updateSCOnEditor } =
+												window.wp.data.select(
+													'maxiBlocks/style-cards'
+												) || {};
+											if (
+												typeof updateSCOnEditor ===
+												'function'
+											) {
+												updateSCOnEditor(SC, null, [
+													document,
+												]);
+											}
 										}}
 										blockStyle={SCStyle}
 										disableOpacity

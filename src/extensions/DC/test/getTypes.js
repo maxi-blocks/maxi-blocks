@@ -137,8 +137,6 @@ describe('getTypes', () => {
 			'Custom types': [
 				{ label: 'Product', value: 'products' },
 				{ label: 'Testimonial', value: 'testimonials' },
-				{ label: 'Category', value: 'category' },
-				{ label: 'Product Category', value: 'product_cat' },
 			],
 		});
 	});

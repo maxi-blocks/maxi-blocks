@@ -37,4 +37,4 @@ jobs:
             - name: reset package-lock.json
               run: git checkout package-lock.json
             - name: Running the tests
-              run: npm test
+              run: npm test -- --verbose

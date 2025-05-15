@@ -1,3 +1,7 @@
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
 import { getIsValid } from '@extensions/styles';
 
@@ -244,4 +248,44 @@ export const receiveSelectedStyleCardValue = (
 		blockStyle,
 		SCEntry
 	);
+};
+
+export const receiveMaxiSelectedStyleCardValue = (
+	state,
+	attribute,
+	type = null
+) => {
+	const { value } = receiveMaxiSelectedStyleCard(state);
+
+	if (isEmpty(value)) return null;
+
+	// Special case for customColors
+	if (attribute === 'customColors') {
+		// Check multiple locations for custom colors in priority order
+		const customColors =
+			value.light?.styleCard?.color?.customColors ||
+			value.dark?.styleCard?.color?.customColors ||
+			value.color?.customColors ||
+			[];
+
+		return customColors;
+	}
+
+	if (type) {
+		// Try styleCard first, then defaultStyleCard
+		if (
+			value[type] &&
+			'styleCard' in value[type] &&
+			value[type].styleCard[attribute]
+		)
+			return value[type].styleCard[attribute];
+		if (
+			value[type] &&
+			'defaultStyleCard' in value[type] &&
+			value[type].defaultStyleCard[attribute]
+		)
+			return value[type].defaultStyleCard[attribute];
+	} else if (value[attribute]) return value[attribute];
+
+	return null;
 };

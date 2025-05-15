@@ -345,10 +345,28 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 
 	// Enhanced custom colors retrieval logic that checks all possible locations
 	const getAvailableCustomColors = (styleCard, style) => {
-		if (!styleCard) return [];
+		if (!styleCard) {
+			return [];
+		}
 
+		// First try the store directly
+		const { receiveMaxiSelectedStyleCardValue } =
+			window.wp.data.select('maxiBlocks/style-cards') || {};
+		let storeColors = [];
+
+		if (typeof receiveMaxiSelectedStyleCardValue === 'function') {
+			storeColors =
+				receiveMaxiSelectedStyleCardValue('customColors') || [];
+		}
+
+		// If we got colors from the store, use those
+		if (storeColors && storeColors.length > 0) {
+			return storeColors;
+		}
+
+		// Otherwise fall back to checking the style card object directly
 		// Check multiple possible locations for custom colors in order of specificity
-		return (
+		const colors =
 			// 1. Check current style context first
 			styleCard[style]?.styleCard?.color?.customColors ||
 			// 2. Check style card's color object (backward compatibility)
@@ -359,8 +377,9 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			styleCard[style === 'light' ? 'dark' : 'light']?.styleCard?.color
 				?.customColors ||
 			// 5. Fall back to empty array if no custom colors found
-			[]
-		);
+			[];
+
+		return colors;
 	};
 
 	// Use enhanced retrieval function

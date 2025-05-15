@@ -44,10 +44,11 @@ const ColorPaletteControl = props => {
 			'maxiBlocks/style-cards'
 		);
 
+		const colors =
+			receiveSelectedStyleCardValue('customColors', null, 'color') || [];
+
 		return {
-			customColors:
-				receiveSelectedStyleCardValue('customColors', null, 'color') ||
-				[],
+			customColors: colors,
 		};
 	});
 

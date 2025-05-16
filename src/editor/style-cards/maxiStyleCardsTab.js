@@ -21,6 +21,7 @@ import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import PaddingControl from '@components/padding-control';
+import { handleDeletedCustomColor } from '@extensions/style-cards/custom-color-utils';
 import {
 	processSCAttribute,
 	showHideHamburgerNavigation,
@@ -957,6 +958,11 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 															);
 														setCustomColors(
 															newCustomColors
+														);
+
+														// Call the handler for updating blocks
+														handleDeletedCustomColor(
+															colorObj.id
 														);
 
 														const tempSC = {

@@ -2,64 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
-
-/**
- * Source constants
- */
-export const sourceOptions = [
-	{
-		label: __('WordPress', 'maxi-blocks'),
-		value: 'wp',
-	},
-];
-
-/**
- * Type constants
- */
-export const generalTypeOptions = [
-	{ label: __('Post', 'maxi-blocks'), value: 'posts' },
-	{ label: __('Page', 'maxi-blocks'), value: 'pages' },
-	{ label: __('Site', 'maxi-blocks'), value: 'settings' },
-	{ label: __('Media', 'maxi-blocks'), value: 'media' },
-	{ label: __('Author', 'maxi-blocks'), value: 'users' }, // TODO: add author support
-	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
-	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
-];
-
-export const imageTypeOptions = generalTypeOptions.filter(
-	option => !['categories', 'tags'].includes(option.value)
-);
-
-export const ACFTypeOptions = generalTypeOptions.filter(
-	option => !['settings'].includes(option.value)
-);
-
-export const WCTypeOptions = [
-	{ label: __('Product', 'maxi-blocks'), value: 'products' },
-	{ label: __('Cart', 'maxi-blocks'), value: 'cart' },
-	{
-		label: __('Product categories', 'maxi-blocks'),
-		value: 'product_categories',
-	},
-	{ label: __('Product tags', 'maxi-blocks'), value: 'product_tags' },
-];
-
-export const typeOptions = {
-	text: generalTypeOptions,
-	button: generalTypeOptions,
-	image: imageTypeOptions,
-	container: generalTypeOptions,
-	row: generalTypeOptions,
-	column: generalTypeOptions,
-	group: generalTypeOptions,
-	pane: generalTypeOptions,
-	slide: generalTypeOptions,
-	accordion: generalTypeOptions,
-	slider: generalTypeOptions,
-	acf: ACFTypeOptions,
-	divider: generalTypeOptions,
-};
 
 // Post types to show in "Standard types" section
 export const supportedPostTypes = ['post', 'page', 'attachment', 'product'];
@@ -784,41 +726,3 @@ export const attributeDefaults = {
 	},
 	accumulator: 0,
 };
-
-let haveLoadedIntegrationsOptions = false;
-
-export const getHaveLoadedIntegrationsOptions = () =>
-	haveLoadedIntegrationsOptions;
-
-const loadIntegrationsOptions = () => {
-	apiFetch({
-		path: '/maxi-blocks/v1.0/get-active-integration-plugins',
-		method: 'GET',
-	})
-		.then(response => {
-			if (response) {
-				if (response.includes('acf')) {
-					sourceOptions.push({
-						label: __('ACF', 'maxi-blocks'),
-						value: 'acf',
-					});
-				}
-
-				if (response.includes('woocommerce')) {
-					generalTypeOptions.push(...WCTypeOptions);
-					imageTypeOptions.push(
-						...WCTypeOptions.filter(option =>
-							['products'].includes(option.value)
-						)
-					);
-				}
-			}
-
-			haveLoadedIntegrationsOptions = true;
-		})
-		.catch(error => {
-			console.error('Error loading integration options:', error);
-		});
-};
-
-loadIntegrationsOptions();

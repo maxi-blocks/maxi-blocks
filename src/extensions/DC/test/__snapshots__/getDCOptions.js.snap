@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getIdOptions fetches categories correctly 1`] = `
+[
+  "taxonomy",
+  "category",
+  {
+    "_fields": [
+      "id",
+      "name",
+      "title",
+    ],
+    "orderby": "id",
+    "per_page": 100,
+  },
+]
+`;
+
+exports[`getIdOptions fetches posts correctly 1`] = `
+[
+  "postType",
+  "post",
+  {
+    "_fields": [
+      "id",
+      "name",
+      "title",
+    ],
+    "orderby": "id",
+    "per_page": 100,
+  },
+]
+`;
+
+exports[`getIdOptions handles by-custom-taxonomy relation correctly 1`] = `
+[
+  "taxonomy",
+  "product_cat",
+  {
+    "_fields": [
+      "id",
+      "name",
+      "title",
+    ],
+    "orderby": "id",
+    "per_page": 100,
+  },
+]
+`;
+
+exports[`getIdOptions handles custom post types correctly 1`] = `
+[
+  "postType",
+  "custom-type",
+  {
+    "_fields": [
+      "id",
+      "name",
+      "title",
+    ],
+    "orderby": "id",
+    "per_page": 100,
+  },
+]
+`;
+
+exports[`getIdOptions handles custom taxonomies correctly 1`] = `
+[
+  "taxonomy",
+  "custom-tax",
+  {
+    "_fields": [
+      "id",
+      "name",
+      "title",
+    ],
+    "orderby": "id",
+    "per_page": 100,
+  },
+]
+`;
+
+exports[`getIdOptions handles pagination with correct per_page parameter 1`] = `
+[
+  "postType",
+  "post",
+  {
+    "_fields": [
+      "id",
+      "name",
+      "title",
+    ],
+    "orderby": "id",
+    "per_page": 100,
+  },
+]
+`;

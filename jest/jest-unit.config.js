@@ -4,6 +4,9 @@ module.exports = {
 	rootDir: '../',
 	roots: ['<rootDir>/src'],
 
+	globalSetup: '<rootDir>/jest/jest-unit-global.setup.js',
+	setupFiles: ['<rootDir>/jest/jest-unit.setup.js'],
+
 	moduleNameMapper: {
 		'^@blocks$': '<rootDir>/src/blocks',
 		'^@blocks/(.*)$': '<rootDir>/src/blocks/$1',
@@ -19,4 +22,14 @@ module.exports = {
 		'^@maxi-icons/(.*)$': '<rootDir>/src/icons/$1',
 		'^@maxi-core/(.*)$': '<rootDir>/core/$1',
 	},
+
+	collectCoverageFrom: [
+		'src/**/*.js',
+		'!src/**/*.test.js',
+		'!src/**/test/**/*.js',
+		'!src/blocks/**/*.js',
+		'!src/components/**/*.js',
+		'!src/icons/**/*.js',
+		'!src/extensions/styles/migrators/**/*.js',
+	],
 };

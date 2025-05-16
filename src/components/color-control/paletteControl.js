@@ -82,16 +82,11 @@ const ColorPaletteControl = props => {
 	const paletteStatus = globalStatus && !paletteSCStatus;
 
 	const getIsActive = item => {
+		// item can be a number (for standard palette 1-8) or a numeric ID (for custom colors)
 		if (paletteStatus && globalPaletteColor === item) return true;
 		if (!paletteStatus && value === item) return true;
 
 		return false;
-	};
-
-	const getColorId = (color, index) => {
-		// Handle both string colors and color objects
-		const colorValue = typeof color === 'object' ? color.value : color;
-		return `${colorValue.replace(/[^a-zA-Z0-9]/g, '')}-${index}`;
 	};
 
 	return (
@@ -141,62 +136,57 @@ const ColorPaletteControl = props => {
 						</div>
 						<div className='maxi-color-control__palette-container'>
 							{customColors.map((color, index) => {
-								// Handle both string and object color formats
-								const colorValue =
-									typeof color === 'object'
-										? color.value
-										: color;
-								const colorName =
-									typeof color === 'object' ? color.name : '';
-
 								return (
 									<button
-										key={`maxi-color-control__palette-custom-box-${getColorId(
-											color,
-											index
-										)}`}
+										key={`maxi-color-control__palette-custom-box-${color.id}`}
 										type='button'
 										aria-label={
-											colorName ||
+											color.name ||
 											sprintf(
-												// translators: %s: custom color number
+												// translators: Generic label for a custom color if no name is provided.
 												__(
-													'Custom colour %s',
+													'Custom Colour %d',
 													'maxi-blocks'
 												),
-												index + 1
+												// Using a simple index for this sprintf as it's just for a fallback aria-label
+												// The actual ID is color.id and is a large number.
+												customColors.findIndex(
+													c => c.id === color.id
+												) + 1
 											)
 										}
 										title={
-											colorName ||
+											color.name ||
 											sprintf(
-												// translators: %s: custom color number
 												__(
-													'Custom colour %s',
+													'Custom Colour %d',
 													'maxi-blocks'
 												),
-												index + 1
+												customColors.findIndex(
+													c => c.id === color.id
+												) + 1
 											)
 										}
 										className={classnames(
 											'maxi-color-control__palette-box',
 											'maxi-color-control__palette-custom-box',
-											getIsActive(1000 + index) &&
+											getIsActive(color.id) && // Use color.id (numeric) for active check
 												'maxi-color-control__palette-box--active'
 										)}
-										data-item={1000 + index}
+										data-item={color.id} // Use color.id (numeric) for data-item
 										onClick={e =>
 											onChange({
-												paletteColor:
-													+e.currentTarget.dataset
-														.item,
+												// Ensure paletteColor is passed as a number if it's a numeric ID from data-item
+												paletteColor: Number(
+													e.currentTarget.dataset.item
+												),
 											})
 										}
 									>
 										<span
 											className='maxi-color-control__palette-custom-item'
 											style={{
-												backgroundColor: colorValue,
+												backgroundColor: color.value,
 											}}
 										/>
 									</button>

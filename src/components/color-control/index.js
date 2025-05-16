@@ -308,25 +308,51 @@ const ColorControl = props => {
 						label={__('Set custom colour', 'maxi-blocks')}
 						selected={!paletteStatus}
 						onChange={val => {
+							let initialCustomColor = 'transparent';
+							if (val) {
+								if (
+									typeof paletteColor === 'number' &&
+									customColors
+								) {
+									if (
+										paletteColor >= 1 &&
+										paletteColor <= 8
+									) {
+										initialCustomColor = `rgba(${getPaletteColor(
+											{
+												clientId,
+												color: paletteColor,
+												blockStyle,
+											}
+										)},${paletteOpacity || 1})`;
+									} else {
+										const matchedCustomColor =
+											customColors.find(
+												cc => cc.id === paletteColor
+											);
+										if (matchedCustomColor) {
+											initialCustomColor =
+												matchedCustomColor.value;
+										} else if (
+											color &&
+											typeof color === 'string'
+										) {
+											initialCustomColor = color;
+										}
+									}
+								} else if (color && typeof color === 'string') {
+									initialCustomColor = color;
+								}
+							}
+
 							onChangeValue({
 								paletteStatus: !val,
-								// If palette is disabled, set custom color from palette one
 								...(val && {
-									color:
-										typeof paletteColor === 'number' &&
-										paletteColor >= 1000
-											? customColors?.[
-													paletteColor - 1000
-											  ]?.value || ''
-											: `rgba(${getPaletteColor({
-													clientId,
-													color: paletteColor,
-													blockStyle,
-											  })},${paletteOpacity || 1})`,
+									color: initialCustomColor,
 								}),
-								// If palette is set, save the custom color opacity
 								...(!disableOpacity &&
-									!val && {
+									!val &&
+									color && {
 										paletteOpacity:
 											tinycolor(color).getAlpha() ||
 											paletteOpacity,

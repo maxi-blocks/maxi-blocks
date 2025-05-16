@@ -411,28 +411,50 @@ const getSCVariablesObject = (
 			});
 
 			// Add custom colors to CSS variables - Enhanced handling
-			// Try to get from all possible locations in priority order
-			const customColors =
+			// Custom colors are now expected to be {id: numericGeneratedId, value: string, name: string}
+			const customColorsSource =
 				styleCards?.[style]?.styleCard?.color?.customColors ||
-				styleCards?.color?.customColors ||
+				styleCards?.color?.customColors || // Check root color.customColors first
+				SC[style]?.color?.customColors || // Then SC[style].color.customColors
+				SC[style]?.styleCard?.color?.customColors || // Redundant with first line, but for safety
+				SC.color?.customColors || // Then SC.color.customColors (global for both styles if specific not found)
 				styleCards?.[style]?.defaultStyleCard?.color?.customColors ||
-				SC[style]?.styleCard?.color?.customColors ||
-				SC?.color?.customColors ||
 				SC[style]?.defaultStyleCard?.color?.customColors ||
+				styleCards?.[style === 'light' ? 'dark' : 'light']?.styleCard
+					?.color?.customColors ||
 				SC[style === 'light' ? 'dark' : 'light']?.styleCard?.color
 					?.customColors ||
+				styleCards?.[style === 'light' ? 'dark' : 'light']
+					?.defaultStyleCard?.color?.customColors ||
 				SC[style === 'light' ? 'dark' : 'light']?.defaultStyleCard
 					?.color?.customColors ||
 				[];
 
-			if (customColors.length > 0) {
-				customColors.forEach((colorValue, index) => {
-					if (!colorValue) return; // Skip empty colors
+			const finalCustomColorsArray = Array.isArray(customColorsSource)
+				? customColorsSource
+				: [];
 
-					const numericId = 1000 + index;
-					// Add the CSS variable with extracted RGB values
-					response[`--maxi-${style}-color-${numericId}`] =
-						extractRGBValues(colorValue);
+			console.log(
+				`[MaxiBlocks DEBUG] getSCVariablesObject - Style: ${style} - customColorsSource:`,
+				cloneDeep(customColorsSource)
+			);
+			console.log(
+				`[MaxiBlocks DEBUG] getSCVariablesObject - Style: ${style} - finalCustomColorsArray:`,
+				cloneDeep(finalCustomColorsArray)
+			);
+
+			if (finalCustomColorsArray.length > 0) {
+				finalCustomColorsArray.forEach(colorObj => {
+					if (
+						!colorObj ||
+						typeof colorObj.id !== 'number' ||
+						typeof colorObj.value !== 'string'
+					)
+						return; // Skip malformed
+
+					// Use the numeric colorObj.id directly for the CSS variable
+					response[`--maxi-${style}-color-${colorObj.id}`] =
+						extractRGBValues(colorObj.value);
 				});
 			}
 		}

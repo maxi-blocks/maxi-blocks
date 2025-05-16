@@ -349,115 +349,90 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			return [];
 		}
 
-		// First try the store directly
 		const { receiveMaxiSelectedStyleCardValue } =
 			window.wp.data.select('maxiBlocks/style-cards') || {};
-		let storeColors = [];
+		let rawColorsData = [];
 
+		// Try store first
 		if (typeof receiveMaxiSelectedStyleCardValue === 'function') {
-			storeColors =
-				receiveMaxiSelectedStyleCardValue('customColors') || [];
-		}
-
-		// If we got colors from the store, use those
-		if (storeColors && storeColors.length > 0) {
-			return storeColors;
-		}
-
-		// Otherwise fall back to checking the style card object directly
-		// Check multiple possible locations for custom colors in order of specificity
-		const colors =
-			// 1. Check current style context first
-			styleCard[style]?.styleCard?.color?.customColors ||
-			// 2. Check style card's color object (backward compatibility)
-			styleCard.color?.customColors ||
-			// 3. Check default style card
-			styleCard[style]?.defaultStyleCard?.color?.customColors ||
-			// 4. Check opposite style (light/dark)
-			styleCard[style === 'light' ? 'dark' : 'light']?.styleCard?.color
-				?.customColors ||
-			// 5. Fall back to empty array if no custom colors found
-			[];
-
-		// Ensure all colors are in the new format with value and name
-		return colors.map(color => {
+			const storeColorsResult =
+				receiveMaxiSelectedStyleCardValue('customColors');
+			// Ensure storeColorsResult is an array and has items before assigning
 			if (
-				typeof color === 'object' &&
-				color.value &&
-				color.name !== undefined
+				storeColorsResult &&
+				Array.isArray(storeColorsResult) &&
+				storeColorsResult.length > 0
 			) {
-				return color;
+				rawColorsData = storeColorsResult;
 			}
-			return { value: color, name: '' };
+		}
+
+		// If not found in store or store returned empty, check styleCard object from various locations
+		if (rawColorsData.length === 0) {
+			const sources = [
+				styleCard[style]?.styleCard?.color?.customColors,
+				styleCard.color?.customColors, // Check root .color.customColors
+				styleCard[style]?.defaultStyleCard?.color?.customColors,
+				styleCard[style === 'light' ? 'dark' : 'light']?.styleCard
+					?.color?.customColors, // Check opposite theme
+			];
+			for (const source of sources) {
+				// Ensure source is an array and has items before assigning
+				if (source && Array.isArray(source) && source.length > 0) {
+					rawColorsData = source;
+					break; // Found a valid source, no need to check further
+				}
+			}
+		}
+
+		// Ensure rawColorsData is an array at this point (it might be undefined or null if all sources failed)
+		if (!Array.isArray(rawColorsData)) {
+			rawColorsData = [];
+		}
+
+		// Map to the desired format {value: string, name: string}
+		// This ensures that every item processed by later parts of the component is in the correct shape.
+		return rawColorsData.map(item => {
+			if (typeof item === 'object' && item !== null) {
+				// If item is an object, ensure 'value' is a string, default to 'transparent' if not or empty.
+				// Ensure 'name' is a string, default to empty string.
+				const value =
+					typeof item.value === 'string' && item.value.trim() !== ''
+						? item.value
+						: 'transparent';
+				const name = typeof item.name === 'string' ? item.name : '';
+				return { value, name };
+			}
+			if (typeof item === 'string' && item.trim() !== '') {
+				// If item is a non-empty string, use it as value, name is empty.
+				return { value: item, name: '' };
+			}
+			// Default for other malformed items (null, undefined, empty string from object, etc.)
+			return { value: 'transparent', name: '' };
 		});
 	};
 
-	// Use enhanced retrieval function
-	const availableCustomColors = getAvailableCustomColors(SC, SCStyle);
-
-	// Local state for custom colors
-	const [customColors, setCustomColors] = useState(
-		availableCustomColors.map(color => {
-			// If the color is already in the new format, return as is
-			if (
-				typeof color === 'object' &&
-				color.value &&
-				color.name !== undefined
-			) {
-				return color;
-			}
-			// Otherwise convert to new format
-			return { value: color, name: '' };
-		})
+	// Local state for custom colors - directly use the output of getAvailableCustomColors for initialization.
+	// This replaces the previous useState that had a .map() call inside it.
+	const [customColors, setCustomColors] = useState(() =>
+		getAvailableCustomColors(SC, SCStyle)
 	);
 
-	// Effect to update custom colors when SC changes - only updates local state
+	// Effect to update custom colors when SC or SCStyle props change.
+	// This ensures the local customColors state reflects any changes from the parent or data store.
 	useEffect(() => {
-		const newCustomColors = getAvailableCustomColors(SC, SCStyle);
-
-		// Compare arrays by stringifying to check for actual differences
-		const currentStr = JSON.stringify(customColors);
-		const newStr = JSON.stringify(newCustomColors);
-
-		if (currentStr !== newStr) {
-			setCustomColors(
-				newCustomColors.map(color => {
-					if (
-						typeof color === 'object' &&
-						color.value &&
-						color.name !== undefined
-					) {
-						return color;
-					}
-					return { value: color, name: '' };
-				})
-			);
-		}
+		const newAvailableColors = getAvailableCustomColors(SC, SCStyle);
+		setCustomColors(currentColors => {
+			// Only update if the stringified versions are different to prevent infinite re-renders.
+			if (
+				JSON.stringify(currentColors) !==
+				JSON.stringify(newAvailableColors)
+			) {
+				return newAvailableColors;
+			}
+			return currentColors; // No change needed
+		});
 	}, [SC, SCStyle]);
-
-	// Initial load effect - runs only once when component mounts
-	useEffect(() => {
-		// Get custom colors from all possible sources
-		const initialCustomColors = getAvailableCustomColors(SC, SCStyle);
-
-		// Set them in the local state without saving to the store
-		if (initialCustomColors.length > 0) {
-			setCustomColors(
-				initialCustomColors.map(color => {
-					// If the color is already in the new format, return as is
-					if (
-						typeof color === 'object' &&
-						color.value &&
-						color.name
-					) {
-						return color;
-					}
-					// Otherwise convert to new format
-					return { value: color, name: '' };
-				})
-			);
-		}
-	}, []); // Empty dependency array ensures this runs only once on mount
 
 	const [selectedCustomColorIndex, setSelectedCustomColorIndex] =
 		useState(-1);

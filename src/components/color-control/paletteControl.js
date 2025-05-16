@@ -132,13 +132,14 @@ const ColorPaletteControl = props => {
 							/>
 						</button>
 					))}
-
-					{/* Custom palette colors */}
-					{customColors.length > 0 && (
-						<div className='maxi-color-control__palette-custom'>
-							<div className='maxi-color-control__palette-custom-header'>
-								{__('Custom colours', 'maxi-blocks')}
-							</div>
+				</div>
+				{/* Custom palette colors */}
+				{customColors.length > 0 && (
+					<div className='maxi-color-control__palette-custom'>
+						<div className='maxi-color-control__palette-custom-header'>
+							{__('Custom colours', 'maxi-blocks')}
+						</div>
+						<div className='maxi-color-control__palette-container'>
 							{customColors.map((color, index) => {
 								// Handle both string and object color formats
 								const colorValue =
@@ -202,8 +203,8 @@ const ColorPaletteControl = props => {
 								);
 							})}
 						</div>
-					)}
-				</div>
+					</div>
+				)}
 				{!disableReset && (
 					<ResetButton
 						onReset={e => {

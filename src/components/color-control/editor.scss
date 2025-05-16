@@ -146,22 +146,15 @@
 			justify-content: flex-start;
 			align-items: center;
 			margin-bottom: 0;
-			gap: 8px;
-		}
-
-		&-custom {
-			.maxi-color-control__palette-box {
-				margin-right: 8px;
-				margin-bottom: 8px;
-			}
+			gap: 3px;
 		}
 
 		&-box {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			width: 32px;
-			height: 32px;
+			width: 30px;
+			height: 30px;
 			padding: 0;
 			border: 1.5px solid var(--maxi-grey-1-color);
 			margin: 0;

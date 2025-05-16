@@ -901,6 +901,20 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											/>
 											<Button
 												className='maxi-style-cards__custom-color-presets__remove-button'
+												title={`${__(
+													'Remove',
+													'maxi-blocks'
+												)} ${
+													colorObj.name ||
+													sprintf(
+														// translators: %s: custom color number
+														__(
+															'custom colour %s',
+															'maxi-blocks'
+														),
+														index + 1
+													)
+												}`}
 												onClick={e => {
 													e.stopPropagation();
 													const newCustomColors = [

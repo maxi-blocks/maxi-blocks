@@ -329,23 +329,26 @@ body .maxi-style-cards__popover {
 			position: absolute;
 			bottom: -4px;
 			right: -4px;
-			width: 16px !important;
-			height: 16px !important;
+			width: 14px !important;
+			height: 14px !important;
 			min-width: auto !important;
 			padding: 0 !important;
 			border-radius: 50% !important;
-			background-color: var(--maxi-grey-1-color) !important;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			border: none !important;
 			font-size: 12px;
 			font-weight: bold;
-			color: white;
 			line-height: 1;
+			color: var(--maxi-grey-11-color);
+			border: 1px solid var(--maxi-grey-1-color) !important;
+			background-color: var(--maxi-white-4-color);
 
 			&:hover {
-				background-color: var(--maxi-grey-6-color) !important;
+				color: var(--maxi-white-4-color);
+				border: 1px solid var(--maxi-grey-6-color) !important;
+				background-color: var(--maxi-grey-11-color) !important;
 			}
 		}
 	}

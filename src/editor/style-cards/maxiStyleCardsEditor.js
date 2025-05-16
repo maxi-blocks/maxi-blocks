@@ -917,6 +917,40 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 													sourceCustomColorsRaw
 												);
 
+											// Deep clone the styleCard parts from selectedSCValue to preserve other properties (typography, spacing etc.)
+											const newLightStyleCardOverrides =
+												cloneDeep(
+													selectedSCValue.light
+														.styleCard || {}
+												);
+											const newDarkStyleCardOverrides =
+												cloneDeep(
+													selectedSCValue.dark
+														.styleCard || {}
+												);
+
+											// Manage the 'color' property within these cloned override objects
+											if (
+												shapedSourceCustomColors.length >
+												0
+											) {
+												newLightStyleCardOverrides.color =
+													{
+														customColors: [
+															...shapedSourceCustomColors,
+														],
+													};
+												newDarkStyleCardOverrides.color =
+													{
+														customColors: [
+															...shapedSourceCustomColors,
+														],
+													};
+											} else {
+												delete newLightStyleCardOverrides.color;
+												delete newDarkStyleCardOverrides.color;
+											}
+
 											const newStyleCard = {
 												name: styleCardName,
 												status: '',
@@ -927,56 +961,44 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 														: true,
 												dark: {
 													defaultStyleCard: {
-														...selectedSCValue.dark
-															.defaultStyleCard,
-														...selectedSCValue.dark
-															.styleCard,
+														...(selectedSCValue.dark
+															?.defaultStyleCard ||
+															{}),
+														...(selectedSCValue.dark
+															?.styleCard || {}),
 													},
-													styleCard: {
-														color:
-															shapedSourceCustomColors.length >
-															0
-																? {
-																		customColors:
-																			[
-																				...shapedSourceCustomColors,
-																			],
-																  }
-																: {},
-													},
+													styleCard:
+														newDarkStyleCardOverrides,
 												},
 												light: {
 													defaultStyleCard: {
-														...selectedSCValue.light
-															.defaultStyleCard,
-														...selectedSCValue.light
-															.styleCard,
+														...(selectedSCValue
+															.light
+															?.defaultStyleCard ||
+															{}),
+														...(selectedSCValue
+															.light?.styleCard ||
+															{}),
 													},
-													styleCard: {
-														color:
-															shapedSourceCustomColors.length >
-															0
-																? {
-																		customColors:
-																			[
-																				...shapedSourceCustomColors,
-																			],
-																  }
-																: {},
-													},
+													styleCard:
+														newLightStyleCardOverrides,
 												},
-												color:
-													shapedSourceCustomColors.length >
-													0
-														? {
-																customColors: [
-																	...shapedSourceCustomColors,
-																],
-														  }
-														: {},
 												type: 'user',
 												updated: currentDate,
 											};
+
+											// Conditionally add root color property
+											if (
+												shapedSourceCustomColors.length >
+												0
+											) {
+												newStyleCard.color = {
+													customColors: [
+														...shapedSourceCustomColors,
+													],
+												};
+											}
+
 											saveImportedStyleCard(newStyleCard);
 											setShowCopyCardDialog(false);
 										}

@@ -1,4 +1,4 @@
-import getDefaultSCValue from '../getDefaultSCValue';
+import getDefaultSCValue from '@extensions/style-cards/getDefaultSCValue';
 
 describe('getDefaultSCValue', () => {
 	it('Returns the default SC value', () => {

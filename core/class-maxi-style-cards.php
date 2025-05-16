@@ -224,12 +224,13 @@ class MaxiBlocks_StyleCards
 
         // Process light style custom colors
         if (!empty($custom_colors['light'])) {
-            foreach ($custom_colors['light'] as $index => $color_value) {
-                if (empty($color_value)) continue; // Skip empty colors
+            foreach ($custom_colors['light'] as $color_object) {
+                if (empty($color_object) || !is_array($color_object) || !isset($color_object['id']) || !isset($color_object['value'])) {
+                    continue; // Skip if malformed or missing id/value
+                }
 
-                // Extract RGB values if it's an rgba format
-                $rgb_values = $this->extract_rgb_values($color_value);
-                $numeric_id = 1000 + $index;
+                $rgb_values = $this->extract_rgb_values($color_object['value']);
+                $numeric_id = $color_object['id'];
 
                 // Add the CSS variable
                 $custom_color_vars .= "--maxi-light-color-{$numeric_id}:{$rgb_values};";
@@ -238,12 +239,13 @@ class MaxiBlocks_StyleCards
 
         // Process dark style custom colors
         if (!empty($custom_colors['dark'])) {
-            foreach ($custom_colors['dark'] as $index => $color_value) {
-                if (empty($color_value)) continue; // Skip empty colors
+            foreach ($custom_colors['dark'] as $color_object) {
+                if (empty($color_object) || !is_array($color_object) || !isset($color_object['id']) || !isset($color_object['value'])) {
+                    continue; // Skip if malformed or missing id/value
+                }
 
-                // Extract RGB values if it's an rgba format
-                $rgb_values = $this->extract_rgb_values($color_value);
-                $numeric_id = 1000 + $index;
+                $rgb_values = $this->extract_rgb_values($color_object['value']);
+                $numeric_id = $color_object['id'];
 
                 // Add the CSS variable
                 $custom_color_vars .= "--maxi-dark-color-{$numeric_id}:{$rgb_values};";

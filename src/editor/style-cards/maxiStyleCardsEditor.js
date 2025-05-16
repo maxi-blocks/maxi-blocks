@@ -396,8 +396,17 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const saveCurrentSC = () => {
 		const isChosenActive = selectedSCValue?.status === 'active';
 
-		// Attempt to get customColors from the MaxiStyleCardsTab component's current state if possible.
-		// This is to capture the most up-to-date UI changes that might not yet be in selectedSCValue.
+		// Prioritize selectedSCValue from the store as it's updated by onChangeValue
+		const baseColorsRaw =
+			selectedSCValue?.color?.customColors ||
+			selectedSCValue?.light?.styleCard?.color?.customColors ||
+			selectedSCValue?.dark?.styleCard?.color?.customColors ||
+			[];
+
+		let finalCustomColors = getShapedCustomColors(baseColorsRaw);
+
+		// Attempt to get customColors from the MaxiStyleCardsTab component's current state via DOM (less reliable)
+		// This is kept as a potential fallback or for comparison, but should ideally be phased out.
 		let uiCustomColors = [];
 		const styleCardsTabNode = document.querySelector(
 			'.maxi-blocks-sc__type--custom-color-presets .maxi-style-cards__custom-color-presets'
@@ -434,20 +443,29 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 					};
 				});
 				uiCustomColors = getShapedCustomColors(uiCustomColors); // Ensure IDs are numeric and unique
-			}
-		}
 
-		let finalCustomColors = [];
-		if (uiCustomColors.length > 0) {
-			finalCustomColors = uiCustomColors;
-		} else {
-			// Fallback to selectedSCValue if UI parsing fails or returns empty
-			const existingColorsRaw =
-				selectedSCValue?.color?.customColors ||
-				selectedSCValue?.light?.styleCard?.color?.customColors ||
-				selectedSCValue?.dark?.styleCard?.color?.customColors ||
-				[];
-			finalCustomColors = getShapedCustomColors(existingColorsRaw);
+				// If finalCustomColors (from selectedSCValue) is empty, and uiCustomColors is not, consider using uiCustomColors.
+				// However, this indicates a potential state desync. For now, we'll log if they differ significantly.
+				if (
+					finalCustomColors.length === 0 &&
+					uiCustomColors.length > 0
+				) {
+					console.warn(
+						'[MaxiBlocks DEBUG maxiStyleCardsEditor] saveCurrentSC - selectedSCValue had no custom colors, but DOM parsing did. Using DOM version. This might indicate a state issue.'
+					);
+					finalCustomColors = uiCustomColors;
+				} else if (
+					JSON.stringify(finalCustomColors) !==
+						JSON.stringify(uiCustomColors) &&
+					uiCustomColors.length > 0
+				) {
+					// Log if they are different and uiCustomColors has items - might indicate DOM is more up-to-date or vice-versa
+					console.warn(
+						'[MaxiBlocks DEBUG maxiStyleCardsEditor] saveCurrentSC - Custom colors from selectedSCValue and DOM differ. Prioritizing selectedSCValue. DOM version:',
+						JSON.stringify(uiCustomColors)
+					);
+				}
+			}
 		}
 
 		const updatedSCValue = { ...selectedSCValue };
@@ -488,29 +506,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				...{ status: isChosenActive ? 'active' : '' },
 			},
 		};
-
-		console.log(
-			'[MaxiBlocks DEBUG] Style Card to be saved:',
-			cloneDeep(newStyleCards[selectedSCKey])
-		);
-		console.log(
-			'[MaxiBlocks DEBUG] Custom colors in .color:',
-			cloneDeep(newStyleCards[selectedSCKey]?.color?.customColors)
-		);
-		console.log(
-			'[MaxiBlocks DEBUG] Custom colors in .light.styleCard.color:',
-			cloneDeep(
-				newStyleCards[selectedSCKey]?.light?.styleCard?.color
-					?.customColors
-			)
-		);
-		console.log(
-			'[MaxiBlocks DEBUG] Custom colors in .dark.styleCard.color:',
-			cloneDeep(
-				newStyleCards[selectedSCKey]?.dark?.styleCard?.color
-					?.customColors
-			)
-		);
 
 		if (isChosenActive) {
 			setActiveSCColour(getActiveColourFromSC(updatedSCValue, 4));

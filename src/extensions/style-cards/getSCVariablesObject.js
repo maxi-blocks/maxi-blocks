@@ -434,15 +434,6 @@ const getSCVariablesObject = (
 				? customColorsSource
 				: [];
 
-			console.log(
-				`[MaxiBlocks DEBUG] getSCVariablesObject - Style: ${style} - customColorsSource:`,
-				cloneDeep(customColorsSource)
-			);
-			console.log(
-				`[MaxiBlocks DEBUG] getSCVariablesObject - Style: ${style} - finalCustomColorsArray:`,
-				cloneDeep(finalCustomColorsArray)
-			);
-
 			if (finalCustomColorsArray.length > 0) {
 				finalCustomColorsArray.forEach(colorObj => {
 					if (

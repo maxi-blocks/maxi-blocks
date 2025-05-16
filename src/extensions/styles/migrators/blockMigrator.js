@@ -65,7 +65,8 @@ const handleBlockMigrator = ({
 				// Use cache for deprecated blocks
 				let prevAttr = deprecatedBlockCache.get(uniqueID);
 				if (!prevAttr) {
-					prevAttr = select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
+					prevAttr =
+						select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
 					if (prevAttr) {
 						deprecatedBlockCache.set(uniqueID, prevAttr);
 					}
@@ -81,7 +82,8 @@ const handleBlockMigrator = ({
 				dispatch('maxiBlocks').saveDeprecatedBlock({
 					uniqueID,
 					attributes: result,
-					ignoreAttributesForSave: newMigrator.ignoreAttributesForSave,
+					ignoreAttributesForSave:
+						newMigrator.ignoreAttributesForSave,
 				});
 
 				// eslint-disable-next-line no-console

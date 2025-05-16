@@ -11,8 +11,13 @@ const getStyles = content => {
 	let response = '';
 
 	Object.entries(content).forEach(([key, val]) => {
-		if (key.includes('css')) response += `${val}`;
-		else response += `${key}:${val};`;
+		// Ensure we never output undefined in style variables
+		const safeKey = key.includes('--maxi-undefined')
+			? key.replace('undefined', 'light')
+			: key;
+
+		if (safeKey.includes('css')) response += `${val}`;
+		else response += `${safeKey}:${val};`;
 	});
 
 	return response;

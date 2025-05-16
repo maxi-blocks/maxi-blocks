@@ -19,16 +19,16 @@ const VALID_VERSIONS = new Set([
 ]);
 
 const isEligible = blockAttributes => {
-	const {
-		uniqueID,
-		'maxi-version-origin': maxiVersionOrigin,
-		'maxi-version-current': maxiVersionCurrent,
-	} = blockAttributes;
+	const { uniqueID, 'maxi-version-origin': maxiVersionOrigin } =
+		blockAttributes;
 
 	// Early return if not text-maxi block
 	if (getBlockNameFromUniqueID(uniqueID) !== BLOCK_TYPE) return false;
 
-	return !maxiVersionOrigin || VALID_VERSIONS.has(maxiVersionCurrent);
+	// Run migrator only if:
+	// 1. Block has no version (legacy block)
+	// 2. OR block was created with a version that needs migration
+	return !maxiVersionOrigin || VALID_VERSIONS.has(maxiVersionOrigin);
 };
 
 const migrate = newAttributes => {

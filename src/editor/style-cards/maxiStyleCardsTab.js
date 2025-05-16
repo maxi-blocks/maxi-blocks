@@ -21,7 +21,7 @@ import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import PaddingControl from '@components/padding-control';
-import { handleDeletedCustomColor } from '@extensions/style-cards/custom-color-utils';
+import { handleDeletedCustomColor } from '@extensions/style-cards/utils';
 import {
 	processSCAttribute,
 	showHideHamburgerNavigation,

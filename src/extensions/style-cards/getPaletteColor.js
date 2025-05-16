@@ -107,7 +107,13 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 
 		// If the specific custom color exists in the array
 		if (customColors[customIndex]) {
-			return extractRGBValues(customColors[customIndex]);
+			const customColor = customColors[customIndex];
+			// Handle both old string format and new object format
+			const colorValue =
+				typeof customColor === 'object' && customColor.value
+					? customColor.value
+					: customColor;
+			return extractRGBValues(colorValue);
 		}
 
 		// If we can't find the custom color in the style card, try to get it from CSS variables

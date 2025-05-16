@@ -62,33 +62,36 @@ const getParsedObj = obj => {
 /**
  * Extract RGB values from a color string to use in CSS variables
  *
- * @param {string} colorValue - The color string (rgba, hex, etc.)
+ * @param {string} colorInput - The color string (rgba, hex, etc.)
  * @return {string} The RGB values as a comma-separated string
  */
-const extractRGBValues = colorValue => {
-	// Extract RGB values if it's an rgba format
-	if (colorValue.startsWith('rgba(') || colorValue.startsWith('rgb(')) {
-		const matches = colorValue.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-		if (matches && matches.length >= 4) {
-			return `${matches[1]}, ${matches[2]}, ${matches[3]}`;
-		}
-	} else if (colorValue.startsWith('#')) {
-		// Convert HEX to RGB
-		const hex = colorValue.slice(1);
-		// Handle both 3-digit and 6-digit hex codes
-		const fullHex =
-			hex.length === 3
-				? `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`
-				: hex;
+const extractRGBValues = colorInput => {
+	if (!colorInput) return '0, 0, 0';
 
-		// Parse hex values to RGB without bitwise operations
-		const r = parseInt(fullHex.substring(0, 2), 16);
-		const g = parseInt(fullHex.substring(2, 4), 16);
-		const b = parseInt(fullHex.substring(4, 6), 16);
+	// Handle color objects
+	const colorValue =
+		typeof colorInput === 'object' && colorInput.value
+			? colorInput.value
+			: colorInput;
+
+	// Check if it's an rgba format
+	const rgbaMatch = colorValue.match(
+		/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/
+	);
+	if (rgbaMatch) {
+		return `${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}`;
+	}
+
+	// If it's a hex color, convert to RGB
+	if (colorValue.startsWith('#')) {
+		const hex = colorValue.replace('#', '');
+		const r = parseInt(hex.substr(0, 2), 16);
+		const g = parseInt(hex.substr(2, 2), 16);
+		const b = parseInt(hex.substr(4, 2), 16);
 		return `${r}, ${g}, ${b}`;
 	}
 
-	// Return as is if no pattern matches
+	// Return the color as is if we can't extract RGB values
 	return colorValue;
 };
 

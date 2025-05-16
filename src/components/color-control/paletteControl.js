@@ -89,7 +89,9 @@ const ColorPaletteControl = props => {
 	};
 
 	const getColorId = (color, index) => {
-		return `${color.replace(/[^a-zA-Z0-9]/g, '')}-${index}`;
+		// Handle both string colors and color objects
+		const colorValue = typeof color === 'object' ? color.value : color;
+		return `${colorValue.replace(/[^a-zA-Z0-9]/g, '')}-${index}`;
 	};
 
 	return (
@@ -137,38 +139,68 @@ const ColorPaletteControl = props => {
 							<div className='maxi-color-control__palette-custom-header'>
 								{__('Custom colours', 'maxi-blocks')}
 							</div>
-							{customColors.map((color, index) => (
-								<button
-									key={`maxi-color-control__palette-custom-box-${getColorId(
-										color,
-										index
-									)}`}
-									type='button'
-									aria-label={sprintf(
-										// translators: %s: custom color number
-										__('Custom colour %s', 'maxi-blocks'),
-										index + 1
-									)}
-									className={classnames(
-										'maxi-color-control__palette-box',
-										'maxi-color-control__palette-custom-box',
-										getIsActive(`custom-${index}`) &&
-											'maxi-color-control__palette-box--active'
-									)}
-									data-item={`custom-${index}`}
-									onClick={e =>
-										onChange({
-											paletteColor:
-												e.currentTarget.dataset.item,
-										})
-									}
-								>
-									<span
-										className='maxi-color-control__palette-custom-item'
-										style={{ backgroundColor: color }}
-									/>
-								</button>
-							))}
+							{customColors.map((color, index) => {
+								// Handle both string and object color formats
+								const colorValue =
+									typeof color === 'object'
+										? color.value
+										: color;
+								const colorName =
+									typeof color === 'object' ? color.name : '';
+
+								return (
+									<button
+										key={`maxi-color-control__palette-custom-box-${getColorId(
+											color,
+											index
+										)}`}
+										type='button'
+										aria-label={
+											colorName ||
+											sprintf(
+												// translators: %s: custom color number
+												__(
+													'Custom colour %s',
+													'maxi-blocks'
+												),
+												index + 1
+											)
+										}
+										title={
+											colorName ||
+											sprintf(
+												// translators: %s: custom color number
+												__(
+													'Custom colour %s',
+													'maxi-blocks'
+												),
+												index + 1
+											)
+										}
+										className={classnames(
+											'maxi-color-control__palette-box',
+											'maxi-color-control__palette-custom-box',
+											getIsActive(`custom-${index}`) &&
+												'maxi-color-control__palette-box--active'
+										)}
+										data-item={`custom-${index}`}
+										onClick={e =>
+											onChange({
+												paletteColor:
+													e.currentTarget.dataset
+														.item,
+											})
+										}
+									>
+										<span
+											className='maxi-color-control__palette-custom-item'
+											style={{
+												backgroundColor: colorValue,
+											}}
+										/>
+									</button>
+								);
+							})}
 						</div>
 					)}
 				</div>

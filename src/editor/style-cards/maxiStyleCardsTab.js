@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
@@ -379,27 +379,59 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			// 5. Fall back to empty array if no custom colors found
 			[];
 
-		return colors;
+		// Ensure all colors are in the new format with value and name
+		return colors.map(color => {
+			if (
+				typeof color === 'object' &&
+				color.value &&
+				color.name !== undefined
+			) {
+				return color;
+			}
+			return { value: color, name: '' };
+		});
 	};
 
 	// Use enhanced retrieval function
 	const availableCustomColors = getAvailableCustomColors(SC, SCStyle);
 
 	// Local state for custom colors
-	const [customColors, setCustomColors] = useState(availableCustomColors);
+	const [customColors, setCustomColors] = useState(
+		availableCustomColors.map(color => {
+			// If the color is already in the new format, return as is
+			if (
+				typeof color === 'object' &&
+				color.value &&
+				color.name !== undefined
+			) {
+				return color;
+			}
+			// Otherwise convert to new format
+			return { value: color, name: '' };
+		})
+	);
 
 	// Effect to update custom colors when SC changes - only updates local state
 	useEffect(() => {
 		const newCustomColors = getAvailableCustomColors(SC, SCStyle);
 
-		// Only update local state if we actually have custom colors or if the arrays are different
-		const shouldUpdate =
-			newCustomColors.length > 0 ||
-			JSON.stringify(newCustomColors) !== JSON.stringify(customColors);
+		// Compare arrays by stringifying to check for actual differences
+		const currentStr = JSON.stringify(customColors);
+		const newStr = JSON.stringify(newCustomColors);
 
-		if (shouldUpdate) {
-			setCustomColors(newCustomColors);
-			// Don't dispatch to store here - that will happen when Save changes is clicked
+		if (currentStr !== newStr) {
+			setCustomColors(
+				newCustomColors.map(color => {
+					if (
+						typeof color === 'object' &&
+						color.value &&
+						color.name !== undefined
+					) {
+						return color;
+					}
+					return { value: color, name: '' };
+				})
+			);
 		}
 	}, [SC, SCStyle]);
 
@@ -410,7 +442,20 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 
 		// Set them in the local state without saving to the store
 		if (initialCustomColors.length > 0) {
-			setCustomColors(initialCustomColors);
+			setCustomColors(
+				initialCustomColors.map(color => {
+					// If the color is already in the new format, return as is
+					if (
+						typeof color === 'object' &&
+						color.value &&
+						color.name
+					) {
+						return color;
+					}
+					// Otherwise convert to new format
+					return { value: color, name: '' };
+				})
+			);
 		}
 	}, []); // Empty dependency array ensures this runs only once on mount
 
@@ -819,10 +864,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						content: (
 							<>
 								<div className='maxi-style-cards__custom-color-presets'>
-									{customColors.map((colorValue, index) => (
+									{customColors.map((colorObj, index) => (
 										<div
 											key={`maxi-style-cards__custom-color-presets__box-${getColorId(
-												colorValue,
+												colorObj.value,
 												index
 											)}`}
 											className={classnames(
@@ -836,11 +881,22 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													index
 												);
 											}}
+											title={
+												colorObj.name ||
+												sprintf(
+													// translators: %s: custom color number
+													__(
+														'Custom colour %s',
+														'maxi-blocks'
+													),
+													index + 1
+												)
+											}
 										>
 											<span
 												className='maxi-style-cards__custom-color-presets__box__item'
 												style={{
-													background: colorValue,
+													background: colorObj.value,
 												}}
 											/>
 											<Button
@@ -964,7 +1020,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											const b = Math.floor(
 												Math.random() * 256
 											);
-											const newColor = `rgba(${r}, ${g}, ${b}, 1)`;
+											const newColor = {
+												value: `rgba(${r}, ${g}, ${b}, 1)`,
+												name: '',
+											};
 											const newCustomColors = [
 												...customColors,
 												newColor,
@@ -994,20 +1053,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 												tempSC.light.styleCard.color =
 													{};
 											tempSC.light.styleCard.color.customColors =
-												newCustomColors;
-
-											if (!tempSC.dark)
-												tempSC.dark = {
-													styleCard: { color: {} },
-												};
-											if (!tempSC.dark.styleCard)
-												tempSC.dark.styleCard = {
-													color: {},
-												};
-											if (!tempSC.dark.styleCard.color)
-												tempSC.dark.styleCard.color =
-													{};
-											tempSC.dark.styleCard.color.customColors =
 												newCustomColors;
 
 											// Preview the change in the editor
@@ -1041,89 +1086,218 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									</Button>
 								</div>
 								{selectedCustomColorIndex >= 0 && (
-									<ColorControl
-										className='maxi-style-cards-control__sc__custom-color'
-										color={
-											customColors[
-												selectedCustomColorIndex
-											]
-										}
-										onChange={({ color }) => {
-											const newCustomColors = [
-												...customColors,
-											];
-											newCustomColors[
-												selectedCustomColorIndex
-											] = color;
-											setCustomColors(newCustomColors);
-
-											// Update UI preview only
-											const tempSC = { ...SC };
-											if (!tempSC.color)
-												tempSC.color = {};
-											tempSC.color.customColors =
-												newCustomColors;
-
-											// Also update the styleCard objects directly
-											if (!tempSC.light)
-												tempSC.light = {
-													styleCard: { color: {} },
-												};
-											if (!tempSC.light.styleCard)
-												tempSC.light.styleCard = {
-													color: {},
-												};
-											if (!tempSC.light.styleCard.color)
-												tempSC.light.styleCard.color =
-													{};
-											tempSC.light.styleCard.color.customColors =
-												[...newCustomColors];
-
-											if (!tempSC.dark)
-												tempSC.dark = {
-													styleCard: { color: {} },
-												};
-											if (!tempSC.dark.styleCard)
-												tempSC.dark.styleCard = {
-													color: {},
-												};
-											if (!tempSC.dark.styleCard.color)
-												tempSC.dark.styleCard.color =
-													{};
-											tempSC.dark.styleCard.color.customColors =
-												[...newCustomColors];
-
-											// Preview the change in the editor
-											const { updateSCOnEditor } =
-												window.wp.data.select(
-													'maxiBlocks/style-cards'
-												) || {};
-											if (
-												typeof updateSCOnEditor ===
-												'function'
-											) {
-												updateSCOnEditor(
-													tempSC,
-													null,
-													[document],
-													true // Flag to indicate preview only
-												);
+									<>
+										<ColorControl
+											className='maxi-style-cards-control__sc__custom-color'
+											color={
+												customColors[
+													selectedCustomColorIndex
+												].value
 											}
+											onChange={({ color }) => {
+												const newCustomColors = [
+													...customColors,
+												];
+												newCustomColors[
+													selectedCustomColorIndex
+												] = {
+													...newCustomColors[
+														selectedCustomColorIndex
+													],
+													value: color,
+												};
+												setCustomColors(
+													newCustomColors
+												);
 
-											// Update the Redux store too - IMPORTANT: This makes the Save button active
-											onChangeValue(
-												{
-													customColors:
-														newCustomColors,
-												},
-												'color'
-											);
-										}}
-										blockStyle={SCStyle}
-										disableOpacity
-										disableGradient
-										disablePalette
-									/>
+												// Update UI preview only
+												const tempSC = { ...SC };
+												if (!tempSC.color)
+													tempSC.color = {};
+												tempSC.color.customColors =
+													newCustomColors;
+
+												// Also update the styleCard objects directly
+												if (!tempSC.light)
+													tempSC.light = {
+														styleCard: {
+															color: {},
+														},
+													};
+												if (!tempSC.light.styleCard)
+													tempSC.light.styleCard = {
+														color: {},
+													};
+												if (
+													!tempSC.light.styleCard
+														.color
+												)
+													tempSC.light.styleCard.color =
+														{};
+												tempSC.light.styleCard.color.customColors =
+													[...newCustomColors];
+
+												if (!tempSC.dark)
+													tempSC.dark = {
+														styleCard: {
+															color: {},
+														},
+													};
+												if (!tempSC.dark.styleCard)
+													tempSC.dark.styleCard = {
+														color: {},
+													};
+												if (
+													!tempSC.dark.styleCard.color
+												)
+													tempSC.dark.styleCard.color =
+														{};
+												tempSC.dark.styleCard.color.customColors =
+													[...newCustomColors];
+
+												// Preview the change in the editor
+												const { updateSCOnEditor } =
+													window.wp.data.select(
+														'maxiBlocks/style-cards'
+													) || {};
+												if (
+													typeof updateSCOnEditor ===
+													'function'
+												) {
+													updateSCOnEditor(
+														tempSC,
+														null,
+														[document],
+														true // Flag to indicate preview only
+													);
+												}
+
+												// Update the Redux store too - IMPORTANT: This makes the Save button active
+												onChangeValue(
+													{
+														customColors:
+															newCustomColors,
+													},
+													'color'
+												);
+											}}
+											blockStyle={SCStyle}
+											disableOpacity
+											disableGradient
+											disablePalette
+										/>
+										<input
+											type='text'
+											className='maxi-style-cards__custom-color-presets__name-input'
+											value={
+												customColors[
+													selectedCustomColorIndex
+												].name
+											}
+											placeholder={__(
+												'Enter color name',
+												'maxi-blocks'
+											)}
+											onChange={e => {
+												const newCustomColors = [
+													...customColors,
+												];
+												newCustomColors[
+													selectedCustomColorIndex
+												] = {
+													...newCustomColors[
+														selectedCustomColorIndex
+													],
+													name: e.target.value,
+												};
+												setCustomColors(
+													newCustomColors
+												);
+
+												// Create a temporary SC object with the updated custom colors
+												const tempSC = { ...SC };
+
+												// Update all locations where custom colors are stored
+												if (!tempSC.color) {
+													tempSC.color = {};
+												}
+												tempSC.color.customColors = [
+													...newCustomColors,
+												];
+
+												// Update light theme
+												if (!tempSC.light) {
+													tempSC.light = {
+														styleCard: {
+															color: {},
+														},
+													};
+												}
+												if (!tempSC.light.styleCard) {
+													tempSC.light.styleCard = {
+														color: {},
+													};
+												}
+												if (
+													!tempSC.light.styleCard
+														.color
+												) {
+													tempSC.light.styleCard.color =
+														{};
+												}
+												tempSC.light.styleCard.color.customColors =
+													[...newCustomColors];
+
+												// Update dark theme
+												if (!tempSC.dark) {
+													tempSC.dark = {
+														styleCard: {
+															color: {},
+														},
+													};
+												}
+												if (!tempSC.dark.styleCard) {
+													tempSC.dark.styleCard = {
+														color: {},
+													};
+												}
+												if (
+													!tempSC.dark.styleCard.color
+												) {
+													tempSC.dark.styleCard.color =
+														{};
+												}
+												tempSC.dark.styleCard.color.customColors =
+													[...newCustomColors];
+
+												// Preview the change in the editor
+												const { updateSCOnEditor } =
+													window.wp.data.select(
+														'maxiBlocks/style-cards'
+													) || {};
+												if (
+													typeof updateSCOnEditor ===
+													'function'
+												) {
+													updateSCOnEditor(
+														tempSC,
+														null,
+														[document],
+														true
+													);
+												}
+
+												// Update the Redux store
+												onChangeValue(
+													{
+														customColors:
+															newCustomColors,
+													},
+													'color'
+												);
+											}}
+										/>
+									</>
 								)}
 							</>
 						),

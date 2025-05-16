@@ -2,12 +2,12 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { getSettings, date } from '@wordpress/date';
+import { Popover } from '@wordpress/components';
+import { __, sprintf } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect, useRef, forwardRef } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { getSettings, date } from '@wordpress/date';
-import { Popover } from '@wordpress/components';
 
 /**
  * External dependencies
@@ -347,30 +347,56 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			'.maxi-blocks-sc__type--custom-color-presets'
 		);
 		if (styleCardsTab) {
-			// This is a hack to access React component state - we're adding a data attribute
+			// Get all color items and their names
 			const customColorItems = styleCardsTab.querySelectorAll(
-				'.maxi-style-cards__custom-color-presets__box__item'
+				'.maxi-style-cards__custom-color-presets__box'
 			);
 			if (customColorItems && customColorItems.length > 0) {
 				customColors = Array.from(customColorItems).map(item => {
-					return item.style.background;
+					const colorSpan = item.querySelector(
+						'.maxi-style-cards__custom-color-presets__box__item'
+					);
+					const colorName = item.getAttribute('title') || '';
+					return {
+						value: colorSpan.style.background,
+						name:
+							colorName ===
+							sprintf(
+								// translators: %s: custom color number
+								__('Custom colour %s', 'maxi-blocks'),
+								customColors.length + 1
+							)
+								? ''
+								: colorName,
+					};
 				});
 			}
 		}
 
 		// If we couldn't get colors from UI, try to get them from the selectedSCValue
 		if (customColors.length === 0) {
-			customColors =
+			const existingColors =
 				selectedSCValue.light?.styleCard?.color?.customColors ||
 				selectedSCValue.dark?.styleCard?.color?.customColors ||
 				selectedSCValue.color?.customColors ||
 				[];
+
+			customColors = existingColors.map(color => {
+				if (
+					typeof color === 'object' &&
+					color.value &&
+					color.name !== undefined
+				) {
+					return color;
+				}
+				return { value: color, name: '' };
+			});
 		}
 
 		// Create a new SC value with updated custom colors
 		const updatedSCValue = { ...selectedSCValue };
 
-		// Ensure custom colors are in all locations
+		// Ensure custom colors are in all locations with proper format
 		// Root level
 		if (!updatedSCValue.color) {
 			updatedSCValue.color = {};
@@ -378,20 +404,27 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		updatedSCValue.color.customColors = [...customColors];
 
 		// Light style
-		if (!updatedSCValue.light)
+		if (!updatedSCValue.light) {
 			updatedSCValue.light = { styleCard: {}, defaultStyleCard: {} };
-		if (!updatedSCValue.light.styleCard)
+		}
+		if (!updatedSCValue.light.styleCard) {
 			updatedSCValue.light.styleCard = {};
-		if (!updatedSCValue.light.styleCard.color)
+		}
+		if (!updatedSCValue.light.styleCard.color) {
 			updatedSCValue.light.styleCard.color = {};
+		}
 		updatedSCValue.light.styleCard.color.customColors = [...customColors];
 
 		// Dark style
-		if (!updatedSCValue.dark)
+		if (!updatedSCValue.dark) {
 			updatedSCValue.dark = { styleCard: {}, defaultStyleCard: {} };
-		if (!updatedSCValue.dark.styleCard) updatedSCValue.dark.styleCard = {};
-		if (!updatedSCValue.dark.styleCard.color)
+		}
+		if (!updatedSCValue.dark.styleCard) {
+			updatedSCValue.dark.styleCard = {};
+		}
+		if (!updatedSCValue.dark.styleCard.color) {
 			updatedSCValue.dark.styleCard.color = {};
+		}
 		updatedSCValue.dark.styleCard.color.customColors = [...customColors];
 
 		// Create the object to save with the colors

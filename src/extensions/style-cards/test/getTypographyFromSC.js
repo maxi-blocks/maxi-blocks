@@ -1,5 +1,5 @@
 import { select } from '@wordpress/data';
-import getTypographyFromSC from '../getTypographyFromSC';
+import getTypographyFromSC from '@extensions/style-cards/getTypographyFromSC';
 
 const mockStyleCard = {
 	value: {

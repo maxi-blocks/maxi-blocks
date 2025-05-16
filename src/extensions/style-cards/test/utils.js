@@ -1,4 +1,4 @@
-import replaceUndefinedWithNull from '../utils';
+import replaceUndefinedWithNull from '@extensions/style-cards/utils';
 
 describe('replaceUndefinedWithNull', () => {
 	it('Should return primitive values unchanged', () => {

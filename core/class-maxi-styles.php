@@ -932,22 +932,50 @@ class MaxiBlocks_Styles
         }
 
         $changed_sc_colors = [];
+        $changed_custom_colors = [];
 
         if (!array_key_exists('_maxi_blocks_style_card', $style_card)) {
             $style_card['_maxi_blocks_style_card'] =
                 $style_card['_maxi_blocks_style_card_preview'];
         }
 
-        $style_card =
+        $style_card_vars =
             is_preview() || is_admin()
                 ? $style_card['_maxi_blocks_style_card_preview']
                 : $style_card['_maxi_blocks_style_card'];
 
         foreach ($color_vars as $color_key => $color_value) {
-            $start_pos = strpos($style_card, $color_key);
-            $end_pos = strpos($style_card, ';--', $start_pos);
+            // Check if this is a custom color
+            $is_custom_color = false;
+            $style_type = '';
+            $custom_index = -1;
+
+            if (preg_match('/--maxi-(light|dark)-color-custom-(\d+)/', $color_key, $matches)) {
+                $is_custom_color = true;
+                $style_type = $matches[1];
+                $custom_index = intval($matches[2]);
+
+                // Handle custom colors separately
+                $this->process_custom_color_change($style_card_vars, $color_key, $color_value, $changed_custom_colors);
+                continue;
+            }
+
+            $start_pos = strpos($style_card_vars, $color_key);
+            // If the color key doesn't exist in style card vars, skip it
+            if ($start_pos === false) {
+                continue;
+            }
+
+            $end_pos = strpos($style_card_vars, ';', $start_pos);
+            if ($end_pos === false) {
+                $end_pos = strpos($style_card_vars, '}', $start_pos);
+                if ($end_pos === false) {
+                    continue;
+                }
+            }
+
             $color_sc_value = substr(
-                $style_card,
+                $style_card_vars,
                 $start_pos + strlen($color_key) + 1,
                 $end_pos - $start_pos - strlen($color_key) - 1
             );
@@ -958,12 +986,26 @@ class MaxiBlocks_Styles
         }
 
         // In case there are changes, fix them
-        if (empty($changed_sc_colors)) {
+        if (empty($changed_sc_colors) && empty($changed_custom_colors)) {
             return $style;
         } else {
             $new_style = $style;
 
+            // Apply regular color changes
             foreach ($changed_sc_colors as $color_key => $color_value) {
+                $old_color_str =
+                    "rgba(var($color_key," . $color_vars[$color_key] . ')';
+                $new_color_str = "rgba(var($color_key," . $color_value . ')';
+
+                $new_style = str_replace(
+                    $old_color_str,
+                    $new_color_str,
+                    $new_style
+                );
+            }
+
+            // Apply custom color changes
+            foreach ($changed_custom_colors as $color_key => $color_value) {
                 $old_color_str =
                     "rgba(var($color_key," . $color_vars[$color_key] . ')';
                 $new_color_str = "rgba(var($color_key," . $color_value . ')';
@@ -983,6 +1025,41 @@ class MaxiBlocks_Styles
             );
 
             return $new_style;
+        }
+    }
+
+    /**
+     * Process a change in custom color
+     *
+     * @param string $style_card_vars The style card variables
+     * @param string $color_key The color key
+     * @param string $color_value The current color value
+     * @param array &$changed_custom_colors Reference to array of changed custom colors
+     */
+    private function process_custom_color_change($style_card_vars, $color_key, $color_value, &$changed_custom_colors)
+    {
+        $start_pos = strpos($style_card_vars, $color_key);
+        // If the color key doesn't exist in style card vars, don't change it
+        if ($start_pos === false) {
+            return;
+        }
+
+        $end_pos = strpos($style_card_vars, ';', $start_pos);
+        if ($end_pos === false) {
+            $end_pos = strpos($style_card_vars, '}', $start_pos);
+            if ($end_pos === false) {
+                return;
+            }
+        }
+
+        $color_sc_value = substr(
+            $style_card_vars,
+            $start_pos + strlen($color_key) + 1,
+            $end_pos - $start_pos - strlen($color_key) - 1
+        );
+
+        if ($color_sc_value !== $color_value) {
+            $changed_custom_colors[$color_key] = $color_sc_value;
         }
     }
 

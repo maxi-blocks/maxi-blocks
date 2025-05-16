@@ -27,7 +27,7 @@ import { getCartContent, getProductsContent } from './getWCContent';
  */
 import { isNil, isEmpty, capitalize } from 'lodash';
 
-const handleParentField = async (contentValue, type) => {
+export const handleParentField = async (contentValue, type) => {
 	if (!contentValue || contentValue === 0)
 		return __('No parent', 'maxi-blocks');
 	const parent = await resolveSelect('core').getEntityRecords(

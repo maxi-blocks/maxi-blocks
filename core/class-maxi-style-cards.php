@@ -229,9 +229,10 @@ class MaxiBlocks_StyleCards
 
                 // Extract RGB values if it's an rgba format
                 $rgb_values = $this->extract_rgb_values($color_value);
+                $numeric_id = 1000 + $index;
 
                 // Add the CSS variable
-                $custom_color_vars .= "--maxi-light-color-custom-{$index}:{$rgb_values};";
+                $custom_color_vars .= "--maxi-light-color-{$numeric_id}:{$rgb_values};";
             }
         }
 
@@ -242,9 +243,10 @@ class MaxiBlocks_StyleCards
 
                 // Extract RGB values if it's an rgba format
                 $rgb_values = $this->extract_rgb_values($color_value);
+                $numeric_id = 1000 + $index;
 
                 // Add the CSS variable
-                $custom_color_vars .= "--maxi-dark-color-custom-{$index}:{$rgb_values};";
+                $custom_color_vars .= "--maxi-dark-color-{$numeric_id}:{$rgb_values};";
             }
         }
 

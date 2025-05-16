@@ -58,6 +58,55 @@ const GlobalColor = props => {
 		isHover = false,
 	} = props;
 
+	const currentPaletteStatus = processSCAttribute(
+		SC,
+		paletteStatus,
+		groupAttr
+	);
+
+	let processedPaletteColor = processSCAttribute(SC, paletteColor, groupAttr);
+	if (
+		typeof processedPaletteColor === 'string' &&
+		processedPaletteColor.startsWith('custom-')
+	) {
+		const index = parseInt(
+			processedPaletteColor.substring('custom-'.length),
+			10
+		);
+		if (!Number.isNaN(index)) {
+			processedPaletteColor = 1000 + index;
+		} else {
+			processedPaletteColor = undefined; // Or some other suitable default/fallback if parsing fails
+		}
+	}
+	const currentPaletteColor = processedPaletteColor;
+
+	const currentPaletteOpacity =
+		processSCAttribute(SC, paletteOpacity, groupAttr) || 1;
+	const currentColor = processSCAttribute(SC, color, groupAttr);
+
+	let processedDefaultPaletteColorValue = getDefaultSCValue({
+		target: paletteColor,
+		SC,
+		SCStyle,
+		groupAttr,
+	});
+	if (
+		typeof processedDefaultPaletteColorValue === 'string' &&
+		processedDefaultPaletteColorValue.startsWith('custom-')
+	) {
+		const index = parseInt(
+			processedDefaultPaletteColorValue.substring('custom-'.length),
+			10
+		);
+		if (!Number.isNaN(index)) {
+			processedDefaultPaletteColorValue = 1000 + index;
+		} else {
+			processedDefaultPaletteColorValue = undefined; // Fallback
+		}
+	}
+	const defaultPaletteColorValue = processedDefaultPaletteColorValue;
+
 	return (
 		<>
 			<ToggleSwitch
@@ -100,22 +149,12 @@ const GlobalColor = props => {
 					<ColorControl
 						label={label}
 						className={`maxi-style-cards-control__sc__link--${SCStyle}`}
-						paletteStatus={processSCAttribute(
-							SC,
-							paletteStatus,
-							groupAttr
-						)}
-						paletteColor={processSCAttribute(
-							SC,
-							paletteColor,
-							groupAttr
-						)}
-						paletteOpacity={
-							processSCAttribute(SC, paletteOpacity, groupAttr) ||
-							1
-						}
-						color={processSCAttribute(SC, color, groupAttr)}
+						paletteStatus={currentPaletteStatus}
+						paletteColor={currentPaletteColor}
+						paletteOpacity={currentPaletteOpacity}
+						color={currentColor}
 						defaultColorAttributes={{
+							defaultPaletteColor: defaultPaletteColorValue,
 							defaultColor: getDefaultSCValue({
 								target: color,
 								SC,
@@ -125,14 +164,14 @@ const GlobalColor = props => {
 						}}
 						onChange={({
 							paletteStatus: newPaletteStatus,
-							paletteColor: newPaletteColor,
+							paletteColor: newPaletteColorFromControl,
 							paletteOpacity: newPaletteOpacity,
 							color: newColor,
 						}) => {
 							onChangeValue(
 								{
 									[paletteStatus]: newPaletteStatus,
-									[paletteColor]: newPaletteColor,
+									[paletteColor]: newPaletteColorFromControl,
 									[paletteOpacity]: newPaletteOpacity,
 									[color]: newColor,
 								},

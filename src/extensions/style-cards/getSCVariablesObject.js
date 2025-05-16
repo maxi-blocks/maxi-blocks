@@ -429,8 +429,9 @@ const getSCVariablesObject = (
 				customColors.forEach((colorValue, index) => {
 					if (!colorValue) return; // Skip empty colors
 
+					const numericId = 1000 + index;
 					// Add the CSS variable with extracted RGB values
-					response[`--maxi-${style}-color-custom-${index}`] =
+					response[`--maxi-${style}-color-${numericId}`] =
 						extractRGBValues(colorValue);
 				});
 			}

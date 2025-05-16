@@ -181,14 +181,14 @@ const ColorPaletteControl = props => {
 										className={classnames(
 											'maxi-color-control__palette-box',
 											'maxi-color-control__palette-custom-box',
-											getIsActive(`custom-${index}`) &&
+											getIsActive(1000 + index) &&
 												'maxi-color-control__palette-box--active'
 										)}
-										data-item={`custom-${index}`}
+										data-item={1000 + index}
 										onClick={e =>
 											onChange({
 												paletteColor:
-													e.currentTarget.dataset
+													+e.currentTarget.dataset
 														.item,
 											})
 										}

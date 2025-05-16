@@ -209,19 +209,13 @@ const ColorControl = props => {
 			else {
 				let defaultColor;
 
-				if (
-					typeof paletteColor === 'string' &&
-					paletteColor.startsWith('custom-')
-				) {
-					const customIndex = parseInt(
-						paletteColor.replace('custom-', ''),
-						10
-					);
-					defaultColor = customColors[customIndex] || '';
+				if (typeof paletteColor === 'number' && paletteColor >= 1000) {
+					const customIndex = paletteColor - 1000;
+					defaultColor = customColors?.[customIndex]?.value || '';
 				} else {
 					defaultColor = `rgba(${getPaletteColor({
 						clientId,
-						color: paletteColor || defaultColorAttr.paletteColor,
+						color: paletteColor,
 						blockStyle,
 					})},${paletteOpacity || 1})`;
 				}
@@ -319,17 +313,11 @@ const ColorControl = props => {
 								// If palette is disabled, set custom color from palette one
 								...(val && {
 									color:
-										typeof paletteColor === 'string' &&
-										paletteColor.startsWith('custom-')
-											? customColors[
-													parseInt(
-														paletteColor.replace(
-															'custom-',
-															''
-														),
-														10
-													)
-											  ] || ''
+										typeof paletteColor === 'number' &&
+										paletteColor >= 1000
+											? customColors?.[
+													paletteColor - 1000
+											  ]?.value || ''
 											: `rgba(${getPaletteColor({
 													clientId,
 													color: paletteColor,

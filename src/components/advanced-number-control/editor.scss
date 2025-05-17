@@ -8,9 +8,8 @@
 			top: -8px;
 			left: 8px;
 			font-size: 10px !important;
-			color: #5d5e5f;
+			color: var(--maxi-black) !important;
 			font-style: italic;
-			background: #fff;
 			padding: 0 5px;
 			pointer-events: none;
 			box-sizing: border-box;
@@ -38,22 +37,22 @@
 			height: 0.9em;
 			font-size: 10px;
 			pointer-events: none;
-			background: #fff;
+			background: var(--maxi-white);
 		}
 
 		&:after {
-			color: red;
+			color: var(--maxi-orange-red);
 			content: '\25B2';
 			width: 12px;
-			background-color: green;
+			background-color: var(--maxi-mid-green);
 			margin-top: 1px;
 		}
 
 		&:before {
-			color: red;
+			color: var(--maxi-orange-red);
 			width: 12px;
 			content: '\25BC';
-			background-color: green;
+			background-color: var(--maxi-mid-green);
 			margin-bottom: 5px;
 			bottom: -0.5em;
 		}

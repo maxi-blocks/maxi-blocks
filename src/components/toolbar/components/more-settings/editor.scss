@@ -17,12 +17,13 @@
 		margin: -18px 0 0 91px !important;
 	}
 	.components-popover__content {
-		width: 185px;
+		width: 220px;
 		margin-left: 0 !important;
 		margin-top: 15px;
 		transform: translate(3px, -13px);
-		background-color: white;
-		font-family: 'Roboto', sans-serif !important;
+		background-color: var(--maxi-white);
+		font-family: 'Inter', sans-serif !important;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
 		.maxi-reusableblocks__blocks-selector,
 		.maxi-text-generator__generator,
@@ -34,7 +35,7 @@
 					height: 1px;
 					left: 12px;
 					right: 12px;
-					background-color: var(--maxi-grey-1-color);
+					background-color: var(--maxi-grey-light);
 					position: absolute;
 					bottom: 0;
 				}
@@ -63,7 +64,8 @@
 				float: right;
 			}
 			&:hover {
-				background-color: #eaf2f6;
+				background-color: var(--maxi-whisper-green);
+				color: var(--maxi-primary-color) !important;
 			}
 			&::after {
 				content: '';

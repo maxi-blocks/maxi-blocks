@@ -184,7 +184,7 @@ const getAspectRatioStyles = (props, isPopup = false) => {
 
 const getCloseIconPosition = obj => {
 	const response = {
-		label: 'Icon position',
+		label: 'Position',
 	};
 
 	const { 'close-icon-position': iconPosition } = obj;

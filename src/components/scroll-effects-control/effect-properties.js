@@ -2,7 +2,7 @@ const EFFECT_PROPERTIES = {
 	vertical: {
 		label: 'Position',
 		attr: 'offset',
-		allowedUnits: ['px', 'em', 'rem', 'vh', '%'],
+		allowedUnits: ['PX', 'EM', 'REM', 'VH', '%'],
 		minMaxSettings: {
 			px: {
 				min: -4000,
@@ -29,7 +29,7 @@ const EFFECT_PROPERTIES = {
 	horizontal: {
 		label: 'Position',
 		attr: 'offset',
-		allowedUnits: ['px', 'em', 'rem', 'vw', '%'],
+		allowedUnits: ['PX', 'EM', 'REM', 'VH', '%'],
 		minMaxSettings: {
 			px: {
 				min: -4000,
@@ -105,7 +105,7 @@ const EFFECT_PROPERTIES = {
 	blur: {
 		label: 'Blur',
 		attr: 'blur',
-		allowedUnits: ['px', 'em', 'rem'],
+		allowedUnits: ['PX', 'EM', 'REM'],
 		minMaxSettings: {
 			px: {
 				min: 0,

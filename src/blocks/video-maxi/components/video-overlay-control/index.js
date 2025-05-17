@@ -363,6 +363,7 @@ const VideoOverlayControl = props => {
 							),
 						},
 					]}
+					disablePadding
 				/>
 			)}
 		</>

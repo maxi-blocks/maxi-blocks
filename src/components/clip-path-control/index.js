@@ -533,7 +533,7 @@ const ClipPathControl = props => {
 										Object.keys(clipPathOptions.content)
 											.length < 100 && (
 											<Button
-												className='maxi-clip-path-control__handles'
+												className='maxi-clip-path-control__handles maxi-clip-path-add-point-button'
 												onClick={() => {
 													clipPathOptions.content = {
 														...clipPathOptions.content,

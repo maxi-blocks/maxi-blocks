@@ -63,17 +63,19 @@ const AccordionLineControl = props => {
 				}}
 			/>
 			<SettingTabsControl
+				disablePadding
 				depth={3}
 				items={[
 					{
-						label: __('Normal state', 'maxi-blocks'),
+						label: __('Normal', 'maxi-blocks'),
 						content: <DividerControl {...props} disableRTC />,
 					},
 					{
-						label: __('Hover state', 'maxi-blocks'),
+						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch
+									className='maxi-accordion-line-control__hover-toggle'
 									label={__('Enable hover', 'maxi-blocks')}
 									selected={
 										props[`${prefix}line-status-hover`]
@@ -95,10 +97,11 @@ const AccordionLineControl = props => {
 						),
 					},
 					{
-						label: __('Active state', 'maxi-blocks'),
+						label: __('Active', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch
+									className='maxi-accordion-line-control__active-toggle'
 									label={__('Enable active', 'maxi-blocks')}
 									selected={
 										props[`${prefix}line-status-active`]

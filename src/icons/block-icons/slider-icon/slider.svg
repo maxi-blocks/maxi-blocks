@@ -2,7 +2,7 @@
 	y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
 	<style type="text/css">
 		.st0 {
-			fill: #FF4A17;
+			fill: var(--maxi-primary-color);
 		}
 	</style>
 	<g>

@@ -1,7 +1,10 @@
 .maxi-alignment-control {
 	.maxi-tabs-control__button {
 		svg path {
-			fill: var(--maxi-grey-4-color);
+			fill: var(--maxi-black);
+		}
+		&:hover svg path {
+			fill: var(--maxi-secondary-color);
 		}
 		&--selected {
 			svg path {
@@ -13,12 +16,15 @@
 		height: 32px;
 		padding: 8px !important;
 		width: 22.5%;
-		margin-right: 7px;
-		border: 1.5px solid var(--maxi-grey-1-color);
+		margin-right: 9px;
+		border: 1.5px solid var(--maxi-mid-green);
 		border-radius: 4px;
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 	.maxi-tabs-control__button[aria-pressed='true'] {
-		background-color: var(--maxi-light-blue-2-color) !important;
-		border: none !important;
+		background-color: var(--maxi-whisper-green) !important;
+		border-color: var(--maxi-secondary-color) !important;
 	}
 }

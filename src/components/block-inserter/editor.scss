@@ -211,15 +211,19 @@
 				width: 0%;
 				height: 0;
 			}
-
 			&--is-hovered {
 				opacity: 1;
 				height: 10px;
+				fill: var(--maxi-white) !important;
 
 				.maxi-inter-blocks-inserter__content-item {
 					width: 20px;
 					height: 20px;
 					margin-top: 0;
+				}
+
+				svg {
+					fill: var(--maxi-white);
 				}
 
 				&::before {

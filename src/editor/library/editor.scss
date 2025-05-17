@@ -523,6 +523,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 				&__input-container {
 					margin-right: 10px;
+					svg {
+						width: 20px;
+						height: 20px;
+						display: flex;
+						padding: 2px 0 0 2px;
+						color: var(--maxi-white);
+					}
 				}
 
 				&__input[type='checkbox'] {
@@ -534,6 +541,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 				&__input[type='checkbox']:checked {
 					background: var(--maxi-cloud-primary);
 					border: none;
+
+					border-radius: 4px;
+					font-size: 20px !important;
 				}
 			}
 		}
@@ -1286,6 +1296,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							height: 15px;
 							display: flex;
 							padding: 2px 0 0 2px;
+							fill: currentColor;
 						}
 					}
 					&__input,

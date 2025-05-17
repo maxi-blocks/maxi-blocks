@@ -131,7 +131,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					transition: background-color 0.5s ease;
 
 					&:hover {
-						background: var(--maxi-admin-mint);
+						background: var(--maxi-admin-pink-hover) !important;
 						transform: scale(1.035);
 					}
 

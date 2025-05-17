@@ -1332,11 +1332,16 @@ $border-light: 1px solid var(--maxi-grey-light);
 					align-items: center;
 					&--selected {
 						a {
-							background-color: var(--maxi-off-white);
+							background-color: var(--maxi-cloud-primary-whisper);
+							color: var(
+								--maxi-white
+							); // Adding white text for better contrast
 
 							.ais-RefinementList-count,
 							.ais-RefinementList-labelText {
-								color: var(--maxi-orange-red);
+								color: var(
+									--maxi-white
+								); // Changed from var(--maxi-orange-red)
 							}
 
 							&:focus {

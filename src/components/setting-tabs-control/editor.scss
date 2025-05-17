@@ -6,9 +6,11 @@
 			margin-left: 7px;
 			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
+			transition: all 0.3s ease;
 
 			svg {
 				fill: var(--maxi-secondary-color);
+				transition: fill 0.3s ease;
 			}
 
 			&[aria-pressed='true'],
@@ -27,8 +29,10 @@
 	&:not(.maxi-responsive-tabs-control) {
 		& > .maxi-tabs-control {
 			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested) {
+				transition: all 0.3s ease;
+
 				&[aria-pressed='true'] {
-					border-bottom: 2px solid var(--maxi-black) !important;
+					border-bottom: 1.5px solid var(--maxi-black) !important;
 					background-color: var(--maxi-whisper-green);
 				}
 			}

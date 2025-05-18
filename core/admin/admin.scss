@@ -948,6 +948,7 @@ body.site-editor-php
 				// Universal hover for all .button variants
 				&:hover {
 					background: var(--maxi-admin-green) !important;
+					transition: all 0.5s ease;
 				}
 
 				&.quick-start {
@@ -962,9 +963,11 @@ body.site-editor-php
 					border: none;
 					padding: 5px 25px;
 					transition: background 0.1s ease, transform 0.3s ease;
+					transition: all 0.5s ease;
 
 					&:hover {
 						background: var(--maxi-admin-light-orange) !important;
+						transition: all 0.5s ease;
 					}
 				}
 			}
@@ -1070,10 +1073,12 @@ body.site-editor-php
 				box-shadow: none;
 				overflow: hidden;
 				transition: background 0.3s ease, transform 0.2s ease;
+				transition: all 0.5s ease;
 
 				&:hover {
 					background: var(--maxi-admin-green) !important;
 					color: var(--maxi-admin-white);
+					transition: all 0.5s ease;
 				}
 			}
 		}

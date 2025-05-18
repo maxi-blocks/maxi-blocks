@@ -107,7 +107,10 @@ body {
 	}
 }
 .maxi-block {
+	transition: all 0.5s ease;
+
 	.block-editor-block-list__layout {
+		transition: all 0.5s ease;
 		&:focus:after {
 			box-shadow: none !important;
 		}
@@ -118,6 +121,7 @@ body {
 				.block-editor-button-block-appender {
 					opacity: 1 !important;
 					visibility: visible !important;
+					transition: opacity 0.5s ease, visibility 0.5s ease;
 				}
 			}
 		}
@@ -235,11 +239,11 @@ body .toolbar-item__popover {
 	input[type='number'],
 	textarea,
 	select {
+		transition: all 0.5s ease;
 		flex: 1;
 		max-height: unset !important;
 		min-height: unset;
 		padding: 10px;
-		// border: 1.5px solid var(--maxi-grey-light) !important;
 		border-radius: 5px !important;
 		color: var(--maxi-grey-dark);
 		background-color: var(--maxi-white);
@@ -249,11 +253,11 @@ body .toolbar-item__popover {
 		&:focus {
 			box-shadow: none;
 			outline: none;
-			// border: 1.5px solid var(--maxi-grey) !important;
 		}
 		&:hover {
 			color: var(--maxi-grey-dark) !important;
 			border: 1.5px solid var(--maxi-primary-color) !important;
+			transition: all 0.4s ease;
 		}
 		&:active {
 			color: var(--maxi-grey-dark);
@@ -408,6 +412,7 @@ svg path#styleCardBoat_b,
 		border-radius: 0;
 		box-shadow: none !important;
 		opacity: 0;
+		transition: opacity 0.5s ease, border-color 0.5s ease;
 	}
 
 	&.maxi-block--repeater::after {
@@ -645,8 +650,11 @@ body.maxi-blocks--active
 }
 
 .maxi-tabs-control__button {
+	transition: all 0.5s ease;
+
 	&-none {
 		svg path {
+			transition: fill 0.5s ease;
 			fill: var(--maxi-grey-dark);
 		}
 		&.maxi-tabs-control__button--selected {
@@ -705,6 +713,7 @@ body.maxi-blocks--active
 // Number input field
 input.maxi-advanced-number-control_value,
 input.maxi-advanced-number-control__value {
+	transition: all 0.3s ease;
 	border: 1.5px solid var(--maxi-grey-light) !important;
 	border-radius: 5px 0 0 5px !important;
 	height: 31px !important;
@@ -724,6 +733,7 @@ input.maxi-advanced-number-control__value {
 // Unit selector
 .maxi-base-control.maxi-dimensions-control__units {
 	select {
+		transition: all 0.3s ease;
 		border: 1.5px solid var(--maxi-grey-light) !important;
 		border-radius: 0 5px 5px 0px !important;
 		height: 31px !important;
@@ -744,6 +754,7 @@ input.maxi-advanced-number-control__value {
 
 // Reset button
 .maxi-components-button.maxi-reset-button {
+	transition: all 0.3s ease;
 	width: 31px !important;
 	height: 31px !important;
 	padding: 0 !important;
@@ -790,4 +801,14 @@ body {
 			transition: all 0.3s ease;
 		}
 	}
+}
+
+/* Global transitions */
+.maxi-sidebar *,
+.maxi-popover *,
+.maxi-block *,
+.maxi-components-button,
+.maxi-base-control * {
+	transition-timing-function: ease;
+	transition-duration: 0.5s;
 }

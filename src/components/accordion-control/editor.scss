@@ -53,6 +53,7 @@
 			border-top: 1.5px solid var(--maxi-grey-light);
 			margin-bottom: 0px;
 			background: var(--maxi-white);
+			transition: background-color 0.5s, color 0.5s;
 
 			&:hover {
 				background: var(--maxi-whisper-green);

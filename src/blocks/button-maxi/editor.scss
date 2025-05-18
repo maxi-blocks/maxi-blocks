@@ -11,13 +11,14 @@ body.maxi-blocks--active .maxi-sidebar {
 			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 10px;
 			margin-bottom: 10px;
-			transition: background 0.4s;
+			transition: all 0.4s ease;
 
 			&:focus {
 				background: var(--maxi-grey);
 			}
 			&:hover {
 				border: 1.5px solid var(--maxi-primary-color);
+				background: var(--maxi-whisper-green);
 
 				&::after {
 					content: '';

@@ -1,6 +1,12 @@
 .maxi-toolbar__popover {
 	z-index: 9999998;
 
+	*,
+	*:before,
+	*:after {
+		transition: all 0.5s ease;
+	}
+
 	&-caption,
 	&--icon {
 		z-index: 9999997;
@@ -78,7 +84,7 @@
 			.breadcrumbs-pin:hover .breadcrumbs-pin-tooltip {
 				visibility: visible;
 				opacity: 1;
-				transition-delay: 0.8s;
+				transition-delay: 0.5s;
 			}
 
 			&.icon-toolbar,
@@ -217,7 +223,7 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: 0.3s;
+					transition: all 0.5s ease;
 					border-radius: 0;
 					background-color: transparent;
 					fill: var(--maxi-black) !important;
@@ -231,7 +237,7 @@
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: 0.2s;
+						transition: all 0.5s ease;
 					}
 
 					&:hover,
@@ -263,7 +269,7 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: 0.3s;
+					transition: all 0.5s ease;
 					border-radius: 0;
 
 					&::after {
@@ -275,7 +281,7 @@
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: 0.2s;
+						transition: all 0.5s ease;
 					}
 
 					&:hover,
@@ -327,7 +333,7 @@
 					rect,
 					polyline,
 					path {
-						transition: 0.3s;
+						transition: all 0.5s ease;
 						// fill: var(--maxi-black);
 						// stroke: transparent;
 					}
@@ -351,6 +357,7 @@
 
 		&:hover {
 			color: var(--maxi-primary-color) !important;
+			transition: color 0.5s ease;
 		}
 	}
 	.maxi-responsive-tabs-control {
@@ -816,7 +823,7 @@ html[dir='rtl'] {
 	width: 100%;
 	height: 100%;
 	padding: 0;
-	transition: 0.3s;
+	transition: all 0.5s ease;
 	border-radius: 0;
 	background-color: transparent;
 	fill: var(--maxi-black) !important;

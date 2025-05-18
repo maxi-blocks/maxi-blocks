@@ -365,8 +365,9 @@
 	transition: all 0.5s ease;
 
 	&:hover {
-		border-color: var(--maxi-highlight-color);
+		border-color: var(--maxi-primary-color);
 		color: var(--maxi-grey-dark);
+		transition: all 0.5s ease;
 	}
 
 	span {

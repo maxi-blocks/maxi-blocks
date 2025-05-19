@@ -6,7 +6,7 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { cloneDeep, isNil } from 'lodash';
+import { isNil, set } from 'lodash';
 
 /**
  * Internal dependencies
@@ -129,6 +129,8 @@ const extractRGBValues = colorInput => {
  * @param {string}       clientId           The client ID of the block being processed.
  * @param {string}       blockName          The name of the block being processed.
  * @param {boolean}      attributesModified Tracks if any attribute was modified.
+ * @param {Function}     mutator            Optional callback to apply changes instead of modifying original object.
+ * @param {string}       currentPath        Current path in the object (for mutator).
  * @return {boolean} True if attributes were modified, false otherwise.
  */
 const traverseAndResetDefault = (
@@ -136,20 +138,27 @@ const traverseAndResetDefault = (
 	deletedColorId,
 	clientId,
 	blockName,
-	attributesModified
+	attributesModified,
+	mutator = null,
+	currentPath = ''
 ) => {
 	let modified = attributesModified;
 
 	if (Array.isArray(currentObject)) {
-		currentObject.forEach(item => {
+		currentObject.forEach((item, index) => {
 			if (typeof item === 'object' && item !== null) {
+				const arrayPath = currentPath
+					? `${currentPath}[${index}]`
+					: `[${index}]`;
 				if (
 					traverseAndResetDefault(
 						item,
 						deletedColorId,
 						clientId,
 						blockName,
-						false
+						false,
+						mutator,
+						arrayPath
 					)
 				) {
 					modified = true;
@@ -159,6 +168,8 @@ const traverseAndResetDefault = (
 	} else if (typeof currentObject === 'object' && currentObject !== null) {
 		for (const key in currentObject) {
 			if (Object.prototype.hasOwnProperty.call(currentObject, key)) {
+				const keyPath = currentPath ? `${currentPath}.${key}` : key;
+
 				if (
 					key.includes('palette-color') &&
 					Number(currentObject[key]) === deletedColorId
@@ -169,11 +180,19 @@ const traverseAndResetDefault = (
 						false,
 						blockName
 					);
-					currentObject[key] =
+					const newValue =
 						typeof blockSpecificDefault === 'number' &&
 						!isNil(blockSpecificDefault)
 							? blockSpecificDefault
 							: DEFAULT_PALETTE_COLOR_ID;
+
+					if (mutator) {
+						// Use the mutator to record the change
+						mutator(keyPath, newValue);
+					} else {
+						// Direct modification if no mutator is provided
+						currentObject[key] = newValue;
+					}
 					modified = true;
 				} else if (
 					typeof currentObject[key] === 'object' &&
@@ -185,7 +204,9 @@ const traverseAndResetDefault = (
 							deletedColorId,
 							clientId,
 							blockName,
-							false
+							false,
+							mutator,
+							keyPath
 						)
 					) {
 						modified = true;
@@ -219,18 +240,31 @@ const handleDeletedCustomColor = deletedColorId => {
 				clientId,
 				name: blockName,
 			} = block;
-			const attributesCopy = cloneDeep(originalAttributes);
 
+			// Instead of deep cloning upfront, prepare an empty object for changes
+			const attributesCopy = {};
+			// Create a mutator that sets values in attributesCopy using the path
+			const mutator = (path, value) => {
+				// Use lodash's set to handle nested paths
+				set(attributesCopy, path, value);
+			};
+
+			// Now traverse and record any changes in attributesCopy
 			const wasModified = traverseAndResetDefault(
-				attributesCopy,
+				originalAttributes,
 				deletedColorId,
 				clientId,
 				blockName,
-				false
+				false,
+				mutator
 			);
 
 			if (wasModified) {
-				updateBlockAttributes(clientId, attributesCopy);
+				// Merge with original attributes and update
+				updateBlockAttributes(clientId, {
+					...originalAttributes,
+					...attributesCopy,
+				});
 			}
 			return false; // Continue iterating through all blocks
 		},
@@ -247,20 +281,36 @@ const handleDeletedCustomColor = deletedColorId => {
  * @param {number}       oldIdToFind        The old custom color ID to find.
  * @param {number}       newIdToSet         The new custom color ID to set.
  * @param {boolean}      attributesModified Tracks if any attribute was modified.
+ * @param {Function}     mutator            Optional callback to apply changes instead of modifying original object.
+ * @param {string}       currentPath        Current path in the object (for mutator).
  * @return {boolean} True if attributes were modified, false otherwise.
  */
 const traverseAndRemapId = (
 	currentObject,
 	oldIdToFind,
 	newIdToSet,
-	attributesModified
+	attributesModified,
+	mutator = null,
+	currentPath = ''
 ) => {
 	let modified = attributesModified;
 
 	if (Array.isArray(currentObject)) {
-		currentObject.forEach(item => {
+		currentObject.forEach((item, index) => {
 			if (typeof item === 'object' && item !== null) {
-				if (traverseAndRemapId(item, oldIdToFind, newIdToSet, false)) {
+				const arrayPath = currentPath
+					? `${currentPath}[${index}]`
+					: `[${index}]`;
+				if (
+					traverseAndRemapId(
+						item,
+						oldIdToFind,
+						newIdToSet,
+						false,
+						mutator,
+						arrayPath
+					)
+				) {
 					modified = true;
 				}
 			}
@@ -268,11 +318,19 @@ const traverseAndRemapId = (
 	} else if (typeof currentObject === 'object' && currentObject !== null) {
 		for (const key in currentObject) {
 			if (Object.prototype.hasOwnProperty.call(currentObject, key)) {
+				const keyPath = currentPath ? `${currentPath}.${key}` : key;
+
 				if (
 					key.includes('palette-color') &&
 					Number(currentObject[key]) === oldIdToFind
 				) {
-					currentObject[key] = newIdToSet;
+					if (mutator) {
+						// Use the mutator to record the change
+						mutator(keyPath, newIdToSet);
+					} else {
+						// Direct modification if no mutator is provided
+						currentObject[key] = newIdToSet;
+					}
 					modified = true;
 				} else if (
 					typeof currentObject[key] === 'object' &&
@@ -283,7 +341,9 @@ const traverseAndRemapId = (
 							currentObject[key],
 							oldIdToFind,
 							newIdToSet,
-							false
+							false,
+							mutator,
+							keyPath
 						)
 					) {
 						modified = true;
@@ -323,17 +383,29 @@ const updateShiftedCustomColorIdsInBlocks = (oldId, newId) => {
 	goThroughMaxiBlocks(
 		block => {
 			const { attributes: originalAttributes, clientId } = block;
-			const attributesCopy = cloneDeep(originalAttributes);
+
+			// Instead of deep cloning upfront, prepare an empty object for changes
+			const attributesCopy = {};
+			// Create a mutator that sets values in attributesCopy using the path
+			const mutator = (path, value) => {
+				// Use lodash's set to handle nested paths
+				set(attributesCopy, path, value);
+			};
 
 			const wasModified = traverseAndRemapId(
-				attributesCopy,
+				originalAttributes,
 				oldId,
 				newId,
-				false
+				false,
+				mutator
 			);
 
 			if (wasModified) {
-				updateBlockAttributes(clientId, attributesCopy);
+				// Merge with original attributes and update
+				updateBlockAttributes(clientId, {
+					...originalAttributes,
+					...attributesCopy,
+				});
 			}
 			return false; // Continue iterating through all blocks
 		},

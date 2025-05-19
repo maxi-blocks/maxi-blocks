@@ -48,6 +48,39 @@ const generateCustomColorId = () => {
 };
 
 /**
+ * Propagates custom colors to all style card variants and updates the editor
+ *
+ * @param {Object}   SC              Current style card object
+ * @param {Array}    newCustomColors Updated custom colors array
+ * @param {Function} onChangeValue   Callback to update style card value
+ */
+const propagateCustomColors = (SC, newCustomColors, onChangeValue) => {
+	const tempSC = { ...SC };
+	if (!tempSC.color) tempSC.color = {};
+	tempSC.color.customColors = newCustomColors;
+
+	// Ensure light style exists
+	if (!tempSC.light) tempSC.light = { styleCard: { color: {} } };
+	if (!tempSC.light.styleCard) tempSC.light.styleCard = { color: {} };
+	if (!tempSC.light.styleCard.color) tempSC.light.styleCard.color = {};
+	tempSC.light.styleCard.color.customColors = [...newCustomColors];
+
+	// Ensure dark style exists
+	if (!tempSC.dark) tempSC.dark = { styleCard: { color: {} } };
+	if (!tempSC.dark.styleCard) tempSC.dark.styleCard = { color: {} };
+	if (!tempSC.dark.styleCard.color) tempSC.dark.styleCard.color = {};
+	tempSC.dark.styleCard.color.customColors = [...newCustomColors];
+
+	const { updateSCOnEditor } =
+		window.wp.data.select('maxiBlocks/style-cards') || {};
+	if (typeof updateSCOnEditor === 'function') {
+		updateSCOnEditor(tempSC, null, [document], true);
+	}
+
+	onChangeValue({ customColors: newCustomColors }, 'color');
+};
+
+/**
  * Component
  */
 const GlobalColor = props => {
@@ -965,78 +998,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 															colorObj.id
 														);
 
-														const tempSC = {
-															...SC,
-														};
-														if (!tempSC.color)
-															tempSC.color = {};
-														tempSC.color.customColors =
-															newCustomColors;
-														if (!tempSC.light)
-															tempSC.light = {
-																styleCard: {
-																	color: {},
-																},
-															};
-														if (
-															!tempSC.light
-																.styleCard
-														)
-															tempSC.light.styleCard =
-																{ color: {} };
-														if (
-															!tempSC.light
-																.styleCard.color
-														)
-															tempSC.light.styleCard.color =
-																{};
-														tempSC.light.styleCard.color.customColors =
-															newCustomColors;
-														if (!tempSC.dark)
-															tempSC.dark = {
-																styleCard: {
-																	color: {},
-																},
-															};
-														if (
-															!tempSC.dark
-																.styleCard
-														)
-															tempSC.dark.styleCard =
-																{ color: {} };
-														if (
-															!tempSC.dark
-																.styleCard.color
-														)
-															tempSC.dark.styleCard.color =
-																{};
-														tempSC.dark.styleCard.color.customColors =
-															newCustomColors;
-
-														const {
-															updateSCOnEditor,
-														} =
-															window.wp.data.select(
-																'maxiBlocks/style-cards'
-															) || {};
-														if (
-															typeof updateSCOnEditor ===
-															'function'
-														) {
-															updateSCOnEditor(
-																tempSC,
-																null,
-																[document],
-																true
-															);
-														}
-
-														onChangeValue(
-															{
-																customColors:
-																	newCustomColors,
-															},
-															'color'
+														propagateCustomColors(
+															SC,
+															newCustomColors,
+															onChangeValue
 														);
 
 														if (
@@ -1083,69 +1048,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													newColorId
 												);
 
-												const tempSC = { ...SC };
-												if (!tempSC.color)
-													tempSC.color = {};
-												tempSC.color.customColors =
-													newCustomColors;
-												if (!tempSC.light)
-													tempSC.light = {
-														styleCard: {
-															color: {},
-														},
-													};
-												if (!tempSC.light.styleCard)
-													tempSC.light.styleCard = {
-														color: {},
-													};
-												if (
-													!tempSC.light.styleCard
-														.color
-												)
-													tempSC.light.styleCard.color =
-														{};
-												tempSC.light.styleCard.color.customColors =
-													newCustomColors;
-												if (!tempSC.dark)
-													tempSC.dark = {
-														styleCard: {
-															color: {},
-														},
-													};
-												if (!tempSC.dark.styleCard)
-													tempSC.dark.styleCard = {
-														color: {},
-													};
-												if (
-													!tempSC.dark.styleCard.color
-												)
-													tempSC.dark.styleCard.color =
-														{};
-												tempSC.dark.styleCard.color.customColors =
-													newCustomColors;
-
-												const { updateSCOnEditor } =
-													window.wp.data.select(
-														'maxiBlocks/style-cards'
-													) || {};
-												if (
-													typeof updateSCOnEditor ===
-													'function'
-												) {
-													updateSCOnEditor(
-														tempSC,
-														null,
-														[document],
-														true
-													);
-												}
-
-												onChangeValue(
-													{
-														customColors:
-															newCustomColors,
-													},
-													'color'
+												propagateCustomColors(
+													SC,
+													newCustomColors,
+													onChangeValue
 												);
 											}}
 										>
@@ -1182,82 +1088,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 															newCustomColors
 														);
 
-														const tempSC = {
-															...SC,
-														};
-														if (!tempSC.color)
-															tempSC.color = {};
-														tempSC.color.customColors =
-															newCustomColors;
-														if (!tempSC.light)
-															tempSC.light = {
-																styleCard: {
-																	color: {},
-																},
-															};
-														if (
-															!tempSC.light
-																.styleCard
-														)
-															tempSC.light.styleCard =
-																{ color: {} };
-														if (
-															!tempSC.light
-																.styleCard.color
-														)
-															tempSC.light.styleCard.color =
-																{};
-														tempSC.light.styleCard.color.customColors =
-															[
-																...newCustomColors,
-															];
-														if (!tempSC.dark)
-															tempSC.dark = {
-																styleCard: {
-																	color: {},
-																},
-															};
-														if (
-															!tempSC.dark
-																.styleCard
-														)
-															tempSC.dark.styleCard =
-																{ color: {} };
-														if (
-															!tempSC.dark
-																.styleCard.color
-														)
-															tempSC.dark.styleCard.color =
-																{};
-														tempSC.dark.styleCard.color.customColors =
-															[
-																...newCustomColors,
-															];
-
-														const {
-															updateSCOnEditor,
-														} =
-															window.wp.data.select(
-																'maxiBlocks/style-cards'
-															) || {};
-														if (
-															typeof updateSCOnEditor ===
-															'function'
-														) {
-															updateSCOnEditor(
-																tempSC,
-																null,
-																[document],
-																true
-															);
-														}
-
-														onChangeValue(
-															{
-																customColors:
-																	newCustomColors,
-															},
-															'color'
+														propagateCustomColors(
+															SC,
+															newCustomColors,
+															onChangeValue
 														);
 													}}
 													blockStyle={SCStyle}
@@ -1297,84 +1131,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 															newCustomColors
 														);
 
-														const tempSC = {
-															...SC,
-														};
-														if (!tempSC.color)
-															tempSC.color = {};
-														tempSC.color.customColors =
-															[
-																...newCustomColors,
-															];
-														if (!tempSC.light)
-															tempSC.light = {
-																styleCard: {
-																	color: {},
-																},
-															};
-														if (
-															!tempSC.light
-																.styleCard
-														)
-															tempSC.light.styleCard =
-																{ color: {} };
-														if (
-															!tempSC.light
-																.styleCard.color
-														)
-															tempSC.light.styleCard.color =
-																{};
-														tempSC.light.styleCard.color.customColors =
-															[
-																...newCustomColors,
-															];
-														if (!tempSC.dark)
-															tempSC.dark = {
-																styleCard: {
-																	color: {},
-																},
-															};
-														if (
-															!tempSC.dark
-																.styleCard
-														)
-															tempSC.dark.styleCard =
-																{ color: {} };
-														if (
-															!tempSC.dark
-																.styleCard.color
-														)
-															tempSC.dark.styleCard.color =
-																{};
-														tempSC.dark.styleCard.color.customColors =
-															[
-																...newCustomColors,
-															];
-
-														const {
-															updateSCOnEditor,
-														} =
-															window.wp.data.select(
-																'maxiBlocks/style-cards'
-															) || {};
-														if (
-															typeof updateSCOnEditor ===
-															'function'
-														) {
-															updateSCOnEditor(
-																tempSC,
-																null,
-																[document],
-																true
-															);
-														}
-
-														onChangeValue(
-															{
-																customColors:
-																	newCustomColors,
-															},
-															'color'
+														propagateCustomColors(
+															SC,
+															newCustomColors,
+															onChangeValue
 														);
 													}}
 												/>

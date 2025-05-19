@@ -39,7 +39,6 @@ import {
 	orderByOptions,
 	orderByRelations,
 	orderRelations,
-	sourceOptions,
 	ignoreEmptyFields,
 } from '@extensions/DC/constants';
 import getDCOptions from '@extensions/DC/getDCOptions';
@@ -87,16 +86,23 @@ const DynamicContent = props => {
 	const [postTypesOptions, setPostTypesOptions] = useState(null);
 	const [isCustomTaxonomyField, setIsCustomTaxonomyField] = useState(false);
 
-	const { relationTypes, orderTypes, limitTypes } = useSelect(select => {
-		const { getRelationTypes, getOrderTypes, getLimitTypes } = select(
-			'maxiBlocks/dynamic-content'
-		);
-		return {
-			relationTypes: getRelationTypes(),
-			orderTypes: getOrderTypes(),
-			limitTypes: getLimitTypes(),
-		};
-	}, []);
+	const { relationTypes, orderTypes, limitTypes, sourceOptions } = useSelect(
+		select => {
+			const {
+				getRelationTypes,
+				getOrderTypes,
+				getLimitTypes,
+				getSourceOptions,
+			} = select('maxiBlocks/dynamic-content');
+			return {
+				relationTypes: getRelationTypes(),
+				orderTypes: getOrderTypes(),
+				limitTypes: getLimitTypes(),
+				sourceOptions: getSourceOptions(),
+			};
+		},
+		[]
+	);
 
 	const classes = classnames('maxi-dynamic-content', className);
 

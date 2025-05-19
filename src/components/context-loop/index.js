@@ -29,7 +29,6 @@ import {
 	orderOptions,
 	orderRelations,
 	relationOptions,
-	sourceOptions,
 } from '@extensions/DC/constants';
 import { getCLAttributes, getDCOptions, LoopContext } from '@extensions/DC';
 import {
@@ -116,13 +115,14 @@ const ContextLoop = props => {
 
 	const clPaginationPrefix = 'cl-pagination-';
 
-	const { relationTypes, orderTypes } = useSelect(select => {
-		const { getRelationTypes, getOrderTypes } = select(
+	const { relationTypes, orderTypes, sourceOptions } = useSelect(select => {
+		const { getRelationTypes, getOrderTypes, getSourceOptions } = select(
 			'maxiBlocks/dynamic-content'
 		);
 		return {
 			relationTypes: getRelationTypes(),
 			orderTypes: getOrderTypes(),
+			sourceOptions: getSourceOptions(),
 		};
 	}, []);
 

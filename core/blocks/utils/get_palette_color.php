@@ -1,6 +1,7 @@
 <?php
 
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/class-maxi-color-utils.php';
 
 /**
  * Gets a color from the active style card's palette
@@ -68,23 +69,11 @@ function get_palette_color($color, $block_style = 'light') {
  * @return string The RGB values as a comma-separated string
  */
 function extract_rgb_values($color_value) {
-    // Extract RGB values if it's an rgba format
-    if (preg_match('/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/', $color_value, $matches)) {
-        return "{$matches[1]}, {$matches[2]}, {$matches[3]}";
-    } elseif (strpos($color_value, '#') === 0) {
-        // Convert HEX to RGB
-        $hex = ltrim($color_value, '#');
-        if (strlen($hex) === 3) {
-            $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
-        }
-        $r = hexdec(substr($hex, 0, 2));
-        $g = hexdec(substr($hex, 2, 2));
-        $b = hexdec(substr($hex, 4, 2));
-        return "$r, $g, $b";
-    } else {
-        // Use as is for other formats
-        return $color_value;
-    }
+    // Include the utility class if not already loaded
+    require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/class-maxi-color-utils.php';
+
+    // Use the shared implementation from the utility class
+    return MaxiBlocks_ColorUtils::extract_rgb_values($color_value);
 }
 
 ?>

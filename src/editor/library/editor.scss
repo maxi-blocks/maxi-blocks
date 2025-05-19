@@ -9,6 +9,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 	overflow-y: auto;
 	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
 	font-weight: 600;
+	transition: transform 0.3s ease;
 
 	@keyframes fadeIn {
 		0% {
@@ -40,12 +41,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 			flex: 5;
 			display: flex;
 			align-items: center;
-			transition: all 0.4s ease;
+			transition: all 0.4s ease; // Add transition
 
 			// Add button hover styles
 			.maxi-cloud-masonry-card__button {
-				transition: all 0.4s ease;
-
 				&:hover {
 					// border-color: var(--maxi-cloud-primary);
 					// background-color: var(--maxi-cloud-primary-whisper);
@@ -59,7 +58,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				background: var(--maxi-whisper-green);
 				border: 1.5px solid var(--maxi-mid-green);
 				color: var(--maxi-black);
-				transition: all 0.5s;
+				transition: all 0.3s ease;
 				display: flex; // Simplified from separate align/justify
 				justify-content: center;
 				align-items: center;
@@ -81,11 +80,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 				border: 2px solid var(--maxi-grey-light);
 				border-radius: 5px;
 				cursor: pointer;
+				transition: all 0.4s ease; // Add transition
 
 				// States
 				&--active,
 				&:hover {
 					background: var(--maxi-cloud-primary-whisper);
+					border-left: 1px solid var(--maxi-white) !important;
 				}
 
 				&:last-child {
@@ -113,7 +114,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			background: var(--maxi-whisper-green);
 			border: 1.5px solid var(--maxi-mid-green);
 			color: var(--maxi-black);
-			transition: all 0.5s;
+			transition: background-color 0.3s ease, border-color 0.3s ease;
 
 			&:hover {
 				background: var(--maxi-pastel-green);
@@ -203,6 +204,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				padding: 8px 6px 4px;
 				cursor: pointer;
 				outline: none;
+				transition: all 0.4s ease; // Add transition
 				&_active {
 					svg {
 						path {
@@ -258,14 +260,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 				h2 {
 					color: var(--maxi-grey-dark);
 					font-size: 16px;
-					font-weight: 500;
+					font-weight: 700;
 					letter-spacing: -0.5px;
 				}
 				.maxi-cloud-toolbar__button {
 					padding: 9px 19px;
 					span {
 						font-size: 16px;
-						font-weight: 500;
+						font-weight: 700;
 						color: var(--maxi-grey-dark);
 					}
 				}
@@ -292,7 +294,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					span {
 						font-size: 16px;
-						font-weight: 500;
+						font-weight: 700;
 						color: var(--maxi-grey-dark);
 					}
 				}
@@ -347,11 +349,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 				justify-content: center;
 				background-color: var(--maxi-black);
 				border-radius: 50%;
-				transition: background-color 0.3s ease;
+				transition: background-color 0.3s ease, color 0.3s ease;
 				font-size: 14px;
 				font-weight: bold;
 				color: var(--maxi-white);
 				text-decoration: none;
+				transition: all 0.4s ease; // Add transition
 
 				&::before {
 					content: '×';
@@ -453,7 +456,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			text-decoration: none;
 			font-size: 14px;
 			cursor: pointer;
-			transition: 0.1s;
+			transition: all 0.4s ease; // Add transition
 
 			svg {
 				width: 12px;
@@ -462,7 +465,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				background-color: var(--maxi-cloud-primary);
 				border-radius: 50%;
 				margin-right: 5px;
-				transition: 0.1s;
+				transition: background-color 0.3s ease;
 
 				path {
 					fill: var(--maxi-cloud-primary);
@@ -584,7 +587,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
 			font-weight: 400;
 			cursor: pointer;
-			transition: 0.1s;
+			transition: all 0.4s ease; // Add transition
 			outline: 0;
 
 			&:not(&--disabled):hover {
@@ -666,7 +669,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					right: 12px;
 					transform: translateY(-50%) rotate(0);
 					transform-origin: center;
-					transition: transform 0.3s linear;
+					transition: all 0.4s ease; // Add transition
 				}
 			}
 
@@ -699,7 +702,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							text-decoration: none;
 							color: var(--maxi-grey-dark);
 							font-weight: bold;
-							transition: color 0.5s;
+							transition: all 0.4s ease; // Add transition
 
 							&:hover {
 								// border-bottom: 2px solid var(--maxi-orange-red);
@@ -780,7 +783,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							bottom: -1px;
 							background-color: var(--maxi-cloud-primary);
 							z-index: -1;
-							transition: 0.1s;
+							transition: all 0.4s ease; // Add transition
 							opacity: 0;
 							border-radius: inherit; /* Add border radius to match parent */
 						}
@@ -869,7 +872,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							color: var(--maxi-white);
 							font-weight: bold;
 							border: none;
-							transition: all 0.5s;
+							transition: all 0.4s ease; // Add transition
 							top: 0;
 							right: 0;
 							height: 100%;
@@ -920,7 +923,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					.maxi-cloud-masonry-card {
 						position: relative;
 						z-index: 1;
-						transition: all 0.5s;
+						transition: all 0.4s ease; // Add transition
 						padding: 12px 12px 20px 12px;
 						height: 100%;
 						overflow: hidden;
@@ -939,7 +942,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							align-items: center;
 							flex-direction: column;
 							cursor: pointer;
-							transition: 0.3s;
+							transition: all 0.4s ease; // Add transition
 							transform: translateY(19px);
 
 							&__title {
@@ -949,7 +952,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 								text-align: center;
 								font-size: 12px;
 								margin-bottom: 4px;
-								transition: 0.3s;
+								transition: all 0.4s ease; // Add transition
 							}
 
 							&__code {
@@ -970,7 +973,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 								font-weight: 600;
 								line-height: 100%;
 								padding: 8px 35px;
-								transition: 0s;
+								transition: all 0.4s ease;
 								opacity: 0;
 								margin-top: -5px;
 								margin-bottom: -5px;
@@ -979,7 +982,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 									content: '';
 									position: absolute;
 									display: block;
-									transition: 0.1s;
+									transition: all 0.4s ease; // Add transition
 									opacity: 0;
 									top: 0;
 									left: 0;
@@ -989,7 +992,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 								}
 
 								&:hover {
-									transition-delay: 0s !important;
+									transition: all 0.4s ease; // Add transition
 									color: var(--maxi-white);
 									background-color: var(--maxi-cloud-primary);
 
@@ -1018,7 +1021,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						bottom: 0;
 						display: block;
 						border: 1px solid var(--maxi-grey-light);
-						transition: 0.3s;
+						transition: all 0.4s ease; // Add transition
 						z-index: 0;
 						border-radius: 10px;
 					}
@@ -1035,10 +1038,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 								}
 
 								span {
-									transition: 0.3s;
-									transition-delay: 0.3s;
-									transition-property: opacity;
-									opacity: 1;
+									transition: all 0.4s ease; // Add transition
 								}
 							}
 						}
@@ -1133,6 +1133,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				border-right: 1px solid var(--maxi-grey-light);
 				border-left: 1px solid var(--maxi-grey-light);
 				background-color: var(--maxi-white);
+				transition: transform 0.3s ease;
 				.top-Menu {
 					display: flex;
 					margin-bottom: 8px;
@@ -1171,7 +1172,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							top: -1px;
 							bottom: -1px;
 							display: block;
-							background-color: var(--maxi-cloud-primary);
+							background-color: var(--maxi-cloud-primary-light);
 							transition: 0.1s;
 							opacity: 0;
 						}
@@ -1193,8 +1194,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 							}
 						}
 						&___pressed {
-							color: var(--maxi-white);
-							font-weight: 500;
+							color: var(--maxi-black);
+							font-weight: 700;
 							border-bottom: 1px solid;
 							&::after {
 								opacity: 1;
@@ -1217,7 +1218,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							}
 						}
 						&:hover {
-							color: var(--maxi-white);
+							color: var(--maxi-black);
 							&::before {
 								opacity: 1;
 							}
@@ -1567,6 +1568,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							font-weight: normal;
 							text-align: center;
 							text-decoration: none;
+							transition: all 0.4s ease !important;
 							&:before {
 								content: '';
 								display: block;
@@ -1575,7 +1577,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 								right: -1px;
 								top: -1px;
 								bottom: -1px;
-								background-color: var(--maxi-cloud-primary);
+								background-color: var(
+									--maxi-cloud-primary-light
+								);
 								z-index: -1;
 								transition: 0.1s;
 								opacity: 0;
@@ -1590,11 +1594,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 								bottom: -1px;
 								width: 1px;
 								display: block;
-								background-color: var(--maxi-white);
+								background-color: var(--maxi-black);
 								opacity: 0;
 							}
 							&:hover {
-								color: var(--maxi-white);
+								color: var(--maxi-black);
 								&::before {
 									opacity: 1;
 								}
@@ -1621,8 +1625,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 						}
 						&--selected {
 							a {
-								font-weight: 500;
-								color: var(--maxi-white);
+								font-weight: 700;
+								color: var(--maxi-black);
 
 								&::before {
 									opacity: 1;
@@ -1645,7 +1649,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					border: 1px solid var(--maxi-grey-light);
 					padding: 0;
 					cursor: pointer;
-					transition: 1s;
+					transition: transform 0.3s ease, box-shadow 0.3s ease;
 					animation: 1s ease-out 0s 1 fadeIn;
 					border-radius: 8px;
 
@@ -1676,9 +1680,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 								transition: all 0.3s ease; // Add transition
 
 								&:hover {
-									background-color: var(--maxi-cloud-primary);
-									border: 1px solid var(--maxi-cloud-primary);
-									color: var(--maxi-white);
+									background-color: var(
+										--maxi-cloud-primary-light
+									);
+									border: 1px solid
+										var(--maxi-cloud-primary-light);
+									color: var(--maxi-black);
 								}
 							}
 						}
@@ -1833,6 +1840,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				max-width: 450px;
 				margin-top: -38px;
 				margin-left: 13px;
+
 				&-item {
 					width: auto;
 					a {
@@ -1860,13 +1868,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 				background-color: var(--maxi-cloud-primary-whisper);
 				color: var(--maxi-grey-dark);
 				border: 1px solid var(--maxi-cloud-primary);
-				transition: 0.1s;
 				z-index: 100000;
+				transition: all 0.3s ease;
 
 				&:hover {
 					background-color: var(--maxi-cloud-primary);
-					color: var(--maxi-white);
+					color: var(--maxi-black);
 					border-color: var(--maxi-cloud-primary);
+					transition: all 0.4s ease !important;
 				}
 			}
 			&__button-connect-pro {
@@ -1932,7 +1941,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					margin-bottom: 8px;
 					.maxi-cloud-masonry__serial-tag {
 						color: var(--maxi-grey-dark);
-						font-weight: 500;
+						font-weight: 700;
 						font-size: 14px;
 					}
 				}
@@ -2770,6 +2779,51 @@ html[dir='rtl'] {
 					&__saved {
 						opacity: 0.4;
 						pointer-events: none;
+					}
+				}
+			}
+		}
+	}
+}
+
+.maxi-cloud-container__patterns__top-menu {
+	.ais-Menu {
+		&-item {
+			a {
+				&:before {
+					content: '';
+					position: absolute;
+					left: -1px;
+					right: -1px;
+					top: -1px;
+					bottom: -1px;
+					display: block;
+					background-color: var(--maxi-cloud-primary);
+					z-index: -1;
+					transition: 0.1s;
+					opacity: 0;
+				}
+				&:after {
+					content: '';
+					position: absolute;
+					z-index: 1;
+					left: -1px;
+					top: -1px;
+					bottom: -1px;
+					width: 1px;
+					display: block;
+					background-color: var(
+						--maxi-white
+					); // Changed from var(--maxi-black)
+					opacity: 0;
+				}
+				&:hover {
+					color: var(--maxi-white);
+					&::before {
+						opacity: 1;
+					}
+					&::after {
+						opacity: 1;
 					}
 				}
 			}

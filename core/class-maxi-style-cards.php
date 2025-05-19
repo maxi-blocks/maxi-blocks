@@ -622,19 +622,25 @@ class MaxiBlocks_StyleCards
             $active_sc['color']['customColors'] = $custom_colors;
 
             // Light style
+            if (!isset($active_sc['light'])) {
+                $active_sc['light'] = [];
+            }
+            if (!isset($active_sc['light']['styleCard'])) {
+                $active_sc['light']['styleCard'] = [];
+            }
             if (!isset($active_sc['light']['styleCard']['color'])) {
-                if (!isset($active_sc['light']['styleCard'])) {
-                    $active_sc['light']['styleCard'] = [];
-                }
                 $active_sc['light']['styleCard']['color'] = [];
             }
             $active_sc['light']['styleCard']['color']['customColors'] = $custom_colors;
 
             // Dark style
+            if (!isset($active_sc['dark'])) {
+                $active_sc['dark'] = [];
+            }
+            if (!isset($active_sc['dark']['styleCard'])) {
+                $active_sc['dark']['styleCard'] = [];
+            }
             if (!isset($active_sc['dark']['styleCard']['color'])) {
-                if (!isset($active_sc['dark']['styleCard'])) {
-                    $active_sc['dark']['styleCard'] = [];
-                }
                 $active_sc['dark']['styleCard']['color'] = [];
             }
             $active_sc['dark']['styleCard']['color']['customColors'] = $custom_colors;

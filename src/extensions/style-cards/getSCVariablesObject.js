@@ -9,7 +9,7 @@ import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttr
 import { getActiveColourFromSC } from '@editor/style-cards/utils';
 import getTypographyStyles from '@extensions/styles/helpers/getTypographyStyles';
 import replaceUndefinedWithNull from './utils';
-import { extractRGBValues } from './customColorsUtils';
+import extractRGBValues from './extractRGBValues';
 
 /**
  * External dependencies

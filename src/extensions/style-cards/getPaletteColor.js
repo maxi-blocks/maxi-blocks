@@ -3,7 +3,7 @@
  */
 import getBlockStyle from '@extensions/styles/getBlockStyle';
 import getActiveStyleCard from './getActiveStyleCard';
-import { extractRGBValues } from './customColorsUtils';
+import extractRGBValues from './extractRGBValues';
 
 /**
  * Fallback function to get custom color from CSS variables

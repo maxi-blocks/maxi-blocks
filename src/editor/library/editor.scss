@@ -470,7 +470,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				path {
 					fill: var(--maxi-cloud-primary);
 					stroke: var(--maxi-white);
-					transition: 0.1s;
+					transition: all 0.4s ease !important;
 				}
 			}
 
@@ -781,7 +781,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							right: -1px;
 							top: -1px;
 							bottom: -1px;
-							background-color: var(--maxi-cloud-primary);
+							background-color: var(--maxi-cloud-primary-light);
 							z-index: -1;
 							transition: all 0.4s ease; // Add transition
 							opacity: 0;
@@ -803,8 +803,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 						&:hover,
 						&___pressed {
-							font-weight: 500;
-							color: var(--maxi-white);
+							font-weight: 700;
+							color: var(--maxi-black);
 
 							&::before {
 								opacity: 1;
@@ -942,7 +942,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							align-items: center;
 							flex-direction: column;
 							cursor: pointer;
-							transition: all 0.4s ease; // Add transition
+							transition: all 0.4s ease !important;
 							transform: translateY(19px);
 
 							&__title {
@@ -961,11 +961,24 @@ $border-light: 1px solid var(--maxi-grey-light);
 								width: 64px;
 								margin-bottom: 12px;
 							}
+
 							//span to show button on hover
+
+							&:hover {
+								span {
+									opacity: 1;
+									transition: all 0.4s ease !important;
+									color: var(--maxi-white);
+									background-color: var(--maxi-black);
+
+									&::before {
+										opacity: 1;
+									}
+								}
+							}
 							span {
 								position: relative;
-								border: 1.5px solid
-									var(--maxi-cloud-primary-light);
+								border: 1.5px solid var(--maxi-black);
 								border-radius: 20px;
 								color: var(--maxi-grey-dark);
 								font-family: 'Inter', Helvetica, Arial, Lucida,
@@ -973,7 +986,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 								font-weight: 600;
 								line-height: 100%;
 								padding: 8px 35px;
-								transition: all 0.4s ease;
+								transition: all 0.4s ease !important;
 								opacity: 0;
 								margin-top: -5px;
 								margin-bottom: -5px;
@@ -994,8 +1007,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 								&:hover {
 									transition: all 0.4s ease; // Add transition
 									color: var(--maxi-white);
-									background-color: var(--maxi-cloud-primary);
-
+									background-color: var(--maxi-black);
+									opacity: 1;
+									transition: all 0.4s ease !important;
 									&::before {
 										opacity: 1;
 									}
@@ -1173,7 +1187,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							bottom: -1px;
 							display: block;
 							background-color: var(--maxi-cloud-primary-light);
-							transition: 0.1s;
+							transition: all 0.4s ease !important;
 							opacity: 0;
 						}
 						&:after {
@@ -1298,7 +1312,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							height: 15px;
 							display: flex;
 							padding: 2px 0 0 2px;
-							fill: currentColor;
+							fill: currentColor !important;
 						}
 					}
 					&__input,
@@ -1332,23 +1346,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 					margin: 0;
 					padding: 0;
 					align-items: center;
+					transition: all 0.4s ease !important; // Added transition here
+
 					&--selected {
 						a {
 							background-color: var(--maxi-cloud-primary-whisper);
-							color: var(
-								--maxi-white
-							); // Adding white text for better contrast
-
-							.ais-RefinementList-count,
-							.ais-RefinementList-labelText {
-								color: var(
-									--maxi-white
-								); // Changed from var(--maxi-orange-red)
-							}
-
-							&:focus {
-								box-shadow: none;
-							}
+							color: var(--maxi-white);
 						}
 					}
 					a {
@@ -1362,7 +1365,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							sans-serif;
 						font-weight: 500;
 						font-size: 13px;
-						transition: color 0.2s;
+						transition: all 0.4s ease !important;
 						text-decoration: none;
 						outline: none;
 
@@ -1374,6 +1377,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						&:hover {
 							background-color: var(--maxi-cloud-primary-whisper);
 							box-shadow: none;
+							transition: all 0.4s ease !important;
 						}
 						.ais-RefinementList-checkbox {
 							display: none;
@@ -1390,7 +1394,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							&.ais-HierarchicalMenu-item-arrow {
 								display: inline-block;
 								margin-left: -15.78px;
-								transition: 0.3s;
+								transition: all 0.4s ease !important;
 								opacity: 0;
 							}
 							&[visible='visible'] {
@@ -1420,13 +1424,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 							a {
 								&:hover {
 									background-color: var(--maxi-white);
-									// color: var(--maxi-orange-red);
 								}
 							}
 							&--selected {
 								a {
 									background-color: var(--maxi-white);
-									// color: var(--maxi-orange-red);
+
 									&:hover {
 										background-color: var(
 											--maxi-light-blue
@@ -1473,7 +1476,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					.sub_menu-wrapper {
 						transform: scaleY(0);
 						transform-origin: top center;
-						transition: 0.3s;
+						transition: all 0.4s ease !important;
 					}
 					&--selected {
 						.sub_menu-wrapper {
@@ -1523,14 +1526,20 @@ $border-light: 1px solid var(--maxi-grey-light);
 							box-shadow: none;
 							position: relative;
 							z-index: 1;
+							transition: all 0.4s ease !important;
 							&:hover {
-								border-color: var(--maxi-cloud-hover);
+								background-color: var(
+									--maxi-cloud-primary-light
+								);
+								transition: all 0.4s ease !important;
 							}
 						}
 						&--selected {
 							a {
-								border-color: var(--maxi-cloud-hover-deep);
-								font-weight: 500;
+								background-color: var(
+									--maxi-cloud-primary-light
+								);
+								font-weight: 700;
 							}
 						}
 					}
@@ -1538,6 +1547,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 			&__top-menu {
 				.ais-Menu {
+					transition: all 0.4s ease !important;
 					&-list {
 						display: flex;
 						margin: 0;
@@ -1568,7 +1578,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							font-weight: normal;
 							text-align: center;
 							text-decoration: none;
-							transition: all 0.4s ease !important;
+
 							&:before {
 								content: '';
 								display: block;
@@ -1581,7 +1591,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 									--maxi-cloud-primary-light
 								);
 								z-index: -1;
-								transition: 0.1s;
+								transition: all 0.4s ease !important;
 								opacity: 0;
 								border-radius: inherit; /* Inherit border radius from parent */
 							}
@@ -1594,11 +1604,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 								bottom: -1px;
 								width: 1px;
 								display: block;
-								background-color: var(--maxi-black);
+								background-color: var(--maxi-white);
 								opacity: 0;
 							}
 							&:hover {
 								color: var(--maxi-black);
+								transition: all 0.4s ease !important;
 								&::before {
 									opacity: 1;
 								}
@@ -1686,6 +1697,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 									border: 1px solid
 										var(--maxi-cloud-primary-light);
 									color: var(--maxi-black);
+									transition: all 0.4s ease !important;
 								}
 							}
 						}
@@ -1731,12 +1743,16 @@ $border-light: 1px solid var(--maxi-grey-light);
 							display: flex !important;
 							justify-content: center !important;
 							align-items: center !important;
-							transition: all 0.3s ease;
+							transition: all 0.4s ease;
 
 							&:hover {
-								background-color: var(--maxi-cloud-primary);
-								border: 1px solid var(--maxi-cloud-primary);
-								color: var(--maxi-white);
+								background-color: var(
+									--maxi-cloud-primary-light
+								);
+								border: 1px solid
+									var(--maxi-cloud-primary-light);
+								color: var(--maxi-black);
+								transition: all 0.4s ease !important;
 							}
 						}
 
@@ -1804,7 +1820,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					background: var(--maxi-white);
 					border-radius: 10px;
 					overflow: hidden;
-					transition: all 0.3s ease;
+					transition: all 0.4s ease !important;
 
 					/* Pro version card style */
 					&-pro {
@@ -1814,6 +1830,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					/* Card hover state */
 					&:hover {
 						background: var(--maxi-off-white) !important;
+						transition: all 0.4s ease !important;
 					}
 				}
 				.maxi-cloud-masonry-card__image {
@@ -2798,9 +2815,9 @@ html[dir='rtl'] {
 					top: -1px;
 					bottom: -1px;
 					display: block;
-					background-color: var(--maxi-cloud-primary);
+					background-color: var(--maxi-cloud-primary-light);
 					z-index: -1;
-					transition: 0.1s;
+					transition: all 0.4s ease !important;
 					opacity: 0;
 				}
 				&:after {
@@ -2812,18 +2829,38 @@ html[dir='rtl'] {
 					bottom: -1px;
 					width: 1px;
 					display: block;
-					background-color: var(
-						--maxi-white
-					); // Changed from var(--maxi-black)
+					background-color: var(--maxi-white);
 					opacity: 0;
 				}
 				&:hover {
-					color: var(--maxi-white);
+					color: var(--maxi-black);
+					transition: all 0.4s ease !important;
 					&::before {
 						opacity: 1;
 					}
 					&::after {
 						opacity: 1;
+					}
+				}
+			}
+		}
+	}
+}
+
+.maxi-cloud-container {
+	&__patterns {
+		&__sidebar {
+			.ais-RefinementList-item,
+			.ais-HierarchicalMenu-item {
+				// Add transition for background hover
+				transition: all 0.4s ease !important;
+
+				a {
+					// Existing styles...
+					&:hover {
+						background-color: var(--maxi-cloud-primary-whisper);
+						box-shadow: none;
+						transition: all 0.4s ease !important;
 					}
 				}
 			}

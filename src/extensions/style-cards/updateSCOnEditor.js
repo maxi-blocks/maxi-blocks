@@ -88,28 +88,32 @@ const updateSCOnEditor = (
 	rawElements = [document, getSiteEditorIframe()],
 	isPreview = false // Added preview flag to prevent saving when just previewing changes
 ) => {
-	// Make sure we have a complete styleCards object with all required properties
-	const clonedStyleCards = { ...cloneDeep(styleCards) };
+	// Create a proper deep clone of styleCards
+	const clonedStyleCards = cloneDeep(styleCards);
 
 	// If we have custom colors in the root, make sure they're also in light and dark styles
 	if (clonedStyleCards.color?.customColors?.length > 0) {
-		// Ensure light style has the custom colors
-		if (!clonedStyleCards.light)
+		// Ensure light style has the custom colors without overwriting existing properties
+		if (!clonedStyleCards.light) {
 			clonedStyleCards.light = { styleCard: { color: {} } };
-		if (!clonedStyleCards.light.styleCard)
+		} else if (!clonedStyleCards.light.styleCard) {
 			clonedStyleCards.light.styleCard = { color: {} };
-		if (!clonedStyleCards.light.styleCard.color)
+		} else if (!clonedStyleCards.light.styleCard.color) {
 			clonedStyleCards.light.styleCard.color = {};
+		}
+		// Set the custom colors while preserving other properties
 		clonedStyleCards.light.styleCard.color.customColors =
 			clonedStyleCards.color.customColors;
 
-		// Ensure dark style has the custom colors
-		if (!clonedStyleCards.dark)
+		// Ensure dark style has the custom colors without overwriting existing properties
+		if (!clonedStyleCards.dark) {
 			clonedStyleCards.dark = { styleCard: { color: {} } };
-		if (!clonedStyleCards.dark.styleCard)
+		} else if (!clonedStyleCards.dark.styleCard) {
 			clonedStyleCards.dark.styleCard = { color: {} };
-		if (!clonedStyleCards.dark.styleCard.color)
+		} else if (!clonedStyleCards.dark.styleCard.color) {
 			clonedStyleCards.dark.styleCard.color = {};
+		}
+		// Set the custom colors while preserving other properties
 		clonedStyleCards.dark.styleCard.color.customColors =
 			clonedStyleCards.color.customColors;
 	}

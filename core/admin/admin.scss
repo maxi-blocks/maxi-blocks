@@ -79,7 +79,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 
 				&:hover {
-					color: var(--maxi-admin-green);
+					color: var(--maxi-admin-pink-hover);
 					background: transparent;
 					border: none;
 				}
@@ -100,7 +100,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 			// Get cloud button
 			.maxi-dashboard_get-cloud-link {
 				padding: 17px 33px;
-				background: var(--maxi-admin-pink-purple);
+				background: var(--maxi-admin-purple-hover);
 				color: var(--maxi-admin-black);
 				text-decoration: none;
 				border-radius: 26px;
@@ -257,8 +257,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 				a {
 					color: var(--maxi-admin-green);
+					transition: all 0.4s ease;
 					&:hover {
-						color: var(--maxi-admin-pink-purple);
+						color: var(--maxi-admin-purple-hover);
 					}
 				}
 				&-start {
@@ -611,7 +612,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								font-weight: 700;
 								height: auto;
 								line-height: 1.6;
-								transition: background 0.3s ease,
+								transition: background 0.4s ease,
 									transform 0.2s ease;
 
 								&:hover {
@@ -713,6 +714,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					a {
 						color: var(--maxi-primary-color);
 						&:hover {
+							transition: all 0.4s ease;
 							opacity: 0.5;
 						}
 					}
@@ -893,12 +895,13 @@ body.site-editor-php
 	text-decoration: none;
 	border-radius: 26px;
 	font-weight: 500;
-	transition: background-color 0.2s ease;
+	transition: all 0.4s ease;
 }
 
 .maxi-dashboard_setup-wizard-button:hover {
 	background-color: var(--maxi-admin-black-text);
 	color: var(--maxi-admin-white);
+	transition: all 0.4s ease;
 }
 
 .maxi-dashboard_setup-wizard-button:focus {

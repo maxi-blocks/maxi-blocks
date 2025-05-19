@@ -532,7 +532,7 @@ body .toolbar-item__popover {
 	}
 
 	.components-popover__content {
-		background-color: var(--maxi-white);
+		background-color: var(--maxi-white) !important;
 		border: 1px solid var(--maxi-grey-light);
 		border-radius: 0;
 		min-width: auto;

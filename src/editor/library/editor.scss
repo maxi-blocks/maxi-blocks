@@ -65,9 +65,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 				align-items: center;
 
 				&:hover {
-					background: var(--maxi-pastel-green);
+					background: var(--maxi-pastel-green) !important;
 					border-color: var(--maxi-secondary-color);
-					color: var(--maxi-black);
+					color: var(--maxi-black) !important;
 					font-weight: 800;
 				}
 			}

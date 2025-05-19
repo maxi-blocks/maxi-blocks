@@ -36,6 +36,11 @@ body .toolbar-item__popover {
 		}
 		svg {
 			fill: var(--maxi-grey-dark) !important;
+			transition: fill 0.4s ease;
+
+			&:hover {
+				fill: var(--maxi-primary-color) !important;
+			}
 		}
 	}
 	.block-editor-link-control__settings {

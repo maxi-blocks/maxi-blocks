@@ -23,11 +23,22 @@
 			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			cursor: pointer;
+			transition: all 0.4s ease;
+
+			.clip-path-defaults__clip-path {
+				background-color: var(--maxi-grey-light);
+				transition: all 0.4s ease;
+			}
+
+			path {
+				fill: var(--maxi-grey-light);
+				transition: all 0.4s ease;
+			}
 
 			&[aria-pressed='true'],
 			&:hover {
-				background: var(--maxi-whisper-green);
-				border: 2px solid var(--maxi-mid-green) !important;
+				background: var(--maxi-pastel-green);
+				border: 1px solid var(--maxi-primary-color) !important;
 
 				.clip-path-defaults__clip-path {
 					background-color: var(--maxi-secondary-color);

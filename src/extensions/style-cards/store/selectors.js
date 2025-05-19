@@ -260,7 +260,7 @@ export const receiveMaxiSelectedStyleCardValue = (
 	attribute,
 	type = null
 ) => {
-	const { value } = receiveMaxiSelectedStyleCard(state);
+	const { value } = receiveMaxiSelectedStyleCard(state) || {};
 
 	if (isEmpty(value)) return null;
 

@@ -161,7 +161,7 @@ const traverseAndResetDefault = (
 			if (Object.prototype.hasOwnProperty.call(currentObject, key)) {
 				if (
 					key.includes('palette-color') &&
-					currentObject[key] === deletedColorId
+					Number(currentObject[key]) === deletedColorId
 				) {
 					const blockSpecificDefault = getDefaultAttribute(
 						key,
@@ -270,7 +270,7 @@ const traverseAndRemapId = (
 			if (Object.prototype.hasOwnProperty.call(currentObject, key)) {
 				if (
 					key.includes('palette-color') &&
-					currentObject[key] === oldIdToFind
+					Number(currentObject[key]) === oldIdToFind
 				) {
 					currentObject[key] = newIdToSet;
 					modified = true;

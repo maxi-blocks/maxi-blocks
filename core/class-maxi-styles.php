@@ -946,15 +946,7 @@ class MaxiBlocks_Styles
 
         foreach ($color_vars as $color_key => $color_value) {
             // Check if this is a custom color
-            $is_custom_color = false;
-            $style_type = '';
-            $custom_index = -1;
-
             if (preg_match('/--maxi-(light|dark)-color-custom-(\d+)/', $color_key, $matches)) {
-                $is_custom_color = true;
-                $style_type = $matches[1];
-                $custom_index = intval($matches[2]);
-
                 // Handle custom colors separately
                 $this->process_custom_color_change($style_card_vars, $color_key, $color_value, $changed_custom_colors);
                 continue;
@@ -991,21 +983,11 @@ class MaxiBlocks_Styles
         } else {
             $new_style = $style;
 
-            // Apply regular color changes
-            foreach ($changed_sc_colors as $color_key => $color_value) {
-                $old_color_str =
-                    "rgba(var($color_key," . $color_vars[$color_key] . ')';
-                $new_color_str = "rgba(var($color_key," . $color_value . ')';
+            // Merge both color change arrays and apply all replacements in a single loop
+            $all_color_changes = array_merge($changed_sc_colors, $changed_custom_colors);
 
-                $new_style = str_replace(
-                    $old_color_str,
-                    $new_color_str,
-                    $new_style
-                );
-            }
-
-            // Apply custom color changes
-            foreach ($changed_custom_colors as $color_key => $color_value) {
+            // Apply all color changes in a single pass
+            foreach ($all_color_changes as $color_key => $color_value) {
                 $old_color_str =
                     "rgba(var($color_key," . $color_vars[$color_key] . ')';
                 $new_color_str = "rgba(var($color_key," . $color_value . ')';

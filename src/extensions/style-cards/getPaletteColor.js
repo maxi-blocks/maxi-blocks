@@ -3,6 +3,7 @@
  */
 import getBlockStyle from '@extensions/styles/getBlockStyle';
 import getActiveStyleCard from './getActiveStyleCard';
+import { extractRGBValues } from './customColorsUtils';
 
 /**
  * Fallback function to get custom color from CSS variables
@@ -29,33 +30,6 @@ const getCustomColorFromCSS = (blockStyle, customIndex) => {
 
 	// Fallback to a default color
 	return '0, 0, 0';
-};
-
-/**
- * Extract RGB values from a color string
- */
-const extractRGBValues = colorString => {
-	if (!colorString) return '0, 0, 0';
-
-	// Check if it's an rgba format
-	const rgbaMatch = colorString.match(
-		/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/
-	);
-	if (rgbaMatch) {
-		return `${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}`;
-	}
-
-	// If it's a hex color, convert to RGB
-	if (colorString.startsWith('#')) {
-		const hex = colorString.replace('#', '');
-		const r = parseInt(hex.substr(0, 2), 16);
-		const g = parseInt(hex.substr(2, 2), 16);
-		const b = parseInt(hex.substr(4, 2), 16);
-		return `${r}, ${g}, ${b}`;
-	}
-
-	// Return the color as is if we can't extract RGB values
-	return colorString;
 };
 
 const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {

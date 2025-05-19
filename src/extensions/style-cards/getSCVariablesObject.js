@@ -9,6 +9,7 @@ import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttr
 import { getActiveColourFromSC } from '@editor/style-cards/utils';
 import getTypographyStyles from '@extensions/styles/helpers/getTypographyStyles';
 import replaceUndefinedWithNull from './utils';
+import { extractRGBValues } from './customColorsUtils';
 
 /**
  * External dependencies
@@ -57,42 +58,6 @@ const getParsedObj = obj => {
 	});
 
 	return newObj;
-};
-
-/**
- * Extract RGB values from a color string to use in CSS variables
- *
- * @param {string} colorInput - The color string (rgba, hex, etc.)
- * @return {string} The RGB values as a comma-separated string
- */
-const extractRGBValues = colorInput => {
-	if (!colorInput) return '0, 0, 0';
-
-	// Handle color objects
-	const colorValue =
-		typeof colorInput === 'object' && colorInput.value
-			? colorInput.value
-			: colorInput;
-
-	// Check if it's an rgba format
-	const rgbaMatch = colorValue.match(
-		/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/
-	);
-	if (rgbaMatch) {
-		return `${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}`;
-	}
-
-	// If it's a hex color, convert to RGB
-	if (colorValue.startsWith('#')) {
-		const hex = colorValue.replace('#', '');
-		const r = parseInt(hex.substr(0, 2), 16);
-		const g = parseInt(hex.substr(2, 2), 16);
-		const b = parseInt(hex.substr(4, 2), 16);
-		return `${r}, ${g}, ${b}`;
-	}
-
-	// Return the color as is if we can't extract RGB values
-	return colorValue;
 };
 
 const getSCVariablesObject = (

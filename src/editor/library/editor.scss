@@ -40,10 +40,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 			flex: 5;
 			display: flex;
 			align-items: center;
+			transition: all 0.4s ease;
 
 			// Add button hover styles
 			.maxi-cloud-masonry-card__button {
-				transition: all 0.3s ease;
+				transition: all 0.4s ease;
 
 				&:hover {
 					// border-color: var(--maxi-cloud-primary);

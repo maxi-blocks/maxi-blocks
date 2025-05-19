@@ -572,14 +572,18 @@ html[dir='rtl'] {
 		border-radius: 0;
 		background: var(--maxi-white);
 		visibility: visible;
-		transition: 0.3s;
+		transition: all 0.4s ease !important; // Updated transition to include all properties
 
 		svg {
 			fill: var(--maxi-primary-color);
 			width: 15px;
 			height: 15px;
+			transition: fill 0.3s ease; // Added transition for svg fill
 		}
 		&:hover {
+			background-color: var(--maxi-pastel-green) !important;
+			transition: all 0.4s ease !important;
+			border-color: var(--maxi-primary-color);
 			svg {
 				fill: var(--maxi-primary-color);
 			}
@@ -744,7 +748,7 @@ input.maxi-advanced-number-control__value {
 		cursor: pointer !important;
 
 		&:hover {
-			border-color: var(--maxi-grey-dark) !important;
+			border-color: var(--maxi-primary-color) !important;
 		}
 
 		&:focus {

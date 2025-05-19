@@ -36,8 +36,12 @@ $grid-unit-20: 20px;
 	border-radius: $radius-block-ui;
 	box-sizing: border-box;
 	width: min-content;
-
 	position: relative !important;
+	transition: all 0.4s ease;
+
+	&:hover {
+		background-color: var(--maxi-pastel-green) !important;
+	}
 
 	// Alternate treatment for popovers that put them at elevation zero with high contrast.
 	.is-alternate & {

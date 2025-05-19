@@ -75,7 +75,7 @@ const ColorPaletteControl = props => {
 		}
 
 		return {
-			customColors: colors,
+			customColors: colors || [],
 		};
 	});
 

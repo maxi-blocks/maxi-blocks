@@ -409,7 +409,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							width: 24px;
 							height: 24px;
 							text-align: center;
-							transition: all 0.35s;
+							transition: all 0.5s;
 							color: var(--maxi-admin-black);
 							transform-origin: center;
 							font-size: 16px;
@@ -457,6 +457,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								border-color: var(--maxi-admin-border-light);
 								max-height: 10000vh;
 								padding: 25px 25px 20px 34px;
+								transition: all 0.5s ease-in-out;
 							}
 						}
 					}
@@ -466,7 +467,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 						background: white;
 						max-height: 0;
 						padding: 0 24px;
-						transition: all 0.35s;
+						transition: all 0.5s;
 						overflow: hidden;
 
 						&-setting {

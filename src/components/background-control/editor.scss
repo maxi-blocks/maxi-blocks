@@ -276,17 +276,18 @@
 
 body.maxi-blocks--active .components-popover__fallback-container {
 	button.components-button.is-link {
-		height: 24px;
-		background-color: var(--maxi-pastel-green);
-		border: 1px solid var(--maxi-mid-green);
+		height: 30px;
+		border: 1.5px solid var(--maxi-secondary-color);
+		color: var(--maxi-secondary-color) !important;
+		background: var(--maxi-whisper-green);
 		border-radius: 30px;
 		text-decoration: none;
-		color: var(--maxi-grey-dark);
 		padding: 0 10px;
+		transition: all 0.5s ease-in-out;
 
 		&:hover {
-			background-color: var(--maxi-mid-green) !important;
 			border-color: var(--maxi-primary-color) !important;
+			background: var(--maxi-mid-green);
 		}
 	}
 }

@@ -149,25 +149,12 @@ class MaxiBlocks_StyleCards
             return $style;
         }
 
-        // Get the active style card
-        $active_style_card = null;
+        // Re-use the centralized helper – it already performs all validations
+        $active_style_card = self::get_maxi_blocks_active_style_card();
 
-        foreach ($style_card_obj as $key => $value) {
-            if (is_array($value) && isset($value['status']) && $value['status'] === 'active') {
-                $active_style_card = $value;
-                break;
-            }
-        }
-
+        // Bail out early when no active card is available
         if (!$active_style_card) {
-            // If no active card found, use the first one as fallback
-            $first_key = array_key_first($style_card_obj);
-            $active_style_card = $style_card_obj[$first_key] ?? null;
-
-            // If still no active card, return original style
-            if (!$active_style_card) {
-                return $style;
-            }
+            return $style;
         }
 
         // Extract custom colors from the active style card

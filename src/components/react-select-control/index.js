@@ -11,9 +11,13 @@ const ReactSelectControl = ({ labelText, ...props }) => {
 			whiteSpace: 'wrap',
 			borderBottom: '1px solid var(--maxi-grey-light)',
 			backgroundColor: `${
-				state.isFocused ? 'rgba(229, 242, 248, 0.7)' : 'var(--maxi-white)'
+				state.isFocused
+					? 'rgba(229, 242, 248, 0.7)'
+					: 'var(--maxi-white)'
 			} !important`,
-			color: 'var(--maxi-grey) !important',
+			color: `${
+				state.isFocused ? 'var(--maxi-black)' : 'var(--maxi-grey)'
+			} !important`,
 			width: 'auto',
 			cursor: 'pointer',
 		}),

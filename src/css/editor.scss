@@ -15,14 +15,11 @@
 ******************/
 .interface-interface-skeleton {
 	&__sidebar {
-		transition: all 0.5s ease;
 		overflow-x: hidden;
 		.interface-complementary-area__fill {
-			transition: all 0.5s ease;
 			position: relative !important;
 			width: auto !important;
 			.editor-sidebar {
-				transition: all 0.5s ease;
 				min-width: 295px;
 				overflow-x: hidden;
 			}
@@ -30,7 +27,6 @@
 	}
 
 	&__content {
-		transition: all 0.5s ease;
 		background-color: transparent !important;
 	}
 }
@@ -658,8 +654,6 @@ body.maxi-blocks--active
 }
 
 .maxi-tabs-control__button {
-	transition: all 0.5s ease;
-
 	&-none {
 		svg path {
 			transition: fill 0.5s ease;
@@ -781,9 +775,6 @@ input.maxi-advanced-number-control__value {
 			fill: var(--maxi-secondary-color) !important;
 		}
 	}
-
-	&:active {
-	}
 }
 
 // Field wrapper
@@ -809,22 +800,4 @@ body {
 			transition: all 0.3s ease;
 		}
 	}
-}
-
-/* Global transitions */
-*,
-*::before,
-*::after,
-.maxi-sidebar *,
-.maxi-popover *,
-.maxi-block *,
-.maxi-components-button,
-.maxi-base-control *,
-.interface-interface-skeleton *,
-.block-editor-inserter *,
-.components-base-control *,
-.maxi-settings-media-upload *,
-.maxi-tabs-control__button * {
-	transition-timing-function: ease;
-	transition-duration: 0.5s;
 }

@@ -9,41 +9,43 @@
 		color: var(--maxi-grey-dark);
 		background-color: var(--maxi-whisper-green);
 		font-size: 13px;
-		border: 1px solid var(--maxi-grey-light);
-		border-radius: 3px;
+		border: 1px solid var(--maxi-primary-color);
+		border-radius: 10px;
 		box-shadow: none !important;
 
 		.maxi-block-library__modal-button {
-			padding: 0 10px 0 0;
 			overflow: hidden;
 			color: var(--maxi-white);
-			background: var(--maxi-secondary-color);
+			background: var(--maxi-primary-color);
 			font-family: Inter, sans-serif;
 			font-size: 12px;
-			font-weight: 500;
+			font-weight: 800;
+			padding: 22px 22px 22px 10px;
 			border: 1px solid var(--maxi-grey-light);
 			transition: all 0.1s;
+			border-radius: 30px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.4s ease;
 
 			svg {
 				width: 36px;
 				height: 36px;
 				padding: 8px;
-				margin-right: 10px;
-				background-color: var(--maxi-white);
-				border-right: 1px solid var(--maxi-grey-light);
-				transition: all 0.1s;
+
 				path {
-					fill: var(--maxi-secondary-color);
+					fill: var(--maxi-white);
 				}
 			}
 
 			&:hover {
 				background: var(--maxi-white) !important;
-				color: var(--maxi-secondary-color) !important;
-				border-color: var(--maxi-secondary-color);
-				svg {
-					border-color: var(--maxi-secondary-color);
-					transform: scale(1.1);
+				color: var(--maxi-cloud-primary-contrast) !important;
+				border-color: var(--maxi-primary-color);
+
+				path {
+					fill: var(--maxi-primary-green) !important;
 				}
 			}
 		}
@@ -59,6 +61,7 @@
 				}
 			}
 		}
+
 		&--smaller {
 			.maxi-block-library__modal-button {
 				height: 30px;
@@ -69,6 +72,7 @@
 			}
 		}
 	}
+
 	&__replace-icon {
 		width: 30px;
 		height: 30px;
@@ -82,12 +86,14 @@
 			width: 15px;
 			height: 15px;
 		}
+
 		&:hover {
 			svg {
 				fill: var(--maxi-primary-color);
 			}
 		}
 	}
+
 	.maxi-svg-icon-block__icon {
 		max-height: 100%;
 		svg {
@@ -95,6 +101,7 @@
 			max-height: 100%;
 		}
 	}
+
 	.maxi-library-modal__action-section {
 		margin-right: 0;
 	}

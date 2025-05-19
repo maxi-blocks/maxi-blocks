@@ -34,7 +34,7 @@
 		background: var(--maxi-primary-color) !important;
 		box-shadow: none;
 		border-radius: 0;
-		transition: all 0s ease;
+		transition: all 0.4s ease;
 
 		&--repeater {
 			background: var(--maxi-tertiary-color) !important;
@@ -73,7 +73,7 @@
 					box-shadow: none !important;
 					text-align: left;
 					text-transform: capitalize;
-					transition: 0.3s;
+					transition: all 0.4s ease;
 					&::after,
 					&::before {
 						content: '';
@@ -89,7 +89,7 @@
 						width: 0;
 						margin: auto;
 						background-color: var(--maxi-secondary-color);
-						transition: 0.3s;
+						transition: all 0.4s ease;
 					}
 					&:hover {
 						background-color: var(--maxi-whisper-green);
@@ -169,7 +169,7 @@
 			width: 0;
 			height: 5px;
 			background-color: var(--maxi-primary-color);
-			transition: all 0.3s ease;
+			transition: all 0.4s ease;
 		}
 
 		&:hover:before {
@@ -200,7 +200,7 @@
 			opacity: 0;
 			height: 10px;
 			cursor: pointer;
-			transition: all 0.3s ease;
+			transition: all 0.4s ease;
 
 			&::before {
 				content: '';

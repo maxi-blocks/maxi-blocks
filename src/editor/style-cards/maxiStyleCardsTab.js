@@ -943,6 +943,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										{customColors.map(colorObj => (
 											<div
 												key={`maxi-style-cards__custom-color-presets__box-${colorObj.id}`}
+												data-color-id={colorObj.id}
 												className={classnames(
 													'maxi-style-cards__custom-color-presets__box',
 													selectedCustomColorId ===

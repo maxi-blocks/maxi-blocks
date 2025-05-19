@@ -396,73 +396,69 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const saveCurrentSC = () => {
 		const isChosenActive = selectedSCValue?.status === 'active';
 
-		// Prioritize selectedSCValue from the store as it's updated by onChangeValue
-		const baseColorsRaw =
-			selectedSCValue?.color?.customColors ||
-			selectedSCValue?.light?.styleCard?.color?.customColors ||
-			selectedSCValue?.dark?.styleCard?.color?.customColors ||
-			[];
+		// Get custom colors from the store
+		const { receiveMaxiSelectedStyleCardValue } =
+			window.wp.data.select('maxiBlocks/style-cards') || {};
 
-		let finalCustomColors = getShapedCustomColors(baseColorsRaw);
+		// First try to get colors from the store (most reliable source)
+		let finalCustomColors = [];
+		if (typeof receiveMaxiSelectedStyleCardValue === 'function') {
+			const storeColors =
+				receiveMaxiSelectedStyleCardValue('customColors');
+			if (Array.isArray(storeColors) && storeColors.length > 0) {
+				finalCustomColors = getShapedCustomColors(storeColors);
+			}
+		}
 
-		// Attempt to get customColors from the MaxiStyleCardsTab component's current state via DOM (less reliable)
-		// This is kept as a potential fallback or for comparison, but should ideally be phased out.
-		let uiCustomColors = [];
-		const styleCardsTabNode = document.querySelector(
-			'.maxi-blocks-sc__type--custom-color-presets .maxi-style-cards__custom-color-presets'
-		);
+		// If store doesn't have colors, fall back to selectedSCValue
+		if (finalCustomColors.length === 0) {
+			const baseColorsRaw =
+				selectedSCValue?.color?.customColors ||
+				selectedSCValue?.light?.styleCard?.color?.customColors ||
+				selectedSCValue?.dark?.styleCard?.color?.customColors ||
+				[];
 
-		if (styleCardsTabNode) {
-			const customColorItems = styleCardsTabNode.querySelectorAll(
-				'.maxi-style-cards__custom-color-presets__box'
+			finalCustomColors = getShapedCustomColors(baseColorsRaw);
+		}
+
+		// As a last resort, try to get colors from DOM (least reliable)
+		if (finalCustomColors.length === 0) {
+			let uiCustomColors = [];
+			const styleCardsTabNode = document.querySelector(
+				'.maxi-blocks-sc__type--custom-color-presets .maxi-style-cards__custom-color-presets'
 			);
-			if (customColorItems && customColorItems.length > 0) {
-				uiCustomColors = Array.from(customColorItems).map(item => {
-					const colorSpan = item.querySelector(
-						'.maxi-style-cards__custom-color-presets__box__item'
-					);
-					const colorName = item.getAttribute('title') || '';
-					const colorIdAttr = item.getAttribute('key'); // e.g., maxi-style-cards__custom-color-presets__box-1234567890
-					let colorId = null;
-					if (colorIdAttr && colorIdAttr.includes('-')) {
-						const parts = colorIdAttr.split('-');
-						const potentialId = parts[parts.length - 1];
-						if (!Number.isNaN(Number(potentialId)))
-							colorId = Number(potentialId);
-					}
 
-					return {
-						id: colorId, // May need regeneration if null or duplicate
-						value: colorSpan
-							? colorSpan.style.background
-							: 'transparent',
-						name:
-							colorName === __('Custom Colour', 'maxi-blocks')
-								? ''
-								: colorName,
-					};
-				});
-				uiCustomColors = getShapedCustomColors(uiCustomColors); // Ensure IDs are numeric and unique
+			if (styleCardsTabNode) {
+				const customColorItems = styleCardsTabNode.querySelectorAll(
+					'.maxi-style-cards__custom-color-presets__box'
+				);
+				if (customColorItems && customColorItems.length > 0) {
+					uiCustomColors = Array.from(customColorItems).map(item => {
+						const colorSpan = item.querySelector(
+							'.maxi-style-cards__custom-color-presets__box__item'
+						);
+						const colorName = item.getAttribute('title') || '';
+						// Use data-color-id attribute we added to the component
+						const colorId = item.dataset.colorId
+							? Number(item.dataset.colorId)
+							: null;
 
-				// If finalCustomColors (from selectedSCValue) is empty, and uiCustomColors is not, consider using uiCustomColors.
-				// However, this indicates a potential state desync. For now, we'll log if they differ significantly.
-				if (
-					finalCustomColors.length === 0 &&
-					uiCustomColors.length > 0
-				) {
-					console.warn(
-						'[MaxiBlocks DEBUG maxiStyleCardsEditor] saveCurrentSC - selectedSCValue had no custom colors, but DOM parsing did. Using DOM version. This might indicate a state issue.'
-					);
-					finalCustomColors = uiCustomColors;
-				} else if (
-					JSON.stringify(finalCustomColors) !==
-						JSON.stringify(uiCustomColors) &&
-					uiCustomColors.length > 0
-				) {
-					// Log if they are different and uiCustomColors has items - might indicate DOM is more up-to-date or vice-versa
-					console.warn(
-						'[MaxiBlocks DEBUG maxiStyleCardsEditor] saveCurrentSC - Custom colors from selectedSCValue and DOM differ. Prioritizing selectedSCValue. DOM version:',
-						JSON.stringify(uiCustomColors)
+						return {
+							id: colorId,
+							value: colorSpan
+								? colorSpan.style.background
+								: 'transparent',
+							name:
+								colorName === __('Custom Colour', 'maxi-blocks')
+									? ''
+									: colorName,
+						};
+					});
+
+					finalCustomColors = getShapedCustomColors(uiCustomColors);
+					console.info(
+						'[MaxiBlocks] Custom colors fetched from DOM as fallback',
+						finalCustomColors.length
 					);
 				}
 			}

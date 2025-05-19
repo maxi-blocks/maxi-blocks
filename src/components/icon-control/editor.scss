@@ -31,6 +31,12 @@
 	text-align: left;
 }
 .maxi-settingstab-control.maxi-axis-position-control.maxi-icon-control__position {
-	text-align: left !important;
-	left: 0 !important;
+	margin-bottom: 4px !important;
+	display: block !important;
+}
+
+.maxi-icon-control__position {
+	.maxi-base-control__label {
+		margin-bottom: 4px !important;
+	}
 }

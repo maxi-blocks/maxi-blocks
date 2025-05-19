@@ -1,4 +1,4 @@
-.maxi-background-control {
+body .maxi-background-control {
 	padding-top: 8px;
 	.maxi-tabs-control__full-width {
 		column-gap: 5px;
@@ -128,6 +128,10 @@
 
 			.components-custom-gradient-picker__ui-line {
 				margin-bottom: 0;
+
+				.components-input-control__container:hover {
+					border-color: var(--maxi-primary-color) !important;
+				}
 			}
 		}
 

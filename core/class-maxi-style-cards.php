@@ -491,7 +491,14 @@ class MaxiBlocks_StyleCards
                         (!isset($card['light']['styleCard']['color']) ||
                          !isset($card['light']['styleCard']['color']['customColors']))) {
 
-                        if (!isset($card['light']['styleCard']['color'])) {
+                        // Ensure all parent keys exist before writing
+                        if (!isset($decoded[$key]['light'])) {
+                            $decoded[$key]['light'] = array();
+                        }
+                        if (!isset($decoded[$key]['light']['styleCard'])) {
+                            $decoded[$key]['light']['styleCard'] = array();
+                        }
+                        if (!isset($decoded[$key]['light']['styleCard']['color'])) {
                             $decoded[$key]['light']['styleCard']['color'] = array();
                         }
 
@@ -503,7 +510,14 @@ class MaxiBlocks_StyleCards
                         (!isset($card['dark']['styleCard']['color']) ||
                          !isset($card['dark']['styleCard']['color']['customColors']))) {
 
-                        if (!isset($card['dark']['styleCard']['color'])) {
+                        // Ensure all parent keys exist before writing
+                        if (!isset($decoded[$key]['dark'])) {
+                            $decoded[$key]['dark'] = array();
+                        }
+                        if (!isset($decoded[$key]['dark']['styleCard'])) {
+                            $decoded[$key]['dark']['styleCard'] = array();
+                        }
+                        if (!isset($decoded[$key]['dark']['styleCard']['color'])) {
                             $decoded[$key]['dark']['styleCard']['color'] = array();
                         }
 

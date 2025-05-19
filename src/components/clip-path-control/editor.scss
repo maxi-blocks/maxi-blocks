@@ -99,6 +99,14 @@
 					height: 1rem;
 					background-color: var(--maxi-orange-red);
 					cursor: pointer;
+					transition: all 0.4s ease; // Added transition
+
+					&:hover {
+						background-color: var(
+							--maxi-primary-color
+						); // Darker shade on hover
+						transform: scale(1.1); // Slight scale effect on hover
+					}
 
 					&:before {
 						content: '';
@@ -109,6 +117,7 @@
 						width: 50%;
 						height: 0.1rem;
 						background-color: var(--maxi-white);
+						transition: all 0.3s ease; // Added transition
 					}
 				}
 			}

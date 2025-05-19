@@ -156,6 +156,14 @@ const updateSCOnEditor = (
 				'maxi-blocks-sc-vars-inline-css'
 			);
 
+			// Only save SC styles to the database if this is not a preview
+			if (!isPreview) {
+				const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
+
+				// Needs a delay, if not Redux returns error 3
+				setTimeout(() => saveSCStyles(false), 150);
+			}
+
 			if (!SCVarEl) {
 				SCVarEl = element.createElement('style');
 				SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
@@ -167,14 +175,6 @@ const updateSCOnEditor = (
 					element.querySelectorAll('head')
 				).pop();
 				elementHead?.appendChild(SCVarEl);
-
-				// Only save SC styles to the database if this is not a preview
-				if (!isPreview) {
-					const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
-
-					// Needs a delay, if not Redux returns error 3
-					setTimeout(() => saveSCStyles(false), 150);
-				}
 			} else {
 				SCVarEl.innerHTML = SCVariableString;
 

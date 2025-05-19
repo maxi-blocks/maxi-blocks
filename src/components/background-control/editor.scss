@@ -48,8 +48,8 @@
 			border-radius: 3px;
 			color: var(--maxi-grey-dark);
 			background-color: var(--maxi-white);
-			width: 50px;
-			transition: all 0.1s;
+			width: 48px;
+			transition: all 0.4s ease !important;
 
 			&[aria-pressed='true'],
 			&:active,
@@ -245,7 +245,7 @@
 	flex-direction: column;
 	width: 100%;
 	height: auto;
-	padding: 14px 8px;
+	padding: 8px 30px !important;
 	border-bottom: 1px solid var(--maxi-grey-light);
 	border-top: 1px solid var(--maxi-grey-light);
 	border-right: 1px solid var(--maxi-grey-light);
@@ -257,6 +257,10 @@
 
 .parallax-direction .maxi-tabs-control__button last-child {
 	border-right: none;
+	margin-left: 8px !important;
+}
+.parallax-direction .maxi-tabs-control__button:first-child {
+	margin-right: 4px !important;
 }
 .parallax-direction .maxi-tabs-control__button hover {
 	background-color: var(--maxi-grey-light);

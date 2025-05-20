@@ -7,10 +7,10 @@
 			}
 		}
 	}
-	.maxi-tabs-control__button-color.maxi-tabs-control__button--selected {
+	.maxi-tabs-control__button-color {
 		path {
 			&:first-child {
-				fill: var(--maxi-white);
+				fill: var(--maxi-white) !important;
 			}
 		}
 	}

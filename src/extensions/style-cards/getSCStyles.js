@@ -217,13 +217,17 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 				if (marginSentence)
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-				targets.forEach(target => {
-					addedResponse += `${target} ${level} {${sentences?.join(
-						' '
-					)}}`;
-				});
+				// Only generate styles if there are non-empty sentences
+				if (sentences?.length > 0) {
+					const styles = sentences?.join(' ').trim();
+					if (styles) {
+						targets.forEach(target => {
+							addedResponse += `${target} ${level} {${styles}}`;
+						});
+					}
+				}
 
-				if (marginSentence) {
+				if (marginSentence && marginSentence.trim()) {
 					// margin-bottom for Text Maxi
 					addedResponse += `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block ${level} {${marginSentence}}`;
 					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .maxi-block.maxi-text-block ${level} {${marginSentence}}`;
@@ -244,7 +248,9 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 				sentence => sentence?.indexOf('margin-bottom') > -1
 			);
 
-			if (marginSentence) addedResponse += `${target} ${marginSentence}`;
+			if (marginSentence && marginSentence.trim()) {
+				addedResponse += `${target} {${marginSentence}}`;
+			}
 		});
 
 		[
@@ -263,7 +269,12 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			addedResponse += `${target} {${sentences?.join(' ')}}`;
+			if (sentences?.length > 0) {
+				const styles = sentences?.join(' ').trim();
+				if (styles) {
+					addedResponse += `${target} {${styles}}`;
+				}
+			}
 		});
 
 		// Text Maxi when has link
@@ -317,7 +328,12 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 						);
 				}
 
-				addedResponse += `${target} ${level} {${sentences?.join(' ')}}`;
+				if (sentences?.length > 0) {
+					const styles = sentences?.join(' ').trim();
+					if (styles) {
+						addedResponse += `${target} ${level} {${styles}}`;
+					}
+				}
 			});
 		});
 
@@ -336,7 +352,12 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			addedResponse += `${target} {${sentences?.join(' ')}}`;
+			if (sentences?.length > 0) {
+				const styles = sentences?.join(' ').trim();
+				if (styles) {
+					addedResponse += `${target} {${styles}}`;
+				}
+			}
 		});
 
 		// Search Maxi
@@ -356,7 +377,12 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			addedResponse += `${target} {${sentences?.join(' ')}}`;
+			if (sentences?.length > 0) {
+				const styles = sentences?.join(' ').trim();
+				if (styles) {
+					addedResponse += `${target} {${styles}}`;
+				}
+			}
 		});
 
 		// Button Maxi
@@ -393,7 +419,9 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 					sentence => sentence?.includes('font-family')
 				)[0];
 
-				sentences?.push(pFontFamilyVar);
+				if (pFontFamilyVar) {
+					sentences?.push(pFontFamilyVar);
+				}
 			}
 
 			// Remove margin-bottom sentences
@@ -404,7 +432,12 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-			addedResponse += `${target} {${sentences?.join(' ')}}`;
+			if (sentences?.length > 0) {
+				const styles = sentences?.join(' ').trim();
+				if (styles) {
+					addedResponse += `${target} {${styles}}`;
+				}
+			}
 		});
 
 		// Navigation inside Maxi Container
@@ -426,7 +459,12 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		if (marginSentence)
 			sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-		addedResponse += `${targetItem} {${sentences?.join(' ')}}`;
+		if (sentences?.length > 0) {
+			const styles = sentences?.join(' ').trim();
+			if (styles) {
+				addedResponse += `${targetItem} {${styles}}`;
+			}
+		}
 
 		const targetLink = `${targetItem} a`;
 		const targetButton = `${targetItem} button`;
@@ -548,7 +586,7 @@ const getWPNativeStyles = ({
 				if (marginSentence)
 					sentences?.splice(sentences?.indexOf(marginSentence), 1);
 
-				const selectors = [
+				const selectors = compact([
 					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level}`,
 					`${prefix} ${secondPrefix} .maxi-${style} ${level}.${nativeWPPrefix}`,
 					`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} ${level} a`,
@@ -579,9 +617,14 @@ const getWPNativeStyles = ({
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-query-pagination-numbers a`,
 					level === 'p' &&
 						`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}.wp-block-query-pagination-numbers span`,
-				].join(', ');
+				]).join(', ');
 
-				addedResponse += `${selectors} {${sentences?.join(' ')}}`;
+				if (selectors && sentences?.length > 0) {
+					const styles = sentences?.join(' ').trim();
+					if (styles) {
+						addedResponse += `${selectors} {${styles}}`;
+					}
+				}
 
 				// fix for .has-small-font-size
 				if (level === 'p') {
@@ -590,28 +633,43 @@ const getWPNativeStyles = ({
 				}
 
 				// In case the level is paragraph, we add the same styles for lists
-				if (level === 'p')
-					addedResponse += `${prefix} ${secondPrefix} .maxi-${style} li.${nativeWPPrefix} {${sentences?.join(
-						' '
-					)}}`;
+				if (level === 'p' && sentences?.length > 0) {
+					const styles = sentences?.join(' ').trim();
+					if (styles) {
+						addedResponse += `${prefix} ${secondPrefix} .maxi-${style} li.${nativeWPPrefix} {${styles}}`;
+					}
+				}
 
 				// In case the level is paragraph, we add the same styles for span data-rich-text-placeholder on backend
-				if (level === 'p' && style === 'light')
-					addedResponse += `${prefix} ${secondPrefix} p > span[data-rich-text-placeholder]::after {${sentences?.join(
-						' '
-					)}}`;
+				if (
+					level === 'p' &&
+					style === 'light' &&
+					sentences?.length > 0
+				) {
+					const styles = sentences?.join(' ').trim();
+					if (styles) {
+						addedResponse += `${prefix} ${secondPrefix} p > span[data-rich-text-placeholder]::after {${styles}}`;
+					}
+				}
 
 				// In case the level is H1, we add the same styles the backends titles
-				if (level === 'h1' && style === 'light')
-					addedResponse += `${prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {${sentences?.join(
-						' '
-					)}}`;
+				if (
+					level === 'h1' &&
+					style === 'light' &&
+					sentences?.length > 0
+				) {
+					const styles = sentences?.join(' ').trim();
+					if (styles) {
+						addedResponse += `${prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {${styles}}`;
+					}
+				}
 
 				// Adds margin-bottom sentence to all elements except the last one
-				if (marginSentence)
+				if (marginSentence && marginSentence.trim() && selectors) {
 					addedResponse += `:is(${selectors}):not(:last-child) {
 						${marginSentence}
 					}`;
+				}
 			}
 		);
 
@@ -667,7 +725,9 @@ const getWPNativeStyles = ({
 				sentence => sentence?.includes('font-family')
 			)[0];
 
-			buttonSentences?.push(pFontFamilyVar);
+			if (pFontFamilyVar) {
+				buttonSentences?.push(pFontFamilyVar);
+			}
 		}
 
 		// Remove margin-bottom sentences
@@ -681,17 +741,23 @@ const getWPNativeStyles = ({
 				1
 			);
 
-		addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
-			...buttonSentences,
-			styleCard[`--maxi-${style}-button-color`]
-				? `color: var(--maxi-${style}-button-color);`
-				: `color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
-		]?.join(' ')}}`;
+		if (buttonSentences?.length > 0) {
+			const styles = buttonSentences?.join(' ').trim();
+			if (styles) {
+				addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
+					...buttonSentences,
+					styleCard[`--maxi-${style}-button-color`]
+						? `color: var(--maxi-${style}-button-color);`
+						: `color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
+				]?.join(' ')}}`;
+			}
+		}
 
-		if (styleCard[`--maxi-${style}-button-color`])
+		if (styleCard[`--maxi-${style}-button-color`]) {
 			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form p.form-submit input {
-			color: var(--maxi-${style}-button-color);
-		}`;
+				color: var(--maxi-${style}-button-color);
+			}`;
+		}
 
 		if (styleCard[`--maxi-${style}-button-color-hover`]) {
 			addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {

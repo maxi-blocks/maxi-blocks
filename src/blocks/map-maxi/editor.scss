@@ -72,11 +72,8 @@
 				background: var(--maxi-primary-color);
 				border-radius: 50%;
 				text-align: center;
-				transition: 0.1s;
+				transition: all 0.4s ease !important;
 
-				svg.dashicon {
-					fill: var(--maxi-orange-red);
-				}
 				span.dashicon {
 					&::before {
 						color: var(--maxi-white);
@@ -84,6 +81,7 @@
 				}
 				&:hover {
 					background: var(--maxi-black);
+					transition: all 0.4s ease !important;
 				}
 			}
 		}

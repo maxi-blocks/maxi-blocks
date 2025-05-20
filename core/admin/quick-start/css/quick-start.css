@@ -482,6 +482,7 @@ select[name="permalink_structure"]:focus {
 	/* Add space between text and image */
 	order: -1 !important;
 	/* This moves the paragraph above the image */
+	text-align: left;
 }
 
 .current-site-logo img {
@@ -537,6 +538,7 @@ select[name="permalink_structure"]:focus {
 	max-width: 100px;
 	height: auto;
 	display: block;
+	float: left;
 }
 
 #dashboard_system_report>div>div>div.maxi-quick-start-main>div>div.maxi-quick-start-section>div.site-logo-wrapper .button {

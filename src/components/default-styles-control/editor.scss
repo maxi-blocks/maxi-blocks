@@ -18,23 +18,23 @@
 
 			path {
 				fill: var(--maxi-secondary-color);
-				stroke: var(--maxi-secondary-color);
+				//stroke: var(--maxi-secondary-color);
 			}
 			&:first-child,
 			&:nth-child-4 {
 				svg {
 					path {
 						fill: var(--maxi-secondary-color);
-						stroke: var(--maxi-secondary-color);
+						//stroke: var(--maxi-secondary-color);
 					}
 				}
 			}
-			&:nth-child(3),
-			&:nth-child(4) {
-				path {
-					stroke: var(--maxi-secondary-color);
-				}
-			}
+			// &:nth-child(3),
+			// &:nth-child(4) {
+			// 	path {
+			// 		stroke: var(--maxi-secondary-color);
+			// 	}
+			// }
 		}
 
 		&:hover {
@@ -43,7 +43,7 @@
 
 			svg {
 				path {
-					stroke: var(--maxi-secondary-color) !important;
+					//stroke: var(--maxi-secondary-color) !important;
 					fill: var(--maxi-secondary-color) !important;
 				}
 			}

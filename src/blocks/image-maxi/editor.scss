@@ -85,4 +85,10 @@ body.maxi-blocks--active
 	.components-range-control__wrapper {
 		margin-left: 7px;
 	}
+	.components-button.is-secondary {
+		border: none !important;
+	}
+	input[type='number'] {
+		border: 1.5px solid var(--maxi-primary-color) !important;
+	}
 }

@@ -215,6 +215,7 @@
 			}
 			&:hover {
 				background-color: var(--maxi-white);
+				color: var(--maxi-black) !important;
 				&::after {
 					background-color: var(--maxi-grey-dark);
 				}

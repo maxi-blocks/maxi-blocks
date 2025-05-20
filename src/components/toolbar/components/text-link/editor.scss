@@ -53,4 +53,7 @@ body .toolbar-item__popover {
 	input[type='text'].components-input-control__input:hover {
 		border: none !important;
 	}
+	.block-editor-link-control .components-spinner {
+		margin-top: -5px;
+	}
 }

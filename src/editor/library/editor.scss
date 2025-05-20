@@ -1922,6 +1922,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 					padding: 1px 8px 2px !important;
 					border: 1px solid var(--maxi-grey-light) !important;
 					border-radius: 0 !important;
+					transition: all 0.4s ease !important;
+					&:focus,
+					&:active,
+					&:hover {
+						border-color: var(--maxi-cloud-primary) !important;
+					}
 				}
 				span {
 					position: absolute;

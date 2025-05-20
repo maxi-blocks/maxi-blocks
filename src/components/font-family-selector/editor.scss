@@ -79,6 +79,9 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			&:hover {
 				color: var(--maxi-black) !important;
 				font-weight: 700 !important;
+				svg {
+					fill: var(--maxi-black);
+				}
 			}
 			svg {
 				width: 100%;

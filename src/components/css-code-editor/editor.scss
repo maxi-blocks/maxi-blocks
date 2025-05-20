@@ -11,10 +11,11 @@ body.maxi-blocks--active .maxi-css-code-editor {
 		border-radius: 10px;
 		transition: all 0.3s ease;
 
-		textarea {
+		textarea.w-tc-editor-text {
 			background-color: var(--maxi-white);
 			font-family: monospace !important;
-			&:hover {
+			font-size: 13px !important;
+			&:hover:not(#inspector-select-control-0):not([id^='inspector-input-control']):not([id^='url-input-control']) {
 				border: none !important;
 			}
 		}

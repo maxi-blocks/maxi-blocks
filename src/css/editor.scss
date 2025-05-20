@@ -690,6 +690,14 @@ body.maxi-blocks--active
 			svg path {
 				stroke: var(--maxi-secondary-color);
 			}
+			svg linearGradient stop {
+				&:first-child {
+					stop-color: var(--maxi-white);
+				}
+				&:last-child {
+					stop-color: var(--maxi-secondary-color);
+				}
+			}
 		}
 	}
 

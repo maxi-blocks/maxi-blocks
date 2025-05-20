@@ -40,19 +40,18 @@
 			margin-top: 0;
 		}
 		&__clear {
-			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			box-shadow: none;
 			padding: 0;
 			height: 31px;
 			width: 31px;
+			transition: all 0.4s ease !important;
 
 			&:hover {
-				background-color: var(--maxi-grey);
-				box-shadow: none !important;
+				fill: var(--maxi-primary-color) !important;
+				background-color: var(--maxi-white) !important;
 			}
 			&:focus {
-				border-color: var(--maxi-grey-dark);
 				box-shadow: none !important;
 			}
 		}

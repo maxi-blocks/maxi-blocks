@@ -717,16 +717,17 @@ body .toolbar-item__popover {
 	.maxi-tabs-control {
 		&__button {
 			background: transparent;
-			color: var(--maxi-black);
+			color: var(--maxi-grey-dark);
 			border: 1px solid var(--maxi-grey-light);
 			border-right: none;
-			padding-top: 5px;
-			padding-bottom: 5px;
-			font-weight: 700;
+			padding-top: 8px;
+			padding-bottom: 8px;
+			font-weight: 400;
 
 			&[aria-pressed='true'] {
 				color: var(--maxi-primary-color);
 				background-color: var(--maxi-whisper-green) !important;
+				font-weight: 700;
 			}
 		}
 	}

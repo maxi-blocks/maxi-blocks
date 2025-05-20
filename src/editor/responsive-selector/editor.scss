@@ -216,6 +216,7 @@
 			&:hover {
 				background-color: var(--maxi-white);
 				color: var(--maxi-black) !important;
+				transition: all 0.4s ease !important;
 				&::after {
 					background-color: var(--maxi-grey-dark);
 				}

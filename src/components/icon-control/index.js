@@ -638,7 +638,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 								prefix
 							)}
 							label={__(
-								'Icon Background gradient',
+								'Icon background gradient',
 								'maxi-blocks'
 							)}
 							breakpoint={breakpoint}

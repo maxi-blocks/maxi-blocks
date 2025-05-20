@@ -35,8 +35,8 @@
 
 		&__custom-clear-wrapper {
 			position: absolute;
-			top: 0;
-			right: 35px;
+			top: -2px;
+			right: 31px;
 			margin-top: 0;
 		}
 		&__clear {
@@ -68,13 +68,14 @@
 			display: flex;
 			align-items: center;
 			justify-content: flex-end;
+			margin-top: 1px;
 
 			span {
 				display: block;
-				width: 31px;
-				height: 31px;
+				width: 25px;
+				height: 25px;
 				margin: auto;
-				border: 2px solid var(--maxi-grey-light);
+				border: 1.5px solid var(--maxi-grey-light);
 				opacity: 1;
 				float: left;
 				border-radius: 50%;

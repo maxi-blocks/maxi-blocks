@@ -152,7 +152,7 @@
 		width: 100%;
 		margin: 10px 10px 10px 0;
 		min-height: 291px;
-		overflow: hidden;
+		overflow: visible;
 		border: 1px solid var(--maxi-grey-light);
 		border-radius: 6px;
 
@@ -173,7 +173,7 @@
 		width: 0.5rem;
 		height: 0.5rem;
 		border-radius: 50%;
-		z-index: 1;
+		z-index: 10;
 		cursor: crosshair;
 
 		&--radius {

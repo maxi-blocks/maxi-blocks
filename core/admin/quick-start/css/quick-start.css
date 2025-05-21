@@ -199,6 +199,7 @@
 
 .maxi-quick-start-section #maxi-starter-sites-root .components-modal__screen-overlay.maxi-open-preview .components-modal__content {
 	left: 7%;
+	cursor: auto;
 }
 
 .maxi-quick-start-section .description {

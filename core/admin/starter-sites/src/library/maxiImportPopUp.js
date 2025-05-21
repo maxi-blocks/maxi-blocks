@@ -918,7 +918,7 @@ const MaxiImportPopUp = props => {
 								<>
 									{__('Import completed. ', 'maxi-blocks')}
 									<a
-										href='/wp-admin/edit.php?post_type=page'
+										href={`${maxiStarterSites.adminUrl}edit.php?post_type=page`}
 										target='_blank'
 										rel='noopener noreferrer'
 									>
@@ -926,7 +926,7 @@ const MaxiImportPopUp = props => {
 									</a>
 									{__(', ', 'maxi-blocks')}
 									<a
-										href='/wp-admin/site-editor.php'
+										href={`${maxiStarterSites.adminUrl}site-editor.php`}
 										target='_blank'
 										rel='noopener noreferrer'
 									>

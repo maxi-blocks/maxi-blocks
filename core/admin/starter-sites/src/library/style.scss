@@ -3208,6 +3208,11 @@ body .maxi-hidden {
 			padding: 11px 14px 2px 22px;
 			border-radius: 30px;
 			font-family: 'Inter' !important;
+			transition: all 0.5s ease !important;
+			&:hover {
+				background-color: var(--maxi-cloud-primary);
+				color: var(--maxi-white);
+			}
 		}
 
 		&_section {
@@ -3241,12 +3246,24 @@ body .maxi-hidden {
 			.maxi-base-control__field {
 				margin-bottom: 10px;
 				flex-direction: row-reverse;
+				transition: all 0.5s ease !important;
 				label {
 					margin-left: 15px;
 					font-size: 16px !important;
 					color: var(--maxi-black) !important;
 					font-weight: 700 !important;
 					font-family: 'Inter' !important;
+					transition: all 0.5s ease !important;
+				}
+				&:hover {
+					label.maxi-base-control__label {
+						color: var(--maxi-cloud-primary) !important;
+					}
+
+					input[type='checkbox'],
+					.maxi-toggle-switch__toggle__track {
+						border: 1.5px solid var(--maxi-cloud-primary) !important;
+					}
 				}
 			}
 		}

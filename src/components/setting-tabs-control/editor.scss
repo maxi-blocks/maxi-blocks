@@ -125,10 +125,6 @@
 				margin: 0;
 				fill: var(--maxi-black);
 				transition: all 0.5s ease;
-
-				&:hover {
-					fill: var(--maxi-secondary-color);
-				}
 			}
 			&--active:before {
 				content: '';

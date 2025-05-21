@@ -58,12 +58,13 @@
 
 					path {
 						stroke: var(--maxi-black); // Default icon color
-
-						&:hover {
-							stroke: var(
-								--maxi-primary-color
-							) !important; // Icon color on hover
-							fill: none !important;
+					}
+				}
+				&:hover {
+					transition: all 0.4s ease !important;
+					svg {
+						path {
+							stroke: var(--maxi-secondary-color) !important;
 						}
 					}
 				}

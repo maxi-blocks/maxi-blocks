@@ -1345,7 +1345,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 
 			// Check PHP Version
 			$php_version = phpversion();
-			$required_php = '9.0';
+			$required_php = '8.0';
 			if (version_compare($php_version, $required_php, '<')) {
 				$warnings[] = [
 					'setting' => 'PHP Version',

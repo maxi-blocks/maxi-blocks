@@ -115,7 +115,8 @@
 }
 
 .other-plugin .some-class #maxi-status-wrapper {
-	background: var(--maxi-admin-white) !important; /* Another plugin or theme override */
+	background: var(--maxi-admin-white) !important;
+	/* Another plugin or theme override */
 }
 
 /* Updated styles for #maxi-status-wrapper */
@@ -144,6 +145,10 @@
 	align-items: center;
 	width: 100%;
 	padding: 10px 20px;
+}
+
+.maxi-dashboard_main-content.maxi-dashboard_main-content-starter-sites {
+	padding: 0;
 }
 
 /* Style the main heading */
@@ -180,17 +185,21 @@
 
 /* Table column widths */
 .maxi-status-table td:first-child {
-	width: 22%; /* Slightly reduce first column */
+	width: 22%;
+	/* Slightly reduce first column */
 }
 
 .maxi-status-table td:nth-child(2) {
-	width: 23%; /* Make 'Recommended' column shorter */
+	width: 23%;
+	/* Make 'Recommended' column shorter */
 }
 
 .maxi-status-table td:nth-child(3) {
-	width: 44%; /* Give more space to 'Actual' values */
+	width: 44%;
+	/* Give more space to 'Actual' values */
 }
 
 .maxi-status-table td:last-child {
-	width: 11%; /* Keep status column the same */
+	width: 11%;
+	/* Keep status column the same */
 }

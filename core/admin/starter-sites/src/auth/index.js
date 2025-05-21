@@ -56,7 +56,8 @@ const getProInfoByEmail = () => {
 	if (typeof pro === 'string') {
 		const proJson = JSON.parse(
 			// eslint-disable-next-line no-undef
-			maxiStarterSites?.proInitialState || select('maxiBlocks/pro').receiveMaxiProStatus()
+			maxiStarterSites?.proInitialState ||
+				select('maxiBlocks/pro').receiveMaxiProStatus()
 		);
 
 		const response = proJson?.[email];

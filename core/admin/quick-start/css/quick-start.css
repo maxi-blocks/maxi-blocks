@@ -656,6 +656,8 @@ select[name="permalink_structure"]:focus {
 	padding: 4px 8px;
 	background-color: var(--maxi-admin-light-grey);
 	border: none;
+	cursor: pointer;
+	transition: all 0.4s ease !important;
 }
 
 .maxi-quick-start-section #maxi-starter-sites-root .maxi-cloud-toolbar__buttons-group_close button:hover {
@@ -823,6 +825,16 @@ select[name="permalink_structure"]:focus {
 	color: var(--maxi-admin-black) !important;
 	font-size: 16px !important;
 	vertical-align: middle !important;
+}
+
+#dashboard_system_report input[type="search"].ais-SearchBox-input {
+	height: 45px !important;
+	margin-bottom: 0;
+}
+
+
+form.ais-SearchBox-form span.maxi-error {
+	display: none;
 }
 
 /* Specific styles for select dropdowns */

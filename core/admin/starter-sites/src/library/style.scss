@@ -92,6 +92,15 @@
 	max-width: 100%;
 	overflow-y: auto;
 
+	&.modal-open {
+		.maxi-cloud-toolbar__sign-in {
+			input.maxi-text-control__input {
+				height: 33px !important;
+				margin-top: 25px;
+			}
+		}
+	}
+
 	ul {
 		padding-inline-start: 0;
 		margin-inline-start: 0;
@@ -179,6 +188,9 @@
 						font-weight: 500;
 						color: var(--maxi-black);
 					}
+					&:hover {
+						box-shadow: inset 0 0 0 2px var(--maxi-admin-pink-hover);
+					}
 				}
 				& > .maxi-cloud-toolbar__line {
 					width: 2px;
@@ -194,13 +206,20 @@
 				justify-content: flex-end;
 				width: 33.33%;
 				margin-right: 10px;
+				transition: all 0.4s ease !important;
 				.maxi-cloud-toolbar__button {
-					padding: 7px 9px;
+					padding: 9px 10px;
 					border: none !important;
 					svg {
 						width: 13px;
 						height: 13px;
 						margin: 0 auto 1px;
+					}
+					&:hover {
+						box-shadow: inset 0 0 0 2px var(--maxi-admin-pink-hover);
+						svg {
+							fill: var(--maxi-cloud-primary);
+						}
 					}
 				}
 			}
@@ -437,6 +456,7 @@
 			height: 90%;
 			border: 20px solid var(--maxi-black);
 			background-color: var(--maxi-black);
+			cursor: auto;
 		}
 	}
 
@@ -485,7 +505,7 @@
 		width: 99.6%;
 		height: 46px;
 
-		border-bottom: 1px solid var(--maxi-grey-light);
+		//border-bottom: 1px solid var(--maxi-grey-light);
 		margin: 0;
 		background-color: var(--maxi-white);
 		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
@@ -500,6 +520,14 @@
 			align-items: center;
 			margin-right: 20px;
 			column-gap: 15px;
+			input.maxi-text-control__input {
+				transition: all 0.4s ease !important;
+				background-color: var(--maxi-white) !important;
+				border-right: none !important;
+				&:hover {
+					border-color: var(--maxi-cloud-primary) !important;
+				}
+			}
 		}
 
 		&__help-button {
@@ -536,7 +564,7 @@
 				svg {
 					background-color: var(--maxi-black);
 					path {
-						fill: var(--maxi-white);
+						fill: var(--maxi-black);
 					}
 				}
 			}
@@ -896,6 +924,10 @@
 							padding: 0.5rem 2rem;
 							color: var(--maxi-black);
 							font-weight: bold;
+							height: 45px !important;
+						}
+						span.maxi-error {
+							display: none;
 						}
 						.ais-SearchBox-loadingIndicator {
 							position: relative;
@@ -1061,6 +1093,10 @@
 		&__patterns {
 			&__sidebar {
 				overflow-x: hidden;
+				> ul {
+					border-top: 1px solid var(--maxi-grey-light);
+					margin-top: 0;
+				}
 			}
 		}
 		&__sc,
@@ -1100,6 +1136,9 @@
 			height: 100%;
 			align-content: flex-start;
 			position: relative;
+			border-bottom: 1px solid var(--maxi-grey-light);
+			border-top: 1px solid var(--maxi-grey-light);
+			border-right: 1px solid var(--maxi-grey-light);
 
 			&__sidebar {
 				position: relative;
@@ -1107,7 +1146,7 @@
 				border-right: 1px solid var(--maxi-grey-light);
 				border-left: 1px solid var(--maxi-grey-light);
 				background-color: var(--maxi-white);
-				border-top-left-radius: 8px;
+				//	border-top-left-radius: 8px;
 				overflow: hidden;
 			}
 
@@ -1128,7 +1167,7 @@
 				border-right: 1px solid var(--maxi-grey-light);
 				border-left: 1px solid var(--maxi-grey-light);
 				background-color: var(--maxi-white);
-				border-top-left-radius: 8px;
+				//border-top-left-radius: 8px;
 				overflow: hidden;
 				.top-Menu {
 					display: flex;
@@ -1242,17 +1281,19 @@
 							position: absolute;
 							top: 1px;
 							bottom: 2px;
-							right: 1px;
+							right: 8px;
 							width: 22px;
-							padding: 2px 6px;
 							border: none;
 							color: var(--maxi-black);
 							background-color: var(--maxi-white) !important;
 							background: none;
-							font-size: 18px;
-							font-weight: 500;
 							cursor: pointer;
+							font-size: 13px;
+							font-weight: 500;
 							outline: 0;
+							padding: 0px 6px;
+							border-radius: 50%;
+							transition: all 0.4s ease !important;
 							&:hover {
 								color: var(--maxi-cloud-primary);
 							}
@@ -1722,10 +1763,11 @@
 				background-color: var(--maxi-cloud-primary-whisper);
 				color: var(--maxi-black);
 				border: 1px solid var(--maxi-cloud-primary);
-				transition: 0.1s;
+				transition: all 0.4s ease !important;
 				z-index: 100000;
 				font-size: 13px;
 				font-weight: 400;
+				cursor: pointer;
 				&:hover {
 					background-color: var(--maxi-cloud-primary);
 					color: var(--maxi-white);

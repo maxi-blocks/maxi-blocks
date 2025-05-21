@@ -612,6 +612,7 @@ const LibraryContainer = props => {
 								translations={{
 									resetTitle: 'Clear',
 								}}
+								required={false}
 							/>
 							<CustomHierarchicalMenu
 								attributes={['starter_sites_category']}

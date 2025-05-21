@@ -825,7 +825,11 @@ class MaxiBlocks_StyleCards
                                     }
                                 }
 
-                                $organized_values[$style][$element][$breakpoint][$setting] = $value;
+                                $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+                                $organized_values[$style][$element][$breakpoint][$setting] = [
+                                    'value' => $value,
+                                    'var_name' => $var_name
+                                ];
                             }
                         }
                     }
@@ -835,7 +839,11 @@ class MaxiBlocks_StyleCards
                 if (isset($style_data['color'])) {
                     for ($i = 1; $i <= 8; $i++) {
                         if (isset($style_data['color'][$i])) {
-                            $organized_values[$style]['color'][$i] = $style_data['color'][$i];
+                            $var_name = "--maxi-{$style}-color-{$i}";
+                            $organized_values[$style]['color'][$i] = [
+                                'value' => $style_data['color'][$i],
+                                'var_name' => $var_name
+                            ];
                         }
                     }
                 }
@@ -853,7 +861,8 @@ class MaxiBlocks_StyleCards
                     $margin_key = "margin-bottom-general";
                     // Only add default if the margin-bottom is not already set
                     if (!isset($organized_values[$style][$element]['general']['margin-bottom'])) {
-                        $var_sc_string .= "--maxi-{$style}-{$element}-{$margin_key}:20px;";
+                        $var_name = "--maxi-{$style}-{$element}-{$margin_key}";
+                        $var_sc_string .= "{$var_name}:20px;";
                     }
                 }
             }
@@ -863,14 +872,22 @@ class MaxiBlocks_StyleCards
                 foreach ($style_data as $element => $element_data) {
                     if ($element === 'color') {
                         foreach ($element_data as $color_number => $color_value) {
-                            $var_sc_string .= "--maxi-{$style}-color-{$color_number}:{$color_value};";
+                            $var_name = "--maxi-{$style}-color-{$color_number}";
+                            $value = is_array($color_value) ? $color_value['value'] : $color_value;
+                            $var_sc_string .= "{$var_name}:{$value};";
                         }
                         continue;
                     }
 
                     foreach ($element_data as $breakpoint => $breakpoint_data) {
                         foreach ($breakpoint_data as $setting => $value) {
-                            $var_sc_string .= "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}:{$value};";
+                            if (is_array($value)) {
+                                $var_name = $value['var_name'] ?? "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+                                $value = $value['value'];
+                            } else {
+                                $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+                            }
+                            $var_sc_string .= "{$var_name}:{$value};";
                         }
                     }
                 }

@@ -3,14 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
-import { useInstanceId } from '@wordpress/compose';
-import { useEffect, useState, useRef } from '@wordpress/element';
+import { useDebounce, useInstanceId } from '@wordpress/compose';
+import { useEffect, useState, useRef, useCallback } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNumber, merge, trim, debounce } from 'lodash';
+import { isEmpty, isNumber, merge, trim } from 'lodash';
 
 /**
  * Internal dependencies
@@ -193,18 +193,28 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	const handleChange = debounce(() => {
-		if (onChangeValue) {
-			const val =
-				latestValueRef.current === '' || optionType === 'string'
-					? latestValueRef.current.toString()
-					: +latestValueRef.current;
-			onChangeValue(val);
-		}
-	}, 300);
+	const handleChange = useDebounce(
+		useCallback(
+			value => {
+				setCurrentValue(value);
+				latestValueRef.current = value;
+				if (onChangeValue) {
+					const val =
+						latestValueRef.current === '' || optionType === 'string'
+							? latestValueRef.current.toString()
+							: +latestValueRef.current;
+					onChangeValue(val);
+				}
+			},
+			[onChangeValue, optionType]
+		),
+		300
+	);
 
 	const handleInputChange = e => {
 		let value = getNewValueFromEmpty(e);
+		setCurrentValue(value);
+		latestValueRef.current = value;
 
 		if (enableUnit) {
 			if (value !== '' && value > maxValue) value = maxValue;
@@ -223,9 +233,6 @@ const AdvancedNumberControl = props => {
 			result = parseFloat(numValue.toFixed(10));
 		}
 
-		latestValueRef.current =
-			typeof result === 'number' ? result.toString() : result;
-		setCurrentValue(result);
 		handleChange(result);
 	};
 

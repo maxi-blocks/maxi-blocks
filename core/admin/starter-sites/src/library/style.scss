@@ -1278,22 +1278,22 @@
 							display: none;
 						}
 						.ais-SearchBox-reset {
-							position: absolute;
-							top: 1px;
-							bottom: 2px;
-							right: 8px;
-							width: 22px;
-							border: none;
-							color: var(--maxi-black);
 							background-color: var(--maxi-white) !important;
 							background: none;
+							border: none;
+							border-radius: 50%;
+							bottom: 2px;
+							color: var(--maxi-black);
 							cursor: pointer;
 							font-size: 13px;
 							font-weight: 500;
 							outline: 0;
-							padding: 0px 6px;
-							border-radius: 50%;
+							padding: 0;
+							position: absolute;
+							right: 7px;
+							top: 2px;
 							transition: all 0.4s ease !important;
+							width: 26px;
 							&:hover {
 								color: var(--maxi-cloud-primary);
 							}

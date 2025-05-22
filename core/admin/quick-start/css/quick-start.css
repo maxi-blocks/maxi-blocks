@@ -1233,7 +1233,7 @@ form.ais-SearchBox-form span.maxi-error {
 }
 
 .maxi-dashboard_header-icon:hover {
-	background: var(--maxi-admin-mint);
+	background: var(--maxi-admin-pink-hover);
 	transform: scale(1.035);
 }
 

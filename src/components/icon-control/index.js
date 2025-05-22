@@ -660,6 +660,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 					disableAuto
 					optionType='string'
 					minMaxSettings={minMaxSettings}
+					enableAxisUnits
 				/>
 			)}
 		</>

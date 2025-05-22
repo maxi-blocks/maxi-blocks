@@ -405,7 +405,7 @@ class MaxiBlocks_Styles
      * Legacy function
      * Gets content
      */
-    public function get_content(bool $is_template = false, ?int $id = null)
+    public function get_content(bool $is_template = false, $id = null)
     {
         global $post;
 

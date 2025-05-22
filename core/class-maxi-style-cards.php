@@ -808,6 +808,56 @@ class MaxiBlocks_StyleCards
                         continue;
                     }
 
+                    // Special handling for navigation
+                    if ($element === 'navigation') {
+                        // Handle navigation properties which might have specific units or formats
+                        foreach ($breakpoints as $breakpoint) {
+                            // Handle navigation specific properties
+                            $nav_props = [
+                                'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
+                                'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
+                                'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
+                                'padding-top', 'padding-left', 'padding-right'
+                            ];
+
+                            foreach ($nav_props as $prop) {
+                                $prop_key = "{$prop}-{$breakpoint}";
+                                $unit_key = "{$prop}-unit-{$breakpoint}";
+
+                                if (isset($style_data[$element][$prop_key])) {
+                                    $value = $style_data[$element][$prop_key];
+
+                                    // Add units if needed for numeric values
+                                    if (is_numeric($value)) {
+                                        // Get unit from style card if available
+                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : null;
+
+                                        // Use appropriate default unit if not specified
+                                        if ($unit === null || $unit === '') {
+                                            if ($prop === 'line-height') {
+                                                $unit = '%'; // Default to % for navigation line-height
+                                            } else {
+                                                $unit = 'px'; // Default to px for other properties
+                                            }
+                                        }
+
+                                        $value .= $unit;
+                                    } else if ($prop === 'font-family') {
+                                        $value = "\"{$value}\"";
+                                    }
+
+                                    $var_name = "--maxi-{$style}-{$element}-{$prop}-{$breakpoint}";
+                                    $organized_values[$style][$element][$breakpoint][$prop] = [
+                                        'value' => $value,
+                                        'var_name' => $var_name
+                                    ];
+                                }
+                            }
+                        }
+
+                        continue; // Skip regular processing for navigation
+                    }
+
                     foreach ($settings as $setting) {
                         foreach ($breakpoints as $breakpoint) {
                             $key = "{$setting}-{$breakpoint}";
@@ -819,9 +869,31 @@ class MaxiBlocks_StyleCards
                                 // Add units if needed
                                 if ($setting === 'font-family') {
                                     $value = "\"{$value}\"";
-                                } elseif (in_array($setting, ['font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'])) {
+                                } elseif ($setting === 'line-height') {
                                     if (is_numeric($value)) {
-                                        $value .= 'px';
+                                        // Get the appropriate unit if specified in the style card
+                                        $unit_key = "line-height-unit-{$breakpoint}";
+                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
+
+                                        // Default to px if no unit is specified, except for button which defaults to %
+                                        if ($unit === null || $unit === '') {
+                                            $unit = ($element === 'button') ? '%' : 'px';
+                                        }
+
+                                        $value .= $unit;
+                                    }
+                                } elseif (in_array($setting, ['font-size', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'])) {
+                                    if (is_numeric($value)) {
+                                        // Check for a unit specification
+                                        $unit_key = "{$setting}-unit-{$breakpoint}";
+                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
+
+                                        // Default to px if no unit is specified
+                                        if ($unit === null || $unit === '') {
+                                            $unit = 'px';
+                                        }
+
+                                        $value .= $unit;
                                     }
                                 }
 
@@ -846,6 +918,24 @@ class MaxiBlocks_StyleCards
                             ];
                         }
                     }
+                }
+
+                // Add menu-related properties
+                $menu_props = [
+                    'menu-item' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
+                    'menu-burger' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
+                    'menu-item-hover' => "rgba(var(--maxi-{$style}-color-6, 172, 28, 92), 1)",
+                    'menu-item-visited' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
+                    'menu-item-sub-bg' => "rgba(var(--maxi-{$style}-color-1, " . ($style === 'light' ? '255, 255, 255' : '0, 0, 0') . "), 1)",
+                    'menu-mobile-bg' => "rgba(var(--maxi-{$style}-color-1, " . ($style === 'light' ? '255, 255, 255' : '0, 0, 0') . "), 1)",
+                ];
+
+                foreach ($menu_props as $prop => $value) {
+                    $var_name = "--maxi-{$style}-{$prop}";
+                    $organized_values[$style]['menu'][$prop] = [
+                        'value' => $value,
+                        'var_name' => $var_name
+                    ];
                 }
             }
 
@@ -879,6 +969,15 @@ class MaxiBlocks_StyleCards
                         continue;
                     }
 
+                    if ($element === 'menu') {
+                        foreach ($element_data as $menu_prop => $menu_value) {
+                            $var_name = $menu_value['var_name'];
+                            $value = $menu_value['value'];
+                            $var_sc_string .= "{$var_name}:{$value};";
+                        }
+                        continue;
+                    }
+
                     foreach ($element_data as $breakpoint => $breakpoint_data) {
                         foreach ($breakpoint_data as $setting => $value) {
                             if (is_array($value)) {
@@ -892,6 +991,10 @@ class MaxiBlocks_StyleCards
                     }
                 }
             }
+
+            // Add active style card color
+            $var_sc_string .= "--maxi-active-sc-color: 222, 36, 119;";
+
             $var_sc_string .= '}';
 
             // Generate styles string
@@ -1169,6 +1272,17 @@ class MaxiBlocks_StyleCards
                     }
                 }
 
+                // Add webkit prefix for text-decoration
+                $webkit_sentences = [];
+                foreach ($sentences as $sentence) {
+                    if (strpos($sentence, 'text-decoration:') !== false) {
+                        $webkit_sentences[] = str_replace('text-decoration:', '-webkit-text-decoration:', $sentence);
+                    }
+                }
+
+                // Combine original sentences with webkit prefixed ones
+                $all_sentences = array_merge($webkit_sentences, $sentences);
+
                 // Build selectors
                 $selectors = [
                     "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block",
@@ -1179,7 +1293,7 @@ class MaxiBlocks_StyleCards
                 ];
 
                 foreach ($selectors as $selector) {
-                    $added_response .= "{$selector} {$level} {" . implode(' ', $sentences) . "}";
+                    $added_response .= "{$selector} {$level} {" . implode(' ', $all_sentences) . "}";
                 }
 
                 if ($margin_sentence) {
@@ -1191,9 +1305,9 @@ class MaxiBlocks_StyleCards
 
             // Text Maxi list styles
             $list_selectors = [
-                "{$prefix} {$second_prefix} .maxi-{$style}maxi-list-block ul.maxi-text-block__content",
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-list-block ul.maxi-text-block__content",
                 "{$prefix} {$second_prefix} .maxi-{$style} .maxi-list-block ul.maxi-text-block__content",
-                "{$prefix} {$second_prefix} .maxi-{$style}maxi-list-block ol.maxi-text-block__content",
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-list-block ol.maxi-text-block__content",
                 "{$prefix} {$second_prefix} .maxi-{$style} .maxi-list-block ol.maxi-text-block__content",
             ];
 
@@ -1209,7 +1323,7 @@ class MaxiBlocks_StyleCards
                 }
 
                 if ($margin_sentence) {
-                    $added_response .= "{$target} {$margin_sentence}";
+                    $added_response .= "{$target} {" . $margin_sentence . "}";
                 }
             }
 
@@ -1225,15 +1339,21 @@ class MaxiBlocks_StyleCards
                 $sentences = $breakpoint_level_sentences['p'];
                 $margin_sentence = null;
 
+                // Add webkit prefix for text-decoration
+                $webkit_sentences = [];
                 foreach ($sentences as $key => $sentence) {
                     if (strpos($sentence, 'margin-bottom') !== false) {
                         $margin_sentence = $sentence;
                         unset($sentences[$key]);
-                        break;
+                    } elseif (strpos($sentence, 'text-decoration:') !== false) {
+                        $webkit_sentences[] = str_replace('text-decoration:', '-webkit-text-decoration:', $sentence);
                     }
                 }
 
-                $added_response .= "{$target} {" . implode(' ', $sentences) . "}";
+                // Combine original sentences with webkit prefixed ones
+                $all_sentences = array_merge($webkit_sentences, $sentences);
+
+                $added_response .= "{$target} {" . implode(' ', $all_sentences) . "}";
             }
 
             // Text Maxi when has link

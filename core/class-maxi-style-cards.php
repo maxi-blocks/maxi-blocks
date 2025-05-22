@@ -1239,7 +1239,7 @@ class MaxiBlocks_StyleCards
         $is_backend = $args['is_backend'] ?? false;
 
         $response = '';
-        $levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'navigation'];
+        $levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'navigation', 'button'];
 
         $add_styles_by_breakpoint = function ($breakpoint, $second_prefix = '') use (
             $organized_values,
@@ -1258,8 +1258,8 @@ class MaxiBlocks_StyleCards
 
             // Process each level's sentences
             foreach ($breakpoint_level_sentences as $level => $sentences) {
-                if ($level === 'navigation') {
-                    continue; // Skip navigation here as we'll handle it separately
+                if ($level === 'navigation' || $level === 'button') {
+                    continue; // Skip navigation and button here as we'll handle them separately
                 }
 
                 // Remove margin-bottom sentences
@@ -1300,6 +1300,40 @@ class MaxiBlocks_StyleCards
                     // Add margin-bottom for Text Maxi
                     $added_response .= "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block {$level} {{$margin_sentence}}";
                     $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .maxi-block.maxi-text-block {$level} {{$margin_sentence}}";
+                }
+            }
+
+            // Button styles
+            if (isset($breakpoint_level_sentences['button']) && !empty($breakpoint_level_sentences['button'])) {
+                $button_sentences = $breakpoint_level_sentences['button'];
+
+                // Add webkit prefix for text-decoration
+                $webkit_button_sentences = [];
+                foreach ($button_sentences as $sentence) {
+                    if (strpos($sentence, 'text-decoration:') !== false) {
+                        $webkit_button_sentences[] = str_replace('text-decoration:', '-webkit-text-decoration:', $sentence);
+                    }
+                }
+
+                // Combine original sentences with webkit prefixed ones
+                $all_button_sentences = array_merge($webkit_button_sentences, $button_sentences);
+
+                // Button selectors
+                $button_selectors = [
+                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-button-block .maxi-button-block__content",
+                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block .maxi-button-block .maxi-button-block__content",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-block--use-sc .wp-element-button"
+                ];
+
+                foreach ($button_selectors as $button_selector) {
+                    $added_response .= "{$button_selector} {" . implode(' ', $all_button_sentences);
+
+                    // Add color for wp-element-button
+                    if (strpos($button_selector, 'wp-element-button') !== false) {
+                        $added_response .= " color: var(--maxi-{$style}-p-color, rgba(var(--maxi-{$style}-color-3, 155, 155, 155), 1));";
+                    }
+
+                    $added_response .= "}";
                 }
             }
 

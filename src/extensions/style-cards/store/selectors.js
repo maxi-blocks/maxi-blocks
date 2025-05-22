@@ -1,3 +1,7 @@
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
 import { getIsValid } from '@extensions/styles';
 
@@ -219,13 +223,77 @@ export const receiveSelectedStyleCardValue = (
 	blockStyle,
 	SCEntry
 ) => {
-	if (state.styleCards)
-		return getSCValues(
-			getActiveStyleCard(state.styleCards, true),
-			rawTarget,
-			blockStyle,
-			SCEntry
-		);
+	if (!state.styleCards) return false;
 
-	return false;
+	// Special case for custom colors
+	if (
+		rawTarget === 'customColors' &&
+		blockStyle === null &&
+		SCEntry === 'color'
+	) {
+		const selectedSC = getActiveStyleCard(state.styleCards, true);
+
+		// Enhanced: Check all possible locations for custom colors
+		// First try the most commonly stored locations, then try any other possible fallbacks
+		const customColors =
+			selectedSC.value?.light?.styleCard?.color?.customColors ||
+			selectedSC.value?.dark?.styleCard?.color?.customColors ||
+			selectedSC.value?.color?.customColors ||
+			// Fallbacks for additional locations:
+			selectedSC.value?.light?.defaultStyleCard?.color?.customColors ||
+			selectedSC.value?.dark?.defaultStyleCard?.color?.customColors ||
+			[];
+
+		return customColors;
+	}
+
+	return getSCValues(
+		getActiveStyleCard(state.styleCards, true),
+		rawTarget,
+		blockStyle,
+		SCEntry
+	);
+};
+
+export const receiveMaxiSelectedStyleCardValue = (
+	state,
+	attribute,
+	type = null
+) => {
+	const { value } = receiveMaxiSelectedStyleCard(state) || {};
+
+	if (isEmpty(value)) return null;
+
+	// Special case for customColors
+	if (attribute === 'customColors') {
+		// Check multiple locations for custom colors in priority order
+		const customColors =
+			value.light?.styleCard?.color?.customColors ||
+			value.dark?.styleCard?.color?.customColors ||
+			value.color?.customColors ||
+			// Add fallbacks for additional locations
+			value.light?.defaultStyleCard?.color?.customColors ||
+			value.dark?.defaultStyleCard?.color?.customColors ||
+			[];
+
+		return customColors;
+	}
+
+	if (type) {
+		// Try styleCard first, then defaultStyleCard
+		if (
+			value[type] &&
+			'styleCard' in value[type] &&
+			value[type].styleCard[attribute]
+		)
+			return value[type].styleCard[attribute];
+		if (
+			value[type] &&
+			'defaultStyleCard' in value[type] &&
+			value[type].defaultStyleCard[attribute]
+		)
+			return value[type].defaultStyleCard[attribute];
+	} else if (value[attribute]) return value[attribute];
+
+	return null;
 };

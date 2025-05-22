@@ -9,6 +9,7 @@ import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttr
 import { getActiveColourFromSC } from '@editor/style-cards/utils';
 import getTypographyStyles from '@extensions/styles/helpers/getTypographyStyles';
 import replaceUndefinedWithNull from './utils';
+import extractRGBValues from './extractRGBValues';
 
 /**
  * External dependencies
@@ -366,12 +367,52 @@ const getSCVariablesObject = (
 			}
 		});
 		if (SC[style].color) {
+			// Add standard palette colors
 			times(8, n => {
 				if (SC[style].color[n + 1]) {
 					response[`--maxi-${style}-color-${n + 1}`] =
 						SC[style].color[n + 1];
 				}
 			});
+
+			// Add custom colors to CSS variables - Enhanced handling
+			// Custom colors are now expected to be {id: numericGeneratedId, value: string, name: string}
+			const customColorsSource =
+				styleCards?.[style]?.styleCard?.color?.customColors ||
+				styleCards?.color?.customColors || // Check root color.customColors first
+				SC[style]?.color?.customColors || // Then SC[style].color.customColors
+				SC[style]?.styleCard?.color?.customColors || // Redundant with first line, but for safety
+				SC.color?.customColors || // Then SC.color.customColors (global for both styles if specific not found)
+				styleCards?.[style]?.defaultStyleCard?.color?.customColors ||
+				SC[style]?.defaultStyleCard?.color?.customColors ||
+				styleCards?.[style === 'light' ? 'dark' : 'light']?.styleCard
+					?.color?.customColors ||
+				SC[style === 'light' ? 'dark' : 'light']?.styleCard?.color
+					?.customColors ||
+				styleCards?.[style === 'light' ? 'dark' : 'light']
+					?.defaultStyleCard?.color?.customColors ||
+				SC[style === 'light' ? 'dark' : 'light']?.defaultStyleCard
+					?.color?.customColors ||
+				[];
+
+			const finalCustomColorsArray = Array.isArray(customColorsSource)
+				? customColorsSource
+				: [];
+
+			if (finalCustomColorsArray.length > 0) {
+				finalCustomColorsArray.forEach(colorObj => {
+					if (
+						!colorObj ||
+						typeof colorObj.id !== 'number' ||
+						typeof colorObj.value !== 'string'
+					)
+						return; // Skip malformed
+
+					// Use the numeric colorObj.id directly for the CSS variable
+					response[`--maxi-${style}-color-${colorObj.id}`] =
+						extractRGBValues(colorObj.value);
+				});
+			}
 		}
 	});
 

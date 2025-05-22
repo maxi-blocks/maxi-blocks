@@ -85,12 +85,40 @@ const updateSCStyles = async (element, SCObject, gutenbergBlocksStatus) => {
 const updateSCOnEditor = (
 	styleCards,
 	activeSCColour,
-	rawElements = [document, getSiteEditorIframe()]
+	rawElements = [document, getSiteEditorIframe()],
+	isPreview = false // Added preview flag to prevent saving when just previewing changes
 ) => {
-	const SCObject = getSCVariablesObject(
-		{ ...cloneDeep(styleCards) },
-		activeSCColour
-	);
+	// Create a proper deep clone of styleCards
+	const clonedStyleCards = cloneDeep(styleCards);
+
+	// If we have custom colors in the root, make sure they're also in light and dark styles
+	if (clonedStyleCards.color?.customColors?.length > 0) {
+		// Ensure light style has the custom colors without overwriting existing properties
+		if (!clonedStyleCards.light) {
+			clonedStyleCards.light = { styleCard: { color: {} } };
+		} else if (!clonedStyleCards.light.styleCard) {
+			clonedStyleCards.light.styleCard = { color: {} };
+		} else if (!clonedStyleCards.light.styleCard.color) {
+			clonedStyleCards.light.styleCard.color = {};
+		}
+		// Set the custom colors while preserving other properties
+		clonedStyleCards.light.styleCard.color.customColors =
+			clonedStyleCards.color.customColors;
+
+		// Ensure dark style has the custom colors without overwriting existing properties
+		if (!clonedStyleCards.dark) {
+			clonedStyleCards.dark = { styleCard: { color: {} } };
+		} else if (!clonedStyleCards.dark.styleCard) {
+			clonedStyleCards.dark.styleCard = { color: {} };
+		} else if (!clonedStyleCards.dark.styleCard.color) {
+			clonedStyleCards.dark.styleCard.color = {};
+		}
+		// Set the custom colors while preserving other properties
+		clonedStyleCards.dark.styleCard.color.customColors =
+			clonedStyleCards.color.customColors;
+	}
+
+	const SCObject = getSCVariablesObject(clonedStyleCards, activeSCColour);
 	const allSCFonts = getSCFontsData(SCObject);
 	const SCVariableString = createSCStyleString(SCObject);
 	const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
@@ -128,6 +156,14 @@ const updateSCOnEditor = (
 				'maxi-blocks-sc-vars-inline-css'
 			);
 
+			// Only save SC styles to the database if this is not a preview
+			if (!isPreview) {
+				const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
+
+				// Needs a delay, if not Redux returns error 3
+				setTimeout(() => saveSCStyles(false), 150);
+			}
+
 			if (!SCVarEl) {
 				SCVarEl = element.createElement('style');
 				SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
@@ -139,10 +175,6 @@ const updateSCOnEditor = (
 					element.querySelectorAll('head')
 				).pop();
 				elementHead?.appendChild(SCVarEl);
-				const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
-
-				// Needs a delay, if not Redux returns error 3
-				setTimeout(() => saveSCStyles(false), 150);
 			} else {
 				SCVarEl.innerHTML = SCVariableString;
 

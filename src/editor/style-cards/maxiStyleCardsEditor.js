@@ -2,12 +2,12 @@
 /**
  * WordPress dependencies
  */
+import { getSettings, date } from '@wordpress/date';
+import { Popover } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect, useRef, forwardRef } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { getSettings, date } from '@wordpress/date';
-import { Popover } from '@wordpress/components';
 
 /**
  * External dependencies
@@ -34,6 +34,62 @@ import standardSC from '@maxi-core/defaults/defaultSC.json';
  * Icons
  */
 import { styleCardBoat, SCDelete, closeIcon } from '@maxi-icons';
+
+// Re-use or adapt the ID generation from maxiStyleCardsTab.js
+const generateCustomColorIdForEditor = () => {
+	const timestampPart = Date.now().toString().slice(-7);
+	const randomPart = Math.random().toString().slice(2, 7);
+	return Number(timestampPart + randomPart);
+};
+
+// Helper to process/ensure custom colors have the correct {id, value, name} structure
+const ensureCustomColorShape = (colorItem, existingIdsSet) => {
+	let id;
+	let value;
+	let name;
+	if (typeof colorItem === 'object' && colorItem !== null) {
+		value =
+			typeof colorItem.value === 'string' && colorItem.value.trim() !== ''
+				? colorItem.value
+				: 'transparent';
+		name = typeof colorItem.name === 'string' ? colorItem.name : '';
+		id =
+			typeof colorItem.id === 'number' && colorItem.id > 8
+				? colorItem.id
+				: null; // Accept existing valid-looking numeric IDs
+	} else if (typeof colorItem === 'string' && colorItem.trim() !== '') {
+		// old array of strings
+		value = colorItem;
+		name = '';
+		id = null;
+	} else {
+		// Malformed
+		return null;
+	}
+
+	if (id === null || (existingIdsSet && existingIdsSet.has(id))) {
+		let newId = generateCustomColorIdForEditor();
+		if (existingIdsSet) {
+			while (existingIdsSet.has(newId)) {
+				newId = generateCustomColorIdForEditor(); // Regenerate until unique in the current set
+			}
+		}
+		id = newId;
+	}
+	if (existingIdsSet) existingIdsSet.add(id);
+	return { id, value, name };
+};
+
+const getShapedCustomColors = rawColorsArray => {
+	if (!Array.isArray(rawColorsArray)) return [];
+	const shaped = [];
+	const ids = new Set();
+	rawColorsArray.forEach(item => {
+		const shapedItem = ensureCustomColorShape(item, ids);
+		if (shapedItem) shaped.push(shapedItem);
+	});
+	return shaped;
+};
 
 const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const prevValues = useRef(null);
@@ -123,6 +179,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const [activeSCColour, setActiveSCColour] = useState(
 		getActiveColourFromSC(activeStyleCard, 4)
 	);
+	const [originalCustomColors, setOriginalCustomColors] = useState([]);
 
 	useEffect(() => {
 		if (selectedSCValue) {
@@ -132,27 +189,61 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			const isUserCreatedSC = getIsUserCreatedStyleCard();
 			setIsTemplate(!isUserCreatedSC);
 			setShowCopyCardDialog(false);
+
+			const rawCustomColors =
+				selectedSCValue?.color?.customColors ||
+				selectedSCValue?.light?.styleCard?.color?.customColors ||
+				selectedSCValue?.dark?.styleCard?.color?.customColors ||
+				[];
+			setOriginalCustomColors(getShapedCustomColors(rawCustomColors));
 		}
-	}, [selectedSCKey]);
+	}, [selectedSCKey, activeSCColour]);
 
 	const canBeSaved = keySC => {
+		// Check if style card exists in both current and saved states
+		if (!styleCards[keySC] || !savedStyleCards[keySC]) {
+			return false;
+		}
+
+		// Check for custom colors changes by explicitly comparing arrays
+		const currentRawCustomColors =
+			styleCards[keySC]?.color?.customColors ||
+			styleCards[keySC]?.light?.styleCard?.color?.customColors ||
+			styleCards[keySC]?.dark?.styleCard?.color?.customColors ||
+			[];
+		const currentCustomColors = getShapedCustomColors(
+			currentRawCustomColors
+		);
+
+		// Check if custom colors have changed from original
+		const customColorsChanged =
+			JSON.stringify(currentCustomColors) !==
+			JSON.stringify(originalCustomColors);
+
+		if (customColorsChanged) {
+			return true;
+		}
+
+		// Compare the general styleCards (without customColors specifically)
 		const currentSC = {
 			light: styleCards[keySC].light.styleCard,
 			dark: styleCards[keySC].dark.styleCard,
 		};
+
 		const savedSC = {
 			light: savedStyleCards[keySC]?.light.styleCard,
 			dark: savedStyleCards[keySC]?.dark.styleCard,
 		};
 
-		if (
-			!isEqual(currentSC, savedSC) ||
+		// Check if gutenberg_blocks_status changed
+		const gutenbergStatusChanged =
 			styleCards[keySC]?.gutenberg_blocks_status !==
-				savedStyleCards[keySC]?.gutenberg_blocks_status
-		)
-			return true;
+			savedStyleCards[keySC]?.gutenberg_blocks_status;
 
-		return false;
+		// Use general objects comparison for other changes
+		const otherChanges = !isEqual(currentSC, savedSC);
+
+		return customColorsChanged || otherChanges || gutenbergStatusChanged;
 	};
 
 	const canBeApplied = (keySC, activeSCKey) => {
@@ -169,6 +260,45 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const onChangeValue = (obj, type) => {
 		let newSC = { ...selectedSCValue };
+		// Special case for customColors
+		if (type === 'color' && 'customColors' in obj) {
+			// Create the color object if it doesn't exist
+			if (!newSC.color) {
+				newSC.color = {};
+			}
+			newSC.color.customColors = [...obj.customColors];
+
+			// Ensure light styleCard has the structure
+			if (!newSC.light)
+				newSC.light = { styleCard: {}, defaultStyleCard: {} };
+			if (!newSC.light.styleCard) newSC.light.styleCard = {};
+			if (!newSC.light.styleCard.color) newSC.light.styleCard.color = {};
+
+			// Ensure dark styleCard has the structure
+			if (!newSC.dark)
+				newSC.dark = { styleCard: {}, defaultStyleCard: {} };
+			if (!newSC.dark.styleCard) newSC.dark.styleCard = {};
+			if (!newSC.dark.styleCard.color) newSC.dark.styleCard.color = {};
+
+			// Set the customColors in both light and dark styleCards
+			newSC.light.styleCard.color.customColors = [...obj.customColors];
+			newSC.dark.styleCard.color.customColors = [...obj.customColors];
+
+			// Create a new styleCards object with the updated SC
+			const newStyleCards = {
+				...styleCards,
+				[selectedSCKey]: newSC,
+			};
+
+			// This updates the UI styleCards state but doesn't save to database
+			saveMaxiStyleCards(newStyleCards);
+
+			// Update the editor preview
+			updateSCOnEditor(newSC, activeSCColour, [document], true);
+
+			return;
+		}
+
 		const isTypography = Object.keys(obj)[0] === 'typography';
 
 		const newObj = handleSetAttributes({
@@ -265,24 +395,128 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const saveCurrentSC = () => {
 		const isChosenActive = selectedSCValue?.status === 'active';
+
+		// Get custom colors from the store
+		const { receiveMaxiSelectedStyleCardValue } =
+			window.wp.data.select('maxiBlocks/style-cards') || {};
+
+		// First try to get colors from the store (most reliable source)
+		let finalCustomColors = [];
+		if (typeof receiveMaxiSelectedStyleCardValue === 'function') {
+			const storeColors =
+				receiveMaxiSelectedStyleCardValue('customColors');
+			if (Array.isArray(storeColors) && storeColors.length > 0) {
+				finalCustomColors = getShapedCustomColors(storeColors);
+			}
+		}
+
+		// If store doesn't have colors, fall back to selectedSCValue
+		if (finalCustomColors.length === 0) {
+			const baseColorsRaw =
+				selectedSCValue?.color?.customColors ||
+				selectedSCValue?.light?.styleCard?.color?.customColors ||
+				selectedSCValue?.dark?.styleCard?.color?.customColors ||
+				[];
+
+			finalCustomColors = getShapedCustomColors(baseColorsRaw);
+		}
+
+		// As a last resort, try to get colors from DOM (least reliable)
+		if (finalCustomColors.length === 0) {
+			let uiCustomColors = [];
+			const styleCardsTabNode = document.querySelector(
+				'.maxi-blocks-sc__type--custom-color-presets .maxi-style-cards__custom-color-presets'
+			);
+
+			if (styleCardsTabNode) {
+				const customColorItems = styleCardsTabNode.querySelectorAll(
+					'.maxi-style-cards__custom-color-presets__box'
+				);
+				if (customColorItems && customColorItems.length > 0) {
+					uiCustomColors = Array.from(customColorItems).map(item => {
+						const colorSpan = item.querySelector(
+							'.maxi-style-cards__custom-color-presets__box__item'
+						);
+						const colorName = item.getAttribute('title') || '';
+						// Use data-color-id attribute we added to the component
+						const colorId = item.dataset.colorId
+							? Number(item.dataset.colorId)
+							: null;
+
+						return {
+							id: colorId,
+							value: colorSpan
+								? colorSpan.style.background
+								: 'transparent',
+							name:
+								colorName === __('Custom Colour', 'maxi-blocks')
+									? ''
+									: colorName,
+						};
+					});
+
+					finalCustomColors = getShapedCustomColors(uiCustomColors);
+					console.info(
+						'[MaxiBlocks] Custom colors fetched from DOM as fallback',
+						finalCustomColors.length
+					);
+				}
+			}
+		}
+
+		const updatedSCValue = { ...selectedSCValue };
+
+		if (!updatedSCValue.color) updatedSCValue.color = {};
+		updatedSCValue.color.customColors = [...finalCustomColors];
+
+		if (!updatedSCValue.light)
+			updatedSCValue.light = {
+				styleCard: { color: {} },
+				defaultStyleCard: {},
+			};
+		if (!updatedSCValue.light.styleCard)
+			updatedSCValue.light.styleCard = { color: {} };
+		if (!updatedSCValue.light.styleCard.color)
+			updatedSCValue.light.styleCard.color = {};
+		updatedSCValue.light.styleCard.color.customColors = [
+			...finalCustomColors,
+		];
+
+		if (!updatedSCValue.dark)
+			updatedSCValue.dark = {
+				styleCard: { color: {} },
+				defaultStyleCard: {},
+			};
+		if (!updatedSCValue.dark.styleCard)
+			updatedSCValue.dark.styleCard = { color: {} };
+		if (!updatedSCValue.dark.styleCard.color)
+			updatedSCValue.dark.styleCard.color = {};
+		updatedSCValue.dark.styleCard.color.customColors = [
+			...finalCustomColors,
+		];
+
 		const newStyleCards = {
 			...styleCards,
 			[selectedSCKey]: {
-				...selectedSCValue,
+				...updatedSCValue,
 				...{ status: isChosenActive ? 'active' : '' },
 			},
 		};
 
 		if (isChosenActive) {
-			setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
+			setActiveSCColour(getActiveColourFromSC(updatedSCValue, 4));
 			updateSCOnEditor(
-				selectedSCValue,
-				getActiveColourFromSC(selectedSCValue, 4)
+				updatedSCValue,
+				getActiveColourFromSC(updatedSCValue, 4)
 			);
 		}
 
+		// Save the updated style cards including the new colors
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(isChosenActive);
+
+		// Update originalCustomColors to match the newly saved colors
+		setOriginalCustomColors([...finalCustomColors]);
 	};
 
 	const deleteSC = () => {
@@ -665,6 +899,54 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 										} else {
 											setCardAlreadyExists(false);
 											setImportedCardExists(false);
+											// Get any custom colors from the selected style card and shape them
+											const sourceCustomColorsRaw =
+												selectedSCValue.color
+													?.customColors ||
+												selectedSCValue.light?.styleCard
+													?.color?.customColors ||
+												selectedSCValue.dark?.styleCard
+													?.color?.customColors ||
+												[];
+											const shapedSourceCustomColors =
+												getShapedCustomColors(
+													sourceCustomColorsRaw
+												);
+
+											// Deep clone the styleCard parts from selectedSCValue to preserve other properties (typography, spacing etc.)
+											const newLightStyleCardOverrides =
+												cloneDeep(
+													selectedSCValue.light
+														.styleCard || {}
+												);
+											const newDarkStyleCardOverrides =
+												cloneDeep(
+													selectedSCValue.dark
+														.styleCard || {}
+												);
+
+											// Manage the 'color' property within these cloned override objects
+											if (
+												shapedSourceCustomColors.length >
+												0
+											) {
+												newLightStyleCardOverrides.color =
+													{
+														customColors: [
+															...shapedSourceCustomColors,
+														],
+													};
+												newDarkStyleCardOverrides.color =
+													{
+														customColors: [
+															...shapedSourceCustomColors,
+														],
+													};
+											} else {
+												delete newLightStyleCardOverrides.color;
+												delete newDarkStyleCardOverrides.color;
+											}
+
 											const newStyleCard = {
 												name: styleCardName,
 												status: '',
@@ -675,25 +957,44 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 														: true,
 												dark: {
 													defaultStyleCard: {
-														...selectedSCValue.dark
-															.defaultStyleCard,
-														...selectedSCValue.dark
-															.styleCard,
+														...(selectedSCValue.dark
+															?.defaultStyleCard ||
+															{}),
+														...(selectedSCValue.dark
+															?.styleCard || {}),
 													},
-													styleCard: {},
+													styleCard:
+														newDarkStyleCardOverrides,
 												},
 												light: {
 													defaultStyleCard: {
-														...selectedSCValue.light
-															.defaultStyleCard,
-														...selectedSCValue.light
-															.styleCard,
+														...(selectedSCValue
+															.light
+															?.defaultStyleCard ||
+															{}),
+														...(selectedSCValue
+															.light?.styleCard ||
+															{}),
 													},
-													styleCard: {},
+													styleCard:
+														newLightStyleCardOverrides,
 												},
 												type: 'user',
 												updated: currentDate,
 											};
+
+											// Conditionally add root color property
+											if (
+												shapedSourceCustomColors.length >
+												0
+											) {
+												newStyleCard.color = {
+													customColors: [
+														...shapedSourceCustomColors,
+													],
+												};
+											}
+
 											saveImportedStyleCard(newStyleCard);
 											setShowCopyCardDialog(false);
 										}

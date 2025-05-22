@@ -19,6 +19,12 @@ jQuery(document).ready(function ($) {
 					.removeClass('completed')
 					.addClass('warning');
 			}
+
+			// Check if modal was open before page reload
+			if (localStorage.getItem('maxiStarterSitesModalOpen') === 'true') {
+				$('#maxi-starter-sites-root').addClass('modal-open');
+				localStorage.removeItem('maxiStarterSitesModalOpen');
+			}
 		},
 
 		bindEvents() {
@@ -32,16 +38,9 @@ jQuery(document).ready(function ($) {
 			$('.maxi-quick-start-actions [data-action="continue"]').on(
 				'click',
 				() => {
-					const steps = $('.maxi-quick-start-steps-nav li')
-						.map(function () {
-							return $(this).data('step');
-						})
-						.get();
-
 					const currentStep = $(
 						'.maxi-quick-start-steps-nav li.active'
 					).data('step');
-					const currentIndex = steps.indexOf(currentStep);
 
 					// If we're on the status step, mark it as warning and go to quick-start
 					if (currentStep === 'status') {
@@ -66,6 +65,14 @@ jQuery(document).ready(function ($) {
 						);
 						return;
 					}
+
+					const steps = $('.maxi-quick-start-steps-nav li')
+						.map(function () {
+							return $(this).data('step');
+						})
+						.get();
+
+					const currentIndex = steps.indexOf(currentStep);
 
 					// For other steps, go to the next step
 					if (currentIndex < steps.length - 1) {
@@ -129,11 +136,13 @@ jQuery(document).ready(function ($) {
 								window.location.reload();
 							}, 500);
 						} else {
-							alert(response.data || 'Error activating theme');
+							console.error(
+								response.data || 'Error activating theme'
+							);
 						}
 					},
 					error() {
-						alert('Error activating theme');
+						console.error('Error activating theme');
 						$button.prop('disabled', false);
 					},
 					complete() {

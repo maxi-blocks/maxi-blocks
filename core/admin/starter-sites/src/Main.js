@@ -40,6 +40,15 @@ const Main = ({ type, isQuickStart }) => {
 					setIsMaxiProExpired(isProSubExpired());
 					setUserName(getUserName());
 					clearInterval(intervalId);
+
+					// Store the modal state before reload
+					if (isQuickStart) {
+						localStorage.setItem(
+							'maxiStarterSitesModalOpen',
+							'true'
+						);
+					}
+
 					window.location.reload();
 				}
 			}, 1000);

@@ -957,10 +957,16 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 												}}
 												title={
 													colorObj.name ||
-													__(
+													`${__(
 														'Custom Colour',
 														'maxi-blocks'
-													)
+													)} ${
+														customColors.findIndex(
+															c =>
+																c.id ===
+																colorObj.id
+														) + 1
+													}`
 												}
 											>
 												<span
@@ -977,10 +983,16 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 														'maxi-blocks'
 													)} ${
 														colorObj.name ||
-														__(
+														`${__(
 															'Custom Colour',
 															'maxi-blocks'
-														)
+														)} ${
+															customColors.findIndex(
+																c =>
+																	c.id ===
+																	colorObj.id
+															) + 1
+														}`
 													}`}
 													onClick={e => {
 														e.stopPropagation();
@@ -1065,6 +1077,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										) && (
 											<>
 												<ColorControl
+													label={__(
+														'Custom',
+														'maxi-blocks'
+													)}
 													className='maxi-style-cards-control__sc__custom-color'
 													color={
 														customColors.find(
@@ -1111,7 +1127,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 														).name
 													}
 													placeholder={__(
-														'Enter color name',
+														'Enter colour name',
 														'maxi-blocks'
 													)}
 													onChange={e => {

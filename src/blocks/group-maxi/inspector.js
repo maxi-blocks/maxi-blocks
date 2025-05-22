@@ -60,7 +60,9 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.contextLoop({
 										props,
-										contentType: 'group',
+									}),
+									...inspectorTabs.savedStyles({
+										props,
 									}),
 								]}
 							/>

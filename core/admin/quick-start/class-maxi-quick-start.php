@@ -245,6 +245,18 @@ class MaxiBlocks_QuickStart {
 	 * Render the quick start page
 	 */
 	public function render_quick_start_page() {
+		// Check if we're accessing the page without a step parameter
+		if (!isset($_GET['step'])) {
+			$status_report = new MaxiBlocks_System_Status_Report();
+			$critical_warnings = $this->get_critical_warnings($status_report);
+
+			// If there are no critical warnings, redirect to the quick_start step
+			if (empty($critical_warnings)) {
+				wp_redirect(admin_url('admin.php?page=maxi-blocks-quick-start&step=quick_start'));
+				exit;
+			}
+		}
+
 		$current_step = isset($_GET['step'])
 			? sanitize_key($_GET['step'])
 			: $this->get_first_step();
@@ -1330,6 +1342,6 @@ class MaxiBlocks_QuickStart {
 		$status_report = new MaxiBlocks_System_Status_Report();
 		$critical_warnings = $this->get_critical_warnings($status_report);
 
-		return !empty($critical_warnings) ? 'status' : 'identity';
+		return !empty($critical_warnings) ? 'status' : 'quick_start';
 	}
 }

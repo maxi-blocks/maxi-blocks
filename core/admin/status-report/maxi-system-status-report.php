@@ -356,7 +356,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 				__('PHP Version', 'maxi-blocks'),
 				'8.0+',
 				$data['php_version'],
-				version_compare($data['php_version'], '9.0', '>='),
+				version_compare($data['php_version'], '8.0', '>='),
 			);
 
 			// Database Version and Type
@@ -1357,7 +1357,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			// Check Database Type
 			global $wpdb;
 			$db_version = $wpdb->db_version();
-			$required_mysql = '5.6';
+			$required_mysql = '8.0';
 			if (version_compare($db_version, $required_mysql, '<')) {
 				$warnings[] = [
 					'setting' => 'Database Type',

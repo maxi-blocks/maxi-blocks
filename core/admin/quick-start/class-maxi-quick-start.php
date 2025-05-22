@@ -133,7 +133,7 @@ class MaxiBlocks_QuickStart {
 	 */
 	public function add_quick_start_page() {
 		add_submenu_page(
-			null,
+			'', // Empty string instead of null to avoid PHP warnings
 			__('MaxiBlocks Setup', 'maxi-blocks'),
 			__('MaxiBlocks Setup', 'maxi-blocks'),
 			'manage_options',

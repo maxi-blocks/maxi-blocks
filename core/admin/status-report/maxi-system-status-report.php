@@ -42,6 +42,11 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 		 * Generate the complete status report HTML
 		 */
 		public function generate_status_report() {
+			// Verify user has adequate permissions
+			if (!current_user_can('manage_options')) {
+				return esc_html__('You do not have permission to access this information.', 'maxi-blocks');
+			}
+
 			// Enqueue required assets
 			$this->enqueue_status_report_assets();
 
@@ -52,42 +57,43 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$active = get_option('active_plugins', []);
 
 			$theme_data = wp_get_theme();
-			$theme = $theme_data->Name . ' ' . $theme_data->Version;
-			$style_parent_theme = wp_get_theme(get_template());
-			$parent_theme =
-				$style_parent_theme->get('Name') .
-				' ' .
-				$style_parent_theme->get('Version');
+			$theme = esc_html($theme_data->get('Name') . ' ' . $theme_data->get('Version'));
+
+			// Handle parent theme correctly
+			$parent_theme_object = $theme_data->parent();
+			$parent_theme = $parent_theme_object ?
+				esc_html($parent_theme_object->get('Name') . ' ' . $parent_theme_object->get('Version')) :
+				esc_html__('None', 'maxi-blocks');
 
 			// Yes/no specifics
 			$ismulti = is_multisite()
-				? __('Yes', 'maxi-blocks')
-				: __('No', 'maxi-blocks');
+				? esc_html__('Yes', 'maxi-blocks')
+				: esc_html__('No', 'maxi-blocks');
 			$safemode = ini_get('safe_mode')
-				? __('Yes', 'maxi-blocks')
-				: __('No', 'maxi-blocks');
+				? esc_html__('Yes', 'maxi-blocks')
+				: esc_html__('No', 'maxi-blocks');
 			$wpdebug = defined('WP_DEBUG')
 				? (WP_DEBUG
-					? __('Enabled', 'maxi-blocks')
-					: __('Disabled', 'maxi-blocks'))
-				: __('Not Set', 'maxi-blocks');
+					? esc_html__('Enabled', 'maxi-blocks')
+					: esc_html__('Disabled', 'maxi-blocks'))
+				: esc_html__('Not Set', 'maxi-blocks');
 			$errdisp =
 				ini_get('display_errors') != false
-					? __('On', 'maxi-blocks')
-					: __('Off', 'maxi-blocks');
+					? esc_html__('On', 'maxi-blocks')
+					: esc_html__('Off', 'maxi-blocks');
 			$jquchk = wp_script_is('jquery', 'registered')
-				? $GLOBALS['wp_scripts']->registered['jquery']->ver
-				: __('n/a', 'maxi-blocks');
+				? esc_html($GLOBALS['wp_scripts']->registered['jquery']->ver)
+				: esc_html__('n/a', 'maxi-blocks');
 			$hascurl = function_exists('curl_init')
-				? __('Supports cURL.', 'maxi-blocks')
-				: __('Does not support cURL.', 'maxi-blocks');
+				? esc_html__('Supports cURL.', 'maxi-blocks')
+				: esc_html__('Does not support cURL.', 'maxi-blocks');
 			$openssl = extension_loaded('openssl')
-				? __('OpenSSL installed.', 'maxi-blocks')
-				: __('OpenSSL not installed.', 'maxi-blocks');
+				? esc_html__('OpenSSL installed.', 'maxi-blocks')
+				: esc_html__('OpenSSL not installed.', 'maxi-blocks');
 
 			// Language settings
-			$site_lang = get_bloginfo('language');
-			$site_char = get_bloginfo('charset');
+			$site_lang = esc_html(get_bloginfo('language'));
+			$site_char = esc_html(get_bloginfo('charset'));
 			$site_text_dir = is_rtl() ? 'rtl' : 'ltr';
 
 			$content =
@@ -95,10 +101,10 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$content .= '<div class="maxi-dashboard_main-content-settings">';
 
 			// System Report Header
-			$content .= '<h1>' . __('System status', 'maxi-blocks') . '</h1>';
+			$content .= '<h1>' . esc_html__('System status', 'maxi-blocks') . '</h1>';
 			$content .=
 				'<p>' .
-				__(
+				esc_html__(
 					'This report provides information about your WordPress environment and server configuration.',
 					'maxi-blocks',
 				) .
@@ -107,7 +113,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			// Copy Report Button
 			$content .=
 				'<button type="button" id="maxi-copy-report" class="button button-primary maxi-dashboard_copy-report-button">' .
-				__('Copy report to clipboard', 'maxi-blocks') .
+				esc_html__('Copy report to clipboard', 'maxi-blocks') .
 				'</button>';
 
 			// Download Report Button
@@ -131,7 +137,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 
 			$content .=
 				'<div id="maxi-copy-success" class="notice notice-success" style="display:none;"><p>' .
-				__('Report copied to clipboard', 'maxi-blocks') .
+				esc_html__('Report copied to clipboard', 'maxi-blocks') .
 				'</p></div>';
 
 			// Hidden textarea for copy functionality
@@ -271,21 +277,21 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 		) {
 			$status = $is_ok
 				? '<td class="status-ok"><span>' .
-					__('OK', 'maxi-blocks') .
+					esc_html__('OK', 'maxi-blocks') .
 					'</span></td>'
 				: '<td class="status-warning"><span>' .
-					__('Warning', 'maxi-blocks') .
+					esc_html__('Warning', 'maxi-blocks') .
 					'</span></td>';
 
 			return '<tr>' .
 				'<td>' .
-				$setting .
+				esc_html($setting) .
 				'</td>' .
 				'<td>' .
-				$recommended .
+				esc_html($recommended) .
 				'</td>' .
 				'<td>' .
-				$actual .
+				esc_html($actual) .
 				'</td>' .
 				$status .
 				'</tr>';
@@ -295,9 +301,9 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 		 * Add this helper method to detect localhost
 		 */
 		private function is_localhost() {
-			$server_name = strtolower($_SERVER['SERVER_NAME'] ?? '');
-			$server_addr = $_SERVER['SERVER_ADDR'] ?? '';
-			$remote_addr = $_SERVER['REMOTE_ADDR'] ?? '';
+			$server_name = strtolower(isset($_SERVER['SERVER_NAME']) ? sanitize_text_field($_SERVER['SERVER_NAME']) : '');
+			$server_addr = isset($_SERVER['SERVER_ADDR']) ? sanitize_text_field($_SERVER['SERVER_ADDR']) : '';
+			$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : '';
 
 			return in_array($server_name, ['localhost', '127.0.0.1', '::1']) ||
 				strpos($server_addr, '127.0.') === 0 ||
@@ -313,49 +319,48 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			global $wpdb;
 			$content =
 				'<tr><th colspan="4">' .
-				__('Server Environment', 'maxi-blocks') .
+				esc_html__('Server Environment', 'maxi-blocks') .
 				'</th></tr>';
 			$content .= '<tr class="header-row">';
-			$content .= '<td>' . __('Setting', 'maxi-blocks') . '</td>';
-			$content .= '<td>' . __('Recommended', 'maxi-blocks') . '</td>';
-			$content .= '<td>' . __('Actual', 'maxi-blocks') . '</td>';
-			$content .= '<td>' . __('Status', 'maxi-blocks') . '</td>';
+			$content .= '<td>' . esc_html__('Setting', 'maxi-blocks') . '</td>';
+			$content .= '<td>' . esc_html__('Recommended', 'maxi-blocks') . '</td>';
+			$content .= '<td>' . esc_html__('Actual', 'maxi-blocks') . '</td>';
+			$content .= '<td>' . esc_html__('Status', 'maxi-blocks') . '</td>';
 			$content .= '</tr>';
 
-			// Server Software
-			$server_software = esc_html($_SERVER['SERVER_SOFTWARE'] ?? '');
+			// Server Software - Sanitize server information
+			$server_software = isset($_SERVER['SERVER_SOFTWARE']) ?
+				sanitize_text_field($_SERVER['SERVER_SOFTWARE']) : '';
 			$content .= $this->generate_status_row(
-				__('Server Software', 'maxi-blocks'),
+				esc_html__('Server Software', 'maxi-blocks'),
 				'-',
-				$server_software,
+				esc_html($server_software),
 				true,
 			);
 
-			// Operating System
-			$os = function_exists('php_uname')
-				? php_uname('s') . ' ' . php_uname('r')
-				: PHP_OS;
+			// Operating System - Limit to OS name for security
+			$os = function_exists('php_uname') ? php_uname('s') : PHP_OS;
 			$content .= $this->generate_status_row(
-				__('Operating System', 'maxi-blocks'),
+				esc_html__('Operating System', 'maxi-blocks'),
 				'-',
-				$os,
+				esc_html($os),
 				true,
 			);
 
 			// Architecture
 			$architecture = PHP_INT_SIZE === 8 ? 'x64' : 'x86';
 			$content .= $this->generate_status_row(
-				__('Architecture', 'maxi-blocks'),
+				esc_html__('Architecture', 'maxi-blocks'),
 				'-',
-				$architecture,
+				esc_html($architecture),
 				true,
 			);
 
 			// PHP Version
 			$content .= $this->generate_status_row(
-				__('PHP Version', 'maxi-blocks'),
+				esc_html__('PHP Version', 'maxi-blocks'),
 				'8.0+',
-				$data['php_version'],
+				esc_html($data['php_version']),
 				version_compare($data['php_version'], '8.0', '>='),
 			);
 
@@ -378,98 +383,98 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			}
 
 			$content .= $this->generate_status_row(
-				__('Database Type', 'maxi-blocks'),
-				$recommended,
-				$db_type . ' ' . $db_version,
+				esc_html__('Database Type', 'maxi-blocks'),
+				esc_html($recommended),
+				esc_html($db_type . ' ' . $db_version),
 				$is_supported,
 			);
 
 			// SSL/HTTPS Status
 			$is_ssl = is_ssl();
 			$content .= $this->generate_status_row(
-				__('SSL/HTTPS', 'maxi-blocks'),
-				__('Enabled', 'maxi-blocks'),
+				esc_html__('SSL/HTTPS', 'maxi-blocks'),
+				esc_html__('Enabled', 'maxi-blocks'),
 				$is_ssl
-					? __('Enabled', 'maxi-blocks')
-					: __('Disabled', 'maxi-blocks'),
+					? esc_html__('Enabled', 'maxi-blocks')
+					: esc_html__('Disabled', 'maxi-blocks'),
 				$is_ssl || $this->is_localhost(),
 			);
 
 			// Memory Limit
 			$memory_limit = $this->convert_to_mb($data['memory_limit']);
 			$content .= $this->generate_status_row(
-				__('Memory Limit', 'maxi-blocks'),
+				esc_html__('Memory Limit', 'maxi-blocks'),
 				'256MB',
-				$data['memory_limit'],
+				esc_html($data['memory_limit']),
 				$memory_limit >= 256,
 			);
 
 			// Post Max Size
 			$post_max_size = $this->convert_to_mb($data['post_max_size']);
 			$content .= $this->generate_status_row(
-				__('Post Max Size', 'maxi-blocks'),
+				esc_html__('Post Max Size', 'maxi-blocks'),
 				'128MB',
-				$data['post_max_size'],
+				esc_html($data['post_max_size']),
 				$post_max_size >= 128,
 			);
 
 			// Max Execution Time
 			$content .= $this->generate_status_row(
-				__('Max Execution Time', 'maxi-blocks'),
+				esc_html__('Max Execution Time', 'maxi-blocks'),
 				'60',
-				$data['max_execution_time'],
+				esc_html($data['max_execution_time']),
 				$data['max_execution_time'] >= 60,
 			);
 
 			// Max Input Time
 			$content .= $this->generate_status_row(
-				__('Max Input Time', 'maxi-blocks'),
+				esc_html__('Max Input Time', 'maxi-blocks'),
 				'60',
-				$data['max_input_time'],
+				esc_html($data['max_input_time']),
 				$data['max_input_time'] >= 60,
 			);
 
 			// Upload Max Filesize
 			$upload_max = $this->convert_to_mb($data['upload_max_filesize']);
 			$content .= $this->generate_status_row(
-				__('Upload Max Filesize', 'maxi-blocks'),
+				esc_html__('Upload Max Filesize', 'maxi-blocks'),
 				'64MB',
-				$data['upload_max_filesize'],
+				esc_html($data['upload_max_filesize']),
 				$upload_max >= 64,
 			);
 
 			// Max Input Vars
 			$content .= $this->generate_status_row(
-				__('Max Input Vars', 'maxi-blocks'),
+				esc_html__('Max Input Vars', 'maxi-blocks'),
 				'8000',
-				$data['max_input_vars'],
+				esc_html($data['max_input_vars']),
 				$data['max_input_vars'] >= 8000,
 			);
 
 			// cURL
 			$content .= $this->generate_status_row(
 				'cURL',
-				__('Enabled', 'maxi-blocks'),
-				$data['hascurl'],
+				esc_html__('Enabled', 'maxi-blocks'),
+				esc_html($data['hascurl']),
 				strpos($data['hascurl'], 'Supports') !== false,
 			);
 
 			// OpenSSL
 			$content .= $this->generate_status_row(
 				'OpenSSL',
-				__('Installed', 'maxi-blocks'),
-				$data['openssl'],
+				esc_html__('Installed', 'maxi-blocks'),
+				esc_html($data['openssl']),
 				strpos($data['openssl'], 'installed') !== false,
 			);
 
 			// Is Localhost
 			$is_localhost = $this->is_localhost();
 			$content .= $this->generate_status_row(
-				__('Environment', 'maxi-blocks'),
+				esc_html__('Environment', 'maxi-blocks'),
 				'-',
 				$is_localhost
-					? __('Local', 'maxi-blocks')
-					: __('Production', 'maxi-blocks'),
+					? esc_html__('Local', 'maxi-blocks')
+					: esc_html__('Production', 'maxi-blocks'),
 				true,
 			);
 
@@ -953,58 +958,51 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 
 			$content =
 				'<tr><th colspan="4">' .
-				__('MaxiBlocks Plugin', 'maxi-blocks') .
+				esc_html__('MaxiBlocks Plugin', 'maxi-blocks') .
 				'</th></tr>';
 			$content .= '<tr class="header-row">';
-			$content .= '<td>' . __('Setting', 'maxi-blocks') . '</td>';
-			$content .= '<td>' . __('Required', 'maxi-blocks') . '</td>';
-			$content .= '<td>' . __('Actual', 'maxi-blocks') . '</td>';
-			$content .= '<td>' . __('Status', 'maxi-blocks') . '</td>';
+			$content .= '<td>' . esc_html__('Setting', 'maxi-blocks') . '</td>';
+			$content .= '<td>' . esc_html__('Required', 'maxi-blocks') . '</td>';
+			$content .= '<td>' . esc_html__('Actual', 'maxi-blocks') . '</td>';
+			$content .= '<td>' . esc_html__('Status', 'maxi-blocks') . '</td>';
 			$content .= '</tr>';
 
 			// Check General Table
 			$general_table = $wpdb->prefix . 'maxi_blocks_general';
-			$general_exists =
-				$wpdb->get_var("SHOW TABLES LIKE '$general_table'") ===
-				$general_table;
+			$general_exists = $this->table_exists($general_table);
 
 			$content .= $this->generate_status_row(
-				__('General Table', 'maxi-blocks'),
-				__('Exists', 'maxi-blocks'),
+				esc_html__('General Table', 'maxi-blocks'),
+				esc_html__('Exists', 'maxi-blocks'),
 				$general_exists
-					? __('Exists', 'maxi-blocks')
-					: __('Missing', 'maxi-blocks'),
+					? esc_html__('Exists', 'maxi-blocks')
+					: esc_html__('Missing', 'maxi-blocks'),
 				$general_exists,
 			);
 
 			// Check Styles Table
 			$styles_table = $wpdb->prefix . 'maxi_blocks_styles_blocks';
-			$styles_exists =
-				$wpdb->get_var("SHOW TABLES LIKE '$styles_table'") ===
-				$styles_table;
+			$styles_exists = $this->table_exists($styles_table);
 
 			$content .= $this->generate_status_row(
-				__('Styles Table', 'maxi-blocks'),
-				__('Exists', 'maxi-blocks'),
+				esc_html__('Styles Table', 'maxi-blocks'),
+				esc_html__('Exists', 'maxi-blocks'),
 				$styles_exists
-					? __('Exists', 'maxi-blocks')
-					: __('Missing', 'maxi-blocks'),
+					? esc_html__('Exists', 'maxi-blocks')
+					: esc_html__('Missing', 'maxi-blocks'),
 				$styles_exists,
 			);
 
 			// Check Custom Data Table
-			$custom_data_table =
-				$wpdb->prefix . 'maxi_blocks_custom_data_blocks';
-			$custom_data_exists =
-				$wpdb->get_var("SHOW TABLES LIKE '$custom_data_table'") ===
-				$custom_data_table;
+			$custom_data_table = $wpdb->prefix . 'maxi_blocks_custom_data_blocks';
+			$custom_data_exists = $this->table_exists($custom_data_table);
 
 			$content .= $this->generate_status_row(
-				__('Custom Data Table', 'maxi-blocks'),
-				__('Exists', 'maxi-blocks'),
+				esc_html__('Custom Data Table', 'maxi-blocks'),
+				esc_html__('Exists', 'maxi-blocks'),
 				$custom_data_exists
-					? __('Exists', 'maxi-blocks')
-					: __('Missing', 'maxi-blocks'),
+					? esc_html__('Exists', 'maxi-blocks')
+					: esc_html__('Missing', 'maxi-blocks'),
 				$custom_data_exists,
 			);
 
@@ -1012,9 +1010,26 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 		}
 
 		/**
+		 * Helper method to check if table exists
+		 */
+		private function table_exists($table) {
+			global $wpdb;
+			$query = $wpdb->prepare('SHOW TABLES LIKE %s', $table);
+			return $wpdb->get_var($query) === $table;
+		}
+
+		/**
 		 * Generates text version of the report for clipboard
+		 *
+		 * @param array $data Data for the report
+		 * @return string The report content
 		 */
 		public function generate_report_text($data) {
+			// Only allow administrators to generate reports
+			if (!current_user_can('manage_options')) {
+				return esc_html__('You do not have permission to access this information.', 'maxi-blocks');
+			}
+
 			$report = "====== BEGIN SYSTEM REPORT ======\n\n";
 
 			// MaxiBlocks Plugin section (moved to top)
@@ -1022,67 +1037,66 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			global $wpdb;
 			$general_table = $wpdb->prefix . 'maxi_blocks_general';
 			$styles_table = $wpdb->prefix . 'maxi_blocks_styles_blocks';
-			$custom_data_table =
-				$wpdb->prefix . 'maxi_blocks_custom_data_blocks';
+			$custom_data_table = $wpdb->prefix . 'maxi_blocks_custom_data_blocks';
 
 			$report .=
 				'General Table: ' .
-				($wpdb->get_var("SHOW TABLES LIKE '$general_table'") ===
-				$general_table
-					? 'Exists'
-					: 'Missing') .
+				($this->table_exists($general_table) ? 'Exists' : 'Missing') .
 				"\n";
 			$report .=
 				'Styles Table: ' .
-				($wpdb->get_var("SHOW TABLES LIKE '$styles_table'") ===
-				$styles_table
-					? 'Exists'
-					: 'Missing') .
+				($this->table_exists($styles_table) ? 'Exists' : 'Missing') .
 				"\n";
 			$report .=
 				'Custom Data Table: ' .
-				($wpdb->get_var("SHOW TABLES LIKE '$custom_data_table'") ===
-				$custom_data_table
-					? 'Exists'
-					: 'Missing') .
+				($this->table_exists($custom_data_table) ? 'Exists' : 'Missing') .
 				"\n\n";
 
-			// Server Environment
+			// Server Environment - limit sensitive information
 			$report .= "--- Server Environment ---\n";
 			$report .=
 				'Environment: ' .
 				($this->is_localhost() ? 'Local' : 'Production') .
 				"\n";
-			$report .=
-				'Server Software: ' .
-				($_SERVER['SERVER_SOFTWARE'] ?? 'Unknown') .
-				"\n";
-			$report .=
-				'Operating System: ' .
-				(function_exists('php_uname')
-					? php_uname('s') . ' ' . php_uname('r')
-					: PHP_OS) .
-				"\n";
+
+			// Sanitize server software info
+			$server_software = isset($_SERVER['SERVER_SOFTWARE']) ?
+				sanitize_text_field($_SERVER['SERVER_SOFTWARE']) : 'Unknown';
+			// Redact version numbers for security
+			$server_software = preg_replace('/[0-9]+\.[0-9]+\.[0-9]+/', 'x.x.x', $server_software);
+
+			$report .= 'Server Software: ' . $server_software . "\n";
+
+			// Limit OS information to just the name for security
+			if (function_exists('php_uname')) {
+				$os_name = php_uname('s');
+				$report .= 'Operating System: ' . $os_name . "\n";
+			} else {
+				$report .= 'Operating System: ' . PHP_OS . "\n";
+			}
+
 			$report .=
 				'Architecture: ' . (PHP_INT_SIZE === 8 ? 'x64' : 'x86') . "\n";
 			$report .= 'PHP Version: ' . PHP_VERSION . "\n";
 
-			// Database info
+			// Database info - Redact minor version numbers
 			$mysql_version = $wpdb->get_var('SELECT VERSION()');
 			$is_mariadb =
 				strpos(strtolower($mysql_version), 'mariadb') !== false;
 			if ($is_mariadb) {
-				preg_match('/\d+\.\d+\.\d+/', $mysql_version, $matches);
-				$db_version = $matches[0] ?? '0.0.0';
+				preg_match('/\d+\.\d+/', $mysql_version, $matches); // Get major.minor version only
+				$db_version = $matches[0] ?? 'Unknown';
 				$report .=
 					'Database: MariaDB ' .
 					$db_version .
 					' (Required: 10.4+)' .
 					"\n";
 			} else {
+				preg_match('/\d+\.\d+/', $mysql_version, $matches); // Get major.minor version only
+				$db_version = $matches[0] ?? $mysql_version;
 				$report .=
 					'Database: MySQL ' .
-					$mysql_version .
+					$db_version .
 					' (Required: 8.0+)' .
 					"\n";
 			}
@@ -1106,21 +1120,24 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$parent_theme = $theme->parent();
 
 			$report .= "--- Theme Information ---\n";
-			$report .= 'Theme Name: ' . $theme->get('Name') . "\n";
-			$report .= 'Version: ' . $theme->get('Version') . "\n";
-			$report .= 'Author: ' . strip_tags($theme->get('Author') ?? '') . "\n";
-			$report .= 'Author Website: ' . $theme->get('AuthorURI') . "\n";
+			$report .= 'Theme Name: ' . esc_html($theme->get('Name')) . "\n";
+			$report .= 'Version: ' . esc_html($theme->get('Version')) . "\n";
+			$report .= 'Author: ' . esc_html(strip_tags($theme->get('Author') ?? '')) . "\n";
+			$report .= 'Author Website: ' . esc_url($theme->get('AuthorURI')) . "\n";
 			$report .=
 				'Parent Theme: ' .
 				($parent_theme
-					? $parent_theme->get('Name') .
-						' ' .
-						$parent_theme->get('Version')
+					? esc_html($parent_theme->get('Name') . ' ' . $parent_theme->get('Version'))
 					: 'None') .
 				"\n";
 			$report .=
 				'Block Theme: ' . ($is_block_theme ? 'Yes' : 'No') . "\n";
-			$report .= 'Theme Directory: ' . get_template_directory() . "\n\n";
+
+			// Redact full server path for security
+			$template_dir = get_template_directory();
+			$wp_root = str_replace('\\', '/', ABSPATH);
+			$template_dir = str_replace($wp_root, '[WORDPRESS_ROOT]/', str_replace('\\', '/', $template_dir));
+			$report .= 'Theme Directory: ' . $template_dir . "\n\n";
 
 			// WordPress Environment
 			$report .= "--- WordPress Environment ---\n";
@@ -1140,34 +1157,40 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 						: 'Subfolder') .
 					"\n";
 			}
-			$report .= 'Site URL: ' . site_url() . "\n";
-			$report .= 'Home URL: ' . home_url() . "\n";
+
+			// Redact full URLs for security in text report
+			$site_url_parts = parse_url(site_url());
+			$home_url_parts = parse_url(home_url());
+
+			$report .= 'Site URL: ' . esc_url(site_url()) . "\n";
+			$report .= 'Home URL: ' . esc_url(home_url()) . "\n";
+
 			if (get_option('page_for_posts')) {
 				$report .=
 					'Blog URL: ' .
-					get_permalink(get_option('page_for_posts')) .
+					esc_url(get_permalink(get_option('page_for_posts'))) .
 					"\n";
 			}
-			$report .= 'Current Theme: ' . $data['theme'] . "\n";
-			$report .= 'Parent Theme: ' . $data['parent_theme'] . "\n";
-			$report .= 'WP Debug Mode: ' . $data['wpdebug'] . "\n";
-			$report .= 'Language: ' . $data['site_lang'] . "\n";
-			$report .= 'Charset: ' . $data['site_char'] . "\n";
-			$report .= 'Timezone: ' . wp_timezone_string() . "\n";
-			$report .= 'Text Direction: ' . $data['site_text_dir'] . "\n";
+			$report .= 'Current Theme: ' . esc_html($data['theme']) . "\n";
+			$report .= 'Parent Theme: ' . esc_html($data['parent_theme']) . "\n";
+			$report .= 'WP Debug Mode: ' . esc_html($data['wpdebug']) . "\n";
+			$report .= 'Language: ' . esc_html($data['site_lang']) . "\n";
+			$report .= 'Charset: ' . esc_html($data['site_char']) . "\n";
+			$report .= 'Timezone: ' . esc_html(wp_timezone_string()) . "\n";
+			$report .= 'Text Direction: ' . esc_html($data['site_text_dir']) . "\n";
 			$report .=
 				'Permalinks: ' .
 				(empty(get_option('permalink_structure'))
 					? 'Plain'
 					: 'Pretty Permalinks (' .
-						get_option('permalink_structure') .
+						esc_html(get_option('permalink_structure')) .
 						')') .
 				"\n";
-			$report .= 'jQuery Version: ' . $data['jquchk'] . "\n";
+			$report .= 'jQuery Version: ' . esc_html($data['jquchk']) . "\n";
 			$wp_scripts = wp_scripts();
 			$report .=
 				'React Version: ' .
-				($wp_scripts->registered['react']->ver ?? 'Not Found') .
+				esc_html($wp_scripts->registered['react']->ver ?? 'Not Found') .
 				"\n";
 
 			// Add AJAX status to WordPress Environment section
@@ -1184,9 +1207,9 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 					if (in_array($plugin_path, $data['active'])) {
 						$report .=
 							'- ' .
-							$plugin['Name'] .
+							esc_html($plugin['Name']) .
 							' ' .
-							$plugin['Version'] .
+							esc_html($plugin['Version']) .
 							"\n";
 					}
 				}
@@ -1203,9 +1226,9 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 						$plugin = $data['plugins'][$plugin_path];
 						$report .=
 							'- ' .
-							$plugin['Name'] .
+							esc_html($plugin['Name']) .
 							' ' .
-							$plugin['Version'] .
+							esc_html($plugin['Version']) .
 							"\n";
 					}
 				}
@@ -1217,35 +1240,42 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 
 			$report .= "\n====== END SYSTEM REPORT ======";
 
-			// Add back the WordPress Directories Permissions section
+			// Redact full paths in WordPress Directories Permissions section
 			$report .= "\nWordPress Directories Permissions:\n";
+
+			// Helper to redact paths for security
+			$redact_path = function($path) {
+				$wp_root = str_replace('\\', '/', ABSPATH);
+				return str_replace($wp_root, '[WORDPRESS_ROOT]/', str_replace('\\', '/', $path));
+			};
+
 			$report .=
 				'WP Directory: ' .
-				ABSPATH .
+				$redact_path(ABSPATH) .
 				' (' .
 				$this->get_directory_permission(ABSPATH) .
 				")\n";
 			$report .=
 				'WP Content Directory: ' .
-				WP_CONTENT_DIR .
+				$redact_path(WP_CONTENT_DIR) .
 				' (' .
 				$this->get_directory_permission(WP_CONTENT_DIR) .
 				")\n";
 			$report .=
 				'WP Plugin Directory: ' .
-				WP_PLUGIN_DIR .
+				$redact_path(WP_PLUGIN_DIR) .
 				' (' .
 				$this->get_directory_permission(WP_PLUGIN_DIR) .
 				")\n";
 			$report .=
 				'WP Themes Directory: ' .
-				get_theme_root() .
+				$redact_path(get_theme_root()) .
 				' (' .
 				$this->get_directory_permission(get_theme_root()) .
 				")\n";
 			$report .=
 				'WP Uploads Directory: ' .
-				wp_upload_dir()['basedir'] .
+				$redact_path(wp_upload_dir()['basedir']) .
 				' (' .
 				$this->get_directory_permission(wp_upload_dir()['basedir']) .
 				")\n";
@@ -1307,8 +1337,17 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			return sprintf('%s | %s | %s', $mode, $readable, $writable);
 		}
 
-		// Keep the get_debug_log_content method
+		/**
+		 * Get the debug log content in a secure way
+		 *
+		 * @return string|bool Contents of debug log or false on failure
+		 */
 		private function get_debug_log_content() {
+			// Only allow administrators to view debug logs
+			if (!current_user_can('manage_options')) {
+				return false;
+			}
+
 			if (!defined('WP_DEBUG_LOG') || !WP_DEBUG_LOG) {
 				return false;
 			}
@@ -1318,12 +1357,22 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 				$log_path = WP_DEBUG_LOG;
 			}
 
+			// Check if the log file exists and is readable
 			if (!file_exists($log_path) || !is_readable($log_path)) {
 				return false;
 			}
 
-			// Use pure PHP approach to get the last 1000 lines
-			$line_count = 1000;
+			// Make sure the path is within WordPress directory to prevent path traversal
+			$wp_root = str_replace('\\', '/', ABSPATH);
+			$log_path_normalized = str_replace('\\', '/', $log_path);
+
+			// If it's an absolute path, make sure it's within WordPress directory
+			if (strpos($log_path_normalized, '/') === 0 && strpos($log_path_normalized, $wp_root) !== 0) {
+				return false;
+			}
+
+			// Use safe reading approach
+			$line_count = 1000; // Limit to last 1000 lines
 			$file_size = filesize($log_path);
 
 			// If file is empty, return empty string
@@ -1331,25 +1380,35 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 				return '';
 			}
 
-			// Start with a reasonable chunk size (larger than typical line length)
-			$chunk_size = min($file_size, 4096);
-			$lines = [];
-			$line_count_found = 0;
-			$pos = $file_size;
+			// Limit the maximum size to read to prevent excessive memory usage
+			$max_size = 5 * 1024 * 1024; // 5MB max
+			if ($file_size > $max_size) {
+				return esc_html__('Debug log too large to display. Download it manually.', 'maxi-blocks');
+			}
 
-			// Open the file for reading
+			// Read file safely
 			$f = fopen($log_path, 'rb');
 			if (!$f) {
 				return false;
 			}
 
-			// Read the file backwards in chunks
+			$lines = [];
+			$line_count_found = 0;
+
+			// Read the file line by line from the end
+			$pos = $file_size;
+			$chunk_size = min($file_size, 4096);
+
 			while ($pos > 0 && $line_count_found < $line_count) {
 				$seek_pos = max(0, $pos - $chunk_size);
 				$read_size = $pos - $seek_pos;
 
 				fseek($f, $seek_pos);
 				$chunk = fread($f, $read_size);
+
+				if ($chunk === false) {
+					break;
+				}
 
 				// Count how many newlines are in this chunk
 				$nl_pos = strrpos($chunk, "\n");
@@ -1389,7 +1448,26 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 
 			fclose($f);
 
-			return implode("\n", $lines);
+			// Filter sensitive information from log output
+			$filtered_lines = [];
+			$patterns = [
+				'/password[=:"\'][^"\'&\s]+/i', // Filter passwords
+				'/user[=:"\'][^"\'&\s]+/i',     // Filter usernames
+				'/key[=:"\'][^"\'&\s]+/i',      // Filter API keys
+				'/token[=:"\'][^"\'&\s]+/i',    // Filter tokens
+				'/authorization[=:"\'][^"\'&\s]+/i', // Filter auth headers
+				'/bearer[=:"\'][^"\'&\s]+/i',   // Filter bearer tokens
+			];
+
+			foreach ($lines as $line) {
+				$filtered_line = $line;
+				foreach ($patterns as $pattern) {
+					$filtered_line = preg_replace($pattern, '[REDACTED]', $filtered_line);
+				}
+				$filtered_lines[] = $filtered_line;
+			}
+
+			return implode("\n", $filtered_lines);
 		}
 
 		/**
@@ -1452,15 +1530,6 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			}
 
 			return $warnings;
-		}
-
-		/**
-		 * Helper method to check if table exists
-		 */
-		private function table_exists($table) {
-			global $wpdb;
-			$query = $wpdb->prepare('SHOW TABLES LIKE %s', $table);
-			return $wpdb->get_var($query) === $table;
 		}
 	}
 endif;

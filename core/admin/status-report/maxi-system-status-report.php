@@ -1291,28 +1291,35 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 		}
 
 		/**
-		 * Add the helper method for AJAX test
+		 * Test if WordPress AJAX or REST API is functioning
 		 */
 		private function test_ajax_status() {
-			// Check if admin-ajax.php exists and is accessible
-			$ajax_url = admin_url('admin-ajax.php');
-
-			// Only disable SSL verification for localhost environments
-			$sslverify = !$this->is_localhost();
-
-			$response = wp_remote_get($ajax_url, [
+			// First try the REST API
+			$rest_url = rest_url('wp/v2/types');
+			$rest_response = wp_remote_get($rest_url, [
 				'timeout' => 5,
-				'sslverify' => $sslverify,
+				'sslverify' => !$this->is_localhost(),
 			]);
 
-			if (is_wp_error($response)) {
+			// If REST API works, we're good
+			if (!is_wp_error($rest_response) && wp_remote_retrieve_response_code($rest_response) === 200) {
+				return true;
+			}
+
+			// Fallback to admin-ajax.php
+			$ajax_url = admin_url('admin-ajax.php');
+			$ajax_response = wp_remote_get($ajax_url, [
+				'timeout' => 5,
+				'sslverify' => !$this->is_localhost(),
+			]);
+
+			if (is_wp_error($ajax_response)) {
 				return false;
 			}
 
-			$response_code = wp_remote_retrieve_response_code($response);
+			$response_code = wp_remote_retrieve_response_code($ajax_response);
 
-			// WordPress AJAX typically returns 400 when no action is specified,
-			// which actually means it's working
+			// For admin-ajax.php, both 200 and 400 responses indicate it's working
 			return in_array($response_code, [200, 400], true);
 		}
 

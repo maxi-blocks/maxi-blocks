@@ -206,7 +206,13 @@ const AdvancedNumberControl = props => {
 					onChangeValue(val);
 				}
 			},
-			[onChangeValue, optionType]
+			// onChangeValue is intentionally omitted from dependencies to prevent
+			// useDebounce from cancelling the function execution
+			// due to onChangeValue changing on every render.
+			// TODO: Fix the components that use ANC to provide a stable onChangeValue reference
+			// (i.e. wrap in useCallback or declare it outside of the component)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+			[optionType]
 		),
 		300
 	);

@@ -1491,14 +1491,29 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 
 			// Check Database Type
 			global $wpdb;
-			$db_version = $wpdb->db_version();
-			$required_mysql = '8.0';
-			if (version_compare($db_version, $required_mysql, '<')) {
-				$warnings[] = [
-					'setting' => 'Database Type',
-					'recommended' => 'MySQL ' . $required_mysql . '+',
-					'actual' => 'MySQL ' . $db_version,
-				];
+			$mysql_version = $wpdb->get_var('SELECT VERSION()');
+			$is_mariadb = strpos(strtolower($mysql_version), 'mariadb') !== false;
+
+			if ($is_mariadb) {
+				preg_match('/\d+\.\d+\.\d+/', $mysql_version, $matches);
+				$db_version = $matches[0] ?? '0.0.0';
+				if (version_compare($db_version, '10.4', '<')) {
+					$warnings[] = [
+						'setting' => 'Database Type',
+						'recommended' => 'MariaDB 10.4+',
+						'actual' => 'MariaDB ' . $db_version,
+					];
+				}
+			} else {
+				$db_version = $wpdb->db_version();
+				$required_mysql = '8.0';
+				if (version_compare($db_version, $required_mysql, '<')) {
+					$warnings[] = [
+						'setting' => 'Database Type',
+						'recommended' => 'MySQL ' . $required_mysql . '+',
+						'actual' => 'MySQL ' . $db_version,
+					];
+				}
 			}
 
 			// Check WordPress AJAX

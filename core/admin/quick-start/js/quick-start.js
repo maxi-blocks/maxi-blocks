@@ -460,6 +460,7 @@ jQuery(document).ready(function ($) {
 					nonce: maxiQuickStart.nonce,
 				},
 				success: () => {
+					this.hideLoader();
 					window.location.href = `${maxiQuickStart.adminUrl}site-editor.php`;
 				},
 				error: () => {

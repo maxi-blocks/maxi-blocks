@@ -56,10 +56,6 @@ class MaxiBlocks_QuickStart {
 			$this,
 			'save_pages_settings',
 		]);
-		add_action('wp_ajax_maxi_save_theme_settings', [
-			$this,
-			'save_theme_settings',
-		]);
 		add_action('wp_ajax_maxi_activate_theme', [$this, 'activate_theme']);
 
 		// Store initial theme state when quick start starts
@@ -149,10 +145,10 @@ class MaxiBlocks_QuickStart {
 		// Only redirect once after activation, using the transient set during activation
 		if (get_transient('maxi_blocks_activation_redirect')) {
 			delete_transient('maxi_blocks_activation_redirect');
-			if (
-				(current_user_can('manage_options') && !isset($_GET['page'])) ||
-				$_GET['page'] !== 'maxi-blocks-quick-start'
-			) {
+
+			// Safely check if the 'page' parameter is set and equals our target
+			$current_page = isset($_GET['page']) ? sanitize_key($_GET['page']) : '';
+			if (current_user_can('manage_options') && $current_page !== 'maxi-blocks-quick-start') {
 				wp_redirect(
 					admin_url('admin.php?page=maxi-blocks-quick-start'),
 				);
@@ -245,6 +241,9 @@ class MaxiBlocks_QuickStart {
 	 * Render the quick start page
 	 */
 	public function render_quick_start_page() {
+		// Initialize steps first to ensure we have a valid list of steps
+		$this->init_steps();
+
 		// Check if we're accessing the page without a step parameter
 		if (!isset($_GET['step'])) {
 			$status_report = new MaxiBlocks_System_Status_Report();
@@ -257,10 +256,12 @@ class MaxiBlocks_QuickStart {
 			}
 		}
 
-		$current_step = isset($_GET['step'])
-			? sanitize_key($_GET['step'])
+		// Get step and validate it's in our allowed steps list
+		$requested_step = isset($_GET['step']) ? sanitize_key($_GET['step']) : '';
+		$current_step = array_key_exists($requested_step, $this->steps)
+			? $requested_step
 			: $this->get_first_step();
-		$this->init_steps();
+
 		?>
 		<div id="dashboard_system_report">
 			<div class="maxi-dashboard_header">
@@ -510,7 +511,7 @@ class MaxiBlocks_QuickStart {
 
 			<script>
 				jQuery(document).ready(function($) {
-					var siteUrl = '<?php echo esc_url(home_url()); ?>';
+					var siteUrl = <?php echo wp_json_encode(home_url()); ?>;
 					var previewUrls = {
 						'/%postname%/': siteUrl + '/sample-post/',
 						'': siteUrl + '/?p=123',
@@ -948,7 +949,9 @@ class MaxiBlocks_QuickStart {
 		check_ajax_referer('maxi_quick_start', 'nonce');
 
 		if (!current_user_can('manage_options')) {
-			wp_send_json_error('Unauthorized');
+			wp_send_json_error(
+				__('You do not have permission to perform this action.', 'maxi-blocks')
+			);
 		}
 
 		// Save homepage selection
@@ -961,52 +964,25 @@ class MaxiBlocks_QuickStart {
 		if (!empty($_POST['pages']) && is_array($_POST['pages'])) {
 			$pages = [];
 			foreach ($_POST['pages'] as $page) {
-				$pages[] = wp_insert_post([
+				// Validate the page data structure
+				if (!isset($page['title']) || !isset($page['content'])) {
+					continue;
+				}
+
+				$page_id = wp_insert_post([
 					'post_title' => sanitize_text_field($page['title']),
 					'post_content' => wp_kses_post($page['content']),
 					'post_status' => 'publish',
 					'post_type' => 'page',
 				]);
+
+				if (!is_wp_error($page_id)) {
+					$pages[] = $page_id;
+				}
 			}
-			update_option('maxi_blocks_quick_start_pages', $pages);
-		}
 
-		wp_send_json_success();
-	}
-
-	/**
-	 * Save theme step settings
-	 */
-	public function save_theme_settings() {
-		check_ajax_referer('maxi_quick_start', 'nonce');
-
-		if (!current_user_can('manage_options')) {
-			wp_send_json_error('Unauthorized');
-		}
-
-		// Save menu design
-		if (!empty($_POST['menu_design'])) {
-			update_option(
-				'maxi_blocks_menu_design',
-				sanitize_text_field($_POST['menu_design']),
-			);
-		}
-
-		// Save template selections
-		$templates = [
-			'single_post',
-			'archive',
-			'author_archive',
-			'search_results',
-			'error_404',
-		];
-
-		foreach ($templates as $template) {
-			if (!empty($_POST[$template])) {
-				update_option(
-					"maxi_blocks_template_{$template}",
-					sanitize_text_field($_POST[$template]),
-				);
+			if (!empty($pages)) {
+				update_option('maxi_blocks_quick_start_pages', $pages);
 			}
 		}
 

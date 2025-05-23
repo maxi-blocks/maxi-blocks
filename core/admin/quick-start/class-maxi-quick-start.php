@@ -1218,9 +1218,9 @@ class MaxiBlocks_QuickStart {
 		);
 
 		foreach ($matches as $match) {
-			$setting = trim(strip_tags($match[1]));
-			$recommended = trim(strip_tags($match[2]));
-			$actual = trim(strip_tags($match[3]));
+			$setting = trim(strip_tags($match[1] ?? ''));
+			$recommended = trim(strip_tags($match[2] ?? ''));
+			$actual = trim(strip_tags($match[3] ?? ''));
 
 			// Skip header rows and empty settings
 			if (

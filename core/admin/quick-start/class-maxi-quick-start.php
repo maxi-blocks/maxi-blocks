@@ -36,6 +36,7 @@ class MaxiBlocks_QuickStart {
 		add_action('admin_menu', [$this, 'add_quick_start_page']);
 		add_action('admin_init', [$this, 'maybe_redirect_to_quick_start']);
 		add_action('admin_init', [$this, 'maxi_blocks_starter_sites_init']);
+		add_action('admin_init', [$this, 'check_quick_start_step']);
 		add_action('admin_enqueue_scripts', [
 			$this,
 			'enqueue_quick_start_assets',
@@ -144,6 +145,45 @@ class MaxiBlocks_QuickStart {
 	}
 
 	/**
+	 * Check if we need to redirect to a specific quick start step
+	 * This runs before headers are sent, during admin_init
+	 */
+	public function check_quick_start_step() {
+		// Only run on our page
+		$page = isset($_GET['page']) ? sanitize_key($_GET['page']) : '';
+		if ($page !== 'maxi-blocks-quick-start') {
+			return;
+		}
+
+		// Skip if step is already specified
+		if (isset($_GET['step'])) {
+			return;
+		}
+
+		// Initialize steps to check warnings
+		$this->init_steps();
+
+		// Check for critical warnings
+		$status_report = new MaxiBlocks_System_Status_Report();
+		$critical_warnings = $this->get_critical_warnings($status_report);
+
+		// If no warnings, redirect to quick_start step
+		if (empty($critical_warnings)) {
+			// Use JavaScript based redirect if headers might have been sent already
+			if (headers_sent()) {
+				add_action('admin_print_footer_scripts', function() {
+					echo '<script>window.location.href = "' .
+						 esc_url(admin_url('admin.php?page=maxi-blocks-quick-start&step=quick_start')) .
+						 '";</script>';
+				});
+			} else {
+				wp_redirect(admin_url('admin.php?page=maxi-blocks-quick-start&step=quick_start'));
+				exit;
+			}
+		}
+	}
+
+	/**
 	 * Enqueue necessary assets
 	 */
 	public function enqueue_quick_start_assets($hook) {
@@ -227,20 +267,8 @@ class MaxiBlocks_QuickStart {
 	 * Render the quick start page
 	 */
 	public function render_quick_start_page() {
-		// Initialize steps first to ensure we have a valid list of steps
+		// Initialize steps to ensure we have a valid list of steps
 		$this->init_steps();
-
-		// Check if we're accessing the page without a step parameter
-		if (!isset($_GET['step'])) {
-			$status_report = new MaxiBlocks_System_Status_Report();
-			$critical_warnings = $this->get_critical_warnings($status_report);
-
-			// If there are no critical warnings, redirect to the quick_start step
-			if (empty($critical_warnings)) {
-				wp_redirect(admin_url('admin.php?page=maxi-blocks-quick-start&step=quick_start'));
-				exit;
-			}
-		}
 
 		// Get step and validate it's in our allowed steps list
 		$requested_step = isset($_GET['step']) ? sanitize_key($_GET['step']) : '';

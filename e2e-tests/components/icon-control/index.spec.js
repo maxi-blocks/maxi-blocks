@@ -17,6 +17,7 @@ import {
 	openSidebarTab,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getBlockStyle,
 } from '../../utils';
 
 describe('IconControl', () => {
@@ -82,5 +83,59 @@ describe('IconControl', () => {
 		expect(await getAttributes('icon-border-style-general')).toStrictEqual(
 			'dashed'
 		);
+	});
+
+	it('Should change icon border radius and padding units', async () => {
+		await createNewPost();
+		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
+		await openSidebarTab(page, 'style', 'icon');
+
+		// select icon
+		await modalMock(page, { type: 'button-icon' });
+
+		// Set border radius to 100
+		const borderRadiusInput = await page.$(
+			'.maxi-axis-control__icon-border .maxi-advanced-number-control .maxi-base-control__field input'
+		);
+		await borderRadiusInput.click();
+		await page.keyboard.type('100', { delay: 350 });
+
+		// Set padding to 100
+		const paddingInput = await page.$(
+			'.maxi-axis-control__icon-padding .maxi-advanced-number-control .maxi-base-control__field input'
+		);
+		await paddingInput.click();
+		await page.keyboard.type('100', { delay: 350 });
+
+		// Change border radius units to em
+		const borderRadiusSelect = await page.$(
+			'.maxi-axis-control__icon-border .maxi-select-control__input'
+		);
+		await borderRadiusSelect.select('em');
+
+		// Change padding units to %
+		const paddingSelect = await page.$(
+			'.maxi-axis-control__icon-padding .maxi-select-control__input'
+		);
+		await paddingSelect.select('%');
+
+		await page.waitForTimeout(1000);
+
+		// Verify the changes
+		expect(
+			await getAttributes('icon-border-top-left-radius-general')
+		).toStrictEqual(100);
+		expect(
+			await getAttributes('icon-border-unit-radius-general')
+		).toStrictEqual('em');
+		expect(await getAttributes('icon-padding-top-general')).toStrictEqual(
+			'100'
+		);
+		expect(
+			await getAttributes('icon-padding-top-unit-general')
+		).toStrictEqual('%');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

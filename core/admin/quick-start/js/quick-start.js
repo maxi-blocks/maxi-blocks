@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 jQuery(document).ready(function ($) {
 	const MaxiQuickStart = {
 		errors: {
@@ -450,6 +451,7 @@ jQuery(document).ready(function ($) {
 		},
 
 		completeQuickStart() {
+			this.showLoader();
 			$.ajax({
 				url: maxiQuickStart.ajaxUrl,
 				type: 'POST',
@@ -459,6 +461,13 @@ jQuery(document).ready(function ($) {
 				},
 				success: () => {
 					window.location.href = `${maxiQuickStart.adminUrl}site-editor.php`;
+				},
+				error: () => {
+					this.showError(
+						$('.maxi-quick-start-content'),
+						'An error occurred while completing the quick start. Please try again.'
+					);
+					this.hideLoader();
 				},
 			});
 		},

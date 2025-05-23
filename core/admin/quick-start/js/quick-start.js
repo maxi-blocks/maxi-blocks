@@ -482,14 +482,12 @@ jQuery(document).ready(function ($) {
 		},
 
 		validateField($field) {
-			const value = $field.val();
-			const $error = $field.next('.maxi-error');
-
-			if ($field.prop('required') && !value) {
+			if ($field.prop('required') && !$field.val()) {
 				this.showError($field, this.errors.required);
 				return false;
 			}
 
+			const value = $field.val();
 			if (
 				$field.attr('type') === 'url' &&
 				value &&
@@ -508,7 +506,12 @@ jQuery(document).ready(function ($) {
 				return false;
 			}
 
-			$error.remove();
+			// Remove error if it exists
+			const $error = $field.next('.maxi-error');
+			if ($error.length) {
+				$error.remove();
+			}
+
 			return true;
 		},
 
@@ -539,8 +542,8 @@ jQuery(document).ready(function ($) {
 
 		isValidUrl(url) {
 			try {
-				new URL(url);
-				return true;
+				// Use URL constructor to validate without assigning
+				return Boolean(new URL(url));
 			} catch {
 				return false;
 			}

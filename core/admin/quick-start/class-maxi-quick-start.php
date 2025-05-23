@@ -52,10 +52,6 @@ class MaxiBlocks_QuickStart {
 			$this,
 			'save_design_settings',
 		]);
-		add_action('wp_ajax_maxi_save_pages_settings', [
-			$this,
-			'save_pages_settings',
-		]);
 		add_action('wp_ajax_maxi_activate_theme', [$this, 'activate_theme']);
 
 		// Store initial theme state when quick start starts
@@ -317,7 +313,6 @@ class MaxiBlocks_QuickStart {
 	private function render_steps_nav($current_step) {
 		echo '<ul class="maxi-quick-start-steps-nav">';
 		$steps_array = array_keys($this->steps);
-		$total_steps = count($steps_array);
 
 		// Only skip if theme was active before quick start started
 		$initial_theme = get_option('maxi_quick_start_initial_theme', '');
@@ -534,50 +529,6 @@ class MaxiBlocks_QuickStart {
 
 		<div class="maxi-quick-start-actions">
 			<button type="button" class="button button-primary" data-action="save-welcome">
-				<?php _e('Save settings', 'maxi-blocks'); ?>
-			</button>
-			<button type="button" class="button" data-action="continue">
-				<?php _e('Skip next', 'maxi-blocks'); ?>
-			</button>
-		</div>
-		<?php
-	}
-
-	/**
-	 * Pages step view
-	 */
-	public function pages_step() {
-		?>
-		<h1><?php _e('Page selection', 'maxi-blocks'); ?></h1>
-		<p class="description">
-			<?php _e('Select pages for your website', 'maxi-blocks'); ?>
-		</p>
-
-		<div class="maxi-quick-start-section">
-			<h2><?php _e('Select the page layout you like', 'maxi-blocks'); ?></h2>
-			<p class="description">
-				<?php _e(
-    	'Choose the pages you want to include on your website from the MaxiBlocks library. Select from a variety of pre-designed templates such as Home, About, Contact, Blog, Services, and more.',
-    	'maxi-blocks',
-    ); ?>
-			</p>
-
-			<h3><?php _e('Select your homepage', 'maxi-blocks'); ?></h3>
-			<button type="button" class="button" id="select-page">
-				<?php _e('Select page', 'maxi-blocks'); ?>
-			</button>
-
-			<h3><?php _e('Add a page', 'maxi-blocks'); ?></h3>
-			<button type="button" class="button-add" id="add-page">
-				<span class="dashicons dashicons-plus-alt2"></span>
-			</button>
-		</div>
-
-		<div class="maxi-quick-start-actions">
-			<button type="button" class="button" data-action="back">
-				<?php _e('Back', 'maxi-blocks'); ?>
-			</button>
-			<button type="button" class="button button-primary" data-action="save-pages">
 				<?php _e('Save settings', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button" data-action="continue">
@@ -940,53 +891,6 @@ class MaxiBlocks_QuickStart {
 				__('An error occurred while saving settings.', 'maxi-blocks'),
 			);
 		}
-	}
-
-	/**
-	 * Save pages step settings
-	 */
-	public function save_pages_settings() {
-		check_ajax_referer('maxi_quick_start', 'nonce');
-
-		if (!current_user_can('manage_options')) {
-			wp_send_json_error(
-				__('You do not have permission to perform this action.', 'maxi-blocks')
-			);
-		}
-
-		// Save homepage selection
-		if (!empty($_POST['homepage_id'])) {
-			update_option('page_on_front', absint($_POST['homepage_id']));
-			update_option('show_on_front', 'page');
-		}
-
-		// Save additional pages
-		if (!empty($_POST['pages']) && is_array($_POST['pages'])) {
-			$pages = [];
-			foreach ($_POST['pages'] as $page) {
-				// Validate the page data structure
-				if (!isset($page['title']) || !isset($page['content'])) {
-					continue;
-				}
-
-				$page_id = wp_insert_post([
-					'post_title' => sanitize_text_field($page['title']),
-					'post_content' => wp_kses_post($page['content']),
-					'post_status' => 'publish',
-					'post_type' => 'page',
-				]);
-
-				if (!is_wp_error($page_id)) {
-					$pages[] = $page_id;
-				}
-			}
-
-			if (!empty($pages)) {
-				update_option('maxi_blocks_quick_start_pages', $pages);
-			}
-		}
-
-		wp_send_json_success();
 	}
 
 	/**

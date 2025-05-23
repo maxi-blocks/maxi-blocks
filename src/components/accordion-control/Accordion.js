@@ -73,7 +73,14 @@ const Accordion = props => {
 
 					const block = getBlock(getSelectedBlockClientId());
 
-					if (block && block.name.includes('maxi-blocks')) {
+					const { show_indicators: showIndicators } =
+						select('maxiBlocks').receiveMaxiSettings();
+
+					if (
+						showIndicators &&
+						block &&
+						block.name.includes('maxi-blocks')
+					) {
 						const { attributes, name } = block;
 						const defaultAttributes = getBlockAttributes(name);
 						isActiveTab = !item.indicatorProps.every(prop =>

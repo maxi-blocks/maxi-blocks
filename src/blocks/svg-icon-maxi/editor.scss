@@ -6,44 +6,46 @@
 		justify-content: center;
 		width: 100%;
 		min-height: 120px;
-		color: #464a53;
-		background-color: rgba(229, 242, 248, 0.7);
+		color: var(--maxi-grey-dark);
+		background-color: var(--maxi-whisper-green);
 		font-size: 13px;
-		border: 1px solid #dbdde6;
-		border-radius: 3px;
+		border: 1px solid var(--maxi-primary-color);
+		border-radius: 10px;
 		box-shadow: none !important;
 
 		.maxi-block-library__modal-button {
-			padding: 0 10px 0 0;
 			overflow: hidden;
-			color: #fff;
-			background: var(--maxi-secondary-color);
-			font-family: Roboto, sans-serif;
+			color: var(--maxi-white);
+			background: var(--maxi-primary-color);
+			font-family: Inter, sans-serif;
 			font-size: 12px;
-			font-weight: 500;
-			border: 1px solid #dbdde6;
+			font-weight: 800;
+			padding: 22px 22px 22px 10px;
+			border: 1px solid var(--maxi-grey-light);
 			transition: all 0.1s;
+			border-radius: 30px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.4s ease;
 
 			svg {
 				width: 36px;
 				height: 36px;
 				padding: 8px;
-				margin-right: 10px;
-				background-color: #fff;
-				border-right: 1px solid #dbdde6;
-				transition: all 0.1s;
+
 				path {
-					fill: var(--maxi-secondary-color);
+					fill: var(--maxi-white);
 				}
 			}
 
 			&:hover {
-				background: #fff !important;
-				color: var(--maxi-secondary-color) !important;
-				border-color: var(--maxi-secondary-color);
-				svg {
-					border-color: var(--maxi-secondary-color);
-					transform: scale(1.1);
+				background: var(--maxi-white) !important;
+				color: var(--maxi-cloud-primary-contrast) !important;
+				border-color: var(--maxi-primary-color);
+
+				path {
+					fill: var(--maxi-primary-green) !important;
 				}
 			}
 		}
@@ -59,6 +61,7 @@
 				}
 			}
 		}
+
 		&--smaller {
 			.maxi-block-library__modal-button {
 				height: 30px;
@@ -69,25 +72,30 @@
 			}
 		}
 	}
+
 	&__replace-icon {
 		width: 30px;
 		height: 30px;
-		background: #fff;
+		background: var(--maxi-white);
 		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 		visibility: visible;
-		transition: 0.3s;
+		transition: all 0.4s ease;
 
 		svg {
 			fill: var(--maxi-secondary-color);
 			width: 15px;
 			height: 15px;
 		}
+
 		&:hover {
+			background-color: var(--maxi-pastel-green) !important;
+			transition: all 0.4s ease;
 			svg {
-				fill: #ff4a17;
+				fill: var(--maxi-primary-color);
 			}
 		}
 	}
+
 	.maxi-svg-icon-block__icon {
 		max-height: 100%;
 		svg {
@@ -95,6 +103,7 @@
 			max-height: 100%;
 		}
 	}
+
 	.maxi-library-modal__action-section {
 		margin-right: 0;
 	}

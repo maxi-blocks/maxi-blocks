@@ -1,15 +1,18 @@
 .toolbar-item__popover__list-options {
 	display: flex;
-	margin: -8px -8px 0;
+	margin: -13px -11px 0;
 
 	&__button {
 		font-weight: 700;
 		font-size: 15px;
-		border-right: 1px solid var(--maxi-grey-1-color);
+		border-right: 1px solid var(--maxi-grey-light);
+		transition: all 0.4s ease !important;
 
-		// To avoid changing the color of button with text
 		&:hover {
-			color: inherit;
+			color: var(--maxi-primary-color) !important;
+			svg path {
+				stroke: var(--maxi-primary-color) !important;
+			}
 		}
 
 		&:last-child {

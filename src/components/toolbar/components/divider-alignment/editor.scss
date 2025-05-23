@@ -5,9 +5,20 @@
 
 	.maxi-alignment-control {
 		.maxi-tabs-control__button {
-			border: 1px solid #dbdde6;
-		}
+			border: 1px solid var(--maxi-grey-light);
+			padding: 5px 30px;
 
+			&:hover {
+				background-color: var(--maxi-whisper-green);
+				border-color: var(--maxi-primary-color) !important;
+			}
+
+			&[aria-pressed='true'] {
+				background-color: var(--maxi-whisper-green) !important;
+				border-color: var(--maxi-primary-color) !important;
+				color: var(--maxi-black) !important;
+			}
+		}
 		.maxi-tabs-control {
 			margin-bottom: 0;
 		}

@@ -197,7 +197,7 @@ const IconSettings = props => {
 					{prefix === 'close-' && (
 						<SelectControl
 							__nextHasNoMarginBottom
-							label={__('Icon position', 'maxi-blocks')}
+							label={__('Position', 'maxi-blocks')}
 							className='maxi-video-icon-control__icon-position'
 							value={props[`${prefix}icon-position`]}
 							defaultValue={getDefaultAttribute(
@@ -422,6 +422,7 @@ const VideoIconControl = props => {
 						},
 					]}
 					depth={2}
+					disablePadding
 				/>
 			)}
 		</>

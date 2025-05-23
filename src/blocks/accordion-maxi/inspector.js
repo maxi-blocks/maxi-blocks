@@ -41,6 +41,7 @@ const Inspector = props => {
 		disableSpacing: true,
 		disableIconInherit: true,
 		disableHeightFitContent: true,
+		disablePadding: true,
 	};
 
 	const lineSettingsProps = {
@@ -146,10 +147,11 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.icon({
 										...iconTabsProps,
-										label: __('Active Icon', 'maxi-blocks'),
+										label: __('Active icon', 'maxi-blocks'),
 										prefix: 'active-',
 										type: 'accordion-icon-active',
 										disablePosition: true,
+										disablePadding: true,
 									}),
 									{
 										label: __(

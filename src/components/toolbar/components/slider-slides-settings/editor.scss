@@ -1,7 +1,9 @@
 .toolbar-item__slide__popover {
 	display: flex;
-	padding-bottom: 7px;
-	padding-top: 3px;
+	padding-bottom: 10px;
+	padding-top: 0;
+	padding-left: 0;
+	margin-left: -9px;
 	.maxi-slider-toolbar__slide {
 		position: relative;
 		margin: 0 7px;
@@ -14,6 +16,13 @@
 			height: 24px;
 			border: 1px solid;
 		}
+		&:hover,
+		&--active {
+			span {
+				border-color: var(--maxi-primary-color);
+				color: var(--maxi-primary-color);
+			}
+		}
 		.maxi-slider-toolbar__slide-remove {
 			position: absolute;
 			right: -9px;
@@ -21,9 +30,21 @@
 			padding: 0;
 			height: 17px;
 			min-width: 17px;
+			border-radius: 50%;
 
 			svg {
 				background-color: white;
+				border-radius: 50%;
+				border: 1px solid white;
+			}
+			&:hover {
+				svg {
+					background-color: var(--maxi-primary-color);
+					border-color: var(--maxi-primary-color);
+					path {
+						fill: white;
+					}
+				}
 			}
 		}
 	}

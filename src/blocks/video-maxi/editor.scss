@@ -1,0 +1,20 @@
+.maxi-accordion-control__item[data-name='popup settings'],
+.maxi-accordion-control__item[data-name='playback icon'] {
+	.maxi-library-modal__action-section__label {
+		margin-bottom: 10px;
+	}
+	.maxi-color-control__palette-label {
+		.maxi-base-control__label {
+			margin-bottom: 10px;
+			margin-top: 10px;
+		}
+	}
+	.maxi-video-icon-control__hover-status {
+		margin-top: 10px;
+	}
+	.maxi-video-icon-control__icon-position {
+		select {
+			flex: 2;
+		}
+	}
+}

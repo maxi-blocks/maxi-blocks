@@ -4,32 +4,16 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const toolbarTextLetterSpacing = (
-	<SVG width={17.5} height={17.811} viewBox='0 0 17.5 17.811'>
-		<g>
-			<g>
-				<g
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					strokeWidth={1.5}
-					transform='translate(-1.015 -.75)'
-				>
-					<Path d='M15.234 17.5l2.531-2.539-2.531-2.7' />
-					<Path transform='translate(1.765 14.961)' d='M0 0L16 0' />
-					<Path d='M4.3 12.264l-2.532 2.7L4.3 17.5' />
-				</g>
-			</g>
-			<g
-				strokeLinecap='round'
-				strokeLinejoin='round'
-				strokeWidth={1.5}
-				transform='translate(-1.015 -.75)'
-			>
-				<Path transform='translate(16.389 1.5)' d='M0 0L0 7.479' />
-				<Path transform='translate(11.957 1.5)' d='M0 0L0 7.479' />
-				<Path transform='translate(7.526 1.5)' d='M0 0L0 7.479' />
-				<Path transform='translate(3.094 1.5)' d='M0 0L0 7.479' />
-			</g>
-		</g>
+	<SVG
+		viewBox='0 0 17.5 17.8'
+		stroke='#141516'
+		strokeLinecap='round'
+		strokeLinejoin='round'
+		strokeWidth={1.5}
+	>
+		<Path d='M14.2,16.8l2.5-2.5-2.5-2.7' />
+		<Path d='M.8 14.2h16M3.3 11.5L.8 14.2l2.5 2.5M15.4.8v7.4' />
+		<Path d='M10.9.8v7.4M6.5.8v7.4M2.1.8v7.4' />
 	</SVG>
 );
 

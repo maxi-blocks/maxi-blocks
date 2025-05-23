@@ -1,10 +1,10 @@
 .maxi-responsive-selector {
 	position: absolute;
 	display: flex;
-	background: #fff;
-	border-color: #dbdde6;
+	background: var(--maxi-white);
+	border-color: var(--maxi-grey-light);
 	border-style: solid;
-	border-width: 0 1px 1px;
+	border-width: 1px;
 	top: 60px;
 	left: 0;
 	z-index: 99;
@@ -23,19 +23,20 @@
 		display: inline-block;
 		&__button {
 			position: relative;
-			color: #081219;
-			background-color: #fff;
-			font-family: Roboto, sans-serif;
+			color: var(--maxi-grey-dark);
+			background-color: var(--maxi-white);
+			font-family: Inter, sans-serif;
 			font-size: 12px;
 			letter-spacing: 0px;
-			border-right: 1px solid #dbdde6;
+			border-right: 1px solid var(--maxi-grey-light);
 			border-radius: 0;
 			transition: all 0.5s;
 			margin-left: 0;
 			box-shadow: none !important;
 			height: 40px;
-			padding: 2px 7px;
+			padding: 0px 10px 0px 10px;
 			outline: none !important;
+			font-weight: bold !important;
 
 			svg {
 				margin-right: 5px;
@@ -52,17 +53,15 @@
 				height: 2px;
 			}
 			&:hover {
-				background-color: #f9f9f9;
-				&::after {
-					background-color: #081219;
-				}
+				background-color: var(--maxi-pastel-green);
+				color: var(--maxi-grey-dark);
 			}
 		}
 		&__help {
 			position: relative;
 			display: flex;
-			color: #081219;
-			font-family: Roboto, sans-serif;
+			color: var(--maxi-grey-dark);
+			font-family: Inter, sans-serif;
 			font-size: 12px;
 			line-height: 100%;
 			font-weight: 500;
@@ -75,7 +74,7 @@
 			justify-content: center;
 			align-items: center;
 			box-shadow: none;
-			border-right: 1px solid #dbdde6;
+			border-right: 1px solid var(--maxi-grey-light);
 
 			&::after {
 				content: '';
@@ -89,10 +88,10 @@
 				height: 2px;
 			}
 			&:hover {
-				background-color: #f9f9f9;
+				background-color: var(--maxi-white);
 
 				&::after {
-					background-color: #081219;
+					background-color: var(--maxi-grey-dark);
 				}
 			}
 			svg {
@@ -131,9 +130,9 @@
 			}
 		}
 		&:hover {
-			background-color: #f9f9f9;
+			background-color: var(--maxi-white);
 			&::after {
-				background-color: #081219;
+				background-color: var(--maxi-grey-dark);
 			}
 		}
 	}
@@ -142,7 +141,7 @@
 			position: relative;
 			display: flex;
 			line-height: 100%;
-			border-right: 1px solid #dbdde6;
+			border-right: 1px solid var(--maxi-grey-light);
 			border-radius: 0;
 			transition: border-color 0.5s;
 			margin: 0;
@@ -171,7 +170,9 @@
 				transition: all 0.2s;
 			}
 			&:hover {
-				color: #000;
+				color: var(--maxi-black);
+				font-weight: bold !important;
+				background-color: var(--maxi-pastel-green) !important;
 
 				.maxi-responsive-selector__button-current-size,
 				svg {
@@ -195,26 +196,29 @@
 				bottom: -1px;
 				left: 0;
 				width: 100%;
+				font-weight: bold !important;
 				height: 2px;
 			}
 			&[aria-pressed='true'] {
-				background-color: #eaf2f6 !important;
+				background-color: var(--maxi-whisper-green) !important;
 				border-bottom-left-radius: 0;
 				border-bottom-right-radius: 0;
 				&::after {
 					height: 0px;
-					background-color: #007cba;
+					background-color: var(--maxi-secondary-color);
 				}
 				svg {
 					&:not(.maxi-tabs-control__notification) {
-						color: var(--wp-admin-theme-color);
+						color: var(--maxi-secondary-color);
 					}
 				}
 			}
 			&:hover {
-				background-color: #f9f9f9;
+				background-color: var(--maxi-white);
+				color: var(--maxi-black) !important;
+				transition: all 0.4s ease !important;
 				&::after {
-					background-color: #081219;
+					background-color: var(--maxi-grey-dark);
 				}
 			}
 			&:focus {
@@ -222,11 +226,12 @@
 			}
 			.maxi-tabs-control__notification {
 				position: absolute;
-				z-index: 8;
-				top: 0;
-				right: 0;
-				width: 7px;
-				height: 7px;
+				top: 4px;
+				right: 4px;
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				background-color: var(--maxi-secondary-color);
 			}
 		}
 		&-wrapper {
@@ -239,18 +244,19 @@
 				.maxi-components-button {
 					&[aria-pressed='true'] {
 						.maxi-responsive-selector__button-current-size {
-							color: #007cba;
+							color: var(--maxi-primary-color);
 						}
 					}
 				}
 			}
 		}
 		&-current-size {
-			font-family: 'Roboto', sans-serif !important;
+			font-family: 'Inter', sans-serif !important;
 			font-size: 10px !important;
 			line-height: 100%;
 			margin-top: 2px;
-			font-weight: 500;
+			font-weight: 800;
+			color: var(--maxi-secondary-color) !important;
 		}
 	}
 }

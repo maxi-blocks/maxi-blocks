@@ -27,14 +27,14 @@ const IconPosition = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__icon-position'
-			tooltip={__('Icon Position', 'maxi-blocks')}
+			tooltip={__(Position', 'maxi-blocks')}
 			position='bottom center'
 			icon={toolbarIconAlign}
 		>
 			<div className='toolbar-item__icon-position__popover'>
 				<SelectControl
 					__nextHasNoMarginBottom
-					label={__('Icon position', 'maxi-blocks')}
+					label={__('Position', 'maxi-blocks')}
 					className='maxi-icon__position'
 					value={props['icon-position']}
 					defaultValue={getDefaultAttribute('icon-position')}

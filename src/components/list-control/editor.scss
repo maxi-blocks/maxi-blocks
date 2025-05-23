@@ -20,6 +20,16 @@
 		border: 1px solid var(--maxi-secondary-color);
 		z-index: 0;
 		border-radius: 5px !important;
+		transition: all 0.4s ease; // Added transition
+
+		&:hover {
+			background-color: var(--maxi-whisper-green) !important;
+			border-color: var(--maxi-primary-color);
+
+			.maxi-list-item-control__arrow {
+				background-color: var(--maxi-whisper-green);
+			}
+		}
 	}
 
 	&__content {
@@ -39,7 +49,7 @@
 		.components-custom-gradient-picker__gradient-bar {
 			margin-top: 0;
 			margin-bottom: 8px;
-			border: 1px solid var(--maxi-grey-1-color);
+			border: 1px solid var(--maxi-grey-light);
 		}
 
 		.components-custom-gradient-picker__ui-line {
@@ -49,14 +59,18 @@
 
 	&__arrow {
 		width: 27px;
-		transition: 0.3s ease all;
+		transition: 0.4s ease all;
 		cursor: pointer;
 		transform-origin: center;
-		padding: 7px 9px;
+		padding: 7px 9px !important;
 		border-right: 1px solid var(--maxi-secondary-color);
-		background-color: var(--maxi-white-4-color);
+		background-color: var(--maxi-white);
 		text-align: center;
 		border-radius: 5px 0px 0px 5px !important;
+
+		&:hover {
+			background-color: var(--maxi-whisper-green);
+		}
 
 		&::before {
 			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.783 9.578"><path d="M5.783 4.758a.963.963 0 01-.283.684L1.651 9.295A.967.967 0 01.283 7.927l3.179-3.169L.293 1.59A.963.963 0 011.651.232L5.5 4.084a.963.963 0 01.283.674z" /></svg>');
@@ -72,7 +86,7 @@
 			display: none !important;
 			transition: 0.3s ease all;
 			path {
-				fill: #464a53;
+				fill: var(--maxi-grey-dark);
 			}
 		}
 	}
@@ -92,14 +106,19 @@
 		width: 100%;
 		margin: 0;
 		border-radius: 5px;
-		transition: all 0.5s;
+		transition: all 0.4s ease;
 		cursor: pointer;
 		padding-right: 5px;
-		background-color: #fff;
+		background-color: var(--maxi-white);
+
+		&:hover {
+			background-color: var(--maxi-whisper-green) !important;
+		}
 
 		&__wrapper {
 			width: 100%;
 			display: flex;
+			justify-content: space-between;
 		}
 
 		&__text {
@@ -108,7 +127,7 @@
 		&__id {
 			&:before {
 				content: counter(list-items-counter);
-				background: var(--maxi-light-blue-2-color);
+				background: var(--maxi-pastel-green);
 				display: block;
 				padding: 7px 10px 7px 8px;
 				border-right: 1px solid var(--maxi-secondary-color);
@@ -125,11 +144,16 @@
 			width: 16px;
 			height: 16px;
 			margin: 0;
-			background-color: var(--maxi-primary-color);
+			background-color: var(--maxi-golden-orange);
 			border-radius: 50%;
 			cursor: pointer;
 			right: -5px;
 			top: -5px;
+			transition: background-color 0.2s ease;
+
+			&:hover {
+				background-color: var(--maxi-orange-red) !important;
+			}
 
 			&:after,
 			&:before {
@@ -140,7 +164,7 @@
 				transform: translate(-50%, -50%) rotate(45deg);
 				width: 12px;
 				height: 2px;
-				background-color: #fff;
+				background-color: var(--maxi-white);
 			}
 
 			&:after {

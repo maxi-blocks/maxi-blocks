@@ -1,0 +1,205 @@
+@import '../_variables.css';
+/* Rest of the styles */
+
+/* Let's style the table headers and cells better */
+.maxi-status-table {
+	background: var(--maxi-admin-white) !important;
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+/* Style the section headers */
+.maxi-status-table tr th[colspan="4"] {
+	background: var(--maxi-admin-black) !important;
+	color: var(--maxi-admin-white);
+	padding: 12px;
+	text-align: left;
+	border-bottom: 1px solid #dee2e6;
+}
+
+.maxi-status-table td {
+	background: var(--maxi-admin-white) !important;
+	padding: 12px;
+	border-bottom: 1px solid var(--maxi-admin-border-light);
+	color: var(--maxi-admin-black-text);
+}
+
+.maxi-status-table .header-row td {
+	background: var(--maxi-admin-purple) !important;
+	font-weight: bold;
+	color: var(--maxi-admin-white);
+}
+
+.maxi-status-table .plugin-section {
+	background: var(--maxi-admin-light-grey) !important;
+	padding: 15px;
+}
+
+.maxi-status-table .status-ok span {
+	color: var(--maxi-admin-green);
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: transparent;
+	font-weight: bold !important;
+}
+
+.maxi-status-table .status-ok span::before {
+	content: '✓';
+	font-weight: bold !important;
+	font-size: 16px;
+	line-height: 1;
+	background: transparent;
+}
+
+.maxi-status-table .status-warning span {
+	color: var(--maxi-admin-orange);
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: transparent;
+	font-weight: bold !important;
+}
+
+.maxi-status-table .status-warning span::before {
+	content: '×';
+	font-weight: bold !important;
+	font-size: 16px;
+	line-height: 1;
+	background: transparent;
+}
+
+#maxi-copy-report-content {
+	display: none;
+}
+
+/* Button container */
+.maxi-dashboard_main-content-settings {
+	gap: 10px;
+	margin-bottom: 20px;
+	justify-content: center;
+	width: 100%;
+	max-width: clamp(280px, 95%, 1000px);
+}
+
+/* Button styles */
+.maxi-dashboard_main-content .maxi-dashboard_copy-report-button,
+.maxi-dashboard_main-content #maxi-download-report {
+	background: var(--maxi-admin-black) !important;
+	color: var(--maxi-admin-white) !important;
+	border: none !important;
+	cursor: pointer !important;
+	padding: 5px 50px !important;
+	font-size: 19px !important;
+	font-weight: 700 !important;
+	border-radius: 26px !important;
+	text-decoration: none !important;
+	transition: background 0.1s ease, transform 0.3s ease !important;
+	box-shadow: none !important;
+	margin: 20px 5px 20px 5px;
+}
+
+.maxi-dashboard_main-content .maxi-dashboard_copy-report-button:hover,
+.maxi-dashboard_main-content #maxi-download-report:hover {
+	background: var(--maxi-admin-purple-hover) !important;
+}
+
+/* Success message */
+#maxi-copy-success {
+	margin-top: 10px;
+	padding: 10px;
+	background: var(--maxi-admin-green-light);
+	border-left: 4px solid var(--maxi-admin-green);
+	display: none;
+}
+
+.other-plugin .some-class #maxi-status-wrapper {
+	background: var(--maxi-admin-white) !important;
+	/* Another plugin or theme override */
+}
+
+/* Updated styles for #maxi-status-wrapper */
+#maxi-status-wrapper {
+	background-color: var(--maxi-admin-light-grey);
+	padding-top: clamp(1vw, 8vw, 3vw) !important;
+	padding-bottom: clamp(1vw, 8vw, 4vw) !important;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+/* Additional styles for table container */
+.maxi-status-table {
+	position: relative;
+	z-index: 2;
+	max-width: clamp(280px, 95%, 1000px);
+	width: 95%;
+	margin: 0 auto;
+}
+
+/* Center the main content container and add spacing */
+.maxi-dashboard_main-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	padding: 10px 20px;
+}
+
+.maxi-dashboard_main-content.maxi-dashboard_main-content-starter-sites {
+	padding: 0;
+}
+
+/* Style the main heading */
+.maxi-dashboard_main-content h1 {
+	font-size: 48px;
+	font-weight: bold;
+	margin-bottom: 16px;
+}
+
+/* Style the description text */
+.maxi-dashboard_main-content p {
+	font-size: 16px;
+	color: #666;
+	margin-bottom: 40px;
+}
+
+/* Status wrapper styles */
+#maxi-status-wrapper {
+	background-color: var(--maxi-admin-light-grey);
+	padding: 40px 20px;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+/* Table container styles */
+.maxi-status-table {
+	position: relative;
+	z-index: 2;
+	max-width: clamp(280px, 95%, 1000px);
+	width: 95%;
+	margin: 0 auto;
+}
+
+/* Table column widths */
+.maxi-status-table td:first-child {
+	width: 22%;
+	/* Slightly reduce first column */
+}
+
+.maxi-status-table td:nth-child(2) {
+	width: 23%;
+	/* Make 'Recommended' column shorter */
+}
+
+.maxi-status-table td:nth-child(3) {
+	width: 44%;
+	/* Give more space to 'Actual' values */
+}
+
+.maxi-status-table td:last-child {
+	width: 11%;
+	/* Keep status column the same */
+}

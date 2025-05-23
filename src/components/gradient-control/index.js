@@ -56,7 +56,6 @@ const GradientControl = props => {
 	return (
 		<div className={classes}>
 			<BaseControl
-					__nextHasNoMarginBottom
 				className='maxi-gradient-control__display'
 				label={`${label} ${__('colour', 'maxi-blocks')}`}
 			>

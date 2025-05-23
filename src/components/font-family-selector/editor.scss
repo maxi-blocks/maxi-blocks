@@ -1,7 +1,7 @@
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	.maxi-font-family-selector {
 		.maxi-font-family-selector__control {
-			border-color: var(--maxi-accessibility-grey-1-color);
+			border-color: var(--maxi-grey);
 
 			&--is-focused,
 			&:focus {
@@ -20,7 +20,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 	.maxi-font-family-selector__control {
 		&__menu {
-			border: 1.5px solid var(--maxi-grey-1-color);
+			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 0;
 			box-shadow: none;
 		}
@@ -30,12 +30,14 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		&__option {
 			&--is-focused,
 			&--is-selected {
-				background-color: rgba(229, 242, 248, 0.7);
+				background-color: var(--maxi-pastel-green);
+				color: var(--maxi-black) !important;
+				font-weight: 700 !important;
 				cursor: pointer;
 			}
 		}
 		&__control {
-			border-color: var(--maxi-grey-1-color);
+			border-color: var(--maxi-grey-light);
 			padding: 8px;
 			border-radius: 5px;
 			min-height: unset;
@@ -46,17 +48,17 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 			&:focus,
 			&:hover {
-				border-color: var(--maxi-grey-6-color);
+				border-color: var(--maxi-grey);
 			}
 			&--is-focused {
-				border-color: var(--maxi-grey-6-color);
+				border-color: var(--maxi-grey);
 				box-shadow: none;
 				outline: none;
 			}
 		}
 		&__single-value {
 			margin: 0;
-			color: var(--maxi-black-1-color);
+			color: var(--maxi-black);
 
 			& + div {
 				margin: 0;
@@ -75,12 +77,16 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			transition: 0.5s all;
 
 			&:hover {
-				opacity: 0.8;
+				color: var(--maxi-black) !important;
+				font-weight: 700 !important;
+				svg {
+					fill: var(--maxi-black);
+				}
 			}
 			svg {
 				width: 100%;
 				height: 100%;
-				fill: var(--maxi-grey-4-color);
+				fill: var(--maxi-grey);
 			}
 		}
 		&__dropdown-indicator {
@@ -91,17 +97,18 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			transition: 0.5s all;
 
 			&:hover {
-				opacity: 0.8;
+				color: var(--maxi-black) !important;
+				font-weight: 700 !important;
 			}
 			svg {
-				fill: var(--maxi-grey-4-color);
+				fill: var(--maxi-grey);
 			}
 		}
 		&__indicator-separator {
 			width: 2px;
 			height: 80%;
 			margin: auto 2px;
-			background-color: var(--maxi-grey-1-color);
+			background-color: var(--maxi-grey-light);
 		}
 	}
 }

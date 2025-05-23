@@ -6,4 +6,10 @@
 	&__example-button {
 		margin-top: 10px;
 	}
+	textarea {
+		border: none !important;
+		&:hover {
+			border: none !important;
+		}
+	}
 }

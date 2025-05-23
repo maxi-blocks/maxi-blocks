@@ -12,12 +12,11 @@ if (!defined('ABSPATH')) {
  */
 function maxi_is_localhost() {
     $server_name = strtolower(isset($_SERVER['SERVER_NAME']) ? sanitize_text_field($_SERVER['SERVER_NAME']) : '');
-    $server_addr = isset($_SERVER['SERVER_ADDR']) ? sanitize_text_field($_SERVER['SERVER_ADDR']) : '';
     $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : '';
 
     return in_array($server_name, ['localhost', '127.0.0.1', '::1']) ||
-        strpos($server_addr, '127.0.') === 0 ||
         strpos($remote_addr, '127.0.') === 0 ||
+        $remote_addr === '::1' ||
         strpos($server_name, '.local') !== false ||
         strpos($server_name, '.test') !== false;
 }

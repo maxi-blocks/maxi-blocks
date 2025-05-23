@@ -837,18 +837,22 @@ class MaxiBlocks_QuickStart {
 			// Update site title and tagline
 			update_option(
 				'blogname',
-				sanitize_text_field($_POST['site_title']),
+				sanitize_text_field(wp_unslash($_POST['site_title'])),
 			);
-			update_option(
-				'blogdescription',
-				sanitize_text_field($_POST['site_tagline']),
-			);
+
+			// Only update tagline if it's set
+			if (isset($_POST['site_tagline'])) {
+				update_option(
+					'blogdescription',
+					sanitize_text_field(wp_unslash($_POST['site_tagline'])),
+				);
+			}
 
 			// Update language
 			if (!empty($_POST['site_language'])) {
 				update_option(
 					'WPLANG',
-					sanitize_text_field($_POST['site_language']),
+					sanitize_text_field(wp_unslash($_POST['site_language'])),
 				);
 			}
 
@@ -856,14 +860,14 @@ class MaxiBlocks_QuickStart {
 			if (!empty($_POST['timezone_string'])) {
 				update_option(
 					'timezone_string',
-					sanitize_text_field($_POST['timezone_string']),
+					sanitize_text_field(wp_unslash($_POST['timezone_string'])),
 				);
 			}
 
 			// Update permalink structure
 			if (isset($_POST['permalink_structure'])) {
 				$permalink_structure = sanitize_text_field(
-					$_POST['permalink_structure'],
+					wp_unslash($_POST['permalink_structure']),
 				);
 
 				// Update the permalink structure option
@@ -1014,7 +1018,7 @@ class MaxiBlocks_QuickStart {
 		}
 
 		$theme = isset($_POST['theme'])
-			? sanitize_text_field($_POST['theme'])
+			? sanitize_text_field(wp_unslash($_POST['theme']))
 			: '';
 		if (empty($theme)) {
 			wp_send_json_error(esc_html__('No theme specified.', 'maxi-blocks'));
@@ -1042,12 +1046,12 @@ class MaxiBlocks_QuickStart {
 		try {
 			// Update site icon
 			if (isset($_POST['site_icon_id'])) {
-				update_option('site_icon', absint($_POST['site_icon_id']));
+				update_option('site_icon', absint(wp_unslash($_POST['site_icon_id'])));
 			}
 
 			// Update site logo
 			if (isset($_POST['site_logo_id'])) {
-				set_theme_mod('custom_logo', absint($_POST['site_logo_id']));
+				set_theme_mod('custom_logo', absint(wp_unslash($_POST['site_logo_id'])));
 			}
 
 			wp_send_json_success();
@@ -1088,9 +1092,9 @@ class MaxiBlocks_QuickStart {
 		);
 
 		foreach ($matches as $match) {
-			$setting = isset($match[1]) ? trim(strip_tags($match[1])) : '';
-			$recommended = isset($match[2]) ? trim(strip_tags($match[2])) : '';
-			$actual = isset($match[3]) ? trim(strip_tags($match[3])) : '';
+			$setting = isset($match[1]) ? trim(wp_strip_all_tags($match[1])) : '';
+			$recommended = isset($match[2]) ? trim(wp_strip_all_tags($match[2])) : '';
+			$actual = isset($match[3]) ? trim(wp_strip_all_tags($match[3])) : '';
 
 			// Skip header rows and empty settings
 			if (

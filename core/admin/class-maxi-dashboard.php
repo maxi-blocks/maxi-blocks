@@ -853,7 +853,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '<h4>' . __('Use Bunny Fonts', 'maxi-blocks') . '</h4>';
             $description .=
                 '<p>' .
-                __('You are currently using: ' . $font_provider_label) .
+                sprintf(__('You are currently using: %s', 'maxi-blocks'), $font_provider_label) .
                 '</p>';
             $description .=
                 '<p>' .
@@ -1474,7 +1474,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if ($is_ai_model) {
                 // For AI model dropdown, show loading placeholder
                 $dropdown .=
-                    '<option value="">' . __('', 'maxi-blocks') . '</option>';
+                    '<option value=""></option>';
             } else {
                 // For other dropdowns, process the static list
                 if (($key = array_search($option_value, $list)) !== false) {

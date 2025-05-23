@@ -181,14 +181,14 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
 		public function maxi_add_image_taxonomy() {
 			$labels = [
-				'name' => __('Maxi Images', 'max-blocks'),
-				'singular_name' => __('maxi-image-type', 'max-blocks'),
-				'search_items' => __('Search Maxi Images', 'max-blocks'),
-				'all_items' => __('All Maxi Images', 'max-blocks'),
-				'edit_item' => __('Edit Maxi Image', 'max-blocks'),
-				'update_item' => __('Update Maxi Image', 'max-blocks'),
-				'add_new_item' => __('Add New Maxi Image', 'max-blocks'),
-				'new_item_name' => __('New Maxi Image Name', 'max-blocks'),
+				'name' => __('Maxi Images', 'maxi-blocks'),
+				'singular_name' => __('maxi-image-type', 'maxi-blocks'),
+				'search_items' => __('Search Maxi Images', 'maxi-blocks'),
+				'all_items' => __('All Maxi Images', 'maxi-blocks'),
+				'edit_item' => __('Edit Maxi Image', 'maxi-blocks'),
+				'update_item' => __('Update Maxi Image', 'maxi-blocks'),
+				'add_new_item' => __('Add New Maxi Image', 'maxi-blocks'),
+				'new_item_name' => __('New Maxi Image Name', 'maxi-blocks'),
 			];
 
 			$args = [
@@ -211,15 +211,15 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
 		public function maxi_add_image_taxonomy_term() {
 			if (
-				!term_exists(__('Maxi Image', 'max-blocks'), 'maxi-image-type')
+				!term_exists(__('Maxi Image', 'maxi-blocks'), 'maxi-image-type')
 			) {
 				wp_insert_term(
-					__('Maxi Image', 'max-blocks'),
+					__('Maxi Image', 'maxi-blocks'),
 					'maxi-image-type',
 					[
 						'description' => __(
 							'Images added by MaxiBlocks plugin',
-							'max-blocks',
+							'maxi-blocks',
 						),
 						'slug' => 'maxi-image',
 					],

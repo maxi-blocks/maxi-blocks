@@ -905,7 +905,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$content .= $this->generate_status_row(
 				__('Author', 'maxi-blocks'),
 				'-',
-				strip_tags($theme->get('Author') ?? ''),
+				wp_strip_all_tags($theme->get('Author') ?? ''),
 				true,
 			);
 
@@ -1122,7 +1122,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$report .= "--- Theme Information ---\n";
 			$report .= 'Theme Name: ' . esc_html($theme->get('Name')) . "\n";
 			$report .= 'Version: ' . esc_html($theme->get('Version')) . "\n";
-			$report .= 'Author: ' . esc_html(strip_tags($theme->get('Author') ?? '')) . "\n";
+			$report .= 'Author: ' . esc_html(wp_strip_all_tags($theme->get('Author') ?? '')) . "\n";
 			$report .= 'Author Website: ' . esc_url($theme->get('AuthorURI')) . "\n";
 			$report .=
 				'Parent Theme: ' .

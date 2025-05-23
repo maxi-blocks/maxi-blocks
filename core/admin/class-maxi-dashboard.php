@@ -1838,13 +1838,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $menu_order;
         }
 
+        /**
+         * Helper method to detect localhost
+         */
+        private function is_localhost() {
+            $server_name = strtolower(isset($_SERVER['SERVER_NAME']) ? sanitize_text_field($_SERVER['SERVER_NAME']) : '');
+            $server_addr = isset($_SERVER['SERVER_ADDR']) ? sanitize_text_field($_SERVER['SERVER_ADDR']) : '';
+            $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : '';
+
+            return in_array($server_name, ['localhost', '127.0.0.1', '::1']) ||
+                strpos($server_addr, '127.0.') === 0 ||
+                strpos($remote_addr, '127.0.') === 0 ||
+                strpos($server_name, '.local') !== false ||
+                strpos($server_name, '.test') !== false;
+        }
+
         public function handle_get_frontend_assets()
         {
             try {
                 $home_url = home_url();
                 $response = wp_remote_get($home_url, [
                     'timeout' => 30,
-                    'sslverify' => false,
+                    'sslverify' => !$this->is_localhost(),
                     'headers' => [
                         'User-Agent' =>
                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',

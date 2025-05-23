@@ -323,7 +323,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$content .= '</tr>';
 
 			// Server Software
-			$server_software = $_SERVER['SERVER_SOFTWARE'] ?? '';
+			$server_software = esc_html($_SERVER['SERVER_SOFTWARE'] ?? '');
 			$content .= $this->generate_status_row(
 				__('Server Software', 'maxi-blocks'),
 				'-',
@@ -1267,9 +1267,13 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 		private function test_ajax_status() {
 			// Check if admin-ajax.php exists and is accessible
 			$ajax_url = admin_url('admin-ajax.php');
+
+			// Only disable SSL verification for localhost environments
+			$sslverify = !$this->is_localhost();
+
 			$response = wp_remote_get($ajax_url, [
 				'timeout' => 5,
-				'sslverify' => false,
+				'sslverify' => $sslverify,
 			]);
 
 			if (is_wp_error($response)) {
@@ -1318,21 +1322,74 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 				return false;
 			}
 
-			// Get last 1000 lines of the log file (to keep the size reasonable)
-			$log_content = shell_exec(
-				'tail -n 1000 ' . escapeshellarg($log_path),
-			);
-			if (!$log_content) {
-				// Fallback if shell_exec fails or is disabled
-				$log_content = file_get_contents($log_path);
-				if ($log_content) {
-					$lines = explode("\n", $log_content);
-					$lines = array_slice($lines, -1000);
-					$log_content = implode("\n", $lines);
-				}
+			// Use pure PHP approach to get the last 1000 lines
+			$line_count = 1000;
+			$file_size = filesize($log_path);
+
+			// If file is empty, return empty string
+			if ($file_size === 0) {
+				return '';
 			}
 
-			return $log_content;
+			// Start with a reasonable chunk size (larger than typical line length)
+			$chunk_size = min($file_size, 4096);
+			$lines = [];
+			$line_count_found = 0;
+			$pos = $file_size;
+
+			// Open the file for reading
+			$f = fopen($log_path, 'rb');
+			if (!$f) {
+				return false;
+			}
+
+			// Read the file backwards in chunks
+			while ($pos > 0 && $line_count_found < $line_count) {
+				$seek_pos = max(0, $pos - $chunk_size);
+				$read_size = $pos - $seek_pos;
+
+				fseek($f, $seek_pos);
+				$chunk = fread($f, $read_size);
+
+				// Count how many newlines are in this chunk
+				$nl_pos = strrpos($chunk, "\n");
+
+				if ($nl_pos === false) {
+					// No newlines in this chunk, continue with the next chunk
+					$pos = $seek_pos;
+					continue;
+				}
+
+				// Split by newlines
+				$chunk_lines = explode("\n", $chunk);
+
+				// If we read from the middle of the file, the first line is likely incomplete
+				// unless we happened to seek exactly to a newline boundary
+				if ($seek_pos > 0 && $nl_pos !== 0) {
+					array_shift($chunk_lines);
+				}
+
+				// Remove empty lines at the end that may come from splitting
+				if (end($chunk_lines) === '') {
+					array_pop($chunk_lines);
+				}
+
+				// Add lines to our result, respecting the limit
+				$lines = array_merge(array_reverse($chunk_lines), $lines);
+				$line_count_found = count($lines);
+
+				// If we have more lines than needed, trim them
+				if ($line_count_found > $line_count) {
+					$lines = array_slice($lines, -$line_count);
+					$line_count_found = $line_count;
+				}
+
+				$pos = $seek_pos;
+			}
+
+			fclose($f);
+
+			return implode("\n", $lines);
 		}
 
 		/**

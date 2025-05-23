@@ -77,7 +77,7 @@ class MaxiBlocks_QuickStart {
 		// Only add Status step if there are critical warnings
 		if (!empty($critical_warnings)) {
 			$this->steps['status'] = [
-				'name' => __('Status', 'maxi-blocks'),
+				'name' => esc_html__('Status', 'maxi-blocks'),
 				'view' => [$this, 'status_step'],
 				'has_warnings' => true,
 			];
@@ -86,23 +86,23 @@ class MaxiBlocks_QuickStart {
 		// Add remaining steps
 		$this->steps += [
 			'quick_start' => [
-				'name' => __('Quick start', 'maxi-blocks'),
+				'name' => esc_html__('Quick start', 'maxi-blocks'),
 				'view' => [$this, 'quick_start_step'],
 			],
 			'theme' => [
-				'name' => __('Theme', 'maxi-blocks'),
+				'name' => esc_html__('Theme', 'maxi-blocks'),
 				'view' => [$this, 'theme_step'],
 			],
 			'brand_identity' => [
-				'name' => __('Brand identity', 'maxi-blocks'),
+				'name' => esc_html__('Brand identity', 'maxi-blocks'),
 				'view' => [$this, 'brand_identity_step'],
 			],
 			'starter_site' => [
-				'name' => __('Starter site', 'maxi-blocks'),
+				'name' => esc_html__('Starter site', 'maxi-blocks'),
 				'view' => [$this, 'starter_site_step'],
 			],
 			'finish' => [
-				'name' => __('Finish', 'maxi-blocks'),
+				'name' => esc_html__('Finish', 'maxi-blocks'),
 				'view' => [$this, 'finish_step'],
 			],
 		];
@@ -111,23 +111,13 @@ class MaxiBlocks_QuickStart {
 	}
 
 	/**
-	 * Get all steps
-	 */
-	private function get_steps() {
-		if (!$this->initialized) {
-			$this->init_steps();
-		}
-		return $this->steps;
-	}
-
-	/**
 	 * Add admin menu page for quick start
 	 */
 	public function add_quick_start_page() {
 		add_submenu_page(
 			'', // Empty string instead of null to avoid PHP warnings
-			__('MaxiBlocks Setup', 'maxi-blocks'),
-			__('MaxiBlocks Setup', 'maxi-blocks'),
+			esc_html__('MaxiBlocks Setup', 'maxi-blocks'),
+			esc_html__('MaxiBlocks Setup', 'maxi-blocks'),
 			'manage_options',
 			'maxi-blocks-quick-start',
 			[$this, 'render_quick_start_page'],
@@ -190,37 +180,37 @@ class MaxiBlocks_QuickStart {
 			'ajaxUrl' => admin_url('admin-ajax.php'),
 			'nonce' => wp_create_nonce('maxi_quick_start'),
 			'strings' => [
-				'activeTheme' => __('Active Theme', 'maxi-blocks'),
-				'selectIcon' => __('Select Site Icon', 'maxi-blocks'),
-				'useAsIcon' => __('Use as site icon', 'maxi-blocks'),
-				'changeIcon' => __('Change Site Icon', 'maxi-blocks'),
-				'uploadIcon' => __('Upload Site Icon', 'maxi-blocks'),
-				'remove' => __('Remove', 'maxi-blocks'),
-				'selectLogo' => __('Select Site Logo', 'maxi-blocks'),
-				'useAsLogo' => __('Use as site logo', 'maxi-blocks'),
-				'changeLogo' => __('Change Logo', 'maxi-blocks'),
-				'uploadLogo' => __('Upload Logo', 'maxi-blocks'),
-				'required' => __('This field is required', 'maxi-blocks'),
-				'invalidUrl' => __('Please enter a valid URL', 'maxi-blocks'),
-				'invalidEmail' => __(
+				'activeTheme' => esc_html__('Active Theme', 'maxi-blocks'),
+				'selectIcon' => esc_html__('Select Site Icon', 'maxi-blocks'),
+				'useAsIcon' => esc_html__('Use as site icon', 'maxi-blocks'),
+				'changeIcon' => esc_html__('Change Site Icon', 'maxi-blocks'),
+				'uploadIcon' => esc_html__('Upload Site Icon', 'maxi-blocks'),
+				'remove' => esc_html__('Remove', 'maxi-blocks'),
+				'selectLogo' => esc_html__('Select Site Logo', 'maxi-blocks'),
+				'useAsLogo' => esc_html__('Use as site logo', 'maxi-blocks'),
+				'changeLogo' => esc_html__('Change Logo', 'maxi-blocks'),
+				'uploadLogo' => esc_html__('Upload Logo', 'maxi-blocks'),
+				'required' => esc_html__('This field is required', 'maxi-blocks'),
+				'invalidUrl' => esc_html__('Please enter a valid URL', 'maxi-blocks'),
+				'invalidEmail' => esc_html__(
 					'Please enter a valid email address',
 					'maxi-blocks',
 				),
-				'currentLogo' => __('Current Logo:', 'maxi-blocks'),
-				'currentIcon' => __('Current Site Icon:', 'maxi-blocks'),
-				'saveSettings' => __('Save settings', 'maxi-blocks'),
-				'skipToNext' => __('Skip next', 'maxi-blocks'),
-				'back' => __('Back', 'maxi-blocks'),
-				'continue' => __('Continue', 'maxi-blocks'),
-				'errorActivating' => __(
+				'currentLogo' => esc_html__('Current Logo:', 'maxi-blocks'),
+				'currentIcon' => esc_html__('Current Site Icon:', 'maxi-blocks'),
+				'saveSettings' => esc_html__('Save settings', 'maxi-blocks'),
+				'skipToNext' => esc_html__('Skip next', 'maxi-blocks'),
+				'back' => esc_html__('Back', 'maxi-blocks'),
+				'continue' => esc_html__('Continue', 'maxi-blocks'),
+				'errorActivating' => esc_html__(
 					'Error activating theme',
 					'maxi-blocks',
 				),
-				'errorSaving' => __(
+				'errorSaving' => esc_html__(
 					'An error occurred while saving. Please try again.',
 					'maxi-blocks',
 				),
-				'errorGeneric' => __(
+				'errorGeneric' => esc_html__(
 					'An error occurred. Please try again.',
 					'maxi-blocks',
 				),
@@ -262,29 +252,29 @@ class MaxiBlocks_QuickStart {
 		<div id="dashboard_system_report">
 			<div class="maxi-dashboard_header">
 				<img class="maxi-dashboard_logo" width="200"
-					src="<?php echo MAXI_PLUGIN_URL_PATH . 'img/maxi-logo-dashboard-white.svg'; ?>"
-					alt="MaxiBlocks Logo">
+					src="<?php echo esc_url(MAXI_PLUGIN_URL_PATH . 'img/maxi-logo-dashboard-white.svg'); ?>"
+					alt="<?php echo esc_attr('MaxiBlocks Logo'); ?>">
 				<div class="maxi-dashboard_header-actions">
 					<a href="https://maxiblocks.com/pricing/" class="maxi-dashboard_get-cloud-link" target="_blank">
-						Get cloud
+						<?php echo esc_html__('Get cloud', 'maxi-blocks'); ?>
 					</a>
 					<div class="maxi-dashboard_header-icons">
 						<a href="https://maxiblocks.com/go/docs" class="maxi-dashboard_header-icon" target="_blank">
-							<img src="<?php echo MAXI_PLUGIN_URL_PATH .
-       	'img/maxi_help_documents_icon.svg'; ?>"
-								alt="MaxiBlocks documentation" width="24" height="24">
+							<img src="<?php echo esc_url(MAXI_PLUGIN_URL_PATH .
+       	'img/maxi_help_documents_icon.svg'); ?>"
+								alt="<?php echo esc_attr('MaxiBlocks documentation'); ?>" width="24" height="24">
 						</a>
 						<a href="https://maxiblocks.com/contact/" class="maxi-dashboard_header-icon" target="_blank">
-							<img src="<?php echo MAXI_PLUGIN_URL_PATH . 'img/maxi_support_icon.svg'; ?>"
-								alt="MaxiBlocks contact" width="24" height="24">
+							<img src="<?php echo esc_url(MAXI_PLUGIN_URL_PATH . 'img/maxi_support_icon.svg'); ?>"
+								alt="<?php echo esc_attr('MaxiBlocks contact'); ?>" width="24" height="24">
 						</a>
 					</div>
 				</div>
 			</div>
 
 			<div class="maxi-dashboard_title-section">
-				<h1 class="maxi-dashboard_title">Quick start</h1>
-				<p class="maxi-dashboard_description">This guide will help you set up your WordPress site in just a few steps.</p>
+				<h1 class="maxi-dashboard_title"><?php esc_html_e('Quick start', 'maxi-blocks'); ?></h1>
+				<p class="maxi-dashboard_description"><?php esc_html_e('This guide will help you set up your WordPress site in just a few steps.', 'maxi-blocks'); ?></p>
 			</div>
 
 			<div class="maxi-quick-start-wrapper">
@@ -372,18 +362,18 @@ class MaxiBlocks_QuickStart {
 	 */
 	public function quick_start_step() {
 		?>
-		<h1><?php _e('Welcome to the MaxiBlocks quick start', 'maxi-blocks'); ?></h1>
+		<h1><?php esc_html_e('Welcome to the MaxiBlocks quick start', 'maxi-blocks'); ?></h1>
 		<p class="description">
-			<?php _e(
+			<?php esc_html_e(
    	'We\'ll help you configure your WordPress site in just a few simple steps. Follow along to set your site\'s title, brand, and starter site, then you\'ll be ready to add your own content.',
    	'maxi-blocks',
    ); ?>
 		</p>
 
 		<div class="maxi-quick-start-section">
-			<h2><?php _e('Site title and tagline', 'maxi-blocks'); ?></h2>
+			<h2><?php esc_html_e('Site title and tagline', 'maxi-blocks'); ?></h2>
 			<p class="description">
-				<?php _e(
+				<?php esc_html_e(
     	'Your title appears at the top of your site and in search results.',
     	'maxi-blocks',
     ); ?>
@@ -398,7 +388,7 @@ class MaxiBlocks_QuickStart {
 				   value="<?php echo esc_attr(get_option('blogname')); ?>" />
 
 			<p class="description">
-				<?php _e(
+				<?php esc_html_e(
     	'Enter a tagline. A tagline is a short description or slogan that clarifies what your site is about.',
     	'maxi-blocks',
     ); ?>
@@ -414,9 +404,9 @@ class MaxiBlocks_QuickStart {
 		</div>
 
 		<div class="maxi-quick-start-section">
-			<h2><?php _e('Site language and time zone', 'maxi-blocks'); ?></h2>
+			<h2><?php esc_html_e('Site language and time zone', 'maxi-blocks'); ?></h2>
 			<p class="description">
-				<?php _e(
+				<?php esc_html_e(
     	'Choose your site\'s main language and nearest city time zone. This ensures dates and times display correctly for your readers and any scheduled content.',
     	'maxi-blocks',
     ); ?>
@@ -431,7 +421,7 @@ class MaxiBlocks_QuickStart {
    ?>
 
 			<p class="description">
-				<?php _e('Nearest city', 'maxi-blocks'); ?>
+				<?php esc_html_e('Nearest city', 'maxi-blocks'); ?>
 			</p>
 			<select name="timezone_string">
 				<?php echo wp_timezone_choice(get_option('timezone_string')); ?>
@@ -439,9 +429,9 @@ class MaxiBlocks_QuickStart {
 		</div>
 
 		<div class="maxi-quick-start-section">
-			<h2><?php _e('Permalink settings', 'maxi-blocks'); ?></h2>
+			<h2><?php esc_html_e('Permalink settings', 'maxi-blocks'); ?></h2>
 			<p class="description">
-				<?php _e(
+				<?php esc_html_e(
     	'Pick how you want your site\'s URLs to look. The "Post name" option is a popular choice for clarity and SEO.',
     	'maxi-blocks',
     ); ?>
@@ -455,15 +445,15 @@ class MaxiBlocks_QuickStart {
     }
 
     $structures = [
-    	'/%postname%/' => __('Post name (default)', 'maxi-blocks'),
-    	'' => __('Plain', 'maxi-blocks'),
-    	'/archives/%post_id%' => __('Numeric', 'maxi-blocks'),
-    	'/%year%/%monthnum%/%day%/%postname%/' => __(
+    	'/%postname%/' => esc_html__('Post name (default)', 'maxi-blocks'),
+    	'' => esc_html__('Plain', 'maxi-blocks'),
+    	'/archives/%post_id%' => esc_html__('Numeric', 'maxi-blocks'),
+    	'/%year%/%monthnum%/%day%/%postname%/' => esc_html__(
     		'Day and name',
     		'maxi-blocks',
     	),
-    	'/%year%/%monthnum%/%postname%/' => __('Month and name', 'maxi-blocks'),
-    	'/archives/%post_id%' => __('Post ID', 'maxi-blocks'),
+    	'/%year%/%monthnum%/%postname%/' => esc_html__('Month and name', 'maxi-blocks'),
+    	'/archives/%post_id%' => esc_html__('Post ID', 'maxi-blocks'),
     ];
 
     foreach ($structures as $value => $label) {
@@ -478,7 +468,7 @@ class MaxiBlocks_QuickStart {
 			</select>
 
 			<div class="permalink-structure-preview">
-				<p class="description"><?php _e('Example URL:', 'maxi-blocks'); ?></p>
+				<p class="description"><?php esc_html_e('Example URL:', 'maxi-blocks'); ?></p>
 				<code class="preview-url"></code>
 			</div>
 
@@ -529,10 +519,10 @@ class MaxiBlocks_QuickStart {
 
 		<div class="maxi-quick-start-actions">
 			<button type="button" class="button button-primary" data-action="save-welcome">
-				<?php _e('Save settings', 'maxi-blocks'); ?>
+				<?php esc_html_e('Save settings', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button" data-action="continue">
-				<?php _e('Skip next', 'maxi-blocks'); ?>
+				<?php esc_html_e('Skip next', 'maxi-blocks'); ?>
 			</button>
 		</div>
 		<?php
@@ -548,11 +538,11 @@ class MaxiBlocks_QuickStart {
 		$current_theme = wp_get_theme();
 		// Get current theme info
 		?>
-		<h1><?php _e('Theme setup', 'maxi-blocks'); ?></h1>
+		<h1><?php esc_html_e('Theme setup', 'maxi-blocks'); ?></h1>
 
 		<?php if ($is_active): ?>
 			<p class="description">
-				<?php _e(
+				<?php esc_html_e(
     	'MaxiBlocks Go theme activated! Enjoy the best site building and customisation experience integrated with MaxiBlocks Builder.',
     	'maxi-blocks',
     ); ?>
@@ -562,13 +552,13 @@ class MaxiBlocks_QuickStart {
 				<div class="theme-card">
 					<div class="theme-info">
 						<h2>
-							<?php _e('MaxiBlocks Go theme', 'maxi-blocks'); ?>
+							<?php esc_html_e('MaxiBlocks Go theme', 'maxi-blocks'); ?>
 							<span class="theme-status active">
 								<span class="dashicons dashicons-yes-alt"></span>
-								<?php _e('Active', 'maxi-blocks'); ?>
+								<?php esc_html_e('Active', 'maxi-blocks'); ?>
 							</span>
 						</h2>
-						<p><?php _e(
+						<p><?php esc_html_e(
       	'You\'re all set! Click Continue to customise your design and layout.',
       	'maxi-blocks',
       ); ?></p>
@@ -581,12 +571,12 @@ class MaxiBlocks_QuickStart {
   	else: ?>
 			<h3 class="description">
 				<?php printf(
-    	__('Your current theme: %s', 'maxi-blocks'),
+    	esc_html__('Your current theme: %s', 'maxi-blocks'),
     	esc_html($current_theme->get('Name')),
     ); ?>
 			</h3>
 			<p class="description">
-				<?php _e(
+				<?php esc_html_e(
     	'For the best experience with MaxiBlocks, we recommend using our official theme.',
     	'maxi-blocks',
     ); ?>
@@ -595,26 +585,26 @@ class MaxiBlocks_QuickStart {
 			<div class="maxi-quick-start-section theme-recommendation">
 				<div class="theme-card">
 					<div class="theme-info">
-						<h2><?php _e('MaxiBlocks Go', 'maxi-blocks'); ?></h2>
-						<p><?php _e(
+						<h2><?php esc_html_e('MaxiBlocks Go', 'maxi-blocks'); ?></h2>
+						<p><?php esc_html_e(
       	'Create professional websites in record time with the MaxiBlocks Go theme. Our designer-made block patterns, full-page templates, global style cards, and customizable SVG icons make it simple to build unique sites.',
       	'maxi-blocks',
       ); ?></p>
 
 						<ul class="theme-features">
-							<li><span class="dashicons dashicons-yes"></span> <?php _e(
+							<li><span class="dashicons dashicons-yes"></span> <?php esc_html_e(
        	'Full site editing ready',
        	'maxi-blocks',
        ); ?></li>
-							<li><span class="dashicons dashicons-yes"></span> <?php _e(
+							<li><span class="dashicons dashicons-yes"></span> <?php esc_html_e(
        	'Block patterns library',
        	'maxi-blocks',
        ); ?></li>
-							<li><span class="dashicons dashicons-yes"></span> <?php _e(
+							<li><span class="dashicons dashicons-yes"></span> <?php esc_html_e(
        	'Global style system',
        	'maxi-blocks',
        ); ?></li>
-							<li><span class="dashicons dashicons-yes"></span> <?php _e(
+							<li><span class="dashicons dashicons-yes"></span> <?php esc_html_e(
        	'Responsive design',
        	'maxi-blocks',
        ); ?></li>
@@ -623,12 +613,12 @@ class MaxiBlocks_QuickStart {
 						<div class="theme-actions">
 							<?php if ($is_installed): ?>
 								<button type="button" class="button button-primary activate-theme" data-theme="maxiblocks-go">
-									<?php _e('Activate Theme', 'maxi-blocks'); ?>
+									<?php esc_html_e('Activate Theme', 'maxi-blocks'); ?>
 								</button>
 							<?php else: ?>
 								<a href="<?php echo esc_url('https://wordpress.org/themes/maxiblocks-go/'); ?>"
 								   class="button button-primary" target="_blank">
-									<?php _e('Install theme', 'maxi-blocks'); ?>
+									<?php esc_html_e('Install theme', 'maxi-blocks'); ?>
 								</a>
 							<?php endif; ?>
 						</div>
@@ -639,10 +629,10 @@ class MaxiBlocks_QuickStart {
 
 		<div class="maxi-quick-start-actions">
 			<button type="button" class="button" data-action="back">
-				<?php _e('Back', 'maxi-blocks'); ?>
+				<?php esc_html_e('Back', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button" data-action="continue">
-				<?php _e('Continue', 'maxi-blocks'); ?>
+				<?php esc_html_e('Continue', 'maxi-blocks'); ?>
 			</button>
 		</div>
 		<?php
@@ -653,9 +643,9 @@ class MaxiBlocks_QuickStart {
 	 */
 	public function brand_identity_step() {
 		?>
-		<h1><?php _e('Brand identity', 'maxi-blocks'); ?></h1>
+		<h1><?php esc_html_e('Brand identity', 'maxi-blocks'); ?></h1>
 		<p class="description">
-			<?php _e(
+			<?php esc_html_e(
    	'Add your brand identity by uploading a site logo and icon (favicon). This helps visitors instantly recognize your site.',
    	'maxi-blocks',
    ); ?>
@@ -664,9 +654,9 @@ class MaxiBlocks_QuickStart {
 		<div class="maxi-quick-start-section">
 			<div class="site-logo-wrapper">
 				<div class="site-logo-info">
-					<h3><?php _e('Site logo', 'maxi-blocks'); ?></h3>
+					<h3><?php esc_html_e('Site logo', 'maxi-blocks'); ?></h3>
 					<p class="description">
-						<?php _e(
+						<?php esc_html_e(
       	'Appears in your site header. For best results, use a transparent PNG that\'s at least 250 × 100 px.',
       	'maxi-blocks',
       ); ?>
@@ -678,8 +668,8 @@ class MaxiBlocks_QuickStart {
     if ($custom_logo_id) {
     	$logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
     	echo '<div class="current-site-logo">';
-    	echo '<p>' . __('Current logo:', 'maxi-blocks') . '</p>';
-    	echo '<img src="' . esc_url($logo_url) . '" alt="Current site logo" />';
+    	echo '<p>' . esc_html__('Current logo:', 'maxi-blocks') . '</p>';
+    	echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr__('Current site logo', 'maxi-blocks') . '" />';
     	echo '</div>';
     }
     ?>
@@ -690,12 +680,12 @@ class MaxiBlocks_QuickStart {
      ); ?>">
 					<button type="button" class="button" id="upload-site-logo">
 						<?php echo $custom_logo_id
-      	? __('Change Logo', 'maxi-blocks')
-      	: __('Upload Logo', 'maxi-blocks'); ?>
+      	? esc_html__('Change Logo', 'maxi-blocks')
+      	: esc_html__('Upload Logo', 'maxi-blocks'); ?>
 					</button>
 					<?php if ($custom_logo_id): ?>
 						<button type="button" class="button remove-site-logo" id="remove-site-logo">
-							<?php _e('Remove', 'maxi-blocks'); ?>
+							<?php esc_html_e('Remove', 'maxi-blocks'); ?>
 						</button>
 					<?php endif; ?>
 				</div>
@@ -704,9 +694,9 @@ class MaxiBlocks_QuickStart {
 			<div class="site-icon-wrapper">
 				<div class="site-icon-info">
 					<div class="site-icon-info-text">
-						<h3><?php _e('Site icon', 'maxi-blocks'); ?></h3>
+						<h3><?php esc_html_e('Site icon', 'maxi-blocks'); ?></h3>
 						<p class="description">
-							<?php _e(
+							<?php esc_html_e(
        	'Used in browser tabs, bookmarks, and mobile devices. Upload a square PNG or JPG (at least 512 × 512 px). WordPress will then generate all required favicon sizes.',
        	'maxi-blocks',
        ); ?>
@@ -719,8 +709,8 @@ class MaxiBlocks_QuickStart {
     if ($site_icon_id) {
     	$icon_url = wp_get_attachment_image_url($site_icon_id, 'full');
     	echo '<div class="current-site-icon">';
-    	echo '<p>' . __('Current icon:', 'maxi-blocks') . '</p>';
-    	echo '<img src="' . esc_url($icon_url) . '" alt="Current site icon" />';
+    	echo '<p>' . esc_html__('Current icon:', 'maxi-blocks') . '</p>';
+    	echo '<img src="' . esc_url($icon_url) . '" alt="' . esc_attr__('Current site icon', 'maxi-blocks') . '" />';
     	echo '</div>';
     }
     ?>
@@ -731,12 +721,12 @@ class MaxiBlocks_QuickStart {
      ); ?>">
 					<button type="button" class="button" id="upload-site-icon">
 						<?php echo $site_icon_id
-      	? __('Change Site Icon', 'maxi-blocks')
-      	: __('Upload site icon', 'maxi-blocks'); ?>
+      	? esc_html__('Change Site Icon', 'maxi-blocks')
+      	: esc_html__('Upload site icon', 'maxi-blocks'); ?>
 					</button>
 					<?php if ($site_icon_id): ?>
 						<button type="button" class="button remove-site-icon" id="remove-site-icon">
-							<?php _e('Remove', 'maxi-blocks'); ?>
+							<?php esc_html_e('Remove', 'maxi-blocks'); ?>
 						</button>
 					<?php endif; ?>
 				</div>
@@ -745,13 +735,13 @@ class MaxiBlocks_QuickStart {
 
 		<div class="maxi-quick-start-actions">
 			<button type="button" class="button" data-action="back">
-				<?php _e('Back', 'maxi-blocks'); ?>
+				<?php esc_html_e('Back', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button button-primary" data-action="save-design">
-				<?php _e('Save settings', 'maxi-blocks'); ?>
+				<?php esc_html_e('Save settings', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button" data-action="continue">
-				<?php _e('Skip next', 'maxi-blocks'); ?>
+				<?php esc_html_e('Skip next', 'maxi-blocks'); ?>
 			</button>
 		</div>
 		<?php
@@ -765,28 +755,28 @@ class MaxiBlocks_QuickStart {
 		$status_report = new MaxiBlocks_System_Status_Report();
 		$warnings = $this->get_warnings_from_status_report($status_report);
 		?>
-		<h1><?php _e('Setup complete!', 'maxi-blocks'); ?></h1>
+		<h1><?php esc_html_e('Setup complete!', 'maxi-blocks'); ?></h1>
 		<p class="description">
-			<?php _e(
+			<?php esc_html_e(
    	'Congratulations! Your MaxiBlocks site is now configured and ready to use.',
    	'maxi-blocks',
    ); ?>
 		</p>
 
 		<?php if (!empty($warnings)): ?>
-			<h2><?php _e('System warnings', 'maxi-blocks'); ?></h2>
+			<h2><?php esc_html_e('System warnings', 'maxi-blocks'); ?></h2>
 			<p class="description">
-				<?php _e(
+				<?php esc_html_e(
     	'Some settings below may need attention for optimal performance. Review the recommended values and update your server or WordPress configuration if necessary. If you have questions, check our documentation or contact support. Enjoy building with MaxiBlocks!',
     	'maxi-blocks',
     ); ?>
 			</p>
 			<table class="maxi-status-table">
 				<tr class="header-row">
-					<td><?php _e('Setting', 'maxi-blocks'); ?></td>
-					<td><?php _e('Recommended', 'maxi-blocks'); ?></td>
-					<td><?php _e('Current', 'maxi-blocks'); ?></td>
-					<td><?php _e('Status', 'maxi-blocks'); ?></td>
+					<td><?php esc_html_e('Setting', 'maxi-blocks'); ?></td>
+					<td><?php esc_html_e('Recommended', 'maxi-blocks'); ?></td>
+					<td><?php esc_html_e('Current', 'maxi-blocks'); ?></td>
+					<td><?php esc_html_e('Status', 'maxi-blocks'); ?></td>
 				</tr>
 				<?php foreach ($warnings as $warning): ?>
 					<tr>
@@ -801,7 +791,7 @@ class MaxiBlocks_QuickStart {
 							<td><?php echo esc_html($parts[1]); ?></td>
 							<td><?php echo esc_html($parts[2]); ?></td>
 							<td><?php echo esc_html($parts[3]); ?></td>
-							<td class="status-warning"><span><?php _e(
+							<td class="status-warning"><span><?php esc_html_e(
        	'Warning',
        	'maxi-blocks',
        ); ?></span></td>
@@ -814,10 +804,10 @@ class MaxiBlocks_QuickStart {
 
 		<div class="maxi-quick-start-actions">
 			<button type="button" class="button" data-action="back">
-				<?php _e('Back', 'maxi-blocks'); ?>
+				<?php esc_html_e('Back', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button button-primary" data-action="complete">
-				<?php _e('Start using MaxiBlocks', 'maxi-blocks'); ?>
+				<?php esc_html_e('Start using MaxiBlocks', 'maxi-blocks'); ?>
 			</button>
 		</div>
 		<?php
@@ -831,7 +821,7 @@ class MaxiBlocks_QuickStart {
 
 		if (!current_user_can('manage_options')) {
 			wp_send_json_error(
-				__(
+				esc_html__(
 					'You do not have permission to perform this action.',
 					'maxi-blocks',
 				),
@@ -840,7 +830,7 @@ class MaxiBlocks_QuickStart {
 
 		// Validate required fields
 		if (empty($_POST['site_title'])) {
-			wp_send_json_error(__('Site title is required.', 'maxi-blocks'));
+			wp_send_json_error(esc_html__('Site title is required.', 'maxi-blocks'));
 		}
 
 		try {
@@ -888,7 +878,7 @@ class MaxiBlocks_QuickStart {
 			wp_send_json_success();
 		} catch (Exception $e) {
 			wp_send_json_error(
-				__('An error occurred while saving settings.', 'maxi-blocks'),
+				esc_html__('An error occurred while saving settings.', 'maxi-blocks'),
 			);
 		}
 	}
@@ -898,49 +888,49 @@ class MaxiBlocks_QuickStart {
 	 */
 	public function starter_site_step() {
 		?>
-		<h1><?php _e('Choose a starter site', 'maxi-blocks'); ?></h1>
+		<h1><?php esc_html_e('Choose a starter site', 'maxi-blocks'); ?></h1>
 		<p class="description">
-			<?php _e(
+			<?php esc_html_e(
    	'Select a pre-built website design to get started quickly. You can customize everything later.',
    	'maxi-blocks',
    ); ?>
 		</p>
 		<div class="starter-site-benefits-wrapper">
-			<h3 class="benefits-title"><?php _e(
+			<h3 class="benefits-title"><?php esc_html_e(
    	'Why choose a starter site?',
    	'maxi-blocks',
    ); ?></h3>
 			<ul class="benefits-list">
-				<li><?php _e(
+				<li><?php esc_html_e(
     	'✅ Saves time – No need to build your site from the ground up.',
     	'maxi-blocks',
     ); ?></li>
-				<li><?php _e(
+				<li><?php esc_html_e(
     	'✅ Customisable – Easily adjust text, images, and colours to match your brand.',
     	'maxi-blocks',
     ); ?></li>
-				<li><?php _e(
+				<li><?php esc_html_e(
     	'✅ Optimised for speed, responsiveness, and user experience.',
     	'maxi-blocks',
     ); ?></li>
 			</ul>
 			<p class="benefits-note">
-				<?php _e(
+				<?php esc_html_e(
     	'Not sure which one to pick? No worries! You can change or customise it later. If you\'d rather start with a blank canvas, you can skip this step.',
     	'maxi-blocks',
     ); ?>
 			</p>
 			<button type="button" class="button button-primary maxi-choose-starter-button" id="choose-starter-site">
-				<?php _e('Choose starter site', 'maxi-blocks'); ?>
+				<?php esc_html_e('Choose starter site', 'maxi-blocks'); ?>
 			</button>
 		</div>
 
 		<div class="maxi-quick-start-section">
 			<div id="starter-site-preview" class="starter-site-preview hidden">
-				<img src="" alt="Selected starter site preview" />
+				<img src="" alt="<?php esc_attr_e('Selected starter site preview', 'maxi-blocks'); ?>" />
 				<h3 class="selected-site-name"></h3>
 				<button type="button" class="button button-link change-starter-site">
-					<?php _e('Change site', 'maxi-blocks'); ?>
+					<?php esc_html_e('Change site', 'maxi-blocks'); ?>
 				</button>
 			</div>
 
@@ -949,10 +939,10 @@ class MaxiBlocks_QuickStart {
 
 		<div class="maxi-quick-start-actions">
 			<button type="button" class="button" data-action="back">
-				<?php _e('Back', 'maxi-blocks'); ?>
+				<?php esc_html_e('Back', 'maxi-blocks'); ?>
 			</button>
 			<button type="button" class="button" data-action="continue">
-				<?php _e('Skip next', 'maxi-blocks'); ?>
+				<?php esc_html_e('Skip next', 'maxi-blocks'); ?>
 			</button>
 		</div>
 		<?php
@@ -1016,7 +1006,7 @@ class MaxiBlocks_QuickStart {
 
 		if (!current_user_can('switch_themes')) {
 			wp_send_json_error(
-				__(
+				esc_html__(
 					'You do not have permission to switch themes.',
 					'maxi-blocks',
 				),
@@ -1027,7 +1017,7 @@ class MaxiBlocks_QuickStart {
 			? sanitize_text_field($_POST['theme'])
 			: '';
 		if (empty($theme)) {
-			wp_send_json_error(__('No theme specified.', 'maxi-blocks'));
+			wp_send_json_error(esc_html__('No theme specified.', 'maxi-blocks'));
 		}
 
 		switch_theme($theme);
@@ -1042,7 +1032,7 @@ class MaxiBlocks_QuickStart {
 
 		if (!current_user_can('manage_options')) {
 			wp_send_json_error(
-				__(
+				esc_html__(
 					'You do not have permission to perform this action.',
 					'maxi-blocks',
 				),
@@ -1063,7 +1053,7 @@ class MaxiBlocks_QuickStart {
 			wp_send_json_success();
 		} catch (Exception $e) {
 			wp_send_json_error(
-				__('An error occurred while saving settings.', 'maxi-blocks'),
+				esc_html__('An error occurred while saving settings.', 'maxi-blocks'),
 			);
 		}
 	}
@@ -1098,9 +1088,9 @@ class MaxiBlocks_QuickStart {
 		);
 
 		foreach ($matches as $match) {
-			$setting = trim(strip_tags($match[1] ?? ''));
-			$recommended = trim(strip_tags($match[2] ?? ''));
-			$actual = trim(strip_tags($match[3] ?? ''));
+			$setting = isset($match[1]) ? trim(strip_tags($match[1])) : '';
+			$recommended = isset($match[2]) ? trim(strip_tags($match[2])) : '';
+			$actual = isset($match[3]) ? trim(strip_tags($match[3])) : '';
 
 			// Skip header rows and empty settings
 			if (
@@ -1154,15 +1144,15 @@ class MaxiBlocks_QuickStart {
 		$critical_warnings = $this->get_critical_warnings($status_report);
 		?>
 		<div id="toplevel_page_maxi-blocks-dashboard">
-			<h1><?php _e('System status check', 'maxi-blocks'); ?></h1>
+			<h1><?php esc_html_e('System status check', 'maxi-blocks'); ?></h1>
 
 			<?php if (!empty($critical_warnings)): ?>
 				<div class="notice notice-error">
 					<p>
-						<strong><?php _e('Critical issues found', 'maxi-blocks'); ?></strong>
+						<strong><?php esc_html_e('Critical issues found', 'maxi-blocks'); ?></strong>
 					</p>
 					<p>
-						<?php _e(
+						<?php esc_html_e(
       	'The following system requirements are not met. MaxiBlocks may not function correctly unless these issues are resolved.',
       	'maxi-blocks',
       ); ?>
@@ -1171,17 +1161,17 @@ class MaxiBlocks_QuickStart {
 
 				<table class="maxi-status-table">
 					<tr class="header-row">
-						<td><?php _e('Setting', 'maxi-blocks'); ?></td>
-						<td><?php _e('Recommended', 'maxi-blocks'); ?></td>
-						<td><?php _e('Current', 'maxi-blocks'); ?></td>
-						<td><?php _e('Status', 'maxi-blocks'); ?></td>
+						<td><?php esc_html_e('Setting', 'maxi-blocks'); ?></td>
+						<td><?php esc_html_e('Recommended', 'maxi-blocks'); ?></td>
+						<td><?php esc_html_e('Current', 'maxi-blocks'); ?></td>
+						<td><?php esc_html_e('Status', 'maxi-blocks'); ?></td>
 					</tr>
 					<?php foreach ($critical_warnings as $warning): ?>
 						<tr>
 							<td><?php echo esc_html($warning['setting']); ?></td>
 							<td><?php echo esc_html($warning['recommended']); ?></td>
 							<td><?php echo esc_html($warning['actual']); ?></td>
-							<td class="status-warning"><span><?php _e(
+							<td class="status-warning"><span><?php esc_html_e(
        	'Warning',
        	'maxi-blocks',
        ); ?></span></td>
@@ -1190,7 +1180,7 @@ class MaxiBlocks_QuickStart {
 				</table>
 
 				<p class="description">
-					<?php _e(
+					<?php esc_html_e(
      	'It is strongly recommended to fix these issues before proceeding. However, you can continue with the setup if you wish to address these later.',
      	'maxi-blocks',
      ); ?>
@@ -1198,7 +1188,7 @@ class MaxiBlocks_QuickStart {
 			<?php else: ?>
 				<div class="notice notice-success">
 					<p>
-						<?php _e(
+						<?php esc_html_e(
       	'All critical system requirements are met. You can proceed with the setup.',
       	'maxi-blocks',
       ); ?>
@@ -1208,7 +1198,7 @@ class MaxiBlocks_QuickStart {
 
 			<div class="maxi-quick-start-actions">
 				<button type="button" class="button button-primary" data-action="continue">
-					<?php _e('Continue to Setup', 'maxi-blocks'); ?>
+					<?php esc_html_e('Continue to Setup', 'maxi-blocks'); ?>
 				</button>
 			</div>
 		</div>

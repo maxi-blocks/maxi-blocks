@@ -115,14 +115,26 @@ class MaxiBlocks_QuickStart {
 	 * Add admin menu page for quick start
 	 */
 	public function add_quick_start_page() {
+		// Fix for PHP 8.2+ deprecated warning in admin-header.php
+		// WordPress expects plugins to set a page title that get_admin_page_title() can retrieve
+		global $title;
+
+		$page_title = esc_html__('MaxiBlocks Setup', 'maxi-blocks');
+		$menu_title = esc_html__('MaxiBlocks Setup', 'maxi-blocks');
+
 		add_submenu_page(
 			'', // Empty string instead of null to avoid PHP warnings
-			esc_html__('MaxiBlocks Setup', 'maxi-blocks'),
-			esc_html__('MaxiBlocks Setup', 'maxi-blocks'),
+			$page_title,
+			$menu_title,
 			'manage_options',
 			'maxi-blocks-quick-start',
 			[$this, 'render_quick_start_page'],
 		);
+
+		// Set title explicitly to avoid PHP 8.2+ warning about passing null to strip_tags
+		if (isset($_GET['page']) && 'maxi-blocks-quick-start' === $_GET['page']) {
+			$title = $page_title;
+		}
 	}
 
 	/**

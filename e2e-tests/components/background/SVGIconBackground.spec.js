@@ -63,7 +63,7 @@ describe('Icon background', () => {
 		);
 
 		await accordion.$eval(
-			'.maxi-tab-content--selected .maxi-background-status-hover input',
+			'.maxi-tab-content--selected .maxi-background-status-hover-svg input',
 			input => input.click()
 		);
 
@@ -82,7 +82,7 @@ describe('Icon background', () => {
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 
 		await accordion.$eval(
-			'.maxi-tab-content--selected .maxi-background-status-hover input',
+			'.maxi-tab-content--selected .maxi-background-status-hover-svg input',
 			input => input.click()
 		);
 

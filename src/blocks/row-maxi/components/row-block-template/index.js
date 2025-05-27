@@ -30,9 +30,6 @@ const RowBlockTemplate = ({
 
 	return (
 		<>
-			<div className='maxi-row-block__title'>
-				<span>{__('Column picker', 'maxi-blocks')}</span>
-			</div>
 			<div
 				className='maxi-row-block__template'
 				onClick={() => selectBlock(clientId)}
@@ -89,6 +86,9 @@ const RowBlockTemplate = ({
 						</Button>
 					);
 				})}
+			</div>
+			<div className='maxi-row-block__title'>
+				<span>{__('Column picker', 'maxi-blocks')}</span>
 			</div>
 		</>
 	);

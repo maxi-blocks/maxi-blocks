@@ -15,9 +15,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	);
 	if (notProDiv) {
 		notProDiv.style.display = 'block';
-		document.getElementById(
+		const proNotProDiv = document.getElementById(
 			'maxi-dashboard_main-content_pro-not-pro'
-		).style.display = 'block';
+		);
+		if (proNotProDiv) proNotProDiv.style.display = 'block';
 	}
 
 	// save new breakpoints to the hidden input
@@ -269,12 +270,12 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		);
 	};
 
-	const fetchOpenAIModels = async (apiKey) => {
+	const fetchOpenAIModels = async apiKey => {
 		try {
 			const response = await fetch('https://api.openai.com/v1/models', {
 				method: 'GET',
 				headers: {
-					'Authorization': `Bearer ${apiKey}`,
+					Authorization: `Bearer ${apiKey}`,
 					'Content-Type': 'application/json',
 				},
 			});
@@ -289,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				'audio',
 				'gpt-3.5-turbo-instruct',
 				'gpt-4o-mini-realtime-preview',
-				'gpt-4o-realtime-preview'
+				'gpt-4o-realtime-preview',
 			];
 
 			const includedPatterns = ['o1', 'o3', 'gpt'];
@@ -316,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 	let isUpdatingDropdown = false;
 
-	const updateModelDropdown = async (apiKey) => {
+	const updateModelDropdown = async apiKey => {
 		if (isUpdatingDropdown) return;
 		isUpdatingDropdown = true;
 
@@ -330,9 +331,11 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 		// Only show loading message if we have a valid API key
 		if (apiKey) {
-			modelSelect.innerHTML = '<option value="">Loading available models...</option>';
+			modelSelect.innerHTML =
+				'<option value="">Loading available models...</option>';
 		} else {
-			modelSelect.innerHTML = '<option value="">Please add your API key</option>';
+			modelSelect.innerHTML =
+				'<option value="">Please add your API key</option>';
 			modelInput.value = '';
 			isUpdatingDropdown = false;
 			return;
@@ -363,7 +366,8 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			});
 
 			// Get the saved value from WordPress options via localized script
-			const currentValue = window.maxiAiSettings?.defaultModel || 'gpt-3.5-turbo';
+			const currentValue =
+				window.maxiAiSettings?.defaultModel || 'gpt-3.5-turbo';
 			modelInput.value = currentValue;
 
 			// Try to restore previous selection if available
@@ -374,10 +378,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				modelSelect.value = models[0];
 				modelInput.value = models[0];
 			}
-
 		} catch (error) {
 			console.error('Error updating model dropdown:', error);
-			modelSelect.innerHTML = '<option value="">Error loading models</option>';
+			modelSelect.innerHTML =
+				'<option value="">Error loading models</option>';
 			modelInput.value = '';
 		} finally {
 			isUpdatingDropdown = false;
@@ -408,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 					max_tokens: 1,
 				}),
 			}),
-			updateModelDropdown(openAIApiKey)
+			updateModelDropdown(openAIApiKey),
 		])
 			.then(([response]) => {
 				if (response.ok) {
@@ -433,8 +437,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		// Handle select changes
 		const modelSelect = document.getElementById('maxi_ai_model');
 		if (modelSelect) {
-			modelSelect.addEventListener('change', function() {
-				const modelInput = document.querySelector('input#maxi_ai_model');
+			modelSelect.addEventListener('change', function () {
+				const modelInput = document.querySelector(
+					'input#maxi_ai_model'
+				);
 				if (modelInput) {
 					modelInput.value = this.value;
 				}
@@ -474,4 +480,71 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			autoResize(textarea);
 		});
 	});
+
+	// Handle admin menu active states
+	function setAdminMenuActive() {
+		const adminMenu = document.querySelector(
+			'#toplevel_page_maxi-blocks-dashboard'
+		);
+		if (!adminMenu) return;
+
+		// Get the current tab from URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const currentTab = urlParams.get('tab');
+		const currentPage = urlParams.get('page');
+
+		// Remove all current classes first
+		const allMenuItems = adminMenu.querySelectorAll('li');
+		allMenuItems.forEach(item => {
+			item.classList.remove('current');
+			const anchor = item.querySelector('a');
+			if (anchor) {
+				anchor.classList.remove('current');
+				anchor.setAttribute('aria-current', 'false');
+			}
+		});
+
+		// Find and set the active menu item
+		const menuItems = adminMenu.querySelectorAll('a');
+		menuItems.forEach(link => {
+			let isActive = false;
+
+			// Special case for Quick Start
+			if (
+				currentPage === 'maxi-blocks-quick-start' &&
+				link.href.includes('maxi-blocks-quick-start')
+			) {
+				isActive = true;
+			}
+			// Handle other menu items
+			else if (currentTab) {
+				// Check if the link contains the current tab
+				const tabInUrl = link.href.match(/tab=([^&]*)/);
+				if (tabInUrl) {
+					isActive = tabInUrl[1] === currentTab;
+				}
+			}
+			// Handle Welcome page (no tab)
+			else if (
+				currentPage === 'maxi-blocks-dashboard' &&
+				link.href.includes('maxi-blocks-dashboard') &&
+				!link.href.includes('tab=')
+			) {
+				isActive = true;
+			}
+
+			if (isActive) {
+				// Set active state
+				const menuItem = link.closest('li');
+				if (menuItem) {
+					menuItem.classList.add('current');
+					link.classList.add('current');
+					link.setAttribute('aria-current', 'page');
+				}
+			}
+		});
+	}
+
+	// Call the function on page load
+	setAdminMenuActive();
 });

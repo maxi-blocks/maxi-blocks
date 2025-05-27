@@ -335,6 +335,7 @@ const DynamicContent = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
+				className='maxi-dynamic-content__toggle'
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
 				onChange={value =>

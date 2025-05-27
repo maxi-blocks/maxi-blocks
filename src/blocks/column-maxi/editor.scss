@@ -16,7 +16,7 @@
 		&.has-child-selected {
 			&::after {
 				opacity: 1;
-				border-color: #ff4a17 !important;
+				border-color: var(--maxi-primary-color) !important;
 			}
 		}
 

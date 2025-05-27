@@ -3,7 +3,7 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#FF4A17;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+	.st0{fill:none;stroke:var(--maxi-primary-color);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
 </style>
 <line class="st0" x1="12.4" y1="18.9" x2="15.4" y2="18.9"/>
 <rect x="1.4" y="1.2" class="st0" width="13.5" height="14.3"/>

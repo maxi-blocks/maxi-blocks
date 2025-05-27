@@ -9,7 +9,9 @@ export const getMaxiCookieKey = () => {
 	const cookie = document.cookie
 		.split(';')
 		.find(row =>
-			row.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
+			row
+				.trim()
+				.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
 		)
 		?.split('=')[1];
 
@@ -32,7 +34,9 @@ export const removeMaxiCookie = () => {
 	const cookie = document.cookie
 		.split(';')
 		.find(row =>
-			row.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
+			row
+				.trim()
+				.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
 		)
 		?.split('=')[1];
 
@@ -205,7 +209,9 @@ export async function authConnect(withRedirect = false, email = false) {
 	let cookieKey = document.cookie
 		.split(';')
 		.find(row =>
-			row.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
+			row
+				.trim()
+				.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
 		)
 		?.split('=')[1];
 

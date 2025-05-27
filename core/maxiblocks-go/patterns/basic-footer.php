@@ -23,7 +23,7 @@
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:paragraph {"style":{"spacing":{"margin":{"top":"0"},"padding":{"bottom":"20px","top":"30px"}},"color":{"text":"#9b9b9b"},"elements":{"link":{"color":{"text":"#ff4a17"},":hover":{"color":{"text":"#c9340a"}}}}}} -->
+<!-- wp:paragraph {"style":{"spacing":{"margin":{"top":"0"},"padding":{"bottom":"20px","top":"30px"}},"color":{"text":"#9b9b9b"},"elements":{"link":{"color":{"text":"var(--maxi-primary-color)"},":hover":{"color":{"text":"#c9340a"}}}}}} -->
 <p class="has-text-color has-link-color" style="color:#9b9b9b;margin-top:0;padding-top:30px;padding-bottom:20px">© Copyright – Made with&nbsp;<a href="https://maxiblocks.com/" target="_blank" rel="noreferrer noopener">Maxi Blocks</a></p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->

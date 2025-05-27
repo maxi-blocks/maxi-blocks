@@ -302,6 +302,7 @@ const ContextLoop = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
+				className='maxi-context-loop__toggle'
 				label={__('Use context loop', 'maxi-blocks')}
 				selected={status}
 				onChange={value => changeProps({ 'cl-status': value })}

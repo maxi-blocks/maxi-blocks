@@ -17,11 +17,18 @@ export const getMaxiCookieKey = () => {
 
 	if (!cookie) return false;
 
-	const obj = JSON.parse(cookie);
-	const email = Object.keys(obj)[0];
-	const key = obj[email];
+	try {
+		const obj = JSON.parse(cookie);
+		const email = Object.keys(obj)[0];
+		const key = obj[email];
 
-	return { email, key };
+		return { email, key };
+	} catch (error) {
+		console.error('Failed to parse cookie JSON:', error);
+		// Remove corrupted cookie
+		removeMaxiCookie();
+		return false;
+	}
 };
 
 export const getPathToAdmin = () => {
@@ -72,7 +79,10 @@ const getProInfoByEmail = () => {
 };
 
 export const isProSubActive = () => {
-	const { info, key } = getProInfoByEmail();
+	const proInfo = getProInfoByEmail();
+	if (!proInfo) return false;
+
+	const { info, key } = proInfo;
 
 	if (info && info?.status === 'yes' && info?.key) {
 		const keysArray = info?.key.split(',');
@@ -83,7 +93,10 @@ export const isProSubActive = () => {
 };
 
 export const isProSubExpired = () => {
-	const { info, key } = getProInfoByEmail();
+	const proInfo = getProInfoByEmail();
+	if (!proInfo) return false;
+
+	const { info, key } = proInfo;
 
 	if (info && info?.status === 'expired' && info?.key) {
 		const keysArray = info?.key.split(',');
@@ -94,7 +107,10 @@ export const isProSubExpired = () => {
 };
 
 export const getUserName = () => {
-	const { email, info, key } = getProInfoByEmail();
+	const proInfo = getProInfoByEmail();
+	if (!proInfo) return false;
+
+	const { email, info, key } = proInfo;
 
 	if (info && info?.key) {
 		const keysArray = info?.key.split(',');
@@ -109,7 +125,10 @@ export const getUserName = () => {
 };
 
 export const getUserEmail = () => {
-	const { email, info, key } = getProInfoByEmail();
+	const proInfo = getProInfoByEmail();
+	if (!proInfo) return false;
+
+	const { email, info, key } = proInfo;
 
 	if (info && info?.key) {
 		const keysArray = info?.key.split(',');
@@ -224,9 +243,15 @@ export async function authConnect(withRedirect = false, email = false) {
 	if (!cookieKey && !email) return;
 
 	if (cookieKey) {
-		const cookieObj = JSON.parse(cookieKey);
-		const cookieEmail = Object.keys(cookieObj)[0];
-		if (cookieEmail !== email) {
+		try {
+			const cookieObj = JSON.parse(cookieKey);
+			const cookieEmail = Object.keys(cookieObj)[0];
+			if (cookieEmail !== email) {
+				removeMaxiCookie();
+				cookieKey = false;
+			}
+		} catch (error) {
+			console.error('Failed to parse cookie JSON in authConnect:', error);
 			removeMaxiCookie();
 			cookieKey = false;
 		}
@@ -264,7 +289,13 @@ export async function authConnect(withRedirect = false, email = false) {
 		return false;
 	};
 
-	const key = JSON.parse(cookieKey)?.[email];
+	let key;
+	try {
+		key = JSON.parse(cookieKey)?.[email];
+	} catch (error) {
+		console.error('Failed to parse cookieKey for key extraction:', error);
+		key = null;
+	}
 
 	const useEmail = email;
 
@@ -346,11 +377,26 @@ export async function authConnect(withRedirect = false, email = false) {
 }
 
 export const logOut = redirect => {
-	const { key } = getMaxiCookieKey();
+	const cookieData = getMaxiCookieKey();
+	if (!cookieData) {
+		// No cookie exists, just handle redirect if needed
+		if (redirect) {
+			const url = 'https://my.maxiblocks.com/log-out?plugin';
+			window.open(url, '_blank')?.focus();
+		}
+		return;
+	}
+
+	const { key } = cookieData;
 	const email = getUserEmail();
 	const name = getUserName();
-	processLocalActivationRemoveDevice(email, name, 'no', key);
+
+	if (email && name && key) {
+		processLocalActivationRemoveDevice(email, name, 'no', key);
+	}
+
 	removeMaxiCookie();
+
 	if (redirect) {
 		const url = 'https://my.maxiblocks.com/log-out?plugin';
 		window.open(url, '_blank')?.focus();

@@ -1,7 +1,45 @@
+/* global ajaxurl, MaxiSystemReport */
 document.addEventListener('DOMContentLoaded', function maxiStatusReport() {
 	const copyButton = document.getElementById('maxi-copy-report');
 	const successNotice = document.getElementById('maxi-copy-success');
 	const reportContent = document.getElementById('maxi-copy-report-content');
+
+	/**
+	 * Shows success notice for 3 seconds
+	 */
+	function showSuccess() {
+		successNotice.style.display = 'block';
+		setTimeout(function () {
+			successNotice.style.display = 'none';
+		}, 3000);
+	}
+
+	/**
+	 * Fallback copy method using document.execCommand
+	 */
+	function fallbackCopy() {
+		// Make textarea visible but out of view
+		reportContent.style.position = 'fixed';
+		reportContent.style.top = '0';
+		reportContent.style.left = '0';
+		reportContent.style.opacity = '0';
+		reportContent.style.display = 'block';
+
+		// Select the text
+		reportContent.select();
+		reportContent.setSelectionRange(0, 99999); // For mobile devices
+
+		try {
+			// Execute copy command
+			document.execCommand('copy');
+			showSuccess();
+		} catch (err) {
+			console.error('Failed to copy text: ', err);
+		} finally {
+			// Restore textarea to hidden state
+			reportContent.style.display = 'none';
+		}
+	}
 
 	if (copyButton && successNotice && reportContent) {
 		copyButton.addEventListener('click', function (e) {
@@ -23,37 +61,6 @@ document.addEventListener('DOMContentLoaded', function maxiStatusReport() {
 
 		// Ensure notice is hidden by default
 		successNotice.style.display = 'none';
-
-		function showSuccess() {
-			successNotice.style.display = 'block';
-			setTimeout(function () {
-				successNotice.style.display = 'none';
-			}, 3000);
-		}
-
-		function fallbackCopy() {
-			// Make textarea visible but out of view
-			reportContent.style.position = 'fixed';
-			reportContent.style.top = '0';
-			reportContent.style.left = '0';
-			reportContent.style.opacity = '0';
-			reportContent.style.display = 'block';
-
-			// Select the text
-			reportContent.select();
-			reportContent.setSelectionRange(0, 99999); // For mobile devices
-
-			try {
-				// Execute copy command
-				document.execCommand('copy');
-				showSuccess();
-			} catch (err) {
-				console.error('Failed to copy text: ', err);
-			} finally {
-				// Restore textarea to hidden state
-				reportContent.style.display = 'none';
-			}
-		}
 	}
 
 	// New download functionality
@@ -99,26 +106,57 @@ document.addEventListener('DOMContentLoaded', function maxiStatusReport() {
 			.then(response => response.json())
 			.then(data => {
 				if (data.success && data.data) {
-					// Update table content
-					let content = `<tr><th colspan="4">${MaxiSystemReport.i18n.frontendAssets}</th></tr>`;
+					// Clear existing content
+					frontendAssetsSection.innerHTML = '';
 
-					// CSS Files
-					content += '<tr><td colspan="4" class="plugin-section">';
-					content += `<strong>${MaxiSystemReport.i18n.cssFiles} (${data.data.css.length})</strong><br>`;
+					// Create header row
+					const headerRow = document.createElement('tr');
+					const headerCell = document.createElement('th');
+					headerCell.colSpan = 4;
+					headerCell.textContent =
+						MaxiSystemReport.i18n.frontendAssets;
+					headerRow.appendChild(headerCell);
+					frontendAssetsSection.appendChild(headerRow);
+
+					// CSS Files section
+					const cssRow = document.createElement('tr');
+					const cssCell = document.createElement('td');
+					cssCell.colSpan = 4;
+					cssCell.className = 'plugin-section';
+
+					const cssTitle = document.createElement('strong');
+					cssTitle.textContent = `${MaxiSystemReport.i18n.cssFiles} (${data.data.css.length})`;
+					cssCell.appendChild(cssTitle);
+					cssCell.appendChild(document.createElement('br'));
+
 					data.data.css.forEach(css => {
-						content += `${css}<br>`;
+						const cssText = document.createTextNode(css);
+						cssCell.appendChild(cssText);
+						cssCell.appendChild(document.createElement('br'));
 					});
-					content += '</td></tr>';
 
-					// JavaScript Files
-					content += '<tr><td colspan="4" class="plugin-section">';
-					content += `<strong>${MaxiSystemReport.i18n.jsFiles} (${data.data.js.length})</strong><br>`;
+					cssRow.appendChild(cssCell);
+					frontendAssetsSection.appendChild(cssRow);
+
+					// JavaScript Files section
+					const jsRow = document.createElement('tr');
+					const jsCell = document.createElement('td');
+					jsCell.colSpan = 4;
+					jsCell.className = 'plugin-section';
+
+					const jsTitle = document.createElement('strong');
+					jsTitle.textContent = `${MaxiSystemReport.i18n.jsFiles} (${data.data.js.length})`;
+					jsCell.appendChild(jsTitle);
+					jsCell.appendChild(document.createElement('br'));
+
 					data.data.js.forEach(js => {
-						content += `${js}<br>`;
+						const jsText = document.createTextNode(js);
+						jsCell.appendChild(jsText);
+						jsCell.appendChild(document.createElement('br'));
 					});
-					content += '</td></tr>';
 
-					frontendAssetsSection.innerHTML = content;
+					jsRow.appendChild(jsCell);
+					frontendAssetsSection.appendChild(jsRow);
 
 					// Update report text content
 					if (reportContent) {
@@ -149,7 +187,15 @@ document.addEventListener('DOMContentLoaded', function maxiStatusReport() {
 						}
 					}
 				} else {
-					frontendAssetsSection.innerHTML = `<tr><td colspan="4" class="error">${MaxiSystemReport.i18n.errorLoadingAssets}</td></tr>`;
+					frontendAssetsSection.innerHTML = '';
+					const errorRow = document.createElement('tr');
+					const errorCell = document.createElement('td');
+					errorCell.colSpan = 4;
+					errorCell.className = 'error';
+					errorCell.textContent =
+						MaxiSystemReport.i18n.errorLoadingAssets;
+					errorRow.appendChild(errorCell);
+					frontendAssetsSection.appendChild(errorRow);
 
 					// Update error in report text
 					if (reportContent) {
@@ -163,7 +209,15 @@ document.addEventListener('DOMContentLoaded', function maxiStatusReport() {
 				}
 			})
 			.catch(error => {
-				frontendAssetsSection.innerHTML = `<tr><td colspan="4" class="error">${MaxiSystemReport.i18n.errorLoadingAssets}</td></tr>`;
+				frontendAssetsSection.innerHTML = '';
+				const errorRow = document.createElement('tr');
+				const errorCell = document.createElement('td');
+				errorCell.colSpan = 4;
+				errorCell.className = 'error';
+				errorCell.textContent =
+					MaxiSystemReport.i18n.errorLoadingAssets;
+				errorRow.appendChild(errorCell);
+				frontendAssetsSection.appendChild(errorRow);
 				console.error('Error loading frontend assets:', error);
 
 				// Update error in report text

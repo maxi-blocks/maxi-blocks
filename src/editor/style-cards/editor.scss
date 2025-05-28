@@ -367,6 +367,19 @@ body .maxi-style-cards__popover {
 		}
 	}
 
+	.maxi-style-cards-control__sc__custom-color {
+		.maxi-reset-button {
+			display: none;
+		}
+		.maxi-color-control__display__color {
+			margin-bottom: 3px;
+			span {
+				width: 20px;
+				height: 20px;
+			}
+		}
+	}
+
 	.maxi-style-cards__quick-color-presets__reset {
 		position: absolute;
 		bottom: 8px;

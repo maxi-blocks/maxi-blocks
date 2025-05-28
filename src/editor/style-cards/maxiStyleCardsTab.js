@@ -934,7 +934,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							),
 						},
 						{
-							label: __('Custom colours', 'maxi-blocks'),
+							label: __(
+								'Custom colours (both tones)',
+								'maxi-blocks'
+							),
 							classNameItem:
 								'maxi-blocks-sc__type--custom-color-presets maxi-blocks-sc__type--color',
 							content: (

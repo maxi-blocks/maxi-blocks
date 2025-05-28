@@ -132,7 +132,7 @@ const ColorPaletteControl = props => {
 				{customColors.length > 0 && (
 					<div className='maxi-color-control__palette-custom'>
 						<div className='maxi-color-control__palette-custom-header'>
-							{__('Custom colours', 'maxi-blocks')}
+							{__('Custom colours (both tones)', 'maxi-blocks')}
 						</div>
 						<div className='maxi-color-control__palette-container'>
 							{customColors.map((color, index) => {

@@ -101,7 +101,7 @@
 		&-custom {
 			width: 100%;
 			margin-top: 15px;
-			border-top: 1px solid var(--maxi-grey-1-color);
+			border-top: 1px solid var(--maxi-grey-light);
 			padding-top: 10px;
 
 			&-header {
@@ -146,7 +146,7 @@
 			justify-content: flex-start;
 			align-items: center;
 			margin-bottom: 0;
-			gap: 4px;
+			gap: 3px;
 		}
 
 		&-box {
@@ -173,6 +173,10 @@
 				box-shadow: 0 0 0 2px var(--maxi-secondary-color);
 			}
 
+			&:nth-child(n + 9) {
+				margin-top: 3px;
+			}
+
 			&--active {
 				background: var(--maxi-pastel-green);
 				border: none;
@@ -196,10 +200,10 @@
 		}
 
 		&-custom-item {
-			width: 18px;
-			height: 18px;
+			width: 24px;
+			height: 24px;
 			border-radius: 50%;
-			border: 1px solid var(--maxi-grey-1-color);
+			border: 1px solid var(---maxi-grey-light);
 		}
 	}
 	&__opacity {

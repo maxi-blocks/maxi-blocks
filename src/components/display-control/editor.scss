@@ -22,10 +22,18 @@
 			column-gap: 5px;
 
 			.maxi-components-button {
-				border: 1px solid var(--maxi-grey-1-color);
+				border: 1px solid var(--maxi-mid-green);
 				border-radius: 4px;
 				&[aria-pressed='true'] {
-					background: var(--maxi-light-blue-2-color);
+					background: var(--maxi-whisper-green);
+				}
+				&:hover {
+					background: var(--maxi-pastel-green);
+					border: 1px solid var(--maxi-secondary-color);
+				}
+				&:active {
+					background: var(--maxi-pastel-green);
+					border: 1px solid var(--maxi-primary-color);
 				}
 			}
 		}

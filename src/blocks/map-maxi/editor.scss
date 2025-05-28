@@ -1,13 +1,13 @@
 .maxi-map-block {
 	&__not-found {
 		padding: 5% 8%;
-		border: 1px solid #dbdde6;
-		background-color: #eaf3f7;
+		border: 1px solid var(--maxi-grey-light);
+		background-color: var(--maxi-whisper-green);
 		p {
 			max-width: 820px;
-			color: #081219;
+			color: var(--maxi-grey-dark);
 			font-size: 16px;
-			font-family: Roboto, sans-serif;
+			font-family: Inter, sans-serif;
 			line-height: 1.5em;
 			a {
 				color: var(--maxi-secondary-color);
@@ -29,8 +29,8 @@
 		font-size: 13px;
 		padding: 0.5em;
 		text-align: center;
-		background: rgba(0, 0, 0, 0.6);
-		color: #fff;
+		background: rgba(var(--maxi-black), 0.6);
+		color: var(--maxi-white);
 		z-index: 9999;
 	}
 
@@ -72,18 +72,16 @@
 				background: var(--maxi-primary-color);
 				border-radius: 50%;
 				text-align: center;
-				transition: 0.1s;
+				transition: all 0.4s ease !important;
 
-				svg.dashicon {
-					fill: #b52727;
-				}
 				span.dashicon {
 					&::before {
-						color: #fff;
+						color: var(--maxi-white);
 					}
 				}
 				&:hover {
-					background: #000;
+					background: var(--maxi-black);
+					transition: all 0.4s ease !important;
 				}
 			}
 		}
@@ -92,13 +90,13 @@
 	&__search-box {
 		display: flex;
 		align-items: center;
-		background: #fff;
-		color: #444;
+		background: var(--maxi-white);
+		color: var(--maxi-grey-dark);
 		position: absolute;
 		z-index: 999;
 		top: 0.5rem;
 		right: 0.5rem;
-		border: 1px solid #1e1e1e;
+		border: 1px solid var(--maxi-grey-dark);
 		padding: 0 0 0 0.5rem;
 		width: 280px;
 		max-width: calc(100% - 5rem);
@@ -115,7 +113,7 @@
 		.maxi-text-input[type='text'] {
 			background: transparent;
 			border: none;
-			color: #000;
+			color: var(--maxi-black);
 			box-shadow: none;
 			font-family: inherit;
 			padding: 0;
@@ -123,11 +121,11 @@
 		}
 
 		svg.dashicon {
-			fill: #000;
+			fill: var(--maxi-black);
 		}
 
 		&__button {
-			border-top: 1px solid #ddd;
+			border-top: 1px solid var(--maxi-grey-light);
 			display: flex;
 			padding: 0.7rem 0;
 			margin: 0 0.5rem;
@@ -136,13 +134,13 @@
 		&-results {
 			position: absolute;
 			z-index: 999;
-			background: #fff;
+			background: var(--maxi-white);
 			top: 0;
 			transition: all 200ms ease-in-out;
 			max-width: calc(100% - 5rem);
 			top: 48px;
 			right: 0.5rem;
-			border: 1px solid #1e1e1e;
+			border: 1px solid var(--maxi-grey-dark);
 			width: 280px;
 			max-height: calc(100% - 70px);
 			overflow-y: auto;
@@ -163,4 +161,21 @@
 		.maxi-default-styles-control__button {
 		width: 18.5%;
 	}
+}
+.maxi-map-popup-text-settings {
+	.maxi-accordion-control__item__panel:not(.maxi-accordion-control__item__panel--disable-padding) {
+		padding: 0 !important;
+	}
+}
+.maxi-accordion-control__item__panel:has(.maxi-map-popup-control) {
+	margin-top: -8px;
+}
+.maxi-map-popup-control-box-shadow-label {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.maxi-map-interaction-toggle-group {
+	display: block;
+	margin-top: 10px;
 }

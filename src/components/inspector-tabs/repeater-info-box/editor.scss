@@ -1,11 +1,11 @@
 .maxi-repeater-info-box {
-	background: #7a00df;
-	color: rgb(var(--maxi-light-color-2)) !important;
+	background: var(--maxi-tertiary-color);
+	color: var(--maxi-white) !important;
 
 	a {
 		&,
 		&:hover {
-			color: rgb(var(--maxi-light-color-2)) !important;
+			color: var(--maxi-white) !important;
 		}
 	}
 }

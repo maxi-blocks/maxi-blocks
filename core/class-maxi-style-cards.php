@@ -825,4 +825,1152 @@ class MaxiBlocks_StyleCards
             update_option('maxi_blocks_link_color_migrated', 'yes');
         }
     }
+
+    /**
+     * Helper function to get WP native styles
+     */
+    private static function get_wp_native_styles($organized_values, $style_card, $prefix, $style, $is_backend = false)
+    {
+        $response = '';
+        $native_wp_prefix = $is_backend ? 'wp-block[data-type^="core/"]' : 'maxi-block--use-sc';
+        $headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+        $levels = array_merge(['p'], $headings);
+        $breakpoints = [
+            'xxl' => 1921,
+            'xl' => 1920,
+            'l' => 1366,
+            'm' => 1024,
+            's' => 767,
+            'xs' => 480,
+        ];
+        $breakpoint_keys = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+        $add_styles_by_breakpoint = function ($breakpoint, $second_prefix = '') use (
+            $organized_values,
+            $prefix,
+            $style,
+            $levels,
+            $native_wp_prefix,
+            $headings,
+            $style_card
+        ) {
+            $added_response = '';
+
+            $breakpoint_level_sentences = self::get_sentences_by_breakpoint([
+                'organized_values' => $organized_values,
+                'style' => $style,
+                'breakpoint' => $breakpoint,
+                'targets' => $levels,
+            ]);
+
+            foreach ($breakpoint_level_sentences as $level => $sentences) {
+                // Remove margin-bottom sentences
+                $margin_sentence = null;
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        $margin_sentence = $sentence;
+                        unset($sentences[$key]);
+                        break;
+                    }
+                }
+
+                // Build selectors with level included
+                $selectors = [
+                    "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} {$level}",
+                    "{$prefix} {$second_prefix} .maxi-{$style} {$level}.{$native_wp_prefix}",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} {$level} a",
+                    "{$prefix} {$second_prefix} .maxi-{$style} {$level}.{$native_wp_prefix} a",
+                ];
+
+                // Add paragraph-specific selectors
+                if ($level === 'p') {
+                    $p_selectors = [
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block)",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .wp-block-comments div:not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block)",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-form textarea",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-form p:not(.form-submit) input",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-reply-title small a",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-form textarea",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-form p:not(.form-submit) input",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-reply-title small a",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-navigation-link a",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-query-pagination-previous",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-query-pagination-next",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-query-pagination-numbers a",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-query-pagination-numbers span",
+                    ];
+                    $selectors = array_merge($selectors, $p_selectors);
+
+                    // Fix for .has-small-font-size
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .wp-block-comments div:has(> a, > time > a):not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block).has-small-font-size {font-size: inherit !important;}";
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .wp-block-comments div:not(.wp-element-button):not(.wp-block-navigation-item):not(.maxi-group-block).has-small-font-size {font-size: inherit !important;}";
+                }
+
+                $added_response .= implode(', ', array_filter($selectors)) . " {" . implode(' ', $sentences) . "}";
+
+                // Add margin-bottom sentence to all elements except the last one
+                if ($margin_sentence) {
+                    $added_response .= ":is(" . implode(', ', array_filter($selectors)) . "):not(:last-child) {" . $margin_sentence . "}";
+                }
+
+                // Add this after the main selectors in get_wp_native_styles
+                if ($level === 'p') {
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} li.{$native_wp_prefix} {" . implode(' ', $sentences) . "}";
+                }
+
+                // Add this after list styles
+                if ($level === 'p' && $style === 'light') {
+                    $added_response .= "{$prefix} {$second_prefix} p > span[data-rich-text-placeholder]::after {" . implode(' ', $sentences) . "}";
+                }
+
+                // Add this after rich text placeholder styles
+                if ($level === 'h1' && $style === 'light') {
+                    $added_response .= "{$prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {" . implode(' ', $sentences) . "}";
+                }
+            }
+
+            // WP native block when has link
+            $wp_native_link_prefix = "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} a";
+            foreach (['', ' span'] as $suffix) {
+                $added_response .= "{$wp_native_link_prefix}{$suffix} { color: var(--maxi-{$style}-link); }";
+                if (isset($style_card["--maxi-{$style}-link-hover"])) {
+                    $added_response .= "{$wp_native_link_prefix}{$suffix}:hover { color: var(--maxi-{$style}-link-hover); }";
+                    $added_response .= "{$wp_native_link_prefix}{$suffix}:focus { color: var(--maxi-{$style}-link-hover); }";
+                }
+                if (isset($style_card["--maxi-{$style}-link-active"])) {
+                    $added_response .= "{$wp_native_link_prefix}{$suffix}:active { color: var(--maxi-{$style}-link-active); }";
+                }
+                if (isset($style_card["--maxi-{$style}-link-visited"])) {
+                    $added_response .= "{$wp_native_link_prefix}{$suffix}:visited { color: var(--maxi-{$style}-link-visited); }";
+                    if (isset($style_card["--maxi-{$style}-link-hover"])) {
+                        $added_response .= "{$wp_native_link_prefix}{$suffix}:visited:hover { color: var(--maxi-{$style}-link-hover); }";
+                    }
+                }
+            }
+
+            // General color
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}, {$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-reply-title small {
+                color: var(--maxi-{$style}-p-color,rgba(var(--maxi-{$style}-color-3,155,155,155),1));
+            }";
+
+            // Headings color
+            foreach ($headings as $heading) {
+                $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} {$heading}.{$native_wp_prefix}, {$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} {$heading} {
+                    color: var(--maxi-{$style}-{$heading}-color,rgba(var(--maxi-{$style}-color-5,0,0,0),1));
+                }";
+            }
+
+            // Button color
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-element-button {
+                background: var(--maxi-{$style}-button-background-color,rgba(var(--maxi-{$style}-color-4,255,74,23),1));
+            }";
+
+            if (isset($style_card["--maxi-{$style}-button-background-color-hover"])) {
+                $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-element-button:hover {
+                    background: var(--maxi-{$style}-button-background-color-hover);
+                }";
+            }
+
+            // Remove form textarea background
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-form textarea {
+                background: transparent;
+                color: inherit;
+                max-width: 100%;
+            }";
+
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-form textarea {
+                background: transparent;
+                color: inherit;
+                max-width: 100%;
+            }";
+
+            // Remove form input background
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix} .wp-block-post-comments-form .comment-form p:not(.form-submit) input {
+                background: transparent;
+                color: inherit;
+                max-width: 100%;
+            }";
+
+            $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .{$native_wp_prefix}.wp-block-post-comments-form .comment-form p:not(.form-submit) input {
+                background: transparent;
+                color: inherit;
+                max-width: 100%;
+            }";
+
+            // Add this after headings color styles
+            $added_response .= "{$prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {
+                color: var(--maxi-light-h1-color,rgba(var(--maxi-light-color-5,0,0,0),1));
+            }";
+
+            return $added_response;
+        };
+
+        // Add styles for all breakpoints
+        $response .= $add_styles_by_breakpoint('general');
+
+        foreach ($breakpoints as $breakpoint => $value) {
+            if ($is_backend) {
+                $response .= $add_styles_by_breakpoint(
+                    $breakpoint,
+                    ".edit-post-visual-editor[maxi-blocks-responsive=\"{$breakpoint}\"]"
+                );
+            } else {
+                $response .= "@media (" . ($breakpoint !== 'xxl' ? 'max' : 'min') . "-width: {$value}px) {";
+                $response .= $add_styles_by_breakpoint($breakpoint);
+                $response .= '}';
+            }
+        }
+
+        return $response;
+    }
+
+    public static function maxi_import_sc($sc_content)
+    {
+        if ($sc_content) {
+            global $wpdb;
+
+            // Get default SC
+            $default_sc = json_decode(self::get_default_style_card(), true);
+            $default_maxi_sc = $default_sc['sc_maxi'];
+
+            // Try to decode once
+            $first_decode = json_decode($sc_content, true);
+
+            // If still a string, try second decode
+            if (is_string($first_decode)) {
+                $imported_sc = json_decode($first_decode, true);
+            } else {
+                $imported_sc = $first_decode;
+            }
+
+            // If still not an array, check for JSON errors
+            if (!is_array($imported_sc)) {
+                return false;
+            }
+
+            // Deep merge default with imported
+            $new_sc = array_replace_recursive($default_maxi_sc, $imported_sc);
+
+            // Get current style cards
+            $current_style_cards = json_decode(
+                self::get_maxi_blocks_current_style_cards(),
+                true
+            );
+
+            // Get the base name from the imported SC
+            $base_name = $new_sc['name'] ?? 'Style Card';
+            $name = $base_name;
+            $counter = 1;
+
+            // Check for existing names and increment counter if needed
+            while (self::sc_name_exists($current_style_cards, $name)) {
+                $counter++;
+                $name = $base_name . '-' . $counter;
+            }
+
+            // Update the SC name
+            $new_sc['name'] = $name;
+
+            // Generate new SC ID
+            $new_id = 'sc_' . time();
+
+            // Set all cards as inactive
+            foreach ($current_style_cards as &$card) {
+                $card['status'] = '';
+            }
+
+            // Add new card to collection
+            $current_style_cards[$new_id] = $new_sc;
+            $current_style_cards[$new_id]['status'] = 'active';
+
+            // Save updated style cards collection
+            $wpdb->replace(
+                "{$wpdb->prefix}maxi_blocks_general",
+                array(
+                    'id' => 'style_cards_current',
+                    'object' => wp_json_encode($current_style_cards)
+                )
+            );
+
+            // Create variables object
+            $organized_values = [];
+            $styles = ['light', 'dark'];
+            $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation'];
+            $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+            $settings = [
+                'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
+                'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
+                'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
+                'padding-top', 'padding-left', 'padding-right'
+            ];
+
+            foreach ($styles as $style) {
+                // Merge defaultStyleCard and styleCard
+                $style_data = array_merge(
+                    $new_sc[$style]['defaultStyleCard'] ?? [],
+                    $new_sc[$style]['styleCard'] ?? []
+                );
+
+                foreach ($elements as $element) {
+                    if (!isset($style_data[$element])) {
+                        continue;
+                    }
+
+                    // Special handling for navigation
+                    if ($element === 'navigation') {
+                        // Handle navigation properties which might have specific units or formats
+                        foreach ($breakpoints as $breakpoint) {
+                            // Handle navigation specific properties
+                            $nav_props = [
+                                'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
+                                'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
+                                'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
+                                'padding-top', 'padding-left', 'padding-right'
+                            ];
+
+                            foreach ($nav_props as $prop) {
+                                $prop_key = "{$prop}-{$breakpoint}";
+                                $unit_key = "{$prop}-unit-{$breakpoint}";
+
+                                if (isset($style_data[$element][$prop_key])) {
+                                    $value = $style_data[$element][$prop_key];
+
+                                    // Add units if needed for numeric values
+                                    if (is_numeric($value)) {
+                                        // Get unit from style card if available
+                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : null;
+
+                                        // Use appropriate default unit if not specified
+                                        if ($unit === null || $unit === '') {
+                                            if ($prop === 'line-height') {
+                                                $unit = '%'; // Default to % for navigation line-height
+                                            } else {
+                                                $unit = 'px'; // Default to px for other properties
+                                            }
+                                        }
+
+                                        $value .= $unit;
+                                    } else if ($prop === 'font-family') {
+                                        $value = "\"{$value}\"";
+                                    }
+
+                                    $var_name = "--maxi-{$style}-{$element}-{$prop}-{$breakpoint}";
+                                    $organized_values[$style][$element][$breakpoint][$prop] = [
+                                        'value' => $value,
+                                        'var_name' => $var_name
+                                    ];
+                                }
+                            }
+                        }
+
+                        continue; // Skip regular processing for navigation
+                    }
+
+                    foreach ($settings as $setting) {
+                        foreach ($breakpoints as $breakpoint) {
+                            $key = "{$setting}-{$breakpoint}";
+                            $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+
+                            if (isset($style_data[$element][$key])) {
+                                $value = $style_data[$element][$key];
+
+                                // Add units if needed
+                                if ($setting === 'font-family') {
+                                    $value = "\"{$value}\"";
+                                } elseif ($setting === 'line-height') {
+                                    if (is_numeric($value)) {
+                                        // Get the appropriate unit if specified in the style card
+                                        $unit_key = "line-height-unit-{$breakpoint}";
+                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
+
+                                        // Default to px if no unit is specified, except for button which defaults to %
+                                        if ($unit === null || $unit === '') {
+                                            $unit = ($element === 'button') ? '%' : 'px';
+                                        }
+
+                                        $value .= $unit;
+                                    }
+                                } elseif (in_array($setting, ['font-size', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'])) {
+                                    if (is_numeric($value)) {
+                                        // Check for a unit specification
+                                        $unit_key = "{$setting}-unit-{$breakpoint}";
+                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
+
+                                        // Default to px if no unit is specified
+                                        if ($unit === null || $unit === '') {
+                                            $unit = 'px';
+                                        }
+
+                                        $value .= $unit;
+                                    }
+                                }
+
+                                $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+                                $organized_values[$style][$element][$breakpoint][$setting] = [
+                                    'value' => $value,
+                                    'var_name' => $var_name
+                                ];
+                            }
+                        }
+                    }
+                }
+
+                // Process colors
+                if (isset($style_data['color'])) {
+                    for ($i = 1; $i <= 8; $i++) {
+                        if (isset($style_data['color'][$i])) {
+                            $var_name = "--maxi-{$style}-color-{$i}";
+                            $organized_values[$style]['color'][$i] = [
+                                'value' => $style_data['color'][$i],
+                                'var_name' => $var_name
+                            ];
+                        }
+                    }
+                }
+
+                // Add menu-related properties
+                $menu_props = [
+                    'menu-item' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
+                    'menu-burger' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
+                    'menu-item-hover' => "rgba(var(--maxi-{$style}-color-6, 172, 28, 92), 1)",
+                    'menu-item-visited' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
+                    'menu-item-sub-bg' => "rgba(var(--maxi-{$style}-color-1, " . ($style === 'light' ? '255, 255, 255' : '0, 0, 0') . "), 1)",
+                    'menu-mobile-bg' => "rgba(var(--maxi-{$style}-color-1, " . ($style === 'light' ? '255, 255, 255' : '0, 0, 0') . "), 1)",
+                ];
+
+                foreach ($menu_props as $prop => $value) {
+                    $var_name = "--maxi-{$style}-{$prop}";
+                    $organized_values[$style]['menu'][$prop] = [
+                        'value' => $value,
+                        'var_name' => $var_name
+                    ];
+                }
+            }
+
+            // Generate CSS variables string
+            $var_sc_string = ':root{';
+
+            // Add default margin-bottom for text elements
+            $text_elements = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+            $styles = ['light', 'dark'];
+
+            foreach ($styles as $style) {
+                foreach ($text_elements as $element) {
+                    $margin_key = "margin-bottom-general";
+                    // Only add default if the margin-bottom is not already set
+                    if (!isset($organized_values[$style][$element]['general']['margin-bottom'])) {
+                        $var_name = "--maxi-{$style}-{$element}-{$margin_key}";
+                        $var_sc_string .= "{$var_name}:20px;";
+                    }
+                }
+            }
+
+            // Continue with existing organized values
+            foreach ($organized_values as $style => $style_data) {
+                foreach ($style_data as $element => $element_data) {
+                    if ($element === 'color') {
+                        foreach ($element_data as $color_number => $color_value) {
+                            $var_name = "--maxi-{$style}-color-{$color_number}";
+                            $value = is_array($color_value) ? $color_value['value'] : $color_value;
+                            $var_sc_string .= "{$var_name}:{$value};";
+                        }
+                        continue;
+                    }
+
+                    if ($element === 'menu') {
+                        foreach ($element_data as $menu_prop => $menu_value) {
+                            $var_name = $menu_value['var_name'];
+                            $value = $menu_value['value'];
+                            $var_sc_string .= "{$var_name}:{$value};";
+                        }
+                        continue;
+                    }
+
+                    foreach ($element_data as $breakpoint => $breakpoint_data) {
+                        foreach ($breakpoint_data as $setting => $value) {
+                            if (is_array($value)) {
+                                $var_name = $value['var_name'] ?? "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+                                $value = $value['value'];
+                            } else {
+                                $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+                            }
+                            $var_sc_string .= "{$var_name}:{$value};";
+                        }
+                    }
+                }
+            }
+
+            // Add active style card color
+            $var_sc_string .= "--maxi-active-sc-color: 222, 36, 119;";
+
+            $var_sc_string .= '}';
+
+            // Generate styles string
+            $styles_string = self::get_sc_styles($new_sc, true);
+
+            $sc_string = array(
+                '_maxi_blocks_style_card' => $var_sc_string,
+                '_maxi_blocks_style_card_preview' => $var_sc_string,
+                '_maxi_blocks_style_card_styles' => $styles_string,
+                '_maxi_blocks_style_card_styles_preview' => $styles_string
+            );
+
+            // Save sc_string
+            $wpdb->replace(
+                "{$wpdb->prefix}maxi_blocks_general",
+                array(
+                    'id' => 'sc_string',
+                    'object' => serialize($sc_string)
+                )
+            );
+
+            return [
+                'sc' => [
+                    'success' => true,
+                    'message' => sprintf(__('Style Card imported successfully as "%s"', 'maxi-blocks'), $name),
+                    'id' => $new_id
+                ]
+            ];
+        }
+        return false;
+    }
+
+    /**
+     * Helper function to check if a style card name already exists
+     *
+     * @param array $style_cards Array of existing style cards
+     * @param string $name Name to check
+     * @return boolean True if name exists, false otherwise
+     */
+    public static function sc_name_exists($style_cards, $name)
+    {
+        foreach ($style_cards as $card) {
+            if (isset($card['name']) && $card['name'] === $name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Helper function to handle array values
+    private static function stringify_value($value)
+    {
+        if (is_array($value)) {
+            if (isset($value['value'])) {
+                return $value['value'];
+            }
+            if (isset($value[0])) {
+                return $value[0];
+            }
+            return json_encode($value);
+        }
+        return $value;
+    }
+
+    private static function get_organized_values($style_card)
+    {
+        $organized_values = [];
+        $styles = ['light', 'dark'];
+        $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation'];
+        $breakpoints_keys = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+        $settings = [
+            'font-family',
+            'font-size',
+            'font-style',
+            'font-weight',
+            'line-height',
+            'text-decoration',
+            'text-transform',
+            'letter-spacing',
+            'white-space',
+            'word-spacing',
+            'text-indent',
+            'margin-bottom',
+            'padding-bottom',
+            'padding-top',
+            'padding-left',
+            'padding-right',
+        ];
+
+        foreach ($styles as $style) {
+            // Merge defaultStyleCard and styleCard for the current style
+            $style_data = array_merge(
+                $style_card[$style]['defaultStyleCard'] ?? [],
+                $style_card[$style]['styleCard'] ?? []
+            );
+
+            // Add default margin-bottom for text elements if not already set
+            $text_elements = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+            foreach ($text_elements as $element) {
+                $margin_key = "margin-bottom-general";
+
+                // Only add default if the margin-bottom is not already set
+                if (!isset($style_data[$element][$margin_key])) {
+                    $organized_values[$style][$element]['general']['margin-bottom'] = [
+                        'value' => '20px',
+                        'var_name' => "--maxi-{$style}-{$element}-margin-bottom-general"
+                    ];
+                }
+            }
+
+            foreach ($elements as $element) {
+                if (!isset($style_data[$element])) {
+                    continue;
+                }
+
+                foreach ($settings as $setting) {
+                    foreach ($breakpoints_keys as $breakpoint) {
+                        $key = "{$setting}-{$breakpoint}";
+                        $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
+
+                        // Handle navigation styles differently
+                        if ($element === 'navigation' && isset($style_data[$element][$breakpoint])) {
+                            foreach ($style_data[$element][$breakpoint] as $prop => $value) {
+                                $organized_values[$style][$element][$breakpoint][$prop] = [
+                                    'value' => $value,
+                                    'var_name' => "--maxi-{$style}-{$element}-{$prop}-{$breakpoint}"
+                                ];
+                            }
+                        }
+                        // Handle other elements
+                        elseif (isset($style_data[$element][$key])) {
+                            $value = $style_data[$element][$key];
+
+                            // Add units if needed
+                            if ($setting === 'font-family') {
+                                $value = "\"{$value}\"";
+                            } elseif (in_array($setting, ['font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'])) {
+                                if (is_numeric($value)) {
+                                    $value .= 'px';
+                                }
+                            }
+
+                            $organized_values[$style][$element][$breakpoint][$setting] = [
+                                'value' => $value,
+                                'var_name' => $var_name
+                            ];
+                        }
+                    }
+                }
+            }
+
+            // Colors
+            if (isset($style_data['color'])) {
+                for ($i = 1; $i <= 8; $i++) {
+                    if (isset($style_data['color'][$i])) {
+                        $organized_values[$style]['color'][$i] = [
+                            'value' => $style_data['color'][$i],
+                            'var_name' => "--maxi-{$style}-color-{$i}"
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $organized_values;
+    }
+
+    private static function get_link_colors_string($args)
+    {
+        $organized_values = $args['organized_values'];
+        $prefix = $args['prefix'];
+        $style = $args['style'];
+
+        $response = '';
+
+        if (isset($organized_values[$style]['color'])) {
+            for ($i = 1; $i <= 8; $i++) {
+                $color_number = $i;
+
+                if (isset($organized_values[$style]['color'][$color_number])) {
+                    $link_types = ['link', 'link-hover', 'link-active', 'link-visited'];
+
+                    foreach ($link_types as $type) {
+                        $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { --maxi-{$style}-{$type}-palette: var(--maxi-{$style}-color-{$color_number});}";
+                        $response .= "{$prefix} .maxi-{$style}.maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { --maxi-{$style}-{$type}-palette: var(--maxi-{$style}-color-{$color_number});}";
+                        $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number}.maxi-block--has-link { --maxi-{$style}-{$type}-palette: var(--maxi-{$style}-color-{$color_number});}";
+                        $response .= "{$prefix} .maxi-{$style} .maxi-sc-{$style}-{$type}-color-{$color_number} a.maxi-block--has-link { --maxi-{$style}-{$type}-palette: var(--maxi-{$style}-color-{$color_number});}";
+                    }
+                }
+            }
+        }
+
+        return $response;
+    }
+
+    private static function get_sentences_by_breakpoint($args)
+    {
+        $organized_values = $args['organized_values'];
+        $style = $args['style'];
+        $breakpoint = $args['breakpoint'];
+        $targets = $args['targets'];
+        $settings = [
+            'font-family',
+            'font-size',
+            'font-style',
+            'font-weight',
+            'line-height',
+            'text-decoration',
+            'text-transform',
+            'letter-spacing',
+            'white-space',
+            'word-spacing',
+            'text-indent',
+            'margin-bottom',
+            'padding-bottom',
+            'padding-top',
+            'padding-left',
+            'padding-right',
+        ];
+
+        $sentences = [];
+
+        foreach ($targets as $target) {
+            $sentences[$target] = [];
+
+            foreach ($settings as $setting) {
+                if (isset($organized_values[$style][$target][$breakpoint][$setting])) {
+                    $value_data = $organized_values[$style][$target][$breakpoint][$setting];
+                    $sentences[$target][] = "{$setting}: var({$value_data['var_name']});";
+                }
+            }
+        }
+
+        return $sentences;
+    }
+
+    private static function get_maxi_sc_styles($args)
+    {
+        $organized_values = $args['organized_values'];
+        $prefix = $args['prefix'];
+        $style = $args['style'];
+        $is_backend = $args['is_backend'] ?? false;
+
+        $response = '';
+        $levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'navigation', 'button'];
+
+        $add_styles_by_breakpoint = function ($breakpoint, $second_prefix = '') use (
+            $organized_values,
+            $prefix,
+            $style,
+            $levels
+        ) {
+            $added_response = '';
+
+            $breakpoint_level_sentences = self::get_sentences_by_breakpoint([
+                'organized_values' => $organized_values,
+                'style' => $style,
+                'breakpoint' => $breakpoint,
+                'targets' => $levels,
+            ]);
+
+            // Process each level's sentences
+            foreach ($breakpoint_level_sentences as $level => $sentences) {
+                if ($level === 'navigation' || $level === 'button') {
+                    continue; // Skip navigation and button here as we'll handle them separately
+                }
+
+                // Remove margin-bottom sentences
+                $margin_sentence = null;
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        $margin_sentence = $sentence;
+                        unset($sentences[$key]);
+                        break;
+                    }
+                }
+
+                // Add webkit prefix for text-decoration
+                $webkit_sentences = [];
+                foreach ($sentences as $sentence) {
+                    if (strpos($sentence, 'text-decoration:') !== false) {
+                        $webkit_sentences[] = str_replace('text-decoration:', '-webkit-text-decoration:', $sentence);
+                    }
+                }
+
+                // Combine original sentences with webkit prefixed ones
+                $all_sentences = array_merge($webkit_sentences, $sentences);
+
+                // Build selectors
+                $selectors = [
+                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-block.maxi-text-block",
+                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-map-block__popup__content",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-map-block__popup__content",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-pane-block .maxi-pane-block__header",
+                ];
+
+                foreach ($selectors as $selector) {
+                    $added_response .= "{$selector} {$level} {" . implode(' ', $all_sentences) . "}";
+                }
+
+                if ($margin_sentence) {
+                    // Add margin-bottom for Text Maxi
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block {$level} {{$margin_sentence}}";
+                    $added_response .= "{$prefix} {$second_prefix} .maxi-{$style} .maxi-block.maxi-text-block {$level} {{$margin_sentence}}";
+                }
+            }
+
+            // Button styles
+            if (isset($breakpoint_level_sentences['button']) && !empty($breakpoint_level_sentences['button'])) {
+                $button_sentences = $breakpoint_level_sentences['button'];
+
+                // Add webkit prefix for text-decoration
+                $webkit_button_sentences = [];
+                foreach ($button_sentences as $sentence) {
+                    if (strpos($sentence, 'text-decoration:') !== false) {
+                        $webkit_button_sentences[] = str_replace('text-decoration:', '-webkit-text-decoration:', $sentence);
+                    }
+                }
+
+                // Combine original sentences with webkit prefixed ones
+                $all_button_sentences = array_merge($webkit_button_sentences, $button_sentences);
+
+                // Button selectors
+                $button_selectors = [
+                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-button-block .maxi-button-block__content",
+                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block .maxi-button-block .maxi-button-block__content",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-block--use-sc .wp-element-button"
+                ];
+
+                foreach ($button_selectors as $button_selector) {
+                    $added_response .= "{$button_selector} {" . implode(' ', $all_button_sentences);
+
+                    // Add color for wp-element-button
+                    if (strpos($button_selector, 'wp-element-button') !== false) {
+                        $added_response .= " color: var(--maxi-{$style}-p-color, rgba(var(--maxi-{$style}-color-3, 155, 155, 155), 1));";
+                    }
+
+                    $added_response .= "}";
+                }
+            }
+
+            // Text Maxi list styles
+            $list_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-list-block ul.maxi-text-block__content",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-list-block ul.maxi-text-block__content",
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-list-block ol.maxi-text-block__content",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-list-block ol.maxi-text-block__content",
+            ];
+
+            foreach ($list_selectors as $target) {
+                $sentences = $breakpoint_level_sentences['p'];
+                $margin_sentence = null;
+
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        $margin_sentence = $sentence;
+                        break;
+                    }
+                }
+
+                if ($margin_sentence) {
+                    $added_response .= "{$target} {" . $margin_sentence . "}";
+                }
+            }
+
+            // Add list and pagination styles
+            $list_pagination_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block li",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-block.maxi-text-block li",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-pagination a",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-pagination span.maxi-pagination__link--current",
+            ];
+
+            foreach ($list_pagination_selectors as $target) {
+                $sentences = $breakpoint_level_sentences['p'];
+                $margin_sentence = null;
+
+                // Add webkit prefix for text-decoration
+                $webkit_sentences = [];
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        $margin_sentence = $sentence;
+                        unset($sentences[$key]);
+                    } elseif (strpos($sentence, 'text-decoration:') !== false) {
+                        $webkit_sentences[] = str_replace('text-decoration:', '-webkit-text-decoration:', $sentence);
+                    }
+                }
+
+                // Combine original sentences with webkit prefixed ones
+                $all_sentences = array_merge($webkit_sentences, $sentences);
+
+                $added_response .= "{$target} {" . implode(' ', $all_sentences) . "}";
+            }
+
+            // Text Maxi when has link
+            $text_maxi_link_prefix = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-block--has-link > .maxi-text-block__content:not(p)";
+
+            $added_response .= "{$text_maxi_link_prefix} { color: var(--maxi-{$style}-link); }";
+            $added_response .= "{$text_maxi_link_prefix}:hover { color: var(--maxi-{$style}-link-hover); }";
+            $added_response .= "{$text_maxi_link_prefix}:focus { color: var(--maxi-{$style}-link-hover); }";
+            $added_response .= "{$text_maxi_link_prefix}:active { color: var(--maxi-{$style}-link-active); }";
+            $added_response .= "{$text_maxi_link_prefix}:visited { color: var(--maxi-{$style}-link-visited); }";
+            $added_response .= "{$text_maxi_link_prefix}:visited:hover { color: var(--maxi-{$style}-link-hover); }";
+
+            // Text block link styles
+            $text_block_link_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block.maxi-text-block a.maxi-block--has-link",
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-block .maxi-text-block a.maxi-block--has-link",
+            ];
+
+            foreach ($text_block_link_selectors as $target) {
+                $added_response .= "{$target} { color: var(--maxi-{$style}-link); }";
+                $added_response .= "{$target}:hover { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:hover span { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:focus { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:focus span { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:active { color: var(--maxi-{$style}-link-active); }";
+                $added_response .= "{$target}:active span { color: var(--maxi-{$style}-link-active); }";
+                $added_response .= "{$target}:visited { color: var(--maxi-{$style}-link-visited); }";
+                $added_response .= "{$target}:visited span { color: var(--maxi-{$style}-link-visited); }";
+                $added_response .= "{$target}:visited:hover { color: var(--maxi-{$style}-link-hover); }";
+                $added_response .= "{$target}:visited:hover span { color: var(--maxi-{$style}-link-hover); }";
+            }
+
+            // Image Maxi styles
+            $image_maxi_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-image-block .maxi-hover-details",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-image-block .maxi-hover-details",
+            ];
+
+            foreach ($image_maxi_selectors as $target) {
+                $image_sentences = [
+                    'h4' => $breakpoint_level_sentences['h4'],
+                    'p' => $breakpoint_level_sentences['p'],
+                ];
+
+                foreach ($image_sentences as $level => $sentences) {
+                    if ($level !== 'p') {
+                        // Remove margin-bottom sentences
+                        foreach ($sentences as $key => $sentence) {
+                            if (strpos($sentence, 'margin-bottom') !== false) {
+                                unset($sentences[$key]);
+                                break;
+                            }
+                        }
+                    }
+
+                    $added_response .= "{$target} {$level} {" . implode(' ', $sentences) . "}";
+                }
+            }
+
+            // Image Maxi caption
+            $caption_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-image-block figcaption",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-image-block figcaption",
+            ];
+
+            foreach ($caption_selectors as $target) {
+                $sentences = $breakpoint_level_sentences['p'];
+
+                // Remove margin-bottom sentences
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        unset($sentences[$key]);
+                        break;
+                    }
+                }
+
+                $added_response .= "{$target} {" . implode(' ', $sentences) . "}";
+            }
+
+            // Search Maxi
+            $search_selectors = [
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-search-block .maxi-search-block__input",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-search-block .maxi-search-block__input",
+                "{$prefix} {$second_prefix} .maxi-{$style}.maxi-search-block .maxi-search-block__button__content",
+                "{$prefix} {$second_prefix} .maxi-{$style} .maxi-search-block .maxi-search-block__button__content",
+            ];
+
+            foreach ($search_selectors as $target) {
+                $sentences = $breakpoint_level_sentences['p'];
+
+                // Remove margin-bottom sentences
+                foreach ($sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        unset($sentences[$key]);
+                        break;
+                    }
+                }
+
+                $added_response .= "{$target} {" . implode(' ', $sentences) . "}";
+            }
+
+            // Navigation inside Maxi Container
+            $target_item = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation-item";
+            $sentences = $breakpoint_level_sentences['navigation'] ?? [];
+
+            // Remove margin-bottom sentences
+            $margin_sentence = null;
+            foreach ($sentences as $key => $sentence) {
+                if (strpos($sentence, 'margin-bottom') !== false) {
+                    $margin_sentence = $sentence;
+                    unset($sentences[$key]);
+                    break;
+                }
+            }
+
+            $added_response .= "{$target_item} {" . implode(' ', $sentences) . "}";
+
+            $target_link = "{$target_item} a";
+            $target_button = "{$target_item} button";
+
+            // Apply styles to both link and button elements
+            foreach ([$target_link, $target_button] as $target) {
+                $added_response .= "{$target} { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease;}";
+                $added_response .= "{$target} span { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease; }";
+                $added_response .= "{$target} + span { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease;}";
+                $added_response .= "{$target} + button { color: var(--maxi-{$style}-menu-item); transition: color 0.3s 0s ease;}";
+
+                $added_response .= "{$target}:hover { color: var(--maxi-{$style}-menu-item-hover); }";
+                $added_response .= "{$target}:hover span { color: var(--maxi-{$style}-menu-item-hover); }";
+                $added_response .= "{$target}:hover + span { color: var(--maxi-{$style}-menu-item-hover); }";
+                $added_response .= "{$target}:hover + button { color: var(--maxi-{$style}-menu-item-hover); }";
+            }
+
+            // Link-specific styles
+            $added_response .= "{$target_link}:focus { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link}:focus span { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link}:focus + span { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link}:focus + button { color: var(--maxi-{$style}-menu-item-hover); }";
+
+            $added_response .= "{$target_link}:visited { color: var(--maxi-{$style}-menu-item-visited); }";
+            $added_response .= "{$target_link}:visited span { color: var(--maxi-{$style}-menu-item-visited); }";
+            $added_response .= "{$target_link}:visited + span { color: var(--maxi-{$style}-menu-item-visited); }";
+            $added_response .= "{$target_link}:visited + button { color: var(--maxi-{$style}-menu-item-visited); }";
+
+            $added_response .= "{$target_link}:visited:hover { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link}:visited:hover span { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link}:visited:hover + span { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link}:visited:hover + button { color: var(--maxi-{$style}-menu-item-hover); }";
+
+            // Current menu item styles
+            $target_link_current = "{$target_item}.current-menu-item > a";
+
+            $added_response .= "{$target_link_current} { color: var(--maxi-{$style}-menu-item-current); }";
+            $added_response .= "{$target_link_current} span { color: var(--maxi-{$style}-menu-item-current); }";
+            $added_response .= "{$target_link_current} + span { color: var(--maxi-{$style}-menu-item-current); }";
+            $added_response .= "{$target_link_current} + button { color: var(--maxi-{$style}-menu-item-current); }";
+
+            $added_response .= "{$target_link_current}:hover { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link_current}:hover span { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link_current}:hover + span { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link_current}:hover + button { color: var(--maxi-{$style}-menu-item-hover); }";
+
+            $added_response .= "{$target_link_current}:focus { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link_current}:focus span { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link_current}:focus + span { color: var(--maxi-{$style}-menu-item-hover); }";
+            $added_response .= "{$target_link_current}:focus + button { color: var(--maxi-{$style}-menu-item-hover); }";
+
+            // Mobile menu icon/text styles
+            $burger_item = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open";
+            $burger_item_close = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close";
+
+            foreach ([$burger_item, $burger_item_close] as $target) {
+                $added_response .= "{$target} { color: var(--maxi-{$style}-menu-burger); }";
+                foreach ($sentences as $sentence) {
+                    if (strpos($sentence, 'font-family') !== false) {
+                        $added_response .= "{$target} { font-family: var(--maxi-{$style}-navigation-font-family-general); }";
+                    }
+                }
+            }
+
+            // Mobile menu background
+            $mobile_menu_bg_target = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation .wp-block-navigation__responsive-container.has-modal-open";
+            $added_response .= "{$mobile_menu_bg_target} { background-color: var(--maxi-{$style}-menu-mobile-bg) !important; }";
+
+            // Sub-menus
+            $sub_menu_target = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container ul li";
+            $sub_menu_target_editor = "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation__submenu-container > div";
+
+            $added_response .= "{$sub_menu_target} { background-color: var(--maxi-{$style}-menu-item-sub-bg); }";
+            $added_response .= "{$sub_menu_target}:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover); }";
+
+            $added_response .= "{$sub_menu_target_editor} { background-color: var(--maxi-{$style}-menu-item-sub-bg) !important; }";
+            $added_response .= "{$sub_menu_target_editor}:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover) !important; }";
+
+            foreach ([$sub_menu_target, $sub_menu_target_editor] as $target) {
+                $added_response .= "{$target}.current-menu-item { background-color: var(--maxi-{$style}-menu-item-sub-bg-current); }";
+                $added_response .= "{$target}.current-menu-item:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover); }";
+            }
+
+            return $added_response;
+        };
+
+        // Add styles for all breakpoints
+        $response .= $add_styles_by_breakpoint('general');
+
+        $breakpoints = [
+            'xxl' => 1921,
+            'xl' => 1920,
+            'l' => 1366,
+            'm' => 1024,
+            's' => 767,
+            'xs' => 480,
+        ];
+
+        foreach ($breakpoints as $breakpoint => $value) {
+            if ($is_backend) {
+                $response .= $add_styles_by_breakpoint(
+                    $breakpoint,
+                    ".edit-post-visual-editor[maxi-blocks-responsive=\"{$breakpoint}\"]"
+                );
+            } else {
+                $response .= "@media (" . ($breakpoint !== 'xxl' ? 'max' : 'min') . "-width: {$value}px) {";
+                $response .= $add_styles_by_breakpoint($breakpoint);
+                $response .= '}';
+            }
+        }
+
+        return $response;
+    }
+
+    private static function get_sc_styles($raw_style_card, $gutenberg_blocks_status = true, $is_backend = false)
+    {
+        $style_card = $raw_style_card;
+        $response = '';
+        $prefix = 'body.maxi-blocks--active';
+        $styles = ['light', 'dark'];
+
+        $organized_values = self::get_organized_values($style_card);
+
+        foreach ($styles as $style) {
+            // Link colors
+            $response .= self::get_link_colors_string([
+                'organized_values' => $organized_values,
+                'prefix' => $prefix,
+                'style' => $style,
+            ]);
+
+            // Maxi styles
+            $response .= self::get_maxi_sc_styles([
+                'organized_values' => $organized_values,
+                'prefix' => $prefix,
+                'style' => $style,
+                'is_backend' => $is_backend,
+            ]);
+
+            // WP native blocks styles
+            if ($gutenberg_blocks_status) {
+                $response .= self::get_wp_native_styles($organized_values, $style_card, $prefix, $style, $is_backend);
+            }
+        }
+
+        return self::process_css($response);
+    }
+
+    private static function process_css($css)
+    {
+        // Remove duplicate rules
+        $css = preg_replace('/([^{}]*){([^{}]*)}/', '$1{$2}', $css);
+
+        // Remove empty rules
+        $css = preg_replace('/[^{}]+{}/', '', $css);
+
+        // Remove extra whitespace
+        $css = preg_replace('/\s+/', ' ', $css);
+
+        return trim($css);
+    }
 }

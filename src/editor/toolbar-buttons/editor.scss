@@ -2,24 +2,42 @@
 	&__button {
 		display: flex;
 		align-items: center;
-		font-family: Roboto, sans-serif;
+		font-family: Inter, sans-serif;
 		font-size: 14px;
 		letter-spacing: 0.5px;
-		color: #081219;
-		background-color: #fff;
+		color: var(--maxi-black);
+		background-color: var(--maxi-white);
 		margin-left: 10px;
-		border-radius: 3px;
+		border-radius: 10px;
 		float: right;
-		border: 2px solid #dddfe2;
+		border: 2px solid var(--maxi-grey-light);
 		box-shadow: none !important;
-		padding: 5px 10px;
+		padding: 10px 7px;
 		justify-content: center;
 		min-height: 45px;
 		transition: all 0.5s;
 
+		svg {
+			width: 130px;
+			height: auto;
+			path,
+			g {
+				transition: all 0.5s;
+			}
+		}
+
 		&[aria-pressed='true'],
 		&:hover {
-			border-color: #ff4a17;
+			border-color: var(--maxi-primary-color);
+			color: var(--maxi-primary-color);
+
+			svg {
+				path,
+				g {
+					fill: var(--maxi-primary-color);
+					stroke: var(--maxi-primary-color);
+				}
+			}
 		}
 	}
 }

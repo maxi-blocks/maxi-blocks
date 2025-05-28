@@ -9,35 +9,44 @@
 		justify-content: center;
 		height: 32px;
 		width: 22.5%;
-		border: 1.5px solid var(--maxi-grey-1-color);
+		border: 1.5px solid var(--maxi-mid-green);
 		border-radius: 4px;
 		transition: all 0.5s;
 
 		&--active {
-			background-color: var(--maxi-light-blue-2-color);
-			border: none;
+			background-color: var(--maxi-whisper-green);
 
 			path {
 				fill: var(--maxi-secondary-color);
+				//stroke: var(--maxi-secondary-color);
 			}
 			&:first-child,
 			&:nth-child-4 {
 				svg {
 					path {
 						fill: var(--maxi-secondary-color);
+						//stroke: var(--maxi-secondary-color);
 					}
 				}
 			}
-			&:nth-child(3),
-			&:nth-child(4) {
-				path {
-					stroke: var(--maxi-secondary-color);
-				}
-			}
+			// &:nth-child(3),
+			// &:nth-child(4) {
+			// 	path {
+			// 		stroke: var(--maxi-secondary-color);
+			// 	}
+			// }
 		}
 
 		&:hover {
-			background-color: var(--maxi-grey-3-color);
+			background-color: var(--maxi-pastel-green);
+			stroke: var(--maxi-secondary-color);
+
+			svg {
+				path {
+					//stroke: var(--maxi-secondary-color) !important;
+					fill: var(--maxi-secondary-color) !important;
+				}
+			}
 		}
 
 		&__icon {

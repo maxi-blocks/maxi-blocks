@@ -3112,7 +3112,7 @@ class MaxiBlocks_DynamicContent
 
                     $allowed_tags = '<svg><img><iframe><hr>';
                     $text_content = strip_tags(
-                        $content_sanitized,
+                        $content_sanitized ?? '',
                         $allowed_tags,
                     );
 

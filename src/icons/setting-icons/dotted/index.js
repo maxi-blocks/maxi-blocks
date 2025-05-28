@@ -8,7 +8,7 @@ const alignLeft = (
 		<Path d='M1 2h1' />
 		<Path
 			fill='none'
-			stroke='var(--maxi-grey-4-color)'
+			stroke='var(--maxi-black)'
 			strokeWidth='2'
 			strokeMiterlimit='10'
 			strokeDasharray='2,2'

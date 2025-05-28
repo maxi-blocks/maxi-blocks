@@ -23,18 +23,18 @@
 			flex: 1;
 			min-width: 35px;
 			height: 32px;
-			border: 1px solid var(--maxi-grey-1-color);
+			border: 1px solid var(--maxi-grey-light);
 			margin-bottom: 0;
-			color: #464a53;
-			background-color: #fff;
+			color: var(--maxi-grey);
+			background-color: var(--maxi-white);
 			opacity: 1 !important;
 			transition: all 0.5s;
 
 			&:hover {
-				background-color: var(--maxi-grey-3-color);
+				background-color: var(--maxi-grey);
 			}
 			&:focus {
-				background-color: var(--maxi-grey-2-color);
+				background-color: var(--maxi-grey);
 			}
 			input {
 				display: none;
@@ -43,7 +43,7 @@
 					position: relative;
 					z-index: 1;
 					border-bottom: 2px solid var(--maxi-secondary-color);
-					background-color: #f8fbfd;
+					background-color: var(--maxi-white);
 				}
 			}
 			label {
@@ -57,7 +57,7 @@
 				width: 20px;
 				height: 100%;
 				margin: 0;
-				fill: #464a53;
+				fill: var(--maxi-black);
 			}
 		}
 	}

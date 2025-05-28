@@ -8,7 +8,7 @@ const backToTop = (
 		<Path
 			d='M7.6 11.1L12 6.6l4.5 4.4m5.6 1c0 2.8-1 5.2-3 7.1s-4.3 3-7.1 3-5.2-1-7.2-3-2.9-4.3-2.9-7.1 1-5.2 2.9-7.2S9.2 1.9 12 1.9s5.2 1 7.1 2.9 3 4.4 3 7.2zM12 6.6l.1 10.9'
 			fill='none'
-			stroke='#ff4a17'
+			stroke='var(--maxi-primary-color)'
 			strokeWidth={1.5}
 			strokeLinecap='round'
 			strokeLinejoin='round'

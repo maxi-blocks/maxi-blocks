@@ -45,7 +45,7 @@ const ContentLoader = props => {
 			)}
 			{!cloud && (
 				<PuffLoader
-					color='#ff4a17'
+					color='var(--maxi-primary-color)'
 					size={30}
 					speedMultiplier={0.8}
 					cssOverride={{

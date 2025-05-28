@@ -3,7 +3,7 @@
 		.maxi-tabs-control:first-child {
 			.maxi-tabs-control__button {
 				&[aria-pressed='true'] {
-					color: var(--maxi-black-1-color);
+					color: var(--maxi-black);
 				}
 			}
 		}
@@ -12,7 +12,7 @@
 				.maxi-tabs-control {
 					column-gap: 5px;
 					&__button {
-						border: 1px solid var(--maxi-grey-1-color);
+						border: 1px solid var(--maxi-grey-light);
 						border-radius: 4px;
 						padding: 6px 3px;
 						transition: all 0.5s;
@@ -20,16 +20,19 @@
 						svg {
 							width: 18px;
 							height: 18px;
-							fill: var(--maxi-grey-6-color) !important;
+							fill: var(--maxi-grey) !important;
 						}
 
 						&:hover {
-							background-color: var(--maxi-light-blue-2-color);
+							background-color: var(--maxi-pastel-green);
+							border-color: var(
+								--maxi-secondary-color
+							) !important;
 						}
 
 						&--selected {
-							background-color: var(--maxi-light-blue-2-color);
-							border-color: var(--maxi-light-blue-2-color);
+							background-color: var(--maxi-whisper-green);
+							border-color: var(--maxi-primary-color);
 
 							svg {
 								path {
@@ -51,7 +54,7 @@
 		.maxi-tabs-control {
 			column-gap: 5px;
 			&__button {
-				border: 1px solid var(--maxi-grey-1-color);
+				border: 1px solid var(--maxi-grey-light);
 				border-radius: 4px;
 				padding: 6px 3px;
 				transition: all 0.5s;
@@ -60,11 +63,12 @@
 					height: 18px;
 				}
 				&:hover {
-					background-color: var(--maxi-light-blue-2-color);
+					background-color: var(--maxi-whisper-green);
+					border-color: var(--maxi-secondary-color) !important;
 				}
 				&--selected {
-					background-color: var(--maxi-light-blue-2-color);
-					border-color: var(--maxi-light-blue-2-color);
+					background-color: var(--maxi-pastel-green);
+					border-color: var(--maxi-secondary-color);
 					svg {
 						path {
 							fill: var(--maxi-secondary-color);

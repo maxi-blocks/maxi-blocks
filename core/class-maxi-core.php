@@ -45,7 +45,7 @@ if (!class_exists('MaxiBlocks_Core')):
 
             // Add fonts for the editor
             add_action('enqueue_block_editor_assets', function () {
-                wp_enqueue_style('maxi-blocks-editor-font', esc_url(MAXI_PLUGIN_URL_PATH) . 'core/admin/fonts/roboto/style.css');
+                wp_enqueue_style('maxi-blocks-editor-font', esc_url(MAXI_PLUGIN_URL_PATH) . 'core/admin/fonts/inter/style.css');
             });
 
             // Add All Images - Maxi Images filter to the media library

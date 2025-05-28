@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import { ToggleSwitch } from '@components';
 
 const MapInteractionControl = ({ onChange, ...attributes }) => (
-	<>
+	<div className='maxi-map-interaction-toggle-group'>
 		<ToggleSwitch
 			label={__('Map dragging', 'maxi-blocks')}
 			selected={attributes['map-dragging']}
@@ -48,7 +48,7 @@ const MapInteractionControl = ({ onChange, ...attributes }) => (
 				});
 			}}
 		/>
-	</>
+	</div>
 );
 
 export default MapInteractionControl;

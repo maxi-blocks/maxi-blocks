@@ -42,7 +42,7 @@ const boxShadow = ({
 			<SettingTabsControl
 				items={[
 					{
-						label: __('Normal state', 'maxi-blocks'),
+						label: __('Normal', 'maxi-blocks'),
 						content: (
 							<BoxShadowControl
 								{...getGroupAttributes(
@@ -70,7 +70,7 @@ const boxShadow = ({
 						),
 					},
 					{
-						label: __('Hover state', 'maxi-blocks'),
+						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<>
 								<ManageHoverTransitions />
@@ -111,7 +111,7 @@ const boxShadow = ({
 						extraIndicators: [`${prefix}box-shadow-status-hover`],
 					},
 					enableActiveState && {
-						label: __('Active state', 'maxi-blocks'),
+						label: __('Active', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch

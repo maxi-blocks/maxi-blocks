@@ -15,6 +15,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import MaxiStyleCardsEditorPopUp from '@editor/style-cards';
+import MaxiExportEditorPopUp from '@editor/export';
 import { Button, Icon } from '@components';
 import { setScreenSize } from '@extensions/styles';
 import {
@@ -82,16 +83,7 @@ const ResponsiveButton = ({
 					{icon}
 					{isBaseBreakpoint && (
 						<>
-							<svg
-								className='maxi-tabs-control__notification'
-								xmlns='http://www.w3.org/2000/svg'
-								viewBox='0 0 9 9'
-							>
-								<path
-									fill='#ff4a17'
-									d='M4.5 0H9v4.5A4.5 4.5 0 0 1 4.5 9 4.5 4.5 0 0 1 0 4.5 4.5 4.5 0 0 1 4.5 0Z'
-								/>
-							</svg>
+							<div className='maxi-tabs-control__notification' />
 							<div className='maxi-responsive-selector__button-current-size'>
 								{__('Your size', 'maxi-blocks')}
 							</div>
@@ -382,17 +374,18 @@ const ResponsiveSelector = props => {
 			<div className='action-buttons'>
 				<Button
 					className='action-buttons__button'
-					aria-label={__('Template library', 'maxi-blocks')}
+					aria-label={__('Cloud library', 'maxi-blocks')}
 					onClick={() => addCloudLibrary()}
 				>
 					<Icon
 						className='template-library-cloud-icon'
 						icon={cloudLib}
 					/>
-					<span>{__('Template library', 'maxi-blocks')}</span>
+					<span>{__('Cloud library', 'maxi-blocks')}</span>
 				</Button>
 			</div>
 			<MaxiStyleCardsEditorPopUp ref={settingsRef} />
+			<MaxiExportEditorPopUp ref={settingsRef} />
 			<a
 				href='https://maxiblocks.com/go/help-center'
 				target='_blank'

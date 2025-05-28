@@ -241,7 +241,7 @@ class MaxiBlocks_Styles
      * Legacy function
      * Apply content
      */
-    public function apply_content($name, $content, $id)
+    public function apply_content(string $name, $content, $id)
     {
         $is_content = $content && !empty($content);
         $is_template_part = is_string($name) && strpos($name, '-templates');
@@ -281,7 +281,7 @@ class MaxiBlocks_Styles
      * Legacy function
      * Get id
      */
-    public function get_id($is_template = false)
+    public function get_id(bool $is_template = false)
     {
         if (!$is_template) {
             global $post;
@@ -405,7 +405,7 @@ class MaxiBlocks_Styles
      * Legacy function
      * Gets content
      */
-    public function get_content($is_template = false, $id = null)
+    public function get_content(bool $is_template = false, $id = null)
     {
         global $post;
 
@@ -456,7 +456,7 @@ class MaxiBlocks_Styles
      * Legacy function
      * Gets post meta
      */
-    public function get_meta($id, $is_template = false)
+    public function get_meta($id, bool $is_template = false)
     {
         global $wpdb;
         $table_name = $wpdb->prefix . 'maxi_blocks_custom_data' . ($is_template ? '_templates' : '');
@@ -495,16 +495,14 @@ class MaxiBlocks_Styles
 
             return $response;
         }
-
     }
 
     /**
      * Legacy function
      * Gets post styles content
      */
-    public function get_styles($content)
+    public function get_styles(array $content)
     {
-
         $style =
             is_preview() || is_admin()
                 ? $content['prev_css_value']
@@ -523,7 +521,7 @@ class MaxiBlocks_Styles
      * Legacy function
      * Gets font styles content
      */
-    public function get_fonts($content)
+    public function get_fonts(array $content)
     {
         if (!isset($content['fonts_value'])) {
             return false;
@@ -841,7 +839,7 @@ class MaxiBlocks_Styles
      * Legacy function
      * Custom Meta
      */
-    public function custom_meta($metaJs, $is_template = false, $id = null)
+    public function custom_meta(string $metaJs, bool $is_template = false, ?string $id = null)
     {
         global $post;
         if ((!$is_template && (!$post || !isset($post->ID))) || empty($metaJs)) {
@@ -1498,7 +1496,7 @@ class MaxiBlocks_Styles
      * @param string|null $passed_content
      * @return array
      */
-    public function get_content_for_blocks_frontend($id = null, string $passed_content = null)
+    public function get_content_for_blocks_frontend(?int $id = null, ?string $passed_content = null)
     {
         global $post;
 

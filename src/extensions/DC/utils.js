@@ -11,7 +11,6 @@ import {
 	fieldOptions,
 	relationOptions,
 	orderByRelations,
-	getHaveLoadedIntegrationsOptions,
 	currentEntityTypes,
 	nameDictionary,
 	relationDictionary,
@@ -311,7 +310,7 @@ const getCustomTaxonomyFields = type => {
 	}
 	addField('Count', 'count');
 	addField('Link', 'link');
-	if (getCurrentTemplateSlug().includes(type)) {
+	if (getCurrentTemplateSlug()?.includes(type)) {
 		addField("Archive type's name", 'archive-type');
 	}
 
@@ -523,7 +522,7 @@ export const validationsValues = (
 		...(typeResult &&
 			!typeResult.includes(variableValue) &&
 			// Only validate type of DC once all integrations have loaded
-			getHaveLoadedIntegrationsOptions() && {
+			select('maxiBlocks/dynamic-content').isIntegrationListLoaded() && {
 				[`${prefix}type`]: typeResult[0],
 			}),
 		...(linkTargetResult &&

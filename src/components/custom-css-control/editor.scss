@@ -29,34 +29,40 @@
 			margin-left: 10px;
 			float: right;
 			height: 24px;
-			background-color: var(--maxi-grey-9-color);
-			border: 1px solid var(--maxi-grey-1-color);
+			background-color: var(--maxi-whisper-green);
+			border: 1px solid var(--maxi-mid-green);
 			border-radius: 0;
+			color: var(--maxi-black);
+
+			&:hover {
+				border: 1px solid var(--maxi-secondary-color);
+				background-color: var(--maxi-pastel-green);
+			}
 		}
 	}
 
 	.w-tc-editor {
 		margin: 5px 0 0 0;
 		width: 100%;
-		background-color: var(--maxi-white-4-color);
-		border: 1px solid var(--maxi-grey-1-color);
+		background-color: var(--maxi-white);
+		border: 1px solid var(--maxi-grey-light);
 		font-family: monospace !important;
 		flex: 1 0 100%;
 		direction: ltr !important;
 
 		textarea {
-			background-color: var(--maxi-white-4-color);
+			background-color: var(--maxi-white);
 			font-family: monospace !important;
 		}
 	}
 
 	code {
 		padding: 0;
-		background-color: var(--maxi-white-4-color);
+		background-color: var(--maxi-white);
 		font-family: monospace !important;
 
 		span {
-			background-color: var(--maxi-white-4-color);
+			background-color: var(--maxi-white);
 			font-family: monospace !important;
 		}
 	}
@@ -72,7 +78,7 @@
 		}
 
 		&.valid {
-			border-left: 2px solid var(--maxi-green-1-color);
+			border-left: 2px solid var(--maxi-secondary-color);
 		}
 	}
 }

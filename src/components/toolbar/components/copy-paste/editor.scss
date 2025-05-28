@@ -10,24 +10,24 @@
 
 			/* Track */
 			&::-webkit-scrollbar-track {
-				background: #fff;
+				background: var(--maxi-white);
 			}
 
 			/* Handle */
 			&::-webkit-scrollbar-thumb {
-				background: #dbdde6;
+				background: var(--maxi-grey-light);
 				border-radius: 0;
 				cursor: pointer;
 			}
 
 			/* Handle on hover */
 			&::-webkit-scrollbar-thumb:hover {
-				background: #007cba;
+				background: var(--maxi-primary-color);
 			}
 		}
 
 		&__item {
-			border-top: 1px solid #dbdde6;
+			border-top: 1px solid var(--maxi-grey-light);
 			position: relative;
 			cursor: pointer;
 			margin: 0;
@@ -35,7 +35,7 @@
 			display: flex;
 			align-items: center;
 			&:hover {
-				background-color: #eaf2f6;
+				background-color: var(--maxi-grey-light);
 			}
 			&[data-copy_paste_group] {
 				padding: 3px 7px 3px 15px;
@@ -56,31 +56,31 @@
 			}
 
 			&:last-child {
-				border-bottom: 1px solid #dbdde6;
+				border-bottom: 1px solid var(--maxi-grey-light);
 			}
 
 			.maxi-axis-control__content__item__checkbox {
 				display: flex;
 				align-items: center;
-				color: var(--maxi-black-1-color);
+				color: var(--maxi-black);
 				margin-top: 0;
 				width: 100%;
 			}
 
 			input[type='checkbox'] {
-				border-color: #e1e2ea;
+				border-color: var(--maxi-grey-light);
 				border-radius: 0;
 				margin: 0;
 				box-shadow: none;
 				&:hover {
-					border-color: #000;
+					border-color: var(--maxi-black);
 				}
 				&:focus {
 					box-shadow: none;
 				}
 
 				&:checked {
-					border-color: #000;
+					border-color: var(--maxi-black);
 					&::before {
 						content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.83 4.89l1.34.94-5.81 8.38H9.02L5.78 9.67l1.34-1.25 2.57 2.4z' fill='%2380828a'/%3E%3C/svg%3E");
 						margin: -3px 0 0 -5px;
@@ -88,7 +88,7 @@
 				}
 				& + span {
 					padding-left: 5px;
-					color: var(--maxi-black-1-color);
+					color: var(--maxi-black);
 				}
 			}
 			&__group {
@@ -101,7 +101,7 @@
 		&__button {
 			display: flex;
 			width: 100%;
-			color: var(--maxi-black-1-color);
+			color: var(--maxi-black);
 			text-align: left;
 			border-radius: 0;
 			box-shadow: none;
@@ -117,7 +117,7 @@
 					width: 100%;
 					height: 1px;
 					margin: 0;
-					background-color: var(--maxi-grey-1-color);
+					background-color: var(--maxi-grey-light);
 				}
 			}
 
@@ -130,7 +130,7 @@
 				height: 30px;
 				background: var(--maxi-primary-color);
 				border-radius: 0;
-				color: #fff;
+				color: var(--maxi-white);
 				font-size: 12px;
 				text-align: center !important;
 				padding-top: 4px !important;
@@ -174,8 +174,8 @@
 		}
 	}
 	&[aria-expanded='true'] {
-		border-bottom: 1px solid var(--maxi-grey-1-color);
-		background: #fff;
+		border-bottom: 1px solid var(--maxi-grey-light);
+		background: var(--maxi-white);
 
 		&:after {
 			transform: translateY(-50%) rotate(90deg);
@@ -194,12 +194,12 @@
 
 		/* Track */
 		&::-webkit-scrollbar-track {
-			background: #fff;
+			background: var(--maxi-white);
 		}
 
 		/* Handle */
 		&::-webkit-scrollbar-thumb {
-			background: #b4b4b4;
+			background: var(--maxi-grey-light);
 			border-radius: 0;
 			cursor: pointer;
 		}
@@ -210,9 +210,9 @@
 		}
 		.maxi-settingstab-control {
 			.maxi-tabs-control {
-				border-bottom: 1px solid #dbdde6;
+				border-bottom: 1px solid var(--maxi-grey-light);
 				.components-button {
-					border-right: 1px solid #dbdde6;
+					border-right: 1px solid var(--maxi-grey-light);
 					text-align: center;
 					display: flex;
 					padding-left: 0;

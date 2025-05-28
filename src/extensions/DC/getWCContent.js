@@ -20,12 +20,11 @@ const getPrice = (rawPrice, data) => {
 		const separateThousands = price =>
 			price.replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
 
-		const parsedPrice =
-			price.length > minorUnit
-				? `${separateThousands(
-						price.slice(0, -minorUnit)
-				  )}${decimalSeparator}${price.slice(-minorUnit)}`
-				: price;
+		const priceWithFullLength =
+			price.length <= minorUnit ? `0${price}` : price;
+		const parsedPrice = `${separateThousands(
+			priceWithFullLength.slice(0, -minorUnit)
+		)}${decimalSeparator}${priceWithFullLength.slice(-minorUnit)}`;
 
 		return `${currencyPrefix}${parsedPrice}${currencySuffix}`;
 	};

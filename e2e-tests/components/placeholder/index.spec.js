@@ -16,7 +16,7 @@ describe('Placeholder', () => {
 			button.click()
 		);
 
-		// display template library
+		// display cloud library
 		await page.$eval(
 			'.maxi-responsive-selector .action-buttons__button',
 			button => button.click()

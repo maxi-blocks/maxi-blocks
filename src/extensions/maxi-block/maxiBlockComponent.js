@@ -177,6 +177,14 @@ class MaxiBlockComponent extends Component {
 
 		if (this.isPatternsPreview || this.templateModal) return;
 
+		// Add FSE iframe styles if we're in the site editor
+		if (getIsSiteEditor()) {
+			this.addMaxiFSEIframeStyles();
+
+			// Set up an observer to handle iframe reloads
+			this.setupFSEIframeObserver();
+		}
+
 		const blocksIBRelations = select(
 			'maxiBlocks/relations'
 		).receiveBlockUnderRelationClientIDs(uniqueID);
@@ -310,12 +318,31 @@ class MaxiBlockComponent extends Component {
 		receiveMaxiSettings()
 			.then(settings => {
 				const maxiVersion = settings.maxi_version;
+				const { updateBlockAttributes } = dispatch('core/block-editor');
+				const {
+					'maxi-version-current': maxiVersionCurrent,
+					'maxi-version-origin': maxiVersionOrigin,
+				} = this.props.attributes;
 
-				if (maxiVersion !== maxiVersionCurrent)
-					this.props.attributes['maxi-version-current'] = maxiVersion;
+				// Only update if we have a valid version from settings
+				if (maxiVersion) {
+					const updates = {};
 
-				if (!maxiVersionOrigin)
-					this.props.attributes['maxi-version-origin'] = maxiVersion;
+					// Update current version if different
+					if (maxiVersion !== maxiVersionCurrent) {
+						updates['maxi-version-current'] = maxiVersion;
+					}
+
+					// Set origin version if not set
+					if (!maxiVersionOrigin) {
+						updates['maxi-version-origin'] = maxiVersion;
+					}
+
+					// Only dispatch if we have updates
+					if (Object.keys(updates).length > 0) {
+						updateBlockAttributes(this.props.clientId, updates);
+					}
+				}
 			})
 			.catch(error =>
 				console.error('MaxiBlocks: Could not load settings', error)
@@ -553,6 +580,12 @@ class MaxiBlockComponent extends Component {
 			this.templateModal
 		)
 			return;
+
+		// Clean up the FSE iframe observer if it exists
+		if (this.fseIframeObserver) {
+			this.fseIframeObserver.disconnect();
+			this.fseIframeObserver = null;
+		}
 
 		// Clear memoization and debounced functions
 		this.memoizedValues?.clear();
@@ -1434,6 +1467,9 @@ class MaxiBlockComponent extends Component {
 		let styleContent;
 		let styles;
 
+		// Ensure we always have a valid block style
+		const blockStyle = this.props.attributes?.blockStyle || 'light';
+
 		const originVersion = this.props.attributes?.['maxi-version-origin'];
 		const currentVersion = this.props.attributes?.['maxi-version-current'];
 		const isOriginVersionBelow156 = originVersion
@@ -1457,7 +1493,6 @@ class MaxiBlockComponent extends Component {
 
 			if (cssCache) {
 				styleContent = cssCache[currentBreakpoint];
-				const { blockStyle } = this.props.attributes;
 				const previousBlockStyle =
 					blockStyle === 'light' ? 'dark' : 'light';
 				const previousBlockStyleRegex = new RegExp(
@@ -1668,6 +1703,66 @@ class MaxiBlockComponent extends Component {
 			});
 
 			this.lastCacheCleanup = now;
+		}
+	}
+
+	// Add new method for FSE iframe styles
+	addMaxiFSEIframeStyles() {
+		// Get the FSE iframe
+		const fseIframe = document.querySelector(
+			'iframe.edit-site-visual-editor__editor-canvas'
+		);
+
+		if (!fseIframe || !fseIframe.contentDocument) return;
+
+		// Check if the iframe-specific style already exists
+		const existingIframeStyle = fseIframe.contentDocument.getElementById(
+			'maxi-blocks-fse-iframe-styles'
+		);
+
+		if (!existingIframeStyle) {
+			// Create the style element
+			const iframeStyles =
+				fseIframe.contentDocument.createElement('style');
+			iframeStyles.id = 'maxi-blocks-fse-iframe-styles';
+
+			// Add iframe-specific CSS
+			iframeStyles.textContent = `
+				.block-editor-iframe__html {
+					overflow-x: hidden;
+				}
+			`;
+
+			// Append style to iframe's head
+			fseIframe.contentDocument.head.appendChild(iframeStyles);
+		}
+	}
+
+	// Call this method in componentDidMount
+	setupFSEIframeObserver() {
+		// Only create observer if it doesn't exist yet
+		if (!this.fseIframeObserver) {
+			this.fseIframeObserver = new MutationObserver(mutations => {
+				for (const mutation of mutations) {
+					if (mutation.type === 'childList') {
+						const fseIframes = document.querySelectorAll(
+							'iframe.edit-site-visual-editor__editor-canvas'
+						);
+						if (fseIframes.length > 0) {
+							// Wait for iframe to fully load
+							setTimeout(() => {
+								this.addMaxiFSEIframeStyles();
+							}, 500);
+						}
+					}
+				}
+			});
+
+			// Observe the document body for when iframes get added/removed
+			this.fseIframeObserver.observe(document.body, {
+				childList: true,
+				subtree: true,
+			});
 		}
 	}
 }

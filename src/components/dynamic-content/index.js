@@ -33,14 +33,12 @@ import {
 	getCurrentTemplateSlug,
 } from '@extensions/DC/utils';
 import {
-	fieldOptions,
 	limitOptions,
 	limitFields,
 	orderOptions,
 	orderByOptions,
 	orderByRelations,
 	orderRelations,
-	sourceOptions,
 	ignoreEmptyFields,
 } from '@extensions/DC/constants';
 import getDCOptions from '@extensions/DC/getDCOptions';
@@ -88,16 +86,23 @@ const DynamicContent = props => {
 	const [postTypesOptions, setPostTypesOptions] = useState(null);
 	const [isCustomTaxonomyField, setIsCustomTaxonomyField] = useState(false);
 
-	const { relationTypes, orderTypes, limitTypes } = useSelect(select => {
-		const { getRelationTypes, getOrderTypes, getLimitTypes } = select(
-			'maxiBlocks/dynamic-content'
-		);
-		return {
-			relationTypes: getRelationTypes(),
-			orderTypes: getOrderTypes(),
-			limitTypes: getLimitTypes(),
-		};
-	}, []);
+	const { relationTypes, orderTypes, limitTypes, sourceOptions } = useSelect(
+		select => {
+			const {
+				getRelationTypes,
+				getOrderTypes,
+				getLimitTypes,
+				getSourceOptions,
+			} = select('maxiBlocks/dynamic-content');
+			return {
+				relationTypes: getRelationTypes(),
+				orderTypes: getOrderTypes(),
+				limitTypes: getLimitTypes(),
+				sourceOptions: getSourceOptions(),
+			};
+		},
+		[]
+	);
 
 	const classes = classnames('maxi-dynamic-content', className);
 
@@ -230,6 +235,7 @@ const DynamicContent = props => {
 					postIdOptions,
 					relation,
 					author,
+					previousRelation: relation,
 				};
 
 				const postIDSettings = await getDCOptions(
@@ -329,6 +335,7 @@ const DynamicContent = props => {
 	return (
 		<div className={classes}>
 			<ToggleSwitch
+				className='maxi-dynamic-content__toggle'
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
 				onChange={value =>

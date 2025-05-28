@@ -21,7 +21,7 @@ function validate_origin_value($val)
     return false;
 }
 
-function get_transform_strings($category, $breakpoint, $index, $obj)
+function get_transform_strings(string $category, string $breakpoint, string $index, array $obj)
 {
     $get_last_breakpoint_transform_attribute = function ($target, $key, $hover_selected, $keys = null) use ($breakpoint, $obj, $category) {
 
@@ -167,7 +167,7 @@ function get_transform_strings($category, $breakpoint, $index, $obj)
     return [$transform_string, $transform_origin_string];
 }
 
-function get_transform_value($obj, $category, $index)
+function get_transform_value(array $obj, string $category, string $index)
 {
     $response = [];
 
@@ -193,7 +193,7 @@ function get_transform_value($obj, $category, $index)
     return $response;
 }
 
-function get_transform_styles($obj, $selectors)
+function get_transform_styles(array $obj, array $selectors)
 {
     $response = [];
 

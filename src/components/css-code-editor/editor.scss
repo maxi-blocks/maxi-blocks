@@ -1,24 +1,38 @@
-.maxi-css-code-editor {
+body.maxi-blocks--active .maxi-css-code-editor {
 	.w-tc-editor {
-		margin: 8px;
+		margin: 8px 8px 0 0;
 		width: 100%;
-		background-color: var(--maxi-white-4-color);
-		border: 1px solid var(--maxi-grey-1-color);
+		background-color: var(--maxi-white);
+		border: 1px solid var(--maxi-grey-light);
+		border-radius: 10px;
 		font-family: monospace !important;
 		flex: 1 0 100%;
 		direction: ltr;
+		border-radius: 10px;
+		transition: all 0.3s ease;
 
-		textarea {
-			background-color: var(--maxi-white-4-color);
+		textarea.w-tc-editor-text {
+			background-color: var(--maxi-white);
 			font-family: monospace !important;
+			font-size: 13px !important;
+			&:hover:not(#inspector-select-control-0):not([id^='inspector-input-control']):not([id^='url-input-control']) {
+				border: none !important;
+			}
 		}
+		&:hover {
+			border: 1px solid var(--maxi-primary-color) !important;
+		}
+	}
+	button.components-button[class*='maxi-advanced-css-control']:hover,
+	button.components-button[class*='maxi-css-code-editor']:hover {
+		color: inherit !important;
 	}
 	code {
 		padding: 0;
-		background-color: var(--maxi-white-4-color);
+		background-color: var(--maxi-white);
 		font-family: monospace !important;
 		span {
-			background-color: var(--maxi-white-4-color);
+			background-color: var(--maxi-white);
 			font-family: monospace !important;
 		}
 	}
@@ -29,10 +43,10 @@
 		padding-right: 5px;
 		font-style: italic;
 		&.not-valid {
-			border-left: 2px solid var(--maxi-primary-color);
+			border-left: 2px solid var(--maxi-orange-red);
 		}
 		&.valid {
-			border-left: 2px solid var(--maxi-green-1-color);
+			border-left: 2px solid var(--maxi-primary-color);
 		}
 	}
 
@@ -47,9 +61,15 @@
 
 		.components-button {
 			height: 24px;
-			background-color: var(--maxi-grey-9-color);
-			border: 1px solid var(--maxi-grey-1-color);
-			border-radius: 0;
+			background-color: var(--maxi-pastel-green);
+			border: 1px solid var(--maxi-mid-green);
+			border-radius: 30px;
+
+			&:hover {
+				background-color: var(--maxi-mid-green) !important;
+				color: var(--maxi-white) !important;
+				border-color: var(--maxi-primary-color) !important;
+			}
 		}
 	}
 }

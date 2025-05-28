@@ -53,7 +53,8 @@ const getMediaById = async (id, type) => {
 	}
 };
 
-const cache = {};
+// Exporting for testing purposes
+export const cache = {};
 const MAX_CACHE_SIZE = 200;
 
 const getDCMedia = async (dataRequest, clientId) => {

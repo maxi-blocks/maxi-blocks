@@ -38,9 +38,7 @@ const Delete = props => {
 					}}
 				>
 					{__('Remove block', 'maxi-blocks')}
-					<span className='toolbar-item__delete-count'>
-						(Ctrl + Shift + &#8592;)
-					</span>
+					<span>(Shift+Alt+Z)</span>
 				</Button>
 			</div>
 		);

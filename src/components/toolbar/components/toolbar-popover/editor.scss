@@ -14,7 +14,7 @@
 			background-color: rgba(33, 141, 250, 0);
 			font-size: 13px;
 			line-height: 13px;
-			color: #fff;
+			color: var(--maxi-white);
 			font-weight: 500;
 			flex: 1;
 			border-bottom: none;
@@ -50,11 +50,11 @@
 			input {
 				display: none;
 				&:checked ~ label {
-					background-color: #4f515c;
+					background-color: var(--maxi-grey);
 					position: relative;
 					z-index: 1;
-					border: 2px solid #dddfe1;
-					border-bottom: 2px solid #ff4a17;
+					border: 2px solid var(--maxi-grey-light);
+					border-bottom: 2px solid var(--maxi-primary-color);
 				}
 			}
 			label {
@@ -62,7 +62,7 @@
 				height: 100%;
 				text-align: center;
 				line-height: 26px;
-				border: 2px solid #5b5d68;
+				border: 2px solid var(--maxi-grey);
 			}
 		}
 	}
@@ -73,17 +73,18 @@
 				margin-bottom: 10px;
 			}
 			&-box {
-				background-color: #fff;
-				width: 35px;
-				height: 35px;
+				background-color: var(--maxi-white);
+				width: 34px;
+				height: 34px;
 
 				&__active,
 				&:hover {
-					border-color: var(--maxi-grey-1-color);
+					border-color: var(--maxi-mid-green);
+					background-color: var(--maxi-pastel-green);
 				}
 			}
 			&-item {
-				border-color: var(--maxi-grey-1-color);
+				border: 1.5px solid var(--maxi-grey-light) !important;
 			}
 		}
 	}
@@ -91,7 +92,7 @@
 		border: 0;
 
 		svg {
-			fill: #fff;
+			fill: var(--maxi-white);
 		}
 	}
 	.maxi-color-control__color {

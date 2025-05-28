@@ -1,5 +1,5 @@
 .maxi-saved-styles-control {
-	padding: 5px;
+	padding: 5px 0;
 
 	&__header {
 		display: flex;
@@ -10,15 +10,17 @@
 
 	&__filter-toggle {
 		.maxi-saved-styles-control__filter-button.components-button {
-			background: var(--maxi-light-blue-1-color);
-			border: 1px solid var(--maxi-grey-1-color);
+			background: var(--maxi-white);
+			border: 1px solid var(--maxi-mid-green);
 			border-radius: 4px;
 			font-size: 11px;
 			padding: 2px 8px;
 			height: auto;
+			transition: all 0.4s ease;
 
 			&:hover {
-				background: var(--maxi-light-blue-2-color);
+				background: var(--maxi-pastel-green);
+				border: 1px solid var(--maxi-secondary-color);
 			}
 		}
 	}
@@ -57,8 +59,8 @@
 		margin-top: 10px;
 
 		.maxi-components-button.components-button {
-			background: var(--maxi-light-blue-2-color);
-			border: 1px solid var(--maxi-grey-1-color);
+			background: var(--maxi-white);
+			border: 1px solid var(--maxi-mid-green);
 			border-radius: 10px !important;
 			padding: 6px 12px !important;
 			height: 36px !important;
@@ -66,10 +68,11 @@
 			display: inline-flex !important;
 			align-items: center;
 			justify-content: center;
+			transition: all 0.4s ease;
 
 			&:hover {
-				transition: all 0.3s ease;
-				background: var(--maxi-grey-2-color);
+				background: var(--maxi-pastel-green);
+				border: 1px solid var(--maxi-secondary-color);
 			}
 		}
 	}
@@ -84,15 +87,15 @@
 		font-weight: 500 !important;
 		margin-top: 10px;
 		padding: 10px;
-		background-color: var(--maxi-grey-8-color);
+		background-color: var(--maxi-grey);
 		border-radius: 4px;
-		color: var(--maxi-grey-11-color);
+		color: var(--maxi-grey-dark);
 	}
 
 	&__help-text {
 		font-weight: 400 !important;
 		margin-top: 8px;
 		font-size: 12px;
-		color: var(--maxi-grey-11-color);
+		color: var(--maxi-grey-dark);
 	}
 }

@@ -136,37 +136,21 @@ const ColorPaletteControl = props => {
 						</div>
 						<div className='maxi-color-control__palette-container'>
 							{customColors.map((color, index) => {
+								// Memoize the label generation to avoid repeated calculations
+								const colorLabel =
+									color.name ||
+									sprintf(
+										// translators: Generic label for a custom color if no name is provided.
+										__('Custom Colour %d', 'maxi-blocks'),
+										index + 1 // Use the current index instead of findIndex
+									);
+
 								return (
 									<button
 										key={`maxi-color-control__palette-custom-box-${color.id}`}
 										type='button'
-										aria-label={
-											color.name ||
-											sprintf(
-												// translators: Generic label for a custom color if no name is provided.
-												__(
-													'Custom Colour %d',
-													'maxi-blocks'
-												),
-												// Using a simple index for this sprintf as it's just for a fallback aria-label
-												// The actual ID is color.id and is a large number.
-												customColors.findIndex(
-													c => c.id === color.id
-												) + 1
-											)
-										}
-										title={
-											color.name ||
-											sprintf(
-												__(
-													'Custom Colour %d',
-													'maxi-blocks'
-												),
-												customColors.findIndex(
-													c => c.id === color.id
-												) + 1
-											)
-										}
+										aria-label={colorLabel}
+										title={colorLabel}
 										className={classnames(
 											'maxi-color-control__palette-box',
 											'maxi-color-control__palette-custom-box',

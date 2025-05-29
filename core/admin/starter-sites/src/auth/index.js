@@ -11,7 +11,7 @@ export const getMaxiCookieKey = () => {
 		.find(row =>
 			row
 				.trim()
-				.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
+				.startsWith(`${import.meta.env.VITE_MAXI_BLOCKS_AUTH_KEY}=`)
 		)
 		?.split('=')[1];
 
@@ -43,13 +43,13 @@ export const removeMaxiCookie = () => {
 		.find(row =>
 			row
 				.trim()
-				.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
+				.startsWith(`${import.meta.env.VITE_MAXI_BLOCKS_AUTH_KEY}=`)
 		)
 		?.split('=')[1];
 
 	if (cookie) {
 		document.cookie = `${
-			process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY
+			import.meta.env.VITE_MAXI_BLOCKS_AUTH_KEY
 		}=${cookie};max-age=0; Path=${getPathToAdmin()};Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 	}
 };
@@ -236,7 +236,7 @@ export async function authConnect(withRedirect = false, email = false) {
 		.find(row =>
 			row
 				.trim()
-				.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
+				.startsWith(`${import.meta.env.VITE_MAXI_BLOCKS_AUTH_KEY}=`)
 		)
 		?.split('=')[1];
 
@@ -274,7 +274,7 @@ export async function authConnect(withRedirect = false, email = false) {
 		};
 		cookieKey = generateCookieKey(email, 20);
 		document.cookie = `${
-			process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY
+			import.meta.env.VITE_MAXI_BLOCKS_AUTH_KEY
 		}=${cookieKey};max-age=2592000;Path=${getPathToAdmin()};`;
 	}
 
@@ -306,11 +306,11 @@ export async function authConnect(withRedirect = false, email = false) {
 			redirect();
 			resolve(false);
 		} else {
-			const fetchUrl = process.env.REACT_APP_MAXI_BLOCKS_AUTH_URL;
-			const checkTitle =
-				process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE;
-			const checkValue =
-				process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE;
+			const fetchUrl = import.meta.env.VITE_MAXI_BLOCKS_AUTH_URL;
+			const checkTitle = import.meta.env
+				.VITE_MAXI_BLOCKS_AUTH_HEADER_TITLE;
+			const checkValue = import.meta.env
+				.VITE_MAXI_BLOCKS_AUTH_HEADER_VALUE;
 
 			const fetchOptions = {
 				method: 'POST',

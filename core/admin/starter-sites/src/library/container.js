@@ -31,9 +31,9 @@ import classnames from 'classnames';
 import { isEmpty, unescape } from 'lodash';
 import { arrowIcon } from '../icons';
 
-// API configuration for Typesense search
-const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
-const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
+// API configuration for Typesense search - updated for Vite
+const apiKey = import.meta.env.VITE_TYPESENSE_API_KEY;
+const apiHost = import.meta.env.VITE_TYPESENSE_API_URL;
 
 /**
  * Results count component - displays number of search results

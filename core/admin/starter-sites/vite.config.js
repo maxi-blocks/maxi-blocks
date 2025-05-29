@@ -36,8 +36,9 @@ export default defineConfig({
 					return 'assets/[name].[ext]';
 				},
 
-				// Disable code splitting to create single bundle
-				manualChunks: () => 'main',
+				// Use UMD format which is more compatible with WordPress
+				format: 'umd',
+				name: 'MaxiStarterSites',
 			},
 		},
 
@@ -68,10 +69,10 @@ export default defineConfig({
 		},
 	},
 
-	// Define global variables (replaces webpack.ProvidePlugin)
-	define: {
-		global: 'globalThis',
-	},
+	// Remove global definitions that might interfere with WordPress
+	// define: {
+	//	global: 'globalThis',
+	// },
 
 	// Configure how external dependencies are handled
 	optimizeDeps: {

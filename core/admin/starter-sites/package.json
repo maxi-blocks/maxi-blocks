@@ -4,35 +4,23 @@
 	"type": "module",
 	"private": true,
 	"dependencies": {
-		"@babel/plugin-proposal-private-property-in-object": "latest",
-		"@testing-library/jest-dom": "^5.16.4",
-		"@testing-library/react": "^13.3.0",
-		"@testing-library/user-event": "^13.5.0",
 		"@wordpress/element": "^4.12.0",
 		"@wordpress/i18n": "^4.14.0",
 		"@wordpress/primitives": "^3.12.0",
-		"dompurify": "^2.3.10",
+		"dompurify": "^3.2.6",
 		"masonry-layout": "^4.2.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-instantsearch-dom": "^6.30.3",
 		"react-switch": "^7.0.0",
 		"sass": "^1.54.3",
-		"typesense": "1.5.4",
+		"typesense": "^1.8.2",
 		"typesense-instantsearch-adapter": "^2.4.1"
 	},
 	"scripts": {
 		"start": "vite",
 		"build": "vite build",
-		"preview": "vite preview",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
-	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
+		"preview": "vite preview"
 	},
 	"browserslist": {
 		"production": [
@@ -49,7 +37,6 @@
 	"devDependencies": {
 		"@vitejs/plugin-react": "^4.2.1",
 		"sass-embedded": "^1.89.0",
-		"sass-loader": "^10.3.1",
-		"vite": "^5.1.4"
+		"vite": "^6.3.5"
 	}
 }

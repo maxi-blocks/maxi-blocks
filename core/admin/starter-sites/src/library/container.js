@@ -256,6 +256,12 @@ const typesenseInstantsearchAdapter = params => {
 // Initialize search client for starter sites
 const searchClientStarterSites = (() => {
 	try {
+		if (!apiKey || !apiHost) {
+			console.error(
+				'Missing required environment variables: API_KEY or API_URL'
+			);
+			return null;
+		}
 		return typesenseInstantsearchAdapter(
 			'post_title, starter_sites_category, cost'
 		).searchClient;

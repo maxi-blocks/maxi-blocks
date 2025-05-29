@@ -69,11 +69,6 @@ export default defineConfig({
 		},
 	},
 
-	// Remove global definitions that might interfere with WordPress
-	// define: {
-	//	global: 'globalThis',
-	// },
-
 	// Configure how external dependencies are handled
 	optimizeDeps: {
 		include: ['lodash'],

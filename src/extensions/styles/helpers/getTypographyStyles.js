@@ -105,13 +105,13 @@ const getTypographyStyles = ({
 
 	const getColorString = breakpoint => {
 		const paletteStatus = getPaletteColorStatus(breakpoint);
-		const paletteColor = getLastBreakpointValue(
+		const paletteColorValue = getLastBreakpointValue(
 			'palette-color',
 			breakpoint
 		);
 
 		if (paletteStatus) {
-			if (isNil(paletteColor)) {
+			if (isNil(paletteColorValue)) {
 				return {};
 			}
 
@@ -126,7 +126,7 @@ const getTypographyStyles = ({
 					getDefaultValue('palette-opacity');
 
 				if (
-					paletteColor === defaultPaletteColor &&
+					paletteColorValue === defaultPaletteColor &&
 					isDefaultOpacity(
 						paletteOpacity,
 						defaultPaletteOpacity,
@@ -145,15 +145,29 @@ const getTypographyStyles = ({
 			const shouldUseTextLevel =
 				!paletteSCStatus &&
 				(!isHover || hoverStatus || globalHoverStatus);
+
+			let colorIdentifier;
+			if (
+				typeof paletteColorValue === 'number' &&
+				paletteColorValue >= 1000
+			) {
+				// For numeric custom color IDs (1000+), use the ID directly.
+				// This matches the new CSS var names like --maxi-light-color-1000
+				colorIdentifier = paletteColorValue;
+			} else {
+				// For standard palette numbers (1-8) or other values.
+				colorIdentifier = paletteColorValue;
+			}
+
 			const firstVar = shouldUseTextLevel
 				? `${textLevel}-color${isHover ? '-hover' : ''}`
-				: `color-${paletteColor}`;
+				: `color-${colorIdentifier}`;
 
 			return {
 				color: getColorRGBAString({
 					firstVar,
 					...(shouldUseTextLevel && {
-						secondVar: `color-${paletteColor}`,
+						secondVar: `color-${colorIdentifier}`,
 					}),
 					opacity: paletteOpacity,
 					blockStyle,

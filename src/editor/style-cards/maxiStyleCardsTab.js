@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -21,6 +21,7 @@ import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import PaddingControl from '@components/padding-control';
+import handleDeletedCustomColor from '@extensions/style-cards/customColorsUtils';
 import {
 	processSCAttribute,
 	showHideHamburgerNavigation,
@@ -38,6 +39,47 @@ import getDefaultSCAttribute from './getDefaultSCAttribute';
  */
 import { reset } from '@maxi-icons';
 
+// Generates a unique numeric ID for custom colors.
+// Uses a portion of the timestamp and a random component to ensure high likelihood of uniqueness.
+const generateCustomColorId = () => {
+	const timestampPart = Date.now().toString().slice(-7); // Last 7 digits of timestamp
+	const randomPart = Math.random().toString().slice(2, 7); // 5 random digits
+	return Number(timestampPart + randomPart);
+};
+
+/**
+ * Propagates custom colors to all style card variants and updates the editor
+ *
+ * @param {Object}   SC              Current style card object
+ * @param {Array}    newCustomColors Updated custom colors array
+ * @param {Function} onChangeValue   Callback to update style card value
+ */
+const propagateCustomColors = (SC, newCustomColors, onChangeValue) => {
+	const tempSC = { ...SC };
+	if (!tempSC.color) tempSC.color = {};
+	tempSC.color.customColors = newCustomColors;
+
+	// Ensure light style exists
+	if (!tempSC.light) tempSC.light = { styleCard: { color: {} } };
+	if (!tempSC.light.styleCard) tempSC.light.styleCard = { color: {} };
+	if (!tempSC.light.styleCard.color) tempSC.light.styleCard.color = {};
+	tempSC.light.styleCard.color.customColors = [...newCustomColors];
+
+	// Ensure dark style exists
+	if (!tempSC.dark) tempSC.dark = { styleCard: { color: {} } };
+	if (!tempSC.dark.styleCard) tempSC.dark.styleCard = { color: {} };
+	if (!tempSC.dark.styleCard.color) tempSC.dark.styleCard.color = {};
+	tempSC.dark.styleCard.color.customColors = [...newCustomColors];
+
+	const { updateSCOnEditor } =
+		window.wp.data.select('maxiBlocks/style-cards') || {};
+	if (typeof updateSCOnEditor === 'function') {
+		updateSCOnEditor(tempSC, null, [document], true);
+	}
+
+	onChangeValue({ customColors: newCustomColors }, 'color');
+};
+
 /**
  * Component
  */
@@ -47,7 +89,7 @@ const GlobalColor = props => {
 		globalAttr,
 		globalAllAttr = false,
 		paletteStatus,
-		paletteColor,
+		paletteColor, // This can be 1-8 (standard) or a large numeric ID (custom)
 		paletteOpacity,
 		color,
 		groupAttr,
@@ -57,6 +99,44 @@ const GlobalColor = props => {
 		disableOpacity = false,
 		isHover = false,
 	} = props;
+
+	const currentPaletteStatus = processSCAttribute(
+		SC,
+		paletteStatus,
+		groupAttr
+	);
+
+	// Process paletteColor: it's either a standard palette number (1-8) or a custom color ID (large number)
+	// No conversion from "custom-X" needed anymore as per new strategy.
+	let processedPaletteColor = processSCAttribute(SC, paletteColor, groupAttr);
+	if (
+		typeof processedPaletteColor === 'string' &&
+		!Number.isNaN(parseInt(processedPaletteColor, 10))
+	) {
+		processedPaletteColor = parseInt(processedPaletteColor, 10);
+	}
+	const currentPaletteColor = processedPaletteColor;
+
+	const currentPaletteOpacity =
+		processSCAttribute(SC, paletteOpacity, groupAttr) || 1;
+	const currentColor = processSCAttribute(SC, color, groupAttr);
+
+	let processedDefaultPaletteColorValue = getDefaultSCValue({
+		target: paletteColor,
+		SC,
+		SCStyle,
+		groupAttr,
+	});
+	if (
+		typeof processedDefaultPaletteColorValue === 'string' &&
+		!Number.isNaN(parseInt(processedDefaultPaletteColorValue, 10))
+	) {
+		processedDefaultPaletteColorValue = parseInt(
+			processedDefaultPaletteColorValue,
+			10
+		);
+	}
+	const defaultPaletteColorValue = processedDefaultPaletteColorValue;
 
 	return (
 		<>
@@ -100,22 +180,12 @@ const GlobalColor = props => {
 					<ColorControl
 						label={label}
 						className={`maxi-style-cards-control__sc__link--${SCStyle}`}
-						paletteStatus={processSCAttribute(
-							SC,
-							paletteStatus,
-							groupAttr
-						)}
-						paletteColor={processSCAttribute(
-							SC,
-							paletteColor,
-							groupAttr
-						)}
-						paletteOpacity={
-							processSCAttribute(SC, paletteOpacity, groupAttr) ||
-							1
-						}
-						color={processSCAttribute(SC, color, groupAttr)}
+						paletteStatus={currentPaletteStatus}
+						paletteColor={currentPaletteColor} // numeric ID or 1-8
+						paletteOpacity={currentPaletteOpacity}
+						color={currentColor}
 						defaultColorAttributes={{
+							defaultPaletteColor: defaultPaletteColorValue,
 							defaultColor: getDefaultSCValue({
 								target: color,
 								SC,
@@ -124,15 +194,16 @@ const GlobalColor = props => {
 							}),
 						}}
 						onChange={({
+							// paletteColorFromControl will be numeric ID or 1-8
 							paletteStatus: newPaletteStatus,
-							paletteColor: newPaletteColor,
+							paletteColor: newPaletteColorFromControl,
 							paletteOpacity: newPaletteOpacity,
 							color: newColor,
 						}) => {
 							onChangeValue(
 								{
 									[paletteStatus]: newPaletteStatus,
-									[paletteColor]: newPaletteColor,
+									[paletteColor]: newPaletteColorFromControl,
 									[paletteOpacity]: newPaletteOpacity,
 									[color]: newColor,
 								},
@@ -342,6 +413,133 @@ const SCAccordion = props => {
 
 const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
+
+	const getAvailableCustomColors = (styleCard, style) => {
+		if (!styleCard) {
+			return [];
+		}
+
+		const { receiveMaxiSelectedStyleCardValue } =
+			window.wp.data.select('maxiBlocks/style-cards') || {};
+		let rawColorsData = [];
+
+		if (typeof receiveMaxiSelectedStyleCardValue === 'function') {
+			const storeColorsResult =
+				receiveMaxiSelectedStyleCardValue('customColors');
+			if (
+				storeColorsResult &&
+				Array.isArray(storeColorsResult) &&
+				storeColorsResult.length > 0
+			) {
+				rawColorsData = storeColorsResult;
+			}
+		}
+
+		if (rawColorsData.length === 0) {
+			const sources = [
+				styleCard[style]?.styleCard?.color?.customColors,
+				styleCard.color?.customColors,
+				styleCard[style]?.defaultStyleCard?.color?.customColors,
+				styleCard[style === 'light' ? 'dark' : 'light']?.styleCard
+					?.color?.customColors,
+			];
+			for (const source of sources) {
+				if (source && Array.isArray(source) && source.length > 0) {
+					rawColorsData = source;
+					break;
+				}
+			}
+		}
+
+		if (!Array.isArray(rawColorsData)) {
+			rawColorsData = [];
+		}
+
+		const existingIds = new Set();
+		return rawColorsData
+			.map(item => {
+				let id;
+				let value;
+				let name;
+				if (typeof item === 'object' && item !== null) {
+					value =
+						typeof item.value === 'string' &&
+						item.value.trim() !== ''
+							? item.value
+							: 'transparent';
+					name = typeof item.name === 'string' ? item.name : '';
+					id =
+						typeof item.id === 'number' && item.id > 8
+							? item.id
+							: generateCustomColorId(); // Keep valid ID or generate new
+				} else if (typeof item === 'string' && item.trim() !== '') {
+					value = item;
+					name = '';
+					id = generateCustomColorId();
+				} else {
+					value = 'transparent';
+					name = '';
+					id = generateCustomColorId();
+				}
+
+				// Ensure ID is unique within this batch
+				const originalId = id;
+				let counter = 1;
+				while (existingIds.has(id)) {
+					console.warn(`Duplicate ID detected: ${id}. Regenerating.`);
+					// Try to make it unique by appending counter and parts of timestamp/randomness
+					const newTimestampPart = Date.now().toString().slice(-3);
+					const newRandomPart = Math.random().toString().slice(2, 5);
+					const counterString = String(counter).padStart(3, '0');
+					counter += 1; // Increment counter after getting its string value
+					const potentialNewIdBase = String(originalId).slice(0, -6); // Keep most of original to vary less if it was long
+					id = Number(
+						potentialNewIdBase +
+							newTimestampPart +
+							newRandomPart +
+							counterString
+					);
+
+					if (counter > 100) {
+						// Safety break for extreme collision cases
+						console.error(
+							'High collision rate for custom color ID generation. Using fallback.'
+						);
+						id = Number(
+							Date.now().toString().slice(-5) +
+								Math.random().toString().slice(2, 7) +
+								counter
+						);
+						if (existingIds.has(id))
+							id = Number(
+								Date.now().toString() +
+									Math.random().toString().slice(2, 10)
+							); // Final fallback
+					}
+				}
+				existingIds.add(id);
+
+				return { id, value, name };
+			})
+			.filter(item => item.id !== undefined); // Filter out any potentially malformed items without ID
+	};
+
+	const [customColors, setCustomColors] = useState(() =>
+		getAvailableCustomColors(SC, SCStyle)
+	);
+
+	useEffect(() => {
+		const newAvailableColors = getAvailableCustomColors(SC, SCStyle);
+		// Simple stringify check for array of objects might be heavy.
+		// A more performant check might be needed if SC/SCStyle update very frequently.
+		if (
+			JSON.stringify(customColors) !== JSON.stringify(newAvailableColors)
+		) {
+			setCustomColors(newAvailableColors);
+		}
+	}, [SC, SCStyle, customColors]); // Added customColors to dep array as per linter suggestion often seen
+
+	const [selectedCustomColorId, setSelectedCustomColorId] = useState(null);
 
 	const headingItems = () =>
 		[1, 2, 3, 4, 5, 6].map(item => {
@@ -620,218 +818,451 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				key='sc-accordion__quick-color-presets'
 				isSecondary
 				isStyleCard
-				items={[
-					{
-						label: __('Colour palette', 'maxi-blocks'),
-						classNameItem:
-							'maxi-blocks-sc__type--quick-color-presets maxi-blocks-sc__type--color',
-						content: (
-							<>
-								<div className='maxi-style-cards__quick-color-presets'>
-									{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-										<div
-											key={`maxi-style-cards__quick-color-presets__box__${item}`}
-											className={classnames(
-												'maxi-style-cards__quick-color-presets__box',
-												quickColorPreset === item &&
-													'maxi-style-cards__quick-color-presets__box--active'
-											)}
-											data-item={item}
-											onClick={e =>
-												setQuickColorPreset(
-													+e.currentTarget.dataset
-														.item
-												)
-											}
-										>
-											<span
+				items={
+					[
+						{
+							label: __('Colour palette', 'maxi-blocks'),
+							classNameItem:
+								'maxi-blocks-sc__type--quick-color-presets maxi-blocks-sc__type--color',
+							content: (
+								<>
+									<div className='maxi-style-cards__quick-color-presets'>
+										{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
+											<div
+												key={`maxi-style-cards__quick-color-presets__box__${item}`}
 												className={classnames(
-													'maxi-style-cards__quick-color-presets__box__item',
-													`maxi-style-cards__quick-color-presets__box__item__${item}`
+													'maxi-style-cards__quick-color-presets__box',
+													quickColorPreset === item &&
+														'maxi-style-cards__quick-color-presets__box--active'
 												)}
-												style={{
-													background: `rgba(${processSCAttribute(
-														SC,
-														item,
-														'color'
-													)}, 1)`,
-												}}
-											/>
-										</div>
-									))}
-								</div>
-								<ColorControl
-									className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}
-									color={`rgba(${processSCAttribute(
-										SC,
-										quickColorPreset,
-										'color'
-									)}, 1)`}
-									defaultColorAttributes={{
-										defaultColor: `rgba(${processSCAttribute(
+												data-item={item}
+												onClick={e =>
+													setQuickColorPreset(
+														+e.currentTarget.dataset
+															.item
+													)
+												}
+											>
+												<span
+													className={classnames(
+														'maxi-style-cards__quick-color-presets__box__item',
+														`maxi-style-cards__quick-color-presets__box__item__${item}`
+													)}
+													style={{
+														background: `rgba(${processSCAttribute(
+															SC,
+															item,
+															'color'
+														)}, 1)`,
+													}}
+												/>
+											</div>
+										))}
+									</div>
+									<ColorControl
+										className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}
+										color={`rgba(${processSCAttribute(
 											SC,
 											quickColorPreset,
 											'color'
-										)}, 1)`,
-									}}
-									onChange={({ color }) =>
-										onChangeValue(
-											{
-												[`${quickColorPreset}`]: color
-													.replace('rgb(', '')
-													.replace(')', ''),
-											},
-											'color'
-										)
-									}
-									avoidBreakpointForDefault
-									blockStyle={SCStyle}
-									disableColorDisplay
-									disableOpacity
-									disableGradient
-									disablePalette
-								/>
-								<div className='maxi-style-cards__quick-color-presets__reset'>
-									<span
-										className='maxi-style-cards__quick-color-presets__reset-button__preview'
-										style={{
-											background: `rgba(${getDefaultSCAttribute(
+										)}, 1)`}
+										defaultColorAttributes={{
+											defaultColor: `rgba(${processSCAttribute(
 												SC,
 												quickColorPreset,
 												'color'
 											)}, 1)`,
 										}}
-									/>
-									<Button
-										disabled={
-											processSCAttribute(
-												SC,
-												quickColorPreset,
-												'color'
-											) ===
-											SC.defaultStyleCard.color[
-												quickColorPreset
-											]
-										}
-										className='maxi-style-cards__quick-color-presets__reset-button'
-										onClick={() =>
+										onChange={({ color }) =>
 											onChangeValue(
 												{
 													[`${quickColorPreset}`]:
-														SC.defaultStyleCard
-															.color[
-															quickColorPreset
-														],
+														color
+															.replace('rgb(', '')
+															.replace(')', ''),
 												},
 												'color'
 											)
 										}
-									>
-										<Icon icon={reset} />
-									</Button>
-								</div>
-							</>
-						),
-					},
-					{
-						label: buttonTabs.label,
-						classNameItem: 'maxi-blocks-sc__type--button',
-						content: (
-							<SCAccordion
-								key={`sc-accordion__${buttonTabs.label}`}
-								{...buttonTabs}
-								breakpoint={breakpoint}
-								SC={SC}
-								SCStyle={SCStyle}
-								onChangeValue={onChangeValue}
-							/>
-						),
-					},
-					{
-						label: pTabs.label,
-						classNameItem: 'maxi-blocks-sc__type--paragraph',
-						content: (
-							<SCAccordion
-								key={`sc-accordion__${pTabs.label}`}
-								{...pTabs}
-								breakpoint={breakpoint}
-								SC={SC}
-								SCStyle={SCStyle}
-								onChangeValue={onChangeValue}
-							/>
-						),
-					},
-					breakpoint === 'general' && {
-						label: linkTabs.label,
-						classNameItem: 'maxi-blocks-sc__type--link',
-						content: (
-							<SCAccordion
-								key={`sc-accordion__${linkTabs.label}`}
-								{...linkTabs}
-								breakpoint={breakpoint}
-								SC={SC}
-								SCStyle={SCStyle}
-								onChangeValue={onChangeValue}
-								disableTypography
-							/>
-						),
-					},
-					{
-						label: __('Headings globals', 'maxi-blocks'),
-						classNameItem: 'maxi-blocks-sc__type--heading',
-						content: (
-							<SettingTabsControl
-								hasBorder
-								items={headingItems()}
-							/>
-						),
-					},
-					breakpoint === 'general' && {
-						label: iconTabs.label,
-						classNameItem: 'maxi-blocks-sc__type--SVG',
-						content: (
-							<SCAccordion
-								key={`sc-accordion__${iconTabs.label}`}
-								{...iconTabs}
-								breakpoint={breakpoint}
-								SC={SC}
-								SCStyle={SCStyle}
-								onChangeValue={onChangeValue}
-								disableTypography
-								disableOpacity
-							/>
-						),
-					},
-					breakpoint === 'general' && {
-						label: dividerTabs.label,
-						classNameItem: 'maxi-blocks-sc__type--divider',
-						content: (
-							<SCAccordion
-								key={`sc-accordion__${dividerTabs.label}`}
-								{...dividerTabs}
-								breakpoint={breakpoint}
-								SC={SC}
-								SCStyle={SCStyle}
-								onChangeValue={onChangeValue}
-								disableTypography
-							/>
-						),
-					},
-					{
-						label: navigationTabs.label,
-						classNameItem: 'maxi-blocks-sc__type--navigation',
-						content: (
-							<SCAccordion
-								key={`sc-accordion__${navigationTabs.label}`}
-								{...navigationTabs}
-								breakpoint={breakpoint}
-								SC={SC}
-								SCStyle={SCStyle}
-								onChangeValue={onChangeValue}
-							/>
-						),
-					},
-				]}
+										avoidBreakpointForDefault
+										blockStyle={SCStyle}
+										disableColorDisplay
+										disableOpacity
+										disableGradient
+										disablePalette
+									/>
+									<div className='maxi-style-cards__quick-color-presets__reset'>
+										<span
+											className='maxi-style-cards__quick-color-presets__reset-button__preview'
+											style={{
+												background: `rgba(${getDefaultSCAttribute(
+													SC,
+													quickColorPreset,
+													'color'
+												)}, 1)`,
+											}}
+										/>
+										<Button
+											disabled={
+												processSCAttribute(
+													SC,
+													quickColorPreset,
+													'color'
+												) ===
+												SC.defaultStyleCard.color[
+													quickColorPreset
+												]
+											}
+											className='maxi-style-cards__quick-color-presets__reset-button'
+											onClick={() =>
+												onChangeValue(
+													{
+														[`${quickColorPreset}`]:
+															SC.defaultStyleCard
+																.color[
+																quickColorPreset
+															],
+													},
+													'color'
+												)
+											}
+										>
+											<Icon icon={reset} />
+										</Button>
+									</div>
+								</>
+							),
+						},
+						{
+							label: __(
+								'Custom colours (both tones)',
+								'maxi-blocks'
+							),
+							classNameItem:
+								'maxi-blocks-sc__type--custom-color-presets maxi-blocks-sc__type--color',
+							content: (
+								<>
+									<div className='maxi-style-cards__custom-color-presets'>
+										{customColors.map(colorObj => (
+											<div
+												key={`maxi-style-cards__custom-color-presets__box-${colorObj.id}`}
+												data-color-id={colorObj.id}
+												className={classnames(
+													'maxi-style-cards__custom-color-presets__box',
+													selectedCustomColorId ===
+														colorObj.id &&
+														'maxi-style-cards__custom-color-presets__box--active'
+												)}
+												onClick={() => {
+													setSelectedCustomColorId(
+														colorObj.id
+													);
+												}}
+												title={
+													colorObj.name ||
+													`${__(
+														'Custom Colour',
+														'maxi-blocks'
+													)} ${
+														customColors.findIndex(
+															c =>
+																c.id ===
+																colorObj.id
+														) + 1
+													}`
+												}
+											>
+												<span
+													className='maxi-style-cards__custom-color-presets__box__item'
+													style={{
+														background:
+															colorObj.value,
+													}}
+												/>
+												<Button
+													className='maxi-style-cards__custom-color-presets__remove-button'
+													title={`${__(
+														'Remove',
+														'maxi-blocks'
+													)} ${
+														colorObj.name ||
+														`${__(
+															'Custom Colour',
+															'maxi-blocks'
+														)} ${
+															customColors.findIndex(
+																c =>
+																	c.id ===
+																	colorObj.id
+															) + 1
+														}`
+													}`}
+													onClick={e => {
+														e.stopPropagation();
+														const newCustomColors =
+															customColors.filter(
+																c =>
+																	c.id !==
+																	colorObj.id
+															);
+														setCustomColors(
+															newCustomColors
+														);
+
+														// Call the handler for updating blocks
+														handleDeletedCustomColor(
+															colorObj.id
+														);
+
+														propagateCustomColors(
+															SC,
+															newCustomColors,
+															onChangeValue
+														);
+
+														if (
+															selectedCustomColorId ===
+															colorObj.id
+														) {
+															setSelectedCustomColorId(
+																null
+															);
+														}
+													}}
+												>
+													-
+												</Button>
+											</div>
+										))}
+										<Button
+											className='maxi-style-cards__custom-color-presets__add-button'
+											onClick={() => {
+												const r = Math.floor(
+													Math.random() * 256
+												);
+												const g = Math.floor(
+													Math.random() * 256
+												);
+												const b = Math.floor(
+													Math.random() * 256
+												);
+												const newColorId =
+													generateCustomColorId();
+												const newColor = {
+													id: newColorId,
+													value: `rgba(${r}, ${g}, ${b}, 1)`,
+													name: '',
+												};
+												const newCustomColors = [
+													...customColors,
+													newColor,
+												];
+												setCustomColors(
+													newCustomColors
+												);
+												setSelectedCustomColorId(
+													newColorId
+												);
+
+												propagateCustomColors(
+													SC,
+													newCustomColors,
+													onChangeValue
+												);
+											}}
+										>
+											+
+										</Button>
+									</div>
+									{selectedCustomColorId &&
+										customColors.find(
+											c => c.id === selectedCustomColorId
+										) && (
+											<>
+												<ColorControl
+													label={__(
+														'Custom',
+														'maxi-blocks'
+													)}
+													className='maxi-style-cards-control__sc__custom-color'
+													color={
+														customColors.find(
+															c =>
+																c.id ===
+																selectedCustomColorId
+														).value
+													}
+													onChange={({ color }) => {
+														const newCustomColors =
+															customColors.map(
+																c =>
+																	c.id ===
+																	selectedCustomColorId
+																		? {
+																				...c,
+																				value: color,
+																		  }
+																		: c
+															);
+														setCustomColors(
+															newCustomColors
+														);
+
+														propagateCustomColors(
+															SC,
+															newCustomColors,
+															onChangeValue
+														);
+													}}
+													blockStyle={SCStyle}
+													disableOpacity
+													disableGradient
+													disablePalette
+												/>
+												<input
+													type='text'
+													className='maxi-style-cards__custom-color-presets__name-input'
+													value={
+														customColors.find(
+															c =>
+																c.id ===
+																selectedCustomColorId
+														).name
+													}
+													placeholder={__(
+														'Enter colour name',
+														'maxi-blocks'
+													)}
+													onChange={e => {
+														const newCustomColors =
+															customColors.map(
+																c =>
+																	c.id ===
+																	selectedCustomColorId
+																		? {
+																				...c,
+																				name: e
+																					.target
+																					.value,
+																		  }
+																		: c
+															);
+														setCustomColors(
+															newCustomColors
+														);
+
+														propagateCustomColors(
+															SC,
+															newCustomColors,
+															onChangeValue
+														);
+													}}
+												/>
+											</>
+										)}
+								</>
+							),
+						},
+						{
+							label: buttonTabs.label,
+							classNameItem: 'maxi-blocks-sc__type--button',
+							content: (
+								<SCAccordion
+									key={`sc-accordion__${buttonTabs.label}`}
+									{...buttonTabs}
+									breakpoint={breakpoint}
+									SC={SC}
+									SCStyle={SCStyle}
+									onChangeValue={onChangeValue}
+								/>
+							),
+						},
+						{
+							label: pTabs.label,
+							classNameItem: 'maxi-blocks-sc__type--paragraph',
+							content: (
+								<SCAccordion
+									key={`sc-accordion__${pTabs.label}`}
+									{...pTabs}
+									breakpoint={breakpoint}
+									SC={SC}
+									SCStyle={SCStyle}
+									onChangeValue={onChangeValue}
+								/>
+							),
+						},
+						breakpoint === 'general' && {
+							label: linkTabs.label,
+							classNameItem: 'maxi-blocks-sc__type--link',
+							content: (
+								<SCAccordion
+									key={`sc-accordion__${linkTabs.label}`}
+									{...linkTabs}
+									breakpoint={breakpoint}
+									SC={SC}
+									SCStyle={SCStyle}
+									onChangeValue={onChangeValue}
+									disableTypography
+								/>
+							),
+						},
+						{
+							label: __('Headings globals', 'maxi-blocks'),
+							classNameItem: 'maxi-blocks-sc__type--heading',
+							content: (
+								<SettingTabsControl
+									hasBorder
+									items={headingItems()}
+								/>
+							),
+						},
+						breakpoint === 'general' && {
+							label: iconTabs.label,
+							classNameItem: 'maxi-blocks-sc__type--SVG',
+							content: (
+								<SCAccordion
+									key={`sc-accordion__${iconTabs.label}`}
+									{...iconTabs}
+									breakpoint={breakpoint}
+									SC={SC}
+									SCStyle={SCStyle}
+									onChangeValue={onChangeValue}
+									disableTypography
+									disableOpacity
+								/>
+							),
+						},
+						breakpoint === 'general' && {
+							label: dividerTabs.label,
+							classNameItem: 'maxi-blocks-sc__type--divider',
+							content: (
+								<SCAccordion
+									key={`sc-accordion__${dividerTabs.label}`}
+									{...dividerTabs}
+									breakpoint={breakpoint}
+									SC={SC}
+									SCStyle={SCStyle}
+									onChangeValue={onChangeValue}
+									disableTypography
+								/>
+							),
+						},
+						{
+							label: navigationTabs.label,
+							classNameItem: 'maxi-blocks-sc__type--navigation',
+							content: (
+								<SCAccordion
+									key={`sc-accordion__${navigationTabs.label}`}
+									{...navigationTabs}
+									breakpoint={breakpoint}
+									SC={SC}
+									SCStyle={SCStyle}
+									onChangeValue={onChangeValue}
+								/>
+							),
+						},
+					].filter(Boolean) // Filter out any false items from conditional rendering
+				}
 			/>
 		</div>
 	);

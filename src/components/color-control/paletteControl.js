@@ -2,6 +2,7 @@
  * Wordpress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -38,9 +39,50 @@ const ColorPaletteControl = props => {
 		globalPaletteOpacity,
 	} = props;
 
+	const { customColors } = useSelect(select => {
+		const {
+			receiveSelectedStyleCardValue,
+			receiveMaxiSelectedStyleCardValue,
+		} = select('maxiBlocks/style-cards');
+
+		// Try multiple strategies to get custom colors in order of preference
+		// First check if we can get them directly from receiveSelectedStyleCardValue
+		let colors = receiveSelectedStyleCardValue(
+			'customColors',
+			null,
+			'color'
+		);
+
+		// If that fails, try the direct selector
+		if (!colors || colors.length === 0) {
+			colors = receiveMaxiSelectedStyleCardValue('customColors') || [];
+		}
+
+		// If still no colors, try to get the styleCard directly
+		if (!colors || colors.length === 0) {
+			const styleCard = select(
+				'maxiBlocks/style-cards'
+			).receiveMaxiSelectedStyleCard();
+
+			if (styleCard && styleCard.value) {
+				// Check multiple possible locations for custom colors
+				colors =
+					styleCard.value.light?.styleCard?.color?.customColors ||
+					styleCard.value.dark?.styleCard?.color?.customColors ||
+					styleCard.value.color?.customColors ||
+					[];
+			}
+		}
+
+		return {
+			customColors: colors || [],
+		};
+	});
+
 	const paletteStatus = globalStatus && !paletteSCStatus;
 
 	const getIsActive = item => {
+		// item can be a number (for standard palette 1-8) or a numeric ID (for custom colors)
 		if (paletteStatus && globalPaletteColor === item) return true;
 		if (!paletteStatus && value === item) return true;
 
@@ -50,11 +92,12 @@ const ColorPaletteControl = props => {
 	return (
 		<div className='maxi-color-control__palette'>
 			<BaseControl
-					__nextHasNoMarginBottom
+				__nextHasNoMarginBottom
 				className='maxi-color-control__palette-label'
 				label={label ? `${label} colour` : ''}
 			>
 				<div className='maxi-color-control__palette-container'>
+					{/* Standard palette colors */}
 					{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
 						<button
 							key={`maxi-color-control__palette-box__${item}`}
@@ -85,6 +128,57 @@ const ColorPaletteControl = props => {
 						</button>
 					))}
 				</div>
+				{/* Custom palette colors */}
+				{customColors.length > 0 && (
+					<div className='maxi-color-control__palette-custom'>
+						<div className='maxi-color-control__palette-custom-header'>
+							{__('Custom colours (both tones)', 'maxi-blocks')}
+						</div>
+						<div className='maxi-color-control__palette-container'>
+							{customColors.map((color, index) => {
+								// Memoize the label generation to avoid repeated calculations
+								const colorLabel =
+									color.name ||
+									sprintf(
+										// translators: Generic label for a custom color if no name is provided.
+										__('Custom Colour %d', 'maxi-blocks'),
+										index + 1 // Use the current index instead of findIndex
+									);
+
+								return (
+									<button
+										key={`maxi-color-control__palette-custom-box-${color.id}`}
+										type='button'
+										aria-label={colorLabel}
+										title={colorLabel}
+										className={classnames(
+											'maxi-color-control__palette-box',
+											'maxi-color-control__palette-custom-box',
+											getIsActive(color.id) && // Use color.id (numeric) for active check
+												'maxi-color-control__palette-box--active'
+										)}
+										data-item={color.id} // Use color.id (numeric) for data-item
+										onClick={e =>
+											onChange({
+												// Ensure paletteColor is passed as a number if it's a numeric ID from data-item
+												paletteColor: Number(
+													e.currentTarget.dataset.item
+												),
+											})
+										}
+									>
+										<span
+											className='maxi-color-control__palette-custom-item'
+											style={{
+												backgroundColor: color.value,
+											}}
+										/>
+									</button>
+								);
+							})}
+						</div>
+					</div>
+				)}
 				{!disableReset && (
 					<ResetButton
 						onReset={e => {

@@ -42,6 +42,8 @@ const CloudLibrary = props => {
 		description,
 	} = props;
 
+	const isPro = cost === 'Pro' ? true : false;
+
 	return (
 		<div className='components-modal__content'>
 			<LibraryToolbar
@@ -62,7 +64,7 @@ const CloudLibrary = props => {
 				url={url}
 				title={title}
 				prefix={prefix}
-				isPro
+				isPro={isPro}
 				templates={templates}
 				pages={pages}
 				patterns={patterns}
@@ -75,6 +77,7 @@ const CloudLibrary = props => {
 				onLogOut={onLogOut}
 				isQuickStart={isQuickStart}
 				description={description}
+				cost={cost}
 			/>
 		</div>
 	);

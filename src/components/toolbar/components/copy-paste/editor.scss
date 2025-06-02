@@ -216,7 +216,8 @@
 					border-bottom: 2px solid transparent;
 					font-weight: 400 !important;
 					&:last-child {
-						border-right: none;
+						background-color: var(--maxi-white);
+						border-right: none !important;
 					}
 					&::before {
 						display: none !important;

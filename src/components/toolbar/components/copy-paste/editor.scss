@@ -128,7 +128,7 @@
 			&--special {
 				display: block;
 				height: 30px;
-				background: var(--maxi-primary-color);
+				background: var(--maxi-primary-color) !important;
 				border-radius: 0;
 				color: var(--maxi-white);
 				font-size: 12px;

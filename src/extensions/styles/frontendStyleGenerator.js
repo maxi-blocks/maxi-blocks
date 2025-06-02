@@ -16,8 +16,13 @@ const getStyles = content => {
 			? key.replace('undefined', 'light')
 			: key;
 
-		if (safeKey.includes('css')) response += `${val}`;
-		else response += `${safeKey}:${val};`;
+		const safeVal =
+			typeof val === 'string' && val.includes('--maxi-undefined')
+				? val.replace('--maxi-undefined', '--maxi-light')
+				: val;
+
+		if (safeKey.includes('css')) response += `${safeVal}`;
+		else response += `${safeKey}:${safeVal};`;
 	});
 
 	return response;

@@ -1895,6 +1895,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				color: var(--maxi-grey-dark);
 				border: 1px solid var(--maxi-cloud-primary);
 				z-index: 100000;
+				line-height: 100%;
 				transition: all 0.3s ease;
 
 				&:hover {

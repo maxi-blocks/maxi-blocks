@@ -31,9 +31,9 @@ import classnames from 'classnames';
 import { isEmpty, unescape } from 'lodash';
 import { arrowIcon } from '../icons';
 
-// API configuration for Typesense search
-const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
-const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
+// API configuration for Typesense search - updated for Vite
+const apiKey = import.meta.env.VITE_TYPESENSE_API_KEY;
+const apiHost = import.meta.env.VITE_TYPESENSE_API_URL;
 
 /**
  * Results count component - displays number of search results
@@ -256,6 +256,12 @@ const typesenseInstantsearchAdapter = params => {
 // Initialize search client for starter sites
 const searchClientStarterSites = (() => {
 	try {
+		if (!apiKey || !apiHost) {
+			console.error(
+				'Missing required environment variables: API_KEY or API_URL'
+			);
+			return null;
+		}
 		return typesenseInstantsearchAdapter(
 			'post_title, starter_sites_category, cost'
 		).searchClient;

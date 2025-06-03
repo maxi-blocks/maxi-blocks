@@ -48,6 +48,7 @@ h2.gx_error {
 .maxi-sidebar
 	*:not(i):not(.block-editor-block-card):not(.block-editor-block-card
 		*):not(.components-range-control__root):not(.components-range-control__root
+		*):not([class*='maxi-transform-control']):not([class*='maxi-transform-control']
 		*),
 .maxi-popover *:not(i) {
 	transition: all 0.5s ease;

@@ -46,7 +46,9 @@ h2.gx_error {
 }
 .maxi-sidebar,
 .maxi-sidebar
-	*:not(i):not(.block-editor-block-card):not(.block-editor-block-card *),
+	*:not(i):not(.block-editor-block-card):not(.block-editor-block-card
+		*):not(.components-range-control__root):not(.components-range-control__root
+		*),
 .maxi-popover *:not(i) {
 	transition: all 0.5s ease;
 	color: var(--maxi-grey-dark);

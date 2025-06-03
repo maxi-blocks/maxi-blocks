@@ -1920,9 +1920,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 				input {
 					margin-top: 10px;
 					margin-right: -15px;
-					padding: 1px 8px 2px !important;
+					padding: 1px 20px 2px 8px !important;
 					border: 1px solid var(--maxi-grey-light) !important;
 					border-radius: 0 !important;
+					border-top-left-radius: 30px !important;
+					border-bottom-left-radius: 30px !important;
 					transition: all 0.4s ease !important;
 					&:focus,
 					&:active,

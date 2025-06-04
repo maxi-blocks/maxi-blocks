@@ -354,7 +354,7 @@ body .maxi-style-cards__popover {
 			transition: all 0.5s ease;
 
 			&:hover {
-				color: var(--maxi-white);
+				color: var(--maxi-white) !important;
 				border: 1px solid var(--maxi-grey) !important;
 				background-color: var(--maxi-grey-dark) !important;
 			}

@@ -715,6 +715,12 @@ body .maxi-style-cards__popover {
 	.maxi-font-family-selector {
 		z-index: 1;
 	}
+	.components-range-control
+		.components-base-control__field
+		.components-range-control__track
+		+ span {
+		z-index: 0;
+	}
 }
 
 @media only screen and (min-width: 2500px) {

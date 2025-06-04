@@ -162,10 +162,10 @@ body .maxi-style-cards__popover {
 	border-left: 1.5px solid var(--maxi-grey-light);
 
 	button:not(.maxi-reset-button):not(.maxi-color-control__palette-box):not(.maxi-style-cards__custom-color-presets__remove-button):hover {
-		border-color: var(--maxi-primary-green) !important;
 		background-color: var(--maxi-whisper-green) !important;
 		opacity: 1;
 		color: var(--maxi-primary-color) !important;
+		transition: all 0.3s ease !important;
 	}
 
 	.maxi-accordion-control__item {
@@ -354,7 +354,7 @@ body .maxi-style-cards__popover {
 			transition: all 0.5s ease;
 
 			&:hover {
-				color: var(--maxi-white);
+				color: var(--maxi-white) !important;
 				border: 1px solid var(--maxi-grey) !important;
 				background-color: var(--maxi-grey-dark) !important;
 			}
@@ -714,6 +714,12 @@ body .maxi-style-cards__popover {
 	}
 	.maxi-font-family-selector {
 		z-index: 1;
+	}
+	.components-range-control
+		.components-base-control__field
+		.components-range-control__track
+		+ span {
+		z-index: 0;
 	}
 }
 

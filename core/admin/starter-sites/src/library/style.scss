@@ -1778,7 +1778,9 @@
 				right: 100px;
 				font-size: 13px;
 				font-weight: 400;
+				line-height: 100%;
 				margin-top: 3px;
+				border-radius: 30px;
 			}
 			&__text_pro {
 				margin: 0;
@@ -1791,10 +1793,16 @@
 				margin-right: -15px;
 				input {
 					margin-top: 10px;
-					margin-right: -5px;
-					padding: 1px 8px 2px !important;
-					border: 1px solid var(--maxi-grey-light) !important;
+					margin-right: -15px;
+					padding: 1px 20px 2px 8px !important;
 					border-radius: 0 !important;
+					border-top-left-radius: 30px !important;
+					border-bottom-left-radius: 30px !important;
+					transition: all 0.4s ease !important;
+				}
+
+				.maxi-text-control__input::placeholder {
+					color: var(--maxi-grey-light);
 				}
 				span {
 					position: absolute;

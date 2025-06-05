@@ -1280,12 +1280,19 @@ class MaxiBlocks_StyleCards
                                 ];
                             }
                         }
-                        // Handle other elements
+                                                // Handle other elements
                         elseif (isset($style_data[$element][$key])) {
                             $value = $style_data[$element][$key];
 
                             // Add units if needed
                             if ($setting === 'font-family') {
+                                // Special case for button: if font-family is empty, use p font-family
+                                if ($element === 'button' && ($value === '' || $value === null)) {
+                                    $p_font_family_key = "font-family-{$breakpoint}";
+                                    $value = isset($style_data['p'][$p_font_family_key])
+                                        ? $style_data['p'][$p_font_family_key]
+                                        : '';
+                                }
                                 $value = "\"{$value}\"";
                             } elseif (in_array($setting, ['font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'])) {
                                 if (is_numeric($value)) {

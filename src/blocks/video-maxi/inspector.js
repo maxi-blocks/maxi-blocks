@@ -222,6 +222,9 @@ const Inspector = props => {
 										),
 										disableMargin: true,
 									}),
+									...inspectorTabs.savedStyles({
+										props,
+									}),
 								]}
 							/>
 						),

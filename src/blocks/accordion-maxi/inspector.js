@@ -212,7 +212,9 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.contextLoop({
 										props,
-										contentType: 'accordion',
+									}),
+									...inspectorTabs.savedStyles({
+										props,
 									}),
 								]}
 							/>

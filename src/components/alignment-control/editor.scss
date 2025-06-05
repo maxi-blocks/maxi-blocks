@@ -1,4 +1,4 @@
-.maxi-alignment-control {
+body .maxi-alignment-control {
 	.maxi-tabs-control__button {
 		height: 32px;
 		padding: 8px;
@@ -33,6 +33,24 @@
 		&[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green);
 			border-color: var(--maxi-secondary-color);
+		}
+	}
+
+	&__toolbar {
+		.maxi-base-control__field
+			.maxi-tabs-control.maxi-settingstab-control_has-border-left-right {
+			display: flex !important;
+			flex-direction: row !important;
+			justify-content: space-between !important;
+			align-items: center !important;
+			gap: 0 !important;
+			margin-bottom: 0 !important;
+			button {
+				margin-right: 0 !important;
+				svg {
+					margin: 0 auto;
+				}
+			}
 		}
 	}
 }

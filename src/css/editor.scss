@@ -45,15 +45,26 @@ h2.gx_error {
 	text-align: center;
 }
 .maxi-sidebar,
-.maxi-sidebar *:not(i),
+.maxi-sidebar
+	*:not(i):not(.block-editor-block-card):not(.block-editor-block-card
+		*):not(.components-range-control__root):not(.components-range-control__root
+		*):not([class*='maxi-transform-control']):not([class*='maxi-transform-control']
+		*),
 .maxi-popover *:not(i) {
 	transition: all 0.5s ease;
 	color: var(--maxi-grey-dark);
 	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
-	// font-size: 12px;
 	font-weight: normal;
 	.block-editor-block-card__name {
-		transition: all 0.5s ease;
+		padding: 0 !important;
+	}
+}
+
+.maxi-sidebar .block-editor-block-card *:not(i) {
+	color: var(--maxi-grey-dark);
+	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	font-weight: normal;
+	.block-editor-block-card__name {
 		padding: 0 !important;
 	}
 }

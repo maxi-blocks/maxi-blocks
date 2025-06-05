@@ -127,7 +127,9 @@ body.maxi-blocks--active .maxi-map-block {
 	}
 }
 .maxi-sidebar,
-.maxi-sidebar *:not(i) {
+.maxi-sidebar
+	*:not(i):not(.block-editor-block-card):not(.block-editor-block-card
+		*):not(.block-editor-block-card) {
 	.maxi-map-popup-title-label,
 	.maxi-map-popup-description-label {
 		display: block;

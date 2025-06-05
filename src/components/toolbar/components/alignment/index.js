@@ -55,6 +55,7 @@ const Alignment = props => {
 			)}
 			renderContent={() => (
 				<AlignmentControl
+					className='maxi-alignment-control__toolbar'
 					{...getGroupAttributes(
 						props,
 						isText ? 'textAlignment' : 'alignment'

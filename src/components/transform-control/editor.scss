@@ -84,6 +84,7 @@
 				height: 40px;
 				border: 1px solid var(--maxi-grey-light);
 				border-radius: 5px;
+				transition: none !important;
 				&__button {
 					&[aria-pressed='active'] {
 						background: var(--maxi-grey-dark) !important;
@@ -95,6 +96,7 @@
 			&__resizer {
 				z-index: 1;
 				border: 1px solid var(--maxi-grey-light);
+				transition: none !important;
 			}
 
 			&__draggable {
@@ -105,10 +107,12 @@
 				border: 2px solid var(--maxi-grey);
 				border-radius: 5px;
 				background-color: rgba(var(--maxi-black), 0.3);
+				transition: none !important;
 			}
 
 			&__origin {
 				z-index: 1;
+				transition: none !important;
 
 				&__button {
 					position: absolute;

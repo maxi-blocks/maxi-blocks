@@ -1215,16 +1215,36 @@ class MaxiBlocks_StyleCards
                     }
                 }
 
-                // Process colors
-                if (isset($style_data['color'])) {
-                    for ($i = 1; $i <= 8; $i++) {
-                        if (isset($style_data['color'][$i])) {
-                            $var_name = "--maxi-{$style}-color-{$i}";
-                            $organized_values[$style]['color'][$i] = [
-                                'value' => $style_data['color'][$i],
-                                'var_name' => $var_name
-                            ];
+                // Process colors - start with imported, then fill missing from defaults
+                $all_colors = [];
+
+                // Step 1: Start with imported colors from styleCard
+                if (isset($new_sc[$style]['styleCard']['color'])) {
+                    $all_colors = $new_sc[$style]['styleCard']['color'];
+                }
+
+                // Step 2: Check what colors are missing (1-8)
+                for ($i = 1; $i <= 8; $i++) {
+                    if (!isset($all_colors[$i])) {
+                        // Step 3: Try to get missing color from imported defaultStyleCard
+                        if (isset($new_sc[$style]['defaultStyleCard']['color'][$i])) {
+                            $all_colors[$i] = $new_sc[$style]['defaultStyleCard']['color'][$i];
                         }
+                        // Step 4: If still missing, get from standard default SC
+                        elseif (isset($default_maxi_sc[$style]['defaultStyleCard']['color'][$i])) {
+                            $all_colors[$i] = $default_maxi_sc[$style]['defaultStyleCard']['color'][$i];
+                        }
+                    }
+                }
+
+                // Generate CSS variables for all available colors
+                for ($i = 1; $i <= 8; $i++) {
+                    if (isset($all_colors[$i])) {
+                        $var_name = "--maxi-{$style}-color-{$i}";
+                        $organized_values[$style]['color'][$i] = [
+                            'value' => $all_colors[$i],
+                            'var_name' => $var_name
+                        ];
                     }
                 }
 

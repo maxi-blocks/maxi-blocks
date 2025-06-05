@@ -28,8 +28,17 @@ class MaxiBlocks_QuickStart_Register
      */
     public static function activate()
     {
-        // Only set the redirect transient if quick start hasn't been completed
-        if (!get_option('maxi_blocks_quick_start_completed')) {
+        global $wpdb;
+
+        // Check if this is a first-time installation by checking if the
+        // maxi_blocks_styles_blocks table is empty. Empty table = no prior usage
+        $table_name = $wpdb->prefix . 'maxi_blocks_styles_blocks';
+        $has_styles = $wpdb->get_var("SELECT COUNT(*) FROM `{$table_name}`");
+        $quick_start_completed = get_option('maxi_blocks_quick_start_completed');
+
+        // Set redirect transient only for genuine first-time users
+        // Empty styles table indicates they've never used MaxiBlocks before
+        if ($has_styles == 0 && !$quick_start_completed) {
             set_transient('maxi_blocks_activation_redirect', true, 30);
         }
     }

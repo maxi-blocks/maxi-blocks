@@ -33,7 +33,15 @@ class MaxiBlocks_QuickStart_Register
         // Check if this is a first-time installation by checking if the
         // maxi_blocks_styles_blocks table is empty. Empty table = no prior usage
         $table_name = $wpdb->prefix . 'maxi_blocks_styles_blocks';
-        $has_styles = $wpdb->get_var("SELECT COUNT(*) FROM `{$table_name}`");
+
+        // First check if the table exists
+        $table_exists = $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name));
+        $has_styles = 0;
+
+        // Only query count if table exists
+        if ($table_exists) {
+            $has_styles = $wpdb->get_var("SELECT COUNT(*) FROM `{$table_name}`");
+        }
         $quick_start_completed = get_option('maxi_blocks_quick_start_completed');
 
         // Set redirect transient only for genuine first-time users

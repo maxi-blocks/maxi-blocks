@@ -1202,6 +1202,10 @@ class MaxiBlocks_StyleCards
 
     private static function get_organized_values($style_card)
     {
+        // Get default style card for fallback values
+        $default_sc = json_decode(self::get_default_style_card(), true);
+        $default_maxi_sc = $default_sc['sc_maxi'] ?? [];
+
         $organized_values = [];
         $styles = ['light', 'dark'];
         $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation'];

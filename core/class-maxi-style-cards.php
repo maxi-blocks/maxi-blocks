@@ -149,7 +149,7 @@ class MaxiBlocks_StyleCards
             return $style;
         }
 
-        // Re-use the centralized helper – it already performs all validations
+        // Re-use the centralized helper - it already performs all validations
         $active_style_card = self::get_maxi_blocks_active_style_card();
 
         // Bail out early when no active card is available
@@ -1198,21 +1198,6 @@ class MaxiBlocks_StyleCards
             }
         }
         return false;
-    }
-
-    // Helper function to handle array values
-    private static function stringify_value($value)
-    {
-        if (is_array($value)) {
-            if (isset($value['value'])) {
-                return $value['value'];
-            }
-            if (isset($value[0])) {
-                return $value[0];
-            }
-            return json_encode($value);
-        }
-        return $value;
     }
 
     private static function get_organized_values($style_card)

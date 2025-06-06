@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-05T10:27:23+00:00\n"
+"POT-Creation-Date: 2025-06-06T09:53:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -1605,7 +1605,7 @@ msgstr ""
 msgid "Delete old file: invalid file path"
 msgstr ""
 
-#: core/class-maxi-style-cards.php:1330
+#: core/class-maxi-style-cards.php:1178
 #, php-format
 msgid "Style Card imported successfully as \"%s\""
 msgstr ""

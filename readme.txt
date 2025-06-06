@@ -173,7 +173,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 5 Jun 2025_
+_Updates 9 Jun 2025_
 MaxiBlocks v2.1.1
 * Update: Introduced a redesigned user interface for the plugin, delivering a more intuitive and modern editing experience.
 * Update: Launched Starter Sites functionality, enabling users to quickly launch pre-built websites and accelerate their development workflow.

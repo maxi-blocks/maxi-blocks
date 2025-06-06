@@ -185,7 +185,7 @@ MaxiBlocks v2.1.1
 * Update: Added comprehensive PHP 8.4 support, ensuring forward compatibility and optimal performance on the latest PHP versions.
 * Update: Significantly expanded plugin testing infrastructure with comprehensive unit test coverage, improving overall code reliability and stability across all features.
 * Security: Fixed missing authorization to authenticated (contributor+) arbitrary options update (CVE-2025-47601). Thanks to Cút lộn xào me for the responsible disclosure.
-* Fix: Resolved styling issues with custom category, tag, and author templates on frontend, ensuring consistent visual presentation.
+* Fix: Resolved styling issues with custom category, tag, and author templates on the frontend, ensuring consistent visual presentation.
 * Fix: Corrected Content Loop resetting behavior when interacting with Row blocks, maintaining user selections and workflow continuity.
 * Fix: Restored keyboard shortcuts (Ctrl+B, Ctrl+I) functionality for Text block formatting, improving editing efficiency.
 * Fix: Enhanced pattern placeholder image upload process for first-time users, eliminating upload failures and improving onboarding experience.

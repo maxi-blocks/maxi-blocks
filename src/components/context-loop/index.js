@@ -403,6 +403,7 @@ const ContextLoop = props => {
 								'cl-type': getDefaultAttribute('cl-type'),
 							})
 						}
+						className='maxi-context-loop-control__type'
 					/>
 					{isEmpty(postIdOptions) &&
 					type !== 'settings' &&
@@ -428,6 +429,7 @@ const ContextLoop = props => {
 												),
 										})
 									}
+									className='maxi-context-loop-control__relation'
 								/>
 							)}
 							{contentType !== 'container' &&
@@ -611,6 +613,7 @@ const ContextLoop = props => {
 													'cl-pagination': value,
 												})
 											}
+											className='maxi-context-loop-control__pagination'
 										/>
 									)}
 									{!isToolbar && paginationEnabled && (

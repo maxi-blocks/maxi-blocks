@@ -149,7 +149,7 @@ class MaxiBlocks_StyleCards
             return $style;
         }
 
-        // Re-use the centralized helper – it already performs all validations
+        // Re-use the centralized helper - it already performs all validations
         $active_style_card = self::get_maxi_blocks_active_style_card();
 
         // Bail out early when no active card is available
@@ -1092,160 +1092,8 @@ class MaxiBlocks_StyleCards
                 )
             );
 
-            // Create variables object
-            $organized_values = [];
-            $styles = ['light', 'dark'];
-            $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation'];
-            $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-            $settings = [
-                'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
-                'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
-                'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
-                'padding-top', 'padding-left', 'padding-right'
-            ];
-
-            foreach ($styles as $style) {
-                // Merge defaultStyleCard and styleCard
-                $style_data = array_merge(
-                    $new_sc[$style]['defaultStyleCard'] ?? [],
-                    $new_sc[$style]['styleCard'] ?? []
-                );
-
-                foreach ($elements as $element) {
-                    if (!isset($style_data[$element])) {
-                        continue;
-                    }
-
-                    // Special handling for navigation
-                    if ($element === 'navigation') {
-                        // Handle navigation properties which might have specific units or formats
-                        foreach ($breakpoints as $breakpoint) {
-                            // Handle navigation specific properties
-                            $nav_props = [
-                                'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
-                                'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
-                                'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
-                                'padding-top', 'padding-left', 'padding-right'
-                            ];
-
-                            foreach ($nav_props as $prop) {
-                                $prop_key = "{$prop}-{$breakpoint}";
-                                $unit_key = "{$prop}-unit-{$breakpoint}";
-
-                                if (isset($style_data[$element][$prop_key])) {
-                                    $value = $style_data[$element][$prop_key];
-
-                                    // Add units if needed for numeric values
-                                    if (is_numeric($value)) {
-                                        // Get unit from style card if available
-                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : null;
-
-                                        // Use appropriate default unit if not specified
-                                        if ($unit === null || $unit === '') {
-                                            if ($prop === 'line-height') {
-                                                $unit = '%'; // Default to % for navigation line-height
-                                            } else {
-                                                $unit = 'px'; // Default to px for other properties
-                                            }
-                                        }
-
-                                        $value .= $unit;
-                                    } else if ($prop === 'font-family') {
-                                        $value = "\"{$value}\"";
-                                    }
-
-                                    $var_name = "--maxi-{$style}-{$element}-{$prop}-{$breakpoint}";
-                                    $organized_values[$style][$element][$breakpoint][$prop] = [
-                                        'value' => $value,
-                                        'var_name' => $var_name
-                                    ];
-                                }
-                            }
-                        }
-
-                        continue; // Skip regular processing for navigation
-                    }
-
-                    foreach ($settings as $setting) {
-                        foreach ($breakpoints as $breakpoint) {
-                            $key = "{$setting}-{$breakpoint}";
-                            $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
-
-                            if (isset($style_data[$element][$key])) {
-                                $value = $style_data[$element][$key];
-
-                                // Add units if needed
-                                if ($setting === 'font-family') {
-                                    $value = "\"{$value}\"";
-                                } elseif ($setting === 'line-height') {
-                                    if (is_numeric($value)) {
-                                        // Get the appropriate unit if specified in the style card
-                                        $unit_key = "line-height-unit-{$breakpoint}";
-                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
-
-                                        // Default to px if no unit is specified, except for button which defaults to %
-                                        if ($unit === null || $unit === '') {
-                                            $unit = ($element === 'button') ? '%' : 'px';
-                                        }
-
-                                        $value .= $unit;
-                                    }
-                                } elseif (in_array($setting, ['font-size', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'])) {
-                                    if (is_numeric($value)) {
-                                        // Check for a unit specification
-                                        $unit_key = "{$setting}-unit-{$breakpoint}";
-                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
-
-                                        // Default to px if no unit is specified
-                                        if ($unit === null || $unit === '') {
-                                            $unit = 'px';
-                                        }
-
-                                        $value .= $unit;
-                                    }
-                                }
-
-                                $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
-                                $organized_values[$style][$element][$breakpoint][$setting] = [
-                                    'value' => $value,
-                                    'var_name' => $var_name
-                                ];
-                            }
-                        }
-                    }
-                }
-
-                // Process colors
-                if (isset($style_data['color'])) {
-                    for ($i = 1; $i <= 8; $i++) {
-                        if (isset($style_data['color'][$i])) {
-                            $var_name = "--maxi-{$style}-color-{$i}";
-                            $organized_values[$style]['color'][$i] = [
-                                'value' => $style_data['color'][$i],
-                                'var_name' => $var_name
-                            ];
-                        }
-                    }
-                }
-
-                // Add menu-related properties
-                $menu_props = [
-                    'menu-item' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
-                    'menu-burger' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
-                    'menu-item-hover' => "rgba(var(--maxi-{$style}-color-6, 172, 28, 92), 1)",
-                    'menu-item-visited' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
-                    'menu-item-sub-bg' => "rgba(var(--maxi-{$style}-color-1, " . ($style === 'light' ? '255, 255, 255' : '0, 0, 0') . "), 1)",
-                    'menu-mobile-bg' => "rgba(var(--maxi-{$style}-color-1, " . ($style === 'light' ? '255, 255, 255' : '0, 0, 0') . "), 1)",
-                ];
-
-                foreach ($menu_props as $prop => $value) {
-                    $var_name = "--maxi-{$style}-{$prop}";
-                    $organized_values[$style]['menu'][$prop] = [
-                        'value' => $value,
-                        'var_name' => $var_name
-                    ];
-                }
-            }
+            // Use the proper organized values processing that handles all properties correctly
+            $organized_values = self::get_organized_values($new_sc);
 
             // Generate CSS variables string
             $var_sc_string = ':root{';
@@ -1352,23 +1200,12 @@ class MaxiBlocks_StyleCards
         return false;
     }
 
-    // Helper function to handle array values
-    private static function stringify_value($value)
-    {
-        if (is_array($value)) {
-            if (isset($value['value'])) {
-                return $value['value'];
-            }
-            if (isset($value[0])) {
-                return $value[0];
-            }
-            return json_encode($value);
-        }
-        return $value;
-    }
-
     private static function get_organized_values($style_card)
     {
+        // Get default style card for fallback values
+        $default_sc = json_decode(self::get_default_style_card(), true);
+        $default_maxi_sc = $default_sc['sc_maxi'] ?? [];
+
         $organized_values = [];
         $styles = ['light', 'dark'];
         $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation'];
@@ -1393,8 +1230,8 @@ class MaxiBlocks_StyleCards
         ];
 
         foreach ($styles as $style) {
-            // Merge defaultStyleCard and styleCard for the current style
-            $style_data = array_merge(
+            // Merge defaultStyleCard and styleCard for the current style using deep merge
+            $style_data = array_replace_recursive(
                 $style_card[$style]['defaultStyleCard'] ?? [],
                 $style_card[$style]['styleCard'] ?? []
             );
@@ -1432,16 +1269,32 @@ class MaxiBlocks_StyleCards
                                 ];
                             }
                         }
-                        // Handle other elements
+                                                // Handle other elements
                         elseif (isset($style_data[$element][$key])) {
                             $value = $style_data[$element][$key];
 
                             // Add units if needed
                             if ($setting === 'font-family') {
+                                // Special case for button: if font-family is empty, use p font-family
+                                if ($element === 'button' && ($value === '' || $value === null)) {
+                                    $p_font_family_key = "font-family-{$breakpoint}";
+                                    $value = isset($style_data['p'][$p_font_family_key])
+                                        ? $style_data['p'][$p_font_family_key]
+                                        : '';
+                                }
                                 $value = "\"{$value}\"";
                             } elseif (in_array($setting, ['font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'])) {
                                 if (is_numeric($value)) {
-                                    $value .= 'px';
+                                    // Check for unit specification
+                                    $unit_key = "{$setting}-unit-{$breakpoint}";
+                                    $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
+
+                                    // Default to px if no unit is specified
+                                    if ($unit === null || $unit === '') {
+                                        $unit = 'px';
+                                    }
+
+                                    $value .= $unit;
                                 }
                             }
 
@@ -1463,6 +1316,43 @@ class MaxiBlocks_StyleCards
                             'var_name' => "--maxi-{$style}-color-{$i}"
                         ];
                     }
+                }
+            }
+
+                        // Menu colors - generate navigation menu color variables
+            if (isset($style_data['navigation'])) {
+                // Get default navigation settings from $default_maxi_sc
+                $default_navigation = $default_maxi_sc[$style]['defaultStyleCard']['navigation'] ?? [];
+
+                $menu_color_mappings = [
+                    'menu-item' => 'menu-item-palette-color',
+                    'menu-burger' => 'menu-burger-palette-color',
+                    'menu-item-hover' => 'menu-item-hover-palette-color',
+                    'menu-item-current' => 'menu-item-current-palette-color',
+                    'menu-item-visited' => 'menu-item-visited-palette-color',
+                    'menu-item-sub-bg' => 'menu-item-sub-bg-palette-color',
+                    'menu-item-sub-bg-hover' => 'menu-item-sub-bg-hover-palette-color',
+                    'menu-mobile-bg' => 'menu-mobile-bg-palette-color'
+                ];
+
+                foreach ($menu_color_mappings as $menu_prop => $palette_key) {
+                    // Get the palette color number from navigation settings or default
+                    $palette_color = isset($style_data['navigation'][$palette_key])
+                        ? $style_data['navigation'][$palette_key]
+                        : ($default_navigation[$palette_key] ?? 5);
+
+                    // Get the actual color value from the color palette or default
+                    $color_value = isset($style_data['color'][$palette_color])
+                        ? $style_data['color'][$palette_color]
+                        : ($default_maxi_sc[$style]['defaultStyleCard']['color'][$palette_color] ?? '0,0,0');
+
+                    $var_name = "--maxi-{$style}-{$menu_prop}";
+                    $rgba_value = "rgba(var(--maxi-{$style}-color-{$palette_color},{$color_value}),1)";
+
+                    $organized_values[$style]['menu'][$menu_prop] = [
+                        'value' => $rgba_value,
+                        'var_name' => $var_name
+                    ];
                 }
             }
         }

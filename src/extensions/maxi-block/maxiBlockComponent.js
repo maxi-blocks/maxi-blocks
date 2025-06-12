@@ -167,13 +167,8 @@ class MaxiBlockComponent extends Component {
 	componentDidMount() {
 		this.updateDOMReferences();
 
-		const {
-			uniqueID,
-			isFirstOnHierarchy,
-			legacyUniqueID,
-			'maxi-version-current': maxiVersionCurrent,
-			'maxi-version-origin': maxiVersionOrigin,
-		} = this.props.attributes;
+		const { uniqueID, isFirstOnHierarchy, legacyUniqueID } =
+			this.props.attributes;
 
 		if (this.isPatternsPreview || this.templateModal) return;
 

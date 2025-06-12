@@ -28,6 +28,9 @@ const BlockStylesControl = props => {
 	const { onChange, isFirstOnHierarchy, className, blockStyle, clientId } =
 		props;
 
+	// Fallback to getBlockStyle if blockStyle prop is undefined
+	const effectiveBlockStyle = blockStyle ?? getBlockStyle(clientId);
+
 	const classes = classnames('maxi-block-style-control', className);
 
 	const getSelectorOptions = () => {
@@ -87,7 +90,7 @@ const BlockStylesControl = props => {
 					__nextHasNoMarginBottom
 					label={__('Block tone', 'maxi-blocks')}
 					className={classes}
-					value={blockStyle}
+					value={effectiveBlockStyle}
 					options={getSelectorOptions()}
 					onChange={blockStyle => {
 						getAllInnerBlocks(clientId, blockStyle);

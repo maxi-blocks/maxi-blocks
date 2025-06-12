@@ -9,6 +9,7 @@ const getBlockStyle = clientId => {
 		getBlockAttributes,
 		getSelectedBlockClientId,
 		getFirstMultiSelectedBlockClientId,
+		getBlockParents,
 	} = select('core/block-editor');
 
 	const id =
@@ -21,10 +22,15 @@ const getBlockStyle = clientId => {
 	const blockAttributes = getBlockAttributes(id);
 	if (blockAttributes?.blockStyle) return blockAttributes.blockStyle;
 
-	// Only check root if the current block doesn't have a style
-	const rootClientId = getBlockHierarchyRootClientId(id);
+	// Check parent blocks hierarchy for blockStyle
+	const parentIds = getBlockParents(id);
+	for (const parentId of parentIds) {
+		const parentAttributes = getBlockAttributes(parentId);
+		if (parentAttributes?.blockStyle) return parentAttributes.blockStyle;
+	}
 
-	// Fix for WP 6.8 RC3: Don't use root style if it's the same as current block
+	// Fallback to root if no parent has blockStyle
+	const rootClientId = getBlockHierarchyRootClientId(id);
 	if (rootClientId && rootClientId !== id) {
 		const rootAttributes = getBlockAttributes(rootClientId);
 		if (rootAttributes?.blockStyle) return rootAttributes.blockStyle;

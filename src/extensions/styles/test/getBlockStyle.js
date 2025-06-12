@@ -11,11 +11,14 @@ describe('getBlockStyle', () => {
 		getBlockAttributes: jest.fn(),
 		getSelectedBlockClientId: jest.fn(),
 		getFirstMultiSelectedBlockClientId: jest.fn(),
+		getBlockParents: jest.fn(),
 	};
 
 	beforeEach(() => {
 		jest.clearAllMocks();
 		select.mockReturnValue(mockBlockEditorStore);
+		// Set default return value for getBlockParents
+		mockBlockEditorStore.getBlockParents.mockReturnValue([]);
 	});
 
 	it('Returns blockStyle from current block if available', () => {

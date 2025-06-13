@@ -143,7 +143,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			// Hidden textarea for copy functionality
 			$content .=
 				'<textarea readonly="readonly" id="maxi-copy-report-content" style="display:none;">';
-			$content .= $this->generate_report_text([
+			$content .= esc_textarea($this->generate_report_text([
 				'mu_plugins' => $mu_plugins,
 				'plugins' => $plugins,
 				'active' => $active,
@@ -158,7 +158,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 				'site_text_dir' => $site_text_dir,
 				'hascurl' => $hascurl,
 				'openssl' => $openssl,
-			]);
+			]));
 			$content .= '</textarea>';
 
 			$content .= '</div>';

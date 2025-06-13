@@ -174,58 +174,76 @@ add_action('admin_enqueue_scripts', 'plugin_maxiblocks_go_fse_admin_script');
 /**
  * One-time migrator to remove ' maxi-block--has-link' from blog-home-page-dark-bhpd-pro-02.php
  */
-function plugin_maxiblocks_go_migrate_has_link_classes() {
+function plugin_maxiblocks_go_migrate_has_link_classes()
+{
 	// Check if templates have been imported
 	$templates_imported = get_option('maxiblocks_go_templates_imported', false);
 
 	// Check if migration has already been run
-	$migration_completed = get_option(
-		'maxiblocks_go_has_link_migration_completed',
-		false,
-	);
+	$migration_completed = get_option('maxiblocks_go_has_link_migration_completed', false);
 
 	// Only run if templates are imported and migration hasn't been completed
 	if ($templates_imported && !$migration_completed) {
+		// Initialize WP Filesystem API
+		if (!function_exists('WP_Filesystem')) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// Initialize filesystem with credentials
+		$credentials = request_filesystem_credentials('', '', false, false, array());
+		if (!WP_Filesystem($credentials)) {
+			// Mark as completed to prevent repeated attempts if filesystem is not accessible
+			update_option('maxiblocks_go_has_link_migration_completed', 'skipped-no-filesystem');
+			return;
+		}
+
+		global $wp_filesystem;
+
 		// Target the copied file in the maxiblocks-go theme, regardless of active theme
-		$pattern_file_path =
-			get_theme_root() .
-			'/maxiblocks-go/patterns/blog-home-page-dark-bhpd-pro-02.php';
+		$pattern_file_path = get_theme_root() . '/maxiblocks-go/patterns/blog-home-page-dark-bhpd-pro-02.php';
 
 		// Check if file exists
-		if (file_exists($pattern_file_path)) {
-			// Read the file content
-			$file_content = file_get_contents($pattern_file_path);
+		if ($wp_filesystem->exists($pattern_file_path)) {
+			// Check if file is readable
+			if ($wp_filesystem->is_readable($pattern_file_path)) {
+				// Read the file content
+				$file_content = $wp_filesystem->get_contents($pattern_file_path);
 
-			if ($file_content !== false) {
-				// Remove all occurrences of ' maxi-block--has-link'
-				$updated_content = str_replace(
-					' maxi-block--has-link',
-					'',
-					$file_content,
-				);
+				if ($file_content !== false) {
+					// Remove all occurrences of ' maxi-block--has-link'
+					$updated_content = str_replace(' maxi-block--has-link', '', $file_content);
 
-				// Only write if there were changes
-				if ($updated_content !== $file_content) {
-					// Write the updated content back to the file
-					if (
-						file_put_contents(
-							$pattern_file_path,
-							$updated_content,
-						) !== false
-					) {
-						// Mark migration as completed
-						update_option(
-							'maxiblocks_go_has_link_migration_completed',
-							true,
-						);
+					// Only write if there were changes
+					if ($updated_content !== $file_content) {
+						// Check if file is writable before attempting to write
+						if ($wp_filesystem->is_writable($pattern_file_path)) {
+							// Write the updated content back to the file
+							if ($wp_filesystem->put_contents($pattern_file_path, $updated_content)) {
+								// Mark migration as completed
+								update_option('maxiblocks_go_has_link_migration_completed', true);
+							} else {
+								// Mark as failed to prevent repeated attempts
+								update_option('maxiblocks_go_has_link_migration_completed', 'failed-write-error');
+							}
+						} else {
+							// Mark as failed due to write permissions
+							update_option('maxiblocks_go_has_link_migration_completed', 'failed-not-writable');
+						}
+					} else {
+						// No changes needed, mark as completed anyway
+						update_option('maxiblocks_go_has_link_migration_completed', 'completed-no-changes');
 					}
 				} else {
-					update_option(
-						'maxiblocks_go_has_link_migration_completed',
-						true,
-					);
+					// Mark as failed due to read error
+					update_option('maxiblocks_go_has_link_migration_completed', 'failed-read-error');
 				}
+			} else {
+				// Mark as skipped due to read permissions
+				update_option('maxiblocks_go_has_link_migration_completed', 'skipped-not-readable');
 			}
+		} else {
+			// Mark as skipped since file doesn't exist
+			update_option('maxiblocks_go_has_link_migration_completed', 'skipped-file-not-found');
 		}
 	}
 }

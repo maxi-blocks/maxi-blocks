@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * WordPress dependencies
  */
@@ -191,16 +190,12 @@ const ColorLayer = props => {
 		<>
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
-				color={(() => {
-					const color = getLastBreakpointAttribute({
-						target: `${prefix}background-color`,
-						breakpoint,
-						attributes: colorOptions,
-						isHover,
-					});
-
-					return color;
-				})()}
+				color={getLastBreakpointAttribute({
+					target: `${prefix}background-color`,
+					breakpoint,
+					attributes: colorOptions,
+					isHover,
+				})}
 				prefix={`${prefix}background-`}
 				defaultColorAttributes={getDefaultAttr()}
 				{...(isLayer && { onReset })}
@@ -216,16 +211,12 @@ const ColorLayer = props => {
 					attributes: colorOptions,
 					isHover,
 				})}
-				paletteColor={(() => {
-					const paletteColor = getLastBreakpointAttribute({
-						target: `${prefix}background-palette-color`,
-						breakpoint,
-						attributes: colorOptions,
-						isHover,
-					});
-
-					return paletteColor;
-				})()}
+				paletteColor={getLastBreakpointAttribute({
+					target: `${prefix}background-palette-color`,
+					breakpoint,
+					attributes: colorOptions,
+					isHover,
+				})}
 				paletteOpacity={getLastBreakpointAttribute({
 					target: `${prefix}background-palette-opacity`,
 					breakpoint,

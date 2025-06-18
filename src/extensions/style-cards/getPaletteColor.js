@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * Internal dependencies
  */

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * Wordpress dependencies
  */

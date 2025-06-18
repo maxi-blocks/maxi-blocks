@@ -833,7 +833,7 @@ class MaxiBlocks_DynamicContent
             foreach ($layers as $layer) {
                 // Add defensive check to ensure $layer is an array before using array_key_exists
                 if (!is_array($layer)) {
-                    // Log the issue for debugging but continue processing
+                    // Continue processing
                     continue;
                 }
 

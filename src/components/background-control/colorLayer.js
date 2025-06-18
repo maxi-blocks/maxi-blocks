@@ -162,7 +162,7 @@ const ColorLayer = props => {
 				paletteStatus: defaultColorAttr.paletteStatus,
 				paletteSCStatus: defaultColorAttr.paletteSCStatus,
 				paletteColor: defaultColorAttr.paletteColor,
-				paletteOpacity: paletteOpacity ?? 1,
+				paletteOpacity: paletteOpacity || 1,
 				color,
 			});
 		else {
@@ -173,7 +173,7 @@ const ColorLayer = props => {
 			});
 
 			const defaultColor = `rgba(${paletteColorResult},${
-				paletteOpacity ?? 1
+				paletteOpacity || 1
 			})`;
 
 			onChangeColor({

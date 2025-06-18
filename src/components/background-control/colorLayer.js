@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * WordPress dependencies
  */
@@ -166,11 +167,15 @@ const ColorLayer = props => {
 				color,
 			});
 		else {
-			const defaultColor = `rgba(${getPaletteColor({
+			const paletteColorResult = getPaletteColor({
 				clientId,
 				color: defaultColorAttr.paletteColor,
 				blockStyle: getBlockStyle(clientId),
-			})},${paletteOpacity || 1})`;
+			});
+
+			const defaultColor = `rgba(${paletteColorResult},${
+				paletteOpacity || 1
+			})`;
 
 			onChangeColor({
 				paletteStatus,
@@ -186,12 +191,16 @@ const ColorLayer = props => {
 		<>
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
-				color={getLastBreakpointAttribute({
-					target: `${prefix}background-color`,
-					breakpoint,
-					attributes: colorOptions,
-					isHover,
-				})}
+				color={(() => {
+					const color = getLastBreakpointAttribute({
+						target: `${prefix}background-color`,
+						breakpoint,
+						attributes: colorOptions,
+						isHover,
+					});
+
+					return color;
+				})()}
 				prefix={`${prefix}background-`}
 				defaultColorAttributes={getDefaultAttr()}
 				{...(isLayer && { onReset })}
@@ -207,12 +216,16 @@ const ColorLayer = props => {
 					attributes: colorOptions,
 					isHover,
 				})}
-				paletteColor={getLastBreakpointAttribute({
-					target: `${prefix}background-palette-color`,
-					breakpoint,
-					attributes: colorOptions,
-					isHover,
-				})}
+				paletteColor={(() => {
+					const paletteColor = getLastBreakpointAttribute({
+						target: `${prefix}background-palette-color`,
+						breakpoint,
+						attributes: colorOptions,
+						isHover,
+					});
+
+					return paletteColor;
+				})()}
 				paletteOpacity={getLastBreakpointAttribute({
 					target: `${prefix}background-palette-opacity`,
 					breakpoint,

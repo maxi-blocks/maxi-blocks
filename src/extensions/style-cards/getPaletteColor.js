@@ -57,9 +57,9 @@ const getPaletteColor = ({ clientId, color, blockStyle = '' }) => {
 			return getCustomColorFromCSS(resolvedBlockStyle, customIndex);
 		}
 
-		return getComputedStyle(document.documentElement).getPropertyValue(
-			`--maxi-${resolvedBlockStyle}-color-${color}`
-		);
+		return getComputedStyle(document.documentElement)
+			.getPropertyValue(`--maxi-${resolvedBlockStyle}-color-${color}`)
+			.trim();
 	}
 
 	const SCValue = activeStyleCard.value;

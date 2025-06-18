@@ -103,7 +103,7 @@ const traverseAndResetDefault = (
 							'palette-color',
 							'palette-opacity'
 						);
-						const opacity = currentObject[opacityKey] || 1;
+						const opacity = currentObject[opacityKey] ?? 1;
 
 						try {
 							const paletteRGB = getPaletteColor({
@@ -231,7 +231,7 @@ const handleDeletedCustomColor = deletedColorId => {
 									'palette-color',
 									'palette-opacity'
 								);
-								const opacity = modifiedLayer[opacityKey] || 1;
+								const opacity = modifiedLayer[opacityKey] ?? 1;
 
 								try {
 									const paletteRGB = getPaletteColor({

@@ -102,7 +102,7 @@ const ColorControl = props => {
 		return {
 			globalStatus,
 			globalPaletteColor,
-			globalPaletteOpacity: globalPaletteOpacity || 1,
+			globalPaletteOpacity: globalPaletteOpacity ?? 1,
 			customColors,
 		};
 	});
@@ -203,7 +203,7 @@ const ColorControl = props => {
 				onChange({
 					paletteStatus: defaultColorAttr.paletteStatus,
 					paletteColor: defaultColorAttr.paletteColor,
-					paletteOpacity: paletteOpacity || 1,
+					paletteOpacity: paletteOpacity ?? 1,
 					color,
 				});
 			else {
@@ -220,7 +220,7 @@ const ColorControl = props => {
 						clientId,
 						color: paletteColor,
 						blockStyle,
-					})},${paletteOpacity || 1})`;
+					})},${paletteOpacity ?? 1})`;
 				}
 
 				onChange({
@@ -253,7 +253,7 @@ const ColorControl = props => {
 			paletteOpacity: opacity,
 			...(color && {
 				color: `rgba(${getColorRGBAParts(color).color},${
-					opacity || 1
+					opacity ?? 1
 				})`,
 			}),
 			isReset: true,
@@ -278,7 +278,7 @@ const ColorControl = props => {
 										clientId,
 										color: paletteColor,
 										blockStyle,
-									})},${paletteOpacity || 1})`,
+									})},${paletteOpacity ?? 1})`,
 								}),
 						})
 					}
@@ -327,7 +327,7 @@ const ColorControl = props => {
 												color: paletteColor,
 												blockStyle,
 											}
-										)},${paletteOpacity || 1})`;
+										)},${paletteOpacity ?? 1})`;
 									} else {
 										const matchedCustomColor =
 											customColors.find(

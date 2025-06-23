@@ -59,6 +59,7 @@ const getLayerCardContent = props => {
 		previewRef,
 		getBounds,
 		getBlockClipPath, // for IB
+		clientId,
 	} = props;
 
 	const handleGetBounds = () =>
@@ -96,6 +97,7 @@ const getLayerCardContent = props => {
 					isHover={isHover}
 					isIB={isIB}
 					isLayer
+					clientId={clientId}
 					getBounds={handleGetBounds}
 					getBlockClipPath={handleGetBlockClipPath}
 				/>
@@ -547,6 +549,7 @@ const BackgroundLayersControl = ({
 										previewRef,
 										getBounds,
 										getBlockClipPath, // for IB
+										clientId,
 									})}
 									id={layer.order}
 									onRemove={() => onRemoveLayer(layer)}

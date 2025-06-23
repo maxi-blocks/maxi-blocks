@@ -831,6 +831,12 @@ class MaxiBlocks_DynamicContent
             }
 
             foreach ($layers as $layer) {
+                // Add defensive check to ensure $layer is an array before using array_key_exists
+                if (!is_array($layer)) {
+                    // Continue processing
+                    continue;
+                }
+
                 if (
                     array_key_exists('dc-status', $layer) &&
                     $layer['dc-status'] &&

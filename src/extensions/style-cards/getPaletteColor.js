@@ -32,9 +32,19 @@ const getCustomColorFromCSS = (blockStyle, customIndex) => {
 	return '0, 0, 0';
 };
 
-const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
+/**
+ * Retrieves the palette color value.
+ *
+ * @param {Object}        props            - The properties object.
+ * @param {string}        props.clientId   - The client ID.
+ * @param {string|number} props.color      - The color value (1-8 for standard palette, or large number for custom).
+ * @param {string}        props.blockStyle - The block style.
+ *
+ * @return {string} The palette color value in RGB format.
+ */
+const getPaletteColor = ({ clientId, color, blockStyle = '' }) => {
 	const activeStyleCard = getActiveStyleCard();
-	const blockStyle = rawBlockStyle ?? getBlockStyle(clientId);
+	const resolvedBlockStyle = blockStyle || getBlockStyle(clientId);
 
 	if (
 		!activeStyleCard ||
@@ -44,12 +54,12 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 		// Check if it's a custom color
 		if (typeof color === 'string' && color.startsWith('custom-')) {
 			const customIndex = parseInt(color.replace('custom-', ''), 10);
-			return getCustomColorFromCSS(blockStyle, customIndex);
+			return getCustomColorFromCSS(resolvedBlockStyle, customIndex);
 		}
 
-		return getComputedStyle(document.documentElement).getPropertyValue(
-			`--maxi-${blockStyle}-color-${color}`
-		);
+		return getComputedStyle(document.documentElement)
+			.getPropertyValue(`--maxi-${resolvedBlockStyle}-color-${color}`)
+			.trim();
 	}
 
 	const SCValue = activeStyleCard.value;
@@ -61,16 +71,16 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 		// Try to get custom colors from multiple possible locations in order of specificity
 		const customColorsLocations = [
 			// First check current style
-			SCValue[blockStyle]?.styleCard?.color?.customColors,
+			SCValue[resolvedBlockStyle]?.styleCard?.color?.customColors,
 			// Then try the color root object (backward compatibility)
 			SCValue.color?.customColors,
 			// Then try defaultStyleCard
-			SCValue[blockStyle]?.defaultStyleCard?.color?.customColors,
+			SCValue[resolvedBlockStyle]?.defaultStyleCard?.color?.customColors,
 			// Try the opposite style (light/dark)
-			SCValue[blockStyle === 'light' ? 'dark' : 'light']?.styleCard?.color
-				?.customColors,
-			SCValue[blockStyle === 'light' ? 'dark' : 'light']?.defaultStyleCard
-				?.color?.customColors,
+			SCValue[resolvedBlockStyle === 'light' ? 'dark' : 'light']
+				?.styleCard?.color?.customColors,
+			SCValue[resolvedBlockStyle === 'light' ? 'dark' : 'light']
+				?.defaultStyleCard?.color?.customColors,
 		];
 
 		// Find first non-empty custom colors array
@@ -91,19 +101,58 @@ const getPaletteColor = ({ clientId, color, blockStyle: rawBlockStyle }) => {
 		}
 
 		// If we can't find the custom color in the style card, try to get it from CSS variables
-		return getCustomColorFromCSS(blockStyle, customIndex);
+		return getCustomColorFromCSS(resolvedBlockStyle, customIndex);
+	}
+
+	// Handle numeric custom color IDs (new format)
+	if (typeof color === 'number' && color >= 1000) {
+		// Try to get custom colors from multiple possible locations
+		const customColorsLocations = [
+			SCValue[resolvedBlockStyle]?.styleCard?.color?.customColors,
+			SCValue.color?.customColors,
+			SCValue[resolvedBlockStyle]?.defaultStyleCard?.color?.customColors,
+			SCValue[resolvedBlockStyle === 'light' ? 'dark' : 'light']
+				?.styleCard?.color?.customColors,
+			SCValue[resolvedBlockStyle === 'light' ? 'dark' : 'light']
+				?.defaultStyleCard?.color?.customColors,
+		];
+
+		// Find first non-empty custom colors array
+		const customColors =
+			customColorsLocations.find(
+				colors => Array.isArray(colors) && colors.length > 0
+			) || [];
+
+		// Find custom color by ID
+		const customColorObj = customColors.find(
+			colorObj => typeof colorObj === 'object' && colorObj.id === color
+		);
+
+		if (customColorObj?.value) {
+			return extractRGBValues(customColorObj.value);
+		}
+
+		// Fallback to palette color 1
+		return (
+			SCValue[resolvedBlockStyle]?.styleCard?.color?.[1] ||
+			SCValue[resolvedBlockStyle]?.defaultStyleCard?.color?.[1] ||
+			SCValue[resolvedBlockStyle === 'light' ? 'dark' : 'light']
+				?.styleCard?.color?.[1] ||
+			SCValue[resolvedBlockStyle === 'light' ? 'dark' : 'light']
+				?.defaultStyleCard?.color?.[1] ||
+			'0, 0, 0'
+		);
 	}
 
 	// Return color value from styleCard or defaultStyleCard with better fallbacks
 	return (
-		SCValue[blockStyle]?.styleCard?.color?.[color] ||
-		SCValue[blockStyle]?.defaultStyleCard?.color?.[color] ||
+		SCValue[resolvedBlockStyle]?.styleCard?.color?.[color] ||
+		SCValue[resolvedBlockStyle]?.defaultStyleCard?.color?.[color] ||
 		// Try opposite style as fallback
-		SCValue[blockStyle === 'light' ? 'dark' : 'light']?.styleCard?.color?.[
-			color
-		] ||
-		SCValue[blockStyle === 'light' ? 'dark' : 'light']?.defaultStyleCard
+		SCValue[resolvedBlockStyle === 'light' ? 'dark' : 'light']?.styleCard
 			?.color?.[color] ||
+		SCValue[resolvedBlockStyle === 'light' ? 'dark' : 'light']
+			?.defaultStyleCard?.color?.[color] ||
 		// Default fallback
 		'0, 0, 0'
 	);

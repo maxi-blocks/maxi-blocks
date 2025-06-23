@@ -6,13 +6,15 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isNil, set } from 'lodash';
+import { isNil, set, omit } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import goThroughMaxiBlocks from '@extensions/maxi-block/goThroughMaxiBlocks';
 import getDefaultAttribute from '@extensions/styles/getDefaultAttribute';
+import { getPaletteColor } from '@extensions/style-cards';
+import { getBlockStyle } from '@extensions/styles';
 
 const DEFAULT_PALETTE_COLOR_ID = 1; // Default to the first standard palette color
 
@@ -90,6 +92,46 @@ const traverseAndResetDefault = (
 						currentObject[key] = newValue;
 					}
 					modified = true;
+
+					// If this is a background-palette-color reset, also generate a proper background-color
+					if (key.includes('background-palette-color')) {
+						// Find the corresponding background-color key
+						const colorKey = key.replace('palette-color', 'color');
+
+						// Get opacity for the color calculation
+						const opacityKey = key.replace(
+							'palette-color',
+							'palette-opacity'
+						);
+						const opacity = currentObject[opacityKey] ?? 1;
+
+						try {
+							const paletteRGB = getPaletteColor({
+								clientId,
+								color: newValue,
+								blockStyle: getBlockStyle(clientId),
+							});
+
+							const generatedColor = `rgba(${paletteRGB}, ${opacity})`;
+
+							if (mutator) {
+								// For mutator, use the same path structure but replace the key
+								const colorKeyPath = keyPath.replace(
+									key,
+									colorKey
+								);
+								mutator(colorKeyPath, generatedColor);
+							} else {
+								// Direct modification
+								currentObject[colorKey] = generatedColor;
+							}
+						} catch (error) {
+							console.warn(
+								'[CustomColors] Failed to generate background color:',
+								error
+							);
+						}
+					}
 				} else if (
 					typeof currentObject[key] === 'object' &&
 					currentObject[key] !== null
@@ -115,14 +157,16 @@ const traverseAndResetDefault = (
 };
 
 /**
- * Handles the deletion of a custom color by updating blocks that use it to defaults.
+ * Handles blocks that have deleted custom colors by resetting them to appropriate defaults
  *
- * @param {number} deletedColorId The ID of the custom color that was deleted (e.g., 1000, 1001).
+ * @param {number} deletedColorId - The numeric ID of the deleted custom color
  */
 const handleDeletedCustomColor = deletedColorId => {
 	if (typeof deletedColorId !== 'number' || deletedColorId < 1000) {
-		// eslint-disable-next-line no-console
-		console.warn('Invalid deletedColorId for reset:', deletedColorId);
+		console.warn(
+			'[CustomColors] Invalid deletedColorId for reset:',
+			deletedColorId
+		);
 		return;
 	}
 
@@ -137,30 +181,116 @@ const handleDeletedCustomColor = deletedColorId => {
 				name: blockName,
 			} = block;
 
+			const hasBackgroundLayers =
+				!!originalAttributes['background-layers']?.length;
+
 			// Instead of deep cloning upfront, prepare an empty object for changes
 			const attributesCopy = {};
-			// Create a mutator that sets values in attributesCopy using the path
-			const mutator = (path, value) => {
-				// Use lodash's set to handle nested paths
-				set(attributesCopy, path, value);
-			};
+			let modified = false;
 
-			// Now traverse and record any changes in attributesCopy
-			const wasModified = traverseAndResetDefault(
-				originalAttributes,
+			// Process background layers specifically
+			if (
+				hasBackgroundLayers &&
+				Array.isArray(originalAttributes['background-layers'])
+			) {
+				let backgroundLayersModified = false;
+				const modifiedBackgroundLayers = originalAttributes[
+					'background-layers'
+				].map(layer => {
+					const modifiedLayer = { ...layer };
+					let layerModified = false;
+
+					// Check all attributes in the layer for custom color usage
+					Object.keys(modifiedLayer).forEach(key => {
+						if (
+							key.includes('palette-color') &&
+							Number(modifiedLayer[key]) === deletedColorId
+						) {
+							const blockSpecificDefault = getDefaultAttribute(
+								key,
+								clientId,
+								false,
+								blockName
+							);
+							const newValue =
+								typeof blockSpecificDefault === 'number' &&
+								!isNil(blockSpecificDefault)
+									? blockSpecificDefault
+									: DEFAULT_PALETTE_COLOR_ID;
+
+							modifiedLayer[key] = newValue;
+							layerModified = true;
+
+							// If this is a background-palette-color, also generate proper background-color
+							if (key.includes('background-palette-color')) {
+								const colorKey = key.replace(
+									'palette-color',
+									'color'
+								);
+								const opacityKey = key.replace(
+									'palette-color',
+									'palette-opacity'
+								);
+								const opacity = modifiedLayer[opacityKey] ?? 1;
+
+								try {
+									const paletteRGB = getPaletteColor({
+										clientId,
+										color: newValue,
+										blockStyle: getBlockStyle(clientId),
+									});
+
+									const generatedColor = `rgba(${paletteRGB}, ${opacity})`;
+
+									modifiedLayer[colorKey] = generatedColor;
+								} catch (error) {
+									// Failed to generate background color, continue silently
+								}
+							}
+						}
+					});
+
+					if (layerModified) {
+						backgroundLayersModified = true;
+					}
+
+					return modifiedLayer;
+				});
+
+				if (backgroundLayersModified) {
+					attributesCopy['background-layers'] =
+						modifiedBackgroundLayers;
+					modified = true;
+				}
+			}
+
+			// Use traverseAndResetDefault for non-background-layer attributes
+			// Filter out ALL background layer related attributes to prevent corruption
+			const nonBackgroundAttributes = omit(originalAttributes, [
+				'background-layers',
+				'background-layers-hover',
+			]);
+
+			const nonBackgroundModified = traverseAndResetDefault(
+				nonBackgroundAttributes,
 				deletedColorId,
 				clientId,
 				blockName,
 				false,
-				mutator
+				(path, value) => {
+					// Additional safety check - don't set any background-layer related paths
+					if (path.includes('background-layers')) {
+						return;
+					}
+					set(attributesCopy, path, value);
+				}
 			);
 
-			if (wasModified) {
-				// Merge with original attributes and update
-				updateBlockAttributes(clientId, {
-					...originalAttributes,
-					...attributesCopy,
-				});
+			modified = modified || nonBackgroundModified;
+
+			if (modified) {
+				// Apply all the accumulated changes
+				updateBlockAttributes(clientId, attributesCopy);
 			}
 			return false; // Continue iterating through all blocks
 		},

@@ -23,7 +23,6 @@ body.maxi-blocks--active .maxi-slider-block {
 		padding: 0;
 		margin: 0;
 		position: relative;
-		min-height: 200px; // Ensure minimum height for slides
 
 		&--edit-view {
 			flex-direction: column;
@@ -34,7 +33,6 @@ body.maxi-blocks--active .maxi-slider-block {
 		&:not(&--edit-view) {
 			.maxi-slide-block {
 				flex-shrink: 0;
-				transition: opacity 0.3s ease-in-out;
 
 				&:not([data-slide-active='true']) {
 					opacity: 0;

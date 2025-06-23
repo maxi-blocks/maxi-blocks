@@ -1,5 +1,4 @@
 /* eslint-disable max-classes-per-file */
-/* eslint-disable no-console */
 /* eslint-disable no-new */
 
 class Slide {

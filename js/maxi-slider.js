@@ -1,4 +1,6 @@
 /* eslint-disable max-classes-per-file */
+/* eslint-disable no-console */
+/* eslint-disable no-new */
 
 class Slide {
 	constructor(el, id) {
@@ -17,6 +19,10 @@ class Slide {
 	set isActive(activeSlideId) {
 		this._isActive = this._id === activeSlideId;
 		this._slide.classList.toggle('slider-item--active', this._isActive);
+		this._slide.setAttribute(
+			'data-slide-active',
+			this._isActive.toString()
+		);
 	}
 
 	get size() {

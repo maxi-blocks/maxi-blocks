@@ -22,10 +22,36 @@ body.maxi-blocks--active .maxi-slider-block {
 		height: 100%;
 		padding: 0;
 		margin: 0;
+		position: relative;
+		min-height: 200px; // Ensure minimum height for slides
 
 		&--edit-view {
 			flex-direction: column;
 			transform: none !important;
+		}
+
+		// Frontend slide transitions
+		&:not(&--edit-view) {
+			.maxi-slide-block {
+				flex-shrink: 0;
+				transition: opacity 0.3s ease-in-out;
+
+				&:not([data-slide-active='true']) {
+					opacity: 0;
+					pointer-events: none;
+					position: absolute;
+					top: 0;
+					left: 0;
+					z-index: 0;
+				}
+
+				&[data-slide-active='true'] {
+					opacity: 1;
+					pointer-events: auto;
+					position: relative;
+					z-index: 1;
+				}
+			}
 		}
 	}
 

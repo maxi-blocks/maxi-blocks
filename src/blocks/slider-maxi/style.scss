@@ -28,9 +28,11 @@ body.maxi-blocks--active .maxi-slider-block {
 			flex-direction: column;
 			transform: none !important;
 		}
+	}
 
-		// Frontend slide transitions
-		&:not(&--edit-view) {
+	// Frontend slide transitions for fade
+	&:not([data-transition='slide']) {
+		.maxi-slider-block__wrapper:not(.maxi-slider-block__wrapper--edit-view) {
 			.maxi-slide-block {
 				flex-shrink: 0;
 

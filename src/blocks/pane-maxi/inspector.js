@@ -139,7 +139,9 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.contextLoop({
 										props,
-										contentType: 'pane',
+									}),
+									...inspectorTabs.savedStyles({
+										props,
 									}),
 								]}
 							/>

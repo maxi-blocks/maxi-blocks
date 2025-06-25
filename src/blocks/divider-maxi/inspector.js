@@ -272,6 +272,9 @@ const Inspector = props => {
 										prefix: 'divider-',
 										disableInset: true,
 									}),
+									...inspectorTabs.savedStyles({
+										props,
+									}),
 								]}
 							/>
 						),

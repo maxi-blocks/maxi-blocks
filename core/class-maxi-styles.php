@@ -1202,8 +1202,8 @@ class MaxiBlocks_Styles
             $js_var = str_replace('-', '_', $script);
             $js_var_to_pass = 'maxi' . str_replace(' ', '', ucwords(str_replace('-', ' ', $script)));
             $js_script_name = 'maxi-' . $script;
-            //$js_script_path = '//js//min//' . $js_script_name . '.min.js';
-            $js_script_path = '//js//' . $js_script_name . '.js';
+            $js_script_path = '//js//min//' . $js_script_name . '.min.js';
+            //$js_script_path = '//js//' . $js_script_name . '.js';
 
             $block_meta = $this->custom_meta($js_var, false);
             $template_meta = $this->custom_meta($js_var, true);

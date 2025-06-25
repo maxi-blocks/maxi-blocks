@@ -1,6 +1,5 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-new */
-/* eslint-disable no-console */
 
 class Slide {
 	constructor(el, id) {
@@ -53,16 +52,6 @@ class MaxiSlider {
 		this.autoplaySpeed = this._container.dataset.autoplaySpeed;
 		this.transition = this._container.dataset.transition;
 		this.transitionSpeed = this._container.dataset.transitionSpeed;
-
-		console.log(
-			'🎪 MaxiSlider initialized:',
-			JSON.stringify({
-				transition: this.transition,
-				isLoop: this.isLoop,
-				numberOfSlides: this._slides.length,
-				containerId: this._container.id,
-			})
-		);
 
 		// Navigation
 		this._arrowNext = this._container.querySelector(
@@ -124,50 +113,30 @@ class MaxiSlider {
 	}
 
 	get activeSlidePosition() {
-		console.log(
-			'🎯 activeSlidePosition called:',
-			JSON.stringify({
-				transition: this.transition,
-				currentSlide: this.currentSlide,
-				numberOfSlides: this.numberOfSlides,
-				realFirstElOffset: this.realFirstElOffset,
-				isLoop: this.isLoop,
-			})
-		);
-
 		// For fade transitions, return realFirstElOffset for proper positioning
 		// (especially important for looped sliders with cloned slides)
 		if (this.transition === 'fade') {
-			console.log(
-				'✨ Fade transition detected - returning realFirstElOffset:',
-				this.realFirstElOffset
-			);
 			return this.realFirstElOffset;
 		}
 
 		// For slide transitions, calculate position
 		if (this._currentSlide < 0) {
-			const position =
+			return (
 				this.realFirstElOffset -
 				(this._slides
 					.slice(this.currentSlide)
 					.map(slide => slide.size.width)
-					?.reduce((acc, cur) => acc + cur) ?? 0);
-			console.log('⬅️ Negative slide position:', position);
-			return position;
+					?.reduce((acc, cur) => acc + cur) ?? 0)
+			);
 		}
 
-		const position =
-			this.currentSlide === 0
-				? this.realFirstElOffset
-				: (this._slides
-						.slice(0, this.currentSlide)
-						.map(slide => slide.size.width)
-						?.reduce((acc, cur) => acc + cur) ?? 0) +
-				  this.realFirstElOffset;
-
-		console.log('➡️ Regular slide position:', position);
-		return position;
+		return this.currentSlide === 0
+			? this.realFirstElOffset
+			: (this._slides
+					.slice(0, this.currentSlide)
+					.map(slide => slide.size.width)
+					?.reduce((acc, cur) => acc + cur) ?? 0) +
+					this.realFirstElOffset;
 	}
 
 	get wrapperTranslate() {
@@ -179,15 +148,6 @@ class MaxiSlider {
 	}
 
 	set wrapperTranslate(translate) {
-		console.log(
-			'🚀 Setting wrapperTranslate:',
-			JSON.stringify({
-				transition: this.transition,
-				translate,
-				currentSlide: this.currentSlide,
-				willSetTransform: `translateX(-${translate}px)`,
-			})
-		);
 		this._wrapper.style.transform = `translateX(-${translate}px)`;
 	}
 
@@ -196,18 +156,10 @@ class MaxiSlider {
 
 		// Set data-transition attribute for CSS targeting
 		this._container.setAttribute('data-transition', this.transition);
-		console.log('🏷️ Set data-transition attribute:', this.transition);
 
 		// Init styles - but only set transform for slide transitions, not fade
 		if (this.transition !== 'fade') {
-			console.log(
-				'🎬 Init: Setting initial transform for slide transition'
-			);
 			this.wrapperTranslate = this.realFirstElOffset;
-		} else {
-			console.log(
-				'✨ Init: Skipping initial transform for fade transition'
-			);
 		}
 
 		this.navEvents();
@@ -399,16 +351,6 @@ class MaxiSlider {
 	}
 
 	sliderAction(withTransition = true) {
-		console.log(
-			'🎬 sliderAction called:',
-			JSON.stringify({
-				withTransition,
-				transition: this.transition,
-				currentSlide: this.currentSlide,
-				numberOfSlides: this.numberOfSlides,
-			})
-		);
-
 		// Update active slide
 		this._slides.forEach(slide => {
 			slide.isActive = this.currentSlide;
@@ -416,31 +358,16 @@ class MaxiSlider {
 
 		// Move the slider - but ONLY for slide transitions, NOT fade
 		if (this.transition !== 'fade') {
-			console.log('🚀 Slide transition - setting transform');
 			if (withTransition) {
 				const property =
 					this.transition === 'slide' ? 'transition' : 'animation';
 				const effect = this.getSliderEffect();
-				console.log(
-					'🎭 Setting animation/transition:',
-					JSON.stringify({
-						property,
-						effect,
-						transition: this.transition,
-					})
-				);
 				this._wrapper.style[property] = effect;
 			}
 			this.wrapperTranslate = this.activeSlidePosition;
-		} else {
-			console.log(
-				'✨ Fade transition - skipping transform, only setting animation'
-			);
-			if (withTransition) {
-				const effect = this.getSliderEffect();
-				console.log('🎭 Setting fade animation:', effect);
-				this._wrapper.style.animation = effect;
-			}
+		} else if (withTransition) {
+			const effect = this.getSliderEffect();
+			this._wrapper.style.animation = effect;
 		}
 	}
 

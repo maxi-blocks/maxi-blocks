@@ -456,7 +456,8 @@ const LibraryContainer = props => {
 	);
 
 	useEffect(() => {
-		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
+		if (selectedSCValue)
+			updateSCOnEditor(selectedSCValue, null, [document], true);
 	}, [selectedSCKey]);
 
 	const typesenseInstantsearchAdapter = params => {

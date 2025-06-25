@@ -166,11 +166,15 @@ const ColorLayer = props => {
 				color,
 			});
 		else {
-			const defaultColor = `rgba(${getPaletteColor({
+			const paletteColorResult = getPaletteColor({
 				clientId,
 				color: defaultColorAttr.paletteColor,
 				blockStyle: getBlockStyle(clientId),
-			})},${paletteOpacity || 1})`;
+			});
+
+			const defaultColor = `rgba(${paletteColorResult},${
+				paletteOpacity || 1
+			})`;
 
 			onChangeColor({
 				paletteStatus,

@@ -121,6 +121,146 @@ class MaxiBlocks_StyleCards
     }
 
     /**
+     * Process custom colors from style cards and add them to the CSS variables
+     *
+     * @param string $style The CSS variables string
+     * @param array|string $style_card_obj The style card object or JSON string
+     * @return string The modified CSS variables string with custom colors
+     */
+    public function process_custom_colors($style, $style_card_obj)
+    {
+        // If style is empty or not a string, return it as is
+        if (empty($style) || !is_string($style)) {
+            return $style;
+        }
+
+        // Check if style_card_obj is a string (JSON), convert it to array
+        if (is_string($style_card_obj)) {
+            $style_card_obj = json_decode($style_card_obj, true);
+
+            // If JSON decoding failed, return the original style
+            if (json_last_error() !== JSON_ERROR_NONE || !is_array($style_card_obj)) {
+                return $style;
+            }
+        }
+
+        // If it's still not an array after potential conversion, return the original style
+        if (!is_array($style_card_obj)) {
+            return $style;
+        }
+
+        // Re-use the centralized helper - it already performs all validations
+        $active_style_card = self::get_maxi_blocks_active_style_card();
+
+        // Bail out early when no active card is available
+        if (!$active_style_card) {
+            return $style;
+        }
+
+        // Extract custom colors from the active style card
+        $custom_colors = [];
+
+        // Try to get custom colors from various possible locations
+        if (isset($active_style_card['light']['styleCard']['color']['customColors']) &&
+            is_array($active_style_card['light']['styleCard']['color']['customColors'])) {
+            $custom_colors['light'] = $active_style_card['light']['styleCard']['color']['customColors'];
+        }
+
+        if (isset($active_style_card['dark']['styleCard']['color']['customColors']) &&
+            is_array($active_style_card['dark']['styleCard']['color']['customColors'])) {
+            $custom_colors['dark'] = $active_style_card['dark']['styleCard']['color']['customColors'];
+        }
+
+        if (isset($active_style_card['color']['customColors'])) {
+            // Handle both string and array formats for backward compatibility
+            $base_custom_colors = $active_style_card['color']['customColors'];
+
+            // If it's a string, try to decode it (sometimes it's double-encoded)
+            if (is_string($base_custom_colors)) {
+                $decoded = json_decode($base_custom_colors, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $base_custom_colors = $decoded;
+                }
+            }
+
+            // If we now have an array, use it
+            if (is_array($base_custom_colors)) {
+                // If we don't have specific light/dark colors, use the general ones for both
+                if (empty($custom_colors['light'])) {
+                    $custom_colors['light'] = $base_custom_colors;
+                }
+                if (empty($custom_colors['dark'])) {
+                    $custom_colors['dark'] = $base_custom_colors;
+                }
+            }
+        }
+
+        // If no custom colors found in any location, return the original style
+        if (empty($custom_colors)) {
+            return $style;
+        }
+
+        // Find the position to insert the custom colors
+        $insert_pos = strrpos($style, '}');
+        if ($insert_pos === false) {
+            $insert_pos = strlen($style);
+        }
+
+        // Build the custom colors CSS variables
+        $custom_color_vars = '';
+
+        // Process light style custom colors
+        if (!empty($custom_colors['light'])) {
+            foreach ($custom_colors['light'] as $color_object) {
+                if (empty($color_object) || !is_array($color_object) || !isset($color_object['id']) || !isset($color_object['value'])) {
+                    continue; // Skip if malformed or missing id/value
+                }
+
+                $rgb_values = $this->extract_rgb_values($color_object['value']);
+                $numeric_id = $color_object['id'];
+
+                // Add the CSS variable
+                $custom_color_vars .= "--maxi-light-color-{$numeric_id}:{$rgb_values};";
+            }
+        }
+
+        // Process dark style custom colors
+        if (!empty($custom_colors['dark'])) {
+            foreach ($custom_colors['dark'] as $color_object) {
+                if (empty($color_object) || !is_array($color_object) || !isset($color_object['id']) || !isset($color_object['value'])) {
+                    continue; // Skip if malformed or missing id/value
+                }
+
+                $rgb_values = $this->extract_rgb_values($color_object['value']);
+                $numeric_id = $color_object['id'];
+
+                // Add the CSS variable
+                $custom_color_vars .= "--maxi-dark-color-{$numeric_id}:{$rgb_values};";
+            }
+        }
+
+        // Insert the custom colors before the closing brace
+        $modified_style = substr_replace($style, $custom_color_vars, $insert_pos, 0);
+
+        return $modified_style;
+    }
+
+    /**
+     * Extract RGB values from a color string
+     *
+     * @param string|array $color_data The color string (rgba, hex, etc.) or an array like ['value' => 'color_string', 'name' => '...']
+     * @return string The RGB values as a comma-separated string (e.g., "255, 255, 255")
+     */
+    private function extract_rgb_values($color_data)
+    {
+        // Include the utility class if not already loaded
+        require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/class-maxi-color-utils.php';
+
+        // Use the shared implementation from the utility class
+        return MaxiBlocks_ColorUtils::extract_rgb_values($color_data);
+    }
+
+    /**
      * Get SC
      */
     public function get_style_card_variables()
@@ -158,6 +298,14 @@ class MaxiBlocks_StyleCards
             }
 
             return false;
+        }
+
+        // Process and add custom colors to the style variables
+        $current_style_cards = self::get_maxi_blocks_current_style_cards();
+
+        // Only process custom colors if current_style_cards is available
+        if ($current_style_cards) {
+            $style = $this->process_custom_colors($style, $current_style_cards);
         }
 
         return $style;
@@ -249,6 +397,76 @@ class MaxiBlocks_StyleCards
             $maxi_blocks_style_cards_current &&
             !empty($maxi_blocks_style_cards_current)
         ) {
+            // Validate that it's a JSON string
+            $decoded = json_decode($maxi_blocks_style_cards_current, true);
+
+            // If it's valid JSON and an array, return the decoded array (more useful than string)
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                // Process the style cards to ensure all custom colors are properly handled
+                foreach ($decoded as $key => $card) {
+                    // Make sure color object exists in each style card
+                    if (!isset($card['color'])) {
+                        $decoded[$key]['color'] = array();
+                    }
+
+                    // Copy custom colors from light/dark to root if they exist there but not in root
+                    if ((!isset($card['color']['customColors']) || empty($card['color']['customColors'])) &&
+                        (isset($card['light']['styleCard']['color']['customColors']) ||
+                         isset($card['dark']['styleCard']['color']['customColors']))) {
+
+                        $decoded[$key]['color']['customColors'] =
+                            isset($card['light']['styleCard']['color']['customColors']) ?
+                            $card['light']['styleCard']['color']['customColors'] :
+                            $card['dark']['styleCard']['color']['customColors'];
+                    }
+
+                    // Ensure light has custom colors if they exist at root level
+                    if (isset($card['color']['customColors']) &&
+                        (!isset($card['light']['styleCard']['color']) ||
+                         !isset($card['light']['styleCard']['color']['customColors']))) {
+
+                        // Ensure all parent keys exist before writing
+                        if (!isset($decoded[$key]['light'])) {
+                            $decoded[$key]['light'] = array();
+                        }
+                        if (!isset($decoded[$key]['light']['styleCard'])) {
+                            $decoded[$key]['light']['styleCard'] = array();
+                        }
+                        if (!isset($decoded[$key]['light']['styleCard']['color'])) {
+                            $decoded[$key]['light']['styleCard']['color'] = array();
+                        }
+
+                        $decoded[$key]['light']['styleCard']['color']['customColors'] = $card['color']['customColors'];
+                    }
+
+                    // Ensure dark has custom colors if they exist at root level
+                    if (isset($card['color']['customColors']) &&
+                        (!isset($card['dark']['styleCard']['color']) ||
+                         !isset($card['dark']['styleCard']['color']['customColors']))) {
+
+                        // Ensure all parent keys exist before writing
+                        if (!isset($decoded[$key]['dark'])) {
+                            $decoded[$key]['dark'] = array();
+                        }
+                        if (!isset($decoded[$key]['dark']['styleCard'])) {
+                            $decoded[$key]['dark']['styleCard'] = array();
+                        }
+                        if (!isset($decoded[$key]['dark']['styleCard']['color'])) {
+                            $decoded[$key]['dark']['styleCard']['color'] = array();
+                        }
+
+                        $decoded[$key]['dark']['styleCard']['color']['customColors'] = $card['color']['customColors'];
+                    }
+                }
+
+                // Re-encode as this function is expected to return a JSON string
+                return json_encode($decoded);
+            } else if (json_last_error() !== JSON_ERROR_NONE) {
+                // If not valid JSON, return default style card instead
+                return self::get_default_style_card();
+            }
+
+            // If it's valid but not an array, return as is
             return $maxi_blocks_style_cards_current;
         } else {
             $default_style_card = self::get_default_style_card();
@@ -264,6 +482,15 @@ class MaxiBlocks_StyleCards
                     'style_cards_current'
                 )
             );
+
+            // Validate the retrieved default style card is valid JSON
+            if ($maxi_blocks_style_cards_current) {
+                $decoded = json_decode($maxi_blocks_style_cards_current, true);
+                if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+                    return false;
+                }
+            }
+
             return $maxi_blocks_style_cards_current;
         }
     }
@@ -276,17 +503,98 @@ class MaxiBlocks_StyleCards
             return false;
         }
 
-        $maxi_blocks_style_cards_array = json_decode(
-            $maxi_blocks_style_cards,
-            true
-        );
+        // If it's already an array, use it directly
+        if (is_array($maxi_blocks_style_cards)) {
+            $maxi_blocks_style_cards_array = $maxi_blocks_style_cards;
+        } else {
+            // Otherwise, decode the JSON string
+            $maxi_blocks_style_cards_array = json_decode(
+                $maxi_blocks_style_cards,
+                true
+            );
 
-        foreach ($maxi_blocks_style_cards_array as $key => $sc) {
-            if ($sc['status'] === 'active') {
-                return $sc;
+            // Check if decoding was successful
+            if (json_last_error() !== JSON_ERROR_NONE || !is_array($maxi_blocks_style_cards_array)) {
+                return false;
             }
         }
-        return false;
+
+        // Find the active style card
+        $active_sc = null;
+        foreach ($maxi_blocks_style_cards_array as $key => $sc) {
+            if (is_array($sc) && isset($sc['status']) && $sc['status'] === 'active') {
+                $active_sc = $sc;
+                break;
+            }
+        }
+
+        // If no active card found, use the first one as fallback
+        if (!$active_sc && !empty($maxi_blocks_style_cards_array)) {
+            $first_key = array_key_first($maxi_blocks_style_cards_array);
+            $active_sc = $maxi_blocks_style_cards_array[$first_key] ?? false;
+        }
+
+        if (!$active_sc) {
+            return false;
+        }
+
+        // Ensure custom colors are properly distributed across all locations for consistency
+        // First, collect all custom colors from all locations
+        $custom_colors = [];
+
+        // Check root level
+        if (isset($active_sc['color']['customColors']) && is_array($active_sc['color']['customColors'])) {
+            $custom_colors = $active_sc['color']['customColors'];
+        }
+
+        // Check light style
+        if (isset($active_sc['light']['styleCard']['color']['customColors']) && is_array($active_sc['light']['styleCard']['color']['customColors'])) {
+            if (empty($custom_colors)) {
+                $custom_colors = $active_sc['light']['styleCard']['color']['customColors'];
+            }
+        }
+
+        // Check dark style
+        if (isset($active_sc['dark']['styleCard']['color']['customColors']) && is_array($active_sc['dark']['styleCard']['color']['customColors'])) {
+            if (empty($custom_colors)) {
+                $custom_colors = $active_sc['dark']['styleCard']['color']['customColors'];
+            }
+        }
+
+        // If we found custom colors, ensure they're in all locations
+        if (!empty($custom_colors)) {
+            // Root level
+            if (!isset($active_sc['color'])) {
+                $active_sc['color'] = [];
+            }
+            $active_sc['color']['customColors'] = $custom_colors;
+
+            // Light style
+            if (!isset($active_sc['light'])) {
+                $active_sc['light'] = [];
+            }
+            if (!isset($active_sc['light']['styleCard'])) {
+                $active_sc['light']['styleCard'] = [];
+            }
+            if (!isset($active_sc['light']['styleCard']['color'])) {
+                $active_sc['light']['styleCard']['color'] = [];
+            }
+            $active_sc['light']['styleCard']['color']['customColors'] = $custom_colors;
+
+            // Dark style
+            if (!isset($active_sc['dark'])) {
+                $active_sc['dark'] = [];
+            }
+            if (!isset($active_sc['dark']['styleCard'])) {
+                $active_sc['dark']['styleCard'] = [];
+            }
+            if (!isset($active_sc['dark']['styleCard']['color'])) {
+                $active_sc['dark']['styleCard']['color'] = [];
+            }
+            $active_sc['dark']['styleCard']['color']['customColors'] = $custom_colors;
+        }
+
+        return $active_sc;
     }
 
     public static function get_maxi_blocks_style_card_fonts($block_style, $text_level)
@@ -784,160 +1092,8 @@ class MaxiBlocks_StyleCards
                 )
             );
 
-            // Create variables object
-            $organized_values = [];
-            $styles = ['light', 'dark'];
-            $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation'];
-            $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-            $settings = [
-                'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
-                'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
-                'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
-                'padding-top', 'padding-left', 'padding-right'
-            ];
-
-            foreach ($styles as $style) {
-                // Merge defaultStyleCard and styleCard
-                $style_data = array_merge(
-                    $new_sc[$style]['defaultStyleCard'] ?? [],
-                    $new_sc[$style]['styleCard'] ?? []
-                );
-
-                foreach ($elements as $element) {
-                    if (!isset($style_data[$element])) {
-                        continue;
-                    }
-
-                    // Special handling for navigation
-                    if ($element === 'navigation') {
-                        // Handle navigation properties which might have specific units or formats
-                        foreach ($breakpoints as $breakpoint) {
-                            // Handle navigation specific properties
-                            $nav_props = [
-                                'font-family', 'font-size', 'font-style', 'font-weight', 'line-height',
-                                'text-decoration', 'text-transform', 'letter-spacing', 'white-space',
-                                'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom',
-                                'padding-top', 'padding-left', 'padding-right'
-                            ];
-
-                            foreach ($nav_props as $prop) {
-                                $prop_key = "{$prop}-{$breakpoint}";
-                                $unit_key = "{$prop}-unit-{$breakpoint}";
-
-                                if (isset($style_data[$element][$prop_key])) {
-                                    $value = $style_data[$element][$prop_key];
-
-                                    // Add units if needed for numeric values
-                                    if (is_numeric($value)) {
-                                        // Get unit from style card if available
-                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : null;
-
-                                        // Use appropriate default unit if not specified
-                                        if ($unit === null || $unit === '') {
-                                            if ($prop === 'line-height') {
-                                                $unit = '%'; // Default to % for navigation line-height
-                                            } else {
-                                                $unit = 'px'; // Default to px for other properties
-                                            }
-                                        }
-
-                                        $value .= $unit;
-                                    } else if ($prop === 'font-family') {
-                                        $value = "\"{$value}\"";
-                                    }
-
-                                    $var_name = "--maxi-{$style}-{$element}-{$prop}-{$breakpoint}";
-                                    $organized_values[$style][$element][$breakpoint][$prop] = [
-                                        'value' => $value,
-                                        'var_name' => $var_name
-                                    ];
-                                }
-                            }
-                        }
-
-                        continue; // Skip regular processing for navigation
-                    }
-
-                    foreach ($settings as $setting) {
-                        foreach ($breakpoints as $breakpoint) {
-                            $key = "{$setting}-{$breakpoint}";
-                            $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
-
-                            if (isset($style_data[$element][$key])) {
-                                $value = $style_data[$element][$key];
-
-                                // Add units if needed
-                                if ($setting === 'font-family') {
-                                    $value = "\"{$value}\"";
-                                } elseif ($setting === 'line-height') {
-                                    if (is_numeric($value)) {
-                                        // Get the appropriate unit if specified in the style card
-                                        $unit_key = "line-height-unit-{$breakpoint}";
-                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
-
-                                        // Default to px if no unit is specified, except for button which defaults to %
-                                        if ($unit === null || $unit === '') {
-                                            $unit = ($element === 'button') ? '%' : 'px';
-                                        }
-
-                                        $value .= $unit;
-                                    }
-                                } elseif (in_array($setting, ['font-size', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'])) {
-                                    if (is_numeric($value)) {
-                                        // Check for a unit specification
-                                        $unit_key = "{$setting}-unit-{$breakpoint}";
-                                        $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
-
-                                        // Default to px if no unit is specified
-                                        if ($unit === null || $unit === '') {
-                                            $unit = 'px';
-                                        }
-
-                                        $value .= $unit;
-                                    }
-                                }
-
-                                $var_name = "--maxi-{$style}-{$element}-{$setting}-{$breakpoint}";
-                                $organized_values[$style][$element][$breakpoint][$setting] = [
-                                    'value' => $value,
-                                    'var_name' => $var_name
-                                ];
-                            }
-                        }
-                    }
-                }
-
-                // Process colors
-                if (isset($style_data['color'])) {
-                    for ($i = 1; $i <= 8; $i++) {
-                        if (isset($style_data['color'][$i])) {
-                            $var_name = "--maxi-{$style}-color-{$i}";
-                            $organized_values[$style]['color'][$i] = [
-                                'value' => $style_data['color'][$i],
-                                'var_name' => $var_name
-                            ];
-                        }
-                    }
-                }
-
-                // Add menu-related properties
-                $menu_props = [
-                    'menu-item' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
-                    'menu-burger' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
-                    'menu-item-hover' => "rgba(var(--maxi-{$style}-color-6, 172, 28, 92), 1)",
-                    'menu-item-visited' => "rgba(var(--maxi-{$style}-color-5, " . ($style === 'light' ? '0, 0, 0' : '255, 255, 255') . "), 1)",
-                    'menu-item-sub-bg' => "rgba(var(--maxi-{$style}-color-1, " . ($style === 'light' ? '255, 255, 255' : '0, 0, 0') . "), 1)",
-                    'menu-mobile-bg' => "rgba(var(--maxi-{$style}-color-1, " . ($style === 'light' ? '255, 255, 255' : '0, 0, 0') . "), 1)",
-                ];
-
-                foreach ($menu_props as $prop => $value) {
-                    $var_name = "--maxi-{$style}-{$prop}";
-                    $organized_values[$style]['menu'][$prop] = [
-                        'value' => $value,
-                        'var_name' => $var_name
-                    ];
-                }
-            }
+            // Use the proper organized values processing that handles all properties correctly
+            $organized_values = self::get_organized_values($new_sc);
 
             // Generate CSS variables string
             $var_sc_string = ':root{';
@@ -1044,23 +1200,12 @@ class MaxiBlocks_StyleCards
         return false;
     }
 
-    // Helper function to handle array values
-    private static function stringify_value($value)
-    {
-        if (is_array($value)) {
-            if (isset($value['value'])) {
-                return $value['value'];
-            }
-            if (isset($value[0])) {
-                return $value[0];
-            }
-            return json_encode($value);
-        }
-        return $value;
-    }
-
     private static function get_organized_values($style_card)
     {
+        // Get default style card for fallback values
+        $default_sc = json_decode(self::get_default_style_card(), true);
+        $default_maxi_sc = $default_sc['sc_maxi'] ?? [];
+
         $organized_values = [];
         $styles = ['light', 'dark'];
         $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation'];
@@ -1085,8 +1230,8 @@ class MaxiBlocks_StyleCards
         ];
 
         foreach ($styles as $style) {
-            // Merge defaultStyleCard and styleCard for the current style
-            $style_data = array_merge(
+            // Merge defaultStyleCard and styleCard for the current style using deep merge
+            $style_data = array_replace_recursive(
                 $style_card[$style]['defaultStyleCard'] ?? [],
                 $style_card[$style]['styleCard'] ?? []
             );
@@ -1124,16 +1269,32 @@ class MaxiBlocks_StyleCards
                                 ];
                             }
                         }
-                        // Handle other elements
+                                                // Handle other elements
                         elseif (isset($style_data[$element][$key])) {
                             $value = $style_data[$element][$key];
 
                             // Add units if needed
                             if ($setting === 'font-family') {
+                                // Special case for button: if font-family is empty, use p font-family
+                                if ($element === 'button' && ($value === '' || $value === null)) {
+                                    $p_font_family_key = "font-family-{$breakpoint}";
+                                    $value = isset($style_data['p'][$p_font_family_key])
+                                        ? $style_data['p'][$p_font_family_key]
+                                        : '';
+                                }
                                 $value = "\"{$value}\"";
                             } elseif (in_array($setting, ['font-size', 'line-height', 'letter-spacing', 'word-spacing', 'margin-bottom', 'text-indent', 'padding-bottom', 'padding-top', 'padding-left', 'padding-right'])) {
                                 if (is_numeric($value)) {
-                                    $value .= 'px';
+                                    // Check for unit specification
+                                    $unit_key = "{$setting}-unit-{$breakpoint}";
+                                    $unit = isset($style_data[$element][$unit_key]) ? $style_data[$element][$unit_key] : 'px';
+
+                                    // Default to px if no unit is specified
+                                    if ($unit === null || $unit === '') {
+                                        $unit = 'px';
+                                    }
+
+                                    $value .= $unit;
                                 }
                             }
 
@@ -1155,6 +1316,43 @@ class MaxiBlocks_StyleCards
                             'var_name' => "--maxi-{$style}-color-{$i}"
                         ];
                     }
+                }
+            }
+
+                        // Menu colors - generate navigation menu color variables
+            if (isset($style_data['navigation'])) {
+                // Get default navigation settings from $default_maxi_sc
+                $default_navigation = $default_maxi_sc[$style]['defaultStyleCard']['navigation'] ?? [];
+
+                $menu_color_mappings = [
+                    'menu-item' => 'menu-item-palette-color',
+                    'menu-burger' => 'menu-burger-palette-color',
+                    'menu-item-hover' => 'menu-item-hover-palette-color',
+                    'menu-item-current' => 'menu-item-current-palette-color',
+                    'menu-item-visited' => 'menu-item-visited-palette-color',
+                    'menu-item-sub-bg' => 'menu-item-sub-bg-palette-color',
+                    'menu-item-sub-bg-hover' => 'menu-item-sub-bg-hover-palette-color',
+                    'menu-mobile-bg' => 'menu-mobile-bg-palette-color'
+                ];
+
+                foreach ($menu_color_mappings as $menu_prop => $palette_key) {
+                    // Get the palette color number from navigation settings or default
+                    $palette_color = isset($style_data['navigation'][$palette_key])
+                        ? $style_data['navigation'][$palette_key]
+                        : ($default_navigation[$palette_key] ?? 5);
+
+                    // Get the actual color value from the color palette or default
+                    $color_value = isset($style_data['color'][$palette_color])
+                        ? $style_data['color'][$palette_color]
+                        : ($default_maxi_sc[$style]['defaultStyleCard']['color'][$palette_color] ?? '0,0,0');
+
+                    $var_name = "--maxi-{$style}-{$menu_prop}";
+                    $rgba_value = "rgba(var(--maxi-{$style}-color-{$palette_color},{$color_value}),1)";
+
+                    $organized_values[$style]['menu'][$menu_prop] = [
+                        'value' => $rgba_value,
+                        'var_name' => $var_name
+                    ];
                 }
             }
         }

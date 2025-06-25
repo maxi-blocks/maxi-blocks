@@ -1,6 +1,8 @@
 // Pre-compute type mappings and position units to avoid repetitive string operations
 const TYPE_MAP = { shape: 'svg' };
-const POSITION_UNITS = ['top', 'left', 'bottom', 'right'].map(a => `position-${a}-unit-general`);
+const POSITION_UNITS = ['top', 'left', 'bottom', 'right'].map(
+	a => `position-${a}-unit-general`
+);
 
 // Memoize type calculations
 const getLayerType = layer => {
@@ -10,18 +12,29 @@ const getLayerType = layer => {
 
 const isEligible = blockAttributes => {
 	const layers = blockAttributes['background-layers'];
-	if (!layers) return false;
+	if (!layers || !Array.isArray(layers)) return false;
 
-	// Early exit if no layers
-	for (let i = 0; i < layers.length; i++) {
-		const type = getLayerType(layers[i]);
+	// Check each layer for missing position units
+	return layers.some((layer, index) => {
+		// Add defensive check to ensure layer is an object
+		if (typeof layer !== 'object' || layer === null) {
+			console.warn(
+				'[BackgroundPositionMigrator] Skipping non-object layer:',
+				{
+					index,
+					layerType: typeof layer,
+					layerValue: layer,
+				}
+			);
+			return false; // Skip this layer, don't consider it eligible
+		}
+
+		const type = getLayerType(layer);
 		const prefix = `background-${type}-`;
 
-		for (const unit of POSITION_UNITS) {
-			if (!(prefix + unit in layers[i])) return true;
-		}
-	}
-	return false;
+		// Check if any position unit is missing
+		return POSITION_UNITS.some(unit => !(prefix + unit in layer));
+	});
 };
 
 const migrate = newAttributes => {
@@ -30,18 +43,32 @@ const migrate = newAttributes => {
 	const layers = newAttributes['background-layers'];
 
 	// Avoid spread operator for better performance
-	const response = Object.assign({}, newAttributes);
+	const response = { ...newAttributes };
 
-	for (let i = 0; i < layers.length; i++) {
-		const type = getLayerType(layers[i]);
+	// Use forEach instead of for loop to avoid increment operators
+	layers.forEach((layer, index) => {
+		// Add defensive check here too
+		if (typeof layer !== 'object' || layer === null) {
+			console.warn(
+				'[BackgroundPositionMigrator] Skipping non-object layer in migrate:',
+				{
+					index,
+					layerType: typeof layer,
+					layerValue: layer,
+				}
+			);
+			return; // Skip this layer
+		}
+
+		const type = getLayerType(layer);
 		const prefix = `background-${type}-`;
 
-		for (const unit of POSITION_UNITS) {
-			if (!(prefix + unit in layers[i])) {
-				layers[i][prefix + unit] = 'px';
+		POSITION_UNITS.forEach(unit => {
+			if (!(prefix + unit in layer)) {
+				layer[prefix + unit] = 'px';
 			}
-		}
-	}
+		});
+	});
 
 	return response;
 };

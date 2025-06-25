@@ -280,6 +280,12 @@ const ResponsiveSelector = props => {
 		let rootClientId;
 		const isFSE = getIsSiteEditor();
 
+		// Check if we're in "Show Template" mode in post editor
+		// This happens when the template editing is enabled in regular post editor
+		const isTemplateMode =
+			!isFSE &&
+			select('core/editor')?.getRenderingMode?.() === 'template-locked';
+
 		if (isFSE) {
 			const postId = select('core/edit-site').getEditedPostId();
 			const postType = select('core/edit-site').getEditedPostType();
@@ -303,7 +309,21 @@ const ResponsiveSelector = props => {
 			}
 		}
 
-		if (rootClientId || !isFSE) {
+		// Handle template mode or FSE context
+		if (isFSE || isTemplateMode) {
+			// If we're in template mode, find the post-content block to insert into
+			if (isTemplateMode && !rootClientId) {
+				goThroughMaxiBlocks(block => {
+					if (block.name === 'core/post-content') {
+						rootClientId = block.clientId;
+						return true;
+					}
+					return false;
+				});
+			}
+		}
+
+		if (rootClientId || (!isFSE && !isTemplateMode)) {
 			insertBlock(
 				createBlock('maxi-blocks/maxi-cloud'),
 				undefined,

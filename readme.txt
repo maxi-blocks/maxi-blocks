@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,14 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 30 Jun 2025_
+MaxiBlocks v2.1.2
+* Fix: Enhanced block tones and Cloud button functionality when 'Show template' is enabled in the Editor, ensuring consistent visual presentation and improved user experience.
+* Fix: Restored custom and advanced CSS editor styles and behaviour, resolving styling inconsistencies and ensuring proper functionality.
+* Fix: Improved custom colour removal process from background settings, providing more reliable colour management.
+* Fix: Corrected Blog Home template compatibility issues for MaxiBlocks Go theme, ensuring proper layout rendering and template functionality.
+* Fix: Resolved Slider block compatibility issues with Interaction Builder when both features are utilised on the same page, eliminating conflicts and ensuring smooth operation of interactive elements.
+
 _Updates 9 Jun 2025_
 MaxiBlocks v2.1.1
 * Update: Introduced a redesigned user interface for the plugin, delivering a more intuitive and modern editing experience.
@@ -201,31 +209,6 @@ MaxiBlocks v2.1.0
 * Update: Refined Divider Maxi block behaviour by synchronizing line width values between horizontal and vertical positions for consistent visual appearance.
 * Fix: Aligned line position values between toolbar and sidebar settings in Divider Maxi block, resolving inconsistencies in the editing experience.
 * Fix: Removed displaced autocomplete pop-up for link inputs, providing a cleaner and more predictable interface when adding links.
-
-_Updates 7 Apr 2025_
-MaxiBlocks v2.0.9
-* Update: Enhanced Single Post templates with author email and site link functionality.
-* Update: Expanded Dynamic Content (DC) capabilities for Button block in Site Editor with additional author options.
-* Update: Improved unit synchronization between Style Cards and Block settings for better consistency.
-* Update: Strengthened plugin testing infrastructure with comprehensive unit test coverage.
-* Fix: Resolved bottom margin migration issues for legacy patterns.
-* Fix: Corrected tag display functionality in imported Single Post templates.
-* Fix: Enhanced Map block compatibility for multiple instances with different service providers.
-* Fix: Improved Map block marker title and description handling for duplicated maps.
-* Fix: Optimized Map block zoom controls on frontend.
-* Fix: Adjusted Map block marker positioning for enlarged markers.
-* Fix: Resolved local font loading issues in specific scenarios.
-* Fix: Enhanced email obfuscation security in Button block frontend display.
-* Fix: Corrected static text rendering for DC author fields in Single Post templates.
-* Fix: Improved block drag-and-drop stability.
-* Fix: Enhanced style consistency for copied and detached synced blocks.
-* Fix: Optimized scrolling migration for legacy patterns.
-* Fix: Improved range control and decimal value handling in advanced number control.
-* Fix: Enhanced sub-item background hover colour functionality in Style Card.
-* Fix: Resolved svg transition migration issues for legacy patterns.
-* Fix: Optimized unit value handling when exceeding new unit range limits.
-* Fix: Improved Save/Activate button functionality in Style Cards editor.
-* Fix: Resolved responsive values resetting when the values are the same on different breakpoints.
 
 == Upgrade Notice ==
 

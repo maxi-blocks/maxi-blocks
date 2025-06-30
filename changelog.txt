@@ -1,3 +1,11 @@
+_Updates 30 Jun 2025_
+MaxiBlocks v2.1.2
+* Fix: Enhanced block tones and Cloud button functionality when 'Show template' is enabled in the Editor, ensuring consistent visual presentation and improved user experience.
+* Fix: Restored custom and advanced CSS editor styles and behaviour, resolving styling inconsistencies and ensuring proper functionality.
+* Fix: Improved custom colour removal process from background settings, providing more reliable colour management.
+* Fix: Corrected Blog Home template compatibility issues for MaxiBlocks Go theme, ensuring proper layout rendering and template functionality.
+* Fix: Resolved Slider block compatibility issues with Interaction Builder when both features are utilised on the same page, eliminating conflicts and ensuring smooth operation of interactive elements.
+
 _Updates 9 Jun 2025_
 MaxiBlocks v2.1.1
 * Update: Introduced a redesigned user interface for the plugin, delivering a more intuitive and modern editing experience.

@@ -1,14 +1,11 @@
-/**
- * WordPress dependencies
- */
-import {
-	ensureSidebarOpened,
-	openDocumentSettingsSidebar,
-} from '@wordpress/e2e-test-utils';
-
 const openSidebarTab = async (page, tab, item) => {
-	await openDocumentSettingsSidebar();
-	await ensureSidebarOpened();
+	// Open the sidebar if it's closed
+	const sidebarButton = page.locator(
+		'button[aria-label="Settings"][aria-expanded="false"]'
+	);
+	if (sidebarButton && (await sidebarButton.isVisible())) {
+		await sidebarButton.click();
+	}
 
 	const options = await page.$$(
 		'.maxi-tabs-control__sidebar-settings-tabs button'

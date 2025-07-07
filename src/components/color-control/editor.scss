@@ -33,11 +33,11 @@
 								order: 1;
 								margin-right: 2px;
 								margin-left: 3px;
-								font-family: 'Roboto', sans-serif !important;
+								font-family: 'Inter', sans-serif !important;
 							}
 							input {
 								order: 2;
-								font-family: 'Roboto', sans-serif !important;
+								font-family: 'Inter', sans-serif !important;
 							}
 						}
 					}
@@ -48,13 +48,13 @@
 		input {
 			width: 90% !important;
 			height: 27px !important;
-			border: 1px solid var(--maxi-grey-1-color) !important;
+			border: 1.5px solid var(--maxi-grey-light) !important;
 			border-radius: 5px !important;
 			font-size: 12px !important;
 			box-shadow: none !important;
 
 			&:focus {
-				border-color: var(--maxi-grey-6-color) !important;
+				border-color: var(--maxi-grey-dark) !important;
 				box-shadow: none !important;
 				outline: 0;
 			}
@@ -73,13 +73,13 @@
 			width: 100%;
 			height: 100%;
 			cursor: not-allowed;
-			background-color: #fff;
+			background-color: var(--maxi-white);
 			background: repeating-linear-gradient(
 				-45deg,
-				var(--maxi-grey-6-color),
-				var(--maxi-grey-6-color) 2px,
-				#fff 2px,
-				#fff 10px
+				var(--maxi-grey-dark),
+				var(--maxi-grey-dark) 2px,
+				var(--maxi-white) 2px,
+				var(--maxi-white) 10px
 			);
 			opacity: 0.1;
 		}
@@ -97,6 +97,20 @@
 		display: flex;
 		flex-wrap: wrap;
 		flex-direction: column;
+
+		&-custom {
+			width: 100%;
+			margin-top: 15px;
+			border-top: 1px solid var(--maxi-grey-light);
+			padding-top: 10px;
+
+			&-header {
+				font-size: 12px;
+				color: var(--maxi-grey-8-color);
+				margin-bottom: 10px;
+				font-weight: 500;
+			}
+		}
 
 		&-label {
 			.maxi-base-control__field {
@@ -119,7 +133,7 @@
 					padding: 1px 1px 1px 8px;
 					&:hover {
 						svg {
-							fill: #ff4a17;
+							fill: var(--maxi-primary-color);
 						}
 					}
 				}
@@ -128,47 +142,68 @@
 
 		&-container {
 			display: flex;
-			justify-content: space-between;
+			flex-wrap: wrap;
+			justify-content: flex-start;
 			align-items: center;
 			margin-bottom: 0;
+			gap: 3px;
 		}
 
 		&-box {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			width: 32px;
-			height: 32px;
+			width: 30px;
+			height: 30px;
 			padding: 0;
-			border: 1.5px solid var(--maxi-grey-1-color);
+			border: none !important;
+			box-shadow: 0 0 0 1px var(--maxi-grey);
 			margin: 0;
-			background-color: #fff;
+			background-color: var(--maxi-white);
 			cursor: pointer;
 			transition: all 0.5s;
 			border-radius: 50%;
 
+			.maxi-color-control__palette-item {
+				margin: auto;
+			}
+
+			&:hover {
+				border: none !important;
+				box-shadow: 0 0 0 2px var(--maxi-secondary-color);
+			}
+
+			&:nth-child(n + 9) {
+				margin-top: 3px;
+			}
+
 			&--active {
-				background: var(--maxi-light-blue-2-color);
-				border: 1.5px solid var(--maxi-grey-11-color);
-				box-shadow: none;
+				background: var(--maxi-pastel-green);
+				border: none;
+				box-shadow: 0 0 0 2px var(--maxi-secondary-color);
 				outline: none;
 
 				&:hover {
-					background: var(--maxi-light-blue-3-color);
-					border-color: var(--maxi-light-blue-3-color);
+					background: var(--maxi-pastel-green) !important;
+					box-shadow: 0 0 0 2px var(--maxi-secondary-color) !important;
 				}
-			}
-
-			&:not(&--active):hover {
-				background: var(--maxi-white-1-color);
-				border-color: var(--maxi-grey-6-color);
 			}
 		}
 
 		&-item {
-			width: 18px;
-			height: 18px;
+			width: 24px;
+			height: 24px;
 			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		&-custom-item {
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			border: 1px solid var(---maxi-grey-light);
 		}
 	}
 	&__opacity {
@@ -199,7 +234,7 @@
 				display: block;
 				width: 18px;
 				height: 18px;
-				border: 1px solid var(--maxi-grey-1-color);
+				border: 1.5px solid var(--maxi-grey-light);
 				border-radius: 50%;
 				margin: auto;
 				opacity: 1;
@@ -207,7 +242,7 @@
 			}
 
 			.components-maxi-control__reset-button {
-				border-color: var(--maxi-grey-1-color);
+				border-color: var(--maxi-grey-light);
 			}
 		}
 	}

@@ -28,7 +28,7 @@ coverage
 .github/ISSUE_TEMPLATE/*
 
 # Ignore for security reasons
-.env
+**/.env
 
 # Ignore Cursor rules
 .cursorrules

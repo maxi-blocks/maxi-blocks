@@ -1,24 +1,56 @@
-.maxi-alignment-control {
+body .maxi-alignment-control {
 	.maxi-tabs-control__button {
+		height: 32px;
+		padding: 8px;
+		width: 22.5%;
+		margin-right: 9px;
+		border: 1.5px solid var(--maxi-grey-light);
+		border-radius: 4px;
+		transition: background-color 0.4s ease, border-color 0.4s ease;
+
 		svg path {
-			fill: var(--maxi-grey-4-color);
+			fill: var(--maxi-black);
+			transition: fill 0.4s ease;
 		}
-		&--selected {
+
+		&:hover {
+			background-color: var(--maxi-whisper-green);
+			border-color: var(--maxi-secondary-color);
+
 			svg path {
 				fill: var(--maxi-secondary-color);
 			}
 		}
+
+		&--selected svg path {
+			fill: var(--maxi-secondary-color);
+		}
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+		&[aria-pressed='true'] {
+			background-color: var(--maxi-whisper-green);
+			border-color: var(--maxi-secondary-color);
+		}
 	}
-	.maxi-tabs-control__button {
-		height: 32px;
-		padding: 8px !important;
-		width: 22.5%;
-		margin-right: 7px;
-		border: 1.5px solid var(--maxi-grey-1-color);
-		border-radius: 4px;
-	}
-	.maxi-tabs-control__button[aria-pressed='true'] {
-		background-color: var(--maxi-light-blue-2-color) !important;
-		border: none !important;
+
+	&__toolbar {
+		.maxi-base-control__field
+			.maxi-tabs-control.maxi-settingstab-control_has-border-left-right {
+			display: flex !important;
+			flex-direction: row !important;
+			justify-content: space-between !important;
+			align-items: center !important;
+			gap: 0 !important;
+			margin-bottom: 0 !important;
+			button {
+				margin-right: 0 !important;
+				svg {
+					margin: 0 auto;
+				}
+			}
+		}
 	}
 }

@@ -9,7 +9,8 @@
 		&[data-name='arrows'],
 		&[data-name='box shadow'],
 		&[data-name='icon'],
-		&[data-name='border'] {
+		&[data-name='border'],
+		&[data-name='active icon'] {
 			.maxi-accordion-control__item__panel {
 				padding: 0;
 			}
@@ -31,15 +32,15 @@
 
 		&__panel {
 			&:not(.maxi-accordion-control__item__panel--disable-padding) {
-				padding: 0px 10px 0;
+				padding: 0px 9px 0;
 			}
 		}
 
 		&:last-child {
 			.maxi-accordion-control__item__button {
-				border-bottom: 1px solid var(--maxi-grey-1-color);
+				border-bottom: 1px solid var(--maxi-grey-light);
 				&[aria-expanded='true'] {
-					border-color: transparent;
+					// border-color: transparent;
 				}
 			}
 		}
@@ -49,17 +50,19 @@
 			display: flex;
 			align-items: center;
 			padding: 10px;
-			border-top: 1.5px solid var(--maxi-grey-1-color);
-			margin-bottom: 0;
-			background: var(--maxi-white-2-color);
+			border-top: 1.5px solid var(--maxi-grey-light);
+			margin-bottom: 0px;
+			background: var(--maxi-white);
+			transition: background-color 0.5s, color 0.5s;
 
 			&:hover {
-				background: var(--maxi-grey-2-color);
+				background: var(--maxi-whisper-green);
 				cursor: pointer;
+				color: var(--maxi-black);
 			}
 			&:active,
 			&:focus {
-				background: var(--maxi-grey-3-color);
+				background: var(--maxi-pastel-green);
 			}
 			&:before {
 				margin-right: 8px;
@@ -80,7 +83,7 @@
 				}
 			}
 			&[aria-expanded='true'] {
-				background: #fff;
+				background: var(--maxi-white);
 
 				&:after {
 					transform: translateY(-50%) rotate(90deg);
@@ -91,13 +94,19 @@
 			&:before {
 				content: '';
 				position: absolute;
-				top: 0;
-				left: 0;
-				width: 10px;
-				height: 10px;
+				top: 50%;
+				left: 6px;
 				z-index: 1;
-				border-top: 2px solid var(--maxi-green-1-color);
-				border-left: 2px solid var(--maxi-green-1-color);
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				background-color: var(--maxi-light-blue-alt);
+				margin-left: 5px;
+				transform: translateY(-50%);
+			}
+
+			&.maxi-accordion-control__item__button {
+				padding-left: 25px; /* Add extra padding for the dot */
 			}
 		}
 	}
@@ -109,10 +118,14 @@
 			}
 		}
 		.maxi-accordion-control__item__button {
-			background: var(--maxi-white-4-color);
+			background: var(--maxi-white);
 			&:hover {
-				background: var(--maxi-white-3-color);
+				background: var(--maxi-pastel-green);
 			}
 		}
 	}
+}
+.maxi-context-loop,
+.maxi-repeater {
+	margin-top: 10px !important;
 }

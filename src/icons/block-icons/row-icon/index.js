@@ -6,7 +6,7 @@ import { SVG, Path } from '@wordpress/primitives';
 const textIcon = (
 	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
 		<Path
-			fill='#ff4a17'
+			fill='var(--maxi-primary-color)'
 			stroke='none'
 			strokeLinecap='round'
 			strokeLinejoin='round'

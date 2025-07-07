@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 2.1.0
+Stable tag: 2.1.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,35 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 30 Jun 2025_
+MaxiBlocks v2.1.2
+* Fix: Enhanced block tones and Cloud button functionality when 'Show template' is enabled in the Editor, ensuring consistent visual presentation and improved user experience.
+* Fix: Restored custom and advanced CSS editor styles and behaviour, resolving styling inconsistencies and ensuring proper functionality.
+* Fix: Improved custom colour removal process from background settings, providing more reliable colour management.
+* Fix: Corrected Blog Home template compatibility issues for MaxiBlocks Go theme, ensuring proper layout rendering and template functionality.
+* Fix: Resolved Slider block compatibility issues with Interaction Builder when both features are utilised on the same page, eliminating conflicts and ensuring smooth operation of interactive elements.
+
+_Updates 9 Jun 2025_
+MaxiBlocks v2.1.1
+* Update: Introduced a redesigned user interface for the plugin, delivering a more intuitive and modern editing experience.
+* Update: Launched Starter Sites functionality, enabling users to quickly launch pre-built websites and accelerate their development workflow.
+* Update: Implemented Quick Start Wizard to guide users through essential WordPress site setup in just a few streamlined steps.
+* Update: Enhanced Content Loop (CL) and Dynamic Content (DC) dropdowns to display all existing categories, tags, and custom taxonomies for improved content organization.
+* Update: Streamlined user interface by removing unnecessary toolbars from Button and Image blocks, reducing visual clutter in the editing experience.
+* Update: Expanded Style Cards (SC) functionality with custom colour options, providing greater design flexibility and customization capabilities.
+* Update: Enhanced WordPress 6.8.1 compatibility by reverting block delete key combination to maintain consistent user experience.
+* Update: Added comprehensive PHP 8.4 support, ensuring forward compatibility and optimal performance on the latest PHP versions.
+* Update: Significantly expanded plugin testing infrastructure with comprehensive unit test coverage, improving overall code reliability and stability across all features.
+* Security: Fixed missing authorization to authenticated (contributor+) arbitrary options update (CVE-2025-47601). Thanks to Cút lộn xào me for the responsible disclosure.
+* Fix: Resolved styling issues with custom category, tag, and author templates on the frontend, ensuring consistent visual presentation.
+* Fix: Corrected Content Loop resetting behavior when interacting with Row blocks, maintaining user selections and workflow continuity.
+* Fix: Restored keyboard shortcuts (Ctrl+B, Ctrl+I) functionality for Text block formatting, improving editing efficiency.
+* Fix: Enhanced pattern placeholder image upload process for first-time users, eliminating upload failures and improving onboarding experience.
+* Fix: Improved Advanced Custom Fields (ACF) integration with Dynamic Content and Content Loop for custom taxonomies and post types.
+* Fix: Resolved Style Cards colour tone rendering issues that returned undefined values in specific scenarios.
+* Fix: Addressed potential PHP errors on PHP 8.2 environments, ensuring stable plugin operation across different server configurations.
+* Fix: Corrected icon padding unit handling for consistent spacing and alignment in icon-based elements.
+
 _Updates 15 Apr 2025_
 MaxiBlocks v2.1.0
 * Update: Enhanced WordPress 6.8 compatibility with comprehensive fixes, ensuring stable plugin performance across all features.
@@ -180,53 +209,6 @@ MaxiBlocks v2.1.0
 * Update: Refined Divider Maxi block behaviour by synchronizing line width values between horizontal and vertical positions for consistent visual appearance.
 * Fix: Aligned line position values between toolbar and sidebar settings in Divider Maxi block, resolving inconsistencies in the editing experience.
 * Fix: Removed displaced autocomplete pop-up for link inputs, providing a cleaner and more predictable interface when adding links.
-
-_Updates 7 Apr 2025_
-MaxiBlocks v2.0.9
-* Update: Enhanced Single Post templates with author email and site link functionality.
-* Update: Expanded Dynamic Content (DC) capabilities for Button block in Site Editor with additional author options.
-* Update: Improved unit synchronization between Style Cards and Block settings for better consistency.
-* Update: Strengthened plugin testing infrastructure with comprehensive unit test coverage.
-* Fix: Resolved bottom margin migration issues for legacy patterns.
-* Fix: Corrected tag display functionality in imported Single Post templates.
-* Fix: Enhanced Map block compatibility for multiple instances with different service providers.
-* Fix: Improved Map block marker title and description handling for duplicated maps.
-* Fix: Optimized Map block zoom controls on frontend.
-* Fix: Adjusted Map block marker positioning for enlarged markers.
-* Fix: Resolved local font loading issues in specific scenarios.
-* Fix: Enhanced email obfuscation security in Button block frontend display.
-* Fix: Corrected static text rendering for DC author fields in Single Post templates.
-* Fix: Improved block drag-and-drop stability.
-* Fix: Enhanced style consistency for copied and detached synced blocks.
-* Fix: Optimized scrolling migration for legacy patterns.
-* Fix: Improved range control and decimal value handling in advanced number control.
-* Fix: Enhanced sub-item background hover colour functionality in Style Card.
-* Fix: Resolved svg transition migration issues for legacy patterns.
-* Fix: Optimized unit value handling when exceeding new unit range limits.
-* Fix: Improved Save/Activate button functionality in Style Cards editor.
-* Fix: Resolved responsive values resetting when the values are the same on different breakpoints.
-
-_Updates 14 Feb 2025_
-MaxiBlocks v2.0.8
-* Fix: Corrected import error when handling patterns from legacy MaxiBlocks versions (0.0.1 and 0.1).
-
-_Updates 11 Feb 2025_
-MaxiBlocks v2.0.7
-* Update: Implemented comprehensive memory and speed optimizations across the Editor Experience (EE) and the Site Editor (SE) interfaces.
-* Update: Enhanced performance of Dynamic Content and Content Loop functionality in both EE and SE.
-* Update: Optimized frontend performance by conditionally loading scripts and styles only when Maxi Blocks are present on the page.
-* Update: Expanded Maxi AI capabilities with support for additional gpt-, o1 and o3 models based on OpenAI key permissions.
-* Update: Refined Maxi AI interface with improved usability features in both EE and Maxi AI Dashboard settings.
-* Update: Enhanced plugin compatibility with WordPress Multisite networks when network-activated.
-* Update: Introduced new "Keep only text content" option in Dynamic Content for HTML tag stripping functionality.
-* Update: Strengthened plugin testing infrastructure with multiple improvements.
-* Fix: Corrected pagination visibility issue in EE by automatically hiding it when Content Loop is inactive.
-* Fix: Resolved pattern selection issue in library modal that required double-clicking on categories.
-* Fix: Enhanced Style Cards modal stability by addressing re-rendering and filter reset issues.
-* Fix: Eliminated unwanted horizontal scrolling in Interaction Builder's transform sidebar section.
-* Fix: Corrected initial width rendering of template parts when loading SE.
-* Fix: Improved MaxiBlocks toolbar compatibility with WordPress Distraction-free and Spotlight editor modes.
-* Fix: Enhanced responsive background colour changes through improved toolbar settings functionality in responsive mode.
 
 == Upgrade Notice ==
 

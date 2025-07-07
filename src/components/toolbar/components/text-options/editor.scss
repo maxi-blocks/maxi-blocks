@@ -1,59 +1,91 @@
+// Main container for the toolbar popup
 .toolbar-item__popover {
+	// Container for font-related options
 	.toolbar-item__popover__font-options {
-		margin: -8px -8px 0;
-		&__wrap {
-			display: flex;
-			align-items: center;
-			border-top: 1px solid #dbdde6;
+		margin: -8px -8px 0; // Negative margin to extend content to edges
 
+		// Wrapper for font controls
+		&__wrap {
+			display: flex; // Makes children align horizontally
+			align-items: center; // Vertically centers items in container
+			border-top: 1px solid var(--maxi-grey-light); // Adds separator line
+
+			// Styles for base control elements
 			.maxi-base-control {
 				.components-range-control {
-					display: none;
+					display: none; // Hides range slider control
+				}
+			}
+
+			// Default SVG icon styling
+			svg {
+				fill: none; // Makes SVG icons transparent by default
+				&:hover {
+					fill: none !important; // Maintains transparency on hover
 				}
 			}
 		}
+
+		// Styles for extra typography options (bold, italic, etc.)
 		.toolbar-item__typography-control__extra-text-options {
 			display: flex;
 			align-items: center;
-			padding-right: 5px;
+			margin: 4px 0; // Adds 8px margin above and below this section
 
+			// Button styling
 			.components-button {
+				// Styles for all buttons except tab controls
 				&:not(.maxi-tabs-control__button) {
-					padding: 5px;
+					padding: 5px 10px;
 					margin-bottom: 0;
 					height: 36px;
+					fill: none !important;
+
+					// Active button state
 					&[aria-pressed='true'] {
-						color: #007cba;
-						background-color: #eaf2f6 !important;
-						border-bottom: 3px solid #007cba !important;
+						color: var(--maxi-primary-color);
+						// Changes text color when active
+						background-color: var(--maxi-white) !important;
+						fill: none !important;
+						border-bottom: 3px solid var(--maxi-primary-color) !important; // Adds highlight bar
 					}
 				}
 
+				// Icon styling within buttons
 				svg {
 					width: 16px;
+					fill: none !important;
 
 					path {
-						fill: transparent;
-						stroke: #000;
+						stroke: var(--maxi-black); // Default icon color
 					}
 				}
-
-				&.toolbar-item__superscript {
-					path {
-						fill: #000;
-						stroke: transparent;
+				&:hover {
+					transition: all 0.4s ease !important;
+					svg {
+						path {
+							stroke: var(--maxi-secondary-color) !important;
+						}
 					}
 				}
 			}
 		}
+
+		// Typography tabs section (alignment, font selection, etc.)
 		.toolbar-item__typography-control__typography-tabs {
+			// Tab control base styling
 			.maxi-tabs-control {
 				margin: 0;
 
 				&__button {
-					border-color: #dbdde6;
+					border-color: var(--maxi-grey-light);
 					border-style: solid;
 					border-width: 0 1px 0 0;
+
+					&:first-child,
+					&:last-child {
+						border-radius: 0 !important;
+					}
 				}
 			}
 
@@ -62,17 +94,25 @@
 					height: 36px;
 					justify-content: center;
 					width: 45px;
+					gap: 0;
 				}
 			}
 
 			.maxi-alignment-control {
 				.maxi-tabs-control {
 					&__button {
+						padding: 0;
+						width: 36px;
 						border-width: 0;
 						height: 36px;
+						margin: 0;
 
-						&:last-child {
-							border-right-width: 1px;
+						svg {
+							width: 14px;
+							path {
+								stroke: var(--maxi-black);
+								transition: stroke 0.2s ease;
+							}
 						}
 					}
 				}
@@ -84,7 +124,7 @@
 			}
 
 			.maxi-font-family-selector__control__control {
-				border-color: #dbdde6;
+				// border-color: var(--maxi-grey-light);
 				border-style: solid;
 				border-width: 0 1px 0 0;
 				height: 36px;
@@ -119,9 +159,22 @@
 				width: 115px;
 				height: 38px;
 
+				// Add specific SVG styling for font selector
+				svg {
+					fill: var(
+						--maxi-black
+					) !important; // Add fill for font selector icons
+
+					&:hover {
+						fill: var(
+							--maxi-primary-color
+						) !important; // Change fill color on hover
+					}
+				}
+
 				&__button {
-					color: #fff;
-					border-color: #80828a;
+					color: var(--maxi-white);
+					border-color: var(--maxi-grey);
 				}
 			}
 
@@ -136,9 +189,6 @@
 				}
 			}
 		}
-		.toolbar-item[aria-pressed='true'] svg path {
-			fill: #ff4a17;
-		}
 
 		&__wrap {
 			&_family {
@@ -146,7 +196,7 @@
 					margin-bottom: 0;
 
 					.maxi-font-family-selector__control__control:hover {
-						background-color: var(--maxi-grey-3-color);
+						background-color: var(--maxi-white);
 						cursor: pointer;
 					}
 				}
@@ -172,8 +222,7 @@
 					margin-right: 3px;
 
 					path {
-						fill: transparent;
-						stroke: #000;
+						// stroke: var(--maxi-black);
 					}
 				}
 			}
@@ -193,8 +242,16 @@
 			height: 100%;
 		}
 		.components-button {
-			font-family: 'Roboto', sans-serif !important;
+			font-family: 'Inter', sans-serif !important;
 			font-weight: 700;
 		}
+	}
+}
+.toolbar-item__bold:hover {
+	stroke: currentColor !important;
+	fill: none !important;
+
+	path {
+		fill: none !important;
 	}
 }

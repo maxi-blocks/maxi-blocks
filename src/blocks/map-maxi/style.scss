@@ -33,7 +33,7 @@ body.maxi-blocks--active .maxi-map-block {
 		display: block;
 		width: 17px;
 		height: 17px;
-		background-color: #fff;
+		background-color: var(--maxi-white);
 		border-radius: 50%;
 		transition: 0.1s;
 		span {
@@ -42,9 +42,9 @@ body.maxi-blocks--active .maxi-map-block {
 			transition: 0.1s;
 		}
 		&:hover {
-			background-color: #000;
+			background-color: var(--maxi-grey-dark);
 			span {
-				color: #fff;
+				color: var(--maxi-white);
 			}
 		}
 	}
@@ -124,5 +124,16 @@ body.maxi-blocks--active .maxi-map-block {
 		100% {
 			top: 0;
 		}
+	}
+}
+.maxi-sidebar,
+.maxi-sidebar
+	*:not(i):not(.block-editor-block-card):not(.block-editor-block-card
+		*):not(.block-editor-block-card) {
+	.maxi-map-popup-title-label,
+	.maxi-map-popup-description-label {
+		display: block;
+		margin-top: 10px !important;
+		margin-bottom: 10px !important;
 	}
 }

@@ -1,4 +1,5 @@
 /* eslint-disable max-classes-per-file */
+/* eslint-disable no-new */
 
 class Slide {
 	constructor(el, id) {
@@ -17,6 +18,10 @@ class Slide {
 	set isActive(activeSlideId) {
 		this._isActive = this._id === activeSlideId;
 		this._slide.classList.toggle('slider-item--active', this._isActive);
+		this._slide.setAttribute(
+			'data-slide-active',
+			this._isActive.toString()
+		);
 	}
 
 	get size() {
@@ -108,7 +113,14 @@ class MaxiSlider {
 	}
 
 	get activeSlidePosition() {
-		if (this._currentSlide < 0)
+		// For fade transitions, return realFirstElOffset for proper positioning
+		// (especially important for looped sliders with cloned slides)
+		if (this.transition === 'fade') {
+			return this.realFirstElOffset;
+		}
+
+		// For slide transitions, calculate position
+		if (this._currentSlide < 0) {
 			return (
 				this.realFirstElOffset -
 				(this._slides
@@ -116,6 +128,7 @@ class MaxiSlider {
 					.map(slide => slide.size.width)
 					?.reduce((acc, cur) => acc + cur) ?? 0)
 			);
+		}
 
 		return this.currentSlide === 0
 			? this.realFirstElOffset
@@ -141,8 +154,13 @@ class MaxiSlider {
 	init() {
 		if (this.isLoop) this.insertSlideClones(2);
 
-		// Init styles
-		this.wrapperTranslate = this.realFirstElOffset;
+		// Set data-transition attribute for CSS targeting
+		this._container.setAttribute('data-transition', this.transition);
+
+		// Init styles - but only set transform for slide transitions, not fade
+		if (this.transition !== 'fade') {
+			this.wrapperTranslate = this.realFirstElOffset;
+		}
 
 		this.navEvents();
 		this.wrapperEvents();
@@ -338,14 +356,19 @@ class MaxiSlider {
 			slide.isActive = this.currentSlide;
 		});
 
-		// Move the slider
-		if (withTransition) {
-			const property =
-				this.transition === 'slide' ? 'transition' : 'animation';
-			this._wrapper.style[property] = this.getSliderEffect();
+		// Move the slider - but ONLY for slide transitions, NOT fade
+		if (this.transition !== 'fade') {
+			if (withTransition) {
+				const property =
+					this.transition === 'slide' ? 'transition' : 'animation';
+				const effect = this.getSliderEffect();
+				this._wrapper.style[property] = effect;
+			}
+			this.wrapperTranslate = this.activeSlidePosition;
+		} else if (withTransition) {
+			const effect = this.getSliderEffect();
+			this._wrapper.style.animation = effect;
 		}
-
-		this.wrapperTranslate = this.activeSlidePosition;
 	}
 
 	onHover(isEnd) {

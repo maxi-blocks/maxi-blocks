@@ -75,7 +75,7 @@ const background = ({
 			<SettingTabsControl
 				items={[
 					{
-						label: __('Normal state', 'maxi-blocks'),
+						label: __('Normal', 'maxi-blocks'),
 						content: (
 							<BackgroundControl
 								{...getGroupAttributes(
@@ -99,7 +99,7 @@ const background = ({
 						),
 					},
 					{
-						label: __('Hover state', 'maxi-blocks'),
+						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<>
 								<ManageHoverTransitions />
@@ -109,7 +109,10 @@ const background = ({
 										'maxi-blocks'
 									)}
 									selected={hoverStatus}
-									className='maxi-background-status-hover'
+									className={`maxi-background-status-hover-${prefix.replace(
+										/-/g,
+										''
+									)}`}
 									onChange={val =>
 										maxiSetAttributes({
 											[`${prefix}background-status-hover`]:
@@ -141,7 +144,7 @@ const background = ({
 						extraIndicators: [`${prefix}background-status-hover`],
 					},
 					enableActiveState && {
-						label: 'Active state',
+						label: 'Active',
 						content: (
 							<>
 								<ToggleSwitch
@@ -150,7 +153,10 @@ const background = ({
 										'maxi-blocks'
 									)}
 									selected={activeStatus}
-									className='maxi-background-status-active'
+									className={`maxi-background-status-active-${prefix.replace(
+										/-/g,
+										''
+									)}`}
 									onChange={val =>
 										maxiSetAttributes({
 											[`${prefix}background-status-active`]:

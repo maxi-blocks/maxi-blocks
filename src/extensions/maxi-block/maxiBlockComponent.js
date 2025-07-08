@@ -1350,11 +1350,18 @@ class MaxiBlockComponent extends Component {
 
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
+		iframeDocument.documentElement.style.scrollbarWidth = 'none';
+		const tabletPreview = editorWrapper.querySelector('.is-tablet-preview');
+		const mobilePreview = editorWrapper.querySelector('.is-mobile-preview');
+
+		if (!tabletPreview && !mobilePreview) {
+			return;
+		}
+
 		editorWrapper.setAttribute(
 			'maxi-blocks-responsive',
 			currentBreakpoint === 's' ? 's' : 'xs'
 		);
-		iframeDocument.documentElement.style.scrollbarWidth = 'none';
 	}
 
 	copyFontsToIframe(iframeDocument, iframe) {
@@ -1643,8 +1650,14 @@ class MaxiBlockComponent extends Component {
 	// Add this new method to handle responsive class updates
 	updateResponsiveClasses(iframe, currentBreakpoint) {
 		const target = iframe?.contentDocument?.body || document.body;
-		const editorWrapper = target.querySelector('.editor-styles-wrapper');
+		const tabletPreview = target.querySelector('.is-tablet-preview');
+		const mobilePreview = target.querySelector('.is-mobile-preview');
 
+		if (!tabletPreview && !mobilePreview) {
+			return;
+		}
+
+		const editorWrapper = target.querySelector('.editor-styles-wrapper');
 		if (editorWrapper) {
 			editorWrapper.setAttribute(
 				'maxi-blocks-responsive',

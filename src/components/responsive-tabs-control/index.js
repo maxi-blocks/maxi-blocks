@@ -9,6 +9,7 @@ import { cloneElement } from '@wordpress/element';
  */
 import SettingTabsControl from '@components/setting-tabs-control';
 import { setScreenSize } from '@extensions/styles';
+import { getIsTemplatePart } from '@extensions/fse';
 
 /**
  * External dependencies
@@ -64,6 +65,14 @@ const ResponsiveTabsControl = props => {
 		return baseBreakpoint === customBreakpoint.toLowerCase();
 	};
 
+	const changeResponsive = breakpoint => {
+		if (disableCallback) return;
+
+		if (baseBreakpoint === breakpoint.toLowerCase() && !getIsTemplatePart())
+			setScreenSize('general');
+		else setScreenSize(breakpoint.toLowerCase());
+	};
+
 	return (
 		<SettingTabsControl
 			className={classes}
@@ -80,12 +89,7 @@ const ResponsiveTabsControl = props => {
 						}),
 					// content: children,
 					showNotification: showNotification(breakpoint),
-					callback: () =>
-						!disableCallback
-							? baseBreakpoint === breakpoint.toLowerCase()
-								? setScreenSize('general')
-								: setScreenSize(breakpoint.toLowerCase())
-							: null,
+					callback: () => changeResponsive(breakpoint),
 					breakpoint: breakpoint.toLowerCase(),
 				};
 			})}

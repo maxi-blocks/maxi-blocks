@@ -692,10 +692,9 @@ class MaxiBlockComponent extends Component {
 	handleIframeStyles(iframe, currentBreakpoint) {
 		const iframeDocument = iframe.contentDocument;
 		const editorWrapper = iframeDocument.body;
-		const { tabletPreview, mobilePreview } =
-			this.getPreviewElements(editorWrapper);
+		const { isPreview } = this.getPreviewElements(editorWrapper);
 
-		if (tabletPreview || mobilePreview) {
+		if (isPreview) {
 			this.handleResponsivePreview(editorWrapper);
 		}
 
@@ -1349,10 +1348,9 @@ class MaxiBlockComponent extends Component {
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
 		iframeDocument.documentElement.style.scrollbarWidth = 'none';
-		const { tabletPreview, mobilePreview } =
-			this.getPreviewElements(editorWrapper);
+		const { isPreview } = this.getPreviewElements(editorWrapper);
 
-		if (!tabletPreview && !mobilePreview) {
+		if (!isPreview) {
 			return;
 		}
 
@@ -1648,10 +1646,9 @@ class MaxiBlockComponent extends Component {
 	// Add this new method to handle responsive class updates
 	updateResponsiveClasses(iframe, currentBreakpoint) {
 		const target = iframe?.contentDocument?.body || document.body;
-		const { tabletPreview, mobilePreview } =
-			this.getPreviewElements(target);
+		const { isPreview } = this.getPreviewElements(target);
 
-		if (!tabletPreview && !mobilePreview) {
+		if (!isPreview) {
 			return;
 		}
 
@@ -1716,7 +1713,11 @@ class MaxiBlockComponent extends Component {
 	getPreviewElements(parentElement) {
 		const tabletPreview = parentElement.querySelector('.is-tablet-preview');
 		const mobilePreview = parentElement.querySelector('.is-mobile-preview');
-		return { tabletPreview, mobilePreview };
+		return {
+			tabletPreview,
+			mobilePreview,
+			isPreview: !!tabletPreview || !!mobilePreview,
+		};
 	}
 
 	// Add new method for FSE iframe styles

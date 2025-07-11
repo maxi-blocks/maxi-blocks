@@ -548,3 +548,264 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	// Call the function on page load
 	setAdminMenuActive();
 });
+
+// Licence page functionality
+document.addEventListener('DOMContentLoaded', function () {
+	console.log('MaxiBlocks licence page JavaScript loaded');
+
+	// Handle purchase code validation
+	const validateButton = document.getElementById(
+		'maxi-validate-purchase-code'
+	);
+	const purchaseCodeInput = document.getElementById(
+		'maxi-purchase-code-input'
+	);
+	const validationMessage = document.getElementById(
+		'maxi-licence-validation-message'
+	);
+	const currentStatus = document.getElementById('current-licence-status');
+	const currentUser = document.getElementById('current-licence-user');
+	const logoutButton = document.getElementById('maxi-licence-logout');
+
+	/**
+	 * Show validation message
+	 */
+	function showMessage(message, isError = false) {
+		if (validationMessage) {
+			validationMessage.style.display = 'block';
+			validationMessage.textContent = message;
+			validationMessage.className = `maxi-licence-message ${
+				isError ? 'error' : 'success'
+			}`;
+			console.log(
+				'Licence validation message:',
+				message,
+				'isError:',
+				isError
+			);
+		}
+	}
+
+	/**
+	 * Update licence status display
+	 */
+	function updateLicenceStatus(status, userName = '') {
+		console.log('Updating licence status:', status, 'userName:', userName);
+
+		if (currentStatus) {
+			currentStatus.textContent = status;
+		}
+
+		if (currentUser) {
+			if (userName) {
+				currentUser.textContent = userName;
+				currentUser.parentElement.style.display = 'block';
+			} else {
+				currentUser.parentElement.style.display = 'none';
+			}
+		}
+
+		// Since we're combining sections, we need to reload the page to show the correct UI
+		// This ensures the proper elements (logout button vs input form) are displayed
+		if (status === 'Active' || status === 'Not activated') {
+			console.log('Reloading page to update UI state');
+			setTimeout(() => {
+				window.location.reload();
+			}, 1500); // Give time to show the success message
+		}
+	}
+
+	/**
+	 * Validate purchase code
+	 */
+	function validatePurchaseCode() {
+		const purchaseCode = purchaseCodeInput
+			? purchaseCodeInput.value.trim()
+			: '';
+
+		if (!purchaseCode) {
+			showMessage('Please enter a purchase code', true);
+			return;
+		}
+
+		console.log('Validating purchase code:', purchaseCode);
+
+		// Show loading state
+		if (validateButton) {
+			validateButton.disabled = true;
+			validateButton.textContent = 'Validating...';
+		}
+
+		// Get middleware configuration from WordPress localized settings
+		// eslint-disable-next-line no-undef
+		const middlewareUrl = maxiLicenceSettings?.middlewareUrl || '';
+		// eslint-disable-next-line no-undef
+		const middlewareKey = maxiLicenceSettings?.middlewareKey || '';
+
+		if (!middlewareUrl || !middlewareKey) {
+			console.error('Missing middleware configuration');
+			showMessage(
+				'Configuration error: Missing middleware settings',
+				true
+			);
+			resetValidateButton();
+			return;
+		}
+
+		// Use the same verification logic as in toolbar.js
+		fetch(middlewareUrl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: middlewareKey,
+			},
+			body: JSON.stringify({
+				purchase_code: purchaseCode,
+				domain: window.location.hostname,
+			}),
+		})
+			.then(response => {
+				console.log('Middleware response status:', response.status);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then(result => {
+				console.log(
+					'Purchase code verification result:',
+					JSON.stringify(result)
+				);
+
+				if (result.success && result.valid) {
+					// Save licence data via AJAX to WordPress
+					const formData = new FormData();
+					formData.append('action', 'maxi_validate_licence');
+					formData.append('nonce', maxiLicenceSettings.nonce);
+					formData.append('purchase_code', purchaseCode);
+					formData.append('licence_action', 'activate');
+
+					fetch(maxiLicenceSettings.ajaxUrl, {
+						method: 'POST',
+						body: formData,
+					})
+						.then(response => response.json())
+						.then(data => {
+							console.log('WordPress AJAX response:', data);
+
+							if (data.success) {
+								showMessage(data.data.message);
+								updateLicenceStatus(
+									data.data.status,
+									data.data.user_name
+								);
+							} else {
+								showMessage(
+									data.data.message ||
+										'Failed to save licence data',
+									true
+								);
+							}
+						})
+						.catch(error => {
+							console.error('WordPress AJAX error:', error);
+							showMessage('Failed to save licence data', true);
+						})
+						.finally(() => {
+							resetValidateButton();
+						});
+				} else {
+					showMessage(
+						'Invalid purchase code or verification failed',
+						true
+					);
+					resetValidateButton();
+				}
+			})
+			.catch(error => {
+				console.error('Purchase code verification error:', error);
+				showMessage(
+					`Failed to verify purchase code: ${error.message}`,
+					true
+				);
+				resetValidateButton();
+			});
+	}
+
+	/**
+	 * Reset validate button state
+	 */
+	function resetValidateButton() {
+		if (validateButton) {
+			validateButton.disabled = false;
+			validateButton.textContent = 'Activate';
+		}
+	}
+
+	/**
+	 * Handle logout
+	 */
+	function handleLogout() {
+		console.log('Handling licence logout');
+
+		if (logoutButton) {
+			logoutButton.disabled = true;
+			logoutButton.textContent = 'Signing out...';
+		}
+
+		const formData = new FormData();
+		formData.append('action', 'maxi_validate_licence');
+		formData.append('nonce', maxiLicenceSettings.nonce);
+		formData.append('licence_action', 'logout');
+
+		fetch(maxiLicenceSettings.ajaxUrl, {
+			method: 'POST',
+			body: formData,
+		})
+			.then(response => response.json())
+			.then(data => {
+				console.log('Logout response:', data);
+
+				if (data.success) {
+					showMessage(data.data.message);
+					updateLicenceStatus(data.data.status, data.data.user_name);
+				} else {
+					showMessage(
+						data.data.message || 'Failed to sign out',
+						true
+					);
+				}
+			})
+			.catch(error => {
+				console.error('Logout error:', error);
+				showMessage('Failed to sign out', true);
+			})
+			.finally(() => {
+				if (logoutButton) {
+					logoutButton.disabled = false;
+					logoutButton.textContent = 'Sign out';
+				}
+			});
+	}
+
+	// Event listeners
+	if (validateButton) {
+		validateButton.addEventListener('click', validatePurchaseCode);
+		console.log('Added click listener to validate button');
+	}
+
+	if (logoutButton) {
+		logoutButton.addEventListener('click', handleLogout);
+		console.log('Added click listener to logout button');
+	}
+
+	if (purchaseCodeInput) {
+		purchaseCodeInput.addEventListener('keypress', function (e) {
+			if (e.key === 'Enter') {
+				e.preventDefault();
+				validatePurchaseCode();
+			}
+		});
+		console.log('Added keypress listener to purchase code input');
+	}
+});

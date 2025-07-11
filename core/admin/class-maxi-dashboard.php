@@ -3,6 +3,9 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'http://localhost:8001/verify'); // TODO: change to production URL
+define('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY', '4d8af9b4d6f221cf7a41271cb7b82c92'); // TODO: change to production key
+
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard
     {
@@ -82,6 +85,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             add_action('wp_ajax_nopriv_maxi_get_frontend_assets', [
                 $this,
                 'handle_get_frontend_assets',
+            ]);
+
+            // Add AJAX handlers for licence validation
+            add_action('wp_ajax_maxi_validate_licence', [
+                $this,
+                'handle_validate_licence',
             ]);
         }
 
@@ -221,6 +230,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'gpt-3.5-turbo',
                     ),
                 ]);
+
+                // Add localization for licence page
+                wp_localize_script('maxi-admin', 'maxiLicenceSettings', [
+                    'middlewareUrl' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '',
+                    'middlewareKey' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '',
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('maxi_licence_validation'),
+                    'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+                ]);
             }
         }
 
@@ -291,6 +309,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
             add_submenu_page(
                 self::$maxi_slug_dashboard,
+                __('Licence', 'maxi-blocks'),
+                __('Licence', 'maxi-blocks'),
+                'manage_options',
+                'admin.php?page=' .
+                    self::$maxi_slug_dashboard .
+                    '&tab=maxi_blocks_licence',
+                '',
+                null,
+            );
+            add_submenu_page(
+                self::$maxi_slug_dashboard,
                 __('Settings', 'maxi-blocks'),
                 __('Settings', 'maxi-blocks'),
                 'manage_options',
@@ -322,6 +351,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'System status',
                     'maxi-blocks',
                 ),
+                self::$maxi_prefix . 'licence' => __('Licence', 'maxi-blocks'),
                 self::$maxi_prefix . 'settings' => __(
                     'Settings',
                     'maxi-blocks',
@@ -426,6 +456,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 } elseif ($tab === self::$maxi_prefix . 'status') {
                     echo wp_kses(
                         $this->maxi_blocks_status(),
+                        maxi_blocks_allowed_html(),
+                    );
+                } elseif ($tab === self::$maxi_prefix . 'licence') {
+                    echo wp_kses(
+                        $this->maxi_blocks_licence(),
                         maxi_blocks_allowed_html(),
                     );
                 }
@@ -1575,10 +1610,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'string',
             ];
 
-			 // Add arguments for API keys
-			 $args_api_key = array(
-                'type' => 'string',
-                'sanitize_callback' => 'sanitize_text_field',
+            // Add arguments for API keys
+            $args_api_key = array(
+               'type' => 'string',
+               'sanitize_callback' => 'sanitize_text_field',
             );
 
             // List of settings and corresponding arguments
@@ -1796,6 +1831,85 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $status_report->generate_status_report();
         }
 
+        public function maxi_blocks_licence()
+        {
+            // Get current licence information
+            $current_licence_data = get_option('maxi_pro', '');
+            $current_licence_status = 'Not activated';
+            $current_user_name = '';
+
+            if (!empty($current_licence_data)) {
+                $licence_array = json_decode($current_licence_data, true);
+                if (is_array($licence_array)) {
+                    foreach ($licence_array as $licence) {
+                        if (isset($licence['status']) && $licence['status'] === 'yes') {
+                            $current_licence_status = 'Active';
+                            $current_user_name = isset($licence['name']) ? $licence['name'] : 'Unknown';
+                            break;
+                        }
+                    }
+                }
+            }
+
+            $content = '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-licence">';
+            $content .=
+                '<div class="maxi-dashboard_main-content-settings">';
+            $content .= '<h1>' . __('Licence', 'maxi-blocks') . '</h1>';
+            $content .=
+                '<p>' .
+                __(
+                    'Manage your MaxiBlocks licence and purchase code authentication.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '</div>';
+
+            $content .=
+                '<div class="maxi-dashboard_main-content_accordion_wrapper">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion">';
+
+            $content .= $this->generate_item_header(
+                __('Current licence', 'maxi-blocks'),
+                true,
+            );
+
+            $content .= '<div class="maxi-licence-status-display">';
+            $content .= '<h4>' . __('Status:', 'maxi-blocks') . ' <span id="current-licence-status">' . esc_html($current_licence_status) . '</span></h4>';
+            if (!empty($current_user_name)) {
+                $content .= '<h4>' . __('User:', 'maxi-blocks') . ' <span id="current-licence-user">' . esc_html($current_user_name) . '</span></h4>';
+            }
+            $content .= '</div>';
+
+            if ($current_licence_status === 'Active') {
+                // Show sign out button if already authenticated
+                $content .= '<div class="maxi-licence-actions">';
+                $content .= '<button type="button" id="maxi-licence-logout" class="button button-primary">' . __('Sign out', 'maxi-blocks') . '</button>';
+                $content .= '</div>';
+            } else {
+                // Show purchase code input if not authenticated
+                $content .= '<div class="maxi-licence-auth-form">';
+                $content .= '<h4>' . __('Enter your purchase code / licence key', 'maxi-blocks') . '</h4>';
+                $content .= '<p>' . __('Enter your purchase code / licence key to activate MaxiBlocks Pro features.', 'maxi-blocks') . '</p>';
+
+                $content .= '<div class="maxi-licence-input-wrapper">';
+                $content .= '<input type="text" id="maxi-purchase-code-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Enter your purchase code', 'maxi-blocks') . '" />';
+                $content .= '<button type="button" id="maxi-validate-purchase-code" class="button button-primary">' . __('Sign in', 'maxi-blocks') . '</button>';
+                $content .= '</div>';
+
+                $content .= '<div id="maxi-licence-validation-message" class="maxi-licence-message" style="display: none;"></div>';
+
+                $content .= '</div>'; // maxi-licence-auth-form
+            }
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion
+            $content .= '</div>'; // maxi-dashboard_main-content
+
+            return $content;
+        }
+
         public function maxi_blocks_menu_order($menu_order)
         {
             global $submenu;
@@ -1811,6 +1925,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'maxi-blocks-style-cards', // Style Cards
                     'maxi-blocks-starter-sites', // Starter Sites
                     'maxi-blocks-settings', // Settings
+                    'maxi-blocks-licence', // Licence
                     'admin.php?page=' .
                     self::$maxi_slug_dashboard .
                     '&tab=maxi_blocks_status', // Status Report (at the end)
@@ -1841,7 +1956,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         /**
          * Helper method to detect localhost
          */
-        private function is_localhost() {
+        private function is_localhost()
+        {
             $server_name = strtolower(isset($_SERVER['SERVER_NAME']) ? sanitize_text_field($_SERVER['SERVER_NAME']) : '');
             $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : '';
 
@@ -1920,12 +2036,121 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
         }
 
-        public function add_hidden_api_fields() {
+        public function add_hidden_api_fields()
+        {
             $google_api_key = get_option('google_api_key_option', '');
             $openai_api_key = get_option('openai_api_key_option', '');
 
             echo '<input type="hidden" name="google_api_key_option" value="' . esc_attr($google_api_key) . '">';
             echo '<input type="hidden" name="openai_api_key_option" value="' . esc_attr($openai_api_key) . '">';
+        }
+
+        /**
+         * Handle AJAX licence validation
+         */
+        public function handle_validate_licence()
+        {
+            // Verify nonce
+            if (!wp_verify_nonce($_POST['nonce'], 'maxi_licence_validation')) {
+                wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
+                return;
+            }
+
+            // Check user permissions
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error(['message' => __('Insufficient permissions', 'maxi-blocks')]);
+                return;
+            }
+
+            $purchase_code = sanitize_text_field($_POST['purchase_code']);
+            $action = sanitize_text_field($_POST['licence_action']);
+
+            if ($action === 'logout') {
+                // Handle logout
+                $this->handle_licence_logout();
+                return;
+            }
+
+            if (empty($purchase_code)) {
+                wp_send_json_error(['message' => __('Purchase code is required', 'maxi-blocks')]);
+                return;
+            }
+
+            // Get environment variables (these should be set in wp-config.php or elsewhere)
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                wp_send_json_error(['message' => __('Middleware configuration is missing', 'maxi-blocks')]);
+                return;
+            }
+
+            $domain = parse_url(home_url(), PHP_URL_HOST);
+
+            // Verify purchase code with middleware
+            $response = wp_remote_post($middleware_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode([
+                    'purchase_code' => $purchase_code,
+                    'domain' => $domain,
+                ]),
+            ]);
+
+            if (is_wp_error($response)) {
+                wp_send_json_error(['message' => __('Failed to connect to validation service', 'maxi-blocks')]);
+                return;
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $result = json_decode($body, true);
+
+            if (!$result || !isset($result['success']) || !$result['success'] || !isset($result['valid']) || !$result['valid']) {
+                wp_send_json_error(['message' => __('Invalid purchase code or validation failed', 'maxi-blocks')]);
+                return;
+            }
+
+            // Save licence data
+            $licence_data = [
+                'code_' . $purchase_code => [
+                    'status' => 'yes',
+                    'name' => 'Pro from ' . (isset($result['marketplace']) ? $result['marketplace'] : 'unknown'),
+                    'purchase_code' => $purchase_code,
+                    'domain' => $domain,
+                    'marketplace' => isset($result['marketplace']) ? $result['marketplace'] : 'unknown',
+                    'user_id' => isset($result['delivery_data']['user_id']) ? $result['delivery_data']['user_id'] : '',
+                    'product_id' => isset($result['delivery_data']['product_id']) ? $result['delivery_data']['product_id'] : '',
+                    'product_type' => isset($result['delivery_data']['product_type']) ? $result['delivery_data']['product_type'] : 'plugin',
+                    'order_id' => isset($result['delivery_data']['order_id']) ? $result['delivery_data']['order_id'] : '',
+                    'activated_at' => current_time('c'),
+                    'auth_type' => 'purchase_code',
+                ],
+            ];
+
+            update_option('maxi_pro', wp_json_encode($licence_data));
+
+            wp_send_json_success([
+                'message' => __('Licence activated successfully', 'maxi-blocks'),
+                'status' => 'Active',
+                'user_name' => 'Pro from ' . (isset($result['marketplace']) ? $result['marketplace'] : 'unknown'),
+            ]);
+        }
+
+        /**
+         * Handle licence logout
+         */
+        private function handle_licence_logout()
+        {
+            delete_option('maxi_pro');
+
+            wp_send_json_success([
+                'message' => __('Signed out successfully', 'maxi-blocks'),
+                'status' => 'Not activated',
+                'user_name' => '',
+            ]);
         }
     }
 endif;

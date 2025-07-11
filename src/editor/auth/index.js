@@ -485,6 +485,8 @@ export async function authConnect(withRedirect = false, email = false) {
 }
 
 export const logOut = redirect => {
+	let hasEmailAuth = false;
+
 	// Handle email auth logout
 	const emailCookie = getMaxiCookieKey();
 	if (emailCookie) {
@@ -494,6 +496,7 @@ export const logOut = redirect => {
 		if (email) {
 			processLocalActivationRemoveDevice(email, name, 'no', key);
 			removeMaxiCookie();
+			hasEmailAuth = true;
 		}
 	}
 
@@ -517,7 +520,8 @@ export const logOut = redirect => {
 		dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
 	}
 
-	if (redirect) {
+	// Only redirect to email logout page if user was authenticated via email
+	if (redirect && hasEmailAuth) {
 		const url = 'https://my.maxiblocks.com/log-out?plugin';
 		window.open(url, '_blank')?.focus();
 	}

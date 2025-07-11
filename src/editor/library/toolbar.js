@@ -29,6 +29,102 @@ import { SearchClient as TypesenseSearchClient } from 'typesense';
 import { isNil, isEmpty } from 'lodash';
 
 /**
+ * Helper functions for auth
+ */
+
+/**
+ * Detects if input is an email or purchase code
+ * @param {string} input - The input string to check
+ * @returns {string} - 'email' or 'code'
+ */
+const detectInputType = input => {
+	if (!input || typeof input !== 'string') return 'email';
+
+	// If it's a valid email, return email
+	if (isValidEmail(input)) return 'email';
+
+	// Purchase codes are typically alphanumeric strings without @ symbol
+	// and are usually longer than 6 characters
+	const trimmedInput = input.trim();
+	const hasAtSymbol = trimmedInput.includes('@');
+	const isAlphanumeric = /^[a-zA-Z0-9]+$/.test(trimmedInput);
+	const isLongEnough = trimmedInput.length >= 6;
+
+	// If it doesn't have @ and looks like a code, treat as purchase code
+	if (!hasAtSymbol && isAlphanumeric && isLongEnough) {
+		return 'code';
+	}
+
+	// Default to email for other cases
+	return 'email';
+};
+
+/**
+ * Verifies purchase code with middleware
+ * @param {string} purchaseCode - The purchase code to verify
+ * @param {string} domain       - The domain to verify against
+ * @returns {Promise<Object>} - Verification result
+ */
+const verifyPurchaseCode = async (purchaseCode, domain) => {
+	const middlewareUrl = process.env.REACT_APP_MAXI_BLOCKS_AUTH_MIDDLEWARE_URL;
+	const middlewareKey = process.env.REACT_APP_MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY;
+
+	if (!middlewareUrl || !middlewareKey) {
+		console.error('Missing middleware configuration');
+		return { success: false, valid: false, error: 'Configuration error' };
+	}
+
+	try {
+		console.log(
+			'Verifying purchase code:',
+			purchaseCode,
+			'for domain:',
+			domain
+		);
+
+		const response = await fetch(middlewareUrl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: middlewareKey,
+			},
+			body: JSON.stringify({
+				purchase_code: purchaseCode,
+				domain,
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		const result = await response.json();
+		console.log(
+			'Purchase code verification result:',
+			JSON.stringify(result)
+		);
+
+		return result;
+	} catch (error) {
+		console.error('Purchase code verification error:', error);
+		return { success: false, valid: false, error: error.message };
+	}
+};
+
+/**
+ * Gets current domain for purchase code verification
+ * @returns {string} - Current domain
+ */
+const getCurrentDomain = () => {
+	try {
+		return window.location.hostname;
+	} catch (error) {
+		console.error('Error getting domain:', error);
+		return 'localhost';
+	}
+};
+
+/**
  * Component
  */
 const ToolbarButton = props => {
@@ -69,6 +165,8 @@ const LibraryToolbar = props => {
 		onLogOut,
 		onClickConnect,
 		showNotValidEmail,
+		showAuthError,
+		onClickConnectCode,
 	} = props;
 
 	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
@@ -383,12 +481,43 @@ const LibraryToolbar = props => {
 		previewIframeWrap.style.right = 0;
 	};
 
-	const onClickAuth = () => {
-		const encodedEmail = encodeURIComponent(userEmail);
-		const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
-		window.open(url, '_blank')?.focus();
+	/**
+	 * Handles authentication based on input type (email or purchase code)
+	 */
+	const onClickAuth = async () => {
+		const inputValue = userEmail;
+		if (!inputValue) return;
 
-		onClickConnect(userEmail);
+		const inputType = detectInputType(inputValue);
+		console.log(
+			'Detected input type:',
+			inputType,
+			'for value:',
+			inputValue
+		);
+
+		if (inputType === 'email') {
+			// Use existing email auth flow
+			const encodedEmail = encodeURIComponent(inputValue);
+			const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
+			window.open(url, '_blank')?.focus();
+			onClickConnect(inputValue);
+		} else if (inputType === 'code') {
+			// Use new purchase code auth flow
+			const domain = getCurrentDomain();
+			const result = await verifyPurchaseCode(inputValue, domain);
+
+			if (result.success && result.valid && onClickConnectCode) {
+				// Pass the purchase code data to the parent component
+				onClickConnectCode(inputValue, result);
+			} else {
+				console.error(
+					'Purchase code verification failed:',
+					result.error || result.message
+				);
+				// The error will be shown via showAuthError prop
+			}
+		}
 	};
 
 	return (
@@ -532,13 +661,24 @@ const LibraryToolbar = props => {
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<div className='maxi-cloud-container__patterns__top-menu__input'>
 						<TextControl
-							placeholder={__('Pro user email', 'maxi-blocks')}
+							placeholder={__(
+								'Pro user email / purchase code / license key',
+								'maxi-blocks'
+							)}
 							value={userEmail}
 							onChange={value => setUserEmail(value)}
 						/>
 						{showNotValidEmail && (
 							<span>
 								{__('The email is not valid', 'maxi-blocks')}
+							</span>
+						)}
+						{showAuthError && (
+							<span>
+								{__(
+									'Authentication failed. Please check your credentials.',
+									'maxi-blocks'
+								)}
 							</span>
 						)}
 					</div>

@@ -47,6 +47,137 @@ export const removeMaxiCookie = () => {
 	}
 };
 
+/**
+ * Purchase code authentication functions
+ */
+
+/**
+ * Processes purchase code activation and saves to local storage
+ * @param {string} purchaseCode - The purchase code
+ * @param {string} domain       - The domain
+ * @param {Object} responseData - Response data from middleware
+ * @param {string} status       - Status ('yes', 'expired', 'no')
+ */
+export const processLocalPurchaseCodeActivation = (
+	purchaseCode,
+	domain,
+	responseData,
+	status = 'yes'
+) => {
+	const codeKey = `code_${purchaseCode}`;
+
+	// Extract useful info from the new data structure
+	const marketplace = responseData?.marketplace || 'unknown';
+	const userId = responseData?.delivery_data?.user_id || null;
+	const productId = responseData?.delivery_data?.product_id || null;
+	const productType = responseData?.delivery_data?.product_type || 'plugin';
+	const orderId = responseData?.delivery_data?.order_id || null;
+
+	// Use marketplace for display name
+	const displayName =
+		marketplace && marketplace !== 'unknown'
+			? `Pro from ${marketplace}`
+			: 'Pro License';
+
+	const newPro = {
+		[codeKey]: {
+			status,
+			name: displayName,
+			purchase_code: purchaseCode,
+			domain,
+			marketplace,
+			user_id: userId,
+			product_id: productId,
+			product_type: productType,
+			order_id: orderId,
+			activated_at: new Date().toISOString(),
+			auth_type: 'purchase_code',
+		},
+	};
+
+	const oldPro = select('maxiBlocks/pro').receiveMaxiProStatus();
+	let obj = newPro;
+
+	if (typeof oldPro === 'string') {
+		const oldProObj = JSON.parse(oldPro);
+		// Merge with existing data but give priority to purchase code auth
+		if (oldProObj?.status !== 'no') {
+			obj = { ...oldProObj, ...newPro };
+		}
+	}
+
+	const objString = JSON.stringify(obj);
+	dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+
+	console.log('Purchase code activation saved:', JSON.stringify(obj));
+};
+
+/**
+ * Removes purchase code activation
+ * @param {string} purchaseCode - The purchase code to remove
+ */
+export const removeLocalPurchaseCodeActivation = purchaseCode => {
+	const codeKey = `code_${purchaseCode}`;
+	const oldPro = select('maxiBlocks/pro').receiveMaxiProStatus();
+
+	if (typeof oldPro === 'string') {
+		const oldProObj = JSON.parse(oldPro);
+		delete oldProObj[codeKey];
+		const objString = JSON.stringify(oldProObj);
+		dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+	}
+};
+
+/**
+ * Gets purchase code info from local storage
+ * @returns {Object|false} - Purchase code info or false
+ */
+const getProInfoByPurchaseCode = () => {
+	const pro = select('maxiBlocks/pro').receiveMaxiProStatus();
+
+	if (typeof pro === 'string') {
+		const proJson = JSON.parse(pro);
+
+		// Find the first active purchase code entry
+		for (const [key, value] of Object.entries(proJson)) {
+			if (
+				key.startsWith('code_') &&
+				value?.auth_type === 'purchase_code'
+			) {
+				return { codeKey: key, info: value };
+			}
+		}
+	}
+
+	return false;
+};
+
+/**
+ * Checks if purchase code subscription is active
+ * @returns {boolean} - True if active
+ */
+export const isPurchaseCodeActive = () => {
+	const codeInfo = getProInfoByPurchaseCode();
+	return codeInfo && codeInfo.info?.status === 'yes';
+};
+
+/**
+ * Gets purchase code user name
+ * @returns {string|false} - User name or false
+ */
+export const getPurchaseCodeUserName = () => {
+	const codeInfo = getProInfoByPurchaseCode();
+	if (codeInfo && codeInfo.info) {
+		const { name } = codeInfo.info;
+		return name && name !== '' && name !== '1' ? name : false;
+	}
+	return false;
+};
+
+/**
+ * Combined functions that check both email and purchase code auth
+ */
+
 const getProInfoByEmail = () => {
 	const cookie = getMaxiCookieKey();
 	if (!cookie) return false;
@@ -66,49 +197,63 @@ const getProInfoByEmail = () => {
 };
 
 export const isProSubActive = () => {
-	const { info, key } = getProInfoByEmail();
-
-	if (info && info?.status === 'yes' && info?.key) {
-		const keysArray = info?.key.split(',');
-		if (keysArray.includes(key)) return true;
-		return false;
+	// Check email auth first
+	const emailInfo = getProInfoByEmail();
+	if (emailInfo) {
+		const { info, key } = emailInfo;
+		if (info && info?.status === 'yes' && info?.key) {
+			const keysArray = info?.key.split(',');
+			if (keysArray.includes(key)) return true;
+		}
 	}
-	return false;
+
+	// Check purchase code auth
+	return isPurchaseCodeActive();
 };
 
 export const isProSubExpired = () => {
-	const { info, key } = getProInfoByEmail();
-
-	if (info && info?.status === 'expired' && info?.key) {
-		const keysArray = info?.key.split(',');
-		if (keysArray.includes(key)) return true;
-		return false;
+	// Check email auth first
+	const emailInfo = getProInfoByEmail();
+	if (emailInfo) {
+		const { info, key } = emailInfo;
+		if (info && info?.status === 'expired' && info?.key) {
+			const keysArray = info?.key.split(',');
+			if (keysArray.includes(key)) return true;
+		}
 	}
+
+	// Purchase codes don't expire in the same way, return false
 	return false;
 };
 
 export const getUserName = () => {
-	const { email, info, key } = getProInfoByEmail();
-
-	if (info && info?.key) {
-		const keysArray = info?.key.split(',');
-		if (keysArray.includes(key)) {
-			const name = info?.name;
-			if (name && name !== '' && name !== '1') return name;
-			return email;
+	// Check email auth first
+	const emailInfo = getProInfoByEmail();
+	if (emailInfo) {
+		const { email, info, key } = emailInfo;
+		if (info && info?.key) {
+			const keysArray = info?.key.split(',');
+			if (keysArray.includes(key)) {
+				const name = info?.name;
+				if (name && name !== '' && name !== '1') return name;
+				return email;
+			}
 		}
-		return false;
 	}
-	return false;
+
+	// Check purchase code auth
+	const purchaseCodeName = getPurchaseCodeUserName();
+	return purchaseCodeName || false;
 };
 
 export const getUserEmail = () => {
-	const { email, info, key } = getProInfoByEmail();
-
-	if (info && info?.key) {
-		const keysArray = info?.key.split(',');
-		if (keysArray.includes(key)) return email;
-		return false;
+	const emailInfo = getProInfoByEmail();
+	if (emailInfo) {
+		const { email, info, key } = emailInfo;
+		if (info && info?.key) {
+			const keysArray = info?.key.split(',');
+			if (keysArray.includes(key)) return email;
+		}
 	}
 	return false;
 };
@@ -340,11 +485,38 @@ export async function authConnect(withRedirect = false, email = false) {
 }
 
 export const logOut = redirect => {
-	const { key } = getMaxiCookieKey();
-	const email = getUserEmail();
-	const name = getUserName();
-	processLocalActivationRemoveDevice(email, name, 'no', key);
-	removeMaxiCookie();
+	// Handle email auth logout
+	const emailCookie = getMaxiCookieKey();
+	if (emailCookie) {
+		const { key } = emailCookie;
+		const email = getUserEmail();
+		const name = getUserName();
+		if (email) {
+			processLocalActivationRemoveDevice(email, name, 'no', key);
+			removeMaxiCookie();
+		}
+	}
+
+	// Handle purchase code logout - remove all purchase code activations
+	const pro = select('maxiBlocks/pro').receiveMaxiProStatus();
+	if (typeof pro === 'string') {
+		const proObj = JSON.parse(pro);
+		const filteredObj = {};
+
+		// Keep only non-purchase-code entries
+		for (const [key, value] of Object.entries(proObj)) {
+			if (
+				!key.startsWith('code_') ||
+				value?.auth_type !== 'purchase_code'
+			) {
+				filteredObj[key] = value;
+			}
+		}
+
+		const objString = JSON.stringify(filteredObj);
+		dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+	}
+
 	if (redirect) {
 		const url = 'https://my.maxiblocks.com/log-out?plugin';
 		window.open(url, '_blank')?.focus();
@@ -353,6 +525,6 @@ export const logOut = redirect => {
 
 export const isValidEmail = email => {
 	const emailPattern =
-		/^(?![.])(([^<>()\[\]\\.,;:\s@"']+(\.[^<>()\[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		/^(?![.])(([^<>()[\]\\.,;:\s@"']+(\.[^<>()[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return emailPattern.test(email);
 };

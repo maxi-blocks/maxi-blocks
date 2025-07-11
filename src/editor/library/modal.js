@@ -9,6 +9,7 @@ import {
 	forwardRef,
 	useRef,
 } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -23,6 +24,7 @@ import {
 	isValidEmail,
 	getUserName,
 	logOut,
+	processLocalPurchaseCodeActivation,
 } from '@editor/auth';
 import useObserveBlockSize from './hooks';
 
@@ -68,35 +70,32 @@ const CloudPlaceholder = forwardRef((props, ref) => {
 });
 
 /**
- * Icon Content Placeholder
+ * SVG Icon Placeholder
  */
 const SVGIconPlaceholder = forwardRef((props, ref) => {
-	const { uniqueID, clientId, onClick } = props;
+	const { clientId, onClick } = props;
 
-	const { isBlockSmall, isBlockSmaller } = useObserveBlockSize(ref);
+	const { isBlockSmall, isBlockSmaller } = useObserveBlockSize(ref, true);
 
 	return (
-		<div
+		<Button
+			key={`maxi-svg-icon-library__modal-button--${clientId}`}
+			isPrimary
 			className={classNames(
-				'maxi-svg-icon-block__placeholder',
-				isBlockSmall && 'maxi-svg-icon-block__placeholder--small',
-				isBlockSmaller && 'maxi-svg-icon-block__placeholder--smaller'
+				'maxi-svg-icon-library__modal-button__placeholder',
+				isBlockSmall &&
+					'maxi-svg-icon-library__modal-button__placeholder--small',
+				isBlockSmaller &&
+					'maxi-svg-icon-library__modal-button__placeholder--smaller'
 			)}
-			key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
+			onClick={onClick}
 		>
-			<Button
-				isPrimary
-				key={`maxi-block-library__modal-button--${clientId}`}
-				className='maxi-block-library__modal-button'
-				onClick={onClick}
-			>
-				<Icon
-					className='maxi-icon-block__select__icon'
-					icon={selectIcon}
-				/>
-				{!isBlockSmall && __('Select icon', 'maxi-blocks')}
-			</Button>
-		</div>
+			<Icon
+				className='maxi-library-block__select__icon'
+				icon={selectIcon}
+			/>
+			{!isBlockSmall && __('Cloud library', 'maxi-blocks')}
+		</Button>
 	);
 });
 
@@ -140,28 +139,42 @@ const MaxiModal = props => {
 		if (forceIsOpen) changeIsOpen(forceIsOpen);
 	}, [forceIsOpen]);
 
-	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
-	const [isMaxiProExpired, setIsMaxiProExpired] = useState(isProSubExpired());
-	const [userName, setUserName] = useState(getUserName());
+	// Use useSelect to properly subscribe to the WordPress data store
+	const { proStatus, hasProData } = useSelect(select => {
+		const proData = select('maxiBlocks/pro').receiveMaxiProStatus();
+		return {
+			proStatus: proData,
+			hasProData: proData !== undefined && proData !== null,
+		};
+	}, []);
+
+	// Initialize state based on store data, with fallbacks
+	const [isMaxiProActive, setIsMaxiProActive] = useState(() => {
+		return hasProData ? isProSubActive() : false;
+	});
+	const [isMaxiProExpired, setIsMaxiProExpired] = useState(() => {
+		return hasProData ? isProSubExpired() : false;
+	});
+	const [userName, setUserName] = useState(() => {
+		return hasProData ? getUserName() : '';
+	});
 	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
+	const [showAuthError, setShowAuthError] = useState(false);
 
-	const isActiveState = isProSubActive();
-	const isExpiredState = isProSubExpired();
-	const isUserName = getUserName();
-
+	// Update state when store data changes
 	useEffect(() => {
-		setIsMaxiProActive(isProSubActive());
-		setUserName(getUserName());
-	}, [type, isActiveState, isUserName]);
-
-	useEffect(() => {
-		setIsMaxiProExpired(isProSubExpired());
-	}, [type, isExpiredState, isUserName]);
+		if (hasProData) {
+			setIsMaxiProActive(isProSubActive());
+			setIsMaxiProExpired(isProSubExpired());
+			setUserName(getUserName());
+		}
+	}, [proStatus, hasProData, type]);
 
 	const onClickConnect = async email => {
 		const isValid = isValidEmail(email);
 		if (isValid) {
 			setShowNotValidEmail(false);
+			setShowAuthError(false);
 
 			await authConnect(false, email); // Initial call
 			setIsMaxiProActive(isProSubActive());
@@ -181,6 +194,48 @@ const MaxiModal = props => {
 			}, 1000); // Check every 5 seconds, adjust as needed
 		} else {
 			setShowNotValidEmail(true);
+			setShowAuthError(false);
+		}
+	};
+
+	/**
+	 * Handles purchase code authentication
+	 * @param {string} purchaseCode       - The purchase code
+	 * @param {Object} verificationResult - Result from middleware
+	 */
+	const onClickConnectCode = async (purchaseCode, verificationResult) => {
+		try {
+			setShowNotValidEmail(false);
+			setShowAuthError(false);
+
+			if (verificationResult.success && verificationResult.valid) {
+				// Get current domain
+				const domain = window.location.hostname;
+
+				// Save purchase code activation
+				processLocalPurchaseCodeActivation(
+					purchaseCode,
+					domain,
+					verificationResult,
+					'yes'
+				);
+
+				// Update states
+				setIsMaxiProActive(isProSubActive());
+				setIsMaxiProExpired(isProSubExpired());
+				setUserName(getUserName());
+
+				console.log('Purchase code authentication successful');
+			} else {
+				console.error(
+					'Purchase code verification failed:',
+					verificationResult.error || verificationResult.message
+				);
+				setShowAuthError(true);
+			}
+		} catch (error) {
+			console.error('Purchase code authentication error:', error);
+			setShowAuthError(true);
 		}
 	};
 
@@ -189,6 +244,8 @@ const MaxiModal = props => {
 		setIsMaxiProActive(false);
 		setIsMaxiProExpired(false);
 		setUserName('');
+		setShowNotValidEmail(false);
+		setShowAuthError(false);
 	};
 
 	const onClick = () => {
@@ -334,7 +391,9 @@ const MaxiModal = props => {
 								isMaxiProActive={isMaxiProActive}
 								isMaxiProExpired={isMaxiProExpired}
 								onClickConnect={onClickConnect}
+								onClickConnectCode={onClickConnectCode}
 								showNotValidEmail={showNotValidEmail}
+								showAuthError={showAuthError}
 								userName={userName}
 								onLogOut={onLogOut}
 								layerOrder={layerOrder}
@@ -343,73 +402,6 @@ const MaxiModal = props => {
 					</div>
 				)}
 			</div>
-			{type === 'button-icon' && !isEmpty(icon) && (
-				<div className='maxi-library-modal__action-section__preview'>
-					<Icon
-						className='maxi-library-modal__action-section__preview--remove'
-						icon={remove}
-						onClick={() =>
-							onRemove({
-								'icon-content': '',
-								'icon-only': false,
-							})
-						}
-					/>
-					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
-						{icon}
-					</RawHTML>
-				</div>
-			)}
-			{(type === 'navigation-icon' || type === 'search-icon') &&
-				!isEmpty(icon) && (
-					<div className='maxi-library-modal__action-section__preview'>
-						<Icon
-							className='maxi-library-modal__action-section__preview--remove'
-							icon={remove}
-							onClick={() =>
-								onRemove({
-									[`${prefix}icon-content`]: '',
-								})
-							}
-						/>
-						<RawHTML className='maxi-library-modal__action-section__preview__icon'>
-							{icon}
-						</RawHTML>
-					</div>
-				)}
-			{type === 'bg-shape' && !isEmpty(icon) && (
-				<div className='maxi-library-modal__action-section__preview'>
-					<Icon
-						className='maxi-library-modal__action-section__preview--remove'
-						icon={remove}
-						onClick={() => {
-							onRemove({
-								'background-svg-SVGElement': '',
-							});
-						}}
-					/>
-					<RawHTML className='maxi-library-modal__action-section__preview__shape'>
-						{icon}
-					</RawHTML>
-				</div>
-			)}
-			{type === 'image-shape' && !isEmpty(icon) && (
-				<div className='maxi-library-modal__action-section__preview'>
-					<Icon
-						className='maxi-library-modal__action-section__preview--remove'
-						icon={remove}
-						onClick={() =>
-							onRemove({
-								SVGElement: '',
-								SVGData: {},
-							})
-						}
-					/>
-					<RawHTML className='maxi-library-modal__action-section__preview__shape'>
-						{icon}
-					</RawHTML>
-				</div>
-			)}
 			{type.includes('video-icon') && !isEmpty(icon) && (
 				<div className='maxi-library-modal__action-section__preview'>
 					<Icon
@@ -447,7 +439,9 @@ const MaxiModal = props => {
 							isMaxiProActive={isMaxiProActive}
 							isMaxiProExpired={isMaxiProExpired}
 							onClickConnect={onClickConnect}
+							onClickConnectCode={onClickConnectCode}
 							showNotValidEmail={showNotValidEmail}
+							showAuthError={showAuthError}
 							userName={userName}
 							onLogOut={onLogOut}
 						/>

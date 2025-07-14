@@ -19,7 +19,7 @@ const openSidebarTab = async (page, tab, item) => {
 	const sidebarButton = page.locator(
 		'button[aria-label="Settings"][aria-expanded="false"]'
 	);
-	if (sidebarButton && (await sidebarButton.isVisible())) {
+	if (await sidebarButton.isVisible()) {
 		await sidebarButton.click();
 	}
 

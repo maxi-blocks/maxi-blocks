@@ -184,10 +184,7 @@ test.describe('Context Loop', () => {
 		await paginationToggle.click();
 
 		// Check that pagination is displayed
-		const paginationVisible = await page
-			.locator('.maxi-pagination')
-			.isVisible();
-		expect(paginationVisible).toBe(true);
+		await expect(page.locator('.maxi-pagination')).toBeVisible();
 
 		// Turn off CL
 		const toggleSwitchOff = page
@@ -196,9 +193,6 @@ test.describe('Context Loop', () => {
 		await toggleSwitchOff.click();
 
 		// Check that pagination is removed
-		const paginationHidden = await page
-			.locator('.maxi-pagination')
-			.isVisible();
-		expect(paginationHidden).toBe(false);
+		await expect(page.locator('.maxi-pagination')).not.toBeVisible();
 	});
 });

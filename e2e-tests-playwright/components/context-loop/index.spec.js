@@ -45,7 +45,10 @@ test.describe('Context Loop', () => {
 		await page.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 		});
-		await page.waitForTimeout(1000);
+		await page.waitForFunction(() => {
+			const element = document.querySelector('.maxi-text-block__content');
+			return element && element.innerText !== 'No content found';
+		});
 
 		const expectedResults = {
 			'cl-text-1': 'Post 2',
@@ -98,7 +101,10 @@ test.describe('Context Loop', () => {
 		await page.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 		});
-		await page.waitForTimeout(1000);
+		await page.waitForFunction(() => {
+			const element = document.querySelector('.maxi-text-block__content');
+			return element && element.innerText !== 'No content found';
+		});
 
 		const expectedResults = {
 			'cl-text-1': 'Post 2',
@@ -151,7 +157,10 @@ test.describe('Context Loop', () => {
 		await page.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 		});
-		await page.waitForTimeout(1000);
+		await page.waitForFunction(() => {
+			const element = document.querySelector('.maxi-text-block__content');
+			return element && element.innerText !== 'No content found';
+		});
 
 		const expectedResults = {
 			'cl-text-1': 'Post 2',
@@ -235,7 +244,6 @@ test.describe('Context Loop', () => {
 		await paginationToggle.click();
 
 		// Check that pagination is displayed
-		await page.waitForTimeout(1000);
 		const paginationVisible = await page
 			.locator('.maxi-pagination')
 			.isVisible();
@@ -248,7 +256,6 @@ test.describe('Context Loop', () => {
 		await toggleSwitchOff.click();
 
 		// Check that pagination is removed
-		await page.waitForTimeout(1000);
 		const paginationHidden = await page
 			.locator('.maxi-pagination')
 			.isVisible();

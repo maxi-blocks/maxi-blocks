@@ -43,7 +43,8 @@ const setAdvancedCss = (obj, selector, breakpoint, css) => {
 const getAdvancedCssObject = obj => {
 	const response = {};
 
-	const selectorRegex = /([a-zA-Z0-9\-_\s.,#:*[\]="']*?)\s*{([^}]*)}/g;
+	const selectorRegex =
+		/([a-zA-Z0-9\-_\s.,#:*[\]="'>+~()|^$!/%]*?)\s*{([^}]*)}/g;
 
 	breakpoints.forEach(breakpoint => {
 		const code = getAttributeValue({

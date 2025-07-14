@@ -30,13 +30,14 @@ const AdvancedCssControl = ({ breakpoint, onChange, ...attributes }) => {
 		if (!code) return '';
 
 		// Check if the code starts with a selector.
-		const selectorRegex = /^[a-zA-Z0-9\-_\s.,#:*[\]="']+?\s*{[^}]*}/;
+		const selectorRegex =
+			/([a-zA-Z0-9\-_\s.,#:*[\]="'>+~()|^$!/%]*?)\s*{([^}]*)}/;
 		const matches = code.match(selectorRegex);
 
 		// If the code doesn't start with a selector, find the first selector and wrap everything before it with 'body'
 		if (!matches) {
 			const firstSelectorIndex = code.search(
-				/[a-zA-Z0-9\-_\s.,#:*[\]="']+?\s*{[^}]*}/
+				/([a-zA-Z0-9\-_\s.,#:*[\]="'>+~()|^$!/%]*?)\s*{([^}]*)}/
 			);
 			if (firstSelectorIndex > 0) {
 				return `body {${code.substring(

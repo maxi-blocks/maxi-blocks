@@ -13,6 +13,61 @@ import {
 	rowInsideRowCL,
 } from './content';
 
+/**
+ * Helper function to setup a test post with content
+ */
+async function setupTestPost(admin, editor, pageUtils, clipboardContent) {
+	await admin.createNewPost({ title: 'Page CL test' });
+	await editor.insertBlock({ name: 'core/paragraph' });
+	await pageUtils.setClipboardData({ html: clipboardContent });
+	await pageUtils.pressKeys('primary+v');
+}
+
+/**
+ * Helper function to wait for content to load and verify expected results in editor
+ */
+async function verifyEditorResults(page, expectedResults) {
+	await page.waitForSelector('.maxi-text-block__content', {
+		visible: true,
+	});
+	await page.waitForFunction(() => {
+		const element = document.querySelector('.maxi-text-block__content');
+		return element && element.innerText !== 'No content found';
+	});
+
+	for (const [block, expectedText] of Object.entries(expectedResults)) {
+		const actualText = await page.$eval(
+			`.maxi-text-block.${block} .maxi-text-block__content`,
+			el => el.innerText
+		);
+		expect(actualText).toBe(expectedText);
+	}
+}
+
+/**
+ * Helper function to verify expected results in preview page
+ */
+async function verifyPreviewResults(editor, expectedResults) {
+	const previewPage = await editor.openPreviewPage();
+
+	await previewPage.waitForSelector(
+		'.cl-text-3.maxi-text-block .maxi-text-block__content',
+		{
+			visible: true,
+		}
+	);
+
+	for (const [block, expectedText] of Object.entries(expectedResults)) {
+		const actualText = await previewPage.$eval(
+			`.${block}.maxi-text-block .maxi-text-block__content`,
+			el => el.innerText
+		);
+		expect(actualText).toBe(expectedText);
+	}
+
+	await previewPage.close();
+}
+
 test.describe('Context Loop', () => {
 	test.beforeEach(async ({ page, admin, editor, requestUtils }) => {
 		await requestUtils.deleteAllPosts();
@@ -20,8 +75,7 @@ test.describe('Context Loop', () => {
 		const pages = ['Post 1', 'Post 2', 'Post 3', 'Post 4', 'Post 5'];
 
 		for (const title of pages) {
-			await admin.createNewPost({ title, page });
-			await editor.publishPost({ page });
+			await requestUtils.createPost({ title, status: 'publish' });
 		}
 	});
 
@@ -35,20 +89,7 @@ test.describe('Context Loop', () => {
 		pageUtils,
 		editor,
 	}) => {
-		await admin.createNewPost({ title: 'Page CL test' });
-
-		await editor.insertBlock({ name: 'core/paragraph' });
-
-		await pageUtils.setClipboardData({ html: contextLoopCodeEditor });
-		await pageUtils.pressKeys('primary+v');
-
-		await page.waitForSelector('.maxi-text-block__content', {
-			visible: true,
-		});
-		await page.waitForFunction(() => {
-			const element = document.querySelector('.maxi-text-block__content');
-			return element && element.innerText !== 'No content found';
-		});
+		await setupTestPost(admin, editor, pageUtils, contextLoopCodeEditor);
 
 		const expectedResults = {
 			'cl-text-1': 'Post 2',
@@ -56,33 +97,8 @@ test.describe('Context Loop', () => {
 			'cl-text-3': 'Post 1',
 		};
 
-		for (const [block, expectedText] of Object.entries(expectedResults)) {
-			const actualText = await page.$eval(
-				`.maxi-text-block.${block} .maxi-text-block__content`,
-				el => el.innerText
-			);
-			expect(actualText).toBe(expectedText);
-		}
-
-		// Check frontend
-		const previewPage = await editor.openPreviewPage();
-
-		await previewPage.waitForSelector(
-			'.cl-text-3.maxi-text-block .maxi-text-block__content',
-			{
-				visible: true,
-			}
-		);
-
-		for (const [block, expectedText] of Object.entries(expectedResults)) {
-			const actualText = await previewPage.$eval(
-				`.${block}.maxi-text-block .maxi-text-block__content`,
-				el => el.innerText
-			);
-			expect(actualText).toBe(expectedText);
-		}
-
-		await previewPage.close();
+		await verifyEditorResults(page, expectedResults);
+		await verifyPreviewResults(editor, expectedResults);
 	});
 
 	test('Should work with group inside the column containing the blocks', async ({
@@ -91,20 +107,7 @@ test.describe('Context Loop', () => {
 		pageUtils,
 		editor,
 	}) => {
-		await admin.createNewPost({ title: 'Page CL test' });
-
-		await editor.insertBlock({ name: 'core/paragraph' });
-
-		await pageUtils.setClipboardData({ html: codeEditorWithGroups });
-		await pageUtils.pressKeys('primary+v');
-
-		await page.waitForSelector('.maxi-text-block__content', {
-			visible: true,
-		});
-		await page.waitForFunction(() => {
-			const element = document.querySelector('.maxi-text-block__content');
-			return element && element.innerText !== 'No content found';
-		});
+		await setupTestPost(admin, editor, pageUtils, codeEditorWithGroups);
 
 		const expectedResults = {
 			'cl-text-1': 'Post 2',
@@ -112,33 +115,8 @@ test.describe('Context Loop', () => {
 			'cl-text-3': 'Post 1',
 		};
 
-		for (const [block, expectedText] of Object.entries(expectedResults)) {
-			const actualText = await page.$eval(
-				`.maxi-text-block.${block} .maxi-text-block__content`,
-				el => el.innerText
-			);
-			expect(actualText).toBe(expectedText);
-		}
-
-		// Check frontend
-		const previewPage = await editor.openPreviewPage();
-
-		await previewPage.waitForSelector(
-			'.cl-text-3.maxi-text-block .maxi-text-block__content',
-			{
-				visible: true,
-			}
-		);
-
-		for (const [block, expectedText] of Object.entries(expectedResults)) {
-			const actualText = await previewPage.$eval(
-				`.${block}.maxi-text-block .maxi-text-block__content`,
-				el => el.innerText
-			);
-			expect(actualText).toBe(expectedText);
-		}
-
-		await previewPage.close();
+		await verifyEditorResults(page, expectedResults);
+		await verifyPreviewResults(editor, expectedResults);
 	});
 
 	test('Should work with row inside another row', async ({
@@ -147,20 +125,7 @@ test.describe('Context Loop', () => {
 		pageUtils,
 		editor,
 	}) => {
-		await admin.createNewPost({ title: 'Page CL test' });
-
-		await editor.insertBlock({ name: 'core/paragraph' });
-
-		await pageUtils.setClipboardData({ html: rowInsideRowCL });
-		await pageUtils.pressKeys('primary+v');
-
-		await page.waitForSelector('.maxi-text-block__content', {
-			visible: true,
-		});
-		await page.waitForFunction(() => {
-			const element = document.querySelector('.maxi-text-block__content');
-			return element && element.innerText !== 'No content found';
-		});
+		await setupTestPost(admin, editor, pageUtils, rowInsideRowCL);
 
 		const expectedResults = {
 			'cl-text-1': 'Post 2',
@@ -168,33 +133,8 @@ test.describe('Context Loop', () => {
 			'cl-text-3': 'Post 5',
 		};
 
-		for (const [block, expectedText] of Object.entries(expectedResults)) {
-			const actualText = await page.$eval(
-				`.maxi-text-block.${block} .maxi-text-block__content`,
-				el => el.innerText
-			);
-			expect(actualText).toBe(expectedText);
-		}
-
-		// Check frontend
-		const previewPage = await editor.openPreviewPage();
-
-		await previewPage.waitForSelector(
-			'.cl-text-3.maxi-text-block .maxi-text-block__content',
-			{
-				visible: true,
-			}
-		);
-
-		for (const [block, expectedText] of Object.entries(expectedResults)) {
-			const actualText = await previewPage.$eval(
-				`.${block}.maxi-text-block .maxi-text-block__content`,
-				el => el.innerText
-			);
-			expect(actualText).toBe(expectedText);
-		}
-
-		await previewPage.close();
+		await verifyEditorResults(page, expectedResults);
+		await verifyPreviewResults(editor, expectedResults);
 	});
 
 	test('Should remove pagination when CL is disabled', async ({

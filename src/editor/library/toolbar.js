@@ -181,6 +181,7 @@ const LibraryToolbar = props => {
 	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
 	const [userEmail, setUserEmail] = useState(false);
 	const [clickCount, setClickCount] = useState(0);
+	const [isVerifying, setIsVerifying] = useState(false);
 
 	const client = new TypesenseSearchClient({
 		nodes: [
@@ -494,7 +495,7 @@ const LibraryToolbar = props => {
 	 */
 	const onClickAuth = async () => {
 		const inputValue = userEmail;
-		if (!inputValue) return;
+		if (!inputValue || isVerifying) return;
 
 		const inputType = detectInputType(inputValue);
 		console.log(
@@ -519,12 +520,18 @@ const LibraryToolbar = props => {
 			}
 		} else if (inputType === 'code') {
 			// Use new purchase code auth flow
-			const domain = getCurrentDomain();
-			const result = await verifyPurchaseCode(inputValue, domain);
+			setIsVerifying(true);
 
-			if (onClickConnectCode) {
-				// Always pass result to parent - let parent handle success/error
-				onClickConnectCode(inputValue, result);
+			try {
+				const domain = getCurrentDomain();
+				const result = await verifyPurchaseCode(inputValue, domain);
+
+				if (onClickConnectCode) {
+					// Always pass result to parent - let parent handle success/error
+					onClickConnectCode(inputValue, result);
+				}
+			} finally {
+				setIsVerifying(false);
 			}
 		}
 	};
@@ -603,16 +610,29 @@ const LibraryToolbar = props => {
 			{type === 'patterns' && isMaxiProActive && userName && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
-						{__('Signed in: ', 'maxi-blocks')}
+						{__('✓ Pro access active Licensed to: ', 'maxi-blocks')}
 						<span
 							className='maxi-username'
 							title={
-								clickCount % 2 !== 0
-									? __('Click to hide', 'maxi-blocks')
-									: __('Click to show', 'maxi-blocks')
+								isValidEmail(userName)
+									? clickCount % 2 !== 0
+										? __('Click to hide', 'maxi-blocks')
+										: __('Click to show', 'maxi-blocks')
+									: undefined
 							}
-							onClick={event => {
-								setClickCount(prevCount => prevCount + 1);
+							onClick={
+								isValidEmail(userName)
+									? event => {
+											setClickCount(
+												prevCount => prevCount + 1
+											);
+									  }
+									: undefined
+							}
+							style={{
+								cursor: isValidEmail(userName)
+									? 'pointer'
+									: 'default',
 							}}
 						>
 							{isValidEmail(userName)
@@ -625,13 +645,13 @@ const LibraryToolbar = props => {
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-						label={__('Sign out', 'maxi-blocks')}
+						label={__('Deactivate Pro', 'maxi-blocks')}
 						onClick={() => {
 							onLogOut(true);
 							onLogOut();
 						}}
 					>
-						{__('Sign out', 'maxi-blocks')}
+						{__('Deactivate Pro', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
@@ -644,10 +664,17 @@ const LibraryToolbar = props => {
 					<Button
 						key='maxi-cloud-toolbar__button__connect'
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
-						label={__('Sign in', 'maxi-blocks')}
+						label={
+							isVerifying
+								? __('Verifying…', 'maxi-blocks')
+								: __('Activate Pro', 'maxi-blocks')
+						}
 						onClick={() => onClickAuth()}
+						disabled={isVerifying}
 					>
-						{__('Sign in', 'maxi-blocks')}
+						{isVerifying
+							? __('Verifying…', 'maxi-blocks')
+							: __('Activate Pro', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
@@ -659,10 +686,10 @@ const LibraryToolbar = props => {
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-						label={__('Sign out', 'maxi-blocks')}
+						label={__('Deactivate Pro', 'maxi-blocks')}
 						onClick={onLogOut}
 					>
-						{__('Sign out', 'maxi-blocks')}
+						{__('Deactivate Pro', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
@@ -694,10 +721,17 @@ const LibraryToolbar = props => {
 					<Button
 						key='maxi-cloud-toolbar__button__connect'
 						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
-						label={__('Sign in', 'maxi-blocks')}
+						label={
+							isVerifying
+								? __('Verifying…', 'maxi-blocks')
+								: __('Activate Pro', 'maxi-blocks')
+						}
 						onClick={() => onClickAuth()}
+						disabled={isVerifying}
 					>
-						{__('Sign in', 'maxi-blocks')}
+						{isVerifying
+							? __('Verifying…', 'maxi-blocks')
+							: __('Activate Pro', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}

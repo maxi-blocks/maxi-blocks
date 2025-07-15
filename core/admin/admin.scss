@@ -1406,9 +1406,9 @@ body.site-editor-php
 	}
 }
 
-// Licence page styles
-.maxi-dashboard_main-content-licence {
-	.maxi-licence-status-display {
+// License page styles
+.maxi-dashboard_main-content-license {
+	.maxi-license-status-display {
 		margin: 20px 0;
 
 		h4 {
@@ -1423,11 +1423,11 @@ body.site-editor-php
 		}
 	}
 
-	.maxi-licence-actions {
+	.maxi-license-actions {
 		margin: 20px 0;
 	}
 
-	.maxi-licence-auth-form {
+	.maxi-license-auth-form {
 		h4 {
 			margin: 0 0 8px 0;
 			font-size: 16px;
@@ -1441,7 +1441,7 @@ body.site-editor-php
 		}
 	}
 
-	.maxi-licence-input-wrapper {
+	.maxi-license-input-wrapper {
 		display: flex;
 		gap: 12px;
 		align-items: flex-start;
@@ -1465,7 +1465,7 @@ body.site-editor-php
 		}
 	}
 
-	.maxi-licence-message {
+	.maxi-license-message {
 		padding: 12px 16px;
 		border-radius: 4px;
 		margin: 16px 0;
@@ -1504,11 +1504,20 @@ body.site-editor-php
 			background: var(--maxi-admin-pink-hover);
 		}
 	}
+	input {
+		border-radius: 10px;
+		border: 2px solid var(--maxi-admin-border-light) !important;
+		padding: 10px;
+		box-sizing: border-box;
+		width: clamp(70vw, 100vw, 45vw);
+		display: block;
+		max-width: 95%;
+	}
 }
 
 @media only screen and (max-width: 767px) {
-	.maxi-dashboard_main-content-licence {
-		.maxi-licence-input-wrapper {
+	.maxi-dashboard_main-content-license {
+		.maxi-license-input-wrapper {
 			flex-direction: column;
 			align-items: stretch;
 

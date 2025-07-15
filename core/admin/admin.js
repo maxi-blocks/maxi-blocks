@@ -549,9 +549,9 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	setAdminMenuActive();
 });
 
-// Licence page functionality
+// License page functionality
 document.addEventListener('DOMContentLoaded', function () {
-	console.log('MaxiBlocks licence page JavaScript loaded');
+	console.log('MaxiBlocks license page JavaScript loaded');
 
 	// Handle purchase code validation
 	const validateButton = document.getElementById(
@@ -561,11 +561,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		'maxi-purchase-code-input'
 	);
 	const validationMessage = document.getElementById(
-		'maxi-licence-validation-message'
+		'maxi-license-validation-message'
 	);
-	const currentStatus = document.getElementById('current-licence-status');
-	const currentUser = document.getElementById('current-licence-user');
-	const logoutButton = document.getElementById('maxi-licence-logout');
+	const currentStatus = document.getElementById('current-license-status');
+	const currentUser = document.getElementById('current-license-user');
+	const logoutButton = document.getElementById('maxi-license-logout');
 
 	/**
 	 * Show validation message
@@ -574,11 +574,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (validationMessage) {
 			validationMessage.style.display = 'block';
 			validationMessage.textContent = message;
-			validationMessage.className = `maxi-licence-message ${
+			validationMessage.className = `maxi-license-message ${
 				isError ? 'error' : 'success'
 			}`;
 			console.log(
-				'Licence validation message:',
+				'License validation message:',
 				message,
 				'isError:',
 				isError
@@ -587,10 +587,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	/**
-	 * Update licence status display
+	 * Update license status display
 	 */
-	function updateLicenceStatus(status, userName = '') {
-		console.log('Updating licence status:', status, 'userName:', userName);
+	function updateLicenseStatus(status, userName = '') {
+		console.log('Updating license status:', status, 'userName:', userName);
 
 		if (currentStatus) {
 			currentStatus.textContent = status;
@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			console.log('Reloading page to update UI state');
 			setTimeout(() => {
 				window.location.reload();
-			}, 1500); // Give time to show the success message
+			}, 300); // Give time to show the success message
 		}
 	}
 
@@ -638,9 +638,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		// Get middleware configuration from WordPress localized settings
 		// eslint-disable-next-line no-undef
-		const middlewareUrl = maxiLicenceSettings?.middlewareUrl || '';
+		const middlewareUrl = maxiLicenseSettings?.middlewareUrl || '';
 		// eslint-disable-next-line no-undef
-		const middlewareKey = maxiLicenceSettings?.middlewareKey || '';
+		const middlewareKey = maxiLicenseSettings?.middlewareKey || '';
 
 		if (!middlewareUrl || !middlewareKey) {
 			console.error('Missing middleware configuration');
@@ -678,14 +678,14 @@ document.addEventListener('DOMContentLoaded', function () {
 				);
 
 				if (result.success && result.valid) {
-					// Save licence data via AJAX to WordPress
+					// Save license data via AJAX to WordPress
 					const formData = new FormData();
-					formData.append('action', 'maxi_validate_licence');
-					formData.append('nonce', maxiLicenceSettings.nonce);
+					formData.append('action', 'maxi_validate_license');
+					formData.append('nonce', maxiLicenseSettings.nonce);
 					formData.append('purchase_code', purchaseCode);
-					formData.append('licence_action', 'activate');
+					formData.append('license_action', 'activate');
 
-					fetch(maxiLicenceSettings.ajaxUrl, {
+					fetch(maxiLicenseSettings.ajaxUrl, {
 						method: 'POST',
 						body: formData,
 					})
@@ -695,21 +695,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
 							if (data.success) {
 								showMessage(data.data.message);
-								updateLicenceStatus(
+								updateLicenseStatus(
 									data.data.status,
 									data.data.user_name
 								);
+								// Reload page to show activated state
+								setTimeout(() => {
+									window.location.reload();
+								}, 1500);
 							} else {
 								showMessage(
 									data.data.message ||
-										'Failed to save licence data',
+										'Failed to save license data',
 									true
 								);
 							}
 						})
 						.catch(error => {
 							console.error('WordPress AJAX error:', error);
-							showMessage('Failed to save licence data', true);
+							showMessage('Failed to save license data', true);
 						})
 						.finally(() => {
 							resetValidateButton();
@@ -746,7 +750,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	 * Handle logout
 	 */
 	function handleLogout() {
-		console.log('Handling licence logout');
+		console.log('Handling license logout');
 
 		if (logoutButton) {
 			logoutButton.disabled = true;
@@ -754,11 +758,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 
 		const formData = new FormData();
-		formData.append('action', 'maxi_validate_licence');
-		formData.append('nonce', maxiLicenceSettings.nonce);
-		formData.append('licence_action', 'logout');
+		formData.append('action', 'maxi_validate_license');
+		formData.append('nonce', maxiLicenseSettings.nonce);
+		formData.append('license_action', 'logout');
 
-		fetch(maxiLicenceSettings.ajaxUrl, {
+		fetch(maxiLicenseSettings.ajaxUrl, {
 			method: 'POST',
 			body: formData,
 		})
@@ -768,7 +772,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 				if (data.success) {
 					showMessage(data.data.message);
-					updateLicenceStatus(data.data.status, data.data.user_name);
+					updateLicenseStatus(data.data.status, data.data.user_name);
 				} else {
 					showMessage(
 						data.data.message || 'Failed to sign out',

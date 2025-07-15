@@ -208,7 +208,12 @@ const MaxiModal = props => {
 			setShowNotValidEmail(false);
 			setShowAuthError(false);
 
-			if (verificationResult.success && verificationResult.valid) {
+			// Check if verification was successful
+			if (
+				verificationResult &&
+				verificationResult.success &&
+				verificationResult.valid
+			) {
 				// Get current domain
 				const domain = window.location.hostname;
 
@@ -225,16 +230,31 @@ const MaxiModal = props => {
 				setIsMaxiProExpired(isProSubExpired());
 				setUserName(getUserName());
 
-				console.log('Purchase code authentication successful');
+				console.log(
+					JSON.stringify({
+						message: 'Purchase code authentication successful',
+					})
+				);
 			} else {
+				// Show authentication error for failed verification
 				console.error(
-					'Purchase code verification failed:',
-					verificationResult.error || verificationResult.message
+					JSON.stringify({
+						message: 'Purchase code verification failed',
+						error:
+							verificationResult?.error ||
+							verificationResult?.message ||
+							'Unknown error',
+					})
 				);
 				setShowAuthError(true);
 			}
 		} catch (error) {
-			console.error('Purchase code authentication error:', error);
+			console.error(
+				JSON.stringify({
+					message: 'Purchase code authentication error',
+					error: error.message,
+				})
+			);
 			setShowAuthError(true);
 		}
 	};

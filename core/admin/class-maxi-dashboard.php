@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'http://localhost:8001/verify'); // TODO: change to production URL
+define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'https://maxi2025.staging.maxiblocks.com/middleware/verify'); // TODO: change to production URL
 define('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY', '4d8af9b4d6f221cf7a41271cb7b82c92'); // TODO: change to production key
 
 if (!class_exists('MaxiBlocks_Dashboard')):

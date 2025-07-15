@@ -40,18 +40,23 @@ import { isNil, isEmpty } from 'lodash';
 const detectInputType = input => {
 	if (!input || typeof input !== 'string') return 'email';
 
-	// If it's a valid email, return email
-	if (isValidEmail(input)) return 'email';
-
-	// Purchase codes are typically alphanumeric strings without @ symbol
-	// and are usually longer than 6 characters
 	const trimmedInput = input.trim();
+
+	// If it contains @ or . (dot), it's likely an email
 	const hasAtSymbol = trimmedInput.includes('@');
-	const isAlphanumeric = /^[a-zA-Z0-9]+$/.test(trimmedInput);
+	const hasDot = trimmedInput.includes('.');
+
+	if (hasAtSymbol || hasDot) {
+		return 'email';
+	}
+
+	// Purchase codes are typically alphanumeric strings without @ or . symbols
+	// and are usually longer than 6 characters
+	const isAlphanumeric = /^[a-zA-Z0-9\-_]+$/.test(trimmedInput);
 	const isLongEnough = trimmedInput.length >= 6;
 
-	// If it doesn't have @ and looks like a code, treat as purchase code
-	if (!hasAtSymbol && isAlphanumeric && isLongEnough) {
+	// If it doesn't have @ or . and looks like a code, treat as purchase code
+	if (isAlphanumeric && isLongEnough) {
 		return 'code';
 	}
 
@@ -76,10 +81,11 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 
 	try {
 		console.log(
-			'Verifying purchase code:',
-			purchaseCode,
-			'for domain:',
-			domain
+			JSON.stringify({
+				message: 'Verifying purchase code',
+				purchaseCode,
+				domain,
+			})
 		);
 
 		const response = await fetch(middlewareUrl, {
@@ -100,8 +106,10 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 
 		const result = await response.json();
 		console.log(
-			'Purchase code verification result:',
-			JSON.stringify(result)
+			JSON.stringify({
+				message: 'Purchase code verification result',
+				result,
+			})
 		);
 
 		return result;
@@ -490,32 +498,33 @@ const LibraryToolbar = props => {
 
 		const inputType = detectInputType(inputValue);
 		console.log(
-			'Detected input type:',
-			inputType,
-			'for value:',
-			inputValue
+			JSON.stringify({
+				message: 'Detected input type',
+				inputType,
+				inputValue,
+			})
 		);
 
 		if (inputType === 'email') {
-			// Use existing email auth flow
-			const encodedEmail = encodeURIComponent(inputValue);
-			const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
-			window.open(url, '_blank')?.focus();
-			onClickConnect(inputValue);
+			// Use existing email auth flow - let parent handle validation and errors
+			if (isValidEmail(inputValue)) {
+				const encodedEmail = encodeURIComponent(inputValue);
+				const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
+				window.open(url, '_blank')?.focus();
+				onClickConnect(inputValue);
+			} else {
+				// Let parent handle invalid email by calling onClickConnect
+				// which will handle validation and show error
+				onClickConnect(inputValue);
+			}
 		} else if (inputType === 'code') {
 			// Use new purchase code auth flow
 			const domain = getCurrentDomain();
 			const result = await verifyPurchaseCode(inputValue, domain);
 
-			if (result.success && result.valid && onClickConnectCode) {
-				// Pass the purchase code data to the parent component
+			if (onClickConnectCode) {
+				// Always pass result to parent - let parent handle success/error
 				onClickConnectCode(inputValue, result);
-			} else {
-				console.error(
-					'Purchase code verification failed:',
-					result.error || result.message
-				);
-				// The error will be shown via showAuthError prop
 			}
 		}
 	};

@@ -419,9 +419,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Add Get cloud link and icons
             echo '<div class="maxi-dashboard_header-actions">';
-            echo '<a href="https://maxiblocks.com/pricing/" target="_blank" class="maxi-dashboard_get-cloud-link">' .
-                esc_html__('Get cloud', 'maxi-blocks') .
-                '</a>';
+
+            // Only show "Get cloud" link if Pro is not active
+            if (!$this->is_pro_active()) {
+                echo '<a href="https://maxiblocks.com/pricing/" target="_blank" class="maxi-dashboard_get-cloud-link">' .
+                    esc_html__('Get cloud', 'maxi-blocks') .
+                    '</a>';
+            }
+
             echo '<div class="maxi-dashboard_header-icons">';
             echo '<a href=" https://maxiblocks.com/go/help-desk/" target="_blank" class="maxi-dashboard_header-icon"><img src="' .
                 esc_url(
@@ -1980,6 +1985,33 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $remote_addr === '::1' ||
                 strpos($server_name, '.local') !== false ||
                 strpos($server_name, '.test') !== false;
+        }
+
+        /**
+         * Helper method to check if Pro is active
+         *
+         * @return bool True if Pro is active, false otherwise
+         */
+        private function is_pro_active()
+        {
+            $current_license_data = get_option('maxi_pro', '');
+
+            if (empty($current_license_data)) {
+                return false;
+            }
+
+            $license_array = json_decode($current_license_data, true);
+            if (!is_array($license_array)) {
+                return false;
+            }
+
+            foreach ($license_array as $license) {
+                if (isset($license['status']) && $license['status'] === 'yes') {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public function handle_get_frontend_assets()

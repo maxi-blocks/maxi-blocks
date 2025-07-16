@@ -2140,7 +2140,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $license_data = [
                 'code_' . $purchase_code => [
                     'status' => 'yes',
-                    'name' => (isset($result['marketplace']) ? ucfirst($result['marketplace']) : 'Marketplace') . ' Pro user',
+                    'name' => (isset($result['marketplace']) ? ucfirst($result['marketplace']) : 'Marketplace'),
                     'purchase_code' => $purchase_code,
                     'domain' => $domain,
                     'marketplace' => isset($result['marketplace']) ? $result['marketplace'] : 'unknown',
@@ -2158,7 +2158,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             wp_send_json_success([
                 'message' => __('License activated successfully', 'maxi-blocks'),
                 'status' => 'Active ✓',
-                'user_name' => '[' . (isset($result['marketplace']) ? ucfirst($result['marketplace']) : 'Marketplace') . '] Pro user',
+                'user_name' => (isset($result['marketplace']) ? ucfirst($result['marketplace']) : 'Marketplace'),
             ]);
         }
 

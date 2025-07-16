@@ -610,7 +610,7 @@ const LibraryToolbar = props => {
 			{type === 'patterns' && isMaxiProActive && userName && (
 				<div className='maxi-cloud-toolbar__sign-in'>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
-						{__('✓ Pro access active Licensed to: ', 'maxi-blocks')}
+						{__('✓ Active: ', 'maxi-blocks')}
 						<span
 							className='maxi-username'
 							title={

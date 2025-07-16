@@ -76,10 +76,8 @@ export const processLocalPurchaseCodeActivation = (
 	// Use marketplace for display name
 	const displayName =
 		marketplace && marketplace !== 'unknown'
-			? `${
-					marketplace.charAt(0).toUpperCase() + marketplace.slice(1)
-			  } Pro user`
-			: 'Marketplace Pro user';
+			? `${marketplace.charAt(0).toUpperCase() + marketplace.slice(1)}`
+			: 'Marketplace';
 
 	const newPro = {
 		[codeKey]: {

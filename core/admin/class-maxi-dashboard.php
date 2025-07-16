@@ -1846,7 +1846,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function maxi_blocks_license()
         {
-            // Get current license information
+            // Get current license information for this specific browser
             $current_license_data = get_option('maxi_pro', '');
             $current_license_status = 'Not activated';
             $current_user_name = '';
@@ -1855,13 +1855,57 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if (!empty($current_license_data)) {
                 $license_array = json_decode($current_license_data, true);
                 if (is_array($license_array)) {
-                    foreach ($license_array as $license) {
-                        if (isset($license['status']) && $license['status'] === 'yes') {
+                    // Check for purchase code auth (domain-wide)
+                    foreach ($license_array as $key => $license) {
+                        if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
                             $current_license_status = 'Active ✓';
                             $current_user_name = isset($license['name']) ? $license['name'] : 'Pro User';
                             $is_active = true;
                             break;
                         }
+                    }
+
+                    // If no purchase code, check for email auth (browser-specific)
+                    if (!$is_active && isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
+                        $cookie_raw = $_COOKIE['maxi_blocks_key'];
+                        // Fix escaped quotes in cookie value
+                        $cookie_fixed = str_replace('\\"', '"', $cookie_raw);
+                        $cookie_data = json_decode($cookie_fixed, true);
+
+                        // Enhanced debugging
+                        error_log('MaxiBlocks dashboard - Raw cookie: ' . $cookie_raw);
+                        error_log('MaxiBlocks dashboard - Fixed cookie: ' . $cookie_fixed);
+                        error_log('MaxiBlocks dashboard - JSON error: ' . json_last_error());
+                        error_log('MaxiBlocks dashboard - JSON error msg: ' . json_last_error_msg());
+                        error_log('MaxiBlocks dashboard - Cookie data: ' . print_r($cookie_data, true));
+
+                        if ($cookie_data && is_array($cookie_data)) {
+                            $email = array_keys($cookie_data)[0];
+                            $browser_key = $cookie_data[$email];
+                            error_log('MaxiBlocks dashboard - Email: ' . $email . ', Browser key: ' . $browser_key);
+
+                            if (isset($license_array[$email]) && isset($license_array[$email]['status']) && $license_array[$email]['status'] === 'yes') {
+                                // Check if this browser's key is in the list
+                                $stored_keys = explode(',', $license_array[$email]['key']);
+                                error_log('MaxiBlocks dashboard - Stored keys: ' . $license_array[$email]['key']);
+                                error_log('MaxiBlocks dashboard - Key match: ' . (in_array($browser_key, array_map('trim', $stored_keys)) ? 'YES' : 'NO'));
+
+                                if (in_array($browser_key, array_map('trim', $stored_keys))) {
+                                    $current_license_status = 'Active ✓';
+                                    $current_user_name = isset($license_array[$email]['name']) ? $license_array[$email]['name'] : $email;
+                                    $is_active = true;
+                                    error_log('MaxiBlocks dashboard - Setting as ACTIVE');
+                                } else {
+                                    error_log('MaxiBlocks dashboard - Key NOT found in stored keys');
+                                }
+                            } else {
+                                error_log('MaxiBlocks dashboard - Email not found or status not yes');
+                            }
+                        } else {
+                            error_log('MaxiBlocks dashboard - Failed to parse cookie');
+                        }
+                    } else {
+                        error_log('MaxiBlocks dashboard - No cookie found or empty');
                     }
                 }
             }
@@ -1988,9 +2032,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         }
 
         /**
-         * Helper method to check if Pro is active
+         * Helper method to check if Pro is active for the current browser
          *
-         * @return bool True if Pro is active, false otherwise
+         * @return bool True if Pro is active for this browser, false otherwise
          */
         private function is_pro_active()
         {
@@ -2005,9 +2049,25 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 return false;
             }
 
-            foreach ($license_array as $license) {
-                if (isset($license['status']) && $license['status'] === 'yes') {
+            // Check for purchase code auth (domain-wide)
+            foreach ($license_array as $key => $license) {
+                if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
                     return true;
+                }
+            }
+
+            // Check for email auth (browser-specific)
+            if (isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
+                $cookie_data = json_decode($_COOKIE['maxi_blocks_key'], true);
+                if ($cookie_data && is_array($cookie_data)) {
+                    $email = array_keys($cookie_data)[0];
+                    $browser_key = $cookie_data[$email];
+
+                    if (isset($license_array[$email]) && isset($license_array[$email]['status']) && $license_array[$email]['status'] === 'yes') {
+                        // Check if this browser's key is in the list
+                        $stored_keys = explode(',', $license_array[$email]['key']);
+                        return in_array($browser_key, array_map('trim', $stored_keys));
+                    }
                 }
             }
 
@@ -2235,6 +2295,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $auth_key = $this->generate_auth_key(20);
 
             // Set a cookie that will be used for authentication
+            // Use a unique cookie for each browser/session instead of merging
             $cookie_name = 'maxi_blocks_key';
             $cookie_data = json_encode([$email => $auth_key]);
 
@@ -2277,12 +2338,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         }
 
         /**
-         * Get admin path for cookie
+         * Get admin path for cookie (matching JavaScript implementation)
          * @returns string - Admin path
          */
         private function get_admin_path()
         {
-            return '/wp-admin/';
+            // Match the JavaScript getPathToAdmin() function
+            // which returns path without trailing slash
+            return '/wp-admin';
         }
 
         /**
@@ -2307,6 +2370,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             // Save license data for purchase code
+            // Purchase codes have priority and should clear all email auths
             $marketplace = isset($result['marketplace']) ? $result['marketplace'] : 'unknown';
             $display_name = $marketplace !== 'unknown'
                 ? ucfirst($marketplace) : 'Marketplace';
@@ -2327,6 +2391,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 ],
             ];
 
+            // Purchase codes override all email auths - completely replace the option
             update_option('maxi_pro', wp_json_encode($license_data));
 
             wp_send_json_success([
@@ -2457,7 +2522,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             error_log('MaxiBlocks auth status check - found pending auth: ' . ($found_auth_data ? 'yes' : 'no'));
 
-            // Check current license status from database
+            // Check current license status from database for this specific browser
             $current_license_data = get_option('maxi_pro', '');
             $is_authenticated = false;
             $status = 'Not activated';
@@ -2466,12 +2531,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if (!empty($current_license_data)) {
                 $license_array = json_decode($current_license_data, true);
                 if (is_array($license_array)) {
-                    foreach ($license_array as $license) {
-                        if (isset($license['status']) && $license['status'] === 'yes') {
+                    // Check for purchase code auth (domain-wide)
+                    foreach ($license_array as $key => $license) {
+                        if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
                             $is_authenticated = true;
                             $status = 'Active ✓';
                             $user_name = isset($license['name']) ? $license['name'] : 'Pro User';
                             break;
+                        }
+                    }
+
+                    // If no purchase code, check for email auth (browser-specific)
+                    if (!$is_authenticated && isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
+                        $cookie_data = json_decode($_COOKIE['maxi_blocks_key'], true);
+                        if ($cookie_data && is_array($cookie_data)) {
+                            $email = array_keys($cookie_data)[0];
+                            $browser_key = $cookie_data[$email];
+
+                            if (isset($license_array[$email]) && isset($license_array[$email]['status']) && $license_array[$email]['status'] === 'yes') {
+                                // Check if this browser's key is in the list
+                                $stored_keys = explode(',', $license_array[$email]['key']);
+                                if (in_array($browser_key, array_map('trim', $stored_keys))) {
+                                    $is_authenticated = true;
+                                    $status = 'Active ✓';
+                                    $user_name = isset($license_array[$email]['name']) ? $license_array[$email]['name'] : $email;
+                                }
+                            }
                         }
                     }
                 }
@@ -2551,36 +2636,38 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         private function save_email_license_data($email, $name, $status, $auth_key)
         {
-            $new_license_data = [
-                $email => [
-                    'status' => $status,
-                    'name' => $name,
-                    'key' => $auth_key,
-                ],
-            ];
-
             // Get existing license data
             $existing_data = get_option('maxi_pro', '');
-            $license_data = $new_license_data;
+            $license_data = [];
 
             if (!empty($existing_data)) {
                 $existing_array = json_decode($existing_data, true);
                 if (is_array($existing_array)) {
-                    // Check if this email already has auth data
-                    if (isset($existing_array[$email]) && isset($existing_array[$email]['key'])) {
-                        // Merge keys if they exist
-                        $existing_keys = explode(',', $existing_array[$email]['key']);
-                        if (!in_array($auth_key, $existing_keys)) {
-                            $existing_keys[] = $auth_key;
-                        }
-                        $new_license_data[$email]['key'] = implode(',', array_unique($existing_keys));
-                    }
-
-                    // Merge with existing data (keeping non-email entries)
-                    if ($existing_array['status'] !== 'no') {
-                        $license_data = array_merge($existing_array, $new_license_data);
-                    }
+                    $license_data = $existing_array;
                 }
+            }
+
+            // Check if this email already has auth data
+            if (isset($license_data[$email]) && isset($license_data[$email]['key'])) {
+                // Merge keys if they exist (for multiple browsers/devices)
+                $existing_keys = explode(',', $license_data[$email]['key']);
+                if (!in_array($auth_key, $existing_keys)) {
+                    $existing_keys[] = $auth_key;
+                }
+                $license_data[$email] = [
+                    'status' => $status,
+                    'name' => $name,
+                    'key' => implode(',', array_unique($existing_keys)),
+                    'auth_type' => 'email',
+                ];
+            } else {
+                // New email entry
+                $license_data[$email] = [
+                    'status' => $status,
+                    'name' => $name,
+                    'key' => $auth_key,
+                    'auth_type' => 'email',
+                ];
             }
 
             update_option('maxi_pro', wp_json_encode($license_data));
@@ -2594,21 +2681,102 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // Check if user was logged in via email (has maxi_blocks_key cookie)
             $has_email_auth = isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key']);
 
-            // Clear the email authentication cookie if it exists
+            $admin_path = $this->get_admin_path();
+
             if ($has_email_auth) {
-                $admin_path = $this->get_admin_path();
+                // Parse the cookie to get email and key
+                $cookie_data = json_decode($_COOKIE['maxi_blocks_key'], true);
+                if ($cookie_data && is_array($cookie_data)) {
+                    $email = array_keys($cookie_data)[0];
+                    $auth_key = $cookie_data[$email];
+
+
+
+                    // Remove only this browser's key from the email auth
+                    $this->remove_email_auth_key($email, $auth_key);
+                }
+
+                // Clear the email authentication cookie
                 setrawcookie('maxi_blocks_key', '', time() - 3600, $admin_path);
+
+                wp_send_json_success([
+                    'message' => __('Signed out successfully', 'maxi-blocks'),
+                    'status' => 'Not activated',
+                    'user_name' => '',
+                    'auth_type' => 'email',
+                ]);
+            } else {
+                // Check if it's a purchase code auth - in that case, delete everything
+                $current_license_data = get_option('maxi_pro', '');
+                $is_purchase_code_active = false;
+
+                if (!empty($current_license_data)) {
+                    $license_array = json_decode($current_license_data, true);
+                    if (is_array($license_array)) {
+                        foreach ($license_array as $key => $license) {
+                            if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                                $is_purchase_code_active = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if ($is_purchase_code_active) {
+                    // Delete all license data for purchase code logout
+                    delete_option('maxi_pro');
+                }
+
+                wp_send_json_success([
+                    'message' => __('Signed out successfully', 'maxi-blocks'),
+                    'status' => 'Not activated',
+                    'user_name' => '',
+                    'auth_type' => $is_purchase_code_active ? 'purchase_code' : 'unknown',
+                ]);
+            }
+        }
+
+        /**
+         * Remove a specific auth key for an email (for browser-specific logout)
+         * @param string $email - Email address
+         * @param string $auth_key - Authentication key to remove
+         */
+        private function remove_email_auth_key($email, $auth_key)
+        {
+            $existing_data = get_option('maxi_pro', '');
+            if (empty($existing_data)) {
+                return;
             }
 
-            // Delete the license data
-            delete_option('maxi_pro');
+            $license_data = json_decode($existing_data, true);
+            if (!is_array($license_data) || !isset($license_data[$email])) {
+                return;
+            }
 
-            wp_send_json_success([
-                'message' => __('Signed out successfully', 'maxi-blocks'),
-                'status' => 'Not activated',
-                'user_name' => '',
-                'had_email_auth' => $has_email_auth, // For debugging
-            ]);
+            $email_data = $license_data[$email];
+            if (!isset($email_data['key'])) {
+                return;
+            }
+
+            // Remove the specific key
+            $existing_keys = explode(',', $email_data['key']);
+            $remaining_keys = array_filter($existing_keys, function ($key) use ($auth_key) {
+                return trim($key) !== trim($auth_key);
+            });
+
+            if (empty($remaining_keys)) {
+                // No more keys for this email, remove the entire entry
+                unset($license_data[$email]);
+            } else {
+                // Update with remaining keys
+                $license_data[$email]['key'] = implode(',', $remaining_keys);
+                // Keep the old status unless it was 'yes' and we're removing keys
+                if ($email_data['status'] === 'yes') {
+                    $license_data[$email]['status'] = $email_data['status'];
+                }
+            }
+
+            update_option('maxi_pro', wp_json_encode($license_data));
         }
 
         /**

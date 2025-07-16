@@ -461,6 +461,7 @@ function maxi_blocks_allowed_html()
             'value' => true,
             'checked' => true,
             'min' => true,
+            'placeholder' => true,
         ),
         'label' => array(
             'class'  => true,

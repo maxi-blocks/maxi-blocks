@@ -1042,6 +1042,21 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	if (licenseInput) {
+		// Store original placeholder
+		const originalPlaceholder = licenseInput.placeholder;
+
+		// Hide placeholder on focus
+		licenseInput.addEventListener('focus', function () {
+			this.placeholder = '';
+		});
+
+		// Restore placeholder on blur if input is empty
+		licenseInput.addEventListener('blur', function () {
+			if (!this.value.trim()) {
+				this.placeholder = originalPlaceholder;
+			}
+		});
+
 		licenseInput.addEventListener('keypress', function (e) {
 			if (e.key === 'Enter') {
 				e.preventDefault();

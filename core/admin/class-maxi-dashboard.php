@@ -2277,8 +2277,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // Save license data for purchase code
             $marketplace = isset($result['marketplace']) ? $result['marketplace'] : 'unknown';
             $display_name = $marketplace !== 'unknown'
-                ? ucfirst($marketplace) . ' Pro user'
-                : 'Marketplace Pro user';
+                ? ucfirst($marketplace) : 'Marketplace';
 
             $license_data = [
                 'code_' . $purchase_code => [

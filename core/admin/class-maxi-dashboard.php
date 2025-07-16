@@ -96,6 +96,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'handle_check_auth_status',
             ]);
+            add_action('wp_ajax_maxi_save_email_license', [
+                $this,
+                'handle_save_email_license',
+            ]);
         }
 
         public function update_settings_on_install()
@@ -2246,12 +2250,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         private function get_admin_path()
         {
-            $request_uri = $_SERVER['REQUEST_URI'] ?? '';
-            $admin_pos = strpos($request_uri, '/wp-admin');
-            if ($admin_pos !== false) {
-                return substr($request_uri, 0, $admin_pos + 1);
-            }
-            return '/';
+            return '/wp-admin/';
         }
 
         /**
@@ -2561,12 +2560,58 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         private function handle_license_logout()
         {
+            // Check if user was logged in via email (has maxi_blocks_key cookie)
+            $has_email_auth = isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key']);
+
+            // Clear the email authentication cookie if it exists
+            if ($has_email_auth) {
+                $admin_path = $this->get_admin_path();
+                setrawcookie('maxi_blocks_key', '', time() - 3600, $admin_path);
+            }
+
+            // Delete the license data
             delete_option('maxi_pro');
 
             wp_send_json_success([
                 'message' => __('Signed out successfully', 'maxi-blocks'),
                 'status' => 'Not activated',
                 'user_name' => '',
+                'had_email_auth' => $has_email_auth, // For debugging
+            ]);
+        }
+
+        /**
+         * Handle saving email license data from JavaScript
+         */
+        public function handle_save_email_license()
+        {
+            // Verify nonce
+            if (!wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
+                wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
+                return;
+            }
+
+            // Check user permissions
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error(['message' => __('Insufficient permissions', 'maxi-blocks')]);
+                return;
+            }
+
+            $email = sanitize_email($_POST['email']);
+            $name = sanitize_text_field($_POST['name']);
+            $status = sanitize_text_field($_POST['status']);
+            $auth_key = sanitize_text_field($_POST['auth_key']);
+
+            if (empty($email) || empty($name) || empty($status) || empty($auth_key)) {
+                wp_send_json_error(['message' => __('Missing required parameters', 'maxi-blocks')]);
+                return;
+            }
+
+            // Save the license data
+            $this->save_email_license_data($email, $name, $status, $auth_key);
+
+            wp_send_json_success([
+                'message' => __('License data saved successfully', 'maxi-blocks'),
             ]);
         }
     }

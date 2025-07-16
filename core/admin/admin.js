@@ -775,8 +775,8 @@ document.addEventListener('DOMContentLoaded', function () {
 							false
 						);
 
-						// Start polling for authentication status
-						startAuthPolling();
+						// Start direct email polling (like toolbar)
+						startDirectEmailPolling(inputValue);
 					} else {
 						showMessage(
 							data.data.message || 'Email authentication failed',
@@ -834,54 +834,135 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	/**
-	 * Start polling for email authentication status
+	 * Start direct email polling (similar to toolbar approach)
 	 */
-	function startAuthPolling() {
-		console.log('Starting auth polling...');
-		let pollCount = 0;
+	function startDirectEmailPolling(email) {
+		console.log('Starting direct email polling for:', email);
 
-		const intervalId = setInterval(() => {
-			pollCount += 1;
-			console.log(`Poll attempt #${pollCount}`);
+		const intervalId = setInterval(async () => {
+			try {
+				// Call the email authentication API directly
+				const authResult = await checkEmailAuthentication(email);
 
-			// Check if user is now authenticated by making a simple request
-			fetch(maxiLicenseSettings.ajaxUrl, {
-				method: 'POST',
-				body: new URLSearchParams({
-					action: 'maxi_check_auth_status',
-					nonce: maxiLicenseSettings.nonce,
-				}),
-			})
-				.then(response => response.json())
-				.then(data => {
-					console.log('Poll response:', data);
-
-					if (data.success && data.data.is_authenticated) {
-						console.log(
-							'Authentication detected! Stopping polling.'
-						);
-						clearInterval(intervalId);
-						showMessage('Authentication successful!');
-						updateLicenseStatus(
-							data.data.status,
-							data.data.user_name
-						);
-						setTimeout(() => {
-							window.location.reload();
-						}, 1500);
-					}
-				})
-				.catch(error => {
-					console.log('Poll error:', error);
-					// Continue polling on error
-				});
-		}, 2000); // Poll every 2 seconds
+				if (authResult && authResult.success) {
+					console.log('Authentication successful! Stopping polling.');
+					clearInterval(intervalId);
+					showMessage('Authentication successful!');
+					updateLicenseStatus('Active ✓', authResult.user_name);
+					setTimeout(() => {
+						window.location.reload();
+					}, 1500);
+				}
+			} catch (error) {
+				console.log('Poll error:', error);
+				// Continue polling on error
+			}
+		}, 1000); // Poll every 1 second like toolbar
 
 		// Stop polling after 5 minutes
 		setTimeout(() => {
-			console.log('Stopping polling after 5 minutes');
+			console.log('Stopping email polling after 5 minutes');
 			clearInterval(intervalId);
 		}, 300000);
+	}
+
+	/**
+	 * Check email authentication directly (similar to toolbar)
+	 */
+	async function checkEmailAuthentication(email) {
+		try {
+			// Get the auth key from cookie
+			const cookies = document.cookie.split(';');
+			let authKey = null;
+
+			for (const cookie of cookies) {
+				const [name, value] = cookie.trim().split('=');
+				if (name === 'maxi_blocks_key') {
+					try {
+						const cookieData = JSON.parse(value);
+						authKey = cookieData[email];
+						break;
+					} catch (e) {
+						console.log('Error parsing cookie:', e);
+					}
+				}
+			}
+
+			if (!authKey) {
+				console.log('No auth key found for email:', email);
+				return false;
+			}
+
+			// Call the MaxiBlocks API directly
+			const response = await fetch(
+				'https://my.maxiblocks.com/plugin-api-fwefqw.php',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-Xaiscmolkb': 'sdeqw239ejkdgaorti482',
+					},
+					body: JSON.stringify({
+						email,
+						cookie: authKey,
+					}),
+				}
+			);
+
+			if (!response.ok) {
+				console.log('API response not ok:', response.status);
+				return false;
+			}
+
+			const data = await response.json();
+
+			if (data && data.status === 'ok') {
+				const today = new Date().toISOString().slice(0, 10);
+				const expirationDate = data.expiration_date || today;
+				const name = data.name || email;
+
+				if (today > expirationDate) {
+					console.log('License expired');
+					// Save expired status via WordPress
+					await saveLicenseData(email, name, 'expired', authKey);
+					return false;
+				}
+				console.log('License active, saving data');
+				// Save active status via WordPress
+				await saveLicenseData(email, name, 'yes', authKey);
+				return { success: true, user_name: name };
+			}
+
+			return false;
+		} catch (error) {
+			console.log('Email auth check error:', error);
+			return false;
+		}
+	}
+
+	/**
+	 * Save license data via WordPress AJAX
+	 */
+	async function saveLicenseData(email, name, status, authKey) {
+		try {
+			const formData = new FormData();
+			formData.append('action', 'maxi_save_email_license');
+			formData.append('nonce', maxiLicenseSettings.nonce);
+			formData.append('email', email);
+			formData.append('name', name);
+			formData.append('status', status);
+			formData.append('auth_key', authKey);
+
+			const response = await fetch(maxiLicenseSettings.ajaxUrl, {
+				method: 'POST',
+				body: formData,
+			});
+
+			const data = await response.json();
+			console.log('Save license response:', data);
+		} catch (error) {
+			console.log('Error saving license data:', error);
+		}
 	}
 
 	/**
@@ -903,6 +984,17 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (logoutButton) {
 			logoutButton.disabled = true;
 			logoutButton.textContent = 'Signing out...';
+		}
+
+		// Check if this is an email logout (check for the maxi_blocks_key cookie)
+		const isEmailLogout = document.cookie
+			.split(';')
+			.some(cookie => cookie.trim().startsWith('maxi_blocks_key='));
+
+		// If email logout, open logout page
+		if (isEmailLogout) {
+			const logoutUrl = 'https://my.maxiblocks.com/log-out?plugin';
+			window.open(logoutUrl, '_blank')?.focus();
 		}
 
 		const formData = new FormData();

@@ -553,19 +553,50 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 document.addEventListener('DOMContentLoaded', function () {
 	console.log('MaxiBlocks license page JavaScript loaded');
 
-	// Handle purchase code validation
-	const validateButton = document.getElementById(
-		'maxi-validate-purchase-code'
-	);
-	const purchaseCodeInput = document.getElementById(
-		'maxi-purchase-code-input'
-	);
+	// Handle license validation (email or purchase code)
+	const validateButton = document.getElementById('maxi-validate-license');
+	const licenseInput = document.getElementById('maxi-license-input');
 	const validationMessage = document.getElementById(
 		'maxi-license-validation-message'
 	);
 	const currentStatus = document.getElementById('current-license-status');
 	const currentUser = document.getElementById('current-license-user');
 	const logoutButton = document.getElementById('maxi-license-logout');
+
+	// Click count for email show/hide functionality
+	let clickCount = 0;
+
+	/**
+	 * Initialize email show/hide functionality for existing user
+	 */
+	function initializeEmailToggle() {
+		if (currentUser && currentUser.textContent) {
+			const userName = currentUser.textContent.trim();
+
+			if (isValidEmail(userName)) {
+				currentUser.style.cursor = 'pointer';
+				currentUser.title = 'Click to show';
+
+				// Add click handler for email show/hide
+				currentUser.onclick = function () {
+					clickCount += 1;
+					if (clickCount % 2 !== 0) {
+						currentUser.textContent = userName;
+						currentUser.title = 'Click to hide';
+					} else {
+						currentUser.textContent = '******@***.***';
+						currentUser.title = 'Click to show';
+					}
+				};
+
+				// Set initial masked display
+				currentUser.textContent = '******@***.***';
+			}
+		}
+	}
+
+	// Initialize email toggle functionality on page load
+	initializeEmailToggle();
 
 	/**
 	 * Show validation message
@@ -600,6 +631,40 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (userName) {
 				currentUser.textContent = userName;
 				currentUser.parentElement.style.display = 'block';
+
+				// Add email show/hide functionality if it's an email
+				if (isValidEmail(userName)) {
+					currentUser.style.cursor = 'pointer';
+					currentUser.title =
+						clickCount % 2 !== 0
+							? 'Click to hide'
+							: 'Click to show';
+
+					// Remove any existing click handlers
+					currentUser.onclick = null;
+
+					// Add click handler for email show/hide
+					currentUser.onclick = function () {
+						clickCount += 1;
+						if (clickCount % 2 !== 0) {
+							currentUser.textContent = userName;
+							currentUser.title = 'Click to hide';
+						} else {
+							currentUser.textContent = '******@***.***';
+							currentUser.title = 'Click to show';
+						}
+					};
+
+					// Set initial display
+					currentUser.textContent =
+						clickCount % 2 !== 0 ? userName : '******@***.***';
+				} else {
+					// For purchase codes, show as-is without click functionality
+					currentUser.style.cursor = 'default';
+					currentUser.title = '';
+					currentUser.onclick = null;
+					currentUser.textContent = userName;
+				}
 			} else {
 				currentUser.parentElement.style.display = 'none';
 			}
@@ -616,19 +681,64 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	/**
-	 * Validate purchase code
+	 * Helper functions for authentication
 	 */
-	function validatePurchaseCode() {
-		const purchaseCode = purchaseCodeInput
-			? purchaseCodeInput.value.trim()
-			: '';
 
-		if (!purchaseCode) {
-			showMessage('Please enter a purchase code', true);
+	/**
+	 * Detects if input is an email or purchase code
+	 * @param {string} input - The input string to check
+	 * @returns {string} - 'email' or 'code'
+	 */
+	function detectInputType(input) {
+		if (!input || typeof input !== 'string') return 'email';
+
+		const trimmedInput = input.trim();
+
+		// If it contains @ or . (dot), it's likely an email
+		const hasAtSymbol = trimmedInput.includes('@');
+		const hasDot = trimmedInput.includes('.');
+
+		if (hasAtSymbol || hasDot) {
+			return 'email';
+		}
+
+		// Purchase codes are typically alphanumeric strings without @ or . symbols
+		// and are usually longer than 6 characters
+		const isAlphanumeric = /^[a-zA-Z0-9\-_]+$/.test(trimmedInput);
+		const isLongEnough = trimmedInput.length >= 6;
+
+		// If it doesn't have @ or . and looks like a code, treat as purchase code
+		if (isAlphanumeric && isLongEnough) {
+			return 'code';
+		}
+
+		// Default to email for other cases
+		return 'email';
+	}
+
+	/**
+	 * Validates email format
+	 * @param {string} email - Email to validate
+	 * @returns {boolean} - True if valid email
+	 */
+	function isValidEmail(email) {
+		const emailPattern =
+			/^(?![.])(([^<>()[\]\\.,;:\s@"']+(\.[^<>()[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return emailPattern.test(email);
+	}
+
+	/**
+	 * Validate license (email or purchase code)
+	 */
+	function validateLicense() {
+		const inputValue = licenseInput ? licenseInput.value.trim() : '';
+
+		if (!inputValue) {
+			showMessage('Please enter an email or purchase code', true);
 			return;
 		}
 
-		console.log('Validating purchase code:', purchaseCode);
+		const inputType = detectInputType(inputValue);
 
 		// Show loading state
 		if (validateButton) {
@@ -636,104 +746,142 @@ document.addEventListener('DOMContentLoaded', function () {
 			validateButton.textContent = 'Validating...';
 		}
 
-		// Get middleware configuration from WordPress localized settings
-		// eslint-disable-next-line no-undef
-		const middlewareUrl = maxiLicenseSettings?.middlewareUrl || '';
-		// eslint-disable-next-line no-undef
-		const middlewareKey = maxiLicenseSettings?.middlewareKey || '';
+		if (inputType === 'email') {
+			// Handle email authentication
+			if (!isValidEmail(inputValue)) {
+				showMessage('The email is not valid', true);
+				resetValidateButton();
+				return;
+			}
 
-		if (!middlewareUrl || !middlewareKey) {
-			console.error('Missing middleware configuration');
-			showMessage(
-				'Configuration error: Missing middleware settings',
-				true
-			);
-			resetValidateButton();
-			return;
-		}
+			// For email authentication, send to WordPress backend and open login page
+			const formData = new FormData();
+			formData.append('action', 'maxi_validate_license');
+			formData.append('nonce', maxiLicenseSettings.nonce);
+			formData.append('license_input', inputValue);
+			formData.append('license_action', 'activate');
 
-		// Use the same verification logic as in toolbar.js
-		fetch(middlewareUrl, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: middlewareKey,
-			},
-			body: JSON.stringify({
-				purchase_code: purchaseCode,
-				domain: window.location.hostname,
-			}),
-		})
-			.then(response => {
-				console.log('Middleware response status:', response.status);
-				if (!response.ok) {
-					throw new Error(`HTTP error! status: ${response.status}`);
-				}
-				return response.json();
+			fetch(maxiLicenseSettings.ajaxUrl, {
+				method: 'POST',
+				body: formData,
 			})
-			.then(result => {
-				console.log(
-					'Purchase code verification result:',
-					JSON.stringify(result)
-				);
+				.then(response => response.json())
+				.then(data => {
+					if (data.success && data.data.auth_type === 'email') {
+						// Open the login URL in a new tab
+						window.open(data.data.login_url, '_blank')?.focus();
+						showMessage(
+							'Email authentication started. Please complete login in the new tab.',
+							false
+						);
 
-				if (result.success && result.valid) {
-					// Save license data via AJAX to WordPress
-					const formData = new FormData();
-					formData.append('action', 'maxi_validate_license');
-					formData.append('nonce', maxiLicenseSettings.nonce);
-					formData.append('purchase_code', purchaseCode);
-					formData.append('license_action', 'activate');
-
-					fetch(maxiLicenseSettings.ajaxUrl, {
-						method: 'POST',
-						body: formData,
-					})
-						.then(response => response.json())
-						.then(data => {
-							console.log('WordPress AJAX response:', data);
-
-							if (data.success) {
-								showMessage(data.data.message);
-								updateLicenseStatus(
-									data.data.status,
-									data.data.user_name
-								);
-								// Reload page to show activated state
-								setTimeout(() => {
-									window.location.reload();
-								}, 1500);
-							} else {
-								showMessage(
-									data.data.message ||
-										'Failed to save license data',
-									true
-								);
-							}
-						})
-						.catch(error => {
-							console.error('WordPress AJAX error:', error);
-							showMessage('Failed to save license data', true);
-						})
-						.finally(() => {
-							resetValidateButton();
-						});
-				} else {
+						// Start polling for authentication status
+						startAuthPolling();
+					} else {
+						showMessage(
+							data.data.message || 'Email authentication failed',
+							true
+						);
+					}
+				})
+				.catch(error => {
 					showMessage(
-						'Invalid purchase code or verification failed',
+						'Failed to initiate email authentication',
 						true
 					);
+				})
+				.finally(() => {
 					resetValidateButton();
-				}
+				});
+		} else {
+			// Handle purchase code authentication
+			const formData = new FormData();
+			formData.append('action', 'maxi_validate_license');
+			formData.append('nonce', maxiLicenseSettings.nonce);
+			formData.append('license_input', inputValue);
+			formData.append('license_action', 'activate');
+
+			fetch(maxiLicenseSettings.ajaxUrl, {
+				method: 'POST',
+				body: formData,
 			})
-			.catch(error => {
-				console.error('Purchase code verification error:', error);
-				showMessage(
-					`Failed to verify purchase code: ${error.message}`,
-					true
-				);
-				resetValidateButton();
-			});
+				.then(response => response.json())
+				.then(data => {
+					if (data.success) {
+						showMessage(data.data.message);
+						updateLicenseStatus(
+							data.data.status,
+							data.data.user_name
+						);
+						// Reload page to show activated state
+						setTimeout(() => {
+							window.location.reload();
+						}, 1500);
+					} else {
+						showMessage(
+							data.data.message || 'Validation failed',
+							true
+						);
+					}
+				})
+				.catch(error => {
+					showMessage('Failed to validate license', true);
+				})
+				.finally(() => {
+					resetValidateButton();
+				});
+		}
+	}
+
+	/**
+	 * Start polling for email authentication status
+	 */
+	function startAuthPolling() {
+		console.log('Starting auth polling...');
+		let pollCount = 0;
+
+		const intervalId = setInterval(() => {
+			pollCount += 1;
+			console.log(`Poll attempt #${pollCount}`);
+
+			// Check if user is now authenticated by making a simple request
+			fetch(maxiLicenseSettings.ajaxUrl, {
+				method: 'POST',
+				body: new URLSearchParams({
+					action: 'maxi_check_auth_status',
+					nonce: maxiLicenseSettings.nonce,
+				}),
+			})
+				.then(response => response.json())
+				.then(data => {
+					console.log('Poll response:', data);
+
+					if (data.success && data.data.is_authenticated) {
+						console.log(
+							'Authentication detected! Stopping polling.'
+						);
+						clearInterval(intervalId);
+						showMessage('Authentication successful!');
+						updateLicenseStatus(
+							data.data.status,
+							data.data.user_name
+						);
+						setTimeout(() => {
+							window.location.reload();
+						}, 1500);
+					}
+				})
+				.catch(error => {
+					console.log('Poll error:', error);
+					// Continue polling on error
+				});
+		}, 2000); // Poll every 2 seconds
+
+		// Stop polling after 5 minutes
+		setTimeout(() => {
+			console.log('Stopping polling after 5 minutes');
+			clearInterval(intervalId);
+		}, 300000);
 	}
 
 	/**
@@ -794,22 +942,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Event listeners
 	if (validateButton) {
-		validateButton.addEventListener('click', validatePurchaseCode);
-		console.log('Added click listener to validate button');
+		validateButton.addEventListener('click', validateLicense);
 	}
 
 	if (logoutButton) {
 		logoutButton.addEventListener('click', handleLogout);
-		console.log('Added click listener to logout button');
 	}
 
-	if (purchaseCodeInput) {
-		purchaseCodeInput.addEventListener('keypress', function (e) {
+	if (licenseInput) {
+		licenseInput.addEventListener('keypress', function (e) {
 			if (e.key === 'Enter') {
 				e.preventDefault();
-				validatePurchaseCode();
+				validateLicense();
 			}
 		});
-		console.log('Added keypress listener to purchase code input');
 	}
 });

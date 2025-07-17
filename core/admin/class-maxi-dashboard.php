@@ -1929,7 +1929,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 // Show deactivate button
                 $content .= '<div class="maxi-license-actions">';
-                $content .= '<button type="button" id="maxi-license-logout" class="button button-primary">' . __('Deactivate license', 'maxi-blocks') . '</button>';
+                $content .= '<button type="button" id="maxi-license-logout" class="button button-primary">' . __('Deactivate Pro', 'maxi-blocks') . '</button>';
                 $content .= '</div>';
             } else {
                 // Show current status for not activated
@@ -1945,7 +1945,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $content .= '</div>';
 
                 $content .= '<div class="maxi-license-actions">';
-                $content .= '<button type="button" id="maxi-validate-license" class="button button-primary">' . __('Activate Pro access', 'maxi-blocks') . '</button>';
+                $content .= '<button type="button" id="maxi-validate-license" class="button button-primary">' . __('Activate Pro', 'maxi-blocks') . '</button>';
                 $content .= '</div>';
 
                 $content .= '<div id="maxi-license-validation-message" class="maxi-license-message" style="display: none;"></div>';

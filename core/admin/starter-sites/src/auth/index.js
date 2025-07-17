@@ -107,10 +107,23 @@ export const processLocalPurchaseCodeActivation = (
 
 	if (typeof oldPro === 'string') {
 		const oldProObj = JSON.parse(oldPro);
-		// Merge with existing data but give priority to purchase code auth
-		if (oldProObj?.status !== 'no') {
-			obj = { ...oldProObj, ...newPro };
+
+		// Remove any existing email authentications when activating purchase code
+		// Purchase code takes priority and should be the only active auth method
+		const filteredObj = {};
+		for (const [key, value] of Object.entries(oldProObj)) {
+			// Keep only non-email entries (but keep purchase codes and general status)
+			if (
+				key === 'status' ||
+				key.startsWith('code_') ||
+				value?.auth_type === 'purchase_code'
+			) {
+				filteredObj[key] = value;
+			}
 		}
+
+		// Add the new purchase code activation
+		obj = { ...filteredObj, ...newPro };
 	}
 
 	const objString = JSON.stringify(obj);

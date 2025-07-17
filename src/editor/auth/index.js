@@ -100,10 +100,23 @@ export const processLocalPurchaseCodeActivation = (
 
 	if (typeof oldPro === 'string') {
 		const oldProObj = JSON.parse(oldPro);
-		// Merge with existing data but give priority to purchase code auth
-		if (oldProObj?.status !== 'no') {
-			obj = { ...oldProObj, ...newPro };
+
+		// Remove any existing email authentications when activating purchase code
+		// Purchase code takes priority and should be the only active auth method
+		const filteredObj = {};
+		for (const [key, value] of Object.entries(oldProObj)) {
+			// Keep only non-email entries (but keep purchase codes and general status)
+			if (
+				key === 'status' ||
+				key.startsWith('code_') ||
+				value?.auth_type === 'purchase_code'
+			) {
+				filteredObj[key] = value;
+			}
 		}
+
+		// Add the new purchase code activation
+		obj = { ...filteredObj, ...newPro };
 	}
 
 	const objString = JSON.stringify(obj);
@@ -197,7 +210,12 @@ const getProInfoByEmail = () => {
 };
 
 export const isProSubActive = () => {
-	// Check email auth first
+	// Check purchase code auth first - it takes priority
+	if (isPurchaseCodeActive()) {
+		return true;
+	}
+
+	// Check email auth only if no active purchase code
 	const emailInfo = getProInfoByEmail();
 	if (emailInfo) {
 		const { info, key } = emailInfo;
@@ -207,8 +225,7 @@ export const isProSubActive = () => {
 		}
 	}
 
-	// Check purchase code auth
-	return isPurchaseCodeActive();
+	return false;
 };
 
 export const isProSubExpired = () => {
@@ -227,7 +244,13 @@ export const isProSubExpired = () => {
 };
 
 export const getUserName = () => {
-	// Check email auth first
+	// Check purchase code auth first - it takes priority
+	const purchaseCodeName = getPurchaseCodeUserName();
+	if (purchaseCodeName) {
+		return purchaseCodeName;
+	}
+
+	// Check email auth only if no active purchase code
 	const emailInfo = getProInfoByEmail();
 	if (emailInfo) {
 		const { email, info, key } = emailInfo;
@@ -241,9 +264,7 @@ export const getUserName = () => {
 		}
 	}
 
-	// Check purchase code auth
-	const purchaseCodeName = getPurchaseCodeUserName();
-	return purchaseCodeName || false;
+	return false;
 };
 
 export const getUserEmail = () => {

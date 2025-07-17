@@ -229,12 +229,6 @@ const MaxiModal = props => {
 				setIsMaxiProActive(isProSubActive());
 				setIsMaxiProExpired(isProSubExpired());
 				setUserName(getUserName());
-
-				console.log(
-					JSON.stringify({
-						message: 'Purchase code authentication successful',
-					})
-				);
 			} else {
 				// Show authentication error for failed verification
 				console.error(

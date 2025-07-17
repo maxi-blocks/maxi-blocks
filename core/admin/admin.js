@@ -551,8 +551,6 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 // License page functionality
 document.addEventListener('DOMContentLoaded', function () {
-	console.log('MaxiBlocks license page JavaScript loaded');
-
 	// Handle license validation (email or purchase code)
 	const validateButton = document.getElementById('maxi-validate-license');
 	const licenseInput = document.getElementById('maxi-license-input');
@@ -608,12 +606,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			validationMessage.className = `maxi-license-message ${
 				isError ? 'error' : 'success'
 			}`;
-			console.log(
-				'License validation message:',
-				message,
-				'isError:',
-				isError
-			);
 		}
 	}
 
@@ -621,8 +613,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	 * Update license status display
 	 */
 	function updateLicenseStatus(status, userName = '') {
-		console.log('Updating license status:', status, 'userName:', userName);
-
 		if (currentStatus) {
 			currentStatus.textContent = status;
 		}
@@ -673,7 +663,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		// Since we're combining sections, we need to reload the page to show the correct UI
 		// This ensures the proper elements (logout button vs input form) are displayed
 		if (status === 'Active' || status === 'Not activated') {
-			console.log('Reloading page to update UI state');
 			setTimeout(() => {
 				window.location.reload();
 			}, 300); // Give time to show the success message
@@ -837,15 +826,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	 * Start direct email polling (similar to toolbar approach)
 	 */
 	function startDirectEmailPolling(email) {
-		console.log('Starting direct email polling for:', email);
-
 		const intervalId = setInterval(async () => {
 			try {
 				// Call the email authentication API directly
 				const authResult = await checkEmailAuthentication(email);
 
 				if (authResult && authResult.success) {
-					console.log('Authentication successful! Stopping polling.');
 					clearInterval(intervalId);
 					showMessage('Authentication successful!');
 					updateLicenseStatus('Active ✓', authResult.user_name);
@@ -854,14 +840,13 @@ document.addEventListener('DOMContentLoaded', function () {
 					}, 1500);
 				}
 			} catch (error) {
-				console.log('Poll error:', error);
+				console.error('Poll error:', error);
 				// Continue polling on error
 			}
 		}, 1000); // Poll every 1 second like toolbar
 
 		// Stop polling after 5 minutes
 		setTimeout(() => {
-			console.log('Stopping email polling after 5 minutes');
 			clearInterval(intervalId);
 		}, 300000);
 	}
@@ -883,13 +868,13 @@ document.addEventListener('DOMContentLoaded', function () {
 						authKey = cookieData[email];
 						break;
 					} catch (e) {
-						console.log('Error parsing cookie:', e);
+						console.error('Error parsing cookie:', e);
 					}
 				}
 			}
 
 			if (!authKey) {
-				console.log('No auth key found for email:', email);
+				console.error('No auth key found for email:', email);
 				return false;
 			}
 
@@ -910,7 +895,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			);
 
 			if (!response.ok) {
-				console.log('API response not ok:', response.status);
+				console.error('API response not ok:', response.status);
 				return false;
 			}
 
@@ -922,12 +907,11 @@ document.addEventListener('DOMContentLoaded', function () {
 				const name = data.name || email;
 
 				if (today > expirationDate) {
-					console.log('License expired');
+					console.error('License expired');
 					// Save expired status via WordPress
 					await saveLicenseData(email, name, 'expired', authKey);
 					return false;
 				}
-				console.log('License active, saving data');
 				// Save active status via WordPress
 				await saveLicenseData(email, name, 'yes', authKey);
 				return { success: true, user_name: name };
@@ -935,7 +919,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			return false;
 		} catch (error) {
-			console.log('Email auth check error:', error);
+			console.error('Email auth check error:', error);
 			return false;
 		}
 	}
@@ -959,9 +943,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 
 			const data = await response.json();
-			console.log('Save license response:', data);
 		} catch (error) {
-			console.log('Error saving license data:', error);
+			console.error('Error saving license data:', error);
 		}
 	}
 
@@ -979,8 +962,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	 * Handle logout
 	 */
 	function handleLogout() {
-		console.log('Handling license logout');
-
 		if (logoutButton) {
 			logoutButton.disabled = true;
 			logoutButton.textContent = 'Signing out...';

@@ -80,14 +80,6 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 	}
 
 	try {
-		console.log(
-			JSON.stringify({
-				message: 'Verifying purchase code',
-				purchaseCode,
-				domain,
-			})
-		);
-
 		const response = await fetch(middlewareUrl, {
 			method: 'POST',
 			headers: {
@@ -105,12 +97,6 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 		}
 
 		const result = await response.json();
-		console.log(
-			JSON.stringify({
-				message: 'Purchase code verification result',
-				result,
-			})
-		);
 
 		return result;
 	} catch (error) {
@@ -498,13 +484,6 @@ const LibraryToolbar = props => {
 		if (!inputValue || isVerifying) return;
 
 		const inputType = detectInputType(inputValue);
-		console.log(
-			JSON.stringify({
-				message: 'Detected input type',
-				inputType,
-				inputValue,
-			})
-		);
 
 		if (inputType === 'email') {
 			// Use existing email auth flow - let parent handle validation and errors

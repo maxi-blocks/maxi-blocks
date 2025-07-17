@@ -121,8 +121,6 @@ export const processLocalPurchaseCodeActivation = (
 
 	const objString = JSON.stringify(obj);
 	dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
-
-	console.log('Purchase code activation saved:', JSON.stringify(obj));
 };
 
 /**

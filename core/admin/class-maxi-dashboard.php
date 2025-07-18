@@ -100,6 +100,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'handle_save_email_license',
             ]);
+
+            // Check for domain changes on admin init
+            add_action('admin_init', [$this, 'check_and_handle_domain_migration']);
         }
 
         public function update_settings_on_install()
@@ -2275,6 +2278,98 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $result = json_decode($body, true);
 
             return $result ?: ['success' => false, 'error' => 'Invalid response'];
+        }
+
+        /**
+         * Handles domain migration for purchase codes
+         * @param string $purchase_code - The purchase code
+         * @param string $old_domain    - The old domain
+         * @param string $new_domain    - The new domain
+         * @returns array - Migration result
+         */
+        private function migrate_purchase_code_domain($purchase_code, $old_domain, $new_domain)
+        {
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                return ['success' => false, 'valid' => false, 'error' => 'Configuration error'];
+            }
+
+            $response = wp_remote_post($middleware_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode([
+                    'purchase_code' => $purchase_code,
+                    'old_domain' => $old_domain,
+                    'new_domain' => $new_domain,
+                    'plugin_version' => MAXI_PLUGIN_VERSION,
+                ]),
+            ]);
+
+            if (is_wp_error($response)) {
+                return ['success' => false, 'valid' => false, 'error' => $response->get_error_message()];
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $result = json_decode($body, true);
+
+            return $result ?: ['success' => false, 'valid' => false, 'error' => 'Invalid response'];
+        }
+
+        /**
+         * Checks and handles domain changes for purchase codes
+         * @returns void
+         */
+        public function check_and_handle_domain_migration()
+        {
+            $current_domain = parse_url(home_url(), PHP_URL_HOST);
+            $license_data = get_option('maxi_pro', '');
+
+            if (empty($license_data)) {
+                return;
+            }
+
+            $license_array = json_decode($license_data, true);
+            if (!is_array($license_array)) {
+                return;
+            }
+
+            foreach ($license_array as $key => $license) {
+                // Only check purchase code entries
+                if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                    $stored_domain = isset($license['domain']) ? $license['domain'] : '';
+                    $purchase_code = isset($license['purchase_code']) ? $license['purchase_code'] : '';
+
+                    // If domain has changed and we have a purchase code
+                    if (!empty($stored_domain) && !empty($purchase_code) && $stored_domain !== $current_domain) {
+                        error_log(__('MaxiBlocks: Domain change detected. Old: ', 'maxi-blocks') . $stored_domain . __(' New: ', 'maxi-blocks') . $current_domain);
+
+                        // Attempt domain migration
+                        $migration_result = $this->migrate_purchase_code_domain($purchase_code, $stored_domain, $current_domain);
+
+                        if ($migration_result && isset($migration_result['success']) && $migration_result['success']) {
+                            // Update license data with new domain
+                            $license_array[$key]['domain'] = $current_domain;
+                            $license_array[$key]['migrated_at'] = current_time('c');
+                            $license_array[$key]['migrated_from'] = $stored_domain;
+
+                            // If migration info is provided, store it
+                            if (isset($migration_result['domain_migration'])) {
+                                $license_array[$key]['migration_status'] = $migration_result['domain_migration'];
+                            }
+
+                            update_option('maxi_pro', wp_json_encode($license_array));
+                            error_log(__('MaxiBlocks: Domain migration successful for purchase code: ', 'maxi-blocks') . $purchase_code);
+                        } else {
+                            error_log(__('MaxiBlocks: Domain migration failed for purchase code: ', 'maxi-blocks') . $purchase_code . ' - ' . wp_json_encode($migration_result));
+                        }
+                    }
+                }
+            }
         }
 
         /**

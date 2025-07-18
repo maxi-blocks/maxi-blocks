@@ -25,6 +25,7 @@ import {
 	getUserName,
 	logOut,
 	processLocalPurchaseCodeActivation,
+	checkAndHandleDomainMigration,
 } from '@editor/auth';
 import useObserveBlockSize from './hooks';
 
@@ -273,6 +274,12 @@ const MaxiModal = props => {
 		changeIsOpen(false);
 		changeOpenedFirstTime(false);
 	};
+
+	useEffect(() => {
+		if (isOpen) {
+			checkAndHandleDomainMigration();
+		}
+	}, [isOpen]);
 
 	return (
 		<div ref={ref} className='maxi-library-modal__action-section'>

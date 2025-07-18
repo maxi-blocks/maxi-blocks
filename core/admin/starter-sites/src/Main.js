@@ -15,6 +15,7 @@ import {
 	getUserName,
 	logOut,
 	processLocalPurchaseCodeActivation,
+	checkAndHandleDomainMigration,
 } from './auth';
 import CloudLibrary from './library';
 import './Main.css';
@@ -50,6 +51,11 @@ const Main = ({ type, isQuickStart }) => {
 			setUserName(getUserName());
 		}
 	}, [proStatus, hasProData]);
+
+	// Check for domain migration on component mount
+	useEffect(() => {
+		checkAndHandleDomainMigration();
+	}, []);
 
 	const onClickConnect = async email => {
 		const isValid = isValidEmail(email);

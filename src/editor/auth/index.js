@@ -563,6 +563,190 @@ const deactivatePurchaseCode = async (
 	}
 };
 
+/**
+ * Migrates purchase code domain with middleware
+ * @param {string} purchaseCode - The purchase code
+ * @param {string} oldDomain    - The old domain
+ * @param {string} newDomain    - The new domain
+ * @returns {Promise<Object>} - Migration result
+ */
+const migratePurchaseCodeDomain = async (
+	purchaseCode,
+	oldDomain,
+	newDomain
+) => {
+	const middlewareUrl = process.env.REACT_APP_MAXI_BLOCKS_AUTH_MIDDLEWARE_URL;
+	const middlewareKey = process.env.REACT_APP_MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY;
+
+	if (!middlewareUrl || !middlewareKey) {
+		console.error('Missing middleware configuration');
+		return { success: false, valid: false, error: 'Configuration error' };
+	}
+
+	// Get plugin version from global settings
+	const pluginVersion = window.maxiLicenseSettings?.pluginVersion || '';
+
+	try {
+		const response = await fetch(middlewareUrl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: middlewareKey,
+			},
+			body: JSON.stringify({
+				purchase_code: purchaseCode,
+				old_domain: oldDomain,
+				new_domain: newDomain,
+				plugin_version: pluginVersion,
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		const result = await response.json();
+
+		return result;
+	} catch (error) {
+		console.error('Purchase code migration error:', error);
+		return { success: false, valid: false, error: error.message };
+	}
+};
+
+/**
+ * Checks and handles domain changes for purchase codes
+ * @returns {Promise<void>}
+ */
+export const checkAndHandleDomainMigration = async () => {
+	try {
+		const currentDomain = window.location.hostname;
+		const pro = select('maxiBlocks/pro').receiveMaxiProStatus();
+
+		if (typeof pro !== 'string') {
+			return;
+		}
+
+		const proObj = JSON.parse(pro);
+		const migrationPromises = [];
+		const updateData = { ...proObj };
+
+		// Check each purchase code entry and prepare migration promises
+		for (const [key, license] of Object.entries(proObj)) {
+			if (
+				key.startsWith('code_') &&
+				license?.auth_type === 'purchase_code' &&
+				license?.status === 'yes'
+			) {
+				const storedDomain = license.domain;
+				const purchaseCode = license.purchase_code;
+
+				// If domain has changed and we have a purchase code
+				if (
+					storedDomain &&
+					purchaseCode &&
+					storedDomain !== currentDomain
+				) {
+					console.error(
+						JSON.stringify({
+							message: 'Domain change detected',
+							oldDomain: storedDomain,
+							newDomain: currentDomain,
+							purchaseCode,
+						})
+					);
+
+					// Add migration promise to array
+					migrationPromises.push(
+						migratePurchaseCodeDomain(
+							purchaseCode,
+							storedDomain,
+							currentDomain
+						)
+							.then(migrationResult => ({
+								key,
+								license,
+								migrationResult,
+								purchaseCode,
+								storedDomain,
+							}))
+							.catch(error => ({
+								key,
+								license,
+								error,
+								purchaseCode,
+								storedDomain,
+							}))
+					);
+				}
+			}
+		}
+
+		// Process all migrations in parallel
+		if (migrationPromises.length > 0) {
+			const results = await Promise.all(migrationPromises);
+			let hasUpdates = false;
+
+			results.forEach(
+				({
+					key,
+					license,
+					migrationResult,
+					error,
+					purchaseCode,
+					storedDomain,
+				}) => {
+					if (error) {
+						console.error(
+							'Domain migration error:',
+							JSON.stringify({ purchaseCode, error })
+						);
+					} else if (migrationResult && migrationResult.success) {
+						// Update license data with new domain
+						updateData[key] = {
+							...license,
+							domain: currentDomain,
+							migrated_at: new Date().toISOString(),
+							migrated_from: storedDomain,
+						};
+
+						// If migration info is provided, store it
+						if (migrationResult.domain_migration) {
+							updateData[key].migration_status =
+								migrationResult.domain_migration;
+						}
+
+						hasUpdates = true;
+						console.error(
+							JSON.stringify({
+								message: 'Domain migration successful',
+								purchaseCode,
+								migrationResult,
+							})
+						);
+					} else {
+						console.error(
+							'Domain migration failed:',
+							JSON.stringify({
+								purchaseCode,
+								migrationResult,
+							})
+						);
+					}
+				}
+			);
+
+			// Update local storage if there were changes
+			if (hasUpdates) {
+				const objString = JSON.stringify(updateData);
+				dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+			}
+		}
+	} catch (error) {
+		console.error('Domain migration check error:', error);
+	}
+};
+
 export const logOut = redirect => {
 	let hasEmailAuth = false;
 

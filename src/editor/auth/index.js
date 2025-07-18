@@ -503,6 +503,66 @@ export async function authConnect(withRedirect = false, email = false) {
 	});
 }
 
+/**
+ * Deactivates purchase code with middleware
+ * @param {string} purchaseCode - The purchase code to deactivate
+ * @param {string} domain       - The domain to deactivate
+ * @param {string} reason       - Reason for deactivation
+ * @returns {Promise<Object>} - Deactivation result
+ */
+const deactivatePurchaseCode = async (
+	purchaseCode,
+	domain,
+	reason = 'Plugin deactivated by user'
+) => {
+	const middlewareUrl = process.env.REACT_APP_MAXI_BLOCKS_AUTH_MIDDLEWARE_URL;
+	const middlewareKey = process.env.REACT_APP_MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY;
+
+	if (!middlewareUrl || !middlewareKey) {
+		console.error('Missing middleware configuration');
+		return { success: false, error: 'Configuration error' };
+	}
+
+	// Replace 'verify' with 'deactivate' in the URL
+	const deactivateUrl = middlewareUrl.replace('/verify', '/deactivate');
+
+	// Get plugin version from global settings
+	const pluginVersion = window.maxiLicenseSettings?.pluginVersion || '';
+
+	const requestBody = {
+		domain,
+		reason,
+		plugin_version: pluginVersion,
+	};
+
+	// Only include purchase code if it's provided
+	if (purchaseCode) {
+		requestBody.purchase_code = purchaseCode;
+	}
+
+	try {
+		const response = await fetch(deactivateUrl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: middlewareKey,
+			},
+			body: JSON.stringify(requestBody),
+		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		const result = await response.json();
+
+		return result;
+	} catch (error) {
+		console.error('Purchase code deactivation error:', error);
+		return { success: false, error: error.message };
+	}
+};
+
 export const logOut = redirect => {
 	let hasEmailAuth = false;
 
@@ -519,22 +579,48 @@ export const logOut = redirect => {
 		}
 	}
 
-	// Handle purchase code logout - remove all purchase code activations
+	// Handle purchase code logout - deactivate and remove all purchase code activations
 	const pro = select('maxiBlocks/pro').receiveMaxiProStatus();
 	if (typeof pro === 'string') {
 		const proObj = JSON.parse(pro);
 		const filteredObj = {};
+		const domain = window.location.hostname;
 
-		// Keep only non-purchase-code entries
+		// Find purchase codes to deactivate
+		const purchaseCodesToDeactivate = [];
 		for (const [key, value] of Object.entries(proObj)) {
 			if (
-				!key.startsWith('code_') ||
-				value?.auth_type !== 'purchase_code'
+				key.startsWith('code_') &&
+				value?.auth_type === 'purchase_code'
 			) {
+				const purchaseCode = key.replace('code_', '');
+				purchaseCodesToDeactivate.push(purchaseCode);
+			} else {
+				// Keep non-purchase-code entries
 				filteredObj[key] = value;
 			}
 		}
 
+		// Deactivate purchase codes with middleware (async, but don't wait)
+		purchaseCodesToDeactivate.forEach(async purchaseCode => {
+			try {
+				const result = await deactivatePurchaseCode(
+					purchaseCode,
+					domain,
+					'Plugin deactivated by user'
+				);
+				if (!result.success) {
+					console.error(
+						'Purchase code deactivation failed:',
+						JSON.stringify(result)
+					);
+				}
+			} catch (error) {
+				console.error('Purchase code deactivation error:', error);
+			}
+		});
+
+		// Update local storage immediately (don't wait for deactivation API calls)
 		const objString = JSON.stringify(filteredObj);
 		dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
 	}

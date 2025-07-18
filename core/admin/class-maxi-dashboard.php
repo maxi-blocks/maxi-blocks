@@ -2229,6 +2229,55 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         }
 
         /**
+         * Deactivates purchase code with middleware
+         * @param string $purchase_code - The purchase code to deactivate
+         * @param string $domain       - The domain to deactivate
+         * @param string $reason       - Reason for deactivation
+         * @returns array - Deactivation result
+         */
+        private function deactivate_purchase_code($purchase_code, $domain, $reason = 'Plugin deactivated by user')
+        {
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                return ['success' => false, 'error' => 'Configuration error'];
+            }
+
+            // Replace 'verify' with 'deactivate' in the URL
+            $deactivate_url = str_replace('/verify', '/deactivate', $middleware_url);
+
+            $request_body = [
+                'domain' => $domain,
+                'reason' => $reason,
+                'plugin_version' => MAXI_PLUGIN_VERSION,
+            ];
+
+            // Only include purchase code if it's provided
+            if (!empty($purchase_code)) {
+                $request_body['purchase_code'] = $purchase_code;
+            }
+
+            $response = wp_remote_post($deactivate_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode($request_body),
+            ]);
+
+            if (is_wp_error($response)) {
+                return ['success' => false, 'error' => $response->get_error_message()];
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $result = json_decode($body, true);
+
+            return $result ?: ['success' => false, 'error' => 'Invalid response'];
+        }
+
+        /**
          * Handle AJAX license validation
          */
         public function handle_validate_license()
@@ -2681,6 +2730,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 // Check if it's a purchase code auth - in that case, delete everything
                 $current_license_data = get_option('maxi_pro', '');
                 $is_purchase_code_active = false;
+                $purchase_code = '';
+                $domain = parse_url(home_url(), PHP_URL_HOST);
 
                 if (!empty($current_license_data)) {
                     $license_array = json_decode($current_license_data, true);
@@ -2688,14 +2739,27 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         foreach ($license_array as $key => $license) {
                             if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
                                 $is_purchase_code_active = true;
+                                // Extract the purchase code (remove 'code_' prefix)
+                                $purchase_code = substr($key, 5);
                                 break;
                             }
                         }
                     }
                 }
 
-                if ($is_purchase_code_active) {
-                    // Delete all license data for purchase code logout
+                if ($is_purchase_code_active && !empty($purchase_code)) {
+                    // Call deactivation endpoint before deleting local data
+                    $deactivation_result = $this->deactivate_purchase_code($purchase_code, $domain, 'Plugin deactivated by user');
+
+                    // Log deactivation result for debugging (optional)
+                    if (!$deactivation_result['success']) {
+                        error_log(__('MaxiBlocks: Purchase code deactivation failed: ', 'maxi-blocks') . wp_json_encode($deactivation_result));
+                    }
+
+                    // Delete all license data for purchase code logout regardless of deactivation result
+                    delete_option('maxi_pro');
+                } elseif ($is_purchase_code_active) {
+                    // If we couldn't extract the purchase code, still delete the local data
                     delete_option('maxi_pro');
                 }
 

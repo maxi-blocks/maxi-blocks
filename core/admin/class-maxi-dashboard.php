@@ -246,6 +246,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'ajaxUrl' => admin_url('admin-ajax.php'),
                     'nonce' => wp_create_nonce('maxi_license_validation'),
                     'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+                    'pluginVersion' => MAXI_PLUGIN_VERSION,
                 ]);
             }
         }
@@ -2213,6 +2214,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'body' => wp_json_encode([
                     'purchase_code' => $purchase_code,
                     'domain' => $domain,
+                    'plugin_version' => MAXI_PLUGIN_VERSION,
                 ]),
             ]);
 

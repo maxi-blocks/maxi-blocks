@@ -67,12 +67,16 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 		return { success: false, valid: false, error: 'Configuration error' };
 	}
 
+	// Get plugin version from global settings
+	const pluginVersion = window.maxiLicenseSettings?.pluginVersion || '';
+
 	try {
 		console.log(
 			JSON.stringify({
 				message: 'Verifying purchase code',
 				purchaseCode,
 				domain,
+				pluginVersion,
 			})
 		);
 
@@ -85,6 +89,7 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 			body: JSON.stringify({
 				purchase_code: purchaseCode,
 				domain,
+				plugin_version: pluginVersion,
 			}),
 		});
 

@@ -79,6 +79,9 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 		return { success: false, valid: false, error: 'Configuration error' };
 	}
 
+	// Get plugin version from global settings
+	const pluginVersion = window.maxiLicenseSettings?.pluginVersion || '';
+
 	try {
 		const response = await fetch(middlewareUrl, {
 			method: 'POST',
@@ -89,6 +92,7 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 			body: JSON.stringify({
 				purchase_code: purchaseCode,
 				domain,
+				plugin_version: pluginVersion,
 			}),
 		});
 

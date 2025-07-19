@@ -112,6 +112,9 @@ const Inspector = props => {
 										props,
 										prefix: 'number-counter-',
 									}),
+									...inspectorTabs.savedStyles({
+										props,
+									}),
 								]}
 							/>
 						),

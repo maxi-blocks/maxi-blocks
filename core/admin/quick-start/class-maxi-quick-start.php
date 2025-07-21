@@ -286,6 +286,8 @@ class MaxiBlocks_QuickStart
         ]);
 
         // Add license settings localization for the license step
+        $dashboard = new MaxiBlocks_Dashboard();
+        $network_license_info = is_multisite() ? $dashboard->get_network_license_info() : false;
         wp_localize_script('maxi-blocks-quick-start', 'maxiLicenseSettings', [
             'middlewareUrl' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '',
             'middlewareKey' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '',
@@ -293,6 +295,10 @@ class MaxiBlocks_QuickStart
             'nonce' => wp_create_nonce('maxi_license_validation'),
             'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
             'pluginVersion' => MAXI_PLUGIN_VERSION,
+            'isMultisite' => is_multisite(),
+            'hasNetworkLicense' => is_multisite() ? $dashboard->has_network_license() : false,
+            'networkLicenseName' => $network_license_info ? $network_license_info['user_name'] : '',
+            'isNetworkAdmin' => false,
         ]);
     }
 
@@ -818,43 +824,61 @@ class MaxiBlocks_QuickStart
     public function license_step()
     {
         // Get license status using the same logic as dashboard
-        $current_license_data = get_option('maxi_pro', '');
         $current_license_status = 'Not activated';
         $current_user_name = '';
         $is_active = false;
+        $is_network_license = false;
 
-        if (!empty($current_license_data)) {
-            $license_array = json_decode($current_license_data, true);
-            if (is_array($license_array)) {
-                // Check for purchase code auth (domain-wide)
-                foreach ($license_array as $key => $license) {
-                    if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
-                        $current_license_status = 'Active ✓';
-                        $current_user_name = isset($license['name']) ? $license['name'] : 'Pro User';
-                        $is_active = true;
-                        break;
-                    }
+        // Check for network license first (multisite)
+        if (is_multisite()) {
+            $dashboard = new MaxiBlocks_Dashboard();
+            if ($dashboard->has_network_license()) {
+                $network_license_info = $dashboard->get_network_license_info();
+                if ($network_license_info) {
+                    $current_license_status = 'Active ✓ (Network)';
+                    $current_user_name = isset($network_license_info['user_name']) ? $network_license_info['user_name'] : 'Network Pro User';
+                    $is_active = true;
+                    $is_network_license = true;
                 }
+            }
+        }
 
-                // If no purchase code, check for email auth (browser-specific)
-                if (!$is_active && isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
-                    $cookie_raw = $_COOKIE['maxi_blocks_key'];
-                    // Fix escaped quotes in cookie value
-                    $cookie_fixed = str_replace('\\"', '"', $cookie_raw);
-                    $cookie_data = json_decode($cookie_fixed, true);
+        // If no network license, check site-level license
+        if (!$is_active) {
+            $current_license_data = get_option('maxi_pro', '');
+            if (!empty($current_license_data)) {
+                $license_array = json_decode($current_license_data, true);
+                if (is_array($license_array)) {
+                    // Check for purchase code auth (domain-wide)
+                    foreach ($license_array as $key => $license) {
+                        if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                            $current_license_status = 'Active ✓';
+                            $current_user_name = isset($license['name']) ? $license['name'] : 'Pro User';
+                            $is_active = true;
+                            break;
+                        }
+                    }
 
-                    if ($cookie_data && is_array($cookie_data)) {
-                        $email = array_keys($cookie_data)[0];
-                        $browser_key = $cookie_data[$email];
+                    // If no purchase code, check for email auth (browser-specific)
+                    if (!$is_active && isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
+                        $cookie_raw = $_COOKIE['maxi_blocks_key'];
+                        // Fix escaped quotes in cookie value
+                        $cookie_fixed = str_replace('\\"', '"', $cookie_raw);
+                        $cookie_data = json_decode($cookie_fixed, true);
 
-                        if (isset($license_array[$email]) && isset($license_array[$email]['status']) && $license_array[$email]['status'] === 'yes') {
-                            // Check if this browser's key is in the list
-                            $stored_keys = explode(',', $license_array[$email]['key']);
+                        if ($cookie_data && is_array($cookie_data)) {
+                            $email = array_keys($cookie_data)[0];
+                            $browser_key = $cookie_data[$email];
 
-                            if (in_array($browser_key, array_map('trim', $stored_keys))) {
-                                $current_license_status = 'Active ✓';
-                                $current_user_name = isset($license_array[$email]['name']) ? $license_array[$email]['name'] : $email;
-                                $is_active = true;
+                            if (isset($license_array[$email]) && isset($license_array[$email]['status']) && $license_array[$email]['status'] === 'yes') {
+                                // Check if this browser's key is in the list
+                                $stored_keys = explode(',', $license_array[$email]['key']);
+
+                                if (in_array($browser_key, array_map('trim', $stored_keys))) {
+                                    $current_license_status = 'Active ✓';
+                                    $current_user_name = isset($license_array[$email]['name']) ? $license_array[$email]['name'] : $email;
+                                    $is_active = true;
+                                }
                             }
                         }
                     }
@@ -880,12 +904,22 @@ class MaxiBlocks_QuickStart
 				<div class="maxi-license-status-display">
 					<h4><?php esc_html_e('Status:', 'maxi-blocks'); ?> <span id="current-license-status" class="maxi-license-active"><?php echo esc_html($current_license_status); ?></span></h4>
 					<h4><?php esc_html_e('Licensed to:', 'maxi-blocks'); ?> <span id="current-license-user"><?php echo esc_html($current_user_name); ?></span></h4>
+					<?php if ($is_network_license): ?>
+						<p class="maxi-license-network-info">
+							<?php esc_html_e('This is a network-wide license activated by your network administrator. To manage network licenses, visit the', 'maxi-blocks'); ?>
+							<a href="<?php echo esc_url(network_admin_url('admin.php?page=maxi-blocks-dashboard')); ?>" target="_blank">
+								<?php esc_html_e('Network License page', 'maxi-blocks'); ?>
+							</a>.
+						</p>
+					<?php endif; ?>
 				</div>
 
-				<!-- Show deactivate button -->
-				<div class="maxi-license-actions">
-					<button type="button" id="maxi-license-logout" class="button"><?php esc_html_e('Deactivate Pro', 'maxi-blocks'); ?></button>
-				</div>
+				<!-- Show deactivate button (only for site-level licenses) -->
+				<?php if (!$is_network_license): ?>
+					<div class="maxi-license-actions">
+						<button type="button" id="maxi-license-logout" class="button"><?php esc_html_e('Deactivate Pro', 'maxi-blocks'); ?></button>
+					</div>
+				<?php endif; ?>
 			<?php else: ?>
 				<!-- Show current status for not activated -->
 				<div class="maxi-license-status-display">

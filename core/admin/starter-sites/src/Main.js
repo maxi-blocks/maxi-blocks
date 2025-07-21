@@ -52,6 +52,16 @@ const Main = ({ type, isQuickStart }) => {
 		}
 	}, [proStatus, hasProData]);
 
+	// Additional check for network license on component mount and updates
+	useEffect(() => {
+		const licenseSettings = window.maxiLicenseSettings || {};
+		if (licenseSettings.isMultisite && licenseSettings.hasNetworkLicense) {
+			setIsMaxiProActive(true);
+			setIsMaxiProExpired(false);
+			setUserName(licenseSettings.networkLicenseName || 'Marketplace');
+		}
+	}, []);
+
 	// Check for domain migration on component mount
 	useEffect(() => {
 		checkAndHandleDomainMigration();

@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		// The location of Uluru
 		const uluru = { lat: -25.344, lng: 131.031 };
 		// The map, centered at Uluru
+		// eslint-disable-next-line no-undef
 		const map = new google.maps.Map(
 			document.getElementById('maxi-api-test'),
 			{
@@ -84,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			}
 		);
 		// The marker, positioned at Uluru
+		// eslint-disable-next-line no-undef, no-unused-vars
 		const marker = new google.maps.Marker({
 			position: uluru,
 			map,
@@ -216,17 +218,30 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		const intercept = method => {
 			const original = console[method];
 			console[method] = function () {
+				// eslint-disable-next-line prefer-rest-params
 				if (arguments[0]) {
 					if (
+						// eslint-disable-next-line prefer-rest-params
 						arguments[0].includes('InvalidKeyMapError') ||
+						// eslint-disable-next-line prefer-rest-params
+						arguments[0].includes('InvalidKeyError') ||
+						// eslint-disable-next-line prefer-rest-params
 						arguments[0].includes('API multiple times')
 					) {
 						googleMapsCustomValidation('InvalidKeyError');
 					} else if (
-						arguments[0].includes('RefererNotAllowedMapError')
+						// eslint-disable-next-line prefer-rest-params
+						arguments[0].includes('RefererNotAllowedMapError') ||
+						// eslint-disable-next-line prefer-rest-params
+						arguments[0].includes('RefererNotAllowedError')
 					) {
 						googleMapsCustomValidation('RefererNotAllowedError');
-					} else if (arguments[0].includes('API without a key')) {
+					} else if (
+						// eslint-disable-next-line prefer-rest-params
+						arguments[0].includes('API without a key') ||
+						// eslint-disable-next-line prefer-rest-params
+						arguments[0].includes('EmptyKeyError')
+					) {
 						googleMapsCustomValidation('EmptyKeyError');
 					} else {
 						googleMapsCustomValidation(true);
@@ -234,6 +249,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				}
 
 				if (original.apply) {
+					// eslint-disable-next-line prefer-rest-params
 					original.apply(console, arguments);
 				}
 			};
@@ -241,6 +257,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		intercept(['error']);
 	};
 
+	// eslint-disable-next-line func-names
 	googleApiKeyVisibleInput?.addEventListener('input', function () {
 		testGoogleApiKey();
 		catchGoogleMapsApiErrors();
@@ -375,7 +392,9 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				modelSelect.value = currentValue;
 			} else {
 				// If previous selection not available, use first model
+				// eslint-disable-next-line prefer-destructuring
 				modelSelect.value = models[0];
+				// eslint-disable-next-line prefer-destructuring
 				modelInput.value = models[0];
 			}
 		} catch (error) {
@@ -746,10 +765,12 @@ document.addEventListener('DOMContentLoaded', function () {
 			// For email authentication, send to WordPress backend and open login page
 			const formData = new FormData();
 			formData.append('action', 'maxi_validate_license');
+			// eslint-disable-next-line no-undef
 			formData.append('nonce', maxiLicenseSettings.nonce);
 			formData.append('license_input', inputValue);
 			formData.append('license_action', 'activate');
 
+			// eslint-disable-next-line no-undef
 			fetch(maxiLicenseSettings.ajaxUrl, {
 				method: 'POST',
 				body: formData,
@@ -786,10 +807,12 @@ document.addEventListener('DOMContentLoaded', function () {
 			// Handle purchase code authentication
 			const formData = new FormData();
 			formData.append('action', 'maxi_validate_license');
+			// eslint-disable-next-line no-undef
 			formData.append('nonce', maxiLicenseSettings.nonce);
 			formData.append('license_input', inputValue);
 			formData.append('license_action', 'activate');
 
+			// eslint-disable-next-line no-undef
 			fetch(maxiLicenseSettings.ajaxUrl, {
 				method: 'POST',
 				body: formData,
@@ -931,17 +954,20 @@ document.addEventListener('DOMContentLoaded', function () {
 		try {
 			const formData = new FormData();
 			formData.append('action', 'maxi_save_email_license');
+			// eslint-disable-next-line no-undef
 			formData.append('nonce', maxiLicenseSettings.nonce);
 			formData.append('email', email);
 			formData.append('name', name);
 			formData.append('status', status);
 			formData.append('auth_key', authKey);
 
+			// eslint-disable-next-line no-undef
 			const response = await fetch(maxiLicenseSettings.ajaxUrl, {
 				method: 'POST',
 				body: formData,
 			});
 
+			// eslint-disable-next-line no-unused-vars
 			const data = await response.json();
 		} catch (error) {
 			console.error('Error saving license data:', error);
@@ -980,17 +1006,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		const formData = new FormData();
 		formData.append('action', 'maxi_validate_license');
+		// eslint-disable-next-line no-undef
 		formData.append('nonce', maxiLicenseSettings.nonce);
 		formData.append('license_action', 'logout');
 
+		// eslint-disable-next-line no-undef
 		fetch(maxiLicenseSettings.ajaxUrl, {
 			method: 'POST',
 			body: formData,
 		})
 			.then(response => response.json())
 			.then(data => {
-				console.log('Logout response:', data);
-
 				if (data.success) {
 					showMessage(data.data.message);
 					updateLicenseStatus(data.data.status, data.data.user_name);
@@ -1027,17 +1053,20 @@ document.addEventListener('DOMContentLoaded', function () {
 		const originalPlaceholder = licenseInput.placeholder;
 
 		// Hide placeholder on focus
+		// eslint-disable-next-line func-names
 		licenseInput.addEventListener('focus', function () {
 			this.placeholder = '';
 		});
 
 		// Restore placeholder on blur if input is empty
+		// eslint-disable-next-line func-names
 		licenseInput.addEventListener('blur', function () {
 			if (!this.value.trim()) {
 				this.placeholder = originalPlaceholder;
 			}
 		});
 
+		// eslint-disable-next-line func-names
 		licenseInput.addEventListener('keypress', function (e) {
 			if (e.key === 'Enter') {
 				e.preventDefault();
@@ -1046,3 +1075,281 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	}
 });
+
+// Network License Management for Multisite
+// eslint-disable-next-line func-names
+document.addEventListener('DOMContentLoaded', function () {
+	// Check if we're in network admin and have the necessary elements
+	if (
+		typeof maxiNetworkLicenseSettings !== 'undefined' &&
+		// eslint-disable-next-line no-undef
+		maxiNetworkLicenseSettings.isNetworkAdmin
+	) {
+		initNetworkLicenseHandlers();
+	}
+
+	// Also initialize for regular site admin
+	if (typeof maxiLicenseSettings !== 'undefined') {
+		// Existing license handlers are already in place
+		// Just ensure they work with network license context
+		initSiteLicenseHandlers();
+	}
+});
+
+/**
+ * Initialize network license handlers
+ */
+function initNetworkLicenseHandlers() {
+	const validateButton = document.getElementById(
+		'maxi-validate-network-license'
+	);
+	const logoutButton = document.getElementById('maxi-network-license-logout');
+	const licenseInput = document.getElementById('maxi-network-license-input');
+
+	if (validateButton) {
+		// eslint-disable-next-line func-names
+		validateButton.addEventListener('click', function () {
+			const licenseValue = licenseInput ? licenseInput.value.trim() : '';
+
+			if (!licenseValue) {
+				showNetworkMessage('Please enter a purchase code', 'error');
+				return;
+			}
+
+			// Show loading state
+			validateButton.disabled = true;
+			validateButton.textContent = 'Activating…';
+
+			// Send AJAX request for network license validation
+			sendNetworkLicenseRequest('validate', licenseValue);
+		});
+	}
+
+	if (logoutButton) {
+		// eslint-disable-next-line func-names
+		logoutButton.addEventListener('click', function () {
+			if (
+				// eslint-disable-next-line no-undef, no-undef, no-restricted-globals, no-alert
+				confirm(
+					'Are you sure you want to deactivate the network license? This will affect all sites in the network.'
+				)
+			) {
+				logoutButton.disabled = true;
+				logoutButton.textContent = 'Deactivating…';
+
+				sendNetworkLicenseRequest('logout', '');
+			}
+		});
+	}
+
+	// Check initial network license status
+	checkNetworkAuthStatus();
+}
+
+/**
+ * Initialize site license handlers with network awareness
+ */
+function initSiteLicenseHandlers() {
+	// The existing license handlers should already be working
+	// We just need to ensure they understand network license context
+
+	// If there's a network license input restriction, handle it
+	const licenseInput = document.getElementById('maxi-license-input');
+	const validateButton = document.getElementById('maxi-validate-license');
+
+	if (licenseInput && validateButton) {
+		// Check if we're in a network-restricted mode (email only)
+		const emailOnlyForm = document.querySelector('.maxi-email-only');
+		if (emailOnlyForm) {
+			// Modify validation to only allow email format
+			// eslint-disable-next-line func-names, consistent-return
+			validateButton.addEventListener('click', function (e) {
+				const inputValue = licenseInput.value.trim();
+				if (inputValue && !isValidEmail(inputValue)) {
+					e.preventDefault();
+					// eslint-disable-next-line no-undef
+					showMessage(
+						'Only email authentication is allowed when a network license is active.',
+						'error'
+					);
+					return false;
+				}
+			});
+		}
+	}
+}
+
+/**
+ * Send network license AJAX request
+ */
+function sendNetworkLicenseRequest(action, licenseInput) {
+	const data = new FormData();
+	data.append('action', 'maxi_network_validate_license');
+	// eslint-disable-next-line no-undef
+	data.append('nonce', maxiNetworkLicenseSettings.nonce);
+	data.append('license_action', action);
+	if (licenseInput) {
+		data.append('license_input', licenseInput);
+	}
+
+	// eslint-disable-next-line no-undef
+	fetch(maxiNetworkLicenseSettings.ajaxUrl, {
+		method: 'POST',
+		body: data,
+	})
+		.then(response => response.json())
+		.then(data => {
+			if (data.success) {
+				handleNetworkLicenseSuccess(data.data, action);
+			} else {
+				handleNetworkLicenseError(
+					data.data.message || 'An error occurred',
+					action
+				);
+			}
+		})
+		.catch(error => {
+			console.error('Network license request failed:', error);
+			handleNetworkLicenseError('Network error occurred', action);
+		});
+}
+
+/**
+ * Handle successful network license response
+ */
+function handleNetworkLicenseSuccess(data, action) {
+	if (action === 'validate') {
+		showNetworkMessage(data.message, 'success');
+		// Refresh the page to show new status
+		setTimeout(() => {
+			window.location.reload();
+		}, 1500);
+	} else if (action === 'logout') {
+		showNetworkMessage(data.message, 'success');
+		// Refresh the page to show new status
+		setTimeout(() => {
+			window.location.reload();
+		}, 1500);
+	}
+}
+
+/**
+ * Handle network license error response
+ */
+function handleNetworkLicenseError(message, action) {
+	showNetworkMessage(message, 'error');
+
+	// Reset button states
+	const validateButton = document.getElementById(
+		'maxi-validate-network-license'
+	);
+	const logoutButton = document.getElementById('maxi-network-license-logout');
+
+	if (action === 'validate' && validateButton) {
+		validateButton.disabled = false;
+		validateButton.textContent = 'Activate network license';
+	} else if (action === 'logout' && logoutButton) {
+		logoutButton.disabled = false;
+		logoutButton.textContent = 'Deactivate network license';
+	}
+}
+
+/**
+ * Show network license message
+ */
+function showNetworkMessage(message, type) {
+	const messageDiv = document.getElementById(
+		'maxi-network-license-validation-message'
+	);
+	if (!messageDiv) return;
+
+	messageDiv.style.display = 'block';
+	messageDiv.textContent = message;
+	messageDiv.className = `maxi-license-message maxi-license-${type}`;
+
+	// Auto-hide success messages
+	if (type === 'success') {
+		setTimeout(() => {
+			messageDiv.style.display = 'none';
+		}, 5000);
+	}
+}
+
+/**
+ * Check network authentication status
+ */
+function checkNetworkAuthStatus() {
+	const data = new FormData();
+	data.append('action', 'maxi_network_check_auth_status');
+	// eslint-disable-next-line no-undef
+	data.append('nonce', maxiNetworkLicenseSettings.nonce);
+
+	// eslint-disable-next-line no-undef
+	fetch(maxiNetworkLicenseSettings.ajaxUrl, {
+		method: 'POST',
+		body: data,
+	})
+		.then(response => response.json())
+		.then(data => {
+			if (data.success && data.data.is_authenticated) {
+				// Update UI to reflect current status
+				updateNetworkLicenseUI(data.data);
+			}
+		})
+		.catch(error => {
+			console.error('Network auth status check failed:', error);
+		});
+}
+
+/**
+ * Update network license UI
+ */
+function updateNetworkLicenseUI(data) {
+	const statusElement = document.getElementById(
+		'current-network-license-status'
+	);
+	const userElement = document.getElementById('current-network-license-user');
+
+	if (statusElement) {
+		statusElement.textContent = data.status;
+		statusElement.className = data.is_authenticated
+			? 'maxi-license-active'
+			: 'maxi-license-inactive';
+	}
+
+	if (userElement) {
+		userElement.textContent = data.user_name;
+	}
+}
+
+/**
+ * Validate email format
+ */
+function isValidEmail(email) {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+}
+
+/**
+ * Show regular site license message (fallback for existing functionality)
+ */
+function showMessage(message, type) {
+	const messageDiv = document.getElementById(
+		'maxi-license-validation-message'
+	);
+	if (!messageDiv) {
+		console.error(message);
+		return;
+	}
+
+	messageDiv.style.display = 'block';
+	messageDiv.textContent = message;
+	messageDiv.className = `maxi-license-message maxi-license-${type}`;
+
+	// Auto-hide success messages
+	if (type === 'success') {
+		setTimeout(() => {
+			messageDiv.style.display = 'none';
+		}, 5000);
+	}
+}

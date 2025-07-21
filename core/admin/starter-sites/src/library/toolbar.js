@@ -67,8 +67,10 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 		return { success: false, valid: false, error: 'Configuration error' };
 	}
 
-	// Get plugin version from global settings
-	const pluginVersion = window.maxiLicenseSettings?.pluginVersion || '';
+	// Get plugin version and multisite info from global settings
+	const licenseSettings = window.maxiLicenseSettings || {};
+	const pluginVersion = licenseSettings.pluginVersion || '';
+	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {
 		console.log(
@@ -77,6 +79,7 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 				purchaseCode,
 				domain,
 				pluginVersion,
+				isMultisite,
 			})
 		);
 
@@ -90,6 +93,7 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 				purchase_code: purchaseCode,
 				domain,
 				plugin_version: pluginVersion,
+				multisite: isMultisite,
 			}),
 		});
 
@@ -164,6 +168,11 @@ const LibraryToolbar = ({
 	const [clickCount, setClickCount] = useState(0);
 	const [emailNotValid, setEmailNotValid] = useState(showNotValidEmail);
 	const [isVerifying, setIsVerifying] = useState(false);
+
+	// Check for network license status
+	const licenseSettings = window.maxiLicenseSettings || {};
+	const { isMultisite, hasNetworkLicense } = licenseSettings;
+	const isNetworkLicenseActive = isMultisite && hasNetworkLicense;
 
 	if (isLoading) {
 		return (
@@ -295,21 +304,37 @@ const LibraryToolbar = ({
 											: '******@***.***'
 										: userName}
 								</span>
+								{isNetworkLicenseActive && (
+									<span className='maxi-network-license-notice'>
+										{' '}
+										Visit the{' '}
+										<a
+											href='/wp-admin/network/admin.php?page=maxi-blocks-dashboard'
+											target='_blank'
+											rel='noopener noreferrer'
+										>
+											Network License page
+										</a>{' '}
+										to manage.
+									</span>
+								)}
 							</h5>
-							<Button
-								key='maxi-cloud-toolbar__button__sing-out'
-								className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-								label={__('Deactivate Pro', 'maxi-blocks')}
-								onClick={() => {
-									onLogOut(true);
-									onLogOut();
-								}}
-								disabled={isLoading}
-							>
-								{isLoading
-									? __('Please wait...', 'maxi-blocks')
-									: __('Deactivate Pro', 'maxi-blocks')}
-							</Button>
+							{!isNetworkLicenseActive && (
+								<Button
+									key='maxi-cloud-toolbar__button__sing-out'
+									className='maxi-cloud-container__patterns__top-menu__button-go-pro'
+									label={__('Deactivate Pro', 'maxi-blocks')}
+									onClick={() => {
+										onLogOut(true);
+										onLogOut();
+									}}
+									disabled={isLoading}
+								>
+									{isLoading
+										? __('Please wait...', 'maxi-blocks')
+										: __('Deactivate Pro', 'maxi-blocks')}
+								</Button>
+							)}
 						</div>
 					)}
 					{!isMaxiProActive && userName && isMaxiProExpired && (
@@ -362,47 +387,77 @@ const LibraryToolbar = ({
 					)}
 					{type === 'starter-sites' && !isMaxiProActive && !userName && (
 						<div className='maxi-cloud-toolbar__sign-in'>
-							<div className='maxi-cloud-container__patterns__top-menu__input'>
-								<TextControl
-									placeholder={__(
-										'Pro user email / purchase code / license key',
-										'maxi-blocks'
-									)}
-									value={userEmail}
-									onChange={value => setUserEmail(value)}
-								/>
-								{emailNotValid && (
-									<span>
+							{isNetworkLicenseActive ? (
+								<div className='maxi-cloud-toolbar__network-license-info'>
+									<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 										{__(
-											'The email is not valid',
+											'✓ Active: Network License',
 											'maxi-blocks'
+										)}{' '}
+										Visit the{' '}
+										<a
+											href='/wp-admin/network/admin.php?page=maxi-blocks-dashboard'
+											target='_blank'
+											rel='noopener noreferrer'
+										>
+											Network License page
+										</a>{' '}
+										to manage.
+									</h5>
+								</div>
+							) : (
+								<>
+									<div className='maxi-cloud-container__patterns__top-menu__input'>
+										<TextControl
+											placeholder={__(
+												'Pro user email / purchase code / license key',
+												'maxi-blocks'
+											)}
+											value={userEmail}
+											onChange={value =>
+												setUserEmail(value)
+											}
+										/>
+										{emailNotValid && (
+											<span>
+												{__(
+													'The email is not valid',
+													'maxi-blocks'
+												)}
+											</span>
 										)}
-									</span>
-								)}
-								{showAuthError && (
-									<span>
-										{__(
-											'Authentication failed. Please check your credentials.',
-											'maxi-blocks'
+										{showAuthError && (
+											<span>
+												{__(
+													'Authentication failed. Please check your credentials.',
+													'maxi-blocks'
+												)}
+											</span>
 										)}
-									</span>
-								)}
-							</div>
-							<Button
-								key='maxi-cloud-toolbar__button__connect'
-								className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
-								label={
-									isVerifying
-										? __('Verifying…', 'maxi-blocks')
-										: __('Activate Pro', 'maxi-blocks')
-								}
-								onClick={() => onClickAuth()}
-								disabled={isVerifying}
-							>
-								{isVerifying
-									? __('Verifying…', 'maxi-blocks')
-									: __('Activate Pro', 'maxi-blocks')}
-							</Button>
+									</div>
+									<Button
+										key='maxi-cloud-toolbar__button__connect'
+										className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
+										label={
+											isVerifying
+												? __(
+														'Verifying…',
+														'maxi-blocks'
+												  )
+												: __(
+														'Activate Pro',
+														'maxi-blocks'
+												  )
+										}
+										onClick={() => onClickAuth()}
+										disabled={isVerifying}
+									>
+										{isVerifying
+											? __('Verifying…', 'maxi-blocks')
+											: __('Activate Pro', 'maxi-blocks')}
+									</Button>
+								</>
+							)}
 						</div>
 					)}
 					<a

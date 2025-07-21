@@ -162,14 +162,31 @@ const MaxiModal = props => {
 	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
 	const [showAuthError, setShowAuthError] = useState(false);
 
-	// Update state when store data changes
+	// Update state when store data changes or when modal opens
 	useEffect(() => {
 		if (hasProData) {
 			setIsMaxiProActive(isProSubActive());
 			setIsMaxiProExpired(isProSubExpired());
 			setUserName(getUserName());
 		}
-	}, [proStatus, hasProData, type]);
+	}, [proStatus, hasProData, type, isOpen]);
+
+	// Additional check for network license when modal opens
+	useEffect(() => {
+		if (isOpen) {
+			const licenseSettings = window.maxiLicenseSettings || {};
+			if (
+				licenseSettings.isMultisite &&
+				licenseSettings.hasNetworkLicense
+			) {
+				setIsMaxiProActive(true);
+				setIsMaxiProExpired(false);
+				setUserName(
+					licenseSettings.networkLicenseName || 'Marketplace'
+				);
+			}
+		}
+	}, [isOpen]);
 
 	const onClickConnect = async email => {
 		const isValid = isValidEmail(email);

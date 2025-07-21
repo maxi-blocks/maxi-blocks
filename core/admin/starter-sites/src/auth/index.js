@@ -218,7 +218,13 @@ const getProInfoByEmail = () => {
 };
 
 export const isProSubActive = () => {
-	// Check purchase code auth first - it takes priority
+	// Check for network license first (multisite)
+	const licenseSettings = window.maxiLicenseSettings || {};
+	if (licenseSettings.isMultisite && licenseSettings.hasNetworkLicense) {
+		return true;
+	}
+
+	// Check purchase code auth - it takes priority over email
 	if (isPurchaseCodeActive()) {
 		return true;
 	}
@@ -252,6 +258,12 @@ export const isProSubExpired = () => {
 };
 
 export const getUserName = () => {
+	// Check for network license first (multisite)
+	const licenseSettings = window.maxiLicenseSettings || {};
+	if (licenseSettings.isMultisite && licenseSettings.hasNetworkLicense) {
+		return licenseSettings.networkLicenseName || 'Marketplace';
+	}
+
 	// Check purchase code auth first - it takes priority
 	const purchaseCodeName = getPurchaseCodeUserName();
 	if (purchaseCodeName) {
@@ -548,13 +560,16 @@ const deactivatePurchaseCode = async (
 	// Replace 'verify' with 'deactivate' in the URL
 	const deactivateUrl = middlewareUrl.replace('/verify', '/deactivate');
 
-	// Get plugin version from global settings
-	const pluginVersion = window.maxiLicenseSettings?.pluginVersion || '';
+	// Get plugin version and multisite info from global settings
+	const licenseSettings = window.maxiLicenseSettings || {};
+	const pluginVersion = licenseSettings.pluginVersion || '';
+	const isMultisite = licenseSettings.isMultisite || false;
 
 	const requestBody = {
 		domain,
 		reason,
 		plugin_version: pluginVersion,
+		multisite: isMultisite,
 	};
 
 	// Only include purchase code if it's provided
@@ -674,8 +689,10 @@ const migratePurchaseCodeDomain = async (
 		return { success: false, valid: false, error: 'Configuration error' };
 	}
 
-	// Get plugin version from global settings
-	const pluginVersion = window.maxiLicenseSettings?.pluginVersion || '';
+	// Get plugin version and multisite info from global settings
+	const licenseSettings = window.maxiLicenseSettings || {};
+	const pluginVersion = licenseSettings.pluginVersion || '';
+	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {
 		const response = await fetch(middlewareUrl, {
@@ -689,6 +706,7 @@ const migratePurchaseCodeDomain = async (
 				old_domain: oldDomain,
 				new_domain: newDomain,
 				plugin_version: pluginVersion,
+				multisite: isMultisite,
 			}),
 		});
 

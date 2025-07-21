@@ -1897,6 +1897,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 				.maxi-username:hover {
 					cursor: pointer;
 				}
+				.maxi-network-license-notice {
+					a {
+						color: var(--maxi-cloud-primary);
+						transition: all 0.4s ease;
+						&:hover {
+							color: var(--maxi-grey-dark);
+						}
+					}
+				}
 			}
 			&__input {
 				width: 300px;

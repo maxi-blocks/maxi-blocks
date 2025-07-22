@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'https://maxi2025.staging.maxiblocks.com/middleware/verify'); // TODO: change to production URL
+define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'https://my.maxiblocks.com/middleware/verify'); // TODO: change to production URL
 define('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY', '4d8af9b4d6f221cf7a41271cb7b82c92'); // TODO: change to production key
 
 if (!class_exists('MaxiBlocks_Dashboard')):
@@ -615,6 +615,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         public function maxi_network_config_page()
         {
+            // Enqueue network admin scripts
+            $this->maxi_network_admin_scripts_styles();
+
             // Get current network license status
             $network_license_info = $this->get_network_license_info();
             $is_network_active = $network_license_info !== false;
@@ -772,8 +775,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         /**
          * Enqueue scripts and styles for network admin
          */
-        public function maxi_network_admin_scripts_styles()
+        public function maxi_network_admin_scripts_styles($hook_suffix = '')
         {
+
             // Call regular admin scripts for network admin
             $this->maxi_admin_scripts_styles();
 
@@ -782,7 +786,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             wp_localize_script('maxi-admin', 'maxiNetworkLicenseSettings', [
                 'middlewareUrl' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '',
                 'middlewareKey' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '',
-                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'ajaxUrl' => admin_url('admin-ajax.php'), // AJAX URLs work the same in network admin
                 'nonce' => wp_create_nonce('maxi_network_license_validation'),
                 'currentDomain' => $this->get_main_site_domain(),
                 'pluginVersion' => MAXI_PLUGIN_VERSION,
@@ -2770,8 +2774,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                     // If domain has changed and we have a purchase code
                     if (!empty($stored_domain) && !empty($purchase_code) && $stored_domain !== $current_domain) {
-                        error_log(__('MaxiBlocks: Network domain change detected. Old: ', 'maxi-blocks') . $stored_domain . __(' New: ', 'maxi-blocks') . $current_domain);
-
                         // Attempt domain migration
                         $migration_result = $this->migrate_purchase_code_domain($purchase_code, $stored_domain, $current_domain);
 
@@ -2787,7 +2789,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                             }
 
                             update_site_option('maxi_pro_network', wp_json_encode($license_array));
-                            error_log(__('MaxiBlocks: Network domain migration successful for purchase code: ', 'maxi-blocks') . $purchase_code);
                         } else {
                             error_log(__('MaxiBlocks: Network domain migration failed for purchase code: ', 'maxi-blocks') . $purchase_code . ' - ' . wp_json_encode($migration_result));
                         }
@@ -2822,8 +2823,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                     // If domain has changed and we have a purchase code
                     if (!empty($stored_domain) && !empty($purchase_code) && $stored_domain !== $current_domain) {
-                        error_log(__('MaxiBlocks: Site domain change detected. Old: ', 'maxi-blocks') . $stored_domain . __(' New: ', 'maxi-blocks') . $current_domain);
-
                         // Attempt domain migration
                         $migration_result = $this->migrate_purchase_code_domain($purchase_code, $stored_domain, $current_domain);
 
@@ -2839,7 +2838,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                             }
 
                             update_option('maxi_pro', wp_json_encode($license_array));
-                            error_log(__('MaxiBlocks: Site domain migration successful for purchase code: ', 'maxi-blocks') . $purchase_code);
                         } else {
                             error_log(__('MaxiBlocks: Site domain migration failed for purchase code: ', 'maxi-blocks') . $purchase_code . ' - ' . wp_json_encode($migration_result));
                         }
@@ -3453,7 +3451,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 return;
             }
 
-            $input_value = sanitize_text_field($_POST['license_input']);
+            $input_value = isset($_POST['license_input']) ? sanitize_text_field($_POST['license_input']) : '';
             $action = sanitize_text_field($_POST['license_action']);
 
             if ($action === 'logout') {

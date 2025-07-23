@@ -112,14 +112,6 @@ const Main = ({ type, isQuickStart }) => {
 		setShowNotValidEmail(false);
 		setShowAuthError(false);
 
-		console.log(
-			JSON.stringify({
-				message: 'Processing purchase code result',
-				purchaseCode,
-				result,
-			})
-		);
-
 		if (result.success && result.valid) {
 			try {
 				// Process successful verification
@@ -135,13 +127,6 @@ const Main = ({ type, isQuickStart }) => {
 				setIsMaxiProActive(isProSubActive());
 				setIsMaxiProExpired(isProSubExpired());
 				setUserName(getUserName());
-
-				console.log(
-					JSON.stringify({
-						message: 'Purchase code activation successful',
-						purchaseCode,
-					})
-				);
 
 				// Store the modal state before reload
 				if (isQuickStart) {
@@ -159,7 +144,7 @@ const Main = ({ type, isQuickStart }) => {
 			}
 		} else {
 			// Show error for invalid purchase code
-			console.log(
+			console.error(
 				JSON.stringify({
 					message: 'Purchase code verification failed',
 					purchaseCode,

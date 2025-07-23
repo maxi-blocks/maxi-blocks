@@ -166,6 +166,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                         'hasNetworkLicense' => is_multisite() ? $dashboard->has_network_license() : false,
                         'networkLicenseName' => $network_license_info ? $network_license_info['user_name'] : '',
                         'isNetworkAdmin' => false,
+                        'networkAdminUrl' => network_admin_url('admin.php?page=maxi-blocks-dashboard'),
                     ]);
                 }
             }

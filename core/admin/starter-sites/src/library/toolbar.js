@@ -286,7 +286,10 @@ const LibraryToolbar = ({
 										{' '}
 										Visit the{' '}
 										<a
-											href='/wp-admin/network/admin.php?page=maxi-blocks-dashboard'
+											href={
+												licenseSettings.networkAdminUrl ||
+												'/wp-admin/network/admin.php?page=maxi-blocks-dashboard'
+											}
 											target='_blank'
 											rel='noopener noreferrer'
 										>
@@ -373,7 +376,10 @@ const LibraryToolbar = ({
 										)}{' '}
 										Visit the{' '}
 										<a
-											href='/wp-admin/network/admin.php?page=maxi-blocks-dashboard'
+											href={
+												licenseSettings.networkAdminUrl ||
+												'/wp-admin/network/admin.php?page=maxi-blocks-dashboard'
+											}
 											target='_blank'
 											rel='noopener noreferrer'
 										>

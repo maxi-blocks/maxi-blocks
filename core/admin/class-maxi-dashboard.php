@@ -273,6 +273,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'hasNetworkLicense' => $this->has_network_license(),
                     'networkLicenseName' => $network_license_info ? $network_license_info['user_name'] : '',
                     'isNetworkAdmin' => false,
+                    'networkAdminUrl' => network_admin_url('admin.php?page=maxi-blocks-dashboard'),
                 ]);
             }
         }
@@ -1672,6 +1673,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'hasNetworkLicense' => $this->has_network_license(),
                 'networkLicenseName' => $network_license_info ? $network_license_info['user_name'] : '',
                 'isNetworkAdmin' => false,
+                'networkAdminUrl' => network_admin_url('admin.php?page=maxi-blocks-dashboard'),
             ]);
         }
 

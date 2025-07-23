@@ -74,32 +74,34 @@ const CloudPlaceholder = forwardRef((props, ref) => {
  * SVG Icon Placeholder
  */
 const SVGIconPlaceholder = forwardRef((props, ref) => {
-	const { clientId, onClick } = props;
+	const { uniqueID, clientId, onClick } = props;
 
-	const { isBlockSmall, isBlockSmaller } = useObserveBlockSize(ref, true);
+	const { isBlockSmall, isBlockSmaller } = useObserveBlockSize(ref);
 
 	return (
-		<Button
-			key={`maxi-svg-icon-library__modal-button--${clientId}`}
-			isPrimary
+		<div
 			className={classNames(
-				'maxi-svg-icon-library__modal-button__placeholder',
-				isBlockSmall &&
-					'maxi-svg-icon-library__modal-button__placeholder--small',
-				isBlockSmaller &&
-					'maxi-svg-icon-library__modal-button__placeholder--smaller'
+				'maxi-svg-icon-block__placeholder',
+				isBlockSmall && 'maxi-svg-icon-block__placeholder--small',
+				isBlockSmaller && 'maxi-svg-icon-block__placeholder--smaller'
 			)}
-			onClick={onClick}
+			key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
 		>
-			<Icon
-				className='maxi-library-block__select__icon'
-				icon={selectIcon}
-			/>
-			{!isBlockSmall && __('Cloud library', 'maxi-blocks')}
-		</Button>
+			<Button
+				isPrimary
+				key={`maxi-block-library__modal-button--${clientId}`}
+				className='maxi-block-library__modal-button'
+				onClick={onClick}
+			>
+				<Icon
+					className='maxi-icon-block__select__icon'
+					icon={selectIcon}
+				/>
+				{!isBlockSmall && __('Select icon', 'maxi-blocks')}
+			</Button>
+		</div>
 	);
 });
-
 /**
  * Layout modal window with tab panel.
  */
@@ -440,6 +442,73 @@ const MaxiModal = props => {
 					</div>
 				)}
 			</div>
+			{type === 'button-icon' && !isEmpty(icon) && (
+				<div className='maxi-library-modal__action-section__preview'>
+					<Icon
+						className='maxi-library-modal__action-section__preview--remove'
+						icon={remove}
+						onClick={() =>
+							onRemove({
+								'icon-content': '',
+								'icon-only': false,
+							})
+						}
+					/>
+					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
+						{icon}
+					</RawHTML>
+				</div>
+			)}
+			{(type === 'navigation-icon' || type === 'search-icon') &&
+				!isEmpty(icon) && (
+					<div className='maxi-library-modal__action-section__preview'>
+						<Icon
+							className='maxi-library-modal__action-section__preview--remove'
+							icon={remove}
+							onClick={() =>
+								onRemove({
+									[`${prefix}icon-content`]: '',
+								})
+							}
+						/>
+						<RawHTML className='maxi-library-modal__action-section__preview__icon'>
+							{icon}
+						</RawHTML>
+					</div>
+				)}
+			{type === 'bg-shape' && !isEmpty(icon) && (
+				<div className='maxi-library-modal__action-section__preview'>
+					<Icon
+						className='maxi-library-modal__action-section__preview--remove'
+						icon={remove}
+						onClick={() => {
+							onRemove({
+								'background-svg-SVGElement': '',
+							});
+						}}
+					/>
+					<RawHTML className='maxi-library-modal__action-section__preview__shape'>
+						{icon}
+					</RawHTML>
+				</div>
+			)}
+			{type === 'image-shape' && !isEmpty(icon) && (
+				<div className='maxi-library-modal__action-section__preview'>
+					<Icon
+						className='maxi-library-modal__action-section__preview--remove'
+						icon={remove}
+						onClick={() =>
+							onRemove({
+								SVGElement: '',
+								SVGData: {},
+							})
+						}
+					/>
+					<RawHTML className='maxi-library-modal__action-section__preview__shape'>
+						{icon}
+					</RawHTML>
+				</div>
+			)}
 			{type.includes('video-icon') && !isEmpty(icon) && (
 				<div className='maxi-library-modal__action-section__preview'>
 					<Icon

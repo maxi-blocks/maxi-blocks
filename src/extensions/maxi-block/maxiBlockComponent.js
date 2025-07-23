@@ -1354,10 +1354,7 @@ class MaxiBlockComponent extends Component {
 			return;
 		}
 
-		editorWrapper.setAttribute(
-			'maxi-blocks-responsive',
-			currentBreakpoint === 's' ? 's' : 'xs'
-		);
+		editorWrapper.setAttribute('maxi-blocks-responsive', currentBreakpoint);
 	}
 
 	copyFontsToIframe(iframeDocument, iframe) {
@@ -1643,20 +1640,16 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	// Add this new method to handle responsive class updates
 	updateResponsiveClasses(iframe, currentBreakpoint) {
 		const target = iframe?.contentDocument?.body || document.body;
-		const { isPreview } = this.getPreviewElements(target);
 
-		if (!isPreview) {
-			return;
-		}
-
-		const editorWrapper = target.querySelector('.editor-styles-wrapper');
+		const editorWrapper = target.classList.contains('editor-styles-wrapper')
+			? target
+			: target.querySelector('.editor-styles-wrapper');
 		if (editorWrapper) {
 			editorWrapper.setAttribute(
 				'maxi-blocks-responsive',
-				currentBreakpoint === 's' ? 's' : 'xs'
+				currentBreakpoint
 			);
 		}
 	}

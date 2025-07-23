@@ -3,8 +3,8 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'https://my.maxiblocks.com/middleware/verify'); // TODO: change to production URL
-define('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY', '4d8af9b4d6f221cf7a41271cb7b82c92'); // TODO: change to production key
+define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'https://my.maxiblocks.com/middleware/verify');
+define('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY', '4d8af9b4d6f221cf7a41271cb7b82c92');
 
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard

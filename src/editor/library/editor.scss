@@ -2652,6 +2652,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 	}
 }
 
+@media only screen and (min-height: 1450px) {
+	.maxi-library-modal {
+		min-height: 80%;
+	}
+}
+
 /*******************************
 * RTL
 *******************************/

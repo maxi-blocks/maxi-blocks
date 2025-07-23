@@ -97,6 +97,7 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 				plugin_version: pluginVersion,
 				multisite: isMultisite,
 			}),
+			signal: AbortSignal.timeout(5000), // 5 second timeout to prevent UI hanging
 		});
 
 		if (!response.ok) {

@@ -2954,9 +2954,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         private function get_admin_path()
         {
-            // Match the JavaScript getPathToAdmin() function
-            // which returns path without trailing slash
-            return '/wp-admin';
+            // Use WordPress's proper admin_url() function and extract path
+            $admin_url = admin_url();
+            $parsed = parse_url($admin_url);
+            return rtrim($parsed['path'], '/'); // Remove trailing slash to match JS function
         }
 
         /**

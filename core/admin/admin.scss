@@ -1144,7 +1144,7 @@ body.site-editor-php
 		}
 	}
 }
-@media only screen and (max-width: 1593px) {
+@media only screen and (max-width: 1710px) {
 	.nav-tab-wrapper {
 		padding: 12px 5px 10px !important;
 		display: flex;
@@ -1181,6 +1181,10 @@ body.site-editor-php
 		max-width: 95% !important;
 		margin: 0 auto;
 		padding-bottom: 60px;
+	}
+
+	.maxi-dashboard_nav-tab {
+		font-size: 16px !important;
 	}
 }
 @media only screen and (max-width: 1400px) {
@@ -1257,8 +1261,8 @@ body.site-editor-php
 	}
 
 	.maxi-dashboard_nav-tab {
-		font-size: clamp(14px, 1.2vw, 16px) !important;
-		padding: clamp(6px, 0.5vw, 8px) clamp(10px, 1vw, 15px) !important;
+		font-size: 13px !important;
+		padding: 10px !important;
 		text-align: center !important;
 		white-space: nowrap !important;
 	}
@@ -1279,6 +1283,38 @@ body.site-editor-php
 
 	.maxi-dashboard_header-icons {
 		display: none !important;
+	}
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main-content
+		h1 {
+		font-size: 32px !important;
+	}
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main-content-settings {
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main:has(.maxi-dashboard_main-content-settings),
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main:has(.maxi-dashboard_main-content-maxi-ai) {
+		padding-bottom: 15px;
+	}
+	.maxi-dashboard_main-content-license input {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main-content-pro-library {
+		padding-top: 20px !important;
+	}
+	.maxi-dashboard_main-content-start .welcome-header {
+		margin-bottom: 0;
 	}
 }
 @media only screen and (max-width: 1124px) {
@@ -1346,8 +1382,7 @@ body.site-editor-php
 	}
 
 	.maxi-dashboard_nav-tab {
-		font-size: clamp(14px, 1.2vw, 16px) !important;
-		padding: clamp(4px, 0.6vw, 6px) clamp(8px, 1vw, 12px) !important;
+		padding: 10px !important;
 		white-space: nowrap !important;
 	}
 
@@ -1513,6 +1548,10 @@ body.site-editor-php
 		display: block;
 		max-width: 95%;
 	}
+}
+
+p.maxi-license-help-text {
+	margin-top: 10px !important;
 }
 
 @media only screen and (max-width: 767px) {

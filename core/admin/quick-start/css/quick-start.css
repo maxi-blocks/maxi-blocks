@@ -805,7 +805,7 @@ select[name="permalink_structure"]:focus {
 }
 
 /* New styles for custom input */
-#dashboard_system_report input[type="text"],
+#dashboard_system_report input[type="text"]:not(.maxi-text-control__input-starter-sites),
 #dashboard_system_report input[type="password"],
 #dashboard_system_report input[type="color"],
 #dashboard_system_report input[type="date"],

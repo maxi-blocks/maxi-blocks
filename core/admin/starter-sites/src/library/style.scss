@@ -95,8 +95,8 @@
 	&.modal-open {
 		.maxi-cloud-toolbar__sign-in {
 			input.maxi-text-control__input {
-				height: 33px !important;
-				margin-top: 25px;
+				height: 30px !important;
+				margin-top: 11px;
 			}
 		}
 	}
@@ -1768,6 +1768,7 @@
 				font-size: 13px;
 				font-weight: 400;
 				cursor: pointer;
+				border-radius: 30px;
 				&:hover {
 					background-color: var(--maxi-cloud-primary);
 					color: var(--maxi-white);
@@ -1815,12 +1816,13 @@
 				}
 				span {
 					position: absolute;
-					bottom: -14px;
-					padding: 5px;
+					padding: 0 5px;
 					color: var(--maxi-cloud-primary);
 					background: var(--maxi-white);
 					font-style: italic;
 					font-size: 12px;
+					margin-top: -5px;
+					z-index: 10000;
 				}
 			}
 		}

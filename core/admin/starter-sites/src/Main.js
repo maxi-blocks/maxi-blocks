@@ -132,9 +132,6 @@ const Main = ({ type, isQuickStart }) => {
 				if (isQuickStart) {
 					localStorage.setItem('maxiStarterSitesModalOpen', 'true');
 				}
-
-				// Reload to refresh the entire interface
-				window.location.reload();
 			} catch (error) {
 				console.error(
 					'Error processing purchase code activation:',

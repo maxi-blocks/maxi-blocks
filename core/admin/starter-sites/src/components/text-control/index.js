@@ -54,7 +54,7 @@ export default function TextControl({
 
 	return (
 		<BaseControl
-					__nextHasNoMarginBottom
+			__nextHasNoMarginBottom
 			label={label}
 			hideLabelFromVision={hideLabelFromVision}
 			id={id}
@@ -71,7 +71,7 @@ export default function TextControl({
 			)}
 			{showHelpContent && helpContent}
 			<TextInput
-				className='maxi-text-control__input'
+				className='maxi-text-control__input maxi-text-control__input-starter-sites'
 				type={type}
 				id={id}
 				value={value || ''}

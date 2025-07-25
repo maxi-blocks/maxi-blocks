@@ -3,14 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
-import { useInstanceId } from '@wordpress/compose';
+import { useInstanceId, useDebounce } from '@wordpress/compose';
 import { useEffect, useState, useRef } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNumber, merge, trim, debounce } from 'lodash';
+import { isEmpty, isNumber, merge, trim } from 'lodash';
 
 /**
  * Internal dependencies
@@ -93,6 +93,8 @@ const AdvancedNumberControl = props => {
 		defaultValue = '',
 		value,
 		onChangeValue,
+		onChangeInline,
+		cleanInline,
 		disableReset = false,
 		disableRange = false,
 		enableAuto = false,
@@ -193,13 +195,16 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	const handleChange = debounce(() => {
+	const handleChange = useDebounce(() => {
 		if (onChangeValue) {
 			const val =
 				latestValueRef.current === '' || optionType === 'string'
 					? latestValueRef.current.toString()
 					: +latestValueRef.current;
 			onChangeValue(val);
+		}
+		if (cleanInline) {
+			cleanInline();
 		}
 	}, 300);
 
@@ -226,7 +231,16 @@ const AdvancedNumberControl = props => {
 		latestValueRef.current =
 			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
-		handleChange(result);
+
+		if (onChangeInline) {
+			const val =
+				result === '' || optionType === 'string'
+					? result.toString()
+					: +result;
+			onChangeInline(val, unit);
+		}
+
+		handleChange(onChangeValue, latestValueRef, cleanInline, optionType);
 	};
 
 	const rawPreferredValues = [
@@ -354,7 +368,17 @@ const AdvancedNumberControl = props => {
 										: +val;
 								setCurrentValue(result);
 								latestValueRef.current = result;
-								onChangeValue(result);
+
+								if (onChangeInline) {
+									onChangeInline(result, unit);
+								}
+
+								handleChange(
+									onChangeValue,
+									latestValueRef,
+									cleanInline,
+									optionType
+								);
 							}}
 							min={enableUnit ? minValueRange : min}
 							max={maxRange || (enableUnit ? maxValueRange : max)}

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, camelCase } from 'lodash';
 
 const modifyStyleElement = (styleElement, modifiedTarget, styleObj) => {
 	styleElement.innerHTML = `${modifiedTarget} { ${Object.entries(
@@ -12,7 +12,7 @@ const modifyStyleElement = (styleElement, modifiedTarget, styleObj) => {
 };
 
 const normalizeTarget = target =>
-	target.replaceAll('>', match => `:scope ${match}`);
+	target.replace('>', match => `:scope ${match}`);
 
 const handleInsertInlineStyles = ({
 	styleObj,
@@ -60,7 +60,7 @@ const handleInsertInlineStyles = ({
 			}
 		} else {
 			Object.entries(styleObj).forEach(([key, val]) => {
-				targetElement.style[key] = val;
+				targetElement.style[camelCase(key)] = val;
 			});
 
 			targetElement.style.transition = 'none';

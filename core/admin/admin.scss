@@ -1144,7 +1144,7 @@ body.site-editor-php
 		}
 	}
 }
-@media only screen and (max-width: 1593px) {
+@media only screen and (max-width: 1710px) {
 	.nav-tab-wrapper {
 		padding: 12px 5px 10px !important;
 		display: flex;
@@ -1181,6 +1181,10 @@ body.site-editor-php
 		max-width: 95% !important;
 		margin: 0 auto;
 		padding-bottom: 60px;
+	}
+
+	.maxi-dashboard_nav-tab {
+		font-size: 16px !important;
 	}
 }
 @media only screen and (max-width: 1400px) {
@@ -1257,8 +1261,8 @@ body.site-editor-php
 	}
 
 	.maxi-dashboard_nav-tab {
-		font-size: clamp(14px, 1.2vw, 16px) !important;
-		padding: clamp(6px, 0.5vw, 8px) clamp(10px, 1vw, 15px) !important;
+		font-size: 13px !important;
+		padding: 10px !important;
 		text-align: center !important;
 		white-space: nowrap !important;
 	}
@@ -1279,6 +1283,38 @@ body.site-editor-php
 
 	.maxi-dashboard_header-icons {
 		display: none !important;
+	}
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main-content
+		h1 {
+		font-size: 32px !important;
+	}
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main-content-settings {
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main:has(.maxi-dashboard_main-content-settings),
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main:has(.maxi-dashboard_main-content-maxi-ai) {
+		padding-bottom: 15px;
+	}
+	.maxi-dashboard_main-content-license input {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+	body.toplevel_page_maxi-blocks-dashboard
+		.maxi-dashboard_form
+		.maxi-dashboard_main-content-pro-library {
+		padding-top: 20px !important;
+	}
+	.maxi-dashboard_main-content-start .welcome-header {
+		margin-bottom: 0;
 	}
 }
 @media only screen and (max-width: 1124px) {
@@ -1346,8 +1382,7 @@ body.site-editor-php
 	}
 
 	.maxi-dashboard_nav-tab {
-		font-size: clamp(14px, 1.2vw, 16px) !important;
-		padding: clamp(4px, 0.6vw, 6px) clamp(8px, 1vw, 12px) !important;
+		padding: 10px !important;
 		white-space: nowrap !important;
 	}
 
@@ -1402,6 +1437,132 @@ body.site-editor-php
 		.maxi-dashboard_header-actions {
 			flex-direction: column;
 			gap: 16px;
+		}
+	}
+}
+
+// License page styles
+.maxi-dashboard_main-content-license {
+	.maxi-license-status-display {
+		margin: 20px 0;
+
+		h4 {
+			margin: 8px 0;
+			font-size: 16px;
+			color: var(--maxi-admin-black-text);
+
+			span {
+				font-weight: 600;
+				color: var(--maxi-admin-black);
+			}
+		}
+	}
+
+	.maxi-license-actions {
+		margin: 20px 0;
+	}
+
+	.maxi-license-auth-form {
+		h4 {
+			margin: 0 0 8px 0;
+			font-size: 16px;
+			font-weight: 600;
+			color: var(--maxi-admin-black);
+		}
+
+		p {
+			margin: 0 0 16px 0;
+			color: var(--maxi-admin-black-text);
+		}
+	}
+
+	.maxi-license-input-wrapper {
+		display: flex;
+		gap: 12px;
+		align-items: flex-start;
+		margin: 16px 0;
+		flex-direction: column;
+		justify-content: space-between;
+
+		input {
+			flex: 1;
+			padding: 8px 12px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			font-size: 14px;
+			width: 100%;
+
+			&:focus {
+				border-color: var(--maxi-admin-purple-hover);
+				outline: none;
+				box-shadow: 0 0 0 1px var(--maxi-admin-purple-hover);
+			}
+		}
+	}
+
+	.maxi-license-message {
+		padding: 12px 16px;
+		border-radius: 4px;
+		margin: 16px 0;
+		font-size: 14px;
+
+		&.success {
+			background: #d4edda;
+			color: #155724;
+			border: 1px solid #c3e6cb;
+		}
+
+		&.error {
+			background: #f8d7da;
+			color: #721c24;
+			border: 1px solid #f5c6cb;
+		}
+	}
+
+	button.button-primary {
+		background: var(--maxi-admin-black);
+		border: none;
+		border-radius: 26px;
+		padding: 9px 19px;
+		font-size: 14px;
+		font-weight: 700;
+		height: auto;
+		line-height: 1.6;
+		transition: background 0.4s ease, transform 0.2s ease,
+			-webkit-transform 0.2s ease;
+
+		&#maxi-validate-purchase-code {
+			margin-top: 0;
+		}
+
+		&:hover {
+			background: var(--maxi-admin-pink-hover);
+		}
+	}
+	input {
+		border-radius: 10px;
+		border: 2px solid var(--maxi-admin-border-light) !important;
+		padding: 10px;
+		box-sizing: border-box;
+		width: clamp(70vw, 100vw, 45vw);
+		display: block;
+		max-width: 95%;
+	}
+}
+
+p.maxi-license-help-text {
+	margin-top: 10px !important;
+}
+
+@media only screen and (max-width: 767px) {
+	.maxi-dashboard_main-content-license {
+		.maxi-license-input-wrapper {
+			flex-direction: column;
+			align-items: stretch;
+
+			button {
+				width: 100%;
+			}
 		}
 	}
 }

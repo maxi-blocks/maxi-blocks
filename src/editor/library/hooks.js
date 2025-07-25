@@ -27,10 +27,11 @@ const useObserveBlockSize = (ref, isCloudPlaceholder = false) => {
 		const elementToObserve = isCloudPlaceholder
 			? ref.current?.closest('.maxi-block-library__placeholder')
 			: ref.current;
-		resizeObserver.observe(elementToObserve);
+		if (resizeObserver && elementToObserve)
+			resizeObserver.observe(elementToObserve);
 
 		return () => {
-			resizeObserver.disconnect();
+			if (resizeObserver) resizeObserver.disconnect();
 		};
 	}, [ref, resizeObserver, isCloudPlaceholder]);
 

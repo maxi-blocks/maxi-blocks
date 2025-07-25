@@ -31,10 +31,13 @@ describe('Breadcrumbs', () => {
 			button => button.click()
 		);
 
-		// Add Group Maxi
-		await page.keyboard.type('group', { delay: 350 });
+		// Add Group Maxi - wait for inserter to be fully ready
+		await page.waitForTimeout(1000);
+		await page.keyboard.type('group', { delay: 200 });
+		await page.waitForTimeout(1500); // Longer wait for CI environments
 		await page.waitForSelector(
-			'.editor-block-list-item-maxi-blocks-group-maxi'
+			'.editor-block-list-item-maxi-blocks-group-maxi',
+			{ timeout: 15000 }
 		);
 		await page.$eval(
 			'.editor-block-list-item-maxi-blocks-group-maxi',
@@ -47,12 +50,21 @@ describe('Breadcrumbs', () => {
 			'.maxi-group-block .block-editor-button-block-appender',
 			button => button.click()
 		);
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(1000);
 
-		// Add Row Maxi
-		await page.keyboard.type('row', { delay: 350 });
+		// Add Row Maxi - clear any existing search and wait longer
+		await page.keyboard.press('Escape'); // Clear any existing search
+		await page.waitForTimeout(500);
+		await page.$eval(
+			'.maxi-group-block .block-editor-button-block-appender',
+			button => button.click()
+		);
+		await page.waitForTimeout(1000);
+		await page.keyboard.type('row', { delay: 200 });
+		await page.waitForTimeout(1500); // Longer wait for CI environments
 		await page.waitForSelector(
-			'.editor-block-list-item-maxi-blocks-row-maxi'
+			'.editor-block-list-item-maxi-blocks-row-maxi',
+			{ timeout: 20000 }
 		);
 		await page.$eval(
 			'.editor-block-list-item-maxi-blocks-row-maxi',
@@ -77,9 +89,8 @@ describe('Breadcrumbs', () => {
 			breadcrumbs => breadcrumbs.innerHTML.trim()
 		);
 
-		const regex = new RegExp(
-			/^<li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Container Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Row Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Column Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Group Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Row Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Column Maxi<\/span><\/li>$/gm
-		);
+		const regex =
+			/^<li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Container Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Row Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Column Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Group Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Row Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Column Maxi<\/span><\/li>$/gm;
 		const result = regex.test(breadCrumbsHTML);
 
 		expect(result).toBeTruthy();

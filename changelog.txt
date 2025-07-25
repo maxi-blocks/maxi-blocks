@@ -1,3 +1,10 @@
+_Updates 28 Jul 2025_
+MaxiBlocks v2.1.3
+* Update: Implemented enhanced authentication methods for marketplace integrations, providing improved access to Pro content.
+* Fix: Enhanced Advanced and Custom CSS settings to support special symbols and complex selectors, enabling more sophisticated styling capabilities and resolving compatibility issues with advanced CSS syntax.
+* Fix: Corrected responsive breakpoint width calculations for Site Editor when switching between template parts, ensuring consistent layout rendering and proper viewport behaviour across different editing contexts.
+* Fix: Resolved synchronization issues with synced pattern styles in Site Editor, ensuring that pattern modifications are properly reflected across all instances and maintaining design consistency throughout the editing experience.
+
 _Updates 30 Jun 2025_
 MaxiBlocks v2.1.2
 * Fix: Enhanced block tones and Cloud button functionality when 'Show template' is enabled in the Editor, ensuring consistent visual presentation and improved user experience.

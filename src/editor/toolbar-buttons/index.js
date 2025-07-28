@@ -51,6 +51,7 @@ wp.domReady(() => {
 	 */
 	let isMaxiToolbar = false;
 	let currentRoot = null;
+	let isReact18 = false;
 
 	const addMaxiToolbar = () => {
 		const maxiToolbar = document.querySelector(
@@ -76,21 +77,24 @@ wp.domReady(() => {
 				parentNode.appendChild(toolbarButtonsWrapper);
 			}
 
-			// Cleanup previous root if it exists
-			if (currentRoot) {
+			// Cleanup previous root if it exists (React 18 only)
+			if (currentRoot && isReact18) {
 				try {
 					currentRoot.unmount();
 				} catch (error) {
-					console.log('Error unmounting previous root:', error);
+					console.error('Error unmounting previous root:', error);
 				}
 			}
 
 			// check if createRoot is available (since React 18)
 			if (typeof createRoot === 'function') {
+				isReact18 = true;
 				currentRoot = createRoot(toolbarButtonsWrapper);
 				currentRoot.render(<ToolbarButtons />);
 			} else {
 				// for React 17 and below
+				isReact18 = false;
+				currentRoot = null;
 				render(<ToolbarButtons />, toolbarButtonsWrapper);
 			}
 
@@ -144,8 +148,15 @@ wp.domReady(() => {
 		}
 	});
 
-	// Start observing the document for changes to the toolbar
-	observer.observe(document.body, {
+	// Try to observe a more specific container if available for better performance
+	const observeTarget =
+		document.querySelector('.interface-interface-skeleton__editor') ||
+		document.querySelector('.edit-post-layout') ||
+		document.querySelector('.edit-site-layout') ||
+		document.body;
+
+	// Start observing the target element for changes to the toolbar
+	observer.observe(observeTarget, {
 		childList: true,
 		subtree: true,
 	});
@@ -154,7 +165,8 @@ wp.domReady(() => {
 	window.addEventListener('beforeunload', () => {
 		unsubscribe();
 		observer.disconnect();
-		if (currentRoot) {
+		// Only attempt to unmount if using React 18
+		if (currentRoot && isReact18) {
 			try {
 				currentRoot.unmount();
 			} catch (error) {

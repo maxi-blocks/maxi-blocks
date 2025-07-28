@@ -50,17 +50,9 @@ wp.domReady(() => {
 	 * - Hide original WP toolbar on selected MaxiBlocks
 	 */
 	let isMaxiToolbar = false;
+	let currentRoot = null;
 
-	const unsubscribe = subscribe(() => {
-		if (
-			// Resetting isMaxiToolbar if we are switching to a different template
-			getIsTemplatesListOpened() ||
-			!document.querySelector('#maxi-blocks__toolbar-buttons')
-		)
-			isMaxiToolbar = false;
-
-		if (isMaxiToolbar) return;
-
+	const addMaxiToolbar = () => {
 		const maxiToolbar = document.querySelector(
 			'#maxi-blocks__toolbar-buttons'
 		);
@@ -83,10 +75,20 @@ wp.domReady(() => {
 			} else {
 				parentNode.appendChild(toolbarButtonsWrapper);
 			}
+
+			// Cleanup previous root if it exists
+			if (currentRoot) {
+				try {
+					currentRoot.unmount();
+				} catch (error) {
+					console.log('Error unmounting previous root:', error);
+				}
+			}
+
 			// check if createRoot is available (since React 18)
 			if (typeof createRoot === 'function') {
-				const root = createRoot(toolbarButtonsWrapper);
-				root.render(<ToolbarButtons />);
+				currentRoot = createRoot(toolbarButtonsWrapper);
+				currentRoot.render(<ToolbarButtons />);
 			} else {
 				// for React 17 and below
 				render(<ToolbarButtons />, toolbarButtonsWrapper);
@@ -114,9 +116,49 @@ wp.domReady(() => {
 			}
 
 			isMaxiToolbar = true;
+		}
+	};
 
-			if (!getIsSiteEditor()) {
-				unsubscribe();
+	const unsubscribe = subscribe(() => {
+		if (
+			// Resetting isMaxiToolbar if we are switching to a different template
+			getIsTemplatesListOpened() ||
+			!document.querySelector('#maxi-blocks__toolbar-buttons')
+		)
+			isMaxiToolbar = false;
+
+		if (isMaxiToolbar) return;
+
+		addMaxiToolbar();
+	});
+
+	// Use MutationObserver to detect when the toolbar gets re-rendered
+	// This handles cases like editing reusable blocks where the parent node re-renders
+	const observer = new MutationObserver(() => {
+		const maxiToolbar = document.querySelector(
+			'#maxi-blocks__toolbar-buttons'
+		);
+		if (!maxiToolbar) {
+			isMaxiToolbar = false;
+			addMaxiToolbar();
+		}
+	});
+
+	// Start observing the document for changes to the toolbar
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true,
+	});
+
+	// Cleanup function for when the page unloads
+	window.addEventListener('beforeunload', () => {
+		unsubscribe();
+		observer.disconnect();
+		if (currentRoot) {
+			try {
+				currentRoot.unmount();
+			} catch (error) {
+				console.error('Error unmounting root on cleanup:', error);
 			}
 		}
 	});

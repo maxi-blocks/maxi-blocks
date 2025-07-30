@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
@@ -171,19 +172,6 @@ const MaxiToolbar = memo(
 		useEffect(() => {
 			setAnchorRef(ref.current);
 		}, [!!ref.current]);
-
-		// Hides original Gutenberg toolbar
-		useEffect(() => {
-			const originalToolbar = document.querySelector(
-				'.block-editor-block-contextual-toolbar'
-			);
-
-			if (originalToolbar) originalToolbar.style.display = 'none';
-
-			return () => {
-				if (originalToolbar) originalToolbar.style.display = 'block';
-			};
-		});
 
 		const breadcrumbStatus = () => {
 			const originalNestedBlocks = clientId

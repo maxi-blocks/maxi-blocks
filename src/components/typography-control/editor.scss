@@ -33,4 +33,115 @@
 			}
 		}
 	}
+
+	.maxi-typography-control__weight-size-row {
+		display: flex;
+		gap: 10px;
+		width: 100%;
+
+		> div {
+			flex: 1;
+			position: relative; /* For typography reset buttons */
+		}
+	}
+
+	/* Add top margin specifically to the Font Size control */
+	.maxi-typography-control__size {
+		margin-top: 3px !important;
+	}
+
+	/* Arrange spacing controls with better spacing */
+	.maxi-typography-control__spacing-controls {
+		margin-bottom: 15px !important;
+
+		/* First row: Line height and Bottom gap */
+		.maxi-typography-control__line-height,
+		.maxi-typography-control__bottom-gap {
+			display: inline-block !important;
+			width: calc(50% - 5px) !important;
+			vertical-align: top !important;
+			position: relative !important;
+		}
+
+		.maxi-typography-control__line-height {
+			margin-right: 10px !important;
+		}
+
+		/* Style spacing controls like Font Weight */
+		.maxi-base-control__field {
+			gap: 5px !important;
+		}
+
+		/* Make inputs wider for 2-column layout */
+		.maxi-advanced-number-control__value {
+			width: 70px !important;
+		}
+
+		/* Make unit selectors wider */
+		.maxi-dimensions-control__units select {
+			min-width: 50px !important;
+			max-width: 50px !important;
+			width: 50px !important;
+		}
+
+		/* Style labels like Font Weight - floating labels */
+		.maxi-base-control__label {
+			position: absolute !important;
+			top: -8px !important;
+			left: 8px !important;
+			font-size: 10px !important;
+			color: var(--maxi-grey-dark) !important;
+			font-style: normal !important;
+			background: var(--maxi-white) !important;
+			padding: 0 5px !important;
+			pointer-events: none !important;
+			box-sizing: border-box !important;
+			-webkit-box-sizing: border-box !important;
+			z-index: 10 !important;
+		}
+	}
+
+	/* Ensure typography controls have relative positioning for reset buttons */
+	.maxi-typography-control__weight,
+	.maxi-typography-control__size {
+		position: relative !important;
+
+		.maxi-base-control {
+			position: relative;
+		}
+
+		/* Specific positioning for Font Size unit reset button */
+		.maxi-typography-control__size .maxi-reset-button--typography {
+			right: -6px !important;
+			top: -6px !important;
+		}
+
+		/* Ensure Font Size reset button is positioned relative to the main control, not the unit selector */
+		.maxi-typography-control__size .maxi-base-control {
+			position: relative !important;
+		}
+
+		.maxi-typography-control__size .maxi-reset-button--typography {
+			position: absolute !important;
+			right: -6px !important;
+			top: -6px !important;
+			z-index: 999 !important;
+		}
+
+		/* Ensure consistent label alignment for typography controls */
+		.maxi-base-control__label {
+			position: absolute !important;
+			top: -8px !important;
+			left: 8px !important;
+			font-size: 10px !important;
+			color: var(--maxi-grey-dark) !important;
+			font-style: normal !important;
+			background: var(--maxi-white) !important;
+			padding: 0 5px !important;
+			pointer-events: none !important;
+			box-sizing: border-box !important;
+			-webkit-box-sizing: border-box !important;
+			z-index: 10 !important;
+		}
+	}
 }

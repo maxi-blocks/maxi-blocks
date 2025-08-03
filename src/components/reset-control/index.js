@@ -15,9 +15,11 @@ import Button from '@components/button';
 import { reset } from '@maxi-icons';
 
 const ResetButton = props => {
+	const { className = '', ...otherProps } = props;
+
 	return (
 		<Button
-			className='maxi-reset-button'
+			className={`maxi-reset-button ${className}`}
 			action='reset'
 			type='reset'
 			aria-label={__('Reset', 'maxi-blocks')}
@@ -25,7 +27,7 @@ const ResetButton = props => {
 				(e => {
 					e.preventDefault();
 				},
-				props.onReset)
+				otherProps.onReset)
 			}
 		>
 			{reset}

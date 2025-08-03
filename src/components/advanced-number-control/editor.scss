@@ -27,35 +27,17 @@
 		height: 31px;
 		flex: none;
 		&::-webkit-outer-spin-button {
-			-webkit-appearance: none;
+			-webkit-appearance: auto;
+			background-color: blue !important;
+			color: blue !important;
 		}
-		&:after,
-		&:before {
-			position: absolute;
-			right: 5px;
-			width: 1.6em;
-			height: 0.9em;
-			font-size: 10px;
-			pointer-events: none;
-			background: var(--maxi-white);
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: auto;
+			background-color: red !important;
+			color: red !important;
+			opacity: 1;
 		}
-
-		&:after {
-			color: var(--maxi-orange-red);
-			content: '\25B2';
-			width: 12px;
-			background-color: var(--maxi-mid-green);
-			margin-top: 1px;
-		}
-
-		&:before {
-			color: var(--maxi-orange-red);
-			width: 12px;
-			content: '\25BC';
-			background-color: var(--maxi-mid-green);
-			margin-bottom: 5px;
-			bottom: -0.5em;
-		}
+		/* Temporarily removed custom arrows to test native ones */
 	}
 	.components-range-control {
 		width: 100%;

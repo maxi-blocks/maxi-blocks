@@ -265,8 +265,9 @@ body .toolbar-item__popover {
 		border-radius: 5px !important;
 		color: var(--maxi-grey-dark);
 		background-color: var(--maxi-white);
-		font-size: 13px;
+		font-size: 12px;
 		line-height: normal;
+		letter-spacing: 0.05px;
 
 		&:focus {
 			box-shadow: none;
@@ -287,6 +288,8 @@ body .toolbar-item__popover {
 	input[type='number']::-webkit-inner-spin-button {
 		height: 31px;
 		opacity: 1;
+		background-color: blue !important;
+		color: blue !important;
 	}
 	.components-range-control__number {
 		.components-input-control__backdrop {
@@ -389,7 +392,7 @@ body .toolbar-item__popover {
 			margin-bottom: 0;
 
 			.maxi-select-control__input {
-				min-width: 3.6rem;
+				min-width: 1.5rem;
 				max-width: 100%;
 			}
 		}
@@ -745,15 +748,40 @@ body.maxi-blocks--active
 	}
 }
 
-// Number input field
+// Number input field - more specific selectors
+input[type='number'].maxi-advanced-number-control__value,
+.maxi-advanced-number-control input.maxi-advanced-number-control__value,
 input.maxi-advanced-number-control_value,
-input.maxi-advanced-number-control__value {
+input.maxi-advanced-number-control__value,
+.maxi-typography-control
+	.maxi-typography-control__size
+	.maxi-advanced-number-control__value,
+.maxi-typography-control
+	.maxi-typography-control__line-height
+	.maxi-advanced-number-control__value,
+.maxi-typography-control
+	.maxi-typography-control__bottom-gap
+	.maxi-advanced-number-control__value {
 	transition: all 0.3s ease;
 	border: 1.5px solid var(--maxi-grey-light) !important;
 	border-radius: 5px 0 0 5px !important;
-	height: 31px !important;
+	height: 36px !important;
 	padding: 0 0 0 8px !important;
-	width: 55px !important;
+	width: 70px !important;
+	position: relative;
+
+	/* ===== Custom inline SVG arrows ===== */
+	/* remove native spinner buttons */
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button {
+		-webkit-appearance: none !important;
+		margin: 0;
+	}
+	/* Firefox */
+	-moz-appearance: textfield;
+
+	/* leave room on the right for arrow buttons */
+	padding-right: 5px !important;
 
 	&:hover {
 		border-color: var(--maxi-grey-dark) !important;
@@ -771,9 +799,11 @@ input.maxi-advanced-number-control__value {
 		transition: all 0.3s ease;
 		border: 1.5px solid var(--maxi-grey-light) !important;
 		border-radius: 0 5px 5px 0px !important;
-		height: 31px !important;
-		padding: 0 8px !important;
-		min-width: 45px !important;
+		height: 36px !important;
+		padding: 0 0 0 8px !important;
+		min-width: 50px !important;
+		max-width: 50px !important;
+		width: 50px !important;
 		cursor: pointer !important;
 
 		&:hover {
@@ -787,11 +817,20 @@ input.maxi-advanced-number-control__value {
 	}
 }
 
+// Super specific unit selector override
+.maxi-select-control.maxi-dimensions-control__units select,
+.maxi-base-control.maxi-select-control.maxi-dimensions-control__units select {
+	// min-width: 59px !important;
+	// max-width: 59px !important;
+	// width: 59px !important;
+	// padding: 0 8px !important;
+}
+
 // Reset button
 .maxi-components-button.maxi-reset-button {
 	transition: all 0.3s ease;
 	width: 31px !important;
-	height: 31px !important;
+	height: 36px !important;
 	padding: 0 !important;
 	margin-left: 0px !important;
 	border-radius: 5px !important;
@@ -815,6 +854,30 @@ input.maxi-advanced-number-control__value {
 	display: flex !important;
 	// align-items: center !important;
 	gap: 0 !important;
+}
+
+// Reduce gap between font size input and unit selector
+.maxi-advanced-number-control .maxi-base-control__field {
+	gap: 5px !important;
+	flex-direction: row !important;
+	align-items: center !important;
+}
+
+.maxi-advanced-number-control .maxi-base-control__field > * {
+	margin-left: 0 !important;
+}
+
+// Add top margin to unit selector to align with input
+.maxi-advanced-number-control .maxi-dimensions-control__units {
+	margin-top: 0 !important;
+}
+
+// Ensure unit selector aligns with the input field
+.maxi-advanced-number-control
+	.maxi-base-control__field
+	.maxi-dimensions-control__units {
+	margin-top: 0 !important;
+	align-self: center !important;
 }
 .maxi-conteCSxt-loop__toggle {
 	margin-top: 10px;

@@ -11,6 +11,7 @@ import { useState, useContext } from '@wordpress/element';
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
 import AlignmentControl from '@components/alignment-control';
+import Button from '@components/button';
 import ColorControl from '@components/color-control';
 import FontFamilySelector from '@components/font-family-selector';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
@@ -714,6 +715,500 @@ const TypographyControl = props => {
 						breakpoint={breakpoint}
 					/>
 				)}
+				<div
+					className='maxi-typography-control__weight-size-row'
+					style={{ display: 'flex', gap: '10px' }}
+				>
+					<div style={{ flex: '1' }}>
+						<FontWeightControl
+							onChange={val => {
+								onChangeFormat({
+									[`${prefix}font-weight`]: val,
+								});
+							}}
+							onReset={() => {
+								onChangeFormat(
+									{
+										[`${prefix}font-weight`]:
+											getDefault('font-weight'),
+									},
+									{ isReset: true }
+								);
+							}}
+							fontWeight={getValue('font-weight')}
+							defaultFontWeight={getDefault('font-weight')}
+							fontName={
+								getValue('font-family') ??
+								getDefault('font-family')
+							}
+							fontStyle={getValue('font-style')}
+							breakpoint={breakpoint}
+							setShowLoader={setShowLoader}
+						/>
+					</div>
+					<div style={{ flex: '1' }}>
+						<AdvancedNumberControl
+							className='maxi-typography-control__size'
+							label={__('Text size', 'maxi-blocks')}
+							enableUnit
+							unit={getValue('font-size-unit')}
+							defaultUnit={getDefault('font-size-unit')}
+							newStyle
+							resetButtonClassName='maxi-reset-button--typography'
+							onChangeUnit={val => {
+								const currentValue = getValue('font-size');
+								const { min, max } = minMaxSettings[val] || {};
+								const newValue =
+									max && currentValue > max
+										? max
+										: min && currentValue < min
+										? min
+										: currentValue;
+								onChangeFormat({
+									[`${prefix}font-size-unit`]: val,
+									[`${prefix}font-size`]: newValue,
+								});
+							}}
+							placeholder={getValue('font-size')}
+							value={getValue('font-size', !isStyleCards)}
+							defaultValue={getDefault('font-size')}
+							onChangeValue={val => {
+								onChangeFormat({
+									[`${prefix}font-size`]: val,
+									[`${prefix}font-size-unit`]:
+										getValue('font-size-unit'),
+								});
+							}}
+							onReset={() =>
+								onChangeFormat(
+									{
+										[`${prefix}font-size-unit`]:
+											getDefault('font-size-unit'),
+										[`${prefix}font-size`]:
+											getDefault('font-size'),
+									},
+									{ isReset: true }
+								)
+							}
+							minMaxSettings={minMaxSettings}
+							allowedUnits={['px', 'em', 'rem', 'vw', '%']}
+						/>
+					</div>
+				</div>
+
+				<div className='maxi-typography-control__spacing-controls'>
+					<AdvancedNumberControl
+						className='maxi-typography-control__line-height'
+						label={__('Line height', 'maxi-blocks')}
+						enableUnit
+						unit={getValue('line-height-unit') || ''}
+						defaultUnit={getDefault('line-height-unit')}
+						resetButtonClassName='maxi-reset-button--typography'
+						onChangeUnit={val => {
+							const currentValue = getValue('line-height');
+							const { min, max } =
+								minMaxSettingsLineHeight[val] || {};
+							const newValue =
+								max && currentValue > max
+									? max
+									: min && currentValue < min
+									? min
+									: currentValue;
+							onChangeFormat({
+								[`${prefix}line-height-unit`]: val,
+								[`${prefix}line-height`]: newValue,
+							});
+						}}
+						placeholder={getValue('line-height')}
+						value={getValue('line-height', !isStyleCards)}
+						defaultValue={getDefault('line-height')}
+						onChangeValue={val => {
+							onChangeFormat({
+								[`${prefix}line-height`]: val,
+								[`${prefix}line-height-unit`]:
+									getValue('line-height-unit'),
+							});
+						}}
+						onReset={() =>
+							onChangeFormat(
+								{
+									[`${prefix}line-height-unit`]:
+										getDefault('line-height-unit'),
+									[`${prefix}line-height`]:
+										getDefault('line-height'),
+								},
+								{ isReset: true }
+							)
+						}
+						minMaxSettings={minMaxSettingsLineHeight}
+						allowedUnits={['px', 'em', 'rem', 'vw', '%', '-']}
+					/>
+					{showBottomGap && (
+						<AdvancedNumberControl
+							className='maxi-typography-control__bottom-gap'
+							label={__('Bottom gap', 'maxi-blocks')}
+							enableUnit
+							unit={getValue('bottom-gap-unit')}
+							defaultUnit={getDefault('bottom-gap-unit')}
+							resetButtonClassName='maxi-reset-button--typography'
+							onChangeUnit={val => {
+								const currentValue = getValue('bottom-gap');
+								const maxValue = minMaxSettings[val]?.max;
+								const newValue =
+									maxValue && currentValue > maxValue
+										? maxValue
+										: currentValue;
+								onChangeFormat(
+									{
+										[`${prefix}bottom-gap-unit`]: val,
+										[`${prefix}bottom-gap`]: newValue,
+									},
+									{ forceDisableCustomFormats: true }
+								);
+							}}
+							placeholder={getValue('bottom-gap')}
+							value={getValue('bottom-gap')}
+							defaultValue={getDefault(
+								'bottom-gap',
+								!isStyleCards
+							)}
+							onChangeValue={val => {
+								onChangeFormat(
+									{
+										[`${prefix}bottom-gap`]: val,
+										[`${prefix}bottom-gap-unit`]:
+											getValue('bottom-gap-unit'),
+									},
+									{ forceDisableCustomFormats: true }
+								);
+							}}
+							onReset={() =>
+								onChangeFormat(
+									{
+										[`${prefix}bottom-gap-unit`]:
+											getDefault('bottom-gap-unit'),
+										[`${prefix}bottom-gap`]:
+											getDefault('bottom-gap'),
+									},
+									{
+										forceDisableCustomFormats: true,
+										isReset: true,
+									}
+								)
+							}
+							minMaxSettings={{
+								px: {
+									min: -99,
+									max: 99,
+								},
+								em: {
+									min: -99,
+									max: 99,
+								},
+								rem: {
+									min: -99,
+									max: 99,
+								},
+								vw: {
+									min: -99,
+									max: 99,
+								},
+								'%': {
+									min: -100,
+									max: 100,
+								},
+							}}
+							allowedUnits={['px', 'em', 'rem', 'vw', '%']}
+						/>
+					)}
+				</div>
+
+				{/* Typography formatting buttons row */}
+				<div
+					className='maxi-typography-control__formatting-buttons'
+					style={{
+						display: 'flex',
+						gap: '5px',
+						marginBottom: '15px',
+					}}
+				>
+					<Button
+						className='maxi-typography-control__format-button maxi-typography-control__format-button--bold'
+						onClick={() => {
+							const currentWeight = getValue('font-weight');
+							const isActive = currentWeight > 400;
+							onChangeFormat({
+								[`${prefix}font-weight`]: isActive ? 400 : 700,
+							});
+						}}
+						aria-pressed={getValue('font-weight') > 400}
+						style={{
+							padding: '8px',
+							minWidth: '32px',
+							height: '32px',
+							border: '1px solid var(--maxi-grey-light)',
+							borderRadius: '4px',
+							background:
+								getValue('font-weight') > 400
+									? 'var(--maxi-primary-color)'
+									: 'var(--maxi-white)',
+							color:
+								getValue('font-weight') > 400
+									? 'var(--maxi-white)'
+									: 'var(--maxi-black)',
+							fontWeight: 'bold',
+							cursor: 'pointer',
+						}}
+					>
+						B
+					</Button>
+					<Button
+						className='maxi-typography-control__format-button maxi-typography-control__format-button--italic'
+						onClick={() => {
+							const currentStyle = getValue('font-style');
+							const isActive = currentStyle === 'italic';
+							onChangeFormat({
+								[`${prefix}font-style`]: isActive
+									? 'normal'
+									: 'italic',
+							});
+						}}
+						aria-pressed={getValue('font-style') === 'italic'}
+						style={{
+							padding: '8px',
+							minWidth: '32px',
+							height: '32px',
+							border: '1px solid var(--maxi-grey-light)',
+							borderRadius: '4px',
+							background:
+								getValue('font-style') === 'italic'
+									? 'var(--maxi-primary-color)'
+									: 'var(--maxi-white)',
+							color:
+								getValue('font-style') === 'italic'
+									? 'var(--maxi-white)'
+									: 'var(--maxi-black)',
+							fontStyle: 'italic',
+							cursor: 'pointer',
+						}}
+					>
+						I
+					</Button>
+					<Button
+						className='maxi-typography-control__format-button maxi-typography-control__format-button--underline'
+						onClick={() => {
+							const currentDecoration =
+								getValue('text-decoration') || '';
+							const isActive =
+								currentDecoration.indexOf('underline') >= 0;
+							let newDecoration;
+
+							if (currentDecoration === 'unset') {
+								newDecoration = 'underline';
+							} else {
+								newDecoration = isActive
+									? currentDecoration
+											.replace('underline', '')
+											.trim()
+									: `${currentDecoration} underline`.trim();
+							}
+
+							if (!newDecoration) newDecoration = 'unset';
+
+							onChangeFormat({
+								[`${prefix}text-decoration`]: newDecoration,
+							});
+						}}
+						aria-pressed={
+							(getValue('text-decoration') || '').indexOf(
+								'underline'
+							) >= 0
+						}
+						style={{
+							padding: '8px',
+							minWidth: '32px',
+							height: '32px',
+							border: '1px solid var(--maxi-grey-light)',
+							borderRadius: '4px',
+							background:
+								(getValue('text-decoration') || '').indexOf(
+									'underline'
+								) >= 0
+									? 'var(--maxi-primary-color)'
+									: 'var(--maxi-white)',
+							color:
+								(getValue('text-decoration') || '').indexOf(
+									'underline'
+								) >= 0
+									? 'var(--maxi-white)'
+									: 'var(--maxi-black)',
+							textDecoration: 'underline',
+							cursor: 'pointer',
+						}}
+					>
+						U
+					</Button>
+					<Button
+						className='maxi-typography-control__format-button maxi-typography-control__format-button--strikethrough'
+						onClick={() => {
+							const currentDecoration =
+								getValue('text-decoration') || '';
+							const isActive =
+								currentDecoration.indexOf('line-through') >= 0;
+							let newDecoration;
+
+							if (currentDecoration === 'unset') {
+								newDecoration = 'line-through';
+							} else {
+								newDecoration = isActive
+									? currentDecoration
+											.replace('line-through', '')
+											.trim()
+									: `${currentDecoration} line-through`.trim();
+							}
+
+							if (!newDecoration) newDecoration = 'unset';
+
+							onChangeFormat({
+								[`${prefix}text-decoration`]: newDecoration,
+							});
+						}}
+						aria-pressed={
+							(getValue('text-decoration') || '').indexOf(
+								'line-through'
+							) >= 0
+						}
+						style={{
+							padding: '8px',
+							minWidth: '32px',
+							height: '32px',
+							border: '1px solid var(--maxi-grey-light)',
+							borderRadius: '4px',
+							background:
+								(getValue('text-decoration') || '').indexOf(
+									'line-through'
+								) >= 0
+									? 'var(--maxi-primary-color)'
+									: 'var(--maxi-white)',
+							color:
+								(getValue('text-decoration') || '').indexOf(
+									'line-through'
+								) >= 0
+									? 'var(--maxi-white)'
+									: 'var(--maxi-black)',
+							textDecoration: 'line-through',
+							cursor: 'pointer',
+						}}
+					>
+						S
+					</Button>
+					<Button
+						className='maxi-typography-control__format-button maxi-typography-control__format-button--capitalize'
+						onClick={() => {
+							const currentTransform =
+								getValue('text-transform') || 'none';
+							const isActive = currentTransform === 'capitalize';
+							onChangeFormat({
+								[`${prefix}text-transform`]: isActive
+									? 'none'
+									: 'capitalize',
+							});
+						}}
+						aria-pressed={
+							getValue('text-transform') === 'capitalize'
+						}
+						style={{
+							padding: '8px',
+							minWidth: '32px',
+							height: '32px',
+							border: '1px solid var(--maxi-grey-light)',
+							borderRadius: '4px',
+							background:
+								getValue('text-transform') === 'capitalize'
+									? 'var(--maxi-primary-color)'
+									: 'var(--maxi-white)',
+							color:
+								getValue('text-transform') === 'capitalize'
+									? 'var(--maxi-white)'
+									: 'var(--maxi-black)',
+							cursor: 'pointer',
+							fontSize: '11px',
+						}}
+					>
+						Ag
+					</Button>
+					<Button
+						className='maxi-typography-control__format-button maxi-typography-control__format-button--uppercase'
+						onClick={() => {
+							const currentTransform =
+								getValue('text-transform') || 'none';
+							const isActive = currentTransform === 'uppercase';
+							onChangeFormat({
+								[`${prefix}text-transform`]: isActive
+									? 'none'
+									: 'uppercase',
+							});
+						}}
+						aria-pressed={
+							getValue('text-transform') === 'uppercase'
+						}
+						style={{
+							padding: '8px',
+							minWidth: '32px',
+							height: '32px',
+							border: '1px solid var(--maxi-grey-light)',
+							borderRadius: '4px',
+							background:
+								getValue('text-transform') === 'uppercase'
+									? 'var(--maxi-primary-color)'
+									: 'var(--maxi-white)',
+							color:
+								getValue('text-transform') === 'uppercase'
+									? 'var(--maxi-white)'
+									: 'var(--maxi-black)',
+							cursor: 'pointer',
+							fontSize: '11px',
+						}}
+					>
+						AG
+					</Button>
+					<Button
+						className='maxi-typography-control__format-button maxi-typography-control__format-button--lowercase'
+						onClick={() => {
+							const currentTransform =
+								getValue('text-transform') || 'none';
+							const isActive = currentTransform === 'lowercase';
+							onChangeFormat({
+								[`${prefix}text-transform`]: isActive
+									? 'none'
+									: 'lowercase',
+							});
+						}}
+						aria-pressed={
+							getValue('text-transform') === 'lowercase'
+						}
+						style={{
+							padding: '8px',
+							minWidth: '32px',
+							height: '32px',
+							border: '1px solid var(--maxi-grey-light)',
+							borderRadius: '4px',
+							background:
+								getValue('text-transform') === 'lowercase'
+									? 'var(--maxi-primary-color)'
+									: 'var(--maxi-white)',
+							color:
+								getValue('text-transform') === 'lowercase'
+									? 'var(--maxi-white)'
+									: 'var(--maxi-black)',
+							cursor: 'pointer',
+							fontSize: '11px',
+						}}
+					>
+						ag
+					</Button>
+				</div>
+
 				{!disableColor && !isStyleCards && (
 					<ColorControl
 						label={__('Font', 'maxi-blocks')}
@@ -785,169 +1280,12 @@ const TypographyControl = props => {
 						disableRTC
 					/>
 				)}
-				<AdvancedNumberControl
-					className='maxi-typography-control__size'
-					label={__('Font size', 'maxi-blocks')}
-					enableUnit
-					unit={getValue('font-size-unit')}
-					defaultUnit={getDefault('font-size-unit')}
-					onChangeUnit={val => {
-						const currentValue = getValue('font-size');
-						const { min, max } = minMaxSettings[val] || {};
-						const newValue =
-							max && currentValue > max
-								? max
-								: min && currentValue < min
-								? min
-								: currentValue;
-						onChangeFormat({
-							[`${prefix}font-size-unit`]: val,
-							[`${prefix}font-size`]: newValue,
-						});
-					}}
-					placeholder={getValue('font-size')}
-					value={getValue('font-size', !isStyleCards)}
-					defaultValue={getDefault('font-size')}
-					onChangeValue={val => {
-						onChangeFormat({
-							[`${prefix}font-size`]: val,
-							[`${prefix}font-size-unit`]:
-								getValue('font-size-unit'),
-						});
-					}}
-					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}font-size-unit`]:
-									getDefault('font-size-unit'),
-								[`${prefix}font-size`]: getDefault('font-size'),
-							},
-							{ isReset: true }
-						)
-					}
-					minMaxSettings={minMaxSettings}
-					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
-				/>
-				<AdvancedNumberControl
-					className='maxi-typography-control__line-height'
-					label={__('Line height', 'maxi-blocks')}
-					enableUnit
-					unit={getValue('line-height-unit') || ''}
-					defaultUnit={getDefault('line-height-unit')}
-					onChangeUnit={val => {
-						const currentValue = getValue('line-height');
-						const { min, max } =
-							minMaxSettingsLineHeight[val] || {};
-						const newValue =
-							max && currentValue > max
-								? max
-								: min && currentValue < min
-								? min
-								: currentValue;
-						onChangeFormat({
-							[`${prefix}line-height-unit`]: val,
-							[`${prefix}line-height`]: newValue,
-						});
-					}}
-					placeholder={getValue('line-height')}
-					value={getValue('line-height', !isStyleCards)}
-					defaultValue={getDefault('line-height')}
-					onChangeValue={val => {
-						onChangeFormat({
-							[`${prefix}line-height`]: val,
-							[`${prefix}line-height-unit`]:
-								getValue('line-height-unit'),
-						});
-					}}
-					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}line-height-unit`]:
-									getDefault('line-height-unit'),
-								[`${prefix}line-height`]:
-									getDefault('line-height'),
-							},
-							{ isReset: true }
-						)
-					}
-					minMaxSettings={minMaxSettingsLineHeight}
-					allowedUnits={['px', 'em', 'rem', 'vw', '%', '-']}
-				/>
-				<AdvancedNumberControl
-					className='maxi-typography-control__letter-spacing'
-					label={__('Letter spacing', 'maxi-blocks')}
-					enableUnit
-					allowedUnits={['px', 'em', 'rem', 'vw']}
-					unit={getValue('letter-spacing-unit')}
-					defaultUnit={getDefault('letter-spacing-unit')}
-					onChangeUnit={val => {
-						const currentValue = getValue('letter-spacing');
-						const { min, max } =
-							minMaxSettingsLetterSpacing[val] || {};
-						const newValue =
-							max && currentValue > max
-								? max
-								: min && currentValue < min
-								? min
-								: currentValue;
-						onChangeFormat({
-							[`${prefix}letter-spacing-unit`]: val,
-							[`${prefix}letter-spacing`]: newValue,
-						});
-					}}
-					placeholder={getValue('letter-spacing')}
-					value={getValue('letter-spacing', !isStyleCards)}
-					defaultValue={getDefault('letter-spacing')}
-					onChangeValue={val => {
-						onChangeFormat({
-							[`${prefix}letter-spacing`]: val,
-							[`${prefix}letter-spacing-unit`]: getValue(
-								'letter-spacing-unit'
-							),
-						});
-					}}
-					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}letter-spacing-unit`]: getDefault(
-									'letter-spacing-unit'
-								),
-								[`${prefix}letter-spacing`]:
-									getDefault('letter-spacing'),
-							},
-							{ isReset: true }
-						)
-					}
-					minMaxSettings={minMaxSettingsLetterSpacing}
-					step={0.1}
-				/>
+
 				<hr />
 				{!disableFontFamily &&
 					!disableColor &&
 					!isStyleCards &&
 					!hideAlignment && <hr style={{ margin: '15px 0' }} />}
-				<FontWeightControl
-					onChange={val => {
-						onChangeFormat({ [`${prefix}font-weight`]: val });
-					}}
-					onReset={() => {
-						onChangeFormat(
-							{
-								[`${prefix}font-weight`]:
-									getDefault('font-weight'),
-							},
-							{ isReset: true }
-						);
-					}}
-					fontWeight={getValue('font-weight')}
-					defaultFontWeight={getDefault('font-weight')}
-					fontName={
-						getValue('font-family') ?? getDefault('font-family')
-					}
-					fontStyle={getValue('font-style')}
-					breakpoint={breakpoint}
-					setShowLoader={setShowLoader}
-				/>
 				<SelectControl
 					__nextHasNoMarginBottom
 					label={__('Text transform', 'maxi-blocks')}
@@ -1337,80 +1675,54 @@ const TypographyControl = props => {
 					}}
 					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
 				/>
-				{showBottomGap && (
-					<AdvancedNumberControl
-						className='maxi-typography-control__bottom-gap'
-						label={__('Bottom gap', 'maxi-blocks')}
-						enableUnit
-						unit={getValue('bottom-gap-unit')}
-						defaultUnit={getDefault('bottom-gap-unit')}
-						onChangeUnit={val => {
-							const currentValue = getValue('bottom-gap');
-							const maxValue = minMaxSettings[val]?.max;
-							const newValue =
-								maxValue && currentValue > maxValue
-									? maxValue
-									: currentValue;
-							onChangeFormat(
-								{
-									[`${prefix}bottom-gap-unit`]: val,
-									[`${prefix}bottom-gap`]: newValue,
-								},
-								{ forceDisableCustomFormats: true }
-							);
-						}}
-						placeholder={getValue('bottom-gap')}
-						value={getValue('bottom-gap')}
-						defaultValue={getDefault('bottom-gap', !isStyleCards)}
-						onChangeValue={val => {
-							onChangeFormat(
-								{
-									[`${prefix}bottom-gap`]: val,
-									[`${prefix}bottom-gap-unit`]:
-										getValue('bottom-gap-unit'),
-								},
-								{ forceDisableCustomFormats: true }
-							);
-						}}
-						onReset={() =>
-							onChangeFormat(
-								{
-									[`${prefix}bottom-gap-unit`]:
-										getDefault('bottom-gap-unit'),
-									[`${prefix}bottom-gap`]:
-										getDefault('bottom-gap'),
-								},
-								{
-									forceDisableCustomFormats: true,
-									isReset: true,
-								}
-							)
-						}
-						minMaxSettings={{
-							px: {
-								min: -99,
-								max: 99,
+				<AdvancedNumberControl
+					className='maxi-typography-control__letter-spacing'
+					label={__('Letter spacing', 'maxi-blocks')}
+					enableUnit
+					allowedUnits={['px', 'em', 'rem', 'vw']}
+					unit={getValue('letter-spacing-unit')}
+					defaultUnit={getDefault('letter-spacing-unit')}
+					onChangeUnit={val => {
+						const currentValue = getValue('letter-spacing');
+						const { min, max } =
+							minMaxSettingsLetterSpacing[val] || {};
+						const newValue =
+							max && currentValue > max
+								? max
+								: min && currentValue < min
+								? min
+								: currentValue;
+						onChangeFormat({
+							[`${prefix}letter-spacing-unit`]: val,
+							[`${prefix}letter-spacing`]: newValue,
+						});
+					}}
+					placeholder={getValue('letter-spacing')}
+					value={getValue('letter-spacing', !isStyleCards)}
+					defaultValue={getDefault('letter-spacing')}
+					onChangeValue={val => {
+						onChangeFormat({
+							[`${prefix}letter-spacing`]: val,
+							[`${prefix}letter-spacing-unit`]: getValue(
+								'letter-spacing-unit'
+							),
+						});
+					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}letter-spacing-unit`]: getDefault(
+									'letter-spacing-unit'
+								),
+								[`${prefix}letter-spacing`]:
+									getDefault('letter-spacing'),
 							},
-							em: {
-								min: -99,
-								max: 99,
-							},
-							rem: {
-								min: -99,
-								max: 99,
-							},
-							vw: {
-								min: -99,
-								max: 99,
-							},
-							'%': {
-								min: -100,
-								max: 100,
-							},
-						}}
-						allowedUnits={['px', 'em', 'rem', 'vw', '%']}
-					/>
-				)}
+							{ isReset: true }
+						)
+					}
+					minMaxSettings={minMaxSettingsLetterSpacing}
+					step={0.1}
+				/>
 				{!hideTextShadow && (
 					<>
 						<hr />

@@ -942,23 +942,6 @@ const TypographyControl = props => {
 							});
 						}}
 						aria-pressed={getValue('font-weight') > 400}
-						style={{
-							padding: '8px',
-							minWidth: '32px',
-							height: '32px',
-							border: '1px solid var(--maxi-grey-light)',
-							borderRadius: '4px',
-							background:
-								getValue('font-weight') > 400
-									? 'var(--maxi-primary-color)'
-									: 'var(--maxi-white)',
-							color:
-								getValue('font-weight') > 400
-									? 'var(--maxi-white)'
-									: 'var(--maxi-black)',
-							fontWeight: 'bold',
-							cursor: 'pointer',
-						}}
 					>
 						B
 					</Button>
@@ -974,23 +957,6 @@ const TypographyControl = props => {
 							});
 						}}
 						aria-pressed={getValue('font-style') === 'italic'}
-						style={{
-							padding: '8px',
-							minWidth: '32px',
-							height: '32px',
-							border: '1px solid var(--maxi-grey-light)',
-							borderRadius: '4px',
-							background:
-								getValue('font-style') === 'italic'
-									? 'var(--maxi-primary-color)'
-									: 'var(--maxi-white)',
-							color:
-								getValue('font-style') === 'italic'
-									? 'var(--maxi-white)'
-									: 'var(--maxi-black)',
-							fontStyle: 'italic',
-							cursor: 'pointer',
-						}}
 					>
 						I
 					</Button>
@@ -1024,27 +990,6 @@ const TypographyControl = props => {
 								'underline'
 							) >= 0
 						}
-						style={{
-							padding: '8px',
-							minWidth: '32px',
-							height: '32px',
-							border: '1px solid var(--maxi-grey-light)',
-							borderRadius: '4px',
-							background:
-								(getValue('text-decoration') || '').indexOf(
-									'underline'
-								) >= 0
-									? 'var(--maxi-primary-color)'
-									: 'var(--maxi-white)',
-							color:
-								(getValue('text-decoration') || '').indexOf(
-									'underline'
-								) >= 0
-									? 'var(--maxi-white)'
-									: 'var(--maxi-black)',
-							textDecoration: 'underline',
-							cursor: 'pointer',
-						}}
 					>
 						U
 					</Button>
@@ -1078,27 +1023,6 @@ const TypographyControl = props => {
 								'line-through'
 							) >= 0
 						}
-						style={{
-							padding: '8px',
-							minWidth: '32px',
-							height: '32px',
-							border: '1px solid var(--maxi-grey-light)',
-							borderRadius: '4px',
-							background:
-								(getValue('text-decoration') || '').indexOf(
-									'line-through'
-								) >= 0
-									? 'var(--maxi-primary-color)'
-									: 'var(--maxi-white)',
-							color:
-								(getValue('text-decoration') || '').indexOf(
-									'line-through'
-								) >= 0
-									? 'var(--maxi-white)'
-									: 'var(--maxi-black)',
-							textDecoration: 'line-through',
-							cursor: 'pointer',
-						}}
 					>
 						S
 					</Button>
@@ -1117,23 +1041,6 @@ const TypographyControl = props => {
 						aria-pressed={
 							getValue('text-transform') === 'capitalize'
 						}
-						style={{
-							padding: '8px',
-							minWidth: '32px',
-							height: '32px',
-							border: '1px solid var(--maxi-grey-light)',
-							borderRadius: '4px',
-							background:
-								getValue('text-transform') === 'capitalize'
-									? 'var(--maxi-primary-color)'
-									: 'var(--maxi-white)',
-							color:
-								getValue('text-transform') === 'capitalize'
-									? 'var(--maxi-white)'
-									: 'var(--maxi-black)',
-							cursor: 'pointer',
-							fontSize: '11px',
-						}}
 					>
 						Ag
 					</Button>
@@ -1152,23 +1059,6 @@ const TypographyControl = props => {
 						aria-pressed={
 							getValue('text-transform') === 'uppercase'
 						}
-						style={{
-							padding: '8px',
-							minWidth: '32px',
-							height: '32px',
-							border: '1px solid var(--maxi-grey-light)',
-							borderRadius: '4px',
-							background:
-								getValue('text-transform') === 'uppercase'
-									? 'var(--maxi-primary-color)'
-									: 'var(--maxi-white)',
-							color:
-								getValue('text-transform') === 'uppercase'
-									? 'var(--maxi-white)'
-									: 'var(--maxi-black)',
-							cursor: 'pointer',
-							fontSize: '11px',
-						}}
 					>
 						AG
 					</Button>
@@ -1187,27 +1077,12 @@ const TypographyControl = props => {
 						aria-pressed={
 							getValue('text-transform') === 'lowercase'
 						}
-						style={{
-							padding: '8px',
-							minWidth: '32px',
-							height: '32px',
-							border: '1px solid var(--maxi-grey-light)',
-							borderRadius: '4px',
-							background:
-								getValue('text-transform') === 'lowercase'
-									? 'var(--maxi-primary-color)'
-									: 'var(--maxi-white)',
-							color:
-								getValue('text-transform') === 'lowercase'
-									? 'var(--maxi-white)'
-									: 'var(--maxi-black)',
-							cursor: 'pointer',
-							fontSize: '11px',
-						}}
 					>
 						ag
 					</Button>
 				</div>
+
+				<hr className='maxi-typography-control__formatting-separator' />
 
 				{!disableColor && !isStyleCards && (
 					<ColorControl
@@ -1286,6 +1161,196 @@ const TypographyControl = props => {
 					!disableColor &&
 					!isStyleCards &&
 					!hideAlignment && <hr style={{ margin: '15px 0' }} />}
+				<AdvancedNumberControl
+					className='maxi-typography-control__text-indent'
+					label={__('Text indent', 'maxi-blocks')}
+					enableUnit
+					unit={getValue('text-indent-unit')}
+					defaultUnit={getDefault('text-indent-unit')}
+					onChangeUnit={val => {
+						const currentValue = getValue('text-indent');
+						const { min, max } = minMaxSettings[val] || {};
+						const newValue =
+							max && currentValue > max
+								? max
+								: min && currentValue < min
+								? min
+								: currentValue;
+						onChangeFormat(
+							{
+								[`${prefix}text-indent-unit`]: val,
+								[`${prefix}text-indent`]: newValue,
+							},
+							{ forceDisableCustomFormats: true }
+						);
+					}}
+					placeholder={getValue('text-indent')}
+					value={getValue('text-indent', !isStyleCards)}
+					defaultValue={getDefault('text-indent')}
+					onChangeValue={val => {
+						onChangeFormat(
+							{
+								[`${prefix}text-indent`]: val,
+								[`${prefix}text-indent-unit`]:
+									getValue('text-indent-unit'),
+							},
+							{ forceDisableCustomFormats: true }
+						);
+					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}text-indent-unit`]:
+									getDefault('text-indent-unit'),
+								[`${prefix}text-indent`]:
+									getDefault('text-indent'),
+							},
+							{ forceDisableCustomFormats: true, isReset: true }
+						)
+					}
+					minMaxSettings={{
+						px: {
+							min: -99,
+							max: 99,
+						},
+						em: {
+							min: -99,
+							max: 99,
+						},
+						rem: {
+							min: -99,
+							max: 99,
+						},
+						vw: {
+							min: -99,
+							max: 99,
+						},
+						'%': {
+							min: -100,
+							max: 100,
+						},
+					}}
+					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
+				/>
+				<AdvancedNumberControl
+					className='maxi-typography-control__word-spacing'
+					label={__('Word Spacing', 'maxi-blocks')}
+					enableUnit
+					unit={getValue('word-spacing-unit')}
+					defaultUnit={getDefault('word-spacing-unit')}
+					onChangeUnit={val => {
+						const currentValue = getValue('word-spacing');
+						const { min, max } = minMaxSettings[val] || {};
+						const newValue =
+							max && currentValue > max
+								? max
+								: min && currentValue < min
+								? min
+								: currentValue;
+						onChangeFormat(
+							{
+								[`${prefix}word-spacing-unit`]: val,
+								[`${prefix}word-spacing`]: newValue,
+							},
+							{ forceDisableCustomFormats: true }
+						);
+					}}
+					placeholder={getValue('word-spacing')}
+					value={getValue('word-spacing')}
+					defaultValue={getDefault('word-spacing', !isStyleCards)}
+					onChangeValue={val => {
+						onChangeFormat(
+							{
+								[`${prefix}word-spacing`]: val,
+								[`${prefix}word-spacing-unit`]:
+									getValue('word-spacing-unit'),
+							},
+							{ forceDisableCustomFormats: true }
+						);
+					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}word-spacing-unit`]:
+									getDefault('word-spacing-unit'),
+								[`${prefix}word-spacing`]:
+									getDefault('word-spacing'),
+							},
+							{ forceDisableCustomFormats: true, isReset: true }
+						)
+					}
+					minMaxSettings={{
+						px: {
+							min: -99,
+							max: 99,
+						},
+						em: {
+							min: -99,
+							max: 99,
+						},
+						rem: {
+							min: -99,
+							max: 99,
+						},
+						vw: {
+							min: -99,
+							max: 99,
+						},
+						'%': {
+							min: -100,
+							max: 100,
+						},
+					}}
+					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
+				/>
+				<AdvancedNumberControl
+					className='maxi-typography-control__letter-spacing'
+					label={__('Letter spacing', 'maxi-blocks')}
+					enableUnit
+					allowedUnits={['px', 'em', 'rem', 'vw']}
+					unit={getValue('letter-spacing-unit')}
+					defaultUnit={getDefault('letter-spacing-unit')}
+					onChangeUnit={val => {
+						const currentValue = getValue('letter-spacing');
+						const { min, max } =
+							minMaxSettingsLetterSpacing[val] || {};
+						const newValue =
+							max && currentValue > max
+								? max
+								: min && currentValue < min
+								? min
+								: currentValue;
+						onChangeFormat({
+							[`${prefix}letter-spacing-unit`]: val,
+							[`${prefix}letter-spacing`]: newValue,
+						});
+					}}
+					placeholder={getValue('letter-spacing')}
+					value={getValue('letter-spacing', !isStyleCards)}
+					defaultValue={getDefault('letter-spacing')}
+					onChangeValue={val => {
+						onChangeFormat({
+							[`${prefix}letter-spacing`]: val,
+							[`${prefix}letter-spacing-unit`]: getValue(
+								'letter-spacing-unit'
+							),
+						});
+					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}letter-spacing-unit`]: getDefault(
+									'letter-spacing-unit'
+								),
+								[`${prefix}letter-spacing`]:
+									getDefault('letter-spacing'),
+							},
+							{ isReset: true }
+						)
+					}
+					minMaxSettings={minMaxSettingsLetterSpacing}
+					step={0.1}
+				/>
 				<SelectControl
 					__nextHasNoMarginBottom
 					label={__('Text transform', 'maxi-blocks')}
@@ -1485,77 +1550,6 @@ const TypographyControl = props => {
 						/>
 					</>
 				)}
-				<AdvancedNumberControl
-					className='maxi-typography-control__text-indent'
-					label={__('Text indent', 'maxi-blocks')}
-					enableUnit
-					unit={getValue('text-indent-unit')}
-					defaultUnit={getDefault('text-indent-unit')}
-					onChangeUnit={val => {
-						const currentValue = getValue('text-indent');
-						const { min, max } = minMaxSettings[val] || {};
-						const newValue =
-							max && currentValue > max
-								? max
-								: min && currentValue < min
-								? min
-								: currentValue;
-						onChangeFormat(
-							{
-								[`${prefix}text-indent-unit`]: val,
-								[`${prefix}text-indent`]: newValue,
-							},
-							{ forceDisableCustomFormats: true }
-						);
-					}}
-					placeholder={getValue('text-indent')}
-					value={getValue('text-indent', !isStyleCards)}
-					defaultValue={getDefault('text-indent')}
-					onChangeValue={val => {
-						onChangeFormat(
-							{
-								[`${prefix}text-indent`]: val,
-								[`${prefix}text-indent-unit`]:
-									getValue('text-indent-unit'),
-							},
-							{ forceDisableCustomFormats: true }
-						);
-					}}
-					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}text-indent-unit`]:
-									getDefault('text-indent-unit'),
-								[`${prefix}text-indent`]:
-									getDefault('text-indent'),
-							},
-							{ forceDisableCustomFormats: true, isReset: true }
-						)
-					}
-					minMaxSettings={{
-						px: {
-							min: -99,
-							max: 99,
-						},
-						em: {
-							min: -99,
-							max: 99,
-						},
-						rem: {
-							min: -99,
-							max: 99,
-						},
-						vw: {
-							min: -99,
-							max: 99,
-						},
-						'%': {
-							min: -100,
-							max: 100,
-						},
-					}}
-					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
-				/>
 				<SelectControl
 					__nextHasNoMarginBottom
 					label={__('White space', 'maxi-blocks')}
@@ -1603,125 +1597,6 @@ const TypographyControl = props => {
 							{ isReset: true }
 						);
 					}}
-				/>
-				<AdvancedNumberControl
-					className='maxi-typography-control__word-spacing'
-					label={__('Word Spacing', 'maxi-blocks')}
-					enableUnit
-					unit={getValue('word-spacing-unit')}
-					defaultUnit={getDefault('word-spacing-unit')}
-					onChangeUnit={val => {
-						const currentValue = getValue('word-spacing');
-						const { min, max } = minMaxSettings[val] || {};
-						const newValue =
-							max && currentValue > max
-								? max
-								: min && currentValue < min
-								? min
-								: currentValue;
-						onChangeFormat(
-							{
-								[`${prefix}word-spacing-unit`]: val,
-								[`${prefix}word-spacing`]: newValue,
-							},
-							{ forceDisableCustomFormats: true }
-						);
-					}}
-					placeholder={getValue('word-spacing')}
-					value={getValue('word-spacing')}
-					defaultValue={getDefault('word-spacing', !isStyleCards)}
-					onChangeValue={val => {
-						onChangeFormat(
-							{
-								[`${prefix}word-spacing`]: val,
-								[`${prefix}word-spacing-unit`]:
-									getValue('word-spacing-unit'),
-							},
-							{ forceDisableCustomFormats: true }
-						);
-					}}
-					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}word-spacing-unit`]:
-									getDefault('word-spacing-unit'),
-								[`${prefix}word-spacing`]:
-									getDefault('word-spacing'),
-							},
-							{ forceDisableCustomFormats: true, isReset: true }
-						)
-					}
-					minMaxSettings={{
-						px: {
-							min: -99,
-							max: 99,
-						},
-						em: {
-							min: -99,
-							max: 99,
-						},
-						rem: {
-							min: -99,
-							max: 99,
-						},
-						vw: {
-							min: -99,
-							max: 99,
-						},
-						'%': {
-							min: -100,
-							max: 100,
-						},
-					}}
-					allowedUnits={['px', 'em', 'rem', 'vw', '%']}
-				/>
-				<AdvancedNumberControl
-					className='maxi-typography-control__letter-spacing'
-					label={__('Letter spacing', 'maxi-blocks')}
-					enableUnit
-					allowedUnits={['px', 'em', 'rem', 'vw']}
-					unit={getValue('letter-spacing-unit')}
-					defaultUnit={getDefault('letter-spacing-unit')}
-					onChangeUnit={val => {
-						const currentValue = getValue('letter-spacing');
-						const { min, max } =
-							minMaxSettingsLetterSpacing[val] || {};
-						const newValue =
-							max && currentValue > max
-								? max
-								: min && currentValue < min
-								? min
-								: currentValue;
-						onChangeFormat({
-							[`${prefix}letter-spacing-unit`]: val,
-							[`${prefix}letter-spacing`]: newValue,
-						});
-					}}
-					placeholder={getValue('letter-spacing')}
-					value={getValue('letter-spacing', !isStyleCards)}
-					defaultValue={getDefault('letter-spacing')}
-					onChangeValue={val => {
-						onChangeFormat({
-							[`${prefix}letter-spacing`]: val,
-							[`${prefix}letter-spacing-unit`]: getValue(
-								'letter-spacing-unit'
-							),
-						});
-					}}
-					onReset={() =>
-						onChangeFormat(
-							{
-								[`${prefix}letter-spacing-unit`]: getDefault(
-									'letter-spacing-unit'
-								),
-								[`${prefix}letter-spacing`]:
-									getDefault('letter-spacing'),
-							},
-							{ isReset: true }
-						)
-					}
-					minMaxSettings={minMaxSettingsLetterSpacing}
-					step={0.1}
 				/>
 				{!hideTextShadow && (
 					<>

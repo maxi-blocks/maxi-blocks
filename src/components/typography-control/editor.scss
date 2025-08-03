@@ -144,4 +144,81 @@
 			z-index: 10 !important;
 		}
 	}
+
+	/* Typography formatting buttons styling */
+	.maxi-typography-control__formatting-buttons {
+		display: flex !important;
+		gap: 5px !important;
+		margin-bottom: 15px !important;
+		justify-content: flex-start !important;
+		align-items: center !important;
+
+		.maxi-typography-control__format-button {
+			display: flex !important;
+			align-items: center !important;
+			justify-content: center !important;
+			padding: 8px !important;
+			min-width: 34px !important;
+			max-width: 34px !important;
+			height: 32px !important;
+			border: 1px solid var(--maxi-grey-light) !important;
+			border-radius: 4px !important;
+			background: var(--maxi-white) !important;
+			color: var(--maxi-black) !important;
+			cursor: pointer !important;
+			font-family: inherit !important;
+			font-size: 12px !important;
+			font-weight: normal !important;
+			line-height: 1 !important;
+			text-align: center !important;
+			text-decoration: none !important;
+			transition: all 0.2s ease !important;
+			box-sizing: border-box !important;
+			margin: 0 !important;
+			margin-top: -15px !important;
+
+			&:hover {
+				border-color: var(--maxi-primary-color) !important;
+				background: var(--maxi-light-blue) !important;
+			}
+
+			&[aria-pressed='true'] {
+				background: var(--maxi-whisper-green) !important;
+				color: var(--maxi-primary-color) !important;
+				border-color: var(--maxi-primary-color) !important;
+			}
+
+			&--bold {
+				font-weight: bold !important;
+			}
+
+			&--italic {
+				font-style: italic !important;
+			}
+
+			&--underline {
+				text-decoration: underline !important;
+			}
+
+			&--strikethrough {
+				text-decoration: line-through !important;
+			}
+
+			&--capitalize,
+			&--uppercase,
+			&--lowercase {
+				font-size: 10px !important;
+				font-weight: 500 !important;
+			}
+		}
+	}
+
+	/* Horizontal separator after formatting buttons */
+	.maxi-typography-control__formatting-separator {
+		border: none !important;
+		border-top: 1px solid var(--maxi-grey-light) !important;
+		margin: 15px 0 !important;
+		height: 0 !important;
+		background: none !important;
+	}
 }

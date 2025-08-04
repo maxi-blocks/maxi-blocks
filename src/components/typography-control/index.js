@@ -787,6 +787,7 @@ const TypographyControl = props => {
 							defaultUnit={getDefault('font-size-unit')}
 							newStyle
 							resetButtonClassName='maxi-reset-button--typography'
+							disableRange
 							onChangeUnit={val => {
 								const currentValue = getValue('font-size');
 								const { min, max } = minMaxSettings[val] || {};
@@ -836,6 +837,7 @@ const TypographyControl = props => {
 						unit={getValue('line-height-unit') || ''}
 						defaultUnit={getDefault('line-height-unit')}
 						resetButtonClassName='maxi-reset-button--typography'
+						disableRange
 						onChangeUnit={val => {
 							const currentValue = getValue('line-height');
 							const { min, max } =
@@ -883,6 +885,7 @@ const TypographyControl = props => {
 							unit={getValue('bottom-gap-unit')}
 							defaultUnit={getDefault('bottom-gap-unit')}
 							resetButtonClassName='maxi-reset-button--typography'
+							disableRange
 							onChangeUnit={val => {
 								const currentValue = getValue('bottom-gap');
 								const maxValue = minMaxSettings[val]?.max;

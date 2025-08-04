@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-// import { RangeControl } from '@wordpress/components'; // Temporarily disabled
+import { RangeControl } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
 import { useEffect, useState, useRef } from '@wordpress/element';
 
@@ -84,17 +84,17 @@ const AdvancedNumberControl = props => {
 		placeholder = '',
 		onChangeUnit,
 		enableUnit = false,
-		// disableInputsLimits = false, // Temporarily disabled with range slider
+		disableInputsLimits = false,
 		min = 0,
 		max = 999,
-		// maxRange, // Temporarily disabled with range slider
-		// initial = 0, // Temporarily disabled with range slider
+		maxRange,
+		initial = 0,
 		step = 1,
 		defaultValue = '',
 		value,
 		onChangeValue,
 		disableReset = false,
-		// disableRange = false, // Temporarily disabled with range slider
+		disableRange = false,
 		enableAuto = false,
 		autoLabel,
 		onReset,
@@ -104,7 +104,7 @@ const AdvancedNumberControl = props => {
 		optionType = 'number',
 		inputType = 'number',
 		customValidationRegex,
-		// transformRangePreferredValue, // Temporarily disabled with range slider
+		transformRangePreferredValue,
 		newStyle = false,
 		showHelp = false,
 		helpContent = '',
@@ -159,18 +159,17 @@ const AdvancedNumberControl = props => {
 	const minValue = minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.min;
 	const maxValue = minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.max;
 
-	// Temporarily disabled with range slider
-	// const minValueRange =
-	// 	minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.minRange < minValue ||
-	// 	disableInputsLimits
-	// 		? minValue
-	// 		: minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.minRange;
+	const minValueRange =
+		minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.minRange < minValue ||
+		disableInputsLimits
+			? minValue
+			: minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.minRange;
 
-	// const maxValueRange =
-	// 	minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.maxRange > maxValue ||
-	// 	disableInputsLimits
-	// 		? maxValue
-	// 		: minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.maxRange;
+	const maxValueRange =
+		minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.maxRange > maxValue ||
+		disableInputsLimits
+			? maxValue
+			: minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.maxRange;
 
 	const getNewValueFromEmpty = e => {
 		const {
@@ -231,23 +230,20 @@ const AdvancedNumberControl = props => {
 		handleChange(result);
 	};
 
-	// Temporarily disabled with range slider
-	// const rawPreferredValues = [
-	// 	latestValueRef.current,
-	// 	currentValue,
-	// 	value,
-	// 	defaultValue,
-	// 	initial,
-	// 	placeholder,
-	// ];
+	const rawPreferredValues = [
+		latestValueRef.current,
+		currentValue,
+		value,
+		defaultValue,
+		initial,
+		placeholder,
+	];
 
-	// Temporarily disabled with range slider
-	// const preferredValues = transformRangePreferredValue
-	// 	? rawPreferredValues.map(transformRangePreferredValue)
-	// 	: rawPreferredValues;
+	const preferredValues = transformRangePreferredValue
+		? rawPreferredValues.map(transformRangePreferredValue)
+		: rawPreferredValues;
 
-	// Temporarily disabled with range slider
-	// const rangeValue = +preferredValues.find(val => /\d/.test(val)) || null;
+	const rangeValue = +preferredValues.find(val => /\d/.test(val)) || null;
 
 	const [showHelpContent, setShowHelpContent] = useState(false);
 
@@ -442,8 +438,7 @@ const AdvancedNumberControl = props => {
 				/>
 			)}
 
-			{/* Temporarily disabled range slider */}
-			{/* {!disableRange && (
+			{!disableRange && (
 				<RangeControl
 					label={label}
 					className={`maxi-advanced-number-control__range${
@@ -458,9 +453,7 @@ const AdvancedNumberControl = props => {
 					value={rangeValue ?? placeholder ?? 0}
 					onChange={val => {
 						const result =
-							optionType === 'string'
-								? val.toString()
-								: +val;
+							optionType === 'string' ? val.toString() : +val;
 						setCurrentValue(result);
 						latestValueRef.current = result;
 						onChangeValue(result);
@@ -472,7 +465,7 @@ const AdvancedNumberControl = props => {
 					initialPosition={value || initial}
 					__nextHasNoMarginBottom
 				/>
-			)} */}
+			)}
 		</BaseControl>
 	);
 };

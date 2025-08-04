@@ -256,31 +256,23 @@ const AdvancedNumberControl = props => {
 	};
 
 	return (
-		<>
-			{enableAuto && (
-				<ToggleSwitch
-					label={autoLabel || __('Auto', 'maxi-blocks')}
-					className={classNameAutoInput}
-					selected={value === 'auto'}
-					onChange={val => (val ? onChangeValue('auto') : onReset())}
-				/>
-			)}
-			{value !== 'auto' && (
-				<BaseControl
-					__nextHasNoMarginBottom
-					id={advancedNumberControlId}
-					label={label}
-					className={classes}
+		<BaseControl
+			__nextHasNoMarginBottom
+			id={advancedNumberControlId}
+			label={label}
+			className={classes}
+		>
+			{showHelp && (
+				<div
+					className='maxi-info__help-icon'
+					onClick={handleToggleHelpContent}
 				>
-					{showHelp && (
-						<div
-							className='maxi-info__help-icon'
-							onClick={handleToggleHelpContent}
-						>
-							<span className='maxi-info__help-icon-span'>i</span>
-						</div>
-					)}
-					{showHelpContent && helpContent}
+					<span className='maxi-info__help-icon-span'>i</span>
+				</div>
+			)}
+			{showHelpContent && helpContent}
+			{value !== 'auto' && (
+				<>
 					<div
 						style={{
 							position: 'relative',
@@ -427,53 +419,61 @@ const AdvancedNumberControl = props => {
 							}}
 						/>
 					)}
-					{!disableReset && (
-						<ResetButton
-							className={resetButtonClassName}
-							onReset={() => {
-								setCurrentValue(defaultValue);
-								latestValueRef.current = defaultValue;
-								onChangeValue(defaultValue);
-								onReset();
-							}}
-							isSmall
-						/>
-					)}
-
-					{/* Temporarily disabled range slider */}
-					{/* {!disableRange && (
-						<RangeControl
-							label={label}
-							className={`maxi-advanced-number-control__range${
-								value > 11111
-									? (value / max) * 100 <= 10
-										? '--small'
-										: (value / max) * 100 >= 90
-										? '--big'
-										: ''
-									: ''
-							}`}
-							value={rangeValue ?? placeholder ?? 0}
-							onChange={val => {
-								const result =
-									optionType === 'string'
-										? val.toString()
-										: +val;
-								setCurrentValue(result);
-								latestValueRef.current = result;
-								onChangeValue(result);
-							}}
-							min={enableUnit ? minValueRange : min}
-							max={maxRange || (enableUnit ? maxValueRange : max)}
-							step={stepValue}
-							withInputField={false}
-							initialPosition={value || initial}
-							__nextHasNoMarginBottom
-						/>
-					)} */}
-				</BaseControl>
+				</>
 			)}
-		</>
+			{enableAuto && (
+				<ToggleSwitch
+					label={autoLabel || __('Auto', 'maxi-blocks')}
+					className={classNameAutoInput}
+					selected={value === 'auto'}
+					onChange={val => (val ? onChangeValue('auto') : onReset())}
+				/>
+			)}
+			{!disableReset && (
+				<ResetButton
+					className={resetButtonClassName}
+					onReset={() => {
+						setCurrentValue(defaultValue);
+						latestValueRef.current = defaultValue;
+						onChangeValue(defaultValue);
+						onReset();
+					}}
+					isSmall
+				/>
+			)}
+
+			{/* Temporarily disabled range slider */}
+			{/* {!disableRange && (
+				<RangeControl
+					label={label}
+					className={`maxi-advanced-number-control__range${
+						value > 11111
+							? (value / max) * 100 <= 10
+								? '--small'
+								: (value / max) * 100 >= 90
+								? '--big'
+								: ''
+							: ''
+					}`}
+					value={rangeValue ?? placeholder ?? 0}
+					onChange={val => {
+						const result =
+							optionType === 'string'
+								? val.toString()
+								: +val;
+						setCurrentValue(result);
+						latestValueRef.current = result;
+						onChangeValue(result);
+					}}
+					min={enableUnit ? minValueRange : min}
+					max={maxRange || (enableUnit ? maxValueRange : max)}
+					step={stepValue}
+					withInputField={false}
+					initialPosition={value || initial}
+					__nextHasNoMarginBottom
+				/>
+			)} */}
+		</BaseControl>
 	);
 };
 

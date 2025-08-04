@@ -1,5 +1,5 @@
 {
-	"core": "WordPress/WordPress#6.8.2",
+	"core": "WordPress/WordPress#6.4.3",
 	"plugins": ["."],
 	"env": {
 		"tests": {

@@ -149,7 +149,11 @@
 			}
 		}
 		.maxi-axis-control__item-auto {
-			margin-bottom: 12px;
+			order: 2;
+			&--axis-mode {
+				position: relative;
+				top: -5px;
+			}
 		}
 		.maxi-axis-control__axis-mode .maxi-axis-control__item-auto {
 			margin-bottom: 0;

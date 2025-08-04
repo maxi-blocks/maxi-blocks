@@ -354,6 +354,25 @@ const TypographyControl = props => {
 	// State for toggling advanced text options
 	const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
+	// Helper function to toggle text-decoration styles
+	const toggleTextDecoration = (currentDecoration, decorationType) => {
+		const currentDecorationStr = currentDecoration || '';
+		const isActive = currentDecorationStr.indexOf(decorationType) >= 0;
+		let newDecoration;
+
+		if (currentDecorationStr === 'unset') {
+			newDecoration = decorationType;
+		} else {
+			newDecoration = isActive
+				? currentDecorationStr.replace(decorationType, '').trim()
+				: `${currentDecorationStr} ${decorationType}`.trim();
+		}
+
+		if (!newDecoration) newDecoration = 'unset';
+
+		return newDecoration;
+	};
+
 	const rawTypography =
 		props.typography ||
 		getGroupAttributes(
@@ -682,10 +701,7 @@ const TypographyControl = props => {
 					/>
 				</div>
 				{!hideAlignment && (
-					<div
-						className='maxi-typography-control__alignment-buttons'
-						style={{ marginBottom: '8px' }}
-					>
+					<div className='maxi-typography-control__alignment-buttons'>
 						<AlignmentControl
 							{...getGroupAttributes(props, 'textAlignment')}
 							className='maxi-typography-control__text-alignment'
@@ -747,11 +763,8 @@ const TypographyControl = props => {
 						breakpoint={breakpoint}
 					/>
 				)}
-				<div
-					className='maxi-typography-control__weight-size-row'
-					style={{ display: 'flex', gap: '10px' }}
-				>
-					<div style={{ flex: '1' }}>
+				<div className='maxi-typography-control__weight-size-row'>
+					<div>
 						<FontWeightControl
 							onChange={val => {
 								onChangeFormat({
@@ -778,7 +791,7 @@ const TypographyControl = props => {
 							setShowLoader={setShowLoader}
 						/>
 					</div>
-					<div style={{ flex: '1' }}>
+					<div>
 						<AdvancedNumberControl
 							className='maxi-typography-control__size'
 							label={__('Text size', 'maxi-blocks')}
@@ -999,22 +1012,11 @@ const TypographyControl = props => {
 						className='maxi-typography-control__format-button maxi-typography-control__format-button--underline'
 						onClick={() => {
 							const currentDecoration =
-								getValue('text-decoration') || '';
-							const isActive =
-								currentDecoration.indexOf('underline') >= 0;
-							let newDecoration;
-
-							if (currentDecoration === 'unset') {
-								newDecoration = 'underline';
-							} else {
-								newDecoration = isActive
-									? currentDecoration
-											.replace('underline', '')
-											.trim()
-									: `${currentDecoration} underline`.trim();
-							}
-
-							if (!newDecoration) newDecoration = 'unset';
+								getValue('text-decoration');
+							const newDecoration = toggleTextDecoration(
+								currentDecoration,
+								'underline'
+							);
 
 							onChangeFormat({
 								[`${prefix}text-decoration`]: newDecoration,
@@ -1032,22 +1034,11 @@ const TypographyControl = props => {
 						className='maxi-typography-control__format-button maxi-typography-control__format-button--strikethrough'
 						onClick={() => {
 							const currentDecoration =
-								getValue('text-decoration') || '';
-							const isActive =
-								currentDecoration.indexOf('line-through') >= 0;
-							let newDecoration;
-
-							if (currentDecoration === 'unset') {
-								newDecoration = 'line-through';
-							} else {
-								newDecoration = isActive
-									? currentDecoration
-											.replace('line-through', '')
-											.trim()
-									: `${currentDecoration} line-through`.trim();
-							}
-
-							if (!newDecoration) newDecoration = 'unset';
+								getValue('text-decoration');
+							const newDecoration = toggleTextDecoration(
+								currentDecoration,
+								'line-through'
+							);
 
 							onChangeFormat({
 								[`${prefix}text-decoration`]: newDecoration,
@@ -1183,7 +1174,9 @@ const TypographyControl = props => {
 				{!disableFontFamily &&
 					!disableColor &&
 					!isStyleCards &&
-					!hideAlignment && <hr style={{ margin: '15px 0' }} />}
+					!hideAlignment && (
+						<hr className='maxi-typography-control__formatting-separator' />
+					)}
 
 				{/* Toggle button for advanced text options */}
 				<div className='maxi-typography-control__advanced-toggle'>
@@ -1192,23 +1185,16 @@ const TypographyControl = props => {
 						onClick={() =>
 							setShowAdvancedOptions(!showAdvancedOptions)
 						}
-						style={{
-							width: '100%',
-							justifyContent: 'space-between',
-							padding: '8px 12px',
-							marginBottom: '15px',
-						}}
 					>
 						<span>
 							{__('Show more text options', 'maxi-blocks')}
 						</span>
 						<span
-							style={{
-								transform: showAdvancedOptions
-									? 'rotate(180deg)'
-									: 'rotate(0deg)',
-								transition: 'transform 0.2s ease',
-							}}
+							className={`maxi-typography-control__toggle-arrow ${
+								showAdvancedOptions
+									? 'maxi-typography-control__toggle-arrow--expanded'
+									: ''
+							}`}
 						>
 							▼
 						</span>

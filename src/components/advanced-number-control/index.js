@@ -300,19 +300,10 @@ const AdvancedNumberControl = props => {
 							step={stepValue}
 							placeholder={placeholder}
 						/>
-						<div
-							style={{
-								position: 'absolute',
-								right: '2px',
-								top: '50%',
-								transform: 'translateY(-50%)',
-								display: 'flex',
-								flexDirection: 'column',
-								gap: '-4px',
-							}}
-						>
+						<div className='maxi-advanced-number-control__spinner-container'>
 							<button
 								type='button'
+								className='maxi-advanced-number-control__spinner-button'
 								onClick={e => {
 									e.preventDefault();
 									const currentVal =
@@ -327,32 +318,12 @@ const AdvancedNumberControl = props => {
 										onChangeValue(newVal);
 									}
 								}}
-								onMouseEnter={e => {
-									e.target.style.color =
-										'var(--maxi-primary-color)';
-								}}
-								onMouseLeave={e => {
-									e.target.style.color = 'var(--maxi-grey)';
-								}}
-								style={{
-									width: '12px',
-									height: '10px',
-									border: 'none',
-									background: 'transparent',
-									cursor: 'pointer',
-									padding: '0',
-									fontSize: '10px',
-									color: 'var(--maxi-grey)',
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									transition: 'color 0.2s ease',
-								}}
 							>
 								▲
 							</button>
 							<button
 								type='button'
+								className='maxi-advanced-number-control__spinner-button'
 								onClick={e => {
 									e.preventDefault();
 									const currentVal =
@@ -366,27 +337,6 @@ const AdvancedNumberControl = props => {
 										setCurrentValue(newVal);
 										onChangeValue(newVal);
 									}
-								}}
-								onMouseEnter={e => {
-									e.target.style.color =
-										'var(--maxi-primary-color)';
-								}}
-								onMouseLeave={e => {
-									e.target.style.color = 'var(--maxi-grey)';
-								}}
-								style={{
-									width: '12px',
-									height: '10px',
-									border: 'none',
-									background: 'transparent',
-									cursor: 'pointer',
-									padding: '0',
-									fontSize: '10px',
-									color: 'var(--maxi-grey)',
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									transition: 'color 0.2s ease',
 								}}
 							>
 								▼

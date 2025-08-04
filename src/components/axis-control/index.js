@@ -73,6 +73,9 @@ const AxisInput = props => {
 
 	const unit = getLastBreakpointValue(`${target}-unit`, breakpoint);
 
+	const isAxisMode =
+		singleTarget === 'vertical' || singleTarget === 'horizontal';
+
 	return (
 		<AdvancedNumberControl
 			label={__(capitalize(label), 'maxi-blocks')}
@@ -86,7 +89,10 @@ const AxisInput = props => {
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
 			autoLabel={__(`Auto ${label.toLowerCase()}`, 'maxi-blocks')}
-			classNameAutoInput='maxi-axis-control__item-auto'
+			classNameAutoInput={classnames(
+				'maxi-axis-control__item-auto',
+				isAxisMode && 'maxi-axis-control__item-auto--axis-mode'
+			)}
 			enableUnit={enableAxisUnits}
 			min={minMaxSettings[currentUnit].min || 0}
 			max={minMaxSettings[currentUnit].max || 999}
@@ -163,27 +169,11 @@ const AxisContent = props => {
 			)}
 			{sync === 'axis' && !disableSync && (
 				<>
-					<AxisInput
-						label={`${inputsArray[0]} / ${inputsArray[2]}`}
-						target={inputsArray[0]}
-						singleTarget='vertical'
-						getValue={getValue}
-						getLastBreakpointValue={getLastBreakpointValue}
-						breakpoint={breakpoint}
-						disableAuto={disableAuto}
-						onChangeValue={onChangeValue}
-						minMaxSettings={minMaxSettings}
-						currentUnit={currentUnit}
-						type={type}
-						enableAxisUnits={enableAxisUnits}
-						onChangeUnit={onChangeUnit}
-						onReset={() => onReset({ reset: 'vertical' })}
-					/>
-					{!disableLeftRightMargin && (
+					<div className='maxi-axis-control__row-1'>
 						<AxisInput
-							label={`${inputsArray[3]} / ${inputsArray[1]}`}
-							target={inputsArray[1]}
-							singleTarget='horizontal'
+							label={`${inputsArray[0]} / ${inputsArray[2]}`}
+							target={inputsArray[0]}
+							singleTarget='vertical'
 							getValue={getValue}
 							getLastBreakpointValue={getLastBreakpointValue}
 							breakpoint={breakpoint}
@@ -194,9 +184,29 @@ const AxisContent = props => {
 							type={type}
 							enableAxisUnits={enableAxisUnits}
 							onChangeUnit={onChangeUnit}
-							onReset={() => onReset({ reset: 'horizontal' })}
+							onReset={() => onReset({ reset: 'vertical' })}
 						/>
-					)}
+					</div>
+					<div className='maxi-axis-control__row-2'>
+						{!disableLeftRightMargin && (
+							<AxisInput
+								label={`${inputsArray[3]} / ${inputsArray[1]}`}
+								target={inputsArray[1]}
+								singleTarget='horizontal'
+								getValue={getValue}
+								getLastBreakpointValue={getLastBreakpointValue}
+								breakpoint={breakpoint}
+								disableAuto={disableAuto}
+								onChangeValue={onChangeValue}
+								minMaxSettings={minMaxSettings}
+								currentUnit={currentUnit}
+								type={type}
+								enableAxisUnits={enableAxisUnits}
+								onChangeUnit={onChangeUnit}
+								onReset={() => onReset({ reset: 'horizontal' })}
+							/>
+						)}
+					</div>
 				</>
 			)}
 			{sync === 'none' && !disableSync && (

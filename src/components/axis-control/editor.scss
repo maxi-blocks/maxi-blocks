@@ -104,13 +104,22 @@
 	}
 
 	.maxi-axis-control__axis-mode {
-		display: flex;
 		width: 100%;
-		gap: 10px;
 
-		.maxi-axis-control__content__item {
-			flex: 1;
-			margin-bottom: 0;
+		.maxi-axis-control__row-1 {
+			margin-bottom: 10px;
+		}
+
+		.maxi-axis-control__row-1,
+		.maxi-axis-control__row-2 {
+			display: flex;
+			gap: 10px;
+			align-items: center;
+
+			.maxi-axis-control__item-auto,
+			.maxi-axis-control__content__item {
+				flex: 1;
+			}
 		}
 	}
 

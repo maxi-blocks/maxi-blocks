@@ -12,6 +12,7 @@
 			margin-right: 0;
 		}
 	}
+
 	.maxi-tabs-control__button {
 		display: flex;
 		flex: 1;
@@ -26,9 +27,7 @@
 		opacity: 1 !important;
 		transition: all 0.5s;
 		cursor: pointer;
-	}
 
-	.maxi-tabs-control__button {
 		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
 			stroke: var(--maxi-grey-dark);
@@ -38,13 +37,145 @@
 		&:hover svg:not(.maxi-tabs-control__notification) path {
 			stroke: var(--maxi-secondary-color);
 		}
+
+		&--selected {
+			svg:not(.maxi-tabs-control__notification) path {
+				fill: transparent;
+				stroke: var(--maxi-secondary-color);
+			}
+		}
 	}
 
-	.maxi-tabs-control__button--selected,
-	.maxi-tabs-control__button--selected {
-		svg:not(.maxi-tabs-control__notification) path {
-			fill: transparent;
-			stroke: var(--maxi-secondary-color);
+	.maxi-axis-control__content__item {
+		position: relative !important;
+	}
+
+	.maxi-axis-control__content__item.maxi-advanced-number-control
+		.maxi-base-control__label {
+		position: absolute !important;
+		top: -8px !important;
+		left: -4px !important;
+		font-size: 10px !important;
+		color: var(--maxi-grey-dark) !important;
+		font-style: normal !important;
+		background: var(--maxi-white) !important;
+		padding: 0 5px !important;
+		pointer-events: none !important;
+		z-index: 10 !important;
+	}
+
+	.maxi-axis-control__content__item.maxi-advanced-number-control
+		.maxi-reset-button {
+		width: 18px !important;
+		height: 18px !important;
+		min-width: 18px !important;
+		max-width: 18px !important;
+		min-height: 18px !important;
+		max-height: 18px !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		background: var(--maxi-white) !important;
+		position: absolute !important;
+		right: -8px !important;
+		top: -8px !important;
+		z-index: 999 !important;
+		border-radius: 50% !important;
+		border: 1px solid var(--maxi-grey-light) !important;
+
+		svg {
+			width: 10px !important;
+			height: 10px !important;
+			margin: auto !important;
+			fill: var(--maxi-grey) !important;
+			display: block !important;
+		}
+
+		&:hover {
+			background: var(--maxi-mid-green) !important;
+			border-color: var(--maxi-mid-green) !important;
+			svg {
+				fill: var(--maxi-primary-color) !important;
+			}
+		}
+	}
+
+	.maxi-axis-control__all-mode .maxi-axis-control__content__item {
+		margin-bottom: 0;
+	}
+
+	.maxi-axis-control__axis-mode {
+		display: flex;
+		width: 100%;
+		gap: 10px;
+
+		.maxi-axis-control__content__item {
+			flex: 1;
+			margin-bottom: 0;
+		}
+	}
+
+	.maxi-axis-control__content__separate-grid {
+		width: 100%;
+		.maxi-axis-control__row-1,
+		.maxi-axis-control__row-2 {
+			display: flex;
+			width: 100%;
+			> div {
+				flex: 1;
+			}
+		}
+		.maxi-axis-control__row-1 {
+			margin-bottom: 10px;
+		}
+	}
+
+	&.maxi-axis-control__margin {
+		.maxi-axis-control__axis-mode {
+			gap: 8px;
+		}
+		.maxi-axis-control__content__separate-grid {
+			.maxi-axis-control__row-1,
+			.maxi-axis-control__row-2 {
+				gap: 8px;
+			}
+		}
+		.maxi-axis-control__item-auto {
+			margin-bottom: 12px;
+		}
+		.maxi-axis-control__axis-mode .maxi-axis-control__item-auto {
+			margin-bottom: 0;
+		}
+	}
+
+	&.maxi-axis-control__padding {
+		.maxi-axis-control__axis-mode {
+			gap: 4px;
+		}
+		.maxi-axis-control__content__separate-grid {
+			.maxi-axis-control__row-1,
+			.maxi-axis-control__row-2 {
+				gap: 4px;
+			}
+		}
+		.maxi-axis-control__item-auto {
+			margin-bottom: 8px;
+		}
+		.maxi-axis-control__axis-mode .maxi-axis-control__item-auto {
+			margin-bottom: 0;
+		}
+	}
+
+	.maxi-advanced-number-control .maxi-base-control__field {
+		&.maxi-axis-control__margin,
+		&.maxi-axis-control__padding {
+			.maxi-advanced-number-control .maxi-base-control__field {
+				gap: 4px !important;
+			}
+		}
+		&.maxi-axis-control__margin
+			.maxi-advanced-number-control
+			.maxi-base-control__field {
+			gap: 8px !important;
 		}
 	}
 }

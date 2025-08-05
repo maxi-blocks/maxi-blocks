@@ -115,23 +115,7 @@
 			position: relative;
 		}
 
-		/* Specific positioning for Font Size unit reset button */
-		.maxi-typography-control__size .maxi-reset-button--typography {
-			right: -6px !important;
-			top: -6px !important;
-		}
-
-		/* Ensure Font Size reset button is positioned relative to the main control, not the unit selector */
-		.maxi-typography-control__size .maxi-base-control {
-			position: relative !important;
-		}
-
-		.maxi-typography-control__size .maxi-reset-button--typography {
-			position: absolute !important;
-			right: -6px !important;
-			top: -6px !important;
-			z-index: 999 !important;
-		}
+		/* All typography reset buttons use the standardized system */
 
 		/* Ensure consistent label alignment for typography controls */
 		.maxi-base-control__label {

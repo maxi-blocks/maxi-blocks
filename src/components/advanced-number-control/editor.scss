@@ -103,23 +103,8 @@
 	}
 }
 
-// Remove duplicate styles and rely on the modifier class
-.maxi-typography-control__weight,
-.maxi-typography-control__size,
-.maxi-typography-control__line-height,
-.maxi-typography-control__bottom-gap {
-	.maxi-reset-button--typography {
-		// Only include styles that differ from the base modifier
-		&:hover {
-			background: var(--maxi-mid-green) !important;
-			border-color: var(--maxi-mid-green) !important;
-
-			svg {
-				fill: var(--maxi-primary-color) !important;
-			}
-		}
-	}
-}
+// Typography reset buttons now use the standardized system
+// No additional overrides needed - base styles handle everything
 
 /*******************************
 * RTL

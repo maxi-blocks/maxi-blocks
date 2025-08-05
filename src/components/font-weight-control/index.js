@@ -47,7 +47,7 @@ const FontWeightControl = props => {
 				defaultValue={defaultFontWeight}
 				options={options}
 				newStyle
-				resetButtonClassName='maxi-reset-button--typography'
+				resetButtonClassName='maxi-reset-button--absolute'
 				onChange={val => {
 					onChange(val);
 					onChangeFontWeight(val, fontName, fontStyle, setShowLoader);

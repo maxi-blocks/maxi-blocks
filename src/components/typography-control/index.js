@@ -799,7 +799,7 @@ const TypographyControl = props => {
 							unit={getValue('font-size-unit')}
 							defaultUnit={getDefault('font-size-unit')}
 							newStyle
-							resetButtonClassName='maxi-reset-button--typography'
+							resetButtonClassName='maxi-reset-button--absolute'
 							disableRange
 							onChangeUnit={val => {
 								const currentValue = getValue('font-size');
@@ -849,7 +849,7 @@ const TypographyControl = props => {
 						enableUnit
 						unit={getValue('line-height-unit') || ''}
 						defaultUnit={getDefault('line-height-unit')}
-						resetButtonClassName='maxi-reset-button--typography'
+						resetButtonClassName='maxi-reset-button--absolute'
 						disableRange
 						onChangeUnit={val => {
 							const currentValue = getValue('line-height');
@@ -897,7 +897,7 @@ const TypographyControl = props => {
 							enableUnit
 							unit={getValue('bottom-gap-unit')}
 							defaultUnit={getDefault('bottom-gap-unit')}
-							resetButtonClassName='maxi-reset-button--typography'
+							resetButtonClassName='maxi-reset-button--absolute'
 							disableRange
 							onChangeUnit={val => {
 								const currentValue = getValue('bottom-gap');
@@ -972,14 +972,7 @@ const TypographyControl = props => {
 				</div>
 
 				{/* Typography formatting buttons row */}
-				<div
-					className='maxi-typography-control__formatting-buttons'
-					style={{
-						display: 'flex',
-						gap: '5px',
-						marginBottom: '15px',
-					}}
-				>
+				<div className='maxi-typography-control__formatting-buttons'>
 					<Button
 						className='maxi-typography-control__format-button maxi-typography-control__format-button--bold'
 						onClick={() => {

@@ -50,9 +50,6 @@
 	--axis-control-label-size: 10px;
 	--axis-control-label-padding: 0 5px;
 	--axis-control-label-z-index: 10;
-	--axis-control-reset-size: 44px; // WCAG 2.5.5 compliant touch target size
-	--axis-control-reset-icon-size: 16px; // Scaled up proportionally
-	--axis-control-reset-z-index: 20; // Reduced from 999, just above labels (z-index: 10)
 
 	.maxi-axis-control__content__item {
 		position: relative;
@@ -72,47 +69,10 @@
 			box-sizing: border-box;
 		}
 
-		// Increased specificity for reset buttons
+		// Reset buttons now use standard system with --absolute variant
 		&.maxi-advanced-number-control .maxi-reset-button {
-			--reset-button-size: var(--axis-control-reset-size);
-
-			width: var(--reset-button-size);
-			height: var(--reset-button-size);
-			min-width: var(--reset-button-size);
-			max-width: var(--reset-button-size);
-			min-height: var(--reset-button-size);
-			max-height: var(--reset-button-size);
-			padding: 0;
-			margin: 0;
-			background: var(--maxi-white);
-			position: absolute;
-			right: -22px; // Adjusted for larger button size (44px/2 = 22px)
-			top: -22px; // Adjusted for larger button size (44px/2 = 22px)
-			z-index: var(--axis-control-reset-z-index);
-			border-radius: 50%;
-			border: 1px solid var(--maxi-grey-light);
-			box-sizing: border-box;
-
-			// Ensure button is accessible and clickable
-			cursor: pointer;
-			touch-action: manipulation;
-
-			svg {
-				width: var(--axis-control-reset-icon-size);
-				height: var(--axis-control-reset-icon-size);
-				margin: auto;
-				fill: var(--maxi-grey);
-				display: block;
-			}
-
-			&:hover {
-				background: var(--maxi-mid-green);
-				border-color: var(--maxi-mid-green);
-
-				svg {
-					fill: var(--maxi-primary-color);
-				}
-			}
+			// No overrides needed - base reset button styles handle everything
+			// These should use 'maxi-reset-button--absolute' class in the HTML
 		}
 	}
 

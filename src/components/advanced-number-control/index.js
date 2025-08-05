@@ -99,6 +99,7 @@ const AdvancedNumberControl = props => {
 		autoLabel,
 		onReset,
 		resetButtonClassName,
+		resetButtonSize = 'default', // 'small', 'default', 'large'
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
@@ -384,7 +385,11 @@ const AdvancedNumberControl = props => {
 						onChangeValue(defaultValue);
 						onReset();
 					}}
-					isSmall
+					isSmall={resetButtonSize === 'small'}
+					isLarge={resetButtonSize === 'large'}
+					isAbsolute={
+						resetButtonClassName === 'maxi-reset-button--absolute'
+					}
 				/>
 			)}
 

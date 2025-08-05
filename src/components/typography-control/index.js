@@ -171,6 +171,7 @@ const LinkOptions = props => {
 					deviceType={breakpoint}
 					clientId={clientId}
 					disableGradient
+					disableOpacity
 					globalProps={{ target: 'link', type: 'link' }}
 				/>
 			)}
@@ -216,6 +217,7 @@ const LinkOptions = props => {
 					deviceType={breakpoint}
 					clientId={clientId}
 					disableGradient
+					disableOpacity
 					globalProps={{ target: 'hover', type: 'link' }}
 				/>
 			)}
@@ -264,6 +266,7 @@ const LinkOptions = props => {
 					deviceType={breakpoint}
 					clientId={clientId}
 					disableGradient
+					disableOpacity
 					globalProps={{ target: 'active', type: 'link' }}
 				/>
 			)}
@@ -312,6 +315,7 @@ const LinkOptions = props => {
 					deviceType={breakpoint}
 					clientId={clientId}
 					disableGradient
+					disableOpacity
 					globalProps={{ target: 'visited', type: 'link' }}
 				/>
 			)}
@@ -1161,6 +1165,7 @@ const TypographyControl = props => {
 						clientId={clientId}
 						disableGradient
 						disablePalette={disablePalette}
+						disableOpacity
 					/>
 				)}
 

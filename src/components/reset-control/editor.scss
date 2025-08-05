@@ -8,6 +8,13 @@ button.maxi-components-button.maxi-reset-button {
 	--reset-border-width: 1px;
 	--reset-z-index: 20;
 
+	// Positioning custom properties
+	--reset-position: absolute;
+	--reset-top: -12px;
+	--reset-right: -12px;
+	--reset-bottom: auto;
+	--reset-left: auto;
+
 	// Base unified styles
 	display: flex !important;
 	align-items: center !important;
@@ -62,9 +69,11 @@ button.maxi-components-button.maxi-reset-button {
 	}
 
 	&--absolute {
-		position: absolute !important;
-		right: -12px !important;
-		top: -12px !important;
+		position: var(--reset-position) !important;
+		top: var(--reset-top) !important;
+		right: var(--reset-right) !important;
+		bottom: var(--reset-bottom) !important;
+		left: var(--reset-left) !important;
 		z-index: var(--reset-z-index) !important;
 	}
 
@@ -79,6 +88,59 @@ button.maxi-components-button.maxi-reset-button {
 		--reset-icon-size: 10px !important;
 	}
 
+	// Positioning preset variants
+	&--top-left {
+		--reset-top: -12px;
+		--reset-left: -12px;
+		--reset-right: auto;
+		--reset-bottom: auto;
+	}
+
+	&--top-right {
+		--reset-top: -12px;
+		--reset-right: -12px;
+		--reset-left: auto;
+		--reset-bottom: auto;
+	}
+
+	&--top-center {
+		--reset-top: -12px;
+		--reset-left: 50%;
+		--reset-right: auto;
+		--reset-bottom: auto;
+		transform: translateX(-50%);
+	}
+
+	&--bottom-left {
+		--reset-bottom: -12px;
+		--reset-left: -12px;
+		--reset-top: auto;
+		--reset-right: auto;
+	}
+
+	&--bottom-right {
+		--reset-bottom: -12px;
+		--reset-right: -12px;
+		--reset-top: auto;
+		--reset-left: auto;
+	}
+
+	&--center-left {
+		--reset-left: -12px;
+		--reset-top: 50%;
+		--reset-right: auto;
+		--reset-bottom: auto;
+		transform: translateY(-50%);
+	}
+
+	&--center-right {
+		--reset-right: -12px;
+		--reset-top: 50%;
+		--reset-left: auto;
+		--reset-bottom: auto;
+		transform: translateY(-50%);
+	}
+
 	// RTL support
 	@at-root .rtl #{&} {
 		&--inline {
@@ -87,8 +149,8 @@ button.maxi-components-button.maxi-reset-button {
 		}
 
 		&--absolute {
-			right: unset;
-			left: -12px;
+			--reset-right: auto;
+			--reset-left: -12px;
 		}
 	}
 
@@ -100,13 +162,18 @@ button.maxi-components-button.maxi-reset-button {
 	}
 }
 
-/* Typography controls now use the standard reset button system */
-.maxi-typography-control__weight .maxi-reset-button,
-.maxi-typography-control__size .maxi-reset-button,
-.maxi-typography-control__line-height .maxi-reset-button,
-.maxi-typography-control__bottom-gap .maxi-reset-button {
-	// These should use the --absolute variant for positioning
-	// No additional overrides needed - base styles handle everything
+/* High specificity override to beat RTL rules */
+html .maxi-typography-control__weight .maxi-reset-button--absolute,
+html .maxi-typography-control__size .maxi-reset-button--absolute,
+html .maxi-typography-control__line-height .maxi-reset-button--absolute,
+html .maxi-typography-control__bottom-gap .maxi-reset-button--absolute,
+.rtl .maxi-typography-control__weight .maxi-reset-button--absolute,
+.rtl .maxi-typography-control__size .maxi-reset-button--absolute,
+.rtl .maxi-typography-control__line-height .maxi-reset-button--absolute,
+.rtl .maxi-typography-control__bottom-gap .maxi-reset-button--absolute {
+	--reset-right: -8px !important;
+	--reset-left: auto !important;
+	--reset-top: -9px !important;
 }
 
 /* Specific context overrides - minimal and purposeful */

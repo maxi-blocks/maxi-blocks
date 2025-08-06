@@ -1105,7 +1105,7 @@ const TypographyControl = props => {
 					</Button>
 				</div>
 
-				<hr className='maxi-typography-control__formatting-separator' />
+				<hr className='maxi-typography-control__separator' />
 
 				{!disableColor && !isStyleCards && (
 					<ColorControl
@@ -1173,22 +1173,20 @@ const TypographyControl = props => {
 					!disableColor &&
 					!isStyleCards &&
 					!hideAlignment && (
-						<hr className='maxi-typography-control__formatting-separator' />
+						<hr className='maxi-typography-control__separator' />
 					)}
 
 				{/* Toggle button for advanced text options */}
 				<div className='maxi-typography-control__advanced-toggle'>
 					<Button
-						variant='secondary'
+						className='maxi-typography-control-button'
 						onClick={() =>
 							setShowAdvancedOptions(!showAdvancedOptions)
 						}
 					>
-						<span>
-							{__('Show more text options', 'maxi-blocks')}
-						</span>
+						{__('Show more text options', 'maxi-blocks')}
 						<span
-							className={`maxi-typography-control__toggle-arrow ${
+							className={`maxi-typography-control-arrow-span ${
 								showAdvancedOptions
 									? 'maxi-typography-control__toggle-arrow--expanded'
 									: ''
@@ -1671,7 +1669,7 @@ const TypographyControl = props => {
 						/>
 						{!hideTextShadow && (
 							<>
-								<hr />
+								<hr className='maxi-typography-control__separator' />
 								<TextShadowControl
 									className='maxi-typography-control__text-shadow'
 									textShadow={getValue('text-shadow')}

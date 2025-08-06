@@ -37,7 +37,7 @@
 		.maxi-tabs-control__button[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green) !important;
 			border-color: var(--maxi-primary-color) !important;
-			color: var(--maxi-black) !important;
+			color: var(--maxi-primary-color) !important;
 		}
 	}
 
@@ -207,7 +207,7 @@
 	}
 
 	/* Horizontal separator after formatting buttons */
-	.maxi-typography-control__formatting-separator {
+	.maxi-typography-control__separator {
 		border: none !important;
 		border-top: 1px solid var(--maxi-grey-light) !important;
 		margin: 15px 0 !important;
@@ -247,6 +247,19 @@
 		&--expanded {
 			transform: rotate(180deg);
 		}
+	}
+
+	.maxi-typography-control-button {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		text-align: left;
+		margin-top: 10px;
+	}
+
+	.maxi-typography-control-arrow-span {
+		transition: transform 0.3s ease;
 	}
 
 	/* Advanced text options collapsible section */

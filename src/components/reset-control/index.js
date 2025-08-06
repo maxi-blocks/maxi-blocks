@@ -76,12 +76,10 @@ const ResetButton = props => {
 			action='reset'
 			type='reset'
 			aria-label={__('Reset', 'maxi-blocks')}
-			onClick={
-				(e => {
-					e.preventDefault();
-				},
-				otherProps.onReset)
-			}
+			onClick={e => {
+				e.preventDefault();
+				otherProps.onReset(e);
+			}}
 		>
 			{reset}
 		</Button>

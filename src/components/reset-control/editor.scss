@@ -1,7 +1,5 @@
-// Higher specificity to override legacy styles
-.maxi-reset-button,
-.maxi-components-button.maxi-reset-button,
-button.maxi-components-button.maxi-reset-button {
+// Placeholder for shared reset button styles
+%maxi-reset-button {
 	// CSS custom properties for easy theming
 	--reset-size: 22px;
 	--reset-icon-size: 12px;
@@ -61,6 +59,13 @@ button.maxi-components-button.maxi-reset-button {
 			fill: var(--maxi-primary-color) !important;
 		}
 	}
+}
+
+// Higher specificity to override legacy styles
+.maxi-reset-button,
+.maxi-components-button.maxi-reset-button,
+button.maxi-components-button.maxi-reset-button {
+	@extend %maxi-reset-button;
 
 	// Positioning variants
 	&--inline {
@@ -153,13 +158,10 @@ button.maxi-components-button.maxi-reset-button {
 			--reset-left: -12px;
 		}
 	}
+}
 
-	/* Typography controls now use standard --absolute variant */
-	&--typography {
-		// This is now just an alias for the absolute variant
-		// Typography controls should use 'maxi-reset-button--absolute' class instead
-		@extend .maxi-reset-button;
-	}
+.maxi-reset-button--typography {
+	@extend %maxi-reset-button;
 }
 
 /* High specificity override to beat RTL rules */

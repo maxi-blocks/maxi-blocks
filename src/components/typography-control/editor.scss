@@ -160,7 +160,7 @@
 			color: var(--maxi-black) !important;
 			cursor: pointer !important;
 			font-family: inherit !important;
-			font-size: 12px !important;
+			font-size: 16px !important;
 			font-weight: normal !important;
 			line-height: 1 !important;
 			text-align: center !important;
@@ -200,7 +200,7 @@
 			&--capitalize,
 			&--uppercase,
 			&--lowercase {
-				font-size: 10px !important;
+				font-size: 16px !important;
 				font-weight: 500 !important;
 			}
 		}
@@ -282,5 +282,106 @@
 	/* Alignment buttons spacing */
 	.maxi-typography-control__alignment-buttons {
 		margin-bottom: 8px;
+	}
+}
+
+/* ========================================
+ * STYLE CARDS POPUP - TYPOGRAPHY CONTROL
+ * ========================================
+ * Clean, modular approach that inherits base styles
+ * with minimal overrides for popup context
+ */
+
+/* Target both style cards popup AND any style cards panel/container */
+.maxi-style-cards__popover,
+.maxi-accordion-control__item,
+.maxi-style-cards__sc,
+[class*='maxi-style-cards'] {
+	/* Typography Control - Style Cards Specific */
+	.maxi-typography-control[class*='maxi-style-cards-control__sc__'] {
+		/* Inherit all base typography control styles */
+		/* Only override what's necessary for popup context */
+
+		/* Base control adjustments - maintain sidebar look */
+		.maxi-base-control {
+			/* Keep sidebar spacing and appearance */
+		}
+
+		/* Style Cards specific: Make advanced number control wider */
+		.maxi-advanced-number-control__value {
+			width: 105px !important;
+		}
+
+		/* Style Cards specific: Make formatting buttons bigger */
+		.maxi-typography-control__formatting-buttons {
+			.maxi-typography-control__format-button {
+				min-width: 43.5px !important;
+				height: 38px !important;
+				font-size: 16px !important;
+				padding: 6px 10px !important;
+			}
+		}
+
+		/* Style Cards specific: Proper spacing like sidebar */
+		.maxi-base-control {
+			margin-bottom: 10px !important;
+
+			&__field {
+				gap: 5px !important;
+				margin-bottom: 0 !important;
+			}
+		}
+
+		/* Fix advanced number control spacing in style cards */
+		.maxi-advanced-number-control {
+			.maxi-base-control {
+				margin-bottom: 0 !important;
+			}
+		}
+
+		/* Keep formatting buttons exactly like sidebar */
+		.maxi-typography-control__formatting-buttons {
+			/* Inherits all base styles - no changes needed */
+		}
+
+		/* Keep weight-size row layout like sidebar */
+		.maxi-typography-control__weight-size-row {
+			/* Inherits all base styles - no changes needed */
+		}
+
+		/* Keep spacing controls like sidebar */
+		.maxi-typography-control__spacing-controls {
+			/* Inherits all base styles - no changes needed */
+		}
+
+		/* Keep font size control like sidebar */
+		.maxi-typography-control__size {
+			/* Inherits all base styles - no changes needed */
+		}
+
+		/* Keep floating labels like sidebar */
+		.maxi-base-control__label {
+			/* Inherits floating-label mixin - no changes needed */
+		}
+
+		/* Keep advanced toggle like sidebar */
+		.maxi-typography-control__advanced-toggle {
+			/* Inherits all base styles - no changes needed */
+		}
+
+		/* Keep separator like sidebar */
+		.maxi-typography-control__separator {
+			/* Inherits all base styles - no changes needed */
+		}
+
+		/* Keep advanced options like sidebar */
+		.maxi-typography-control__advanced-options {
+			/* Inherits all base styles - no changes needed */
+		}
+
+		/* Keep alignment buttons like sidebar */
+		.maxi-typography-control__alignment-buttons {
+			/* Inherits all base styles - no changes needed */
+		}
 	}
 }

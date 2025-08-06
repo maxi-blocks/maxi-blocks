@@ -22,46 +22,131 @@
 	.maxi-base-control {
 		margin-bottom: 0;
 	}
+
+	&__input-wrapper {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		flex: none;
+		width: 72px;
+		border: none !important;
+		outline: none !important;
+		box-shadow: none !important;
+
+		&:focus,
+		&:focus-within {
+			border: none !important;
+			outline: none !important;
+			box-shadow: none !important;
+		}
+	}
+
 	&__value {
-		width: 20%;
+		width: 100%;
 		height: 31px;
 		flex: none;
-		&::-webkit-outer-spin-button {
-			-webkit-appearance: auto;
-		}
+		padding-right: 24px; // Make room for custom spinner buttons
+		min-width: 60px;
+		border: none !important; // Remove any inherited borders
+		box-shadow: none !important; // Remove any box shadows
+		background: transparent !important; // Ensure transparent background
+
+		// Hide native browser spinner buttons since we have custom ones
+		&::-webkit-outer-spin-button,
 		&::-webkit-inner-spin-button {
-			-webkit-appearance: auto;
-			opacity: 1;
+			-webkit-appearance: none;
+			margin: 0;
 		}
-		/* Temporarily removed custom arrows to test native ones */
+
+		// Firefox
+		&[type='number'] {
+			-moz-appearance: textfield;
+			appearance: textfield;
+		}
+
+		&:focus,
+		&:focus-visible,
+		&:active {
+			// Ensure input focus doesn't interfere with spinner buttons
+			z-index: 0;
+			border: none !important; // Remove focus border
+			outline: none !important; // Remove focus outline
+			box-shadow: none !important; // Remove focus box shadow
+			background: transparent !important; // Keep background transparent
+		}
 	}
 
 	&__spinner-container {
 		position: absolute;
-		right: 2px;
+		right: 4px;
 		top: 50%;
-		transform: translateY(-50%);
+		transform: translateY(-48%); // Move down 2px from center
 		display: flex;
 		flex-direction: column;
-		gap: -4px;
+		gap: -1px; // Bring buttons closer together
+		z-index: 1;
 	}
 
 	&__spinner-button {
-		width: 12px;
-		height: 10px;
+		width: 16px;
+		height: 12px;
 		border: none;
 		background: transparent;
 		cursor: pointer;
 		padding: 0;
-		font-size: 10px;
 		color: var(--maxi-grey);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: color 0.2s ease;
+		transition: all 0.2s ease;
+		border-radius: 2px;
+		position: relative;
+
+		// Better focus states for accessibility
+		&:focus {
+			outline: none;
+			border: none;
+			background: var(--maxi-whisper-green);
+		}
 
 		&:hover {
 			color: var(--maxi-primary-color);
+			background: var(--maxi-whisper-green);
+			border: none;
+
+			svg {
+				color: var(--maxi-primary-color);
+				border: none;
+			}
+		}
+
+		&:active {
+			transform: scale(0.95);
+			border: none;
+		}
+
+		// Disabled state
+		&:disabled {
+			color: var(--maxi-grey);
+			cursor: not-allowed;
+
+			&:hover {
+				background: transparent;
+			}
+		}
+
+		// SVG styling
+		svg {
+			pointer-events: none;
+			transition: inherit;
+		}
+
+		// Specific button styling
+		&--up {
+		}
+
+		&--down {
+			border-top: 1px solid var(--maxi-grey);
 		}
 	}
 	.components-range-control {

@@ -270,13 +270,7 @@ const AdvancedNumberControl = props => {
 			{showHelpContent && helpContent}
 			{value !== 'auto' && (
 				<>
-					<div
-						style={{
-							position: 'relative',
-							display: 'inline-flex',
-							alignItems: 'center',
-						}}
-					>
+					<div className='maxi-advanced-number-control__input-wrapper'>
 						<input
 							id={advancedNumberControlId}
 							type={
@@ -304,7 +298,13 @@ const AdvancedNumberControl = props => {
 						<div className='maxi-advanced-number-control__spinner-container'>
 							<button
 								type='button'
-								className='maxi-advanced-number-control__spinner-button'
+								className='maxi-advanced-number-control__spinner-button maxi-advanced-number-control__spinner-button--up'
+								disabled={(() => {
+									const currentVal =
+										parseFloat(latestValueRef.current) || 0;
+									const maxVal = enableUnit ? maxValue : max;
+									return currentVal >= maxVal;
+								})()}
 								onClick={e => {
 									e.preventDefault();
 									const currentVal =
@@ -319,12 +319,34 @@ const AdvancedNumberControl = props => {
 										onChangeValue(newVal);
 									}
 								}}
+								title='Increase value'
+								aria-label='Increase value'
 							>
-								▲
+								<svg
+									width='8'
+									height='5'
+									viewBox='0 0 8 5'
+									fill='none'
+									xmlns='http://www.w3.org/2000/svg'
+								>
+									<path
+										d='M1 4L4 1L7 4'
+										stroke='currentColor'
+										strokeWidth='1.5'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+									/>
+								</svg>
 							</button>
 							<button
 								type='button'
-								className='maxi-advanced-number-control__spinner-button'
+								className='maxi-advanced-number-control__spinner-button maxi-advanced-number-control__spinner-button--down'
+								disabled={(() => {
+									const currentVal =
+										parseFloat(latestValueRef.current) || 0;
+									const minVal = enableUnit ? minValue : min;
+									return currentVal <= minVal;
+								})()}
 								onClick={e => {
 									e.preventDefault();
 									const currentVal =
@@ -339,8 +361,24 @@ const AdvancedNumberControl = props => {
 										onChangeValue(newVal);
 									}
 								}}
+								title='Decrease value'
+								aria-label='Decrease value'
 							>
-								▼
+								<svg
+									width='8'
+									height='5'
+									viewBox='0 0 8 5'
+									fill='none'
+									xmlns='http://www.w3.org/2000/svg'
+								>
+									<path
+										d='M7 1L4 4L1 1'
+										stroke='currentColor'
+										strokeWidth='1.5'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+									/>
+								</svg>
 							</button>
 						</div>
 					</div>

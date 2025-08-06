@@ -176,6 +176,23 @@ html .maxi-typography-control__bottom-gap .maxi-reset-button--absolute,
 	--reset-top: -9px !important;
 }
 
+/* Font family selector specific reset button with higher z-index */
+html .maxi-font-family-selector__container .maxi-reset-button--absolute,
+html .maxi-font-family-selector__container .maxi-reset-button--font-selector,
+.rtl .maxi-font-family-selector__container .maxi-reset-button--absolute,
+.rtl .maxi-font-family-selector__container .maxi-reset-button--font-selector {
+	--reset-right: -8px !important;
+	--reset-left: auto !important;
+	--reset-top: -9px !important;
+	--reset-z-index: 999 !important;
+}
+
+/* New unique class for font family selector reset button */
+.maxi-reset-button--font-selector {
+	@extend .maxi-reset-button--absolute;
+	--reset-z-index: 999 !important;
+}
+
 /* Specific context overrides - minimal and purposeful */
 .maxi-color-control__palette-label {
 	.maxi-reset-button {

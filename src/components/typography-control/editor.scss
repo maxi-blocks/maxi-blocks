@@ -52,12 +52,17 @@
 
 	.maxi-typography-control__weight-size-row {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 10px;
 		width: 100%;
 
 		> div {
 			flex: 1;
 			position: relative; /* For typography reset buttons */
+
+			&:has(.maxi-typography-control__weight-warning) {
+				flex-basis: 100%;
+			}
 		}
 	}
 

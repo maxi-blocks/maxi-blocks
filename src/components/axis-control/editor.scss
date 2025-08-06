@@ -1,17 +1,51 @@
+/* ========================================
+   MAXI AXIS CONTROL COMPONENT STYLES
+   ======================================== */
+
 .maxi-axis-control {
 	margin-bottom: 10px;
+	background-color: #ff0080 !important; /* TEMPORARY: bright pink */
+
+	/* ========================================
+	   CSS CUSTOM PROPERTIES / VARIABLES
+	   ======================================== */
+
+	// Label styling variables
+	--axis-control-label-size: 10px;
+	--axis-control-label-padding: 0 5px;
+	--axis-control-label-z-index: 10;
+
+	// Layout spacing variables
+	--axis-control-row-gap: 10px;
+	--axis-control-item-gap: 10px;
+
+	// Gap spacing variables
+	--axis-control-gap-default: 4px;
+	--axis-control-gap-margin: 8px;
+
+	/* ========================================
+	   HEADER SECTION
+	   ======================================== */
 
 	&__header {
 		margin-bottom: 10px;
+		background-color: #00ff40 !important; /* TEMPORARY: bright green */
 
 		.maxi-base-control__field {
 			margin-bottom: 0;
+			background-color: #0080ff !important; /* TEMPORARY: bright blue */
 		}
+
 		.maxi-tabs-control {
 			margin-left: 0;
 			margin-right: 0;
+			background-color: #ffff00 !important; /* TEMPORARY: bright yellow */
 		}
 	}
+
+	/* ========================================
+	   TAB CONTROL BUTTONS
+	   ======================================== */
 
 	.maxi-tabs-control__button {
 		display: flex;
@@ -27,18 +61,24 @@
 		opacity: 1;
 		transition: all 0.5s;
 		cursor: pointer;
+		background-color: #ff8000 !important; /* TEMPORARY: bright orange */
 
+		// SVG icon styling
 		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
 			stroke: var(--maxi-grey-dark);
 			transition: stroke 0.3s ease;
 		}
 
+		// Hover state
 		&:hover svg:not(.maxi-tabs-control__notification) path {
 			stroke: var(--maxi-secondary-color);
 		}
 
+		// Selected state
 		&--selected {
+			background-color: #8000ff !important; /* TEMPORARY: bright purple */
+
 			svg:not(.maxi-tabs-control__notification) path {
 				fill: transparent;
 				stroke: var(--maxi-secondary-color);
@@ -46,15 +86,15 @@
 		}
 	}
 
-	// CSS custom properties for axis control styling
-	--axis-control-label-size: 10px;
-	--axis-control-label-padding: 0 5px;
-	--axis-control-label-z-index: 10;
+	/* ========================================
+	   CONTENT ITEM STYLING
+	   ======================================== */
 
 	.maxi-axis-control__content__item {
 		position: relative;
+		background-color: #00ffff !important; /* TEMPORARY: bright cyan */
 
-		// Increased specificity for floating labels
+		// Floating labels with increased specificity
 		&.maxi-advanced-number-control .maxi-base-control__label {
 			position: absolute;
 			top: -8px;
@@ -67,29 +107,37 @@
 			pointer-events: none;
 			z-index: var(--axis-control-label-z-index);
 			box-sizing: border-box;
+			background-color: #ff0040 !important; /* TEMPORARY: bright red */
 		}
 
-		// Reset buttons now use standard system with --absolute variant
+		// Reset buttons - using standard system with --absolute variant
 		&.maxi-advanced-number-control .maxi-reset-button {
 			// No overrides needed - base reset button styles handle everything
 			// These should use 'maxi-reset-button--absolute' class in the HTML
 		}
 	}
 
+	/* ========================================
+	   ALL MODE LAYOUT
+	   ======================================== */
+
 	.maxi-axis-control__all-mode .maxi-axis-control__content__item {
 		margin-bottom: 0;
+		background-color: #40ff00 !important; /* TEMPORARY: bright lime */
 	}
 
-	// CSS custom properties for layout spacing
-	--axis-control-row-gap: 10px;
-	--axis-control-item-gap: 10px;
+	/* ========================================
+	   AXIS MODE LAYOUT
+	   ======================================== */
 
 	.maxi-axis-control__axis-mode {
 		width: 100%;
 		container-type: inline-size;
+		background-color: #ff4080 !important; /* TEMPORARY: bright magenta */
 
 		.maxi-axis-control__row-1 {
 			margin-bottom: var(--axis-control-row-gap);
+			background-color: #80ff40 !important; /* TEMPORARY: bright chartreuse */
 		}
 
 		.maxi-axis-control__row-1,
@@ -98,18 +146,25 @@
 			gap: var(--axis-control-item-gap);
 			align-items: stretch;
 			min-height: 32px;
+			background-color: #4080ff !important; /* TEMPORARY: bright sky blue */
 
 			.maxi-axis-control__item-auto,
 			.maxi-axis-control__content__item {
 				flex: 1;
 				min-width: 0; // Prevent flex items from overflowing
+				background-color: #ff8040 !important; /* TEMPORARY: bright coral */
 			}
 		}
 	}
 
+	/* ========================================
+	   SEPARATE GRID LAYOUT
+	   ======================================== */
+
 	.maxi-axis-control__content__separate-grid {
 		width: 100%;
 		container-type: inline-size;
+		background-color: #8040ff !important; /* TEMPORARY: bright violet */
 
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
@@ -118,61 +173,96 @@
 			gap: var(--axis-control-item-gap);
 			align-items: stretch;
 			min-height: 32px;
+			background-color: #00ff80 !important; /* TEMPORARY: bright spring green */
 
 			> div {
 				flex: 1;
 				min-width: 0; // Prevent flex items from overflowing
+				background-color: #ff0080 !important; /* TEMPORARY: bright hot pink */
 			}
 		}
 
 		.maxi-axis-control__row-1 {
 			margin-bottom: var(--axis-control-row-gap);
+			background-color: #40ff80 !important; /* TEMPORARY: bright seafoam */
 		}
 	}
 
+	/* ========================================
+	   MARGIN-SPECIFIC STYLING
+	   ======================================== */
+
 	&.maxi-axis-control__margin {
+		background-color: #ffff80 !important; /* TEMPORARY: bright light yellow */
+
 		.maxi-axis-control__axis-mode {
 			gap: 8px;
+			background-color: #80ffff !important; /* TEMPORARY: bright light cyan */
 		}
+
 		.maxi-axis-control__content__separate-grid {
+			background-color: #ff80ff !important; /* TEMPORARY: bright light magenta */
+
 			.maxi-axis-control__row-1,
 			.maxi-axis-control__row-2 {
 				gap: 8px;
+				background-color: #80ff80 !important; /* TEMPORARY: bright light green */
 			}
 		}
+
 		.maxi-axis-control__item-auto {
 			order: 2;
+			background-color: #ff4040 !important; /* TEMPORARY: bright red-orange */
+
 			&--axis-mode {
 				position: relative;
 				top: -5px;
+				background-color: #40ff40 !important; /* TEMPORARY: bright green */
 			}
 		}
+
 		.maxi-axis-control__axis-mode .maxi-axis-control__item-auto {
 			margin-bottom: 0;
+			background-color: #4040ff !important; /* TEMPORARY: bright blue */
 		}
 	}
 
+	/* ========================================
+	   PADDING-SPECIFIC STYLING
+	   ======================================== */
+
 	&.maxi-axis-control__padding {
+		background-color: #8080ff !important; /* TEMPORARY: bright periwinkle */
+
 		.maxi-axis-control__axis-mode {
 			gap: 4px;
+			background-color: #ff8080 !important; /* TEMPORARY: bright pink */
 		}
+
 		.maxi-axis-control__content__separate-grid {
+			background-color: #80ff00 !important; /* TEMPORARY: bright lime green */
+
 			.maxi-axis-control__row-1,
 			.maxi-axis-control__row-2 {
 				gap: 4px;
+				background-color: #0080ff !important; /* TEMPORARY: bright azure */
 			}
 		}
+
 		.maxi-axis-control__item-auto {
 			margin-bottom: 8px;
+			background-color: #ff00ff !important; /* TEMPORARY: bright fuchsia */
 		}
+
 		.maxi-axis-control__axis-mode .maxi-axis-control__item-auto {
 			margin-bottom: 0;
+			background-color: #00ff00 !important; /* TEMPORARY: bright pure green */
 		}
 	}
 
-	// CSS custom properties for gap spacing
-	--axis-control-gap-default: 4px;
-	--axis-control-gap-margin: 8px;
+	/* ========================================
+	   ADVANCED NUMBER CONTROL OVERRIDES
+	   ======================================== */
 
 	// Flattened selectors to avoid impossible self-nesting
 	.maxi-advanced-number-control
@@ -180,10 +270,12 @@
 	.maxi-advanced-number-control
 		.maxi-base-control__field.maxi-axis-control__padding {
 		gap: var(--axis-control-gap-default);
+		background-color: #ffaa00 !important; /* TEMPORARY: bright amber */
 	}
 
 	.maxi-advanced-number-control
 		.maxi-base-control__field.maxi-axis-control__margin {
 		gap: var(--axis-control-gap-margin);
+		background-color: #00aaff !important; /* TEMPORARY: bright dodger blue */
 	}
 }

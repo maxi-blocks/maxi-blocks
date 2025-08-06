@@ -66,6 +66,7 @@ const AxisInput = props => {
 		enableAxisUnits,
 		onChangeUnit,
 		onReset,
+		disableRange,
 	} = props;
 
 	const value = getValue(target, breakpoint);
@@ -102,6 +103,7 @@ const AxisInput = props => {
 			}
 			unit={unit}
 			onReset={onReset}
+			disableRange={disableRange}
 		/>
 	);
 };
@@ -124,6 +126,7 @@ const AxisContent = props => {
 		disableLeftRightMargin,
 		onChangeUnit,
 		enableAxisUnits,
+		disableRange,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -165,6 +168,7 @@ const AxisContent = props => {
 					enableAxisUnits={enableAxisUnits}
 					onChangeUnit={onChangeUnit}
 					onReset={() => onReset({ reset: 'all' })}
+					disableRange={disableRange}
 				/>
 			)}
 			{sync === 'axis' && !disableSync && (
@@ -185,6 +189,7 @@ const AxisContent = props => {
 							enableAxisUnits={enableAxisUnits}
 							onChangeUnit={onChangeUnit}
 							onReset={() => onReset({ reset: 'vertical' })}
+							disableRange={disableRange}
 						/>
 					</div>
 					<div className='maxi-axis-control__row-2'>
@@ -204,6 +209,7 @@ const AxisContent = props => {
 								enableAxisUnits={enableAxisUnits}
 								onChangeUnit={onChangeUnit}
 								onReset={() => onReset({ reset: 'horizontal' })}
+								disableRange={disableRange}
 							/>
 						)}
 					</div>
@@ -229,6 +235,7 @@ const AxisContent = props => {
 								enableAxisUnits={enableAxisUnits}
 								onChangeUnit={onChangeUnit}
 								onReset={() => onReset({ reset: 'top' })}
+								disableRange={disableRange}
 							/>
 						</div>
 						{!disableLeftRightMargin && (
@@ -250,6 +257,7 @@ const AxisContent = props => {
 									enableAxisUnits={enableAxisUnits}
 									onChangeUnit={onChangeUnit}
 									onReset={() => onReset({ reset: 'right' })}
+									disableRange={disableRange}
 								/>
 							</div>
 						)}
@@ -272,6 +280,7 @@ const AxisContent = props => {
 								enableAxisUnits={enableAxisUnits}
 								onChangeUnit={onChangeUnit}
 								onReset={() => onReset({ reset: 'bottom' })}
+								disableRange={disableRange}
 							/>
 						</div>
 						{!disableLeftRightMargin && (
@@ -293,6 +302,7 @@ const AxisContent = props => {
 									enableAxisUnits={enableAxisUnits}
 									onChangeUnit={onChangeUnit}
 									onReset={() => onReset({ reset: 'left' })}
+									disableRange={disableRange}
 								/>
 							</div>
 						)}

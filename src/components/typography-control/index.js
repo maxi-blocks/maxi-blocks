@@ -10,11 +10,9 @@ import { useState, useContext } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
-import AlignmentControl from '@components/alignment-control';
 import Button from '@components/button';
 import ColorControl from '@components/color-control';
 import FontFamilySelector from '@components/font-family-selector';
-import FontLevelControl from '@components/font-level-control';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SelectControl from '@components/select-control';
 import TextShadowControl from '@components/text-shadow-control';
@@ -696,31 +694,6 @@ const TypographyControl = props => {
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>
 			<div className={classes}>
-				{/* Font Level Control (Heading/Paragraph tags) */}
-				<div className='maxi-typography-control__font-level'>
-					<FontLevelControl
-						{...getGroupAttributes(props, 'typography', true)}
-						value={textLevel}
-						onChange={onChange}
-					/>
-				</div>
-				{!hideAlignment && (
-					<div className='maxi-typography-control__alignment-buttons'>
-						<AlignmentControl
-							{...getGroupAttributes(props, 'textAlignment')}
-							className='maxi-typography-control__text-alignment'
-							onChange={val => {
-								onChangeFormat({
-									[`${prefix}text-alignment`]:
-										val[Object.keys(val)[0]],
-								});
-							}}
-							breakpoint={breakpoint}
-							type='text'
-							disableRTC
-						/>
-					</div>
-				)}
 				{!disableFontFamily && (
 					<FontFamilySelector
 						className='maxi-typography-control__font-family'
@@ -976,134 +949,141 @@ const TypographyControl = props => {
 				</div>
 
 				{/* Typography formatting buttons row */}
-				<div className='maxi-typography-control__formatting-buttons'>
-					<Button
-						className='maxi-typography-control__format-button maxi-typography-control__format-button--bold'
-						onClick={() => {
-							const currentWeight = getValue('font-weight');
-							const isActive = currentWeight > 400;
-							onChangeFormat({
-								[`${prefix}font-weight`]: isActive ? 400 : 700,
-							});
-						}}
-						aria-pressed={getValue('font-weight') > 400}
-					>
-						B
-					</Button>
-					<Button
-						className='maxi-typography-control__format-button maxi-typography-control__format-button--italic'
-						onClick={() => {
-							const currentStyle = getValue('font-style');
-							const isActive = currentStyle === 'italic';
-							onChangeFormat({
-								[`${prefix}font-style`]: isActive
-									? 'normal'
-									: 'italic',
-							});
-						}}
-						aria-pressed={getValue('font-style') === 'italic'}
-					>
-						I
-					</Button>
-					<Button
-						className='maxi-typography-control__format-button maxi-typography-control__format-button--underline'
-						onClick={() => {
-							const currentDecoration =
-								getValue('text-decoration');
-							const newDecoration = toggleTextDecoration(
-								currentDecoration,
-								'underline'
-							);
+				{!disableFormats && (
+					<div className='maxi-typography-control__formatting-buttons'>
+						<Button
+							className='maxi-typography-control__format-button maxi-typography-control__format-button--bold'
+							onClick={() => {
+								const currentWeight = getValue('font-weight');
+								const isActive = currentWeight > 400;
+								onChangeFormat({
+									[`${prefix}font-weight`]: isActive
+										? 400
+										: 700,
+								});
+							}}
+							aria-pressed={getValue('font-weight') > 400}
+						>
+							B
+						</Button>
+						<Button
+							className='maxi-typography-control__format-button maxi-typography-control__format-button--italic'
+							onClick={() => {
+								const currentStyle = getValue('font-style');
+								const isActive = currentStyle === 'italic';
+								onChangeFormat({
+									[`${prefix}font-style`]: isActive
+										? 'normal'
+										: 'italic',
+								});
+							}}
+							aria-pressed={getValue('font-style') === 'italic'}
+						>
+							I
+						</Button>
+						<Button
+							className='maxi-typography-control__format-button maxi-typography-control__format-button--underline'
+							onClick={() => {
+								const currentDecoration =
+									getValue('text-decoration');
+								const newDecoration = toggleTextDecoration(
+									currentDecoration,
+									'underline'
+								);
 
-							onChangeFormat({
-								[`${prefix}text-decoration`]: newDecoration,
-							});
-						}}
-						aria-pressed={
-							(getValue('text-decoration') || '').indexOf(
-								'underline'
-							) >= 0
-						}
-					>
-						U
-					</Button>
-					<Button
-						className='maxi-typography-control__format-button maxi-typography-control__format-button--strikethrough'
-						onClick={() => {
-							const currentDecoration =
-								getValue('text-decoration');
-							const newDecoration = toggleTextDecoration(
-								currentDecoration,
-								'line-through'
-							);
+								onChangeFormat({
+									[`${prefix}text-decoration`]: newDecoration,
+								});
+							}}
+							aria-pressed={
+								(getValue('text-decoration') || '').indexOf(
+									'underline'
+								) >= 0
+							}
+						>
+							U
+						</Button>
+						<Button
+							className='maxi-typography-control__format-button maxi-typography-control__format-button--strikethrough'
+							onClick={() => {
+								const currentDecoration =
+									getValue('text-decoration');
+								const newDecoration = toggleTextDecoration(
+									currentDecoration,
+									'line-through'
+								);
 
-							onChangeFormat({
-								[`${prefix}text-decoration`]: newDecoration,
-							});
-						}}
-						aria-pressed={
-							(getValue('text-decoration') || '').indexOf(
-								'line-through'
-							) >= 0
-						}
-					>
-						S
-					</Button>
-					<Button
-						className='maxi-typography-control__format-button maxi-typography-control__format-button--capitalize'
-						onClick={() => {
-							const currentTransform =
-								getValue('text-transform') || 'none';
-							const isActive = currentTransform === 'capitalize';
-							onChangeFormat({
-								[`${prefix}text-transform`]: isActive
-									? 'none'
-									: 'capitalize',
-							});
-						}}
-						aria-pressed={
-							getValue('text-transform') === 'capitalize'
-						}
-					>
-						Ag
-					</Button>
-					<Button
-						className='maxi-typography-control__format-button maxi-typography-control__format-button--uppercase'
-						onClick={() => {
-							const currentTransform =
-								getValue('text-transform') || 'none';
-							const isActive = currentTransform === 'uppercase';
-							onChangeFormat({
-								[`${prefix}text-transform`]: isActive
-									? 'none'
-									: 'uppercase',
-							});
-						}}
-						aria-pressed={
-							getValue('text-transform') === 'uppercase'
-						}
-					>
-						AG
-					</Button>
-					<Button
-						className='maxi-typography-control__format-button maxi-typography-control__format-button--lowercase'
-						onClick={() => {
-							const currentTransform =
-								getValue('text-transform') || 'none';
-							const isActive = currentTransform === 'lowercase';
-							onChangeFormat({
-								[`${prefix}text-transform`]: isActive
-									? 'none'
-									: 'lowercase',
-							});
-						}}
-						aria-pressed={
-							getValue('text-transform') === 'lowercase'
-						}
-					>
-						ag
-					</Button>
-				</div>
+								onChangeFormat({
+									[`${prefix}text-decoration`]: newDecoration,
+								});
+							}}
+							aria-pressed={
+								(getValue('text-decoration') || '').indexOf(
+									'line-through'
+								) >= 0
+							}
+						>
+							S
+						</Button>
+						<Button
+							className='maxi-typography-control__format-button maxi-typography-control__format-button--capitalize'
+							onClick={() => {
+								const currentTransform =
+									getValue('text-transform') || 'none';
+								const isActive =
+									currentTransform === 'capitalize';
+								onChangeFormat({
+									[`${prefix}text-transform`]: isActive
+										? 'none'
+										: 'capitalize',
+								});
+							}}
+							aria-pressed={
+								getValue('text-transform') === 'capitalize'
+							}
+						>
+							Ag
+						</Button>
+						<Button
+							className='maxi-typography-control__format-button maxi-typography-control__format-button--uppercase'
+							onClick={() => {
+								const currentTransform =
+									getValue('text-transform') || 'none';
+								const isActive =
+									currentTransform === 'uppercase';
+								onChangeFormat({
+									[`${prefix}text-transform`]: isActive
+										? 'none'
+										: 'uppercase',
+								});
+							}}
+							aria-pressed={
+								getValue('text-transform') === 'uppercase'
+							}
+						>
+							AG
+						</Button>
+						<Button
+							className='maxi-typography-control__format-button maxi-typography-control__format-button--lowercase'
+							onClick={() => {
+								const currentTransform =
+									getValue('text-transform') || 'none';
+								const isActive =
+									currentTransform === 'lowercase';
+								onChangeFormat({
+									[`${prefix}text-transform`]: isActive
+										? 'none'
+										: 'lowercase',
+								});
+							}}
+							aria-pressed={
+								getValue('text-transform') === 'lowercase'
+							}
+						>
+							ag
+						</Button>
+					</div>
+				)}
 
 				<hr className='maxi-typography-control__separator' />
 
@@ -1562,7 +1542,9 @@ const TypographyControl = props => {
 												[`${prefix}text-orientation`]:
 													val,
 											},
-											{ forceDisableCustomFormats: true }
+											{
+												forceDisableCustomFormats: true,
+											}
 										);
 									}}
 									onReset={() =>

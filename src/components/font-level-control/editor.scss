@@ -3,6 +3,10 @@
 	flex-wrap: nowrap;
 	margin-bottom: 8px;
 	justify-content: space-between;
+	margin-left: 7px;
+	margin-right: 7px;
+	border-top: 1.5px solid var(--maxi-grey-light);
+	padding-top: 8px;
 
 	&__button {
 		display: flex;
@@ -29,7 +33,7 @@
 		}
 		&[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green);
-			border: 1.5px solid var(--maxi-secondary-color) !important;
+			border: 1.5px solid var(--maxi-primary-color) !important;
 			color: var(--maxi-primary-color) !important;
 			font-weight: 700;
 		}

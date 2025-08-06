@@ -46,6 +46,7 @@ const MarginControl = props => {
 				},
 			}}
 			enableAxisUnits
+			disableRange
 		/>
 	);
 };

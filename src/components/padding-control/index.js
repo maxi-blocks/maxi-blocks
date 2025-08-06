@@ -23,6 +23,7 @@ const PaddingControl = props => {
 			optionType='string'
 			disableAuto
 			enableAxisUnits
+			disableRange
 		/>
 	);
 };

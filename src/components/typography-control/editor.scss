@@ -59,9 +59,19 @@
 		> div {
 			flex: 1;
 			position: relative; /* For typography reset buttons */
+		}
 
-			&:has(.maxi-typography-control__weight-warning) {
-				flex-basis: 100%;
+		&:has(.maxi-typography-control__weight-warning) {
+			flex-direction: column;
+
+			.maxi-base-control__field > div {
+				display: flex !important;
+				width: 79% !important;
+				margin-bottom: -20px !important;
+			}
+
+			.maxi-advanced-number-control__value {
+				flex: 1 1 auto !important;
 			}
 		}
 	}

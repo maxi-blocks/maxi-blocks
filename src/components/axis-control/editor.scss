@@ -175,13 +175,24 @@
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr)); // 2 equal columns
 		grid-auto-rows: auto;
-		gap: var(--mx-gap, 8px); // reuse spacing token
+		gap: var(--mx-gap, 4px); // reuse spacing token
 
 		/* Let the inner row wrappers disappear so their children
 		   participate directly in the parent grid */
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
 			display: contents; // safe in evergreen browsers
+		}
+		.maxi-axis-control.maxi-axis-control__margin[data-sync='none'] {
+			--axis-control-gap-margin: 4px; /* was 8px */
+			gap: var(--axis-control-gap-margin); /* grid gap */
+		}
+
+		/* If the extra space comes from margins on the inner items
+	 (older codebases sometimes do that), clear them too.     */
+		.maxi-axis-control.maxi-axis-control__margin[data-sync='none']
+			.maxi-axis-control__content__item {
+			margin-bottom: 0;
 		}
 
 		/* ========================================

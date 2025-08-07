@@ -152,7 +152,7 @@ const AxisContent = props => {
 	};
 
 	return (
-		<div className={getContainerClass()}>
+		<div className={getContainerClass()} data-sync={sync}>
 			{(sync === 'all' || disableSync) && (
 				<AxisInput
 					label={type}
@@ -432,26 +432,14 @@ const AxisControlContent = props => {
 					<SettingTabsControl
 						label={getSyncLabel()}
 						type='buttons'
-						className='maxi-axis-control__header maxi-axis-control__sync'
+						className={classnames(
+							'maxi-axis-control__header',
+							'maxi-axis-control__sync',
+							`maxi-axis-control__sync--${sync}`
+						)}
 						selected={sync}
 						hasBorder
 						items={[
-							{
-								value: 'all',
-								className: 'maxi-axis-control__sync-all',
-								icon:
-									type === 'Margin'
-										? marginSyncAllIcon
-										: paddingSyncAllIcon,
-							},
-							{
-								value: 'axis',
-								className: 'maxi-axis-control__sync-axis',
-								icon:
-									type === 'Margin'
-										? marginSyncDirectionIcon
-										: paddingSyncDirectionIcon,
-							},
 							{
 								value: 'none',
 								className: 'maxi-axis-control__sync-none',
@@ -459,6 +447,25 @@ const AxisControlContent = props => {
 									type === 'Margin'
 										? marginSeparateIcon
 										: paddingSeparateIcon,
+							},
+							{
+								value: 'axis',
+								className: classnames(
+									'maxi-axis-control__sync-axis',
+									'maxi-tabs-control__button--sync-axis'
+								),
+								icon:
+									type === 'Margin'
+										? marginSyncDirectionIcon
+										: paddingSyncDirectionIcon,
+							},
+							{
+								value: 'all',
+								className: 'maxi-axis-control__sync-all',
+								icon:
+									type === 'Margin'
+										? marginSyncAllIcon
+										: paddingSyncAllIcon,
 							},
 						]}
 						onChange={val => onChangeSync(val, breakpoint)}

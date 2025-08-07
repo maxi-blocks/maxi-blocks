@@ -18,7 +18,7 @@
 	// Layout spacing variables
 
 	// Gap spacing variables
-	--axis-control-gap-default: 8px;
+	--axis-control-gap-default: 0 8px;
 	--axis-control-gap-margin: 8px;
 
 	/* ========================================
@@ -65,6 +65,10 @@
 		transition: all 0.5s;
 		cursor: pointer;
 
+		&.maxi-tabs-control__button--sync-axis {
+			padding: 6px 0;
+		}
+
 		// SVG icon styling
 		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
@@ -72,17 +76,18 @@
 			transition: stroke 0.3s ease;
 		}
 
-		// Hover state
-		&:hover svg:not(.maxi-tabs-control__notification) path {
-			stroke: var(--maxi-secondary-color);
-		}
-
 		// Selected state
+
 		&--selected {
 			svg:not(.maxi-tabs-control__notification) path {
 				fill: transparent;
 				stroke: var(--maxi-secondary-color);
 			}
+		}
+
+		// Hover state
+		&:hover svg:not(.maxi-tabs-control__notification) path {
+			stroke: var(--maxi-secondary-color);
 		}
 	}
 
@@ -118,6 +123,7 @@
 			box-sizing: border-box;
 		}
 	}
+
 	/* Reset buttons - positioning handled globally by reset-control component */
 
 	/* ========================================
@@ -143,86 +149,44 @@
 		grid-template-columns: 1fr;
 		grid-gap: var(--axis-control-item-gap);
 
-		.maxi-axis-control__row-1 {
-			margin-bottom: var(--axis-control-gap-default);
-		}
-
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
-			display: grid;
-			grid-template-columns: 1fr;
+			display: flex; // or grid with 1 column
+			gap: var(--mx-gap, 8px);
 
 			.maxi-axis-control__item-auto,
 			.maxi-axis-control__content__item {
 				width: 100%;
 			}
+
+			.maxi-advanced-number-control {
+				display: grid;
+				grid-template-columns: 1fr;
+				gap: 8px;
+			}
 		}
 	}
 
 	/* ========================================
-	   SEPARATE GRID LAYOUT
+	   SEPARATE GRID LAYOUT - 2×2 Grid
 	   ======================================== */
 
 	.maxi-axis-control__content__separate-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-gap: var(--axis-control-item-gap);
+		grid-template-columns: repeat(2, minmax(0, 1fr)); // 2 equal columns
+		grid-auto-rows: auto;
+		gap: var(--mx-gap, 8px); // reuse spacing token
 
+		/* Let the inner row wrappers disappear so their children
+		   participate directly in the parent grid */
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			grid-gap: var(--axis-control-gap-default);
-			width: 100%;
-		}
-
-		.maxi-axis-control__row-1 {
-			grid-column: 1 / -1;
-		}
-
-		.maxi-axis-control__row-2 {
-			grid-column: 1 / -1;
-			display: grid;
-			grid-template-columns: 1fr 1fr;
+			display: contents; // safe in evergreen browsers
 		}
 
 		/* ========================================
-	   MARGIN-SPECIFIC STYLING
-	   ======================================== */
-		&.maxi-axis-control__margin {
-			/* Margin-specific grid styles */
-			background-color: rgba(0, 0, 0, 0.02);
-			border-radius: 4px;
-		}
-
-		/* ========================================
-	   PADDING-SPECIFIC STYLING
-	   ======================================== */
-
-		&.maxi-axis-control__padding {
-			.maxi-axis-control__axis-mode {
-				gap: 4px;
-			}
-
-			.maxi-axis-control__content__separate-grid {
-				.maxi-axis-control__row-1,
-				.maxi-axis-control__row-2 {
-					gap: 4px;
-				}
-			}
-
-			.maxi-axis-control__item-auto {
-				margin-bottom: 8px;
-			}
-
-			.maxi-axis-control__axis-mode .maxi-axis-control__item-auto {
-				margin-bottom: 0;
-			}
-		}
-
-		/* ========================================
-	   ADVANCED NUMBER CONTROL OVERRIDES
-	   ======================================== */
+		   ADVANCED NUMBER CONTROL OVERRIDES
+		   ======================================== */
 
 		// Flattened selectors to avoid impossible self-nesting
 		.maxi-advanced-number-control
@@ -239,24 +203,34 @@
 	}
 
 	/* ========================================
+	 PADDING-SPECIFIC STYLING
+	 ======================================== */
+
+	/* ========================================
 	   RESPONSIVE SIZE BUTTONS GRID
 	   ======================================== */
-	.maxi-responsive-tabs-control {
+	.maxi-axis-control__axis-mode {
+		/* parent becomes the grid */
 		display: grid;
-		grid-gap: var(--axis-control-gap-default);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-auto-rows: auto;
+		gap: var(--mx-gap, 8px); /* re-uses your spacing token */
+	}
 
-		.maxi-responsive-tabs-control__content {
+	/* flatten the two row wrappers so their children
+		 participate directly in the parent grid */
+	.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,
+	.maxi-axis-control__axis-mode > .maxi-axis-control__row-2 {
+		display: contents; /* modern browsers */
+	}
+
+	/* ---------- OPTIONAL SAFARI <14 FALLBACK ---------- */
+	@supports not (display: contents) {
+		.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,
+		.maxi-axis-control__axis-mode > .maxi-axis-control__row-2 {
 			display: grid;
-			grid-template-columns: repeat(6, 1fr);
-			grid-gap: 2px;
-
-			button {
-				min-width: auto;
-				padding: 4px 2px;
-				font-size: 12px;
-				text-align: center;
-				border-radius: 2px;
-			}
+			grid-template-columns: repeat(2, 1fr);
+			gap: var(--mx-gap, 8px);
 		}
 	}
 
@@ -272,6 +246,7 @@
 	/* ========================================
 	   FIX FOR BOTTOM ROW ALIGNMENT
 	   ======================================== */
+
 	/* Bottom row alignment is handled through grid layout */
 
 	/* Make all toggle switches aligned */
@@ -282,10 +257,25 @@
 
 		label {
 			font-size: 12px;
-			font-weight: normal;
+			font-weight: 400;
 		}
 	}
+
+	/* ========================================
+	   DATA-SYNC ATTRIBUTE STYLING HOOKS
+	   ======================================== */
+
+	/* Use [data-sync="axis"], [data-sync="none"], or [data-sync="all"] selectors
+	   to target specific sync modes when needed */
+
+	/* ========================================
+	   SYNC BUTTON STATE MODIFIERS
+	   ======================================== */
+
+	/* Use .maxi-axis-control__sync--axis, .maxi-axis-control__sync--none,
+	   or .maxi-axis-control__sync--all to style active sync buttons */
 }
+
 html .maxi-axis-control__content__item .maxi-reset-button--typography {
 	position: absolute !important;
 	top: -8px !important;

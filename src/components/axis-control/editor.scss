@@ -100,8 +100,7 @@
 			flex-direction: column;
 			width: 100%;
 
-			.maxi-base-control__field {
-			}
+			/* Base control field styling handled by base component */
 		}
 
 		// Floating labels with increased specificity
@@ -118,14 +117,8 @@
 			z-index: var(--axis-control-label-z-index);
 			box-sizing: border-box;
 		}
-
-		// Reset buttons - using typography control positioning to match
-		&.maxi-advanced-number-control .maxi-reset-button--absolute {
-			--reset-right: -8px !important;
-			--reset-left: auto !important;
-			--reset-top: -9px !important;
-		}
 	}
+	/* Reset buttons - positioning handled globally by reset-control component */
 
 	/* ========================================
 	   ALL MODE LAYOUT
@@ -279,16 +272,7 @@
 	/* ========================================
 	   FIX FOR BOTTOM ROW ALIGNMENT
 	   ======================================== */
-	.maxi-axis-control__row-2 {
-		div {
-			.maxi-toggle-switch,
-			.maxi-advanced-number-control {
-			}
-
-			.maxi-toggle-switch {
-			}
-		}
-	}
+	/* Bottom row alignment is handled through grid layout */
 
 	/* Make all toggle switches aligned */
 	.maxi-toggle-switch {
@@ -301,4 +285,9 @@
 			font-weight: normal;
 		}
 	}
+}
+html .maxi-axis-control__content__item .maxi-reset-button--typography {
+	position: absolute !important;
+	top: -12px !important;
+	right: -10px !important;
 }

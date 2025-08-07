@@ -436,7 +436,11 @@ const AdvancedNumberControl = props => {
 				)}
 				{!disableReset && (
 					<ResetButton
-						className={resetButtonClassName}
+						className={
+							resetButtonClassName
+								? `${resetButtonClassName} maxi-reset-button--typography`
+								: 'maxi-reset-button--typography'
+						}
 						onReset={() => {
 							setCurrentValue(defaultValue);
 							latestValueRef.current = defaultValue;

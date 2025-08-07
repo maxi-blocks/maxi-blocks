@@ -418,6 +418,8 @@ const AxisControlContent = props => {
 								onChange={onChangeUnit}
 							/>
 							<ResetButton
+								className='maxi-reset-button--absolute maxi-reset-button--typography'
+								isAbsolute
 								onReset={() =>
 									onReset({
 										reset: 'unit',

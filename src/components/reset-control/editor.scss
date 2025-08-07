@@ -82,6 +82,16 @@ button.maxi-components-button.maxi-reset-button {
 		z-index: var(--reset-z-index) !important;
 	}
 
+	&--absolute.maxi-reset-button--typography {
+		// Same positioning as regular absolute buttons by default
+		position: var(--reset-position) !important;
+		top: var(--reset-top) !important;
+		right: var(--reset-right) !important;
+		bottom: var(--reset-bottom) !important;
+		left: var(--reset-left) !important;
+		z-index: var(--reset-z-index) !important;
+	}
+
 	// Size variants
 	&--large {
 		--reset-size: 32px !important;
@@ -169,10 +179,15 @@ html .maxi-typography-control__weight .maxi-reset-button--absolute,
 html .maxi-typography-control__size .maxi-reset-button--absolute,
 html .maxi-typography-control__line-height .maxi-reset-button--absolute,
 html .maxi-typography-control__bottom-gap .maxi-reset-button--absolute,
+html .maxi-axis-control__content__item .maxi-reset-button--absolute,
+html .maxi-axis-control__content__item .maxi-reset-button--typography,
+html .maxi-axis-control__units_container .maxi-reset-button,
 .rtl .maxi-typography-control__weight .maxi-reset-button--absolute,
 .rtl .maxi-typography-control__size .maxi-reset-button--absolute,
 .rtl .maxi-typography-control__line-height .maxi-reset-button--absolute,
-.rtl .maxi-typography-control__bottom-gap .maxi-reset-button--absolute {
+.rtl .maxi-typography-control__bottom-gap .maxi-reset-button--absolute,
+.rtl .maxi-axis-control__content__item .maxi-reset-button--absolute,
+.rtl .maxi-axis-control__content__item .maxi-reset-button--typography {
 	--reset-right: -8px !important;
 	--reset-left: auto !important;
 	--reset-top: -9px !important;

@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -16,7 +15,7 @@ const MarginControl = props => {
 		<AxisControl
 			{...getGroupAttributes(props, 'margin', false, prefix)}
 			prefix={prefix}
-			label={__('Margin', 'maxi-blocks')}
+			label='Margin'
 			onChange={onChange}
 			breakpoint={breakpoint}
 			target='margin'

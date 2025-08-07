@@ -299,14 +299,6 @@
 [class*='maxi-style-cards'] {
 	/* Typography Control - Style Cards Specific */
 	.maxi-typography-control[class*='maxi-style-cards-control__sc__'] {
-		/* Inherit all base typography control styles */
-		/* Only override what's necessary for popup context */
-
-		/* Base control adjustments - maintain sidebar look */
-		.maxi-base-control {
-			/* Keep sidebar spacing and appearance */
-		}
-
 		/* Style Cards specific: Make advanced number control wider */
 		.maxi-advanced-number-control__value {
 			width: 105px !important;
@@ -337,51 +329,6 @@
 			.maxi-base-control {
 				margin-bottom: 0 !important;
 			}
-		}
-
-		/* Keep formatting buttons exactly like sidebar */
-		.maxi-typography-control__formatting-buttons {
-			/* Inherits all base styles - no changes needed */
-		}
-
-		/* Keep weight-size row layout like sidebar */
-		.maxi-typography-control__weight-size-row {
-			/* Inherits all base styles - no changes needed */
-		}
-
-		/* Keep spacing controls like sidebar */
-		.maxi-typography-control__spacing-controls {
-			/* Inherits all base styles - no changes needed */
-		}
-
-		/* Keep font size control like sidebar */
-		.maxi-typography-control__size {
-			/* Inherits all base styles - no changes needed */
-		}
-
-		/* Keep floating labels like sidebar */
-		.maxi-base-control__label {
-			/* Inherits floating-label mixin - no changes needed */
-		}
-
-		/* Keep advanced toggle like sidebar */
-		.maxi-typography-control__advanced-toggle {
-			/* Inherits all base styles - no changes needed */
-		}
-
-		/* Keep separator like sidebar */
-		.maxi-typography-control__separator {
-			/* Inherits all base styles - no changes needed */
-		}
-
-		/* Keep advanced options like sidebar */
-		.maxi-typography-control__advanced-options {
-			/* Inherits all base styles - no changes needed */
-		}
-
-		/* Keep alignment buttons like sidebar */
-		.maxi-typography-control__alignment-buttons {
-			/* Inherits all base styles - no changes needed */
 		}
 	}
 }

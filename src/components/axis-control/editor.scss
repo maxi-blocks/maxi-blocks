@@ -3,8 +3,8 @@
    ======================================== */
 
 .maxi-axis-control {
-	margin-bottom: 10px;
-	background-color: #ff0080 !important; /* TEMPORARY: bright pink */
+	display: grid;
+	grid-gap: var(--axis-control-gap-default);
 
 	/* ========================================
 	   CSS CUSTOM PROPERTIES / VARIABLES
@@ -12,15 +12,13 @@
 
 	// Label styling variables
 	--axis-control-label-size: 10px;
-	--axis-control-label-padding: 0 5px;
+	--axis-control-label-padding: 0 6px;
 	--axis-control-label-z-index: 10;
 
 	// Layout spacing variables
-	--axis-control-row-gap: 10px;
-	--axis-control-item-gap: 10px;
 
 	// Gap spacing variables
-	--axis-control-gap-default: 4px;
+	--axis-control-gap-default: 8px;
 	--axis-control-gap-margin: 8px;
 
 	/* ========================================
@@ -29,17 +27,22 @@
 
 	&__header {
 		margin-bottom: 10px;
-		background-color: #00ff40 !important; /* TEMPORARY: bright green */
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-gap: var(--axis-control-gap-default);
 
 		.maxi-base-control__field {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			align-items: center;
 			margin-bottom: 0;
-			background-color: #0080ff !important; /* TEMPORARY: bright blue */
 		}
 
 		.maxi-tabs-control {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
 			margin-left: 0;
 			margin-right: 0;
-			background-color: #ffff00 !important; /* TEMPORARY: bright yellow */
 		}
 	}
 
@@ -61,7 +64,6 @@
 		opacity: 1;
 		transition: all 0.5s;
 		cursor: pointer;
-		background-color: #ff8000 !important; /* TEMPORARY: bright orange */
 
 		// SVG icon styling
 		svg:not(.maxi-tabs-control__notification) path {
@@ -77,8 +79,6 @@
 
 		// Selected state
 		&--selected {
-			background-color: #8000ff !important; /* TEMPORARY: bright purple */
-
 			svg:not(.maxi-tabs-control__notification) path {
 				fill: transparent;
 				stroke: var(--maxi-secondary-color);
@@ -92,7 +92,17 @@
 
 	.maxi-axis-control__content__item {
 		position: relative;
-		background-color: #00ffff !important; /* TEMPORARY: bright cyan */
+		box-sizing: border-box;
+
+		// Make the inner control take full height
+		&.maxi-advanced-number-control {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+
+			.maxi-base-control__field {
+			}
+		}
 
 		// Floating labels with increased specificity
 		&.maxi-advanced-number-control .maxi-base-control__label {
@@ -107,13 +117,13 @@
 			pointer-events: none;
 			z-index: var(--axis-control-label-z-index);
 			box-sizing: border-box;
-			background-color: #ff0040 !important; /* TEMPORARY: bright red */
 		}
 
-		// Reset buttons - using standard system with --absolute variant
-		&.maxi-advanced-number-control .maxi-reset-button {
-			// No overrides needed - base reset button styles handle everything
-			// These should use 'maxi-reset-button--absolute' class in the HTML
+		// Reset buttons - using typography control positioning to match
+		&.maxi-advanced-number-control .maxi-reset-button--absolute {
+			--reset-right: -8px !important;
+			--reset-left: auto !important;
+			--reset-top: -9px !important;
 		}
 	}
 
@@ -121,9 +131,14 @@
 	   ALL MODE LAYOUT
 	   ======================================== */
 
-	.maxi-axis-control__all-mode .maxi-axis-control__content__item {
-		margin-bottom: 0;
-		background-color: #40ff00 !important; /* TEMPORARY: bright lime */
+	.maxi-axis-control__all-mode {
+		display: grid;
+		grid-template-columns: 1fr;
+
+		.maxi-axis-control__content__item {
+			width: 100%;
+			margin-bottom: 0;
+		}
 	}
 
 	/* ========================================
@@ -131,28 +146,22 @@
 	   ======================================== */
 
 	.maxi-axis-control__axis-mode {
-		width: 100%;
-		container-type: inline-size;
-		background-color: #ff4080 !important; /* TEMPORARY: bright magenta */
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-gap: var(--axis-control-item-gap);
 
 		.maxi-axis-control__row-1 {
-			margin-bottom: var(--axis-control-row-gap);
-			background-color: #80ff40 !important; /* TEMPORARY: bright chartreuse */
+			margin-bottom: var(--axis-control-gap-default);
 		}
 
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
-			display: flex;
-			gap: var(--axis-control-item-gap);
-			align-items: stretch;
-			min-height: 32px;
-			background-color: #4080ff !important; /* TEMPORARY: bright sky blue */
+			display: grid;
+			grid-template-columns: 1fr;
 
 			.maxi-axis-control__item-auto,
 			.maxi-axis-control__content__item {
-				flex: 1;
-				min-width: 0; // Prevent flex items from overflowing
-				background-color: #ff8040 !important; /* TEMPORARY: bright coral */
+				width: 100%;
 			}
 		}
 	}
@@ -162,120 +171,134 @@
 	   ======================================== */
 
 	.maxi-axis-control__content__separate-grid {
-		width: 100%;
-		container-type: inline-size;
-		background-color: #8040ff !important; /* TEMPORARY: bright violet */
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: var(--axis-control-item-gap);
 
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
-			display: flex;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-gap: var(--axis-control-gap-default);
 			width: 100%;
-			gap: var(--axis-control-item-gap);
-			align-items: stretch;
-			min-height: 32px;
-			background-color: #00ff80 !important; /* TEMPORARY: bright spring green */
-
-			> div {
-				flex: 1;
-				min-width: 0; // Prevent flex items from overflowing
-				background-color: #ff0080 !important; /* TEMPORARY: bright hot pink */
-			}
 		}
 
 		.maxi-axis-control__row-1 {
-			margin-bottom: var(--axis-control-row-gap);
-			background-color: #40ff80 !important; /* TEMPORARY: bright seafoam */
+			grid-column: 1 / -1;
 		}
-	}
 
-	/* ========================================
+		.maxi-axis-control__row-2 {
+			grid-column: 1 / -1;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+		}
+
+		/* ========================================
 	   MARGIN-SPECIFIC STYLING
 	   ======================================== */
-
-	&.maxi-axis-control__margin {
-		background-color: #ffff80 !important; /* TEMPORARY: bright light yellow */
-
-		.maxi-axis-control__axis-mode {
-			gap: 8px;
-			background-color: #80ffff !important; /* TEMPORARY: bright light cyan */
+		&.maxi-axis-control__margin {
+			/* Margin-specific grid styles */
+			background-color: rgba(0, 0, 0, 0.02);
+			border-radius: 4px;
 		}
 
-		.maxi-axis-control__content__separate-grid {
-			background-color: #ff80ff !important; /* TEMPORARY: bright light magenta */
-
-			.maxi-axis-control__row-1,
-			.maxi-axis-control__row-2 {
-				gap: 8px;
-				background-color: #80ff80 !important; /* TEMPORARY: bright light green */
-			}
-		}
-
-		.maxi-axis-control__item-auto {
-			order: 2;
-			background-color: #ff4040 !important; /* TEMPORARY: bright red-orange */
-
-			&--axis-mode {
-				position: relative;
-				top: -5px;
-				background-color: #40ff40 !important; /* TEMPORARY: bright green */
-			}
-		}
-
-		.maxi-axis-control__axis-mode .maxi-axis-control__item-auto {
-			margin-bottom: 0;
-			background-color: #4040ff !important; /* TEMPORARY: bright blue */
-		}
-	}
-
-	/* ========================================
+		/* ========================================
 	   PADDING-SPECIFIC STYLING
 	   ======================================== */
 
-	&.maxi-axis-control__padding {
-		background-color: #8080ff !important; /* TEMPORARY: bright periwinkle */
-
-		.maxi-axis-control__axis-mode {
-			gap: 4px;
-			background-color: #ff8080 !important; /* TEMPORARY: bright pink */
-		}
-
-		.maxi-axis-control__content__separate-grid {
-			background-color: #80ff00 !important; /* TEMPORARY: bright lime green */
-
-			.maxi-axis-control__row-1,
-			.maxi-axis-control__row-2 {
+		&.maxi-axis-control__padding {
+			.maxi-axis-control__axis-mode {
 				gap: 4px;
-				background-color: #0080ff !important; /* TEMPORARY: bright azure */
+			}
+
+			.maxi-axis-control__content__separate-grid {
+				.maxi-axis-control__row-1,
+				.maxi-axis-control__row-2 {
+					gap: 4px;
+				}
+			}
+
+			.maxi-axis-control__item-auto {
+				margin-bottom: 8px;
+			}
+
+			.maxi-axis-control__axis-mode .maxi-axis-control__item-auto {
+				margin-bottom: 0;
 			}
 		}
 
-		.maxi-axis-control__item-auto {
-			margin-bottom: 8px;
-			background-color: #ff00ff !important; /* TEMPORARY: bright fuchsia */
+		/* ========================================
+	   ADVANCED NUMBER CONTROL OVERRIDES
+	   ======================================== */
+
+		// Flattened selectors to avoid impossible self-nesting
+		.maxi-advanced-number-control
+			.maxi-base-control__field.maxi-axis-control__margin,
+		.maxi-advanced-number-control
+			.maxi-base-control__field.maxi-axis-control__padding {
+			gap: var(--axis-control-gap-default);
 		}
 
-		.maxi-axis-control__axis-mode .maxi-axis-control__item-auto {
-			margin-bottom: 0;
-			background-color: #00ff00 !important; /* TEMPORARY: bright pure green */
+		.maxi-advanced-number-control
+			.maxi-base-control__field.maxi-axis-control__margin {
+			gap: var(--axis-control-gap-margin);
 		}
 	}
 
 	/* ========================================
-	   ADVANCED NUMBER CONTROL OVERRIDES
+	   RESPONSIVE SIZE BUTTONS GRID
 	   ======================================== */
+	.maxi-responsive-tabs-control {
+		display: grid;
+		grid-gap: var(--axis-control-gap-default);
 
-	// Flattened selectors to avoid impossible self-nesting
-	.maxi-advanced-number-control
-		.maxi-base-control__field.maxi-axis-control__margin,
-	.maxi-advanced-number-control
-		.maxi-base-control__field.maxi-axis-control__padding {
-		gap: var(--axis-control-gap-default);
-		background-color: #ffaa00 !important; /* TEMPORARY: bright amber */
+		.maxi-responsive-tabs-control__content {
+			display: grid;
+			grid-template-columns: repeat(6, 1fr);
+			grid-gap: 2px;
+
+			button {
+				min-width: auto;
+				padding: 4px 2px;
+				font-size: 12px;
+				text-align: center;
+				border-radius: 2px;
+			}
+		}
 	}
 
-	.maxi-advanced-number-control
-		.maxi-base-control__field.maxi-axis-control__margin {
-		gap: var(--axis-control-gap-margin);
-		background-color: #00aaff !important; /* TEMPORARY: bright dodger blue */
+	/* ========================================
+	   AUTO CONTROL GRID LAYOUT
+	   ======================================== */
+	.maxi-advanced-number-control__input-wrapper {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+	}
+
+	/* ========================================
+	   FIX FOR BOTTOM ROW ALIGNMENT
+	   ======================================== */
+	.maxi-axis-control__row-2 {
+		div {
+			.maxi-toggle-switch,
+			.maxi-advanced-number-control {
+			}
+
+			.maxi-toggle-switch {
+			}
+		}
+	}
+
+	/* Make all toggle switches aligned */
+	.maxi-toggle-switch {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		label {
+			font-size: 12px;
+			font-weight: normal;
+		}
 	}
 }

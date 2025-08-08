@@ -283,6 +283,30 @@
 	.maxi-typography-control__alignment-buttons {
 		margin-bottom: 8px;
 	}
+
+	/* Unique styling for alignment inside Typography panel only */
+	/* intentionally left without base styles; margins are defined below */
+}
+
+/* Ensure the unique alignment class is styled even when used outside the
+   `.maxi-typography-control` container (as in the inspector panel wrapper) */
+.maxi-typography-control__alignment-buttons
+	.maxi-typography-panel__text-alignment {
+	margin-left: 7px;
+	margin-right: 4px !important;
+}
+
+/* Override alignment-control typography override to allow right spacing */
+.maxi-typography-control__alignment-buttons
+	.maxi-typography-panel__text-alignment
+	.maxi-tabs-control__button {
+	margin-right: 5px !important;
+}
+
+.maxi-typography-control__alignment-buttons
+	.maxi-typography-panel__text-alignment
+	.maxi-tabs-control__button:last-child {
+	margin-right: 4px !important;
 }
 
 /* ========================================

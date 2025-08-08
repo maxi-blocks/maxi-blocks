@@ -77,7 +77,8 @@ const typography = ({
 								false,
 								prefix
 							)}
-							className='maxi-typography-control__text-alignment'
+							/* Add a unique class for Typography panel text alignment */
+							className='maxi-typography-control__text-alignment maxi-typography-panel__text-alignment'
 							onChange={val => {
 								maxiSetAttributes(val);
 								cleanInlineStyles();

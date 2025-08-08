@@ -131,3 +131,17 @@
 .maxi-tab-content .maxi-default-styles-control {
 	margin-top: 10px !important;
 }
+.typography-accordion-wrapper {
+	padding: none !important;
+}
+
+/*
+ * Override hook for Accordion Maxi only.
+ * Adds zero padding to the inspector Accordion panels without
+ * impacting other accordions elsewhere in the editor.
+ */
+.maxi-accordion-control.maxi-accordion-control--accordion-maxi {
+	.maxi-accordion-control__item__panel:not(.maxi-accordion-control__item__panel--disable-padding) {
+		padding: 0 !important;
+	}
+}

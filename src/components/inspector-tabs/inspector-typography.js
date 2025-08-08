@@ -61,7 +61,7 @@ const typography = ({
 		content: (
 			<>
 				{/* Font Level Control (Heading/Paragraph tags) */}
-				<div className='maxi-typography-control__font-level'>
+				<div className='maxi-typography-control__font-level maxi-typography-panel__font-level'>
 					<FontLevelControl
 						{...getGroupAttributes(attributes, 'typography', true)}
 						value={textLevel || attributes.textLevel}

@@ -1,3 +1,67 @@
+/**
+ * Accordion Maxi Editor Styles
+ * Optimized version with reusable mixins and consolidated selectors
+ */
+
+// ================================
+// Variables and Mixins
+// ================================
+
+/**
+ * Mixin for standard button styling used across accordion controls
+ */
+@mixin accordion-button-base {
+	background: var(--maxi-white);
+	border-radius: 6px;
+	padding: 6px 12px;
+	margin: 0;
+	height: 30px;
+	box-shadow: none;
+	color: var(--maxi-grey-dark);
+	transition: all 0.2s ease;
+	text-align: center;
+	justify-content: center;
+	display: flex;
+	align-items: center;
+	font-weight: 500;
+}
+
+/**
+ * Mixin for button hover states
+ */
+@mixin accordion-button-hover {
+	background: var(--maxi-pastel-green);
+	color: var(--maxi-black);
+}
+
+/**
+ * Mixin for button active/selected states
+ */
+@mixin accordion-button-active {
+	background: var(--maxi-whisper-green);
+	color: var(--maxi-grey-dark);
+	font-weight: 700;
+}
+
+/**
+ * Mixin for tab control negative margins (full-width styling)
+ */
+@mixin tab-full-width-margins {
+	.maxi-tabs-control__button:first-child {
+		margin-left: -8px !important;
+	}
+	.maxi-tabs-control__button:last-child {
+		margin-right: -8px !important;
+	}
+}
+
+// ================================
+// Control Status Classes
+// ================================
+
+/**
+ * Status active states for various control types
+ */
 [class*='maxi-border-status-active'],
 [class*='maxi-background-status-active'],
 [class*='maxi-box-shadow-status-active'],
@@ -9,18 +73,17 @@
 	margin-bottom: 5px !important;
 }
 
+// ================================
+// Skin Control Styles
+// ================================
+
 .maxi-skin-control__reveal-action-tabs {
 	.components-button {
-		background: var(--maxi-white);
+		@include accordion-button-base;
 		border: none;
 		border-radius: 10px;
-		padding: 6px 12px;
-		margin: 0;
 		min-width: 70px;
-		height: 30px;
 		box-shadow: 0 0 0 1px var(--maxi-grey-light);
-		color: var(--maxi-grey-dark);
-		transition: all 0.2s ease;
 
 		&:first-child {
 			margin-right: 8px;
@@ -43,99 +106,69 @@
 		}
 	}
 }
+
+// ================================
+// Icon Control Styles
+// ================================
+
 .maxi-icon-control__position {
 	margin-top: 6px !important;
-}
-.maxi-icon-control__position {
+
 	.maxi-tabs-control__button {
-		background: var(--maxi-white);
+		@include accordion-button-base;
 		border: 1.5px solid var(--maxi-grey-light);
-		border-radius: 6px !important;
-		padding: 6px 6px;
 		margin-right: 2px !important;
 		min-width: 65px;
-		height: 30px !important;
-		box-shadow: none;
-		color: var(--maxi-grey-dark);
-		transition: all 0.2s ease;
-		text-align: center;
-		justify-content: center;
-		display: flex;
-		align-items: center;
-		font-weight: 500;
 
 		&:first-child {
-			margin-left: 0px !important;
+			margin-left: 0 !important;
 		}
 		&:last-child {
 			border: 1.5px solid var(--maxi-grey-light);
 		}
 
 		&:hover {
-			background: var(--maxi-white);
+			@include accordion-button-hover;
 			box-shadow: none;
-			background: var(--maxi-pastel-green) !important;
-			color: var(--maxi-black);
 		}
 
 		&:active,
 		&--selected,
 		&[aria-pressed='true'] {
-			background: var(--maxi-whisper-green) !important;
+			@include accordion-button-active;
 			border: 1.5px solid var(--maxi-grey-light) !important;
 			box-shadow: none;
-			color: var(--maxi-grey-dark) !important;
-			font-weight: 700;
 		}
 	}
 }
 
-.maxi-icon-styles-control {
-	.maxi-tabs-control__full-width {
-		.maxi-tabs-control__button:first-child {
-			margin-left: -8px !important;
-		}
-		.maxi-tabs-control__button:last-child {
-			margin-right: -8px !important;
-		}
-	}
-}
+// ================================
+// Tab Control Full-Width Styles
+// ================================
 
-.maxi-settingstab-control:has(.maxi-accordion-icon-control__color-section) {
-	.maxi-tabs-control__button:first-child {
-		margin-left: -8px !important;
-	}
-	.maxi-tabs-control__button:last-child {
-		margin-right: -8px !important;
-	}
-}
-
+.maxi-icon-styles-control .maxi-tabs-control__full-width,
+.maxi-settingstab-control:has(.maxi-accordion-icon-control__color-section),
 .maxi-icon-background-tabs {
-	.maxi-tabs-control__button:first-child {
-		margin-left: -8px !important;
-	}
-	.maxi-tabs-control__button:last-child {
-		margin-right: -8px !important;
-	}
+	@include tab-full-width-margins;
 }
 
-// .maxi-tabs-control__full-width {
-// 	// .maxi-tabs-control__button:first-child {
-// 	// 	margin-left: -8px !important;
-// 	// }
-// 	// .maxi-tabs-control__button:last-child {
-// 	// 	margin-right: -8px !important;
-// 	// }
-// }
+// ================================
+// Misc Control Styles
+// ================================
 
 .maxi-tab-content .maxi-default-styles-control {
 	margin-top: 10px !important;
 }
+
 .typography-accordion-wrapper {
 	padding: none !important;
 }
 
-/*
+// ================================
+// Accordion-Specific Overrides
+// ================================
+
+/**
  * Override hook for Accordion Maxi only.
  * Adds zero padding to the inspector Accordion panels without
  * impacting other accordions elsewhere in the editor.
@@ -143,5 +176,20 @@
 .maxi-accordion-control.maxi-accordion-control--accordion-maxi {
 	.maxi-accordion-control__item__panel:not(.maxi-accordion-control__item__panel--disable-padding) {
 		padding: 0 !important;
+	}
+}
+
+.maxi-accordion-title-control__state-tabs {
+	@include tab-full-width-margins;
+
+	> .maxi-tabs-control > .maxi-tabs-control__button:first-child {
+		margin-left: -8px;
+	}
+	> .maxi-tabs-control > .maxi-tabs-control__button:last-child {
+		margin-right: -8px;
+	}
+
+	.maxi-tabs-content {
+		margin-left: -1px;
 	}
 }

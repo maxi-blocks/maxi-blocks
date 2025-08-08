@@ -99,16 +99,12 @@
 		position: relative;
 		box-sizing: border-box;
 
-		// Make the inner control take full height
 		&.maxi-advanced-number-control {
 			display: flex;
 			flex-direction: column;
 			width: 100%;
-
-			/* Base control field styling handled by base component */
 		}
 
-		// Floating labels with increased specificity
 		&.maxi-advanced-number-control .maxi-base-control__label {
 			position: absolute;
 			top: -8px;
@@ -123,8 +119,6 @@
 			box-sizing: border-box;
 		}
 	}
-
-	/* Reset buttons - positioning handled globally by reset-control component */
 
 	/* ========================================
 	   ALL MODE LAYOUT
@@ -151,8 +145,12 @@
 
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
-			display: flex; // or grid with 1 column
+			display: flex;
 			gap: var(--mx-gap, 8px);
+
+			&.maxi-axis-control__row--top {
+				margin-bottom: 4px;
+			}
 
 			.maxi-axis-control__item-auto,
 			.maxi-axis-control__content__item {
@@ -165,6 +163,11 @@
 				gap: 8px;
 			}
 		}
+
+		/* Reduce bottom spacing after the first row only (axis mode) */
+		.maxi-axis-control__item--top-row {
+			margin-bottom: calc(-0.5 * var(--mx-gap, 8px));
+		}
 	}
 
 	/* ========================================
@@ -173,33 +176,24 @@
 
 	.maxi-axis-control__content__separate-grid {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr)); // 2 equal columns
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		grid-auto-rows: auto;
-		gap: var(--mx-gap, 4px); // reuse spacing token
+		gap: var(--mx-gap, 4px);
 
-		/* Let the inner row wrappers disappear so their children
-		   participate directly in the parent grid */
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
-			display: contents; // safe in evergreen browsers
-		}
-		.maxi-axis-control.maxi-axis-control__margin[data-sync='none'] {
-			--axis-control-gap-margin: 4px; /* was 8px */
-			gap: var(--axis-control-gap-margin); /* grid gap */
+			display: contents;
 		}
 
-		/* If the extra space comes from margins on the inner items
-	 (older codebases sometimes do that), clear them too.     */
-		.maxi-axis-control.maxi-axis-control__margin[data-sync='none']
-			.maxi-axis-control__content__item {
-			margin-bottom: 0;
+		/* Reduce bottom spacing after the first row only (separate grid) */
+		.maxi-axis-control__item--top-row {
+			margin-bottom: calc(-1 * var(--mx-gap, 8px));
 		}
 
 		/* ========================================
 		   ADVANCED NUMBER CONTROL OVERRIDES
 		   ======================================== */
 
-		// Flattened selectors to avoid impossible self-nesting
 		.maxi-advanced-number-control
 			.maxi-base-control__field.maxi-axis-control__margin,
 		.maxi-advanced-number-control
@@ -217,25 +211,19 @@
 	 PADDING-SPECIFIC STYLING
 	 ======================================== */
 
-	/* ========================================
-	   RESPONSIVE SIZE BUTTONS GRID
-	   ======================================== */
 	.maxi-axis-control__axis-mode {
 		/* parent becomes the grid */
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		grid-auto-rows: auto;
-		gap: var(--mx-gap, 8px); /* re-uses your spacing token */
+		gap: var(--mx-gap, 8px);
 	}
 
-	/* flatten the two row wrappers so their children
-		 participate directly in the parent grid */
 	.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,
 	.maxi-axis-control__axis-mode > .maxi-axis-control__row-2 {
-		display: contents; /* modern browsers */
+		display: contents;
 	}
 
-	/* ---------- OPTIONAL SAFARI <14 FALLBACK ---------- */
 	@supports not (display: contents) {
 		.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,
 		.maxi-axis-control__axis-mode > .maxi-axis-control__row-2 {
@@ -258,9 +246,6 @@
 	   FIX FOR BOTTOM ROW ALIGNMENT
 	   ======================================== */
 
-	/* Bottom row alignment is handled through grid layout */
-
-	/* Make all toggle switches aligned */
 	.maxi-toggle-switch {
 		display: flex;
 		align-items: center;
@@ -271,25 +256,11 @@
 			font-weight: 400;
 		}
 	}
-
-	/* ========================================
-	   DATA-SYNC ATTRIBUTE STYLING HOOKS
-	   ======================================== */
-
-	/* Use [data-sync="axis"], [data-sync="none"], or [data-sync="all"] selectors
-	   to target specific sync modes when needed */
-
-	/* ========================================
-	   SYNC BUTTON STATE MODIFIERS
-	   ======================================== */
-
-	/* Use .maxi-axis-control__sync--axis, .maxi-axis-control__sync--none,
-	   or .maxi-axis-control__sync--all to style active sync buttons */
 }
 
 html .maxi-axis-control__content__item .maxi-reset-button--typography {
 	position: absolute !important;
 	top: -8px !important;
-	right: -5px !important;
+	right: 0px !important;
 	z-index: 1000 !important;
 }

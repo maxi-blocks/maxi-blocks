@@ -67,6 +67,7 @@ const AxisInput = props => {
 		onChangeUnit,
 		onReset,
 		disableRange,
+		extraClassName,
 	} = props;
 
 	const value = getValue(target, breakpoint);
@@ -82,7 +83,8 @@ const AxisInput = props => {
 			label={__(capitalize(label), 'maxi-blocks')}
 			className={classnames(
 				'maxi-axis-control__content__item',
-				`maxi-axis-control__content__item__${kebabCase(label)}`
+				`maxi-axis-control__content__item__${kebabCase(label)}`,
+				extraClassName
 			)}
 			placeholder={lastValue}
 			value={value}
@@ -173,7 +175,7 @@ const AxisContent = props => {
 			)}
 			{sync === 'axis' && !disableSync && (
 				<>
-					<div className='maxi-axis-control__row-1'>
+					<div className='maxi-axis-control__row-1 maxi-axis-control__row--top'>
 						<AxisInput
 							label={`${inputsArray[0]} / ${inputsArray[2]}`}
 							target={inputsArray[0]}
@@ -189,6 +191,7 @@ const AxisContent = props => {
 							enableAxisUnits={enableAxisUnits}
 							onChangeUnit={onChangeUnit}
 							onReset={() => onReset({ reset: 'vertical' })}
+							extraClassName='maxi-axis-control__item--top-row'
 							disableRange={disableRange}
 						/>
 					</div>
@@ -218,7 +221,7 @@ const AxisContent = props => {
 			{sync === 'none' && !disableSync && (
 				<>
 					{/* First row: Top + Right */}
-					<div className='maxi-axis-control__row-1'>
+					<div className='maxi-axis-control__row-1 maxi-axis-control__row--top'>
 						<div>
 							<AxisInput
 								label={inputsArray[0]}
@@ -235,6 +238,7 @@ const AxisContent = props => {
 								enableAxisUnits={enableAxisUnits}
 								onChangeUnit={onChangeUnit}
 								onReset={() => onReset({ reset: 'top' })}
+								extraClassName='maxi-axis-control__item--top-row'
 								disableRange={disableRange}
 							/>
 						</div>
@@ -257,6 +261,7 @@ const AxisContent = props => {
 									enableAxisUnits={enableAxisUnits}
 									onChangeUnit={onChangeUnit}
 									onReset={() => onReset({ reset: 'right' })}
+									extraClassName='maxi-axis-control__item--top-row'
 									disableRange={disableRange}
 								/>
 							</div>

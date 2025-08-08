@@ -143,7 +143,6 @@ const AccordionTitleSettings = props => {
 			<SettingTabsControl
 				className='maxi-accordion-title-control__state-tabs'
 				disablePadding
-				contentClassName='typography-accordion-wrapper'
 				depth={2}
 				items={[
 					{

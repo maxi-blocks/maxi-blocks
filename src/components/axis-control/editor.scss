@@ -229,6 +229,17 @@
 		.maxi-axis-control__item-auto {
 			margin-bottom: 6px;
 		}
+
+		/* Normalize row heights so columns align perfectly */
+		.maxi-base-control__field {
+			margin: 0;
+		}
+		.maxi-advanced-number-control .maxi-base-control__field {
+			align-items: center;
+		}
+		.maxi-toggle-switch .maxi-base-control__field {
+			min-height: 32px;
+		}
 	}
 
 	.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,

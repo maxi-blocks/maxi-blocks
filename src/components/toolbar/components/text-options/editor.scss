@@ -139,8 +139,25 @@
 	}
 
 	&__advanced-button {
-		top: -20px !important;
-		left: 105% !important;
+		position: absolute;
+		top: -10px !important;
+		right: -10px !important;
+		left: auto !important;
+		min-width: 22px !important;
+		height: 22px;
+		padding: 0 !important;
+		background-color: var(--maxi-primary-color);
+		border-radius: 50%;
+		transform: translate(0, 0);
+
+		&:hover {
+			background-color: var(--maxi-secondary-color);
+		}
+
+		svg {
+			width: 16px;
+			fill: var(--maxi-white);
+		}
 	}
 
 	&__font-options {

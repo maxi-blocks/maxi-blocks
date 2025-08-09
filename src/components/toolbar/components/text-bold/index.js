@@ -46,7 +46,10 @@ const TextBold = props => {
 				}
 				aria-pressed={isActive}
 			>
-				<span className='toolbar-item__text toolbar-item__text--bold' aria-hidden='true'>
+				<span
+					className='toolbar-item__text toolbar-item__text--bold'
+					aria-hidden='true'
+				>
 					{TEXT_GLYPH}
 				</span>
 			</Button>

@@ -173,12 +173,18 @@
 		}
 
 		// Apply sidebar styles to toolbar formatting buttons specifically
-		.toolbar-item__typography-control__extra-text-options .toolbar-item__bold,
-		.toolbar-item__typography-control__extra-text-options .toolbar-item__italic,
-		.toolbar-item__typography-control__extra-text-options .toolbar-item__underline,
-		.toolbar-item__typography-control__extra-text-options .toolbar-item__strikethrough,
-		.toolbar-item__typography-control__extra-text-options .toolbar-item__superscript,
-		.toolbar-item__typography-control__extra-text-options .toolbar-item__subscript {
+		.toolbar-item__typography-control__extra-text-options
+			.toolbar-item__bold,
+		.toolbar-item__typography-control__extra-text-options
+			.toolbar-item__italic,
+		.toolbar-item__typography-control__extra-text-options
+			.toolbar-item__underline,
+		.toolbar-item__typography-control__extra-text-options
+			.toolbar-item__strikethrough,
+		.toolbar-item__typography-control__extra-text-options
+			.toolbar-item__superscript,
+		.toolbar-item__typography-control__extra-text-options
+			.toolbar-item__subscript {
 			@include toolbar-button-base;
 			flex: 0 0 auto;
 			min-width: var(--mx-btn-width) !important;

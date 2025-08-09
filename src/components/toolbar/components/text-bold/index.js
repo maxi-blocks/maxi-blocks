@@ -9,10 +9,6 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '@components/button';
-/**
- * Styles
- */
-import './editor.scss';
 
 /**
  * Text glyph constant for toolbar formatting buttons

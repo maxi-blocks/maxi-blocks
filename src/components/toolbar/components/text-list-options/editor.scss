@@ -1,17 +1,34 @@
 .toolbar-item__popover__list-options {
+	// CSS custom properties for consistency and performance
+	--mx-primary-color: var(--maxi-primary-color);
+	--mx-secondary-color: var(--maxi-secondary-color);
+	--mx-border-color: var(--maxi-grey-light);
+	--mx-border-separator: 1px solid var(--mx-border-color);
+	--mx-transition: all 0.4s ease;
+	--mx-active-border: 2px solid var(--mx-secondary-color);
+	--mx-font-weight: 700;
+	--mx-font-size: 15px;
+	--mx-stroke-color: #000;
+
 	display: flex;
 	margin: -13px -11px 0;
 
 	&__button {
-		font-weight: 700;
-		font-size: 15px;
-		border-right: 1px solid var(--maxi-grey-light);
-		transition: all 0.4s ease !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		min-width: 36px !important;
+		max-width: 36px !important;
+		height: 36px !important;
+		font-weight: var(--mx-font-weight);
+		font-size: var(--mx-font-size);
+		border-right: var(--mx-border-separator);
+		transition: var(--mx-transition) !important;
 
 		&:hover {
-			color: var(--maxi-primary-color) !important;
+			color: var(--mx-primary-color) !important;
 			svg path {
-				stroke: var(--maxi-primary-color) !important;
+				stroke: var(--mx-primary-color) !important;
 			}
 		}
 
@@ -21,21 +38,22 @@
 
 		svg path {
 			fill: transparent;
-			stroke: #000;
+			stroke: var(--mx-stroke-color);
 			stroke-width: 1;
 		}
 
 		&[aria-pressed='true'] {
-			color: var(--maxi-secondary-color);
-			border-bottom: 2px solid var(--maxi-secondary-color);
+			color: var(--mx-secondary-color);
+			border-bottom: var(--mx-active-border);
 
 			svg path {
-				stroke: var(--maxi-secondary-color);
+				stroke: var(--mx-secondary-color);
 			}
 		}
 	}
 }
 
+// Simplified popover context selector (kept for specificity requirements)
 .components-popover
 	.components-popover__content
 	.toolbar-wrapper

@@ -180,11 +180,7 @@
 		.toolbar-item__typography-control__extra-text-options
 			.toolbar-item__underline,
 		.toolbar-item__typography-control__extra-text-options
-			.toolbar-item__strikethrough,
-		.toolbar-item__typography-control__extra-text-options
-			.toolbar-item__superscript,
-		.toolbar-item__typography-control__extra-text-options
-			.toolbar-item__subscript {
+			.toolbar-item__strikethrough {
 			@include toolbar-button-base;
 			flex: 0 0 auto;
 			min-width: var(--mx-btn-width) !important;

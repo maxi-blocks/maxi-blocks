@@ -1,5 +1,5 @@
 .toolbar-item__column-pattern__popover {
-	min-width: 392px;
+	min-width: var(--mx-popover-width-xxxl);
 
 	.components-column-pattern {
 		&__icon {
@@ -25,13 +25,13 @@
 			&--toolbar {
 				&:hover {
 					svg path {
-						fill: var(--maxi-white);
+						fill: var(--mx-color-text-inverse);
 					}
 				}
 
 				&[aria-pressed='true'] {
 					svg path {
-						fill: var(--maxi-white);
+						fill: var(--mx-color-text-inverse);
 					}
 				}
 

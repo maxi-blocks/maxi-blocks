@@ -1,14 +1,15 @@
 .toolbar-item__icon-color__popover {
-	min-width: 300px;
+	min-width: var(--mx-popover-width-lg);
 
 	&__warning {
 		text-align: left;
 		font-style: italic;
-		margin-bottom: 8px;
+		margin-bottom: var(--mx-spacing-md);
 		margin-top: 0;
-		border-left: 2px solid var(--maxi-primary-color);
-		padding: 4px 0 4px 9px;
+		border-left: var(--mx-border-width) solid var(--mx-color-primary);
+		padding: var(--mx-spacing-xs) 0 var(--mx-spacing-xs)
+			var(--mx-spacing-md);
 		border-radius: 0;
-		color: #151617;
+		color: var(--mx-color-text);
 	}
 }

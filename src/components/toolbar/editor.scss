@@ -1,42 +1,106 @@
 // Maxi Toolbar Styles - Optimized & Refactored
 // =============================================
 
-// Main toolbar popover container with CSS variables
+// Main toolbar popover container with consolidated CSS variables
 .maxi-toolbar__popover {
-	// Component variables for consistency and performance
-	--mx-toolbar-size: 2rem;
-	--mx-icon-size: 1rem;
-	--mx-border-radius: 3px;
-	--mx-border-radius-circle: 50%;
-	--mx-border-radius-button: 10px;
+	// Popover dimensions (consolidate min-width patterns)
+	--mx-popover-width-xs: 176px; // icon-position
+	--mx-popover-width-sm: 216px; // icon-size
+	--mx-popover-width-md2: 230px; // size, slider-settings
+	--mx-popover-width-md: 280px; // dynamic-content, context-loop, link
+	--mx-popover-width-lg: 300px; // border, box-shadow, icon-color, text-color, etc.
+	--mx-popover-width-xl: 350px; // reusable-blocks
+	--mx-popover-width-xxl: 376px; // text-options font
+	--mx-popover-width-xxxl: 392px; // column-pattern
+
+	// Button dimensions (standardize all button sizing)
+	--mx-btn-size: 36px; // main button size
+	--mx-btn-width: 34px; // button width variant
+	--mx-btn-min-width: 22px; // minimum button size
+	--mx-btn-padding: 8px; // button internal padding
+
+	// Icon sizing
+	--mx-icon-size: 16px; // standard icon (was 1rem)
+	--mx-icon-sm: 14px; // small icon
+	--mx-icon-lg: 20px; // large icon
+	--mx-icon-arrow: 6px; // arrow icons
+
+	// Toolbar specific sizing
+	--mx-toolbar-size: 32px; // main toolbar size (optimized from 2rem)
+	--mx-indicator-size: 15px; // indicator badge size
+	--mx-tooltip-offset: -24px; // tooltip positioning
+
+	// Spacing tokens (replace scattered spacing)
+	--mx-spacing-xs: 3px;
+	--mx-spacing-sm: 5px;
+	--mx-spacing-md: 8px;
+	--mx-spacing-lg: 10px;
+	--mx-spacing-xl: 12px;
+	--mx-spacing-xxl: 20px;
+
+	// Border system
 	--mx-border: 1px solid var(--maxi-grey-light);
-	--mx-transition: 0.4s ease;
-	--mx-transition-fast: 0.5s ease;
-	--mx-spacing-xs: 4px;
-	--mx-spacing-sm: 8px;
-	--mx-spacing-md: 10px;
-	--mx-spacing-lg: 12px;
-	--mx-indicator-size: 15px;
-	--mx-tooltip-offset: -24px;
+	--mx-border-active: 2px solid var(--maxi-primary-color);
+	--mx-border-separator: 1px solid var(--maxi-grey-light);
+	--mx-border-width: 1px;
+
+	// Border radius
+	--mx-radius: 4px;
+	--mx-radius-sm: 2px;
+	--mx-radius-circle: 50%;
+	--mx-radius-button: 10px;
+
+	// Transitions (consolidate all timing)
+	--mx-transition: all 0.3s ease;
+	--mx-transition-bg: background-color 0.3s;
+	--mx-transition-transform: transform 0.3s linear;
+
+	// Shadows
 	--mx-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.08);
 	--mx-shadow-popover: 0 -2px 8px 0 rgba(0, 0, 0, 0.05);
+	--mx-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-	z-index: 9999998;
+	// Z-index management
+	--mx-z-base: 9999997;
+	--mx-z-toolbar: 9999998;
+	--mx-z-hover: 9999999;
+	--mx-z-max: 99999999;
+
+	// Typography
+	--mx-font-size: 16px;
+	--mx-font-size-sm: 12px;
+	--mx-font-size-xs: 10px;
+	--mx-font-weight-normal: 400;
+	--mx-font-weight-medium: 500;
+	--mx-font-weight-bold: 700;
+	--mx-line-height: 1;
+
+	// Color aliases for better semantics
+	--mx-color-text: var(--maxi-black);
+	--mx-color-text-light: var(--maxi-grey);
+	--mx-color-text-inverse: var(--maxi-white);
+	--mx-color-primary: var(--maxi-primary-color);
+	--mx-color-secondary: var(--maxi-secondary-color);
+	--mx-color-bg: var(--maxi-white);
+	--mx-color-bg-hover: var(--maxi-pastel-green);
+	--mx-color-bg-active: var(--maxi-whisper-green);
+
+	z-index: var(--mx-z-toolbar);
 
 	// Apply transition to all elements
 	*,
 	*::before,
 	*::after {
-		transition: all var(--mx-transition);
+		transition: var(--mx-transition);
 	}
 
 	// Caption and icon containers
 	&-caption,
 	&--icon {
-		z-index: 9999997;
+		z-index: var(--mx-z-base);
 
 		&:hover {
-			z-index: 9999999;
+			z-index: var(--mx-z-hover);
 		}
 	}
 
@@ -51,8 +115,8 @@
 		width: var(--mx-indicator-size);
 		height: 20px;
 		margin-left: var(--mx-spacing-md);
-		background: var(--maxi-primary-color);
-		border-radius: 0 var(--mx-border-radius) var(--mx-border-radius) 0;
+		background: var(--mx-color-primary);
+		border-radius: 0 var(--mx-radius) var(--mx-radius) 0;
 
 		&--repeater {
 			background: var(--maxi-tertiary-color);
@@ -74,7 +138,7 @@
 			left: 50%;
 			display: flex;
 			width: min-content;
-			background-color: var(--maxi-white);
+			background-color: var(--mx-color-bg);
 			border: var(--mx-border);
 			border-radius: 0;
 			box-shadow: var(--mx-shadow);
@@ -134,21 +198,20 @@
 				height: 20px;
 				padding: var(--mx-spacing-xs) var(--mx-spacing-md);
 				font-family: 'Inter', sans-serif !important;
-				font-size: 10px !important;
-				font-weight: 400;
-				line-height: 100%;
-				color: var(--maxi-white);
+				font-size: var(--mx-font-size-xs);
+				font-weight: var(--mx-font-weight-normal);
+				line-height: var(--mx-line-height);
+				color: var(--mx-color-text-inverse);
 				white-space: pre;
-				background: var(--maxi-primary-color);
-				border-radius: var(--mx-border-radius) 0 0
-					var(--mx-border-radius);
+				background: var(--mx-color-primary);
+				border-radius: var(--mx-radius) 0 0 var(--mx-radius);
 
 				&--repeater {
 					background: var(--maxi-tertiary-color);
 				}
 
 				&__block-style {
-					padding-left: var(--mx-border-radius);
+					padding-left: var(--mx-radius);
 					text-transform: capitalize;
 				}
 
@@ -177,7 +240,7 @@
 				justify-content: center;
 				width: var(--mx-toolbar-size);
 				height: var(--mx-toolbar-size);
-				background-color: var(--maxi-white);
+				background-color: var(--mx-color-bg);
 				border-right: var(--mx-border);
 
 				&.toolbar-item__more-settings {
@@ -209,7 +272,7 @@
 							rect,
 							polyline,
 							path {
-								stroke: var(--maxi-secondary-color);
+								stroke: var(--mx-color-secondary);
 							}
 						}
 					}
@@ -217,7 +280,7 @@
 
 				// Active link state
 				&__link--active .toolbar-item__icon path {
-					fill: var(--maxi-primary-color);
+					fill: var(--mx-color-primary);
 				}
 
 				// Icon alignment for text options and border
@@ -250,8 +313,8 @@
 					padding: 0;
 					background-color: transparent;
 					border-radius: 0;
-					fill: var(--maxi-black);
-					transition: all var(--mx-transition-fast);
+					fill: var(--mx-color-text);
+					transition: var(--mx-transition);
 
 					&::after {
 						position: absolute;
@@ -260,13 +323,13 @@
 						right: -1px;
 						height: 0;
 						content: '';
-						background-color: var(--maxi-secondary-color);
-						transition: all var(--mx-transition-fast);
+						background-color: var(--mx-color-secondary);
+						transition: var(--mx-transition);
 					}
 
 					&:hover,
 					&[aria-expanded='true'] {
-						background-color: var(--maxi-pastel-green);
+						background-color: var(--mx-color-bg-hover);
 
 						.toolbar-item__icon {
 							ellipse,
@@ -275,8 +338,8 @@
 							rect,
 							polyline,
 							path {
-								fill: var(--maxi-secondary-color);
-								stroke: var(--maxi-secondary-color);
+								fill: var(--mx-color-secondary);
+								stroke: var(--mx-color-secondary);
 							}
 						}
 					}
@@ -294,12 +357,12 @@
 				&__bold,
 				&__italic {
 					&:hover path {
-						stroke: var(--maxi-secondary-color);
+						stroke: var(--mx-color-secondary);
 					}
 
 					path {
-						fill: var(--maxi-white);
-						stroke: var(--maxi-black);
+						fill: var(--mx-color-text-inverse);
+						stroke: var(--mx-color-text);
 					}
 				}
 
@@ -326,7 +389,7 @@
 					rect,
 					polyline,
 					path {
-						transition: all var(--mx-transition-fast);
+						transition: all var(--mx-transition);
 					}
 				}
 
@@ -343,8 +406,8 @@
 		font-family: 'Inter', sans-serif;
 
 		&:hover {
-			color: var(--maxi-primary-color);
-			transition: all var(--mx-transition);
+			color: var(--mx-color-primary);
+			transition: var(--mx-transition);
 		}
 	}
 
@@ -354,21 +417,21 @@
 
 		&__button {
 			&:first-child {
-				border-radius: var(--mx-border-radius-button) 0 0
-					var(--mx-border-radius-button);
+				border-radius: var(--mx-radius-button) 0 0
+					var(--mx-radius-button);
 			}
 
 			&:last-child {
 				border-right: var(--mx-border);
-				border-radius: 0 var(--mx-border-radius-button)
-					var(--mx-border-radius-button) 0;
+				border-radius: 0 var(--mx-radius-button) var(--mx-radius-button)
+					0;
 			}
 		}
 	}
 
 	// Color control active state
 	.maxi-color-control__palette-box--active {
-		background-color: var(--maxi-pastel-green);
+		background-color: var(--mx-color-bg-hover);
 	}
 
 	// Typography control
@@ -399,17 +462,17 @@
 		min-width: 22px;
 		height: 22px;
 		padding: 0;
-		background-color: var(--maxi-primary-color);
-		border-radius: var(--mx-border-radius-circle);
+		background-color: var(--mx-color-primary);
+		border-radius: var(--mx-radius-circle);
 		transform: translate(0, 0);
 
 		&:hover {
-			background-color: var(--maxi-secondary-color);
+			background-color: var(--mx-color-secondary);
 		}
 
 		svg {
-			width: 16px;
-			fill: var(--maxi-white);
+			width: var(--mx-icon-size);
+			fill: var(--mx-color-text-inverse);
 		}
 	}
 
@@ -421,7 +484,7 @@
 			display: block;
 			width: 100%;
 			margin: 0 var(--mx-spacing-xs);
-			background: var(--maxi-white);
+			background: var(--mx-color-bg);
 
 			&:first-of-type {
 				margin-left: 0;
@@ -456,8 +519,8 @@
 			font-size: 13px;
 			font-weight: 500;
 			line-height: 13px;
-			color: var(--maxi-white);
-			background-color: var(--maxi-black);
+			color: var(--mx-color-text-inverse);
+			background-color: var(--mx-color-text);
 			border-right: 0;
 			border-bottom: none;
 			opacity: 1;
@@ -484,9 +547,9 @@
 				&:checked ~ label {
 					position: relative;
 					z-index: 1;
-					background-color: var(--maxi-pastel-green);
+					background-color: var(--mx-color-bg-active);
 					border: 2px solid var(--maxi-grey-light);
-					border-bottom: 2px solid var(--maxi-primary-color);
+					border-bottom: 2px solid var(--mx-color-primary);
 				}
 			}
 
@@ -516,10 +579,10 @@
 		}
 
 		&__field {
-			color: var(--maxi-black);
+			color: var(--mx-color-text);
 
 			.components-range-control__track + span span {
-				background-color: var(--maxi-white);
+				background-color: var(--mx-color-bg);
 
 				&::before {
 					border-color: var(--maxi-grey-dark);
@@ -527,13 +590,13 @@
 			}
 
 			.components-range-control__number {
-				color: var(--maxi-black);
+				color: var(--mx-color-text);
 				background-color: transparent;
 				border-color: var(--maxi-grey);
 			}
 
 			.maxi-select-control__input option {
-				color: var(--maxi-black);
+				color: var(--mx-color-text);
 			}
 
 			.components-button.is-secondary {
@@ -545,13 +608,13 @@
 				}
 
 				svg {
-					fill: var(--maxi-black);
+					fill: var(--mx-color-text);
 				}
 			}
 		}
 
 		&__label {
-			color: var(--maxi-black);
+			color: var(--mx-color-text);
 		}
 	}
 
@@ -569,7 +632,7 @@
 
 	// Dimensions control
 	.maxi-dimensions-control {
-		color: var(--maxi-white);
+		color: var(--mx-color-text-inverse);
 
 		&_sync {
 			width: 36px;
@@ -581,10 +644,10 @@
 			}
 
 			&[aria-pressed='true'] {
-				border-color: var(--maxi-white);
+				border-color: var(--mx-color-text-inverse);
 
 				svg {
-					fill: var(--maxi-white);
+					fill: var(--mx-color-text-inverse);
 				}
 			}
 		}
@@ -594,13 +657,13 @@
 			border-color: var(--maxi-grey);
 
 			svg {
-				color: var(--maxi-white);
+				color: var(--mx-color-text-inverse);
 				fill: currentColor;
 			}
 		}
 
 		&__number {
-			color: var(--maxi-white);
+			color: var(--mx-color-text-inverse);
 			background-color: transparent;
 			border-color: var(--maxi-grey);
 		}
@@ -617,9 +680,9 @@
 			border-right: none;
 
 			&[aria-pressed='true'] {
-				font-weight: 700;
-				color: var(--maxi-primary-color);
-				background-color: var(--maxi-whisper-green);
+				font-weight: var(--mx-font-weight-bold);
+				color: var(--mx-color-primary);
+				background-color: var(--mx-color-bg-active);
 			}
 		}
 	}
@@ -660,7 +723,7 @@ body .toolbar-item__popover {
 		padding: var(--mx-spacing-lg) 11px 0 14px;
 		margin-left: -2px;
 		overflow: visible;
-		background-color: var(--maxi-white);
+		background-color: var(--mx-color-bg);
 		border: var(--mx-border);
 		border-radius: 0;
 		box-shadow: var(--mx-shadow-popover);
@@ -673,7 +736,7 @@ body .toolbar-item__popover {
 		// Color control - optimized
 		.maxi-color-control {
 			margin-bottom: var(--mx-spacing-md);
-			color: var(--maxi-white);
+			color: var(--mx-color-text-inverse);
 
 			button.maxi-components-button.maxi-reset-button {
 				margin-top: -4px;
@@ -711,7 +774,7 @@ body .toolbar-item__popover {
 			}
 
 			&__items {
-				color: var(--maxi-white);
+				color: var(--mx-color-text-inverse);
 
 				.maxi-tabs-control__button {
 					background-color: var(--maxi-grey);
@@ -723,16 +786,16 @@ body .toolbar-item__popover {
 				}
 
 				svg {
-					fill: var(--maxi-white);
+					fill: var(--mx-color-text-inverse);
 
 					path {
-						stroke: var(--maxi-white);
+						stroke: var(--mx-color-text-inverse);
 					}
 				}
 			}
 
 			&__display {
-				color: var(--maxi-white);
+				color: var(--mx-color-text-inverse);
 			}
 		}
 
@@ -763,7 +826,7 @@ html[dir='rtl'] {
 	.toolbar-block-custom-label {
 		right: 0;
 		left: unset;
-		border-radius: 0 var(--mx-border-radius) var(--mx-border-radius) 0;
+		border-radius: 0 var(--mx-radius) var(--mx-radius) 0;
 	}
 
 	.toolbar-more-indicator {
@@ -771,7 +834,7 @@ html[dir='rtl'] {
 		left: -16px;
 		margin-right: var(--mx-spacing-md);
 		margin-left: 0;
-		border-radius: var(--mx-border-radius) 0 0 var(--mx-border-radius);
+		border-radius: var(--mx-radius) 0 0 var(--mx-radius);
 	}
 
 	.breadcrumbs-pin {
@@ -796,10 +859,10 @@ html[dir='rtl'] {
 	padding: 0;
 	background-color: transparent;
 	border-radius: 0;
-	fill: var(--maxi-black);
-	transition: all var(--mx-transition-fast);
+	fill: var(--mx-color-text);
+	transition: var(--mx-transition);
 }
 
 .components-button:hover .st0 {
-	fill: var(--maxi-primary-color);
+	fill: var(--mx-color-primary);
 }

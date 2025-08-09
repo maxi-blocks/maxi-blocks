@@ -6,7 +6,7 @@
 	}
 
 	&-popover {
-		min-width: 280px;
+		min-width: var(--mx-popover-width-md);
 	}
 
 	&-warning {

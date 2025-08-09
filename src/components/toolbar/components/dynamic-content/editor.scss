@@ -1,6 +1,6 @@
 .toolbar-item__popover {
 	.toolbar-item__dynamic-content__popover {
-		min-width: 280px;
+		min-width: var(--mx-popover-width-md);
 		.maxi-axis-control {
 			.maxi-base-control {
 				&__field {
@@ -29,11 +29,11 @@
 		input[type='number'],
 		select {
 			border: 2px solid var(--maxi-grey-light);
-			color: var(--maxi-grey-light);
+			color: var(--mx-color-text-light);
 		}
 	}
 	.maxi-axis-control {
-		color: #fff;
+		color: var(--mx-color-text-inverse);
 		&__content {
 			&__item {
 				&__checkbox {
@@ -53,7 +53,7 @@
 							background: #4f515c !important;
 						}
 						svg {
-							fill: #fff;
+							fill: var(--mx-color-text-inverse);
 						}
 					}
 				}

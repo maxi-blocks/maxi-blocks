@@ -91,6 +91,9 @@
 
 // Main container for the toolbar popup with CSS custom properties
 .toolbar-item__popover {
+	/* One source of truth for spacing in this row */
+	--toolbar-gap: 6px;
+
 	/* Spacing tokens */
 	--mx-gap-xs: 4px;
 	--mx-gap-sm: 5px;
@@ -143,14 +146,48 @@
 		.toolbar-item__typography-control__extra-text-options {
 			display: flex;
 			align-items: center;
-			gap: var(--mx-gap-sm);
+			gap: var(--toolbar-gap);
 			margin: var(--mx-gap-xs) 0;
+		}
 
-			// Consolidated button styles for both .toolbar-item and .toolbar-item__popover__list-options__button
-			.toolbar-item,
-			.toolbar-item__popover__list-options__button {
-				@include toolbar-button-base;
-			}
+		// Kill stray margins/padding from wrappers
+		.toolbar-item__typography-control__extra-text-options > * {
+			margin: 0 !important;
+			padding: 0 !important;
+			border: 0 !important;
+		}
+
+		// Make ALL the button types identical boxes
+		.toolbar-item__typography-control__extra-text-options .toolbar-item,
+		.toolbar-item__typography-control__extra-text-options
+			.toolbar-item__popover__list-options__button,
+		.toolbar-item__typography-control__extra-text-options
+			.maxi-alignment-control
+			.maxi-tabs-control__button {
+			@include toolbar-button-base; /* uses your --mx-* tokens */
+			flex: 0 0 auto; /* prevent stretch */
+			min-width: var(--mx-btn-width) !important;
+			max-width: var(--mx-btn-width) !important;
+			height: var(--mx-btn-size) !important;
+			margin: 0 !important;
+		}
+
+		// Keep the alignment group as its own row container,
+		// but give it the SAME gap as the outer row
+		.toolbar-item__typography-control__extra-text-options
+			.maxi-alignment-control
+			.maxi-tabs-control {
+			display: inline-flex; /* NOT display: contents */
+			gap: var(--toolbar-gap);
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+
+		// Optional: ensure the alignment group wrapper itself doesn't add spacing
+		.toolbar-item__typography-control__extra-text-options
+			.maxi-alignment-control {
+			display: inline-flex; /* wrapper collapses to its content width */
 		}
 
 		// Typography tabs section (alignment, font selection, etc.)

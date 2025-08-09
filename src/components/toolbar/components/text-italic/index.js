@@ -9,14 +9,15 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '@components/button';
-import Icon from '@components/icon';
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
- * Styles and icons
+ * Text glyph constant for toolbar formatting buttons
  */
-
-import './editor.scss';
-import { toolbarItalic } from '@maxi-icons';
+const TEXT_GLYPH = 'I';
 
 /**
  * TextItalic
@@ -45,10 +46,9 @@ const TextItalic = props => {
 				}
 				aria-pressed={isActive}
 			>
-				<Icon
-					className='toolbar-item__icon toolbar-item__italic'
-					icon={toolbarItalic}
-				/>
+				<span className='toolbar-item__text toolbar-item__text--italic' aria-hidden='true'>
+					{TEXT_GLYPH}
+				</span>
 			</Button>
 		);
 	};

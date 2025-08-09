@@ -9,12 +9,11 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '@components/button';
-import Icon from '@components/icon';
 
 /**
- * Styles and icons
+ * Text glyph constant for toolbar formatting buttons (small text)
  */
-import { toolbarSubScript } from '@maxi-icons';
+const TEXT_GLYPH = 'Aa'; // small text indicator
 
 /**
  * TextFormatSubscript
@@ -31,7 +30,7 @@ const TextFormatSubscript = props => {
 
 	useEffect(() => {
 		setIsActive((getSuperscriptValue() === 'sub' && true) || false);
-	});
+	}, [getSuperscriptValue]);
 
 	const subscriptContent = () => {
 		return (
@@ -44,7 +43,12 @@ const TextFormatSubscript = props => {
 				}
 				aria-pressed={isActive}
 			>
-				<Icon className='toolbar-item__icon' icon={toolbarSubScript} />
+				<span
+					className='toolbar-item__text toolbar-item__text--small'
+					aria-hidden='true'
+				>
+					{TEXT_GLYPH}
+				</span>
 			</Button>
 		);
 	};

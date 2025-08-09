@@ -9,17 +9,15 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '@components/button';
-import Icon from '@components/icon';
-
 /**
  * External dependencies
  */
 import { trim, isEmpty } from 'lodash';
 
 /**
- * Styles and icons
+ * Text glyph constant for toolbar formatting buttons
  */
-import { toolbarStrikethrough } from '@maxi-icons';
+const TEXT_GLYPH = 'S';
 
 /**
  * TextFormatStrikethrough
@@ -64,10 +62,9 @@ const TextFormatStrikethrough = props => {
 				onClick={onClick}
 				aria-pressed={isActive}
 			>
-				<Icon
-					className='toolbar-item__icon'
-					icon={toolbarStrikethrough}
-				/>
+				<span className='toolbar-item__text toolbar-item__text--strikethrough' aria-hidden='true'>
+					{TEXT_GLYPH}
+				</span>
 			</Button>
 		);
 	};

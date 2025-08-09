@@ -172,6 +172,50 @@
 			margin: 0 !important;
 		}
 
+		// Apply sidebar styles to toolbar formatting buttons specifically
+		.toolbar-item__typography-control__extra-text-options .toolbar-item__bold,
+		.toolbar-item__typography-control__extra-text-options .toolbar-item__italic,
+		.toolbar-item__typography-control__extra-text-options .toolbar-item__underline,
+		.toolbar-item__typography-control__extra-text-options .toolbar-item__strikethrough,
+		.toolbar-item__typography-control__extra-text-options .toolbar-item__superscript,
+		.toolbar-item__typography-control__extra-text-options .toolbar-item__subscript {
+			@include toolbar-button-base;
+			flex: 0 0 auto;
+			min-width: var(--mx-btn-width) !important;
+			max-width: var(--mx-btn-width) !important;
+			height: var(--mx-btn-size) !important;
+			margin: 0 !important;
+
+			// Text glyph styling matching sidebar
+			.toolbar-item__text {
+				font-family: inherit;
+				font-size: var(--mx-font-size);
+				line-height: var(--mx-line-height);
+				color: currentColor;
+				transition: var(--mx-transition);
+
+				&--bold {
+					font-weight: bold;
+				}
+				&--italic {
+					font-style: italic;
+				}
+				&--underline {
+					text-decoration: underline;
+				}
+				&--strikethrough {
+					text-decoration: line-through;
+				}
+				&--small {
+					font-variant-caps: small-caps;
+				}
+				&--big {
+					// Use slightly larger font for A₂ glyph
+					font-size: calc(var(--mx-font-size) * 1.1);
+				}
+			}
+		}
+
 		// Keep the alignment group as its own row container,
 		// but give it the SAME gap as the outer row
 		.toolbar-item__typography-control__extra-text-options

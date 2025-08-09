@@ -621,7 +621,7 @@
 		}
 
 		&__mobile-controls-item {
-			height: 36px;
+			height: var(--mx-btn-size, 36px);
 			border-color: var(--maxi-grey) !important;
 
 			svg {

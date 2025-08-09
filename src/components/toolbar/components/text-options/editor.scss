@@ -101,7 +101,7 @@
 	--mx-gap-lg: 10px;
 
 	/* Button dimensions */
-	--mx-btn-size: 32px;
+	--mx-btn-size: 36px;
 	--mx-btn-width: 34px;
 	--mx-btn-padding: 8px;
 	--mx-icon-size: 16px;
@@ -254,7 +254,7 @@
 			}
 
 			& > .maxi-tabs-control .maxi-tabs-control__button {
-				height: 36px;
+				height: var(--mx-btn-size);
 				justify-content: center;
 				width: 45px;
 				gap: 0;
@@ -282,8 +282,8 @@
 			.maxi-font-family-selector__control__control {
 				border-style: solid;
 				border-width: 0 1px 0 0;
-				height: 36px;
-				min-height: 36px;
+				height: var(--mx-btn-size);
+				min-height: var(--mx-btn-size);
 			}
 
 			.maxi-font-family-selector__control__menu {
@@ -346,7 +346,7 @@
 			}
 
 			.components-maxi-control__reset-button {
-				height: 36px;
+				height: var(--mx-btn-size);
 				margin: 0;
 				border: none;
 

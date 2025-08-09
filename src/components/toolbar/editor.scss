@@ -1,40 +1,33 @@
-// Maxi Toolbar Styles - Optimized
-// ================================
+// Maxi Toolbar Styles - Optimized & Refactored
+// =============================================
 
-// Common transition for all elements
-%maxi-transition {
-	transition: all 0.4s ease;
-}
-
-// Common button reset
-%maxi-button-reset {
-	padding: 0;
-	border-radius: 0;
-	outline: none;
-	box-shadow: none;
-}
-
-// Common hover states for SVG elements
-%svg-hover-state {
-	ellipse,
-	circle,
-	line,
-	rect,
-	polyline,
-	path {
-		stroke: var(--maxi-secondary-color) !important;
-	}
-}
-
-// Main toolbar popover container
+// Main toolbar popover container with CSS variables
 .maxi-toolbar__popover {
+	// Component variables for consistency and performance
+	--mx-toolbar-size: 2rem;
+	--mx-icon-size: 1rem;
+	--mx-border-radius: 3px;
+	--mx-border-radius-circle: 50%;
+	--mx-border-radius-button: 10px;
+	--mx-border: 1px solid var(--maxi-grey-light);
+	--mx-transition: 0.4s ease;
+	--mx-transition-fast: 0.5s ease;
+	--mx-spacing-xs: 4px;
+	--mx-spacing-sm: 8px;
+	--mx-spacing-md: 10px;
+	--mx-spacing-lg: 12px;
+	--mx-indicator-size: 15px;
+	--mx-tooltip-offset: -24px;
+	--mx-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.08);
+	--mx-shadow-popover: 0 -2px 8px 0 rgba(0, 0, 0, 0.05);
+
 	z-index: 9999998;
 
 	// Apply transition to all elements
 	*,
 	*::before,
 	*::after {
-		@extend %maxi-transition;
+		transition: all var(--mx-transition);
 	}
 
 	// Caption and icon containers
@@ -55,11 +48,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 15px;
+		width: var(--mx-indicator-size);
 		height: 20px;
-		margin-left: 10px;
+		margin-left: var(--mx-spacing-md);
 		background: var(--maxi-primary-color);
-		border-radius: 0 3px 3px 0;
+		border-radius: 0 var(--mx-border-radius) var(--mx-border-radius) 0;
 
 		&--repeater {
 			background: var(--maxi-tertiary-color);
@@ -82,9 +75,9 @@
 			display: flex;
 			width: min-content;
 			background-color: var(--maxi-white);
-			border: 1px solid var(--maxi-grey-light);
+			border: var(--mx-border);
 			border-radius: 0;
-			box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.08);
+			box-shadow: var(--mx-shadow);
 			transform: translateX(-50%);
 
 			// Pinned state
@@ -106,10 +99,10 @@
 			// Breadcrumbs tooltip
 			.breadcrumbs-pin-tooltip {
 				position: absolute;
-				top: -24px;
+				top: var(--mx-tooltip-offset);
 				left: 0;
 				z-index: 5;
-				padding: 7px 8px;
+				padding: 7px var(--mx-spacing-sm);
 				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
 					Inter, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
 					sans-serif;
@@ -139,7 +132,7 @@
 				display: inline-block;
 				width: auto;
 				height: 20px;
-				padding: 4px 10px;
+				padding: var(--mx-spacing-xs) var(--mx-spacing-md);
 				font-family: 'Inter', sans-serif !important;
 				font-size: 10px !important;
 				font-weight: 400;
@@ -147,26 +140,32 @@
 				color: var(--maxi-white);
 				white-space: pre;
 				background: var(--maxi-primary-color);
-				border-radius: 3px 0 0 3px;
+				border-radius: var(--mx-border-radius) 0 0
+					var(--mx-border-radius);
 
 				&--repeater {
 					background: var(--maxi-tertiary-color);
 				}
 
 				&__block-style {
-					padding-left: 3px;
+					padding-left: var(--mx-border-radius);
 					text-transform: capitalize;
 				}
 
 				.breadcrumbs-pin {
 					display: inline-block;
-					padding-right: 10px;
+					padding-right: var(--mx-spacing-md);
 				}
 			}
 
-			// Button focus state
-			button:not(.maxi-color-control__palette-box):focus {
-				@extend %maxi-button-reset;
+			// Button focus state and main toolbar buttons
+			button:not(.maxi-color-control__palette-box):focus,
+			> div:not(.toolbar-block-custom-label),
+			> button {
+				padding: 0;
+				border-radius: 0;
+				outline: none;
+				box-shadow: none;
 			}
 
 			// Main toolbar buttons and divs
@@ -176,12 +175,10 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				width: 2rem;
-				height: 2rem;
-				padding: 0;
+				width: var(--mx-toolbar-size);
+				height: var(--mx-toolbar-size);
 				background-color: var(--maxi-white);
-				border-right: 1px solid var(--maxi-grey-light);
-				border-radius: 0;
+				border-right: var(--mx-border);
 
 				&.toolbar-item__more-settings {
 					border-right: none;
@@ -198,23 +195,22 @@
 				align-items: center;
 				justify-content: center;
 
-				// Dynamic content hover
-				&__dynamic-content {
-					&:hover,
-					&[aria-expanded='true'] {
-						svg {
-							@extend %svg-hover-state;
-						}
-					}
-				}
-
-				// List options and text margin hover
+				// Consolidated hover states for SVG elements
+				&__dynamic-content,
 				&__list-options,
 				&__text-margin {
 					&:hover,
 					&[aria-expanded='true'] {
+						svg,
 						.toolbar-item__icon {
-							@extend %svg-hover-state;
+							ellipse,
+							circle,
+							line,
+							rect,
+							polyline,
+							path {
+								stroke: var(--maxi-secondary-color);
+							}
 						}
 					}
 				}
@@ -224,7 +220,7 @@
 					fill: var(--maxi-primary-color);
 				}
 
-				// Text options and border icon alignment
+				// Icon alignment for text options and border
 				&__text-options,
 				&__border {
 					.toolbar-item__icon {
@@ -234,7 +230,7 @@
 					}
 				}
 
-				// Common button styles
+				// Common button styles - consolidated
 				&__more-settings .components-button,
 				&__help .components-button,
 				&__duplicate .components-button,
@@ -244,14 +240,18 @@
 				&__bold,
 				&__italic,
 				&__toolbarSizing,
-				&__button {
+				&__button,
+				&__underline,
+				&__strikethrough,
+				&__subscript,
+				&__superscript {
 					width: 100%;
 					height: 100%;
 					padding: 0;
 					background-color: transparent;
 					border-radius: 0;
-					fill: var(--maxi-black) !important;
-					transition: all 0.5s ease;
+					fill: var(--maxi-black);
+					transition: all var(--mx-transition-fast);
 
 					&::after {
 						position: absolute;
@@ -261,12 +261,12 @@
 						height: 0;
 						content: '';
 						background-color: var(--maxi-secondary-color);
-						transition: all 0.5s ease;
+						transition: all var(--mx-transition-fast);
 					}
 
 					&:hover,
 					&[aria-expanded='true'] {
-						background-color: var(--maxi-pastel-green) !important;
+						background-color: var(--maxi-pastel-green);
 
 						.toolbar-item__icon {
 							ellipse,
@@ -276,54 +276,21 @@
 							polyline,
 							path {
 								fill: var(--maxi-secondary-color);
+								stroke: var(--maxi-secondary-color);
 							}
 						}
 					}
 
 					&:focus,
 					&:visited {
-						@extend %maxi-button-reset;
+						padding: 0;
+						border-radius: 0;
+						outline: none;
+						box-shadow: none;
 					}
 				}
 
-				// Text formatting buttons
-				&__underline,
-				&__strikethrough,
-				&__subscript,
-				&__superscript {
-					width: 100%;
-					height: 100%;
-					padding: 0;
-					border-radius: 0;
-					transition: all 0.5s ease;
-
-					&::after {
-						position: absolute;
-						bottom: -1px;
-						left: -1px;
-						right: -1px;
-						height: 0;
-						content: '';
-						background-color: var(--maxi-secondary-color);
-						transition: all 0.5s ease;
-					}
-
-					&:hover,
-					&[aria-expanded='true'] {
-						background-color: var(--maxi-pastel-green);
-
-						.toolbar-item__icon {
-							@extend %svg-hover-state;
-						}
-					}
-
-					&:focus,
-					&:visited {
-						@extend %maxi-button-reset;
-					}
-				}
-
-				// Bold and italic hover states
+				// Bold and italic specific path styles
 				&__bold,
 				&__italic {
 					&:hover path {
@@ -338,7 +305,7 @@
 
 				// Replace image button
 				&__replace-image {
-					width: 80px !important;
+					width: 80px;
 
 					&__button {
 						display: inline-block;
@@ -349,8 +316,8 @@
 				// Icon styles
 				&__icon {
 					display: block;
-					width: 1rem;
-					height: 1rem;
+					width: var(--mx-icon-size);
+					height: var(--mx-icon-size);
 					margin: auto;
 
 					ellipse,
@@ -359,7 +326,7 @@
 					rect,
 					polyline,
 					path {
-						transition: all 0.5s ease;
+						transition: all var(--mx-transition-fast);
 					}
 				}
 
@@ -373,11 +340,11 @@
 
 	// Components button styles
 	.components-button {
-		font-family: 'Inter', sans-serif !important;
+		font-family: 'Inter', sans-serif;
 
 		&:hover {
-			color: var(--maxi-primary-color) !important;
-			transition: all 0.4s ease !important;
+			color: var(--maxi-primary-color);
+			transition: all var(--mx-transition);
 		}
 	}
 
@@ -387,19 +354,21 @@
 
 		&__button {
 			&:first-child {
-				border-radius: 10px 0 0 10px;
+				border-radius: var(--mx-border-radius-button) 0 0
+					var(--mx-border-radius-button);
 			}
 
 			&:last-child {
-				border-right: 1px solid var(--maxi-grey-light);
-				border-radius: 0 10px 10px 0;
+				border-right: var(--mx-border);
+				border-radius: 0 var(--mx-border-radius-button)
+					var(--mx-border-radius-button) 0;
 			}
 		}
 	}
 
 	// Color control active state
 	.maxi-color-control__palette-box--active {
-		background-color: var(--maxi-pastel-green) !important;
+		background-color: var(--maxi-pastel-green);
 	}
 
 	// Typography control
@@ -409,8 +378,8 @@
 			gap: 0;
 
 			button {
-				width: 35px !important;
-				border-radius: 4px !important;
+				width: 35px;
+				border-radius: var(--mx-spacing-xs);
 			}
 		}
 	}
@@ -424,14 +393,14 @@
 	// Advanced button
 	&__advanced-button {
 		position: absolute;
-		top: -10px !important;
-		right: -10px !important;
-		left: auto !important;
-		min-width: 22px !important;
+		top: -10px;
+		right: -10px;
+		left: auto;
+		min-width: 22px;
 		height: 22px;
-		padding: 0 !important;
+		padding: 0;
 		background-color: var(--maxi-primary-color);
-		border-radius: 50%;
+		border-radius: var(--mx-border-radius-circle);
 		transform: translate(0, 0);
 
 		&:hover {
@@ -451,7 +420,7 @@
 		&__button {
 			display: block;
 			width: 100%;
-			margin: 0 4px;
+			margin: 0 var(--mx-spacing-xs);
 			background: var(--maxi-white);
 
 			&:first-of-type {
@@ -475,7 +444,7 @@
 			border-radius: 5px;
 
 			.maxi-base-control__label {
-				flex: 3 !important;
+				flex: 3;
 			}
 		}
 
@@ -491,7 +460,7 @@
 			background-color: var(--maxi-black);
 			border-right: 0;
 			border-bottom: none;
-			opacity: 1 !important;
+			opacity: 1;
 
 			&:first-of-type input ~ label {
 				border-radius: 5px 0 0 5px;
@@ -536,10 +505,10 @@
 	&::after {
 		z-index: -1;
 		display: none;
-		border-color: var(--maxi-grey-dark) !important;
+		border-color: var(--maxi-grey-dark);
 	}
 
-	// Base control styles
+	// Base control styles - consolidated
 	.maxi-base-control,
 	.components-base-control {
 		.components-range-control {
@@ -550,33 +519,33 @@
 			color: var(--maxi-black);
 
 			.components-range-control__track + span span {
-				background-color: var(--maxi-white) !important;
+				background-color: var(--maxi-white);
 
 				&::before {
-					border-color: var(--maxi-grey-dark) !important;
+					border-color: var(--maxi-grey-dark);
 				}
 			}
 
 			.components-range-control__number {
 				color: var(--maxi-black);
 				background-color: transparent;
-				border-color: var(--maxi-grey) !important;
+				border-color: var(--maxi-grey);
 			}
 
 			.maxi-select-control__input option {
-				color: var(--maxi-black) !important;
+				color: var(--maxi-black);
 			}
 
 			.components-button.is-secondary {
 				background-color: transparent;
-				border-color: var(--maxi-grey) !important;
+				border-color: var(--maxi-grey);
 
 				&:hover {
-					background-color: transparent !important;
+					background-color: transparent;
 				}
 
 				svg {
-					fill: var(--maxi-black) !important;
+					fill: var(--maxi-black);
 				}
 			}
 		}
@@ -589,8 +558,8 @@
 	// Number input styles
 	input[type='number'] {
 		flex: 2;
-		color: var(--maxi-grey) !important;
-		border: 1px solid var(--maxi-grey-light) !important;
+		color: var(--maxi-grey);
+		border: var(--mx-border);
 
 		&::placeholder {
 			color: var(--maxi-grey);
@@ -603,12 +572,12 @@
 		color: var(--maxi-white);
 
 		&_sync {
-			width: 36px !important;
-			background-color: transparent !important;
-			border-color: var(--maxi-grey) !important;
+			width: 36px;
+			background-color: transparent;
+			border-color: var(--maxi-grey);
 
 			&:hover {
-				background-color: transparent !important;
+				background-color: transparent;
 			}
 
 			&[aria-pressed='true'] {
@@ -622,7 +591,7 @@
 
 		&__mobile-controls-item {
 			height: var(--mx-btn-size, 36px);
-			border-color: var(--maxi-grey) !important;
+			border-color: var(--maxi-grey);
 
 			svg {
 				color: var(--maxi-white);
@@ -633,24 +602,24 @@
 		&__number {
 			color: var(--maxi-white);
 			background-color: transparent;
-			border-color: var(--maxi-grey) !important;
+			border-color: var(--maxi-grey);
 		}
 	}
 
 	// Tabs control
 	.maxi-tabs-control {
 		&__button {
-			padding: 8px 0;
+			padding: var(--mx-spacing-sm) 0;
 			font-weight: 400;
 			color: var(--maxi-grey-dark);
 			background: transparent;
-			border: 1px solid var(--maxi-grey-light);
+			border: var(--mx-border);
 			border-right: none;
 
 			&[aria-pressed='true'] {
 				font-weight: 700;
 				color: var(--maxi-primary-color);
-				background-color: var(--maxi-whisper-green) !important;
+				background-color: var(--maxi-whisper-green);
 			}
 		}
 	}
@@ -675,44 +644,44 @@
 
 // Popover content overrides
 body .toolbar-item__popover {
-	margin-top: 0 !important;
+	margin-top: 0;
 
 	// Reset button icons
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		&::before {
-			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 16 15.7"><path fill="var(--maxi-whites)" d="M16.5 1.1v5a.91.91 0 01-.3.7.91.91 0 01-.7.3h-5.1a.91.91 0 01-.7-.3 1 1 0 010-1.4.91.91 0 01.7-.3H13A8.09 8.09 0 0011 3a4.46 4.46 0 00-2.6-.8 5.66 5.66 0 00-4.1 1.7A5.3 5.3 0 002.6 8a5.66 5.66 0 001.7 4.1 5.66 5.66 0 004.1 1.7 5.75 5.75 0 003.4-1.1 5.63 5.63 0 002.1-2.9 1 1 0 01.5-.6 1.41 1.41 0 01.9-.1 1 1 0 01.6.5 1.06 1.06 0 01.1.8 7.49 7.49 0 01-2.9 3.9 7.67 7.67 0 01-4.6 1.5 7.7 7.7 0 01-5.6-2.3A7.56 7.56 0 01.5 8a7.87 7.87 0 012.3-5.6A7.7 7.7 0 018.4.1a3.08 3.08 0 011 .1c.3 0 .6.1.9.1a1.33 1.33 0 01.8.3 3.63 3.63 0 00.7.3 2.09 2.09 0 01.6.4c.2.2.4.3.5.4l.5.5c.2.2.3.4.4.4s.2.2.4.5a3 3 0 00.3.4V1.1a.91.91 0 01.3-.7 1 1 0 011.4 0 .91.91 0 01.3.7z" transform="translate(-.5 -.1)"/> </svg>') !important;
+			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 16 15.7"><path fill="var(--maxi-whites)" d="M16.5 1.1v5a.91.91 0 01-.3.7.91.91 0 01-.7.3h-5.1a.91.91 0 01-.7-.3 1 1 0 010-1.4.91.91 0 01.7-.3H13A8.09 8.09 0 0011 3a4.46 4.46 0 00-2.6-.8 5.66 5.66 0 00-4.1 1.7A5.3 5.3 0 002.6 8a5.66 5.66 0 001.7 4.1 5.66 5.66 0 004.1 1.7 5.75 5.75 0 003.4-1.1 5.63 5.63 0 002.1-2.9 1 1 0 01.5-.6 1.41 1.41 0 01.9-.1 1 1 0 01.6.5 1.06 1.06 0 01.1.8 7.49 7.49 0 01-2.9 3.9 7.67 7.67 0 01-4.6 1.5 7.7 7.7 0 01-5.6-2.3A7.56 7.56 0 01.5 8a7.87 7.87 0 012.3-5.6A7.7 7.7 0 018.4.1a3.08 3.08 0 011 .1c.3 0 .6.1.9.1a1.33 1.33 0 01.8.3 3.63 3.63 0 00.7.3 2.09 2.09 0 01.6.4c.2.2.4.3.5.4l.5.5c.2.2.3.4.4.4s.2.2.4.5a3 3 0 00.3.4V1.1a.91.91 0 01.3-.7 1 1 0 011.4 0 .91.91 0 01.3.7z" transform="translate(-.5 -.1)"/> </svg>');
 		}
 	}
 
 	// Popover content
 	.components-popover__content {
 		min-width: auto;
-		padding: 12px 11px 0 14px;
+		padding: var(--mx-spacing-lg) 11px 0 14px;
 		margin-left: -2px;
-		overflow: visible !important;
-		background-color: var(--maxi-white) !important;
-		border: 1px solid var(--maxi-grey-light);
+		overflow: visible;
+		background-color: var(--maxi-white);
+		border: var(--mx-border);
 		border-radius: 0;
-		box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.05);
+		box-shadow: var(--mx-shadow-popover);
 		outline: none;
 
 		* {
-			font-family: 'Inter', sans-serif !important;
+			font-family: 'Inter', sans-serif;
 		}
 
-		// Color control
+		// Color control - optimized
 		.maxi-color-control {
-			margin-bottom: 10px;
+			margin-bottom: var(--mx-spacing-md);
 			color: var(--maxi-white);
 
 			button.maxi-components-button.maxi-reset-button {
-				margin-top: -4px !important;
+				margin-top: -4px;
 			}
 
 			.components-custom-gradient-picker {
 				.components-base-control__field {
-					margin-bottom: 10px;
+					margin-bottom: var(--mx-spacing-md);
 				}
 
 				.components-angle-picker-control {
@@ -730,8 +699,8 @@ body .toolbar-item__popover {
 
 						&.is-pressed,
 						&:hover {
-							background-color: var(--maxi-grey) !important;
-							border-color: var(--maxi-grey) !important;
+							background-color: var(--maxi-grey);
+							border-color: var(--maxi-grey);
 
 							> svg {
 								background: none;
@@ -754,7 +723,7 @@ body .toolbar-item__popover {
 				}
 
 				svg {
-					fill: var(--maxi-white) !important;
+					fill: var(--maxi-white);
 
 					path {
 						stroke: var(--maxi-white);
@@ -768,13 +737,14 @@ body .toolbar-item__popover {
 		}
 
 		> .components-base-control:nth-last-child(1) {
-			margin-bottom: 0 !important;
+			margin-bottom: 0;
 		}
 	}
 }
 
-// RTL Support for body context
-body.rtl .toolbar-item__popover {
+// RTL Support - consolidated
+body.rtl .toolbar-item__popover,
+html[dir='rtl'] {
 	.maxi-tabs-control__button {
 		&:first-of-type input ~ label {
 			border-radius: 0 5px 5px 0;
@@ -784,55 +754,52 @@ body.rtl .toolbar-item__popover {
 			border-radius: 5px 0 0 5px;
 		}
 	}
+
+	.toolbar-item__more-settings {
+		border-left: unset;
+		border-right: var(--mx-border);
+	}
+
+	.toolbar-block-custom-label {
+		right: 0;
+		left: unset;
+		border-radius: 0 var(--mx-border-radius) var(--mx-border-radius) 0;
+	}
+
+	.toolbar-more-indicator {
+		right: unset;
+		left: -16px;
+		margin-right: var(--mx-spacing-md);
+		margin-left: 0;
+		border-radius: var(--mx-border-radius) 0 0 var(--mx-border-radius);
+	}
+
+	.breadcrumbs-pin {
+		padding-right: 0;
+		padding-left: var(--mx-spacing-md);
+	}
 }
 
 // Firefox specific fixes
 @-moz-document url-prefix() {
 	.toolbar-item__popover {
 		input[type='number'] {
-			width: 5em !important;
+			width: 5em;
 		}
 	}
 }
 
-// RTL Support
-html[dir='rtl'] {
-	.toolbar-item__more-settings {
-		border-left: unset !important;
-		border-right: 1px solid var(--maxi-grey-light) !important;
-	}
-
-	.toolbar-block-custom-label {
-		right: 0;
-		left: unset !important;
-		border-radius: 0 3px 3px 0 !important;
-	}
-
-	.toolbar-more-indicator {
-		right: unset !important;
-		left: -16px;
-		margin-right: 10px !important;
-		margin-left: 0;
-		border-radius: 3px 0 0 3px !important;
-	}
-
-	.breadcrumbs-pin {
-		padding-right: 0 !important;
-		padding-left: 10px;
-	}
-}
-
-// SVG button styles
+// SVG button styles - optimized
 .st0 {
 	width: 100%;
 	height: 100%;
 	padding: 0;
 	background-color: transparent;
 	border-radius: 0;
-	fill: var(--maxi-black) !important;
-	transition: all 0.5s ease;
+	fill: var(--maxi-black);
+	transition: all var(--mx-transition-fast);
 }
 
 .components-button:hover .st0 {
-	fill: var(--maxi-primary-color) !important;
+	fill: var(--maxi-primary-color);
 }

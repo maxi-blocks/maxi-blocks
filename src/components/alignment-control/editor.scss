@@ -28,7 +28,7 @@ body .maxi-alignment-control {
 		}
 
 		&:last-child {
-			margin-right: 0;
+			margin-right: 0 !important;
 		}
 
 		&[aria-pressed='true'] {

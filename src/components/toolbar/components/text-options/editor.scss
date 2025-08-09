@@ -2,7 +2,7 @@
 .toolbar-item__popover {
 	// Container for font-related options
 	.toolbar-item__popover__font-options {
-		margin: -8px -8px 0; // Negative margin to extend content to edges
+		margin: -8px -4px 0; // Negative margin to extend content to edges
 
 		// Wrapper for font controls
 		&__wrap {
@@ -162,8 +162,7 @@
 				.maxi-tabs-control {
 					&__button {
 						padding: 0;
-						width: 36px;
-						height: 36px;
+
 						margin: 0;
 						border: 1px solid var(--maxi-grey-light) !important;
 						border-radius: 4px !important;

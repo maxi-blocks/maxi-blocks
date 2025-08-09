@@ -1,25 +1,48 @@
 .toolbar-item {
 	&__text-margin {
-		// Fix button sizing issues - prevent 100% width problems
-		width: auto !important;
-		min-width: auto !important;
-		height: auto !important;
-		flex: none !important;
-		display: inline-flex !important;
-		align-items: center !important;
-		justify-content: center !important;
-		padding: 6px !important;
-		margin: 0 2px !important;
-
 		.toolbar-item__icon {
-			width: 16px !important;
-			height: 16px !important;
-			margin: 0 !important;
-
 			line,
 			path {
 				fill: transparent !important;
 				stroke: var(--maxi-black) !important;
+			}
+		}
+		&__popover {
+			.maxi-axis-control__margin {
+				min-width: 210px;
+				.maxi-responsive-tabs-control {
+					flex-direction: column;
+				}
+			}
+			.maxi-base-control__field {
+				flex-wrap: nowrap;
+
+				.maxi-advanced-number-control__value {
+					width: 80px;
+				}
+			}
+			.maxi-axis-control__header
+				.maxi-base-control__field
+				> .maxi-base-control__label {
+				display: none !important;
+			}
+			.maxi-axis-control {
+				& > div {
+					flex-direction: column;
+					& > .maxi-axis-control__unit-header {
+						display: none;
+					}
+				}
+			}
+			.maxi-axis-control__content__item {
+				border-bottom: 1px solid var(--maxi-grey);
+				margin-bottom: 5px;
+				padding-bottom: 5px;
+				&:last-child {
+					border-bottom: none;
+					margin-bottom: 0;
+					padding-bottom: 0;
+				}
 			}
 		}
 	}

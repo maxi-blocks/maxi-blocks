@@ -26,47 +26,107 @@
 			}
 		}
 
-		// Styles for extra typography options (bold, italic, etc.)
+		// Styles for extra typography options (bold, italic, etc.) - matching sidebar style
 		.toolbar-item__typography-control__extra-text-options {
 			display: flex;
 			align-items: center;
+			gap: 5px;
 			margin: 4px 0; // Adds 8px margin above and below this section
 
-			// Button styling
-			.components-button {
-				// Styles for all buttons except tab controls
-				&:not(.maxi-tabs-control__button) {
-					padding: 5px 10px;
-					margin-bottom: 0;
-					height: 36px;
-					fill: none !important;
+			// Toolbar formatting buttons should match sidebar style exactly
+			.toolbar-item,
+			.toolbar-item__popover__list-options__button {
+				display: flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				padding: 8px !important;
+				min-width: 34px !important;
+				max-width: 34px !important;
+				height: 32px !important;
+				border: 1px solid var(--maxi-grey-light) !important;
+				border-radius: 4px !important;
+				background: var(--maxi-white) !important;
+				color: var(--maxi-black) !important;
+				cursor: pointer !important;
+				font-family: inherit !important;
+				font-size: 16px !important;
+				font-weight: normal !important;
+				line-height: 1 !important;
+				text-align: center !important;
+				text-decoration: none !important;
+				transition: all 0.2s ease !important;
+				box-sizing: border-box !important;
+				margin: 0 !important;
 
-					// Active button state
-					&[aria-pressed='true'] {
-						color: var(--maxi-primary-color);
-						// Changes text color when active
-						background-color: var(--maxi-white) !important;
-						fill: none !important;
-						border-bottom: 3px solid var(--maxi-primary-color) !important; // Adds highlight bar
-					}
-				}
-
-				// Icon styling within buttons
+				// SVG icon styling
 				svg {
 					width: 16px;
-					fill: none !important;
+					height: 16px;
+					transition: all 0.2s ease;
 
 					path {
-						stroke: var(--maxi-black); // Default icon color
+						stroke: var(--maxi-black);
+						fill: none;
+						transition: all 0.2s ease;
 					}
 				}
+
 				&:hover {
-					transition: all 0.4s ease !important;
-					svg {
-						path {
-							stroke: var(--maxi-secondary-color) !important;
-						}
+					border-color: var(--maxi-primary-color) !important;
+					background: var(--maxi-light-blue) !important;
+
+					svg path {
+						stroke: var(--maxi-primary-color) !important;
 					}
+				}
+
+				&[aria-pressed='true'] {
+					background: var(--maxi-whisper-green) !important;
+					color: var(--maxi-primary-color) !important;
+					border-color: var(--maxi-primary-color) !important;
+
+					svg path {
+						stroke: var(--maxi-primary-color) !important;
+					}
+				}
+
+				// Text-based button styling (matching sidebar exactly)
+				.toolbar-item__text {
+					font-family: inherit;
+					font-size: 16px;
+					font-weight: normal;
+					line-height: 1;
+					color: inherit;
+					transition: all 0.2s ease;
+
+					&--italic {
+						font-style: italic;
+					}
+
+					&--underline {
+						text-decoration: underline;
+					}
+
+					&--strikethrough {
+						text-decoration: line-through;
+					}
+
+					&--capitalize {
+						text-transform: capitalize;
+					}
+
+					&--uppercase {
+						text-transform: uppercase;
+					}
+
+					&--lowercase {
+						text-transform: lowercase;
+					}
+				}
+
+				// Bold styling for bold button
+				&.toolbar-item__bold .toolbar-item__text {
+					font-weight: bold;
 				}
 			}
 		}
@@ -103,15 +163,34 @@
 					&__button {
 						padding: 0;
 						width: 36px;
-						border-width: 0;
 						height: 36px;
 						margin: 0;
+						border: 1px solid var(--maxi-grey-light) !important;
+						border-radius: 4px !important;
+						background: var(--maxi-white) !important;
+						transition: all 0.2s ease !important;
 
 						svg {
 							width: 14px;
 							path {
 								stroke: var(--maxi-black);
-								transition: stroke 0.2s ease;
+								transition: all 0.2s ease;
+							}
+						}
+
+						&:hover {
+							border-color: var(--maxi-primary-color) !important;
+							background: var(--maxi-light-blue) !important;
+							svg path {
+								stroke: var(--maxi-primary-color) !important;
+							}
+						}
+
+						&[aria-pressed='true'] {
+							background: var(--maxi-whisper-green) !important;
+							border-color: var(--maxi-primary-color) !important;
+							svg path {
+								stroke: var(--maxi-primary-color) !important;
 							}
 						}
 					}
@@ -237,10 +316,6 @@
 				.toolbar-item__text-size-icon {
 					margin-bottom: 8px;
 					margin-right: 3px;
-
-					path {
-						// stroke: var(--maxi-black);
-					}
 				}
 			}
 		}
@@ -270,5 +345,69 @@
 
 	path {
 		fill: none !important;
+	}
+}
+
+// List options styling
+.toolbar-item__typography-control__list-options {
+	display: flex;
+	gap: 5px;
+	margin: 4px 0;
+	padding-left: 8px;
+	border-left: 1px solid var(--maxi-grey-light);
+
+	.toolbar-item__list-button {
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		padding: 8px !important;
+		min-width: 34px !important;
+		max-width: 34px !important;
+		height: 32px !important;
+		border: 1px solid var(--maxi-grey-light) !important;
+		border-radius: 4px !important;
+		background: var(--maxi-white) !important;
+		color: var(--maxi-black) !important;
+		cursor: pointer !important;
+		font-family: inherit !important;
+		font-size: 16px !important;
+		font-weight: normal !important;
+		line-height: 1 !important;
+		text-align: center !important;
+		text-decoration: none !important;
+		transition: all 0.2s ease !important;
+		box-sizing: border-box !important;
+		margin: 0 !important;
+
+		svg {
+			width: 16px;
+			height: 16px;
+			transition: all 0.2s ease;
+
+			path {
+				stroke: var(--maxi-black);
+				fill: none;
+				transition: all 0.2s ease;
+			}
+		}
+
+		&:hover {
+			border-color: var(--maxi-primary-color) !important;
+			background: var(--maxi-light-blue) !important;
+
+			svg path {
+				stroke: var(--maxi-primary-color) !important;
+			}
+		}
+
+		&[aria-pressed='true'] {
+			background: var(--maxi-whisper-green) !important;
+			border-color: var(--maxi-primary-color) !important;
+			color: var(--maxi-primary-color) !important;
+
+			svg path {
+				stroke: var(--maxi-primary-color) !important;
+			}
+		}
 	}
 }

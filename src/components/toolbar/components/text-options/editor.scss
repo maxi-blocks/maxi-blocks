@@ -89,12 +89,38 @@
 	}
 }
 
-// Text options toolbar popup - using main toolbar variables
+// Main container for the toolbar popup with CSS custom properties
 .toolbar-item__popover {
+	/* One source of truth for spacing in this row */
+	--toolbar-gap: 6px;
+
+	/* Spacing tokens */
+	--mx-gap-xs: 4px;
+	--mx-gap-sm: 5px;
+	--mx-gap-md: 8px;
+	--mx-gap-lg: 10px;
+
+	/* Button dimensions */
+	--mx-btn-size: 36px;
+	--mx-btn-width: 34px;
+	--mx-btn-padding: 8px;
+	--mx-icon-size: 16px;
+	--mx-icon-sm: 14px;
+
+	/* Border and radius */
+	--mx-border: 1px solid var(--maxi-grey-light);
+	--mx-radius: 4px;
+
+	/* Typography */
+	--mx-font-size: 16px;
+	--mx-line-height: 1;
+
+	/* Transitions */
+	--mx-transition: all 0.2s ease;
+
 	// Container for font-related options
 	.toolbar-item__popover__font-options {
-		margin: calc(var(--mx-spacing-md) * -1) calc(var(--mx-spacing-xs) * -1)
-			0;
+		margin: calc(var(--mx-gap-md) * -1) calc(var(--mx-gap-xs) * -1) 0;
 
 		// Wrapper for font controls
 		&__wrap {
@@ -120,8 +146,8 @@
 		.toolbar-item__typography-control__extra-text-options {
 			display: flex;
 			align-items: center;
-			gap: var(--mx-spacing-sm);
-			margin: var(--mx-spacing-xs) 0;
+			gap: var(--toolbar-gap);
+			margin: var(--mx-gap-xs) 0;
 		}
 
 		// Kill stray margins/padding from wrappers
@@ -198,7 +224,7 @@
 			.maxi-alignment-control
 			.maxi-tabs-control {
 			display: inline-flex; /* NOT display: contents */
-			gap: var(--mx-spacing-sm);
+			gap: var(--toolbar-gap);
 			margin: 0;
 			padding: 0;
 			border: 0;
@@ -285,12 +311,12 @@
 
 		svg {
 			width: var(--mx-icon-size);
-			fill: var(--mx-color-text-inverse);
+			fill: var(--maxi-white);
 		}
 	}
 
 	&__font-options {
-		min-width: var(--mx-popover-width-xxl);
+		min-width: 376px;
 
 		&__font {
 			display: flex;
@@ -306,15 +332,15 @@
 				height: 38px;
 
 				svg {
-					fill: var(--mx-color-text) !important;
+					fill: var(--maxi-black) !important;
 
 					&:hover {
-						fill: var(--mx-color-primary) !important;
+						fill: var(--maxi-primary-color) !important;
 					}
 				}
 
 				&__button {
-					color: var(--mx-color-text-inverse);
+					color: var(--maxi-white);
 					border-color: var(--maxi-grey);
 				}
 			}
@@ -336,16 +362,16 @@
 				margin-bottom: 0;
 
 				.maxi-font-family-selector__control__control:hover {
-					background-color: var(--mx-color-bg);
+					background-color: var(--maxi-white);
 					cursor: pointer;
 				}
 			}
 
 			&_inputs {
-				padding: var(--mx-spacing-lg) var(--mx-spacing-lg) 0;
+				padding: var(--mx-gap-lg) var(--mx-gap-lg) 0;
 
 				.maxi-advanced-number-control {
-					margin-right: var(--mx-spacing-md);
+					margin-right: var(--mx-gap-md);
 
 					&:last-child {
 						margin-right: 0;
@@ -357,8 +383,8 @@
 				}
 
 				.toolbar-item__text-size-icon {
-					margin-bottom: var(--mx-spacing-md);
-					margin-right: var(--mx-spacing-xs);
+					margin-bottom: var(--mx-gap-md);
+					margin-right: 3px;
 				}
 			}
 		}

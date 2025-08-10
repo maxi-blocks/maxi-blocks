@@ -1,6 +1,6 @@
 .components-popover {
 	.toolbar-item__box-shadow__popover {
-		min-width: var(--mx-popover-width-lg);
+		min-width: 305px;
 	}
 
 	.maxi-shadow-control {
@@ -19,7 +19,7 @@
 		&__default {
 			width: 1.5rem;
 			height: 0.5rem;
-			background: var(--mx-color-bg);
+			background: var(--maxi-white);
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -52,7 +52,7 @@
 
 		&__icon {
 			display: flex;
-			margin-bottom: var(--mx-spacing-md);
+			margin-bottom: 8px;
 
 			svg {
 				margin: auto;

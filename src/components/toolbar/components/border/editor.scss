@@ -1,5 +1,5 @@
 .toolbar-item__border__popover {
-	min-width: var(--mx-popover-width-lg);
+	min-width: 300px;
 
 	.maxi-border-control {
 		display: flex;
@@ -31,7 +31,7 @@
 
 		&__icon {
 			display: flex;
-			margin-bottom: var(--mx-spacing-md);
+			margin-bottom: 8px;
 
 			svg {
 				margin: auto;

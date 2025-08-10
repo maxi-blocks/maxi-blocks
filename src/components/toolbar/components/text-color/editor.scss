@@ -1,12 +1,12 @@
 .toolbar-item__text-color__popover {
-	min-width: var(--mx-popover-width-lg);
+	min-width: 300px;
 }
 .toolbar-item {
 	&__text-options {
 		.toolbar-item__icon {
 			path {
-				fill: var(--mx-color-text-inverse) !important;
-				stroke: var(--mx-color-text) !important;
+				fill: #fff !important;
+				stroke: #000 !important;
 				stroke-width: 0.4px;
 				transform: translate(1.2px, 0.75px);
 			}

@@ -1,18 +1,18 @@
 .toolbar-item__reusable-blocks {
 	&__popover {
-		min-width: var(--mx-popover-width-xl);
+		min-width: 350px;
 
 		form {
 			display: flex;
 			width: 100%;
 
 			.components-button {
-				color: var(--mx-color-text-inverse);
+				color: #fff;
 				background-color: #4f515c;
 				border: 2px solid #7a7c85;
 				height: 32px;
-				margin-left: var(--mx-spacing-sm);
-				border-radius: var(--mx-spacing-sm);
+				margin-left: 5px;
+				border-radius: 5px;
 			}
 
 			.maxi-base-control {
@@ -20,7 +20,7 @@
 
 				.maxi-text-control__input {
 					&:focus {
-						border-color: var(--mx-color-text-inverse);
+						border-color: #fff;
 						box-shadow: none;
 						outline: none;
 					}
@@ -51,7 +51,7 @@
 					content: '';
 					width: 200%;
 					height: 1px;
-					margin: var(--mx-spacing-md) calc(var(--mx-spacing-md) * -1);
+					margin: 8px -8px;
 					display: block;
 					background-color: #dbdde6;
 				}

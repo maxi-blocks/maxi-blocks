@@ -1,5 +1,5 @@
 .maxi-dropdown__alignment-content {
-	z-index: var(--mx-z-max);
+	z-index: 99999999;
 	margin: -33px 0 0 98px !important;
 
 	.components-popover__content {
@@ -18,7 +18,7 @@
 						background-color: var(--maxi-grey-light);
 					}
 					&:focus:not(:disabled) {
-						background-color: var(--mx-color-bg);
+						background-color: var(--maxi-white);
 					}
 				}
 			}

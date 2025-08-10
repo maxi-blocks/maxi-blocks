@@ -5,9 +5,9 @@
 $white: var(--maxi-white);
 
 .maxi-block-library__modal {
-	width: 80%;
-	min-height: 90%;
-	max-width: 90%;
+	width: var(--maxi-layout-80-percent);
+	min-height: var(--maxi-layout-90-percent);
+	max-width: var(--maxi-layout-90-percent);
 
 	.components-modal__content {
 		background: var(--maxi-cloud-primary-whisper);
@@ -19,31 +19,31 @@ $white: var(--maxi-white);
 	}
 
 	.components-modal__header {
-		margin-bottom: 25px;
-		padding-left: 50px;
-		padding-right: 25px;
+		margin-bottom: var(--maxi-space-25px);
+		padding-left: var(--maxi-space-50px);
+		padding-right: var(--maxi-space-25px);
 
 		h1 {
-			font-weight: bold;
-			font-size: 1rem;
+			font-weight: var(--maxi-font-weight-bold);
+			font-size: var(--maxi-space-1rem);
 		}
 	}
 
 	.components-tab-panel__tab-content {
 		background: $white;
-		padding: 35px;
-		border-top: 1px solid var(--maxi-grey-light);
+		padding: var(--maxi-space-35px);
+		border-top: var(--maxi-border-1px) solid var(--maxi-grey-light);
 	}
 
 	.components-tab-panel__tabs {
-		padding: 0 35px;
-		margin-bottom: -1px;
+		padding: var(--maxi-reset-padding) var(--maxi-space-35px);
+		margin-bottom: calc(-1 * var(--maxi-space-1px));
 
 		button {
-			padding: 15px 20px;
-			background: none;
-			border: none;
-			font-size: 16px;
+			padding: var(--maxi-space-15px) var(--maxi-space-20px);
+			background: var(--maxi-reset-background);
+			border: var(--maxi-reset-border-none);
+			font-size: var(--maxi-font-size-16px);
 
 			&:hover {
 				background: $white;
@@ -53,10 +53,10 @@ $white: var(--maxi-white);
 	}
 
 	.components-tab-panel__tabs .maxi-block-library__modal-active-tab {
-		font-weight: 600;
+		font-weight: var(--maxi-font-weight-600);
 		background: $white;
-		border: 1px solid var(--maxi-grey-light);
-		border-bottom: none;
+		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
+		border-bottom: var(--maxi-reset-border-none);
 	}
 
 	.components-base-control {

@@ -1,25 +1,25 @@
 .maxi-checkbox-control {
 	&__input {
-		position: relative;
-		width: 23px !important;
-		height: 23px !important;
-		background-color: #c50df3 !important;
-		border: none !important;
+		position: var(--maxi-layout-relative);
+		width: var(--maxi-space-23px) !important;
+		height: var(--maxi-space-23px) !important;
+		background-color: var(--maxi-checkbox-control-bg) !important;
+		border: var(--maxi-reset-border-none) !important;
 
 		&:checked:before {
 			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" x="0" y="0" version="1.1" viewBox="0 0 24 25" xml:space="preserve"><path fill="#FFF" d="M23.6 12.6c0 6.5-5.3 11.8-11.8 11.8C5.3 24.4 0 19.1 0 12.6S5.2.7 11.7.7C18.3.7 23.6 6 23.6 12.6zm-21.4 0c0 5.3 4.3 9.5 9.5 9.5 5.3 0 9.5-4.3 9.5-9.5C21.3 7.3 17 3 11.7 3s-9.5 4.3-9.5 9.6zm16.2-2.5l-8.2 8.2c-.2.2-.6.2-.8 0L5 13.9c-.2-.2-.2-.6 0-.8L6.1 12c.2-.2.6-.2.8 0l2.9 2.9 6.7-6.7c.2-.2.6-.2.8 0l1.1 1.1c.2.2.2.5 0 .8z"/></svg>') !important;
-			position: absolute;
-			top: 50%;
-			left: 50%;
+			position: var(--maxi-layout-absolute);
+			top: var(--maxi-layout-half);
+			left: var(--maxi-layout-half);
 			transform: translate(-50%, -50%);
-			margin: auto !important;
-			width: 20px !important;
-			height: 20px !important;
+			margin: var(--maxi-layout-auto) !important;
+			width: var(--maxi-space-20px) !important;
+			height: var(--maxi-space-20px) !important;
 		}
 
 		&:focus {
-			border: none !important;
-			box-shadow: none !important;
+			border: var(--maxi-reset-border-none) !important;
+			box-shadow: var(--maxi-reset-box-shadow) !important;
 		}
 	}
 }

@@ -1,19 +1,19 @@
 .maxi-image-crop-control {
-	margin-bottom: 8px;
+	margin-bottom: var(--maxi-space-8px);
 	.ReactCrop__crop-selection {
-		background: transparent;
+		background: var(--maxi-color-transparent);
 	}
 	&__options {
-		display: flex;
-		margin: 10px 0;
+		display: var(--maxi-display-flex);
+		margin: var(--maxi-space-10px) var(--maxi-space-0px);
 		label {
-			width: 20%;
-			margin-right: 5px;
+			width: var(--maxi-layout-20-percent);
+			margin-right: var(--maxi-space-5px);
 			&:last-child {
-				margin-right: 0;
+				margin-right: var(--maxi-space-0px);
 			}
 			input[type='number'] {
-				width: 100%;
+				width: var(--maxi-layout-full-width);
 			}
 		}
 	}

@@ -1,33 +1,33 @@
 body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
-	z-index: 1;
+	z-index: var(--maxi-z-elevated);
 
 	.maxi-background-displayer {
-		z-index: -1;
+		z-index: var(--maxi-z-background);
 	}
 }
 
 .maxi-container-arrow {
-	position: absolute;
-	top: 0;
-	left: 50%;
+	position: var(--maxi-layout-absolute);
+	top: var(--maxi-space-0px);
+	left: var(--maxi-layout-half);
 	transform: translate(-50%);
-	width: 100%;
-	height: 100%;
+	width: var(--maxi-layout-full-width);
+	height: var(--maxi-layout-full-width);
 	backface-visibility: hidden;
-	z-index: -1;
+	z-index: var(--maxi-z-background);
 
 	&::before {
 		content: '';
-		width: 100%;
-		height: 100%;
-		position: absolute;
+		width: var(--maxi-layout-full-width);
+		height: var(--maxi-layout-full-width);
+		position: var(--maxi-layout-absolute);
 		box-sizing: content-box;
-		z-index: -1;
-		top: 0;
-		left: 0;
+		z-index: var(--maxi-z-background);
+		top: var(--maxi-space-0px);
+		left: var(--maxi-space-0px);
 	}
 	&__bottom .maxi-container-arrow--content {
-		margin-top: -1px;
+		margin-top: calc(-1 * var(--maxi-space-1px));
 	}
 	&__top .maxi-container-arrow--content {
 		transform: translate(-50%, -50%) rotate(225deg);
@@ -40,24 +40,27 @@ body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
 	}
 
 	&--content {
-		display: none;
-		width: 80px;
-		height: 80px;
-		position: absolute;
+		display: var(--maxi-display-none);
+		width: var(--maxi-space-80px);
+		height: var(--maxi-space-80px);
+		position: var(--maxi-layout-absolute);
 		top: calc(100% + 3.5355rem);
 		transform: translate(-50%, -50%) rotate(45deg);
-		background-color: transparent;
-		box-shadow: none !important;
-		z-index: -1;
+		background-color: var(--maxi-reset-background);
+		box-shadow: var(--maxi-reset-box-shadow) !important;
+		z-index: var(--maxi-z-background);
 
 		&:after {
 			content: '';
-			width: 50%;
-			height: 50%;
-			position: absolute;
-			top: -25%;
-			left: -25%;
-			transform: translate(-0.8px, -0.8px);
+			width: var(--maxi-layout-half);
+			height: var(--maxi-layout-half);
+			position: var(--maxi-layout-absolute);
+			top: calc(-1 * var(--maxi-layout-quarter));
+			left: calc(-1 * var(--maxi-layout-quarter));
+			transform: translate(
+				calc(-1 * var(--maxi-space-0-8px)),
+				calc(-1 * var(--maxi-space-0-8px))
+			);
 			clip-path: polygon(100% 0, 0% 100%, 100% 100%);
 		}
 	}

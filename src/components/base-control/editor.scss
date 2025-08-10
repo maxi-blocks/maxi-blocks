@@ -1,30 +1,30 @@
 .maxi-base-control {
 	&__disable {
-		opacity: 0.3;
-		pointer-events: none;
+		opacity: var(--maxi-opacity-disabled);
+		pointer-events: var(--maxi-pointer-events-none);
 	}
 	&__field {
-		display: flex !important;
-		align-items: center;
-		margin-bottom: 10px;
+		display: var(--maxi-display-flex) !important;
+		align-items: var(--maxi-layout-center);
+		margin-bottom: var(--maxi-space-10px);
 		.maxi-base-control__field {
-			margin-bottom: 8px;
+			margin-bottom: var(--maxi-space-8px);
 		}
 	}
 
 	&__label {
-		display: inline-block;
+		display: var(--maxi-display-inline-block);
 		flex: 1;
-		min-height: 18px;
-		margin: 0;
+		min-height: var(--maxi-space-18px);
+		margin: var(--maxi-reset-margin);
 	}
 
 	&__help {
-		margin-top: -8px;
+		margin-top: calc(-1 * var(--maxi-space-8px));
 		font-style: italic;
 	}
 
 	.components-visually-hidden {
-		display: none;
+		display: var(--maxi-display-none);
 	}
 }

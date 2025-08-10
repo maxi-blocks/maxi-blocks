@@ -1,7 +1,7 @@
 .maxi-image-url-upload {
 	& &__error {
 		color: var(--maxi-orange-red);
-		font-weight: bold;
-		padding: 4px 8px;
+		font-weight: var(--maxi-font-weight-bold);
+		padding: var(--maxi-space-4px) var(--maxi-space-8px);
 	}
 }

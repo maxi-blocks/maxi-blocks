@@ -1,11 +1,11 @@
 body.maxi-blocks--active .maxi-dynamic-content {
 	.maxi-dynamic-content__custom-delimiter .maxi-text-input {
-		padding: 8px;
+		padding: var(--maxi-space-8px);
 	}
 	.components-range-control
 		.components-base-control__field
 		.components-range-control__track
 		+ span {
-		top: -7px;
+		top: calc(-1 * var(--maxi-space-7px));
 	}
 }

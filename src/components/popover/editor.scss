@@ -10,7 +10,7 @@ $panel-header-height: 32px;
 $grid-unit-20: 20px;
 
 .maxi-components-popover {
-	z-index: 10;
+	z-index: var(--maxi-z-index-10);
 	opacity: 1;
 
 	&::before,
@@ -18,26 +18,26 @@ $grid-unit-20: 20px;
 		content: none !important;
 	}
 	&.is-expanded {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		z-index: z-index('.components-popover') !important;
+		position: var(--maxi-layout-fixed);
+		top: var(--maxi-space-0px);
+		left: var(--maxi-space-0px);
+		right: var(--maxi-space-0px);
+		bottom: var(--maxi-space-0px);
+		z-index: var(--maxi-z-index-10) !important;
 	}
 }
 
 .maxi-components-popover__content {
-	background: $white;
+	background: var(--maxi-white);
 	// Using outline instead of border to avoid impacting
 	// popover computations.
-	outline: $border-width solid $gray-400;
-	box-shadow: $shadow-popover;
-	border-radius: $radius-block-ui;
-	box-sizing: border-box;
-	width: min-content;
+	outline: var(--maxi-border-width-1px) solid var(--maxi-grey-light);
+	box-shadow: var(--maxi-shadow-popover);
+	border-radius: var(--maxi-radius-block-ui);
+	box-sizing: var(--maxi-box-sizing-border-box);
+	width: var(--maxi-layout-min-content);
 	position: relative !important;
-	transition: all 0.4s ease;
+	transition: all var(--maxi-transition-400ms) ease;
 
 	&:hover {
 		background-color: var(--maxi-pastel-green);
@@ -45,101 +45,102 @@ $grid-unit-20: 20px;
 
 	// Alternate treatment for popovers that put them at elevation zero with high contrast.
 	.is-alternate & {
-		outline: $border-width solid $gray-900;
+		outline: var(--maxi-border-width-1px) solid var(--maxi-grey-dark);
 		box-shadow: none;
 	}
 
 	.components-popover.is-expanded & {
-		position: static;
-		height: calc(100% - #{$panel-header-height});
-		overflow-y: visible;
-		width: auto;
-		border: none;
-		outline: none;
-		border-top: $border-width solid $gray-900;
+		position: var(--maxi-layout-static);
+		height: calc(100% - var(--maxi-panel-header-height));
+		overflow-y: var(--maxi-overflow-visible);
+		width: var(--maxi-layout-auto);
+		border: var(--maxi-reset-border);
+		outline: var(--maxi-reset-outline);
+		border-top: var(--maxi-border-width-1px) solid var(--maxi-grey-dark);
 	}
 }
 
 .maxi-components-popover__header {
-	align-items: center;
-	background: $white;
-	display: flex;
-	height: $panel-header-height;
-	justify-content: space-between;
-	padding: 0 8px 0 $grid-unit-20;
+	align-items: var(--maxi-layout-center);
+	background: var(--maxi-white);
+	display: var(--maxi-display-flex);
+	height: var(--maxi-space-32px);
+	justify-content: var(--maxi-layout-space-between);
+	padding: var(--maxi-space-0px) var(--maxi-space-8px) var(--maxi-space-0px)
+		var(--maxi-space-20px);
 }
 
 .maxi-components-popover__header-title {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	width: 100%;
+	overflow: var(--maxi-overflow-hidden);
+	text-overflow: var(--maxi-text-overflow-ellipsis);
+	white-space: var(--maxi-white-space-nowrap);
+	width: var(--maxi-layout-full-width) !important;
 }
 
 .maxi-components-popover__close.components-button {
-	z-index: z-index('.components-popover__close');
+	z-index: var(--maxi-z-index-10);
 }
 
 .maxi-components-popover__arrow {
-	position: absolute;
-	width: $arrow-triangle-base-size;
-	height: $arrow-triangle-base-size;
-	pointer-events: none;
-	display: flex;
+	position: var(--maxi-layout-absolute);
+	width: var(--maxi-arrow-triangle-base-size);
+	height: var(--maxi-arrow-triangle-base-size);
+	pointer-events: var(--maxi-pointer-events-none);
+	display: var(--maxi-display-flex);
 
 	// Thin line that helps to make sure that the underlying
 	// popover__content's outline is fully overlapped by the
 	// arrow
 	&::before {
 		content: '';
-		position: absolute;
-		top: -1px;
-		left: 1px;
-		height: 2px;
-		right: 1px;
-		background-color: $white;
+		position: var(--maxi-layout-absolute);
+		top: var(--maxi-space-1px);
+		left: var(--maxi-space-1px);
+		height: var(--maxi-space-2px);
+		right: var(--maxi-space-1px);
+		background-color: var(--maxi-white);
 	}
 
 	// Position and rotate the arrow depending on the popover's placement.
 	// The `!important' is necessary to override the inline styles.
 	&.is-top {
-		bottom: -1 * $arrow-triangle-base-size !important;
+		bottom: calc(-1 * var(--maxi-arrow-triangle-base-size)) !important;
 		transform: rotate(0);
 	}
 	&.is-right {
 		/*rtl:begin:ignore*/
-		left: -1 * $arrow-triangle-base-size !important;
+		left: calc(-1 * var(--maxi-arrow-triangle-base-size)) !important;
 		transform: rotate(90deg);
 	}
 	&.is-bottom {
-		top: -1 * $arrow-triangle-base-size !important;
+		top: calc(-1 * var(--maxi-arrow-triangle-base-size)) !important;
 		transform: rotate(180deg);
 	}
 	&.is-left {
 		/*rtl:begin:ignore*/
-		right: -1 * $arrow-triangle-base-size !important;
+		right: calc(-1 * var(--maxi-arrow-triangle-base-size)) !important;
 		transform: rotate(-90deg);
 		/*rtl:end:ignore*/
 	}
 }
 
 .maxi-components-popover__triangle {
-	display: block;
-	flex: 1;
+	display: var(--maxi-display-block);
+	flex: var(--maxi-flex-grow-1);
 }
 
 .maxi-components-popover__triangle-bg {
 	// Fill color is the same as the .components-popover__content's background
-	fill: $white;
+	fill: var(--maxi-white) !important;
 }
 
 .maxi-components-popover__triangle-border {
 	// Stroke colors are the same as the .components-popover__content's outline
-	fill: transparent;
-	stroke-width: $border-width;
-	stroke: $gray-400;
+	fill: var(--maxi-color-transparent) !important;
+	stroke-width: var(--maxi-border-width-1px) !important;
+	stroke: var(--maxi-grey-light) !important;
 
 	.is-alternate & {
-		stroke: $gray-900;
+		stroke: var(--maxi-grey-dark) !important;
 	}
 }

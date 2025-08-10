@@ -1,44 +1,36 @@
 .maxi-overflow-control {
-	position: relative;
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 10px;
+	position: var(--maxi-layout-relative);
+	display: var(--maxi-display-flex);
+	justify-content: var(--maxi-layout-space-between);
+	margin-bottom: var(--maxi-space-10px);
 
 	.maxi-select-control {
-		width: 110px;
+		width: var(--maxi-space-110px);
 
 		.maxi-base-control__field {
-			margin-top: 3px !important;
-			margin-bottom: 0 !important;
+			margin-top: var(--maxi-space-3px) !important;
+			margin-bottom: var(--maxi-space-0px) !important;
 		}
 	}
 
 	.sync-wrapper {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
-		margin-top: 2px;
+		position: var(--maxi-layout-absolute);
+		left: var(--maxi-layout-50-percent);
+		top: var(--maxi-layout-50-percent);
+		transform: var(--maxi-transform-translate-center);
+		margin-top: var(--maxi-space-2px);
 
 		button {
 			background: var(--maxi-white);
-			border: 1.5px solid var(--maxi-grey-light);
-			border-radius: 4px;
-			width: 24px;
-			height: 24px;
-			padding: 0;
-			display: -webkit-inline-box;
-			display: -ms-inline-flexbox;
-			display: inline-flex;
-			-webkit-box-align: center;
-			-ms-flex-align: center;
-			align-items: center;
-			-webkit-box-pack: center;
-			-ms-flex-pack: center;
-			justify-content: center;
-			-webkit-transition: all 0.2s;
-			-o-transition: all 0.2s;
-			transition: all 0.2s;
+			border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+			border-radius: var(--maxi-radius-4px);
+			width: var(--maxi-space-24px);
+			height: var(--maxi-space-24px);
+			padding: var(--maxi-space-0px);
+			display: var(--maxi-display-inline-flex);
+			align-items: var(--maxi-layout-center);
+			justify-content: var(--maxi-layout-center);
+			transition: all var(--maxi-transition-200ms);
 
 			&:focus {
 				border-color: transparent;
@@ -46,11 +38,12 @@
 
 			&[aria-pressed='true'] {
 				background: var(--maxi-whisper-green) !important;
-				border: 1px solid var(--maxi-mid-green);
+				border: var(--maxi-border-1px) solid var(--maxi-mid-green);
 
 				&:hover {
 					background: var(--maxi-pastel-green) !important;
-					border: 1px solid var(--maxi-primary-color);
+					border: var(--maxi-border-1px) solid
+						var(--maxi-primary-color);
 
 					svg {
 						path {
@@ -67,8 +60,8 @@
 			}
 
 			svg {
-				width: 14px;
-				height: 14px;
+				width: var(--maxi-space-14px);
+				height: var(--maxi-space-14px);
 				path {
 					fill: var(--maxi-grey);
 				}

@@ -1,15 +1,15 @@
 .maxi-advanced-css-control {
 	&__example-wrapper {
-		width: 100%;
+		width: var(--maxi-layout-full-width);
 	}
 
 	&__example-button {
-		margin-top: 10px;
+		margin-top: var(--maxi-space-10px);
 	}
 	textarea {
-		border: none !important;
+		border: var(--maxi-reset-border-none) !important;
 		&:hover {
-			border: none !important;
+			border: var(--maxi-reset-border-none) !important;
 		}
 	}
 }

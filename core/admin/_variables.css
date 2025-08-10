@@ -79,4 +79,339 @@
 
 	/* For icon blocks */
 	--maxi-icon-block-orange: #ff4a17; /* For mobile and tablet preview iframe */
+
+	/* Block indicators */
+	--maxi-block-indicator-padding-border: #c7e6f7;
+	--maxi-block-indicator-padding-bg: rgba(249, 252, 253, 0.2);
+	--maxi-block-indicator-margin-border: #d2f6cb;
+	--maxi-block-indicator-margin-bg: #f7faf6;
+	--maxi-block-indicator-text: #9b9b9b;
+	--maxi-block-indicator-label-bg: rgba(0, 0, 0, 0.2);
+	--maxi-checkbox-control-bg: #c50df3;
+
+	/* === DESIGN TOKENS - NON-COLOR === */
+	/* Spacing System */
+	--maxi-space-0px: 0px;
+	--maxi-space-1px: 1px;
+	--maxi-space-2px: 2px;
+	--maxi-space-3px: 3px;
+	--maxi-space-4px: 4px;
+	--maxi-space-5px: 5px;
+	--maxi-space-6px: 6px;
+	--maxi-space-7px: 7px;
+	--maxi-space-8px: 8px;
+	--maxi-space-8-5px: 8.5px;
+	--maxi-space-9px: 9px;
+	--maxi-space-10px: 10px;
+	--maxi-space-12px: 12px;
+	--maxi-space-14px: 14px;
+	--maxi-space-15px: 15px;
+	--maxi-space-16px: 16px;
+	--maxi-space-17px: 17px;
+	--maxi-space-18px: 18px;
+	--maxi-space-20px: 20px;
+	--maxi-space-21px: 21px;
+	--maxi-space-22px: 22px;
+	--maxi-space-23px: 23px;
+	--maxi-space-24px: 24px;
+	--maxi-space-25px: 25px;
+	--maxi-space-27px: 27px;
+	--maxi-space-28px: 28px;
+	--maxi-space-29px: 29px;
+	--maxi-space-30px: 30px;
+	--maxi-space-40px: 40px;
+	--maxi-space-35px: 35px;
+	--maxi-space-36px: 36px;
+	--maxi-space-57px: 57px;
+	--maxi-space-301px: 301px;
+	--maxi-space-23px: 23px;
+	--maxi-space-50px: 50px;
+	--maxi-space-60px: 60px;
+	--maxi-space-65px: 65px;
+	--maxi-space-80px: 80px;
+	--maxi-space-90px: 90%;
+	--maxi-space-0-8px: 0.8px;
+	--maxi-space-8-5px: 8.5px;
+	--maxi-space-0-5rem: 0.5rem;
+	--maxi-space-0-75rem: 0.75rem;
+	--maxi-space-1rem: 1rem;
+	--maxi-space-0-1rem: 0.1rem;
+	--maxi-space-25rem: 25rem;
+
+	/* Border Radius */
+	--maxi-radius-2px: 2px;
+	--maxi-radius-3px: 3px;
+	--maxi-radius-4px: 4px;
+	--maxi-radius-5px: 5px;
+	--maxi-radius-6px: 6px;
+	--maxi-radius-round: 50%;
+	--maxi-radius-10px: 10px;
+	--maxi-radius-12px: 12px;
+	--maxi-radius-60px: 60px;
+	--maxi-radius-20px: 20px;
+	--maxi-radius-30px: 30px;
+	--maxi-radius-100px: 100%;
+
+	/* Border Widths */
+	--maxi-border-1px: 1px;
+	--maxi-border-1-5px: 1.5px;
+	--maxi-border-2px: 2px;
+	--maxi-border-3px: 3px;
+	--maxi-border-4px: 4px;
+
+	/* Transitions */
+	--maxi-transition-100ms: 0.1s;
+	--maxi-transition-200ms: 0.2s;
+	--maxi-transition-300ms: 0.3s;
+	--maxi-transition-400ms: 0.4s;
+	--maxi-transition-500ms: 0.5s;
+	--maxi-transition-200ms-delay: 0.2s;
+
+	/* Control Heights */
+	--maxi-control-height-24px: 24px;
+	--maxi-control-height-28px: 28px;
+	--maxi-control-height-31px: 31px;
+	--maxi-control-height-32px: 32px;
+	--maxi-control-height-36px: 36px;
+	--maxi-control-height-40px: 40px;
+	--maxi-control-height-291px: 291px;
+	--maxi-control-height-43px: 43px;
+	--maxi-control-width-32px: 32px;
+
+	/* Control/Element Dimensions */
+	--maxi-control-width-60px: 60px;
+	--maxi-control-width-72px: 72px;
+	--maxi-control-width-64px: 64px;
+	--maxi-control-width-70px: 70px;
+	--maxi-control-width-120px: 120px;
+	--maxi-control-width-160px: 160px;
+	--maxi-control-width-180px: 180px;
+	--maxi-control-width-220px: 220px;
+	--maxi-control-width-400px: 400px;
+	--maxi-control-width-300px: 300px;
+	--maxi-canvas-size-170px: 170px;
+	--maxi-canvas-size-190px: 190px;
+	--maxi-canvas-size-280px: 280px;
+	--maxi-canvas-size-200px: 200px;
+	--maxi-canvas-size-400px: 400px;
+	--maxi-element-size-40px: 40px;
+	--maxi-element-size-44px: 44px;
+	--maxi-element-size-48px: 48px;
+	--maxi-element-size-168px: 168px;
+	--maxi-element-size-185px: 185px;
+
+	/* Font Sizes */
+	--maxi-font-size-8px: 8px;
+	--maxi-font-size-10px: 10px;
+	--maxi-font-size-12px: 12px;
+	--maxi-font-size-13px: 13px;
+	--maxi-font-size-14px: 14px;
+	--maxi-font-size-16px: 16px;
+
+	/* Z-Index Scale */
+	--maxi-z-background: -1;
+	--maxi-z-base: 0;
+	--maxi-z-elevated: 1;
+	--maxi-z-overlay: 2;
+	--maxi-z-modal: 8;
+	--maxi-z-maximum: 10;
+	--maxi-z-reset-button: 1000;
+	--maxi-z-prompt-control: 10000;
+	--maxi-z-dropdown: 99999;
+	--maxi-z-dialog: 999999;
+	--maxi-z-font-selector: 99;
+
+	/* === COMMON COMPONENT PATTERNS === */
+	/* Standard Button Base */
+	--maxi-button-padding: var(--maxi-space-8px);
+	--maxi-button-border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+	--maxi-button-radius: var(--maxi-radius-4px);
+	--maxi-button-transition: all var(--maxi-transition-400ms) ease;
+
+	/* Floating Label Pattern */
+	--maxi-floating-label-top: calc(-1 * var(--maxi-space-8px));
+	--maxi-floating-label-left: calc(-1 * var(--maxi-space-5px));
+	--maxi-floating-label-padding: 0 var(--maxi-space-5px);
+	--maxi-floating-label-size: var(--maxi-font-size-10px);
+	--maxi-floating-label-z: var(--maxi-z-maximum);
+
+	/* Input Field Pattern */
+	--maxi-input-height: var(--maxi-control-height-31px);
+	--maxi-input-padding: var(--maxi-space-8px);
+	--maxi-input-border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+	--maxi-input-radius: var(--maxi-radius-5px);
+	--maxi-input-transition: border-color var(--maxi-transition-400ms) ease;
+
+	/* Standard Spacing Patterns */
+	--maxi-field-margin: var(--maxi-space-10px);
+	--maxi-section-margin: var(--maxi-space-15px);
+	--maxi-component-gap: var(--maxi-space-5px);
+
+	/* === LAYOUT UTILITIES === */
+	/* Display Properties */
+	--maxi-display-block: block;
+	--maxi-display-inline-block: inline-block;
+	--maxi-display-none: none;
+	--maxi-display-flex: flex;
+	--maxi-display-inline-flex: inline-flex;
+	--maxi-display-grid: grid;
+	--maxi-display-contents: contents;
+
+	/* Layout Properties */
+	--maxi-layout-full-width: 100%;
+	--maxi-layout-half: 50%;
+	--maxi-layout-quarter: 25%;
+	--maxi-layout-22-5-percent: 22.5%;
+	--maxi-layout-auto: auto;
+	--maxi-layout-zero: 0;
+	--maxi-layout-flex: flex;
+	--maxi-layout-flex-row: row;
+	--maxi-layout-flex-column: column;
+	--maxi-layout-absolute: absolute;
+	--maxi-layout-relative: relative;
+	--maxi-layout-fixed: fixed;
+	--maxi-layout-center: center;
+	--maxi-layout-space-between: space-between;
+	--maxi-layout-max-content: max-content;
+	--maxi-layout-unset: unset;
+	--maxi-layout-50-percent: 50%;
+	--maxi-layout-80-percent: 80%;
+	--maxi-transform-rotate-0: rotate(0);
+	--maxi-transform-rotate-45deg: rotate(45deg);
+	--maxi-transform-rotate-90deg: rotate(90deg);
+	--maxi-transform-rotate-135deg: rotate(135deg);
+	--maxi-layout-button-width: calc(100% / 8.5);
+	--maxi-layout-flex-start: flex-start;
+	--maxi-layout-flex-end: flex-end;
+	--maxi-layout-50-percent-radius: 50%;
+
+	/* Height keywords */
+	--maxi-height-unset: unset;
+
+	/* Align Content */
+	--maxi-align-content-center: center;
+
+	/* Text Alignment */
+	--maxi-text-align-left: left;
+	--maxi-text-align-center: center;
+	--maxi-text-align-right: right;
+
+	/* Float Properties */
+	--maxi-float-left: left;
+	--maxi-float-right: right;
+	--maxi-float-none: none;
+
+	/* Font Style */
+	--maxi-font-style-italic: italic;
+
+	/* Direction */
+	--maxi-direction-ltr: ltr;
+
+	/* Vertical Alignment */
+	--maxi-vertical-align-top: top;
+	--maxi-vertical-align-middle: middle;
+	--maxi-vertical-align-bottom: bottom;
+	--maxi-vertical-align-start: start;
+	--maxi-vertical-align-end: end;
+
+	/* Visibility & Opacity */
+	--maxi-opacity-hidden: 0;
+	--maxi-opacity-disabled: 0.3;
+	--maxi-opacity-semi: 0.5;
+	--maxi-opacity-low: 0.1;
+	--maxi-opacity-medium: 0.7;
+	--maxi-opacity-dark-overlay: 0.7;
+	--maxi-opacity-visible: 1;
+	--maxi-visibility-hidden: hidden;
+	--maxi-visibility-visible: visible;
+
+	/* Reset Utilities */
+	--maxi-reset-margin: 0;
+	--maxi-reset-padding: 0;
+	--maxi-reset-border: 0;
+	--maxi-reset-border-none: none;
+	--maxi-reset-outline: none;
+	--maxi-reset-background: transparent;
+	--maxi-reset-box-shadow: none;
+	--maxi-box-shadow-url-input: -3px 3px 6px 0px rgba(0, 0, 0, 0.16);
+	--maxi-box-shadow-0-0-0-1px-grey: 0 0 0 1px var(--maxi-grey);
+
+	/* Interaction */
+	--maxi-cursor-pointer: pointer;
+	--maxi-cursor-grab: grab;
+	--maxi-cursor-move: move;
+	--maxi-cursor-inherit: inherit;
+	--maxi-cursor-not-allowed: not-allowed;
+	--maxi-overflow-hidden: hidden;
+	--maxi-overflow-visible: visible;
+
+	/* Animation */
+	--maxi-animation-timing-ease-out: ease-out;
+	--maxi-animation-timing-ease-in-out: ease-in-out;
+
+	/* Transform */
+	--maxi-transform-translateZ-0: translateZ(0);
+	--maxi-transform-translate-center: translate(-50%, -50%);
+
+	/* Behavior & Box Model */
+	--maxi-box-sizing-border-box: border-box;
+	--maxi-box-sizing-content-box: content-box;
+	--maxi-user-select-none: none;
+	--maxi-user-select-auto: auto;
+	--maxi-pointer-events-none: none;
+	--maxi-pointer-events-auto: auto;
+	--maxi-white-space-nowrap: nowrap;
+	--maxi-white-space-normal: normal;
+	--maxi-white-space-pre: pre;
+
+	/* Text Decoration */
+	--maxi-text-decoration-underline: underline;
+	--maxi-text-decoration-none: none;
+
+	/* === TYPOGRAPHY SYSTEM === */
+	/* Font Families */
+	--maxi-font-primary: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+	--maxi-font-ui: 'Inter', sans-serif;
+	--maxi-font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+	--maxi-font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+	--maxi-font-monospace: monospace;
+	--maxi-font-inherit: inherit;
+
+	/* Font Weights */
+	--maxi-font-weight-normal: 400;
+	--maxi-font-weight-medium: 500;
+	--maxi-font-weight-600: 600;
+	--maxi-font-weight-bold: 700;
+	--maxi-font-weight-bolder: bolder;
+	--maxi-font-weight-inherit: inherit;
+
+	/* Line Heights */
+	--maxi-line-height-normal: 1.4;
+	--maxi-line-height-100: 100%;
+	--maxi-line-height-2: 2;
+
+	/* === SVG UTILITIES === */
+	/* Fill States */
+	--maxi-svg-fill-primary: var(--maxi-primary-color);
+	--maxi-svg-fill-secondary: var(--maxi-secondary-color);
+	--maxi-svg-fill-tertiary: var(--maxi-tertiary-color);
+	--maxi-svg-fill-grey: var(--maxi-grey);
+	--maxi-svg-fill-grey-dark: var(--maxi-grey-dark);
+	--maxi-svg-fill-black: var(--maxi-black);
+	--maxi-svg-fill-white: var(--maxi-white);
+	--maxi-svg-fill-none: none;
+	--maxi-svg-fill-transparent: transparent;
+	--maxi-svg-fill-current: currentColor;
+
+	/* Stroke States */
+	--maxi-svg-stroke-primary: var(--maxi-primary-color);
+	--maxi-svg-stroke-secondary: var(--maxi-secondary-color);
+	--maxi-svg-stroke-tertiary: var(--maxi-tertiary-color);
+	--maxi-svg-stroke-grey: var(--maxi-grey);
+	--maxi-svg-stroke-grey-dark: var(--maxi-grey-dark);
+	--maxi-svg-stroke-black: var(--maxi-black);
+	--maxi-svg-stroke-white: var(--maxi-white);
+	--maxi-svg-stroke-none: none;
+	--maxi-svg-stroke-transparent: transparent;
+	--maxi-svg-stroke-current: currentColor;
 }

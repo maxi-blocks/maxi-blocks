@@ -12,18 +12,18 @@
  */
 @mixin accordion-button-base {
 	background: var(--maxi-white);
-	border-radius: 6px;
-	padding: 6px 12px;
-	margin: 0;
-	height: 30px;
-	box-shadow: none;
+	border-radius: var(--maxi-radius-6px);
+	padding: var(--maxi-space-6px) var(--maxi-space-12px);
+	margin: var(--maxi-reset-margin);
+	height: var(--maxi-control-height-32px);
+	box-shadow: var(--maxi-reset-box-shadow);
 	color: var(--maxi-grey-dark);
-	transition: all 0.2s ease;
-	text-align: center;
-	justify-content: center;
-	display: flex;
-	align-items: center;
-	font-weight: 500;
+	transition: all var(--maxi-transition-200ms) ease;
+	text-align: var(--maxi-text-align-center);
+	justify-content: var(--maxi-layout-center);
+	display: var(--maxi-display-flex);
+	align-items: var(--maxi-layout-center);
+	font-weight: var(--maxi-font-weight-medium);
 }
 
 /**
@@ -40,7 +40,7 @@
 @mixin accordion-button-active {
 	background: var(--maxi-whisper-green);
 	color: var(--maxi-grey-dark);
-	font-weight: 700;
+	font-weight: var(--maxi-font-weight-bold);
 }
 
 /**
@@ -48,10 +48,10 @@
  */
 @mixin tab-full-width-margins {
 	.maxi-tabs-control__button:first-child {
-		margin-left: -8px !important;
+		margin-left: calc(-1 * var(--maxi-space-8px)) !important;
 	}
 	.maxi-tabs-control__button:last-child {
-		margin-right: -8px !important;
+		margin-right: calc(-1 * var(--maxi-space-8px)) !important;
 	}
 }
 
@@ -69,8 +69,8 @@
 [class*='maxi-accordion-line-control__active-toggle'],
 [class*='maxi-accordion-title-control__hover-toggle'],
 [class*='maxi-accordion-title-control__active-toggle'] {
-	margin-top: 10px !important;
-	margin-bottom: 5px !important;
+	margin-top: var(--maxi-space-10px) !important;
+	margin-bottom: var(--maxi-space-5px) !important;
 }
 
 // ================================
@@ -80,16 +80,16 @@
 .maxi-skin-control__reveal-action-tabs {
 	.components-button {
 		@include accordion-button-base;
-		border: none;
-		border-radius: 10px;
-		min-width: 70px;
-		box-shadow: 0 0 0 1px var(--maxi-grey-light);
+		border: var(--maxi-reset-border-none);
+		border-radius: var(--maxi-radius-10px);
+		min-width: var(--maxi-control-width-70px);
+		box-shadow: var(--maxi-box-shadow-0-0-0-1px-grey);
 
 		&:first-child {
-			margin-right: 8px;
+			margin-right: var(--maxi-space-8px);
 		}
 		&:last-child {
-			margin-right: 2px !important;
+			margin-right: var(--maxi-space-2px) !important;
 		}
 
 		&:hover {
@@ -112,19 +112,19 @@
 // ================================
 
 .maxi-icon-control__position {
-	margin-top: 6px !important;
+	margin-top: var(--maxi-space-6px) !important;
 
 	.maxi-tabs-control__button {
 		@include accordion-button-base;
-		border: 1.5px solid var(--maxi-grey-light);
-		margin-right: 2px !important;
-		min-width: 65px;
+		border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+		margin-right: var(--maxi-space-2px) !important;
+		min-width: var(--maxi-control-width-64px);
 
 		&:first-child {
-			margin-left: 0 !important;
+			margin-left: var(--maxi-layout-zero) !important;
 		}
 		&:last-child {
-			border: 1.5px solid var(--maxi-grey-light);
+			border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
 		}
 
 		&:hover {
@@ -136,8 +136,8 @@
 		&--selected,
 		&[aria-pressed='true'] {
 			@include accordion-button-active;
-			border: 1.5px solid var(--maxi-grey-light) !important;
-			box-shadow: none;
+			border: var(--maxi-border-1-5px) solid var(--maxi-grey-light) !important;
+			box-shadow: var(--maxi-reset-box-shadow);
 		}
 	}
 }
@@ -157,11 +157,11 @@
 // ================================
 
 .maxi-tab-content .maxi-default-styles-control {
-	margin-top: 10px !important;
+	margin-top: var(--maxi-space-10px) !important;
 }
 
 .typography-accordion-wrapper {
-	padding: none !important;
+	padding: var(--maxi-reset-padding) !important;
 }
 
 // ================================
@@ -175,7 +175,7 @@
  */
 .maxi-accordion-control.maxi-accordion-control--accordion-maxi {
 	.maxi-accordion-control__item__panel:not(.maxi-accordion-control__item__panel--disable-padding) {
-		padding: 0 !important;
+		padding: var(--maxi-reset-padding) !important;
 	}
 }
 
@@ -183,13 +183,13 @@
 	@include tab-full-width-margins;
 
 	> .maxi-tabs-control > .maxi-tabs-control__button:first-child {
-		margin-left: -8px;
+		margin-left: calc(-1 * var(--maxi-space-8px));
 	}
 	> .maxi-tabs-control > .maxi-tabs-control__button:last-child {
-		margin-right: -8px;
+		margin-right: calc(-1 * var(--maxi-space-8px));
 	}
 
 	.maxi-tabs-content {
-		margin-left: -1px;
+		margin-left: calc(-1 * var(--maxi-space-1px));
 	}
 }

@@ -17,9 +17,9 @@
 }
 
 h3.maxi-text-loader {
-	margin-top: 35px;
-	font-weight: 500;
-	font-size: 16px;
+	margin-top: var(--maxi-space-35px);
+	font-weight: var(--maxi-font-weight-medium);
+	font-size: var(--maxi-font-size-16px);
 	&:before {
 		content: '';
 		display: block;

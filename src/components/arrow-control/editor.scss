@@ -1,13 +1,13 @@
 .maxi-arrow-control {
 	.maxi-settingstab-control {
 		.maxi-tabs-control {
-			margin-left: 0;
-			margin-right: 0;
+			margin-left: var(--maxi-space-0px);
+			margin-right: var(--maxi-space-0px);
 			&__button {
-				margin-right: 5px;
-				border-radius: 4px;
-				border: 1.5px solid var(--maxi-grey-light);
-				transition: all 0.4s ease !important;
+				margin-right: var(--maxi-space-5px);
+				border-radius: var(--maxi-radius-4px);
+				border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+				transition: all var(--maxi-transition-400ms) ease !important;
 				&:hover {
 					background-color: var(--maxi-whisper-green);
 					border-color: var(--maxi-primary-color) !important;

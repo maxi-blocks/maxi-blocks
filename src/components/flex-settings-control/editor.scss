@@ -10,16 +10,17 @@
 		.maxi-tabs-content {
 			&:not(:first-child) {
 				.maxi-tabs-control {
-					column-gap: 5px;
+					column-gap: var(--maxi-space-5px);
 					&__button {
-						border: 1px solid var(--maxi-grey-light);
-						border-radius: 4px;
-						padding: 6px 3px;
-						transition: all 0.5s;
+						border: var(--maxi-border-1px) solid
+							var(--maxi-grey-light);
+						border-radius: var(--maxi-radius-4px);
+						padding: var(--maxi-space-6px) var(--maxi-space-3px);
+						transition: all var(--maxi-transition-500ms);
 
 						svg {
-							width: 18px;
-							height: 18px;
+							width: var(--maxi-space-18px);
+							height: var(--maxi-space-18px);
 							fill: var(--maxi-grey) !important;
 						}
 
@@ -44,7 +45,7 @@
 				}
 				.maxi-flex-options__wrap {
 					.maxi-base-control__label {
-						margin-bottom: 3px !important;
+						margin-bottom: var(--maxi-space-3px) !important;
 					}
 				}
 			}
@@ -52,15 +53,15 @@
 	}
 	.maxi-flex-wrap-control {
 		.maxi-tabs-control {
-			column-gap: 5px;
+			column-gap: var(--maxi-space-5px);
 			&__button {
-				border: 1px solid var(--maxi-grey-light);
-				border-radius: 4px;
-				padding: 6px 3px;
-				transition: all 0.5s;
+				border: var(--maxi-border-1px) solid var(--maxi-grey-light);
+				border-radius: var(--maxi-radius-4px);
+				padding: var(--maxi-space-6px) var(--maxi-space-3px);
+				transition: all var(--maxi-transition-500ms);
 				svg {
-					width: 18px;
-					height: 18px;
+					width: var(--maxi-space-18px);
+					height: var(--maxi-space-18px);
 				}
 				&:hover {
 					background-color: var(--maxi-whisper-green);

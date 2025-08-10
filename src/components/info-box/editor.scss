@@ -1,27 +1,27 @@
 .maxi-warning-box {
-	position: relative;
-	padding: 1rem;
+	position: var(--maxi-layout-relative);
+	padding: var(--maxi-space-1rem);
 	background: var(--maxi-light-yellow);
 	color: var(--maxi-grey-dark) !important;
-	width: 100%;
+	width: var(--maxi-layout-full-width);
 
 	&__links {
-		margin-top: 10px;
+		margin-top: var(--maxi-space-10px);
 
 		&.manage-transitions {
-			margin-bottom: 10px;
+			margin-bottom: var(--maxi-space-10px);
 		}
 
 		a {
 			text-decoration: underline;
-			font-size: 11px !important;
-			cursor: pointer;
+			font-size: var(--maxi-font-size-11px) !important;
+			cursor: var(--maxi-cursor-pointer);
 			color: var(--maxi-grey-dark) !important;
-			margin-right: 5px;
-			transition: all 0.5s;
+			margin-right: var(--maxi-space-5px);
+			transition: all var(--maxi-transition-500ms);
 
 			&:last-child {
-				margin-right: 0;
+				margin-right: var(--maxi-space-0px);
 			}
 			&:hover {
 				color: var(--maxi-tertiary-color) !important;
@@ -30,16 +30,16 @@
 	}
 
 	&__close-button {
-		position: absolute;
-		top: 5px;
-		right: 5px;
-		cursor: pointer;
+		position: var(--maxi-layout-absolute);
+		top: var(--maxi-space-5px);
+		right: var(--maxi-space-5px);
+		cursor: var(--maxi-cursor-pointer);
 	}
 }
 .maxi-accordion-control__item__panel {
 	.maxi-warning-box {
 		border: 1px solid var(--maxi-bright-yellow);
-		margin-bottom: 8px;
-		border-radius: 7px !important;
+		margin-bottom: var(--maxi-space-8px);
+		border-radius: var(--maxi-space-7px) !important;
 	}
 }

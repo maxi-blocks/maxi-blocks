@@ -10,19 +10,20 @@
 /**
  * Standard dimensions used throughout clip path controls
  */
-$clip-path-icon-size: 18px;
-$clip-path-handle-size: 0.75rem; // Increased from 0.5rem for better visibility
-$clip-path-handle-size-hover: 1rem; // Hover state size
-$clip-path-delete-handle-size: 1rem;
-$clip-path-border-radius: 6px;
+// SCSS variables converted to CSS custom properties - see core/admin/_variables.css
+// $clip-path-icon-size: 18px; → --maxi-space-18px
+// $clip-path-handle-size: 0.75rem; → --maxi-space-0-75rem
+// $clip-path-handle-size-hover: 1rem; → --maxi-space-1rem
+// $clip-path-delete-handle-size: 1rem; → --maxi-space-1rem
+// $clip-path-border-radius: 6px; → --maxi-radius-6px
 
 /**
  * Mixin for centered flex containers
  */
 @mixin flex-center {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	display: var(--maxi-display-flex);
+	align-items: var(--maxi-layout-center);
+	justify-content: var(--maxi-layout-center);
 }
 
 /**
@@ -31,30 +32,38 @@ $clip-path-border-radius: 6px;
 @mixin circular-element($size) {
 	width: $size;
 	height: $size;
-	border-radius: 50%;
+	border-radius: var(--maxi-radius-round);
 }
 
 /**
  * Mixin for enhanced clip-path control dots with better visibility
  */
 @mixin enhanced-clip-path-dot {
-	@include circular-element($clip-path-handle-size);
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 2px var(--maxi-white),
-		0 0 0 3px rgba(var(--maxi-secondary-color), 0.8);
-	transition: all 0.2s ease;
-	cursor: grab;
-	z-index: 10;
+	@include circular-element(var(--maxi-space-0-75rem));
+	box-shadow: var(--maxi-space-0px) var(--maxi-space-2px)
+			var(--maxi-space-8px) rgba(0, 0, 0, 0.15),
+		var(--maxi-space-0px) var(--maxi-space-0px) var(--maxi-space-0px)
+			var(--maxi-space-2px) var(--maxi-white),
+		var(--maxi-space-0px) var(--maxi-space-0px) var(--maxi-space-0px)
+			var(--maxi-space-3px) rgba(var(--maxi-secondary-color), 0.8);
+	transition: all var(--maxi-transition-200ms) ease;
+	cursor: var(--maxi-cursor-grab);
+	z-index: var(--maxi-z-maximum);
 
 	&:hover {
-		@include circular-element($clip-path-handle-size-hover);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 0 0 2px var(--maxi-white),
-			0 0 0 4px var(--maxi-secondary-color);
+		@include circular-element(var(--maxi-space-1rem));
+		box-shadow: var(--maxi-space-0px) var(--maxi-space-4px)
+				var(--maxi-space-12px) rgba(0, 0, 0, 0.25),
+			var(--maxi-space-0px) var(--maxi-space-0px) var(--maxi-space-0px)
+				var(--maxi-space-2px) var(--maxi-white),
+			var(--maxi-space-0px) var(--maxi-space-0px) var(--maxi-space-0px)
+				var(--maxi-space-4px) var(--maxi-secondary-color);
 		transform: translate(-50%, -50%) scale(1.1);
-		cursor: grabbing;
+		cursor: var(--maxi-cursor-grab);
 	}
 
 	&:active {
-		cursor: grabbing;
+		cursor: var(--maxi-cursor-grab);
 		transform: translate(-50%, -50%) scale(0.95);
 	}
 }
@@ -63,10 +72,10 @@ $clip-path-border-radius: 6px;
  * Mixin for interactive button states
  */
 @mixin interactive-button-base {
-	border: 1.5px solid var(--maxi-grey-light);
-	border-radius: 4px;
-	cursor: pointer;
-	transition: all 0.4s ease;
+	border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+	border-radius: var(--maxi-radius-4px);
+	cursor: var(--maxi-cursor-pointer);
+	transition: all var(--maxi-transition-400ms) ease;
 }
 
 /**
@@ -74,7 +83,7 @@ $clip-path-border-radius: 6px;
  */
 @mixin button-active-state {
 	background: var(--maxi-pastel-green);
-	border: 1px solid var(--maxi-primary-color) !important;
+	border: var(--maxi-border-1px) solid var(--maxi-primary-color) !important;
 }
 
 /**
@@ -115,11 +124,11 @@ $clip-path-border-radius: 6px;
 	// ================================
 
 	.clip-path-defaults {
-		display: flex;
+		display: var(--maxi-display-flex);
 		flex-wrap: wrap;
-		justify-content: space-between;
-		margin-bottom: 8px;
-		gap: 5px;
+		justify-content: var(--maxi-layout-space-between);
+		margin-bottom: var(--maxi-space-8px);
+		gap: var(--maxi-space-5px);
 
 		&__items__none {
 			@include flex-center;
@@ -128,11 +137,11 @@ $clip-path-border-radius: 6px;
 		&__items {
 			@include flex-center;
 			@include interactive-button-base;
-			position: relative;
-			width: 28px;
-			height: 30px;
-			margin: 0;
-			padding: 3px;
+			position: var(--maxi-layout-relative);
+			width: var(--maxi-space-28px);
+			height: var(--maxi-space-30px);
+			margin: var(--maxi-space-0px);
+			padding: var(--maxi-space-3px);
 
 			&[aria-pressed='true'],
 			&:hover {
@@ -145,15 +154,15 @@ $clip-path-border-radius: 6px;
 				var(--maxi-grey-light),
 				var(--maxi-secondary-color)
 			);
-			width: $clip-path-icon-size;
-			height: $clip-path-icon-size;
-			transform: translateZ(0);
-			margin: auto;
+			width: var(--maxi-space-18px);
+			height: var(--maxi-space-18px);
+			transform: var(--maxi-transform-translateZ-0);
+			margin: var(--maxi-layout-auto);
 		}
 
 		svg {
-			width: $clip-path-icon-size;
-			height: $clip-path-icon-size;
+			width: var(--maxi-space-18px);
+			height: var(--maxi-space-18px);
 
 			path {
 				fill: var(--maxi-grey-light);
@@ -166,37 +175,37 @@ $clip-path-border-radius: 6px;
 	// ================================
 
 	.maxi-clip-path-controller {
-		display: flex;
-		position: relative;
+		display: var(--maxi-display-flex);
+		position: var(--maxi-layout-relative);
 
 		&__handle {
-			display: flex;
-			align-items: center;
-			padding-bottom: 0.75rem;
+			display: var(--maxi-display-flex);
+			align-items: var(--maxi-layout-center);
+			padding-bottom: var(--maxi-space-0-75rem);
 
 			span {
-				display: block;
-				border-radius: 50%;
+				display: var(--maxi-display-block);
+				border-radius: var(--maxi-radius-round);
 			}
 
 			&.maxi-clip-path-color-handle {
-				margin-right: 0.5rem;
+				margin-right: var(--maxi-space-0-5rem);
 
 				span {
-					@include circular-element($clip-path-handle-size);
+					@include circular-element(var(--maxi-space-0-75rem));
 				}
 			}
 
 			&.maxi-clip-path-delete-handle {
-				position: absolute;
-				left: 0;
-				bottom: 0;
+				position: var(--maxi-layout-absolute);
+				left: var(--maxi-space-0px);
+				bottom: var(--maxi-space-0px);
 
 				span {
-					@include circular-element($clip-path-delete-handle-size);
-					position: relative;
+					@include circular-element(var(--maxi-space-1rem));
+					position: var(--maxi-layout-relative);
 					background-color: var(--maxi-orange-red);
-					cursor: pointer;
+					cursor: var(--maxi-cursor-pointer);
 
 					&:hover {
 						background-color: var(--maxi-primary-color);
@@ -205,36 +214,36 @@ $clip-path-border-radius: 6px;
 
 					&:before {
 						content: '';
-						position: absolute;
-						top: 50%;
-						left: 50%;
+						position: var(--maxi-layout-absolute);
+						top: var(--maxi-layout-half);
+						left: var(--maxi-layout-half);
 						transform: translate(-50%, -50%);
-						width: 50%;
-						height: 0.1rem;
+						width: var(--maxi-layout-50-percent);
+						height: var(--maxi-space-0-1rem);
 						background-color: var(--maxi-white);
-						transition: all 0.3s ease;
+						transition: all var(--maxi-transition-300ms) ease;
 					}
 				}
 			}
 		}
 
 		&__item {
-			width: 100%;
+			width: var(--maxi-layout-full-width);
 
 			.maxi-base-control {
-				margin-bottom: 5px;
+				margin-bottom: var(--maxi-space-5px);
 
 				&__field {
-					width: 100%;
-					display: flex;
+					width: var(--maxi-layout-full-width);
+					display: var(--maxi-display-flex);
 
 					.maxi-base-control__label {
-						margin-right: 10px;
-						min-width: 65px !important;
+						margin-right: var(--maxi-space-10px);
+						min-width: var(--maxi-space-65px) !important;
 					}
 
 					input {
-						width: 60px;
+						width: var(--maxi-space-60px);
 					}
 				}
 			}
@@ -247,26 +256,27 @@ $clip-path-border-radius: 6px;
 
 	.maxi-clip-path-visual-editor {
 		background-color: var(--maxi-white) !important;
-		position: relative;
-		width: 100%;
-		margin: 10px 10px 10px 0;
-		min-height: 291px;
-		overflow: visible;
-		border: 1px solid var(--maxi-grey-light);
-		border-radius: $clip-path-border-radius;
+		position: var(--maxi-layout-relative);
+		width: var(--maxi-layout-full-width);
+		margin: var(--maxi-space-10px) var(--maxi-space-10px)
+			var(--maxi-space-10px) var(--maxi-space-0px);
+		min-height: var(--maxi-control-height-291px);
+		overflow: var(--maxi-overflow-visible);
+		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
+		border-radius: var(--maxi-radius-6px);
 
 		&-wrapper {
-			border: 2px solid var(--maxi-secondary-color) !important;
-			border-radius: 5px;
+			border: var(--maxi-border-2px) solid var(--maxi-secondary-color) !important;
+			border-radius: var(--maxi-space-5px);
 		}
 
 		&__preview {
 			background-color: var(--maxi-pastel-green) !important;
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			position: var(--maxi-layout-absolute);
+			top: var(--maxi-space-0px);
+			left: var(--maxi-space-0px);
+			width: var(--maxi-layout-full-width);
+			height: var(--maxi-layout-full-width);
 		}
 	}
 
@@ -277,32 +287,38 @@ $clip-path-border-radius: 6px;
 	.maxi-clip-path-button {
 		@include enhanced-clip-path-dot;
 		background-color: var(--maxi-secondary-color);
-		position: absolute;
+		position: var(--maxi-layout-absolute);
 		transform: translate(-50%, -50%);
 
 		&--radius {
 			// For radius buttons, use border instead of solid background for visibility
-			background-color: transparent;
-			border: 3px solid var(--maxi-secondary-color);
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15),
-				0 0 0 2px var(--maxi-white);
+			background-color: var(--maxi-reset-background);
+			border: var(--maxi-border-3px) solid var(--maxi-secondary-color);
+			box-shadow: var(--maxi-space-0px) var(--maxi-space-2px)
+					var(--maxi-space-8px) rgba(0, 0, 0, 0.15),
+				var(--maxi-space-0px) var(--maxi-space-0px)
+					var(--maxi-space-0px) var(--maxi-space-2px)
+					var(--maxi-white);
 
 			&:hover {
 				border-color: var(--maxi-primary-color);
-				border-width: 4px;
-				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25),
-					0 0 0 2px var(--maxi-white);
+				border-width: var(--maxi-border-4px);
+				box-shadow: var(--maxi-space-0px) var(--maxi-space-4px)
+						var(--maxi-space-12px) rgba(0, 0, 0, 0.25),
+					var(--maxi-space-0px) var(--maxi-space-0px)
+						var(--maxi-space-0px) var(--maxi-space-2px)
+						var(--maxi-white);
 			}
 
 			&__hidden {
-				@include circular-element($clip-path-handle-size);
-				position: absolute;
+				@include circular-element(var(--maxi-space-0-75rem));
+				position: var(--maxi-layout-absolute);
 				transform: translate(-50%, -50%);
-				z-index: 1;
-				background-color: transparent;
-				border: none;
-				box-shadow: none;
-				cursor: grabbing;
+				z-index: var(--maxi-z-elevated);
+				background-color: var(--maxi-reset-background);
+				border: var(--maxi-reset-border-none);
+				box-shadow: var(--maxi-reset-box-shadow);
+				cursor: var(--maxi-cursor-grab);
 
 				&:hover {
 					background-color: rgba(var(--maxi-secondary-color), 0.1);
@@ -311,21 +327,21 @@ $clip-path-border-radius: 6px;
 		}
 
 		&--single {
-			top: 50%;
-			left: 50%;
+			top: var(--maxi-layout-half);
+			left: var(--maxi-layout-half);
 		}
 
 		&--opposite {
 			// Style for opposite/mirror points
-			opacity: 0.7;
+			opacity: var(--maxi-opacity-medium);
 
 			&:hover {
-				opacity: 1;
+				opacity: var(--maxi-opacity-visible);
 			}
 		}
 
 		&__hidden-tooltip {
-			display: block;
+			display: var(--maxi-display-block);
 		}
 	}
 }
@@ -336,11 +352,11 @@ $clip-path-border-radius: 6px;
 
 .maxi-clip-path-add-point-button {
 	background-color: var(--maxi-white) !important;
-	border: 1.5px solid var(--maxi-grey-light) !important;
+	border: var(--maxi-border-1-5px) solid var(--maxi-grey-light) !important;
 	color: var(--maxi-black) !important;
-	font-weight: 700;
-	border-radius: $clip-path-border-radius;
-	margin-bottom: 20px !important;
+	font-weight: var(--maxi-font-weight-bold);
+	border-radius: var(--maxi-radius-6px);
+	margin-bottom: var(--maxi-space-20px) !important;
 
 	&:hover {
 		background-color: var(--maxi-whisper-green) !important;
@@ -349,7 +365,7 @@ $clip-path-border-radius: 6px;
 }
 
 .maxi-clip-path-control .button {
-	border-radius: $clip-path-border-radius;
+	border-radius: var(--maxi-radius-6px);
 }
 
 // ================================
@@ -358,7 +374,7 @@ $clip-path-border-radius: 6px;
 
 html[dir='rtl'] {
 	.maxi-clip-path-delete-handle {
-		left: unset;
-		right: 0;
+		left: var(--maxi-layout-unset);
+		right: var(--maxi-space-0px);
 	}
 }

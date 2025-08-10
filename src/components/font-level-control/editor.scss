@@ -1,43 +1,43 @@
 .maxi-font-level-control {
-	display: flex;
-	flex-wrap: nowrap;
-	margin-bottom: 8px;
-	justify-content: space-between;
-	border-top: 1.5px solid var(--maxi-grey-light);
-	padding-top: 8px;
+	display: var(--maxi-display-flex);
+	flex-wrap: var(--maxi-flex-nowrap);
+	margin-bottom: var(--maxi-space-8px);
+	justify-content: var(--maxi-layout-space-between);
+	border-top: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+	padding-top: var(--maxi-space-8px);
 
 	&__button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: calc(100% / 8.5);
-		height: 32px;
-		border: 1.5px solid var(--maxi-grey-light);
-		border-radius: 5px;
+		display: var(--maxi-display-flex);
+		align-items: var(--maxi-layout-center);
+		justify-content: var(--maxi-layout-center);
+		width: var(--maxi-layout-button-width);
+		height: var(--maxi-control-height-32px);
+		border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+		border-radius: var(--maxi-space-5px);
 		color: var(--maxi-grey-dark) !important;
 		background-color: var(--maxi-white);
-		transition: all 0.5s;
-		font-weight: 700;
-		margin-right: 7px;
+		transition: all var(--maxi-transition-500ms);
+		font-weight: var(--maxi-font-weight-bold);
+		margin-right: var(--maxi-space-7px);
 
 		&:hover {
 			background-color: var(--maxi-pastel-green);
-			border: 1.5px solid var(--maxi-secondary-color) !important;
+			border: var(--maxi-border-1-5px) solid var(--maxi-secondary-color) !important;
 		}
 		&:last-child {
 			.maxi-accordion-control__item__button {
-				margin-right: 0px;
+				margin-right: var(--maxi-space-0px);
 			}
 		}
 		&[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green);
-			border: 1.5px solid var(--maxi-primary-color) !important;
+			border: var(--maxi-border-1-5px) solid var(--maxi-primary-color) !important;
 			color: var(--maxi-primary-color) !important;
-			font-weight: 700;
+			font-weight: var(--maxi-font-weight-bold);
 		}
 
 		&:last-child {
-			margin-right: 0;
+			margin-right: var(--maxi-space-0px);
 		}
 	}
 }

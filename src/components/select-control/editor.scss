@@ -2,24 +2,25 @@ body.maxi-blocks--active {
 	select.maxi-select-control__input {
 		flex: 1;
 		width: 100%;
-		min-width: 40px;
-		max-width: 20rem;
+		min-width: var(--maxi-element-size-40px);
+		max-width: var(--maxi-space-25rem);
 		min-height: unset;
 		max-height: unset !important;
-		padding: 4px 6px;
-		height: 36px !important;
-		border: 1.5px solid var(--maxi-grey-light);
-		border-radius: 5px !important;
+		padding: var(--maxi-space-4px) var(--maxi-space-6px);
+		height: var(--maxi-control-height-36px) !important;
+		border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+		border-radius: var(--maxi-radius-5px) !important;
 		margin: 0;
 		color: var(--maxi-grey);
 		background: var(--maxi-white)
 			url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>')
-			no-repeat right 6px top 50%;
-		background-size: 8px 8px;
-		font-size: 12px;
-		line-height: 14px;
+			no-repeat right var(--maxi-space-6px) top 50%;
+		background-size: var(--maxi-space-8px) var(--maxi-space-8px);
+		font-size: var(--maxi-font-size-12px);
+		line-height: var(--maxi-space-14px);
 		vertical-align: middle;
 		-webkit-appearance: none;
+		appearance: none;
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
 		cursor: pointer;
 		opacity: 1;
@@ -32,7 +33,7 @@ body.maxi-blocks--active {
 	.maxi-option {
 		&__in-use {
 			color: var(--maxi-highlight-color);
-			font-weight: 500;
+			font-weight: var(--maxi-font-weight-medium);
 		}
 	}
 
@@ -40,28 +41,28 @@ body.maxi-blocks--active {
 		&__second-style {
 			&:first-child {
 				.maxi-base-control__field {
-					margin-top: 3px;
+					margin-top: var(--maxi-space-3px);
 				}
 			}
 			.maxi-base-control__field {
 				position: relative;
-				margin-top: 12px;
+				margin-top: var(--maxi-space-12px);
 			}
 			.maxi-base-control__label {
 				position: absolute;
-				top: -8px;
-				left: -4px;
-				font-size: 10px !important;
+				top: calc(-1 * var(--maxi-space-8px));
+				left: calc(-1 * var(--maxi-space-4px));
+				font-size: var(--maxi-font-size-10px) !important;
 				color: var(--maxi-grey-dark);
 				font-style: normal;
 				background: var(--maxi-white);
-				padding: 0 5px;
+				padding: 0 var(--maxi-space-5px);
 				pointer-events: none;
-				box-sizing: border-box;
-				-webkit-box-sizing: border-box;
+				box-sizing: var(--maxi-box-sizing-border-box);
+				-webkit-box-sizing: var(--maxi-box-sizing-border-box);
 			}
 			.maxi-select-control__input {
-				padding: 10px 11px;
+				padding: var(--maxi-space-10px) var(--maxi-space-11px);
 			}
 		}
 	}

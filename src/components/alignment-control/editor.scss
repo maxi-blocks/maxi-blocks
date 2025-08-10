@@ -1,17 +1,18 @@
 body .maxi-alignment-control {
 	.maxi-tabs-control__button {
-		height: 32px;
-		padding: 8.5px;
+		height: var(--maxi-control-height-lg);
+		padding: var(--maxi-space-8-5px);
 		width: 22.5%;
-		margin-right: 9px !important;
-		border: 1.5px solid var(--maxi-grey-light);
-		border-radius: 4px;
-		transition: background-color 0.4s ease, border-color 0.4s ease;
-		margin-top: 4px;
+		margin-right: var(--maxi-space-9px) !important;
+		border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+		border-radius: var(--maxi-radius-4px);
+		transition: background-color var(--maxi-transition-400ms) ease,
+			border-color var(--maxi-transition-400ms) ease;
+		margin-top: var(--maxi-space-5px);
 
 		svg path {
 			fill: var(--maxi-black);
-			transition: fill 0.4s ease;
+			transition: fill var(--maxi-transition-400ms) ease;
 		}
 
 		&:hover {
@@ -40,16 +41,16 @@ body .maxi-alignment-control {
 	&__toolbar {
 		.maxi-base-control__field
 			.maxi-tabs-control.maxi-settingstab-control_has-border-left-right {
-			display: flex !important;
-			flex-direction: row !important;
-			justify-content: space-between !important;
-			align-items: center !important;
-			gap: 0 !important;
-			margin-bottom: 0 !important;
+			display: var(--maxi-display-flex) !important;
+			flex-direction: var(--maxi-layout-flex-row) !important;
+			justify-content: var(--maxi-layout-space-between) !important;
+			align-items: var(--maxi-layout-center) !important;
+			gap: var(--maxi-space-0px) !important;
+			margin-bottom: var(--maxi-space-0px) !important;
 			button {
-				margin-right: 0 !important;
+				margin-right: var(--maxi-space-0px) !important;
 				svg {
-					margin: 0 auto;
+					margin: var(--maxi-space-0px) auto;
 				}
 			}
 		}
@@ -60,12 +61,12 @@ body .maxi-alignment-control {
 	.maxi-typography-control__alignment-buttons {
 		.maxi-alignment-control {
 			.maxi-tabs-control__button {
-				width: auto !important;
-				margin-left: 8px !important;
-				margin-right: 0 !important;
+				width: var(--maxi-layout-auto) !important;
+				margin-left: var(--maxi-space-8px) !important;
+				margin-right: var(--maxi-space-0px) !important;
 
 				&:first-child {
-					margin-left: 0 !important;
+					margin-left: var(--maxi-space-0px) !important;
 				}
 			}
 		}

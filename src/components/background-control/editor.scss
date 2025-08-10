@@ -1,17 +1,18 @@
 body .maxi-background-control {
-	padding-top: 8px;
+	padding-top: var(--maxi-space-8px);
 	.maxi-tabs-control__full-width {
-		column-gap: 5px;
+		column-gap: var(--maxi-space-5px);
 		.maxi-tabs-control__button {
 			&-none,
 			&-color,
 			&-gradient {
-				padding: 10px;
-				border: 1px solid var(--maxi-grey-light);
-				border-radius: 4px;
+				padding: var(--maxi-space-10px);
+				border: var(--maxi-border-1px) solid var(--maxi-grey-light);
+				border-radius: var(--maxi-radius-4px);
 				&.maxi-tabs-control__button--selected {
 					background-color: var(--maxi-pastel-green);
-					border: 1px solid var(--maxi-primary-color);
+					border: var(--maxi-border-1px) solid
+						var(--maxi-primary-color);
 				}
 			}
 			&-none,
@@ -39,24 +40,24 @@ body .maxi-background-control {
 	}
 
 	&__image-layer .maxi-toggle-switch {
-		padding-top: 10px;
-		margin-bottom: 3px !important;
+		padding-top: var(--maxi-space-10px);
+		margin-bottom: var(--maxi-space-3px) !important;
 	}
 	.parallax-direction {
 		.maxi-tabs-control__button {
-			border: 1px solid var(--maxi-grey-light);
-			border-radius: 3px;
+			border: var(--maxi-border-1px) solid var(--maxi-grey-light);
+			border-radius: var(--maxi-radius-2px);
 			color: var(--maxi-grey-dark);
 			background-color: var(--maxi-white);
-			width: 48px;
-			transition: all 0.4s ease !important;
+			width: var(--maxi-element-size-48px);
+			transition: all var(--maxi-transition-400ms) ease !important;
 
 			&[aria-pressed='true'],
 			&:active,
 			&:hover {
 				background-color: var(--maxi-whisper-green);
 				color: var(--maxi-secondary-color);
-				border: 1px solid var(--maxi-primary-color);
+				border: var(--maxi-border-1px) solid var(--maxi-primary-color);
 			}
 		}
 	}
@@ -70,60 +71,61 @@ body .maxi-background-control {
 	.maxi-background-control__add-layer {
 		margin-top: 0 !important;
 		.maxi-base-control__field {
-			margin-bottom: 3px !important;
+			margin-bottom: var(--maxi-space-3px) !important;
 		}
 	}
 	.maxi-background-layer {
 		&__preview {
-			display: block;
-			width: 20px;
-			height: 20px;
-			margin: 3px 4px 0 0 !important;
-			border: 1px solid var(--maxi-black);
-			opacity: 1;
-			float: left;
+			display: var(--maxi-display-block);
+			width: var(--maxi-space-20px);
+			height: var(--maxi-space-20px);
+			margin: var(--maxi-space-3px) var(--maxi-space-5px) 0 0 !important;
+			border: var(--maxi-border-1px) solid var(--maxi-black);
+			opacity: var(--maxi-opacity-visible);
+			float: var(--maxi-float-left);
 			border-radius: 0;
-			margin-right: 3px;
+			margin-right: var(--maxi-space-3px);
 			background-size: cover !important;
 
 			svg {
-				display: block;
-				max-width: 21px;
-				max-height: 21px;
-				margin: auto;
+				display: var(--maxi-display-block);
+				max-width: var(--maxi-space-21px);
+				max-height: var(--maxi-space-21px);
+				margin: var(--maxi-layout-auto);
 			}
 		}
 		&__row {
-			margin: 0 0 8px;
-			display: flex;
-			align-items: center;
-			border: 1px solid var(--maxi-secondary-color);
+			margin: 0 0 var(--maxi-space-8px);
+			display: var(--maxi-display-flex);
+			align-items: var(--maxi-layout-center);
+			border: var(--maxi-border-1px) solid var(--maxi-secondary-color);
 			z-index: 0;
 
 			.maxi-background-layer__title__text {
-				display: flex;
-				align-items: center;
-				min-height: 25px;
+				display: var(--maxi-display-flex);
+				align-items: var(--maxi-layout-center);
+				min-height: var(--maxi-space-25px);
 			}
 		}
 
 		&__content {
-			border: 1px solid var(--maxi-secondary-color);
+			border: var(--maxi-border-1px) solid var(--maxi-secondary-color);
 			border-radius: 0;
-			padding: 22px 8px 0;
-			margin: -23px -8px 8px;
+			padding: var(--maxi-space-22px) var(--maxi-space-8px) 0;
+			margin: calc(-1 * var(--maxi-space-23px))
+				calc(-1 * var(--maxi-space-8px)) var(--maxi-space-8px);
 
 			.chrome-picker {
-				width: 100% !important;
+				width: var(--maxi-layout-full-width) !important;
 			}
 
 			.maxi-library-modal__action-section {
-				margin-bottom: 8px;
+				margin-bottom: var(--maxi-space-8px);
 			}
 
 			.components-custom-gradient-picker__gradient-bar {
 				margin-top: 0;
-				margin-bottom: 8px;
+				margin-bottom: var(--maxi-space-8px);
 			}
 
 			.components-custom-gradient-picker__ui-line {
@@ -137,39 +139,39 @@ body .maxi-background-control {
 
 		&__title {
 			&__text {
-				line-height: 25px;
+				line-height: var(--maxi-space-25px);
 			}
 			&__mover {
-				display: block;
-				width: 17px;
-				height: 17px;
-				margin: auto 2px auto auto;
-				cursor: move;
+				display: var(--maxi-display-block);
+				width: var(--maxi-space-17px);
+				height: var(--maxi-space-17px);
+				margin: auto var(--maxi-space-3px) auto auto;
+				cursor: var(--maxi-cursor-move);
 
 				svg {
-					width: 15px;
-					height: 15px;
+					width: var(--maxi-space-15px);
+					height: var(--maxi-space-15px);
 					path {
 						fill: var(--maxi-black);
 					}
 				}
 			}
 			&__display {
-				display: block;
-				width: 22px;
-				height: 22px;
-				margin: auto 5px auto 5px;
-				cursor: pointer;
-				position: relative;
-				transition: all 0.4s ease;
+				display: var(--maxi-display-block);
+				width: var(--maxi-space-22px);
+				height: var(--maxi-space-22px);
+				margin: auto var(--maxi-space-5px) auto var(--maxi-space-5px);
+				cursor: var(--maxi-cursor-pointer);
+				position: var(--maxi-layout-relative);
+				transition: all var(--maxi-transition-400ms) ease;
 
 				&:hover {
 					transform: scale(1.1);
-					opacity: 0.8;
+					opacity: var(--maxi-opacity-medium);
 				}
 				svg {
-					width: 22px;
-					height: 22px;
+					width: var(--maxi-space-22px);
+					height: var(--maxi-space-22px);
 				}
 
 				&--block {
@@ -179,20 +181,20 @@ body .maxi-background-control {
 				}
 				&:after {
 					content: '';
-					display: block;
+					display: var(--maxi-display-block);
 					background-color: var(--maxi-grey-dark);
-					width: 0;
-					height: 1px;
-					position: absolute;
+					width: var(--maxi-layout-zero);
+					height: var(--maxi-space-1px);
+					position: var(--maxi-layout-absolute);
 					top: 50%;
 					left: 50%;
 					transform: translate(-50%, -50%) rotate(-45deg);
-					transition: 0.3s;
+					transition: var(--maxi-transition-300ms);
 				}
 				&--none {
-					opacity: 0.6;
+					opacity: var(--maxi-opacity-semi);
 					&:after {
-						width: 23px;
+						width: var(--maxi-space-23px);
 					}
 					path {
 						stroke: var(--maxi-grey-dark);
@@ -203,22 +205,23 @@ body .maxi-background-control {
 	}
 
 	.maxi-list-item-control__arrow {
-		width: 25px;
-		-webkit-transition: 0.3s ease all;
-		transition: 0.3s ease all;
-		cursor: pointer;
-		-webkit-transform-origin: center;
-		-ms-transform-origin: center;
-		transform-origin: center;
-		padding: 6px 0px;
-		border-right: 1px solid var(--maxi-secondary-color);
+		width: var(--maxi-space-25px);
+		-webkit-transition: var(--maxi-transition-300ms) ease all;
+		transition: var(--maxi-transition-300ms) ease all;
+		cursor: var(--maxi-cursor-pointer);
+		-webkit-transform-origin: var(--maxi-layout-center);
+		-ms-transform-origin: var(--maxi-layout-center);
+		transform-origin: var(--maxi-layout-center);
+		padding: var(--maxi-space-6px) var(--maxi-space-0px);
+		border-right: var(--maxi-border-1px) solid var(--maxi-secondary-color);
 		background-color: var(--maxi-white);
-		text-align: center;
-		border-radius: 5px 0px 0px 5px !important;
+		text-align: var(--maxi-text-align-center);
+		border-radius: var(--maxi-radius-5px) var(--maxi-space-0px)
+			var(--maxi-space-0px) var(--maxi-radius-5px) !important;
 
 		svg {
-			width: 8px;
-			height: 16px;
+			width: var(--maxi-space-8px);
+			height: var(--maxi-space-16px);
 			transform: rotate(-90deg);
 			path {
 				fill: var(--maxi-black);
@@ -229,46 +232,47 @@ body .maxi-background-control {
 	.maxi-list-item-control__title__id:before {
 		content: counter(list-items-counter);
 		background: var(--maxi-whisper-green);
-		display: block;
-		padding: 7px 6px 7px 6px !important;
-		border-right: 1px solid var(--maxi-secondary-color);
-		margin-right: 5px !important;
+		display: var(--maxi-display-block);
+		padding: var(--maxi-space-7px) var(--maxi-space-6px)
+			var(--maxi-space-7px) var(--maxi-space-6px) !important;
+		border-right: var(--maxi-border-1px) solid var(--maxi-secondary-color);
+		margin-right: var(--maxi-space-5px) !important;
 		counter-increment: list-items-counter 1;
-		font-size: 14px;
-		font-weight: 700;
-		min-width: 22px;
+		font-size: var(--maxi-font-size-14px);
+		font-weight: var(--maxi-font-weight-bold);
+		min-width: var(--maxi-space-22px);
 	}
 }
 .maxi-background-control__image-layer .maxi-toggle-switch {
-	padding-top: 10px;
-	margin-bottom: 10px !important;
+	padding-top: var(--maxi-space-10px);
+	margin-bottom: var(--maxi-space-10px) !important;
 }
 .parallax-direction .maxi-tabs-control__button {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: auto;
-	padding: 8px 30px !important;
-	border-bottom: 1px solid var(--maxi-grey-light);
-	border-top: 1px solid var(--maxi-grey-light);
-	border-right: 1px solid var(--maxi-grey-light);
+	position: var(--maxi-layout-relative);
+	display: var(--maxi-display-flex);
+	flex-direction: var(--maxi-layout-flex-column);
+	width: var(--maxi-layout-full-width);
+	height: var(--maxi-layout-auto);
+	padding: var(--maxi-space-8px) var(--maxi-space-30px) !important;
+	border-bottom: var(--maxi-border-1px) solid var(--maxi-grey-light);
+	border-top: var(--maxi-border-1px) solid var(--maxi-grey-light);
+	border-right: var(--maxi-border-1px) solid var(--maxi-grey-light);
 	border-radius: 0;
 	color: var(--maxi-grey-dark);
 	background-color: var(--maxi-white);
-	text-align: center;
+	text-align: var(--maxi-text-align-center);
 }
 
 .parallax-direction .maxi-tabs-control__button last-child {
 	border-right: none;
-	margin-left: 8px !important;
+	margin-left: var(--maxi-space-8px) !important;
 }
 .parallax-direction .maxi-tabs-control__button:first-child {
-	margin-right: 4px !important;
+	margin-right: var(--maxi-space-4px) !important;
 }
 .parallax-direction .maxi-tabs-control__button hover {
 	background-color: var(--maxi-grey-light);
-	cursor: pointer;
+	cursor: var(--maxi-cursor-pointer);
 }
 .parallax-direction .maxi-tabs-control__button focus:not(:disabled) {
 	box-shadow: none;
@@ -280,14 +284,14 @@ body .maxi-background-control {
 
 body.maxi-blocks--active .components-popover__fallback-container {
 	button.components-button.is-link {
-		height: 30px;
-		border: 1.5px solid var(--maxi-secondary-color);
+		height: var(--maxi-space-30px);
+		border: var(--maxi-border-1-5px) solid var(--maxi-secondary-color);
 		color: var(--maxi-secondary-color) !important;
 		background: var(--maxi-whisper-green);
-		border-radius: 30px;
+		border-radius: var(--maxi-space-30px);
 		text-decoration: none;
-		padding: 0 10px;
-		transition: all 0.5s ease-in-out;
+		padding: 0 var(--maxi-space-10px);
+		transition: all var(--maxi-transition-500ms) ease-in-out;
 
 		&:hover {
 			border-color: var(--maxi-primary-color) !important;

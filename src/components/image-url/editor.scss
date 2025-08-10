@@ -1,20 +1,20 @@
 .maxi-block--backend {
 	.maxi-editor-url-input__button {
-		position: absolute;
-		top: 43px;
-		right: 0;
-		width: 40px;
-		height: 40px;
+		position: var(--maxi-layout-absolute);
+		top: var(--maxi-control-height-43px);
+		right: var(--maxi-space-0px);
+		width: var(--maxi-control-height-40px);
+		height: var(--maxi-control-height-40px);
 		background: var(--maxi-grey-dark);
 
 		.components-button.has-icon {
-			min-width: 40px;
+			min-width: var(--maxi-control-height-40px);
 		}
 		button {
-			width: 40px;
-			height: 40px;
-			box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
-			border-radius: 0;
+			width: var(--maxi-control-height-40px);
+			height: var(--maxi-control-height-40px);
+			box-shadow: var(--maxi-box-shadow-url-input) !important;
+			border-radius: var(--maxi-space-0px);
 		}
 		form,
 		button {
@@ -30,37 +30,37 @@
 		form {
 			.block-editor-url-input,
 			button {
-				box-shadow: none;
-				border: 1px solid var(--maxi-grey-light);
+				box-shadow: var(--maxi-reset-box-shadow);
+				border: var(--maxi-border-1px) solid var(--maxi-grey-light);
 			}
 		}
 		svg {
-			width: 20px;
-			height: 20px;
+			width: var(--maxi-space-20px);
+			height: var(--maxi-space-20px);
 			fill: var(--maxi-primary-color);
 		}
 		.components-base-control__field {
-			margin-bottom: 0;
+			margin-bottom: var(--maxi-space-0px);
 			input {
-				padding-top: 9px;
-				padding-bottom: 8px;
-				width: 300px;
-				font-size: 14px;
+				padding-top: var(--maxi-space-9px);
+				padding-bottom: var(--maxi-space-8px);
+				width: var(--maxi-control-width-300px);
+				font-size: var(--maxi-font-size-14px);
 			}
 		}
 		.maxi-editor-url-input__warning {
-			width: 300px;
-			font-size: 13px;
-			margin-top: 0px;
-			margin-bottom: 3px;
-			margin-left: -301px;
+			width: var(--maxi-control-width-300px);
+			font-size: var(--maxi-font-size-13px);
+			margin-top: var(--maxi-space-0px);
+			margin-bottom: var(--maxi-space-3px);
+			margin-left: calc(-1 * var(--maxi-space-301px));
 			color: var(--maxi-primary-color);
-			padding-left: 8px;
+			padding-left: var(--maxi-space-8px);
 			background: var(--maxi-white);
 		}
 		.maxi-editor-url-input__button-modal-line {
-			display: flex;
-			flex-direction: row-reverse;
+			display: var(--maxi-display-flex);
+			flex-direction: var(--maxi-flex-row-reverse);
 		}
 	}
 }
@@ -70,10 +70,10 @@
 		.maxi-block__resizer:first-child:nth-last-child(#{$i}) {
 			.maxi-block--backend {
 				.maxi-editor-url-input__button-modal-line {
-					flex-direction: row;
+					flex-direction: var(--maxi-flex-row);
 				}
 				.maxi-editor-url-input__warning {
-					margin-left: 57px;
+					margin-left: var(--maxi-space-57px);
 				}
 			}
 		}
@@ -82,10 +82,10 @@
 		.maxi-block__resizer:nth-child(2):nth-last-child(#{$i}) {
 			.maxi-block--backend {
 				.maxi-editor-url-input__button-modal-line {
-					flex-direction: row;
+					flex-direction: var(--maxi-flex-row);
 				}
 				.maxi-editor-url-input__warning {
-					margin-left: 57px;
+					margin-left: var(--maxi-space-57px);
 				}
 			}
 		}

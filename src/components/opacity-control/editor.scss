@@ -1,20 +1,21 @@
 .maxi-accordion-control__item[data-name='opacity'] {
 	.maxi-accordion-control__item__panel {
-		padding: 0;
-		margin-top: 10px !important;
+		padding: var(--maxi-space-0px);
+		margin-top: var(--maxi-space-10px) !important;
 
 		.maxi-tabs-content {
-			padding: 0 10px 0;
+			padding: var(--maxi-space-0px) var(--maxi-space-10px)
+				var(--maxi-space-0px);
 
 			.maxi-responsive-tabs-control {
 				.maxi-tabs-control {
-					margin-right: -8px;
-					margin-left: -8px;
+					margin-right: calc(-1 * var(--maxi-space-8px));
+					margin-left: calc(-1 * var(--maxi-space-8px));
 				}
 			}
 
 			.maxi-opacity-control {
-				margin-top: 10px;
+				margin-top: var(--maxi-space-10px);
 			}
 		}
 	}

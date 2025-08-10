@@ -1,31 +1,31 @@
 .maxi-placeholder.maxi-placeholder {
 	// This needs specificity to override individual block styles.
-	box-sizing: border-box;
-	position: relative;
-	padding: 1em;
+	box-sizing: var(--maxi-box-sizing-border-box);
+	position: var(--maxi-layout-relative);
+	padding: var(--maxi-space-1em);
 	width: 100%;
-	text-align: left;
-	margin: 0;
+	text-align: var(--maxi-text-align-left);
+	margin: var(--maxi-space-0px);
 	color: var(--maxi-grey-dark);
 
 	// Some editor styles unset this.
-	-moz-font-smoothing: subpixel-antialiased;
-	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-font-smoothing: var(--maxi-font-smoothing-subpixel-antialiased);
+	-webkit-font-smoothing: var(--maxi-font-smoothing-subpixel-antialiased);
 
 	// IE11 doesn't read rules inside this query. They are applied only to modern browsers.
 	@supports (position: sticky) {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: flex-start;
+		display: var(--maxi-display-flex);
+		flex-direction: var(--maxi-flex-direction-column);
+		justify-content: var(--maxi-layout-center);
+		align-items: var(--maxi-layout-flex-start);
 	}
 
 	// Block UI appearance.
-	border-radius: 2px;
+	border-radius: var(--maxi-radius-2px);
 	background-color: var(--maxi-white);
 
 	.components-base-control__label {
-		font-size: 18pt;
+		font-size: var(--maxi-font-size-18pt);
 	}
 }
 
@@ -33,73 +33,75 @@
 .maxi-placeholder__instructions,
 .maxi-placeholder__label,
 .maxi-placeholder__fieldset {
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Inter, Oxygen-Sans,
-		Ubuntu, Cantarell, Helvetica Neue, sans-serif;
-	font-size: 13px;
+	font-family: var(--maxi-font-system);
+	font-size: var(--maxi-font-size-13px);
 }
 
 .maxi-placeholder__label {
-	display: flex;
-	font-weight: 600;
-	align-items: center;
+	display: var(--maxi-display-flex);
+	font-weight: var(--maxi-font-weight-600);
+	align-items: var(--maxi-layout-center);
 
 	svg {
-		width: 100%;
-		height: 100%;
-		margin: auto;
+		width: var(--maxi-layout-full-width);
+		height: var(--maxi-layout-full-width);
+		margin: var(--maxi-layout-auto);
 	}
 
 	// Don't take up space if the label is empty.
 	&:empty {
-		display: none;
+		display: var(--maxi-display-none);
 	}
 }
 
 .maxi-placeholder__fieldset,
 .maxi-placeholder__fieldset form {
-	display: flex;
-	flex-direction: row;
-	width: 100%;
-	flex-wrap: wrap;
+	display: var(--maxi-display-flex);
+	flex-direction: var(--maxi-flex-direction-row);
+	width: var(--maxi-layout-full-width);
+	flex-wrap: var(--maxi-flex-wrap);
 
 	p {
-		font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Inter,
-			Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
-		font-size: 13px;
+		font-family: var(--maxi-font-system);
+		font-size: var(--maxi-font-size-13px);
 	}
 }
 
 .maxi-placeholder__fieldset.is-column-layout,
 .maxi-placeholder__fieldset.is-column-layout form {
-	flex-direction: column;
+	flex-direction: var(--maxi-flex-direction-column);
 }
 
 .maxi-placeholder__input[type='url'] {
-	margin: 0 8px 0 0;
-	flex: 1 1 auto;
+	margin: var(--maxi-space-0px) var(--maxi-space-8px) var(--maxi-space-0px)
+		var(--maxi-space-0px);
+	flex: var(--maxi-flex-grow-1) var(--maxi-flex-grow-1)
+		var(--maxi-flex-grow-auto);
 }
 
 .maxi-placeholder__instructions {
-	margin-bottom: 1em;
+	margin-bottom: var(--maxi-space-1em);
 }
 
 .maxi-placeholder__error {
-	margin-top: 1em;
-	width: 100%;
+	margin-top: var(--maxi-space-1em);
+	width: var(--maxi-layout-full-width);
 }
 
 .maxi-placeholder__preview img {
-	margin: 3%;
-	width: 50%;
+	margin: var(--maxi-space-3-percent) !important;
+	width: var(--maxi-layout-50-percent) !important;
 }
 
 .maxi-placeholder__fieldset .components-button {
-	margin-right: 12px;
-	margin-bottom: 12px; // If buttons wrap we need vertical space between.
+	margin-right: var(--maxi-space-12px);
+	margin-bottom: var(
+		--maxi-space-12px
+	); // If buttons wrap we need vertical space between.
 
 	&:last-child {
-		margin-bottom: 0;
-		margin-right: 0;
+		margin-bottom: var(--maxi-space-0px);
+		margin-right: var(--maxi-space-0px);
 	}
 }
 
@@ -110,11 +112,15 @@
 .maxi-placeholder__fieldset
 	.components-button:not(.is-link)
 	~ .components-button.is-link {
-	margin-left: 10px; // equal to standard button inner padding
-	margin-right: 10px; // equal to standard button inner padding
+	margin-left: var(
+		--maxi-space-10px
+	); // equal to standard button inner padding
+	margin-right: var(
+		--maxi-space-10px
+	); // equal to standard button inner padding
 
 	&:last-child {
-		margin-right: 0;
+		margin-right: var(--maxi-space-0px);
 	}
 }
 
@@ -123,18 +129,18 @@
 	// Medium and large sizes.
 	&.is-large {
 		.maxi-placeholder__label {
-			font-size: 18pt;
-			font-weight: normal;
-			margin: 0 auto;
+			font-size: var(--maxi-font-size-18pt);
+			font-weight: var(--maxi-font-weight-normal);
+			margin: var(--maxi-space-0px) var(--maxi-layout-auto);
 		}
 
 		.maxi-placeholder__instructions {
-			position: absolute;
-			bottom: 40px;
-			left: 0;
-			width: 100%;
+			position: var(--maxi-layout-absolute);
+			bottom: var(--maxi-space-40px);
+			left: var(--maxi-space-0px);
+			width: var(--maxi-layout-full-width);
 			text-align: center;
-			font-size: 18px;
+			font-size: var(--maxi-font-size-18px);
 			color: var(--maxi-grey);
 		}
 	}
@@ -143,23 +149,24 @@
 	&.is-medium,
 	&.is-small {
 		.maxi-placeholder__instructions {
-			display: none;
+			display: var(--maxi-display-none);
 		}
 
 		.maxi-placeholder__fieldset,
 		.maxi-placeholder__fieldset form {
-			flex-direction: column;
+			flex-direction: var(--maxi-flex-direction-column);
 		}
 
 		.maxi-placeholder__fieldset .components-button {
-			margin-right: auto;
+			margin-right: var(--maxi-layout-auto);
 		}
 	}
 
 	// Small sizes.
 	&.is-small {
 		.components-button {
-			padding: 0 8px 2px;
+			padding: var(--maxi-space-0px) var(--maxi-space-8px)
+				var(--maxi-space-2px);
 		}
 	}
 }

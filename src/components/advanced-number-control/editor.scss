@@ -1,55 +1,63 @@
 .maxi-advanced-number-control {
 	&__second-style {
 		.maxi-base-control__field {
-			position: relative;
+			position: var(--maxi-layout-relative);
 		}
 		.maxi-base-control__label {
-			position: absolute;
-			top: -8px;
-			left: 8px;
-			font-size: 10px !important;
+			position: var(--maxi-layout-absolute);
+			top: calc(-1 * var(--maxi-space-8px));
+			left: var(--maxi-space-8px);
+			font-size: var(--maxi-font-size-10px) !important;
 			color: var(--maxi-black) !important;
 			font-style: italic;
-			padding: 0 5px;
+			padding: var(--maxi-space-0px) var(--maxi-space-5px);
 			pointer-events: none;
 			box-sizing: border-box;
 			-webkit-box-sizing: border-box;
 		}
 		.maxi-select-control__input {
-			padding: 9px 8px;
+			padding: var(--maxi-space-9px) var(--maxi-space-8px);
 		}
 	}
 	.maxi-base-control {
-		margin-bottom: 0;
+		margin-bottom: var(--maxi-space-0px);
 	}
 
 	&__input-wrapper {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
+		position: var(--maxi-layout-relative);
+		display: var(--maxi-display-inline-flex);
+		align-items: var(--maxi-layout-center);
 		flex: none;
-		width: 72px;
-		border: none !important;
-		outline: none !important;
-		box-shadow: none !important;
+		width: var(--maxi-control-width-72px);
+		border: var(--maxi-reset-border-none) !important;
+		outline: var(--maxi-reset-outline) !important;
+		box-shadow: var(--maxi-reset-box-shadow) !important;
 
 		&:focus,
 		&:focus-within {
-			border: none !important;
-			outline: none !important;
-			box-shadow: none !important;
+			border: var(--maxi-reset-border-none) !important;
+			outline: var(--maxi-reset-outline) !important;
+			box-shadow: var(--maxi-reset-box-shadow) !important;
 		}
 	}
 
 	&__value {
-		width: 100%;
-		height: 31px;
+		width: var(--maxi-layout-full-width);
+		height: var(--maxi-control-height-31px);
 		flex: none;
-		padding-right: 24px; // Make room for custom spinner buttons
-		min-width: 60px;
-		border: none !important; // Remove any inherited borders
-		box-shadow: none !important; // Remove any box shadows
-		background: transparent !important; // Ensure transparent background
+		padding-right: var(
+			--maxi-space-24px
+		); // Make room for custom spinner buttons
+		min-width: var(--maxi-control-width-60px);
+		border: var(
+			--maxi-reset-border-none
+		) !important; // Remove any inherited borders
+		box-shadow: var(
+			--maxi-reset-box-shadow
+		) !important; // Remove any box shadows
+		background: var(
+			--maxi-reset-background
+		) !important; // Ensure transparent background
 
 		// Hide native browser spinner buttons since we have custom ones
 		&::-webkit-outer-spin-button,
@@ -69,60 +77,68 @@
 		&:active {
 			// Ensure input focus doesn't interfere with spinner buttons
 			z-index: 0;
-			border: none !important; // Remove focus border
-			outline: none !important; // Remove focus outline
-			box-shadow: none !important; // Remove focus box shadow
-			background: transparent !important; // Keep background transparent
+			border: var(
+				--maxi-reset-border-none
+			) !important; // Remove focus border
+			outline: var(
+				--maxi-reset-outline
+			) !important; // Remove focus outline
+			box-shadow: var(
+				--maxi-reset-box-shadow
+			) !important; // Remove focus box shadow
+			background: var(
+				--maxi-reset-background
+			) !important; // Keep background transparent
 		}
 	}
 
 	&__spinner-container {
-		position: absolute;
-		right: 4px;
-		top: 50%;
+		position: var(--maxi-layout-absolute);
+		right: var(--maxi-space-4px);
+		top: var(--maxi-layout-half);
 		transform: translateY(-48%); // Move down 2px from center
-		display: flex;
-		flex-direction: column;
-		gap: -1px; // Bring buttons closer together
+		display: var(--maxi-display-flex);
+		flex-direction: var(--maxi-layout-flex-column);
+		gap: calc(-1 * var(--maxi-space-1px)); // Bring buttons closer together
 		z-index: 1;
 	}
 
 	&__spinner-button {
-		width: 16px;
-		height: 12px;
-		border: none;
-		background: transparent;
-		cursor: pointer;
-		padding: 0;
+		width: var(--maxi-space-16px);
+		height: var(--maxi-space-12px);
+		border: var(--maxi-reset-border-none);
+		background: var(--maxi-reset-background);
+		cursor: var(--maxi-cursor-pointer);
+		padding: var(--maxi-reset-padding);
 		color: var(--maxi-grey);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.2s ease;
-		border-radius: 2px;
-		position: relative;
+		display: var(--maxi-display-flex);
+		align-items: var(--maxi-layout-center);
+		justify-content: var(--maxi-layout-center);
+		transition: all var(--maxi-transition-200ms) ease;
+		border-radius: var(--maxi-radius-2px);
+		position: var(--maxi-layout-relative);
 
 		// Better focus states for accessibility
 		&:focus {
-			outline: none;
-			border: none;
+			outline: var(--maxi-reset-outline);
+			border: var(--maxi-reset-border-none);
 			background: var(--maxi-whisper-green);
 		}
 
 		&:hover {
 			color: var(--maxi-primary-color);
 			background: var(--maxi-whisper-green);
-			border: none;
+			border: var(--maxi-reset-border-none);
 
 			svg {
 				color: var(--maxi-primary-color);
-				border: none;
+				border: var(--maxi-reset-border-none);
 			}
 		}
 
 		&:active {
 			transform: scale(0.95);
-			border: none;
+			border: var(--maxi-reset-border-none);
 		}
 
 		// Disabled state
@@ -131,13 +147,13 @@
 			cursor: not-allowed;
 
 			&:hover {
-				background: transparent;
+				background: var(--maxi-reset-background);
 			}
 		}
 
 		// SVG styling
 		svg {
-			pointer-events: none;
+			pointer-events: var(--maxi-pointer-events-none);
 			transition: inherit;
 		}
 
@@ -146,13 +162,13 @@
 		}
 
 		&--down {
-			border-top: 1px solid var(--maxi-grey);
+			border-top: var(--maxi-border-1px) solid var(--maxi-grey);
 		}
 	}
 	.components-range-control {
-		width: 100%;
-		flex: 100%;
-		margin: 8px 0 0;
+		width: var(--maxi-layout-full-width);
+		flex: var(--maxi-layout-full-width);
+		margin: var(--maxi-space-8px) 0 0;
 
 		&.maxi-advanced-number-control__range--small {
 			.components-simple-tooltip {
@@ -173,17 +189,17 @@
 		flex-wrap: wrap;
 
 		& > * {
-			margin-left: 4px;
+			margin-left: var(--maxi-space-5px);
 		}
 		.maxi-base-control__label,
 		.components-base-control__label,
 		.components-range-control {
-			margin-left: 0;
+			margin-left: var(--maxi-space-0px);
 		}
 
 		.components-range-control__root {
-			margin-left: 7px !important;
-			width: calc(100% - 16px);
+			margin-left: var(--maxi-space-7px) !important;
+			width: calc(var(--maxi-layout-full-width) - var(--maxi-space-16px));
 		}
 	}
 }
@@ -200,6 +216,6 @@ html[dir='rtl'] {
 	}
 	.maxi-base-control__label {
 		left: unset;
-		right: 8px;
+		right: var(--maxi-space-8px);
 	}
 }

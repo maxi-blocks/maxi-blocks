@@ -31,9 +31,9 @@
 /* GX Button */
 
 #maxi-button__layout {
-	color: #000;
-	border: 1px solid #000;
-	margin-right: 10px;
+	color: var(--maxi-black);
+	border: var(--maxi-border-1px) solid var(--maxi-black);
+	margin-right: var(--maxi-space-10px);
 }
 
 #maxi-button__layout img {
@@ -56,10 +56,10 @@
 		padding: 15px;
 		height: auto;
 		border-radius: 5px;
-		background: #fff;
+		background: var(--maxi-white);
 
 		&:hover {
-			background: #fff;
+			background: var(--maxi-white);
 		}
 	}
 
@@ -100,7 +100,7 @@
 
 .ab-white-text,
 .wp-block-heading .ab-white-text {
-	color: #fff;
+	color: var(--maxi-white);
 }
 
 .maxi-cloud-landing-2 {

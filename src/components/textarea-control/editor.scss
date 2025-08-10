@@ -1,22 +1,22 @@
 .maxi-textarea-control__input {
 	width: 100%;
-	padding: 6px 8px;
+	padding: var(--maxi-space-6px) var(--maxi-space-8px);
 
 	box-shadow: 0 0 0 transparent;
-	transition: box-shadow 0.1s linear;
-	border-radius: 2px;
-	border: 1px solid var(--maxi-grey-light);
+	transition: box-shadow var(--maxi-transition-100ms) linear;
+	border-radius: var(--maxi-radius-2px);
+	border: var(--maxi-border-1px) solid var(--maxi-grey-light);
 	transition-duration: 0ms;
 
 	/* Fonts smaller than 16px causes mobile safari to zoom. */
-	font-size: 16px;
+	font-size: var(--maxi-font-size-16px);
 	/* Override core line-height. To be reviewed. */
-	line-height: normal;
+	line-height: var(--maxi-line-height-normal);
 
 	@media (min-width: 600px) {
-		font-size: 13px;
+		font-size: var(--maxi-font-size-13px);
 		/* Override core line-height. To be reviewed. */
-		line-height: normal;
+		line-height: var(--maxi-line-height-normal);
 	}
 
 	&:focus {

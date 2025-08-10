@@ -6,50 +6,52 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			&--is-focused,
 			&:focus {
 				border-color: var(--maxi-secondary-color);
-				box-shadow: 0 0 0 1px var(--maxi-secondary-color);
-				outline: 2px solid transparent;
+				box-shadow: var(--maxi-space-0px) var(--maxi-space-0px)
+					var(--maxi-space-0px) var(--maxi-space-1px)
+					var(--maxi-secondary-color);
+				outline: var(--maxi-space-2px) solid transparent;
 			}
 		}
 	}
 }
 .maxi-font-family-selector {
-	z-index: 99;
-	display: block;
-	width: 100%;
-	height: 32px;
+	z-index: var(--maxi-z-font-selector);
+	display: var(--maxi-display-block);
+	width: var(--maxi-layout-full-width);
+	height: var(--maxi-control-height-32px);
 
 	&__container {
-		position: relative;
-		width: 100%;
+		position: var(--maxi-layout-relative);
+		width: var(--maxi-layout-full-width);
 	}
 
 	.maxi-font-family-selector__control {
 		&__menu {
-			border: 1.5px solid var(--maxi-grey-light);
-			border-radius: 0;
-			box-shadow: none;
+			border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+			border-radius: var(--maxi-space-0px);
+			box-shadow: var(--maxi-reset-box-shadow);
 		}
 		&__menu-list {
-			padding: 0;
+			padding: var(--maxi-space-0px);
 		}
 		&__option {
 			&--is-focused,
 			&--is-selected {
 				background-color: var(--maxi-pastel-green);
 				color: var(--maxi-black) !important;
-				font-weight: 700 !important;
-				cursor: pointer;
+				font-weight: var(--maxi-font-weight-bold) !important;
+				cursor: var(--maxi-cursor-pointer);
 			}
 		}
 		&__control {
 			border-color: var(--maxi-grey-light);
-			padding: 8px;
-			border-radius: 5px;
-			min-height: unset;
-			display: flex;
-			align-content: center;
-			height: 32px;
-			border-width: 1.5px;
+			padding: var(--maxi-space-8px);
+			border-radius: var(--maxi-space-5px);
+			min-height: var(--maxi-height-unset);
+			display: var(--maxi-display-flex);
+			align-content: var(--maxi-align-content-center);
+			height: var(--maxi-control-height-32px);
+			border-width: var(--maxi-border-1-5px);
 
 			&:focus,
 			&:hover {
@@ -57,62 +59,62 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			}
 			&--is-focused {
 				border-color: var(--maxi-grey);
-				box-shadow: none;
-				outline: none;
+				box-shadow: var(--maxi-reset-box-shadow);
+				outline: var(--maxi-reset-outline);
 			}
 		}
 		&__single-value {
-			margin: 0;
+			margin: var(--maxi-space-0px);
 			color: var(--maxi-black);
 
 			& + div {
-				margin: 0;
-				padding: 0;
+				margin: var(--maxi-space-0px);
+				padding: var(--maxi-space-0px);
 			}
 		}
 		&__value-container {
-			padding: 0;
-			cursor: pointer;
+			padding: var(--maxi-space-0px);
+			cursor: var(--maxi-cursor-pointer);
 		}
 		&__clear-indicator {
-			width: 16px;
-			height: 16px;
-			padding: 0;
-			cursor: pointer;
-			transition: 0.5s all;
+			width: var(--maxi-space-16px);
+			height: var(--maxi-space-16px);
+			padding: var(--maxi-space-0px);
+			cursor: var(--maxi-cursor-pointer);
+			transition: var(--maxi-transition-500ms) all;
 
 			&:hover {
 				color: var(--maxi-black) !important;
-				font-weight: 700 !important;
+				font-weight: var(--maxi-font-weight-bold) !important;
 				svg {
 					fill: var(--maxi-black);
 				}
 			}
 			svg {
-				width: 100%;
-				height: 100%;
+				width: var(--maxi-layout-full-width);
+				height: var(--maxi-layout-full-width);
 				fill: var(--maxi-grey);
 			}
 		}
 		&__dropdown-indicator {
-			width: 20px;
-			height: 20px;
-			padding: 0;
-			cursor: pointer;
-			transition: 0.5s all;
+			width: var(--maxi-space-20px);
+			height: var(--maxi-space-20px);
+			padding: var(--maxi-space-0px);
+			cursor: var(--maxi-cursor-pointer);
+			transition: var(--maxi-transition-500ms) all;
 
 			&:hover {
 				color: var(--maxi-black) !important;
-				font-weight: 700 !important;
+				font-weight: var(--maxi-font-weight-bold) !important;
 			}
 			svg {
 				fill: var(--maxi-grey);
 			}
 		}
 		&__indicator-separator {
-			width: 2px;
-			height: 80%;
-			margin: auto 2px;
+			width: var(--maxi-space-2px);
+			height: var(--maxi-layout-80-percent);
+			margin: var(--maxi-layout-auto) var(--maxi-space-2px);
 			background-color: var(--maxi-grey-light);
 		}
 	}

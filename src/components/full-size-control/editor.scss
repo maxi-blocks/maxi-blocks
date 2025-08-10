@@ -1,6 +1,6 @@
 .maxi-full-size-control {
 	.maxi-tabs-control {
-		margin-left: -12px;
-		margin-right: -12px;
+		margin-left: calc(-1 * var(--maxi-space-12px));
+		margin-right: calc(-1 * var(--maxi-space-12px));
 	}
 }

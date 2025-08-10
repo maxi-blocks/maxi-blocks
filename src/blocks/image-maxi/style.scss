@@ -60,7 +60,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 		}
 	}
 	.maxi-hover-details {
-		background-color: #000;
+		background-color: var(--maxi-black);
 
 		&:not(.maxi-hover-effect__text__flip-horiz) {
 			position: absolute;
@@ -101,9 +101,9 @@ body.maxi-blocks--active figure.maxi-image-block {
 			}
 			h4,
 			p {
-				margin: 0;
-				padding: 0;
-				color: #fff;
+				margin: var(--maxi-reset-margin);
+				padding: var(--maxi-reset-padding);
+				color: var(--maxi-white);
 			}
 		}
 	}

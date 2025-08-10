@@ -1,36 +1,36 @@
 .maxi-prompt-control {
 	&__buttons {
-		display: flex;
-		gap: 8px;
-		margin-bottom: 8px;
+		display: var(--maxi-display-flex);
+		gap: var(--maxi-space-8px);
+		margin-bottom: var(--maxi-space-8px);
 	}
 
 	&-history-buttons {
-		padding-left: 10px;
-		column-gap: 5px;
+		padding-left: var(--maxi-space-10px);
+		column-gap: var(--maxi-space-5px);
 	}
 
 	&-history-tab,
 	&-modify-tab {
 		.maxi-prompt-control__buttons {
 			.maxi-components-button {
-				height: auto;
-				padding: 0;
-				color: var(--maxi-black);
+				height: var(--maxi-layout-auto);
+				padding: var(--maxi-space-0px);
+				color: var(--maxi-black) !important;
 			}
 		}
 	}
 
 	&-generate-tab {
-		padding-top: 8px;
+		padding-top: var(--maxi-space-8px);
 		.maxi-react-select-control {
-			z-index: 10000;
+			z-index: var(--maxi-z-index-10000);
 			& > label {
 				display: block;
-				margin-bottom: 3px;
+				margin-bottom: var(--maxi-space-3px);
 			}
 			& > div > div {
-				z-index: 10000;
+				z-index: var(--maxi-z-index-10000);
 				border-color: var(--maxi-grey-light);
 			}
 		}
@@ -63,14 +63,15 @@
 	&__buttons {
 		.maxi-components-button {
 			height: auto;
-			padding: 4px 8px !important;
-			width: auto;
-			border: 1.5px solid var(--maxi-secondary-color);
+			padding: var(--maxi-space-4px) var(--maxi-space-8px) !important;
+			width: var(--maxi-layout-auto);
+			border: var(--maxi-border-width-1-5px) solid
+				var(--maxi-secondary-color);
 			color: var(--maxi-secondary-color) !important;
 			background: var(--maxi-whisper-green);
-			font-size: 12px !important;
-			font-weight: 600 !important;
-			border-radius: 30px;
+			font-size: var(--maxi-font-size-12px) !important;
+			font-weight: var(--maxi-font-weight-600) !important;
+			border-radius: var(--maxi-radius-30px);
 			text-align: center;
 			cursor: pointer;
 
@@ -80,8 +81,9 @@
 			}
 
 			&:focus {
-				outline: none;
-				box-shadow: 0 0 0 2px var(--maxi-cloud-primary-light);
+				outline: var(--maxi-reset-outline) !important;
+				box-shadow: 0 0 0 var(--maxi-space-2px)
+					var(--maxi-cloud-primary-light) !important;
 			}
 		}
 	}

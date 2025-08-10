@@ -1,26 +1,27 @@
 body.maxi-blocks--active .maxi-css-code-editor {
 	.w-tc-editor {
-		margin: 8px 8px 0 0;
-		width: 100%;
+		margin: var(--maxi-space-8px) var(--maxi-space-8px)
+			var(--maxi-space-0px) var(--maxi-space-0px);
+		width: var(--maxi-layout-full-width);
 		background-color: var(--maxi-white);
-		border: 1px solid var(--maxi-grey-light);
-		border-radius: 10px;
-		font-family: monospace !important;
-		flex: 1 0 100%;
-		direction: ltr;
-		border-radius: 10px;
-		transition: all 0.3s ease;
+		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
+		border-radius: var(--maxi-space-10px);
+		font-family: var(--maxi-font-monospace) !important;
+		flex: 1 0 var(--maxi-layout-full-width);
+		direction: var(--maxi-direction-ltr);
+		border-radius: var(--maxi-space-10px);
+		transition: all var(--maxi-transition-300ms) ease;
 
 		textarea.w-tc-editor-text {
 			background-color: var(--maxi-white);
-			font-family: monospace !important;
-			font-size: 13px !important;
+			font-family: var(--maxi-font-monospace) !important;
+			font-size: var(--maxi-space-13px) !important;
 			&:hover:not(#inspector-select-control-0):not([id^='inspector-input-control']):not([id^='url-input-control']) {
-				border: none !important;
+				border: var(--maxi-reset-border-none) !important;
 			}
 		}
 		&:hover {
-			border: 1px solid var(--maxi-primary-color) !important;
+			border: var(--maxi-border-1px) solid var(--maxi-primary-color) !important;
 		}
 	}
 	button.components-button[class*='maxi-advanced-css-control']:hover,
@@ -28,42 +29,42 @@ body.maxi-blocks--active .maxi-css-code-editor {
 		color: inherit !important;
 	}
 	code {
-		padding: 0;
+		padding: var(--maxi-space-0px);
 		background-color: var(--maxi-white);
-		font-family: monospace !important;
+		font-family: var(--maxi-font-monospace) !important;
 		span {
 			background-color: var(--maxi-white);
-			font-family: monospace !important;
+			font-family: var(--maxi-font-monospace) !important;
 		}
 	}
 
 	&__error {
-		margin-top: 8px;
-		padding-left: 10px;
-		padding-right: 5px;
-		font-style: italic;
+		margin-top: var(--maxi-space-8px);
+		padding-left: var(--maxi-space-10px);
+		padding-right: var(--maxi-space-5px);
+		font-style: var(--maxi-font-style-italic);
 		&.not-valid {
-			border-left: 2px solid var(--maxi-orange-red);
+			border-left: var(--maxi-border-2px) solid var(--maxi-orange-red);
 		}
 		&.valid {
-			border-left: 2px solid var(--maxi-primary-color);
+			border-left: var(--maxi-border-2px) solid var(--maxi-primary-color);
 		}
 	}
 
 	.maxi-base-control__field {
-		flex-direction: row;
+		flex-direction: var(--maxi-layout-flex-row);
 		flex-wrap: wrap;
 
 		.maxi-css-code-editor__validate-button {
-			margin-left: 10px;
-			float: right;
+			margin-left: var(--maxi-space-10px);
+			float: var(--maxi-float-right);
 		}
 
 		.components-button {
-			height: 24px;
+			height: var(--maxi-space-24px);
 			background-color: var(--maxi-pastel-green);
-			border: 1px solid var(--maxi-mid-green);
-			border-radius: 30px;
+			border: var(--maxi-border-1px) solid var(--maxi-mid-green);
+			border-radius: var(--maxi-radius-30px);
 
 			&:hover {
 				background-color: var(--maxi-mid-green) !important;
@@ -79,7 +80,7 @@ body.maxi-blocks--active .maxi-css-code-editor {
 *******************************/
 html[dir='rtl'] {
 	.maxi-css-code-editor__validate-button {
-		margin-right: 10px;
-		margin-left: 0px !important;
+		margin-right: var(--maxi-space-10px);
+		margin-left: var(--maxi-space-0px) !important;
 	}
 }

@@ -3,7 +3,7 @@
    ======================================== */
 
 .maxi-axis-control {
-	display: grid;
+	display: var(--maxi-display-grid);
 	grid-gap: var(--axis-control-gap-default);
 
 	/* ========================================
@@ -11,38 +11,38 @@
 	   ======================================== */
 
 	// Label styling variables
-	--axis-control-label-size: 10px;
-	--axis-control-label-padding: 0 6px;
-	--axis-control-label-z-index: 10;
+	--axis-control-label-size: var(--maxi-font-size-10px);
+	--axis-control-label-padding: var(--maxi-space-0px) var(--maxi-space-6px);
+	--axis-control-label-z-index: var(--maxi-z-maximum);
 
 	// Layout spacing variables
 
 	// Gap spacing variables
-	--axis-control-gap-default: 0 8px;
-	--axis-control-gap-margin: 8px;
+	--axis-control-gap-default: var(--maxi-space-0px) var(--maxi-space-8px);
+	--axis-control-gap-margin: var(--maxi-space-8px);
 
 	/* ========================================
 	   HEADER SECTION
 	   ======================================== */
 
 	&__header {
-		margin-bottom: 10px;
-		display: grid;
+		margin-bottom: var(--maxi-space-10px);
+		display: var(--maxi-display-grid);
 		grid-template-columns: 1fr;
 		grid-gap: var(--axis-control-gap-default);
 
 		.maxi-base-control__field {
-			display: grid;
+			display: var(--maxi-display-grid);
 			grid-template-columns: 1fr auto;
-			align-items: center;
-			margin-bottom: 0;
+			align-items: var(--maxi-layout-center);
+			margin-bottom: var(--maxi-space-0px);
 		}
 
 		.maxi-tabs-control {
-			display: grid;
+			display: var(--maxi-display-grid);
 			grid-template-columns: repeat(3, 1fr);
-			margin-left: 0;
-			margin-right: 0;
+			margin-left: var(--maxi-space-0px);
+			margin-right: var(--maxi-space-0px);
 		}
 	}
 
@@ -51,36 +51,36 @@
 	   ======================================== */
 
 	.maxi-tabs-control__button {
-		display: flex;
+		display: var(--maxi-display-flex);
 		flex: 1;
-		align-items: center;
-		justify-content: center;
-		min-width: 32px;
-		height: 32px;
-		padding: 0;
-		border: 1px solid var(--maxi-grey-light);
-		border-radius: 0;
-		margin-bottom: 0;
-		opacity: 1;
-		transition: all 0.5s;
-		cursor: pointer;
+		align-items: var(--maxi-layout-center);
+		justify-content: var(--maxi-layout-center);
+		min-width: var(--maxi-control-width-32px);
+		height: var(--maxi-control-height-32px);
+		padding: var(--maxi-reset-padding);
+		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
+		border-radius: var(--maxi-space-0px);
+		margin-bottom: var(--maxi-space-0px);
+		opacity: var(--maxi-opacity-visible);
+		transition: all var(--maxi-transition-500ms);
+		cursor: var(--maxi-cursor-pointer);
 
 		&.maxi-tabs-control__button--sync-axis {
-			padding: 6px 0;
+			padding: var(--maxi-space-6px) var(--maxi-space-0px);
 		}
 
 		// SVG icon styling
 		svg:not(.maxi-tabs-control__notification) path {
-			fill: transparent;
+			fill: var(--maxi-reset-background);
 			stroke: var(--maxi-grey-dark);
-			transition: stroke 0.3s ease;
+			transition: stroke var(--maxi-transition-300ms) ease;
 		}
 
 		// Selected state
 
 		&--selected {
 			svg:not(.maxi-tabs-control__notification) path {
-				fill: transparent;
+				fill: var(--maxi-reset-background);
 				stroke: var(--maxi-secondary-color);
 			}
 		}
@@ -96,25 +96,25 @@
 	   ======================================== */
 
 	.maxi-axis-control__content__item {
-		position: relative;
+		position: var(--maxi-layout-relative);
 		box-sizing: border-box;
 
 		&.maxi-advanced-number-control {
-			display: flex;
-			flex-direction: column;
-			width: 100%;
+			display: var(--maxi-display-flex);
+			flex-direction: var(--maxi-layout-flex-column);
+			width: var(--maxi-layout-full-width);
 		}
 
 		&.maxi-advanced-number-control .maxi-base-control__label {
-			position: absolute;
-			top: -8px;
-			left: -4px;
+			position: var(--maxi-layout-absolute);
+			top: calc(-1 * var(--maxi-space-8px));
+			left: calc(-1 * var(--maxi-space-4px));
 			font-size: var(--axis-control-label-size);
 			color: var(--maxi-grey-dark);
 			font-style: normal;
 			background: var(--maxi-white);
 			padding: var(--axis-control-label-padding);
-			pointer-events: none;
+			pointer-events: var(--maxi-pointer-events-none);
 			z-index: var(--axis-control-label-z-index);
 			box-sizing: border-box;
 		}
@@ -125,12 +125,12 @@
 	   ======================================== */
 
 	.maxi-axis-control__all-mode {
-		display: grid;
+		display: var(--maxi-display-grid);
 		grid-template-columns: 1fr;
 
 		.maxi-axis-control__content__item {
-			width: 100%;
-			margin-bottom: 0;
+			width: var(--maxi-layout-full-width);
+			margin-bottom: var(--maxi-space-0px);
 		}
 	}
 
@@ -139,14 +139,14 @@
 	   ======================================== */
 
 	.maxi-axis-control__axis-mode {
-		display: grid;
+		display: var(--maxi-display-grid);
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--mx-gap, 6px);
+		gap: var(--mx-gap, var(--maxi-space-6px));
 
 		/* Flatten the two rows so children participate directly in the grid */
 		> .maxi-axis-control__row-1,
 		> .maxi-axis-control__row-2 {
-			display: contents;
+			display: var(--maxi-display-contents);
 		}
 
 		/* Column 1: vertical (top/bottom) pair; Column 2: horizontal (left/right) */
@@ -159,7 +159,7 @@
 
 		/* Stack toggle above number within each column */
 		.maxi-axis-control__item-auto {
-			margin-bottom: 4px;
+			margin-bottom: var(--maxi-space-4px);
 		}
 	}
 
@@ -168,10 +168,10 @@
 	   ======================================== */
 
 	.maxi-axis-control__content__separate-grid {
-		display: grid;
+		display: var(--maxi-display-grid);
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		grid-auto-rows: auto;
-		gap: var(--mx-gap, 4px);
+		grid-auto-rows: var(--maxi-layout-auto);
+		gap: var(--mx-gap, var(--maxi-space-4px));
 
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
@@ -180,7 +180,7 @@
 
 		/* Reduce bottom spacing after the first row only (separate grid) */
 		.maxi-axis-control__item--top-row {
-			margin-bottom: calc(-1 * var(--mx-gap, 8px));
+			margin-bottom: calc(-1 * var(--mx-gap, var(--maxi-space-8px)));
 		}
 
 		/* ========================================
@@ -206,17 +206,17 @@
 
 	.maxi-axis-control__axis-mode {
 		/* parent becomes the grid */
-		display: grid;
+		display: var(--maxi-display-grid);
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		grid-auto-rows: auto;
-		gap: var(--mx-gap, 8px);
+		grid-auto-rows: var(--maxi-layout-auto);
+		gap: var(--mx-gap, var(--maxi-space-8px));
 
 		/* Align columns: label/toggle on the same baseline */
-		align-items: start;
+		align-items: var(--maxi-vertical-align-start);
 		/* Each column stacks its own children vertically */
 		> .maxi-axis-control__row-1,
 		> .maxi-axis-control__row-2 {
-			display: contents;
+			display: var(--maxi-display-contents);
 		}
 		> .maxi-axis-control__row-1 > * {
 			grid-column: 1;
@@ -227,32 +227,32 @@
 
 		/* Space between toggle (top) and number (below) */
 		.maxi-axis-control__item-auto {
-			margin-bottom: 6px;
+			margin-bottom: var(--maxi-space-6px);
 		}
 
 		/* Normalize row heights so columns align perfectly */
 		.maxi-base-control__field {
-			margin: 0;
+			margin: var(--maxi-space-0px);
 		}
 		.maxi-advanced-number-control .maxi-base-control__field {
-			align-items: center;
+			align-items: var(--maxi-layout-center);
 		}
 		.maxi-toggle-switch .maxi-base-control__field {
-			min-height: 32px;
+			min-height: var(--maxi-control-height-32px);
 		}
 	}
 
 	.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,
 	.maxi-axis-control__axis-mode > .maxi-axis-control__row-2 {
-		display: contents;
+		display: var(--maxi-display-contents);
 	}
 
-	@supports not (display: contents) {
+	@supports not (display: var(--maxi-display-contents)) {
 		.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,
 		.maxi-axis-control__axis-mode > .maxi-axis-control__row-2 {
-			display: grid;
+			display: var(--maxi-display-grid);
 			grid-template-columns: repeat(2, 1fr);
-			gap: var(--mx-gap, 8px);
+			gap: var(--mx-gap, var(--maxi-space-8px));
 		}
 	}
 
@@ -260,9 +260,9 @@
 	   AUTO CONTROL GRID LAYOUT
 	   ======================================== */
 	.maxi-advanced-number-control__input-wrapper {
-		display: grid;
-		grid-template-columns: 1fr auto;
-		align-items: center;
+		display: var(--maxi-display-grid);
+		grid-template-columns: 1fr var(--maxi-layout-auto);
+		align-items: var(--maxi-layout-center);
 	}
 
 	/* ========================================
@@ -270,20 +270,20 @@
 	   ======================================== */
 
 	.maxi-toggle-switch {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		display: var(--maxi-display-flex);
+		align-items: var(--maxi-layout-center);
+		justify-content: var(--maxi-layout-space-between);
 
 		label {
-			font-size: 12px;
-			font-weight: 400;
+			font-size: var(--maxi-font-size-12px);
+			font-weight: var(--maxi-font-weight-normal);
 		}
 	}
 }
 
 html .maxi-axis-control__content__item .maxi-reset-button--typography {
-	position: absolute !important;
-	top: -8px !important;
-	right: 0px !important;
-	z-index: 1000 !important;
+	position: var(--maxi-layout-absolute) !important;
+	top: calc(-1 * var(--maxi-space-8px)) !important;
+	right: var(--maxi-space-0px) !important;
+	z-index: var(--maxi-z-reset-button) !important;
 }

@@ -1,15 +1,15 @@
 // Placeholder for shared reset button styles
 %maxi-reset-button {
 	// CSS custom properties for easy theming
-	--reset-size: 22px;
-	--reset-icon-size: 12px;
-	--reset-border-width: 1px;
-	--reset-z-index: 20;
+	--reset-size: var(--maxi-space-22px);
+	--reset-icon-size: var(--maxi-space-12px);
+	--reset-border-width: var(--maxi-border-1px);
+	--reset-z-index: var(--maxi-z-elevated);
 
 	// Positioning custom properties
 	--reset-position: absolute;
-	--reset-top: -12px;
-	--reset-right: -12px;
+	--reset-top: calc(-1 * var(--maxi-space-12px));
+	--reset-right: calc(-1 * var(--maxi-space-12px));
 	--reset-bottom: auto;
 	--reset-left: auto;
 
@@ -27,11 +27,11 @@
 	margin: 0 !important;
 	background: var(--maxi-white) !important;
 	border: var(--reset-border-width) solid var(--maxi-grey-light) !important;
-	border-radius: 50% !important;
+	border-radius: var(--maxi-radius-round) !important;
 	cursor: pointer !important;
-	transition: all 0.2s ease !important;
+	transition: all var(--maxi-transition-200ms) ease !important;
 	box-sizing: border-box !important;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+	box-shadow: 0 var(--maxi-space-2px) var(--maxi-space-4px) rgba(0, 0, 0, 0.1) !important;
 	-webkit-appearance: none !important;
 	appearance: none !important;
 	text-decoration: none !important;
@@ -47,7 +47,7 @@
 		height: var(--reset-icon-size) !important;
 		margin: auto !important;
 		fill: var(--maxi-grey) !important;
-		transition: fill 0.2s ease !important;
+		transition: fill var(--maxi-transition-200ms) ease !important;
 		display: block !important;
 	}
 
@@ -70,7 +70,7 @@ button.maxi-components-button.maxi-reset-button {
 	// Positioning variants
 	&--inline {
 		position: relative !important;
-		margin-left: 8px !important;
+		margin-left: var(--maxi-space-8px) !important;
 	}
 
 	&--absolute {
@@ -94,63 +94,63 @@ button.maxi-components-button.maxi-reset-button {
 
 	// Size variants
 	&--large {
-		--reset-size: 32px !important;
-		--reset-icon-size: 16px !important;
+		--reset-size: var(--maxi-control-height-32px) !important;
+		--reset-icon-size: var(--maxi-space-16px) !important;
 	}
 
 	&--small {
-		--reset-size: 20px !important;
-		--reset-icon-size: 10px !important;
+		--reset-size: var(--maxi-space-20px) !important;
+		--reset-icon-size: var(--maxi-space-10px) !important;
 	}
 
 	// Positioning preset variants
 	&--top-left {
-		--reset-top: -12px;
-		--reset-left: -12px;
+		--reset-top: calc(-1 * var(--maxi-space-12px));
+		--reset-left: calc(-1 * var(--maxi-space-12px));
 		--reset-right: auto;
 		--reset-bottom: auto;
 	}
 
 	&--top-right {
-		--reset-top: -12px;
-		--reset-right: -12px;
+		--reset-top: calc(-1 * var(--maxi-space-12px));
+		--reset-right: calc(-1 * var(--maxi-space-12px));
 		--reset-left: auto;
 		--reset-bottom: auto;
 	}
 
 	&--top-center {
-		--reset-top: -12px;
-		--reset-left: 50%;
+		--reset-top: calc(-1 * var(--maxi-space-12px));
+		--reset-left: var(--maxi-layout-half);
 		--reset-right: auto;
 		--reset-bottom: auto;
 		transform: translateX(-50%);
 	}
 
 	&--bottom-left {
-		--reset-bottom: -12px;
-		--reset-left: -12px;
+		--reset-bottom: calc(-1 * var(--maxi-space-12px));
+		--reset-left: calc(-1 * var(--maxi-space-12px));
 		--reset-top: auto;
 		--reset-right: auto;
 	}
 
 	&--bottom-right {
-		--reset-bottom: -12px;
-		--reset-right: -12px;
+		--reset-bottom: calc(-1 * var(--maxi-space-12px));
+		--reset-right: calc(-1 * var(--maxi-space-12px));
 		--reset-top: auto;
 		--reset-left: auto;
 	}
 
 	&--center-left {
-		--reset-left: -12px;
-		--reset-top: 50%;
+		--reset-left: calc(-1 * var(--maxi-space-12px));
+		--reset-top: var(--maxi-layout-half);
 		--reset-right: auto;
 		--reset-bottom: auto;
 		transform: translateY(-50%);
 	}
 
 	&--center-right {
-		--reset-right: -12px;
-		--reset-top: 50%;
+		--reset-right: calc(-1 * var(--maxi-space-12px));
+		--reset-top: var(--maxi-layout-half);
 		--reset-left: auto;
 		--reset-bottom: auto;
 		transform: translateY(-50%);
@@ -160,12 +160,12 @@ button.maxi-components-button.maxi-reset-button {
 	@at-root .rtl #{&} {
 		&--inline {
 			margin-left: 0;
-			margin-right: 8px;
+			margin-right: var(--maxi-space-8px);
 		}
 
 		&--absolute {
 			--reset-right: auto;
-			--reset-left: -12px;
+			--reset-left: calc(-1 * var(--maxi-space-12px));
 		}
 	}
 }
@@ -188,9 +188,9 @@ html .maxi-axis-control__units_container .maxi-reset-button,
 .rtl .maxi-typography-control__bottom-gap .maxi-reset-button--absolute,
 .rtl .maxi-axis-control__content__item .maxi-reset-button--absolute,
 .rtl .maxi-axis-control__content__item .maxi-reset-button--typography {
-	--reset-right: -8px !important;
+	--reset-right: calc(-1 * var(--maxi-space-8px)) !important;
 	--reset-left: auto !important;
-	--reset-top: -9px !important;
+	--reset-top: calc(-1 * var(--maxi-space-9px)) !important;
 }
 
 /* Font family selector specific reset button with higher z-index */
@@ -198,36 +198,36 @@ html .maxi-font-family-selector__container .maxi-reset-button--absolute,
 html .maxi-font-family-selector__container .maxi-reset-button--font-selector,
 .rtl .maxi-font-family-selector__container .maxi-reset-button--absolute,
 .rtl .maxi-font-family-selector__container .maxi-reset-button--font-selector {
-	--reset-right: -8px !important;
+	--reset-right: calc(-1 * var(--maxi-space-8px)) !important;
 	--reset-left: auto !important;
-	--reset-top: -9px !important;
-	--reset-z-index: 999 !important;
+	--reset-top: calc(-1 * var(--maxi-space-9px)) !important;
+	--reset-z-index: var(--maxi-z-font-selector) !important;
 }
 
 /* New unique class for font family selector reset button */
 .maxi-reset-button--font-selector {
 	@extend .maxi-reset-button--absolute;
-	--reset-z-index: 999 !important;
+	--reset-z-index: var(--maxi-z-font-selector) !important;
 }
 
 /* Specific context overrides - minimal and purposeful */
 .maxi-color-control__palette-label {
 	.maxi-reset-button {
 		// Use --small variant for compact palette labels
-		--reset-size: 20px;
-		--reset-icon-size: 10px;
+		--reset-size: var(--maxi-space-20px);
+		--reset-icon-size: var(--maxi-space-10px);
 		position: absolute;
 		top: 0;
 		right: 0;
-		margin-top: -4px;
+		margin-top: calc(-1 * var(--maxi-space-4px));
 	}
 }
 
 .toolbar-item__popover__font-options__wrap_family {
 	.maxi-reset-button {
 		// Use --large variant for font options
-		--reset-size: 36px;
-		--reset-icon-size: 18px;
+		--reset-size: var(--maxi-control-height-36px);
+		--reset-icon-size: var(--maxi-space-18px);
 		margin: 0;
 	}
 }
@@ -235,7 +235,7 @@ html .maxi-font-family-selector__container .maxi-reset-button--font-selector,
 .components-circular-option-picker__custom-clear-wrapper {
 	.maxi-reset-button {
 		// Square variant for circular picker context
-		border-radius: 4px;
+		border-radius: var(--maxi-radius-4px);
 
 		&:hover {
 			background: var(--maxi-mid-green);

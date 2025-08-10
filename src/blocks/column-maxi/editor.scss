@@ -23,8 +23,8 @@
 		&.maxi-block--repeater {
 			&.has-child-selected {
 				&::after {
-					opacity: 1;
-					border-color: #7a00df !important;
+					opacity: var(--maxi-opacity-visible);
+					border-color: var(--maxi-tertiary-color) !important;
 				}
 			}
 		}

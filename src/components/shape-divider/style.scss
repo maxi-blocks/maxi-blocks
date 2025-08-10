@@ -1,7 +1,7 @@
 .maxi-shape-divider {
 	position: relative;
-	z-index: 1;
-	transition: all 1s;
+	z-index: var(--maxi-z-elevated);
+	transition: all var(--maxi-transition-500ms);
 	overflow: hidden;
 
 	svg {
@@ -17,6 +17,6 @@
 .maxi-shape-divider-control
 	.maxi-settingstab-control
 	.maxi-tabs-content:not(.maxi-tabs-content--disable-padding) {
-	padding-top: 10px !important;
-	padding-bottom: 0px !important;
+	padding-top: var(--maxi-space-10px) !important;
+	padding-bottom: var(--maxi-space-0px) !important;
 }

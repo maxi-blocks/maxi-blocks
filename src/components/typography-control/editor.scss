@@ -2,33 +2,33 @@
 	// Shared floating label styles to avoid duplication
 	%floating-label {
 		position: absolute !important;
-		top: -8px !important;
-		left: -4px !important;
-		font-size: 10px !important;
+		top: calc(-1 * var(--maxi-space-8px)) !important;
+		left: calc(-1 * var(--maxi-space-5px)) !important;
+		font-size: var(--maxi-font-size-10px) !important;
 		color: var(--maxi-grey-dark) !important;
 		font-style: normal !important;
 		background: var(--maxi-white) !important;
-		padding: 0 5px !important;
+		padding: 0 var(--maxi-space-5px) !important;
 		pointer-events: none !important;
 		box-sizing: border-box !important;
 		-webkit-box-sizing: border-box !important;
-		z-index: 10 !important;
+		z-index: var(--maxi-z-maximum) !important;
 	}
 
 	.maxi-base-control {
 		flex: 1;
 		&__help {
 			color: var(--maxi-grey);
-			font-size: 12px;
+			font-size: var(--maxi-font-size-12px);
 		}
 		.maxi-tabs-control__button--selected svg path {
 			fill: var(--maxi-primary-color);
 		}
 		.maxi-tabs-control__button {
-			margin-right: 11px;
-			border-radius: 4px;
-			border: 1.5px solid var(--maxi-grey-light);
-			transition: all 0.4s ease !important;
+			margin-right: var(--maxi-space-11px);
+			border-radius: var(--maxi-radius-4px);
+			border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+			transition: all var(--maxi-transition-400ms) ease !important;
 			&:hover {
 				background-color: var(--maxi-whisper-green);
 				border-color: var(--maxi-primary-color) !important;
@@ -44,7 +44,7 @@
 	.maxi-typography-control__link-options {
 		.maxi-tabs-control__button {
 			&--selected {
-				font-weight: 700;
+				font-weight: var(--maxi-font-weight-bold);
 				color: var(--maxi-secondary-color) !important;
 			}
 		}
@@ -53,7 +53,7 @@
 	.maxi-typography-control__weight-size-row {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 10px;
+		gap: var(--maxi-space-10px);
 		width: 100%;
 
 		> div {
@@ -67,7 +67,7 @@
 			.maxi-base-control__field > div {
 				display: flex !important;
 				width: 79% !important;
-				margin-bottom: -20px !important;
+				margin-bottom: calc(-1 * var(--maxi-space-20px)) !important;
 			}
 
 			.maxi-advanced-number-control__value {
@@ -78,12 +78,12 @@
 
 	/* Add top margin specifically to the Font Size control */
 	.maxi-typography-control__size {
-		margin-top: 3px !important;
+		margin-top: var(--maxi-space-3px) !important;
 	}
 
 	/* Arrange spacing controls with better spacing */
 	.maxi-typography-control__spacing-controls {
-		margin-bottom: 15px !important;
+		margin-bottom: var(--maxi-space-15px) !important;
 
 		/* First row: Line height and Bottom gap */
 		.maxi-typography-control__line-height,
@@ -95,24 +95,24 @@
 		}
 
 		.maxi-typography-control__line-height {
-			margin-right: 10px !important;
+			margin-right: var(--maxi-space-10px) !important;
 		}
 
 		/* Style spacing controls like Font Weight */
 		.maxi-base-control__field {
-			gap: 5px !important;
+			gap: var(--maxi-space-5px) !important;
 		}
 
 		/* Make inputs wider for 2-column layout */
 		.maxi-advanced-number-control__value {
-			width: 70px !important;
+			width: var(--maxi-control-width-70px) !important;
 		}
 
 		/* Make unit selectors wider */
 		.maxi-dimensions-control__units select {
-			min-width: 50px !important;
-			max-width: 50px !important;
-			width: 50px !important;
+			min-width: var(--maxi-space-50px) !important;
+			max-width: var(--maxi-space-50px) !important;
+			width: var(--maxi-space-50px) !important;
 		}
 
 		/* Style labels like Font Weight - floating labels */
@@ -141,8 +141,8 @@
 	/* Typography formatting buttons styling */
 	.maxi-typography-control__formatting-buttons {
 		display: flex !important;
-		gap: 5px !important;
-		margin-bottom: 15px !important;
+		gap: var(--maxi-space-5px) !important;
+		margin-bottom: var(--maxi-space-15px) !important;
 		justify-content: flex-start !important;
 		align-items: center !important;
 
@@ -150,25 +150,25 @@
 			display: flex !important;
 			align-items: center !important;
 			justify-content: center !important;
-			padding: 8px !important;
-			min-width: 34px !important;
-			max-width: 34px !important;
-			height: 32px !important;
-			border: 1px solid var(--maxi-grey-light) !important;
-			border-radius: 4px !important;
+			padding: var(--maxi-space-8px) !important;
+			min-width: var(--maxi-space-34px) !important;
+			max-width: var(--maxi-space-34px) !important;
+			height: var(--maxi-control-height-36px) !important;
+			border: var(--maxi-border-1px) solid var(--maxi-grey-light) !important;
+			border-radius: var(--maxi-radius-4px) !important;
 			background: var(--maxi-white) !important;
 			color: var(--maxi-black) !important;
 			cursor: pointer !important;
 			font-family: inherit !important;
-			font-size: 16px !important;
-			font-weight: normal !important;
+			font-size: var(--maxi-font-size-16px) !important;
+			font-weight: var(--maxi-font-weight-normal) !important;
 			line-height: 1 !important;
 			text-align: center !important;
 			text-decoration: none !important;
-			transition: all 0.2s ease !important;
+			transition: all var(--maxi-transition-200ms) ease !important;
 			box-sizing: border-box !important;
 			margin: 0 !important;
-			margin-top: -15px !important;
+			margin-top: calc(-1 * var(--maxi-space-15px)) !important;
 
 			&:hover {
 				border-color: var(--maxi-primary-color) !important;
@@ -182,15 +182,17 @@
 			}
 
 			&--bold {
-				font-weight: bold !important;
+				font-weight: var(--maxi-font-weight-bold) !important;
 			}
 
 			&--italic {
-				font-style: italic !important;
+				font-style: var(--maxi-font-style-italic) !important;
 			}
 
 			&--underline {
-				text-decoration: underline !important;
+				text-decoration: var(
+					--maxi-text-decoration-underline
+				) !important;
 			}
 
 			&--strikethrough {
@@ -200,8 +202,8 @@
 			&--capitalize,
 			&--uppercase,
 			&--lowercase {
-				font-size: 16px !important;
-				font-weight: 500 !important;
+				font-size: var(--maxi-font-size-16px) !important;
+				font-weight: var(--maxi-font-weight-medium) !important;
 			}
 		}
 	}
@@ -209,8 +211,8 @@
 	/* Horizontal separator after formatting buttons */
 	.maxi-typography-control__separator {
 		border: none !important;
-		border-top: 1px solid var(--maxi-grey-light) !important;
-		margin: 15px 0 !important;
+		border-top: var(--maxi-border-1px) solid var(--maxi-grey-light) !important;
+		margin: var(--maxi-space-15px) 0 !important;
 		height: 0 !important;
 		background: none !important;
 	}
@@ -222,15 +224,15 @@
 			align-items: center !important;
 			justify-content: space-between !important;
 			width: 100% !important;
-			padding: 8px 12px !important;
-			margin-bottom: 15px !important;
-			border: 1px solid var(--maxi-grey-light) !important;
-			border-radius: 4px !important;
+			padding: var(--maxi-space-8px) var(--maxi-space-10px) !important;
+			margin-bottom: var(--maxi-space-15px) !important;
+			border: var(--maxi-border-1px) solid var(--maxi-grey-light) !important;
+			border-radius: var(--maxi-radius-4px) !important;
 			background: var(--maxi-white) !important;
 			color: var(--maxi-black) !important;
-			font-size: 14px !important;
+			font-size: var(--maxi-font-size-14px) !important;
 			cursor: pointer !important;
-			transition: all 0.2s ease !important;
+			transition: all var(--maxi-transition-200ms) ease !important;
 
 			&:hover {
 				border-color: var(--maxi-primary-color) !important;
@@ -241,7 +243,7 @@
 
 	/* Arrow icon for advanced toggle */
 	.maxi-typography-control__toggle-arrow {
-		transition: transform 0.2s ease;
+		transition: transform var(--maxi-transition-200ms) ease;
 		transform: rotate(0deg);
 
 		&--expanded {
@@ -255,22 +257,22 @@
 		align-items: center;
 		width: 100%;
 		text-align: left;
-		margin-top: 10px;
+		margin-top: var(--maxi-space-10px);
 	}
 
 	.maxi-typography-control-arrow-span {
-		transition: transform 0.3s ease;
+		transition: transform var(--maxi-transition-300ms) ease;
 	}
 
 	/* Advanced text options collapsible section */
 	.maxi-typography-control__advanced-options {
 		margin-top: 0 !important;
-		animation: slideDown 0.3s ease-out;
+		animation: slideDown var(--maxi-transition-300ms) ease-out;
 
 		@keyframes slideDown {
 			from {
 				opacity: 0;
-				transform: translateY(-10px);
+				transform: translateY(calc(-1 * var(--maxi-space-10px)));
 			}
 			to {
 				opacity: 1;
@@ -281,7 +283,7 @@
 
 	/* Alignment buttons spacing */
 	.maxi-typography-control__alignment-buttons {
-		margin-bottom: 8px;
+		margin-bottom: var(--maxi-space-8px);
 	}
 
 	/* Unique styling for alignment inside Typography panel only */
@@ -292,21 +294,21 @@
    `.maxi-typography-control` container (as in the inspector panel wrapper) */
 .maxi-typography-control__alignment-buttons
 	.maxi-typography-panel__text-alignment {
-	margin-left: 7px;
-	margin-right: 4px !important;
+	margin-left: var(--maxi-space-7px);
+	margin-right: var(--maxi-space-4px) !important;
 }
 
 /* Override alignment-control typography override to allow right spacing */
 .maxi-typography-control__alignment-buttons
 	.maxi-typography-panel__text-alignment
 	.maxi-tabs-control__button {
-	margin-right: 5px !important;
+	margin-right: var(--maxi-space-5px) !important;
 }
 
 .maxi-typography-control__alignment-buttons
 	.maxi-typography-panel__text-alignment
 	.maxi-tabs-control__button:last-child {
-	margin-right: 4px !important;
+	margin-right: var(--maxi-space-4px) !important;
 }
 
 /* ========================================
@@ -325,25 +327,25 @@
 	.maxi-typography-control[class*='maxi-style-cards-control__sc__'] {
 		/* Style Cards specific: Make advanced number control wider */
 		.maxi-advanced-number-control__value {
-			width: 105px !important;
+			width: var(--maxi-control-width-105px) !important;
 		}
 
 		/* Style Cards specific: Make formatting buttons bigger */
 		.maxi-typography-control__formatting-buttons {
 			.maxi-typography-control__format-button {
-				min-width: 43.5px !important;
-				height: 38px !important;
-				font-size: 16px !important;
-				padding: 6px 10px !important;
+				min-width: var(--maxi-space-43-5px) !important;
+				height: var(--maxi-control-height-38px) !important;
+				font-size: var(--maxi-font-size-16px) !important;
+				padding: var(--maxi-space-6px) var(--maxi-space-10px) !important;
 			}
 		}
 
 		/* Style Cards specific: Proper spacing like sidebar */
 		.maxi-base-control {
-			margin-bottom: 10px !important;
+			margin-bottom: var(--maxi-space-10px) !important;
 
 			&__field {
-				gap: 5px !important;
+				gap: var(--maxi-space-5px) !important;
 				margin-bottom: 0 !important;
 			}
 		}
@@ -359,5 +361,5 @@
 
 /* Unique styling for font-level control in typography panel */
 .maxi-typography-panel__font-level {
-	margin: 0 7px;
+	margin: 0 var(--maxi-space-7px);
 }

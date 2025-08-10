@@ -1,12 +1,12 @@
 .maxi-map-block {
 	&__not-found {
 		padding: 5% 8%;
-		border: 1px solid var(--maxi-grey-light);
+		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
 		background-color: var(--maxi-whisper-green);
 		p {
-			max-width: 820px;
+			max-width: var(--maxi-control-width-400px);
 			color: var(--maxi-grey-dark);
-			font-size: 16px;
+			font-size: var(--maxi-font-size-16px);
 			font-family: Inter, sans-serif;
 			line-height: 1.5em;
 			a {

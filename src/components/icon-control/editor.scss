@@ -3,7 +3,7 @@
 		&--selected {
 			path {
 				fill: var(--maxi-secondary-color);
-				stroke: transparent;
+				stroke: var(--maxi-color-transparent);
 			}
 		}
 	}
@@ -16,30 +16,30 @@
 	}
 	.maxi-tabs-control__button-border.maxi-tabs-control__button--selected {
 		path {
-			fill: transparent;
+			fill: var(--maxi-color-transparent);
 			stroke: var(--maxi-secondary-color);
 		}
 	}
 }
 .maxi-base-control__label {
-	display: block !important;
+	display: var(--maxi-display-block) !important;
 }
 .maxi-icon-control__position .maxi-base-control .maxi-base-control__field {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	text-align: left;
+	display: var(--maxi-display-flex);
+	flex-direction: var(--maxi-flex-column);
+	align-items: var(--maxi-layout-flex-start);
+	text-align: var(--maxi-text-align-left);
 }
 .maxi-settingstab-control.maxi-axis-position-control.maxi-icon-control__position {
-	margin-bottom: 4px !important;
-	display: block !important;
+	margin-bottom: var(--maxi-space-4px) !important;
+	display: var(--maxi-display-block) !important;
 	.maxi-tabs-control {
-		width: 100%;
+		width: var(--maxi-layout-full-width);
 	}
 }
 
 .maxi-icon-control__position {
 	.maxi-base-control__label {
-		margin-bottom: 4px !important;
+		margin-bottom: var(--maxi-space-4px) !important;
 	}
 }

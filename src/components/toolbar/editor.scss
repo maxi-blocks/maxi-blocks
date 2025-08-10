@@ -6,16 +6,6 @@
 	// Component variables for consistency and performance
 	--mx-toolbar-size: 2rem;
 	--mx-icon-size: 1rem;
-	--mx-border-radius: 3px;
-	--mx-border-radius-circle: 50%;
-	--mx-border-radius-button: 10px;
-	--mx-border: 1px solid var(--maxi-grey-light);
-	--mx-transition: 0.4s ease;
-	--mx-transition-fast: 0.5s ease;
-	--mx-spacing-xs: 4px;
-	--mx-spacing-sm: 8px;
-	--mx-spacing-md: 10px;
-	--mx-spacing-lg: 12px;
 	--mx-indicator-size: 15px;
 	--mx-tooltip-offset: -24px;
 	--mx-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.08);
@@ -27,7 +17,7 @@
 	*,
 	*::before,
 	*::after {
-		transition: all var(--mx-transition);
+		transition: all var(--maxi-transition-400ms);
 	}
 
 	// Caption and icon containers
@@ -50,9 +40,9 @@
 		justify-content: center;
 		width: var(--mx-indicator-size);
 		height: 20px;
-		margin-left: var(--mx-spacing-md);
+		margin-left: var(--maxi-space-10px);
 		background: var(--maxi-primary-color);
-		border-radius: 0 var(--mx-border-radius) var(--mx-border-radius) 0;
+		border-radius: 0 var(--maxi-radius-3px) var(--maxi-radius-3px) 0;
 
 		&--repeater {
 			background: var(--maxi-tertiary-color);
@@ -75,7 +65,7 @@
 			display: flex;
 			width: min-content;
 			background-color: var(--maxi-white);
-			border: var(--mx-border);
+			border: var(--maxi-border-1px) solid var(--maxi-grey-light);
 			border-radius: 0;
 			box-shadow: var(--mx-shadow);
 			transform: translateX(-50%);
@@ -102,7 +92,7 @@
 				top: var(--mx-tooltip-offset);
 				left: 0;
 				z-index: 5;
-				padding: 7px var(--mx-spacing-sm);
+				padding: 7px var(--maxi-space-8px);
 				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
 					Inter, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
 					sans-serif;
@@ -132,7 +122,7 @@
 				display: inline-block;
 				width: auto;
 				height: 20px;
-				padding: var(--mx-spacing-xs) var(--mx-spacing-md);
+				padding: var(--maxi-space-5px) var(--maxi-space-10px);
 				font-family: 'Inter', sans-serif !important;
 				font-size: 10px !important;
 				font-weight: 400;
@@ -140,21 +130,20 @@
 				color: var(--maxi-white);
 				white-space: pre;
 				background: var(--maxi-primary-color);
-				border-radius: var(--mx-border-radius) 0 0
-					var(--mx-border-radius);
+				border-radius: var(--maxi-radius-3px) 0 0 var(--maxi-radius-3px);
 
 				&--repeater {
 					background: var(--maxi-tertiary-color);
 				}
 
 				&__block-style {
-					padding-left: var(--mx-border-radius);
+					padding-left: var(--maxi-radius-3px);
 					text-transform: capitalize;
 				}
 
 				.breadcrumbs-pin {
 					display: inline-block;
-					padding-right: var(--mx-spacing-md);
+					padding-right: var(--maxi-space-10px);
 				}
 			}
 
@@ -178,7 +167,8 @@
 				width: var(--mx-toolbar-size);
 				height: var(--mx-toolbar-size);
 				background-color: var(--maxi-white);
-				border-right: var(--mx-border);
+				border-right: var(--maxi-border-1px) solid
+					var(--maxi-grey-light);
 
 				&.toolbar-item__more-settings {
 					border-right: none;
@@ -251,7 +241,7 @@
 					background-color: transparent;
 					border-radius: 0;
 					fill: var(--maxi-black);
-					transition: all var(--mx-transition-fast);
+					transition: all var(--maxi-transition-500ms);
 
 					&::after {
 						position: absolute;
@@ -261,7 +251,7 @@
 						height: 0;
 						content: '';
 						background-color: var(--maxi-secondary-color);
-						transition: all var(--mx-transition-fast);
+						transition: all var(--maxi-transition-500ms);
 					}
 
 					&:hover,
@@ -326,7 +316,7 @@
 					rect,
 					polyline,
 					path {
-						transition: all var(--mx-transition-fast);
+						transition: all var(--maxi-transition-500ms);
 					}
 				}
 
@@ -344,7 +334,7 @@
 
 		&:hover {
 			color: var(--maxi-primary-color);
-			transition: all var(--mx-transition);
+			transition: all var(--maxi-transition-400ms);
 		}
 	}
 
@@ -354,14 +344,13 @@
 
 		&__button {
 			&:first-child {
-				border-radius: var(--mx-border-radius-button) 0 0
-					var(--mx-border-radius-button);
+				border-radius: var(--maxi-radius-5px) 0 0 var(--maxi-radius-5px);
 			}
 
 			&:last-child {
-				border-right: var(--mx-border);
-				border-radius: 0 var(--mx-border-radius-button)
-					var(--mx-border-radius-button) 0;
+				border-right: var(--maxi-border-1px) solid
+					var(--maxi-grey-light);
+				border-radius: 0 var(--maxi-radius-5px) var(--maxi-radius-5px) 0;
 			}
 		}
 	}
@@ -379,7 +368,7 @@
 
 			button {
 				width: 35px;
-				border-radius: var(--mx-spacing-xs);
+				border-radius: var(--maxi-space-5px);
 			}
 		}
 	}
@@ -400,7 +389,7 @@
 		height: 22px;
 		padding: 0;
 		background-color: var(--maxi-primary-color);
-		border-radius: var(--mx-border-radius-circle);
+		border-radius: var(--maxi-radius-round);
 		transform: translate(0, 0);
 
 		&:hover {
@@ -420,7 +409,7 @@
 		&__button {
 			display: block;
 			width: 100%;
-			margin: 0 var(--mx-spacing-xs);
+			margin: 0 var(--maxi-space-5px);
 			background: var(--maxi-white);
 
 			&:first-of-type {
@@ -559,7 +548,7 @@
 	input[type='number'] {
 		flex: 2;
 		color: var(--maxi-grey);
-		border: var(--mx-border);
+		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
 
 		&::placeholder {
 			color: var(--maxi-grey);
@@ -609,11 +598,11 @@
 	// Tabs control
 	.maxi-tabs-control {
 		&__button {
-			padding: var(--mx-spacing-sm) 0;
+			padding: var(--maxi-space-8px) 0;
 			font-weight: 400;
 			color: var(--maxi-grey-dark);
 			background: transparent;
-			border: var(--mx-border);
+			border: var(--maxi-border-1px) solid var(--maxi-grey-light);
 			border-right: none;
 
 			&[aria-pressed='true'] {
@@ -657,11 +646,11 @@ body .toolbar-item__popover {
 	// Popover content
 	.components-popover__content {
 		min-width: auto;
-		padding: var(--mx-spacing-lg) 11px 0 14px;
+		padding: var(--maxi-space-15px) 11px 0 14px;
 		margin-left: -2px;
 		overflow: visible;
 		background-color: var(--maxi-white);
-		border: var(--mx-border);
+		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
 		border-radius: 0;
 		box-shadow: var(--mx-shadow-popover);
 		outline: none;
@@ -672,7 +661,7 @@ body .toolbar-item__popover {
 
 		// Color control - optimized
 		.maxi-color-control {
-			margin-bottom: var(--mx-spacing-md);
+			margin-bottom: var(--maxi-space-10px);
 			color: var(--maxi-white);
 
 			button.maxi-components-button.maxi-reset-button {
@@ -681,7 +670,7 @@ body .toolbar-item__popover {
 
 			.components-custom-gradient-picker {
 				.components-base-control__field {
-					margin-bottom: var(--mx-spacing-md);
+					margin-bottom: var(--maxi-space-10px);
 				}
 
 				.components-angle-picker-control {
@@ -757,26 +746,26 @@ html[dir='rtl'] {
 
 	.toolbar-item__more-settings {
 		border-left: unset;
-		border-right: var(--mx-border);
+		border-right: var(--maxi-border-1px) solid var(--maxi-grey-light);
 	}
 
 	.toolbar-block-custom-label {
 		right: 0;
 		left: unset;
-		border-radius: 0 var(--mx-border-radius) var(--mx-border-radius) 0;
+		border-radius: 0 var(--maxi-radius-3px) var(--maxi-radius-3px) 0;
 	}
 
 	.toolbar-more-indicator {
 		right: unset;
 		left: -16px;
-		margin-right: var(--mx-spacing-md);
+		margin-right: var(--maxi-space-10px);
 		margin-left: 0;
-		border-radius: var(--mx-border-radius) 0 0 var(--mx-border-radius);
+		border-radius: var(--maxi-radius-3px) 0 0 var(--maxi-radius-3px);
 	}
 
 	.breadcrumbs-pin {
 		padding-right: 0;
-		padding-left: var(--mx-spacing-md);
+		padding-left: var(--maxi-space-10px);
 	}
 }
 
@@ -797,7 +786,7 @@ html[dir='rtl'] {
 	background-color: transparent;
 	border-radius: 0;
 	fill: var(--maxi-black);
-	transition: all var(--mx-transition-fast);
+	transition: all var(--maxi-transition-500ms);
 }
 
 .components-button:hover .st0 {

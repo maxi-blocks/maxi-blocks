@@ -1,6 +1,6 @@
 .toolbar-item__popover {
 	.toolbar-item__context-loop__popover {
-		min-width: 280px;
+		min-width: var(--mx-popover-width-md);
 		.maxi-axis-control {
 			.maxi-base-control {
 				&__field {

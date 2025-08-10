@@ -1,5 +1,5 @@
 .toolbar-item__divider-line__popover {
-	min-width: 302px;
+	min-width: var(--mx-popover-width-lg);
 
 	.divider-border__size-disable,
 	.divider-border__weight-disable {

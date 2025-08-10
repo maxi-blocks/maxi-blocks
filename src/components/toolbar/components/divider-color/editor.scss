@@ -1,7 +1,7 @@
 .toolbar-item__divider-color__popover {
-	min-width: 300px;
+	min-width: var(--mx-popover-width-lg);
 	.maxi-opacity-control {
-		line-height: 100%;
+		line-height: var(--mx-line-height);
 	}
 	.maxi-advanced-number-control__value {
 		flex: 1 !important;

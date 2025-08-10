@@ -4,13 +4,13 @@
 // Common active/hover state for alignment buttons
 %alignment-active-state {
 	background-color: var(--maxi-mid-green) !important;
-	border-color: var(--maxi-primary-color) !important;
+	border-color: var(--mx-color-primary) !important;
 }
 
 .toolbar-item__popover {
 	// Divider alignment popover container
 	.toolbar-item__divider-alignment__popover {
-		min-width: 270px;
+		min-width: var(--mx-popover-width-md);
 	}
 
 	// Alignment control component
@@ -28,7 +28,7 @@
 
 				&[aria-pressed='true'] {
 					@extend %alignment-active-state;
-					color: var(--maxi-black) !important;
+					color: var(--mx-color-text) !important;
 				}
 			}
 		}

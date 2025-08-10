@@ -1,6 +1,6 @@
 .toolbar-item__icon-position__popover {
-	min-width: 176px;
+	min-width: var(--mx-popover-width-xs);
 	.maxi-base-control__label {
-		margin-right: 5px;
+		margin-right: var(--mx-spacing-sm);
 	}
 }

@@ -1,5 +1,5 @@
 .toolbar-item__icon-size__popover {
-	min-width: 216px;
+	min-width: var(--mx-popover-width-sm);
 	.maxi-advanced-number-control__value {
 		&[type='number'] {
 			flex: 1;

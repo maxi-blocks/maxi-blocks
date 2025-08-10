@@ -1,5 +1,5 @@
 .toolbar-item__icon-background__popover {
-	min-width: 300px;
+	min-width: var(--mx-popover-width-lg);
 
 	&__warning {
 		text-align: left;

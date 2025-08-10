@@ -119,6 +119,7 @@
 	--maxi-space-28px: 28px;
 	--maxi-space-29px: 29px;
 	--maxi-space-30px: 30px;
+	--maxi-space-31px: 31px;
 	--maxi-space-40px: 40px;
 	--maxi-space-35px: 35px;
 	--maxi-space-36px: 36px;
@@ -137,8 +138,13 @@
 	--maxi-space-1rem: 1rem;
 	--maxi-space-0-1rem: 0.1rem;
 	--maxi-space-25rem: 25rem;
+	--maxi-space-40vh: 40vh;
+	--maxi-space-0: 0;
+	--maxi-space-minus-1px: -1px;
+	--maxi-space-minus-3px: -3px;
 
 	/* Border Radius */
+	--maxi-radius-0: 0;
 	--maxi-radius-2px: 2px;
 	--maxi-radius-3px: 3px;
 	--maxi-radius-4px: 4px;
@@ -179,10 +185,14 @@
 	--maxi-control-width-32px: 32px;
 
 	/* Control/Element Dimensions */
+	--maxi-control-width-50px: 50px;
 	--maxi-control-width-60px: 60px;
 	--maxi-control-width-72px: 72px;
 	--maxi-control-width-64px: 64px;
 	--maxi-control-width-70px: 70px;
+	--maxi-control-width-100px: 100px;
+	--maxi-control-width-295px: 295px;
+	--maxi-control-width-1-5rem: 1.5rem;
 	--maxi-control-width-120px: 120px;
 	--maxi-control-width-160px: 160px;
 	--maxi-control-width-180px: 180px;
@@ -207,6 +217,9 @@
 	--maxi-font-size-13px: 13px;
 	--maxi-font-size-14px: 14px;
 	--maxi-font-size-16px: 16px;
+
+	/* Letter Spacing */
+	--maxi-letter-spacing-005px: 0.05px;
 
 	/* Z-Index Scale */
 	--maxi-z-background: -1;
@@ -258,6 +271,7 @@
 	--maxi-display-contents: contents;
 
 	/* Layout Properties */
+	--maxi-layout-100: 100%;
 	--maxi-layout-full-width: 100%;
 	--maxi-layout-half: 50%;
 	--maxi-layout-quarter: 25%;
@@ -265,6 +279,7 @@
 	--maxi-layout-auto: auto;
 	--maxi-layout-zero: 0;
 	--maxi-layout-flex: flex;
+	--maxi-flex-shrink-0: 0;
 	--maxi-layout-flex-row: row;
 	--maxi-layout-flex-column: column;
 	--maxi-layout-absolute: absolute;
@@ -334,6 +349,8 @@
 	--maxi-reset-background: transparent;
 	--maxi-reset-box-shadow: none;
 	--maxi-box-shadow-url-input: -3px 3px 6px 0px rgba(0, 0, 0, 0.16);
+	--maxi-box-shadow-upload-button: -3px 3px 6px 0px rgba(0, 0, 0, 0.16);
+	--maxi-box-shadow-focus: 0 0 0 1px var(--maxi-secondary-color);
 	--maxi-box-shadow-0-0-0-1px-grey: 0 0 0 1px var(--maxi-grey);
 
 	/* Interaction */
@@ -363,6 +380,9 @@
 	--maxi-white-space-nowrap: nowrap;
 	--maxi-white-space-normal: normal;
 	--maxi-white-space-pre: pre;
+
+	/* Outline Properties */
+	--maxi-outline-focus: 2px solid transparent;
 
 	/* Text Decoration */
 	--maxi-text-decoration-underline: underline;

@@ -78,27 +78,21 @@
 			margin-bottom: var(--maxi-space-8px) !important;
 		}
 		&__button {
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			width: 100%;
-			height: auto;
+			position: var(--maxi-layout-relative);
+			display: var(--maxi-layout-flex);
+			flex-direction: var(--maxi-layout-column);
+			width: var(--maxi-layout-100);
+			height: var(--maxi-layout-auto);
 			padding: var(--maxi-space-10px) var(--maxi-space-8px);
-			border-bottom: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
-			border-top: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
-			border-right: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
-			border-radius: 0;
+			border: var(--maxi-border-1-5px) solid var(--maxi-grey-light) !important;
+			border-radius: var(--maxi-radius-6px) !important;
 			color: var(--maxi-grey-dark);
 			background-color: var(--maxi-white);
-			text-align: center;
-			white-space: nowrap;
+			text-align: var(--maxi-layout-center) !important;
+			white-space: var(--maxi-layout-nowrap);
 			font-weight: var(--maxi-font-weight-bold);
 			transition: all var(--maxi-transition-500ms) ease;
 
-			&:last-child {
-				border-right: none;
-				transition: all var(--maxi-transition-500ms) ease;
-			}
 			&:hover {
 				background-color: var(--maxi-whisper-green);
 				cursor: pointer;
@@ -118,6 +112,7 @@
 				font-weight: var(--maxi-font-weight-bold);
 				background-color: var(--maxi-whisper-green) !important;
 				transition: all var(--maxi-transition-500ms) ease;
+				border: var(--maxi-border-1-5px) solid var(--maxi-primary-color) !important;
 			}
 			svg:not(.maxi-tabs-control__notification) {
 				display: block;
@@ -162,7 +157,8 @@
 					background-color: var(--maxi-whisper-green) !important;
 				}
 				&:last-child {
-					border: 1.5px solid var(--maxi-grey-light) !important;
+					border: var(--maxi-border-1-5px) solid
+						var(--maxi-grey-light) !important;
 					border-radius: var(--maxi-radius-6px) !important;
 					transition: all var(--maxi-transition-500ms) ease;
 				}
@@ -178,7 +174,7 @@
 				border-color: var(--maxi-primary-color) !important;
 				color: var(--maxi-black) !important;
 				font-weight: var(--maxi-font-weight-bold);
-				border-radius: 6px !important;
+				border-radius: var(--maxi-radius-6px) !important;
 			}
 		}
 

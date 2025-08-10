@@ -2,22 +2,29 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Tooltip } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
-import { getGroupAttributes } from '@extensions/styles';
+import Button from '@components/button';
+import Icon from '@components/icon';
+import { openSidebarAccordion } from '@extensions/inspector';
 
 /**
  * Icons
  */
 import './editor.scss';
 import { toolbarDropShadow } from '@maxi-icons';
-import BoxShadowControl from '@components/box-shadow-control';
 
 /**
- * BoxShadow
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
+ * BoxShadow - Direct Sidebar Link
  */
 const ALLOWED_BLOCKS = [
 	'maxi-blocks/button-maxi',
@@ -28,41 +35,36 @@ const ALLOWED_BLOCKS = [
 ];
 
 const BoxShadow = props => {
-	const {
-		blockName,
-		onChangeInline,
-		onChange,
-		breakpoint,
-		clientId,
-		prefix = '',
-		dropShadow,
-		disableInset,
-	} = props;
+	const { blockName } = props;
+
+	const { tooltipsHide } = useSelect(select => {
+		const { receiveMaxiSettings } = select('maxiBlocks');
+		const maxiSettings = receiveMaxiSettings();
+		const { hide_tooltips: hideTooltips } = maxiSettings;
+		return {
+			tooltipsHide: !isEmpty(hideTooltips) ? hideTooltips : false,
+		};
+	}, []);
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-	return (
-		<ToolbarPopover
-			className='toolbar-item__box-shadow'
-			tooltip={__('Box shadow', 'maxi-blocks')}
-			icon={toolbarDropShadow}
-			advancedOptions='box shadow'
+	const buttonContent = (
+		<Button
+			className='toolbar-item toolbar-item__button toolbar-item__box-shadow'
+			onClick={() => {
+				openSidebarAccordion(0, 'box shadow');
+			}}
 		>
-			<div className='toolbar-item__box-shadow__popover'>
-				<BoxShadowControl
-					{...getGroupAttributes(props, ['boxShadow'], false, prefix)}
-					onChangeInline={onChangeInline}
-					onChange={onChange}
-					breakpoint={breakpoint}
-					clientId={clientId}
-					disableAdvanced
-					prefix={prefix}
-					isToolbar
-					dropShadow={dropShadow}
-					disableInset={disableInset}
-				/>
-			</div>
-		</ToolbarPopover>
+			<Icon className='toolbar-item__icon' icon={toolbarDropShadow} />
+		</Button>
+	);
+
+	return tooltipsHide ? (
+		buttonContent
+	) : (
+		<Tooltip text={__('Box shadow', 'maxi-blocks')} placement='top'>
+			{buttonContent}
+		</Tooltip>
 	);
 };
 

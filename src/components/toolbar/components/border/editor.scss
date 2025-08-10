@@ -1,85 +1,44 @@
-.toolbar-item__border__popover {
-	min-width: 300px;
+// Border toolbar item styles
+.toolbar-item__border {
+	// Ensure proper toolbar button dimensions
+	width: var(--mx-toolbar-size) !important;
+	height: var(--mx-toolbar-size) !important;
+	background-color: var(--maxi-white);
+	border-right: var(--maxi-border-1px) solid var(--maxi-grey-light);
 
-	.maxi-border-control {
+	// Icon alignment specific to border
+	.toolbar-item__icon {
 		display: flex;
-		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		width: var(--mx-icon-size);
+		height: var(--mx-icon-size);
+	}
 
-		&--disable {
-			.maxi-border-control__icon,
-			.maxi-axis-control,
-			.maxi-color-control {
-				opacity: 0.3;
-				pointer-events: none;
+	// Hover states for border icon
+	&:hover,
+	&[aria-expanded='true'] {
+		background-color: var(--maxi-pastel-green);
+
+		svg,
+		.toolbar-item__icon {
+			ellipse,
+			circle,
+			line,
+			rect,
+			polyline,
+			path {
+				stroke: var(--maxi-secondary-color);
+				fill: var(--maxi-secondary-color);
 			}
 		}
+	}
 
-		.maxi-default-styles-control {
-			display: inline-block;
-			vertical-align: middle;
-			width: 181px;
-
-			&__button {
-				display: inline-block !important;
-				vertical-align: middle;
-
-				&:not(:first-child) {
-					padding: 0 5px;
-				}
-			}
-		}
-
-		&__icon {
-			display: flex;
-			margin-bottom: 8px;
-
-			svg {
-				margin: auto;
-			}
-		}
-
-		.maxi-axis-control {
-			& > div {
-				display: flex;
-				align-items: center;
-
-				.maxi-base-control__field {
-					margin-bottom: 0;
-
-					.maxi-base-control__label {
-						flex: none;
-					}
-				}
-			}
-		}
-
-		.maxi-color-control {
-			flex-basis: 100%;
-			width: 100%;
-
-			&__wrap {
-				.maxi-color-control__display {
-					width: 171px;
-				}
-			}
-
-			.maxi-opacity-control {
-				line-height: 100%;
-
-				input {
-					flex: 1;
-				}
-			}
-			& > .components-maxi-control__reset-button {
-				display: none;
-			}
-		}
-		.maxi-axis-control {
-			& > div {
-				& > .maxi-axis-control__unit-header {
-					display: none;
-				}
-			}
-		}
+	// Remove default button styling that might interfere
+	&:focus,
+	&:visited {
+		outline: none;
+		box-shadow: none;
+		border-radius: 0;
 	}
 }

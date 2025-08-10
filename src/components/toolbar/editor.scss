@@ -295,11 +295,23 @@
 
 				// Replace image button
 				&__replace-image {
-					width: 80px;
+					width: 80px !important;
+					height: var(--mx-toolbar-size);
 
 					&__button {
 						display: inline-block;
+						width: 100%;
+						height: 100%;
+						padding: 0 var(--maxi-space-8px);
 						font-weight: 700;
+						text-align: center;
+						background-color: transparent;
+						border: none;
+						cursor: pointer;
+
+						&:hover {
+							background-color: var(--maxi-pastel-green);
+						}
 					}
 				}
 

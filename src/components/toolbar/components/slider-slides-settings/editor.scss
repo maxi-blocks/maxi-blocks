@@ -1,9 +1,9 @@
 .toolbar-item__slide__popover {
 	display: flex;
-	padding-bottom: var(--mx-spacing-lg);
+	padding-bottom: 10px;
 	padding-top: 0;
 	padding-left: 0;
-	margin-left: calc(var(--mx-spacing-md) * -1);
+	margin-left: -9px;
 	.maxi-slider-toolbar__slide {
 		position: relative;
 		margin: 0 7px;
@@ -19,8 +19,8 @@
 		&:hover,
 		&--active {
 			span {
-				border-color: var(--mx-color-primary);
-				color: var(--mx-color-primary);
+				border-color: var(--maxi-primary-color);
+				color: var(--maxi-primary-color);
 			}
 		}
 		.maxi-slider-toolbar__slide-remove {
@@ -33,17 +33,16 @@
 			border-radius: 50%;
 
 			svg {
-				background-color: var(--mx-color-text-inverse);
-				border-radius: var(--mx-radius-circle);
-				border: var(--mx-border-width) solid
-					var(--mx-color-text-inverse);
+				background-color: white;
+				border-radius: 50%;
+				border: 1px solid white;
 			}
 			&:hover {
 				svg {
-					background-color: var(--mx-color-primary);
-					border-color: var(--mx-color-primary);
+					background-color: var(--maxi-primary-color);
+					border-color: var(--maxi-primary-color);
 					path {
-						fill: var(--mx-color-text-inverse);
+						fill: white;
 					}
 				}
 			}
@@ -51,7 +50,7 @@
 	}
 	button.maxi-slider-toolbar__slide--add {
 		padding: 0;
-		margin: 0 0 0 var(--mx-spacing-sm);
+		margin: 0 0 0 5px;
 		height: 24px;
 	}
 }

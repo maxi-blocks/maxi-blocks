@@ -1,4 +1,16 @@
 .toolbar-item__popover__list-options {
+	// CSS custom properties for consistency and performance
+	--mx-primary-color: var(--maxi-primary-color);
+	--mx-secondary-color: var(--maxi-secondary-color);
+	--mx-border-color: var(--maxi-grey-light);
+	--mx-border-separator: 1px solid var(--mx-border-color);
+	--mx-transition: all 0.4s ease;
+	--mx-active-border: 2px solid var(--mx-secondary-color);
+	--mx-font-weight: 700;
+	--mx-font-size: 15px;
+	--mx-stroke-color: #000;
+	--mx-btn-size: 36px;
+
 	display: flex;
 	margin: -14px -14px 0;
 
@@ -9,20 +21,20 @@
 		min-width: var(--mx-btn-size) !important;
 		max-width: var(--mx-btn-size) !important;
 		height: var(--mx-btn-size) !important;
-		background: var(--mx-color-bg) !important;
-		border: var(--mx-border) !important;
+		background: var(--maxi-white) !important;
+		border: 1px solid var(--maxi-grey-light) !important;
 		border-radius: 0 !important;
-		color: var(--mx-color-text) !important;
+		color: var(--maxi-black) !important;
 		cursor: pointer !important;
-		font-weight: var(--mx-font-weight-bold);
+		font-weight: var(--mx-font-weight);
 		font-size: var(--mx-font-size);
 		border-right: var(--mx-border-separator);
 		transition: var(--mx-transition) !important;
 
 		&:hover {
-			color: var(--mx-color-primary) !important;
+			color: var(--mx-primary-color) !important;
 			svg path {
-				stroke: var(--mx-color-primary) !important;
+				stroke: var(--mx-primary-color) !important;
 			}
 		}
 
@@ -32,17 +44,17 @@
 
 		svg path {
 			fill: transparent;
-			stroke: var(--mx-color-text);
+			stroke: var(--mx-stroke-color);
 			stroke-width: 1;
 		}
 
 		&[aria-pressed='true'] {
-			background: var(--mx-color-bg-active) !important;
-			color: var(--mx-color-primary) !important;
-			border-color: var(--mx-color-primary) !important;
+			background: var(--maxi-whisper-green) !important;
+			color: var(--maxi-primary-color) !important;
+			border-color: var(--maxi-primary-color) !important;
 
 			svg path {
-				stroke: var(--mx-color-primary) !important;
+				stroke: var(--maxi-primary-color) !important;
 			}
 		}
 	}
@@ -55,6 +67,6 @@
 	.toolbar-item__list-options {
 	svg path {
 		fill: transparent;
-		stroke: var(--mx-color-text);
+		stroke: #000;
 	}
 }

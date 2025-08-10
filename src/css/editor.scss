@@ -42,7 +42,7 @@
 
 h2.gx_error {
 	font-size: var(--maxi-font-size-16px);
-	text-align: center;
+	text-align: var(--maxi-text-align-center);
 }
 .maxi-sidebar,
 .maxi-sidebar
@@ -53,7 +53,7 @@ h2.gx_error {
 .maxi-popover *:not(i) {
 	transition: all var(--maxi-transition-500ms) ease;
 	color: var(--maxi-grey-dark);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: var(--maxi-font-family-inter);
 	font-weight: normal;
 	.block-editor-block-card__name {
 		padding: 0 !important;
@@ -62,7 +62,7 @@ h2.gx_error {
 
 .maxi-sidebar .block-editor-block-card *:not(i) {
 	color: var(--maxi-grey-dark);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: var(--maxi-font-family-inter);
 	font-weight: normal;
 	.block-editor-block-card__name {
 		padding: 0 !important;
@@ -289,8 +289,8 @@ body .toolbar-item__popover {
 	input[type='number']::-webkit-inner-spin-button {
 		height: var(--maxi-space-31px);
 		opacity: 1;
-		background-color: blue !important;
-		color: blue !important;
+		background-color: var(--maxi-light-blue-alt) !important;
+		color: var(--maxi-white) !important;
 	}
 	.components-range-control__number {
 		.components-input-control__backdrop {
@@ -313,7 +313,7 @@ body .toolbar-item__popover {
 			color: var(--maxi-grey-dark);
 		}
 		&:hover {
-			transition: all 0.5s ease;
+			transition: all var(--maxi-transition-500ms) ease;
 			&:before {
 				content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.34 11.5" role="img" aria-hidden="true" focusable="false"><path fill="rgba(99,186,121, 0.8)" d="M11.32.75a.74.74 0 0 0-.75-.75.76.76 0 0 0-.75.75v1.49A5.6 5.6 0 1 0 5.6 11.5a5.44 5.44 0 0 0 1.48-.2.74.74 0 0 0 .52-.92.76.76 0 0 0-.92-.53A4.1 4.1 0 1 1 9.22 4H6.57a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 .53-.22.77.77 0 0 0 .22-.54Z"></path></svg>') !important;
 			}
@@ -429,7 +429,7 @@ svg path#styleCardBoat_b,
 
 .maxi-block {
 	&::after {
-		transition: all 0.5s ease;
+		transition: all var(--maxi-transition-500ms) ease;
 		content: '';
 		position: absolute;
 		pointer-events: none;
@@ -453,7 +453,7 @@ svg path#styleCardBoat_b,
 
 	&:not(.is-selected) {
 		&:hover {
-			transition: all 0.5s ease;
+			transition: all var(--maxi-transition-500ms) ease;
 			&::after {
 				content: '';
 				position: absolute;
@@ -784,6 +784,7 @@ input.maxi-advanced-number-control__value,
 	}
 	/* Firefox */
 	-moz-appearance: textfield;
+	appearance: textfield;
 
 	/* leave room on the right for arrow buttons */
 	padding-right: var(--maxi-space-5px) !important;

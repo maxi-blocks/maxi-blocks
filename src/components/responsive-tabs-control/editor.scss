@@ -3,8 +3,8 @@
 		padding: var(--maxi-space-12px) 0 0;
 	}
 	.maxi-tabs-control {
-		margin-right: calc(-1 * var(--maxi-space-8px));
-		margin-left: calc(-1 * var(--maxi-space-8px));
+		margin-right: calc(-1 * var(--maxi-space-10px));
+		margin-left: calc(-1 * var(--maxi-space-10px));
 		&.maxi-settingstab-control_has-border-left-right {
 			margin-right: 0;
 			margin-left: 0;
@@ -15,7 +15,7 @@
 			font-weight: var(--maxi-font-weight-medium);
 
 			&[aria-pressed='true'] {
-				color: var(--maxi-primary-color);
+				color: var(--maxi-primary-color) !important;
 				background-color: var(--maxi-whisper-green);
 			}
 			&--active:before {

@@ -2,39 +2,31 @@
 	display: var(--maxi-display-flex);
 	flex-wrap: wrap;
 	justify-content: var(--maxi-layout-space-between);
-	margin-bottom: var(--maxi-space-10px);
 
 	.maxi-default-styles-control__button {
-		display: var(--maxi-display-flex);
-		justify-content: var(--maxi-layout-center);
-		height: var(--maxi-control-height-32px);
-		width: var(--maxi-layout-22-5-percent);
-		border: var(--maxi-border-1-5px) solid var(--maxi-mid-green);
-		border-radius: var(--maxi-radius-4px);
-		transition: all var(--maxi-transition-500ms);
+		position: var(--maxi-layout-relative);
+		width: calc(var(--maxi-layout-full-width) / 3);
+		height: var(--maxi-layout-auto) !important;
+		padding: var(--maxi-space-6px);
+		border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+		border-radius: var(--maxi-radius-10px);
+		margin-bottom: var(--maxi-space-10px);
+		transition: all var(--maxi-transition-400ms) ease;
 
 		&--active {
 			background-color: var(--maxi-whisper-green);
 
 			path {
 				fill: var(--maxi-secondary-color);
-				//stroke: var(--maxi-secondary-color);
 			}
 			&:first-child,
 			&:nth-child-4 {
 				svg {
 					path {
 						fill: var(--maxi-secondary-color);
-						//stroke: var(--maxi-secondary-color);
 					}
 				}
 			}
-			// &:nth-child(3),
-			// &:nth-child(4) {
-			// 	path {
-			// 		stroke: var(--maxi-secondary-color);
-			// 	}
-			// }
 		}
 
 		&:hover {
@@ -43,7 +35,6 @@
 
 			svg {
 				path {
-					//stroke: var(--maxi-secondary-color) !important;
 					fill: var(--maxi-secondary-color) !important;
 				}
 			}

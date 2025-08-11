@@ -1,20 +1,24 @@
 .maxi-default-styles-control:not(.maxi-button-default-styles) {
 	display: var(--maxi-display-flex);
 	flex-wrap: wrap;
-	justify-content: var(--maxi-layout-space-between);
+	gap: var(--maxi-space-8px);
 
 	.maxi-default-styles-control__button {
 		position: var(--maxi-layout-relative);
-		width: calc(var(--maxi-layout-full-width) / 3);
+		width: calc((var(--maxi-layout-full-width) - 24px) / 4);
 		height: var(--maxi-layout-auto) !important;
 		padding: var(--maxi-space-6px);
 		border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
-		border-radius: var(--maxi-radius-10px);
+		border-radius: var(--maxi-radius-6px);
 		margin-bottom: var(--maxi-space-10px);
 		transition: all var(--maxi-transition-400ms) ease;
+		display: var(--maxi-display-flex);
+		align-items: var(--maxi-layout-center);
+		justify-content: var(--maxi-layout-center);
 
 		&--active {
 			background-color: var(--maxi-whisper-green);
+			border: var(--maxi-border-1-5px) solid var(--maxi-primary-color);
 
 			path {
 				fill: var(--maxi-secondary-color);
@@ -31,21 +35,34 @@
 
 		&:hover {
 			background-color: var(--maxi-pastel-green);
-			stroke: var(--maxi-secondary-color);
+			stroke: var(--maxi-primary-color);
 
 			svg {
 				path {
-					fill: var(--maxi-secondary-color) !important;
+					fill: var(--maxi-primary-color) !important;
 				}
 			}
 		}
 
 		&__icon {
-			width: var(--maxi-control-height-40px);
+			/* Constrain SVG icon size inside the button */
+			width: var(--maxi-space-20px) !important;
+			height: var(--maxi-space-20px) !important;
+			/* Ensure inner SVG respects the intended size regardless of globals */
+			svg {
+				width: var(--maxi-space-20px) !important;
+				height: var(--maxi-space-20px) !important;
+				display: block;
+			}
 		}
-		svg {
-			width: var(--maxi-layout-full-width);
-			height: var(--maxi-layout-full-width);
+
+		/*
+			Limit generic SVG sizing so icons do not stretch to the full
+			button width. Only size the dedicated icon element.
+		*/
+		& > .maxi-default-styles-control__button__icon {
+			width: var(--maxi-space-20px) !important;
+			height: var(--maxi-space-20px) !important;
 		}
 	}
 }

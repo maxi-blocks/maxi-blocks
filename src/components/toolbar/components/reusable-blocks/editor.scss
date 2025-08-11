@@ -1,33 +1,33 @@
 .toolbar-item__reusable-blocks {
 	&__popover {
-		min-width: 350px;
+		min-width: var(--maxi-space-350px);
 
 		form {
-			display: flex;
-			width: 100%;
+			display: var(--maxi-display-flex);
+			width: var(--maxi-layout-full-width);
 
 			.components-button {
-				color: #fff;
-				background-color: #4f515c;
-				border: 2px solid #7a7c85;
-				height: 32px;
-				margin-left: 5px;
-				border-radius: 5px;
+				color: var(--maxi-admin-white);
+				background-color: var(--maxi-admin-black);
+				border: var(--maxi-border-2px) solid var(--maxi-admin-black);
+				height: var(--maxi-space-32px);
+				margin-left: var(--maxi-space-5px);
+				border-radius: var(--maxi-radius-5px);
 			}
 
 			.maxi-base-control {
-				width: 100%;
+				width: var(--maxi-layout-full-width);
 
 				.maxi-text-control__input {
 					&:focus {
-						border-color: #fff;
-						box-shadow: none;
-						outline: none;
+						border-color: var(--maxi-admin-white);
+						box-shadow: var(--maxi-reset-box-shadow);
+						outline: var(--maxi-reset-outline);
 					}
 				}
 
 				&__label {
-					flex: 0 !important;
+					flex: var(--maxi-layout-0) !important;
 				}
 			}
 		}
@@ -36,53 +36,54 @@
 
 .maxi-dropdown__content.maxi-dropdown__reusable-content {
 	.components-popover__content {
-		width: 239px !important;
-		padding: 8px;
+		width: var(--maxi-space-239px) !important;
+		padding: var(--maxi-space-8px);
 
 		.maxi-base-control {
 			&__field {
-				margin-bottom: 0;
+				margin-bottom: var(--maxi-space-0);
 			}
 
 			&__label {
-				font-weight: 500;
+				font-weight: var(--maxi-font-weight-500);
 
 				&::after {
 					content: '';
-					width: 200%;
-					height: 1px;
-					margin: 8px -8px;
-					display: block;
-					background-color: #dbdde6;
+					width: var(--maxi-space-200);
+					height: var(--maxi-space-1px);
+					margin: var(--maxi-space-8px)
+						calc(-1 * var(--maxi-space-8px));
+					display: var(--maxi-display-block);
+					background-color: var(--maxi-admin-black);
 				}
 			}
 
 			input {
 				&:focus {
-					box-shadow: none;
+					box-shadow: var(--maxi-reset-box-shadow);
 				}
 
-				height: 28px;
+				height: var(--maxi-space-28px);
 				min-height: 0;
 				flex-basis: 100%;
 				border-radius: 0;
-				border-color: #dbdde6;
-				font-weight: 400;
+				border-color: var(--maxi-grey-light);
+				font-weight: var(--maxi-font-weight-400);
 			}
 		}
 
 		form {
-			display: flex;
-			overflow: hidden;
+			display: var(--maxi-display-flex);
+			overflow: var(--maxi-overflow-hidden);
 
 			.components-button {
 				width: auto !important;
-				height: 29px !important;
-				margin-top: auto;
-				padding: 0px 12px;
-				background-color: #e5f2f8;
-				font-weight: 700;
-				color: #007cba;
+				height: var(--maxi-space-29px) !important;
+				margin-top: var(--maxi-layout-auto);
+				padding: var(--maxi-space-0) var(--maxi-space-12px);
+				background-color: var(--maxi-admin-blue);
+				font-weight: var(--maxi-font-weight-700);
+				color: var(--maxi-primary-color);
 			}
 		}
 	}

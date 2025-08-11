@@ -49,4 +49,14 @@
 
 	/* For icon blocks */
 	--maxi-icon-block-orange: #ff4a17; /* For mobile and tablet preview iframe */
+
+	/* Typography aliases (keep in sync with admin variables) */
+	--maxi-font-ui: 'Inter', sans-serif; /* ensure available in editor build too */
+	--maxi-font-family-inter: var(--maxi-font-ui);
+
+	/* Backward-compatible z-index aliases used across editor styles */
+	--maxi-z-index-0: 0;
+	--maxi-z-index-1: 1;
+	--maxi-z-index-10: 10;
+	--maxi-z-index-10000: 10000;
 }

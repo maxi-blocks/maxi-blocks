@@ -235,6 +235,12 @@
 	--maxi-z-dialog: 999999;
 	--maxi-z-font-selector: 99;
 
+	/* Backward-compatible z-index aliases used across editor styles */
+	--maxi-z-index-0: var(--maxi-z-base);
+	--maxi-z-index-1: var(--maxi-z-elevated);
+	--maxi-z-index-10: var(--maxi-z-maximum);
+	--maxi-z-index-10000: var(--maxi-z-prompt-control);
+
 	/* === COMMON COMPONENT PATTERNS === */
 	/* Standard Button Base */
 	--maxi-button-padding: var(--maxi-space-8px);
@@ -395,6 +401,8 @@
 	--maxi-font-ui: 'Inter', sans-serif;
 	--maxi-font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 	--maxi-font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+	/* Alias for explicit Inter font family usage to avoid undefined var warnings */
+	--maxi-font-family-inter: var(--maxi-font-ui);
 	--maxi-font-monospace: monospace;
 	--maxi-font-inherit: inherit;
 

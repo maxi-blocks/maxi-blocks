@@ -42,14 +42,18 @@ body.maxi-blocks--active .maxi-sidebar {
 				justify-content: var(--maxi-layout-center);
 				width: calc(var(--maxi-layout-full-width) / 5);
 
-				svg {
+				/* Icons inside later buttons use 30px visuals */
+				.maxi-default-styles-control__button__icon svg {
 					width: var(--maxi-space-30px);
 					height: var(--maxi-space-30px);
 				}
 			}
-			svg {
-				width: var(--maxi-layout-full-width);
-				height: var(--maxi-layout-full-width);
+			/* Scope SVG sizing only to the icon element to avoid stretching */
+			.maxi-default-styles-control__button__icon,
+			.maxi-default-styles-control__button__icon svg {
+				width: var(--maxi-space-20px) !important;
+				height: var(--maxi-space-20px) !important;
+				display: block;
 			}
 		}
 	}

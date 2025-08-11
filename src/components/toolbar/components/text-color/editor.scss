@@ -1,22 +1,22 @@
 .toolbar-item__text-color__popover {
-	min-width: 300px;
+	min-width: var(--maxi-space-300px);
 }
 .toolbar-item {
 	&__text-options {
 		.toolbar-item__icon {
 			path {
-				fill: #fff !important;
-				stroke: #000 !important;
-				stroke-width: 0.4px;
-				transform: translate(1.2px, 0.75px);
+				fill: var(--maxi-admin-white) !important;
+				stroke: var(--maxi-admin-black) !important;
+				stroke-width: var(--maxi-space-0-4px);
+				transform: var(--maxi-transform-translate-1-2px-0-75px);
 			}
 		}
 	}
 
 	&__text-color {
 		& > div {
-			width: 100%;
-			height: 100%;
+			width: var(--maxi-layout-full-width);
+			height: var(--maxi-layout-full-height);
 		}
 	}
 }

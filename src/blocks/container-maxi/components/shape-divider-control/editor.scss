@@ -16,26 +16,26 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 .maxi-shape-divider-control {
 	&__shape-list {
 		.maxi-tabs-control {
-			display: flex;
+			display: var(--maxi-display-flex);
 			flex-wrap: wrap;
 			width: 271px;
-			height: 300px;
+			height: var(--maxi-layout-auto);
 			overflow-y: scroll;
 		}
 
 		.maxi-tabs-control__button {
-			width: 100%;
-			flex-direction: row;
+			width: var(--maxi-layout-full-width);
+			flex-direction: var(--maxi-flex-direction-row);
 
 			svg {
-				width: 100% !important;
+				width: var(--maxi-layout-full-width) !important;
 			}
 			&:focus,
 			&--selected {
-				border: none;
+				border: var(--maxi-border-none);
 				background-color: var(--maxi-white) !important;
-				box-shadow: none;
-				outline: none;
+				box-shadow: var(--maxi-box-shadow-none);
+				outline: var(--maxi-outline-none);
 
 				svg {
 					fill: var(--maxi-secondary-color);
@@ -44,19 +44,19 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		}
 	}
 	&__shape-selector {
-		width: 100%;
-		margin-bottom: 8px;
+		width: var(--maxi-layout-full-width);
+		margin-bottom: var(--maxi-space-8px);
 
 		&__display {
-			display: block;
-			width: 100%;
-			padding: 18px 0;
-			border: 1px solid var(--maxi-mid-green);
-			border-radius: 4px !important;
+			display: var(--maxi-display-block);
+			width: var(--maxi-layout-full-width);
+			padding: var(--maxi-space-18px) 0;
+			border: 1px solid var(--maxi-secondary-color);
+			border-radius: var(--maxi-radius-4px) !important;
 			background-color: var(--maxi-whisper-green);
-			text-align: center;
-			transition: all 0.5s;
-			cursor: pointer;
+			text-align: var(--maxi-text-align-center);
+			transition: all var(--maxi-transition-500ms);
+			cursor: var(--maxi-cursor-pointer);
 
 			&:hover {
 				border-color: var(--maxi-grey);

@@ -1,27 +1,27 @@
 .toolbar-item__popover {
 	.toolbar-item__dynamic-content__popover {
-		min-width: 280px;
+		min-width: var(--maxi-space-280px);
 		.maxi-axis-control {
 			.maxi-base-control {
 				&__field {
-					margin-bottom: 0;
+					margin-bottom: var(--maxi-space-0);
 				}
 				&__label {
 					display: block;
-					width: 125px;
+					width: var(--maxi-space-125px);
 				}
 				.maxi-advanced-number-control__value {
 					flex: 1;
 				}
 			}
 			& > div {
-				display: flex;
+				display: var(--maxi-display-flex);
 			}
 		}
 		.maxi-select-control__input {
 			text-overflow: ellipsis;
 			// max-width: 130px;
-			padding-right: 20px;
+			padding-right: var(--maxi-space-20px);
 		}
 	}
 	.maxi-base-control {
@@ -33,27 +33,28 @@
 		}
 	}
 	.maxi-axis-control {
-		color: #fff;
+		color: var(--maxi-admin-white);
 		&__content {
 			&__item {
 				&__checkbox {
 					input {
-						border: 2px solid #80828a;
-						background-color: #242433;
+						border: var(--maxi-border-2px) solid
+							var(--maxi-admin-black);
+						background-color: var(--maxi-admin-black);
 						&:focus {
-							border-color: #80828a;
+							border-color: var(--maxi-admin-black);
 						}
 					}
 				}
 				&__sync {
-					margin-top: 35px;
-					border-color: #80828a;
+					margin-top: var(--maxi-space-35px);
+					border-color: var(--maxi-admin-black);
 					button {
 						&[aria-pressed='true'] {
-							background: #4f515c !important;
+							background: var(--maxi-admin-black) !important;
 						}
 						svg {
-							fill: #fff;
+							fill: var(--maxi-admin-white);
 						}
 					}
 				}

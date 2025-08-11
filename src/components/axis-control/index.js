@@ -546,7 +546,18 @@ const AxisControl = props => {
 	const useResponsiveTabs =
 		!noResponsiveTabs && ['margin', 'padding'].includes(target);
 
-	const disableLeftRightMargin = target === 'margin' && fullWidth;
+	// Get sync mode to determine if left/right margin should be disabled
+	const sync = getLastBreakpointAttribute({
+		target: `${prefix}${target}-sync`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	// Only disable left/right margin when fullWidth is true AND sync is 'all' (equal mode)
+	// Allow left/right margins in 'none' (separate) and 'axis' (together) modes
+	const disableLeftRightMargin =
+		target === 'margin' && fullWidth && sync === 'all';
 
 	const getOptions = () => {
 		const options = [];

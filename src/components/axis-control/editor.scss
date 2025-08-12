@@ -10,14 +10,19 @@
 	   CSS CUSTOM PROPERTIES / VARIABLES
 	   ======================================== */
 
+	// Padding Control (PC) spacing variables
+	--pc-gap: 6px; /* Gap between grid cells - compact */
+	--pc-field-pad: 4px; /* Internal padding for inputs/fields */
+	--pc-border-radius: 4px; /* Border radius for inputs/buttons */
+	--pc-mode-gap: 6px; /* Gap between mode toggle buttons */
+
 	// Label styling variables
 	--axis-control-label-size: var(--maxi-font-size-10px);
-	--axis-control-label-padding: var(--maxi-space-0px) var(--maxi-space-6px);
+	--axis-control-label-padding: var(--maxi-space-0px) var(--maxi-space-5px)
+		var(--maxi-space-0px);
 	--axis-control-label-z-index: var(--maxi-z-maximum);
 
-	// Layout spacing variables
-
-	// Gap spacing variables
+	// Layout spacing variables (legacy)
 	--axis-control-gap-default: var(--maxi-space-0px) var(--maxi-space-8px);
 	--axis-control-gap-margin: var(--maxi-space-8px);
 
@@ -26,10 +31,10 @@
 	   ======================================== */
 
 	&__header {
-		margin-bottom: var(--maxi-space-10px);
+		margin-bottom: var(--maxi-space-10px) !important;
 		display: var(--maxi-display-grid);
 		grid-template-columns: 1fr;
-		grid-gap: var(--axis-control-gap-default);
+		gap: var(--pc-mode-gap);
 
 		.maxi-base-control__field {
 			display: var(--maxi-display-grid);
@@ -39,10 +44,11 @@
 		}
 
 		.maxi-tabs-control {
-			display: var(--maxi-display-grid);
-			grid-template-columns: repeat(3, 1fr);
+			display: var(--maxi-display-flex);
+			gap: var(--pc-mode-gap);
 			margin-left: var(--maxi-space-0px);
 			margin-right: var(--maxi-space-0px);
+			margin-bottom: var(--maxi-space-4px);
 		}
 	}
 
@@ -57,9 +63,8 @@
 		justify-content: var(--maxi-layout-center);
 		min-width: var(--maxi-control-width-32px);
 		height: var(--maxi-control-height-32px);
-		padding: var(--maxi-reset-padding);
+		padding: var(--pc-field-pad);
 		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
-		border-radius: var(--maxi-space-0px);
 		margin-bottom: var(--maxi-space-0px);
 		opacity: var(--maxi-opacity-visible);
 		transition: all var(--maxi-transition-500ms);
@@ -98,6 +103,7 @@
 	.maxi-axis-control__content__item {
 		position: var(--maxi-layout-relative);
 		box-sizing: border-box;
+		margin-bottom: var(--maxi-space-8px) !important;
 
 		&.maxi-advanced-number-control {
 			display: var(--maxi-display-flex);
@@ -121,7 +127,7 @@
 	}
 
 	/* ========================================
-	   ALL MODE LAYOUT
+	   ALL MODE LAYOUT - Set margin equal
 	   ======================================== */
 
 	.maxi-axis-control__all-mode {
@@ -134,32 +140,256 @@
 		}
 	}
 
+	/* 2) Axis & All modes: keep the reset in-flow and flush right */
+	@at-root {
+		.maxi-axis-control__axis-mode
+			.maxi-axis-control__content__item
+			.maxi-reset-button--typography,
+		.maxi-axis-control__all-mode
+			.maxi-axis-control__content__item
+			.maxi-reset-button--typography {
+			position: static !important;
+			top: auto !important;
+			right: auto !important;
+			z-index: auto !important;
+			margin-inline-start: auto;
+			align-self: center;
+		}
+	}
+
+	/* --- Unique reset button colors per mode (testing) --- */
+	/* 3) All mode: all sides equal */
+	@at-root {
+		.maxi-axis-control__all-mode .maxi-reset-button--typography {
+			position: var(--maxi-layout-absolute) !important;
+			top: calc(-1 * var(--maxi-space-8px)) !important;
+			right: calc(-1 * var(--maxi-space-4px)) !important;
+			z-index: var(--maxi-z-reset-button) !important;
+		}
+	}
+
+	/* Stronger selectors to ensure styles win over WP button defaults */
+	/* All mode reset button (all sides equal) */
+	@at-root {
+		.maxi-axis-control__all-mode
+			.maxi-axis-control__content__item
+			> button.maxi-components-button.components-button.maxi-reset-button.maxi-reset-button--typography,
+		.maxi-axis-control__all-mode
+			.maxi-reset-button--typography.maxi-reset-button--typography {
+			position: var(--maxi-layout-absolute) !important;
+			top: calc(-1 * var(--maxi-space-8px)) !important;
+			right: 140px !important;
+			z-index: var(--maxi-z-reset-button) !important;
+		}
+	}
+
 	/* ========================================
-	   AXIS MODE LAYOUT
+	   AXIS MODE LAYOUT - STRICT 2×2 GRID - Set margin together
 	   ======================================== */
 
 	.maxi-axis-control__axis-mode {
+		/* Forces a strict 2×2 grid: row 1 = toggles, row 2 = number fields; column 1 = Top/Bottom; column 2 = Left/Right */
 		display: var(--maxi-display-grid);
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--mx-gap, var(--maxi-space-6px));
+		// grid-template-columns: repeat(2, minmax(0, 1fr));
+		// grid-template-rows: auto auto;
+		// // gap: var(--pc-gap, 4px) !important;
+		// row-gap: var(--maxi-space-16px);
+		// align-items: start;
 
-		/* Flatten the two rows so children participate directly in the grid */
+		/* Flatten helpers */
 		> .maxi-axis-control__row-1,
 		> .maxi-axis-control__row-2 {
 			display: var(--maxi-display-contents);
 		}
 
-		/* Column 1: vertical (top/bottom) pair; Column 2: horizontal (left/right) */
-		> .maxi-axis-control__row-1 > * {
+		/* COLUMN 1: Top/Bottom group - Toggle in row 1, number field in row 2 */
+		> .maxi-axis-control__row-1 > .maxi-axis-control__item-auto {
 			grid-column: 1;
+			grid-row: 1;
 		}
-		> .maxi-axis-control__row-2 > * {
-			grid-column: 2;
+		> .maxi-axis-control__row-1 > .maxi-axis-control__content__item {
+			grid-column: 1;
+			grid-row: 2;
 		}
 
-		/* Stack toggle above number within each column */
+		/* COLUMN 2: Left/Right group - Toggle in row 1, number field in row 2 */
+		> .maxi-axis-control__row-2 > .maxi-axis-control__item-auto {
+			grid-column: 2;
+			grid-row: 1;
+		}
+		> .maxi-axis-control__row-2 > .maxi-axis-control__content__item {
+			grid-column: 2;
+			grid-row: 2;
+		}
+
+		/* Normalize inner rows so everything lines up */
+		.maxi-base-control__field {
+			display: flex;
+			align-items: center;
+			gap: var(--maxi-space-10px);
+			margin: 0 !important;
+		}
+
+		/* Reserve same label width so both columns align */
+		.maxi-base-control__label {
+			inline-size: 72px;
+			flex: 0 0 72px;
+		}
+
+		/* Inputs & selects consistent size */
+		input[type='number'],
+		select {
+			height: 32px;
+			min-inline-size: 80px;
+		}
+
+		/* Let the number+spinner wrapper expand to fill */
+		.maxi-advanced-number-control__input-wrapper {
+			flex: 1 1 auto;
+		}
+
+		/* Keep the unit block as an inline piece */
+		.maxi-dimensions-control__units {
+			flex: 0 0 auto;
+		}
+
+		/* Ensure the advanced number control container is flex for proper reset button alignment */
+		.maxi-advanced-number-control {
+			.maxi-base-control__field {
+				display: flex;
+				align-items: center;
+				gap: 4px;
+				margin: 0;
+				width: 100%;
+			}
+		}
+
+		/* Kill legacy spacing that fights gap */
+		.maxi-axis-control__item--top-row {
+			margin-bottom: 0;
+		}
+
 		.maxi-axis-control__item-auto {
-			margin-bottom: var(--maxi-space-4px);
+			margin-bottom: 0;
+		}
+	}
+
+	/* ========================================
+	   AXIS MODE SPACING OVERRIDES
+	   ======================================== */
+
+	/* Override the shorthand gap with longhand properties using !important */
+	.maxi-axis-control__axis-mode {
+		/* More space between the two columns */
+		column-gap: var(--maxi-space-8px) !important;
+
+		/* Keep the existing row gap */
+		row-gap: var(--maxi-space-8px) !important;
+	}
+
+	/* Spacing inside each input row (number + unit + reset) */
+	.maxi-axis-control__axis-mode
+		.maxi-advanced-number-control
+		.maxi-base-control__field {
+		gap: var(--maxi-space-12px); /* increased from previous value */
+	}
+
+	/* Undo the negative offset only in axis mode */
+	.maxi-axis-control__axis-mode .maxi-axis-control__content__item {
+		margin-left: 0 !important;
+	}
+
+	/* If you still want the -2px nudge in Separate mode, scope it there */
+	.maxi-axis-control__content__separate-grid
+		.maxi-axis-control__content__item {
+		margin-left: -2px !important;
+	}
+
+	/* 2) Axis mode: vertical/horizontal together */
+	@at-root {
+		.maxi-axis-control__axis-mode .maxi-reset-button--typography {
+		}
+	}
+
+	/* Stronger selectors to ensure styles win over WP button defaults */
+	/* Axis mode reset button (vertical/horizontal) */
+	@at-root {
+		.maxi-axis-control__axis-mode
+			.maxi-axis-control__content__item
+			> button.maxi-components-button.components-button.maxi-reset-button.maxi-reset-button--typography,
+		.maxi-axis-control__axis-mode
+			.maxi-reset-button--typography.maxi-reset-button--typography {
+			/* Use the correct token; provide absolute as a fallback */
+			position: var(--maxi-layout-absolute) !important;
+			top: calc(-1 * var(--maxi-space-8px)) !important;
+			right: calc(-1 * var(--maxi-space-4px)) !important;
+			z-index: var(--maxi-z-reset-button) !important;
+		}
+	}
+
+	/* Axis mode: make toggle rows fill column width and push toggle right (TEMP layout fix) */
+	.maxi-axis-control__axis-mode
+		.maxi-toggle-switch
+		.maxi-base-control__field {
+		width: 100%;
+		margin: 0 !important; /* neutralize inherited margins */
+		align-items: center;
+		gap: var(
+			--maxi-space-4px
+		) !important; /* tighter spacing between label and toggle */
+	}
+	.maxi-axis-control__axis-mode .maxi-toggle-switch__toggle {
+		margin-inline-start: auto; /* push toggle to the far edge */
+	}
+	.maxi-axis-control__axis-mode
+		.maxi-toggle-switch
+		.maxi-base-control__label {
+		/* reduce reserved label width */
+		inline-size: auto !important;
+		min-inline-size: 0 !important;
+		flex: 0 1 auto !important; /* allow label to shrink so toggle reaches edge */
+	}
+
+	/* 1) Separate mode: absolute in the top-right of each field */
+	.maxi-axis-control__content__separate-grid
+		.maxi-axis-control__content__item
+		.maxi-reset-button--typography {
+		position: var(--maxi-layout-absolute) !important;
+		top: calc(-1 * var(--maxi-space-8px)) !important;
+		right: calc(-1 * var(--maxi-space-4px)) !important;
+		z-index: var(--maxi-z-reset-button) !important;
+	}
+
+	/* Set margin together button styling */
+	.maxi-axis-control__set-margin-together {
+		display: flex;
+		align-items: center;
+		gap: var(--maxi-space-4px);
+		padding: var(--maxi-space-4px) var(--maxi-space-8px);
+		border-radius: var(--maxi-border-radius-4px);
+		cursor: pointer;
+		transition: all 0.2s ease;
+
+		&:hover {
+			background: var(--maxi-color-neutral-100);
+			border-color: var(--maxi-color-neutral-300);
+		}
+
+		&:active {
+			background: var(--maxi-color-neutral-200);
+		}
+
+		&.is-active {
+			background: var(--maxi-color-primary-100);
+			border-color: var(--maxi-color-primary-300);
+			color: var(--maxi-color-primary-700);
+		}
+
+		.maxi-reset-button--typography {
+			position: var(--maxi-layout-absolute) !important;
+			top: calc(-1 * var(--maxi-space-8px)) !important;
+			right: calc(-1 * var(--maxi-space-4px)) !important;
+			z-index: var(--maxi-z-reset-button) !important;
 		}
 	}
 
@@ -169,18 +399,26 @@
 
 	.maxi-axis-control__content__separate-grid {
 		display: var(--maxi-display-grid);
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		grid-auto-rows: var(--maxi-layout-auto);
-		gap: var(--mx-gap, var(--maxi-space-4px));
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-rows: repeat(2, auto);
+		gap: var(--pc-gap);
+		align-items: start;
 
 		.maxi-axis-control__row-1,
 		.maxi-axis-control__row-2 {
 			display: contents;
 		}
 
-		/* Reduce bottom spacing after the first row only (separate grid) */
+		/* Reset any conflicting margins from previous layout */
 		.maxi-axis-control__item--top-row {
-			margin-bottom: calc(-1 * var(--mx-gap, var(--maxi-space-8px)));
+			margin-bottom: 0;
+		}
+
+		/* Individual field styling for better alignment */
+		.maxi-axis-control__content__item {
+			display: var(--maxi-display-flex);
+			flex-direction: var(--maxi-layout-flex-column);
+			width: var(--maxi-layout-full-width);
 		}
 
 		/* ========================================
@@ -191,68 +429,82 @@
 			.maxi-base-control__field.maxi-axis-control__margin,
 		.maxi-advanced-number-control
 			.maxi-base-control__field.maxi-axis-control__padding {
-			gap: var(--axis-control-gap-default);
+			gap: var(--pc-field-pad);
 		}
 
 		.maxi-advanced-number-control
 			.maxi-base-control__field.maxi-axis-control__margin {
-			gap: var(--axis-control-gap-margin);
+			gap: var(--pc-field-pad);
+		}
+	}
+
+	/* --- Unique reset button colors per mode (testing) --- */
+	/* 1) Separate mode: individual fields */
+	@at-root {
+		.maxi-axis-control__content__separate-grid
+			.maxi-reset-button--typography {
+		}
+	}
+
+	/* Stronger selectors to ensure styles win over WP button defaults */
+	/* Separate mode reset button (per-side) */
+	@at-root {
+		.maxi-axis-control__content__separate-grid
+			.maxi-axis-control__content__item
+			> button.maxi-components-button.components-button.maxi-reset-button.maxi-reset-button--typography,
+		.maxi-axis-control__content__separate-grid
+			.maxi-reset-button--typography.maxi-reset-button--typography {
+			position: var(--maxi-layout-absolute) !important;
+			top: calc(-1 * var(--maxi-space-8px)) !important;
+			right: calc(-1 * var(--maxi-space-4px)) !important;
+			z-index: var(--maxi-z-reset-button) !important;
 		}
 	}
 
 	/* ========================================
-	 PADDING-SPECIFIC STYLING
-	 ======================================== */
+	   PADDING CONTROL SPECIFIC STYLING
+	   ======================================== */
 
-	.maxi-axis-control__axis-mode {
-		/* parent becomes the grid */
-		display: var(--maxi-display-grid);
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		grid-auto-rows: var(--maxi-layout-auto);
-		gap: var(--mx-gap, var(--maxi-space-8px));
-
-		/* Align columns: label/toggle on the same baseline */
-		align-items: var(--maxi-vertical-align-start);
-		/* Each column stacks its own children vertically */
-		> .maxi-axis-control__row-1,
-		> .maxi-axis-control__row-2 {
-			display: var(--maxi-display-contents);
-		}
-		> .maxi-axis-control__row-1 > * {
-			grid-column: 1;
-		}
-		> .maxi-axis-control__row-2 > * {
-			grid-column: 2;
+	&.maxi-axis-control__padding {
+		/* Ensure padding controls have optimized spacing for 2×2 grid */
+		.maxi-axis-control__content__separate-grid {
+			gap: var(--pc-gap);
+			margin-top: var(--maxi-space-2px);
 		}
 
-		/* Space between toggle (top) and number (below) */
-		.maxi-axis-control__item-auto {
-			margin-bottom: var(--maxi-space-6px);
-		}
-
-		/* Normalize row heights so columns align perfectly */
-		.maxi-base-control__field {
-			margin: var(--maxi-space-0px);
-		}
-		.maxi-advanced-number-control .maxi-base-control__field {
-			align-items: var(--maxi-layout-center);
-		}
-		.maxi-toggle-switch .maxi-base-control__field {
-			min-height: var(--maxi-control-height-32px);
+		/* Better visual hierarchy for padding controls */
+		.maxi-axis-control__content__item {
+			.maxi-base-control__label {
+				font-weight: var(--maxi-font-weight-normal);
+				color: var(--maxi-grey-dark);
+			}
 		}
 	}
 
-	.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,
-	.maxi-axis-control__axis-mode > .maxi-axis-control__row-2 {
-		display: var(--maxi-display-contents);
+	/* ========================================
+	   GENERAL FIELD ALIGNMENT IMPROVEMENTS
+	   ======================================== */
+
+	/* Normalize row heights so columns align perfectly */
+	.maxi-base-control__field {
+		margin: var(--maxi-space-0px);
+	}
+	.maxi-advanced-number-control .maxi-base-control__field {
+		align-items: var(--maxi-layout-center);
+	}
+	.maxi-toggle-switch .maxi-base-control__field {
+		min-height: var(--maxi-control-height-32px);
 	}
 
+	/* Fallback for browsers that don't support display: contents */
 	@supports not (display: var(--maxi-display-contents)) {
 		.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,
-		.maxi-axis-control__axis-mode > .maxi-axis-control__row-2 {
+		.maxi-axis-control__axis-mode > .maxi-axis-control__row-2,
+		.maxi-axis-control__content__separate-grid > .maxi-axis-control__row-1,
+		.maxi-axis-control__content__separate-grid > .maxi-axis-control__row-2 {
 			display: var(--maxi-display-grid);
 			grid-template-columns: repeat(2, 1fr);
-			gap: var(--mx-gap, var(--maxi-space-8px));
+			gap: var(--pc-gap);
 		}
 	}
 
@@ -275,15 +527,44 @@
 		justify-content: var(--maxi-layout-space-between);
 
 		label {
-			font-size: var(--maxi-font-size-12px);
+			font-size: var(--maxi-font-size-10px);
 			font-weight: var(--maxi-font-weight-normal);
 		}
 	}
 }
 
-html .maxi-axis-control__content__item .maxi-reset-button--typography {
-	position: var(--maxi-layout-absolute) !important;
-	top: calc(-1 * var(--maxi-space-8px)) !important;
-	right: var(--maxi-space-0px) !important;
-	z-index: var(--maxi-z-reset-button) !important;
+/* Set margin equal button styling */
+.maxi-axis-control__set-margin-equal {
+	display: flex;
+	align-items: center;
+	gap: var(--maxi-space-4px);
+	padding: var(--maxi-space-4px) var(--maxi-space-8px);
+	background: #ccffcc;
+	border: 1px solid #99ff99;
+	border-radius: var(--maxi-border-radius-4px);
+	cursor: pointer;
+	transition: all 0.2s ease;
+
+	&:hover {
+		background: var(--maxi-color-neutral-100);
+		border-color: var(--maxi-color-neutral-300);
+	}
+
+	&:active {
+		background: var(--maxi-color-neutral-200);
+	}
+
+	&.is-active {
+		background: var(--maxi-color-primary-100);
+		border-color: var(--maxi-color-primary-300);
+		color: var(--maxi-color-primary-700);
+	}
+
+	.maxi-reset-button--typography {
+		/* Use the correct token; provide absolute as a fallback */
+		position: var(--maxi-layout-absolute, absolute);
+		top: calc(-1 * var(--maxi-space-8px));
+		right: calc(-1 * var(--maxi-space-4px));
+		z-index: var(--maxi-z-reset-button);
+	}
 }

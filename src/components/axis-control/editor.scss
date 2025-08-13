@@ -123,6 +123,7 @@
 			pointer-events: var(--maxi-pointer-events-none);
 			z-index: var(--axis-control-label-z-index);
 			box-sizing: border-box;
+			line-height: 12px;
 		}
 	}
 
@@ -136,7 +137,6 @@
 
 		.maxi-axis-control__content__item {
 			width: var(--maxi-layout-full-width);
-			margin-bottom: var(--maxi-space-0px) !important;
 		}
 	}
 
@@ -232,7 +232,6 @@
 
 		/* Reserve same label width so both columns align */
 		.maxi-base-control__label {
-			inline-size: 72px;
 			flex: 0 0 72px;
 		}
 
@@ -306,10 +305,7 @@
 	}
 
 	/* 2) Axis mode: vertical/horizontal together */
-	@at-root {
-		.maxi-axis-control__axis-mode .maxi-reset-button--typography {
-		}
-	}
+	/* removed empty ruleset */
 
 	/* Stronger selectors to ensure styles win over WP button defaults */
 	/* Axis mode reset button (vertical/horizontal) */
@@ -440,11 +436,7 @@
 
 	/* --- Unique reset button colors per mode (testing) --- */
 	/* 1) Separate mode: individual fields */
-	@at-root {
-		.maxi-axis-control__content__separate-grid
-			.maxi-reset-button--typography {
-		}
-	}
+	/* removed empty ruleset */
 
 	/* Stronger selectors to ensure styles win over WP button defaults */
 	/* Separate mode reset button (per-side) */
@@ -566,5 +558,341 @@
 		top: calc(-1 * var(--maxi-space-8px));
 		right: calc(-1 * var(--maxi-space-4px));
 		z-index: var(--maxi-z-reset-button);
+	}
+}
+
+/* ========================================
+   BORDER AXIS CONTROL IDENTIFIERS
+   Adds clear, targetable hooks and a visible background
+   for Border-specific axis control UIs
+   ======================================== */
+
+/* 1) Main container: Border axis control modifier */
+.maxi-axis-control.maxi-axis-control__border {
+	/* Visual highlight to easily identify Border axis control */
+	background: #99ff99;
+}
+
+/* 2) Content item: Border radius field slot */
+.maxi-axis-control__content__item__border-radius {
+	font-size: var(--maxi-font-size-13px) !important;
+}
+
+/* 3) Optional: emphasize inner field alignment within border context */
+.maxi-axis-control.maxi-axis-control__border .maxi-base-control__field {
+	/* Keep layout tidy inside highlighted container */
+}
+
+/* ========================================
+   BORDER CONTROL – SCOPED CLASS MAP WITH TEMP BACKGROUNDS
+   ======================================== */
+
+/* Main container */
+.maxi-axis-control__border {
+	background: #99ff99; /* temp highlight */
+	border-radius: var(--maxi-border-radius-4px);
+}
+.maxi-axis-control__border.maxi-axis-control__disable-auto {
+	background: #ffcccc; /* temp highlight for disabled auto */
+}
+
+/* Unit header */
+.maxi-axis-control__border .maxi-axis-control__unit-header {
+	margin-bottom: var(--maxi-space-8px);
+}
+.maxi-axis-control__border .maxi-base-control__field {
+}
+.maxi-axis-control__border .maxi-base-control__label {
+}
+
+/* Unit selector */
+.maxi-axis-control__border .maxi-axis-control__units {
+	background: #ff99ff; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-select-control__input {
+	background: #cc99ff; /* temp highlight */
+}
+
+/* Reset button */
+.maxi-axis-control__border .maxi-reset-button {
+	background: #ff6666; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-reset-button--absolute {
+	background: #ff4444; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-reset-button--typography {
+	background: #ff8888; /* temp highlight */
+}
+
+/* Sync / tabs section */
+.maxi-axis-control__border .maxi-axis-control__header {
+	background: #66ffcc; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-axis-control__sync {
+	background: #99ffff; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-axis-control__sync--all {
+	background: #99ffcc; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-tabs-control {
+	background: #ccffff; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-settingstab-control_has-border-left-right {
+	background: #ffccff; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-tabs-control__button-none {
+	background: #ffd9ec; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-tabs-control__button-axis {
+	background: #d9ffec; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-tabs-control__button-all {
+	background: #ececff; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-tabs-control__button--selected {
+	background: #fff0b3; /* temp highlight */
+}
+
+/* Content section */
+.maxi-axis-control__border .maxi-axis-control__all-mode {
+	margin-bottom: var(--maxi-space-8px);
+}
+.maxi-axis-control__border .maxi-axis-control__content__item__border-radius {
+	background: #ccff00; /* temp highlight, match global */
+}
+
+/* Number input */
+.maxi-axis-control__border .maxi-advanced-number-control__input-wrapper {
+}
+.maxi-axis-control__content__item__top-bottom
+	.maxi-advanced-number-control__value,
+.maxi-axis-control__content__item__left-right
+	.maxi-advanced-number-control__value,
+.maxi-axis-control__content__item__top-left-bottom-right
+	.maxi-advanced-number-control__value,
+.maxi-axis-control__content__item__bottom-left-top-right
+	.maxi-advanced-number-control__value,
+.maxi-axis-control__border {
+}
+
+/* Spinner controls */
+.maxi-axis-control__border .maxi-advanced-number-control__spinner-container {
+	background: #e0b3ff; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-advanced-number-control__spinner-button {
+	background: #d1e0ff; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-advanced-number-control__spinner-button--up {
+	background: #b3ffd9; /* temp highlight */
+}
+.maxi-axis-control__border .maxi-advanced-number-control__spinner-button--down {
+	background: #ffd9b3; /* temp highlight */
+}
+
+/* ========================================
+   BORDER CONTROL — Set border radii equal (ALL mode)
+   Scope: .maxi-axis-control.maxi-axis-control__border ONLY
+   ======================================== */
+.maxi-axis-control.maxi-axis-control__border {
+	/* ALL mode container */
+	.maxi-axis-control__all-mode[data-sync='all'] {
+		display: var(--maxi-display-grid);
+		grid-template-columns: 1fr;
+		row-gap: var(--pc-gap, 6px);
+	}
+
+	/* Single border-radius field block */
+	.maxi-axis-control__all-mode
+		.maxi-axis-control__content__item__border-radius {
+		width: var(--maxi-layout-full-width);
+	}
+
+	/* ====== Base control layout ====== */
+	.maxi-axis-control__all-mode .maxi-base-control__field {
+		display: flex;
+		flex-wrap: nowrap;
+		align-items: center;
+		justify-content: flex-start;
+		gap: var(--maxi-space-8px);
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	.maxi-axis-control__all-mode .maxi-base-control__label,
+	.maxi-axis-control__all-mode .components-base-control__label {
+		position: static !important; /* Override absolute positioning from other modes */
+		top: auto !important;
+		left: auto !important;
+		background: transparent !important; /* Remove background from other modes */
+		padding: 0 !important; /* Remove padding from other modes */
+		z-index: auto !important;
+		font-size: var(--maxi-font-size-10px);
+		font-weight: 600;
+		letter-spacing: 0.01em;
+		user-select: none;
+		margin: 0;
+		flex: 0 0 auto; /* Don't grow/shrink, natural size */
+		min-width: auto;
+		width: auto;
+		line-height: 1.4;
+	}
+	.maxi-axis-control__content__item__border-width .maxi-base-control__label,
+	.maxi-axis-control__content__item__border-radius .maxi-base-control__label {
+		font-size: var(--maxi-font-size-13px);
+	}
+
+	/* ====== Number input + custom spinner ====== */
+	.maxi-axis-control__all-mode .maxi-advanced-number-control__input-wrapper {
+		position: absolute;
+		right: 0;
+		display: flex;
+		align-items: center;
+		height: var(--maxi-input-h);
+		min-width: 80px;
+		max-width: 80px;
+		flex: 1 1 auto;
+	}
+
+	.maxi-axis-control__all-mode
+		.maxi-advanced-number-control__input-wrapper
+		> :last-child {
+		margin-bottom: var(--maxi-space-8px);
+	}
+
+	.maxi-axis-control__all-mode .maxi-advanced-number-control__value {
+		appearance: textfield;
+		-moz-appearance: textfield;
+		width: 100%;
+		height: 100%;
+		padding: 0 36px 0 12px; /* room for spinner on the right */
+		border: 1px solid var(--maxi-border);
+		border-radius: var(--maxi-radius);
+		background: var(--maxi-bg);
+		color: var(--maxi-fg);
+		box-shadow: var(--maxi-shadow);
+		transition: border-color 0.15s ease, box-shadow 0.15s ease,
+			background-color 0.15s ease;
+		line-height: 1;
+		font-size: 13px;
+	}
+
+	.maxi-axis-control__all-mode .maxi-advanced-number-control__value:hover {
+		border-color: var(--maxi-border-strong);
+	}
+
+	.maxi-axis-control__all-mode .maxi-advanced-number-control__value:focus {
+		outline: none;
+		border-color: var(--maxi-accent);
+		box-shadow: var(--maxi-ring);
+	}
+
+	/* Hide native spin buttons */
+	.maxi-axis-control__all-mode
+		.maxi-advanced-number-control__value::-webkit-outer-spin-button,
+	.maxi-axis-control__all-mode
+		.maxi-advanced-number-control__value::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	/* Spinner container (stacked up/down) */
+	.maxi-axis-control__all-mode
+		.maxi-advanced-number-control__spinner-container {
+		position: absolute;
+		right: 6px;
+		top: 50%;
+		transform: translateY(-50%);
+		display: grid;
+		grid-auto-flow: row;
+		gap: 2px;
+	}
+
+	.maxi-axis-control__all-mode .maxi-advanced-number-control__spinner-button {
+		appearance: none;
+		-webkit-tap-highlight-color: transparent;
+		width: 22px;
+		height: 16px;
+		padding: 0;
+		border: 1px solid var(--maxi-border);
+		border-radius: 6px;
+		background: var(--maxi-panel);
+		color: var(--maxi-fg-muted);
+		display: inline-grid;
+		place-items: center;
+		cursor: pointer;
+		transition: background-color 0.15s ease, border-color 0.15s ease,
+			color 0.15s ease, transform 0.06s ease;
+	}
+
+	.maxi-axis-control__all-mode
+		.maxi-advanced-number-control__spinner-button:hover {
+		background: color-mix(
+			in oklab,
+			var(--maxi-panel) 80%,
+			var(--maxi-accent) 20%
+		);
+		border-color: var(--maxi-border-strong);
+		color: var(--maxi-fg);
+	}
+
+	.maxi-axis-control__all-mode
+		.maxi-advanced-number-control__spinner-button:active {
+		transform: translateY(1px);
+	}
+
+	.maxi-axis-control__all-mode
+		.maxi-advanced-number-control__spinner-button
+		svg {
+		display: block;
+		pointer-events: none;
+	}
+
+	/* ====== Units select (PX, EM, REM, etc.) ====== */
+	.maxi-axis-control__all-mode .maxi-select-control__input {
+		height: var(--maxi-input-h);
+		border: 1px solid var(--maxi-border);
+		border-radius: var(--maxi-radius);
+		background: var(--maxi-bg);
+		color: var(--maxi-fg);
+		padding: 0 28px 0 10px;
+		font-size: 12px;
+		line-height: 1;
+		box-shadow: var(--maxi-shadow);
+		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	}
+
+	.maxi-axis-control__all-mode .maxi-select-control__input:hover {
+		border-color: var(--maxi-border-strong);
+	}
+
+	.maxi-axis-control__all-mode .maxi-select-control__input:focus {
+		outline: none;
+		border-color: var(--maxi-accent);
+		box-shadow: var(--maxi-ring);
+	}
+
+	/* ====== Reset icon button ====== */
+	.maxi-axis-control__all-mode .maxi-reset-button {
+		position: absolute;
+		right: 0;
+	}
+
+	.maxi-axis-control__all-mode .maxi-reset-button:active {
+		transform: translateY(1px);
+	}
+
+	.maxi-axis-control__all-mode .maxi-reset-button svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	/* Optional: unit header row stays tidy (no layout change, just alignment) */
+	.maxi-axis-control__unit-header .maxi-base-control__field {
+		display: flex;
+		align-items: center;
+		gap: var(--maxi-space-8px);
+		margin: 0;
 	}
 }

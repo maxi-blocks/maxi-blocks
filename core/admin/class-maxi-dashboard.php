@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'https://my.maxiblocks.com/middleware/verify');
+define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'https://maxi2025.staging.maxiblocks.com/middleware/verify');
 define('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY', '4d8af9b4d6f221cf7a41271cb7b82c92');
 
 if (!class_exists('MaxiBlocks_Dashboard')):
@@ -2916,14 +2916,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Store the authentication attempt in transients for polling (more reliable than sessions)
             $transient_key = 'maxi_auth_' . md5($email . $auth_key);
-            set_transient($transient_key, [
+            $transient_data = [
                 'email' => $email,
                 'auth_key' => $auth_key,
                 'time' => time(),
-            ], 600); // 10 minutes
+            ];
+
+            set_transient($transient_key, $transient_data, 600); // 10 minutes
 
             // Also store a reverse lookup to find the transient by email
-            set_transient('maxi_auth_lookup_' . md5($email), $transient_key, 600);
+            $lookup_key = 'maxi_auth_lookup_' . md5($email);
+            set_transient($lookup_key, $transient_key, 600);
 
             wp_send_json_success([
                 'message' => __('Email authentication initiated', 'maxi-blocks'),
@@ -3044,6 +3047,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 case 'subscription_expired':
                     return __('This purchase code / key has expired. Please check your subscription status or contact support.', 'maxi-blocks');
 
+                case 'SEAT_LIMIT_EXCEEDED':
+                    return __('Seats limit reached. Please log out from another device or upgrade your subscription.', 'maxi-blocks');
+
                 default:
                     return __('Invalid purchase code / key. Please check your code and try again.', 'maxi-blocks');
             }
@@ -3079,24 +3085,35 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $found_auth_data = true;
             }
 
-            // If no session data, check transients
+            // If no session data, check transients using a more direct approach
             if (!$found_auth_data) {
-                $all_transients = wp_load_alloptions();
+                // Try to get transients using WordPress database query
+                global $wpdb;
+                $transient_keys = $wpdb->get_results(
+                    "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '_transient_maxi_auth_%' AND option_name NOT LIKE '%_lookup_%'",
+                    ARRAY_A
+                );
 
-                foreach ($all_transients as $key => $value) {
-                    if (strpos($key, '_transient_maxi_auth_') === 0 && strpos($key, '_lookup_') === false) {
-                        $transient_name = str_replace('_transient_', '', $key);
-                        $auth_data = get_transient($transient_name);
 
-                        if ($auth_data && is_array($auth_data)) {
-                            $email = $auth_data['email'];
-                            $auth_key = $auth_data['auth_key'];
-                            $auth_time = $auth_data['time'] ?? time();
-                            $found_auth_data = true;
-                            break; // Only check the first pending auth
-                        }
+
+                foreach ($transient_keys as $row) {
+                    $option_name = $row['option_name'];
+                    $transient_name = str_replace('_transient_', '', $option_name);
+                    $auth_data = get_transient($transient_name);
+
+
+
+                    if ($auth_data && is_array($auth_data)) {
+                        $email = $auth_data['email'];
+                        $auth_key = $auth_data['auth_key'];
+                        $auth_time = $auth_data['time'] ?? time();
+                        $found_auth_data = true;
+
+                        break; // Only check the first pending auth
                     }
                 }
+
+
             }
 
             if ($found_auth_data && $email && $auth_key) {
@@ -3104,7 +3121,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 if ((time() - $auth_time) < 600) {
                     $auth_result = $this->check_email_authentication($email, $auth_key);
 
-                    if ($auth_result) {
+                    if ($auth_result && isset($auth_result['user_name'])) {
+                        // Success case
                         // Clear session data on successful auth
                         if (isset($_SESSION['maxi_auth_email'])) {
                             unset($_SESSION['maxi_auth_email']);
@@ -3114,6 +3132,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                         // Clear transient data on successful auth
                         $transient_key = 'maxi_auth_' . md5($email . $auth_key);
+
                         delete_transient($transient_key);
                         delete_transient('maxi_auth_lookup_' . md5($email));
 
@@ -3121,6 +3140,24 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                             'is_authenticated' => true,
                             'status' => 'Active ✓',
                             'user_name' => $auth_result['user_name'],
+                        ]);
+                        return;
+                    } elseif ($auth_result && isset($auth_result['error_code'])) {
+                        // Specific error case (like seat limit)
+                        $error_message = $this->get_license_error_message($auth_result['error_code']);
+
+                        // Clear transient data on error
+                        $transient_key = 'maxi_auth_' . md5($email . $auth_key);
+                        delete_transient($transient_key);
+                        delete_transient('maxi_auth_lookup_' . md5($email));
+
+                        wp_send_json_success([
+                            'is_authenticated' => false,
+                            'status' => 'Error',
+                            'user_name' => '',
+                            'error' => true,
+                            'error_message' => $error_message,
+                            'error_code' => $auth_result['error_code']
                         ]);
                         return;
                     }
@@ -3133,8 +3170,30 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $status = 'Not activated';
             $user_name = '';
 
+            $cookie_info = '';
+            if (isset($_COOKIE['maxi_blocks_key'])) {
+                $raw_cookie = $_COOKIE['maxi_blocks_key'];
+
+                // Fix escaped quotes in cookie value
+                $cookie_fixed = str_replace('\\"', '"', $raw_cookie);
+
+                // Try to decode the cookie
+                $cookie_data = json_decode($cookie_fixed, true);
+
+                if ($cookie_data && is_array($cookie_data)) {
+                    $cookie_email = array_keys($cookie_data)[0];
+                    $cookie_key = $cookie_data[$cookie_email];
+                    $cookie_info = "Email: {$cookie_email}, Key: " . substr($cookie_key, 0, 4) . '...';
+                } else {
+                    $cookie_info = 'Invalid cookie format';
+                }
+            } else {
+                $cookie_info = 'No cookie found';
+            }
+
             if (!empty($current_license_data)) {
                 $license_array = json_decode($current_license_data, true);
+
                 if (is_array($license_array)) {
                     // Check for purchase code auth (domain-wide)
                     foreach ($license_array as $key => $license) {
@@ -3148,18 +3207,38 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                     // If no purchase code, check for email auth (browser-specific)
                     if (!$is_authenticated && isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
-                        $cookie_data = json_decode($_COOKIE['maxi_blocks_key'], true);
+                        // Fix escaped quotes in cookie value
+                        $cookie_fixed = str_replace('\\"', '"', $_COOKIE['maxi_blocks_key']);
+                        $cookie_data = json_decode($cookie_fixed, true);
                         if ($cookie_data && is_array($cookie_data)) {
                             $email = array_keys($cookie_data)[0];
                             $browser_key = $cookie_data[$email];
 
-                            if (isset($license_array[$email]) && isset($license_array[$email]['status']) && $license_array[$email]['status'] === 'yes') {
-                                // Check if this browser's key is in the list
-                                $stored_keys = explode(',', $license_array[$email]['key']);
-                                if (in_array($browser_key, array_map('trim', $stored_keys))) {
+                            if (isset($license_array[$email])) {
+                                $email_data = $license_array[$email];
+
+                                if (isset($email_data['status']) && $email_data['status'] === 'yes') {
+                                    // Check if this browser's key is in the list
+                                    $stored_keys = explode(',', $email_data['key']);
+                                    $trimmed_keys = array_map('trim', $stored_keys);
+
+                                    if (in_array($browser_key, $trimmed_keys)) {
+                                        $is_authenticated = true;
+                                        $status = 'Active ✓';
+                                        $user_name = isset($email_data['name']) ? $email_data['name'] : $email;
+                                    }
+                                }
+                            } else {
+                                // Try to authenticate via API if no local license data exists
+                                $auth_result = $this->check_email_authentication($email, $browser_key);
+                                if ($auth_result && isset($auth_result['user_name'])) {
+                                    // Success - auth_result contains user_name
                                     $is_authenticated = true;
                                     $status = 'Active ✓';
-                                    $user_name = isset($license_array[$email]['name']) ? $license_array[$email]['name'] : $email;
+                                    $user_name = $auth_result['user_name'];
+                                } elseif ($auth_result && isset($auth_result['error_code'])) {
+                                    // Specific error (like seat limit) - don't show generic "not activated"
+                                    // Don't set status here, let it fall through to the error handling below
                                 }
                             }
                         }
@@ -3167,11 +3246,24 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
             }
 
-            wp_send_json_success([
-                'is_authenticated' => $is_authenticated,
-                'status' => $status,
-                'user_name' => $user_name,
-            ]);
+            // Check if we have a specific error to report (like seat limit)
+            if (!$is_authenticated && isset($auth_result) && isset($auth_result['error_code'])) {
+                $error_message = $this->get_license_error_message($auth_result['error_code']);
+                wp_send_json_success([
+                    'is_authenticated' => false,
+                    'status' => 'Error',
+                    'user_name' => '',
+                    'error' => true,
+                    'error_message' => $error_message,
+                    'error_code' => $auth_result['error_code']
+                ]);
+            } else {
+                wp_send_json_success([
+                    'is_authenticated' => $is_authenticated,
+                    'status' => $status,
+                    'user_name' => $user_name,
+                ]);
+            }
         }
 
         /**
@@ -3182,20 +3274,30 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         private function check_email_authentication($email, $auth_key)
         {
-            // Use the same auth configuration as the frontend
-            $auth_url = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';
-            $auth_header_title = 'X-Xaiscmolkb';
-            $auth_header_value = 'sdeqw239ejkdgaorti482';
+            // Use middleware to verify email subscription after Appwrite login
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                error_log(__('MaxiBlocks: Missing middleware configuration for email authentication', 'maxi-blocks'));
+                return false;
+            }
+
+            // Replace 'verify' with 'email/verify' in the URL for email authentication
+            $auth_url = str_replace('/verify', '/email/verify', $middleware_url);
 
             $response = wp_remote_post($auth_url, [
                 'timeout' => 30,
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    $auth_header_title => $auth_header_value,
+                    'Authorization' => $middleware_key,
                 ],
                 'body' => wp_json_encode([
                     'email' => $email,
                     'cookie' => $auth_key,
+                    'domain' => parse_url(home_url(), PHP_URL_HOST),
+                    'plugin_version' => MAXI_PLUGIN_VERSION,
+                    'multisite' => is_multisite(),
                 ]),
             ]);
 
@@ -3205,9 +3307,47 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             $body = wp_remote_retrieve_body($response);
+            $status_code = wp_remote_retrieve_response_code($response);
+
+            error_log("MaxiBlocks: API Response - Status: {$status_code}, Body: " . substr($body, 0, 500));
+
             $data = json_decode($body, true);
 
-            if ($data && isset($data['status']) && $data['status'] === 'ok') {
+            // Handle both middleware response format and legacy format
+            if ($data && isset($data['success']) && $data['success']) {
+                // Check if authentication was successful but seat limit exceeded
+                if (!$data['valid'] && isset($data['error_code']) && $data['error_code'] === 'SEAT_LIMIT_EXCEEDED') {
+                    error_log("MaxiBlocks: Seat limit exceeded for email: {$email}");
+                    // Return error details instead of false
+                    return [
+                        'success' => false,
+                        'error_code' => $data['error_code'],
+                        'error_message' => $data['message'] ?? 'Seat limit exceeded'
+                    ];
+                }
+
+                // Check if valid authentication
+                if (isset($data['valid']) && $data['valid']) {
+                    // Middleware response format
+                    $subscription_data = $data['subscription_data'] ?? [];
+                    $name = $subscription_data['name'] ?? $email;
+                    $expiration_date = $subscription_data['expiration_date'] ?? null;
+
+                    if ($expiration_date) {
+                        $today = current_time('Y-m-d');
+                        if ($today > $expiration_date) {
+                            // Save expired status
+                            $this->save_email_license_data($email, $name, 'expired', $auth_key);
+                            return false;
+                        }
+                    }
+
+                    // Save active status
+                    $this->save_email_license_data($email, $name, 'yes', $auth_key);
+                    return ['user_name' => $name];
+                }
+            } elseif ($data && isset($data['status']) && $data['status'] === 'ok') {
+                // Legacy response format
                 $today = current_time('Y-m-d');
                 $expiration_date = $data['expiration_date'] ?? $today;
                 $name = $data['name'] ?? $email;
@@ -3284,7 +3424,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if ($has_email_auth) {
                 // Parse the cookie to get email and key
-                $cookie_data = json_decode($_COOKIE['maxi_blocks_key'], true);
+                // Fix escaped quotes in cookie value
+                $cookie_fixed = str_replace('\\"', '"', $_COOKIE['maxi_blocks_key']);
+                $cookie_data = json_decode($cookie_fixed, true);
                 if ($cookie_data && is_array($cookie_data)) {
                     $email = array_keys($cookie_data)[0];
                     $auth_key = $cookie_data[$email];

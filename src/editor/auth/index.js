@@ -379,54 +379,374 @@ export const removeLocalActivation = email => {
 	}
 };
 
+/**
+ * Helper function to get cookie value for a specific email
+ */
+const getMaxiCookieForEmail = email => {
+	const cookies = document.cookie.split(';');
+	for (const cookie of cookies) {
+		const [name, value] = cookie.trim().split('=');
+		if (name === process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY) {
+			try {
+				const cookieData = JSON.parse(value);
+				return cookieData[email] || null;
+			} catch (e) {
+				console.error('Error parsing auth cookie:', e);
+				return null;
+			}
+		}
+	}
+	return null;
+};
+
+/**
+ * Helper function to check existing authentication from local storage
+ */
+const checkExistingAuthentication = () => {
+	// Check for purchase code authentication first
+	if (isPurchaseCodeActive()) {
+		return true;
+	}
+
+	// Check for email authentication
+	const emailInfo = getProInfoByEmail();
+	if (emailInfo && emailInfo.info?.status === 'yes') {
+		return true;
+	}
+
+	return false;
+};
+
+/**
+ * Initiate email authentication via WordPress AJAX (same as dashboard)
+ */
+const initiateEmailAuthentication = async email => {
+	try {
+		const licenseSettings = window.maxiLicenseSettings || {};
+		const { ajaxUrl, nonce } = licenseSettings;
+
+		if (!ajaxUrl || !nonce) {
+			console.error('Missing WordPress AJAX configuration');
+			return false;
+		}
+
+		const formData = new FormData();
+		formData.append('action', 'maxi_validate_license');
+		formData.append('nonce', nonce);
+		formData.append('license_input', email);
+		formData.append('license_action', 'activate');
+
+		const response = await fetch(ajaxUrl, {
+			method: 'POST',
+			body: formData,
+		});
+
+		if (!response.ok) {
+			console.error(
+				'WordPress AJAX call failed. Status:',
+				response.status
+			);
+			return false;
+		}
+
+		const data = await response.json();
+
+		console.error(
+			JSON.stringify({
+				message: 'Email auth initiation response',
+				email,
+				response: data,
+			})
+		);
+
+		return data;
+	} catch (error) {
+		console.error('Email auth initiation error:', error);
+		return false;
+	}
+};
+
+/**
+ * Check email authentication status via WordPress AJAX (similar to admin.js)
+ */
+const checkEmailAuthenticationStatus = async email => {
+	try {
+		// Get the auth key from cookie
+		const authKey = getMaxiCookieForEmail(email);
+
+		if (!authKey) {
+			console.error('No auth key found for email:', email);
+			return false;
+		}
+
+		// Use WordPress AJAX endpoint
+		const licenseSettings = window.maxiLicenseSettings || {};
+		const { ajaxUrl, nonce } = licenseSettings;
+
+		if (!ajaxUrl || !nonce) {
+			console.error('Missing WordPress AJAX configuration');
+			return false;
+		}
+
+		const formData = new FormData();
+		formData.append('action', 'maxi_check_auth_status');
+		formData.append('nonce', nonce);
+
+		const response = await fetch(ajaxUrl, {
+			method: 'POST',
+			body: formData,
+		});
+
+		if (!response.ok) {
+			console.error(
+				'WordPress AJAX call failed. Status:',
+				response.status
+			);
+			return false;
+		}
+
+		const data = await response.json();
+
+		console.error(
+			JSON.stringify({
+				message: 'Auth check response',
+				email,
+				authKey: `${authKey.substring(0, 4)}...`,
+				response: data,
+				cookieData:
+					document.cookie
+						.split(';')
+						.find(c => c.includes('maxi_blocks_key')) ||
+					'No maxi_blocks_key cookie found',
+			})
+		);
+
+		if (data && data.success && data.data) {
+			if (data.data.is_authenticated) {
+				return {
+					success: true,
+					user_name: data.data.user_name,
+				};
+			}
+			if (data.data.error && data.data.error_message) {
+				// Handle specific errors like seat limit
+				console.error(
+					`Authentication error: ${data.data.error_message}`
+				);
+				// In the block editor, we just log the error since there's no message UI
+				return false;
+			}
+		}
+
+		return false;
+	} catch (error) {
+		console.error('Email auth check error:', error);
+		return false;
+	}
+};
+
+// Keep track of active polling to prevent multiple instances
+let activePollingEmail = null;
+
+/**
+ * Start smart authentication checking using Page Visibility API and focus events
+ * This is much more efficient than constant polling - only checks when user returns to tab
+ */
+const startSmartAuthCheck = email => {
+	// Set active polling email to prevent duplicates
+	activePollingEmail = email;
+
+	console.error(
+		JSON.stringify({
+			message: 'Starting smart auth checking (Page Visibility API)',
+			email,
+		})
+	);
+
+	let fallbackTimeout;
+	let isCheckingAuth = false;
+
+	const stopAuthCheck = () => {
+		activePollingEmail = null;
+		if (fallbackTimeout) {
+			clearTimeout(fallbackTimeout);
+		}
+		// Remove event listeners
+		document.removeEventListener(
+			'visibilitychange',
+			handleVisibilityChange
+		);
+		window.removeEventListener('focus', handleWindowFocus);
+	};
+
+	const checkAuth = async (trigger = 'unknown') => {
+		if (isCheckingAuth) return false; // Prevent multiple simultaneous checks
+
+		isCheckingAuth = true;
+
+		console.error(
+			JSON.stringify({
+				message: 'Checking auth status',
+				email,
+				trigger,
+				timestamp: new Date().toISOString(),
+			})
+		);
+
+		try {
+			const authResult = await checkEmailAuthenticationStatus(email);
+			if (authResult) {
+				console.error(
+					JSON.stringify({
+						message: 'Email authentication completed!',
+						email,
+						userName: authResult.user_name,
+						trigger,
+					})
+				);
+
+				// Stop auth checking
+				stopAuthCheck();
+
+				// Update local storage to reflect the authenticated state
+				const cookieKey = getMaxiCookieForEmail(email);
+				if (cookieKey) {
+					processLocalActivation(
+						email,
+						authResult.user_name || email,
+						'yes',
+						cookieKey
+					);
+				}
+
+				// Trigger a custom event that the UI can listen to
+				const authEvent = new CustomEvent('maxiEmailAuthSuccess', {
+					detail: {
+						email,
+						userName: authResult.user_name,
+						status: 'authenticated',
+					},
+				});
+				window.dispatchEvent(authEvent);
+
+				return true;
+			}
+		} catch (error) {
+			console.error('Error checking auth status:', error);
+		} finally {
+			isCheckingAuth = false;
+		}
+
+		return false;
+	};
+
+	// Handle when user returns to tab (most important trigger)
+	const handleVisibilityChange = () => {
+		if (document.visibilityState === 'visible') {
+			console.error(
+				JSON.stringify({
+					message: 'Tab became visible - checking auth',
+					email,
+				})
+			);
+			checkAuth('tab-visible');
+		}
+	};
+
+	// Handle when window gets focus (backup trigger)
+	const handleWindowFocus = () => {
+		console.error(
+			JSON.stringify({
+				message: 'Window gained focus - checking auth',
+				email,
+			})
+		);
+		checkAuth('window-focus');
+	};
+
+	// Add event listeners
+	document.addEventListener('visibilitychange', handleVisibilityChange);
+	window.addEventListener('focus', handleWindowFocus);
+
+	// Check immediately
+	checkAuth('initial');
+
+	// Fallback: Check once every 60 seconds as a safety net (much less frequent than before)
+	const fallbackCheck = () => {
+		if (activePollingEmail === email) {
+			// Only check if tab is visible to avoid unnecessary API calls
+			if (document.visibilityState === 'visible') {
+				checkAuth('fallback-timer');
+			}
+			fallbackTimeout = setTimeout(fallbackCheck, 60000); // 60 seconds
+		}
+	};
+	fallbackTimeout = setTimeout(fallbackCheck, 60000);
+
+	// Stop checking after 10 minutes
+	setTimeout(() => {
+		if (activePollingEmail === email) {
+			console.error(
+				JSON.stringify({
+					message: 'Smart auth check timeout - stopping',
+					email,
+				})
+			);
+			stopAuthCheck();
+		}
+	}, 600000); // 10 minutes
+};
+
 export async function authConnect(withRedirect = false, email = false) {
 	const url = 'https://my.maxiblocks.com/login?plugin';
 
-	let cookieKey = document.cookie
-		.split(';')
-		.find(row =>
-			row
-				.trim()
-				.startsWith(`${process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY}=`)
-		)
-		?.split('=')[1];
+	// First, check if we should try to authenticate with existing stored data
+	if (!email) {
+		// Check if we have existing authentication data stored locally
+		const existingAuth = checkExistingAuthentication();
+		if (existingAuth) {
+			return true;
+		}
+		// No existing auth and no email provided
+		return false;
+	}
 
-	if (!cookieKey && !email) return;
+	// Check if authentication is already in progress for this email
+	if (activePollingEmail === email) {
+		console.error(
+			JSON.stringify({
+				message: 'Authentication already in progress for this email',
+				email,
+			})
+		);
+		return false;
+	}
 
-	if (cookieKey) {
-		const cookieObj = JSON.parse(cookieKey);
-		const cookieEmail = Object.keys(cookieObj)[0];
-		if (cookieEmail !== email) {
-			removeMaxiCookie();
-			cookieKey = false;
+	// Check if we already have a valid cookie for this email
+	const existingCookie = getMaxiCookieForEmail(email);
+	if (existingCookie) {
+		// Try to authenticate with existing cookie
+		const authResult = await checkEmailAuthenticationStatus(email);
+		if (authResult) {
+			return true;
 		}
 	}
 
-	if (!cookieKey && email) {
-		const generateCookieKey = (email, length) => {
-			let key = '';
-			const string =
-				'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-			const stringLength = string.length;
-			let i = 0;
-			while (i < length) {
-				key += string.charAt(Math.floor(Math.random() * stringLength));
-				i += 1;
-			}
+	// If no existing authentication, initiate email authentication like the dashboard does
+	const authResult = await initiateEmailAuthentication(email);
+	if (authResult && authResult.success) {
+		// Authentication initiated successfully, redirect to login
+		if (withRedirect && authResult.login_url) {
+			window.open(authResult.login_url, '_blank')?.focus();
+		}
 
-			const obj = { [email]: key };
-			return JSON.stringify(obj);
-		};
-		cookieKey = generateCookieKey(email, 20);
-		document.cookie = `${
-			process.env.REACT_APP_MAXI_BLOCKS_AUTH_KEY
-		}=${cookieKey};max-age=2592000;Path=${getPathToAdmin()};`;
+		// Start smart auth checking for authentication completion
+		startSmartAuthCheck(email);
+
+		return false; // Return false initially, authentication will be completed after user logs in
 	}
 
-	const redirect = () => {
-		withRedirect && window.open(url, '_blank')?.focus();
-	};
-
+	// Fallback to old behavior if initiation fails
 	const deactivateLocal = () => {
 		dispatch('maxiBlocks/pro').saveMaxiProStatus(
 			JSON.stringify({ status: 'no' })
@@ -434,85 +754,13 @@ export async function authConnect(withRedirect = false, email = false) {
 		return false;
 	};
 
-	const key = JSON.parse(cookieKey)?.[email];
+	const redirect = () => {
+		withRedirect && window.open(url, '_blank')?.focus();
+	};
 
-	const useEmail = email;
-
-	// eslint-disable-next-line consistent-return
-	return new Promise((resolve, reject) => {
-		if (!useEmail) {
-			deactivateLocal();
-			redirect();
-			resolve(false);
-		} else {
-			const fetchUrl = process.env.REACT_APP_MAXI_BLOCKS_AUTH_URL;
-			const checkTitle =
-				process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_TITLE;
-			const checkValue =
-				process.env.REACT_APP_MAXI_BLOCKS_AUTH_HEADER_VALUE;
-
-			const fetchOptions = {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					[checkTitle]: checkValue,
-				},
-				body: JSON.stringify({ email: useEmail, cookie: key }),
-			};
-
-			fetch(fetchUrl, fetchOptions)
-				.then(response => {
-					if (response.status !== 200) {
-						console.error(
-							`There was a problem with an API call. Status Code: ${response.status}`
-						);
-						deactivateLocal();
-						redirect();
-						resolve(false);
-					}
-
-					response.json().then(data => {
-						if (data && data.status === 'ok') {
-							const today = new Date().toISOString().slice(0, 10);
-							const expirationDate = data?.expiration_date;
-							const { name } = data;
-
-							if (today > expirationDate) {
-								processLocalActivation(
-									useEmail,
-									name,
-									'expired',
-									key
-								);
-								redirect();
-								resolve(false);
-							} else {
-								processLocalActivation(
-									useEmail,
-									name,
-									'yes',
-									key
-								);
-								resolve(true);
-							}
-						} else {
-							if (data?.error) {
-								console.error(data.error);
-							}
-							deactivateLocal();
-							redirect();
-							resolve(false);
-						}
-					});
-				})
-				.catch(err => {
-					console.error('Fetch Error for the API call:', err);
-					deactivateLocal();
-					redirect();
-					resolve(false);
-				});
-		}
-	});
+	deactivateLocal();
+	redirect();
+	return false;
 }
 
 /**

@@ -901,21 +901,17 @@ document.addEventListener('DOMContentLoaded', function () {
 				return false;
 			}
 
-			// Call the MaxiBlocks API directly
-			const response = await fetch(
-				'https://my.maxiblocks.com/plugin-api-fwefqw.php',
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-Xaiscmolkb': 'sdeqw239ejkdgaorti482',
-					},
-					body: JSON.stringify({
-						email,
-						cookie: authKey,
-					}),
-				}
-			);
+			// Call WordPress AJAX endpoint to check authentication status
+			const formData = new FormData();
+			formData.append('action', 'maxi_check_auth_status');
+			// eslint-disable-next-line no-undef
+			formData.append('nonce', maxiLicenseSettings.nonce);
+
+			// eslint-disable-next-line no-undef
+			const response = await fetch(maxiLicenseSettings.ajaxUrl, {
+				method: 'POST',
+				body: formData,
+			});
 
 			if (!response.ok) {
 				console.error('API response not ok:', response.status);
@@ -924,53 +920,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			const data = await response.json();
 
-			if (data && data.status === 'ok') {
-				const today = new Date().toISOString().slice(0, 10);
-				const expirationDate = data.expiration_date || today;
-				const name = data.name || email;
-
-				if (today > expirationDate) {
-					console.error('License expired');
-					// Save expired status via WordPress
-					await saveLicenseData(email, name, 'expired', authKey);
+			if (data && data.success) {
+				if (data.data.is_authenticated) {
+					// WordPress AJAX response format
+					return {
+						success: true,
+						user_name: data.data.user_name,
+					};
+				}
+				if (data.data.error && data.data.error_message) {
+					// Handle specific errors like seat limit
+					showMessage(data.data.error_message, true);
 					return false;
 				}
-				// Save active status via WordPress
-				await saveLicenseData(email, name, 'yes', authKey);
-				return { success: true, user_name: name };
 			}
 
 			return false;
 		} catch (error) {
 			console.error('Email auth check error:', error);
 			return false;
-		}
-	}
-
-	/**
-	 * Save license data via WordPress AJAX
-	 */
-	async function saveLicenseData(email, name, status, authKey) {
-		try {
-			const formData = new FormData();
-			formData.append('action', 'maxi_save_email_license');
-			// eslint-disable-next-line no-undef
-			formData.append('nonce', maxiLicenseSettings.nonce);
-			formData.append('email', email);
-			formData.append('name', name);
-			formData.append('status', status);
-			formData.append('auth_key', authKey);
-
-			// eslint-disable-next-line no-undef
-			const response = await fetch(maxiLicenseSettings.ajaxUrl, {
-				method: 'POST',
-				body: formData,
-			});
-
-			// eslint-disable-next-line no-unused-vars
-			const data = await response.json();
-		} catch (error) {
-			console.error('Error saving license data:', error);
 		}
 	}
 

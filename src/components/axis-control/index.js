@@ -333,7 +333,6 @@ const AxisControlContent = props => {
 		inputsArray,
 		disableSync = false,
 		enableAxisUnits,
-		target,
 	} = props;
 
 	const sync =
@@ -342,7 +341,7 @@ const AxisControlContent = props => {
 			breakpoint,
 			attributes: props,
 			isHover,
-		}) || (target === 'padding' ? 'none' : 'all'); // Default padding to 'none' (separate mode)
+		}) || 'none'; // Default to 'none' (Set separately)
 
 	const getSyncLabel = () => {
 		const label =

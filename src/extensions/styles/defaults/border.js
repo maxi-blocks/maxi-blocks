@@ -30,7 +30,7 @@ export const rawBorderWidth = {
 	},
 	'border-sync-width': {
 		type: 'string',
-		default: 'all',
+		default: 'none',
 	},
 	'border-unit-width': {
 		type: 'string',
@@ -53,7 +53,7 @@ export const rawBorderRadius = {
 	},
 	'border-sync-radius': {
 		type: 'string',
-		default: 'all',
+		default: 'none',
 	},
 	'border-unit-radius': {
 		type: 'string',

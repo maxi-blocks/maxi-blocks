@@ -136,7 +136,7 @@
 
 		.maxi-axis-control__content__item {
 			width: var(--maxi-layout-full-width);
-			margin-bottom: var(--maxi-space-0px);
+			margin-bottom: var(--maxi-space-0px) !important;
 		}
 	}
 
@@ -266,7 +266,7 @@
 
 		/* Kill legacy spacing that fights gap */
 		.maxi-axis-control__item--top-row {
-			margin-bottom: 0;
+			margin-bottom: 0 !important;
 		}
 
 		.maxi-axis-control__item-auto {
@@ -411,7 +411,7 @@
 
 		/* Reset any conflicting margins from previous layout */
 		.maxi-axis-control__item--top-row {
-			margin-bottom: 0;
+			margin-bottom: var(--maxi-space-0px) !important;
 		}
 
 		/* Individual field styling for better alignment */

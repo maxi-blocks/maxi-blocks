@@ -168,6 +168,7 @@ const BorderWidthControl = props => {
 			disableAuto
 			isHover={isHover}
 			{...(isToolbar && { disableSync: true })}
+			disableRange
 		/>
 	);
 };
@@ -430,6 +431,7 @@ const BorderControl = props => {
 							'bottom-left',
 							'unit',
 						]}
+						disableRange
 					/>
 				</>
 			)}

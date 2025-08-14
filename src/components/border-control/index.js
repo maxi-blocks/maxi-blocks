@@ -50,79 +50,98 @@ const BorderColorControl = props => {
 		globalProps,
 	} = props;
 
+	// Get the border sync state for unique class identification
+	const borderSyncValue = getLastBreakpointAttribute({
+		target: `${prefix}border-sync-width`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const isBorderSyncAll = borderSyncValue === 'all';
+
+	// Generate unique classes for border color control
+	const borderColorClasses = classnames(
+		'maxi-border-color-control',
+		isBorderSyncAll && 'maxi-border-color-control--sync-all',
+		!isBorderSyncAll && 'maxi-border-color-control--sync-separate'
+	);
+
 	return (
-		<ColorControl
-			label={__('Border', 'maxi-blocks')}
-			color={getLastBreakpointAttribute({
-				target: `${prefix}border-color`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
-			paletteStatus={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-status`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
-			paletteSCStatus={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-sc-status`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
-			paletteColor={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-color`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
-			paletteOpacity={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-opacity`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
-			onChangeInline={({ color }) => {
-				onChangeInline &&
-					onChangeInline({
-						'border-color': color,
+		<div className={borderColorClasses}>
+			<ColorControl
+				label={__('Border', 'maxi-blocks')}
+				color={getLastBreakpointAttribute({
+					target: `${prefix}border-color`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}
+				paletteStatus={getLastBreakpointAttribute({
+					target: `${prefix}border-palette-status`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}
+				paletteSCStatus={getLastBreakpointAttribute({
+					target: `${prefix}border-palette-sc-status`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}
+				paletteColor={getLastBreakpointAttribute({
+					target: `${prefix}border-palette-color`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}
+				paletteOpacity={getLastBreakpointAttribute({
+					target: `${prefix}border-palette-opacity`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}
+				onChangeInline={({ color }) => {
+					onChangeInline &&
+						onChangeInline({
+							'border-color': color,
+						});
+				}}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteSCStatus,
+					paletteOpacity,
+					color,
+				}) => {
+					onChange({
+						[`${prefix}border-palette-status-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: paletteStatus,
+						[`${prefix}border-palette-sc-status-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: paletteSCStatus,
+						[`${prefix}border-palette-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: paletteColor,
+						[`${prefix}border-palette-opacity-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: paletteOpacity,
+						[`${prefix}border-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: color,
 					});
-			}}
-			onChange={({
-				paletteColor,
-				paletteStatus,
-				paletteSCStatus,
-				paletteOpacity,
-				color,
-			}) => {
-				onChange({
-					[`${prefix}border-palette-status-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteStatus,
-					[`${prefix}border-palette-sc-status-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteSCStatus,
-					[`${prefix}border-palette-color-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteColor,
-					[`${prefix}border-palette-opacity-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteOpacity,
-					[`${prefix}border-color-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: color,
-				});
-			}}
-			disableImage
-			disableVideo
-			disableGradient
-			isHover={isHover}
-			deviceType={breakpoint}
-			clientId={clientId}
-			globalProps={globalProps}
-			prefix={`${prefix}border-`}
-		/>
+				}}
+				disableImage
+				disableVideo
+				disableGradient
+				isHover={isHover}
+				deviceType={breakpoint}
+				clientId={clientId}
+				globalProps={globalProps}
+				prefix={`${prefix}border-`}
+			/>
+		</div>
 	);
 };
 
@@ -135,41 +154,64 @@ const BorderWidthControl = props => {
 		isToolbar,
 	} = props;
 
+	// Get the border sync state for unique class identification
+	const borderSyncValue = getLastBreakpointAttribute({
+		target: `${prefix}border-sync-width`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const isBorderSyncAll = borderSyncValue === 'all';
+
+	// Generate unique classes for border width control
+	const borderWidthClasses = classnames(
+		'maxi-border-width-control',
+		isToolbar && 'maxi-border-width-control--toolbar',
+		!isToolbar && 'maxi-border-width-control--panel',
+		isBorderSyncAll && 'maxi-border-width-control--sync-all',
+		!isBorderSyncAll && 'maxi-border-width-control--sync-separate'
+	);
+
 	return (
-		<AxisControl
-			{...getGroupAttributes(props, 'borderWidth', isHover, prefix)}
-			target={`${prefix}border`}
-			auxTarget='width'
-			{...(!isToolbar && { label: __('Border width', 'maxi-blocks') })}
-			onChange={obj => {
-				if (!isToolbar) onChange(obj);
-				else
-					onChange({
-						[`border-sync-width-${breakpoint}`]: 'all',
-						...obj,
-					});
-			}}
-			breakpoint={breakpoint}
-			allowedUnits={['px', 'em', 'vw']}
-			minMaxSettings={{
-				px: {
-					min: 0,
-					max: 99,
-				},
-				em: {
-					min: 0,
-					max: 10,
-				},
-				vw: {
-					min: 0,
-					max: 10,
-				},
-			}}
-			disableAuto
-			isHover={isHover}
-			{...(isToolbar && { disableSync: true })}
-			disableRange
-		/>
+		<div className={borderWidthClasses}>
+			<AxisControl
+				{...getGroupAttributes(props, 'borderWidth', isHover, prefix)}
+				target={`${prefix}border`}
+				auxTarget='width'
+				{...(!isToolbar && {
+					label: __('Border width', 'maxi-blocks'),
+				})}
+				onChange={obj => {
+					if (!isToolbar) onChange(obj);
+					else
+						onChange({
+							[`border-sync-width-${breakpoint}`]: 'all',
+							...obj,
+						});
+				}}
+				breakpoint={breakpoint}
+				allowedUnits={['px', 'em', 'vw']}
+				minMaxSettings={{
+					px: {
+						min: 0,
+						max: 99,
+					},
+					em: {
+						min: 0,
+						max: 10,
+					},
+					vw: {
+						min: 0,
+						max: 10,
+					},
+				}}
+				disableAuto
+				isHover={isHover}
+				{...(isToolbar && { disableSync: true })}
+				disableRange
+			/>
+		</div>
 	);
 };
 
@@ -209,9 +251,21 @@ const BorderControl = props => {
 
 	const isBorderEnable = borderStyleValue && borderStyleValue !== 'none';
 
+	// Get the border sync state to determine if borders are set together or separately
+	const borderSyncValue = getLastBreakpointAttribute({
+		target: `${prefix}border-sync-width`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const isBorderSyncAll = borderSyncValue === 'all';
+
 	const classes = classnames(
 		'maxi-border-control',
 		!isBorderEnable && 'maxi-border-control--disable',
+		isBorderSyncAll && 'maxi-border-control--sync-all',
+		!isBorderSyncAll && 'maxi-border-control--sync-separate',
 		className
 	);
 

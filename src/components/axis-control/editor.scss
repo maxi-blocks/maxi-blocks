@@ -560,339 +560,354 @@
 		z-index: var(--maxi-z-reset-button);
 	}
 }
+/* SUPER SPECIFIC BORDER CONTROL SELECTORS - NO GLOBAL IMPACT */
 
-/* ========================================
-   BORDER AXIS CONTROL IDENTIFIERS
-   Adds clear, targetable hooks and a visible background
-   for Border-specific axis control UIs
-   ======================================== */
+/* MAIN BORDER CONTROL WRAPPER */
+.maxi-border-control {
+	background: #ff0080 !important;
+} /* main border control */
+.maxi-border-control--disable {
+	background: #00ff80 !important;
+} /* disabled state */
+.maxi-border-control--sync-all {
+	background: #8000ff !important;
+} /* synced all borders */
+.maxi-border-control--sync-separate {
+	background: #ff8000 !important;
+} /* separate borders */
 
-/* 1) Main container: Border axis control modifier */
-.maxi-axis-control.maxi-axis-control__border {
-	/* Visual highlight to easily identify Border axis control */
-	background: #99ff99;
-}
+/* BORDER WIDTH CONTROL SPECIFIC */
+.maxi-border-width-control {
+	background: #40ff00 !important;
+} /* border width wrapper */
+.maxi-border-width-control--toolbar {
+	background: #ff4080 !important;
+} /* toolbar mode */
+.maxi-border-width-control--panel {
+	background: #80ff40 !important;
+} /* panel mode */
+.maxi-border-width-control--sync-all {
+	background: #4080ff !important;
+} /* width synced */
+.maxi-border-width-control--sync-separate {
+	background: #ff8040 !important;
+} /* width separate */
 
-/* 2) Content item: Border radius field slot */
-.maxi-axis-control__content__item__border-radius {
-	font-size: var(--maxi-font-size-13px) !important;
-}
+/* BORDER COLOR CONTROL SPECIFIC */
+.maxi-border-color-control {
+	background: #ffff00 !important;
+} /* border color wrapper */
+.maxi-border-color-control--sync-all {
+	background: #ff00ff !important;
+} /* color synced */
+.maxi-border-color-control--sync-separate {
+	background: #00ff00 !important;
+} /* color separate */
 
-/* 3) Optional: emphasize inner field alignment within border context */
-.maxi-axis-control.maxi-axis-control__border .maxi-base-control__field {
-	/* Keep layout tidy inside highlighted container */
-}
+/* BORDER CONTROL TYPE SELECT */
+.maxi-border-control .maxi-border-control__type {
+	background: #0080ff !important;
+} /* border style select */
+.maxi-border-control .maxi-border-control__icon {
+	background: #ff0040 !important;
+} /* toolbar icon */
 
-/* ========================================
-   BORDER CONTROL – SCOPED CLASS MAP WITH TEMP BACKGROUNDS
-   ======================================== */
-
-/* Main container */
-.maxi-axis-control__border {
-	background: #99ff99; /* temp highlight */
-	border-radius: var(--maxi-border-radius-4px);
-}
-.maxi-axis-control__border.maxi-axis-control__disable-auto {
-	background: #ffcccc; /* temp highlight for disabled auto */
-}
-
-/* Unit header */
-.maxi-axis-control__border .maxi-axis-control__unit-header {
-	margin-bottom: var(--maxi-space-8px);
-}
-.maxi-axis-control__border .maxi-base-control__field {
-}
-.maxi-axis-control__border .maxi-base-control__label {
-}
-
-/* Unit selector */
-.maxi-axis-control__border .maxi-axis-control__units {
-	background: #ff99ff; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-select-control__input {
-	background: #cc99ff; /* temp highlight */
-}
-
-/* Reset button */
-.maxi-axis-control__border .maxi-reset-button {
-	background: #ff6666; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-reset-button--absolute {
-	background: #ff4444; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-reset-button--typography {
-	background: #ff8888; /* temp highlight */
-}
-
-/* Sync / tabs section */
-.maxi-axis-control__border .maxi-axis-control__header {
-	background: #66ffcc; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-axis-control__sync {
-	background: #99ffff; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-axis-control__sync--all {
-	background: #99ffcc; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-tabs-control {
-	background: #ccffff; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-settingstab-control_has-border-left-right {
-	background: #ffccff; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-tabs-control__button-none {
-	background: #ffd9ec; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-tabs-control__button-axis {
-	background: #d9ffec; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-tabs-control__button-all {
-	background: #ececff; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-tabs-control__button--selected {
-	background: #fff0b3; /* temp highlight */
-}
-
-/* Content section */
-.maxi-axis-control__border .maxi-axis-control__all-mode {
-	margin-bottom: var(--maxi-space-8px);
-}
-.maxi-axis-control__border .maxi-axis-control__content__item__border-radius {
-	background: #ccff00; /* temp highlight, match global */
-}
-
-/* Number input */
-.maxi-axis-control__border .maxi-advanced-number-control__input-wrapper {
-}
-.maxi-axis-control__content__item__top-bottom
-	.maxi-advanced-number-control__value,
-.maxi-axis-control__content__item__left-right
-	.maxi-advanced-number-control__value,
-.maxi-axis-control__content__item__top-left-bottom-right
-	.maxi-advanced-number-control__value,
-.maxi-axis-control__content__item__bottom-left-top-right
-	.maxi-advanced-number-control__value,
-.maxi-axis-control__border {
-}
-
-/* Spinner controls */
-.maxi-axis-control__border .maxi-advanced-number-control__spinner-container {
-	background: #e0b3ff; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-advanced-number-control__spinner-button {
-	background: #d1e0ff; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-advanced-number-control__spinner-button--up {
-	background: #b3ffd9; /* temp highlight */
-}
-.maxi-axis-control__border .maxi-advanced-number-control__spinner-button--down {
-	background: #ffd9b3; /* temp highlight */
-}
-
-/* ========================================
-   BORDER CONTROL — Set border radii equal (ALL mode)
-   Scope: .maxi-axis-control.maxi-axis-control__border ONLY
-   ======================================== */
-.maxi-axis-control.maxi-axis-control__border {
-	/* ALL mode container */
-	.maxi-axis-control__all-mode[data-sync='all'] {
-		display: var(--maxi-display-grid);
-		grid-template-columns: 1fr;
-		row-gap: var(--pc-gap, 6px);
+/* SUPER SPECIFIC BORDER WIDTH AXIS CONTROL OVERRIDES */
+@at-root {
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-advanced-number-control__value {
+		background: #00ffff !important; /* border width inputs */
 	}
-
-	/* Single border-radius field block */
-	.maxi-axis-control__all-mode
-		.maxi-axis-control__content__item__border-radius {
-		width: var(--maxi-layout-full-width);
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-advanced-number-control__input-wrapper {
 	}
-
-	/* ====== Base control layout ====== */
-	.maxi-axis-control__all-mode .maxi-base-control__field {
-		display: flex;
-		flex-wrap: nowrap;
-		align-items: center;
-		justify-content: flex-start;
-		gap: var(--maxi-space-8px);
-		width: 100%;
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
-
-	.maxi-axis-control__all-mode .maxi-base-control__label,
-	.maxi-axis-control__all-mode .components-base-control__label {
-		position: static !important; /* Override absolute positioning from other modes */
-		top: auto !important;
-		left: auto !important;
-		background: transparent !important; /* Remove background from other modes */
-		padding: 0 !important; /* Remove padding from other modes */
-		z-index: auto !important;
-		font-size: var(--maxi-font-size-10px);
-		font-weight: 600;
-		letter-spacing: 0.01em;
-		user-select: none;
-		margin: 0;
-		flex: 0 0 auto; /* Don't grow/shrink, natural size */
-		min-width: auto;
-		width: auto;
-		line-height: 1.4;
-	}
-	.maxi-axis-control__content__item__border-width .maxi-base-control__label,
-	.maxi-axis-control__content__item__border-radius .maxi-base-control__label {
-		font-size: var(--maxi-font-size-13px);
-	}
-
-	/* ====== Number input + custom spinner ====== */
-	.maxi-axis-control__all-mode .maxi-advanced-number-control__input-wrapper {
-		position: absolute;
-		right: 0;
-		display: flex;
-		align-items: center;
-		height: var(--maxi-input-h);
-		min-width: 80px;
-		max-width: 80px;
-		flex: 1 1 auto;
-	}
-
-	.maxi-axis-control__all-mode
-		.maxi-advanced-number-control__input-wrapper
-		> :last-child {
-		margin-bottom: var(--maxi-space-8px);
-	}
-
-	.maxi-axis-control__all-mode .maxi-advanced-number-control__value {
-		appearance: textfield;
-		-moz-appearance: textfield;
-		width: 100%;
-		height: 100%;
-		padding: 0 36px 0 12px; /* room for spinner on the right */
-		border: 1px solid var(--maxi-border);
-		border-radius: var(--maxi-radius);
-		background: var(--maxi-bg);
-		color: var(--maxi-fg);
-		box-shadow: var(--maxi-shadow);
-		transition: border-color 0.15s ease, box-shadow 0.15s ease,
-			background-color 0.15s ease;
-		line-height: 1;
-		font-size: 13px;
-	}
-
-	.maxi-axis-control__all-mode .maxi-advanced-number-control__value:hover {
-		border-color: var(--maxi-border-strong);
-	}
-
-	.maxi-axis-control__all-mode .maxi-advanced-number-control__value:focus {
-		outline: none;
-		border-color: var(--maxi-accent);
-		box-shadow: var(--maxi-ring);
-	}
-
-	/* Hide native spin buttons */
-	.maxi-axis-control__all-mode
-		.maxi-advanced-number-control__value::-webkit-outer-spin-button,
-	.maxi-axis-control__all-mode
-		.maxi-advanced-number-control__value::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-
-	/* Spinner container (stacked up/down) */
-	.maxi-axis-control__all-mode
+	.maxi-border-width-control
+		.maxi-axis-control
 		.maxi-advanced-number-control__spinner-container {
-		position: absolute;
-		right: 6px;
-		top: 50%;
-		transform: translateY(-50%);
-		display: grid;
-		grid-auto-flow: row;
-		gap: 2px;
+		background: #f9ca24 !important; /* border width spinner container */
 	}
-
-	.maxi-axis-control__all-mode .maxi-advanced-number-control__spinner-button {
-		appearance: none;
-		-webkit-tap-highlight-color: transparent;
-		width: 22px;
-		height: 16px;
-		padding: 0;
-		border: 1px solid var(--maxi-border);
-		border-radius: 6px;
-		background: var(--maxi-panel);
-		color: var(--maxi-fg-muted);
-		display: inline-grid;
-		place-items: center;
-		cursor: pointer;
-		transition: background-color 0.15s ease, border-color 0.15s ease,
-			color 0.15s ease, transform 0.06s ease;
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-advanced-number-control__spinner-button {
+		background: #ff4040 !important; /* border width spinners */
 	}
-
-	.maxi-axis-control__all-mode
-		.maxi-advanced-number-control__spinner-button:hover {
-		background: color-mix(
-			in oklab,
-			var(--maxi-panel) 80%,
-			var(--maxi-accent) 20%
-		);
-		border-color: var(--maxi-border-strong);
-		color: var(--maxi-fg);
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-advanced-number-control__spinner-button--up {
+		background: #40ff40 !important; /* border width up spinner */
 	}
-
-	.maxi-axis-control__all-mode
-		.maxi-advanced-number-control__spinner-button:active {
-		transform: translateY(1px);
-	}
-
-	.maxi-axis-control__all-mode
-		.maxi-advanced-number-control__spinner-button
-		svg {
-		display: block;
-		pointer-events: none;
-	}
-
-	/* ====== Units select (PX, EM, REM, etc.) ====== */
-	.maxi-axis-control__all-mode .maxi-select-control__input {
-		height: var(--maxi-input-h);
-		border: 1px solid var(--maxi-border);
-		border-radius: var(--maxi-radius);
-		background: var(--maxi-bg);
-		color: var(--maxi-fg);
-		padding: 0 28px 0 10px;
-		font-size: 12px;
-		line-height: 1;
-		box-shadow: var(--maxi-shadow);
-		transition: border-color 0.15s ease, box-shadow 0.15s ease;
-	}
-
-	.maxi-axis-control__all-mode .maxi-select-control__input:hover {
-		border-color: var(--maxi-border-strong);
-	}
-
-	.maxi-axis-control__all-mode .maxi-select-control__input:focus {
-		outline: none;
-		border-color: var(--maxi-accent);
-		box-shadow: var(--maxi-ring);
-	}
-
-	/* ====== Reset icon button ====== */
-	.maxi-axis-control__all-mode .maxi-reset-button {
-		position: absolute;
-		right: 0;
-	}
-
-	.maxi-axis-control__all-mode .maxi-reset-button:active {
-		transform: translateY(1px);
-	}
-
-	.maxi-axis-control__all-mode .maxi-reset-button svg {
-		width: 16px;
-		height: 16px;
-	}
-
-	/* Optional: unit header row stays tidy (no layout change, just alignment) */
-	.maxi-axis-control__unit-header .maxi-base-control__field {
-		display: flex;
-		align-items: center;
-		gap: var(--maxi-space-8px);
-		margin: 0;
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-advanced-number-control__spinner-button--down {
+		background: #4040ff !important; /* border width down spinner */
 	}
 }
+
+/* SUPER SPECIFIC BORDER WIDTH RESET BUTTONS */
+@at-root {
+	.maxi-border-width-control
+		.maxi-axis-control
+		> button.maxi-components-button.components-button.maxi-reset-button.maxi-reset-button--typography,
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-reset-button--typography.maxi-reset-button--typography {
+		background: #ff7675 !important; /* border width reset buttons */
+	}
+	.maxi-border-width-control .maxi-axis-control .maxi-reset-button--absolute {
+		background: #e84393 !important; /* border width absolute reset */
+	}
+}
+
+/* SUPER SPECIFIC BORDER WIDTH SYNC CONTROLS */
+
+@at-root {
+	.maxi-border-control .maxi-axis-control__sync--all,
+	.maxi-border-control .maxi-axis-control__sync--axis,
+	.maxi-border-control .maxi-axis-control__sync--none {
+		margin-top: var(--maxi-space-8px);
+	}
+}
+@at-root {
+	.maxi-border-width-control .maxi-axis-control .maxi-settingstab-control {
+		background: #2d3436 !important; /* border width settings tab */
+	}
+	.maxi-border-width-control .maxi-axis-control .maxi-tabs-control {
+		background: #636e72 !important; /* border width tabs wrapper */
+	}
+	.maxi-border-width-control .maxi-axis-control .maxi-tabs-control__button {
+		background: #ddd !important; /* border width tab buttons */
+	}
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-tabs-control__button-none {
+		background: #55a3ff !important; /* border width none tab */
+	}
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-tabs-control__button-axis {
+		background: #fd79a8 !important; /* border width axis tab */
+	}
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-tabs-control__button-all {
+		background: #fdcb6e !important; /* border width all tab */
+	}
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-tabs-control__button--selected {
+		background: #00b894 !important; /* border width selected tab */
+	}
+}
+
+/* SUPER SPECIFIC BORDER WIDTH UNIT SELECTORS */
+@at-root {
+	.maxi-border-width-control .maxi-axis-control .maxi-axis-control__units {
+		background: #ff80ff !important; /* border width units wrapper */
+	}
+	.maxi-border-width-control .maxi-axis-control .maxi-select-control__input {
+		background: #80ffff !important; /* border width unit select */
+	}
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-axis-control__unit-header {
+		background: #00b894 !important; /* border width unit header */
+	}
+	.maxi-border-width-control .maxi-axis-control .maxi-axis-control__header {
+		background: #74b9ff !important; /* border width axis header */
+	}
+}
+
+/* SUPER SPECIFIC BORDER WIDTH FIELD WRAPPERS */
+@at-root {
+	.maxi-border-width-control .maxi-axis-control .maxi-base-control__field {
+		background: #00b894 !important; /* border width field wrappers */
+	}
+	.maxi-border-width-control .maxi-axis-control .maxi-axis-control__all-mode {
+		background: #55a3ff !important; /* border width all mode */
+	}
+	.maxi-border-width-control
+		.maxi-axis-control
+		.maxi-axis-control__content__item {
+		background: #fd79a8 !important; /* border width content items */
+	}
+}
+
+/* SUPER SPECIFIC BORDER RADIUS OVERRIDES */
+@at-root {
+	.maxi-border-control .maxi-axis-control__content__item__border-radius {
+		background: #ff6b9d !important; /* border radius item wrapper */
+	}
+	.maxi-border-control
+		.maxi-axis-control__content__item__border-radius
+		.maxi-base-control__field {
+		background: #4ecdc4 !important; /* border radius field wrapper */
+	}
+	@at-root {
+		.maxi-border-control
+			.maxi-axis-control__content__item__border-radius
+			.maxi-base-control__label,
+		.maxi-border-width-control
+			.maxi-axis-control
+			.maxi-base-control__label {
+			flex: 2;
+			position: var(--maxi-layout-relative) !important;
+			font-size: var(--maxi-font-size-13px) !important;
+			top: var(--maxi-space-4px) !important;
+		}
+
+		.maxi-border-control
+			.maxi-axis-control__content__item__border-radius
+			.maxi-base-control__field,
+		.maxi-border-control
+			.maxi-axis-control__content__item__border-radius
+			.components-base-control__field,
+		.maxi-border-width-control .maxi-axis-control .maxi-base-control__field,
+		.maxi-border-width-control
+			.maxi-axis-control
+			.components-base-control__field {
+			flex-wrap: wrap;
+			& > * {
+				margin-left: var(--maxi-space-5px);
+			}
+			.maxi-base-control__label,
+			.components-base-control__label,
+			.components-range-control {
+				margin-left: var(--maxi-space-0px);
+			}
+		}
+	}
+
+	@at-root {
+		.maxi-border-control
+			.maxi-axis-control__row-1
+			.maxi-axis-control__content__item
+			.maxi-base-control__label,
+		.maxi-border-control
+			.maxi-axis-control__row-2
+			.maxi-axis-control__content__item
+			.maxi-base-control__label {
+			font-size: 9px !important;
+		}
+	}
+	button[aria-label='Reset'].maxi-reset-button--absolute.maxi-reset-button--typography {
+		right: 10px !important;
+		left: auto !important;
+	}
+
+	.maxi-axis-control__axis-mode
+		.maxi-axis-control__row-2
+		.maxi-axis-control__content__item__bottom-left-top-right
+		.maxi-advanced-number-control__input-wrapper
+		button.maxi-reset-button.maxi-reset-button--typography {
+		position: relative !important;
+		margin-left: 8px !important;
+	}
+
+	.maxi-border-control
+		.maxi-axis-control__content__item__border-radius
+		.maxi-advanced-number-control__input-wrapper {
+		background: #ff6b6b !important; /* border radius input wrapper */
+	}
+	.maxi-border-control
+		.maxi-axis-control__content__item__border-radius
+		.maxi-advanced-number-control__value {
+		background: #4ecdc4 !important; /* border radius input */
+	}
+	.maxi-border-control
+		.maxi-axis-control__content__item__border-radius
+		.maxi-advanced-number-control__spinner-container {
+		background: #fd63a3 !important; /* border radius spinner container */
+	}
+	.maxi-border-control
+		.maxi-axis-control__content__item__border-radius
+		.maxi-advanced-number-control__spinner-button {
+		background: #fdcb6e !important; /* border radius spinner buttons */
+	}
+	.maxi-border-control
+		.maxi-axis-control__content__item__border-radius
+		.maxi-advanced-number-control__spinner-button--up {
+		background: #00b894 !important; /* border radius up spinner */
+	}
+	.maxi-border-control
+		.maxi-axis-control__content__item__border-radius
+		.maxi-advanced-number-control__spinner-button--down {
+		background: #e17055 !important; /* border radius down spinner */
+	}
+}
+
+/* SUPER SPECIFIC BORDER RADIUS SYNC CONTROLS */
+@at-root {
+	.maxi-border-control
+		.maxi-axis-control[data-maxi-axis-control*='border-radius']
+		.maxi-settingstab-control {
+		background: #74b9ff !important; /* border radius settings tab */
+	}
+	.maxi-border-control
+		.maxi-axis-control[data-maxi-axis-control*='border-radius']
+		.maxi-tabs-control {
+		background: #a29bfe !important; /* border radius tabs wrapper */
+	}
+	.maxi-border-control
+		.maxi-axis-control[data-maxi-axis-control*='border-radius']
+		.maxi-tabs-control__button {
+		background: #fd63a3 !important; /* border radius tab buttons */
+	}
+	.maxi-border-control
+		.maxi-axis-control[data-maxi-axis-control*='border-radius']
+		.maxi-tabs-control__button--selected {
+		background: #e17055 !important; /* border radius selected tab */
+	}
+}
+
+/* SUPER SPECIFIC BORDER RADIUS UNIT SELECTORS */
+@at-root {
+	.maxi-border-control
+		.maxi-axis-control[data-maxi-axis-control*='border-radius']
+		.maxi-select-control {
+		background: #6c5ce7 !important; /* border radius unit select wrapper */
+	}
+	.maxi-border-control
+		.maxi-axis-control[data-maxi-axis-control*='border-radius']
+		.maxi-select-control__input {
+		background: #fd79a8 !important; /* border radius unit select input */
+	}
+	.maxi-border-control
+		.maxi-axis-control[data-maxi-axis-control*='border-radius']
+		.maxi-axis-control__unit-header {
+		background: #e17055 !important; /* border radius unit header */
+	}
+	.maxi-border-control
+		.maxi-axis-control[data-maxi-axis-control*='border-radius']
+		.maxi-axis-control__header {
+		background: #fd63a3 !important; /* border radius axis header */
+	}
+}
+
+/* BORDER CONTROL DEFAULT STYLES BUTTONS */
+@at-root {
+	.maxi-border-control .maxi-default-styles-control {
+		background: #c0ff80 !important; /* border style buttons wrapper */
+	}
+	.maxi-border-control .maxi-default-styles-control__button {
+		background: #ffc080 !important; /* border individual style buttons */
+	}
+	.maxi-border-control .maxi-default-styles-control__button__icon {
+		background: #80ffc0 !important; /* border style icons */
+	}
+}
+
+/* SUPER SPECIFIC ID SELECTORS FOR BORDER INPUTS ONLY */
+.maxi-border-control input[id*='maxi-advanced-number-control'] {
+	width: auto !important;
+} /* border number inputs */
+.maxi-border-control select[id*='inspector-select-control'] {
+	background: #3838ff !important;
+} /* border unit selects */
+.maxi-border-width-control input[id*='maxi-advanced-number-control'] {
+	background: #38ff38 !important;
+} /* border width inputs */
+.maxi-border-width-control select[id*='inspector-select-control'] {
+	background: #ff38ff !important;
+} /* border width selects */

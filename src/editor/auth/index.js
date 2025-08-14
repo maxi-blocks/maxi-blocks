@@ -451,14 +451,6 @@ const initiateEmailAuthentication = async email => {
 
 		const data = await response.json();
 
-		console.error(
-			JSON.stringify({
-				message: 'Email auth initiation response',
-				email,
-				response: data,
-			})
-		);
-
 		return data;
 	} catch (error) {
 		console.error('Email auth initiation error:', error);
@@ -507,27 +499,30 @@ const checkEmailAuthenticationStatus = async email => {
 
 		const data = await response.json();
 
-		console.error(
-			JSON.stringify({
-				message: 'Auth check response',
-				email,
-				authKey: `${authKey.substring(0, 4)}...`,
-				response: data,
-				cookieData:
-					document.cookie
-						.split(';')
-						.find(c => c.includes('maxi_blocks_key')) ||
-					'No maxi_blocks_key cookie found',
-			})
-		);
-
 		if (data && data.success && data.data) {
 			if (data.data.is_authenticated) {
+				// User is fully authenticated (both subscription valid and logged into Appwrite)
 				return {
 					success: true,
 					user_name: data.data.user_name,
 				};
 			}
+
+			// Check for the new intermediate state: subscription valid but not logged into Appwrite
+			if (
+				data.data.subscription_valid &&
+				!data.data.appwrite_login_verified
+			) {
+				return {
+					success: false,
+					subscription_valid: true,
+					appwrite_login_verified: false,
+					message:
+						data.data.message ||
+						'Please log into your MaxiBlocks account to complete activation',
+				};
+			}
+
 			if (data.data.error && data.data.error_message) {
 				// Handle specific errors like seat limit
 				console.error(
@@ -561,15 +556,20 @@ const startSmartAuthCheck = email => {
 	// Set active polling email to prevent duplicates
 	activePollingEmail = email;
 
-	console.error(
-		JSON.stringify({
-			message: 'Starting smart auth checking (Page Visibility API)',
-			email,
-		})
-	);
-
 	let fallbackTimeout;
 	let isCheckingAuth = false;
+
+	// Handle when user returns to tab (most important trigger)
+	const handleVisibilityChange = () => {
+		if (document.visibilityState === 'visible') {
+			checkAuth('tab-visible');
+		}
+	};
+
+	// Handle when window gets focus (backup trigger)
+	const handleWindowFocus = () => {
+		checkAuth('window-focus');
+	};
 
 	const stopAuthCheck = () => {
 		activePollingEmail = null;
@@ -589,27 +589,10 @@ const startSmartAuthCheck = email => {
 
 		isCheckingAuth = true;
 
-		console.error(
-			JSON.stringify({
-				message: 'Checking auth status',
-				email,
-				trigger,
-				timestamp: new Date().toISOString(),
-			})
-		);
-
 		try {
 			const authResult = await checkEmailAuthenticationStatus(email);
-			if (authResult && authResult.success) {
-				console.error(
-					JSON.stringify({
-						message: 'Email authentication completed!',
-						email,
-						userName: authResult.user_name,
-						trigger,
-					})
-				);
 
+			if (authResult && authResult.success) {
 				// Stop auth checking
 				stopAuthCheck();
 
@@ -636,16 +619,21 @@ const startSmartAuthCheck = email => {
 
 				return true;
 			}
+
+			if (
+				authResult &&
+				authResult.subscription_valid &&
+				!authResult.appwrite_login_verified
+			) {
+				// Subscription is valid but user hasn't logged into Appwrite yet
+				// Don't stop checking - keep polling until they log in
+				return false;
+			}
+
 			if (authResult && authResult.error) {
 				// Handle authentication errors (like seat limit)
 				console.error(
-					JSON.stringify({
-						message: 'Email authentication error',
-						email,
-						error: authResult.error_message,
-						errorCode: authResult.error_code,
-						trigger,
-					})
+					`Authentication error: ${authResult.error_message}`
 				);
 
 				// Stop auth checking for errors
@@ -660,14 +648,6 @@ const startSmartAuthCheck = email => {
 						status: 'error',
 					},
 				});
-				console.error(
-					JSON.stringify({
-						message: 'Dispatching auth error event',
-						email,
-						error: authResult.error_message,
-						errorCode: authResult.error_code,
-					})
-				);
 				window.dispatchEvent(authErrorEvent);
 
 				return false;
@@ -679,30 +659,6 @@ const startSmartAuthCheck = email => {
 		}
 
 		return false;
-	};
-
-	// Handle when user returns to tab (most important trigger)
-	const handleVisibilityChange = () => {
-		if (document.visibilityState === 'visible') {
-			console.error(
-				JSON.stringify({
-					message: 'Tab became visible - checking auth',
-					email,
-				})
-			);
-			checkAuth('tab-visible');
-		}
-	};
-
-	// Handle when window gets focus (backup trigger)
-	const handleWindowFocus = () => {
-		console.error(
-			JSON.stringify({
-				message: 'Window gained focus - checking auth',
-				email,
-			})
-		);
-		checkAuth('window-focus');
 	};
 
 	// Add event listeners
@@ -727,12 +683,6 @@ const startSmartAuthCheck = email => {
 	// Stop checking after 10 minutes
 	setTimeout(() => {
 		if (activePollingEmail === email) {
-			console.error(
-				JSON.stringify({
-					message: 'Smart auth check timeout - stopping',
-					email,
-				})
-			);
 			stopAuthCheck();
 		}
 	}, 600000); // 10 minutes
@@ -754,12 +704,6 @@ export async function authConnect(withRedirect = false, email = false) {
 
 	// Check if authentication is already in progress for this email
 	if (activePollingEmail === email) {
-		console.error(
-			JSON.stringify({
-				message: 'Authentication already in progress for this email',
-				email,
-			})
-		);
 		return false;
 	}
 
@@ -964,14 +908,11 @@ export const checkAndHandleDomainMigration = async () => {
 					purchaseCode &&
 					storedDomain !== currentDomain
 				) {
-					console.error(
-						JSON.stringify({
-							message: 'Domain change detected',
-							oldDomain: storedDomain,
-							newDomain: currentDomain,
-							purchaseCode,
-						})
-					);
+					console.warn('Domain change detected:', {
+						oldDomain: storedDomain,
+						newDomain: currentDomain,
+						purchaseCode,
+					});
 
 					// Add migration promise to array
 					migrationPromises.push(
@@ -1014,10 +955,10 @@ export const checkAndHandleDomainMigration = async () => {
 					storedDomain,
 				}) => {
 					if (error) {
-						console.error(
-							'Domain migration error:',
-							JSON.stringify({ purchaseCode, error })
-						);
+						console.error('Domain migration error:', {
+							purchaseCode,
+							error,
+						});
 					} else if (migrationResult && migrationResult.success) {
 						// Update license data with new domain
 						updateData[key] = {
@@ -1034,21 +975,11 @@ export const checkAndHandleDomainMigration = async () => {
 						}
 
 						hasUpdates = true;
-						console.error(
-							JSON.stringify({
-								message: 'Domain migration successful',
-								purchaseCode,
-								migrationResult,
-							})
-						);
 					} else {
-						console.error(
-							'Domain migration failed:',
-							JSON.stringify({
-								purchaseCode,
-								migrationResult,
-							})
-						);
+						console.error('Domain migration failed:', {
+							purchaseCode,
+							migrationResult,
+						});
 					}
 				}
 			);
@@ -1111,10 +1042,7 @@ export const logOut = redirect => {
 					'Plugin deactivated by user'
 				);
 				if (!result.success) {
-					console.error(
-						'Purchase code deactivation failed:',
-						JSON.stringify(result)
-					);
+					console.error('Purchase code deactivation failed:', result);
 				}
 			} catch (error) {
 				console.error('Purchase code deactivation error:', error);

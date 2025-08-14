@@ -2854,7 +2854,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function handle_validate_license()
         {
             // Verify nonce
-            if (!wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
                 wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
                 return;
             }
@@ -2865,8 +2865,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 return;
             }
 
-            $input_value = sanitize_text_field($_POST['license_input']);
-            $action = sanitize_text_field($_POST['license_action']);
+            $input_value = isset($_POST['license_input']) ? sanitize_text_field($_POST['license_input']) : '';
+            $action = isset($_POST['license_action']) ? sanitize_text_field($_POST['license_action']) : '';
 
             if ($action === 'logout') {
                 // Handle logout
@@ -3078,7 +3078,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             error_log("MaxiBlocks Email Auth STATUS: Starting auth status check");
 
             // Verify nonce
-            if (!wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
                 error_log("MaxiBlocks Email Auth STATUS: Nonce verification failed");
                 wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
                 return;
@@ -3607,7 +3607,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $email = array_keys($cookie_data)[0];
                     $auth_key = $cookie_data[$email];
 
-
+                    // First, call middleware to logout the session BEFORE removing local data
+                    $this->logout_email_session($email, $auth_key);
 
                     // Remove only this browser's key from the email auth
                     $this->remove_email_auth_key($email, $auth_key);
@@ -3669,6 +3670,62 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         }
 
         /**
+         * Logout email session via middleware
+         * @param string $email - Email address
+         * @param string $auth_key - Authentication key/cookie
+         * @returns array - Logout result
+         */
+        private function logout_email_session($email, $auth_key)
+        {
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                error_log(__('MaxiBlocks: Missing middleware configuration for email session logout', 'maxi-blocks'));
+                return ['success' => false, 'error' => 'Configuration error'];
+            }
+
+            // Replace 'verify' with 'email/session/logout' in the URL
+            $logout_url = str_replace('/verify', '/email/session/logout', $middleware_url);
+
+            error_log("MaxiBlocks Email Session Logout: Calling middleware logout for email: {$email}");
+            error_log("MaxiBlocks Email Session Logout: Logout URL: {$logout_url}");
+
+            $response = wp_remote_post($logout_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode([
+                    'email' => $email,
+                    'cookie' => $auth_key,
+                ]),
+            ]);
+
+            if (is_wp_error($response)) {
+                error_log("MaxiBlocks Email Session Logout: API call failed - " . $response->get_error_message());
+                return ['success' => false, 'error' => $response->get_error_message()];
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $status_code = wp_remote_retrieve_response_code($response);
+            $result = json_decode($body, true);
+
+            error_log("MaxiBlocks Email Session Logout: Response status: {$status_code}");
+            error_log("MaxiBlocks Email Session Logout: Response body: " . substr($body, 0, 500));
+
+            // Log result but don't fail local logout if middleware call fails
+            if ($status_code !== 200 || !$result || !isset($result['success']) || !$result['success']) {
+                error_log("MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout");
+                return ['success' => false, 'error' => 'Middleware logout failed'];
+            }
+
+            error_log("MaxiBlocks Email Session Logout: Successfully logged out session via middleware");
+            return $result ?: ['success' => false, 'error' => 'Invalid response'];
+        }
+
+        /**
          * Remove a specific auth key for an email (for browser-specific logout)
          * @param string $email - Email address
          * @param string $auth_key - Authentication key to remove
@@ -3717,7 +3774,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function handle_save_email_license()
         {
             // Verify nonce
-            if (!wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
                 wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
                 return;
             }
@@ -3728,10 +3785,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 return;
             }
 
-            $email = sanitize_email($_POST['email']);
-            $name = sanitize_text_field($_POST['name']);
-            $status = sanitize_text_field($_POST['status']);
-            $auth_key = sanitize_text_field($_POST['auth_key']);
+            $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+            $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
+            $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
+            $auth_key = isset($_POST['auth_key']) ? sanitize_text_field($_POST['auth_key']) : '';
 
             if (empty($email) || empty($name) || empty($status) || empty($auth_key)) {
                 wp_send_json_error(['message' => __('Missing required parameters', 'maxi-blocks')]);
@@ -3761,7 +3818,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function handle_network_validate_license()
         {
             // Verify nonce
-            if (!wp_verify_nonce($_POST['nonce'], 'maxi_network_license_validation')) {
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_network_license_validation')) {
                 wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
                 return;
             }
@@ -3773,7 +3830,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             $input_value = isset($_POST['license_input']) ? sanitize_text_field($_POST['license_input']) : '';
-            $action = sanitize_text_field($_POST['license_action']);
+            $action = isset($_POST['license_action']) ? sanitize_text_field($_POST['license_action']) : '';
 
             if ($action === 'logout') {
                 // Handle network logout
@@ -3893,7 +3950,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function handle_network_check_auth_status()
         {
             // Verify nonce
-            if (!wp_verify_nonce($_POST['nonce'], 'maxi_network_license_validation')) {
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_network_license_validation')) {
                 wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
                 return;
             }

@@ -763,13 +763,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 
 			// For email authentication, send to WordPress backend and open login page
-			console.log(
-				JSON.stringify({
-					message:
-						'MaxiBlocks Email Auth JS INIT: Starting email authentication initiation',
-					email: inputValue,
-				})
-			);
 
 			const formData = new FormData();
 			formData.append('action', 'maxi_validate_license');
@@ -778,51 +771,16 @@ document.addEventListener('DOMContentLoaded', function () {
 			formData.append('license_input', inputValue);
 			formData.append('license_action', 'activate');
 
-			console.log(
-				JSON.stringify({
-					message:
-						'MaxiBlocks Email Auth JS INIT: Sending request to WordPress',
-					// eslint-disable-next-line no-undef
-					endpoint: maxiLicenseSettings.ajaxUrl,
-					action: 'maxi_validate_license',
-					licenseAction: 'activate',
-				})
-			);
-
 			// eslint-disable-next-line no-undef
 			fetch(maxiLicenseSettings.ajaxUrl, {
 				method: 'POST',
 				body: formData,
 			})
 				.then(response => {
-					console.log(
-						JSON.stringify({
-							message:
-								'MaxiBlocks Email Auth JS INIT: Received response',
-							status: response.status,
-							ok: response.ok,
-						})
-					);
 					return response.json();
 				})
 				.then(data => {
-					console.log(
-						JSON.stringify({
-							message:
-								'MaxiBlocks Email Auth JS INIT: Response data',
-							data: JSON.stringify(data),
-						})
-					);
-
 					if (data.success && data.data.auth_type === 'email') {
-						console.log(
-							JSON.stringify({
-								message:
-									'MaxiBlocks Email Auth JS INIT: Email auth successful, opening login URL',
-								loginUrl: data.data.login_url,
-							})
-						);
-
 						// Open the login URL in a new tab
 						window.open(data.data.login_url, '_blank')?.focus();
 						showMessage(
@@ -1043,26 +1001,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	 * Check email authentication directly (similar to toolbar)
 	 */
 	async function checkEmailAuthentication(email) {
-		console.log(
-			JSON.stringify({
-				message:
-					'MaxiBlocks Email Auth JS: Starting authentication check',
-				email,
-				timestamp: new Date().toISOString(),
-			})
-		);
-
 		try {
 			// Get the auth key from cookie
 			const cookies = document.cookie.split(';');
 			let authKey = null;
-
-			console.log(
-				JSON.stringify({
-					message: 'MaxiBlocks Email Auth JS: Checking cookies',
-					cookieCount: cookies.length,
-				})
-			);
 
 			for (const cookie of cookies) {
 				const [name, value] = cookie.trim().split('=');
@@ -1070,16 +1012,6 @@ document.addEventListener('DOMContentLoaded', function () {
 					try {
 						const cookieData = JSON.parse(value);
 						authKey = cookieData[email];
-						console.log(
-							JSON.stringify({
-								message:
-									'MaxiBlocks Email Auth JS: Found auth cookie',
-								email,
-								authKeyPreview: authKey
-									? `${authKey.substring(0, 8)}...`
-									: 'null',
-							})
-						);
 						break;
 					} catch (e) {
 						console.error(
@@ -1106,28 +1038,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			// eslint-disable-next-line no-undef
 			const endpoint = maxiLicenseSettings.ajaxUrl;
-			console.log(
-				JSON.stringify({
-					message: 'MaxiBlocks Email Auth JS: Calling WordPress AJAX',
-					endpoint,
-					action: 'maxi_check_auth_status',
-				})
-			);
 
 			// eslint-disable-next-line no-undef
 			const response = await fetch(endpoint, {
 				method: 'POST',
 				body: formData,
 			});
-
-			console.log(
-				JSON.stringify({
-					message: 'MaxiBlocks Email Auth JS: Received response',
-					status: response.status,
-					statusText: response.statusText,
-					ok: response.ok,
-				})
-			);
 
 			if (!response.ok) {
 				console.error(
@@ -1138,23 +1054,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 
 			const data = await response.json();
-			console.log(
-				JSON.stringify({
-					message: 'MaxiBlocks Email Auth JS: Response data',
-					data: JSON.stringify(data),
-				})
-			);
 
 			if (data && data.success) {
 				if (data.data.is_authenticated) {
 					// User is fully authenticated (both subscription valid and logged into Appwrite)
-					console.log(
-						JSON.stringify({
-							message:
-								'MaxiBlocks Email Auth JS: FULL SUCCESS - User authenticated',
-							userName: data.data.user_name,
-						})
-					);
 					return {
 						success: true,
 						user_name: data.data.user_name,
@@ -1166,15 +1069,6 @@ document.addEventListener('DOMContentLoaded', function () {
 					data.data.subscription_valid &&
 					!data.data.appwrite_login_verified
 				) {
-					console.log(
-						JSON.stringify({
-							message:
-								'MaxiBlocks Email Auth JS: INTERMEDIATE STATE - Subscription valid but Appwrite login not verified',
-							subscriptionValid: data.data.subscription_valid,
-							appwriteLoginVerified:
-								data.data.appwrite_login_verified,
-						})
-					);
 					return {
 						success: false,
 						subscription_valid: true,
@@ -1201,14 +1095,6 @@ document.addEventListener('DOMContentLoaded', function () {
 						error_code: data.data.error_code,
 					};
 				}
-
-				console.log(
-					JSON.stringify({
-						message:
-							'MaxiBlocks Email Auth JS: Unknown response state',
-						responseData: data.data,
-					})
-				);
 			} else {
 				console.error(
 					JSON.stringify({
@@ -1220,11 +1106,6 @@ document.addEventListener('DOMContentLoaded', function () {
 				);
 			}
 
-			console.log(
-				JSON.stringify({
-					message: 'MaxiBlocks Email Auth JS: Returning false',
-				})
-			);
 			return false;
 		} catch (error) {
 			console.error(

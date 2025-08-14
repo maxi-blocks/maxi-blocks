@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { library, help, closeIcon } from '../icons';
-import { isValidEmail } from '../auth';
+import { isValidEmail, authConnect } from '../auth';
 import { Button, TextControl } from '../components';
 
 /**
@@ -153,6 +153,7 @@ const LibraryToolbar = ({
 	const [clickCount, setClickCount] = useState(0);
 	const [emailNotValid, setEmailNotValid] = useState(showNotValidEmail);
 	const [isVerifying, setIsVerifying] = useState(false);
+	const [authMessage, setAuthMessage] = useState('');
 
 	// Check for network license status
 	const licenseSettings = window.maxiLicenseSettings || {};
@@ -185,17 +186,93 @@ const LibraryToolbar = ({
 		const inputType = detectInputType(inputValue);
 
 		if (inputType === 'email') {
-			// Use existing email auth flow - let parent handle validation and errors
+			// Use WordPress AJAX email auth flow (same as admin.js and editor)
 			if (isValidEmail(inputValue)) {
 				setEmailNotValid(false);
-				const encodedEmail = encodeURIComponent(inputValue);
-				const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
-				window.open(url, '_blank')?.focus();
-				onClickConnect(inputValue);
+				setAuthMessage('');
+				setIsVerifying(true);
+
+				try {
+					// Use the WordPress AJAX authentication flow
+					const authResult = await authConnect(true, inputValue);
+
+					if (authResult) {
+						// Authentication completed immediately (existing valid auth)
+						setIsVerifying(false);
+						setAuthMessage('');
+						onClickConnect(inputValue);
+					} else {
+						// Authentication initiated, user needs to log in
+						setAuthMessage(
+							'Please log into your MaxiBlocks account to complete activation'
+						);
+
+						// Set up event listener for authentication completion
+						const handleAuthSuccess = event => {
+							if (event.detail.email === inputValue) {
+								window.removeEventListener(
+									'maxiEmailAuthSuccess',
+									handleAuthSuccess
+								);
+								setIsVerifying(false);
+								setAuthMessage('');
+								onClickConnect(inputValue);
+							}
+						};
+
+						// Set up event listener for authentication errors
+						const handleAuthError = event => {
+							if (event.detail.email === inputValue) {
+								window.removeEventListener(
+									'maxiEmailAuthError',
+									handleAuthError
+								);
+								setIsVerifying(false);
+								setAuthMessage(
+									event.detail.message ||
+										'Authentication failed. Please check your credentials.'
+								);
+							}
+						};
+
+						window.addEventListener(
+							'maxiEmailAuthSuccess',
+							handleAuthSuccess
+						);
+
+						window.addEventListener(
+							'maxiEmailAuthError',
+							handleAuthError
+						);
+
+						// Also listen for errors or timeout
+						setTimeout(() => {
+							window.removeEventListener(
+								'maxiEmailAuthSuccess',
+								handleAuthSuccess
+							);
+							window.removeEventListener(
+								'maxiEmailAuthError',
+								handleAuthError
+							);
+							if (isVerifying) {
+								setIsVerifying(false);
+								setAuthMessage(
+									'Authentication timeout. Please try again.'
+								);
+							}
+						}, 600000); // 10 minutes timeout
+					}
+				} catch (error) {
+					setIsVerifying(false);
+					setAuthMessage(
+						'Authentication failed. Please check your credentials.'
+					);
+				}
 			} else {
-				// Let parent handle invalid email by calling onClickConnect
-				// which will handle validation and show error
-				onClickConnect(inputValue);
+				// Invalid email - show error message
+				setEmailNotValid(true);
+				setAuthMessage('');
 			}
 		} else if (inputType === 'code') {
 			// Use new purchase code auth flow
@@ -417,6 +494,9 @@ const LibraryToolbar = ({
 													'maxi-blocks'
 												)}
 											</span>
+										)}
+										{authMessage && (
+											<span>{authMessage}</span>
 										)}
 									</div>
 									<Button

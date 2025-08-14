@@ -457,11 +457,6 @@ const initiateEmailAuthentication = async email => {
 
 		const data = await response.json();
 
-		console.log('Email auth initiation response:', {
-			email,
-			response: data,
-		});
-
 		return data;
 	} catch (error) {
 		console.error('Email auth initiation error:', error);
@@ -510,25 +505,41 @@ const checkEmailAuthenticationStatus = async email => {
 
 		const data = await response.json();
 
-		console.log('Auth check response:', {
-			email,
-			authKey: `${authKey.substring(0, 4)}...`,
-			response: data,
-		});
-
 		if (data && data.success && data.data) {
 			if (data.data.is_authenticated) {
+				// User is fully authenticated (both subscription valid and logged into Appwrite)
 				return {
 					success: true,
 					user_name: data.data.user_name,
 				};
 			}
+
+			// Check for the new intermediate state: subscription valid but not logged into Appwrite
+			if (
+				data.data.subscription_valid &&
+				!data.data.appwrite_login_verified
+			) {
+				return {
+					success: false,
+					subscription_valid: true,
+					appwrite_login_verified: false,
+					message:
+						data.data.message ||
+						'Please log into your MaxiBlocks account to complete activation',
+				};
+			}
+
 			if (data.data.error && data.data.error_message) {
 				// Handle specific errors like seat limit
 				console.error(
 					`Authentication error: ${data.data.error_message}`
 				);
-				return false;
+				return {
+					success: false,
+					error: true,
+					error_message: data.data.error_message,
+					error_code: data.data.error_code || 'UNKNOWN_ERROR',
+				};
 			}
 		}
 
@@ -549,10 +560,6 @@ let activePollingEmail = null;
 const startSmartAuthCheck = email => {
 	// Set active polling email to prevent duplicates
 	activePollingEmail = email;
-
-	console.log('Starting smart auth checking (Page Visibility API):', {
-		email,
-	});
 
 	let fallbackTimeout;
 	let isCheckingAuth = false;
@@ -575,21 +582,10 @@ const startSmartAuthCheck = email => {
 
 		isCheckingAuth = true;
 
-		console.log('Checking auth status:', {
-			email,
-			trigger,
-			timestamp: new Date().toISOString(),
-		});
-
 		try {
 			const authResult = await checkEmailAuthenticationStatus(email);
-			if (authResult) {
-				console.log('Email authentication completed!', {
-					email,
-					userName: authResult.user_name,
-					trigger,
-				});
 
+			if (authResult && authResult.success) {
 				// Stop auth checking
 				stopAuthCheck();
 
@@ -616,6 +612,36 @@ const startSmartAuthCheck = email => {
 
 				return true;
 			}
+
+			if (
+				authResult &&
+				authResult.subscription_valid &&
+				!authResult.appwrite_login_verified
+			) {
+				// Subscription is valid but user hasn't logged into Appwrite yet
+				// Don't stop checking - keep polling until they log in
+				return false;
+			}
+
+			if (authResult && authResult.error) {
+				// Handle authentication errors (like seat limit)
+				console.error(
+					`Authentication error: ${authResult.error_message}`
+				);
+				stopAuthCheck();
+
+				// Trigger error event for UI
+				const authErrorEvent = new CustomEvent('maxiEmailAuthError', {
+					detail: {
+						email,
+						message: authResult.error_message,
+						error_code: authResult.error_code,
+					},
+				});
+				window.dispatchEvent(authErrorEvent);
+
+				return false;
+			}
 		} catch (error) {
 			console.error('Error checking auth status:', error);
 		} finally {
@@ -628,14 +654,12 @@ const startSmartAuthCheck = email => {
 	// Handle when user returns to tab (most important trigger)
 	const handleVisibilityChange = () => {
 		if (document.visibilityState === 'visible') {
-			console.log('Tab became visible - checking auth:', { email });
 			checkAuth('tab-visible');
 		}
 	};
 
 	// Handle when window gets focus (backup trigger)
 	const handleWindowFocus = () => {
-		console.log('Window gained focus - checking auth:', { email });
 		checkAuth('window-focus');
 	};
 
@@ -661,7 +685,6 @@ const startSmartAuthCheck = email => {
 	// Stop checking after 10 minutes
 	setTimeout(() => {
 		if (activePollingEmail === email) {
-			console.log('Smart auth check timeout - stopping:', { email });
 			stopAuthCheck();
 		}
 	}, 600000); // 10 minutes
@@ -683,9 +706,6 @@ export async function authConnect(withRedirect = false, email = false) {
 
 	// Check if authentication is already in progress for this email
 	if (activePollingEmail === email) {
-		console.log('Authentication already in progress for this email:', {
-			email,
-		});
 		return false;
 	}
 

@@ -789,13 +789,26 @@
 			.maxi-axis-control__content__item
 			.maxi-base-control__label {
 			font-size: 9px !important;
+			position: var(--maxi-layout-absolute) !important;
+			top: calc(-1 * var(--maxi-space-8px)) !important;
+			left: calc(-1 * var(--maxi-space-4px)) !important;
 		}
 	}
 	button[aria-label='Reset'].maxi-reset-button--absolute.maxi-reset-button--typography {
 		right: 10px !important;
 		left: auto !important;
 	}
-
+	.maxi-axis-control__axis-mode
+		.maxi-axis-control__row-1
+		.maxi-axis-control__content__item__top-left-bottom-right
+		.maxi-advanced-number-control__input-wrapper,
+	.maxi-axis-control__axis-mode
+		.maxi-axis-control__row-2
+		.maxi-axis-control__content__item__bottom-left-top-right
+		.maxi-advanced-number-control__input-wrapper {
+		width: calc(100% - 40px) !important;
+		max-width: 120px !important;
+	}
 	.maxi-axis-control__axis-mode
 		.maxi-axis-control__row-2
 		.maxi-axis-control__content__item__bottom-left-top-right

@@ -533,8 +533,13 @@ const checkEmailAuthenticationStatus = async email => {
 				console.error(
 					`Authentication error: ${data.data.error_message}`
 				);
-				// In the block editor, we just log the error since there's no message UI
-				return false;
+				// Return error details for UI handling
+				return {
+					success: false,
+					error: true,
+					error_message: data.data.error_message,
+					error_code: data.data.error_code || 'UNKNOWN_ERROR',
+				};
 			}
 		}
 
@@ -595,7 +600,7 @@ const startSmartAuthCheck = email => {
 
 		try {
 			const authResult = await checkEmailAuthenticationStatus(email);
-			if (authResult) {
+			if (authResult && authResult.success) {
 				console.error(
 					JSON.stringify({
 						message: 'Email authentication completed!',
@@ -630,6 +635,42 @@ const startSmartAuthCheck = email => {
 				window.dispatchEvent(authEvent);
 
 				return true;
+			}
+			if (authResult && authResult.error) {
+				// Handle authentication errors (like seat limit)
+				console.error(
+					JSON.stringify({
+						message: 'Email authentication error',
+						email,
+						error: authResult.error_message,
+						errorCode: authResult.error_code,
+						trigger,
+					})
+				);
+
+				// Stop auth checking for errors
+				stopAuthCheck();
+
+				// Trigger a custom event that the UI can listen to for errors
+				const authErrorEvent = new CustomEvent('maxiEmailAuthError', {
+					detail: {
+						email,
+						error: authResult.error_message,
+						errorCode: authResult.error_code,
+						status: 'error',
+					},
+				});
+				console.error(
+					JSON.stringify({
+						message: 'Dispatching auth error event',
+						email,
+						error: authResult.error_message,
+						errorCode: authResult.error_code,
+					})
+				);
+				window.dispatchEvent(authErrorEvent);
+
+				return false;
 			}
 		} catch (error) {
 			console.error('Error checking auth status:', error);
@@ -727,8 +768,17 @@ export async function authConnect(withRedirect = false, email = false) {
 	if (existingCookie) {
 		// Try to authenticate with existing cookie
 		const authResult = await checkEmailAuthenticationStatus(email);
-		if (authResult) {
+		if (authResult && authResult.success) {
 			return true;
+		}
+		if (authResult && authResult.error) {
+			// Return error details for immediate display
+			return {
+				success: false,
+				error: true,
+				error_message: authResult.error_message,
+				error_code: authResult.error_code,
+			};
 		}
 	}
 

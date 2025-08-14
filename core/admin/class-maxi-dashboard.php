@@ -2897,21 +2897,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         private function handle_email_authentication($email)
         {
+            error_log("MaxiBlocks Email Auth INIT: Starting email authentication initiation for email: {$email}");
+
             if (!$this->is_valid_email($email)) {
+                error_log("MaxiBlocks Email Auth INIT: Invalid email format: {$email}");
                 wp_send_json_error(['message' => __('The email is not valid', 'maxi-blocks')]);
                 return;
             }
 
             // Generate a unique authentication key for this email
             $auth_key = $this->generate_auth_key(20);
+            error_log("MaxiBlocks Email Auth INIT: Generated auth key: " . substr($auth_key, 0, 8) . "...");
 
             // Set a cookie that will be used for authentication
             // Use a unique cookie for each browser/session instead of merging
             $cookie_name = 'maxi_blocks_key';
             $cookie_data = json_encode([$email => $auth_key]);
 
+            error_log("MaxiBlocks Email Auth INIT: Setting cookie '{$cookie_name}' with email key mapping");
+
             // Set cookie for 30 days
             $admin_path = $this->get_admin_path();
+            error_log("MaxiBlocks Email Auth INIT: Cookie path: {$admin_path}");
             setrawcookie($cookie_name, $cookie_data, time() + (30 * 24 * 60 * 60), $admin_path);
 
             // Store the authentication attempt in transients for polling (more reliable than sessions)
@@ -2922,18 +2929,26 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'time' => time(),
             ];
 
+            error_log("MaxiBlocks Email Auth INIT: Storing transient data with key: {$transient_key}");
             set_transient($transient_key, $transient_data, 600); // 10 minutes
 
             // Also store a reverse lookup to find the transient by email
             $lookup_key = 'maxi_auth_lookup_' . md5($email);
+            error_log("MaxiBlocks Email Auth INIT: Storing lookup transient with key: {$lookup_key}");
             set_transient($lookup_key, $transient_key, 600);
 
-            wp_send_json_success([
+            $login_url = 'https://my.maxiblocks.com/login?plugin&email=' . urlencode($email);
+            error_log("MaxiBlocks Email Auth INIT: Login URL generated: {$login_url}");
+
+            $response_data = [
                 'message' => __('Email authentication initiated', 'maxi-blocks'),
                 'auth_type' => 'email',
                 'email' => $email,
-                'login_url' => 'https://my.maxiblocks.com/login?plugin&email=' . urlencode($email)
-            ]);
+                'login_url' => $login_url
+            ];
+
+            error_log("MaxiBlocks Email Auth INIT: Sending success response: " . wp_json_encode($response_data));
+            wp_send_json_success($response_data);
         }
 
         /**
@@ -3060,11 +3075,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         public function handle_check_auth_status()
         {
+            error_log("MaxiBlocks Email Auth STATUS: Starting auth status check");
+
             // Verify nonce
             if (!wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
+                error_log("MaxiBlocks Email Auth STATUS: Nonce verification failed");
                 wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
                 return;
             }
+
+            error_log("MaxiBlocks Email Auth STATUS: Nonce verified, checking for pending authentication data");
 
             // First check if we have a pending email authentication
             // Check both sessions (legacy) and transients (new)
@@ -3083,10 +3103,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $auth_key = $_SESSION['maxi_auth_key'];
                 $auth_time = $_SESSION['maxi_auth_time'] ?? time();
                 $found_auth_data = true;
+                error_log("MaxiBlocks Email Auth STATUS: Found session data for email: {$email}");
+            } else {
+                error_log("MaxiBlocks Email Auth STATUS: No session data found");
             }
 
             // If no session data, check transients using a more direct approach
             if (!$found_auth_data) {
+                error_log("MaxiBlocks Email Auth STATUS: Checking transients for pending authentication");
                 // Try to get transients using WordPress database query
                 global $wpdb;
                 $transient_keys = $wpdb->get_results(
@@ -3094,35 +3118,43 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     ARRAY_A
                 );
 
-
+                error_log("MaxiBlocks Email Auth STATUS: Found " . count($transient_keys) . " transient keys to check");
 
                 foreach ($transient_keys as $row) {
                     $option_name = $row['option_name'];
                     $transient_name = str_replace('_transient_', '', $option_name);
                     $auth_data = get_transient($transient_name);
 
-
+                    error_log("MaxiBlocks Email Auth STATUS: Checking transient: {$transient_name}");
 
                     if ($auth_data && is_array($auth_data)) {
                         $email = $auth_data['email'];
                         $auth_key = $auth_data['auth_key'];
                         $auth_time = $auth_data['time'] ?? time();
                         $found_auth_data = true;
+                        error_log("MaxiBlocks Email Auth STATUS: Found valid transient data for email: {$email}");
 
                         break; // Only check the first pending auth
+                    } else {
+                        error_log("MaxiBlocks Email Auth STATUS: Transient data invalid or expired");
                     }
                 }
 
-
+                if (!$found_auth_data) {
+                    error_log("MaxiBlocks Email Auth STATUS: No valid transient data found");
+                }
             }
 
             if ($found_auth_data && $email && $auth_key) {
+                error_log("MaxiBlocks Email Auth STATUS: Authentication data found - Email: {$email}, Auth Key: " . substr($auth_key, 0, 8) . "..., Time: {$auth_time}");
                 // Only try authentication if it's been less than 10 minutes
                 if ((time() - $auth_time) < 600) {
+                    error_log("MaxiBlocks Email Auth STATUS: Auth time is valid, calling check_email_authentication");
                     $auth_result = $this->check_email_authentication($email, $auth_key);
 
                     if ($auth_result && isset($auth_result['user_name'])) {
-                        // Success case
+                        // Success case - user is fully authenticated
+                        error_log("MaxiBlocks Email Auth STATUS: FULL SUCCESS - User authenticated, cleaning up and sending success response");
                         // Clear session data on successful auth
                         if (isset($_SESSION['maxi_auth_email'])) {
                             unset($_SESSION['maxi_auth_email']);
@@ -3136,11 +3168,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         delete_transient($transient_key);
                         delete_transient('maxi_auth_lookup_' . md5($email));
 
-                        wp_send_json_success([
+                        $success_response = [
                             'is_authenticated' => true,
                             'status' => 'Active ✓',
                             'user_name' => $auth_result['user_name'],
-                        ]);
+                        ];
+                        error_log("MaxiBlocks Email Auth STATUS: Sending success response: " . wp_json_encode($success_response));
+                        wp_send_json_success($success_response);
+                        return;
+                    } elseif ($auth_result && isset($auth_result['subscription_valid']) && $auth_result['subscription_valid'] && !$auth_result['appwrite_login_verified']) {
+                        // Intermediate state: subscription valid but user hasn't logged into Appwrite yet
+                        error_log("MaxiBlocks Email Auth STATUS: INTERMEDIATE STATE - Subscription valid but Appwrite login not verified");
+                        // Don't clear transient data - keep polling
+                        $intermediate_response = [
+                            'is_authenticated' => false,
+                            'subscription_valid' => true,
+                            'appwrite_login_verified' => false,
+                            'status' => 'Waiting for login',
+                            'user_name' => '',
+                            'message' => $auth_result['message'] ?? 'Please log into your MaxiBlocks account to complete activation'
+                        ];
+                        error_log("MaxiBlocks Email Auth STATUS: Sending intermediate response: " . wp_json_encode($intermediate_response));
+                        wp_send_json_success($intermediate_response);
                         return;
                     } elseif ($auth_result && isset($auth_result['error_code'])) {
                         // Specific error case (like seat limit)
@@ -3161,10 +3210,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         ]);
                         return;
                     }
+                } else {
+                    error_log("MaxiBlocks Email Auth STATUS: Auth timeout - authentication window has expired (>10 minutes)");
                 }
+            } else {
+                error_log("MaxiBlocks Email Auth STATUS: No pending authentication data found, checking existing license status");
             }
 
             // Check current license status from database for this specific browser
+            error_log("MaxiBlocks Email Auth STATUS: Checking existing license status from database");
             $current_license_data = get_option('maxi_pro', '');
             $is_authenticated = false;
             $status = 'Not activated';
@@ -3274,6 +3328,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         private function check_email_authentication($email, $auth_key)
         {
+            error_log("MaxiBlocks Email Auth: Starting email authentication for email: {$email}");
+
             // Use middleware to verify email subscription after Appwrite login
             $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
             $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
@@ -3286,83 +3342,203 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // Replace 'verify' with 'email/verify' in the URL for email authentication
             $auth_url = str_replace('/verify', '/email/verify', $middleware_url);
 
-            $response = wp_remote_post($auth_url, [
+            error_log("MaxiBlocks Email Auth: Middleware URL configured: {$auth_url}");
+
+            // First call: Check subscription status without triggering Appwrite login
+            $initial_payload = [
+                'email' => $email,
+                'cookie' => substr($auth_key, 0, 8) . '...', // Log only partial key for security
+                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'plugin_version' => MAXI_PLUGIN_VERSION,
+                'multisite' => is_multisite(),
+                'check_appwrite_login' => false, // Only check subscription, don't verify Appwrite login
+            ];
+
+            error_log("MaxiBlocks Email Auth: STEP 1 - Subscription check (check_appwrite_login: false)");
+            error_log("MaxiBlocks Email Auth: Endpoint: {$auth_url}");
+            error_log("MaxiBlocks Email Auth: Request payload: " . wp_json_encode($initial_payload));
+
+            $actual_payload = [
+                'email' => $email,
+                'cookie' => $auth_key,
+                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'plugin_version' => MAXI_PLUGIN_VERSION,
+                'multisite' => is_multisite(),
+                'check_appwrite_login' => false,
+            ];
+
+            $initial_response = wp_remote_post($auth_url, [
                 'timeout' => 30,
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Authorization' => $middleware_key,
                 ],
-                'body' => wp_json_encode([
-                    'email' => $email,
-                    'cookie' => $auth_key,
-                    'domain' => parse_url(home_url(), PHP_URL_HOST),
-                    'plugin_version' => MAXI_PLUGIN_VERSION,
-                    'multisite' => is_multisite(),
-                ]),
+                'body' => wp_json_encode($actual_payload),
             ]);
 
-            if (is_wp_error($response)) {
-                error_log(__('MaxiBlocks auth API error: ', 'maxi-blocks') . $response->get_error_message());
+            if (is_wp_error($initial_response)) {
+                error_log("MaxiBlocks Email Auth: STEP 1 ERROR - " . $initial_response->get_error_message());
                 return false;
             }
 
-            $body = wp_remote_retrieve_body($response);
-            $status_code = wp_remote_retrieve_response_code($response);
+            $initial_body = wp_remote_retrieve_body($initial_response);
+            $initial_status_code = wp_remote_retrieve_response_code($initial_response);
+            $initial_data = json_decode($initial_body, true);
 
-            error_log("MaxiBlocks: API Response - Status: {$status_code}, Body: " . substr($body, 0, 500));
+            error_log("MaxiBlocks Email Auth: STEP 1 RESPONSE - Status Code: {$initial_status_code}");
+            error_log("MaxiBlocks Email Auth: STEP 1 RESPONSE - Body: " . substr($initial_body, 0, 1000));
 
-            $data = json_decode($body, true);
-
-            // Handle both middleware response format and legacy format
-            if ($data && isset($data['success']) && $data['success']) {
-                // Check if authentication was successful but seat limit exceeded
-                if (!$data['valid'] && isset($data['error_code']) && $data['error_code'] === 'SEAT_LIMIT_EXCEEDED') {
-                    error_log("MaxiBlocks: Seat limit exceeded for email: {$email}");
-                    // Return error details instead of false
+            // Check if subscription is valid first
+            if (!$initial_data || !isset($initial_data['success']) || !$initial_data['success'] || !$initial_data['valid']) {
+                error_log("MaxiBlocks Email Auth: STEP 1 FAILED - Subscription not valid");
+                // Handle subscription errors (seat limit, invalid subscription, etc.)
+                if (isset($initial_data['error_code']) && $initial_data['error_code'] === 'SEAT_LIMIT_EXCEEDED') {
+                    error_log("MaxiBlocks Email Auth: STEP 1 ERROR - Seat limit exceeded");
                     return [
                         'success' => false,
-                        'error_code' => $data['error_code'],
-                        'error_message' => $data['message'] ?? 'Seat limit exceeded'
+                        'error_code' => $initial_data['error_code'],
+                        'error_message' => $initial_data['message'] ?? 'Seat limit exceeded'
                     ];
                 }
+                return false; // Invalid subscription
+            }
 
-                // Check if valid authentication
-                if (isset($data['valid']) && $data['valid']) {
-                    // Middleware response format
-                    $subscription_data = $data['subscription_data'] ?? [];
-                    $name = $subscription_data['name'] ?? $email;
+            error_log("MaxiBlocks Email Auth: STEP 1 SUCCESS - Subscription is valid, proceeding to Appwrite login check");
+
+            // Subscription is valid, now check if user has logged into Appwrite
+            $appwrite_payload = [
+                'email' => $email,
+                'cookie' => substr($auth_key, 0, 8) . '...', // Log only partial key for security
+                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'plugin_version' => MAXI_PLUGIN_VERSION,
+                'multisite' => is_multisite(),
+                'check_appwrite_login' => true, // Now check both subscription AND Appwrite login
+            ];
+
+            error_log("MaxiBlocks Email Auth: STEP 2 - Appwrite login check (check_appwrite_login: true)");
+            error_log("MaxiBlocks Email Auth: Endpoint: {$auth_url}");
+            error_log("MaxiBlocks Email Auth: Request payload: " . wp_json_encode($appwrite_payload));
+
+            $actual_appwrite_payload = [
+                'email' => $email,
+                'cookie' => $auth_key,
+                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'plugin_version' => MAXI_PLUGIN_VERSION,
+                'multisite' => is_multisite(),
+                'check_appwrite_login' => true,
+            ];
+
+            $appwrite_response = wp_remote_post($auth_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode($actual_appwrite_payload),
+            ]);
+
+            if (is_wp_error($appwrite_response)) {
+                error_log("MaxiBlocks Email Auth: STEP 2 ERROR - " . $appwrite_response->get_error_message());
+                return false;
+            }
+
+            $appwrite_body = wp_remote_retrieve_body($appwrite_response);
+            $appwrite_status_code = wp_remote_retrieve_response_code($appwrite_response);
+            $appwrite_data = json_decode($appwrite_body, true);
+
+            error_log("MaxiBlocks Email Auth: STEP 2 RESPONSE - Status Code: {$appwrite_status_code}");
+            error_log("MaxiBlocks Email Auth: STEP 2 RESPONSE - Body: " . substr($appwrite_body, 0, 1000));
+
+            // Handle the new response format with appwrite_login_verified
+            if ($appwrite_data && isset($appwrite_data['success']) && $appwrite_data['success']) {
+                error_log("MaxiBlocks Email Auth: STEP 2 - API call successful, analyzing response");
+
+                // Check if both subscription is valid AND user is logged into Appwrite
+                if (isset($appwrite_data['valid']) && $appwrite_data['valid'] &&
+                    isset($appwrite_data['appwrite_login_verified']) && $appwrite_data['appwrite_login_verified']) {
+
+                    error_log("MaxiBlocks Email Auth: STEP 2 SUCCESS - Both subscription valid AND Appwrite login verified");
+
+                    // Get user name from Appwrite user data if available
+                    $name = $email; // default fallback
+                    if (isset($appwrite_data['appwrite_user']) && isset($appwrite_data['appwrite_user']['name'])) {
+                        $name = $appwrite_data['appwrite_user']['name'];
+                        error_log("MaxiBlocks Email Auth: Using Appwrite user name: {$name}");
+                    } elseif (isset($appwrite_data['subscription_data']) && isset($appwrite_data['subscription_data']['name'])) {
+                        $name = $appwrite_data['subscription_data']['name'];
+                        error_log("MaxiBlocks Email Auth: Using subscription data name: {$name}");
+                    } else {
+                        error_log("MaxiBlocks Email Auth: Using email as fallback name: {$name}");
+                    }
+
+                    // Check expiration if available
+                    $subscription_data = $appwrite_data['subscription_data'] ?? [];
                     $expiration_date = $subscription_data['expiration_date'] ?? null;
 
                     if ($expiration_date) {
                         $today = current_time('Y-m-d');
+                        error_log("MaxiBlocks Email Auth: Checking expiration - Today: {$today}, Expires: {$expiration_date}");
                         if ($today > $expiration_date) {
+                            error_log("MaxiBlocks Email Auth: EXPIRED - Subscription has expired");
                             // Save expired status
                             $this->save_email_license_data($email, $name, 'expired', $auth_key);
                             return false;
                         }
                     }
 
-                    // Save active status
+                    error_log("MaxiBlocks Email Auth: FINAL SUCCESS - Saving active license and returning user data");
+                    // Save active status - user is fully authenticated
                     $this->save_email_license_data($email, $name, 'yes', $auth_key);
                     return ['user_name' => $name];
+
+                } elseif (isset($appwrite_data['valid']) && $appwrite_data['valid'] &&
+                         (!isset($appwrite_data['appwrite_login_verified']) || !$appwrite_data['appwrite_login_verified'])) {
+
+                    error_log("MaxiBlocks Email Auth: STEP 2 INTERMEDIATE - Subscription valid but Appwrite login not verified");
+                    error_log("MaxiBlocks Email Auth: appwrite_login_verified = " . ($appwrite_data['appwrite_login_verified'] ?? 'not set'));
+
+                    // Subscription is valid but user hasn't logged into Appwrite yet
+                    return [
+                        'success' => false,
+                        'subscription_valid' => true,
+                        'appwrite_login_verified' => false,
+                        'message' => 'Please log into your MaxiBlocks account to complete activation'
+                    ];
                 }
-            } elseif ($data && isset($data['status']) && $data['status'] === 'ok') {
-                // Legacy response format
+
+                // Handle other error cases
+                if (!$appwrite_data['valid'] && isset($appwrite_data['error_code']) && $appwrite_data['error_code'] === 'SEAT_LIMIT_EXCEEDED') {
+                    error_log("MaxiBlocks Email Auth: STEP 2 ERROR - Seat limit exceeded");
+                    return [
+                        'success' => false,
+                        'error_code' => $appwrite_data['error_code'],
+                        'error_message' => $appwrite_data['message'] ?? 'Seat limit exceeded'
+                    ];
+                }
+
+                error_log("MaxiBlocks Email Auth: STEP 2 UNKNOWN STATE - Response not matching expected patterns");
+                error_log("MaxiBlocks Email Auth: valid = " . ($appwrite_data['valid'] ?? 'not set'));
+                error_log("MaxiBlocks Email Auth: appwrite_login_verified = " . ($appwrite_data['appwrite_login_verified'] ?? 'not set'));
+            } else {
+                error_log("MaxiBlocks Email Auth: STEP 2 FAILED - API call unsuccessful or malformed response");
+            }
+
+            // Legacy response format support (fallback)
+            if ($appwrite_data && isset($appwrite_data['status']) && $appwrite_data['status'] === 'ok') {
                 $today = current_time('Y-m-d');
-                $expiration_date = $data['expiration_date'] ?? $today;
-                $name = $data['name'] ?? $email;
+                $expiration_date = $appwrite_data['expiration_date'] ?? $today;
+                $name = $appwrite_data['name'] ?? $email;
 
                 if ($today > $expiration_date) {
-                    // Save expired status
                     $this->save_email_license_data($email, $name, 'expired', $auth_key);
                     return false;
                 } else {
-                    // Save active status
                     $this->save_email_license_data($email, $name, 'yes', $auth_key);
                     return ['user_name' => $name];
                 }
             }
 
+            error_log("MaxiBlocks Email Auth: FINAL RESULT - Authentication failed, returning false");
             return false;
         }
 

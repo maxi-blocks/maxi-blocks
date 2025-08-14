@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -176,6 +176,27 @@ const LibraryToolbar = props => {
 	const [userEmail, setUserEmail] = useState(false);
 	const [clickCount, setClickCount] = useState(0);
 	const [isVerifying, setIsVerifying] = useState(false);
+	const [authErrorMessage, setAuthErrorMessage] = useState('');
+
+	// Listen for authentication errors
+	useEffect(() => {
+		const handleAuthError = event => {
+			console.error(
+				JSON.stringify({
+					message: 'Toolbar received auth error event',
+					error: event.detail.error,
+					errorCode: event.detail.errorCode,
+				})
+			);
+			setAuthErrorMessage(event.detail.error || 'Authentication failed');
+		};
+
+		window.addEventListener('maxiEmailAuthError', handleAuthError);
+
+		return () => {
+			window.removeEventListener('maxiEmailAuthError', handleAuthError);
+		};
+	}, []);
 
 	// Check for network license status
 	const licenseSettings = window.maxiLicenseSettings || {};
@@ -496,6 +517,9 @@ const LibraryToolbar = props => {
 		const inputValue = userEmail;
 		if (!inputValue || isVerifying) return;
 
+		// Clear any previous errors
+		setAuthErrorMessage('');
+
 		const inputType = detectInputType(inputValue);
 
 		if (inputType === 'email') {
@@ -504,6 +528,8 @@ const LibraryToolbar = props => {
 				const encodedEmail = encodeURIComponent(inputValue);
 				const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
 				window.open(url, '_blank')?.focus();
+
+				// Call onClickConnect - errors will come through event system
 				onClickConnect(inputValue);
 			} else {
 				// Let parent handle invalid email by calling onClickConnect
@@ -733,7 +759,10 @@ const LibraryToolbar = props => {
 										'maxi-blocks'
 									)}
 									value={userEmail}
-									onChange={value => setUserEmail(value)}
+									onChange={value => {
+										setUserEmail(value);
+										setAuthErrorMessage(''); // Clear auth error when user types
+									}}
 								/>
 								{showNotValidEmail && (
 									<span>
@@ -750,6 +779,9 @@ const LibraryToolbar = props => {
 											'maxi-blocks'
 										)}
 									</span>
+								)}
+								{authErrorMessage && (
+									<span>{authErrorMessage}</span>
 								)}
 							</div>
 							<Button

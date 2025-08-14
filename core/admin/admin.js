@@ -763,6 +763,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 
 			// For email authentication, send to WordPress backend and open login page
+			console.log(
+				JSON.stringify({
+					message:
+						'MaxiBlocks Email Auth JS INIT: Starting email authentication initiation',
+					email: inputValue,
+				})
+			);
+
 			const formData = new FormData();
 			formData.append('action', 'maxi_validate_license');
 			// eslint-disable-next-line no-undef
@@ -770,14 +778,51 @@ document.addEventListener('DOMContentLoaded', function () {
 			formData.append('license_input', inputValue);
 			formData.append('license_action', 'activate');
 
+			console.log(
+				JSON.stringify({
+					message:
+						'MaxiBlocks Email Auth JS INIT: Sending request to WordPress',
+					// eslint-disable-next-line no-undef
+					endpoint: maxiLicenseSettings.ajaxUrl,
+					action: 'maxi_validate_license',
+					licenseAction: 'activate',
+				})
+			);
+
 			// eslint-disable-next-line no-undef
 			fetch(maxiLicenseSettings.ajaxUrl, {
 				method: 'POST',
 				body: formData,
 			})
-				.then(response => response.json())
+				.then(response => {
+					console.log(
+						JSON.stringify({
+							message:
+								'MaxiBlocks Email Auth JS INIT: Received response',
+							status: response.status,
+							ok: response.ok,
+						})
+					);
+					return response.json();
+				})
 				.then(data => {
+					console.log(
+						JSON.stringify({
+							message:
+								'MaxiBlocks Email Auth JS INIT: Response data',
+							data: JSON.stringify(data),
+						})
+					);
+
 					if (data.success && data.data.auth_type === 'email') {
+						console.log(
+							JSON.stringify({
+								message:
+									'MaxiBlocks Email Auth JS INIT: Email auth successful, opening login URL',
+								loginUrl: data.data.login_url,
+							})
+						);
+
 						// Open the login URL in a new tab
 						window.open(data.data.login_url, '_blank')?.focus();
 						showMessage(
@@ -785,9 +830,17 @@ document.addEventListener('DOMContentLoaded', function () {
 							false
 						);
 
-						// Start direct email polling (like toolbar)
-						startDirectEmailPolling(inputValue);
+						// Start smart email authentication checking
+						startSmartAuthCheck(inputValue);
 					} else {
+						console.error(
+							JSON.stringify({
+								message:
+									'MaxiBlocks Email Auth JS INIT: Email auth failed',
+								errorMessage:
+									data.data?.message || 'Unknown error',
+							})
+						);
 						showMessage(
 							data.data.message || 'Email authentication failed',
 							true
@@ -795,6 +848,13 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 				})
 				.catch(error => {
+					console.error(
+						JSON.stringify({
+							message:
+								'MaxiBlocks Email Auth JS INIT: Request failed',
+							error: error.message,
+						})
+					);
 					showMessage(
 						'Failed to initiate email authentication',
 						true
@@ -845,43 +905,164 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	}
 
+	// Keep track of active polling to prevent multiple instances
+	let activePollingEmail = null;
+
 	/**
-	 * Start direct email polling (similar to toolbar approach)
+	 * Start smart authentication checking using Page Visibility API and focus events
+	 * This is much more efficient than constant polling - only checks when user returns to tab
 	 */
-	function startDirectEmailPolling(email) {
-		const intervalId = setInterval(async () => {
+	function startSmartAuthCheck(email) {
+		// Set active polling email to prevent duplicates
+		activePollingEmail = email;
+
+		let fallbackTimeout;
+		let isCheckingAuth = false;
+		let handleVisibilityChange;
+		let handleWindowFocus;
+
+		const stopAuthCheck = () => {
+			activePollingEmail = null;
+			if (fallbackTimeout) {
+				clearTimeout(fallbackTimeout);
+			}
+			// Remove event listeners
+			if (handleVisibilityChange) {
+				document.removeEventListener(
+					'visibilitychange',
+					handleVisibilityChange
+				);
+			}
+			if (handleWindowFocus) {
+				window.removeEventListener('focus', handleWindowFocus);
+			}
+		};
+
+		const checkAuth = async (trigger = 'unknown') => {
+			if (isCheckingAuth) return false; // Prevent multiple simultaneous checks
+
+			isCheckingAuth = true;
+
 			try {
-				// Call the email authentication API directly
 				const authResult = await checkEmailAuthentication(email);
 
 				if (authResult && authResult.success) {
-					clearInterval(intervalId);
-					showMessage('Authentication successful!');
+					// User is fully authenticated (both subscription valid and logged into Appwrite)
+					stopAuthCheck();
+
+					showMessage(
+						'Successfully authenticated with MaxiBlocks account!'
+					);
 					updateLicenseStatus('Active ✓', authResult.user_name);
 					setTimeout(() => {
 						window.location.reload();
 					}, 1500);
+
+					return true;
+				}
+
+				if (
+					authResult &&
+					authResult.subscription_valid &&
+					!authResult.appwrite_login_verified
+				) {
+					// Subscription is valid but user hasn't logged into Appwrite yet
+					// Don't stop checking - keep polling until they log in
+					showMessage(
+						'Please log into your MaxiBlocks account to complete activation',
+						false
+					);
+					return false;
+				}
+
+				if (authResult && authResult.error) {
+					// Handle specific errors like seat limit
+					console.error(
+						`Authentication error: ${authResult.error_message}`
+					);
+
+					// Stop auth checking on error
+					stopAuthCheck();
+
+					showMessage(authResult.error_message, true);
+					return false;
 				}
 			} catch (error) {
-				console.error('Poll error:', error);
-				// Continue polling on error
+				console.error('Auth check error:', error);
+			} finally {
+				isCheckingAuth = false;
 			}
-		}, 1000); // Poll every 1 second like toolbar
 
-		// Stop polling after 5 minutes
+			return false;
+		};
+
+		// Define event handlers
+		handleVisibilityChange = () => {
+			if (
+				document.visibilityState === 'visible' &&
+				activePollingEmail === email
+			) {
+				checkAuth('visibility-change');
+			}
+		};
+
+		handleWindowFocus = () => {
+			if (activePollingEmail === email) {
+				checkAuth('window-focus');
+			}
+		};
+
+		// Add event listeners
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+		window.addEventListener('focus', handleWindowFocus);
+
+		// Check immediately
+		checkAuth('initial');
+
+		// Fallback: Check once every 60 seconds as a safety net (much less frequent than before)
+		const fallbackCheck = () => {
+			if (activePollingEmail === email) {
+				// Only check if tab is visible to avoid unnecessary API calls
+				if (document.visibilityState === 'visible') {
+					checkAuth('fallback-timer');
+				}
+				fallbackTimeout = setTimeout(fallbackCheck, 60000); // 60 seconds
+			}
+		};
+		fallbackTimeout = setTimeout(fallbackCheck, 60000);
+
+		// Stop checking after 10 minutes
 		setTimeout(() => {
-			clearInterval(intervalId);
-		}, 300000);
+			if (activePollingEmail === email) {
+				stopAuthCheck();
+			}
+		}, 600000); // 10 minutes
 	}
 
 	/**
 	 * Check email authentication directly (similar to toolbar)
 	 */
 	async function checkEmailAuthentication(email) {
+		console.log(
+			JSON.stringify({
+				message:
+					'MaxiBlocks Email Auth JS: Starting authentication check',
+				email,
+				timestamp: new Date().toISOString(),
+			})
+		);
+
 		try {
 			// Get the auth key from cookie
 			const cookies = document.cookie.split(';');
 			let authKey = null;
+
+			console.log(
+				JSON.stringify({
+					message: 'MaxiBlocks Email Auth JS: Checking cookies',
+					cookieCount: cookies.length,
+				})
+			);
 
 			for (const cookie of cookies) {
 				const [name, value] = cookie.trim().split('=');
@@ -889,15 +1070,31 @@ document.addEventListener('DOMContentLoaded', function () {
 					try {
 						const cookieData = JSON.parse(value);
 						authKey = cookieData[email];
+						console.log(
+							JSON.stringify({
+								message:
+									'MaxiBlocks Email Auth JS: Found auth cookie',
+								email,
+								authKeyPreview: authKey
+									? `${authKey.substring(0, 8)}...`
+									: 'null',
+							})
+						);
 						break;
 					} catch (e) {
-						console.error('Error parsing cookie:', e);
+						console.error(
+							'MaxiBlocks Email Auth JS: Error parsing cookie:',
+							e
+						);
 					}
 				}
 			}
 
 			if (!authKey) {
-				console.error('No auth key found for email:', email);
+				console.error(
+					'MaxiBlocks Email Auth JS: No auth key found for email:',
+					email
+				);
 				return false;
 			}
 
@@ -908,36 +1105,135 @@ document.addEventListener('DOMContentLoaded', function () {
 			formData.append('nonce', maxiLicenseSettings.nonce);
 
 			// eslint-disable-next-line no-undef
-			const response = await fetch(maxiLicenseSettings.ajaxUrl, {
+			const endpoint = maxiLicenseSettings.ajaxUrl;
+			console.log(
+				JSON.stringify({
+					message: 'MaxiBlocks Email Auth JS: Calling WordPress AJAX',
+					endpoint,
+					action: 'maxi_check_auth_status',
+				})
+			);
+
+			// eslint-disable-next-line no-undef
+			const response = await fetch(endpoint, {
 				method: 'POST',
 				body: formData,
 			});
 
+			console.log(
+				JSON.stringify({
+					message: 'MaxiBlocks Email Auth JS: Received response',
+					status: response.status,
+					statusText: response.statusText,
+					ok: response.ok,
+				})
+			);
+
 			if (!response.ok) {
-				console.error('API response not ok:', response.status);
+				console.error(
+					'MaxiBlocks Email Auth JS: API response not ok:',
+					response.status
+				);
 				return false;
 			}
 
 			const data = await response.json();
+			console.log(
+				JSON.stringify({
+					message: 'MaxiBlocks Email Auth JS: Response data',
+					data: JSON.stringify(data),
+				})
+			);
 
 			if (data && data.success) {
 				if (data.data.is_authenticated) {
-					// WordPress AJAX response format
+					// User is fully authenticated (both subscription valid and logged into Appwrite)
+					console.log(
+						JSON.stringify({
+							message:
+								'MaxiBlocks Email Auth JS: FULL SUCCESS - User authenticated',
+							userName: data.data.user_name,
+						})
+					);
 					return {
 						success: true,
 						user_name: data.data.user_name,
 					};
 				}
+
+				// Check for the new intermediate state: subscription valid but not logged into Appwrite
+				if (
+					data.data.subscription_valid &&
+					!data.data.appwrite_login_verified
+				) {
+					console.log(
+						JSON.stringify({
+							message:
+								'MaxiBlocks Email Auth JS: INTERMEDIATE STATE - Subscription valid but Appwrite login not verified',
+							subscriptionValid: data.data.subscription_valid,
+							appwriteLoginVerified:
+								data.data.appwrite_login_verified,
+						})
+					);
+					return {
+						success: false,
+						subscription_valid: true,
+						appwrite_login_verified: false,
+						message:
+							data.data.message ||
+							'Please log into your MaxiBlocks account to complete activation',
+					};
+				}
+
 				if (data.data.error && data.data.error_message) {
 					// Handle specific errors like seat limit
-					showMessage(data.data.error_message, true);
-					return false;
+					console.error(
+						JSON.stringify({
+							message: 'MaxiBlocks Email Auth JS: ERROR response',
+							errorCode: data.data.error_code,
+							errorMessage: data.data.error_message,
+						})
+					);
+					return {
+						success: false,
+						error: true,
+						error_message: data.data.error_message,
+						error_code: data.data.error_code,
+					};
 				}
+
+				console.log(
+					JSON.stringify({
+						message:
+							'MaxiBlocks Email Auth JS: Unknown response state',
+						responseData: data.data,
+					})
+				);
+			} else {
+				console.error(
+					JSON.stringify({
+						message:
+							'MaxiBlocks Email Auth JS: Response unsuccessful or malformed',
+						responseSuccess: data?.success,
+						responseData: data,
+					})
+				);
 			}
 
+			console.log(
+				JSON.stringify({
+					message: 'MaxiBlocks Email Auth JS: Returning false',
+				})
+			);
 			return false;
 		} catch (error) {
-			console.error('Email auth check error:', error);
+			console.error(
+				JSON.stringify({
+					message: 'MaxiBlocks Email Auth JS: Exception caught',
+					error: error.message,
+					stack: error.stack,
+				})
+			);
 			return false;
 		}
 	}

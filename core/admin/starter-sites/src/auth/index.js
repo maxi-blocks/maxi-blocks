@@ -813,7 +813,7 @@ const deactivatePurchaseCode = async (
 	}
 };
 
-export const logOut = redirect => {
+export const logOut = async redirect => {
 	let hasEmailAuth = false;
 
 	// Handle email auth logout
@@ -824,7 +824,7 @@ export const logOut = redirect => {
 		const name = getUserName();
 		if (email) {
 			processLocalActivationRemoveDevice(email, name, 'no', key);
-			removeMaxiCookie();
+			// Don't remove cookie yet - we need it for the server-side logout
 			hasEmailAuth = true;
 		}
 	}
@@ -870,6 +870,36 @@ export const logOut = redirect => {
 		// Update local storage immediately (don't wait for deactivation API calls)
 		const objString = JSON.stringify(filteredObj);
 		dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+	}
+
+	// Call WordPress AJAX logout for email authentication only
+	if (hasEmailAuth) {
+		try {
+			const licenseSettings = window.maxiLicenseSettings || {};
+			const { ajaxUrl, nonce } = licenseSettings;
+
+			if (ajaxUrl && nonce) {
+				const formData = new FormData();
+				formData.append('action', 'maxi_validate_license');
+				formData.append('nonce', nonce);
+				formData.append('license_action', 'logout');
+
+				await fetch(ajaxUrl, {
+					method: 'POST',
+					body: formData,
+				});
+			}
+		} catch (error) {
+			console.error(
+				JSON.stringify({
+					message: 'MaxiBlocks Starter Sites Email Logout: Exception',
+					error: error.message,
+				})
+			);
+		}
+
+		// Now remove the cookie after server-side logout
+		removeMaxiCookie();
 	}
 
 	// Only redirect to email logout page if user was authenticated via email

@@ -40,8 +40,6 @@
 				transition: var(--tabs-transition);
 
 				&[aria-pressed='true'] {
-					border-bottom: var(--maxi-border-1-5px) solid
-						var(--maxi-black) !important;
 					background-color: var(--maxi-whisper-green);
 				}
 			}

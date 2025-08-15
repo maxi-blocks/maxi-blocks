@@ -5,6 +5,17 @@ import './store';
  */
 import { select, dispatch } from '@wordpress/data';
 
+/**
+ * Email validation utility function
+ * @param {string} email - Email to validate
+ * @returns {boolean} - True if email is valid
+ */
+export const isValidEmail = email => {
+	const emailPattern =
+		/^(?![.])(([^<>()[\]\\.,;:\s@"']+(\.[^<>()[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return emailPattern.test(email);
+};
+
 export const getMaxiCookieKey = () => {
 	const cookie = document.cookie
 		.split(';')
@@ -421,6 +432,18 @@ const checkExistingAuthentication = () => {
  * Initiate email authentication via WordPress AJAX (same as dashboard)
  */
 const initiateEmailAuthentication = async email => {
+	// Validate email format
+	if (!email || !isValidEmail(email)) {
+		console.error(
+			JSON.stringify({
+				message:
+					'MaxiBlocks Auth: Invalid email provided to initiateEmailAuthentication',
+				email,
+			})
+		);
+		return false;
+	}
+
 	try {
 		const licenseSettings = window.maxiLicenseSettings || {};
 		const { ajaxUrl, nonce } = licenseSettings;
@@ -462,6 +485,18 @@ const initiateEmailAuthentication = async email => {
  * Check email authentication status via WordPress AJAX (similar to admin.js)
  */
 const checkEmailAuthenticationStatus = async email => {
+	// Validate email format
+	if (!email || !isValidEmail(email)) {
+		console.error(
+			JSON.stringify({
+				message:
+					'MaxiBlocks Auth: Invalid email provided to checkEmailAuthenticationStatus',
+				email,
+			})
+		);
+		return false;
+	}
+
 	try {
 		// Get the auth key from cookie
 		const authKey = getMaxiCookieForEmail(email);
@@ -553,10 +588,23 @@ let activePollingEmail = null;
  * This is much more efficient than constant polling - only checks when user returns to tab
  */
 const startSmartAuthCheck = email => {
+	// Validate email format
+	if (!email || !isValidEmail(email)) {
+		console.error(
+			JSON.stringify({
+				message:
+					'MaxiBlocks Auth: Invalid email provided to startSmartAuthCheck',
+				email,
+			})
+		);
+		return false;
+	}
+
 	// Set active polling email to prevent duplicates
 	activePollingEmail = email;
 
 	let fallbackTimeout;
+	let stopTimeout;
 	let isCheckingAuth = false;
 	let handleVisibilityChange;
 	let handleWindowFocus;
@@ -566,6 +614,11 @@ const startSmartAuthCheck = email => {
 		activePollingEmail = null;
 		if (fallbackTimeout) {
 			clearTimeout(fallbackTimeout);
+			fallbackTimeout = null;
+		}
+		if (stopTimeout) {
+			clearTimeout(stopTimeout);
+			stopTimeout = null;
 		}
 		// Remove event listeners
 		if (handleVisibilityChange) {
@@ -677,22 +730,32 @@ const startSmartAuthCheck = email => {
 
 	// Fallback: Check once every 60 seconds as a safety net (much less frequent than before)
 	const fallbackCheck = () => {
+		// Clear the existing timeout reference first
+		fallbackTimeout = null;
+
 		if (activePollingEmail === email) {
 			// Only check if tab is visible to avoid unnecessary API calls
 			if (document.visibilityState === 'visible') {
 				checkAuth('fallback-timer');
 			}
-			fallbackTimeout = setTimeout(fallbackCheck, 60000); // 60 seconds
+			// Schedule next check only if we're still the active polling email
+			if (activePollingEmail === email) {
+				fallbackTimeout = setTimeout(fallbackCheck, 60000); // 60 seconds
+			}
 		}
 	};
+
+	// Start the fallback timer
 	fallbackTimeout = setTimeout(fallbackCheck, 60000);
 
-	// Stop checking after 10 minutes
-	setTimeout(() => {
+	// Stop checking after 10 minutes - store the timeout reference for proper cleanup
+	stopTimeout = setTimeout(() => {
 		if (activePollingEmail === email) {
 			stopAuthCheck();
 		}
 	}, 600000); // 10 minutes
+
+	return true; // Successfully started auth checking
 };
 
 export async function authConnect(withRedirect = false, email = false) {
@@ -707,6 +770,22 @@ export async function authConnect(withRedirect = false, email = false) {
 		}
 		// No existing auth and no email provided
 		return false;
+	}
+
+	// Validate email format if provided
+	if (email && !isValidEmail(email)) {
+		console.error(
+			JSON.stringify({
+				message: 'MaxiBlocks Auth: Invalid email format provided',
+				email,
+			})
+		);
+		return {
+			success: false,
+			error: true,
+			error_message: 'Invalid email format',
+			error_code: 'INVALID_EMAIL_FORMAT',
+		};
 	}
 
 	// Check if authentication is already in progress for this email
@@ -1096,10 +1175,4 @@ export const logOut = async redirect => {
 		const url = 'https://my.maxiblocks.com/log-out?plugin';
 		window.open(url, '_blank')?.focus();
 	}
-};
-
-export const isValidEmail = email => {
-	const emailPattern =
-		/^(?![.])(([^<>()[\]\\.,;:\s@"']+(\.[^<>()[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return emailPattern.test(email);
 };

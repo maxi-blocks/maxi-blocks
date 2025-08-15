@@ -2927,6 +2927,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $lookup_key = 'maxi_auth_lookup_' . md5($email);
             set_transient($lookup_key, $transient_key, 600);
 
+            // Update the registry of active auth attempts for structured access
+            $this->add_to_auth_registry($transient_key);
+
             $login_url = 'https://my.maxiblocks.com/login?plugin&email=' . urlencode($email);
 
             $response_data = [
@@ -3089,32 +3092,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $found_auth_data = true;
             }
 
-            // If no session data, check transients using a more direct approach
+            // If no session data, check transients using WordPress API
             if (!$found_auth_data) {
-                // Try to get transients using WordPress database query
-                global $wpdb;
-                $transient_keys = $wpdb->get_results(
-                    "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '_transient_maxi_auth_%' AND option_name NOT LIKE '%_lookup_%'",
-                    ARRAY_A
-                );
+                $auth_data = $this->get_pending_auth_data();
 
-                foreach ($transient_keys as $row) {
-                    $option_name = $row['option_name'];
-                    $transient_name = str_replace('_transient_', '', $option_name);
-                    $auth_data = get_transient($transient_name);
-
-                    if ($auth_data && is_array($auth_data)) {
-                        $email = $auth_data['email'];
-                        $auth_key = $auth_data['auth_key'];
-                        $auth_time = $auth_data['time'] ?? time();
-                        $found_auth_data = true;
-
-                        break; // Only check the first pending auth
-                    } else {
-                        error_log("MaxiBlocks Email Auth STATUS: Transient data invalid or expired");
-                    }
+                if ($auth_data) {
+                    $email = $auth_data['email'];
+                    $auth_key = $auth_data['auth_key'];
+                    $auth_time = $auth_data['time'] ?? time();
+                    $found_auth_data = true;
                 }
-
             }
 
             if ($found_auth_data && $email && $auth_key) {                // Only try authentication if it's been less than 10 minutes
@@ -3132,9 +3119,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                         // Clear transient data on successful auth
                         $transient_key = 'maxi_auth_' . md5($email . $auth_key);
-
-                        delete_transient($transient_key);
-                        delete_transient('maxi_auth_lookup_' . md5($email));
+                        $this->cleanup_expired_auth_data($transient_key, $email);
 
                         $success_response = [
                             'is_authenticated' => true,
@@ -3162,8 +3147,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                         // Clear transient data on error
                         $transient_key = 'maxi_auth_' . md5($email . $auth_key);
-                        delete_transient($transient_key);
-                        delete_transient('maxi_auth_lookup_' . md5($email));
+                        $this->cleanup_expired_auth_data($transient_key, $email);
 
                         wp_send_json_success([
                             'is_authenticated' => false,
@@ -3280,6 +3264,112 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'user_name' => $user_name,
                 ]);
             }
+        }
+
+        /**
+         * Get pending auth data using WordPress transient API with structured approach
+         *
+         * This method uses a more WordPress-friendly approach by:
+         * 1. First trying to get auth data by email if provided in request
+         * 2. Falling back to checking a registry of pending auth attempts
+         * 3. Avoiding direct database queries in favor of WordPress transient API
+         *
+         * @param string $email Optional email to look up specific auth data
+         * @return array|false Auth data array or false if none found
+         */
+        private function get_pending_auth_data($email = null)
+        {
+            // Method 1: If we have an email, try the lookup mechanism
+            if ($email) {
+                $lookup_key = 'maxi_auth_lookup_' . md5($email);
+                $transient_key = get_transient($lookup_key);
+
+                if ($transient_key) {
+                    $auth_data = get_transient($transient_key);
+                    if ($auth_data && is_array($auth_data) && isset($auth_data['email'], $auth_data['auth_key'])) {
+                        return $auth_data;
+                    }
+                }
+            }
+
+            // Method 2: Check for any pending auth using a registry approach
+            // First, try to get the registry of active auth attempts
+            $auth_registry = get_transient('maxi_auth_registry');
+
+            if (is_array($auth_registry) && !empty($auth_registry)) {
+                foreach ($auth_registry as $transient_key) {
+                    $auth_data = get_transient($transient_key);
+                    if ($auth_data && is_array($auth_data) && isset($auth_data['email'], $auth_data['auth_key'])) {
+                        // Verify this auth attempt is still within the time limit
+                        $auth_time = $auth_data['time'] ?? time();
+                        if ((time() - $auth_time) < 600) { // 10 minutes
+                            return $auth_data;
+                        } else {
+                            // Clean up expired auth data
+                            $this->cleanup_expired_auth_data($transient_key, $auth_data['email']);
+                        }
+                    }
+                }
+            }
+
+            // Method 3: Fallback - try a few common email patterns if we have POST data
+            if (!$email && isset($_POST['email'])) {
+                return $this->get_pending_auth_data(sanitize_email($_POST['email']));
+            }
+
+            return false;
+        }
+
+        /**
+         * Clean up expired auth data and update registry
+         *
+         * @param string $transient_key The expired transient key
+         * @param string $email The email associated with the auth data
+         */
+        private function cleanup_expired_auth_data($transient_key, $email)
+        {
+            // Remove the main auth transient
+            delete_transient($transient_key);
+
+            // Remove the lookup transient
+            if ($email) {
+                $lookup_key = 'maxi_auth_lookup_' . md5($email);
+                delete_transient($lookup_key);
+            }
+
+            // Update the registry to remove this transient
+            $auth_registry = get_transient('maxi_auth_registry');
+            if (is_array($auth_registry)) {
+                $auth_registry = array_filter($auth_registry, function ($key) use ($transient_key) {
+                    return $key !== $transient_key;
+                });
+                set_transient('maxi_auth_registry', $auth_registry, 600);
+            }
+
+            error_log("MaxiBlocks Email Auth: Cleaned up expired auth data for transient: {$transient_key}");
+        }
+
+        /**
+         * Add a transient key to the auth registry for structured access
+         *
+         * @param string $transient_key The transient key to add to the registry
+         */
+        private function add_to_auth_registry($transient_key)
+        {
+            $auth_registry = get_transient('maxi_auth_registry');
+
+            // Initialize registry if it doesn't exist
+            if (!is_array($auth_registry)) {
+                $auth_registry = [];
+            }
+
+            // Add the new transient key to the registry (avoid duplicates)
+            if (!in_array($transient_key, $auth_registry)) {
+                $auth_registry[] = $transient_key;
+            }
+
+            // Store the updated registry
+            set_transient('maxi_auth_registry', $auth_registry, 600); // 10 minutes
         }
 
         /**

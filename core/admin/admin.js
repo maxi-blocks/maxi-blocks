@@ -1,3 +1,6 @@
+// Keep track of active polling to prevent multiple instances
+let activePollingEmail = null;
+
 document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	// &panel=documentation-support will open the tab in the accordion
 	const urlStr = window.location.href;
@@ -862,9 +865,6 @@ document.addEventListener('DOMContentLoaded', function () {
 				});
 		}
 	}
-
-	// Keep track of active polling to prevent multiple instances
-	let activePollingEmail = null;
 
 	/**
 	 * Start smart authentication checking using Page Visibility API and focus events

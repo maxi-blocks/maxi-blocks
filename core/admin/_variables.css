@@ -1,97 +1,102 @@
-/* Base Colors */
+/* ===================================
+   MAXI BLOCKS - CSS DESIGN TOKENS
+   =================================== */
+
 :root {
+	/* ===================================
+	   COLOR SYSTEM
+	   =================================== */
+
+	/* Base Administrative Colors */
 	--maxi-admin-white: #ffffff;
-	--maxi-admin-black-text: #666666;
-	--maxi-admin-light-grey: #f3fbf7;
 	--maxi-admin-black: #000000;
+	--maxi-admin-black-text: #666666;
+	--maxi-admin-grey: #999999;
+	--maxi-admin-light-grey: #f3fbf7;
+	--maxi-admin-border-light: #e6f3ed;
+	--maxi-admin-mint: #f3fbf7;
+
+	/* Administrative Brand Colors */
 	--maxi-admin-orange: #ff9700;
 	--maxi-admin-light-orange: #f5b500;
 	--maxi-admin-yellow: #e8ea00;
-	--maxi-admin-border-light: #e6f3ed;
-
-	--maxi-admin-grey: #999999;
 	--maxi-admin-purple: #000;
 	--maxi-admin-pink-purple: #2c8a46;
 	--maxi-admin-green: #2c8a46;
-	--maxi-admin-mint: #f3fbf7;
 
-	/* Hover States */
+	/* Administrative Hover States */
 	--maxi-admin-white-hover: #f5f5f5;
 	--maxi-admin-black-hover: #848389;
 	--maxi-admin-orange-hover: #e53e00;
 	--maxi-admin-light-orange-hover: #ff9700;
 	--maxi-admin-yellow-hover: #ffde3e;
-
 	--maxi-admin-purple-hover: #b06bf7;
 	--maxi-admin-pink-hover: #ff66ff;
 	--maxi-admin-green-hover: #2c8a46;
 	--maxi-admin-mint-hover: #e3f3ea;
-}
 
-:root {
-	/* Core Builder */
+	/* Core Brand Colors */
 	--maxi-primary-color: #2c8a46; /* Fresh lime green */
 	--maxi-secondary-color: #63ba79; /* Crisp blue accent */
 	--maxi-tertiary-color: #7a00df; /* Rich deep purple accent */
 
-	/* Core Colors */
+	/* Cloud System Colors */
 	--maxi-cloud-primary: #9a8cf3; /* Soft, pastel lavender-purple – modern and approachable */
 	--maxi-cloud-primary-light: #e1dbfe; /* Lighter pastel version, now more distinct from whisper */
 	--maxi-cloud-primary-bright: #7e6ee8; /* A more saturated but still refined shade */
 	--maxi-cloud-primary-whisper: #f5f3fe; /* Slightly darker off-white for backgrounds */
 	--maxi-cloud-primary-contrast: #3a3a3a; /* Dark neutral for text and contrast */
-
-	/* Accent & Hover Colors */
 	--maxi-cloud-hover: #b06bf7; /* Vibrant lavender-purple for hover effects */
 	--maxi-cloud-hover-deep: #954dd1; /* Slightly deeper version for active states */
+	--maxi-cloud-preview-gradient: #f8fbfd; /* For lines gradient */
+	--maxi-cloud-iframe-border: #96b0cb; /* For mobile and tablet preview iframe */
 
 	/* Core Neutrals */
 	--maxi-white: #fff; /* Pure white */
 	--maxi-off-white: #f8f8f8; /* Soft off-white background */
+	--maxi-black: #000; /* True black */
 	--maxi-grey: #b4b4b4; /* Standard grey for text/borders */
 	--maxi-grey-light: #e0e0e0; /* Very light grey background */
 	--maxi-grey-dark: #383838; /* Dark grey for high-contrast elements */
-	--maxi-black: #000; /* True black */
-
-	/* Accessibility */
 	--maxi-accessibility-grey: #757575; /* Medium grey for readability */
 
-	/* Existing Accent Colors */
+	/* Accent Colors */
 	--maxi-light-blue: #e5f2f8; /* Soft light blue background/highlight */
 	--maxi-light-blue-alt: #7fbddc; /* Alternative blue accent */
-	--maxi-highlight-color: #f066ff; /* Vibrant highlight/punctuation */
 	--maxi-light-yellow: #f7f5df; /* Gentle light yellow for accents */
+	--maxi-highlight-color: #f066ff; /* Vibrant highlight/punctuation */
+	--maxi-hot-pink: #ff66ff; /* Vibrant pink highlight */
 
-	/* New Accent Brand Colors */
+	/* Brand Accent Colors */
 	--maxi-orange-red: #ff4500; /* Vibrant orange-red */
 	--maxi-golden-orange: #f2a600; /* Warm golden-orange */
 	--maxi-bright-yellow: #ffff00; /* Pure, bright yellow */
 	--maxi-deep-golden: #f2b600; /* Rich golden shade */
 
+	/* Green System */
 	--maxi-pastel-green: #e3f3ea; /* Soft pastel green */
 	--maxi-mid-green: #e6f3ed; /* Midpoint between the two pastel greens */
 	--maxi-whisper-green: #f3fbf7; /* Soft pastel green */
-	--maxi-hot-pink: #ff66ff; /* Vibrant pink highlight */
 
-	/* Patterns preview colours */
-	--maxi-cloud-preview-gradient: #f8fbfd; /* For lines gradient */
-	--maxi-cloud-iframe-border: #96b0cb; /* For mobile and tablet preview iframe */
+	/* Special Purpose Colors */
+	--maxi-icon-block-orange: #ff4a17; /* For icon blocks */
+	--maxi-checkbox-control-bg: #c50df3; /* Checkbox control background */
 
-	/* For icon blocks */
-	--maxi-icon-block-orange: #ff4a17; /* For mobile and tablet preview iframe */
-
-	/* Block indicators */
+	/* Block Indicators */
 	--maxi-block-indicator-padding-border: #c7e6f7;
 	--maxi-block-indicator-padding-bg: rgba(249, 252, 253, 0.2);
 	--maxi-block-indicator-margin-border: #d2f6cb;
 	--maxi-block-indicator-margin-bg: #f7faf6;
 	--maxi-block-indicator-text: #9b9b9b;
 	--maxi-block-indicator-label-bg: rgba(0, 0, 0, 0.2);
-	--maxi-checkbox-control-bg: #c50df3;
 
-	/* === DESIGN TOKENS - NON-COLOR === */
-	/* Spacing System */
+	/* ===================================
+	   SPACING SYSTEM
+	   =================================== */
+
+	/* Pixel Values */
 	--maxi-space-0px: 0px;
+	--maxi-space-0-8px: 0.8px;
 	--maxi-space-1px: 1px;
 	--maxi-space-2px: 2px;
 	--maxi-space-3px: 3px;
@@ -121,29 +126,36 @@
 	--maxi-space-29px: 29px;
 	--maxi-space-30px: 30px;
 	--maxi-space-31px: 31px;
-	--maxi-space-40px: 40px;
 	--maxi-space-34px: 34px;
 	--maxi-space-35px: 35px;
 	--maxi-space-36px: 36px;
-	--maxi-space-57px: 57px;
-	--maxi-space-301px: 301px;
-	--maxi-space-23px: 23px;
+	--maxi-space-40px: 40px;
 	--maxi-space-50px: 50px;
+	--maxi-space-57px: 57px;
 	--maxi-space-60px: 60px;
 	--maxi-space-65px: 65px;
 	--maxi-space-80px: 80px;
-	--maxi-space-90px: 90%;
-	--maxi-space-0-8px: 0.8px;
-	--maxi-space-8-5px: 8.5px;
+	--maxi-space-301px: 301px;
+
+	/* Rem Values */
+	--maxi-space-0-1rem: 0.1rem;
 	--maxi-space-0-5rem: 0.5rem;
 	--maxi-space-0-75rem: 0.75rem;
 	--maxi-space-1rem: 1rem;
-	--maxi-space-0-1rem: 0.1rem;
 	--maxi-space-25rem: 25rem;
+
+	/* Percentage & Viewport Values */
+	--maxi-space-90px: 90%;
 	--maxi-space-40vh: 40vh;
+
+	/* Zero & Negative Values */
 	--maxi-space-0: 0;
 	--maxi-space-minus-1px: -1px;
 	--maxi-space-minus-3px: -3px;
+
+	/* ===================================
+	   BORDER SYSTEM
+	   =================================== */
 
 	/* Border Radius */
 	--maxi-radius-0: 0;
@@ -152,12 +164,12 @@
 	--maxi-radius-4px: 4px;
 	--maxi-radius-5px: 5px;
 	--maxi-radius-6px: 6px;
-	--maxi-radius-round: 50%;
 	--maxi-radius-10px: 10px;
 	--maxi-radius-12px: 12px;
-	--maxi-radius-60px: 60px;
 	--maxi-radius-20px: 20px;
 	--maxi-radius-30px: 30px;
+	--maxi-radius-60px: 60px;
+	--maxi-radius-round: 50%;
 	--maxi-radius-100px: 100%;
 
 	/* Border Widths */
@@ -167,13 +179,9 @@
 	--maxi-border-3px: 3px;
 	--maxi-border-4px: 4px;
 
-	/* Transitions */
-	--maxi-transition-100ms: 0.1s;
-	--maxi-transition-200ms: 0.2s;
-	--maxi-transition-300ms: 0.3s;
-	--maxi-transition-400ms: 0.4s;
-	--maxi-transition-500ms: 0.5s;
-	--maxi-transition-200ms-delay: 0.2s;
+	/* ===================================
+	   DIMENSIONS SYSTEM
+	   =================================== */
 
 	/* Control Heights */
 	--maxi-control-height-24px: 24px;
@@ -182,35 +190,52 @@
 	--maxi-control-height-32px: 32px;
 	--maxi-control-height-36px: 36px;
 	--maxi-control-height-40px: 40px;
-	--maxi-control-height-291px: 291px;
 	--maxi-control-height-43px: 43px;
-	--maxi-control-width-32px: 32px;
+	--maxi-control-height-291px: 291px;
 
-	/* Control/Element Dimensions */
+	/* Control Widths */
+	--maxi-control-width-32px: 32px;
 	--maxi-control-width-50px: 50px;
 	--maxi-control-width-60px: 60px;
-	--maxi-control-width-72px: 72px;
 	--maxi-control-width-64px: 64px;
 	--maxi-control-width-70px: 70px;
+	--maxi-control-width-72px: 72px;
 	--maxi-control-width-100px: 100px;
-	--maxi-control-width-295px: 295px;
-	--maxi-control-width-1-5rem: 1.5rem;
 	--maxi-control-width-120px: 120px;
 	--maxi-control-width-160px: 160px;
 	--maxi-control-width-180px: 180px;
 	--maxi-control-width-220px: 220px;
-	--maxi-control-width-400px: 400px;
+	--maxi-control-width-295px: 295px;
 	--maxi-control-width-300px: 300px;
+	--maxi-control-width-400px: 400px;
+	--maxi-control-width-1-5rem: 1.5rem;
+
+	/* Canvas Sizes */
 	--maxi-canvas-size-170px: 170px;
 	--maxi-canvas-size-190px: 190px;
-	--maxi-canvas-size-280px: 280px;
 	--maxi-canvas-size-200px: 200px;
+	--maxi-canvas-size-280px: 280px;
 	--maxi-canvas-size-400px: 400px;
+
+	/* Element Sizes */
 	--maxi-element-size-40px: 40px;
 	--maxi-element-size-44px: 44px;
 	--maxi-element-size-48px: 48px;
 	--maxi-element-size-168px: 168px;
 	--maxi-element-size-185px: 185px;
+
+	/* ===================================
+	   TYPOGRAPHY SYSTEM
+	   =================================== */
+
+	/* Font Families */
+	--maxi-font-primary: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+	--maxi-font-ui: 'Inter', sans-serif;
+	--maxi-font-family-inter: var(--maxi-font-ui); /* Alias for explicit Inter font family usage */
+	--maxi-font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+	--maxi-font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+	--maxi-font-monospace: monospace;
+	--maxi-font-inherit: inherit;
 
 	/* Font Sizes */
 	--maxi-font-size-8px: 8px;
@@ -219,193 +244,6 @@
 	--maxi-font-size-13px: 13px;
 	--maxi-font-size-14px: 14px;
 	--maxi-font-size-16px: 16px;
-
-	/* Letter Spacing */
-	--maxi-letter-spacing-005px: 0.05px;
-
-	/* Z-Index Scale */
-	--maxi-z-background: -1;
-	--maxi-z-base: 0;
-	--maxi-z-elevated: 1;
-	--maxi-z-overlay: 2;
-	--maxi-z-modal: 8;
-	--maxi-z-maximum: 10;
-	--maxi-z-reset-button: 1000;
-	--maxi-z-prompt-control: 10000;
-	--maxi-z-dropdown: 99999;
-	--maxi-z-dialog: 999999;
-	--maxi-z-font-selector: 99;
-
-	/* Backward-compatible z-index aliases used across editor styles */
-	--maxi-z-index-0: var(--maxi-z-base);
-	--maxi-z-index-1: var(--maxi-z-elevated);
-	--maxi-z-index-10: var(--maxi-z-maximum);
-	--maxi-z-index-10000: var(--maxi-z-prompt-control);
-
-	/* === COMMON COMPONENT PATTERNS === */
-	/* Standard Button Base */
-	--maxi-button-padding: var(--maxi-space-8px);
-	--maxi-button-border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
-	--maxi-button-radius: var(--maxi-radius-4px);
-	--maxi-button-transition: all var(--maxi-transition-400ms) ease;
-
-	/* Floating Label Pattern */
-	--maxi-floating-label-top: calc(-1 * var(--maxi-space-8px));
-	--maxi-floating-label-left: calc(-1 * var(--maxi-space-5px));
-	--maxi-floating-label-padding: 0 var(--maxi-space-5px);
-	--maxi-floating-label-size: var(--maxi-font-size-10px);
-	--maxi-floating-label-z: var(--maxi-z-maximum);
-
-	/* Input Field Pattern */
-	--maxi-input-height: var(--maxi-control-height-31px);
-	--maxi-input-padding: var(--maxi-space-8px);
-	--maxi-input-border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
-	--maxi-input-radius: var(--maxi-radius-5px);
-	--maxi-input-transition: border-color var(--maxi-transition-400ms) ease;
-
-	/* Standard Spacing Patterns */
-	--maxi-field-margin: var(--maxi-space-10px);
-	--maxi-section-margin: var(--maxi-space-15px);
-	--maxi-component-gap: var(--maxi-space-5px);
-
-	/* === LAYOUT UTILITIES === */
-	/* Display Properties */
-	--maxi-display-block: block;
-	--maxi-display-inline-block: inline-block;
-	--maxi-display-none: none;
-	--maxi-display-flex: flex;
-	--maxi-display-inline-flex: inline-flex;
-	--maxi-display-grid: grid;
-	--maxi-display-contents: contents;
-
-	/* Layout Properties */
-	--maxi-layout-100: 100%;
-	--maxi-layout-full-width: 100%;
-	--maxi-layout-half: 50%;
-	--maxi-layout-quarter: 25%;
-	--maxi-layout-22-5-percent: 22.5%;
-	--maxi-layout-auto: auto;
-	--maxi-layout-zero: 0;
-	--maxi-layout-flex: flex;
-	--maxi-flex-shrink-0: 0;
-	--maxi-layout-flex-row: row;
-	--maxi-layout-flex-column: column;
-	--maxi-layout-absolute: absolute;
-	--maxi-layout-relative: relative;
-	--maxi-layout-fixed: fixed;
-	--maxi-layout-center: center;
-	--maxi-layout-space-between: space-between;
-	--maxi-layout-max-content: max-content;
-	--maxi-layout-unset: unset;
-	--maxi-layout-50-percent: 50%;
-	--maxi-layout-80-percent: 80%;
-	--maxi-transform-rotate-0: rotate(0);
-	--maxi-transform-rotate-45deg: rotate(45deg);
-	--maxi-transform-rotate-90deg: rotate(90deg);
-	--maxi-transform-rotate-135deg: rotate(135deg);
-	--maxi-layout-button-width: calc(100% / 8.5);
-	--maxi-layout-flex-start: flex-start;
-	--maxi-layout-flex-end: flex-end;
-	--maxi-layout-50-percent-radius: 50%;
-
-	/* Height keywords */
-	--maxi-height-unset: unset;
-
-	/* Align Content */
-	--maxi-align-content-center: center;
-
-	/* Text Alignment */
-	--maxi-text-align-left: left;
-	--maxi-text-align-center: center;
-	--maxi-text-align-right: right;
-
-	/* Float Properties */
-	--maxi-float-left: left;
-	--maxi-float-right: right;
-	--maxi-float-none: none;
-
-	/* Font Style */
-	--maxi-font-style-italic: italic;
-
-	/* Direction */
-	--maxi-direction-ltr: ltr;
-
-	/* Vertical Alignment */
-	--maxi-vertical-align-top: top;
-	--maxi-vertical-align-middle: middle;
-	--maxi-vertical-align-bottom: bottom;
-	--maxi-vertical-align-start: start;
-	--maxi-vertical-align-end: end;
-
-	/* Visibility & Opacity */
-	--maxi-opacity-hidden: 0;
-	--maxi-opacity-disabled: 0.3;
-	--maxi-opacity-semi: 0.5;
-	--maxi-opacity-low: 0.1;
-	--maxi-opacity-medium: 0.7;
-	--maxi-opacity-dark-overlay: 0.7;
-	--maxi-opacity-visible: 1;
-	--maxi-visibility-hidden: hidden;
-	--maxi-visibility-visible: visible;
-
-	/* Reset Utilities */
-	--maxi-reset-margin: 0;
-	--maxi-reset-padding: 0;
-	--maxi-reset-border: 0;
-	--maxi-reset-border-none: none;
-	--maxi-reset-outline: none;
-	--maxi-reset-background: transparent;
-	--maxi-reset-box-shadow: none;
-	--maxi-box-shadow-url-input: -3px 3px 6px 0px rgba(0, 0, 0, 0.16);
-	--maxi-box-shadow-upload-button: -3px 3px 6px 0px rgba(0, 0, 0, 0.16);
-	--maxi-box-shadow-focus: 0 0 0 1px var(--maxi-secondary-color);
-	--maxi-box-shadow-0-0-0-1px-grey: 0 0 0 1px var(--maxi-grey);
-
-	/* Interaction */
-	--maxi-cursor-pointer: pointer;
-	--maxi-cursor-grab: grab;
-	--maxi-cursor-move: move;
-	--maxi-cursor-inherit: inherit;
-	--maxi-cursor-not-allowed: not-allowed;
-	--maxi-overflow-hidden: hidden;
-	--maxi-overflow-visible: visible;
-
-	/* Animation */
-	--maxi-animation-timing-ease-out: ease-out;
-	--maxi-animation-timing-ease-in-out: ease-in-out;
-
-	/* Transform */
-	--maxi-transform-translateZ-0: translateZ(0);
-	--maxi-transform-translate-center: translate(-50%, -50%);
-
-	/* Behavior & Box Model */
-	--maxi-box-sizing-border-box: border-box;
-	--maxi-box-sizing-content-box: content-box;
-	--maxi-user-select-none: none;
-	--maxi-user-select-auto: auto;
-	--maxi-pointer-events-none: none;
-	--maxi-pointer-events-auto: auto;
-	--maxi-white-space-nowrap: nowrap;
-	--maxi-white-space-normal: normal;
-	--maxi-white-space-pre: pre;
-
-	/* Outline Properties */
-	--maxi-outline-focus: 2px solid transparent;
-
-	/* Text Decoration */
-	--maxi-text-decoration-underline: underline;
-	--maxi-text-decoration-none: none;
-
-	/* === TYPOGRAPHY SYSTEM === */
-	/* Font Families */
-	--maxi-font-primary: 'Inter', Helvetica, Arial, Lucida, sans-serif;
-	--maxi-font-ui: 'Inter', sans-serif;
-	--maxi-font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-	--maxi-font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-	/* Alias for explicit Inter font family usage to avoid undefined var warnings */
-	--maxi-font-family-inter: var(--maxi-font-ui);
-	--maxi-font-monospace: monospace;
-	--maxi-font-inherit: inherit;
 
 	/* Font Weights */
 	--maxi-font-weight-normal: 400;
@@ -420,8 +258,207 @@
 	--maxi-line-height-100: 100%;
 	--maxi-line-height-2: 2;
 
-	/* === SVG UTILITIES === */
-	/* Fill States */
+	/* Letter Spacing */
+	--maxi-letter-spacing-005px: 0.05px;
+
+	/* ===================================
+	   TIMING & ANIMATION SYSTEM
+	   =================================== */
+
+	/* Transitions */
+	--maxi-transition-100ms: 0.1s;
+	--maxi-transition-200ms: 0.2s;
+	--maxi-transition-200ms-delay: 0.2s;
+	--maxi-transition-300ms: 0.3s;
+	--maxi-transition-400ms: 0.4s;
+	--maxi-transition-500ms: 0.5s;
+
+	/* Animation Timing */
+	--maxi-animation-timing-ease-out: ease-out;
+	--maxi-animation-timing-ease-in-out: ease-in-out;
+
+	/* ===================================
+	   Z-INDEX SYSTEM
+	   =================================== */
+
+	/* Z-Index Scale */
+	--maxi-z-background: -1;
+	--maxi-z-base: 0;
+	--maxi-z-elevated: 1;
+	--maxi-z-overlay: 2;
+	--maxi-z-modal: 8;
+	--maxi-z-maximum: 10;
+	--maxi-z-font-selector: 99;
+	--maxi-z-reset-button: 1000;
+	--maxi-z-prompt-control: 10000;
+	--maxi-z-dropdown: 99999;
+	--maxi-z-dialog: 999999;
+
+	/* Backward-compatible z-index aliases */
+	--maxi-z-index-0: var(--maxi-z-base);
+	--maxi-z-index-1: var(--maxi-z-elevated);
+	--maxi-z-index-10: var(--maxi-z-maximum);
+	--maxi-z-index-10000: var(--maxi-z-prompt-control);
+
+	/* ===================================
+	   LAYOUT UTILITIES
+	   =================================== */
+
+	/* Display Properties */
+	--maxi-display-block: block;
+	--maxi-display-inline-block: inline-block;
+	--maxi-display-inline-flex: inline-flex;
+	--maxi-display-flex: flex;
+	--maxi-display-grid: grid;
+	--maxi-display-contents: contents;
+	--maxi-display-none: none;
+
+	/* Position Properties */
+	--maxi-layout-absolute: absolute;
+	--maxi-layout-relative: relative;
+	--maxi-layout-fixed: fixed;
+
+	/* Flex Properties */
+	--maxi-layout-flex: flex;
+	--maxi-layout-flex-row: row;
+	--maxi-layout-flex-column: column;
+	--maxi-layout-flex-start: flex-start;
+	--maxi-layout-flex-end: flex-end;
+	--maxi-layout-center: center;
+	--maxi-layout-space-between: space-between;
+	--maxi-flex-shrink-0: 0;
+
+	/* Alignment */
+	--maxi-align-content-center: center;
+	--maxi-text-align-left: left;
+	--maxi-text-align-center: center;
+	--maxi-text-align-right: right;
+	--maxi-vertical-align-top: top;
+	--maxi-vertical-align-middle: middle;
+	--maxi-vertical-align-bottom: bottom;
+	--maxi-vertical-align-start: start;
+	--maxi-vertical-align-end: end;
+
+	/* Sizing Properties */
+	--maxi-layout-100: 100%;
+	--maxi-layout-full-width: 100%;
+	--maxi-layout-80-percent: 80%;
+	--maxi-layout-50-percent: 50%;
+	--maxi-layout-50-percent-radius: 50%;
+	--maxi-layout-half: 50%;
+	--maxi-layout-quarter: 25%;
+	--maxi-layout-22-5-percent: 22.5%;
+	--maxi-layout-button-width: calc(100% / 8.5);
+	--maxi-layout-auto: auto;
+	--maxi-layout-zero: 0;
+	--maxi-layout-max-content: max-content;
+	--maxi-layout-unset: unset;
+
+	/* Height Keywords */
+	--maxi-height-unset: unset;
+
+	/* Float Properties */
+	--maxi-float-left: left;
+	--maxi-float-right: right;
+	--maxi-float-none: none;
+
+	/* ===================================
+	   INTERACTION & BEHAVIOR
+	   =================================== */
+
+	/* Cursor States */
+	--maxi-cursor-pointer: pointer;
+	--maxi-cursor-grab: grab;
+	--maxi-cursor-move: move;
+	--maxi-cursor-inherit: inherit;
+	--maxi-cursor-not-allowed: not-allowed;
+
+	/* Overflow Properties */
+	--maxi-overflow-hidden: hidden;
+	--maxi-overflow-visible: visible;
+
+	/* Visibility & Opacity */
+	--maxi-opacity-hidden: 0;
+	--maxi-opacity-low: 0.1;
+	--maxi-opacity-disabled: 0.3;
+	--maxi-opacity-semi: 0.5;
+	--maxi-opacity-medium: 0.7;
+	--maxi-opacity-dark-overlay: 0.7;
+	--maxi-opacity-visible: 1;
+	--maxi-visibility-hidden: hidden;
+	--maxi-visibility-visible: visible;
+
+	/* User Interaction */
+	--maxi-user-select-none: none;
+	--maxi-user-select-auto: auto;
+	--maxi-pointer-events-none: none;
+	--maxi-pointer-events-auto: auto;
+
+	/* ===================================
+	   TEXT & CONTENT UTILITIES
+	   =================================== */
+
+	/* White Space */
+	--maxi-white-space-nowrap: nowrap;
+	--maxi-white-space-normal: normal;
+	--maxi-white-space-pre: pre;
+
+	/* Text Decoration */
+	--maxi-text-decoration-underline: underline;
+	--maxi-text-decoration-none: none;
+
+	/* Font Style */
+	--maxi-font-style-italic: italic;
+
+	/* Direction */
+	--maxi-direction-ltr: ltr;
+
+	/* ===================================
+	   TRANSFORM UTILITIES
+	   =================================== */
+
+	/* Transform Functions */
+	--maxi-transform-translateZ-0: translateZ(0);
+	--maxi-transform-translate-center: translate(-50%, -50%);
+	--maxi-transform-rotate-0: rotate(0);
+	--maxi-transform-rotate-45deg: rotate(45deg);
+	--maxi-transform-rotate-90deg: rotate(90deg);
+	--maxi-transform-rotate-135deg: rotate(135deg);
+
+	/* ===================================
+	   BOX MODEL & EFFECTS
+	   =================================== */
+
+	/* Box Sizing */
+	--maxi-box-sizing-border-box: border-box;
+	--maxi-box-sizing-content-box: content-box;
+
+	/* Box Shadows */
+	--maxi-box-shadow-focus: 0 0 0 1px var(--maxi-secondary-color);
+	--maxi-box-shadow-0-0-0-1px-grey: 0 0 0 1px var(--maxi-grey);
+	--maxi-box-shadow-url-input: -3px 3px 6px 0px rgba(0, 0, 0, 0.16);
+	--maxi-box-shadow-upload-button: -3px 3px 6px 0px rgba(0, 0, 0, 0.16);
+
+	/* Outline Properties */
+	--maxi-outline-focus: 2px solid transparent;
+
+	/* ===================================
+	   RESET UTILITIES
+	   =================================== */
+
+	--maxi-reset-margin: 0;
+	--maxi-reset-padding: 0;
+	--maxi-reset-border: 0;
+	--maxi-reset-border-none: none;
+	--maxi-reset-outline: none;
+	--maxi-reset-background: transparent;
+	--maxi-reset-box-shadow: none;
+
+	/* ===================================
+	   SVG UTILITIES
+	   =================================== */
+
+	/* SVG Fill States */
 	--maxi-svg-fill-primary: var(--maxi-primary-color);
 	--maxi-svg-fill-secondary: var(--maxi-secondary-color);
 	--maxi-svg-fill-tertiary: var(--maxi-tertiary-color);
@@ -429,11 +466,11 @@
 	--maxi-svg-fill-grey-dark: var(--maxi-grey-dark);
 	--maxi-svg-fill-black: var(--maxi-black);
 	--maxi-svg-fill-white: var(--maxi-white);
+	--maxi-svg-fill-current: currentColor;
 	--maxi-svg-fill-none: none;
 	--maxi-svg-fill-transparent: transparent;
-	--maxi-svg-fill-current: currentColor;
 
-	/* Stroke States */
+	/* SVG Stroke States */
 	--maxi-svg-stroke-primary: var(--maxi-primary-color);
 	--maxi-svg-stroke-secondary: var(--maxi-secondary-color);
 	--maxi-svg-stroke-tertiary: var(--maxi-tertiary-color);
@@ -441,7 +478,36 @@
 	--maxi-svg-stroke-grey-dark: var(--maxi-grey-dark);
 	--maxi-svg-stroke-black: var(--maxi-black);
 	--maxi-svg-stroke-white: var(--maxi-white);
+	--maxi-svg-stroke-current: currentColor;
 	--maxi-svg-stroke-none: none;
 	--maxi-svg-stroke-transparent: transparent;
-	--maxi-svg-stroke-current: currentColor;
+
+	/* ===================================
+	   COMPONENT PATTERNS
+	   =================================== */
+
+	/* Standard Button Pattern */
+	--maxi-button-padding: var(--maxi-space-8px);
+	--maxi-button-border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+	--maxi-button-radius: var(--maxi-radius-4px);
+	--maxi-button-transition: all var(--maxi-transition-400ms) ease;
+
+	/* Input Field Pattern */
+	--maxi-input-height: var(--maxi-control-height-31px);
+	--maxi-input-padding: var(--maxi-space-8px);
+	--maxi-input-border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+	--maxi-input-radius: var(--maxi-radius-5px);
+	--maxi-input-transition: border-color var(--maxi-transition-400ms) ease;
+
+	/* Floating Label Pattern */
+	--maxi-floating-label-top: calc(-1 * var(--maxi-space-8px));
+	--maxi-floating-label-left: calc(-1 * var(--maxi-space-5px));
+	--maxi-floating-label-padding: 0 var(--maxi-space-5px);
+	--maxi-floating-label-size: var(--maxi-font-size-10px);
+	--maxi-floating-label-z: var(--maxi-z-maximum);
+
+	/* Standard Spacing Patterns */
+	--maxi-field-margin: var(--maxi-space-10px);
+	--maxi-section-margin: var(--maxi-space-15px);
+	--maxi-component-gap: var(--maxi-space-5px);
 }

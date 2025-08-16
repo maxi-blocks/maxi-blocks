@@ -1,10 +1,10 @@
 .maxi-font-level-control {
 	display: var(--maxi-display-flex);
 	flex-wrap: var(--maxi-flex-nowrap);
-	margin-bottom: var(--maxi-space-8px);
+	margin-bottom: var(--maxi-space-4px);
 	justify-content: var(--maxi-layout-space-between);
 	border-top: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
-	padding-top: var(--maxi-space-8px);
+	padding-top: var(--maxi-space-10px);
 
 	&__button {
 		display: var(--maxi-display-flex);

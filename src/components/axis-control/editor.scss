@@ -1,700 +1,75 @@
-/* ========================================
-   MAXI AXIS CONTROL COMPONENT STYLES
-   ======================================== */
-
-.maxi-axis-control {
-	display: var(--maxi-display-grid);
-	grid-gap: var(--axis-control-gap-default);
-
-	/* ========================================
-	   CSS CUSTOM PROPERTIES / VARIABLES
-	   ======================================== */
-
-	// Padding Control (PC) spacing variables
-	--pc-gap: 6px; /* Gap between grid cells - compact */
-	--pc-field-pad: 4px; /* Internal padding for inputs/fields */
-	--pc-border-radius: 4px; /* Border radius for inputs/buttons */
-	--pc-mode-gap: 6px; /* Gap between mode toggle buttons */
-
-	// Label styling variables
-	--axis-control-label-size: var(--maxi-font-size-10px);
-	--axis-control-label-padding: var(--maxi-space-0px) var(--maxi-space-5px)
-		var(--maxi-space-0px);
-	--axis-control-label-z-index: var(--maxi-z-maximum);
-
-	// Layout spacing variables (legacy)
-	--axis-control-gap-default: var(--maxi-space-0px) var(--maxi-space-8px);
-	--axis-control-gap-margin: var(--maxi-space-8px);
-
-	/* ========================================
-	   HEADER SECTION
-	   ======================================== */
-
-	&__header {
-		margin-bottom: var(--maxi-space-10px) !important;
-		display: var(--maxi-display-grid);
-		grid-template-columns: 1fr;
-		gap: var(--pc-mode-gap);
-
-		.maxi-base-control__field {
-			display: var(--maxi-display-grid);
-			grid-template-columns: 1fr auto;
-			align-items: var(--maxi-layout-center);
-			margin-bottom: var(--maxi-space-0px);
-		}
-
-		.maxi-tabs-control {
-			display: var(--maxi-display-flex);
-			gap: var(--pc-mode-gap);
-			margin-left: var(--maxi-space-0px);
-			margin-right: var(--maxi-space-0px);
-			margin-bottom: var(--maxi-space-4px);
-		}
-	}
-
-	/* ========================================
-	   TAB CONTROL BUTTONS
-	   ======================================== */
-
-	.maxi-tabs-control__button {
-		display: var(--maxi-display-flex);
-		flex: 1;
-		align-items: var(--maxi-layout-center);
-		justify-content: var(--maxi-layout-center);
-		min-width: var(--maxi-control-width-32px);
-		height: var(--maxi-control-height-32px);
-		padding: var(--pc-field-pad);
-		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
-		margin-bottom: var(--maxi-space-0px);
-		opacity: var(--maxi-opacity-visible);
-		transition: all var(--maxi-transition-500ms);
-		cursor: var(--maxi-cursor-pointer);
-
-		&.maxi-tabs-control__button--sync-axis {
-			padding: var(--maxi-space-6px) var(--maxi-space-0px);
-		}
-
-		// SVG icon styling
-		svg:not(.maxi-tabs-control__notification) path {
-			fill: var(--maxi-reset-background);
-			stroke: var(--maxi-grey-dark);
-			transition: stroke var(--maxi-transition-300ms) ease;
-		}
-
-		// Selected state
-
-		&--selected {
-			svg:not(.maxi-tabs-control__notification) path {
-				fill: var(--maxi-reset-background);
-				stroke: var(--maxi-secondary-color);
-			}
-		}
-
-		// Hover state
-		&:hover svg:not(.maxi-tabs-control__notification) path {
-			stroke: var(--maxi-secondary-color);
-		}
-	}
-
-	/* ========================================
-	   CONTENT ITEM STYLING
-	   ======================================== */
-
-	.maxi-axis-control__content__item {
-		position: var(--maxi-layout-relative);
-		box-sizing: border-box;
-		margin-bottom: var(--maxi-space-8px) !important;
-
-		&.maxi-advanced-number-control {
-			display: var(--maxi-display-flex);
-			flex-direction: var(--maxi-layout-flex-column);
-			width: var(--maxi-layout-full-width);
-		}
-
-		&.maxi-advanced-number-control .maxi-base-control__label {
-			position: var(--maxi-layout-absolute);
-			top: calc(-1 * var(--maxi-space-8px));
-			left: calc(-1 * var(--maxi-space-4px));
-			font-size: var(--axis-control-label-size);
-			color: var(--maxi-grey-dark);
-			font-style: normal;
-			background: var(--maxi-white);
-			padding: var(--axis-control-label-padding);
-			pointer-events: var(--maxi-pointer-events-none);
-			z-index: var(--axis-control-label-z-index);
-			box-sizing: border-box;
-			line-height: 12px;
-		}
-	}
-
-	/* ========================================
-	   ALL MODE LAYOUT - Set margin equal
-	   ======================================== */
-
-	.maxi-axis-control__all-mode {
-		display: var(--maxi-display-grid);
-		grid-template-columns: 1fr;
-
-		.maxi-axis-control__content__item {
-			width: var(--maxi-layout-full-width);
-		}
-	}
-
-	/* 2) Axis & All modes: keep the reset in-flow and flush right */
-	@at-root {
-		.maxi-axis-control__axis-mode
-			.maxi-axis-control__content__item
-			.maxi-reset-button--typography,
-		.maxi-axis-control__all-mode
-			.maxi-axis-control__content__item
-			.maxi-reset-button--typography {
-			position: static !important;
-			top: auto !important;
-			right: auto !important;
-			z-index: auto !important;
-			margin-inline-start: auto;
-			align-self: center;
-		}
-	}
-
-	/* --- Unique reset button colors per mode (testing) --- */
-	/* 3) All mode: all sides equal */
-	@at-root {
-		.maxi-axis-control__all-mode .maxi-reset-button--typography {
-			position: var(--maxi-layout-absolute) !important;
-			top: calc(-1 * var(--maxi-space-8px)) !important;
-			right: calc(-1 * var(--maxi-space-4px)) !important;
-			z-index: var(--maxi-z-reset-button) !important;
-		}
-	}
-
-	/* Stronger selectors to ensure styles win over WP button defaults */
-	/* All mode reset button (all sides equal) */
-	@at-root {
-		.maxi-axis-control__all-mode
-			.maxi-axis-control__content__item
-			> button.maxi-components-button.components-button.maxi-reset-button.maxi-reset-button--typography,
-		.maxi-axis-control__all-mode
-			.maxi-reset-button--typography.maxi-reset-button--typography {
-			position: var(--maxi-layout-absolute) !important;
-			top: calc(-1 * var(--maxi-space-8px)) !important;
-			right: 140px !important;
-			z-index: var(--maxi-z-reset-button) !important;
-		}
-	}
-
-	/* ========================================
-	   AXIS MODE LAYOUT - STRICT 2×2 GRID - Set margin together
-	   ======================================== */
-
-	.maxi-axis-control__axis-mode {
-		/* Forces a strict 2×2 grid: row 1 = toggles, row 2 = number fields; column 1 = Top/Bottom; column 2 = Left/Right */
-		display: var(--maxi-display-grid);
-		// grid-template-columns: repeat(2, minmax(0, 1fr));
-		// grid-template-rows: auto auto;
-		// // gap: var(--pc-gap, 4px) !important;
-		// row-gap: var(--maxi-space-16px);
-		// align-items: start;
-
-		/* Flatten helpers */
-		> .maxi-axis-control__row-1,
-		> .maxi-axis-control__row-2 {
-			display: var(--maxi-display-contents);
-		}
-
-		/* COLUMN 1: Top/Bottom group - Toggle in row 1, number field in row 2 */
-		> .maxi-axis-control__row-1 > .maxi-axis-control__item-auto {
-			grid-column: 1;
-			grid-row: 1;
-		}
-		> .maxi-axis-control__row-1 > .maxi-axis-control__content__item {
-			grid-column: 1;
-			grid-row: 2;
-		}
-
-		/* COLUMN 2: Left/Right group - Toggle in row 1, number field in row 2 */
-		> .maxi-axis-control__row-2 > .maxi-axis-control__item-auto {
-			grid-column: 2;
-			grid-row: 1;
-		}
-		> .maxi-axis-control__row-2 > .maxi-axis-control__content__item {
-			grid-column: 2;
-			grid-row: 2;
-		}
-
-		/* Normalize inner rows so everything lines up */
-		.maxi-base-control__field {
-			display: flex;
-			align-items: center;
-			gap: var(--maxi-space-10px);
-			margin: 0 !important;
-		}
-
-		/* Reserve same label width so both columns align */
-		.maxi-base-control__label {
-			flex: 0 0 72px;
-		}
-
-		/* Inputs & selects consistent size */
-		input[type='number'],
-		select {
-			height: 32px;
-			min-inline-size: 80px;
-		}
-
-		/* Let the number+spinner wrapper expand to fill */
-		.maxi-advanced-number-control__input-wrapper {
-			flex: 1 1 auto;
-		}
-
-		/* Keep the unit block as an inline piece */
-		.maxi-dimensions-control__units {
-			flex: 0 0 auto;
-		}
-
-		/* Ensure the advanced number control container is flex for proper reset button alignment */
-		.maxi-advanced-number-control {
-			.maxi-base-control__field {
-				display: flex;
-				align-items: center;
-				gap: 4px;
-				margin: 0;
-				width: 100%;
-			}
-		}
-
-		/* Kill legacy spacing that fights gap */
-		.maxi-axis-control__item--top-row {
-			margin-bottom: 0 !important;
-		}
-
-		.maxi-axis-control__item-auto {
-			margin-bottom: 0;
-		}
-	}
-
-	/* ========================================
-	   AXIS MODE SPACING OVERRIDES
-	   ======================================== */
-
-	/* Override the shorthand gap with longhand properties using !important */
-	.maxi-axis-control__axis-mode {
-		/* More space between the two columns */
-		column-gap: var(--maxi-space-8px) !important;
-
-		/* Keep the existing row gap */
-		row-gap: var(--maxi-space-8px) !important;
-	}
-
-	/* Spacing inside each input row (number + unit + reset) */
-	.maxi-axis-control__axis-mode
-		.maxi-advanced-number-control
-		.maxi-base-control__field {
-		gap: var(--maxi-space-12px); /* increased from previous value */
-	}
-
-	/* Undo the negative offset only in axis mode */
-	.maxi-axis-control__axis-mode .maxi-axis-control__content__item {
-		margin-left: 0 !important;
-	}
-
-	/* If you still want the -2px nudge in Separate mode, scope it there */
-	.maxi-axis-control__content__separate-grid
-		.maxi-axis-control__content__item {
-		margin-left: -2px !important;
-	}
-
-	/* 2) Axis mode: vertical/horizontal together */
-	/* removed empty ruleset */
-
-	/* Stronger selectors to ensure styles win over WP button defaults */
-	/* Axis mode reset button (vertical/horizontal) */
-	@at-root {
-		.maxi-axis-control__axis-mode
-			.maxi-axis-control__content__item
-			> button.maxi-components-button.components-button.maxi-reset-button.maxi-reset-button--typography,
-		.maxi-axis-control__axis-mode
-			.maxi-reset-button--typography.maxi-reset-button--typography {
-			/* Use the correct token; provide absolute as a fallback */
-			position: var(--maxi-layout-absolute) !important;
-			top: calc(-1 * var(--maxi-space-8px)) !important;
-			right: calc(-1 * var(--maxi-space-4px)) !important;
-			z-index: var(--maxi-z-reset-button) !important;
-		}
-	}
-
-	/* Axis mode: make toggle rows fill column width and push toggle right (TEMP layout fix) */
-	.maxi-axis-control__axis-mode
-		.maxi-toggle-switch
-		.maxi-base-control__field {
-		width: 100%;
-		margin: 0 !important; /* neutralize inherited margins */
-		align-items: center;
-		gap: var(
-			--maxi-space-4px
-		) !important; /* tighter spacing between label and toggle */
-	}
-	.maxi-axis-control__axis-mode .maxi-toggle-switch__toggle {
-		margin-inline-start: auto; /* push toggle to the far edge */
-	}
-	.maxi-axis-control__axis-mode
-		.maxi-toggle-switch
-		.maxi-base-control__label {
-		/* reduce reserved label width */
-		inline-size: auto !important;
-		min-inline-size: 0 !important;
-		flex: 0 1 auto !important; /* allow label to shrink so toggle reaches edge */
-	}
-
-	/* 1) Separate mode: absolute in the top-right of each field */
-	.maxi-axis-control__content__separate-grid
-		.maxi-axis-control__content__item
-		.maxi-reset-button--typography {
-		position: var(--maxi-layout-absolute) !important;
-		top: calc(-1 * var(--maxi-space-8px)) !important;
-		right: calc(-1 * var(--maxi-space-4px)) !important;
-		z-index: var(--maxi-z-reset-button) !important;
-	}
-
-	/* Set margin together button styling */
-	.maxi-axis-control__set-margin-together {
-		display: flex;
-		align-items: center;
-		gap: var(--maxi-space-4px);
-		padding: var(--maxi-space-4px) var(--maxi-space-8px);
-		border-radius: var(--maxi-border-radius-4px);
-		cursor: pointer;
-		transition: all 0.2s ease;
-
-		&:hover {
-			background: var(--maxi-color-neutral-100);
-			border-color: var(--maxi-color-neutral-300);
-		}
-
-		&:active {
-			background: var(--maxi-color-neutral-200);
-		}
-
-		&.is-active {
-			background: var(--maxi-color-primary-100);
-			border-color: var(--maxi-color-primary-300);
-			color: var(--maxi-color-primary-700);
-		}
-
-		.maxi-reset-button--typography {
-			position: var(--maxi-layout-absolute) !important;
-			top: calc(-1 * var(--maxi-space-8px)) !important;
-			right: calc(-1 * var(--maxi-space-4px)) !important;
-			z-index: var(--maxi-z-reset-button) !important;
-		}
-	}
-
-	/* ========================================
-	   SEPARATE GRID LAYOUT - 2×2 Grid
-	   ======================================== */
-
-	.maxi-axis-control__content__separate-grid {
-		display: var(--maxi-display-grid);
-		grid-template-columns: repeat(2, 1fr);
-		grid-template-rows: repeat(2, auto);
-		gap: var(--pc-gap);
-		align-items: start;
-
-		.maxi-axis-control__row-1,
-		.maxi-axis-control__row-2 {
-			display: contents;
-		}
-
-		/* Reset any conflicting margins from previous layout */
-		.maxi-axis-control__item--top-row {
-			margin-bottom: var(--maxi-space-0px) !important;
-		}
-
-		/* Individual field styling for better alignment */
-		.maxi-axis-control__content__item {
-			display: var(--maxi-display-flex);
-			flex-direction: var(--maxi-layout-flex-column);
-			width: var(--maxi-layout-full-width);
-		}
-
-		/* ========================================
-		   ADVANCED NUMBER CONTROL OVERRIDES
-		   ======================================== */
-
-		.maxi-advanced-number-control
-			.maxi-base-control__field.maxi-axis-control__margin,
-		.maxi-advanced-number-control
-			.maxi-base-control__field.maxi-axis-control__padding {
-			gap: var(--pc-field-pad);
-		}
-
-		.maxi-advanced-number-control
-			.maxi-base-control__field.maxi-axis-control__margin {
-			gap: var(--pc-field-pad);
-		}
-	}
-
-	/* --- Unique reset button colors per mode (testing) --- */
-	/* 1) Separate mode: individual fields */
-	/* removed empty ruleset */
-
-	/* Stronger selectors to ensure styles win over WP button defaults */
-	/* Separate mode reset button (per-side) */
-	@at-root {
-		.maxi-axis-control__content__separate-grid
-			.maxi-axis-control__content__item
-			> button.maxi-components-button.components-button.maxi-reset-button.maxi-reset-button--typography,
-		.maxi-axis-control__content__separate-grid
-			.maxi-reset-button--typography.maxi-reset-button--typography {
-			position: var(--maxi-layout-absolute) !important;
-			top: calc(-1 * var(--maxi-space-8px)) !important;
-			right: calc(-1 * var(--maxi-space-4px)) !important;
-			z-index: var(--maxi-z-reset-button) !important;
-		}
-	}
-
-	/* ========================================
-	   PADDING CONTROL SPECIFIC STYLING
-	   ======================================== */
-
-	&.maxi-axis-control__padding {
-		/* Ensure padding controls have optimized spacing for 2×2 grid */
-		.maxi-axis-control__content__separate-grid {
-			gap: var(--pc-gap);
-			margin-top: var(--maxi-space-2px);
-		}
-
-		/* Better visual hierarchy for padding controls */
-		.maxi-axis-control__content__item {
-			.maxi-base-control__label {
-				font-weight: var(--maxi-font-weight-normal);
-				color: var(--maxi-grey-dark);
-			}
-		}
-	}
-
-	/* ========================================
-	   GENERAL FIELD ALIGNMENT IMPROVEMENTS
-	   ======================================== */
-
-	/* Normalize row heights so columns align perfectly */
-	.maxi-base-control__field {
-		margin: var(--maxi-space-0px);
-	}
-	.maxi-advanced-number-control .maxi-base-control__field {
-		align-items: var(--maxi-layout-center);
-	}
-	.maxi-toggle-switch .maxi-base-control__field {
-		min-height: var(--maxi-control-height-32px);
-	}
-
-	/* Fallback for browsers that don't support display: contents */
-	@supports not (display: var(--maxi-display-contents)) {
-		.maxi-axis-control__axis-mode > .maxi-axis-control__row-1,
-		.maxi-axis-control__axis-mode > .maxi-axis-control__row-2,
-		.maxi-axis-control__content__separate-grid > .maxi-axis-control__row-1,
-		.maxi-axis-control__content__separate-grid > .maxi-axis-control__row-2 {
-			display: var(--maxi-display-grid);
-			grid-template-columns: repeat(2, 1fr);
-			gap: var(--pc-gap);
-		}
-	}
-
-	/* ========================================
-	   AUTO CONTROL GRID LAYOUT
-	   ======================================== */
-	.maxi-advanced-number-control__input-wrapper {
-		display: var(--maxi-display-grid);
-		grid-template-columns: 1fr var(--maxi-layout-auto);
-		align-items: var(--maxi-layout-center);
-	}
-
-	/* ========================================
-	   FIX FOR BOTTOM ROW ALIGNMENT
-	   ======================================== */
-
-	.maxi-toggle-switch {
-		display: var(--maxi-display-flex);
-		align-items: var(--maxi-layout-center);
-		justify-content: var(--maxi-layout-space-between);
-
-		label {
-			font-size: var(--maxi-font-size-10px);
-			font-weight: var(--maxi-font-weight-normal);
-		}
-	}
+.maxi-tabs-control {
+	display: var(--maxi-display-inline-flex);
+	background-color: var(--maxi-white);
+	border-radius: var(--maxi-radius-4px);
+	padding: var(--maxi-space-2px);
+	gap: var(--maxi-space-2px);
 }
 
-/* Set margin equal button styling */
-.maxi-axis-control__set-margin-equal {
-	display: flex;
-	align-items: center;
-	gap: var(--maxi-space-4px);
-	padding: var(--maxi-space-4px) var(--maxi-space-8px);
-	border-radius: var(--maxi-border-radius-4px);
-	cursor: pointer;
-	transition: all 0.2s ease;
-
-	&:hover {
-		background: var(--maxi-color-neutral-100);
-		border-color: var(--maxi-color-neutral-300);
-	}
-
-	&:active {
-		background: var(--maxi-color-neutral-200);
-	}
-
-	&.is-active {
-		background: var(--maxi-color-primary-100);
-		border-color: var(--maxi-color-primary-300);
-		color: var(--maxi-color-primary-700);
-	}
-
-	.maxi-reset-button--typography {
-		/* Use the correct token; provide absolute as a fallback */
-		position: var(--maxi-layout-absolute, absolute);
-		top: calc(-1 * var(--maxi-space-8px));
-		right: calc(-1 * var(--maxi-space-4px));
-		z-index: var(--maxi-z-reset-button);
-	}
+.maxi-settingstab-control_has-border-left-right {
+	border-left: var(--maxi-border-1px) solid var(--maxi-grey-light);
+	border-right: var(--maxi-border-1px) solid var(--maxi-grey-light);
 }
 
-/* SUPER SPECIFIC BORDER WIDTH RESET BUTTONS */
-@at-root {
-	.maxi-border-width-control
-		.maxi-axis-control
-		> button.maxi-components-button.components-button.maxi-reset-button.maxi-reset-button--typography,
-	.maxi-border-width-control
-		.maxi-axis-control
-		.maxi-reset-button--typography.maxi-reset-button--typography,
-	.maxi-axis-control__all-mode
-		.maxi-axis-control__content__item__border-radius
-		.maxi-reset-button--typography {
-		position: relative !important;
-		right: 0 !important;
-		top: 0px !important;
-	}
+.maxi-tabs-control__button,
+.maxi-components-button,
+.components-button {
+	background: var(--maxi-reset-background);
+	border: var(--maxi-reset-border-none);
+	padding: var(--maxi-space-8px) var(--maxi-space-12px);
+	cursor: var(--maxi-cursor-pointer);
+	display: var(--maxi-display-inline-flex);
+	align-items: var(--maxi-layout-center);
+	justify-content: var(--maxi-layout-center);
+	transition: all var(--maxi-transition-200ms) ease;
+	border-radius: var(--maxi-radius-3px);
+	outline: var(--maxi-reset-outline);
+	position: var(--maxi-layout-relative);
 }
 
-/* SUPER SPECIFIC BORDER WIDTH SYNC CONTROLS */
-
-@at-root {
-	.maxi-border-control .maxi-axis-control__sync--all,
-	.maxi-border-control .maxi-axis-control__sync--axis,
-	.maxi-border-control .maxi-axis-control__sync--none {
-		margin-top: var(--maxi-space-8px);
-	}
+.maxi-tabs-control__button:hover:not(.maxi-tabs-control__button--selected) {
+	background-color: var(--maxi-admin-white-hover);
 }
 
-/* SUPER SPECIFIC BORDER RADIUS OVERRIDES */
-@at-root {
-	.maxi-border-control
-		.maxi-axis-control__content__item__border-radius
-		.maxi-base-control__label,
-	.maxi-border-width-control .maxi-axis-control .maxi-base-control__label {
-		flex: 2;
-		position: var(--maxi-layout-relative) !important;
-		font-size: var(--maxi-font-size-13px) !important;
-		top: var(--maxi-space-4px) !important;
-	}
-
-	.maxi-border-control
-		.maxi-axis-control__content__item__border-radius
-		.maxi-base-control__field,
-	.maxi-border-control
-		.maxi-axis-control__content__item__border-radius
-		.components-base-control__field,
-	.maxi-border-width-control .maxi-axis-control .maxi-base-control__field,
-	.maxi-border-width-control
-		.maxi-axis-control
-		.components-base-control__field {
-		flex-wrap: wrap;
-		& > * {
-			margin-left: var(--maxi-space-5px);
-		}
-		.maxi-base-control__label,
-		.components-base-control__label,
-		.components-range-control {
-			margin-left: var(--maxi-space-0px);
-		}
-	}
+.maxi-tabs-control__button:focus {
+	box-shadow: 0 0 0 var(--maxi-space-2px) rgba(20, 21, 22, 0.1);
 }
 
-@at-root {
-	.maxi-border-control
-		.maxi-axis-control__row-1
-		.maxi-axis-control__content__item
-		.maxi-base-control__label,
-	.maxi-border-control
-		.maxi-axis-control__row-2
-		.maxi-axis-control__content__item
-		.maxi-base-control__label {
-		font-size: 9px !important;
-		position: var(--maxi-layout-absolute) !important;
-		top: calc(-1 * var(--maxi-space-8px)) !important;
-		left: calc(-1 * var(--maxi-space-4px)) !important;
-	}
+.maxi-tabs-control__button:active {
+	transform: translateY(var(--maxi-space-1px));
 }
 
-button[aria-label='Reset'].maxi-reset-button--absolute.maxi-reset-button--typography {
-	right: -10px !important;
-	left: auto !important;
+.maxi-tabs-control__button--selected {
+	fill: rgba(0, 0, 0, 0);
+	stroke: var(--maxi-secondary-color);
 }
-.maxi-axis-control__axis-mode
-	.maxi-axis-control__row-1
-	.maxi-axis-control__content__item__top-left-bottom-right
-	.maxi-advanced-number-control__input-wrapper,
-.maxi-axis-control__axis-mode
-	.maxi-axis-control__row-2
-	.maxi-axis-control__content__item__bottom-left-top-right
-	.maxi-advanced-number-control__input-wrapper {
-	width: calc(100% - 40px) !important;
-	max-width: 120px !important;
+
+.maxi-tabs-control__button--selected svg path {
+	stroke: var(--maxi-grey-dark);
+	stroke-width: var(--maxi-border-1-5px);
 }
-.maxi-axis-control__axis-mode
-	.maxi-axis-control__row-2
-	.maxi-axis-control__content__item__bottom-left-top-right
-	.maxi-advanced-number-control__input-wrapper
-	button.maxi-reset-button.maxi-reset-button--typography {
-	position: relative !important;
-	margin-left: 8px !important;
+
+.maxi-tabs-control__button svg {
+	width: 19.5px;
+	height: 19.5px;
+	display: var(--maxi-display-block);
 }
-.maxi-axis-control.maxi-axis-control__border
-	.maxi-axis-control__content__separate-grid[data-sync='none']
-	.maxi-advanced-number-control__input-wrapper {
-	width: calc(100% - 40px) !important;
-	max-width: 120px !important;
-	flex: 1 1 auto !important;
+
+.maxi-tabs-control__button:not(.maxi-tabs-control__button--selected) svg path {
+	stroke: var(--maxi-accessibility-grey);
+	transition: stroke var(--maxi-transition-200ms) ease;
 }
-.maxi-axis-control.maxi-axis-control__border
-	.maxi-axis-control__content__separate-grid[data-sync='none']
-	.maxi-axis-control__content__item[class*='__top-left']
-	.maxi-reset-button--typography,
-.maxi-axis-control.maxi-axis-control__border
-	.maxi-axis-control__content__separate-grid[data-sync='none']
-	.maxi-axis-control__content__item[class*='__top-right']
-	.maxi-reset-button--typography,
-.maxi-axis-control.maxi-axis-control__border
-	.maxi-axis-control__content__separate-grid[data-sync='none']
-	.maxi-axis-control__content__item[class*='__bottom-left']
-	.maxi-reset-button--typography,
-.maxi-axis-control.maxi-axis-control__border
-	.maxi-axis-control__content__separate-grid[data-sync='none']
-	.maxi-axis-control__content__item[class*='__bottom-right']
-	.maxi-reset-button--typography {
-	position: relative !important;
-	margin-left: 8px !important;
-	top: auto !important;
-	right: auto !important;
+
+.maxi-tabs-control__button:hover:not(.maxi-tabs-control__button--selected)
+	svg
+	path {
+	stroke: var(--maxi-grey-dark);
 }
-.maxi-axis-control__content__separate-grid[data-sync='none']
-	input.maxi-advanced-number-control__value {
-	width: 100px !important;
-	margin-bottom: 4px !important;
-}
-.maxi-axis-control__content__item__top-left-bottom-right
-	.maxi-advanced-number-control__value,
-.maxi-axis-control__content__item__bottom-left-top-right
-	.maxi-advanced-number-control__value {
-	width: 120px !important;
+
+/* Empty selectors for future styling extension if needed */
+
+.maxi-tabs-control__button[aria-pressed='true'] {
+	background: var(--maxi-whisper-green);
+	color: var(--maxi-secondary-color);
+	border: var(--maxi-border-1px) solid var(--maxi-secondary-color);
 }

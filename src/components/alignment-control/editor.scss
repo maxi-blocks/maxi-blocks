@@ -1,12 +1,13 @@
 body .maxi-alignment-control {
 	.maxi-tabs-control__button {
 		height: 32px;
-		padding: 8px;
+		padding: 8.5px;
 		width: 22.5%;
-		margin-right: 9px;
+		margin-right: 9px !important;
 		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 4px;
 		transition: background-color 0.4s ease, border-color 0.4s ease;
+		margin-top: 4px;
 
 		svg path {
 			fill: var(--maxi-black);
@@ -27,12 +28,12 @@ body .maxi-alignment-control {
 		}
 
 		&:last-child {
-			margin-right: 0;
+			margin-right: 0 !important;
 		}
 
 		&[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green);
-			border-color: var(--maxi-secondary-color);
+			border-color: var(--maxi-primary-color);
 		}
 	}
 
@@ -49,6 +50,22 @@ body .maxi-alignment-control {
 				margin-right: 0 !important;
 				svg {
 					margin: 0 auto;
+				}
+			}
+		}
+	}
+}
+
+.maxi-typography-control {
+	.maxi-typography-control__alignment-buttons {
+		.maxi-alignment-control {
+			.maxi-tabs-control__button {
+				width: auto !important;
+				margin-left: 8px !important;
+				margin-right: 0 !important;
+
+				&:first-child {
+					margin-left: 0 !important;
 				}
 			}
 		}

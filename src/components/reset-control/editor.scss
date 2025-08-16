@@ -1,83 +1,258 @@
-.maxi-reset-button {
-	display: flex;
-	overflow: hidden;
-	align-items: center;
-	justify-content: center;
-	height: auto;
-	min-width: 20px;
-	padding: 8px 5px !important;
-	border-radius: 50%;
-	margin-left: 4px;
-	background: var(--maxi-white);
-	text-decoration: none;
-	transition: all 0.3s;
-	-webkit-appearance: none;
-	box-shadow: none;
-	cursor: pointer;
-	opacity: 1;
-	margin-right: 0 !important;
+// Placeholder for shared reset button styles
+%maxi-reset-button {
+	// CSS custom properties for easy theming
+	--reset-size: 22px;
+	--reset-icon-size: 12px;
+	--reset-border-width: 1px;
+	--reset-z-index: 20;
+
+	// Positioning custom properties
+	--reset-position: absolute;
+	--reset-top: -12px;
+	--reset-right: -12px;
+	--reset-bottom: auto;
+	--reset-left: auto;
+
+	// Base unified styles
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: var(--reset-size) !important;
+	height: var(--reset-size) !important;
+	min-width: var(--reset-size) !important;
+	max-width: var(--reset-size) !important;
+	min-height: var(--reset-size) !important;
+	max-height: var(--reset-size) !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	background: var(--maxi-white) !important;
+	border: var(--reset-border-width) solid var(--maxi-grey-light) !important;
+	border-radius: 50% !important;
+	cursor: pointer !important;
+	transition: all 0.2s ease !important;
+	box-sizing: border-box !important;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+	-webkit-appearance: none !important;
+	appearance: none !important;
+	text-decoration: none !important;
+	opacity: 1 !important;
 
 	&:focus {
-		border-color: var(--maxi-grey);
+		border-color: var(--maxi-grey) !important;
+		outline: none !important;
 	}
+
 	svg {
-		width: 14px;
-		height: 14px;
-		margin: auto;
-		fill: var(--maxi-grey);
+		width: var(--reset-icon-size) !important;
+		height: var(--reset-icon-size) !important;
+		margin: auto !important;
+		fill: var(--maxi-grey) !important;
+		transition: fill 0.2s ease !important;
+		display: block !important;
 	}
-	&:hover svg {
-		fill: var(--maxi-black);
-		transition: all 0.3s;
-	}
-	@at-root .rtl #{&} {
-		margin-right: 4px;
+
+	&:hover {
+		background: var(--maxi-mid-green) !important;
+		border-color: var(--maxi-mid-green) !important;
+
+		svg {
+			fill: var(--maxi-primary-color) !important;
+		}
 	}
 }
+
+// Higher specificity to override legacy styles
+.maxi-reset-button,
+.maxi-components-button.maxi-reset-button,
+button.maxi-components-button.maxi-reset-button {
+	@extend %maxi-reset-button;
+
+	// Positioning variants
+	&--inline {
+		position: relative !important;
+		margin-left: 8px !important;
+	}
+
+	&--absolute {
+		position: var(--reset-position) !important;
+		top: var(--reset-top) !important;
+		right: var(--reset-right) !important;
+		bottom: var(--reset-bottom) !important;
+		left: var(--reset-left) !important;
+		z-index: var(--reset-z-index) !important;
+	}
+
+	&--absolute.maxi-reset-button--typography {
+		// Same positioning as regular absolute buttons by default
+		position: var(--reset-position) !important;
+		top: var(--reset-top) !important;
+		right: var(--reset-right) !important;
+		bottom: var(--reset-bottom) !important;
+		left: var(--reset-left) !important;
+		z-index: var(--reset-z-index) !important;
+	}
+
+	// Size variants
+	&--large {
+		--reset-size: 32px !important;
+		--reset-icon-size: 16px !important;
+	}
+
+	&--small {
+		--reset-size: 20px !important;
+		--reset-icon-size: 10px !important;
+	}
+
+	// Positioning preset variants
+	&--top-left {
+		--reset-top: -12px;
+		--reset-left: -12px;
+		--reset-right: auto;
+		--reset-bottom: auto;
+	}
+
+	&--top-right {
+		--reset-top: -12px;
+		--reset-right: -12px;
+		--reset-left: auto;
+		--reset-bottom: auto;
+	}
+
+	&--top-center {
+		--reset-top: -12px;
+		--reset-left: 50%;
+		--reset-right: auto;
+		--reset-bottom: auto;
+		transform: translateX(-50%);
+	}
+
+	&--bottom-left {
+		--reset-bottom: -12px;
+		--reset-left: -12px;
+		--reset-top: auto;
+		--reset-right: auto;
+	}
+
+	&--bottom-right {
+		--reset-bottom: -12px;
+		--reset-right: -12px;
+		--reset-top: auto;
+		--reset-left: auto;
+	}
+
+	&--center-left {
+		--reset-left: -12px;
+		--reset-top: 50%;
+		--reset-right: auto;
+		--reset-bottom: auto;
+		transform: translateY(-50%);
+	}
+
+	&--center-right {
+		--reset-right: -12px;
+		--reset-top: 50%;
+		--reset-left: auto;
+		--reset-bottom: auto;
+		transform: translateY(-50%);
+	}
+
+	// RTL support
+	@at-root .rtl #{&} {
+		&--inline {
+			margin-left: 0;
+			margin-right: 8px;
+		}
+
+		&--absolute {
+			--reset-right: auto;
+			--reset-left: -12px;
+		}
+	}
+}
+
+.maxi-reset-button--typography {
+	@extend %maxi-reset-button;
+}
+
+/* High specificity override to beat RTL rules */
+html .maxi-typography-control__weight .maxi-reset-button--absolute,
+html .maxi-typography-control__size .maxi-reset-button--absolute,
+html .maxi-typography-control__line-height .maxi-reset-button--absolute,
+html .maxi-typography-control__bottom-gap .maxi-reset-button--absolute,
+html .maxi-axis-control__content__item .maxi-reset-button--absolute,
+html .maxi-axis-control__content__item .maxi-reset-button--typography,
+html .maxi-axis-control__units_container .maxi-reset-button,
+.rtl .maxi-typography-control__weight .maxi-reset-button--absolute,
+.rtl .maxi-typography-control__size .maxi-reset-button--absolute,
+.rtl .maxi-typography-control__line-height .maxi-reset-button--absolute,
+.rtl .maxi-typography-control__bottom-gap .maxi-reset-button--absolute,
+.rtl .maxi-axis-control__content__item .maxi-reset-button--absolute,
+.rtl .maxi-axis-control__content__item .maxi-reset-button--typography {
+	--reset-right: -8px !important;
+	--reset-left: auto !important;
+	--reset-top: -9px !important;
+}
+
+/* Font family selector specific reset button with higher z-index */
+html .maxi-font-family-selector__container .maxi-reset-button--absolute,
+html .maxi-font-family-selector__container .maxi-reset-button--font-selector,
+.rtl .maxi-font-family-selector__container .maxi-reset-button--absolute,
+.rtl .maxi-font-family-selector__container .maxi-reset-button--font-selector {
+	--reset-right: -8px !important;
+	--reset-left: auto !important;
+	--reset-top: -9px !important;
+	--reset-z-index: 999 !important;
+}
+
+/* New unique class for font family selector reset button */
+.maxi-reset-button--font-selector {
+	@extend .maxi-reset-button--absolute;
+	--reset-z-index: 999 !important;
+}
+
+/* Specific context overrides - minimal and purposeful */
 .maxi-color-control__palette-label {
 	.maxi-reset-button {
+		// Use --small variant for compact palette labels
+		--reset-size: 20px;
+		--reset-icon-size: 10px;
 		position: absolute;
-		background-color: transparent;
-		border-width: 0 0 0 2px;
-		max-width: 32px;
 		top: 0;
 		right: 0;
-		padding: 1px 1px 1px 8px !important;
-		margin-top: -6px !important;
-		&:hover svg {
-			transition: all 0.3s;
-			fill: var(--maxi-black);
-		}
+		margin-top: -4px;
 	}
 }
+
 .toolbar-item__popover__font-options__wrap_family {
 	.maxi-reset-button {
+		// Use --large variant for font options
+		--reset-size: 36px;
+		--reset-icon-size: 18px;
 		margin: 0;
-		border: none;
-		height: 36px;
 	}
 }
+
 .components-circular-option-picker__custom-clear-wrapper {
 	.maxi-reset-button {
-		border-radius: 0;
+		// Square variant for circular picker context
+		border-radius: 4px;
 
 		&:hover {
-			background: var(--maxi-white);
-		}
-		&:focus {
-			border-color: var(--maxi-grey);
+			background: var(--maxi-mid-green);
+			border-color: var(--maxi-mid-green);
+
+			svg {
+				fill: var(--maxi-primary-color);
+			}
 		}
 	}
 }
 /*******************************
-* RTL
+* RTL Support
 *******************************/
 html[dir='rtl'] {
-	.maxi-reset-button {
-		right: unset !important;
+	.maxi-color-control__palette-label .maxi-reset-button {
+		right: unset;
 		left: 0;
-		padding: 1px 8px 1px 1px !important;
-		margin-left: 0;
-		margin-right: 4px !important;
 	}
 }

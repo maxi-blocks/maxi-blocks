@@ -95,7 +95,7 @@
 				content: '';
 				position: absolute;
 				top: 50%;
-				left: 6px;
+				left: 3px;
 				z-index: 1;
 				width: 6px;
 				height: 6px;
@@ -128,4 +128,17 @@
 .maxi-context-loop,
 .maxi-repeater {
 	margin-top: 10px !important;
+}
+
+/*
+ * Scoped override: when AccordionControl is used with the
+ * `maxi-accordion-control--accordion-maxi` hook (Accordion Maxi block
+ * inspector), remove default panel padding so block-specific styles can
+ * define it. This targets the inspector sidebar context because this
+ * stylesheet is bundled globally with components.
+ */
+.maxi-accordion-control.maxi-accordion-control--accordion-maxi {
+	.maxi-accordion-control__item__panel:not(.maxi-accordion-control__item__panel--disable-padding) {
+		padding: 0 !important;
+	}
 }

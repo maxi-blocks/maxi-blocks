@@ -1,4 +1,119 @@
+/**
+ * Clip Path Control Editor Styles
+ * Optimized version with reusable mixins and better organization
+ */
+
+// ================================
+// Variables and Mixins
+// ================================
+
+/**
+ * Standard dimensions used throughout clip path controls
+ */
+$clip-path-icon-size: 18px;
+$clip-path-handle-size: 0.75rem; // Increased from 0.5rem for better visibility
+$clip-path-handle-size-hover: 1rem; // Hover state size
+$clip-path-delete-handle-size: 1rem;
+$clip-path-border-radius: 6px;
+
+/**
+ * Mixin for centered flex containers
+ */
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/**
+ * Mixin for circular elements with enhanced visibility
+ */
+@mixin circular-element($size) {
+	width: $size;
+	height: $size;
+	border-radius: 50%;
+}
+
+/**
+ * Mixin for enhanced clip-path control dots with better visibility
+ */
+@mixin enhanced-clip-path-dot {
+	@include circular-element($clip-path-handle-size);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 2px var(--maxi-white),
+		0 0 0 3px rgba(var(--maxi-secondary-color), 0.8);
+	transition: all 0.2s ease;
+	cursor: grab;
+	z-index: 10;
+
+	&:hover {
+		@include circular-element($clip-path-handle-size-hover);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 0 0 2px var(--maxi-white),
+			0 0 0 4px var(--maxi-secondary-color);
+		transform: translate(-50%, -50%) scale(1.1);
+		cursor: grabbing;
+	}
+
+	&:active {
+		cursor: grabbing;
+		transform: translate(-50%, -50%) scale(0.95);
+	}
+}
+
+/**
+ * Mixin for interactive button states
+ */
+@mixin interactive-button-base {
+	border: 1.5px solid var(--maxi-grey-light);
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.4s ease;
+}
+
+/**
+ * Mixin for button hover/active states
+ */
+@mixin button-active-state {
+	background: var(--maxi-pastel-green);
+	border: 1px solid var(--maxi-primary-color) !important;
+}
+
+/**
+ * Mixin for icon/path color states
+ */
+@mixin icon-color-states($default-color, $active-color) {
+	background-color: $default-color;
+
+	path {
+		fill: $default-color;
+	}
+
+	.clip-path-defaults__clip-path {
+		background-color: $default-color;
+	}
+
+	&:hover,
+	&[aria-pressed='true'] {
+		background-color: $active-color;
+
+		path {
+			fill: $active-color !important;
+		}
+
+		.clip-path-defaults__clip-path {
+			background-color: $active-color;
+		}
+	}
+}
+
+// ================================
+// Main Clip Path Control
+// ================================
+
 .maxi-clip-path-control {
+	// ================================
+	// Default Clip Path Items
+	// ================================
+
 	.clip-path-defaults {
 		display: flex;
 		flex-wrap: wrap;
@@ -7,68 +122,53 @@
 		gap: 5px;
 
 		&__items__none {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 		}
 
 		&__items {
+			@include flex-center;
+			@include interactive-button-base;
 			position: relative;
 			width: 28px;
 			height: 30px;
-			display: flex;
-			justify-content: center;
 			margin: 0;
 			padding: 3px;
-			border: 1.5px solid var(--maxi-grey-light);
-			border-radius: 4px;
-			cursor: pointer;
-			transition: all 0.4s ease;
-
-			.clip-path-defaults__clip-path {
-				background-color: var(--maxi-grey-light);
-				transition: all 0.4s ease;
-			}
-
-			path {
-				fill: var(--maxi-grey-light);
-				transition: all 0.4s ease;
-			}
 
 			&[aria-pressed='true'],
 			&:hover {
-				background: var(--maxi-pastel-green);
-				border: 1px solid var(--maxi-primary-color) !important;
-
-				.clip-path-defaults__clip-path {
-					background-color: var(--maxi-secondary-color);
-				}
-
-				path {
-					fill: var(--maxi-secondary-color) !important;
-				}
+				@include button-active-state;
 			}
 		}
+
 		&__clip-path {
-			background-color: var(--maxi-grey-light);
-			width: 18px;
-			height: 18px;
+			@include icon-color-states(
+				var(--maxi-grey-light),
+				var(--maxi-secondary-color)
+			);
+			width: $clip-path-icon-size;
+			height: $clip-path-icon-size;
 			transform: translateZ(0);
 			margin: auto;
 		}
 
 		svg {
-			width: 18px;
-			height: 18px;
+			width: $clip-path-icon-size;
+			height: $clip-path-icon-size;
+
 			path {
 				fill: var(--maxi-grey-light);
 			}
 		}
 	}
 
+	// ================================
+	// Clip Path Controller
+	// ================================
+
 	.maxi-clip-path-controller {
 		display: flex;
 		position: relative;
+
 		&__handle {
 			display: flex;
 			align-items: center;
@@ -83,8 +183,7 @@
 				margin-right: 0.5rem;
 
 				span {
-					width: 0.5rem;
-					height: 0.5rem;
+					@include circular-element($clip-path-handle-size);
 				}
 			}
 
@@ -94,18 +193,14 @@
 				bottom: 0;
 
 				span {
+					@include circular-element($clip-path-delete-handle-size);
 					position: relative;
-					width: 1rem;
-					height: 1rem;
 					background-color: var(--maxi-orange-red);
 					cursor: pointer;
-					transition: all 0.4s ease; // Added transition
 
 					&:hover {
-						background-color: var(
-							--maxi-primary-color
-						); // Darker shade on hover
-						transform: scale(1.1); // Slight scale effect on hover
+						background-color: var(--maxi-primary-color);
+						transform: scale(1.1);
 					}
 
 					&:before {
@@ -117,15 +212,18 @@
 						width: 50%;
 						height: 0.1rem;
 						background-color: var(--maxi-white);
-						transition: all 0.3s ease; // Added transition
+						transition: all 0.3s ease;
 					}
 				}
 			}
 		}
+
 		&__item {
 			width: 100%;
+
 			.maxi-base-control {
 				margin-bottom: 5px;
+
 				&__field {
 					width: 100%;
 					display: flex;
@@ -134,6 +232,7 @@
 						margin-right: 10px;
 						min-width: 65px !important;
 					}
+
 					input {
 						width: 60px;
 					}
@@ -142,10 +241,10 @@
 		}
 	}
 
-	.maxi-clip-path-visual-editor-wrapper {
-		border: 2px solid var(--maxi-secondary-color) !important;
-		border-radius: 5px;
-	}
+	// ================================
+	// Visual Editor
+	// ================================
+
 	.maxi-clip-path-visual-editor {
 		background-color: var(--maxi-white) !important;
 		position: relative;
@@ -154,36 +253,60 @@
 		min-height: 291px;
 		overflow: visible;
 		border: 1px solid var(--maxi-grey-light);
-		border-radius: 6px;
+		border-radius: $clip-path-border-radius;
+
+		&-wrapper {
+			border: 2px solid var(--maxi-secondary-color) !important;
+			border-radius: 5px;
+		}
 
 		&__preview {
 			background-color: var(--maxi-pastel-green) !important;
 			position: absolute;
-			top: 0px;
-			left: 0px;
+			top: 0;
+			left: 0;
 			width: 100%;
 			height: 100%;
 		}
 	}
 
+	// ================================
+	// Clip Path Buttons (Enhanced Visibility)
+	// ================================
+
 	.maxi-clip-path-button {
+		@include enhanced-clip-path-dot;
 		background-color: var(--maxi-secondary-color);
 		position: absolute;
 		transform: translate(-50%, -50%);
-		width: 0.5rem;
-		height: 0.5rem;
-		border-radius: 50%;
-		z-index: 10;
-		cursor: crosshair;
 
 		&--radius {
-			clip-path: circle(50% at 50% 50%);
+			// For radius buttons, use border instead of solid background for visibility
+			background-color: transparent;
+			border: 3px solid var(--maxi-secondary-color);
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15),
+				0 0 0 2px var(--maxi-white);
+
+			&:hover {
+				border-color: var(--maxi-primary-color);
+				border-width: 4px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25),
+					0 0 0 2px var(--maxi-white);
+			}
 
 			&__hidden {
+				@include circular-element($clip-path-handle-size);
 				position: absolute;
 				transform: translate(-50%, -50%);
-				border-radius: 50%;
 				z-index: 1;
+				background-color: transparent;
+				border: none;
+				box-shadow: none;
+				cursor: grabbing;
+
+				&:hover {
+					background-color: rgba(var(--maxi-secondary-color), 0.1);
+				}
 			}
 		}
 
@@ -192,19 +315,31 @@
 			left: 50%;
 		}
 
+		&--opposite {
+			// Style for opposite/mirror points
+			opacity: 0.7;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
+
 		&__hidden-tooltip {
 			display: block;
 		}
 	}
 }
 
+// ================================
+// Standalone Components
+// ================================
+
 .maxi-clip-path-add-point-button {
 	background-color: var(--maxi-white) !important;
-	border-color: var(--maxi-grey-light) !important;
 	border: 1.5px solid var(--maxi-grey-light) !important;
 	color: var(--maxi-black) !important;
 	font-weight: 700;
-	border-radius: 6px;
+	border-radius: $clip-path-border-radius;
 	margin-bottom: 20px !important;
 
 	&:hover {
@@ -214,11 +349,13 @@
 }
 
 .maxi-clip-path-control .button {
-	border-radius: 6px;
+	border-radius: $clip-path-border-radius;
 }
-/*******************************
-* RTL
-*******************************/
+
+// ================================
+// RTL Support
+// ================================
+
 html[dir='rtl'] {
 	.maxi-clip-path-delete-handle {
 		left: unset;

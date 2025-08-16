@@ -1,4 +1,20 @@
 .maxi-typography-control {
+	// Shared floating label styles to avoid duplication
+	%floating-label {
+		position: absolute !important;
+		top: -8px !important;
+		left: -4px !important;
+		font-size: 10px !important;
+		color: var(--maxi-grey-dark) !important;
+		font-style: normal !important;
+		background: var(--maxi-white) !important;
+		padding: 0 5px !important;
+		pointer-events: none !important;
+		box-sizing: border-box !important;
+		-webkit-box-sizing: border-box !important;
+		z-index: 10 !important;
+	}
+
 	.maxi-base-control {
 		flex: 1;
 		&__help {
@@ -9,7 +25,7 @@
 			fill: var(--maxi-primary-color);
 		}
 		.maxi-tabs-control__button {
-			margin-right: 5px;
+			margin-right: 11px;
 			border-radius: 4px;
 			border: 1.5px solid var(--maxi-grey-light);
 			transition: all 0.4s ease !important;
@@ -21,7 +37,7 @@
 		.maxi-tabs-control__button[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green) !important;
 			border-color: var(--maxi-primary-color) !important;
-			color: var(--maxi-black) !important;
+			color: var(--maxi-primary-color) !important;
 		}
 	}
 
@@ -33,4 +49,315 @@
 			}
 		}
 	}
+
+	.maxi-typography-control__weight-size-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		width: 100%;
+
+		> div {
+			flex: 1;
+			position: relative; /* For typography reset buttons */
+		}
+
+		&:has(.maxi-typography-control__weight-warning) {
+			flex-direction: column;
+
+			.maxi-base-control__field > div {
+				display: flex !important;
+				width: 79% !important;
+				margin-bottom: -20px !important;
+			}
+
+			.maxi-advanced-number-control__value {
+				flex: 1 1 auto !important;
+			}
+		}
+	}
+
+	/* Add top margin specifically to the Font Size control */
+	.maxi-typography-control__size {
+		margin-top: 3px !important;
+	}
+
+	/* Arrange spacing controls with better spacing */
+	.maxi-typography-control__spacing-controls {
+		margin-bottom: 15px !important;
+
+		/* First row: Line height and Bottom gap */
+		.maxi-typography-control__line-height,
+		.maxi-typography-control__bottom-gap {
+			display: inline-block !important;
+			width: calc(50% - 5px) !important;
+			vertical-align: top !important;
+			position: relative !important;
+		}
+
+		.maxi-typography-control__line-height {
+			margin-right: 10px !important;
+		}
+
+		/* Style spacing controls like Font Weight */
+		.maxi-base-control__field {
+			gap: 5px !important;
+		}
+
+		/* Make inputs wider for 2-column layout */
+		.maxi-advanced-number-control__value {
+			width: 70px !important;
+		}
+
+		/* Make unit selectors wider */
+		.maxi-dimensions-control__units select {
+			min-width: 50px !important;
+			max-width: 50px !important;
+			width: 50px !important;
+		}
+
+		/* Style labels like Font Weight - floating labels */
+		.maxi-base-control__label {
+			@extend %floating-label;
+		}
+	}
+
+	/* Ensure typography controls have relative positioning for reset buttons */
+	.maxi-typography-control__weight,
+	.maxi-typography-control__size {
+		position: relative !important;
+
+		.maxi-base-control {
+			position: relative;
+		}
+
+		/* All typography reset buttons use the standardized system */
+
+		/* Ensure consistent label alignment for typography controls */
+		.maxi-base-control__label {
+			@extend %floating-label;
+		}
+	}
+
+	/* Typography formatting buttons styling */
+	.maxi-typography-control__formatting-buttons {
+		display: flex !important;
+		gap: 5px !important;
+		margin-bottom: 15px !important;
+		justify-content: flex-start !important;
+		align-items: center !important;
+
+		.maxi-typography-control__format-button {
+			display: flex !important;
+			align-items: center !important;
+			justify-content: center !important;
+			padding: 8px !important;
+			min-width: 34px !important;
+			max-width: 34px !important;
+			height: 32px !important;
+			border: 1px solid var(--maxi-grey-light) !important;
+			border-radius: 4px !important;
+			background: var(--maxi-white) !important;
+			color: var(--maxi-black) !important;
+			cursor: pointer !important;
+			font-family: inherit !important;
+			font-size: 16px !important;
+			font-weight: normal !important;
+			line-height: 1 !important;
+			text-align: center !important;
+			text-decoration: none !important;
+			transition: all 0.2s ease !important;
+			box-sizing: border-box !important;
+			margin: 0 !important;
+			margin-top: -15px !important;
+
+			&:hover {
+				border-color: var(--maxi-primary-color) !important;
+				background: var(--maxi-light-blue) !important;
+			}
+
+			&[aria-pressed='true'] {
+				background: var(--maxi-whisper-green) !important;
+				color: var(--maxi-primary-color) !important;
+				border-color: var(--maxi-primary-color) !important;
+			}
+
+			&--bold {
+				font-weight: bold !important;
+			}
+
+			&--italic {
+				font-style: italic !important;
+			}
+
+			&--underline {
+				text-decoration: underline !important;
+			}
+
+			&--strikethrough {
+				text-decoration: line-through !important;
+			}
+
+			&--capitalize,
+			&--uppercase,
+			&--lowercase {
+				font-size: 16px !important;
+				font-weight: 500 !important;
+			}
+		}
+	}
+
+	/* Horizontal separator after formatting buttons */
+	.maxi-typography-control__separator {
+		border: none !important;
+		border-top: 1px solid var(--maxi-grey-light) !important;
+		margin: 15px 0 !important;
+		height: 0 !important;
+		background: none !important;
+	}
+
+	/* Advanced text options toggle */
+	.maxi-typography-control__advanced-toggle {
+		.components-button {
+			display: flex !important;
+			align-items: center !important;
+			justify-content: space-between !important;
+			width: 100% !important;
+			padding: 8px 12px !important;
+			margin-bottom: 15px !important;
+			border: 1px solid var(--maxi-grey-light) !important;
+			border-radius: 4px !important;
+			background: var(--maxi-white) !important;
+			color: var(--maxi-black) !important;
+			font-size: 14px !important;
+			cursor: pointer !important;
+			transition: all 0.2s ease !important;
+
+			&:hover {
+				border-color: var(--maxi-primary-color) !important;
+				background: var(--maxi-light-blue) !important;
+			}
+		}
+	}
+
+	/* Arrow icon for advanced toggle */
+	.maxi-typography-control__toggle-arrow {
+		transition: transform 0.2s ease;
+		transform: rotate(0deg);
+
+		&--expanded {
+			transform: rotate(180deg);
+		}
+	}
+
+	.maxi-typography-control-button {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		text-align: left;
+		margin-top: 10px;
+	}
+
+	.maxi-typography-control-arrow-span {
+		transition: transform 0.3s ease;
+	}
+
+	/* Advanced text options collapsible section */
+	.maxi-typography-control__advanced-options {
+		margin-top: 0 !important;
+		animation: slideDown 0.3s ease-out;
+
+		@keyframes slideDown {
+			from {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	}
+
+	/* Alignment buttons spacing */
+	.maxi-typography-control__alignment-buttons {
+		margin-bottom: 8px;
+	}
+
+	/* Unique styling for alignment inside Typography panel only */
+	/* intentionally left without base styles; margins are defined below */
+}
+
+/* Ensure the unique alignment class is styled even when used outside the
+   `.maxi-typography-control` container (as in the inspector panel wrapper) */
+.maxi-typography-control__alignment-buttons
+	.maxi-typography-panel__text-alignment {
+	margin-left: 7px;
+	margin-right: 4px !important;
+}
+
+/* Override alignment-control typography override to allow right spacing */
+.maxi-typography-control__alignment-buttons
+	.maxi-typography-panel__text-alignment
+	.maxi-tabs-control__button {
+	margin-right: 5px !important;
+}
+
+.maxi-typography-control__alignment-buttons
+	.maxi-typography-panel__text-alignment
+	.maxi-tabs-control__button:last-child {
+	margin-right: 4px !important;
+}
+
+/* ========================================
+ * STYLE CARDS POPUP - TYPOGRAPHY CONTROL
+ * ========================================
+ * Clean, modular approach that inherits base styles
+ * with minimal overrides for popup context
+ */
+
+/* Target both style cards popup AND any style cards panel/container */
+.maxi-style-cards__popover,
+.maxi-accordion-control__item,
+.maxi-style-cards__sc,
+[class*='maxi-style-cards'] {
+	/* Typography Control - Style Cards Specific */
+	.maxi-typography-control[class*='maxi-style-cards-control__sc__'] {
+		/* Style Cards specific: Make advanced number control wider */
+		.maxi-advanced-number-control__value {
+			width: 105px !important;
+		}
+
+		/* Style Cards specific: Make formatting buttons bigger */
+		.maxi-typography-control__formatting-buttons {
+			.maxi-typography-control__format-button {
+				min-width: 43.5px !important;
+				height: 38px !important;
+				font-size: 16px !important;
+				padding: 6px 10px !important;
+			}
+		}
+
+		/* Style Cards specific: Proper spacing like sidebar */
+		.maxi-base-control {
+			margin-bottom: 10px !important;
+
+			&__field {
+				gap: 5px !important;
+				margin-bottom: 0 !important;
+			}
+		}
+
+		/* Fix advanced number control spacing in style cards */
+		.maxi-advanced-number-control {
+			.maxi-base-control {
+				margin-bottom: 0 !important;
+			}
+		}
+	}
+}
+
+/* Unique styling for font-level control in typography panel */
+.maxi-typography-panel__font-level {
+	margin: 0 7px;
 }

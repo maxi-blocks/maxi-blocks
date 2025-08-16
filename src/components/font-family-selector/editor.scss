@@ -13,10 +13,15 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	}
 }
 .maxi-font-family-selector {
-	z-index: 9;
+	z-index: 99;
 	display: block;
 	width: 100%;
 	height: 32px;
+
+	&__container {
+		position: relative;
+		width: 100%;
+	}
 
 	.maxi-font-family-selector__control {
 		&__menu {

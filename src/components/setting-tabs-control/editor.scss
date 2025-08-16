@@ -82,7 +82,7 @@
 			flex-direction: column;
 			width: 100%;
 			height: auto;
-			padding: 14px 8px;
+			padding: 10px 8px;
 			border-bottom: 1.5px solid var(--maxi-grey-light);
 			border-top: 1.5px solid var(--maxi-grey-light);
 			border-right: 1.5px solid var(--maxi-grey-light);
@@ -124,20 +124,6 @@
 				height: 100%;
 				margin: 0;
 				fill: var(--maxi-black);
-				transition: all 0.5s ease;
-			}
-			&--active:before {
-				content: '';
-				position: absolute;
-				top: 5px !important;
-				left: -2px !important;
-				z-index: 1;
-				width: 6px;
-				height: 6px;
-				border-radius: 50%;
-				background-color: var(--maxi-light-blue-alt);
-				margin-left: 5px;
-				transform: translateY(-50%);
 				transition: all 0.5s ease;
 			}
 
@@ -240,6 +226,8 @@
 			padding: 0px 8px 5px;
 			background-color: var(--maxi-white);
 		}
+
+		/* Class moved to accordion-control/editor.scss */
 
 		&--nested {
 			background: var(--maxi-white);

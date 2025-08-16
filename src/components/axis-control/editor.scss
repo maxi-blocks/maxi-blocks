@@ -1,15 +1,15 @@
 .maxi-axis-control {
-	margin-bottom: 8px;
+	margin-bottom: var(--maxi-space-8px);
 
 	&__header {
-		margin-bottom: 8px;
+		margin-bottom: var(--maxi-space-8px);
 
 		.maxi-base-control__field {
-			margin-bottom: 0;
+			margin-bottom: var(--maxi-space-0);
 		}
 		.maxi-tabs-control {
-			margin-left: 0;
-			margin-right: 0;
+			margin-left: var(--maxi-space-0);
+			margin-right: var(--maxi-space-0);
 		}
 	}
 	.maxi-tabs-control__button {
@@ -17,14 +17,14 @@
 		flex: 1;
 		align-items: center;
 		justify-content: center;
-		min-width: 32px;
-		height: 32px;
-		padding: 0;
-		border: 1px solid var(--maxi-grey-light);
-		border-radius: 0;
-		margin-bottom: 0;
-		opacity: 1 !important;
-		transition: all 0.5s;
+		min-width: var(--maxi-control-width-32px);
+		height: var(--maxi-control-height-32px);
+		padding: var(--maxi-space-0);
+		border: var(--maxi-border-1px) solid var(--maxi-grey-light);
+		border-radius: var(--maxi-radius-0);
+		margin-bottom: var(--maxi-space-0);
+		opacity: var(--maxi-opacity-visible) !important;
+		transition: all var(--maxi-transition-500ms);
 		cursor: pointer;
 	}
 
@@ -32,7 +32,7 @@
 		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
 			stroke: var(--maxi-grey-dark);
-			transition: stroke 0.3s ease;
+			transition: stroke var(--maxi-transition-300ms) ease;
 		}
 
 		&:hover svg:not(.maxi-tabs-control__notification) path {

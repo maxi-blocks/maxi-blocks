@@ -3,16 +3,16 @@
 		display: var(--maxi-display-flex);
 		width: var(--maxi-layout-full-width);
 		justify-content: var(--maxi-layout-center);
-		margin-bottom: var(--maxi-space-10px);
+		margin-bottom: var(--maxi-space-8px);
 	}
 	&__block-access {
-		margin-bottom: var(--maxi-space-10px);
+		margin-bottom: var(--maxi-space-8px);
 	}
 	&__title-spacing {
 		margin-top: var(--maxi-space-20px);
 	}
 	&__interaction-builder {
-		margin-top: var(--maxi-space-10px);
+		margin-top: var(--maxi-space-8px);
 	}
 	.maxi-list-item-control__title__wrapper {
 		overflow: var(--maxi-overflow-hidden);
@@ -21,10 +21,10 @@
 		white-space: var(--maxi-white-space-nowrap);
 	}
 	.maxi-base-control {
-		margin-bottom: var(--maxi-space-10px) !important;
-		margin-top: var(--maxi-space-10px) !important;
+		margin-bottom: var(--maxi-space-8px) !important;
+		margin-top: var(--maxi-space-8px) !important;
 		.maxi-dimensions-control__units {
-			margin-bottom: var(--maxi-space-10px) !important;
+			margin-bottom: var(--maxi-space-8px) !important;
 		}
 	}
 	.maxi-list-item-control__arrow {

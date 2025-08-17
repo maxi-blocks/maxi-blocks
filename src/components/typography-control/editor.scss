@@ -42,6 +42,8 @@
 	}
 
 	.maxi-typography-control__link-options {
+		margin-left: 6px; // Add this line
+
 		.maxi-tabs-control__button {
 			&--selected {
 				font-weight: var(--maxi-font-weight-bold);

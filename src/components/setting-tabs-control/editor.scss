@@ -1,13 +1,71 @@
+/*===============================================
+  SETTING TABS CONTROL COMPONENT
+===============================================*/
+
 .maxi-settingstab-control {
-	width: 100%;
-	/* Local tokens to avoid repetition and keep scope local */
+	/*-------------------------------------------
+	  COMPONENT VARIABLES
+	-------------------------------------------*/
 	--tabs-transition: all var(--maxi-transition-500ms) ease;
 	--tabs-border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+	--button-radius-large: var(--maxi-radius-10px);
+
+	/*-------------------------------------------
+	  SHARED COMPONENT PATTERNS
+	-------------------------------------------*/
+	width: var(--maxi-layout-full-width);
 	transition: var(--tabs-transition);
 
+	// Shared hover background pattern for whisper green
+	&.maxi-axis-control__sync .maxi-tabs-control__button:hover,
+	.maxi-tabs-control--nested .maxi-tabs-control__button:hover,
+	.maxi-tabs-control__button:hover,
+	.maxi-tabs-control__button:active,
+	.maxi-tabs-control__button.maxi-clip-path-control__handles-button:hover,
+	.maxi-tabs-control__button.maxi-tabs-control__button-visual:hover,
+	.maxi-tabs-control__button.maxi-tabs-control__button-edit.points:hover {
+		background-color: var(--maxi-whisper-green);
+	}
+
+	// Shared active state pattern for pastel green
+	&.maxi-axis-control__sync .maxi-tabs-control__button[aria-pressed='true'],
+	.maxi-tabs-control__button.maxi-clip-path-control__handles-button[aria-pressed='true'],
+	.maxi-tabs-control__button.maxi-tabs-control__button-visual[aria-pressed='true'],
+	.maxi-tabs-control__button.maxi-tabs-control__button-edit.points[aria-pressed='true'] {
+		background-color: var(--maxi-pastel-green);
+		color: var(--maxi-black);
+		font-weight: var(--maxi-font-weight-bold);
+	}
+
+	// Shared border radius pattern for large buttons
+	.maxi-tabs-control__button.maxi-clip-path-control__handles-button,
+	.maxi-tabs-control__button.maxi-tabs-control__button-visual,
+	.maxi-tabs-control__button.maxi-tabs-control__button-edit.points {
+		&,
+		&:hover,
+		&[aria-pressed='true'],
+		&:first-child,
+		&:last-child {
+			border-radius: var(--button-radius-large) !important;
+		}
+	}
+
+	// Shared flexbox center pattern
+	.maxi-tabs-control,
+	.maxi-tabs-control__button,
+	.block-info-icon {
+		display: var(--maxi-display-flex);
+		align-items: var(--maxi-layout-center);
+		justify-content: var(--maxi-layout-center);
+	}
+
+	/*-------------------------------------------
+	  SYNC AXIS VARIANT
+	-------------------------------------------*/
 	&.maxi-axis-control__sync {
 		.maxi-tabs-control__button {
-			margin-left: var(--maxi-spac-5px) solid var(--maxi-grey-light);
+			margin-left: var(--maxi-space-5px);
+			border-left: var(--tabs-border);
 			border-radius: var(--maxi-radius-4px);
 			transition: var(--tabs-transition);
 
@@ -17,9 +75,7 @@
 
 			&[aria-pressed='true'],
 			&:hover {
-				background-color: var(--maxi-pastel-green);
 				border: var(--maxi-border-1-5px) solid var(--maxi-mid-green);
-				font-weight: var(--maxi-font-weight-bold);
 
 				svg {
 					fill: var(--maxi-primary-color) !important;
@@ -28,14 +84,18 @@
 		}
 	}
 
+	/*-------------------------------------------
+	  NON-RESPONSIVE TABS
+	-------------------------------------------*/
 	&:not(.maxi-responsive-tabs-control) {
 		& > .maxi-tabs-control {
 			&.quick-start {
 				background: var(--maxi-admin-black);
 				color: var(--maxi-admin-white);
-				border: none;
+				border: var(--maxi-reset-border-none);
 				transition: var(--tabs-transition);
 			}
+
 			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested) {
 				transition: var(--tabs-transition);
 
@@ -45,8 +105,11 @@
 			}
 		}
 	}
+
+	/*-------------------------------------------
+	  CORE TABS CONTROL
+	-------------------------------------------*/
 	.maxi-tabs-control {
-		display: flex;
 		padding-top: 0;
 
 		&--nested {
@@ -55,9 +118,7 @@
 
 			.maxi-tabs-control__button {
 				transition: var(--tabs-transition);
-				&:hover {
-					background-color: var(--maxi-pastel-green);
-				}
+
 				&:focus:not(:disabled) {
 					background-color: var(--maxi-white);
 				}
@@ -69,52 +130,53 @@
 				color: var(--maxi-black);
 			}
 		}
+
 		&:not(.maxi-tabs-control--disable-padding) {
-			margin-bottom: 0;
+			margin-bottom: var(--maxi-space-0px);
 		}
+
 		&--bottom-space {
 			margin-bottom: var(--maxi-space-8px) !important;
 		}
+
+		/*-------------------------------------------
+		  BUTTON COMPONENT
+		-------------------------------------------*/
 		&__button {
 			position: var(--maxi-layout-relative);
-			display: var(--maxi-layout-flex);
-			flex-direction: var(--maxi-layout-column);
-			align-items: var(--maxi-layout-center);
-			justify-content: var(--maxi-layout-center);
-			width: var(--maxi-layout-100);
+			flex-direction: var(--maxi-layout-flex-column);
+			width: var(--maxi-layout-full-width);
 			height: var(--maxi-layout-auto);
 			padding: var(--maxi-space-10px) var(--maxi-space-8px);
 			border: var(--tabs-border) !important;
 			color: var(--maxi-grey-dark);
 			background-color: var(--maxi-white);
 			text-align: var(--maxi-text-align-center) !important;
-			white-space: var(--maxi-layout-nowrap);
+			white-space: var(--maxi-white-space-nowrap);
 			font-weight: var(--maxi-font-weight-bold);
 			transition: var(--tabs-transition);
+			cursor: var(--maxi-cursor-pointer);
 
 			&:hover {
-				background-color: var(--maxi-whisper-green);
-				cursor: pointer;
 				color: var(--maxi-black);
 			}
+
 			&:focus:not(:disabled) {
-				box-shadow: none;
-				outline: none;
+				box-shadow: var(--maxi-reset-box-shadow);
+				outline: var(--maxi-reset-outline);
 			}
-			&:active {
-				background-color: var(--maxi-whisper-green) !important;
-			}
+
 			&[aria-pressed='true'] {
 				color: var(--maxi-primary-color);
-				font-weight: var(--maxi-font-weight-bold);
 				background-color: var(--maxi-whisper-green) !important;
 				border: var(--maxi-border-1-5px) solid var(--maxi-primary-color) !important;
 			}
+
 			svg:not(.maxi-tabs-control__notification) {
-				display: block;
+				display: var(--maxi-display-block);
 				width: var(--maxi-space-20px);
-				height: 100%;
-				margin: 0;
+				height: var(--maxi-layout-100);
+				margin: var(--maxi-space-0px);
 				fill: var(--maxi-black);
 				transition: var(--tabs-transition);
 			}
@@ -123,17 +185,8 @@
 				padding-left: var(--maxi-space-25px);
 			}
 
-			&.maxi-clip-path-control__handles-button {
-				&[aria-pressed='true'] {
-					background-color: var(--maxi-pastel-green);
-					border-color: var(--maxi-mid-green);
-					color: var(--maxi-black);
-					border-radius: var(--maxi-radius-10px) !important;
-				}
-				&:hover {
-					background-color: var(--maxi-whisper-green);
-					border-radius: var(--maxi-radius-10px) !important;
-				}
+			&.maxi-clip-path-control__handles-button[aria-pressed='true'] {
+				border-color: var(--maxi-mid-green);
 			}
 
 			&.maxi-tabs-control__button-visual,
@@ -141,82 +194,66 @@
 				border: var(--tabs-border) !important;
 
 				&[aria-pressed='true'] {
-					background-color: var(--maxi-pastel-green) !important;
 					border-color: var(--maxi-primary-color) !important;
-					color: var(--maxi-black) !important;
-					font-weight: var(--maxi-font-weight-bold);
-					border-radius: var(--maxi-radius-10px) !important;
 				}
-				&:hover {
-					background-color: var(--maxi-whisper-green) !important;
-				}
-				&:last-child {
-					border: var(--tabs-border) !important;
-					border-radius: var(--maxi-radius-10px) !important;
-				}
-				&:first-child {
-					border-radius: var(--maxi-radius-10px) !important;
-				}
-			}
-
-			&.maxi-tabs-control__button-edit.points[aria-pressed='true'],
-			&.maxi-tabs-control__button-visual[aria-pressed='true'] {
-				background-color: var(--maxi-whisper-green) !important;
-				border-color: var(--maxi-primary-color) !important;
-				color: var(--maxi-black) !important;
-				font-weight: var(--maxi-font-weight-bold);
-				border-radius: var(--maxi-radius-10px) !important;
 			}
 		}
 
+		/*-------------------------------------------
+		  NOTIFICATION INDICATOR
+		-------------------------------------------*/
 		&__notification {
 			transition: var(--tabs-transition);
-			position: absolute;
-			z-index: 8;
-			top: 0;
-			right: 0;
-			width: 0;
-			height: 0;
-			border-style: solid;
+			position: var(--maxi-layout-absolute);
+			z-index: var(--maxi-z-modal);
+			top: var(--maxi-space-0px);
+			right: var(--maxi-space-0px);
+			width: var(--maxi-space-0px);
+			height: var(--maxi-space-0px);
+			border-style: var(--maxi-border-solid);
 			border-width: 0 var(--maxi-space-8px) var(--maxi-space-8px) 0;
 			border-color: transparent var(--maxi-primary-color) transparent
 				transparent;
 		}
 
+		/*-------------------------------------------
+		  BASE CONTROL INTEGRATION
+		-------------------------------------------*/
 		.maxi-base-control {
 			&__field {
-				width: 100%;
-				margin-bottom: 0;
+				width: var(--maxi-layout-full-width);
+				margin-bottom: var(--maxi-space-0px);
 			}
 			&__label {
-				flex: 4;
+				flex: var(--maxi-layout-4);
 			}
 		}
 
 		&__full-width {
-			width: 100%;
+			width: var(--maxi-layout-full-width);
 
 			.maxi-base-control {
 				&__field {
 					flex-wrap: wrap;
 				}
 				&__label {
-					display: block;
-					flex: 100% !important;
-					width: 100%;
+					display: var(--maxi-display-block);
+					flex: var(--maxi-layout-full-width) !important;
+					width: var(--maxi-layout-full-width);
 					margin: 0 0 var(--maxi-space-8px) !important;
 				}
 			}
 		}
 	}
 
+	/*-------------------------------------------
+	  TABS CONTENT
+	-------------------------------------------*/
 	.maxi-tabs-content {
 		&:not(.maxi-tabs-content--disable-padding) {
 			padding: 0 var(--maxi-space-8px) var(--maxi-space-5px);
 			background-color: var(--maxi-white);
 		}
-
-		/* Class moved to accordion-control/editor.scss */
 
 		&--nested {
 			background: var(--maxi-white);
@@ -224,47 +261,51 @@
 			padding: var(--maxi-space-25px) 0 0;
 			margin-bottom: var(--maxi-space-8px);
 			border-radius: var(--maxi-radius-5px);
-			overflow: hidden;
+			overflow: var(--maxi-overflow-hidden);
 		}
 
 		.maxi-tab-content {
-			display: none;
+			display: var(--maxi-display-none);
 			background: var(--maxi-white);
 
 			&__box {
-				position: relative;
+				position: var(--maxi-layout-relative);
 				padding: var(--maxi-space-8px);
-				border-top: var(--maxi-border-1-5px) solid
-					var(--maxi-grey-light);
-				border-bottom: var(--maxi-border-1-5px) solid
-					var(--maxi-grey-light);
+				border-top: var(--tabs-border);
+				border-bottom: var(--tabs-border);
 				background-color: var(--maxi-white);
 
 				&:after {
 					content: '';
-					position: absolute;
-					bottom: 0;
-					left: 0;
-					width: 100%;
+					position: var(--maxi-layout-absolute);
+					bottom: var(--maxi-space-0px);
+					left: var(--maxi-space-0px);
+					width: var(--maxi-layout-full-width);
 					height: var(--maxi-border-1px);
 					background: var(--maxi-grey-light);
 				}
+
 				& > *:last-child {
 					.maxi-base-control__field {
-						margin-bottom: 0 !important;
+						margin-bottom: var(--maxi-space-0px) !important;
 					}
 				}
+
 				.components-base-control__label {
-					flex: none;
-					width: 50%;
+					flex: var(--maxi-layout-none);
+					width: var(--maxi-layout-half);
 				}
 			}
+
 			&--selected {
-				display: block;
+				display: var(--maxi-display-block);
 			}
 		}
 	}
 
+	/*-------------------------------------------
+	  BORDER VARIANTS
+	-------------------------------------------*/
 	&_has-border-left-right {
 		.maxi-tabs-control__button {
 			&:last-child {
@@ -276,79 +317,122 @@
 		}
 	}
 }
+
+/*===============================================
+  SIDEBAR BLOCK INFO COMPONENT
+===============================================*/
 .sidebar-block-info {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	background-color: var(--maxi-white);
-	padding-left: var(--maxi-space-5px);
-	/* Local token for transitions inside this block */
+	/*-------------------------------------------
+	  COMPONENT VARIABLES
+	-------------------------------------------*/
 	--sidebar-transition: all var(--maxi-transition-500ms) ease;
 
-	.maxi-text-control__input {
-		padding-left: var(--maxi-space-10px) !important;
+	/*-------------------------------------------
+	  SHARED LAYOUT PATTERNS
+	-------------------------------------------*/
+	display: var(--maxi-display-flex);
+	flex-direction: var(--maxi-layout-row);
+	justify-content: var(--maxi-layout-space-between);
+	background-color: var(--maxi-white);
+	padding-left: var(--maxi-space-5px);
+
+	// Shared transition pattern
+	.maxi-text-control__input,
+	.maxi-select-control__input,
+	.maxi-custom-label,
+	.maxi-base-control.maxi-block-style-control,
+	.maxi-block-style-preview,
+	.block-style-label-2,
+	.maxi-base-control__label {
 		transition: var(--sidebar-transition);
-	}
-	.maxi-select-control__input {
-		padding-left: var(--maxi-space-12px) !important;
-		transition: var(--sidebar-transition);
-	}
-	.maxi-select-control__input:hover,
-	.maxi-text-control__input:hover {
-		border-color: var(--maxi-whisper-green) !important;
-	}
-	.maxi-select-control__input:focus,
-	.maxi-text-control__input:focus {
-		border-color: var(--maxi-primary-color) !important;
 	}
 
-	.maxi-custom-label {
-		width: 100%;
-		position: relative;
-		transition: var(--sidebar-transition);
+	// Shared input hover/focus states
+	.maxi-select-control__input,
+	.maxi-text-control__input {
+		&:hover {
+			border-color: var(--maxi-whisper-green) !important;
+		}
+		&:focus {
+			border-color: var(--maxi-primary-color) !important;
+		}
 	}
+
+	/*-------------------------------------------
+	  INPUT CONTROLS
+	-------------------------------------------*/
+	.maxi-text-control__input {
+		padding-left: var(--maxi-space-10px) !important;
+	}
+
+	.maxi-select-control__input {
+		padding-left: var(--maxi-space-12px) !important;
+	}
+
+	/*-------------------------------------------
+	  LAYOUT COMPONENTS
+	-------------------------------------------*/
+	.maxi-custom-label {
+		width: var(--maxi-layout-full-width);
+		position: var(--maxi-layout-relative);
+	}
+
 	.maxi-base-control.maxi-block-style-control {
-		position: relative;
+		position: var(--maxi-layout-relative);
 		min-width: var(--maxi-control-width-70px);
 		margin: 0 var(--maxi-space-5px);
-		transition: var(--sidebar-transition);
 	}
+
 	.maxi-block-style-preview {
-		position: relative;
+		position: var(--maxi-layout-relative);
 		min-width: var(--maxi-control-width-100px);
 		margin-left: var(--maxi-space-10px);
 		height: var(--maxi-control-height-32px);
-		transition: var(--sidebar-transition);
 	}
+
+	/*-------------------------------------------
+	  FLOATING LABELS
+	-------------------------------------------*/
 	.block-style-label-2,
 	.maxi-base-control__label {
-		position: absolute;
-		top: calc(-1 * var(--maxi-space-8px));
+		position: var(--maxi-layout-absolute);
+		top: var(--maxi-floating-label-top);
 		left: var(--maxi-space-8px);
 		font-size: var(--maxi-font-size-8px);
 		color: var(--maxi-grey-dark);
 		font-style: var(--maxi-font-style-italic);
 		background: var(--maxi-white);
-		padding: 0 var(--maxi-space-5px);
-		pointer-events: none;
+		padding: var(--maxi-floating-label-padding);
+		pointer-events: var(--maxi-pointer-events-none);
 		box-sizing: var(--maxi-box-sizing-border-box);
-		transition: var(--sidebar-transition);
 	}
 }
+
+/*===============================================
+  BLOCK INFO ICON COMPONENT
+===============================================*/
 .block-info-icon {
-	position: absolute;
+	/*-------------------------------------------
+	  SHARED TRANSITION PATTERN
+	-------------------------------------------*/
+	--icon-transition: all var(--maxi-transition-500ms) ease;
+
+	/*-------------------------------------------
+	  LAYOUT & STYLING
+	-------------------------------------------*/
+	position: var(--maxi-layout-absolute);
 	right: var(--maxi-space-5px);
 	border: var(--maxi-border-2px) solid var(--maxi-grey-light);
 	border-radius: var(--maxi-radius-round);
 	height: var(--maxi-space-16px);
 	width: var(--maxi-space-16px);
-	text-align: center;
+	text-align: var(--maxi-text-align-center);
 	top: var(--maxi-space-9px);
-	cursor: pointer;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: all var(--maxi-transition-500ms) ease;
+	cursor: var(--maxi-cursor-pointer);
+	display: var(--maxi-display-flex);
+	justify-content: var(--maxi-layout-center);
+	align-items: var(--maxi-layout-center);
+	transition: var(--icon-transition);
 
 	&:hover {
 		border-color: var(--maxi-primary-color);
@@ -357,23 +441,26 @@
 
 	span {
 		font-size: var(--maxi-font-size-10px);
-		transition: all var(--maxi-transition-500ms) ease;
+		transition: var(--icon-transition);
 	}
 }
-/*******************************
-* RTL
-*******************************/
+
+/*===============================================
+  RTL SUPPORT
+===============================================*/
 html[dir='rtl'] {
 	.block-info-icon {
-		right: unset;
+		right: var(--maxi-reset-right);
 		left: var(--maxi-space-5px);
 	}
+
 	.maxi-settingstab-control .maxi-tabs-control__button:last-child {
 		border-left: var(--tabs-border);
 		border-right: var(--tabs-border);
 	}
+
 	.maxi-block-style-preview {
-		margin-left: unset;
+		margin-left: var(--maxi-reset-left);
 		margin-right: var(--maxi-space-10px);
 	}
 }

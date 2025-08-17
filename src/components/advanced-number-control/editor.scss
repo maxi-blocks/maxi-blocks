@@ -1,11 +1,60 @@
+/*===============================================
+  ADVANCED NUMBER CONTROL COMPONENT
+===============================================*/
+
 .maxi-advanced-number-control {
+	/*-------------------------------------------
+	  COMPONENT VARIABLES
+	-------------------------------------------*/
+	--spinner-gap: calc(-1 * var(--maxi-space-1px));
+	--spinner-transform-offset: -48%;
+	--floating-label-top: calc(-1 * var(--maxi-space-8px));
+
+	/*-------------------------------------------
+	  SHARED COMPONENT PATTERNS
+	-------------------------------------------*/
+	
+	// Reset patterns for inputs and wrappers
+	&__input-wrapper,
+	&__value {
+		border: var(--maxi-reset-border-none) !important;
+		outline: var(--maxi-reset-outline) !important;
+		box-shadow: var(--maxi-reset-box-shadow) !important;
+		background: var(--maxi-reset-background) !important;
+	}
+
+	// Focus state patterns
+	&__input-wrapper:focus,
+	&__input-wrapper:focus-within,
+	&__value:focus,
+	&__value:focus-visible,
+	&__value:active {
+		border: var(--maxi-reset-border-none) !important;
+		outline: var(--maxi-reset-outline) !important;
+		box-shadow: var(--maxi-reset-box-shadow) !important;
+		background: var(--maxi-reset-background) !important;
+	}
+
+	// Flexbox center alignment pattern
+	&__input-wrapper,
+	&__spinner-container,
+	&__spinner-button {
+		display: var(--maxi-display-flex);
+		align-items: var(--maxi-layout-center);
+	}
+
+	/*-------------------------------------------
+	  STYLE VARIANTS
+	-------------------------------------------*/
+	
 	&__second-style {
 		.maxi-base-control__field {
 			position: var(--maxi-layout-relative);
 		}
+		
 		.maxi-base-control__label {
 			position: var(--maxi-layout-absolute);
-			top: calc(-1 * var(--maxi-space-8px));
+			top: var(--floating-label-top);
 			left: var(--maxi-space-8px);
 			font-size: var(--maxi-font-size-10px) !important;
 			color: var(--maxi-black) !important;
@@ -13,12 +62,17 @@
 			padding: var(--maxi-space-0px) var(--maxi-space-5px);
 			pointer-events: none;
 			box-sizing: border-box;
-			-webkit-box-sizing: border-box;
 		}
+		
 		.maxi-select-control__input {
 			padding: var(--maxi-space-9px) var(--maxi-space-8px);
 		}
 	}
+
+	/*-------------------------------------------
+	  CORE INPUT COMPONENTS
+	-------------------------------------------*/
+	
 	.maxi-base-control {
 		margin-bottom: var(--maxi-space-0px);
 	}
@@ -26,80 +80,42 @@
 	&__input-wrapper {
 		position: var(--maxi-layout-relative);
 		display: var(--maxi-display-inline-flex);
-		align-items: var(--maxi-layout-center);
 		flex: none;
 		width: var(--maxi-control-width-72px);
-		border: var(--maxi-reset-border-none) !important;
-		outline: var(--maxi-reset-outline) !important;
-		box-shadow: var(--maxi-reset-box-shadow) !important;
-
-		&:focus,
-		&:focus-within {
-			border: var(--maxi-reset-border-none) !important;
-			outline: var(--maxi-reset-outline) !important;
-			box-shadow: var(--maxi-reset-box-shadow) !important;
-		}
 	}
 
 	&__value {
 		width: var(--maxi-layout-full-width);
-		height: var(--maxi-control-height-31px);
-		flex: none;
-		padding-right: var(
-			--maxi-space-24px
-		); // Make room for custom spinner buttons
+		height: var(--maxi-control-height-36px);
+		flex: var(--maxi-layout-full-width);
+		padding-right: var(--maxi-space-24px);
 		min-width: var(--maxi-control-width-60px);
-		border: var(
-			--maxi-reset-border-none
-		) !important; // Remove any inherited borders
-		box-shadow: var(
-			--maxi-reset-box-shadow
-		) !important; // Remove any box shadows
-		background: var(
-			--maxi-reset-background
-		) !important; // Ensure transparent background
+		z-index: 0;
 
-		// Hide native browser spinner buttons since we have custom ones
+		// Hide browser spinner buttons
 		&::-webkit-outer-spin-button,
 		&::-webkit-inner-spin-button {
 			-webkit-appearance: none;
 			margin: 0;
 		}
 
-		// Firefox
 		&[type='number'] {
 			-moz-appearance: textfield;
 			appearance: textfield;
 		}
-
-		&:focus,
-		&:focus-visible,
-		&:active {
-			// Ensure input focus doesn't interfere with spinner buttons
-			z-index: 0;
-			border: var(
-				--maxi-reset-border-none
-			) !important; // Remove focus border
-			outline: var(
-				--maxi-reset-outline
-			) !important; // Remove focus outline
-			box-shadow: var(
-				--maxi-reset-box-shadow
-			) !important; // Remove focus box shadow
-			background: var(
-				--maxi-reset-background
-			) !important; // Keep background transparent
-		}
 	}
 
+	/*-------------------------------------------
+	  CUSTOM SPINNER CONTROLS
+	-------------------------------------------*/
+	
 	&__spinner-container {
 		position: var(--maxi-layout-absolute);
 		right: var(--maxi-space-4px);
 		top: var(--maxi-layout-half);
-		transform: translateY(-48%); // Move down 2px from center
-		display: var(--maxi-display-flex);
+		transform: translateY(var(--spinner-transform-offset));
 		flex-direction: var(--maxi-layout-flex-column);
-		gap: calc(-1 * var(--maxi-space-1px)); // Bring buttons closer together
+		gap: var(--spinner-gap);
 		z-index: 1;
 	}
 
@@ -111,15 +127,14 @@
 		cursor: var(--maxi-cursor-pointer);
 		padding: var(--maxi-reset-padding);
 		color: var(--maxi-grey);
-		display: var(--maxi-display-flex);
-		align-items: var(--maxi-layout-center);
 		justify-content: var(--maxi-layout-center);
 		transition: all var(--maxi-transition-200ms) ease;
 		border-radius: var(--maxi-radius-2px);
 		position: var(--maxi-layout-relative);
 
-		// Better focus states for accessibility
-		&:focus {
+		// Interactive states
+		&:focus,
+		&:hover {
 			outline: var(--maxi-reset-outline);
 			border: var(--maxi-reset-border-none);
 			background: var(--maxi-whisper-green);
@@ -127,8 +142,6 @@
 
 		&:hover {
 			color: var(--maxi-primary-color);
-			background: var(--maxi-whisper-green);
-			border: var(--maxi-reset-border-none);
 
 			svg {
 				color: var(--maxi-primary-color);
@@ -141,7 +154,6 @@
 			border: var(--maxi-reset-border-none);
 		}
 
-		// Disabled state
 		&:disabled {
 			color: var(--maxi-grey);
 			cursor: not-allowed;
@@ -151,39 +163,42 @@
 			}
 		}
 
-		// SVG styling
 		svg {
 			pointer-events: var(--maxi-pointer-events-none);
 			transition: inherit;
-		}
-
-		// Specific button styling
-		&--up {
 		}
 
 		&--down {
 			border-top: var(--maxi-border-1px) solid var(--maxi-grey);
 		}
 	}
+
+	/*-------------------------------------------
+	  RANGE CONTROL INTEGRATION
+	-------------------------------------------*/
+	
 	.components-range-control {
 		width: var(--maxi-layout-full-width);
 		flex: var(--maxi-layout-full-width);
 		margin: var(--maxi-space-8px) 0 0;
 
-		&.maxi-advanced-number-control__range--small {
-			.components-simple-tooltip {
-				transform: none;
-			}
+		&.maxi-advanced-number-control__range--small .components-simple-tooltip {
+			transform: none;
 		}
-		&.maxi-advanced-number-control__range--big {
-			.components-simple-tooltip {
-				transform: translateX(-90%);
-			}
+		
+		&.maxi-advanced-number-control__range--big .components-simple-tooltip {
+			transform: translateX(-90%);
 		}
 	}
+
+	/*-------------------------------------------
+	  FIELD LAYOUT & SPACING
+	-------------------------------------------*/
+	
 	.maxi-base-control__label {
 		flex: 2;
 	}
+
 	.maxi-base-control__field,
 	.components-base-control__field {
 		flex-wrap: wrap;
@@ -191,6 +206,7 @@
 		& > * {
 			margin-left: var(--maxi-space-5px);
 		}
+
 		.maxi-base-control__label,
 		.components-base-control__label,
 		.components-range-control {
@@ -202,10 +218,18 @@
 			width: calc(var(--maxi-layout-full-width) - var(--maxi-space-16px));
 		}
 	}
-}
 
-// Typography reset buttons now use the standardized system
-// No additional overrides needed - base styles handle everything
+	/*-------------------------------------------
+	  DIMENSIONS CONTROL INTEGRATION
+	-------------------------------------------*/
+	
+	.maxi-dimensions-control__units {
+		.maxi-select-control__input {
+			height: var(--maxi-control-height-36px) !important;
+			min-height: var(--maxi-control-height-36px) !important;
+		}
+	}
+}
 
 /*******************************
 * RTL

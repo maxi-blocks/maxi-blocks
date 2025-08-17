@@ -302,17 +302,6 @@
 	.maxi-typography-control__advanced-options {
 		margin-top: var(--maxi-space-0px) !important;
 		animation: slideDown var(--maxi-transition-300ms) ease-out;
-
-		@keyframes slideDown {
-			from {
-				opacity: var(--maxi-opacity-hidden);
-				transform: translateY(calc(-1 * var(--maxi-space-10px)));
-			}
-			to {
-				opacity: var(--maxi-opacity-visible);
-				transform: translateY(var(--maxi-space-0px));
-			}
-		}
 	}
 
 	/*-------------------------------------------
@@ -320,6 +309,20 @@
 	-------------------------------------------*/
 	.maxi-typography-control__alignment-buttons {
 		margin-bottom: var(--maxi-space-8px);
+	}
+}
+
+/*===============================================
+  KEYFRAME ANIMATIONS
+===============================================*/
+@keyframes slideDown {
+	from {
+		opacity: var(--maxi-opacity-hidden);
+		transform: translateY(calc(-1 * var(--maxi-space-10px)));
+	}
+	to {
+		opacity: var(--maxi-opacity-visible);
+		transform: translateY(var(--maxi-space-0px));
 	}
 }
 

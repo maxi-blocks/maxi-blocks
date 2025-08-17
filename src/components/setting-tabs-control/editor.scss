@@ -227,7 +227,7 @@
 				margin-bottom: var(--maxi-space-0px);
 			}
 			&__label {
-				flex: 4;
+				flex: var(--maxi-flex-4);
 			}
 		}
 
@@ -455,7 +455,7 @@
 ===============================================*/
 html[dir='rtl'] {
 	.block-info-icon {
-		right: unset;
+		right: var(--maxi-reset-right);
 		left: var(--maxi-space-5px);
 	}
 
@@ -465,7 +465,7 @@ html[dir='rtl'] {
 	}
 
 	.maxi-block-style-preview {
-		margin-left: unset;
+		margin-left: var(--maxi-reset-left);
 		margin-right: var(--maxi-space-10px);
 	}
 }

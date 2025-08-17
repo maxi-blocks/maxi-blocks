@@ -34,11 +34,12 @@
 		}
 	}
 
-	// Remove default button styling that might interfere
-	&:focus,
-	&:visited {
-		outline: none;
-		box-shadow: none;
-		border-radius: 0;
+	// Keyboard accessibility focus treatment
+	&:focus-visible {
+		outline: var(--maxi-border-2px) solid var(--maxi-primary-color);
+		outline-offset: var(--maxi-space-2px);
+		box-shadow: 0 0 0 var(--maxi-space-1px) var(--maxi-white),
+			0 0 0 var(--maxi-space-3px) var(--maxi-primary-color);
+		border-radius: var(--maxi-radius-3px);
 	}
 }

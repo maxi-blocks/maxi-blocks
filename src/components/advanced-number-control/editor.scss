@@ -133,7 +133,7 @@
 		position: var(--maxi-layout-relative);
 
 		// Interactive states
-		&:focus,
+		&:focus-visible,
 		&:hover {
 			outline: var(--maxi-reset-outline);
 			border: var(--maxi-reset-border-none);
@@ -171,6 +171,20 @@
 		&--down {
 			border-top: var(--maxi-border-1px) solid var(--maxi-grey);
 		}
+	}
+
+	/*-------------------------------------------
+	  KEYBOARD ACCESSIBILITY FOCUS STYLES
+	-------------------------------------------*/
+	
+	&__input-wrapper:focus-within {
+		outline: var(--maxi-outline-focus);
+		outline-offset: var(--maxi-space-2px);
+	}
+
+	&__value:focus-visible {
+		outline: var(--maxi-outline-focus);
+		outline-offset: var(--maxi-space-2px);
 	}
 
 	/*-------------------------------------------

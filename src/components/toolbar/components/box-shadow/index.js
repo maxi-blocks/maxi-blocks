@@ -39,10 +39,10 @@ const BoxShadow = props => {
 
 	const { tooltipsHide } = useSelect(select => {
 		const { receiveMaxiSettings } = select('maxiBlocks');
-		const maxiSettings = receiveMaxiSettings();
-		const { hide_tooltips: hideTooltips } = maxiSettings;
+		const maxiSettings = receiveMaxiSettings() || {};
+		const { hide_tooltips } = maxiSettings;
 		return {
-			tooltipsHide: !isEmpty(hideTooltips) ? hideTooltips : false,
+			tooltipsHide: typeof hide_tooltips === 'boolean' ? hide_tooltips : false,
 		};
 	}, []);
 

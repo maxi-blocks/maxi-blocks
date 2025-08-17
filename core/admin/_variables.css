@@ -179,6 +179,11 @@
 	--maxi-border-3px: 3px;
 	--maxi-border-4px: 4px;
 
+	/* Border Styles */
+	--maxi-border-solid: solid;
+	--maxi-border-dashed: dashed;
+	--maxi-border-dotted: dotted;
+
 	/* ===================================
 	   DIMENSIONS SYSTEM
 	   =================================== */
@@ -278,6 +283,9 @@
 	--maxi-animation-timing-ease-out: ease-out;
 	--maxi-animation-timing-ease-in-out: ease-in-out;
 
+	/* Standard Easing Curves */
+	--maxi-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
 	/* ===================================
 	   Z-INDEX SYSTEM
 	   =================================== */
@@ -328,6 +336,13 @@
 	--maxi-layout-center: center;
 	--maxi-layout-space-between: space-between;
 	--maxi-flex-shrink-0: 0;
+
+	/* Flex Values */
+	--maxi-flex-1: 1;
+	--maxi-flex-2: 2;
+	--maxi-flex-3: 3;
+	--maxi-flex-4: 4;
+	--maxi-flex-none: none;
 
 	/* Alignment */
 	--maxi-align-content-center: center;
@@ -454,6 +469,10 @@
 	--maxi-reset-outline: none;
 	--maxi-reset-background: transparent;
 	--maxi-reset-box-shadow: none;
+	--maxi-reset-left: unset;
+	--maxi-reset-right: unset;
+	--maxi-reset-top: unset;
+	--maxi-reset-bottom: unset;
 
 	/* ===================================
 	   SVG UTILITIES

@@ -6,8 +6,8 @@
 	/*-------------------------------------------
 	  COMPONENT VARIABLES
 	-------------------------------------------*/
-	--tabs-transition: all var(--maxi-transition-500ms) ease;
-	--tabs-border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
+	--tabs-transition: var(--maxi-button-transition);
+	--tabs-border: var(--maxi-input-border);
 	--button-radius-large: var(--maxi-radius-10px);
 
 	/*-------------------------------------------
@@ -110,10 +110,11 @@
 	  CORE TABS CONTROL
 	-------------------------------------------*/
 	.maxi-tabs-control {
-		padding-top: 0;
+		padding-top: var(--maxi-space-0px);
 
 		&--nested {
-			padding: var(--maxi-space-8px) var(--maxi-space-8px) 0;
+			padding: var(--maxi-space-8px) var(--maxi-space-8px)
+				var(--maxi-space-0px);
 			margin-bottom: calc(-1 * var(--maxi-space-18px));
 
 			.maxi-tabs-control__button {
@@ -210,10 +211,11 @@
 			right: var(--maxi-space-0px);
 			width: var(--maxi-space-0px);
 			height: var(--maxi-space-0px);
-			border-style: var(--maxi-border-solid);
-			border-width: 0 var(--maxi-space-8px) var(--maxi-space-8px) 0;
-			border-color: transparent var(--maxi-primary-color) transparent
-				transparent;
+			border-style: solid;
+			border-width: var(--maxi-space-0px) var(--maxi-space-8px)
+				var(--maxi-space-8px) var(--maxi-space-0px);
+			border-color: var(--maxi-reset-background) var(--maxi-primary-color)
+				var(--maxi-reset-background) var(--maxi-reset-background);
 		}
 
 		/*-------------------------------------------
@@ -225,7 +227,7 @@
 				margin-bottom: var(--maxi-space-0px);
 			}
 			&__label {
-				flex: var(--maxi-layout-4);
+				flex: 4;
 			}
 		}
 
@@ -240,7 +242,8 @@
 					display: var(--maxi-display-block);
 					flex: var(--maxi-layout-full-width) !important;
 					width: var(--maxi-layout-full-width);
-					margin: 0 0 var(--maxi-space-8px) !important;
+					margin: var(--maxi-space-0px) var(--maxi-space-0px)
+						var(--maxi-space-8px) !important;
 				}
 			}
 		}
@@ -251,14 +254,16 @@
 	-------------------------------------------*/
 	.maxi-tabs-content {
 		&:not(.maxi-tabs-content--disable-padding) {
-			padding: 0 var(--maxi-space-8px) var(--maxi-space-5px);
+			padding: var(--maxi-space-0px) var(--maxi-space-8px)
+				var(--maxi-space-5px);
 			background-color: var(--maxi-white);
 		}
 
 		&--nested {
 			background: var(--maxi-white);
 			border: var(--maxi-border-1-5px) solid var(--maxi-secondary-color);
-			padding: var(--maxi-space-25px) 0 0;
+			padding: var(--maxi-space-25px) var(--maxi-space-0px)
+				var(--maxi-space-0px);
 			margin-bottom: var(--maxi-space-8px);
 			border-radius: var(--maxi-radius-5px);
 			overflow: var(--maxi-overflow-hidden);
@@ -292,7 +297,7 @@
 				}
 
 				.components-base-control__label {
-					flex: var(--maxi-layout-none);
+					flex: none;
 					width: var(--maxi-layout-half);
 				}
 			}
@@ -325,7 +330,7 @@
 	/*-------------------------------------------
 	  COMPONENT VARIABLES
 	-------------------------------------------*/
-	--sidebar-transition: all var(--maxi-transition-500ms) ease;
+	--sidebar-transition: var(--maxi-button-transition);
 
 	/*-------------------------------------------
 	  SHARED LAYOUT PATTERNS
@@ -380,7 +385,7 @@
 	.maxi-base-control.maxi-block-style-control {
 		position: var(--maxi-layout-relative);
 		min-width: var(--maxi-control-width-70px);
-		margin: 0 var(--maxi-space-5px);
+		margin: var(--maxi-space-0px) var(--maxi-space-5px);
 	}
 
 	.maxi-block-style-preview {
@@ -415,7 +420,7 @@
 	/*-------------------------------------------
 	  SHARED TRANSITION PATTERN
 	-------------------------------------------*/
-	--icon-transition: all var(--maxi-transition-500ms) ease;
+	--icon-transition: var(--maxi-button-transition);
 
 	/*-------------------------------------------
 	  LAYOUT & STYLING
@@ -450,7 +455,7 @@
 ===============================================*/
 html[dir='rtl'] {
 	.block-info-icon {
-		right: var(--maxi-reset-right);
+		right: unset;
 		left: var(--maxi-space-5px);
 	}
 
@@ -460,7 +465,7 @@ html[dir='rtl'] {
 	}
 
 	.maxi-block-style-preview {
-		margin-left: var(--maxi-reset-left);
+		margin-left: unset;
 		margin-right: var(--maxi-space-10px);
 	}
 }

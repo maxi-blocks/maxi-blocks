@@ -1,52 +1,96 @@
 .maxi-transform-control {
+	/*-------------------------------------------
+	  COMPONENT VARIABLES
+	-------------------------------------------*/
+	--transform-y-offset: calc(-1 * var(--maxi-space-20px));
+	--transform-input-width: var(--maxi-control-width-64px);
+	--transform-sync-size: var(--maxi-control-height-32px);
+	--transform-rtl-offset: 85px;
+	--transform-control-spacing: var(--maxi-space-5px);
+
+	/*-------------------------------------------
+	  SHARED PATTERNS
+	-------------------------------------------*/
+
+	// Flexbox center pattern
+	%flex-center-pattern {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	// Flexbox space-between pattern
+	%flex-between-pattern {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	// Absolute center pattern
+	%absolute-center-pattern {
+		position: absolute;
+		top: var(--maxi-layout-half);
+		left: var(--maxi-layout-half);
+		transform: translate(-50%, -50%);
+	}
+
+	// Range slider thumb pattern
+	%range-thumb-pattern {
+		width: var(--maxi-space-16px);
+		height: var(--maxi-space-16px);
+		border-radius: var(--maxi-radius-round);
+		background: var(--maxi-black);
+		cursor: var(--maxi-cursor-pointer);
+		box-shadow: inset 0 0 0 var(--maxi-space-2px) var(--maxi-black),
+			inset 0 0 0 var(--maxi-space-4px) var(--maxi-white);
+	}
+
+	// Input base pattern
+	%input-base-pattern {
+		padding-right: var(--maxi-reset-padding) !important;
+		margin-left: var(--transform-control-spacing);
+
+		@at-root .rtl #{&} {
+			padding-right: var(--maxi-space-8px) !important;
+			margin-left: var(--maxi-reset-margin);
+			margin-right: var(--transform-control-spacing);
+		}
+	}
+
 	input[type='range'] {
 		-webkit-appearance: none;
-		width: 100%;
+		width: var(--maxi-layout-full-width);
 		height: var(--maxi-space-2px);
-		border-radius: 0;
+		border-radius: var(--maxi-radius-0);
 		background: var(--maxi-grey-light);
-		outline: none;
+		outline: var(--maxi-reset-outline);
 		-webkit-transition: var(--maxi-transition-200ms);
 		transition: opacity var(--maxi-transition-200ms);
 
 		&::-webkit-slider-thumb {
 			-webkit-appearance: none;
 			appearance: none;
-			width: var(--maxi-space-16px);
-			height: var(--maxi-space-16px);
-			border-radius: 50%;
-			background: var(--maxi-black);
-			cursor: pointer;
-			box-shadow: inset 0 0 0 var(--maxi-space-2px) var(--maxi-black),
-				inset 0 0 0 var(--maxi-space-4px) var(--maxi-white);
+			@extend %range-thumb-pattern;
 		}
 
 		&::-moz-range-thumb {
-			width: var(--maxi-space-16px);
-			height: var(--maxi-space-16px);
-			border-radius: 50%;
-			background: var(--maxi-black);
-			cursor: pointer;
-			box-shadow: inset 0 0 0 var(--maxi-space-2px) var(--maxi-black),
-				inset 0 0 0 var(--maxi-space-4px) var(--maxi-white);
+			@extend %range-thumb-pattern;
 		}
 	}
 
 	&__square-control {
 		display: flex;
 		flex-wrap: wrap;
-		position: relative;
+		position: var(--maxi-layout-relative);
 
 		&__canvas {
-			position: relative;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+			position: var(--maxi-layout-relative);
+			@extend %flex-center-pattern;
 			width: var(--maxi-canvas-size-170px);
 			height: var(--maxi-canvas-size-170px);
 			border: var(--maxi-border-1px) solid var(--maxi-grey-light);
 			border-radius: var(--maxi-radius-5px);
-			overflow: hidden;
+			overflow: var(--maxi-overflow-hidden);
 
 			&:before {
 				content: '';
@@ -61,25 +105,19 @@
 
 			&:after {
 				content: '';
-				display: block;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
+				display: var(--maxi-display-block);
+				@extend %absolute-center-pattern;
 				width: var(--maxi-space-10px);
 				height: var(--maxi-space-10px);
 				border: var(--maxi-space-2px) solid var(--maxi-white);
-				border-radius: 50%;
+				border-radius: var(--maxi-radius-round);
 				background: var(--maxi-primary-color);
-				cursor: inherit;
+				cursor: var(--maxi-cursor-inherit);
 			}
 
 			&__placeholder,
 			&__origin {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
+				@extend %absolute-center-pattern;
 				width: var(--maxi-element-size-40px);
 				height: var(--maxi-element-size-40px);
 				border: var(--maxi-border-1px) solid var(--maxi-grey-light);
@@ -100,70 +138,70 @@
 			}
 
 			&__draggable {
-				z-index: 9;
-				cursor: move;
+				z-index: var(--maxi-z-maximum);
+				cursor: var(--maxi-cursor-move);
 				width: var(--maxi-element-size-40px);
 				height: var(--maxi-element-size-40px);
 				border: var(--maxi-space-2px) solid var(--maxi-grey);
 				border-radius: var(--maxi-radius-5px);
-				background-color: rgba(var(--maxi-black), 0.3);
+				background-color: rgba(0, 0, 0, 0.3);
 				transition: none !important;
 			}
 
 			&__origin {
-				z-index: 1;
+				z-index: var(--maxi-z-elevated);
 				transition: none !important;
 
 				&__button {
-					position: absolute;
+					position: var(--maxi-layout-absolute);
 					transform: translate(-50%, -50%);
 					width: var(--maxi-space-8px);
 					height: var(--maxi-space-8px);
-					padding: 0;
+					padding: var(--maxi-reset-padding);
 					background-color: var(--maxi-grey-light);
-					border-radius: 100%;
+					border-radius: var(--maxi-radius-100px);
 				}
 
 				&__top {
-					top: 0;
+					top: var(--maxi-space-0px);
 				}
 				&__center {
-					top: 50%;
+					top: var(--maxi-layout-half);
 				}
 				&__bottom {
-					top: 100%;
+					top: var(--maxi-layout-full-width);
 				}
 				&__left {
-					left: 0;
+					left: var(--maxi-space-0px);
 				}
 				&__middle {
-					left: 50%;
+					left: var(--maxi-layout-half);
 				}
 				&__right {
-					left: 100%;
+					left: var(--maxi-layout-full-width);
 				}
 			}
 		}
 		&__y-control {
-			position: absolute;
+			position: var(--maxi-layout-absolute);
 			top: 55px;
-			right: calc(-1 * var(--maxi-space-20px));
+			right: var(--transform-y-offset);
 			width: var(--maxi-element-size-168px);
 
 			@at-root .rtl #{&} {
-				left: calc(-1 * var(--maxi-space-20px));
-				right: unset;
+				left: var(--transform-y-offset);
+				right: var(--maxi-reset-right);
 			}
 
 			input[type='range'] {
-				position: relative;
+				position: var(--maxi-layout-relative);
 				right: var(--maxi-space-18px);
 				top: var(--maxi-space-18px);
 				margin-left: var(--maxi-space-4px);
 
 				@at-root .rtl #{&} {
 					left: var(--maxi-space-18px);
-					right: unset;
+					right: var(--maxi-reset-right);
 				}
 			}
 
@@ -172,13 +210,13 @@
 			}
 
 			&__value {
-				position: relative;
+				position: var(--maxi-layout-relative);
 				top: calc(-1 * var(--maxi-space-6px));
-				right: -85px;
+				right: calc(-1 * var(--transform-rtl-offset));
 
 				@at-root .rtl #{&} {
-					left: -85px;
-					right: unset;
+					left: calc(-1 * var(--transform-rtl-offset));
+					right: var(--maxi-reset-right);
 				}
 
 				.maxi-base-control {
@@ -188,10 +226,7 @@
 
 				&__input {
 					width: var(--maxi-control-width-60px);
-					padding-right: 0 !important;
-					@at-root .rtl #{&} {
-						padding-right: var(--maxi-space-8px) !important;
-					}
+					@extend %input-base-pattern;
 				}
 			}
 		}
@@ -200,7 +235,7 @@
 			width: calc(100% - 72px);
 			display: flex;
 			align-items: center;
-			margin-top: var(--maxi-space-5px);
+			margin-top: var(--transform-control-spacing);
 			margin-bottom: var(--maxi-space-8px);
 
 			&__value {
@@ -210,31 +245,27 @@
 
 				.maxi-base-control {
 					width: var(--maxi-control-width-70px);
-					margin: 5px 0 0 !important;
+					margin: var(--transform-control-spacing) 0 0 !important;
 					&__field {
-						margin-bottom: 0;
+						margin-bottom: var(--maxi-space-0px);
 					}
 				}
 				&__input {
 					width: var(--maxi-control-width-60px);
-					margin-left: var(--maxi-space-5px);
-					padding-right: 0 !important;
-					@at-root .rtl #{&} {
-						padding-right: var(--maxi-space-8px) !important;
-					}
+					@extend %input-base-pattern;
 				}
 			}
 		}
 		&__sync {
-			position: absolute;
+			position: var(--maxi-layout-absolute);
 			top: var(--maxi-element-size-185px);
-			right: 0;
+			right: var(--maxi-space-0px);
 			display: flex;
 			align-items: flex-end;
 			width: var(--maxi-control-width-60px);
 			@at-root .rtl #{&} {
-				right: unset;
-				left: 0;
+				right: var(--maxi-reset-right);
+				left: var(--maxi-space-0px);
 			}
 
 			svg {
@@ -248,16 +279,16 @@
 			button[type='button'] {
 				background: var(--maxi-white);
 				border-radius: var(--maxi-radius-4px);
-				width: var(--maxi-control-height-32px);
-				height: var(--maxi-control-height-32px);
-				padding: 0;
+				width: var(--transform-sync-size);
+				height: var(--transform-sync-size);
+				padding: var(--maxi-reset-padding);
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
 				transition: all var(--maxi-transition-200ms);
 
 				&:focus {
-					border-color: transparent;
+					border-color: var(--maxi-reset-background);
 				}
 
 				&[aria-pressed='true'] {
@@ -271,29 +302,27 @@
 			}
 
 			button[type='reset'] {
-				margin-right: 0;
+				margin-right: var(--maxi-space-0px);
 			}
 		}
 	}
 	&__rotate-control {
 		&__item {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			width: 100%;
+			@extend %flex-between-pattern;
+			width: var(--maxi-layout-full-width);
 			margin-bottom: var(--maxi-space-15px);
 
 			&:last-child {
-				margin: 0;
+				margin: var(--maxi-reset-margin);
 
 				.maxi-base-control__field {
-					margin-bottom: 0;
+					margin-bottom: var(--maxi-space-0px);
 				}
 			}
 
 			&__label,
 			.maxi-base-control__field {
-				width: 100%;
+				width: var(--maxi-layout-full-width);
 			}
 
 			&__range {
@@ -301,120 +330,117 @@
 			}
 
 			&__input {
-				width: 4rem;
-				margin: auto;
-				margin-left: var(--maxi-space-5px);
-				padding-right: 0 !important;
-				@at-root .rtl #{&} {
-					padding-right: var(--maxi-space-8px) !important;
-				}
+				width: var(--transform-input-width);
+				margin: var(--maxi-layout-auto);
+				@extend %input-base-pattern;
 			}
 
 			& .components-maxi-control__reset-button {
-				margin-left: var(--maxi-space-5px);
+				margin-left: var(--transform-control-spacing);
 			}
 		}
 	}
 
-	.maxi-transform-control__rotate-control__item__input {
-		width: var(--maxi-control-width-64px);
+	/*-------------------------------------------
+	  CONTROL INPUT SIZING
+	-------------------------------------------*/
+	&__square-control {
+		&__y-control__value .maxi-base-control,
+		&__x-control__value__input,
+		&__x-control__value .maxi-base-control,
+		&__y-control__value__input {
+			width: var(--maxi-control-width-70px);
+		}
 	}
 
-	.maxi-transform-control__square-control__y-control__value
-		.maxi-base-control,
-	.maxi-transform-control__square-control__x-control__value__input,
-	.maxi-transform-control__square-control__x-control__value
-		.maxi-base-control
-		.maxi-transform-control__square-control__y-control__value
-		.maxi-base-control,
-	.maxi-transform-control__square-control__y-control__value__input {
-		width: var(--maxi-control-width-70px);
-	}
-
-	.maxi-transform-control__rotate-control {
+	/*-------------------------------------------
+	  ROTATE CONTROL & TABS INTEGRATION
+	-------------------------------------------*/
+	&__rotate-control {
 		margin-bottom: var(--maxi-space-8px);
 
 		.maxi-base-control__label {
-			margin-right: var(--maxi-space-5px);
+			margin-right: var(--transform-control-spacing);
 		}
 
 		.components-maxi-control__reset-button {
-			min-width: var(--maxi-control-height-32px);
+			min-width: var(--transform-sync-size);
 		}
 	}
-	.maxi-settingstab-control {
-		flex: 1;
 
-		.maxi-tabs-control__button--selected svg path {
-			fill: var(--maxi-secondary-color);
-		}
+	.maxi-settingstab-control {
+		flex: var(--maxi-flex-1);
 
 		.maxi-tabs-control__button {
-			padding: var(--maxi-space-8px) var(--maxi-space-8px);
-			margin-right: var(--maxi-space-5px);
+			padding: var(--maxi-space-8px);
+			margin-right: var(--transform-control-spacing);
 			border: var(--maxi-border-1-5px) solid var(--maxi-grey-light);
 			border-radius: var(--maxi-radius-4px);
 			transition: all var(--maxi-transition-500ms);
+
 			&:last-child {
-				margin-right: 0;
+				margin-right: var(--maxi-space-0px);
 			}
-		}
 
-		.maxi-tabs-control__button[aria-pressed='true'] {
-			background-color: var(--maxi-whisper-green) !important;
-			border-color: var(--maxi-secondary-color) !important;
-		}
+			&[aria-pressed='true'] {
+				background-color: var(--maxi-whisper-green) !important;
+				border-color: var(--maxi-secondary-color) !important;
+			}
 
-		.maxi-tabs-control__button {
 			&--selected {
-				font-weight: 700;
+				font-weight: var(--maxi-font-weight-bold);
 				color: var(--maxi-secondary-color) !important;
+
+				svg path {
+					fill: var(--maxi-secondary-color);
+				}
 			}
 		}
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
+/*-------------------------------------------
+  RTL LAYOUT OVERRIDES
+-------------------------------------------*/
 html[dir='rtl'] {
 	.maxi-transform-control {
-		.maxi-settingstab-control .maxi-tabs-control__button {
-			&:last-child {
-				margin-right: 0;
-			}
-			&:last-child {
-				margin-right: var(--maxi-space-5px);
-			}
+		.maxi-settingstab-control .maxi-tabs-control__button:last-child {
+			margin-right: var(--transform-control-spacing);
 		}
-		.maxi-transform-control__square-control input[type='number'] {
+
+		// Consolidated input padding for RTL
+		&__square-control input[type='number'],
+		&__rotate-control input[type='number'] {
 			padding: var(--maxi-space-8px) var(--maxi-space-8px)
-				var(--maxi-space-8px) 0 !important;
+				var(--maxi-space-8px) var(--maxi-space-0px) !important;
 		}
-		.maxi-transform-control__square-control__x-control__value__input {
-			margin-right: var(--maxi-space-5px);
-			margin-left: 0;
+
+		&__square-control__x-control__value__input {
+			margin-right: var(--transform-control-spacing);
+			margin-left: var(--maxi-space-0px);
 		}
 
 		&__rotate-control {
 			input[type='number'] {
-				padding: var(--maxi-space-8px) var(--maxi-space-8px)
-					var(--maxi-space-8px) 0 !important;
-				margin-right: var(--maxi-space-5px);
-				margin-left: unset;
+				margin-right: var(--transform-control-spacing);
+				margin-left: var(--maxi-reset-left);
 			}
 			.maxi-base-control__label {
-				margin-left: var(--maxi-space-5px);
-				margin-right: unset;
+				margin-left: var(--transform-control-spacing);
+				margin-right: var(--maxi-reset-right);
 			}
 		}
+
 		&__square-control__sync button[type='button'] {
-			margin-right: var(--maxi-space-5px);
-			margin-left: unset;
+			margin-right: var(--transform-control-spacing);
+			margin-left: var(--maxi-reset-left);
 		}
 	}
 }
 
+/*-------------------------------------------
+  RESPONSIVE ADJUSTMENTS
+-------------------------------------------*/
 @media screen and (max-width: 1920px) {
 	.maxi-transform-control__square-control__y-control {
 		right: calc(-1 * var(--maxi-space-7px));

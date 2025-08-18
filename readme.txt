@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,13 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 28 Jul 2025_
+MaxiBlocks v2.1.3
+* Update: Implemented enhanced authentication methods for marketplace integrations, providing improved access to Pro content.
+* Fix: Enhanced Advanced and Custom CSS settings to support special symbols and complex selectors, enabling more sophisticated styling capabilities and resolving compatibility issues with advanced CSS syntax.
+* Fix: Corrected responsive breakpoint width calculations for Site Editor when switching between template parts, ensuring consistent layout rendering and proper viewport behaviour across different editing contexts.
+* Fix: Resolved synchronization issues with synced pattern styles in Site Editor, ensuring that pattern modifications are properly reflected across all instances and maintaining design consistency throughout the editing experience.
+
 _Updates 30 Jun 2025_
 MaxiBlocks v2.1.2
 * Fix: Enhanced block tones and Cloud button functionality when 'Show template' is enabled in the Editor, ensuring consistent visual presentation and improved user experience.
@@ -201,14 +208,6 @@ MaxiBlocks v2.1.1
 * Fix: Resolved Style Cards colour tone rendering issues that returned undefined values in specific scenarios.
 * Fix: Addressed potential PHP errors on PHP 8.2 environments, ensuring stable plugin operation across different server configurations.
 * Fix: Corrected icon padding unit handling for consistent spacing and alignment in icon-based elements.
-
-_Updates 15 Apr 2025_
-MaxiBlocks v2.1.0
-* Update: Enhanced WordPress 6.8 compatibility with comprehensive fixes, ensuring stable plugin performance across all features.
-* Update: Expanded plugin testing infrastructure with comprehensive unit test coverage, improving overall code reliability and stability.
-* Update: Refined Divider Maxi block behaviour by synchronizing line width values between horizontal and vertical positions for consistent visual appearance.
-* Fix: Aligned line position values between toolbar and sidebar settings in Divider Maxi block, resolving inconsistencies in the editing experience.
-* Fix: Removed displaced autocomplete pop-up for link inputs, providing a cleaner and more predictable interface when adding links.
 
 == Upgrade Notice ==
 

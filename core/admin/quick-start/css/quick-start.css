@@ -274,6 +274,16 @@
 	color: var(--maxi-admin-white);
 }
 
+#dashboard_system_report p a {
+	color: var(--maxi-admin-green);
+	text-decoration: underline;
+	transition: all 0.3s ease;
+}
+
+#dashboard_system_report p a:hover {
+	color: var(--maxi-admin-black);
+}
+
 .maxi-error {
 	color: var(--maxi-admin-orange);
 	font-size: 12px;
@@ -795,7 +805,7 @@ select[name="permalink_structure"]:focus {
 }
 
 /* New styles for custom input */
-#dashboard_system_report input[type="text"],
+#dashboard_system_report input[type="text"]:not(.maxi-text-control__input-starter-sites),
 #dashboard_system_report input[type="password"],
 #dashboard_system_report input[type="color"],
 #dashboard_system_report input[type="date"],
@@ -1276,6 +1286,12 @@ form.ais-SearchBox-form span.maxi-error {
 	max-width: 450px;
 	text-align: center;
 }
+
+.maxi-license-status-display {
+	font-size: 16px;
+}
+
+
 
 @media only screen and (max-width: 1280px) {
 

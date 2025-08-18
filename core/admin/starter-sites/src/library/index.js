@@ -35,9 +35,11 @@ const CloudLibrary = props => {
 		isMaxiProActive,
 		isMaxiProExpired,
 		onClickConnect,
+		onClickConnectCode,
 		userName,
 		onLogOut,
 		showNotValidEmail,
+		showAuthError,
 		isQuickStart,
 		description,
 	} = props;
@@ -54,9 +56,11 @@ const CloudLibrary = props => {
 				isMaxiProActive={isMaxiProActive}
 				isMaxiProExpired={isMaxiProExpired}
 				onClickConnect={onClickConnect}
+				onClickConnectCode={onClickConnectCode}
 				userName={userName}
 				onLogOut={onLogOut}
 				showNotValidEmail={showNotValidEmail}
+				showAuthError={showAuthError}
 				isQuickStart={isQuickStart}
 			/>
 			<LibraryContainer

@@ -9,6 +9,7 @@ import {
 	forwardRef,
 	useRef,
 } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -23,6 +24,8 @@ import {
 	isValidEmail,
 	getUserName,
 	logOut,
+	processLocalPurchaseCodeActivation,
+	checkAndHandleDomainMigration,
 } from '@editor/auth';
 import useObserveBlockSize from './hooks';
 
@@ -68,7 +71,7 @@ const CloudPlaceholder = forwardRef((props, ref) => {
 });
 
 /**
- * Icon Content Placeholder
+ * SVG Icon Placeholder
  */
 const SVGIconPlaceholder = forwardRef((props, ref) => {
 	const { uniqueID, clientId, onClick } = props;
@@ -99,7 +102,6 @@ const SVGIconPlaceholder = forwardRef((props, ref) => {
 		</div>
 	);
 });
-
 /**
  * Layout modal window with tab panel.
  */
@@ -140,28 +142,59 @@ const MaxiModal = props => {
 		if (forceIsOpen) changeIsOpen(forceIsOpen);
 	}, [forceIsOpen]);
 
-	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
-	const [isMaxiProExpired, setIsMaxiProExpired] = useState(isProSubExpired());
-	const [userName, setUserName] = useState(getUserName());
+	// Use useSelect to properly subscribe to the WordPress data store
+	const { proStatus, hasProData } = useSelect(select => {
+		const proData = select('maxiBlocks/pro').receiveMaxiProStatus();
+		return {
+			proStatus: proData,
+			hasProData: proData !== undefined && proData !== null,
+		};
+	}, []);
+
+	// Initialize state based on store data, with fallbacks
+	const [isMaxiProActive, setIsMaxiProActive] = useState(() => {
+		return hasProData ? isProSubActive() : false;
+	});
+	const [isMaxiProExpired, setIsMaxiProExpired] = useState(() => {
+		return hasProData ? isProSubExpired() : false;
+	});
+	const [userName, setUserName] = useState(() => {
+		return hasProData ? getUserName() : '';
+	});
 	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
+	const [showAuthError, setShowAuthError] = useState(false);
 
-	const isActiveState = isProSubActive();
-	const isExpiredState = isProSubExpired();
-	const isUserName = getUserName();
-
+	// Update state when store data changes or when modal opens
 	useEffect(() => {
-		setIsMaxiProActive(isProSubActive());
-		setUserName(getUserName());
-	}, [type, isActiveState, isUserName]);
+		if (hasProData) {
+			setIsMaxiProActive(isProSubActive());
+			setIsMaxiProExpired(isProSubExpired());
+			setUserName(getUserName());
+		}
+	}, [proStatus, hasProData, type, isOpen]);
 
+	// Additional check for network license when modal opens
 	useEffect(() => {
-		setIsMaxiProExpired(isProSubExpired());
-	}, [type, isExpiredState, isUserName]);
+		if (isOpen) {
+			const licenseSettings = window.maxiLicenseSettings || {};
+			if (
+				licenseSettings.isMultisite &&
+				licenseSettings.hasNetworkLicense
+			) {
+				setIsMaxiProActive(true);
+				setIsMaxiProExpired(false);
+				setUserName(
+					licenseSettings.networkLicenseName || 'Marketplace'
+				);
+			}
+		}
+	}, [isOpen]);
 
 	const onClickConnect = async email => {
 		const isValid = isValidEmail(email);
 		if (isValid) {
 			setShowNotValidEmail(false);
+			setShowAuthError(false);
 
 			await authConnect(false, email); // Initial call
 			setIsMaxiProActive(isProSubActive());
@@ -181,6 +214,62 @@ const MaxiModal = props => {
 			}, 1000); // Check every 5 seconds, adjust as needed
 		} else {
 			setShowNotValidEmail(true);
+			setShowAuthError(false);
+		}
+	};
+
+	/**
+	 * Handles purchase code authentication
+	 * @param {string} purchaseCode       - The purchase code
+	 * @param {Object} verificationResult - Result from middleware
+	 */
+	const onClickConnectCode = async (purchaseCode, verificationResult) => {
+		try {
+			setShowNotValidEmail(false);
+			setShowAuthError(false);
+
+			// Check if verification was successful
+			if (
+				verificationResult &&
+				verificationResult.success &&
+				verificationResult.valid
+			) {
+				// Get current domain
+				const domain = window.location.hostname;
+
+				// Save purchase code activation
+				processLocalPurchaseCodeActivation(
+					purchaseCode,
+					domain,
+					verificationResult,
+					'yes'
+				);
+
+				// Update states
+				setIsMaxiProActive(isProSubActive());
+				setIsMaxiProExpired(isProSubExpired());
+				setUserName(getUserName());
+			} else {
+				// Show authentication error for failed verification
+				console.error(
+					JSON.stringify({
+						message: 'Purchase code verification failed',
+						error:
+							verificationResult?.error ||
+							verificationResult?.message ||
+							'Unknown error',
+					})
+				);
+				setShowAuthError(true);
+			}
+		} catch (error) {
+			console.error(
+				JSON.stringify({
+					message: 'Purchase code authentication error',
+					error: error.message,
+				})
+			);
+			setShowAuthError(true);
 		}
 	};
 
@@ -189,6 +278,8 @@ const MaxiModal = props => {
 		setIsMaxiProActive(false);
 		setIsMaxiProExpired(false);
 		setUserName('');
+		setShowNotValidEmail(false);
+		setShowAuthError(false);
 	};
 
 	const onClick = () => {
@@ -202,6 +293,12 @@ const MaxiModal = props => {
 		changeIsOpen(false);
 		changeOpenedFirstTime(false);
 	};
+
+	useEffect(() => {
+		if (isOpen) {
+			checkAndHandleDomainMigration();
+		}
+	}, [isOpen]);
 
 	return (
 		<div ref={ref} className='maxi-library-modal__action-section'>
@@ -334,7 +431,9 @@ const MaxiModal = props => {
 								isMaxiProActive={isMaxiProActive}
 								isMaxiProExpired={isMaxiProExpired}
 								onClickConnect={onClickConnect}
+								onClickConnectCode={onClickConnectCode}
 								showNotValidEmail={showNotValidEmail}
+								showAuthError={showAuthError}
 								userName={userName}
 								onLogOut={onLogOut}
 								layerOrder={layerOrder}
@@ -447,7 +546,9 @@ const MaxiModal = props => {
 							isMaxiProActive={isMaxiProActive}
 							isMaxiProExpired={isMaxiProExpired}
 							onClickConnect={onClickConnect}
+							onClickConnectCode={onClickConnectCode}
 							showNotValidEmail={showNotValidEmail}
+							showAuthError={showAuthError}
 							userName={userName}
 							onLogOut={onLogOut}
 						/>

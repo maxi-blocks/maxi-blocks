@@ -47,10 +47,12 @@ const CloudLibrary = props => {
 		isMaxiProActive,
 		isMaxiProExpired,
 		onClickConnect,
+		onClickConnectCode,
 		userName,
 		onLogOut,
 		layerOrder,
 		showNotValidEmail,
+		showAuthError,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -93,9 +95,11 @@ const CloudLibrary = props => {
 				isMaxiProActive={isMaxiProActive}
 				isMaxiProExpired={isMaxiProExpired}
 				onClickConnect={onClickConnect}
+				onClickConnectCode={onClickConnectCode}
 				userName={userName}
 				onLogOut={onLogOut}
 				showNotValidEmail={showNotValidEmail}
+				showAuthError={showAuthError}
 				onChangeTone={hit => {
 					const {
 						demo_url: newUrl,

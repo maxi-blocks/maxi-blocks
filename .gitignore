@@ -39,3 +39,7 @@ coverage
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Ignore Claude files
+CLAUDE.md
+

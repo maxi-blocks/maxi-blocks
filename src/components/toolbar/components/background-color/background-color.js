@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { memo, useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -81,14 +82,14 @@ const BackgroundColor = props => {
 				/>
 				{isBackgroundColor && (
 					<ColorLayer
-						colorOptions={{
+						colorOptions={useMemo(() => ({
 							...getGroupAttributes(
 								props,
 								'backgroundColor',
 								false,
 								prefix
 							),
-						}}
+						}), [props, prefix])}
 						key={`background-color-layer--${clientId}`}
 						onChangeInline={onChangeInline}
 						onChange={onChange}
@@ -106,4 +107,4 @@ const BackgroundColor = props => {
 	);
 };
 
-export default BackgroundColor;
+export default memo(BackgroundColor);

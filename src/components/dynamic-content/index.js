@@ -266,7 +266,9 @@ const DynamicContent = props => {
 				}
 			}
 		} catch (error) {
-			console.error('Error fetching DC data:', error);
+			if (process.env.NODE_ENV === 'development') {
+				console.error('Error fetching DC data:', error);
+			}
 		}
 	}, [
 		author,
@@ -329,7 +331,11 @@ const DynamicContent = props => {
 	}, [field, type]);
 
 	useEffect(() => {
-		fetchDcData().catch(console.error);
+		fetchDcData().catch(error => {
+			if (process.env.NODE_ENV === 'development') {
+				console.error(error);
+			}
+		});
 	}, [fetchDcData]);
 
 	return (

@@ -4,13 +4,17 @@
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
-import { useEffect, useState, useRef } from '@wordpress/element';
+import { useEffect, useState, useRef, useMemo, useCallback } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNumber, merge, trim, debounce } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import isNumber from 'lodash/isNumber';
+import merge from 'lodash/merge';
+import trim from 'lodash/trim';
+import debounce from 'lodash/debounce';
 
 /**
  * Internal dependencies
@@ -195,41 +199,47 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	const handleChange = debounce(() => {
-		if (onChangeValue) {
-			const val =
-				latestValueRef.current === '' || optionType === 'string'
-					? latestValueRef.current.toString()
-					: +latestValueRef.current;
-			onChangeValue(val);
-		}
-	}, 300);
+	// Optimized debounced handler with reduced timing
+	const handleChange = useMemo(
+		() => debounce(() => {
+			if (onChangeValue) {
+				const val =
+					latestValueRef.current === '' || optionType === 'string'
+						? latestValueRef.current.toString()
+						: +latestValueRef.current;
+				onChangeValue(val);
+			}
+		}, 200), // Reduced from 300ms for snappier response
+		[onChangeValue, optionType]
+	);
 
-	const handleInputChange = e => {
+	// Batched input change handler for smoother performance
+	const handleInputChange = useCallback((e) => {
 		let value = getNewValueFromEmpty(e);
 
-		if (enableUnit) {
-			if (value !== '' && value > maxValue) value = maxValue;
-			if (value !== '' && value < minValue) value = minValue;
-		} else {
-			if (value !== '' && +value > max) value = max;
-			if (value !== '' && +value !== 0 && +value < min) value = min;
-		}
+		// Batch validation operations
+		const limits = enableUnit ? { max: maxValue, min: minValue } : { max, min };
+		
+		if (value !== '' && value > limits.max) value = limits.max;
+		if (value !== '' && value < limits.min && +value !== 0) value = limits.min;
 
 		let result;
 		if (value === '' || optionType === 'string') {
 			result = value.toString();
 		} else {
-			// Fix floating-point precision
+			// Fix floating-point precision with cached calculation
 			const numValue = +value;
 			result = parseFloat(numValue.toFixed(10));
 		}
 
-		latestValueRef.current =
-			typeof result === 'number' ? result.toString() : result;
+		// Batch state updates using React's automatic batching
+		const stringResult = typeof result === 'number' ? result.toString() : result;
+		latestValueRef.current = stringResult;
 		setCurrentValue(result);
-		handleChange(result);
-	};
+		
+		// Debounced external change
+		handleChange();
+	}, [enableUnit, maxValue, minValue, max, min, optionType, handleChange]);
 
 	const rawPreferredValues = [
 		latestValueRef.current,
@@ -248,9 +258,53 @@ const AdvancedNumberControl = props => {
 
 	const [showHelpContent, setShowHelpContent] = useState(false);
 
-	const handleToggleHelpContent = () => {
+	const handleToggleHelpContent = useCallback(() => {
 		setShowHelpContent(state => !state);
-	};
+	}, []);
+
+	// Memoize expensive spinner calculations
+	const spinnerConfig = useMemo(() => {
+		const currentVal = parseFloat(latestValueRef.current) || 0;
+		const maxVal = enableUnit ? maxValue : max;
+		const minVal = enableUnit ? minValue : min;
+		const stepVal = stepValue || 1;
+		
+		return {
+			currentVal,
+			maxVal,
+			minVal,
+			stepVal,
+			isMaxDisabled: currentVal >= maxVal,
+			isMinDisabled: currentVal <= minVal,
+			canIncrease: currentVal + stepVal <= maxVal,
+			canDecrease: currentVal - stepVal >= minVal
+		};
+	}, [latestValueRef.current, enableUnit, maxValue, max, minValue, min, stepValue]);
+
+	// Optimized spinner handlers
+	const handleSpinnerUp = useCallback((e) => {
+		e.preventDefault();
+		const { currentVal, stepVal, maxVal } = spinnerConfig;
+		const newVal = currentVal + stepVal;
+		
+		if (newVal <= maxVal) {
+			latestValueRef.current = newVal.toString();
+			setCurrentValue(newVal);
+			onChangeValue(newVal);
+		}
+	}, [spinnerConfig, onChangeValue]);
+
+	const handleSpinnerDown = useCallback((e) => {
+		e.preventDefault();
+		const { currentVal, stepVal, minVal } = spinnerConfig;
+		const newVal = currentVal - stepVal;
+		
+		if (newVal >= minVal) {
+			latestValueRef.current = newVal.toString();
+			setCurrentValue(newVal);
+			onChangeValue(newVal);
+		}
+	}, [spinnerConfig, onChangeValue]);
 
 	return (
 		<>
@@ -311,34 +365,8 @@ const AdvancedNumberControl = props => {
 								<button
 									type='button'
 									className='maxi-advanced-number-control__spinner-button maxi-advanced-number-control__spinner-button--up'
-									disabled={(() => {
-										const currentVal =
-											parseFloat(
-												latestValueRef.current
-											) || 0;
-										const maxVal = enableUnit
-											? maxValue
-											: max;
-										return currentVal >= maxVal;
-									})()}
-									onClick={e => {
-										e.preventDefault();
-										const currentVal =
-											parseFloat(
-												latestValueRef.current
-											) || 0;
-										const newVal =
-											currentVal + (stepValue || 1);
-										const maxVal = enableUnit
-											? maxValue
-											: max;
-										if (newVal <= maxVal) {
-											latestValueRef.current =
-												newVal.toString();
-											setCurrentValue(newVal);
-											onChangeValue(newVal);
-										}
-									}}
+									disabled={spinnerConfig.isMaxDisabled}
+									onClick={handleSpinnerUp}
 									title='Increase value'
 									aria-label='Increase value'
 								>
@@ -361,34 +389,8 @@ const AdvancedNumberControl = props => {
 								<button
 									type='button'
 									className='maxi-advanced-number-control__spinner-button maxi-advanced-number-control__spinner-button--down'
-									disabled={(() => {
-										const currentVal =
-											parseFloat(
-												latestValueRef.current
-											) || 0;
-										const minVal = enableUnit
-											? minValue
-											: min;
-										return currentVal <= minVal;
-									})()}
-									onClick={e => {
-										e.preventDefault();
-										const currentVal =
-											parseFloat(
-												latestValueRef.current
-											) || 0;
-										const newVal =
-											currentVal - (stepValue || 1);
-										const minVal = enableUnit
-											? minValue
-											: min;
-										if (newVal >= minVal) {
-											latestValueRef.current =
-												newVal.toString();
-											setCurrentValue(newVal);
-											onChangeValue(newVal);
-										}
-									}}
+									disabled={spinnerConfig.isMinDisabled}
+									onClick={handleSpinnerDown}
 									title='Decrease value'
 									aria-label='Decrease value'
 								>
@@ -469,13 +471,13 @@ const AdvancedNumberControl = props => {
 								: ''
 						}`}
 						value={rangeValue ?? placeholder ?? 0}
-						onChange={val => {
-							const result =
-								optionType === 'string' ? val.toString() : +val;
+						onChange={useCallback(val => {
+							const result = optionType === 'string' ? val.toString() : +val;
+							// Batch state updates
 							setCurrentValue(result);
 							latestValueRef.current = result;
 							onChangeValue(result);
-						}}
+						}, [optionType, onChangeValue])}
 						min={enableUnit ? minValueRange : min}
 						max={maxRange || (enableUnit ? maxValueRange : max)}
 						step={stepValue}

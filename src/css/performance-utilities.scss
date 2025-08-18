@@ -1,0 +1,96 @@
+/*===============================================
+  MAXI BLOCKS - PERFORMANCE UTILITIES
+  High-performance CSS classes to replace inline styles
+===============================================*/
+
+/*-------------------------------------------
+  TEXT COLOR UTILITIES
+-------------------------------------------*/
+.maxi-text-block--has-custom-color {
+	.maxi-text-block__content {
+		color: var(--maxi-text-custom-color, inherit) !important;
+		
+		li {
+			color: var(--maxi-text-custom-color, inherit) !important;
+		}
+	}
+}
+
+/*-------------------------------------------
+  BACKGROUND COLOR UTILITIES
+-------------------------------------------*/
+.maxi-block--has-custom-background {
+	background-color: var(--maxi-background-background-color, transparent) !important;
+	background-image: var(--maxi-background-background-image, none) !important;
+	background-size: var(--maxi-background-background-size, auto) !important;
+	background-position: var(--maxi-background-background-position, center) !important;
+	background-repeat: var(--maxi-background-background-repeat, no-repeat) !important;
+}
+
+.maxi-block--has-custom-gradient {
+	background: var(--maxi-background-background, transparent) !important;
+}
+
+/*-------------------------------------------
+  BORDER UTILITIES
+-------------------------------------------*/
+.maxi-block--has-custom-border {
+	border-color: var(--maxi-border-custom-color, var(--maxi-grey-light)) !important;
+	border-width: var(--maxi-border-custom-width, var(--maxi-border-1px)) !important;
+	border-style: var(--maxi-border-custom-style, var(--maxi-border-solid)) !important;
+}
+
+/*-------------------------------------------
+  BOX SHADOW UTILITIES
+-------------------------------------------*/
+.maxi-block--has-custom-shadow {
+	box-shadow: var(--maxi-shadow-custom, var(--maxi-reset-box-shadow)) !important;
+}
+
+/*-------------------------------------------
+  SVG COLOR UTILITIES
+-------------------------------------------*/
+.maxi-svg-block--has-custom-fill {
+	[data-fill] {
+		fill: var(--maxi-svg-custom-fill, currentColor) !important;
+	}
+}
+
+.maxi-svg-block--has-custom-stroke {
+	[data-stroke] {
+		stroke: var(--maxi-svg-custom-stroke, currentColor) !important;
+	}
+}
+
+/*-------------------------------------------
+  DIVIDER COLOR UTILITIES
+-------------------------------------------*/
+.maxi-divider-block--has-custom-color {
+	.maxi-divider-line {
+		border-color: var(--maxi-divider-custom-color, var(--maxi-grey)) !important;
+	}
+}
+
+/*-------------------------------------------
+  PERFORMANCE OPTIMIZATIONS
+-------------------------------------------*/
+
+/* Use transform for better performance */
+.maxi-block--has-custom-transform {
+	transform: var(--maxi-custom-transform, none);
+	will-change: transform;
+}
+
+/* Containment for isolated blocks */
+.maxi-block--isolated {
+	contain: layout style paint;
+}
+
+/* High-performance hover states */
+.maxi-block--hover-optimized {
+	transition: 
+		background-color var(--maxi-transition-300ms) ease,
+		border-color var(--maxi-transition-300ms) ease,
+		transform var(--maxi-transition-300ms) ease;
+	will-change: background-color, border-color, transform;
+}

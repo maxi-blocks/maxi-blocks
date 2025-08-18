@@ -15,7 +15,10 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
 import classnames from 'classnames';
 
 /**
@@ -64,6 +67,12 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
+import { 
+	setBackgroundStyles, 
+	setTextColorStyles,
+	cleanPerformanceStyles,
+	supportsPerformanceUtils 
+} from '../../utils/performanceStyleUtils';
 import { isInSiteEditorPreviewIframe } from '@extensions/fse';
 
 /**
@@ -281,17 +290,29 @@ const MaxiToolbar = memo(
 						<TextColor
 							blockName={name}
 							{...getGroupAttributes(attributes, 'typography')}
-							onChangeInline={obj =>
-								insertInlineStyles({
-									obj,
-									target: `.maxi-text-block__content ${
-										isList ? 'li' : ''
-									}`,
-									isMultiplySelector: isList,
-								})
-							}
+							onChangeInline={obj => {
+								// Use performance-optimized styles if supported, fallback to inline
+								if (supportsPerformanceUtils()) {
+									setTextColorStyles({ obj, uniqueID });
+								} else {
+									insertInlineStyles({
+										obj,
+										target: `.maxi-text-block__content ${
+											isList ? 'li' : ''
+										}`,
+										isMultiplySelector: isList,
+									});
+								}
+							}}
 							onChange={obj => {
 								maxiSetAttributes(obj);
+								// Clean both performance and inline styles
+								if (supportsPerformanceUtils()) {
+									cleanPerformanceStyles({ 
+										uniqueID, 
+										styleType: 'text' 
+									});
+								}
 								cleanInlineStyles(
 									`.maxi-text-block__content ${
 										isList ? 'li' : ''
@@ -451,14 +472,26 @@ const MaxiToolbar = memo(
 							globalProps={backgroundGlobalProps}
 							blockName={name}
 							breakpoint={breakpoint}
-							onChangeInline={obj =>
-								insertInlineStyles({
-									obj,
-									target: inlineStylesTargetsDefault.background,
-								})
-							}
+							onChangeInline={obj => {
+								// Use performance-optimized styles if supported, fallback to inline
+								if (supportsPerformanceUtils()) {
+									setBackgroundStyles({ obj, uniqueID });
+								} else {
+									insertInlineStyles({
+										obj,
+										target: inlineStylesTargetsDefault.background,
+									});
+								}
+							}}
 							onChange={obj => {
 								maxiSetAttributes(obj);
+								// Clean both performance and inline styles
+								if (supportsPerformanceUtils()) {
+									cleanPerformanceStyles({ 
+										uniqueID, 
+										styleType: 'background' 
+									});
+								}
 								cleanInlineStyles(
 									inlineStylesTargetsDefault.background
 								);

@@ -3,7 +3,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useContext, useRef } from '@wordpress/element';
+import { useContext, useRef, memo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -183,4 +183,4 @@ const TextColor = props => {
 	);
 };
 
-export default TextColor;
+export default memo(TextColor);

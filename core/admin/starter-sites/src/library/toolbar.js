@@ -357,6 +357,8 @@ const LibraryToolbar = ({
 										? clickCount % 2 !== 0
 											? userName
 											: '******@***.***'
+										: userName === 'Maxiblocks'
+										? 'MaxiBlocks'
 										: userName}
 								</span>
 								{isNetworkLicenseActive && (

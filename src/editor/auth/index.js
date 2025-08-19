@@ -262,13 +262,17 @@ export const getUserName = () => {
 	// Check for network license first (multisite)
 	const licenseSettings = window.maxiLicenseSettings || {};
 	if (licenseSettings.isMultisite && licenseSettings.hasNetworkLicense) {
-		return licenseSettings.networkLicenseName || 'Marketplace';
+		return licenseSettings.networkLicenseName === 'Maxiblocks'
+			? 'MaxiBlocks'
+			: licenseSettings.networkLicenseName || 'Marketplace';
 	}
 
 	// Check purchase code auth first - it takes priority
 	const purchaseCodeName = getPurchaseCodeUserName();
 	if (purchaseCodeName) {
-		return purchaseCodeName;
+		return purchaseCodeName === 'Maxiblocks'
+			? 'MaxiBlocks'
+			: purchaseCodeName;
 	}
 
 	// Check email auth only if no active purchase code
@@ -279,7 +283,8 @@ export const getUserName = () => {
 			const keysArray = info?.key.split(',');
 			if (keysArray.includes(key)) {
 				const name = info?.name;
-				if (name && name !== '' && name !== '1') return name;
+				if (name && name !== '' && name !== '1')
+					return name === 'Maxiblocks' ? 'MaxiBlocks' : name;
 				return email;
 			}
 		}

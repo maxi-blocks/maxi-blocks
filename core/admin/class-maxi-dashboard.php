@@ -684,7 +684,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if ($is_network_active) {
                 $current_license_status = $network_license_info['status'];
-                $current_user_name = $network_license_info['user_name'];
+                $current_user_name = $network_license_info['user_name'] === 'Maxiblocks' ? 'MaxiBlocks' : $network_license_info['user_name'];
                 $license_source = 'network';
             }
 
@@ -2204,7 +2204,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if ($has_network_license) {
                 // Network license takes priority
                 $current_license_status = $network_license_info['status'];
-                $current_user_name = $network_license_info['user_name'];
+                $current_user_name = $network_license_info['user_name'] === 'Maxiblocks' ? 'MaxiBlocks' : $network_license_info['user_name'];
                 $is_active = true;
                 $license_source = 'network';
             } elseif (!empty($current_license_data)) {
@@ -2214,7 +2214,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     foreach ($license_array as $key => $license) {
                         if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
                             $current_license_status = 'Active ✓';
-                            $current_user_name = isset($license['name']) ? $license['name'] : 'Pro User';
+                            $current_user_name = isset($license['name']) ? ($license['name'] === 'Maxiblocks' ? 'MaxiBlocks' : $license['name']) : 'Pro User';
                             $is_active = true;
                             $license_source = 'site_purchase_code';
                             break;

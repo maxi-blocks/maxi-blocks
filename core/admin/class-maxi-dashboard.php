@@ -742,7 +742,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $content .= '<div class="maxi-license-auth-form">';
                 $content .= '<div class="maxi-license-input-group">';
                 $content .= '<input type="text" id="maxi-network-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Network purchase code', 'maxi-blocks') . '" />';
-                $content .= '<p class="maxi-license-help-text">' . sprintf(__('Enter a purchase code to activate Pro access for the entire network. Find your code in your account or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>') . '</p>';
+                $content .= '<p class="maxi-license-help-text">' . __('Enter a purchase code to activate Pro access for the entire network.', 'maxi-blocks') . '</p>';
+                $content .= '<p class="maxi-license-help-text">' . __('Note: only for purchase codes, not for MaxiBlocks email activations or MaxiBlocks license key activations. Please activate your MaxiBlocks license on each sub-site separately.', 'maxi-blocks') . '</p>';
                 $content .= '</div>';
 
                 $content .= '<div class="maxi-license-actions">';
@@ -2286,6 +2287,33 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $content .= '<h4>' . __('Status:', 'maxi-blocks') . ' <span id="current-license-status" class="maxi-license-active">' . esc_html($current_license_status) . '</span></h4>';
                 $content .= '<h4>' . __('Licensed to:', 'maxi-blocks') . ' <span id="current-license-user">' . esc_html($current_user_name) . '</span></h4>';
 
+                // Check if this is a MaxiBlocks license (email auth or MaxiBlocks license key) and add multisite notice
+                $is_maxiblocks_license = false;
+                if ($license_source === 'site_email') {
+                    // Email authentication is always MaxiBlocks
+                    $is_maxiblocks_license = true;
+                } elseif ($license_source === 'site_purchase_code' && !empty($current_license_data)) {
+                    // Check marketplace field for purchase codes
+                    $license_array = json_decode($current_license_data, true);
+                    if (is_array($license_array)) {
+                        foreach ($license_array as $key => $license) {
+                            if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                                $marketplace = isset($license['marketplace']) ? $license['marketplace'] : 'unknown';
+                                // MaxiBlocks licenses have 'unknown' marketplace or no marketplace field
+                                if ($marketplace === 'unknown' || $marketplace === '') {
+                                    $is_maxiblocks_license = true;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Add multisite notice for MaxiBlocks licenses
+                if ($is_maxiblocks_license && is_multisite()) {
+                    $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected, please contact us with %s to allocate more domains / seats.', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
+                }
+
                 if ($license_source === 'network') {
                     $content .= '<h4>' . __('License type:', 'maxi-blocks') . ' <span class="maxi-license-network">Network License</span></h4>';
                     if (is_multisite() && current_user_can('manage_network_options')) {
@@ -2347,6 +2375,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $content .= '<div class="maxi-license-input-group">';
                     $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Pro user email / purchase code / license key', 'maxi-blocks') . '" />';
                     $content .= '<p class="maxi-license-help-text">' . sprintf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>') . '</p>';
+
+                    // Add multisite notice if this is a multisite installation
+                    if (is_multisite()) {
+                        $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected, please contact us with %s to allocate more domains / seats.', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
+                    }
+
                     $content .= '</div>';
 
                     $content .= '<div class="maxi-license-actions">';

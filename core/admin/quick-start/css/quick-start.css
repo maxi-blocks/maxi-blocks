@@ -1291,6 +1291,12 @@ form.ais-SearchBox-form span.maxi-error {
 	font-size: 16px;
 }
 
+.maxi-quick-start-content #maxi-license-validation-message {
+	color: var(--maxi-admin-green);
+	display: block;
+	font-size: 16px;
+	font-style: italic;
+}
 
 
 @media only screen and (max-width: 1280px) {

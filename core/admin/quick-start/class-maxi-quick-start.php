@@ -837,7 +837,7 @@ class MaxiBlocks_QuickStart
                 $network_license_info = $dashboard->get_network_license_info();
                 if ($network_license_info) {
                     $current_license_status = 'Active ✓ (Network)';
-                    $current_user_name = isset($network_license_info['user_name']) ? $network_license_info['user_name'] : 'Network Pro User';
+                    $current_user_name = isset($network_license_info['user_name']) ? ($network_license_info['user_name'] === 'Maxiblocks' ? 'MaxiBlocks' : $network_license_info['user_name']) : 'Network Pro User';
                     $is_active = true;
                     $is_network_license = true;
                 }
@@ -854,7 +854,7 @@ class MaxiBlocks_QuickStart
                     foreach ($license_array as $key => $license) {
                         if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
                             $current_license_status = 'Active ✓';
-                            $current_user_name = isset($license['name']) ? $license['name'] : 'Pro User';
+                            $current_user_name = isset($license['name']) ? ($license['name'] === 'Maxiblocks' ? 'MaxiBlocks' : $license['name']) : 'Pro User';
                             $is_active = true;
                             break;
                         }
@@ -877,7 +877,7 @@ class MaxiBlocks_QuickStart
 
                                 if (in_array($browser_key, array_map('trim', $stored_keys))) {
                                     $current_license_status = 'Active ✓';
-                                    $current_user_name = isset($license_array[$email]['name']) ? $license_array[$email]['name'] : $email;
+                                    $current_user_name = isset($license_array[$email]['name']) ? ($license_array[$email]['name'] === 'Maxiblocks' ? 'MaxiBlocks' : $license_array[$email]['name']) : $email;
                                     $is_active = true;
                                 }
                             }
@@ -932,13 +932,13 @@ class MaxiBlocks_QuickStart
 					<div class="maxi-license-input-group">
 						<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="<?php esc_attr_e('Pro user email / purchase code / license key', 'maxi-blocks'); ?>" />
 						<p class="maxi-license-help-text"><?php printf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>'); ?></p>
+						<div id="maxi-license-validation-message" class="maxi-license-message" style="display: none;"></div>
 					</div>
 
 					<div class="maxi-license-actions">
 						<button type="button" id="maxi-validate-license" class="button button-primary"><?php esc_html_e('Activate Pro', 'maxi-blocks'); ?></button>
 					</div>
 
-					<div id="maxi-license-validation-message" class="maxi-license-message" style="display: none;"></div>
 				</div>
 			<?php endif; ?>
 		</div>

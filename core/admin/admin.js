@@ -641,7 +641,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		if (currentUser) {
 			if (userName) {
-				currentUser.textContent = userName;
+				currentUser.textContent =
+					userName === 'Maxiblocks' ? 'MaxiBlocks' : userName;
 				currentUser.parentElement.style.display = 'block';
 
 				// Add email show/hide functionality if it's an email

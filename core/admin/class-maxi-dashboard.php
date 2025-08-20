@@ -2287,23 +2287,21 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $content .= '<h4>' . __('Status:', 'maxi-blocks') . ' <span id="current-license-status" class="maxi-license-active">' . esc_html($current_license_status) . '</span></h4>';
                 $content .= '<h4>' . __('Licensed to:', 'maxi-blocks') . ' <span id="current-license-user">' . esc_html($current_user_name) . '</span></h4>';
 
-                // Check if this is a MaxiBlocks license (email auth or MaxiBlocks license key) and add multisite notice
+                // Check if this is a MaxiBlocks license and add multisite notice
                 $is_maxiblocks_license = false;
-                if ($license_source === 'site_email') {
-                    // Email authentication is always MaxiBlocks
-                    $is_maxiblocks_license = true;
-                } elseif ($license_source === 'site_purchase_code' && !empty($current_license_data)) {
-                    // Check marketplace field for purchase codes
+                if (!empty($current_license_data)) {
                     $license_array = json_decode($current_license_data, true);
                     if (is_array($license_array)) {
                         foreach ($license_array as $key => $license) {
-                            if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
-                                $marketplace = isset($license['marketplace']) ? $license['marketplace'] : 'unknown';
-                                // MaxiBlocks licenses have 'unknown' marketplace or no marketplace field
-                                if ($marketplace === 'unknown' || $marketplace === '') {
+                            if (isset($license['status']) && $license['status'] === 'yes') {
+                                // Check for email auth type OR maxiblocks marketplace
+                                $auth_type = isset($license['auth_type']) ? $license['auth_type'] : '';
+                                $marketplace = isset($license['marketplace']) ? $license['marketplace'] : '';
+
+                                if ($auth_type === 'email' || $marketplace === 'maxiblocks') {
                                     $is_maxiblocks_license = true;
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }

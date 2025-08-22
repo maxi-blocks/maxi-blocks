@@ -2309,7 +2309,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 // Add multisite notice for MaxiBlocks licenses
                 if ($is_maxiblocks_license && is_multisite()) {
-                    $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected, please contact us with %s to allocate more domains / seats.', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
+                    $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected. If you require additional licences, email %s', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
                 }
 
                 if ($license_source === 'network') {
@@ -2376,7 +2376,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                     // Add multisite notice if this is a multisite installation
                     if (is_multisite()) {
-                        $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected, please contact us with %s to allocate more domains / seats.', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
+                        $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected. If you require additional licences, email %s', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
                     }
 
                     $content .= '</div>';

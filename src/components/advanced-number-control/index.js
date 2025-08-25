@@ -418,7 +418,9 @@ const AdvancedNumberControl = props => {
 								options={getOptions()}
 								value={unit}
 								onChange={val => {
-									if (value > minMaxSettings[val]?.max) {
+									if (
+										Number(value) > minMaxSettings[val]?.max
+									) {
 										onChangeValue(
 											optionType === 'string'
 												? minMaxSettings[

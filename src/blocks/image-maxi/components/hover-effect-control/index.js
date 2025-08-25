@@ -149,7 +149,6 @@ const HoverEffectControl = props => {
 						initialPosition={getDefaultAttribute(
 							'hover-transition-duration'
 						)}
-						disableRange
 					/>
 				)}
 			{props['hover-type'] !== 'none' &&
@@ -325,7 +324,6 @@ const HoverEffectControl = props => {
 								initialPosition={getDefaultAttribute(
 									`hover-basic-${props['hover-basic-effect-type']}-value`
 								)}
-								disableRange
 							/>
 						)}
 				</>
@@ -578,7 +576,6 @@ const HoverEffectControl = props => {
 							target='hover-padding'
 							breakpoint={breakpoint}
 							disableAuto
-							disableRange
 						/>
 					)}
 					<ToggleSwitch
@@ -598,7 +595,6 @@ const HoverEffectControl = props => {
 							target='hover-margin'
 							optionType='string'
 							breakpoint={breakpoint}
-							disableRange
 						/>
 					)}
 				</>

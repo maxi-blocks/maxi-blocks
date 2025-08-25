@@ -480,7 +480,7 @@ const AdvancedNumberControl = props => {
 						max={maxRange || (enableUnit ? maxValueRange : max)}
 						step={stepValue}
 						withInputField={false}
-						initialPosition={value || initial}
+						initialPosition={value ?? initial}
 						__nextHasNoMarginBottom
 					/>
 				)}

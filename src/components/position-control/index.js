@@ -102,7 +102,6 @@ const PositionControl = props => {
 			allowedUnits={['px', 'em', 'vw', '%', '-']}
 			isHover={isHover}
 			defaultAttributes={defaultAttributes}
-			disableRange
 		/>
 	);
 

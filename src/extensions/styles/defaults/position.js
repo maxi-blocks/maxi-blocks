@@ -19,7 +19,7 @@ export const rawPosition = {
 	},
 	'position-sync': {
 		type: 'string',
-		default: 'none',
+		default: 'all',
 	},
 	'position-top-unit': {
 		type: 'string',

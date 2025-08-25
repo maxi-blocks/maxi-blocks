@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -15,7 +16,7 @@ const MarginControl = props => {
 		<AxisControl
 			{...getGroupAttributes(props, 'margin', false, prefix)}
 			prefix={prefix}
-			label='Margin'
+			label={__('Margin', 'maxi-blocks')}
 			onChange={onChange}
 			breakpoint={breakpoint}
 			target='margin'
@@ -45,7 +46,6 @@ const MarginControl = props => {
 				},
 			}}
 			enableAxisUnits
-			disableRange
 		/>
 	);
 };

@@ -31,7 +31,7 @@ const rawPadding = {
 	},
 	'padding-sync': {
 		type: 'string',
-		default: 'none',
+		default: 'all',
 	},
 };
 

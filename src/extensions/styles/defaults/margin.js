@@ -15,7 +15,7 @@ const rawMargin = {
 	},
 	'margin-sync': {
 		type: 'string',
-		default: 'none',
+		default: 'all',
 	},
 	'margin-top-unit': {
 		type: 'string',

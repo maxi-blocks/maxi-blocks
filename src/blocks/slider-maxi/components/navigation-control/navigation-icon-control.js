@@ -262,7 +262,6 @@ const NavigationIconControl = props => {
 									)} stroke width`}
 									breakpoint={breakpoint}
 									isHover={isHover}
-									disableRange
 								/>
 							)}
 							{!isHover && !isActive && (
@@ -317,7 +316,6 @@ const NavigationIconControl = props => {
 											})
 										}
 										isHover={isHover}
-										disableRange
 									/>
 									<AdvancedNumberControl
 										label={__(
@@ -369,7 +367,6 @@ const NavigationIconControl = props => {
 											})
 										}
 										isHover={isHover}
-										disableRange
 									/>
 									{prefix.includes('dot') && (
 										<AdvancedNumberControl
@@ -444,7 +441,6 @@ const NavigationIconControl = props => {
 									minMaxSettings={minMaxSettings}
 									prefix={prefix}
 									noResponsiveTabs
-									disableRange
 								/>
 							)}
 						</>

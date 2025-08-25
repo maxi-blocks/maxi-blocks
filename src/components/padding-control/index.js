@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -15,14 +16,13 @@ const PaddingControl = props => {
 		<AxisControl
 			{...getGroupAttributes(props, 'padding', false, prefix)}
 			prefix={prefix}
-			label='Padding'
+			label={__('Padding', 'maxi-blocks')}
 			onChange={onChange}
 			breakpoint={breakpoint}
 			target='padding'
 			optionType='string'
 			disableAuto
 			enableAxisUnits
-			disableRange
 		/>
 	);
 };

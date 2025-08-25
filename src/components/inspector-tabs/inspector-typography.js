@@ -183,7 +183,9 @@ const typography = ({
 									)}
 								</>
 							),
-							extraIndicators: ['typography-status-hover'],
+							extraIndicators: [
+								`${prefix}typography-status-hover`,
+							],
 						},
 					]}
 					depth={depth}

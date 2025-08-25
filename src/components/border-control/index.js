@@ -186,7 +186,7 @@ const BorderWidthControl = props => {
 					if (!isToolbar) onChange(obj);
 					else
 						onChange({
-							[`border-sync-width-${breakpoint}`]: 'all',
+							[`${prefix}border-sync-width-${breakpoint}`]: 'all',
 							...obj,
 						});
 				}}
@@ -209,7 +209,6 @@ const BorderWidthControl = props => {
 				disableAuto
 				isHover={isHover}
 				{...(isToolbar && { disableSync: true })}
-				disableRange
 			/>
 		</div>
 	);
@@ -485,7 +484,6 @@ const BorderControl = props => {
 							'bottom-left',
 							'unit',
 						]}
-						disableRange
 					/>
 				</>
 			)}

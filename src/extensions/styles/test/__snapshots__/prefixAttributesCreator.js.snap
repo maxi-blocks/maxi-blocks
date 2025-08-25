@@ -133,7 +133,7 @@ exports[`prefixAttributesCreator Returns prefixed object with custom values 1`] 
     "type": "string",
   },
   "button-padding-sync-general": {
-    "default": "none",
+    "default": "all",
     "type": "string",
   },
   "button-padding-sync-l": {
@@ -764,7 +764,7 @@ exports[`prefixAttributesCreator Returns prefixed object with default values 1`]
     "type": "string",
   },
   "button-margin-sync-general": {
-    "default": "none",
+    "default": "all",
     "type": "string",
   },
   "button-margin-sync-l": {
@@ -920,7 +920,7 @@ exports[`prefixAttributesCreator Returns prefixed object with excluded values 1`
     "type": "string",
   },
   "button-padding-sync-general": {
-    "default": "none",
+    "default": "all",
     "type": "string",
   },
   "button-padding-sync-l": {

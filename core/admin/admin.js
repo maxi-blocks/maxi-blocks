@@ -106,10 +106,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		const key = getKey();
 		let validationMessage = '';
 
-		const { localization } = window;
+		// Use window.localization directly for consistency
 
 		if (type === 'validating') {
-			validationMessage = localization.loading_status_message;
+			validationMessage = window.localization.loading_status_message;
 			validationDiv.classList.add(validationLoadingClass);
 			validationDiv.classList.remove(errorClass);
 		} else {
@@ -118,21 +118,21 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			if (key === '' || type === 'EmptyKeyError') {
 				hiddenInput.value = '';
 				validationDiv.classList.add(errorClass);
-				validationMessage = localization.please_add_api_key;
+				validationMessage = window.localization.please_add_api_key;
 			} else {
 				validationDiv.classList.add(errorClass);
 				switch (type) {
 					case 'InvalidKeyError':
-						validationMessage = localization.invalid_api_key;
+						validationMessage = window.localization.invalid_api_key;
 						break;
 					case 'RefererNotAllowedError':
-						validationMessage = localization.referer_not_allowed;
+						validationMessage = window.localization.referer_not_allowed;
 						break;
 					case 'InvalidCharactersError':
-						validationMessage = localization.invalid_characters;
+						validationMessage = window.localization.invalid_characters;
 						break;
 					case 'ServerError':
-						validationMessage = localization.server_error;
+						validationMessage = window.localization.server_error;
 						break;
 					case true:
 						hiddenInput.value = key;
@@ -352,9 +352,9 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 		// Only show loading message if we have a valid API key
 		if (apiKey) {
-			modelSelect.innerHTML = `<option value="">${localization.loading_available_models}</option>`;
+			modelSelect.innerHTML = `<option value="">${window.localization.loading_available_models}</option>`;
 		} else {
-			modelSelect.innerHTML = `<option value="">${localization.please_add_api_key}</option>`;
+			modelSelect.innerHTML = `<option value="">${window.localization.please_add_api_key}</option>`;
 			modelInput.value = '';
 			isUpdatingDropdown = false;
 			return;
@@ -369,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			if (models.length === 0) {
 				const option = document.createElement('option');
 				option.value = '';
-				option.textContent = localization.no_models_available;
+				option.textContent = window.localization.no_models_available;
 				modelSelect.appendChild(option);
 				modelInput.value = '';
 				isUpdatingDropdown = false;
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			}
 		} catch (error) {
 			console.error('Error updating model dropdown:', error);
-			modelSelect.innerHTML = `<option value="">${localization.error_loading_models}</option>`;
+			modelSelect.innerHTML = `<option value="">${window.localization.error_loading_models}</option>`;
 			modelInput.value = '';
 		} finally {
 			isUpdatingDropdown = false;

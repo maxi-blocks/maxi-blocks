@@ -251,6 +251,111 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'Error validating API Key, please try again later',
                         'maxi-blocks',
                     ),
+                    // AI Model dropdown messages
+                    'loading_available_models' => __(
+                        'Loading available models...',
+                        'maxi-blocks',
+                    ),
+                    'no_models_available' => __(
+                        'No models available - check API key',
+                        'maxi-blocks',
+                    ),
+                    'error_loading_models' => __(
+                        'Error loading models',
+                        'maxi-blocks',
+                    ),
+                    // License validation messages
+                    'please_enter_email_or_code' => __(
+                        'Please enter an email or purchase code',
+                        'maxi-blocks',
+                    ),
+                    'validating' => __(
+                        'Validating...',
+                        'maxi-blocks',
+                    ),
+                    'the_email_is_not_valid' => __(
+                        'The email is not valid',
+                        'maxi-blocks',
+                    ),
+                    'email_authentication_started' => __(
+                        'Email authentication started. Please complete login in the new tab.',
+                        'maxi-blocks',
+                    ),
+                    'failed_to_initiate_email_auth' => __(
+                        'Failed to initiate email authentication',
+                        'maxi-blocks',
+                    ),
+                    'failed_to_validate_license' => __(
+                        'Failed to validate license',
+                        'maxi-blocks',
+                    ),
+                    'successfully_authenticated' => __(
+                        'Successfully authenticated with MaxiBlocks account!',
+                        'maxi-blocks',
+                    ),
+                    'please_log_into_maxiblocks' => __(
+                        'Please log into your MaxiBlocks account to complete activation',
+                        'maxi-blocks',
+                    ),
+                    // Email show/hide functionality
+                    'click_to_show' => __(
+                        'Click to show',
+                        'maxi-blocks',
+                    ),
+                    'click_to_hide' => __(
+                        'Click to hide',
+                        'maxi-blocks',
+                    ),
+                    // Button states
+                    'signing_out' => __(
+                        'Signing out...',
+                        'maxi-blocks',
+                    ),
+                    'sign_out' => __(
+                        'Sign out',
+                        'maxi-blocks',
+                    ),
+                    'activating' => __(
+                        'Activating…',
+                        'maxi-blocks',
+                    ),
+                    'deactivating' => __(
+                        'Deactivating…',
+                        'maxi-blocks',
+                    ),
+                    'activate' => __(
+                        'Activate',
+                        'maxi-blocks',
+                    ),
+                    // Network license messages
+                    'deactivate_network_license_confirm' => __(
+                        'Are you sure you want to deactivate the network license? This will affect all sites in the network.',
+                        'maxi-blocks',
+                    ),
+                    'only_email_authentication_allowed' => __(
+                        'Only email authentication is allowed when a network license is active.',
+                        'maxi-blocks',
+                    ),
+                    'activate_network_license' => __(
+                        'Activate network license',
+                        'maxi-blocks',
+                    ),
+                    'deactivate_network_license' => __(
+                        'Deactivate network license',
+                        'maxi-blocks',
+                    ),
+                    'failed_to_sign_out' => __(
+                        'Failed to sign out',
+                        'maxi-blocks',
+                    ),
+                    'please_enter_purchase_code' => __(
+                        'Please enter a purchase code',
+                        'maxi-blocks',
+                    ),
+                    'network_error_occurred' => __(
+                        'Network error occurred',
+                        'maxi-blocks',
+                    ),
                 ]);
 
                 wp_localize_script('maxi-admin', 'maxiAiSettings', [

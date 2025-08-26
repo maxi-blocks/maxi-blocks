@@ -351,11 +351,9 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 		// Only show loading message if we have a valid API key
 		if (apiKey) {
-			modelSelect.innerHTML =
-				'<option value="">Loading available models...</option>';
+			modelSelect.innerHTML = `<option value="">${localization.loading_available_models}</option>`;
 		} else {
-			modelSelect.innerHTML =
-				'<option value="">Please add your API key</option>';
+			modelSelect.innerHTML = `<option value="">${localization.please_add_api_key}</option>`;
 			modelInput.value = '';
 			isUpdatingDropdown = false;
 			return;
@@ -370,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			if (models.length === 0) {
 				const option = document.createElement('option');
 				option.value = '';
-				option.textContent = 'No models available - check API key';
+				option.textContent = localization.no_models_available;
 				modelSelect.appendChild(option);
 				modelInput.value = '';
 				isUpdatingDropdown = false;
@@ -402,8 +400,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			}
 		} catch (error) {
 			console.error('Error updating model dropdown:', error);
-			modelSelect.innerHTML =
-				'<option value="">Error loading models</option>';
+			modelSelect.innerHTML = `<option value="">${localization.error_loading_models}</option>`;
 			modelInput.value = '';
 		} finally {
 			isUpdatingDropdown = false;
@@ -595,17 +592,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			if (isValidEmail(userName)) {
 				currentUser.style.cursor = 'pointer';
-				currentUser.title = 'Click to show';
+				currentUser.title = window.localization.click_to_show;
 
 				// Add click handler for email show/hide
 				currentUser.onclick = function () {
 					clickCount += 1;
 					if (clickCount % 2 !== 0) {
 						currentUser.textContent = userName;
-						currentUser.title = 'Click to hide';
+						currentUser.title = window.localization.click_to_hide;
 					} else {
 						currentUser.textContent = '******@***.***';
-						currentUser.title = 'Click to show';
+						currentUser.title = window.localization.click_to_show;
 					}
 				};
 
@@ -650,8 +647,8 @@ document.addEventListener('DOMContentLoaded', function () {
 					currentUser.style.cursor = 'pointer';
 					currentUser.title =
 						clickCount % 2 !== 0
-							? 'Click to hide'
-							: 'Click to show';
+							? window.localization.click_to_hide
+							: window.localization.click_to_show;
 
 					// Remove any existing click handlers
 					currentUser.onclick = null;
@@ -661,10 +658,12 @@ document.addEventListener('DOMContentLoaded', function () {
 						clickCount += 1;
 						if (clickCount % 2 !== 0) {
 							currentUser.textContent = userName;
-							currentUser.title = 'Click to hide';
+							currentUser.title =
+								window.localization.click_to_hide;
 						} else {
 							currentUser.textContent = '******@***.***';
-							currentUser.title = 'Click to show';
+							currentUser.title =
+								window.localization.click_to_show;
 						}
 					};
 
@@ -746,7 +745,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const inputValue = licenseInput ? licenseInput.value.trim() : '';
 
 		if (!inputValue) {
-			showMessage('Please enter an email or purchase code', true);
+			showMessage(window.localization.please_enter_email_or_code, true);
 			return;
 		}
 
@@ -755,13 +754,13 @@ document.addEventListener('DOMContentLoaded', function () {
 		// Show loading state
 		if (validateButton) {
 			validateButton.disabled = true;
-			validateButton.textContent = 'Validating...';
+			validateButton.textContent = window.localization.validating;
 		}
 
 		if (inputType === 'email') {
 			// Handle email authentication
 			if (!isValidEmail(inputValue)) {
-				showMessage('The email is not valid', true);
+				showMessage(window.localization.the_email_is_not_valid, true);
 				resetValidateButton();
 				return;
 			}
@@ -788,7 +787,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						// Open the login URL in a new tab
 						window.open(data.data.login_url, '_blank')?.focus();
 						showMessage(
-							'Email authentication started. Please complete login in the new tab.',
+							window.localization.email_authentication_started,
 							false
 						);
 
@@ -818,7 +817,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						})
 					);
 					showMessage(
-						'Failed to initiate email authentication',
+						window.localization.failed_to_initiate_email_auth,
 						true
 					);
 				})
@@ -859,7 +858,10 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 				})
 				.catch(error => {
-					showMessage('Failed to validate license', true);
+					showMessage(
+						window.localization.failed_to_validate_license,
+						true
+					);
 				})
 				.finally(() => {
 					resetValidateButton();
@@ -909,9 +911,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					// User is fully authenticated (both subscription valid and logged into Appwrite)
 					stopAuthCheck();
 
-					showMessage(
-						'Successfully authenticated with MaxiBlocks account!'
-					);
+					showMessage(window.localization.successfully_authenticated);
 					updateLicenseStatus('Active ✓', authResult.user_name);
 					setTimeout(() => {
 						window.location.reload();
@@ -928,7 +928,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					// Subscription is valid but user hasn't logged into Appwrite yet
 					// Don't stop checking - keep polling until they log in
 					showMessage(
-						'Please log into your MaxiBlocks account to complete activation',
+						window.localization.please_log_into_maxiblocks,
 						false
 					);
 					return false;
@@ -1076,7 +1076,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						appwrite_login_verified: false,
 						message:
 							data.data.message ||
-							'Please log into your MaxiBlocks account to complete activation',
+							window.localization.please_log_into_maxiblocks,
 					};
 				}
 
@@ -1126,7 +1126,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	function resetValidateButton() {
 		if (validateButton) {
 			validateButton.disabled = false;
-			validateButton.textContent = 'Activate';
+			validateButton.textContent = window.localization.activate;
 		}
 	}
 
@@ -1136,7 +1136,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	function handleLogout() {
 		if (logoutButton) {
 			logoutButton.disabled = true;
-			logoutButton.textContent = 'Signing out...';
+			logoutButton.textContent = window.localization.signing_out;
 		}
 
 		// Check if this is an email logout (check for the maxi_blocks_key cookie)
@@ -1168,19 +1168,20 @@ document.addEventListener('DOMContentLoaded', function () {
 					updateLicenseStatus(data.data.status, data.data.user_name);
 				} else {
 					showMessage(
-						data.data.message || 'Failed to sign out',
+						data.data.message ||
+							window.localization.failed_to_sign_out,
 						true
 					);
 				}
 			})
 			.catch(error => {
 				console.error('Logout error:', error);
-				showMessage('Failed to sign out', true);
+				showMessage(window.localization.failed_to_sign_out, true);
 			})
 			.finally(() => {
 				if (logoutButton) {
 					logoutButton.disabled = false;
-					logoutButton.textContent = 'Sign out';
+					logoutButton.textContent = window.localization.sign_out;
 				}
 			});
 	}
@@ -1258,13 +1259,16 @@ function initNetworkLicenseHandlers() {
 			const licenseValue = licenseInput ? licenseInput.value.trim() : '';
 
 			if (!licenseValue) {
-				showNetworkMessage('Please enter a purchase code', 'error');
+				showNetworkMessage(
+					window.localization.please_enter_purchase_code,
+					'error'
+				);
 				return;
 			}
 
 			// Show loading state
 			validateButton.disabled = true;
-			validateButton.textContent = 'Activating…';
+			validateButton.textContent = window.localization.activating;
 
 			// Send AJAX request for network license validation
 			sendNetworkLicenseRequest('validate', licenseValue);
@@ -1276,12 +1280,10 @@ function initNetworkLicenseHandlers() {
 		logoutButton.addEventListener('click', function () {
 			if (
 				// eslint-disable-next-line no-undef, no-undef, no-restricted-globals, no-alert
-				confirm(
-					'Are you sure you want to deactivate the network license? This will affect all sites in the network.'
-				)
+				confirm(window.localization.deactivate_network_license_confirm)
 			) {
 				logoutButton.disabled = true;
-				logoutButton.textContent = 'Deactivating…';
+				logoutButton.textContent = window.localization.deactivating;
 
 				sendNetworkLicenseRequest('logout', '');
 			}
@@ -1315,7 +1317,7 @@ function initSiteLicenseHandlers() {
 					e.preventDefault();
 					// eslint-disable-next-line no-undef
 					showMessage(
-						'Only email authentication is allowed when a network license is active.',
+						window.localization.only_email_authentication_allowed,
 						'error'
 					);
 					return false;
@@ -1356,7 +1358,10 @@ function sendNetworkLicenseRequest(action, licenseInput) {
 		})
 		.catch(error => {
 			console.error('Network license request failed:', error);
-			handleNetworkLicenseError('Network error occurred', action);
+			handleNetworkLicenseError(
+				window.localization.network_error_occurred,
+				action
+			);
 		});
 }
 
@@ -1393,10 +1398,12 @@ function handleNetworkLicenseError(message, action) {
 
 	if (action === 'validate' && validateButton) {
 		validateButton.disabled = false;
-		validateButton.textContent = 'Activate network license';
+		validateButton.textContent =
+			window.localization.activate_network_license;
 	} else if (action === 'logout' && logoutButton) {
 		logoutButton.disabled = false;
-		logoutButton.textContent = 'Deactivate network license';
+		logoutButton.textContent =
+			window.localization.deactivate_network_license;
 	}
 }
 

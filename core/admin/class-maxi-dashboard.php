@@ -3852,6 +3852,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'body' => wp_json_encode([
                     'email' => $email,
                     'cookie' => $auth_key,
+                    'domain' => parse_url(home_url(), PHP_URL_HOST),
+                    'plugin_version' => MAXI_PLUGIN_VERSION,
+                    'multisite' => is_multisite(),
                 ]),
             ]);
 

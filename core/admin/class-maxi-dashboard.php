@@ -3482,8 +3482,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 });
                 set_transient('maxi_auth_registry', $auth_registry, 600);
             }
-
-            error_log("MaxiBlocks Email Auth: Cleaned up expired auth data for transient: {$transient_key}");
         }
 
         /**
@@ -3567,10 +3565,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Check if subscription is valid first
             if (!$initial_data || !isset($initial_data['success']) || !$initial_data['success'] || !$initial_data['valid']) {
-                error_log("MaxiBlocks Email Auth: STEP 1 FAILED - Subscription not valid");
                 // Handle subscription errors (seat limit, invalid subscription, etc.)
                 if (isset($initial_data['error_code']) && $initial_data['error_code'] === 'SEAT_LIMIT_EXCEEDED') {
-                    error_log("MaxiBlocks Email Auth: STEP 1 ERROR - Seat limit exceeded");
                     return [
                         'success' => false,
                         'error_code' => $initial_data['error_code'],
@@ -3609,7 +3605,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             ]);
 
             if (is_wp_error($appwrite_response)) {
-                error_log("MaxiBlocks Email Auth: STEP 2 ERROR - " . $appwrite_response->get_error_message());
+                error_log("MaxiBlocks Email Auth: ERROR - " . $appwrite_response->get_error_message());
                 return false;
             }
 
@@ -3639,7 +3635,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     if ($expiration_date) {
                         $today = current_time('Y-m-d');
                         if ($today > $expiration_date) {
-                            error_log("MaxiBlocks Email Auth: EXPIRED - Subscription has expired");
                             // Save expired status
                             $this->save_email_license_data($email, $name, 'expired', $auth_key);
                             return false;
@@ -3664,7 +3659,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 // Handle other error cases
                 if (!$appwrite_data['valid'] && isset($appwrite_data['error_code']) && $appwrite_data['error_code'] === 'SEAT_LIMIT_EXCEEDED') {
-                    error_log("MaxiBlocks Email Auth: STEP 2 ERROR - Seat limit exceeded");
                     return [
                         'success' => false,
                         'error_code' => $appwrite_data['error_code'],
@@ -3673,7 +3667,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
 
             } else {
-                error_log("MaxiBlocks Email Auth: STEP 2 FAILED - API call unsuccessful or malformed response");
+                error_log("MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response");
             }
 
             // Legacy response format support (fallback)
@@ -3691,7 +3685,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
             }
 
-            error_log("MaxiBlocks Email Auth: FINAL RESULT - Authentication failed, returning false");
             return false;
         }
 
@@ -3840,9 +3833,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // Replace 'verify' with 'email/session/logout' in the URL
             $logout_url = str_replace('/verify', '/email/session/logout', $middleware_url);
 
-            error_log("MaxiBlocks Email Session Logout: Calling middleware logout for email: {$email}");
-            error_log("MaxiBlocks Email Session Logout: Logout URL: {$logout_url}");
-
             $response = wp_remote_post($logout_url, [
                 'timeout' => 30,
                 'headers' => [
@@ -3867,16 +3857,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $status_code = wp_remote_retrieve_response_code($response);
             $result = json_decode($body, true);
 
-            error_log("MaxiBlocks Email Session Logout: Response status: {$status_code}");
-            error_log("MaxiBlocks Email Session Logout: Response body: " . substr($body, 0, 500));
-
             // Log result but don't fail local logout if middleware call fails
             if ($status_code !== 200 || !$result || !isset($result['success']) || !$result['success']) {
                 error_log("MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout");
                 return ['success' => false, 'error' => 'Middleware logout failed'];
             }
 
-            error_log("MaxiBlocks Email Session Logout: Successfully logged out session via middleware");
             return $result ?: ['success' => false, 'error' => 'Invalid response'];
         }
 

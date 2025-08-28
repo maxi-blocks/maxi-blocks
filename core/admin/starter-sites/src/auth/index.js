@@ -347,28 +347,25 @@ export const processLocalActivationRemoveDevice = (
 		const oldProObj = JSON.parse(oldPro);
 		const oldEmailInfo = oldProObj?.[email];
 		if (oldEmailInfo && oldEmailInfo?.key) {
-			let newPro = {
-				[email]: {
-					status,
-					name,
-					key,
-				},
-			};
 			const oldKeysArray = oldEmailInfo?.key.split(',');
 			const newKeysArray = oldKeysArray.filter(item => item !== key);
-			if (newKeysArray.length !== 0) {
-				const newKey = newKeysArray.join();
+
+			// Start with all existing data except this email
+			obj = { ...oldProObj };
+			delete obj[email];
+
+			// If there are still keys remaining for this email, keep the email entry
+			if (newKeysArray.length > 0) {
+				const newKey = newKeysArray.join(',');
 				const oldStatus = oldEmailInfo?.status;
-				newPro = {
-					[email]: {
-						status: oldStatus,
-						name,
-						key: newKey,
-					},
+				obj[email] = {
+					status: oldStatus,
+					name,
+					key: newKey,
 				};
 			}
+			// If no keys remaining, the email entry is already deleted above
 
-			if (oldProObj?.status !== 'no') obj = { ...oldProObj, ...newPro };
 			const objString = JSON.stringify(obj);
 			dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
 		}

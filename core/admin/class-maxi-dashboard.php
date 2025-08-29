@@ -3560,7 +3560,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             $initial_body = wp_remote_retrieve_body($initial_response);
-            $initial_status_code = wp_remote_retrieve_response_code($initial_response);
             $initial_data = json_decode($initial_body, true);
 
             // Check if subscription is valid first
@@ -3577,14 +3576,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             // Subscription is valid, now check if user has logged into Appwrite
-            $appwrite_payload = [
-                'email' => $email,
-                'cookie' => substr($auth_key, 0, 8) . '...', // Log only partial key for security
-                'domain' => parse_url(home_url(), PHP_URL_HOST),
-                'plugin_version' => MAXI_PLUGIN_VERSION,
-                'multisite' => is_multisite(),
-                'check_appwrite_login' => true, // Now check both subscription AND Appwrite login
-            ];
 
             $actual_appwrite_payload = [
                 'email' => $email,
@@ -3610,8 +3601,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             $appwrite_body = wp_remote_retrieve_body($appwrite_response);
-            $appwrite_status_code = wp_remote_retrieve_response_code($appwrite_response);
             $appwrite_data = json_decode($appwrite_body, true);
+
+            error_log("MaxiBlocks Email Auth: Appwrite response - " . wp_json_encode($appwrite_data));
 
             // Handle the new response format with appwrite_login_verified
             if ($appwrite_data && isset($appwrite_data['success']) && $appwrite_data['success']) {
@@ -3626,19 +3618,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         $name = $appwrite_data['appwrite_user']['name'];
                     } elseif (isset($appwrite_data['subscription_data']) && isset($appwrite_data['subscription_data']['name'])) {
                         $name = $appwrite_data['subscription_data']['name'];
-                    }
-
-                    // Check expiration if available
-                    $subscription_data = $appwrite_data['subscription_data'] ?? [];
-                    $expiration_date = $subscription_data['expiration_date'] ?? null;
-
-                    if ($expiration_date) {
-                        $today = current_time('Y-m-d');
-                        if ($today > $expiration_date) {
-                            // Save expired status
-                            $this->save_email_license_data($email, $name, 'expired', $auth_key);
-                            return false;
-                        }
                     }
 
                     // Save active status - user is fully authenticated
@@ -3672,17 +3651,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Legacy response format support (fallback)
             if ($appwrite_data && isset($appwrite_data['status']) && $appwrite_data['status'] === 'ok') {
-                $today = current_time('Y-m-d');
-                $expiration_date = $appwrite_data['expiration_date'] ?? $today;
                 $name = $appwrite_data['name'] ?? $email;
-
-                if ($today > $expiration_date) {
-                    $this->save_email_license_data($email, $name, 'expired', $auth_key);
-                    return false;
-                } else {
-                    $this->save_email_license_data($email, $name, 'yes', $auth_key);
-                    return ['user_name' => $name];
-                }
+                $this->save_email_license_data($email, $name, 'yes', $auth_key);
+                return ['user_name' => $name];
             }
 
             return false;

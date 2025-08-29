@@ -3205,7 +3205,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             // Verify nonce
             if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
-                error_log("MaxiBlocks Email Auth STATUS: Nonce verification failed");
+                error_log(__("MaxiBlocks Email Auth STATUS: Nonce verification failed", 'maxi-blocks'));
                 wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
                 return;
             }
@@ -3297,7 +3297,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         return;
                     }
                 } else {
-                    error_log("MaxiBlocks Email Auth STATUS: Auth timeout - authentication window has expired (>10 minutes)");
+                    error_log(__("MaxiBlocks Email Auth STATUS: Auth timeout - authentication window has expired (>10 minutes)", 'maxi-blocks'));
                 }
             }
 
@@ -3307,7 +3307,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $status = 'Not activated';
             $user_name = '';
 
-            $cookie_info = '';
             if (isset($_COOKIE['maxi_blocks_key'])) {
                 $raw_cookie = $_COOKIE['maxi_blocks_key'];
 
@@ -3316,16 +3315,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 // Try to decode the cookie
                 $cookie_data = json_decode($cookie_fixed, true);
-
-                if ($cookie_data && is_array($cookie_data)) {
-                    $cookie_email = array_keys($cookie_data)[0];
-                    $cookie_key = $cookie_data[$cookie_email];
-                    $cookie_info = "Email: {$cookie_email}, Key: " . substr($cookie_key, 0, 4) . '...';
-                } else {
-                    $cookie_info = 'Invalid cookie format';
-                }
-            } else {
-                $cookie_info = 'No cookie found';
             }
 
             if (!empty($current_license_data)) {
@@ -3527,16 +3516,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // Replace 'verify' with 'email/verify' in the URL for email authentication
             $auth_url = str_replace('/verify', '/email/verify', $middleware_url);
 
-            // First call: Check subscription status without triggering Appwrite login
-            $initial_payload = [
-                'email' => $email,
-                'cookie' => substr($auth_key, 0, 8) . '...', // Log only partial key for security
-                'domain' => parse_url(home_url(), PHP_URL_HOST),
-                'plugin_version' => MAXI_PLUGIN_VERSION,
-                'multisite' => is_multisite(),
-                'check_appwrite_login' => false, // Only check subscription, don't verify Appwrite login
-            ];
-
             $actual_payload = [
                 'email' => $email,
                 'cookie' => $auth_key,
@@ -3596,14 +3575,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             ]);
 
             if (is_wp_error($appwrite_response)) {
-                error_log("MaxiBlocks Email Auth: ERROR - " . $appwrite_response->get_error_message());
+                error_log(__("MaxiBlocks Email Auth: ERROR - " . $appwrite_response->get_error_message(), 'maxi-blocks'));
                 return false;
             }
 
             $appwrite_body = wp_remote_retrieve_body($appwrite_response);
             $appwrite_data = json_decode($appwrite_body, true);
-
-            error_log("MaxiBlocks Email Auth: Appwrite response - " . wp_json_encode($appwrite_data));
 
             // Handle the new response format with appwrite_login_verified
             if ($appwrite_data && isset($appwrite_data['success']) && $appwrite_data['success']) {
@@ -3646,7 +3623,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
 
             } else {
-                error_log("MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response");
+                error_log(__("MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response", 'maxi-blocks'));
             }
 
             // Legacy response format support (fallback)
@@ -3820,7 +3797,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             ]);
 
             if (is_wp_error($response)) {
-                error_log("MaxiBlocks Email Session Logout: API call failed - " . $response->get_error_message());
+                error_log(__("MaxiBlocks Email Session Logout: API call failed - " . $response->get_error_message(), 'maxi-blocks'));
                 return ['success' => false, 'error' => $response->get_error_message()];
             }
 
@@ -3830,7 +3807,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Log result but don't fail local logout if middleware call fails
             if ($status_code !== 200 || !$result || !isset($result['success']) || !$result['success']) {
-                error_log("MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout");
+                error_log(__("MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout", 'maxi-blocks'));
                 return ['success' => false, 'error' => 'Middleware logout failed'];
             }
 

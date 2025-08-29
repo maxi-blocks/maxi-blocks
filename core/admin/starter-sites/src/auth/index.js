@@ -1061,10 +1061,6 @@ export const checkAndHandleDomainMigration = async () => {
 						}
 
 						hasUpdates = true;
-						console.log('Domain migration successful:', {
-							purchaseCode,
-							migrationResult,
-						});
 					} else {
 						console.error('Domain migration failed:', {
 							purchaseCode,

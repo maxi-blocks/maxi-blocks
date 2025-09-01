@@ -447,12 +447,12 @@ const AxisControlContent = props => {
 						hasBorder
 						items={[
 							{
-								value: 'none',
-								className: 'maxi-axis-control__sync-none',
+								value: 'all',
+								className: 'maxi-axis-control__sync-all',
 								icon:
 									type === 'Margin'
-										? marginSeparateIcon
-										: paddingSeparateIcon,
+										? marginSyncAllIcon
+										: paddingSyncAllIcon,
 							},
 							{
 								value: 'axis',
@@ -466,12 +466,12 @@ const AxisControlContent = props => {
 										: paddingSyncDirectionIcon,
 							},
 							{
-								value: 'all',
-								className: 'maxi-axis-control__sync-all',
+								value: 'none',
+								className: 'maxi-axis-control__sync-none',
 								icon:
 									type === 'Margin'
-										? marginSyncAllIcon
-										: paddingSyncAllIcon,
+										? marginSeparateIcon
+										: paddingSeparateIcon,
 							},
 						]}
 						onChange={val => onChangeSync(val, breakpoint)}

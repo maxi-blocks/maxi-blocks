@@ -25,18 +25,23 @@ const editColorControl = async ({
 
 	// select customColor
 	if (!paletteStatus && customColor) {
+		await page.waitForTimeout(3500);
+
 		await instance.$eval('.maxi-opacity-control button', button =>
 			button.click()
 		);
+		await page.waitForTimeout(3500);
 
 		await instance.$eval(
 			'.maxi-color-control .maxi-toggle-switch input',
 			button => button.click()
 		);
+		await page.waitForTimeout(3500);
 
 		await page.$eval('.maxi-color-control__color input', input =>
 			input.focus()
 		);
+		await page.waitForTimeout(3500);
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type(customColor);

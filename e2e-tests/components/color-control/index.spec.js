@@ -56,11 +56,16 @@ describe('ColorControl', () => {
 	});
 
 	it('Checking the custom color control', async () => {
+		await createNewPost();
+		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
 			'button background'
 		);
+
+		await page.waitForTimeout(3500);
 
 		await editColorControl({
 			page,
@@ -70,7 +75,7 @@ describe('ColorControl', () => {
 			opacity: '67',
 		});
 
-		await page.waitForTimeout(350);
+		await page.waitForTimeout(3500);
 
 		expect(
 			await getAttributes('button-background-color-general')

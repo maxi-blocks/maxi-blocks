@@ -42,11 +42,11 @@ describe('Text strikethrough', () => {
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'typography');
 
-		const textDecoration = await page.$eval(
-			'.maxi-tabs-content .maxi-typography-control__decoration select',
-			input => input.value
+		const strikethroughButton = await page.$eval(
+			'.maxi-tabs-content .maxi-typography-control__format-button--strikethrough',
+			button => button.getAttribute('aria-pressed')
 		);
 
-		expect(textDecoration).toStrictEqual('line-through');
+		expect(strikethroughButton).toStrictEqual('true');
 	});
 });

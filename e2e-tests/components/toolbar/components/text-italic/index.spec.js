@@ -41,11 +41,11 @@ describe('Text italic', () => {
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'typography');
 
-		const textDecoration = await page.$eval(
-			'.maxi-tabs-content .maxi-typography-control__font-style select',
-			input => input.value
+		const italicButton = await page.$eval(
+			'.maxi-tabs-content .maxi-typography-control__format-button--italic',
+			button => button.getAttribute('aria-pressed')
 		);
 
-		expect(textDecoration).toStrictEqual('italic');
+		expect(italicButton).toStrictEqual('true');
 	});
 });

@@ -18,7 +18,7 @@ describe('Button', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 		await updateAllBlockUniqueIds(page);
-		await openSidebarTab(page, 'style', 'alignment');
+		await openSidebarTab(page, 'style', 'typography');
 
 		await page.$$eval('.maxi-alignment-control button', click =>
 			click[1].click()

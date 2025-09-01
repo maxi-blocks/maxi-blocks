@@ -65,7 +65,7 @@ describe('ColorControl', () => {
 			'button background'
 		);
 
-		await page.waitForTimeout(3500);
+		await page.waitForTimeout(350);
 
 		await editColorControl({
 			page,
@@ -75,7 +75,7 @@ describe('ColorControl', () => {
 			opacity: '67',
 		});
 
-		await page.waitForTimeout(3500);
+		await page.waitForTimeout(350);
 
 		expect(
 			await getAttributes('button-background-color-general')

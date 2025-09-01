@@ -34,7 +34,7 @@ describe('Text level', () => {
 		expect(await getAttributes('textLevel')).toStrictEqual('h1');
 
 		// Check changes in sidebar
-		await openSidebarTab(page, 'style', 'heading paragraph tag');
+		await openSidebarTab(page, 'style', 'typography');
 
 		const textLevel = await page.$eval(
 			'.maxi-font-level-control button[aria-pressed="true"]',

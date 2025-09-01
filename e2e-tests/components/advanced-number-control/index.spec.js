@@ -34,6 +34,15 @@ describe('Advanced Number Control', () => {
 
 		await changeResponsive(page, 'm');
 
+		await page.waitForTimeout(200);
+
+		await accordionPanel.$eval(
+			'.maxi-typography-control__advanced-toggle button.maxi-typography-control-button',
+			click => click.click()
+		);
+
+		await page.waitForTimeout(200);
+
 		// Max value
 		await editAdvancedNumberControl({
 			page,

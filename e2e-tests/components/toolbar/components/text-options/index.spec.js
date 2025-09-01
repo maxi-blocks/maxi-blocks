@@ -140,7 +140,7 @@ describe('Text options', () => {
 
 		expect(letterSpacing).toStrictEqual('12');
 
-		await openSidebarTab(page, 'style', 'alignment');
+		await openSidebarTab(page, 'style', 'typography');
 
 		const alignment = await page.$eval(
 			'.maxi-alignment-control .maxi-tabs-control__button-justify',

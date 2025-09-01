@@ -25,7 +25,7 @@ describe('AlignmentControl', () => {
 		await updateAllBlockUniqueIds(page);
 		await page.keyboard.type('Testing Text Maxi', { delay: 350 });
 
-		await openSidebarTab(page, 'style', 'alignment');
+		await openSidebarTab(page, 'style', 'typography');
 
 		const alignmentSettings = await page.$$(
 			'.maxi-alignment-control button'
@@ -44,7 +44,11 @@ describe('AlignmentControl', () => {
 	});
 
 	it('Check Responsive text-alignment control', async () => {
-		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'typography'
+		);
 
 		const isItemChecked = await page.$$eval(
 			'.maxi-alignment-control button',

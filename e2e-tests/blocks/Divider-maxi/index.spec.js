@@ -26,7 +26,11 @@ describe('Divider Maxi', () => {
 	});
 
 	it('Check Divider alignment', async () => {
-		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'typography'
+		);
 
 		let alignmentSelectors = await accordionPanel.$$(
 			'.maxi-base-control select'
@@ -103,7 +107,11 @@ describe('Divider Maxi', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');
 		await updateAllBlockUniqueIds(page);
-		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'typography'
+		);
 
 		const responsiveVertical = await addResponsiveTest({
 			page,

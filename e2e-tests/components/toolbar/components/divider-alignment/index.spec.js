@@ -44,7 +44,11 @@ describe('Divider alignment from Toolbar', () => {
 		);
 
 		// Check changes in sidebar
-		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'typography'
+		);
 
 		const alignmentOrientation = await accordionPanel.$eval(
 			'.line-orientation-selector select',

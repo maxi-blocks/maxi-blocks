@@ -23,6 +23,8 @@ const addTypographyStyle = async ({
 	isStyleCards = false,
 }) => {
 	const response = {};
+
+	await page.waitForTimeout(200);
 	// Weight, Transform, Style, Decoration
 	const weightSelector = await instance.$(
 		'.maxi-typography-control__weight .maxi-base-control__field select'

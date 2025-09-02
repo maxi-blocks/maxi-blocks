@@ -190,7 +190,18 @@ describe('TypographyControl', () => {
 
 	it('Checking the Weight, Transform, Style, Decoration and Orientation', async () => {
 		await changeResponsive(page, 'base');
-		await openSidebarTab(page, 'style', 'typography');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'typography'
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-typography-control__advanced-toggle button.maxi-typography-control-button',
+			click => click.click()
+		);
+
+		await page.waitForTimeout(200);
 
 		await addTypographyStyle({
 			instance: page,

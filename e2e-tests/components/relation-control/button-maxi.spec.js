@@ -254,6 +254,13 @@ describe('Button Maxi hover simple actions', () => {
 			opacity: 50,
 		});
 
+		await page.$eval(
+			'.maxi-typography-control__advanced-toggle button.maxi-typography-control-button',
+			click => click.click()
+		);
+
+		await page.waitForTimeout(200);
+
 		await addTypographyOptions({
 			page,
 			instance: await page.$('.maxi-typography-control'),

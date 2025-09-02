@@ -315,7 +315,9 @@ const AdvancedNumberControl = props => {
 										const currentVal =
 											parseFloat(
 												latestValueRef.current
-											) || 0;
+											) ||
+											parseFloat(placeholder) ||
+											0;
 										const maxVal = enableUnit
 											? maxValue
 											: max;
@@ -323,10 +325,14 @@ const AdvancedNumberControl = props => {
 									})()}
 									onClick={e => {
 										e.preventDefault();
-										const currentVal =
-											parseFloat(
-												latestValueRef.current
-											) || 0;
+										const hasRealValue =
+											latestValueRef.current !== '' &&
+											latestValueRef.current !==
+												undefined &&
+											latestValueRef.current !== null;
+										const currentVal = hasRealValue
+											? parseFloat(latestValueRef.current)
+											: parseFloat(placeholder) || 0;
 										const newVal =
 											currentVal + (stepValue || 1);
 										const maxVal = enableUnit
@@ -365,7 +371,9 @@ const AdvancedNumberControl = props => {
 										const currentVal =
 											parseFloat(
 												latestValueRef.current
-											) || 0;
+											) ||
+											parseFloat(placeholder) ||
+											0;
 										const minVal = enableUnit
 											? minValue
 											: min;
@@ -373,10 +381,14 @@ const AdvancedNumberControl = props => {
 									})()}
 									onClick={e => {
 										e.preventDefault();
-										const currentVal =
-											parseFloat(
-												latestValueRef.current
-											) || 0;
+										const hasRealValue =
+											latestValueRef.current !== '' &&
+											latestValueRef.current !==
+												undefined &&
+											latestValueRef.current !== null;
+										const currentVal = hasRealValue
+											? parseFloat(latestValueRef.current)
+											: parseFloat(placeholder) || 0;
 										const newVal =
 											currentVal - (stepValue || 1);
 										const minVal = enableUnit

@@ -202,16 +202,26 @@ class MaxiBlockComponent extends Component {
 		this.templateModal = null;
 		this.updateDOMReferences();
 
-		// Cache frequently accessed values
+		// Cache frequently accessed values with LRU-like behavior
 		this.memoizedValues = new Map();
+		this.cacheAccessOrder = new Map(); // Track access times for LRU cleanup
 
 		// Debounce expensive operations
 		this.debouncedDisplayStyles = _.debounce(this.displayStyles, 150);
 
-		// Set maximum cache size and initialize cache timestamp
-		this.MAX_CACHE_SIZE = 10000;
-		this.CACHE_CLEANUP_INTERVAL = 600000; // 600 seconds
+		// Set more aggressive cache limits to prevent memory bloat
+		this.MAX_CACHE_SIZE = 1000; // Reduced from 10000 to 1000
+		this.MAX_CACHE_AGE = 120000; // 2 minutes in milliseconds
+		this.CACHE_CLEANUP_INTERVAL = 30000; // 30 seconds (more frequent cleanup)
 		this.lastCacheCleanup = Date.now();
+
+		// Schedule periodic cache cleanup (only if needed)
+		this.cacheCleanupTimer = setInterval(() => {
+			// Only run cleanup if cache has meaningful content
+			if (this.memoizedValues.size > 10) {
+				this.aggressiveCleanupCache();
+			}
+		}, this.CACHE_CLEANUP_INTERVAL);
 	}
 
 	updateDOMReferences() {
@@ -702,8 +712,15 @@ class MaxiBlockComponent extends Component {
 			this.fseIframeObserver = null;
 		}
 
+		// Clear cache cleanup timer
+		if (this.cacheCleanupTimer) {
+			clearInterval(this.cacheCleanupTimer);
+			this.cacheCleanupTimer = null;
+		}
+
 		// Clear memoization and debounced functions
 		this.memoizedValues?.clear();
+		this.cacheAccessOrder?.clear();
 		this.debouncedDisplayStyles?.cancel();
 
 		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
@@ -1564,10 +1581,14 @@ class MaxiBlockComponent extends Component {
 
 	getStyleTarget(isSiteEditor, iframe) {
 		const cacheKey = `styleTarget-${isSiteEditor}-${!!iframe}`;
+		const now = Date.now();
 
+		// Cleanup cache if needed
 		this.cleanupCache();
 
 		if (this.memoizedValues.has(cacheKey)) {
+			// Update access time for LRU tracking
+			this.cacheAccessOrder.set(cacheKey, now);
 			return this.memoizedValues.get(cacheKey);
 		}
 
@@ -1575,7 +1596,10 @@ class MaxiBlockComponent extends Component {
 			? getSiteEditorIframe()
 			: iframe?.contentDocument || document;
 
+		// Set cache with access time tracking
 		this.memoizedValues.set(cacheKey, target);
+		this.cacheAccessOrder.set(cacheKey, now);
+
 		return target;
 	}
 
@@ -1809,27 +1833,95 @@ class MaxiBlockComponent extends Component {
 	cleanupCache() {
 		const now = Date.now();
 
-		// Only cleanup if enough time has passed AND cache is too large
+		// Only cleanup if cache is getting large or it's been a while
 		if (
-			this.memoizedValues.size > this.MAX_CACHE_SIZE &&
-			now - this.lastCacheCleanup >= this.CACHE_CLEANUP_INTERVAL
+			this.memoizedValues.size < 100 &&
+			now - this.lastCacheCleanup < 60000 // 1 minute minimum
 		) {
-			// Convert to array for sorting
-			const entries = Array.from(this.memoizedValues.entries());
-
-			// Keep only the most recent entries
-			const entriesToKeep = entries.slice(
-				-Math.floor(this.MAX_CACHE_SIZE * 0.8)
-			); // Keep 80% of max size
-
-			// Clear and rebuild cache
-			this.memoizedValues.clear();
-			entriesToKeep.forEach(([key, value]) => {
-				this.memoizedValues.set(key, value);
-			});
-
-			this.lastCacheCleanup = now;
+			return;
 		}
+
+		this.aggressiveCleanupCache();
+		this.lastCacheCleanup = now;
+	}
+
+	/**
+	 * Aggressive cache cleanup with time-based expiration and LRU eviction
+	 */
+	aggressiveCleanupCache() {
+		const now = Date.now();
+		const keysToRemove = [];
+		const initialSize = this.memoizedValues.size;
+
+		// First pass: Remove expired entries
+		for (const [key, accessTime] of this.cacheAccessOrder.entries()) {
+			if (now - accessTime > this.MAX_CACHE_AGE) {
+				keysToRemove.push(key);
+			}
+		}
+
+		// Remove expired entries
+		keysToRemove.forEach(key => {
+			this.memoizedValues.delete(key);
+			this.cacheAccessOrder.delete(key);
+		});
+
+		let lruRemoved = 0;
+		// Second pass: LRU eviction if still over size limit
+		if (this.memoizedValues.size > this.MAX_CACHE_SIZE) {
+			// Sort by access time (oldest first)
+			const sortedByAccess = Array.from(
+				this.cacheAccessOrder.entries()
+			).sort(([, timeA], [, timeB]) => timeA - timeB);
+
+			// Remove oldest entries until we're under the limit
+			const entriesToRemove =
+				this.memoizedValues.size -
+				Math.floor(this.MAX_CACHE_SIZE * 0.7); // Keep 70% of max size
+
+			for (
+				let i = 0;
+				i < entriesToRemove && i < sortedByAccess.length;
+				i += 1
+			) {
+				const [key] = sortedByAccess[i];
+				this.memoizedValues.delete(key);
+				this.cacheAccessOrder.delete(key);
+				lruRemoved += 1;
+			}
+		}
+
+		// Cleanup completed silently
+	}
+
+	/**
+	 * Cache-aware getter with automatic cleanup and LRU tracking
+	 * @param {string}   key         - Cache key
+	 * @param {Function} valueGetter - Function to get value if not cached
+	 * @returns {*} Cached or computed value
+	 *
+	 * @todo This method can be used to replace direct memoizedValues access
+	 * throughout the codebase for better cache management
+	 */
+	// eslint-disable-next-line class-methods-use-this
+	getCachedValue(key, valueGetter) {
+		const now = Date.now();
+
+		// Cleanup cache if needed
+		this.cleanupCache();
+
+		if (this.memoizedValues.has(key)) {
+			// Update access time for LRU tracking
+			this.cacheAccessOrder.set(key, now);
+			return this.memoizedValues.get(key);
+		}
+
+		// Compute and cache the value
+		const value = valueGetter();
+		this.memoizedValues.set(key, value);
+		this.cacheAccessOrder.set(key, now);
+
+		return value;
 	}
 
 	// Returns responsive preview elements if present

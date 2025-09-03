@@ -68,10 +68,62 @@ const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
 
 /**
  * Global settings cache to prevent multiple API calls
+ * Includes cleanup mechanism to prevent memory leaks
  */
 const maxiGlobalCache = {
 	settingsCache: null,
 	settingsPromise: null,
+	cacheTimestamp: null,
+	activeBlockCount: 0,
+	CACHE_EXPIRY_TIME: 300000, // 5 minutes in milliseconds
+
+	/**
+	 * Increments the active block count
+	 */
+	incrementBlockCount() {
+		this.activeBlockCount += 1;
+	},
+
+	/**
+	 * Decrements the active block count and clears cache if no blocks remain
+	 */
+	decrementBlockCount() {
+		this.activeBlockCount = Math.max(0, this.activeBlockCount - 1);
+
+		// Clear cache when no blocks are using it
+		if (this.activeBlockCount === 0) {
+			this.clearCache();
+		}
+	},
+
+	/**
+	 * Clears the global cache
+	 */
+	clearCache() {
+		this.settingsCache = null;
+		this.settingsPromise = null;
+		this.cacheTimestamp = null;
+	},
+
+	/**
+	 * Checks if cache is expired and clears it if needed
+	 */
+	checkCacheExpiry() {
+		if (
+			this.cacheTimestamp &&
+			Date.now() - this.cacheTimestamp > this.CACHE_EXPIRY_TIME
+		) {
+			this.clearCache();
+		}
+	},
+
+	/**
+	 * Sets cache with timestamp
+	 */
+	setCache(settings) {
+		this.settingsCache = settings;
+		this.cacheTimestamp = Date.now();
+	},
 };
 
 /**
@@ -123,6 +175,9 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview) return;
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
+
+		// Register this block with global cache for proper cleanup
+		maxiGlobalCache.incrementBlockCount();
 
 		// Init
 		this.updateLastInsertedBlocks();
@@ -348,6 +403,8 @@ class MaxiBlockComponent extends Component {
 			}
 		};
 
+		// Check cache expiry and clear if needed
+		maxiGlobalCache.checkCacheExpiry();
 		// Check global cache first
 		if (maxiGlobalCache.settingsCache) {
 			// Use globally cached settings immediately
@@ -363,8 +420,8 @@ class MaxiBlockComponent extends Component {
 				// Create promise and store it globally
 				maxiGlobalCache.settingsPromise = receiveMaxiSettings()
 					.then(settings => {
-						// Cache the settings globally
-						maxiGlobalCache.settingsCache = settings;
+						// Cache the settings globally with timestamp
+						maxiGlobalCache.setCache(settings);
 						// Clear the promise since it's resolved
 						maxiGlobalCache.settingsPromise = null;
 						return settings;
@@ -635,6 +692,9 @@ class MaxiBlockComponent extends Component {
 			this.templateModal
 		)
 			return;
+
+		// Unregister this block from global cache
+		maxiGlobalCache.decrementBlockCount();
 
 		// Clean up the FSE iframe observer if it exists
 		if (this.fseIframeObserver) {

@@ -30,16 +30,6 @@ class edit extends MaxiBlockComponent {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
 		const { uniqueID } = attributes;
 
-		// Only log for specific problematic blocks
-		const shouldLog =
-			uniqueID === 'text-maxi-9ffa918d-u' ||
-			uniqueID === 'group-maxi-220cd5ba-u';
-		if (shouldLog) {
-			console.log(
-				`🎨 [RENDER-${uniqueID}] Group edit render() method started`
-			);
-		}
-
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
 		 */

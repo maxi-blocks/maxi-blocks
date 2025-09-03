@@ -101,7 +101,7 @@ const BlockStylesSaver = () => {
 	useEffect(() => {
 		if (getIsSiteEditor() && isPageLoaded)
 			dispatch('maxiBlocks').setIsPageLoaded(false);
-	}, [hasTemplateChanged]);
+	}, [hasTemplateChanged, isPageLoaded]);
 
 	useLayoutEffect(() => {
 		if (!isPageLoaded) {
@@ -129,19 +129,13 @@ const BlockStylesSaver = () => {
 				} else {
 					// If there are MaxiBlocks, give them time to start loading, then set page as loaded
 					// This prevents indefinite waiting and allows React to render all blocks normally
-					console.log(
-						'🎯 [MAXI-LOADER] Found MaxiBlocks, will set isPageLoaded to true in 100ms'
-					);
 					setTimeout(() => {
-						console.log(
-							'🎯 [MAXI-LOADER] Setting isPageLoaded to true after MaxiBlocks initialization timeout'
-						);
 						dispatch('maxiBlocks').setIsPageLoaded(true);
-					}, 100); // Reduced to 2 seconds for faster response
+					}, 100);
 				}
 			}, 1000);
 		}
-	}, []);
+	}, [isPageLoaded]);
 
 	useEffect(() => {
 		if (!allStylesAreSaved) {

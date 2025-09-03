@@ -65,33 +65,15 @@ const selectors = {
 		return false;
 	},
 	canBlockRender(state, uniqueID) {
-		// Only log for specific problematic blocks
-		const shouldLog =
-			uniqueID === 'text-maxi-9ffa918d-u' ||
-			uniqueID === 'group-maxi-220cd5ba-u';
-
 		if (state) {
 			const { isPageLoaded } = state;
 			const blocksToRender = state.blocksToRender || [];
 			const isFirstInQueue = blocksToRender.indexOf(uniqueID) === 0;
 			const canRender = isPageLoaded || isFirstInQueue;
 
-			if (shouldLog) {
-				console.log(
-					`🔍 [SELECTOR-${uniqueID}] canBlockRender called - isPageLoaded: ${isPageLoaded}, blocksToRender: [${blocksToRender.join(
-						', '
-					)}], isFirstInQueue: ${isFirstInQueue}, result: ${canRender}`
-				);
-			}
-
 			return canRender;
 		}
 
-		if (shouldLog) {
-			console.log(
-				`🔍 [SELECTOR-${uniqueID}] canBlockRender called - no state, returning false`
-			);
-		}
 		return false;
 	},
 	allBlocksHaveBeenRendered(state) {

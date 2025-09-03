@@ -150,6 +150,16 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 		} = attributes;
 
+		// Only log for specific problematic blocks
+		const shouldLog =
+			uniqueID === 'text-maxi-9ffa918d-u' ||
+			uniqueID === 'group-maxi-220cd5ba-u';
+		if (shouldLog) {
+			console.log(
+				`🎨 [RENDER-${uniqueID}] Text edit render() method started`
+			);
+		}
+
 		const {
 			status: dcStatus,
 			content: dcContent,

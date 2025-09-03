@@ -175,23 +175,32 @@ class MaxiBlockComponent extends Component {
 	componentDidMount() {
 		const { uniqueID } = this.props.attributes;
 		const componentDidMountStartTime = performance.now();
-		console.log(`🚀 [MAXI-${uniqueID}] componentDidMount started`);
+
+		// Only log for specific problematic blocks
+		const shouldLog =
+			uniqueID === 'text-maxi-9ffa918d-u' ||
+			uniqueID === 'group-maxi-220cd5ba-u';
+
+		if (shouldLog)
+			console.log(`🚀 [MAXI-${uniqueID}] componentDidMount started`);
 
 		const domRefStartTime = performance.now();
 		this.updateDOMReferences();
 		const domRefEndTime = performance.now();
-		console.log(
-			`🔧 [MAXI-${uniqueID}] DOM references update: ${(
-				domRefEndTime - domRefStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🔧 [MAXI-${uniqueID}] DOM references update: ${(
+					domRefEndTime - domRefStartTime
+				).toFixed(2)}ms`
+			);
 
 		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
 
 		if (this.isPatternsPreview || this.templateModal) {
-			console.log(
-				`⚠️ [MAXI-${uniqueID}] Skipping due to patterns preview or template modal`
-			);
+			if (shouldLog)
+				console.log(
+					`⚠️ [MAXI-${uniqueID}] Skipping due to patterns preview or template modal`
+				);
 			return;
 		}
 
@@ -204,11 +213,12 @@ class MaxiBlockComponent extends Component {
 			this.setupFSEIframeObserver();
 		}
 		const fseEndTime = performance.now();
-		console.log(
-			`🖼️ [MAXI-${uniqueID}] FSE iframe setup: ${(
-				fseEndTime - fseStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🖼️ [MAXI-${uniqueID}] FSE iframe setup: ${(
+					fseEndTime - fseStartTime
+				).toFixed(2)}ms`
+			);
 
 		const relationsStartTime = performance.now();
 		const blocksIBRelations = select(
@@ -251,11 +261,12 @@ class MaxiBlockComponent extends Component {
 			});
 		}
 		const relationsEndTime = performance.now();
-		console.log(
-			`🔗 [MAXI-${uniqueID}] Relations processing: ${(
-				relationsEndTime - relationsStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🔗 [MAXI-${uniqueID}] Relations processing: ${(
+					relationsEndTime - relationsStartTime
+				).toFixed(2)}ms`
+			);
 
 		// Migrate uniqueID for IB
 		const migrationStartTime = performance.now();
@@ -346,17 +357,19 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 		const migrationEndTime = performance.now();
-		console.log(
-			`🔄 [MAXI-${uniqueID}] UniqueID migration: ${(
-				migrationEndTime - migrationStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🔄 [MAXI-${uniqueID}] UniqueID migration: ${(
+					migrationEndTime - migrationStartTime
+				).toFixed(2)}ms`
+			);
 
 		// Load settings with global caching to prevent multiple API calls
 		const settingsStartTime = performance.now();
-		console.log(
-			`⚙️ [MAXI-${uniqueID}] Settings retrieval started (checking global cache)`
-		);
+		if (shouldLog)
+			console.log(
+				`⚙️ [MAXI-${uniqueID}] Settings retrieval started (checking global cache)`
+			);
 
 		const processSettings = settings => {
 			const maxiVersion = settings.maxi_version;
@@ -390,30 +403,30 @@ class MaxiBlockComponent extends Component {
 		// Check global cache first
 		if (maxiGlobalCache.settingsCache) {
 			// Use globally cached settings immediately
-			console.log(
-				`⚙️ [MAXI-${uniqueID}] Settings retrieved from global cache instantly`
-			);
+			if (shouldLog)
+				console.log(
+					`⚙️ [MAXI-${uniqueID}] Settings retrieved from global cache instantly`
+				);
 			processSettings(maxiGlobalCache.settingsCache);
 		} else {
 			// Settings not cached - load asynchronously without blocking componentDidMount
-			console.log(
-				`⚙️ [MAXI-${uniqueID}] Settings will be loaded asynchronously (non-blocking)`
-			);
+			if (shouldLog)
+				console.log(
+					`⚙️ [MAXI-${uniqueID}] Settings will be loaded asynchronously (non-blocking)`
+				);
 
 			if (!maxiGlobalCache.settingsPromise) {
 				// First block to request settings - make the API call
-				console.log(
-					`⚙️ [MAXI-${uniqueID}] Initiating first settings API call`
-				);
+				if (shouldLog)
+					console.log(
+						`⚙️ [MAXI-${uniqueID}] Initiating first settings API call`
+					);
 
 				const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 
 				// Create promise and store it globally
 				maxiGlobalCache.settingsPromise = receiveMaxiSettings()
 					.then(settings => {
-						console.log(
-							'⚙️ Settings API call completed, caching globally'
-						);
 						// Cache the settings globally
 						maxiGlobalCache.settingsCache = settings;
 						// Clear the promise since it's resolved
@@ -439,9 +452,10 @@ class MaxiBlockComponent extends Component {
 				if (currentSettingsPromise) {
 					currentSettingsPromise
 						.then(settings => {
-							console.log(
-								`⚙️ [MAXI-${uniqueID}] Settings processed asynchronously`
-							);
+							if (shouldLog)
+								console.log(
+									`⚙️ [MAXI-${uniqueID}] Settings processed asynchronously`
+								);
 							processSettings(settings);
 						})
 						.catch(error => {
@@ -453,9 +467,10 @@ class MaxiBlockComponent extends Component {
 				} else {
 					// Promise was null, settings might be cached now
 					if (maxiGlobalCache.settingsCache) {
-						console.log(
-							`⚙️ [MAXI-${uniqueID}] Settings found in cache during async processing`
-						);
+						if (shouldLog)
+							console.log(
+								`⚙️ [MAXI-${uniqueID}] Settings found in cache during async processing`
+							);
 						processSettings(maxiGlobalCache.settingsCache);
 					}
 				}
@@ -468,20 +483,22 @@ class MaxiBlockComponent extends Component {
 		const didMountStartTime = performance.now();
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 		const didMountEndTime = performance.now();
-		console.log(
-			`🔧 [MAXI-${uniqueID}] maxiBlockDidMount: ${(
-				didMountEndTime - didMountStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🔧 [MAXI-${uniqueID}] maxiBlockDidMount: ${(
+					didMountEndTime - didMountStartTime
+				).toFixed(2)}ms`
+			);
 
 		const loadFontsStartTime = performance.now();
 		this.loadFonts();
 		const loadFontsEndTime = performance.now();
-		console.log(
-			`🔤 [MAXI-${uniqueID}] loadFonts: ${(
-				loadFontsEndTime - loadFontsStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🔤 [MAXI-${uniqueID}] loadFonts: ${(
+					loadFontsEndTime - loadFontsStartTime
+				).toFixed(2)}ms`
+			);
 
 		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
 		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
@@ -489,27 +506,30 @@ class MaxiBlockComponent extends Component {
 		const displayStylesStartTime = performance.now();
 		this?.displayStyles(!!this?.rootSlot);
 		const displayStylesEndTime = performance.now();
-		console.log(
-			`🎨 [MAXI-${uniqueID}] displayStyles: ${(
-				displayStylesEndTime - displayStylesStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🎨 [MAXI-${uniqueID}] displayStyles: ${(
+					displayStylesEndTime - displayStylesStartTime
+				).toFixed(2)}ms`
+			);
 
 		const forceUpdateStartTime = performance.now();
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
 		const forceUpdateEndTime = performance.now();
-		console.log(
-			`🔄 [MAXI-${uniqueID}] forceUpdate: ${(
-				forceUpdateEndTime - forceUpdateStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🔄 [MAXI-${uniqueID}] forceUpdate: ${(
+					forceUpdateEndTime - forceUpdateStartTime
+				).toFixed(2)}ms`
+			);
 
 		const componentDidMountEndTime = performance.now();
-		console.log(
-			`🏁 [MAXI-${uniqueID}] componentDidMount total: ${(
-				componentDidMountEndTime - componentDidMountStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🏁 [MAXI-${uniqueID}] componentDidMount total: ${(
+					componentDidMountEndTime - componentDidMountStartTime
+				).toFixed(2)}ms`
+			);
 	}
 
 	/**
@@ -1219,12 +1239,20 @@ class MaxiBlockComponent extends Component {
 	loadFonts() {
 		const { uniqueID } = this.props.attributes;
 		const loadFontsMethodStartTime = performance.now();
-		console.log(`🔤 [MAXI-${uniqueID}] loadFonts method started`);
+
+		// Only log for specific problematic blocks
+		const shouldLog =
+			uniqueID === 'text-maxi-9ffa918d-u' ||
+			uniqueID === 'group-maxi-220cd5ba-u';
+
+		if (shouldLog)
+			console.log(`🔤 [MAXI-${uniqueID}] loadFonts method started`);
 
 		if (this.isPatternsPreview || this.templateModal) {
-			console.log(
-				`⚠️ [MAXI-${uniqueID}] loadFonts skipped - patterns preview or template modal`
-			);
+			if (shouldLog)
+				console.log(
+					`⚠️ [MAXI-${uniqueID}] loadFonts skipped - patterns preview or template modal`
+				);
 			return;
 		}
 
@@ -1235,34 +1263,40 @@ class MaxiBlockComponent extends Component {
 			)
 		);
 		const typographyCheckEndTime = performance.now();
-		console.log(
-			`📝 [MAXI-${uniqueID}] Typography check: ${(
-				typographyCheckEndTime - typographyCheckStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`📝 [MAXI-${uniqueID}] Typography check: ${(
+					typographyCheckEndTime - typographyCheckStartTime
+				).toFixed(2)}ms`
+			);
 
 		if (
 			this.areFontsLoaded.current ||
 			(isEmpty(typographyToCheck) && !this.paginationTypographyStatus)
 		) {
-			console.log(
-				`✅ [MAXI-${uniqueID}] loadFonts early return - fonts already loaded or no typography`
-			);
+			if (shouldLog)
+				console.log(
+					`✅ [MAXI-${uniqueID}] loadFonts early return - fonts already loaded or no typography`
+				);
 			return;
 		}
 
 		const targetCheckStartTime = performance.now();
 		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
 		if (!target) {
-			console.log(`❌ [MAXI-${uniqueID}] loadFonts - no target found`);
+			if (shouldLog)
+				console.log(
+					`❌ [MAXI-${uniqueID}] loadFonts - no target found`
+				);
 			return;
 		}
 		const targetCheckEndTime = performance.now();
-		console.log(
-			`🎯 [MAXI-${uniqueID}] Target check: ${(
-				targetCheckEndTime - targetCheckStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🎯 [MAXI-${uniqueID}] Target check: ${(
+					targetCheckEndTime - targetCheckStartTime
+				).toFixed(2)}ms`
+			);
 
 		const getAllFontsStartTime = performance.now();
 		let response = {};
@@ -1285,16 +1319,18 @@ class MaxiBlockComponent extends Component {
 			);
 		} else response = getAllFonts(this.typography, 'custom-formats');
 		const getAllFontsEndTime = performance.now();
-		console.log(
-			`📚 [MAXI-${uniqueID}] getAllFonts: ${(
-				getAllFontsEndTime - getAllFontsStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`📚 [MAXI-${uniqueID}] getAllFonts: ${(
+					getAllFontsEndTime - getAllFontsStartTime
+				).toFixed(2)}ms`
+			);
 
 		if (isEmpty(response)) {
-			console.log(
-				`⚠️ [MAXI-${uniqueID}] loadFonts - empty response from getAllFonts`
-			);
+			if (shouldLog)
+				console.log(
+					`⚠️ [MAXI-${uniqueID}] loadFonts - empty response from getAllFonts`
+				);
 			return;
 		}
 
@@ -1310,29 +1346,32 @@ class MaxiBlockComponent extends Component {
 
 		// Execute immediately instead of using setTimeout to avoid unnecessary delay
 		const actualLoadFontsStartTime = performance.now();
-		console.log(
-			`🚀 [MAXI-${uniqueID}] Starting actual loadFonts call with response:`,
-			JSON.stringify(response)
-		);
+		if (shouldLog)
+			console.log(
+				`🚀 [MAXI-${uniqueID}] Starting actual loadFonts call with response:`,
+				JSON.stringify(response)
+			);
 
 		loadFonts(response, true, target);
 
 		const actualLoadFontsEndTime = performance.now();
-		console.log(
-			`✅ [MAXI-${uniqueID}] Actual loadFonts call completed: ${(
-				actualLoadFontsEndTime - actualLoadFontsStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`✅ [MAXI-${uniqueID}] Actual loadFonts call completed: ${(
+					actualLoadFontsEndTime - actualLoadFontsStartTime
+				).toFixed(2)}ms`
+			);
 
 		this.areFontsLoaded.current = true;
 		this.fontLoadTimeout = null;
 
 		const loadFontsMethodEndTime = performance.now();
-		console.log(
-			`🏁 [MAXI-${uniqueID}] loadFonts method total: ${(
-				loadFontsMethodEndTime - loadFontsMethodStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🏁 [MAXI-${uniqueID}] loadFonts method total: ${(
+					loadFontsMethodEndTime - loadFontsMethodStartTime
+				).toFixed(2)}ms`
+			);
 	}
 
 	/**
@@ -1340,26 +1379,35 @@ class MaxiBlockComponent extends Component {
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
 		const { uniqueID } = this.props.attributes;
+
+		// Only log for specific problematic blocks
+		const shouldLog =
+			uniqueID === 'text-maxi-9ffa918d-u' ||
+			uniqueID === 'group-maxi-220cd5ba-u';
+
 		const displayStylesMethodStartTime = performance.now();
-		console.log(
-			`🎨 [MAXI-${uniqueID}] displayStyles method started`,
-			JSON.stringify({ isBreakpointChange, isBlockStyleChange })
-		);
+		if (shouldLog)
+			console.log(
+				`🎨 [MAXI-${uniqueID}] displayStyles method started`,
+				JSON.stringify({ isBreakpointChange, isBlockStyleChange })
+			);
 
 		// Update references if they're null
 		const updateRefsStartTime = performance.now();
 		this.updateDOMReferences();
 		const updateRefsEndTime = performance.now();
-		console.log(
-			`🔧 [MAXI-${uniqueID}] DOM references update: ${(
-				updateRefsEndTime - updateRefsStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🔧 [MAXI-${uniqueID}] DOM references update: ${(
+					updateRefsEndTime - updateRefsStartTime
+				).toFixed(2)}ms`
+			);
 
 		if (this.isPatternsPreview || this.templateModal) {
-			console.log(
-				`⚠️ [MAXI-${uniqueID}] displayStyles skipped - patterns preview or template modal`
-			);
+			if (shouldLog)
+				console.log(
+					`⚠️ [MAXI-${uniqueID}] displayStyles skipped - patterns preview or template modal`
+				);
 			return;
 		}
 		const isSiteEditor = getIsSiteEditor();
@@ -1375,11 +1423,12 @@ class MaxiBlockComponent extends Component {
 			const getStylesStartTime = performance.now();
 			obj = this.getStylesObject;
 			const getStylesEndTime = performance.now();
-			console.log(
-				`📊 [MAXI-${uniqueID}] getStylesObject: ${(
-					getStylesEndTime - getStylesStartTime
-				).toFixed(2)}ms`
-			);
+			if (shouldLog)
+				console.log(
+					`📊 [MAXI-${uniqueID}] getStylesObject: ${(
+						getStylesEndTime - getStylesStartTime
+					).toFixed(2)}ms`
+				);
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
@@ -1394,11 +1443,12 @@ class MaxiBlockComponent extends Component {
 				customDataRelations = customData[uniqueID]?.relations;
 			}
 			const customDataEndTime = performance.now();
-			console.log(
-				`📋 [MAXI-${uniqueID}] Custom data processing: ${(
-					customDataEndTime - customDataStartTime
-				).toFixed(2)}ms`
-			);
+			if (shouldLog)
+				console.log(
+					`📋 [MAXI-${uniqueID}] Custom data processing: ${(
+						customDataEndTime - customDataStartTime
+					).toFixed(2)}ms`
+				);
 		}
 
 		const injectStylesStartTime = performance.now();
@@ -1413,11 +1463,12 @@ class MaxiBlockComponent extends Component {
 			this.editorIframe
 		);
 		const injectStylesEndTime = performance.now();
-		console.log(
-			`💉 [MAXI-${uniqueID}] injectStyles: ${(
-				injectStylesEndTime - injectStylesStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`💉 [MAXI-${uniqueID}] injectStyles: ${(
+					injectStylesEndTime - injectStylesStartTime
+				).toFixed(2)}ms`
+			);
 
 		// Update responsive classes for non-XXL breakpoint changes
 		if (isBreakpointChange && this.props.deviceType !== 'xxl') {
@@ -1529,11 +1580,12 @@ class MaxiBlockComponent extends Component {
 		}
 
 		const displayStylesMethodEndTime = performance.now();
-		console.log(
-			`🏁 [MAXI-${uniqueID}] displayStyles method total: ${(
-				displayStylesMethodEndTime - displayStylesMethodStartTime
-			).toFixed(2)}ms`
-		);
+		if (shouldLog)
+			console.log(
+				`🏁 [MAXI-${uniqueID}] displayStyles method total: ${(
+					displayStylesMethodEndTime - displayStylesMethodStartTime
+				).toFixed(2)}ms`
+			);
 	}
 
 	injectStyles(

@@ -178,8 +178,7 @@ class MaxiBlockComponent extends Component {
 
 		// Only log for specific problematic blocks
 		const shouldLog =
-			uniqueID === 'text-maxi-9ffa918d-u' ||
-			uniqueID === 'group-maxi-220cd5ba-u';
+			uniqueID.includes('text-maxi') || uniqueID.includes('group-maxi');
 
 		if (shouldLog)
 			console.log(`🚀 [MAXI-${uniqueID}] componentDidMount started`);

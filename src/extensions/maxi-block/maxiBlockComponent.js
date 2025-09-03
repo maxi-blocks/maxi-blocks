@@ -222,6 +222,11 @@ class MaxiBlockComponent extends Component {
 				this.aggressiveCleanupCache();
 			}
 		}, this.CACHE_CLEANUP_INTERVAL);
+
+		// Track timeouts for proper cleanup
+		this.activeTimeouts = new Set();
+		this.settingsTimeout = null;
+		this.fseIframeTimeout = null;
 	}
 
 	updateDOMReferences() {
@@ -451,7 +456,10 @@ class MaxiBlockComponent extends Component {
 			// Store a local reference to the promise before it gets set to null
 			const currentSettingsPromise = maxiGlobalCache.settingsPromise;
 
-			setTimeout(() => {
+			this.settingsTimeout = setTimeout(() => {
+				// Clear the timeout reference since it's executed
+				this.settingsTimeout = null;
+
 				if (currentSettingsPromise) {
 					currentSettingsPromise
 						.then(settings => {
@@ -716,6 +724,31 @@ class MaxiBlockComponent extends Component {
 		if (this.cacheCleanupTimer) {
 			clearInterval(this.cacheCleanupTimer);
 			this.cacheCleanupTimer = null;
+		}
+
+		// Clear all timeouts to prevent memory leaks
+		if (this.settingsTimeout) {
+			clearTimeout(this.settingsTimeout);
+			this.settingsTimeout = null;
+		}
+
+		if (this.fseIframeTimeout) {
+			clearTimeout(this.fseIframeTimeout);
+			this.fseIframeTimeout = null;
+		}
+
+		// Clear all preview timeouts
+		if (this.previewTimeouts) {
+			this.previewTimeouts.forEach(timeout => clearTimeout(timeout));
+			this.previewTimeouts.clear();
+			this.previewTimeouts = null;
+		}
+
+		// Clear any tracked timeouts
+		if (this.activeTimeouts) {
+			this.activeTimeouts.forEach(timeout => clearTimeout(timeout));
+			this.activeTimeouts.clear();
+			this.activeTimeouts = null;
 		}
 
 		// Clear memoization and debounced functions
@@ -995,7 +1028,11 @@ class MaxiBlockComponent extends Component {
 
 	showPreviewImage(previewIframes) {
 		const disconnectTimeout = 10000; // 10 seconds
-		const timeouts = {};
+
+		// Use instance property to track timeouts for proper cleanup
+		if (!this.previewTimeouts) {
+			this.previewTimeouts = new Map();
+		}
 
 		const isSiteEditor = getIsSiteEditor();
 
@@ -1047,11 +1084,16 @@ class MaxiBlockComponent extends Component {
 				if (!iframeBody) return;
 
 				// Clear and reset the timeout for this iframe
-				clearTimeout(timeouts[iframe]);
-				timeouts[iframe] = setTimeout(() => {
+				const existingTimeout = this.previewTimeouts.get(iframe);
+				if (existingTimeout) {
+					clearTimeout(existingTimeout);
+				}
+				const newTimeout = setTimeout(() => {
 					observer.disconnect();
-					delete timeouts[iframe];
+					this.previewTimeouts.delete(iframe);
 				}, disconnectTimeout);
+
+				this.previewTimeouts.set(iframe, newTimeout);
 
 				const containsMaxiBlocksContainer = iframeBody.querySelector(
 					'.is-root-container .maxi-block'
@@ -1851,7 +1893,8 @@ class MaxiBlockComponent extends Component {
 	aggressiveCleanupCache() {
 		const now = Date.now();
 		const keysToRemove = [];
-		const initialSize = this.memoizedValues.size;
+		// Track initial size for potential future logging
+		// const initialSize = this.memoizedValues.size;
 
 		// First pass: Remove expired entries
 		for (const [key, accessTime] of this.cacheAccessOrder.entries()) {
@@ -1866,7 +1909,7 @@ class MaxiBlockComponent extends Component {
 			this.cacheAccessOrder.delete(key);
 		});
 
-		let lruRemoved = 0;
+		// let lruRemoved = 0; // Tracked for potential future logging
 		// Second pass: LRU eviction if still over size limit
 		if (this.memoizedValues.size > this.MAX_CACHE_SIZE) {
 			// Sort by access time (oldest first)
@@ -1887,11 +1930,34 @@ class MaxiBlockComponent extends Component {
 				const [key] = sortedByAccess[i];
 				this.memoizedValues.delete(key);
 				this.cacheAccessOrder.delete(key);
-				lruRemoved += 1;
+				// lruRemoved += 1; // Tracked for potential future logging
 			}
 		}
 
 		// Cleanup completed silently
+	}
+
+	/**
+	 * Creates a timeout that is automatically tracked for cleanup
+	 * @param {Function} callback - Function to execute
+	 * @param {number}   delay    - Delay in milliseconds
+	 * @returns {number} Timeout ID
+	 *
+	 * @todo This method can be used to replace direct setTimeout calls
+	 * throughout the codebase for better timeout management
+	 */
+	// eslint-disable-next-line class-methods-use-this
+	createTrackedTimeout(callback, delay) {
+		const timeoutId = setTimeout(() => {
+			// Remove from tracking when executed
+			this.activeTimeouts?.delete(timeoutId);
+			callback();
+		}, delay);
+
+		// Track the timeout for cleanup
+		this.activeTimeouts?.add(timeoutId);
+
+		return timeoutId;
 	}
 
 	/**
@@ -1978,8 +2044,14 @@ class MaxiBlockComponent extends Component {
 							'iframe.edit-site-visual-editor__editor-canvas'
 						);
 						if (fseIframes.length > 0) {
+							// Clear any existing FSE iframe timeout
+							if (this.fseIframeTimeout) {
+								clearTimeout(this.fseIframeTimeout);
+							}
+
 							// Wait for iframe to fully load
-							setTimeout(() => {
+							this.fseIframeTimeout = setTimeout(() => {
+								this.fseIframeTimeout = null;
 								this.addMaxiFSEIframeStyles();
 							}, 500);
 						}

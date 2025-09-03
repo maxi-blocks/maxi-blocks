@@ -31,12 +31,12 @@ const updateRelationsRemotely = ({
 	if (blockTriggerClientId === blockTargetClientId) return;
 
 	const blockEditor = select(BLOCK_EDITOR);
-	const relations = blockEditor?.getBlockAttributes(blockTriggerClientId)?.relations;
+	const relations =
+		blockEditor?.getBlockAttributes(blockTriggerClientId)?.relations;
 	if (!relations) return;
 
 	const { uniqueID } = blockAttributes;
 	const newRelations = [];
-
 
 	for (const item of Object.values(relations)) {
 		if (isEmpty(item.attributes)) continue;
@@ -45,7 +45,10 @@ const updateRelationsRemotely = ({
 			continue;
 		}
 
-		const selectedSettings = getSelectedIBSettings(blockTargetClientId, item.sid);
+		const selectedSettings = getSelectedIBSettings(
+			blockTargetClientId,
+			item.sid
+		);
 		const prefix = selectedSettings?.prefix || '';
 		const relationsAttributes = item.attributes || {};
 
@@ -54,31 +57,43 @@ const updateRelationsRemotely = ({
 			const relationBGLayers = relationsAttributes['background-layers'];
 			const blockBGLayers = blockAttributes['background-layers'];
 
-			if (relationBGLayers && blockBGLayers &&
-				relationBGLayers.length !== blockBGLayers.length) {
+			if (
+				relationBGLayers &&
+				blockBGLayers &&
+				relationBGLayers.length !== blockBGLayers.length
+			) {
 				if (blockBGLayers.length === 0) {
 					relationsAttributes['background-layers'] = [];
 				} else {
 					// Use Set for O(1) lookup
-					const blockLayerIds = new Set(blockBGLayers.map(layer => layer.id));
+					const blockLayerIds = new Set(
+						blockBGLayers.map(layer => layer.id)
+					);
 					relationsAttributes['background-layers'] =
-						relationBGLayers.filter(layer => blockLayerIds.has(layer.id));
+						relationBGLayers.filter(layer =>
+							blockLayerIds.has(layer.id)
+						);
 				}
 			}
 		}
 
-		const { cleanAttributesObject, tempAttributes } = getCleanResponseIBAttributes(
-			item.attributes,
-			blockAttributes,
-			item.uniqueID,
-			selectedSettings,
-			breakpoint,
-			prefix,
-			item.sid,
-			blockTriggerClientId
-		);
+		const { cleanAttributesObject, tempAttributes } =
+			getCleanResponseIBAttributes(
+				item.attributes,
+				blockAttributes,
+				item.uniqueID,
+				selectedSettings,
+				breakpoint,
+				prefix,
+				item.sid,
+				blockTriggerClientId
+			);
 
-		const mergedAttributes = merge({}, cleanAttributesObject, tempAttributes);
+		const mergedAttributes = merge(
+			{},
+			cleanAttributesObject,
+			tempAttributes
+		);
 		const styles = getIBStyles({
 			stylesObj: getIBStylesObj({
 				clientId: blockTargetClientId,
@@ -111,7 +126,9 @@ const updateRelationsRemotely = ({
 	if (!isEmpty(diff(relations, newRelations))) {
 		const editor = dispatch(BLOCK_EDITOR);
 		editor.__unstableMarkNextChangeAsNotPersistent();
-		editor.updateBlockAttributes(blockTriggerClientId, { relations: newRelations });
+		editor.updateBlockAttributes(blockTriggerClientId, {
+			relations: newRelations,
+		});
 
 		const getUniqueID = clientID =>
 			blockEditor.getBlockAttributes(clientID).uniqueID;

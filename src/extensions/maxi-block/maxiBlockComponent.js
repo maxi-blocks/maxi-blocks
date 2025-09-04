@@ -245,6 +245,10 @@ class MaxiBlockComponent extends Component {
 		this.activeTimeouts = new Set();
 		this.settingsTimeout = null;
 		this.fseIframeTimeout = null;
+
+		// Track MutationObservers for proper cleanup
+		this.mutationObservers = new Set();
+		this.previewObservers = new Map(); // iframe -> observer mapping
 	}
 
 	updateDOMReferences() {
@@ -682,12 +686,6 @@ class MaxiBlockComponent extends Component {
 		// Unregister this block from global cache
 		maxiGlobalCache.decrementBlockCount();
 
-		// Clean up the FSE iframe observer if it exists
-		if (this.fseIframeObserver) {
-			this.fseIframeObserver.disconnect();
-			this.fseIframeObserver = null;
-		}
-
 		// Clear cache cleanup timer
 		if (this.cacheCleanupTimer) {
 			clearInterval(this.cacheCleanupTimer);
@@ -721,6 +719,9 @@ class MaxiBlockComponent extends Component {
 
 		// Clean up WordPress data store subscriptions
 		this.cleanupStoreSubscriptions();
+
+		// Clean up all MutationObservers
+		this.cleanupAllObservers();
 
 		// Clear memoization and debounced functions
 		this.memoizedValues?.clear();
@@ -1062,7 +1063,7 @@ class MaxiBlockComponent extends Component {
 					clearTimeout(existingTimeout);
 				}
 				const newTimeout = setTimeout(() => {
-					observer.disconnect();
+					this.disconnectTrackedObserver(observer);
 					this.previewTimeouts.delete(iframe);
 				}, disconnectTimeout);
 
@@ -1109,14 +1110,27 @@ class MaxiBlockComponent extends Component {
 				iframe?.parentNode?.insertBefore(img, iframe);
 				iframe.style.display = 'none';
 
-				observer.disconnect();
+				this.disconnectTrackedObserver(observer);
 			};
 
-			const observer = new MutationObserver((mutationsList, observer) => {
-				mutationsList.forEach(mutation =>
-					replaceIframeWithImage(mutation.target, observer)
-				);
-			});
+			// Check if this iframe already has an observer
+			const existingObserver = this.previewObservers.get(iframe);
+			if (existingObserver) {
+				this.disconnectTrackedObserver(existingObserver);
+			}
+
+			// Create a new tracked observer for this iframe
+			const observer = this.createTrackedMutationObserver(
+				(mutationsList, observer) => {
+					mutationsList.forEach(mutation =>
+						replaceIframeWithImage(mutation.target, observer)
+					);
+				},
+				`preview-${iframe.src || 'unknown'}`
+			);
+
+			// Track this observer per iframe
+			this.previewObservers.set(iframe, observer);
 
 			observer.observe(iframe, {
 				attributes: true,
@@ -1975,6 +1989,71 @@ class MaxiBlockComponent extends Component {
 	}
 
 	/**
+	 * Create a tracked MutationObserver that will be automatically cleaned up
+	 * @param {Function} callback     - Observer callback function
+	 * @param {string}   [observerId] - Optional ID for the observer
+	 * @returns {MutationObserver} The created observer
+	 */
+	createTrackedMutationObserver(callback, observerId = null) {
+		const observer = new MutationObserver(callback);
+
+		// Track the observer for cleanup
+		this.mutationObservers.add(observer);
+
+		// If this is a preview observer, also track it separately
+		if (observerId) {
+			observer._maxiId = observerId;
+		}
+
+		return observer;
+	}
+
+	/**
+	 * Disconnect and remove a tracked MutationObserver
+	 * @param {MutationObserver} observer - Observer to disconnect
+	 */
+	disconnectTrackedObserver(observer) {
+		if (observer && typeof observer.disconnect === 'function') {
+			observer.disconnect();
+			this.mutationObservers.delete(observer);
+
+			// Also remove from preview observers if it exists there
+			this.previewObservers.forEach((obs, iframe) => {
+				if (obs === observer) {
+					this.previewObservers.delete(iframe);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Clean up all tracked MutationObservers
+	 */
+	cleanupAllObservers() {
+		// Disconnect all general observers
+		this.mutationObservers.forEach(observer => {
+			if (observer && typeof observer.disconnect === 'function') {
+				observer.disconnect();
+			}
+		});
+		this.mutationObservers.clear();
+
+		// Disconnect all preview observers
+		this.previewObservers.forEach(observer => {
+			if (observer && typeof observer.disconnect === 'function') {
+				observer.disconnect();
+			}
+		});
+		this.previewObservers.clear();
+
+		// Clean up FSE observer specifically
+		if (this.fseIframeObserver) {
+			this.fseIframeObserver.disconnect();
+			this.fseIframeObserver = null;
+		}
+	}
+
+	/**
 	 * Safe selector that tracks subscriptions for cleanup
 	 * @param {string} storeName    - Store name (e.g., 'core/block-editor')
 	 * @param {string} selectorName - Selector name (e.g., 'getBlockName')
@@ -2087,9 +2166,15 @@ class MaxiBlockComponent extends Component {
 
 	// Call this method in componentDidMount
 	setupFSEIframeObserver() {
-		// Only create observer if it doesn't exist yet
-		if (!this.fseIframeObserver) {
-			this.fseIframeObserver = new MutationObserver(mutations => {
+		// Clean up existing observer if it exists
+		if (this.fseIframeObserver) {
+			this.disconnectTrackedObserver(this.fseIframeObserver);
+			this.fseIframeObserver = null;
+		}
+
+		// Create a new tracked FSE observer
+		this.fseIframeObserver = this.createTrackedMutationObserver(
+			mutations => {
 				for (const mutation of mutations) {
 					if (mutation.type === 'childList') {
 						const fseIframes = document.querySelectorAll(
@@ -2109,14 +2194,15 @@ class MaxiBlockComponent extends Component {
 						}
 					}
 				}
-			});
+			},
+			'fse-iframe-observer'
+		);
 
-			// Observe the document body for when iframes get added/removed
-			this.fseIframeObserver.observe(document.body, {
-				childList: true,
-				subtree: true,
-			});
-		}
+		// Observe the document body for when iframes get added/removed
+		this.fseIframeObserver.observe(document.body, {
+			childList: true,
+			subtree: true,
+		});
 	}
 }
 

@@ -81,19 +81,25 @@ const maxiGlobalCache = {
 	 * Increments the active block count
 	 */
 	incrementBlockCount() {
-		this.activeBlockCount += 1;
+		// Use setTimeout to avoid blocking Gutenberg's block creation
+		setTimeout(() => {
+			this.activeBlockCount += 1;
+		}, 0);
 	},
 
 	/**
 	 * Decrements the active block count and clears cache if no blocks remain
 	 */
 	decrementBlockCount() {
-		this.activeBlockCount = Math.max(0, this.activeBlockCount - 1);
+		// Use setTimeout to avoid blocking Gutenberg's block removal
+		setTimeout(() => {
+			this.activeBlockCount = Math.max(0, this.activeBlockCount - 1);
 
-		// Clear cache when no blocks are using it
-		if (this.activeBlockCount === 0) {
-			this.clearCache();
-		}
+			// Clear cache when no blocks are using it
+			if (this.activeBlockCount === 0) {
+				this.clearCache();
+			}
+		}, 0);
 	},
 
 	/**
@@ -179,6 +185,8 @@ class MaxiBlockComponent extends Component {
 		// Register this block with global cache for proper cleanup
 		maxiGlobalCache.incrementBlockCount();
 
+		// Block successfully registered
+
 		// Init
 		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
@@ -246,6 +254,8 @@ class MaxiBlockComponent extends Component {
 		this.updateDOMReferences();
 
 		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
+
+		// Block mounted successfully
 
 		if (this.isPatternsPreview || this.templateModal) {
 			return;
@@ -418,65 +428,37 @@ class MaxiBlockComponent extends Component {
 			}
 		};
 
-		// Check cache expiry and clear if needed
-		maxiGlobalCache.checkCacheExpiry();
-		// Check global cache first
-		if (maxiGlobalCache.settingsCache) {
-			// Use globally cached settings immediately
-			processSettings(maxiGlobalCache.settingsCache);
-		} else {
-			// Settings not cached - load asynchronously without blocking componentDidMount
+		// REVERT TO ORIGINAL SETTINGS LOADING
+		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 
-			if (!maxiGlobalCache.settingsPromise) {
-				// First block to request settings - make the API call
+		receiveMaxiSettings().then(settings => {
+			const maxiVersion = settings.maxi_version;
+			const { updateBlockAttributes } = dispatch('core/block-editor');
+			const {
+				'maxi-version-current': maxiVersionCurrent,
+				'maxi-version-origin': maxiVersionOrigin,
+			} = this.props.attributes;
 
-				const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+			// Only update if we have a valid version from settings
+			if (maxiVersion) {
+				const updates = {};
 
-				// Create promise and store it globally
-				maxiGlobalCache.settingsPromise = receiveMaxiSettings()
-					.then(settings => {
-						// Cache the settings globally with timestamp
-						maxiGlobalCache.setCache(settings);
-						// Clear the promise since it's resolved
-						maxiGlobalCache.settingsPromise = null;
-						return settings;
-					})
-					.catch(error => {
-						console.error(
-							'MaxiBlocks: Settings API call failed',
-							error
-						);
-						// Clear the promise on error so other blocks can retry
-						maxiGlobalCache.settingsPromise = null;
-						throw error;
-					});
-			}
-
-			// Schedule settings processing for next tick (non-blocking)
-			// Store a local reference to the promise before it gets set to null
-			const currentSettingsPromise = maxiGlobalCache.settingsPromise;
-
-			this.settingsTimeout = setTimeout(() => {
-				// Clear the timeout reference since it's executed
-				this.settingsTimeout = null;
-
-				if (currentSettingsPromise) {
-					currentSettingsPromise
-						.then(settings => {
-							processSettings(settings);
-						})
-						.catch(error => {
-							console.error(
-								'MaxiBlocks: Could not load settings',
-								error
-							);
-						});
-				} else if (maxiGlobalCache.settingsCache) {
-					// Promise was null, settings might be cached now
-					processSettings(maxiGlobalCache.settingsCache);
+				// Update current version if different
+				if (maxiVersion !== maxiVersionCurrent) {
+					updates['maxi-version-current'] = maxiVersion;
 				}
-			}, 0);
-		}
+
+				// Set origin version if not set
+				if (!maxiVersionOrigin) {
+					updates['maxi-version-origin'] = maxiVersion;
+				}
+
+				// Only dispatch if we have updates
+				if (Object.keys(updates).length > 0) {
+					updateBlockAttributes(this.props.clientId, updates);
+				}
+			}
+		});
 
 		// Check if the block is reusable
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
@@ -702,6 +684,8 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		const { uniqueID } = this.props.attributes;
+
+		// Block cleanup initiated
 
 		// Return early checks
 		if (
@@ -1159,15 +1143,20 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { clientId } = this.props;
 
-		if (
-			![
-				...select('maxiBlocks/blocks').getLastInsertedBlocks(),
-				...select('maxiBlocks/blocks').getBlockClientIds(),
-			].includes(clientId)
-		) {
+		const lastInserted =
+			select('maxiBlocks/blocks').getLastInsertedBlocks();
+		const blockClientIds = select('maxiBlocks/blocks').getBlockClientIds();
+		const isAlreadyTracked = [...lastInserted, ...blockClientIds].includes(
+			clientId
+		);
+
+		// Block tracking updated
+
+		if (!isAlreadyTracked) {
 			const allClientIds =
 				select('core/block-editor').getClientIdsWithDescendants();
 
+			// Client IDs saved to store
 			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(allClientIds);
 			dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
 		}
@@ -1179,18 +1168,24 @@ class MaxiBlockComponent extends Component {
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		const isBlockCopied =
-			!select('maxiBlocks/blocks').getIsNewBlock(
-				this.props.attributes.uniqueID
-			) &&
-			select('maxiBlocks/blocks')
-				.getLastInsertedBlocks()
-				.includes(this.props.clientId);
+		const isNewBlock = select('maxiBlocks/blocks').getIsNewBlock(
+			this.props.attributes.uniqueID
+		);
+		const lastInsertedBlocks =
+			select('maxiBlocks/blocks').getLastInsertedBlocks();
+		const isInLastInserted = lastInsertedBlocks.includes(
+			this.props.clientId
+		);
+		const isBlockCopied = !isNewBlock && isInLastInserted;
+
+		// UniqueID validation completed
 
 		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});
+
+			// New uniqueID generated
 
 			propagateNewUniqueID(
 				idToCheck,

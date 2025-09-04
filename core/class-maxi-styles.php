@@ -624,6 +624,11 @@ class MaxiBlocks_Styles
                     @list($font, $font_weights, $font_styles) = $sc_fonts;
                 }
 
+                // If style card doesn't return a valid font, skip this sc_font entry
+                if (empty($font) || $font === null) {
+                    continue;
+                }
+
                 if (isset($font_data['weight']) && !in_array($font_data['weight'], $font_weights)) {
                     $font_weights = [[...$font_weights, intval($font_data['weight'])]];
                 }
@@ -668,6 +673,24 @@ class MaxiBlocks_Styles
                                     MAXI_PLUGIN_VERSION,
                                     'all'
                                 );
+                            } else {
+                                // Try fallback with weight 400
+                                $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+                                $fallback_font_data = array_merge($font_data, ['weight' => '400']);
+                                $fallback_font_url = $local_fonts->generate_font_url(
+                                    $font_api_url . "/css2?family=$font:",
+                                    $fallback_font_data
+                                );
+
+                                if ($this->check_font_url($fallback_font_url)) {
+                                    wp_enqueue_style(
+                                        $name . '-font-' . sanitize_title_with_dashes($font),
+                                        $fallback_font_url,
+                                        array(),
+                                        MAXI_PLUGIN_VERSION,
+                                        'all'
+                                    );
+                                }
                             }
                         }
                     } else {

@@ -161,6 +161,9 @@ class MaxiBlockComponent extends Component {
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
+
+		// Track all relation instances for proper cleanup
+		this.allRelationInstances = new Set();
 		this.popoverStyles = null;
 		this.isPatternsPreview = false;
 
@@ -242,8 +245,14 @@ class MaxiBlockComponent extends Component {
 		this.memoizedValues = new Map();
 		this.cacheAccessOrder = new Map(); // Track access times for LRU cleanup
 
+		// Track debounced functions for proper cleanup
+		this.debouncedFunctions = new Set();
+
 		// Debounce expensive operations
-		this.debouncedDisplayStyles = _.debounce(this.displayStyles, 150);
+		this.debouncedDisplayStyles = this.createTrackedDebouncedFunction(
+			this.displayStyles,
+			150
+		);
 
 		// Set more aggressive cache limits to prevent memory bloat
 		this.MAX_CACHE_SIZE = 1000; // Reduced from 10000 to 1000
@@ -778,7 +787,10 @@ class MaxiBlockComponent extends Component {
 		// Clear memoization and debounced functions
 		this.memoizedValues?.clear();
 		this.cacheAccessOrder?.clear();
-		this.debouncedDisplayStyles?.cancel();
+		this.cleanupDebouncedFunctions();
+
+		// Clean up all relation instances
+		this.cleanupAllRelationInstances();
 
 		const keepStylesOnEditor = !!this.safeSelect(
 			'core/block-editor',
@@ -1418,7 +1430,13 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes['relations-preview'];
 
 			if (isRelationsPreview) {
-				this.relationInstances = processRelations(customDataRelations);
+				// Clean up previous instances before creating new ones
+				if (this.relationInstances) {
+					this.cleanupRelationInstances(this.relationInstances);
+				}
+
+				this.relationInstances =
+					this.createTrackedRelationInstances(customDataRelations);
 			}
 
 			this.relationInstances?.forEach(relationInstance => {
@@ -1507,7 +1525,19 @@ class MaxiBlockComponent extends Component {
 			}
 
 			if (!isRelationsPreview) {
-				this.relationInstances = null;
+				// Clean up instances when not in preview mode
+				if (this.relationInstances) {
+					this.cleanupRelationInstances(this.relationInstances);
+					this.relationInstances = null;
+				}
+			}
+
+			// Clean up previous instances before updating
+			if (
+				this.previousRelationInstances &&
+				this.previousRelationInstances !== this.relationInstances
+			) {
+				this.cleanupRelationInstances(this.previousRelationInstances);
 			}
 
 			this.previousRelationInstances = this.relationInstances;
@@ -2366,6 +2396,134 @@ class MaxiBlockComponent extends Component {
 		// Clear tracking sets
 		this.storeSubscriptions.clear();
 		this.storeSelectors.clear();
+	}
+
+	/**
+	 * Create a tracked debounced function that will be automatically cleaned up
+	 * @param {Function} func  - Function to debounce
+	 * @param {number}   delay - Debounce delay in milliseconds
+	 * @returns {Function} Debounced function
+	 */
+	createTrackedDebouncedFunction(func, delay) {
+		const debouncedFn = _.debounce(func.bind(this), delay);
+
+		// Track for cleanup
+		if (this.debouncedFunctions) {
+			this.debouncedFunctions.add(debouncedFn);
+		}
+
+		return debouncedFn;
+	}
+
+	/**
+	 * Clean up all debounced functions to prevent memory leaks
+	 */
+	cleanupDebouncedFunctions() {
+		if (this.debouncedFunctions) {
+			this.debouncedFunctions.forEach(debouncedFn => {
+				if (debouncedFn && typeof debouncedFn.cancel === 'function') {
+					try {
+						debouncedFn.cancel();
+					} catch (error) {
+						// Silently handle already cancelled functions
+					}
+				}
+			});
+			this.debouncedFunctions.clear();
+		}
+
+		// Also clear individual references for backward compatibility
+		if (
+			this.debouncedDisplayStyles &&
+			typeof this.debouncedDisplayStyles.cancel === 'function'
+		) {
+			this.debouncedDisplayStyles.cancel();
+			this.debouncedDisplayStyles = null;
+		}
+	}
+
+	/**
+	 * Create tracked relation instances with automatic cleanup
+	 * @param {Array} customDataRelations - Relations data
+	 * @returns {Array|null} Relation instances
+	 */
+	createTrackedRelationInstances(customDataRelations) {
+		if (!customDataRelations) return null;
+
+		const instances = processRelations(customDataRelations);
+
+		if (instances && Array.isArray(instances)) {
+			// Track each instance for cleanup
+			instances.forEach(instance => {
+				if (instance) {
+					this.allRelationInstances.add(instance);
+				}
+			});
+		}
+
+		return instances;
+	}
+
+	/**
+	 * Clean up relation instances to prevent memory leaks
+	 * @param {Array} instances - Relation instances to clean up
+	 */
+	cleanupRelationInstances(instances) {
+		if (!instances || !Array.isArray(instances)) return;
+
+		instances.forEach(instance => {
+			if (instance) {
+				try {
+					// Remove styles and transitions if the method exists
+					if (
+						typeof instance.removePreviousStylesAndTransitions ===
+						'function'
+					) {
+						instance.removePreviousStylesAndTransitions();
+					}
+
+					// Remove from tracking
+					this.allRelationInstances.delete(instance);
+				} catch (error) {
+					// Silently handle cleanup errors
+				}
+			}
+		});
+	}
+
+	/**
+	 * Clean up all relation instances
+	 */
+	cleanupAllRelationInstances() {
+		// Clean up current instances
+		if (this.relationInstances) {
+			this.cleanupRelationInstances(this.relationInstances);
+			this.relationInstances = null;
+		}
+
+		// Clean up previous instances
+		if (this.previousRelationInstances) {
+			this.cleanupRelationInstances(this.previousRelationInstances);
+			this.previousRelationInstances = null;
+		}
+
+		// Clean up any remaining tracked instances
+		if (this.allRelationInstances) {
+			this.allRelationInstances.forEach(instance => {
+				if (
+					instance &&
+					typeof instance.removePreviousStylesAndTransitions ===
+						'function'
+				) {
+					try {
+						instance.removePreviousStylesAndTransitions();
+					} catch (error) {
+						// Silently handle cleanup errors
+					}
+				}
+			});
+			this.allRelationInstances.clear();
+		}
 	}
 
 	// Returns responsive preview elements if present

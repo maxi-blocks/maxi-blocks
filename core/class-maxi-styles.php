@@ -557,25 +557,64 @@ class MaxiBlocks_Styles
 
     /**
      * Legacy function
-     * Check font url status code
+     * Check font url status code with caching
      */
     public function check_font_url($font_url)
     {
+        // OPTIMIZATION: Add static cache to avoid repeated HTTP requests
+        static $font_url_cache = [];
+
         $font_url = str_replace(' ', '+', $font_url);
 
-        $array = @get_headers($font_url);
+        // Check cache first
+        if (isset($font_url_cache[$font_url])) {
+            return $font_url_cache[$font_url];
+        }
 
-        if (!$array) {
+        // OPTIMIZATION: Try cURL first (often faster than get_headers)
+        if (function_exists('curl_init')) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $font_url);
+            curl_setopt($ch, CURLOPT_NOBODY, true); // HEAD request
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 1); // 1 second timeout
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1); // 1 second connection timeout
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Skip SSL verification for speed
+
+            $result = curl_exec($ch);
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            $is_valid = ($http_code == 200);
+            $font_url_cache[$font_url] = $is_valid;
+
+            return $is_valid;
+        }
+
+        // Fallback to get_headers if cURL not available
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'HEAD',
+                'timeout' => 1, // Reduced timeout
+                'ignore_errors' => true
+            ]
+        ]);
+
+        $headers = @get_headers($font_url, 0, $context);
+
+        if (!$headers) {
+            $font_url_cache[$font_url] = false;
             return false;
         }
 
-        $string = $array[0];
+        $string = $headers[0];
 
-        if (strpos($string, '200')) {
-            return true;
-        } else {
-            return false;
-        }
+        $result = strpos($string, '200') !== false;
+        $font_url_cache[$font_url] = $result;
+
+        return $result;
     }
 
     /**
@@ -586,7 +625,6 @@ class MaxiBlocks_Styles
      */
     public function enqueue_fonts($fonts, $name)
     {
-
         if (empty($fonts) || !is_array($fonts)) {
             return;
         }
@@ -609,7 +647,6 @@ class MaxiBlocks_Styles
         $use_bunny_fonts = (bool) get_option('bunny_fonts');
         $font_api_url = $use_bunny_fonts ? 'https://fonts.bunny.net' : 'https://fonts.googleapis.com';
 
-        $loaded_fonts = [];
         $consolidated_fonts = [];
 
         // First pass: consolidate fonts with multiple weights
@@ -1135,13 +1172,11 @@ class MaxiBlocks_Styles
      */
     public function process_content_frontend()
     {
-
         $post_id = $this->get_id();
 
         $content_meta_fonts = $this->get_content_meta_fonts_frontend($post_id, 'maxi-blocks-styles');
 
         if ($content_meta_fonts['meta'] !== null) {
-
             $meta_filtered = $this->filter_recursive($content_meta_fonts['meta']);
             $this->process_scripts($meta_filtered);
         }
@@ -1156,7 +1191,6 @@ class MaxiBlocks_Styles
      */
     private function get_content_meta_fonts_frontend($id, $content_key)
     {
-
         $data = $this->get_content_for_blocks_frontend($id);
 
         if (!empty($data) && isset($data['content']) && isset($data['meta']) && isset($data['fonts'])) {
@@ -1349,7 +1383,7 @@ class MaxiBlocks_Styles
      * @param string &$prev_styles
      * @param array &$active_custom_data_array
      */
-    public function process_block_frontend(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array, bool &$gutenberg_blocks_status, string $maxi_block_style = '')
+    public function process_block_frontend(array $block, array &$fonts, string &$styles, string &$prev_styles, array &$active_custom_data_array, bool &$gutenberg_blocks_status, string $maxi_block_style = '', array $blocks_data_cache = [])
     {
         global $wpdb;
 
@@ -1387,7 +1421,7 @@ class MaxiBlocks_Styles
         if (empty($props) || !isset($unique_id) || !$unique_id) {
             if (!empty($block['innerBlocks'])) {
                 foreach ($block['innerBlocks'] as $innerBlock) {
-                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style, $blocks_data_cache);
                 }
             } else {
                 return;
@@ -1395,20 +1429,13 @@ class MaxiBlocks_Styles
 
         }
 
-        $content_array_block = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                $unique_id
-            ),
-            ARRAY_A
-        );
-
-        $content_block = $content_array_block[0] ?? null;
+        // OPTIMIZATION: Use cached data instead of individual database query
+        $content_block = $blocks_data_cache[$unique_id] ?? null;
 
         if (!isset($content_block) || empty($content_block)) {
             if (!empty($block['innerBlocks'])) {
                 foreach ($block['innerBlocks'] as $innerBlock) {
-                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                    $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style, $blocks_data_cache);
                 }
             } else {
                 return;
@@ -1477,7 +1504,7 @@ class MaxiBlocks_Styles
         // Process inner blocks, if any
         if (!empty($block['innerBlocks'])) {
             foreach ($block['innerBlocks'] as $innerBlock) {
-                $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style);
+                $this->process_block_frontend($innerBlock, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, $maxi_block_style, $blocks_data_cache);
             }
         }
     }
@@ -1637,6 +1664,7 @@ class MaxiBlocks_Styles
         }
 
         $custom_template_parts_blocks = $this->get_parsed_custom_template_parts_blocks_frontend($blocks);
+
         if (!empty($custom_template_parts_blocks)) {
             $blocks = array_merge_recursive($blocks, $custom_template_parts_blocks);
         }
@@ -2005,12 +2033,60 @@ class MaxiBlocks_Styles
 
         $gutenberg_blocks_status = $current_style_cards && array_key_exists('gutenberg_blocks_status', $current_style_cards) && $current_style_cards['gutenberg_blocks_status'];
 
-        foreach ($blocks as $block) {
-            $this->process_block_frontend($block, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status);
+        // OPTIMIZATION: Collect all unique IDs first to do bulk database query
+        $unique_ids = $this->collect_unique_ids_from_blocks($blocks);
+        $blocks_data_cache = [];
+
+        if (!empty($unique_ids)) {
+            global $wpdb;
+            $placeholders = implode(',', array_fill(0, count($unique_ids), '%s'));
+            $blocks_data_results = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id IN ($placeholders)",
+                    ...$unique_ids
+                ),
+                ARRAY_A
+            );
+
+            // Index results by block_style_id for fast lookup
+            foreach ($blocks_data_results as $block_data) {
+                $blocks_data_cache[$block_data['block_style_id']] = $block_data;
+            }
         }
 
+        foreach ($blocks as $block) {
+            $this->process_block_frontend($block, $fonts, $styles, $prev_styles, $active_custom_data_array, $gutenberg_blocks_status, '', $blocks_data_cache);
+        }
 
         return [$styles, $prev_styles, $active_custom_data_array, $fonts];
+    }
+
+    /**
+     * Recursively collect all unique IDs from blocks for bulk database query
+     *
+     * @param array $blocks
+     * @return array
+     */
+    private function collect_unique_ids_from_blocks($blocks)
+    {
+        $unique_ids = [];
+
+        foreach ($blocks as $block) {
+            $props = $block['attrs'] ?? [];
+            $unique_id = $props['uniqueID'] ?? null;
+
+            if ($unique_id && str_starts_with($block['blockName'] ?? '', 'maxi-blocks/')) {
+                $unique_ids[] = $unique_id;
+            }
+
+            // Recursively process inner blocks
+            if (!empty($block['innerBlocks'])) {
+                $inner_ids = $this->collect_unique_ids_from_blocks($block['innerBlocks']);
+                $unique_ids = array_merge($unique_ids, $inner_ids);
+            }
+        }
+
+        return array_unique($unique_ids);
     }
 
 

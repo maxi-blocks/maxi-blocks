@@ -66,15 +66,18 @@ const withMaxiLoader = createHigherOrderComponent(
 			const [hasBeenConsolidated, setHasBeenConsolidated] =
 				useState(false);
 
-			const [canRender, setCanRender] = useState(
-				canBlockRender(uniqueID, clientId)
-			);
+			const initialCanRender = canBlockRender
+				? canBlockRender(uniqueID, clientId)
+				: false;
+			const [canRender, setCanRender] = useState(initialCanRender);
 
 			useEffect(() => {
 				if (canRender && hasBeenConsolidated) return;
 
 				const checkRender = () => {
-					const canRenderNow = canBlockRender(uniqueID, clientId);
+					const canRenderNow = canBlockRender
+						? canBlockRender(uniqueID, clientId)
+						: false;
 
 					if (canRenderNow && isPageLoaded) {
 						setCanRender(true);

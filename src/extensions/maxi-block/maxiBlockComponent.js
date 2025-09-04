@@ -172,20 +172,38 @@ class MaxiBlockComponent extends Component {
 			this.props.clientId
 		);
 
+		const templateModal = document.querySelector(
+			'.editor-post-template__swap-template-modal'
+		);
+
+		// Check if this block is actually inside a preview container
+		const blockElement = document.querySelector(
+			`[data-block="${this.props.clientId}"]`
+		);
+		const isInsidePreview =
+			blockElement &&
+			(blockElement.closest('.block-editor-block-preview__container') ||
+				blockElement.closest(
+					'.block-editor-block-patterns-list__list-item'
+				) ||
+				blockElement.closest(
+					'.edit-site-page-content .block-editor-block-preview__container'
+				));
+
+		// Only set as patterns preview if actually inside a preview container
 		if (
 			previewIframes.length > 0 &&
-			(!blockName ||
-				document.querySelector(
-					'.editor-post-template__swap-template-modal'
-				))
+			(!blockName || templateModal) &&
+			isInsidePreview
 		) {
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
 			return;
 		}
 
-		if (this.isPatternsPreview) return;
-
+		if (this.isPatternsPreview) {
+			return;
+		}
 		this.safeDispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Register this block with global cache for proper cleanup
@@ -239,6 +257,9 @@ class MaxiBlockComponent extends Component {
 			if (this.memoizedValues.size > 10) {
 				this.aggressiveCleanupCache();
 			}
+
+			// Also clean up stale DOM cache entries
+			this.cleanupStaleDOMCache();
 		}, this.CACHE_CLEANUP_INTERVAL);
 
 		// Track timeouts for proper cleanup
@@ -249,18 +270,43 @@ class MaxiBlockComponent extends Component {
 		// Track MutationObservers for proper cleanup
 		this.mutationObservers = new Set();
 		this.previewObservers = new Map(); // iframe -> observer mapping
+
+		// Track DOM references with validation and cleanup
+		this.domReferences = new Map();
+		this.domQueryCache = new Map(); // selector -> {element, timestamp}
+		this.DOM_CACHE_TTL = 30000; // 30 seconds cache TTL
+		this.fseInitialized = false; // Track FSE initialization status
 	}
 
 	updateDOMReferences() {
-		if (!this.editorIframe) {
-			this.editorIframe = document.querySelector(
-				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
-			);
+		// Clean up stale cache entries first
+		this.cleanupStaleDOMCache();
+
+		// Update editor iframe reference with validation
+		const editorIframeSelector =
+			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
+		if (!this.editorIframe || !this.isElementInDOM(this.editorIframe)) {
+			this.editorIframe = this.getCachedElement(editorIframeSelector);
+			this.setDOMReference('editorIframe', this.editorIframe);
 		}
-		if (!this.templateModal) {
-			this.templateModal = document.querySelector(
-				'.editor-post-template__swap-template-modal'
-			);
+
+		// Update template modal reference with validation
+		// Skip template modal detection in FSE to avoid interference
+		if (!getIsSiteEditor()) {
+			const templateModalSelector =
+				'.editor-post-template__swap-template-modal';
+			if (
+				!this.templateModal ||
+				!this.isElementInDOM(this.templateModal)
+			) {
+				this.templateModal = this.getCachedElement(
+					templateModalSelector
+				);
+				this.setDOMReference('templateModal', this.templateModal);
+			}
+		} else {
+			// In FSE, ensure templateModal is null
+			this.templateModal = null;
 		}
 	}
 
@@ -281,6 +327,9 @@ class MaxiBlockComponent extends Component {
 
 			// Set up an observer to handle iframe reloads
 			this.setupFSEIframeObserver();
+
+			// Mark FSE as initialized
+			this.fseInitialized = true;
 		}
 
 		const blocksIBRelations = this.safeSelect(
@@ -723,6 +772,9 @@ class MaxiBlockComponent extends Component {
 		// Clean up all MutationObservers
 		this.cleanupAllObservers();
 
+		// Clean up DOM references and cache
+		this.cleanupDOMReferences();
+
 		// Clear memoization and debounced functions
 		this.memoizedValues?.clear();
 		this.cacheAccessOrder?.clear();
@@ -819,8 +871,9 @@ class MaxiBlockComponent extends Component {
 		const { tabletPreview, mobilePreview } =
 			this.getPreviewElements(editorWrapper);
 		const previewTarget = tabletPreview ?? mobilePreview;
-		const postEditor = document?.body?.querySelector(
-			'.edit-post-visual-editor'
+		const postEditor = this.getCachedElement(
+			'.edit-post-visual-editor',
+			document.body
 		);
 		const responsiveWidth = postEditor.getAttribute(
 			'maxi-blocks-responsive-width'
@@ -1015,7 +1068,7 @@ class MaxiBlockComponent extends Component {
 			: 'pattern-preview-edit.jpg';
 
 		const defaultImgPath = `/wp-content/plugins/maxi-blocks/img/${imageName}`;
-		const linkElement = document.querySelector('#maxi-blocks-block-css');
+		const linkElement = this.getCachedElement('#maxi-blocks-block-css');
 		const href = linkElement?.getAttribute('href');
 		const pluginsPath = href?.substring(0, href?.lastIndexOf('/build'));
 		const imgPath = pluginsPath
@@ -2054,6 +2107,200 @@ class MaxiBlockComponent extends Component {
 	}
 
 	/**
+	 * Get a DOM element with caching and validation
+	 * @param {string}           selector             - CSS selector
+	 * @param {Document|Element} [context=document]   - Search context
+	 * @param {boolean}          [forceRefresh=false] - Force refresh of cached element
+	 * @returns {Element|null} The found element or null
+	 */
+	getCachedElement(selector, context = document, forceRefresh = false) {
+		// Safety check - ensure cache is initialized
+		if (!this.domQueryCache) {
+			return context.querySelector(selector);
+		}
+
+		// Don't cache FSE-critical selectors to avoid interference
+		const fseSelectors = [
+			'iframe.edit-site-visual-editor__editor-canvas',
+			'.edit-site-visual-editor',
+			'.editor-post-template__swap-template-modal',
+		];
+
+		if (fseSelectors.some(fseSelector => selector.includes(fseSelector))) {
+			return context.querySelector(selector);
+		}
+
+		const now = Date.now();
+		const cacheKey = `${selector}:${
+			context === document ? 'document' : 'context'
+		}`;
+
+		// Check cache if not forcing refresh
+		if (!forceRefresh && this.domQueryCache.has(cacheKey)) {
+			const cached = this.domQueryCache.get(cacheKey);
+
+			// Check if cache is still valid and element still exists in DOM
+			if (
+				now - cached.timestamp < this.DOM_CACHE_TTL &&
+				cached.element &&
+				this.isElementInDOM(cached.element)
+			) {
+				return cached.element;
+			}
+
+			// Cache is stale or element is gone, remove it
+			this.domQueryCache.delete(cacheKey);
+		}
+
+		// Query fresh element
+		const element = context.querySelector(selector);
+
+		// Cache the result (even if null)
+		this.domQueryCache.set(cacheKey, {
+			element,
+			timestamp: now,
+			selector,
+		});
+
+		return element;
+	}
+
+	/**
+	 * Check if an element is still in the DOM
+	 * @param {Element} element - Element to check
+	 * @returns {boolean} True if element is in DOM
+	 */
+	isElementInDOM(element) {
+		return element && element.isConnected && document.contains(element);
+	}
+
+	/**
+	 * Set a tracked DOM reference with validation
+	 * @param {string}       key     - Reference key
+	 * @param {Element|null} element - DOM element to track
+	 */
+	setDOMReference(key, element) {
+		// Safety check - ensure references map is initialized
+		if (!this.domReferences) {
+			return;
+		}
+
+		if (element && !this.isElementInDOM(element)) {
+			// Don't store invalid references
+			return;
+		}
+
+		this.domReferences.set(key, {
+			element,
+			timestamp: Date.now(),
+			selector: element ? this.getElementSelector(element) : null,
+		});
+	}
+
+	/**
+	 * Get a tracked DOM reference with validation
+	 * @param {string}  key                - Reference key
+	 * @param {boolean} [autoRefresh=true] - Auto refresh if stale
+	 * @returns {Element|null} The DOM element or null
+	 */
+	getDOMReference(key, autoRefresh = true) {
+		const ref = this.domReferences.get(key);
+
+		if (!ref) {
+			return null;
+		}
+
+		// Check if element is still valid
+		if (ref.element && this.isElementInDOM(ref.element)) {
+			return ref.element;
+		}
+
+		// Element is stale, try to refresh if requested
+		if (autoRefresh && ref.selector) {
+			const freshElement = document.querySelector(ref.selector);
+			if (freshElement) {
+				this.setDOMReference(key, freshElement);
+				return freshElement;
+			}
+		}
+
+		// Remove stale reference
+		this.domReferences.delete(key);
+		return null;
+	}
+
+	/**
+	 * Generate a selector for an element (best effort)
+	 * @param {Element} element - Element to get selector for
+	 * @returns {string} CSS selector
+	 */
+	getElementSelector(element) {
+		if (element.id) {
+			return `#${element.id}`;
+		}
+
+		if (element.className) {
+			const classes = element.className.split(' ').filter(c => c.trim());
+			if (classes.length > 0) {
+				return `.${classes.join('.')}`;
+			}
+		}
+
+		return element.tagName.toLowerCase();
+	}
+
+	/**
+	 * Clean up all DOM references and query cache
+	 */
+	cleanupDOMReferences() {
+		// Clear all cached DOM references
+		if (this.domReferences) {
+			this.domReferences.clear();
+		}
+		if (this.domQueryCache) {
+			this.domQueryCache.clear();
+		}
+
+		// Clear specific references
+		this.editorIframe = null;
+		this.templateModal = null;
+	}
+
+	/**
+	 * Clean up stale DOM cache entries
+	 */
+	cleanupStaleDOMCache() {
+		// Safety check - ensure caches are initialized
+		if (!this.domQueryCache || !this.domReferences) {
+			return;
+		}
+
+		// Don't clean cache during FSE initialization to avoid interference
+		if (getIsSiteEditor() && !this.fseInitialized) {
+			return;
+		}
+
+		const now = Date.now();
+
+		// Clean up query cache
+		this.domQueryCache.forEach((cached, key) => {
+			if (
+				now - cached.timestamp > this.DOM_CACHE_TTL ||
+				(cached.element && !this.isElementInDOM(cached.element))
+			) {
+				this.domQueryCache.delete(key);
+			}
+		});
+
+		// Clean up DOM references
+		this.domReferences.forEach((ref, key) => {
+			if (ref.element && !this.isElementInDOM(ref.element)) {
+				this.domReferences.delete(key);
+			}
+		});
+	}
+
+	/**
 	 * Safe selector that tracks subscriptions for cleanup
 	 * @param {string} storeName    - Store name (e.g., 'core/block-editor')
 	 * @param {string} selectorName - Selector name (e.g., 'getBlockName')
@@ -2135,11 +2382,13 @@ class MaxiBlockComponent extends Component {
 	// Add new method for FSE iframe styles
 	addMaxiFSEIframeStyles() {
 		// Get the FSE iframe
-		const fseIframe = document.querySelector(
+		const fseIframe = this.getCachedElement(
 			'iframe.edit-site-visual-editor__editor-canvas'
 		);
 
-		if (!fseIframe || !fseIframe.contentDocument) return;
+		if (!fseIframe || !fseIframe.contentDocument) {
+			return;
+		}
 
 		// Check if the iframe-specific style already exists
 		const existingIframeStyle = fseIframe.contentDocument.getElementById(

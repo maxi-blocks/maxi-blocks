@@ -98,10 +98,14 @@ const BlockStylesSaver = () => {
 
 	// In FSE, when the template part is changed, we need to set the `isPageLoaded` to false to ensure
 	// a good UX as with the `isPageLoaded` equal to false the load of the editor is smoother.
+	// However, we need to prevent infinite loops by only resetting when hasTemplateChanged actually changes
 	useEffect(() => {
-		if (getIsSiteEditor() && isPageLoaded)
+		// Only reset isPageLoaded if we're in FSE, page is loaded, AND hasTemplateChanged is true
+		// This prevents the infinite loop where setting isPageLoaded=false triggers this effect again
+		if (getIsSiteEditor() && isPageLoaded && hasTemplateChanged) {
 			dispatch('maxiBlocks').setIsPageLoaded(false);
-	}, [hasTemplateChanged, isPageLoaded]);
+		}
+	}, [hasTemplateChanged]); // Only depend on hasTemplateChanged, not isPageLoaded
 
 	useLayoutEffect(() => {
 		if (!isPageLoaded) {

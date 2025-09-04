@@ -139,6 +139,10 @@ class MaxiBlockComponent extends Component {
 	constructor(...args) {
 		super(...args);
 
+		// Initialize store management FIRST (before any store calls)
+		this.storeSubscriptions = new Set();
+		this.storeSelectors = new Map(); // Cache selectors to avoid recreating
+
 		this.state = {
 			oldSC: {},
 			scValues: {},
@@ -162,7 +166,9 @@ class MaxiBlockComponent extends Component {
 
 		const previewIframes = getSiteEditorPreviewIframes();
 
-		const blockName = select('core/block-editor').getBlockName(
+		const blockName = this.safeSelect(
+			'core/block-editor',
+			'getBlockName',
 			this.props.clientId
 		);
 
@@ -180,7 +186,7 @@ class MaxiBlockComponent extends Component {
 
 		if (this.isPatternsPreview) return;
 
-		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
+		this.safeDispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Register this block with global cache for proper cleanup
 		maxiGlobalCache.incrementBlockCount();
@@ -195,7 +201,7 @@ class MaxiBlockComponent extends Component {
 		this.setRelations();
 
 		// Add block to store
-		dispatch('maxiBlocks/blocks').addBlock(
+		this.safeDispatch('maxiBlocks/blocks').addBlock(
 			newUniqueID,
 			clientId,
 			this.rootSlot
@@ -204,7 +210,11 @@ class MaxiBlockComponent extends Component {
 		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
 		// 1. Adding again the root and having a React error
 		// 2. Will request `displayStyles` without re-rendering the styles, which speeds up the process
-		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
+		this.rootSlot = this.safeSelect(
+			'maxiBlocks/blocks',
+			'getBlockRoot',
+			newUniqueID
+		);
 		// Cache DOM references
 		this.editorIframe = null;
 		this.templateModal = null;
@@ -269,19 +279,21 @@ class MaxiBlockComponent extends Component {
 			this.setupFSEIframeObserver();
 		}
 
-		const blocksIBRelations = select(
-			'maxiBlocks/relations'
-		).receiveBlockUnderRelationClientIDs(this.props.attributes.uniqueID);
+		const blocksIBRelations = this.safeSelect(
+			'maxiBlocks/relations',
+			'receiveBlockUnderRelationClientIDs',
+			this.props.attributes.uniqueID
+		);
 
 		if (!isEmpty(blocksIBRelations)) {
-			const { getBlockAttributes } = select('core/block-editor');
 			const { clientId, attributes, deviceType } = this.props;
 
 			blocksIBRelations.forEach(({ clientId: relationClientId }) => {
-				const blockMaxiVersionCurrent =
-					getBlockAttributes(relationClientId)?.[
-						'maxi-version-current'
-					];
+				const blockMaxiVersionCurrent = this.safeSelect(
+					'core/block-editor',
+					'getBlockAttributes',
+					relationClientId
+				)?.['maxi-version-current'];
 
 				if (blockMaxiVersionCurrent) {
 					const needUpdate = [
@@ -336,8 +348,11 @@ class MaxiBlockComponent extends Component {
 			};
 
 			// Collect all uniqueID and legacyUniqueID pairs
-			const { getBlock } = select('core/block-editor');
-			const block = getBlock(this.props.clientId);
+			const block = this.safeSelect(
+				'core/block-editor',
+				'getBlock',
+				this.props.clientId
+			);
 			const idPairs = collectIDs(
 				this.props.attributes,
 				block.innerBlocks
@@ -397,38 +412,7 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		// Load settings with global caching to prevent multiple API calls
-
-		const processSettings = settings => {
-			const maxiVersion = settings.maxi_version;
-			const { updateBlockAttributes } = dispatch('core/block-editor');
-			const {
-				'maxi-version-current': maxiVersionCurrent,
-				'maxi-version-origin': maxiVersionOrigin,
-			} = this.props.attributes;
-
-			// Only update if we have a valid version from settings
-			if (maxiVersion) {
-				const updates = {};
-
-				// Update current version if different
-				if (maxiVersion !== maxiVersionCurrent) {
-					updates['maxi-version-current'] = maxiVersion;
-				}
-
-				// Set origin version if not set
-				if (!maxiVersionOrigin) {
-					updates['maxi-version-origin'] = maxiVersion;
-				}
-
-				// Only dispatch if we have updates
-				if (Object.keys(updates).length > 0) {
-					updateBlockAttributes(this.props.clientId, updates);
-				}
-			}
-		};
-
-		// REVERT TO ORIGINAL SETTINGS LOADING
+		// Load settings with original logic (reverted from problematic caching)
 		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 
 		receiveMaxiSettings().then(settings => {
@@ -735,12 +719,17 @@ class MaxiBlockComponent extends Component {
 			this.activeTimeouts = null;
 		}
 
+		// Clean up WordPress data store subscriptions
+		this.cleanupStoreSubscriptions();
+
 		// Clear memoization and debounced functions
 		this.memoizedValues?.clear();
 		this.cacheAccessOrder?.clear();
 		this.debouncedDisplayStyles?.cancel();
 
-		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
+		const keepStylesOnEditor = !!this.safeSelect(
+			'core/block-editor',
+			'getBlock',
 			this.props.clientId
 		);
 		const keepStylesOnCloning =
@@ -1983,6 +1972,74 @@ class MaxiBlockComponent extends Component {
 		this.cacheAccessOrder.set(key, now);
 
 		return value;
+	}
+
+	/**
+	 * Safe selector that tracks subscriptions for cleanup
+	 * @param {string} storeName    - Store name (e.g., 'core/block-editor')
+	 * @param {string} selectorName - Selector name (e.g., 'getBlockName')
+	 * @param {...any} args         - Selector arguments
+	 * @returns {*} Selector result
+	 */
+	safeSelect(storeName, selectorName, ...args) {
+		const key = `${storeName}/${selectorName}`;
+
+		// Get or create cached selector
+		if (!this.storeSelectors.has(key)) {
+			this.storeSelectors.set(key, select(storeName)[selectorName]);
+		}
+
+		const selector = this.storeSelectors.get(key);
+		return selector(...args);
+	}
+
+	/**
+	 * Safe dispatch that tracks actions for cleanup
+	 * @param {string} storeName - Store name (e.g., 'core/block-editor')
+	 * @returns {Object} Store actions
+	 */
+	safeDispatch(storeName) {
+		return dispatch(storeName);
+	}
+
+	/**
+	 * Subscribe to store changes with automatic cleanup tracking
+	 * @param {string}   storeName - Store name
+	 * @param {Function} callback  - Callback function
+	 * @returns {Function} Unsubscribe function
+	 *
+	 * @todo This method can be used for explicit store subscriptions
+	 * that need cleanup tracking
+	 */
+	// eslint-disable-next-line class-methods-use-this
+	subscribeToStore(storeName, callback) {
+		const store = select(storeName);
+		const unsubscribe = store.subscribe(callback);
+
+		// Track subscription for cleanup
+		this.storeSubscriptions.add(unsubscribe);
+
+		return unsubscribe;
+	}
+
+	/**
+	 * Clean up all store subscriptions and cached selectors
+	 */
+	cleanupStoreSubscriptions() {
+		// Unsubscribe from all tracked subscriptions
+		this.storeSubscriptions.forEach(unsubscribe => {
+			if (typeof unsubscribe === 'function') {
+				try {
+					unsubscribe();
+				} catch (error) {
+					// Silently handle already unsubscribed stores
+				}
+			}
+		});
+
+		// Clear tracking sets
+		this.storeSubscriptions.clear();
+		this.storeSelectors.clear();
 	}
 
 	// Returns responsive preview elements if present

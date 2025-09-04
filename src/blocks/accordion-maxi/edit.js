@@ -73,7 +73,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes } = this.props;
+		const { attributes, insertInlineStyles, cleanInlineStyles } =
+			this.props;
 		const {
 			uniqueID,
 			accordionLayout,
@@ -82,20 +83,14 @@ class edit extends MaxiBlockComponent {
 			animationDuration,
 		} = attributes;
 
-		const inlineStylesTargets = {
-			headerLine:
-				':scope > .maxi-pane-block > .maxi-pane-block__header > .maxi-pane-block__header-line-container > .maxi-pane-block__header-line',
-			contentLine:
-				':scope > .maxi-pane-block > .maxi-pane-block__content > .maxi-pane-block__content-line-container > .maxi-pane-block__content-line',
-		};
-
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];
 
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				inlineStylesTargets={inlineStylesTargets}
+				insertInlineStyles={insertInlineStyles}
+				cleanInlineStyles={cleanInlineStyles}
 				setShowLoader={value => this.setState({ showLoader: value })}
 			/>,
 			<Toolbar

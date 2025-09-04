@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { getAttrKeyWithoutBreakpoint } from '@extensions/styles';
 import { isEmpty, camelCase } from 'lodash';
 
 const modifyStyleElement = (styleElement, modifiedTarget, styleObj) => {
@@ -105,4 +106,50 @@ const handleCleanInlineStyles = (
 	styleObjKeys.current = [];
 };
 
-export { handleInsertInlineStyles, handleCleanInlineStyles };
+/**
+ * @param {*}       changedAttributes
+ * @param {*}       attributes
+ * @param {*}       attributesToStyles
+ * @param {boolean} skipStyles         - If true, skip the styleObj and return only the target
+ * @returns {Array<Record<string, object>>} - Array of objects with styleObj, target, isMultiplySelector, pseudoElement
+ */
+const getInlineStylesAndTargetsFromAttributes = ({
+	changedAttributes,
+	attributesToStyles,
+	skipStyles = false,
+	inlineOptions = {},
+}) => {
+	return Object.entries(changedAttributes).reduce((acc, [key, value]) => {
+		const pureKey = getAttrKeyWithoutBreakpoint(key);
+
+		if (attributesToStyles[pureKey]) {
+			const { property, target, isMultiplySelector, pseudoElement } =
+				attributesToStyles[pureKey];
+			const { unit } = inlineOptions;
+			const current = {
+				styleObj: {},
+				target,
+				isMultiplySelector,
+				pseudoElement,
+			};
+
+			if (skipStyles) {
+				acc.push(current);
+				return acc;
+			}
+
+			const style = unit ? `${value}${unit}` : value;
+			current.styleObj[property] = style;
+
+			acc.push(current);
+		}
+
+		return acc;
+	}, []);
+};
+
+export {
+	handleInsertInlineStyles,
+	handleCleanInlineStyles,
+	getInlineStylesAndTargetsFromAttributes,
+};

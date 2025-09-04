@@ -432,7 +432,7 @@ const DividerControl = props => {
 								attributes: props,
 								isHover,
 							})}
-							onChangeValue={val =>
+							onChangeValue={(val, inline) =>
 								onChange({
 									[getAttributeKey(
 										'divider-width',
@@ -440,6 +440,9 @@ const DividerControl = props => {
 										prefix,
 										breakpoint
 									)]: val,
+									meta: {
+										inline,
+									},
 								})
 							}
 							onReset={() =>

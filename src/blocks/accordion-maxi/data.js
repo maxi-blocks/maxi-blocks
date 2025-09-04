@@ -3,10 +3,7 @@
  */
 import { createSelectors } from '@extensions/styles/custom-css';
 import { createIconTransitions } from '@extensions/styles';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 import { targets as paneTargets } from '@blocks/pane-maxi/data';
 
@@ -424,12 +421,35 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 
+const inlineStylesTargets = {
+	headerLine:
+		'> .maxi-pane-block > .maxi-pane-block__header > .maxi-pane-block__header-line-container > .maxi-pane-block__header-line',
+	contentLine:
+		'> .maxi-pane-block > .maxi-pane-block__content > .maxi-pane-block__content-line-container > .maxi-pane-block__content-line',
+};
+
+const attributesToStyles = {
+	'header-divider-width': {
+		target: inlineStylesTargets.headerLine,
+		property: 'width',
+		unit: true,
+		isMultiplySelector: true,
+	},
+	'content-divider-width': {
+		target: inlineStylesTargets.contentLine,
+		property: 'width',
+		unit: true,
+		isMultiplySelector: true,
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	attributesToStyles,
 };
 
 export {
@@ -438,5 +458,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

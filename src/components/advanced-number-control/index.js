@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
 import { useInstanceId, useDebounce } from '@wordpress/compose';
-import { useEffect, useState, useRef } from '@wordpress/element';
+import { useEffect, useState, useRef, useCallback } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -93,8 +93,6 @@ const AdvancedNumberControl = props => {
 		defaultValue = '',
 		value,
 		onChangeValue,
-		onChangeInline,
-		cleanInline,
 		disableReset = false,
 		disableRange = false,
 		enableAuto = false,
@@ -195,18 +193,18 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	const handleChange = useDebounce(() => {
-		if (onChangeValue) {
-			const val =
-				latestValueRef.current === '' || optionType === 'string'
-					? latestValueRef.current.toString()
-					: +latestValueRef.current;
-			onChangeValue(val);
-		}
-		if (cleanInline) {
-			cleanInline();
-		}
-	}, 300);
+	const handleChange = useDebounce(
+		useCallback((onChangeValue, latestValueRef, optionType) => {
+			if (onChangeValue) {
+				const val =
+					latestValueRef.current === '' || optionType === 'string'
+						? latestValueRef.current.toString()
+						: +latestValueRef.current;
+				onChangeValue(val);
+			}
+		}, []),
+		300
+	);
 
 	const handleInputChange = e => {
 		let value = getNewValueFromEmpty(e);
@@ -232,15 +230,13 @@ const AdvancedNumberControl = props => {
 			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
 
-		if (onChangeInline) {
-			const val =
-				result === '' || optionType === 'string'
-					? result.toString()
-					: +result;
-			onChangeInline(val, unit);
-		}
+		const val =
+			result === '' || optionType === 'string'
+				? result.toString()
+				: +result;
+		onChangeValue?.(val, { isInline: true, unit });
 
-		handleChange(onChangeValue, latestValueRef, cleanInline, optionType);
+		handleChange(onChangeValue, latestValueRef, optionType);
 	};
 
 	const rawPreferredValues = [
@@ -369,14 +365,14 @@ const AdvancedNumberControl = props => {
 								setCurrentValue(result);
 								latestValueRef.current = result;
 
-								if (onChangeInline) {
-									onChangeInline(result, unit);
-								}
+								onChangeValue?.(result, {
+									isInline: true,
+									unit,
+								});
 
 								handleChange(
 									onChangeValue,
 									latestValueRef,
-									cleanInline,
 									optionType
 								);
 							}}

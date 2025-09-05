@@ -918,6 +918,14 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getOrCreateStyleElement(target, uniqueID) {
+		// Safety check for target document
+		if (!target || typeof target.getElementById !== 'function') {
+			console.warn(
+				'MaxiBlocks: Invalid target document in getOrCreateStyleElement, falling back to main document'
+			);
+			target = document;
+		}
+
 		const styleId = `maxi-blocks__styles--${uniqueID}`;
 		let styleElement = target.getElementById(styleId);
 
@@ -1715,9 +1723,16 @@ class MaxiBlockComponent extends Component {
 			return this.memoizedValues.get(cacheKey);
 		}
 
-		const target = isSiteEditor
-			? getSiteEditorIframe()
-			: iframe?.contentDocument || document;
+		let target;
+		if (isSiteEditor) {
+			target = getSiteEditorIframe();
+			// Fallback to document if FSE iframe is not available
+			if (!target) {
+				target = document;
+			}
+		} else {
+			target = iframe?.contentDocument || document;
+		}
 
 		// Set cache with access time tracking
 		this.memoizedValues.set(cacheKey, target);
@@ -2019,59 +2034,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	/**
-	 * Creates a timeout that is automatically tracked for cleanup
-	 * @param {Function} callback - Function to execute
-	 * @param {number}   delay    - Delay in milliseconds
-	 * @returns {number} Timeout ID
-	 *
-	 * @todo This method can be used to replace direct setTimeout calls
-	 * throughout the codebase for better timeout management
-	 */
-	// eslint-disable-next-line class-methods-use-this
-	createTrackedTimeout(callback, delay) {
-		const timeoutId = setTimeout(() => {
-			// Remove from tracking when executed
-			this.activeTimeouts?.delete(timeoutId);
-			callback();
-		}, delay);
-
-		// Track the timeout for cleanup
-		this.activeTimeouts?.add(timeoutId);
-
-		return timeoutId;
-	}
-
-	/**
-	 * Cache-aware getter with automatic cleanup and LRU tracking
-	 * @param {string}   key         - Cache key
-	 * @param {Function} valueGetter - Function to get value if not cached
-	 * @returns {*} Cached or computed value
-	 *
-	 * @todo This method can be used to replace direct memoizedValues access
-	 * throughout the codebase for better cache management
-	 */
-	// eslint-disable-next-line class-methods-use-this
-	getCachedValue(key, valueGetter) {
-		const now = Date.now();
-
-		// Cleanup cache if needed
-		this.cleanupCache();
-
-		if (this.memoizedValues.has(key)) {
-			// Update access time for LRU tracking
-			this.cacheAccessOrder.set(key, now);
-			return this.memoizedValues.get(key);
-		}
-
-		// Compute and cache the value
-		const value = valueGetter();
-		this.memoizedValues.set(key, value);
-		this.cacheAccessOrder.set(key, now);
-
-		return value;
-	}
-
-	/**
 	 * Create a tracked MutationObserver that will be automatically cleaned up
 	 * @param {Function} callback     - Observer callback function
 	 * @param {string}   [observerId] - Optional ID for the observer
@@ -2228,38 +2190,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	/**
-	 * Get a tracked DOM reference with validation
-	 * @param {string}  key                - Reference key
-	 * @param {boolean} [autoRefresh=true] - Auto refresh if stale
-	 * @returns {Element|null} The DOM element or null
-	 */
-	getDOMReference(key, autoRefresh = true) {
-		const ref = this.domReferences.get(key);
-
-		if (!ref) {
-			return null;
-		}
-
-		// Check if element is still valid
-		if (ref.element && this.isElementInDOM(ref.element)) {
-			return ref.element;
-		}
-
-		// Element is stale, try to refresh if requested
-		if (autoRefresh && ref.selector) {
-			const freshElement = document.querySelector(ref.selector);
-			if (freshElement) {
-				this.setDOMReference(key, freshElement);
-				return freshElement;
-			}
-		}
-
-		// Remove stale reference
-		this.domReferences.delete(key);
-		return null;
-	}
-
-	/**
 	 * Generate a selector for an element (best effort)
 	 * @param {Element} element - Element to get selector for
 	 * @returns {string} CSS selector
@@ -2356,26 +2286,6 @@ class MaxiBlockComponent extends Component {
 	 */
 	safeDispatch(storeName) {
 		return dispatch(storeName);
-	}
-
-	/**
-	 * Subscribe to store changes with automatic cleanup tracking
-	 * @param {string}   storeName - Store name
-	 * @param {Function} callback  - Callback function
-	 * @returns {Function} Unsubscribe function
-	 *
-	 * @todo This method can be used for explicit store subscriptions
-	 * that need cleanup tracking
-	 */
-	// eslint-disable-next-line class-methods-use-this
-	subscribeToStore(storeName, callback) {
-		const store = select(storeName);
-		const unsubscribe = store.subscribe(callback);
-
-		// Track subscription for cleanup
-		this.storeSubscriptions.add(unsubscribe);
-
-		return unsubscribe;
 	}
 
 	/**
@@ -2539,6 +2449,9 @@ class MaxiBlockComponent extends Component {
 
 	// Add new method for FSE iframe styles
 	addMaxiFSEIframeStyles() {
+		// Only proceed if we're in FSE
+		if (!getIsSiteEditor()) return;
+
 		// Get the FSE iframe
 		const fseIframe = this.getCachedElement(
 			'iframe.edit-site-visual-editor__editor-canvas'
@@ -2568,6 +2481,50 @@ class MaxiBlockComponent extends Component {
 
 			// Append style to iframe's head
 			fseIframe.contentDocument.head.appendChild(iframeStyles);
+
+			// Copy Maxi CSS variables to FSE iframe
+			this.copyMaxiCSSVariablesToIframe(fseIframe);
+		}
+	}
+
+	/**
+	 * Copy MaxiBlocks CSS variables to FSE iframe
+	 * @param {HTMLIFrameElement} fseIframe - FSE iframe element
+	 */
+	copyMaxiCSSVariablesToIframe(fseIframe) {
+		if (!fseIframe || !fseIframe.contentDocument) return;
+
+		// Check if variables are already copied
+		const existingVariables = fseIframe.contentDocument.getElementById(
+			'maxi-blocks-fse-spinners'
+		);
+
+		if (!existingVariables) {
+			// Create style element for CSS variables
+			const variablesStyle =
+				fseIframe.contentDocument.createElement('style');
+			variablesStyle.id = 'maxi-blocks-fse-spinners';
+
+			// Add essential CSS variables and spinner animations for loaders
+			variablesStyle.textContent = `
+				:root {
+					--maxi-primary-color: #2c8a46; /* Fresh lime green */
+				}
+				.maxi-puff-loader span {
+					height: 40px !important;
+					width: 40px !important;
+				}
+				@keyframes react-spinners-PuffLoader-puff-1 {
+					0% { transform: scale(0); }
+					100% { transform: scale(1); }
+				}
+				@keyframes react-spinners-PuffLoader-puff-2 {
+					0% { opacity: 1; }
+					100% { opacity: 0; }
+				}
+			`;
+
+			fseIframe.contentDocument.head.appendChild(variablesStyle);
 		}
 	}
 

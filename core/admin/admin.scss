@@ -1506,7 +1506,8 @@ body.site-editor-php
 		margin: 16px 0;
 		font-size: 14px;
 
-		&.success {
+		&.success,
+		&.maxi-license-success {
 			background: #d4edda;
 			color: #155724;
 			border: 1px solid #c3e6cb;

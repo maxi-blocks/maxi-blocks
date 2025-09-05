@@ -126,10 +126,12 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 						validationMessage = window.localization.invalid_api_key;
 						break;
 					case 'RefererNotAllowedError':
-						validationMessage = window.localization.referer_not_allowed;
+						validationMessage =
+							window.localization.referer_not_allowed;
 						break;
 					case 'InvalidCharactersError':
-						validationMessage = window.localization.invalid_characters;
+						validationMessage =
+							window.localization.invalid_characters;
 						break;
 					case 'ServerError':
 						validationMessage = window.localization.server_error;
@@ -938,7 +940,14 @@ document.addEventListener('DOMContentLoaded', function () {
 				if (authResult && authResult.error) {
 					// Handle specific errors like seat limit
 					console.error(
-						`Authentication error: ${authResult.error_message}`
+						JSON.stringify({
+							message:
+								'MaxiBlocks Email Auth JS: Authentication error',
+							email,
+							trigger,
+							errorMessage: authResult.error_message,
+							errorCode: authResult.error_code,
+						})
 					);
 
 					// Stop auth checking on error
@@ -947,8 +956,19 @@ document.addEventListener('DOMContentLoaded', function () {
 					showMessage(authResult.error_message, true);
 					return false;
 				}
+
+				// If we get here, authentication failed for unknown reasons
 			} catch (error) {
-				console.error('Auth check error:', error);
+				console.error(
+					JSON.stringify({
+						message:
+							'MaxiBlocks Email Auth JS: Auth check exception',
+						email,
+						trigger,
+						error: error.message,
+						stack: error.stack,
+					})
+				);
 			} finally {
 				isCheckingAuth = false;
 			}
@@ -1014,11 +1034,17 @@ document.addEventListener('DOMContentLoaded', function () {
 					try {
 						const cookieData = JSON.parse(value);
 						authKey = cookieData[email];
+
 						break;
 					} catch (e) {
 						console.error(
-							'MaxiBlocks Email Auth JS: Error parsing cookie:',
-							e
+							JSON.stringify({
+								message:
+									'MaxiBlocks Email Auth JS: Error parsing cookie',
+								email,
+								error: e.message,
+								cookieValue: value,
+							})
 						);
 					}
 				}
@@ -1026,8 +1052,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			if (!authKey) {
 				console.error(
-					'MaxiBlocks Email Auth JS: No auth key found for email:',
-					email
+					JSON.stringify({
+						message:
+							'MaxiBlocks Email Auth JS: No auth key found for email',
+						email,
+					})
 				);
 				return false;
 			}
@@ -1049,8 +1078,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			if (!response.ok) {
 				console.error(
-					'MaxiBlocks Email Auth JS: API response not ok:',
-					response.status
+					JSON.stringify({
+						message:
+							'MaxiBlocks Email Auth JS: API response not ok',
+						email,
+						status: response.status,
+						statusText: response.statusText,
+					})
 				);
 				return false;
 			}
@@ -1060,6 +1094,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (data && data.success) {
 				if (data.data.is_authenticated) {
 					// User is fully authenticated (both subscription valid and logged into Appwrite)
+
 					return {
 						success: true,
 						user_name: data.data.user_name,
@@ -1085,7 +1120,9 @@ document.addEventListener('DOMContentLoaded', function () {
 					// Handle specific errors like seat limit
 					console.error(
 						JSON.stringify({
-							message: 'MaxiBlocks Email Auth JS: ERROR response',
+							message:
+								'MaxiBlocks Email Auth JS: ERROR response from server',
+							email,
 							errorCode: data.data.error_code,
 							errorMessage: data.data.error_message,
 						})
@@ -1102,6 +1139,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					JSON.stringify({
 						message:
 							'MaxiBlocks Email Auth JS: Response unsuccessful or malformed',
+						email,
 						responseSuccess: data?.success,
 						responseData: data,
 					})
@@ -1112,7 +1150,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		} catch (error) {
 			console.error(
 				JSON.stringify({
-					message: 'MaxiBlocks Email Auth JS: Exception caught',
+					message:
+						'MaxiBlocks Email Auth JS: Exception caught in checkEmailAuthentication',
+					email,
 					error: error.message,
 					stack: error.stack,
 				})

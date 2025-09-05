@@ -848,7 +848,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $content .= '<div class="maxi-license-input-group">';
                 $content .= '<input type="text" id="maxi-network-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Network purchase code', 'maxi-blocks') . '" />';
                 $content .= '<p class="maxi-license-help-text">' . __('Enter a purchase code to activate Pro access for the entire network.', 'maxi-blocks') . '</p>';
-                $content .= '<p class="maxi-license-help-text">' . __('Note: only for purchase codes, not for MaxiBlocks email activations or MaxiBlocks license key activations. Please activate your MaxiBlocks license on each sub-site separately.', 'maxi-blocks') . '</p>';
+                $content .= '<p class="maxi-license-help-text">' . __('Note: Network licensing only supports purchase codes from marketplaces. MaxiBlocks email accounts and MaxiBlocks license keys must be activated on each sub-site separately.', 'maxi-blocks') . '</p>';
                 $content .= '</div>';
 
                 $content .= '<div class="maxi-license-actions">';
@@ -2394,16 +2394,36 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 // Check if this is a MaxiBlocks license and add multisite notice
                 $is_maxiblocks_license = false;
-                if (!empty($current_license_data)) {
+
+                if ($license_source === 'network') {
+                    // Check network license data
+                    $network_license_data = get_site_option('maxi_pro_network', '');
+                    if (!empty($network_license_data)) {
+                        $license_array = json_decode($network_license_data, true);
+                        if (is_array($license_array)) {
+                            foreach ($license_array as $key => $license) {
+                                if (isset($license['status']) && $license['status'] === 'yes') {
+                                    // Check for email auth type only (network purchase codes don't have multisite limitations)
+                                    $auth_type = isset($license['auth_type']) ? $license['auth_type'] : '';
+
+                                    if ($auth_type === 'email') {
+                                        $is_maxiblocks_license = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } elseif (!empty($current_license_data)) {
+                    // Check site-level license data
                     $license_array = json_decode($current_license_data, true);
                     if (is_array($license_array)) {
                         foreach ($license_array as $key => $license) {
                             if (isset($license['status']) && $license['status'] === 'yes') {
-                                // Check for email auth type OR maxiblocks marketplace
+                                // Check for email auth type only (MaxiBlocks license keys are treated as purchase codes)
                                 $auth_type = isset($license['auth_type']) ? $license['auth_type'] : '';
-                                $marketplace = isset($license['marketplace']) ? $license['marketplace'] : '';
 
-                                if ($auth_type === 'email' || $marketplace === 'maxiblocks') {
+                                if ($auth_type === 'email') {
                                     $is_maxiblocks_license = true;
                                     break;
                                 }
@@ -2479,9 +2499,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Pro user email / purchase code / license key', 'maxi-blocks') . '" />';
                     $content .= '<p class="maxi-license-help-text">' . sprintf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>') . '</p>';
 
-                    // Add multisite notice if this is a multisite installation
+                    // Add multisite notice for MaxiBlocks-specific license types only
                     if (is_multisite()) {
-                        $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected. If you require additional licences, email %s', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
+                        $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected. If using MaxiBlocks email or license key and you require additional licences, email %s', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
                     }
 
                     $content .= '</div>';
@@ -2694,9 +2714,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
 
         /**
-         * Detects if input is an email or purchase code
+         * Detects if input is an email, MaxiBlocks license key, or purchase code
          * @param string $input - The input string to check
-         * @returns string - 'email' or 'code'
+         * @returns string - 'email', 'maxiblocks_key', or 'code'
          */
         private function detect_input_type($input)
         {
@@ -2712,6 +2732,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if ($has_at_symbol || $has_dot) {
                 return 'email';
+            }
+
+            // Check for MaxiBlocks license keys (start with 'maxiblocks_' or 'maxiblocks-')
+            if (strpos($trimmed_input, 'maxiblocks_') === 0 || strpos($trimmed_input, 'maxiblocks-') === 0) {
+                return 'maxiblocks_key';
             }
 
             // Purchase codes are typically alphanumeric strings without @ or . symbols
@@ -3014,12 +3039,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 return;
             }
 
-            // Detect input type (email or purchase code)
+            // Detect input type (email, MaxiBlocks key, or purchase code)
             $input_type = $this->detect_input_type($input_value);
 
             if ($input_type === 'email') {
                 // Handle email authentication
                 $this->handle_email_authentication($input_value);
+            } elseif ($input_type === 'maxiblocks_key') {
+                // Handle MaxiBlocks license key authentication (same as purchase code)
+                $this->handle_purchase_code_authentication($input_value);
             } else {
                 // Handle purchase code authentication
                 $this->handle_purchase_code_authentication($input_value);
@@ -3302,10 +3330,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             // Check current license status from database for this specific browser
+            // First check for network license, then site-level license
+            $network_license_info = $this->get_network_license_info();
+            $has_network_license = $network_license_info !== false;
+
             $current_license_data = get_option('maxi_pro', '');
             $is_authenticated = false;
             $status = 'Not activated';
             $user_name = '';
+
+            // If network license is active, user is authenticated
+            if ($has_network_license) {
+                $is_authenticated = true;
+                $status = 'Active ✓';
+                $user_name = $network_license_info['user_name'] === 'Maxiblocks' ? 'MaxiBlocks' : $network_license_info['user_name'];
+
+                wp_send_json_success([
+                    'is_authenticated' => $is_authenticated,
+                    'status' => $status,
+                    'user_name' => $user_name,
+                ]);
+                return;
+            }
 
             if (isset($_COOKIE['maxi_blocks_key'])) {
                 $raw_cookie = $_COOKIE['maxi_blocks_key'];
@@ -3928,7 +3974,18 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             if (empty($input_value)) {
-                wp_send_json_error(['message' => __('Purchase code is required', 'maxi-blocks')]);
+                wp_send_json_error(['message' => __('Network purchase code is required', 'maxi-blocks')]);
+                return;
+            }
+
+            // Detect input type and show appropriate error for unsupported types
+            $input_type = $this->detect_input_type($input_value);
+
+            if ($input_type === 'email') {
+                wp_send_json_error(['message' => __('Multisite detected. Please activate your MaxiBlocks email on each sub-site separately.', 'maxi-blocks')]);
+                return;
+            } elseif ($input_type === 'maxiblocks_key') {
+                wp_send_json_error(['message' => __('Multisite detected. Please activate your MaxiBlocks license key on each sub-site separately.', 'maxi-blocks')]);
                 return;
             }
 

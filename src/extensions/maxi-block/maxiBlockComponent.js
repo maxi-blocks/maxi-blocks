@@ -67,39 +67,30 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
 
 /**
- * Global settings cache to prevent multiple API calls
- * Includes cleanup mechanism to prevent memory leaks
+ * Minimal global settings cache
  */
 const maxiGlobalCache = {
 	settingsCache: null,
 	settingsPromise: null,
 	cacheTimestamp: null,
 	activeBlockCount: 0,
-	CACHE_EXPIRY_TIME: 300000, // 5 minutes in milliseconds
+	CACHE_EXPIRY_TIME: 300000, // 5 minutes
 
 	/**
 	 * Increments the active block count
 	 */
 	incrementBlockCount() {
-		// Use setTimeout to avoid blocking Gutenberg's block creation
-		setTimeout(() => {
-			this.activeBlockCount += 1;
-		}, 0);
+		this.activeBlockCount += 1;
 	},
 
 	/**
 	 * Decrements the active block count and clears cache if no blocks remain
 	 */
 	decrementBlockCount() {
-		// Use setTimeout to avoid blocking Gutenberg's block removal
-		setTimeout(() => {
-			this.activeBlockCount = Math.max(0, this.activeBlockCount - 1);
-
-			// Clear cache when no blocks are using it
-			if (this.activeBlockCount === 0) {
-				this.clearCache();
-			}
-		}, 0);
+		this.activeBlockCount = Math.max(0, this.activeBlockCount - 1);
+		if (this.activeBlockCount === 0) {
+			this.clearCache();
+		}
 	},
 
 	/**
@@ -214,8 +205,8 @@ class MaxiBlockComponent extends Component {
 
 		// Block successfully registered
 
-		// Init
-		this.updateLastInsertedBlocks();
+		// Init - skip updateLastInsertedBlocks to avoid array accumulation
+		// this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
@@ -241,80 +232,38 @@ class MaxiBlockComponent extends Component {
 		this.templateModal = null;
 		this.updateDOMReferences();
 
-		// Cache frequently accessed values with LRU-like behavior
-		this.memoizedValues = new Map();
-		this.cacheAccessOrder = new Map(); // Track access times for LRU cleanup
+		// NO caching at all - remove all memory accumulation
+		// this.memoizedValues = new Map();
+		// this.MAX_CACHE_SIZE = 20;
 
-		// Track debounced functions for proper cleanup
-		this.debouncedFunctions = new Set();
+		// NO debouncing - call directly to avoid accumulation
+		// this.debouncedDisplayStyles = _.debounce(this.displayStyles.bind(this), 200);
 
-		// Debounce expensive operations
-		this.debouncedDisplayStyles = this.createTrackedDebouncedFunction(
-			this.displayStyles,
-			150
-		);
-
-		// Set more aggressive cache limits to prevent memory bloat
-		this.MAX_CACHE_SIZE = 1000; // Reduced from 10000 to 1000
-		this.MAX_CACHE_AGE = 120000; // 2 minutes in milliseconds
-		this.CACHE_CLEANUP_INTERVAL = 30000; // 30 seconds (more frequent cleanup)
-		this.lastCacheCleanup = Date.now();
-
-		// Schedule periodic cache cleanup (only if needed)
-		this.cacheCleanupTimer = setInterval(() => {
-			// Only run cleanup if cache has meaningful content
-			if (this.memoizedValues.size > 10) {
-				this.aggressiveCleanupCache();
-			}
-
-			// Also clean up stale DOM cache entries
-			this.cleanupStaleDOMCache();
-		}, this.CACHE_CLEANUP_INTERVAL);
-
-		// Track timeouts for proper cleanup
-		this.activeTimeouts = new Set();
+		// MINIMAL tracking - only essential timeouts
 		this.settingsTimeout = null;
 		this.fseIframeTimeout = null;
 
-		// Track MutationObservers for proper cleanup
-		this.mutationObservers = new Set();
-		this.previewObservers = new Map(); // iframe -> observer mapping
-
-		// Track DOM references with validation and cleanup
-		this.domReferences = new Map();
-		this.domQueryCache = new Map(); // selector -> {element, timestamp}
-		this.DOM_CACHE_TTL = 30000; // 30 seconds cache TTL
-		this.fseInitialized = false; // Track FSE initialization status
+		// NO Maps, Sets, or WeakSets - remove all memory accumulators
+		// this.activeTimeouts = new Set();
+		// this.mutationObservers = new Set();
+		// this.previewObservers = new Map();
+		// this.domReferences = new Map();
+		// this.domQueryCache = new Map();
+		// this.trackedElements = new WeakSet();
+		// this.intersectionObservers = new Set();
 	}
 
 	updateDOMReferences() {
-		// Clean up stale cache entries first
-		this.cleanupStaleDOMCache();
-
-		// Update editor iframe reference with validation
+		// SIMPLIFIED - no caching, just direct queries
 		const editorIframeSelector =
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
-		if (!this.editorIframe || !this.isElementInDOM(this.editorIframe)) {
-			this.editorIframe = this.getCachedElement(editorIframeSelector);
-			this.setDOMReference('editorIframe', this.editorIframe);
-		}
+		this.editorIframe = document.querySelector(editorIframeSelector);
 
-		// Update template modal reference with validation
-		// Skip template modal detection in FSE to avoid interference
 		if (!getIsSiteEditor()) {
 			const templateModalSelector =
 				'.editor-post-template__swap-template-modal';
-			if (
-				!this.templateModal ||
-				!this.isElementInDOM(this.templateModal)
-			) {
-				this.templateModal = this.getCachedElement(
-					templateModalSelector
-				);
-				this.setDOMReference('templateModal', this.templateModal);
-			}
+			this.templateModal = document.querySelector(templateModalSelector);
 		} else {
-			// In FSE, ensure templateModal is null
 			this.templateModal = null;
 		}
 	}
@@ -516,9 +465,20 @@ class MaxiBlockComponent extends Component {
 		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
 		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
 		// unnecessary amount of process and resources
-		this?.displayStyles(!!this?.rootSlot);
+		try {
+			// Call directly without debouncing to avoid memory accumulation
+			this?.displayStyles(!!this?.rootSlot);
+		} catch (error) {
+			console.warn('MaxiBlocks: Display styles error:', error);
+		}
 
-		if (!this.getBreakpoints.xxl) this.forceUpdate();
+		if (!this.getBreakpoints.xxl) {
+			try {
+				this.forceUpdate();
+			} catch (error) {
+				console.warn('MaxiBlocks: Force update error:', error);
+			}
+		}
 	}
 
 	/**
@@ -652,6 +612,7 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID } = this.props.attributes;
 
 		if (!shouldDisplayStyles) {
+			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
 					this.props.deviceType !== prevProps.deviceType ||
@@ -661,6 +622,7 @@ class MaxiBlockComponent extends Component {
 					this.props.attributes.blockStyle !==
 						prevProps.attributes.blockStyle
 				);
+			// For reusable blocks, also call directly
 			this.isReusable && this.displayStyles();
 		}
 
@@ -744,13 +706,9 @@ class MaxiBlockComponent extends Component {
 		// Unregister this block from global cache
 		maxiGlobalCache.decrementBlockCount();
 
-		// Clear cache cleanup timer
-		if (this.cacheCleanupTimer) {
-			clearInterval(this.cacheCleanupTimer);
-			this.cacheCleanupTimer = null;
-		}
+		// No cleanup needed since we're not using caching
 
-		// Clear all timeouts to prevent memory leaks
+		// Clear all timeouts to prevent memory leaks (more comprehensive)
 		if (this.settingsTimeout) {
 			clearTimeout(this.settingsTimeout);
 			this.settingsTimeout = null;
@@ -761,36 +719,28 @@ class MaxiBlockComponent extends Component {
 			this.fseIframeTimeout = null;
 		}
 
-		// Clear all preview timeouts
+		if (this.fontLoadTimeout) {
+			clearTimeout(this.fontLoadTimeout);
+			this.fontLoadTimeout = null;
+		}
+
+		// MINIMAL cleanup - only clear essential timeouts
 		if (this.previewTimeouts) {
 			this.previewTimeouts.forEach(timeout => clearTimeout(timeout));
-			this.previewTimeouts.clear();
 			this.previewTimeouts = null;
 		}
 
-		// Clear any tracked timeouts
-		if (this.activeTimeouts) {
-			this.activeTimeouts.forEach(timeout => clearTimeout(timeout));
-			this.activeTimeouts.clear();
-			this.activeTimeouts = null;
+		// No cleanup needed for disabled data structures
+
+		// No cleanup needed since we disabled all caching structures
+
+		// Clear font cache references
+		if (this.fontCache) {
+			this.fontCache = null;
 		}
-
-		// Clean up WordPress data store subscriptions
-		this.cleanupStoreSubscriptions();
-
-		// Clean up all MutationObservers
-		this.cleanupAllObservers();
-
-		// Clean up DOM references and cache
-		this.cleanupDOMReferences();
-
-		// Clear memoization and debounced functions
-		this.memoizedValues?.clear();
-		this.cacheAccessOrder?.clear();
-		this.cleanupDebouncedFunctions();
-
-		// Clean up all relation instances
-		this.cleanupAllRelationInstances();
+		if (this.areFontsLoaded) {
+			this.areFontsLoaded.current = false;
+		}
 
 		const keepStylesOnEditor = !!this.safeSelect(
 			'core/block-editor',
@@ -1213,30 +1163,19 @@ class MaxiBlockComponent extends Component {
 		});
 	}
 
-	// This function saves the last inserted blocks' clientIds, so we can use them
-	// to update IB relations.
-	updateLastInsertedBlocks() {
-		if (this.isPatternsPreview || this.templateModal) return;
-		const { clientId } = this.props;
-
-		const lastInserted =
-			select('maxiBlocks/blocks').getLastInsertedBlocks();
-		const blockClientIds = select('maxiBlocks/blocks').getBlockClientIds();
-		const isAlreadyTracked = [...lastInserted, ...blockClientIds].includes(
-			clientId
-		);
-
-		// Block tracking updated
-
-		if (!isAlreadyTracked) {
-			const allClientIds =
-				select('core/block-editor').getClientIdsWithDescendants();
-
-			// Client IDs saved to store
-			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(allClientIds);
-			dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
-		}
-	}
+	// DISABLED - this was accumulating arrays in Redux store
+	// updateLastInsertedBlocks() {
+	//	if (this.isPatternsPreview || this.templateModal) return;
+	//	const { clientId } = this.props;
+	//	const lastInserted = select('maxiBlocks/blocks').getLastInsertedBlocks();
+	//	const blockClientIds = select('maxiBlocks/blocks').getBlockClientIds();
+	//	const isAlreadyTracked = [...lastInserted, ...blockClientIds].includes(clientId);
+	//	if (!isAlreadyTracked) {
+	//		const allClientIds = select('core/block-editor').getClientIdsWithDescendants();
+	//		dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(allClientIds);
+	//		dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
+	//	}
+	// }
 
 	uniqueIDChecker(idToCheck) {
 		if (this.isPatternsPreview || this.templateModal) return idToCheck;
@@ -1317,22 +1256,30 @@ class MaxiBlockComponent extends Component {
 			return;
 		}
 
+		// Early return if fonts are already loaded
+		if (this.areFontsLoaded.current) {
+			return;
+		}
+
 		const typographyToCheck = Object.fromEntries(
-			Object.entries(this.typography).filter(
+			Object.entries(this.typography || {}).filter(
 				([key, value]) => value !== undefined
 			)
 		);
 
-		if (
-			this.areFontsLoaded.current ||
-			(isEmpty(typographyToCheck) && !this.paginationTypographyStatus)
-		) {
+		if (isEmpty(typographyToCheck) && !this.paginationTypographyStatus) {
 			return;
 		}
 
 		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
 		if (!target) {
 			return;
+		}
+
+		// Cancel any pending font load operations
+		if (this.fontLoadTimeout) {
+			clearTimeout(this.fontLoadTimeout);
+			this.fontLoadTimeout = null;
 		}
 
 		let response = {};
@@ -1353,27 +1300,28 @@ class MaxiBlockComponent extends Component {
 				true,
 				['cl-pagination-']
 			);
-		} else response = getAllFonts(this.typography, 'custom-formats');
+		} else {
+			response = getAllFonts(this.typography, 'custom-formats');
+		}
 
 		if (isEmpty(response)) {
 			return;
 		}
 
-		// Clear font cache after loading
+		// Clear font cache to prevent memory accumulation
 		if (this.fontCache) {
 			this.fontCache = null;
 		}
 
-		// Debounce font loading to prevent multiple loads
-		if (this.fontLoadTimeout) {
-			clearTimeout(this.fontLoadTimeout);
+		// Load fonts with error handling
+		try {
+			loadFonts(response, true, target);
+			this.areFontsLoaded.current = true;
+		} catch (error) {
+			console.warn('MaxiBlocks: Font loading failed:', error);
+			// Still mark as loaded to prevent infinite retries
+			this.areFontsLoaded.current = true;
 		}
-
-		// Execute immediately instead of using setTimeout to avoid unnecessary delay
-		loadFonts(response, true, target);
-
-		this.areFontsLoaded.current = true;
-		this.fontLoadTimeout = null;
 	}
 
 	/**
@@ -1382,11 +1330,14 @@ class MaxiBlockComponent extends Component {
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
 		const { uniqueID } = this.props.attributes;
 
-		// Update references if they're null
-		this.updateDOMReferences();
-
-		if (this.isPatternsPreview || this.templateModal) {
+		// Early return for invalid states
+		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
 			return;
+		}
+
+		// Update references if they're null (but don't do it too frequently)
+		if (!this.editorIframe || !this.isElementInDOM(this.editorIframe)) {
+			this.updateDOMReferences();
 		}
 		const isSiteEditor = getIsSiteEditor();
 		const breakpoints = this.getBreakpoints;
@@ -1441,15 +1392,40 @@ class MaxiBlockComponent extends Component {
 				// Clean up previous instances before creating new ones
 				if (this.relationInstances) {
 					this.cleanupRelationInstances(this.relationInstances);
+					this.relationInstances = null;
 				}
 
-				this.relationInstances =
-					this.createTrackedRelationInstances(customDataRelations);
+				try {
+					this.relationInstances =
+						this.createTrackedRelationInstances(
+							customDataRelations
+						);
+				} catch (error) {
+					console.warn(
+						'MaxiBlocks: Relation instances creation failed:',
+						error
+					);
+					this.relationInstances = null;
+				}
 			}
 
-			this.relationInstances?.forEach(relationInstance => {
-				relationInstance.setIsPreview(isRelationsPreview);
-			});
+			if (this.relationInstances) {
+				this.relationInstances.forEach(relationInstance => {
+					if (
+						relationInstance &&
+						typeof relationInstance.setIsPreview === 'function'
+					) {
+						try {
+							relationInstance.setIsPreview(isRelationsPreview);
+						} catch (error) {
+							console.warn(
+								'MaxiBlocks: Relation setIsPreview failed:',
+								error
+							);
+						}
+					}
+				});
+			}
 
 			if (
 				isRelationsPreview &&
@@ -1540,15 +1516,19 @@ class MaxiBlockComponent extends Component {
 				}
 			}
 
-			// Clean up previous instances before updating
+			// Clean up previous instances before updating (with safety checks)
 			if (
 				this.previousRelationInstances &&
 				this.previousRelationInstances !== this.relationInstances
 			) {
 				this.cleanupRelationInstances(this.previousRelationInstances);
+				this.previousRelationInstances = null;
 			}
 
-			this.previousRelationInstances = this.relationInstances;
+			// Update previous reference (shallow copy to avoid reference issues)
+			this.previousRelationInstances = this.relationInstances
+				? [...this.relationInstances]
+				: null;
 		}
 	}
 
@@ -1711,34 +1691,12 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getStyleTarget(isSiteEditor, iframe) {
-		const cacheKey = `styleTarget-${isSiteEditor}-${!!iframe}`;
-		const now = Date.now();
-
-		// Cleanup cache if needed
-		this.cleanupCache();
-
-		if (this.memoizedValues.has(cacheKey)) {
-			// Update access time for LRU tracking
-			this.cacheAccessOrder.set(cacheKey, now);
-			return this.memoizedValues.get(cacheKey);
-		}
-
-		let target;
+		// No caching - just return the target directly
 		if (isSiteEditor) {
-			target = getSiteEditorIframe();
-			// Fallback to document if FSE iframe is not available
-			if (!target) {
-				target = document;
-			}
-		} else {
-			target = iframe?.contentDocument || document;
+			const target = getSiteEditorIframe();
+			return target || document;
 		}
-
-		// Set cache with access time tracking
-		this.memoizedValues.set(cacheKey, target);
-		this.cacheAccessOrder.set(cacheKey, now);
-
-		return target;
+		return iframe?.contentDocument || document;
 	}
 
 	generateStyleContent(
@@ -1849,34 +1807,77 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview || this.templateModal) return;
 
 		const { uniqueID } = this.props.attributes;
+		const styleId = `maxi-blocks__styles--${uniqueID}`;
 
-		const templateViewIframe = getTemplateViewIframe(uniqueID);
-		const siteEditorIframe = getSiteEditorIframe();
-		const previewIframe = document.querySelector(
-			'.block-editor-block-preview__container iframe'
-		);
-		const iframe = document.querySelector(
-			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
-		);
+		// BULLETPROOF CLEANUP - Remove from ALL possible documents
+		const documentsToClean = [
+			document, // Main document
+		];
 
-		const editorElement =
-			templateViewIframe ||
-			siteEditorIframe ||
-			previewIframe ||
-			iframe ||
-			document;
+		// Add iframe documents if they exist
+		try {
+			const templateViewIframe = getTemplateViewIframe(uniqueID);
+			if (templateViewIframe?.contentDocument) {
+				documentsToClean.push(templateViewIframe.contentDocument);
+			}
+		} catch (e) {
+			// Ignore iframe access errors
+		}
 
-		if (
-			!editorElement ||
-			typeof editorElement?.getElementById !== 'function'
-		)
-			return;
+		try {
+			const siteEditorIframe = getSiteEditorIframe();
+			if (siteEditorIframe?.contentDocument) {
+				documentsToClean.push(siteEditorIframe.contentDocument);
+			}
+		} catch (e) {
+			// Ignore iframe access errors
+		}
 
-		const styleElement = editorElement.getElementById(
-			`maxi-blocks__styles--${uniqueID}`
-		);
-		if (styleElement) {
-			styleElement.remove();
+		try {
+			const previewIframe = document.querySelector(
+				'.block-editor-block-preview__container iframe'
+			);
+			if (previewIframe?.contentDocument) {
+				documentsToClean.push(previewIframe.contentDocument);
+			}
+		} catch (e) {
+			// Ignore iframe access errors
+		}
+
+		try {
+			const editorIframe = document.querySelector(
+				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
+			);
+			if (editorIframe?.contentDocument) {
+				documentsToClean.push(editorIframe.contentDocument);
+			}
+		} catch (e) {
+			// Ignore iframe access errors
+		}
+
+		// Remove style elements from ALL documents
+		let removedCount = 0;
+		documentsToClean.forEach(doc => {
+			if (doc && typeof doc.getElementById === 'function') {
+				const styleElement = doc.getElementById(styleId);
+				if (styleElement) {
+					styleElement.remove();
+					removedCount++;
+				}
+			}
+		});
+
+		// Also remove any orphaned style elements with this ID from anywhere
+		try {
+			const allStyleElements = document.querySelectorAll(`#${styleId}`);
+			allStyleElements.forEach(el => {
+				if (el && el.parentNode) {
+					el.remove();
+					removedCount++;
+				}
+			});
+		} catch (e) {
+			// Ignore query errors
 		}
 	}
 
@@ -1971,10 +1972,10 @@ class MaxiBlockComponent extends Component {
 	cleanupCache() {
 		const now = Date.now();
 
-		// Only cleanup if cache is getting large or it's been a while
+		// Gentle cleanup thresholds - only cleanup when needed
 		if (
-			this.memoizedValues.size < 100 &&
-			now - this.lastCacheCleanup < 60000 // 1 minute minimum
+			this.memoizedValues.size < 30 &&
+			now - this.lastCacheCleanup < 120000 // 2 minutes minimum
 		) {
 			return;
 		}
@@ -1984,13 +1985,15 @@ class MaxiBlockComponent extends Component {
 	}
 
 	/**
-	 * Aggressive cache cleanup with time-based expiration and LRU eviction
+	 * Gentle cache cleanup with time-based expiration and LRU eviction
 	 */
 	aggressiveCleanupCache() {
+		if (!this.memoizedValues || !this.cacheAccessOrder) {
+			return;
+		}
+
 		const now = Date.now();
 		const keysToRemove = [];
-		// Track initial size for potential future logging
-		// const initialSize = this.memoizedValues.size;
 
 		// First pass: Remove expired entries
 		for (const [key, accessTime] of this.cacheAccessOrder.entries()) {
@@ -2005,18 +2008,17 @@ class MaxiBlockComponent extends Component {
 			this.cacheAccessOrder.delete(key);
 		});
 
-		// let lruRemoved = 0; // Tracked for potential future logging
-		// Second pass: LRU eviction if still over size limit
-		if (this.memoizedValues.size > this.MAX_CACHE_SIZE) {
+		// Second pass: Gentle LRU eviction only if significantly over limit
+		if (this.memoizedValues.size > this.MAX_CACHE_SIZE * 1.2) {
 			// Sort by access time (oldest first)
 			const sortedByAccess = Array.from(
 				this.cacheAccessOrder.entries()
 			).sort(([, timeA], [, timeB]) => timeA - timeB);
 
-			// Remove oldest entries until we're under the limit
+			// Remove oldest entries until we're at 80% of limit (gentle cleanup)
 			const entriesToRemove =
 				this.memoizedValues.size -
-				Math.floor(this.MAX_CACHE_SIZE * 0.7); // Keep 70% of max size
+				Math.floor(this.MAX_CACHE_SIZE * 0.8); // Keep 80% of max size
 
 			for (
 				let i = 0;
@@ -2026,11 +2028,21 @@ class MaxiBlockComponent extends Component {
 				const [key] = sortedByAccess[i];
 				this.memoizedValues.delete(key);
 				this.cacheAccessOrder.delete(key);
-				// lruRemoved += 1; // Tracked for potential future logging
 			}
 		}
 
-		// Cleanup completed silently
+		// Emergency cleanup only if severely over limit
+		if (this.memoizedValues.size > this.MAX_CACHE_SIZE * 2) {
+			console.warn(
+				`MaxiBlocks: Emergency cache cleanup - clearing ${
+					this.memoizedValues.size
+				} entries for block ${
+					this.props?.attributes?.uniqueID || 'unknown'
+				}`
+			);
+			this.memoizedValues.clear();
+			this.cacheAccessOrder.clear();
+		}
 	}
 
 	/**
@@ -2213,17 +2225,41 @@ class MaxiBlockComponent extends Component {
 	 * Clean up all DOM references and query cache
 	 */
 	cleanupDOMReferences() {
+		// Clean up intersection observers
+		if (this.intersectionObservers) {
+			this.intersectionObservers.forEach(observer => {
+				if (observer && typeof observer.disconnect === 'function') {
+					try {
+						observer.disconnect();
+					} catch (error) {
+						// Silently handle already disconnected observers
+					}
+				}
+			});
+			this.intersectionObservers.clear();
+			this.intersectionObservers = null;
+		}
+
+		// Clear WeakSet tracking
+		if (this.trackedElements) {
+			// WeakSet will be garbage collected automatically
+			this.trackedElements = null;
+		}
+
 		// Clear all cached DOM references
 		if (this.domReferences) {
 			this.domReferences.clear();
+			this.domReferences = null;
 		}
 		if (this.domQueryCache) {
 			this.domQueryCache.clear();
+			this.domQueryCache = null;
 		}
 
 		// Clear specific references
 		this.editorIframe = null;
 		this.templateModal = null;
+		this.previousIframeContent = null;
 	}
 
 	/**
@@ -2242,22 +2278,48 @@ class MaxiBlockComponent extends Component {
 
 		const now = Date.now();
 
-		// Clean up query cache
+		// More aggressive cleanup - shorter TTL and immediate removal of stale elements
 		this.domQueryCache.forEach((cached, key) => {
 			if (
 				now - cached.timestamp > this.DOM_CACHE_TTL ||
 				(cached.element && !this.isElementInDOM(cached.element))
 			) {
+				// Remove from WeakSet tracking if applicable
+				if (
+					cached.element &&
+					this.trackedElements.has(cached.element)
+				) {
+					this.trackedElements.delete(cached.element);
+				}
 				this.domQueryCache.delete(key);
 			}
 		});
 
-		// Clean up DOM references
+		// Clean up DOM references more aggressively
 		this.domReferences.forEach((ref, key) => {
-			if (ref.element && !this.isElementInDOM(ref.element)) {
+			if (
+				!ref.element ||
+				!this.isElementInDOM(ref.element) ||
+				now - ref.timestamp > this.DOM_CACHE_TTL
+			) {
 				this.domReferences.delete(key);
 			}
 		});
+
+		// Emergency cleanup if caches are too large
+		if (this.domQueryCache.size > 50) {
+			console.warn(
+				`MaxiBlocks: DOM cache too large (${this.domQueryCache.size}), clearing`
+			);
+			this.domQueryCache.clear();
+		}
+
+		if (this.domReferences.size > 20) {
+			console.warn(
+				`MaxiBlocks: DOM references too large (${this.domReferences.size}), clearing`
+			);
+			this.domReferences.clear();
+		}
 	}
 
 	/**
@@ -2333,13 +2395,19 @@ class MaxiBlockComponent extends Component {
 			this.debouncedFunctions.forEach(debouncedFn => {
 				if (debouncedFn && typeof debouncedFn.cancel === 'function') {
 					try {
+						// Cancel pending executions
 						debouncedFn.cancel();
+						// Force flush any pending execution
+						if (typeof debouncedFn.flush === 'function') {
+							debouncedFn.flush();
+						}
 					} catch (error) {
 						// Silently handle already cancelled functions
 					}
 				}
 			});
 			this.debouncedFunctions.clear();
+			this.debouncedFunctions = null;
 		}
 
 		// Also clear individual references for backward compatibility
@@ -2347,7 +2415,14 @@ class MaxiBlockComponent extends Component {
 			this.debouncedDisplayStyles &&
 			typeof this.debouncedDisplayStyles.cancel === 'function'
 		) {
-			this.debouncedDisplayStyles.cancel();
+			try {
+				this.debouncedDisplayStyles.cancel();
+				if (typeof this.debouncedDisplayStyles.flush === 'function') {
+					this.debouncedDisplayStyles.flush();
+				}
+			} catch (error) {
+				// Silently handle cleanup errors
+			}
 			this.debouncedDisplayStyles = null;
 		}
 	}
@@ -2358,20 +2433,29 @@ class MaxiBlockComponent extends Component {
 	 * @returns {Array|null} Relation instances
 	 */
 	createTrackedRelationInstances(customDataRelations) {
-		if (!customDataRelations) return null;
-
-		const instances = processRelations(customDataRelations);
-
-		if (instances && Array.isArray(instances)) {
-			// Track each instance for cleanup
-			instances.forEach(instance => {
-				if (instance) {
-					this.allRelationInstances.add(instance);
-				}
-			});
+		if (!customDataRelations || !Array.isArray(customDataRelations)) {
+			return null;
 		}
 
-		return instances;
+		try {
+			const instances = processRelations(customDataRelations);
+
+			if (instances && Array.isArray(instances)) {
+				// Track each instance for cleanup with validation
+				instances.forEach(instance => {
+					if (instance && typeof instance === 'object') {
+						this.allRelationInstances.add(instance);
+					}
+				});
+				return instances.filter(
+					instance => instance && typeof instance === 'object'
+				);
+			}
+		} catch (error) {
+			console.warn('MaxiBlocks: processRelations failed:', error);
+		}
+
+		return null;
 	}
 
 	/**
@@ -2382,8 +2466,15 @@ class MaxiBlockComponent extends Component {
 		if (!instances || !Array.isArray(instances)) return;
 
 		instances.forEach(instance => {
-			if (instance) {
+			if (instance && typeof instance === 'object') {
 				try {
+					// CRITICAL: Remove MutationObserver first to prevent memory leaks
+					if (
+						typeof instance.removeRelationSubscriber === 'function'
+					) {
+						instance.removeRelationSubscriber();
+					}
+
 					// Remove styles and transitions if the method exists
 					if (
 						typeof instance.removePreviousStylesAndTransitions ===
@@ -2392,48 +2483,34 @@ class MaxiBlockComponent extends Component {
 						instance.removePreviousStylesAndTransitions();
 					}
 
+					// Clean up any event listeners if method exists
+					if (typeof instance.cleanup === 'function') {
+						instance.cleanup();
+					}
+
+					// Clear observer reference
+					if (instance.observer) {
+						instance.observer = null;
+					}
+
+					// Clear any DOM references
+					if (instance.element) {
+						instance.element = null;
+					}
+					if (instance.target) {
+						instance.target = null;
+					}
+
 					// Remove from tracking
-					this.allRelationInstances.delete(instance);
+					if (this.allRelationInstances) {
+						this.allRelationInstances.delete(instance);
+					}
 				} catch (error) {
-					// Silently handle cleanup errors
+					// Silently handle cleanup errors but log for debugging
+					console.warn('MaxiBlocks: Relation cleanup error:', error);
 				}
 			}
 		});
-	}
-
-	/**
-	 * Clean up all relation instances
-	 */
-	cleanupAllRelationInstances() {
-		// Clean up current instances
-		if (this.relationInstances) {
-			this.cleanupRelationInstances(this.relationInstances);
-			this.relationInstances = null;
-		}
-
-		// Clean up previous instances
-		if (this.previousRelationInstances) {
-			this.cleanupRelationInstances(this.previousRelationInstances);
-			this.previousRelationInstances = null;
-		}
-
-		// Clean up any remaining tracked instances
-		if (this.allRelationInstances) {
-			this.allRelationInstances.forEach(instance => {
-				if (
-					instance &&
-					typeof instance.removePreviousStylesAndTransitions ===
-						'function'
-				) {
-					try {
-						instance.removePreviousStylesAndTransitions();
-					} catch (error) {
-						// Silently handle cleanup errors
-					}
-				}
-			});
-			this.allRelationInstances.clear();
-		}
 	}
 
 	// Returns responsive preview elements if present

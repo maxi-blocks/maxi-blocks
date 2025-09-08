@@ -74,7 +74,12 @@ const withMaxiLoader = createHigherOrderComponent(
 			useEffect(() => {
 				if (canRender && hasBeenConsolidated) return;
 
+				let timeoutId;
+				let isMounted = true;
+
 				const checkRender = () => {
+					if (!isMounted) return; // Prevent execution after unmount
+
 					const canRenderNow = canBlockRender
 						? canBlockRender(uniqueID, clientId)
 						: false;
@@ -83,11 +88,22 @@ const withMaxiLoader = createHigherOrderComponent(
 						setCanRender(true);
 						setHasBeenConsolidated(true);
 					} else {
-						setTimeout(checkRender, 100);
+						// Only schedule next check if still mounted
+						if (isMounted) {
+							timeoutId = setTimeout(checkRender, 100);
+						}
 					}
 				};
 
 				checkRender();
+
+				// Cleanup function to prevent memory leaks
+				return () => {
+					isMounted = false;
+					if (timeoutId) {
+						clearTimeout(timeoutId);
+					}
+				};
 			}, [
 				canRender,
 				hasBeenConsolidated,

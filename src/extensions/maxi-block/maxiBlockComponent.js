@@ -1811,23 +1811,23 @@ class MaxiBlockComponent extends Component {
 			document, // Main document
 		];
 
-		// Add iframe documents if they exist
+		// Add documents from FSE contexts if they exist
 		try {
-			const templateViewIframe = getTemplateViewIframe(uniqueID);
-			if (templateViewIframe?.contentDocument) {
-				documentsToClean.push(templateViewIframe.contentDocument);
+			const templateViewDocument = getTemplateViewIframe(uniqueID);
+			if (templateViewDocument) {
+				documentsToClean.push(templateViewDocument);
 			}
 		} catch (e) {
-			// Ignore iframe access errors
+			// Ignore document access errors
 		}
 
 		try {
-			const siteEditorIframe = getSiteEditorIframe();
-			if (siteEditorIframe?.contentDocument) {
-				documentsToClean.push(siteEditorIframe.contentDocument);
+			const siteEditorDocument = getSiteEditorIframe();
+			if (siteEditorDocument) {
+				documentsToClean.push(siteEditorDocument);
 			}
 		} catch (e) {
-			// Ignore iframe access errors
+			// Ignore document access errors
 		}
 
 		try {

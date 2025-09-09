@@ -101,13 +101,11 @@ const AccordionSettings = props => {
 					})}
 					enableUnit
 					allowedUnits={['px', 'em', 'vh']}
-					onChangeValue={(val, inline) => {
+					onChangeValue={(val, meta) => {
 						onChange({
 							[`row-gap-${breakpoint}`]:
 								val !== undefined ? val : '',
-							meta: {
-								inline,
-							},
+							meta,
 						});
 					}}
 					onChangeUnit={val => {

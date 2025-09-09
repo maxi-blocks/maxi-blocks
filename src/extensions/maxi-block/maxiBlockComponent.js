@@ -873,7 +873,9 @@ class MaxiBlockComponent extends Component {
 			console.warn(
 				'MaxiBlocks: Invalid target document in getOrCreateStyleElement, falling back to main document'
 			);
-			target = document;
+			// Use local variable instead of modifying parameter
+			const fallbackTarget = document;
+			return this.getOrCreateStyleElement(fallbackTarget, uniqueID);
 		}
 
 		const styleId = `maxi-blocks__styles--${uniqueID}`;
@@ -1389,10 +1391,23 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes['relations-preview'];
 
 			if (isRelationsPreview) {
-				// Clean up previous instances before creating new ones
+				// DEFENSIVE: Clean up previous instances with comprehensive error handling
 				if (this.relationInstances) {
-					this.cleanupRelationInstances(this.relationInstances);
-					this.relationInstances = null;
+					try {
+						this.safeCleanupRelationInstances(
+							this.relationInstances
+						);
+					} catch (error) {
+						console.error(
+							'MaxiBlocks: CRITICAL - Failed to cleanup relation instances:',
+							error
+						);
+						// Force cleanup even if error occurred
+						this.forceCleanupRelationInstances();
+					} finally {
+						// Always nullify reference regardless of cleanup success
+						this.relationInstances = null;
+					}
 				}
 
 				try {
@@ -1509,20 +1524,42 @@ class MaxiBlockComponent extends Component {
 			}
 
 			if (!isRelationsPreview) {
-				// Clean up instances when not in preview mode
+				// DEFENSIVE: Clean up instances when not in preview mode
 				if (this.relationInstances) {
-					this.cleanupRelationInstances(this.relationInstances);
-					this.relationInstances = null;
+					try {
+						this.safeCleanupRelationInstances(
+							this.relationInstances
+						);
+					} catch (error) {
+						console.error(
+							'MaxiBlocks: CRITICAL - Failed to cleanup relation instances (non-preview):',
+							error
+						);
+						this.forceCleanupRelationInstances();
+					} finally {
+						this.relationInstances = null;
+					}
 				}
 			}
 
-			// Clean up previous instances before updating (with safety checks)
+			// DEFENSIVE: Clean up previous instances before updating (with comprehensive safety checks)
 			if (
 				this.previousRelationInstances &&
 				this.previousRelationInstances !== this.relationInstances
 			) {
-				this.cleanupRelationInstances(this.previousRelationInstances);
-				this.previousRelationInstances = null;
+				try {
+					this.safeCleanupRelationInstances(
+						this.previousRelationInstances
+					);
+				} catch (error) {
+					console.error(
+						'MaxiBlocks: CRITICAL - Failed to cleanup previous relation instances:',
+						error
+					);
+					this.forceCleanupRelationInstances();
+				} finally {
+					this.previousRelationInstances = null;
+				}
 			}
 
 			// Update previous reference (shallow copy to avoid reference issues)
@@ -1856,13 +1893,11 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Remove style elements from ALL documents
-		let removedCount = 0;
 		documentsToClean.forEach(doc => {
 			if (doc && typeof doc.getElementById === 'function') {
 				const styleElement = doc.getElementById(styleId);
 				if (styleElement) {
 					styleElement.remove();
-					removedCount++;
 				}
 			}
 		});
@@ -1873,7 +1908,6 @@ class MaxiBlockComponent extends Component {
 			allStyleElements.forEach(el => {
 				if (el && el.parentNode) {
 					el.remove();
-					removedCount++;
 				}
 			});
 		} catch (e) {
@@ -2459,58 +2493,243 @@ class MaxiBlockComponent extends Component {
 	}
 
 	/**
-	 * Clean up relation instances to prevent memory leaks
+	 * DEFENSIVE: Safe cleanup of relation instances with comprehensive error handling
 	 * @param {Array} instances - Relation instances to clean up
 	 */
-	cleanupRelationInstances(instances) {
-		if (!instances || !Array.isArray(instances)) return;
+	safeCleanupRelationInstances(instances) {
+		if (!instances || !Array.isArray(instances)) {
+			console.warn(
+				'MaxiBlocks: Invalid instances passed to cleanup:',
+				instances
+			);
+			return;
+		}
 
-		instances.forEach(instance => {
-			if (instance && typeof instance === 'object') {
+		// Track cleanup progress for debugging
+		const cleanupErrors = [];
+
+		instances.forEach((instance, index) => {
+			if (!instance || typeof instance !== 'object') {
+				console.warn(
+					`MaxiBlocks: Invalid instance at index ${index}:`,
+					instance
+				);
+				return;
+			}
+
+			try {
+				this.cleanupSingleRelationInstance(instance, index);
+			} catch (error) {
+				cleanupErrors.push({ index, error: error.message || error });
+				console.error(
+					`MaxiBlocks: Failed to cleanup instance ${index}:`,
+					error
+				);
+
+				// Try force cleanup for this specific instance
 				try {
-					// CRITICAL: Remove MutationObserver first to prevent memory leaks
+					this.forceCleanupSingleInstance(instance, index);
+				} catch (forceError) {
+					console.error(
+						`MaxiBlocks: Force cleanup also failed for instance ${index}:`,
+						forceError
+					);
+				}
+			}
+		});
+
+		// Removed console.log to fix linting
+		if (cleanupErrors.length > 0) {
+			console.warn(
+				'MaxiBlocks: Cleanup errors encountered:',
+				cleanupErrors
+			);
+		}
+	}
+
+	/**
+	 * Clean up a single relation instance with detailed error handling
+	 * @param {Object} instance - Single relation instance
+	 * @param {number} index    - Instance index for logging
+	 */
+	cleanupSingleRelationInstance(instance, index) {
+		const cleanupSteps = [
+			{
+				name: 'removeRelationSubscriber',
+				action: () => {
 					if (
 						typeof instance.removeRelationSubscriber === 'function'
 					) {
 						instance.removeRelationSubscriber();
 					}
-
-					// Remove styles and transitions if the method exists
+				},
+			},
+			{
+				name: 'removePreviousStylesAndTransitions',
+				action: () => {
 					if (
 						typeof instance.removePreviousStylesAndTransitions ===
 						'function'
 					) {
 						instance.removePreviousStylesAndTransitions();
 					}
-
-					// Clean up any event listeners if method exists
+				},
+			},
+			{
+				name: 'cleanup',
+				action: () => {
 					if (typeof instance.cleanup === 'function') {
 						instance.cleanup();
 					}
-
-					// Clear observer reference
+				},
+			},
+			{
+				name: 'clearObserverReference',
+				action: () => {
 					if (instance.observer) {
+						// Try to disconnect observer if it has the method
+						if (
+							typeof instance.observer.disconnect === 'function'
+						) {
+							instance.observer.disconnect();
+						}
 						instance.observer = null;
 					}
-
-					// Clear any DOM references
+				},
+			},
+			{
+				name: 'clearDOMReferences',
+				action: () => {
 					if (instance.element) {
 						instance.element = null;
 					}
 					if (instance.target) {
 						instance.target = null;
 					}
-
-					// Remove from tracking
-					if (this.allRelationInstances) {
+				},
+			},
+			{
+				name: 'removeFromTracking',
+				action: () => {
+					if (
+						this.allRelationInstances &&
+						this.allRelationInstances.has(instance)
+					) {
 						this.allRelationInstances.delete(instance);
 					}
-				} catch (error) {
-					// Silently handle cleanup errors but log for debugging
-					console.warn('MaxiBlocks: Relation cleanup error:', error);
-				}
+				},
+			},
+		];
+
+		cleanupSteps.forEach(step => {
+			try {
+				step.action();
+			} catch (stepError) {
+				console.warn(
+					`MaxiBlocks: Failed ${step.name} for instance ${index}:`,
+					stepError
+				);
+				// Continue with other cleanup steps even if one fails
 			}
 		});
+	}
+
+	/**
+	 * Force cleanup a single instance by nullifying all possible references
+	 * @param {Object} instance - Instance to force cleanup
+	 * @param {number} index    - Instance index for logging
+	 */
+	forceCleanupSingleInstance(instance, index) {
+		console.warn(`MaxiBlocks: Force cleaning instance ${index}`);
+
+		// Nullify all possible properties that could hold references
+		const propertiesToNullify = [
+			'observer',
+			'element',
+			'target',
+			'removeRelationSubscriber',
+			'removePreviousStylesAndTransitions',
+			'cleanup',
+			'subscription',
+			'mutationObserver',
+			'eventListeners',
+			'styleElement',
+			'targetElement',
+		];
+
+		propertiesToNullify.forEach(prop => {
+			try {
+				if (instance[prop]) {
+					// Try to call disconnect/remove methods if they exist
+					if (typeof instance[prop].disconnect === 'function') {
+						instance[prop].disconnect();
+					}
+					if (typeof instance[prop].remove === 'function') {
+						instance[prop].remove();
+					}
+					instance[prop] = null;
+				}
+			} catch (error) {
+				// Silently continue - this is force cleanup
+			}
+		});
+
+		// Remove from all tracking sets
+		try {
+			if (this.allRelationInstances) {
+				this.allRelationInstances.delete(instance);
+			}
+		} catch (error) {
+			// Silently continue
+		}
+	}
+
+	/**
+	 * EMERGENCY: Force cleanup all relation instances when normal cleanup fails
+	 */
+	forceCleanupRelationInstances() {
+		console.warn(
+			'MaxiBlocks: EMERGENCY - Force cleaning all relation instances'
+		);
+
+		// Clear all tracking sets
+		try {
+			if (this.allRelationInstances) {
+				this.allRelationInstances.forEach(instance => {
+					try {
+						this.forceCleanupSingleInstance(instance, 'force');
+					} catch (error) {
+						// Silently continue with force cleanup
+					}
+				});
+				this.allRelationInstances.clear();
+			}
+		} catch (error) {
+			console.error('MaxiBlocks: Even force cleanup failed:', error);
+		}
+
+		// Nullify all instance references
+		this.relationInstances = null;
+		this.previousRelationInstances = null;
+	}
+
+	/**
+	 * LEGACY: Keep original method for backward compatibility but make it defensive
+	 * @param {Array} instances - Relation instances to clean up
+	 */
+	cleanupRelationInstances(instances) {
+		console.warn(
+			'MaxiBlocks: Using legacy cleanupRelationInstances - consider using safeCleanupRelationInstances'
+		);
+		try {
+			this.safeCleanupRelationInstances(instances);
+		} catch (error) {
+			console.error(
+				'MaxiBlocks: Legacy cleanup failed, attempting force cleanup:',
+				error
+			);
+			this.forceCleanupRelationInstances();
+		}
 	}
 
 	// Returns responsive preview elements if present

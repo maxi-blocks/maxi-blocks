@@ -131,7 +131,6 @@ class MaxiBlockComponent extends Component {
 		super(...args);
 
 		// Initialize store management FIRST (before any store calls)
-		this.storeSubscriptions = new Set();
 		this.storeSelectors = new Map(); // Cache selectors to avoid recreating
 
 		this.state = {
@@ -232,25 +231,9 @@ class MaxiBlockComponent extends Component {
 		this.templateModal = null;
 		this.updateDOMReferences();
 
-		// NO caching at all - remove all memory accumulation
-		// this.memoizedValues = new Map();
-		// this.MAX_CACHE_SIZE = 20;
-
-		// NO debouncing - call directly to avoid accumulation
-		// this.debouncedDisplayStyles = _.debounce(this.displayStyles.bind(this), 200);
-
 		// MINIMAL tracking - only essential timeouts
 		this.settingsTimeout = null;
 		this.fseIframeTimeout = null;
-
-		// NO Maps, Sets, or WeakSets - remove all memory accumulators
-		// this.activeTimeouts = new Set();
-		// this.mutationObservers = new Set();
-		// this.previewObservers = new Map();
-		// this.domReferences = new Map();
-		// this.domQueryCache = new Map();
-		// this.trackedElements = new WeakSet();
-		// this.intersectionObservers = new Set();
 	}
 
 	updateDOMReferences() {
@@ -285,9 +268,6 @@ class MaxiBlockComponent extends Component {
 
 			// Set up an observer to handle iframe reloads
 			this.setupFSEIframeObserver();
-
-			// Mark FSE as initialized
-			this.fseInitialized = true;
 		}
 
 		const blocksIBRelations = this.safeSelect(
@@ -1158,20 +1138,6 @@ class MaxiBlockComponent extends Component {
 			});
 		});
 	}
-
-	// DISABLED - this was accumulating arrays in Redux store
-	// updateLastInsertedBlocks() {
-	//	if (this.isPatternsPreview || this.templateModal) return;
-	//	const { clientId } = this.props;
-	//	const lastInserted = select('maxiBlocks/blocks').getLastInsertedBlocks();
-	//	const blockClientIds = select('maxiBlocks/blocks').getBlockClientIds();
-	//	const isAlreadyTracked = [...lastInserted, ...blockClientIds].includes(clientId);
-	//	if (!isAlreadyTracked) {
-	//		const allClientIds = select('core/block-editor').getClientIdsWithDescendants();
-	//		dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(allClientIds);
-	//		dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
-	//	}
-	// }
 
 	uniqueIDChecker(idToCheck) {
 		if (this.isPatternsPreview || this.templateModal) return idToCheck;
@@ -2056,36 +2022,6 @@ class MaxiBlockComponent extends Component {
 		return element && element.isConnected && document.contains(element);
 	}
 
-	// REMOVED: setDOMReference method that referenced disabled domReferences Map
-	// Since domReferences is disabled, this method would throw errors if called
-
-	/**
-	 * Generate a selector for an element (best effort)
-	 * @param {Element} element - Element to get selector for
-	 * @returns {string} CSS selector
-	 */
-	getElementSelector(element) {
-		if (element.id) {
-			return `#${element.id}`;
-		}
-
-		if (element.className) {
-			const classes = element.className.split(' ').filter(c => c.trim());
-			if (classes.length > 0) {
-				return `.${classes.join('.')}`;
-			}
-		}
-
-		return element.tagName.toLowerCase();
-	}
-
-	// REMOVED: cleanupDOMReferences method that referenced disabled DOM caching properties
-	// Since intersectionObservers, trackedElements, domReferences, domQueryCache are disabled,
-	// this method would throw errors if called. Manual cleanup of specific references is handled elsewhere.
-
-	// REMOVED: cleanupStaleDOMCache method that referenced disabled DOM caching properties
-	// Since domQueryCache, domReferences, trackedElements are disabled, this method would throw errors if called
-
 	/**
 	 * Safe selector that tracks subscriptions for cleanup
 	 * @param {string} storeName    - Store name (e.g., 'core/block-editor')
@@ -2113,17 +2049,6 @@ class MaxiBlockComponent extends Component {
 	safeDispatch(storeName) {
 		return dispatch(storeName);
 	}
-
-	// REMOVED: cleanupStoreSubscriptions method - store subscriptions are still active
-	// The storeSubscriptions and storeSelectors are still initialized and used, so this method is valid
-	// but marked as unused by linter. Keeping it for potential future use.
-
-	// REMOVED: createTrackedDebouncedFunction method that referenced disabled debouncedFunctions Set
-	// Since debouncedFunctions is disabled, this method would throw errors if called
-
-	// REMOVED: cleanupDebouncedFunctions method that referenced disabled debouncedFunctions Set
-	// Since debouncedFunctions is disabled, this method would throw errors if called
-	// Individual debounced function cleanup (like debouncedDisplayStyles) is handled elsewhere if needed
 
 	/**
 	 * Create tracked relation instances with automatic cleanup
@@ -2375,25 +2300,6 @@ class MaxiBlockComponent extends Component {
 		// Nullify all instance references
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
-	}
-
-	/**
-	 * LEGACY: Keep original method for backward compatibility but make it defensive
-	 * @param {Array} instances - Relation instances to clean up
-	 */
-	cleanupRelationInstances(instances) {
-		console.warn(
-			'MaxiBlocks: Using legacy cleanupRelationInstances - consider using safeCleanupRelationInstances'
-		);
-		try {
-			this.safeCleanupRelationInstances(instances);
-		} catch (error) {
-			console.error(
-				'MaxiBlocks: Legacy cleanup failed, attempting force cleanup:',
-				error
-			);
-			this.forceCleanupRelationInstances();
-		}
 	}
 
 	// Returns responsive preview elements if present

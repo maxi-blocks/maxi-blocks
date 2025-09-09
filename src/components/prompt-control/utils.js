@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { select } from '@wordpress/data';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -241,8 +242,76 @@ export const callChatAndUpdateResults = async ({
 	});
 };
 
+export const callBackendAIProxy = async ({
+	messages,
+	modelName,
+	additionalParams,
+	newId,
+	abortControllerRef,
+	shouldRemoveQuotes = true,
+	setIsGenerating,
+	setResults,
+}) => {
+	abortControllerRef.current = new AbortController();
+
+	setIsGenerating(true);
+
+	try {
+		const response = await apiFetch({
+			path: '/maxi-blocks/v1.0/ai/chat',
+			method: 'POST',
+			data: {
+				messages,
+				model: modelName,
+				temperature: additionalParams?.temperature,
+				streaming: false, // Start with non-streaming for simplicity
+			},
+			signal: abortControllerRef.current.signal,
+		});
+
+		setIsGenerating(false);
+		abortControllerRef.current = null;
+
+		// Extract content from OpenAI response
+		const content = response?.choices?.[0]?.message?.content || '';
+
+		setResults(prevResults => {
+			const newResults = [...prevResults];
+			const addedResult = newResults.find(result => result.id === newId);
+
+			if (addedResult) {
+				addedResult.content = sanitizeContent(
+					content,
+					shouldRemoveQuotes
+				);
+				addedResult.loading = false;
+			}
+
+			return newResults;
+		});
+	} catch (error) {
+		setIsGenerating(false);
+		abortControllerRef.current = null;
+
+		setResults(prevResults => {
+			const newResults = [...prevResults];
+			const addedResult = newResults.find(result => result.id === newId);
+
+			if (addedResult) {
+				addedResult.content = error.message || 'AI request failed';
+				addedResult.loading = false;
+				addedResult.error = true;
+			}
+
+			return newResults;
+		});
+
+		throw error;
+	}
+};
+
 export const handleContentGeneration = async ({
-	openAIApiKey,
+	openAIApiKey, // This parameter is now unused but kept for compatibility
 	modelName,
 	additionalParams,
 	additionalData,
@@ -265,13 +334,11 @@ export const handleContentGeneration = async ({
 
 		setSelectedResultId(newId);
 
-		// Chat creation and settings
-		const chat = createChat(openAIApiKey, modelName, additionalParams);
-
-		// Calling chat and updating results
-		await callChatAndUpdateResults({
-			chat,
+		// Use backend proxy instead of direct OpenAI calls
+		await callBackendAIProxy({
 			messages,
+			modelName,
+			additionalParams,
 			newId,
 			abortControllerRef,
 			shouldRemoveQuotes: additionalData?.settings?.contentType

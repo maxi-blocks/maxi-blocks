@@ -394,6 +394,36 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('install_plugins') && current_user_can('activate_plugins');
                 },
             ]);
+            register_rest_route($this->namespace, '/ai/chat', [
+                'methods' => 'POST',
+                'callback' => [$this, 'proxy_ai_chat'],
+                'args' => [
+                    'messages' => [
+                        'required' => true,
+                        'validate_callback' => function ($param) {
+                            return is_array($param) || is_string($param);
+                        },
+                    ],
+                    'model' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                    'temperature' => [
+                        'validate_callback' => function ($param) {
+                            return is_numeric($param);
+                        },
+                    ],
+                    'streaming' => [
+                        'validate_callback' => function ($param) {
+                            return is_bool($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
         }
 
         /**
@@ -423,7 +453,8 @@ if (!class_exists('MaxiBlocks_API')):
                 'maxi_version' => MAXI_PLUGIN_VERSION,
                 'google_api_key' => get_option('google_api_key_option'),
                 'ai_settings' => [
-                    'openai_api_key' => get_option('openai_api_key_option'),
+                    // Note: openai_api_key removed for security - now handled by backend proxy
+                    'has_openai_api_key' => !empty(get_option('openai_api_key_option')),
                     'model' => get_option('maxi_ai_model'),
                     'language' => get_option('maxi_ai_language'),
                     'tone' => get_option('maxi_ai_tone'),
@@ -2418,6 +2449,90 @@ if (!class_exists('MaxiBlocks_API')):
                 'message' => __('WordPress Importer has been installed and activated successfully.', 'maxi-blocks'),
                 'status' => 'active'
             ]);
+        }
+
+        /**
+         * Proxy AI chat requests to OpenAI API
+         * This keeps the API key secure on the backend
+         */
+        public function proxy_ai_chat($request)
+        {
+            $openai_api_key = get_option('openai_api_key_option');
+            
+            if (!$openai_api_key) {
+                return new WP_Error(
+                    'no_api_key',
+                    'OpenAI API key not configured',
+                    ['status' => 500]
+                );
+            }
+
+            // Get parameters from request
+            $messages = $request->get_param('messages');
+            $model = $request->get_param('model') ?: 'gpt-3.5-turbo';
+            $temperature = $request->get_param('temperature');
+            $streaming = $request->get_param('streaming') ?: false;
+
+            // Convert messages to OpenAI format if needed
+            if (is_string($messages)) {
+                $messages = json_decode($messages, true);
+            }
+
+            // Build OpenAI API request
+            $body = [
+                'model' => $model,
+                'messages' => $messages,
+                'stream' => $streaming,
+            ];
+
+            // Add temperature for non-o1/o3 models
+            if (!str_contains($model, 'o1') && !str_contains($model, 'o3')) {
+                if ($temperature !== null) {
+                    $body['temperature'] = (float) $temperature;
+                }
+            }
+
+            // Make request to OpenAI
+            $response = wp_remote_post('https://api.openai.com/v1/chat/completions', [
+                'timeout' => 30,
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $openai_api_key,
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => wp_json_encode($body),
+            ]);
+
+            if (is_wp_error($response)) {
+                return new WP_Error(
+                    'openai_request_failed',
+                    $response->get_error_message(),
+                    ['status' => 500]
+                );
+            }
+
+            $response_code = wp_remote_retrieve_response_code($response);
+            $response_body = wp_remote_retrieve_body($response);
+
+            if ($response_code !== 200) {
+                return new WP_Error(
+                    'openai_api_error',
+                    'OpenAI API returned error: ' . $response_body,
+                    ['status' => $response_code]
+                );
+            }
+
+            // Parse and return response
+            $data = json_decode($response_body, true);
+            
+            if (!$data) {
+                return new WP_Error(
+                    'invalid_response',
+                    'Invalid response from OpenAI API',
+                    ['status' => 500]
+                );
+            }
+
+            return rest_ensure_response($data);
         }
     }
 endif;

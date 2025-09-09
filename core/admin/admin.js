@@ -308,6 +308,12 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				'gpt-3.5-turbo-instruct',
 				'gpt-4o-mini-realtime-preview',
 				'gpt-4o-realtime-preview',
+				'gpt-image',
+				'gpt-realtime',
+				'transcribe',
+				'tts',
+				'search-preview',
+				'o1-pro',
 			];
 
 			const includedPatterns = ['o1', 'o3', 'gpt'];

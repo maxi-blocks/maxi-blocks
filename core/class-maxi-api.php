@@ -2478,6 +2478,46 @@ if (!class_exists('MaxiBlocks_API')):
                 $messages = json_decode($messages, true);
             }
 
+
+            // Validate message format
+            if (!is_array($messages) || empty($messages)) {
+                return new WP_Error(
+                    'invalid_messages',
+                    'Messages must be a non-empty array',
+                    ['status' => 400]
+                );
+            }
+
+            // Convert LangChain format to OpenAI format
+            $converted_messages = [];
+            foreach ($messages as $message) {
+                if (isset($message['id']) && is_array($message['id'])) {
+                    // This is a LangChain message format
+                    $message_type = end($message['id']); // Get last element (SystemMessage, HumanMessage, etc.)
+                    $content = $message['kwargs']['content'] ?? '';
+                    
+                    switch ($message_type) {
+                        case 'SystemMessage':
+                            $converted_messages[] = ['role' => 'system', 'content' => $content];
+                            break;
+                        case 'HumanMessage':
+                            $converted_messages[] = ['role' => 'user', 'content' => $content];
+                            break;
+                        case 'AIMessage':
+                            $converted_messages[] = ['role' => 'assistant', 'content' => $content];
+                            break;
+                        default:
+                            // Fallback to user role for unknown types
+                            $converted_messages[] = ['role' => 'user', 'content' => $content];
+                    }
+                } else {
+                    // Already in OpenAI format, use as-is
+                    $converted_messages[] = $message;
+                }
+            }
+
+            $messages = $converted_messages;
+
             // Build OpenAI API request
             $body = [
                 'model' => $model,
@@ -2485,10 +2525,17 @@ if (!class_exists('MaxiBlocks_API')):
                 'stream' => $streaming,
             ];
 
-            // Add temperature for non-o1/o3 models
+            // Add temperature based on model support
+            // o1 and o3 models don't support temperature at all
             if (!str_contains($model, 'o1') && !str_contains($model, 'o3')) {
-                if ($temperature !== null) {
-                    $body['temperature'] = (float) $temperature;
+                // Only GPT-5 models require temperature = 1, others support custom values
+                if (str_contains($model, 'gpt-5')) {
+                    $body['temperature'] = 1;
+                } else {
+                    // Most models (including gpt-4o) support custom temperature
+                    if ($temperature !== null) {
+                        $body['temperature'] = (float) $temperature;
+                    }
                 }
             }
 

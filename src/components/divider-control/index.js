@@ -141,7 +141,7 @@ const DividerControl = props => {
 		isHover,
 	});
 
-	const handleLineWeightChange = val => {
+	const handleLineWeightChange = (val, meta) => {
 		// Sync both horizontal and vertical line weights
 		onChange({
 			[getAttributeKey(
@@ -156,6 +156,7 @@ const DividerControl = props => {
 				prefix,
 				breakpoint
 			)]: val,
+			meta,
 		});
 	};
 
@@ -491,7 +492,7 @@ const DividerControl = props => {
 								attributes: props,
 								isHover,
 							})}
-							onChangeValue={val => {
+							onChangeValue={(val, meta) => {
 								onChange({
 									[getAttributeKey(
 										'divider-height',
@@ -502,6 +503,7 @@ const DividerControl = props => {
 										val !== undefined && val !== ''
 											? val
 											: '',
+									meta,
 								});
 							}}
 							min={0}

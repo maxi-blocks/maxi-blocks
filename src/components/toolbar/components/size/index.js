@@ -93,9 +93,10 @@ const Size = props => {
 								attributes: props,
 							})}
 							allowedUnits={['px', 'em', 'vw', '%']}
-							onChangeValue={val =>
+							onChangeValue={(val, meta) =>
 								onChange({
 									[`width-${breakpoint}`]: val,
+									meta,
 								})
 							}
 							onReset={() =>
@@ -146,9 +147,10 @@ const Size = props => {
 										breakpoint,
 										attributes: props,
 									})}
-									onChangeValue={val =>
+									onChangeValue={(val, meta) =>
 										onChange({
 											[`max-width-${breakpoint}`]: val,
+											meta,
 										})
 									}
 								/>

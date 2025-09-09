@@ -96,9 +96,9 @@ const ClipPathOption = props => {
 									key={index}
 									value={values[index].value}
 									unit={values[index].unit}
-									onChangeValue={value => {
+									onChangeValue={(value, meta) => {
 										values[index].value = value || 0;
-										onChange(values);
+										onChange(values, meta);
 									}}
 									onChangeUnit={unit => {
 										values[index].unit = unit;
@@ -269,16 +269,17 @@ const ClipPathControl = props => {
 			changeClipPathOptions(deconstructCP());
 	}, [clipPath, clipPathOptions]);
 
-	const onChangeValue = val => {
+	const onChangeValue = (val, meta) => {
 		onChange({
 			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
+			meta,
 		});
 	};
 
-	const generateCP = clipPath => {
+	const generateCP = (clipPath, meta) => {
 		const newCP = getClipPath(clipPath);
 
-		onChangeValue(newCP);
+		onChangeValue(newCP, meta);
 		changeClipPathOptions(clipPath);
 	};
 
@@ -431,10 +432,13 @@ const ClipPathControl = props => {
 												number={i}
 												type={clipPathOptions.type}
 												getBounds={getBounds}
-												onChange={value => {
+												onChange={(value, meta) => {
 													clipPathOptions.content[i] =
 														value;
-													generateCP(clipPathOptions);
+													generateCP(
+														clipPathOptions,
+														meta
+													);
 												}}
 												onReset={coordIndex => {
 													const breakpoints = [

@@ -253,9 +253,10 @@ const DimensionTab = props => {
 									attributes,
 								})}
 								value={attributes[`object-size-${deviceType}`]}
-								onChangeValue={val =>
+								onChangeValue={(val, meta) =>
 									maxiSetAttributes({
 										[`object-size-${deviceType}`]: val,
+										meta,
 									})
 								}
 								onReset={() =>
@@ -288,10 +289,11 @@ const DimensionTab = props => {
 									`object-position-horizontal-${deviceType}`
 								]
 							}
-							onChangeValue={val =>
+							onChangeValue={(val, meta) =>
 								maxiSetAttributes({
 									[`object-position-horizontal-${deviceType}`]:
 										val,
+									meta,
 								})
 							}
 							onReset={() =>
@@ -319,10 +321,11 @@ const DimensionTab = props => {
 									`object-position-vertical-${deviceType}`
 								]
 							}
-							onChangeValue={val =>
+							onChangeValue={(val, meta) =>
 								maxiSetAttributes({
 									[`object-position-vertical-${deviceType}`]:
 										val,
+									meta,
 								})
 							}
 							onReset={() =>

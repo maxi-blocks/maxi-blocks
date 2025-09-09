@@ -129,9 +129,10 @@ const AccordionSettings = props => {
 				max={10}
 				step={0.1}
 				value={animationDuration}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					onChange({
 						animationDuration: val !== undefined ? val : '',
+						meta,
 					});
 				}}
 				onReset={() =>

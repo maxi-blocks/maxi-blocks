@@ -153,9 +153,10 @@ const NumberCounterControl = props => {
 					initial={100}
 					step={1}
 					value={props['number-counter-start-animation-offset']}
-					onChangeValue={val =>
+					onChangeValue={(val, meta) =>
 						onChange({
 							'number-counter-start-animation-offset': val,
+							meta,
 						})
 					}
 					onReset={() =>
@@ -184,7 +185,9 @@ const NumberCounterControl = props => {
 				initial={0}
 				step={1}
 				value={props['number-counter-start']}
-				onChangeValue={val => onChange({ 'number-counter-start': val })}
+				onChangeValue={(val, meta) =>
+					onChange({ 'number-counter-start': val, meta })
+				}
 				onReset={() =>
 					onChange({
 						'number-counter-start': getDefaultAttribute(
@@ -202,7 +205,9 @@ const NumberCounterControl = props => {
 				initial={100}
 				step={1}
 				value={props['number-counter-end']}
-				onChangeValue={val => onChange({ 'number-counter-end': val })}
+				onChangeValue={(val, meta) =>
+					onChange({ 'number-counter-end': val, meta })
+				}
 				onReset={() =>
 					onChange({
 						'number-counter-end':
@@ -229,8 +234,8 @@ const NumberCounterControl = props => {
 				initial={1}
 				step={1}
 				value={props['number-counter-duration']}
-				onChangeValue={val =>
-					onChange({ 'number-counter-duration': val })
+				onChangeValue={(val, meta) =>
+					onChange({ 'number-counter-duration': val, meta })
 				}
 				onReset={() =>
 					onChange({
@@ -249,8 +254,8 @@ const NumberCounterControl = props => {
 					initial={8}
 					step={1}
 					value={props['number-counter-stroke']}
-					onChangeValue={val =>
-						onChange({ 'number-counter-stroke': val })
+					onChangeValue={(val, meta) =>
+						onChange({ 'number-counter-stroke': val, meta })
 					}
 					onReset={() =>
 						onChange({
@@ -317,9 +322,10 @@ const NumberCounterControl = props => {
 					breakpoint,
 					attributes: props,
 				})}
-				onChangeValue={val =>
+				onChangeValue={(val, meta) =>
 					onChange({
 						[`number-counter-title-font-size-${breakpoint}`]: val,
+						meta,
 					})
 				}
 				onReset={() =>

@@ -141,8 +141,8 @@ const GenerateTab = ({
 			<AdvancedNumberControl
 				label={__('Character count guideline', 'maxi-blocks')}
 				value={characterCount}
-				onChangeValue={characterCount =>
-					updateSettings({ characterCount })
+				onChangeValue={(characterCount, meta) =>
+					updateSettings({ characterCount, meta })
 				}
 				onReset={() =>
 					updateSettings({
@@ -157,7 +157,9 @@ const GenerateTab = ({
 				min={0}
 				max={1}
 				step={0.01}
-				onChangeValue={temperature => updateSettings({ temperature })}
+				onChangeValue={(temperature, meta) =>
+					updateSettings({ temperature, meta })
+				}
 				onReset={() =>
 					updateSettings({
 						temperature: DEFAULT_TEMPERATURE,

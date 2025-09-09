@@ -432,14 +432,16 @@ const attributesToStyles = {
 	'header-divider-width': {
 		target: inlineStylesTargets.headerLine,
 		property: 'width',
-		unit: true,
 		isMultiplySelector: true,
 	},
 	'content-divider-width': {
 		target: inlineStylesTargets.contentLine,
 		property: 'width',
-		unit: true,
 		isMultiplySelector: true,
+	},
+	'row-gap': {
+		target: '',
+		property: 'row-gap',
 	},
 };
 

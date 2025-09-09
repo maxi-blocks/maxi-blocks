@@ -22,9 +22,16 @@ import { ariaLabelsCategories, customCss } from './data';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		clientId,
+		insertInlineStyles,
+		inlineStylesTargets,
+	} = props;
 
-	const { blockStyle, titleLevel } = attributes;
+	const { blockStyle, titleLevel, accordionLayout } = attributes;
 	const { selectors, categories } = customCss;
 
 	const iconTabsProps = {
@@ -39,17 +46,17 @@ const Inspector = props => {
 	const lineSettingsProps = {
 		...getGroupAttributes(attributes, 'accordionLine'),
 		onChangeInline: obj => {
-			// insertInlineStyles({
-			// 	obj,
-			// 	target: inlineStylesTargets.headerLine,
-			// 	isMultiplySelector: true,
-			// });
-			// if (accordionLayout === 'simple')
-			// 	insertInlineStyles({
-			// 		obj,
-			// 		target: inlineStylesTargets.contentLine,
-			// 		isMultiplySelector: true,
-			// 	});
+			insertInlineStyles({
+				obj,
+				target: inlineStylesTargets.headerLine,
+				isMultiplySelector: true,
+			});
+			if (accordionLayout === 'simple')
+				insertInlineStyles({
+					obj,
+					target: inlineStylesTargets.contentLine,
+					isMultiplySelector: true,
+				});
 		},
 		onChange: obj => {
 			maxiSetAttributes(obj);

@@ -347,28 +347,25 @@ export const processLocalActivationRemoveDevice = (
 		const oldProObj = JSON.parse(oldPro);
 		const oldEmailInfo = oldProObj?.[email];
 		if (oldEmailInfo && oldEmailInfo?.key) {
-			let newPro = {
-				[email]: {
-					status,
-					name,
-					key,
-				},
-			};
 			const oldKeysArray = oldEmailInfo?.key.split(',');
 			const newKeysArray = oldKeysArray.filter(item => item !== key);
-			if (newKeysArray.length !== 0) {
-				const newKey = newKeysArray.join();
+
+			// Start with all existing data except this email
+			obj = { ...oldProObj };
+			delete obj[email];
+
+			// If there are still keys remaining for this email, keep the email entry
+			if (newKeysArray.length > 0) {
+				const newKey = newKeysArray.join(',');
 				const oldStatus = oldEmailInfo?.status;
-				newPro = {
-					[email]: {
-						status: oldStatus,
-						name,
-						key: newKey,
-					},
+				obj[email] = {
+					status: oldStatus,
+					name,
+					key: newKey,
 				};
 			}
+			// If no keys remaining, the email entry is already deleted above
 
-			if (oldProObj?.status !== 'no') obj = { ...oldProObj, ...newPro };
 			const objString = JSON.stringify(obj);
 			dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
 		}
@@ -385,60 +382,355 @@ export const removeLocalActivation = email => {
 	}
 };
 
+/**
+ * Helper function to get cookie value for a specific email
+ */
+const getMaxiCookieForEmail = email => {
+	const cookies = document.cookie.split(';');
+	for (const cookie of cookies) {
+		const [name, value] = cookie.trim().split('=');
+		if (name === import.meta.env.VITE_MAXI_BLOCKS_AUTH_KEY) {
+			try {
+				const cookieData = JSON.parse(value);
+				return cookieData[email] || null;
+			} catch (e) {
+				console.error('Error parsing auth cookie:', e);
+				return null;
+			}
+		}
+	}
+	return null;
+};
+
+/**
+ * Helper function to check existing authentication from local storage
+ */
+const checkExistingAuthentication = () => {
+	// Check for purchase code authentication first
+	if (isPurchaseCodeActive()) {
+		return true;
+	}
+
+	// Check for email authentication
+	const emailInfo = getProInfoByEmail();
+	if (emailInfo && emailInfo.info?.status === 'yes') {
+		return true;
+	}
+
+	return false;
+};
+
+/**
+ * Initiate email authentication via WordPress AJAX (same as dashboard)
+ */
+const initiateEmailAuthentication = async email => {
+	try {
+		const licenseSettings = window.maxiLicenseSettings || {};
+		const { ajaxUrl, nonce } = licenseSettings;
+
+		if (!ajaxUrl || !nonce) {
+			console.error('Missing WordPress AJAX configuration');
+			return false;
+		}
+
+		const formData = new FormData();
+		formData.append('action', 'maxi_validate_license');
+		formData.append('nonce', nonce);
+		formData.append('license_input', email);
+		formData.append('license_action', 'activate');
+
+		const response = await fetch(ajaxUrl, {
+			method: 'POST',
+			body: formData,
+		});
+
+		if (!response.ok) {
+			console.error(
+				'WordPress AJAX call failed. Status:',
+				response.status
+			);
+			return false;
+		}
+
+		const data = await response.json();
+
+		return data;
+	} catch (error) {
+		console.error('Email auth initiation error:', error);
+		return false;
+	}
+};
+
+/**
+ * Check email authentication status via WordPress AJAX (similar to admin.js)
+ */
+const checkEmailAuthenticationStatus = async email => {
+	try {
+		// Get the auth key from cookie
+		const authKey = getMaxiCookieForEmail(email);
+
+		if (!authKey) {
+			console.error('No auth key found for email:', email);
+			return false;
+		}
+
+		// Use WordPress AJAX endpoint
+		const licenseSettings = window.maxiLicenseSettings || {};
+		const { ajaxUrl, nonce } = licenseSettings;
+
+		if (!ajaxUrl || !nonce) {
+			console.error('Missing WordPress AJAX configuration');
+			return false;
+		}
+
+		const formData = new FormData();
+		formData.append('action', 'maxi_check_auth_status');
+		formData.append('nonce', nonce);
+
+		const response = await fetch(ajaxUrl, {
+			method: 'POST',
+			body: formData,
+		});
+
+		if (!response.ok) {
+			console.error(
+				'WordPress AJAX call failed. Status:',
+				response.status
+			);
+			return false;
+		}
+
+		const data = await response.json();
+
+		if (data && data.success && data.data) {
+			if (data.data.is_authenticated) {
+				// User is fully authenticated (both subscription valid and logged into Appwrite)
+				return {
+					success: true,
+					user_name: data.data.user_name,
+				};
+			}
+
+			// Check for the new intermediate state: subscription valid but not logged into Appwrite
+			if (
+				data.data.subscription_valid &&
+				!data.data.appwrite_login_verified
+			) {
+				return {
+					success: false,
+					subscription_valid: true,
+					appwrite_login_verified: false,
+					message:
+						data.data.message ||
+						'Please log into your MaxiBlocks account to complete activation',
+				};
+			}
+
+			if (data.data.error && data.data.error_message) {
+				// Handle specific errors like seat limit
+				console.error(
+					`Authentication error: ${data.data.error_message}`
+				);
+				return {
+					success: false,
+					error: true,
+					error_message: data.data.error_message,
+					error_code: data.data.error_code || 'UNKNOWN_ERROR',
+				};
+			}
+		}
+
+		return false;
+	} catch (error) {
+		console.error('Email auth check error:', error);
+		return false;
+	}
+};
+
+// Keep track of active polling to prevent multiple instances
+let activePollingEmail = null;
+
+/**
+ * Start smart authentication checking using Page Visibility API and focus events
+ * This is much more efficient than constant polling - only checks when user returns to tab
+ */
+const startSmartAuthCheck = email => {
+	// Set active polling email to prevent duplicates
+	activePollingEmail = email;
+
+	let fallbackTimeout;
+	let isCheckingAuth = false;
+
+	const stopAuthCheck = () => {
+		activePollingEmail = null;
+		if (fallbackTimeout) {
+			clearTimeout(fallbackTimeout);
+		}
+		// Remove event listeners
+		document.removeEventListener(
+			'visibilitychange',
+			handleVisibilityChange
+		);
+		window.removeEventListener('focus', handleWindowFocus);
+	};
+
+	const checkAuth = async (trigger = 'unknown') => {
+		if (isCheckingAuth) return false; // Prevent multiple simultaneous checks
+
+		isCheckingAuth = true;
+
+		try {
+			const authResult = await checkEmailAuthenticationStatus(email);
+
+			if (authResult && authResult.success) {
+				// Stop auth checking
+				stopAuthCheck();
+
+				// Update local storage to reflect the authenticated state
+				const cookieKey = getMaxiCookieForEmail(email);
+				if (cookieKey) {
+					processLocalActivation(
+						email,
+						authResult.user_name || email,
+						'yes',
+						cookieKey
+					);
+				}
+
+				// Trigger a custom event that the UI can listen to
+				const authEvent = new CustomEvent('maxiEmailAuthSuccess', {
+					detail: {
+						email,
+						userName: authResult.user_name,
+						status: 'authenticated',
+					},
+				});
+				window.dispatchEvent(authEvent);
+
+				return true;
+			}
+
+			if (
+				authResult &&
+				authResult.subscription_valid &&
+				!authResult.appwrite_login_verified
+			) {
+				// Subscription is valid but user hasn't logged into Appwrite yet
+				// Don't stop checking - keep polling until they log in
+				return false;
+			}
+
+			if (authResult && authResult.error) {
+				// Handle authentication errors (like seat limit)
+				console.error(
+					`Authentication error: ${authResult.error_message}`
+				);
+				stopAuthCheck();
+
+				// Trigger error event for UI
+				const authErrorEvent = new CustomEvent('maxiEmailAuthError', {
+					detail: {
+						email,
+						message: authResult.error_message,
+						error_code: authResult.error_code,
+					},
+				});
+				window.dispatchEvent(authErrorEvent);
+
+				return false;
+			}
+		} catch (error) {
+			console.error('Error checking auth status:', error);
+		} finally {
+			isCheckingAuth = false;
+		}
+
+		return false;
+	};
+
+	// Handle when user returns to tab (most important trigger)
+	const handleVisibilityChange = () => {
+		if (document.visibilityState === 'visible') {
+			checkAuth('tab-visible');
+		}
+	};
+
+	// Handle when window gets focus (backup trigger)
+	const handleWindowFocus = () => {
+		checkAuth('window-focus');
+	};
+
+	// Add event listeners
+	document.addEventListener('visibilitychange', handleVisibilityChange);
+	window.addEventListener('focus', handleWindowFocus);
+
+	// Check immediately
+	checkAuth('initial');
+
+	// Fallback: Check once every 60 seconds as a safety net (much less frequent than before)
+	const fallbackCheck = () => {
+		if (activePollingEmail === email) {
+			// Only check if tab is visible to avoid unnecessary API calls
+			if (document.visibilityState === 'visible') {
+				checkAuth('fallback-timer');
+			}
+			fallbackTimeout = setTimeout(fallbackCheck, 60000); // 60 seconds
+		}
+	};
+	fallbackTimeout = setTimeout(fallbackCheck, 60000);
+
+	// Stop checking after 10 minutes
+	setTimeout(() => {
+		if (activePollingEmail === email) {
+			stopAuthCheck();
+		}
+	}, 600000); // 10 minutes
+};
+
 export async function authConnect(withRedirect = false, email = false) {
 	const url = 'https://my.maxiblocks.com/login?plugin';
 
-	let cookieKey = document.cookie
-		.split(';')
-		.find(row =>
-			row
-				.trim()
-				.startsWith(`${import.meta.env.VITE_MAXI_BLOCKS_AUTH_KEY}=`)
-		)
-		?.split('=')[1];
+	// First, check if we should try to authenticate with existing stored data
+	if (!email) {
+		// Check if we have existing authentication data stored locally
+		const existingAuth = checkExistingAuthentication();
+		if (existingAuth) {
+			return true;
+		}
+		// No existing auth and no email provided
+		return false;
+	}
 
-	if (!cookieKey && !email) return;
+	// Check if authentication is already in progress for this email
+	if (activePollingEmail === email) {
+		return false;
+	}
 
-	if (cookieKey) {
-		try {
-			const cookieObj = JSON.parse(cookieKey);
-			const cookieEmail = Object.keys(cookieObj)[0];
-			if (cookieEmail !== email) {
-				removeMaxiCookie();
-				cookieKey = false;
-			}
-		} catch (error) {
-			console.error('Failed to parse cookie JSON in authConnect:', error);
-			removeMaxiCookie();
-			cookieKey = false;
+	// Check if we already have a valid cookie for this email
+	const existingCookie = getMaxiCookieForEmail(email);
+	if (existingCookie) {
+		// Try to authenticate with existing cookie
+		const authResult = await checkEmailAuthenticationStatus(email);
+		if (authResult) {
+			return true;
 		}
 	}
 
-	if (!cookieKey && email) {
-		const generateCookieKey = (email, length) => {
-			let key = '';
-			const string =
-				'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-			const stringLength = string.length;
-			let i = 0;
-			while (i < length) {
-				key += string.charAt(Math.floor(Math.random() * stringLength));
-				i += 1;
-			}
+	// If no existing authentication, initiate email authentication like the dashboard does
+	const authResult = await initiateEmailAuthentication(email);
+	if (authResult && authResult.success) {
+		// Authentication initiated successfully, redirect to login
+		if (withRedirect && authResult.data && authResult.data.login_url) {
+			window.open(authResult.data.login_url, '_blank')?.focus();
+		}
 
-			const obj = { [email]: key };
-			return JSON.stringify(obj);
-		};
-		cookieKey = generateCookieKey(email, 20);
-		document.cookie = `${
-			import.meta.env.VITE_MAXI_BLOCKS_AUTH_KEY
-		}=${cookieKey};max-age=2592000;Path=${getPathToAdmin()};`;
+		// Start smart auth checking for authentication completion
+		startSmartAuthCheck(email);
+
+		return false; // Return false initially, authentication will be completed after user logs in
 	}
 
-	const redirect = () => {
-		withRedirect && window.open(url, '_blank')?.focus();
-	};
-
+	// Fallback to old behavior if initiation fails
 	const deactivateLocal = () => {
 		dispatch('maxiBlocks/pro').saveMaxiProStatus(
 			JSON.stringify({ status: 'no' })
@@ -446,91 +738,13 @@ export async function authConnect(withRedirect = false, email = false) {
 		return false;
 	};
 
-	let key;
-	try {
-		key = JSON.parse(cookieKey)?.[email];
-	} catch (error) {
-		console.error('Failed to parse cookieKey for key extraction:', error);
-		key = null;
-	}
+	const redirect = () => {
+		withRedirect && window.open(url, '_blank')?.focus();
+	};
 
-	const useEmail = email;
-
-	// eslint-disable-next-line consistent-return
-	return new Promise((resolve, reject) => {
-		if (!useEmail) {
-			deactivateLocal();
-			redirect();
-			resolve(false);
-		} else {
-			const fetchUrl = import.meta.env.VITE_MAXI_BLOCKS_AUTH_URL;
-			const checkTitle = import.meta.env
-				.VITE_MAXI_BLOCKS_AUTH_HEADER_TITLE;
-			const checkValue = import.meta.env
-				.VITE_MAXI_BLOCKS_AUTH_HEADER_VALUE;
-
-			const fetchOptions = {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					[checkTitle]: checkValue,
-				},
-				body: JSON.stringify({ email: useEmail, cookie: key }),
-			};
-
-			fetch(fetchUrl, fetchOptions)
-				.then(response => {
-					if (response.status !== 200) {
-						console.error(
-							`There was a problem with an API call. Status Code: ${response.status}`
-						);
-						deactivateLocal();
-						redirect();
-						resolve(false);
-					}
-
-					response.json().then(data => {
-						if (data && data.status === 'ok') {
-							const today = new Date().toISOString().slice(0, 10);
-							const expirationDate = data?.expiration_date;
-							const { name } = data;
-
-							if (today > expirationDate) {
-								processLocalActivation(
-									useEmail,
-									name,
-									'expired',
-									key
-								);
-								redirect();
-								resolve(false);
-							} else {
-								processLocalActivation(
-									useEmail,
-									name,
-									'yes',
-									key
-								);
-								resolve(true);
-							}
-						} else {
-							if (data?.error) {
-								console.error(data.error);
-							}
-							deactivateLocal();
-							redirect();
-							resolve(false);
-						}
-					});
-				})
-				.catch(err => {
-					console.error('Fetch Error for the API call:', err);
-					deactivateLocal();
-					redirect();
-					resolve(false);
-				});
-		}
-	});
+	deactivateLocal();
+	redirect();
+	return false;
 }
 
 /**
@@ -596,7 +810,7 @@ const deactivatePurchaseCode = async (
 	}
 };
 
-export const logOut = redirect => {
+export const logOut = async redirect => {
 	let hasEmailAuth = false;
 
 	// Handle email auth logout
@@ -607,7 +821,7 @@ export const logOut = redirect => {
 		const name = getUserName();
 		if (email) {
 			processLocalActivationRemoveDevice(email, name, 'no', key);
-			removeMaxiCookie();
+			// Don't remove cookie yet - we need it for the server-side logout
 			hasEmailAuth = true;
 		}
 	}
@@ -643,10 +857,7 @@ export const logOut = redirect => {
 					'Plugin deactivated by user'
 				);
 				if (!result.success) {
-					console.error(
-						'Purchase code deactivation failed:',
-						JSON.stringify(result)
-					);
+					console.error('Purchase code deactivation failed:', result);
 				}
 			} catch (error) {
 				console.error('Purchase code deactivation error:', error);
@@ -656,6 +867,36 @@ export const logOut = redirect => {
 		// Update local storage immediately (don't wait for deactivation API calls)
 		const objString = JSON.stringify(filteredObj);
 		dispatch('maxiBlocks/pro').saveMaxiProStatus(objString);
+	}
+
+	// Call WordPress AJAX logout for email authentication only
+	if (hasEmailAuth) {
+		try {
+			const licenseSettings = window.maxiLicenseSettings || {};
+			const { ajaxUrl, nonce } = licenseSettings;
+
+			if (ajaxUrl && nonce) {
+				const formData = new FormData();
+				formData.append('action', 'maxi_validate_license');
+				formData.append('nonce', nonce);
+				formData.append('license_action', 'logout');
+
+				await fetch(ajaxUrl, {
+					method: 'POST',
+					body: formData,
+				});
+			}
+		} catch (error) {
+			console.error(
+				JSON.stringify({
+					message: 'MaxiBlocks Starter Sites Email Logout: Exception',
+					error: error.message,
+				})
+			);
+		}
+
+		// Now remove the cookie after server-side logout
+		removeMaxiCookie();
 	}
 
 	// Only redirect to email logout page if user was authenticated via email
@@ -753,14 +994,11 @@ export const checkAndHandleDomainMigration = async () => {
 					purchaseCode &&
 					storedDomain !== currentDomain
 				) {
-					console.error(
-						JSON.stringify({
-							message: 'Domain change detected',
-							oldDomain: storedDomain,
-							newDomain: currentDomain,
-							purchaseCode,
-						})
-					);
+					console.warn('Domain change detected:', {
+						oldDomain: storedDomain,
+						newDomain: currentDomain,
+						purchaseCode,
+					});
 
 					// Add migration promise to array
 					migrationPromises.push(
@@ -803,10 +1041,10 @@ export const checkAndHandleDomainMigration = async () => {
 					storedDomain,
 				}) => {
 					if (error) {
-						console.error(
-							'Domain migration error:',
-							JSON.stringify({ purchaseCode, error })
-						);
+						console.error('Domain migration error:', {
+							purchaseCode,
+							error,
+						});
 					} else if (migrationResult && migrationResult.success) {
 						// Update license data with new domain
 						updateData[key] = {
@@ -823,21 +1061,11 @@ export const checkAndHandleDomainMigration = async () => {
 						}
 
 						hasUpdates = true;
-						console.error(
-							JSON.stringify({
-								message: 'Domain migration successful',
-								purchaseCode,
-								migrationResult,
-							})
-						);
 					} else {
-						console.error(
-							'Domain migration failed:',
-							JSON.stringify({
-								purchaseCode,
-								migrationResult,
-							})
-						);
+						console.error('Domain migration failed:', {
+							purchaseCode,
+							migrationResult,
+						});
 					}
 				}
 			);

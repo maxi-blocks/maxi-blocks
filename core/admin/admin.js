@@ -1263,7 +1263,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		licenseInput.addEventListener('keypress', function (e) {
 			if (e.key === 'Enter') {
 				e.preventDefault();
-				validateLicense();'gpt-image-1',
+				validateLicense();
 			}
 		});
 	}

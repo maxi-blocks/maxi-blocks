@@ -137,11 +137,18 @@ export const createChat = (openAIApiKey, modelName, additionalParams) => {
 		streaming: true,
 	};
 
-	// Only add temperature for non-o1 and non-o3 models
-	if (!modelName?.includes('o1') && !modelName?.includes('o3')) {
+	// Only add temperature for non-o1, non-o3, and non-gpt-5 models
+	if (
+		!modelName?.includes('o1') &&
+		!modelName?.includes('o3') &&
+		!modelName?.includes('gpt-5')
+	) {
 		config.temperature = additionalParams?.temperature;
 	}
 	if (modelName?.includes('o1') && !modelName?.includes('mini')) {
+		config.streaming = false;
+	}
+	if (modelName?.includes('gpt-5') || modelName?.includes('o3')) {
 		config.streaming = false;
 	}
 

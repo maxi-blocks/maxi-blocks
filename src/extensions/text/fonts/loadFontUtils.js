@@ -16,7 +16,10 @@ export const buildFontUrl = async (fontName, fontData = {}) => {
 
 		const response = await fetch(
 			`${
-				window.wpApiSettings?.root ?? '/wp-json/'
+				window.wpApiSettings?.root ??
+				window.maxiStarterSites?.apiRoot ??
+				window.maxiBlocksMain?.apiRoot ??
+				`${window.location.origin}/wp-json/`
 			}maxi-blocks/v1.0/get-font-url/${encodedFontName}`,
 			{
 				credentials: 'same-origin',

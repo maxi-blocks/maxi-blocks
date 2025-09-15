@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 2.1.3
+Stable tag: 2.1.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,14 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 15 Sep 2025_
+MaxiBlocks v2.1.4
+* Update: Enhanced Pro authentication system by implementing new server middleware for improved security and reliability.
+* Update: Expanded AI model support with full GPT-5 integration, providing access to the latest OpenAI capabilities for enhanced content generation and editing assistance.
+* Fix: Restored MaxiBlocks toolbar functionality in synced blocks editor, ensuring consistent editing experience across all block types and maintaining proper toolbar accessibility.
+* Fix: Resolved toolbar conflicts by returning native Gutenberg toolbar for standard WordPress blocks nested inside Maxi blocks, preventing interface inconsistencies and ensuring proper block functionality.
+* Security: Fixed Broken Access Control vulnerability in MaxiBlocks plugin settings affecting Contributor-level users and above. Thanks to Abu Hurayra for the responsible disclosure.
+
 _Updates 28 Jul 2025_
 MaxiBlocks v2.1.3
 * Update: Implemented enhanced authentication methods for marketplace integrations, providing improved access to Pro content.
@@ -187,27 +195,6 @@ MaxiBlocks v2.1.2
 * Fix: Improved custom colour removal process from background settings, providing more reliable colour management.
 * Fix: Corrected Blog Home template compatibility issues for MaxiBlocks Go theme, ensuring proper layout rendering and template functionality.
 * Fix: Resolved Slider block compatibility issues with Interaction Builder when both features are utilised on the same page, eliminating conflicts and ensuring smooth operation of interactive elements.
-
-_Updates 9 Jun 2025_
-MaxiBlocks v2.1.1
-* Update: Introduced a redesigned user interface for the plugin, delivering a more intuitive and modern editing experience.
-* Update: Launched Starter Sites functionality, enabling users to quickly launch pre-built websites and accelerate their development workflow.
-* Update: Implemented Quick Start Wizard to guide users through essential WordPress site setup in just a few streamlined steps.
-* Update: Enhanced Content Loop (CL) and Dynamic Content (DC) dropdowns to display all existing categories, tags, and custom taxonomies for improved content organization.
-* Update: Streamlined user interface by removing unnecessary toolbars from Button and Image blocks, reducing visual clutter in the editing experience.
-* Update: Expanded Style Cards (SC) functionality with custom colour options, providing greater design flexibility and customization capabilities.
-* Update: Enhanced WordPress 6.8.1 compatibility by reverting block delete key combination to maintain consistent user experience.
-* Update: Added comprehensive PHP 8.4 support, ensuring forward compatibility and optimal performance on the latest PHP versions.
-* Update: Significantly expanded plugin testing infrastructure with comprehensive unit test coverage, improving overall code reliability and stability across all features.
-* Security: Fixed missing authorization to authenticated (contributor+) arbitrary options update (CVE-2025-47601). Thanks to Cút lộn xào me for the responsible disclosure.
-* Fix: Resolved styling issues with custom category, tag, and author templates on the frontend, ensuring consistent visual presentation.
-* Fix: Corrected Content Loop resetting behavior when interacting with Row blocks, maintaining user selections and workflow continuity.
-* Fix: Restored keyboard shortcuts (Ctrl+B, Ctrl+I) functionality for Text block formatting, improving editing efficiency.
-* Fix: Enhanced pattern placeholder image upload process for first-time users, eliminating upload failures and improving onboarding experience.
-* Fix: Improved Advanced Custom Fields (ACF) integration with Dynamic Content and Content Loop for custom taxonomies and post types.
-* Fix: Resolved Style Cards colour tone rendering issues that returned undefined values in specific scenarios.
-* Fix: Addressed potential PHP errors on PHP 8.2 environments, ensuring stable plugin operation across different server configurations.
-* Fix: Corrected icon padding unit handling for consistent spacing and alignment in icon-based elements.
 
 == Upgrade Notice ==
 

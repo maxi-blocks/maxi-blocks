@@ -1703,7 +1703,15 @@ class MaxiBlocks_DynamicContent
                 'number' => 1,
             ];
 
-            if ($is_random) {
+            if ($dc_relation === 'current') {
+                // Get the current queried object (should be the current category/term)
+                $queried_object = get_queried_object();
+                if ($queried_object && isset($queried_object->term_id) && $queried_object->taxonomy === $taxonomy) {
+                    return $queried_object;
+                }
+                // If not on a taxonomy archive page, return null
+                return null;
+            } elseif ($is_random) {
                 $args['number'] = 0; // Get all terms
                 $terms = get_terms($args);
 
@@ -2485,6 +2493,9 @@ class MaxiBlocks_DynamicContent
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
             'dc-accumulator' => $dc_accumulator,
+            'dc-type' => $dc_type,
+            'dc-id' => $dc_id,
+            'dc-relation' => $dc_relation,
         ] = $attributes;
 
         $post = $this->get_post($attributes);
@@ -2492,10 +2503,39 @@ class MaxiBlocks_DynamicContent
             return '';
         }
 
-        if ($this->is_repeated_post($post->ID, $dc_accumulator)) {
+        // Check if it's a taxonomy term (has term_id) or a regular post (has ID)
+        $item_id = isset($post->term_id) ? $post->term_id : $post->ID;
+
+        if ($this->is_repeated_post($item_id, $dc_accumulator)) {
             return '';
         }
-        $acf_data = get_field_object($dc_field, $post->ID);
+
+        // First, try to get the field as a post/page field
+        $acf_data = get_field_object($dc_field, $item_id);
+
+        // If no value found and it looks like a taxonomy term, try taxonomy contexts
+        if ((!$acf_data || empty($acf_data['value'])) && isset($post->term_id)) {
+            // Try common taxonomy contexts
+            $taxonomy_contexts = [
+                'category_' . $post->term_id,  // Categories
+                'post_tag_' . $post->term_id,  // Tags
+                'product_cat_' . $post->term_id, // WooCommerce product categories
+                'product_tag_' . $post->term_id, // WooCommerce product tags
+            ];
+
+            // Also try to use the actual taxonomy from the term object
+            if (isset($post->taxonomy)) {
+                $taxonomy_contexts[] = $post->taxonomy . '_' . $post->term_id;
+            }
+
+            foreach ($taxonomy_contexts as $context) {
+                $acf_data = get_field_object($dc_field, $context);
+                if ($acf_data && !empty($acf_data['value'])) {
+                    break;
+                }
+            }
+        }
+
         $acf_value = is_array($acf_data) ? $acf_data['value'] : null;
         $content = null;
 

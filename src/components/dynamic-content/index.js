@@ -146,6 +146,7 @@ const DynamicContent = props => {
 		acfGroup,
 		mediaSize,
 		keepOnlyTextContent,
+		acfCharLimit,
 	} = dcValues;
 
 	const dcValuesForDate = {
@@ -868,6 +869,33 @@ const DynamicContent = props => {
 								)}
 						</>
 					)}
+					{source === 'acf' &&
+						acfFieldType &&
+						['text', 'textarea'].includes(acfFieldType) && (
+							<AdvancedNumberControl
+								label={__(
+									'Character limit (backend)',
+									'maxi-blocks'
+								)}
+								value={acfCharLimit || 0}
+								min={0}
+								max={9999}
+								step={1}
+								withInputField={false}
+								disableReset={false}
+								onChangeValue={value =>
+									changeProps({
+										'dc-acf-char-limit': Number(value),
+									})
+								}
+								onReset={() =>
+									changeProps({
+										'dc-acf-char-limit': 0,
+									})
+								}
+								initialPosition={acfCharLimit || 0}
+							/>
+						)}
 				</>
 			)}
 		</div>

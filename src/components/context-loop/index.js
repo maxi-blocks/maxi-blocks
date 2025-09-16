@@ -86,6 +86,8 @@ const ContextLoop = props => {
 		'cl-accumulator': accumulator,
 		'cl-grandchild-accumulator': grandchildAccumulator = false,
 		'cl-acf-group': acfGroup,
+		'cl-acf-field-type': acfFieldType,
+		'cl-acf-char-limit': acfCharLimit,
 		'cl-pagination': paginationEnabled,
 		'cl-pagination-per-page': paginationPerPage,
 		'cl-pagination-total': paginationTotal,
@@ -884,6 +886,33 @@ const ContextLoop = props => {
 							)}
 						</>
 					)}
+					{source === 'acf' &&
+						acfFieldType &&
+						['text', 'textarea'].includes(acfFieldType) && (
+							<AdvancedNumberControl
+								label={__(
+									'Character limit (backend)',
+									'maxi-blocks'
+								)}
+								value={acfCharLimit || 0}
+								min={0}
+								max={9999}
+								step={1}
+								withInputField={false}
+								disableReset={false}
+								onChangeValue={value =>
+									changeProps({
+										'cl-acf-char-limit': Number(value),
+									})
+								}
+								onReset={() =>
+									changeProps({
+										'cl-acf-char-limit': 0,
+									})
+								}
+								initialPosition={acfCharLimit || 0}
+							/>
+						)}
 				</>
 			)}
 		</div>

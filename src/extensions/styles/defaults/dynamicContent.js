@@ -167,6 +167,10 @@ const dynamicContent = {
 		type: 'boolean',
 		default: false,
 	},
+	'dc-acf-char-limit': {
+		type: 'number',
+		default: 0,
+	},
 	...dynamicContentLink,
 };
 

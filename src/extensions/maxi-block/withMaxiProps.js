@@ -230,7 +230,6 @@ const withMaxiProps = createHigherOrderComponent(
 								getInlineStylesAndTargetsFromAttributes({
 									changedAttributes,
 									attributesToStyles,
-									skipStyles: true,
 								});
 
 							if (!actions || !Array.isArray(actions)) return;

@@ -234,7 +234,7 @@ const AdvancedNumberControl = props => {
 			result === '' || optionType === 'string'
 				? result.toString()
 				: +result;
-		onChangeValue?.(val, { inline: { unit } });
+		onChangeValue?.(val, { inline: enableUnit ? { unit } : {} });
 
 		handleChange(onChangeValue, latestValueRef, optionType);
 	};
@@ -366,7 +366,7 @@ const AdvancedNumberControl = props => {
 								latestValueRef.current = result;
 
 								onChangeValue?.(result, {
-									inline: { unit },
+									inline: enableUnit ? { unit } : {},
 								});
 
 								handleChange(

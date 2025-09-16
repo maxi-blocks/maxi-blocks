@@ -32,7 +32,8 @@ const getValidatedDCAttributes = async (
 		attributes.source,
 		attributes.linkTarget,
 		isCL,
-		attributes.acfGroup
+		attributes.acfGroup,
+		attributes.limitByArchive
 	);
 	const validatedRelations = validateRelations(
 		attributes.type,

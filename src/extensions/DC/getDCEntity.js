@@ -359,18 +359,82 @@ const getDCEntity = async (dataRequest, clientId) => {
 				return null;
 			}
 		}
+		// Build query parameters
+		const queryParams = {
+			per_page: 1,
+			order,
+			orderby: getDCOrder(relation, orderBy),
+			offset: accumulator,
+			...(relationKeyForId && {
+				[relationKeyForId]: currentId,
+			}),
+		};
+
+		// Add archive filtering if limitByArchive is 'yes'
+		if (
+			dataRequest.limitByArchive === 'yes' &&
+			relation !== 'current-archive'
+		) {
+			const currentTemplateType = getCurrentTemplateSlug();
+
+			// Use the same logic as current-archive relation to get current archive ID
+			if (
+				currentTemplateType &&
+				currentTemplateType.includes('category')
+			) {
+				// Get current category ID using the same method as current-archive
+				const taxonomyRecords = await resolveSelect(
+					'core'
+				).getEntityRecords('taxonomy', 'category', {
+					per_page: 1,
+					hide_empty: false,
+				});
+
+				if (taxonomyRecords && taxonomyRecords.length > 0) {
+					const currentCategoryId = taxonomyRecords[0].id;
+					if (!queryParams.categories) {
+						queryParams.categories = currentCategoryId;
+					}
+				}
+			} else if (
+				currentTemplateType &&
+				currentTemplateType.includes('tag')
+			) {
+				// Get current tag ID
+				const taxonomyRecords = await resolveSelect(
+					'core'
+				).getEntityRecords('taxonomy', 'post_tag', {
+					per_page: 1,
+					hide_empty: false,
+				});
+
+				if (taxonomyRecords && taxonomyRecords.length > 0) {
+					const currentTagId = taxonomyRecords[0].id;
+					if (!queryParams.tags) {
+						queryParams.tags = currentTagId;
+					}
+				}
+			} else if (
+				currentTemplateType &&
+				currentTemplateType.includes('author')
+			) {
+				// Get current author ID
+				const users = await resolveSelect('core').getUsers({
+					per_page: 1,
+				});
+				if (users && users.length > 0) {
+					const currentAuthorId = users[0].id;
+					if (!queryParams.author) {
+						queryParams.author = currentAuthorId;
+					}
+				}
+			}
+		}
+
 		const entities = await resolveSelect('core').getEntityRecords(
 			getKind(type),
 			nameDictionary[type] ?? type,
-			{
-				per_page: 1,
-				order,
-				orderby: getDCOrder(relation, orderBy),
-				offset: accumulator,
-				...(relationKeyForId && {
-					[relationKeyForId]: currentId,
-				}),
-			}
+			queryParams
 		);
 		if (entities && entities.length > 0) {
 			return entities.slice(-1)[0];

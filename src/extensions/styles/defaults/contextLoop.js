@@ -73,6 +73,9 @@ const contextLoop = {
 		type: 'string',
 		default: 'Next',
 	},
+	'cl-limit-by-archive': {
+		type: 'string',
+	},
 	...prefixAttributesCreator({
 		obj: typography,
 		prefix,

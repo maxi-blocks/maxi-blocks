@@ -171,6 +171,9 @@ const dynamicContent = {
 		type: 'number',
 		default: 0,
 	},
+	'dc-limit-by-archive': {
+		type: 'string',
+	},
 	...dynamicContentLink,
 };
 

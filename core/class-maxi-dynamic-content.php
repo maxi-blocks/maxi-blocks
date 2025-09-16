@@ -162,7 +162,8 @@ class MaxiBlocks_DynamicContent
     public function get_total_posts_by_relation(
         $relation,
         $id,
-        $type = 'post'
+        $type = 'post',
+        $limit_by_archive = null
     ) {
         // Initialize the query args array
         $args = [
@@ -288,6 +289,110 @@ class MaxiBlocks_DynamicContent
                 ];
             }
         }
+
+        // Apply current archive filtering if limit_by_archive is 'yes'
+        if ($limit_by_archive === 'yes' && $relation !== 'current-archive') {
+            $current_archive_info = $this->get_current_archive_type_and_id();
+
+            if (!empty($current_archive_info['type']) && !empty($current_archive_info['id'])) {
+                // Add archive constraints to the query
+                $additional_constraints = [];
+
+                switch ($current_archive_info['type']) {
+                    case 'category':
+                        if ($type === 'product') {
+                            // For WooCommerce products, use product_cat taxonomy
+                            $additional_constraints['tax_query'] = [
+                                [
+                                    'taxonomy' => 'product_cat',
+                                    'field' => 'term_id',
+                                    'terms' => [$current_archive_info['id']],
+                                ],
+                            ];
+                        } else {
+                            // For regular posts, use category constraint
+                            $additional_constraints['category__in'] = [$current_archive_info['id']];
+                        }
+                        break;
+                    case 'tag':
+                        if ($type === 'product') {
+                            // For WooCommerce products, use product_tag taxonomy
+                            $additional_constraints['tax_query'] = [
+                                [
+                                    'taxonomy' => 'product_tag',
+                                    'field' => 'term_id',
+                                    'terms' => [$current_archive_info['id']],
+                                ],
+                            ];
+                        } else {
+                            // For regular posts, use tag constraint
+                            $additional_constraints['tag__in'] = [$current_archive_info['id']];
+                        }
+                        break;
+                    case 'author':
+                        if ($type === 'attachment') {
+                            $additional_constraints['post_status'] = 'inherit';
+                        }
+                        $additional_constraints['author'] = $current_archive_info['id'];
+                        break;
+                    case 'date':
+                        // Parse the date ID format (YYYY or YYYY-MM or YYYY-MM-DD)
+                        $date_parts = explode('-', $current_archive_info['id']);
+                        $additional_constraints['date_query'] = [
+                            'inclusive' => true,
+                        ];
+                        if (isset($date_parts[0])) {
+                            $additional_constraints['date_query']['year'] = intval($date_parts[0]);
+                        }
+                        if (isset($date_parts[1])) {
+                            $additional_constraints['date_query']['month'] = intval($date_parts[1]);
+                        }
+                        if (isset($date_parts[2])) {
+                            $additional_constraints['date_query']['day'] = intval($date_parts[2]);
+                        }
+                        break;
+                }
+
+                // Handle custom taxonomy archives
+                if (isset($current_archive_info['tax_query'])) {
+                    $additional_constraints['tax_query'] = $current_archive_info['tax_query'];
+                }
+
+                // Merge the additional constraints with existing args
+                foreach ($additional_constraints as $key => $value) {
+                    if ($key === 'tax_query') {
+                        // Handle tax_query merging specially
+                        if (isset($args['tax_query'])) {
+                            // If we already have a tax_query, combine them with 'AND' relation
+                            $args['tax_query'] = [
+                                'relation' => 'AND',
+                                $args['tax_query'][0], // Existing tax query
+                                $value[0], // New archive constraint
+                            ];
+                        } else {
+                            // No existing tax_query, just set it
+                            $args['tax_query'] = $value;
+                        }
+                    } elseif ($key === 'date_query') {
+                        // Handle date_query merging
+                        if (isset($args['date_query'])) {
+                            // Merge date queries with 'AND' relation
+                            $args['date_query'] = [
+                                'relation' => 'AND',
+                                $args['date_query'],
+                                $value,
+                            ];
+                        } else {
+                            $args['date_query'] = $value;
+                        }
+                    } else {
+                        // For other constraints, just set them (they should not conflict)
+                        $args[$key] = $value;
+                    }
+                }
+            }
+        }
+
         // Create a new WP_Query instance
         $query = new WP_Query($args);
 
@@ -324,6 +429,7 @@ class MaxiBlocks_DynamicContent
             'cl-relation' => $cl_relation,
             'cl-id' => $cl_id,
             'cl-type' => $cl_type,
+            'cl-limit-by-archive' => $cl_limit_by_archive,
         ] = $cl + ['cl-pagination-per-page' => 3];
 
         if (!isset($cl_id) || !isset($cl_relation)) {
@@ -353,6 +459,7 @@ class MaxiBlocks_DynamicContent
                     $cl_relation,
                     $cl_id,
                     $type,
+                    $cl_limit_by_archive,
                 );
             }
         }

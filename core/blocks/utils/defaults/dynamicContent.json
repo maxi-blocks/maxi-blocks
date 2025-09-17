@@ -130,5 +130,9 @@
 	},
 	"dc-limit-by-archive": {
 		"type": "string"
+	},
+	"dc-acf-char-limit": {
+		"type": "number",
+		"default": 0
 	}
 }

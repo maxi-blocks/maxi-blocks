@@ -194,17 +194,23 @@ const DynamicContent = props => {
 	const changeProps = useCallback(
 		params => {
 			let hasChangesToSave = false;
-
-			for (const [key, val] of Object.entries(params)) {
-				if (key in dynamicContent && dynamicContent[key] !== val) {
+			// Compare existing keys
+			for (const [key, val] of Object.entries(dynamicContent)) {
+				if (key in params && params[key] !== val) {
 					hasChangesToSave = true;
 					break;
 				}
 			}
-
-			if (hasChangesToSave) {
-				onChange(params);
+			// Also consider new or changed keys not yet in dynamicContent
+			if (!hasChangesToSave) {
+				for (const [key, val] of Object.entries(params)) {
+					if (dynamicContent[key] !== val) {
+						hasChangesToSave = true;
+						break;
+					}
+				}
 			}
+			if (hasChangesToSave) onChange(params);
 		},
 		[dynamicContent, onChange]
 	);

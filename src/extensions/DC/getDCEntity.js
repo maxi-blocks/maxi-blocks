@@ -371,63 +371,25 @@ const getDCEntity = async (dataRequest, clientId) => {
 		};
 
 		// Add archive filtering if limitByArchive is 'yes'
-		if (
-			dataRequest.limitByArchive === 'yes' &&
-			relation !== 'current-archive'
-		) {
-			const currentTemplateType = getCurrentTemplateSlug();
-
-			// Use the same logic as current-archive relation to get current archive ID
-			if (
-				currentTemplateType &&
-				currentTemplateType.includes('category')
-			) {
-				// Get current category ID using the same method as current-archive
-				const taxonomyRecords = await resolveSelect(
-					'core'
-				).getEntityRecords('taxonomy', 'category', {
-					per_page: 1,
-					hide_empty: false,
-				});
-
-				if (taxonomyRecords && taxonomyRecords.length > 0) {
-					const currentCategoryId = taxonomyRecords[0].id;
-					if (!queryParams.categories) {
-						queryParams.categories = currentCategoryId;
-					}
-				}
-			} else if (
-				currentTemplateType &&
-				currentTemplateType.includes('tag')
-			) {
-				// Get current tag ID
-				const taxonomyRecords = await resolveSelect(
-					'core'
-				).getEntityRecords('taxonomy', 'post_tag', {
-					per_page: 1,
-					hide_empty: false,
-				});
-
-				if (taxonomyRecords && taxonomyRecords.length > 0) {
-					const currentTagId = taxonomyRecords[0].id;
-					if (!queryParams.tags) {
-						queryParams.tags = currentTagId;
-					}
-				}
-			} else if (
-				currentTemplateType &&
-				currentTemplateType.includes('author')
-			) {
-				// Get current author ID
-				const users = await resolveSelect('core').getUsers({
-					per_page: 1,
-				});
-				if (users && users.length > 0) {
-					const currentAuthorId = users[0].id;
-					if (!queryParams.author) {
-						queryParams.author = currentAuthorId;
-					}
-				}
+		if (dataRequest.limitByArchive === 'yes' && relation !== 'current-archive') {
+			const tpl = getCurrentTemplateSlug() || '';
+			// category-{slug}
+			if (tpl.includes('category-') && !queryParams.categories) {
+				const slug = tpl.replace('category-', '');
+				const term = await getCategoryBySlug(slug);
+				if (term?.id) queryParams.categories = term.id;
+			}
+			// tag-{slug}
+			if (tpl.includes('tag-') && !queryParams.tags) {
+				const slug = tpl.replace('tag-', '');
+				const term = await getTagBySlug(slug);
+				if (term?.id) queryParams.tags = term.id;
+			}
+			// author-{slug}
+			if (tpl.includes('author-') && !queryParams.author) {
+				const slug = tpl.replace('author-', '');
+				const user = await getAuthorBySlug(slug);
+				if (user?.id) queryParams.author = user.id;
 			}
 		}
 

@@ -98,15 +98,15 @@ const showCurrentArchive = (type, currentTemplateType) => {
 	];
 
 	if (
-		(allowedTemplateTypes.includes(currentTemplateType) ||
-			allowedTemplateTypes.some(template =>
-				currentTemplateType.includes(template)
+		(allowedTemplateTypes?.includes(currentTemplateType) ||
+			allowedTemplateTypes?.some(template =>
+				currentTemplateType?.includes(template)
 			)) &&
-		type.includes('posts')
+		type?.includes('posts')
 	)
 		return true;
 
-	if (type.includes('posts') && currentTemplateType.includes('taxonomy'))
+	if (type?.includes('posts') && currentTemplateType?.includes('taxonomy'))
 		return true;
 
 	return false;

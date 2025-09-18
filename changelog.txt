@@ -1,3 +1,11 @@
+_Updates 15 Sep 2025_
+MaxiBlocks v2.1.4
+* Update: Enhanced Pro authentication system by implementing new server middleware for improved security and reliability.
+* Update: Expanded AI model support with full GPT-5 integration, providing access to the latest OpenAI capabilities for enhanced content generation and editing assistance.
+* Fix: Restored MaxiBlocks toolbar functionality in synced blocks editor, ensuring consistent editing experience across all block types and maintaining proper toolbar accessibility.
+* Fix: Resolved toolbar conflicts by returning native Gutenberg toolbar for standard WordPress blocks nested inside Maxi blocks, preventing interface inconsistencies and ensuring proper block functionality.
+* Security: Fixed Broken Access Control vulnerability in MaxiBlocks plugin settings affecting Contributor-level users and above. Thanks to Abu Hurayra for the responsible disclosure.
+
 _Updates 28 Jul 2025_
 MaxiBlocks v2.1.3
 * Update: Implemented enhanced authentication methods for marketplace integrations, providing improved access to Pro content.

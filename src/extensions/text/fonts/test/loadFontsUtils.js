@@ -146,6 +146,12 @@ describe('buildFontUrl', () => {
 	it('Should use default API root when wpApiSettings is not available', async () => {
 		window.maxiBlocksMain = { local_fonts: true };
 		window.wpApiSettings = undefined;
+		window.maxiStarterSites = undefined;
+
+		// Mock window.location for consistent testing
+		delete window.location;
+		window.location = { origin: 'http://localhost' };
+
 		const fontName = 'Merriweather';
 		const fontData = { weight: '400', style: 'normal' };
 
@@ -162,7 +168,70 @@ describe('buildFontUrl', () => {
 		await buildFontUrl(fontName, fontData);
 
 		expect(mockFetch).toHaveBeenCalledWith(
-			'/wp-json/maxi-blocks/v1.0/get-font-url/Merriweather',
+			'http://localhost/wp-json/maxi-blocks/v1.0/get-font-url/Merriweather',
+			{
+				credentials: 'same-origin',
+				headers: {
+					'X-WP-Nonce': undefined,
+				},
+			}
+		);
+	});
+
+	it('Should use maxiStarterSites.apiRoot when wpApiSettings is not available', async () => {
+		window.maxiBlocksMain = { local_fonts: true };
+		window.wpApiSettings = undefined;
+		window.maxiStarterSites = {
+			apiRoot: 'http://localhost/subfolder/wp-json/',
+		};
+
+		const fontName = 'Inter';
+		const fontData = { weight: '400', style: 'normal' };
+
+		const mockResponse = {
+			ok: true,
+			text: jest
+				.fn()
+				.mockResolvedValue('https://example.com/fonts/inter.woff2'),
+		};
+		mockFetch.mockResolvedValue(mockResponse);
+
+		await buildFontUrl(fontName, fontData);
+
+		expect(mockFetch).toHaveBeenCalledWith(
+			'http://localhost/subfolder/wp-json/maxi-blocks/v1.0/get-font-url/Inter',
+			{
+				credentials: 'same-origin',
+				headers: {
+					'X-WP-Nonce': undefined,
+				},
+			}
+		);
+	});
+
+	it('Should use maxiBlocksMain.apiRoot when wpApiSettings and maxiStarterSites are not available', async () => {
+		window.maxiBlocksMain = {
+			local_fonts: true,
+			apiRoot: 'http://localhost/another/wp-json/',
+		};
+		window.wpApiSettings = undefined;
+		window.maxiStarterSites = undefined;
+
+		const fontName = 'Poppins';
+		const fontData = { weight: '400', style: 'normal' };
+
+		const mockResponse = {
+			ok: true,
+			text: jest
+				.fn()
+				.mockResolvedValue('https://example.com/fonts/poppins.woff2'),
+		};
+		mockFetch.mockResolvedValue(mockResponse);
+
+		await buildFontUrl(fontName, fontData);
+
+		expect(mockFetch).toHaveBeenCalledWith(
+			'http://localhost/another/wp-json/maxi-blocks/v1.0/get-font-url/Poppins',
 			{
 				credentials: 'same-origin',
 				headers: {

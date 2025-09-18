@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.1.3\n"
+"Project-Id-Version: MaxiBlocks 2.1.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-25T14:53:30+00:00\n"
+"POT-Creation-Date: 2025-09-12T14:07:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: plugin.php
-#: core/class-maxi-blocks.php:266
+#: core/class-maxi-blocks.php:267
 msgid "MaxiBlocks"
 msgstr ""
 
@@ -37,6 +37,7 @@ msgid "https://maxiblocks.com/go/plugin-author"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:230
+#: core/admin/class-maxi-dashboard.php:272
 msgid "Validating..."
 msgstr ""
 
@@ -60,55 +61,165 @@ msgstr ""
 msgid "Error validating API Key, please try again later"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:307
-#: core/admin/class-maxi-dashboard.php:472
+#: core/admin/class-maxi-dashboard.php:255
+msgid "Loading available models..."
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:259
+msgid "No models available - check API key"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:263
+msgid "Error loading models"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:268
+msgid "Please enter an email or purchase code"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:276
+#: core/admin/class-maxi-dashboard.php:3065
+#: build/index.js:18
+#: core/admin/starter-sites/src/library/toolbar.js:486
+#: src/editor/library/toolbar.js:812
+msgid "The email is not valid"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:280
+msgid "Email authentication started. Please complete login in the new tab."
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:284
+msgid "Failed to initiate email authentication"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:288
+msgid "Failed to validate license"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:292
+msgid "Successfully authenticated with MaxiBlocks account!"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:296
+msgid "Please log into your MaxiBlocks account to complete activation"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:301
+#: build/index.js:18
+#: core/admin/starter-sites/src/library/toolbar.js:334
+#: src/editor/library/toolbar.js:680
+msgid "Click to show"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:305
+#: build/index.js:18
+#: core/admin/starter-sites/src/library/toolbar.js:330
+#: src/editor/library/toolbar.js:679
+msgid "Click to hide"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:310
+msgid "Signing out..."
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:314
+msgid "Sign out"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:318
+msgid "Activating…"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:322
+msgid "Deactivating…"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:326
+#: build/index.js:18
+#: src/editor/style-cards/maxiStyleCardsEditor.js:830
+msgid "Activate"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:331
+msgid "Are you sure you want to deactivate the network license? This will affect all sites in the network."
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:335
+msgid "Only email authentication is allowed when a network license is active."
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:339
+#: core/admin/class-maxi-dashboard.php:855
+msgid "Activate network license"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:343
+#: core/admin/class-maxi-dashboard.php:828
+msgid "Deactivate network license"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:347
+msgid "Failed to sign out"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:351
+msgid "Please enter a purchase code"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:355
+msgid "Network error occurred"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:412
+#: core/admin/class-maxi-dashboard.php:577
 msgid "Welcome"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:315
-#: core/admin/class-maxi-dashboard.php:316
-#: core/admin/class-maxi-dashboard.php:474
-#: core/admin/class-maxi-dashboard.php:856
+#: core/admin/class-maxi-dashboard.php:420
+#: core/admin/class-maxi-dashboard.php:421
+#: core/admin/class-maxi-dashboard.php:579
+#: core/admin/class-maxi-dashboard.php:962
 #: core/admin/quick-start/class-maxi-quick-start.php:93
 #: core/admin/quick-start/class-maxi-quick-start.php:345
 msgid "Quick start"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:324
-#: core/admin/class-maxi-dashboard.php:325
-#: core/admin/class-maxi-dashboard.php:479
-#: core/admin/class-maxi-dashboard.php:1692
-#: core/admin/starter-sites/src/library/toolbar.js:224
+#: core/admin/class-maxi-dashboard.php:429
+#: core/admin/class-maxi-dashboard.php:430
+#: core/admin/class-maxi-dashboard.php:584
+#: core/admin/class-maxi-dashboard.php:1798
+#: core/admin/starter-sites/src/library/toolbar.js:301
 msgid "Starter sites"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:335
-#: core/admin/class-maxi-dashboard.php:336
-#: core/admin/class-maxi-dashboard.php:483
-#: core/admin/class-maxi-dashboard.php:1404
+#: core/admin/class-maxi-dashboard.php:440
+#: core/admin/class-maxi-dashboard.php:441
+#: core/admin/class-maxi-dashboard.php:588
+#: core/admin/class-maxi-dashboard.php:1510
 msgid "Maxi AI"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:346
-#: core/admin/class-maxi-dashboard.php:347
-#: core/admin/class-maxi-dashboard.php:484
+#: core/admin/class-maxi-dashboard.php:451
+#: core/admin/class-maxi-dashboard.php:452
+#: core/admin/class-maxi-dashboard.php:589
 #: core/admin/status-report/maxi-system-status-report.php:104
 msgid "System status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:357
-#: core/admin/class-maxi-dashboard.php:358
-#: core/admin/class-maxi-dashboard.php:397
-#: core/admin/class-maxi-dashboard.php:488
-#: core/admin/class-maxi-dashboard.php:635
+#: core/admin/class-maxi-dashboard.php:462
+#: core/admin/class-maxi-dashboard.php:463
+#: core/admin/class-maxi-dashboard.php:502
+#: core/admin/class-maxi-dashboard.php:593
+#: core/admin/class-maxi-dashboard.php:740
 #: core/admin/quick-start/class-maxi-quick-start.php:105
 msgid "License"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:368
-#: core/admin/class-maxi-dashboard.php:369
-#: core/admin/class-maxi-dashboard.php:489
-#: core/admin/class-maxi-dashboard.php:1104
+#: core/admin/class-maxi-dashboard.php:473
+#: core/admin/class-maxi-dashboard.php:474
+#: core/admin/class-maxi-dashboard.php:594
+#: core/admin/class-maxi-dashboard.php:1210
 #: build/index.js:18
 #: src/blocks/accordion-maxi/inspector.js:88
 #: src/blocks/button-maxi/inspector.js:207
@@ -135,757 +246,788 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:507
-#: core/admin/class-maxi-dashboard.php:632
+#: core/admin/class-maxi-dashboard.php:612
+#: core/admin/class-maxi-dashboard.php:737
 msgid "MaxiBlocks Logo"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:552
-#: core/admin/class-maxi-dashboard.php:644
+#: core/admin/class-maxi-dashboard.php:657
+#: core/admin/class-maxi-dashboard.php:749
 #: core/admin/quick-start/class-maxi-quick-start.php:328
 msgid "Get cloud"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:695
+#: core/admin/class-maxi-dashboard.php:800
 msgid "Network Pro license active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:696
+#: core/admin/class-maxi-dashboard.php:801
 msgid "Pro access is active network-wide. All sites in the network have access to Pro features."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:698
+#: core/admin/class-maxi-dashboard.php:803
 msgid "Activate network Pro license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:699
+#: core/admin/class-maxi-dashboard.php:804
+#: core/admin/class-maxi-dashboard.php:850
 msgid "Enter a purchase code to activate Pro access for the entire network."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:708
+#: core/admin/class-maxi-dashboard.php:813
 msgid "Network license status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:708
+#: core/admin/class-maxi-dashboard.php:813
 msgid "Network license activation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:715
-#: core/admin/class-maxi-dashboard.php:2288
+#: core/admin/class-maxi-dashboard.php:820
+#: core/admin/class-maxi-dashboard.php:2392
 #: core/admin/quick-start/class-maxi-quick-start.php:906
 msgid "Status:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:716
-#: core/admin/class-maxi-dashboard.php:2289
+#: core/admin/class-maxi-dashboard.php:821
+#: core/admin/class-maxi-dashboard.php:2393
 #: core/admin/quick-start/class-maxi-quick-start.php:907
 msgid "Licensed to:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:717
+#: core/admin/class-maxi-dashboard.php:822
 msgid "Main domain:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:718
-#: core/admin/class-maxi-dashboard.php:2292
+#: core/admin/class-maxi-dashboard.php:823
+#: core/admin/class-maxi-dashboard.php:2441
 msgid "License type:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:723
-msgid "Deactivate network license"
-msgstr ""
-
-#: core/admin/class-maxi-dashboard.php:728
+#: core/admin/class-maxi-dashboard.php:833
 msgid "How network licensing works:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:730
+#: core/admin/class-maxi-dashboard.php:835
 msgid "All sites in the network have Pro access automatically"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:731
+#: core/admin/class-maxi-dashboard.php:836
 msgid "Individual site license tabs will show network license status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:732
+#: core/admin/class-maxi-dashboard.php:837
 msgid "Purchase codes cannot be activated on individual sites when network license is active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:738
-#: core/admin/class-maxi-dashboard.php:2319
+#: core/admin/class-maxi-dashboard.php:843
+#: core/admin/class-maxi-dashboard.php:2468
 #: core/admin/quick-start/class-maxi-quick-start.php:927
 msgid "Current status:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:744
+#: core/admin/class-maxi-dashboard.php:849
 msgid "Network purchase code"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:745
-#, php-format
-msgid "Enter a purchase code to activate Pro access for the entire network. Find your code in your account or %s"
+#: core/admin/class-maxi-dashboard.php:851
+msgid "Note: Network licensing only supports purchase codes from marketplaces. MaxiBlocks email accounts and MaxiBlocks license keys must be activated on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:749
-msgid "Activate network license"
-msgstr ""
-
-#: core/admin/class-maxi-dashboard.php:758
+#: core/admin/class-maxi-dashboard.php:864
 msgid "Network licensing benefits:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:760
+#: core/admin/class-maxi-dashboard.php:866
 msgid "One purchase code activates Pro for all sites in the network"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:761
+#: core/admin/class-maxi-dashboard.php:867
 msgid "No need to activate individual sites separately"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:762
+#: core/admin/class-maxi-dashboard.php:868
 msgid "Centralized license management from the network admin"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:829
+#: core/admin/class-maxi-dashboard.php:935
 msgid "Hello, "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:831
+#: core/admin/class-maxi-dashboard.php:937
 msgid "Hello, friend"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:837
+#: core/admin/class-maxi-dashboard.php:943
 msgid "Let's get set up so you can start designing straight away."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:844
+#: core/admin/class-maxi-dashboard.php:950
 msgid "Just a few quick steps, and you're ready to go!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:862
+#: core/admin/class-maxi-dashboard.php:968
 msgid "Create new page"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:883
+#: core/admin/class-maxi-dashboard.php:989
 msgid "Learn by watching"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:886
+#: core/admin/class-maxi-dashboard.php:992
 msgid "Watch quick tutorials to get the most out of MaxiBlocks. Learn tips, tricks and best practices to build faster and smarter."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:898
+#: core/admin/class-maxi-dashboard.php:1004
 msgid "Understanding full site editing in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:902
+#: core/admin/class-maxi-dashboard.php:1008
 msgid "Learn what full site editing (FSE) is in WordPress and how it changes the way you design and customize your website using blocks."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:913
+#: core/admin/class-maxi-dashboard.php:1019
 msgid "Step-by-step: how to add a new page in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:917
+#: core/admin/class-maxi-dashboard.php:1023
 msgid "A quick guide to creating and managing new pages in WordPress, perfect for beginners looking to build their site."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:928
+#: core/admin/class-maxi-dashboard.php:1034
 msgid "How to set a page as your homepage in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:932
+#: core/admin/class-maxi-dashboard.php:1038
 msgid "Want a custom homepage? This tutorial shows you how to set any page as your homepage in just a few clicks."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:943
+#: core/admin/class-maxi-dashboard.php:1049
 msgid "How to edit and customise the footer in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:947
+#: core/admin/class-maxi-dashboard.php:1053
 msgid "Need to change the footer? This guide helps you through the steps to edit and personalize your footer section."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:958
+#: core/admin/class-maxi-dashboard.php:1064
 msgid "How to create and manage navigation menus in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:962
+#: core/admin/class-maxi-dashboard.php:1068
 msgid "Design your site's main navigation. Learn how to create and organize your WordPress for a better user experience."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:973
+#: core/admin/class-maxi-dashboard.php:1079
 msgid "How to add and format content in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:977
+#: core/admin/class-maxi-dashboard.php:1083
 msgid "Learn how to add text, images, and other content to your WordPress pages and posts. A guide to create engaging layouts."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1012
+#: core/admin/class-maxi-dashboard.php:1118
 msgid "More videos"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1027
+#: core/admin/class-maxi-dashboard.php:1133
 msgid "Need Help"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1029
+#: core/admin/class-maxi-dashboard.php:1135
 msgid "Need help?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1032
+#: core/admin/class-maxi-dashboard.php:1138
 msgid "We're here for you. Get the support you need!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1039
+#: core/admin/class-maxi-dashboard.php:1145
 msgid "Read the blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1049
+#: core/admin/class-maxi-dashboard.php:1155
 msgid "Never Miss an Update"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1052
+#: core/admin/class-maxi-dashboard.php:1158
 msgid "Never miss an update"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1055
+#: core/admin/class-maxi-dashboard.php:1161
 msgid "Get new patterns, tips, and updates—no spam."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1062
+#: core/admin/class-maxi-dashboard.php:1168
 msgid "Notify me"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1074
+#: core/admin/class-maxi-dashboard.php:1180
 msgid "Share Your Thoughts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1077
+#: core/admin/class-maxi-dashboard.php:1183
 msgid "Share your thoughts!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1080
+#: core/admin/class-maxi-dashboard.php:1186
 msgid "Love us? Leave a review and help others discover it."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1087
+#: core/admin/class-maxi-dashboard.php:1193
 msgid "Give a review"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1107
+#: core/admin/class-maxi-dashboard.php:1213
 msgid "Customise MaxiBlocks, manage fonts, APIs, and access support."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1125
+#: core/admin/class-maxi-dashboard.php:1231
 msgid "Editor preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1130
+#: core/admin/class-maxi-dashboard.php:1236
 msgid "Hide interface tooltips"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1133
+#: core/admin/class-maxi-dashboard.php:1239
 msgid "Hide tooltips on mouse-hover."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1137
-#: core/admin/class-maxi-dashboard.php:1213
-#: core/admin/class-maxi-dashboard.php:1323
+#: core/admin/class-maxi-dashboard.php:1243
+#: core/admin/class-maxi-dashboard.php:1319
+#: core/admin/class-maxi-dashboard.php:1429
 #: build/index.js:18
 #: src/editor/style-cards/maxiStyleCardsEditor.js:821
 msgid "Save changes"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1144
+#: core/admin/class-maxi-dashboard.php:1250
 msgid "Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1150
+#: core/admin/class-maxi-dashboard.php:1256
 msgid "Create Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1154
+#: core/admin/class-maxi-dashboard.php:1260
 msgid "To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1161
+#: core/admin/class-maxi-dashboard.php:1267
 msgid "To create an API key, you will need to do the following:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1169
+#: core/admin/class-maxi-dashboard.php:1275
 msgid "Create a Google Cloud Platform account, if you don't already have one."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1176
+#: core/admin/class-maxi-dashboard.php:1282
 msgid "Create a new Google Cloud Platform project."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1183
+#: core/admin/class-maxi-dashboard.php:1289
 msgid "Enable Google Maps Platform APIs."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1186
+#: core/admin/class-maxi-dashboard.php:1292
 msgid "Generate an API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1190
+#: core/admin/class-maxi-dashboard.php:1296
 msgid "To make this process easy, launch"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1194
+#: core/admin/class-maxi-dashboard.php:1300
 msgid "Google Maps API Quickstart"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1197
+#: core/admin/class-maxi-dashboard.php:1303
 msgid "which will handle the setup of your account and generate the API key that you can insert below."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1204
+#: core/admin/class-maxi-dashboard.php:1310
 msgid "Insert Google Maps API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1219
+#: core/admin/class-maxi-dashboard.php:1325
 msgid "Fonts and files"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1229
+#: core/admin/class-maxi-dashboard.php:1335
 msgid "Use Bunny Fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1232
+#: core/admin/class-maxi-dashboard.php:1338
 #, php-format
 msgid "You are currently using: %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1236
+#: core/admin/class-maxi-dashboard.php:1342
 msgid "Bunny Fonts: Privacy-friendly, GDPR compliant. Global CDN for fast loading. Wide selection of fonts available."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1243
+#: core/admin/class-maxi-dashboard.php:1349
 msgid "Google Fonts: Extensive font selection. Potential privacy concerns when using Google's CDN."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1253
+#: core/admin/class-maxi-dashboard.php:1359
 msgid "Serve Bunny Fonts locally"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1257
+#: core/admin/class-maxi-dashboard.php:1363
 msgid "Serve Bunny Fonts from CDN: Fastest option. Uses external CDN. No local storage required."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1264
+#: core/admin/class-maxi-dashboard.php:1370
 msgid "Serve Bunny Fonts locally: Privacy-focused. May impact server performance. Requires local storage."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1277
+#: core/admin/class-maxi-dashboard.php:1383
 msgid "Serve Google Fonts locally"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1281
+#: core/admin/class-maxi-dashboard.php:1387
 msgid "Serve from Google CDN: Fastest option. Uses Google's CDN. Potential privacy (GDPR) implications."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1288
+#: core/admin/class-maxi-dashboard.php:1394
 msgid "Serve Google Fonts locally: Blocks Google tracking. May impact server performance. Requires local storage."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1303
+#: core/admin/class-maxi-dashboard.php:1409
 msgid "Size of the local fonts:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1306
+#: core/admin/class-maxi-dashboard.php:1412
 msgid "MB"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1313
+#: core/admin/class-maxi-dashboard.php:1419
 msgid "Remove local fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1330
+#: core/admin/class-maxi-dashboard.php:1436
 msgid "Documentation & support"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1334
+#: core/admin/class-maxi-dashboard.php:1440
 msgid "Read the "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1337
+#: core/admin/class-maxi-dashboard.php:1443
 msgid "help center documentation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1339
+#: core/admin/class-maxi-dashboard.php:1445
 msgid " for self-service."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1345
+#: core/admin/class-maxi-dashboard.php:1451
 msgid "Troubleshooting"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1350
+#: core/admin/class-maxi-dashboard.php:1456
 msgid "Site health info report"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1353
+#: core/admin/class-maxi-dashboard.php:1459
 msgid "The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1360
+#: core/admin/class-maxi-dashboard.php:1466
 msgid "Go to site health info"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1367
+#: core/admin/class-maxi-dashboard.php:1473
 msgid "Experimental preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1373
+#: core/admin/class-maxi-dashboard.php:1479
 msgid "Enable settings indicators"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1377
+#: core/admin/class-maxi-dashboard.php:1483
 msgid "Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1407
+#: core/admin/class-maxi-dashboard.php:1513
 msgid "General setting for Maxi AI writer"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1416
+#: core/admin/class-maxi-dashboard.php:1522
 msgid "Integrations"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1422
+#: core/admin/class-maxi-dashboard.php:1528
 msgid "Insert OpenAI API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1432
+#: core/admin/class-maxi-dashboard.php:1538
 msgid "ChatGPT AI Model"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1448
+#: core/admin/class-maxi-dashboard.php:1554
 msgid "Website identity"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1455
+#: core/admin/class-maxi-dashboard.php:1561
 msgid "Tell us about your site"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1458
+#: core/admin/class-maxi-dashboard.php:1564
 msgid ""
 "What is the primary goal of your website? (e.g. shopping platform, offering\n"
 "\t\t\t\tservices, showcasing work, journaling)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1470
+#: core/admin/class-maxi-dashboard.php:1576
 msgid "Example: Hairdresser, Plumber, Marketing agency"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1480
+#: core/admin/class-maxi-dashboard.php:1586
 msgid "Who is your target audience?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1483
+#: core/admin/class-maxi-dashboard.php:1589
 msgid "Group of people you want to connect with or offer services to."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1494
+#: core/admin/class-maxi-dashboard.php:1600
 msgid "Example: Ladies who need haircuts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1504
+#: core/admin/class-maxi-dashboard.php:1610
 msgid "What is the goal of the website?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1507
-#: core/admin/class-maxi-dashboard.php:1531
+#: core/admin/class-maxi-dashboard.php:1613
+#: core/admin/class-maxi-dashboard.php:1637
 msgid "Enter as many as you like. Separate with commas."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1518
-#: core/admin/class-maxi-dashboard.php:1590
+#: core/admin/class-maxi-dashboard.php:1624
+#: core/admin/class-maxi-dashboard.php:1696
 msgid "Example: Get bookings, write a blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1528
+#: core/admin/class-maxi-dashboard.php:1634
 msgid "What services do you offer?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1542
+#: core/admin/class-maxi-dashboard.php:1648
 msgid "Example: Hair cuts, blow dries, beard shave"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1552
+#: core/admin/class-maxi-dashboard.php:1658
 msgid "What is your website or business name?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1555
+#: core/admin/class-maxi-dashboard.php:1661
 msgid "The name will be used for writing content. Optional. Takes WordPress Site Title by default"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1566
+#: core/admin/class-maxi-dashboard.php:1672
 msgid "Example: Mary's fabulous hair studio"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1576
+#: core/admin/class-maxi-dashboard.php:1682
 msgid "Anything else we should know?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1579
+#: core/admin/class-maxi-dashboard.php:1685
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1695
+#: core/admin/class-maxi-dashboard.php:1801
 msgid "Get started with a pre-built website"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2245
+#: core/admin/class-maxi-dashboard.php:2351
 msgid "MaxiBlocks dashboard - Key NOT found in stored keys"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2248
+#: core/admin/class-maxi-dashboard.php:2354
 msgid "MaxiBlocks dashboard - Email not found or status not yes"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2251
+#: core/admin/class-maxi-dashboard.php:2357
 msgid "MaxiBlocks dashboard - Failed to parse cookie"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2254
-msgid "MaxiBlocks dashboard - No cookie found or empty"
-msgstr ""
-
-#: core/admin/class-maxi-dashboard.php:2264
+#: core/admin/class-maxi-dashboard.php:2368
 msgid "Pro access active via network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2265
+#: core/admin/class-maxi-dashboard.php:2369
 msgid "Your Pro cloud access is active through a network-wide license."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2267
+#: core/admin/class-maxi-dashboard.php:2371
 msgid "Pro cloud access active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2268
+#: core/admin/class-maxi-dashboard.php:2372
 msgid "Your Pro cloud access is active and ready to use."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2271
+#: core/admin/class-maxi-dashboard.php:2375
 msgid "Activate Pro cloud access"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2272
+#: core/admin/class-maxi-dashboard.php:2376
 msgid "Enter your email or purchase code to access premium items"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2281
+#: core/admin/class-maxi-dashboard.php:2385
 msgid "Current status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2281
+#: core/admin/class-maxi-dashboard.php:2385
 msgid "License activation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2294
-#: core/admin/class-maxi-dashboard.php:2329
+#: core/admin/class-maxi-dashboard.php:2437
+#, php-format
+msgid "Multisite detected. If you require additional licences, email %s"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:2443
+#: core/admin/class-maxi-dashboard.php:2478
 msgid "Manage network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2303
+#: core/admin/class-maxi-dashboard.php:2452
 #: core/admin/quick-start/class-maxi-quick-start.php:921
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:307
-#: core/admin/starter-sites/src/library/toolbar.js:316
-#: core/admin/starter-sites/src/library/toolbar.js:356
-#: core/admin/starter-sites/src/library/toolbar.js:365
-#: src/editor/library/toolbar.js:658
-#: src/editor/library/toolbar.js:664
-#: src/editor/library/toolbar.js:700
-#: src/editor/library/toolbar.js:703
+#: core/admin/starter-sites/src/library/toolbar.js:386
+#: core/admin/starter-sites/src/library/toolbar.js:395
+#: core/admin/starter-sites/src/library/toolbar.js:435
+#: core/admin/starter-sites/src/library/toolbar.js:444
+#: src/editor/library/toolbar.js:726
+#: src/editor/library/toolbar.js:732
+#: src/editor/library/toolbar.js:768
+#: src/editor/library/toolbar.js:771
 msgid "Deactivate Pro"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2308
+#: core/admin/class-maxi-dashboard.php:2457
 msgid "This site is using a network-wide license. Purchase codes cannot be activated on individual sites when a network license is active."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2310
+#: core/admin/class-maxi-dashboard.php:2459
 msgid "To manage the network license, visit the"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2310
+#: core/admin/class-maxi-dashboard.php:2459
 msgid "network admin license page"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2312
+#: core/admin/class-maxi-dashboard.php:2461
 msgid "To manage the network license, contact your network administrator."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2326
+#: core/admin/class-maxi-dashboard.php:2475
 msgid "Network license is active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2327
+#: core/admin/class-maxi-dashboard.php:2476
 msgid "A network-wide license is already active. Purchase codes cannot be activated on individual sites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2334
+#: core/admin/class-maxi-dashboard.php:2483
 msgid "Individual email authentication"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2335
+#: core/admin/class-maxi-dashboard.php:2484
 msgid "You can still authenticate with your individual Pro email account for user-specific features."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2337
+#: core/admin/class-maxi-dashboard.php:2486
 msgid "Pro user email address"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2338
+#: core/admin/class-maxi-dashboard.php:2487
 #, php-format
 msgid "Enter your Pro user email. Find your account details at %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2341
+#: core/admin/class-maxi-dashboard.php:2490
 msgid "Authenticate Email"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2350
+#: core/admin/class-maxi-dashboard.php:2499
 #: core/admin/quick-start/class-maxi-quick-start.php:933
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:396
-#: src/editor/library/toolbar.js:731
+#: core/admin/starter-sites/src/library/toolbar.js:475
+#: src/editor/library/toolbar.js:799
 msgid "Pro user email / purchase code / license key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2351
+#: core/admin/class-maxi-dashboard.php:2500
 #: core/admin/quick-start/class-maxi-quick-start.php:934
 #, php-format
 msgid "Find your code or key in your account, inbox or %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2355
-#: core/admin/quick-start/class-maxi-quick-start.php:938
+#: core/admin/class-maxi-dashboard.php:2504
+#, php-format
+msgid "Multisite detected. If using MaxiBlocks email or license key and you require additional licences, email %s"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:2510
+#: core/admin/quick-start/class-maxi-quick-start.php:939
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:335
-#: core/admin/starter-sites/src/library/toolbar.js:342
-#: core/admin/starter-sites/src/library/toolbar.js:431
-#: core/admin/starter-sites/src/library/toolbar.js:441
-#: src/editor/library/toolbar.js:681
-#: src/editor/library/toolbar.js:688
-#: src/editor/library/toolbar.js:761
-#: src/editor/library/toolbar.js:768
+#: core/admin/starter-sites/src/library/toolbar.js:414
+#: core/admin/starter-sites/src/library/toolbar.js:421
+#: core/admin/starter-sites/src/library/toolbar.js:513
+#: core/admin/starter-sites/src/library/toolbar.js:523
+#: src/editor/library/toolbar.js:749
+#: src/editor/library/toolbar.js:756
+#: src/editor/library/toolbar.js:837
+#: src/editor/library/toolbar.js:844
 msgid "Activate Pro"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2537
+#: core/admin/class-maxi-dashboard.php:2692
 #: core/admin/status-report/frontend-assets.php:91
 msgid "No CSS files found"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2540
+#: core/admin/class-maxi-dashboard.php:2695
 #: core/admin/status-report/frontend-assets.php:92
 msgid "No JavaScript files found"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2795
+#: core/admin/class-maxi-dashboard.php:2955
 msgid "MaxiBlocks: Network domain migration failed for purchase code: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2844
+#: core/admin/class-maxi-dashboard.php:3004
 msgid "MaxiBlocks: Site domain migration failed for purchase code: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2858
-#: core/admin/class-maxi-dashboard.php:3059
-#: core/admin/class-maxi-dashboard.php:3403
-#: core/admin/class-maxi-dashboard.php:3447
-#: core/admin/class-maxi-dashboard.php:3579
+#: core/admin/class-maxi-dashboard.php:3018
+#: core/admin/class-maxi-dashboard.php:3237
+#: core/admin/class-maxi-dashboard.php:3913
+#: core/admin/class-maxi-dashboard.php:3957
+#: core/admin/class-maxi-dashboard.php:4100
 msgid "Security check failed"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2864
-#: core/admin/class-maxi-dashboard.php:3409
-#: core/admin/class-maxi-dashboard.php:3453
+#: core/admin/class-maxi-dashboard.php:3024
+#: core/admin/class-maxi-dashboard.php:3919
+#: core/admin/class-maxi-dashboard.php:3963
 msgid "Insufficient permissions"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2878
+#: core/admin/class-maxi-dashboard.php:3038
 msgid "Email or purchase code is required"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2901
-#: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:407
-#: src/editor/library/toolbar.js:740
-msgid "The email is not valid"
-msgstr ""
-
-#: core/admin/class-maxi-dashboard.php:2929
+#: core/admin/class-maxi-dashboard.php:3101
 msgid "Email authentication initiated"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2971
+#: core/admin/class-maxi-dashboard.php:3145
 msgid "A network license is already active. Purchase codes cannot be activated on individual sites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2985
-#: core/admin/class-maxi-dashboard.php:3033
-#: core/admin/class-maxi-dashboard.php:3048
+#: core/admin/class-maxi-dashboard.php:3159
+#: core/admin/class-maxi-dashboard.php:3207
+#: core/admin/class-maxi-dashboard.php:3225
 msgid "Invalid purchase code / key. Please check your code and try again."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3016
+#: core/admin/class-maxi-dashboard.php:3190
 msgid "License activated successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3040
+#: core/admin/class-maxi-dashboard.php:3214
 msgid "This code / key has already been activated on another domain. Contact support if you need help."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3045
+#: core/admin/class-maxi-dashboard.php:3219
 msgid "This purchase code / key has expired. Please check your subscription status or contact support."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3203
-msgid "MaxiBlocks auth API error: "
+#: core/admin/class-maxi-dashboard.php:3222
+msgid "Seats limit reached. Please log out from another device or upgrade your subscription."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3302
-#: core/admin/class-maxi-dashboard.php:3345
+#: core/admin/class-maxi-dashboard.php:3236
+msgid "MaxiBlocks Email Auth STATUS: Nonce verification failed"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:3328
+msgid "MaxiBlocks Email Auth STATUS: Auth timeout - authentication window has expired (>10 minutes)"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:3558
+msgid "MaxiBlocks: Missing middleware configuration for email authentication"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:3624
+msgid "MaxiBlocks Email Auth: ERROR - "
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:3672
+msgid "MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:3760
+#: core/admin/class-maxi-dashboard.php:3803
 msgid "Signed out successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3334
+#: core/admin/class-maxi-dashboard.php:3792
 msgid "MaxiBlocks: Purchase code deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3419
+#: core/admin/class-maxi-dashboard.php:3823
+msgid "MaxiBlocks: Missing middleware configuration for email session logout"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:3846
+msgid "MaxiBlocks Email Session Logout: API call failed - "
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:3856
+msgid "MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout"
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:3929
 msgid "Missing required parameters"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3427
+#: core/admin/class-maxi-dashboard.php:3937
 msgid "License data saved successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3467
-msgid "Purchase code is required"
+#: core/admin/class-maxi-dashboard.php:3977
+msgid "Network purchase code is required"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3491
+#: core/admin/class-maxi-dashboard.php:3985
+msgid "Multisite detected. Please activate your MaxiBlocks email on each sub-site separately."
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:3988
+msgid "Multisite detected. Please activate your MaxiBlocks license key on each sub-site separately."
+msgstr ""
+
+#: core/admin/class-maxi-dashboard.php:4012
 msgid "Invalid purchase code. Please check your code and try again."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3521
+#: core/admin/class-maxi-dashboard.php:4042
 msgid "Network license activated successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3557
+#: core/admin/class-maxi-dashboard.php:4078
 msgid "MaxiBlocks: Network license deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3565
+#: core/admin/class-maxi-dashboard.php:4086
 msgid "Network license deactivated successfully"
 msgstr ""
 
@@ -1009,8 +1151,8 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:1015
 #: core/admin/quick-start/class-maxi-quick-start.php:1156
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:231
-#: src/editor/library/toolbar.js:541
+#: core/admin/starter-sites/src/library/toolbar.js:308
+#: src/editor/library/toolbar.js:609
 msgid "Back"
 msgstr ""
 
@@ -1829,113 +1971,113 @@ msgstr ""
 msgid "Debug log too large to display. Download it manually."
 msgstr ""
 
-#: core/class-maxi-api.php:1261
+#: core/class-maxi-api.php:1292
 #, php-format
 msgid "Failed to fetch template content from %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1272
+#: core/class-maxi-api.php:1303
 msgid "Invalid template JSON content"
 msgstr ""
 
-#: core/class-maxi-api.php:1298
+#: core/class-maxi-api.php:1329
 #, php-format
 msgid "Failed to fetch page content from %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1309
+#: core/class-maxi-api.php:1340
 msgid "Invalid page JSON content"
 msgstr ""
 
-#: core/class-maxi-api.php:1335
+#: core/class-maxi-api.php:1366
 #, php-format
 msgid "Failed to fetch pattern content from %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1346
+#: core/class-maxi-api.php:1377
 msgid "Invalid pattern JSON content"
 msgstr ""
 
-#: core/class-maxi-api.php:1452
+#: core/class-maxi-api.php:1483
 #, php-format
 msgid "Successfully imported %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1481
+#: core/class-maxi-api.php:1512
 msgid "Created Blog page"
 msgstr ""
 
-#: core/class-maxi-api.php:1533
+#: core/class-maxi-api.php:1564
 #, php-format
 msgid "Invalid entity type: %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1641
+#: core/class-maxi-api.php:1672
 #, php-format
 msgid "Successfully imported %s template part"
 msgstr ""
 
-#: core/class-maxi-api.php:1708
+#: core/class-maxi-api.php:1739
 #, php-format
 msgid "Invalid template slug: %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1790
+#: core/class-maxi-api.php:1821
 #, php-format
 msgid "Successfully imported %s template"
 msgstr ""
 
-#: core/class-maxi-api.php:2131
+#: core/class-maxi-api.php:2162
 #, php-format
 msgid "Successfully imported %s pattern"
 msgstr ""
 
-#: core/class-maxi-api.php:2366
+#: core/class-maxi-api.php:2397
 msgid "MaxiBlocks Go theme has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-api.php:2418
+#: core/class-maxi-api.php:2449
 msgid "WordPress Importer has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-blocks.php:213
+#: core/class-maxi-blocks.php:214
 msgid "Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:214
+#: core/class-maxi-blocks.php:215
 msgid "maxi-image-type"
 msgstr ""
 
-#: core/class-maxi-blocks.php:215
+#: core/class-maxi-blocks.php:216
 msgid "Search Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:216
+#: core/class-maxi-blocks.php:217
 msgid "All Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:217
+#: core/class-maxi-blocks.php:218
 msgid "Edit Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:218
+#: core/class-maxi-blocks.php:219
 msgid "Update Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:219
+#: core/class-maxi-blocks.php:220
 msgid "Add New Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:220
+#: core/class-maxi-blocks.php:221
 msgid "New Maxi Image Name"
 msgstr ""
 
-#: core/class-maxi-blocks.php:244
-#: core/class-maxi-blocks.php:247
+#: core/class-maxi-blocks.php:245
+#: core/class-maxi-blocks.php:248
 msgid "Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:250
+#: core/class-maxi-blocks.php:251
 msgid "Images added by MaxiBlocks plugin"
 msgstr ""
 
@@ -3482,82 +3624,70 @@ msgid "The Code is not valid"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/toolbar.js:552
+#: src/editor/library/toolbar.js:620
 msgid "Switch tone"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/toolbar.js:561
+#: src/editor/library/toolbar.js:629
 msgid "Full screen"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/toolbar.js:569
+#: src/editor/library/toolbar.js:637
 msgid "Desktop"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/toolbar.js:577
+#: src/editor/library/toolbar.js:645
 msgid "Tablet"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/toolbar.js:585
+#: src/editor/library/toolbar.js:653
 msgid "Mobile"
 msgstr ""
 
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:247
-#: src/editor/library/toolbar.js:605
+#: core/admin/starter-sites/src/library/toolbar.js:324
+#: src/editor/library/toolbar.js:673
 msgid "✓ Active: "
 msgstr ""
 
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:253
-#: src/editor/library/toolbar.js:611
-msgid "Click to hide"
-msgstr ""
-
-#: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:257
-#: src/editor/library/toolbar.js:612
-msgid "Click to show"
-msgstr ""
-
-#: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:324
-#: src/editor/library/toolbar.js:672
+#: core/admin/starter-sites/src/library/toolbar.js:403
+#: src/editor/library/toolbar.js:740
 msgid "Expired: "
 msgstr ""
 
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:334
-#: core/admin/starter-sites/src/library/toolbar.js:341
-#: core/admin/starter-sites/src/library/toolbar.js:427
-#: core/admin/starter-sites/src/library/toolbar.js:440
-#: src/editor/library/toolbar.js:680
-#: src/editor/library/toolbar.js:687
-#: src/editor/library/toolbar.js:760
-#: src/editor/library/toolbar.js:767
+#: core/admin/starter-sites/src/library/toolbar.js:413
+#: core/admin/starter-sites/src/library/toolbar.js:420
+#: core/admin/starter-sites/src/library/toolbar.js:509
+#: core/admin/starter-sites/src/library/toolbar.js:522
+#: src/editor/library/toolbar.js:748
+#: src/editor/library/toolbar.js:755
+#: src/editor/library/toolbar.js:836
+#: src/editor/library/toolbar.js:843
 msgid "Verifying…"
 msgstr ""
 
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:374
-#: src/editor/library/toolbar.js:712
+#: core/admin/starter-sites/src/library/toolbar.js:453
+#: src/editor/library/toolbar.js:780
 msgid "✓ Active: Network License"
 msgstr ""
 
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:415
-#: src/editor/library/toolbar.js:748
+#: core/admin/starter-sites/src/library/toolbar.js:494
+#: src/editor/library/toolbar.js:820
 msgid "Authentication failed. Please check your credentials."
 msgstr ""
 
 #: build/index.js:18
-#: core/admin/starter-sites/src/library/toolbar.js:454
+#: core/admin/starter-sites/src/library/toolbar.js:536
 #: src/components/toolbar/components/help/index.js:48
-#: src/editor/library/toolbar.js:783
+#: src/editor/library/toolbar.js:859
 #: src/editor/responsive-selector/index.js:416
 msgid "Help"
 msgstr ""
@@ -3566,7 +3696,7 @@ msgstr ""
 #: src/components/toolbar/components/media-upload/index.js:33
 #: src/editor/library/MasonryItem.js:105
 #: src/editor/library/MasonryItem.js:195
-#: src/editor/library/toolbar.js:790
+#: src/editor/library/toolbar.js:866
 msgid "Insert"
 msgstr ""
 
@@ -7377,11 +7507,6 @@ msgid "Copy card"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:830
-msgid "Activate"
-msgstr ""
-
-#: build/index.js:18
 #: src/editor/style-cards/maxiStyleCardsEditor.js:840
 msgid "Activate now"
 msgstr ""
@@ -7616,12 +7741,12 @@ msgstr ""
 msgid "Live Demo"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/toolbar.js:166
+#: core/admin/starter-sites/src/library/toolbar.js:167
 msgid "Loading..."
 msgstr ""
 
-#: core/admin/starter-sites/src/library/toolbar.js:315
-#: core/admin/starter-sites/src/library/toolbar.js:364
+#: core/admin/starter-sites/src/library/toolbar.js:394
+#: core/admin/starter-sites/src/library/toolbar.js:443
 msgid "Please wait..."
 msgstr ""
 

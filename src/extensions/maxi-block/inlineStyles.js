@@ -68,7 +68,7 @@ const handleInsertInlineStyles = ({
 		}
 
 		if (pseudoElement === '') {
-			styleObjKeys.current = [...Object.keys(styleObj), 'transition'];
+			styleObjKeys.current.push(...Object.keys(styleObj), 'transition');
 		}
 	});
 };

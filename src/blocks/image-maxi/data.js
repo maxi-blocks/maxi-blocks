@@ -19,10 +19,7 @@ import {
 	getImageShapeStyles,
 } from '@extensions/styles/helpers';
 import { getGroupAttributes } from '@extensions/styles';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 import { getEditorWrapper } from '@extensions/dom';
 
@@ -307,12 +304,212 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 
+const inlineStylesTargets = {
+	block: '',
+	image: imageClass,
+	imageWrapper: imageWrapperClass,
+	caption: `${blockClass}__caption`,
+};
+
+const attributesToStyles = {
+	// 'img-width': {
+	// 	target: `${inlineStylesTargets.image}, ${inlineStylesTargets.caption}`,
+	// 	property: 'width',
+	// 	unit: 'px',
+	// },
+	'font-size': {
+		target: inlineStylesTargets.content,
+		property: 'font-size',
+	},
+	'line-height': {
+		target: inlineStylesTargets.content,
+		property: 'line-height',
+	},
+	'letter-spacing': {
+		target: inlineStylesTargets.content,
+		property: 'letter-spacing',
+	},
+	'text-indent': {
+		target: inlineStylesTargets.content,
+		property: 'text-indent',
+	},
+	'word-spacing': {
+		target: inlineStylesTargets.content,
+		property: 'word-spacing',
+	},
+	'bottom-gap': {
+		target: inlineStylesTargets.content,
+		property: 'margin-bottom',
+	},
+	'image-border-top-width': {
+		target: inlineStylesTargets.image,
+		property: 'border-top-width',
+	},
+	'image-border-right-width': {
+		target: inlineStylesTargets.image,
+		property: 'border-right-width',
+	},
+	'image-border-bottom-width': {
+		target: inlineStylesTargets.image,
+		property: 'border-bottom-width',
+	},
+	'image-border-left-width': {
+		target: inlineStylesTargets.image,
+		property: 'border-left-width',
+	},
+	'image-border-top-left-radius': {
+		target: inlineStylesTargets.image,
+		property: 'border-top-left-radius',
+	},
+	'image-border-top-right-radius': {
+		target: inlineStylesTargets.image,
+		property: 'border-top-right-radius',
+	},
+	'image-border-bottom-right-radius': {
+		target: inlineStylesTargets.image,
+		property: 'border-bottom-right-radius',
+	},
+	'image-border-bottom-left-radius': {
+		target: inlineStylesTargets.image,
+		property: 'border-bottom-left-radius',
+	},
+	'border-top-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-width',
+	},
+	'border-right-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-right-width',
+	},
+	'border-bottom-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-width',
+	},
+	'border-left-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-left-width',
+	},
+	'border-top-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-left-radius',
+	},
+	'border-top-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-right-radius',
+	},
+	'border-bottom-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-right-radius',
+	},
+	'border-bottom-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-left-radius',
+	},
+	opacity: {
+		target: inlineStylesTargets.block,
+		property: 'opacity',
+	},
+	'flex-grow': {
+		target: inlineStylesTargets.block,
+		property: 'flex-grow',
+	},
+	'flex-shrink': {
+		target: inlineStylesTargets.block,
+		property: 'flex-shrink',
+	},
+	'row-gap': {
+		target: inlineStylesTargets.block,
+		property: 'row-gap',
+	},
+	'column-gap': {
+		target: inlineStylesTargets.block,
+		property: 'column-gap',
+	},
+	order: {
+		target: inlineStylesTargets.block,
+		property: 'order',
+	},
+	'margin-top': {
+		target: inlineStylesTargets.block,
+		property: 'margin-top',
+	},
+	'margin-right': {
+		target: inlineStylesTargets.block,
+		property: 'margin-right',
+	},
+	'margin-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'margin-bottom',
+	},
+	'margin-left': {
+		target: inlineStylesTargets.block,
+		property: 'margin-left',
+	},
+	'padding-top': {
+		target: inlineStylesTargets.block,
+		property: 'padding-top',
+	},
+	'padding-right': {
+		target: inlineStylesTargets.block,
+		property: 'padding-right',
+	},
+	'padding-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'padding-bottom',
+	},
+	'padding-left': {
+		target: inlineStylesTargets.block,
+		property: 'padding-left',
+	},
+	'position-top': {
+		target: inlineStylesTargets.block,
+		property: 'top',
+	},
+	'position-right': {
+		target: inlineStylesTargets.block,
+		property: 'right',
+	},
+	'position-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'bottom',
+	},
+	'position-left': {
+		target: inlineStylesTargets.block,
+		property: 'left',
+	},
+	width: {
+		target: inlineStylesTargets.block,
+		property: 'width',
+	},
+	height: {
+		target: inlineStylesTargets.block,
+		property: 'height',
+	},
+	'min-width': {
+		target: inlineStylesTargets.block,
+		property: 'min-width',
+	},
+	'min-height': {
+		target: inlineStylesTargets.block,
+		property: 'min-height',
+	},
+	'max-width': {
+		target: inlineStylesTargets.block,
+		property: 'max-width',
+	},
+	'max-height': {
+		target: inlineStylesTargets.block,
+		property: 'max-height',
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	attributesToStyles,
 };
 
 export {
@@ -321,5 +518,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

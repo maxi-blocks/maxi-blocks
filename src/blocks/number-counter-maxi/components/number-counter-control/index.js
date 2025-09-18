@@ -92,9 +92,10 @@ const NumberCounterControl = props => {
 								breakpoint,
 								attributes: props,
 							})}
-							onChangeValue={val =>
+							onChangeValue={(val, meta) =>
 								onChange({
 									[`number-counter-width-${breakpoint}`]: val,
+									meta,
 								})
 							}
 							onReset={() =>

@@ -318,28 +318,24 @@ const attributesToStyles = {
 	// 	unit: 'px',
 	// },
 	'font-size': {
-		target: inlineStylesTargets.content,
+		target: inlineStylesTargets.caption,
 		property: 'font-size',
 	},
 	'line-height': {
-		target: inlineStylesTargets.content,
+		target: inlineStylesTargets.caption,
 		property: 'line-height',
 	},
 	'letter-spacing': {
-		target: inlineStylesTargets.content,
+		target: inlineStylesTargets.caption,
 		property: 'letter-spacing',
 	},
 	'text-indent': {
-		target: inlineStylesTargets.content,
+		target: inlineStylesTargets.caption,
 		property: 'text-indent',
 	},
 	'word-spacing': {
-		target: inlineStylesTargets.content,
+		target: inlineStylesTargets.caption,
 		property: 'word-spacing',
-	},
-	'bottom-gap': {
-		target: inlineStylesTargets.content,
-		property: 'margin-bottom',
 	},
 	'image-border-top-width': {
 		target: inlineStylesTargets.image,
@@ -372,6 +368,62 @@ const attributesToStyles = {
 	'image-border-bottom-left-radius': {
 		target: inlineStylesTargets.image,
 		property: 'border-bottom-left-radius',
+	},
+	'image-margin-top': {
+		target: inlineStylesTargets.image,
+		property: 'margin-top',
+	},
+	'image-margin-right': {
+		target: inlineStylesTargets.image,
+		property: 'margin-right',
+	},
+	'image-margin-bottom': {
+		target: inlineStylesTargets.image,
+		property: 'margin-bottom',
+	},
+	'image-margin-left': {
+		target: inlineStylesTargets.image,
+		property: 'margin-left',
+	},
+	'image-padding-top': {
+		target: inlineStylesTargets.imageWrapper,
+		property: 'padding-top',
+	},
+	'image-padding-right': {
+		target: inlineStylesTargets.imageWrapper,
+		property: 'padding-right',
+	},
+	'image-padding-bottom': {
+		target: inlineStylesTargets.imageWrapper,
+		property: 'padding-bottom',
+	},
+	'image-padding-left': {
+		target: inlineStylesTargets.imageWrapper,
+		property: 'padding-left',
+	},
+	'image-width': {
+		target: inlineStylesTargets.image,
+		property: 'width',
+	},
+	'image-height': {
+		target: inlineStylesTargets.image,
+		property: 'height',
+	},
+	'image-min-width': {
+		target: inlineStylesTargets.image,
+		property: 'min-width',
+	},
+	'image-min-height': {
+		target: inlineStylesTargets.image,
+		property: 'min-height',
+	},
+	'image-max-width': {
+		target: inlineStylesTargets.image,
+		property: 'max-width',
+	},
+	'image-max-height': {
+		target: inlineStylesTargets.image,
+		property: 'max-height',
 	},
 	'border-top-width': {
 		target: inlineStylesTargets.block,

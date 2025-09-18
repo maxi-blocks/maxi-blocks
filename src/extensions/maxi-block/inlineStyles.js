@@ -143,11 +143,14 @@ const getInlineStylesAndTargetsFromAttributes = ({
 				return acc;
 			}
 
-			if (constantUnit) {
-				current.styleObj[property] = `${value}${constantUnit}`;
-			} else {
-				current.styleObj[property] = unit ? `${value}${unit}` : value;
-			}
+			const properties = Array.isArray(property) ? property : [property];
+			properties.forEach(prop => {
+				if (constantUnit) {
+					current.styleObj[prop] = `${value}${constantUnit}`;
+				} else {
+					current.styleObj[prop] = unit ? `${value}${unit}` : value;
+				}
+			});
 
 			acc.push(current);
 		}

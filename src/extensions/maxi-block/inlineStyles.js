@@ -123,8 +123,13 @@ const getInlineStylesAndTargetsFromAttributes = ({
 		const pureKey = getAttrKeyWithoutBreakpoint(key);
 
 		if (attributesToStyles[pureKey]) {
-			const { property, target, isMultiplySelector, pseudoElement } =
-				attributesToStyles[pureKey];
+			const {
+				property,
+				target,
+				isMultiplySelector,
+				pseudoElement,
+				unit: constantUnit,
+			} = attributesToStyles[pureKey];
 			const { unit } = inlineOptions;
 			const current = {
 				styleObj: {},
@@ -138,8 +143,11 @@ const getInlineStylesAndTargetsFromAttributes = ({
 				return acc;
 			}
 
-			const style = unit ? `${value}${unit}` : value;
-			current.styleObj[property] = style;
+			if (constantUnit) {
+				current.styleObj[property] = `${value}${constantUnit}`;
+			} else {
+				current.styleObj[property] = unit ? `${value}${unit}` : value;
+			}
 
 			acc.push(current);
 		}

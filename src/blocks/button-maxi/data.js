@@ -461,6 +461,38 @@ const attributesToStyles = {
 		target: inlineStylesTargets.content,
 		property: 'margin-bottom',
 	},
+	'button-margin-top': {
+		target: inlineStylesTargets.button,
+		property: 'margin-top',
+	},
+	'button-margin-right': {
+		target: inlineStylesTargets.button,
+		property: 'margin-right',
+	},
+	'button-margin-bottom': {
+		target: inlineStylesTargets.button,
+		property: 'margin-bottom',
+	},
+	'button-margin-left': {
+		target: inlineStylesTargets.button,
+		property: 'margin-left',
+	},
+	'button-padding-top': {
+		target: inlineStylesTargets.button,
+		property: 'padding-top',
+	},
+	'button-padding-right': {
+		target: inlineStylesTargets.button,
+		property: 'padding-right',
+	},
+	'button-padding-bottom': {
+		target: inlineStylesTargets.button,
+		property: 'padding-bottom',
+	},
+	'button-padding-left': {
+		target: inlineStylesTargets.button,
+		property: 'padding-left',
+	},
 	'button-border-top-width': {
 		target: inlineStylesTargets.button,
 		property: 'border-top-width',
@@ -524,38 +556,6 @@ const attributesToStyles = {
 	'border-bottom-left-radius': {
 		target: inlineStylesTargets.block,
 		property: 'border-bottom-left-radius',
-	},
-	'button-margin-top': {
-		target: inlineStylesTargets.button,
-		property: 'margin-top',
-	},
-	'button-margin-right': {
-		target: inlineStylesTargets.button,
-		property: 'margin-right',
-	},
-	'button-margin-bottom': {
-		target: inlineStylesTargets.button,
-		property: 'margin-bottom',
-	},
-	'button-margin-left': {
-		target: inlineStylesTargets.button,
-		property: 'margin-left',
-	},
-	'button-padding-top': {
-		target: inlineStylesTargets.button,
-		property: 'padding-top',
-	},
-	'button-padding-right': {
-		target: inlineStylesTargets.button,
-		property: 'padding-right',
-	},
-	'button-padding-bottom': {
-		target: inlineStylesTargets.button,
-		property: 'padding-bottom',
-	},
-	'button-padding-left': {
-		target: inlineStylesTargets.button,
-		property: 'padding-left',
 	},
 	opacity: {
 		target: inlineStylesTargets.block,

@@ -16,10 +16,7 @@ import {
 	getBorderStyles,
 	getSVGStyles,
 } from '@extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
@@ -281,12 +278,224 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 
+const inlineStylesTargets = {
+	block: '',
+	icon: iconClass,
+	iconPath: `${iconClass} svg path`,
+	iconSvg: `${iconClass} svg`,
+};
+
+const attributesToStyles = {
+	'svg-stroke': {
+		target: inlineStylesTargets.iconPath,
+		property: 'stroke-width',
+		isMultiplySelector: true,
+	},
+	'svg-width': {
+		target: inlineStylesTargets.icon,
+		property: 'width',
+	},
+	'svg-margin-top': {
+		target: inlineStylesTargets.icon,
+		property: 'margin-top',
+	},
+	'svg-margin-right': {
+		target: inlineStylesTargets.icon,
+		property: 'margin-right',
+	},
+	'svg-margin-bottom': {
+		target: inlineStylesTargets.icon,
+		property: 'margin-bottom',
+	},
+	'svg-margin-left': {
+		target: inlineStylesTargets.icon,
+		property: 'margin-left',
+	},
+	'svg-padding-top': {
+		target: inlineStylesTargets.icon,
+		property: 'padding-top',
+	},
+	'svg-padding-right': {
+		target: inlineStylesTargets.icon,
+		property: 'padding-right',
+	},
+	'svg-padding-bottom': {
+		target: inlineStylesTargets.icon,
+		property: 'padding-bottom',
+	},
+	'svg-padding-left': {
+		target: inlineStylesTargets.icon,
+		property: 'padding-left',
+	},
+	'svg-border-top-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-width',
+	},
+	'svg-border-right-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-right-width',
+	},
+	'svg-border-bottom-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-bottom-width',
+	},
+	'svg-border-left-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-left-width',
+	},
+	'svg-border-top-left-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-left-radius',
+	},
+	'svg-border-top-right-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-right-radius',
+	},
+	'svg-border-bottom-right-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-bottom-right-radius',
+	},
+	'svg-border-bottom-left-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-bottom-left-radius',
+	},
+	'border-top-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-width',
+	},
+	'border-right-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-right-width',
+	},
+	'border-bottom-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-width',
+	},
+	'border-left-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-left-width',
+	},
+	'border-top-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-left-radius',
+	},
+	'border-top-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-right-radius',
+	},
+	'border-bottom-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-right-radius',
+	},
+	'border-bottom-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-left-radius',
+	},
+	opacity: {
+		target: inlineStylesTargets.block,
+		property: 'opacity',
+	},
+	'flex-grow': {
+		target: inlineStylesTargets.block,
+		property: 'flex-grow',
+	},
+	'flex-shrink': {
+		target: inlineStylesTargets.block,
+		property: 'flex-shrink',
+	},
+	'row-gap': {
+		target: inlineStylesTargets.block,
+		property: 'row-gap',
+	},
+	'column-gap': {
+		target: inlineStylesTargets.block,
+		property: 'column-gap',
+	},
+	order: {
+		target: inlineStylesTargets.block,
+		property: 'order',
+	},
+	'margin-top': {
+		target: inlineStylesTargets.block,
+		property: 'margin-top',
+	},
+	'margin-right': {
+		target: inlineStylesTargets.block,
+		property: 'margin-right',
+	},
+	'margin-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'margin-bottom',
+	},
+	'margin-left': {
+		target: inlineStylesTargets.block,
+		property: 'margin-left',
+	},
+	'padding-top': {
+		target: inlineStylesTargets.block,
+		property: 'padding-top',
+	},
+	'padding-right': {
+		target: inlineStylesTargets.block,
+		property: 'padding-right',
+	},
+	'padding-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'padding-bottom',
+	},
+	'padding-left': {
+		target: inlineStylesTargets.block,
+		property: 'padding-left',
+	},
+	'position-top': {
+		target: inlineStylesTargets.block,
+		property: 'top',
+	},
+	'position-right': {
+		target: inlineStylesTargets.block,
+		property: 'right',
+	},
+	'position-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'bottom',
+	},
+	'position-left': {
+		target: inlineStylesTargets.block,
+		property: 'left',
+	},
+	width: {
+		target: inlineStylesTargets.block,
+		property: 'width',
+	},
+	height: {
+		target: inlineStylesTargets.block,
+		property: 'height',
+	},
+	'min-width': {
+		target: inlineStylesTargets.block,
+		property: 'min-width',
+	},
+	'min-height': {
+		target: inlineStylesTargets.block,
+		property: 'min-height',
+	},
+	'max-width': {
+		target: inlineStylesTargets.block,
+		property: 'max-width',
+	},
+	'max-height': {
+		target: inlineStylesTargets.block,
+		property: 'max-height',
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	attributesToStyles,
 };
 
 export {
@@ -295,5 +504,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

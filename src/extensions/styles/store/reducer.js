@@ -4,7 +4,7 @@
 import styleGenerator from '@extensions/styles/styleGenerator';
 import controls from './controls';
 import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
-import { MemoCache } from '../../maxi-block/memoizationHelper';
+import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
 import { omit } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -16,7 +16,7 @@ class CSSCache extends MemoCache {
 		this.memoryStats = {
 			totalSize: 0,
 			averageSize: 0,
-			lastCleanup: Date.now()
+			lastCleanup: Date.now(),
 		};
 	}
 
@@ -24,7 +24,8 @@ class CSSCache extends MemoCache {
 		// Estimate memory usage of the CSS content
 		const estimatedSize = JSON.stringify(value).length;
 		this.memoryStats.totalSize += estimatedSize;
-		this.memoryStats.averageSize = this.memoryStats.totalSize / (this.size() + 1);
+		this.memoryStats.averageSize =
+			this.memoryStats.totalSize / (this.size() + 1);
 
 		super.set(key, value);
 
@@ -39,20 +40,22 @@ class CSSCache extends MemoCache {
 		if (value) {
 			try {
 				const estimatedSize = JSON.stringify(value).length;
-				this.memoryStats.totalSize = Math.max(0, this.memoryStats.totalSize - estimatedSize);
+				this.memoryStats.totalSize = Math.max(
+					0,
+					this.memoryStats.totalSize - estimatedSize
+				);
 			} catch (error) {
 				// If we can't estimate size, just reset memory stats
 				this.memoryStats.totalSize = 0;
 			}
 		}
 
-		// Delete from cache
-		super.cache.delete(key);
+		// Delete from cache - use this.cache instead of super.cache
+		this.cache.delete(key);
 
 		// Recalculate average after deletion
-		this.memoryStats.averageSize = this.size() > 0
-			? this.memoryStats.totalSize / this.size()
-			: 0;
+		this.memoryStats.averageSize =
+			this.size() > 0 ? this.memoryStats.totalSize / this.size() : 0;
 	}
 
 	clear() {
@@ -60,7 +63,7 @@ class CSSCache extends MemoCache {
 		this.memoryStats = {
 			totalSize: 0,
 			averageSize: 0,
-			lastCleanup: Date.now()
+			lastCleanup: Date.now(),
 		};
 	}
 
@@ -77,10 +80,10 @@ class CSSCache extends MemoCache {
 		}
 
 		// Only cleanup if we actually exceed reasonable thresholds
-		const shouldCleanup = (
-			(this.memoryStats.averageSize > maxAverageSize && this.size() > 50) ||
-			(this.memoryStats.totalSize > maxTotalSize && this.size() > 100)
-		);
+		const shouldCleanup =
+			(this.memoryStats.averageSize > maxAverageSize &&
+				this.size() > 50) ||
+			(this.memoryStats.totalSize > maxTotalSize && this.size() > 100);
 
 		if (shouldCleanup) {
 			const oldSize = this.size();
@@ -93,7 +96,9 @@ class CSSCache extends MemoCache {
 			const entriesToKeep = Math.floor(this.maxSize * 0.6); // Keep 60% of entries (more aggressive)
 
 			// Get most recently used entries (last 60%)
-			const entries = Array.from(this.cache.entries()).slice(-entriesToKeep);
+			const entries = Array.from(this.cache.entries()).slice(
+				-entriesToKeep
+			);
 
 			// Reset memory stats before cleanup
 			this.memoryStats.totalSize = 0;
@@ -107,17 +112,20 @@ class CSSCache extends MemoCache {
 			});
 
 			// Recalculate average
-			this.memoryStats.averageSize = this.size() > 0
-				? this.memoryStats.totalSize / this.size()
-				: 0;
+			this.memoryStats.averageSize =
+				this.size() > 0 ? this.memoryStats.totalSize / this.size() : 0;
 			this.memoryStats.lastCleanup = Date.now();
 
 			const newSize = this.size();
 			if (newSize < oldSize) {
 				// Only log in development or debug mode to reduce console noise
-				const isDebugMode = process.env.NODE_ENV === 'development' || localStorage.getItem('maxiBlocks-debug') === 'true';
+				const isDebugMode =
+					process.env.NODE_ENV === 'development' ||
+					localStorage.getItem('maxiBlocks-debug') === 'true';
 				if (isDebugMode) {
-					console.log(`MaxiBlocks CSS Cache: Auto-cleanup triggered. Reduced from ${oldSize} to ${newSize} entries`);
+					console.log(
+						`MaxiBlocks CSS Cache: Auto-cleanup triggered. Reduced from ${oldSize} to ${newSize} entries`
+					);
 				}
 			}
 		}
@@ -128,7 +136,7 @@ class CSSCache extends MemoCache {
 			size: this.size(),
 			maxSize: this.maxSize,
 			...this.memoryStats,
-			hitRate: this.hitRate || 0
+			hitRate: this.hitRate || 0,
 		};
 	}
 }
@@ -161,7 +169,7 @@ function reducer(
 		isUpdate: null,
 		prevSavedAttrs: [],
 		prevSavedAttrsClientId: null,
-		cssCache: cssCache, // Use LRU cache instance instead of plain object
+		cssCache, // Use LRU cache instance instead of plain object
 		blockMarginValue: '',
 		defaultGroupAttributes,
 	},
@@ -287,7 +295,7 @@ export const cssCacheUtils = {
 	 */
 	forceCleanup() {
 		cssCache.checkMemoryUsage();
-	}
+	},
 };
 
 export default reducer;

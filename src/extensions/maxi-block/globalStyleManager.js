@@ -263,16 +263,6 @@ let globalStyleManagerInstance = null;
 export const getGlobalStyleManager = () => {
 	if (!globalStyleManagerInstance) {
 		globalStyleManagerInstance = new GlobalStyleManager();
-
-		// Add cleanup on page unload
-		if (typeof window !== 'undefined') {
-			window.addEventListener('beforeunload', () => {
-				if (globalStyleManagerInstance) {
-					globalStyleManagerInstance.destroy();
-					globalStyleManagerInstance = null;
-				}
-			});
-		}
 	}
 
 	return globalStyleManagerInstance;

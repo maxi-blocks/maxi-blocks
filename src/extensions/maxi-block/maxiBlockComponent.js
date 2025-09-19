@@ -2055,6 +2055,7 @@ class MaxiBlockComponent extends Component {
 
 	/**
 	 * DEFENSIVE: Safe cleanup of relation instances with comprehensive error handling
+	 * Now integrates with enhanced cleanup manager for better performance and monitoring
 	 * @param {Array} instances - Relation instances to clean up
 	 */
 	safeCleanupRelationInstances(instances) {
@@ -2066,6 +2067,67 @@ class MaxiBlockComponent extends Component {
 			return;
 		}
 
+		// Import the enhanced cleanup manager
+		if (!this.cleanupManager) {
+			import('./relationCleanupManager').then(
+				({ globalCleanupManager }) => {
+					this.cleanupManager = globalCleanupManager;
+					this.performEnhancedCleanup(instances);
+				}
+			);
+			// Fallback to legacy cleanup for immediate execution
+			this.performLegacyCleanup(instances);
+		} else {
+			this.performEnhancedCleanup(instances);
+		}
+	}
+
+	/**
+	 * Enhanced cleanup using the cleanup manager
+	 * @param {Array} instances - Relation instances to clean up
+	 */
+	performEnhancedCleanup(instances) {
+		// Check for memory leaks first
+		const suspiciousInstances =
+			this.cleanupManager.detectMemoryLeaks(instances);
+
+		if (suspiciousInstances.length > 0) {
+			console.warn(
+				`MaxiBlocks: Detected ${suspiciousInstances.length} potentially leaked instances`
+			);
+
+			// Schedule high priority cleanup for suspicious instances
+			suspiciousInstances.forEach(({ instance }, index) => {
+				this.cleanupManager.scheduleInstanceCleanup(
+					instance,
+					index,
+					3 // HIGH priority from relationCleanupManager.js
+				);
+			});
+		}
+
+		// For large numbers of instances, use batch cleanup
+		if (instances.length > 10) {
+			this.cleanupManager.scheduleBatchCleanup(instances, 2); // NORMAL priority
+		} else {
+			// For small numbers, schedule individual cleanups
+			instances.forEach((instance, index) => {
+				if (instance && typeof instance === 'object') {
+					this.cleanupManager.scheduleInstanceCleanup(
+						instance,
+						index,
+						2
+					); // NORMAL priority
+				}
+			});
+		}
+	}
+
+	/**
+	 * Legacy cleanup method as fallback
+	 * @param {Array} instances - Relation instances to clean up
+	 */
+	performLegacyCleanup(instances) {
 		// Track cleanup progress for debugging
 		const cleanupErrors = [];
 
@@ -2253,6 +2315,15 @@ class MaxiBlockComponent extends Component {
 			'MaxiBlocks: EMERGENCY - Force cleaning all relation instances'
 		);
 
+		// Use enhanced cleanup manager if available
+		if (this.cleanupManager) {
+			// Schedule critical priority cleanup for all instances
+			if (this.allRelationInstances) {
+				const instances = Array.from(this.allRelationInstances);
+				this.cleanupManager.scheduleBatchCleanup(instances, 4); // CRITICAL priority
+			}
+		}
+
 		// Clear all tracking sets
 		try {
 			if (this.allRelationInstances) {
@@ -2272,6 +2343,63 @@ class MaxiBlockComponent extends Component {
 		// Nullify all instance references
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
+	}
+
+	/**
+	 * Get cleanup and memory statistics for monitoring
+	 * @returns {Object} Comprehensive cleanup statistics
+	 */
+	getCleanupStats() {
+		const baseStats = {
+			totalRelationInstances: this.allRelationInstances
+				? this.allRelationInstances.size
+				: 0,
+			hasCleanupManager: !!this.cleanupManager,
+			timestamp: Date.now(),
+		};
+
+		if (this.cleanupManager) {
+			return {
+				...baseStats,
+				...this.cleanupManager.getStats(),
+			};
+		}
+
+		return baseStats;
+	}
+
+	/**
+	 * Force memory cleanup and optimization
+	 */
+	performMemoryOptimization() {
+		if (this.cleanupManager) {
+			// Detect and cleanup memory leaks
+			if (this.allRelationInstances) {
+				const instances = Array.from(this.allRelationInstances);
+				const suspiciousInstances =
+					this.cleanupManager.detectMemoryLeaks(instances);
+
+				if (suspiciousInstances.length > 0) {
+					console.warn(
+						`MaxiBlocks: Performing memory optimization - found ${suspiciousInstances.length} suspicious instances`
+					);
+
+					// Schedule immediate cleanup for suspicious instances
+					suspiciousInstances.forEach(({ instance }, index) => {
+						this.cleanupManager.scheduleInstanceCleanup(
+							instance,
+							index,
+							4
+						); // CRITICAL priority
+					});
+				}
+			}
+		}
+
+		// Also trigger style cache cleanup
+		if (typeof window !== 'undefined' && window.MaxiBlocksStyleCache) {
+			window.MaxiBlocksStyleCache.checkMemoryUsage();
+		}
 	}
 
 	// Returns responsive preview elements if present

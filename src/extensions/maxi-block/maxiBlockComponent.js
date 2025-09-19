@@ -48,6 +48,7 @@ import {
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
+import { addBlockStyles, removeBlockStyles } from './globalStyleManager';
 import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { removeBlockFromColumns } from '@extensions/repeater';
@@ -57,7 +58,7 @@ import compareVersions from './compareVersions';
 /**
  * External dependencies
  */
-import _, { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
+import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
 
@@ -847,29 +848,6 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	getOrCreateStyleElement(target, uniqueID) {
-		// Safety check for target document
-		if (!target || typeof target.getElementById !== 'function') {
-			console.warn(
-				'MaxiBlocks: Invalid target document in getOrCreateStyleElement, falling back to main document'
-			);
-			// Use local variable instead of modifying parameter
-			const fallbackTarget = document;
-			return this.getOrCreateStyleElement(fallbackTarget, uniqueID);
-		}
-
-		const styleId = `maxi-blocks__styles--${uniqueID}`;
-		let styleElement = target.getElementById(styleId);
-
-		if (!styleElement) {
-			styleElement = target.createElement('style');
-			styleElement.id = styleId;
-			target.head.appendChild(styleElement);
-		}
-
-		return styleElement;
-	}
-
 	setMaxiAttributes() {
 		if (this.isPatternsPreview || this.templateModal) return;
 
@@ -1544,7 +1522,6 @@ class MaxiBlockComponent extends Component {
 		}
 
 		const target = this.getStyleTarget(isSiteEditor, iframe);
-		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
 		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
@@ -1558,7 +1535,9 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
-			this.updateStyleElement(styleElement, styleContent);
+
+			// Use batched style injection instead of individual style elements
+			addBlockStyles(uniqueID, styleContent, target);
 		}
 	}
 
@@ -1782,12 +1761,6 @@ class MaxiBlockComponent extends Component {
 		return styleContent;
 	}
 
-	updateStyleElement(styleElement, styleContent) {
-		if (styleElement.textContent !== styleContent) {
-			styleElement.textContent = styleContent;
-		}
-	}
-
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
 		const styles = styleResolver({
@@ -1804,9 +1777,8 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview || this.templateModal) return;
 
 		const { uniqueID } = this.props.attributes;
-		const styleId = `maxi-blocks__styles--${uniqueID}`;
 
-		// BULLETPROOF CLEANUP - Remove from ALL possible documents
+		// BULLETPROOF CLEANUP - Remove from ALL possible documents using GlobalStyleManager
 		const documentsToClean = [
 			document, // Main document
 		];
@@ -1852,19 +1824,19 @@ class MaxiBlockComponent extends Component {
 			// Ignore iframe access errors
 		}
 
-		// Remove style elements from ALL documents
+		// Remove block styles from all documents using GlobalStyleManager
 		documentsToClean.forEach(doc => {
 			if (doc && typeof doc.getElementById === 'function') {
-				const styleElement = doc.getElementById(styleId);
-				if (styleElement) {
-					styleElement.remove();
-				}
+				removeBlockStyles(uniqueID, doc);
 			}
 		});
 
-		// Also remove any orphaned style elements with this ID from anywhere
+		// Legacy cleanup: Also remove any old individual style elements with this ID
+		const legacyStyleId = `maxi-blocks__styles--${uniqueID}`;
 		try {
-			const allStyleElements = document.querySelectorAll(`#${styleId}`);
+			const allStyleElements = document.querySelectorAll(
+				`#${legacyStyleId}`
+			);
 			allStyleElements.forEach(el => {
 				if (el && el.parentNode) {
 					el.remove();

@@ -82,7 +82,9 @@ const typography = ({
 								}
 								onChange={(obj, target) => {
 									maxiSetAttributes(obj);
-									cleanInlineStyles(target);
+									if (!obj.meta?.inline) {
+										cleanInlineStyles(target);
+									}
 								}}
 								setShowLoader={setShowLoader}
 								hideAlignment={hideAlignment}

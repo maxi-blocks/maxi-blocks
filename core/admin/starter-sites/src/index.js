@@ -5,7 +5,10 @@ import apiFetch from '@wordpress/api-fetch';
 
 // Set up the REST API nonce for admin context
 const apiNonce = window.maxiStarterSites?.apiNonce;
-const apiRoot = window.maxiStarterSites?.root || '/wp-json/';
+const apiRoot =
+	window.maxiStarterSites?.apiRoot ||
+	window.maxiBlocksMain?.apiRoot ||
+	`${window.location.origin}/wp-json/`;
 
 apiFetch.use(apiFetch.createNonceMiddleware(apiNonce));
 apiFetch.use(apiFetch.createRootURLMiddleware(apiRoot));

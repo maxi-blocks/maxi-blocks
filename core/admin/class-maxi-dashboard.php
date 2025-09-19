@@ -3,6 +3,9 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+define('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL', 'https://my.maxiblocks.com/middleware/verify');
+define('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY', '4d8af9b4d6f221cf7a41271cb7b82c92');
+
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard
     {
@@ -28,10 +31,19 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         }
 
         /**
+         * Get the existing instance (if any)
+         */
+        public static function get_instance()
+        {
+            return self::$instance;
+        }
+
+        /**
          * Constructor.
          */
         public function __construct()
         {
+            // Register regular admin menu (not for network admin)
             add_action('admin_menu', [$this, 'maxi_register_menu']);
 
             add_action('admin_init', [$this, 'register_maxi_blocks_settings']);
@@ -83,6 +95,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'handle_get_frontend_assets',
             ]);
+
+            // Add AJAX handlers for license validation
+            add_action('wp_ajax_maxi_validate_license', [
+                $this,
+                'handle_validate_license',
+            ]);
+            add_action('wp_ajax_maxi_check_auth_status', [
+                $this,
+                'handle_check_auth_status',
+            ]);
+            add_action('wp_ajax_maxi_save_email_license', [
+                $this,
+                'handle_save_email_license',
+            ]);
+
+            // Check for domain changes on admin init
+            add_action('admin_init', [$this, 'check_and_handle_domain_migration']);
+
+            // Add multisite network admin support
+            if (is_multisite()) {
+                add_action('network_admin_menu', [$this, 'maxi_register_network_menu']);
+                add_action('network_admin_enqueue_scripts', [$this, 'maxi_network_admin_scripts_styles']);
+                add_action('network_admin_edit_maxi_network_license', [$this, 'handle_network_license_update']);
+                add_action('wp_ajax_maxi_network_validate_license', [$this, 'handle_network_validate_license']);
+                add_action('wp_ajax_maxi_network_check_auth_status', [$this, 'handle_network_check_auth_status']);
+            }
         }
 
         public function update_settings_on_install()
@@ -213,6 +251,111 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'Error validating API Key, please try again later',
                         'maxi-blocks',
                     ),
+                    // AI Model dropdown messages
+                    'loading_available_models' => __(
+                        'Loading available models...',
+                        'maxi-blocks',
+                    ),
+                    'no_models_available' => __(
+                        'No models available - check API key',
+                        'maxi-blocks',
+                    ),
+                    'error_loading_models' => __(
+                        'Error loading models',
+                        'maxi-blocks',
+                    ),
+                    // License validation messages
+                    'please_enter_email_or_code' => __(
+                        'Please enter an email or purchase code',
+                        'maxi-blocks',
+                    ),
+                    'validating' => __(
+                        'Validating...',
+                        'maxi-blocks',
+                    ),
+                    'the_email_is_not_valid' => __(
+                        'The email is not valid',
+                        'maxi-blocks',
+                    ),
+                    'email_authentication_started' => __(
+                        'Email authentication started. Please complete login in the new tab.',
+                        'maxi-blocks',
+                    ),
+                    'failed_to_initiate_email_auth' => __(
+                        'Failed to initiate email authentication',
+                        'maxi-blocks',
+                    ),
+                    'failed_to_validate_license' => __(
+                        'Failed to validate license',
+                        'maxi-blocks',
+                    ),
+                    'successfully_authenticated' => __(
+                        'Successfully authenticated with MaxiBlocks account!',
+                        'maxi-blocks',
+                    ),
+                    'please_log_into_maxiblocks' => __(
+                        'Please log into your MaxiBlocks account to complete activation',
+                        'maxi-blocks',
+                    ),
+                    // Email show/hide functionality
+                    'click_to_show' => __(
+                        'Click to show',
+                        'maxi-blocks',
+                    ),
+                    'click_to_hide' => __(
+                        'Click to hide',
+                        'maxi-blocks',
+                    ),
+                    // Button states
+                    'signing_out' => __(
+                        'Signing out...',
+                        'maxi-blocks',
+                    ),
+                    'sign_out' => __(
+                        'Sign out',
+                        'maxi-blocks',
+                    ),
+                    'activating' => __(
+                        'Activating…',
+                        'maxi-blocks',
+                    ),
+                    'deactivating' => __(
+                        'Deactivating…',
+                        'maxi-blocks',
+                    ),
+                    'activate' => __(
+                        'Activate',
+                        'maxi-blocks',
+                    ),
+                    // Network license messages
+                    'deactivate_network_license_confirm' => __(
+                        'Are you sure you want to deactivate the network license? This will affect all sites in the network.',
+                        'maxi-blocks',
+                    ),
+                    'only_email_authentication_allowed' => __(
+                        'Only email authentication is allowed when a network license is active.',
+                        'maxi-blocks',
+                    ),
+                    'activate_network_license' => __(
+                        'Activate network license',
+                        'maxi-blocks',
+                    ),
+                    'deactivate_network_license' => __(
+                        'Deactivate network license',
+                        'maxi-blocks',
+                    ),
+                    'failed_to_sign_out' => __(
+                        'Failed to sign out',
+                        'maxi-blocks',
+                    ),
+                    'please_enter_purchase_code' => __(
+                        'Please enter a purchase code',
+                        'maxi-blocks',
+                    ),
+                    'network_error_occurred' => __(
+                        'Network error occurred',
+                        'maxi-blocks',
+                    ),
                 ]);
 
                 wp_localize_script('maxi-admin', 'maxiAiSettings', [
@@ -220,6 +363,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'maxi_ai_model',
                         'gpt-3.5-turbo',
                     ),
+                ]);
+
+                // Add localization for license page
+                $network_license_info = $this->get_network_license_info();
+                wp_localize_script('maxi-admin', 'maxiLicenseSettings', [
+                    'middlewareUrl' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '',
+                    'middlewareKey' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '',
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('maxi_license_validation'),
+                    'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+                    'pluginVersion' => MAXI_PLUGIN_VERSION,
+                    'isMultisite' => is_multisite(),
+                    'hasNetworkLicense' => $this->has_network_license(),
+                    'networkLicenseName' => $network_license_info ? $network_license_info['user_name'] : '',
+                    'isNetworkAdmin' => false,
+                    'networkAdminUrl' => network_admin_url('admin.php?page=maxi-blocks-dashboard'),
                 ]);
             }
         }
@@ -229,6 +388,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         public function maxi_register_menu()
         {
+            // Don't register regular admin menu in network admin context
+            if (is_network_admin()) {
+                return;
+            }
+
+            // Additional check to prevent double registration
+            if (defined('DOING_AJAX') && DOING_AJAX) {
+                return;
+            }
             add_menu_page(
                 self::$maxi_plugin_name,
                 self::$maxi_plugin_name,
@@ -291,6 +459,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
             add_submenu_page(
                 self::$maxi_slug_dashboard,
+                __('License', 'maxi-blocks'),
+                __('License', 'maxi-blocks'),
+                'manage_options',
+                'admin.php?page=' .
+                    self::$maxi_slug_dashboard .
+                    '&tab=maxi_blocks_license',
+                '',
+                null,
+            );
+            add_submenu_page(
+                self::$maxi_slug_dashboard,
                 __('Settings', 'maxi-blocks'),
                 __('Settings', 'maxi-blocks'),
                 'manage_options',
@@ -300,6 +479,95 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '',
                 null,
             );
+        }
+
+        /**
+         * Register network admin menu (for multisite)
+         */
+        public function maxi_register_network_menu()
+        {
+            add_menu_page(
+                self::$maxi_plugin_name,
+                self::$maxi_plugin_name,
+                'manage_network_options',
+                self::$maxi_slug_dashboard,
+                [$this, 'maxi_network_config_page'],
+                $this->maxi_get_menu_icon_base64(),
+                60,
+            );
+            // Add the main item as a submenu to create the dropdown
+            add_submenu_page(
+                self::$maxi_slug_dashboard,
+                self::$maxi_plugin_name,
+                __('License', 'maxi-blocks'),
+                'manage_network_options',
+                self::$maxi_slug_dashboard,
+                '',
+                null,
+            );
+        }
+
+        /**
+         * Check if there's an active network license
+         * @returns bool
+         */
+        public function has_network_license()
+        {
+            if (!is_multisite()) {
+                return false;
+            }
+
+            $network_license = get_site_option('maxi_pro_network', '');
+            if (empty($network_license)) {
+                return false;
+            }
+
+            $license_array = json_decode($network_license, true);
+            if (!is_array($license_array)) {
+                return false;
+            }
+
+            foreach ($license_array as $key => $license) {
+                if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Get network license info
+         * @returns array|false
+         */
+        public function get_network_license_info()
+        {
+            if (!is_multisite()) {
+                return false;
+            }
+
+            $network_license = get_site_option('maxi_pro_network', '');
+            if (empty($network_license)) {
+                return false;
+            }
+
+            $license_array = json_decode($network_license, true);
+            if (!is_array($license_array)) {
+                return false;
+            }
+
+            foreach ($license_array as $key => $license) {
+                if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                    return [
+                        'status' => 'Active ✓',
+                        'user_name' => isset($license['name']) ? $license['name'] : 'Network User',
+                        'purchase_code' => isset($license['purchase_code']) ? $license['purchase_code'] : '',
+                        'domain' => isset($license['domain']) ? $license['domain'] : '',
+                    ];
+                }
+            }
+
+            return false;
         }
 
         // Draw option page
@@ -322,6 +590,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'System status',
                     'maxi-blocks',
                 ),
+                self::$maxi_prefix . 'license' => __('License', 'maxi-blocks'),
                 self::$maxi_prefix . 'settings' => __(
                     'Settings',
                     'maxi-blocks',
@@ -381,9 +650,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Add Get cloud link and icons
             echo '<div class="maxi-dashboard_header-actions">';
-            echo '<a href="https://maxiblocks.com/pricing/" target="_blank" class="maxi-dashboard_get-cloud-link">' .
-                esc_html__('Get cloud', 'maxi-blocks') .
-                '</a>';
+
+            // Only show "Get cloud" link if Pro is not active
+            if (!$this->is_pro_active()) {
+                echo '<a href="https://maxiblocks.com/pricing/" target="_blank" class="maxi-dashboard_get-cloud-link">' .
+                    esc_html__('Get cloud', 'maxi-blocks') .
+                    '</a>';
+            }
+
             echo '<div class="maxi-dashboard_header-icons">';
             echo '<a href=" https://maxiblocks.com/go/help-desk/" target="_blank" class="maxi-dashboard_header-icon"><img src="' .
                 esc_url(
@@ -428,6 +702,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         $this->maxi_blocks_status(),
                         maxi_blocks_allowed_html(),
                     );
+                } elseif ($tab === self::$maxi_prefix . 'license') {
+                    echo wp_kses(
+                        $this->maxi_blocks_license(),
+                        maxi_blocks_allowed_html(),
+                    );
                 }
             }
 
@@ -435,6 +714,209 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             echo '<div class="clear"></div>';
             echo '</form>'; // maxi-dashboard_form
             echo '</div>'; // maxi-dashboard_wrap
+        }
+
+        /**
+         * Network admin configuration page (for multisite)
+         */
+        public function maxi_network_config_page()
+        {
+            // Enqueue network admin scripts
+            $this->maxi_network_admin_scripts_styles();
+
+            // Get current network license status
+            $network_license_info = $this->get_network_license_info();
+            $is_network_active = $network_license_info !== false;
+
+            echo '<div class="maxi-dashboard_wrap">';
+            echo '<header class="maxi-dashboard_header">';
+            echo '<img class="maxi-dashboard_logo" width="200" src="' .
+                esc_url(MAXI_PLUGIN_URL_PATH) .
+                'img/maxi-logo-dashboard-white.svg' .
+                '" alt="' .
+                esc_html(__('MaxiBlocks Logo', 'maxi-blocks')) .
+                '">';
+            echo '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
+            echo '<span class="maxi-dashboard_nav-tab nav-tab maxi-dashboard_nav-tab__active nav-tab-active">' . __('License', 'maxi-blocks') . '</span>';
+            echo '</h4>';
+
+            // Add Get cloud link and icons (same as regular dashboard)
+            echo '<div class="maxi-dashboard_header-actions">';
+
+            // Only show "Get cloud" link if Pro is not active
+            if (!$is_network_active) {
+                echo '<a href="https://maxiblocks.com/pricing/" target="_blank" class="maxi-dashboard_get-cloud-link">' .
+                    esc_html__('Get cloud', 'maxi-blocks') .
+                    '</a>';
+            }
+
+            echo '<div class="maxi-dashboard_header-icons">';
+            echo '<a href=" https://maxiblocks.com/go/help-desk/" target="_blank" class="maxi-dashboard_header-icon"><img src="' .
+                esc_url(
+                    MAXI_PLUGIN_URL_PATH . 'img/maxi_help_documents_icon.svg',
+                ) .
+                '" alt="MaxiBlocks documentation" width="24" height="24"></a>';
+            echo '<a href="https://maxiblocks.com/contact/" target="_blank" class="maxi-dashboard_header-icon"><img src="' .
+                esc_url(MAXI_PLUGIN_URL_PATH . 'img/maxi_support_icon.svg') .
+                '" alt="MaxiBlocks contact" width="24" height="24"></a>';
+            echo '</div>'; // maxi-dashboard_header-icons
+            echo '</div>'; // maxi-dashboard_header-actions
+            echo '</header>';
+
+            echo '<form action="options.php" method="post" class="maxi-dashboard_form">';
+            echo '<div class="maxi-dashboard_main">';
+
+            // License content using the same format as regular dashboard
+            echo wp_kses($this->maxi_blocks_network_license(), maxi_blocks_allowed_html());
+
+            echo '</div>'; // maxi-dashboard_main
+            echo '<div class="clear"></div>';
+            echo '</form>'; // maxi-dashboard_form
+            echo '</div>'; // maxi-dashboard_wrap
+        }
+
+        /**
+         * Generate network license content (mirrors maxi_blocks_license structure)
+         */
+        public function maxi_blocks_network_license()
+        {
+            // Get current network license status
+            $network_license_info = $this->get_network_license_info();
+            $is_network_active = $network_license_info !== false;
+            $current_license_status = 'Not activated';
+            $current_user_name = '';
+            $license_source = 'none';
+
+            if ($is_network_active) {
+                $current_license_status = $network_license_info['status'];
+                $current_user_name = $network_license_info['user_name'] === 'Maxiblocks' ? 'MaxiBlocks' : $network_license_info['user_name'];
+                $license_source = 'network';
+            }
+
+            $content = '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-license">';
+            $content .= '<div class="maxi-dashboard_main-content-settings">';
+
+            if ($is_network_active) {
+                $content .= '<h1>' . __('Network Pro license active', 'maxi-blocks') . '</h1>';
+                $content .= '<p>' . __('Pro access is active network-wide. All sites in the network have access to Pro features.', 'maxi-blocks') . '</p>';
+            } else {
+                $content .= '<h1>' . __('Activate network Pro license', 'maxi-blocks') . '</h1>';
+                $content .= '<p>' . __('Enter a purchase code to activate Pro access for the entire network.', 'maxi-blocks') . '</p>';
+            }
+
+            $content .= '</div>';
+
+            $content .= '<div class="maxi-dashboard_main-content_accordion_wrapper">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion">';
+
+            $content .= $this->generate_item_header(
+                $is_network_active ? __('Network license status', 'maxi-blocks') : __('Network license activation', 'maxi-blocks'),
+                true,
+            );
+
+            if ($is_network_active) {
+                // Show active status
+                $content .= '<div class="maxi-license-status-display">';
+                $content .= '<h4>' . __('Status:', 'maxi-blocks') . ' <span id="current-network-license-status" class="maxi-license-active">' . esc_html($current_license_status) . '</span></h4>';
+                $content .= '<h4>' . __('Licensed to:', 'maxi-blocks') . ' <span id="current-network-license-user">' . esc_html($current_user_name) . '</span></h4>';
+                $content .= '<h4>' . __('Main domain:', 'maxi-blocks') . ' <span id="current-network-license-domain">' . esc_html($network_license_info['domain']) . '</span></h4>';
+                $content .= '<h4>' . __('License type:', 'maxi-blocks') . ' <span class="maxi-license-network">Network License</span></h4>';
+                $content .= '</div>';
+
+                // Show deactivate button
+                $content .= '<div class="maxi-license-actions">';
+                $content .= '<button type="button" id="maxi-network-license-logout" class="button button-primary">' . __('Deactivate network license', 'maxi-blocks') . '</button>';
+                $content .= '</div>';
+
+                // Show network behavior explanation
+                $content .= '<div class="maxi-license-network-info">';
+                $content .= '<h4>' . __('How network licensing works:', 'maxi-blocks') . '</h4>';
+                $content .= '<ul>';
+                $content .= '<li>' . __('All sites in the network have Pro access automatically', 'maxi-blocks') . '</li>';
+                $content .= '<li>' . __('Individual site license tabs will show network license status', 'maxi-blocks') . '</li>';
+                $content .= '<li>' . __('Purchase codes cannot be activated on individual sites when network license is active', 'maxi-blocks') . '</li>';
+                $content .= '</ul>';
+                $content .= '</div>';
+            } else {
+                // Show current status for not activated
+                $content .= '<div class="maxi-license-status-display">';
+                $content .= '<h4>' . __('Current status:', 'maxi-blocks') . ' <span id="current-network-license-status" class="maxi-license-inactive">' . esc_html($current_license_status) . '</span></h4>';
+                $content .= '</div>';
+
+                // Show authentication input form
+                $content .= '<div class="maxi-license-auth-form">';
+                $content .= '<div class="maxi-license-input-group">';
+                $content .= '<input type="text" id="maxi-network-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Network purchase code', 'maxi-blocks') . '" />';
+                $content .= '<p class="maxi-license-help-text">' . __('Enter a purchase code to activate Pro access for the entire network.', 'maxi-blocks') . '</p>';
+                $content .= '<p class="maxi-license-help-text">' . __('Note: Network licensing only supports purchase codes from marketplaces. MaxiBlocks email accounts and MaxiBlocks license keys must be activated on each sub-site separately.', 'maxi-blocks') . '</p>';
+                $content .= '</div>';
+
+                $content .= '<div class="maxi-license-actions">';
+                $content .= '<button type="button" id="maxi-validate-network-license" class="button button-primary">' . __('Activate network license', 'maxi-blocks') . '</button>';
+                $content .= '</div>';
+
+                $content .= '<div id="maxi-network-license-validation-message" class="maxi-license-message" style="display: none;"></div>';
+
+                $content .= '</div>'; // maxi-license-auth-form
+
+                // Show network behavior explanation
+                $content .= '<div class="maxi-license-network-info">';
+                $content .= '<h4>' . __('Network licensing benefits:', 'maxi-blocks') . '</h4>';
+                $content .= '<ul>';
+                $content .= '<li>' . __('One purchase code activates Pro for all sites in the network', 'maxi-blocks') . '</li>';
+                $content .= '<li>' . __('No need to activate individual sites separately', 'maxi-blocks') . '</li>';
+                $content .= '<li>' . __('Centralized license management from the network admin', 'maxi-blocks') . '</li>';
+                $content .= '</ul>';
+                $content .= '</div>';
+            }
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion
+            $content .= '</div>'; // maxi-dashboard_main-content
+
+            return $content;
+        }
+
+        /**
+         * Enqueue scripts and styles for network admin
+         */
+        public function maxi_network_admin_scripts_styles($hook_suffix = '')
+        {
+
+            // Call regular admin scripts for network admin
+            $this->maxi_admin_scripts_styles();
+
+            // Add additional localization specifically for network license page
+            $network_license_info = $this->get_network_license_info();
+            wp_localize_script('maxi-admin', 'maxiNetworkLicenseSettings', [
+                'middlewareUrl' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '',
+                'middlewareKey' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '',
+                'ajaxUrl' => admin_url('admin-ajax.php'), // AJAX URLs work the same in network admin
+                'nonce' => wp_create_nonce('maxi_network_license_validation'),
+                'currentDomain' => $this->get_main_site_domain(),
+                'pluginVersion' => MAXI_PLUGIN_VERSION,
+                'isMultisite' => true,
+                'hasNetworkLicense' => $this->has_network_license(),
+                'networkLicenseName' => $network_license_info ? $network_license_info['user_name'] : '',
+                'isNetworkAdmin' => true,
+            ]);
+        }
+
+        /**
+         * Get the main site domain for network licensing
+         * @returns string
+         */
+        private function get_main_site_domain()
+        {
+            if (!is_multisite()) {
+                return parse_url(home_url(), PHP_URL_HOST);
+            }
+
+            // Get the main site URL
+            $main_site_url = get_site_url(get_main_site_id());
+            return parse_url($main_site_url, PHP_URL_HOST);
         }
 
         public function maxi_blocks_welcome()
@@ -1283,6 +1765,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'wpImporterStatus' => $wp_importer_status,
                 'proInitialState' => get_option('maxi_pro', ''),
             ]);
+
+            // Add license settings for authentication context
+            $network_license_info = $this->get_network_license_info();
+            wp_localize_script('maxi-starter-sites', 'maxiLicenseSettings', [
+                'middlewareUrl' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '',
+                'middlewareKey' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '',
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('maxi_license_validation'),
+                'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+                'pluginVersion' => MAXI_PLUGIN_VERSION,
+                'isMultisite' => is_multisite(),
+                'hasNetworkLicense' => $this->has_network_license(),
+                'networkLicenseName' => $network_license_info ? $network_license_info['user_name'] : '',
+                'isNetworkAdmin' => false,
+                'networkAdminUrl' => network_admin_url('admin.php?page=maxi-blocks-dashboard'),
+            ]);
         }
 
         public function maxi_blocks_starter_sites()
@@ -1575,10 +2073,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'string',
             ];
 
-			 // Add arguments for API keys
-			 $args_api_key = array(
-                'type' => 'string',
-                'sanitize_callback' => 'sanitize_text_field',
+            // Add arguments for API keys
+            $args_api_key = array(
+               'type' => 'string',
+               'sanitize_callback' => 'sanitize_text_field',
             );
 
             // List of settings and corresponding arguments
@@ -1796,6 +2294,237 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $status_report->generate_status_report();
         }
 
+        public function maxi_blocks_license()
+        {
+            // Check for network license first
+            $network_license_info = $this->get_network_license_info();
+            $has_network_license = $network_license_info !== false;
+
+            // Get current site-level license information
+            $current_license_data = get_option('maxi_pro', '');
+            $current_license_status = 'Not activated';
+            $current_user_name = '';
+            $is_active = false;
+            $license_source = 'none';
+
+            if ($has_network_license) {
+                // Network license takes priority
+                $current_license_status = $network_license_info['status'];
+                $current_user_name = $network_license_info['user_name'] === 'Maxiblocks' ? 'MaxiBlocks' : $network_license_info['user_name'];
+                $is_active = true;
+                $license_source = 'network';
+            } elseif (!empty($current_license_data)) {
+                $license_array = json_decode($current_license_data, true);
+                if (is_array($license_array)) {
+                    // Check for purchase code auth (domain-wide)
+                    foreach ($license_array as $key => $license) {
+                        if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                            $current_license_status = 'Active ✓';
+                            $current_user_name = isset($license['name']) ? ($license['name'] === 'Maxiblocks' ? 'MaxiBlocks' : $license['name']) : 'Pro User';
+                            $is_active = true;
+                            $license_source = 'site_purchase_code';
+                            break;
+                        }
+                    }
+
+                    // If no purchase code, check for email auth (browser-specific)
+                    if (!$is_active && isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
+                        $cookie_raw = $_COOKIE['maxi_blocks_key'];
+                        // Fix escaped quotes in cookie value
+                        $cookie_fixed = str_replace('\\"', '"', $cookie_raw);
+                        $cookie_data = json_decode($cookie_fixed, true);
+
+                        if ($cookie_data && is_array($cookie_data)) {
+                            $email = array_keys($cookie_data)[0];
+                            $browser_key = $cookie_data[$email];
+
+                            if (isset($license_array[$email]) && isset($license_array[$email]['status']) && $license_array[$email]['status'] === 'yes') {
+                                // Check if this browser's key is in the list
+                                $stored_keys = explode(',', $license_array[$email]['key']);
+
+                                if (in_array($browser_key, array_map('trim', $stored_keys))) {
+                                    $current_license_status = 'Active ✓';
+                                    $current_user_name = isset($license_array[$email]['name']) ? $license_array[$email]['name'] : $email;
+                                    $is_active = true;
+                                    $license_source = 'site_email';
+                                } else {
+                                    error_log(__('MaxiBlocks dashboard - Key NOT found in stored keys', 'maxi-blocks'));
+                                }
+                            } else {
+                                error_log(__('MaxiBlocks dashboard - Email not found or status not yes', 'maxi-blocks'));
+                            }
+                        } else {
+                            error_log(__('MaxiBlocks dashboard - Failed to parse cookie', 'maxi-blocks'));
+                        }
+                    }
+                }
+            }
+
+            $content = '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-license">';
+            $content .= '<div class="maxi-dashboard_main-content-settings">';
+
+            if ($is_active) {
+                if ($license_source === 'network') {
+                    $content .= '<h1>' . __('Pro access active via network license', 'maxi-blocks') . '</h1>';
+                    $content .= '<p>' . __('Your Pro cloud access is active through a network-wide license.', 'maxi-blocks') . '</p>';
+                } else {
+                    $content .= '<h1>' . __('Pro cloud access active', 'maxi-blocks') . '</h1>';
+                    $content .= '<p>' . __('Your Pro cloud access is active and ready to use.', 'maxi-blocks') . '</p>';
+                }
+            } else {
+                $content .= '<h1>' . __('Activate Pro cloud access', 'maxi-blocks') . '</h1>';
+                $content .= '<p>' . __('Enter your email or purchase code to access premium items', 'maxi-blocks') . '</p>';
+            }
+
+            $content .= '</div>';
+
+            $content .= '<div class="maxi-dashboard_main-content_accordion_wrapper">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion">';
+
+            $content .= $this->generate_item_header(
+                $is_active ? __('Current status', 'maxi-blocks') : __('License activation', 'maxi-blocks'),
+                true,
+            );
+
+            if ($is_active) {
+                // Show active status
+                $content .= '<div class="maxi-license-status-display">';
+                $content .= '<h4>' . __('Status:', 'maxi-blocks') . ' <span id="current-license-status" class="maxi-license-active">' . esc_html($current_license_status) . '</span></h4>';
+                $content .= '<h4>' . __('Licensed to:', 'maxi-blocks') . ' <span id="current-license-user">' . esc_html($current_user_name) . '</span></h4>';
+
+                // Check if this is a MaxiBlocks license and add multisite notice
+                $is_maxiblocks_license = false;
+
+                if ($license_source === 'network') {
+                    // Check network license data
+                    $network_license_data = get_site_option('maxi_pro_network', '');
+                    if (!empty($network_license_data)) {
+                        $license_array = json_decode($network_license_data, true);
+                        if (is_array($license_array)) {
+                            foreach ($license_array as $key => $license) {
+                                if (isset($license['status']) && $license['status'] === 'yes') {
+                                    // Check for email auth type only (network purchase codes don't have multisite limitations)
+                                    $auth_type = isset($license['auth_type']) ? $license['auth_type'] : '';
+
+                                    if ($auth_type === 'email') {
+                                        $is_maxiblocks_license = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } elseif (!empty($current_license_data)) {
+                    // Check site-level license data
+                    $license_array = json_decode($current_license_data, true);
+                    if (is_array($license_array)) {
+                        foreach ($license_array as $key => $license) {
+                            if (isset($license['status']) && $license['status'] === 'yes') {
+                                // Check for email auth type only (MaxiBlocks license keys are treated as purchase codes)
+                                $auth_type = isset($license['auth_type']) ? $license['auth_type'] : '';
+
+                                if ($auth_type === 'email') {
+                                    $is_maxiblocks_license = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Add multisite notice for MaxiBlocks licenses
+                if ($is_maxiblocks_license && is_multisite()) {
+                    $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected. If you require additional licences, email %s', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
+                }
+
+                if ($license_source === 'network') {
+                    $content .= '<h4>' . __('License type:', 'maxi-blocks') . ' <span class="maxi-license-network">Network License</span></h4>';
+                    if (is_multisite() && current_user_can('manage_network_options')) {
+                        $content .= '<p class="maxi-license-network-link"><a href="' . esc_url(network_admin_url('admin.php?page=maxi-blocks-dashboard')) . '">' . __('Manage network license', 'maxi-blocks') . '</a></p>';
+                    }
+                }
+
+                $content .= '</div>';
+
+                // Show deactivate button (only for site-level licenses)
+                if ($license_source !== 'network') {
+                    $content .= '<div class="maxi-license-actions">';
+                    $content .= '<button type="button" id="maxi-license-logout" class="button button-primary">' . __('Deactivate Pro', 'maxi-blocks') . '</button>';
+                    $content .= '</div>';
+                } else {
+                    // Show network license info
+                    $content .= '<div class="maxi-license-network-info">';
+                    $content .= '<p>' . __('This site is using a network-wide license. Purchase codes cannot be activated on individual sites when a network license is active.', 'maxi-blocks') . '</p>';
+                    if (is_multisite() && current_user_can('manage_network_options')) {
+                        $content .= '<p>' . __('To manage the network license, visit the', 'maxi-blocks') . ' <a href="' . esc_url(network_admin_url('admin.php?page=maxi-blocks-dashboard')) . '">' . __('network admin license page', 'maxi-blocks') . '</a>.</p>';
+                    } else {
+                        $content .= '<p>' . __('To manage the network license, contact your network administrator.', 'maxi-blocks') . '</p>';
+                    }
+                    $content .= '</div>';
+                }
+            } else {
+                // Show current status for not activated
+                $content .= '<div class="maxi-license-status-display">';
+                $content .= '<h4>' . __('Current status:', 'maxi-blocks') . ' <span id="current-license-status" class="maxi-license-inactive">' . esc_html($current_license_status) . '</span></h4>';
+                $content .= '</div>';
+
+                // Show authentication input form (only if no network license blocks purchase codes)
+                if ($has_network_license) {
+                    // Network license is active - show limited options
+                    $content .= '<div class="maxi-license-network-override">';
+                    $content .= '<h4>' . __('Network license is active', 'maxi-blocks') . '</h4>';
+                    $content .= '<p>' . __('A network-wide license is already active. Purchase codes cannot be activated on individual sites.', 'maxi-blocks') . '</p>';
+                    if (is_multisite() && current_user_can('manage_network_options')) {
+                        $content .= '<p><a href="' . esc_url(network_admin_url('admin.php?page=maxi-blocks-dashboard')) . '">' . __('Manage network license', 'maxi-blocks') . '</a></p>';
+                    }
+
+                    // Still allow email authentication for user-specific accounts
+                    $content .= '<div class="maxi-license-auth-form maxi-email-only">';
+                    $content .= '<h4>' . __('Individual email authentication', 'maxi-blocks') . '</h4>';
+                    $content .= '<p>' . __('You can still authenticate with your individual Pro email account for user-specific features.', 'maxi-blocks') . '</p>';
+                    $content .= '<div class="maxi-license-input-group">';
+                    $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Pro user email address', 'maxi-blocks') . '" />';
+                    $content .= '<p class="maxi-license-help-text">' . sprintf(__('Enter your Pro user email. Find your account details at %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>') . '</p>';
+                    $content .= '</div>';
+                    $content .= '<div class="maxi-license-actions">';
+                    $content .= '<button type="button" id="maxi-validate-license" class="button button-primary">' . __('Authenticate Email', 'maxi-blocks') . '</button>';
+                    $content .= '</div>';
+                    $content .= '<div id="maxi-license-validation-message" class="maxi-license-message" style="display: none;"></div>';
+                    $content .= '</div>'; // maxi-license-auth-form
+                    $content .= '</div>'; // maxi-license-network-override
+                } else {
+                    // No network license - show full activation form
+                    $content .= '<div class="maxi-license-auth-form">';
+                    $content .= '<div class="maxi-license-input-group">';
+                    $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Pro user email / purchase code / license key', 'maxi-blocks') . '" />';
+                    $content .= '<p class="maxi-license-help-text">' . sprintf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>') . '</p>';
+
+                    // Add multisite notice for MaxiBlocks-specific license types only
+                    if (is_multisite()) {
+                        $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(__('Multisite detected. If using MaxiBlocks email or license key and you require additional licences, email %s', 'maxi-blocks'), '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>') . '</p>';
+                    }
+
+                    $content .= '</div>';
+
+                    $content .= '<div class="maxi-license-actions">';
+                    $content .= '<button type="button" id="maxi-validate-license" class="button button-primary">' . __('Activate Pro', 'maxi-blocks') . '</button>';
+                    $content .= '</div>';
+
+                    $content .= '<div id="maxi-license-validation-message" class="maxi-license-message" style="display: none;"></div>';
+
+                    $content .= '</div>'; // maxi-license-auth-form
+                }
+            }
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion
+            $content .= '</div>'; // maxi-dashboard_main-content
+
+            return $content;
+        }
+
         public function maxi_blocks_menu_order($menu_order)
         {
             global $submenu;
@@ -1811,6 +2540,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'maxi-blocks-style-cards', // Style Cards
                     'maxi-blocks-starter-sites', // Starter Sites
                     'maxi-blocks-settings', // Settings
+                    'maxi-blocks-license', // License
                     'admin.php?page=' .
                     self::$maxi_slug_dashboard .
                     '&tab=maxi_blocks_status', // Status Report (at the end)
@@ -1841,7 +2571,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         /**
          * Helper method to detect localhost
          */
-        private function is_localhost() {
+        private function is_localhost()
+        {
             $server_name = strtolower(isset($_SERVER['SERVER_NAME']) ? sanitize_text_field($_SERVER['SERVER_NAME']) : '');
             $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : '';
 
@@ -1850,6 +2581,55 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $remote_addr === '::1' ||
                 strpos($server_name, '.local') !== false ||
                 strpos($server_name, '.test') !== false;
+        }
+
+        /**
+         * Helper method to check if Pro is active (network or site level)
+         *
+         * @return bool True if Pro is active for this browser, false otherwise
+         */
+        private function is_pro_active()
+        {
+            // Check network license first (for multisite)
+            if ($this->has_network_license()) {
+                return true;
+            }
+
+            // Check site level license
+            $current_license_data = get_option('maxi_pro', '');
+
+            if (empty($current_license_data)) {
+                return false;
+            }
+
+            $license_array = json_decode($current_license_data, true);
+            if (!is_array($license_array)) {
+                return false;
+            }
+
+            // Check for purchase code auth (domain-wide)
+            foreach ($license_array as $key => $license) {
+                if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                    return true;
+                }
+            }
+
+            // Check for email auth (browser-specific)
+            if (isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
+                $cookie_data = json_decode($_COOKIE['maxi_blocks_key'], true);
+                if ($cookie_data && is_array($cookie_data)) {
+                    $email = array_keys($cookie_data)[0];
+                    $browser_key = $cookie_data[$email];
+
+                    if (isset($license_array[$email]) && isset($license_array[$email]['status']) && $license_array[$email]['status'] === 'yes') {
+                        // Check if this browser's key is in the list
+                        $stored_keys = explode(',', $license_array[$email]['key']);
+                        return in_array($browser_key, array_map('trim', $stored_keys));
+                    }
+                }
+            }
+
+            return false;
         }
 
         public function handle_get_frontend_assets()
@@ -1920,12 +2700,1416 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
         }
 
-        public function add_hidden_api_fields() {
+        public function add_hidden_api_fields()
+        {
             $google_api_key = get_option('google_api_key_option', '');
             $openai_api_key = get_option('openai_api_key_option', '');
 
             echo '<input type="hidden" name="google_api_key_option" value="' . esc_attr($google_api_key) . '">';
             echo '<input type="hidden" name="openai_api_key_option" value="' . esc_attr($openai_api_key) . '">';
+        }
+
+        /**
+         * Helper functions for authentication
+         */
+
+        /**
+         * Detects if input is an email, MaxiBlocks license key, or purchase code
+         * @param string $input - The input string to check
+         * @returns string - 'email', 'maxiblocks_key', or 'code'
+         */
+        private function detect_input_type($input)
+        {
+            if (!$input || !is_string($input)) {
+                return 'email';
+            }
+
+            $trimmed_input = trim($input);
+
+            // If it contains @ or . (dot), it's likely an email
+            $has_at_symbol = strpos($trimmed_input, '@') !== false;
+            $has_dot = strpos($trimmed_input, '.') !== false;
+
+            if ($has_at_symbol || $has_dot) {
+                return 'email';
+            }
+
+            // Check for MaxiBlocks license keys (start with 'maxiblocks_' or 'maxiblocks-')
+            if (strpos($trimmed_input, 'maxiblocks_') === 0 || strpos($trimmed_input, 'maxiblocks-') === 0) {
+                return 'maxiblocks_key';
+            }
+
+            // Purchase codes are typically alphanumeric strings without @ or . symbols
+            // and are usually longer than 6 characters
+            $is_alphanumeric = preg_match('/^[a-zA-Z0-9\-_]+$/', $trimmed_input);
+            $is_long_enough = strlen($trimmed_input) >= 6;
+
+            // If it doesn't have @ or . and looks like a code, treat as purchase code
+            if ($is_alphanumeric && $is_long_enough) {
+                return 'code';
+            }
+
+            // Default to email for other cases
+            return 'email';
+        }
+
+        /**
+         * Validates email format
+         * @param string $email - Email to validate
+         * @returns bool - True if valid email
+         */
+        private function is_valid_email($email)
+        {
+            return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+        }
+
+        /**
+         * Verifies purchase code with middleware
+         * @param string $purchase_code - The purchase code to verify
+         * @param string $domain       - The domain to verify against
+         * @returns array - Verification result
+         */
+        private function verify_purchase_code($purchase_code, $domain)
+        {
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                return ['success' => false, 'valid' => false, 'error' => 'Configuration error'];
+            }
+
+            $response = wp_remote_post($middleware_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode([
+                    'purchase_code' => $purchase_code,
+                    'domain' => $domain,
+                    'plugin_version' => MAXI_PLUGIN_VERSION,
+                    'multisite' => is_multisite(),
+                ]),
+            ]);
+
+            if (is_wp_error($response)) {
+                return ['success' => false, 'valid' => false, 'error' => $response->get_error_message()];
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $result = json_decode($body, true);
+
+            return $result ?: ['success' => false, 'valid' => false, 'error' => 'Invalid response'];
+        }
+
+        /**
+         * Deactivates purchase code with middleware
+         * @param string $purchase_code - The purchase code to deactivate
+         * @param string $domain       - The domain to deactivate
+         * @param string $reason       - Reason for deactivation
+         * @returns array - Deactivation result
+         */
+        private function deactivate_purchase_code($purchase_code, $domain, $reason = 'Plugin deactivated by user')
+        {
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                return ['success' => false, 'error' => 'Configuration error'];
+            }
+
+            // Replace 'verify' with 'deactivate' in the URL
+            $deactivate_url = str_replace('/verify', '/deactivate', $middleware_url);
+
+            $request_body = [
+                'domain' => $domain,
+                'reason' => $reason,
+                'plugin_version' => MAXI_PLUGIN_VERSION,
+            ];
+
+            // Only include purchase code if it's provided
+            if (!empty($purchase_code)) {
+                $request_body['purchase_code'] = $purchase_code;
+            }
+
+            // Add multisite information
+            $request_body['multisite'] = is_multisite();
+
+            $response = wp_remote_post($deactivate_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode($request_body),
+            ]);
+
+            if (is_wp_error($response)) {
+                return ['success' => false, 'error' => $response->get_error_message()];
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $result = json_decode($body, true);
+
+            return $result ?: ['success' => false, 'error' => 'Invalid response'];
+        }
+
+        /**
+         * Handles domain migration for purchase codes
+         * @param string $purchase_code - The purchase code
+         * @param string $old_domain    - The old domain
+         * @param string $new_domain    - The new domain
+         * @returns array - Migration result
+         */
+        private function migrate_purchase_code_domain($purchase_code, $old_domain, $new_domain)
+        {
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                return ['success' => false, 'valid' => false, 'error' => 'Configuration error'];
+            }
+
+            $response = wp_remote_post($middleware_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode([
+                    'purchase_code' => $purchase_code,
+                    'old_domain' => $old_domain,
+                    'new_domain' => $new_domain,
+                    'plugin_version' => MAXI_PLUGIN_VERSION,
+                    'multisite' => is_multisite(),
+                ]),
+            ]);
+
+            if (is_wp_error($response)) {
+                return ['success' => false, 'valid' => false, 'error' => $response->get_error_message()];
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $result = json_decode($body, true);
+
+            return $result ?: ['success' => false, 'valid' => false, 'error' => 'Invalid response'];
+        }
+
+        /**
+         * Checks and handles domain changes for purchase codes (both network and site level)
+         * @returns void
+         */
+        public function check_and_handle_domain_migration()
+        {
+            // Check network license migration first
+            if (is_multisite()) {
+                $this->check_network_domain_migration();
+            }
+
+            // Then check site-level license migration
+            $this->check_site_domain_migration();
+        }
+
+        /**
+         * Check and handle network license domain migration
+         * @returns void
+         */
+        private function check_network_domain_migration()
+        {
+            $current_domain = $this->get_main_site_domain();
+            $network_license_data = get_site_option('maxi_pro_network', '');
+
+            if (empty($network_license_data)) {
+                return;
+            }
+
+            $license_array = json_decode($network_license_data, true);
+            if (!is_array($license_array)) {
+                return;
+            }
+
+            foreach ($license_array as $key => $license) {
+                // Only check network purchase code entries
+                if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                    $stored_domain = isset($license['domain']) ? $license['domain'] : '';
+                    $purchase_code = isset($license['purchase_code']) ? $license['purchase_code'] : '';
+
+                    // If domain has changed and we have a purchase code
+                    if (!empty($stored_domain) && !empty($purchase_code) && $stored_domain !== $current_domain) {
+                        // Attempt domain migration
+                        $migration_result = $this->migrate_purchase_code_domain($purchase_code, $stored_domain, $current_domain);
+
+                        if ($migration_result && isset($migration_result['success']) && $migration_result['success']) {
+                            // Update network license data with new domain
+                            $license_array[$key]['domain'] = $current_domain;
+                            $license_array[$key]['migrated_at'] = current_time('c');
+                            $license_array[$key]['migrated_from'] = $stored_domain;
+
+                            // If migration info is provided, store it
+                            if (isset($migration_result['domain_migration'])) {
+                                $license_array[$key]['migration_status'] = $migration_result['domain_migration'];
+                            }
+
+                            update_site_option('maxi_pro_network', wp_json_encode($license_array));
+                        } else {
+                            error_log(__('MaxiBlocks: Network domain migration failed for purchase code: ', 'maxi-blocks') . $purchase_code . ' - ' . wp_json_encode($migration_result));
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * Check and handle site-level license domain migration
+         * @returns void
+         */
+        private function check_site_domain_migration()
+        {
+            $current_domain = parse_url(home_url(), PHP_URL_HOST);
+            $license_data = get_option('maxi_pro', '');
+
+            if (empty($license_data)) {
+                return;
+            }
+
+            $license_array = json_decode($license_data, true);
+            if (!is_array($license_array)) {
+                return;
+            }
+
+            foreach ($license_array as $key => $license) {
+                // Only check purchase code entries
+                if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                    $stored_domain = isset($license['domain']) ? $license['domain'] : '';
+                    $purchase_code = isset($license['purchase_code']) ? $license['purchase_code'] : '';
+
+                    // If domain has changed and we have a purchase code
+                    if (!empty($stored_domain) && !empty($purchase_code) && $stored_domain !== $current_domain) {
+                        // Attempt domain migration
+                        $migration_result = $this->migrate_purchase_code_domain($purchase_code, $stored_domain, $current_domain);
+
+                        if ($migration_result && isset($migration_result['success']) && $migration_result['success']) {
+                            // Update license data with new domain
+                            $license_array[$key]['domain'] = $current_domain;
+                            $license_array[$key]['migrated_at'] = current_time('c');
+                            $license_array[$key]['migrated_from'] = $stored_domain;
+
+                            // If migration info is provided, store it
+                            if (isset($migration_result['domain_migration'])) {
+                                $license_array[$key]['migration_status'] = $migration_result['domain_migration'];
+                            }
+
+                            update_option('maxi_pro', wp_json_encode($license_array));
+                        } else {
+                            error_log(__('MaxiBlocks: Site domain migration failed for purchase code: ', 'maxi-blocks') . $purchase_code . ' - ' . wp_json_encode($migration_result));
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * Handle AJAX license validation
+         */
+        public function handle_validate_license()
+        {
+            // Verify nonce
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
+                wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
+                return;
+            }
+
+            // Check user permissions
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error(['message' => __('Insufficient permissions', 'maxi-blocks')]);
+                return;
+            }
+
+            $input_value = isset($_POST['license_input']) ? sanitize_text_field($_POST['license_input']) : '';
+            $action = isset($_POST['license_action']) ? sanitize_text_field($_POST['license_action']) : '';
+
+            if ($action === 'logout') {
+                // Handle logout
+                $this->handle_license_logout();
+                return;
+            }
+
+            if (empty($input_value)) {
+                wp_send_json_error(['message' => __('Email or purchase code is required', 'maxi-blocks')]);
+                return;
+            }
+
+            // Detect input type (email, MaxiBlocks key, or purchase code)
+            $input_type = $this->detect_input_type($input_value);
+
+            if ($input_type === 'email') {
+                // Handle email authentication
+                $this->handle_email_authentication($input_value);
+            } elseif ($input_type === 'maxiblocks_key') {
+                // Handle MaxiBlocks license key authentication (same as purchase code)
+                $this->handle_purchase_code_authentication($input_value);
+            } else {
+                // Handle purchase code authentication
+                $this->handle_purchase_code_authentication($input_value);
+            }
+        }
+
+        /**
+         * Handle email authentication
+         * @param string $email - Email address
+         */
+        private function handle_email_authentication($email)
+        {
+
+            if (!$this->is_valid_email($email)) {
+                wp_send_json_error(['message' => __('The email is not valid', 'maxi-blocks')]);
+                return;
+            }
+
+            // Generate a unique authentication key for this email
+            $auth_key = $this->generate_auth_key(20);
+
+            // Set a cookie that will be used for authentication
+            // Use a unique cookie for each browser/session instead of merging
+            $cookie_name = 'maxi_blocks_key';
+            $cookie_data = json_encode([$email => $auth_key]);
+
+            // Set cookie for 30 days
+            $admin_path = $this->get_admin_path();
+            setrawcookie($cookie_name, $cookie_data, time() + (30 * 24 * 60 * 60), $admin_path);
+
+            // Store the authentication attempt in transients for polling (more reliable than sessions)
+            $transient_key = 'maxi_auth_' . md5($email . $auth_key);
+            $transient_data = [
+                'email' => $email,
+                'auth_key' => $auth_key,
+                'time' => time(),
+            ];
+
+            set_transient($transient_key, $transient_data, 600); // 10 minutes
+
+            // Also store a reverse lookup to find the transient by email
+            $lookup_key = 'maxi_auth_lookup_' . md5($email);
+            set_transient($lookup_key, $transient_key, 600);
+
+            // Update the registry of active auth attempts for structured access
+            $this->add_to_auth_registry($transient_key);
+
+            $login_url = 'https://my.maxiblocks.com/login?plugin&email=' . urlencode($email);
+
+            $response_data = [
+                'message' => __('Email authentication initiated', 'maxi-blocks'),
+                'auth_type' => 'email',
+                'email' => $email,
+                'login_url' => $login_url
+            ];
+
+            wp_send_json_success($response_data);
+        }
+
+        /**
+         * Generate authentication key
+         * @param int $length - Length of key to generate
+         * @returns string - Generated key
+         */
+        private function generate_auth_key($length = 20)
+        {
+            $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            $key = '';
+            for ($i = 0; $i < $length; $i++) {
+                $key .= $characters[wp_rand(0, strlen($characters) - 1)];
+            }
+            return $key;
+        }
+
+        /**
+         * Get admin path for cookie (matching JavaScript implementation)
+         * @returns string - Admin path
+         */
+        private function get_admin_path()
+        {
+            // Use WordPress's proper admin_url() function and extract path
+            $admin_url = admin_url();
+            $parsed = parse_url($admin_url);
+            return rtrim($parsed['path'], '/'); // Remove trailing slash to match JS function
+        }
+
+        /**
+         * Handle purchase code authentication
+         * @param string $purchase_code - Purchase code
+         */
+        private function handle_purchase_code_authentication($purchase_code)
+        {
+            // Check if network license is active - prevent site-level purchase code activation
+            if ($this->has_network_license()) {
+                wp_send_json_error(['message' => __('A network license is already active. Purchase codes cannot be activated on individual sites.', 'maxi-blocks')]);
+                return;
+            }
+
+            $domain = parse_url(home_url(), PHP_URL_HOST);
+
+            // Verify purchase code with middleware
+            $result = $this->verify_purchase_code($purchase_code, $domain);
+
+            if (!$result['success'] || !$result['valid']) {
+                if (isset($result['error'])) {
+                    $error_message = $this->get_license_error_message($result['error']);
+                    wp_send_json_error(['message' => $error_message]);
+                } else {
+                    wp_send_json_error(['message' => __('Invalid purchase code / key. Please check your code and try again.', 'maxi-blocks')]);
+                }
+                return;
+            }
+
+            // Save license data for purchase code
+            // Purchase codes have priority and should clear all email auths
+            $marketplace = isset($result['marketplace']) ? $result['marketplace'] : 'unknown';
+            $display_name = $marketplace !== 'unknown'
+                ? ucfirst($marketplace) : 'Marketplace';
+
+            $license_data = [
+                'code_' . $purchase_code => [
+                    'status' => 'yes',
+                    'name' => $display_name,
+                    'purchase_code' => $purchase_code,
+                    'domain' => $domain,
+                    'marketplace' => $marketplace,
+                    'user_id' => isset($result['delivery_data']['user_id']) ? $result['delivery_data']['user_id'] : '',
+                    'product_id' => isset($result['delivery_data']['product_id']) ? $result['delivery_data']['product_id'] : '',
+                    'product_type' => isset($result['delivery_data']['product_type']) ? $result['delivery_data']['product_type'] : 'plugin',
+                    'order_id' => isset($result['delivery_data']['order_id']) ? $result['delivery_data']['order_id'] : '',
+                    'activated_at' => current_time('c'),
+                    'auth_type' => 'purchase_code',
+                ],
+            ];
+
+            // Purchase codes override all email auths - completely replace the option
+            update_option('maxi_pro', wp_json_encode($license_data));
+
+            wp_send_json_success([
+                'message' => __('License activated successfully', 'maxi-blocks'),
+                'status' => 'Active ✓',
+                'user_name' => $display_name,
+                'auth_type' => 'purchase_code'
+            ]);
+        }
+
+        /**
+         * Get appropriate error message for license validation errors
+         * @param string $error_code - Error code from middleware
+         * @return string - User-friendly error message
+         */
+        private function get_license_error_message($error_code)
+        {
+            switch ($error_code) {
+                case 'invalid_purchase_code':
+                case 'purchase_code_not_found':
+                    return __('Invalid purchase code / key. Please check your code and try again.', 'maxi-blocks');
+
+                case 'domain_not_allowed':
+                case 'domain_mismatch':
+                case 'max_activations_reached':
+                case 'activation_limit_exceeded':
+                case 'already_activated':
+                    return __('This code / key has already been activated on another domain. Contact support if you need help.', 'maxi-blocks');
+
+                case 'purchase_code_expired':
+                case 'license_expired':
+                case 'subscription_expired':
+                    return __('This purchase code / key has expired. Please check your subscription status or contact support.', 'maxi-blocks');
+
+                case 'SEAT_LIMIT_EXCEEDED':
+                    return __('Seats limit reached. Please log out from another device or upgrade your subscription.', 'maxi-blocks');
+
+                default:
+                    return __('Invalid purchase code / key. Please check your code and try again.', 'maxi-blocks');
+            }
+        }
+
+        /**
+         * Handle checking authentication status (for email auth polling)
+         */
+        public function handle_check_auth_status()
+        {
+            // Verify nonce
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
+                error_log(__("MaxiBlocks Email Auth STATUS: Nonce verification failed", 'maxi-blocks'));
+                wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
+                return;
+            }
+
+            // First check if we have a pending email authentication
+            // Check both sessions (legacy) and transients (new)
+            $found_auth_data = false;
+            $email = null;
+            $auth_key = null;
+            $auth_time = null;
+
+            // Check sessions first (for backward compatibility)
+            if (!session_id()) {
+                session_start();
+            }
+
+            if (isset($_SESSION['maxi_auth_email']) && isset($_SESSION['maxi_auth_key'])) {
+                $email = $_SESSION['maxi_auth_email'];
+                $auth_key = $_SESSION['maxi_auth_key'];
+                $auth_time = $_SESSION['maxi_auth_time'] ?? time();
+                $found_auth_data = true;
+            }
+
+            // If no session data, check transients using WordPress API
+            if (!$found_auth_data) {
+                $auth_data = $this->get_pending_auth_data();
+
+                if ($auth_data) {
+                    $email = $auth_data['email'];
+                    $auth_key = $auth_data['auth_key'];
+                    $auth_time = $auth_data['time'] ?? time();
+                    $found_auth_data = true;
+                }
+            }
+
+            if ($found_auth_data && $email && $auth_key) {                // Only try authentication if it's been less than 10 minutes
+                if ((time() - $auth_time) < 600) {
+                    $auth_result = $this->check_email_authentication($email, $auth_key);
+
+                    if ($auth_result && isset($auth_result['user_name'])) {
+                        // Success case - user is fully authenticated
+                        // Clear session data on successful auth
+                        if (isset($_SESSION['maxi_auth_email'])) {
+                            unset($_SESSION['maxi_auth_email']);
+                            unset($_SESSION['maxi_auth_key']);
+                            unset($_SESSION['maxi_auth_time']);
+                        }
+
+                        // Clear transient data on successful auth
+                        $transient_key = 'maxi_auth_' . md5($email . $auth_key);
+                        $this->cleanup_expired_auth_data($transient_key, $email);
+
+                        $success_response = [
+                            'is_authenticated' => true,
+                            'status' => 'Active ✓',
+                            'user_name' => $auth_result['user_name'],
+                        ];
+                        wp_send_json_success($success_response);
+                        return;
+                    } elseif ($auth_result && isset($auth_result['subscription_valid']) && $auth_result['subscription_valid'] && !$auth_result['appwrite_login_verified']) {
+                        // Intermediate state: subscription valid but user hasn't logged into Appwrite yet
+                        // Don't clear transient data - keep polling
+                        $intermediate_response = [
+                            'is_authenticated' => false,
+                            'subscription_valid' => true,
+                            'appwrite_login_verified' => false,
+                            'status' => 'Waiting for login',
+                            'user_name' => '',
+                            'message' => $auth_result['message'] ?? 'Please log into your MaxiBlocks account to complete activation'
+                        ];
+                        wp_send_json_success($intermediate_response);
+                        return;
+                    } elseif ($auth_result && isset($auth_result['error_code'])) {
+                        // Specific error case (like seat limit)
+                        $error_message = $this->get_license_error_message($auth_result['error_code']);
+
+                        // Clear transient data on error
+                        $transient_key = 'maxi_auth_' . md5($email . $auth_key);
+                        $this->cleanup_expired_auth_data($transient_key, $email);
+
+                        wp_send_json_success([
+                            'is_authenticated' => false,
+                            'status' => 'Error',
+                            'user_name' => '',
+                            'error' => true,
+                            'error_message' => $error_message,
+                            'error_code' => $auth_result['error_code']
+                        ]);
+                        return;
+                    }
+                } else {
+                    error_log(__("MaxiBlocks Email Auth STATUS: Auth timeout - authentication window has expired (>10 minutes)", 'maxi-blocks'));
+                }
+            }
+
+            // Check current license status from database for this specific browser
+            // First check for network license, then site-level license
+            $network_license_info = $this->get_network_license_info();
+            $has_network_license = $network_license_info !== false;
+
+            $current_license_data = get_option('maxi_pro', '');
+            $is_authenticated = false;
+            $status = 'Not activated';
+            $user_name = '';
+
+            // If network license is active, user is authenticated
+            if ($has_network_license) {
+                $is_authenticated = true;
+                $status = 'Active ✓';
+                $user_name = $network_license_info['user_name'] === 'Maxiblocks' ? 'MaxiBlocks' : $network_license_info['user_name'];
+
+                wp_send_json_success([
+                    'is_authenticated' => $is_authenticated,
+                    'status' => $status,
+                    'user_name' => $user_name,
+                ]);
+                return;
+            }
+
+            if (isset($_COOKIE['maxi_blocks_key'])) {
+                $raw_cookie = $_COOKIE['maxi_blocks_key'];
+
+                // Fix escaped quotes in cookie value
+                $cookie_fixed = str_replace('\\"', '"', $raw_cookie);
+
+                // Try to decode the cookie
+                $cookie_data = json_decode($cookie_fixed, true);
+            }
+
+            if (!empty($current_license_data)) {
+                $license_array = json_decode($current_license_data, true);
+
+                if (is_array($license_array)) {
+                    // Check for purchase code auth (domain-wide)
+                    foreach ($license_array as $key => $license) {
+                        if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                            $is_authenticated = true;
+                            $status = 'Active ✓';
+                            $user_name = isset($license['name']) ? $license['name'] : 'Pro User';
+                            break;
+                        }
+                    }
+
+                    // If no purchase code, check for email auth (browser-specific)
+                    if (!$is_authenticated && isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
+                        // Fix escaped quotes in cookie value
+                        $cookie_fixed = str_replace('\\"', '"', $_COOKIE['maxi_blocks_key']);
+                        $cookie_data = json_decode($cookie_fixed, true);
+                        if ($cookie_data && is_array($cookie_data)) {
+                            $email = array_keys($cookie_data)[0];
+                            $browser_key = $cookie_data[$email];
+
+                            if (isset($license_array[$email])) {
+                                $email_data = $license_array[$email];
+
+                                if (isset($email_data['status']) && $email_data['status'] === 'yes') {
+                                    // Check if this browser's key is in the list
+                                    $stored_keys = explode(',', $email_data['key']);
+                                    $trimmed_keys = array_map('trim', $stored_keys);
+
+                                    if (in_array($browser_key, $trimmed_keys)) {
+                                        $is_authenticated = true;
+                                        $status = 'Active ✓';
+                                        $user_name = isset($email_data['name']) ? $email_data['name'] : $email;
+                                    }
+                                }
+                            } else {
+                                // Try to authenticate via API if no local license data exists
+                                $auth_result = $this->check_email_authentication($email, $browser_key);
+                                if ($auth_result && isset($auth_result['user_name'])) {
+                                    // Success - auth_result contains user_name
+                                    $is_authenticated = true;
+                                    $status = 'Active ✓';
+                                    $user_name = $auth_result['user_name'];
+                                } elseif ($auth_result && isset($auth_result['error_code'])) {
+                                    // Specific error (like seat limit) - don't show generic "not activated"
+                                    // Don't set status here, let it fall through to the error handling below
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Check if we have a specific error to report (like seat limit)
+            if (!$is_authenticated && isset($auth_result) && isset($auth_result['error_code'])) {
+                $error_message = $this->get_license_error_message($auth_result['error_code']);
+                wp_send_json_success([
+                    'is_authenticated' => false,
+                    'status' => 'Error',
+                    'user_name' => '',
+                    'error' => true,
+                    'error_message' => $error_message,
+                    'error_code' => $auth_result['error_code']
+                ]);
+            } else {
+                wp_send_json_success([
+                    'is_authenticated' => $is_authenticated,
+                    'status' => $status,
+                    'user_name' => $user_name,
+                ]);
+            }
+        }
+
+        /**
+         * Get pending auth data using WordPress transient API with structured approach
+         *
+         * This method uses a more WordPress-friendly approach by:
+         * 1. First trying to get auth data by email if provided in request
+         * 2. Falling back to checking a registry of pending auth attempts
+         * 3. Avoiding direct database queries in favor of WordPress transient API
+         *
+         * @param string $email Optional email to look up specific auth data
+         * @return array|false Auth data array or false if none found
+         */
+        private function get_pending_auth_data($email = null)
+        {
+            // Method 1: If we have an email, try the lookup mechanism
+            if ($email) {
+                $lookup_key = 'maxi_auth_lookup_' . md5($email);
+                $transient_key = get_transient($lookup_key);
+
+                if ($transient_key) {
+                    $auth_data = get_transient($transient_key);
+                    if ($auth_data && is_array($auth_data) && isset($auth_data['email'], $auth_data['auth_key'])) {
+                        return $auth_data;
+                    }
+                }
+            }
+
+            // Method 2: Check for any pending auth using a registry approach
+            // First, try to get the registry of active auth attempts
+            $auth_registry = get_transient('maxi_auth_registry');
+
+            if (is_array($auth_registry) && !empty($auth_registry)) {
+                foreach ($auth_registry as $transient_key) {
+                    $auth_data = get_transient($transient_key);
+                    if ($auth_data && is_array($auth_data) && isset($auth_data['email'], $auth_data['auth_key'])) {
+                        // Verify this auth attempt is still within the time limit
+                        $auth_time = $auth_data['time'] ?? time();
+                        if ((time() - $auth_time) < 600) { // 10 minutes
+                            return $auth_data;
+                        } else {
+                            // Clean up expired auth data
+                            $this->cleanup_expired_auth_data($transient_key, $auth_data['email']);
+                        }
+                    }
+                }
+            }
+
+            // Method 3: Fallback - try a few common email patterns if we have POST data
+            if (!$email && isset($_POST['email'])) {
+                return $this->get_pending_auth_data(sanitize_email($_POST['email']));
+            }
+
+            return false;
+        }
+
+        /**
+         * Clean up expired auth data and update registry
+         *
+         * @param string $transient_key The expired transient key
+         * @param string $email The email associated with the auth data
+         */
+        private function cleanup_expired_auth_data($transient_key, $email)
+        {
+            // Remove the main auth transient
+            delete_transient($transient_key);
+
+            // Remove the lookup transient
+            if ($email) {
+                $lookup_key = 'maxi_auth_lookup_' . md5($email);
+                delete_transient($lookup_key);
+            }
+
+            // Update the registry to remove this transient
+            $auth_registry = get_transient('maxi_auth_registry');
+            if (is_array($auth_registry)) {
+                $auth_registry = array_filter($auth_registry, function ($key) use ($transient_key) {
+                    return $key !== $transient_key;
+                });
+                set_transient('maxi_auth_registry', $auth_registry, 600);
+            }
+        }
+
+        /**
+         * Add a transient key to the auth registry for structured access
+         *
+         * @param string $transient_key The transient key to add to the registry
+         */
+        private function add_to_auth_registry($transient_key)
+        {
+            $auth_registry = get_transient('maxi_auth_registry');
+
+            // Initialize registry if it doesn't exist
+            if (!is_array($auth_registry)) {
+                $auth_registry = [];
+            }
+
+            // Add the new transient key to the registry (avoid duplicates)
+            if (!in_array($transient_key, $auth_registry)) {
+                $auth_registry[] = $transient_key;
+            }
+
+            // Store the updated registry
+            set_transient('maxi_auth_registry', $auth_registry, 600); // 10 minutes
+        }
+
+        /**
+         * Check email authentication with MaxiBlocks API
+         * @param string $email - Email address
+         * @param string $auth_key - Authentication key
+         * @returns array|false - User data if authenticated, false otherwise
+         */
+        private function check_email_authentication($email, $auth_key)
+        {
+            // Use middleware to verify email subscription after Appwrite login
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                error_log(__('MaxiBlocks: Missing middleware configuration for email authentication', 'maxi-blocks'));
+                return false;
+            }
+
+            // Replace 'verify' with 'email/verify' in the URL for email authentication
+            $auth_url = str_replace('/verify', '/email/verify', $middleware_url);
+
+            $actual_payload = [
+                'email' => $email,
+                'cookie' => $auth_key,
+                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'plugin_version' => MAXI_PLUGIN_VERSION,
+                'multisite' => is_multisite(),
+                'check_appwrite_login' => false,
+            ];
+
+            $initial_response = wp_remote_post($auth_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode($actual_payload),
+            ]);
+
+            if (is_wp_error($initial_response)) {
+                return false;
+            }
+
+            $initial_body = wp_remote_retrieve_body($initial_response);
+            $initial_data = json_decode($initial_body, true);
+
+            // Check if subscription is valid first
+            if (!$initial_data || !isset($initial_data['success']) || !$initial_data['success'] || !$initial_data['valid']) {
+                // Handle subscription errors (seat limit, invalid subscription, etc.)
+                if (isset($initial_data['error_code']) && $initial_data['error_code'] === 'SEAT_LIMIT_EXCEEDED') {
+                    return [
+                        'success' => false,
+                        'error_code' => $initial_data['error_code'],
+                        'error_message' => $initial_data['message'] ?? 'Seat limit exceeded'
+                    ];
+                }
+                return false; // Invalid subscription
+            }
+
+            // Subscription is valid, now check if user has logged into Appwrite
+
+            $actual_appwrite_payload = [
+                'email' => $email,
+                'cookie' => $auth_key,
+                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'plugin_version' => MAXI_PLUGIN_VERSION,
+                'multisite' => is_multisite(),
+                'check_appwrite_login' => true,
+            ];
+
+            $appwrite_response = wp_remote_post($auth_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode($actual_appwrite_payload),
+            ]);
+
+            if (is_wp_error($appwrite_response)) {
+                error_log(__("MaxiBlocks Email Auth: ERROR - " . $appwrite_response->get_error_message(), 'maxi-blocks'));
+                return false;
+            }
+
+            $appwrite_body = wp_remote_retrieve_body($appwrite_response);
+            $appwrite_data = json_decode($appwrite_body, true);
+
+            // Handle the new response format with appwrite_login_verified
+            if ($appwrite_data && isset($appwrite_data['success']) && $appwrite_data['success']) {
+
+                // Check if both subscription is valid AND user is logged into Appwrite
+                if (isset($appwrite_data['valid']) && $appwrite_data['valid'] &&
+                    isset($appwrite_data['appwrite_login_verified']) && $appwrite_data['appwrite_login_verified']) {
+
+                    // Get user name from Appwrite user data if available
+                    $name = $email; // default fallback
+                    if (isset($appwrite_data['appwrite_user']) && isset($appwrite_data['appwrite_user']['name'])) {
+                        $name = $appwrite_data['appwrite_user']['name'];
+                    } elseif (isset($appwrite_data['subscription_data']) && isset($appwrite_data['subscription_data']['name'])) {
+                        $name = $appwrite_data['subscription_data']['name'];
+                    }
+
+                    // Save active status - user is fully authenticated
+                    $this->save_email_license_data($email, $name, 'yes', $auth_key);
+                    return ['user_name' => $name];
+
+                } elseif (isset($appwrite_data['valid']) && $appwrite_data['valid'] &&
+                         (!isset($appwrite_data['appwrite_login_verified']) || !$appwrite_data['appwrite_login_verified'])) {
+
+                    // Subscription is valid but user hasn't logged into Appwrite yet
+                    return [
+                        'success' => false,
+                        'subscription_valid' => true,
+                        'appwrite_login_verified' => false,
+                        'message' => 'Please log into your MaxiBlocks account to complete activation'
+                    ];
+                }
+
+                // Handle other error cases
+                if (!$appwrite_data['valid'] && isset($appwrite_data['error_code']) && $appwrite_data['error_code'] === 'SEAT_LIMIT_EXCEEDED') {
+                    return [
+                        'success' => false,
+                        'error_code' => $appwrite_data['error_code'],
+                        'error_message' => $appwrite_data['message'] ?? 'Seat limit exceeded'
+                    ];
+                }
+
+            } else {
+                error_log(__("MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response", 'maxi-blocks'));
+            }
+
+            // Legacy response format support (fallback)
+            if ($appwrite_data && isset($appwrite_data['status']) && $appwrite_data['status'] === 'ok') {
+                $name = $appwrite_data['name'] ?? $email;
+                $this->save_email_license_data($email, $name, 'yes', $auth_key);
+                return ['user_name' => $name];
+            }
+
+            return false;
+        }
+
+        /**
+         * Save email license data
+         * @param string $email - Email address
+         * @param string $name - User name
+         * @param string $status - Status (yes, expired, no)
+         * @param string $auth_key - Authentication key
+         */
+        private function save_email_license_data($email, $name, $status, $auth_key)
+        {
+            // Get existing license data
+            $existing_data = get_option('maxi_pro', '');
+            $license_data = [];
+
+            if (!empty($existing_data)) {
+                $existing_array = json_decode($existing_data, true);
+                if (is_array($existing_array)) {
+                    $license_data = $existing_array;
+                }
+            }
+
+            // Check if this email already has auth data
+            if (isset($license_data[$email]) && isset($license_data[$email]['key'])) {
+                // Merge keys if they exist (for multiple browsers/devices)
+                $existing_keys = explode(',', $license_data[$email]['key']);
+                if (!in_array($auth_key, $existing_keys)) {
+                    $existing_keys[] = $auth_key;
+                }
+                $license_data[$email] = [
+                    'status' => $status,
+                    'name' => $name,
+                    'key' => implode(',', array_unique($existing_keys)),
+                    'auth_type' => 'email',
+                ];
+            } else {
+                // New email entry
+                $license_data[$email] = [
+                    'status' => $status,
+                    'name' => $name,
+                    'key' => $auth_key,
+                    'auth_type' => 'email',
+                ];
+            }
+
+            update_option('maxi_pro', wp_json_encode($license_data));
+        }
+
+        /**
+         * Handle license logout
+         */
+        private function handle_license_logout()
+        {
+            // Check if user was logged in via email (has maxi_blocks_key cookie)
+            $has_email_auth = isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key']);
+
+            $admin_path = $this->get_admin_path();
+
+            if ($has_email_auth) {
+                // Parse the cookie to get email and key
+                // Fix escaped quotes in cookie value
+                $cookie_fixed = str_replace('\\"', '"', $_COOKIE['maxi_blocks_key']);
+                $cookie_data = json_decode($cookie_fixed, true);
+                if ($cookie_data && is_array($cookie_data)) {
+                    $email = array_keys($cookie_data)[0];
+                    $auth_key = $cookie_data[$email];
+
+                    // First, call middleware to logout the session BEFORE removing local data
+                    $this->logout_email_session($email, $auth_key);
+                    // Remove only this browser's key from the email auth
+                    $this->remove_email_auth_key($email, $auth_key);
+                }
+
+                // Clear the email authentication cookie
+                setrawcookie('maxi_blocks_key', '', time() - 3600, $admin_path);
+
+                wp_send_json_success([
+                    'message' => __('Signed out successfully', 'maxi-blocks'),
+                    'status' => 'Not activated',
+                    'user_name' => '',
+                    'auth_type' => 'email',
+                ]);
+            } else {
+                // Check if it's a purchase code auth - in that case, delete everything
+                $current_license_data = get_option('maxi_pro', '');
+                $is_purchase_code_active = false;
+                $purchase_code = '';
+                $domain = parse_url(home_url(), PHP_URL_HOST);
+
+                if (!empty($current_license_data)) {
+                    $license_array = json_decode($current_license_data, true);
+                    if (is_array($license_array)) {
+                        foreach ($license_array as $key => $license) {
+                            if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                                $is_purchase_code_active = true;
+                                // Extract the purchase code (remove 'code_' prefix)
+                                $purchase_code = substr($key, 5);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if ($is_purchase_code_active && !empty($purchase_code)) {
+                    // Call deactivation endpoint before deleting local data
+                    $deactivation_result = $this->deactivate_purchase_code($purchase_code, $domain, 'Plugin deactivated by user');
+
+                    // Log deactivation result for debugging (optional)
+                    if (!$deactivation_result['success']) {
+                        error_log(__('MaxiBlocks: Purchase code deactivation failed: ', 'maxi-blocks') . wp_json_encode($deactivation_result));
+                    }
+
+                    // Delete all license data for purchase code logout regardless of deactivation result
+                    delete_option('maxi_pro');
+                } elseif ($is_purchase_code_active) {
+                    // If we couldn't extract the purchase code, still delete the local data
+                    delete_option('maxi_pro');
+                }
+
+                wp_send_json_success([
+                    'message' => __('Signed out successfully', 'maxi-blocks'),
+                    'status' => 'Not activated',
+                    'user_name' => '',
+                    'auth_type' => $is_purchase_code_active ? 'purchase_code' : 'unknown',
+                ]);
+            }
+        }
+
+        /**
+         * Logout email session via middleware
+         * @param string $email - Email address
+         * @param string $auth_key - Authentication key/cookie
+         * @returns array - Logout result
+         */
+        private function logout_email_session($email, $auth_key)
+        {
+            $middleware_url = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_URL') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_URL : '';
+            $middleware_key = defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '';
+
+            if (empty($middleware_url) || empty($middleware_key)) {
+                error_log(__('MaxiBlocks: Missing middleware configuration for email session logout', 'maxi-blocks'));
+                return ['success' => false, 'error' => 'Configuration error'];
+            }
+
+            // Replace 'verify' with 'email/session/logout' in the URL
+            $logout_url = str_replace('/verify', '/email/session/logout', $middleware_url);
+
+            $response = wp_remote_post($logout_url, [
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $middleware_key,
+                ],
+                'body' => wp_json_encode([
+                    'email' => $email,
+                    'cookie' => $auth_key,
+                    'domain' => parse_url(home_url(), PHP_URL_HOST),
+                    'plugin_version' => MAXI_PLUGIN_VERSION,
+                    'multisite' => is_multisite(),
+                ]),
+            ]);
+
+            if (is_wp_error($response)) {
+                error_log(__("MaxiBlocks Email Session Logout: API call failed - " . $response->get_error_message(), 'maxi-blocks'));
+                return ['success' => false, 'error' => $response->get_error_message()];
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $status_code = wp_remote_retrieve_response_code($response);
+            $result = json_decode($body, true);
+
+            // Log result but don't fail local logout if middleware call fails
+            if ($status_code !== 200 || !$result || !isset($result['success']) || !$result['success']) {
+                error_log(__("MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout", 'maxi-blocks'));
+                return ['success' => false, 'error' => 'Middleware logout failed'];
+            }
+
+            return $result ?: ['success' => false, 'error' => 'Invalid response'];
+        }
+
+        /**
+         * Remove a specific auth key for an email (for browser-specific logout)
+         * @param string $email - Email address
+         * @param string $auth_key - Authentication key to remove
+         */
+        private function remove_email_auth_key($email, $auth_key)
+        {
+            $existing_data = get_option('maxi_pro', '');
+            if (empty($existing_data)) {
+                return;
+            }
+
+            $license_data = json_decode($existing_data, true);
+            if (!is_array($license_data) || !isset($license_data[$email])) {
+                return;
+            }
+
+            $email_data = $license_data[$email];
+            if (!isset($email_data['key'])) {
+                return;
+            }
+
+            // Remove the specific key
+            $existing_keys = explode(',', $email_data['key']);
+            $remaining_keys = array_filter($existing_keys, function ($key) use ($auth_key) {
+                return trim($key) !== trim($auth_key);
+            });
+
+            if (empty($remaining_keys)) {
+                // No more keys for this email, remove the entire entry
+                unset($license_data[$email]);
+            } else {
+                // Update with remaining keys
+                $license_data[$email]['key'] = implode(',', $remaining_keys);
+                // Keep the old status unless it was 'yes' and we're removing keys
+                if ($email_data['status'] === 'yes') {
+                    $license_data[$email]['status'] = $email_data['status'];
+                }
+            }
+
+            update_option('maxi_pro', wp_json_encode($license_data));
+        }
+
+        /**
+         * Handle saving email license data from JavaScript
+         */
+        public function handle_save_email_license()
+        {
+            // Verify nonce
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_license_validation')) {
+                wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
+                return;
+            }
+
+            // Check user permissions
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error(['message' => __('Insufficient permissions', 'maxi-blocks')]);
+                return;
+            }
+
+            $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+            $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
+            $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
+            $auth_key = isset($_POST['auth_key']) ? sanitize_text_field($_POST['auth_key']) : '';
+
+            if (empty($email) || empty($name) || empty($status) || empty($auth_key)) {
+                wp_send_json_error(['message' => __('Missing required parameters', 'maxi-blocks')]);
+                return;
+            }
+
+            // Save the license data
+            $this->save_email_license_data($email, $name, $status, $auth_key);
+
+            wp_send_json_success([
+                'message' => __('License data saved successfully', 'maxi-blocks'),
+            ]);
+        }
+
+        /**
+         * Handle network license form update
+         */
+        public function handle_network_license_form_update()
+        {
+            // This method handles form submission from network admin
+            // For now, we'll rely on AJAX handlers for license operations
+        }
+
+        /**
+         * Handle network license validation via AJAX
+         */
+        public function handle_network_validate_license()
+        {
+            // Verify nonce
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_network_license_validation')) {
+                wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
+                return;
+            }
+
+            // Check user permissions (network admin)
+            if (!current_user_can('manage_network_options')) {
+                wp_send_json_error(['message' => __('Insufficient permissions', 'maxi-blocks')]);
+                return;
+            }
+
+            $input_value = isset($_POST['license_input']) ? sanitize_text_field($_POST['license_input']) : '';
+            $action = isset($_POST['license_action']) ? sanitize_text_field($_POST['license_action']) : '';
+
+            if ($action === 'logout') {
+                // Handle network logout
+                $this->handle_network_license_logout();
+                return;
+            }
+
+            if (empty($input_value)) {
+                wp_send_json_error(['message' => __('Network purchase code is required', 'maxi-blocks')]);
+                return;
+            }
+
+            // Detect input type and show appropriate error for unsupported types
+            $input_type = $this->detect_input_type($input_value);
+
+            if ($input_type === 'email') {
+                wp_send_json_error(['message' => __('Multisite detected. Please activate your MaxiBlocks email on each sub-site separately.', 'maxi-blocks')]);
+                return;
+            } elseif ($input_type === 'maxiblocks_key') {
+                wp_send_json_error(['message' => __('Multisite detected. Please activate your MaxiBlocks license key on each sub-site separately.', 'maxi-blocks')]);
+                return;
+            }
+
+            // Only handle purchase codes for network licensing
+            $this->handle_network_purchase_code_authentication($input_value);
+        }
+
+        /**
+         * Handle network purchase code authentication
+         * @param string $purchase_code - Purchase code
+         */
+        private function handle_network_purchase_code_authentication($purchase_code)
+        {
+            $domain = $this->get_main_site_domain();
+
+            // Verify purchase code with middleware
+            $result = $this->verify_purchase_code($purchase_code, $domain);
+
+            if (!$result['success'] || !$result['valid']) {
+                if (isset($result['error'])) {
+                    $error_message = $this->get_license_error_message($result['error']);
+                    wp_send_json_error(['message' => $error_message]);
+                } else {
+                    wp_send_json_error(['message' => __('Invalid purchase code. Please check your code and try again.', 'maxi-blocks')]);
+                }
+                return;
+            }
+
+            // Save network license data
+            $marketplace = isset($result['marketplace']) ? $result['marketplace'] : 'unknown';
+            $display_name = $marketplace !== 'unknown'
+                ? ucfirst($marketplace) : 'Network License';
+
+            $license_data = [
+                'code_' . $purchase_code => [
+                    'status' => 'yes',
+                    'name' => $display_name,
+                    'purchase_code' => $purchase_code,
+                    'domain' => $domain,
+                    'marketplace' => $marketplace,
+                    'user_id' => isset($result['delivery_data']['user_id']) ? $result['delivery_data']['user_id'] : '',
+                    'product_id' => isset($result['delivery_data']['product_id']) ? $result['delivery_data']['product_id'] : '',
+                    'product_type' => isset($result['delivery_data']['product_type']) ? $result['delivery_data']['product_type'] : 'plugin',
+                    'order_id' => isset($result['delivery_data']['order_id']) ? $result['delivery_data']['order_id'] : '',
+                    'activated_at' => current_time('c'),
+                    'auth_type' => 'network_purchase_code',
+                ],
+            ];
+
+            // Save as network option (available to all sites)
+            update_site_option('maxi_pro_network', wp_json_encode($license_data));
+
+            wp_send_json_success([
+                'message' => __('Network license activated successfully', 'maxi-blocks'),
+                'status' => 'Active ✓',
+                'user_name' => $display_name,
+                'auth_type' => 'network_purchase_code'
+            ]);
+        }
+
+        /**
+         * Handle network license logout
+         */
+        private function handle_network_license_logout()
+        {
+            // Get current network license data for deactivation call
+            $network_license = get_site_option('maxi_pro_network', '');
+            $purchase_code = '';
+            $domain = $this->get_main_site_domain();
+
+            if (!empty($network_license)) {
+                $license_array = json_decode($network_license, true);
+                if (is_array($license_array)) {
+                    foreach ($license_array as $key => $license) {
+                        if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
+                            // Extract the purchase code (remove 'code_' prefix)
+                            $purchase_code = substr($key, 5);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Call deactivation endpoint if we have a purchase code
+            if (!empty($purchase_code)) {
+                $deactivation_result = $this->deactivate_purchase_code($purchase_code, $domain, 'Network license deactivated by admin');
+
+                // Log deactivation result for debugging
+                if (!$deactivation_result['success']) {
+                    error_log(__('MaxiBlocks: Network license deactivation failed: ', 'maxi-blocks') . wp_json_encode($deactivation_result));
+                }
+            }
+
+            // Delete network license data regardless of deactivation result
+            delete_site_option('maxi_pro_network');
+
+            wp_send_json_success([
+                'message' => __('Network license deactivated successfully', 'maxi-blocks'),
+                'status' => 'Not activated',
+                'user_name' => '',
+                'auth_type' => 'network_purchase_code',
+            ]);
+        }
+
+        /**
+         * Handle checking network authentication status
+         */
+        public function handle_network_check_auth_status()
+        {
+            // Verify nonce
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'maxi_network_license_validation')) {
+                wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
+                return;
+            }
+
+            // Check current network license status
+            $network_license_info = $this->get_network_license_info();
+            $is_authenticated = $network_license_info !== false;
+
+            wp_send_json_success([
+                'is_authenticated' => $is_authenticated,
+                'status' => $is_authenticated ? $network_license_info['status'] : 'Not activated',
+                'user_name' => $is_authenticated ? $network_license_info['user_name'] : '',
+            ]);
         }
     }
 endif;

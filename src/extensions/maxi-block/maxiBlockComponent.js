@@ -671,7 +671,9 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	handleResponsivePreview(editorWrapper, tabletPreview, mobilePreview) {
+	handleResponsivePreview(editorWrapper) {
+		const { tabletPreview, mobilePreview } =
+			this.getPreviewElements(editorWrapper);
 		const previewTarget = tabletPreview ?? mobilePreview;
 		const postEditor = document?.body?.querySelector(
 			'.edit-post-visual-editor'
@@ -690,15 +692,10 @@ class MaxiBlockComponent extends Component {
 	handleIframeStyles(iframe, currentBreakpoint) {
 		const iframeDocument = iframe.contentDocument;
 		const editorWrapper = iframeDocument.body;
-		const tabletPreview = editorWrapper.querySelector('.is-tablet-preview');
-		const mobilePreview = editorWrapper.querySelector('.is-mobile-preview');
+		const { isPreview } = this.getPreviewElements(editorWrapper);
 
-		if (tabletPreview || mobilePreview) {
-			this.handleResponsivePreview(
-				editorWrapper,
-				tabletPreview,
-				mobilePreview
-			);
+		if (isPreview) {
+			this.handleResponsivePreview(editorWrapper);
 		}
 
 		if (editorWrapper) {
@@ -1350,11 +1347,14 @@ class MaxiBlockComponent extends Component {
 
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
-		editorWrapper.setAttribute(
-			'maxi-blocks-responsive',
-			currentBreakpoint === 's' ? 's' : 'xs'
-		);
 		iframeDocument.documentElement.style.scrollbarWidth = 'none';
+		const { isPreview } = this.getPreviewElements(editorWrapper);
+
+		if (!isPreview) {
+			return;
+		}
+
+		editorWrapper.setAttribute('maxi-blocks-responsive', currentBreakpoint);
 	}
 
 	copyFontsToIframe(iframeDocument, iframe) {
@@ -1640,15 +1640,16 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	// Add this new method to handle responsive class updates
 	updateResponsiveClasses(iframe, currentBreakpoint) {
 		const target = iframe?.contentDocument?.body || document.body;
-		const editorWrapper = target.querySelector('.editor-styles-wrapper');
 
+		const editorWrapper = target.classList.contains('editor-styles-wrapper')
+			? target
+			: target.querySelector('.editor-styles-wrapper');
 		if (editorWrapper) {
 			editorWrapper.setAttribute(
 				'maxi-blocks-responsive',
-				currentBreakpoint === 's' ? 's' : 'xs'
+				currentBreakpoint
 			);
 		}
 	}
@@ -1699,6 +1700,17 @@ class MaxiBlockComponent extends Component {
 
 			this.lastCacheCleanup = now;
 		}
+	}
+
+	// Returns responsive preview elements if present
+	getPreviewElements(parentElement) {
+		const tabletPreview = parentElement.querySelector('.is-tablet-preview');
+		const mobilePreview = parentElement.querySelector('.is-mobile-preview');
+		return {
+			tabletPreview,
+			mobilePreview,
+			isPreview: !!tabletPreview || !!mobilePreview,
+		};
 	}
 
 	// Add new method for FSE iframe styles

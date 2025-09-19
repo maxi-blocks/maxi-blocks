@@ -344,6 +344,7 @@ jQuery(document).ready(function ($) {
 				'quick_start',
 				'theme',
 				'brand_identity',
+				'license',
 				'starter_site',
 				'finish',
 			];

@@ -120,7 +120,7 @@ Original text: ${
 			selectedResultId === 'selectedText' && selectedText;
 
 		handleContentGeneration({
-			openAIApiKey: AISettings.openaiApiKey,
+			openAIApiKey: undefined, // No longer needed - using backend proxy
 			modelName: AISettings.model,
 			additionalParams: {
 				topP: 1,

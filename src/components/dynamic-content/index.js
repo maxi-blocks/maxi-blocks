@@ -382,8 +382,7 @@ const DynamicContent = props => {
 			{status && (
 				<>
 					{!disableHideOnFrontend &&
-						!ignoreEmptyFields.includes(field) &&
-						!CLStatus && (
+						!ignoreEmptyFields.includes(field) && (
 							<ToggleSwitch
 								label={__(
 									'Hide if no content found on frontend',

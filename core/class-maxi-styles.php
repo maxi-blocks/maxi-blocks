@@ -1570,23 +1570,17 @@ class MaxiBlocks_Styles
         $blocks = $this->fetch_blocks_by_template_id($template_id);
 
         $specific_archives = ['tag', 'category', 'author', 'date'];
-        // Attempt to replace a specific archive type with 'archive' in the template_id
-        $modified_template_id = $template_id;
+
+        // Smart template inheritance: only fall back to archive if specific template is empty
         foreach ($specific_archives as $archive_type) {
             if (strpos($template_id, $archive_type) !== false) {
-                // Replace the first occurrence of the archive_type with 'archive'
-                $modified_template_id = preg_replace('/' . preg_quote($archive_type, '/') . '/', 'archive', $template_id, 1);
-                break; // Exit the loop once a match is found and replacement is done
+                // If specific template has no blocks, fall back to archive template
+                if (empty($blocks)) {
+                    $archive_template_id = preg_replace('/' . preg_quote($archive_type, '/') . '/', 'archive', $template_id, 1);
+                    $blocks = $this->fetch_blocks_by_template_id($archive_template_id);
+                }
+                break; // Exit the loop once a match is found
             }
-        }
-
-        // Check if the modification was successful and the modified template_id is different
-        if ($modified_template_id !== $template_id) {
-            // Fetch blocks for the modified template_id which now targets 'archive'
-            $blocks_all_archives = $this->fetch_blocks_by_template_id($modified_template_id);
-
-            // Merge the blocks specific to the archive with the general archive blocks
-            $blocks = array_merge($blocks, $blocks_all_archives);
         }
 
 

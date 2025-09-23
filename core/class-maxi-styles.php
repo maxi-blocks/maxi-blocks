@@ -34,6 +34,12 @@ class MaxiBlocks_Styles
     private static $instance;
     private static $active_theme;
 
+    // Cache properties for query optimization
+    private static $content_cache = [];
+    private static $bulk_content_cache = [];
+    private static $template_parts_cache = [];
+    private static $meta_cache = [];
+    private static $blocks_cache = [];
     /**
      * Registers the plugin.
      */
@@ -83,6 +89,10 @@ class MaxiBlocks_Styles
         }
 
         add_action('maxi_blocks_migrate_sc_fonts', [$this, 'run_migrate_sc_fonts']);
+
+        // Clear caches after page processing to free memory
+        add_action('wp_footer', [__CLASS__, 'clear_caches'], 999);
+        add_action('admin_footer', [__CLASS__, 'clear_caches'], 999);
     }
 
     private function should_apply_content_filter()
@@ -172,8 +182,11 @@ class MaxiBlocks_Styles
                 $template_parts_meta = [];
 
                 if ($template_parts && !empty($template_parts)) {
+                    // Bulk fetch template parts meta
+                    $template_parts_meta_bulk = [];
                     foreach ($template_parts as $template_part_id) {
-                        $template_parts_meta = array_merge($template_parts_meta, $this->custom_meta($js_var, true, $template_part_id));
+                        $custom_meta = $this->custom_meta($js_var, true, $template_part_id);
+                        $template_parts_meta = array_merge($template_parts_meta, $custom_meta);
                     }
                 }
 
@@ -218,9 +231,17 @@ class MaxiBlocks_Styles
     // Legacy function
     public function get_template_parts($content)
     {
+        // Cache template parts to avoid repeated processing
+        $cache_key = md5(serialize($content));
+        if (isset(self::$template_parts_cache[$cache_key])) {
+            return self::$template_parts_cache[$cache_key];
+        }
+
+        $template_parts = [];
         if ($content && array_key_exists('template_parts', $content)) {
             $template_parts = json_decode($content['template_parts'], true);
             if (!empty($template_parts)) {
+                self::$template_parts_cache[$cache_key] = $template_parts;
                 return $template_parts;
             }
         }
@@ -231,10 +252,13 @@ class MaxiBlocks_Styles
          * template parts (header and footer).
          */
         $theme_name = $this->get_template_name();
-        return [
+        $template_parts = [
             $theme_name . '//header',
             $theme_name . '//footer',
         ];
+
+        self::$template_parts_cache[$cache_key] = $template_parts;
+        return $template_parts;
     }
 
     /**
@@ -269,9 +293,13 @@ class MaxiBlocks_Styles
             $template_parts = $this->get_template_parts($content);
 
             if ($template_parts && !empty($template_parts)) {
+                // Bulk fetch template parts content
+                $template_parts_content = $this->get_bulk_content($template_parts, true);
+
                 foreach ($template_parts as $template_part) {
                     $template_part_name = 'maxi-blocks-style-templates-' . @end(explode('//', $template_part, 2));
-                    $this->apply_content($template_part_name, $this->get_content(true, $template_part), $template_part);
+                    $template_part_content = $template_parts_content[$template_part] ?? false;
+                    $this->apply_content($template_part_name, $template_part_content, $template_part);
                 }
             }
         }
@@ -386,8 +414,11 @@ class MaxiBlocks_Styles
                     $template_parts = $this->get_template_parts($content);
 
                     if ($template_parts) {
+                        // Bulk fetch template parts content
+                        $template_parts_content = $this->get_bulk_content($template_parts, true);
+
                         foreach ($template_parts as $template_part) {
-                            $template_part_content = $this->get_content(true, $template_part);
+                            $template_part_content = $template_parts_content[$template_part] ?? false;
                             if ($template_part_content && $this->need_custom_meta([['content' => $template_part_content, 'is_template_part' => true]])) {
                                 $need_custom_meta = true;
                                 break;
@@ -417,6 +448,12 @@ class MaxiBlocks_Styles
             return false;
         }
 
+        // Check cache first
+        $cache_key = ($is_template ? 'template_' : 'post_') . $id;
+        if (isset(self::$content_cache[$cache_key])) {
+            return self::$content_cache[$cache_key];
+        }
+
         global $wpdb;
         $content_array = [];
         if ($is_template) {
@@ -440,16 +477,93 @@ class MaxiBlocks_Styles
         }
 
         if (!$content_array || empty($content_array)) {
+            self::$content_cache[$cache_key] = false;
             return false;
         }
 
         $content = $content_array[0];
 
         if (!$content || empty($content)) {
+            self::$content_cache[$cache_key] = false;
             return false;
         }
 
-        return json_decode(wp_json_encode($content), true);
+        $result = json_decode(wp_json_encode($content), true);
+        self::$content_cache[$cache_key] = $result;
+        return $result;
+    }
+
+    /**
+     * Bulk get content for multiple IDs to reduce database queries
+     */
+    public function get_bulk_content(array $ids, bool $is_template = false)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        global $wpdb;
+        $results = [];
+        $uncached_ids = [];
+
+        // Check cache for each ID
+        foreach ($ids as $id) {
+            $cache_key = ($is_template ? 'template_' : 'post_') . $id;
+            if (isset(self::$content_cache[$cache_key])) {
+                if (self::$content_cache[$cache_key] !== false) {
+                    $results[$id] = self::$content_cache[$cache_key];
+                }
+            } else {
+                $uncached_ids[] = $id;
+            }
+        }
+
+        // Query uncached IDs in bulk
+        if (!empty($uncached_ids)) {
+            if ($is_template) {
+                $placeholders = implode(',', array_fill(0, count($uncached_ids), '%s'));
+                $content_array = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_templates WHERE template_id IN ($placeholders)",
+                        ...$uncached_ids
+                    ),
+                    OBJECT
+                );
+
+                foreach ($content_array as $content) {
+                    $result = json_decode(wp_json_encode($content), true);
+                    $results[$content->template_id] = $result;
+                    $cache_key = 'template_' . $content->template_id;
+                    self::$content_cache[$cache_key] = $result;
+                }
+            } else {
+                $placeholders = implode(',', array_fill(0, count($uncached_ids), '%d'));
+                $content_array = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id IN ($placeholders)",
+                        ...$uncached_ids
+                    ),
+                    OBJECT
+                );
+
+                foreach ($content_array as $content) {
+                    $result = json_decode(wp_json_encode($content), true);
+                    $results[$content->post_id] = $result;
+                    $cache_key = 'post_' . $content->post_id;
+                    self::$content_cache[$cache_key] = $result;
+                }
+            }
+
+            // Mark missing IDs as false in cache
+            foreach ($uncached_ids as $id) {
+                $cache_key = ($is_template ? 'template_' : 'post_') . $id;
+                if (!isset(self::$content_cache[$cache_key])) {
+                    self::$content_cache[$cache_key] = false;
+                }
+            }
+        }
+
+        return $results;
     }
 
     /**
@@ -466,6 +580,12 @@ class MaxiBlocks_Styles
 
             if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
                 return false;
+            }
+
+            // Check cache first
+            $cache_key = ($is_template ? 'template_meta_' : 'post_meta_') . $id;
+            if (isset(self::$meta_cache[$cache_key])) {
+                return self::$meta_cache[$cache_key];
             }
 
             $response = '';
@@ -493,8 +613,87 @@ class MaxiBlocks_Styles
                 $response = '';
             }
 
+            self::$meta_cache[$cache_key] = $response;
             return $response;
         }
+    }
+
+    /**
+     * Bulk get meta for multiple IDs to reduce database queries
+     */
+    public function get_bulk_meta(array $ids, bool $is_template = false)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'maxi_blocks_custom_data' . ($is_template ? '_templates' : '');
+
+        if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) != $table_name) {
+            return [];
+        }
+
+        $results = [];
+        $uncached_ids = [];
+
+        // Check cache for each ID
+        foreach ($ids as $id) {
+            $cache_key = ($is_template ? 'template_meta_' : 'post_meta_') . $id;
+            if (isset(self::$meta_cache[$cache_key])) {
+                $results[$id] = self::$meta_cache[$cache_key];
+            } else {
+                $uncached_ids[] = $id;
+            }
+        }
+
+        // Query uncached IDs in bulk
+        if (!empty($uncached_ids)) {
+            if ($is_template) {
+                $placeholders = implode(',', array_fill(0, count($uncached_ids), '%s'));
+                $meta_array = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT template_id, custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_templates WHERE template_id IN ($placeholders)",
+                        ...$uncached_ids
+                    ),
+                    OBJECT
+                );
+
+                foreach ($meta_array as $meta) {
+                    $result = [$meta];
+                    $results[$meta->template_id] = $result;
+                    $cache_key = 'template_meta_' . $meta->template_id;
+                    self::$meta_cache[$cache_key] = $result;
+                }
+            } else {
+                $placeholders = implode(',', array_fill(0, count($uncached_ids), '%d'));
+                $meta_array = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT post_id, custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id IN ($placeholders)",
+                        ...$uncached_ids
+                    ),
+                    OBJECT
+                );
+
+                foreach ($meta_array as $meta) {
+                    $result = [$meta];
+                    $results[$meta->post_id] = $result;
+                    $cache_key = 'post_meta_' . $meta->post_id;
+                    self::$meta_cache[$cache_key] = $result;
+                }
+            }
+
+            // Mark missing IDs as empty in cache
+            foreach ($uncached_ids as $id) {
+                $cache_key = ($is_template ? 'template_meta_' : 'post_meta_') . $id;
+                if (!isset(self::$meta_cache[$cache_key])) {
+                    self::$meta_cache[$cache_key] = '';
+                    $results[$id] = '';
+                }
+            }
+        }
+
+        return $results;
     }
 
     /**
@@ -1310,6 +1509,22 @@ class MaxiBlocks_Styles
     }
 
 
+    private static $custom_meta_check_cache = [];
+
+    /**
+     * Clear all caches to free memory
+     * Should be called after page processing is complete
+     */
+    public static function clear_caches()
+    {
+        self::$content_cache = [];
+        self::$bulk_content_cache = [];
+        self::$template_parts_cache = [];
+        self::$meta_cache = [];
+        self::$blocks_cache = [];
+        self::$custom_meta_check_cache = [];
+    }
+
     /**
      * Check if block needs custom meta
      *
@@ -1318,6 +1533,11 @@ class MaxiBlocks_Styles
      */
     public function block_needs_custom_meta($unique_id)
     {
+        // Check cache first
+        if (isset(self::$custom_meta_check_cache[$unique_id])) {
+            return self::$custom_meta_check_cache[$unique_id];
+        }
+
         global $wpdb;
 
         $active_custom_data = $wpdb->get_var(
@@ -1327,7 +1547,9 @@ class MaxiBlocks_Styles
             )
         );
 
-        return (bool)$active_custom_data;
+        $result = (bool)$active_custom_data;
+        self::$custom_meta_check_cache[$unique_id] = $result;
+        return $result;
     }
 
     /**
@@ -1384,15 +1606,21 @@ class MaxiBlocks_Styles
 
         }
 
-        $content_array_block = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                $unique_id
-            ),
-            ARRAY_A
-        );
+        // Use bulk query optimization for blocks if available
+        static $blocks_cache = [];
 
-        $content_block = $content_array_block[0] ?? null;
+        if (!isset($blocks_cache[$unique_id])) {
+            $content_array_block = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
+                    $unique_id
+                ),
+                ARRAY_A
+            );
+            $blocks_cache[$unique_id] = $content_array_block[0] ?? null;
+        }
+
+        $content_block = $blocks_cache[$unique_id];
 
         if (!isset($content_block) || empty($content_block)) {
             if (!empty($block['innerBlocks'])) {
@@ -1532,12 +1760,19 @@ class MaxiBlocks_Styles
     {
         global $wpdb;
 
-        $block_meta = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                $unique_id
-            )
-        );
+        // Use caching for block meta queries
+        static $block_meta_cache = [];
+
+        if (!isset($block_meta_cache[$unique_id])) {
+            $block_meta_cache[$unique_id] = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
+                    $unique_id
+                )
+            );
+        }
+
+        $block_meta = $block_meta_cache[$unique_id];
 
         if (!empty($block_meta)) {
             if (isset($active_custom_data_array[$block_name])) {
@@ -1645,6 +1880,11 @@ class MaxiBlocks_Styles
     */
     public function fetch_blocks_by_template_id($template_id)
     {
+        // Check cache first
+        if (isset(self::$blocks_cache[$template_id])) {
+            return self::$blocks_cache[$template_id];
+        }
+
         global $wpdb;
 
         $parts = explode('//', $template_id);
@@ -1702,6 +1942,8 @@ class MaxiBlocks_Styles
             }
         }
 
+        // Cache the result before returning
+        self::$blocks_cache[$template_id] = $all_blocks;
         return $all_blocks;
     }
 

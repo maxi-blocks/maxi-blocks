@@ -14,7 +14,6 @@
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
 import { dispatch, resolveSelect, select } from '@wordpress/data';
-import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -67,111 +66,6 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  * Constants
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
-
-/**
- * Global settings manager - fetches settings once and shares across all blocks
- */
-const globalMaxiSettingsManager = {
-	settings: null,
-	isLoading: false,
-	loadPromise: null,
-	loadStartTime: null,
-	blockQueue: new Set(),
-
-	/**
-	 * Gets settings (loads them if not already loaded)
-	 * @param {string} uniqueID - Block's unique identifier for logging
-	 * @returns {Promise<Object>} Settings promise
-	 */
-	getSettings(uniqueID) {
-		// If settings are already loaded, return them SYNCHRONOUSLY
-		if (this.settings) {
-			return this.settings;
-		}
-
-		// Add block to queue
-		this.blockQueue.add(uniqueID);
-
-		// If already loading, wait for the existing promise
-		if (this.isLoading && this.loadPromise) {
-			// Return a promise that resolves when the shared promise resolves
-			return this.loadPromise.then(result => {
-				return result;
-			});
-		}
-
-		// Check for broken state - isLoading but no promise
-		if (this.isLoading && !this.loadPromise) {
-			this.isLoading = false;
-		}
-
-		// Start loading
-		this.isLoading = true;
-		this.loadStartTime = performance.now();
-
-		this.loadPromise = this.fetchSettings()
-			.then(settings => {
-				this.settings = settings;
-				this.isLoading = false;
-				return settings;
-			})
-			.catch(error => {
-				this.isLoading = false;
-				this.loadPromise = null;
-				throw error;
-			});
-
-		return this.loadPromise;
-	},
-
-	/**
-	 * Fetches settings from the API
-	 * @returns {Promise<Object>} Settings from API
-	 */
-	async fetchSettings() {
-		try {
-			const result = await apiFetch({
-				path: '/maxi-blocks/v1.0/settings',
-			});
-
-			return result;
-		} catch (error) {
-			throw error;
-		}
-	},
-
-	/**
-	 * Removes a block from the queue (for cleanup)
-	 * @param {string} uniqueID - Block's unique identifier
-	 */
-	removeFromQueue(uniqueID) {
-		const removed = this.blockQueue.delete(uniqueID);
-		if (removed) {
-		}
-	},
-
-	/**
-	 * Clears all cached data (for debugging)
-	 */
-	clearCache() {
-		this.settings = null;
-		this.isLoading = false;
-		this.loadPromise = null;
-		this.loadStartTime = null;
-	},
-
-	/**
-	 * Gets current status for debugging
-	 */
-	getStatus() {
-		return {
-			hasSettings: !!this.settings,
-			isLoading: this.isLoading,
-			queueSize: this.blockQueue.size,
-			loadStartTime: this.loadStartTime,
-		};
-	},
-};
 
 /**
  * Minimal global settings cache
@@ -543,35 +437,23 @@ class MaxiBlockComponent extends Component {
 			});
 
 		// Check if the block is reusable
-		const postSettingsStart = performance.now();
-
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
 		if (this.maxiBlockDidMount) {
-			const maxiBlockDidMountStart = performance.now();
 			this.maxiBlockDidMount();
-			const maxiBlockDidMountDuration =
-				performance.now() - maxiBlockDidMountStart;
 		}
 
-		const loadFontsStart = performance.now();
 		this.loadFonts();
-		const loadFontsDuration = performance.now() - loadFontsStart;
 
 		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
 		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
 		// unnecessary amount of process and resources
 		try {
-			const displayStylesStart = performance.now();
 			// Call directly without debouncing to avoid memory accumulation
 			this?.displayStyles(!!this?.rootSlot);
-			const displayStylesDuration =
-				performance.now() - displayStylesStart;
 		} catch (error) {
 			console.warn('MaxiBlocks: Display styles error:', error);
 		}
-
-		const postSettingsDuration = performance.now() - postSettingsStart;
 
 		if (!this.getBreakpoints.xxl) {
 			try {
@@ -2462,63 +2344,6 @@ class MaxiBlockComponent extends Component {
 		// Nullify all instance references
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
-	}
-
-	/**
-	 * Get cleanup and memory statistics for monitoring
-	 * @returns {Object} Comprehensive cleanup statistics
-	 */
-	getCleanupStats() {
-		const baseStats = {
-			totalRelationInstances: this.allRelationInstances
-				? this.allRelationInstances.size
-				: 0,
-			hasCleanupManager: !!this.cleanupManager,
-			timestamp: Date.now(),
-		};
-
-		if (this.cleanupManager) {
-			return {
-				...baseStats,
-				...this.cleanupManager.getStats(),
-			};
-		}
-
-		return baseStats;
-	}
-
-	/**
-	 * Force memory cleanup and optimization
-	 */
-	performMemoryOptimization() {
-		if (this.cleanupManager) {
-			// Detect and cleanup memory leaks
-			if (this.allRelationInstances) {
-				const instances = Array.from(this.allRelationInstances);
-				const suspiciousInstances =
-					this.cleanupManager.detectMemoryLeaks(instances);
-
-				if (suspiciousInstances.length > 0) {
-					console.warn(
-						`MaxiBlocks: Performing memory optimization - found ${suspiciousInstances.length} suspicious instances`
-					);
-
-					// Schedule immediate cleanup for suspicious instances
-					suspiciousInstances.forEach(({ instance }, index) => {
-						this.cleanupManager.scheduleInstanceCleanup(
-							instance,
-							index,
-							4
-						); // CRITICAL priority
-					});
-				}
-			}
-		}
-
-		// Also trigger style cache cleanup
-		if (typeof window !== 'undefined' && window.MaxiBlocksStyleCache) {
-			window.MaxiBlocksStyleCache.checkMemoryUsage();
-		}
 	}
 
 	// Returns responsive preview elements if present

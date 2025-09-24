@@ -409,7 +409,7 @@ export const getIdOptions = async (
 };
 
 const getDCOptions = async (
-	{ type, id, field, relation, author, previousRelation },
+	{ type, id, field, relation, author, previousRelation, limitByArchive },
 	postIdOptions,
 	contentType,
 	isCL = false,

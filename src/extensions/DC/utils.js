@@ -98,18 +98,37 @@ const showCurrentArchive = (type, currentTemplateType) => {
 	];
 
 	if (
-		(allowedTemplateTypes.includes(currentTemplateType) ||
-			allowedTemplateTypes.some(template =>
-				currentTemplateType.includes(template)
+		(allowedTemplateTypes?.includes(currentTemplateType) ||
+			allowedTemplateTypes?.some(template =>
+				currentTemplateType?.includes(template)
 			)) &&
-		type.includes('posts')
+		type?.includes('posts')
 	)
 		return true;
 
-	if (type.includes('posts') && currentTemplateType.includes('taxonomy'))
+	if (type?.includes('posts') && currentTemplateType?.includes('taxonomy'))
 		return true;
 
 	return false;
+};
+
+/**
+ * Determines whether to show the "Limit by current archive posts" option
+ * @param {string} type                - DC/CL type
+ * @param {string} currentTemplateType - Current template type
+ * @param {string} relation            - Current relation
+ * @returns {boolean} Whether to show the limit by archive option
+ */
+export const showLimitByArchiveOption = (
+	type,
+	currentTemplateType,
+	relation
+) => {
+	// Only show if we're in an archive context and relation is not current-archive
+	return (
+		showCurrentArchive(type, currentTemplateType) &&
+		relation !== 'current-archive'
+	);
 };
 
 export const parseText = value => {
@@ -477,7 +496,8 @@ export const validationsValues = (
 	source = 'wp',
 	linkTarget,
 	isCL = false,
-	acfGroup
+	acfGroup,
+	limitByArchive
 ) => {
 	if (
 		!select('maxiBlocks/dynamic-content').getWasCustomPostTypesLoaded() ||

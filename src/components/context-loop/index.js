@@ -29,12 +29,14 @@ import {
 	orderOptions,
 	orderRelations,
 	relationOptions,
+	limitByArchiveOptions,
 } from '@extensions/DC/constants';
 import { getCLAttributes, getDCOptions, LoopContext } from '@extensions/DC';
 import {
 	getRelationOptions,
 	validationsValues,
 	getCurrentTemplateSlug,
+	showLimitByArchiveOption,
 } from '@extensions/DC/utils';
 import {
 	ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP,
@@ -86,6 +88,8 @@ const ContextLoop = props => {
 		'cl-accumulator': accumulator,
 		'cl-grandchild-accumulator': grandchildAccumulator = false,
 		'cl-acf-group': acfGroup,
+		'cl-acf-field-type': acfFieldType,
+		'cl-acf-char-limit': acfCharLimit,
 		'cl-pagination': paginationEnabled,
 		'cl-pagination-per-page': paginationPerPage,
 		'cl-pagination-total': paginationTotal,
@@ -111,6 +115,7 @@ const ContextLoop = props => {
 			paginationLinkCurrentPaletteColor,
 		'cl-pagination-link-current-palette-opacity':
 			paginationLinkCurrentPaletteOpacity,
+		'cl-limit-by-archive': limitByArchive,
 	} = getCLAttributes(contextLoop);
 
 	const clPaginationPrefix = 'cl-pagination-';
@@ -148,6 +153,7 @@ const ContextLoop = props => {
 		(params, alwaysSaveCLStatus = false) => {
 			let hasChangesToSave = false;
 
+			// Check existing keys in contextLoop
 			for (const [key, val] of Object.entries(contextLoop)) {
 				if (
 					(alwaysSaveCLStatus && key === 'cl-status') ||
@@ -155,6 +161,16 @@ const ContextLoop = props => {
 				) {
 					hasChangesToSave = true;
 					break;
+				}
+			}
+
+			// Also check for new keys or keys with different values (including undefined)
+			if (!hasChangesToSave) {
+				for (const [key, val] of Object.entries(params)) {
+					if (contextLoop[key] !== val) {
+						hasChangesToSave = true;
+						break;
+					}
 				}
 			}
 
@@ -187,7 +203,7 @@ const ContextLoop = props => {
 		if (!postAuthorOptions) {
 			fetchPostAuthorOptions();
 		}
-	}, [changeProps, postAuthorOptions]);
+	}, [author, changeProps, postAuthorOptions]);
 
 	const fetchDcData = useCallback(async () => {
 		if (status && isTypeHasRelations) {
@@ -199,6 +215,7 @@ const ContextLoop = props => {
 				relation,
 				author,
 				previousRelation: relation,
+				limitByArchive,
 			};
 
 			const postIDSettings = await getDCOptions(
@@ -231,6 +248,7 @@ const ContextLoop = props => {
 		type,
 		id,
 		field,
+		limitByArchive,
 		postIdOptions,
 		relation,
 		author,
@@ -285,7 +303,12 @@ const ContextLoop = props => {
 				type,
 				field,
 				relation,
-				contentType
+				contentType,
+				'wp',
+				undefined,
+				true,
+				undefined,
+				limitByArchive
 			);
 
 			changeProps({
@@ -293,7 +316,15 @@ const ContextLoop = props => {
 				...validatedAttributes,
 			});
 		}
-	}, []);
+	}, [
+		changeProps,
+		contentType,
+		field,
+		limitByArchive,
+		relation,
+		source,
+		type,
+	]);
 
 	useEffect(() => {
 		fetchDcData().catch(console.error);
@@ -358,7 +389,8 @@ const ContextLoop = props => {
 									value,
 									linkTarget,
 									true,
-									acfGroup
+									acfGroup,
+									limitByArchive
 								);
 
 								changeProps({
@@ -391,7 +423,9 @@ const ContextLoop = props => {
 								contentType,
 								'wp',
 								linkTarget,
-								true
+								true,
+								undefined,
+								limitByArchive
 							);
 
 							changeProps({
@@ -596,6 +630,36 @@ const ContextLoop = props => {
 												changeProps({
 													'cl-grandchild-accumulator':
 														value,
+												})
+											}
+										/>
+									)}
+									{showLimitByArchiveOption(
+										type,
+										currentTemplateType,
+										relation
+									) && (
+										<SelectControl
+											__nextHasNoMarginBottom
+											label={__(
+												'Limit by current archive posts',
+												'maxi-blocks'
+											)}
+											value={limitByArchive}
+											options={limitByArchiveOptions}
+											newStyle
+											onChange={value =>
+												changeProps({
+													'cl-limit-by-archive':
+														value,
+												})
+											}
+											onReset={() =>
+												changeProps({
+													'cl-limit-by-archive':
+														getDefaultAttribute(
+															'cl-limit-by-archive'
+														),
 												})
 											}
 										/>
@@ -884,6 +948,33 @@ const ContextLoop = props => {
 							)}
 						</>
 					)}
+					{source === 'acf' &&
+						acfFieldType &&
+						['text', 'textarea'].includes(acfFieldType) && (
+							<AdvancedNumberControl
+								label={__(
+									'Character limit (backend)',
+									'maxi-blocks'
+								)}
+								value={acfCharLimit || 0}
+								min={0}
+								max={9999}
+								step={1}
+								withInputField={false}
+								disableReset={false}
+								onChangeValue={value =>
+									changeProps({
+										'cl-acf-char-limit': Number(value),
+									})
+								}
+								onReset={() =>
+									changeProps({
+										'cl-acf-char-limit': 0,
+									})
+								}
+								initialPosition={acfCharLimit || 0}
+							/>
+						)}
 				</>
 			)}
 		</div>

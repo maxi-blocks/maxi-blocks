@@ -40,6 +40,13 @@ const contextLoop = {
 	'cl-acf-group': {
 		type: 'number',
 	},
+	'cl-acf-field-type': {
+		type: 'string',
+	},
+	'cl-acf-char-limit': {
+		type: 'number',
+		default: 0,
+	},
 	'cl-pagination': {
 		type: 'boolean',
 		default: false,
@@ -65,6 +72,9 @@ const contextLoop = {
 	'cl-pagination-next-text': {
 		type: 'string',
 		default: 'Next',
+	},
+	'cl-limit-by-archive': {
+		type: 'string',
 	},
 	...prefixAttributesCreator({
 		obj: typography,

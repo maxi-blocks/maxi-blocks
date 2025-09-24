@@ -162,7 +162,8 @@ class MaxiBlocks_DynamicContent
     public function get_total_posts_by_relation(
         $relation,
         $id,
-        $type = 'post'
+        $type = 'post',
+        $limit_by_archive = null
     ) {
         // Initialize the query args array
         $args = [
@@ -288,6 +289,110 @@ class MaxiBlocks_DynamicContent
                 ];
             }
         }
+
+        // Apply current archive filtering if limit_by_archive is 'yes'
+        if ($limit_by_archive === 'yes' && $relation !== 'current-archive') {
+            $current_archive_info = $this->get_current_archive_type_and_id();
+
+            if (!empty($current_archive_info['type']) && !empty($current_archive_info['id'])) {
+                // Add archive constraints to the query
+                $additional_constraints = [];
+
+                switch ($current_archive_info['type']) {
+                    case 'category':
+                        if ($type === 'product') {
+                            // For WooCommerce products, use product_cat taxonomy
+                            $additional_constraints['tax_query'] = [
+                                [
+                                    'taxonomy' => 'product_cat',
+                                    'field' => 'term_id',
+                                    'terms' => [$current_archive_info['id']],
+                                ],
+                            ];
+                        } else {
+                            // For regular posts, use category constraint
+                            $additional_constraints['category__in'] = [$current_archive_info['id']];
+                        }
+                        break;
+                    case 'tag':
+                        if ($type === 'product') {
+                            // For WooCommerce products, use product_tag taxonomy
+                            $additional_constraints['tax_query'] = [
+                                [
+                                    'taxonomy' => 'product_tag',
+                                    'field' => 'term_id',
+                                    'terms' => [$current_archive_info['id']],
+                                ],
+                            ];
+                        } else {
+                            // For regular posts, use tag constraint
+                            $additional_constraints['tag__in'] = [$current_archive_info['id']];
+                        }
+                        break;
+                    case 'author':
+                        if ($type === 'attachment') {
+                            $additional_constraints['post_status'] = 'inherit';
+                        }
+                        $additional_constraints['author'] = $current_archive_info['id'];
+                        break;
+                    case 'date':
+                        // Parse the date ID format (YYYY or YYYY-MM or YYYY-MM-DD)
+                        $date_parts = explode('-', $current_archive_info['id']);
+                        $additional_constraints['date_query'] = [
+                            'inclusive' => true,
+                        ];
+                        if (isset($date_parts[0])) {
+                            $additional_constraints['date_query']['year'] = intval($date_parts[0]);
+                        }
+                        if (isset($date_parts[1])) {
+                            $additional_constraints['date_query']['month'] = intval($date_parts[1]);
+                        }
+                        if (isset($date_parts[2])) {
+                            $additional_constraints['date_query']['day'] = intval($date_parts[2]);
+                        }
+                        break;
+                }
+
+                // Handle custom taxonomy archives
+                if (isset($current_archive_info['tax_query'])) {
+                    $additional_constraints['tax_query'] = $current_archive_info['tax_query'];
+                }
+
+                // Merge the additional constraints with existing args
+                foreach ($additional_constraints as $key => $value) {
+                    if ($key === 'tax_query') {
+                        // Handle tax_query merging specially
+                        if (isset($args['tax_query'])) {
+                            // If we already have a tax_query, combine them with 'AND' relation
+                            $args['tax_query'] = [
+                                'relation' => 'AND',
+                                $args['tax_query'][0], // Existing tax query
+                                $value[0], // New archive constraint
+                            ];
+                        } else {
+                            // No existing tax_query, just set it
+                            $args['tax_query'] = $value;
+                        }
+                    } elseif ($key === 'date_query') {
+                        // Handle date_query merging
+                        if (isset($args['date_query'])) {
+                            // Merge date queries with 'AND' relation
+                            $args['date_query'] = [
+                                'relation' => 'AND',
+                                $args['date_query'],
+                                $value,
+                            ];
+                        } else {
+                            $args['date_query'] = $value;
+                        }
+                    } else {
+                        // For other constraints, just set them (they should not conflict)
+                        $args[$key] = $value;
+                    }
+                }
+            }
+        }
+
         // Create a new WP_Query instance
         $query = new WP_Query($args);
 
@@ -324,6 +429,7 @@ class MaxiBlocks_DynamicContent
             'cl-relation' => $cl_relation,
             'cl-id' => $cl_id,
             'cl-type' => $cl_type,
+            'cl-limit-by-archive' => $cl_limit_by_archive,
         ] = $cl + ['cl-pagination-per-page' => 3];
 
         if (!isset($cl_id) || !isset($cl_relation)) {
@@ -353,6 +459,7 @@ class MaxiBlocks_DynamicContent
                     $cl_relation,
                     $cl_id,
                     $type,
+                    $cl_limit_by_archive,
                 );
             }
         }
@@ -1428,6 +1535,7 @@ class MaxiBlocks_DynamicContent
             'dc-order-by' => $dc_order_by,
             'dc-order' => $dc_order,
             'dc-accumulator' => $dc_accumulator,
+            'dc-limit-by-archive' => $dc_limit_by_archive,
         ] = $attributes;
 
         if (empty($dc_type)) {
@@ -1551,6 +1659,8 @@ class MaxiBlocks_DynamicContent
                         $dc_accumulator,
                         $dc_type,
                         $dc_id,
+                        null,
+                        $dc_limit_by_archive,
                     ),
                 );
             } elseif ($is_current_archive) {
@@ -1562,7 +1672,8 @@ class MaxiBlocks_DynamicContent
                     $dc_accumulator,
                     $dc_type,
                     $archive_info['id'],
-                    $archive_info['type']
+                    $archive_info['type'],
+                    $dc_limit_by_archive
                 );
 
                 if (isset($archive_info['tax_query'])) {
@@ -1640,6 +1751,8 @@ class MaxiBlocks_DynamicContent
                         $dc_accumulator,
                         $dc_type,
                         $dc_id,
+                        null,
+                        $dc_limit_by_archive,
                     ),
                 );
             }
@@ -1703,7 +1816,15 @@ class MaxiBlocks_DynamicContent
                 'number' => 1,
             ];
 
-            if ($is_random) {
+            if ($dc_relation === 'current') {
+                // Get the current queried object (should be the current category/term)
+                $queried_object = get_queried_object();
+                if ($queried_object && isset($queried_object->term_id) && $queried_object->taxonomy === $taxonomy) {
+                    return $queried_object;
+                }
+                // If not on a taxonomy archive page, return null
+                return null;
+            } elseif ($is_random) {
                 $args['number'] = 0; // Get all terms
                 $terms = get_terms($args);
 
@@ -1742,6 +1863,8 @@ class MaxiBlocks_DynamicContent
                         $dc_accumulator,
                         $dc_type,
                         $dc_id,
+                        null,
+                        $dc_limit_by_archive,
                     ),
                 );
             } elseif ($dc_relation === 'by-id') {
@@ -2485,6 +2608,9 @@ class MaxiBlocks_DynamicContent
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
             'dc-accumulator' => $dc_accumulator,
+            'dc-type' => $dc_type,
+            'dc-id' => $dc_id,
+            'dc-relation' => $dc_relation,
         ] = $attributes;
 
         $post = $this->get_post($attributes);
@@ -2492,10 +2618,39 @@ class MaxiBlocks_DynamicContent
             return '';
         }
 
-        if ($this->is_repeated_post($post->ID, $dc_accumulator)) {
+        // Check if it's a taxonomy term (has term_id) or a regular post (has ID)
+        $item_id = isset($post->term_id) ? $post->term_id : $post->ID;
+
+        if ($this->is_repeated_post($item_id, $dc_accumulator)) {
             return '';
         }
-        $acf_data = get_field_object($dc_field, $post->ID);
+
+        // First, try to get the field as a post/page field
+        $acf_data = get_field_object($dc_field, $item_id);
+
+        // If no value found and it looks like a taxonomy term, try taxonomy contexts
+        if ((!$acf_data || empty($acf_data['value'])) && isset($post->term_id)) {
+            // Try common taxonomy contexts
+            $taxonomy_contexts = [
+                'category_' . $post->term_id,  // Categories
+                'post_tag_' . $post->term_id,  // Tags
+                'product_cat_' . $post->term_id, // WooCommerce product categories
+                'product_tag_' . $post->term_id, // WooCommerce product tags
+            ];
+
+            // Also try to use the actual taxonomy from the term object
+            if (isset($post->taxonomy)) {
+                $taxonomy_contexts[] = $post->taxonomy . '_' . $post->term_id;
+            }
+
+            foreach ($taxonomy_contexts as $context) {
+                $acf_data = get_field_object($dc_field, $context);
+                if ($acf_data && !empty($acf_data['value'])) {
+                    break;
+                }
+            }
+        }
+
         $acf_value = is_array($acf_data) ? $acf_data['value'] : null;
         $content = null;
 
@@ -2866,7 +3021,8 @@ class MaxiBlocks_DynamicContent
         $accumulator,
         $type,
         $id,
-        $archive_type = null
+        $archive_type = null,
+        $limit_by_archive = null
     ) {
         if ($type === 'users') {
             $order_by_arg =
@@ -2951,6 +3107,106 @@ class MaxiBlocks_DynamicContent
                     'terms' => $id,
                 ],
             ];
+        }
+
+        // Apply current archive filtering if limit_by_archive is 'yes'
+        if ($limit_by_archive === 'yes' && $relation !== 'current-archive') {
+            $current_archive_info = $this->get_current_archive_type_and_id();
+
+            if (!empty($current_archive_info['type']) && !empty($current_archive_info['id'])) {
+                // We need to add additional constraints based on current archive
+                $additional_constraints = [];
+
+                switch ($current_archive_info['type']) {
+                    case 'category':
+                        if ($type === 'products') {
+                            // For WooCommerce products, use product_cat taxonomy
+                            $additional_constraints['tax_query'] = [
+                                [
+                                    'taxonomy' => 'product_cat',
+                                    'field' => 'term_id',
+                                    'terms' => [$current_archive_info['id']],
+                                ],
+                            ];
+                        } else {
+                            // For regular posts, use category constraint
+                            $additional_constraints['cat'] = $current_archive_info['id'];
+                        }
+                        break;
+                    case 'tag':
+                        if ($type === 'products') {
+                            // For WooCommerce products, use product_tag taxonomy
+                            $additional_constraints['tax_query'] = [
+                                [
+                                    'taxonomy' => 'product_tag',
+                                    'field' => 'term_id',
+                                    'terms' => [$current_archive_info['id']],
+                                ],
+                            ];
+                        } else {
+                            // For regular posts, use tag constraint
+                            $additional_constraints['tag_id'] = $current_archive_info['id'];
+                        }
+                        break;
+                    case 'author':
+                        $additional_constraints['author'] = $current_archive_info['id'];
+                        break;
+                    case 'date':
+                        // Parse the date ID format (YYYY or YYYY-MM or YYYY-MM-DD)
+                        $date_parts = explode('-', $current_archive_info['id']);
+                        $additional_constraints['date_query'] = [
+                            'inclusive' => true,
+                        ];
+                        if (isset($date_parts[0])) {
+                            $additional_constraints['date_query']['year'] = intval($date_parts[0]);
+                        }
+                        if (isset($date_parts[1])) {
+                            $additional_constraints['date_query']['month'] = intval($date_parts[1]);
+                        }
+                        if (isset($date_parts[2])) {
+                            $additional_constraints['date_query']['day'] = intval($date_parts[2]);
+                        }
+                        break;
+                }
+
+                // Handle custom taxonomy archives
+                if (isset($current_archive_info['tax_query'])) {
+                    $additional_constraints['tax_query'] = $current_archive_info['tax_query'];
+                }
+
+                // Merge the additional constraints with existing args
+                foreach ($additional_constraints as $key => $value) {
+                    if ($key === 'tax_query') {
+                        // Handle tax_query merging specially
+                        if (isset($args['tax_query'])) {
+                            // If we already have a tax_query, we need to combine them with 'AND' relation
+                            $args['tax_query'] = [
+                                'relation' => 'AND',
+                                $args['tax_query'][0], // Existing tax query
+                                $value[0], // New archive constraint
+                            ];
+                        } else {
+                            // No existing tax_query, just set it
+                            $args['tax_query'] = $value;
+                        }
+                    } elseif ($key === 'date_query') {
+                        // Handle date_query merging
+                        if (isset($args['date_query'])) {
+                            // Merge date queries with 'AND' relation
+                            $args['date_query'] = [
+                                'relation' => 'AND',
+                                $args['date_query'],
+                                $value,
+                            ];
+                        } else {
+                            $args['date_query'] = $value;
+                        }
+                    } else {
+                        // For other constraints, just set them (they should not conflict)
+                        $args[$key] = $value;
+                    }
+                }
+            }
         }
 
         return $args;

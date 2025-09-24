@@ -63,6 +63,7 @@ describe('getValidatedDCAttributes', () => {
 			source: 'wp',
 			linkTarget: 'post',
 			acfGroup: '',
+			limitByArchive: undefined,
 		};
 
 		const contentType = 'text';
@@ -95,7 +96,8 @@ describe('getValidatedDCAttributes', () => {
 			attributes.source,
 			attributes.linkTarget,
 			isCL,
-			attributes.acfGroup
+			attributes.acfGroup,
+			attributes.limitByArchive
 		);
 
 		expect(validateRelations).toHaveBeenCalledWith(

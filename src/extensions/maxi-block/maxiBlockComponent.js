@@ -14,6 +14,7 @@
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
 import { dispatch, resolveSelect, select } from '@wordpress/data';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -66,6 +67,111 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  * Constants
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
+
+/**
+ * Global settings manager - fetches settings once and shares across all blocks
+ */
+const globalMaxiSettingsManager = {
+	settings: null,
+	isLoading: false,
+	loadPromise: null,
+	loadStartTime: null,
+	blockQueue: new Set(),
+
+	/**
+	 * Gets settings (loads them if not already loaded)
+	 * @param {string} uniqueID - Block's unique identifier for logging
+	 * @returns {Promise<Object>} Settings promise
+	 */
+	getSettings(uniqueID) {
+		// If settings are already loaded, return them SYNCHRONOUSLY
+		if (this.settings) {
+			return this.settings;
+		}
+
+		// Add block to queue
+		this.blockQueue.add(uniqueID);
+
+		// If already loading, wait for the existing promise
+		if (this.isLoading && this.loadPromise) {
+			// Return a promise that resolves when the shared promise resolves
+			return this.loadPromise.then(result => {
+				return result;
+			});
+		}
+
+		// Check for broken state - isLoading but no promise
+		if (this.isLoading && !this.loadPromise) {
+			this.isLoading = false;
+		}
+
+		// Start loading
+		this.isLoading = true;
+		this.loadStartTime = performance.now();
+
+		this.loadPromise = this.fetchSettings()
+			.then(settings => {
+				this.settings = settings;
+				this.isLoading = false;
+				return settings;
+			})
+			.catch(error => {
+				this.isLoading = false;
+				this.loadPromise = null;
+				throw error;
+			});
+
+		return this.loadPromise;
+	},
+
+	/**
+	 * Fetches settings from the API
+	 * @returns {Promise<Object>} Settings from API
+	 */
+	async fetchSettings() {
+		try {
+			const result = await apiFetch({
+				path: '/maxi-blocks/v1.0/settings',
+			});
+
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	},
+
+	/**
+	 * Removes a block from the queue (for cleanup)
+	 * @param {string} uniqueID - Block's unique identifier
+	 */
+	removeFromQueue(uniqueID) {
+		const removed = this.blockQueue.delete(uniqueID);
+		if (removed) {
+		}
+	},
+
+	/**
+	 * Clears all cached data (for debugging)
+	 */
+	clearCache() {
+		this.settings = null;
+		this.isLoading = false;
+		this.loadPromise = null;
+		this.loadStartTime = null;
+	},
+
+	/**
+	 * Gets current status for debugging
+	 */
+	getStatus() {
+		return {
+			hasSettings: !!this.settings,
+			isLoading: this.isLoading,
+			queueSize: this.blockQueue.size,
+			loadStartTime: this.loadStartTime,
+		};
+	},
+};
 
 /**
  * Minimal global settings cache
@@ -404,54 +510,68 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		// Load settings with original logic (reverted from problematic caching)
-		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+		// Load settings using WordPress data store
+		resolveSelect('maxiBlocks')
+			.receiveMaxiSettings()
+			.then(settings => {
+				const maxiVersion = settings.maxi_version;
+				const { updateBlockAttributes } = dispatch('core/block-editor');
+				const {
+					'maxi-version-current': maxiVersionCurrent,
+					'maxi-version-origin': maxiVersionOrigin,
+				} = this.props.attributes;
 
-		receiveMaxiSettings().then(settings => {
-			const maxiVersion = settings.maxi_version;
-			const { updateBlockAttributes } = dispatch('core/block-editor');
-			const {
-				'maxi-version-current': maxiVersionCurrent,
-				'maxi-version-origin': maxiVersionOrigin,
-			} = this.props.attributes;
+				// Only update if we have a valid version from settings
+				if (maxiVersion) {
+					const updates = {};
 
-			// Only update if we have a valid version from settings
-			if (maxiVersion) {
-				const updates = {};
+					// Update current version if different
+					if (maxiVersion !== maxiVersionCurrent) {
+						updates['maxi-version-current'] = maxiVersion;
+					}
 
-				// Update current version if different
-				if (maxiVersion !== maxiVersionCurrent) {
-					updates['maxi-version-current'] = maxiVersion;
+					// Set origin version if not set
+					if (!maxiVersionOrigin) {
+						updates['maxi-version-origin'] = maxiVersion;
+					}
+
+					// Only dispatch if we have updates
+					if (Object.keys(updates).length > 0) {
+						updateBlockAttributes(this.props.clientId, updates);
+					}
 				}
-
-				// Set origin version if not set
-				if (!maxiVersionOrigin) {
-					updates['maxi-version-origin'] = maxiVersion;
-				}
-
-				// Only dispatch if we have updates
-				if (Object.keys(updates).length > 0) {
-					updateBlockAttributes(this.props.clientId, updates);
-				}
-			}
-		});
+			});
 
 		// Check if the block is reusable
+		const postSettingsStart = performance.now();
+
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
-		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+		if (this.maxiBlockDidMount) {
+			const maxiBlockDidMountStart = performance.now();
+			this.maxiBlockDidMount();
+			const maxiBlockDidMountDuration =
+				performance.now() - maxiBlockDidMountStart;
+		}
 
+		const loadFontsStart = performance.now();
 		this.loadFonts();
+		const loadFontsDuration = performance.now() - loadFontsStart;
 
 		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
 		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
 		// unnecessary amount of process and resources
 		try {
+			const displayStylesStart = performance.now();
 			// Call directly without debouncing to avoid memory accumulation
 			this?.displayStyles(!!this?.rootSlot);
+			const displayStylesDuration =
+				performance.now() - displayStylesStart;
 		} catch (error) {
 			console.warn('MaxiBlocks: Display styles error:', error);
 		}
+
+		const postSettingsDuration = performance.now() - postSettingsStart;
 
 		if (!this.getBreakpoints.xxl) {
 			try {
@@ -2161,7 +2281,6 @@ class MaxiBlockComponent extends Component {
 			}
 		});
 
-		// Removed console.log to fix linting
 		if (cleanupErrors.length > 0) {
 			console.warn(
 				'MaxiBlocks: Cleanup errors encountered:',

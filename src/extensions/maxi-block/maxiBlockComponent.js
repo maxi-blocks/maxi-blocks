@@ -74,10 +74,8 @@ class MaxiBlockComponent extends Component {
 	constructor(...args) {
 		super(...args);
 
-		// Performance timing - start constructor
 		const { attributes } = args[0] || {};
 		const { uniqueID } = attributes || {};
-		const constructorStart = performance.now();
 
 		// Initialize store management FIRST (before any store calls)
 		this.storeSelectors = new Map(); // Cache selectors to avoid recreating
@@ -92,12 +90,6 @@ class MaxiBlockComponent extends Component {
 
 		const { clientId } = this.props;
 
-		// Performance timing - end constructor (only log if > 100ms)
-		const constructorEnd = performance.now();
-		const constructorTime = constructorEnd - constructorStart;
-		if (constructorTime > 100) {
-			console.log(`[MaxiBlocks Perf] ${uniqueID || 'unknown'}: Constructor completed in ${constructorTime.toFixed(2)}ms`);
-		}
 
 		this.isReusable = false;
 		this.blockRef = createRef();
@@ -204,18 +196,10 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		// Performance timing - start componentDidMount
 		const { uniqueID } = this.props.attributes;
-		const mountStart = performance.now();
-		let stepTime = mountStart;
 
 		// Step 1: DOM references
-		const domStart = performance.now();
 		this.updateDOMReferences();
-		const domEnd = performance.now();
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: DOM references took ${(domEnd - domStart).toFixed(2)}ms`);
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Time since mount start: ${(domEnd - mountStart).toFixed(2)}ms`);
-		stepTime = domEnd;
 
 		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
 
@@ -227,19 +211,11 @@ class MaxiBlockComponent extends Component {
 
 		// Step 2: FSE iframe styles and observer
 		if (getIsSiteEditor()) {
-			const fseStart = performance.now();
-			console.log(`[MaxiBlocks Perf] ${uniqueID}: Gap before FSE: ${(fseStart - stepTime).toFixed(2)}ms`);
 			this.addMaxiFSEIframeStyles();
 			this.setupFSEIframeObserver();
-			const fseEnd = performance.now();
-			console.log(`[MaxiBlocks Perf] ${uniqueID}: FSE iframe setup took ${(fseEnd - fseStart).toFixed(2)}ms`);
-			console.log(`[MaxiBlocks Perf] ${uniqueID}: Time since mount start: ${(fseEnd - mountStart).toFixed(2)}ms`);
-			stepTime = fseEnd;
 		}
 
 		// Step 3: Relations processing
-		const relationsStart = performance.now();
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Gap before Relations: ${(relationsStart - stepTime).toFixed(2)}ms`);
 		const blocksIBRelations = this.safeSelect(
 			'maxiBlocks/relations',
 			'receiveBlockUnderRelationClientIDs',
@@ -374,70 +350,37 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Log relations processing time
-		const relationsEnd = performance.now();
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Relations processing took ${(relationsEnd - relationsStart).toFixed(2)}ms`);
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Time since mount start: ${(relationsEnd - mountStart).toFixed(2)}ms`);
-		stepTime = relationsEnd;
 
 		// Step 4: Load settings directly from injected window.maxiSettings
-		const settingsStart = performance.now();
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Gap before Settings: ${(settingsStart - stepTime).toFixed(2)}ms`);
 
 		// Get settings directly from window - no async resolver needed
 		const settings = window.maxiSettings || {};
-		const settingsEnd = performance.now();
-		const settingsTime = settingsEnd - settingsStart;
-		console.log(`[MaxiBlocks Perf] ${uniqueID || 'unknown'}: Settings loaded in ${settingsTime.toFixed(2)}ms`);
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Time since mount start: ${(settingsEnd - mountStart).toFixed(2)}ms`);
-		stepTime = settingsEnd;
-
-		const maxiVersion = settings.maxi_version;
 
 		// Step 4: Block setup and reusable check
-		const setupStart = performance.now();
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Gap before Block Setup: ${(setupStart - stepTime).toFixed(2)}ms`);
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
 		if (this.maxiBlockDidMount) {
 			this.maxiBlockDidMount();
 		}
-		const setupEnd = performance.now();
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Block setup took ${(setupEnd - setupStart).toFixed(2)}ms`);
 
 		// Step 6: Font loading
-		const fontsStart = performance.now();
 		this.loadFonts();
-		const fontsEnd = performance.now();
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Font loading took ${(fontsEnd - fontsStart).toFixed(2)}ms`);
 
 		// Step 7: Display styles
-		const stylesStart = performance.now();
 		try {
 			// Call directly without debouncing to avoid memory accumulation
 			this?.displayStyles(!!this?.rootSlot);
 		} catch (error) {
 			console.warn('MaxiBlocks: Display styles error:', error);
 		}
-		const stylesEnd = performance.now();
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Display styles took ${(stylesEnd - stylesStart).toFixed(2)}ms`);
 
 		// Step 8: Force update if needed
-		const updateStart = performance.now();
 		if (!this.getBreakpoints.xxl) {
 			try {
 				this.forceUpdate();
 			} catch (error) {
 				console.warn('MaxiBlocks: Force update error:', error);
 			}
-		}
-		const updateEnd = performance.now();
-		console.log(`[MaxiBlocks Perf] ${uniqueID}: Force update took ${(updateEnd - updateStart).toFixed(2)}ms`);
-
-		// Performance timing - end componentDidMount (only log if > 100ms)
-		const mountEnd = performance.now();
-		const mountTime = mountEnd - mountStart;
-		if (mountTime > 100) {
-			console.log(`[MaxiBlocks Perf] ${uniqueID || 'unknown'}: componentDidMount completed in ${mountTime.toFixed(2)}ms`);
 		}
 	}
 
@@ -1244,22 +1187,10 @@ class MaxiBlockComponent extends Component {
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
 		const { uniqueID } = this.props.attributes;
 
-		// Performance timing - start displayStyles
-		const displayStylesStart = performance.now();
-
 		// Early return for invalid states
 		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
 			return;
 		}
-
-		// Helper to log displayStyles performance (only if > 100ms)
-		const logDisplayStylesPerf = () => {
-			const displayStylesEnd = performance.now();
-			const displayStylesTime = displayStylesEnd - displayStylesStart;
-			if (displayStylesTime > 100) {
-				console.log(`[MaxiBlocks Perf] ${uniqueID}: displayStyles completed in ${displayStylesTime.toFixed(2)}ms`);
-			}
-		};
 
 		// Update references if they're null (but don't do it too frequently)
 		if (!this.editorIframe || !this.isElementInDOM(this.editorIframe)) {

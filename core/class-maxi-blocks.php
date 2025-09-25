@@ -186,48 +186,29 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'maxi-blocks-block-editor',
                 "
                 (function() {
-                    console.log('[MaxiBlocks Debug] Initializing version update script');
-
-                    if (typeof wp === 'undefined' || !wp.data) {
-                        console.log('[MaxiBlocks Debug] WordPress data API not available');
-                        return;
-                    }
+                    if (typeof wp === 'undefined' || !wp.data) return;
 
                     const { select, dispatch } = wp.data;
                     let saveInProgress = false;
 
-                    // Function to get current version - try multiple sources
                     function getCurrentVersion() {
-                        // Try window.maxiSettings first
                         if (window.maxiSettings?.pluginVersion) {
                             return window.maxiSettings.pluginVersion;
                         }
-
-                        // Try hardcoded version as fallback
                         return '" . MAXI_PLUGIN_VERSION . "';
                     }
 
-                    // Subscribe to editor changes to detect saves
                     wp.data.subscribe(() => {
                         const isSavingPost = select('core/editor')?.isSavingPost?.();
                         const isAutosavingPost = select('core/editor')?.isAutosavingPost?.();
 
-                        // If save just started and we haven't processed this save yet
                         if (isSavingPost && !isAutosavingPost && !saveInProgress) {
-                            console.log('[MaxiBlocks Debug] Save detected, updating versions...');
                             saveInProgress = true;
 
                             const currentVersion = getCurrentVersion();
-                            console.log('[MaxiBlocks Debug] Using version:', currentVersion);
-
-                            if (!currentVersion) {
-                                console.log('[MaxiBlocks Debug] No plugin version available');
-                                return;
-                            }
+                            if (!currentVersion) return;
 
                             const clientIds = select('core/block-editor').getClientIdsWithDescendants();
-                            let updatedCount = 0;
-                            console.log('[MaxiBlocks Debug] Found', clientIds.length, 'blocks total');
 
                             clientIds.forEach(clientId => {
                                 const block = select('core/block-editor').getBlock(clientId);
@@ -235,8 +216,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
                                     const attrs = block.attributes;
                                     const needsCurrentUpdate = !attrs['maxi-version-current'] || attrs['maxi-version-current'] !== currentVersion;
                                     const needsOriginUpdate = !attrs['maxi-version-origin'];
-
-                                    console.log('[MaxiBlocks Debug] Block', block.name, 'current:', attrs['maxi-version-current'], 'needs update:', needsCurrentUpdate || needsOriginUpdate);
 
                                     if (needsCurrentUpdate || needsOriginUpdate) {
                                         const newAttrs = {};
@@ -246,24 +225,13 @@ if (!class_exists('MaxiBlocks_Blocks')):
                                         if (needsOriginUpdate) {
                                             newAttrs['maxi-version-origin'] = currentVersion;
                                         }
-
-                                        console.log('[MaxiBlocks Debug] Updating block', clientId, 'with attrs:', newAttrs);
                                         dispatch('core/block-editor').updateBlockAttributes(clientId, newAttrs);
-                                        updatedCount++;
                                     }
                                 }
                             });
-
-                            if (updatedCount > 0) {
-                                console.log('[MaxiBlocks] Updated ' + updatedCount + ' blocks to version ' + currentVersion);
-                            } else {
-                                console.log('[MaxiBlocks Debug] No blocks needed updating');
-                            }
                         }
 
-                        // Reset flag when save is complete
                         if (!isSavingPost && saveInProgress) {
-                            console.log('[MaxiBlocks Debug] Save completed');
                             saveInProgress = false;
                         }
                     });

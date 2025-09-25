@@ -90,6 +90,9 @@ const Inspector = props => {
 										props,
 										contentType: 'column',
 									}),
+									...inspectorTabs.savedStyles({
+										props,
+									}),
 								]}
 							/>
 						),

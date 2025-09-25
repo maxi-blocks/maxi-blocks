@@ -351,6 +351,27 @@ if (!class_exists('MaxiBlocks_API')):
                     ],
                 ],
             ]);
+            register_rest_route($this->namespace, '/saved-styles', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_maxi_blocks_saved_styles'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/saved-styles', [
+                'methods' => 'POST',
+                'callback' => [$this, 'set_maxi_blocks_saved_styles'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+                'args' => [
+                    'styles' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
+            ]);
             register_rest_route($this->namespace, '/import-starter-site', [
                 'methods' => 'POST',
                 'callback' => [$this, 'maxi_import_starter_site'],
@@ -1276,6 +1297,62 @@ if (!class_exists('MaxiBlocks_API')):
                 return $dataString;
             }
             return false;
+        }
+
+        public function get_maxi_blocks_saved_styles()
+        {
+            global $wpdb;
+
+            $saved_styles = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
+                    'maxi_saved_styles',
+                ),
+            );
+
+            if (!$saved_styles) {
+                return '{}';
+            }
+
+            return $saved_styles;
+        }
+
+        public function set_maxi_blocks_saved_styles($request)
+        {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'maxi_blocks_general';
+
+            $request_result = $request->get_json_params();
+            $styles = $request_result['styles'];
+
+            // Validate that styles is a valid JSON string
+            if (!is_string($styles) || json_decode($styles) === null) {
+                return new WP_Error(
+                    'invalid_styles',
+                    'Invalid styles format',
+                    ['status' => 400]
+                );
+            }
+
+            // Store the styles directly as they are already stringified
+            $result = $wpdb->replace(
+                $table_name,
+                [
+                    'id' => 'maxi_saved_styles',
+                    'object' => $styles,
+                ],
+                ['%s', '%s']
+            );
+
+            if ($result === false) {
+                return new WP_Error(
+                    'db_error',
+                    'Failed to save styles',
+                    ['status' => 500]
+                );
+            }
+
+            return new WP_REST_Response(['success' => true], 200);
         }
 
         public function check_if_legacy_code_needed($tableName)

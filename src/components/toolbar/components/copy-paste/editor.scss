@@ -148,6 +148,11 @@
 			&:hover {
 				color: var(--maxi-secondary-color);
 			}
+
+			span.toolbar-item__copy-paste__popover__button--error {
+				float: left !important;
+				color: red;
+			}
 		}
 	}
 }

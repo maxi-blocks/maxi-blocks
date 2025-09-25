@@ -2,8 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch, useSelect } from '@wordpress/data';
-import { useContext, useState } from '@wordpress/element';
+import { select, useSelect, useDispatch, dispatch } from '@wordpress/data';
+import { useContext, useState, useEffect } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -30,6 +31,7 @@ import {
 	getInitialColumn,
 } from '@extensions/repeater/utils';
 import RepeaterContext from '@blocks/row-maxi/repeaterContext';
+import { openSidebarAccordion } from '@extensions/inspector';
 
 /**
  * External dependencies
@@ -50,6 +52,15 @@ import {
 import './editor.scss';
 
 /**
+ * Helper function to normalize block names for comparison
+ */
+const normalizeBlockName = name => {
+	if (!name) return '';
+	// Strip 'maxi-blocks/' prefix if present
+	return name.replace('maxi-blocks/', '');
+};
+
+/**
  * Component
  */
 
@@ -64,6 +75,40 @@ const CopyPaste = props => {
 	const { blockName, clientId, closeMoreSettings, copyPasteMapping } = props;
 
 	const repeaterContext = useContext(RepeaterContext);
+	const [pasteButtonText, setPasteButtonText] = useState(
+		__('Paste styles from clipboard - all', 'maxi-blocks')
+	);
+	const [savedStyles, setSavedStyles] = useState({});
+
+	// Load saved styles on component mount
+	useEffect(() => {
+		const loadSavedStyles = async () => {
+			try {
+				const response = await apiFetch({
+					path: '/maxi-blocks/v1.0/saved-styles',
+				});
+
+				const parsedResponse =
+					typeof response === 'string'
+						? JSON.parse(response)
+						: response;
+
+				setSavedStyles(parsedResponse || {});
+			} catch (err) {
+				console.error('Error loading saved styles:', err);
+			}
+		};
+		loadSavedStyles();
+	}, []);
+
+	const setErrorMessage = message => {
+		setPasteButtonText(message);
+		setTimeout(() => {
+			setPasteButtonText(
+				__('Paste styles from clipboard - all', 'maxi-blocks')
+			);
+		}, 3000);
+	};
 
 	const {
 		attributes,
@@ -151,8 +196,24 @@ const CopyPaste = props => {
 	};
 
 	const onCopyStyles = () => {
-		closeMoreSettings();
+		// Update the Redux store
 		copyStyles(blockAttributes);
+		closeMoreSettings();
+	};
+
+	const onCopyStylesToClipboard = async () => {
+		try {
+			// Copy to system clipboard using native API
+			await navigator?.clipboard?.writeText(
+				JSON.stringify({
+					blockType: blockName,
+					styles: blockAttributes,
+				})
+			);
+			closeMoreSettings();
+		} catch (err) {
+			console.error('Failed to copy styles:', err);
+		}
 	};
 
 	const onPasteStylesIntoRepeaterBlock = () => {
@@ -182,8 +243,44 @@ const CopyPaste = props => {
 	};
 
 	const onPasteStyles = () => {
+		// Handle both formats - direct styles object or {blockType, styles} format
+		const styleData = copiedStyles.styles
+			? copiedStyles.styles
+			: copiedStyles;
+
+		// Only check block type if we're using the new format
+		if (copiedStyles.blockType) {
+			// Compare normalized block names for more flexibility
+			const normalizedStyleBlockType = normalizeBlockName(
+				copiedStyles.blockType
+			);
+			const normalizedCurrentBlockType = normalizeBlockName(blockName);
+
+			if (normalizedStyleBlockType !== normalizedCurrentBlockType) {
+				const blockTypeName = copiedStyles.blockType.replace(
+					'maxi-blocks/',
+					''
+				);
+				dispatch('core/notices').createNotice(
+					'error',
+					`${__(
+						'The copied style is for',
+						'maxi-blocks'
+					)} ${blockTypeName} ${__(
+						'blocks and cannot be applied to this block.',
+						'maxi-blocks'
+					)}`,
+					{
+						type: 'snackbar',
+						isDismissible: true,
+					}
+				);
+				return;
+			}
+		}
+
 		const styles = excludeAttributes(
-			copiedStyles,
+			styleData,
 			attributes,
 			copyPasteMapping
 		);
@@ -315,6 +412,95 @@ const CopyPaste = props => {
 		onPasteStylesIntoRepeaterBlock();
 	};
 
+	const readFromClipboard = async () => {
+		try {
+			const text = await navigator.clipboard.readText();
+			if (!text) {
+				throw new Error('Clipboard is empty');
+			}
+			return text;
+		} catch (err) {
+			throw new Error('Failed to read from clipboard');
+		}
+	};
+
+	const onPasteStylesFromClipboard = async () => {
+		try {
+			const clipboardText = await readFromClipboard();
+			const trimmedContent = clipboardText.trim();
+
+			if (!trimmedContent || trimmedContent === '') {
+				setErrorMessage(__('Empty clipboard', 'maxi-blocks'));
+				return;
+			}
+
+			if (
+				!trimmedContent.startsWith('{') ||
+				!trimmedContent.endsWith('}')
+			) {
+				setErrorMessage(__('Invalid clipboard format', 'maxi-blocks'));
+				return;
+			}
+
+			let clipboardData;
+			try {
+				clipboardData = JSON.parse(trimmedContent);
+			} catch (err) {
+				setErrorMessage(__('Invalid clipboard data', 'maxi-blocks'));
+				return;
+			}
+
+			if (!clipboardData || typeof clipboardData !== 'object') {
+				setErrorMessage(__('Invalid data format', 'maxi-blocks'));
+				return;
+			}
+
+			// Handle the new style format with blockType and styles properties
+			const styleData = clipboardData.styles
+				? clipboardData.styles
+				: clipboardData;
+
+			// Check if the style was created for a specific block type and doesn't match current block
+			if (clipboardData.blockType) {
+				const normalizedStyleBlockType = normalizeBlockName(
+					clipboardData.blockType
+				);
+				const normalizedCurrentBlockType =
+					normalizeBlockName(blockName);
+
+				if (normalizedStyleBlockType !== normalizedCurrentBlockType) {
+					const blockTypeName = clipboardData.blockType.replace(
+						'maxi-blocks/',
+						''
+					);
+					setErrorMessage(
+						`${__(
+							'Style is for',
+							'maxi-blocks'
+						)} ${blockTypeName} ${__('block type', 'maxi-blocks')}`
+					);
+					return;
+				}
+			}
+
+			const styles = excludeAttributes(
+				styleData,
+				attributes,
+				copyPasteMapping
+			);
+
+			closeMoreSettings();
+			handleAttributesOnPaste(styles);
+			updateBlockAttributes(clientId, styles);
+			onPasteStylesIntoRepeaterBlock();
+			setPasteButtonText(
+				__('Paste styles from clipboard - all', 'maxi-blocks')
+			);
+		} catch (err) {
+			setErrorMessage(__('Failed to read clipboard', 'maxi-blocks'));
+		}
+	};
+
 	const getTabItems = () => {
 		const response = [];
 
@@ -435,6 +621,120 @@ const CopyPaste = props => {
 						)}
 					/>
 				)}
+			<Button
+				className='toolbar-item__copy-paste__popover__button'
+				onClick={onCopyStylesToClipboard}
+			>
+				{__('Copy styles to clipboard - all', 'maxi-blocks')}
+			</Button>
+			<Button
+				className='toolbar-item__copy-paste__popover__button'
+				onClick={onPasteStylesFromClipboard}
+			>
+				{pasteButtonText ===
+				__('Paste styles from clipboard - all', 'maxi-blocks') ? (
+					pasteButtonText
+				) : (
+					<span className='toolbar-item__copy-paste__popover__button--error'>
+						{pasteButtonText}
+					</span>
+				)}
+			</Button>
+			<Button
+				className='toolbar-item__copy-paste__popover__button'
+				onClick={async () => {
+					// Get current time and date
+					const now = new Date();
+					const dateStr = now.toLocaleDateString();
+					const timeStr = now.toLocaleTimeString([], {
+						hour: '2-digit',
+						minute: '2-digit',
+						hour12: false,
+					});
+
+					// Find next available style number
+					const currentStyles = savedStyles || {};
+					const styleNumbers = Object.keys(currentStyles)
+						.map(key => {
+							const match = key.match(/Style (\d+)/);
+							return match ? parseInt(match[1], 10) : 0;
+						})
+						.filter(num => !Number.isNaN(num));
+
+					const nextStyleNumber =
+						styleNumbers.length > 0
+							? Math.max(...styleNumbers) + 1
+							: 1;
+
+					// Create new style name with number and timestamp
+					const newStyleName = `Style ${nextStyleNumber} - ${dateStr} ${timeStr}`;
+
+					// Check if we've reached the maximum number of styles (100)
+					const MAX_SAVED_STYLES = 100;
+					if (Object.keys(currentStyles).length >= MAX_SAVED_STYLES) {
+						// Show an error notification
+						dispatch('core/notices').createNotice(
+							'error',
+							__(
+								'Maximum number of saved styles (100) reached. Please delete some styles before saving new ones.',
+								'maxi-blocks'
+							),
+							{
+								type: 'snackbar',
+								isDismissible: true,
+							}
+						);
+						return;
+					}
+
+					const updatedStyles = {
+						...currentStyles,
+						[newStyleName]: {
+							blockType: blockName,
+							styles: blockAttributes,
+						},
+					};
+
+					try {
+						// Call the API directly
+						await apiFetch({
+							path: '/maxi-blocks/v1.0/saved-styles',
+							method: 'POST',
+							data: {
+								styles: JSON.stringify(updatedStyles),
+							},
+						});
+
+						// Update local state
+						setSavedStyles(updatedStyles);
+
+						// Set global variable for the saved-styles component to use
+						window.maxiLastSavedStyleName = newStyleName;
+						window.maxiLastSavedStyleBlockType = blockName;
+
+						// Only open the sidebar if it's not already open on the "copy and paste styles" accordion
+						const currentAccordion =
+							select('maxiBlocks').receiveInspectorPath()?.[1]
+								?.value;
+						const accordionName = 'copy and paste styles';
+						const accordionUid = accordionName.replace(
+							/[^a-zA-Z0-9]+/g,
+							''
+						);
+
+						// If the current accordion is not already the "copy and paste styles", open it
+						if (currentAccordion !== accordionUid) {
+							openSidebarAccordion(0, accordionName);
+						}
+
+						closeMoreSettings();
+					} catch (err) {
+						console.error('Error saving style:', err);
+					}
+				}}
+			>
+				{__('Save styles', 'maxi-blocks')}
+			</Button>
 			{hasInnerBlocks && (
 				<Button
 					className='toolbar-item__copy-paste__popover__button toolbar-item__copy-nested-block__popover__button'

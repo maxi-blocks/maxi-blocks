@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import actions from './actions';
 
 const resolvers = {

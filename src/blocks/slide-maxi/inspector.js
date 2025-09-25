@@ -61,6 +61,9 @@ const Inspector = props => {
 										props,
 										contentType: 'slide',
 									}),
+									...inspectorTabs.savedStyles({
+										props,
+									}),
 								]}
 							/>
 						),

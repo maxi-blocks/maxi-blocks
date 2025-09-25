@@ -207,8 +207,15 @@ class MaxiBlockComponent extends Component {
 		// Performance timing - start componentDidMount
 		const { uniqueID } = this.props.attributes;
 		const mountStart = performance.now();
+		let stepTime = mountStart;
 
+		// Step 1: DOM references
+		const domStart = performance.now();
 		this.updateDOMReferences();
+		const domEnd = performance.now();
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: DOM references took ${(domEnd - domStart).toFixed(2)}ms`);
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Time since mount start: ${(domEnd - mountStart).toFixed(2)}ms`);
+		stepTime = domEnd;
 
 		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
 
@@ -218,14 +225,21 @@ class MaxiBlockComponent extends Component {
 			return;
 		}
 
-		// Add FSE iframe styles if we're in the site editor
+		// Step 2: FSE iframe styles and observer
 		if (getIsSiteEditor()) {
+			const fseStart = performance.now();
+			console.log(`[MaxiBlocks Perf] ${uniqueID}: Gap before FSE: ${(fseStart - stepTime).toFixed(2)}ms`);
 			this.addMaxiFSEIframeStyles();
-
-			// Set up an observer to handle iframe reloads
 			this.setupFSEIframeObserver();
+			const fseEnd = performance.now();
+			console.log(`[MaxiBlocks Perf] ${uniqueID}: FSE iframe setup took ${(fseEnd - fseStart).toFixed(2)}ms`);
+			console.log(`[MaxiBlocks Perf] ${uniqueID}: Time since mount start: ${(fseEnd - mountStart).toFixed(2)}ms`);
+			stepTime = fseEnd;
 		}
 
+		// Step 3: Relations processing
+		const relationsStart = performance.now();
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Gap before Relations: ${(relationsStart - stepTime).toFixed(2)}ms`);
 		const blocksIBRelations = this.safeSelect(
 			'maxiBlocks/relations',
 			'receiveBlockUnderRelationClientIDs',
@@ -359,63 +373,56 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		// Load settings directly from injected window.maxiSettings
+		// Log relations processing time
+		const relationsEnd = performance.now();
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Relations processing took ${(relationsEnd - relationsStart).toFixed(2)}ms`);
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Time since mount start: ${(relationsEnd - mountStart).toFixed(2)}ms`);
+		stepTime = relationsEnd;
+
+		// Step 4: Load settings directly from injected window.maxiSettings
 		const settingsStart = performance.now();
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Gap before Settings: ${(settingsStart - stepTime).toFixed(2)}ms`);
 
 		// Get settings directly from window - no async resolver needed
 		const settings = window.maxiSettings || {};
 		const settingsEnd = performance.now();
 		const settingsTime = settingsEnd - settingsStart;
-		if (settingsTime > 100) {
-			console.log(`[MaxiBlocks Perf] ${uniqueID || 'unknown'}: Settings loaded in ${settingsTime.toFixed(2)}ms`);
-		}
+		console.log(`[MaxiBlocks Perf] ${uniqueID || 'unknown'}: Settings loaded in ${settingsTime.toFixed(2)}ms`);
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Time since mount start: ${(settingsEnd - mountStart).toFixed(2)}ms`);
+		stepTime = settingsEnd;
 
 		const maxiVersion = settings.maxi_version;
-		const { updateBlockAttributes } = dispatch('core/block-editor');
-		const {
-			'maxi-version-current': maxiVersionCurrent,
-			'maxi-version-origin': maxiVersionOrigin,
-		} = this.props.attributes;
 
-		// Only update if we have a valid version from settings
-		if (maxiVersion) {
-			const updates = {};
-
-			// Update current version if different
-			if (maxiVersion !== maxiVersionCurrent) {
-				updates['maxi-version-current'] = maxiVersion;
-			}
-
-			// Set origin version if not set
-			if (!maxiVersionOrigin) {
-				updates['maxi-version-origin'] = maxiVersion;
-			}
-
-			// Only dispatch if we have updates
-			if (Object.keys(updates).length > 0) {
-				updateBlockAttributes(this.props.clientId, updates);
-			}
-		}
-
-		// Check if the block is reusable
+		// Step 4: Block setup and reusable check
+		const setupStart = performance.now();
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Gap before Block Setup: ${(setupStart - stepTime).toFixed(2)}ms`);
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
 		if (this.maxiBlockDidMount) {
 			this.maxiBlockDidMount();
 		}
+		const setupEnd = performance.now();
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Block setup took ${(setupEnd - setupStart).toFixed(2)}ms`);
 
+		// Step 6: Font loading
+		const fontsStart = performance.now();
 		this.loadFonts();
+		const fontsEnd = performance.now();
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Font loading took ${(fontsEnd - fontsStart).toFixed(2)}ms`);
 
-		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
-		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
-		// unnecessary amount of process and resources
+		// Step 7: Display styles
+		const stylesStart = performance.now();
 		try {
 			// Call directly without debouncing to avoid memory accumulation
 			this?.displayStyles(!!this?.rootSlot);
 		} catch (error) {
 			console.warn('MaxiBlocks: Display styles error:', error);
 		}
+		const stylesEnd = performance.now();
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Display styles took ${(stylesEnd - stylesStart).toFixed(2)}ms`);
 
+		// Step 8: Force update if needed
+		const updateStart = performance.now();
 		if (!this.getBreakpoints.xxl) {
 			try {
 				this.forceUpdate();
@@ -423,6 +430,8 @@ class MaxiBlockComponent extends Component {
 				console.warn('MaxiBlocks: Force update error:', error);
 			}
 		}
+		const updateEnd = performance.now();
+		console.log(`[MaxiBlocks Perf] ${uniqueID}: Force update took ${(updateEnd - updateStart).toFixed(2)}ms`);
 
 		// Performance timing - end componentDidMount (only log if > 100ms)
 		const mountEnd = performance.now();

@@ -87,6 +87,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
             // Register MaxiBlocks category
             add_filter('block_categories_all', [$this, 'maxi_block_category']);
 
+
+
             $style_cards = new MaxiBlocks_StyleCards();
             $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
 
@@ -178,6 +180,96 @@ if (!class_exists('MaxiBlocks_Blocks')):
                     ]);
                 }
             }
+
+            // Add JavaScript to handle version updates on save
+            wp_add_inline_script(
+                'maxi-blocks-block-editor',
+                "
+                (function() {
+                    console.log('[MaxiBlocks Debug] Initializing version update script');
+
+                    if (typeof wp === 'undefined' || !wp.data) {
+                        console.log('[MaxiBlocks Debug] WordPress data API not available');
+                        return;
+                    }
+
+                    const { select, dispatch } = wp.data;
+                    let saveInProgress = false;
+
+                    // Function to get current version - try multiple sources
+                    function getCurrentVersion() {
+                        // Try window.maxiSettings first
+                        if (window.maxiSettings?.pluginVersion) {
+                            return window.maxiSettings.pluginVersion;
+                        }
+
+                        // Try hardcoded version as fallback
+                        return '" . MAXI_PLUGIN_VERSION . "';
+                    }
+
+                    // Subscribe to editor changes to detect saves
+                    wp.data.subscribe(() => {
+                        const isSavingPost = select('core/editor')?.isSavingPost?.();
+                        const isAutosavingPost = select('core/editor')?.isAutosavingPost?.();
+
+                        // If save just started and we haven't processed this save yet
+                        if (isSavingPost && !isAutosavingPost && !saveInProgress) {
+                            console.log('[MaxiBlocks Debug] Save detected, updating versions...');
+                            saveInProgress = true;
+
+                            const currentVersion = getCurrentVersion();
+                            console.log('[MaxiBlocks Debug] Using version:', currentVersion);
+
+                            if (!currentVersion) {
+                                console.log('[MaxiBlocks Debug] No plugin version available');
+                                return;
+                            }
+
+                            const clientIds = select('core/block-editor').getClientIdsWithDescendants();
+                            let updatedCount = 0;
+                            console.log('[MaxiBlocks Debug] Found', clientIds.length, 'blocks total');
+
+                            clientIds.forEach(clientId => {
+                                const block = select('core/block-editor').getBlock(clientId);
+                                if (block && block.name && block.name.startsWith('maxi-blocks/')) {
+                                    const attrs = block.attributes;
+                                    const needsCurrentUpdate = !attrs['maxi-version-current'] || attrs['maxi-version-current'] !== currentVersion;
+                                    const needsOriginUpdate = !attrs['maxi-version-origin'];
+
+                                    console.log('[MaxiBlocks Debug] Block', block.name, 'current:', attrs['maxi-version-current'], 'needs update:', needsCurrentUpdate || needsOriginUpdate);
+
+                                    if (needsCurrentUpdate || needsOriginUpdate) {
+                                        const newAttrs = {};
+                                        if (needsCurrentUpdate) {
+                                            newAttrs['maxi-version-current'] = currentVersion;
+                                        }
+                                        if (needsOriginUpdate) {
+                                            newAttrs['maxi-version-origin'] = currentVersion;
+                                        }
+
+                                        console.log('[MaxiBlocks Debug] Updating block', clientId, 'with attrs:', newAttrs);
+                                        dispatch('core/block-editor').updateBlockAttributes(clientId, newAttrs);
+                                        updatedCount++;
+                                    }
+                                }
+                            });
+
+                            if (updatedCount > 0) {
+                                console.log('[MaxiBlocks] Updated ' + updatedCount + ' blocks to version ' + currentVersion);
+                            } else {
+                                console.log('[MaxiBlocks Debug] No blocks needed updating');
+                            }
+                        }
+
+                        // Reset flag when save is complete
+                        if (!isSavingPost && saveInProgress) {
+                            console.log('[MaxiBlocks Debug] Save completed');
+                            saveInProgress = false;
+                        }
+                    });
+                })();
+                "
+            );
 
             $editor_css = 'build/index.css';
             wp_register_style(
@@ -568,5 +660,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
             return $has_blocks;
         }
+
+
     }
 endif;

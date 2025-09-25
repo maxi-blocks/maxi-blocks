@@ -7,7 +7,11 @@ import { select } from '@wordpress/data';
 const controls = {
 	async RECEIVE_GENERAL_SETTINGS() {
 		// Return injected settings directly (no API call)
-		return window.maxiSettings || {};
+		if (window.maxiSettings) {
+			return window.maxiSettings;
+		} else {
+			return apiFetch({ path: '/maxi-blocks/v1.0/settings' });
+		}
 	},
 	async RECEIVE_BREAKPOINTS() {
 		return apiFetch({ path: '/maxi-blocks/v1.0/breakpoints/' });

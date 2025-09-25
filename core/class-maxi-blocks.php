@@ -153,7 +153,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
             // Inject MaxiBlocks settings directly to avoid API calls
             if (class_exists('MaxiBlocks_API')) {
                 $api = new MaxiBlocks_API();
-                wp_localize_script('maxi-blocks-block-editor', 'maxiSettings', $api->get_maxi_blocks_options());
+                $settings = $api->get_maxi_blocks_options();
+                wp_localize_script('maxi-blocks-block-editor', 'maxiSettings', $settings);
             }
 
             // Add license settings for authentication context

@@ -13,7 +13,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import { dispatch, resolveSelect, select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -74,6 +74,11 @@ class MaxiBlockComponent extends Component {
 	constructor(...args) {
 		super(...args);
 
+		// Performance timing - start constructor
+		const { attributes } = args[0] || {};
+		const { uniqueID } = attributes || {};
+		const constructorStart = performance.now();
+
 		// Initialize store management FIRST (before any store calls)
 		this.storeSelectors = new Map(); // Cache selectors to avoid recreating
 
@@ -85,8 +90,14 @@ class MaxiBlockComponent extends Component {
 
 		this.areFontsLoaded = createRef(false);
 
-		const { clientId, attributes } = this.props;
-		const { uniqueID } = attributes;
+		const { clientId } = this.props;
+
+		// Performance timing - end constructor (only log if > 100ms)
+		const constructorEnd = performance.now();
+		const constructorTime = constructorEnd - constructorStart;
+		if (constructorTime > 100) {
+			console.log(`[MaxiBlocks Perf] ${uniqueID || 'unknown'}: Constructor completed in ${constructorTime.toFixed(2)}ms`);
+		}
 
 		this.isReusable = false;
 		this.blockRef = createRef();
@@ -193,6 +204,10 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		// Performance timing - start componentDidMount
+		const { uniqueID } = this.props.attributes;
+		const mountStart = performance.now();
+
 		this.updateDOMReferences();
 
 		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
@@ -344,37 +359,43 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		// Load settings using WordPress data store
-		resolveSelect('maxiBlocks')
-			.receiveMaxiSettings()
-			.then(settings => {
-				const maxiVersion = settings.maxi_version;
-				const { updateBlockAttributes } = dispatch('core/block-editor');
-				const {
-					'maxi-version-current': maxiVersionCurrent,
-					'maxi-version-origin': maxiVersionOrigin,
-				} = this.props.attributes;
+		// Load settings directly from injected window.maxiSettings
+		const settingsStart = performance.now();
 
-				// Only update if we have a valid version from settings
-				if (maxiVersion) {
-					const updates = {};
+		// Get settings directly from window - no async resolver needed
+		const settings = window.maxiSettings || {};
+		const settingsEnd = performance.now();
+		const settingsTime = settingsEnd - settingsStart;
+		if (settingsTime > 100) {
+			console.log(`[MaxiBlocks Perf] ${uniqueID || 'unknown'}: Settings loaded in ${settingsTime.toFixed(2)}ms`);
+		}
 
-					// Update current version if different
-					if (maxiVersion !== maxiVersionCurrent) {
-						updates['maxi-version-current'] = maxiVersion;
-					}
+		const maxiVersion = settings.maxi_version;
+		const { updateBlockAttributes } = dispatch('core/block-editor');
+		const {
+			'maxi-version-current': maxiVersionCurrent,
+			'maxi-version-origin': maxiVersionOrigin,
+		} = this.props.attributes;
 
-					// Set origin version if not set
-					if (!maxiVersionOrigin) {
-						updates['maxi-version-origin'] = maxiVersion;
-					}
+		// Only update if we have a valid version from settings
+		if (maxiVersion) {
+			const updates = {};
 
-					// Only dispatch if we have updates
-					if (Object.keys(updates).length > 0) {
-						updateBlockAttributes(this.props.clientId, updates);
-					}
-				}
-			});
+			// Update current version if different
+			if (maxiVersion !== maxiVersionCurrent) {
+				updates['maxi-version-current'] = maxiVersion;
+			}
+
+			// Set origin version if not set
+			if (!maxiVersionOrigin) {
+				updates['maxi-version-origin'] = maxiVersion;
+			}
+
+			// Only dispatch if we have updates
+			if (Object.keys(updates).length > 0) {
+				updateBlockAttributes(this.props.clientId, updates);
+			}
+		}
 
 		// Check if the block is reusable
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
@@ -401,6 +422,13 @@ class MaxiBlockComponent extends Component {
 			} catch (error) {
 				console.warn('MaxiBlocks: Force update error:', error);
 			}
+		}
+
+		// Performance timing - end componentDidMount (only log if > 100ms)
+		const mountEnd = performance.now();
+		const mountTime = mountEnd - mountStart;
+		if (mountTime > 100) {
+			console.log(`[MaxiBlocks Perf] ${uniqueID || 'unknown'}: componentDidMount completed in ${mountTime.toFixed(2)}ms`);
 		}
 	}
 
@@ -1207,10 +1235,22 @@ class MaxiBlockComponent extends Component {
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
 		const { uniqueID } = this.props.attributes;
 
+		// Performance timing - start displayStyles
+		const displayStylesStart = performance.now();
+
 		// Early return for invalid states
 		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
 			return;
 		}
+
+		// Helper to log displayStyles performance (only if > 100ms)
+		const logDisplayStylesPerf = () => {
+			const displayStylesEnd = performance.now();
+			const displayStylesTime = displayStylesEnd - displayStylesStart;
+			if (displayStylesTime > 100) {
+				console.log(`[MaxiBlocks Perf] ${uniqueID}: displayStyles completed in ${displayStylesTime.toFixed(2)}ms`);
+			}
+		};
 
 		// Update references if they're null (but don't do it too frequently)
 		if (!this.editorIframe || !this.isElementInDOM(this.editorIframe)) {

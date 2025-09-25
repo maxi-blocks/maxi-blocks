@@ -13,7 +13,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import { dispatch, select } from '@wordpress/data';
+import { dispatch, resolveSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -344,35 +344,37 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		// Load settings from injected data (no API call needed)
-		if (window.maxiSettings) {
-			const maxiVersion = window.maxiSettings.maxi_version;
-			const { updateBlockAttributes } = dispatch('core/block-editor');
-			const {
-				'maxi-version-current': maxiVersionCurrent,
-				'maxi-version-origin': maxiVersionOrigin,
-			} = this.props.attributes;
+		// Load settings using WordPress data store
+		resolveSelect('maxiBlocks')
+			.receiveMaxiSettings()
+			.then(settings => {
+				const maxiVersion = settings.maxi_version;
+				const { updateBlockAttributes } = dispatch('core/block-editor');
+				const {
+					'maxi-version-current': maxiVersionCurrent,
+					'maxi-version-origin': maxiVersionOrigin,
+				} = this.props.attributes;
 
-			// Only update if we have a valid version from settings
-			if (maxiVersion) {
-				const updates = {};
+				// Only update if we have a valid version from settings
+				if (maxiVersion) {
+					const updates = {};
 
-				// Update current version if different
-				if (maxiVersion !== maxiVersionCurrent) {
-					updates['maxi-version-current'] = maxiVersion;
+					// Update current version if different
+					if (maxiVersion !== maxiVersionCurrent) {
+						updates['maxi-version-current'] = maxiVersion;
+					}
+
+					// Set origin version if not set
+					if (!maxiVersionOrigin) {
+						updates['maxi-version-origin'] = maxiVersion;
+					}
+
+					// Only dispatch if we have updates
+					if (Object.keys(updates).length > 0) {
+						updateBlockAttributes(this.props.clientId, updates);
+					}
 				}
-
-				// Set origin version if not set
-				if (!maxiVersionOrigin) {
-					updates['maxi-version-origin'] = maxiVersion;
-				}
-
-				// Only dispatch if we have updates
-				if (Object.keys(updates).length > 0) {
-					updateBlockAttributes(this.props.clientId, updates);
-				}
-			}
-		}
+			});
 
 		// Check if the block is reusable
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');

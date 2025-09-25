@@ -16,8 +16,7 @@ import Icon from '@components/icon';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import TextBold from '@components/toolbar/components/text-bold';
 import TextFormatStrikethrough from '@components/toolbar/components/text-format-strikethrough';
-import TextFormatSubscript from '@components/toolbar/components/text-format-subscript';
-import TextFormatSuperscript from '@components/toolbar/components/text-format-superscript';
+
 import TextFormatUnderline from '@components/toolbar/components/text-format-underline';
 import TextItalic from '@components/toolbar/components/text-italic';
 import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
@@ -365,16 +364,6 @@ const TextOptions = props => {
 										tooltipsHide={tooltipsHide}
 									/>
 									<TextFormatStrikethrough
-										onChangeFormat={onChangeFormat}
-										getValue={getValue}
-										tooltipsHide={tooltipsHide}
-									/>
-									<TextFormatSubscript
-										onChangeFormat={onChangeFormat}
-										getValue={getValue}
-										tooltipsHide={tooltipsHide}
-									/>
-									<TextFormatSuperscript
 										onChangeFormat={onChangeFormat}
 										getValue={getValue}
 										tooltipsHide={tooltipsHide}

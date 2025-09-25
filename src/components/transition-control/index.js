@@ -100,6 +100,7 @@ const TransitionControl = props => {
 						},
 					]}
 					fullWidthMode
+					className='maxi-default-styles-control'
 					onChange={val => setSplitMode(val)}
 				/>
 			)}

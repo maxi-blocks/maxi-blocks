@@ -13,7 +13,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import { dispatch, resolveSelect, select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -66,63 +66,6 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  * Constants
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
-
-/**
- * Minimal global settings cache
- */
-const maxiGlobalCache = {
-	settingsCache: null,
-	settingsPromise: null,
-	cacheTimestamp: null,
-	activeBlockCount: 0,
-	CACHE_EXPIRY_TIME: 300000, // 5 minutes
-
-	/**
-	 * Increments the active block count
-	 */
-	incrementBlockCount() {
-		this.activeBlockCount += 1;
-	},
-
-	/**
-	 * Decrements the active block count and clears cache if no blocks remain
-	 */
-	decrementBlockCount() {
-		this.activeBlockCount = Math.max(0, this.activeBlockCount - 1);
-		if (this.activeBlockCount === 0) {
-			this.clearCache();
-		}
-	},
-
-	/**
-	 * Clears the global cache
-	 */
-	clearCache() {
-		this.settingsCache = null;
-		this.settingsPromise = null;
-		this.cacheTimestamp = null;
-	},
-
-	/**
-	 * Checks if cache is expired and clears it if needed
-	 */
-	checkCacheExpiry() {
-		if (
-			this.cacheTimestamp &&
-			Date.now() - this.cacheTimestamp > this.CACHE_EXPIRY_TIME
-		) {
-			this.clearCache();
-		}
-	},
-
-	/**
-	 * Sets cache with timestamp
-	 */
-	setCache(settings) {
-		this.settingsCache = settings;
-		this.cacheTimestamp = Date.now();
-	},
-};
 
 /**
  * Class
@@ -199,9 +142,6 @@ class MaxiBlockComponent extends Component {
 			return;
 		}
 		this.safeDispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
-
-		// Register this block with global cache for proper cleanup
-		maxiGlobalCache.incrementBlockCount();
 
 		// Block successfully registered
 
@@ -404,37 +344,35 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		// Load settings using WordPress data store
-		resolveSelect('maxiBlocks')
-			.receiveMaxiSettings()
-			.then(settings => {
-				const maxiVersion = settings.maxi_version;
-				const { updateBlockAttributes } = dispatch('core/block-editor');
-				const {
-					'maxi-version-current': maxiVersionCurrent,
-					'maxi-version-origin': maxiVersionOrigin,
-				} = this.props.attributes;
+		// Load settings from injected data (no API call needed)
+		if (window.maxiSettings) {
+			const maxiVersion = window.maxiSettings.maxi_version;
+			const { updateBlockAttributes } = dispatch('core/block-editor');
+			const {
+				'maxi-version-current': maxiVersionCurrent,
+				'maxi-version-origin': maxiVersionOrigin,
+			} = this.props.attributes;
 
-				// Only update if we have a valid version from settings
-				if (maxiVersion) {
-					const updates = {};
+			// Only update if we have a valid version from settings
+			if (maxiVersion) {
+				const updates = {};
 
-					// Update current version if different
-					if (maxiVersion !== maxiVersionCurrent) {
-						updates['maxi-version-current'] = maxiVersion;
-					}
-
-					// Set origin version if not set
-					if (!maxiVersionOrigin) {
-						updates['maxi-version-origin'] = maxiVersion;
-					}
-
-					// Only dispatch if we have updates
-					if (Object.keys(updates).length > 0) {
-						updateBlockAttributes(this.props.clientId, updates);
-					}
+				// Update current version if different
+				if (maxiVersion !== maxiVersionCurrent) {
+					updates['maxi-version-current'] = maxiVersion;
 				}
-			});
+
+				// Set origin version if not set
+				if (!maxiVersionOrigin) {
+					updates['maxi-version-origin'] = maxiVersion;
+				}
+
+				// Only dispatch if we have updates
+				if (Object.keys(updates).length > 0) {
+					updateBlockAttributes(this.props.clientId, updates);
+				}
+			}
+		}
 
 		// Check if the block is reusable
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
@@ -685,11 +623,6 @@ class MaxiBlockComponent extends Component {
 			this.templateModal
 		)
 			return;
-
-		// Unregister this block from global cache
-		maxiGlobalCache.decrementBlockCount();
-
-		// No cleanup needed since we're not using caching
 
 		// Clear all timeouts to prevent memory leaks (more comprehensive)
 		if (this.settingsTimeout) {

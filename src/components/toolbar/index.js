@@ -136,18 +136,10 @@ const MaxiToolbar = memo(
 			select('core/block-editor')
 		);
 
-		const { tooltipsHide } = useSelect(select => {
-			const { receiveMaxiSettings } = select('maxiBlocks');
-
-			const maxiSettings = receiveMaxiSettings();
-			const { hide_tooltips: hideTooltips } = maxiSettings;
-
-			const tooltipsHide = !isEmpty(hideTooltips) ? hideTooltips : false;
-
-			return {
-				tooltipsHide,
-			};
-		}, []);
+		// Use injected settings instead of API call
+		const tooltipsHide = !isEmpty(window.maxiSettings?.hide_tooltips)
+			? window.maxiSettings.hide_tooltips
+			: false;
 
 		const { breakpoint, styleCard } = useSelect(select => {
 			const { receiveMaxiDeviceType } = select('maxiBlocks');

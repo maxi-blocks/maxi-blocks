@@ -199,11 +199,9 @@ const TextOptions = props => {
 			'maxiBlocks/style-cards'
 		);
 
-		const { receiveMaxiSettings } = select('maxiBlocks');
-
-		const maxiSettings = receiveMaxiSettings();
-		const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
-			? maxiSettings.hide_tooltips
+		// Use injected settings instead of API call
+		const tooltipsHide = !isEmpty(window.maxiSettings?.hide_tooltips)
+			? window.maxiSettings.hide_tooltips
 			: false;
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};

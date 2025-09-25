@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
 import { renderToString } from '@wordpress/element';
 
 /**
@@ -66,18 +65,12 @@ class edit extends MaxiBlockComponent {
 			});
 		}
 
-		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
-		receiveMaxiSettings()
-			.then(maxiSettings => {
-				const googleApiKey = maxiSettings?.google_api_key;
-				this.setState({
-					googleApiKey,
-					isApiKeyLoading: false,
-				});
-			})
-			.catch(() => {
-				this.setState({ isApiKeyLoading: false });
-			});
+		// Use injected settings instead of API call
+		const googleApiKey = window.maxiSettings?.google_api_key;
+		this.setState({
+			googleApiKey,
+			isApiKeyLoading: false,
+		});
 	}
 
 	render() {

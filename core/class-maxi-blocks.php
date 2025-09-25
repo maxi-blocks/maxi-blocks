@@ -150,6 +150,12 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'apiRoot' => esc_url_raw(rest_url()),
             ]);
 
+            // Inject MaxiBlocks settings directly to avoid API calls
+            if (class_exists('MaxiBlocks_API')) {
+                $api = new MaxiBlocks_API();
+                wp_localize_script('maxi-blocks-block-editor', 'maxiSettings', $api->get_maxi_blocks_options());
+            }
+
             // Add license settings for authentication context
             // Only add license settings if we have a dashboard instance already
             if (class_exists('MaxiBlocks_Dashboard') && method_exists('MaxiBlocks_Dashboard', 'get_instance')) {

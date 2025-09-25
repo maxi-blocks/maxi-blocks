@@ -129,5 +129,11 @@
 		"plugins": {
 			"autoprefixer": {}
 		}
+	},
+	"overrides": {
+		"cookie": "^0.7.0",
+		"ws": "^8.18.0",
+		"tar-fs": "^3.0.9",
+		"cross-spawn": "^7.0.6"
 	}
 }

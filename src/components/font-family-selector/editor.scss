@@ -1,8 +1,6 @@
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	.maxi-font-family-selector {
 		.maxi-font-family-selector__control {
-			border-color: var(--maxi-grey);
-
 			&--is-focused,
 			&:focus {
 				border-color: var(--maxi-secondary-color);
@@ -15,8 +13,13 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 .maxi-font-family-selector {
 	z-index: 9;
 	display: block;
-	width: 100%;
 	height: 32px;
+
+	&__container {
+		position: relative;
+		width: 100% !important;
+		flex: 1;
+	}
 
 	.maxi-font-family-selector__control {
 		&__menu {
@@ -110,5 +113,25 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			margin: auto 2px;
 			background-color: var(--maxi-grey-light);
 		}
+	}
+
+	// Reset button positioning
+	.maxi-reset-button--absolute {
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 10;
+	}
+
+	.maxi-reset-button--top-right {
+		top: 0;
+		right: 0;
+	}
+}
+
+// Position reset button relative to BaseControl field for font family selector
+.maxi-font-family-selector-control {
+	.maxi-base-control__field {
+		position: relative;
 	}
 }

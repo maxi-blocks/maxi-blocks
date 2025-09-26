@@ -61,9 +61,19 @@ export class RelationCleanupManager {
 	 * @param {number} priority  - Cleanup priority
 	 */
 	scheduleBatchCleanup(instances, priority = CLEANUP_PRIORITY.NORMAL) {
+		// Validate input and filter out falsy entries
+		if (!Array.isArray(instances)) {
+			return;
+		}
+
+		const validInstances = instances.filter(instance => instance);
+		if (validInstances.length === 0) {
+			return;
+		}
+
 		this.cleanupQueue.push({
 			type: 'batch',
-			instances,
+			instances: validInstances,
 			priority,
 			timestamp: Date.now(),
 		});
@@ -204,22 +214,48 @@ export class RelationCleanupManager {
 	}
 
 	removeEventListeners(instance) {
-		if (instance?.element && instance.element.removeEventListener) {
-			try {
-				// Clone element to remove all listeners
-				if (instance.element.cloneNode) {
-					const newElement = instance.element.cloneNode(true);
-					if (instance.element.parentNode) {
-						instance.element.parentNode.replaceChild(
-							newElement,
-							instance.element
-						);
-						instance.element = newElement;
+		if (!instance?.element) {
+			return;
+		}
+
+		try {
+			// First try to remove tracked event listeners if available
+			if (instance.handlers && Array.isArray(instance.handlers)) {
+				instance.handlers.forEach(handler => {
+					try {
+						if (handler.type && handler.listener) {
+							instance.element.removeEventListener(
+								handler.type,
+								handler.listener,
+								handler.options
+							);
+						}
+					} catch (error) {
+						console.warn('Failed to remove tracked event listener:', error);
 					}
+				});
+				instance.handlers = [];
+			} else if (instance.element.removeEventListener && instance.element.cloneNode) {
+				// Fall back to cloning as last resort
+				const newElement = instance.element.cloneNode(true);
+				if (instance.element.parentNode) {
+					instance.element.parentNode.replaceChild(
+						newElement,
+						instance.element
+					);
+					instance.element = newElement;
 				}
-			} catch (error) {
-				// Silently continue if we can't remove listeners
 			}
+
+			// Clean up any stored DOM references
+			const domProps = ['element', 'container', 'wrapper', 'target'];
+			domProps.forEach(prop => {
+				if (instance[prop] && instance[prop] !== instance.element) {
+					instance[prop] = null;
+				}
+			});
+		} catch (error) {
+			console.warn('Failed to remove event listeners:', error);
 		}
 	}
 

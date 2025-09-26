@@ -1920,11 +1920,29 @@ class MaxiBlockComponent extends Component {
 
 		// Get or create cached selector
 		if (!this.storeSelectors.has(key)) {
-			this.storeSelectors.set(key, select(storeName)[selectorName]);
+			try {
+				const store = select(storeName);
+				if (!store || typeof store[selectorName] !== 'function') {
+					this.storeSelectors.set(key, null);
+					return undefined;
+				}
+				this.storeSelectors.set(key, store[selectorName]);
+			} catch (error) {
+				console.warn(`Failed to access selector ${key}:`, error);
+				this.storeSelectors.set(key, null);
+				return undefined;
+			}
 		}
 
 		const selector = this.storeSelectors.get(key);
-		return selector(...args);
+		if (!selector) return undefined;
+
+		try {
+			return selector(...args);
+		} catch (error) {
+			console.warn(`Selector ${key} threw an error:`, error);
+			return undefined;
+		}
 	}
 
 	/**

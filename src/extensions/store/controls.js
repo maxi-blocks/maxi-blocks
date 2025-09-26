@@ -9,9 +9,8 @@ const controls = {
 		// Return injected settings directly (no API call)
 		if (window.maxiSettings) {
 			return window.maxiSettings;
-		} else {
-			return apiFetch({ path: '/maxi-blocks/v1.0/settings' });
 		}
+		return apiFetch({ path: '/maxi-blocks/v1.0/settings' });
 	},
 	async RECEIVE_BREAKPOINTS() {
 		return apiFetch({ path: '/maxi-blocks/v1.0/breakpoints/' });

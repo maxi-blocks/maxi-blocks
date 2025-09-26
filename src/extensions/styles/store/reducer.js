@@ -22,12 +22,22 @@ class CSSCache extends MemoCache {
 
 	set(key, value) {
 		// Estimate memory usage of the CSS content
-		const estimatedSize = JSON.stringify(value).length;
-		this.memoryStats.totalSize += estimatedSize;
-		this.memoryStats.averageSize =
-			this.memoryStats.totalSize / (this.size() + 1);
+		const newSize = JSON.stringify(value).length;
+
+		// Check for existing value and subtract its size from totalSize
+		const oldValue = this.get(key);
+		if (oldValue !== undefined) {
+			const oldSize = JSON.stringify(oldValue).length;
+			this.memoryStats.totalSize -= oldSize;
+		}
 
 		super.set(key, value);
+
+		// Update totalSize with new value
+		this.memoryStats.totalSize += newSize;
+
+		// Recompute averageSize using post-insert size
+		this.memoryStats.averageSize = this.memoryStats.totalSize / this.size();
 
 		// Only check memory usage periodically (every 10 additions) to avoid performance issues
 		if (this.size() % 10 === 0) {
@@ -121,7 +131,9 @@ class CSSCache extends MemoCache {
 				// Only log in development or debug mode to reduce console noise
 				const isDebugMode =
 					process.env.NODE_ENV === 'development' ||
-					localStorage.getItem('maxiBlocks-debug') === 'true';
+					(typeof window !== 'undefined' &&
+						window.localStorage &&
+						localStorage.getItem('maxiBlocks-debug') === 'true');
 				if (isDebugMode) {
 					console.log(
 						`MaxiBlocks CSS Cache: Auto-cleanup triggered. Reduced from ${oldSize} to ${newSize} entries`

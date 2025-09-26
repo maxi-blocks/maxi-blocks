@@ -190,6 +190,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
                     const { select, dispatch } = wp.data;
                     let saveInProgress = false;
+                    let originalSavePost = null;
 
                     function getCurrentVersion() {
                         if (window.maxiSettings?.pluginVersion) {
@@ -198,42 +199,56 @@ if (!class_exists('MaxiBlocks_Blocks')):
                         return '" . MAXI_PLUGIN_VERSION . "';
                     }
 
-                    wp.data.subscribe(() => {
-                        const isSavingPost = select('core/editor')?.isSavingPost?.();
-                        const isAutosavingPost = select('core/editor')?.isAutosavingPost?.();
+                    function updateBlockVersions() {
+                        const currentVersion = getCurrentVersion();
+                        if (!currentVersion) return;
 
-                        if (isSavingPost && !isAutosavingPost && !saveInProgress) {
-                            saveInProgress = true;
+                        const clientIds = select('core/block-editor').getClientIdsWithDescendants();
 
-                            const currentVersion = getCurrentVersion();
-                            if (!currentVersion) return;
+                        clientIds.forEach(clientId => {
+                            const block = select('core/block-editor').getBlock(clientId);
+                            if (block && block.name && block.name.startsWith('maxi-blocks/')) {
+                                const attrs = block.attributes;
+                                const needsCurrentUpdate = !attrs['maxi-version-current'] || attrs['maxi-version-current'] !== currentVersion;
+                                const needsOriginUpdate = !attrs['maxi-version-origin'];
 
-                            const clientIds = select('core/block-editor').getClientIdsWithDescendants();
-
-                            clientIds.forEach(clientId => {
-                                const block = select('core/block-editor').getBlock(clientId);
-                                if (block && block.name && block.name.startsWith('maxi-blocks/')) {
-                                    const attrs = block.attributes;
-                                    const needsCurrentUpdate = !attrs['maxi-version-current'] || attrs['maxi-version-current'] !== currentVersion;
-                                    const needsOriginUpdate = !attrs['maxi-version-origin'];
-
-                                    if (needsCurrentUpdate || needsOriginUpdate) {
-                                        const newAttrs = {};
-                                        if (needsCurrentUpdate) {
-                                            newAttrs['maxi-version-current'] = currentVersion;
-                                        }
-                                        if (needsOriginUpdate) {
-                                            newAttrs['maxi-version-origin'] = currentVersion;
-                                        }
-                                        dispatch('core/block-editor').updateBlockAttributes(clientId, newAttrs);
+                                if (needsCurrentUpdate || needsOriginUpdate) {
+                                    const newAttrs = {};
+                                    if (needsCurrentUpdate) {
+                                        newAttrs['maxi-version-current'] = currentVersion;
                                     }
+                                    if (needsOriginUpdate) {
+                                        newAttrs['maxi-version-origin'] = currentVersion;
+                                    }
+                                    dispatch('core/block-editor').updateBlockAttributes(clientId, newAttrs);
                                 }
-                            });
-                        }
+                            }
+                        });
+                    }
 
-                        if (!isSavingPost && saveInProgress) {
-                            saveInProgress = false;
+                    // Intercept the save process
+                    function interceptSavePost() {
+                        const editorDispatch = dispatch('core/editor');
+
+                        // Store the original savePost function
+                        if (!originalSavePost && editorDispatch.savePost) {
+                            originalSavePost = editorDispatch.savePost;
+
+                            // Replace with our version
+                            editorDispatch.savePost = function(options = {}) {
+                                // Update versions first before save
+                                updateBlockVersions();
+
+                                // Then call original save with all changes included
+                                return originalSavePost.call(this, options);
+                            };
                         }
+                    }
+
+                    // Set up the intercept when the editor is ready
+                    wp.domReady(() => {
+                        // Small delay to ensure editor is fully initialized
+                        setTimeout(interceptSavePost, 100);
                     });
                 })();
                 "

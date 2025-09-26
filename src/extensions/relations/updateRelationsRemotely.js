@@ -39,88 +39,88 @@ const updateRelationsRemotely = ({
 	const newRelations = [];
 
 	for (const item of Object.values(relations)) {
-		if (isEmpty(item.attributes)) continue;
-		if (item.uniqueID !== uniqueID) {
+		if (isEmpty(item.attributes)) {
+			// Skip items with empty attributes
+		} else if (item.uniqueID !== uniqueID) {
 			newRelations.push(item);
-			continue;
-		}
+		} else {
+			const selectedSettings = getSelectedIBSettings(
+				blockTargetClientId,
+				item.sid
+			);
+			const prefix = selectedSettings?.prefix || '';
+			const relationsAttributes = item.attributes || {};
 
-		const selectedSettings = getSelectedIBSettings(
-			blockTargetClientId,
-			item.sid
-		);
-		const prefix = selectedSettings?.prefix || '';
-		const relationsAttributes = item.attributes || {};
+			// Handle background layers special case
+			if (item.sid === BGL_SID) {
+				const relationBGLayers = relationsAttributes['background-layers'];
+				const blockBGLayers = blockAttributes['background-layers'];
 
-		// Handle background layers special case
-		if (item.sid === BGL_SID) {
-			const relationBGLayers = relationsAttributes['background-layers'];
-			const blockBGLayers = blockAttributes['background-layers'];
-
-			if (
-				relationBGLayers &&
-				blockBGLayers &&
-				relationBGLayers.length !== blockBGLayers.length
-			) {
-				if (blockBGLayers.length === 0) {
-					relationsAttributes['background-layers'] = [];
-				} else {
-					// Use Set for O(1) lookup
-					const blockLayerIds = new Set(
-						blockBGLayers.map(layer => layer.id)
-					);
-					relationsAttributes['background-layers'] =
-						relationBGLayers.filter(layer =>
-							blockLayerIds.has(layer.id)
+				if (
+					relationBGLayers &&
+					blockBGLayers &&
+					relationBGLayers.length !== blockBGLayers.length
+				) {
+					if (blockBGLayers.length === 0) {
+						relationsAttributes['background-layers'] = [];
+					} else {
+						// Use Set for O(1) lookup
+						const blockLayerIds = new Set(
+							blockBGLayers.map(layer => layer.id)
 						);
+						relationsAttributes['background-layers'] =
+							relationBGLayers.filter(layer =>
+								blockLayerIds.has(layer.id)
+							);
+					}
 				}
 			}
-		}
 
-		const { cleanAttributesObject, tempAttributes } =
-			getCleanResponseIBAttributes(
-				item.attributes,
-				blockAttributes,
-				item.uniqueID,
-				selectedSettings,
-				breakpoint,
-				prefix,
-				item.sid,
-				blockTriggerClientId
+			const { cleanAttributesObject, tempAttributes } =
+				getCleanResponseIBAttributes(
+					item.attributes,
+					blockAttributes,
+					item.uniqueID,
+					selectedSettings,
+					breakpoint,
+					prefix,
+					item.sid,
+					blockTriggerClientId
+				);
+
+			const mergedAttributes = merge(
+				{},
+				cleanAttributesObject,
+				tempAttributes
 			);
-
-		const mergedAttributes = merge(
-			{},
-			cleanAttributesObject,
-			tempAttributes
-		);
-		const styles = getIBStyles({
-			stylesObj: getIBStylesObj({
-				clientId: blockTargetClientId,
-				sid: item.sid,
-				attributes: mergedAttributes,
+			const styles = getIBStyles({
+				stylesObj: getIBStylesObj({
+					clientId: blockTargetClientId,
+					sid: item.sid,
+					attributes: mergedAttributes,
+					blockAttributes,
+					breakpoint,
+				}),
 				blockAttributes,
-				breakpoint,
-			}),
-			blockAttributes,
-			isFirst: true,
-		});
+				isFirst: true,
+			});
 
-		const newItem = {
-			...item,
-			attributes: { ...item.attributes, ...cleanAttributesObject },
-			css: styles,
-		};
-
-		// Handle transition effects
-		if (item.sid === TRANSITION_SID) {
-			newItem.effects = {
-				...item.effects,
-				transitionTarget: Object.keys(styles),
+			const newItem = {
+				...item,
+				attributes: { ...item.attributes, ...cleanAttributesObject },
+				css: styles,
 			};
-		}
 
-		newRelations.push(newItem);
+			// Handle transition effects
+			if (item.sid === TRANSITION_SID) {
+				newItem.effects = {
+					...item.effects,
+					transitionTarget: Object.keys(styles),
+				};
+			}
+
+			newRelations.push(newItem);
+		}
 	}
 
 	if (!isEmpty(diff(relations, newRelations))) {

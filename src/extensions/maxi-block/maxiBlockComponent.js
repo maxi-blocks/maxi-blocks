@@ -90,7 +90,6 @@ class MaxiBlockComponent extends Component {
 
 		const { clientId } = this.props;
 
-
 		this.isReusable = false;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
@@ -196,8 +195,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		const { uniqueID } = this.props.attributes;
-
 		// Step 1: DOM references
 		this.updateDOMReferences();
 
@@ -570,19 +567,19 @@ class MaxiBlockComponent extends Component {
 
 			// If there's a relation affecting this concrete block, check if is necessary
 			// to update it's content to keep the coherence and the good UX
-			const blocksIBRelations = select(
-				'maxiBlocks/relations'
-			).receiveBlockUnderRelationClientIDs(uniqueID);
+			// const blocksIBRelations = select(
+			// 	'maxiBlocks/relations'
+			// ).receiveBlockUnderRelationClientIDs(uniqueID);
 
-			if (!isEmpty(blocksIBRelations))
-				blocksIBRelations.forEach(({ clientId }) =>
-					updateRelationsRemotely({
-						blockTriggerClientId: clientId,
-						blockTargetClientId: this.props.clientId,
-						blockAttributes: this.props.attributes,
-						breakpoint: this.props.deviceType,
-					})
-				);
+			// if (!isEmpty(blocksIBRelations))
+			// 	blocksIBRelations.forEach(({ clientId }) =>
+			// 		updateRelationsRemotely({
+			// 			blockTriggerClientId: clientId,
+			// 			blockTargetClientId: this.props.clientId,
+			// 			blockAttributes: this.props.attributes,
+			// 			breakpoint: this.props.deviceType,
+			// 		})
+			// 	);
 		}
 
 		this.hideGutenbergPopover();

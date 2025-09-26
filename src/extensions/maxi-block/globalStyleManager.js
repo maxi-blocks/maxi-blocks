@@ -75,8 +75,12 @@ class DocumentStyleManager {
 
 		this.updateScheduled = true;
 
-		// Use requestAnimationFrame for optimal performance
-		requestAnimationFrame(() => {
+		// Use document-specific requestAnimationFrame for iframe compatibility
+		const requestFrame =
+			this.document?.defaultView?.requestAnimationFrame ||
+			requestAnimationFrame;
+
+		requestFrame(() => {
 			this.flush();
 			this.updateScheduled = false;
 		});
@@ -197,20 +201,36 @@ class GlobalStyleManager {
 	 * Add or update block styles
 	 * @param {string}   uniqueID       - Block unique identifier
 	 * @param {string}   styleContent   - CSS content for the block
-	 * @param {Document} targetDocument - Target document (default: document)
+	 * @param {Document} targetDocument - Target document
 	 */
-	addBlockStyles(uniqueID, styleContent, targetDocument = document) {
-		const manager = this.getDocumentManager(targetDocument);
+	addBlockStyles(uniqueID, styleContent, targetDocument) {
+		const resolvedDocument =
+			targetDocument === undefined
+				? typeof document !== 'undefined'
+					? document
+					: null
+				: targetDocument;
+		if (!resolvedDocument) return;
+
+		const manager = this.getDocumentManager(resolvedDocument);
 		manager.addBlockStyles(uniqueID, styleContent);
 	}
 
 	/**
 	 * Remove block styles
 	 * @param {string}   uniqueID       - Block unique identifier
-	 * @param {Document} targetDocument - Target document (default: document)
+	 * @param {Document} targetDocument - Target document
 	 */
-	removeBlockStyles(uniqueID, targetDocument = document) {
-		const manager = this.getDocumentManager(targetDocument);
+	removeBlockStyles(uniqueID, targetDocument) {
+		const resolvedDocument =
+			targetDocument === undefined
+				? typeof document !== 'undefined'
+					? document
+					: null
+				: targetDocument;
+		if (!resolvedDocument) return;
+
+		const manager = this.getDocumentManager(resolvedDocument);
 		manager.removeBlockStyles(uniqueID);
 	}
 
@@ -274,13 +294,17 @@ export const getGlobalStyleManager = () => {
  * @param {string}   styleContent   - CSS content
  * @param {Document} targetDocument - Target document
  */
-export const addBlockStyles = (
-	uniqueID,
-	styleContent,
-	targetDocument = document
-) => {
+export const addBlockStyles = (uniqueID, styleContent, targetDocument) => {
+	const resolvedDocument =
+		targetDocument === undefined
+			? typeof document !== 'undefined'
+				? document
+				: null
+			: targetDocument;
+	if (!resolvedDocument) return;
+
 	const manager = getGlobalStyleManager();
-	manager.addBlockStyles(uniqueID, styleContent, targetDocument);
+	manager.addBlockStyles(uniqueID, styleContent, resolvedDocument);
 };
 
 /**
@@ -288,9 +312,17 @@ export const addBlockStyles = (
  * @param {string}   uniqueID       - Block unique identifier
  * @param {Document} targetDocument - Target document
  */
-export const removeBlockStyles = (uniqueID, targetDocument = document) => {
+export const removeBlockStyles = (uniqueID, targetDocument) => {
+	const resolvedDocument =
+		targetDocument === undefined
+			? typeof document !== 'undefined'
+				? document
+				: null
+			: targetDocument;
+	if (!resolvedDocument) return;
+
 	const manager = getGlobalStyleManager();
-	manager.removeBlockStyles(uniqueID, targetDocument);
+	manager.removeBlockStyles(uniqueID, resolvedDocument);
 };
 
 export default GlobalStyleManager;

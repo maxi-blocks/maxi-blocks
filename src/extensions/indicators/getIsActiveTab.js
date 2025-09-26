@@ -15,7 +15,7 @@ const getIsActiveTab = (
 	ignoreIndicatorGroups = []
 ) => {
 	const { show_indicators: showIndicators } =
-		window.maxiSettings || {};
+		(typeof window !== 'undefined' && window.maxiSettings) || {};
 
 	if (!showIndicators) return false;
 

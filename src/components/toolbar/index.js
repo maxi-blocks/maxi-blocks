@@ -137,9 +137,10 @@ const MaxiToolbar = memo(
 		);
 
 		// Use injected settings instead of API call
-		const tooltipsHide = !isEmpty(window.maxiSettings?.hide_tooltips)
-			? window.maxiSettings.hide_tooltips
-			: false;
+		const tooltipsHide =
+			typeof window !== 'undefined'
+				? window.maxiSettings?.hide_tooltips ?? false
+				: false;
 
 		const { breakpoint, styleCard } = useSelect(select => {
 			const { receiveMaxiDeviceType } = select('maxiBlocks');

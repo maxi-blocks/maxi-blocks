@@ -193,8 +193,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
                     let originalSavePost = null;
 
                     function getCurrentVersion() {
-                        if (window.maxiSettings?.pluginVersion) {
-                            return window.maxiSettings.pluginVersion;
+                        if (window.maxiSettings?.maxi_version) {
+                            return window.maxiSettings.maxi_version;
                         }
                         return '" . MAXI_PLUGIN_VERSION . "';
                     }

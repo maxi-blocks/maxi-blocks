@@ -66,10 +66,15 @@ class edit extends MaxiBlockComponent {
 		}
 
 		// Use injected settings instead of API call
-		const googleApiKey = window.maxiSettings?.google_api_key;
+		const googleApiKey =
+			typeof window !== 'undefined'
+				? window.maxiSettings?.google_api_key || ''
+				: '';
+		const provider = attributes?.['map-provider'];
 		this.setState({
 			googleApiKey,
-			isApiKeyLoading: false,
+			// Keep loader only if Google provider requires a missing key
+			isApiKeyLoading: provider === 'googlemaps' && !googleApiKey,
 		});
 	}
 
@@ -98,15 +103,16 @@ class edit extends MaxiBlockComponent {
 				showLoader={this.state.showLoader || isApiKeyLoading}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				{!isApiKeyLoading && (
-					<MapContent
-						{...this.props}
-						apiKey={googleApiKey}
-						isFirstClick={this.state.isFirstClick}
-						isGoogleMaps={mapProvider === 'googlemaps'}
-						isSelected={isSelected}
-					/>
-				)}
+				{!isApiKeyLoading &&
+					(mapProvider !== 'googlemaps' || !!googleApiKey) && (
+						<MapContent
+							{...this.props}
+							apiKey={googleApiKey}
+							isFirstClick={this.state.isFirstClick}
+							isGoogleMaps={mapProvider === 'googlemaps'}
+							isSelected={isSelected}
+						/>
+					)}
 			</MaxiBlock>,
 		];
 	}

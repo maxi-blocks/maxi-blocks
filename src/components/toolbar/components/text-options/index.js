@@ -32,7 +32,6 @@ import { getGroupAttributes, getDefaultAttribute } from '@extensions/styles';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -200,9 +199,10 @@ const TextOptions = props => {
 		);
 
 		// Use injected settings instead of API call
-		const tooltipsHide = !isEmpty(window.maxiSettings?.hide_tooltips)
-			? window.maxiSettings.hide_tooltips
-			: false;
+		const tooltipsHide =
+			typeof window !== 'undefined'
+				? window.maxiSettings?.hide_tooltips ?? false
+				: false;
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 

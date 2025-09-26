@@ -1,36 +1,379 @@
+/*===============================================
+  TYPOGRAPHY CONTROL COMPONENT
+===============================================*/
+
 .maxi-typography-control {
-	.maxi-base-control {
-		flex: 1;
-		&__help {
-			color: var(--maxi-grey);
-			font-size: 12px;
-		}
-		.maxi-tabs-control__button--selected svg path {
-			fill: var(--maxi-primary-color);
-		}
-		.maxi-tabs-control__button {
-			margin-right: 5px;
-			border-radius: 4px;
-			border: 1.5px solid var(--maxi-grey-light);
-			transition: all 0.4s ease !important;
-			&:hover {
-				background-color: var(--maxi-whisper-green);
-				border-color: var(--maxi-primary-color) !important;
-			}
-		}
-		.maxi-tabs-control__button[aria-pressed='true'] {
-			background-color: var(--maxi-whisper-green) !important;
+	/*-------------------------------------------
+	  COMPONENT VARIABLES
+	-------------------------------------------*/
+	--typography-spacing-standard: 15px;
+	--typography-button-transition: all 200ms ease;
+	--typography-interactive-border: 1px solid var(--maxi-grey-light);
+	--typography-button-radius: 4px;
+
+	/*-------------------------------------------
+	  SHARED COMPONENT PATTERNS
+	-------------------------------------------*/
+
+	// Floating label pattern
+	%floating-label {
+		position: absolute !important;
+		top: -8px !important;
+		left: 10px !important;
+		font-size: 10px !important;
+		color: var(--maxi-grey) !important;
+		font-style: normal !important;
+		background: var(--maxi-white) !important;
+		padding: 0 5px !important;
+		pointer-events: none !important;
+		box-sizing: border-box !important;
+		z-index: 999 !important;
+	}
+
+	// Shared flexbox center pattern
+	%flex-center-pattern {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	// Shared button base styling
+	%button-base-pattern {
+		@extend %flex-center-pattern;
+		border: 1px solid var(--maxi-grey-light) !important;
+		border-radius: 4px !important;
+		background: var(--maxi-white) !important;
+		color: var(--maxi-black) !important;
+		cursor: pointer !important;
+		transition: all 200ms ease !important;
+		box-sizing: border-box !important;
+
+		&:hover {
 			border-color: var(--maxi-primary-color) !important;
-			color: var(--maxi-black) !important;
+			background: var(--maxi-mid-green) !important;
 		}
 	}
 
-	.maxi-typography-control__link-options {
+	// Shared interactive states for tabs
+	%tabs-interactive-states {
+		&:hover {
+			background-color: var(--maxi-mid-green);
+			border-color: var(--maxi-primary-color) !important;
+		}
+
+		&[aria-pressed='true'] {
+			background-color: var(--maxi-whisper-green) !important;
+			border-color: var(--maxi-primary-color) !important;
+			color: var(--maxi-primary-color) !important;
+		}
+	}
+
+	/*-------------------------------------------
+	  BASE CONTROL CONFIGURATION
+	-------------------------------------------*/
+	.maxi-base-control {
+		flex: 1;
+
+		&__help {
+			color: var(--maxi-grey-light);
+			font-size: 12px;
+		}
+
+		.maxi-tabs-control__button--selected svg path {
+			fill: var(--maxi-primary-color);
+		}
+
 		.maxi-tabs-control__button {
-			&--selected {
-				font-weight: 700;
-				color: var(--maxi-secondary-color) !important;
+			margin-right: 11px;
+			border-radius: 4px;
+			border: 1.5px solid var(--maxi-grey-light);
+			transition: all 400ms ease !important;
+			@extend %tabs-interactive-states;
+		}
+	}
+
+	/*-------------------------------------------
+	  LINK OPTIONS & VARIANTS
+	-------------------------------------------*/
+	.maxi-typography-control__link-options {
+		margin-left: 6px;
+
+		.maxi-tabs-control__button--selected {
+			font-weight: bold;
+			color: var(--maxi-secondary-color) !important;
+		}
+	}
+
+	/*-------------------------------------------
+	  WEIGHT & SIZE ROW LAYOUT
+	-------------------------------------------*/
+	.maxi-typography-control__weight-size-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		width: 100%;
+
+		> div {
+			flex: 1;
+			position: relative;
+		}
+
+		&:has(.maxi-typography-control__weight-warning) {
+			flex-direction: column;
+
+			.maxi-base-control__field > div {
+				display: flex !important;
+				width: 79% !important;
+				margin-bottom: -20px !important;
+			}
+
+			.maxi-advanced-number-control__value {
+				flex: 1 1 auto !important;
 			}
 		}
 	}
+
+	/*-------------------------------------------
+	  TYPOGRAPHY CONTROLS POSITIONING
+	-------------------------------------------*/
+	.maxi-typography-control__size {
+		margin-top: 3px !important;
+	}
+
+	.maxi-typography-control__weight,
+	.maxi-typography-control__size {
+		position: relative !important;
+
+		.maxi-base-control {
+			position: relative;
+
+			&__label {
+				@extend %floating-label;
+			}
+		}
+	}
+
+	/*-------------------------------------------
+	  SPACING CONTROLS LAYOUT
+	-------------------------------------------*/
+	.maxi-typography-control__spacing-controls {
+		margin-bottom: 15px !important;
+
+		.maxi-typography-control__line-height,
+		.maxi-typography-control__bottom-gap {
+			display: inline-block !important;
+			width: calc(50% - 5px) !important;
+			vertical-align: top !important;
+			position: relative !important;
+		}
+
+		.maxi-typography-control__line-height {
+			margin-right: 10px !important;
+		}
+
+		.maxi-base-control__field {
+			gap: 5px !important;
+		}
+
+		.maxi-advanced-number-control__value {
+			width: 70px !important;
+		}
+
+		.maxi-dimensions-control__units select {
+			min-width: 50px !important;
+			max-width: 50px !important;
+			width: 50px !important;
+		}
+
+		.maxi-base-control__label {
+			@extend %floating-label;
+		}
+	}
+
+	/*-------------------------------------------
+	  FORMATTING BUTTONS
+	-------------------------------------------*/
+	.maxi-typography-control__formatting-buttons {
+		display: flex !important;
+		gap: 5px !important;
+		margin-bottom: 15px !important;
+		justify-content: flex-start !important;
+		align-items: center !important;
+
+		.maxi-typography-control__format-button {
+			@extend %button-base-pattern;
+			padding: 8px !important;
+			min-width: 34px !important;
+			max-width: 34px !important;
+			height: 36px !important;
+			font-family: inherit !important;
+			font-size: 16px !important;
+			font-weight: normal !important;
+			line-height: 1 !important;
+			text-align: center !important;
+			text-decoration: none !important;
+			margin: 0 !important;
+			margin-top: -15px !important;
+
+			&[aria-pressed='true'] {
+				background: var(--maxi-whisper-green) !important;
+				color: var(--maxi-primary-color) !important;
+				border-color: var(--maxi-primary-color) !important;
+			}
+
+			&--bold {
+				font-weight: bold !important;
+			}
+
+			&--italic {
+				font-style: italic !important;
+			}
+
+			&--underline {
+				text-decoration: underline !important;
+			}
+
+			&--strikethrough {
+				text-decoration: line-through !important;
+			}
+
+			&--capitalize,
+			&--uppercase,
+			&--lowercase {
+				font-size: 16px !important;
+				font-weight: 500 !important; /* 500 is medium */
+			}
+		}
+	}
+
+	/*-------------------------------------------
+	  SEPARATORS & ADVANCED TOGGLES
+	-------------------------------------------*/
+	.maxi-typography-control__separator {
+		border: none !important;
+		border-top: 1px solid var(--maxi-grey-light) !important;
+		margin: 14px 0 !important;
+		height: 0 !important;
+		background: transparent !important;
+	}
+
+	.maxi-typography-control__advanced-toggle {
+		.components-button {
+			@extend %button-base-pattern;
+			justify-content: space-between !important;
+			width: 100% !important;
+			padding: 8px 10px !important;
+			margin-bottom: 15px !important;
+			font-size: 14px !important;
+		}
+	}
+
+	/*-------------------------------------------
+	  ADVANCED CONTROLS & ANIMATIONS
+	-------------------------------------------*/
+	.maxi-typography-control__toggle-arrow {
+		transition: transform 200ms ease;
+		transform: rotate(0);
+
+		&--expanded {
+			transform: rotate(180deg);
+		}
+	}
+
+	.maxi-typography-control-button {
+		@extend %flex-center-pattern;
+		justify-content: space-between;
+		width: 100%;
+		text-align: left;
+		margin-top: 10px;
+	}
+
+	.maxi-typography-control-arrow-span {
+		transition: transform 300ms ease;
+	}
+
+	.maxi-typography-control__advanced-options {
+		margin-top: 0 !important;
+		animation: slideDown 300ms ease-out;
+	}
+
+	/*-------------------------------------------
+	  ALIGNMENT & SPACING
+	-------------------------------------------*/
+	.maxi-typography-control__alignment-buttons {
+		margin-bottom: 8px;
+	}
+}
+
+/*===============================================
+  KEYFRAME ANIMATIONS
+===============================================*/
+@keyframes slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/*===============================================
+  EXTERNAL ALIGNMENT CONTROLS
+===============================================*/
+.maxi-typography-control__alignment-buttons
+	.maxi-typography-panel__text-alignment {
+	margin-left: 7px;
+	margin-right: 4px !important;
+
+	.maxi-tabs-control__button {
+		margin-right: 5px !important;
+
+		&:last-child {
+			margin-right: 4px !important;
+		}
+	}
+}
+
+/*===============================================
+  STYLE CARDS INTEGRATION
+===============================================*/
+.maxi-style-cards__popover,
+.maxi-accordion-control__item,
+.maxi-style-cards__sc,
+[class*='maxi-style-cards'] {
+	.maxi-typography-control[class*='maxi-style-cards-control__sc__'] {
+		.maxi-advanced-number-control__value {
+			width: 100px !important;
+		}
+
+		.maxi-typography-control__formatting-buttons
+			.maxi-typography-control__format-button {
+			min-width: 43px !important;
+			height: 36px !important;
+			font-size: 16px !important;
+			padding: 6px 10px !important;
+		}
+
+		.maxi-base-control {
+			margin-bottom: 10px !important;
+
+			&__field {
+				gap: 5px !important;
+				margin-bottom: 0 !important;
+			}
+		}
+
+		.maxi-advanced-number-control .maxi-base-control {
+			margin-bottom: 0 !important;
+		}
+	}
+}
+
+/*===============================================
+  TYPOGRAPHY PANEL INTEGRATION
+===============================================*/
+.maxi-typography-panel__font-level {
+	margin: 0 7px;
 }

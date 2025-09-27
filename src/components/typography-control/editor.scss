@@ -63,8 +63,8 @@
 
 		&[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green) !important;
-			border-color: var(--maxi-primary-color) !important;
-			color: var(--maxi-primary-color) !important;
+			border-color: var(--maxi-secondary-color) !important;
+			color: var(--maxi-secondary-color) !important;
 		}
 	}
 
@@ -104,27 +104,40 @@
 		}
 	}
 
+	.maxi-font-family-selector_container {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+
+		.maxi-reset-button {
+			position: static !important;
+			margin: 0 !important;
+		}
+	}
+
 	/*-------------------------------------------
 	  WEIGHT & SIZE ROW LAYOUT
 	-------------------------------------------*/
 	.maxi-typography-control__weight-size-row {
 		display: flex;
-		flex-wrap: wrap;
+		flex-wrap: nowrap; /* Change from wrap to nowrap */
 		gap: 10px;
 		width: 100%;
+		align-items: flex-end; /* Align items to the bottom */
 
 		> div {
-			flex: 1;
+			flex: 1 1 auto; /* Allow items to grow and shrink */
 			position: relative;
+			width: auto !important; /* Remove fixed width */
 		}
 
 		&:has(.maxi-typography-control__weight-warning) {
-			flex-direction: column;
+			flex-direction: row; /* Ensure it remains a row even with warning */
 
 			.maxi-base-control__field > div {
 				display: flex !important;
-				width: 79% !important;
-				margin-bottom: -20px !important;
+				width: auto !important; /* Adjust width */
+				margin-bottom: 0 !important; /* Reset margin */
 			}
 
 			.maxi-advanced-number-control__value {
@@ -176,14 +189,13 @@
 		}
 
 		.maxi-advanced-number-control__value {
-			width: 70px !important;
 		}
 
-		.maxi-dimensions-control__units select {
-			min-width: 50px !important;
-			max-width: 50px !important;
-			width: 50px !important;
-		}
+		// .maxi-dimensions-control__units select {
+		// 	min-width: 50px !important;
+		// 	max-width: 50px !important;
+		// 	width: 50px !important;
+		// }
 
 		.maxi-base-control__label {
 			@extend %floating-label;
@@ -217,8 +229,8 @@
 
 			&[aria-pressed='true'] {
 				background: var(--maxi-whisper-green) !important;
-				color: var(--maxi-primary-color) !important;
-				border-color: var(--maxi-primary-color) !important;
+				color: var(--maxi-secondary-color) !important;
+				border-color: var(--maxi-secondary-color) !important;
 			}
 
 			&--bold {
@@ -374,6 +386,3 @@
 /*===============================================
   TYPOGRAPHY PANEL INTEGRATION
 ===============================================*/
-.maxi-typography-panel__font-level {
-	margin: 0 7px;
-}

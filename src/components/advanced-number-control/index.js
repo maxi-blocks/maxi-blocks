@@ -278,7 +278,7 @@ const AdvancedNumberControl = props => {
 				)}
 				{showHelpContent && helpContent}
 				{value !== 'auto' && (
-					<>
+					<div className='maxi-advanced-number-control__controls-group'>
 						<div className='maxi-advanced-number-control__input-wrapper'>
 							<input
 								id={advancedNumberControlId}
@@ -446,28 +446,28 @@ const AdvancedNumberControl = props => {
 								}}
 							/>
 						)}
-					</>
-				)}
-				{!disableReset && (
-					<ResetButton
-						className={
-							resetButtonClassName
-								? `${resetButtonClassName} maxi-reset-button--typography`
-								: 'maxi-reset-button--typography'
-						}
-						onReset={() => {
-							setCurrentValue(defaultValue);
-							latestValueRef.current = defaultValue;
-							onChangeValue(defaultValue);
-							onReset();
-						}}
-						isSmall={resetButtonSize === 'small'}
-						isLarge={resetButtonSize === 'large'}
-						isAbsolute={
-							resetButtonClassName ===
-							'maxi-reset-button--absolute'
-						}
-					/>
+						{!disableReset && (
+							<ResetButton
+								className={
+									resetButtonClassName
+										? `${resetButtonClassName} maxi-reset-button--typography`
+										: 'maxi-reset-button--typography'
+								}
+								onReset={() => {
+									setCurrentValue(defaultValue);
+									latestValueRef.current = defaultValue;
+									onChangeValue(defaultValue);
+									onReset();
+								}}
+								isSmall={resetButtonSize === 'small'}
+								isLarge={resetButtonSize === 'large'}
+								isAbsolute={
+									resetButtonClassName ===
+									'maxi-reset-button--absolute'
+								}
+							/>
+						)}
+					</div>
 				)}
 
 				{!disableRange && (

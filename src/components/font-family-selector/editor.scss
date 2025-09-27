@@ -11,12 +11,17 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	}
 }
 .maxi-font-family-selector {
-	z-index: 9;
+	z-index: 200000;
 	display: block;
 	height: 32px;
+	width: 100% !important;
+	flex: 1 1 auto;
 
 	&__container {
 		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 5px;
 		width: 100% !important;
 		flex: 1;
 	}
@@ -48,6 +53,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			align-content: center;
 			height: 32px;
 			border-width: 1.5px;
+			width: 100% !important;
 
 			&:focus,
 			&:hover {
@@ -115,17 +121,11 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		}
 	}
 
-	// Reset button positioning
-	.maxi-reset-button--absolute {
-		position: absolute;
-		top: 0;
-		right: 0;
-		z-index: 10;
-	}
-
-	.maxi-reset-button--top-right {
-		top: 0;
-		right: 0;
+	// Reset button variants
+	.maxi-reset-button--inline {
+		position: static;
+		margin-left: 6px;
+		flex: 0 0 auto;
 	}
 }
 

@@ -6,9 +6,6 @@
 	/*-------------------------------------------
   COMPONENT VARIABLES
 -------------------------------------------*/
-	--spinner-gap: -1px;
-	--spinner-transform-offset: -48%;
-	--floating-label-top: -8px;
 
 	/*-------------------------------------------
   SHARED COMPONENT PATTERNS
@@ -47,27 +44,27 @@
   STYLE VARIANTS
 -------------------------------------------*/
 
-	&__second-style {
-		.maxi-base-control__field {
-			position: relative;
-		}
+	// &__second-style {
+	// 	.maxi-base-control__field {
+	// 		position: relative;
+	// 	}
 
-		.maxi-base-control__label {
-			position: absolute;
-			top: -8px;
-			left: 8px;
-			font-size: 10px !important;
-			color: var(--maxi-black) !important;
-			font-style: italic;
-			padding: 0px 5px;
-			pointer-events: none;
-			box-sizing: border-box;
-		}
+	// 	.maxi-base-control__label {
+	// 		// position: absolute;
+	// 		// top: -8px;
+	// 		// left: 8px;
+	// 		// font-size: 10px !important;
+	// 		// color: var(--maxi-black) !important;
+	// 		// font-style: italic;
+	// 		// padding: 0px 5px;
+	// 		// pointer-events: none;
+	// 		// box-sizing: border-box;
+	// 	}
 
-		.maxi-select-control__input {
-			padding: 9px 8px;
-		}
-	}
+	// 	.maxi-select-control__input {
+	// 		// padding: 9px 8px;
+	// 	}
+	// }
 
 	/*-------------------------------------------
   CORE INPUT COMPONENTS
@@ -81,15 +78,15 @@
 		position: relative;
 		display: inline-flex;
 		flex: none;
-		width: 72px;
+		width: 60px !important;
 	}
 
 	&__value {
-		width: 100%;
+		// width: 100%;
 		height: 36px;
-		flex: 1;
-		padding-right: 24px;
-		min-width: 60px;
+		// flex: 1;
+		// padding-right: 24px;
+		// min-width: 60px;
 		z-index: 0;
 
 		// Hide browser spinner buttons
@@ -218,7 +215,7 @@
 		flex-wrap: wrap;
 
 		& > * {
-			margin-left: 5px;
+			// margin-left: 5px;
 		}
 
 		.maxi-base-control__label,
@@ -229,7 +226,6 @@
 
 		.components-range-control__root {
 			margin-left: 7px !important;
-			width: calc(100% - 16px);
 		}
 	}
 
@@ -256,4 +252,11 @@ html[dir='rtl'] {
 		left: unset;
 		right: 8px;
 	}
+}
+.maxi-advanced-number-control__controls-group {
+	border: 1px solid var(--maxi-grey-light);
+	border-radius: 5px;
+	display: flex;
+
+	align-items: center;
 }

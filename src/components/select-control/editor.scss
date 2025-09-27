@@ -7,8 +7,7 @@ body.maxi-blocks--active {
 		min-height: unset;
 		max-height: unset !important;
 		padding: 8px;
-		border: 1.5px solid var(--maxi-grey-light);
-		border-radius: 5px !important;
+		border: none !important;
 		margin: 0;
 		color: var(--maxi-grey);
 		background: var(--maxi-white)
@@ -27,7 +26,18 @@ body.maxi-blocks--active {
 			fill: var(--maxi-grey);
 		}
 	}
-
+	.maxi-select-control__input {
+		padding-left: 12px !important;
+		transition: all 0.5s ease;
+	}
+	.maxi-select-control__input:hover,
+	.maxi-text-control__input:hover {
+		border: none !important;
+	}
+	.maxi-select-control__input:focus,
+	.maxi-text-control__input:focus {
+		border-color: none !important;
+	}
 	.maxi-option {
 		&__in-use {
 			color: var(--maxi-highlight-color);
@@ -45,6 +55,9 @@ body.maxi-blocks--active {
 			.maxi-base-control__field {
 				position: relative;
 				margin-top: 12px;
+				background-color: var(--maxi-white);
+				border: 1px solid var(--maxi-grey-light) !important;
+				border-radius: 5px;
 			}
 			.maxi-base-control__label {
 				position: absolute;

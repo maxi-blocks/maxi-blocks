@@ -101,8 +101,7 @@ const FontFamilySelector = props => {
 
 				{!disableFontFamilyReset && (
 					<ResetButton
-						isAbsolute
-						isTopRight
+						isInline
 						onReset={e => {
 							onFontChange({
 								label: defaultValue,

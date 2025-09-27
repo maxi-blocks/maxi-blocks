@@ -308,18 +308,6 @@
 		padding-left: 10px !important;
 		transition: all 0.5s ease;
 	}
-	.maxi-select-control__input {
-		padding-left: 12px !important;
-		transition: all 0.5s ease;
-	}
-	.maxi-select-control__input:hover,
-	.maxi-text-control__input:hover {
-		border-color: var(--maxi-whisper-green) !important;
-	}
-	.maxi-select-control__input:focus,
-	.maxi-text-control__input:focus {
-		border-color: var(--maxi-primary-color) !important;
-	}
 
 	.maxi-custom-label {
 		width: 100%;

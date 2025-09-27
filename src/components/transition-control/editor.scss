@@ -1,0 +1,29 @@
+.maxi-settingstab-control.maxi-transition-control__split-tabs {
+	/* Scope unique styling only to TransitionControl split tabs */
+	.maxi-tabs-control {
+		&__button {
+			border: 1.5px solid var(--maxi-secondary-color) !important;
+			border-radius: 6px !important;
+			background-color: var(--maxi-white);
+			color: var(--maxi-black) !important;
+			margin-right: 6px !important;
+			padding: 8px 12px !important;
+			transition: all 0.4s ease !important;
+
+			&:last-child {
+				margin-right: 0 !important;
+			}
+
+			&:hover {
+				border-color: var(--maxi-primary-color) !important;
+				background-color: var(--maxi-pastel-green);
+			}
+
+			&[aria-pressed='true'] {
+				background-color: var(--maxi-whisper-green);
+				border-color: var(--maxi-secondary-color) !important;
+				color: var(--maxi-secondary-color) !important;
+			}
+		}
+	}
+}

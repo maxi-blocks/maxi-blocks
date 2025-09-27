@@ -21,6 +21,11 @@ import { cloneDeep, omitBy } from 'lodash';
 import classnames from 'classnames';
 
 /**
+ * Styles (scoped to TransitionControl)
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const TransitionControl = props => {
@@ -100,7 +105,7 @@ const TransitionControl = props => {
 						},
 					]}
 					fullWidthMode
-					className='maxi-default-styles-control'
+					className='maxi-default-styles-control maxi-transition-control__split-tabs'
 					onChange={val => setSplitMode(val)}
 				/>
 			)}

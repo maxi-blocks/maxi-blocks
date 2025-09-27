@@ -1,15 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 25.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 111.9 38" style="enable-background:new 0 0 111.9 38;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:#323C47;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-</style>
-<line class="st0" x1="1" y1="1" x2="110.9" y2="1"/>
-<line class="st0" x1="1" y1="7" x2="110.9" y2="7"/>
-<line class="st0" x1="1" y1="13" x2="110.9" y2="13"/>
-<line class="st0" x1="1" y1="19" x2="110.9" y2="19"/>
-<line class="st0" x1="1" y1="25" x2="110.9" y2="25"/>
-<line class="st0" x1="1" y1="31" x2="110.9" y2="31"/>
-<line class="st0" x1="1" y1="37" x2="110.9" y2="37"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 111.9 38">
+  <!-- Generator: Adobe Illustrator 29.8.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 2)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+        stroke: #323c47;
+        stroke-linecap: square;
+        stroke-linejoin: bevel;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <line class="st0" x1="1" y1="1" x2="110.9" y2="1"/>
+  <line class="st0" x1="1" y1="7" x2="110.9" y2="7"/>
+  <line class="st0" x1="1" y1="13" x2="110.9" y2="13"/>
+  <line class="st0" x1="1" y1="19" x2="110.9" y2="19"/>
+  <line class="st0" x1="1" y1="25" x2="110.9" y2="25"/>
+  <line class="st0" x1="1" y1="31" x2="110.9" y2="31"/>
+  <line class="st0" x1="1" y1="37" x2="110.9" y2="37"/>
 </svg>

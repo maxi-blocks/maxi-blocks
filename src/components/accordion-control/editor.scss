@@ -39,9 +39,6 @@
 		&:last-child {
 			.maxi-accordion-control__item__button {
 				border-bottom: 1px solid var(--maxi-grey-light);
-				&[aria-expanded='true'] {
-					// border-color: transparent;
-				}
 			}
 		}
 		&__button {
@@ -125,7 +122,12 @@
 		}
 	}
 }
-.maxi-context-loop,
-.maxi-repeater {
-	margin-top: 10px !important;
+
+.maxi-sidebar {
+	.maxi-context-loop,
+	.maxi-repeater {
+		> *:last-child {
+			margin-top: 10px !important;
+		}
+	}
 }

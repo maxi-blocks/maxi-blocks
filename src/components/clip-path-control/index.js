@@ -40,6 +40,42 @@ import './editor.scss';
 import { styleNone } from '@maxi-icons';
 
 /**
+ * Normalizers
+ */
+const normalizeClipPathOptions = options => {
+	const normalized = cloneDeep(options);
+	if (!normalized || !normalized.type) return normalized;
+
+	if (normalized.type === 'polygon') {
+		const entries = Object.entries(normalized.content || {});
+		const fixed = {};
+		entries.forEach(([key, handle], idx) => {
+			const x = Array.isArray(handle) ? handle[0] : undefined;
+			const y = Array.isArray(handle) ? handle[1] : undefined;
+			fixed[idx] = [
+				{
+					value:
+						typeof x?.value === 'number' && isFinite(x.value)
+							? x.value
+							: 0,
+					unit: x?.unit || '%',
+				},
+				{
+					value:
+						typeof y?.value === 'number' && isFinite(y.value)
+							? y.value
+							: 0,
+					unit: y?.unit || '%',
+				},
+			];
+		});
+		normalized.content = fixed;
+	}
+
+	return normalized;
+};
+
+/**
  * Component
  */
 const ClipPathOption = props => {
@@ -171,7 +207,7 @@ const ClipPathControl = props => {
 			  });
 
 	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
-		if (isEmpty(clipPathToDeconstruct) || clipPath === 'none')
+		if (isEmpty(clipPathToDeconstruct) || clipPathToDeconstruct === 'none')
 			return {
 				type: 'polygon',
 				content: cloneDeep(typeDefaults.polygon),
@@ -243,13 +279,16 @@ const ClipPathControl = props => {
 			case 'none':
 				break;
 			default:
-				return false;
+				return {
+					type: 'polygon',
+					content: cloneDeep(typeDefaults.polygon),
+				};
 		}
 
-		return {
+		return normalizeClipPathOptions({
 			type: cpType,
 			content: { ...cpValues },
-		};
+		});
 	};
 
 	const [customMode, setCustomMode] = useState('visual');
@@ -276,10 +315,11 @@ const ClipPathControl = props => {
 	};
 
 	const generateCP = clipPath => {
-		const newCP = getClipPath(clipPath);
+		const normalized = normalizeClipPathOptions(clipPath);
+		const newCP = getClipPath(normalized);
 
 		onChangeValue(newCP);
-		changeClipPathOptions(clipPath);
+		changeClipPathOptions(normalized);
 	};
 
 	const onChangeType = newType => {
@@ -315,7 +355,12 @@ const ClipPathControl = props => {
 						className='clip-path-custom'
 						label={__('Custom clip-path', 'maxi-blocks')}
 						selected={isCustom}
-						onChange={val => changeIsCustom(val)}
+						onChange={val => {
+							changeIsCustom(val);
+							if (val && clipPath !== 'none') {
+								changeClipPathOptions(deconstructCP(clipPath));
+							}
+						}}
 					/>
 					{!isCustom && (
 						<div className='clip-path-defaults'>
@@ -346,10 +391,21 @@ const ClipPathControl = props => {
 												newClipPath === clipPath
 											}
 											className='clip-path-defaults__items'
-											onClick={() =>
-												newClipPath !== clipPath &&
-												onChangeValue(newClipPath)
-											}
+											onClick={() => {
+												if (newClipPath === clipPath)
+													return;
+
+												if (isCustom) {
+													const deconstructed =
+														deconstructCP(
+															newClipPath
+														);
+
+													generateCP(deconstructed);
+												} else {
+													onChangeValue(newClipPath);
+												}
+											}}
 										>
 											<span
 												className='clip-path-defaults__clip-path'

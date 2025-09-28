@@ -433,12 +433,12 @@ const ClipPathVisualEditor = props => {
 };
 
 const VisualEditorWithHOC = withFallbackStyles(node => {
-	const visualEditorNode = node.querySelector(
+	const visualEditorNode = node?.querySelector?.(
 		'.maxi-clip-path-visual-editor'
 	);
 	return {
 		// TODO something wit height, it's not representing a real one.
-		wrapperHeight: visualEditorNode.offsetHeight,
+		wrapperHeight: visualEditorNode ? visualEditorNode.offsetHeight : 0,
 	};
 })(ClipPathVisualEditor);
 

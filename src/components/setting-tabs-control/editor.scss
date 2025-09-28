@@ -17,7 +17,7 @@
 			&[aria-pressed='true'],
 			&:hover {
 				background-color: var(--maxi-pastel-green);
-				border: 1.5px solid var(--maxi-mid-green);
+				border: 1.5px solid var(--maxi-secondary-color);
 				font-weight: 700;
 
 				svg {
@@ -91,7 +91,6 @@
 			background-color: var(--maxi-white);
 			text-align: center;
 			white-space: nowrap;
-			font-weight: 700;
 			transition: all 0.5s ease;
 
 			&:last-child {

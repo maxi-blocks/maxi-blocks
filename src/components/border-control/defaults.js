@@ -12,10 +12,22 @@ const getBorderDefault = (
 	return {
 		[`${prefix}border-sync-width`]: 'all',
 		[`${prefix}border-unit-width`]: 'px',
-		[`${prefix}border-top-width`]: borderTopWidth || 2,
-		[`${prefix}border-right-width`]: borderRightWidth || 2,
-		[`${prefix}border-bottom-width`]: borderBottomWidth || 2,
-		[`${prefix}border-left-width`]: borderLeftWidth || 2,
+		[`${prefix}border-top-width`]:
+			borderTopWidth === undefined || borderTopWidth === null
+				? 2
+				: borderTopWidth,
+		[`${prefix}border-right-width`]:
+			borderRightWidth === undefined || borderRightWidth === null
+				? 2
+				: borderRightWidth,
+		[`${prefix}border-bottom-width`]:
+			borderBottomWidth === undefined || borderBottomWidth === null
+				? 2
+				: borderBottomWidth,
+		[`${prefix}border-left-width`]:
+			borderLeftWidth === undefined || borderLeftWidth === null
+				? 2
+				: borderLeftWidth,
 	};
 };
 

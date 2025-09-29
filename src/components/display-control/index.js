@@ -1,6 +1,3 @@
-/**
- * WordPress dependencies
- */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 
@@ -8,6 +5,7 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import SettingTabsControl from '@components/setting-tabs-control';
+import InfoBox from '@components/info-box';
 
 /**
  * External dependencies
@@ -91,8 +89,9 @@ const DisplayControl = props => {
 		];
 	};
 
-	// Rendering behavior for reveal/hidden
-	const shouldBeHidden = isHide();
+	// Determine effective hidden state for current breakpoint (accounts for inheritance)
+	const effectiveValue = getValue();
+	const shouldBeHidden = effectiveValue === 'none';
 
 	const classes = classnames('maxi-display-control', className, {
 		'is-temporarily-revealed': shouldBeHidden && isRevealModeActive,
@@ -100,16 +99,25 @@ const DisplayControl = props => {
 
 	return (
 		<div className={classes}>
+			{shouldBeHidden && !isRevealModeActive && (
+				<InfoBox
+					className='maxi-warning-box__hidden-reveal'
+					message={__(
+						'To view or edit a hidden block, open List View, select the block, then choose Show.',
+						'maxi-blocks'
+					)}
+				/>
+			)}
 			<SettingTabsControl
 				label={__('Show or hide by breakpoint', 'maxi-blocks')}
 				type='buttons'
-				selected={getValue()}
+				selected={effectiveValue}
 				items={getOptions()}
-				onChange={val =>
+				onChange={val => {
 					onChange({
 						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
-					})
-				}
+					});
+				}}
 				hasBorder
 			/>
 		</div>

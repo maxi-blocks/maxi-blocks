@@ -35,10 +35,24 @@ let lastSignature = '';
 
 const computeSignature = () => {
 	const device = select('maxiBlocks').receiveMaxiDeviceType();
-	const blocksTree = select('core/block-editor').getBlocks();
-	// Simple signature: device + number of blocks + selection clientId
-	const { getSelectedBlockClientId } = select('core/block-editor');
-	return `${device}|${blocksTree?.length}|${getSelectedBlockClientId()}`;
+	const { getSelectedBlockClientId, getBlocks } = select('core/block-editor');
+	const blocksTree = getBlocks();
+
+	// Build a lightweight signature that reflects hidden/visible state per Maxi block
+	const parts = [device, getSelectedBlockClientId()];
+	const visit = list => {
+		list.forEach(block => {
+			const { name, attributes, clientId, innerBlocks } = block;
+			if (isMaxiBlock(name)) {
+				const hidden = isHiddenAtDevice(attributes, device) ? '1' : '0';
+				parts.push(clientId, hidden);
+			}
+			if (innerBlocks && innerBlocks.length) visit(innerBlocks);
+		});
+	};
+	if (blocksTree) visit(blocksTree);
+
+	return parts.join('|');
 };
 
 const updateHighlights = () => {

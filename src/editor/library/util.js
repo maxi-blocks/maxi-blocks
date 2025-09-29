@@ -57,29 +57,91 @@ export const fitSvg = svgCode => {
 };
 
 export const svgAttributesReplacer = (svgCode, target = 'svg') => {
-	const fillRegExp = /fill:[^n]+?(?=})/g;
-	const fillStr = 'fill:var(--maxi-icon-block-orange)';
+	// Attempt to resolve colors from active style card and current block
+	try {
+		const { getSelectedBlockClientId, getBlock } =
+			select('core/block-editor');
+		const clientId = getSelectedBlockClientId();
+		const currentAttributes = getBlock(clientId)?.attributes || {};
+		const blockStyle = getBlockStyle(clientId);
+		// Choose prefixes based on requested target so we align with block attributes
+		const strokePrefix =
+			target === 'icon' ? 'icon-stroke-' : `${target}-line-`;
+		const fillPrefix = target === 'icon' ? 'icon-fill-' : `${target}-fill-`;
 
-	const fillRegExp2 = /[^-]fill="[^n]+?(?=")/g;
-	const fillStr2 = ' fill="var(--maxi-icon-block-orange)';
+		const {
+			paletteStatus: strokePaletteStatus,
+			paletteColor: strokePaletteColor,
+			color: strokeDirectColor,
+		} = getPaletteAttributes({
+			obj: currentAttributes,
+			prefix: strokePrefix,
+		});
 
-	const strokeRegExp = /stroke:[^n]+?(?=})/g;
-	const strokeStr = 'stroke:#081219';
+		const {
+			paletteStatus: fillPaletteStatus,
+			paletteColor: fillPaletteColor,
+			paletteSCStatus: fillPaletteSCStatus,
+			color: fillDirectColor,
+		} = getPaletteAttributes({
+			obj: currentAttributes,
+			prefix: fillPrefix,
+		});
 
-	const strokeRegExp2 = /[^-]stroke="[^n]+?(?=")/g;
-	const strokeStr2 = ' stroke="#081219';
+		const resolvedStroke = strokePaletteStatus
+			? `rgba(var(--maxi-${blockStyle}-color-${strokePaletteColor}),1)`
+			: strokeDirectColor || '#081219';
+		const resolvedFill =
+			fillPaletteStatus || fillPaletteSCStatus
+				? `rgba(var(--maxi-${blockStyle}-color-${fillPaletteColor}),1)`
+				: fillDirectColor || 'currentColor';
 
-	return target === 'svg'
-		? svgCode
-				.replace(fillRegExp, fillStr)
-				.replace(fillRegExp2, fillStr2)
-				.replace(strokeRegExp, strokeStr)
-				.replace(strokeRegExp2, strokeStr2)
-		: target === 'icon'
-		? svgCode
-				.replace(strokeRegExp, strokeStr)
-				.replace(strokeRegExp2, strokeStr2)
-		: svgCode.replace(fillRegExp, fillStr).replace(fillRegExp2, fillStr2);
+		const fillRegExp = /fill:[^n]+?(?=})/g;
+		const fillStr = `fill:${resolvedFill}`;
+		const fillRegExp2 = /[^-]fill="[^n]+?(?=")/g;
+		const fillStr2 = ` fill="${resolvedFill}`;
+		const strokeRegExp = /stroke:[^n]+?(?=})/g;
+		const strokeStr = `stroke:${resolvedStroke}`;
+		const strokeRegExp2 = /[^-]stroke="[^n]+?(?=")/g;
+		const strokeStr2 = ` stroke="${resolvedStroke}`;
+
+		return target === 'svg'
+			? svgCode
+					.replace(fillRegExp, fillStr)
+					.replace(fillRegExp2, fillStr2)
+					.replace(strokeRegExp, strokeStr)
+					.replace(strokeRegExp2, strokeStr2)
+			: target === 'icon'
+			? svgCode
+					.replace(strokeRegExp, strokeStr)
+					.replace(strokeRegExp2, strokeStr2)
+			: svgCode
+					.replace(fillRegExp, fillStr)
+					.replace(fillRegExp2, fillStr2);
+	} catch (err) {
+		// Fallback to prior behavior
+		const fillRegExp = /fill:[^n]+?(?=})/g;
+		const fillStr = 'fill:var(--maxi-icon-block-orange)';
+		const fillRegExp2 = /[^-]fill="[^n]+?(?=")/g;
+		const fillStr2 = ' fill="var(--maxi-icon-block-orange)';
+		const strokeRegExp = /stroke:[^n]+?(?=})/g;
+		const strokeStr = 'stroke:#081219';
+		const strokeRegExp2 = /[^-]stroke="[^n]+?(?=")/g;
+		const strokeStr2 = ' stroke="#081219';
+		return target === 'svg'
+			? svgCode
+					.replace(fillRegExp, fillStr)
+					.replace(fillRegExp2, fillStr2)
+					.replace(strokeRegExp, strokeStr)
+					.replace(strokeRegExp2, strokeStr2)
+			: target === 'icon'
+			? svgCode
+					.replace(strokeRegExp, strokeStr)
+					.replace(strokeRegExp2, strokeStr2)
+			: svgCode
+					.replace(fillRegExp, fillStr)
+					.replace(fillRegExp2, fillStr2);
+	}
 };
 
 export const isColorLight = color => {

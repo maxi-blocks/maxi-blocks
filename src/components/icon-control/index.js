@@ -705,13 +705,17 @@ const IconControl = props => {
 					onSelect={obj => {
 						const newSvgType = obj[`${prefix}svgType`];
 
-						let icon = getIconWithColor({
-							rawIcon: obj[`${prefix}icon-content`],
-							type: [
-								newSvgType !== 'Shape' && 'stroke',
-								newSvgType !== 'Line' && 'fill',
-							].filter(Boolean),
-						});
+						let icon = getIconWithColor(
+							// Pass props (attributes and blockStyle) as the first argument
+							props,
+							{
+								rawIcon: obj[`${prefix}icon-content`],
+								type: [
+									newSvgType !== 'Shape' && 'stroke',
+									newSvgType !== 'Line' && 'fill',
+								].filter(Boolean),
+							}
+						);
 
 						if (
 							!disableHeightFitContent &&

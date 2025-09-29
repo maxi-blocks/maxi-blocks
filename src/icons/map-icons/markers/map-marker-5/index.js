@@ -6,8 +6,8 @@ import { SVG, Path } from '@wordpress/primitives';
 const mapMarker5 = (
 	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
 		<Path
-			fill='var(--maxi-icon-block-orange)'
-			stroke='#081219'
+			// fill='var(--maxi-icon-block-orange)'
+			// stroke='#081219'
 			strokeLinecap='round'
 			strokeLinejoin='round'
 			strokeMiterlimit='10'

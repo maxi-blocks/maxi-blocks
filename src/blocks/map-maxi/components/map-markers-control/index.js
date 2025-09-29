@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { renderToString } from '@wordpress/element';
+import parse from 'html-react-parser';
 
 /**
  * Internal dependencies
@@ -13,10 +14,13 @@ import {
 	ResponsiveTabsControl,
 	SvgColor,
 } from '@components';
+import { setSVGColor } from '@extensions/svg';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteAttributes,
+	getBlockStyle,
 } from '@extensions/styles';
 
 /**
@@ -69,9 +73,48 @@ const MapMarkersControl = props => {
 	const markerPresets = Object.values(mapMarkers).map((value, rawIndex) => {
 		const index = rawIndex + 1;
 
+		// Resolve colors from style card for map marker svg (fill/line)
+		const {
+			paletteStatus: fillPaletteStatus,
+			paletteColor: fillPaletteColor,
+			paletteSCStatus: fillPaletteSCStatus,
+			color: fillDirectColor,
+		} = getPaletteAttributes({ obj: props, prefix: 'svg-fill-' });
+		const {
+			paletteStatus: linePaletteStatus,
+			paletteColor: linePaletteColor,
+			paletteSCStatus: linePaletteSCStatus,
+			color: lineDirectColor,
+		} = getPaletteAttributes({ obj: props, prefix: 'svg-line-' });
+
+		const blockStyleName =
+			getBlockStyle(props.clientId) || props.blockStyle;
+
+		const resolvedFill =
+			fillPaletteStatus || fillPaletteSCStatus
+				? `rgba(var(--maxi-${blockStyleName}-color-${fillPaletteColor}),1)`
+				: fillDirectColor || 'currentColor';
+		const resolvedStroke = linePaletteStatus
+			? `rgba(var(--maxi-${blockStyleName}-color-${linePaletteColor}),1)`
+			: lineDirectColor || '#081219';
+
+		const svgString = renderToString(value);
+		// Add fill and stroke attributes directly since setSVGColor needs existing attributes
+		let coloredString = svgString
+			.replace(
+				/(<path[^>]*)(data-fill[^>]*>)/g,
+				`$1fill="${resolvedFill}" $2`
+			)
+			.replace(
+				/(<path[^>]*)(data-stroke[^>]*>)/g,
+				`$1stroke="${resolvedStroke}" $2`
+			);
+
+		const coloredPreview = parse(coloredString);
+
 		return {
 			label: __(`Default marker ${index}`, 'maxi-blocks'),
-			content: value,
+			content: coloredPreview,
 			activeItem: index === mapMarker,
 			onChange: () =>
 				onChange({

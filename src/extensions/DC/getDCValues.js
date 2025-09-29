@@ -41,12 +41,14 @@ const getDCValues = (dynamicContent, contextLoop) => {
 			: getDefaultDCValue(target, obj);
 	};
 
-	return Object.keys(dynamicContent).reduce((acc, key) => {
+	const result = Object.keys(dynamicContent).reduce((acc, key) => {
 		const target = key.replace('dc-', '');
 		const value = getDCValue(target, acc);
 		acc[camelCase(target)] = value;
 		return acc;
 	}, {});
+
+	return result;
 };
 
 export default getDCValues;

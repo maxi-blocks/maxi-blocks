@@ -1207,10 +1207,35 @@ if (!class_exists('MaxiBlocks_API')):
                 return null;
             }
 
-            $field = get_field_object(
-                $request['field_id'],
-                $request['post_id'],
-            );
+            $field_id = $request['field_id'];
+            $post_id = $request['post_id'];
+
+            // First, try to get the field as a post field
+            $field = get_field_object($field_id, $post_id);
+
+            // If no value found and the ID looks like it could be a term ID, try taxonomy contexts
+            if ((!$field || empty($field['value'])) && is_numeric($post_id)) {
+                // Try common taxonomy contexts
+                $taxonomy_contexts = [
+                    'category_' . $post_id,  // Categories
+                    'post_tag_' . $post_id,  // Tags
+                    'product_cat_' . $post_id, // WooCommerce product categories
+                    'product_tag_' . $post_id, // WooCommerce product tags
+                ];
+
+                // Also try to get the actual term and use its taxonomy
+                $term = get_term($post_id);
+                if ($term && !is_wp_error($term)) {
+                    $taxonomy_contexts[] = $term->taxonomy . '_' . $post_id;
+                }
+
+                foreach ($taxonomy_contexts as $context) {
+                    $field = get_field_object($field_id, $context);
+                    if ($field && !empty($field['value'])) {
+                        break;
+                    }
+                }
+            }
 
             if (is_array($field) && $field['type'] === 'image') {
                 return wp_json_encode([
@@ -1222,6 +1247,8 @@ if (!class_exists('MaxiBlocks_API')):
             if (is_array($field)) {
                 return wp_json_encode($field['value']);
             }
+
+            return null;
         }
 
         public function get_maxi_blocks_pro_status()
@@ -1393,7 +1420,7 @@ if (!class_exists('MaxiBlocks_API')):
             // Process Style Card
             if (!empty($import_data['sc'])) {
                 $sc_content = $fetch_remote_content($import_data['sc']);
-                if($sc_content) {
+                if ($sc_content) {
                     MaxiBlocks_StyleCards::maxi_import_sc($sc_content);
                 }
             }
@@ -2051,7 +2078,7 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
             $unique_id = $request->get_param('unique_id');
 
-            if(!$unique_id || $unique_id === '') {
+            if (!$unique_id || $unique_id === '') {
                 return new WP_Error(
                     'no_unique_id',
                     'No block unique ID provided',
@@ -2458,7 +2485,7 @@ if (!class_exists('MaxiBlocks_API')):
         public function proxy_ai_chat($request)
         {
             $openai_api_key = get_option('openai_api_key_option');
-            
+
             if (!$openai_api_key) {
                 return new WP_Error(
                     'no_api_key',
@@ -2495,7 +2522,7 @@ if (!class_exists('MaxiBlocks_API')):
                     // This is a LangChain message format
                     $message_type = end($message['id']); // Get last element (SystemMessage, HumanMessage, etc.)
                     $content = $message['kwargs']['content'] ?? '';
-                    
+
                     switch ($message_type) {
                         case 'SystemMessage':
                             $converted_messages[] = ['role' => 'system', 'content' => $content];
@@ -2570,7 +2597,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Parse and return response
             $data = json_decode($response_body, true);
-            
+
             if (!$data) {
                 return new WP_Error(
                     'invalid_response',

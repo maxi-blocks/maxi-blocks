@@ -148,6 +148,14 @@ const SettingTabsControl = props => {
 												getBlockName(
 													getSelectedBlockClientId()
 												),
+											excludedEntries: [
+												'icon',
+												'value',
+												'label',
+												'className',
+												'indicatorProps',
+												'breakpoint',
+											],
 										}),
 										item.breakpoint,
 										item.extraIndicators,

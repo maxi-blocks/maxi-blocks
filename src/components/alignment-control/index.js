@@ -46,32 +46,73 @@ const AlignmentControl = props => {
 		isToolbar = false,
 		prefix = '',
 	} = props;
+
+	const getDefaultOptionValue = () => {
+		if (!disableLeft) return 'left';
+		if (!disableCenter) return 'center';
+		if (!disableRight) return 'right';
+		return 'justify';
+	};
+
+	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
+	const selectedValue =
+		getLastBreakpointAttribute({
+			target,
+			breakpoint,
+			attributes: props,
+			isHover,
+		}) || getDefaultOptionValue();
+
 	const getOptions = () => {
 		const options = [];
+		const attributeKey = `${target}-${breakpoint}${
+			isHover ? '-hover' : ''
+		}`;
 
-		!disableLeft &&
+		// Only show indicators if the selected value is NOT the default
+		const isNonDefault = selectedValue !== getDefaultOptionValue();
+
+		if (!disableLeft) {
 			options.push({
 				icon: <Icon icon={isToolbar ? toolbarAlignLeft : alignLeft} />,
 				value: 'left',
+				indicatorProps:
+					selectedValue === 'left' && isNonDefault
+						? [attributeKey]
+						: undefined,
+				breakpoint,
 			});
+		}
 
-		!disableCenter &&
+		if (!disableCenter) {
 			options.push({
 				icon: (
 					<Icon icon={isToolbar ? toolbarAlignCenter : alignCenter} />
 				),
 				value: 'center',
+				indicatorProps:
+					selectedValue === 'center' && isNonDefault
+						? [attributeKey]
+						: undefined,
+				breakpoint,
 			});
+		}
 
-		!disableRight &&
+		if (!disableRight) {
 			options.push({
 				icon: (
 					<Icon icon={isToolbar ? toolbarAlignRight : alignRight} />
 				),
 				value: 'right',
+				indicatorProps:
+					selectedValue === 'right' && isNonDefault
+						? [attributeKey]
+						: undefined,
+				breakpoint,
 			});
+		}
 
-		!disableJustify &&
+		if (!disableJustify) {
 			options.push({
 				icon: (
 					<Icon
@@ -79,7 +120,13 @@ const AlignmentControl = props => {
 					/>
 				),
 				value: 'justify',
+				indicatorProps:
+					selectedValue === 'justify' && isNonDefault
+						? [attributeKey]
+						: undefined,
+				breakpoint,
 			});
+		}
 
 		return options;
 	};
@@ -90,7 +137,6 @@ const AlignmentControl = props => {
 		className
 	);
 
-	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
 	return (
 		<>
 			{showLabel && (

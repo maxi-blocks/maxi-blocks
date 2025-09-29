@@ -25,7 +25,10 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 	const getProps = item => {
 		if (!isObject(item)) return;
 		if ('indicatorProps' in item) {
-			response.push(...item.indicatorProps);
+			// Only add indicatorProps if they are defined (not undefined)
+			if (item.indicatorProps) {
+				response.push(...item.indicatorProps);
+			}
 			return;
 		}
 
@@ -49,7 +52,11 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 
 			Object.entries(item.props).forEach(([key, val]) => {
 				keyResponse.push(key);
-				if (!excludedEntries.includes(key) && getIsValid(val, true)) {
+				if (
+					!excludedEntries.includes(
+						key
+					) /* && getIsValid(val, true) */
+				) {
 					if (isObject(val))
 						Object.keys(val).forEach(subKey =>
 							response.push(subKey)

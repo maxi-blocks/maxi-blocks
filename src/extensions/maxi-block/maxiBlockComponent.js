@@ -2030,11 +2030,11 @@ class MaxiBlockComponent extends Component {
 			);
 
 			// Schedule high priority cleanup for suspicious instances
-			suspiciousInstances.forEach(({ instance }, index) => {
+			suspiciousInstances.forEach((instance, index) => {
 				this.cleanupManager.scheduleInstanceCleanup(
 					instance,
 					index,
-					3 // HIGH priority from relationCleanupManager.js
+					3 // HIGH priority (CLEANUP_PRIORITY.HIGH from relationCleanupManager.js)
 				);
 			});
 		}

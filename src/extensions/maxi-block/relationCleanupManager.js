@@ -43,6 +43,34 @@ export class RelationCleanupManager {
 		index,
 		priority = CLEANUP_PRIORITY.NORMAL
 	) {
+		// Validate instance
+		if (!instance || typeof instance !== 'object') {
+			console.warn(
+				'MaxiBlocks Cleanup: Invalid instance - must be a non-null object',
+				instance
+			);
+			return;
+		}
+
+		// Validate index
+		if (!Number.isFinite(index) || index < 0) {
+			console.warn(
+				'MaxiBlocks Cleanup: Invalid index - must be a finite non-negative number',
+				index
+			);
+			return;
+		}
+
+		// Validate and coerce priority
+		const validPriorities = Object.values(CLEANUP_PRIORITY);
+		if (!validPriorities.includes(priority)) {
+			console.warn(
+				`MaxiBlocks Cleanup: Invalid priority ${priority}, defaulting to NORMAL`
+			);
+			// eslint-disable-next-line no-param-reassign
+			priority = CLEANUP_PRIORITY.NORMAL;
+		}
+
 		this.cleanupQueue.push({
 			type: 'single',
 			instance,

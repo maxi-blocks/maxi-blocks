@@ -1,6 +1,12 @@
 /* eslint-disable no-undef */
 /* eslint-disable func-names */
-document.addEventListener('DOMContentLoaded', function () {
+/* eslint-disable prettier/prettier */
+/**
+ * Ensure handlers are attached whether the script loads before or after DOMContentLoaded.
+ * This script may be enqueued in the admin footer for the plugin-update notice,
+ * so we cannot rely solely on DOMContentLoaded to register listeners.
+ */
+function setupMaxiAdminNotices() {
 	const firstRow = document.querySelector(
 		'tr.active.is-uninstallable[data-slug="maxi-blocks"]'
 	);
@@ -77,4 +83,9 @@ document.addEventListener('DOMContentLoaded', function () {
 				.catch(error => console.error('Error:', error));
 		}
 	});
-});
+}
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupMaxiAdminNotices);
+} else {
+	setupMaxiAdminNotices();
+}

@@ -17,6 +17,7 @@ import {
 	getSiteEditorIframe,
 } from '@extensions/fse';
 import getWinBreakpoint from './getWinBreakpoint';
+import initHighlightHiddenBlocks from './highlightHiddenBlocks';
 import getEditorWrapper from './getEditorWrapper';
 import { setScreenSize } from '@extensions/styles';
 import { authConnect, getMaxiCookieKey } from '@editor/auth';
@@ -74,6 +75,9 @@ wp.domReady(() => {
 
 	// Initial set of scrollbar width
 	updateScrollbarWidth();
+
+	// Initialize List View highlight for hidden Maxi blocks
+	initHighlightHiddenBlocks();
 
 	const changeHandlesDisplay = (display, wrapper) =>
 		Array.from(

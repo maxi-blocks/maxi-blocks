@@ -197,6 +197,10 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			if (!isDragging && isDragOverBlock) setIsDragOverBlock(false);
 		}, [isDragging, isDragOverBlock, setIsDragOverBlock]);
 
+	// Reveal Hidden Blocks: read global flag (non-hook; safe in any render path)
+	const isRevealModeActive =
+		select('maxiBlocks')?.receiveMaxiSettings?.()?.reveal_hidden_blocks;
+
 	const classes = classnames(
 		'maxi-block',
 		!isSave && 'maxi-block--backend',
@@ -219,7 +223,11 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		extraClassName,
 		uniqueID,
 		className,
-		displayValue === 'none' && 'maxi-block-display-none',
+		// Hidden handling
+		displayValue === 'none' &&
+			(isRevealModeActive
+				? 'is-temporarily-revealed'
+				: 'maxi-block--hidden'),
 		customClasses,
 		paletteClasses,
 		hasLink &&

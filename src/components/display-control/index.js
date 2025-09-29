@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -30,7 +31,12 @@ const DisplayControl = props => {
 		defaultDisplay = 'inherit',
 	} = props;
 
-	const classes = classnames('maxi-display-control', className);
+	// Subscribe to global "Reveal Hidden Blocks" flag from maxiBlocks settings
+	const isRevealModeActive = useSelect(select => {
+		const settings = select('maxiBlocks').receiveMaxiSettings();
+		// Expect a boolean settings flag. Default to false if missing.
+		return !!settings?.reveal_hidden_blocks;
+	}, []);
 
 	const isHide = () => {
 		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -84,6 +90,13 @@ const DisplayControl = props => {
 			{ label: __('Hide', 'maxi-blocks'), value: 'none' },
 		];
 	};
+
+	// Rendering behavior for reveal/hidden
+	const shouldBeHidden = isHide();
+
+	const classes = classnames('maxi-display-control', className, {
+		'is-temporarily-revealed': shouldBeHidden && isRevealModeActive,
+	});
 
 	return (
 		<div className={classes}>

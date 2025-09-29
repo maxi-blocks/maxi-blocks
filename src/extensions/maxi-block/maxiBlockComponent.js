@@ -1923,13 +1923,14 @@ class MaxiBlockComponent extends Component {
 			try {
 				const store = select(storeName);
 				if (!store || typeof store[selectorName] !== 'function') {
-					this.storeSelectors.set(key, null);
+					// Do NOT cache null - allow future re-attempts when store becomes available
 					return undefined;
 				}
+				// Only cache when we have a valid callable function
 				this.storeSelectors.set(key, store[selectorName]);
 			} catch (error) {
 				console.warn(`Failed to access selector ${key}:`, error);
-				this.storeSelectors.set(key, null);
+				// Do NOT cache null on exception - allow future re-attempts
 				return undefined;
 			}
 		}

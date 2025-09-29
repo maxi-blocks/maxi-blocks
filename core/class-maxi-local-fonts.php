@@ -103,9 +103,7 @@ class MaxiBlocks_Local_Fonts
         global $wpdb;
 
         $post_content_array = [];
-        $post_content_templates_array = [];
         $prev_post_content_array = [];
-        $prev_post_content_templates_array = [];
         $blocks_content_array = [];
         $prev_blocks_content_array = [];
         $sc_string = '';
@@ -122,16 +120,6 @@ class MaxiBlocks_Local_Fonts
             );
         }
 
-        // For templates
-        if ($this->check_table_exists('maxi_blocks_styles_templates')) {
-            $post_content_templates_array = (array) $wpdb->get_col(
-                "SELECT DISTINCT fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
-            );
-
-            $prev_post_content_templates_array = (array) $wpdb->get_col(
-                "SELECT DISTINCT prev_fonts_value FROM {$wpdb->prefix}maxi_blocks_styles_templates",
-            );
-        }
 
         // For blocks
         if ($this->check_table_exists('maxi_blocks_styles_blocks')) {
@@ -157,8 +145,6 @@ class MaxiBlocks_Local_Fonts
         if (
             empty($post_content_array) &&
             empty($prev_post_content_array) &&
-            empty($post_content_templates_array) &&
-            empty($prev_post_content_templates_array) &&
             empty($blocks_content_array) &&
             empty($prev_blocks_content_array) &&
             $sc_string === ''
@@ -187,17 +173,6 @@ class MaxiBlocks_Local_Fonts
             }
         }
 
-        if (!empty($post_content_templates_array)) {
-            foreach ($post_content_templates_array as $font) {
-                $array[] = $font;
-            }
-        }
-
-        if (!empty($prev_post_content_templates_array)) {
-            foreach ($prev_post_content_templates_array as $font) {
-                $array[] = $font;
-            }
-        }
 
         if (empty($array)) {
             return false;

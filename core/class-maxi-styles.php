@@ -457,14 +457,9 @@ class MaxiBlocks_Styles
         global $wpdb;
         $content_array = [];
         if ($is_template) {
-            // Prepare and execute the query for templates
-            $content_array = (array) $wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_templates WHERE template_id = %s",
-                    $id
-                ),
-                OBJECT
-            );
+            // Templates don't store data in template tables,
+            // they work through template parts which have individual block styles
+            $content_array = [];
         } else {
             // Prepare and execute the query for posts
             $content_array = (array) $wpdb->get_results(
@@ -521,20 +516,11 @@ class MaxiBlocks_Styles
         // Query uncached IDs in bulk
         if (!empty($uncached_ids)) {
             if ($is_template) {
-                $placeholders = implode(',', array_fill(0, count($uncached_ids), '%s'));
-                $content_array = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_templates WHERE template_id IN ($placeholders)",
-                        ...$uncached_ids
-                    ),
-                    OBJECT
-                );
-
-                foreach ($content_array as $content) {
-                    $result = json_decode(wp_json_encode($content), true);
-                    $results[$content->template_id] = $result;
-                    $cache_key = 'template_' . $content->template_id;
-                    self::$content_cache[$cache_key] = $result;
+                // Templates don't store bulk data in template tables,
+                // mark all as false in cache
+                foreach ($uncached_ids as $id) {
+                    $cache_key = 'template_' . $id;
+                    self::$content_cache[$cache_key] = false;
                 }
             } else {
                 $placeholders = implode(',', array_fill(0, count($uncached_ids), '%d'));
@@ -590,14 +576,9 @@ class MaxiBlocks_Styles
 
             $response = '';
             if ($is_template) {
-                // Prepare and execute the query for templates
-                $response = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_templates WHERE template_id = %s",
-                        $id
-                    ),
-                    OBJECT
-                );
+                // Templates don't store meta in template tables,
+                // they work through template parts which have individual block meta
+                $response = '';
             } else {
                 // Prepare and execute the query for posts
                 $response = $wpdb->get_results(
@@ -650,20 +631,12 @@ class MaxiBlocks_Styles
         // Query uncached IDs in bulk
         if (!empty($uncached_ids)) {
             if ($is_template) {
-                $placeholders = implode(',', array_fill(0, count($uncached_ids), '%s'));
-                $meta_array = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT template_id, custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_templates WHERE template_id IN ($placeholders)",
-                        ...$uncached_ids
-                    ),
-                    OBJECT
-                );
-
-                foreach ($meta_array as $meta) {
-                    $result = [$meta];
-                    $results[$meta->template_id] = $result;
-                    $cache_key = 'template_meta_' . $meta->template_id;
-                    self::$meta_cache[$cache_key] = $result;
+                // Templates don't store bulk meta in template tables,
+                // mark all as empty in cache
+                foreach ($uncached_ids as $id) {
+                    $cache_key = 'template_meta_' . $id;
+                    self::$meta_cache[$cache_key] = '';
+                    $results[$id] = '';
                 }
             } else {
                 $placeholders = implode(',', array_fill(0, count($uncached_ids), '%d'));

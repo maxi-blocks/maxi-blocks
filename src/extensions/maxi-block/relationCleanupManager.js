@@ -92,26 +92,34 @@ export class RelationCleanupManager {
 
 		this.isProcessing = true;
 
+		// Continue processing until queue is completely empty
 		while (this.cleanupQueue.length > 0) {
-			const task = this.cleanupQueue.shift();
+			// Process current batch of tasks
+			while (this.cleanupQueue.length > 0) {
+				const task = this.cleanupQueue.shift();
 
-			try {
-				if (task.type === 'single') {
-					await this.performSingleInstanceCleanup(
-						task.instance,
-						task.index
-					);
-				} else if (task.type === 'batch') {
-					await this.performBatchCleanup(task.instances);
+				try {
+					if (task.type === 'single') {
+						await this.performSingleInstanceCleanup(
+							task.instance,
+							task.index
+						);
+					} else if (task.type === 'batch') {
+						await this.performBatchCleanup(task.instances);
+					}
+
+					this.stats.successfulCleanups++;
+				} catch (error) {
+					this.stats.failedCleanups++;
+					console.error('MaxiBlocks: Cleanup task failed:', error);
 				}
 
-				this.stats.successfulCleanups++;
-			} catch (error) {
-				this.stats.failedCleanups++;
-				console.error('MaxiBlocks: Cleanup task failed:', error);
+				this.stats.totalCleanups++;
 			}
 
-			this.stats.totalCleanups++;
+			// Re-check for any tasks that arrived while we were processing
+			// This handles the race condition where tasks arrive after the inner loop
+			// completes but before isProcessing is set to false
 		}
 
 		this.isProcessing = false;

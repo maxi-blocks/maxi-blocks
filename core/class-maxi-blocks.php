@@ -189,8 +189,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
                     if (typeof wp === 'undefined' || !wp.data) return;
 
                     const { select, dispatch } = wp.data;
-                    let saveInProgress = false;
-                    let originalSavePost = null;
 
                     function getCurrentVersion() {
                         if (window.maxiSettings?.maxi_version) {
@@ -226,29 +224,54 @@ if (!class_exists('MaxiBlocks_Blocks')):
                         });
                     }
 
-                    // Intercept the save process
+                    // Override savePost to update versions BEFORE the save happens
                     function interceptSavePost() {
+                        // Get a reference to the editor dispatch object
                         const editorDispatch = dispatch('core/editor');
 
-                        // Store the original savePost function
-                        if (!originalSavePost && editorDispatch.savePost) {
-                            originalSavePost = editorDispatch.savePost;
-
-                            // Replace with our version
-                            editorDispatch.savePost = function(options = {}) {
-                                // Update versions first before save
-                                updateBlockVersions();
-
-                                // Then call original save with all changes included
-                                return originalSavePost.call(this, options);
-                            };
+                        // Only proceed if savePost exists and hasn't been overridden yet
+                        if (!editorDispatch.savePost || editorDispatch.savePost._maxiIntercepted) {
+                            return;
                         }
+
+                        // Store the original savePost function
+                        const originalSavePost = editorDispatch.savePost;
+
+                        // Create our intercepted version
+                        editorDispatch.savePost = function(options = {}) {
+                            // Update versions BEFORE calling the original save
+                            updateBlockVersions();
+
+                            // Call the original savePost with the same context and arguments
+                            return originalSavePost.call(this, options);
+                        };
+
+                        // Mark that we've intercepted this function
+                        editorDispatch.savePost._maxiIntercepted = true;
                     }
 
                     // Set up the intercept when the editor is ready
                     wp.domReady(() => {
-                        // Small delay to ensure editor is fully initialized
-                        setTimeout(interceptSavePost, 100);
+                        // Use a longer delay to ensure the editor dispatch is fully set up
+                        setTimeout(() => {
+                            // Try multiple times in case the editor isn't ready yet
+                            let attempts = 0;
+                            const maxAttempts = 10;
+
+                            function tryIntercept() {
+                                attempts++;
+                                try {
+                                    interceptSavePost();
+                                } catch (error) {
+                                    console.warn('MaxiBlocks: Failed to intercept savePost, attempt', attempts, error);
+                                    if (attempts < maxAttempts) {
+                                        setTimeout(tryIntercept, 500);
+                                    }
+                                }
+                            }
+
+                            tryIntercept();
+                        }, 200);
                     });
                 })();
                 "

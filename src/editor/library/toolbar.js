@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -19,7 +19,7 @@ import {
 } from '@maxi-icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { Button, TextControl } from '@components';
-import { isValidEmail } from '@editor/auth';
+import { isValidEmail, authConnect } from '@editor/auth';
 
 /**
  * External dependencies
@@ -176,6 +176,37 @@ const LibraryToolbar = props => {
 	const [userEmail, setUserEmail] = useState(false);
 	const [clickCount, setClickCount] = useState(0);
 	const [isVerifying, setIsVerifying] = useState(false);
+	const [authErrorMessage, setAuthErrorMessage] = useState('');
+	const [authMessage, setAuthMessage] = useState('');
+
+	// Listen for authentication events
+	useEffect(() => {
+		const handleAuthError = event => {
+			setAuthErrorMessage(event.detail.error || 'Authentication failed');
+			setAuthMessage('');
+			setIsVerifying(false);
+		};
+
+		const handleAuthSuccess = event => {
+			setAuthErrorMessage('');
+			setAuthMessage('');
+			setIsVerifying(false);
+			if (onClickConnect) {
+				onClickConnect(event.detail.email);
+			}
+		};
+
+		window.addEventListener('maxiEmailAuthError', handleAuthError);
+		window.addEventListener('maxiEmailAuthSuccess', handleAuthSuccess);
+
+		return () => {
+			window.removeEventListener('maxiEmailAuthError', handleAuthError);
+			window.removeEventListener(
+				'maxiEmailAuthSuccess',
+				handleAuthSuccess
+			);
+		};
+	}, [onClickConnect]);
 
 	// Check for network license status
 	const licenseSettings = window.maxiLicenseSettings || {};
@@ -496,18 +527,55 @@ const LibraryToolbar = props => {
 		const inputValue = userEmail;
 		if (!inputValue || isVerifying) return;
 
+		// Clear any previous messages
+		setAuthErrorMessage('');
+		setAuthMessage('');
+
 		const inputType = detectInputType(inputValue);
 
 		if (inputType === 'email') {
-			// Use existing email auth flow - let parent handle validation and errors
+			// Use WordPress AJAX email auth flow (same as admin.js and starter sites)
 			if (isValidEmail(inputValue)) {
+				// Open the login tab first
 				const encodedEmail = encodeURIComponent(inputValue);
 				const url = `https://my.maxiblocks.com/login?plugin&email=${encodedEmail}`;
 				window.open(url, '_blank')?.focus();
-				onClickConnect(inputValue);
-			} else {
-				// Let parent handle invalid email by calling onClickConnect
-				// which will handle validation and show error
+
+				setIsVerifying(true);
+
+				try {
+					// Use the WordPress AJAX authentication flow
+					const authResult = await authConnect(true, inputValue);
+
+					if (authResult && authResult.success) {
+						// Authentication completed immediately (existing valid auth)
+						setIsVerifying(false);
+						setAuthMessage('');
+						if (onClickConnect) {
+							onClickConnect(inputValue);
+						}
+					} else if (authResult && authResult.error) {
+						// Handle immediate errors
+						setIsVerifying(false);
+						setAuthErrorMessage(
+							authResult.error_message ||
+								'Authentication failed. Please check your credentials.'
+						);
+					} else {
+						// Authentication initiated, user needs to log in
+						setAuthMessage(
+							'Please log into your MaxiBlocks account to complete activation'
+						);
+						// Events will handle completion/errors
+					}
+				} catch (error) {
+					setIsVerifying(false);
+					setAuthErrorMessage(
+						'Authentication failed. Please check your credentials.'
+					);
+				}
+			} else if (onClickConnect) {
+				// Invalid email - let parent handle validation and show error
 				onClickConnect(inputValue);
 			}
 		} else if (inputType === 'code') {
@@ -733,7 +801,11 @@ const LibraryToolbar = props => {
 										'maxi-blocks'
 									)}
 									value={userEmail}
-									onChange={value => setUserEmail(value)}
+									onChange={value => {
+										setUserEmail(value);
+										setAuthErrorMessage(''); // Clear auth error when user types
+										setAuthMessage(''); // Clear auth message when user types
+									}}
 								/>
 								{showNotValidEmail && (
 									<span>
@@ -751,6 +823,10 @@ const LibraryToolbar = props => {
 										)}
 									</span>
 								)}
+								{authErrorMessage && (
+									<span>{authErrorMessage}</span>
+								)}
+								{authMessage && <span>{authMessage}</span>}
 							</div>
 							<Button
 								key='maxi-cloud-toolbar__button__connect'

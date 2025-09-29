@@ -394,6 +394,36 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('install_plugins') && current_user_can('activate_plugins');
                 },
             ]);
+            register_rest_route($this->namespace, '/ai/chat', [
+                'methods' => 'POST',
+                'callback' => [$this, 'proxy_ai_chat'],
+                'args' => [
+                    'messages' => [
+                        'required' => true,
+                        'validate_callback' => function ($param) {
+                            return is_array($param) || is_string($param);
+                        },
+                    ],
+                    'model' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                    'temperature' => [
+                        'validate_callback' => function ($param) {
+                            return is_numeric($param);
+                        },
+                    ],
+                    'streaming' => [
+                        'validate_callback' => function ($param) {
+                            return is_bool($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
         }
 
         /**
@@ -423,7 +453,8 @@ if (!class_exists('MaxiBlocks_API')):
                 'maxi_version' => MAXI_PLUGIN_VERSION,
                 'google_api_key' => get_option('google_api_key_option'),
                 'ai_settings' => [
-                    'openai_api_key' => get_option('openai_api_key_option'),
+                    // Note: openai_api_key removed for security - now handled by backend proxy
+                    'has_openai_api_key' => !empty(get_option('openai_api_key_option')),
                     'model' => get_option('maxi_ai_model'),
                     'language' => get_option('maxi_ai_language'),
                     'tone' => get_option('maxi_ai_tone'),
@@ -1176,10 +1207,35 @@ if (!class_exists('MaxiBlocks_API')):
                 return null;
             }
 
-            $field = get_field_object(
-                $request['field_id'],
-                $request['post_id'],
-            );
+            $field_id = $request['field_id'];
+            $post_id = $request['post_id'];
+
+            // First, try to get the field as a post field
+            $field = get_field_object($field_id, $post_id);
+
+            // If no value found and the ID looks like it could be a term ID, try taxonomy contexts
+            if ((!$field || empty($field['value'])) && is_numeric($post_id)) {
+                // Try common taxonomy contexts
+                $taxonomy_contexts = [
+                    'category_' . $post_id,  // Categories
+                    'post_tag_' . $post_id,  // Tags
+                    'product_cat_' . $post_id, // WooCommerce product categories
+                    'product_tag_' . $post_id, // WooCommerce product tags
+                ];
+
+                // Also try to get the actual term and use its taxonomy
+                $term = get_term($post_id);
+                if ($term && !is_wp_error($term)) {
+                    $taxonomy_contexts[] = $term->taxonomy . '_' . $post_id;
+                }
+
+                foreach ($taxonomy_contexts as $context) {
+                    $field = get_field_object($field_id, $context);
+                    if ($field && !empty($field['value'])) {
+                        break;
+                    }
+                }
+            }
 
             if (is_array($field) && $field['type'] === 'image') {
                 return wp_json_encode([
@@ -1191,6 +1247,8 @@ if (!class_exists('MaxiBlocks_API')):
             if (is_array($field)) {
                 return wp_json_encode($field['value']);
             }
+
+            return null;
         }
 
         public function get_maxi_blocks_pro_status()
@@ -1362,7 +1420,7 @@ if (!class_exists('MaxiBlocks_API')):
             // Process Style Card
             if (!empty($import_data['sc'])) {
                 $sc_content = $fetch_remote_content($import_data['sc']);
-                if($sc_content) {
+                if ($sc_content) {
                     MaxiBlocks_StyleCards::maxi_import_sc($sc_content);
                 }
             }
@@ -2020,7 +2078,7 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
             $unique_id = $request->get_param('unique_id');
 
-            if(!$unique_id || $unique_id === '') {
+            if (!$unique_id || $unique_id === '') {
                 return new WP_Error(
                     'no_unique_id',
                     'No block unique ID provided',
@@ -2418,6 +2476,137 @@ if (!class_exists('MaxiBlocks_API')):
                 'message' => __('WordPress Importer has been installed and activated successfully.', 'maxi-blocks'),
                 'status' => 'active'
             ]);
+        }
+
+        /**
+         * Proxy AI chat requests to OpenAI API
+         * This keeps the API key secure on the backend
+         */
+        public function proxy_ai_chat($request)
+        {
+            $openai_api_key = get_option('openai_api_key_option');
+
+            if (!$openai_api_key) {
+                return new WP_Error(
+                    'no_api_key',
+                    'OpenAI API key not configured',
+                    ['status' => 500]
+                );
+            }
+
+            // Get parameters from request
+            $messages = $request->get_param('messages');
+            $model = $request->get_param('model') ?: 'gpt-3.5-turbo';
+            $temperature = $request->get_param('temperature');
+            $streaming = $request->get_param('streaming') ?: false;
+
+            // Convert messages to OpenAI format if needed
+            if (is_string($messages)) {
+                $messages = json_decode($messages, true);
+            }
+
+
+            // Validate message format
+            if (!is_array($messages) || empty($messages)) {
+                return new WP_Error(
+                    'invalid_messages',
+                    'Messages must be a non-empty array',
+                    ['status' => 400]
+                );
+            }
+
+            // Convert LangChain format to OpenAI format
+            $converted_messages = [];
+            foreach ($messages as $message) {
+                if (isset($message['id']) && is_array($message['id'])) {
+                    // This is a LangChain message format
+                    $message_type = end($message['id']); // Get last element (SystemMessage, HumanMessage, etc.)
+                    $content = $message['kwargs']['content'] ?? '';
+
+                    switch ($message_type) {
+                        case 'SystemMessage':
+                            $converted_messages[] = ['role' => 'system', 'content' => $content];
+                            break;
+                        case 'HumanMessage':
+                            $converted_messages[] = ['role' => 'user', 'content' => $content];
+                            break;
+                        case 'AIMessage':
+                            $converted_messages[] = ['role' => 'assistant', 'content' => $content];
+                            break;
+                        default:
+                            // Fallback to user role for unknown types
+                            $converted_messages[] = ['role' => 'user', 'content' => $content];
+                    }
+                } else {
+                    // Already in OpenAI format, use as-is
+                    $converted_messages[] = $message;
+                }
+            }
+
+            $messages = $converted_messages;
+
+            // Build OpenAI API request
+            $body = [
+                'model' => $model,
+                'messages' => $messages,
+                'stream' => $streaming,
+            ];
+
+            // Add temperature based on model support
+            // o1 and o3 models don't support temperature at all
+            if (!str_contains($model, 'o1') && !str_contains($model, 'o3')) {
+                // Only GPT-5 models require temperature = 1, others support custom values
+                if (str_contains($model, 'gpt-5')) {
+                    $body['temperature'] = 1;
+                } else {
+                    // Most models (including gpt-4o) support custom temperature
+                    if ($temperature !== null) {
+                        $body['temperature'] = (float) $temperature;
+                    }
+                }
+            }
+
+            // Make request to OpenAI
+            $response = wp_remote_post('https://api.openai.com/v1/chat/completions', [
+                'timeout' => 30,
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $openai_api_key,
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => wp_json_encode($body),
+            ]);
+
+            if (is_wp_error($response)) {
+                return new WP_Error(
+                    'openai_request_failed',
+                    $response->get_error_message(),
+                    ['status' => 500]
+                );
+            }
+
+            $response_code = wp_remote_retrieve_response_code($response);
+            $response_body = wp_remote_retrieve_body($response);
+
+            if ($response_code !== 200) {
+                return new WP_Error(
+                    'openai_api_error',
+                    'OpenAI API returned error: ' . $response_body,
+                    ['status' => $response_code]
+                );
+            }
+
+            // Parse and return response
+            $data = json_decode($response_body, true);
+
+            if (!$data) {
+                return new WP_Error(
+                    'invalid_response',
+                    'Invalid response from OpenAI API',
+                    ['status' => 500]
+                );
+            }
+
+            return rest_ensure_response($data);
         }
     }
 endif;

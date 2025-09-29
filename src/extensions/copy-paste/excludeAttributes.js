@@ -18,6 +18,8 @@ const GLOBAL_EXCLUDE = [
 	'dc-accumulator',
 	'cl-accumulator',
 	'cl-grandchild-accumulator',
+	'dc-limit-by-archive',
+	'cl-limit-by-archive',
 ];
 
 const REPEATER_GLOBAL_EXCLUDE = GLOBAL_EXCLUDE.filter(

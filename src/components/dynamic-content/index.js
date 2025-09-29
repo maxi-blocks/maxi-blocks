@@ -31,6 +31,7 @@ import {
 	validationsValues,
 	getRelationOptions,
 	getCurrentTemplateSlug,
+	showLimitByArchiveOption,
 } from '@extensions/DC/utils';
 import {
 	limitOptions,
@@ -40,6 +41,7 @@ import {
 	orderByRelations,
 	orderRelations,
 	ignoreEmptyFields,
+	limitByArchiveOptions,
 } from '@extensions/DC/constants';
 import getDCOptions from '@extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
@@ -146,6 +148,8 @@ const DynamicContent = props => {
 		acfGroup,
 		mediaSize,
 		keepOnlyTextContent,
+		acfCharLimit,
+		limitByArchive,
 	} = dcValues;
 
 	const dcValuesForDate = {
@@ -187,20 +191,29 @@ const DynamicContent = props => {
 		return getFields(contentType, 'users');
 	}, [contentType, field]);
 
-	const changeProps = params => {
-		let hasChangesToSave = false;
-
-		for (const [key, val] of Object.entries(params)) {
-			if (key in dynamicContent && dynamicContent[key] !== val) {
-				hasChangesToSave = true;
-				break;
+	const changeProps = useCallback(
+		params => {
+			let hasChangesToSave = false;
+			// Compare existing keys
+			for (const [key, val] of Object.entries(dynamicContent)) {
+				if (key in params && params[key] !== val) {
+					hasChangesToSave = true;
+					break;
+				}
 			}
-		}
-
-		if (hasChangesToSave) {
-			onChange(params);
-		}
-	};
+			// Also consider new or changed keys not yet in dynamicContent
+			if (!hasChangesToSave) {
+				for (const [key, val] of Object.entries(params)) {
+					if (dynamicContent[key] !== val) {
+						hasChangesToSave = true;
+						break;
+					}
+				}
+			}
+			if (hasChangesToSave) onChange(params);
+		},
+		[dynamicContent, onChange]
+	);
 
 	const fetchDcData = useCallback(async () => {
 		try {
@@ -236,6 +249,7 @@ const DynamicContent = props => {
 					relation,
 					author,
 					previousRelation: relation,
+					limitByArchive,
 				};
 
 				const postIDSettings = await getDCOptions(
@@ -270,10 +284,12 @@ const DynamicContent = props => {
 		}
 	}, [
 		author,
+		changeProps,
 		contentType,
 		contextLoop,
 		field,
 		id,
+		limitByArchive,
 		postAuthorOptions,
 		postIdOptions,
 		relation,
@@ -308,7 +324,10 @@ const DynamicContent = props => {
 				relation,
 				contentType,
 				undefined,
-				linkTarget
+				linkTarget,
+				false,
+				undefined,
+				limitByArchive
 			);
 
 			changeProps({
@@ -318,7 +337,16 @@ const DynamicContent = props => {
 				...validatedAttributes,
 			});
 		}
-	}, []);
+	}, [
+		changeProps,
+		contentType,
+		field,
+		limitByArchive,
+		linkTarget,
+		relation,
+		source,
+		type,
+	]);
 
 	const customTaxonomies = select(
 		'maxiBlocks/dynamic-content'
@@ -326,7 +354,7 @@ const DynamicContent = props => {
 
 	useEffect(() => {
 		setIsCustomTaxonomyField(customTaxonomies.includes(field));
-	}, [field, type]);
+	}, [customTaxonomies, field, type]);
 
 	useEffect(() => {
 		fetchDcData().catch(console.error);
@@ -354,8 +382,7 @@ const DynamicContent = props => {
 			{status && (
 				<>
 					{!disableHideOnFrontend &&
-						!ignoreEmptyFields.includes(field) &&
-						!CLStatus && (
+						!ignoreEmptyFields.includes(field) && (
 							<ToggleSwitch
 								label={__(
 									'Hide if no content found on frontend',
@@ -383,7 +410,8 @@ const DynamicContent = props => {
 									value,
 									linkTarget,
 									false,
-									acfGroup
+									acfGroup,
+									limitByArchive
 								);
 
 								changeProps({
@@ -419,7 +447,8 @@ const DynamicContent = props => {
 								source,
 								linkTarget,
 								false,
-								acfGroup
+								acfGroup,
+								limitByArchive
 							);
 
 							changeProps({
@@ -637,6 +666,35 @@ const DynamicContent = props => {
 										})
 									}
 									disableRange
+								/>
+							)}
+							{showLimitByArchiveOption(
+								type,
+								currentTemplateType,
+								relation
+							) && (
+								<SelectControl
+									__nextHasNoMarginBottom
+									label={__(
+										'Limit by current archive posts',
+										'maxi-blocks'
+									)}
+									value={limitByArchive}
+									options={limitByArchiveOptions}
+									newStyle
+									onChange={value =>
+										changeProps({
+											'dc-limit-by-archive': value,
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-limit-by-archive':
+												getDefaultAttribute(
+													'dc-limit-by-archive'
+												),
+										})
+									}
 								/>
 							)}
 							{source === 'wp' &&
@@ -868,6 +926,33 @@ const DynamicContent = props => {
 								)}
 						</>
 					)}
+					{source === 'acf' &&
+						acfFieldType &&
+						['text', 'textarea'].includes(acfFieldType) && (
+							<AdvancedNumberControl
+								label={__(
+									'Character limit (backend)',
+									'maxi-blocks'
+								)}
+								value={acfCharLimit || 0}
+								min={0}
+								max={9999}
+								step={1}
+								withInputField={false}
+								disableReset={false}
+								onChangeValue={value =>
+									changeProps({
+										'dc-acf-char-limit': Number(value),
+									})
+								}
+								onReset={() =>
+									changeProps({
+										'dc-acf-char-limit': 0,
+									})
+								}
+								initialPosition={acfCharLimit || 0}
+							/>
+						)}
 				</>
 			)}
 		</div>

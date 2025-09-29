@@ -147,6 +147,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
             wp_localize_script('maxi-blocks-block-editor', 'maxiBlocksMain', [
                 'local_fonts' => get_option('local_fonts'),
                 'bunny_fonts' => get_option('bunny_fonts'),
+                'apiRoot' => esc_url_raw(rest_url()),
             ]);
 
             // Add license settings for authentication context

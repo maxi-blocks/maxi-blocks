@@ -1,3 +1,6 @@
+// Keep track of active polling to prevent multiple instances
+let activePollingEmail = null;
+
 document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	// &panel=documentation-support will open the tab in the accordion
 	const urlStr = window.location.href;
@@ -103,10 +106,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		const key = getKey();
 		let validationMessage = '';
 
-		const { localization } = window;
+		// Use window.localization directly for consistency
 
 		if (type === 'validating') {
-			validationMessage = localization.loading_status_message;
+			validationMessage = window.localization.loading_status_message;
 			validationDiv.classList.add(validationLoadingClass);
 			validationDiv.classList.remove(errorClass);
 		} else {
@@ -115,21 +118,23 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			if (key === '' || type === 'EmptyKeyError') {
 				hiddenInput.value = '';
 				validationDiv.classList.add(errorClass);
-				validationMessage = localization.please_add_api_key;
+				validationMessage = window.localization.please_add_api_key;
 			} else {
 				validationDiv.classList.add(errorClass);
 				switch (type) {
 					case 'InvalidKeyError':
-						validationMessage = localization.invalid_api_key;
+						validationMessage = window.localization.invalid_api_key;
 						break;
 					case 'RefererNotAllowedError':
-						validationMessage = localization.referer_not_allowed;
+						validationMessage =
+							window.localization.referer_not_allowed;
 						break;
 					case 'InvalidCharactersError':
-						validationMessage = localization.invalid_characters;
+						validationMessage =
+							window.localization.invalid_characters;
 						break;
 					case 'ServerError':
-						validationMessage = localization.server_error;
+						validationMessage = window.localization.server_error;
 						break;
 					case true:
 						hiddenInput.value = key;
@@ -308,6 +313,12 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				'gpt-3.5-turbo-instruct',
 				'gpt-4o-mini-realtime-preview',
 				'gpt-4o-realtime-preview',
+				'gpt-image',
+				'gpt-realtime',
+				'transcribe',
+				'tts',
+				'search-preview',
+				'o1-pro',
 			];
 
 			const includedPatterns = ['o1', 'o3', 'gpt'];
@@ -348,11 +359,9 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 		// Only show loading message if we have a valid API key
 		if (apiKey) {
-			modelSelect.innerHTML =
-				'<option value="">Loading available models...</option>';
+			modelSelect.innerHTML = `<option value="">${window.localization.loading_available_models}</option>`;
 		} else {
-			modelSelect.innerHTML =
-				'<option value="">Please add your API key</option>';
+			modelSelect.innerHTML = `<option value="">${window.localization.please_add_api_key}</option>`;
 			modelInput.value = '';
 			isUpdatingDropdown = false;
 			return;
@@ -367,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			if (models.length === 0) {
 				const option = document.createElement('option');
 				option.value = '';
-				option.textContent = 'No models available - check API key';
+				option.textContent = window.localization.no_models_available;
 				modelSelect.appendChild(option);
 				modelInput.value = '';
 				isUpdatingDropdown = false;
@@ -399,8 +408,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			}
 		} catch (error) {
 			console.error('Error updating model dropdown:', error);
-			modelSelect.innerHTML =
-				'<option value="">Error loading models</option>';
+			modelSelect.innerHTML = `<option value="">${window.localization.error_loading_models}</option>`;
 			modelInput.value = '';
 		} finally {
 			isUpdatingDropdown = false;
@@ -592,17 +600,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			if (isValidEmail(userName)) {
 				currentUser.style.cursor = 'pointer';
-				currentUser.title = 'Click to show';
+				currentUser.title = window.localization.click_to_show;
 
 				// Add click handler for email show/hide
 				currentUser.onclick = function () {
 					clickCount += 1;
 					if (clickCount % 2 !== 0) {
 						currentUser.textContent = userName;
-						currentUser.title = 'Click to hide';
+						currentUser.title = window.localization.click_to_hide;
 					} else {
 						currentUser.textContent = '******@***.***';
-						currentUser.title = 'Click to show';
+						currentUser.title = window.localization.click_to_show;
 					}
 				};
 
@@ -638,7 +646,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		if (currentUser) {
 			if (userName) {
-				currentUser.textContent = userName;
+				currentUser.textContent =
+					userName === 'Maxiblocks' ? 'MaxiBlocks' : userName;
 				currentUser.parentElement.style.display = 'block';
 
 				// Add email show/hide functionality if it's an email
@@ -646,8 +655,8 @@ document.addEventListener('DOMContentLoaded', function () {
 					currentUser.style.cursor = 'pointer';
 					currentUser.title =
 						clickCount % 2 !== 0
-							? 'Click to hide'
-							: 'Click to show';
+							? window.localization.click_to_hide
+							: window.localization.click_to_show;
 
 					// Remove any existing click handlers
 					currentUser.onclick = null;
@@ -657,10 +666,12 @@ document.addEventListener('DOMContentLoaded', function () {
 						clickCount += 1;
 						if (clickCount % 2 !== 0) {
 							currentUser.textContent = userName;
-							currentUser.title = 'Click to hide';
+							currentUser.title =
+								window.localization.click_to_hide;
 						} else {
 							currentUser.textContent = '******@***.***';
-							currentUser.title = 'Click to show';
+							currentUser.title =
+								window.localization.click_to_show;
 						}
 					};
 
@@ -742,7 +753,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const inputValue = licenseInput ? licenseInput.value.trim() : '';
 
 		if (!inputValue) {
-			showMessage('Please enter an email or purchase code', true);
+			showMessage(window.localization.please_enter_email_or_code, true);
 			return;
 		}
 
@@ -751,18 +762,19 @@ document.addEventListener('DOMContentLoaded', function () {
 		// Show loading state
 		if (validateButton) {
 			validateButton.disabled = true;
-			validateButton.textContent = 'Validating...';
+			validateButton.textContent = window.localization.validating;
 		}
 
 		if (inputType === 'email') {
 			// Handle email authentication
 			if (!isValidEmail(inputValue)) {
-				showMessage('The email is not valid', true);
+				showMessage(window.localization.the_email_is_not_valid, true);
 				resetValidateButton();
 				return;
 			}
 
 			// For email authentication, send to WordPress backend and open login page
+
 			const formData = new FormData();
 			formData.append('action', 'maxi_validate_license');
 			// eslint-disable-next-line no-undef
@@ -775,19 +787,29 @@ document.addEventListener('DOMContentLoaded', function () {
 				method: 'POST',
 				body: formData,
 			})
-				.then(response => response.json())
+				.then(response => {
+					return response.json();
+				})
 				.then(data => {
 					if (data.success && data.data.auth_type === 'email') {
 						// Open the login URL in a new tab
 						window.open(data.data.login_url, '_blank')?.focus();
 						showMessage(
-							'Email authentication started. Please complete login in the new tab.',
+							window.localization.email_authentication_started,
 							false
 						);
 
-						// Start direct email polling (like toolbar)
-						startDirectEmailPolling(inputValue);
+						// Start smart email authentication checking
+						startSmartAuthCheck(inputValue);
 					} else {
+						console.error(
+							JSON.stringify({
+								message:
+									'MaxiBlocks Email Auth JS INIT: Email auth failed',
+								errorMessage:
+									data.data?.message || 'Unknown error',
+							})
+						);
 						showMessage(
 							data.data.message || 'Email authentication failed',
 							true
@@ -795,8 +817,15 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 				})
 				.catch(error => {
+					console.error(
+						JSON.stringify({
+							message:
+								'MaxiBlocks Email Auth JS INIT: Request failed',
+							error: error.message,
+						})
+					);
 					showMessage(
-						'Failed to initiate email authentication',
+						window.localization.failed_to_initiate_email_auth,
 						true
 					);
 				})
@@ -837,7 +866,10 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 				})
 				.catch(error => {
-					showMessage('Failed to validate license', true);
+					showMessage(
+						window.localization.failed_to_validate_license,
+						true
+					);
 				})
 				.finally(() => {
 					resetValidateButton();
@@ -846,32 +878,150 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	/**
-	 * Start direct email polling (similar to toolbar approach)
+	 * Start smart authentication checking using Page Visibility API and focus events
+	 * This is much more efficient than constant polling - only checks when user returns to tab
 	 */
-	function startDirectEmailPolling(email) {
-		const intervalId = setInterval(async () => {
+	function startSmartAuthCheck(email) {
+		// Set active polling email to prevent duplicates
+		activePollingEmail = email;
+
+		let fallbackTimeout;
+		let isCheckingAuth = false;
+		let handleVisibilityChange;
+		let handleWindowFocus;
+
+		const stopAuthCheck = () => {
+			activePollingEmail = null;
+			if (fallbackTimeout) {
+				clearTimeout(fallbackTimeout);
+			}
+			// Remove event listeners
+			if (handleVisibilityChange) {
+				document.removeEventListener(
+					'visibilitychange',
+					handleVisibilityChange
+				);
+			}
+			if (handleWindowFocus) {
+				window.removeEventListener('focus', handleWindowFocus);
+			}
+		};
+
+		const checkAuth = async (trigger = 'unknown') => {
+			if (isCheckingAuth) return false; // Prevent multiple simultaneous checks
+
+			isCheckingAuth = true;
+
 			try {
-				// Call the email authentication API directly
 				const authResult = await checkEmailAuthentication(email);
 
 				if (authResult && authResult.success) {
-					clearInterval(intervalId);
-					showMessage('Authentication successful!');
+					// User is fully authenticated (both subscription valid and logged into Appwrite)
+					stopAuthCheck();
+
+					showMessage(window.localization.successfully_authenticated);
 					updateLicenseStatus('Active ✓', authResult.user_name);
 					setTimeout(() => {
 						window.location.reload();
 					}, 1500);
-				}
-			} catch (error) {
-				console.error('Poll error:', error);
-				// Continue polling on error
-			}
-		}, 1000); // Poll every 1 second like toolbar
 
-		// Stop polling after 5 minutes
+					return true;
+				}
+
+				if (
+					authResult &&
+					authResult.subscription_valid &&
+					!authResult.appwrite_login_verified
+				) {
+					// Subscription is valid but user hasn't logged into Appwrite yet
+					// Don't stop checking - keep polling until they log in
+					showMessage(
+						window.localization.please_log_into_maxiblocks,
+						false
+					);
+					return false;
+				}
+
+				if (authResult && authResult.error) {
+					// Handle specific errors like seat limit
+					console.error(
+						JSON.stringify({
+							message:
+								'MaxiBlocks Email Auth JS: Authentication error',
+							email,
+							trigger,
+							errorMessage: authResult.error_message,
+							errorCode: authResult.error_code,
+						})
+					);
+
+					// Stop auth checking on error
+					stopAuthCheck();
+
+					showMessage(authResult.error_message, true);
+					return false;
+				}
+
+				// If we get here, authentication failed for unknown reasons
+			} catch (error) {
+				console.error(
+					JSON.stringify({
+						message:
+							'MaxiBlocks Email Auth JS: Auth check exception',
+						email,
+						trigger,
+						error: error.message,
+						stack: error.stack,
+					})
+				);
+			} finally {
+				isCheckingAuth = false;
+			}
+
+			return false;
+		};
+
+		// Define event handlers
+		handleVisibilityChange = () => {
+			if (
+				document.visibilityState === 'visible' &&
+				activePollingEmail === email
+			) {
+				checkAuth('visibility-change');
+			}
+		};
+
+		handleWindowFocus = () => {
+			if (activePollingEmail === email) {
+				checkAuth('window-focus');
+			}
+		};
+
+		// Add event listeners
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+		window.addEventListener('focus', handleWindowFocus);
+
+		// Check immediately
+		checkAuth('initial');
+
+		// Fallback: Check once every 60 seconds as a safety net (much less frequent than before)
+		const fallbackCheck = () => {
+			if (activePollingEmail === email) {
+				// Only check if tab is visible to avoid unnecessary API calls
+				if (document.visibilityState === 'visible') {
+					checkAuth('fallback-timer');
+				}
+				fallbackTimeout = setTimeout(fallbackCheck, 60000); // 60 seconds
+			}
+		};
+		fallbackTimeout = setTimeout(fallbackCheck, 60000);
+
+		// Stop checking after 10 minutes
 		setTimeout(() => {
-			clearInterval(intervalId);
-		}, 300000);
+			if (activePollingEmail === email) {
+				stopAuthCheck();
+			}
+		}, 600000); // 10 minutes
 	}
 
 	/**
@@ -889,88 +1039,130 @@ document.addEventListener('DOMContentLoaded', function () {
 					try {
 						const cookieData = JSON.parse(value);
 						authKey = cookieData[email];
+
 						break;
 					} catch (e) {
-						console.error('Error parsing cookie:', e);
+						console.error(
+							JSON.stringify({
+								message:
+									'MaxiBlocks Email Auth JS: Error parsing cookie',
+								email,
+								error: e.message,
+								cookieValue: value,
+							})
+						);
 					}
 				}
 			}
 
 			if (!authKey) {
-				console.error('No auth key found for email:', email);
-				return false;
-			}
-
-			// Call the MaxiBlocks API directly
-			const response = await fetch(
-				'https://my.maxiblocks.com/plugin-api-fwefqw.php',
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-Xaiscmolkb': 'sdeqw239ejkdgaorti482',
-					},
-					body: JSON.stringify({
+				console.error(
+					JSON.stringify({
+						message:
+							'MaxiBlocks Email Auth JS: No auth key found for email',
 						email,
-						cookie: authKey,
-					}),
-				}
-			);
-
-			if (!response.ok) {
-				console.error('API response not ok:', response.status);
+					})
+				);
 				return false;
 			}
 
-			const data = await response.json();
-
-			if (data && data.status === 'ok') {
-				const today = new Date().toISOString().slice(0, 10);
-				const expirationDate = data.expiration_date || today;
-				const name = data.name || email;
-
-				if (today > expirationDate) {
-					console.error('License expired');
-					// Save expired status via WordPress
-					await saveLicenseData(email, name, 'expired', authKey);
-					return false;
-				}
-				// Save active status via WordPress
-				await saveLicenseData(email, name, 'yes', authKey);
-				return { success: true, user_name: name };
-			}
-
-			return false;
-		} catch (error) {
-			console.error('Email auth check error:', error);
-			return false;
-		}
-	}
-
-	/**
-	 * Save license data via WordPress AJAX
-	 */
-	async function saveLicenseData(email, name, status, authKey) {
-		try {
+			// Call WordPress AJAX endpoint to check authentication status
 			const formData = new FormData();
-			formData.append('action', 'maxi_save_email_license');
+			formData.append('action', 'maxi_check_auth_status');
 			// eslint-disable-next-line no-undef
 			formData.append('nonce', maxiLicenseSettings.nonce);
-			formData.append('email', email);
-			formData.append('name', name);
-			formData.append('status', status);
-			formData.append('auth_key', authKey);
 
 			// eslint-disable-next-line no-undef
-			const response = await fetch(maxiLicenseSettings.ajaxUrl, {
+			const endpoint = maxiLicenseSettings.ajaxUrl;
+
+			// eslint-disable-next-line no-undef
+			const response = await fetch(endpoint, {
 				method: 'POST',
 				body: formData,
 			});
 
-			// eslint-disable-next-line no-unused-vars
+			if (!response.ok) {
+				console.error(
+					JSON.stringify({
+						message:
+							'MaxiBlocks Email Auth JS: API response not ok',
+						email,
+						status: response.status,
+						statusText: response.statusText,
+					})
+				);
+				return false;
+			}
+
 			const data = await response.json();
+
+			if (data && data.success) {
+				if (data.data.is_authenticated) {
+					// User is fully authenticated (both subscription valid and logged into Appwrite)
+
+					return {
+						success: true,
+						user_name: data.data.user_name,
+					};
+				}
+
+				// Check for the new intermediate state: subscription valid but not logged into Appwrite
+				if (
+					data.data.subscription_valid &&
+					!data.data.appwrite_login_verified
+				) {
+					return {
+						success: false,
+						subscription_valid: true,
+						appwrite_login_verified: false,
+						message:
+							data.data.message ||
+							window.localization.please_log_into_maxiblocks,
+					};
+				}
+
+				if (data.data.error && data.data.error_message) {
+					// Handle specific errors like seat limit
+					console.error(
+						JSON.stringify({
+							message:
+								'MaxiBlocks Email Auth JS: ERROR response from server',
+							email,
+							errorCode: data.data.error_code,
+							errorMessage: data.data.error_message,
+						})
+					);
+					return {
+						success: false,
+						error: true,
+						error_message: data.data.error_message,
+						error_code: data.data.error_code,
+					};
+				}
+			} else {
+				console.error(
+					JSON.stringify({
+						message:
+							'MaxiBlocks Email Auth JS: Response unsuccessful or malformed',
+						email,
+						responseSuccess: data?.success,
+						responseData: data,
+					})
+				);
+			}
+
+			return false;
 		} catch (error) {
-			console.error('Error saving license data:', error);
+			console.error(
+				JSON.stringify({
+					message:
+						'MaxiBlocks Email Auth JS: Exception caught in checkEmailAuthentication',
+					email,
+					error: error.message,
+					stack: error.stack,
+				})
+			);
+			return false;
 		}
 	}
 
@@ -980,7 +1172,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	function resetValidateButton() {
 		if (validateButton) {
 			validateButton.disabled = false;
-			validateButton.textContent = 'Activate';
+			validateButton.textContent = window.localization.activate;
 		}
 	}
 
@@ -990,7 +1182,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	function handleLogout() {
 		if (logoutButton) {
 			logoutButton.disabled = true;
-			logoutButton.textContent = 'Signing out...';
+			logoutButton.textContent = window.localization.signing_out;
 		}
 
 		// Check if this is an email logout (check for the maxi_blocks_key cookie)
@@ -1022,19 +1214,20 @@ document.addEventListener('DOMContentLoaded', function () {
 					updateLicenseStatus(data.data.status, data.data.user_name);
 				} else {
 					showMessage(
-						data.data.message || 'Failed to sign out',
+						data.data.message ||
+							window.localization.failed_to_sign_out,
 						true
 					);
 				}
 			})
 			.catch(error => {
 				console.error('Logout error:', error);
-				showMessage('Failed to sign out', true);
+				showMessage(window.localization.failed_to_sign_out, true);
 			})
 			.finally(() => {
 				if (logoutButton) {
 					logoutButton.disabled = false;
-					logoutButton.textContent = 'Sign out';
+					logoutButton.textContent = window.localization.sign_out;
 				}
 			});
 	}
@@ -1112,13 +1305,16 @@ function initNetworkLicenseHandlers() {
 			const licenseValue = licenseInput ? licenseInput.value.trim() : '';
 
 			if (!licenseValue) {
-				showNetworkMessage('Please enter a purchase code', 'error');
+				showNetworkMessage(
+					window.localization.please_enter_purchase_code,
+					'error'
+				);
 				return;
 			}
 
 			// Show loading state
 			validateButton.disabled = true;
-			validateButton.textContent = 'Activating…';
+			validateButton.textContent = window.localization.activating;
 
 			// Send AJAX request for network license validation
 			sendNetworkLicenseRequest('validate', licenseValue);
@@ -1130,12 +1326,10 @@ function initNetworkLicenseHandlers() {
 		logoutButton.addEventListener('click', function () {
 			if (
 				// eslint-disable-next-line no-undef, no-undef, no-restricted-globals, no-alert
-				confirm(
-					'Are you sure you want to deactivate the network license? This will affect all sites in the network.'
-				)
+				confirm(window.localization.deactivate_network_license_confirm)
 			) {
 				logoutButton.disabled = true;
-				logoutButton.textContent = 'Deactivating…';
+				logoutButton.textContent = window.localization.deactivating;
 
 				sendNetworkLicenseRequest('logout', '');
 			}
@@ -1169,7 +1363,7 @@ function initSiteLicenseHandlers() {
 					e.preventDefault();
 					// eslint-disable-next-line no-undef
 					showMessage(
-						'Only email authentication is allowed when a network license is active.',
+						window.localization.only_email_authentication_allowed,
 						'error'
 					);
 					return false;
@@ -1210,7 +1404,10 @@ function sendNetworkLicenseRequest(action, licenseInput) {
 		})
 		.catch(error => {
 			console.error('Network license request failed:', error);
-			handleNetworkLicenseError('Network error occurred', action);
+			handleNetworkLicenseError(
+				window.localization.network_error_occurred,
+				action
+			);
 		});
 }
 
@@ -1247,10 +1444,12 @@ function handleNetworkLicenseError(message, action) {
 
 	if (action === 'validate' && validateButton) {
 		validateButton.disabled = false;
-		validateButton.textContent = 'Activate network license';
+		validateButton.textContent =
+			window.localization.activate_network_license;
 	} else if (action === 'logout' && logoutButton) {
 		logoutButton.disabled = false;
-		logoutButton.textContent = 'Deactivate network license';
+		logoutButton.textContent =
+			window.localization.deactivate_network_license;
 	}
 }
 

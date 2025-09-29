@@ -112,7 +112,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		return <ContentLoader />;
 	}
 
-	if (!AISettings.openaiApiKey) {
+	if (!AISettings.hasOpenaiApiKey) {
 		return (
 			<InfoBox
 				message={__(
@@ -165,7 +165,7 @@ ${getExamplesSection(contentType)}`;
 		switchToResultsTab();
 
 		handleContentGeneration({
-			openAIApiKey: AISettings.openaiApiKey,
+			openAIApiKey: undefined, // No longer needed - using backend proxy
 			modelName: AISettings.model,
 			additionalParams: {
 				temperature,

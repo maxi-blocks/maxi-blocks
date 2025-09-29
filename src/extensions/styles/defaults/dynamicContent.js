@@ -167,6 +167,13 @@ const dynamicContent = {
 		type: 'boolean',
 		default: false,
 	},
+	'dc-acf-char-limit': {
+		type: 'number',
+		default: 0,
+	},
+	'dc-limit-by-archive': {
+		type: 'string',
+	},
 	...dynamicContentLink,
 };
 

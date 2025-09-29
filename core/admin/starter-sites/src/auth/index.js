@@ -772,7 +772,7 @@ const deactivatePurchaseCode = async (
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.maxi_version || '';
+	const pluginVersion = licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	const requestBody = {
@@ -928,7 +928,7 @@ const migratePurchaseCodeDomain = async (
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.maxi_version || '';
+	const pluginVersion = licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {

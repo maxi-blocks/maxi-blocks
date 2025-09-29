@@ -733,21 +733,39 @@ class MaxiBlocks_Styles
      */
     public function check_font_url($font_url)
     {
+        static $font_url_cache = [];
+
         $font_url = str_replace(' ', '+', $font_url);
+
+        // Check static cache first
+        if (isset($font_url_cache[$font_url])) {
+            return $font_url_cache[$font_url];
+        }
+
+        // Check transient cache (24 hours)
+        $cache_key = 'maxi_font_check_' . md5($font_url);
+        $cached_result = get_transient($cache_key);
+
+        if ($cached_result !== false) {
+            $font_url_cache[$font_url] = $cached_result === 'success';
+            return $font_url_cache[$font_url];
+        }
 
         $array = @get_headers($font_url);
 
         if (!$array) {
+            $font_url_cache[$font_url] = false;
+            set_transient($cache_key, 'failed', 24 * HOUR_IN_SECONDS);
             return false;
         }
 
         $string = $array[0];
 
-        if (strpos($string, '200')) {
-            return true;
-        } else {
-            return false;
-        }
+        $result = strpos($string, '200') !== false;
+        $font_url_cache[$font_url] = $result;
+        set_transient($cache_key, $result ? 'success' : 'failed', 24 * HOUR_IN_SECONDS);
+
+        return $result;
     }
 
     /**

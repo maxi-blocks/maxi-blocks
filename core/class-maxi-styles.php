@@ -39,6 +39,7 @@ class MaxiBlocks_Styles
     private static $template_parts_cache = [];
     private static $meta_cache = [];
     private static $blocks_cache = [];
+    private static $enqueued_script_paths = [];
     /**
      * Registers the plugin.
      */
@@ -93,6 +94,9 @@ class MaxiBlocks_Styles
         add_action('wp_footer', [__CLASS__, 'clear_caches'], 999);
         add_action('admin_footer', [__CLASS__, 'clear_caches'], 999);
         add_action('shutdown', [__CLASS__, 'clear_caches'], 999);
+
+        // Register prefetch filter once for all enqueued scripts
+        add_filter('wp_resource_hints', [$this, 'add_script_prefetch_hints'], 10, 2);
     }
 
     private function should_apply_content_filter()
@@ -1519,15 +1523,25 @@ class MaxiBlocks_Styles
             ));
         wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
 
-        // Add prefetch link for the script
-        add_filter('wp_resource_hints', function($urls, $relation_type) use ($js_script_path) {
-            if ('prefetch' === $relation_type) {
-                $urls[] = plugins_url($js_script_path, dirname(__FILE__));
-            }
-            return $urls;
-        }, 10, 2);
+        // Store script path for prefetch hints
+        self::$enqueued_script_paths[] = $js_script_path;
     }
 
+    /**
+     * Add prefetch hints for all enqueued scripts
+     * @param  array $urls
+     * @param  string $relation_type
+     * @return array
+     */
+    public function add_script_prefetch_hints($urls, $relation_type)
+    {
+        if ('prefetch' === $relation_type && !empty(self::$enqueued_script_paths)) {
+            foreach (self::$enqueued_script_paths as $path) {
+                $urls[] = plugins_url($path, dirname(__FILE__));
+            }
+        }
+        return $urls;
+    }
 
     private static $custom_meta_check_cache = [];
 
@@ -1542,6 +1556,7 @@ class MaxiBlocks_Styles
         self::$meta_cache = [];
         self::$blocks_cache = [];
         self::$custom_meta_check_cache = [];
+        self::$enqueued_script_paths = [];
     }
 
     /**

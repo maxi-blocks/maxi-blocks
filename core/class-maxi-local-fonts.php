@@ -133,7 +133,6 @@ class MaxiBlocks_Local_Fonts
             );
         }
 
-
         // For blocks
         if ($this->check_table_exists('maxi_blocks_styles_blocks')) {
             $blocks_content_array = (array) $wpdb->get_col(
@@ -176,6 +175,7 @@ class MaxiBlocks_Local_Fonts
             $prev_blocks_content_array,
         );
 
+        $array = [];
 
         foreach ($post_content_array as $font) {
             $array[] = $font;

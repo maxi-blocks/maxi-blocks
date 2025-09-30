@@ -661,9 +661,10 @@ class MaxiBlocks_Styles
                 }
             } else {
                 $placeholders = implode(',', array_fill(0, count($uncached_ids), '%d'));
+                $sanitized_table_name = esc_sql($table_name);
                 $meta_array = $wpdb->get_results(
                     $wpdb->prepare(
-                        "SELECT post_id, custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id IN ($placeholders)",
+                        "SELECT post_id, custom_data_value FROM {$sanitized_table_name} WHERE post_id IN ($placeholders)",
                         ...$uncached_ids
                     ),
                     OBJECT

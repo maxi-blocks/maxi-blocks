@@ -483,9 +483,14 @@ class MaxiBlocks_Styles
         global $wpdb;
         $content_array = [];
         if ($is_template) {
-            // Templates don't store data in template tables,
-            // they work through template parts which have individual block styles
-            $content_array = [];
+            // Prepare and execute the query for templates
+            $content_array = (array) $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_templates WHERE template_id = %s",
+                    $id
+                ),
+                OBJECT
+            );
         } else {
             // Prepare and execute the query for posts
             $content_array = (array) $wpdb->get_results(
@@ -2279,7 +2284,7 @@ class MaxiBlocks_Styles
         }
 
         // Filter out IDs already in cache
-        $ids_to_fetch = array_filter($unique_ids, function($id) {
+        $ids_to_fetch = array_filter($unique_ids, function ($id) {
             return !isset(self::$blocks_cache[$id]);
         });
 

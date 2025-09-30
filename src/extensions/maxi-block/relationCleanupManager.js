@@ -89,14 +89,23 @@ export class RelationCleanupManager {
 	 * @param {number} priority  - Cleanup priority
 	 */
 	scheduleBatchCleanup(instances, priority = CLEANUP_PRIORITY.NORMAL) {
-		// Validate input and filter out falsy entries
-		if (!Array.isArray(instances)) {
+		if (!Array.isArray(instances)) return;
+
+		const validInstances = instances.filter(
+			instance => instance && typeof instance === 'object'
+		);
+		if (validInstances.length === 0) {
 			return;
 		}
 
-		const validInstances = instances.filter(instance => instance);
-		if (validInstances.length === 0) {
-			return;
+		// Validate and coerce priority
+		const validPriorities = Object.values(CLEANUP_PRIORITY);
+		if (!validPriorities.includes(priority)) {
+			console.warn(
+				`MaxiBlocks Cleanup: Invalid batch priority ${priority}, defaulting to NORMAL`
+			);
+			// eslint-disable-next-line no-param-reassign
+			priority = CLEANUP_PRIORITY.NORMAL;
 		}
 
 		this.cleanupQueue.push({

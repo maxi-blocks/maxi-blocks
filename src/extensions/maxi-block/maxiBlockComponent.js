@@ -289,7 +289,9 @@ class MaxiBlockComponent extends Component {
 			);
 			const idPairs = collectIDs(
 				this.props.attributes,
-				block.innerBlocks
+				block && Array.isArray(block.innerBlocks)
+					? block.innerBlocks
+					: []
 			);
 
 			if (!isEmpty(idPairs)) {
@@ -338,11 +340,13 @@ class MaxiBlockComponent extends Component {
 				};
 
 				// Replace relation.uniqueID with legacyUniqueID in all blocks
-				replaceRelationIDs(
-					this.props.attributes,
-					block.innerBlocks,
-					this.props.clientId
-				);
+				if (block && Array.isArray(block.innerBlocks)) {
+					replaceRelationIDs(
+						this.props.attributes,
+						block.innerBlocks,
+						this.props.clientId
+					);
+				}
 			}
 		}
 

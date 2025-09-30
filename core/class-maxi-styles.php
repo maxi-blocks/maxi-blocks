@@ -40,6 +40,7 @@ class MaxiBlocks_Styles
     private static $meta_cache = [];
     private static $blocks_cache = [];
     private static $enqueued_script_paths = [];
+    private static $block_meta_cache = [];
     /**
      * Registers the plugin.
      */
@@ -1557,6 +1558,7 @@ class MaxiBlocks_Styles
         self::$blocks_cache = [];
         self::$custom_meta_check_cache = [];
         self::$enqueued_script_paths = [];
+        self::$block_meta_cache = [];
     }
 
     /**
@@ -1793,10 +1795,8 @@ class MaxiBlocks_Styles
         global $wpdb;
 
         // Use caching for block meta queries
-        static $block_meta_cache = [];
-
-        if (!isset($block_meta_cache[$unique_id])) {
-            $block_meta_cache[$unique_id] = $wpdb->get_var(
+        if (!isset(self::$block_meta_cache[$unique_id])) {
+            self::$block_meta_cache[$unique_id] = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
                     $unique_id
@@ -1804,7 +1804,7 @@ class MaxiBlocks_Styles
             );
         }
 
-        $block_meta = $block_meta_cache[$unique_id];
+        $block_meta = self::$block_meta_cache[$unique_id];
 
         if (!empty($block_meta)) {
             if (isset($active_custom_data_array[$block_name])) {

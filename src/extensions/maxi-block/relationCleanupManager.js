@@ -360,7 +360,7 @@ export class RelationCleanupManager {
 							this.stats.totalCleanups) *
 						100
 				  ).toFixed(2)
-				: '100';
+				: '0';
 
 		return {
 			...this.stats,

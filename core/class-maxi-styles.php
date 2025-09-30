@@ -1433,34 +1433,12 @@ class MaxiBlocks_Styles
             }
         }
 
-        // Cache custom_meta results to avoid repeated calls
-        $custom_meta_cache = [
-            'block' => $this->custom_meta('', false),
-            'template' => $this->custom_meta('', true),
-        ];
-
         foreach ($script_configs as $script => $config) {
             $js_var = $config['js_var'];
 
-            // Get relevant meta for this script
-            $block_meta = [];
-            $template_meta = [];
-
-            if (!empty($custom_meta_cache['block'])) {
-                foreach ($custom_meta_cache['block'] as $key => $value) {
-                    if (str_contains($key, $js_var)) {
-                        $block_meta[$key] = $value;
-                    }
-                }
-            }
-
-            if (!empty($custom_meta_cache['template'])) {
-                foreach ($custom_meta_cache['template'] as $key => $value) {
-                    if (str_contains($key, $js_var)) {
-                        $template_meta[$key] = $value;
-                    }
-                }
-            }
+            // Get relevant meta for this specific script
+            $block_meta = $this->custom_meta($js_var, false);
+            $template_meta = $this->custom_meta($js_var, true);
 
             $meta = array_merge_recursive($post_meta, $block_meta, $template_meta);
             $block_names = [];

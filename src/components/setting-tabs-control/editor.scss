@@ -108,22 +108,16 @@
 				transition: all 0.5s ease;
 			}
 			&:active {
-				background-color: var(--maxi-whisper-green) !important;
+				background-color: var(--maxi-mid-green) !important;
 				transition: all 0.5s ease;
 			}
 			&[aria-pressed='true'] {
 				color: var(--maxi-black);
 				font-weight: 700;
-				background-color: var(--maxi-whisper-green) !important;
+				background-color: var(--maxi-mid-green) !important;
 				transition: all 0.5s ease;
-			}
-			svg:not(.maxi-tabs-control__notification) {
-				display: block;
-				width: 20px;
-				height: 100%;
-				margin: 0;
-				fill: var(--maxi-black);
-				transition: all 0.5s ease;
+				svg:not(.maxi-tabs-control__notification) {
+				}
 			}
 			&--active:before {
 				content: '';

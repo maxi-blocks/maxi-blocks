@@ -15,8 +15,14 @@
 			font-weight: 500;
 
 			&[aria-pressed='true'] {
-				color: var(--maxi-primary-color);
-				background-color: var(--maxi-whisper-green);
+				color: var(--maxi-secondary-color) !important;
+				background-color: var(--maxi-whisper-green) !important;
+				font-weight: 700 !important;
+				fill: var(--maxi-secondary-color) !important;
+				svg,
+				svg * {
+					fill: var(--maxi-secondary-color) !important;
+				}
 			}
 		}
 	}

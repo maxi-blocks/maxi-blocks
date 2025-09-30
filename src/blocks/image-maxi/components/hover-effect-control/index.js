@@ -77,6 +77,7 @@ const HoverEffectControl = props => {
 	return (
 		<div className={classes}>
 			<SettingTabsControl
+				className='maxi-hover-effect-control__tabs'
 				label={__('Hover animation', 'maxi-blocks')}
 				type='buttons'
 				selected={props['hover-type']}
@@ -391,6 +392,7 @@ const HoverEffectControl = props => {
 					<SettingTabsControl
 						type='buttons'
 						fullWidthMode
+						target='hover-text-preset'
 						selected={props['hover-text-preset']}
 						items={[
 							{

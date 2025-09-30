@@ -36,7 +36,6 @@ class MaxiBlocks_Styles
 
     // Cache properties for query optimization
     private static $content_cache = [];
-    private static $bulk_content_cache = [];
     private static $template_parts_cache = [];
     private static $meta_cache = [];
     private static $blocks_cache = [];
@@ -74,7 +73,7 @@ class MaxiBlocks_Styles
                 }
 
                 if (self::should_apply_content_filter()) {
-                    add_filter('wp_enqueue_scripts', [$this, 'process_content_frontend']);
+                    add_action('wp_enqueue_scripts', [$this, 'process_content_frontend']);
                 }
             }
         });
@@ -93,6 +92,7 @@ class MaxiBlocks_Styles
         // Clear caches after page processing to free memory
         add_action('wp_footer', [__CLASS__, 'clear_caches'], 999);
         add_action('admin_footer', [__CLASS__, 'clear_caches'], 999);
+        add_action('shutdown', [__CLASS__, 'clear_caches'], 999);
     }
 
     private function should_apply_content_filter()
@@ -773,17 +773,20 @@ class MaxiBlocks_Styles
             return $font_url_cache[$font_url];
         }
 
-        $array = @get_headers($font_url);
+        $response = wp_remote_head($font_url, [
+            'timeout' => 10,
+            'user-agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url()
+        ]);
 
-        if (!$array) {
+        if (is_wp_error($response)) {
             $font_url_cache[$font_url] = false;
             set_transient($cache_key, 'failed', 24 * HOUR_IN_SECONDS);
             return false;
         }
 
-        $string = $array[0];
+        $response_code = wp_remote_retrieve_response_code($response);
 
-        $result = strpos($string, '200') !== false;
+        $result = $response_code === 200;
         $font_url_cache[$font_url] = $result;
         set_transient($cache_key, $result ? 'success' : 'failed', 24 * HOUR_IN_SECONDS);
 
@@ -1517,8 +1520,12 @@ class MaxiBlocks_Styles
         wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
 
         // Add prefetch link for the script
-        $prefetch_url = plugins_url($js_script_path, dirname(__FILE__));
-        echo "<link rel='prefetch' href='$prefetch_url' as='script'>";
+        add_filter('wp_resource_hints', function($urls, $relation_type) use ($js_script_path) {
+            if ('prefetch' === $relation_type) {
+                $urls[] = plugins_url($js_script_path, dirname(__FILE__));
+            }
+            return $urls;
+        }, 10, 2);
     }
 
 
@@ -1531,7 +1538,6 @@ class MaxiBlocks_Styles
     public static function clear_caches()
     {
         self::$content_cache = [];
-        self::$bulk_content_cache = [];
         self::$template_parts_cache = [];
         self::$meta_cache = [];
         self::$blocks_cache = [];

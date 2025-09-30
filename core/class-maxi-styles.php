@@ -183,10 +183,31 @@ class MaxiBlocks_Styles
 
                 if ($template_parts && !empty($template_parts)) {
                     // Bulk fetch template parts meta
-                    $template_parts_meta_bulk = [];
+                    $bulk_meta_results = $this->get_bulk_meta($template_parts, true);
+
                     foreach ($template_parts as $template_part_id) {
-                        $custom_meta = $this->custom_meta($js_var, true, $template_part_id);
-                        $template_parts_meta = array_merge($template_parts_meta, $custom_meta);
+                        $meta_data = $bulk_meta_results[$template_part_id] ?? null;
+
+                        if (!$meta_data || empty($meta_data)) {
+                            continue;
+                        }
+
+                        $result_arr = (array) $meta_data[0];
+                        $result_string = $result_arr['custom_data_value'] ?? '';
+                        $result = maybe_unserialize($result_string);
+
+                        if (!$result || empty($result) || !isset($result[$js_var])) {
+                            continue;
+                        }
+
+                        $result_decoded = $result[$js_var];
+
+                        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects and slider meta
+                        if (in_array($js_var, ['bg_video', 'scroll_effects', 'slider'])) {
+                            $template_parts_meta = array_merge($template_parts_meta, [true]);
+                        } elseif (is_array($result_decoded) && !empty($result_decoded)) {
+                            $template_parts_meta = array_merge($template_parts_meta, $result_decoded);
+                        }
                     }
                 }
 

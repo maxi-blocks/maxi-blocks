@@ -5,7 +5,7 @@
 		width: 40px;
 		min-width: 40px;
 		background: #fff;
-		border: 1px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 3px;
 		box-shadow: none;
 		line-height: 1;
@@ -16,9 +16,14 @@
 		align-items: center;
 		justify-content: center;
 
+		// Ensure the first tab has left spacing to not stick to the container edge
+		&:first-child {
+			margin-left: 5px;
+		}
+
 		&.is-active,
 		&.maxi-tabs-control__button--selected {
-			background: var(--maxi-whisper-color);
+			background: var(--maxi-mid-color);
 			border-color: var(--maxi-secondary-color);
 			color: var(--maxi-secondary-color);
 
@@ -33,14 +38,13 @@
 		}
 
 		&:hover {
-			box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-			background: var(--maxi-mid-color);
+			background: var(--maxi-whisper-green);
 			border-color: var(--maxi-secondary-color);
 			color: var(--maxi-secondary-color);
 
 			svg {
 				path {
-					fill: var(--maxi-secondary-color) !important;
+					fill: var(--maxi-secondary-color);
 				}
 				stroke {
 					stroke: var(--maxi-secondary-color);
@@ -62,38 +66,47 @@
 }
 
 .maxi-tabs-control__hover-text-preset {
-	display: flex;
+	display: flex; // Align bottom preset buttons in a row
 	flex-wrap: wrap;
-	justify-content: flex-start;
-
+	gap: 11px; // Even spacing between bottom buttons
+	padding: 0 5px; // Align edges with neighboring controls
 	.maxi-tabs-control__button {
 		border-radius: 3px;
-		margin: 3px;
-		border: 1px solid var(--maxi-grey-light) !important;
-		width: 46px;
-		padding: 4px !important;
+		margin: 0; // Spacing handled by container gap
+		border: 1.5px solid var(--maxi-grey-light) !important;
+		padding: 0; // Match top icons
+		height: 40px; // Uniform size
+		width: 40px; // Uniform size
+		min-width: 40px; // Prevent shrinking
+		line-height: 1; // Prevent vertical misalignment
+		display: flex; // Center icon
+		align-items: center;
+		justify-content: center;
 
+		// First preset button: add left margin
 		&:first-child {
-			margin-left: 8px;
-		}
-		&:last-child {
-			margin-right: 0px !important;
+			margin-left: 5px;
 		}
 
-		&:hover,
+		// Active state: emphasize with secondary color border
 		&.is-active,
 		&.maxi-tabs-control__button--selected {
-			background: var(--maxi-whisper-green) !important;
 			border-color: var(--maxi-secondary-color) !important;
-			color: var(--maxi-secondary-color) !important;
+		}
 
-			svg {
-				path {
-					fill: var(--maxi-secondary-color) !important;
-				}
-				stroke {
-					stroke: var(--maxi-secondary-color) !important;
-				}
+		// Hover state: emphasize with secondary color border
+		&:hover {
+			border-color: var(--maxi-secondary-color) !important;
+		}
+
+		svg {
+			width: 18px;
+			height: 18px;
+			path {
+				transition: all 0.15s ease-in-out;
+			}
+			stroke {
+				transition: all 0.15s ease-in-out;
 			}
 		}
 	}

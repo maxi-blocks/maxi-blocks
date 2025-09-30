@@ -776,6 +776,7 @@ class MaxiBlockComponent extends Component {
 			'.edit-post-visual-editor',
 			document.body
 		);
+		if (!postEditor) return;
 		const responsiveWidth = postEditor.getAttribute(
 			'maxi-blocks-responsive-width'
 		);

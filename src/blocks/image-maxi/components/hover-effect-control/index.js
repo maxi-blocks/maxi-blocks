@@ -165,51 +165,54 @@ const HoverEffectControl = props => {
 						'grey-scale',
 						'clear-grey-scale',
 					].includes(props['hover-basic-effect-type'])) && (
-					<SelectControl
-						__nextHasNoMarginBottom
-						label={__('Easing', 'maxi-blocks')}
-						value={props['hover-transition-easing']}
-						defaultValue={getDefaultAttribute(
-							'hover-transition-easing'
-						)}
-						onReset={() =>
-							onChange({
-								'hover-transition-easing': getDefaultAttribute(
-									'hover-transition-easing'
-								),
-								isReset: true,
-							})
-						}
-						onChange={val =>
-							onChange({ 'hover-transition-easing': val })
-						}
-						options={[
-							{
-								label: __('Ease', 'maxi-blocks'),
-								value: 'ease',
-							},
-							{
-								label: __('Linear', 'maxi-blocks'),
-								value: 'linear',
-							},
-							{
-								label: __('Ease-in', 'maxi-blocks'),
-								value: 'ease-in',
-							},
-							{
-								label: __('Ease-out', 'maxi-blocks'),
-								value: 'ease-out',
-							},
-							{
-								label: __('Ease-in-out', 'maxi-blocks'),
-								value: 'ease-in-out',
-							},
-							{
-								label: __('Cubic-bezier', 'maxi-blocks'),
-								value: 'cubic-bezier',
-							},
-						]}
-					/>
+					<div className='maxi-hover-effect-control__select-control-wrapper'>
+						<SelectControl
+							__nextHasNoMarginBottom
+							label={__('Easing', 'maxi-blocks')}
+							value={props['hover-transition-easing']}
+							defaultValue={getDefaultAttribute(
+								'hover-transition-easing'
+							)}
+							onReset={() =>
+								onChange({
+									'hover-transition-easing':
+										getDefaultAttribute(
+											'hover-transition-easing'
+										),
+									isReset: true,
+								})
+							}
+							onChange={val =>
+								onChange({ 'hover-transition-easing': val })
+							}
+							options={[
+								{
+									label: __('Ease', 'maxi-blocks'),
+									value: 'ease',
+								},
+								{
+									label: __('Linear', 'maxi-blocks'),
+									value: 'linear',
+								},
+								{
+									label: __('Ease-in', 'maxi-blocks'),
+									value: 'ease-in',
+								},
+								{
+									label: __('Ease-out', 'maxi-blocks'),
+									value: 'ease-out',
+								},
+								{
+									label: __('Ease-in-out', 'maxi-blocks'),
+									value: 'ease-in-out',
+								},
+								{
+									label: __('Cubic-bezier', 'maxi-blocks'),
+									value: 'cubic-bezier',
+								},
+							]}
+						/>
+					</div>
 				)}
 			{props['hover-transition-easing'] === 'cubic-bezier' && (
 				<BezierEditor
@@ -330,7 +333,7 @@ const HoverEffectControl = props => {
 				</>
 			)}
 			{props['hover-type'] === 'text' && (
-				<>
+				<div className='maxi-hover-effect-control__select-control-wrapper'>
 					<SelectControl
 						__nextHasNoMarginBottom
 						label={__('Animation type', 'maxi-blocks')}
@@ -389,220 +392,219 @@ const HoverEffectControl = props => {
 							onChange({ 'hover-text-effect-type': val })
 						}
 					/>
-					<SettingTabsControl
-						type='buttons'
-						fullWidthMode
-						target='hover-text-preset'
-						selected={props['hover-text-preset']}
-						items={[
-							{
-								icon: <Icon icon={alignLeftTop} />,
-								value: 'left-top',
-							},
-							{
-								icon: <Icon icon={alignRightTop} />,
-								value: 'right-top',
-							},
-							{
-								icon: <Icon icon={alignCenterCenter} />,
-								value: 'center-center',
-							},
-							{
-								icon: <Icon icon={alignLeftBottom} />,
-								value: 'left-bottom',
-							},
-							{
-								icon: <Icon icon={alignRightBottom} />,
-								value: 'right-bottom',
-							},
-						]}
-						onChange={val => onChange({ 'hover-text-preset': val })}
-					/>
-					<TextareaControl
-						placeholder={__(
-							'Add hover title text here',
-							'maxi-blocks'
-						)}
-						value={props['hover-title-typography-content']}
-						onChange={val =>
-							onChange({
-								'hover-title-typography-content': isNil(val)
-									? getDefaultAttribute(
-											'hover-title-typography-content'
-									  )
-									: val,
-							})
-						}
-					/>
-					<ToggleSwitch
-						label={__('Custom hover text', 'maxi-blocks')}
-						selected={props['hover-title-typography-status']}
-						onChange={val =>
-							onChange({
-								'hover-title-typography-status': val,
-							})
-						}
-					/>
-					{props['hover-title-typography-status'] && (
-						<TypographyControl
-							typography={{
-								...getGroupAttributes(
-									props,
-									'hoverTitleTypography'
-								),
-							}}
-							hideAlignment
-							onChangeInline={onChangeInline}
-							onChange={onChange}
-							prefix='hover-title-'
-							disableCustomFormats
-							showBottomGap
-							blockStyle={blockStyle}
-							clientId={clientId}
-							globalProps={{
-								target: '',
-								type: 'h4',
-							}}
-							textLevel='h4'
-							inlineTarget='maxi-hover-details__content h4'
-						/>
-					)}
-					<hr />
-					<TextareaControl
-						placeholder={__(
-							'Add hover content text here',
-							'maxi-blocks'
-						)}
-						value={props['hover-content-typography-content']}
-						onChange={val =>
-							onChange({
-								'hover-content-typography-content': isNil(val)
-									? getDefaultAttribute(
-											'hover-content-typography-content'
-									  )
-									: val,
-							})
-						}
-					/>
-					<ToggleSwitch
-						label={__('Custom content text', 'maxi-blocks')}
-						selected={props['hover-content-typography-status']}
-						onChange={val =>
-							onChange({
-								'hover-content-typography-status': val,
-							})
-						}
-					/>
-					{props['hover-content-typography-status'] && (
-						<TypographyControl
-							typography={{
-								...getGroupAttributes(
-									props,
-									'hoverContentTypography'
-								),
-							}}
-							hideAlignment
-							onChange={onChange}
-							prefix='hover-content-'
-							disableCustomFormats
-							blockStyle={blockStyle}
-							clientId={clientId}
-							globalProps={{
-								target: '',
-								type: 'p',
-							}}
-							textLevel='p'
-							inlineTarget='maxi-hover-details__content p'
-						/>
-					)}
-					<hr />
-					<BackgroundControl
-						{...getGroupAttributes(props, [
-							'hoverBackground',
-							'hoverBackgroundColor',
-							'hoverBackgroundGradient',
-						])}
-						onChangeInline={obj =>
-							onChangeInline(obj, '.maxi-hover-details__content')
-						}
-						onChange={onChange}
-						disableClipPath
-						disableImage
-						disableVideo
-						disableSVG
-						prefix='hover-'
-						clientId={clientId}
-					/>
-					<ToggleSwitch
-						label={__('Custom border', 'maxi-blocks')}
-						selected={props['hover-border-status']}
-						onChange={val =>
-							onChange({
-								'hover-border-status': val,
-							})
-						}
-					/>
-					{props['hover-border-status'] && (
-						<BorderControl
-							{...getGroupAttributes(props, [
-								'hoverBorder',
-								'hoverBorderWidth',
-								'hoverBorderRadius',
-							])}
-							onChangeInline={obj =>
-								onChangeInline(
-									obj,
-									'.maxi-hover-details__content'
-								)
-							}
-							onChange={onChange}
-							prefix='hover-'
-							disablePalette
-							clientId={clientId}
-						/>
-					)}
-					<ToggleSwitch
-						label={__('Custom padding', 'maxi-blocks')}
-						selected={props['hover-padding-status']}
-						onChange={val =>
-							onChange({
-								'hover-padding-status': val,
-							})
-						}
-					/>
-					{props['hover-padding-status'] && (
-						<AxisControl
-							{...getGroupAttributes(props, 'hoverPadding')}
-							label={__('Padding', 'maxi-blocks')}
-							onChange={onChange}
-							target='hover-padding'
-							breakpoint={breakpoint}
-							disableAuto
-						/>
-					)}
-					<ToggleSwitch
-						label={__('Custom margin', 'maxi-blocks')}
-						selected={props['hover-margin-status']}
-						onChange={val =>
-							onChange({
-								'hover-margin-status': val,
-							})
-						}
-					/>
-					{props['hover-margin-status'] && (
-						<AxisControl
-							{...getGroupAttributes(props, 'hoverMargin')}
-							label={__('Margin', 'maxi-blocks')}
-							onChange={onChange}
-							target='hover-margin'
-							optionType='string'
-							breakpoint={breakpoint}
-						/>
-					)}
-				</>
+				</div>
+			)}
+			<SettingTabsControl
+				type='buttons'
+				fullWidthMode
+				target='hover-text-preset'
+				selected={props['hover-text-preset']}
+				items={[
+					{
+						icon: <Icon icon={alignLeftTop} />,
+						value: 'left-top',
+					},
+					{
+						icon: <Icon icon={alignRightTop} />,
+						value: 'right-top',
+					},
+					{
+						icon: <Icon icon={alignCenterCenter} />,
+						value: 'center-center',
+					},
+					{
+						icon: <Icon icon={alignLeftBottom} />,
+						value: 'left-bottom',
+					},
+					{
+						icon: <Icon icon={alignRightBottom} />,
+						value: 'right-bottom',
+					},
+				]}
+				onChange={val => onChange({ 'hover-text-preset': val })}
+			/>
+			<TextareaControl
+				placeholder={__(
+					'Add hover title text here',
+					'maxi-blocks'
+				)}
+				value={props['hover-title-typography-content']}
+				onChange={val =>
+					onChange({
+						'hover-title-typography-content': isNil(val)
+							? getDefaultAttribute(
+									'hover-title-typography-content'
+							  )
+							: val,
+					})
+				}
+			/>
+			<ToggleSwitch
+				label={__('Custom hover text', 'maxi-blocks')}
+				selected={props['hover-title-typography-status']}
+				onChange={val =>
+					onChange({
+						'hover-title-typography-status': val,
+					})
+				}
+			/>
+			{props['hover-title-typography-status'] && (
+				<TypographyControl
+					typography={{
+						...getGroupAttributes(
+							props,
+							'hoverTitleTypography'
+						),
+					}}
+					hideAlignment
+					onChangeInline={onChangeInline}
+					onChange={onChange}
+					prefix='hover-title-'
+					disableCustomFormats
+					showBottomGap
+					blockStyle={blockStyle}
+					clientId={clientId}
+					globalProps={{
+						target: '',
+						type: 'h4',
+					}}
+					textLevel='h4'
+					inlineTarget='maxi-hover-details__content h4'
+				/>
+			)}
+			<hr />
+			<TextareaControl
+				placeholder={__(
+					'Add hover content text here',
+					'maxi-blocks'
+				)}
+				value={props['hover-content-typography-content']}
+				onChange={val =>
+					onChange({
+						'hover-content-typography-content': isNil(val)
+							? getDefaultAttribute(
+									'hover-content-typography-content'
+							  )
+							: val,
+					})
+				}
+			/>
+			<ToggleSwitch
+				label={__('Custom content text', 'maxi-blocks')}
+				selected={props['hover-content-typography-status']}
+				onChange={val =>
+					onChange({
+						'hover-content-typography-status': val,
+					})
+				}
+			/>
+			{props['hover-content-typography-status'] && (
+				<TypographyControl
+					typography={{
+						...getGroupAttributes(
+							props,
+							'hoverContentTypography'
+						),
+					}}
+					hideAlignment
+					onChange={onChange}
+					prefix='hover-content-'
+					disableCustomFormats
+					blockStyle={blockStyle}
+					clientId={clientId}
+					globalProps={{
+						target: '',
+						type: 'p',
+					}}
+					textLevel='p'
+					inlineTarget='maxi-hover-details__content p'
+				/>
+			)}
+			<hr />
+			<BackgroundControl
+				{...getGroupAttributes(props, [
+					'hoverBackground',
+					'hoverBackgroundColor',
+					'hoverBackgroundGradient',
+				])}
+				onChangeInline={obj =>
+					onChangeInline(obj, '.maxi-hover-details__content')
+				}
+				onChange={onChange}
+				disableClipPath
+				disableImage
+				disableVideo
+				disableSVG
+				prefix='hover-'
+				clientId={clientId}
+			/>
+			<ToggleSwitch
+				label={__('Custom border', 'maxi-blocks')}
+				selected={props['hover-border-status']}
+				onChange={val =>
+					onChange({
+						'hover-border-status': val,
+					})
+				}
+			/>
+			{props['hover-border-status'] && (
+				<BorderControl
+					{...getGroupAttributes(props, [
+						'hoverBorder',
+						'hoverBorderWidth',
+						'hoverBorderRadius',
+					])}
+					onChangeInline={obj =>
+						onChangeInline(
+							obj,
+							'.maxi-hover-details__content'
+						)
+					}
+					onChange={onChange}
+					prefix='hover-'
+					disablePalette
+					clientId={clientId}
+				/>
+			)}
+			<ToggleSwitch
+				label={__('Custom padding', 'maxi-blocks')}
+				selected={props['hover-padding-status']}
+				onChange={val =>
+					onChange({
+						'hover-padding-status': val,
+					})
+				}
+			/>
+			{props['hover-padding-status'] && (
+				<AxisControl
+					{...getGroupAttributes(props, 'hoverPadding')}
+					label={__('Padding', 'maxi-blocks')}
+					onChange={onChange}
+					target='hover-padding'
+					breakpoint={breakpoint}
+					disableAuto
+				/>
+			)}
+			<ToggleSwitch
+				label={__('Custom margin', 'maxi-blocks')}
+				selected={props['hover-margin-status']}
+				onChange={val =>
+					onChange({
+						'hover-margin-status': val,
+					})
+				}
+			/>
+			{props['hover-margin-status'] && (
+				<AxisControl
+					{...getGroupAttributes(props, 'hoverMargin')}
+					label={__('Margin', 'maxi-blocks')}
+					onChange={onChange}
+					target='hover-margin'
+					optionType='string'
+					breakpoint={breakpoint}
+				/>
 			)}
 		</div>
 	);
-};
 
 export default HoverEffectControl;

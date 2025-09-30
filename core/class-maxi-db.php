@@ -126,7 +126,6 @@ if (!class_exists('MaxiBlocks_DB')):
                 require_once ABSPATH . 'wp-admin/includes/upgrade.php';
                 dbDelta($sql);
             }
-
         }
     }
 endif;

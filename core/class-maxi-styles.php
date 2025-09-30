@@ -1641,9 +1641,7 @@ class MaxiBlocks_Styles
         }
 
         // Use bulk query optimization for blocks if available
-        static $blocks_cache = [];
-
-        if (!isset($blocks_cache[$unique_id])) {
+        if (!isset(self::$blocks_cache[$unique_id])) {
             $content_array_block = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
@@ -1651,10 +1649,10 @@ class MaxiBlocks_Styles
                 ),
                 ARRAY_A
             );
-            $blocks_cache[$unique_id] = $content_array_block[0] ?? null;
+            self::$blocks_cache[$unique_id] = $content_array_block[0] ?? null;
         }
 
-        $content_block = $blocks_cache[$unique_id];
+        $content_block = self::$blocks_cache[$unique_id];
 
         if (!isset($content_block) || empty($content_block)) {
             if (!empty($block['innerBlocks'])) {

@@ -625,6 +625,50 @@ class MaxiBlockComponent extends Component {
 			this.previewTimeouts = null;
 		}
 
+		// Disconnect FSE observer if present
+		if (this.fseIframeObserver) {
+			this.disconnectTrackedObserver(this.fseIframeObserver);
+			this.fseIframeObserver = null;
+		}
+
+		// Remove temporary popover-hiding styles if still injected
+		if (this.popoverStyles) {
+			this.popoverStyles.remove();
+			this.popoverStyles = null;
+		}
+
+		// Clear Map and Set collections
+		if (this.storeSelectors) {
+			this.storeSelectors.clear();
+			this.storeSelectors = null;
+		}
+
+		if (this.allRelationInstances) {
+			this.allRelationInstances.clear();
+			this.allRelationInstances = null;
+		}
+
+		// Clean up relation instances
+		if (this.relationInstances) {
+			try {
+				this.safeCleanupRelationInstances(this.relationInstances);
+			} catch (error) {
+				console.error('MaxiBlocks: Failed to cleanup relation instances on unmount:', error);
+			}
+			this.relationInstances = null;
+		}
+
+		if (this.previousRelationInstances) {
+			this.previousRelationInstances = null;
+		}
+
+		// Clear DOM references
+		this.rootSlot = null;
+		this.editorIframe = null;
+		this.templateModal = null;
+		this.previousIframeContent = null;
+		this.blockRef = null;
+
 		// No cleanup needed for disabled data structures
 
 		// No cleanup needed since we disabled all caching structures

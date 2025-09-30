@@ -60,18 +60,20 @@ const HoverEffectControl = props => {
 		onChange({
 			'hover-type': 'none',
 		});
-		document
-			.querySelector(`#block-${clientId} .maxi-image-block__image`)
-			.removeAttribute('style');
+		const imgEl = document.querySelector(
+			`#block-${clientId} .maxi-image-block__image`
+		);
+		if (imgEl) imgEl.removeAttribute('style');
 	};
 
 	const disablePreview = () => {
 		onChange({
 			'hover-preview': false,
 		});
-		document
-			.querySelector(`#block-${clientId} .maxi-image-block__image`)
-			.removeAttribute('style');
+		const imgEl = document.querySelector(
+			`#block-${clientId} .maxi-image-block__image`
+		);
+		if (imgEl) imgEl.removeAttribute('style');
 	};
 
 	return (
@@ -530,15 +532,50 @@ const HoverEffectControl = props => {
 						disableSVG
 						prefix='hover-'
 						clientId={clientId}
+						tabsClassName='mb-hover-bg'
 					/>
 					<ToggleSwitch
 						label={__('Custom border', 'maxi-blocks')}
 						selected={props['hover-border-status']}
-						onChange={val =>
-							onChange({
-								'hover-border-status': val,
-							})
-						}
+						onChange={val => {
+							if (val) {
+								onChange({ 'hover-border-status': true });
+							} else {
+								onChange({
+									'hover-border-status': false,
+									[`hover-border-style-${breakpoint}`]:
+										undefined,
+									[`hover-border-color-${breakpoint}`]:
+										undefined,
+									[`hover-border-palette-status-${breakpoint}`]:
+										undefined,
+									[`hover-border-palette-sc-status-${breakpoint}`]:
+										undefined,
+									[`hover-border-palette-color-${breakpoint}`]:
+										undefined,
+									[`hover-border-palette-opacity-${breakpoint}`]:
+										undefined,
+									[`hover-border-top-width-${breakpoint}`]:
+										undefined,
+									[`hover-border-right-width-${breakpoint}`]:
+										undefined,
+									[`hover-border-bottom-width-${breakpoint}`]:
+										undefined,
+									[`hover-border-left-width-${breakpoint}`]:
+										undefined,
+									[`hover-border-top-left-radius-${breakpoint}`]:
+										undefined,
+									[`hover-border-top-right-radius-${breakpoint}`]:
+										undefined,
+									[`hover-border-bottom-right-radius-${breakpoint}`]:
+										undefined,
+									[`hover-border-bottom-left-radius-${breakpoint}`]:
+										undefined,
+									[`hover-border-unit-radius-${breakpoint}`]:
+										undefined,
+								});
+							}
+						}}
 					/>
 					{props['hover-border-status'] && (
 						<BorderControl
@@ -557,6 +594,8 @@ const HoverEffectControl = props => {
 							prefix='hover-'
 							disablePalette
 							clientId={clientId}
+							status={props['hover-border-status']}
+							breakpoint={breakpoint}
 						/>
 					)}
 					<ToggleSwitch

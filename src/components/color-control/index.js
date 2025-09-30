@@ -57,6 +57,7 @@ const ColorControl = props => {
 		isToolbar = false,
 		prefix = '',
 		avoidBreakpointForDefault = false,
+		paletteOnly = false,
 	} = props;
 
 	const {
@@ -114,7 +115,7 @@ const ColorControl = props => {
 	const classes = classnames(
 		'maxi-color-control',
 		!disablePalette &&
-			paletteStatus &&
+			(paletteStatus || paletteOnly) &&
 			`maxi-color-palette-control maxi-color-palette--${blockStyle}`,
 		className
 	);
@@ -130,7 +131,27 @@ const ColorControl = props => {
 			});
 	}, [globalStatus]);
 
-	const showPalette = !disablePalette && paletteStatus;
+	// Force palette mode when paletteOnly is enabled
+	useEffect(() => {
+		if (paletteOnly && !paletteStatus) {
+			onChange({
+				paletteStatus: true,
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paletteOnly]);
+
+	// When paletteOnly is enabled, ensure we can edit even if a style card is active
+	useEffect(() => {
+		if (paletteOnly && globalStatus && !paletteSCStatus) {
+			onChange({
+				paletteSCStatus: true,
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paletteOnly, globalStatus]);
+
+	const showPalette = (!disablePalette && paletteStatus) || paletteOnly;
 
 	/**
 	 * Creates an object with the color variables with RGBA format
@@ -284,10 +305,12 @@ const ColorControl = props => {
 					}
 				/>
 			)}
+			{/* Disabled wrapper should not include the Set custom colour toggle so that users can always deselect back to palette */}
 			<div
 				className={classnames(
 					globalStatus &&
 						!paletteSCStatus &&
+						!paletteOnly &&
 						'maxi-color-control--disabled'
 				)}
 			>
@@ -306,64 +329,6 @@ const ColorControl = props => {
 						globalPaletteOpacity={globalPaletteOpacity}
 					/>
 				)}
-				{!disablePalette && (
-					<ToggleSwitch
-						label={__('Set custom colour', 'maxi-blocks')}
-						selected={!paletteStatus}
-						onChange={val => {
-							let initialCustomColor = 'transparent';
-							if (val) {
-								if (
-									typeof paletteColor === 'number' &&
-									customColors
-								) {
-									if (
-										paletteColor >= 1 &&
-										paletteColor <= 8
-									) {
-										initialCustomColor = `rgba(${getPaletteColor(
-											{
-												clientId,
-												color: paletteColor,
-												blockStyle,
-											}
-										)},${paletteOpacity || 1})`;
-									} else {
-										const matchedCustomColor =
-											customColors.find(
-												cc => cc.id === paletteColor
-											);
-										if (matchedCustomColor) {
-											initialCustomColor =
-												matchedCustomColor.value;
-										} else if (
-											color &&
-											typeof color === 'string'
-										) {
-											initialCustomColor = color;
-										}
-									}
-								} else if (color && typeof color === 'string') {
-									initialCustomColor = color;
-								}
-							}
-
-							onChangeValue({
-								paletteStatus: !val,
-								...(val && {
-									color: initialCustomColor,
-								}),
-								...(!disableOpacity &&
-									!val &&
-									color && {
-										paletteOpacity:
-											tinycolor(color).getAlpha() ||
-											paletteOpacity,
-									}),
-							});
-						}}
-					/>
-				)}
 				{!showPalette && (
 					<CustomColorControl
 						label={label}
@@ -379,6 +344,64 @@ const ColorControl = props => {
 					/>
 				)}
 			</div>
+			{/* Keep Set custom colour toggle outside disabled wrapper so it can always be toggled off */}
+			{!disablePalette && !paletteOnly && (
+				<ToggleSwitch
+					label={__('Set custom colour', 'maxi-blocks')}
+					selected={!paletteStatus}
+					onChange={val => {
+						// Prevent enabling custom colour when a style card lock is active
+						if (globalStatus && !paletteSCStatus && val) return;
+						let initialCustomColor = 'transparent';
+						if (val) {
+							if (
+								typeof paletteColor === 'number' &&
+								customColors
+							) {
+								if (paletteColor >= 1 && paletteColor <= 8) {
+									initialCustomColor = `rgba(${getPaletteColor(
+										{
+											clientId,
+											color: paletteColor,
+											blockStyle,
+										}
+									)},${paletteOpacity || 1})`;
+								} else {
+									const matchedCustomColor =
+										customColors.find(
+											cc => cc.id === paletteColor
+										);
+									if (matchedCustomColor) {
+										initialCustomColor =
+											matchedCustomColor.value;
+									} else if (
+										color &&
+										typeof color === 'string'
+									) {
+										initialCustomColor = color;
+									}
+								}
+							} else if (color && typeof color === 'string') {
+								initialCustomColor = color;
+							}
+						}
+
+						onChangeValue({
+							paletteStatus: !val,
+							...(val && {
+								color: initialCustomColor,
+							}),
+							...(!disableOpacity &&
+								!val &&
+								color && {
+									paletteOpacity:
+										tinycolor(color).getAlpha() ||
+										paletteOpacity,
+								}),
+						});
+					}}
+				/>
+			)}
 		</div>
 	);
 };

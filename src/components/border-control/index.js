@@ -30,6 +30,7 @@ import {
  */
 import classnames from 'classnames';
 import { isNumber, capitalize } from 'lodash';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Icons
@@ -48,6 +49,7 @@ const BorderColorControl = props => {
 		onChange,
 		clientId,
 		globalProps,
+		paletteOnly = false,
 	} = props;
 
 	return (
@@ -122,6 +124,7 @@ const BorderColorControl = props => {
 			clientId={clientId}
 			globalProps={globalProps}
 			prefix={`${prefix}border-`}
+			paletteOnly={paletteOnly}
 		/>
 	);
 };
@@ -181,7 +184,32 @@ const BorderControl = props => {
 		disableColor = false,
 		isHover = false,
 		prefix = '',
+		paletteOnly = false,
+		status,
 	} = props;
+
+	useEffect(() => {
+		if (status === false) {
+			const resetAttributes = {
+				[`${prefix}border-color-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-color`),
+				[`${prefix}border-palette-status-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-palette-status`),
+				[`${prefix}border-palette-sc-status-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-palette-sc-status`),
+				[`${prefix}border-palette-color-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-palette-color`),
+				[`${prefix}border-palette-opacity-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-palette-opacity`),
+			};
+			onChange(resetAttributes);
+		}
+	}, [status, breakpoint, isHover, prefix, onChange]);
 
 	const borderWidthLastValue = () => {
 		const response = {};
@@ -383,7 +411,7 @@ const BorderControl = props => {
 				<BorderWidthControl isToolbar={isToolbar} {...props} />
 			)}
 			{(isToolbar || (!disableColor && isBorderEnable)) && (
-				<BorderColorControl {...props} />
+				<BorderColorControl {...props} paletteOnly={paletteOnly} />
 			)}
 			{!isToolbar && isBorderEnable && (
 				<BorderWidthControl isToolbar={isToolbar} {...props} />

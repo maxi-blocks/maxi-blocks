@@ -1965,6 +1965,11 @@ class MaxiBlockComponent extends Component {
 	 * @returns {*} Selector result
 	 */
 	safeSelect(storeName, selectorName, ...args) {
+		// Guard against calls after cleanup
+		if (!this.storeSelectors) {
+			return undefined;
+		}
+
 		const key = `${storeName}/${selectorName}`;
 
 		// Get or create cached selector

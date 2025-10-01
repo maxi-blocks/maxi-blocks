@@ -1,3 +1,6 @@
+// Set CI environment to enable sandbox-disabled mode for Puppeteer
+process.env.CI = 'true';
+
 module.exports = {
 	...require('@wordpress/scripts/config/jest-e2e.config'),
 

@@ -316,29 +316,21 @@ const getButtonIconStyles = ({
 
 	const pathStyles = getIconPathStyles(obj, false);
 
-	let cachedHoverIconObj;
-	let cachedHoverIconSize;
-	let cachedHoverPathStyles;
-
-	// Only compute if icon-status-hover is enabled
-	if (obj['icon-status-hover']) {
-		// Compute once and reuse (avoid duplicate calls)
-		cachedHoverIconObj = getIconHoverObject(obj, 'iconHover');
-		cachedHoverIconSize = getIconSize(obj, true, prefix, iconWidthHeightRatio);
-		cachedHoverPathStyles = getIconPathStyles(obj, true);
-	}
-
-	const additionalHover = {
-		[hoverTarget]: cachedHoverIconObj,
-		[`${hoverTarget} svg > *`]: cachedHoverIconObj,
-		[`${hoverTarget} svg`]: cachedHoverIconSize,
-		[`${hoverTarget} svg path`]: cachedHoverPathStyles,
-	};
+	// Cache hover styles to avoid duplicate computations
+	const cachedHoverIconObj =
+		iconHoverStatus && getIconHoverObject(obj, 'iconHover');
+	const cachedHoverIconSize =
+		iconHoverStatus && getIconSize(obj, true, prefix, iconWidthHeightRatio);
+	const cachedHoverPathStyles =
+		iconHoverStatus && getIconPathStyles(obj, true);
 
 	response = {
 		...response,
 		[`${normalTarget} svg path`]: pathStyles,
-		...additionalHover,
+		[hoverTarget]: cachedHoverIconObj,
+		[`${hoverTarget} svg > *`]: cachedHoverIconObj,
+		[`${hoverTarget} svg`]: cachedHoverIconSize,
+		[`${hoverTarget} svg path`]: cachedHoverPathStyles,
 	};
 
 	const backgroundStyles = {

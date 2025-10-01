@@ -24,6 +24,7 @@ const getBoxShadowStyles = ({
 	blockStyle,
 	forClipPath = false,
 	isIB = false,
+	uniqueID = null,
 }) => {
 	const response = {};
 	const getPrevBreakpoint = breakpoint =>
@@ -35,7 +36,30 @@ const getBoxShadowStyles = ({
 	});
 	const svgElementExists = !isEmpty(obj.SVGElement);
 
+	// Cache to store computed colors to avoid redundant getPaletteColor calls
+	const colorCache = new Map();
+
+	const getCachedColor = (paletteColor, paletteOpacity, paletteStatus) => {
+		const cacheKey = `${paletteColor}-${paletteOpacity}-${paletteStatus}`;
+		if (colorCache.has(cacheKey)) {
+			return colorCache.get(cacheKey);
+		}
+
+		const color =
+			paletteStatus && paletteColor
+				? getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle,
+				  })
+				: paletteColor;
+
+		colorCache.set(cacheKey, color);
+		return color;
+	};
+
 	breakpoints.forEach(breakpoint => {
+
 		const getValue = (target, defaultPrefix = `${prefix}box-shadow-`) => {
 			const value = getAttributeValue({
 				target,
@@ -107,20 +131,13 @@ const getBoxShadowStyles = ({
 		const { value: paletteOpacity, defaultValue: defaultPaletteOpacity } =
 			getValue('palette-opacity');
 
-		const defaultColor = getColorRGBAString({
-			firstVar: `color-${defaultPaletteColor}`,
-			opacity: defaultPaletteOpacity,
-			blockStyle,
-		});
+		const defaultColor = getCachedColor(
+			defaultPaletteColor,
+			defaultPaletteOpacity,
+			true
+		);
 
-		const color =
-			paletteStatus && paletteColor
-				? getColorRGBAString({
-						firstVar: `color-${paletteColor}`,
-						opacity: paletteOpacity,
-						blockStyle,
-				  })
-				: paletteColor;
+		const color = getCachedColor(paletteColor, paletteOpacity, paletteStatus);
 
 		const isNotDefault =
 			(breakpoint === 'general' && isIB) ||

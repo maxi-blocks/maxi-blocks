@@ -76,6 +76,7 @@ class MaxiBlockComponent extends Component {
 
 		const { attributes } = args[0] || {};
 		const { uniqueID } = attributes || {};
+		const constructorStart = performance.now();
 
 		// Initialize store management FIRST (before any store calls)
 		this.storeSelectors = new Map(); // Cache selectors to avoid recreating
@@ -177,6 +178,18 @@ class MaxiBlockComponent extends Component {
 		// MINIMAL tracking - only essential timeouts
 		this.settingsTimeout = null;
 		this.fseIframeTimeout = null;
+
+		const constructorEnd = performance.now();
+		const constructorDuration = constructorEnd - constructorStart;
+		if (constructorDuration >= 50) {
+			console.log(
+				JSON.stringify({
+					event: 'constructor',
+					uniqueID,
+					duration: `${constructorDuration.toFixed(2)}ms`,
+				})
+			);
+		}
 	}
 
 	updateDOMReferences() {
@@ -195,6 +208,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		const mountStart = performance.now();
+		const { uniqueID } = this.props.attributes;
+
 		// Step 1: DOM references
 		this.updateDOMReferences();
 
@@ -383,6 +399,18 @@ class MaxiBlockComponent extends Component {
 				console.warn('MaxiBlocks: Force update error:', error);
 			}
 		}
+
+		const mountEnd = performance.now();
+		const mountDuration = mountEnd - mountStart;
+		if (mountDuration >= 50) {
+			console.log(
+				JSON.stringify({
+					event: 'componentDidMount',
+					uniqueID,
+					duration: `${mountDuration.toFixed(2)}ms`,
+				})
+			);
+		}
 	}
 
 	/**
@@ -510,6 +538,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
+		const updateStart = performance.now();
 		this.updateDOMReferences();
 
 		if (this.isPatternsPreview || this.templateModal) return;
@@ -592,9 +621,23 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockDidUpdate) {
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 		}
+
+		const updateEnd = performance.now();
+		const updateDuration = updateEnd - updateStart;
+		if (updateDuration >= 50) {
+			console.log(
+				JSON.stringify({
+					event: 'componentDidUpdate',
+					uniqueID,
+					duration: `${updateDuration.toFixed(2)}ms`,
+					shouldDisplayStyles,
+				})
+			);
+		}
 	}
 
 	componentWillUnmount() {
+		const unmountStart = performance.now();
 		const { uniqueID } = this.props.attributes;
 
 		// Block cleanup initiated
@@ -657,7 +700,10 @@ class MaxiBlockComponent extends Component {
 			try {
 				this.safeCleanupRelationInstances(this.relationInstances);
 			} catch (error) {
-				console.error('MaxiBlocks: Failed to cleanup relation instances on unmount:', error);
+				console.error(
+					'MaxiBlocks: Failed to cleanup relation instances on unmount:',
+					error
+				);
 			}
 			this.relationInstances = null;
 		}
@@ -742,6 +788,19 @@ class MaxiBlockComponent extends Component {
 
 		if (this.maxiBlockWillUnmount) {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
+		}
+
+		const unmountEnd = performance.now();
+		const unmountDuration = unmountEnd - unmountStart;
+		if (unmountDuration >= 50) {
+			console.log(
+				JSON.stringify({
+					event: 'componentWillUnmount',
+					uniqueID,
+					duration: `${unmountDuration.toFixed(2)}ms`,
+					isBlockBeingRemoved,
+				})
+			);
 		}
 	}
 
@@ -1155,6 +1214,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
+		const loadFontsStart = performance.now();
+		const { uniqueID } = this.props.attributes;
+
 		if (this.isPatternsPreview || this.templateModal) {
 			return;
 		}
@@ -1225,12 +1287,25 @@ class MaxiBlockComponent extends Component {
 			// Still mark as loaded to prevent infinite retries
 			this.areFontsLoaded.current = true;
 		}
+
+		const loadFontsEnd = performance.now();
+		const loadFontsDuration = loadFontsEnd - loadFontsStart;
+		if (loadFontsDuration >= 50) {
+			console.log(
+				JSON.stringify({
+					event: 'loadFonts',
+					uniqueID,
+					duration: `${loadFontsDuration.toFixed(2)}ms`,
+				})
+			);
+		}
 	}
 
 	/**
 	 * Refresh the styles on the Editor
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
+		const displayStylesStart = performance.now();
 		const { uniqueID } = this.props.attributes;
 
 		// Early return for invalid states
@@ -1255,7 +1330,11 @@ class MaxiBlockComponent extends Component {
 			obj = this.getStylesObject || {};
 
 			// When duplicating, need to change the obj target for the new uniqueID
-			if (obj && !obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+			if (
+				obj &&
+				!obj[uniqueID] &&
+				!!obj[this.props.attributes.uniqueID]
+			) {
 				obj[uniqueID] = obj[this.props.attributes.uniqueID];
 				delete obj[this.props.attributes.uniqueID];
 			}
@@ -1468,6 +1547,20 @@ class MaxiBlockComponent extends Component {
 				? [...this.relationInstances]
 				: null;
 		}
+
+		const displayStylesEnd = performance.now();
+		const displayStylesDuration = displayStylesEnd - displayStylesStart;
+		if (displayStylesDuration >= 50) {
+			console.log(
+				JSON.stringify({
+					event: 'displayStyles',
+					uniqueID,
+					duration: `${displayStylesDuration.toFixed(2)}ms`,
+					isBreakpointChange,
+					isBlockStyleChange,
+				})
+			);
+		}
 	}
 
 	injectStyles(
@@ -1480,6 +1573,8 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
+		const injectStylesStart = performance.now();
+
 		if (iframe?.contentDocument?.body) {
 			this.handleIframeStyles(iframe, currentBreakpoint);
 		}
@@ -1501,6 +1596,21 @@ class MaxiBlockComponent extends Component {
 
 			// Use batched style injection instead of individual style elements
 			addBlockStyles(uniqueID, styleContent, target);
+		}
+
+		const injectStylesEnd = performance.now();
+		const injectStylesDuration = injectStylesEnd - injectStylesStart;
+		if (injectStylesDuration >= 50) {
+			console.log(
+				JSON.stringify({
+					event: 'injectStyles',
+					uniqueID,
+					duration: `${injectStylesDuration.toFixed(2)}ms`,
+					currentBreakpoint,
+					isBreakpointChange,
+					isBlockStyleChange,
+				})
+			);
 		}
 	}
 
@@ -1648,6 +1758,7 @@ class MaxiBlockComponent extends Component {
 		iframe,
 		isSiteEditor
 	) {
+		const generateStylesStart = performance.now();
 		let styleContent;
 		let styles;
 
@@ -1718,6 +1829,21 @@ class MaxiBlockComponent extends Component {
 			styleContent = styleContent.replace(
 				WHITE_SPACE_REGEX,
 				'white-space: nowrap !important'
+			);
+		}
+
+		const generateStylesEnd = performance.now();
+		const generateStylesDuration = generateStylesEnd - generateStylesStart;
+		if (generateStylesDuration >= 50) {
+			console.log(
+				JSON.stringify({
+					event: 'generateStyleContent',
+					uniqueID,
+					duration: `${generateStylesDuration.toFixed(2)}ms`,
+					currentBreakpoint,
+					isBreakpointChange,
+					isBlockStyleChange,
+				})
 			);
 		}
 

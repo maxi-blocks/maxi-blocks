@@ -314,18 +314,31 @@ const getButtonIconStyles = ({
 		};
 	}
 
+	const pathStyles = getIconPathStyles(obj, false);
+
+	let cachedHoverIconObj;
+	let cachedHoverIconSize;
+	let cachedHoverPathStyles;
+
+	// Only compute if icon-status-hover is enabled
+	if (obj['icon-status-hover']) {
+		// Compute once and reuse (avoid duplicate calls)
+		cachedHoverIconObj = getIconHoverObject(obj, 'iconHover');
+		cachedHoverIconSize = getIconSize(obj, true, prefix, iconWidthHeightRatio);
+		cachedHoverPathStyles = getIconPathStyles(obj, true);
+	}
+
+	const additionalHover = {
+		[hoverTarget]: cachedHoverIconObj,
+		[`${hoverTarget} svg > *`]: cachedHoverIconObj,
+		[`${hoverTarget} svg`]: cachedHoverIconSize,
+		[`${hoverTarget} svg path`]: cachedHoverPathStyles,
+	};
+
 	response = {
 		...response,
-		[`${normalTarget} svg path`]: getIconPathStyles(obj, false),
-		[hoverTarget]:
-			obj['icon-status-hover'] && getIconHoverObject(obj, 'iconHover'),
-		[`${hoverTarget} svg > *`]:
-			obj['icon-status-hover'] && getIconHoverObject(obj, 'iconHover'),
-		[`${hoverTarget} svg`]:
-			obj['icon-status-hover'] &&
-			getIconSize(obj, true, prefix, iconWidthHeightRatio),
-		[`${hoverTarget} svg path`]:
-			obj['icon-status-hover'] && getIconPathStyles(obj, true),
+		[`${normalTarget} svg path`]: pathStyles,
+		...additionalHover,
 	};
 
 	const backgroundStyles = {

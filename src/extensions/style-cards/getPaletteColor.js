@@ -6,13 +6,41 @@ import getActiveStyleCard from './getActiveStyleCard';
 import extractRGBValues from './extractRGBValues';
 
 /**
+ * Cache for CSS variable values to avoid expensive getComputedStyle calls
+ */
+const cssVariableCache = new Map();
+
+/**
+ * Get CSS variable value with caching
+ */
+const getCachedCSSVariable = (variableName) => {
+	if (cssVariableCache.has(variableName)) {
+		return cssVariableCache.get(variableName);
+	}
+
+	const value = getComputedStyle(document.documentElement)
+		.getPropertyValue(variableName)
+		.trim();
+
+	cssVariableCache.set(variableName, value);
+	return value;
+};
+
+/**
+ * Clear CSS variable cache (call when style card changes)
+ */
+export const clearCSSVariableCache = () => {
+	cssVariableCache.clear();
+};
+
+/**
  * Fallback function to get custom color from CSS variables
  */
 const getCustomColorFromCSS = (blockStyle, customIndex) => {
 	// Try with the specified block style first
-	const cssValueSpecific = getComputedStyle(document.documentElement)
-		.getPropertyValue(`--maxi-${blockStyle}-color-custom-${customIndex}`)
-		.trim();
+	const cssValueSpecific = getCachedCSSVariable(
+		`--maxi-${blockStyle}-color-custom-${customIndex}`
+	);
 
 	if (cssValueSpecific) {
 		return cssValueSpecific;
@@ -20,9 +48,9 @@ const getCustomColorFromCSS = (blockStyle, customIndex) => {
 
 	// Try with the opposite block style (light/dark) as a fallback
 	const oppositeStyle = blockStyle === 'light' ? 'dark' : 'light';
-	const cssValueOpposite = getComputedStyle(document.documentElement)
-		.getPropertyValue(`--maxi-${oppositeStyle}-color-custom-${customIndex}`)
-		.trim();
+	const cssValueOpposite = getCachedCSSVariable(
+		`--maxi-${oppositeStyle}-color-custom-${customIndex}`
+	);
 
 	if (cssValueOpposite) {
 		return cssValueOpposite;
@@ -57,9 +85,9 @@ const getPaletteColor = ({ clientId, color, blockStyle = '' }) => {
 			return getCustomColorFromCSS(resolvedBlockStyle, customIndex);
 		}
 
-		return getComputedStyle(document.documentElement)
-			.getPropertyValue(`--maxi-${resolvedBlockStyle}-color-${color}`)
-			.trim();
+		return getCachedCSSVariable(
+			`--maxi-${resolvedBlockStyle}-color-${color}`
+		);
 	}
 
 	const SCValue = activeStyleCard.value;

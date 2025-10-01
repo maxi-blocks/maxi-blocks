@@ -58,6 +58,9 @@ const getWrapperObject = props => {
 			},
 			blockStyle: props.blockStyle,
 		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),

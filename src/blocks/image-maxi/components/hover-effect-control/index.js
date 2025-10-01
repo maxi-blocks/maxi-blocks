@@ -459,6 +459,7 @@ const HoverEffectControl = props => {
 							showBottomGap
 							blockStyle={blockStyle}
 							clientId={clientId}
+							tabsClassName='mb-hover-bg'
 							globalProps={{
 								target: '',
 								type: 'h4',
@@ -526,6 +527,7 @@ const HoverEffectControl = props => {
 							onChangeInline(obj, '.maxi-hover-details__content')
 						}
 						onChange={onChange}
+						tabsClassName='mb-hover-bg'
 						disableClipPath
 						disableImage
 						disableVideo

@@ -176,7 +176,7 @@ const ColorControl = props => {
 		});
 
 	const onChangeInlineValue = obj =>
-		onChangeInline
+		typeof onChangeInline === 'function'
 			? onChangeInline({
 					...colorObj,
 					...obj,

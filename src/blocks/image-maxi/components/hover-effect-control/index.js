@@ -614,7 +614,9 @@ const HoverEffectControl = props => {
 							onChange={onChange}
 							target='hover-padding'
 							breakpoint={breakpoint}
+							optionType='string'
 							disableAuto
+							enableAxisUnits
 						/>
 					)}
 					<ToggleSwitch

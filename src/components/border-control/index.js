@@ -94,10 +94,11 @@ const BorderColorControl = props => {
 			paletteColor={borderPaletteColorValue}
 			paletteOpacity={borderPaletteOpacityValue}
 			onChangeInline={({ color }) => {
-				onChangeInline &&
+				if (typeof onChangeInline === 'function') {
 					onChangeInline({
 						'border-color': color,
 					});
+				}
 			}}
 			onChange={changes => {
 				const nextValues = {};
@@ -390,7 +391,6 @@ const BorderControl = props => {
 			/>
 			{!isToolbar && (
 				<SelectControl
-					__nextHasNoMarginBottom
 					label={__('Add border line', 'maxi-blocks')}
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}

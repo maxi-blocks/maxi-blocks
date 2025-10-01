@@ -44,27 +44,19 @@
   STYLE VARIANTS
 -------------------------------------------*/
 
-	// &__second-style {
-	// 	.maxi-base-control__field {
-	// 		position: relative;
-	// 	}
+	&__second-style {
+		.maxi-base-control__field {
+			position: relative;
+		}
 
-	// 	.maxi-base-control__label {
-	// 		// position: absolute;
-	// 		// top: -8px;
-	// 		// left: 8px;
-	// 		// font-size: 10px !important;
-	// 		// color: var(--maxi-black) !important;
-	// 		// font-style: italic;
-	// 		// padding: 0px 5px;
-	// 		// pointer-events: none;
-	// 		// box-sizing: border-box;
-	// 	}
+		.maxi-base-control__label {
+			border: none !important;
+		}
 
-	// 	.maxi-select-control__input {
-	// 		// padding: 9px 8px;
-	// 	}
-	// }
+		.maxi-select-control__input {
+			border: none !important;
+		}
+	}
 
 	/*-------------------------------------------
   CORE INPUT COMPONENTS
@@ -78,14 +70,15 @@
 		position: relative;
 		display: inline-flex;
 		flex: none;
-		width: 60px !important;
+		width: 65px !important;
 	}
 
 	&__value {
 		// width: 100%;
 		height: 36px;
 		// flex: 1;
-		// padding-right: 24px;
+		/* Reduce inner spacing so digits sit closer to the spinner */
+		padding: 0 5px 0 4px !important;
 		// min-width: 60px;
 		z-index: 0;
 
@@ -108,12 +101,25 @@
 
 	&__spinner-container {
 		position: absolute;
-		right: 4px;
+		right: 2px;
 		top: 50%;
 		transform: translateY(-48%);
 		flex-direction: column;
 		gap: -1px;
 		z-index: 1;
+
+		/* Single short divider on the LEFT (between input and spinner) */
+		&::before {
+			content: '';
+			position: absolute;
+			left: -3px;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 1px;
+			height: 18px;
+			background-color: var(--maxi-grey-light);
+			pointer-events: none;
+		}
 	}
 
 	&__spinner-button {
@@ -214,10 +220,6 @@
 	.components-base-control__field {
 		flex-wrap: wrap;
 
-		& > * {
-			// margin-left: 5px;
-		}
-
 		.maxi-base-control__label,
 		.components-base-control__label,
 		.components-range-control {
@@ -237,6 +239,9 @@
 		.maxi-select-control__input {
 			height: 36px !important;
 			min-height: 36px !important;
+			// Reduce inner right space and move chevron closer
+			padding-right: 6px !important;
+			background-position: right 4px top 50% !important;
 		}
 	}
 }

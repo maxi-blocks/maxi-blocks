@@ -170,6 +170,10 @@
 	.maxi-typography-control__spacing-controls {
 		margin-bottom: 15px !important;
 
+		.maxi-select-control__input {
+			border: none !important;
+		}
+
 		.maxi-typography-control__line-height,
 		.maxi-typography-control__bottom-gap {
 			display: inline-block !important;

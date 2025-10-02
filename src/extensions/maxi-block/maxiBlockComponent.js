@@ -1291,9 +1291,15 @@ class MaxiBlockComponent extends Component {
 		const target = this.getStyleTarget(isSiteEditor, iframe);
 		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
-		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
-		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
-			const styleContent = this.generateStyleContent(
+		const shouldGenerateNewStyles =
+			!isBreakpointChange ||
+			currentBreakpoint === 'xxl' ||
+			isBlockStyleChange;
+
+		let styleContent;
+
+		if (shouldGenerateNewStyles) {
+			styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,
 				currentBreakpoint,
@@ -1303,8 +1309,44 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
+		} else {
+			styleContent = this.getCachedStyleContent(
+				uniqueID,
+				currentBreakpoint
+			);
+
+			if (!styleContent) {
+				const fallbackStylesObj = stylesObj || this.getStylesObject;
+
+				if (fallbackStylesObj) {
+					styleContent = this.generateStyleContent(
+						uniqueID,
+						fallbackStylesObj,
+						currentBreakpoint,
+						breakpoints,
+						false,
+						isBlockStyleChange,
+						iframe,
+						isSiteEditor
+					);
+				}
+			}
+		}
+
+		if (styleContent) {
 			this.updateStyleElement(styleElement, styleContent);
 		}
+	}
+
+	getCachedStyleContent(uniqueID, currentBreakpoint) {
+		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+
+		if (!cssCache || !cssCache[currentBreakpoint]) return null;
+
+		return cssCache[currentBreakpoint].replace(
+			WHITE_SPACE_REGEX,
+			'white-space: nowrap !important'
+		);
 	}
 
 	// eslint-disable-next-line class-methods-use-this

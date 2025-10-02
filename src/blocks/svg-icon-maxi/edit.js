@@ -112,37 +112,55 @@ class edit extends MaxiBlockComponent {
 			});
 		}
 
-		if (this.resizableObject.current) {
+		const resizableInstance = this.resizableObject.current;
+		if (resizableInstance) {
+			const breakpoint = this.props.deviceType || 'general';
 			const svgWidth = getLastBreakpointAttribute({
 				target: 'svg-width',
-				breakpoint: this.props.deviceType || 'general',
+				breakpoint,
 				attributes: this.props.attributes,
 			});
-			const svgWidthUnit = getLastBreakpointAttribute({
-				target: 'svg-width-unit',
-				breakpoint: this.props.deviceType || 'general',
-				attributes: this.props.attributes,
-			});
-			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
+			const svgWidthUnit =
+				getLastBreakpointAttribute({
+					target: 'svg-width-unit',
+					breakpoint,
+					attributes: this.props.attributes,
+				}) || 'px';
 
-			if (this.resizableObject.current.state.width !== fullWidthValue) {
-				this.resizableObject.current.updateSize({
-					width: fullWidthValue,
-				});
+			if (
+				svgWidth !== undefined &&
+				svgWidth !== null &&
+				svgWidth !== ''
+			) {
+				const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 
-				let newContent = svgCode
-					.replace('height="64px"', '')
-					.replace('width="64px"', '');
+				if (resizableInstance.state.width !== fullWidthValue) {
+					resizableInstance.updateSize({
+						width: fullWidthValue,
+					});
 
-				if (newContent.indexOf('viewBox') === -1) {
-					const changeTo = ' viewBox="0 0 64 64"><defs>';
-					newContent = newContent.replace(/><defs>/, changeTo);
+					let newContent = svgCode
+						.replace('height="64px"', '')
+						.replace('width="64px"', '');
+
+					if (newContent.indexOf('viewBox') === -1) {
+						const changeTo = ' viewBox="0 0 64 64"><defs>';
+						newContent = newContent.replace(/><defs>/, changeTo);
+					}
+
+					if (!isEmpty(newContent))
+						this.props.maxiSetAttributes({
+							content: newContent,
+						});
 				}
 
-				if (!isEmpty(newContent))
-					this.props.maxiSetAttributes({
-						content: newContent,
-					});
+				const resizableElement = resizableInstance.resizable;
+				if (
+					resizableElement &&
+					resizableElement.style.width !== fullWidthValue
+				) {
+					resizableElement.style.width = fullWidthValue;
+				}
 			}
 		}
 	}

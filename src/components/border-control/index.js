@@ -258,7 +258,7 @@ const BorderControl = props => {
 				isHover,
 			});
 
-			if (!value)
+			if (value === undefined || value === null)
 				response[getAttributeKey(item, isHover, false, breakpoint)] = 2;
 		});
 

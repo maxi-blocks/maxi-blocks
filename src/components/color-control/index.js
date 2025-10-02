@@ -134,7 +134,7 @@ const ColorControl = props => {
 	// Force palette mode when paletteOnly is enabled
 	useEffect(() => {
 		if (paletteOnly && !paletteStatus) {
-			onChange({
+			onChangeValue({
 				paletteStatus: true,
 			});
 		}
@@ -144,7 +144,7 @@ const ColorControl = props => {
 	// When paletteOnly is enabled, ensure we can edit even if a style card is active
 	useEffect(() => {
 		if (paletteOnly && globalStatus && !paletteSCStatus) {
-			onChange({
+			onChangeValue({
 				paletteSCStatus: true,
 			});
 		}

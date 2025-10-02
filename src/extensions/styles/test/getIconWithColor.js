@@ -1,10 +1,9 @@
 import getIconWithColor from '@extensions/styles/getIconWithColor';
-import { setSVGContent, setSVGContentHover } from '@extensions/svg';
+import { setSVGColor } from '@extensions/svg';
 import getAttributeValue from '@extensions/styles/getAttributeValue';
 
 jest.mock('@extensions/svg', () => ({
-	setSVGContent: jest.fn(content => content),
-	setSVGContentHover: jest.fn(content => content),
+	setSVGColor: jest.fn(({ svg }) => svg),
 }));
 jest.mock('@extensions/styles/getColorRGBAString', () =>
 	jest.fn(() => 'rgba(0,0,0,1)')
@@ -24,11 +23,11 @@ describe('getIconWithColor', () => {
 
 		const result = getIconWithColor(attributes);
 
-		expect(setSVGContent).toHaveBeenCalledWith(
-			'<svg>test</svg>',
-			'rgba(0,0,0,1)',
-			'stroke'
-		);
+		expect(setSVGColor).toHaveBeenCalledWith({
+			svg: '<svg>test</svg>',
+			color: 'rgba(0,0,0,1)',
+			type: 'stroke',
+		});
 		expect(result).toBe('<svg>test</svg>');
 	});
 
@@ -60,7 +59,7 @@ describe('getIconWithColor', () => {
 
 		getIconWithColor(attributes, args);
 
-		expect(setSVGContentHover).toHaveBeenCalled();
+		expect(setSVGColor).toHaveBeenCalled();
 	});
 
 	it('Handles multiple types (stroke and fill)', () => {
@@ -75,17 +74,17 @@ describe('getIconWithColor', () => {
 
 		getIconWithColor(attributes, args);
 
-		expect(setSVGContent).toHaveBeenCalledTimes(2);
-		expect(setSVGContent).toHaveBeenCalledWith(
-			'<svg>test</svg>',
-			'rgba(0,0,0,1)',
-			'stroke'
-		);
-		expect(setSVGContent).toHaveBeenCalledWith(
-			'<svg>test</svg>',
-			'rgba(0,0,0,1)',
-			'fill'
-		);
+		expect(setSVGColor).toHaveBeenCalledTimes(2);
+		expect(setSVGColor).toHaveBeenCalledWith({
+			svg: '<svg>test</svg>',
+			color: 'rgba(0,0,0,1)',
+			type: 'stroke',
+		});
+		expect(setSVGColor).toHaveBeenCalledWith({
+			svg: '<svg>test</svg>',
+			color: 'rgba(0,0,0,1)',
+			type: 'fill',
+		});
 	});
 
 	it('Uses raw icon from args if provided', () => {
@@ -100,11 +99,11 @@ describe('getIconWithColor', () => {
 
 		getIconWithColor(attributes, args);
 
-		expect(setSVGContent).toHaveBeenCalledWith(
-			'<svg>raw</svg>',
-			'rgba(0,0,0,1)',
-			'stroke'
-		);
+		expect(setSVGColor).toHaveBeenCalledWith({
+			svg: '<svg>raw</svg>',
+			color: 'rgba(0,0,0,1)',
+			type: 'stroke',
+		});
 	});
 
 	it('Should use the button color if icon is inheriting color', () => {

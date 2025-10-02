@@ -175,10 +175,14 @@ const IconControlResponsiveSettings = withRTC(props => {
 						className='maxi-icon-control__icon-only'
 						selected={iconOnly}
 						onChange={val => {
-							const icon = getIconWithColor({
-								isIconOnly: val,
-								isHover,
-							});
+							const icon = getIconWithColor(
+								props,
+								{
+									isIconOnly: val,
+									isHover,
+								},
+								prefix
+							);
 
 							onChange({
 								[`${prefix}icon-only`]: val,
@@ -275,10 +279,14 @@ const IconControlResponsiveSettings = withRTC(props => {
 					className='maxi-icon-control__inherit'
 					selected={iconInherit}
 					onChange={val => {
-						const icon = getIconWithColor({
-							isInherit: val,
-							isHover,
-						});
+						const icon = getIconWithColor(
+							props,
+							{
+								isInherit: val,
+								isHover,
+							},
+							prefix
+						);
 
 						onChange({
 							[`${prefix}icon-inherit`]: val,
@@ -350,14 +358,18 @@ const IconControlResponsiveSettings = withRTC(props => {
 								paletteSCStatus,
 								paletteOpacity,
 							}) => {
-								const icon = getIconWithColor({
-									color,
-									paletteColor,
-									paletteStatus,
-									paletteSCStatus,
-									paletteOpacity,
-									isHover,
-								});
+								const icon = getIconWithColor(
+									props,
+									{
+										color,
+										paletteColor,
+										paletteStatus,
+										paletteSCStatus,
+										paletteOpacity,
+										isHover,
+									},
+									prefix
+								);
 
 								onChange({
 									[`${prefix}icon-stroke-color${
@@ -462,15 +474,19 @@ const IconControlResponsiveSettings = withRTC(props => {
 						paletteSCStatus,
 						paletteOpacity,
 					}) => {
-						const icon = getIconWithColor({
-							color,
-							paletteColor,
-							paletteStatus,
-							paletteSCStatus,
-							paletteOpacity,
-							type: 'fill',
-							isHover,
-						});
+						const icon = getIconWithColor(
+							props,
+							{
+								color,
+								paletteColor,
+								paletteStatus,
+								paletteSCStatus,
+								paletteOpacity,
+								type: 'fill',
+								isHover,
+							},
+							prefix
+						);
 
 						onChange({
 							[`${prefix}icon-fill-color${

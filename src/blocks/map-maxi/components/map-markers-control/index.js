@@ -2,8 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { renderToString } from '@wordpress/element';
-import parse from 'html-react-parser';
+import { RawHTML, renderToString } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -14,13 +13,12 @@ import {
 	ResponsiveTabsControl,
 	SvgColor,
 } from '@components';
-import { setSVGColor } from '@extensions/svg';
+import { setSVGContentWithBlockStyle } from '@extensions/svg';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getPaletteAttributes,
-	getBlockStyle,
+	getColorRGBAString,
 } from '@extensions/styles';
 
 /**
@@ -70,56 +68,77 @@ const MapMarkersControl = props => {
 		...getGroupAttributes(props, 'svgHover'),
 	};
 
-	const markerPresets = Object.values(mapMarkers).map((value, rawIndex) => {
-		const index = rawIndex + 1;
+	const {
+		'svg-fill-palette-status': fillPaletteStatus,
+		'svg-fill-palette-sc-status': fillPaletteSCStatus,
+		'svg-fill-palette-color': fillPaletteColor,
+		'svg-fill-palette-opacity': fillPaletteOpacity,
+		'svg-fill-color': fillDirectColor,
+		'svg-line-palette-status': linePaletteStatus,
+		'svg-line-palette-sc-status': linePaletteSCStatus,
+		'svg-line-palette-color': linePaletteColor,
+		'svg-line-palette-opacity': linePaletteOpacity,
+		'svg-line-color': lineDirectColor,
+	} = svgAttributes;
 
-		// Resolve colors from style card for map marker svg (fill/line)
-		const {
-			paletteStatus: fillPaletteStatus,
-			paletteColor: fillPaletteColor,
-			paletteSCStatus: fillPaletteSCStatus,
-			color: fillDirectColor,
-		} = getPaletteAttributes({ obj: props, prefix: 'svg-fill-' });
-		const {
-			paletteStatus: linePaletteStatus,
-			paletteColor: linePaletteColor,
-			paletteSCStatus: linePaletteSCStatus,
-			color: lineDirectColor,
-		} = getPaletteAttributes({ obj: props, prefix: 'svg-line-' });
+	const fillPaletteColorVar =
+		fillPaletteColor != null ? `color-${fillPaletteColor}` : null;
+	const fillPaletteSCColor = fillPaletteColorVar;
+	const resolvedFill =
+		fillPaletteColorVar && (fillPaletteStatus || fillPaletteSCStatus)
+			? getColorRGBAString(
+					fillPaletteSCStatus
+						? {
+								firstVar: fillPaletteSCColor,
+								opacity: fillPaletteOpacity,
+								blockStyle,
+						  }
+						: {
+								firstVar: 'icon-fill',
+								secondVar: fillPaletteColorVar,
+								opacity: fillPaletteOpacity,
+								blockStyle,
+						  }
+			  )
+			: fillDirectColor || 'var(--maxi-icon-block-orange)';
 
-		const blockStyleName =
-			getBlockStyle(props.clientId) || props.blockStyle;
-
-		const resolvedFill =
-			fillPaletteStatus || fillPaletteSCStatus
-				? `rgba(var(--maxi-${blockStyleName}-color-${fillPaletteColor}),1)`
-				: fillDirectColor || 'currentColor';
-		const resolvedStroke = linePaletteStatus
-			? `rgba(var(--maxi-${blockStyleName}-color-${linePaletteColor}),1)`
+	const linePaletteColorVar =
+		linePaletteColor != null ? `color-${linePaletteColor}` : null;
+	const linePaletteSCColor = linePaletteColorVar;
+	const resolvedStroke =
+		linePaletteColorVar && (linePaletteStatus || linePaletteSCStatus)
+			? getColorRGBAString(
+					linePaletteSCStatus
+						? {
+								firstVar: linePaletteSCColor,
+								opacity: linePaletteOpacity,
+								blockStyle,
+						  }
+						: {
+								firstVar: 'icon-stroke',
+								secondVar: linePaletteColorVar,
+								opacity: linePaletteOpacity,
+								blockStyle,
+						  }
+			  )
 			: lineDirectColor || '#081219';
 
-		const svgString = renderToString(value);
-		// Add fill and stroke attributes directly since setSVGColor needs existing attributes
-		let coloredString = svgString
-			.replace(
-				/(<path[^>]*)(data-fill[^>]*>)/g,
-				`$1fill="${resolvedFill}" $2`
-			)
-			.replace(
-				/(<path[^>]*)(data-stroke[^>]*>)/g,
-				`$1stroke="${resolvedStroke}" $2`
-			);
+	const applyMarkerColors = svgContent =>
+		setSVGContentWithBlockStyle(svgContent, resolvedFill, resolvedStroke);
 
-		const coloredPreview = parse(coloredString);
+	const markerPresets = Object.values(mapMarkers).map((value, rawIndex) => {
+		const index = rawIndex + 1;
+		const rawContent = renderToString(value);
+		const coloredContent = applyMarkerColors(rawContent);
 
 		return {
 			label: __(`Default marker ${index}`, 'maxi-blocks'),
-			content: coloredPreview,
+			content: <RawHTML>{coloredContent}</RawHTML>,
 			activeItem: index === mapMarker,
 			onChange: () =>
 				onChange({
 					'map-marker': index,
-					'map-marker-icon': renderToString(value),
+					'map-marker-icon': applyMarkerColors(rawContent),
 				}),
 		};
 	});

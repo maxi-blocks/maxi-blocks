@@ -343,8 +343,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				...newSC,
 			},
 		};
-		saveMaxiStyleCards(newStyleCards);
+		saveMaxiStyleCards(newStyleCards, true);
 		updateSCOnEditor(newSC, activeSCColour);
+		saveSCStyles(selectedSCKey === activeSCKey);
 	};
 
 	const [postDate] = useState();
@@ -364,6 +365,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		saveMaxiStyleCards(newAllSCs, true);
 		updateSCOnEditor(card, activeSCColour);
 		setSelectedStyleCard(newId);
+		saveSCStyles(false);
 	};
 
 	const customiseInputRef = useRef();
@@ -534,8 +536,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			},
 		};
 
-		saveMaxiStyleCards(newStyleCards);
+		saveMaxiStyleCards(newStyleCards, true);
 		updateSCOnEditor(newStyleCards[selectedSCKey], activeSCColour);
+		saveSCStyles(selectedSCKey === activeSCKey);
 	};
 
 	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);

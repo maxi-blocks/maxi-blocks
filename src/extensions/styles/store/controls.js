@@ -17,14 +17,34 @@ import postcss from 'postcss';
 import frontendStyleGenerator from '@extensions/styles/frontendStyleGenerator';
 import entityRecordsWrapper from '@extensions/styles/entityRecordsWrapper';
 
+/**
+ * Cache for processCss results
+ */
+const processCssCache = new Map();
+
 export const processCss = async code => {
 	if (!code) return null;
 
+	// Check cache first
+	if (processCssCache.has(code)) {
+		return processCssCache.get(code);
+	}
+
 	try {
-		const { css } = postcss([autoprefixer]).process(code);
+		const { css } = postcss([
+			autoprefixer({
+				flexbox: 'no-2009',
+				grid: 'autoplace',
+				overrideBrowserslist: ['last 2 versions', '> 0.5%', 'not dead']
+			})
+		]).process(code);
+
 		if (!css) return null;
 
 		const minifiedCss = minifyCssString(css);
+
+		// Store in cache
+		processCssCache.set(code, minifiedCss);
 
 		return minifiedCss;
 	} catch (error) {

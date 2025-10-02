@@ -40,7 +40,7 @@ import data from './data';
 /**
  * External dependencies
  */
-import { isNil, round } from 'lodash';
+import { isEmpty, isNil, round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -235,6 +235,16 @@ const getImageOverflow = props => {
 };
 
 const getImageWrapperObject = props => {
+	const border = getBorderStyles({
+		obj: {
+			...getGroupAttributes(props, ['borderRadius']),
+		},
+		blockStyle: props.blockStyle,
+	});
+	const hasBorderStyles = Object.values(border).some(
+		breakpointStyles => !isEmpty(breakpointStyles)
+	);
+
 	const response = {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
@@ -245,6 +255,7 @@ const getImageWrapperObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
+		...(hasBorderStyles && { border }),
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding', false, 'image-'),

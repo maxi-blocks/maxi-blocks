@@ -1,70 +1,109 @@
 /**
- * External dependencies
+ * Helpers
+ * - Validate nodes and values and construct CSS strings safely
  */
-import { isArray, isEmpty } from 'lodash';
+const hasValueAndUnit = node =>
+	node &&
+	typeof node.value !== 'undefined' &&
+	typeof node.unit !== 'undefined';
+
+const isFiniteNumericValue = value => {
+	if (typeof value === 'number') return Number.isFinite(value);
+	if (typeof value === 'string' && value.trim() !== '')
+		return Number.isFinite(Number(value));
+
+	return false;
+};
+
+const buildCoordinate = coordinate => `${coordinate.value}${coordinate.unit}`;
 
 const getClipPath = clipPath => {
-	if (!clipPath || isEmpty(clipPath) || isEmpty(clipPath.content)) {
-		return 'none';
-	}
+	// Guard against invalid structures
+	if (!clipPath || !clipPath.type) return 'none';
 
 	const { type, content } = clipPath;
-	const arrayContent = Object.values(content || {});
+
+	// Short-circuit explicit none
+	if (type === 'none') return 'none';
+
+	// Ensure content exists and is an object
+	if (!content || typeof content !== 'object') return 'none';
+
+	const arrayContent = Object.values(content);
 
 	let newContent = '';
 
 	switch (type) {
 		case 'polygon': {
+			// Ensure at least three valid points to form a polygon
 			const safePoints = arrayContent.filter(
 				point =>
 					Array.isArray(point) &&
-					point[0] &&
-					point[1] &&
-					typeof point[0].value !== 'undefined' &&
-					typeof point[1].value !== 'undefined' &&
-					point[0].unit &&
-					point[1].unit
+					point.length >= 2 &&
+					point.every(hasValueAndUnit)
 			);
 
-			if (safePoints.length === 0) return 'none';
+			if (safePoints.length < 3) return 'none';
 
 			newContent = safePoints
-				.map(p => `${p[0].value}${p[0].unit} ${p[1].value}${p[1].unit}`)
+				.map(
+					([first, second]) =>
+						`${buildCoordinate(first)} ${buildCoordinate(second)}`
+				)
 				.join(', ');
 			break;
 		}
 		case 'circle': {
-			const r = arrayContent?.[0]?.[0];
-			const cx = arrayContent?.[1]?.[0];
-			const cy = arrayContent?.[1]?.[1];
-			if (!r || !cx || !cy) return 'none';
-			newContent = `${r.value}${r.unit} at ${cx.value}${cx.unit} ${cy.value}${cy.unit}`;
+			const [radiusHandle, centerHandle] = arrayContent;
+			const radius = radiusHandle?.[0];
+			const cx = centerHandle?.[0];
+			const cy = centerHandle?.[1];
+
+			if (![radius, cx, cy].every(hasValueAndUnit)) return 'none';
+
+			newContent = `${buildCoordinate(radius)} at ${buildCoordinate(
+				cx
+			)} ${buildCoordinate(cy)}`;
 			break;
 		}
 		case 'ellipse': {
-			const rx = arrayContent?.[0]?.[0];
-			const ry = arrayContent?.[1]?.[0];
-			const cx = arrayContent?.[2]?.[0];
-			const cy = arrayContent?.[2]?.[1];
-			if (!rx || !ry || !cx || !cy) return 'none';
-			newContent = `${rx.value}${rx.unit} ${ry.value}${ry.unit} at ${cx.value}${cx.unit} ${cy.value}${cy.unit}`;
+			const [rxHandle, ryHandle, centerHandle] = arrayContent;
+			const rx = rxHandle?.[0];
+			const ry = ryHandle?.[0];
+			const cx = centerHandle?.[0];
+			const cy = centerHandle?.[1];
+
+			if (![rx, ry, cx, cy].every(hasValueAndUnit)) return 'none';
+
+			newContent = `${buildCoordinate(rx)} ${buildCoordinate(
+				ry
+			)} at ${buildCoordinate(cx)} ${buildCoordinate(cy)}`;
 			break;
 		}
 		case 'inset': {
-			const top = arrayContent?.[0]?.[0];
-			const right = arrayContent?.[1]?.[0];
-			const bottom = arrayContent?.[2]?.[0];
-			const left = arrayContent?.[3]?.[0];
-			if (!top || !right || !bottom || !left) return 'none';
-			newContent = `${top.value}${top.unit} ${right.value}${right.unit} ${bottom.value}${bottom.unit} ${left.value}${left.unit}`;
+			// Validate four sides and ensure numeric values and non-empty units
+			const sides = arrayContent.slice(0, 4).map(handle => handle?.[0]);
+
+			if (
+				sides.length < 4 ||
+				sides.some(
+					side =>
+						!hasValueAndUnit(side) ||
+						!isFiniteNumericValue(side.value) ||
+						typeof side.unit !== 'string' ||
+						side.unit.trim() === ''
+				)
+			)
+				return 'none';
+
+			newContent = sides.map(side => buildCoordinate(side)).join(' ');
 			break;
 		}
 		default:
 			return 'none';
 	}
-	const newCP = `${type}${type !== 'none' ? `(${newContent})` : ''}`;
 
-	return newCP;
+	return `${type}(${newContent})`;
 };
 
 export default getClipPath;

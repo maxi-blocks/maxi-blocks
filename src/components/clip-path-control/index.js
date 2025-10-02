@@ -40,37 +40,75 @@ import './editor.scss';
 import { styleNone } from '@maxi-icons';
 
 /**
- * Normalizers
+ * Normalizers and helpers
  */
-const normalizeClipPathOptions = options => {
-	const normalized = cloneDeep(options);
-	if (!normalized || !normalized.type) return normalized;
+const DEFAULT_COORDINATE = { value: 0, unit: '%' };
+const ALLOWED_COORD_UNITS = ['%', 'px', 'em', 'rem', 'vw', 'vh'];
 
-	if (normalized.type === 'polygon') {
-		const entries = Object.entries(normalized.content || {});
-		const fixed = {};
-		entries.forEach(([key, handle], idx) => {
-			const x = Array.isArray(handle) ? handle[0] : undefined;
-			const y = Array.isArray(handle) ? handle[1] : undefined;
-			fixed[idx] = [
-				{
-					value:
-						typeof x?.value === 'number' && isFinite(x.value)
-							? x.value
-							: 0,
-					unit: x?.unit || '%',
-				},
-				{
-					value:
-						typeof y?.value === 'number' && isFinite(y.value)
-							? y.value
-							: 0,
-					unit: y?.unit || '%',
-				},
-			];
-		});
-		normalized.content = fixed;
-	}
+const createDefaultCoordinate = () => ({ ...DEFAULT_COORDINATE });
+
+const createDefaultHandle = () => [
+	createDefaultCoordinate(),
+	createDefaultCoordinate(),
+];
+
+const sanitizeCoordinate = coordinate => {
+	if (
+		!coordinate ||
+		typeof coordinate.value === 'undefined' ||
+		typeof coordinate.unit === 'undefined'
+	)
+		return createDefaultCoordinate();
+
+	const value =
+		typeof coordinate.value === 'number'
+			? coordinate.value
+			: Number.parseFloat(coordinate.value);
+
+	const hasValidValue = Number.isFinite(value);
+
+	const unit =
+		typeof coordinate.unit === 'string' &&
+		ALLOWED_COORD_UNITS.includes(coordinate.unit)
+			? coordinate.unit
+			: DEFAULT_COORDINATE.unit;
+
+	return {
+		value: hasValidValue ? value : DEFAULT_COORDINATE.value,
+		unit,
+	};
+};
+
+const normalizePolygonHandle = handle => {
+	if (!Array.isArray(handle)) return createDefaultHandle();
+
+	const normalized = handle.slice(0, 2).map(sanitizeCoordinate);
+
+	while (normalized.length < 2) normalized.push(createDefaultCoordinate());
+
+	return normalized;
+};
+
+const normalizeClipPathOptions = clipPathOptions => {
+	if (!clipPathOptions || typeof clipPathOptions !== 'object')
+		return clipPathOptions;
+
+	const normalized = cloneDeep(clipPathOptions);
+
+	if (normalized.type !== 'polygon') return normalized;
+
+	const content =
+		normalized.content && typeof normalized.content === 'object'
+			? normalized.content
+			: {};
+
+	normalized.content = Object.entries(content).reduce(
+		(acc, [key, handle]) => ({
+			...acc,
+			[key]: normalizePolygonHandle(handle),
+		}),
+		{}
+	);
 
 	return normalized;
 };
@@ -208,10 +246,10 @@ const ClipPathControl = props => {
 
 	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
 		if (isEmpty(clipPathToDeconstruct) || clipPathToDeconstruct === 'none')
-			return {
+			return normalizeClipPathOptions({
 				type: 'polygon',
 				content: cloneDeep(typeDefaults.polygon),
-			};
+			});
 
 		const cpType = clipPathToDeconstruct.match(/^[^(]+/gi)[0];
 		const cpValues = [];
@@ -279,10 +317,10 @@ const ClipPathControl = props => {
 			case 'none':
 				break;
 			default:
-				return {
+				return normalizeClipPathOptions({
 					type: 'polygon',
 					content: cloneDeep(typeDefaults.polygon),
-				};
+				});
 		}
 
 		return normalizeClipPathOptions({
@@ -304,8 +342,9 @@ const ClipPathControl = props => {
 	);
 
 	useEffect(() => {
-		if (JSON.stringify(clipPathOptions) !== JSON.stringify(deconstructCP()))
-			changeClipPathOptions(deconstructCP());
+		const parsedClipPath = deconstructCP();
+		if (JSON.stringify(clipPathOptions) !== JSON.stringify(parsedClipPath))
+			changeClipPathOptions(parsedClipPath);
 	}, [clipPath, clipPathOptions]);
 
 	const onChangeValue = val => {

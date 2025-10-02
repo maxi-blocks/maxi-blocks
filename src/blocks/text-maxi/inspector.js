@@ -118,7 +118,7 @@ const Inspector = props => {
 										context,
 										disableCustomFormats,
 									}),
-									...inspectorTabs.linkSettings({
+									inspectorTabs.linkSettings({
 										props,
 										styleCardPrefix: '',
 										prefix: '',

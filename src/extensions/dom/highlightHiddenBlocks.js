@@ -81,14 +81,22 @@ const initHighlightHiddenBlocks = () => {
 	// Initial run (List View might render async; delay a tick)
 	setTimeout(updateHighlights, 0);
 
-	// Subscribe to relevant store changes; debounce via micro-signature
+	// Subscribe to relevant store changes; debounce via micro-signature.
+	// IMPORTANT: Do not call select() while a reducer is executing.
+	// We schedule the work to the macrotask queue so the current dispatch completes first.
+	let isScheduled = false;
 	subscribe(() => {
-		const sig = computeSignature();
-		if (sig !== lastSignature) {
-			lastSignature = sig;
-			// Run on next frame to avoid thrashing
-			requestAnimationFrame(updateHighlights);
-		}
+		if (isScheduled) return;
+		isScheduled = true;
+		setTimeout(() => {
+			isScheduled = false;
+			const sig = computeSignature();
+			if (sig !== lastSignature) {
+				lastSignature = sig;
+				// Run on next frame to avoid thrashing
+				requestAnimationFrame(updateHighlights);
+			}
+		}, 0);
 	});
 
 	// Observe List View DOM so we react when it opens or rows mount

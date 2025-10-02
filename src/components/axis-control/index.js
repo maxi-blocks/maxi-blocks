@@ -72,6 +72,10 @@ const AxisInput = props => {
 	const lastValue = getLastBreakpointValue(target);
 
 	const unit = getLastBreakpointValue(`${target}-unit`, breakpoint);
+	const fallbackUnit =
+		(enableAxisUnits &&
+			(unit || getLastBreakpointValue('unit', breakpoint))) ||
+		currentUnit;
 
 	return (
 		<AdvancedNumberControl
@@ -88,13 +92,13 @@ const AxisInput = props => {
 			autoLabel={__(`Auto ${label.toLowerCase()}`, 'maxi-blocks')}
 			classNameAutoInput='maxi-axis-control__item-auto'
 			enableUnit={enableAxisUnits}
-			min={minMaxSettings[currentUnit].min || 0}
-			max={minMaxSettings[currentUnit].max || 999}
-			step={minMaxSettings[currentUnit].step || 1}
+			min={minMaxSettings[fallbackUnit]?.min || 0}
+			max={minMaxSettings[fallbackUnit]?.max || 999}
+			step={minMaxSettings[fallbackUnit]?.step || 1}
 			onChangeUnit={val =>
 				onChangeUnit(val, singleTarget, breakpoint, '-unit')
 			}
-			unit={unit}
+			unit={unit || fallbackUnit}
 			onReset={onReset}
 		/>
 	);
@@ -275,6 +279,7 @@ const AxisControlContent = props => {
 		inputsArray,
 		disableSync = false,
 		enableAxisUnits,
+		disableLeftRightMargin,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -308,7 +313,72 @@ const AxisControlContent = props => {
 		}
 	};
 
-	const onChangeUnit = val => {
+	const onChangeUnit = (val, singleTarget, customBreakpoint, suffix) => {
+		// Axis-units mode: propagate unit updates respecting sync and margins
+		if (enableAxisUnits && suffix?.includes('unit')) {
+			const response = {};
+			const breakpointToUse = customBreakpoint ?? breakpoint;
+			const availableUnitKeys = inputsArray.filter(
+				input =>
+					input.includes('unit') &&
+					input !== 'unit' &&
+					!(
+						disableLeftRightMargin &&
+						(input.includes('left') || input.includes('right'))
+					)
+			);
+
+			const unitKeysByAxis = {
+				vertical: availableUnitKeys.filter(
+					key => key.includes('top') || key.includes('bottom')
+				),
+				horizontal: availableUnitKeys.filter(
+					key => key.includes('left') || key.includes('right')
+				),
+			};
+
+			const addKey = key => {
+				if (!key || !inputsArray.includes(key)) return;
+				response[
+					getAttributeKey(
+						getKey(key),
+						isHover,
+						false,
+						breakpointToUse
+					)
+				] = val;
+			};
+
+			const syncTarget = disableSync ? 'all' : sync;
+
+			switch (syncTarget) {
+				case 'all':
+					availableUnitKeys.forEach(addKey);
+					break;
+				case 'axis':
+					if (singleTarget === 'horizontal') {
+						unitKeysByAxis.horizontal.forEach(addKey);
+					} else if (singleTarget === 'vertical') {
+						unitKeysByAxis.vertical.forEach(addKey);
+					}
+					break;
+				case 'none':
+				default: {
+					const key = `${singleTarget}${suffix}`;
+					if (availableUnitKeys.includes(key)) addKey(key);
+					break;
+				}
+			}
+
+			// Always keep the generic 'unit' in sync when present
+			if (syncTarget === 'all' && inputsArray.includes('unit'))
+				addKey('unit');
+
+			onChange(response);
+			return;
+		}
+
+		// Fallback: non-axis unit change (legacy behavior)
 		const response = {};
 
 		inputsArray.forEach(input => {
@@ -334,7 +404,7 @@ const AxisControlContent = props => {
 				if (!isNil(value) && isNumber(value))
 					response[key] = round(
 						value,
-						minMaxSettings[currentUnit].step / 0.5
+						(minMaxSettings?.[val]?.step || 1) / 0.5
 					);
 			}
 		});
@@ -408,10 +478,20 @@ const AxisControlContent = props => {
 						]}
 						onChange={val => onChangeSync(val, breakpoint)}
 					/>
-					<AxisContent {...props} />
+					<AxisContent
+						{...props}
+						onChangeUnit={onChangeUnit}
+						disableLeftRightMargin={disableLeftRightMargin}
+					/>
 				</>
 			)}
-			{disableSync && <AxisContent {...props} />}
+			{disableSync && (
+				<AxisContent
+					{...props}
+					onChangeUnit={onChangeUnit}
+					disableLeftRightMargin={disableLeftRightMargin}
+				/>
+			)}
 		</>
 	);
 };
@@ -467,6 +547,7 @@ const AxisControl = props => {
 		fullWidth,
 		enableAxisUnits,
 		defaultAttributes = null,
+		onChangeUnit,
 	} = props;
 
 	const classes = classnames(
@@ -816,7 +897,7 @@ const AxisControl = props => {
 						disableLeftRightMargin={disableLeftRightMargin}
 						getKey={getKey}
 						onChangeSync={onChangeSync}
-						onChangeUnit={onChangeValue}
+						onChangeUnit={onChangeUnit}
 						enableAxisUnits={enableAxisUnits}
 					/>
 				</ResponsiveTabsControl>
@@ -838,9 +919,10 @@ const AxisControl = props => {
 					onChangeValue={onChangeValue}
 					minMaxSettings={minMaxSettings}
 					disableAuto={disableAuto}
+					disableLeftRightMargin={disableLeftRightMargin}
 					getKey={getKey}
 					onChangeSync={onChangeSync}
-					onChangeUnit={onChangeValue}
+					onChangeUnit={onChangeUnit}
 					enableAxisUnits={enableAxisUnits}
 				/>
 			)}

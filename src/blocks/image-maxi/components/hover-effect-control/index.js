@@ -636,6 +636,7 @@ const HoverEffectControl = props => {
 							target='hover-margin'
 							optionType='string'
 							breakpoint={breakpoint}
+							enableAxisUnits
 						/>
 					)}
 				</>

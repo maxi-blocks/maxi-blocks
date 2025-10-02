@@ -91,7 +91,8 @@ const DisplayControl = props => {
 
 	// Determine effective hidden state for current breakpoint (accounts for inheritance)
 	const effectiveValue = getValue();
-	const shouldBeHidden = effectiveValue === 'none';
+	const shouldBeHidden =
+		isHide() || props[`display-${breakpoint}`] === 'none';
 
 	const classes = classnames('maxi-display-control', className, {
 		'is-temporarily-revealed': shouldBeHidden && isRevealModeActive,

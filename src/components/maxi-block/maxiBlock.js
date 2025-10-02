@@ -25,7 +25,6 @@ import { getIsHoverPreview } from '@extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 import { inlineLinkFields } from '@extensions/DC/constants';
-import isPostEditor from '@extensions/dom/isPostEditor';
 
 /**
  * External dependencies
@@ -131,8 +130,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isRevealModeActive,
 		attributes,
 		deviceType,
-		context,
-		state,
 		baseBreakpoint,
 		...extraProps
 	} = props;
@@ -141,7 +138,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	const isFullWidth = getLastBreakpointAttribute({
 		target: 'full-width',
 		breakpoint: deviceType,
-		attributes: attributes,
+		attributes,
 	});
 
 	if (isSelected) {
@@ -173,11 +170,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		}, 0);
 
 	// Are just necessary for the memo() part
-	// delete extraProps.attributes;
-	// delete extraProps.deviceType;
-	// delete extraProps.baseBreakpoint;
-	// delete extraProps.context;
-	// delete extraProps.state;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -202,12 +194,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		useEffect(() => {
 			if (!isDragging && isDragOverBlock) setIsDragOverBlock(false);
 		}, [isDragging, isDragOverBlock, setIsDragOverBlock]);
-
-	// Reveal Hidden Blocks: read global flag (non-hook; safe in any render path)
-	// const isRevealModeActive = useSelect(
-	// 	sel => !!sel('maxiBlocks').receiveMaxiSettings()?.reveal_hidden_blocks,
-	// 	[]
-	// );
 
 	const classes = classnames(
 		'maxi-block',

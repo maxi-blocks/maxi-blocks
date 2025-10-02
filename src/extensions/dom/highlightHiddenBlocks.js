@@ -85,7 +85,7 @@ const initHighlightHiddenBlocks = () => {
 	// IMPORTANT: Do not call select() while a reducer is executing.
 	// We schedule the work to the macrotask queue so the current dispatch completes first.
 	let isScheduled = false;
-	subscribe(() => {
+	const unsubscribe = subscribe(() => {
 		if (isScheduled) return;
 		isScheduled = true;
 		setTimeout(() => {
@@ -126,6 +126,14 @@ const initHighlightHiddenBlocks = () => {
 	});
 
 	mo.observe(document.body, { childList: true, subtree: true });
+
+	// Return cleanup to disconnect observer and unsubscribe from store updates
+	return () => {
+		try {
+			mo.disconnect();
+		} catch (e) {}
+		if (typeof unsubscribe === 'function') unsubscribe();
+	};
 };
 
 export default initHighlightHiddenBlocks;

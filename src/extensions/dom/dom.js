@@ -77,7 +77,7 @@ wp.domReady(() => {
 	updateScrollbarWidth();
 
 	// Initialize List View highlight for hidden Maxi blocks
-	initHighlightHiddenBlocks();
+	const cleanupHighlightHiddenBlocks = initHighlightHiddenBlocks();
 
 	const changeHandlesDisplay = (display, wrapper) =>
 		Array.from(
@@ -257,6 +257,7 @@ wp.domReady(() => {
 			) {
 				isNewEditorContentObserver = true;
 				resizeObserver.disconnect();
+				// Do not cleanup highlight here; editor is switching templates, not tearing down
 			}
 
 			// Need to add 'maxi-blocks--active' class to the FSE iframe body
@@ -346,7 +347,14 @@ wp.domReady(() => {
 			if (blockContainer) blockMarginObserver.observe(blockContainer);
 
 			editorContentUnsubscribe();
+			// Keep highlight active during normal editor lifecycle
 		}
+	});
+
+	// Also cleanup on window unload/navigation just in case
+	window.addEventListener('beforeunload', () => {
+		if (typeof cleanupHighlightHiddenBlocks === 'function')
+			cleanupHighlightHiddenBlocks();
 	});
 
 	// authentication for maxi pro

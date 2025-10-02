@@ -4,6 +4,10 @@
  */
 module.exports = {
 	launch: {
+		// Set headless based on environment variables
+		headless:
+			process.env.PUPPETEER_HEADLESS !== 'false' &&
+			process.env.CI !== 'false',
 		args: [
 			'--no-sandbox',
 			'--disable-setuid-sandbox',

@@ -1,5 +1,9 @@
 // Set CI environment to enable sandbox-disabled mode for Puppeteer
-process.env.CI = 'true';
+// Only set CI=true if not running in interactive mode
+// Check for PUPPETEER_HEADLESS environment variable set by wp-scripts
+if (process.env.PUPPETEER_HEADLESS !== 'false' && process.env.CI !== 'false') {
+	process.env.CI = 'true';
+}
 
 module.exports = {
 	...require('@wordpress/scripts/config/jest-e2e.config'),

@@ -72,6 +72,17 @@ const attributes = {
 	...attributesData.customCss,
 	...attributesData.advancedCss,
 	...attributesData.flex,
+
+	/**
+	 * Popup animation duration settings
+	 * Stores the numeric value and unit to control popup zoom animation speed
+	 */
+	popupAnimationDuration: {
+		type: 'number',
+	},
+	popupAnimationDurationUnit: {
+		type: 'string',
+	},
 };
 
 export default attributes;

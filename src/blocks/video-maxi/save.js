@@ -50,6 +50,17 @@ const save = props => {
 		])
 	);
 
+	// Compose CSS variable value for popup duration only when set
+	const inlinePopupDurationStyle =
+		props.attributes.popupAnimationDuration !== undefined &&
+		props.attributes.popupAnimationDuration !== ''
+			? {
+					'--maxi-video-popup-duration': `${
+						props.attributes.popupAnimationDuration
+					}${props.attributes.popupAnimationDurationUnit || 's'}`,
+			  }
+			: undefined;
+
 	return (
 		<MaxiBlock.save
 			classes={`maxi-video-block--${videoType}`}
@@ -93,7 +104,10 @@ const save = props => {
 									<RawHTML>{closeIcon}</RawHTML>
 								</div>
 							)}
-							<div className={videoContainerClassNames}>
+							<div
+								className={videoContainerClassNames}
+								style={inlinePopupDurationStyle}
+							>
 								{closeIconPosition ===
 									'top-right-above-video' && (
 									<div

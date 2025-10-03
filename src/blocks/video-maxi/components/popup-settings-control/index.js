@@ -154,8 +154,8 @@ const PopupSettingsControl = props => {
 				enableUnit
 				allowedUnits={['ms', 's']}
 				minMaxSettings={{
-					ms: { min: 0, max: 10000 },
-					s: { min: 0, max: 10 },
+					ms: { min: 100, max: 10000 },
+					s: { min: 0.1, max: 10 },
 				}}
 				step={(popupAnimationDurationUnit ?? 's') === 'ms' ? 10 : 0.01}
 				defaultValue={''}

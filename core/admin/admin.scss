@@ -1568,3 +1568,130 @@ p.maxi-license-help-text {
 		}
 	}
 }
+
+.maxi-custom-fonts-manager {
+	margin-top: 24px;
+	padding: 16px;
+	background: #fff;
+	border: 1px solid #e2e4e7;
+	border-radius: 8px;
+
+	h4 {
+		margin-top: 0;
+		margin-bottom: 8px;
+	}
+
+	p {
+		margin-top: 0;
+	}
+
+	.maxi-custom-fonts-form {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		margin-bottom: 16px;
+
+		&__field {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+
+			span {
+				font-weight: 500;
+			}
+
+			input,
+			select {
+				max-width: 260px;
+			}
+
+			&--small input,
+			&--small select {
+				max-width: 120px;
+			}
+		}
+
+		&__group {
+			display: flex;
+			gap: 16px;
+			flex-wrap: wrap;
+		}
+
+		&__actions {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			flex-wrap: wrap;
+
+			.maxi-custom-fonts-selected-file {
+				font-style: italic;
+				color: #3c434a;
+			}
+		}
+
+		&__submit {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			flex-wrap: wrap;
+		}
+	}
+
+	.maxi-custom-fonts-status {
+		font-weight: 500;
+
+		&.is-success {
+			color: #008a20;
+		}
+
+		&.is-error {
+			color: #d63638;
+		}
+
+		&.is-loading {
+			color: #3858e9;
+		}
+	}
+
+	.maxi-custom-fonts-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+
+		&__empty {
+			color: #3c434a;
+			font-style: italic;
+		}
+
+		&__item {
+			border: 1px solid #e2e4e7;
+			border-radius: 6px;
+			padding: 12px;
+			background: #f6f7f7;
+		}
+
+		&__title {
+			font-weight: 600;
+			margin-bottom: 6px;
+		}
+
+		&__variants {
+			list-style: disc;
+			margin: 0 0 8px 20px;
+			padding: 0;
+
+			li {
+				margin: 0;
+				padding: 0;
+			}
+		}
+
+		&__actions {
+			display: flex;
+			justify-content: flex-end;
+		}
+	}
+}

@@ -8,6 +8,11 @@ export const getFonts = state => {
 	return state;
 };
 
+export const getCustomFonts = state => {
+	if (state.customFonts) return state.customFonts;
+	return {};
+};
+
 export const getFont = (state, font) => {
 	if (state.fonts) return state.fonts[font];
 	return state;

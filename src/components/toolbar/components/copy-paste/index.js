@@ -202,7 +202,35 @@ const CopyPaste = props => {
 		closeMoreSettings();
 	};
 	const onPasteBlocks = () => {
-		const newCopiedBlocks = cleanInnerBlocks(copiedBlocks);
+		const removeColumnsFromBlocks = blocks =>
+			blocks.reduce((acc, block) => {
+				if (block.name === 'maxi-blocks/column-maxi') {
+					return acc;
+				}
+
+				const innerBlocks = block.innerBlocks
+					? removeColumnsFromBlocks(block.innerBlocks)
+					: [];
+
+				return [
+					...acc,
+					{
+						...block,
+						innerBlocks,
+					},
+				];
+			}, []);
+
+		let newCopiedBlocks = cleanInnerBlocks(copiedBlocks);
+
+		if (blockName === 'maxi-blocks/column-maxi') {
+			newCopiedBlocks = removeColumnsFromBlocks(newCopiedBlocks);
+
+			if (isEmpty(newCopiedBlocks)) {
+				closeMoreSettings();
+				return;
+			}
+		}
 
 		if (!repeaterContext?.repeaterStatus) {
 			replaceInnerBlocks(clientId, newCopiedBlocks);

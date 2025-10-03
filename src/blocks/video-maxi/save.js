@@ -52,8 +52,7 @@ const save = props => {
 
 	// Compose CSS variable value for popup duration only when set
 	const inlinePopupDurationStyle =
-		props.attributes.popupAnimationDuration !== undefined &&
-		props.attributes.popupAnimationDuration !== ''
+		props.attributes.popupAnimationDuration != null
 			? {
 					'--maxi-video-popup-duration': `${
 						props.attributes.popupAnimationDuration

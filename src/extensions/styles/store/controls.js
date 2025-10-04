@@ -21,7 +21,10 @@ export const processCss = async code => {
 	if (!code) return null;
 
 	try {
-		const { css } = postcss([autoprefixer]).process(code);
+		// Defensive guard: ensure CSS ends with a closing brace if missing and trim stray characters
+		const safeCode =
+			typeof code === 'string' ? code.replace(/}\s*$/, '}').trim() : code;
+		const { css } = postcss([autoprefixer]).process(safeCode);
 		if (!css) return null;
 
 		const minifiedCss = minifyCssString(css);

@@ -60,10 +60,31 @@ const CustomCssControl = props => {
 	};
 
 	const generateComponent = (label, index, category, cssClassIndex) => {
+		const isValidCssDeclarationList = css => {
+			// Accept empty as valid to allow clearing
+			if (isEmpty(css)) return true;
+			try {
+				const sheet = new CSSStyleSheet();
+				// Wrap as a declaration list inside a dummy selector
+				sheet.replaceSync(`.maxi-css-validate{${css}}`);
+				return true;
+			} catch (err) {
+				// Ensure stringified error output per project guidelines
+				console.error(
+					`MaxiBlocks: invalid custom CSS provided - ${JSON.stringify(
+						String(err)
+					)}`
+				);
+				return false;
+			}
+		};
+
 		const onChangeCssCode = (code, valid = true) => {
 			const newCustomCss = !isEmpty(value) ? cloneDeep(value) : {};
 
-			if (!valid) setNotValidCode(cloneDeep(newCustomCss));
+			// Validate incoming CSS before applying to block attributes
+			const isValid = isValidCssDeclarationList(code);
+			if (!isValid || !valid) setNotValidCode(cloneDeep(newCustomCss));
 			else {
 				delete notValidCode?.[category]?.[index];
 				if (isEmpty(notValidCode[category]))
@@ -76,14 +97,17 @@ const CustomCssControl = props => {
 				if (isEmpty(newCustomCss[category]))
 					newCustomCss[category] = {};
 
-				newCustomCss[category][index] = code;
+				// Only apply to attributes if valid; otherwise, keep local notValidCode state
+				if (isValid) newCustomCss[category][index] = code;
 			} else {
 				delete newCustomCss?.[category]?.[index];
 				if (isEmpty(newCustomCss[category]))
 					delete newCustomCss[category];
 			}
 
-			onChange(`custom-css-${breakpoint}`, newCustomCss);
+			// Propagate only when valid or when clearing
+			if (isValid || isEmpty(code))
+				onChange(`custom-css-${breakpoint}`, newCustomCss);
 		};
 
 		const getValue = () => {

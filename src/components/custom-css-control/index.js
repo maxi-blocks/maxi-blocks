@@ -63,12 +63,21 @@ const CustomCssControl = props => {
 		const isValidCssDeclarationList = css => {
 			// Accept empty as valid to allow clearing
 			if (isEmpty(css)) return true;
+			let styleEl;
 			try {
-				const sheet = new CSSStyleSheet();
-				// Wrap as a declaration list inside a dummy selector
-				sheet.replaceSync(`.maxi-css-validate{${css}}`);
+				styleEl = document.createElement('style');
+				styleEl.textContent = `.maxi-css-validate{${css}}`;
+				document.head.appendChild(styleEl);
+				// Accessing cssRules will throw if the CSS is invalid
+				// eslint-disable-next-line no-unused-expressions
+				styleEl?.sheet?.cssRules;
+				// Clean up immediately on success
+				if (styleEl && styleEl.parentNode)
+					styleEl.parentNode.removeChild(styleEl);
 				return true;
 			} catch (err) {
+				if (styleEl && styleEl.parentNode)
+					styleEl.parentNode.removeChild(styleEl);
 				// Ensure stringified error output per project guidelines
 				console.error(
 					`MaxiBlocks: invalid custom CSS provided - ${JSON.stringify(

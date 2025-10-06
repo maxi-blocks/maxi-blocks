@@ -316,121 +316,41 @@ describe('isCacheValid', () => {
 		expect(await isCacheValid(undefined)).toBe(false);
 	});
 
-	it('Should validate Google Fonts URL when local_fonts and bunny_fonts are false', async () => {
-		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: false };
-		const url =
-			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap';
+	it('Should return true for any valid URL string', async () => {
+		const testUrls = [
+			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap',
+			'https://fonts.bunny.net/css2?family=Roboto:wght@400&display=swap',
+			'https://example.com/wp-content/uploads/fonts/roboto.woff2',
+			'http://localhost/font.css',
+			'https://any-domain.com/any-path',
+		];
 
-		const mockResponse = { ok: true };
-		mockFetch.mockResolvedValue(mockResponse);
+		for (const url of testUrls) {
+			expect(await isCacheValid(url)).toBe(true);
+		}
 
-		expect(await isCacheValid(url)).toBe(true);
-		expect(mockFetch).toHaveBeenCalledWith(
-			url,
-			expect.objectContaining({
-				method: 'HEAD',
-				cache: 'no-store',
-			})
-		);
-	});
-
-	it('Should validate Bunny Fonts URL when bunny_fonts is true', async () => {
-		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: true };
-		const url =
-			'https://fonts.bunny.net/css2?family=Roboto:wght@400&display=swap';
-
-		const mockResponse = { ok: true };
-		mockFetch.mockResolvedValue(mockResponse);
-
-		expect(await isCacheValid(url)).toBe(true);
-		expect(mockFetch).toHaveBeenCalledWith(
-			url,
-			expect.objectContaining({
-				method: 'HEAD',
-				cache: 'no-store',
-			})
-		);
-	});
-
-	it('Should validate local font URL when local_fonts is true', async () => {
-		window.maxiBlocksMain = { local_fonts: true };
-		const url = 'https://example.com/wp-content/uploads/fonts/roboto.woff2';
-
-		const mockResponse = { ok: true };
-		mockFetch.mockResolvedValue(mockResponse);
-
-		expect(await isCacheValid(url)).toBe(true);
-		expect(mockFetch).toHaveBeenCalledWith(
-			url,
-			expect.objectContaining({
-				method: 'HEAD',
-				cache: 'no-store',
-			})
-		);
-	});
-
-	it('Should return false when URL pattern does not match current font provider', async () => {
-		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: true };
-		const url =
-			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap';
-
-		expect(await isCacheValid(url)).toBe(false);
+		// Ensure no network calls are made since validation is simplified
 		expect(mockFetch).not.toHaveBeenCalled();
 	});
 
-	it('Should return false when fetch response is not ok', async () => {
-		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: false };
+	it('Should return true regardless of font provider configuration', async () => {
 		const url =
 			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap';
 
-		const mockResponse = { ok: false };
-		mockFetch.mockResolvedValue(mockResponse);
+		// Test with different configurations
+		const configs = [
+			{ local_fonts: false, bunny_fonts: false },
+			{ local_fonts: false, bunny_fonts: true },
+			{ local_fonts: true, bunny_fonts: false },
+			{ local_fonts: true, bunny_fonts: true },
+		];
 
-		expect(await isCacheValid(url)).toBe(false);
-		expect(mockFetch).toHaveBeenCalledWith(url, expect.any(Object));
-	});
+		for (const config of configs) {
+			window.maxiBlocksMain = config;
+			expect(await isCacheValid(url)).toBe(true);
+		}
 
-	it('Should return false when fetch throws an error', async () => {
-		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: false };
-		const url =
-			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap';
-
-		mockFetch.mockRejectedValue(new Error('Network error'));
-
-		expect(await isCacheValid(url)).toBe(false);
-	});
-
-	it('Should handle fetch network errors gracefully', async () => {
-		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: false };
-		const url =
-			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap';
-
-		mockFetch.mockImplementation(() => Promise.resolve({ ok: false }));
-
-		expect(await isCacheValid(url)).toBe(false);
-	});
-
-	it('Should abort fetch after timeout', async () => {
-		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: false };
-		const url =
-			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap';
-
-		const mockAbort = jest.fn();
-		global.AbortController = jest.fn(() => ({
-			abort: mockAbort,
-			signal: 'mock-signal',
-		}));
-
-		jest.useFakeTimers();
-
-		const validationPromise = isCacheValid(url);
-
-		jest.runAllTimers();
-
-		await validationPromise;
-
-		expect(mockAbort).toHaveBeenCalled();
-
-		jest.useRealTimers();
+		// Ensure no network calls are made
+		expect(mockFetch).not.toHaveBeenCalled();
 	});
 });

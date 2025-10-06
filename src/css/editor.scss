@@ -661,6 +661,8 @@ body.maxi-blocks--active .interface-interface-skeleton__content {
 	flex-grow: 1;
 	min-width: 0; /* Allow content to shrink below its content width */
 	overflow-x: auto; /* Enable horizontal scrolling */
+	scroll-behavior: smooth; /* Smooth scrolling behavior */
+	-webkit-overflow-scrolling: touch; /* Enhanced scrolling on iOS */
 }
 
 body.maxi-blocks--active .edit-post-visual-editor {

@@ -260,6 +260,11 @@ const getButtonIconStyles = ({
 
 	let response = {};
 
+	// Cache hover styles to avoid duplicate computations
+	let cachedHoverIconObj;
+	let cachedHoverIconSize;
+	let cachedHoverPathStyles;
+
 	if (hasIcon && !isHover) {
 		const svgStyles = getSVGStyles({
 			obj,
@@ -281,20 +286,20 @@ const getButtonIconStyles = ({
 			[`${normalTarget} svg > *`]: svgChildStyles,
 		};
 	} else if (iconHoverStatus) {
-		const hoverIconObj = getIconHoverObject(
+		cachedHoverIconObj = getIconHoverObject(
 			obj,
 			'iconHover',
 			prefix,
 			iconType
 		);
-		const hoverIconSize = getIconSize(
+		cachedHoverIconSize = getIconSize(
 			obj,
 			true,
 			prefix,
 			iconWidthHeightRatio
 		);
 
-		const hoverIconPathStyles = getIconPathStyles(obj, true);
+		cachedHoverPathStyles = getIconPathStyles(obj, true, prefix);
 		const hoverSvgStyles = getSVGStyles({
 			obj,
 			target: hoverTarget,
@@ -306,23 +311,31 @@ const getButtonIconStyles = ({
 		});
 
 		response = {
-			[`${hoverTarget}`]: hoverIconObj,
-			[`${hoverTarget} svg > *`]: hoverIconObj,
-			[`${hoverTarget} svg`]: hoverIconSize,
-			[`${hoverTarget} svg path`]: hoverIconPathStyles,
+			[`${hoverTarget}`]: cachedHoverIconObj,
+			[`${hoverTarget} svg > *`]: cachedHoverIconObj,
+			[`${hoverTarget} svg`]: cachedHoverIconSize,
+			[`${hoverTarget} svg path`]: cachedHoverPathStyles,
 			...hoverSvgStyles,
 		};
 	}
 
-	const pathStyles = getIconPathStyles(obj, false);
+	const pathStyles = getIconPathStyles(obj, false, prefix);
 
-	// Cache hover styles to avoid duplicate computations
-	const cachedHoverIconObj =
-		iconHoverStatus && getIconHoverObject(obj, 'iconHover');
-	const cachedHoverIconSize =
-		iconHoverStatus && getIconSize(obj, true, prefix, iconWidthHeightRatio);
-	const cachedHoverPathStyles =
-		iconHoverStatus && getIconPathStyles(obj, true);
+	// Compute cached hover values if not already computed (maintaining backward compatibility)
+	if (!cachedHoverIconObj) {
+		cachedHoverIconObj =
+			iconHoverStatus &&
+			getIconHoverObject(obj, 'iconHover', prefix, iconType);
+	}
+	if (!cachedHoverIconSize) {
+		cachedHoverIconSize =
+			iconHoverStatus &&
+			getIconSize(obj, true, prefix, iconWidthHeightRatio);
+	}
+	if (!cachedHoverPathStyles) {
+		cachedHoverPathStyles =
+			iconHoverStatus && getIconPathStyles(obj, true, prefix);
+	}
 
 	response = {
 		...response,

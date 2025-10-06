@@ -13,7 +13,7 @@ const cssVariableCache = new Map();
 /**
  * Get CSS variable value with caching
  */
-const getCachedCSSVariable = (variableName) => {
+const getCachedCSSVariable = variableName => {
 	if (cssVariableCache.has(variableName)) {
 		return cssVariableCache.get(variableName);
 	}

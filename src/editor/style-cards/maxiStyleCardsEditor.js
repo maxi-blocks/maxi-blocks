@@ -27,6 +27,7 @@ import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import MaxiModal from '@editor/library/modal';
 import { exportStyleCard, getActiveColourFromSC } from './utils';
 import { updateSCOnEditor } from '@extensions/style-cards';
+import { clearCSSVariableCache } from '@extensions/style-cards/getPaletteColor';
 import { handleSetAttributes } from '@extensions/maxi-block';
 import standardSC from '@maxi-core/defaults/defaultSC.json';
 
@@ -392,6 +393,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(true);
+
+		// Clear CSS variable cache after applying style card
+		clearCSSVariableCache();
 	};
 
 	const saveCurrentSC = () => {
@@ -523,7 +527,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const deleteSC = () => {
 		removeStyleCard(selectedSCKey);
 
-		if (activeSCKey === selectedSCKey) setActiveStyleCard('sc_maxi');
+		if (activeSCKey === selectedSCKey) {
+			setActiveStyleCard('sc_maxi');
+			// Clear CSS variable cache after deleting style card
+			clearCSSVariableCache();
+		}
 	};
 
 	const onChangeGutenbergBlocksStatus = value => {

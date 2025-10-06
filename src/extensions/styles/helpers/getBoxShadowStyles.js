@@ -16,6 +16,9 @@ import { isBoolean, isNil, isNumber, round, isEmpty } from 'lodash';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+// Cache to store computed colors to avoid redundant getPaletteColor calls
+const colorCache = new Map();
+
 const getBoxShadowStyles = ({
 	obj,
 	isHover = false,
@@ -24,7 +27,6 @@ const getBoxShadowStyles = ({
 	blockStyle,
 	forClipPath = false,
 	isIB = false,
-	uniqueID = null,
 }) => {
 	const response = {};
 	const getPrevBreakpoint = breakpoint =>
@@ -35,9 +37,6 @@ const getBoxShadowStyles = ({
 		attributes: obj,
 	});
 	const svgElementExists = !isEmpty(obj.SVGElement);
-
-	// Cache to store computed colors to avoid redundant getPaletteColor calls
-	const colorCache = new Map();
 
 	const getCachedColor = (paletteColor, paletteOpacity, paletteStatus) => {
 		const cacheKey = `${paletteColor}-${paletteOpacity}-${paletteStatus}`;
@@ -59,7 +58,6 @@ const getBoxShadowStyles = ({
 	};
 
 	breakpoints.forEach(breakpoint => {
-
 		const getValue = (target, defaultPrefix = `${prefix}box-shadow-`) => {
 			const value = getAttributeValue({
 				target,
@@ -137,7 +135,11 @@ const getBoxShadowStyles = ({
 			true
 		);
 
-		const color = getCachedColor(paletteColor, paletteOpacity, paletteStatus);
+		const color = getCachedColor(
+			paletteColor,
+			paletteOpacity,
+			paletteStatus
+		);
 
 		const isNotDefault =
 			(breakpoint === 'general' && isIB) ||

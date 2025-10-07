@@ -84,32 +84,38 @@ export default function SelectControl({
 				className={classes}
 				__nextHasNoMarginBottom
 			>
-				<select
-					id={id}
-					className='maxi-select-control__input'
-					value={value ?? defaultValue ?? options[0]?.value}
-					onChange={onChangeValue}
-					aria-describedby={help ? `${id}__help` : undefined}
-					multiple={multiple}
-					{...props}
-				>
-					{isPlainObject(options)
-						? Object.entries(options).map(
-								([groupLabel, groupOptions]) =>
-									groupLabel !== '' ? (
-										<optgroup
-											key={groupLabel}
-											label={groupLabel}
-											className='maxi-select-control__optgroup'
-										>
-											{getOptions(groupOptions)}
-										</optgroup>
-									) : (
-										getOptions(groupOptions)
-									)
-						  )
-						: getOptions(options)}
-				</select>
+				{(() => {
+					// Prevent leaking unknown props to DOM
+					const { __nextHasNoMarginBottom, ...restProps } = props;
+					return (
+						<select
+							id={id}
+							className='maxi-select-control__input'
+							value={value ?? defaultValue ?? options[0]?.value}
+							onChange={onChangeValue}
+							aria-describedby={help ? `${id}__help` : undefined}
+							multiple={multiple}
+							{...restProps}
+						>
+							{isPlainObject(options)
+								? Object.entries(options).map(
+										([groupLabel, groupOptions]) =>
+											groupLabel !== '' ? (
+												<optgroup
+													key={groupLabel}
+													label={groupLabel}
+													className='maxi-select-control__optgroup'
+												>
+													{getOptions(groupOptions)}
+												</optgroup>
+											) : (
+												getOptions(groupOptions)
+											)
+								  )
+								: getOptions(options)}
+						</select>
+					);
+				})()}
 				{onReset && (
 					<ResetButton
 						className={resetButtonClassName}

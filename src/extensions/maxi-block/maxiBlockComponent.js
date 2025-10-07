@@ -114,26 +114,6 @@ class MaxiBlockComponent extends Component {
 
 		if (this.isPatternsPreview) return;
 
-		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
-
-		// Init
-		this.updateLastInsertedBlocks();
-		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		this.getCurrentBlockStyle();
-		this.setMaxiAttributes();
-		this.setRelations();
-
-		// Add block to store
-		dispatch('maxiBlocks/blocks').addBlock(
-			newUniqueID,
-			clientId,
-			this.rootSlot
-		);
-
-		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
-		// 1. Adding again the root and having a React error
-		// 2. Will request `displayStyles` without re-rendering the styles, which speeds up the process
-		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
 		// Cache DOM references
 		this.editorIframe = null;
 		this.templateModal = null;
@@ -171,6 +151,21 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes;
 
 		if (this.isPatternsPreview || this.templateModal) return;
+
+		// Moved from constructor to avoid store updates during render
+		const { clientId } = this.props;
+		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
+		this.updateLastInsertedBlocks();
+		const newUniqueID = this.uniqueIDChecker(uniqueID);
+		this.getCurrentBlockStyle();
+		this.setMaxiAttributes();
+		this.setRelations();
+		dispatch('maxiBlocks/blocks').addBlock(
+			newUniqueID,
+			clientId,
+			this.rootSlot
+		);
+		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
 
 		// Add FSE iframe styles if we're in the site editor
 		if (getIsSiteEditor()) {

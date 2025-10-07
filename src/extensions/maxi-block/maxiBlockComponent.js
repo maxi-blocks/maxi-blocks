@@ -398,7 +398,7 @@ class MaxiBlockComponent extends Component {
 			return true;
 		}
 
-		// Ensures rendering when breakpoint changes
+		// Ensures rendering when breakpoint changes - but only if this block has responsive styles
 		const wasBreakpointChanged =
 			this.props.deviceType !== nextProps.deviceType ||
 			this.props.baseBreakpoint !== nextProps.baseBreakpoint;
@@ -568,22 +568,6 @@ class MaxiBlockComponent extends Component {
 					);
 				}
 			}
-
-			// If there's a relation affecting this concrete block, check if is necessary
-			// to update it's content to keep the coherence and the good UX
-			// const blocksIBRelations = select(
-			// 	'maxiBlocks/relations'
-			// ).receiveBlockUnderRelationClientIDs(uniqueID);
-
-			// if (!isEmpty(blocksIBRelations))
-			// 	blocksIBRelations.forEach(({ clientId }) =>
-			// 		updateRelationsRemotely({
-			// 			blockTriggerClientId: clientId,
-			// 			blockTargetClientId: this.props.clientId,
-			// 			blockAttributes: this.props.attributes,
-			// 			breakpoint: this.props.deviceType,
-			// 		})
-			// 	);
 		}
 
 		this.hideGutenbergPopover();

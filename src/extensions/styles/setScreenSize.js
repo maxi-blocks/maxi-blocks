@@ -1,6 +1,6 @@
 import { select, dispatch } from '@wordpress/data';
 
-const setScreenSize = (size, changeSize = true) => {
+const setScreenSize = size => {
 	const xxlSize = select('maxiBlocks').receiveXXLSize();
 	const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 
@@ -10,7 +10,6 @@ const setScreenSize = (size, changeSize = true) => {
 		dispatch('maxiBlocks').setMaxiDeviceType({
 			deviceType: size,
 			width: size !== 'xxl' ? breakpoints[size] : xxlSize,
-			changeSize,
 		});
 };
 

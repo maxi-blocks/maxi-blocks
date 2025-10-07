@@ -30,8 +30,9 @@ const setScreenSize = size => {
 	if (now - lastCallTime < 50) {
 		// 50ms throttle
 		pendingCall = setTimeout(() => {
-			pendingCall = null;
+			lastCallTime = Date.now();
 			setScreenSizeImmediate(size);
+			pendingCall = null;
 		}, 50);
 		return;
 	}

@@ -52,7 +52,7 @@ const CustomColorControl = props => {
 				<>
 					{!disableColorDisplay && (
 						<BaseControl
-					__nextHasNoMarginBottom
+							__nextHasNoMarginBottom
 							className='maxi-color-control__display'
 							label={`${label} ${__('colour', 'maxi-blocks')}`}
 						>
@@ -80,13 +80,14 @@ const CustomColorControl = props => {
 						<OpacityControl
 							label={__('Colour opacity', 'maxi-blocks')}
 							opacity={color.a}
-							onChangeOpacity={val => {
+							onChangeOpacity={(val, meta) => {
 								if (!isEmpty(color)) {
 									color.a = val;
 
 									onChangeValue({
 										color: tinycolor(color).toRgbString(),
 										paletteOpacity: val,
+										meta,
 									});
 								}
 							}}
@@ -98,7 +99,7 @@ const CustomColorControl = props => {
 			{isToolbar && (
 				<div className='maxi-color-control__wrap'>
 					<BaseControl
-					__nextHasNoMarginBottom
+						__nextHasNoMarginBottom
 						className='maxi-color-control__display'
 						label={`${label} ${__('colour', 'maxi-blocks')}`}
 					>
@@ -121,13 +122,14 @@ const CustomColorControl = props => {
 					<OpacityControl
 						label={__('Colour opacity', 'maxi-blocks')}
 						opacity={color.a}
-						onChangeOpacity={val => {
+						onChangeOpacity={(val, meta) => {
 							if (!isEmpty(color)) {
 								color.a = val;
 
 								onChangeValue({
 									color: tinycolor(color).toRgbString(),
 									paletteOpacity: val,
+									meta,
 								});
 							}
 						}}

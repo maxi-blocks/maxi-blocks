@@ -192,9 +192,10 @@ const ColorPaletteControl = props => {
 				<OpacityControl
 					label={__('Colour opacity', 'maxi-blocks')}
 					opacity={globalStatus ? globalPaletteOpacity : opacity}
-					onChangeOpacity={val =>
+					onChangeOpacity={(val, meta) =>
 						onChange({
 							paletteOpacity: val,
+							meta,
 						})
 					}
 					onReset={onResetOpacity}

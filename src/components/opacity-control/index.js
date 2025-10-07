@@ -59,7 +59,8 @@ const OpacityControl = props => {
 			onChangeValue={(rawVal, meta) => {
 				const val = !isNil(rawVal) ? round(rawVal / 100, 2) : 0;
 
-				if (isFunction(onChangeOpacity)) return onChangeOpacity(val);
+				if (isFunction(onChangeOpacity))
+					return onChangeOpacity(val, meta);
 				return onChange({ [getOpacityAttributeKey()]: val, meta });
 			}}
 			min={0}

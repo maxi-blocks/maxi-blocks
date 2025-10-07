@@ -360,7 +360,7 @@ const attributesToStyles = {
 		property: 'border-bottom-left-radius',
 	},
 	'border-top-width': {
-		target: inlineStylesTargets.icon,
+		target: inlineStylesTargets.block,
 		property: 'border-top-width',
 	},
 	'border-right-width': {

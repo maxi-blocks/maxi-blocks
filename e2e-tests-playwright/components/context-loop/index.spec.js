@@ -69,7 +69,11 @@ async function verifyPreviewResults(editor, expectedResults) {
 }
 
 test.describe('Context Loop', () => {
-	test.beforeEach(async ({ page, admin, editor, requestUtils }) => {
+	test.beforeAll(async ({ requestUtils }, testInfo) => {
+		if (testInfo.project.name !== 'chromium') {
+			return;
+		}
+
 		await requestUtils.deleteAllPosts();
 
 		const pages = ['Post 1', 'Post 2', 'Post 3', 'Post 4', 'Post 5'];
@@ -79,7 +83,11 @@ test.describe('Context Loop', () => {
 		}
 	});
 
-	test.afterEach(async ({ requestUtils }) => {
+	test.afterAll(async ({ requestUtils }, testInfo) => {
+		if (testInfo.project.name !== 'chromium') {
+			return;
+		}
+
 		await requestUtils.deleteAllPosts();
 	});
 

@@ -51,7 +51,7 @@ async function verifyPreviewResults(editor, expectedResults) {
 	const previewPage = await editor.openPreviewPage();
 
 	await previewPage.waitForSelector(
-		'.cl-text-3.maxi-text-block .maxi-text-block__content',
+		'.maxi-text-block .maxi-text-block__content',
 		{
 			visible: true,
 		}

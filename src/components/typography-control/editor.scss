@@ -130,7 +130,7 @@
 		}
 
 		&:has(.maxi-typography-control__weight-warning) {
-			flex-direction: row; /* Ensure it remains a row even with warning */
+			/* Ensure it remains a row even with warning */
 
 			.maxi-base-control__field > div {
 				display: flex !important;
@@ -141,6 +141,10 @@
 			.maxi-advanced-number-control__value {
 				flex: 1 1 auto !important;
 			}
+		}
+		.maxi-typography-control__weight-warning {
+			width: 265px !important;
+			margin-bottom: 10px !important;
 		}
 	}
 

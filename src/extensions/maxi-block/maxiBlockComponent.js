@@ -119,17 +119,61 @@ class MaxiBlockComponent extends Component {
 		const blockElement = document.querySelector(
 			`[data-block="${this.props.clientId}"]`
 		);
+
+		// Check inside preview iframes for block elements
+		let isInsidePreviewIframe = false;
+		previewIframes.forEach((iframe, index) => {
+			try {
+				const iframeDoc = iframe.contentDocument;
+				if (iframeDoc) {
+					const blockInIframe = iframeDoc.querySelector(
+						`[data-block="${this.props.clientId}"]`
+					);
+					const allBlocksInIframe =
+						iframeDoc.querySelectorAll('[data-block]');
+
+					if (blockInIframe) {
+						isInsidePreviewIframe = true;
+					} else if (allBlocksInIframe.length > 0) {
+						// If there are blocks but not our specific one, let's assume we're in a preview context
+						// This might be a pattern preview where the clientId doesn't match
+						isInsidePreviewIframe = true;
+					}
+				}
+			} catch (error) {
+				// If we can't access iframe content but it's a blob URL, assume preview context
+				if (iframe.src && iframe.src.startsWith('blob:')) {
+					isInsidePreviewIframe = true;
+				}
+			}
+		});
+
+		// TIMING FALLBACK: If we have preview iframes but couldn't detect blocks,
+		// assume we're in preview context (timing issue)
+		if (!isInsidePreviewIframe && previewIframes.length > 0) {
+			const hasBlobIframes = Array.from(previewIframes).some(
+				iframe => iframe.src && iframe.src.startsWith('blob:')
+			);
+			if (hasBlobIframes) {
+				isInsidePreviewIframe = true;
+			}
+		}
+
 		const isInsidePreview =
-			blockElement &&
-			(blockElement.closest('.block-editor-block-preview__container') ||
-				blockElement.closest(
-					'.block-editor-block-patterns-list__list-item'
+			(blockElement &&
+				(blockElement.closest(
+					'.block-editor-block-preview__container'
 				) ||
-				blockElement.closest(
-					'.edit-site-page-content .block-editor-block-preview__container'
-				));
+					blockElement.closest(
+						'.block-editor-block-patterns-list__list-item'
+					) ||
+					blockElement.closest(
+						'.edit-site-page-content .block-editor-block-preview__container'
+					))) ||
+			isInsidePreviewIframe;
 
 		// Only set as patterns preview if actually inside a preview container
+
 		if (
 			previewIframes.length > 0 &&
 			(!blockName || templateModal) &&
@@ -955,7 +999,7 @@ class MaxiBlockComponent extends Component {
 			? `${pluginsPath}/img/${imageName}`
 			: defaultImgPath;
 
-		previewIframes.forEach(iframe => {
+		previewIframes.forEach((iframe, index) => {
 			if (
 				!iframe ||
 				!iframe?.parentNode ||

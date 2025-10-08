@@ -1,14 +1,9 @@
 /**
  * WordPress dependencies
  */
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import {
-	useState,
-	useEffect,
-	useCallback,
-	useLayoutEffect,
-} from '@wordpress/element';
+import { useState, useEffect, useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -60,54 +55,78 @@ const withMaxiLoader = createHigherOrderComponent(
 				attributes: { uniqueID },
 			} = ownProps;
 
-			const { canBlockRender } = useSelect(
-				select => select('maxiBlocks'),
-				[]
-			);
+			const { canBlockRender, isPageLoaded } = useSelect(select => {
+				const maxiBlocksSelect = select('maxiBlocks');
+				return {
+					canBlockRender: maxiBlocksSelect.canBlockRender,
+					isPageLoaded: maxiBlocksSelect.getIsPageLoaded(),
+				};
+			}, []);
 
 			const [hasBeenConsolidated, setHasBeenConsolidated] =
 				useState(false);
 
-			const [canRender, setCanRender] = useState(
-				canBlockRender(uniqueID, clientId)
-			);
+			const initialCanRender = canBlockRender
+				? canBlockRender(uniqueID, clientId)
+				: false;
+			const [canRender, setCanRender] = useState(initialCanRender);
 
 			useEffect(() => {
 				if (canRender && hasBeenConsolidated) return;
 
+				let timeoutId;
+				let isMounted = true;
+
 				const checkRender = () => {
-					if (canBlockRender(uniqueID, clientId)) {
+					if (!isMounted) return; // Prevent execution after unmount
+
+					const canRenderNow = canBlockRender
+						? canBlockRender(uniqueID, clientId)
+						: false;
+
+					if (canRenderNow && isPageLoaded) {
 						setCanRender(true);
 						setHasBeenConsolidated(true);
 					} else {
-						setTimeout(checkRender, 100);
+						// Only schedule next check if still mounted
+						if (isMounted) {
+							timeoutId = setTimeout(checkRender, 100);
+						}
 					}
 				};
 
 				checkRender();
+
+				// Cleanup function to prevent memory leaks
+				return () => {
+					isMounted = false;
+					if (timeoutId) {
+						clearTimeout(timeoutId);
+					}
+				};
 			}, [
 				canRender,
 				hasBeenConsolidated,
 				canBlockRender,
 				uniqueID,
 				clientId,
+				isPageLoaded,
 			]);
 
 			const onMountBlock = useCallback(() => {
-				setHasBeenConsolidated(true);
-				setCanRender(true);
+				// Block mount callback - no logging needed
 			}, []);
 
-			if (canRender && hasBeenConsolidated) {
-				return <WrappedComponent {...ownProps} />;
+			if (!canRender || !hasBeenConsolidated) {
+				return (
+					<SuspendedBlock
+						onMountBlock={onMountBlock}
+						clientId={clientId}
+					/>
+				);
 			}
 
-			return (
-				<SuspendedBlock
-					onMountBlock={onMountBlock}
-					clientId={clientId}
-				/>
-			);
+			return <WrappedComponent {...ownProps} />;
 		}),
 	'withMaxiLoader'
 );

@@ -52,42 +52,6 @@ const Inspector = props => {
 									...inspectorTabs.prompt({
 										props,
 									}),
-									deviceType === 'general' &&
-										!isList && {
-											label: __(
-												'Heading / Paragraph tag',
-												'maxi-blocks'
-											),
-											content: (
-												<FontLevelControl
-													{...getGroupAttributes(
-														attributes,
-														'typography',
-														true
-													)}
-													value={textLevel}
-													onChange={obj => {
-														const filteredObj =
-															Object.fromEntries(
-																Object.entries(
-																	obj
-																).filter(
-																	([
-																		key,
-																		value,
-																	]) =>
-																		value !==
-																		undefined
-																)
-															);
-														maxiSetAttributes(
-															filteredObj
-														);
-													}}
-												/>
-											),
-											indicatorProps: ['textLevel'],
-										},
 									...(isList && {
 										label: __(
 											'List options',
@@ -97,14 +61,10 @@ const Inspector = props => {
 											<ListOptionsControl {...props} />
 										),
 									}),
-									...inspectorTabs.alignment({
-										props,
-										isTextAlignment: true,
-									}),
 									...inspectorTabs.typography({
 										props,
 										styleCardPrefix: '',
-										hideAlignment: true,
+										hideAlignment: false,
 										showBottomGap: !isList,
 										allowLink: true,
 										globalProps: {

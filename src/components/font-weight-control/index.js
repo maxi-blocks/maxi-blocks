@@ -8,7 +8,10 @@ import { __ } from '@wordpress/i18n';
  */
 import InfoBox from '@components/info-box';
 import SelectControl from '@components/select-control';
-import { getWeightLabel, getWeightOptions } from '@components/typography-control/utils';
+import {
+	getWeightLabel,
+	getWeightOptions,
+} from '@components/typography-control/utils';
 import onChangeFontWeight from './utils';
 
 const FontWeightControl = props => {
@@ -44,6 +47,7 @@ const FontWeightControl = props => {
 				defaultValue={defaultFontWeight}
 				options={options}
 				newStyle
+				resetButtonClassName='maxi-reset-button--absolute'
 				onChange={val => {
 					onChange(val);
 					onChangeFontWeight(val, fontName, fontStyle, setShowLoader);

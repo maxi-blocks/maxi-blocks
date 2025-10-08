@@ -657,7 +657,10 @@ class MaxiBlockComponent extends Component {
 			try {
 				this.safeCleanupRelationInstances(this.relationInstances);
 			} catch (error) {
-				console.error('MaxiBlocks: Failed to cleanup relation instances on unmount:', error);
+				console.error(
+					'MaxiBlocks: Failed to cleanup relation instances on unmount:',
+					error
+				);
 			}
 			this.relationInstances = null;
 		}
@@ -1255,7 +1258,11 @@ class MaxiBlockComponent extends Component {
 			obj = this.getStylesObject || {};
 
 			// When duplicating, need to change the obj target for the new uniqueID
-			if (obj && !obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+			if (
+				obj &&
+				!obj[uniqueID] &&
+				!!obj[this.props.attributes.uniqueID]
+			) {
 				obj[uniqueID] = obj[this.props.attributes.uniqueID];
 				delete obj[this.props.attributes.uniqueID];
 			}

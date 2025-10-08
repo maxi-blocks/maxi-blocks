@@ -7,7 +7,7 @@ const toolbarDynamicContent = props => (
 	<SVG
 		data-name='Group 1031'
 		xmlns='http://www.w3.org/2000/svg'
-		width={17.644}
+		width={18}
 		height={17.629}
 		viewBox='0 0 17.644 17.629'
 	>

@@ -3,7 +3,7 @@ body .maxi-alignment-control {
 		height: 32px;
 		padding: 8px;
 		width: 22.5%;
-		margin-right: 9px;
+		margin-right: 7px;
 		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 4px;
 		transition: background-color 0.4s ease, border-color 0.4s ease;
@@ -26,8 +26,7 @@ body .maxi-alignment-control {
 			fill: var(--maxi-secondary-color);
 		}
 
-		&:last-child {
-			margin-right: 0;
+		&:first-child {
 		}
 
 		&[aria-pressed='true'] {

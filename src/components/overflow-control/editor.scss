@@ -46,7 +46,7 @@
 
 			&[aria-pressed='true'] {
 				background: var(--maxi-whisper-green) !important;
-				border: 1px solid var(--maxi-mid-green);
+				border: 1.5px solid var(--maxi-secondary-color);
 
 				&:hover {
 					background: var(--maxi-pastel-green) !important;

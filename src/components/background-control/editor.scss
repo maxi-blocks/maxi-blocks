@@ -71,6 +71,8 @@ body .maxi-background-control {
 		margin-top: 0 !important;
 		.maxi-base-control__field {
 			margin-bottom: 3px !important;
+			border: 1px solid var(--maxi-grey-light);
+			border-radius: 4px;
 		}
 	}
 	.maxi-background-layer {

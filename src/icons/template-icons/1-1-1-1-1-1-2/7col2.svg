@@ -1,21 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 25.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 111.9 38" style="enable-background:new 0 0 111.9 38;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:#323C47;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-</style>
-<line class="st0" x1="110.9" y1="37" x2="1" y2="37"/>
-<g>
-	<rect x="58.8" y="1" class="st0" width="52.1" height="7.2"/>
-	<rect x="1" y="1" class="st0" width="52.1" height="7.2"/>
-</g>
-<g>
-	<rect x="58.8" y="13" class="st0" width="52.1" height="7.2"/>
-	<rect x="1" y="13" class="st0" width="52.1" height="7.2"/>
-</g>
-<g>
-	<rect x="58.8" y="25" class="st0" width="52.1" height="7.2"/>
-	<rect x="1" y="25" class="st0" width="52.1" height="7.2"/>
-</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 111.9 38">
+  <!-- Generator: Adobe Illustrator 29.8.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 2)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #323c47;
+      }
+
+      .st1 {
+        fill: none;
+        stroke: #323c47;
+        stroke-linecap: square;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <line class="st1" x1="110.04" y1="37" x2="1.86" y2="37"/>
+  <g>
+    <path class="st0" d="M108.9,3v3.2h-48.1v-3.2h48.1M110.9,1h-52.1v7.2h52.1V1h0Z"/>
+    <path class="st0" d="M51.1,3v3.2H3v-3.2h48.1M53.1,1H1v7.2h52.1V1h0Z"/>
+  </g>
+  <g>
+    <path class="st0" d="M108.9,15v3.2h-48.1v-3.2h48.1M110.9,13h-52.1v7.2h52.1v-7.2h0Z"/>
+    <path class="st0" d="M51.1,15v3.2H3v-3.2h48.1M53.1,13H1v7.2h52.1v-7.2h0Z"/>
+  </g>
+  <g>
+    <path class="st0" d="M108.9,27v3.2h-48.1v-3.2h48.1M110.9,25h-52.1v7.2h52.1v-7.2h0Z"/>
+    <path class="st0" d="M51.1,27v3.2H3v-3.2h48.1M53.1,25H1v7.2h52.1v-7.2h0Z"/>
+  </g>
 </svg>

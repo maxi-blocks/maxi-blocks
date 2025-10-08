@@ -8,6 +8,7 @@
 			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			transition: all 0.5s ease;
+			padding: 4px 6px;
 
 			svg {
 				fill: var(--maxi-secondary-color);
@@ -17,7 +18,7 @@
 			&[aria-pressed='true'],
 			&:hover {
 				background-color: var(--maxi-pastel-green);
-				border: 1.5px solid var(--maxi-mid-green);
+				border: 1.5px solid var(--maxi-secondary-color);
 				font-weight: 700;
 
 				svg {
@@ -82,7 +83,7 @@
 			flex-direction: column;
 			width: 100%;
 			height: auto;
-			padding: 14px 8px;
+			padding: 12px 8px;
 			border-bottom: 1.5px solid var(--maxi-grey-light);
 			border-top: 1.5px solid var(--maxi-grey-light);
 			border-right: 1.5px solid var(--maxi-grey-light);
@@ -91,7 +92,6 @@
 			background-color: var(--maxi-white);
 			text-align: center;
 			white-space: nowrap;
-			font-weight: 700;
 			transition: all 0.5s ease;
 
 			&:last-child {
@@ -116,14 +116,6 @@
 				color: var(--maxi-black);
 				font-weight: 700;
 				background-color: var(--maxi-whisper-green) !important;
-				transition: all 0.5s ease;
-			}
-			svg:not(.maxi-tabs-control__notification) {
-				display: block;
-				width: 20px;
-				height: 100%;
-				margin: 0;
-				fill: var(--maxi-black);
 				transition: all 0.5s ease;
 			}
 			&--active:before {
@@ -307,18 +299,6 @@
 	.maxi-text-control__input {
 		padding-left: 10px !important;
 		transition: all 0.5s ease;
-	}
-	.maxi-select-control__input {
-		padding-left: 12px !important;
-		transition: all 0.5s ease;
-	}
-	.maxi-select-control__input:hover,
-	.maxi-text-control__input:hover {
-		border-color: var(--maxi-whisper-green) !important;
-	}
-	.maxi-select-control__input:focus,
-	.maxi-text-control__input:focus {
-		border-color: var(--maxi-primary-color) !important;
 	}
 
 	.maxi-custom-label {

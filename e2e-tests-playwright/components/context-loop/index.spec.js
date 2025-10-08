@@ -28,7 +28,7 @@ async function setupTestPost(admin, editor, pageUtils, clipboardContent) {
  */
 async function verifyEditorResults(page, expectedResults) {
 	await page.waitForSelector('.maxi-text-block__content', {
-		visible: true,
+		state: 'visible',
 	});
 	await page.waitForFunction(() => {
 		const element = document.querySelector('.maxi-text-block__content');

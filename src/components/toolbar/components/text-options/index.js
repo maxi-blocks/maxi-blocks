@@ -72,9 +72,10 @@ const TextOptionsContent = props => {
 				className='maxi-typography-control__size'
 				value={getValue(`${prefix}font-size`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}font-size`, breakpoint)}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					onChangeFormat({
 						[`${prefix}font-size`]: val,
+						meta,
 					});
 				}}
 				onReset={() =>
@@ -98,9 +99,10 @@ const TextOptionsContent = props => {
 				className='maxi-typography-control__line-height'
 				value={getValue(`${prefix}line-height`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}line-height`, breakpoint)}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					onChangeFormat({
 						[`${prefix}line-height`]: val,
+						meta,
 					});
 				}}
 				onReset={() =>
@@ -136,9 +138,10 @@ const TextOptionsContent = props => {
 					avoidXXL
 				)}
 				defaultValue={getDefault(`${prefix}letter-spacing`, breakpoint)}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					onChangeFormat({
 						[`${prefix}letter-spacing`]: val,
+						meta,
 					});
 				}}
 				onReset={() =>

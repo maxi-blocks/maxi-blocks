@@ -631,9 +631,10 @@ const DynamicContent = props => {
 									<AdvancedNumberControl
 										label={__('Accumulator', 'maxi-blocks')}
 										value={accumulator}
-										onChangeValue={value =>
+										onChangeValue={(value, meta) =>
 											changeProps({
 												'dc-accumulator': value,
+												meta,
 											})
 										}
 										onReset={() =>
@@ -652,9 +653,10 @@ const DynamicContent = props => {
 								<AdvancedNumberControl
 									label={__('Accumulator', 'maxi-blocks')}
 									value={accumulator}
-									onChangeValue={value =>
+									onChangeValue={(value, meta) =>
 										changeProps({
 											'dc-accumulator': value,
+											meta,
 										})
 									}
 									onReset={() =>
@@ -768,10 +770,11 @@ const DynamicContent = props => {
 												helpContent={
 													<UnlimitedCharacterPopover message='Type 0 for unlimited' />
 												}
-												onChangeValue={value =>
+												onChangeValue={(value, meta) =>
 													changeProps({
 														'dc-limit':
 															Number(value),
+														meta,
 													})
 												}
 												disableReset={
@@ -878,9 +881,10 @@ const DynamicContent = props => {
 										'maxi-blocks'
 									)}
 									value={imageAccumulator}
-									onChangeValue={value =>
+									onChangeValue={(value, meta) =>
 										changeProps({
 											'dc-image-accumulator': value,
+											meta,
 										})
 									}
 									onReset={() =>
@@ -909,9 +913,10 @@ const DynamicContent = props => {
 											'dc-media-size'
 										)}
 										placeholder={mediaSize}
-										onChangeValue={value =>
+										onChangeValue={(value, meta) =>
 											changeProps({
 												'dc-media-size': Number(value),
+												meta,
 											})
 										}
 										onReset={() =>

@@ -56,11 +56,11 @@ const OpacityControl = props => {
 					: __('Opacity', 'maxi-blocks')
 			}`}
 			value={getIsValid(opacity, true) ? round(opacity * 100, 2) : 100}
-			onChangeValue={rawVal => {
+			onChangeValue={(rawVal, meta) => {
 				const val = !isNil(rawVal) ? round(rawVal / 100, 2) : 0;
 
 				if (isFunction(onChangeOpacity)) return onChangeOpacity(val);
-				return onChange({ [getOpacityAttributeKey()]: val });
+				return onChange({ [getOpacityAttributeKey()]: val, meta });
 			}}
 			min={0}
 			max={100}

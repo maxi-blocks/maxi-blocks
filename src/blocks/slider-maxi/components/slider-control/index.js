@@ -69,10 +69,11 @@ const SliderControl = props => {
 						initial={2500}
 						step={100}
 						value={props['slider-autoplay-speed']}
-						onChangeValue={val => {
+						onChangeValue={(val, meta) => {
 							onChange({
 								'slider-autoplay-speed':
 									val !== undefined ? val : '',
+								meta,
 							});
 						}}
 						onReset={() =>
@@ -119,10 +120,11 @@ const SliderControl = props => {
 				initial={200}
 				step={1}
 				value={props['slider-transition-speed']}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					onChange({
 						'slider-transition-speed':
 							val !== undefined && val !== '' ? val : '',
+						meta,
 					});
 				}}
 				onReset={() =>

@@ -129,10 +129,11 @@ const Size = ({
 					attributes: options,
 					isHover,
 				})}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					onChange({
 						[getAttributeKey('width', isHover, prefix, breakpoint)]:
 							val,
+						meta,
 					});
 				}}
 				onChangeUnit={val =>
@@ -165,7 +166,7 @@ const Size = ({
 						attributes: options,
 						isHover,
 					})}
-					onChangeValue={val => {
+					onChangeValue={(val, meta) => {
 						onChange({
 							[getAttributeKey(
 								'height',
@@ -173,6 +174,7 @@ const Size = ({
 								prefix,
 								breakpoint
 							)]: val,
+							meta,
 						});
 					}}
 					onChangeUnit={val =>

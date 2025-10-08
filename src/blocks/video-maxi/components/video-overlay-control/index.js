@@ -237,9 +237,10 @@ const VideoOverlayControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChangeValue={val =>
+						onChangeValue={(val, meta) =>
 							onChange({
 								[`${mediaPrefix}width-${breakpoint}`]: val,
+								meta,
 							})
 						}
 						defaultValue={getDefaultAttribute(
@@ -282,9 +283,10 @@ const VideoOverlayControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChangeValue={val =>
+						onChangeValue={(val, meta) =>
 							onChange({
 								[`${mediaPrefix}height-${breakpoint}`]: val,
+								meta,
 							})
 						}
 						defaultValue={getDefaultAttribute(

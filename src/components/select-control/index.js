@@ -32,6 +32,7 @@ export default function SelectControl({
 	defaultValue,
 	value,
 	newStyle = false,
+	__nextHasNoMarginBottom,
 	...props
 }) {
 	const instanceId = useInstanceId(SelectControl);
@@ -75,13 +76,12 @@ export default function SelectControl({
 	return (
 		!isEmpty(options) && (
 			<BaseControl
-				__nextHasNoMarginBottom
+				__nextHasNoMarginBottom={__nextHasNoMarginBottom}
 				label={label}
 				hideLabelFromVision={hideLabelFromVision}
 				id={id}
 				help={help}
 				className={classes}
-				__nextHasNoMarginBottom
 			>
 				<select
 					id={id}

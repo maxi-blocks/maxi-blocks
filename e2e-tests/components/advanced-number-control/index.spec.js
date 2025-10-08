@@ -203,7 +203,7 @@ describe('Advanced Number Control', () => {
 			'-999'
 		);
 
-		// check em max rangue
+		// check em max range: step increments are ~0.1, so 298 + 3 ArrowUp ≈ 298.3 and should NOT clamp to 300
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
@@ -218,8 +218,9 @@ describe('Advanced Number Control', () => {
 		);
 		await pressKeyTimes('ArrowUp', '3');
 
+		// Expect the precise stepped value as string
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
-			'300'
+			'298.3'
 		);
 
 		// check em min rangue

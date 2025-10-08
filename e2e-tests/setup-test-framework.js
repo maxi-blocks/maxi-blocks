@@ -156,6 +156,16 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// Ignore YouTube postMessage target origin mismatch when iframe served from localhost (http) but message targets https
+		// Example: "Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('http://localhost:8889')."
+		if (
+			text.includes("Failed to execute 'postMessage' on 'DOMWindow'") &&
+			text.includes('https://www.youtube.com') &&
+			text.includes('http://localhost:')
+		) {
+			return;
+		}
+
 		// Video headers fails sometimes
 		if (text.includes('Error with Permissions-Policy header')) {
 			return;

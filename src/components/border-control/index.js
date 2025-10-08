@@ -30,6 +30,7 @@ import {
  */
 import classnames from 'classnames';
 import { isNumber, capitalize } from 'lodash';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Icons
@@ -48,71 +49,113 @@ const BorderColorControl = props => {
 		onChange,
 		clientId,
 		globalProps,
+		paletteOnly = false,
 	} = props;
+
+	const borderColorValue = getLastBreakpointAttribute({
+		target: `${prefix}border-color`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+	const borderPaletteStatusValue = getLastBreakpointAttribute({
+		target: `${prefix}border-palette-status`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+	const borderPaletteSCStatusValue = getLastBreakpointAttribute({
+		target: `${prefix}border-palette-sc-status`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+	const borderPaletteColorValue = getLastBreakpointAttribute({
+		target: `${prefix}border-palette-color`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+	const borderPaletteOpacityValue = getLastBreakpointAttribute({
+		target: `${prefix}border-palette-opacity`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	const hoverSuffix = isHover ? '-hover' : '';
 
 	return (
 		<ColorControl
 			label={__('Border', 'maxi-blocks')}
-			color={getLastBreakpointAttribute({
-				target: `${prefix}border-color`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
-			paletteStatus={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-status`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
-			paletteSCStatus={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-sc-status`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
-			paletteColor={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-color`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
-			paletteOpacity={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-opacity`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}
+			color={borderColorValue}
+			paletteStatus={borderPaletteStatusValue}
+			paletteSCStatus={borderPaletteSCStatusValue}
+			paletteColor={borderPaletteColorValue}
+			paletteOpacity={borderPaletteOpacityValue}
 			onChangeInline={({ color }) => {
-				onChangeInline &&
+				if (typeof onChangeInline === 'function') {
 					onChangeInline({
 						'border-color': color,
 					});
+				}
 			}}
-			onChange={({
-				paletteColor,
-				paletteStatus,
-				paletteSCStatus,
-				paletteOpacity,
-				color,
-			}) => {
-				onChange({
-					[`${prefix}border-palette-status-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteStatus,
-					[`${prefix}border-palette-sc-status-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteSCStatus,
-					[`${prefix}border-palette-color-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteColor,
-					[`${prefix}border-palette-opacity-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteOpacity,
-					[`${prefix}border-color-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: color,
-				});
+			onChange={changes => {
+				const nextValues = {};
+
+				if (
+					Object.prototype.hasOwnProperty.call(
+						changes,
+						'paletteStatus'
+					)
+				) {
+					nextValues[
+						`${prefix}border-palette-status-${breakpoint}${hoverSuffix}`
+					] = changes.paletteStatus;
+				}
+
+				if (
+					Object.prototype.hasOwnProperty.call(
+						changes,
+						'paletteSCStatus'
+					)
+				) {
+					nextValues[
+						`${prefix}border-palette-sc-status-${breakpoint}${hoverSuffix}`
+					] = changes.paletteSCStatus;
+				}
+
+				if (
+					Object.prototype.hasOwnProperty.call(
+						changes,
+						'paletteColor'
+					)
+				) {
+					nextValues[
+						`${prefix}border-palette-color-${breakpoint}${hoverSuffix}`
+					] = changes.paletteColor;
+				}
+
+				if (
+					Object.prototype.hasOwnProperty.call(
+						changes,
+						'paletteOpacity'
+					)
+				) {
+					nextValues[
+						`${prefix}border-palette-opacity-${breakpoint}${hoverSuffix}`
+					] = changes.paletteOpacity;
+				}
+
+				if (Object.prototype.hasOwnProperty.call(changes, 'color')) {
+					nextValues[
+						`${prefix}border-color-${breakpoint}${hoverSuffix}`
+					] = changes.color;
+				}
+
+				if (Object.keys(nextValues).length === 0) return;
+
+				onChange(nextValues);
 			}}
 			disableImage
 			disableVideo
@@ -122,6 +165,7 @@ const BorderColorControl = props => {
 			clientId={clientId}
 			globalProps={globalProps}
 			prefix={`${prefix}border-`}
+			paletteOnly={paletteOnly}
 		/>
 	);
 };
@@ -181,7 +225,32 @@ const BorderControl = props => {
 		disableColor = false,
 		isHover = false,
 		prefix = '',
+		paletteOnly = false,
+		status,
 	} = props;
+
+	useEffect(() => {
+		if (status === false) {
+			const resetAttributes = {
+				[`${prefix}border-color-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-color`),
+				[`${prefix}border-palette-status-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-palette-status`),
+				[`${prefix}border-palette-sc-status-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-palette-sc-status`),
+				[`${prefix}border-palette-color-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-palette-color`),
+				[`${prefix}border-palette-opacity-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`]: getDefaultAttribute(`${prefix}border-palette-opacity`),
+			};
+			onChange(resetAttributes);
+		}
+	}, [status, breakpoint, isHover, prefix, onChange]);
 
 	const borderWidthLastValue = () => {
 		const response = {};
@@ -304,7 +373,6 @@ const BorderControl = props => {
 			/>
 			{!isToolbar && (
 				<SelectControl
-					__nextHasNoMarginBottom
 					label={__('Add border line', 'maxi-blocks')}
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}
@@ -364,7 +432,7 @@ const BorderControl = props => {
 				<BorderWidthControl isToolbar={isToolbar} {...props} />
 			)}
 			{(isToolbar || (!disableColor && isBorderEnable)) && (
-				<BorderColorControl {...props} />
+				<BorderColorControl {...props} paletteOnly={paletteOnly} />
 			)}
 			{!isToolbar && isBorderEnable && (
 				<BorderWidthControl isToolbar={isToolbar} {...props} />

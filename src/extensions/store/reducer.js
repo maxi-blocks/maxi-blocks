@@ -132,7 +132,7 @@ const reducer = (
 	action
 ) => {
 	switch (action.type) {
-		case 'SEND_GLOBAL_SETTINGS':
+		case 'SEND_GENERAL_SETTINGS':
 			return {
 				...state,
 				settings: {

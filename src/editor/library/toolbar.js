@@ -81,7 +81,7 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.pluginVersion || '';
+	const pluginVersion = licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {

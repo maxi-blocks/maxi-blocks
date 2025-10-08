@@ -51,6 +51,7 @@ const ContentLoader = props => {
 					cssOverride={{
 						margin: '0 auto',
 					}}
+					className='maxi-puff-loader'
 				/>
 			)}
 		</div>

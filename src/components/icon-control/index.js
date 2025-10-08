@@ -175,14 +175,10 @@ const IconControlResponsiveSettings = withRTC(props => {
 						className='maxi-icon-control__icon-only'
 						selected={iconOnly}
 						onChange={val => {
-							const icon = getIconWithColor(
-								props,
-								{
-									isIconOnly: val,
-									isHover,
-								},
-								prefix
-							);
+							const icon = getIconWithColor({
+								isIconOnly: val,
+								isHover,
+							});
 
 							onChange({
 								[`${prefix}icon-only`]: val,
@@ -279,14 +275,10 @@ const IconControlResponsiveSettings = withRTC(props => {
 					className='maxi-icon-control__inherit'
 					selected={iconInherit}
 					onChange={val => {
-						const icon = getIconWithColor(
-							props,
-							{
-								isInherit: val,
-								isHover,
-							},
-							prefix
-						);
+						const icon = getIconWithColor({
+							isInherit: val,
+							isHover,
+						});
 
 						onChange({
 							[`${prefix}icon-inherit`]: val,
@@ -358,18 +350,14 @@ const IconControlResponsiveSettings = withRTC(props => {
 								paletteSCStatus,
 								paletteOpacity,
 							}) => {
-								const icon = getIconWithColor(
-									props,
-									{
-										color,
-										paletteColor,
-										paletteStatus,
-										paletteSCStatus,
-										paletteOpacity,
-										isHover,
-									},
-									prefix
-								);
+								const icon = getIconWithColor({
+									color,
+									paletteColor,
+									paletteStatus,
+									paletteSCStatus,
+									paletteOpacity,
+									isHover,
+								});
 
 								onChange({
 									[`${prefix}icon-stroke-color${
@@ -474,19 +462,15 @@ const IconControlResponsiveSettings = withRTC(props => {
 						paletteSCStatus,
 						paletteOpacity,
 					}) => {
-						const icon = getIconWithColor(
-							props,
-							{
-								color,
-								paletteColor,
-								paletteStatus,
-								paletteSCStatus,
-								paletteOpacity,
-								type: 'fill',
-								isHover,
-							},
-							prefix
-						);
+						const icon = getIconWithColor({
+							color,
+							paletteColor,
+							paletteStatus,
+							paletteSCStatus,
+							paletteOpacity,
+							type: 'fill',
+							isHover,
+						});
 
 						onChange({
 							[`${prefix}icon-fill-color${
@@ -721,17 +705,13 @@ const IconControl = props => {
 					onSelect={obj => {
 						const newSvgType = obj[`${prefix}svgType`];
 
-						let icon = getIconWithColor(
-							// Pass props (attributes and blockStyle) as the first argument
-							props,
-							{
-								rawIcon: obj[`${prefix}icon-content`],
-								type: [
-									newSvgType !== 'Shape' && 'stroke',
-									newSvgType !== 'Line' && 'fill',
-								].filter(Boolean),
-							}
-						);
+						let icon = getIconWithColor({
+							rawIcon: obj[`${prefix}icon-content`],
+							type: [
+								newSvgType !== 'Shape' && 'stroke',
+								newSvgType !== 'Line' && 'fill',
+							].filter(Boolean),
+						});
 
 						if (
 							!disableHeightFitContent &&

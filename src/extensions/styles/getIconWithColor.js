@@ -1,7 +1,7 @@
 import { isArray, isNil } from 'lodash';
 
 import getColorRGBAString from './getColorRGBAString';
-import { setSVGColor } from '@extensions/svg';
+import { setSVGColor, setSVGContentHover } from '@extensions/svg';
 import getAttributeValue from './getAttributeValue';
 
 const getIconWithColor = (props, args = {}, prefix = '') => {
@@ -126,11 +126,17 @@ const getIconWithColor = (props, args = {}, prefix = '') => {
 			});
 		}
 
-		icon = setSVGColor({
-			svg: icon,
-			color: paletteStatus ? lineColorStr : color,
-			type,
-		});
+		icon = isHover
+			? setSVGContentHover({
+					svg: icon,
+					color: paletteStatus ? lineColorStr : color,
+					type,
+			  })
+			: setSVGColor({
+					svg: icon,
+					color: paletteStatus ? lineColorStr : color,
+					type,
+			  });
 	});
 
 	return icon;

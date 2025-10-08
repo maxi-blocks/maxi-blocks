@@ -284,7 +284,7 @@ const AdvancedNumberControl = props => {
 								: 'hidden'
 						}
 						className='maxi-advanced-number-control__value'
-						value={latestValueRef.current || currentValue}
+						value={latestValueRef.current ?? currentValue}
 						onChange={handleInputChange}
 						onKeyDown={e => {
 							validateNumberInput(e, customValidationRegex);
@@ -360,7 +360,7 @@ const AdvancedNumberControl = props => {
 							max={maxRange || (enableUnit ? maxValueRange : max)}
 							step={stepValue}
 							withInputField={false}
-							initialPosition={value || initial}
+							initialPosition={value ?? initial}
 							__nextHasNoMarginBottom
 						/>
 					)}

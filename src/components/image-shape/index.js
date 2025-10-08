@@ -58,7 +58,7 @@ const ImageShapeResponsiveSettings = ({
 		}`;
 
 		return {
-			[getDictionaryValue('value')]: getLastShapeAttribute(target) || '',
+			[getDictionaryValue('value')]: getLastShapeAttribute(target) ?? '',
 			[getDictionaryValue('onChange')]: value =>
 				onChange({
 					[targetWithBreakpoint]:

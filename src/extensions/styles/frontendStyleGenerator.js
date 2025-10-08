@@ -21,8 +21,12 @@ const getStyles = content => {
 				? val.replace('--maxi-undefined', '--maxi-light')
 				: val;
 
-		if (safeKey.includes('css')) response += `${safeVal}`;
-		else response += `${safeKey}:${safeVal};`;
+		if (safeKey.includes('css')) {
+			// Ensure raw custom CSS declarations end with a semicolon to avoid invalid CSS
+			const raw = `${safeVal}`.trim();
+			const needsSemicolon = raw.length > 0 && !raw.endsWith(';');
+			response += needsSemicolon ? `${raw};` : raw;
+		} else response += `${safeKey}:${safeVal};`;
 	});
 
 	return response;

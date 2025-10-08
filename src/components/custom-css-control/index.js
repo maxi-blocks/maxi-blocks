@@ -60,10 +60,40 @@ const CustomCssControl = props => {
 	};
 
 	const generateComponent = (label, index, category, cssClassIndex) => {
+		const isValidCssDeclarationList = css => {
+			// Accept empty as valid to allow clearing
+			if (isEmpty(css)) return true;
+			let styleEl;
+			try {
+				styleEl = document.createElement('style');
+				styleEl.textContent = `.maxi-css-validate{${css}}`;
+				document.head.appendChild(styleEl);
+				// Accessing cssRules will throw if the CSS is invalid
+				// eslint-disable-next-line no-unused-expressions
+				styleEl?.sheet?.cssRules;
+				// Clean up immediately on success
+				if (styleEl && styleEl.parentNode)
+					styleEl.parentNode.removeChild(styleEl);
+				return true;
+			} catch (err) {
+				if (styleEl && styleEl.parentNode)
+					styleEl.parentNode.removeChild(styleEl);
+				// Ensure stringified error output per project guidelines
+				console.error(
+					`MaxiBlocks: invalid custom CSS provided - ${JSON.stringify(
+						String(err)
+					)}`
+				);
+				return false;
+			}
+		};
+
 		const onChangeCssCode = (code, valid = true) => {
 			const newCustomCss = !isEmpty(value) ? cloneDeep(value) : {};
 
-			if (!valid) setNotValidCode(cloneDeep(newCustomCss));
+			// Validate incoming CSS before applying to block attributes
+			const isValid = isValidCssDeclarationList(code);
+			if (!isValid || !valid) setNotValidCode(cloneDeep(newCustomCss));
 			else {
 				delete notValidCode?.[category]?.[index];
 				if (isEmpty(notValidCode[category]))
@@ -76,14 +106,17 @@ const CustomCssControl = props => {
 				if (isEmpty(newCustomCss[category]))
 					newCustomCss[category] = {};
 
-				newCustomCss[category][index] = code;
+				// Only apply to attributes if valid; otherwise, keep local notValidCode state
+				if (isValid) newCustomCss[category][index] = code;
 			} else {
 				delete newCustomCss?.[category]?.[index];
 				if (isEmpty(newCustomCss[category]))
 					delete newCustomCss[category];
 			}
 
-			onChange(`custom-css-${breakpoint}`, newCustomCss);
+			// Propagate only when valid or when clearing
+			if (isValid || isEmpty(code))
+				onChange(`custom-css-${breakpoint}`, newCustomCss);
 		};
 
 		const getValue = () => {

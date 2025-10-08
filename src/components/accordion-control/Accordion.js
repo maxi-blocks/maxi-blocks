@@ -74,7 +74,9 @@ const Accordion = props => {
 					const block = getBlock(getSelectedBlockClientId());
 
 					const { show_indicators: showIndicators } =
-						select('maxiBlocks').receiveMaxiSettings();
+						(typeof window !== 'undefined' &&
+							window.maxiSettings) ||
+						{};
 
 					if (
 						showIndicators &&

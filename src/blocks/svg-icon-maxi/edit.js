@@ -177,7 +177,7 @@ class edit extends MaxiBlockComponent {
 		return getStyles(
 			this.props.attributes,
 			getSVGWidthHeightRatio(
-				this.blockRef.current?.querySelector(
+				this.blockRef?.current?.querySelector(
 					'.maxi-svg-icon-block__icon svg'
 				)
 			)

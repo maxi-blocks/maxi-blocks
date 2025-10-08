@@ -1,12 +1,5 @@
-import {
-	getStorageCache,
-	setStorageCache,
-} from '@extensions/text/fonts/fontCacheUtils';
 import { getFontUrl, loadFonts } from '@extensions/text/fonts/loadFonts';
-import {
-	buildFontUrl,
-	isCacheValid,
-} from '@extensions/text/fonts/loadFontUtils';
+import { buildFontUrl } from '@extensions/text/fonts/loadFontUtils';
 
 jest.mock('@wordpress/data', () => ({
 	select: jest.fn().mockReturnValue({
@@ -25,131 +18,98 @@ jest.mock('@wordpress/data', () => ({
 
 jest.mock('@extensions/text/fonts/fontCacheUtils', () => ({
 	cleanUrl: jest.fn(url => url),
-	getStorageCache: jest.fn(),
-	setStorageCache: jest.fn(),
-	fontUrlCache: {
-		get: jest.fn(),
-		set: jest.fn(),
-		delete: jest.fn(),
-	},
 }));
 
 jest.mock('@extensions/text/fonts/loadFontUtils', () => ({
 	buildFontUrl: jest.fn(() => Promise.resolve('')),
-	isCacheValid: jest.fn(() => Promise.resolve(true)),
 }));
 
 describe('getFontUrl', () => {
-	let originalWindow;
-	let mockFetch;
-
 	beforeEach(() => {
-		originalWindow = { ...window };
-		mockFetch = jest.fn();
-		global.fetch = mockFetch;
-
-		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: false };
-
 		jest.clearAllMocks();
 	});
 
-	afterEach(() => {
-		window = originalWindow;
-		jest.clearAllMocks();
-	});
-
-	it('Should return cached URL when available and valid', async () => {
+	it('Should build and return font URL directly', async () => {
 		const fontName = 'Roboto';
 		const fontData = { weight: '400', style: 'normal' };
-		const cachedUrl =
+		const expectedUrl =
 			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap';
-		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
 
-		getStorageCache.mockReturnValue(cachedUrl);
-		isCacheValid.mockResolvedValue(true);
+		buildFontUrl.mockResolvedValue(expectedUrl);
 
 		const result = await getFontUrl(fontName, fontData);
 
-		expect(result).toBe(cachedUrl);
-		expect(getStorageCache).toHaveBeenCalledWith(requestKey);
-		expect(isCacheValid).toHaveBeenCalledWith(cachedUrl);
-		expect(buildFontUrl).not.toHaveBeenCalled();
-		expect(setStorageCache).not.toHaveBeenCalled();
-	});
-
-	it('Should clear invalid cache and build new URL', async () => {
-		const fontName = 'Roboto';
-		const fontData = { weight: '400', style: 'normal' };
-		const cachedUrl =
-			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap';
-		const newUrl =
-			'https://fonts.googleapis.com/css2?family=Railway:wght@400&display=swap';
-		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
-
-		getStorageCache.mockReturnValue(cachedUrl);
-		isCacheValid.mockImplementation(url =>
-			Promise.resolve(url !== cachedUrl)
-		);
-		buildFontUrl.mockResolvedValue(newUrl);
-
-		const result = await getFontUrl(fontName, fontData);
-
-		expect(result).toBe(newUrl);
-		expect(getStorageCache).toHaveBeenCalledWith(requestKey);
+		expect(result).toBe(expectedUrl);
 		expect(buildFontUrl).toHaveBeenCalledWith(fontName, fontData);
-		expect(setStorageCache).toHaveBeenCalledWith(requestKey, newUrl);
 	});
 
-	it('Should build and cache new URL when no cache exists', async () => {
+	it('Should handle empty font data', async () => {
 		const fontName = 'Lato';
-		const fontData = { weight: '700', style: 'normal' };
-		const newUrl =
-			'https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap';
-		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
+		const expectedUrl =
+			'https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap';
 
-		getStorageCache.mockReturnValue(null);
-		buildFontUrl.mockResolvedValue(newUrl);
-		isCacheValid.mockResolvedValue(true);
+		buildFontUrl.mockResolvedValue(expectedUrl);
 
-		const result = await getFontUrl(fontName, fontData);
+		const result = await getFontUrl(fontName);
 
-		expect(result).toBe(newUrl);
-		expect(getStorageCache).toHaveBeenCalledWith(requestKey);
-		expect(buildFontUrl).toHaveBeenCalledWith(fontName, fontData);
-		expect(isCacheValid).toHaveBeenCalledWith(newUrl);
-		expect(setStorageCache).toHaveBeenCalledWith(requestKey, newUrl);
-	});
-
-	it('Should throw error when built URL is not valid', async () => {
-		const fontName = 'Invalid Font';
-		const fontData = { weight: '400', style: 'normal' };
-		const invalidUrl = 'https://invalid-url.com/font.woff2';
-		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
-
-		getStorageCache.mockReturnValue(null);
-		buildFontUrl.mockResolvedValue(invalidUrl);
-		isCacheValid.mockResolvedValue(false);
-
-		await expect(getFontUrl(fontName, fontData)).rejects.toThrow(
-			`Invalid font URL: ${invalidUrl}`
-		);
-		expect(getStorageCache).toHaveBeenCalledWith(requestKey);
-		expect(buildFontUrl).toHaveBeenCalledWith(fontName, fontData);
-		expect(isCacheValid).toHaveBeenCalledWith(invalidUrl);
-		expect(setStorageCache).not.toHaveBeenCalled();
+		expect(result).toBe(expectedUrl);
+		expect(buildFontUrl).toHaveBeenCalledWith(fontName, {});
 	});
 
 	it('Should handle errors during URL building', async () => {
 		const fontName = 'Error Font';
 		const fontData = { weight: '400', style: 'normal' };
 		const errorMessage = 'Network error during font URL building';
+		const consoleErrorSpy = jest
+			.spyOn(console, 'error')
+			.mockImplementation();
 
 		buildFontUrl.mockRejectedValue(new Error(errorMessage));
 
 		await expect(getFontUrl(fontName, fontData)).rejects.toThrow(
 			errorMessage
 		);
-		expect(console.error).toHaveBeenCalled();
+		expect(buildFontUrl).toHaveBeenCalledWith(fontName, fontData);
+		expect(consoleErrorSpy).toHaveBeenCalledWith(
+			'Error getting font URL:',
+			expect.any(Error)
+		);
+
+		consoleErrorSpy.mockRestore();
+	});
+
+	it('Should work with different font configurations', async () => {
+		const testCases = [
+			{
+				fontName: 'Open Sans',
+				fontData: { weight: '700', style: 'italic' },
+				expectedUrl:
+					'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,700&display=swap',
+			},
+			{
+				fontName: 'Roboto',
+				fontData: { weight: '300,400,700' },
+				expectedUrl:
+					'https://fonts.googleapis.com/css2?family=Roboto:wght@300,400,700&display=swap',
+			},
+		];
+
+		await Promise.all(
+			testCases.map(async testCase => {
+				buildFontUrl.mockResolvedValue(testCase.expectedUrl);
+
+				const result = await getFontUrl(
+					testCase.fontName,
+					testCase.fontData
+				);
+
+				expect(result).toBe(testCase.expectedUrl);
+				expect(buildFontUrl).toHaveBeenCalledWith(
+					testCase.fontName,
+					testCase.fontData
+				);
+			})
+		);
 	});
 });
 
@@ -182,8 +142,6 @@ describe('loadFonts', () => {
 			.mockImplementation(() => {});
 
 		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: false };
-
-		isCacheValid.mockResolvedValue(true);
 	});
 
 	afterEach(() => {

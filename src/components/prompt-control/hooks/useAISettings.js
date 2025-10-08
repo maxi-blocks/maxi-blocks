@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
@@ -10,30 +9,26 @@ import { useEffect, useState } from '@wordpress/element';
 import { camelCase } from 'lodash';
 
 const useAISettings = () => {
-	const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
 	const [AISettings, setAISettings] = useState({});
 
 	useEffect(() => {
-		const fetchAISettings = async () => {
-			try {
-				const maxiSettings = await receiveMaxiSettings();
+		// Load AI settings from injected data (no API call needed)
+		if (window.maxiSettings?.ai_settings) {
+			const AISettings = Object.entries(
+				window.maxiSettings.ai_settings
+			).reduce((acc, [key, value]) => {
+				const newKey = camelCase(key);
+				acc[newKey] = value;
+				return acc;
+			}, {});
 
-				const AISettings = Object.entries(
-					maxiSettings.ai_settings
-				).reduce((acc, [key, value]) => {
-					const newKey = camelCase(key);
-					acc[newKey] = value;
-					return acc;
-				}, {});
-
-				setAISettings(AISettings);
-			} catch (error) {
-				console.error('MaxiBlocks: Could not load settings', error);
-			}
-		};
-
-		fetchAISettings();
-	}, [receiveMaxiSettings]);
+			setAISettings(AISettings);
+		} else {
+			console.error(
+				'MaxiBlocks: AI settings not available in window.maxiSettings'
+			);
+		}
+	}, []);
 
 	return AISettings;
 };

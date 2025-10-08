@@ -117,9 +117,7 @@ class ToolbarPopover extends Component {
 			className
 		);
 
-		const { receiveMaxiSettings } = select('maxiBlocks');
-
-		const { hide_tooltips: hideTooltips } = receiveMaxiSettings();
+		const { hide_tooltips: hideTooltips } = window.maxiSettings || {};
 		const tooltipsHide = !isEmpty(hideTooltips) ? hideTooltips : false;
 
 		const buttonContent = () => {

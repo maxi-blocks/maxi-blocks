@@ -138,11 +138,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		attributes: extraProps.attributes,
 	});
 
-	useEffect(() => {
-		if (!isSelected || isSave) {
-			return;
-		}
-
+	if (isSelected) {
 		if (blockName === 'maxi-blocks/text-maxi') {
 			setDefaultBlockName('maxi-blocks/text-maxi');
 		} else {
@@ -157,7 +153,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		// } else {
 		// 	setDefaultBlockName('maxi-blocks/container-maxi');
 		// }
-	}, [blockName, isSave, isSelected]);
+	}
 
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =
@@ -178,8 +174,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	delete extraProps.state;
 
 	// Not usable/necessary on save blocks
-	// Always initialize hooks at top-level to follow React Rules of Hooks
-	const [isDragOverBlock, setIsDragOverBlock] = useState(false);
+	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
 
 	const {
 		isDraggingBlocks,
@@ -197,11 +192,10 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	);
 	const isDraggingOrigin = blockParents.includes(clientId);
 
-	useEffect(() => {
-		// Guard inside the effect instead of calling the hook conditionally
-		if (isSave || INNER_BLOCKS.includes(blockName)) return;
-		if (!isDragging && isDragOverBlock) setIsDragOverBlock(false);
-	}, [isSave, blockName, isDragging, isDragOverBlock, setIsDragOverBlock]);
+	if (!isSave && !INNER_BLOCKS.includes(blockName))
+		useEffect(() => {
+			if (!isDragging && isDragOverBlock) setIsDragOverBlock(false);
+		}, [isDragging, isDragOverBlock, setIsDragOverBlock]);
 
 	const classes = classnames(
 		'maxi-block',
@@ -240,40 +234,42 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isSave && dcStatus && dcHide && '$class-to-replace'
 	);
 
-	// Define callbacks unconditionally, guard usage via variables
-	const onDragLeaveCb = useCallback(({ target }) => {
-		if (
-			isDragOverBlock &&
-			(!ref.current.isSameNode(target) ||
-				isDraggingOrigin ||
-				!ref.current.contains(target))
-		)
-			setIsDragOverBlock(false);
-	}, []);
-	const onDragLeave = isSave ? null : onDragLeaveCb;
+	const onDragLeave = isSave
+		? null
+		: useCallback(({ target }) => {
+				if (
+					isDragOverBlock &&
+					(!ref.current.isSameNode(target) ||
+						isDraggingOrigin ||
+						!ref.current.contains(target))
+				)
+					setIsDragOverBlock(false);
+		  }, []);
 
-	const onDragOverCb = useCallback(() => {
-		const { getBlock } = select('core/block-editor');
-		const { innerBlocks } = getBlock(clientId);
+	const onDragOver = isSave
+		? null
+		: useCallback(() => {
+				const { getBlock } = select('core/block-editor');
+				const { innerBlocks } = getBlock(clientId);
 
-		const isLastOnHierarchy = isEmpty(innerBlocks)
-			? true
-			: innerBlocks.every(
-					({ name }) =>
-						![...INNER_BLOCKS, 'maxi-blocks/row-maxi'].includes(
-							name
-						)
-			  );
+				const isLastOnHierarchy = isEmpty(innerBlocks)
+					? true
+					: innerBlocks.every(
+							({ name }) =>
+								![
+									...INNER_BLOCKS,
+									'maxi-blocks/row-maxi',
+								].includes(name)
+					  );
 
-		if (
-			!isDragOverBlock &&
-			!isSave &&
-			INNER_BLOCKS.includes(blockName) &&
-			isLastOnHierarchy
-		)
-			setIsDragOverBlock(true);
-	}, []);
-	const onDragOver = isSave ? null : onDragOverCb;
+				if (
+					!isDragOverBlock &&
+					!isSave &&
+					INNER_BLOCKS.includes(blockName) &&
+					isLastOnHierarchy
+				)
+					setIsDragOverBlock(true);
+		  }, []);
 
 	const blockProps = {
 		tagName,
@@ -320,115 +316,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		</InnerBlocksBlock>
 	);
 });
-
-// Save-only content without React hooks to satisfy Rules of Hooks during block save/validation
-const MaxiBlockSaveContent = props => {
-    const {
-        clientId,
-        blockName,
-        tagName = 'div',
-        children,
-        blockStyle,
-        extraClassName,
-        anchorLink,
-        uniqueID,
-        className,
-        displayValue,
-        motion,
-        background,
-        disableBackground = false,
-        classes: customClasses,
-        paletteClasses,
-        hasLink,
-        useInnerBlocks = false,
-        hasInnerBlocks = false,
-        isRepeater,
-        isSelected, // unused in save
-        hasSelectedChild, // unused in save
-        isHovered, // unused in save
-        isChild,
-        dcStatus,
-        dcHide,
-        pagination = false,
-        dcLinkStatus,
-        dcLinkTarget,
-        showLoader,
-        ...extraProps
-    } = props;
-
-    const isSave = true;
-    const isDisabled = false; // no editor-only disabled state on save
-
-    const classes = classnames(
-        'maxi-block',
-        blockName && getBlockClassName(blockName),
-        motion['hover-type'] &&
-            motion['hover-type'] !== 'none' &&
-            `maxi-hover-effect maxi-hover-effect-${uniqueID}`,
-        getHasParallax(background['background-layers']) &&
-            `maxi-bg-parallax maxi-bg-parallax-${uniqueID}`,
-        motion['number-counter-status'] &&
-            `maxi-nc-effect maxi-nc-effect-${uniqueID}`,
-        (motion['shape-divider-top-status'] ||
-            motion['shape-divider-bottom-status']) &&
-            `maxi-sd-effect maxi-sd-effect-${uniqueID}`,
-        blockStyle && blockStyle.includes('maxi-')
-            ? blockStyle
-            : `maxi-${blockStyle ?? 'light'}`,
-        extraClassName,
-        uniqueID,
-        className,
-        displayValue === 'none' && 'maxi-block-display-none',
-        customClasses,
-        paletteClasses,
-        hasLink &&
-            (!inlineLinkFields.includes(dcLinkTarget) || !dcLinkStatus) &&
-            'maxi-block--has-link',
-        isRepeater && 'maxi-block--repeater',
-        (isDisabled || showLoader) && 'maxi-block--disabled',
-        isSave && dcStatus && dcHide && '$class-to-replace'
-    );
-
-    const blockProps = {
-        tagName,
-        className: classes,
-        id: uniqueID,
-        key: `maxi-block-${uniqueID}`,
-        uniqueID,
-        anchorLink,
-        background,
-        disableBackground: !disableBackground,
-        isChild,
-        isDisabled,
-        showLoader,
-        isSave,
-        ...extraProps,
-        ...(pagination && {
-            paginationProps: getGroupAttributes(
-                props?.attributes,
-                'contextLoop'
-            ),
-        }),
-    };
-
-    if (!useInnerBlocks)
-        return <MainMaxiBlock {...blockProps}>{children}</MainMaxiBlock>;
-
-    return (
-        <InnerBlocksBlock
-            {...blockProps}
-            clientId={clientId}
-            blockName={blockName}
-            hasInnerBlocks={hasInnerBlocks}
-            isSelected={isSelected}
-            hasSelectedChild={hasSelectedChild}
-            pagination={pagination}
-            isSave
-        >
-            {children}
-        </InnerBlocksBlock>
-    );
-};
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
@@ -537,6 +424,6 @@ const MaxiBlock = memo(
 	}
 );
 
-MaxiBlock.save = props => <MaxiBlockSaveContent {...props} />;
+MaxiBlock.save = props => <MaxiBlockContent {...props} isSave />;
 
 export default MaxiBlock;

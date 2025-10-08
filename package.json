@@ -133,8 +133,6 @@
 		"cookie": "^0.7.0",
 		"ws": "^8.18.0",
 		"tar-fs": "^3.0.9",
-		"cross-spawn": "^7.0.6",
-		"webpack-dev-server": "^5.2.2",
-		"algoliasearch-helper": "^3.11.2"
+		"cross-spawn": "^7.0.6"
 	}
 }

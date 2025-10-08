@@ -36,7 +36,7 @@ const linkSettings = ({
 
 	return [
 		{
-			label: __('Link settings', 'maxi-blocks'),
+			label: __('Link', 'maxi-blocks'),
 			disablePadding: true,
 			content: (
 				<TypographyControl

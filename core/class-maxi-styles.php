@@ -1111,12 +1111,7 @@ class MaxiBlocks_Styles
 
             $front_page_id = $this->get_template_name() . '//' . 'front-page';
 
-            // Use singleton to avoid duplicate hook registration
-            if (method_exists('MaxiBlocks_API', 'get_instance')) {
-                $api = MaxiBlocks_API::get_instance();
-            } else {
-                $api = null;
-            }
+            $api = new MaxiBlocks_API();
 
             $styles = isset($home_content['css_value']) && is_string($home_content['css_value']) ? $home_content['css_value'] : '';
             $fonts_value = isset($home_content['fonts_value']) && is_string($home_content['fonts_value']) ? json_decode($home_content['fonts_value'], true) : [];

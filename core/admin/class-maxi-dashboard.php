@@ -1926,15 +1926,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             require_once plugin_dir_path(__DIR__) .
                 '../core/class-maxi-local-fonts.php';
-            // Use singleton to avoid duplicate hook registration
-            if (method_exists('MaxiBlocks_API', 'get_instance')) {
-                $api = MaxiBlocks_API::get_instance();
-            } else {
-                $api = null;
-            }
+            $api = new MaxiBlocks_API();
 
             $breakpoints_html = '';
-            $breakpoints_array = $api ? $api->get_maxi_blocks_breakpoints() : [];
+            $breakpoints_array = $api->get_maxi_blocks_breakpoints();
 
             foreach ($breakpoints_array as $breakpoint => $value) {
                 $value_num = intval($value);

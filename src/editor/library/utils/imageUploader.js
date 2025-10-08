@@ -61,9 +61,7 @@ export const placeholderUploader = async () => {
 				url: media[0].media_details.sizes.full.source_url,
 			};
 
-		const { placeholder_url: placeholderURL } = await resolveSelect(
-			'maxiBlocks'
-		).receiveMaxiSettings();
+		const { placeholder_url: placeholderURL } = window.maxiSettings || {};
 
 		// In case the image is not found, let's fetch it from the Cloud server
 		const placeholderResponse = await fetch(placeholderURL).catch(err => {

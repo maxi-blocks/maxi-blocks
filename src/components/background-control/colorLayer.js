@@ -97,14 +97,19 @@ const ColorLayer = props => {
 				breakpoints[breakpoints.indexOf(breakpoint) - 1];
 
 			const getResetValue = target =>
-				prevBreakpoint
+				prevBreakpoint && !isHover
 					? getLastBreakpointAttribute({
 							target,
 							breakpoint: prevBreakpoint,
 							attributes: colorOptions,
 							isHover,
 					  })
-					: getDefaultLayerAttr('colorOptions', target);
+					: getLastBreakpointAttribute({
+							target,
+							breakpoint,
+							attributes: colorOptions,
+							isHover: false,
+					  });
 
 			defaultColor.paletteStatus = getResetValue(
 				`${bgPrefix}palette-status`

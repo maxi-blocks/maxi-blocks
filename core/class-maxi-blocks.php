@@ -153,10 +153,22 @@ if (!class_exists('MaxiBlocks_Blocks')):
             ]);
 
             // Inject MaxiBlocks settings directly to avoid API calls
-            if (class_exists('MaxiBlocks_API')) {
-                $api = new MaxiBlocks_API();
-                $settings = $api->get_maxi_blocks_options();
-                wp_localize_script('maxi-blocks-block-editor', 'maxiSettings', $settings);
+            if (class_exists('MaxiBlocks_API') && method_exists('MaxiBlocks_API', 'register')) {
+                // Ensure singleton is registered, then use it to avoid double hook registration
+                MaxiBlocks_API::register();
+                if (method_exists('MaxiBlocks_API', 'get_instance')) {
+                    $api = MaxiBlocks_API::get_instance();
+                } else {
+                    // Fallback for older versions: avoid creating multiple instances
+                    $api = isset($GLOBALS['maxi_blocks_api']) && $GLOBALS['maxi_blocks_api'] instanceof MaxiBlocks_API
+                        ? $GLOBALS['maxi_blocks_api']
+                        : null;
+                }
+
+                if ($api instanceof MaxiBlocks_API) {
+                    $settings = $api->get_maxi_blocks_options();
+                    wp_localize_script('maxi-blocks-block-editor', 'maxiSettings', $settings);
+                }
             }
 
             // Add license settings for authentication context
@@ -226,11 +238,21 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
                     // Override savePost to update versions BEFORE the save happens
                     function interceptSavePost() {
-                        // Get a reference to the editor dispatch object
-                        const editorDispatch = dispatch('core/editor');
+                        // Get a reference to the editor dispatch object (may not exist in Site Editor)
+                        let editorDispatch;
+                        try {
+                            editorDispatch = dispatch('core/editor');
+                        } catch (e) {
+                            editorDispatch = null;
+                        }
 
-                        // Only proceed if savePost exists and hasn't been overridden yet
-                        if (!editorDispatch.savePost || editorDispatch.savePost._maxiIntercepted) {
+                        // If core/editor is not available, do nothing
+                        if (!editorDispatch || typeof editorDispatch.savePost !== 'function') {
+                            return;
+                        }
+
+                        // Only proceed if savePost hasn't been overridden yet
+                        if (editorDispatch.savePost._maxiIntercepted) {
                             return;
                         }
 
@@ -240,7 +262,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                         // Create our intercepted version
                         editorDispatch.savePost = function(options = {}) {
                             // Update versions BEFORE calling the original save
-                            updateBlockVersions();
+                            try { updateBlockVersions(); } catch (e) { /* noop */ }
 
                             // Call the original savePost with the same context and arguments
                             return originalSavePost.call(this, options);

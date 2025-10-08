@@ -33,6 +33,16 @@ if (!class_exists('MaxiBlocks_API')):
         }
 
         /**
+         * Return the registered instance.
+         *
+         * @return MaxiBlocks_API|null
+         */
+        public static function get_instance()
+        {
+            return self::$instance;
+        }
+
+        /**
          * Variables
          */
         private $version;

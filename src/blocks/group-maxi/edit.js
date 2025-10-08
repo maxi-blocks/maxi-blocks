@@ -90,6 +90,10 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiContextLoop(
-	withMaxiContextLoopContext(withMaxiDC(withMaxiProps(edit)))
-);
+const withPropsComponent = withMaxiProps(edit);
+const withDCComponent = withMaxiDC(withPropsComponent);
+const withContextLoopContextComponent =
+	withMaxiContextLoopContext(withDCComponent);
+const finalComponent = withMaxiContextLoop(withContextLoopContextComponent);
+
+export default finalComponent;

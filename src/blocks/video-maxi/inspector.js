@@ -114,6 +114,12 @@ const Inspector = props => {
 														attributes,
 														['video', 'videoPopup']
 													)}
+													popupAnimationDuration={
+														attributes.popupAnimationDuration
+													}
+													popupAnimationDurationUnit={
+														attributes.popupAnimationDurationUnit
+													}
 													breakpoint={deviceType}
 													clientId={clientId}
 													blockStyle={blockStyle}

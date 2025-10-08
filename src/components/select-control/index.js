@@ -72,10 +72,12 @@ export default function SelectControl({
 		className
 	);
 
+	// Filter out private/react-unsafe props so they are not forwarded to the DOM
+	const { __nextHasNoMarginBottom: _noMarginBottom, ...domProps } = props;
+
 	return (
 		!isEmpty(options) && (
 			<BaseControl
-				__nextHasNoMarginBottom
 				label={label}
 				hideLabelFromVision={hideLabelFromVision}
 				id={id}
@@ -90,7 +92,7 @@ export default function SelectControl({
 					onChange={onChangeValue}
 					aria-describedby={help ? `${id}__help` : undefined}
 					multiple={multiple}
-					{...props}
+					{...domProps}
 				>
 					{isPlainObject(options)
 						? Object.entries(options).map(

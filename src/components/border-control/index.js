@@ -301,24 +301,6 @@ const BorderControl = props => {
 		return 'none';
 	};
 
-	const getValuesOnChangeType = () => {
-		const response = {};
-
-		axisItems.forEach(item => {
-			const value = getLastBreakpointAttribute({
-				target: item,
-				breakpoint,
-				attributes: props,
-				isHover,
-			});
-
-			if (!value)
-				response[getAttributeKey(item, isHover, false, breakpoint)] = 2;
-		});
-
-		return response;
-	};
-
 	return (
 		<div className={classes}>
 			<DefaultStylesControl
@@ -423,7 +405,6 @@ const BorderControl = props => {
 							[`${prefix}border-style-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: val,
-							...getValuesOnChangeType(),
 						});
 					}}
 				/>

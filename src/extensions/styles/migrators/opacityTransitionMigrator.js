@@ -12,7 +12,7 @@ const NAME = 'Opacity Transition';
 const blockDataCache = new Map();
 const opacityAttributesCache = new Map();
 
-const getBlockData = (uniqueID) => {
+const getBlockData = uniqueID => {
 	if (blockDataCache.has(uniqueID)) {
 		return blockDataCache.get(uniqueID);
 	}
@@ -26,7 +26,8 @@ const getOpacityAttributes = () => {
 	if (opacityAttributesCache.has('default')) {
 		return opacityAttributesCache.get('default');
 	}
-	const attrs = transitionAttributesCreator().transition.default.canvas.opacity;
+	const attrs =
+		transitionAttributesCreator().transition.default.canvas.opacity;
 	opacityAttributesCache.set('default', attrs);
 	return attrs;
 };
@@ -36,16 +37,46 @@ const isEligible = blockAttributes => {
 	if (!transition) return false;
 
 	// Check if any category needs opacity migration
-	for (const category of Object.values(transition)) {
+	for (const [categoryName, categoryData] of Object.entries(transition)) {
+		const blockDataTransition = getBlockData(blockAttributes.uniqueID);
+
+		// Skip if this category doesn't exist in block data or shouldn't have opacity
+		if (
+			!blockDataTransition[categoryName] ||
+			!blockDataTransition[categoryName].opacity
+		) {
+			// eslint-disable-next-line no-continue
+			continue;
+		}
+
 		// If opacity exists but is not properly structured (not an object with properties)
-		if (category.opacity !== undefined && typeof category.opacity !== 'object') {
+		if (
+			categoryData.opacity !== undefined &&
+			typeof categoryData.opacity !== 'object'
+		) {
 			return true;
 		}
-		// If category should have opacity but doesn't
-		if (!Object.prototype.hasOwnProperty.call(category, 'opacity') &&
-			Object.keys(getBlockData(blockAttributes.uniqueID)).some(
-				cat => cat === Object.keys(category)[0]
-			)) {
+
+		// If category should have opacity but doesn't have it at all
+		if (!Object.prototype.hasOwnProperty.call(categoryData, 'opacity')) {
+			return true;
+		}
+
+		// Check if opacity already matches what migration would set
+		if (
+			typeof categoryData.opacity === 'object' &&
+			categoryData.opacity !== null
+		) {
+			const opacityAttributes = getOpacityAttributes();
+			// If opacity exactly matches what migration would set, skip
+			const isAlreadyMigrated =
+				JSON.stringify(categoryData.opacity) ===
+				JSON.stringify(opacityAttributes);
+			if (isAlreadyMigrated) {
+				// eslint-disable-next-line no-continue
+				continue;
+			}
+			// If opacity exists but doesn't match, needs migration
 			return true;
 		}
 	}
@@ -58,7 +89,6 @@ const migrate = newAttributes => {
 
 	const blockDataTransition = getBlockData(uniqueID);
 	const opacityAttributes = getOpacityAttributes();
-
 
 	for (const [category, properties] of Object.entries(blockDataTransition)) {
 		for (const name of Object.keys(properties)) {

@@ -28,21 +28,23 @@ const isEligible = blockAttributes => {
 	// Run migrator only if:
 	// 1. Block has no version (legacy block)
 	// 2. OR block was created with a version that needs migration
-	return !maxiVersionOrigin || VALID_VERSIONS.has(maxiVersionOrigin);
-};
+	if (maxiVersionOrigin && !VALID_VERSIONS.has(maxiVersionOrigin)) {
+		return false;
+	}
 
-const migrate = newAttributes => {
-	let hasBottomGap = false;
+	// Check if bottom-gap has already been set (migration already applied)
 	for (let i = 0; i < BREAKPOINTS.length; i += 1) {
-		if (newAttributes[`bottom-gap-${BREAKPOINTS[i]}`]) {
-			hasBottomGap = true;
-			break;
+		if (blockAttributes[`bottom-gap-${BREAKPOINTS[i]}`] !== undefined) {
+			return false;
 		}
 	}
 
-	if (!hasBottomGap) {
-		newAttributes['bottom-gap-general'] = 0;
-	}
+	return true;
+};
+
+const migrate = newAttributes => {
+	// Set default bottom-gap since isEligible already confirmed it doesn't exist
+	newAttributes['bottom-gap-general'] = 0;
 
 	return newAttributes;
 };

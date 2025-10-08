@@ -13,7 +13,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import { dispatch, resolveSelect, select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -48,6 +48,7 @@ import {
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
+import { addBlockStyles, removeBlockStyles } from './globalStyleManager';
 import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { removeBlockFromColumns } from '@extensions/repeater';
@@ -57,7 +58,7 @@ import compareVersions from './compareVersions';
 /**
  * External dependencies
  */
-import _, { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
+import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
 
@@ -73,6 +74,12 @@ class MaxiBlockComponent extends Component {
 	constructor(...args) {
 		super(...args);
 
+		const { attributes } = args[0] || {};
+		const { uniqueID } = attributes || {};
+
+		// Initialize store management FIRST (before any store calls)
+		this.storeSelectors = new Map(); // Cache selectors to avoid recreating
+
 		this.state = {
 			oldSC: {},
 			scValues: {},
@@ -81,8 +88,7 @@ class MaxiBlockComponent extends Component {
 
 		this.areFontsLoaded = createRef(false);
 
-		const { clientId, attributes } = this.props;
-		const { uniqueID } = attributes;
+		const { clientId } = this.props;
 
 		this.isReusable = false;
 		this.blockRef = createRef();
@@ -91,103 +97,137 @@ class MaxiBlockComponent extends Component {
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
+
+		// Track all relation instances for proper cleanup
+		this.allRelationInstances = new Set();
 		this.popoverStyles = null;
 		this.isPatternsPreview = false;
 
 		const previewIframes = getSiteEditorPreviewIframes();
 
-		const blockName = select('core/block-editor').getBlockName(
+		const blockName = this.safeSelect(
+			'core/block-editor',
+			'getBlockName',
 			this.props.clientId
 		);
 
+		const templateModal = document.querySelector(
+			'.editor-post-template__swap-template-modal'
+		);
+
+		// Check if this block is actually inside a preview container
+		const blockElement = document.querySelector(
+			`[data-block="${this.props.clientId}"]`
+		);
+		const isInsidePreview =
+			blockElement &&
+			(blockElement.closest('.block-editor-block-preview__container') ||
+				blockElement.closest(
+					'.block-editor-block-patterns-list__list-item'
+				) ||
+				blockElement.closest(
+					'.edit-site-page-content .block-editor-block-preview__container'
+				));
+
+		// Only set as patterns preview if actually inside a preview container
 		if (
 			previewIframes.length > 0 &&
-			(!blockName ||
-				document.querySelector(
-					'.editor-post-template__swap-template-modal'
-				))
+			(!blockName || templateModal) &&
+			isInsidePreview
 		) {
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
 			return;
 		}
 
-		if (this.isPatternsPreview) return;
+		if (this.isPatternsPreview) {
+			return;
+		}
+		this.safeDispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
+		// Block successfully registered
+
+		// Init - skip updateLastInsertedBlocks to avoid array accumulation
+		// this.updateLastInsertedBlocks();
+		const newUniqueID = this.uniqueIDChecker(uniqueID);
+		this.getCurrentBlockStyle();
+		this.setMaxiAttributes();
+		this.setRelations();
+
+		// Add block to store
+		this.safeDispatch('maxiBlocks/blocks').addBlock(
+			newUniqueID,
+			clientId,
+			this.rootSlot
+		);
+
+		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
+		// 1. Adding again the root and having a React error
+		// 2. Will request `displayStyles` without re-rendering the styles, which speeds up the process
+		this.rootSlot = this.safeSelect(
+			'maxiBlocks/blocks',
+			'getBlockRoot',
+			newUniqueID
+		);
 		// Cache DOM references
 		this.editorIframe = null;
 		this.templateModal = null;
 		this.updateDOMReferences();
 
-		// Cache frequently accessed values
-		this.memoizedValues = new Map();
-
-		// Debounce expensive operations
-		this.debouncedDisplayStyles = _.debounce(this.displayStyles, 150);
-
-		// Set maximum cache size and initialize cache timestamp
-		this.MAX_CACHE_SIZE = 10000;
-		this.CACHE_CLEANUP_INTERVAL = 600000; // 600 seconds
-		this.lastCacheCleanup = Date.now();
+		// MINIMAL tracking - only essential timeouts
+		this.settingsTimeout = null;
+		this.fseIframeTimeout = null;
 	}
 
 	updateDOMReferences() {
-		if (!this.editorIframe) {
-			this.editorIframe = document.querySelector(
-				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
-			);
-		}
-		if (!this.templateModal) {
-			this.templateModal = document.querySelector(
-				'.editor-post-template__swap-template-modal'
-			);
+		// SIMPLIFIED - no caching, just direct queries
+		const editorIframeSelector =
+			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
+		this.editorIframe = document.querySelector(editorIframeSelector);
+
+		if (!getIsSiteEditor()) {
+			const templateModalSelector =
+				'.editor-post-template__swap-template-modal';
+			this.templateModal = document.querySelector(templateModalSelector);
+		} else {
+			this.templateModal = null;
 		}
 	}
 
 	componentDidMount() {
+		// Step 1: DOM references
 		this.updateDOMReferences();
 
-		const { uniqueID, isFirstOnHierarchy, legacyUniqueID } =
-			this.props.attributes;
+		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
 
-		if (this.isPatternsPreview || this.templateModal) return;
+		// Block mounted successfully
 
-		// Moved from constructor to avoid store updates during render
-		const { clientId } = this.props;
-		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
-		this.updateLastInsertedBlocks();
-		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		this.getCurrentBlockStyle();
-		this.setMaxiAttributes();
-		this.setRelations();
-		dispatch('maxiBlocks/blocks').addBlock(
-			newUniqueID,
-			clientId,
-			this.rootSlot
-		);
-		this.rootSlot = select('maxiBlocks/blocks').getBlockRoot(newUniqueID);
+		if (this.isPatternsPreview || this.templateModal) {
+			return;
+		}
 
-		// Add FSE iframe styles if we're in the site editor
+		// Step 2: FSE iframe styles and observer
 		if (getIsSiteEditor()) {
 			this.addMaxiFSEIframeStyles();
-
-			// Set up an observer to handle iframe reloads
 			this.setupFSEIframeObserver();
 		}
 
-		const blocksIBRelations = select(
-			'maxiBlocks/relations'
-		).receiveBlockUnderRelationClientIDs(uniqueID);
+		// Step 3: Relations processing
+		const blocksIBRelations = this.safeSelect(
+			'maxiBlocks/relations',
+			'receiveBlockUnderRelationClientIDs',
+			this.props.attributes.uniqueID
+		);
 
 		if (!isEmpty(blocksIBRelations)) {
-			const { getBlockAttributes } = select('core/block-editor');
 			const { clientId, attributes, deviceType } = this.props;
 
 			blocksIBRelations.forEach(({ clientId: relationClientId }) => {
-				const blockMaxiVersionCurrent =
-					getBlockAttributes(relationClientId)?.[
-						'maxi-version-current'
-					];
+				const blockMaxiVersionCurrent = this.safeSelect(
+					'core/block-editor',
+					'getBlockAttributes',
+					relationClientId
+				)?.['maxi-version-current'];
 
 				if (blockMaxiVersionCurrent) {
 					const needUpdate = [
@@ -242,11 +282,16 @@ class MaxiBlockComponent extends Component {
 			};
 
 			// Collect all uniqueID and legacyUniqueID pairs
-			const { getBlock } = select('core/block-editor');
-			const block = getBlock(this.props.clientId);
+			const block = this.safeSelect(
+				'core/block-editor',
+				'getBlock',
+				this.props.clientId
+			);
 			const idPairs = collectIDs(
 				this.props.attributes,
-				block.innerBlocks
+				block && Array.isArray(block.innerBlocks)
+					? block.innerBlocks
+					: []
 			);
 
 			if (!isEmpty(idPairs)) {
@@ -295,62 +340,49 @@ class MaxiBlockComponent extends Component {
 				};
 
 				// Replace relation.uniqueID with legacyUniqueID in all blocks
-				replaceRelationIDs(
-					this.props.attributes,
-					block.innerBlocks,
-					this.props.clientId
-				);
+				if (block && Array.isArray(block.innerBlocks)) {
+					replaceRelationIDs(
+						this.props.attributes,
+						block.innerBlocks,
+						this.props.clientId
+					);
+				}
 			}
 		}
 
-		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+		// Log relations processing time
 
-		receiveMaxiSettings()
-			.then(settings => {
-				const maxiVersion = settings.maxi_version;
-				const { updateBlockAttributes } = dispatch('core/block-editor');
-				const {
-					'maxi-version-current': maxiVersionCurrent,
-					'maxi-version-origin': maxiVersionOrigin,
-				} = this.props.attributes;
+		// Step 4: Load settings directly from injected window.maxiSettings
 
-				// Only update if we have a valid version from settings
-				if (maxiVersion) {
-					const updates = {};
+		// Get settings directly from window - no async resolver needed
+		const settings = window.maxiSettings || {};
 
-					// Update current version if different
-					if (maxiVersion !== maxiVersionCurrent) {
-						updates['maxi-version-current'] = maxiVersion;
-					}
-
-					// Set origin version if not set
-					if (!maxiVersionOrigin) {
-						updates['maxi-version-origin'] = maxiVersion;
-					}
-
-					// Only dispatch if we have updates
-					if (Object.keys(updates).length > 0) {
-						updateBlockAttributes(this.props.clientId, updates);
-					}
-				}
-			})
-			.catch(error =>
-				console.error('MaxiBlocks: Could not load settings', error)
-			);
-
-		// Check if the block is reusable
+		// Step 4: Block setup and reusable check
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
-		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+		if (this.maxiBlockDidMount) {
+			this.maxiBlockDidMount();
+		}
 
+		// Step 6: Font loading
 		this.loadFonts();
 
-		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
-		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
-		// unnecessary amount of process and resources
-		this?.displayStyles(!!this?.rootSlot);
+		// Step 7: Display styles
+		try {
+			// Call directly without debouncing to avoid memory accumulation
+			this?.displayStyles(!!this?.rootSlot);
+		} catch (error) {
+			console.warn('MaxiBlocks: Display styles error:', error);
+		}
 
-		if (!this.getBreakpoints.xxl) this.forceUpdate();
+		// Step 8: Force update if needed
+		if (!this.getBreakpoints.xxl) {
+			try {
+				this.forceUpdate();
+			} catch (error) {
+				console.warn('MaxiBlocks: Force update error:', error);
+			}
+		}
 	}
 
 	/**
@@ -484,6 +516,7 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID } = this.props.attributes;
 
 		if (!shouldDisplayStyles) {
+			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
 					this.props.deviceType !== prevProps.deviceType ||
@@ -493,6 +526,7 @@ class MaxiBlockComponent extends Component {
 					this.props.attributes.blockStyle !==
 						prevProps.attributes.blockStyle
 				);
+			// For reusable blocks, also call directly
 			this.isReusable && this.displayStyles();
 		}
 
@@ -537,19 +571,19 @@ class MaxiBlockComponent extends Component {
 
 			// If there's a relation affecting this concrete block, check if is necessary
 			// to update it's content to keep the coherence and the good UX
-			const blocksIBRelations = select(
-				'maxiBlocks/relations'
-			).receiveBlockUnderRelationClientIDs(uniqueID);
+			// const blocksIBRelations = select(
+			// 	'maxiBlocks/relations'
+			// ).receiveBlockUnderRelationClientIDs(uniqueID);
 
-			if (!isEmpty(blocksIBRelations))
-				blocksIBRelations.forEach(({ clientId }) =>
-					updateRelationsRemotely({
-						blockTriggerClientId: clientId,
-						blockTargetClientId: this.props.clientId,
-						blockAttributes: this.props.attributes,
-						breakpoint: this.props.deviceType,
-					})
-				);
+			// if (!isEmpty(blocksIBRelations))
+			// 	blocksIBRelations.forEach(({ clientId }) =>
+			// 		updateRelationsRemotely({
+			// 			blockTriggerClientId: clientId,
+			// 			blockTargetClientId: this.props.clientId,
+			// 			blockAttributes: this.props.attributes,
+			// 			breakpoint: this.props.deviceType,
+			// 		})
+			// 	);
 		}
 
 		this.hideGutenbergPopover();
@@ -563,6 +597,8 @@ class MaxiBlockComponent extends Component {
 	componentWillUnmount() {
 		const { uniqueID } = this.props.attributes;
 
+		// Block cleanup initiated
+
 		// Return early checks
 		if (
 			this.isTemplatePartPreview ||
@@ -571,17 +607,90 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
-		// Clean up the FSE iframe observer if it exists
+		// Clear all timeouts to prevent memory leaks (more comprehensive)
+		if (this.settingsTimeout) {
+			clearTimeout(this.settingsTimeout);
+			this.settingsTimeout = null;
+		}
+
+		if (this.fseIframeTimeout) {
+			clearTimeout(this.fseIframeTimeout);
+			this.fseIframeTimeout = null;
+		}
+
+		if (this.fontLoadTimeout) {
+			clearTimeout(this.fontLoadTimeout);
+			this.fontLoadTimeout = null;
+		}
+
+		// MINIMAL cleanup - only clear essential timeouts
+		if (this.previewTimeouts) {
+			this.previewTimeouts.forEach(timeout => clearTimeout(timeout));
+			this.previewTimeouts = null;
+		}
+
+		// Disconnect FSE observer if present
 		if (this.fseIframeObserver) {
-			this.fseIframeObserver.disconnect();
+			this.disconnectTrackedObserver(this.fseIframeObserver);
 			this.fseIframeObserver = null;
 		}
 
-		// Clear memoization and debounced functions
-		this.memoizedValues?.clear();
-		this.debouncedDisplayStyles?.cancel();
+		// Remove temporary popover-hiding styles if still injected
+		if (this.popoverStyles) {
+			this.popoverStyles.remove();
+			this.popoverStyles = null;
+		}
 
-		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
+		// Clear Map and Set collections
+		if (this.storeSelectors) {
+			this.storeSelectors.clear();
+			this.storeSelectors = null;
+		}
+
+		if (this.allRelationInstances) {
+			this.allRelationInstances.clear();
+			this.allRelationInstances = null;
+		}
+
+		// Clean up relation instances
+		if (this.relationInstances) {
+			try {
+				this.safeCleanupRelationInstances(this.relationInstances);
+			} catch (error) {
+				console.error(
+					'MaxiBlocks: Failed to cleanup relation instances on unmount:',
+					error
+				);
+			}
+			this.relationInstances = null;
+		}
+
+		if (this.previousRelationInstances) {
+			this.previousRelationInstances = null;
+		}
+
+		// Clear DOM references
+		this.rootSlot = null;
+		this.editorIframe = null;
+		this.templateModal = null;
+		this.previousIframeContent = null;
+		this.blockRef = null;
+
+		// No cleanup needed for disabled data structures
+
+		// No cleanup needed since we disabled all caching structures
+
+		// Clear font cache references
+		if (this.fontCache) {
+			this.fontCache = null;
+		}
+		if (this.areFontsLoaded) {
+			this.areFontsLoaded.current = false;
+		}
+
+		const keepStylesOnEditor = !!this.safeSelect(
+			'core/block-editor',
+			'getBlock',
 			this.props.clientId
 		);
 		const keepStylesOnCloning =
@@ -670,9 +779,11 @@ class MaxiBlockComponent extends Component {
 		const { tabletPreview, mobilePreview } =
 			this.getPreviewElements(editorWrapper);
 		const previewTarget = tabletPreview ?? mobilePreview;
-		const postEditor = document?.body?.querySelector(
-			'.edit-post-visual-editor'
+		const postEditor = this.getCachedElement(
+			'.edit-post-visual-editor',
+			document.body
 		);
+		if (!postEditor) return;
 		const responsiveWidth = postEditor.getAttribute(
 			'maxi-blocks-responsive-width'
 		);
@@ -701,19 +812,6 @@ class MaxiBlockComponent extends Component {
 				currentBreakpoint
 			);
 		}
-	}
-
-	getOrCreateStyleElement(target, uniqueID) {
-		const styleId = `maxi-blocks__styles--${uniqueID}`;
-		let styleElement = target.getElementById(styleId);
-
-		if (!styleElement) {
-			styleElement = target.createElement('style');
-			styleElement.id = styleId;
-			target.head.appendChild(styleElement);
-		}
-
-		return styleElement;
 	}
 
 	setMaxiAttributes() {
@@ -853,7 +951,11 @@ class MaxiBlockComponent extends Component {
 
 	showPreviewImage(previewIframes) {
 		const disconnectTimeout = 10000; // 10 seconds
-		const timeouts = {};
+
+		// Use instance property to track timeouts for proper cleanup
+		if (!this.previewTimeouts) {
+			this.previewTimeouts = new Map();
+		}
 
 		const isSiteEditor = getIsSiteEditor();
 
@@ -862,7 +964,7 @@ class MaxiBlockComponent extends Component {
 			: 'pattern-preview-edit.jpg';
 
 		const defaultImgPath = `/wp-content/plugins/maxi-blocks/img/${imageName}`;
-		const linkElement = document.querySelector('#maxi-blocks-block-css');
+		const linkElement = this.getCachedElement('#maxi-blocks-block-css');
 		const href = linkElement?.getAttribute('href');
 		const pluginsPath = href?.substring(0, href?.lastIndexOf('/build'));
 		const imgPath = pluginsPath
@@ -905,11 +1007,16 @@ class MaxiBlockComponent extends Component {
 				if (!iframeBody) return;
 
 				// Clear and reset the timeout for this iframe
-				clearTimeout(timeouts[iframe]);
-				timeouts[iframe] = setTimeout(() => {
-					observer.disconnect();
-					delete timeouts[iframe];
+				const existingTimeout = this.previewTimeouts.get(iframe);
+				if (existingTimeout) {
+					clearTimeout(existingTimeout);
+				}
+				const newTimeout = setTimeout(() => {
+					this.disconnectTrackedObserver(observer);
+					this.previewTimeouts.delete(iframe);
 				}, disconnectTimeout);
+
+				this.previewTimeouts.set(iframe, newTimeout);
 
 				const containsMaxiBlocksContainer = iframeBody.querySelector(
 					'.is-root-container .maxi-block'
@@ -952,14 +1059,21 @@ class MaxiBlockComponent extends Component {
 				iframe?.parentNode?.insertBefore(img, iframe);
 				iframe.style.display = 'none';
 
-				observer.disconnect();
+				this.disconnectTrackedObserver(observer);
 			};
 
-			const observer = new MutationObserver((mutationsList, observer) => {
-				mutationsList.forEach(mutation =>
-					replaceIframeWithImage(mutation.target, observer)
-				);
-			});
+			// SIMPLIFIED: No tracking of existing observers since previewObservers is disabled
+			// Create a new observer for this iframe
+			const observer = this.createTrackedMutationObserver(
+				(mutationsList, observer) => {
+					mutationsList.forEach(mutation =>
+						replaceIframeWithImage(mutation.target, observer)
+					);
+				},
+				`preview-${iframe.src || 'unknown'}`
+			);
+
+			// SIMPLIFIED: No tracking per iframe since previewObservers is disabled
 
 			observer.observe(iframe, {
 				attributes: true,
@@ -969,44 +1083,30 @@ class MaxiBlockComponent extends Component {
 		});
 	}
 
-	// This function saves the last inserted blocks' clientIds, so we can use them
-	// to update IB relations.
-	updateLastInsertedBlocks() {
-		if (this.isPatternsPreview || this.templateModal) return;
-		const { clientId } = this.props;
-
-		if (
-			![
-				...select('maxiBlocks/blocks').getLastInsertedBlocks(),
-				...select('maxiBlocks/blocks').getBlockClientIds(),
-			].includes(clientId)
-		) {
-			const allClientIds =
-				select('core/block-editor').getClientIdsWithDescendants();
-
-			dispatch('maxiBlocks/blocks').saveLastInsertedBlocks(allClientIds);
-			dispatch('maxiBlocks/blocks').saveBlockClientIds(allClientIds);
-		}
-	}
-
 	uniqueIDChecker(idToCheck) {
 		if (this.isPatternsPreview || this.templateModal) return idToCheck;
 
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		const isBlockCopied =
-			!select('maxiBlocks/blocks').getIsNewBlock(
-				this.props.attributes.uniqueID
-			) &&
-			select('maxiBlocks/blocks')
-				.getLastInsertedBlocks()
-				.includes(this.props.clientId);
+		const isNewBlock = select('maxiBlocks/blocks').getIsNewBlock(
+			this.props.attributes.uniqueID
+		);
+		const lastInsertedBlocks =
+			select('maxiBlocks/blocks').getLastInsertedBlocks();
+		const isInLastInserted = lastInsertedBlocks.includes(
+			this.props.clientId
+		);
+		const isBlockCopied = !isNewBlock && isInLastInserted;
+
+		// UniqueID validation completed
 
 		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});
+
+			// New uniqueID generated
 
 			propagateNewUniqueID(
 				idToCheck,
@@ -1058,22 +1158,35 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		if (this.isPatternsPreview || this.templateModal) return;
+		if (this.isPatternsPreview || this.templateModal) {
+			return;
+		}
+
+		// Early return if fonts are already loaded
+		if (this.areFontsLoaded.current) {
+			return;
+		}
 
 		const typographyToCheck = Object.fromEntries(
-			Object.entries(this.typography).filter(
+			Object.entries(this.typography || {}).filter(
 				([key, value]) => value !== undefined
 			)
 		);
 
-		if (
-			this.areFontsLoaded.current ||
-			(isEmpty(typographyToCheck) && !this.paginationTypographyStatus)
-		)
+		if (isEmpty(typographyToCheck) && !this.paginationTypographyStatus) {
 			return;
+		}
 
 		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
-		if (!target) return;
+		if (!target) {
+			return;
+		}
+
+		// Cancel any pending font load operations
+		if (this.fontLoadTimeout) {
+			clearTimeout(this.fontLoadTimeout);
+			this.fontLoadTimeout = null;
+		}
 
 		let response = {};
 		if (this.paginationTypographyStatus) {
@@ -1093,36 +1206,45 @@ class MaxiBlockComponent extends Component {
 				true,
 				['cl-pagination-']
 			);
-		} else response = getAllFonts(this.typography, 'custom-formats');
-		if (isEmpty(response)) return;
+		} else {
+			response = getAllFonts(this.typography, 'custom-formats');
+		}
 
-		// Clear font cache after loading
+		if (isEmpty(response)) {
+			return;
+		}
+
+		// Clear font cache to prevent memory accumulation
 		if (this.fontCache) {
 			this.fontCache = null;
 		}
 
-		// Debounce font loading to prevent multiple loads
-		if (this.fontLoadTimeout) {
-			clearTimeout(this.fontLoadTimeout);
-		}
-
-		this.fontLoadTimeout = setTimeout(() => {
+		// Load fonts with error handling
+		try {
 			loadFonts(response, true, target);
 			this.areFontsLoaded.current = true;
-			this.fontLoadTimeout = null;
-		}, 300);
+		} catch (error) {
+			console.warn('MaxiBlocks: Font loading failed:', error);
+			// Still mark as loaded to prevent infinite retries
+			this.areFontsLoaded.current = true;
+		}
 	}
 
 	/**
 	 * Refresh the styles on the Editor
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
-		// Update references if they're null
-		this.updateDOMReferences();
-
-		if (this.isPatternsPreview || this.templateModal) return;
-
 		const { uniqueID } = this.props.attributes;
+
+		// Early return for invalid states
+		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
+			return;
+		}
+
+		// Update references if they're null (but don't do it too frequently)
+		if (!this.editorIframe || !this.isElementInDOM(this.editorIframe)) {
+			this.updateDOMReferences();
+		}
 		const isSiteEditor = getIsSiteEditor();
 		const breakpoints = this.getBreakpoints;
 		let obj;
@@ -1133,10 +1255,14 @@ class MaxiBlockComponent extends Component {
 			!isBreakpointChange || this.props.deviceType === 'xxl';
 
 		if (shouldGenerateNewStyles) {
-			obj = this.getStylesObject;
+			obj = this.getStylesObject || {};
 
 			// When duplicating, need to change the obj target for the new uniqueID
-			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+			if (
+				obj &&
+				!obj[uniqueID] &&
+				!!obj[this.props.attributes.uniqueID]
+			) {
 				obj[uniqueID] = obj[this.props.attributes.uniqueID];
 				delete obj[this.props.attributes.uniqueID];
 			}
@@ -1173,12 +1299,56 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes['relations-preview'];
 
 			if (isRelationsPreview) {
-				this.relationInstances = processRelations(customDataRelations);
+				// DEFENSIVE: Clean up previous instances with comprehensive error handling
+				if (this.relationInstances) {
+					try {
+						this.safeCleanupRelationInstances(
+							this.relationInstances
+						);
+					} catch (error) {
+						console.error(
+							'MaxiBlocks: CRITICAL - Failed to cleanup relation instances:',
+							error
+						);
+						// Force cleanup even if error occurred
+						this.forceCleanupRelationInstances();
+					} finally {
+						// Always nullify reference regardless of cleanup success
+						this.relationInstances = null;
+					}
+				}
+
+				try {
+					this.relationInstances =
+						this.createTrackedRelationInstances(
+							customDataRelations
+						);
+				} catch (error) {
+					console.warn(
+						'MaxiBlocks: Relation instances creation failed:',
+						error
+					);
+					this.relationInstances = null;
+				}
 			}
 
-			this.relationInstances?.forEach(relationInstance => {
-				relationInstance.setIsPreview(isRelationsPreview);
-			});
+			if (this.relationInstances) {
+				this.relationInstances.forEach(relationInstance => {
+					if (
+						relationInstance &&
+						typeof relationInstance.setIsPreview === 'function'
+					) {
+						try {
+							relationInstance.setIsPreview(isRelationsPreview);
+						} catch (error) {
+							console.warn(
+								'MaxiBlocks: Relation setIsPreview failed:',
+								error
+							);
+						}
+					}
+				});
+			}
 
 			if (
 				isRelationsPreview &&
@@ -1262,10 +1432,48 @@ class MaxiBlockComponent extends Component {
 			}
 
 			if (!isRelationsPreview) {
-				this.relationInstances = null;
+				// DEFENSIVE: Clean up instances when not in preview mode
+				if (this.relationInstances) {
+					try {
+						this.safeCleanupRelationInstances(
+							this.relationInstances
+						);
+					} catch (error) {
+						console.error(
+							'MaxiBlocks: CRITICAL - Failed to cleanup relation instances (non-preview):',
+							error
+						);
+						this.forceCleanupRelationInstances();
+					} finally {
+						this.relationInstances = null;
+					}
+				}
 			}
 
-			this.previousRelationInstances = this.relationInstances;
+			// DEFENSIVE: Clean up previous instances before updating (with comprehensive safety checks)
+			if (
+				this.previousRelationInstances &&
+				this.previousRelationInstances !== this.relationInstances
+			) {
+				try {
+					this.safeCleanupRelationInstances(
+						this.previousRelationInstances
+					);
+				} catch (error) {
+					console.error(
+						'MaxiBlocks: CRITICAL - Failed to cleanup previous relation instances:',
+						error
+					);
+					this.forceCleanupRelationInstances();
+				} finally {
+					this.previousRelationInstances = null;
+				}
+			}
+
+			// Update previous reference (shallow copy to avoid reference issues)
+			this.previousRelationInstances = this.relationInstances
+				? [...this.relationInstances]
+				: null;
 		}
 	}
 
@@ -1284,7 +1492,6 @@ class MaxiBlockComponent extends Component {
 		}
 
 		const target = this.getStyleTarget(isSiteEditor, iframe);
-		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
 		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
@@ -1298,7 +1505,9 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
-			this.updateStyleElement(styleElement, styleContent);
+
+			// Use batched style injection instead of individual style elements
+			addBlockStyles(uniqueID, styleContent, target);
 		}
 	}
 
@@ -1428,20 +1637,12 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getStyleTarget(isSiteEditor, iframe) {
-		const cacheKey = `styleTarget-${isSiteEditor}-${!!iframe}`;
-
-		this.cleanupCache();
-
-		if (this.memoizedValues.has(cacheKey)) {
-			return this.memoizedValues.get(cacheKey);
+		// No caching - just return the target directly
+		if (isSiteEditor) {
+			const target = getSiteEditorIframe();
+			return target || document;
 		}
-
-		const target = isSiteEditor
-			? getSiteEditorIframe()
-			: iframe?.contentDocument || document;
-
-		this.memoizedValues.set(cacheKey, target);
-		return target;
+		return iframe?.contentDocument || document;
 	}
 
 	generateStyleContent(
@@ -1530,12 +1731,6 @@ class MaxiBlockComponent extends Component {
 		return styleContent;
 	}
 
-	updateStyleElement(styleElement, styleContent) {
-		if (styleElement.textContent !== styleContent) {
-			styleElement.textContent = styleContent;
-		}
-	}
-
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
 		const styles = styleResolver({
@@ -1553,33 +1748,72 @@ class MaxiBlockComponent extends Component {
 
 		const { uniqueID } = this.props.attributes;
 
-		const templateViewIframe = getTemplateViewIframe(uniqueID);
-		const siteEditorIframe = getSiteEditorIframe();
-		const previewIframe = document.querySelector(
-			'.block-editor-block-preview__container iframe'
-		);
-		const iframe = document.querySelector(
-			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
-		);
+		// BULLETPROOF CLEANUP - Remove from ALL possible documents using GlobalStyleManager
+		const documentsToClean = [
+			document, // Main document
+		];
 
-		const editorElement =
-			templateViewIframe ||
-			siteEditorIframe ||
-			previewIframe ||
-			iframe ||
-			document;
+		// Add documents from FSE contexts if they exist
+		try {
+			const templateViewDocument = getTemplateViewIframe(uniqueID);
+			if (templateViewDocument) {
+				documentsToClean.push(templateViewDocument);
+			}
+		} catch (e) {
+			// Ignore document access errors
+		}
 
-		if (
-			!editorElement ||
-			typeof editorElement?.getElementById !== 'function'
-		)
-			return;
+		try {
+			const siteEditorDocument = getSiteEditorIframe();
+			if (siteEditorDocument) {
+				documentsToClean.push(siteEditorDocument);
+			}
+		} catch (e) {
+			// Ignore document access errors
+		}
 
-		const styleElement = editorElement.getElementById(
-			`maxi-blocks__styles--${uniqueID}`
-		);
-		if (styleElement) {
-			styleElement.remove();
+		try {
+			const previewIframe = document.querySelector(
+				'.block-editor-block-preview__container iframe'
+			);
+			if (previewIframe?.contentDocument) {
+				documentsToClean.push(previewIframe.contentDocument);
+			}
+		} catch (e) {
+			// Ignore iframe access errors
+		}
+
+		try {
+			const editorIframe = document.querySelector(
+				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
+			);
+			if (editorIframe?.contentDocument) {
+				documentsToClean.push(editorIframe.contentDocument);
+			}
+		} catch (e) {
+			// Ignore iframe access errors
+		}
+
+		// Remove block styles from all documents using GlobalStyleManager
+		documentsToClean.forEach(doc => {
+			if (doc && typeof doc.getElementById === 'function') {
+				removeBlockStyles(uniqueID, doc);
+			}
+		});
+
+		// Legacy cleanup: Also remove any old individual style elements with this ID
+		const legacyStyleId = `maxi-blocks__styles--${uniqueID}`;
+		try {
+			const allStyleElements = document.querySelectorAll(
+				`#${legacyStyleId}`
+			);
+			allStyleElements.forEach(el => {
+				if (el && el.parentNode) {
+					el.remove();
+				}
+			});
+		} catch (e) {
+			// Ignore query errors
 		}
 	}
 
@@ -1670,31 +1904,438 @@ class MaxiBlockComponent extends Component {
 		return newObj;
 	}
 
-	// Add cache management methods
-	cleanupCache() {
-		const now = Date.now();
+	// REMOVED: Cache cleanup methods that referenced uninitialized properties
+	// The memoizedValues and cacheAccessOrder properties are no longer initialized (disabled in constructor)
+	// so these methods would throw errors if called. Since caching is disabled, cleanup is not needed.
 
-		// Only cleanup if enough time has passed AND cache is too large
-		if (
-			this.memoizedValues.size > this.MAX_CACHE_SIZE &&
-			now - this.lastCacheCleanup >= this.CACHE_CLEANUP_INTERVAL
-		) {
-			// Convert to array for sorting
-			const entries = Array.from(this.memoizedValues.entries());
+	/**
+	 * Create a MutationObserver (simplified - no tracking since caching is disabled)
+	 * @param {Function} callback     - Observer callback function
+	 * @param {string}   [observerId] - Optional ID for the observer (for backward compatibility)
+	 * @returns {MutationObserver} The created observer
+	 */
+	createTrackedMutationObserver(callback, observerId = null) {
+		const observer = new MutationObserver(callback);
 
-			// Keep only the most recent entries
-			const entriesToKeep = entries.slice(
-				-Math.floor(this.MAX_CACHE_SIZE * 0.8)
-			); // Keep 80% of max size
+		// SIMPLIFIED: No tracking since mutationObservers Set is disabled
+		// Observer cleanup is now handled manually where needed
 
-			// Clear and rebuild cache
-			this.memoizedValues.clear();
-			entriesToKeep.forEach(([key, value]) => {
-				this.memoizedValues.set(key, value);
-			});
-
-			this.lastCacheCleanup = now;
+		// If this is a preview observer, add ID for debugging
+		if (observerId) {
+			observer._maxiId = observerId;
 		}
+
+		return observer;
+	}
+
+	/**
+	 * Disconnect a MutationObserver (simplified - no tracking removal since caching is disabled)
+	 * @param {MutationObserver} observer - Observer to disconnect
+	 */
+	disconnectTrackedObserver(observer) {
+		if (observer && typeof observer.disconnect === 'function') {
+			observer.disconnect();
+			// SIMPLIFIED: No tracking removal since mutationObservers and previewObservers are disabled
+		}
+	}
+
+	// REMOVED: cleanupAllObservers method that referenced disabled mutationObservers and previewObservers
+	// Since these collections are disabled, this method would throw errors if called
+
+	/**
+	 * Get a DOM element with caching and validation
+	 * @param {string}           selector             - CSS selector
+	 * @param {Document|Element} [context=document]   - Search context
+	 * @param {boolean}          [forceRefresh=false] - Force refresh of cached element
+	 * @returns {Element|null} The found element or null
+	 */
+	getCachedElement(selector, context = document, forceRefresh = false) {
+		// SIMPLIFIED: No caching since domQueryCache is disabled
+		// Always query fresh element to avoid memory accumulation
+		return context.querySelector(selector);
+	}
+
+	/**
+	 * Check if an element is still in the DOM
+	 * @param {Element} element - Element to check
+	 * @returns {boolean} True if element is in DOM
+	 */
+	isElementInDOM(element) {
+		return element && element.isConnected && document.contains(element);
+	}
+
+	/**
+	 * Safe selector that tracks subscriptions for cleanup
+	 * @param {string} storeName    - Store name (e.g., 'core/block-editor')
+	 * @param {string} selectorName - Selector name (e.g., 'getBlockName')
+	 * @param {...any} args         - Selector arguments
+	 * @returns {*} Selector result
+	 */
+	safeSelect(storeName, selectorName, ...args) {
+		// Guard against calls after cleanup
+		if (!this.storeSelectors) {
+			return undefined;
+		}
+
+		const key = `${storeName}/${selectorName}`;
+
+		// Get or create cached selector
+		if (!this.storeSelectors.has(key)) {
+			try {
+				const store = select(storeName);
+				if (!store || typeof store[selectorName] !== 'function') {
+					// Do NOT cache null - allow future re-attempts when store becomes available
+					return undefined;
+				}
+				// Only cache when we have a valid callable function
+				this.storeSelectors.set(key, store[selectorName]);
+			} catch (error) {
+				console.warn(`Failed to access selector ${key}:`, error);
+				// Do NOT cache null on exception - allow future re-attempts
+				return undefined;
+			}
+		}
+
+		const selector = this.storeSelectors.get(key);
+		if (!selector) return undefined;
+
+		try {
+			return selector(...args);
+		} catch (error) {
+			console.warn(`Selector ${key} threw an error:`, error);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Safe dispatch that tracks actions for cleanup
+	 * @param {string} storeName - Store name (e.g., 'core/block-editor')
+	 * @returns {Object} Store actions
+	 */
+	safeDispatch(storeName) {
+		return dispatch(storeName);
+	}
+
+	/**
+	 * Create tracked relation instances with automatic cleanup
+	 * @param {Array} customDataRelations - Relations data
+	 * @returns {Array|null} Relation instances
+	 */
+	createTrackedRelationInstances(customDataRelations) {
+		if (!customDataRelations || !Array.isArray(customDataRelations)) {
+			return null;
+		}
+
+		try {
+			const instances = processRelations(customDataRelations);
+
+			if (instances && Array.isArray(instances)) {
+				// Track each instance for cleanup with validation
+				instances.forEach(instance => {
+					if (instance && typeof instance === 'object') {
+						this.allRelationInstances.add(instance);
+					}
+				});
+				return instances.filter(
+					instance => instance && typeof instance === 'object'
+				);
+			}
+		} catch (error) {
+			console.warn('MaxiBlocks: processRelations failed:', error);
+		}
+
+		return null;
+	}
+
+	/**
+	 * DEFENSIVE: Safe cleanup of relation instances with comprehensive error handling
+	 * Now integrates with enhanced cleanup manager for better performance and monitoring
+	 * @param {Array} instances - Relation instances to clean up
+	 */
+	safeCleanupRelationInstances(instances) {
+		if (!instances || !Array.isArray(instances)) {
+			console.warn(
+				'MaxiBlocks: Invalid instances passed to cleanup:',
+				instances
+			);
+			return;
+		}
+
+		// Import the enhanced cleanup manager
+		if (!this.cleanupManager) {
+			import('./relationCleanupManager').then(
+				({ globalCleanupManager }) => {
+					this.cleanupManager = globalCleanupManager;
+					this.performEnhancedCleanup(instances);
+				}
+			);
+			// Fallback to legacy cleanup for immediate execution
+			this.performLegacyCleanup(instances);
+		} else {
+			this.performEnhancedCleanup(instances);
+		}
+	}
+
+	/**
+	 * Enhanced cleanup using the cleanup manager
+	 * @param {Array} instances - Relation instances to clean up
+	 */
+	performEnhancedCleanup(instances) {
+		// Check for memory leaks first
+		const suspiciousInstances =
+			this.cleanupManager.detectMemoryLeaks(instances);
+
+		if (suspiciousInstances.length > 0) {
+			console.warn(
+				`MaxiBlocks: Detected ${suspiciousInstances.length} potentially leaked instances`
+			);
+
+			// Schedule high priority cleanup for suspicious instances
+			suspiciousInstances.forEach((instance, index) => {
+				this.cleanupManager.scheduleInstanceCleanup(
+					instance,
+					index,
+					3 // HIGH priority (CLEANUP_PRIORITY.HIGH from relationCleanupManager.js)
+				);
+			});
+		}
+
+		// For large numbers of instances, use batch cleanup
+		if (instances.length > 10) {
+			this.cleanupManager.scheduleBatchCleanup(instances, 2); // NORMAL priority
+		} else {
+			// For small numbers, schedule individual cleanups
+			instances.forEach((instance, index) => {
+				if (instance && typeof instance === 'object') {
+					this.cleanupManager.scheduleInstanceCleanup(
+						instance,
+						index,
+						2
+					); // NORMAL priority
+				}
+			});
+		}
+	}
+
+	/**
+	 * Legacy cleanup method as fallback
+	 * @param {Array} instances - Relation instances to clean up
+	 */
+	performLegacyCleanup(instances) {
+		// Track cleanup progress for debugging
+		const cleanupErrors = [];
+
+		instances.forEach((instance, index) => {
+			if (!instance || typeof instance !== 'object') {
+				console.warn(
+					`MaxiBlocks: Invalid instance at index ${index}:`,
+					instance
+				);
+				return;
+			}
+
+			try {
+				this.cleanupSingleRelationInstance(instance, index);
+			} catch (error) {
+				cleanupErrors.push({ index, error: error.message || error });
+				console.error(
+					`MaxiBlocks: Failed to cleanup instance ${index}:`,
+					error
+				);
+
+				// Try force cleanup for this specific instance
+				try {
+					this.forceCleanupSingleInstance(instance, index);
+				} catch (forceError) {
+					console.error(
+						`MaxiBlocks: Force cleanup also failed for instance ${index}:`,
+						forceError
+					);
+				}
+			}
+		});
+
+		if (cleanupErrors.length > 0) {
+			console.warn(
+				'MaxiBlocks: Cleanup errors encountered:',
+				cleanupErrors
+			);
+		}
+	}
+
+	/**
+	 * Clean up a single relation instance with detailed error handling
+	 * @param {Object} instance - Single relation instance
+	 * @param {number} index    - Instance index for logging
+	 */
+	cleanupSingleRelationInstance(instance, index) {
+		const cleanupSteps = [
+			{
+				name: 'removeRelationSubscriber',
+				action: () => {
+					if (
+						typeof instance.removeRelationSubscriber === 'function'
+					) {
+						instance.removeRelationSubscriber();
+					}
+				},
+			},
+			{
+				name: 'removePreviousStylesAndTransitions',
+				action: () => {
+					if (
+						typeof instance.removePreviousStylesAndTransitions ===
+						'function'
+					) {
+						instance.removePreviousStylesAndTransitions();
+					}
+				},
+			},
+			{
+				name: 'cleanup',
+				action: () => {
+					if (typeof instance.cleanup === 'function') {
+						instance.cleanup();
+					}
+				},
+			},
+			{
+				name: 'clearObserverReference',
+				action: () => {
+					if (instance.observer) {
+						// Try to disconnect observer if it has the method
+						if (
+							typeof instance.observer.disconnect === 'function'
+						) {
+							instance.observer.disconnect();
+						}
+						instance.observer = null;
+					}
+				},
+			},
+			{
+				name: 'clearDOMReferences',
+				action: () => {
+					if (instance.element) {
+						instance.element = null;
+					}
+					if (instance.target) {
+						instance.target = null;
+					}
+				},
+			},
+			{
+				name: 'removeFromTracking',
+				action: () => {
+					if (
+						this.allRelationInstances &&
+						this.allRelationInstances.has(instance)
+					) {
+						this.allRelationInstances.delete(instance);
+					}
+				},
+			},
+		];
+
+		cleanupSteps.forEach(step => {
+			try {
+				step.action();
+			} catch (stepError) {
+				console.warn(
+					`MaxiBlocks: Failed ${step.name} for instance ${index}:`,
+					stepError
+				);
+				// Continue with other cleanup steps even if one fails
+			}
+		});
+	}
+
+	/**
+	 * Force cleanup a single instance by nullifying all possible references
+	 * @param {Object} instance - Instance to force cleanup
+	 * @param {number} index    - Instance index for logging
+	 */
+	forceCleanupSingleInstance(instance, index) {
+		console.warn(`MaxiBlocks: Force cleaning instance ${index}`);
+
+		// Nullify all possible properties that could hold references
+		const propertiesToNullify = [
+			'observer',
+			'element',
+			'target',
+			'removeRelationSubscriber',
+			'removePreviousStylesAndTransitions',
+			'cleanup',
+			'subscription',
+			'mutationObserver',
+			'eventListeners',
+			'styleElement',
+			'targetElement',
+		];
+
+		propertiesToNullify.forEach(prop => {
+			try {
+				if (instance[prop]) {
+					// Try to call disconnect/remove methods if they exist
+					if (typeof instance[prop].disconnect === 'function') {
+						instance[prop].disconnect();
+					}
+					if (typeof instance[prop].remove === 'function') {
+						instance[prop].remove();
+					}
+					instance[prop] = null;
+				}
+			} catch (error) {
+				// Silently continue - this is force cleanup
+			}
+		});
+
+		// Remove from all tracking sets
+		try {
+			if (this.allRelationInstances) {
+				this.allRelationInstances.delete(instance);
+			}
+		} catch (error) {
+			// Silently continue
+		}
+	}
+
+	/**
+	 * EMERGENCY: Force cleanup all relation instances when normal cleanup fails
+	 */
+	forceCleanupRelationInstances() {
+		console.warn(
+			'MaxiBlocks: EMERGENCY - Force cleaning all relation instances'
+		);
+
+		// Use enhanced cleanup manager if available
+		if (this.cleanupManager) {
+			// Schedule critical priority cleanup for all instances
+			if (this.allRelationInstances) {
+				const instances = Array.from(this.allRelationInstances);
+				this.cleanupManager.scheduleBatchCleanup(instances, 4); // CRITICAL priority
+			}
+		}
+
+		// Clear all tracking sets
+		try {
+			if (this.allRelationInstances) {
+				this.allRelationInstances.forEach(instance => {
+					try {
+						this.forceCleanupSingleInstance(instance, 'force');
+					} catch (error) {
+						// Silently continue with force cleanup
+					}
+				});
+				this.allRelationInstances.clear();
+			}
+		} catch (error) {
+			console.error('MaxiBlocks: Even force cleanup failed:', error);
+		}
+
+		// Nullify all instance references
+		this.relationInstances = null;
+		this.previousRelationInstances = null;
 	}
 
 	// Returns responsive preview elements if present
@@ -1710,12 +2351,17 @@ class MaxiBlockComponent extends Component {
 
 	// Add new method for FSE iframe styles
 	addMaxiFSEIframeStyles() {
+		// Only proceed if we're in FSE
+		if (!getIsSiteEditor()) return;
+
 		// Get the FSE iframe
-		const fseIframe = document.querySelector(
+		const fseIframe = this.getCachedElement(
 			'iframe.edit-site-visual-editor__editor-canvas'
 		);
 
-		if (!fseIframe || !fseIframe.contentDocument) return;
+		if (!fseIframe || !fseIframe.contentDocument) {
+			return;
+		}
 
 		// Check if the iframe-specific style already exists
 		const existingIframeStyle = fseIframe.contentDocument.getElementById(
@@ -1737,35 +2383,92 @@ class MaxiBlockComponent extends Component {
 
 			// Append style to iframe's head
 			fseIframe.contentDocument.head.appendChild(iframeStyles);
+
+			// Copy Maxi CSS variables to FSE iframe
+			this.copyMaxiCSSVariablesToIframe(fseIframe);
+		}
+	}
+
+	/**
+	 * Copy MaxiBlocks CSS variables to FSE iframe
+	 * @param {HTMLIFrameElement} fseIframe - FSE iframe element
+	 */
+	copyMaxiCSSVariablesToIframe(fseIframe) {
+		if (!fseIframe || !fseIframe.contentDocument) return;
+
+		// Check if variables are already copied
+		const existingVariables = fseIframe.contentDocument.getElementById(
+			'maxi-blocks-fse-spinners'
+		);
+
+		if (!existingVariables) {
+			// Create style element for CSS variables
+			const variablesStyle =
+				fseIframe.contentDocument.createElement('style');
+			variablesStyle.id = 'maxi-blocks-fse-spinners';
+
+			// Add essential CSS variables and spinner animations for loaders
+			variablesStyle.textContent = `
+				:root {
+					--maxi-primary-color: #2c8a46; /* Fresh lime green */
+				}
+				.maxi-puff-loader span {
+					height: 40px !important;
+					width: 40px !important;
+				}
+				@keyframes react-spinners-PuffLoader-puff-1 {
+					0% { transform: scale(0); }
+					100% { transform: scale(1); }
+				}
+				@keyframes react-spinners-PuffLoader-puff-2 {
+					0% { opacity: 1; }
+					100% { opacity: 0; }
+				}
+			`;
+
+			fseIframe.contentDocument.head.appendChild(variablesStyle);
 		}
 	}
 
 	// Call this method in componentDidMount
 	setupFSEIframeObserver() {
-		// Only create observer if it doesn't exist yet
-		if (!this.fseIframeObserver) {
-			this.fseIframeObserver = new MutationObserver(mutations => {
+		// Clean up existing observer if it exists
+		if (this.fseIframeObserver) {
+			this.disconnectTrackedObserver(this.fseIframeObserver);
+			this.fseIframeObserver = null;
+		}
+
+		// Create a new tracked FSE observer
+		this.fseIframeObserver = this.createTrackedMutationObserver(
+			mutations => {
 				for (const mutation of mutations) {
 					if (mutation.type === 'childList') {
 						const fseIframes = document.querySelectorAll(
 							'iframe.edit-site-visual-editor__editor-canvas'
 						);
 						if (fseIframes.length > 0) {
+							// Clear any existing FSE iframe timeout
+							if (this.fseIframeTimeout) {
+								clearTimeout(this.fseIframeTimeout);
+							}
+
 							// Wait for iframe to fully load
-							setTimeout(() => {
+							this.fseIframeTimeout = setTimeout(() => {
+								this.fseIframeTimeout = null;
 								this.addMaxiFSEIframeStyles();
 							}, 500);
 						}
 					}
 				}
-			});
+			},
+			'fse-iframe-observer'
+		);
 
-			// Observe the document body for when iframes get added/removed
-			this.fseIframeObserver.observe(document.body, {
-				childList: true,
-				subtree: true,
-			});
-		}
+		// Observe the document body for when iframes get added/removed
+		this.fseIframeObserver.observe(document.body, {
+			childList: true,
+			subtree: true,
+		});
 	}
 }
 

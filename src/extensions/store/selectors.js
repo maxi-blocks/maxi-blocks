@@ -65,11 +65,14 @@ const selectors = {
 		return false;
 	},
 	canBlockRender(state, uniqueID) {
-		if (state)
-			return (
-				state.isPageLoaded ||
-				state.blocksToRender.indexOf(uniqueID) === 0
-			);
+		if (state) {
+			const { isPageLoaded } = state;
+			const blocksToRender = state.blocksToRender || [];
+			const isFirstInQueue = blocksToRender.indexOf(uniqueID) === 0;
+			const canRender = isPageLoaded || isFirstInQueue;
+
+			return canRender;
+		}
 
 		return false;
 	},

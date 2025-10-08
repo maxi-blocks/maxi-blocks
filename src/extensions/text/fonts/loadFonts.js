@@ -7,48 +7,20 @@ import { dispatch, select } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty, uniq } from 'lodash';
-import {
-	fontUrlCache,
-	getStorageCache,
-	setStorageCache,
-	cleanUrl,
-} from './fontCacheUtils';
-import { buildFontUrl, isCacheValid } from './loadFontUtils';
+import { cleanUrl } from './fontCacheUtils';
+import { buildFontUrl } from './loadFontUtils';
 
 /**
- * Get the font URL from cache or build it and save it to cache
+ * Get the font URL - simplified version without caching
  * @param {string} fontName - The font name
  * @param {Object} fontData - The font data
  * @returns {Promise<string>} The font URL
  */
 export const getFontUrl = async (fontName, fontData = {}) => {
 	try {
-		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
-
-		// Check cache first
-		const cached =
-			fontUrlCache.get(requestKey) || getStorageCache(requestKey);
-		if (cached && (await isCacheValid(cached))) {
-			return cached;
-		}
-
-		// If cache exists but is invalid, clear it
-		if (cached) {
-			fontUrlCache.delete(requestKey);
-			localStorage.removeItem(`maxi_font_${requestKey}`);
-		}
-
-		// Build and validate the URL
+		// Build the URL directly without caching
 		const fontUrl = await buildFontUrl(fontName, fontData);
-
-		// Validate the URL before returning and caching
-		if (await isCacheValid(fontUrl)) {
-			fontUrlCache.set(requestKey, fontUrl);
-			setStorageCache(requestKey, fontUrl);
-			return fontUrl;
-		}
-
-		throw new Error(`Invalid font URL: ${fontUrl}`);
+		return fontUrl;
 	} catch (error) {
 		console.error('Error getting font URL:', error);
 		throw error;

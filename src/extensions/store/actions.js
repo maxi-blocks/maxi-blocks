@@ -23,7 +23,7 @@ const actions = {
 	},
 	sendMaxiSettings(settings) {
 		return {
-			type: 'SEND_GLOBAL_SETTINGS',
+			type: 'SEND_GENERAL_SETTINGS',
 			settings,
 		};
 	},

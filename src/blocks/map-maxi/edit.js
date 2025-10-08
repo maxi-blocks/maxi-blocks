@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { resolveSelect } from '@wordpress/data';
 import { renderToString } from '@wordpress/element';
 
 /**
@@ -66,18 +65,17 @@ class edit extends MaxiBlockComponent {
 			});
 		}
 
-		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
-		receiveMaxiSettings()
-			.then(maxiSettings => {
-				const googleApiKey = maxiSettings?.google_api_key;
-				this.setState({
-					googleApiKey,
-					isApiKeyLoading: false,
-				});
-			})
-			.catch(() => {
-				this.setState({ isApiKeyLoading: false });
-			});
+		// Use injected settings instead of API call
+		const googleApiKey =
+			typeof window !== 'undefined'
+				? window.maxiSettings?.google_api_key || ''
+				: '';
+		const provider = attributes?.['map-provider'];
+		this.setState({
+			googleApiKey,
+			// Initialize as false to let MapContent handle error state
+			isApiKeyLoading: false,
+		});
 	}
 
 	render() {
@@ -105,15 +103,13 @@ class edit extends MaxiBlockComponent {
 				showLoader={this.state.showLoader || isApiKeyLoading}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				{!isApiKeyLoading && (
-					<MapContent
-						{...this.props}
-						apiKey={googleApiKey}
-						isFirstClick={this.state.isFirstClick}
-						isGoogleMaps={mapProvider === 'googlemaps'}
-						isSelected={isSelected}
-					/>
-				)}
+				<MapContent
+					{...this.props}
+					apiKey={googleApiKey}
+					isFirstClick={this.state.isFirstClick}
+					isGoogleMaps={mapProvider === 'googlemaps'}
+					isSelected={isSelected}
+				/>
 			</MaxiBlock>,
 		];
 	}

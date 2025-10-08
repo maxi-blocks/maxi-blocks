@@ -1,9 +1,10 @@
 import getIconWithColor from '@extensions/styles/getIconWithColor';
-import { setSVGColor } from '@extensions/svg';
+import { setSVGColor, setSVGContentHover } from '@extensions/svg';
 import getAttributeValue from '@extensions/styles/getAttributeValue';
 
 jest.mock('@extensions/svg', () => ({
 	setSVGColor: jest.fn(({ svg }) => svg),
+	setSVGContentHover: jest.fn(content => content),
 }));
 jest.mock('@extensions/styles/getColorRGBAString', () =>
 	jest.fn(() => 'rgba(0,0,0,1)')
@@ -59,7 +60,7 @@ describe('getIconWithColor', () => {
 
 		getIconWithColor(attributes, args);
 
-		expect(setSVGColor).toHaveBeenCalled();
+		expect(setSVGContentHover).toHaveBeenCalled();
 	});
 
 	it('Handles multiple types (stroke and fill)', () => {

@@ -127,11 +127,11 @@ const getIconWithColor = (props, args = {}, prefix = '') => {
 		}
 
 		icon = isHover
-			? setSVGContentHover({
-					svg: icon,
-					color: paletteStatus ? lineColorStr : color,
-					type,
-			  })
+			? setSVGContentHover(
+					icon,
+					paletteStatus ? lineColorStr : color,
+					type
+			  )
 			: setSVGColor({
 					svg: icon,
 					color: paletteStatus ? lineColorStr : color,

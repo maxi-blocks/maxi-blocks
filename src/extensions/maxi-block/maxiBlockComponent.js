@@ -119,17 +119,61 @@ class MaxiBlockComponent extends Component {
 		const blockElement = document.querySelector(
 			`[data-block="${this.props.clientId}"]`
 		);
+
+		// Check inside preview iframes for block elements
+		let isInsidePreviewIframe = false;
+		previewIframes.forEach((iframe, index) => {
+			try {
+				const iframeDoc = iframe.contentDocument;
+				if (iframeDoc) {
+					const blockInIframe = iframeDoc.querySelector(
+						`[data-block="${this.props.clientId}"]`
+					);
+					const allBlocksInIframe =
+						iframeDoc.querySelectorAll('[data-block]');
+
+					if (blockInIframe) {
+						isInsidePreviewIframe = true;
+					} else if (allBlocksInIframe.length > 0) {
+						// If there are blocks but not our specific one, let's assume we're in a preview context
+						// This might be a pattern preview where the clientId doesn't match
+						isInsidePreviewIframe = true;
+					}
+				}
+			} catch (error) {
+				// If we can't access iframe content but it's a blob URL, assume preview context
+				if (iframe.src && iframe.src.startsWith('blob:')) {
+					isInsidePreviewIframe = true;
+				}
+			}
+		});
+
+		// TIMING FALLBACK: If we have preview iframes but couldn't detect blocks,
+		// assume we're in preview context (timing issue)
+		if (!isInsidePreviewIframe && previewIframes.length > 0) {
+			const hasBlobIframes = Array.from(previewIframes).some(
+				iframe => iframe.src && iframe.src.startsWith('blob:')
+			);
+			if (hasBlobIframes) {
+				isInsidePreviewIframe = true;
+			}
+		}
+
 		const isInsidePreview =
-			blockElement &&
-			(blockElement.closest('.block-editor-block-preview__container') ||
-				blockElement.closest(
-					'.block-editor-block-patterns-list__list-item'
+			(blockElement &&
+				(blockElement.closest(
+					'.block-editor-block-preview__container'
 				) ||
-				blockElement.closest(
-					'.edit-site-page-content .block-editor-block-preview__container'
-				));
+					blockElement.closest(
+						'.block-editor-block-patterns-list__list-item'
+					) ||
+					blockElement.closest(
+						'.edit-site-page-content .block-editor-block-preview__container'
+					))) ||
+			isInsidePreviewIframe;
 
 		// Only set as patterns preview if actually inside a preview container
+
 		if (
 			previewIframes.length > 0 &&
 			(!blockName || templateModal) &&
@@ -355,7 +399,7 @@ class MaxiBlockComponent extends Component {
 		// Step 4: Load settings directly from injected window.maxiSettings
 
 		// Get settings directly from window - no async resolver needed
-		const settings = window.maxiSettings || {};
+		// const settings = window.maxiSettings || {};
 
 		// Step 4: Block setup and reusable check
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
@@ -398,7 +442,7 @@ class MaxiBlockComponent extends Component {
 			return true;
 		}
 
-		// Ensures rendering when breakpoint changes
+		// Ensures rendering when breakpoint changes - but only if this block has responsive styles
 		const wasBreakpointChanged =
 			this.props.deviceType !== nextProps.deviceType ||
 			this.props.baseBreakpoint !== nextProps.baseBreakpoint;
@@ -568,22 +612,6 @@ class MaxiBlockComponent extends Component {
 					);
 				}
 			}
-
-			// If there's a relation affecting this concrete block, check if is necessary
-			// to update it's content to keep the coherence and the good UX
-			// const blocksIBRelations = select(
-			// 	'maxiBlocks/relations'
-			// ).receiveBlockUnderRelationClientIDs(uniqueID);
-
-			// if (!isEmpty(blocksIBRelations))
-			// 	blocksIBRelations.forEach(({ clientId }) =>
-			// 		updateRelationsRemotely({
-			// 			blockTriggerClientId: clientId,
-			// 			blockTargetClientId: this.props.clientId,
-			// 			blockAttributes: this.props.attributes,
-			// 			breakpoint: this.props.deviceType,
-			// 		})
-			// 	);
 		}
 
 		this.hideGutenbergPopover();
@@ -657,7 +685,10 @@ class MaxiBlockComponent extends Component {
 			try {
 				this.safeCleanupRelationInstances(this.relationInstances);
 			} catch (error) {
-				console.error('MaxiBlocks: Failed to cleanup relation instances on unmount:', error);
+				console.error(
+					'MaxiBlocks: Failed to cleanup relation instances on unmount:',
+					error
+				);
 			}
 			this.relationInstances = null;
 		}
@@ -968,7 +999,7 @@ class MaxiBlockComponent extends Component {
 			? `${pluginsPath}/img/${imageName}`
 			: defaultImgPath;
 
-		previewIframes.forEach(iframe => {
+		previewIframes.forEach((iframe, index) => {
 			if (
 				!iframe ||
 				!iframe?.parentNode ||
@@ -1255,7 +1286,11 @@ class MaxiBlockComponent extends Component {
 			obj = this.getStylesObject || {};
 
 			// When duplicating, need to change the obj target for the new uniqueID
-			if (obj && !obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+			if (
+				obj &&
+				!obj[uniqueID] &&
+				!!obj[this.props.attributes.uniqueID]
+			) {
 				obj[uniqueID] = obj[this.props.attributes.uniqueID];
 				delete obj[this.props.attributes.uniqueID];
 			}
@@ -1990,9 +2025,12 @@ class MaxiBlockComponent extends Component {
 		}
 
 		const selector = this.storeSelectors.get(key);
-		if (!selector) return undefined;
+		if (!selector) {
+			return undefined;
+		}
 
 		try {
+			// eslint-disable-next-line consistent-return
 			return selector(...args);
 		} catch (error) {
 			console.warn(`Selector ${key} threw an error:`, error);

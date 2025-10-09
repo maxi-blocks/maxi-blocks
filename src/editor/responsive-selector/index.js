@@ -101,7 +101,6 @@ const ResponsiveSelector = props => {
 	const settingsRef = useRef(null);
 
 	const { insertBlock } = useDispatch('core/block-editor');
-	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
 	const {
 		deviceType,
@@ -174,52 +173,70 @@ const ResponsiveSelector = props => {
 	});
 
 	const onChangeNativeResponsive = useCallback(button => {
-		button.addEventListener('click', e => {
-			const responsiveDiv = document.querySelector(
-				'.editor-preview-dropdown'
-			);
-			if (!responsiveDiv) return;
+		button.addEventListener(
+			'click',
+			e => {
+				// Prevent Gutenberg's default behavior (iframe creation)
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
 
-			setTimeout(() => {
-				const deviceClass = responsiveDiv.className.match(
-					/editor-preview-dropdown--(mobile|tablet|desktop)/i
+				// Get all responsive buttons in order: Desktop, Tablet, Mobile
+				const allButtons = Array.from(
+					document.querySelectorAll(
+						'button[role="menuitemradio"].components-menu-items-choice'
+					)
 				);
-				const value = deviceClass ? deviceClass[1] : 'desktop';
 
-				const maxiValue =
-					(value === 'desktop' && baseBreakpoint) ||
-					(value === 'tablet' && 's') ||
-					(value === 'mobile' && 'xs');
+				// Find which button was clicked by index
+				const buttonIndex = allButtons.indexOf(button);
 
-				const editorWrapper =
-					document.querySelector('.edit-post-visual-editor') ||
-					document.querySelector('.edit-site-visual-editor') ||
-					document.querySelector('.editor-visual-editor');
+				// Map button index to target size: 0=Desktop, 1=Tablet, 2=Mobile
+				const targetSizes = ['general', 's', 'xs'];
+				const targetSize = targetSizes[buttonIndex];
 
-				editorWrapper.setAttribute('maxi-blocks-responsive', maxiValue);
-				editorWrapper.removeAttribute('maxi-blocks-responsive-width');
+				if (targetSize) {
+					// Use our custom responsive logic first
+					setScreenSize(targetSize);
 
-				if (value === 'desktop') {
-					const responsiveToolbar = document.querySelector(
-						'.maxi-responsive-selector'
-					);
-					if (responsiveToolbar) {
-						editorWrapper.style.width = '';
-						const baseButton = responsiveToolbar.querySelector(
-							'div.maxi-responsive-selector__base button'
+					// Update aria-checked state and move the checkmark SVG
+					setTimeout(() => {
+						const refreshedButtons = Array.from(
+							document.querySelectorAll(
+								'button[role="menuitemradio"].components-menu-items-choice'
+							)
 						);
-						if (baseButton) baseButton.click();
-					}
+
+						// Find the checkmark SVG
+						const checkmarkSvg = document.querySelector(
+							'button[role="menuitemradio"].components-menu-items-choice svg.components-menu-items__item-icon'
+						);
+
+						refreshedButtons.forEach((btn, index) => {
+							// Update aria-checked
+							const newValue =
+								index === buttonIndex ? 'true' : 'false';
+							btn.setAttribute('aria-checked', newValue);
+
+							// Remove any existing checkmark from this button
+							const existingSvg = btn.querySelector('svg');
+							if (existingSvg) {
+								existingSvg.remove();
+							}
+
+							// Add checkmark to the clicked button
+							if (index === buttonIndex && checkmarkSvg) {
+								btn.appendChild(checkmarkSvg.cloneNode(true));
+							}
+						});
+					}, 10);
 				}
 
-				setMaxiDeviceType({
-					deviceType: maxiValue,
-					isGutenbergButton: true,
-					changeSize: false,
-				});
-			}, 100);
-		});
-	});
+				return false;
+			},
+			true
+		); // Use capture phase to intercept before Gutenberg
+	}, []);
 
 	useEffect(() => {
 		const previewButton =

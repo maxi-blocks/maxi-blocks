@@ -77,15 +77,53 @@ export const svgAttributesReplacer = (
 	let resolvedFill = fallbackFill;
 	let resolvedStroke = fallbackStroke;
 
-	console.log('===================');
-	console.log('target', target);
-	console.log('iconType', iconType);
-
 	if (currentAttributes) {
-		const fillPrefix = target === 'icon' ? 'icon-fill-' : 'svg-fill-';
-		const strokePrefix = target === 'icon' ? 'icon-stroke-' : 'svg-line-';
+		let fillPrefix;
+		let strokePrefix;
 
-		console.log('fillPrefix', fillPrefix);
+		if (target === 'svg') {
+			// For SVG target, always use svg-fill- and svg-line-
+			fillPrefix = 'svg-fill-';
+			strokePrefix = 'svg-line-';
+		} else if (target === 'image-shape') {
+			// For image-shape target, use just 'list-' for both fill and stroke
+			fillPrefix = 'list-';
+			strokePrefix = 'list-';
+		} else if (target === 'icon' && iconType) {
+			// Handle specific iconType cases
+			switch (iconType) {
+				case 'video-icon-play':
+					fillPrefix = 'play-icon-fill-';
+					strokePrefix = 'play-icon-stroke-';
+					break;
+				case 'video-icon-close':
+					fillPrefix = 'close-icon-fill-';
+					strokePrefix = 'close-icon-stroke-';
+					break;
+				case 'accordion-icon-active':
+					fillPrefix = 'active-icon-fill-';
+					strokePrefix = 'active-icon-stroke-';
+					break;
+				case 'image-shape':
+					// Use just 'list-' for both fill and stroke
+					fillPrefix = 'list-';
+					strokePrefix = 'list-';
+					break;
+				case 'search-icon-close':
+					fillPrefix = 'close-icon-fill-';
+					strokePrefix = 'close-icon-stroke-';
+					break;
+				default:
+					// Fallback for other iconType cases
+					fillPrefix = 'icon-fill-';
+					strokePrefix = 'icon-stroke-';
+					break;
+			}
+		} else {
+			// Default case for icon target without iconType
+			fillPrefix = 'icon-fill-';
+			strokePrefix = 'icon-stroke-';
+		}
 
 		const {
 			paletteStatus: fillPaletteStatus,
@@ -111,7 +149,6 @@ export const svgAttributesReplacer = (
 
 		const fillPaletteColorVar =
 			fillPaletteColor != null ? `color-${fillPaletteColor}` : null;
-		console.log('fillPaletteColorVar', fillPaletteColorVar);
 		const fillPaletteSCColor = fillPaletteColorVar;
 		const strokePaletteColorVar =
 			strokePaletteColor != null ? `color-${strokePaletteColor}` : null;
@@ -160,9 +197,6 @@ export const svgAttributesReplacer = (
 				  )
 				: strokeDirectColor || fallbackStroke;
 	}
-
-	console.log('resolvedFill', resolvedFill);
-	console.log('resolvedStroke', resolvedStroke);
 
 	const fillRegExp = /fill:[^n]+?(?=})/g;
 	const fillStr = `fill:${resolvedFill}`;

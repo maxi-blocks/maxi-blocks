@@ -60,7 +60,11 @@ export const fitSvg = svgCode => {
 	return newSvgCode;
 };
 
-export const svgAttributesReplacer = (svgCode, target = 'svg') => {
+export const svgAttributesReplacer = (
+	svgCode,
+	target = 'svg',
+	iconType = null
+) => {
 	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
 	const block = clientId ? getBlock(clientId) : null;
@@ -73,9 +77,15 @@ export const svgAttributesReplacer = (svgCode, target = 'svg') => {
 	let resolvedFill = fallbackFill;
 	let resolvedStroke = fallbackStroke;
 
+	console.log('===================');
+	console.log('target', target);
+	console.log('iconType', iconType);
+
 	if (currentAttributes) {
 		const fillPrefix = target === 'icon' ? 'icon-fill-' : 'svg-fill-';
 		const strokePrefix = target === 'icon' ? 'icon-stroke-' : 'svg-line-';
+
+		console.log('fillPrefix', fillPrefix);
 
 		const {
 			paletteStatus: fillPaletteStatus,
@@ -101,6 +111,7 @@ export const svgAttributesReplacer = (svgCode, target = 'svg') => {
 
 		const fillPaletteColorVar =
 			fillPaletteColor != null ? `color-${fillPaletteColor}` : null;
+		console.log('fillPaletteColorVar', fillPaletteColorVar);
 		const fillPaletteSCColor = fillPaletteColorVar;
 		const strokePaletteColorVar =
 			strokePaletteColor != null ? `color-${strokePaletteColor}` : null;
@@ -119,7 +130,7 @@ export const svgAttributesReplacer = (svgCode, target = 'svg') => {
 									firstVar:
 										target === 'icon'
 											? 'icon-fill'
-											: 'icon-fill',
+											: 'svg-fill',
 									secondVar: fillPaletteColorVar,
 									opacity: fillPaletteOpacity,
 									blockStyle,
@@ -138,7 +149,10 @@ export const svgAttributesReplacer = (svgCode, target = 'svg') => {
 									blockStyle,
 							  }
 							: {
-									firstVar: 'icon-stroke',
+									firstVar:
+										target === 'icon'
+											? 'icon-stroke'
+											: 'svg-stroke',
 									secondVar: strokePaletteColorVar,
 									opacity: strokePaletteOpacity,
 									blockStyle,
@@ -146,6 +160,9 @@ export const svgAttributesReplacer = (svgCode, target = 'svg') => {
 				  )
 				: strokeDirectColor || fallbackStroke;
 	}
+
+	console.log('resolvedFill', resolvedFill);
+	console.log('resolvedStroke', resolvedStroke);
 
 	const fillRegExp = /fill:[^n]+?(?=})/g;
 	const fillStr = `fill:${resolvedFill}`;
@@ -159,17 +176,11 @@ export const svgAttributesReplacer = (svgCode, target = 'svg') => {
 	const strokeRegExp2 = /[^-]stroke="[^n]+?(?=")/g;
 	const strokeStr2 = ` stroke="${resolvedStroke}`;
 
-	return target === 'svg'
-		? svgCode
-				.replace(fillRegExp, fillStr)
-				.replace(fillRegExp2, fillStr2)
-				.replace(strokeRegExp, strokeStr)
-				.replace(strokeRegExp2, strokeStr2)
-		: target === 'icon'
-		? svgCode
-				.replace(strokeRegExp, strokeStr)
-				.replace(strokeRegExp2, strokeStr2)
-		: svgCode.replace(fillRegExp, fillStr).replace(fillRegExp2, fillStr2);
+	return svgCode
+		.replace(fillRegExp, fillStr)
+		.replace(fillRegExp2, fillStr2)
+		.replace(strokeRegExp, strokeStr)
+		.replace(strokeRegExp2, strokeStr2);
 };
 
 export const isColorLight = color => {

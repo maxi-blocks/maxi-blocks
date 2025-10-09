@@ -617,9 +617,9 @@ const LibraryContainer = props => {
 
 	/** SVG Icons Results */
 	const svgResults = hit => {
-		const newContent = svgAttributesReplacer(hit.svg_code);
 		const svgType = hit.svg_category[0];
 		const shapeType = getShapeType(type);
+		const newContent = svgAttributesReplacer(hit.svg_code, shapeType, type);
 
 		return (
 			<MasonryItem
@@ -758,7 +758,9 @@ const LibraryContainer = props => {
 		const shapeType = getShapeType(type);
 		const svgType = hit.svg_category[0];
 
-		const newContent = svgAttributesReplacer(hit.svg_code, shapeType);
+		console.log('type', type);
+
+		const newContent = svgAttributesReplacer(hit.svg_code, shapeType, type);
 
 		return (
 			<MasonryItem

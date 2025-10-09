@@ -274,17 +274,17 @@ const ClipPathVisualEditor = props => {
 		if (
 			e.relatedTarget &&
 			!(
-				e.relatedTarget.classList.contains('maxi-clip-path-button') ||
-				e.relatedTarget.classList.contains(
+				e.relatedTarget?.classList?.contains('maxi-clip-path-button') ||
+				e.relatedTarget?.classList?.contains(
 					'maxi-clip-path-button--radius__hidden'
 				) ||
-				e.relatedTarget.classList.contains(
+				e.relatedTarget?.classList?.contains(
 					'maxi-clip-path-visual-editor'
 				) ||
-				e.relatedTarget.classList.contains(
+				e.relatedTarget?.classList?.contains(
 					'maxi-clip-path-visual-editor__preview'
 				) ||
-				e.relatedTarget.parentElement.classList.contains(
+				e.relatedTarget.parentElement?.classList?.contains(
 					'components-popover__content'
 				)
 			)

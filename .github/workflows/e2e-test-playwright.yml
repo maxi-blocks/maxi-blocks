@@ -1,11 +1,11 @@
-name: E2E Tests
+name: Playwright Tests
 
 on:
     pull_request:
         branches: [master]
 
 jobs:
-    e2e-js:
+    e2e-js-playwright:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -32,12 +32,13 @@ jobs:
                   node-version: 16.x
             - name: Install dependencies
               run: npm install --legacy-peer-deps
+            - name: Install Playwright browsers
+              run: npx playwright install --with-deps
             - name: Create .env file
               run: |
                   touch .env
                   echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
                   echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
-                  echo "GITHUB_ENV_TEST=1" >> .env
             - name: Build
               run: npm run build
             - name: reset package-lock.json
@@ -46,22 +47,12 @@ jobs:
               run: |
                   chmod -R 767 ./
                   npm run wp-env start
-            - name: Setup WordPress debug log
-              run: |
-                  WP_PATH="$(npm run wp-env install-path --silent)"
-                  echo "WordPress path: $WP_PATH"
-                  for dir in "$WP_PATH/WordPress" "$WP_PATH"; do
-                    if [ -d "$dir/wp-content" ]; then
-                      echo "Found wp-content in: $dir"
-                      sudo touch "$dir/wp-content/debug.log"
-                      sudo chmod 666 "$dir/wp-content/debug.log"
-                      break
-                    fi
-                  done
-            - name: Check WordPress debug log
-              run: |
-                  echo "=== WordPress Debug Log ==="
-                  WP_PATH="$(npm run wp-env install-path --silent)"
-                  find "$WP_PATH" -name debug.log -type f -exec cat {} \; || echo "No debug logs found"
             - name: Running the tests
-              run: npm run test:e2e
+              run: npm run test:playwright
+            - name: Upload Playwright Report
+              uses: actions/upload-artifact@v4
+              if: failure()
+              with:
+                  name: playwright-report
+                  path: playwright-report/
+                  retention-days: 30

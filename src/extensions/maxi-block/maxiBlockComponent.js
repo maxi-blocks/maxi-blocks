@@ -48,6 +48,7 @@ import {
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
+import { globalCleanupManager } from './relationCleanupManager';
 import { addBlockStyles, removeBlockStyles } from './globalStyleManager';
 import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
@@ -2092,19 +2093,12 @@ class MaxiBlockComponent extends Component {
 			return;
 		}
 
-		// Import the enhanced cleanup manager
+		// Use the statically imported cleanup manager
 		if (!this.cleanupManager) {
-			import('./relationCleanupManager').then(
-				({ globalCleanupManager }) => {
-					this.cleanupManager = globalCleanupManager;
-					this.performEnhancedCleanup(instances);
-				}
-			);
-			// Fallback to legacy cleanup for immediate execution
-			this.performLegacyCleanup(instances);
-		} else {
-			this.performEnhancedCleanup(instances);
+			this.cleanupManager = globalCleanupManager;
 		}
+
+		this.performEnhancedCleanup(instances);
 	}
 
 	/**
@@ -2146,139 +2140,6 @@ class MaxiBlockComponent extends Component {
 				}
 			});
 		}
-	}
-
-	/**
-	 * Legacy cleanup method as fallback
-	 * @param {Array} instances - Relation instances to clean up
-	 */
-	performLegacyCleanup(instances) {
-		// Track cleanup progress for debugging
-		const cleanupErrors = [];
-
-		instances.forEach((instance, index) => {
-			if (!instance || typeof instance !== 'object') {
-				console.warn(
-					`MaxiBlocks: Invalid instance at index ${index}:`,
-					instance
-				);
-				return;
-			}
-
-			try {
-				this.cleanupSingleRelationInstance(instance, index);
-			} catch (error) {
-				cleanupErrors.push({ index, error: error.message || error });
-				console.error(
-					`MaxiBlocks: Failed to cleanup instance ${index}:`,
-					error
-				);
-
-				// Try force cleanup for this specific instance
-				try {
-					this.forceCleanupSingleInstance(instance, index);
-				} catch (forceError) {
-					console.error(
-						`MaxiBlocks: Force cleanup also failed for instance ${index}:`,
-						forceError
-					);
-				}
-			}
-		});
-
-		if (cleanupErrors.length > 0) {
-			console.warn(
-				'MaxiBlocks: Cleanup errors encountered:',
-				cleanupErrors
-			);
-		}
-	}
-
-	/**
-	 * Clean up a single relation instance with detailed error handling
-	 * @param {Object} instance - Single relation instance
-	 * @param {number} index    - Instance index for logging
-	 */
-	cleanupSingleRelationInstance(instance, index) {
-		const cleanupSteps = [
-			{
-				name: 'removeRelationSubscriber',
-				action: () => {
-					if (
-						typeof instance.removeRelationSubscriber === 'function'
-					) {
-						instance.removeRelationSubscriber();
-					}
-				},
-			},
-			{
-				name: 'removePreviousStylesAndTransitions',
-				action: () => {
-					if (
-						typeof instance.removePreviousStylesAndTransitions ===
-						'function'
-					) {
-						instance.removePreviousStylesAndTransitions();
-					}
-				},
-			},
-			{
-				name: 'cleanup',
-				action: () => {
-					if (typeof instance.cleanup === 'function') {
-						instance.cleanup();
-					}
-				},
-			},
-			{
-				name: 'clearObserverReference',
-				action: () => {
-					if (instance.observer) {
-						// Try to disconnect observer if it has the method
-						if (
-							typeof instance.observer.disconnect === 'function'
-						) {
-							instance.observer.disconnect();
-						}
-						instance.observer = null;
-					}
-				},
-			},
-			{
-				name: 'clearDOMReferences',
-				action: () => {
-					if (instance.element) {
-						instance.element = null;
-					}
-					if (instance.target) {
-						instance.target = null;
-					}
-				},
-			},
-			{
-				name: 'removeFromTracking',
-				action: () => {
-					if (
-						this.allRelationInstances &&
-						this.allRelationInstances.has(instance)
-					) {
-						this.allRelationInstances.delete(instance);
-					}
-				},
-			},
-		];
-
-		cleanupSteps.forEach(step => {
-			try {
-				step.action();
-			} catch (stepError) {
-				console.warn(
-					`MaxiBlocks: Failed ${step.name} for instance ${index}:`,
-					stepError
-				);
-				// Continue with other cleanup steps even if one fails
-			}
-		});
 	}
 
 	/**

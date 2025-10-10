@@ -451,7 +451,7 @@ const LibraryContainer = props => {
 		};
 	});
 
-	const { saveMaxiStyleCards, setSelectedStyleCard } = useDispatch(
+	const { saveMaxiStyleCards, setSelectedStyleCard, saveSCStyles } = useDispatch(
 		'maxiBlocks/style-cards'
 	);
 
@@ -1145,9 +1145,10 @@ const LibraryContainer = props => {
 			[newId]: merge(parsedCard, defaultSCvalues),
 		};
 
-		saveMaxiStyleCards(newAllSCs);
+		saveMaxiStyleCards(newAllSCs, true);
 		updateSCOnEditor(parsedCard);
 		setSelectedStyleCard(newId);
+		saveSCStyles(false);
 
 		onRequestClose();
 	};

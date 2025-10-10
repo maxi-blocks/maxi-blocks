@@ -120,7 +120,9 @@
 	},
 	"browserslist": {
 		"production": [
-			"last 4 version"
+			"last 2 versions",
+			"> 0.5%",
+			"not dead"
 		]
 	},
 	"postcss": {

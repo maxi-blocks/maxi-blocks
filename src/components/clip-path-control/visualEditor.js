@@ -274,17 +274,17 @@ const ClipPathVisualEditor = props => {
 		if (
 			e.relatedTarget &&
 			!(
-				e.relatedTarget.classList.contains('maxi-clip-path-button') ||
-				e.relatedTarget.classList.contains(
+				e.relatedTarget?.classList?.contains('maxi-clip-path-button') ||
+				e.relatedTarget?.classList?.contains(
 					'maxi-clip-path-button--radius__hidden'
 				) ||
-				e.relatedTarget.classList.contains(
+				e.relatedTarget?.classList?.contains(
 					'maxi-clip-path-visual-editor'
 				) ||
-				e.relatedTarget.classList.contains(
+				e.relatedTarget?.classList?.contains(
 					'maxi-clip-path-visual-editor__preview'
 				) ||
-				e.relatedTarget.parentElement.classList.contains(
+				e.relatedTarget.parentElement?.classList?.contains(
 					'components-popover__content'
 				)
 			)
@@ -433,12 +433,12 @@ const ClipPathVisualEditor = props => {
 };
 
 const VisualEditorWithHOC = withFallbackStyles(node => {
-	const visualEditorNode = node.querySelector(
+	const visualEditorNode = node?.querySelector?.(
 		'.maxi-clip-path-visual-editor'
 	);
 	return {
 		// TODO something wit height, it's not representing a real one.
-		wrapperHeight: visualEditorNode.offsetHeight,
+		wrapperHeight: visualEditorNode ? visualEditorNode.offsetHeight : 0,
 	};
 })(ClipPathVisualEditor);
 

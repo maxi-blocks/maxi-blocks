@@ -88,7 +88,7 @@ const Inspector = props => {
 											),
 											indicatorProps: ['textLevel'],
 										},
-									...(isList && {
+									isList && {
 										label: __(
 											'List options',
 											'maxi-blocks'
@@ -96,7 +96,7 @@ const Inspector = props => {
 										content: (
 											<ListOptionsControl {...props} />
 										),
-									}),
+									},
 									...inspectorTabs.alignment({
 										props,
 										isTextAlignment: true,
@@ -117,6 +117,13 @@ const Inspector = props => {
 										},
 										context,
 										disableCustomFormats,
+									}),
+									...inspectorTabs.linkSettings({
+										props,
+										styleCardPrefix: '',
+										prefix: '',
+										classNamePanel:
+											'maxi-link-settings-panel',
 									}),
 									...inspectorTabs.blockBackground({
 										props,

@@ -16,10 +16,7 @@ import {
 	getBorderStyles,
 	getSVGStyles,
 } from '@extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
@@ -51,7 +48,7 @@ const copyPasteMapping = {
 			group: {
 				'Icon hover status': 'svg-status-hover',
 				'Fill colour': { props: 'svg-fill', isPalette: true },
-				'Line colour': { label: 'svg-line', isPalette: true },
+				'Line colour': { props: 'svg-line', isPalette: true },
 				'Fill hover colour': {
 					props: 'svg-fill',
 					isPalette: true,

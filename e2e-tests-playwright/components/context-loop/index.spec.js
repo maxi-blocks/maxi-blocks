@@ -53,7 +53,7 @@ async function verifyPreviewResults(editor, expectedResults) {
 	await previewPage.waitForSelector(
 		'.maxi-text-block .maxi-text-block__content',
 		{
-			visible: true,
+			state: 'visible',
 		}
 	);
 
@@ -163,7 +163,7 @@ test.describe('Context Loop', () => {
 
 		// Wait for the container to be inserted
 		await page.waitForSelector('.maxi-container-block', {
-			visible: true,
+			state: 'visible',
 		});
 
 		// Find the row block inside the container

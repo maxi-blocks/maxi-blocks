@@ -69,6 +69,12 @@ async function verifyPreviewResults(editor, expectedResults) {
 }
 
 test.describe('Context Loop', () => {
+	// Skip this suite on browsers other than Chromium due to shared posts setup conflicts when running in parallel
+	test.skip(
+		({ browserName }) => browserName !== 'chromium',
+		'Skipped on other browsers'
+	);
+
 	test.beforeAll(async ({ requestUtils }, testInfo) => {
 		if (testInfo.project.name !== 'chromium') {
 			return;

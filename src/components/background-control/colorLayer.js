@@ -45,6 +45,7 @@ const ColorLayer = props => {
 		isToolbar = false,
 		getBounds,
 		getBlockClipPath, // for IB
+		blockAttributes, // for IB reset
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -55,6 +56,7 @@ const ColorLayer = props => {
 		paletteStatus,
 		paletteSCStatus,
 		paletteOpacity,
+		isReset = false,
 	}) => {
 		const response = {
 			[getAttributeKey(
@@ -83,6 +85,7 @@ const ColorLayer = props => {
 			)]: paletteOpacity,
 			[getAttributeKey('background-color', isHover, prefix, breakpoint)]:
 				color,
+			...(isReset && { isReset: true }),
 		};
 
 		onChange(response);
@@ -96,20 +99,77 @@ const ColorLayer = props => {
 			const prevBreakpoint =
 				breakpoints[breakpoints.indexOf(breakpoint) - 1];
 
-			const getResetValue = target =>
-				prevBreakpoint && !isHover
-					? getLastBreakpointAttribute({
+			const getResetValue = target => {
+				if (isIB) {
+					// For IB reset, we want to reset to the target block's actual background color
+					// NOT the IB override values - we're clearing the IB override!
+
+					// First, get the value from the target block's actual attributes
+					// If we're in hover mode, check for the block's hover value first
+					if (blockAttributes) {
+						// Try to get the hover value if we're in hover mode
+						if (isHover) {
+							const blockHoverValue = getLastBreakpointAttribute({
+								target,
+								breakpoint,
+								attributes: blockAttributes,
+								isHover: true,
+							});
+
+							if (blockHoverValue !== undefined) {
+								return blockHoverValue;
+							}
+						}
+
+						// If not in hover mode, or no hover value exists, get non-hover value
+						const blockValue = getLastBreakpointAttribute({
 							target,
-							breakpoint: prevBreakpoint,
-							attributes: colorOptions,
-							isHover,
-					  })
-					: getLastBreakpointAttribute({
+							breakpoint,
+							attributes: blockAttributes,
+							isHover: false,
+						});
+
+						if (blockValue !== undefined) {
+							return blockValue;
+						}
+					}
+
+					// If block has no value, return default first color
+					let defaultValue;
+					if (target.includes('palette-status')) defaultValue = true;
+					else if (target.includes('palette-sc-status'))
+						defaultValue = true;
+					else if (target.includes('palette-color')) defaultValue = 1;
+					else if (target.includes('palette-opacity'))
+						defaultValue = 1;
+					else if (target.includes('color'))
+						defaultValue = 'rgba(var(--maxi-light-color-1), 1)';
+
+					return defaultValue;
+				}
+
+				// Regular layer logic
+				return isHover
+					? getLastBreakpointAttribute({
 							target,
 							breakpoint,
 							attributes: colorOptions,
 							isHover: false,
-					  });
+					  })
+					: prevBreakpoint
+						? getLastBreakpointAttribute({
+								target,
+								breakpoint: prevBreakpoint,
+								attributes: colorOptions,
+								isHover: false,
+						  })
+						: getLastBreakpointAttribute({
+								target,
+								breakpoint,
+								attributes: colorOptions,
+								isHover: false,
+						  });
+			};
 
 			defaultColor.paletteStatus = getResetValue(
 				`${bgPrefix}palette-status`
@@ -162,15 +222,16 @@ const ColorLayer = props => {
 	}) => {
 		const defaultColorAttr = getDefaultAttr();
 
-		if (showPalette)
+		if (showPalette) {
 			onChangeColor({
 				paletteStatus: defaultColorAttr.paletteStatus,
 				paletteSCStatus: defaultColorAttr.paletteSCStatus,
 				paletteColor: defaultColorAttr.paletteColor,
 				paletteOpacity: paletteOpacity || 1,
 				color,
+				isReset: true,
 			});
-		else {
+		} else {
 			const paletteColorResult = getPaletteColor({
 				clientId,
 				color: defaultColorAttr.paletteColor,
@@ -187,6 +248,7 @@ const ColorLayer = props => {
 				paletteColor,
 				paletteOpacity,
 				color: defaultColor,
+				isReset: true,
 			});
 		}
 	};

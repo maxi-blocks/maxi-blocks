@@ -37,6 +37,7 @@ const BlockBackgroundControl = props => {
 		transition,
 		getBounds,
 		getBlockClipPath, // for IB
+		blockAttributes, // for IB reset
 	} = props;
 
 	const layersOptions = compact([
@@ -84,6 +85,7 @@ const BlockBackgroundControl = props => {
 				transition={transition}
 				getBounds={getBounds}
 				getBlockClipPath={getBlockClipPath}
+				blockAttributes={blockAttributes}
 			/>
 		</div>
 	);

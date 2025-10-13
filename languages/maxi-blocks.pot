@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.1.4\n"
+"Project-Id-Version: MaxiBlocks 2.1.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-09-12T14:07:23+00:00\n"
+"POT-Creation-Date: 2025-10-09T15:46:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: plugin.php
-#: core/class-maxi-blocks.php:267
+#: core/class-maxi-blocks.php:372
 msgid "MaxiBlocks"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:326
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:830
+#: src/editor/style-cards/maxiStyleCardsEditor.js:839
 msgid "Activate"
 msgstr ""
 
@@ -497,7 +497,7 @@ msgstr ""
 #: core/admin/class-maxi-dashboard.php:1319
 #: core/admin/class-maxi-dashboard.php:1429
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:821
+#: src/editor/style-cards/maxiStyleCardsEditor.js:830
 msgid "Save changes"
 msgstr ""
 
@@ -1535,10 +1535,10 @@ msgstr ""
 #: src/blocks/video-maxi/components/video-control/index.js:142
 #: src/components/background-control/imageLayer.js:122
 #: src/components/divider-control/index.js:253
-#: src/components/dynamic-content/index.js:170
+#: src/components/dynamic-content/index.js:174
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
-#: src/components/typography-control/index.js:1082
+#: src/components/typography-control/index.js:1122
 msgid "None"
 msgstr ""
 
@@ -1546,12 +1546,16 @@ msgstr ""
 #: core/admin/status-report/maxi-system-status-report.php:73
 #: core/admin/status-report/maxi-system-status-report.php:934
 #: core/admin/status-report/maxi-system-status-report.php:936
+#: build/index.js:1
+#: src/extensions/DC/constants.js:671
 msgid "Yes"
 msgstr ""
 
 #: core/admin/status-report/maxi-system-status-report.php:71
 #: core/admin/status-report/maxi-system-status-report.php:74
 #: core/admin/status-report/maxi-system-status-report.php:937
+#: build/index.js:1
+#: src/extensions/DC/constants.js:670
 msgid "No"
 msgstr ""
 
@@ -1971,142 +1975,142 @@ msgstr ""
 msgid "Debug log too large to display. Download it manually."
 msgstr ""
 
-#: core/class-maxi-api.php:1292
+#: core/class-maxi-api.php:1319
 #, php-format
 msgid "Failed to fetch template content from %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1303
+#: core/class-maxi-api.php:1330
 msgid "Invalid template JSON content"
 msgstr ""
 
-#: core/class-maxi-api.php:1329
+#: core/class-maxi-api.php:1356
 #, php-format
 msgid "Failed to fetch page content from %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1340
+#: core/class-maxi-api.php:1367
 msgid "Invalid page JSON content"
 msgstr ""
 
-#: core/class-maxi-api.php:1366
+#: core/class-maxi-api.php:1393
 #, php-format
 msgid "Failed to fetch pattern content from %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1377
+#: core/class-maxi-api.php:1404
 msgid "Invalid pattern JSON content"
 msgstr ""
 
-#: core/class-maxi-api.php:1483
+#: core/class-maxi-api.php:1510
 #, php-format
 msgid "Successfully imported %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1512
+#: core/class-maxi-api.php:1539
 msgid "Created Blog page"
 msgstr ""
 
-#: core/class-maxi-api.php:1564
+#: core/class-maxi-api.php:1591
 #, php-format
 msgid "Invalid entity type: %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1672
+#: core/class-maxi-api.php:1699
 #, php-format
 msgid "Successfully imported %s template part"
 msgstr ""
 
-#: core/class-maxi-api.php:1739
+#: core/class-maxi-api.php:1766
 #, php-format
 msgid "Invalid template slug: %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1821
+#: core/class-maxi-api.php:1848
 #, php-format
 msgid "Successfully imported %s template"
 msgstr ""
 
-#: core/class-maxi-api.php:2162
+#: core/class-maxi-api.php:2189
 #, php-format
 msgid "Successfully imported %s pattern"
 msgstr ""
 
-#: core/class-maxi-api.php:2397
+#: core/class-maxi-api.php:2424
 msgid "MaxiBlocks Go theme has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-api.php:2449
+#: core/class-maxi-api.php:2476
 msgid "WordPress Importer has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-blocks.php:214
+#: core/class-maxi-blocks.php:319
 msgid "Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:215
+#: core/class-maxi-blocks.php:320
 msgid "maxi-image-type"
 msgstr ""
 
-#: core/class-maxi-blocks.php:216
+#: core/class-maxi-blocks.php:321
 msgid "Search Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:217
+#: core/class-maxi-blocks.php:322
 msgid "All Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:218
+#: core/class-maxi-blocks.php:323
 msgid "Edit Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:219
+#: core/class-maxi-blocks.php:324
 msgid "Update Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:220
+#: core/class-maxi-blocks.php:325
 msgid "Add New Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:221
+#: core/class-maxi-blocks.php:326
 msgid "New Maxi Image Name"
 msgstr ""
 
-#: core/class-maxi-blocks.php:245
-#: core/class-maxi-blocks.php:248
+#: core/class-maxi-blocks.php:350
+#: core/class-maxi-blocks.php:353
 msgid "Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:251
+#: core/class-maxi-blocks.php:356
 msgid "Images added by MaxiBlocks plugin"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:224
+#: core/class-maxi-dynamic-content.php:225
 msgid "Categories are not associated with this post type."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:242
+#: core/class-maxi-dynamic-content.php:243
 msgid "Tags are not associated with this post type."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:275
+#: core/class-maxi-dynamic-content.php:276
 msgid "Unsupported archive type."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:651
+#: core/class-maxi-dynamic-content.php:758
 msgid "Error in render_pagination for uniqueID "
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1105
-#: core/class-maxi-dynamic-content.php:2207
+#: core/class-maxi-dynamic-content.php:1212
+#: core/class-maxi-dynamic-content.php:2330
 msgid "author"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1107
+#: core/class-maxi-dynamic-content.php:1214
 msgid "date"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:2607
+#: core/class-maxi-dynamic-content.php:2762
 msgid "Failed to create DateTime object: "
 msgstr ""
 
@@ -2120,7 +2124,7 @@ msgstr ""
 msgid "Delete old file: invalid file path"
 msgstr ""
 
-#: core/class-maxi-style-cards.php:1178
+#: core/class-maxi-style-cards.php:1449
 #, php-format
 msgid "Style Card imported successfully as \"%s\""
 msgstr ""
@@ -2136,11 +2140,6 @@ msgid "Learn more"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/store/actions.js:92
-msgid "Unable to set the preview device type. The required method is not available."
-msgstr ""
-
-#: build/index.js:1
 #: src/extensions/dom/getCurrentPreviewDeviceType.js:27
 msgid "Unable to get the preview device type. The required method is not available."
 msgstr ""
@@ -2153,6 +2152,7 @@ msgstr ""
 
 #: build/index.js:1
 #: build/index.js:18
+#: src/components/inspector-tabs/inspector-link-settings.js:39
 #: src/components/toolbar/components/link/index.js:128
 #: src/components/toolbar/components/text-link/index.js:293
 #: src/components/typography-control/index.js:90
@@ -2186,7 +2186,7 @@ msgstr ""
 
 #: build/index.js:1
 #: src/extensions/DC/constants.js:46
-#: src/extensions/DC/utils.js:397
+#: src/extensions/DC/utils.js:416
 msgid "Get by tag"
 msgstr ""
 
@@ -2210,13 +2210,13 @@ msgstr ""
 #: build/index.js:1
 #: src/extensions/DC/constants.js:55
 #: src/extensions/DC/constants.js:63
-#: src/extensions/DC/utils.js:379
+#: src/extensions/DC/utils.js:398
 msgid "Get alphabetical"
 msgstr ""
 
 #: build/index.js:1
 #: src/extensions/DC/constants.js:56
-#: src/extensions/DC/utils.js:385
+#: src/extensions/DC/utils.js:404
 msgid "Get by author"
 msgstr ""
 
@@ -2622,12 +2622,12 @@ msgid "All archives"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/utils.js:154
+#: src/extensions/DC/utils.js:173
 msgid "Selected entity"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/utils.js:168
+#: src/extensions/DC/utils.js:187
 msgid "links"
 msgstr ""
 
@@ -2636,33 +2636,33 @@ msgstr ""
 #: src/blocks/image-maxi/edit.js:448
 #: src/blocks/image-maxi/edit.js:538
 #: src/blocks/image-maxi/edit.js:593
-#: src/extensions/DC/utils.js:180
+#: src/extensions/DC/utils.js:199
 msgid "No content found"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/utils.js:358
+#: src/extensions/DC/utils.js:377
 msgid "Archive type's name"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/utils.js:391
+#: src/extensions/DC/utils.js:410
 msgid "Get by category"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/utils.js:439
-#: src/extensions/DC/utils.js:459
+#: src/extensions/DC/utils.js:458
+#: src/extensions/DC/utils.js:478
 msgid "Get the current item's data"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/DC/utils.js:449
+#: src/extensions/DC/utils.js:468
 msgid "Get the current archive's posts"
 msgstr ""
 
 #: build/index.js:1
-#: src/extensions/maxi-block/maxiBlockComponent.js:949
+#: src/extensions/maxi-block/maxiBlockComponent.js:1080
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 
@@ -2842,7 +2842,7 @@ msgstr ""
 #: src/components/aspect-ratio-control/index.js:48
 #: src/components/background-control/imageLayer.js:110
 #: src/components/background-control/imageLayer.js:304
-#: src/components/dynamic-content/index.js:173
+#: src/components/dynamic-content/index.js:177
 #: src/components/image-alt-control/index.js:58
 #: src/editor/style-cards/maxiStyleCardsTab.js:1083
 msgid "Custom"
@@ -3004,8 +3004,8 @@ msgstr ""
 
 #: build/index.js:18
 #: src/components/clip-path-control/index.js:370
-#: src/components/context-loop/index.js:382
-#: src/components/dynamic-content/index.js:409
+#: src/components/context-loop/index.js:414
+#: src/components/dynamic-content/index.js:437
 msgid "Type"
 msgstr ""
 
@@ -3284,109 +3284,121 @@ msgid "ACF"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:171
+#: src/components/dynamic-content/index.js:175
 msgid "Comma"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:172
+#: src/components/dynamic-content/index.js:176
 msgid "Semicolon"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:339
+#: src/components/dynamic-content/index.js:367
 msgid "Use dynamic content"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:360
+#: src/components/dynamic-content/index.js:387
 msgid "Hide if no content found on frontend"
 msgstr ""
 
 #: build/index.js:18
 #: src/blocks/text-maxi/components/list-options-control/index.js:826
-#: src/components/context-loop/index.js:348
-#: src/components/dynamic-content/index.js:373
+#: src/components/context-loop/index.js:379
+#: src/components/dynamic-content/index.js:400
 msgid "Source"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:411
-#: src/components/dynamic-content/index.js:442
+#: src/components/context-loop/index.js:445
+#: src/components/dynamic-content/index.js:471
 msgid "This type is empty"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:417
-#: src/components/dynamic-content/index.js:450
+#: src/components/context-loop/index.js:451
+#: src/components/dynamic-content/index.js:479
 msgid "Relation"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:440
-#: src/components/dynamic-content/index.js:483
+#: src/components/context-loop/index.js:474
+#: src/components/dynamic-content/index.js:512
 msgid "Author id"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:511
-#: src/components/dynamic-content/index.js:549
+#: src/components/context-loop/index.js:545
+#: src/components/dynamic-content/index.js:578
 msgid "Order by"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:535
-#: src/components/dynamic-content/index.js:573
+#: src/components/context-loop/index.js:569
+#: src/components/dynamic-content/index.js:602
 #: src/components/flex-settings-control/index.js:115
 msgid "Order"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:565
-#: src/components/context-loop/index.js:867
-#: src/components/dynamic-content/index.js:603
-#: src/components/dynamic-content/index.js:624
+#: src/components/context-loop/index.js:599
+#: src/components/context-loop/index.js:931
+#: src/components/dynamic-content/index.js:632
+#: src/components/dynamic-content/index.js:653
 msgid "Accumulator"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:656
+#: src/components/context-loop/index.js:644
+#: src/components/dynamic-content/index.js:678
+msgid "Limit by current archive posts"
+msgstr ""
+
+#: build/index.js:18
+#: src/components/dynamic-content/index.js:714
 msgid "Field"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:677
+#: src/components/dynamic-content/index.js:735
 msgid "Author field"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:704
+#: src/components/dynamic-content/index.js:762
 msgid "Character limit"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:744
+#: src/components/dynamic-content/index.js:802
 msgid "Display as plain text"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:773
+#: src/components/dynamic-content/index.js:831
 msgid "Delimiter"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:801
+#: src/components/dynamic-content/index.js:859
 msgid "Custom delimiter"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:818
+#: src/components/dynamic-content/index.js:876
 msgid "Image accumulator"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/dynamic-content/index.js:843
+#: src/components/dynamic-content/index.js:901
 msgid "Size (px)"
+msgstr ""
+
+#: build/index.js:18
+#: src/components/context-loop/index.js:955
+#: src/components/dynamic-content/index.js:933
+msgid "Character limit (backend)"
 msgstr ""
 
 #: build/index.js:18
@@ -3688,7 +3700,7 @@ msgstr ""
 #: core/admin/starter-sites/src/library/toolbar.js:536
 #: src/components/toolbar/components/help/index.js:48
 #: src/editor/library/toolbar.js:859
-#: src/editor/responsive-selector/index.js:416
+#: src/editor/responsive-selector/index.js:433
 msgid "Help"
 msgstr ""
 
@@ -3715,7 +3727,7 @@ msgstr ""
 #: build/index.js:18
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:120
 #: src/editor/library/MasonryItem.js:128
-#: src/editor/library/modal.js:406
+#: src/editor/library/modal.js:417
 msgid "Preview"
 msgstr ""
 
@@ -3761,39 +3773,39 @@ msgstr ""
 #: build/index.js:18
 #: core/admin/starter-sites/src/library/container.js:204
 #: src/editor/library/container.js:389
-#: src/editor/library/container.js:1574
+#: src/editor/library/container.js:1575
 msgid "Clear filters"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/container.js:1263
-#: src/editor/library/container.js:1382
-#: src/editor/library/container.js:1395
+#: src/editor/library/container.js:1264
+#: src/editor/library/container.js:1383
+#: src/editor/library/container.js:1396
 msgid "All icons"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/container.js:1273
-#: src/editor/library/container.js:1307
-#: src/editor/library/container.js:1318
-#: src/editor/library/container.js:1327
-#: src/editor/library/container.js:1406
-#: src/editor/library/container.js:1417
+#: src/editor/library/container.js:1274
+#: src/editor/library/container.js:1308
+#: src/editor/library/container.js:1319
+#: src/editor/library/container.js:1328
+#: src/editor/library/container.js:1407
+#: src/editor/library/container.js:1418
 msgid "Find"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/container.js:1210
+#: src/editor/library/container.js:1211
 msgid "Tablet / iPad simulator | Viewport 768px x 1024px"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/container.js:1219
+#: src/editor/library/container.js:1220
 msgid "Mobile / iPhone simulator | Viewport 390px x 844px"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/container.js:1181
+#: src/editor/library/container.js:1182
 msgid "Swap stock images for placeholders to save disk space"
 msgstr ""
 
@@ -3805,8 +3817,8 @@ msgstr ""
 
 #: build/index.js:18
 #: src/editor/library/modal.js:68
-#: src/editor/responsive-selector/index.js:397
-#: src/editor/responsive-selector/index.js:404
+#: src/editor/responsive-selector/index.js:414
+#: src/editor/responsive-selector/index.js:421
 msgid "Cloud library"
 msgstr ""
 
@@ -3816,37 +3828,37 @@ msgid "Select icon"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/modal.js:323
+#: src/editor/library/modal.js:334
 msgid "Browse style cards"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/modal.js:347
+#: src/editor/library/modal.js:358
 msgid "Load shape library"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/modal.js:358
+#: src/editor/library/modal.js:369
 msgid "Add Icon"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/modal.js:359
+#: src/editor/library/modal.js:370
 msgid "Replace Icon"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/modal.js:368
+#: src/editor/library/modal.js:379
 msgid "Add icon"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/modal.js:369
+#: src/editor/library/modal.js:380
 msgid "Replace icon"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/library/modal.js:379
+#: src/editor/library/modal.js:390
 msgid "Load icon library"
 msgstr ""
 
@@ -3969,13 +3981,13 @@ msgid "Border width"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/border-control/index.js:326
+#: src/components/border-control/index.js:308
 #: src/components/divider-control/index.js:251
 msgid "Add border line"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/border-control/index.js:403
+#: src/components/border-control/index.js:384
 msgid "Border radius"
 msgstr ""
 
@@ -4103,7 +4115,7 @@ msgstr ""
 #: src/components/typography-control/index.js:177
 #: src/components/typography-control/index.js:222
 #: src/components/typography-control/index.js:270
-#: src/components/typography-control/index.js:719
+#: src/components/typography-control/index.js:741
 msgid "Font"
 msgstr ""
 
@@ -4113,139 +4125,139 @@ msgstr ""
 #: src/blocks/list-item-maxi/data.js:110
 #: src/blocks/text-maxi/data.js:180
 #: src/components/inspector-tabs/inspector-alignment.js:33
-#: src/components/typography-control/index.js:781
+#: src/components/typography-control/index.js:808
 msgid "Alignment"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:790
+#: src/components/typography-control/index.js:817
 msgid "Font size"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:833
+#: src/components/typography-control/index.js:861
 msgid "Line height"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:878
+#: src/components/typography-control/index.js:906
 msgid "Letter spacing"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:953
+#: src/components/typography-control/index.js:985
 msgid "Text transform"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:960
-#: src/components/typography-control/index.js:1000
-#: src/components/typography-control/index.js:1036
+#: src/components/typography-control/index.js:992
+#: src/components/typography-control/index.js:1032
+#: src/components/typography-control/index.js:1068
 msgid "Default"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:964
+#: src/components/typography-control/index.js:996
 msgid "Capitalize"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:968
+#: src/components/typography-control/index.js:1000
 msgid "Uppercase"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:972
+#: src/components/typography-control/index.js:1004
 msgid "Lowercase"
 msgstr ""
 
 #: build/index.js:18
 #: src/blocks/text-maxi/components/list-options-control/index.js:754
-#: src/components/typography-control/index.js:993
+#: src/components/typography-control/index.js:1025
 msgid "Style"
 msgstr ""
 
 #: build/index.js:18
 #: src/components/toolbar/components/text-italic/index.js:58
-#: src/components/typography-control/index.js:1004
+#: src/components/typography-control/index.js:1036
 msgid "Italic"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1008
+#: src/components/typography-control/index.js:1040
 msgid "Oblique"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1029
+#: src/components/typography-control/index.js:1061
 msgid "Text decoration"
 msgstr ""
 
 #: build/index.js:18
 #: src/components/toolbar/components/text-format-overline/index.js:111
-#: src/components/typography-control/index.js:1040
+#: src/components/typography-control/index.js:1072
 msgid "Overline"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1044
+#: src/components/typography-control/index.js:1076
 msgid "Line through"
 msgstr ""
 
 #: build/index.js:18
 #: src/components/toolbar/components/text-format-underline/index.js:74
-#: src/components/typography-control/index.js:1048
+#: src/components/typography-control/index.js:1080
 msgid "Underline"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1052
+#: src/components/typography-control/index.js:1084
 msgid "Underline overline"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1075
+#: src/components/typography-control/index.js:1110
 msgid "Text orientation"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1086
+#: src/components/typography-control/index.js:1126
 msgid "Mixed"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1090
+#: src/components/typography-control/index.js:1130
 msgid "Upright"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1094
+#: src/components/typography-control/index.js:1134
 msgid "Sideways"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1118
+#: src/components/typography-control/index.js:1164
 msgid "Text direction"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1125
+#: src/components/typography-control/index.js:1171
 msgid "Left to right"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1129
+#: src/components/typography-control/index.js:1178
 msgid "Right to left"
 msgstr ""
 
 #: build/index.js:18
 #: src/blocks/text-maxi/components/list-options-control/index.js:178
-#: src/components/typography-control/index.js:1152
+#: src/components/typography-control/index.js:1206
 msgid "Text indent"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1223
+#: src/components/typography-control/index.js:1280
 msgid "White space"
 msgstr ""
 
@@ -4257,42 +4269,42 @@ msgstr ""
 #: src/components/inspector-tabs/inspector-background.js:78
 #: src/components/inspector-tabs/inspector-border.js:60
 #: src/components/inspector-tabs/inspector-box-shadow.js:45
-#: src/components/typography-control/index.js:1230
+#: src/components/typography-control/index.js:1287
 msgid "Normal"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1234
+#: src/components/typography-control/index.js:1291
 msgid "No wrap"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1238
+#: src/components/typography-control/index.js:1295
 msgid "Pre"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1242
+#: src/components/typography-control/index.js:1299
 msgid "Pre line"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1246
+#: src/components/typography-control/index.js:1303
 msgid "Pre wrap"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1250
+#: src/components/typography-control/index.js:1307
 msgid "Break spaces"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1271
+#: src/components/typography-control/index.js:1328
 msgid "Word Spacing"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/typography-control/index.js:1343
+#: src/components/typography-control/index.js:1406
 msgid "Bottom gap"
 msgstr ""
 
@@ -4376,62 +4388,62 @@ msgid "The block should have a wrapper to use flex-child properties"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:306
+#: src/components/context-loop/index.js:337
 msgid "Use context loop"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:330
+#: src/components/context-loop/index.js:361
 msgid "Stop accumulator inheritance"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:590
+#: src/components/context-loop/index.js:624
 msgid "Enable for grandchildren blocks"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:605
+#: src/components/context-loop/index.js:669
 msgid "Pagination"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:620
+#: src/components/context-loop/index.js:684
 msgid "Items per page"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:646
+#: src/components/context-loop/index.js:710
 msgid "Items total: show all"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:660
+#: src/components/context-loop/index.js:724
 msgid "Items total"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:691
+#: src/components/context-loop/index.js:755
 msgid "Text for previous link"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:705
+#: src/components/context-loop/index.js:769
 msgid "Text for next link"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:718
+#: src/components/context-loop/index.js:782
 msgid "Show page list (1, 2, 3, …)"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:750
+#: src/components/context-loop/index.js:814
 msgid "Pagination hover"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/context-loop/index.js:795
+#: src/components/context-loop/index.js:859
 msgid "Pagination current"
 msgstr ""
 
@@ -4459,7 +4471,7 @@ msgstr ""
 #: src/components/dialog-box/index.js:79
 #: src/components/image-url/index.js:106
 #: src/editor/export/MaxiExportPopUp.js:328
-#: src/editor/style-cards/maxiStyleCardsEditor.js:669
+#: src/editor/style-cards/maxiStyleCardsEditor.js:678
 msgid "Close"
 msgstr ""
 
@@ -4887,9 +4899,9 @@ msgstr ""
 #: src/components/prompt-control/components/history-buttons/index.js:84
 #: src/components/prompt-control/components/result-card/index.js:311
 #: src/components/repeater/index.js:83
-#: src/editor/style-cards/maxiStyleCardsEditor.js:787
-#: src/editor/style-cards/maxiStyleCardsEditor.js:829
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1008
+#: src/editor/style-cards/maxiStyleCardsEditor.js:796
+#: src/editor/style-cards/maxiStyleCardsEditor.js:838
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1017
 msgid "Cancel"
 msgstr ""
 
@@ -5562,12 +5574,12 @@ msgid "Superscript"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/toolbar/components/text-options/index.js:311
+#: src/components/toolbar/components/text-options/index.js:309
 msgid "Edit text"
 msgstr ""
 
 #: build/index.js:18
-#: src/components/toolbar/components/text-options/index.js:312
+#: src/components/toolbar/components/text-options/index.js:310
 msgid "Edit"
 msgstr ""
 
@@ -5630,8 +5642,8 @@ msgstr ""
 #: src/components/prompt-control/components/result-card/index.js:312
 #: src/components/prompt-control/components/result-card/index.js:318
 #: src/components/toolbar/components/delete/index.js:49
-#: src/editor/style-cards/maxiStyleCardsEditor.js:788
 #: src/editor/style-cards/maxiStyleCardsEditor.js:797
+#: src/editor/style-cards/maxiStyleCardsEditor.js:806
 msgid "Delete"
 msgstr ""
 
@@ -6136,7 +6148,7 @@ msgstr ""
 #: core/admin/starter-sites/src/library/maxiImportPopUp.js:962
 #: core/admin/starter-sites/src/library/modal.js:162
 #: src/components/prompt-control/components/history-buttons/index.js:70
-#: src/editor/style-cards/maxiStyleCardsEditor.js:713
+#: src/editor/style-cards/maxiStyleCardsEditor.js:722
 msgid "Import"
 msgstr ""
 
@@ -6145,7 +6157,7 @@ msgstr ""
 #: src/editor/export/index.js:28
 #: src/editor/export/index.js:32
 #: src/editor/export/MaxiExportPopUp.js:318
-#: src/editor/style-cards/maxiStyleCardsEditor.js:734
+#: src/editor/style-cards/maxiStyleCardsEditor.js:743
 msgid "Export"
 msgstr ""
 
@@ -6274,7 +6286,7 @@ msgstr ""
 #: src/blocks/divider-maxi/inspector.js:307
 #: src/blocks/group-maxi/inspector.js:70
 #: src/blocks/image-maxi/inspector.js:491
-#: src/blocks/list-item-maxi/inspector.js:79
+#: src/blocks/list-item-maxi/inspector.js:86
 #: src/blocks/map-maxi/inspector.js:204
 #: src/blocks/number-counter-maxi/inspector.js:146
 #: src/blocks/pane-maxi/inspector.js:149
@@ -6283,7 +6295,7 @@ msgstr ""
 #: src/blocks/slide-maxi/inspector.js:69
 #: src/blocks/slider-maxi/inspector.js:197
 #: src/blocks/svg-icon-maxi/inspector.js:339
-#: src/blocks/text-maxi/inspector.js:143
+#: src/blocks/text-maxi/inspector.js:150
 #: src/blocks/video-maxi/inspector.js:256
 msgid "Advanced"
 msgstr ""
@@ -7450,7 +7462,7 @@ msgid "Colour palette"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:452
+#: src/editor/style-cards/maxiStyleCardsEditor.js:457
 #: src/editor/style-cards/maxiStyleCardsTab.js:963
 #: src/editor/style-cards/maxiStyleCardsTab.js:989
 msgid "Custom Colour"
@@ -7467,82 +7479,82 @@ msgid "Headings globals"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:553
+#: src/editor/style-cards/maxiStyleCardsEditor.js:562
 msgid "Template"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:658
+#: src/editor/style-cards/maxiStyleCardsEditor.js:667
 msgid "Active style card"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:740
+#: src/editor/style-cards/maxiStyleCardsEditor.js:749
 msgid "Style card editor"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:742
+#: src/editor/style-cards/maxiStyleCardsEditor.js:751
 msgid "Preview, edit or activate style card"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:751
+#: src/editor/style-cards/maxiStyleCardsEditor.js:760
 msgid "Imported card already exists."
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:765
+#: src/editor/style-cards/maxiStyleCardsEditor.js:774
 msgid "Type to search…"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:812
+#: src/editor/style-cards/maxiStyleCardsEditor.js:821
 msgid "Customise card"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:813
+#: src/editor/style-cards/maxiStyleCardsEditor.js:822
 msgid "Copy card"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:840
+#: src/editor/style-cards/maxiStyleCardsEditor.js:849
 msgid "Activate now"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:843
+#: src/editor/style-cards/maxiStyleCardsEditor.js:852
 msgid "Save and activate now"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:853
+#: src/editor/style-cards/maxiStyleCardsEditor.js:862
 msgid "Style core blocks within Maxi containers"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:869
+#: src/editor/style-cards/maxiStyleCardsEditor.js:878
 msgid "Create new style from"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:877
+#: src/editor/style-cards/maxiStyleCardsEditor.js:886
 msgid "Short memorable name*"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1003
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1012
 msgid "Create"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1035
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1044
 msgid "Light tone globals"
 msgstr ""
 
 #: build/index.js:18
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1051
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1060
 msgid "Dark tone globals"
 msgstr ""
 

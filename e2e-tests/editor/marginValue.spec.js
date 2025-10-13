@@ -1,12 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, activateTheme } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { insertMaxiBlock } from '../utils';
+import { activateTheme, insertMaxiBlock } from '../utils';
 
 const testContainerWidth = async () => {
 	const containerElement = await page.$('.maxi-container-block');

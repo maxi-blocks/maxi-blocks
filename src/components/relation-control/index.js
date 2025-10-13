@@ -220,6 +220,7 @@ const RelationControl = props => {
 			),
 			attributes: mergedAttributes,
 			blockAttributes,
+			isHover: item.effects?.hoverStatus || false,
 			onChange: ({ isReset, ...obj }) => {
 				const newAttributesObj = isReset
 					? getNewAttributesOnReset(obj)

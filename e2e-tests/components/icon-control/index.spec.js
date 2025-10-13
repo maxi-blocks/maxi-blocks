@@ -94,6 +94,13 @@ describe('IconControl', () => {
 		// select icon
 		await modalMock(page, { type: 'button-icon' });
 
+		// switch to border tab
+		const borderTab = await page.$(
+			'button.maxi-tabs-control__button-border'
+		);
+
+		await borderTab.click();
+
 		// Set border radius to 100
 		const borderRadiusInput = await page.$(
 			'.maxi-axis-control__icon-border .maxi-advanced-number-control .maxi-base-control__field input'

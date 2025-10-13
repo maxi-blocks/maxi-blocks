@@ -6,7 +6,11 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getBlockStyle, getPaletteAttributes } from '@extensions/styles';
+import {
+	getBlockStyle,
+	getPaletteAttributes,
+	getColorRGBAString,
+} from '@extensions/styles';
 
 /**
  * External dependencies
@@ -56,30 +60,161 @@ export const fitSvg = svgCode => {
 	return newSvgCode;
 };
 
-export const svgAttributesReplacer = (svgCode, target = 'svg') => {
+export const svgAttributesReplacer = (
+	svgCode,
+	target = 'svg',
+	iconType = null
+) => {
+	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
+	const clientId = getSelectedBlockClientId();
+	const block = clientId ? getBlock(clientId) : null;
+	const currentAttributes = block?.attributes;
+	const blockStyle = getBlockStyle(clientId);
+
+	const fallbackFill = 'var(--maxi-icon-block-orange)';
+	const fallbackStroke = '#081219';
+
+	let resolvedFill = fallbackFill;
+	let resolvedStroke = fallbackStroke;
+
+	if (currentAttributes) {
+		let fillPrefix;
+		let strokePrefix;
+
+		if (target === 'svg') {
+			// For SVG target, always use svg-fill- and svg-line-
+			fillPrefix = 'svg-fill-';
+			strokePrefix = 'svg-line-';
+		} else if (target === 'image-shape') {
+			// For image-shape target, use just 'list-' for both fill and stroke
+			fillPrefix = 'list-';
+			strokePrefix = 'list-';
+		} else if (target === 'icon' && iconType) {
+			// Handle specific iconType cases
+			switch (iconType) {
+				case 'video-icon-play':
+					fillPrefix = 'play-icon-fill-';
+					strokePrefix = 'play-icon-stroke-';
+					break;
+				case 'video-icon-close':
+					fillPrefix = 'close-icon-fill-';
+					strokePrefix = 'close-icon-stroke-';
+					break;
+				case 'accordion-icon-active':
+					fillPrefix = 'active-icon-fill-';
+					strokePrefix = 'active-icon-stroke-';
+					break;
+				case 'image-shape':
+					// Use just 'list-' for both fill and stroke
+					fillPrefix = 'list-';
+					strokePrefix = 'list-';
+					break;
+				case 'search-icon-close':
+					fillPrefix = 'close-icon-fill-';
+					strokePrefix = 'close-icon-stroke-';
+					break;
+				default:
+					// Fallback for other iconType cases
+					fillPrefix = 'icon-fill-';
+					strokePrefix = 'icon-stroke-';
+					break;
+			}
+		} else {
+			// Default case for icon target without iconType
+			fillPrefix = 'icon-fill-';
+			strokePrefix = 'icon-stroke-';
+		}
+
+		const {
+			paletteStatus: fillPaletteStatus,
+			paletteSCStatus: fillPaletteSCStatus,
+			paletteColor: fillPaletteColor,
+			paletteOpacity: fillPaletteOpacity,
+			color: fillDirectColor,
+		} = getPaletteAttributes({
+			obj: currentAttributes,
+			prefix: fillPrefix,
+		});
+
+		const {
+			paletteStatus: strokePaletteStatus,
+			paletteSCStatus: strokePaletteSCStatus,
+			paletteColor: strokePaletteColor,
+			paletteOpacity: strokePaletteOpacity,
+			color: strokeDirectColor,
+		} = getPaletteAttributes({
+			obj: currentAttributes,
+			prefix: strokePrefix,
+		});
+
+		const fillPaletteColorVar =
+			fillPaletteColor != null ? `color-${fillPaletteColor}` : null;
+		const fillPaletteSCColor = fillPaletteColorVar;
+		const strokePaletteColorVar =
+			strokePaletteColor != null ? `color-${strokePaletteColor}` : null;
+		const strokePaletteSCColor = strokePaletteColorVar;
+
+		resolvedFill =
+			fillPaletteColorVar && (fillPaletteStatus || fillPaletteSCStatus)
+				? getColorRGBAString(
+						fillPaletteSCStatus
+							? {
+									firstVar: fillPaletteSCColor,
+									opacity: fillPaletteOpacity,
+									blockStyle,
+							  }
+							: {
+									firstVar:
+										target === 'icon'
+											? 'icon-fill'
+											: 'svg-fill',
+									secondVar: fillPaletteColorVar,
+									opacity: fillPaletteOpacity,
+									blockStyle,
+							  }
+				  )
+				: fillDirectColor || fallbackFill;
+
+		resolvedStroke =
+			strokePaletteColorVar &&
+			(strokePaletteStatus || strokePaletteSCStatus)
+				? getColorRGBAString(
+						strokePaletteSCStatus
+							? {
+									firstVar: strokePaletteSCColor,
+									opacity: strokePaletteOpacity,
+									blockStyle,
+							  }
+							: {
+									firstVar:
+										target === 'icon'
+											? 'icon-stroke'
+											: 'svg-stroke',
+									secondVar: strokePaletteColorVar,
+									opacity: strokePaletteOpacity,
+									blockStyle,
+							  }
+				  )
+				: strokeDirectColor || fallbackStroke;
+	}
+
 	const fillRegExp = /fill:[^n]+?(?=})/g;
-	const fillStr = 'fill:var(--maxi-icon-block-orange)';
+	const fillStr = `fill:${resolvedFill}`;
 
 	const fillRegExp2 = /[^-]fill="[^n]+?(?=")/g;
-	const fillStr2 = ' fill="var(--maxi-icon-block-orange)';
+	const fillStr2 = ` fill="${resolvedFill}`;
 
 	const strokeRegExp = /stroke:[^n]+?(?=})/g;
-	const strokeStr = 'stroke:#081219';
+	const strokeStr = `stroke:${resolvedStroke}`;
 
 	const strokeRegExp2 = /[^-]stroke="[^n]+?(?=")/g;
-	const strokeStr2 = ' stroke="#081219';
+	const strokeStr2 = ` stroke="${resolvedStroke}`;
 
-	return target === 'svg'
-		? svgCode
-				.replace(fillRegExp, fillStr)
-				.replace(fillRegExp2, fillStr2)
-				.replace(strokeRegExp, strokeStr)
-				.replace(strokeRegExp2, strokeStr2)
-		: target === 'icon'
-		? svgCode
-				.replace(strokeRegExp, strokeStr)
-				.replace(strokeRegExp2, strokeStr2)
-		: svgCode.replace(fillRegExp, fillStr).replace(fillRegExp2, fillStr2);
+	return svgCode
+		.replace(fillRegExp, fillStr)
+		.replace(fillRegExp2, fillStr2)
+		.replace(strokeRegExp, strokeStr)
+		.replace(strokeRegExp2, strokeStr2);
 };
 
 export const isColorLight = color => {

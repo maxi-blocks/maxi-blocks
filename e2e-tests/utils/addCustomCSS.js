@@ -13,7 +13,7 @@ const checkCSS = async ({ page, cssInstances }) => {
 		);
 
 		// Type a valid declaration; semicolon avoids malformed concatenation
-		await page.keyboard.type('background: red;');
+		await page.keyboard.type('background: red');
 		await page.waitForTimeout(200);
 
 		// validate css

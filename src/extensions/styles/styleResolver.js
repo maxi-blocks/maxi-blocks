@@ -209,13 +209,43 @@ export const styleCacheUtils = {
 	 * @param {number} maxSize - Maximum total cache size before clearing
 	 */
 	checkMemoryUsage(maxSize = 1000) {
-		const totalSize = styleCache.size() + cleanContentCache.size() + getCleanContentCache.size();
-		if (totalSize > maxSize) {
-			// Clear oldest cache first (cleanContent is most frequently regenerated)
-			cleanContentCache.clear();
-			getCleanContentCache.clear();
-			console.log(`MaxiBlocks StyleResolver: Cleared caches due to memory usage (${totalSize} > ${maxSize})`);
+		let totalSize = styleCache.size() + cleanContentCache.size() + getCleanContentCache.size();
+		if (totalSize <= maxSize) return;
+
+		const initialSize = totalSize;
+		const cachesEvicted = [];
+
+		// First, evict oldest entries from styleCache until within limit or empty
+		let styleCacheEvicted = 0;
+		while (totalSize > maxSize && styleCache.size() > 0) {
+			// Get first (oldest) key from styleCache's underlying Map
+			const oldestKey = styleCache.cache.keys().next().value;
+			styleCache.cache.delete(oldestKey);
+			styleCacheEvicted++;
+			totalSize = styleCache.size() + cleanContentCache.size() + getCleanContentCache.size();
 		}
+		if (styleCacheEvicted > 0) {
+			cachesEvicted.push(`styleCache (${styleCacheEvicted} entries)`);
+		}
+
+		// If still over threshold, clear cleanContentCache
+		if (totalSize > maxSize) {
+			cleanContentCache.clear();
+			cachesEvicted.push('cleanContentCache (all)');
+			totalSize = styleCache.size() + cleanContentCache.size() + getCleanContentCache.size();
+		}
+
+		// If still over threshold, clear getCleanContentCache
+		if (totalSize > maxSize) {
+			getCleanContentCache.clear();
+			cachesEvicted.push('getCleanContentCache (all)');
+			totalSize = styleCache.size() + cleanContentCache.size() + getCleanContentCache.size();
+		}
+
+		console.log(
+			`MaxiBlocks StyleResolver: Trimmed caches due to memory usage (${initialSize} > ${maxSize}). ` +
+			`Evicted: ${cachesEvicted.join(', ')}. Final size: ${totalSize}`
+		);
 	}
 };
 

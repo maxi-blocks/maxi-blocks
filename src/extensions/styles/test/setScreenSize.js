@@ -1,4 +1,6 @@
-import setScreenSize from '../setScreenSize';
+import setScreenSize, {
+	resetThrottleState,
+} from '@extensions/styles/setScreenSize';
 import { select, dispatch } from '@wordpress/data';
 
 jest.mock('@wordpress/data', () => ({
@@ -18,6 +20,7 @@ describe('setScreenSize', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
+		resetThrottleState(); // Reset throttling state between tests
 		select.mockImplementation(store => {
 			if (store === 'maxiBlocks') return mockMaxiBlocksStore;
 			return {};
@@ -45,7 +48,6 @@ describe('setScreenSize', () => {
 		expect(mockMaxiBlocksDispatch.setMaxiDeviceType).toHaveBeenCalledWith({
 			deviceType: 'xxl',
 			width: mockXXLSize,
-			changeSize: true,
 		});
 	});
 
@@ -66,22 +68,6 @@ describe('setScreenSize', () => {
 		expect(mockMaxiBlocksDispatch.setMaxiDeviceType).toHaveBeenCalledWith({
 			deviceType: 'md',
 			width: mockBreakpoints.md,
-			changeSize: true,
-		});
-	});
-
-	it('Respects changeSize parameter when false', () => {
-		const mockBreakpoints = { sm: 768 };
-		mockMaxiBlocksStore.receiveMaxiBreakpoints.mockReturnValue(
-			mockBreakpoints
-		);
-
-		setScreenSize('sm', false);
-
-		expect(mockMaxiBlocksDispatch.setMaxiDeviceType).toHaveBeenCalledWith({
-			deviceType: 'sm',
-			width: mockBreakpoints.sm,
-			changeSize: false,
 		});
 	});
 
@@ -89,12 +75,11 @@ describe('setScreenSize', () => {
 		const mockXXLSize = 2000;
 		mockMaxiBlocksStore.receiveXXLSize.mockReturnValue(mockXXLSize);
 
-		setScreenSize('xxl', false);
+		setScreenSize('xxl');
 
 		expect(mockMaxiBlocksDispatch.setMaxiDeviceType).toHaveBeenCalledWith({
 			deviceType: 'xxl',
 			width: mockXXLSize,
-			changeSize: false,
 		});
 	});
 });

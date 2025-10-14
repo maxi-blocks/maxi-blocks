@@ -6,6 +6,9 @@ import { cloneDeep, isEmpty, isEqual, isNil, isObject } from 'lodash';
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].reverse();
 
 const objectsCleaner = obj => {
+	// Handle null/undefined input
+	if (isNil(obj)) return {};
+
 	const response = cloneDeep(obj);
 
 	Object.entries(response).forEach(([key, val]) => {

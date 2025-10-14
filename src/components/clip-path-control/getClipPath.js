@@ -1,39 +1,109 @@
 /**
- * External dependencies
+ * Helpers
+ * - Validate nodes and values and construct CSS strings safely
  */
-import { isArray, isEmpty } from 'lodash';
+const hasValueAndUnit = node =>
+	node &&
+	typeof node.value !== 'undefined' &&
+	typeof node.unit !== 'undefined';
+
+const isFiniteNumericValue = value => {
+	if (typeof value === 'number') return Number.isFinite(value);
+	if (typeof value === 'string' && value.trim() !== '')
+		return Number.isFinite(Number(value));
+
+	return false;
+};
+
+const buildCoordinate = coordinate => `${coordinate.value}${coordinate.unit}`;
 
 const getClipPath = clipPath => {
+	// Guard against invalid structures
+	if (!clipPath || !clipPath.type) return 'none';
+
 	const { type, content } = clipPath;
+
+	// Short-circuit explicit none
+	if (type === 'none') return 'none';
+
+	// Ensure content exists and is an object
+	if (!content || typeof content !== 'object') return 'none';
+
 	const arrayContent = Object.values(content);
 
 	let newContent = '';
 
 	switch (type) {
-		case 'polygon':
-			newContent = arrayContent.reduce((a, b) => {
-				if (isArray(a))
-					return `${a[0].value}${a[0].unit} ${a[1].value}${a[1].unit}, ${b[0].value}${b[0].unit} ${b[1].value}${b[1].unit}`;
-				return `${!isEmpty(a) ? `${a}, ` : ''}${b[0].value}${
-					b[0].unit
-				} ${b[1].value}${b[1].unit}`;
-			});
-			break;
-		case 'circle':
-			newContent = `${arrayContent[0][0].value}${arrayContent[0][0].unit} at ${arrayContent[1][0].value}${arrayContent[1][0].unit} ${arrayContent[1][1].value}${arrayContent[1][1].unit}`;
-			break;
-		case 'ellipse':
-			newContent = `${arrayContent[0][0].value}${arrayContent[0][0].unit} ${arrayContent[1][0].value}${arrayContent[1][0].unit} at ${arrayContent[2][0].value}${arrayContent[2][0].unit} ${arrayContent[2][1].value}${arrayContent[2][1].unit}`;
-			break;
-		case 'inset':
-			newContent = `${arrayContent[0][0].value}${arrayContent[0][0].unit} ${arrayContent[1][0].value}${arrayContent[1][0].unit} ${arrayContent[2][0].value}${arrayContent[2][0].unit} ${arrayContent[3][0].value}${arrayContent[3][0].unit}`;
-			break;
-		default:
-			break;
-	}
-	const newCP = `${type}${type !== 'none' ? `(${newContent})` : ''}`;
+		case 'polygon': {
+			// Ensure at least three valid points to form a polygon
+			const safePoints = arrayContent.filter(
+				point =>
+					Array.isArray(point) &&
+					point.length >= 2 &&
+					point.every(hasValueAndUnit)
+			);
 
-	return newCP;
+			if (safePoints.length < 3) return 'none';
+
+			newContent = safePoints
+				.map(
+					([first, second]) =>
+						`${buildCoordinate(first)} ${buildCoordinate(second)}`
+				)
+				.join(', ');
+			break;
+		}
+		case 'circle': {
+			const [radiusHandle, centerHandle] = arrayContent;
+			const radius = radiusHandle?.[0];
+			const cx = centerHandle?.[0];
+			const cy = centerHandle?.[1];
+
+			if (![radius, cx, cy].every(hasValueAndUnit)) return 'none';
+
+			newContent = `${buildCoordinate(radius)} at ${buildCoordinate(
+				cx
+			)} ${buildCoordinate(cy)}`;
+			break;
+		}
+		case 'ellipse': {
+			const [rxHandle, ryHandle, centerHandle] = arrayContent;
+			const rx = rxHandle?.[0];
+			const ry = ryHandle?.[0];
+			const cx = centerHandle?.[0];
+			const cy = centerHandle?.[1];
+
+			if (![rx, ry, cx, cy].every(hasValueAndUnit)) return 'none';
+
+			newContent = `${buildCoordinate(rx)} ${buildCoordinate(
+				ry
+			)} at ${buildCoordinate(cx)} ${buildCoordinate(cy)}`;
+			break;
+		}
+		case 'inset': {
+			// Validate four sides and ensure numeric values and non-empty units
+			const sides = arrayContent.slice(0, 4).map(handle => handle?.[0]);
+
+			if (
+				sides.length < 4 ||
+				sides.some(
+					side =>
+						!hasValueAndUnit(side) ||
+						!isFiniteNumericValue(side.value) ||
+						typeof side.unit !== 'string' ||
+						side.unit.trim() === ''
+				)
+			)
+				return 'none';
+
+			newContent = sides.map(side => buildCoordinate(side)).join(' ');
+			break;
+		}
+		default:
+			return 'none';
+	}
+
+	return `${type}(${newContent})`;
 };
 
 export default getClipPath;

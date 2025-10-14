@@ -186,6 +186,17 @@ const MaxiModal = props => {
 				setUserName(
 					licenseSettings.networkLicenseName || 'Marketplace'
 				);
+			} else {
+				// Check current authentication status and sync with server
+				// This ensures the UI reflects the actual auth state
+				const syncAuthState = async () => {
+					// Force a check of the current auth state
+					await authConnect(false);
+					setIsMaxiProActive(isProSubActive());
+					setIsMaxiProExpired(isProSubExpired());
+					setUserName(getUserName());
+				};
+				syncAuthState();
 			}
 		}
 	}, [isOpen]);

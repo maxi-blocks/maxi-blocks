@@ -57,13 +57,3 @@ export const buildFontUrl = async (fontName, fontData = {}) => {
 	)}:${fontString}&display=swap`;
 	return url;
 };
-
-/**
- * Check if the URL is valid - simplified version without network validation
- * @param {string} url - The URL to check
- * @returns {Promise<boolean>} True if the URL is valid, false otherwise
- */
-export const isCacheValid = async url => {
-	// Simply return true if URL exists - no network validation needed
-	return !!url;
-};

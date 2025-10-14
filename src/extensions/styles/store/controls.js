@@ -35,8 +35,8 @@ export const processCss = async code => {
 			autoprefixer({
 				flexbox: 'no-2009',
 				grid: 'autoplace',
-				overrideBrowserslist: ['last 2 versions', '> 0.5%', 'not dead']
-			})
+				overrideBrowserslist: ['last 2 versions', '> 0.5%', 'not dead'],
+			}),
 		]).process(code);
 
 		if (!css) return null;

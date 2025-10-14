@@ -12,6 +12,7 @@ const checkCSS = async ({ page, cssInstances }) => {
 			el.focus()
 		);
 
+		// Type a valid declaration; semicolon avoids malformed concatenation
 		await page.keyboard.type('background: red');
 		await page.waitForTimeout(200);
 

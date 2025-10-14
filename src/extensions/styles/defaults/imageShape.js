@@ -4,6 +4,7 @@ export const rawImageShape = {
 	'image-shape-scale': {
 		type: 'number',
 		default: 100,
+		min: 0,
 	},
 	'image-shape-rotate': {
 		type: 'number',

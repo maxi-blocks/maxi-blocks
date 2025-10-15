@@ -123,7 +123,7 @@ const computeHiddenSignature = (blocks, deviceType) => {
 };
 
 const noticeMessage = __(
-	'This page contains hidden Maxi blocks. Open the Maxi tree to review them.',
+	'This page contains hidden Maxi blocks. Open the blocks List View to review them.',
 	'maxi-blocks'
 );
 

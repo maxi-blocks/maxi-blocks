@@ -88,34 +88,17 @@
 }
 
 // Highlight hidden Maxi blocks in List View
+
+.block-editor-list-view__block[data-maxi-hidden='true'],
+.block-editor-list-view-leaf[data-maxi-hidden='true'] {
+	opacity: 0.7;
+}
+
 .block-editor-list-view__block[data-maxi-hidden='true']
 	.block-editor-list-view__expander,
 .block-editor-list-view-leaf[data-maxi-hidden='true']
 	.block-editor-list-view__expander {
-	color: #ff7a00 !important; // orange highlight for expander
-	fill: #ff7a00 !important;
-}
-
-// WordPress uses `.block-editor-block-icon` inside List View
-.block-editor-list-view__block[data-maxi-hidden='true']
-	.block-editor-block-icon,
-.block-editor-list-view-leaf[data-maxi-hidden='true'] .block-editor-block-icon,
-.block-editor-list-view__block[data-maxi-hidden='true']
-	.block-editor-block-icon
-	svg,
-.block-editor-list-view-leaf[data-maxi-hidden='true']
-	.block-editor-block-icon
-	svg,
-.block-editor-list-view__block[data-maxi-hidden='true']
-	.block-editor-block-icon
-	svg
-	path,
-.block-editor-list-view-leaf[data-maxi-hidden='true']
-	.block-editor-block-icon
-	svg
-	path {
-	color: #ff7a00 !important;
-	fill: #ff7a00 !important;
+	color: var(--maxi-admin-grey) !important; // grey highlight for expander
 }
 
 // Target icon container with has-colors and selected rows
@@ -127,17 +110,10 @@
 	.block-editor-list-view__block-icon,
 .block-editor-list-view__block[data-maxi-hidden='true'].is-selected
 	.block-editor-list-view__block-icon {
-	color: #ff7a00 !important;
-	fill: #ff7a00 !important;
+	color: var(--maxi-admin-grey) !important;
 }
 
-// Ensure currentColor-based icons use orange
-.block-editor-list-view-leaf[data-maxi-hidden='true'],
-.block-editor-list-view__block[data-maxi-hidden='true'] {
-	--wp-admin-theme-color: #ff7a00 !important;
-}
-
-// Make the List View row text orange for hidden blocks
+// Make the List View row text grey for hidden blocks
 .block-editor-list-view-leaf[data-maxi-hidden='true']
 	.block-editor-list-view-block-contents,
 .block-editor-list-view__block[data-maxi-hidden='true']
@@ -148,7 +124,7 @@
 	.block-editor-list-view-block-select-button__title,
 .block-editor-list-view-leaf[data-maxi-hidden='true'] .components-truncate,
 .block-editor-list-view__block[data-maxi-hidden='true'] .components-truncate {
-	color: #ff7a00 !important;
+	color: var(--maxi-admin-grey) !important;
 }
 
 .maxi-link-wrapper {

@@ -1,10 +1,4 @@
 .maxi-block-display-none {
-	filter: blur(1px);
-
-	&.maxi-block {
-		display: flex !important;
-	}
-
 	&.maxi-pane-block,
 	&.maxi-text-block,
 	&.maxi-map-block {

@@ -56,7 +56,6 @@ const computeSignature = () => {
 };
 
 const updateHighlights = () => {
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 	const blocks = select('core/block-editor').getBlocks();
 	if (!blocks) return;
 
@@ -66,6 +65,7 @@ const updateHighlights = () => {
 			const listItem = queryListItemByClientId(clientId);
 
 			if (listItem && isMaxiBlock(name)) {
+				const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 				const hidden = isHiddenAtDevice(attributes, deviceType);
 				if (hidden) listItem.setAttribute('data-maxi-hidden', 'true');
 				else listItem.removeAttribute('data-maxi-hidden');

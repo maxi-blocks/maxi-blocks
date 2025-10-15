@@ -11,6 +11,7 @@ import { getLastBreakpointAttribute } from '@extensions/styles';
 /**
  * Tag List View items whose blocks are hidden at the current breakpoint.
  * Adds data attribute `data-maxi-hidden="true"` to the corresponding list item.
+ * Also adds `data-maxi-hidden-parent="true"` to blocks that contain hidden descendants.
  */
 const queryListItemByClientId = clientId =>
 	document.querySelector(
@@ -59,18 +60,70 @@ const updateHighlights = () => {
 	const blocks = select('core/block-editor').getBlocks();
 	if (!blocks) return;
 
-	const visit = list => {
+	const visit = (list, isParentHidden = false) => {
 		list.forEach(block => {
 			const { clientId, name, attributes, innerBlocks } = block;
 			const listItem = queryListItemByClientId(clientId);
 
 			if (listItem && isMaxiBlock(name)) {
 				const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-				const hidden = isHiddenAtDevice(attributes, deviceType);
-				if (hidden) listItem.setAttribute('data-maxi-hidden', 'true');
+				const isSelfHidden = isHiddenAtDevice(attributes, deviceType);
+				const isEffectivelyHidden = isParentHidden || isSelfHidden;
+
+				// Check if any descendants are hidden
+				let hasHiddenDescendants = false;
+				if (innerBlocks && innerBlocks.length) {
+					const checkHiddenDescendants = (children, parentHidden) => {
+						return children.some(child => {
+							const isChildMaxi = isMaxiBlock(child.name);
+							if (!isChildMaxi) {
+								// For non-Maxi blocks, check their children
+								return child.innerBlocks &&
+									child.innerBlocks.length
+									? checkHiddenDescendants(
+											child.innerBlocks,
+											parentHidden
+									  )
+									: false;
+							}
+							const isChildHidden =
+								parentHidden ||
+								isHiddenAtDevice(child.attributes, deviceType);
+							// Return true if this child is hidden OR any of its descendants are hidden
+							return (
+								isChildHidden ||
+								(child.innerBlocks && child.innerBlocks.length
+									? checkHiddenDescendants(
+											child.innerBlocks,
+											isChildHidden
+									  )
+									: false)
+							);
+						});
+					};
+					hasHiddenDescendants = checkHiddenDescendants(
+						innerBlocks,
+						isEffectivelyHidden
+					);
+				}
+
+				// Set data-maxi-hidden attribute for hidden blocks
+				if (isEffectivelyHidden)
+					listItem.setAttribute('data-maxi-hidden', 'true');
 				else listItem.removeAttribute('data-maxi-hidden');
+
+				// Set data-maxi-hidden-parent attribute for blocks with hidden descendants
+				if (hasHiddenDescendants)
+					listItem.setAttribute('data-maxi-hidden-parent', 'true');
+				else listItem.removeAttribute('data-maxi-hidden-parent');
+
+				// Pass down the effective hidden state to children
+				if (innerBlocks && innerBlocks.length)
+					visit(innerBlocks, isEffectivelyHidden);
+			} else if (innerBlocks && innerBlocks.length) {
+				// For non-Maxi blocks, just continue traversing with current hidden state
+				visit(innerBlocks, isParentHidden);
 			}
-			if (innerBlocks && innerBlocks.length) visit(innerBlocks);
 		});
 	};
 
@@ -131,7 +184,9 @@ const initHighlightHiddenBlocks = () => {
 	return () => {
 		try {
 			mo.disconnect();
-		} catch (e) {}
+		} catch (e) {
+			// Ignore errors during cleanup
+		}
 		if (typeof unsubscribe === 'function') unsubscribe();
 	};
 };

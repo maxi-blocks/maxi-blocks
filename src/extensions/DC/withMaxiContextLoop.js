@@ -69,6 +69,20 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				[attributes]
 			);
 
+			// Skip Provider for container blocks without Context Loop enabled
+			const containerBlocks = [
+				'maxi-blocks/container-maxi',
+				'maxi-blocks/accordion-maxi',
+				'maxi-blocks/group-maxi',
+			];
+			if (
+				!contextLoopAttributes['cl-status'] &&
+				attributes.isFirstOnHierarchy &&
+				containerBlocks.includes(name)
+			) {
+				return <WrappedComponent {...ownProps} />;
+			}
+
 			const getIsAccumulator = attributes =>
 				orderRelations.includes(attributes?.['cl-relation']) ||
 				attributes?.['cl-relation']?.includes('custom-taxonomy') ||

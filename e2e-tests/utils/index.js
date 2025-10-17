@@ -7,6 +7,7 @@ export { default as addImageToLibrary } from './addImageToLibrary';
 export { default as addResponsiveTest } from './addResponsiveTest';
 export { default as addTypographyOptions } from './addTypographyOptions';
 export { default as addTypographyStyle } from './addTypographyStyle';
+export { default as adjustANC } from './adjustANC';
 export { default as changeResponsive } from './changeResponsive';
 export { default as copySCToEdit } from './copySCToEdit';
 export { default as deactivatePlugin } from './deactivatePlugin';

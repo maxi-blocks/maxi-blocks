@@ -20,7 +20,10 @@ import LoopContext from './loopContext';
 import getDCOptions from './getDCOptions';
 import getCLAttributes from './getCLAttributes';
 import { getAttributesWithoutPrefix } from './utils';
-import { isInSiteEditorPreviewIframe } from '@extensions/fse';
+import {
+	isInSiteEditorPreviewIframe,
+	getIsSiteEditor,
+} from '@extensions/fse';
 
 /**
  * External dependencies
@@ -41,6 +44,12 @@ export const ALLOWED_ACCUMULATOR_GRANDPARENT_GRANDCHILD_MAP = {
 	'maxi-blocks/column-maxi': 'maxi-blocks/column-maxi',
 	'maxi-blocks/group-maxi': 'maxi-blocks/column-maxi',
 };
+
+export const CONTAINER_BLOCKS = [
+	'maxi-blocks/container-maxi',
+	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/group-maxi',
+];
 
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
@@ -69,16 +78,13 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				[attributes]
 			);
 
-			// Skip Provider for container blocks without Context Loop enabled
-			const containerBlocks = [
-				'maxi-blocks/container-maxi',
-				'maxi-blocks/accordion-maxi',
-				'maxi-blocks/group-maxi',
-			];
+			// Skip Provider for container blocks without Context Loop enabled (FSE only)
+			// Check cheap conditions first, then only check FSE if needed
 			if (
-				!contextLoopAttributes['cl-status'] &&
 				attributes.isFirstOnHierarchy &&
-				containerBlocks.includes(name)
+				!contextLoopAttributes['cl-status'] &&
+				CONTAINER_BLOCKS.includes(name) &&
+				getIsSiteEditor()
 			) {
 				return <WrappedComponent {...ownProps} />;
 			}

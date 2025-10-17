@@ -79,6 +79,8 @@ const handleCleanInlineStyles = (
 	styleObjKeys,
 	ref
 ) => {
+	if (pseudoElement === '' && styleObjKeys.current.length === 0) return;
+
 	const target = normalizeTarget(rawTarget);
 	const parentElement = ref?.current.blockRef.current;
 	const targetElements =

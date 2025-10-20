@@ -359,18 +359,44 @@ const getDCEntity = async (dataRequest, clientId) => {
 				return null;
 			}
 		}
+		// Build query parameters
+		const queryParams = {
+			per_page: 1,
+			order,
+			orderby: getDCOrder(relation, orderBy),
+			offset: accumulator,
+			...(relationKeyForId && {
+				[relationKeyForId]: currentId,
+			}),
+		};
+
+		// Add archive filtering if limitByArchive is 'yes'
+		if (dataRequest.limitByArchive === 'yes' && relation !== 'current-archive') {
+			const tpl = getCurrentTemplateSlug() || '';
+			// category-{slug}
+			if (tpl.includes('category-') && !queryParams.categories) {
+				const slug = tpl.replace('category-', '');
+				const term = await getCategoryBySlug(slug);
+				if (term?.id) queryParams.categories = term.id;
+			}
+			// tag-{slug}
+			if (tpl.includes('tag-') && !queryParams.tags) {
+				const slug = tpl.replace('tag-', '');
+				const term = await getTagBySlug(slug);
+				if (term?.id) queryParams.tags = term.id;
+			}
+			// author-{slug}
+			if (tpl.includes('author-') && !queryParams.author) {
+				const slug = tpl.replace('author-', '');
+				const user = await getAuthorBySlug(slug);
+				if (user?.id) queryParams.author = user.id;
+			}
+		}
+
 		const entities = await resolveSelect('core').getEntityRecords(
 			getKind(type),
 			nameDictionary[type] ?? type,
-			{
-				per_page: 1,
-				order,
-				orderby: getDCOrder(relation, orderBy),
-				offset: accumulator,
-				...(relationKeyForId && {
-					[relationKeyForId]: currentId,
-				}),
-			}
+			queryParams
 		);
 		if (entities && entities.length > 0) {
 			return entities.slice(-1)[0];

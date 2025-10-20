@@ -666,6 +666,11 @@ export const orderOptions = {
 	],
 };
 
+export const limitByArchiveOptions = [
+	{ label: __('No', 'maxi-blocks'), value: 'no' },
+	{ label: __('Yes', 'maxi-blocks'), value: 'yes' },
+];
+
 export const kindDictionary = {
 	posts: 'postType',
 	pages: 'postType',
@@ -725,4 +730,5 @@ export const attributeDefaults = {
 		return dictionary[relation];
 	},
 	accumulator: 0,
+	'limit-by-archive': null,
 };

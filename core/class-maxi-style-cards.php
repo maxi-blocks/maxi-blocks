@@ -12,6 +12,27 @@ class MaxiBlocks_StyleCards
     private static $instance;
 
     /**
+     * Request-level cache for database results and generated CSS
+     *
+     * @var array
+     */
+    private static $cache = [
+        'style_card_object' => null,
+        'current_style_cards' => null,
+        'active_style_card' => null,
+        'style_variables' => null,
+        'style_styles' => null,
+        'cache_keys' => []
+    ];
+
+    /**
+     * Recursion guard to prevent infinite loops
+     *
+     * @var array
+     */
+    private static $processing = [];
+
+    /**
      * Registers the plugin.
      */
     public static function register()
@@ -45,6 +66,100 @@ class MaxiBlocks_StyleCards
 
         // Run the migration once
         add_action('admin_init', [$this, 'run_link_palette_migration']);
+
+        // Clear cache when style cards are updated
+        add_action('maxi_blocks_style_card_updated', [__CLASS__, 'clear_cache']);
+        add_action('maxi_blocks_style_cards_updated', [__CLASS__, 'clear_cache']);
+    }
+
+    /**
+     * Clear request-level cache
+     */
+    public static function clear_cache()
+    {
+        self::$cache = [
+            'style_card_object' => null,
+            'current_style_cards' => null,
+            'active_style_card' => null,
+            'style_variables' => null,
+            'style_styles' => null,
+            'cache_keys' => []
+        ];
+        self::$processing = [];
+    }
+
+    /**
+     * Generate cache key based on context
+     *
+     * @return string
+     */
+    private static function get_cache_key()
+    {
+        // Use a simple key during early initialization to avoid WordPress query issues
+        if (!did_action('wp')) {
+            return 'early_init_' . md5(get_current_user_id() . is_admin());
+        }
+
+        $context = [
+            'is_admin' => is_admin(),
+            'is_preview' => self::is_preview_safe(),
+            'user_id' => get_current_user_id(),
+            'request_uri' => isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : ''
+        ];
+
+        return md5(serialize($context));
+    }
+
+    /**
+     * Safe wrapper for is_preview() that won't cause WordPress notices
+     *
+     * @return bool
+     */
+    private static function is_preview_safe()
+    {
+        // Don't call is_preview() before WordPress has set up the query
+        if (!did_action('wp') || !function_exists('is_preview')) {
+            return false;
+        }
+
+        return is_preview();
+    }
+
+    /**
+     * Get cache statistics for monitoring
+     *
+     * @return array
+     */
+    public static function get_cache_stats()
+    {
+        $stats = [
+            'cache_hits' => 0,
+            'total_items' => 0,
+            'items' => []
+        ];
+
+        foreach (self::$cache as $key => $value) {
+            if ($key === 'cache_keys') {
+                continue;
+            }
+
+            $stats['total_items']++;
+            $is_cached = ($value !== null);
+
+            if ($is_cached) {
+                $stats['cache_hits']++;
+            }
+
+            $stats['items'][$key] = [
+                'cached' => $is_cached,
+                'size' => $is_cached ? strlen(serialize($value)) : 0
+            ];
+        }
+
+        $stats['hit_ratio'] = $stats['total_items'] > 0 ?
+            round(($stats['cache_hits'] / $stats['total_items']) * 100, 2) : 0;
+
+        return $stats;
     }
 
     /**
@@ -52,6 +167,9 @@ class MaxiBlocks_StyleCards
      */
     public function enqueue_styles()
     {
+        // Performance logging (only in debug mode)
+        $start_time = defined('WP_DEBUG') && WP_DEBUG ? microtime(true) : null;
+
         if (!wp_style_is('maxi-blocks-sc-vars', 'registered')) {
             $vars = $this->get_style_card_variables();
 
@@ -67,7 +185,7 @@ class MaxiBlocks_StyleCards
             $styles = $this->get_style_card_styles();
 
             // MVP: ensure no margin-bottom for button
-            if (str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
+            if ($styles && str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
                 $styles = str_replace('margin-bottom: var(--maxi-light-button-margin-bottom-general);', '', $styles);
             }
 
@@ -78,10 +196,27 @@ class MaxiBlocks_StyleCards
                 wp_add_inline_style('maxi-blocks-sc-styles', $styles);
             }
         }
+
     }
 
     public function get_style_card_object_from_db()
     {
+        // Recursion guard
+        if (isset(self::$processing['style_card_object'])) {
+            return false;
+        }
+
+        // Check cache first
+        $cache_key = self::get_cache_key();
+        if (self::$cache['style_card_object'] !== null &&
+            isset(self::$cache['cache_keys']['style_card_object']) &&
+            self::$cache['cache_keys']['style_card_object'] === $cache_key) {
+            return self::$cache['style_card_object'];
+        }
+
+        // Set processing flag
+        self::$processing['style_card_object'] = true;
+
         global $wpdb;
         $style_card = maybe_unserialize(
             $wpdb->get_var(
@@ -103,6 +238,13 @@ class MaxiBlocks_StyleCards
                 )
             );
         }
+
+        // Cache the result
+        self::$cache['style_card_object'] = $style_card;
+        self::$cache['cache_keys']['style_card_object'] = $cache_key;
+
+        // Clear processing flag
+        unset(self::$processing['style_card_object']);
 
         return $style_card;
     }
@@ -265,13 +407,36 @@ class MaxiBlocks_StyleCards
      */
     public function get_style_card_variables()
     {
+        // Recursion guard
+        if (isset(self::$processing['style_variables'])) {
+            return false;
+        }
+
+        // Check cache first
+        $cache_key = self::get_cache_key();
+        if (self::$cache['style_variables'] !== null &&
+            isset(self::$cache['cache_keys']['style_variables']) &&
+            self::$cache['cache_keys']['style_variables'] === $cache_key) {
+            return self::$cache['style_variables'];
+        }
+
+        // Set processing flag
+        self::$processing['style_variables'] = true;
+
         $style_card = $this->get_style_card_object_from_db();
 
         if (!$style_card) {
             if (isset($GLOBALS['default_sc_variables_string'])) {
-                return $GLOBALS['default_sc_variables_string'];
+                $result = $GLOBALS['default_sc_variables_string'];
+                self::$cache['style_variables'] = $result;
+                self::$cache['cache_keys']['style_variables'] = $cache_key;
+                unset(self::$processing['style_variables']);
+                return $result;
             }
 
+            self::$cache['style_variables'] = false;
+            self::$cache['cache_keys']['style_variables'] = $cache_key;
+            unset(self::$processing['style_variables']);
             return false;
         }
 
@@ -281,22 +446,29 @@ class MaxiBlocks_StyleCards
         }
 
         $style =
-            is_preview() || is_admin()
+            self::is_preview_safe() || is_admin()
                 ? $style_card['_maxi_blocks_style_card_preview']
                 : $style_card['_maxi_blocks_style_card'];
 
         if (!$style || empty($style)) {
             $style =
-                is_preview() || is_admin() // If one fail, let's test the other one!
+                self::is_preview_safe() || is_admin() // If one fail, let's test the other one!
                     ? $style_card['_maxi_blocks_style_card']
                     : $style_card['_maxi_blocks_style_card_preview'];
         }
 
         if (!$style || empty($style) || $style === ':root{--maxi-active-sc-color:0,0,0;}') { // ':root{--maxi-active-sc-color:0,0,0;}' is the default value
             if (isset($GLOBALS['default_sc_variables_string'])) {
-                return $GLOBALS['default_sc_variables_string'];
+                $result = $GLOBALS['default_sc_variables_string'];
+                self::$cache['style_variables'] = $result;
+                self::$cache['cache_keys']['style_variables'] = $cache_key;
+                unset(self::$processing['style_variables']);
+                return $result;
             }
 
+            self::$cache['style_variables'] = false;
+            self::$cache['cache_keys']['style_variables'] = $cache_key;
+            unset(self::$processing['style_variables']);
             return false;
         }
 
@@ -308,18 +480,38 @@ class MaxiBlocks_StyleCards
             $style = $this->process_custom_colors($style, $current_style_cards);
         }
 
+        // Cache the final result
+        self::$cache['style_variables'] = $style;
+        self::$cache['cache_keys']['style_variables'] = $cache_key;
+
+        // Clear processing flag
+        unset(self::$processing['style_variables']);
+
         return $style;
     }
 
     public function get_style_card_styles()
     {
+        // Check cache first
+        $cache_key = self::get_cache_key();
+        if (self::$cache['style_styles'] !== null &&
+            isset(self::$cache['cache_keys']['style_styles']) &&
+            self::$cache['cache_keys']['style_styles'] === $cache_key) {
+            return self::$cache['style_styles'];
+        }
+
         $style_card = $this->get_style_card_object_from_db();
 
         if (!$style_card) {
             if (isset($GLOBALS['default_sc_styles_string'])) {
-                return $GLOBALS['default_sc_styles_string'];
+                $result = $GLOBALS['default_sc_styles_string'];
+                self::$cache['style_styles'] = $result;
+                self::$cache['cache_keys']['style_styles'] = $cache_key;
+                return $result;
             }
 
+            self::$cache['style_styles'] = false;
+            self::$cache['cache_keys']['style_styles'] = $cache_key;
             return false;
         }
 
@@ -336,37 +528,67 @@ class MaxiBlocks_StyleCards
             !array_key_exists('_maxi_blocks_style_card_styles_preview', $style_card)
         ) {
             if (isset($GLOBALS['default_sc_styles_string'])) {
-                return $GLOBALS['default_sc_styles_string'];
+                $result = $GLOBALS['default_sc_styles_string'];
+                self::$cache['style_styles'] = $result;
+                self::$cache['cache_keys']['style_styles'] = $cache_key;
+                return $result;
             }
 
+            self::$cache['style_styles'] = false;
+            self::$cache['cache_keys']['style_styles'] = $cache_key;
             return false;
         }
 
         $sc_variables =
-            is_preview() || is_admin()
+            self::is_preview_safe() || is_admin()
                 ? $style_card['_maxi_blocks_style_card_styles_preview']
                 : $style_card['_maxi_blocks_style_card_styles'];
 
         if (!$sc_variables || empty($sc_variables)) {
             $sc_variables =
-                is_preview() || is_admin() // If one fail, let's test the other one!
+                self::is_preview_safe() || is_admin() // If one fail, let's test the other one!
                     ? $style_card['_maxi_blocks_style_card_styles']
                     : $style_card['_maxi_blocks_style_card_styles_preview'];
         }
 
         if (!$sc_variables || empty($sc_variables)) {
             if (isset($GLOBALS['default_sc_styles_string'])) {
-                return $GLOBALS['default_sc_styles_string'];
+                $result = $GLOBALS['default_sc_styles_string'];
+                self::$cache['style_styles'] = $result;
+                self::$cache['cache_keys']['style_styles'] = $cache_key;
+                return $result;
             }
 
+            self::$cache['style_styles'] = false;
+            self::$cache['cache_keys']['style_styles'] = $cache_key;
             return false;
         }
+
+        // Cache the final result
+        self::$cache['style_styles'] = $sc_variables;
+        self::$cache['cache_keys']['style_styles'] = $cache_key;
 
         return $sc_variables;
     }
 
     public static function get_maxi_blocks_current_style_cards()
     {
+        // Recursion guard
+        if (isset(self::$processing['current_style_cards'])) {
+            return false;
+        }
+
+        // Check cache first
+        $cache_key = self::get_cache_key();
+        if (self::$cache['current_style_cards'] !== null &&
+            isset(self::$cache['cache_keys']['current_style_cards']) &&
+            self::$cache['cache_keys']['current_style_cards'] === $cache_key) {
+            return self::$cache['current_style_cards'];
+        }
+
+        // Set processing flag
+        self::$processing['current_style_cards'] = true;
+
         global $wpdb;
 
         // Check if table exists
@@ -382,6 +604,9 @@ class MaxiBlocks_StyleCards
 
         if ($table_exists != $table_name) {
             // Table doesn't exist
+            self::$cache['current_style_cards'] = false;
+            self::$cache['cache_keys']['current_style_cards'] = $cache_key;
+            unset(self::$processing['current_style_cards']);
             return false;
         }
 
@@ -460,13 +685,24 @@ class MaxiBlocks_StyleCards
                 }
 
                 // Re-encode as this function is expected to return a JSON string
-                return json_encode($decoded);
-            } else if (json_last_error() !== JSON_ERROR_NONE) {
+                $result = json_encode($decoded);
+                self::$cache['current_style_cards'] = $result;
+                self::$cache['cache_keys']['current_style_cards'] = $cache_key;
+                unset(self::$processing['current_style_cards']);
+                return $result;
+            } elseif (json_last_error() !== JSON_ERROR_NONE) {
                 // If not valid JSON, return default style card instead
-                return self::get_default_style_card();
+                $result = self::get_default_style_card();
+                self::$cache['current_style_cards'] = $result;
+                self::$cache['cache_keys']['current_style_cards'] = $cache_key;
+                unset(self::$processing['current_style_cards']);
+                return $result;
             }
 
             // If it's valid but not an array, return as is
+            self::$cache['current_style_cards'] = $maxi_blocks_style_cards_current;
+            self::$cache['cache_keys']['current_style_cards'] = $cache_key;
+            unset(self::$processing['current_style_cards']);
             return $maxi_blocks_style_cards_current;
         } else {
             $default_style_card = self::get_default_style_card();
@@ -487,19 +723,44 @@ class MaxiBlocks_StyleCards
             if ($maxi_blocks_style_cards_current) {
                 $decoded = json_decode($maxi_blocks_style_cards_current, true);
                 if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+                    self::$cache['current_style_cards'] = false;
+                    self::$cache['cache_keys']['current_style_cards'] = $cache_key;
+                    unset(self::$processing['current_style_cards']);
                     return false;
                 }
             }
 
+            self::$cache['current_style_cards'] = $maxi_blocks_style_cards_current;
+            self::$cache['cache_keys']['current_style_cards'] = $cache_key;
+            unset(self::$processing['current_style_cards']);
             return $maxi_blocks_style_cards_current;
         }
     }
 
     public static function get_maxi_blocks_active_style_card()
     {
+        // Recursion guard
+        if (isset(self::$processing['active_style_card'])) {
+            return false;
+        }
+
+        // Check cache first
+        $cache_key = self::get_cache_key();
+        if (self::$cache['active_style_card'] !== null &&
+            isset(self::$cache['cache_keys']['active_style_card']) &&
+            self::$cache['cache_keys']['active_style_card'] === $cache_key) {
+            return self::$cache['active_style_card'];
+        }
+
+        // Set processing flag
+        self::$processing['active_style_card'] = true;
+
         $maxi_blocks_style_cards = self::get_maxi_blocks_current_style_cards();
 
         if (!$maxi_blocks_style_cards) {
+            self::$cache['active_style_card'] = false;
+            self::$cache['cache_keys']['active_style_card'] = $cache_key;
+            unset(self::$processing['active_style_card']);
             return false;
         }
 
@@ -535,6 +796,9 @@ class MaxiBlocks_StyleCards
         }
 
         if (!$active_sc) {
+            self::$cache['active_style_card'] = false;
+            self::$cache['cache_keys']['active_style_card'] = $cache_key;
+            unset(self::$processing['active_style_card']);
             return false;
         }
 
@@ -593,6 +857,13 @@ class MaxiBlocks_StyleCards
             }
             $active_sc['dark']['styleCard']['color']['customColors'] = $custom_colors;
         }
+
+        // Cache the result
+        self::$cache['active_style_card'] = $active_sc;
+        self::$cache['cache_keys']['active_style_card'] = $cache_key;
+
+        // Clear processing flag
+        unset(self::$processing['active_style_card']);
 
         return $active_sc;
     }
@@ -1269,7 +1540,7 @@ class MaxiBlocks_StyleCards
                                 ];
                             }
                         }
-                                                // Handle other elements
+                        // Handle other elements
                         elseif (isset($style_data[$element][$key])) {
                             $value = $style_data[$element][$key];
 
@@ -1319,7 +1590,7 @@ class MaxiBlocks_StyleCards
                 }
             }
 
-                        // Menu colors - generate navigation menu color variables
+            // Menu colors - generate navigation menu color variables
             if (isset($style_data['navigation'])) {
                 // Get default navigation settings from $default_maxi_sc
                 $default_navigation = $default_maxi_sc[$style]['defaultStyleCard']['navigation'] ?? [];

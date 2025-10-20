@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
-import { select } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -117,9 +116,9 @@ class ToolbarPopover extends Component {
 			className
 		);
 
-		const { receiveMaxiSettings } = select('maxiBlocks');
-
-		const { hide_tooltips: hideTooltips } = receiveMaxiSettings();
+		const settings =
+			typeof window !== 'undefined' ? window.maxiSettings : undefined;
+		const { hide_tooltips: hideTooltips } = settings || {};
 		const tooltipsHide = !isEmpty(hideTooltips) ? hideTooltips : false;
 
 		const buttonContent = () => {

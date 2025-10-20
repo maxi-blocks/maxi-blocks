@@ -74,7 +74,9 @@ const Accordion = props => {
 					const block = getBlock(getSelectedBlockClientId());
 
 					const { show_indicators: showIndicators } =
-						select('maxiBlocks').receiveMaxiSettings();
+						(typeof window !== 'undefined' &&
+							window.maxiSettings) ||
+						{};
 
 					if (
 						showIndicators &&
@@ -125,7 +127,8 @@ const Accordion = props => {
 					'maxi-accordion-control__item__panel',
 					disablePadding || item.disablePadding
 						? 'maxi-accordion-control__item__panel--disable-padding'
-						: ''
+						: '',
+					item.classNamePanel
 				);
 
 				const accordionUid =

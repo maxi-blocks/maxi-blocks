@@ -183,6 +183,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				name,
 				prevContextLoopAttributes?.['cl-accumulator'],
 				prevContextLoopAttributes?.['cl-status'],
+				prevContextLoopAttributes?.['cl-relation'],
 			]);
 
 			const contextLoop = useMemo(() => {

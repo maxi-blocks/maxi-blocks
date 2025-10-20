@@ -23,7 +23,7 @@ const actions = {
 	},
 	sendMaxiSettings(settings) {
 		return {
-			type: 'SEND_GLOBAL_SETTINGS',
+			type: 'SEND_GENERAL_SETTINGS',
 			settings,
 		};
 	},
@@ -44,12 +44,7 @@ const actions = {
 			deviceType,
 		};
 	},
-	setMaxiDeviceType({
-		deviceType: rawDeviceType,
-		width,
-		isGutenbergButton = false,
-		changeSize = true,
-	}) {
+	setMaxiDeviceType({ deviceType: rawDeviceType, width }) {
 		const { receiveBaseBreakpoint, receiveMaxiBreakpoints } =
 			select('maxiBlocks');
 		const breakpoints = receiveMaxiBreakpoints();
@@ -67,46 +62,9 @@ const actions = {
 		};
 		const deviceType = getDeviceType();
 
-		const setPreviewDeviceType = deviceType => {
-			// First, try to use the new preferred method if it exists
-			if (
-				dispatch('core/editor') &&
-				dispatch('core/editor').setDeviceType
-			) {
-				dispatch('core/editor').setDeviceType(deviceType);
-			} else {
-				// Determine if we are in the site editor or post editor as a fallback
-				const isSiteEditor = getIsSiteEditor(); // Ensure you have implemented this check
-				const editorStore = isSiteEditor
-					? 'core/edit-site'
-					: 'core/edit-post';
-
-				// Check and call the deprecated method if available
-				const storeDispatch = dispatch(editorStore);
-				if (storeDispatch.__experimentalSetPreviewDeviceType) {
-					storeDispatch.__experimentalSetPreviewDeviceType(
-						deviceType
-					);
-				} else {
-					console.error(
-						__(
-							'Unable to set the preview device type. The required method is not available.',
-							'maxi-blocks'
-						)
-					);
-				}
-			}
-		};
-
-		if (!isGutenbergButton) {
-			setPreviewDeviceType('Desktop');
-		}
-
 		return {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
-			isGutenbergButton,
-			changeSize,
 		};
 	},
 	setEditorContentSize(editorContentSize) {

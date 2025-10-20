@@ -19,13 +19,7 @@ import getCurrentPreviewDeviceType from '@extensions/dom/getCurrentPreviewDevice
  */
 import { omit } from 'lodash';
 
-const breakpointResizer = ({
-	size,
-	breakpoints,
-	winSize = 0,
-	isGutenbergButton = false,
-	changeSize = true,
-}) => {
+const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 	const xxlSize = breakpoints.xl + 1;
 
 	const getEditorWrapper = () => {
@@ -64,47 +58,38 @@ const breakpointResizer = ({
 		);
 	});
 
-	if (changeSize) {
-		const winHeight = window.outerWidth;
-		const responsiveWidth =
-			(size === 'general' && 'none') ||
-			(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
-			breakpoints[size];
+	const winHeight = window.outerWidth;
+	const responsiveWidth =
+		(size === 'general' && 'none') ||
+		(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
+		breakpoints[size];
 
-		editorWrapper.setAttribute(
-			'maxi-blocks-responsive-width',
-			responsiveWidth
+	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
+	editorWrapper.setAttribute('is-maxi-preview', true);
+
+	if (getIsSiteEditor()) {
+		const canvas = document.querySelector(
+			'.edit-site-visual-editor__editor-canvas'
 		);
+		if (canvas) canvas.style.width = null;
+	}
 
-		if (!isGutenbergButton) {
-			editorWrapper.setAttribute('is-maxi-preview', true);
-			if (getIsSiteEditor()) {
-				document.querySelector(
-					'.edit-site-visual-editor__editor-canvas'
-				).style.width = null;
-			}
-		} else editorWrapper.removeAttribute('is-maxi-preview');
+	if (size === 'general') {
+		editorWrapper.style.width = '';
+		editorWrapper.style.margin = '';
+		editorWrapper.style.minWidth = '';
+	} else {
+		editorWrapper.style.minWidth = 'auto';
+		editorWrapper.style.margin =
+			winHeight > responsiveWidth ? '0 auto' : '';
 
-		if (size === 'general') {
-			editorWrapper.style.width = '';
-			editorWrapper.style.margin = '';
-			editorWrapper.style.minWidth = '';
-		} else {
-			editorWrapper.style.minWidth = 'auto';
-			editorWrapper.style.margin =
-				winHeight > responsiveWidth ? '0 auto' : '';
-
-			if (isGutenbergButton) {
-				editorWrapper.style = null;
-			} else if (['s', 'xs'].includes(size) && !getIsSiteEditor()) {
-				const gutenbergDeviceType = getCurrentPreviewDeviceType();
-
-				if (gutenbergDeviceType !== 'Desktop')
-					editorWrapper.style.width = 'fit-content';
-				else editorWrapper.style.width = `${responsiveWidth}px`;
-			} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
-				editorWrapper.style.width = `${responsiveWidth}px`;
-			}
+		if (['s', 'xs'].includes(size) && !getIsSiteEditor()) {
+			const gutenbergDeviceType = getCurrentPreviewDeviceType();
+			if (gutenbergDeviceType !== 'Desktop')
+				editorWrapper.style.width = 'fit-content';
+			else editorWrapper.style.width = `${responsiveWidth}px`;
+		} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
+			editorWrapper.style.width = `${responsiveWidth}px`;
 		}
 	}
 
@@ -132,7 +117,7 @@ const reducer = (
 	action
 ) => {
 	switch (action.type) {
-		case 'SEND_GLOBAL_SETTINGS':
+		case 'SEND_GENERAL_SETTINGS':
 			return {
 				...state,
 				settings: {
@@ -155,8 +140,6 @@ const reducer = (
 				size: action.deviceType,
 				breakpoints: state.breakpoints,
 				winSize: state.settings.editorContent.width,
-				isGutenbergButton: action.isGutenbergButton,
-				changeSize: action.changeSize,
 			});
 
 			return {

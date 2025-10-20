@@ -46,5 +46,8 @@
 	"cl-pagination-next-text": {
 		"type": "string",
 		"default": "Next"
+	},
+	"cl-limit-by-archive": {
+		"type": "string"
 	}
 }

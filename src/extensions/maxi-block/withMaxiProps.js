@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, useDispatch, useSelect } from '@wordpress/data';
+import { dispatch, select, useDispatch, useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import {
 	useCallback,
@@ -45,9 +45,7 @@ const DISABLED_BLOCKS = ['maxi-blocks/list-item-maxi'];
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			if (!ownProps) {
-				return null;
-			}
+			if (!ownProps) return null;
 			const {
 				setAttributes,
 				attributes,
@@ -59,12 +57,24 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const repeaterContext = useContext(RepeaterContext);
 
+			// Memoize selectors to prevent recreation on every render
+			const blockEditorSelectors = useMemo(() => {
+				const selectStore = select('core/block-editor');
+				return {
+					getBlock: selectStore.getBlock,
+					getBlockOrder: selectStore.getBlockOrder,
+					getBlockParents: selectStore.getBlockParents,
+					getBlockParentsByBlockName:
+						selectStore.getBlockParentsByBlockName,
+				};
+			}, []);
+
 			const {
 				getBlock,
 				getBlockOrder,
 				getBlockParents,
 				getBlockParentsByBlockName,
-			} = useSelect(select => select('core/block-editor'), []);
+			} = blockEditorSelectors;
 
 			const {
 				updateBlockAttributes,
@@ -366,39 +376,53 @@ const withMaxiProps = createHigherOrderComponent(
 				return getTarget().getBoundingClientRect();
 			}, []);
 
+			// Clean up effect for selected state changes
 			useEffect(() => {
-				dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
+				if (isSelected) {
+					dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
+				}
+				// No cleanup needed for this effect
 			}, [isSelected]);
 
+			// Effect for handling repeater block moves with proper cleanup
 			useEffect(() => {
-				if (repeaterContext?.repeaterStatus) {
-					const innerBlocksPositions =
-						repeaterContext?.getInnerBlocksPositions();
+				if (!repeaterContext?.repeaterStatus) {
+					return;
+				}
 
-					const blockPositionFromInnerBlocks = getBlockPosition(
+				const innerBlocksPositions =
+					repeaterContext?.getInnerBlocksPositions();
+				if (!innerBlocksPositions) {
+					return;
+				}
+
+				const blockPositionFromInnerBlocks = getBlockPosition(
+					clientId,
+					innerBlocksPositions
+				);
+
+				if (
+					blockPositionFromInnerBlocks &&
+					blockPositionFromColumn &&
+					!isEqual(
+						blockPositionFromInnerBlocks,
+						blockPositionFromColumn
+					)
+				) {
+					handleBlockMove(
 						clientId,
+						blockPositionFromInnerBlocks,
+						blockPositionFromColumn,
 						innerBlocksPositions
 					);
 
-					if (
-						blockPositionFromInnerBlocks &&
-						blockPositionFromColumn &&
-						!isEqual(
-							blockPositionFromInnerBlocks,
-							blockPositionFromColumn
-						)
-					) {
-						handleBlockMove(
-							clientId,
-							blockPositionFromInnerBlocks,
-							blockPositionFromColumn,
-							innerBlocksPositions
-						);
-
-						repeaterContext?.updateInnerBlocksPositions();
-					}
+					repeaterContext?.updateInnerBlocksPositions();
 				}
-			}, [blockPositionFromColumn]);
+			}, [
+				blockPositionFromColumn,
+				repeaterContext?.repeaterStatus,
+				clientId,
+			]);
 
 			return (
 				<>

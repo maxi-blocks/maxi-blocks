@@ -100,7 +100,8 @@ const handleCleanInlineStyles = (
 				.remove();
 		} else {
 			styleObjKeys.current.forEach(key => {
-				if (targetElement.style[key]) targetElement.style[key] = '';
+				if (targetElement.style[camelCase(key)])
+					targetElement.style[camelCase(key)] = '';
 			});
 		}
 	});

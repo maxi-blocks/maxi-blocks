@@ -103,17 +103,49 @@ export async function getCurrentUser() {
 }
 
 /**
-  /**
- * Deactivates an active plugin.
+ * Deactivates an active plugin with retry logic for CI environments.
  *
  * @param {string} slug Plugin slug.
  */
 export default async function deactivatePlugin(slug) {
-	await visitAdminPage('plugins.php');
-	const deleteLink = await page.$(`tr[data-slug="${slug}"] .delete a`);
-	if (deleteLink) {
-		return;
+	const maxRetries = 3;
+	let attempt = 1;
+
+	// eslint-disable-next-line no-constant-condition
+	while (true) {
+		try {
+			// eslint-disable-next-line no-await-in-loop
+			await visitAdminPage('plugins.php');
+			// eslint-disable-next-line no-await-in-loop
+			const deleteLink = await page.$(
+				`tr[data-slug="${slug}"] .delete a`
+			);
+			if (deleteLink) {
+				return;
+			}
+			// eslint-disable-next-line no-await-in-loop
+			await page.waitForSelector(
+				`tr[data-slug="${slug}"] .deactivate a`,
+				{
+					timeout: 30000,
+				}
+			);
+			// eslint-disable-next-line no-await-in-loop
+			await page.click(`tr[data-slug="${slug}"] .deactivate a`);
+			// eslint-disable-next-line no-await-in-loop
+			await page.waitForSelector(`tr[data-slug="${slug}"] .delete a`, {
+				timeout: 30000,
+			});
+			break; // Success, exit retry loop
+		} catch (error) {
+			if (attempt === maxRetries) {
+				throw error; // Final attempt failed, throw error
+			}
+			// eslint-disable-next-line no-await-in-loop
+			await new Promise(resolve => {
+				setTimeout(resolve, 2000);
+			}); // Wait 2s before retry
+			attempt += 1;
+		}
 	}
-	await page.click(`tr[data-slug="${slug}"] .deactivate a`);
-	await page.waitForSelector(`tr[data-slug="${slug}"] .delete a`);
 }

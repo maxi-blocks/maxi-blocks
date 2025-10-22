@@ -33,6 +33,7 @@ export default function SelectControl({
 	defaultValue,
 	value,
 	newStyle = false,
+	__nextHasNoMarginBottom, // extract so it doesn't get forwarded
 	...props
 }) {
 	const instanceId = useInstanceId(SelectControl);
@@ -76,13 +77,12 @@ export default function SelectControl({
 	return (
 		!isEmpty(options) && (
 			<BaseControl
-				__nextHasNoMarginBottom
+				__nextHasNoMarginBottom={__nextHasNoMarginBottom}
 				label={label}
 				hideLabelFromVision={hideLabelFromVision}
 				id={id}
 				help={help}
 				className={classes}
-				__nextHasNoMarginBottom
 			>
 				{(() => {
 					// Prevent leaking unknown props to DOM

@@ -1,5 +1,5 @@
 /*===============================================
-  TYPOGRAPHY CONTROL COMPONENT
+ TYPOGRAPHY CONTROL COMPONENT
 ===============================================*/
 
 .maxi-typography-control {
@@ -12,7 +12,7 @@
 	--typography-button-radius: 4px;
 
 	/*-------------------------------------------
-	  SHARED COMPONENT PATTERNS
+	 SHARED COMPONENT PATTERNS
 	-------------------------------------------*/
 
 	// Floating label pattern
@@ -69,7 +69,7 @@
 	}
 
 	/*-------------------------------------------
-	  BASE CONTROL CONFIGURATION
+	 BASE CONTROL CONFIGURATION
 	-------------------------------------------*/
 	.maxi-base-control {
 		flex: 1;
@@ -93,7 +93,7 @@
 	}
 
 	/*-------------------------------------------
-	  LINK OPTIONS & VARIANTS
+	 LINK OPTIONS & VARIANTS
 	-------------------------------------------*/
 	.maxi-typography-control__link-options {
 		.maxi-tabs-control__button--selected {
@@ -114,7 +114,7 @@
 	}
 
 	/*-------------------------------------------
-	  WEIGHT & SIZE ROW LAYOUT
+	 WEIGHT & SIZE ROW LAYOUT
 	-------------------------------------------*/
 	.maxi-typography-control__weight-size-row {
 		display: flex;
@@ -149,7 +149,7 @@
 	}
 
 	/*-------------------------------------------
-	  TYPOGRAPHY CONTROLS POSITIONING
+	 TYPOGRAPHY CONTROLS POSITIONING
 	-------------------------------------------*/
 	.maxi-typography-control__size {
 		margin-top: 3px !important;
@@ -169,7 +169,7 @@
 	}
 
 	/*-------------------------------------------
-	  SPACING CONTROLS LAYOUT
+	 SPACING CONTROLS LAYOUT
 	-------------------------------------------*/
 	.maxi-typography-control__spacing-controls {
 		margin-bottom: 15px !important;
@@ -209,7 +209,7 @@
 	}
 
 	/*-------------------------------------------
-	  FORMATTING BUTTONS
+  FORMATTING BUTTONS
 	-------------------------------------------*/
 	.maxi-typography-control__formatting-buttons {
 		display: flex !important;
@@ -265,7 +265,7 @@
 	}
 
 	/*-------------------------------------------
-	  SEPARATORS & ADVANCED TOGGLES
+	 SEPARATORS & ADVANCED TOGGLES
 	-------------------------------------------*/
 	.maxi-typography-control__separator {
 		border: none !important;
@@ -287,7 +287,7 @@
 	}
 
 	/*-------------------------------------------
-	  ADVANCED CONTROLS & ANIMATIONS
+	 ADVANCED CONTROLS & ANIMATIONS
 	-------------------------------------------*/
 	.maxi-typography-control__toggle-arrow {
 		transition: transform 200ms ease;
@@ -316,7 +316,7 @@
 	}
 
 	/*-------------------------------------------
-	  ALIGNMENT & SPACING
+	 ALIGNMENT & SPACING
 	-------------------------------------------*/
 	.maxi-typography-control__alignment-buttons {
 		margin-bottom: 8px;
@@ -324,7 +324,7 @@
 }
 
 /*===============================================
-  KEYFRAME ANIMATIONS
+ KEYFRAME ANIMATIONS
 ===============================================*/
 @keyframes slideDown {
 	from {
@@ -338,7 +338,7 @@
 }
 
 /*===============================================
-  EXTERNAL ALIGNMENT CONTROLS
+ EXTERNAL ALIGNMENT CONTROLS
 ===============================================*/
 .maxi-typography-control__alignment-buttons
 	.maxi-typography-panel__text-alignment {
@@ -355,7 +355,7 @@
 }
 
 /*===============================================
-  STYLE CARDS INTEGRATION
+ STYLE CARDS INTEGRATION
 ===============================================*/
 .maxi-style-cards__popover,
 .maxi-accordion-control__item,
@@ -390,5 +390,8 @@
 }
 
 /*===============================================
-  TYPOGRAPHY PANEL INTEGRATION
+ TYPOGRAPHY PANEL INTEGRATION
 ===============================================*/
+.maxi-link-settings-panel {
+	padding: 0px 8px;
+}

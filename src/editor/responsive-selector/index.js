@@ -72,12 +72,17 @@ const ResponsiveButton = ({
 				onClick={() => {
 					const targetSize = isBaseBreakpoint ? 'general' : target;
 
-					if (getIsTemplatePart()) setScreenSize(target);
-					else setScreenSize(targetSize);
+					// Compute the actual applied screen size based on context
+					const appliedScreenSize = getIsTemplatePart()
+						? target
+						: targetSize;
+
+					// Apply the same value to both Maxi and native Gutenberg
+					setScreenSize(appliedScreenSize);
 
 					// Update the native Gutenberg responsive selector
 					if (updateNativeResponsiveState) {
-						updateNativeResponsiveState(targetSize);
+						updateNativeResponsiveState(appliedScreenSize);
 					}
 				}}
 				aria-pressed={getIsPressed()}
@@ -197,30 +202,26 @@ const ResponsiveSelector = props => {
 		// Update Gutenberg's device type using the data store
 		// This will cause React to re-render with the correct checkmark
 		// Don't try to manipulate the DOM manually - let React handle it
+		const isFSE = getIsSiteEditor();
+
 		try {
-			// For post editor
-			if (select('core/editor')) {
+			if (isFSE) {
+				// For site editor
 				const { __experimentalSetPreviewDeviceType } =
-					dispatch('core/editor');
+					dispatch('core/edit-site');
+				if (__experimentalSetPreviewDeviceType) {
+					__experimentalSetPreviewDeviceType(deviceType);
+				}
+			} else {
+				// For post editor - use core/edit-post store
+				const { __experimentalSetPreviewDeviceType } =
+					dispatch('core/edit-post');
 				if (__experimentalSetPreviewDeviceType) {
 					__experimentalSetPreviewDeviceType(deviceType);
 				}
 			}
 		} catch (e) {
 			// Silently fail if editor store not available
-		}
-
-		try {
-			// For site editor
-			if (select('core/edit-site')) {
-				const { __experimentalSetPreviewDeviceType } =
-					dispatch('core/edit-site');
-				if (__experimentalSetPreviewDeviceType) {
-					__experimentalSetPreviewDeviceType(deviceType);
-				}
-			}
-		} catch (e) {
-			// Silently fail if site editor store not available
 		}
 	}, []);
 

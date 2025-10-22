@@ -53,50 +53,17 @@ const Inspector = props => {
 										props,
 									}),
 									deviceType === 'general' &&
-										!isList && {
+										isList && {
 											label: __(
-												'Heading / Paragraph tag',
+												'List options',
 												'maxi-blocks'
 											),
 											content: (
-												<FontLevelControl
-													{...getGroupAttributes(
-														attributes,
-														'typography',
-														true
-													)}
-													value={textLevel}
-													onChange={obj => {
-														const filteredObj =
-															Object.fromEntries(
-																Object.entries(
-																	obj
-																).filter(
-																	([
-																		key,
-																		value,
-																	]) =>
-																		value !==
-																		undefined
-																)
-															);
-														maxiSetAttributes(
-															filteredObj
-														);
-													}}
+												<ListOptionsControl
+													{...props}
 												/>
 											),
-											indicatorProps: ['textLevel'],
 										},
-									isList && {
-										label: __(
-											'List options',
-											'maxi-blocks'
-										),
-										content: (
-											<ListOptionsControl {...props} />
-										),
-									},
 									...inspectorTabs.alignment({
 										props,
 										isTextAlignment: true,

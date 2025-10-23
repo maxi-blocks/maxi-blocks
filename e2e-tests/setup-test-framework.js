@@ -231,6 +231,8 @@ function observeConsoleLogging() {
 
 		if (text.includes('was added to the iframe incorrectly')) return;
 
+		if (text.includes('ERR_CONNECTION_REFUSED')) return;
+
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
 
 		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of

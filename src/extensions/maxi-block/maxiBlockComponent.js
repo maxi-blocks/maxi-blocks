@@ -1115,6 +1115,18 @@ class MaxiBlockComponent extends Component {
 	uniqueIDChecker(idToCheck) {
 		if (this.isPatternsPreview || this.templateModal) return idToCheck;
 
+		// Check if this block was recently processed by paste detection
+		// If so, skip processing to prevent interference and style loss
+		if (
+			typeof window !== 'undefined' &&
+			window.maxiBlocksPasteDetection &&
+			window.maxiBlocksPasteDetection.isRecentlyProcessedByPaste(
+				this.props.clientId
+			)
+		) {
+			return idToCheck;
+		}
+
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
@@ -1127,7 +1139,6 @@ class MaxiBlockComponent extends Component {
 			this.props.clientId
 		);
 		const isBlockCopied = !isNewBlock && isInLastInserted;
-
 		// UniqueID validation completed
 
 		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {

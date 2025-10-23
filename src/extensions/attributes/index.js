@@ -1,4 +1,5 @@
 import './withAttributes';
+import './simplePasteDetection';
 
 export { default as generateStyleID } from './generateStyleID';
 export { default as getBlockData } from './getBlockData';

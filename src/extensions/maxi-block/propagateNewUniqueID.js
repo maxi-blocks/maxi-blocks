@@ -7,6 +7,7 @@ import { dispatch, select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getUpdatedBGLayersWithNewUniqueID } from '@extensions/attributes';
+import goThroughMaxiBlocks from './goThroughMaxiBlocks';
 
 /**
  * External dependencies
@@ -199,8 +200,68 @@ const propagateNewUniqueID = (
 		}
 	};
 
+	const updateGlobalRelations = () => {
+		// Update relations in ALL blocks that point to the old uniqueID
+		// This ensures IB relations are preserved when duplicating and removing original blocks
+		const attributesHasRelations = attributes =>
+			'relations' in attributes &&
+			!isEmpty(attributes.relations) &&
+			(isArray(attributes.relations) ||
+				(isPlainObject(attributes.relations) &&
+					isArray(Object.values(attributes.relations))));
+
+		goThroughMaxiBlocks(block => {
+			const { attributes, clientId: blockClientId } = block;
+
+			// Skip blocks that are part of the duplication (already handled by updateRelations)
+			if (lastChangedBlocks.includes(blockClientId)) return false;
+
+			if (!attributesHasRelations(attributes)) return false;
+
+			const relations = isArray(attributes.relations)
+				? attributes.relations
+				: Object.values(attributes.relations);
+
+			// Check if any relation points to the old uniqueID
+			const hasOldUniqueID = relations.some(
+				relation => relation.uniqueID === oldUniqueID
+			);
+
+			if (hasOldUniqueID) {
+				const newRelations = cloneDeep(relations).map(relation => {
+					if (relation.uniqueID === oldUniqueID) {
+						return {
+							...relation,
+							uniqueID: newUniqueID,
+						};
+					}
+					return relation;
+				});
+
+				if (!isEqual(relations, newRelations)) {
+					updateBlockAttributesUpdate(
+						blockClientId,
+						'relations',
+						newRelations
+					);
+
+					const maxiBlocksStore = select('maxiBlocks/blocks');
+					const blockEditorDispatch = dispatch('maxiBlocks/blocks');
+					if (!maxiBlocksStore.getBlockByClientId(blockClientId)) {
+						blockEditorDispatch.addBlockWithUpdatedAttributes(
+							blockClientId
+						);
+					}
+				}
+			}
+
+			return false;
+		});
+	};
+
 	updateRelations();
 	updateBGLayers();
+	updateGlobalRelations();
 
 	if (!isEmpty(blockAttributesUpdate)) {
 		const {

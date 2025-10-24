@@ -4,6 +4,11 @@
 import apiFetch from '@wordpress/api-fetch';
 
 /**
+ * Internal dependencies
+ */
+import { removeBlockStyles } from '@extensions/maxi-block/globalStyleManager';
+
+/**
  * External dependencies
  */
 import { isNil } from 'lodash';
@@ -32,6 +37,19 @@ const uniqueIDRemover = async (uniqueID, innerBlocks = null) => {
 	}
 
 	for (const uniqueID of uniqueIDArray) {
+		// Remove styles from GlobalStyleManager - this is the proper place for style cleanup
+		// since this function is only called when blocks are actually deleted by user action
+		try {
+			removeBlockStyles(uniqueID);
+		} catch (error) {
+			console.error(
+				'[uniqueIDRemover] Error removing styles for block:',
+				uniqueID,
+				error
+			);
+		}
+
+		// Remove from database
 		try {
 			// eslint-disable-next-line no-await-in-loop
 			const response = await apiFetch({

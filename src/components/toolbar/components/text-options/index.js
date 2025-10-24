@@ -72,10 +72,25 @@ const TextOptionsContent = props => {
 				className='maxi-typography-control__size'
 				value={getValue(`${prefix}font-size`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}font-size`, breakpoint)}
-				onChangeValue={val => {
-					onChangeFormat({
-						[`${prefix}font-size`]: val,
-					});
+				onChangeValue={(val, meta) => {
+					onChangeFormat(
+						{
+							[`${prefix}font-size`]: val,
+						},
+						{
+							meta: meta
+								? {
+										...meta,
+										inline: {
+											...meta.inline,
+											unit: getValue(
+												`${prefix}font-size-unit`
+											),
+										},
+								  }
+								: null,
+						}
+					);
 				}}
 				onReset={() =>
 					onChangeFormat(
@@ -84,7 +99,7 @@ const TextOptionsContent = props => {
 								`${prefix}font-size`
 							),
 						},
-						true
+						{ isReset: true }
 					)
 				}
 				min={minMaxSettings[getValue(`${prefix}font-size-unit`)].min}
@@ -98,10 +113,25 @@ const TextOptionsContent = props => {
 				className='maxi-typography-control__line-height'
 				value={getValue(`${prefix}line-height`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}line-height`, breakpoint)}
-				onChangeValue={val => {
-					onChangeFormat({
-						[`${prefix}line-height`]: val,
-					});
+				onChangeValue={(val, meta) => {
+					onChangeFormat(
+						{
+							[`${prefix}line-height`]: val,
+						},
+						{
+							meta: meta
+								? {
+										...meta,
+										inline: {
+											...meta.inline,
+											unit: getValue(
+												`${prefix}line-height-unit`
+											),
+										},
+								  }
+								: null,
+						}
+					);
 				}}
 				onReset={() =>
 					onChangeFormat(
@@ -110,7 +140,7 @@ const TextOptionsContent = props => {
 								`${prefix}line-height`
 							),
 						},
-						true
+						{ isReset: true }
 					)
 				}
 				min={
@@ -136,17 +166,32 @@ const TextOptionsContent = props => {
 					avoidXXL
 				)}
 				defaultValue={getDefault(`${prefix}letter-spacing`, breakpoint)}
-				onChangeValue={val => {
-					onChangeFormat({
-						[`${prefix}letter-spacing`]: val,
-					});
+				onChangeValue={(val, meta) => {
+					onChangeFormat(
+						{
+							[`${prefix}letter-spacing`]: val,
+						},
+						{
+							meta: meta
+								? {
+										...meta,
+										inline: {
+											...meta.inline,
+											unit: getValue(
+												`${prefix}letter-spacing-unit`
+											),
+										},
+								  }
+								: null,
+						}
+					);
 				}}
 				onReset={() =>
 					onChangeFormat(
 						{
 							[`${prefix}letter-spacing`]: '',
 						},
-						true
+						{ isReset: true }
 					)
 				}
 				min={
@@ -224,7 +269,7 @@ const TextOptions = props => {
 			styleCardPrefix,
 		});
 
-	const onChangeFormat = (value, isReset = false) => {
+	const onChangeFormat = (value, { isReset = false, meta } = {}) => {
 		const obj = setFormat({
 			formatValue,
 			isList,
@@ -242,8 +287,8 @@ const TextOptions = props => {
 
 		onChangeTextFormat(newFormatValue);
 
-		if (!isReset) onChange(obj);
-		else onChange({ ...obj, isReset: true });
+		if (!isReset) onChange({ ...obj, meta });
+		else onChange({ ...obj, isReset: true, meta });
 	};
 
 	const getDefault = (prop, customBreakpoint) => {

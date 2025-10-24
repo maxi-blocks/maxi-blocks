@@ -173,7 +173,9 @@ const MapControl = props => {
 				initial={1}
 				step={1}
 				value={mapMinZoom}
-				onChangeValue={val => onChange({ 'map-min-zoom': val })}
+				onChangeValue={(val, meta) =>
+					onChange({ 'map-min-zoom': val, meta })
+				}
 				onReset={() =>
 					onChange({
 						'map-min-zoom': getDefaultAttribute('map-min-zoom'),
@@ -189,7 +191,9 @@ const MapControl = props => {
 				initial={1}
 				step={1}
 				value={mapMaxZoom}
-				onChangeValue={val => onChange({ 'map-max-zoom': val })}
+				onChangeValue={(val, meta) =>
+					onChange({ 'map-max-zoom': val, meta })
+				}
 				onReset={() =>
 					onChange({
 						'map-max-zoom': getDefaultAttribute('map-max-zoom'),

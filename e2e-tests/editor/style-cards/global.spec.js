@@ -80,6 +80,26 @@ describe('SC settings', () => {
 		});
 	});
 
+	it('Can copy a style card to edit it', async () => {
+		await createNewPost();
+		await setBrowserViewport('large');
+
+		await getStyleCardEditor({
+			page,
+			accordion: 'divider',
+		});
+
+		await addMoreSC();
+		const newName = `copy ${new Date().getTime()}`;
+		await copySCToEdit(page, newName);
+
+		const {
+			value: { name: SCName },
+		} = await receiveSelectedMaxiStyleCard(page);
+
+		expect(SCName).toContain(`Daemon - ${newName}`);
+	});
+
 	it('Can add style cards from library and switch them with select', async () => {
 		await createNewPost();
 		await setBrowserViewport('large');
@@ -106,26 +126,6 @@ describe('SC settings', () => {
 		const { key } = await receiveSelectedMaxiStyleCard(page);
 
 		expect(key).toStrictEqual('sc_maxi');
-	});
-
-	it('Can copy a style card to edit it', async () => {
-		await createNewPost();
-		await setBrowserViewport('large');
-
-		await getStyleCardEditor({
-			page,
-			accordion: 'divider',
-		});
-
-		await addMoreSC();
-		const newName = `copy ${new Date().getTime()}`;
-		await copySCToEdit(page, newName);
-
-		const {
-			value: { name: SCName },
-		} = await receiveSelectedMaxiStyleCard(page);
-
-		expect(SCName).toContain(`Daemon - ${newName}`);
 	});
 
 	it('Applies SC on all pages', async () => {

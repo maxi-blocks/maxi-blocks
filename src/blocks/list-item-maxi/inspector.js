@@ -54,6 +54,13 @@ const Inspector = props => {
 										context,
 										disableCustomFormats,
 									}),
+									...inspectorTabs.linkSettings({
+										props,
+										styleCardPrefix: '',
+										prefix: '',
+										classNamePanel:
+											'maxi-link-settings-panel',
+									}),
 									...inspectorTabs.blockBackground({
 										props,
 									}),

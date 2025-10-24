@@ -16,6 +16,7 @@ import {
 	openPreviewPage,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	editAdvancedNumberControl,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
@@ -233,6 +234,24 @@ describe('BackgroundControl', () => {
 		);
 
 		expect(checkEditor).toMatchSnapshot();
+
+		await openSidebarTab(page, 'style', 'height width');
+
+		const heightSelector = await page.$(
+			'.maxi-full-size-control .maxi-advanced-number-control select'
+		);
+
+		await heightSelector.select('em');
+
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-full-size-control .maxi-advanced-number-control'
+			),
+			newNumber: '1',
+		});
+
+		await page.waitForTimeout(300);
 
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');

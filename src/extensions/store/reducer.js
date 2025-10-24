@@ -59,10 +59,34 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 	});
 
 	const winHeight = window.outerWidth;
-	const responsiveWidth =
-		(size === 'general' && 'none') ||
-		(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
-		breakpoints[size];
+
+	// For template parts in 'general' mode, we need to calculate the width based on the base breakpoint
+	// For other contexts, 'general' means full width ('none')
+	let responsiveWidth;
+	if (size === 'general') {
+		if (getIsTemplatePart()) {
+			// Check if breakpoints are loaded
+			const hasBreakpoints =
+				breakpoints &&
+				typeof breakpoints === 'object' &&
+				Object.keys(breakpoints).length > 0;
+
+			if (hasBreakpoints) {
+				const baseBreakpoint = getWinBreakpoint(winSize, breakpoints);
+				responsiveWidth = breakpoints[baseBreakpoint];
+			} else {
+				// Breakpoints not loaded yet, skip setting width for now
+				// This will be called again when breakpoints are loaded
+				return;
+			}
+		} else {
+			responsiveWidth = 'none';
+		}
+	} else if (size === 'xxl') {
+		responsiveWidth = xxlSize > winSize ? xxlSize : winSize;
+	} else {
+		responsiveWidth = breakpoints[size];
+	}
 
 	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
 	editorWrapper.setAttribute('is-maxi-preview', true);
@@ -75,9 +99,18 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 	}
 
 	if (size === 'general') {
-		editorWrapper.style.width = '';
-		editorWrapper.style.margin = '';
-		editorWrapper.style.minWidth = '';
+		// For template parts, 'general' should display at the base breakpoint width
+		// For other contexts, 'general' means full width (no constraint)
+		if (getIsTemplatePart()) {
+			editorWrapper.style.minWidth = 'auto';
+			editorWrapper.style.margin =
+				winHeight > responsiveWidth ? '0 auto' : '';
+			editorWrapper.style.width = `${responsiveWidth}px`;
+		} else {
+			editorWrapper.style.width = '';
+			editorWrapper.style.margin = '';
+			editorWrapper.style.minWidth = '';
+		}
 	} else {
 		editorWrapper.style.minWidth = 'auto';
 		editorWrapper.style.margin =

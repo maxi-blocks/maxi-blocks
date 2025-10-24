@@ -33,6 +33,13 @@ coverage
 # Ignore Cursor rules
 .cursorrules
 
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
 # Ignore Claude files
 CLAUDE.md
 

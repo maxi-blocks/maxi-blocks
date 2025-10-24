@@ -49,8 +49,26 @@ class DocumentStyleManager {
 	 * @param {string} styleContent - CSS content for the block
 	 */
 	addBlockStyles(uniqueID, styleContent) {
+		console.log(
+			'[GlobalStyleManager] addBlockStyles called:',
+			JSON.stringify({
+				uniqueID,
+				styleContentLength: styleContent?.length,
+				currentBlockCount: this.blockStyles.size,
+			})
+		);
+
 		// Store the styles
 		this.blockStyles.set(uniqueID, styleContent);
+
+		console.log(
+			'[GlobalStyleManager] After adding:',
+			JSON.stringify({
+				uniqueID,
+				totalBlocksStored: this.blockStyles.size,
+				allStoredIDs: Array.from(this.blockStyles.keys()),
+			})
+		);
 
 		// Schedule update
 		this.scheduleUpdate();
@@ -61,8 +79,24 @@ class DocumentStyleManager {
 	 * @param {string} uniqueID - Block unique identifier
 	 */
 	removeBlockStyles(uniqueID) {
+		console.log(
+			'[GlobalStyleManager] removeBlockStyles called:',
+			JSON.stringify({ uniqueID, existed: this.blockStyles.has(uniqueID) })
+		);
+
+		// Get stack trace to see who's calling this
+		console.trace('[GlobalStyleManager] removeBlockStyles stack trace:');
+
 		if (this.blockStyles.has(uniqueID)) {
 			this.blockStyles.delete(uniqueID);
+			console.log(
+				'[GlobalStyleManager] After removal:',
+				JSON.stringify({
+					uniqueID,
+					remainingBlocks: this.blockStyles.size,
+					allStoredIDs: Array.from(this.blockStyles.keys()),
+				})
+			);
 			this.scheduleUpdate();
 		}
 	}
@@ -90,6 +124,8 @@ class DocumentStyleManager {
 	 * Flush all pending updates to the DOM
 	 */
 	flush() {
+		console.log('[GlobalStyleManager] flush() called');
+
 		if (!this.consolidatedStyleElement) {
 			this.initializeStyleElement();
 		}
@@ -99,7 +135,16 @@ class DocumentStyleManager {
 
 		// Update the style element only if content changed
 		if (this.consolidatedStyleElement.textContent !== consolidatedCSS) {
+			console.log(
+				'[GlobalStyleManager] Updating DOM with new CSS:',
+				JSON.stringify({
+					newLength: consolidatedCSS.length,
+					oldLength: this.consolidatedStyleElement.textContent.length,
+				})
+			);
 			this.consolidatedStyleElement.textContent = consolidatedCSS;
+		} else {
+			console.log('[GlobalStyleManager] CSS unchanged, skipping DOM update');
 		}
 	}
 
@@ -108,12 +153,22 @@ class DocumentStyleManager {
 	 * @returns {string} - Consolidated CSS content
 	 */
 	buildConsolidatedCSS() {
+		console.log(
+			'[GlobalStyleManager] buildConsolidatedCSS started:',
+			JSON.stringify({
+				totalBlocks: this.blockStyles.size,
+				blockIDs: Array.from(this.blockStyles.keys()),
+			})
+		);
+
 		if (this.blockStyles.size === 0) {
 			return '';
 		}
 
 		const cssChunks = [];
 		const processedRules = new Set(); // For deduplication
+		let skippedCount = 0;
+		let addedCount = 0;
 
 		// Add header comment for debugging
 		cssChunks.push('/* MaxiBlocks Consolidated Styles - Generated */');
@@ -121,6 +176,10 @@ class DocumentStyleManager {
 		// Process each block's styles
 		for (const [uniqueID, styleContent] of this.blockStyles.entries()) {
 			if (!styleContent || typeof styleContent !== 'string') {
+				console.log(
+					'[GlobalStyleManager] Skipping invalid content for:',
+					JSON.stringify({ uniqueID })
+				);
 				// Skip invalid content - using empty block to avoid continue statement
 			} else {
 				// Add block identifier comment for debugging
@@ -131,9 +190,37 @@ class DocumentStyleManager {
 				if (!processedRules.has(trimmedContent)) {
 					cssChunks.push(trimmedContent);
 					processedRules.add(trimmedContent);
+					addedCount++;
+					console.log(
+						'[GlobalStyleManager] Added styles for:',
+						JSON.stringify({
+							uniqueID,
+							contentLength: trimmedContent.length,
+							contentPreview: trimmedContent.substring(0, 100),
+						})
+					);
+				} else {
+					skippedCount++;
+					console.log(
+						'[GlobalStyleManager] SKIPPED duplicate styles for:',
+						JSON.stringify({
+							uniqueID,
+							contentLength: trimmedContent.length,
+							contentPreview: trimmedContent.substring(0, 100),
+						})
+					);
 				}
 			}
 		}
+
+		console.log(
+			'[GlobalStyleManager] buildConsolidatedCSS completed:',
+			JSON.stringify({
+				addedCount,
+				skippedCount,
+				totalChunks: cssChunks.length,
+			})
+		);
 
 		return cssChunks.join('\n');
 	}

@@ -625,6 +625,20 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		const { uniqueID } = this.props.attributes;
+		const blockName = this.safeSelect(
+			'core/block-editor',
+			'getBlockName',
+			this.props.clientId
+		);
+
+		console.log(
+			'[MaxiBlockComponent] componentWillUnmount START:',
+			JSON.stringify({
+				uniqueID,
+				clientId: this.props.clientId,
+				blockName,
+			})
+		);
 
 		// Block cleanup initiated
 
@@ -724,57 +738,154 @@ class MaxiBlockComponent extends Component {
 		);
 		const keepStylesOnCloning =
 			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
-		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
+		// Check for editor states that indicate temporary unmounting
+		const isDragging =
+			this.safeSelect('core/block-editor', 'isDraggingBlocks') || false;
+		const isTyping =
+			this.safeSelect('core/block-editor', 'isTyping') || false;
+		const isMultiSelecting =
+			this.safeSelect('core/block-editor', 'isMultiSelecting') || false;
+
+		// IMPORTANT: Check if block still exists in the full block tree
+		// During React reconciliation, getBlock might return null temporarily
+		// but the block is actually being remounted, not removed
+		const allBlocks =
+			this.safeSelect('core/block-editor', 'getBlocks') || [];
+
+		// Helper function to recursively collect all clientIds from block tree
+		const collectAllClientIds = blocks => {
+			const ids = [];
+			const traverse = blockList => {
+				if (!blockList || !Array.isArray(blockList)) return;
+				for (const block of blockList) {
+					if (block && block.clientId) {
+						ids.push(block.clientId);
+					}
+					if (
+						block &&
+						block.innerBlocks &&
+						Array.isArray(block.innerBlocks)
+					) {
+						traverse(block.innerBlocks);
+					}
+				}
+			};
+			traverse(blocks);
+			return ids;
+		};
+
+		const allClientIdsInTree = collectAllClientIds(allBlocks);
+		const isClientIdInTree = allClientIdsInTree.includes(
+			this.props.clientId
+		);
+
+		const blockExistsInTree = this.checkBlockInTree(
+			allBlocks,
+			this.props.clientId
+		);
+
+		// Enhanced logic: Don't remove styles during temporary editor states
+		const isTemporaryUnmount = isDragging || isTyping || isMultiSelecting;
+
+		// Additional check: If block tree is being modified, delay cleanup
+		const isBlockTreeModifying =
+			this.safeSelect('core/block-editor', 'isBlockBeingInserted') ||
+			false;
+
+		const isBlockBeingRemoved =
+			!keepStylesOnEditor &&
+			!keepStylesOnCloning &&
+			!blockExistsInTree &&
+			!isTemporaryUnmount &&
+			!isBlockTreeModifying;
+
+		console.log(
+			'[MaxiBlockComponent] unmount:',
+			JSON.stringify({
+				uniqueID,
+				clientId: this.props.clientId,
+				inTree: isClientIdInTree,
+				checkFound: blockExistsInTree,
+				isDragging,
+				isTyping,
+				isMultiSelecting,
+				isBlockTreeModifying,
+				isTemporaryUnmount,
+				removing: isBlockBeingRemoved,
+			})
+		);
+
+		// DISABLED: Don't remove styles on unmount due to React reconciliation issues
+		// Styles will be cleaned up when blocks are actually deleted via user actions
+		// or when the GlobalStyleManager detects truly orphaned styles
+		console.log(
+			'[MaxiBlockComponent] componentWillUnmount - SKIPPING style removal to prevent React reconciliation issues:',
+			JSON.stringify({
+				uniqueID,
+				clientId: this.props.clientId,
+				reason: 'Style removal disabled in componentWillUnmount to prevent issues during React reconciliation',
+			})
+		);
+
+		// Only clean up non-style resources
 		if (isBlockBeingRemoved) {
+			console.log(
+				'[MaxiBlockComponent] Cleaning up non-style resources:',
+				JSON.stringify({ uniqueID, clientId: this.props.clientId })
+			);
+
 			const { clientId } = this.props;
 
-			// Use a single rAF for all style operations
-			const batchStyleOperations = () => {
-				const obj = this.getStylesObject;
+			// Use microtask for store updates to avoid blocking
+			queueMicrotask(() => {
+				// Only clean up store data, not styles
+				const batchedDispatch = () => {
+					dispatch('maxiBlocks/blocks').removeBlock(
+						uniqueID,
+						clientId
+					);
+					dispatch('maxiBlocks/customData').removeCustomData(
+						uniqueID
+					);
+					dispatch('maxiBlocks/relations').removeBlockRelation(
+						uniqueID
+					);
+					// NOTE: Not removing CSS cache to prevent style loss
+				};
+				batchedDispatch();
 
-				// Batch all style removals into a single operation
-				const fragment = document.createDocumentFragment();
-				styleResolver({
-					styles: obj,
-					remover: true,
-					optimized: true,
-					fragment,
-					uniqueID,
-				});
-				this.removeStyles();
-
-				// Use microtask for store updates to avoid blocking
-				queueMicrotask(() => {
-					// Batch dispatch operations
-					const batchedDispatch = () => {
-						dispatch('maxiBlocks/blocks').removeBlock(
-							uniqueID,
-							clientId
-						);
-						dispatch('maxiBlocks/customData').removeCustomData(
-							uniqueID
-						);
-						dispatch('maxiBlocks/relations').removeBlockRelation(
-							uniqueID
-						);
-						dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
-					};
-					batchedDispatch();
-
-					if (this.props.repeaterStatus) {
-						this.handleRepeaterCleanup();
-					}
-				});
-			};
-
-			// Schedule style operations in the next frame
-			requestAnimationFrame(batchStyleOperations);
+				if (this.props.repeaterStatus) {
+					this.handleRepeaterCleanup();
+				}
+			});
 		}
 
 		if (this.maxiBlockWillUnmount) {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 		}
+	}
+
+	// Helper method to recursively check if block exists in tree
+	checkBlockInTree(blocks, targetClientId) {
+		if (!blocks || !Array.isArray(blocks)) {
+			return false;
+		}
+
+		for (const block of blocks) {
+			if (block.clientId === targetClientId) {
+				return true;
+			}
+
+			// Recursively check inner blocks
+			if (block.innerBlocks && block.innerBlocks.length > 0) {
+				if (this.checkBlockInTree(block.innerBlocks, targetClientId)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	// Add new helper method for repeater cleanup
@@ -1139,15 +1250,17 @@ class MaxiBlockComponent extends Component {
 
 		// Use Sets for O(1) lookup instead of array spread and includes
 		const lastInsertedSet = new Set(
-			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') ||
-				[]
+			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') || []
 		);
 		const blockClientIdsSet = new Set(
 			this.safeSelect('maxiBlocks/blocks', 'getBlockClientIds') || []
 		);
 
 		// Only proceed if this clientId is not already tracked
-		if (!lastInsertedSet.has(clientId) && !blockClientIdsSet.has(clientId)) {
+		if (
+			!lastInsertedSet.has(clientId) &&
+			!blockClientIdsSet.has(clientId)
+		) {
 			const allClientIds = this.safeSelect(
 				'core/block-editor',
 				'getClientIdsWithDescendants'
@@ -1195,8 +1308,7 @@ class MaxiBlockComponent extends Component {
 
 		// OPTIMIZED: Use Set for O(1) lookup instead of array.includes O(n)
 		const lastInsertedBlocks =
-			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') ||
-			[];
+			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') || [];
 		const lastInsertedSet = new Set(lastInsertedBlocks);
 		const isInLastInserted = lastInsertedSet.has(this.props.clientId);
 		const isBlockCopied = !isNewBlock && isInLastInserted;

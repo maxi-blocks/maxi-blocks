@@ -865,6 +865,7 @@ class MaxiBlockComponent extends Component {
 		const { tabletPreview, mobilePreview } =
 			this.getPreviewElements(editorWrapper);
 		const previewTarget = tabletPreview ?? mobilePreview;
+		if (!previewTarget) return;
 		const postEditor = this.getCachedElement(
 			'.edit-post-visual-editor',
 			document.body
@@ -873,11 +874,15 @@ class MaxiBlockComponent extends Component {
 		const responsiveWidth = postEditor.getAttribute(
 			'maxi-blocks-responsive-width'
 		);
-		const isMaxiPreview = postEditor.getAttribute('is-maxi-preview');
+		previewTarget.style.width = `${responsiveWidth}px`;
+		previewTarget.style.boxSizing = 'content-box';
+		previewTarget.style.padding = '0';
 
-		if (isMaxiPreview) {
-			previewTarget.style.width = `${responsiveWidth}px`;
-			previewTarget.style.boxSizing = 'content-box';
+		const previewTargetIframe = document.querySelector(
+			'iframe[name="editor-canvas"]'
+		);
+		if (previewTargetIframe) {
+			previewTargetIframe.style.width = `${responsiveWidth}px`;
 		}
 	}
 

@@ -1114,31 +1114,59 @@ class MaxiBlockComponent extends Component {
 
 	// This function saves the last inserted blocks' clientIds, so we can use them
 	// to update IB relations.
+	// OPTIMIZED: Use static cache to prevent excessive calls during page load
 	updateLastInsertedBlocks() {
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { clientId } = this.props;
 
-		if (
-			![
-				...this.safeSelect(
-					'maxiBlocks/blocks',
-					'getLastInsertedBlocks'
-				),
-				...this.safeSelect('maxiBlocks/blocks', 'getBlockClientIds'),
-			].includes(clientId)
-		) {
+		// Use a static cache shared across all instances to prevent redundant updates
+		if (!MaxiBlockComponent._lastInsertedBlocksCache) {
+			MaxiBlockComponent._lastInsertedBlocksCache = {
+				lastUpdate: 0,
+				processing: false,
+			};
+		}
+
+		const cache = MaxiBlockComponent._lastInsertedBlocksCache;
+		const now = Date.now();
+
+		// Throttle: only update once per 100ms to prevent excessive calls during page load
+		if (now - cache.lastUpdate < 100 || cache.processing) {
+			return;
+		}
+
+		cache.processing = true;
+
+		// Use Sets for O(1) lookup instead of array spread and includes
+		const lastInsertedSet = new Set(
+			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') ||
+				[]
+		);
+		const blockClientIdsSet = new Set(
+			this.safeSelect('maxiBlocks/blocks', 'getBlockClientIds') || []
+		);
+
+		// Only proceed if this clientId is not already tracked
+		if (!lastInsertedSet.has(clientId) && !blockClientIdsSet.has(clientId)) {
 			const allClientIds = this.safeSelect(
 				'core/block-editor',
 				'getClientIdsWithDescendants'
 			);
 
-			this.safeDispatch('maxiBlocks/blocks').saveLastInsertedBlocks(
-				allClientIds
-			);
-			this.safeDispatch('maxiBlocks/blocks').saveBlockClientIds(
-				allClientIds
-			);
+			// Only update if we actually got client IDs
+			if (allClientIds && allClientIds.length > 0) {
+				this.safeDispatch('maxiBlocks/blocks').saveLastInsertedBlocks(
+					allClientIds
+				);
+				this.safeDispatch('maxiBlocks/blocks').saveBlockClientIds(
+					allClientIds
+				);
+
+				cache.lastUpdate = now;
+			}
 		}
+
+		cache.processing = false;
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -1159,14 +1187,18 @@ class MaxiBlockComponent extends Component {
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		const isNewBlock = select('maxiBlocks/blocks').getIsNewBlock(
+		const isNewBlock = this.safeSelect(
+			'maxiBlocks/blocks',
+			'getIsNewBlock',
 			this.props.attributes.uniqueID
 		);
+
+		// OPTIMIZED: Use Set for O(1) lookup instead of array.includes O(n)
 		const lastInsertedBlocks =
-			select('maxiBlocks/blocks').getLastInsertedBlocks();
-		const isInLastInserted = lastInsertedBlocks.includes(
-			this.props.clientId
-		);
+			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') ||
+			[];
+		const lastInsertedSet = new Set(lastInsertedBlocks);
+		const isInLastInserted = lastInsertedSet.has(this.props.clientId);
 		const isBlockCopied = !isNewBlock && isInLastInserted;
 		// UniqueID validation completed
 

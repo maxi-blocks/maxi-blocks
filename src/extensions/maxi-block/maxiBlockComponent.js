@@ -625,20 +625,6 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		const { uniqueID } = this.props.attributes;
-		const blockName = this.safeSelect(
-			'core/block-editor',
-			'getBlockName',
-			this.props.clientId
-		);
-
-		console.log(
-			'[MaxiBlockComponent] componentWillUnmount START:',
-			JSON.stringify({
-				uniqueID,
-				clientId: this.props.clientId,
-				blockName,
-			})
-		);
 
 		// Block cleanup initiated
 
@@ -775,11 +761,6 @@ class MaxiBlockComponent extends Component {
 			return ids;
 		};
 
-		const allClientIdsInTree = collectAllClientIds(allBlocks);
-		const isClientIdInTree = allClientIdsInTree.includes(
-			this.props.clientId
-		);
-
 		const blockExistsInTree = this.checkBlockInTree(
 			allBlocks,
 			this.props.clientId
@@ -800,41 +781,8 @@ class MaxiBlockComponent extends Component {
 			!isTemporaryUnmount &&
 			!isBlockTreeModifying;
 
-		console.log(
-			'[MaxiBlockComponent] unmount:',
-			JSON.stringify({
-				uniqueID,
-				clientId: this.props.clientId,
-				inTree: isClientIdInTree,
-				checkFound: blockExistsInTree,
-				isDragging,
-				isTyping,
-				isMultiSelecting,
-				isBlockTreeModifying,
-				isTemporaryUnmount,
-				removing: isBlockBeingRemoved,
-			})
-		);
-
-		// DISABLED: Don't remove styles on unmount due to React reconciliation issues
-		// Styles will be cleaned up when blocks are actually deleted via user actions
-		// or when the GlobalStyleManager detects truly orphaned styles
-		console.log(
-			'[MaxiBlockComponent] componentWillUnmount - SKIPPING style removal to prevent React reconciliation issues:',
-			JSON.stringify({
-				uniqueID,
-				clientId: this.props.clientId,
-				reason: 'Style removal disabled in componentWillUnmount to prevent issues during React reconciliation',
-			})
-		);
-
 		// Only clean up non-style resources
 		if (isBlockBeingRemoved) {
-			console.log(
-				'[MaxiBlockComponent] Cleaning up non-style resources:',
-				JSON.stringify({ uniqueID, clientId: this.props.clientId })
-			);
-
 			const { clientId } = this.props;
 
 			// Use microtask for store updates to avoid blocking

@@ -196,7 +196,9 @@ let subscribeTimeout = null;
 subscribe(() => {
 	// Process block changes regardless of paste detection to catch code editor insertions
 	// But still use paste detection to optimize processing
-	if (isProcessing) return;
+	if (isProcessing) {
+		return;
+	}
 
 	// Throttle to prevent excessive calls during rapid operations (like code editor)
 	if (subscribeTimeout) {
@@ -204,17 +206,43 @@ subscribe(() => {
 	}
 
 	subscribeTimeout = setTimeout(() => {
-		processBlockChanges();
+		// Quick check: only process if block count changed
+		const blockEditor = select('core/block-editor');
+		if (!blockEditor) {
+			subscribeTimeout = null;
+			return;
+		}
+
+		const currentBlockClientIds = blockEditor.getClientIdsWithDescendants();
+		if (!currentBlockClientIds) {
+			subscribeTimeout = null;
+			return;
+		}
+
+		// Only process if there are new blocks
+		const previousSet = new Set(previousBlockClientIds);
+		const newBlocks = currentBlockClientIds.filter(
+			clientId => !previousSet.has(clientId)
+		);
+
+		if (newBlocks.length > 0) {
+			processBlockChanges();
+		}
+
 		subscribeTimeout = null;
 	}, 100); // 100ms throttle
 });
 
 const processBlockChanges = () => {
 	const blockEditor = select('core/block-editor');
-	if (!blockEditor) return;
+	if (!blockEditor) {
+		return;
+	}
 
 	const currentBlockClientIds = blockEditor.getClientIdsWithDescendants();
-	if (!currentBlockClientIds) return;
+	if (!currentBlockClientIds) {
+		return;
+	}
 
 	// Detect new blocks (pasted blocks)
 	const previousSet = new Set(previousBlockClientIds);
@@ -248,7 +276,6 @@ const processBlockChanges = () => {
 			) {
 				// Check if this unique ID might be a duplicate (from code editor or cross-page paste)
 				const oldUniqueID = block.attributes.uniqueID;
-				const isDuplicateID = !isBlockProtected(clientId); // If not protected, it might be a duplicate
 
 				// Always regenerate IDs for newly inserted blocks to prevent conflicts
 				const newUniqueID = uniqueIDGenerator({

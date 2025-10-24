@@ -660,7 +660,7 @@ describe('TextMaxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it.only('Test Text Maxi on List mode and changing the font color', async () => {
+	it('Test Text Maxi on List mode and changing the font color', async () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__list-options', button =>

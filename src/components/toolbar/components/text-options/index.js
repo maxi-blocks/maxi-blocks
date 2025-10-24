@@ -78,13 +78,17 @@ const TextOptionsContent = props => {
 							[`${prefix}font-size`]: val,
 						},
 						{
-							meta: {
-								...meta,
-								inline: {
-									...meta.inline,
-									unit: getValue(`${prefix}font-size-unit`),
-								},
-							},
+							meta: meta
+								? {
+										...meta,
+										inline: {
+											...meta.inline,
+											unit: getValue(
+												`${prefix}font-size-unit`
+											),
+										},
+								  }
+								: null,
 						}
 					);
 				}}
@@ -115,13 +119,17 @@ const TextOptionsContent = props => {
 							[`${prefix}line-height`]: val,
 						},
 						{
-							meta: {
-								...meta,
-								inline: {
-									...meta.inline,
-									unit: getValue(`${prefix}line-height-unit`),
-								},
-							},
+							meta: meta
+								? {
+										...meta,
+										inline: {
+											...meta.inline,
+											unit: getValue(
+												`${prefix}line-height-unit`
+											),
+										},
+								  }
+								: null,
 						}
 					);
 				}}
@@ -164,15 +172,17 @@ const TextOptionsContent = props => {
 							[`${prefix}letter-spacing`]: val,
 						},
 						{
-							meta: {
-								...meta,
-								inline: {
-									...meta.inline,
-									unit: getValue(
-										`${prefix}letter-spacing-unit`
-									),
-								},
-							},
+							meta: meta
+								? {
+										...meta,
+										inline: {
+											...meta.inline,
+											unit: getValue(
+												`${prefix}letter-spacing-unit`
+											),
+										},
+								  }
+								: null,
 						}
 					);
 				}}

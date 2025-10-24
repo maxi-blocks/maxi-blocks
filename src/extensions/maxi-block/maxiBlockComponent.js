@@ -192,8 +192,8 @@ class MaxiBlockComponent extends Component {
 
 		// Block successfully registered
 
-		// Init - skip updateLastInsertedBlocks to avoid array accumulation
-		// this.updateLastInsertedBlocks();
+		// Init
+		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
@@ -1110,6 +1110,35 @@ class MaxiBlockComponent extends Component {
 				subtree: true,
 			});
 		});
+	}
+
+	// This function saves the last inserted blocks' clientIds, so we can use them
+	// to update IB relations.
+	updateLastInsertedBlocks() {
+		if (this.isPatternsPreview || this.templateModal) return;
+		const { clientId } = this.props;
+
+		if (
+			![
+				...this.safeSelect(
+					'maxiBlocks/blocks',
+					'getLastInsertedBlocks'
+				),
+				...this.safeSelect('maxiBlocks/blocks', 'getBlockClientIds'),
+			].includes(clientId)
+		) {
+			const allClientIds = this.safeSelect(
+				'core/block-editor',
+				'getClientIdsWithDescendants'
+			);
+
+			this.safeDispatch('maxiBlocks/blocks').saveLastInsertedBlocks(
+				allClientIds
+			);
+			this.safeDispatch('maxiBlocks/blocks').saveBlockClientIds(
+				allClientIds
+			);
+		}
 	}
 
 	uniqueIDChecker(idToCheck) {

@@ -558,6 +558,11 @@ class MaxiBlockComponent extends Component {
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		this.updateDOMReferences();
 
+		// Update FSE iframe styles even for template parts
+		if (getIsSiteEditor()) {
+			this.addMaxiFSEIframeStyles();
+		}
+
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { uniqueID } = this.props.attributes;
 
@@ -2518,10 +2523,12 @@ class MaxiBlockComponent extends Component {
 
 			// Append style to iframe's head
 			fseIframe.contentDocument.head.appendChild(iframeStyles);
-
-			// Copy Maxi CSS variables to FSE iframe
-			this.copyMaxiCSSVariablesToIframe(fseIframe);
 		}
+
+		// Always copy/update Maxi CSS variables to FSE iframe
+		// This ensures variables are available even if they weren't ready
+		// during initial iframe creation
+		this.copyMaxiCSSVariablesToIframe(fseIframe);
 	}
 
 	/**
@@ -2531,19 +2538,54 @@ class MaxiBlockComponent extends Component {
 	copyMaxiCSSVariablesToIframe(fseIframe) {
 		if (!fseIframe || !fseIframe.contentDocument) return;
 
-		// Check if variables are already copied
-		const existingVariables = fseIframe.contentDocument.getElementById(
+		// Copy style card CSS variables from main document
+		const maxiVariables = document.querySelector(
+			'#maxi-blocks-sc-vars-inline-css'
+		);
+		if (maxiVariables) {
+			// Remove old version if exists
+			fseIframe.contentDocument
+				.querySelector('#maxi-blocks-sc-vars-inline-css')
+				?.remove();
+
+			// Clone and append to iframe
+			const clonedVariables = maxiVariables.cloneNode(true);
+			fseIframe.contentDocument.head.appendChild(clonedVariables);
+		}
+
+		// Load fonts into FSE iframe
+		loadFonts(getPageFonts(), true, fseIframe.contentDocument);
+
+		// Copy font stylesheet links to FSE iframe
+		const maxiFonts = Array.from(
+			document.querySelectorAll(
+				'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]'
+			)
+		);
+		if (maxiFonts.length > 0) {
+			maxiFonts.forEach(rawMaxiFont => {
+				// Check if this font link already exists in iframe
+				const fontId = rawMaxiFont.id;
+				if (!fseIframe.contentDocument.querySelector(`#${fontId}`)) {
+					const maxiFont = rawMaxiFont.cloneNode(true);
+					fseIframe.contentDocument.head.appendChild(maxiFont);
+				}
+			});
+		}
+
+		// Check if spinners are already added
+		const existingSpinners = fseIframe.contentDocument.getElementById(
 			'maxi-blocks-fse-spinners'
 		);
 
-		if (!existingVariables) {
-			// Create style element for CSS variables
-			const variablesStyle =
+		if (!existingSpinners) {
+			// Create style element for spinner animations
+			const spinnersStyle =
 				fseIframe.contentDocument.createElement('style');
-			variablesStyle.id = 'maxi-blocks-fse-spinners';
+			spinnersStyle.id = 'maxi-blocks-fse-spinners';
 
 			// Add essential CSS variables and spinner animations for loaders
-			variablesStyle.textContent = `
+			spinnersStyle.textContent = `
 				:root {
 					--maxi-primary-color: #2c8a46; /* Fresh lime green */
 				}
@@ -2561,7 +2603,7 @@ class MaxiBlockComponent extends Component {
 				}
 			`;
 
-			fseIframe.contentDocument.head.appendChild(variablesStyle);
+			fseIframe.contentDocument.head.appendChild(spinnersStyle);
 		}
 	}
 

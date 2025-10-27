@@ -125,13 +125,13 @@ const MenuSC = ({ items, refine }) => (
 );
 
 const MenuSelect = ({ items, currentRefinement, refine }) => {
-	const proElement = items.find(element => element.label === 'Cloud') || {
+	const proElement = items.find(element => element.value === 'Pro') || {
 		label: 'Cloud',
 		value: 'Pro',
 		count: 0,
 		isRefined: false,
 	};
-	const freeElement = items.find(element => element.label === 'Free') || {
+	const freeElement = items.find(element => element.value === 'Free') || {
 		label: 'Free',
 		value: 'Free',
 		count: 0,

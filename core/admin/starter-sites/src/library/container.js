@@ -311,7 +311,7 @@ const starterSitesResults = ({
  * Shows:
  * 1. Title "Acupuncture"
  * 2. Description text
- * 3. Action buttons (Live preview, Go Pro)
+ * 3. Action buttons (Live preview, Get Cloud)
  * 4. Pages preview grid (showing Home Page, Blog Page, About Page, etc.)
  */
 const MaxiDetailsPopUp = ({
@@ -482,7 +482,7 @@ const MaxiDetailsPopUp = ({
 										className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-preview maxi-cloud-container__details-popup_button-go-pro'
 										onClick={handleGoProClick}
 									>
-										{__('Go Pro', 'maxi-blocks')}
+										{__('Get Cloud', 'maxi-blocks')}
 									</button>
 								) : (
 									<button

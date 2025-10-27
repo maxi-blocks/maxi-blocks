@@ -94,7 +94,7 @@
 		"@babel/plugin-syntax-object-rest-spread": "latest",
 		"@babel/plugin-transform-spread": "latest",
 		"@limegrass/eslint-plugin-import-alias": "^1.5.0",
-		"@playwright/test": "^1.53.0",
+		"@playwright/test": "^1.56.1",
 		"@wordpress/babel-preset-default": "^7.35.1",
 		"caniuse-lite": "^1.0.30001726",
 		"@prettier/plugin-php": "latest",

@@ -228,8 +228,11 @@ class MaxiBlockComponent extends Component {
 		// SIMPLIFIED - no caching, just direct queries
 		const editorIframeSelector =
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
-		this.editorIframe = document.querySelector(editorIframeSelector);
-
+		const editorIframeSelectorAttemptTwo =
+			'.block-editor-iframe__scale-container iframe[name="editor-canvas"]';
+		this.editorIframe =
+			document.querySelector(editorIframeSelector) ||
+			document.querySelector(editorIframeSelectorAttemptTwo);
 		if (!getIsSiteEditor()) {
 			const templateModalSelector =
 				'.editor-post-template__swap-template-modal';

@@ -125,8 +125,8 @@ const MenuSC = ({ items, refine }) => (
 );
 
 const MenuSelect = ({ items, currentRefinement, refine }) => {
-	const proElement = items.find(element => element.label === 'Pro') || {
-		label: 'Pro',
+	const proElement = items.find(element => element.label === 'Cloud') || {
+		label: 'Cloud',
 		value: 'Pro',
 		count: 0,
 		isRefined: false,
@@ -187,7 +187,7 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					proElement.isRefined = true;
 				}}
 			>
-				{__('Pro', 'maxi-blocks')}
+				{__('Cloud', 'maxi-blocks')}
 			</button>
 		</div>
 	);
@@ -451,9 +451,8 @@ const LibraryContainer = props => {
 		};
 	});
 
-	const { saveMaxiStyleCards, setSelectedStyleCard, saveSCStyles } = useDispatch(
-		'maxiBlocks/style-cards'
-	);
+	const { saveMaxiStyleCards, setSelectedStyleCard, saveSCStyles } =
+		useDispatch('maxiBlocks/style-cards');
 
 	useEffect(() => {
 		if (selectedSCValue)

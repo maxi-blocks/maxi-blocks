@@ -864,38 +864,88 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	handleResponsivePreview(editorWrapper) {
-		const { tabletPreview, mobilePreview } =
-			this.getPreviewElements(editorWrapper);
-		const previewTarget = tabletPreview ?? mobilePreview;
-		if (!previewTarget) return;
-		const postEditor = this.getCachedElement(
-			'.edit-post-visual-editor',
-			document.body
-		);
-		if (!postEditor) return;
-		const responsiveWidth = postEditor.getAttribute(
-			'maxi-blocks-responsive-width'
-		);
-		previewTarget.style.width = `${responsiveWidth}px`;
-		previewTarget.style.boxSizing = 'content-box';
-		previewTarget.style.padding = '0';
+	handleResponsivePreview(editorWrapper, currentBreakpoint) {
+		// Helper function to apply styles
+		const applyPreviewStyles = () => {
+			const { tabletPreview, mobilePreview, desktopPreview } =
+				this.getPreviewElements(editorWrapper, currentBreakpoint);
+			const previewTarget =
+				tabletPreview ?? mobilePreview ?? desktopPreview;
 
-		const previewTargetIframe = document.querySelector(
-			'iframe[name="editor-canvas"]'
+			if (!previewTarget) return;
+
+			if (desktopPreview) {
+				previewTarget.style.height = '100%';
+				// Clear mobile/tablet width constraints when switching to desktop
+				previewTarget.style.width = '';
+				const previewTargetIframe = document.querySelector(
+					'iframe[name="editor-canvas"]'
+				);
+				if (previewTargetIframe) {
+					previewTargetIframe.style.width = '';
+				}
+				return;
+			}
+
+			const postEditor = this.getCachedElement(
+				'.edit-post-visual-editor',
+				document.body
+			);
+			if (!postEditor) return;
+
+			const responsiveWidth = postEditor.getAttribute(
+				'maxi-blocks-responsive-width'
+			);
+			previewTarget.style.width = `${responsiveWidth}px`;
+			previewTarget.style.boxSizing = 'content-box';
+			previewTarget.style.padding = '0';
+
+			const previewTargetIframe = document.querySelector(
+				'iframe[name="editor-canvas"]'
+			);
+			if (previewTargetIframe) {
+				previewTargetIframe.style.width = `${responsiveWidth}px`;
+			}
+		};
+
+		// Check if we need to use fallback (wrong preview class in DOM)
+		const breakpointMap = {
+			xxl: 'desktop',
+			xl: 'desktop',
+			l: 'desktop',
+			m: 'tablet',
+			s: 'mobile',
+			xs: 'mobile',
+			general: 'desktop',
+		};
+		const expectedPreviewType =
+			breakpointMap[currentBreakpoint] || 'desktop';
+		const expectedElement = editorWrapper.querySelector(
+			`.is-${expectedPreviewType}-preview`
 		);
-		if (previewTargetIframe) {
-			previewTargetIframe.style.width = `${responsiveWidth}px`;
+
+		// If the expected preview element doesn't exist yet (WordPress timing issue),
+		// defer style application to next frame to give DOM time to update
+		if (!expectedElement) {
+			requestAnimationFrame(() => {
+				applyPreviewStyles();
+			});
+		} else {
+			// Element exists, apply styles immediately
+			applyPreviewStyles();
 		}
 	}
 
 	handleIframeStyles(iframe, currentBreakpoint) {
 		const iframeDocument = iframe.contentDocument;
 		const editorWrapper = iframeDocument.body;
-		const { isPreview } = this.getPreviewElements(editorWrapper);
+		const { isPreview } = this.getPreviewElements(
+			editorWrapper,
+			currentBreakpoint
+		);
 
 		if (isPreview) {
-			this.handleResponsivePreview(editorWrapper);
+			this.handleResponsivePreview(editorWrapper, currentBreakpoint);
 		}
 
 		if (editorWrapper) {
@@ -1719,7 +1769,10 @@ class MaxiBlockComponent extends Component {
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
 		iframeDocument.documentElement.style.scrollbarWidth = 'none';
-		const { isPreview } = this.getPreviewElements(editorWrapper);
+		const { isPreview } = this.getPreviewElements(
+			editorWrapper,
+			currentBreakpoint
+		);
 
 		if (!isPreview) {
 			return;
@@ -2369,13 +2422,65 @@ class MaxiBlockComponent extends Component {
 	}
 
 	// Returns responsive preview elements if present
-	getPreviewElements(parentElement) {
+	// Use currentBreakpoint param when available to avoid DOM timing issues
+	getPreviewElements(parentElement, currentBreakpoint = null) {
+		// If currentBreakpoint is provided, use it directly instead of querying DOM
+		// This prevents timing issues where DOM classes haven't updated yet
+		if (currentBreakpoint) {
+			const breakpointMap = {
+				xxl: 'desktop',
+				xl: 'desktop',
+				l: 'desktop',
+				m: 'tablet',
+				s: 'mobile',
+				xs: 'mobile',
+			};
+			const previewType = breakpointMap[currentBreakpoint] || 'desktop';
+
+			// Check if parentElement itself has the preview class
+			const parentHasClass = parentElement?.classList?.contains(
+				`is-${previewType}-preview`
+			);
+
+			// Query for the specific preview element based on current breakpoint
+			let previewElement = parentElement.querySelector(
+				`.is-${previewType}-preview`
+			);
+
+			// If not found as child, check if parentElement itself is the preview element
+			if (!previewElement && parentHasClass) {
+				previewElement = parentElement;
+			}
+
+			// FALLBACK: If the expected preview class isn't found yet (WordPress timing issue),
+			// look for ANY preview element and use that, since we know the correct type from currentBreakpoint
+			if (!previewElement) {
+				previewElement =
+					parentElement.querySelector('.is-mobile-preview') ||
+					parentElement.querySelector('.is-tablet-preview') ||
+					parentElement.querySelector('.is-desktop-preview');
+			}
+
+			return {
+				tabletPreview: previewType === 'tablet' ? previewElement : null,
+				mobilePreview: previewType === 'mobile' ? previewElement : null,
+				desktopPreview:
+					previewType === 'desktop' ? previewElement : null,
+				isPreview: !!previewElement,
+			};
+		}
+
+		// Fallback to DOM query when currentBreakpoint is not provided
 		const tabletPreview = parentElement.querySelector('.is-tablet-preview');
 		const mobilePreview = parentElement.querySelector('.is-mobile-preview');
+		const desktopPreview = parentElement.querySelector(
+			'.is-desktop-preview'
+		);
 		return {
 			tabletPreview,
 			mobilePreview,
-			isPreview: !!tabletPreview || !!mobilePreview,
+			desktopPreview,
+			isPreview: !!tabletPreview || !!mobilePreview || !!desktopPreview,
 		};
 	}
 

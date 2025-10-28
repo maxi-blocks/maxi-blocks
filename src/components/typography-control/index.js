@@ -978,13 +978,40 @@ const TypographyControl = props => {
 							onClick={() => {
 								const currentWeight = getValue('font-weight');
 								const isActive = currentWeight > 400;
+								const targetWeight = isActive ? 400 : 700;
+								const fontName =
+									getValue('font-family') ??
+									getDefault('font-family');
+
+								// Check if target weight is available, get closest if not
+								const availableWeight = getWeightOptions(
+									fontName
+								).some(({ value }) => +value === targetWeight)
+									? targetWeight
+									: getClosestAvailableFontWeight(
+											fontName,
+											targetWeight
+									  );
+
 								onChangeFormat({
-									[`${prefix}font-weight`]: isActive
-										? 400
-										: 700,
+									[`${prefix}font-weight`]: availableWeight,
 								});
+
+								// Load the font with the new weight
+								onChangeFontWeight(
+									availableWeight,
+									fontName,
+									getValue('font-style') ??
+										getDefault('font-style'),
+									setShowLoader
+								);
 							}}
 							aria-pressed={getValue('font-weight') > 400}
+							aria-label={
+								getValue('font-weight') > 400
+									? __('Remove bold', 'maxi-blocks')
+									: __('Apply bold', 'maxi-blocks')
+							}
 						>
 							B
 						</Button>
@@ -993,13 +1020,32 @@ const TypographyControl = props => {
 							onClick={() => {
 								const currentStyle = getValue('font-style');
 								const isActive = currentStyle === 'italic';
+								const targetStyle = isActive
+									? 'normal'
+									: 'italic';
+								const fontName =
+									getValue('font-family') ??
+									getDefault('font-family');
+
 								onChangeFormat({
-									[`${prefix}font-style`]: isActive
-										? 'normal'
-										: 'italic',
+									[`${prefix}font-style`]: targetStyle,
 								});
+
+								// Load the font with the new style
+								onChangeFontWeight(
+									getValue('font-weight') ??
+										getDefault('font-weight'),
+									fontName,
+									targetStyle,
+									setShowLoader
+								);
 							}}
 							aria-pressed={getValue('font-style') === 'italic'}
+							aria-label={
+								getValue('font-style') === 'italic'
+									? __('Remove italic', 'maxi-blocks')
+									: __('Apply italic', 'maxi-blocks')
+							}
 						>
 							I
 						</Button>
@@ -1022,6 +1068,13 @@ const TypographyControl = props => {
 									'underline'
 								) >= 0
 							}
+							aria-label={
+								(getValue('text-decoration') || '').indexOf(
+									'underline'
+								) >= 0
+									? __('Remove underline', 'maxi-blocks')
+									: __('Apply underline', 'maxi-blocks')
+							}
 						>
 							U
 						</Button>
@@ -1043,6 +1096,13 @@ const TypographyControl = props => {
 								(getValue('text-decoration') || '').indexOf(
 									'line-through'
 								) >= 0
+							}
+							aria-label={
+								(getValue('text-decoration') || '').indexOf(
+									'line-through'
+								) >= 0
+									? __('Remove strikethrough', 'maxi-blocks')
+									: __('Apply strikethrough', 'maxi-blocks')
 							}
 						>
 							S

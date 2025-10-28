@@ -10,7 +10,7 @@ import {
 	useReducer,
 	useState,
 } from '@wordpress/element';
-import { dispatch, select } from '@wordpress/data';
+import { dispatch, select, useSelect } from '@wordpress/data';
 import { setDefaultBlockName } from '@wordpress/blocks';
 
 /**
@@ -25,7 +25,6 @@ import { getIsHoverPreview } from '@extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 import { inlineLinkFields } from '@extensions/DC/constants';
-import isPostEditor from '@extensions/dom/isPostEditor';
 
 /**
  * External dependencies
@@ -128,14 +127,18 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		dcLinkStatus,
 		dcLinkTarget,
 		showLoader,
+		isRevealModeActive,
+		attributes,
+		deviceType,
+		baseBreakpoint,
 		...extraProps
 	} = props;
 
 	// Gets if the block is full-width
 	const isFullWidth = getLastBreakpointAttribute({
 		target: 'full-width',
-		breakpoint: extraProps.deviceType,
-		attributes: extraProps.attributes,
+		breakpoint: deviceType,
+		attributes,
 	});
 
 	if (isSelected) {
@@ -157,7 +160,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =
-		DISALLOWED_BREAKPOINTS.includes(extraProps.baseBreakpoint) &&
+		DISALLOWED_BREAKPOINTS.includes(baseBreakpoint) &&
 		mobile({ tablet: true });
 
 	// Unselect the block if it's disabled
@@ -167,11 +170,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		}, 0);
 
 	// Are just necessary for the memo() part
-	delete extraProps.attributes;
-	delete extraProps.deviceType;
-	delete extraProps.baseBreakpoint;
-	delete extraProps.context;
-	delete extraProps.state;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -219,7 +217,11 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		extraClassName,
 		uniqueID,
 		className,
-		displayValue === 'none' && 'maxi-block-display-none',
+		// Hidden handling
+		displayValue === 'none' &&
+			(isRevealModeActive
+				? 'is-temporarily-revealed'
+				: 'maxi-block--hidden'),
 		customClasses,
 		paletteClasses,
 		hasLink &&
@@ -319,7 +321,15 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
-		const { clientId, attributes, deviceType } = props;
+		const {
+			clientId,
+			attributes,
+			deviceType,
+			baseBreakpoint,
+			context,
+			state,
+			isSelected,
+		} = props;
 		const pagination = attributes?.['cl-pagination'];
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
@@ -351,6 +361,13 @@ const MaxiBlock = memo(
 			return () => {};
 		}, [styleStr, isFirstOnHierarchy, clientId, ref]);
 
+		// Reveal Hidden Blocks: read global flag (non-hook; safe in any render path)
+		const isRevealModeActive = useSelect(
+			sel =>
+				!!sel('maxiBlocks').receiveMaxiSettings()?.reveal_hidden_blocks,
+			[]
+		);
+
 		return (
 			<MaxiBlockContent
 				key={`maxi-block-content__${clientId}`}
@@ -360,6 +377,13 @@ const MaxiBlock = memo(
 				isHovered={isHovered}
 				pagination={pagination}
 				{...props}
+				isRevealModeActive={isRevealModeActive}
+				attributes={attributes}
+				deviceType={deviceType}
+				context={context}
+				state={state}
+				isSelected={isSelected}
+				baseBreakpoint={baseBreakpoint}
 			/>
 		);
 	}),
@@ -379,6 +403,11 @@ const MaxiBlock = memo(
 			context,
 			state,
 		} = rawNewProps;
+
+		const isRevealModeActiveOld = rawOldProps.isRevealModeActive;
+		const isRevealModeActiveNew = rawNewProps.isRevealModeActive;
+
+		if (isRevealModeActiveOld !== isRevealModeActiveNew) return false;
 
 		// Check differences between attributes
 		if (!isEqual(oldAttr, newAttr)) return false;

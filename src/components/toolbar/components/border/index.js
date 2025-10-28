@@ -2,23 +2,29 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Tooltip } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import Button from '@components/button';
 import Icon from '@components/icon';
-import BorderControl from '@components/border-control';
-import ToolbarPopover from '@components/toolbar/components/toolbar-popover';
+import { openSidebarAccordion } from '@extensions/inspector';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
 import { toolbarBorder } from '@maxi-icons';
-import { getGroupAttributes } from '@extensions/styles';
 
 /**
- * Border
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
+ * Border - Direct Sidebar Link
  */
 const ALLOWED_BLOCKS = [
 	'maxi-blocks/button-maxi',
@@ -32,51 +38,37 @@ const ALLOWED_BLOCKS = [
  * Component
  */
 const Border = props => {
-	const {
-		blockName,
-		onChangeInline,
-		onChange,
-		breakpoint,
-		disableColor = false,
-		clientId,
-		prefix = '',
-	} = props;
+	const { blockName } = props;
+
+	const { tooltipsHide } = useSelect(select => {
+		const { receiveMaxiSettings } = select('maxiBlocks');
+		const maxiSettings = receiveMaxiSettings() || {};
+		const { hide_tooltips } = maxiSettings;
+		return {
+			tooltipsHide:
+				typeof hide_tooltips === 'boolean' ? hide_tooltips : false,
+		};
+	}, []);
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-	return (
-		<ToolbarPopover
-			className='toolbar-item__border'
-			advancedOptions='border'
-			tooltip={__('Border', 'maxi-blocks')}
-			position='top center'
-			icon={
-				<div className='toolbar-item__border__icon'>
-					<Icon
-						className='toolbar-item__border__inner-icon'
-						icon={toolbarBorder}
-					/>
-				</div>
-			}
+	const buttonContent = (
+		<Button
+			className='toolbar-item toolbar-item__button toolbar-item__border'
+			onClick={() => {
+				openSidebarAccordion(0, 'border');
+			}}
 		>
-			<div className='toolbar-item__border__popover'>
-				<BorderControl
-					{...getGroupAttributes(
-						props,
-						['border', 'borderWidth', 'borderRadius'],
-						false,
-						prefix
-					)}
-					onChangeInline={onChangeInline}
-					onChange={onChange}
-					breakpoint={breakpoint}
-					isToolbar
-					disableColor={disableColor}
-					clientId={clientId}
-					prefix={prefix}
-				/>
-			</div>
-		</ToolbarPopover>
+			<Icon className='toolbar-item__icon' icon={toolbarBorder} />
+		</Button>
+	);
+
+	return tooltipsHide ? (
+		buttonContent
+	) : (
+		<Tooltip text={__('Border', 'maxi-blocks')} placement='top'>
+			{buttonContent}
+		</Tooltip>
 	);
 };
 

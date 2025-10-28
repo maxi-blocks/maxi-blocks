@@ -248,6 +248,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 									isReset: true,
 								})
 							}
+							disableRange
 						/>
 					)}
 					{!isIB && !disablePosition && (

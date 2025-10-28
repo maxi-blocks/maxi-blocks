@@ -1,15 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 25.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 111.9 38" style="enable-background:new 0 0 111.9 38;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:#323C47;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-</style>
-<line class="st0" x1="1" y1="1" x2="110.9" y2="1"/>
-<rect x="77.7" y="25.4" class="st0" width="33" height="11.5"/>
-<rect x="1.2" y="25.4" class="st0" width="33" height="11.5"/>
-<rect x="39.6" y="25.4" class="st0" width="32.7" height="11.5"/>
-<rect x="77.7" y="7.6" class="st0" width="33" height="11.5"/>
-<rect x="1.2" y="7.6" class="st0" width="33" height="11.5"/>
-<rect x="39.5" y="7.6" class="st0" width="33" height="11.5"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 111.9 38">
+  <!-- Generator: Adobe Illustrator 29.8.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 2)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+        stroke: #323c47;
+        stroke-linecap: square;
+        stroke-linejoin: bevel;
+        stroke-width: 2px;
+      }
+
+      .st1 {
+        fill: #323c47;
+      }
+    </style>
+  </defs>
+  <line class="st0" x1="2.34" y1="1" x2="109.56" y2="1"/>
+  <path class="st1" d="M108.7,27.4v7.5h-29v-7.5h29M110.7,25.4h-33v11.5h33v-11.5h0Z"/>
+  <path class="st1" d="M32.2,27.4v7.5H3.2v-7.5h29M34.2,25.4H1.2v11.5h33v-11.5h0Z"/>
+  <path class="st1" d="M70.3,27.4v7.5h-28.7v-7.5h28.7M72.3,25.4h-32.7v11.5h32.7v-11.5h0Z"/>
+  <path class="st1" d="M108.7,9.6v7.5h-29v-7.5h29M110.7,7.6h-33v11.5h33V7.6h0Z"/>
+  <path class="st1" d="M32.2,9.6v7.5H3.2v-7.5h29M34.2,7.6H1.2v11.5h33V7.6h0Z"/>
+  <path class="st1" d="M70.5,9.6v7.5h-29v-7.5h29M72.5,7.6h-33v11.5h33V7.6h0Z"/>
 </svg>

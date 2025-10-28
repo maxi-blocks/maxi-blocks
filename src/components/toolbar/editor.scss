@@ -1,4 +1,16 @@
+// Maxi Toolbar Styles - Optimized & Refactored
+// =============================================
+
+// Main toolbar popover container with CSS variables
 .maxi-toolbar__popover {
+	// Component variables for consistency and performance
+	--mx-toolbar-size: 2rem;
+	--mx-icon-size: 1rem;
+	--mx-indicator-size: 15px;
+	--mx-tooltip-offset: -24px;
+	--mx-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.08);
+	--mx-shadow-popover: 0 -2px 8px 0 rgba(0, 0, 0, 0.05);
+
 	z-index: 9999998;
 
 	*,

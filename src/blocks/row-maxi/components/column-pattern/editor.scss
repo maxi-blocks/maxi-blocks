@@ -2,13 +2,16 @@
 	&__icon {
 		width: 100%;
 		height: 100%;
+		overflow: visible;
 		path {
 			fill: var(--maxi-white);
 			stroke: var(--maxi-grey-dark);
-			stroke-width: 2px;
+			stroke-width: 1.5px !important;
 		}
 	}
-
+	.components-column-pattern__template-button svg {
+		overflow: visible;
+	}
 	&__templates {
 		margin-bottom: 5px;
 		& .components-column-pattern-apply_settings {

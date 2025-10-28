@@ -88,6 +88,8 @@ const Inspector = props => {
 						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<AccordionControl
+								/* Unique hook to scope Accordion Maxi inspector styles */
+								className='maxi-accordion-control--accordion-maxi'
 								items={[
 									{
 										label: __(
@@ -222,6 +224,8 @@ const Inspector = props => {
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
 							<AccordionControl
+								/* Unique hook to scope Accordion Maxi inspector styles */
+								className='maxi-accordion-control--accordion-maxi'
 								isPrimary
 								items={[
 									...inspectorTabs.ariaLabel({

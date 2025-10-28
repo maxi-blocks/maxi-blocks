@@ -878,3 +878,19 @@ body {
 		}
 	}
 }
+
+// fix Tablet / Mobile Gutenberg preview
+body.maxi-blocks--active {
+	.block-editor-iframe__scale-container {
+		iframe[name='editor-canvas'] {
+			height: 100% !important;
+			margin: 0 !important;
+			padding: 0 !important;
+			border: none !important;
+			box-shadow: none !important;
+			border-radius: 0 !important;
+			overflow: hidden !important;
+			box-sizing: border-box !important;
+		}
+	}
+}

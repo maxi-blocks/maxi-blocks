@@ -192,8 +192,8 @@ class MaxiBlockComponent extends Component {
 
 		// Block successfully registered
 
-		// Init - skip updateLastInsertedBlocks to avoid array accumulation
-		// this.updateLastInsertedBlocks();
+		// Init
+		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
@@ -228,8 +228,11 @@ class MaxiBlockComponent extends Component {
 		// SIMPLIFIED - no caching, just direct queries
 		const editorIframeSelector =
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
-		this.editorIframe = document.querySelector(editorIframeSelector);
-
+		const editorIframeSelectorAttemptTwo =
+			'.block-editor-iframe__scale-container iframe[name="editor-canvas"]';
+		this.editorIframe =
+			document.querySelector(editorIframeSelector) ||
+			document.querySelector(editorIframeSelectorAttemptTwo);
 		if (!getIsSiteEditor()) {
 			const templateModalSelector =
 				'.editor-post-template__swap-template-modal';
@@ -531,12 +534,10 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
-		// For render styles when there's no <style> element for the block
+		// For render styles when there's no styles for the block in the store
 		// Normally happens when duplicate the block
+		// With GlobalStyleManager, we only need to check the store, not DOM elements
 		if (
-			!document.querySelector(
-				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
-			) ||
 			isNil(
 				select('maxiBlocks/styles').getBlockStyles(
 					this.props.attributes.uniqueID
@@ -556,6 +557,11 @@ class MaxiBlockComponent extends Component {
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		this.updateDOMReferences();
+
+		// Update FSE iframe styles even for template parts
+		if (getIsSiteEditor()) {
+			this.addMaxiFSEIframeStyles();
+		}
 
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { uniqueID } = this.props.attributes;
@@ -724,57 +730,116 @@ class MaxiBlockComponent extends Component {
 		);
 		const keepStylesOnCloning =
 			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
-		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
+		// Check for editor states that indicate temporary unmounting
+		const isDragging =
+			this.safeSelect('core/block-editor', 'isDraggingBlocks') || false;
+		const isTyping =
+			this.safeSelect('core/block-editor', 'isTyping') || false;
+		const isMultiSelecting =
+			this.safeSelect('core/block-editor', 'isMultiSelecting') || false;
+
+		// IMPORTANT: Check if block still exists in the full block tree
+		// During React reconciliation, getBlock might return null temporarily
+		// but the block is actually being remounted, not removed
+		const allBlocks =
+			this.safeSelect('core/block-editor', 'getBlocks') || [];
+
+		// Helper function to recursively collect all clientIds from block tree
+		const collectAllClientIds = blocks => {
+			const ids = [];
+			const traverse = blockList => {
+				if (!blockList || !Array.isArray(blockList)) return;
+				for (const block of blockList) {
+					if (block && block.clientId) {
+						ids.push(block.clientId);
+					}
+					if (
+						block &&
+						block.innerBlocks &&
+						Array.isArray(block.innerBlocks)
+					) {
+						traverse(block.innerBlocks);
+					}
+				}
+			};
+			traverse(blocks);
+			return ids;
+		};
+
+		const blockExistsInTree = this.checkBlockInTree(
+			allBlocks,
+			this.props.clientId
+		);
+
+		// Enhanced logic: Don't remove styles during temporary editor states
+		const isTemporaryUnmount = isDragging || isTyping || isMultiSelecting;
+
+		// Additional check: If block tree is being modified, delay cleanup
+		const isBlockTreeModifying =
+			this.safeSelect('core/block-editor', 'isBlockBeingInserted') ||
+			false;
+
+		const isBlockBeingRemoved =
+			!keepStylesOnEditor &&
+			!keepStylesOnCloning &&
+			!blockExistsInTree &&
+			!isTemporaryUnmount &&
+			!isBlockTreeModifying;
+
+		// Only clean up non-style resources
 		if (isBlockBeingRemoved) {
 			const { clientId } = this.props;
 
-			// Use a single rAF for all style operations
-			const batchStyleOperations = () => {
-				const obj = this.getStylesObject;
+			// Use microtask for store updates to avoid blocking
+			queueMicrotask(() => {
+				// Only clean up store data, not styles
+				const batchedDispatch = () => {
+					dispatch('maxiBlocks/blocks').removeBlock(
+						uniqueID,
+						clientId
+					);
+					dispatch('maxiBlocks/customData').removeCustomData(
+						uniqueID
+					);
+					dispatch('maxiBlocks/relations').removeBlockRelation(
+						uniqueID
+					);
+					// NOTE: Not removing CSS cache to prevent style loss
+				};
+				batchedDispatch();
 
-				// Batch all style removals into a single operation
-				const fragment = document.createDocumentFragment();
-				styleResolver({
-					styles: obj,
-					remover: true,
-					optimized: true,
-					fragment,
-					uniqueID,
-				});
-				this.removeStyles();
-
-				// Use microtask for store updates to avoid blocking
-				queueMicrotask(() => {
-					// Batch dispatch operations
-					const batchedDispatch = () => {
-						dispatch('maxiBlocks/blocks').removeBlock(
-							uniqueID,
-							clientId
-						);
-						dispatch('maxiBlocks/customData').removeCustomData(
-							uniqueID
-						);
-						dispatch('maxiBlocks/relations').removeBlockRelation(
-							uniqueID
-						);
-						dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
-					};
-					batchedDispatch();
-
-					if (this.props.repeaterStatus) {
-						this.handleRepeaterCleanup();
-					}
-				});
-			};
-
-			// Schedule style operations in the next frame
-			requestAnimationFrame(batchStyleOperations);
+				if (this.props.repeaterStatus) {
+					this.handleRepeaterCleanup();
+				}
+			});
 		}
 
 		if (this.maxiBlockWillUnmount) {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 		}
+	}
+
+	// Helper method to recursively check if block exists in tree
+	checkBlockInTree(blocks, targetClientId) {
+		if (!blocks || !Array.isArray(blocks)) {
+			return false;
+		}
+
+		for (const block of blocks) {
+			if (block.clientId === targetClientId) {
+				return true;
+			}
+
+			// Recursively check inner blocks
+			if (block.innerBlocks && block.innerBlocks.length > 0) {
+				if (this.checkBlockInTree(block.innerBlocks, targetClientId)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	// Add new helper method for repeater cleanup
@@ -804,33 +869,88 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	handleResponsivePreview(editorWrapper) {
-		const { tabletPreview, mobilePreview } =
-			this.getPreviewElements(editorWrapper);
-		const previewTarget = tabletPreview ?? mobilePreview;
-		const postEditor = this.getCachedElement(
-			'.edit-post-visual-editor',
-			document.body
-		);
-		if (!postEditor) return;
-		const responsiveWidth = postEditor.getAttribute(
-			'maxi-blocks-responsive-width'
-		);
-		const isMaxiPreview = postEditor.getAttribute('is-maxi-preview');
+	handleResponsivePreview(editorWrapper, currentBreakpoint) {
+		// Helper function to apply styles
+		const applyPreviewStyles = () => {
+			const { tabletPreview, mobilePreview, desktopPreview } =
+				this.getPreviewElements(editorWrapper, currentBreakpoint);
+			const previewTarget =
+				tabletPreview ?? mobilePreview ?? desktopPreview;
 
-		if (isMaxiPreview) {
+			if (!previewTarget) return;
+
+			if (desktopPreview) {
+				previewTarget.style.height = '100%';
+				// Clear mobile/tablet width constraints when switching to desktop
+				previewTarget.style.width = '';
+				const previewTargetIframe = document.querySelector(
+					'iframe[name="editor-canvas"]'
+				);
+				if (previewTargetIframe) {
+					previewTargetIframe.style.width = '';
+				}
+				return;
+			}
+
+			const postEditor = this.getCachedElement(
+				'.edit-post-visual-editor',
+				document.body
+			);
+			if (!postEditor) return;
+
+			const responsiveWidth = postEditor.getAttribute(
+				'maxi-blocks-responsive-width'
+			);
 			previewTarget.style.width = `${responsiveWidth}px`;
 			previewTarget.style.boxSizing = 'content-box';
+			previewTarget.style.padding = '0';
+
+			const previewTargetIframe = document.querySelector(
+				'iframe[name="editor-canvas"]'
+			);
+			if (previewTargetIframe) {
+				previewTargetIframe.style.width = `${responsiveWidth}px`;
+			}
+		};
+
+		// Check if we need to use fallback (wrong preview class in DOM)
+		const breakpointMap = {
+			xxl: 'desktop',
+			xl: 'desktop',
+			l: 'desktop',
+			m: 'tablet',
+			s: 'mobile',
+			xs: 'mobile',
+			general: 'desktop',
+		};
+		const expectedPreviewType =
+			breakpointMap[currentBreakpoint] || 'desktop';
+		const expectedElement = editorWrapper.querySelector(
+			`.is-${expectedPreviewType}-preview`
+		);
+
+		// If the expected preview element doesn't exist yet (WordPress timing issue),
+		// defer style application to next frame to give DOM time to update
+		if (!expectedElement) {
+			requestAnimationFrame(() => {
+				applyPreviewStyles();
+			});
+		} else {
+			// Element exists, apply styles immediately
+			applyPreviewStyles();
 		}
 	}
 
 	handleIframeStyles(iframe, currentBreakpoint) {
 		const iframeDocument = iframe.contentDocument;
 		const editorWrapper = iframeDocument.body;
-		const { isPreview } = this.getPreviewElements(editorWrapper);
+		const { isPreview } = this.getPreviewElements(
+			editorWrapper,
+			currentBreakpoint
+		);
 
 		if (isPreview) {
-			this.handleResponsivePreview(editorWrapper);
+			this.handleResponsivePreview(editorWrapper, currentBreakpoint);
 		}
 
 		if (editorWrapper) {
@@ -1112,22 +1232,95 @@ class MaxiBlockComponent extends Component {
 		});
 	}
 
+	// This function saves the last inserted blocks' clientIds, so we can use them
+	// to update IB relations.
+	// OPTIMIZED: Use static cache to prevent excessive calls during page load
+	updateLastInsertedBlocks() {
+		if (this.isPatternsPreview || this.templateModal) return;
+		const { clientId } = this.props;
+
+		// Use a static cache shared across all instances to prevent redundant updates
+		if (!MaxiBlockComponent._lastInsertedBlocksCache) {
+			MaxiBlockComponent._lastInsertedBlocksCache = {
+				lastUpdate: 0,
+				processing: false,
+			};
+		}
+
+		const cache = MaxiBlockComponent._lastInsertedBlocksCache;
+		const now = Date.now();
+
+		// Throttle: only update once per 100ms to prevent excessive calls during page load
+		if (now - cache.lastUpdate < 100 || cache.processing) {
+			return;
+		}
+
+		cache.processing = true;
+
+		// Use Sets for O(1) lookup instead of array spread and includes
+		const lastInsertedSet = new Set(
+			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') || []
+		);
+		const blockClientIdsSet = new Set(
+			this.safeSelect('maxiBlocks/blocks', 'getBlockClientIds') || []
+		);
+
+		// Only proceed if this clientId is not already tracked
+		if (
+			!lastInsertedSet.has(clientId) &&
+			!blockClientIdsSet.has(clientId)
+		) {
+			const allClientIds = this.safeSelect(
+				'core/block-editor',
+				'getClientIdsWithDescendants'
+			);
+
+			// Only update if we actually got client IDs
+			if (allClientIds && allClientIds.length > 0) {
+				this.safeDispatch('maxiBlocks/blocks').saveLastInsertedBlocks(
+					allClientIds
+				);
+				this.safeDispatch('maxiBlocks/blocks').saveBlockClientIds(
+					allClientIds
+				);
+
+				cache.lastUpdate = now;
+			}
+		}
+
+		cache.processing = false;
+	}
+
 	uniqueIDChecker(idToCheck) {
 		if (this.isPatternsPreview || this.templateModal) return idToCheck;
+
+		// Check if this block was recently processed by paste detection
+		// If so, skip processing to prevent interference and style loss
+		if (
+			typeof window !== 'undefined' &&
+			window.maxiBlocksPasteDetection &&
+			window.maxiBlocksPasteDetection.isRecentlyProcessedByPaste(
+				this.props.clientId
+			)
+		) {
+			return idToCheck;
+		}
 
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		const isNewBlock = select('maxiBlocks/blocks').getIsNewBlock(
+		const isNewBlock = this.safeSelect(
+			'maxiBlocks/blocks',
+			'getIsNewBlock',
 			this.props.attributes.uniqueID
 		);
-		const lastInsertedBlocks =
-			select('maxiBlocks/blocks').getLastInsertedBlocks();
-		const isInLastInserted = lastInsertedBlocks.includes(
-			this.props.clientId
-		);
-		const isBlockCopied = !isNewBlock && isInLastInserted;
 
+		// OPTIMIZED: Use Set for O(1) lookup instead of array.includes O(n)
+		const lastInsertedBlocks =
+			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') || [];
+		const lastInsertedSet = new Set(lastInsertedBlocks);
+		const isInLastInserted = lastInsertedSet.has(this.props.clientId);
+		const isBlockCopied = !isNewBlock && isInLastInserted;
 		// UniqueID validation completed
 
 		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {
@@ -1581,7 +1774,10 @@ class MaxiBlockComponent extends Component {
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
 		iframeDocument.documentElement.style.scrollbarWidth = 'none';
-		const { isPreview } = this.getPreviewElements(editorWrapper);
+		const { isPreview } = this.getPreviewElements(
+			editorWrapper,
+			currentBreakpoint
+		);
 
 		if (!isPreview) {
 			return;
@@ -2231,13 +2427,65 @@ class MaxiBlockComponent extends Component {
 	}
 
 	// Returns responsive preview elements if present
-	getPreviewElements(parentElement) {
+	// Use currentBreakpoint param when available to avoid DOM timing issues
+	getPreviewElements(parentElement, currentBreakpoint = null) {
+		// If currentBreakpoint is provided, use it directly instead of querying DOM
+		// This prevents timing issues where DOM classes haven't updated yet
+		if (currentBreakpoint) {
+			const breakpointMap = {
+				xxl: 'desktop',
+				xl: 'desktop',
+				l: 'desktop',
+				m: 'tablet',
+				s: 'mobile',
+				xs: 'mobile',
+			};
+			const previewType = breakpointMap[currentBreakpoint] || 'desktop';
+
+			// Check if parentElement itself has the preview class
+			const parentHasClass = parentElement?.classList?.contains(
+				`is-${previewType}-preview`
+			);
+
+			// Query for the specific preview element based on current breakpoint
+			let previewElement = parentElement.querySelector(
+				`.is-${previewType}-preview`
+			);
+
+			// If not found as child, check if parentElement itself is the preview element
+			if (!previewElement && parentHasClass) {
+				previewElement = parentElement;
+			}
+
+			// FALLBACK: If the expected preview class isn't found yet (WordPress timing issue),
+			// look for ANY preview element and use that, since we know the correct type from currentBreakpoint
+			if (!previewElement) {
+				previewElement =
+					parentElement.querySelector('.is-mobile-preview') ||
+					parentElement.querySelector('.is-tablet-preview') ||
+					parentElement.querySelector('.is-desktop-preview');
+			}
+
+			return {
+				tabletPreview: previewType === 'tablet' ? previewElement : null,
+				mobilePreview: previewType === 'mobile' ? previewElement : null,
+				desktopPreview:
+					previewType === 'desktop' ? previewElement : null,
+				isPreview: !!previewElement,
+			};
+		}
+
+		// Fallback to DOM query when currentBreakpoint is not provided
 		const tabletPreview = parentElement.querySelector('.is-tablet-preview');
 		const mobilePreview = parentElement.querySelector('.is-mobile-preview');
+		const desktopPreview = parentElement.querySelector(
+			'.is-desktop-preview'
+		);
 		return {
 			tabletPreview,
 			mobilePreview,
-			isPreview: !!tabletPreview || !!mobilePreview,
+			desktopPreview,
+			isPreview: !!tabletPreview || !!mobilePreview || !!desktopPreview,
 		};
 	}
 
@@ -2275,10 +2523,12 @@ class MaxiBlockComponent extends Component {
 
 			// Append style to iframe's head
 			fseIframe.contentDocument.head.appendChild(iframeStyles);
-
-			// Copy Maxi CSS variables to FSE iframe
-			this.copyMaxiCSSVariablesToIframe(fseIframe);
 		}
+
+		// Always copy/update Maxi CSS variables to FSE iframe
+		// This ensures variables are available even if they weren't ready
+		// during initial iframe creation
+		this.copyMaxiCSSVariablesToIframe(fseIframe);
 	}
 
 	/**
@@ -2288,19 +2538,54 @@ class MaxiBlockComponent extends Component {
 	copyMaxiCSSVariablesToIframe(fseIframe) {
 		if (!fseIframe || !fseIframe.contentDocument) return;
 
-		// Check if variables are already copied
-		const existingVariables = fseIframe.contentDocument.getElementById(
+		// Copy style card CSS variables from main document
+		const maxiVariables = document.querySelector(
+			'#maxi-blocks-sc-vars-inline-css'
+		);
+		if (maxiVariables) {
+			// Remove old version if exists
+			fseIframe.contentDocument
+				.querySelector('#maxi-blocks-sc-vars-inline-css')
+				?.remove();
+
+			// Clone and append to iframe
+			const clonedVariables = maxiVariables.cloneNode(true);
+			fseIframe.contentDocument.head.appendChild(clonedVariables);
+		}
+
+		// Load fonts into FSE iframe
+		loadFonts(getPageFonts(), true, fseIframe.contentDocument);
+
+		// Copy font stylesheet links to FSE iframe
+		const maxiFonts = Array.from(
+			document.querySelectorAll(
+				'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]'
+			)
+		);
+		if (maxiFonts.length > 0) {
+			maxiFonts.forEach(rawMaxiFont => {
+				// Check if this font link already exists in iframe
+				const fontId = rawMaxiFont.id;
+				if (!fseIframe.contentDocument.querySelector(`#${fontId}`)) {
+					const maxiFont = rawMaxiFont.cloneNode(true);
+					fseIframe.contentDocument.head.appendChild(maxiFont);
+				}
+			});
+		}
+
+		// Check if spinners are already added
+		const existingSpinners = fseIframe.contentDocument.getElementById(
 			'maxi-blocks-fse-spinners'
 		);
 
-		if (!existingVariables) {
-			// Create style element for CSS variables
-			const variablesStyle =
+		if (!existingSpinners) {
+			// Create style element for spinner animations
+			const spinnersStyle =
 				fseIframe.contentDocument.createElement('style');
-			variablesStyle.id = 'maxi-blocks-fse-spinners';
+			spinnersStyle.id = 'maxi-blocks-fse-spinners';
 
 			// Add essential CSS variables and spinner animations for loaders
-			variablesStyle.textContent = `
+			spinnersStyle.textContent = `
 				:root {
 					--maxi-primary-color: #2c8a46; /* Fresh lime green */
 				}
@@ -2318,7 +2603,7 @@ class MaxiBlockComponent extends Component {
 				}
 			`;
 
-			fseIframe.contentDocument.head.appendChild(variablesStyle);
+			fseIframe.contentDocument.head.appendChild(spinnersStyle);
 		}
 	}
 

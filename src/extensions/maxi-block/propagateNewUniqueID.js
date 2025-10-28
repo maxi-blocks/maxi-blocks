@@ -7,6 +7,7 @@ import { dispatch, select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getUpdatedBGLayersWithNewUniqueID } from '@extensions/attributes';
+import goThroughMaxiBlocks from './goThroughMaxiBlocks';
 
 /**
  * External dependencies
@@ -26,6 +27,21 @@ const propagateNewUniqueID = (
 		select('maxiBlocks/blocks').getLastInsertedBlocks();
 
 	const updateBlockAttributesUpdate = (clientId, key, value) => {
+		// Optimization 1: Value Change Detection
+		// Check if the value has actually changed to avoid unnecessary updates
+		const currentBlock = select('core/block-editor').getBlock(clientId);
+		if (
+			currentBlock &&
+			currentBlock.attributes &&
+			currentBlock.attributes[key]
+		) {
+			const currentValue = currentBlock.attributes[key];
+			// Deep comparison for complex objects like relations and background-layers
+			if (isEqual(currentValue, value)) {
+				return blockAttributesUpdate; // Skip unchanged values
+			}
+		}
+
 		if (!blockAttributesUpdate[clientId])
 			blockAttributesUpdate[clientId] = {};
 
@@ -199,25 +215,162 @@ const propagateNewUniqueID = (
 		}
 	};
 
+	const updateGlobalRelations = () => {
+		// Update relations in ALL blocks that point to the old uniqueID
+		// This ensures IB relations are preserved when duplicating and removing original blocks
+		const attributesHasRelations = attributes =>
+			'relations' in attributes &&
+			!isEmpty(attributes.relations) &&
+			(isArray(attributes.relations) ||
+				(isPlainObject(attributes.relations) &&
+					isArray(Object.values(attributes.relations))));
+
+		goThroughMaxiBlocks(block => {
+			const { attributes, clientId: blockClientId } = block;
+
+			// Skip blocks that are part of the duplication (already handled by updateRelations)
+			if (lastChangedBlocks.includes(blockClientId)) return false;
+
+			if (!attributesHasRelations(attributes)) return false;
+
+			const relations = isArray(attributes.relations)
+				? attributes.relations
+				: Object.values(attributes.relations);
+
+			// Check if any relation points to the old uniqueID
+			const hasOldUniqueID = relations.some(
+				relation => relation.uniqueID === oldUniqueID
+			);
+
+			if (hasOldUniqueID) {
+				const newRelations = cloneDeep(relations).map(relation => {
+					if (relation.uniqueID === oldUniqueID) {
+						return {
+							...relation,
+							uniqueID: newUniqueID,
+						};
+					}
+					return relation;
+				});
+
+				if (!isEqual(relations, newRelations)) {
+					updateBlockAttributesUpdate(
+						blockClientId,
+						'relations',
+						newRelations
+					);
+
+					const maxiBlocksStore = select('maxiBlocks/blocks');
+					const blockEditorDispatch = dispatch('maxiBlocks/blocks');
+					if (!maxiBlocksStore.getBlockByClientId(blockClientId)) {
+						blockEditorDispatch.addBlockWithUpdatedAttributes(
+							blockClientId
+						);
+					}
+				}
+			}
+
+			return false;
+		});
+	};
+
 	updateRelations();
 	updateBGLayers();
+	updateGlobalRelations();
 
 	if (!isEmpty(blockAttributesUpdate)) {
+		// Optimization 2: Block Existence Check & Update Batching
+		// Filter out non-existent blocks and empty attribute objects
+		const optimizedUpdates = {};
+		Object.entries(blockAttributesUpdate).forEach(
+			([blockClientId, attributes]) => {
+				if (attributes && Object.keys(attributes).length > 0) {
+					// Check if block still exists before updating
+					const blockExists =
+						select('core/block-editor').getBlock(blockClientId);
+					if (blockExists) {
+						optimizedUpdates[blockClientId] = attributes;
+					}
+				}
+			}
+		);
+
+		const updateCount = Object.keys(optimizedUpdates).length;
+		if (updateCount === 0) return;
+
 		const {
 			__unstableMarkNextChangeAsNotPersistent:
 				markNextChangeAsNotPersistent,
 			updateBlockAttributes,
 		} = dispatch('core/block-editor');
 
-		for (const [clientId, attributes] of Object.entries(
-			blockAttributesUpdate
+		// Optimization 3: Critical vs Non-Critical Update Separation
+		// Separate critical updates (current block) from non-critical ones (related blocks)
+		const criticalUpdates = {};
+		const deferredUpdates = {};
+
+		Object.entries(optimizedUpdates).forEach(
+			([blockClientId, attributes]) => {
+				if (blockClientId === clientId) {
+					// Current block - update immediately
+					criticalUpdates[blockClientId] = attributes;
+				} else {
+					// Related blocks - can be deferred
+					deferredUpdates[blockClientId] = attributes;
+				}
+			}
+		);
+
+		// Process critical updates immediately
+		for (const [blockClientId, attributes] of Object.entries(
+			criticalUpdates
 		)) {
-			if (attributes) {
+			// Optimization 4: Final Value Verification
+			// Double-check value before expensive updateBlockAttributes call
+			const block = select('core/block-editor').getBlock(blockClientId);
+			if (block && Object.keys(attributes).length === 1) {
+				// For single attribute updates, verify the value isn't already identical
+				const [attrKey, attrValue] = Object.entries(attributes)[0];
+				if (block.attributes[attrKey] !== attrValue) {
+					markNextChangeAsNotPersistent();
+					updateBlockAttributes(blockClientId, attributes);
+				}
+			} else {
+				// Multiple attributes or block not found - use standard update
 				markNextChangeAsNotPersistent();
-				updateBlockAttributes(clientId, attributes);
+				updateBlockAttributes(blockClientId, attributes);
 			}
 		}
+
+		// Optimization 5: Deferred Processing for Non-Critical Updates
+		// Process non-critical updates with a small delay to avoid blocking the UI
+		const deferredCount = Object.keys(deferredUpdates).length;
+		if (deferredCount > 0) {
+			setTimeout(() => {
+				for (const [blockClientId, attributes] of Object.entries(
+					deferredUpdates
+				)) {
+					// Apply same optimization logic for deferred updates
+					const block =
+						select('core/block-editor').getBlock(blockClientId);
+					if (block && Object.keys(attributes).length === 1) {
+						const [attrKey, attrValue] =
+							Object.entries(attributes)[0];
+						if (block.attributes[attrKey] !== attrValue) {
+							markNextChangeAsNotPersistent();
+							updateBlockAttributes(blockClientId, attributes);
+						}
+					} else {
+						markNextChangeAsNotPersistent();
+						updateBlockAttributes(blockClientId, attributes);
+					}
+				}
+			}, 50); // 50ms delay to let the main thread breathe
+		}
 	}
+
+	// Minimal performance monitoring - only available in debug mode
+	// To enable: window.maxiBlocksDebug = true in browser console
 };
 
 export default propagateNewUniqueID;

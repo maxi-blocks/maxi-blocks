@@ -192,8 +192,8 @@ class MaxiBlockComponent extends Component {
 
 		// Block successfully registered
 
-		// Init - skip updateLastInsertedBlocks to avoid array accumulation
-		// this.updateLastInsertedBlocks();
+		// Init
+		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
@@ -531,12 +531,10 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
-		// For render styles when there's no <style> element for the block
+		// For render styles when there's no styles for the block in the store
 		// Normally happens when duplicate the block
+		// With GlobalStyleManager, we only need to check the store, not DOM elements
 		if (
-			!document.querySelector(
-				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
-			) ||
 			isNil(
 				select('maxiBlocks/styles').getBlockStyles(
 					this.props.attributes.uniqueID
@@ -724,57 +722,116 @@ class MaxiBlockComponent extends Component {
 		);
 		const keepStylesOnCloning =
 			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
-		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
 
+		// Check for editor states that indicate temporary unmounting
+		const isDragging =
+			this.safeSelect('core/block-editor', 'isDraggingBlocks') || false;
+		const isTyping =
+			this.safeSelect('core/block-editor', 'isTyping') || false;
+		const isMultiSelecting =
+			this.safeSelect('core/block-editor', 'isMultiSelecting') || false;
+
+		// IMPORTANT: Check if block still exists in the full block tree
+		// During React reconciliation, getBlock might return null temporarily
+		// but the block is actually being remounted, not removed
+		const allBlocks =
+			this.safeSelect('core/block-editor', 'getBlocks') || [];
+
+		// Helper function to recursively collect all clientIds from block tree
+		const collectAllClientIds = blocks => {
+			const ids = [];
+			const traverse = blockList => {
+				if (!blockList || !Array.isArray(blockList)) return;
+				for (const block of blockList) {
+					if (block && block.clientId) {
+						ids.push(block.clientId);
+					}
+					if (
+						block &&
+						block.innerBlocks &&
+						Array.isArray(block.innerBlocks)
+					) {
+						traverse(block.innerBlocks);
+					}
+				}
+			};
+			traverse(blocks);
+			return ids;
+		};
+
+		const blockExistsInTree = this.checkBlockInTree(
+			allBlocks,
+			this.props.clientId
+		);
+
+		// Enhanced logic: Don't remove styles during temporary editor states
+		const isTemporaryUnmount = isDragging || isTyping || isMultiSelecting;
+
+		// Additional check: If block tree is being modified, delay cleanup
+		const isBlockTreeModifying =
+			this.safeSelect('core/block-editor', 'isBlockBeingInserted') ||
+			false;
+
+		const isBlockBeingRemoved =
+			!keepStylesOnEditor &&
+			!keepStylesOnCloning &&
+			!blockExistsInTree &&
+			!isTemporaryUnmount &&
+			!isBlockTreeModifying;
+
+		// Only clean up non-style resources
 		if (isBlockBeingRemoved) {
 			const { clientId } = this.props;
 
-			// Use a single rAF for all style operations
-			const batchStyleOperations = () => {
-				const obj = this.getStylesObject;
+			// Use microtask for store updates to avoid blocking
+			queueMicrotask(() => {
+				// Only clean up store data, not styles
+				const batchedDispatch = () => {
+					dispatch('maxiBlocks/blocks').removeBlock(
+						uniqueID,
+						clientId
+					);
+					dispatch('maxiBlocks/customData').removeCustomData(
+						uniqueID
+					);
+					dispatch('maxiBlocks/relations').removeBlockRelation(
+						uniqueID
+					);
+					// NOTE: Not removing CSS cache to prevent style loss
+				};
+				batchedDispatch();
 
-				// Batch all style removals into a single operation
-				const fragment = document.createDocumentFragment();
-				styleResolver({
-					styles: obj,
-					remover: true,
-					optimized: true,
-					fragment,
-					uniqueID,
-				});
-				this.removeStyles();
-
-				// Use microtask for store updates to avoid blocking
-				queueMicrotask(() => {
-					// Batch dispatch operations
-					const batchedDispatch = () => {
-						dispatch('maxiBlocks/blocks').removeBlock(
-							uniqueID,
-							clientId
-						);
-						dispatch('maxiBlocks/customData').removeCustomData(
-							uniqueID
-						);
-						dispatch('maxiBlocks/relations').removeBlockRelation(
-							uniqueID
-						);
-						dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
-					};
-					batchedDispatch();
-
-					if (this.props.repeaterStatus) {
-						this.handleRepeaterCleanup();
-					}
-				});
-			};
-
-			// Schedule style operations in the next frame
-			requestAnimationFrame(batchStyleOperations);
+				if (this.props.repeaterStatus) {
+					this.handleRepeaterCleanup();
+				}
+			});
 		}
 
 		if (this.maxiBlockWillUnmount) {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 		}
+	}
+
+	// Helper method to recursively check if block exists in tree
+	checkBlockInTree(blocks, targetClientId) {
+		if (!blocks || !Array.isArray(blocks)) {
+			return false;
+		}
+
+		for (const block of blocks) {
+			if (block.clientId === targetClientId) {
+				return true;
+			}
+
+			// Recursively check inner blocks
+			if (block.innerBlocks && block.innerBlocks.length > 0) {
+				if (this.checkBlockInTree(block.innerBlocks, targetClientId)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	// Add new helper method for repeater cleanup
@@ -1112,22 +1169,95 @@ class MaxiBlockComponent extends Component {
 		});
 	}
 
+	// This function saves the last inserted blocks' clientIds, so we can use them
+	// to update IB relations.
+	// OPTIMIZED: Use static cache to prevent excessive calls during page load
+	updateLastInsertedBlocks() {
+		if (this.isPatternsPreview || this.templateModal) return;
+		const { clientId } = this.props;
+
+		// Use a static cache shared across all instances to prevent redundant updates
+		if (!MaxiBlockComponent._lastInsertedBlocksCache) {
+			MaxiBlockComponent._lastInsertedBlocksCache = {
+				lastUpdate: 0,
+				processing: false,
+			};
+		}
+
+		const cache = MaxiBlockComponent._lastInsertedBlocksCache;
+		const now = Date.now();
+
+		// Throttle: only update once per 100ms to prevent excessive calls during page load
+		if (now - cache.lastUpdate < 100 || cache.processing) {
+			return;
+		}
+
+		cache.processing = true;
+
+		// Use Sets for O(1) lookup instead of array spread and includes
+		const lastInsertedSet = new Set(
+			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') || []
+		);
+		const blockClientIdsSet = new Set(
+			this.safeSelect('maxiBlocks/blocks', 'getBlockClientIds') || []
+		);
+
+		// Only proceed if this clientId is not already tracked
+		if (
+			!lastInsertedSet.has(clientId) &&
+			!blockClientIdsSet.has(clientId)
+		) {
+			const allClientIds = this.safeSelect(
+				'core/block-editor',
+				'getClientIdsWithDescendants'
+			);
+
+			// Only update if we actually got client IDs
+			if (allClientIds && allClientIds.length > 0) {
+				this.safeDispatch('maxiBlocks/blocks').saveLastInsertedBlocks(
+					allClientIds
+				);
+				this.safeDispatch('maxiBlocks/blocks').saveBlockClientIds(
+					allClientIds
+				);
+
+				cache.lastUpdate = now;
+			}
+		}
+
+		cache.processing = false;
+	}
+
 	uniqueIDChecker(idToCheck) {
 		if (this.isPatternsPreview || this.templateModal) return idToCheck;
+
+		// Check if this block was recently processed by paste detection
+		// If so, skip processing to prevent interference and style loss
+		if (
+			typeof window !== 'undefined' &&
+			window.maxiBlocksPasteDetection &&
+			window.maxiBlocksPasteDetection.isRecentlyProcessedByPaste(
+				this.props.clientId
+			)
+		) {
+			return idToCheck;
+		}
 
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		const isNewBlock = select('maxiBlocks/blocks').getIsNewBlock(
+		const isNewBlock = this.safeSelect(
+			'maxiBlocks/blocks',
+			'getIsNewBlock',
 			this.props.attributes.uniqueID
 		);
-		const lastInsertedBlocks =
-			select('maxiBlocks/blocks').getLastInsertedBlocks();
-		const isInLastInserted = lastInsertedBlocks.includes(
-			this.props.clientId
-		);
-		const isBlockCopied = !isNewBlock && isInLastInserted;
 
+		// OPTIMIZED: Use Set for O(1) lookup instead of array.includes O(n)
+		const lastInsertedBlocks =
+			this.safeSelect('maxiBlocks/blocks', 'getLastInsertedBlocks') || [];
+		const lastInsertedSet = new Set(lastInsertedBlocks);
+		const isInLastInserted = lastInsertedSet.has(this.props.clientId);
+		const isBlockCopied = !isNewBlock && isInLastInserted;
 		// UniqueID validation completed
 
 		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {

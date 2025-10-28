@@ -79,21 +79,6 @@ body.maxi-blocks--active .maxi-image-block {
 		margin: auto;
 	}
 }
-
-body.maxi-blocks--active
-	.block-editor__container
-	.maxi-image-inspector__dimension-width {
-	margin-bottom: 8px;
-	.components-range-control__wrapper {
-		margin-left: 7px;
-	}
-	.components-button.is-secondary {
-		border: none !important;
-	}
-	input[type='number'] {
-		border: 1.5px solid var(--maxi-primary-color) !important;
-	}
-}
 .mb-hover-bg {
 	margin-left: 8px !important;
 }

@@ -139,7 +139,6 @@
 		&:focus-visible,
 		&:hover {
 			outline: none;
-			border: none;
 			background: var(--maxi-whisper-green);
 		}
 
@@ -154,7 +153,6 @@
 
 		&:active {
 			transform: scale(0.95);
-			border: none;
 		}
 
 		&:disabled {

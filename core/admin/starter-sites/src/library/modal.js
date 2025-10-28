@@ -149,7 +149,7 @@ const MaxiModal = props => {
 								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-go-pro'
 								onClick={handleGoProClick}
 							>
-								{__('Go Pro', 'maxi-blocks')}
+								{__('Get Cloud', 'maxi-blocks')}
 							</button>
 						) : (
 							<button

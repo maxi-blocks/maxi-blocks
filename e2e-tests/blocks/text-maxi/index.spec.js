@@ -676,9 +676,12 @@ describe('TextMaxi', () => {
 		);
 		await page.waitForTimeout(150);
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		await page.waitForTimeout(150);
+
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'
 		);
+		await page.waitForTimeout(150);
 		await selectMaxiTextP.click();
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'a');

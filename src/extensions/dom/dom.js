@@ -108,17 +108,11 @@ wp.domReady(() => {
 			editorWrapper.style.maxWidth = 'initial';
 			const { width } = editorWrapper.getBoundingClientRect();
 
-			const { setMaxiDeviceType } = dispatch('maxiBlocks');
-			const responsiveMenu = document.querySelector(
-				'.components-dropdown-menu__menu .components-menu-items-choice'
-			);
-
-			if (!responsiveMenu) {
-				setMaxiDeviceType({
-					width,
-					changeSize: false,
-				});
-			}
+			// For template parts, we don't want to automatically change the device type
+			// based on the resizable box width. The device type should stay as 'general'
+			// (which displays as the base breakpoint) unless the user explicitly clicks
+			// a responsive button. The resize observer should only handle UI updates
+			// like showing/hiding handles.
 
 			const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 				select('maxiBlocks');
@@ -237,12 +231,28 @@ wp.domReady(() => {
 				isNewEditorContentObserver &&
 				siteEditorIframeBody
 			) {
-				if (!getIsTemplatePart())
-					setTimeout(() => {
-						dispatch('maxiBlocks').setMaxiDeviceType({
-							deviceType: 'general',
-						});
-					}, 150);
+				setTimeout(() => {
+					// Wait for breakpoints to be loaded before setting device type
+					const checkBreakpoints = () => {
+						const breakpoints =
+							select('maxiBlocks').receiveMaxiBreakpoints();
+						const hasBreakpoints =
+							breakpoints &&
+							typeof breakpoints === 'object' &&
+							Object.keys(breakpoints).length > 0;
+
+						if (hasBreakpoints) {
+							dispatch('maxiBlocks').setMaxiDeviceType({
+								deviceType: 'general',
+							});
+						} else {
+							// Retry after a short delay
+							setTimeout(checkBreakpoints, 50);
+						}
+					};
+
+					checkBreakpoints();
+				}, 150);
 
 				isNewEditorContentObserver = false;
 				resizeObserver.observe(resizeObserverTarget);

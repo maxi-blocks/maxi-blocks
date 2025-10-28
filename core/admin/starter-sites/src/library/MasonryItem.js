@@ -96,7 +96,7 @@ const MasonryItem = props => {
 						)}
 						{isPro && (
 							<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-pro'>
-								{__('Pro', 'maxi-blocks')}
+								{__('Cloud', 'maxi-blocks')}
 							</span>
 						)}
 					</div>

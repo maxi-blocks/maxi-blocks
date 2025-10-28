@@ -228,8 +228,11 @@ class MaxiBlockComponent extends Component {
 		// SIMPLIFIED - no caching, just direct queries
 		const editorIframeSelector =
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
-		this.editorIframe = document.querySelector(editorIframeSelector);
-
+		const editorIframeSelectorAttemptTwo =
+			'.block-editor-iframe__scale-container iframe[name="editor-canvas"]';
+		this.editorIframe =
+			document.querySelector(editorIframeSelector) ||
+			document.querySelector(editorIframeSelectorAttemptTwo);
 		if (!getIsSiteEditor()) {
 			const templateModalSelector =
 				'.editor-post-template__swap-template-modal';
@@ -555,6 +558,11 @@ class MaxiBlockComponent extends Component {
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		this.updateDOMReferences();
 
+		// Update FSE iframe styles even for template parts
+		if (getIsSiteEditor()) {
+			this.addMaxiFSEIframeStyles();
+		}
+
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { uniqueID } = this.props.attributes;
 
@@ -861,33 +869,88 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	handleResponsivePreview(editorWrapper) {
-		const { tabletPreview, mobilePreview } =
-			this.getPreviewElements(editorWrapper);
-		const previewTarget = tabletPreview ?? mobilePreview;
-		const postEditor = this.getCachedElement(
-			'.edit-post-visual-editor',
-			document.body
-		);
-		if (!postEditor) return;
-		const responsiveWidth = postEditor.getAttribute(
-			'maxi-blocks-responsive-width'
-		);
-		const isMaxiPreview = postEditor.getAttribute('is-maxi-preview');
+	handleResponsivePreview(editorWrapper, currentBreakpoint) {
+		// Helper function to apply styles
+		const applyPreviewStyles = () => {
+			const { tabletPreview, mobilePreview, desktopPreview } =
+				this.getPreviewElements(editorWrapper, currentBreakpoint);
+			const previewTarget =
+				tabletPreview ?? mobilePreview ?? desktopPreview;
 
-		if (isMaxiPreview) {
+			if (!previewTarget) return;
+
+			if (desktopPreview) {
+				previewTarget.style.height = '100%';
+				// Clear mobile/tablet width constraints when switching to desktop
+				previewTarget.style.width = '';
+				const previewTargetIframe = document.querySelector(
+					'iframe[name="editor-canvas"]'
+				);
+				if (previewTargetIframe) {
+					previewTargetIframe.style.width = '';
+				}
+				return;
+			}
+
+			const postEditor = this.getCachedElement(
+				'.edit-post-visual-editor',
+				document.body
+			);
+			if (!postEditor) return;
+
+			const responsiveWidth = postEditor.getAttribute(
+				'maxi-blocks-responsive-width'
+			);
 			previewTarget.style.width = `${responsiveWidth}px`;
 			previewTarget.style.boxSizing = 'content-box';
+			previewTarget.style.padding = '0';
+
+			const previewTargetIframe = document.querySelector(
+				'iframe[name="editor-canvas"]'
+			);
+			if (previewTargetIframe) {
+				previewTargetIframe.style.width = `${responsiveWidth}px`;
+			}
+		};
+
+		// Check if we need to use fallback (wrong preview class in DOM)
+		const breakpointMap = {
+			xxl: 'desktop',
+			xl: 'desktop',
+			l: 'desktop',
+			m: 'tablet',
+			s: 'mobile',
+			xs: 'mobile',
+			general: 'desktop',
+		};
+		const expectedPreviewType =
+			breakpointMap[currentBreakpoint] || 'desktop';
+		const expectedElement = editorWrapper.querySelector(
+			`.is-${expectedPreviewType}-preview`
+		);
+
+		// If the expected preview element doesn't exist yet (WordPress timing issue),
+		// defer style application to next frame to give DOM time to update
+		if (!expectedElement) {
+			requestAnimationFrame(() => {
+				applyPreviewStyles();
+			});
+		} else {
+			// Element exists, apply styles immediately
+			applyPreviewStyles();
 		}
 	}
 
 	handleIframeStyles(iframe, currentBreakpoint) {
 		const iframeDocument = iframe.contentDocument;
 		const editorWrapper = iframeDocument.body;
-		const { isPreview } = this.getPreviewElements(editorWrapper);
+		const { isPreview } = this.getPreviewElements(
+			editorWrapper,
+			currentBreakpoint
+		);
 
 		if (isPreview) {
-			this.handleResponsivePreview(editorWrapper);
+			this.handleResponsivePreview(editorWrapper, currentBreakpoint);
 		}
 
 		if (editorWrapper) {
@@ -1711,7 +1774,10 @@ class MaxiBlockComponent extends Component {
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
 		iframeDocument.documentElement.style.scrollbarWidth = 'none';
-		const { isPreview } = this.getPreviewElements(editorWrapper);
+		const { isPreview } = this.getPreviewElements(
+			editorWrapper,
+			currentBreakpoint
+		);
 
 		if (!isPreview) {
 			return;
@@ -2361,13 +2427,65 @@ class MaxiBlockComponent extends Component {
 	}
 
 	// Returns responsive preview elements if present
-	getPreviewElements(parentElement) {
+	// Use currentBreakpoint param when available to avoid DOM timing issues
+	getPreviewElements(parentElement, currentBreakpoint = null) {
+		// If currentBreakpoint is provided, use it directly instead of querying DOM
+		// This prevents timing issues where DOM classes haven't updated yet
+		if (currentBreakpoint) {
+			const breakpointMap = {
+				xxl: 'desktop',
+				xl: 'desktop',
+				l: 'desktop',
+				m: 'tablet',
+				s: 'mobile',
+				xs: 'mobile',
+			};
+			const previewType = breakpointMap[currentBreakpoint] || 'desktop';
+
+			// Check if parentElement itself has the preview class
+			const parentHasClass = parentElement?.classList?.contains(
+				`is-${previewType}-preview`
+			);
+
+			// Query for the specific preview element based on current breakpoint
+			let previewElement = parentElement.querySelector(
+				`.is-${previewType}-preview`
+			);
+
+			// If not found as child, check if parentElement itself is the preview element
+			if (!previewElement && parentHasClass) {
+				previewElement = parentElement;
+			}
+
+			// FALLBACK: If the expected preview class isn't found yet (WordPress timing issue),
+			// look for ANY preview element and use that, since we know the correct type from currentBreakpoint
+			if (!previewElement) {
+				previewElement =
+					parentElement.querySelector('.is-mobile-preview') ||
+					parentElement.querySelector('.is-tablet-preview') ||
+					parentElement.querySelector('.is-desktop-preview');
+			}
+
+			return {
+				tabletPreview: previewType === 'tablet' ? previewElement : null,
+				mobilePreview: previewType === 'mobile' ? previewElement : null,
+				desktopPreview:
+					previewType === 'desktop' ? previewElement : null,
+				isPreview: !!previewElement,
+			};
+		}
+
+		// Fallback to DOM query when currentBreakpoint is not provided
 		const tabletPreview = parentElement.querySelector('.is-tablet-preview');
 		const mobilePreview = parentElement.querySelector('.is-mobile-preview');
+		const desktopPreview = parentElement.querySelector(
+			'.is-desktop-preview'
+		);
 		return {
 			tabletPreview,
 			mobilePreview,
-			isPreview: !!tabletPreview || !!mobilePreview,
+			desktopPreview,
+			isPreview: !!tabletPreview || !!mobilePreview || !!desktopPreview,
 		};
 	}
 
@@ -2405,10 +2523,12 @@ class MaxiBlockComponent extends Component {
 
 			// Append style to iframe's head
 			fseIframe.contentDocument.head.appendChild(iframeStyles);
-
-			// Copy Maxi CSS variables to FSE iframe
-			this.copyMaxiCSSVariablesToIframe(fseIframe);
 		}
+
+		// Always copy/update Maxi CSS variables to FSE iframe
+		// This ensures variables are available even if they weren't ready
+		// during initial iframe creation
+		this.copyMaxiCSSVariablesToIframe(fseIframe);
 	}
 
 	/**
@@ -2418,19 +2538,54 @@ class MaxiBlockComponent extends Component {
 	copyMaxiCSSVariablesToIframe(fseIframe) {
 		if (!fseIframe || !fseIframe.contentDocument) return;
 
-		// Check if variables are already copied
-		const existingVariables = fseIframe.contentDocument.getElementById(
+		// Copy style card CSS variables from main document
+		const maxiVariables = document.querySelector(
+			'#maxi-blocks-sc-vars-inline-css'
+		);
+		if (maxiVariables) {
+			// Remove old version if exists
+			fseIframe.contentDocument
+				.querySelector('#maxi-blocks-sc-vars-inline-css')
+				?.remove();
+
+			// Clone and append to iframe
+			const clonedVariables = maxiVariables.cloneNode(true);
+			fseIframe.contentDocument.head.appendChild(clonedVariables);
+		}
+
+		// Load fonts into FSE iframe
+		loadFonts(getPageFonts(), true, fseIframe.contentDocument);
+
+		// Copy font stylesheet links to FSE iframe
+		const maxiFonts = Array.from(
+			document.querySelectorAll(
+				'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]'
+			)
+		);
+		if (maxiFonts.length > 0) {
+			maxiFonts.forEach(rawMaxiFont => {
+				// Check if this font link already exists in iframe
+				const fontId = rawMaxiFont.id;
+				if (!fseIframe.contentDocument.querySelector(`#${fontId}`)) {
+					const maxiFont = rawMaxiFont.cloneNode(true);
+					fseIframe.contentDocument.head.appendChild(maxiFont);
+				}
+			});
+		}
+
+		// Check if spinners are already added
+		const existingSpinners = fseIframe.contentDocument.getElementById(
 			'maxi-blocks-fse-spinners'
 		);
 
-		if (!existingVariables) {
-			// Create style element for CSS variables
-			const variablesStyle =
+		if (!existingSpinners) {
+			// Create style element for spinner animations
+			const spinnersStyle =
 				fseIframe.contentDocument.createElement('style');
-			variablesStyle.id = 'maxi-blocks-fse-spinners';
+			spinnersStyle.id = 'maxi-blocks-fse-spinners';
 
 			// Add essential CSS variables and spinner animations for loaders
-			variablesStyle.textContent = `
+			spinnersStyle.textContent = `
 				:root {
 					--maxi-primary-color: #2c8a46; /* Fresh lime green */
 				}
@@ -2448,7 +2603,7 @@ class MaxiBlockComponent extends Component {
 				}
 			`;
 
-			fseIframe.contentDocument.head.appendChild(variablesStyle);
+			fseIframe.contentDocument.head.appendChild(spinnersStyle);
 		}
 	}
 

@@ -144,11 +144,26 @@ const propagateNewUniqueID = (
 			// Check blockAttributesUpdate first (current function's pending updates),
 			// then fresh attributes from store (previous functions' applied updates),
 			// finally fall back to original attributes
-			const currentRelations = blockAttributesUpdate[clientId]?.relations || freshAttributes.relations;
+			const currentRelations =
+				blockAttributesUpdate[clientId]?.relations ||
+				freshAttributes.relations ||
+				attributes.relations;
 
-			const relations = isArray(currentRelations)
-				? currentRelations
-				: Object.values(currentRelations);
+			// Guard against undefined and detect original data type
+			// Determine if original relations was an Array or Object to preserve the shape
+			const originalRelations =
+				freshAttributes.relations || attributes.relations;
+			const isOriginalArray = isArray(originalRelations);
+
+			// Provide appropriate fallback based on original type
+			const safeCurrentRelations =
+				currentRelations || (isOriginalArray ? [] : {});
+
+			// Normalize to array for processing while preserving original type info
+			const relations = isArray(safeCurrentRelations)
+				? safeCurrentRelations
+				: Object.values(safeCurrentRelations);
+
 			const newRelations = updateRelationsWithNewUniqueID(
 				relations,
 				clientId,
@@ -156,10 +171,32 @@ const propagateNewUniqueID = (
 			);
 
 			if (!isEqual(relations, newRelations)) {
+				// Convert back to original shape: if original was object, convert array back to object
+				// If original was array, keep as array
+				let relationsToSave = newRelations;
+				if (!isOriginalArray && isArray(newRelations)) {
+					// Convert array back to object structure
+					// Preserve original object keys if possible, otherwise use indices
+					relationsToSave = {};
+					if (isPlainObject(safeCurrentRelations)) {
+						// Try to preserve original keys
+						const originalKeys = Object.keys(safeCurrentRelations);
+						newRelations.forEach((relation, index) => {
+							const key = originalKeys[index] || index.toString();
+							relationsToSave[key] = relation;
+						});
+					} else {
+						// Use indices as keys
+						newRelations.forEach((relation, index) => {
+							relationsToSave[index.toString()] = relation;
+						});
+					}
+				}
+
 				updateBlockAttributesUpdate(
 					clientId,
 					'relations',
-					newRelations
+					relationsToSave
 				);
 
 				if (!maxiBlocksStore.getBlockByClientId(clientId)) {
@@ -273,11 +310,25 @@ const propagateNewUniqueID = (
 			// Check blockAttributesUpdate first (current function's pending updates),
 			// then fresh attributes from store (previous functions' applied updates),
 			// finally fall back to original attributes
-			const currentRelations = blockAttributesUpdate[blockClientId]?.relations || freshAttributes.relations;
+			const currentRelations =
+				blockAttributesUpdate[blockClientId]?.relations ||
+				freshAttributes.relations ||
+				attributes.relations;
 
-			const relations = isArray(currentRelations)
-				? currentRelations
-				: Object.values(currentRelations);
+			// Guard against undefined and detect original data type
+			// Determine if original relations was an Array or Object to preserve the shape
+			const originalRelations =
+				freshAttributes.relations || attributes.relations;
+			const isOriginalArray = isArray(originalRelations);
+
+			// Provide appropriate fallback based on original type
+			const safeCurrentRelations =
+				currentRelations || (isOriginalArray ? [] : {});
+
+			// Normalize to array for processing while preserving original type info
+			const relations = isArray(safeCurrentRelations)
+				? safeCurrentRelations
+				: Object.values(safeCurrentRelations);
 
 			// Check if any relation points to the old uniqueID
 			const hasOldUniqueID = relations.some(
@@ -296,10 +347,34 @@ const propagateNewUniqueID = (
 				});
 
 				if (!isEqual(relations, newRelations)) {
+					// Convert back to original shape: if original was object, convert array back to object
+					// If original was array, keep as array
+					let relationsToSave = newRelations;
+					if (!isOriginalArray && isArray(newRelations)) {
+						// Convert array back to object structure
+						// Preserve original object keys if possible, otherwise use indices
+						relationsToSave = {};
+						if (isPlainObject(safeCurrentRelations)) {
+							// Try to preserve original keys
+							const originalKeys =
+								Object.keys(safeCurrentRelations);
+							newRelations.forEach((relation, index) => {
+								const key =
+									originalKeys[index] || index.toString();
+								relationsToSave[key] = relation;
+							});
+						} else {
+							// Use indices as keys
+							newRelations.forEach((relation, index) => {
+								relationsToSave[index.toString()] = relation;
+							});
+						}
+					}
+
 					updateBlockAttributesUpdate(
 						blockClientId,
 						'relations',
-						newRelations
+						relationsToSave
 					);
 
 					const maxiBlocksStore = select('maxiBlocks/blocks');
@@ -353,7 +428,10 @@ const propagateNewUniqueID = (
 
 		Object.entries(optimizedUpdates).forEach(
 			([blockClientId, attributes]) => {
-				if (blockClientId === clientId || lastChangedBlocks.includes(blockClientId)) {
+				if (
+					blockClientId === clientId ||
+					lastChangedBlocks.includes(blockClientId)
+				) {
 					// Current block or copied blocks - update immediately
 					// Copied blocks must be immediate because subsequent propagateNewUniqueID calls
 					// will need the updated relations before their setTimeout delays expire

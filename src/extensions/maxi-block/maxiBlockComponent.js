@@ -746,28 +746,6 @@ class MaxiBlockComponent extends Component {
 		const allBlocks =
 			this.safeSelect('core/block-editor', 'getBlocks') || [];
 
-		// Helper function to recursively collect all clientIds from block tree
-		const collectAllClientIds = blocks => {
-			const ids = [];
-			const traverse = blockList => {
-				if (!blockList || !Array.isArray(blockList)) return;
-				for (const block of blockList) {
-					if (block && block.clientId) {
-						ids.push(block.clientId);
-					}
-					if (
-						block &&
-						block.innerBlocks &&
-						Array.isArray(block.innerBlocks)
-					) {
-						traverse(block.innerBlocks);
-					}
-				}
-			};
-			traverse(blocks);
-			return ids;
-		};
-
 		const blockExistsInTree = this.checkBlockInTree(
 			allBlocks,
 			this.props.clientId
@@ -1246,21 +1224,41 @@ class MaxiBlockComponent extends Component {
 				lastUpdate: 0,
 				processing: false,
 				processedClientIds: new Set(), // Track which clientIds have been processed
+				lastViewMode: null, // Track view mode changes
 			};
 		}
 
 		const cache = MaxiBlockComponent._lastInsertedBlocksCache;
 		const now = Date.now();
 
+		// CRITICAL FIX: Detect view mode changes and clear cache
+		// This prevents relations from being lost during visual <-> code view switches
+		const currentViewMode =
+			this.safeSelect('core/edit-post', 'getEditorMode') ||
+			this.safeSelect('core/editor', 'getEditorMode') ||
+			'visual'; // fallback to visual
+
+		if (cache.lastViewMode && cache.lastViewMode !== currentViewMode) {
+			// Clear the cache to ensure proper relation tracking after view mode switch
+			cache.processedClientIds.clear();
+			cache.lastUpdate = 0;
+			cache.processing = false;
+		}
+		cache.lastViewMode = currentViewMode;
+
 		// Check if this specific clientId was already processed recently
 		const isFirstTimeForThisClient =
 			!cache.processedClientIds.has(clientId);
 
-		// Throttle: only update once per 100ms to prevent excessive calls during page load
+		// ENHANCED: More lenient throttling for view mode switches
+		// Reduce throttling window and always allow processing after view mode changes
+		const throttleWindow = cache.lastViewMode !== currentViewMode ? 0 : 50; // Reduced from 100ms to 50ms
+
+		// Throttle: only update once per throttleWindow to prevent excessive calls during page load
 		// BUT: Always allow first-time processing for a clientId (critical for IB relations)
 		if (
 			!isFirstTimeForThisClient &&
-			(now - cache.lastUpdate < 100 || cache.processing)
+			(now - cache.lastUpdate < throttleWindow || cache.processing)
 		) {
 			return;
 		}
@@ -1275,10 +1273,13 @@ class MaxiBlockComponent extends Component {
 			this.safeSelect('maxiBlocks/blocks', 'getBlockClientIds') || []
 		);
 
-		// Only proceed if this clientId is not already tracked in store
+		// ENHANCED: Always update after view mode changes to ensure relations are preserved
+		const shouldForceUpdate = cache.lastViewMode !== currentViewMode;
+
+		// Only proceed if this clientId is not already tracked in store OR if we're forcing update
 		if (
-			!lastInsertedSet.has(clientId) &&
-			!blockClientIdsSet.has(clientId)
+			shouldForceUpdate ||
+			(!lastInsertedSet.has(clientId) && !blockClientIdsSet.has(clientId))
 		) {
 			const allClientIds = this.safeSelect(
 				'core/block-editor',
@@ -1297,6 +1298,8 @@ class MaxiBlockComponent extends Component {
 				cache.lastUpdate = now;
 				// Mark this clientId as processed
 				cache.processedClientIds.add(clientId);
+
+				// Force update completed for view mode change
 			}
 		} else {
 			// Even if already in store, mark as processed to enable throttling

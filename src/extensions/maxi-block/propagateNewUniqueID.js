@@ -51,7 +51,33 @@ const propagateNewUniqueID = (
 	};
 
 	const updateRelations = () => {
-		if (isEmpty(lastChangedBlocks)) return;
+		// ENHANCED: Don't skip relation updates if lastChangedBlocks is empty during view mode switches
+		// This can happen when components remount after switching between visual/code views
+
+		// If lastChangedBlocks is empty but we have a valid clientId, it might be a view mode switch
+		// In this case, we should still process relations to prevent them from being lost
+		if (isEmpty(lastChangedBlocks)) {
+			// Check if the current block exists and has relations that need updating
+			const currentBlock = select('core/block-editor').getBlock(clientId);
+			if (
+				currentBlock &&
+				currentBlock.attributes &&
+				currentBlock.attributes.relations
+			) {
+				const hasRelationsWithOldID =
+					currentBlock.attributes.relations.some(
+						relation => relation.uniqueID === oldUniqueID
+					);
+
+				if (hasRelationsWithOldID) {
+					// Don't return early - continue with relation updates
+				} else {
+					return; // No relations to update
+				}
+			} else {
+				return; // No block or relations found
+			}
+		}
 
 		let firstColumnToModifyClientId = null;
 
@@ -287,16 +313,23 @@ const propagateNewUniqueID = (
 			return false;
 		});
 
+		// ENHANCED: Additional safety check for view mode switches
+		// If we're in a view mode switch scenario, be more aggressive about updating relations
+		const isLikelyViewModeSwitch =
+			isEmpty(lastChangedBlocks) && !originalBlockStillExists;
+
 		goThroughMaxiBlocks(block => {
 			const { attributes, clientId: blockClientId } = block;
 
 			// Skip blocks that are part of the duplication (already handled by updateRelations)
 			// BUT only skip them if this is copy-paste (original still exists)
 			// For pattern imports (original doesn't exist), we MUST update them here
+			// ENHANCED: Don't skip during likely view mode switches to ensure relations are preserved
 			if (
 				Array.isArray(lastChangedBlocks) &&
 				lastChangedBlocks.includes(blockClientId) &&
-				originalBlockStillExists
+				originalBlockStillExists &&
+				!isLikelyViewModeSwitch
 			) {
 				return false;
 			}

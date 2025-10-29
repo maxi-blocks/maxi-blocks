@@ -49,7 +49,7 @@ if (!class_exists('MaxiBlocks_Core')):
 
                 // Add inline CSS to hide resizable handles in Site Editor if option is enabled
                 if (get_option('hide_fse_resizable_handles')) {
-                    $custom_css = 'body.maxi-blocks--active .editor-resizable-editor__resize-handle { display: none !important; }';
+                    $custom_css = 'body.maxi-blocks--active .editor-resizable-editor__resize-handle { display: none !important; } body.maxi-blocks--active .editor-visual-editor.has-padding { padding: 0 !important; }';
                     wp_add_inline_style('maxi-blocks-editor-font', $custom_css);
                 }
             });

@@ -64,10 +64,18 @@ const propagateNewUniqueID = (
 				currentBlock.attributes &&
 				currentBlock.attributes.relations
 			) {
-				const hasRelationsWithOldID =
-					currentBlock.attributes.relations.some(
-						relation => relation.uniqueID === oldUniqueID
-					);
+				// Normalize relations to array: if it's already an array use it,
+				// otherwise if it's an object use Object.values(), or [] if falsy
+				const { relations } = currentBlock.attributes;
+				const relationsArray = Array.isArray(relations)
+					? relations
+					: relations && typeof relations === 'object'
+					? Object.values(relations)
+					: [];
+
+				const hasRelationsWithOldID = relationsArray.some(
+					relation => relation && relation.uniqueID === oldUniqueID
+				);
 
 				if (hasRelationsWithOldID) {
 					// Don't return early - continue with relation updates
@@ -464,7 +472,8 @@ const propagateNewUniqueID = (
 			([blockClientId, attributes]) => {
 				if (
 					blockClientId === clientId ||
-					lastChangedBlocks.includes(blockClientId)
+					(Array.isArray(lastChangedBlocks) &&
+						lastChangedBlocks.includes(blockClientId))
 				) {
 					// Current block or copied blocks - update immediately
 					// Copied blocks must be immediate because subsequent propagateNewUniqueID calls

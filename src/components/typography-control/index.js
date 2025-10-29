@@ -601,7 +601,12 @@ const TypographyControl = props => {
 
 	const onChangeFormat = (
 		value,
-		{ forceDisableCustomFormats = false, tag = '', isReset = false } = {},
+		{
+			forceDisableCustomFormats = false,
+			tag = '',
+			isReset = false,
+			meta,
+		} = {},
 		disableFilter = false
 	) => {
 		if (forceIndividualChanges) {
@@ -611,7 +616,7 @@ const TypographyControl = props => {
 				return acc;
 			}, {});
 
-			onChange({ ...obj, isReset });
+			onChange({ ...obj, isReset, meta });
 			return;
 		}
 
@@ -650,9 +655,9 @@ const TypographyControl = props => {
 		}
 
 		if (!isReset) {
-			onChange(filteredObj, getInlineTarget(tag));
+			onChange({ ...filteredObj, meta }, getInlineTarget(tag));
 		} else {
-			onChange({ ...obj, isReset: true }, getInlineTarget(tag));
+			onChange({ ...obj, meta, isReset: true }, getInlineTarget(tag));
 		}
 	};
 
@@ -835,12 +840,15 @@ const TypographyControl = props => {
 							placeholder={getValue('font-size')}
 							value={getValue('font-size', !isStyleCards)}
 							defaultValue={getDefault('font-size')}
-							onChangeValue={val => {
-								onChangeFormat({
-									[`${prefix}font-size`]: val,
-									[`${prefix}font-size-unit`]:
-										getValue('font-size-unit'),
-								});
+							onChangeValue={(val, meta) => {
+								onChangeFormat(
+									{
+										[`${prefix}font-size`]: val,
+										[`${prefix}font-size-unit`]:
+											getValue('font-size-unit'),
+									},
+									{ meta }
+								);
 							}}
 							onReset={() =>
 								onChangeFormat(
@@ -880,12 +888,15 @@ const TypographyControl = props => {
 							placeholder={getValue('line-height')}
 							value={getValue('line-height', !isStyleCards)}
 							defaultValue={getDefault('line-height')}
-							onChangeValue={val => {
-								onChangeFormat({
-									[`${prefix}line-height`]: val,
-									[`${prefix}line-height-unit`]:
-										getValue('line-height-unit'),
-								});
+							onChangeValue={(val, meta) => {
+								onChangeFormat(
+									{
+										[`${prefix}line-height`]: val,
+										[`${prefix}line-height-unit`]:
+											getValue('line-height-unit'),
+									},
+									{ meta }
+								);
 							}}
 							onReset={() =>
 								onChangeFormat(
@@ -926,13 +937,15 @@ const TypographyControl = props => {
 							placeholder={getValue('letter-spacing')}
 							value={getValue('letter-spacing', !isStyleCards)}
 							defaultValue={getDefault('letter-spacing')}
-							onChangeValue={val => {
-								onChangeFormat({
-									[`${prefix}letter-spacing`]: val,
-									[`${prefix}letter-spacing-unit`]: getValue(
-										'letter-spacing-unit'
-									),
-								});
+							onChangeValue={(val, meta) => {
+								onChangeFormat(
+									{
+										[`${prefix}letter-spacing`]: val,
+										[`${prefix}letter-spacing-unit`]:
+											getValue('letter-spacing-unit'),
+									},
+									{ meta }
+								);
 							}}
 							onReset={() =>
 								onChangeFormat(
@@ -1227,14 +1240,14 @@ const TypographyControl = props => {
 							placeholder={getValue('text-indent')}
 							value={getValue('text-indent', !isStyleCards)}
 							defaultValue={getDefault('text-indent')}
-							onChangeValue={val => {
+							onChangeValue={(val, meta) => {
 								onChangeFormat(
 									{
 										[`${prefix}text-indent`]: val,
 										[`${prefix}text-indent-unit`]:
 											getValue('text-indent-unit'),
 									},
-									{ forceDisableCustomFormats: true }
+									{ forceDisableCustomFormats: true, meta }
 								);
 							}}
 							onReset={() =>
@@ -1352,14 +1365,14 @@ const TypographyControl = props => {
 								'word-spacing',
 								!isStyleCards
 							)}
-							onChangeValue={val => {
+							onChangeValue={(val, meta) => {
 								onChangeFormat(
 									{
 										[`${prefix}word-spacing`]: val,
 										[`${prefix}word-spacing-unit`]:
 											getValue('word-spacing-unit'),
 									},
-									{ forceDisableCustomFormats: true }
+									{ forceDisableCustomFormats: true, meta }
 								);
 							}}
 							onReset={() =>
@@ -1428,14 +1441,17 @@ const TypographyControl = props => {
 									'bottom-gap',
 									!isStyleCards
 								)}
-								onChangeValue={val => {
+								onChangeValue={(val, meta) => {
 									onChangeFormat(
 										{
 											[`${prefix}bottom-gap`]: val,
 											[`${prefix}bottom-gap-unit`]:
 												getValue('bottom-gap-unit'),
 										},
-										{ forceDisableCustomFormats: true }
+										{
+											forceDisableCustomFormats: true,
+											meta,
+										}
 									);
 								}}
 								onReset={() =>

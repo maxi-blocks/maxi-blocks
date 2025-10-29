@@ -181,13 +181,14 @@ const VideoLayer = props => {
 							props: videoOptions,
 							prefix,
 						})}
-						onChangeValue={val => {
+						onChangeValue={(val, meta) => {
 							onChange({
 								[getAttributeKey(
 									'background-video-startTime',
 									false,
 									prefix
 								)]: val !== undefined && val !== '' ? val : '',
+								meta,
 							});
 						}}
 						min={0}
@@ -211,13 +212,14 @@ const VideoLayer = props => {
 							props: videoOptions,
 							prefix,
 						})}
-						onChangeValue={val =>
+						onChangeValue={(val, meta) =>
 							onChange({
 								[getAttributeKey(
 									'background-video-endTime',
 									false,
 									prefix
 								)]: val !== undefined && val !== '' ? val : '',
+								meta,
 							})
 						}
 						min={0}

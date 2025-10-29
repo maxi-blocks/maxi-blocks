@@ -19,7 +19,7 @@ import { isNil } from 'lodash';
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const handleSetAttributes = ({
-	obj: { isReset, ...obj },
+	obj: { isReset, meta, ...obj },
 	attributes,
 	onChange,
 	clientId = null,
@@ -27,7 +27,17 @@ const handleSetAttributes = ({
 	defaultAttributes,
 	allowXXLOverGeneral = false,
 	isStyleCard = false,
+	onChangeInline,
+	cleanInlineStyles,
 }) => {
+	if (meta?.inline) {
+		if (onChangeInline) {
+			return onChangeInline(obj, meta.inline);
+		}
+	} else if (cleanInlineStyles) {
+		cleanInlineStyles(obj);
+	}
+
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();

@@ -527,13 +527,10 @@ const ClipPathControl = props => {
 												number={i}
 												type={clipPathOptions.type}
 												getBounds={getBounds}
-												onChange={(value, meta) => {
+												onChange={value => {
 													clipPathOptions.content[i] =
 														value;
-													generateCP(
-														clipPathOptions,
-														meta
-													);
+													generateCP(clipPathOptions);
 												}}
 												onReset={coordIndex => {
 													const breakpoints = [

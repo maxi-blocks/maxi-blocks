@@ -388,11 +388,13 @@ class MaxiBlockComponent extends Component {
 				};
 
 				// Replace relation.uniqueID with legacyUniqueID in all blocks
-				replaceRelationIDs(
-					this.props.attributes,
-					block.innerBlocks,
-					this.props.clientId
-				);
+				if (block && Array.isArray(block.innerBlocks)) {
+					replaceRelationIDs(
+						this.props.attributes,
+						block.innerBlocks,
+						this.props.clientId
+					);
+				}
 			}
 		}
 
@@ -617,23 +619,6 @@ class MaxiBlockComponent extends Component {
 					);
 				}
 			}
-
-			// If there's a relation affecting this concrete block, check if is necessary
-			// to update it's content to keep the coherence and the good UX
-
-			const blocksIBRelations = select(
-				'maxiBlocks/relations'
-			).receiveBlockUnderRelationClientIDs(uniqueID);
-
-			if (!isEmpty(blocksIBRelations))
-				blocksIBRelations.forEach(({ clientId }) =>
-					updateRelationsRemotely({
-						blockTriggerClientId: clientId,
-						blockTargetClientId: this.props.clientId,
-						blockAttributes: this.props.attributes,
-						breakpoint: this.props.deviceType,
-					})
-				);
 		}
 
 		this.hideGutenbergPopover();

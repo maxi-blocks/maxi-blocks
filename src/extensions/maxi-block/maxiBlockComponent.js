@@ -192,8 +192,10 @@ class MaxiBlockComponent extends Component {
 
 		// Block successfully registered
 
-		// Init
-		this.updateLastInsertedBlocks();
+		// Init - skip updateLastInsertedBlocks to avoid array accumulation
+		// Calling it here causes updateGlobalRelations to skip blocks during pattern import
+		// because they get added to lastChangedBlocks and then skipped in propagateNewUniqueID
+		// this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();

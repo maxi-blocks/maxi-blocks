@@ -1244,7 +1244,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '<h4>' . __('Hide resizable handles in Site Editor', 'maxi-blocks') . '</h4>';
             $description .=
                 '<p>' .
-                __('Hide resizable handles in Site Editor for templates part editor and synced blocks editor.', 'maxi-blocks') .
+                __('Hide resizable handles in Site Editor for templates part editor and patterns editor.', 'maxi-blocks') .
                 '</p>';
             $content .= $this->generate_setting($description, 'hide_fse_resizable_handles');
 

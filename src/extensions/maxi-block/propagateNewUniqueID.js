@@ -294,6 +294,7 @@ const propagateNewUniqueID = (
 			// BUT only skip them if this is copy-paste (original still exists)
 			// For pattern imports (original doesn't exist), we MUST update them here
 			if (
+				Array.isArray(lastChangedBlocks) &&
 				lastChangedBlocks.includes(blockClientId) &&
 				originalBlockStillExists
 			) {

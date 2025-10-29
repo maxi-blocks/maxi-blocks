@@ -1240,6 +1240,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '</p>';
             $content .= $this->generate_setting($description, 'hide_tooltips');
 
+            $description =
+                '<h4>' . __('Hide resizable handles in Site Editor', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Hide resizable handles in Site Editor for templates part editor and synced blocks editor.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting($description, 'hide_fse_resizable_handles');
+
             $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
             $this->add_hidden_api_fields();
 
@@ -2088,6 +2096,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'remove_local_fonts' => $args,
                 'allow_svg_json_uploads' => $args,
                 'hide_tooltips' => $args,
+                'hide_fse_resizable_handles' => $args_true,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,

@@ -192,10 +192,9 @@ class MaxiBlockComponent extends Component {
 
 		// Block successfully registered
 
-		// Init - skip updateLastInsertedBlocks to avoid array accumulation
-		// Calling it here causes updateGlobalRelations to skip blocks during pattern import
-		// because they get added to lastChangedBlocks and then skipped in propagateNewUniqueID
-		// this.updateLastInsertedBlocks();
+		// Init - Call updateLastInsertedBlocks to track blocks for IB relations
+		// This is needed for both pattern imports and copy-paste to work correctly
+		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
@@ -1246,14 +1245,23 @@ class MaxiBlockComponent extends Component {
 			MaxiBlockComponent._lastInsertedBlocksCache = {
 				lastUpdate: 0,
 				processing: false,
+				processedClientIds: new Set(), // Track which clientIds have been processed
 			};
 		}
 
 		const cache = MaxiBlockComponent._lastInsertedBlocksCache;
 		const now = Date.now();
 
+		// Check if this specific clientId was already processed recently
+		const isFirstTimeForThisClient =
+			!cache.processedClientIds.has(clientId);
+
 		// Throttle: only update once per 100ms to prevent excessive calls during page load
-		if (now - cache.lastUpdate < 100 || cache.processing) {
+		// BUT: Always allow first-time processing for a clientId (critical for IB relations)
+		if (
+			!isFirstTimeForThisClient &&
+			(now - cache.lastUpdate < 100 || cache.processing)
+		) {
 			return;
 		}
 
@@ -1267,7 +1275,7 @@ class MaxiBlockComponent extends Component {
 			this.safeSelect('maxiBlocks/blocks', 'getBlockClientIds') || []
 		);
 
-		// Only proceed if this clientId is not already tracked
+		// Only proceed if this clientId is not already tracked in store
 		if (
 			!lastInsertedSet.has(clientId) &&
 			!blockClientIdsSet.has(clientId)
@@ -1287,7 +1295,12 @@ class MaxiBlockComponent extends Component {
 				);
 
 				cache.lastUpdate = now;
+				// Mark this clientId as processed
+				cache.processedClientIds.add(clientId);
 			}
+		} else {
+			// Even if already in store, mark as processed to enable throttling
+			cache.processedClientIds.add(clientId);
 		}
 
 		cache.processing = false;

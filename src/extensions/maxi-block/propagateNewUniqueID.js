@@ -136,9 +136,19 @@ const propagateNewUniqueID = (
 
 			if (!attributesHasRelations(attributes)) return;
 
-			const relations = isArray(attributes.relations)
-				? attributes.relations
-				: Object.values(attributes.relations);
+			// CRITICAL FIX: Re-fetch the block from store to get latest attributes
+			// Previous updates from other blocks might have already modified the relations
+			const freshBlock = blockEditorStore.getBlock(clientId);
+			const freshAttributes = freshBlock?.attributes || attributes;
+
+			// Check blockAttributesUpdate first (current function's pending updates),
+			// then fresh attributes from store (previous functions' applied updates),
+			// finally fall back to original attributes
+			const currentRelations = blockAttributesUpdate[clientId]?.relations || freshAttributes.relations;
+
+			const relations = isArray(currentRelations)
+				? currentRelations
+				: Object.values(currentRelations);
 			const newRelations = updateRelationsWithNewUniqueID(
 				relations,
 				clientId,
@@ -225,17 +235,49 @@ const propagateNewUniqueID = (
 				(isPlainObject(attributes.relations) &&
 					isArray(Object.values(attributes.relations))));
 
+		const blockEditorStore = select('core/block-editor');
+
+		// Check if the old uniqueID still exists elsewhere (copy-paste) or not (pattern import)
+		let originalBlockStillExists = false;
+		goThroughMaxiBlocks(block => {
+			if (
+				block.attributes.uniqueID === oldUniqueID &&
+				block.clientId !== clientId
+			) {
+				originalBlockStillExists = true;
+				return true; // Stop searching
+			}
+			return false;
+		});
+
 		goThroughMaxiBlocks(block => {
 			const { attributes, clientId: blockClientId } = block;
 
 			// Skip blocks that are part of the duplication (already handled by updateRelations)
-			if (lastChangedBlocks.includes(blockClientId)) return false;
+			// BUT only skip them if this is copy-paste (original still exists)
+			// For pattern imports (original doesn't exist), we MUST update them here
+			if (
+				lastChangedBlocks.includes(blockClientId) &&
+				originalBlockStillExists
+			) {
+				return false;
+			}
 
 			if (!attributesHasRelations(attributes)) return false;
 
-			const relations = isArray(attributes.relations)
-				? attributes.relations
-				: Object.values(attributes.relations);
+			// CRITICAL FIX: Re-fetch the block from store to get latest attributes
+			// Previous updates from other blocks might have already modified the relations
+			const freshBlock = blockEditorStore.getBlock(blockClientId);
+			const freshAttributes = freshBlock?.attributes || attributes;
+
+			// Check blockAttributesUpdate first (current function's pending updates),
+			// then fresh attributes from store (previous functions' applied updates),
+			// finally fall back to original attributes
+			const currentRelations = blockAttributesUpdate[blockClientId]?.relations || freshAttributes.relations;
+
+			const relations = isArray(currentRelations)
+				? currentRelations
+				: Object.values(currentRelations);
 
 			// Check if any relation points to the old uniqueID
 			const hasOldUniqueID = relations.some(
@@ -305,17 +347,19 @@ const propagateNewUniqueID = (
 		} = dispatch('core/block-editor');
 
 		// Optimization 3: Critical vs Non-Critical Update Separation
-		// Separate critical updates (current block) from non-critical ones (related blocks)
+		// Separate critical updates (current block + copied blocks) from non-critical ones
 		const criticalUpdates = {};
 		const deferredUpdates = {};
 
 		Object.entries(optimizedUpdates).forEach(
 			([blockClientId, attributes]) => {
-				if (blockClientId === clientId) {
-					// Current block - update immediately
+				if (blockClientId === clientId || lastChangedBlocks.includes(blockClientId)) {
+					// Current block or copied blocks - update immediately
+					// Copied blocks must be immediate because subsequent propagateNewUniqueID calls
+					// will need the updated relations before their setTimeout delays expire
 					criticalUpdates[blockClientId] = attributes;
 				} else {
-					// Related blocks - can be deferred
+					// Other unrelated blocks - can be deferred
 					deferredUpdates[blockClientId] = attributes;
 				}
 			}

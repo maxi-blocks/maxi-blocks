@@ -331,7 +331,10 @@ const propagateNewUniqueID = (
 			// If this block HAS the oldUniqueID, it's the original block
 			// We should NOT update its relations because they should still point to itself
 			// Example: Original image with self-targeting BG IB should keep targeting itself
-			if (attributes.uniqueID === oldUniqueID && originalBlockStillExists) {
+			if (
+				attributes.uniqueID === oldUniqueID &&
+				originalBlockStillExists
+			) {
 				return false;
 			}
 

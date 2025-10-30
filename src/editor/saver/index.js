@@ -15,6 +15,7 @@ import { useEffect, createRoot, useLayoutEffect } from '@wordpress/element';
  */
 import { getPageFonts, loadFonts } from '@extensions/text/fonts';
 import { getIsSiteEditor, getIsTemplatePart } from '@extensions/fse';
+import MaxiBlocksSaveBlocker from '@editor/save-blocker';
 
 /**
  * Component
@@ -189,7 +190,7 @@ const BlockStylesSaver = () => {
 		return () => {};
 	}, [allStylesAreSaved]);
 
-	return null;
+	return <MaxiBlocksSaveBlocker />;
 };
 
 wp.domReady(() => {

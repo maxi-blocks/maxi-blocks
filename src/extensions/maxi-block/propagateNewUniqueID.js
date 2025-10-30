@@ -204,38 +204,10 @@ const propagateNewUniqueID = (
 				repeaterColumnClientIds
 			);
 
-			if (!isEqual(relations, newRelations)) {
-				// Convert back to original shape: if original was object, convert array back to object
-				// If original was array, keep as array
-				let relationsToSave = newRelations;
-				if (!isOriginalArray && isArray(newRelations)) {
-					// Convert array back to object structure
-					// Preserve original object keys if possible, otherwise use indices
-					relationsToSave = {};
-					if (isPlainObject(safeCurrentRelations)) {
-						// Try to preserve original keys
-						const originalKeys = Object.keys(safeCurrentRelations);
-						newRelations.forEach((relation, index) => {
-							const key = originalKeys[index] || index.toString();
-							relationsToSave[key] = relation;
-						});
-					} else {
-						// Use indices as keys
-						newRelations.forEach((relation, index) => {
-							relationsToSave[index.toString()] = relation;
-						});
-					}
-				}
+			updateBlockAttributesUpdate(clientId, 'relations', newRelations);
 
-				updateBlockAttributesUpdate(
-					clientId,
-					'relations',
-					relationsToSave
-				);
-
-				if (!maxiBlocksStore.getBlockByClientId(clientId)) {
-					blockEditorDispatch.addBlockWithUpdatedAttributes(clientId);
-				}
+			if (!maxiBlocksStore.getBlockByClientId(clientId)) {
+				blockEditorDispatch.addBlockWithUpdatedAttributes(clientId);
 			}
 		};
 

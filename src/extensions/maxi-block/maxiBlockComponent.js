@@ -338,9 +338,7 @@ class MaxiBlockComponent extends Component {
 			);
 			const idPairs = collectIDs(
 				this.props.attributes,
-				block && Array.isArray(block.innerBlocks)
-					? block.innerBlocks
-					: []
+				block.innerBlocks
 			);
 
 			if (!isEmpty(idPairs)) {
@@ -389,23 +387,15 @@ class MaxiBlockComponent extends Component {
 				};
 
 				// Replace relation.uniqueID with legacyUniqueID in all blocks
-				if (block && Array.isArray(block.innerBlocks)) {
-					replaceRelationIDs(
-						this.props.attributes,
-						block.innerBlocks,
-						this.props.clientId
-					);
-				}
+				replaceRelationIDs(
+					this.props.attributes,
+					block.innerBlocks,
+					this.props.clientId
+				);
 			}
 		}
 
 		// Log relations processing time
-
-		// Step 4: Load settings directly from injected window.maxiSettings
-
-		// Get settings directly from window - no async resolver needed
-		// const settings = window.maxiSettings || {};
-
 		// Step 4: Block setup and reusable check
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
@@ -620,6 +610,21 @@ class MaxiBlockComponent extends Component {
 					);
 				}
 			}
+			// If there's a relation affecting this concrete block, check if is necessary
+			// to update it's content to keep the coherence and the good UX
+			const blocksIBRelations = select(
+				'maxiBlocks/relations'
+			).receiveBlockUnderRelationClientIDs(uniqueID);
+
+			if (!isEmpty(blocksIBRelations))
+				blocksIBRelations.forEach(({ clientId }) =>
+					updateRelationsRemotely({
+						blockTriggerClientId: clientId,
+						blockTargetClientId: this.props.clientId,
+						blockAttributes: this.props.attributes,
+						breakpoint: this.props.deviceType,
+					})
+				);
 		}
 
 		this.hideGutenbergPopover();

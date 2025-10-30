@@ -158,7 +158,20 @@ const propagateNewUniqueID = (
 						clientId,
 						repeaterColumnClientIds
 					);
+
 					relation.uniqueID = newUniqueID;
+
+					// CRITICAL FIX: Update trigger field to use new uniqueID
+					// The trigger field contains the CSS class selector which includes the uniqueID
+					// Format: "uniqueID" or "uniqueID .maxi-button-block__button" for buttons
+					if (relation.trigger) {
+						// Replace the old uniqueID in the trigger string with the new one
+						// This handles both simple triggers (just uniqueID) and complex ones (uniqueID + selector)
+						relation.trigger = relation.trigger.replace(
+							oldUniqueID,
+							newUniqueID
+						);
+					}
 				}
 				return relation;
 			});
@@ -314,6 +327,24 @@ const propagateNewUniqueID = (
 				return false;
 			}
 
+			// CRITICAL FIX: Skip the original block (the one being copied FROM)
+			// If this block HAS the oldUniqueID, it's the original block
+			// We should NOT update its relations because they should still point to itself
+			// Example: Original image with self-targeting BG IB should keep targeting itself
+			if (attributes.uniqueID === oldUniqueID && originalBlockStillExists) {
+				return false;
+			}
+
+			// CRITICAL FIX: Skip blocks OUTSIDE the duplication that have relations pointing INSIDE
+			// When copying a group, blocks outside the group should keep their relations to the original blocks
+			// NOT switch to the copied blocks
+			// Example: Original image outside group has IB to text inside group - should keep pointing to original text
+			const isBlockOutsideCopy =
+				!lastChangedBlocks.includes(blockClientId);
+			if (isBlockOutsideCopy && originalBlockStillExists) {
+				return false;
+			}
+
 			if (!attributesHasRelations(attributes)) return false;
 
 			// CRITICAL FIX: Re-fetch the block from store to get latest attributes
@@ -352,9 +383,16 @@ const propagateNewUniqueID = (
 			if (hasOldUniqueID) {
 				const newRelations = cloneDeep(relations).map(relation => {
 					if (relation.uniqueID === oldUniqueID) {
+						// CRITICAL FIX: Update trigger field to use new uniqueID
+						// The trigger field contains the CSS class selector which includes the uniqueID
+						const updatedTrigger = relation.trigger
+							? relation.trigger.replace(oldUniqueID, newUniqueID)
+							: relation.trigger;
+
 						return {
 							...relation,
 							uniqueID: newUniqueID,
+							trigger: updatedTrigger,
 						};
 					}
 					return relation;

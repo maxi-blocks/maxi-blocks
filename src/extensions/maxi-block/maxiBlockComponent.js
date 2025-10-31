@@ -13,7 +13,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import { dispatch, resolveSelect, select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -57,7 +57,7 @@ import compareVersions from './compareVersions';
 /**
  * External dependencies
  */
-import _, { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
+import { isArray, isEmpty, isEqual, isNil, isObject } from 'lodash';
 import { diff } from 'deep-object-diff';
 import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
 
@@ -73,6 +73,9 @@ class MaxiBlockComponent extends Component {
 	constructor(...args) {
 		super(...args);
 
+		const { attributes } = args[0] || {};
+		const { uniqueID } = attributes || {};
+
 		this.state = {
 			oldSC: {},
 			scValues: {},
@@ -81,8 +84,7 @@ class MaxiBlockComponent extends Component {
 
 		this.areFontsLoaded = createRef(false);
 
-		const { clientId, attributes } = this.props;
-		const { uniqueID } = attributes;
+		const { clientId } = this.props;
 
 		this.isReusable = false;
 		this.blockRef = createRef();
@@ -100,20 +102,82 @@ class MaxiBlockComponent extends Component {
 			this.props.clientId
 		);
 
+		const templateModal = document.querySelector(
+			'.editor-post-template__swap-template-modal'
+		);
+
+		// Check if this block is actually inside a preview container
+		const blockElement = document.querySelector(
+			`[data-block="${this.props.clientId}"]`
+		);
+
+		// Check inside preview iframes for block elements
+		let isInsidePreviewIframe = false;
+		previewIframes.forEach((iframe, index) => {
+			try {
+				const iframeDoc = iframe.contentDocument;
+				if (iframeDoc) {
+					const blockInIframe = iframeDoc.querySelector(
+						`[data-block="${this.props.clientId}"]`
+					);
+					const allBlocksInIframe =
+						iframeDoc.querySelectorAll('[data-block]');
+
+					if (blockInIframe) {
+						isInsidePreviewIframe = true;
+					} else if (allBlocksInIframe.length > 0) {
+						// If there are blocks but not our specific one, let's assume we're in a preview context
+						// This might be a pattern preview where the clientId doesn't match
+						isInsidePreviewIframe = true;
+					}
+				}
+			} catch (error) {
+				// If we can't access iframe content but it's a blob URL, assume preview context
+				if (iframe.src && iframe.src.startsWith('blob:')) {
+					isInsidePreviewIframe = true;
+				}
+			}
+		});
+
+		// TIMING FALLBACK: If we have preview iframes but couldn't detect blocks,
+		// assume we're in preview context (timing issue)
+		if (!isInsidePreviewIframe && previewIframes.length > 0) {
+			const hasBlobIframes = Array.from(previewIframes).some(
+				iframe => iframe.src && iframe.src.startsWith('blob:')
+			);
+			if (hasBlobIframes) {
+				isInsidePreviewIframe = true;
+			}
+		}
+
+		const isInsidePreview =
+			(blockElement &&
+				(blockElement.closest(
+					'.block-editor-block-preview__container'
+				) ||
+					blockElement.closest(
+						'.block-editor-block-patterns-list__list-item'
+					) ||
+					blockElement.closest(
+						'.edit-site-page-content .block-editor-block-preview__container'
+					))) ||
+			isInsidePreviewIframe;
+
+		// Only set as patterns preview if actually inside a preview container
+
 		if (
 			previewIframes.length > 0 &&
-			(!blockName ||
-				document.querySelector(
-					'.editor-post-template__swap-template-modal'
-				))
+			(!blockName || templateModal) &&
+			isInsidePreview
 		) {
 			this.isPatternsPreview = true;
 			this.showPreviewImage(previewIframes);
 			return;
 		}
 
-		if (this.isPatternsPreview) return;
-
+		if (this.isPatternsPreview) {
+			return;
+		}
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
@@ -139,50 +203,51 @@ class MaxiBlockComponent extends Component {
 		this.templateModal = null;
 		this.updateDOMReferences();
 
-		// Cache frequently accessed values
-		this.memoizedValues = new Map();
-
-		// Debounce expensive operations
-		this.debouncedDisplayStyles = _.debounce(this.displayStyles, 150);
-
-		// Set maximum cache size and initialize cache timestamp
-		this.MAX_CACHE_SIZE = 10000;
-		this.CACHE_CLEANUP_INTERVAL = 600000; // 600 seconds
-		this.lastCacheCleanup = Date.now();
+		// MINIMAL tracking - only essential timeouts
+		this.settingsTimeout = null;
+		this.fseIframeTimeout = null;
 	}
 
 	updateDOMReferences() {
-		if (!this.editorIframe) {
-			this.editorIframe = document.querySelector(
-				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
-			);
-		}
-		if (!this.templateModal) {
-			this.templateModal = document.querySelector(
-				'.editor-post-template__swap-template-modal'
-			);
+		// SIMPLIFIED - no caching, just direct queries
+		const editorIframeSelector =
+			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
+		const editorIframeSelectorAttemptTwo =
+			'.block-editor-iframe__scale-container iframe[name="editor-canvas"]';
+		this.editorIframe =
+			document.querySelector(editorIframeSelector) ||
+			document.querySelector(editorIframeSelectorAttemptTwo);
+		if (!getIsSiteEditor()) {
+			const templateModalSelector =
+				'.editor-post-template__swap-template-modal';
+			this.templateModal = document.querySelector(templateModalSelector);
+		} else {
+			this.templateModal = null;
 		}
 	}
 
 	componentDidMount() {
+		// Step 1: DOM references
 		this.updateDOMReferences();
 
-		const { uniqueID, isFirstOnHierarchy, legacyUniqueID } =
-			this.props.attributes;
+		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
 
-		if (this.isPatternsPreview || this.templateModal) return;
+		// Block mounted successfully
 
-		// Add FSE iframe styles if we're in the site editor
+		if (this.isPatternsPreview || this.templateModal) {
+			return;
+		}
+
+		// Step 2: FSE iframe styles and observer
 		if (getIsSiteEditor()) {
 			this.addMaxiFSEIframeStyles();
-
-			// Set up an observer to handle iframe reloads
 			this.setupFSEIframeObserver();
 		}
 
+		// Step 3: Relations processing
 		const blocksIBRelations = select(
 			'maxiBlocks/relations'
-		).receiveBlockUnderRelationClientIDs(uniqueID);
+		).receiveBlockUnderRelationClientIDs(this.props.attributes.uniqueID);
 
 		if (!isEmpty(blocksIBRelations)) {
 			const { getBlockAttributes } = select('core/block-editor');
@@ -308,54 +373,33 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
-
-		receiveMaxiSettings()
-			.then(settings => {
-				const maxiVersion = settings.maxi_version;
-				const { updateBlockAttributes } = dispatch('core/block-editor');
-				const {
-					'maxi-version-current': maxiVersionCurrent,
-					'maxi-version-origin': maxiVersionOrigin,
-				} = this.props.attributes;
-
-				// Only update if we have a valid version from settings
-				if (maxiVersion) {
-					const updates = {};
-
-					// Update current version if different
-					if (maxiVersion !== maxiVersionCurrent) {
-						updates['maxi-version-current'] = maxiVersion;
-					}
-
-					// Set origin version if not set
-					if (!maxiVersionOrigin) {
-						updates['maxi-version-origin'] = maxiVersion;
-					}
-
-					// Only dispatch if we have updates
-					if (Object.keys(updates).length > 0) {
-						updateBlockAttributes(this.props.clientId, updates);
-					}
-				}
-			})
-			.catch(error =>
-				console.error('MaxiBlocks: Could not load settings', error)
-			);
-
-		// Check if the block is reusable
+		// Log relations processing time
+		// Step 4: Block setup and reusable check
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
-		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+		if (this.maxiBlockDidMount) {
+			this.maxiBlockDidMount();
+		}
 
+		// Step 6: Font loading
 		this.loadFonts();
 
-		// In case the `rootSlot` is defined, means the block was unmounted by reasons like swapping from
-		// code editor to visual editor, so we can avoid re-rendering the styles again and avoid an
-		// unnecessary amount of process and resources
-		this?.displayStyles(!!this?.rootSlot);
+		// Step 7: Display styles
+		try {
+			// Call directly without debouncing to avoid memory accumulation
+			this?.displayStyles(!!this?.rootSlot);
+		} catch (error) {
+			console.warn('MaxiBlocks: Display styles error:', error);
+		}
 
-		if (!this.getBreakpoints.xxl) this.forceUpdate();
+		// Step 8: Force update if needed
+		if (!this.getBreakpoints.xxl) {
+			try {
+				this.forceUpdate();
+			} catch (error) {
+				console.warn('MaxiBlocks: Force update error:', error);
+			}
+		}
 	}
 
 	/**
@@ -485,10 +529,16 @@ class MaxiBlockComponent extends Component {
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		this.updateDOMReferences();
 
+		// Update FSE iframe styles even for template parts
+		if (getIsSiteEditor()) {
+			this.addMaxiFSEIframeStyles();
+		}
+
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { uniqueID } = this.props.attributes;
 
 		if (!shouldDisplayStyles) {
+			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
 					this.props.deviceType !== prevProps.deviceType ||
@@ -498,6 +548,7 @@ class MaxiBlockComponent extends Component {
 					this.props.attributes.blockStyle !==
 						prevProps.attributes.blockStyle
 				);
+			// For reusable blocks, also call directly
 			this.isReusable && this.displayStyles();
 		}
 
@@ -568,6 +619,8 @@ class MaxiBlockComponent extends Component {
 	componentWillUnmount() {
 		const { uniqueID } = this.props.attributes;
 
+		// Block cleanup initiated
+
 		// Return early checks
 		if (
 			this.isTemplatePartPreview ||
@@ -576,15 +629,48 @@ class MaxiBlockComponent extends Component {
 		)
 			return;
 
-		// Clean up the FSE iframe observer if it exists
+		// Clear all timeouts to prevent memory leaks (more comprehensive)
+		if (this.settingsTimeout) {
+			clearTimeout(this.settingsTimeout);
+			this.settingsTimeout = null;
+		}
+
+		if (this.fseIframeTimeout) {
+			clearTimeout(this.fseIframeTimeout);
+			this.fseIframeTimeout = null;
+		}
+
+		if (this.fontLoadTimeout) {
+			clearTimeout(this.fontLoadTimeout);
+			this.fontLoadTimeout = null;
+		}
+
+		// Disconnect FSE observer if present
 		if (this.fseIframeObserver) {
 			this.fseIframeObserver.disconnect();
 			this.fseIframeObserver = null;
 		}
 
-		// Clear memoization and debounced functions
-		this.memoizedValues?.clear();
-		this.debouncedDisplayStyles?.cancel();
+		// Remove temporary popover-hiding styles if still injected
+		if (this.popoverStyles) {
+			this.popoverStyles.remove();
+			this.popoverStyles = null;
+		}
+
+		// Clear DOM references
+		this.rootSlot = null;
+		this.editorIframe = null;
+		this.templateModal = null;
+		this.previousIframeContent = null;
+		this.blockRef = null;
+
+		// Clear font cache references
+		if (this.fontCache) {
+			this.fontCache = null;
+		}
+		if (this.areFontsLoaded) {
+			this.areFontsLoaded.current = false;
+		}
 
 		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
 			this.props.clientId
@@ -1063,22 +1149,35 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		if (this.isPatternsPreview || this.templateModal) return;
+		if (this.isPatternsPreview || this.templateModal) {
+			return;
+		}
+
+		// Early return if fonts are already loaded
+		if (this.areFontsLoaded.current) {
+			return;
+		}
 
 		const typographyToCheck = Object.fromEntries(
-			Object.entries(this.typography).filter(
+			Object.entries(this.typography || {}).filter(
 				([key, value]) => value !== undefined
 			)
 		);
 
-		if (
-			this.areFontsLoaded.current ||
-			(isEmpty(typographyToCheck) && !this.paginationTypographyStatus)
-		)
+		if (isEmpty(typographyToCheck) && !this.paginationTypographyStatus) {
 			return;
+		}
 
 		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
-		if (!target) return;
+		if (!target) {
+			return;
+		}
+
+		// Cancel any pending font load operations
+		if (this.fontLoadTimeout) {
+			clearTimeout(this.fontLoadTimeout);
+			this.fontLoadTimeout = null;
+		}
 
 		let response = {};
 		if (this.paginationTypographyStatus) {
@@ -1098,36 +1197,45 @@ class MaxiBlockComponent extends Component {
 				true,
 				['cl-pagination-']
 			);
-		} else response = getAllFonts(this.typography, 'custom-formats');
-		if (isEmpty(response)) return;
+		} else {
+			response = getAllFonts(this.typography, 'custom-formats');
+		}
 
-		// Clear font cache after loading
+		if (isEmpty(response)) {
+			return;
+		}
+
+		// Clear font cache to prevent memory accumulation
 		if (this.fontCache) {
 			this.fontCache = null;
 		}
 
-		// Debounce font loading to prevent multiple loads
-		if (this.fontLoadTimeout) {
-			clearTimeout(this.fontLoadTimeout);
-		}
-
-		this.fontLoadTimeout = setTimeout(() => {
+		// Load fonts with error handling
+		try {
 			loadFonts(response, true, target);
 			this.areFontsLoaded.current = true;
-			this.fontLoadTimeout = null;
-		}, 300);
+		} catch (error) {
+			console.warn('MaxiBlocks: Font loading failed:', error);
+			// Still mark as loaded to prevent infinite retries
+			this.areFontsLoaded.current = true;
+		}
 	}
 
 	/**
 	 * Refresh the styles on the Editor
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
-		// Update references if they're null
-		this.updateDOMReferences();
-
-		if (this.isPatternsPreview || this.templateModal) return;
-
 		const { uniqueID } = this.props.attributes;
+
+		// Early return for invalid states
+		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
+			return;
+		}
+
+		// Update references if they're null (but don't do it too frequently)
+		if (!this.editorIframe || !this.isElementInDOM(this.editorIframe)) {
+			this.updateDOMReferences();
+		}
 		const isSiteEditor = getIsSiteEditor();
 		const breakpoints = this.getBreakpoints;
 		let obj;
@@ -1138,10 +1246,14 @@ class MaxiBlockComponent extends Component {
 			!isBreakpointChange || this.props.deviceType === 'xxl';
 
 		if (shouldGenerateNewStyles) {
-			obj = this.getStylesObject;
+			obj = this.getStylesObject || {};
 
 			// When duplicating, need to change the obj target for the new uniqueID
-			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+			if (
+				obj &&
+				!obj[uniqueID] &&
+				!!obj[this.props.attributes.uniqueID]
+			) {
 				obj[uniqueID] = obj[this.props.attributes.uniqueID];
 				delete obj[this.props.attributes.uniqueID];
 			}
@@ -1433,20 +1545,12 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getStyleTarget(isSiteEditor, iframe) {
-		const cacheKey = `styleTarget-${isSiteEditor}-${!!iframe}`;
-
-		this.cleanupCache();
-
-		if (this.memoizedValues.has(cacheKey)) {
-			return this.memoizedValues.get(cacheKey);
+		// No caching - just return the target directly
+		if (isSiteEditor) {
+			const target = getSiteEditorIframe();
+			return target || document;
 		}
-
-		const target = isSiteEditor
-			? getSiteEditorIframe()
-			: iframe?.contentDocument || document;
-
-		this.memoizedValues.set(cacheKey, target);
-		return target;
+		return iframe?.contentDocument || document;
 	}
 
 	generateStyleContent(
@@ -1675,31 +1779,13 @@ class MaxiBlockComponent extends Component {
 		return newObj;
 	}
 
-	// Add cache management methods
-	cleanupCache() {
-		const now = Date.now();
-
-		// Only cleanup if enough time has passed AND cache is too large
-		if (
-			this.memoizedValues.size > this.MAX_CACHE_SIZE &&
-			now - this.lastCacheCleanup >= this.CACHE_CLEANUP_INTERVAL
-		) {
-			// Convert to array for sorting
-			const entries = Array.from(this.memoizedValues.entries());
-
-			// Keep only the most recent entries
-			const entriesToKeep = entries.slice(
-				-Math.floor(this.MAX_CACHE_SIZE * 0.8)
-			); // Keep 80% of max size
-
-			// Clear and rebuild cache
-			this.memoizedValues.clear();
-			entriesToKeep.forEach(([key, value]) => {
-				this.memoizedValues.set(key, value);
-			});
-
-			this.lastCacheCleanup = now;
-		}
+	/**
+	 * Check if an element is still in the DOM
+	 * @param {Element} element - Element to check
+	 * @returns {boolean} True if element is in DOM
+	 */
+	isElementInDOM(element) {
+		return element && element.isConnected && document.contains(element);
 	}
 
 	// Returns responsive preview elements if present
@@ -1756,8 +1842,14 @@ class MaxiBlockComponent extends Component {
 							'iframe.edit-site-visual-editor__editor-canvas'
 						);
 						if (fseIframes.length > 0) {
+							// Clear any existing FSE iframe timeout
+							if (this.fseIframeTimeout) {
+								clearTimeout(this.fseIframeTimeout);
+							}
+
 							// Wait for iframe to fully load
-							setTimeout(() => {
+							this.fseIframeTimeout = setTimeout(() => {
+								this.fseIframeTimeout = null;
 								this.addMaxiFSEIframeStyles();
 							}, 500);
 						}

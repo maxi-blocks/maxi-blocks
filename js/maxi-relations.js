@@ -464,7 +464,7 @@ class Relation {
 		// to ensure the last trigger is not removed. It happens when moving from some trigger to
 		// other really fast between while `transitionTimeout` is still running.
 		if (value === 'false') {
-			const currentTrigger = this.blockTargetEl.getAttribute(
+			const currentTrigger = this.blockTargetEl?.getAttribute(
 				'data-maxi-relations-trigger'
 			);
 

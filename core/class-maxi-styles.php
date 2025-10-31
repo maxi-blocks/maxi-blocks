@@ -1885,11 +1885,9 @@ class MaxiBlocks_Styles
         // Smart template inheritance: only fall back to archive if specific template is empty
         foreach ($specific_archives as $archive_type) {
             if (strpos($template_id, $archive_type) !== false) {
-                // If specific template has no blocks, fall back to archive template
-                if (empty($blocks)) {
-                    $archive_template_id = preg_replace('/' . preg_quote($archive_type, '/') . '/', 'archive', $template_id, 1);
-                    $blocks = $this->fetch_blocks_by_template_id($archive_template_id);
-                }
+                $archive_template_id = preg_replace('/' . preg_quote($archive_type, '/') . '/', 'archive', $template_id, 1);
+                $blocks = $this->fetch_blocks_by_template_id($archive_template_id);
+
                 break; // Exit the loop once a match is found
             }
         }

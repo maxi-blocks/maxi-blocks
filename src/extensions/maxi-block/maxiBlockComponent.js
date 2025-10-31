@@ -48,6 +48,7 @@ import {
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
+import { addBlockStyles, removeBlockStyles } from './globalStyleManager';
 import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { removeBlockFromColumns } from '@extensions/repeater';
@@ -854,19 +855,6 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
-	getOrCreateStyleElement(target, uniqueID) {
-		const styleId = `maxi-blocks__styles--${uniqueID}`;
-		let styleElement = target.getElementById(styleId);
-
-		if (!styleElement) {
-			styleElement = target.createElement('style');
-			styleElement.id = styleId;
-			target.head.appendChild(styleElement);
-		}
-
-		return styleElement;
-	}
-
 	setMaxiAttributes() {
 		if (this.isPatternsPreview || this.templateModal) return;
 
@@ -1470,7 +1458,6 @@ class MaxiBlockComponent extends Component {
 		}
 
 		const target = this.getStyleTarget(isSiteEditor, iframe);
-		const styleElement = this.getOrCreateStyleElement(target, uniqueID);
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
 		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
@@ -1484,7 +1471,9 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
-			this.updateStyleElement(styleElement, styleContent);
+
+			// Use batched style injection instead of individual style elements
+			addBlockStyles(uniqueID, styleContent, target);
 		}
 	}
 
@@ -1711,12 +1700,6 @@ class MaxiBlockComponent extends Component {
 		return styleContent;
 	}
 
-	updateStyleElement(styleElement, styleContent) {
-		if (styleElement.textContent !== styleContent) {
-			styleElement.textContent = styleContent;
-		}
-	}
-
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
 		const styles = styleResolver({
@@ -1734,7 +1717,7 @@ class MaxiBlockComponent extends Component {
 
 		const { uniqueID } = this.props.attributes;
 
-		// BULLETPROOF CLEANUP - Remove from ALL possible documents
+		// BULLETPROOF CLEANUP - Remove from ALL possible documents using GlobalStyleManager
 		const documentsToClean = [
 			document, // Main document
 		];
@@ -1780,19 +1763,10 @@ class MaxiBlockComponent extends Component {
 			// Ignore iframe access errors
 		}
 
-		// Remove style elements from all documents
+		// Remove block styles from all documents using GlobalStyleManager
 		documentsToClean.forEach(doc => {
 			if (doc && typeof doc.getElementById === 'function') {
-				try {
-					const styleElement = doc.getElementById(
-						`maxi-blocks__styles--${uniqueID}`
-					);
-					if (styleElement && styleElement.parentNode) {
-						styleElement.remove();
-					}
-				} catch (e) {
-					// Ignore removal errors
-				}
+				removeBlockStyles(uniqueID, doc);
 			}
 		});
 

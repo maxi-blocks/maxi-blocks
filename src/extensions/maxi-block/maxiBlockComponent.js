@@ -247,11 +247,14 @@ class MaxiBlockComponent extends Component {
 		// Step 1: DOM references
 		this.updateDOMReferences();
 
-		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
-
+		const { isFirstOnHierarchy, legacyUniqueID, uniqueID } =
+			this.props.attributes;
 		// Block mounted successfully
 
 		if (this.isPatternsPreview || this.templateModal) {
+			console.log('isPatternsPreview or templateModal');
+			console.log('isPatternsPreview: ', this.isPatternsPreview);
+			console.log('templateModal: ', this.templateModal);
 			return;
 		}
 
@@ -268,6 +271,25 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes.uniqueID
 		);
 
+		const blocksIBRelations2 = select(
+			'maxiBlocks/relations'
+		).receiveBlockUnderRelationClientIDs(uniqueID);
+
+		if (uniqueID.includes('image-maxi')) {
+			console.log(
+				'blocksIBRelations: for',
+				blocksIBRelations,
+				'uniqueID: ',
+				uniqueID
+			);
+			console.log(
+				'blocksIBRelations2: for',
+				blocksIBRelations2,
+				'uniqueID: ',
+				uniqueID
+			);
+		}
+
 		if (!isEmpty(blocksIBRelations)) {
 			const { clientId, attributes, deviceType } = this.props;
 
@@ -277,6 +299,13 @@ class MaxiBlockComponent extends Component {
 					'getBlockAttributes',
 					relationClientId
 				)?.['maxi-version-current'];
+
+				if (uniqueID.includes('image-maxi')) {
+					console.log(
+						'blockMaxiVersionCurrent: ',
+						blockMaxiVersionCurrent
+					);
+				}
 
 				if (blockMaxiVersionCurrent) {
 					const needUpdate = [
@@ -292,7 +321,14 @@ class MaxiBlockComponent extends Component {
 						'1.0.1',
 					].includes(blockMaxiVersionCurrent);
 
+					if (uniqueID.includes('image-maxi')) {
+						console.log('needUpdate: ', needUpdate);
+					}
+
 					if (needUpdate) {
+						if (uniqueID.includes('image-maxi')) {
+							console.log('needUpdate: ', needUpdate);
+						}
 						updateRelationsRemotely({
 							blockTriggerClientId: relationClientId,
 							blockTargetClientId: clientId,

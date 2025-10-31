@@ -51,7 +51,41 @@ const propagateNewUniqueID = (
 	};
 
 	const updateRelations = () => {
-		if (isEmpty(lastChangedBlocks)) return;
+		// ENHANCED: Don't skip relation updates if lastChangedBlocks is empty during view mode switches
+		// This can happen when components remount after switching between visual/code views
+
+		// If lastChangedBlocks is empty but we have a valid clientId, it might be a view mode switch
+		// In this case, we should still process relations to prevent them from being lost
+		if (isEmpty(lastChangedBlocks)) {
+			// Check if the current block exists and has relations that need updating
+			const currentBlock = select('core/block-editor').getBlock(clientId);
+			if (
+				currentBlock &&
+				currentBlock.attributes &&
+				currentBlock.attributes.relations
+			) {
+				// Normalize relations to array: if it's already an array use it,
+				// otherwise if it's an object use Object.values(), or [] if falsy
+				const { relations } = currentBlock.attributes;
+				const relationsArray = Array.isArray(relations)
+					? relations
+					: relations && typeof relations === 'object'
+					? Object.values(relations)
+					: [];
+
+				const hasRelationsWithOldID = relationsArray.some(
+					relation => relation && relation.uniqueID === oldUniqueID
+				);
+
+				if (hasRelationsWithOldID) {
+					// Don't return early - continue with relation updates
+				} else {
+					return; // No relations to update
+				}
+			} else {
+				return; // No block or relations found
+			}
+		}
 
 		let firstColumnToModifyClientId = null;
 
@@ -124,7 +158,20 @@ const propagateNewUniqueID = (
 						clientId,
 						repeaterColumnClientIds
 					);
+
 					relation.uniqueID = newUniqueID;
+
+					// CRITICAL FIX: Update trigger field to use new uniqueID
+					// The trigger field contains the CSS class selector which includes the uniqueID
+					// Format: "uniqueID" or "uniqueID .maxi-button-block__button" for buttons
+					if (relation.trigger) {
+						// Replace the old uniqueID in the trigger string with the new one
+						// This handles both simple triggers (just uniqueID) and complex ones (uniqueID + selector)
+						relation.trigger = relation.trigger.replace(
+							oldUniqueID,
+							newUniqueID
+						);
+					}
 				}
 				return relation;
 			});
@@ -136,25 +183,44 @@ const propagateNewUniqueID = (
 
 			if (!attributesHasRelations(attributes)) return;
 
-			const relations = isArray(attributes.relations)
-				? attributes.relations
-				: Object.values(attributes.relations);
+			// CRITICAL FIX: Re-fetch the block from store to get latest attributes
+			// Previous updates from other blocks might have already modified the relations
+			const freshBlock = blockEditorStore.getBlock(clientId);
+			const freshAttributes = freshBlock?.attributes || attributes;
+
+			// Check blockAttributesUpdate first (current function's pending updates),
+			// then fresh attributes from store (previous functions' applied updates),
+			// finally fall back to original attributes
+			const currentRelations =
+				blockAttributesUpdate[clientId]?.relations ||
+				freshAttributes.relations ||
+				attributes.relations;
+
+			// Guard against undefined and detect original data type
+			// Determine if original relations was an Array or Object to preserve the shape
+			const originalRelations =
+				freshAttributes.relations || attributes.relations;
+			const isOriginalArray = isArray(originalRelations);
+
+			// Provide appropriate fallback based on original type
+			const safeCurrentRelations =
+				currentRelations || (isOriginalArray ? [] : {});
+
+			// Normalize to array for processing while preserving original type info
+			const relations = isArray(safeCurrentRelations)
+				? safeCurrentRelations
+				: Object.values(safeCurrentRelations);
+
 			const newRelations = updateRelationsWithNewUniqueID(
 				relations,
 				clientId,
 				repeaterColumnClientIds
 			);
 
-			if (!isEqual(relations, newRelations)) {
-				updateBlockAttributesUpdate(
-					clientId,
-					'relations',
-					newRelations
-				);
+			updateBlockAttributesUpdate(clientId, 'relations', newRelations);
 
-				if (!maxiBlocksStore.getBlockByClientId(clientId)) {
-					blockEditorDispatch.addBlockWithUpdatedAttributes(clientId);
-				}
+			if (!maxiBlocksStore.getBlockByClientId(clientId)) {
+				blockEditorDispatch.addBlockWithUpdatedAttributes(clientId);
 			}
 		};
 
@@ -225,17 +291,92 @@ const propagateNewUniqueID = (
 				(isPlainObject(attributes.relations) &&
 					isArray(Object.values(attributes.relations))));
 
+		const blockEditorStore = select('core/block-editor');
+
+		// Check if the old uniqueID still exists elsewhere (copy-paste) or not (pattern import)
+		let originalBlockStillExists = false;
+		goThroughMaxiBlocks(block => {
+			if (
+				block.attributes.uniqueID === oldUniqueID &&
+				block.clientId !== clientId
+			) {
+				originalBlockStillExists = true;
+				return true; // Stop searching
+			}
+			return false;
+		});
+
+		// ENHANCED: Additional safety check for view mode switches
+		// If we're in a view mode switch scenario, be more aggressive about updating relations
+		const isLikelyViewModeSwitch =
+			isEmpty(lastChangedBlocks) && !originalBlockStillExists;
+
 		goThroughMaxiBlocks(block => {
 			const { attributes, clientId: blockClientId } = block;
 
 			// Skip blocks that are part of the duplication (already handled by updateRelations)
-			if (lastChangedBlocks.includes(blockClientId)) return false;
+			// BUT only skip them if this is copy-paste (original still exists)
+			// For pattern imports (original doesn't exist), we MUST update them here
+			// ENHANCED: Don't skip during likely view mode switches to ensure relations are preserved
+			if (
+				Array.isArray(lastChangedBlocks) &&
+				lastChangedBlocks.includes(blockClientId) &&
+				originalBlockStillExists &&
+				!isLikelyViewModeSwitch
+			) {
+				return false;
+			}
+
+			// CRITICAL FIX: Skip the original block (the one being copied FROM)
+			// If this block HAS the oldUniqueID, it's the original block
+			// We should NOT update its relations because they should still point to itself
+			// Example: Original image with self-targeting BG IB should keep targeting itself
+			if (
+				attributes.uniqueID === oldUniqueID &&
+				originalBlockStillExists
+			) {
+				return false;
+			}
+
+			// CRITICAL FIX: Skip blocks OUTSIDE the duplication that have relations pointing INSIDE
+			// When copying a group, blocks outside the group should keep their relations to the original blocks
+			// NOT switch to the copied blocks
+			// Example: Original image outside group has IB to text inside group - should keep pointing to original text
+			const isBlockOutsideCopy =
+				!lastChangedBlocks.includes(blockClientId);
+			if (isBlockOutsideCopy && originalBlockStillExists) {
+				return false;
+			}
 
 			if (!attributesHasRelations(attributes)) return false;
 
-			const relations = isArray(attributes.relations)
-				? attributes.relations
-				: Object.values(attributes.relations);
+			// CRITICAL FIX: Re-fetch the block from store to get latest attributes
+			// Previous updates from other blocks might have already modified the relations
+			const freshBlock = blockEditorStore.getBlock(blockClientId);
+			const freshAttributes = freshBlock?.attributes || attributes;
+
+			// Check blockAttributesUpdate first (current function's pending updates),
+			// then fresh attributes from store (previous functions' applied updates),
+			// finally fall back to original attributes
+			const currentRelations =
+				blockAttributesUpdate[blockClientId]?.relations ||
+				freshAttributes.relations ||
+				attributes.relations;
+
+			// Guard against undefined and detect original data type
+			// Determine if original relations was an Array or Object to preserve the shape
+			const originalRelations =
+				freshAttributes.relations || attributes.relations;
+			const isOriginalArray = isArray(originalRelations);
+
+			// Provide appropriate fallback based on original type
+			const safeCurrentRelations =
+				currentRelations || (isOriginalArray ? [] : {});
+
+			// Normalize to array for processing while preserving original type info
+			const relations = isArray(safeCurrentRelations)
+				? safeCurrentRelations
+				: Object.values(safeCurrentRelations);
 
 			// Check if any relation points to the old uniqueID
 			const hasOldUniqueID = relations.some(
@@ -245,19 +386,50 @@ const propagateNewUniqueID = (
 			if (hasOldUniqueID) {
 				const newRelations = cloneDeep(relations).map(relation => {
 					if (relation.uniqueID === oldUniqueID) {
+						// CRITICAL FIX: Update trigger field to use new uniqueID
+						// The trigger field contains the CSS class selector which includes the uniqueID
+						const updatedTrigger = relation.trigger
+							? relation.trigger.replace(oldUniqueID, newUniqueID)
+							: relation.trigger;
+
 						return {
 							...relation,
 							uniqueID: newUniqueID,
+							trigger: updatedTrigger,
 						};
 					}
 					return relation;
 				});
 
 				if (!isEqual(relations, newRelations)) {
+					// Convert back to original shape: if original was object, convert array back to object
+					// If original was array, keep as array
+					let relationsToSave = newRelations;
+					if (!isOriginalArray && isArray(newRelations)) {
+						// Convert array back to object structure
+						// Preserve original object keys if possible, otherwise use indices
+						relationsToSave = {};
+						if (isPlainObject(safeCurrentRelations)) {
+							// Try to preserve original keys
+							const originalKeys =
+								Object.keys(safeCurrentRelations);
+							newRelations.forEach((relation, index) => {
+								const key =
+									originalKeys[index] || index.toString();
+								relationsToSave[key] = relation;
+							});
+						} else {
+							// Use indices as keys
+							newRelations.forEach((relation, index) => {
+								relationsToSave[index.toString()] = relation;
+							});
+						}
+					}
+
 					updateBlockAttributesUpdate(
 						blockClientId,
 						'relations',
-						newRelations
+						relationsToSave
 					);
 
 					const maxiBlocksStore = select('maxiBlocks/blocks');
@@ -305,17 +477,23 @@ const propagateNewUniqueID = (
 		} = dispatch('core/block-editor');
 
 		// Optimization 3: Critical vs Non-Critical Update Separation
-		// Separate critical updates (current block) from non-critical ones (related blocks)
+		// Separate critical updates (current block + copied blocks) from non-critical ones
 		const criticalUpdates = {};
 		const deferredUpdates = {};
 
 		Object.entries(optimizedUpdates).forEach(
 			([blockClientId, attributes]) => {
-				if (blockClientId === clientId) {
-					// Current block - update immediately
+				if (
+					blockClientId === clientId ||
+					(Array.isArray(lastChangedBlocks) &&
+						lastChangedBlocks.includes(blockClientId))
+				) {
+					// Current block or copied blocks - update immediately
+					// Copied blocks must be immediate because subsequent propagateNewUniqueID calls
+					// will need the updated relations before their setTimeout delays expire
 					criticalUpdates[blockClientId] = attributes;
 				} else {
-					// Related blocks - can be deferred
+					// Other unrelated blocks - can be deferred
 					deferredUpdates[blockClientId] = attributes;
 				}
 			}

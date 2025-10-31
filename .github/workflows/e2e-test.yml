@@ -26,10 +26,10 @@ jobs:
                       ${{ runner.os }}-
               env:
                   cache-name: cache-node-modules
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v1
+            - name: Use Node.js 18.x
+              uses: actions/setup-node@v4
               with:
-                  node-version: 16.x
+                  node-version: 18.x
             - name: Install dependencies
               run: npm install --legacy-peer-deps
             - name: Create .env file

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch, select, dispatch } from '@wordpress/data';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 import { useCallback, useEffect, useRef } from '@wordpress/element';
 
@@ -50,7 +50,6 @@ const ResponsiveButton = ({
 	tooltipValue,
 	breakpoint,
 	target,
-	updateNativeResponsiveState,
 }) => {
 	const isBaseBreakpoint = baseBreakpoint === target;
 
@@ -77,13 +76,8 @@ const ResponsiveButton = ({
 						? target
 						: targetSize;
 
-					// Apply the same value to both Maxi and native Gutenberg
+					// Apply the screen size to MaxiBlocks
 					setScreenSize(appliedScreenSize);
-
-					// Update the native Gutenberg responsive selector
-					if (updateNativeResponsiveState) {
-						updateNativeResponsiveState(appliedScreenSize);
-					}
 				}}
 				aria-pressed={getIsPressed()}
 			>
@@ -185,46 +179,6 @@ const ResponsiveSelector = props => {
 		});
 	});
 
-	// Function to update the native Gutenberg responsive selector state
-	const updateNativeResponsiveState = useCallback(targetSize => {
-		// Map MaxiBlocks breakpoints to Gutenberg device types
-		const sizeToDeviceType = {
-			general: 'Desktop',
-			xxl: 'Desktop',
-			xl: 'Desktop',
-			l: 'Desktop',
-			m: 'Tablet',
-			s: 'Tablet',
-			xs: 'Mobile',
-		};
-		const deviceType = sizeToDeviceType[targetSize];
-
-		// Update Gutenberg's device type using the data store
-		// This will cause React to re-render with the correct checkmark
-		// Don't try to manipulate the DOM manually - let React handle it
-		const isFSE = getIsSiteEditor();
-
-		try {
-			if (isFSE) {
-				// For site editor
-				const { __experimentalSetPreviewDeviceType } =
-					dispatch('core/edit-site');
-				if (__experimentalSetPreviewDeviceType) {
-					__experimentalSetPreviewDeviceType(deviceType);
-				}
-			} else {
-				// For post editor - use core/edit-post store
-				const { __experimentalSetPreviewDeviceType } =
-					dispatch('core/edit-post');
-				if (__experimentalSetPreviewDeviceType) {
-					__experimentalSetPreviewDeviceType(deviceType);
-				}
-			}
-		} catch (e) {
-			// Silently fail if editor store not available
-		}
-	}, []);
-
 	// Track when native buttons are clicked to avoid conflicts
 	const lastNativeClickRef = useRef(0);
 
@@ -309,23 +263,10 @@ const ResponsiveSelector = props => {
 										)
 									);
 
-								// First attach click handlers
+								// Attach click handlers to native buttons
 								responsiveButtons.forEach(
 									onChangeNativeResponsive
 								);
-
-								// Don't sync immediately - wait and see if user clicks a button
-								// Only sync if they didn't just click a native button
-								syncTimeout = setTimeout(() => {
-									const timeSinceLastClick =
-										Date.now() - lastNativeClickRef.current;
-
-									// Only sync if no button was clicked in the last 500ms
-									if (timeSinceLastClick > 500) {
-										updateNativeResponsiveState(deviceType);
-									}
-									syncTimeout = null;
-								}, 150);
 							}
 						}
 					}
@@ -343,7 +284,7 @@ const ResponsiveSelector = props => {
 		}
 
 		return () => {};
-	}, [deviceType, onChangeNativeResponsive, updateNativeResponsiveState]);
+	}, [deviceType, onChangeNativeResponsive]);
 
 	const addCloudLibrary = () => {
 		let rootClientId;
@@ -419,7 +360,6 @@ const ResponsiveSelector = props => {
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
 				tooltipValue={`>${breakpoints.xl}`}
-				updateNativeResponsiveState={updateNativeResponsiveState}
 			/>
 			<ResponsiveButton
 				icon={xlMode}
@@ -428,7 +368,6 @@ const ResponsiveSelector = props => {
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
 				tooltipValue={breakpoints.xl}
-				updateNativeResponsiveState={updateNativeResponsiveState}
 			/>
 			<ResponsiveButton
 				icon={largeMode}
@@ -437,7 +376,6 @@ const ResponsiveSelector = props => {
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
 				tooltipValue={breakpoints.l}
-				updateNativeResponsiveState={updateNativeResponsiveState}
 			/>
 			<ResponsiveButton
 				icon={mediumMode}
@@ -446,7 +384,6 @@ const ResponsiveSelector = props => {
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
 				tooltipValue={breakpoints.m}
-				updateNativeResponsiveState={updateNativeResponsiveState}
 			/>
 			<ResponsiveButton
 				icon={smallMode}
@@ -455,7 +392,6 @@ const ResponsiveSelector = props => {
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
 				tooltipValue={breakpoints.s}
-				updateNativeResponsiveState={updateNativeResponsiveState}
 			/>
 			<ResponsiveButton
 				icon={xsMode}
@@ -464,7 +400,6 @@ const ResponsiveSelector = props => {
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
 				tooltipValue={breakpoints.xs}
-				updateNativeResponsiveState={updateNativeResponsiveState}
 			/>
 			<div className='action-buttons'>
 				<Button

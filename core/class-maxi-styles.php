@@ -1240,6 +1240,12 @@ class MaxiBlocks_Styles
 
             // Apply all color changes in a single pass
             foreach ($all_color_changes as $color_key => $color_value) {
+                // Guard: Skip if color_vars doesn't have this key or if the value is empty
+                // This prevents generating broken CSS like rgba(var(--color,),1)
+                if (!isset($color_vars[$color_key]) || $color_vars[$color_key] === '') {
+                    continue;
+                }
+
                 $old_color_str =
                     "rgba(var($color_key," . $color_vars[$color_key] . ')';
                 $new_color_str = "rgba(var($color_key," . $color_value . ')';

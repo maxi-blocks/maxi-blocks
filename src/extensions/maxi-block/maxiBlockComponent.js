@@ -692,12 +692,9 @@ class MaxiBlockComponent extends Component {
 				const obj = this.getStylesObject;
 
 				// Batch all style removals into a single operation
-				const fragment = document.createDocumentFragment();
 				styleResolver({
 					styles: obj,
 					remover: true,
-					optimized: true,
-					fragment,
 					uniqueID,
 				});
 				this.removeStyles();

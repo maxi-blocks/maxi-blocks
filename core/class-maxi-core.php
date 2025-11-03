@@ -52,6 +52,12 @@ if (!class_exists('MaxiBlocks_Core')):
                     $custom_css = 'body.maxi-blocks--active .editor-resizable-editor__resize-handle { display: none !important; } body.maxi-blocks--active .editor-visual-editor.has-padding { padding: 0 !important; }';
                     wp_add_inline_style('maxi-blocks-editor-font', $custom_css);
                 }
+
+                // Add inline CSS to hide Gutenberg native responsive preview if option is enabled
+                if (get_option('hide_gutenberg_responsive_preview')) {
+                    $custom_css = 'body.maxi-blocks--active .components-dropdown.components-dropdown-menu.editor-preview-dropdown { display: none !important; }';
+                    wp_add_inline_style('maxi-blocks-editor-font', $custom_css);
+                }
             });
 
             // Add All Images - Maxi Images filter to the media library

@@ -196,9 +196,6 @@ const Indicator = props => {
 	};
 
 	const handleOnResizeStop = (type, e, ref) => {
-		// Avoids triggering on click
-		if (avoidResizing()) return;
-
 		// Cancel any pending RAF
 		if (rafRef.current) {
 			cancelAnimationFrame(rafRef.current);
@@ -206,6 +203,9 @@ const Indicator = props => {
 		}
 
 		setIsDragging(false);
+
+		// Avoids triggering on click
+		if (avoidResizing()) return;
 
 		const newValue = handleChanges(e, ref);
 		onChange({

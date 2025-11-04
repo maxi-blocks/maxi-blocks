@@ -1158,7 +1158,30 @@ class MaxiBlocks_Styles
         $colors = [];
 
         while (($last_pos = strpos($style, $needle, $last_pos)) !== false) {
-            $end_pos = strpos($style, ')', $last_pos);
+            // Find the matching closing parenthesis for rgba( by counting parens
+            $paren_count = 0;
+            $pos = $last_pos;
+            $end_pos = false;
+
+            while ($pos < strlen($style)) {
+                if ($style[$pos] === '(') {
+                    $paren_count++;
+                } elseif ($style[$pos] === ')') {
+                    $paren_count--;
+                    if ($paren_count === 0) {
+                        $end_pos = $pos;
+                        break;
+                    }
+                }
+                $pos++;
+            }
+
+            if ($end_pos === false) {
+                // Couldn't find matching parenthesis, skip this one
+                $last_pos = $last_pos + strlen($needle);
+                continue;
+            }
+
             $color_str = substr($style, $last_pos, $end_pos - $last_pos + 1);
 
             if (!in_array($color_str, $colors)) {

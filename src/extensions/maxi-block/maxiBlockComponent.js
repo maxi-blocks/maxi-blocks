@@ -1529,14 +1529,29 @@ class MaxiBlockComponent extends Component {
 
 	copyFontsToIframe(iframeDocument, iframe) {
 		loadFonts(getPageFonts(), true, iframeDocument);
-		const maxiFonts = Array.from(
-			document.querySelectorAll(
-				'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]'
-			)
-		);
+
+		// Collect fonts from both main document and FSE iframe
+		const fontSelector = 'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]';
+		let maxiFonts = Array.from(document.querySelectorAll(fontSelector));
+
+		// Also check FSE iframe for SC fonts (for reusables/template parts)
+		const siteEditorDoc = getSiteEditorIframe();
+		if (siteEditorDoc) {
+			const fseFonts = Array.from(siteEditorDoc.querySelectorAll(fontSelector));
+			// Merge fonts, avoiding duplicates by ID
+			const existingIds = new Set(maxiFonts.map(font => font.id));
+			fseFonts.forEach(font => {
+				if (!existingIds.has(font.id)) {
+					maxiFonts.push(font);
+				}
+			});
+		}
+
 		if (!isEmpty(maxiFonts)) {
 			maxiFonts.forEach(rawMaxiFont => {
 				const maxiFont = rawMaxiFont.cloneNode(true);
+				// Remove existing font link with same ID to avoid duplicates
+				iframe.contentDocument.getElementById(maxiFont.id)?.remove();
 				iframe.contentDocument.head.appendChild(maxiFont);
 			});
 		}
@@ -1562,14 +1577,27 @@ class MaxiBlockComponent extends Component {
 	}
 
 	copyMaxiVariablesToIframe(iframeDocument, iframe) {
-		const maxiVariables = document
-			.querySelector('#maxi-blocks-sc-vars-inline-css')
-			?.cloneNode(true);
+		// Try to get SC variables from multiple sources
+		// First check FSE iframe (for reusables/template parts in Site Editor)
+		const siteEditorDoc = getSiteEditorIframe();
+		let maxiVariables = siteEditorDoc?.querySelector(
+			'#maxi-blocks-sc-vars-inline-css'
+		);
+
+		// Fall back to main document if not found in FSE iframe
+		if (!maxiVariables) {
+			maxiVariables = document.querySelector(
+				'#maxi-blocks-sc-vars-inline-css'
+			);
+		}
+
+		// Clone and append if found
 		if (maxiVariables) {
+			const clonedVariables = maxiVariables.cloneNode(true);
 			iframeDocument
 				.querySelector('#maxi-blocks-sc-vars-inline-css')
 				?.remove();
-			iframe.contentDocument.head.appendChild(maxiVariables);
+			iframe.contentDocument.head.appendChild(clonedVariables);
 		}
 	}
 
@@ -1971,6 +1999,52 @@ class MaxiBlockComponent extends Component {
 
 			// Append style to iframe's head
 			fseIframe.contentDocument.head.appendChild(iframeStyles);
+		}
+
+		// Ensure SC variables are copied to FSE iframe
+		// This is crucial for reusables and template parts
+		const scVarsFromMain = document.querySelector(
+			'#maxi-blocks-sc-vars-inline-css'
+		);
+
+		if (scVarsFromMain) {
+			const existingSCVars = fseIframe.contentDocument.getElementById(
+				'maxi-blocks-sc-vars-inline-css'
+			);
+
+			// Check if SC vars need to be updated (content changed)
+			if (
+				!existingSCVars ||
+				existingSCVars.innerHTML !== scVarsFromMain.innerHTML
+			) {
+				// Remove existing and add updated version
+				existingSCVars?.remove();
+				const clonedSCVars = scVarsFromMain.cloneNode(true);
+				fseIframe.contentDocument.head.appendChild(clonedSCVars);
+			}
+		}
+
+		// Ensure SC fonts are copied to FSE iframe
+		// This is crucial for font rendering in reusable blocks and template parts
+		const fontSelector =
+			'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]';
+		const scFontsFromMain = Array.from(
+			document.querySelectorAll(fontSelector)
+		);
+
+		if (!isEmpty(scFontsFromMain)) {
+			scFontsFromMain.forEach(fontLink => {
+				const existingFont = fseIframe.contentDocument.getElementById(
+					fontLink.id
+				);
+
+				// Check if font needs to be updated
+				if (!existingFont || existingFont.href !== fontLink.href) {
+					existingFont?.remove();
+					const clonedFont = fontLink.cloneNode(true);
+					fseIframe.contentDocument.head.appendChild(clonedFont);
+				}
+			});
 		}
 	}
 

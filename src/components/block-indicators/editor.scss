@@ -8,16 +8,6 @@
 	z-index: 0;
 	--maxi-block-indicators-min-size: 5px;
 	--maxi-block-indicators-max-size: 20px;
-	will-change: transform;
-
-	// Disable transitions during active drag for smoother performance
-	&.is-dragging {
-		transition: none !important;
-
-		.maxi-block-indicator {
-			transition: none !important;
-		}
-	}
 
 	&__padding {
 		background-image: url("data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23007CBA' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M7 0h1L0 8V7zM8 7v1H7z'/%3E%3C/g%3E%3C/svg%3E");
@@ -42,15 +32,6 @@
 		width: 100%;
 		opacity: 0;
 		transition: opacity 0.5s;
-
-		// Disable transitions during drag for smoother performance
-		&.is-dragging {
-			transition: none !important;
-
-			* {
-				transition: none !important;
-			}
-		}
 
 		&__content {
 			display: flex;
@@ -101,12 +82,6 @@
 
 	&__handle {
 		display: flex;
-		will-change: transform;
-		cursor: grab;
-
-		&:active {
-			cursor: grabbing;
-		}
 	}
 
 	&:hover {

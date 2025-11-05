@@ -1920,6 +1920,12 @@ class MaxiBlocks_Styles
             }
         }
 
+        // Also handle custom taxonomies (taxonomy-*)
+        if ($modified_template_id === $template_id && strpos($template_id, 'taxonomy-') !== false) {
+            // Replace 'taxonomy-{taxonomy_name}' with 'archive'
+            $modified_template_id = preg_replace('/taxonomy-[^\/]+/', 'archive', $template_id, 1);
+        }
+
         // Check if the modification was successful and the modified template_id is different
         if ($modified_template_id !== $template_id) {
             // Fetch blocks for the modified template_id which now targets 'archive'

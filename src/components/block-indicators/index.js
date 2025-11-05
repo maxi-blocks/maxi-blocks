@@ -42,17 +42,29 @@ const Indicator = props => {
 	} = props;
 
 	const [value, setValue] = useState(val);
+	const [isDragging, setIsDragging] = useState(false);
 	const dragTime = useRef(null);
+	const rafRef = useRef(null);
 	const { selectBlock } = dispatch('core/block-editor');
 
 	useEffect(() => {
 		if (+value !== +val) setValue(val);
 	}, [val]);
 
+	useEffect(() => {
+		// Cleanup RAF on unmount
+		return () => {
+			if (rafRef.current) {
+				cancelAnimationFrame(rafRef.current);
+			}
+		};
+	}, []);
+
 	const classes = classnames(
 		'maxi-block-indicator',
 		`maxi-block-indicator--${dir}`,
-		`maxi-block-indicators__${type}`
+		`maxi-block-indicators__${type}`,
+		{ 'is-dragging': isDragging }
 	);
 
 	const getDirection = dir => {
@@ -154,25 +166,44 @@ const Indicator = props => {
 		// Avoids triggering on click
 		if (avoidResizing()) return;
 
-		// Get block clientId
-		const blockClientId = getBlockClientId(e);
-
-		// Select the block if it's not already selected and we have a clientId
-		if (!isBlockSelected && blockClientId) {
-			selectBlock(blockClientId);
+		// Cancel previous frame to throttle updates
+		if (rafRef.current) {
+			cancelAnimationFrame(rafRef.current);
 		}
 
-		const newValue = handleChanges(e, ref);
+		// Schedule update for next frame
+		rafRef.current = requestAnimationFrame(() => {
+			// Get block clientId
+			const blockClientId = getBlockClientId(e);
 
-		insertInlineStyles({
-			obj: {
-				[`${type}-${dir}`]: `${newValue}px`,
-				transition: 'none',
-			},
+			// Select the block if it's not already selected and we have a clientId
+			if (!isBlockSelected && blockClientId) {
+				selectBlock(blockClientId);
+			}
+
+			const newValue = isVertical
+				? round(ref.getBoundingClientRect().height)
+				: round(ref.getBoundingClientRect().width);
+
+			// Only update inline styles during drag, not state
+			insertInlineStyles({
+				obj: {
+					[`${type}-${dir}`]: `${newValue}px`,
+					transition: 'none',
+				},
+			});
 		});
 	};
 
 	const handleOnResizeStop = (type, e, ref) => {
+		// Cancel any pending RAF
+		if (rafRef.current) {
+			cancelAnimationFrame(rafRef.current);
+			rafRef.current = null;
+		}
+
+		setIsDragging(false);
+
 		// Avoids triggering on click
 		if (avoidResizing()) return;
 
@@ -190,6 +221,7 @@ const Indicator = props => {
 
 		// Always set drag time for consistency
 		dragTime.current = Date.now();
+		setIsDragging(true);
 
 		// Get block clientId
 		const blockClientId = getBlockClientId(e);

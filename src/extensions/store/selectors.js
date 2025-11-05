@@ -81,6 +81,19 @@ const selectors = {
 
 		return false;
 	},
+	/**
+	 * Check if all MaxiBlocks are fully rendered and ready for save
+	 * This includes page loading and block rendering completion
+	 */
+	getAllBlocksFullyRendered(state) {
+		if (!state) return false;
+
+		// Check if page is loaded and all blocks have been rendered
+		const { isPageLoaded } = state;
+		const allBlocksRendered = state.blocksToRender.length === 0;
+
+		return isPageLoaded && allBlocksRendered;
+	},
 	getIsPageLoaded(state) {
 		if (state) return state.isPageLoaded;
 

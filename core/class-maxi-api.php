@@ -476,6 +476,8 @@ if (!class_exists('MaxiBlocks_API')):
                     'is_core' => $is_core,
                 ],
                 'hide_tooltips' => get_option('hide_tooltips'),
+                'hide_fse_resizable_handles' => get_option('hide_fse_resizable_handles'),
+                'hide_gutenberg_responsive_preview' => get_option('hide_gutenberg_responsive_preview'),
                 'placeholder_url' =>
                     MAXI_PLUGIN_URL_PATH . 'img/patterns-placeholder.jpeg',
                 'show_indicators' => get_option('maxi_show_indicators'),

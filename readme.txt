@@ -176,12 +176,12 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 _Updates 5 Nov 2025_
 MaxiBlocks v2.1.6
 * Update: Rebranded Pro features to Cloud, providing clearer terminology and improved user understanding of cloud-based functionality.
-* Update: Updated npm packages and dependencies to latest versions for enhanced security measures and improved stability across all plugin features.
+* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
 * Update: Introduced option to hide native Gutenberg responsive preview controls, allowing for a cleaner and more streamlined editing interface.
-* Fix: Resolved Interaction Builder relations disappearing after duplicating blocks and removing the original, ensuring consistent editing experience and maintaining interaction configurations.
+* Fix: Resolved Interaction Builder relations disappearing after duplicating blocks and removing the original, ensuring a consistent editing experience and maintaining interaction configurations.
 * Fix: Corrected copy-paste functionality for blocks and page duplication, ensuring all block settings and styles are properly transferred.
-* Fix: Enhanced template parts rendering and editing experience in Site Editing Experience editor, ensuring proper functionality and consistent behaviour.
-* Fix: Addressed taxonomy styling issues on frontend when using All Archive template, ensuring custom taxonomy pages display correctly with proper style inheritance.
+* Fix: Enhanced template parts rendering and editing experience in the Site Editing Experience editor, ensuring proper functionality and consistent behaviour.
+* Fix: Addressed taxonomy styling issues on the frontend when using the All Archive template, ensuring custom taxonomy pages display correctly with proper style inheritance.
 * Fix: Resolved custom colours in Style Cards breaking frontend styles in specific scenarios, maintaining consistent visual presentation across all pages.
 
 _Updates 13 Oct 2025_

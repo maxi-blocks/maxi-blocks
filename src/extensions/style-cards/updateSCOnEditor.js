@@ -139,7 +139,7 @@ const updateSCOnEditor = (
 				overlayEl = iframeDocument.createElement('style');
 				overlayEl.id = 'maxi-blocks-fse-white-overlay-remove-styles';
 				overlayEl.innerHTML =
-					'body{background-color: transparent; !important;}.is-focus-mode .block-editor-block-list__block:not(.has-child-selected){opacity: 1 !important;}';
+					'body{background-color: transparent: !important;}.is-focus-mode .block-editor-block-list__block:not(.has-child-selected){opacity: 1 !important;}';
 				const overlayHead = iframeDocument.head;
 				if (overlayHead) {
 					overlayHead.appendChild(overlayEl);

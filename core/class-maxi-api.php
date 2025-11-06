@@ -1891,6 +1891,11 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }
 
+            // Load the php-toolkit which includes WPURL and other required classes
+            if (!class_exists('WordPress\XML\XMLProcessor')) {
+                require_once WP_PLUGIN_DIR . '/wordpress-importer/php-toolkit/load.php';
+            }
+
             require_once WP_PLUGIN_DIR . '/wordpress-importer/class-wp-import.php';
             require_once WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php';
             require_once WP_PLUGIN_DIR . '/wordpress-importer/parsers/class-wxr-parser.php';

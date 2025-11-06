@@ -1623,16 +1623,36 @@ if (!class_exists('MaxiBlocks_API')):
                     'wp_template_part'
                 );
 
-                // Check if it exists in database by simple slug
+                // Check if it exists in database by simple slug (check all statuses, not just publish)
                 $existing_post = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT ID FROM {$wpdb->posts}
                         WHERE post_type = 'wp_template_part'
                         AND post_name = %s
-                        AND post_status = 'publish'",
+                        AND post_status != 'trash'",
                         $entity_slug
                     )
                 );
+
+                // Clean up any duplicate posts with incremented slugs (e.g., header-2, footer-2)
+                // This happens when previous imports created duplicates due to slug conflicts
+                if (!$existing_post) {
+                    $duplicate_posts = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT ID FROM {$wpdb->posts}
+                            WHERE post_type = 'wp_template_part'
+                            AND post_name LIKE %s
+                            AND post_name != %s
+                            AND post_status != 'trash'",
+                            $entity_slug . '-%',
+                            $entity_slug
+                        )
+                    );
+
+                    foreach ($duplicate_posts as $duplicate) {
+                        wp_delete_post($duplicate->ID, true);
+                    }
+                }
 
                 $template_content = array(
                     'post_name' => $entity_slug,
@@ -1776,16 +1796,36 @@ if (!class_exists('MaxiBlocks_API')):
                     'wp_template'
                 );
 
-                // Check if it exists in database by simple slug
+                // Check if it exists in database by simple slug (check all statuses, not just publish)
                 $existing_post = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT ID FROM {$wpdb->posts}
                         WHERE post_type = 'wp_template'
                         AND post_name = %s
-                        AND post_status = 'publish'",
+                        AND post_status != 'trash'",
                         $entity_slug
                     )
                 );
+
+                // Clean up any duplicate posts with incremented slugs (e.g., home-2, archive-2)
+                // This happens when previous imports created duplicates due to slug conflicts
+                if (!$existing_post) {
+                    $duplicate_posts = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT ID FROM {$wpdb->posts}
+                            WHERE post_type = 'wp_template'
+                            AND post_name LIKE %s
+                            AND post_name != %s
+                            AND post_status != 'trash'",
+                            $entity_slug . '-%',
+                            $entity_slug
+                        )
+                    );
+
+                    foreach ($duplicate_posts as $duplicate) {
+                        wp_delete_post($duplicate->ID, true);
+                    }
+                }
 
                 $template_content = array(
                     'post_name' => $entity_slug,
@@ -2125,10 +2165,6 @@ if (!class_exists('MaxiBlocks_API')):
             $results = [];
             global $wpdb;
 
-            // Get current theme
-            $current_theme = wp_get_theme();
-            $theme_slug = $current_theme->get_stylesheet();
-
             foreach ($pattern_data as $pattern_name => $pattern_data) {
                 // Parse the pattern data
                 $content = $pattern_data['content'] ?? '';
@@ -2143,16 +2179,36 @@ if (!class_exists('MaxiBlocks_API')):
                 $fonts = $pattern_data['fonts'] ?? [];
                 $wp_pattern_sync_status = $pattern_data['wpPatternSyncStatus'] ?? '';
 
-                // Check if pattern exists in database
+                // Check if pattern exists in database (check all statuses, not just publish)
                 $existing_post = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT ID FROM {$wpdb->posts}
                         WHERE post_type = 'wp_block'
                         AND post_name = %s
-                        AND post_status = 'publish'",
+                        AND post_status != 'trash'",
                         $entity_slug
                     )
                 );
+
+                // Clean up any duplicate posts with incremented slugs
+                // This happens when previous imports created duplicates due to slug conflicts
+                if (!$existing_post) {
+                    $duplicate_posts = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT ID FROM {$wpdb->posts}
+                            WHERE post_type = 'wp_block'
+                            AND post_name LIKE %s
+                            AND post_name != %s
+                            AND post_status != 'trash'",
+                            $entity_slug . '-%',
+                            $entity_slug
+                        )
+                    );
+
+                    foreach ($duplicate_posts as $duplicate) {
+                        wp_delete_post($duplicate->ID, true);
+                    }
+                }
 
                 $pattern_content = array(
                     'post_name' => $entity_slug,

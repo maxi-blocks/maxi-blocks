@@ -266,11 +266,15 @@ const Inspector = props => {
 																		`caption-gap-${deviceType}`
 																	]
 																}
-																onChangeValue={val =>
+																onChangeValue={(
+																	val,
+																	meta
+																) =>
 																	maxiSetAttributes(
 																		{
 																			[`caption-gap-${deviceType}`]:
 																				val,
+																			meta,
 																		}
 																	)
 																}

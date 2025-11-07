@@ -3,10 +3,7 @@
  */
 import { createSelectors } from '@extensions/styles/custom-css';
 import { createIconTransitions } from '@extensions/styles';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 
 /**
  * Classnames
@@ -300,6 +297,326 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 
+const inlineStylesTargets = {
+	block: '',
+	button: buttonClass,
+	buttonContent: `${buttonClass}__content`,
+	input: inputClass,
+	icon: defaultIconClass,
+	closeIcon: closeIconClass,
+	iconSvg: `${defaultIconClass} svg`,
+	closeIconSvg: `${closeIconClass} svg`,
+	iconPath: `${defaultIconClass} svg path`,
+	closeIconPath: `${closeIconClass} svg path`,
+};
+
+const attributesToStyles = {
+	'input-font-size': {
+		target: inlineStylesTargets.input,
+		property: 'font-size',
+	},
+	'input-line-height': {
+		target: inlineStylesTargets.input,
+		property: 'line-height',
+	},
+	'input-letter-spacing': {
+		target: inlineStylesTargets.input,
+		property: 'letter-spacing',
+	},
+	'input-text-indent': {
+		target: inlineStylesTargets.input,
+		property: 'text-indent',
+	},
+	'input-word-spacing': {
+		target: inlineStylesTargets.input,
+		property: 'word-spacing',
+	},
+	'input-bottom-gap': {
+		target: inlineStylesTargets.input,
+		property: 'margin-bottom',
+	},
+	'input-border-top-width': {
+		target: inlineStylesTargets.input,
+		property: 'border-top-width',
+	},
+	'input-border-right-width': {
+		target: inlineStylesTargets.input,
+		property: 'border-right-width',
+	},
+	'input-border-bottom-width': {
+		target: inlineStylesTargets.input,
+		property: 'border-bottom-width',
+	},
+	'input-border-left-width': {
+		target: inlineStylesTargets.input,
+		property: 'border-left-width',
+	},
+	'input-border-top-left-radius': {
+		target: inlineStylesTargets.input,
+		property: 'border-top-left-radius',
+	},
+	'input-border-top-right-radius': {
+		target: inlineStylesTargets.input,
+		property: 'border-top-right-radius',
+	},
+	'input-border-bottom-right-radius': {
+		target: inlineStylesTargets.input,
+		property: 'border-bottom-right-radius',
+	},
+	'input-border-bottom-left-radius': {
+		target: inlineStylesTargets.input,
+		property: 'border-bottom-left-radius',
+	},
+	'input-margin-top': {
+		target: inlineStylesTargets.input,
+		property: 'margin-top',
+	},
+	'input-margin-right': {
+		target: inlineStylesTargets.input,
+		property: 'margin-right',
+	},
+	'input-margin-bottom': {
+		target: inlineStylesTargets.input,
+		property: 'margin-bottom',
+	},
+	'input-margin-left': {
+		target: inlineStylesTargets.input,
+		property: 'margin-left',
+	},
+	'input-padding-top': {
+		target: inlineStylesTargets.input,
+		property: 'padding-top',
+	},
+	'input-padding-right': {
+		target: inlineStylesTargets.input,
+		property: 'padding-right',
+	},
+	'input-padding-bottom': {
+		target: inlineStylesTargets.input,
+		property: 'padding-bottom',
+	},
+	'input-padding-left': {
+		target: inlineStylesTargets.input,
+		property: 'padding-left',
+	},
+	'button-font-size': {
+		target: inlineStylesTargets.buttonContent,
+		property: 'font-size',
+	},
+	'button-line-height': {
+		target: inlineStylesTargets.buttonContent,
+		property: 'line-height',
+	},
+	'button-letter-spacing': {
+		target: inlineStylesTargets.buttonContent,
+		property: 'letter-spacing',
+	},
+	'button-text-indent': {
+		target: inlineStylesTargets.buttonContent,
+		property: 'text-indent',
+	},
+	'button-word-spacing': {
+		target: inlineStylesTargets.buttonContent,
+		property: 'word-spacing',
+	},
+	'button-bottom-gap': {
+		target: inlineStylesTargets.buttonContent,
+		property: 'margin-bottom',
+	},
+	'button-border-top-left-radius': {
+		target: inlineStylesTargets.button,
+		property: 'border-top-left-radius',
+	},
+	'button-border-top-right-radius': {
+		target: inlineStylesTargets.button,
+		property: 'border-top-right-radius',
+	},
+	'button-border-bottom-right-radius': {
+		target: inlineStylesTargets.button,
+		property: 'border-bottom-right-radius',
+	},
+	'button-border-bottom-left-radius': {
+		target: inlineStylesTargets.button,
+		property: 'border-bottom-left-radius',
+	},
+	'button-margin-top': {
+		target: inlineStylesTargets.button,
+		property: 'margin-top',
+	},
+	'button-margin-right': {
+		target: inlineStylesTargets.button,
+		property: 'margin-right',
+	},
+	'button-margin-bottom': {
+		target: inlineStylesTargets.button,
+		property: 'margin-bottom',
+	},
+	'button-margin-left': {
+		target: inlineStylesTargets.button,
+		property: 'margin-left',
+	},
+	'button-padding-top': {
+		target: inlineStylesTargets.button,
+		property: 'padding-top',
+	},
+	'button-padding-right': {
+		target: inlineStylesTargets.button,
+		property: 'padding-right',
+	},
+	'button-padding-bottom': {
+		target: inlineStylesTargets.button,
+		property: 'padding-bottom',
+	},
+	'button-padding-left': {
+		target: inlineStylesTargets.button,
+		property: 'padding-left',
+	},
+	'icon-stroke': {
+		target: inlineStylesTargets.iconPath,
+		property: 'stroke-width',
+	},
+	'close-icon-stroke': {
+		target: inlineStylesTargets.closeIconPath,
+		property: 'stroke-width',
+	},
+	'icon-width': {
+		target: inlineStylesTargets.iconSvg,
+		property: 'width',
+	},
+	'close-icon-width': {
+		target: inlineStylesTargets.closeIconSvg,
+		property: 'width',
+	},
+	'border-top-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-width',
+	},
+	'border-right-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-right-width',
+	},
+	'border-bottom-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-width',
+	},
+	'border-left-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-left-width',
+	},
+	'border-top-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-left-radius',
+	},
+	'border-top-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-right-radius',
+	},
+	'border-bottom-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-right-radius',
+	},
+	'border-bottom-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-left-radius',
+	},
+	opacity: {
+		target: inlineStylesTargets.block,
+		property: 'opacity',
+	},
+	'flex-grow': {
+		target: inlineStylesTargets.block,
+		property: 'flex-grow',
+	},
+	'flex-shrink': {
+		target: inlineStylesTargets.block,
+		property: 'flex-shrink',
+	},
+	'row-gap': {
+		target: inlineStylesTargets.block,
+		property: 'row-gap',
+	},
+	'column-gap': {
+		target: inlineStylesTargets.block,
+		property: 'column-gap',
+	},
+	order: {
+		target: inlineStylesTargets.block,
+		property: 'order',
+	},
+	'margin-top': {
+		target: inlineStylesTargets.block,
+		property: 'margin-top',
+	},
+	'margin-right': {
+		target: inlineStylesTargets.block,
+		property: 'margin-right',
+	},
+	'margin-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'margin-bottom',
+	},
+	'margin-left': {
+		target: inlineStylesTargets.block,
+		property: 'margin-left',
+	},
+	'padding-top': {
+		target: inlineStylesTargets.block,
+		property: 'padding-top',
+	},
+	'padding-right': {
+		target: inlineStylesTargets.block,
+		property: 'padding-right',
+	},
+	'padding-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'padding-bottom',
+	},
+	'padding-left': {
+		target: inlineStylesTargets.block,
+		property: 'padding-left',
+	},
+	'position-top': {
+		target: inlineStylesTargets.block,
+		property: 'top',
+	},
+	'position-right': {
+		target: inlineStylesTargets.block,
+		property: 'right',
+	},
+	'position-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'bottom',
+	},
+	'position-left': {
+		target: inlineStylesTargets.block,
+		property: 'left',
+	},
+	width: {
+		target: inlineStylesTargets.block,
+		property: 'width',
+	},
+	height: {
+		target: inlineStylesTargets.block,
+		property: 'height',
+	},
+	'min-width': {
+		target: inlineStylesTargets.block,
+		property: 'min-width',
+	},
+	'min-height': {
+		target: inlineStylesTargets.block,
+		property: 'min-height',
+	},
+	'max-width': {
+		target: inlineStylesTargets.block,
+		property: 'max-width',
+	},
+	'max-height': {
+		target: inlineStylesTargets.block,
+		property: 'max-height',
+	},
+};
+
 const data = {
 	name,
 	prefixes,
@@ -307,6 +624,7 @@ const data = {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	attributesToStyles,
 };
 
 export {
@@ -316,5 +634,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

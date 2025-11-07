@@ -358,7 +358,7 @@ const ImageLayerSettings = props => {
 							attributes: imageOptions,
 							isHover,
 						})}
-						onChangeValue={val =>
+						onChangeValue={(val, meta) =>
 							onChange({
 								[getAttributeKey(
 									'background-image-position-width',
@@ -366,6 +366,7 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
+								meta,
 							})
 						}
 						onReset={() =>
@@ -415,7 +416,7 @@ const ImageLayerSettings = props => {
 							attributes: imageOptions,
 							isHover,
 						})}
-						onChangeValue={val =>
+						onChangeValue={(val, meta) =>
 							onChange({
 								[getAttributeKey(
 									'background-image-position-height',
@@ -423,6 +424,7 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
+								meta,
 							})
 						}
 						onReset={() =>
@@ -867,13 +869,14 @@ const ImageLayer = props => {
 														'background-image-parallax-speed'
 													]
 												}
-												onChangeValue={val => {
+												onChangeValue={(val, meta) => {
 													onChange({
 														'background-image-parallax-speed':
 															val !== undefined &&
 															val !== ''
 																? val
 																: '',
+														meta,
 													});
 												}}
 												min={0.2}

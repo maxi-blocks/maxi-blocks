@@ -239,8 +239,31 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
                         // Create our intercepted version
                         editorDispatch.savePost = function(options = {}) {
+                            // Check if all MaxiBlocks are fully rendered
+                            const maxiBlocksSelect = select('maxiBlocks');
+                            const allBlocksReady = maxiBlocksSelect.getAllBlocksFullyRendered();
+
+                            if (!allBlocksReady) {
+                                console.warn('%c[MaxiBlocks] Save prevented - blocks still rendering',
+                                    'background: #FF5722; color: white; font-weight: bold; padding: 2px 4px;',
+                                    JSON.stringify({
+                                        allBlocksReady
+                                    }, null, 2));
+
+                                // Show user notification
+                                dispatch('core/notices').createWarningNotice(
+                                    'Please wait for MaxiBlocks to finish rendering before saving.',
+                                    { id: 'maxi-blocks-rendering-warning', isDismissible: true }
+                                );
+
+                                return Promise.resolve(); // Return resolved promise to prevent save
+                            }
+
                             // Update versions BEFORE calling the original save
                             updateBlockVersions();
+
+                            // Remove any existing warning notices
+                            dispatch('core/notices').removeNotice('maxi-blocks-rendering-warning');
 
                             // Call the original savePost with the same context and arguments
                             return originalSavePost.call(this, options);

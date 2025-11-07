@@ -43,7 +43,7 @@
 		border: 1px solid var(--maxi-grey-light) !important;
 		border-radius: 4px !important;
 		background: var(--maxi-white) !important;
-		color: var(--maxi-black) !important;
+		color: var(--maxi-grey-dark) !important;
 		cursor: pointer !important;
 		transition: all 200ms ease !important;
 		box-sizing: border-box !important;
@@ -165,6 +165,13 @@
 			&__label {
 				@extend %floating-label;
 			}
+		}
+	}
+	.maxi-typography-control__weight {
+		.maxi-select-control__input {
+			padding-left: 5px !important;
+			padding-right: 19px !important;
+			font-size: 11px !important;
 		}
 	}
 
@@ -295,6 +302,10 @@
 		width: 100%;
 		text-align: left;
 		margin-top: 10px;
+		color: var(--maxi-grey-dark) !important;
+		.maxi-typography-control__toggle-arrow--expanded {
+			color: var(--maxi-grey-dark) !important;
+		}
 	}
 
 	.maxi-typography-control-arrow-span {

@@ -70,7 +70,7 @@
 		position: relative;
 		display: inline-flex;
 		flex: none;
-		width: 65px !important;
+		width: 55px !important;
 	}
 
 	&__value {
@@ -240,7 +240,7 @@
 			min-height: 36px !important;
 			// Reduce inner right space and move chevron closer
 			padding-right: 6px !important;
-			background-position: right 4px top 50% !important;
+			//background-position: right 4px top 50% !important;
 		}
 	}
 }

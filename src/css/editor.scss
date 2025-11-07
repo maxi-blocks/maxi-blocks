@@ -408,22 +408,22 @@ body.maxi-blocks--active {
 		flex: 0 0 auto !important;
 		width: auto !important;
 		max-width: 60px !important;
-		min-width: 40px !important;
+		min-width: 55px !important;
 		padding: 8px 6px !important;
 		background-color: var(--maxi-white) !important;
 		/* Draw shorter vertical lines using layered backgrounds */
 		/* Short dividers on LEFT and RIGHT plus chevron */
-		background-image: linear-gradient(
-				var(--maxi-grey-light),
-				var(--maxi-grey-light)
-			),
-			linear-gradient(var(--maxi-grey-light), var(--maxi-grey-light)),
-			url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>');
-		background-repeat: no-repeat, no-repeat, no-repeat !important;
-		/* Set the short line heights here */
-		background-size: 1px 18px, 1px 18px, 8px 8px !important;
-		background-position: left 0.5px center, right 0.5px center,
-			right 5px center !important;
+		// background-image: linear-gradient(
+		// 		var(--maxi-grey-light),
+		// 		var(--maxi-grey-light)
+		// 	),
+		// 	linear-gradient(var(--maxi-grey-light), var(--maxi-grey-light)),
+		// 	url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>');
+		// background-repeat: no-repeat, no-repeat, no-repeat !important;
+		// /* Set the short line heights here */
+		// background-size: 1px 18px, 1px 18px, 8px 8px !important;
+		// background-position: left 0.5px center, right 0.5px center,
+		// 	right 5px center !important;
 		/* Ensure native borders are not shown */
 		border-left: none !important;
 		border-right: none !important;
@@ -833,11 +833,11 @@ body.maxi-blocks--active
 // Reset button
 .maxi-components-button.maxi-reset-button {
 	transition: all 0.3s ease;
-	width: 10px !important;
+	width: 9px !important;
 	height: 31px !important;
 	padding: 0 !important;
-	margin-left: 7px !important;
-	margin-right: 7px !important;
+	margin-left: 4px !important;
+	margin-right: 4px !important;
 	border-radius: 5px !important;
 
 	svg {

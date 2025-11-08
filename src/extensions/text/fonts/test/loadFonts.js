@@ -1,19 +1,23 @@
 import { getFontUrl, loadFonts } from '@extensions/text/fonts/loadFonts';
 import { buildFontUrl } from '@extensions/text/fonts/loadFontUtils';
 
+const defaultFontResponse = {
+	files: {
+		400: 'regular',
+		500: 'medium',
+		700: 'bold',
+		'400italic': 'italic',
+		'500italic': 'medium-italic',
+		'700italic': 'bold-italic',
+	},
+};
+
+const getFontMock = jest.fn().mockReturnValue(defaultFontResponse);
+
 jest.mock('@wordpress/data', () => ({
-	select: jest.fn().mockReturnValue({
-		getFont: jest.fn().mockReturnValue({
-			files: {
-				400: 'regular',
-				500: 'medium',
-				700: 'bold',
-				'400italic': 'italic',
-				'500italic': 'medium-italic',
-				'700italic': 'bold-italic',
-			},
-		}),
-	}),
+	select: jest.fn(() => ({
+		getFont: getFontMock,
+	})),
 }));
 
 jest.mock('@extensions/text/fonts/fontCacheUtils', () => ({
@@ -27,6 +31,7 @@ jest.mock('@extensions/text/fonts/loadFontUtils', () => ({
 describe('getFontUrl', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		getFontMock.mockReturnValue(defaultFontResponse);
 	});
 
 	it('Should build and return font URL directly', async () => {
@@ -110,6 +115,23 @@ describe('getFontUrl', () => {
 				);
 			})
 		);
+	});
+
+	it('Should create data URL for custom fonts', async () => {
+		const fontName = 'Custom Font';
+		const fontData = { weight: '400', style: 'normal' };
+
+		getFontMock.mockReturnValue({
+			source: 'custom',
+			files: {
+				400: 'https://example.com/fonts/custom.woff2',
+			},
+		});
+
+		const result = await getFontUrl(fontName, fontData);
+
+		expect(result.startsWith('data:text/css;base64,')).toBe(true);
+		expect(buildFontUrl).not.toHaveBeenCalled();
 	});
 });
 
@@ -334,5 +356,27 @@ describe('loadFonts', () => {
 			weight: '400',
 			style: 'normal',
 		});
+	});
+
+	it('Should inject custom fonts using style elements', async () => {
+		const font = {
+			'Custom Font': {
+				weight: '400',
+				style: 'normal',
+			},
+		};
+
+		getFontMock.mockReturnValue({
+			source: 'custom',
+			files: {
+				400: 'https://example.com/fonts/custom.woff2',
+			},
+		});
+
+		await loadFonts(font);
+
+		expect(createElementSpy).toHaveBeenCalledWith('style');
+		expect(buildFontUrl).not.toHaveBeenCalled();
+		expect(appendChildSpy).toHaveBeenCalled();
 	});
 });

@@ -1,8 +1,8 @@
 <?php
 // At the top of the file, after the initial requires
-require_once(ABSPATH . 'wp-admin/includes/file.php');
-require_once(ABSPATH . 'wp-admin/includes/media.php');
-require_once(ABSPATH . 'wp-admin/includes/image.php');
+require_once ABSPATH . 'wp-admin/includes/file.php';
+require_once ABSPATH . 'wp-admin/includes/media.php';
+require_once ABSPATH . 'wp-admin/includes/image.php';
 require_once plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php';
 /**
  * MaxiBlocks styles API
@@ -126,6 +126,37 @@ if (!class_exists('MaxiBlocks_API')):
                                 // Convert '+' back to spaces and decode other URL entities
                                 return urldecode(str_replace('+', ' ', $param));
                             },
+                        ],
+                    ],
+                ],
+            );
+            register_rest_route($this->namespace, '/fonts/custom', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_custom_fonts'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/fonts/custom', [
+                'methods' => 'POST',
+                'callback' => [$this, 'create_custom_font'],
+                'permission_callback' => function () {
+                    return current_user_can('upload_files');
+                },
+            ]);
+            register_rest_route(
+                $this->namespace,
+                '/fonts/custom/(?P<id>[a-z0-9\-]+)',
+                [
+                    'methods' => 'DELETE',
+                    'callback' => [$this, 'delete_custom_font'],
+                    'permission_callback' => function () {
+                        return current_user_can('upload_files');
+                    },
+                    'args' => [
+                        'id' => [
+                            'required' => true,
+                            'sanitize_callback' => 'sanitize_title',
                         ],
                     ],
                 ],
@@ -356,23 +387,28 @@ if (!class_exists('MaxiBlocks_API')):
                 'callback' => [$this, 'maxi_import_starter_site'],
                 'permission_callback' => function () {
                     // Check if user is logged in and has correct capabilities
-                    return is_user_logged_in() && current_user_can('edit_posts');
+                    return is_user_logged_in() &&
+                        current_user_can('edit_posts');
                 },
             ]);
-            register_rest_route($this->namespace, '/fonts/(?P<unique_id>[a-z0-9-]+)$', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_maxi_blocks_fonts_by_id'],
-                'args' => [
-                    'unique_id' => [
-                        'validate_callback' => function ($param) {
-                            return is_string($param);
-                        },
+            register_rest_route(
+                $this->namespace,
+                '/fonts/(?P<unique_id>[a-z0-9-]+)$',
+                [
+                    'methods' => 'GET',
+                    'callback' => [$this, 'get_maxi_blocks_fonts_by_id'],
+                    'args' => [
+                        'unique_id' => [
+                            'validate_callback' => function ($param) {
+                                return is_string($param);
+                            },
+                        ],
                     ],
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
                 ],
-                'permission_callback' => function () {
-                    return current_user_can('edit_posts');
-                },
-            ]);
+            );
             register_rest_route($this->namespace, '/check-theme-type', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_theme_type'],
@@ -384,14 +420,16 @@ if (!class_exists('MaxiBlocks_API')):
                 'methods' => 'POST',
                 'callback' => [$this, 'install_maxiblocks_go_theme'],
                 'permission_callback' => function () {
-                    return current_user_can('install_themes') && current_user_can('switch_themes');
+                    return current_user_can('install_themes') &&
+                        current_user_can('switch_themes');
                 },
             ]);
             register_rest_route($this->namespace, '/install-importer', [
                 'methods' => 'POST',
                 'callback' => [$this, 'install_wordpress_importer'],
                 'permission_callback' => function () {
-                    return current_user_can('install_plugins') && current_user_can('activate_plugins');
+                    return current_user_can('install_plugins') &&
+                        current_user_can('activate_plugins');
                 },
             ]);
             register_rest_route($this->namespace, '/ai/chat', [
@@ -426,6 +464,267 @@ if (!class_exists('MaxiBlocks_API')):
             ]);
         }
 
+        public function get_custom_fonts($request)
+        {
+            $fonts = $this->get_custom_fonts_option();
+
+            $response = [];
+
+            foreach ($fonts as $font) {
+                $font_value = isset($font['value']) ? $font['value'] : '';
+
+                if (empty($font_value)) {
+                    continue;
+                }
+
+                $response[$font_value] = [
+                    'id' => $font['id'],
+                    'value' => $font_value,
+                    'files' => isset($font['files']) ? $font['files'] : [],
+                    'variants' => isset($font['variants'])
+                        ? $font['variants']
+                        : [],
+                    'source' => 'custom',
+                ];
+            }
+
+            return rest_ensure_response($response);
+        }
+
+        public function create_custom_font($request)
+        {
+            $family = sanitize_text_field($request->get_param('family'));
+            $variants_param = $request->get_param('variants');
+
+            if (empty($family)) {
+                return new WP_Error(
+                    'invalid_font_family',
+                    __('Font family is required.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            if (!is_array($variants_param) || empty($variants_param)) {
+                return new WP_Error(
+                    'invalid_font_variants',
+                    __('At least one font file is required.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            $fonts = $this->get_custom_fonts_option();
+
+            $normalized_variants = [];
+            $files = [];
+
+            foreach ($variants_param as $variant) {
+                $normalized = $this->normalize_font_variant($variant);
+
+                if (is_wp_error($normalized)) {
+                    return $normalized;
+                }
+
+                if (empty($normalized)) {
+                    continue;
+                }
+
+                $files[$normalized['key']] = esc_url_raw($normalized['url']);
+                $normalized_variants[] = [
+                    'weight' => $normalized['weight'],
+                    'style' => $normalized['style'],
+                    'attachment_id' => $normalized['attachment_id'],
+                    'mime_type' => $normalized['mime_type'],
+                    'url' => $normalized['url'],
+                ];
+            }
+
+            if (empty($files)) {
+                return new WP_Error(
+                    'invalid_font_files',
+                    __('No valid font files were provided.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            $id = sanitize_title($family);
+            $original_id = $id;
+            $suffix = 2;
+
+            while (
+                isset($fonts[$id]) &&
+                strtolower($fonts[$id]['value']) !== strtolower($family)
+            ) {
+                $id = $original_id . '-' . $suffix;
+                $suffix++;
+            }
+
+            $fonts[$id] = [
+                'id' => $id,
+                'value' => $family,
+                'files' => $files,
+                'variants' => $normalized_variants,
+                'source' => 'custom',
+            ];
+
+            $this->persist_custom_fonts($fonts);
+
+            return rest_ensure_response($fonts[$id]);
+        }
+
+        public function delete_custom_font($request)
+        {
+            $id = sanitize_title($request->get_param('id'));
+
+            if (empty($id)) {
+                return new WP_Error(
+                    'invalid_font_id',
+                    __('Font ID is required.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            $fonts = $this->get_custom_fonts_option();
+
+            if (!isset($fonts[$id])) {
+                return new WP_Error(
+                    'font_not_found',
+                    __('The requested font does not exist.', 'maxi-blocks'),
+                    ['status' => 404],
+                );
+            }
+
+            $font = $fonts[$id];
+
+            if (!empty($font['variants']) && is_array($font['variants'])) {
+                foreach ($font['variants'] as $variant) {
+                    if (!empty($variant['attachment_id'])) {
+                        wp_delete_attachment(
+                            (int) $variant['attachment_id'],
+                            true,
+                        );
+                    }
+                }
+            }
+
+            unset($fonts[$id]);
+            $this->persist_custom_fonts($fonts);
+
+            return rest_ensure_response(['deleted' => $id]);
+        }
+
+        private function get_custom_fonts_option()
+        {
+            $fonts = get_option('maxi_blocks_custom_fonts', []);
+
+            if (!is_array($fonts)) {
+                $fonts = [];
+            }
+
+            return $fonts;
+        }
+
+        private function persist_custom_fonts(array $fonts)
+        {
+            update_option('maxi_blocks_custom_fonts', $fonts, false);
+        }
+
+        private function normalize_font_variant($variant)
+        {
+            if (!is_array($variant)) {
+                return [];
+            }
+
+            $attachment_id = isset($variant['attachment_id'])
+                ? absint($variant['attachment_id'])
+                : 0;
+
+            if (!$attachment_id) {
+                return [];
+            }
+
+            $attachment = get_post($attachment_id);
+
+            if (!$attachment || 'attachment' !== $attachment->post_type) {
+                return new WP_Error(
+                    'invalid_attachment',
+                    __('Invalid font attachment provided.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            $mime_type = get_post_mime_type($attachment_id);
+
+            if (!$this->is_allowed_font_mime($mime_type)) {
+                return new WP_Error(
+                    'invalid_font_mime',
+                    __('Unsupported font file type.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            $url = wp_get_attachment_url($attachment_id);
+
+            if (!$url) {
+                return new WP_Error(
+                    'missing_font_url',
+                    __('Unable to determine the font file URL.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            $weight = isset($variant['weight'])
+                ? sanitize_text_field($variant['weight'])
+                : '400';
+            $style = isset($variant['style'])
+                ? sanitize_text_field($variant['style'])
+                : 'normal';
+
+            $style = strtolower($style) === 'italic' ? 'italic' : 'normal';
+
+            $key = $this->build_variant_key($weight, $style);
+
+            return [
+                'weight' => $weight,
+                'style' => $style,
+                'key' => $key,
+                'attachment_id' => $attachment_id,
+                'mime_type' => $mime_type,
+                'url' => $url,
+            ];
+        }
+
+        private function build_variant_key($weight, $style)
+        {
+            $weight = (string) $weight;
+            $style = strtolower($style);
+
+            if ('italic' === $style) {
+                return '400' === $weight || 'normal' === $weight
+                    ? 'italic'
+                    : $weight . 'italic';
+            }
+
+            return $weight ?: '400';
+        }
+
+        private function is_allowed_font_mime($mime_type)
+        {
+            $allowed_mimes = [
+                'font/ttf',
+                'font/otf',
+                'font/woff',
+                'font/woff2',
+                'application/font-sfnt',
+                'application/x-font-ttf',
+                'application/x-font-otf',
+                'application/font-woff',
+                'application/x-font-woff',
+                'application/x-font-woff2',
+            ];
+
+            return in_array($mime_type, $allowed_mimes, true);
+        }
+
         /**
          * Returns MaxiBlocks general settings
          */
@@ -454,7 +753,9 @@ if (!class_exists('MaxiBlocks_API')):
                 'google_api_key' => get_option('google_api_key_option'),
                 'ai_settings' => [
                     // Note: openai_api_key removed for security - now handled by backend proxy
-                    'has_openai_api_key' => !empty(get_option('openai_api_key_option')),
+                    'has_openai_api_key' => !empty(
+                        get_option('openai_api_key_option')
+                    ),
                     'model' => get_option('maxi_ai_model'),
                     'language' => get_option('maxi_ai_language'),
                     'tone' => get_option('maxi_ai_tone'),
@@ -1219,8 +1520,8 @@ if (!class_exists('MaxiBlocks_API')):
             if ((!$field || empty($field['value'])) && is_numeric($post_id)) {
                 // Try common taxonomy contexts
                 $taxonomy_contexts = [
-                    'category_' . $post_id,  // Categories
-                    'post_tag_' . $post_id,  // Tags
+                    'category_' . $post_id, // Categories
+                    'post_tag_' . $post_id, // Tags
                     'product_cat_' . $post_id, // WooCommerce product categories
                     'product_tag_' . $post_id, // WooCommerce product tags
                 ];
@@ -1313,12 +1614,20 @@ if (!class_exists('MaxiBlocks_API')):
 
                 foreach ($import_data['templates'] as $template) {
                     // Fetch template content from URL
-                    $template_content = $fetch_remote_content($template['content']);
+                    $template_content = $fetch_remote_content(
+                        $template['content'],
+                    );
                     if (!$template_content) {
                         $results['templates'][] = [
                             'name' => $template['name'],
                             'success' => false,
-                            'message' => sprintf(__('Failed to fetch template content from %s', 'maxi-blocks'), $template['content'])
+                            'message' => sprintf(
+                                __(
+                                    'Failed to fetch template content from %s',
+                                    'maxi-blocks',
+                                ),
+                                $template['content'],
+                            ),
                         ];
                         continue;
                     }
@@ -1329,17 +1638,22 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['templates'][] = [
                             'name' => $template['name'],
                             'success' => false,
-                            'message' => __('Invalid template JSON content', 'maxi-blocks')
+                            'message' => __(
+                                'Invalid template JSON content',
+                                'maxi-blocks',
+                            ),
                         ];
                         continue;
                     }
 
                     // Import the template
-                    $import_result = $this->maxi_import_template_parts([$template_data]);
+                    $import_result = $this->maxi_import_template_parts([
+                        $template_data,
+                    ]);
                     $results['templates'][] = [
                         'name' => $template['name'],
                         'success' => true,
-                        'data' => $import_result
+                        'data' => $import_result,
                     ];
                 }
             }
@@ -1355,7 +1669,13 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['pages'][] = [
                             'name' => $page['name'],
                             'success' => false,
-                            'message' => sprintf(__('Failed to fetch page content from %s', 'maxi-blocks'), $page['content'])
+                            'message' => sprintf(
+                                __(
+                                    'Failed to fetch page content from %s',
+                                    'maxi-blocks',
+                                ),
+                                $page['content'],
+                            ),
                         ];
                         continue;
                     }
@@ -1366,7 +1686,10 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['pages'][] = [
                             'name' => $page['name'],
                             'success' => false,
-                            'message' => __('Invalid page JSON content', 'maxi-blocks')
+                            'message' => __(
+                                'Invalid page JSON content',
+                                'maxi-blocks',
+                            ),
                         ];
                         continue;
                     }
@@ -1376,7 +1699,7 @@ if (!class_exists('MaxiBlocks_API')):
                     $results['pages'][] = [
                         'name' => $page['name'],
                         'success' => true,
-                        'data' => $import_result
+                        'data' => $import_result,
                     ];
                 }
             }
@@ -1387,12 +1710,20 @@ if (!class_exists('MaxiBlocks_API')):
 
                 foreach ($import_data['patterns'] as $pattern) {
                     // Fetch pattern content from URL
-                    $pattern_content = $fetch_remote_content($pattern['content']);
+                    $pattern_content = $fetch_remote_content(
+                        $pattern['content'],
+                    );
                     if (!$pattern_content) {
                         $results['patterns'][] = [
                             'name' => $pattern['name'],
                             'success' => false,
-                            'message' => sprintf(__('Failed to fetch pattern content from %s', 'maxi-blocks'), $pattern['content'])
+                            'message' => sprintf(
+                                __(
+                                    'Failed to fetch pattern content from %s',
+                                    'maxi-blocks',
+                                ),
+                                $pattern['content'],
+                            ),
                         ];
                         continue;
                     }
@@ -1403,21 +1734,25 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['patterns'][] = [
                             'name' => $pattern['name'],
                             'success' => false,
-                            'message' => __('Invalid pattern JSON content', 'maxi-blocks')
+                            'message' => __(
+                                'Invalid pattern JSON content',
+                                'maxi-blocks',
+                            ),
                         ];
                         continue;
                     }
 
                     // Import the pattern
-                    $import_result = $this->maxi_import_patterns([$pattern_data]);
+                    $import_result = $this->maxi_import_patterns([
+                        $pattern_data,
+                    ]);
                     $results['patterns'][] = [
                         'name' => $pattern['name'],
                         'success' => true,
-                        'data' => $import_result
+                        'data' => $import_result,
                     ];
                 }
             }
-
 
             // Process Style Card
             if (!empty($import_data['sc'])) {
@@ -1429,23 +1764,27 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Process XML content
             if (!empty($import_data['contentXML'])) {
-                $xml_content = $fetch_remote_content($import_data['contentXML']);
+                $xml_content = $fetch_remote_content(
+                    $import_data['contentXML'],
+                );
                 if ($xml_content) {
                     $this->maxi_import_xml($xml_content);
                 }
             }
 
-
             // Save current starter site name
             if (!empty($import_data['title'])) {
-                update_option('maxiblocks_current_starter_site', $import_data['title']);
+                update_option(
+                    'maxiblocks_current_starter_site',
+                    $import_data['title'],
+                );
             }
 
             return rest_ensure_response([
                 'success' => true,
                 'message' => 'Import data processed',
                 'data' => $results,
-                'currentStarterSite' => $import_data['title'] ?? ''
+                'currentStarterSite' => $import_data['title'] ?? '',
             ]);
         }
 
@@ -1466,34 +1805,41 @@ if (!class_exists('MaxiBlocks_API')):
                 $styles = $page_data['styles'] ?? [];
                 $entity_type = $page_data['entityType'] ?? 'page';
                 $entity_title = $page_data['entityTitle'] ?? $page_name;
-                $entity_slug = $page_data['entitySlug'] ?? sanitize_title($entity_title);
+                $entity_slug =
+                    $page_data['entitySlug'] ?? sanitize_title($entity_title);
                 $custom_data = $page_data['customData'] ?? [];
                 $fonts = $page_data['fonts'] ?? [];
 
                 // Create the page/post
-                $post_data = array(
-                    'post_title'    => $entity_title,
-                    'post_content'  => wp_slash($content),
-                    'post_status'   => 'publish',
-                    'post_type'     => $entity_type,
-                    'post_name'     => $entity_slug,
-                );
+                $post_data = [
+                    'post_title' => $entity_title,
+                    'post_content' => wp_slash($content),
+                    'post_status' => 'publish',
+                    'post_type' => $entity_type,
+                    'post_name' => $entity_slug,
+                ];
 
                 $post_id = wp_insert_post($post_data);
 
                 if (is_wp_error($post_id)) {
                     $results[$page_name] = [
                         'success' => false,
-                        'message' => $post_id->get_error_message()
+                        'message' => $post_id->get_error_message(),
                     ];
                     continue;
                 }
 
                 // Check if this is a home or blog page
-                if (stripos($entity_title, 'home') !== false || stripos($entity_slug, 'home') !== false) {
+                if (
+                    stripos($entity_title, 'home') !== false ||
+                    stripos($entity_slug, 'home') !== false
+                ) {
                     $home_page_id = $post_id;
                     $has_home_page = true;
-                } elseif (stripos($entity_title, 'blog') !== false || stripos($entity_slug, 'blog') !== false) {
+                } elseif (
+                    stripos($entity_title, 'blog') !== false ||
+                    stripos($entity_slug, 'blog') !== false
+                ) {
                     $blog_page_id = $post_id;
                 }
 
@@ -1509,12 +1855,18 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$page_name] = [
                     'success' => true,
                     'post_id' => $post_id,
-                    'message' => sprintf(__('Successfully imported %s', 'maxi-blocks'), $entity_title)
+                    'message' => sprintf(
+                        __('Successfully imported %s', 'maxi-blocks'),
+                        $entity_title,
+                    ),
                 ];
             }
 
             // Check if we have a blog template
-            $blog_template = get_block_template(get_stylesheet() . '//blog', 'wp_template');
+            $blog_template = get_block_template(
+                get_stylesheet() . '//blog',
+                'wp_template',
+            );
             $has_blog_template = !empty($blog_template);
 
             // Create blog page if it doesn't exist
@@ -1525,20 +1877,20 @@ if (!class_exists('MaxiBlocks_API')):
                 if ($existing_blog) {
                     $blog_page_id = $existing_blog->ID;
                 } else {
-                    $blog_page = array(
-                        'post_title'    => 'Blog',
-                        'post_content'  => '',
-                        'post_status'   => 'publish',
-                        'post_type'     => 'page',
-                        'post_name'     => 'blog'
-                    );
+                    $blog_page = [
+                        'post_title' => 'Blog',
+                        'post_content' => '',
+                        'post_status' => 'publish',
+                        'post_type' => 'page',
+                        'post_name' => 'blog',
+                    ];
                     $blog_page_id = wp_insert_post($blog_page);
 
                     if (!is_wp_error($blog_page_id)) {
                         $results['blog_page'] = [
                             'success' => true,
                             'post_id' => $blog_page_id,
-                            'message' => __('Created Blog page', 'maxi-blocks')
+                            'message' => __('Created Blog page', 'maxi-blocks'),
                         ];
                     }
                 }
@@ -1559,12 +1911,11 @@ if (!class_exists('MaxiBlocks_API')):
             $results['reading_settings'] = [
                 'show_on_front' => get_option('show_on_front'),
                 'page_on_front' => get_option('page_on_front'),
-                'page_for_posts' => get_option('page_for_posts')
+                'page_for_posts' => get_option('page_for_posts'),
             ];
 
             return $results;
         }
-
 
         /**
          * Import template parts
@@ -1590,7 +1941,10 @@ if (!class_exists('MaxiBlocks_API')):
                 if ($template_part_data['entityType'] !== 'template-part') {
                     $results[$template_name] = [
                         'success' => false,
-                        'message' => sprintf(__('Invalid entity type: %s', 'maxi-blocks'), $template_part_data['entityType'])
+                        'message' => sprintf(
+                            __('Invalid entity type: %s', 'maxi-blocks'),
+                            $template_part_data['entityType'],
+                        ),
                     ];
                     continue;
                 }
@@ -1602,8 +1956,11 @@ if (!class_exists('MaxiBlocks_API')):
                 $content = $this->process_content_images($content);
 
                 $styles = $template_part_data['styles'] ?? [];
-                $entity_title = $template_part_data['entityTitle'] ?? $template_name;
-                $entity_slug = $template_part_data['entitySlug'] ?? sanitize_title($entity_title);
+                $entity_title =
+                    $template_part_data['entityTitle'] ?? $template_name;
+                $entity_slug =
+                    $template_part_data['entitySlug'] ??
+                    sanitize_title($entity_title);
                 $custom_data = $template_part_data['customData'] ?? [];
                 $fonts = $template_part_data['fonts'] ?? [];
 
@@ -1611,7 +1968,9 @@ if (!class_exists('MaxiBlocks_API')):
                 $area = '';
                 if (strpos(strtolower($entity_title), 'header') !== false) {
                     $area = 'header';
-                } elseif (strpos(strtolower($entity_title), 'footer') !== false) {
+                } elseif (
+                    strpos(strtolower($entity_title), 'footer') !== false
+                ) {
                     $area = 'footer';
                 } else {
                     $area = 'uncategorized';
@@ -1620,7 +1979,7 @@ if (!class_exists('MaxiBlocks_API')):
                 // Check if template part exists
                 $existing_template = get_block_template(
                     $theme_slug . '//' . $entity_slug,
-                    'wp_template_part'
+                    'wp_template_part',
                 );
 
                 // Check if it exists in database by simple slug (check all statuses, not just publish)
@@ -1661,17 +2020,17 @@ if (!class_exists('MaxiBlocks_API')):
                     'post_status' => 'publish',
                     'post_type' => 'wp_template_part',
                     'post_excerpt' => '',
-                    'tax_input' => array(
-                        'wp_theme' => array($theme_slug),
-                        'wp_template_part_area' => array($area)
-                    ),
-                    'meta_input' => array(
+                    'tax_input' => [
+                        'wp_theme' => [$theme_slug],
+                        'wp_template_part_area' => [$area],
+                    ],
+                    'meta_input' => [
                         'origin' => 'theme',
                         'theme' => $theme_slug,
                         'area' => $area,
-                        'is_custom' => true
-                    )
-                );
+                        'is_custom' => true,
+                    ],
+                ];
 
                 if ($existing_template) {
                     if ($existing_post) {
@@ -1681,15 +2040,27 @@ if (!class_exists('MaxiBlocks_API')):
                         $post_id = wp_insert_post($template_content);
 
                         if ($post_id && !is_wp_error($post_id)) {
-                            wp_set_object_terms($post_id, $area, 'wp_template_part_area');
-                            wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
+                            wp_set_object_terms(
+                                $post_id,
+                                $area,
+                                'wp_template_part_area',
+                            );
+                            wp_set_object_terms(
+                                $post_id,
+                                $theme_slug,
+                                'wp_theme',
+                            );
                         }
                     }
                 } else {
                     $post_id = wp_insert_post($template_content);
 
                     if ($post_id && !is_wp_error($post_id)) {
-                        wp_set_object_terms($post_id, $area, 'wp_template_part_area');
+                        wp_set_object_terms(
+                            $post_id,
+                            $area,
+                            'wp_template_part_area',
+                        );
                         wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
                     }
                 }
@@ -1697,7 +2068,7 @@ if (!class_exists('MaxiBlocks_API')):
                 if (is_wp_error($post_id)) {
                     $results[$template_name] = [
                         'success' => false,
-                        'message' => $post_id->get_error_message()
+                        'message' => $post_id->get_error_message(),
                     ];
                     continue;
                 }
@@ -1718,7 +2089,13 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$template_name] = [
                     'success' => true,
                     'post_id' => $post_id,
-                    'message' => sprintf(__('Successfully imported %s template part', 'maxi-blocks'), $entity_title)
+                    'message' => sprintf(
+                        __(
+                            'Successfully imported %s template part',
+                            'maxi-blocks',
+                        ),
+                        $entity_title,
+                    ),
                 ];
             }
 
@@ -1744,13 +2121,15 @@ if (!class_exists('MaxiBlocks_API')):
             $replace_template_parts = function ($content) use ($theme_slug) {
                 return preg_replace(
                     '/<!-- wp:template-part {"slug":"([^"]+)","theme":"[^"]+"/',
-                    '<!-- wp:template-part {"slug":"$1","theme":"' . $theme_slug . '"',
-                    $content
+                    '<!-- wp:template-part {"slug":"$1","theme":"' .
+                        $theme_slug .
+                        '"',
+                    $content,
                 );
             };
 
             // Valid template types
-            $valid_types = array(
+            $valid_types = [
                 'archive',
                 'author',
                 'category',
@@ -1761,8 +2140,8 @@ if (!class_exists('MaxiBlocks_API')):
                 'page',
                 'home',
                 '404',
-                'search'
-            );
+                'search',
+            ];
 
             foreach ($template_data as $template_name => $template_data) {
                 // Parse the template data
@@ -1777,7 +2156,9 @@ if (!class_exists('MaxiBlocks_API')):
                 $styles = $template_data['styles'] ?? [];
                 $entity_type = $template_data['entityType'] ?? '';
                 $entity_title = $template_data['entityTitle'] ?? $template_name;
-                $entity_slug = $template_data['entitySlug'] ?? sanitize_title($entity_title);
+                $entity_slug =
+                    $template_data['entitySlug'] ??
+                    sanitize_title($entity_title);
                 $custom_data = $template_data['customData'] ?? [];
                 $fonts = $template_data['fonts'] ?? [];
 
@@ -1785,7 +2166,10 @@ if (!class_exists('MaxiBlocks_API')):
                 if (!in_array($entity_slug, $valid_types)) {
                     $results[$template_name] = [
                         'success' => false,
-                        'message' => sprintf(__('Invalid template slug: %s', 'maxi-blocks'), $entity_slug)
+                        'message' => sprintf(
+                            __('Invalid template slug: %s', 'maxi-blocks'),
+                            $entity_slug,
+                        ),
                     ];
                     continue;
                 }
@@ -1793,7 +2177,7 @@ if (!class_exists('MaxiBlocks_API')):
                 // Check if template exists
                 $existing_template = get_block_template(
                     $theme_slug . '//' . $entity_slug,
-                    'wp_template'
+                    'wp_template',
                 );
 
                 // Check if it exists in database by simple slug (check all statuses, not just publish)
@@ -1834,16 +2218,16 @@ if (!class_exists('MaxiBlocks_API')):
                     'post_status' => 'publish',
                     'post_type' => 'wp_template',
                     'post_excerpt' => '',
-                    'tax_input' => array(
-                        'wp_theme' => array($theme_slug)
-                    ),
-                    'meta_input' => array(
+                    'tax_input' => [
+                        'wp_theme' => [$theme_slug],
+                    ],
+                    'meta_input' => [
                         'origin' => 'theme',
                         'theme' => $theme_slug,
                         'is_custom' => true,
-                        'type' => $entity_type
-                    )
-                );
+                        'type' => $entity_type,
+                    ],
+                ];
 
                 if ($existing_template) {
                     if ($existing_post) {
@@ -1853,7 +2237,11 @@ if (!class_exists('MaxiBlocks_API')):
                         $post_id = wp_insert_post($template_content);
 
                         if ($post_id && !is_wp_error($post_id)) {
-                            wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
+                            wp_set_object_terms(
+                                $post_id,
+                                $theme_slug,
+                                'wp_theme',
+                            );
                         }
                     }
                 } else {
@@ -1867,7 +2255,7 @@ if (!class_exists('MaxiBlocks_API')):
                 if (is_wp_error($post_id)) {
                     $results[$template_name] = [
                         'success' => false,
-                        'message' => $post_id->get_error_message()
+                        'message' => $post_id->get_error_message(),
                     ];
                     continue;
                 }
@@ -1887,13 +2275,15 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$template_name] = [
                     'success' => true,
                     'post_id' => $post_id,
-                    'message' => sprintf(__('Successfully imported %s template', 'maxi-blocks'), $entity_title)
+                    'message' => sprintf(
+                        __('Successfully imported %s template', 'maxi-blocks'),
+                        $entity_title,
+                    ),
                 ];
             }
 
             return $results;
         }
-
 
         private function maxi_import_xml($xml_content)
         {
@@ -1904,7 +2294,10 @@ if (!class_exists('MaxiBlocks_API')):
             // Create a temporary file to store the XML
             $temp_file = wp_tempnam('maxi_import_');
             if (!$temp_file) {
-                return new WP_Error('temp_file_error', 'Could not create temporary file');
+                return new WP_Error(
+                    'temp_file_error',
+                    'Could not create temporary file',
+                );
             }
 
             file_put_contents($temp_file, $xml_content);
@@ -1923,11 +2316,15 @@ if (!class_exists('MaxiBlocks_API')):
             require_once ABSPATH . 'wp-admin/includes/class-wp-importer.php';
 
             // Check if WordPress Importer plugin is installed and active
-            if (!file_exists(WP_PLUGIN_DIR . '/wordpress-importer/class-wp-import.php')) {
+            if (
+                !file_exists(
+                    WP_PLUGIN_DIR . '/wordpress-importer/class-wp-import.php',
+                )
+            ) {
                 return new WP_Error(
                     'importer_missing',
                     'WordPress Importer plugin is required but not installed.',
-                    array('status' => 400)
+                    ['status' => 400],
                 );
             }
 
@@ -1954,10 +2351,10 @@ if (!class_exists('MaxiBlocks_API')):
                 // Clean up
                 unlink($temp_file);
 
-                return array(
+                return [
                     'success' => true,
-                    'message' => 'XML content imported successfully'
-                );
+                    'message' => 'XML content imported successfully',
+                ];
             } catch (Exception $e) {
                 unlink($temp_file);
                 return new WP_Error('import_error', $e->getMessage());
@@ -1979,32 +2376,32 @@ if (!class_exists('MaxiBlocks_API')):
                 $existing_style = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                        $block_id
-                    )
+                        $block_id,
+                    ),
                 );
 
                 if ($existing_style) {
                     // Update existing record, keeping current css_value as prev_css_value
                     $wpdb->update(
                         $wpdb->prefix . 'maxi_blocks_styles_blocks',
-                        array(
+                        [
                             'prev_css_value' => $existing_style->css_value,
                             'css_value' => $style_data,
-                        ),
-                        array('block_style_id' => $block_id),
-                        array('%s', '%s'),
-                        array('%s')
+                        ],
+                        ['block_style_id' => $block_id],
+                        ['%s', '%s'],
+                        ['%s'],
                     );
                 } else {
                     // Insert new record
                     $wpdb->insert(
                         $wpdb->prefix . 'maxi_blocks_styles_blocks',
-                        array(
+                        [
                             'block_style_id' => $block_id,
                             'css_value' => $style_data,
                             'prev_css_value' => $style_data,
-                        ),
-                        array('%s', '%s', '%s')
+                        ],
+                        ['%s', '%s', '%s'],
                     );
                 }
             }
@@ -2028,7 +2425,9 @@ if (!class_exists('MaxiBlocks_API')):
                     // If parsing successful and contains nested structure
                     if ($parsed_data && isset($parsed_data[$block_id])) {
                         // Extract the inner object
-                        $block_custom_data = json_encode($parsed_data[$block_id]);
+                        $block_custom_data = json_encode(
+                            $parsed_data[$block_id],
+                        );
                     }
                     // If already in the correct format, keep as is
                 }
@@ -2037,32 +2436,33 @@ if (!class_exists('MaxiBlocks_API')):
                 $existing_custom_data = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT * FROM {$wpdb->prefix}maxi_blocks_custom_data_blocks WHERE block_style_id = %s",
-                        $block_id
-                    )
+                        $block_id,
+                    ),
                 );
 
                 if ($existing_custom_data) {
                     // Update existing record, keeping current custom_data as prev_custom_data
                     $wpdb->update(
                         $wpdb->prefix . 'maxi_blocks_custom_data_blocks',
-                        array(
-                            'prev_custom_data_value' => $existing_custom_data->custom_data_value,
+                        [
+                            'prev_custom_data_value' =>
+                                $existing_custom_data->custom_data_value,
                             'custom_data_value' => $block_custom_data,
-                        ),
-                        array('block_style_id' => $block_id),
-                        array('%s', '%s'),
-                        array('%s')
+                        ],
+                        ['block_style_id' => $block_id],
+                        ['%s', '%s'],
+                        ['%s'],
                     );
                 } else {
                     // Insert new record
                     $wpdb->insert(
                         $wpdb->prefix . 'maxi_blocks_custom_data_blocks',
-                        array(
+                        [
                             'block_style_id' => $block_id,
                             'custom_data_value' => $block_custom_data,
                             'prev_custom_data_value' => $block_custom_data,
-                        ),
-                        array('%s', '%s', '%s')
+                        ],
+                        ['%s', '%s', '%s'],
                     );
                 }
             }
@@ -2083,32 +2483,33 @@ if (!class_exists('MaxiBlocks_API')):
                 $existing_fonts = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles_blocks WHERE block_style_id = %s",
-                        $block_id
-                    )
+                        $block_id,
+                    ),
                 );
 
                 if ($existing_fonts) {
                     // Update existing record, keeping current fonts as prev_fonts
                     $wpdb->update(
                         $wpdb->prefix . 'maxi_blocks_styles_blocks',
-                        array(
-                            'prev_fonts_value' => $existing_fonts->fonts_value ?? $font_data,
+                        [
+                            'prev_fonts_value' =>
+                                $existing_fonts->fonts_value ?? $font_data,
                             'fonts_value' => $font_data,
-                        ),
-                        array('block_style_id' => $block_id),
-                        array('%s', '%s'),
-                        array('%s')
+                        ],
+                        ['block_style_id' => $block_id],
+                        ['%s', '%s'],
+                        ['%s'],
                     );
                 } else {
                     // Insert new record
                     $wpdb->insert(
                         $wpdb->prefix . 'maxi_blocks_styles_blocks',
-                        array(
+                        [
                             'block_style_id' => $block_id,
                             'fonts_value' => $font_data,
                             'prev_fonts_value' => $font_data,
-                        ),
-                        array('%s', '%s', '%s')
+                        ],
+                        ['%s', '%s', '%s'],
                     );
                 }
             }
@@ -2129,7 +2530,7 @@ if (!class_exists('MaxiBlocks_API')):
                 return new WP_Error(
                     'no_unique_id',
                     'No block unique ID provided',
-                    array('status' => 400)
+                    ['status' => 400],
                 );
             }
 
@@ -2138,16 +2539,16 @@ if (!class_exists('MaxiBlocks_API')):
                     "SELECT fonts_value
                     FROM {$wpdb->prefix}maxi_blocks_styles_blocks
                     WHERE block_style_id = %s",
-                    $unique_id
+                    $unique_id,
                 ),
-                ARRAY_A
+                ARRAY_A,
             );
 
             if (!$fonts) {
                 return new WP_Error(
                     'no_fonts_found',
                     'No fonts found for this block ID',
-                    array('status' => 404)
+                    ['status' => 404],
                 );
             }
 
@@ -2174,10 +2575,13 @@ if (!class_exists('MaxiBlocks_API')):
 
                 $styles = $pattern_data['styles'] ?? [];
                 $entity_title = $pattern_data['entityTitle'] ?? $pattern_name;
-                $entity_slug = $pattern_data['entitySlug'] ?? sanitize_title($entity_title);
+                $entity_slug =
+                    $pattern_data['entitySlug'] ??
+                    sanitize_title($entity_title);
                 $custom_data = $pattern_data['customData'] ?? [];
                 $fonts = $pattern_data['fonts'] ?? [];
-                $wp_pattern_sync_status = $pattern_data['wpPatternSyncStatus'] ?? '';
+                $wp_pattern_sync_status =
+                    $pattern_data['wpPatternSyncStatus'] ?? '';
 
                 // Check if pattern exists in database (check all statuses, not just publish)
                 $existing_post = $wpdb->get_row(
@@ -2217,10 +2621,10 @@ if (!class_exists('MaxiBlocks_API')):
                     'post_status' => 'publish',
                     'post_type' => 'wp_block',
                     'post_excerpt' => '',
-                    'meta_input' => array(
-                        'wp_pattern_sync_status' => $wp_pattern_sync_status
-                    )
-                );
+                    'meta_input' => [
+                        'wp_pattern_sync_status' => $wp_pattern_sync_status,
+                    ],
+                ];
 
                 if ($existing_post) {
                     $pattern_content['ID'] = $existing_post->ID;
@@ -2232,7 +2636,7 @@ if (!class_exists('MaxiBlocks_API')):
                 if (is_wp_error($post_id)) {
                     $results[$pattern_name] = [
                         'success' => false,
-                        'message' => $post_id->get_error_message()
+                        'message' => $post_id->get_error_message(),
                     ];
                     continue;
                 }
@@ -2249,7 +2653,10 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$pattern_name] = [
                     'success' => true,
                     'post_id' => $post_id,
-                    'message' => sprintf(__('Successfully imported %s pattern', 'maxi-blocks'), $entity_title)
+                    'message' => sprintf(
+                        __('Successfully imported %s pattern', 'maxi-blocks'),
+                        $entity_title,
+                    ),
                 ];
             }
 
@@ -2284,7 +2691,7 @@ if (!class_exists('MaxiBlocks_API')):
                 }
 
                 // Get file info
-                $file_array = array();
+                $file_array = [];
                 $file_array['name'] = basename(parse_url($url, PHP_URL_PATH));
 
                 // Check file type
@@ -2297,21 +2704,26 @@ if (!class_exists('MaxiBlocks_API')):
                         if (isset($headers['content-type'])) {
                             $mime_type = $headers['content-type'];
                             // Map common MIME types to extensions
-                            $mime_to_ext = array(
+                            $mime_to_ext = [
                                 'image/jpeg' => 'jpg',
                                 'image/jpg' => 'jpg',
                                 'image/png' => 'png',
                                 'image/gif' => 'gif',
                                 'image/webp' => 'webp',
-                                'image/svg+xml' => 'svg'
-                            );
+                                'image/svg+xml' => 'svg',
+                            ];
 
                             if (isset($mime_to_ext[$mime_type])) {
                                 $wp_filetype['type'] = $mime_type;
                                 $wp_filetype['ext'] = $mime_to_ext[$mime_type];
                                 // Update filename with correct extension
                                 $file_array['name'] = sanitize_file_name(
-                                    pathinfo($file_array['name'], PATHINFO_FILENAME) . '.' . $wp_filetype['ext']
+                                    pathinfo(
+                                        $file_array['name'],
+                                        PATHINFO_FILENAME,
+                                    ) .
+                                        '.' .
+                                        $wp_filetype['ext'],
                                 );
                             }
                         }
@@ -2319,7 +2731,10 @@ if (!class_exists('MaxiBlocks_API')):
                 }
 
                 // Skip if not a valid image type
-                if (!$wp_filetype['type'] || !stristr($wp_filetype['type'], 'image/')) {
+                if (
+                    !$wp_filetype['type'] ||
+                    !stristr($wp_filetype['type'], 'image/')
+                ) {
                     return false;
                 }
 
@@ -2341,10 +2756,10 @@ if (!class_exists('MaxiBlocks_API')):
 
                 // Do the upload
                 $time = current_time('mysql');
-                $file = wp_handle_sideload(
-                    $file_array,
-                    array('test_form' => false, 'time' => $time)
-                );
+                $file = wp_handle_sideload($file_array, [
+                    'test_form' => false,
+                    'time' => $time,
+                ]);
 
                 // Remove the upload directory filter
                 remove_filter('upload_dir', $upload_override);
@@ -2357,13 +2772,17 @@ if (!class_exists('MaxiBlocks_API')):
                 }
 
                 // Create attachment
-                $attachment = array(
+                $attachment = [
                     'post_mime_type' => $file['type'],
-                    'post_title' => preg_replace('/\.[^.]+$/', '', $file_array['name']),
+                    'post_title' => preg_replace(
+                        '/\.[^.]+$/',
+                        '',
+                        $file_array['name'],
+                    ),
                     'post_content' => '',
                     'post_status' => 'inherit',
-                    'guid' => $file['url']
-                );
+                    'guid' => $file['url'],
+                ];
 
                 $attach_id = wp_insert_attachment($attachment, $file['file']);
                 if (is_wp_error($attach_id)) {
@@ -2371,8 +2790,11 @@ if (!class_exists('MaxiBlocks_API')):
                 }
 
                 // Generate metadata and thumbnails
-                require_once(ABSPATH . 'wp-admin/includes/image.php');
-                $attach_data = wp_generate_attachment_metadata($attach_id, $file['file']);
+                require_once ABSPATH . 'wp-admin/includes/image.php';
+                $attach_data = wp_generate_attachment_metadata(
+                    $attach_id,
+                    $file['file'],
+                );
                 wp_update_attachment_metadata($attach_id, $attach_data);
 
                 return $file['url'];
@@ -2380,40 +2802,54 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Find all image URLs in content
             $pattern = '/"url":\s*"([^"]+)"/';
-            $content = preg_replace_callback($pattern, function ($matches) use ($import_image) {
-                if (empty($matches[1])) {
-                    return $matches[0];
-                }
-                $old_url = $matches[1];
-                $new_url = $import_image($old_url);
-                return $new_url ? '"url":"' . $new_url . '"' : $matches[0];
-            }, $content);
+            $content = preg_replace_callback(
+                $pattern,
+                function ($matches) use ($import_image) {
+                    if (empty($matches[1])) {
+                        return $matches[0];
+                    }
+                    $old_url = $matches[1];
+                    $new_url = $import_image($old_url);
+                    return $new_url ? '"url":"' . $new_url . '"' : $matches[0];
+                },
+                $content,
+            );
 
             // Also handle background images
             $pattern = '/"backgroundImage":\s*"([^"]+)"/';
-            $content = preg_replace_callback($pattern, function ($matches) use ($import_image) {
-                if (empty($matches[1])) {
-                    return $matches[0];
-                }
-                $old_url = $matches[1];
-                $new_url = $import_image($old_url);
-                return $new_url ? '"backgroundImage":"' . $new_url . '"' : $matches[0];
-            }, $content);
+            $content = preg_replace_callback(
+                $pattern,
+                function ($matches) use ($import_image) {
+                    if (empty($matches[1])) {
+                        return $matches[0];
+                    }
+                    $old_url = $matches[1];
+                    $new_url = $import_image($old_url);
+                    return $new_url
+                        ? '"backgroundImage":"' . $new_url . '"'
+                        : $matches[0];
+                },
+                $content,
+            );
 
             // Handle SVG content
             $pattern = '/"svg":\s*"([^"]+)"/';
-            $content = preg_replace_callback($pattern, function ($matches) use ($import_image) {
-                if (empty($matches[1])) {
-                    return $matches[0];
-                }
-                $old_url = $matches[1];
-                // Skip if it's inline SVG
-                if (strpos($old_url, '<svg') !== false) {
-                    return $matches[0];
-                }
-                $new_url = $import_image($old_url);
-                return $new_url ? '"svg":"' . $new_url . '"' : $matches[0];
-            }, $content);
+            $content = preg_replace_callback(
+                $pattern,
+                function ($matches) use ($import_image) {
+                    if (empty($matches[1])) {
+                        return $matches[0];
+                    }
+                    $old_url = $matches[1];
+                    // Skip if it's inline SVG
+                    if (strpos($old_url, '<svg') !== false) {
+                        return $matches[0];
+                    }
+                    $new_url = $import_image($old_url);
+                    return $new_url ? '"svg":"' . $new_url . '"' : $matches[0];
+                },
+                $content,
+            );
 
             return $content;
         }
@@ -2432,7 +2868,9 @@ if (!class_exists('MaxiBlocks_API')):
                 'isBlockTheme' => $this->is_block_theme(),
                 'themeName' => $current_theme->get('Name'),
                 'isMaxiBlocksGoInstalled' => $maxiblocks_go_theme->exists(),
-                'themeActivateNonce' => wp_create_nonce('switch-theme_maxiblocks-go'),
+                'themeActivateNonce' => wp_create_nonce(
+                    'switch-theme_maxiblocks-go',
+                ),
             ]);
         }
 
@@ -2446,14 +2884,14 @@ if (!class_exists('MaxiBlocks_API')):
 
             if (!$theme->exists()) {
                 // Get theme information from WordPress.org
-                $api = themes_api('theme_information', array(
-                    'slug' => 'maxiblocks-go'
-                ));
+                $api = themes_api('theme_information', [
+                    'slug' => 'maxiblocks-go',
+                ]);
 
                 if (is_wp_error($api)) {
                     return rest_ensure_response([
                         'success' => false,
-                        'message' => $api->get_error_message()
+                        'message' => $api->get_error_message(),
                     ]);
                 }
 
@@ -2464,7 +2902,7 @@ if (!class_exists('MaxiBlocks_API')):
                 if (is_wp_error($installed)) {
                     return rest_ensure_response([
                         'success' => false,
-                        'message' => $installed->get_error_message()
+                        'message' => $installed->get_error_message(),
                     ]);
                 }
             }
@@ -2475,7 +2913,7 @@ if (!class_exists('MaxiBlocks_API')):
             if (is_wp_error($activated)) {
                 return rest_ensure_response([
                     'success' => false,
-                    'message' => $activated->get_error_message()
+                    'message' => $activated->get_error_message(),
                 ]);
             }
 
@@ -2484,10 +2922,13 @@ if (!class_exists('MaxiBlocks_API')):
 
             return rest_ensure_response([
                 'success' => true,
-                'message' => __('MaxiBlocks Go theme has been installed and activated successfully.', 'maxi-blocks'),
+                'message' => __(
+                    'MaxiBlocks Go theme has been installed and activated successfully.',
+                    'maxi-blocks',
+                ),
                 'isBlockTheme' => true,
                 'themeName' => 'MaxiBlocks Go',
-                'isMaxiBlocksGoInstalled' => true
+                'isMaxiBlocksGoInstalled' => true,
             ]);
         }
 
@@ -2497,18 +2938,20 @@ if (!class_exists('MaxiBlocks_API')):
             require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 
             // Check if plugin is already installed
-            $installed = file_exists(WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php');
+            $installed = file_exists(
+                WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php',
+            );
 
             if (!$installed) {
                 // Get plugin information from WordPress.org
-                $api = plugins_api('plugin_information', array(
-                    'slug' => 'wordpress-importer'
-                ));
+                $api = plugins_api('plugin_information', [
+                    'slug' => 'wordpress-importer',
+                ]);
 
                 if (is_wp_error($api)) {
                     return rest_ensure_response([
                         'success' => false,
-                        'message' => $api->get_error_message()
+                        'message' => $api->get_error_message(),
                     ]);
                 }
 
@@ -2519,25 +2962,30 @@ if (!class_exists('MaxiBlocks_API')):
                 if (is_wp_error($installed)) {
                     return rest_ensure_response([
                         'success' => false,
-                        'message' => $installed->get_error_message()
+                        'message' => $installed->get_error_message(),
                     ]);
                 }
             }
 
             // Activate the plugin
-            $activated = activate_plugin('wordpress-importer/wordpress-importer.php');
+            $activated = activate_plugin(
+                'wordpress-importer/wordpress-importer.php',
+            );
 
             if (is_wp_error($activated)) {
                 return rest_ensure_response([
                     'success' => false,
-                    'message' => $activated->get_error_message()
+                    'message' => $activated->get_error_message(),
                 ]);
             }
 
             return rest_ensure_response([
                 'success' => true,
-                'message' => __('WordPress Importer has been installed and activated successfully.', 'maxi-blocks'),
-                'status' => 'active'
+                'message' => __(
+                    'WordPress Importer has been installed and activated successfully.',
+                    'maxi-blocks',
+                ),
+                'status' => 'active',
             ]);
         }
 
@@ -2553,7 +3001,7 @@ if (!class_exists('MaxiBlocks_API')):
                 return new WP_Error(
                     'no_api_key',
                     'OpenAI API key not configured',
-                    ['status' => 500]
+                    ['status' => 500],
                 );
             }
 
@@ -2568,13 +3016,12 @@ if (!class_exists('MaxiBlocks_API')):
                 $messages = json_decode($messages, true);
             }
 
-
             // Validate message format
             if (!is_array($messages) || empty($messages)) {
                 return new WP_Error(
                     'invalid_messages',
                     'Messages must be a non-empty array',
-                    ['status' => 400]
+                    ['status' => 400],
                 );
             }
 
@@ -2588,17 +3035,29 @@ if (!class_exists('MaxiBlocks_API')):
 
                     switch ($message_type) {
                         case 'SystemMessage':
-                            $converted_messages[] = ['role' => 'system', 'content' => $content];
+                            $converted_messages[] = [
+                                'role' => 'system',
+                                'content' => $content,
+                            ];
                             break;
                         case 'HumanMessage':
-                            $converted_messages[] = ['role' => 'user', 'content' => $content];
+                            $converted_messages[] = [
+                                'role' => 'user',
+                                'content' => $content,
+                            ];
                             break;
                         case 'AIMessage':
-                            $converted_messages[] = ['role' => 'assistant', 'content' => $content];
+                            $converted_messages[] = [
+                                'role' => 'assistant',
+                                'content' => $content,
+                            ];
                             break;
                         default:
                             // Fallback to user role for unknown types
-                            $converted_messages[] = ['role' => 'user', 'content' => $content];
+                            $converted_messages[] = [
+                                'role' => 'user',
+                                'content' => $content,
+                            ];
                     }
                 } else {
                     // Already in OpenAI format, use as-is
@@ -2630,20 +3089,23 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             // Make request to OpenAI
-            $response = wp_remote_post('https://api.openai.com/v1/chat/completions', [
-                'timeout' => 30,
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $openai_api_key,
-                    'Content-Type' => 'application/json',
+            $response = wp_remote_post(
+                'https://api.openai.com/v1/chat/completions',
+                [
+                    'timeout' => 30,
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $openai_api_key,
+                        'Content-Type' => 'application/json',
+                    ],
+                    'body' => wp_json_encode($body),
                 ],
-                'body' => wp_json_encode($body),
-            ]);
+            );
 
             if (is_wp_error($response)) {
                 return new WP_Error(
                     'openai_request_failed',
                     $response->get_error_message(),
-                    ['status' => 500]
+                    ['status' => 500],
                 );
             }
 
@@ -2654,7 +3116,7 @@ if (!class_exists('MaxiBlocks_API')):
                 return new WP_Error(
                     'openai_api_error',
                     'OpenAI API returned error: ' . $response_body,
-                    ['status' => $response_code]
+                    ['status' => $response_code],
                 );
             }
 
@@ -2665,7 +3127,7 @@ if (!class_exists('MaxiBlocks_API')):
                 return new WP_Error(
                     'invalid_response',
                     'Invalid response from OpenAI API',
-                    ['status' => 500]
+                    ['status' => 500],
                 );
             }
 

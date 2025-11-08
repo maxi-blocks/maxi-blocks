@@ -661,6 +661,15 @@ body.maxi-blocks--active .interface-interface-skeleton__content {
 	flex-grow: 1;
 	min-width: 0; /* Allow content to shrink below its content width */
 	overflow-x: auto; /* Enable horizontal scrolling */
+	-webkit-overflow-scrolling: touch; /* Enhanced scrolling on iOS */
+
+	@media (prefers-reduced-motion: no-preference) {
+		scroll-behavior: smooth; /* Smooth scrolling behavior */
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		scroll-behavior: auto; /* Respect user's reduced motion preference */
+	}
 }
 
 body.maxi-blocks--active .edit-post-visual-editor {
@@ -831,6 +840,22 @@ body {
 		button,
 		input {
 			transition: all 0.3s ease;
+		}
+	}
+}
+
+// fix Tablet / Mobile Gutenberg preview
+body.maxi-blocks--active {
+	.block-editor-iframe__scale-container {
+		iframe[name='editor-canvas'] {
+			height: 100% !important;
+			margin: 0 !important;
+			padding: 0 !important;
+			border: none !important;
+			box-shadow: none !important;
+			border-radius: 0 !important;
+			overflow: hidden !important;
+			box-sizing: border-box !important;
 		}
 	}
 }

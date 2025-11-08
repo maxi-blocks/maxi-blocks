@@ -65,11 +65,14 @@ const selectors = {
 		return false;
 	},
 	canBlockRender(state, uniqueID) {
-		if (state)
-			return (
-				state.isPageLoaded ||
-				state.blocksToRender.indexOf(uniqueID) === 0
-			);
+		if (state) {
+			const { isPageLoaded } = state;
+			const blocksToRender = state.blocksToRender || [];
+			const isFirstInQueue = blocksToRender.indexOf(uniqueID) === 0;
+			const canRender = isPageLoaded || isFirstInQueue;
+
+			return canRender;
+		}
 
 		return false;
 	},
@@ -77,6 +80,19 @@ const selectors = {
 		if (state) return state.blocksToRender.length === 0;
 
 		return false;
+	},
+	/**
+	 * Check if all MaxiBlocks are fully rendered and ready for save
+	 * This includes page loading and block rendering completion
+	 */
+	getAllBlocksFullyRendered(state) {
+		if (!state) return false;
+
+		// Check if page is loaded and all blocks have been rendered
+		const { isPageLoaded } = state;
+		const allBlocksRendered = state.blocksToRender.length === 0;
+
+		return isPageLoaded && allBlocksRendered;
 	},
 	getIsPageLoaded(state) {
 		if (state) return state.isPageLoaded;

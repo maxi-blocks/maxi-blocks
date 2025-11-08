@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 2.1.4
+Stable tag: 2.1.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,27 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 5 Nov 2025_
+MaxiBlocks v2.1.6
+* Update: Rebranded Pro features to Cloud, providing clearer terminology and improved user understanding of cloud-based functionality.
+* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
+* Update: Introduced option to hide native Gutenberg responsive preview controls, allowing for a cleaner and more streamlined editing interface.
+* Fix: Resolved Interaction Builder relations disappearing after duplicating blocks and removing the original, ensuring a consistent editing experience and maintaining interaction configurations.
+* Fix: Corrected copy-paste functionality for blocks and page duplication, ensuring all block settings and styles are properly transferred.
+* Fix: Enhanced template parts rendering and editing experience in the Site Editing Experience editor, ensuring proper functionality and consistent behaviour.
+* Fix: Addressed taxonomy styling issues on the frontend when using the All Archive template, ensuring custom taxonomy pages display correctly with proper style inheritance.
+* Fix: Resolved custom colours in Style Cards breaking frontend styles in specific scenarios, maintaining consistent visual presentation across all pages.
+
+_Updates 13 Oct 2025_
+MaxiBlocks v2.1.5
+* Update: Implemented comprehensive speed optimizations across both backend and frontend operations, resulting in faster load times and improved overall plugin performance.
+* Update: Updated npm packages and dependencies to latest versions for enhanced security measures and improved stability across all plugin features.
+* Update: Reorganized Link settings into a dedicated tab within the Editor Sidebar for improved user experience and better settings organization.
+* Update: Enhanced Block Toolbar layout by re-arranging and optimizing setting controls for more intuitive access and streamlined editing workflow.
+* Fix: Resolved Dynamic Content rendering issues when displaying Advanced Custom Fields data, ensuring proper field values are shown on both backend and frontend.
+* Fix: Corrected border line properties resetting to default values when specific styling configurations were applied, maintaining consistent border appearance.
+* Fix: Addressed compatibility issues with certain clip-path CSS options that were causing block rendering failures.
+
 _Updates 15 Sep 2025_
 MaxiBlocks v2.1.4
 * Update: Enhanced Pro authentication system by implementing new server middleware for improved security and reliability.
@@ -180,21 +201,6 @@ MaxiBlocks v2.1.4
 * Fix: Restored MaxiBlocks toolbar functionality in synced blocks editor, ensuring consistent editing experience across all block types and maintaining proper toolbar accessibility.
 * Fix: Resolved toolbar conflicts by returning native Gutenberg toolbar for standard WordPress blocks nested inside Maxi blocks, preventing interface inconsistencies and ensuring proper block functionality.
 * Security: Fixed Broken Access Control vulnerability in MaxiBlocks plugin settings affecting Contributor-level users and above. Thanks to Abu Hurayra for the responsible disclosure.
-
-_Updates 28 Jul 2025_
-MaxiBlocks v2.1.3
-* Update: Implemented enhanced authentication methods for marketplace integrations, providing improved access to Pro content.
-* Fix: Enhanced Advanced and Custom CSS settings to support special symbols and complex selectors, enabling more sophisticated styling capabilities and resolving compatibility issues with advanced CSS syntax.
-* Fix: Corrected responsive breakpoint width calculations for Site Editor when switching between template parts, ensuring consistent layout rendering and proper viewport behaviour across different editing contexts.
-* Fix: Resolved synchronization issues with synced pattern styles in Site Editor, ensuring that pattern modifications are properly reflected across all instances and maintaining design consistency throughout the editing experience.
-
-_Updates 30 Jun 2025_
-MaxiBlocks v2.1.2
-* Fix: Enhanced block tones and Cloud button functionality when 'Show template' is enabled in the Editor, ensuring consistent visual presentation and improved user experience.
-* Fix: Restored custom and advanced CSS editor styles and behaviour, resolving styling inconsistencies and ensuring proper functionality.
-* Fix: Improved custom colour removal process from background settings, providing more reliable colour management.
-* Fix: Corrected Blog Home template compatibility issues for MaxiBlocks Go theme, ensuring proper layout rendering and template functionality.
-* Fix: Resolved Slider block compatibility issues with Interaction Builder when both features are utilised on the same page, eliminating conflicts and ensuring smooth operation of interactive elements.
 
 == Upgrade Notice ==
 

@@ -325,7 +325,7 @@ class MaxiBlocks_QuickStart
 					alt="<?php echo esc_attr('MaxiBlocks Logo'); ?>">
 				<div class="maxi-dashboard_header-actions">
 					<a href="https://maxiblocks.com/pricing/" class="maxi-dashboard_get-cloud-link" target="_blank">
-						<?php echo esc_html__('Get cloud', 'maxi-blocks'); ?>
+						<?php echo esc_html__('Get Cloud', 'maxi-blocks'); ?>
 					</a>
 					<div class="maxi-dashboard_header-icons">
 						<a href="https://maxiblocks.com/go/docs" class="maxi-dashboard_header-icon" target="_blank">
@@ -837,7 +837,7 @@ class MaxiBlocks_QuickStart
                 $network_license_info = $dashboard->get_network_license_info();
                 if ($network_license_info) {
                     $current_license_status = 'Active ✓ (Network)';
-                    $current_user_name = isset($network_license_info['user_name']) ? ($network_license_info['user_name'] === 'Maxiblocks' ? 'MaxiBlocks' : $network_license_info['user_name']) : 'Network Pro User';
+                    $current_user_name = isset($network_license_info['user_name']) ? ($network_license_info['user_name'] === 'Maxiblocks' ? 'MaxiBlocks' : $network_license_info['user_name']) : 'Network Cloud User';
                     $is_active = true;
                     $is_network_license = true;
                 }
@@ -854,7 +854,7 @@ class MaxiBlocks_QuickStart
                     foreach ($license_array as $key => $license) {
                         if (strpos($key, 'code_') === 0 && isset($license['status']) && $license['status'] === 'yes') {
                             $current_license_status = 'Active ✓';
-                            $current_user_name = isset($license['name']) ? ($license['name'] === 'Maxiblocks' ? 'MaxiBlocks' : $license['name']) : 'Pro User';
+                            $current_user_name = isset($license['name']) ? ($license['name'] === 'Maxiblocks' ? 'MaxiBlocks' : $license['name']) : 'Cloud User';
                             $is_active = true;
                             break;
                         }
@@ -888,14 +888,14 @@ class MaxiBlocks_QuickStart
         }
         ?>
 
-		<h1><?php esc_html_e('Pro cloud access', 'maxi-blocks'); ?></h1>
+		<h1><?php esc_html_e('Cloud access', 'maxi-blocks'); ?></h1>
 		<?php if ($is_active): ?>
 			<p class="description">
-				<?php esc_html_e('Your Pro cloud access is active and ready to use. You can continue to the next step.', 'maxi-blocks'); ?>
+				<?php esc_html_e('Your Cloud access is active and ready to use. You can continue to the next step.', 'maxi-blocks'); ?>
 			</p>
 		<?php else: ?>
 			<p class="description">
-				<?php esc_html_e('Unlock premium items with your Pro license. This step is optional - you can always activate your license later.', 'maxi-blocks'); ?>
+				<?php esc_html_e('Unlock premium items with your Cloud license. This step is optional - you can always activate your license later.', 'maxi-blocks'); ?>
 			</p>
 		<?php endif; ?>
 
@@ -918,7 +918,7 @@ class MaxiBlocks_QuickStart
 				<!-- Show deactivate button (only for site-level licenses) -->
 				<?php if (!$is_network_license): ?>
 					<div class="maxi-license-actions">
-						<button type="button" id="maxi-license-logout" class="button"><?php esc_html_e('Deactivate Pro', 'maxi-blocks'); ?></button>
+						<button type="button" id="maxi-license-logout" class="button"><?php esc_html_e('Deactivate Cloud', 'maxi-blocks'); ?></button>
 					</div>
 				<?php endif; ?>
 			<?php else: ?>
@@ -930,13 +930,13 @@ class MaxiBlocks_QuickStart
 				<!-- Show authentication input form -->
 				<div class="maxi-license-auth-form">
 					<div class="maxi-license-input-group">
-						<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="<?php esc_attr_e('Pro user email / purchase code / license key', 'maxi-blocks'); ?>" />
+						<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="<?php esc_attr_e('Cloud user email / purchase code / license key', 'maxi-blocks'); ?>" />
 						<p class="maxi-license-help-text"><?php printf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>'); ?></p>
 						<div id="maxi-license-validation-message" class="maxi-license-message" style="display: none;"></div>
 					</div>
 
 					<div class="maxi-license-actions">
-						<button type="button" id="maxi-validate-license" class="button button-primary"><?php esc_html_e('Activate Pro', 'maxi-blocks'); ?></button>
+						<button type="button" id="maxi-validate-license" class="button button-primary"><?php esc_html_e('Activate Cloud', 'maxi-blocks'); ?></button>
 					</div>
 
 				</div>

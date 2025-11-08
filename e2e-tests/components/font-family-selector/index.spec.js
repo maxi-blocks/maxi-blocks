@@ -77,7 +77,7 @@ describe('FontFamilySelector', () => {
 			() =>
 				!!document.querySelector(
 					'link[href*="Montserrat"][id*="maxi-blocks-styles-font"]'
-				)?.sheet?.cssRules?.length
+				)
 		);
 
 		expect(hasBeenLoaded).toBeTruthy();

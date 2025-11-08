@@ -672,13 +672,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
             echo '</h4>';
 
-            // Add Get cloud link and icons
+            // Add Get Cloud link and icons
             echo '<div class="maxi-dashboard_header-actions">';
 
-            // Only show "Get cloud" link if Pro is not active
+            // Only show "Get Cloud" link if Pro is not active
             if (!$this->is_pro_active()) {
                 echo '<a href="https://maxiblocks.com/pricing/" target="_blank" class="maxi-dashboard_get-cloud-link">' .
-                    esc_html__('Get cloud', 'maxi-blocks') .
+                    esc_html__('Get Cloud', 'maxi-blocks') .
                     '</a>';
             }
 
@@ -766,13 +766,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '</span>';
             echo '</h4>';
 
-            // Add Get cloud link and icons (same as regular dashboard)
+            // Add Get Cloud link and icons (same as regular dashboard)
             echo '<div class="maxi-dashboard_header-actions">';
 
-            // Only show "Get cloud" link if Pro is not active
+            // Only show "Get Cloud" link if Pro is not active
             if (!$is_network_active) {
                 echo '<a href="https://maxiblocks.com/pricing/" target="_blank" class="maxi-dashboard_get-cloud-link">' .
-                    esc_html__('Get cloud', 'maxi-blocks') .
+                    esc_html__('Get Cloud', 'maxi-blocks') .
                     '</a>';
             }
 
@@ -830,29 +830,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<div class="maxi-dashboard_main-content-settings">';
 
             if ($is_network_active) {
-                $content .=
-                    '<h1>' .
-                    __('Network Pro license active', 'maxi-blocks') .
-                    '</h1>';
-                $content .=
-                    '<p>' .
-                    __(
-                        'Pro access is active network-wide. All sites in the network have access to Pro features.',
-                        'maxi-blocks',
-                    ) .
-                    '</p>';
+                $content .= '<h1>' . __('Network Cloud license active', 'maxi-blocks') . '</h1>';
+                $content .= '<p>' . __('Cloud access is active network-wide. All sites in the network have access to Cloud features.', 'maxi-blocks') . '</p>';
             } else {
-                $content .=
-                    '<h1>' .
-                    __('Activate network Pro license', 'maxi-blocks') .
-                    '</h1>';
-                $content .=
-                    '<p>' .
-                    __(
-                        'Enter a purchase code to activate Pro access for the entire network.',
-                        'maxi-blocks',
-                    ) .
-                    '</p>';
+                $content .= '<h1>' . __('Activate network Cloud license', 'maxi-blocks') . '</h1>';
+                $content .= '<p>' . __('Enter a purchase code to activate Cloud access for the entire network.', 'maxi-blocks') . '</p>';
             }
 
             $content .= '</div>';
@@ -871,36 +853,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             if ($is_network_active) {
                 // Show active status
                 $content .= '<div class="maxi-license-status-display">';
-                $content .=
-                    '<h4>' .
-                    __('Status:', 'maxi-blocks') .
-                    ' <span id="current-network-license-status" class="maxi-license-active">' .
-                    esc_html($current_license_status) .
-                    '</span></h4>';
-                $content .=
-                    '<h4>' .
-                    __('Licensed to:', 'maxi-blocks') .
-                    ' <span id="current-network-license-user">' .
-                    esc_html($current_user_name) .
-                    '</span></h4>';
-                $content .=
-                    '<h4>' .
-                    __('Main domain:', 'maxi-blocks') .
-                    ' <span id="current-network-license-domain">' .
-                    esc_html($network_license_info['domain']) .
-                    '</span></h4>';
-                $content .=
-                    '<h4>' .
-                    __('License type:', 'maxi-blocks') .
-                    ' <span class="maxi-license-network">Network License</span></h4>';
+                $content .= '<h4>' . __('Status:', 'maxi-blocks') . ' <span id="current-network-license-status" class="maxi-license-active">' . esc_html($current_license_status) . '</span></h4>';
+                $content .= '<h4>' . __('Licensed to:', 'maxi-blocks') . ' <span id="current-network-license-user">' . esc_html($current_user_name) . '</span></h4>';
+                $content .= '<h4>' . __('Main domain:', 'maxi-blocks') . ' <span id="current-network-license-domain">' . esc_html($network_license_info['domain']) . '</span></h4>';
+                $content .= '<h4>' . __('License type:', 'maxi-blocks') . ' <span class="maxi-license-network">Network Cloud License</span></h4>';
                 $content .= '</div>';
 
                 // Show deactivate button
                 $content .= '<div class="maxi-license-actions">';
-                $content .=
-                    '<button type="button" id="maxi-network-license-logout" class="button button-primary">' .
-                    __('Deactivate network license', 'maxi-blocks') .
-                    '</button>';
+                $content .= '<button type="button" id="maxi-network-license-logout" class="button button-primary">' . __('Deactivate network Cloud license', 'maxi-blocks') . '</button>';
                 $content .= '</div>';
 
                 // Show network behavior explanation
@@ -910,27 +871,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     __('How network licensing works:', 'maxi-blocks') .
                     '</h4>';
                 $content .= '<ul>';
-                $content .=
-                    '<li>' .
-                    __(
-                        'All sites in the network have Pro access automatically',
-                        'maxi-blocks',
-                    ) .
-                    '</li>';
-                $content .=
-                    '<li>' .
-                    __(
-                        'Individual site license tabs will show network license status',
-                        'maxi-blocks',
-                    ) .
-                    '</li>';
-                $content .=
-                    '<li>' .
-                    __(
-                        'Purchase codes cannot be activated on individual sites when network license is active',
-                        'maxi-blocks',
-                    ) .
-                    '</li>';
+                $content .= '<li>' . __('All sites in the network have Cloud access automatically', 'maxi-blocks') . '</li>';
+                $content .= '<li>' . __('Individual site license tabs will show network license status', 'maxi-blocks') . '</li>';
+                $content .= '<li>' . __('Purchase codes cannot be activated on individual sites when network license is active', 'maxi-blocks') . '</li>';
                 $content .= '</ul>';
                 $content .= '</div>';
             } else {
@@ -947,31 +890,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 // Show authentication input form
                 $content .= '<div class="maxi-license-auth-form">';
                 $content .= '<div class="maxi-license-input-group">';
-                $content .=
-                    '<input type="text" id="maxi-network-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' .
-                    esc_attr__('Network purchase code', 'maxi-blocks') .
-                    '" />';
-                $content .=
-                    '<p class="maxi-license-help-text">' .
-                    __(
-                        'Enter a purchase code to activate Pro access for the entire network.',
-                        'maxi-blocks',
-                    ) .
-                    '</p>';
-                $content .=
-                    '<p class="maxi-license-help-text">' .
-                    __(
-                        'Note: Network licensing only supports purchase codes from marketplaces. MaxiBlocks email accounts and MaxiBlocks license keys must be activated on each sub-site separately.',
-                        'maxi-blocks',
-                    ) .
-                    '</p>';
+                $content .= '<input type="text" id="maxi-network-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Network purchase code', 'maxi-blocks') . '" />';
+                $content .= '<p class="maxi-license-help-text">' . __('Enter a purchase code to activate Cloud access for the entire network.', 'maxi-blocks') . '</p>';
+                $content .= '<p class="maxi-license-help-text">' . __('Note: Network licensing only supports purchase codes from marketplaces. MaxiBlocks email accounts and MaxiBlocks license keys must be activated on each sub-site separately.', 'maxi-blocks') . '</p>';
                 $content .= '</div>';
 
                 $content .= '<div class="maxi-license-actions">';
-                $content .=
-                    '<button type="button" id="maxi-validate-network-license" class="button button-primary">' .
-                    __('Activate network license', 'maxi-blocks') .
-                    '</button>';
+                $content .= '<button type="button" id="maxi-validate-network-license" class="button button-primary">' . __('Activate network Cloud license', 'maxi-blocks') . '</button>';
                 $content .= '</div>';
 
                 $content .=
@@ -986,27 +911,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     __('Network licensing benefits:', 'maxi-blocks') .
                     '</h4>';
                 $content .= '<ul>';
-                $content .=
-                    '<li>' .
-                    __(
-                        'One purchase code activates Pro for all sites in the network',
-                        'maxi-blocks',
-                    ) .
-                    '</li>';
-                $content .=
-                    '<li>' .
-                    __(
-                        'No need to activate individual sites separately',
-                        'maxi-blocks',
-                    ) .
-                    '</li>';
-                $content .=
-                    '<li>' .
-                    __(
-                        'Centralized license management from the network admin',
-                        'maxi-blocks',
-                    ) .
-                    '</li>';
+                $content .= '<li>' . __('One purchase code activates Cloud for all sites in the network', 'maxi-blocks') . '</li>';
+                $content .= '<li>' . __('No need to activate individual sites separately', 'maxi-blocks') . '</li>';
+                $content .= '<li>' . __('Centralized license management from the network admin', 'maxi-blocks') . '</li>';
                 $content .= '</ul>';
                 $content .= '</div>';
             }
@@ -1385,6 +1292,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 __('Hide tooltips on mouse-hover.', 'maxi-blocks') .
                 '</p>';
             $content .= $this->generate_setting($description, 'hide_tooltips');
+
+            $description =
+                '<h4>' . __('Hide resizable handles in Site Editor', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Hide resizable handles in Site Editor for templates part editor and patterns editor.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting($description, 'hide_fse_resizable_handles');
+
+            $description =
+                '<h4>' . __('Hide Gutenberg native responsive preview', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Hide the native Gutenberg responsive preview dropdown in the editor.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting($description, 'hide_gutenberg_responsive_preview');
 
             $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
             $this->add_hidden_api_fields();
@@ -2338,6 +2261,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'remove_local_fonts' => $args,
                 'allow_svg_json_uploads' => $args,
                 'hide_tooltips' => $args,
+                'hide_fse_resizable_handles' => $args_true,
+                'hide_gutenberg_responsive_preview' => $args_true,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,
@@ -2581,11 +2506,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                             $license['status'] === 'yes'
                         ) {
                             $current_license_status = 'Active ✓';
-                            $current_user_name = isset($license['name'])
-                                ? ($license['name'] === 'Maxiblocks'
-                                    ? 'MaxiBlocks'
-                                    : $license['name'])
-                                : 'Pro User';
+                            $current_user_name = isset($license['name']) ? ($license['name'] === 'Maxiblocks' ? 'MaxiBlocks' : $license['name']) : 'Cloud User';
                             $is_active = true;
                             $license_source = 'site_purchase_code';
                             break;
@@ -2666,45 +2587,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if ($is_active) {
                 if ($license_source === 'network') {
-                    $content .=
-                        '<h1>' .
-                        __(
-                            'Pro access active via network license',
-                            'maxi-blocks',
-                        ) .
-                        '</h1>';
-                    $content .=
-                        '<p>' .
-                        __(
-                            'Your Pro cloud access is active through a network-wide license.',
-                            'maxi-blocks',
-                        ) .
-                        '</p>';
+                    $content .= '<h1>' . __('Cloud access active via network license', 'maxi-blocks') . '</h1>';
+                    $content .= '<p>' . __('Your Cloud access is active through a network-wide license.', 'maxi-blocks') . '</p>';
                 } else {
-                    $content .=
-                        '<h1>' .
-                        __('Pro cloud access active', 'maxi-blocks') .
-                        '</h1>';
-                    $content .=
-                        '<p>' .
-                        __(
-                            'Your Pro cloud access is active and ready to use.',
-                            'maxi-blocks',
-                        ) .
-                        '</p>';
+                    $content .= '<h1>' . __('Cloud access active', 'maxi-blocks') . '</h1>';
+                    $content .= '<p>' . __('Your Cloud access is active and ready to use.', 'maxi-blocks') . '</p>';
                 }
             } else {
-                $content .=
-                    '<h1>' .
-                    __('Activate Pro cloud access', 'maxi-blocks') .
-                    '</h1>';
-                $content .=
-                    '<p>' .
-                    __(
-                        'Enter your email or purchase code to access premium items',
-                        'maxi-blocks',
-                    ) .
-                    '</p>';
+                $content .= '<h1>' . __('Activate Cloud access', 'maxi-blocks') . '</h1>';
+                $content .= '<p>' . __('Enter your email or purchase code to access premium items', 'maxi-blocks') . '</p>';
             }
 
             $content .= '</div>';
@@ -2833,10 +2724,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 // Show deactivate button (only for site-level licenses)
                 if ($license_source !== 'network') {
                     $content .= '<div class="maxi-license-actions">';
-                    $content .=
-                        '<button type="button" id="maxi-license-logout" class="button button-primary">' .
-                        __('Deactivate Pro', 'maxi-blocks') .
-                        '</button>';
+                    $content .= '<button type="button" id="maxi-license-logout" class="button button-primary">' . __('Deactivate Cloud', 'maxi-blocks') . '</button>';
                     $content .= '</div>';
                 } else {
                     // Show network license info
@@ -2921,34 +2809,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     }
 
                     // Still allow email authentication for user-specific accounts
-                    $content .=
-                        '<div class="maxi-license-auth-form maxi-email-only">';
-                    $content .=
-                        '<h4>' .
-                        __('Individual email authentication', 'maxi-blocks') .
-                        '</h4>';
-                    $content .=
-                        '<p>' .
-                        __(
-                            'You can still authenticate with your individual Pro email account for user-specific features.',
-                            'maxi-blocks',
-                        ) .
-                        '</p>';
+                    $content .= '<div class="maxi-license-auth-form maxi-email-only">';
+                    $content .= '<h4>' . __('Individual email authentication', 'maxi-blocks') . '</h4>';
+                    $content .= '<p>' . __('You can still authenticate with your individual Cloud email account for user-specific features.', 'maxi-blocks') . '</p>';
                     $content .= '<div class="maxi-license-input-group">';
-                    $content .=
-                        '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' .
-                        esc_attr__('Pro user email address', 'maxi-blocks') .
-                        '" />';
-                    $content .=
-                        '<p class="maxi-license-help-text">' .
-                        sprintf(
-                            __(
-                                'Enter your Pro user email. Find your account details at %s',
-                                'maxi-blocks',
-                            ),
-                            '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>',
-                        ) .
-                        '</p>';
+                    $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Cloud user email address', 'maxi-blocks') . '" />';
+                    $content .= '<p class="maxi-license-help-text">' . sprintf(__('Enter your Cloud user email. Find your account details at %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>') . '</p>';
                     $content .= '</div>';
                     $content .= '<div class="maxi-license-actions">';
                     $content .=
@@ -2964,23 +2830,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     // No network license - show full activation form
                     $content .= '<div class="maxi-license-auth-form">';
                     $content .= '<div class="maxi-license-input-group">';
-                    $content .=
-                        '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' .
-                        esc_attr__(
-                            'Pro user email / purchase code / license key',
-                            'maxi-blocks',
-                        ) .
-                        '" />';
-                    $content .=
-                        '<p class="maxi-license-help-text">' .
-                        sprintf(
-                            __(
-                                'Find your code or key in your account, inbox or %s',
-                                'maxi-blocks',
-                            ),
-                            '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>',
-                        ) .
-                        '</p>';
+                    $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Cloud user email / purchase code / license key', 'maxi-blocks') . '" />';
+                    $content .= '<p class="maxi-license-help-text">' . sprintf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>') . '</p>';
 
                     // Add multisite notice for MaxiBlocks-specific license types only
                     if (is_multisite()) {
@@ -2999,10 +2850,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $content .= '</div>';
 
                     $content .= '<div class="maxi-license-actions">';
-                    $content .=
-                        '<button type="button" id="maxi-validate-license" class="button button-primary">' .
-                        __('Activate Pro', 'maxi-blocks') .
-                        '</button>';
+                    $content .= '<button type="button" id="maxi-validate-license" class="button button-primary">' . __('Activate Cloud', 'maxi-blocks') . '</button>';
                     $content .= '</div>';
 
                     $content .=
@@ -4142,9 +3990,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         ) {
                             $is_authenticated = true;
                             $status = 'Active ✓';
-                            $user_name = isset($license['name'])
-                                ? $license['name']
-                                : 'Pro User';
+                            $user_name = isset($license['name']) ? $license['name'] : 'Cloud User';
                             break;
                         }
                     }

@@ -768,6 +768,23 @@ export async function authConnect(withRedirect = false, email = false) {
 		// Check if we have existing authentication data stored locally
 		const existingAuth = checkExistingAuthentication();
 		if (existingAuth) {
+			// Even if we have local auth data, verify with server to ensure sync
+			const emailInfo = getProInfoByEmail();
+			if (emailInfo && emailInfo.email) {
+				// Verify with server and update local state if needed
+				const authResult = await checkEmailAuthenticationStatus(
+					emailInfo.email
+				);
+				if (authResult && authResult.success && authResult.user_name) {
+					// Update local storage with current user name from server
+					processLocalActivation(
+						emailInfo.email,
+						authResult.user_name,
+						'yes',
+						emailInfo.key
+					);
+				}
+			}
 			return true;
 		}
 		// No existing auth and no email provided
@@ -870,7 +887,7 @@ const deactivatePurchaseCode = async (
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.pluginVersion || '';
+	const pluginVersion = licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	const requestBody = {
@@ -930,7 +947,7 @@ const migratePurchaseCodeDomain = async (
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.pluginVersion || '';
+	const pluginVersion = licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {

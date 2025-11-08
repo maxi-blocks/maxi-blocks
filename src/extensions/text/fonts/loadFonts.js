@@ -7,13 +7,8 @@ import { dispatch, select } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty, uniq } from 'lodash';
-import {
-	fontUrlCache,
-	getStorageCache,
-	setStorageCache,
-	cleanUrl,
-} from './fontCacheUtils';
-import { buildFontUrl, isCacheValid } from './loadFontUtils';
+import { cleanUrl } from './fontCacheUtils';
+import { buildFontUrl } from './loadFontUtils';
 
 const buildVariantKey = (weight, style) => {
 	const normalizedWeight = weight?.toString() || '400';
@@ -57,13 +52,13 @@ const createFontFaceCss = (fontName, weight, style, fileUrl) => {
 	const fontFormat = guessFontFormat(fileUrl);
 
 	return (
-		`@font-face {\n` +
+		'@font-face {\n' +
 		`\tfont-family: '${sanitizedName}';\n` +
 		`\tsrc: url('${fileUrl}') format('${fontFormat}');\n` +
 		`\tfont-weight: ${fontWeight};\n` +
 		`\tfont-style: ${fontStyle};\n` +
-		`\tfont-display: swap;\n` +
-		`}\n`
+		'\tfont-display: swap;\n' +
+		'}\n'
 	);
 };
 
@@ -80,77 +75,16 @@ const encodeCss = css => {
 };
 
 /**
- * Get the font URL from cache or build it and save it to cache
+ * Get the font URL - simplified version without caching
  * @param {string} fontName - The font name
  * @param {Object} fontData - The font data
  * @returns {Promise<string>} The font URL
  */
 export const getFontUrl = async (fontName, fontData = {}) => {
 	try {
-		const requestKey = `${fontName}-${JSON.stringify(fontData)}`;
-
-		const fontRecord = select('maxiBlocks/text').getFont(fontName);
-
-		if (fontRecord?.source === 'custom') {
-			const rawWeight = Array.isArray(fontData.weight)
-				? fontData.weight[0]
-				: (fontData.weight || '400').toString().split(',')[0];
-			const rawStyle = Array.isArray(fontData.style)
-				? fontData.style[0]
-				: (fontData.style || 'normal').toString().split(',')[0];
-
-			const variantKey = buildVariantKey(rawWeight, rawStyle);
-			const fallbackKey = buildVariantKey('400', rawStyle);
-			const fileUrl =
-				fontRecord?.files?.[variantKey] ??
-				fontRecord?.files?.[fallbackKey] ??
-				fontRecord?.files?.['400'];
-
-			if (!fileUrl) {
-				throw new Error(
-					`Missing custom font file for ${fontName} (${variantKey})`
-				);
-			}
-
-			const css = createFontFaceCss(
-				fontName,
-				rawWeight,
-				rawStyle,
-				fileUrl
-			);
-			const encodedCss = encodeCss(css);
-			const dataUrl = `data:text/css;base64,${encodedCss}`;
-
-			fontUrlCache.set(requestKey, dataUrl);
-			setStorageCache(requestKey, dataUrl);
-
-			return dataUrl;
-		}
-
-		// Check cache first
-		const cached =
-			fontUrlCache.get(requestKey) || getStorageCache(requestKey);
-		if (cached && (await isCacheValid(cached))) {
-			return cached;
-		}
-
-		// If cache exists but is invalid, clear it
-		if (cached) {
-			fontUrlCache.delete(requestKey);
-			localStorage.removeItem(`maxi_font_${requestKey}`);
-		}
-
-		// Build and validate the URL
+		// Build the URL directly without caching
 		const fontUrl = await buildFontUrl(fontName, fontData);
-
-		// Validate the URL before returning and caching
-		if (await isCacheValid(fontUrl)) {
-			fontUrlCache.set(requestKey, fontUrl);
-			setStorageCache(requestKey, fontUrl);
-			return fontUrl;
-		}
-
-		throw new Error(`Invalid font URL: ${fontUrl}`);
+		return fontUrl;
 	} catch (error) {
 		console.error('Error getting font URL:', error);
 		throw error;

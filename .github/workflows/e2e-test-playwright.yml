@@ -1,0 +1,58 @@
+name: Playwright Tests
+
+on:
+    pull_request:
+        branches: [master]
+
+jobs:
+    e2e-js-playwright:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 2
+            - name: Cache node modules
+              uses: actions/cache@v4
+              with:
+                  # npm cache files are stored in `~/.npm` on Linux/macOS
+                  # to clear the cache, change `v1.3` for any other random number, github will destroy
+                  # the old cache within 7 days 👌
+                  # Note: don't change the `actions/setup-node@v1` or any other dependency version by error
+                  path: ~/.npm
+                  key: ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-v1.3-
+                      ${{ runner.os }}-
+              env:
+                  cache-name: cache-node-modules
+            - name: Use Node.js 18.x
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18.x
+            - name: Install dependencies
+              run: npm install --legacy-peer-deps
+            - name: Install Playwright browsers
+              run: npx playwright install --with-deps
+            - name: Create .env file
+              run: |
+                  touch .env
+                  echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
+                  echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
+            - name: Build
+              run: npm run build
+            - name: reset package-lock.json
+              run: git checkout package-lock.json
+            - name: Install WordPress
+              run: |
+                  chmod -R 767 ./
+                  npm run wp-env start
+            - name: Running the tests
+              run: npm run test:playwright
+            - name: Upload Playwright Report
+              uses: actions/upload-artifact@v4
+              if: failure()
+              with:
+                  name: playwright-report
+                  path: playwright-report/
+                  retention-days: 30

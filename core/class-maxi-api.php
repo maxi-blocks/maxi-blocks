@@ -777,6 +777,8 @@ if (!class_exists('MaxiBlocks_API')):
                     'is_core' => $is_core,
                 ],
                 'hide_tooltips' => get_option('hide_tooltips'),
+                'hide_fse_resizable_handles' => get_option('hide_fse_resizable_handles'),
+                'hide_gutenberg_responsive_preview' => get_option('hide_gutenberg_responsive_preview'),
                 'placeholder_url' =>
                     MAXI_PLUGIN_URL_PATH . 'img/patterns-placeholder.jpeg',
                 'show_indicators' => get_option('maxi_show_indicators'),
@@ -1980,18 +1982,38 @@ if (!class_exists('MaxiBlocks_API')):
                     'wp_template_part',
                 );
 
-                // Check if it exists in database by simple slug
+                // Check if it exists in database by simple slug (check all statuses, not just publish)
                 $existing_post = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT ID FROM {$wpdb->posts}
                         WHERE post_type = 'wp_template_part'
                         AND post_name = %s
-                        AND post_status = 'publish'",
-                        $entity_slug,
-                    ),
+                        AND post_status != 'trash'",
+                        $entity_slug
+                    )
                 );
 
-                $template_content = [
+                // Clean up any duplicate posts with incremented slugs (e.g., header-2, footer-2)
+                // This happens when previous imports created duplicates due to slug conflicts
+                if (!$existing_post) {
+                    $duplicate_posts = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT ID FROM {$wpdb->posts}
+                            WHERE post_type = 'wp_template_part'
+                            AND post_name LIKE %s
+                            AND post_name != %s
+                            AND post_status != 'trash'",
+                            $entity_slug . '-%',
+                            $entity_slug
+                        )
+                    );
+
+                    foreach ($duplicate_posts as $duplicate) {
+                        wp_delete_post($duplicate->ID, true);
+                    }
+                }
+
+                $template_content = array(
                     'post_name' => $entity_slug,
                     'post_title' => $entity_title,
                     'post_content' => wp_slash($content),
@@ -2158,18 +2180,38 @@ if (!class_exists('MaxiBlocks_API')):
                     'wp_template',
                 );
 
-                // Check if it exists in database by simple slug
+                // Check if it exists in database by simple slug (check all statuses, not just publish)
                 $existing_post = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT ID FROM {$wpdb->posts}
                         WHERE post_type = 'wp_template'
                         AND post_name = %s
-                        AND post_status = 'publish'",
-                        $entity_slug,
-                    ),
+                        AND post_status != 'trash'",
+                        $entity_slug
+                    )
                 );
 
-                $template_content = [
+                // Clean up any duplicate posts with incremented slugs (e.g., home-2, archive-2)
+                // This happens when previous imports created duplicates due to slug conflicts
+                if (!$existing_post) {
+                    $duplicate_posts = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT ID FROM {$wpdb->posts}
+                            WHERE post_type = 'wp_template'
+                            AND post_name LIKE %s
+                            AND post_name != %s
+                            AND post_status != 'trash'",
+                            $entity_slug . '-%',
+                            $entity_slug
+                        )
+                    );
+
+                    foreach ($duplicate_posts as $duplicate) {
+                        wp_delete_post($duplicate->ID, true);
+                    }
+                }
+
+                $template_content = array(
                     'post_name' => $entity_slug,
                     'post_title' => $entity_title,
                     'post_content' => wp_slash($content),
@@ -2286,14 +2328,15 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }
 
-            require_once WP_PLUGIN_DIR .
-                '/wordpress-importer/class-wp-import.php';
-            require_once WP_PLUGIN_DIR .
-                '/wordpress-importer/wordpress-importer.php';
-            require_once WP_PLUGIN_DIR .
-                '/wordpress-importer/parsers/class-wxr-parser.php';
-            require_once WP_PLUGIN_DIR .
-                '/wordpress-importer/parsers/class-wxr-parser-simplexml.php';
+            // Load the php-toolkit which includes WPURL and other required classes
+            if (!class_exists('WordPress\XML\XMLProcessor')) {
+                require_once WP_PLUGIN_DIR . '/wordpress-importer/php-toolkit/load.php';
+            }
+
+            require_once WP_PLUGIN_DIR . '/wordpress-importer/class-wp-import.php';
+            require_once WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php';
+            require_once WP_PLUGIN_DIR . '/wordpress-importer/parsers/class-wxr-parser.php';
+            require_once WP_PLUGIN_DIR . '/wordpress-importer/parsers/class-wxr-parser-simplexml.php';
 
             // Run the importer
             try {
@@ -2523,10 +2566,6 @@ if (!class_exists('MaxiBlocks_API')):
             $results = [];
             global $wpdb;
 
-            // Get current theme
-            $current_theme = wp_get_theme();
-            $theme_slug = $current_theme->get_stylesheet();
-
             foreach ($pattern_data as $pattern_name => $pattern_data) {
                 // Parse the pattern data
                 $content = $pattern_data['content'] ?? '';
@@ -2544,18 +2583,38 @@ if (!class_exists('MaxiBlocks_API')):
                 $wp_pattern_sync_status =
                     $pattern_data['wpPatternSyncStatus'] ?? '';
 
-                // Check if pattern exists in database
+                // Check if pattern exists in database (check all statuses, not just publish)
                 $existing_post = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT ID FROM {$wpdb->posts}
                         WHERE post_type = 'wp_block'
                         AND post_name = %s
-                        AND post_status = 'publish'",
-                        $entity_slug,
-                    ),
+                        AND post_status != 'trash'",
+                        $entity_slug
+                    )
                 );
 
-                $pattern_content = [
+                // Clean up any duplicate posts with incremented slugs
+                // This happens when previous imports created duplicates due to slug conflicts
+                if (!$existing_post) {
+                    $duplicate_posts = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT ID FROM {$wpdb->posts}
+                            WHERE post_type = 'wp_block'
+                            AND post_name LIKE %s
+                            AND post_name != %s
+                            AND post_status != 'trash'",
+                            $entity_slug . '-%',
+                            $entity_slug
+                        )
+                    );
+
+                    foreach ($duplicate_posts as $duplicate) {
+                        wp_delete_post($duplicate->ID, true);
+                    }
+                }
+
+                $pattern_content = array(
                     'post_name' => $entity_slug,
                     'post_title' => $entity_title,
                     'post_content' => wp_slash($content),

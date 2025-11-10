@@ -699,7 +699,10 @@ describe('TextMaxi', () => {
 
 		// Change color
 		await page.waitForTimeout(500);
-		await page.$eval('.toolbar-item__text-color', button => button.click());
+		await page.$eval(
+			'.toolbar-item__typography-control .toolbar-item',
+			button => button.click()
+		);
 		await page.waitForTimeout(150);
 		await page.waitForSelector('.maxi-color-control__palette-box');
 		await page.$$eval('.maxi-color-control__palette-box', paletteButtons =>

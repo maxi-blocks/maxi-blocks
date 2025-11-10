@@ -62,18 +62,6 @@ const createFontFaceCss = (fontName, weight, style, fileUrl) => {
 	);
 };
 
-const encodeCss = css => {
-	if (typeof window !== 'undefined' && window.btoa) {
-		return window.btoa(unescape(encodeURIComponent(css)));
-	}
-
-	if (typeof Buffer !== 'undefined') {
-		return Buffer.from(css, 'utf8').toString('base64');
-	}
-
-	return css;
-};
-
 /**
  * Get the font URL - simplified version without caching
  * @param {string} fontName - The font name

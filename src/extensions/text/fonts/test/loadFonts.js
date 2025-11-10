@@ -12,11 +12,11 @@ const defaultFontResponse = {
 	},
 };
 
-const getFontMock = jest.fn().mockReturnValue(defaultFontResponse);
+const mockGetFont = jest.fn().mockReturnValue(defaultFontResponse);
 
 jest.mock('@wordpress/data', () => ({
 	select: jest.fn(() => ({
-		getFont: getFontMock,
+		getFont: mockGetFont,
 	})),
 }));
 
@@ -31,7 +31,7 @@ jest.mock('@extensions/text/fonts/loadFontUtils', () => ({
 describe('getFontUrl', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		getFontMock.mockReturnValue(defaultFontResponse);
+		mockGetFont.mockReturnValue(defaultFontResponse);
 	});
 
 	it('Should build and return font URL directly', async () => {
@@ -116,23 +116,6 @@ describe('getFontUrl', () => {
 			})
 		);
 	});
-
-	it('Should create data URL for custom fonts', async () => {
-		const fontName = 'Custom Font';
-		const fontData = { weight: '400', style: 'normal' };
-
-		getFontMock.mockReturnValue({
-			source: 'custom',
-			files: {
-				400: 'https://example.com/fonts/custom.woff2',
-			},
-		});
-
-		const result = await getFontUrl(fontName, fontData);
-
-		expect(result.startsWith('data:text/css;base64,')).toBe(true);
-		expect(buildFontUrl).not.toHaveBeenCalled();
-	});
 });
 
 describe('loadFonts', () => {
@@ -162,6 +145,8 @@ describe('loadFonts', () => {
 		appendChildSpy = jest
 			.spyOn(document.head, 'appendChild')
 			.mockImplementation(() => {});
+
+		mockGetFont.mockReturnValue(defaultFontResponse);
 
 		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: false };
 	});
@@ -366,7 +351,7 @@ describe('loadFonts', () => {
 			},
 		};
 
-		getFontMock.mockReturnValue({
+		mockGetFont.mockReturnValue({
 			source: 'custom',
 			files: {
 				400: 'https://example.com/fonts/custom.woff2',

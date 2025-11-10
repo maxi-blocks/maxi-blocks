@@ -37,6 +37,11 @@ import { isNumber, capitalize } from 'lodash';
 import { styleNone, dashed, dotted, solid, borderWidth } from '@maxi-icons';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const BorderColorControl = props => {

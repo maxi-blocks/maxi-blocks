@@ -498,6 +498,113 @@ class MaxiBlocks_Local_Fonts
         }
     }
 
+    /**
+     * Return custom font data from option by family (case-insensitive), or null.
+     */
+    public function get_custom_font_data_by_family($family)
+    {
+        $fonts = get_option('maxi_blocks_custom_fonts', []);
+        if (!is_array($fonts) || empty($fonts)) {
+            return null;
+        }
+        foreach ($fonts as $font) {
+            $value = isset($font['value']) ? $font['value'] : '';
+            if ($value && strtolower($value) === strtolower($family)) {
+                return $font;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Ensure @font-face CSS exists for a custom uploaded family and return its URL.
+     * CSS path: uploads/maxi/custom-fonts/{family}/style.css
+     */
+    public function get_or_create_custom_font_stylesheet_url($family, $font_data)
+    {
+        $uploads = wp_upload_dir();
+        $sanitized = $this->sanitize_font_name($family);
+        $dir = trailingslashit($uploads['basedir']) . 'maxi/custom-fonts/' . $sanitized;
+        $url = trailingslashit($uploads['baseurl']) . 'maxi/custom-fonts/' . $sanitized . '/style.css';
+        $css_file = $dir . '/style.css';
+
+        if (!file_exists($css_file)) {
+            if (!wp_mkdir_p($dir)) {
+                return false;
+            }
+            $css = $this->build_custom_font_css($family, $font_data);
+            if (!$css) {
+                return false;
+            }
+            if (@file_put_contents($css_file, $css) === false) {
+                global $wp_filesystem;
+                if (empty($wp_filesystem)) {
+                    require_once ABSPATH . 'wp-admin/includes/file.php';
+                    WP_Filesystem(false, false, true);
+                }
+                if (empty($wp_filesystem)) {
+                    return false;
+                }
+                $wp_filesystem->put_contents($css_file, $css);
+            }
+        }
+        return $url;
+    }
+
+    private function build_custom_font_css($family, $font_data)
+    {
+        $variants = isset($font_data['variants']) && is_array($font_data['variants']) ? $font_data['variants'] : [];
+        if (empty($variants)) {
+            return false;
+        }
+
+        $css_rules = [];
+        foreach ($variants as $variant) {
+            $weight = isset($variant['weight']) ? $variant['weight'] : '400';
+            $style = isset($variant['style']) ? $variant['style'] : 'normal';
+            $url = isset($variant['url']) ? $variant['url'] : '';
+            if (!$url) {
+                continue;
+            }
+            $format = $this->guess_font_format_from_url($url);
+            $safe_family = str_replace(["\n", "\r"], '', $family);
+            $safe_url = esc_url_raw($url);
+            $safe_weight = esc_attr($weight);
+            $safe_style = strtolower($style) === 'italic' ? 'italic' : 'normal';
+
+            $rules = "@font-face{font-family:'{$safe_family}';font-style:{$safe_style};font-weight:{$safe_weight};font-display:swap;src:url('{$safe_url}')";
+            if ($format) {
+                $rules .= " format('{$format}')";
+            }
+            $rules .= ";}";
+            $css_rules[] = $rules;
+        }
+
+        if (empty($css_rules)) {
+            return false;
+        }
+
+        return $this->minimize_font_css(implode('', $css_rules));
+    }
+
+    private function guess_font_format_from_url($url)
+    {
+        $path = strtolower(parse_url($url, PHP_URL_PATH));
+        if (str_ends_with($path, '.woff2')) {
+            return 'woff2';
+        }
+        if (str_ends_with($path, '.woff')) {
+            return 'woff';
+        }
+        if (str_ends_with($path, '.ttf')) {
+            return 'truetype';
+        }
+        if (str_ends_with($path, '.otf')) {
+            return 'opentype';
+        }
+        return '';
+    }
+
     public function check_table_exists($table_name)
     {
         global $wpdb;

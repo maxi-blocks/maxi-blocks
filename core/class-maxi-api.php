@@ -2029,8 +2029,8 @@ if (!class_exists('MaxiBlocks_API')):
                         'theme' => $theme_slug,
                         'area' => $area,
                         'is_custom' => true,
-                    ],
-                ];
+                    ]
+                );
 
                 if ($existing_template) {
                     if ($existing_post) {
@@ -2227,7 +2227,7 @@ if (!class_exists('MaxiBlocks_API')):
                         'is_custom' => true,
                         'type' => $entity_type,
                     ],
-                ];
+                );
 
                 if ($existing_template) {
                     if ($existing_post) {
@@ -2624,7 +2624,7 @@ if (!class_exists('MaxiBlocks_API')):
                     'meta_input' => [
                         'wp_pattern_sync_status' => $wp_pattern_sync_status,
                     ],
-                ];
+                );
 
                 if ($existing_post) {
                     $pattern_content['ID'] = $existing_post->ID;

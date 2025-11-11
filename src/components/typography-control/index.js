@@ -16,7 +16,6 @@ import FontFamilySelector from '@components/font-family-selector';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SelectControl from '@components/select-control';
 import TextShadowControl from '@components/text-shadow-control';
-import SettingTabsControl from '@components/setting-tabs-control';
 import FontWeightControl from '@components/font-weight-control';
 import {
 	setFormat,
@@ -49,273 +48,6 @@ import './editor.scss';
 /**
  * Component
  */
-const LinkOptions = props => {
-	const {
-		getValue,
-		onChangeInline,
-		onChangeFormat,
-		prefix,
-		breakpoint,
-		textLevel,
-		clientId,
-		isListItem,
-	} = props;
-
-	const [linkStatus, setLinkStatus] = useState('normal_link');
-
-	const handleReset = () => {
-		onChangeFormat(
-			{
-				[`${prefix}link-color`]: undefined,
-				[`${prefix}link-palette-color`]: undefined,
-				[`${prefix}link-palette-status`]: undefined,
-				[`${prefix}link-palette-sc-status`]: undefined,
-				[`${prefix}link-palette-opacity`]: undefined,
-			},
-			undefined,
-			true
-		);
-	};
-
-	return (
-		<>
-			<SettingTabsControl
-				type='buttons'
-				fullWidthMode
-				className='maxi-typography-control__link-options'
-				selected={linkStatus}
-				hasBorder
-				items={[
-					{
-						label: __('Link', 'maxi-blocks'),
-						value: 'normal_link',
-						extraIndicatorsResponsive: [
-							`${prefix}link-color`,
-							`${prefix}link-palette-color`,
-							`${prefix}link-palette-opacity`,
-							`${prefix}link-palette-status`,
-						],
-					},
-					{
-						label: __('Hover', 'maxi-blocks'),
-						value: 'hover_link',
-						extraIndicatorsResponsive: [
-							`${prefix}link-hover-color`,
-							`${prefix}link-hover-palette-color`,
-							`${prefix}link-hover-palette-opacity`,
-							`${prefix}link-hover-palette-status`,
-						],
-					},
-					{
-						label: __('Active', 'maxi-blocks'),
-						value: 'active_link',
-						extraIndicatorsResponsive: [
-							`${prefix}link-active-color`,
-							`${prefix}link-active-palette-color`,
-							`${prefix}link-active-palette-opacity`,
-							`${prefix}link-active-palette-status`,
-						],
-					},
-					{
-						label: __('Visited', 'maxi-blocks'),
-						value: 'visited_link',
-						extraIndicatorsResponsive: [
-							`${prefix}link-visited-color`,
-							`${prefix}link-visited-palette-color`,
-							`${prefix}link-visited-palette-opacity`,
-							`${prefix}link-visited-palette-status`,
-						],
-					},
-				]}
-				onChange={val => setLinkStatus(val)}
-			/>
-			{linkStatus === 'normal_link' && (
-				<ColorControl
-					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-link-color'
-					color={getValue('link-color')}
-					prefix={`${prefix}link-`}
-					paletteStatus={getValue('link-palette-status')}
-					paletteSCStatus={getValue('link-palette-sc-status')}
-					paletteColor={getValue('link-palette-color')}
-					paletteOpacity={getValue('link-palette-opacity')}
-					onChangeInline={({ color }) =>
-						onChangeInline({ color }, 'a')
-					}
-					onChange={({
-						paletteColor,
-						paletteStatus,
-						paletteSCStatus,
-						paletteOpacity,
-						color,
-					}) =>
-						onChangeFormat(
-							{
-								[`${prefix}link-palette-status`]: paletteStatus,
-								[`${prefix}link-palette-sc-status`]:
-									paletteSCStatus,
-								[`${prefix}link-palette-color`]: paletteColor,
-								[`${prefix}link-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-color`]: color,
-							},
-							{ forceDisableCustomFormats: false, tag: 'a' }
-						)
-					}
-					{...(isListItem && {
-						onReset: handleReset,
-					})}
-					textLevel={textLevel}
-					deviceType={breakpoint}
-					clientId={clientId}
-					disableGradient
-					globalProps={{ target: 'link', type: 'link' }}
-				/>
-			)}
-			{linkStatus === 'hover_link' && (
-				<ColorControl
-					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-link-hover-color'
-					color={getValue('link-hover-color')}
-					prefix={`${prefix}link-hover-`}
-					paletteStatus={getValue('link-hover-palette-status')}
-					paletteSCStatus={getValue('link-hover-palette-sc-status')}
-					paletteColor={getValue('link-hover-palette-color')}
-					paletteOpacity={getValue('link-hover-palette-opacity')}
-					onChangeInline={({ color }) =>
-						onChangeInline({ color }, 'a:hover')
-					}
-					onChange={({
-						paletteColor,
-						paletteStatus,
-						paletteSCStatus,
-						paletteOpacity,
-						color,
-					}) =>
-						onChangeFormat(
-							{
-								[`${prefix}link-hover-palette-status`]:
-									paletteStatus,
-								[`${prefix}link-hover-palette-sc-status`]:
-									paletteSCStatus,
-								[`${prefix}link-hover-palette-color`]:
-									paletteColor,
-								[`${prefix}link-hover-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-hover-color`]: color,
-							},
-							{ forceDisableCustomFormats: false, tag: 'a:hover' }
-						)
-					}
-					{...(isListItem && {
-						onReset: handleReset,
-					})}
-					textLevel={textLevel}
-					deviceType={breakpoint}
-					clientId={clientId}
-					disableGradient
-					globalProps={{ target: 'hover', type: 'link' }}
-				/>
-			)}
-			{linkStatus === 'active_link' && (
-				<ColorControl
-					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-link-active-color'
-					color={getValue('link-active-color')}
-					prefix={`${prefix}link-active-`}
-					paletteStatus={getValue('link-active-palette-status')}
-					paletteSCStatus={getValue('link-active-palette-sc-status')}
-					paletteColor={getValue('link-active-palette-color')}
-					paletteOpacity={getValue('link-active-palette-opacity')}
-					onChangeInline={({ color }) =>
-						onChangeInline({ color }, 'a:active')
-					}
-					onChange={({
-						paletteColor,
-						paletteStatus,
-						paletteSCStatus,
-						paletteOpacity,
-						color,
-					}) =>
-						onChangeFormat(
-							{
-								[`${prefix}link-active-palette-status`]:
-									paletteStatus,
-								[`${prefix}link-active-palette-sc-status`]:
-									paletteSCStatus,
-								[`${prefix}link-active-palette-color`]:
-									paletteColor,
-								[`${prefix}link-active-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-active-color`]: color,
-							},
-							{
-								forceDisableCustomFormats: false,
-								tag: 'a:active',
-							}
-						)
-					}
-					{...(isListItem && {
-						onReset: handleReset,
-					})}
-					textLevel={textLevel}
-					deviceType={breakpoint}
-					clientId={clientId}
-					disableGradient
-					globalProps={{ target: 'active', type: 'link' }}
-				/>
-			)}
-			{linkStatus === 'visited_link' && (
-				<ColorControl
-					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-link-visited-color'
-					color={getValue('link-visited-color')}
-					prefix={`${prefix}link-visited-`}
-					paletteStatus={getValue('link-visited-palette-status')}
-					paletteSCStatus={getValue('link-visited-palette-sc-status')}
-					paletteColor={getValue('link-visited-palette-color')}
-					paletteOpacity={getValue('link-visited-palette-opacity')}
-					onChangeInline={({ color }) =>
-						onChangeInline({ color }, 'a:visited')
-					}
-					onChange={({
-						paletteColor,
-						paletteStatus,
-						paletteSCStatus,
-						paletteOpacity,
-						color,
-					}) =>
-						onChangeFormat(
-							{
-								[`${prefix}link-visited-palette-status`]:
-									paletteStatus,
-								[`${prefix}link-visited-palette-sc-status`]:
-									paletteSCStatus,
-								[`${prefix}link-visited-palette-color`]:
-									paletteColor,
-								[`${prefix}link-visited-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-visited-color`]: color,
-							},
-							{
-								forceDisableCustomFormats: false,
-								tag: 'a:visited',
-							}
-						)
-					}
-					{...(isListItem && {
-						onReset: handleReset,
-					})}
-					textLevel={textLevel}
-					deviceType={breakpoint}
-					clientId={clientId}
-					disableGradient
-					globalProps={{ target: 'visited', type: 'link' }}
-				/>
-			)}
-		</>
-	);
-};
 
 const TypographyControl = props => {
 	const {
@@ -340,7 +72,6 @@ const TypographyControl = props => {
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
-		linkOnly = false,
 		blockStyle,
 		globalProps,
 		forceIndividualChanges = false,
@@ -687,31 +418,6 @@ const TypographyControl = props => {
 
 		return getIsValid(value, true) ? value : 1;
 	};
-
-	// Early return for linkOnly mode - show only link controls
-	if (linkOnly) {
-		return (
-			<ResponsiveTabsControl breakpoint={breakpoint}>
-				<div className={classes}>
-					{allowLink && (
-						<LinkOptions
-							getValue={getValue}
-							getDefault={getDefault}
-							onChangeInline={onChangeInlineValue}
-							onChangeFormat={onChangeFormat}
-							prefix={prefix}
-							breakpoint={breakpoint}
-							textLevel={textLevel}
-							isHover={isHover}
-							clientId={clientId}
-							getOpacityValue={getOpacityValue}
-							isListItem={!!listContext}
-						/>
-					)}
-				</div>
-			</ResponsiveTabsControl>
-		);
-	}
 
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>
@@ -1755,21 +1461,6 @@ const TypographyControl = props => {
 							</>
 						)}
 					</div>
-				)}
-				{allowLink && (
-					<LinkOptions
-						getValue={getValue}
-						getDefault={getDefault}
-						onChangeInline={onChangeInlineValue}
-						onChangeFormat={onChangeFormat}
-						prefix={prefix}
-						breakpoint={breakpoint}
-						textLevel={textLevel}
-						isHover={isHover}
-						clientId={clientId}
-						getOpacityValue={getOpacityValue}
-						isListItem={!!listContext}
-					/>
 				)}
 			</div>
 		</ResponsiveTabsControl>

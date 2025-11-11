@@ -16,7 +16,7 @@ import {
 } from '../../utils';
 
 describe('Padding control', () => {
-	it.only('Checking padding equal control', async () => {
+	it('Checking padding equal control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 		await updateAllBlockUniqueIds(page);

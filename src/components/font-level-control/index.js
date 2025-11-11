@@ -72,29 +72,29 @@ const FontLevelControl = memo(props => {
 	const fontOptions = useMemo(() => {
 		return getGroupAttributes(props, 'typography');
 	}, [
-		props.attributes?.typography,
-		props.attributes?.['palette-color-general'],
-		props.attributes?.['font-family-general'],
-		props.attributes?.['font-size-general'],
-		props.attributes?.['font-weight-general'],
-		props.attributes?.['line-height-general'],
-		props.attributes?.['letter-spacing-general'],
-		props.attributes?.['text-decoration-general'],
-		props.attributes?.['text-transform-general'],
+		props.attributes?.typography ?? props.typography,
+		props.attributes?.['palette-color-general'] ?? props['palette-color-general'],
+		props.attributes?.['font-family-general'] ?? props['font-family-general'],
+		props.attributes?.['font-size-general'] ?? props['font-size-general'],
+		props.attributes?.['font-weight-general'] ?? props['font-weight-general'],
+		props.attributes?.['line-height-general'] ?? props['line-height-general'],
+		props.attributes?.['letter-spacing-general'] ?? props['letter-spacing-general'],
+		props.attributes?.['text-decoration-general'] ?? props['text-decoration-general'],
+		props.attributes?.['text-transform-general'] ?? props['text-transform-general'],
 	]);
 
 	const fontOptionsHover = useMemo(() => {
 		return getGroupAttributes(props, 'typographyHover');
 	}, [
-		props.attributes?.typographyHover,
-		props.attributes?.['palette-color-general-hover'],
-		props.attributes?.['font-family-general-hover'],
-		props.attributes?.['font-size-general-hover'],
-		props.attributes?.['font-weight-general-hover'],
-		props.attributes?.['line-height-general-hover'],
-		props.attributes?.['letter-spacing-general-hover'],
-		props.attributes?.['text-decoration-general-hover'],
-		props.attributes?.['text-transform-general-hover'],
+		props.attributes?.typographyHover ?? props.typographyHover,
+		props.attributes?.['palette-color-general-hover'] ?? props['palette-color-general-hover'],
+		props.attributes?.['font-family-general-hover'] ?? props['font-family-general-hover'],
+		props.attributes?.['font-size-general-hover'] ?? props['font-size-general-hover'],
+		props.attributes?.['font-weight-general-hover'] ?? props['font-weight-general-hover'],
+		props.attributes?.['line-height-general-hover'] ?? props['line-height-general-hover'],
+		props.attributes?.['letter-spacing-general-hover'] ?? props['letter-spacing-general-hover'],
+		props.attributes?.['text-decoration-general-hover'] ?? props['text-decoration-general-hover'],
+		props.attributes?.['text-transform-general-hover'] ?? props['text-transform-general-hover'],
 	]);
 
 	// Memoize class names to prevent recalculation

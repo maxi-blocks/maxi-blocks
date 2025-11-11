@@ -27,6 +27,21 @@ describe('TextShadowControl', () => {
 			'typography'
 		);
 
+		// click on the typography advanced settings if it's not open
+		const isAdvancedSettingsOpen = await page.evaluate(
+			() =>
+				!!document.querySelector(
+					'.maxi-typography-control__text-indent'
+				)
+		);
+		if (!isAdvancedSettingsOpen) {
+			const advancedSettingsSelector = await page.$(
+				'.maxi-typography-control__advanced-toggle button.maxi-typography-control-button'
+			);
+			if (advancedSettingsSelector)
+				await advancedSettingsSelector.click();
+		}
+
 		await accordionPanel.$eval(
 			'.maxi-tabs-content .maxi-typography-control .maxi-textshadow-control .maxi-toggle-switch .maxi-base-control__label',
 			use => use.click()

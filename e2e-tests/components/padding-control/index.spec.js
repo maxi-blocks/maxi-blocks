@@ -16,7 +16,7 @@ import {
 } from '../../utils';
 
 describe('Padding control', () => {
-	it('Checking padding equal control', async () => {
+	it.only('Checking padding equal control', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 		await updateAllBlockUniqueIds(page);
@@ -56,9 +56,10 @@ describe('Padding control', () => {
 
 		const resetExpect = await resettingAttributes({
 			page,
-			instance: 'maxi-axis-control__content__item__margin',
+			instance: 'maxi-axis-control__content__item__padding',
 			expectValue: '',
 		});
+
 		expect(resetExpect).toBeTruthy();
 	});
 

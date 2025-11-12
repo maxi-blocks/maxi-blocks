@@ -96,12 +96,13 @@ const FontLevelControl = memo(props => {
 	const applyAttrs = useCallback(
 		attrs => {
 			// Only send changed keys to avoid invalidating unchanged attributes
-			const minimal = diffAttrs(props.attributes, attrs);
+			const prev = props.attributes ?? props;
+			const minimal = diffAttrs(prev, attrs);
 			if (Object.keys(minimal).length > 0) {
 				onChange(minimal);
 			}
 		},
-		[onChange, props.attributes]
+		[onChange, props]
 	);
 
 	// Optimized main change handler with split instant/heavy updates

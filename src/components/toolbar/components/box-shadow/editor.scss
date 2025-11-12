@@ -1,84 +1,44 @@
-.components-popover {
-	.toolbar-item__box-shadow__popover {
-		min-width: 305px;
+// Box shadow toolbar item styles
+.toolbar-item__box-shadow {
+	// Ensure proper toolbar button dimensions
+	width: var(--mx-toolbar-size) !important;
+	height: var(--mx-toolbar-size) !important;
+	background-color: var(--maxi-white);
+	border-right: var(--maxi-border-1px) solid var(--maxi-grey-light);
+
+	// Icon alignment specific to box shadow
+	.toolbar-item__icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--mx-icon-size);
+		height: var(--mx-icon-size);
 	}
 
-	.maxi-shadow-control {
-		display: flex;
-		flex-wrap: wrap;
+	// Hover states for box shadow icon
+	&:hover,
+	&[aria-expanded='true'] {
+		background-color: var(--maxi-pastel-green);
 
-		&--disable {
-			.maxi-shadow-control__icon,
-			.maxi-advanced-number-control,
-			.maxi-color-control {
-				opacity: 0.3;
-				pointer-events: none;
+		svg,
+		.toolbar-item__icon {
+			ellipse,
+			circle,
+			line,
+			rect,
+			polyline,
+			path {
+				stroke: var(--maxi-secondary-color);
+				fill: var(--maxi-secondary-color);
 			}
 		}
+	}
 
-		&__default {
-			width: 1.5rem;
-			height: 0.5rem;
-			background: var(--maxi-white);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin: 0 auto;
-			&__total {
-				box-shadow: 0px 0px 5px 0px var(--maxi-grey);
-			}
-			&__bottom {
-				box-shadow: 0px 4px 8px -2px var(--maxi-grey);
-			}
-			&__solid {
-				box-shadow: 1px 2px 0px 0px var(--maxi-grey);
-			}
-		}
-
-		.maxi-default-styles-control {
-			display: inline-block;
-			vertical-align: middle;
-			width: 181px;
-
-			&__button {
-				display: inline-block !important;
-				vertical-align: middle;
-
-				&:not(:first-child) {
-					padding: 0 5px;
-				}
-			}
-		}
-
-		&__icon {
-			display: flex;
-			margin-bottom: 8px;
-
-			svg {
-				margin: auto;
-			}
-		}
-
-		.maxi-color-control {
-			flex-basis: 100%;
-			width: 100%;
-
-			&__wrap {
-				.maxi-color-control__display {
-					width: 171px;
-				}
-			}
-
-			.maxi-opacity-control {
-				line-height: 100%;
-
-				input {
-					flex: 1;
-				}
-			}
-			& > .components-maxi-control__reset-button {
-				display: none;
-			}
-		}
+	// Remove default button styling that might interfere
+	&:focus,
+	&:visited {
+		outline: none;
+		box-shadow: none;
+		border-radius: 0;
 	}
 }

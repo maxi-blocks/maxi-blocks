@@ -9,17 +9,15 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '@components/button';
-import Icon from '@components/icon';
-
 /**
  * External dependencies
  */
 import { trim, isEmpty } from 'lodash';
 
 /**
- * Styles and icons
+ * Text glyph constant for toolbar formatting buttons
  */
-import { toolbarUnderline } from '@maxi-icons';
+const TEXT_GLYPH = 'U';
 
 /**
  * TextFormatUnderline
@@ -64,7 +62,12 @@ const TextFormatUnderline = props => {
 				onClick={onClick}
 				aria-pressed={isActive}
 			>
-				<Icon className='toolbar-item__icon' icon={toolbarUnderline} />
+				<span
+					className='toolbar-item__text toolbar-item__text--underline'
+					aria-hidden='true'
+				>
+					{TEXT_GLYPH}
+				</span>
 			</Button>
 		);
 	};

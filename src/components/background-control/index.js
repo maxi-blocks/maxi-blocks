@@ -60,6 +60,7 @@ const BackgroundControl = props => {
 		globalProps,
 		inlineTarget = '',
 		getBounds,
+		tabsClassName,
 	} = props;
 
 	const backgroundActiveMedia = getLastBreakpointAttribute({
@@ -119,7 +120,10 @@ const BackgroundControl = props => {
 				<SettingTabsControl
 					label={__('Background', 'maxi-blocks')}
 					type='buttons'
-					className='maxi-background-control__simple'
+					className={classnames(
+						'maxi-background-control__simple',
+						tabsClassName
+					)}
 					fullWidthMode
 					selected={backgroundActiveMedia || 'none'}
 					items={getOptions()}

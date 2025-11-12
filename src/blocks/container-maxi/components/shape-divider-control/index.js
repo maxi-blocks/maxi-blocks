@@ -215,7 +215,7 @@ const ShapeDividerControl = props => {
 			<SettingTabsControl
 				items={[
 					{
-						label: __('Top shape divider', 'maxi-blocks'),
+						label: __('Top shape', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch
@@ -429,7 +429,7 @@ const ShapeDividerControl = props => {
 						extraIndicators: ['shape-divider-top-status'],
 					},
 					{
-						label: __('Bottom shape divider', 'maxi-blocks'),
+						label: __('Bottom shape', 'maxi-blocks'),
 						content: (
 							<>
 								<ToggleSwitch

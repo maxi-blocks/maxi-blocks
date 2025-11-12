@@ -226,13 +226,17 @@
 				box-shadow: none !important;
 			}
 			.maxi-tabs-control__notification {
+				transition: all 0.5s ease;
 				position: absolute;
-				top: 4px;
-				right: 4px;
-				width: 6px;
-				height: 6px;
-				border-radius: 50%;
-				background-color: var(--maxi-secondary-color);
+				z-index: 8;
+				top: 0;
+				right: 0;
+				width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 0 8px 8px 0;
+				border-color: transparent var(--maxi-primary-color) transparent
+					transparent;
 			}
 		}
 		&-wrapper {

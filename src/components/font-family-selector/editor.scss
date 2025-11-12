@@ -1,8 +1,6 @@
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	.maxi-font-family-selector {
 		.maxi-font-family-selector__control {
-			border-color: var(--maxi-grey);
-
 			&--is-focused,
 			&:focus {
 				border-color: var(--maxi-secondary-color);
@@ -13,10 +11,20 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	}
 }
 .maxi-font-family-selector {
-	z-index: 9;
+	z-index: 200000;
 	display: block;
-	width: 100%;
 	height: 32px;
+	width: 100% !important;
+	flex: 1 1 auto;
+
+	&__container {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		width: 100% !important;
+		flex: 1;
+	}
 
 	.maxi-font-family-selector__control {
 		&__menu {
@@ -38,13 +46,14 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		}
 		&__control {
 			border-color: var(--maxi-grey-light);
-			padding: 8px;
+			padding: 8px 2px 8px 8px;
 			border-radius: 5px;
 			min-height: unset;
 			display: flex;
 			align-content: center;
 			height: 32px;
 			border-width: 1.5px;
+			width: 100% !important;
 
 			&:focus,
 			&:hover {
@@ -110,5 +119,19 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			margin: auto 2px;
 			background-color: var(--maxi-grey-light);
 		}
+	}
+
+	// Reset button variants
+	.maxi-reset-button--inline {
+		position: static;
+		margin-left: 6px;
+		flex: 0 0 auto;
+	}
+}
+
+// Position reset button relative to BaseControl field for font family selector
+.maxi-font-family-selector-control {
+	.maxi-base-control__field {
+		position: relative;
 	}
 }

@@ -8,26 +8,53 @@ body.maxi-blocks--active {
 		max-height: unset !important;
 		padding: 8px;
 		border: 1.5px solid var(--maxi-grey-light);
-		border-radius: 5px !important;
 		margin: 0;
 		color: var(--maxi-grey);
-		background: var(--maxi-white)
-			url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>')
-			no-repeat right 6px top 50%;
 		background-size: 9px 9px;
 		font-size: 12px;
 		line-height: 14px;
 		vertical-align: middle;
 		-webkit-appearance: none;
+		appearance: none;
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
 		cursor: pointer;
 		opacity: 1;
 		outline: 0;
+		background-image: linear-gradient(
+				var(--maxi-grey-light),
+				var(--maxi-grey-light)
+			),
+			url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+		background-repeat: no-repeat, no-repeat !important;
+		background-size: 1px 18px, 8px 8px !important;
+		background-position: right 1px center, right 5px center !important;
+		&:hover,
+		&:focus,
+		&:active {
+			background-image: linear-gradient(
+					var(--maxi-grey-light),
+					var(--maxi-grey-light)
+				),
+				url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(99, 186, 121, 1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+		}
 		svg {
 			fill: var(--maxi-grey);
 		}
 	}
-
+	.maxi-select-control__input {
+		padding-left: 12px !important;
+		transition: all 0.5s ease;
+	}
+	// Consolidate hover rule to avoid empty ruleset warning
+	.maxi-select-control__input:hover,
+	.maxi-text-control__input:hover {
+		/* Intentionally left for future hover tweaks; keep non-empty to satisfy linter */
+		outline: none;
+	}
+	.maxi-select-control__input:focus,
+	.maxi-text-control__input:focus {
+		border-color: none !important;
+	}
 	.maxi-option {
 		&__in-use {
 			color: var(--maxi-highlight-color);
@@ -45,6 +72,10 @@ body.maxi-blocks--active {
 			.maxi-base-control__field {
 				position: relative;
 				margin-top: 12px;
+				background-color: var(--maxi-white);
+				border: 1px solid var(--maxi-grey-light) !important;
+				border-radius: 5px;
+				margin-right: -3px;
 			}
 			.maxi-base-control__label {
 				position: absolute;
@@ -61,6 +92,40 @@ body.maxi-blocks--active {
 			}
 			.maxi-select-control__input {
 				padding: 10px 11px;
+				border: none !important;
+				/* Short right divider + chevron */
+				background-color: var(--maxi-white) !important;
+				background-image: linear-gradient(
+						var(--maxi-grey-light),
+						var(--maxi-grey-light)
+					),
+					url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+				background-repeat: no-repeat, no-repeat !important;
+				background-size: 1px 18px, 8px 8px !important;
+				background-position: right 1px center, right 5px center !important;
+				&:hover,
+				&:focus,
+				&:active {
+					background-image: linear-gradient(
+							var(--maxi-grey-light),
+							var(--maxi-grey-light)
+						),
+						url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(99, 186, 121, 1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+				}
+			}
+			#inspector-select-control-5 {
+				border: none !important;
+				outline: none !important;
+				box-shadow: none !important;
+			}
+			/* Scope width only to the Font weight selector instance */
+			#inspector-select-control-4.maxi-select-control__input {
+				flex: 0 0 auto !important;
+				width: 104px !important;
+				height: 36px !important;
+				line-height: 36px !important;
+				padding-top: 0 !important;
+				padding-bottom: 0 !important;
 			}
 		}
 	}

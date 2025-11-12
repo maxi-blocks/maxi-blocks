@@ -272,11 +272,11 @@ body .toolbar-item__popover {
 			box-shadow: none;
 			outline: none;
 		}
-		&:hover:not(#inspector-select-control-0):not([id^='inspector-input-control']):not([id^='url-input-control']):not(.w-tc-editor-text):not(.maxi-css-code-editor__code-editor) {
-			color: var(--maxi-grey-dark) !important;
-			border: 1.5px solid var(--maxi-primary-color) !important;
-			transition: all 0.4s ease;
-		}
+		// &:hover:not(#inspector-select-control-0):not([id^='inspector-input-control']):not([id^='url-input-control']):not(.w-tc-editor-text):not(.maxi-css-code-editor__code-editor) {
+		// 	color: var(--maxi-grey-dark) !important;
+		// 	border: 1.5px solid var(--maxi-primary-color) !important;
+		// 	transition: all 0.4s ease;
+		// }
 		&:active {
 			color: var(--maxi-grey-dark);
 		}
@@ -384,15 +384,49 @@ body .toolbar-item__popover {
 .maxi-base-control {
 	.maxi-dimensions-control__units {
 		margin-bottom: 0 !important;
+		.maxi-select-control__input {
+			border: none !important;
+		}
 
 		.maxi-base-control__field {
 			margin-bottom: 0;
 
 			.maxi-select-control__input {
-				min-width: 3.6rem;
+				// min-width: 1rem;
 				max-width: 100%;
 			}
 		}
+	}
+}
+
+// Tighten unit select spacing inside AdvancedNumberControl only
+body.maxi-blocks--active {
+	.maxi-advanced-number-control
+		.maxi-dimensions-control__units
+		select.maxi-select-control__input {
+		/* Prevent stretching and tighten internal spacing */
+		flex: 0 0 auto !important;
+		width: auto !important;
+		max-width: 60px !important;
+		min-width: 55px !important;
+		padding: 8px 6px !important;
+		background-color: var(--maxi-white) !important;
+		/* Draw shorter vertical lines using layered backgrounds */
+		/* Short dividers on LEFT and RIGHT plus chevron */
+		// background-image: linear-gradient(
+		// 		var(--maxi-grey-light),
+		// 		var(--maxi-grey-light)
+		// 	),
+		// 	linear-gradient(var(--maxi-grey-light), var(--maxi-grey-light)),
+		// 	url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>');
+		// background-repeat: no-repeat, no-repeat, no-repeat !important;
+		// /* Set the short line heights here */
+		// background-size: 1px 18px, 1px 18px, 8px 8px !important;
+		// background-position: left 0.5px center, right 0.5px center,
+		// 	right 5px center !important;
+		/* Ensure native borders are not shown */
+		border-left: none !important;
+		border-right: none !important;
 	}
 }
 
@@ -755,59 +789,60 @@ body.maxi-blocks--active
 }
 
 // Number input field
-input.maxi-advanced-number-control_value,
-input.maxi-advanced-number-control__value {
-	transition: all 0.3s ease;
-	border: 1.5px solid var(--maxi-grey-light) !important;
-	border-radius: 5px 0 0 5px !important;
-	height: 31px !important;
-	padding: 0 0 0 8px !important;
-	width: 55px !important;
+// input.maxi-advanced-number-control_value,
+// input.maxi-advanced-number-control__value {
+// 	transition: all 0.3s ease;
+// 	border: 1.5px solid var(--maxi-grey-light) !important;
+// 	border-radius: 5px 0 0 5px !important;
+// 	height: 31px !important;
+// 	padding: 0 0 0 8px !important;
+// 	width: 55px !important;
 
-	&:hover {
-		border-color: var(--maxi-grey-dark) !important;
-	}
+// 	&:hover {
+// 		border-color: var(--maxi-grey-dark) !important;
+// 	}
 
-	&:focus {
-		border-color: var(--maxi-secondary-color) !important;
-		outline: none !important;
-	}
-}
+// 	&:focus {
+// 		border-color: var(--maxi-secondary-color) !important;
+// 		outline: none !important;
+// 	}
+// }
 
 // Unit selector
-.maxi-base-control.maxi-dimensions-control__units {
-	select {
-		transition: all 0.3s ease;
-		border: 1.5px solid var(--maxi-grey-light) !important;
-		border-radius: 0 5px 5px 0px !important;
-		height: 31px !important;
-		padding: 0 8px !important;
-		min-width: 45px !important;
-		cursor: pointer !important;
+// .maxi-base-control.maxi-dimensions-control__units {
+// 	select {
+// 		transition: all 0.3s ease;
+// 		border: 1.5px solid var(--maxi-grey-light) !important;
+// 		border-radius: 0 5px 5px 0px !important;
+// 		height: 31px !important;
+// 		padding: 0 8px !important;
+// 		min-width: 45px !important;
+// 		cursor: pointer !important;
 
-		&:hover {
-			border-color: var(--maxi-primary-color) !important;
-		}
+// 		&:hover {
+// 			border-color: var(--maxi-primary-color) !important;
+// 		}
 
-		&:focus {
-			border-color: var(--maxi-secondary-color) !important;
-			outline: none !important;
-		}
-	}
-}
+// 		&:focus {
+// 			border-color: var(--maxi-secondary-color) !important;
+// 			outline: none !important;
+// 		}
+// 	}
+// }
 
 // Reset button
 .maxi-components-button.maxi-reset-button {
 	transition: all 0.3s ease;
-	width: 31px !important;
+	width: 9px !important;
 	height: 31px !important;
 	padding: 0 !important;
-	margin-left: 0px !important;
+	margin-left: 4px !important;
+	margin-right: 4px !important;
 	border-radius: 5px !important;
 
 	svg {
-		width: 14px !important;
-		height: 14px !important;
+		width: 10px !important;
+		height: 10px !important;
 		fill: var(--maxi-grey) !important;
 	}
 

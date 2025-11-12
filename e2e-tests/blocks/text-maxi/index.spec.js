@@ -699,7 +699,10 @@ describe('TextMaxi', () => {
 
 		// Change color
 		await page.waitForTimeout(500);
-		await page.$eval('.toolbar-item__text-color', button => button.click());
+		await page.$eval(
+			'.toolbar-item__typography-control .toolbar-item',
+			button => button.click()
+		);
 		await page.waitForTimeout(150);
 		await page.waitForSelector('.maxi-color-control__palette-box');
 		await page.$$eval('.maxi-color-control__palette-box', paletteButtons =>
@@ -718,33 +721,6 @@ describe('TextMaxi', () => {
 		expect(expectedContent).toMatchSnapshot();
 	});
 
-	// Toolbar related. Waiting for #2519
-	it.skip('Testing changing custom format and showing the correct value', async () => {
-		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
-		await page.waitForTimeout(150);
-
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
-		await page.waitForTimeout(150);
-
-		await page.$eval('.toolbar-item__typography-control', button =>
-			button.click()
-		);
-		await page.waitForTimeout(150);
-
-		const input = await page.$('.maxi-typography-control__size input');
-		await input.focus();
-		await page.keyboard.press('Backspace');
-		await page.waitForTimeout(200);
-		await page.keyboard.press(0);
-		await page.waitForTimeout(200);
-
-		const inputValue = await input.evaluate(input => input.value);
-
-		expect(inputValue).toStrictEqual('10');
-	});
 	it('Text Maxi Custom CSS', async () => {
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);

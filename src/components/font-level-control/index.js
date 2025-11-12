@@ -116,6 +116,11 @@ const FontLevelControl = memo(props => {
 			}
 
 			// 2) DEFERRED: Compute and apply heavy typography attributes in a transition
+			// Capture values at click time to avoid stale closures
+			const capturedFontOptions = fontOptions;
+			const capturedFontOptionsHover = fontOptionsHover;
+			const capturedPreviousLevel = previousLevel;
+
 			// Use requestIdleCallback for even smoother updates
 			const defer = cb =>
 				window.requestIdleCallback
@@ -125,15 +130,15 @@ const FontLevelControl = memo(props => {
 			startTransition(() =>
 				defer(() => {
 					// Save current styles to ref (no re-render triggered)
-					if (fontOptions && Object.keys(fontOptions).length > 0) {
-						savedStylesRef.current[previousLevel] = fontOptions;
+					if (capturedFontOptions && Object.keys(capturedFontOptions).length > 0) {
+						savedStylesRef.current[capturedPreviousLevel] = capturedFontOptions;
 					}
 					if (
-						fontOptionsHover &&
-						Object.keys(fontOptionsHover).length > 0
+						capturedFontOptionsHover &&
+						Object.keys(capturedFontOptionsHover).length > 0
 					) {
-						savedStylesRef.current[`${previousLevel}Hover`] =
-							fontOptionsHover;
+						savedStylesRef.current[`${capturedPreviousLevel}Hover`] =
+							capturedFontOptionsHover;
 					}
 
 					// Update previous level ref for next time
@@ -151,22 +156,22 @@ const FontLevelControl = memo(props => {
 						fontOptResponse = savedOptions;
 						fontOptResponseHover = savedHoverOptions || {};
 					} else if (
-						fontOptions &&
-						Object.keys(fontOptions).length > 0
+						capturedFontOptions &&
+						Object.keys(capturedFontOptions).length > 0
 					) {
 						const newColor = getNewColor(
 							newValue,
-							fontOptions['palette-color-general'],
-							previousLevel
+							capturedFontOptions['palette-color-general'],
+							capturedPreviousLevel
 						);
 
 						// Use object spread for better performance and readability
 						fontOptResponse = {
-							...fontOptions,
+							...capturedFontOptions,
 							'palette-color-general': newColor,
 						};
 						fontOptResponseHover = {
-							...fontOptionsHover,
+							...capturedFontOptionsHover,
 							'palette-color-general-hover': 5,
 						};
 					}
@@ -188,7 +193,6 @@ const FontLevelControl = memo(props => {
 			fontOptions,
 			fontOptionsHover,
 			getNewColor,
-			startTransition,
 		]
 	);
 

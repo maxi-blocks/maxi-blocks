@@ -60,7 +60,7 @@ const FontLevelControl = memo(props => {
 	const { className, value, onChange } = props;
 
 	// Use useTransition to split instant vs heavy updates
-	const [isPending, startTransition] = useTransition();
+	const [, startTransition] = useTransition();
 
 	// Use useRef to cache styles without triggering re-renders
 	// This eliminates the performance bottleneck of unnecessary state updates
@@ -71,31 +71,11 @@ const FontLevelControl = memo(props => {
 	// Only recalculate when the actual typography attributes change
 	const fontOptions = useMemo(() => {
 		return getGroupAttributes(props, 'typography');
-	}, [
-		props.attributes?.typography ?? props.typography,
-		props.attributes?.['palette-color-general'] ?? props['palette-color-general'],
-		props.attributes?.['font-family-general'] ?? props['font-family-general'],
-		props.attributes?.['font-size-general'] ?? props['font-size-general'],
-		props.attributes?.['font-weight-general'] ?? props['font-weight-general'],
-		props.attributes?.['line-height-general'] ?? props['line-height-general'],
-		props.attributes?.['letter-spacing-general'] ?? props['letter-spacing-general'],
-		props.attributes?.['text-decoration-general'] ?? props['text-decoration-general'],
-		props.attributes?.['text-transform-general'] ?? props['text-transform-general'],
-	]);
+	}, [props]);
 
 	const fontOptionsHover = useMemo(() => {
 		return getGroupAttributes(props, 'typographyHover');
-	}, [
-		props.attributes?.typographyHover ?? props.typographyHover,
-		props.attributes?.['palette-color-general-hover'] ?? props['palette-color-general-hover'],
-		props.attributes?.['font-family-general-hover'] ?? props['font-family-general-hover'],
-		props.attributes?.['font-size-general-hover'] ?? props['font-size-general-hover'],
-		props.attributes?.['font-weight-general-hover'] ?? props['font-weight-general-hover'],
-		props.attributes?.['line-height-general-hover'] ?? props['line-height-general-hover'],
-		props.attributes?.['letter-spacing-general-hover'] ?? props['letter-spacing-general-hover'],
-		props.attributes?.['text-decoration-general-hover'] ?? props['text-decoration-general-hover'],
-		props.attributes?.['text-transform-general-hover'] ?? props['text-transform-general-hover'],
-	]);
+	}, [props]);
 
 	// Memoize class names to prevent recalculation
 	const classes = useMemo(

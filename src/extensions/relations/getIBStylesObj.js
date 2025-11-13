@@ -13,6 +13,15 @@ const getIBStylesObj = ({
 }) => {
 	const selectedSettings = getSelectedIBSettings(clientId, sid);
 
+	// Return empty object if selectedSettings is undefined
+	if (!selectedSettings) {
+		// eslint-disable-next-line no-console
+		console.log(
+			`getIBStylesObj: selectedSettings is undefined for sid: ${sid}`
+		);
+		return {};
+	}
+
 	const prefix = selectedSettings?.prefix || '';
 
 	const newGroupAttributes = getGroupAttributes(

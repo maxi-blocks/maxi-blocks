@@ -22,6 +22,18 @@ const getCleanResponseIBAttributes = (
 	sid,
 	blockTriggerClientId
 ) => {
+	// Add null check for selectedSettingsObj to prevent undefined errors
+	if (!selectedSettingsObj) {
+		// eslint-disable-next-line no-console
+		console.log(
+			'selectedSettingsObj is undefined, returning empty attributes'
+		);
+		return {
+			cleanAttributesObject: {},
+			tempAttributes: {},
+		};
+	}
+
 	const cleanAttributesObject = getRelatedAttributes({
 		IBAttributes: handleSetAttributes({
 			obj: newAttributesObj,

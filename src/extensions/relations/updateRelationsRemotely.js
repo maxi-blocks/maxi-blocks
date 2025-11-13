@@ -48,12 +48,24 @@ const updateRelationsRemotely = ({
 				blockTargetClientId,
 				item.sid
 			);
+
+			// Skip if selectedSettings is undefined (no matching option found)
+			if (!selectedSettings) {
+				// eslint-disable-next-line no-console
+				console.log(
+					`Skipping relation processing for sid: ${item.sid} - no matching settings found`
+				);
+				// eslint-disable-next-line no-continue
+				continue;
+			}
+
 			const prefix = selectedSettings?.prefix || '';
 			const relationsAttributes = item.attributes || {};
 
 			// Handle background layers special case
 			if (item.sid === BGL_SID) {
-				const relationBGLayers = relationsAttributes['background-layers'];
+				const relationBGLayers =
+					relationsAttributes['background-layers'];
 				const blockBGLayers = blockAttributes['background-layers'];
 
 				if (

@@ -1,7 +1,7 @@
 {
 	"name": "maxi-blocks",
 	"version": "1.0.0",
-	"main": "./build/index.js",
+	"main": "./build/index.min.js",
 	"scripts": {
 		"build": "wp-scripts build",
 		"format:js": "wp-scripts format-js",

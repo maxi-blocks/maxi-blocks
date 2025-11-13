@@ -161,7 +161,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 wp_register_style(
                     'maxi-admin',
-                    MAXI_PLUGIN_URL_PATH . 'build/admin.css',
+                    MAXI_PLUGIN_URL_PATH . 'build/admin.min.css',
                     [],
                     MAXI_PLUGIN_VERSION,
                 );
@@ -169,7 +169,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 wp_register_script(
                     'maxi-admin',
-                    MAXI_PLUGIN_URL_PATH . 'build/admin.js',
+                    MAXI_PLUGIN_URL_PATH . 'build/admin.min.js',
                     [],
                     MAXI_PLUGIN_VERSION,
                     [

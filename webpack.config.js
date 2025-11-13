@@ -7,6 +7,8 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config');
  * External Dependencies
  */
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const RtlCssPlugin = require('rtlcss-webpack-plugin');
 const { resolve } = require('path');
 const { sync: glob } = require('fast-glob');
 const Dotenv = require('dotenv-webpack');
@@ -55,6 +57,10 @@ const blocksConfig = {
 		...defaultConfig.entry(),
 		admin: ['./core/admin/admin.js', './core/admin/admin.scss'],
 	},
+	output: {
+		...defaultConfig.output,
+		filename: '[name].min.js', // Add .min to filename so WP.org i18n skips it
+	},
 	optimization: {
 		...defaultConfig.optimization,
 		minimizer: [
@@ -87,7 +93,18 @@ const blocksConfig = {
 		extensions: ['.js', '.json', ...defaultConfig.resolve.extensions],
 	},
 	plugins: [
-		...defaultConfig.plugins,
+		...defaultConfig.plugins.filter(
+			// Remove default MiniCssExtractPlugin and RtlCssPlugin so we can add our own with .min.css
+			plugin =>
+				!(plugin instanceof MiniCssExtractPlugin) &&
+				!(plugin instanceof RtlCssPlugin)
+		),
+		new MiniCssExtractPlugin({
+			filename: '[name].min.css', // Add .min to CSS filename
+		}),
+		new RtlCssPlugin({
+			filename: '[name]-rtl.min.css', // Add .min to RTL CSS filename
+		}),
 		new Dotenv(),
 		...(isAnalyze
 			? [new BundleAnalyzerPlugin({ analyzerPort: 'auto' })]

@@ -128,14 +128,14 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
         public function enqueue_blocks_assets()
         {
-            $script_asset_path = MAXI_PLUGIN_DIR_PATH . 'build/index.asset.php';
+            $script_asset_path = MAXI_PLUGIN_DIR_PATH . 'build/index.min.asset.php';
             if (!file_exists($script_asset_path)) {
                 throw new Error( //phpcs:ignore
                     'You need to run `npm start` or `npm run build` for the "create-block/test-maxi-blocks" block first.',
                 );
             }
 
-            $index_js = 'build/index.js';
+            $index_js = 'build/index.min.js';
             $script_asset = require $script_asset_path;
             wp_register_script(
                 'maxi-blocks-block-editor',
@@ -300,7 +300,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 "
             );
 
-            $editor_css = 'build/index.css';
+            $editor_css = 'build/index.min.css';
             wp_register_style(
                 'maxi-blocks-block-editor',
                 plugins_url($editor_css, dirname(__FILE__)),
@@ -313,7 +313,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'editor_style' => 'maxi-blocks-block-editor',
             ]);
 
-            $style_css = 'build/style-index.css';
+            $style_css = 'build/style-index.min.css';
             wp_register_style(
                 'maxi-blocks-block',
                 plugins_url($style_css, dirname(__FILE__)),

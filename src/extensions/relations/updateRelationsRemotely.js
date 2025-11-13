@@ -52,7 +52,7 @@ const updateRelationsRemotely = ({
 			// Skip if selectedSettings is undefined (no matching option found)
 			if (!selectedSettings) {
 				// eslint-disable-next-line no-console
-				console.log(
+				console.warn(
 					`Skipping relation processing for sid: ${item.sid} - no matching settings found`
 				);
 				// eslint-disable-next-line no-continue

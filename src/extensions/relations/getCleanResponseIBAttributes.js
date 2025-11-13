@@ -25,7 +25,7 @@ const getCleanResponseIBAttributes = (
 	// Add null check for selectedSettingsObj to prevent undefined errors
 	if (!selectedSettingsObj) {
 		// eslint-disable-next-line no-console
-		console.log(
+		console.warn(
 			'selectedSettingsObj is undefined, returning empty attributes'
 		);
 		return {

@@ -74,6 +74,7 @@ const stripCustomStyles = (content, useSCStyles) => {
 	// - Borders, shadows, opacity
 	// - Width/height/size
 	// - Backgrounds (already preserved)
+	// - Custom formats (structural - tied to content HTML with format classes)
 	const styleAttributePatterns = [
 		// Typography - SC provides defaults for these
 		new RegExp(`"(font-family[^"]*?)":${jsonValue},`, 'g'),
@@ -98,9 +99,6 @@ const stripCustomStyles = (content, useSCStyles) => {
 
 		// Text spacing - SC provides bottom-gap for text elements
 		new RegExp(`"(bottom-gap[^"]*?)":${jsonValue},`, 'g'),
-
-		// Custom formats (these override SC typography) - handle objects specifically
-		/"custom-formats(-hover)?":(\{[^}]*?\}|null),/g,
 	];
 
 	let modifiedContent = content;

@@ -105,14 +105,16 @@ const updateRelationsRemotely = ({
 				cleanAttributesObject,
 				tempAttributes
 			);
+			const stylesObj = getIBStylesObj({
+				clientId: blockTargetClientId,
+				sid: item.sid,
+				attributes: mergedAttributes,
+				blockAttributes,
+				breakpoint,
+			});
+
 			const styles = getIBStyles({
-				stylesObj: getIBStylesObj({
-					clientId: blockTargetClientId,
-					sid: item.sid,
-					attributes: mergedAttributes,
-					blockAttributes,
-					breakpoint,
-				}),
+				stylesObj,
 				blockAttributes,
 				isFirst: true,
 			});

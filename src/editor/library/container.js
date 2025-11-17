@@ -402,6 +402,8 @@ const LibraryContainer = props => {
 		onSelect,
 		url,
 		title,
+		useSCStyles,
+		onUseSCStylesChange,
 		prefix = '',
 		isMaxiProActive,
 		onClickConnect,
@@ -578,6 +580,7 @@ const LibraryContainer = props => {
 					await onRequestInsertPattern(
 						hit.gutenberg_code,
 						isSwapChecked,
+						useSCStyles,
 						clientId
 					);
 				}}
@@ -1192,6 +1195,24 @@ const LibraryContainer = props => {
 		);
 	};
 
+	// eslint-disable-next-line react/no-unstable-nested-components
+	const UseSCStylesCheckboxControl = () => {
+		return (
+			<CheckboxControl
+				className='use-sc-styles'
+				label={__(
+					'Use Style Card defaults instead of custom block styles',
+					'maxi-blocks'
+				)}
+				checked={useSCStyles}
+				onChange={val => {
+					onUseSCStylesChange(val);
+				}}
+				__nextHasNoMarginBottom
+			/>
+		);
+	};
+
 	const CustomMenuSelect = connectMenu(MenuSelect);
 	const CustomMenuSC = connectMenu(MenuSC);
 	const CustomSvgMenuSelect = connectMenu(SvgMenuSelect);
@@ -1534,6 +1555,7 @@ const LibraryContainer = props => {
 								}}
 							/>
 							<PlaceholderCheckboxControl />
+							<UseSCStylesCheckboxControl />
 							<CustomHierarchicalMenu
 								attributes={['category.lvl0', 'category.lvl1']}
 								limit={100}

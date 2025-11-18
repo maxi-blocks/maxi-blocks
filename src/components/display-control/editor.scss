@@ -26,14 +26,17 @@
 				border-radius: 4px;
 				&[aria-pressed='true'] {
 					background: var(--maxi-whisper-green);
+					border: 1.5px solid var(--maxi-secondary-color) !important;
+					color: var(--maxi-secondary-color) !important;
+					font-weight: 700 !important;
 				}
 				&:hover {
 					background: var(--maxi-pastel-green);
-					border: 1px solid var(--maxi-secondary-color);
+					border: 1.5px solid var(--maxi-primary-color) !important;
 				}
 				&:active {
-					background: var(--maxi-pastel-green);
-					border: 1px solid var(--maxi-primary-color);
+					background: var(--maxi-pastel-green) !important;
+					border: 1.5px solid var(--maxi-secondary-color) !important;
 				}
 			}
 		}

@@ -5,7 +5,7 @@
 const resettingAttributes = async ({ page, instance, expectValue }) => {
 	// Refresh
 	await page.$eval(
-		`.maxi-tabs-content .${instance} .maxi-base-control__field button`,
+		`.maxi-tabs-content .${instance} .maxi-base-control__field button.maxi-reset-button`,
 		button => button.click()
 	);
 

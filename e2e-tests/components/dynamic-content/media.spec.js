@@ -37,21 +37,16 @@ describe('Dynamic content', () => {
 		// Need multiple calls to refresh the WordPress store cache
 		let mediaElement;
 		let retries = 20; // Increase retries
-		let lastResultInfo = '';
 
 		while (retries > 0) {
-			// Call getEntityRecords with force refresh
+			// Call getEntityRecords to fetch media
 			const mediaEntities = await wpDataSelect(
 				'core',
 				'getEntityRecords',
 				'postType',
 				'attachment',
-				{ per_page: -1 }
+				{ per_page: 100 }
 			);
-
-			lastResultInfo = `Attempt ${21 - retries}: ${
-				mediaEntities ? mediaEntities.length : 'null'
-			} entities`;
 
 			if (mediaEntities && mediaEntities.length > 0) {
 				[mediaElement] = mediaEntities;
@@ -64,10 +59,7 @@ describe('Dynamic content', () => {
 
 		if (!mediaElement) {
 			// Skip test if media isn't available - this can happen randomly in CI/test environments
-			// eslint-disable-next-line no-console
-			console.warn(
-				`Skipping test: No media entities found after retries. Last attempt: ${lastResultInfo}`
-			);
+			// Media may not have been processed by WordPress yet
 			return;
 		}
 

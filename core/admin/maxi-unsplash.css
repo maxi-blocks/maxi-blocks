@@ -1,0 +1,125 @@
+.maxi-unsplash-browser-wrapper {
+    padding: 16px;
+}
+
+.maxi-unsplash-browser-wrapper .maxi-unsplash-search-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.maxi-unsplash-browser-wrapper .maxi-unsplash-search-field {
+    flex: 1 1 auto;
+    min-width: 120px;
+}
+
+.maxi-unsplash-browser-wrapper .maxi-unsplash-search-button {
+    flex: 0 0 auto;
+}
+
+.maxi-unsplash-browser-wrapper .maxi-unsplash-feedback {
+    min-height: 24px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.maxi-unsplash-browser-wrapper .maxi-unsplash-feedback .spinner {
+    margin: 0;
+}
+
+.maxi-unsplash-browser-wrapper .maxi-unsplash-results {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.maxi-unsplash-card {
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.maxi-unsplash-card-image {
+    position: relative;
+    padding-bottom: 66%;
+    overflow: hidden;
+    background: #f6f7f7;
+}
+
+.maxi-unsplash-card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.maxi-unsplash-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    flex: 1;
+}
+
+.maxi-unsplash-card-body strong {
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.maxi-unsplash-card-meta {
+    font-size: 12px;
+    color: #555d66;
+}
+
+.maxi-unsplash-card-actions {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.maxi-unsplash-card-actions .button {
+    margin: 0;
+}
+
+.maxi-unsplash-card-link {
+    font-size: 12px;
+    color: #2271b1;
+    text-decoration: none;
+}
+
+.maxi-unsplash-card-link:hover,
+.maxi-unsplash-card-link:focus {
+    color: #135e96;
+    text-decoration: underline;
+}
+
+.maxi-unsplash-browser-wrapper .maxi-unsplash-pagination {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.maxi-unsplash-browser-wrapper .maxi-unsplash-load-more[hidden] {
+    display: none;
+}
+
+@media (max-width: 782px) {
+    .maxi-unsplash-browser-wrapper .maxi-unsplash-search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .maxi-unsplash-browser-wrapper .maxi-unsplash-search-button {
+        width: 100%;
+    }
+}

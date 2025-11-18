@@ -349,6 +349,14 @@ if (class_exists('MaxiBlocks_Dashboard')) {
 }
 
 //======================================================================
+// MaxiBlocks Unsplash Integration
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/admin/class-maxi-unsplash.php';
+if (class_exists('MaxiBlocks_Unsplash')) {
+    MaxiBlocks_Unsplash::register();
+}
+
+//======================================================================
 // MaxiBlocks Dynamic Content
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-dynamic-content.php';

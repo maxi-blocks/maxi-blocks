@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	setClipboardData,
 	pressKeyWithModifier,
+	wpDataSelect,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -15,10 +16,43 @@ import { openPreviewPage } from '../../utils';
 
 describe('Dynamic content', () => {
 	it('Should return post DC content', async () => {
+		// Create the test post first
+		await createNewPost();
+		await page.keyboard.type('Test Post for DC', { delay: 50 });
+		await page.keyboard.press('Enter');
+		await page.keyboard.type('This is test content for dynamic content testing.');
+
+		// Publish the post
+		await page.click('.editor-post-publish-panel__toggle');
+		await page.waitForSelector('.editor-post-publish-button');
+		await page.click('.editor-post-publish-button');
+		await page.waitForSelector('.post-publish-panel__postpublish');
+
+		// Get the published post ID and data
+		const postId = await page.evaluate(() => {
+			const editor = wp.data.select('core/editor');
+			return {
+				id: editor.getCurrentPostId(),
+				title: editor.getEditedPostAttribute('title'),
+				content: editor.getEditedPostAttribute('content'),
+			};
+		});
+
+		// Create a new post to test DC display
 		await createNewPost();
 
-		// Set code editor as clipboard data
-		const codeEditor = postCodeEditor;
+		const post = {
+			id: postId.id,
+			title: { rendered: postId.title },
+			content: { rendered: postId.content },
+			excerpt: { rendered: '' },
+		};
+
+		// Set code editor as clipboard data with real post ID
+		const codeEditor = postCodeEditor.replaceAll(
+			'"dc-id":1',
+			`"dc-id":${post.id}`
+		);
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
@@ -33,13 +67,11 @@ describe('Dynamic content', () => {
 		});
 		await page.waitForTimeout(5000);
 
-		// Check backend
+		// Check backend - use test post data
 		const expectedResults = {
-			title: 'Hello world!',
-			content:
-				'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!',
-			excerpt:
-				'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!',
+			title: 'Test Post for DC',
+			content: 'This is test content for dynamic content testing.',
+			excerpt: 'This is test content for dynamic content testing.',
 			author: 'admin',
 			categories: 'Uncategorized',
 			tags: 'No content found',

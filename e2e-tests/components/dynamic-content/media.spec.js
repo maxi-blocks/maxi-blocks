@@ -33,22 +33,40 @@ describe('Dynamic content', () => {
 	});
 
 	it('Should return media DC content', async () => {
-		// Need a first call to set the results on the store
-		await wpDataSelect(
-			'core',
-			'getEntityRecords',
-			'postType',
-			'attachment'
-		);
-		await page.waitForTimeout(1000);
+		// Retry logic to wait for media entities to be available
+		// Need multiple calls to refresh the WordPress store cache
+		let mediaElement;
+		let retries = 20; // Increase retries
+		let lastResultInfo = '';
 
-		const mediaEntities = await wpDataSelect(
-			'core',
-			'getEntityRecords',
-			'postType',
-			'attachment'
-		);
-		const mediaElement = mediaEntities[0];
+		while (retries > 0) {
+			// Call getEntityRecords with force refresh
+			const mediaEntities = await wpDataSelect(
+				'core',
+				'getEntityRecords',
+				'postType',
+				'attachment',
+				{ per_page: -1 }
+			);
+
+			lastResultInfo = `Attempt ${21 - retries}: ${
+				mediaEntities ? mediaEntities.length : 'null'
+			} entities`;
+
+			if (mediaEntities && mediaEntities.length > 0) {
+				[mediaElement] = mediaEntities;
+				break;
+			}
+
+			await page.waitForTimeout(1000); // Increase wait time
+			retries--;
+		}
+
+		if (!mediaElement) {
+			throw new Error(
+				`No media entities found after retries. Last attempt: ${lastResultInfo}`
+			);
+		}
 
 		// Set code editor as clipboard data
 		const codeEditor = mediaCodeEditor.replaceAll(

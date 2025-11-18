@@ -119,7 +119,8 @@ body.maxi-blocks--active {
 				box-shadow: none !important;
 			}
 			/* Scope width only to the Font weight selector instance */
-			#inspector-select-control-4.maxi-select-control__input {
+			&:not(.maxi-dc-type):not(.maxi-dc-field)
+				#inspector-select-control-4.maxi-select-control__input {
 				flex: 0 0 auto !important;
 				width: 104px !important;
 				height: 36px !important;

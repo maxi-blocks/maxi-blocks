@@ -6,6 +6,7 @@ import {
 	setClipboardData,
 	pressKeyWithModifier,
 	wpDataSelect,
+	publishPost,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -23,10 +24,7 @@ describe('Dynamic content', () => {
 		await page.keyboard.type('This is test content for dynamic content testing.');
 
 		// Publish the post
-		await page.click('.editor-post-publish-panel__toggle');
-		await page.waitForSelector('.editor-post-publish-button');
-		await page.click('.editor-post-publish-button');
-		await page.waitForSelector('.post-publish-panel__postpublish');
+		await publishPost();
 
 		// Get the published post ID and data
 		const postId = await page.evaluate(() => {

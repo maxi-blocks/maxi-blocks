@@ -243,28 +243,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				isIB={isIB}
 			/>
 
-			{/* Stroke width control: Only for non-Shape SVGs (Lines and other types) */}
-			{svgType !== 'Shape' && (
-				<SvgStrokeWidthControl
-					{...getGroupAttributes(props, 'icon', isHover, prefix)}
-					{...(isHover && {
-						...{
-							...getGroupAttributes(
-								props,
-								'icon',
-								isHover,
-								prefix
-							),
-						},
-					})}
-					className='maxi-icon-control__stroke-width'
-					onChange={obj => onChange(obj)}
-					prefix={`${prefix}icon-`}
-					breakpoint={breakpoint}
-					isHover={isHover}
-					content={props[`${prefix}icon-content`]}
-				/>
-			)}
+
 
 			{/* Spacing and position controls: Only when not in icon-only mode */}
 			{!isHover && !iconOnly && (
@@ -440,6 +419,29 @@ const IconControlResponsiveSettings = withRTC(props => {
 						]}
 					/>
 				))}
+
+			{/* Stroke width control: Only for non-Shape SVGs (Lines and other types) */}
+			{iconStyle === 'color' && svgType !== 'Shape' && (
+				<SvgStrokeWidthControl
+					{...getGroupAttributes(props, 'icon', isHover, prefix)}
+					{...(isHover && {
+						...{
+							...getGroupAttributes(
+								props,
+								'icon',
+								isHover,
+								prefix
+							),
+						},
+					})}
+					className='maxi-icon-control__stroke-width'
+					onChange={obj => onChange(obj)}
+					prefix={`${prefix}icon-`}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					content={props[`${prefix}icon-content`]}
+				/>
+			)}
 
 			{/* Inherit toggle: Allow icon to inherit colors from parent button */}
 			{iconStyle === 'color' && !disableIconInherit && !isHover && breakpoint === 'general' && (

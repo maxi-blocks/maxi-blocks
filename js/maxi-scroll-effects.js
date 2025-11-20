@@ -65,7 +65,7 @@ class ScrollEffects {
 				const scrollDelta = Math.abs(window.scrollY - this.lastScrollY);
 				// If scroll jumped more than 100px, likely an anchor click
 				if (scrollDelta > 100) {
-					this.startingEffect();
+					this.recalculatePositions();
 				}
 				this.lastScrollY = window.scrollY;
 			}, 150);
@@ -469,6 +469,20 @@ class ScrollEffects {
 		}
 
 		return transition;
+	}
+
+	// Only recalculate element positions without resetting transforms
+	recalculatePositions() {
+		Object.entries(this.scrollData).forEach(([id]) => {
+			const element = document.getElementById(id);
+			if (!element) return;
+
+			const rects = element.getBoundingClientRect();
+			this.startData[id] = {
+				top: Math.round(rects.top + window.scrollY),
+				height: Math.round(rects.height),
+			};
+		});
 	}
 
 	startingEffect() {

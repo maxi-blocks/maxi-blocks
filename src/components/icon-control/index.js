@@ -468,8 +468,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 			)}
 
 			{/* OUTLINE TAB CONTENT: Border controls for icon outline */}
-			{(iconStyle === 'border' ||
-				inlineTarget?.includes('button-block')) && (
+			{iconStyle === 'border' && (
 				<BorderControl
 					{...getGroupAttributes(
 						props,

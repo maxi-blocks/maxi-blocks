@@ -319,29 +319,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				</>
 			)}
 
-			{/* Inherit toggle: Allow icon to inherit colors from parent button */}
-			{!disableIconInherit && !isHover && breakpoint === 'general' && (
-				<ToggleSwitch
-					label={__(
-						'Inherit stroke colour/background from button',
-						'maxi-blocks'
-					)}
-					className='maxi-icon-control__inherit'
-					selected={iconInherit}
-					onChange={val => {
-						// Update icon SVG with inherit state
-						const icon = getIconWithColor({
-							isInherit: val,
-							isHover,
-						});
 
-						onChange({
-							[`${prefix}icon-inherit`]: val,
-							[`${prefix}icon-content`]: icon,
-						});
-					}}
-				/>
-			)}
 
 			{/* Icon style tabs: Stroke, Fill, Outline (only show if more than 1 option) */}
 			{getOptions().length > 1 && (
@@ -462,6 +440,30 @@ const IconControlResponsiveSettings = withRTC(props => {
 						]}
 					/>
 				))}
+
+			{/* Inherit toggle: Allow icon to inherit colors from parent button */}
+			{iconStyle === 'color' && !disableIconInherit && !isHover && breakpoint === 'general' && (
+				<ToggleSwitch
+					label={__(
+						'Inherit stroke colour/background from button',
+						'maxi-blocks'
+					)}
+					className='maxi-icon-control__inherit'
+					selected={iconInherit}
+					onChange={val => {
+						// Update icon SVG with inherit state
+						const icon = getIconWithColor({
+							isInherit: val,
+							isHover,
+						});
+
+						onChange({
+							[`${prefix}icon-inherit`]: val,
+							[`${prefix}icon-content`]: icon,
+						});
+					}}
+				/>
+			)}
 
 			{/* OUTLINE TAB CONTENT: Border controls for icon outline */}
 			{(iconStyle === 'border' ||

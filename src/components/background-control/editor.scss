@@ -7,7 +7,9 @@ body .maxi-background-control {
 		}
 		
 		// Unique classes for each background type button
-		.maxi-tabs-control__button-none {
+		.maxi-tabs-control__button-none,
+		.maxi-tabs-control__button-solid,
+		.maxi-tabs-control__button-gradient {
 			border: 1px solid var(--maxi-grey-light);
 			border-radius: 4px;
 			color: var(--maxi-grey-dark);
@@ -16,36 +18,10 @@ body .maxi-background-control {
 			
 			&.maxi-tabs-control__button--selected {
 				border: 1px solid var(--maxi-primary-color);
-			color: var(--maxi-primary-color);
-			background-color: var(--maxi-whisper-green);
+				color: var(--maxi-primary-color);
+				background-color: var(--maxi-whisper-green);
 			}
 		}
-		
-		.maxi-tabs-control__button-solid {
-				border: 1px solid var(--maxi-grey-light);
-			border-radius: 4px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
-			padding: 8px;
-			
-			&.maxi-tabs-control__button--selected {
-						border: 1px solid var(--maxi-primary-color);
-			color: var(--maxi-primary-color);
-			background-color: var(--maxi-whisper-green);
-			}
-		}
-			.maxi-tabs-control__button-gradient {
-				border: 1px solid var(--maxi-grey-light);
-			border-radius: 4px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
-			padding: 8px;
-			
-			&.maxi-tabs-control__button--selected {
-							border: 1px solid var(--maxi-primary-color);
-			color: var(--maxi-primary-color);
-			background-color: var(--maxi-whisper-green);
-			}}
 		// .maxi-tabs-control__button-image {
 		// 	// Styles for "Image" button
 			

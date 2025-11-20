@@ -113,7 +113,7 @@
 				transition: all 0.5s ease;
 			}
 			&[aria-pressed='true'] {
-				color: var(--maxi-black);
+				color: var(--maxi-primary-color) !important;
 				font-weight: 700;
 				background-color: var(--maxi-whisper-green) !important;
 				transition: all 0.5s ease;

@@ -3,39 +3,51 @@ body .maxi-background-control {
 	.maxi-tabs-control__full-width {
 		column-gap: 5px;
 		.maxi-tabs-control__button {
-			&-none,
-			&-color,
-			&-gradient {
-				padding: 10px;
-				border: 1px solid var(--maxi-grey-light);
-				border-radius: 4px;
-				&.maxi-tabs-control__button--selected {
-					background-color: var(--maxi-pastel-green);
-					border: 1px solid var(--maxi-primary-color);
-				}
-			}
-			&-none,
-			&-color {
-				&.maxi-tabs-control__button--selected {
-					svg {
-						path,
-						circle {
-							fill: var(--maxi-secondary-color);
-						}
-					}
-				}
-			}
-			&-gradient {
-				&.maxi-tabs-control__button--selected {
-					svg {
-						path,
-						circle {
-							stroke: var(--maxi-secondary-color);
-						}
-					}
-				}
+			
+		}
+		
+		// Unique classes for each background type button
+		.maxi-tabs-control__button-none,
+		.maxi-tabs-control__button-solid,
+		.maxi-tabs-control__button-gradient {
+			border: 1px solid var(--maxi-grey-light);
+			border-radius: 4px;
+			color: var(--maxi-grey-dark);
+			background-color: var(--maxi-white);
+			padding: 8px;
+			
+			&.maxi-tabs-control__button--selected {
+				border: 1px solid var(--maxi-primary-color);
+				color: var(--maxi-primary-color);
+				background-color: var(--maxi-whisper-green);
 			}
 		}
+		// .maxi-tabs-control__button-image {
+		// 	// Styles for "Image" button
+			
+		// 	&.maxi-tabs-control__button--selected {
+		// 		// Selected state for "Image" button
+		// 	}
+		// }
+		
+		// .maxi-tabs-control__button-video {
+		// 	// Styles for "Video" button
+			
+		// 	&.maxi-tabs-control__button--selected {
+		// 		// Selected state for "Video" button
+		// 	}
+		// }
+		
+	
+		
+		
+		// .maxi-tabs-control__button-svg {
+		// 	// Styles for "SVG" button
+			
+		// 	&.maxi-tabs-control__button--selected {
+		// 		// Selected state for "SVG" button
+		// 	}
+		// }
 	}
 
 	&__image-layer .maxi-toggle-switch {

@@ -211,8 +211,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 			{/* Icon-only toggle: Only show on general breakpoint, not in hover state or image blocks */}
 			{!isIB && !disableIconOnly && !isHover && breakpoint === 'general' && (
 				<>
-					<hr />
-					<ToggleSwitch
+						<ToggleSwitch
 						label={__('Icon only (remove text)', 'maxi-blocks')}
 						className='maxi-icon-control__icon-only'
 						selected={iconOnly}

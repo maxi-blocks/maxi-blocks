@@ -56,6 +56,12 @@ body.maxi-blocks--active .maxi-sidebar {
 		column-gap: 10px;
 
 	}
+
+	.maxi-background-control--button- {
+		.components-custom-gradient-picker__ui-line {
+			margin-bottom: 8px !important;
+		}
+	}
 }
 
 body.maxi-blocks--active .maxi-button-block__content.hidden {

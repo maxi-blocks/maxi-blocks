@@ -66,6 +66,7 @@ const background = ({
 		breakpoint: deviceType,
 		globalProps,
 		getBounds,
+		className: `maxi-background-control--${prefix}`,
 	};
 
 	return {

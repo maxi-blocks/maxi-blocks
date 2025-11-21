@@ -520,13 +520,17 @@ class MaxiBlocks_Local_Fonts
      * Ensure @font-face CSS exists for a custom uploaded family and return its URL.
      * CSS path: uploads/maxi/custom-fonts/{family}/style.css
      */
-    public function get_or_create_custom_font_stylesheet_url($family, $font_data)
+    public function get_or_create_custom_font_stylesheet_url($family, $font_data, $force = false)
     {
         $uploads = wp_upload_dir();
         $sanitized = $this->sanitize_font_name($family);
         $dir = trailingslashit($uploads['basedir']) . 'maxi/custom-fonts/' . $sanitized;
         $url = trailingslashit($uploads['baseurl']) . 'maxi/custom-fonts/' . $sanitized . '/style.css';
         $css_file = $dir . '/style.css';
+
+        if ($force && file_exists($css_file)) {
+            @unlink($css_file);
+        }
 
         if (!file_exists($css_file)) {
             if (!wp_mkdir_p($dir)) {
@@ -551,6 +555,44 @@ class MaxiBlocks_Local_Fonts
         return $url;
     }
 
+    /**
+     * Regenerate the stylesheet for a custom font family.
+     *
+     * @param string $family
+     * @param array  $font_data
+     * @return false|string
+     */
+    public function regenerate_custom_font_stylesheet($family, $font_data)
+    {
+        return $this->get_or_create_custom_font_stylesheet_url($family, $font_data, true);
+    }
+
+    /**
+     * Remove the generated stylesheet for a custom font family.
+     *
+     * @param string $family
+     * @return void
+     */
+    public function remove_custom_font_stylesheet($family)
+    {
+        $uploads = wp_upload_dir();
+        $sanitized = $this->sanitize_font_name($family);
+        $dir = trailingslashit($uploads['basedir']) . 'maxi/custom-fonts/' . $sanitized;
+        $css_file = $dir . '/style.css';
+
+        if (file_exists($css_file)) {
+            @unlink($css_file);
+        }
+
+        // Remove directory if empty.
+        if (is_dir($dir)) {
+            $files = @scandir($dir);
+            if (is_array($files) && count($files) <= 2) {
+                @rmdir($dir);
+            }
+        }
+    }
+
     private function build_custom_font_css($family, $font_data)
     {
         $variants = isset($font_data['variants']) && is_array($font_data['variants']) ? $font_data['variants'] : [];
@@ -569,8 +611,8 @@ class MaxiBlocks_Local_Fonts
             $format = $this->guess_font_format_from_url($url);
             $safe_family = str_replace(["\n", "\r"], '', $family);
             $safe_url = esc_url_raw($url);
-            $safe_weight = esc_attr($weight);
-            $safe_style = strtolower($style) === 'italic' ? 'italic' : 'normal';
+            $safe_weight = esc_attr($this->normalize_font_weight_value($weight, false));
+            $safe_style = $this->normalize_font_style_value($style, false);
 
             $rules = "@font-face{font-family:'{$safe_family}';font-style:{$safe_style};font-weight:{$safe_weight};font-display:swap;src:url('{$safe_url}')";
             if ($format) {
@@ -585,6 +627,161 @@ class MaxiBlocks_Local_Fonts
         }
 
         return $this->minimize_font_css(implode('', $css_rules));
+    }
+
+    /**
+     * Detect font attributes for a given attachment.
+     *
+     * @param int         $attachment_id
+     * @param string|int  $weight
+     * @param string|null $style
+     * @return array{weight:string,style:string}
+     */
+    public function detect_font_attributes_from_attachment($attachment_id)
+    {
+        $file_path = get_attached_file($attachment_id);
+        if (!$file_path || !file_exists($file_path)) {
+            return new WP_Error(
+                'font_file_missing',
+                __('Unable to locate the uploaded font file.', 'maxi-blocks'),
+                ['status' => 400],
+            );
+        }
+
+        $parsed = $this->parse_font_file_attributes($file_path);
+        if (is_wp_error($parsed)) {
+            return $parsed;
+        }
+
+        $weight = isset($parsed['weight']) ? $parsed['weight'] : '';
+        $style = isset($parsed['style']) ? $parsed['style'] : '';
+
+        if (!$weight || !$style) {
+            return new WP_Error(
+                'font_metadata_missing',
+                __('Unable to read required font metadata (weight/style).', 'maxi-blocks'),
+                ['status' => 400],
+            );
+        }
+
+        return [
+            'weight' => $weight,
+            'style' => $style,
+        ];
+    }
+
+    /**
+     * Attempt to read OS/2 table data from the provided font file using php-font-lib.
+     *
+     * @param string $file_path
+     * @return array<string,string>|WP_Error
+     */
+    private function parse_font_file_attributes($file_path)
+    {
+        if (!class_exists('\FontLib\Font')) {
+            return new WP_Error(
+                'font_parser_unavailable',
+                __('Font parsing library is not available.', 'maxi-blocks'),
+                ['status' => 500],
+            );
+        }
+
+        try {
+            $font = \FontLib\Font::load($file_path);
+            $font->parse();
+            $os2 = $font->getData('OS/2');
+            $font->close();
+        } catch (\Throwable $e) {
+            return new WP_Error(
+                'font_parser_failed',
+                __('Unable to parse the uploaded font file.', 'maxi-blocks'),
+                ['status' => 400],
+            );
+        }
+
+        if (!is_array($os2) || empty($os2)) {
+            return new WP_Error(
+                'font_metadata_missing',
+                __('Required font metadata is missing.', 'maxi-blocks'),
+                ['status' => 400],
+            );
+        }
+
+        $weight_value = isset($os2['usWeightClass']) ? $os2['usWeightClass'] : null;
+        if (!$weight_value) {
+            return new WP_Error(
+                'font_weight_missing',
+                __('Font weight metadata is missing.', 'maxi-blocks'),
+                ['status' => 400],
+            );
+        }
+
+        $fs_selection = isset($os2['fsSelection']) ? (int) $os2['fsSelection'] : 0;
+        $style = 'normal';
+        if ($fs_selection & (1 << 9)) {
+            $style = 'oblique';
+        } elseif ($fs_selection & 1) {
+            $style = 'italic';
+        }
+
+        return [
+            'weight' => $this->normalize_font_weight_value($weight_value),
+            'style' => $this->normalize_font_style_value($style, false),
+        ];
+    }
+
+    private function normalize_font_weight_value($weight, $allow_empty = true)
+    {
+        if ($weight === '' || null === $weight) {
+            return $allow_empty ? '' : '400';
+        }
+
+        if (!is_numeric($weight)) {
+            return $allow_empty ? '' : '400';
+        }
+
+        $weight = (int) $weight;
+        if ($weight <= 0) {
+            return $allow_empty ? '' : '400';
+        }
+
+        $weight = $this->clamp_weight_value($weight);
+
+        return (string) $weight;
+    }
+
+    private function normalize_font_style_value($style, $allow_empty = true)
+    {
+        if (!is_string($style) || '' === trim($style)) {
+            return $allow_empty ? '' : 'normal';
+        }
+
+        $style = strtolower(trim($style));
+        if ('italic' === $style || 'oblique' === $style) {
+            return $style;
+        }
+
+        if ('normal' === $style) {
+            return 'normal';
+        }
+
+        return $allow_empty ? '' : 'normal';
+    }
+
+    private function clamp_weight_value($weight)
+    {
+        $weight = max(100, min(900, $weight));
+        $rounded = (int) round($weight / 100) * 100;
+
+        if ($rounded < 100) {
+            return 100;
+        }
+
+        if ($rounded > 900) {
+            return 900;
+        }
+
+        return $rounded;
     }
 
     private function guess_font_format_from_url($url)

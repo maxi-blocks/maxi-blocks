@@ -470,6 +470,8 @@ if (!class_exists('MaxiBlocks_API')):
 
             $response = [];
 
+            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+
             foreach ($fonts as $font) {
                 $font_value = isset($font['value']) ? $font['value'] : '';
 
@@ -486,6 +488,15 @@ if (!class_exists('MaxiBlocks_API')):
                         : [],
                     'source' => 'custom',
                 ];
+
+                $stylesheet = $local_fonts->get_or_create_custom_font_stylesheet_url(
+                    $font_value,
+                    $font
+                );
+
+                if ($stylesheet) {
+                    $response[$font_value]['stylesheet'] = $stylesheet;
+                }
             }
 
             return rest_ensure_response($response);
@@ -568,6 +579,16 @@ if (!class_exists('MaxiBlocks_API')):
 
             $this->persist_custom_fonts($fonts);
 
+            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+            $stylesheet_url = $local_fonts->regenerate_custom_font_stylesheet(
+                $family,
+                $fonts[$id]
+            );
+
+            if ($stylesheet_url) {
+                $fonts[$id]['stylesheet'] = $stylesheet_url;
+            }
+
             return rest_ensure_response($fonts[$id]);
         }
 
@@ -608,6 +629,11 @@ if (!class_exists('MaxiBlocks_API')):
 
             unset($fonts[$id]);
             $this->persist_custom_fonts($fonts);
+
+            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+            if (isset($font['value'])) {
+                $local_fonts->remove_custom_font_stylesheet($font['value']);
+            }
 
             return rest_ensure_response(['deleted' => $id]);
         }
@@ -672,14 +698,17 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }
 
-            $weight = isset($variant['weight'])
-                ? sanitize_text_field($variant['weight'])
-                : '400';
-            $style = isset($variant['style'])
-                ? sanitize_text_field($variant['style'])
-                : 'normal';
+            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+            $detected_attributes = $local_fonts->detect_font_attributes_from_attachment(
+                $attachment_id
+            );
 
-            $style = strtolower($style) === 'italic' ? 'italic' : 'normal';
+            if (is_wp_error($detected_attributes)) {
+                return $detected_attributes;
+            }
+
+            $weight = $detected_attributes['weight'];
+            $style = $detected_attributes['style'];
 
             $key = $this->build_variant_key($weight, $style);
 

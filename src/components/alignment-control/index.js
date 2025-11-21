@@ -97,10 +97,10 @@ const AlignmentControl = props => {
 			breakpoint,
 			attributes: props,
 			isHover,
-		}) || getOptions()[0].value;
+		}) || (getOptions()[0]?.value ?? 'left');
 
 	// Get the default value (first option)
-	const defaultValue = getOptions()[0]?.value;
+	const defaultValue = getOptions()[0]?.value ?? 'left';
 
 	// Generate all possible alignment attribute names (all breakpoints + hover states)
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

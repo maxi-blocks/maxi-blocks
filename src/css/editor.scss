@@ -477,6 +477,10 @@ svg path#styleCardBoat_b,
 		border-color: var(--maxi-tertiary-color);
 	}
 
+	&.maxi-block--interaction::after {
+		border-color: #448aff;
+	}
+
 	&.maxi-block--full-width::after {
 		width: calc(100% - 4px);
 	}
@@ -794,6 +798,38 @@ body.maxi-blocks--active
 // 	transition: all 0.3s ease;
 // 	border: 1.5px solid var(--maxi-grey-light) !important;
 // 	border-radius: 5px 0 0 5px !important;
+
+// Interaction indicator in List View - blue dot for blocks with interactions
+.block-editor-list-view-tree
+	[data-maxi-interaction='true']
+	> .block-editor-list-view-block__contents-cell::after {
+	content: '';
+	position: absolute;
+	right: 3px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background-color: #448aff;
+	pointer-events: none;
+}
+
+// When a block with interaction is selected, make the dot and text blue
+.block-editor-list-view-leaf.is-selected[data-maxi-interaction='true'],
+.block-editor-list-view__block.is-selected[data-maxi-interaction='true'] {
+	// Blue dot when selected
+	> .block-editor-list-view-block__contents-cell::after {
+		background-color: #448aff !important;
+	}
+	
+	// Blue text when selected
+	.block-editor-list-view-block-contents,
+	.block-editor-list-view-block-select-button__title,
+	.components-truncate {
+		color: #448aff !important;
+	}
+}
 // 	height: 31px !important;
 // 	padding: 0 0 0 8px !important;
 // 	width: 55px !important;

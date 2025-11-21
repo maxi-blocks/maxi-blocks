@@ -128,6 +128,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		dcLinkStatus,
 		dcLinkTarget,
 		showLoader,
+		attributes,
 		...extraProps
 	} = props;
 
@@ -135,7 +136,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	const isFullWidth = getLastBreakpointAttribute({
 		target: 'full-width',
 		breakpoint: extraProps.deviceType,
-		attributes: extraProps.attributes,
+		attributes: attributes,
 	});
 
 	if (isSelected) {
@@ -167,7 +168,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		}, 0);
 
 	// Are just necessary for the memo() part
-	delete extraProps.attributes;
 	delete extraProps.deviceType;
 	delete extraProps.baseBreakpoint;
 	delete extraProps.context;
@@ -231,6 +231,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isRepeater && 'maxi-block--repeater',
 		(isDisabled || showLoader) && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width',
+		!isSave && !isEmpty(attributes?.relations) && 'maxi-block--interaction',
 		isSave && dcStatus && dcHide && '$class-to-replace'
 	);
 

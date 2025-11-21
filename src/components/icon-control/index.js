@@ -53,10 +53,10 @@ import {
 
 /**
  * IconControlResponsiveSettings Component
- * 
+ *
  * This component renders all the responsive settings for icon customization.
  * It handles icon styling (stroke, fill, outline), sizing, positioning, and background options.
- * 
+ *
  * Key Features:
  * - Icon style tabs (Stroke, Fill, Outline) based on SVG type
  * - Color controls for stroke and fill
@@ -119,7 +119,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 
 	/**
 	 * Build icon style tab options based on SVG type and breakpoint
-	 * 
+	 *
 	 * Returns array of tab options with labels and values:
 	 * - 'Stroke' (value: 'color') - for non-Shape SVGs on general breakpoint
 	 * - 'Fill' (value: 'fill') - for non-Line SVGs on general breakpoint
@@ -158,7 +158,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 
 	/**
 	 * Build background type options
-	 * 
+	 *
 	 * Returns array of background options:
 	 * - None - no background
 	 * - Color - solid color background
@@ -222,25 +222,23 @@ const IconControlResponsiveSettings = withRTC(props => {
 		<>
 			{/* Icon-only toggle: Only show on general breakpoint, not in hover state or image blocks */}
 			{!isIB && !disableIconOnly && !isHover && breakpoint === 'general' && (
-				<>
-						<ToggleSwitch
-						label={__('Icon only (remove text)', 'maxi-blocks')}
-						className='maxi-icon-control__icon-only'
-						selected={iconOnly}
-						onChange={val => {
-							// Update icon SVG with new icon-only state
-							const icon = getIconWithColor({
-								isIconOnly: val,
-								isHover,
-							});
+				<ToggleSwitch
+					label={__('Icon only (remove text)', 'maxi-blocks')}
+					className='maxi-icon-control__icon-only'
+					selected={iconOnly}
+					onChange={val => {
+						// Update icon SVG with new icon-only state
+						const icon = getIconWithColor({
+							isIconOnly: val,
+							isHover,
+						});
 
-							onChange({
-								[`${prefix}icon-only`]: val,
-								[`${prefix}icon-content`]: icon,
-							});
-						}}
-					/>
-				</>
+						onChange({
+							[`${prefix}icon-only`]: val,
+							[`${prefix}icon-content`]: icon,
+						});
+					}}
+				/>
 			)}
 
 			{/* Icon width and height controls */}
@@ -254,8 +252,6 @@ const IconControlResponsiveSettings = withRTC(props => {
 				disableHeightFitContent={disableHeightFitContent}
 				isIB={isIB}
 			/>
-
-
 
 			{/* Spacing and position controls: Only when not in icon-only mode */}
 			{!isHover && !iconOnly && (
@@ -309,8 +305,6 @@ const IconControlResponsiveSettings = withRTC(props => {
 					)}
 				</>
 			)}
-
-
 
 			{/* Icon style tabs: Stroke, Fill, Outline (only show if more than 1 option) */}
 			{getOptions().length > 1 && (
@@ -456,7 +450,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 			)}
 
 			{/* Inherit toggle: Allow icon to inherit colors from parent button */}
-			{iconStyle === 'color' && !disableIconInherit && !isHover && breakpoint === 'general' && (
+			{!disableIconInherit && !isHover && breakpoint === 'general' && (
 				<ToggleSwitch
 					label={__(
 						'Inherit stroke colour/background from button',
@@ -763,11 +757,11 @@ const IconControlResponsiveSettings = withRTC(props => {
 
 /**
  * IconControl Component (Main Export)
- * 
+ *
  * This is the main wrapper component that:
  * 1. Renders the icon selection modal (MaxiModal)
  * 2. Renders the IconControlResponsiveSettings when an icon is selected
- * 
+ *
  * The modal allows users to choose an icon from the library.
  * Once selected, all the styling controls become available.
  */

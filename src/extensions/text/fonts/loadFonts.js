@@ -8,7 +8,7 @@ import { dispatch, select } from '@wordpress/data';
  */
 import { isEmpty, uniq } from 'lodash';
 import { cleanUrl } from './fontCacheUtils';
-import { buildFontUrl } from './loadFontUtils';
+import buildFontUrl from './loadFontUtils';
 
 const buildVariantKey = (weight, style) => {
 	const normalizedWeight = weight?.toString() || '400';

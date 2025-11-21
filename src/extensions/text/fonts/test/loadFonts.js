@@ -1,5 +1,5 @@
 import { getFontUrl, loadFonts } from '@extensions/text/fonts/loadFonts';
-import { buildFontUrl } from '@extensions/text/fonts/loadFontUtils';
+import buildFontUrl from '@extensions/text/fonts/loadFontUtils';
 
 const defaultFontResponse = {
 	files: {

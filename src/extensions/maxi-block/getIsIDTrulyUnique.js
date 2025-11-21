@@ -67,16 +67,28 @@ const getIsIDTrulyUnique = (id, repeatCount = 1) => {
 			isUnique = false;
 		}
 
+		// eslint-disable-next-line no-console
 		console.log(
-			`[getIsIDTrulyUnique] ⚡ CACHE HIT: ${JSON.stringify(id)} | InDB: ${JSON.stringify(existsInDB)} | EditorCount: ${JSON.stringify(currentEditorCount)} | PostDirty: ${JSON.stringify(postDirty)} | Unique: ${JSON.stringify(isUnique)}`
+			`[getIsIDTrulyUnique] ⚡ CACHE HIT: ${JSON.stringify(
+				id
+			)} | InDB: ${JSON.stringify(
+				existsInDB
+			)} | EditorCount: ${JSON.stringify(
+				currentEditorCount
+			)} | PostDirty: ${JSON.stringify(
+				postDirty
+			)} | Unique: ${JSON.stringify(isUnique)}`
 		);
 
 		return isUnique;
 	}
 
 	// Fallback to original tree traversal if cache not loaded
+	// eslint-disable-next-line no-console
 	console.log(
-		`[getIsIDTrulyUnique] 🐢 CACHE MISS - using tree traversal for: ${JSON.stringify(id)}`
+		`[getIsIDTrulyUnique] 🐢 CACHE MISS - using tree traversal for: ${JSON.stringify(
+			id
+		)}`
 	);
 
 	let currentRepeatCount = 0;

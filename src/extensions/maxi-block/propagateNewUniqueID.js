@@ -292,19 +292,15 @@ const propagateNewUniqueID = (
 					isArray(Object.values(attributes.relations))));
 
 		const blockEditorStore = select('core/block-editor');
+		const maxiBlocksStore = select('maxiBlocks/blocks');
 
 		// Check if the old uniqueID still exists elsewhere (copy-paste) or not (pattern import)
+		// O(1) lookup using Redux store instead of tree traversal
 		let originalBlockStillExists = false;
-		goThroughMaxiBlocks(block => {
-			if (
-				block.attributes.uniqueID === oldUniqueID &&
-				block.clientId !== clientId
-			) {
-				originalBlockStillExists = true;
-				return true; // Stop searching
-			}
-			return false;
-		});
+		const existingBlock = maxiBlocksStore.getBlock(oldUniqueID);
+		if (existingBlock && existingBlock.clientId !== clientId) {
+			originalBlockStillExists = true;
+		}
 
 		// ENHANCED: Additional safety check for view mode switches
 		// If we're in a view mode switch scenario, be more aggressive about updating relations

@@ -54,15 +54,6 @@ const MaxiBreadcrumbs = ({ repeaterStatus }) => {
 					// Check if block has interactions
 					const block = select('core/block-editor').getBlock(blockId);
 					const hasInteraction = !isEmpty(block?.attributes?.relations);
-					
-					// Debug logging
-					if (hasInteraction) {
-						console.log('MaxiBlocks Breadcrumbs: Block has interaction', {
-							blockId,
-							title,
-							relations: block?.attributes?.relations
-						});
-					}
 
 					return (
 						<li

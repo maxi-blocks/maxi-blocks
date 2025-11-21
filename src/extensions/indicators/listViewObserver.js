@@ -9,7 +9,6 @@ import { select, subscribe } from '@wordpress/data';
 import { isEmpty } from 'lodash';
 
 const ATTR_NAME = 'data-maxi-interaction';
-const DEBUG = false; // Set to true for debugging
 
 /**
  * Updates a single List View item with the interaction attribute
@@ -20,7 +19,6 @@ const updateListViewItem = (item) => {
     const link = item.querySelector('a[href^="#block-"]');
 
     if (!link) {
-        if (DEBUG) console.log('MaxiBlocks List View: No link found in item', item);
         return;
     }
 
@@ -38,7 +36,6 @@ const updateListViewItem = (item) => {
         item.setAttribute(ATTR_NAME, 'true');
         item.setAttribute('aria-label', 'Interaction');
         item.setAttribute('title', 'Interaction');
-        if (DEBUG) console.log('MaxiBlocks List View: Added interaction attribute to', block.name, clientId);
     } else {
         item.removeAttribute(ATTR_NAME);
         item.removeAttribute('aria-label');
@@ -52,7 +49,6 @@ const updateListViewItem = (item) => {
 const updateAllListViewItems = () => {
     // Target the actual row elements in the List View
     const items = document.querySelectorAll('.block-editor-list-view-leaf, .block-editor-list-view__block');
-    if (DEBUG) console.log('MaxiBlocks List View: Found', items.length, 'list view items');
 
     if (items.length === 0) return;
 
@@ -63,7 +59,11 @@ const updateAllListViewItems = () => {
  * Initialize the observer
  */
 const initListViewObserver = () => {
-    if (DEBUG) console.log('MaxiBlocks List View: Initializing observer');
+    // Track resources for cleanup
+    let initialTimeout;
+    let updateTimeout;
+    let periodicInterval;
+    let unsubscribe;
 
     // Observer for DOM changes (List View opening, expanding, scrolling)
     const observer = new MutationObserver((mutations) => {
@@ -102,11 +102,10 @@ const initListViewObserver = () => {
     });
 
     // Initial check
-    setTimeout(updateAllListViewItems, 500);
+    initialTimeout = setTimeout(updateAllListViewItems, 500);
 
     // Subscribe to block editor changes to update when blocks are modified
-    let updateTimeout;
-    subscribe(() => {
+    unsubscribe = subscribe(() => {
         if (document.querySelector('.block-editor-list-view-tree')) {
             clearTimeout(updateTimeout);
             updateTimeout = setTimeout(updateAllListViewItems, 300);
@@ -114,14 +113,49 @@ const initListViewObserver = () => {
     }, 'core/block-editor');
 
     // Periodic check as fallback
-    setInterval(() => {
+    periodicInterval = setInterval(() => {
         if (document.querySelector('.block-editor-list-view-tree')) {
             updateAllListViewItems();
         }
     }, 2000);
+
+    // Return cleanup function
+    return () => {
+        // Disconnect MutationObserver
+        if (observer) {
+            observer.disconnect();
+        }
+
+        // Clear all timeouts
+        if (initialTimeout) {
+            clearTimeout(initialTimeout);
+        }
+        if (updateTimeout) {
+            clearTimeout(updateTimeout);
+        }
+
+        // Clear interval
+        if (periodicInterval) {
+            clearInterval(periodicInterval);
+        }
+
+        // Unsubscribe from block editor
+        if (unsubscribe) {
+            unsubscribe();
+        }
+    };
 };
 
-// Initialize on DOM ready
+// Initialize on DOM ready and store cleanup function
+let cleanup;
 wp.domReady(() => {
-    initListViewObserver();
+    cleanup = initListViewObserver();
 });
+
+// Export cleanup function for manual teardown if needed
+export const cleanupListViewObserver = () => {
+    if (cleanup) {
+        cleanup();
+        cleanup = null;
+    }
+};

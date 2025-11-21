@@ -68,6 +68,10 @@ import {
  * - Inherit from button toggle
  */
 const IconControlResponsiveSettings = withRTC(props => {
+	const { prefix = '' } = props;
+	const iconOnlyKey = `${prefix}icon-only`;
+	const iconInheritKey = `${prefix}icon-inherit`;
+
 	const {
 		onChangeInline = null, // Function for inline style changes
 		onChange, // Main change handler
@@ -87,9 +91,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 		disablePositionY = false, // Disable Y-axis positioning
 		getIconWithColor, // Function to apply colors to icon SVG
 		inlineTarget, // Target selector for inline styles
-		prefix = '', // Attribute prefix (e.g., 'close-' for close icon)
-		[`${prefix}icon-only`]: iconOnly, // Icon-only mode state
-		[`${prefix}icon-inherit`]: iconInherit, // Inherit from button state
+		[iconOnlyKey]: iconOnly, // Icon-only mode state
+		[iconInheritKey]: iconInherit, // Inherit from button state
 	} = props;
 
 	// State: Current active icon style tab ('color' = stroke, 'fill', or 'border' = outline)
@@ -102,6 +105,17 @@ const IconControlResponsiveSettings = withRTC(props => {
 			setIconStyle('border');
 		}
 	}, [breakpoint]);
+
+	// Effect: Handle icon style switching based on SVG type
+	useEffect(() => {
+		if (breakpoint === 'general') {
+			if (svgType === 'Shape' && iconStyle === 'color') {
+				setIconStyle('fill');
+			} else if (svgType === 'Line' && iconStyle === 'fill') {
+				setIconStyle('color');
+			}
+		}
+	}, [svgType, iconStyle, breakpoint]);
 
 	/**
 	 * Build icon style tab options based on SVG type and breakpoint
@@ -122,7 +136,6 @@ const IconControlResponsiveSettings = withRTC(props => {
 					label: __('Stroke', 'maxi-blocks'),
 					value: 'color',
 				});
-			else if (iconStyle === 'color') setIconStyle('fill');
 
 			// Fill tab: Available for all SVG types except 'Line'
 			if (svgType !== 'Line')
@@ -130,7 +143,6 @@ const IconControlResponsiveSettings = withRTC(props => {
 					label: __('Fill', 'maxi-blocks'),
 					value: 'fill',
 				});
-			else if (iconStyle === 'fill') setIconStyle('color');
 		}
 
 		// Outline tab: Always available unless explicitly disabled
@@ -760,6 +772,9 @@ const IconControlResponsiveSettings = withRTC(props => {
  * Once selected, all the styling controls become available.
  */
 const IconControl = props => {
+	const { prefix = '' } = props;
+	const iconContentKey = `${prefix}icon-content`;
+
 	const {
 		className,
 		onChange,
@@ -772,8 +787,7 @@ const IconControl = props => {
 		getIconWithColor,
 		ariaLabels,
 		type = 'button-icon', // 'button-icon' or 'search-icon'
-		prefix = '',
-		[`${prefix}icon-content`]: iconContent, // The actual SVG content
+		[iconContentKey]: iconContent, // The actual SVG content
 		disablePadding = false,
 	} = props;
 

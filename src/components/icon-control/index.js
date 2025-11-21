@@ -100,11 +100,15 @@ const IconControlResponsiveSettings = withRTC(props => {
 
 	// Effect: Auto-switch to 'border' tab when not on general breakpoint
 	// (stroke and fill options are only available on general breakpoint)
+	// Only switch if current iconStyle is 'color' or 'fill' which aren't available
 	useEffect(() => {
-		if (breakpoint !== 'general') {
+		if (
+			breakpoint !== 'general' &&
+			(iconStyle === 'color' || iconStyle === 'fill')
+		) {
 			setIconStyle('border');
 		}
-	}, [breakpoint]);
+	}, [breakpoint, iconStyle]);
 
 	// Effect: Handle icon style switching based on SVG type
 	useEffect(() => {
@@ -252,6 +256,29 @@ const IconControlResponsiveSettings = withRTC(props => {
 				disableHeightFitContent={disableHeightFitContent}
 				isIB={isIB}
 			/>
+
+			{/* Stroke width control: Always show for non-Shape SVGs */}
+			{svgType !== 'Shape' && (
+				<SvgStrokeWidthControl
+					{...getGroupAttributes(props, 'icon', isHover, prefix)}
+					{...(isHover && {
+						...{
+							...getGroupAttributes(
+								props,
+								'icon',
+								isHover,
+								prefix
+							),
+						},
+					})}
+					className='maxi-icon-control__stroke-width'
+					onChange={obj => onChange(obj)}
+					prefix={`${prefix}icon-`}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					content={props[`${prefix}icon-content`]}
+				/>
+			)}
 
 			{/* Spacing and position controls: Only when not in icon-only mode */}
 			{!isHover && !iconOnly && (
@@ -425,29 +452,6 @@ const IconControlResponsiveSettings = withRTC(props => {
 						]}
 					/>
 				))}
-
-			{/* Stroke width control: Only for non-Shape SVGs (Lines and other types) */}
-			{iconStyle === 'color' && svgType !== 'Shape' && (
-				<SvgStrokeWidthControl
-					{...getGroupAttributes(props, 'icon', isHover, prefix)}
-					{...(isHover && {
-						...{
-							...getGroupAttributes(
-								props,
-								'icon',
-								isHover,
-								prefix
-							),
-						},
-					})}
-					className='maxi-icon-control__stroke-width'
-					onChange={obj => onChange(obj)}
-					prefix={`${prefix}icon-`}
-					breakpoint={breakpoint}
-					isHover={isHover}
-					content={props[`${prefix}icon-content`]}
-				/>
-			)}
 
 			{/* Inherit toggle: Allow icon to inherit colors from parent button */}
 			{!disableIconInherit && !isHover && breakpoint === 'general' && (
@@ -766,9 +770,6 @@ const IconControlResponsiveSettings = withRTC(props => {
  * Once selected, all the styling controls become available.
  */
 const IconControl = props => {
-	const { prefix = '' } = props;
-	const iconContentKey = `${prefix}icon-content`;
-
 	const {
 		className,
 		onChange,
@@ -780,8 +781,9 @@ const IconControl = props => {
 		disableHeightFitContent = false,
 		getIconWithColor,
 		ariaLabels,
-		type = 'button-icon', // 'button-icon' or 'search-icon'
-		[iconContentKey]: iconContent, // The actual SVG content
+		type = 'button-icon',
+		prefix = '',
+		[`${prefix}icon-content`]: iconContent,
 		disablePadding = false,
 	} = props;
 

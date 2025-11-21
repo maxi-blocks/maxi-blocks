@@ -65,6 +65,21 @@
 				opacity: 0.7;
 			}
 		}
+
+		&--has-interaction {
+			background-color: var(--maxi-interaction-pink);
+			padding: 4px 0px 4px 7px;
+			margin: 0 6px 0 2px ;
+
+			.maxi-breadcrumbs__item__content {
+				color: var(--maxi-white);
+				font-weight: 500;
+			}
+
+			&:not(:last-child):after {
+				padding-right: 6px;
+			}
+		}
 	}
 }
 .toolbar-block-custom-label {

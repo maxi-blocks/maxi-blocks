@@ -6,7 +6,7 @@ import { useSelect, useDispatch, select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -50,11 +50,27 @@ const MaxiBreadcrumbs = ({ repeaterStatus }) => {
 					const blockType =
 						select('core/blocks').getBlockType(blockName);
 					const { title } = blockType;
+					
+					// Check if block has interactions
+					const block = select('core/block-editor').getBlock(blockId);
+					const hasInteraction = !isEmpty(block?.attributes?.relations);
+					
+					// Debug logging
+					if (hasInteraction) {
+						console.log('MaxiBlocks Breadcrumbs: Block has interaction', {
+							blockId,
+							title,
+							relations: block?.attributes?.relations
+						});
+					}
 
 					return (
 						<li
 							key={`maxi-breadcrumbs__item-${blockId}`}
-							className='maxi-breadcrumbs__item'
+							className={classnames(
+								'maxi-breadcrumbs__item',
+								hasInteraction && 'maxi-breadcrumbs__item--has-interaction'
+							)}
 						>
 							<span
 								className='maxi-breadcrumbs__item__content'

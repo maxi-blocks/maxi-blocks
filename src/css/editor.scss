@@ -478,7 +478,7 @@ svg path#styleCardBoat_b,
 	}
 
 	&.maxi-block--interaction::after {
-		border-color: #448aff;
+		border-color: var(--maxi-interaction-pink);
 	}
 
 	&.maxi-block--full-width::after {
@@ -811,7 +811,7 @@ body.maxi-blocks--active
 	width: 6px;
 	height: 6px;
 	border-radius: 50%;
-	background-color: #448aff;
+	background-color: var(--maxi-interaction-pink);
 	pointer-events: none;
 }
 
@@ -820,14 +820,14 @@ body.maxi-blocks--active
 .block-editor-list-view__block.is-selected[data-maxi-interaction='true'] {
 	// Blue dot when selected
 	> .block-editor-list-view-block__contents-cell::after {
-		background-color: #448aff !important;
+		background-color: var(--maxi-interaction-pink) !important;
 	}
 	
 	// Blue text when selected
 	.block-editor-list-view-block-contents,
 	.block-editor-list-view-block-select-button__title,
 	.components-truncate {
-		color: #448aff !important;
+		color: var(--maxi-interaction-pink) !important;
 	}
 }
 // 	height: 31px !important;

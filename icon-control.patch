@@ -1,0 +1,12 @@
+--- a/src/components/icon-control/index.js
++++ b/src/components/icon-control/index.js
+@@ -468,8 +468,7 @@
+ 		)}
+ 
+ 		{/* OUTLINE TAB CONTENT: Border controls for icon outline */}
+-		{(iconStyle === 'border' ||
+-			inlineTarget?.includes('button-block')) && (
++		{iconStyle === 'border' && (
+ 			<BorderControl
+ 				{...getGroupAttributes(
+ 					props,

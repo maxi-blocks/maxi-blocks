@@ -46,67 +46,109 @@ import './editor.scss';
 import {
 	backgroundColor,
 	backgroundGradient,
-	iconBorder,
 	styleNone,
 	iconStroke,
 	iconFill,
 } from '@maxi-icons';
 
+/**
+ * IconControlResponsiveSettings Component
+ * 
+ * This component renders all the responsive settings for icon customization.
+ * It handles icon styling (stroke, fill, outline), sizing, positioning, and background options.
+ * 
+ * Key Features:
+ * - Icon style tabs (Stroke, Fill, Outline) based on SVG type
+ * - Color controls for stroke and fill
+ * - Border/outline controls
+ * - Background options (none, color, gradient)
+ * - Size and spacing controls
+ * - Position controls
+ * - Icon-only mode toggle
+ * - Inherit from button toggle
+ */
 const IconControlResponsiveSettings = withRTC(props => {
+	const { prefix = '' } = props;
+	const iconOnlyKey = `${prefix}icon-only`;
+	const iconInheritKey = `${prefix}icon-inherit`;
+
 	const {
-		onChangeInline = null,
-		onChange,
-		clientId,
-		svgType,
-		breakpoint,
-		isHover = false,
-		isIB = false,
-		disableBackground = false,
-		disableBorder = false,
-		disableIconInherit = false,
-		disableIconOnly = false,
-		disablePadding = false,
-		disablePosition = false,
-		disableSpacing = false,
-		disableHeightFitContent = false,
-		disablePositionY = false,
-		getIconWithColor,
-		inlineTarget,
-		prefix = '',
-		[`${prefix}icon-only`]: iconOnly,
-		[`${prefix}icon-inherit`]: iconInherit,
+		onChangeInline = null, // Function for inline style changes
+		onChange, // Main change handler
+		clientId, // Block client ID
+		svgType, // Type of SVG: 'Shape', 'Line', or other
+		breakpoint, // Current responsive breakpoint
+		isHover = false, // Whether we're in hover state
+		isIB = false, // Whether this is an image block
+		disableBackground = false, // Hide background controls
+		disableBorder = false, // Hide border/outline controls
+		disableIconInherit = false, // Hide inherit toggle
+		disableIconOnly = false, // Hide icon-only toggle
+		disablePadding = false, // Hide padding controls
+		disablePosition = false, // Hide position controls
+		disableSpacing = false, // Hide spacing controls
+		disableHeightFitContent = false, // Disable height fit content
+		disablePositionY = false, // Disable Y-axis positioning
+		getIconWithColor, // Function to apply colors to icon SVG
+		inlineTarget, // Target selector for inline styles
+		[iconOnlyKey]: iconOnly, // Icon-only mode state
+		[iconInheritKey]: iconInherit, // Inherit from button state
 	} = props;
 
+	// State: Current active icon style tab ('color' = stroke, 'fill', or 'border' = outline)
 	const [iconStyle, setIconStyle] = useState('color');
 
+	// Effect: Auto-switch to 'border' tab when not on general breakpoint
+	// (stroke and fill options are only available on general breakpoint)
 	useEffect(() => {
 		if (breakpoint !== 'general') {
 			setIconStyle('border');
 		}
 	}, [breakpoint]);
 
+	// Effect: Handle icon style switching based on SVG type
+	useEffect(() => {
+		if (breakpoint === 'general') {
+			if (svgType === 'Shape' && iconStyle === 'color') {
+				setIconStyle('fill');
+			} else if (svgType === 'Line' && iconStyle === 'fill') {
+				setIconStyle('color');
+			}
+		}
+	}, [svgType, iconStyle, breakpoint]);
+
+	/**
+	 * Build icon style tab options based on SVG type and breakpoint
+	 * 
+	 * Returns array of tab options with labels and values:
+	 * - 'Stroke' (value: 'color') - for non-Shape SVGs on general breakpoint
+	 * - 'Fill' (value: 'fill') - for non-Line SVGs on general breakpoint
+	 * - 'Outline' (value: 'border') - always available unless disabled
+	 */
 	const getOptions = () => {
 		const options = [];
 
+		// Only show Stroke and Fill tabs on general breakpoint
 		if (breakpoint === 'general') {
+			// Stroke tab: Available for all SVG types except 'Shape'
 			if (svgType !== 'Shape')
 				options.push({
-					icon: <Icon icon={iconBorder} />,
+					label: __('Stroke', 'maxi-blocks'),
 					value: 'color',
 				});
-			else if (iconStyle === 'color') setIconStyle('fill');
 
+			// Fill tab: Available for all SVG types except 'Line'
 			if (svgType !== 'Line')
 				options.push({
-					icon: <Icon icon={iconFill} />,
+					label: __('Fill', 'maxi-blocks'),
 					value: 'fill',
 				});
-			else if (iconStyle === 'fill') setIconStyle('color');
 		}
 
+		// Outline tab: Always available unless explicitly disabled
 		if (!disableBorder) {
 			options.push({
-				icon: <Icon icon={iconStroke} />,
+				label: __('Outline', 'maxi-blocks'),
 				value: 'border',
 			});
 		}
@@ -114,6 +156,14 @@ const IconControlResponsiveSettings = withRTC(props => {
 		return options;
 	};
 
+	/**
+	 * Build background type options
+	 * 
+	 * Returns array of background options:
+	 * - None - no background
+	 * - Color - solid color background
+	 * - Gradient - gradient background
+	 */
 	const getBackgroundOptions = () => {
 		const options = [];
 
@@ -135,6 +185,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 		return options;
 	};
 
+	// Min/max settings for padding controls based on unit type
 	const minMaxSettings = {
 		px: {
 			min: 0,
@@ -154,6 +205,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 		},
 	};
 
+	// Get the current background type from attributes
 	const iconBackgroundActiveMedia = getLastBreakpointAttribute({
 		target: `${prefix}icon-background-active-media`,
 		breakpoint,
@@ -161,20 +213,22 @@ const IconControlResponsiveSettings = withRTC(props => {
 		isHover,
 	});
 
+	// State: Current active background type ('none', 'color', or 'gradient')
 	const [iconBgActive, setIconBgActive] = useState(
 		iconBackgroundActiveMedia || 'none'
 	);
 
 	return (
 		<>
+			{/* Icon-only toggle: Only show on general breakpoint, not in hover state or image blocks */}
 			{!isIB && !disableIconOnly && !isHover && breakpoint === 'general' && (
 				<>
-					<hr />
-					<ToggleSwitch
+						<ToggleSwitch
 						label={__('Icon only (remove text)', 'maxi-blocks')}
 						className='maxi-icon-control__icon-only'
 						selected={iconOnly}
 						onChange={val => {
+							// Update icon SVG with new icon-only state
 							const icon = getIconWithColor({
 								isIconOnly: val,
 								isHover,
@@ -188,6 +242,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 					/>
 				</>
 			)}
+
+			{/* Icon width and height controls */}
 			<SvgWidthControl
 				{...getGroupAttributes(props, 'icon', isHover, prefix)}
 				className='maxi-icon-control__width'
@@ -198,29 +254,13 @@ const IconControlResponsiveSettings = withRTC(props => {
 				disableHeightFitContent={disableHeightFitContent}
 				isIB={isIB}
 			/>
-			{svgType !== 'Shape' && (
-				<SvgStrokeWidthControl
-					{...getGroupAttributes(props, 'icon', isHover, prefix)}
-					{...(isHover && {
-						...{
-							...getGroupAttributes(
-								props,
-								'icon',
-								isHover,
-								prefix
-							),
-						},
-					})}
-					className='maxi-icon-control__stroke-width'
-					onChange={obj => onChange(obj)}
-					prefix={`${prefix}icon-`}
-					breakpoint={breakpoint}
-					isHover={isHover}
-					content={props[`${prefix}icon-content`]}
-				/>
-			)}
+
+
+
+			{/* Spacing and position controls: Only when not in icon-only mode */}
 			{!isHover && !iconOnly && (
 				<>
+					{/* Spacing control: Distance between icon and text */}
 					{!disableSpacing && (
 						<AdvancedNumberControl
 							label={__('Spacing', 'maxi-blocks')}
@@ -251,6 +291,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 							disableRange
 						/>
 					)}
+
+					{/* Position control: Icon placement relative to text (left/right/top/bottom) */}
 					{!isIB && !disablePosition && (
 						<AxisPositionControl
 							label='Icon'
@@ -267,27 +309,10 @@ const IconControlResponsiveSettings = withRTC(props => {
 					)}
 				</>
 			)}
-			{!disableIconInherit && !isHover && breakpoint === 'general' && (
-				<ToggleSwitch
-					label={__(
-						'Inherit stroke colour/background from button',
-						'maxi-blocks'
-					)}
-					className='maxi-icon-control__inherit'
-					selected={iconInherit}
-					onChange={val => {
-						const icon = getIconWithColor({
-							isInherit: val,
-							isHover,
-						});
 
-						onChange({
-							[`${prefix}icon-inherit`]: val,
-							[`${prefix}icon-content`]: icon,
-						});
-					}}
-				/>
-			)}
+
+
+			{/* Icon style tabs: Stroke, Fill, Outline (only show if more than 1 option) */}
 			{getOptions().length > 1 && (
 				<SettingTabsControl
 					className='maxi-icon-styles-control'
@@ -298,6 +323,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 					onChange={val => setIconStyle(val)}
 				/>
 			)}
+
+			{/* STROKE TAB CONTENT: Color control for icon stroke */}
 			{iconStyle === 'color' &&
 				(!iconInherit || iconOnly || disableIconInherit ? (
 					svgType !== 'Shape' && (
@@ -351,6 +378,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 								paletteSCStatus,
 								paletteOpacity,
 							}) => {
+								// Apply color to icon SVG
 								const icon = getIconWithColor({
 									color,
 									paletteColor,
@@ -360,6 +388,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 									isHover,
 								});
 
+								// Save all stroke color attributes
 								onChange({
 									[`${prefix}icon-stroke-color${
 										isHover ? '-hover' : ''
@@ -387,6 +416,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 						/>
 					)
 				) : (
+					// Info box shown when stroke is inheriting from button
 					<InfoBox
 						key='maxi-warning-box__icon-color'
 						message={__(
@@ -401,8 +431,56 @@ const IconControlResponsiveSettings = withRTC(props => {
 						]}
 					/>
 				))}
-			{(iconStyle === 'border' ||
-				inlineTarget?.includes('button-block')) && (
+
+			{/* Stroke width control: Only for non-Shape SVGs (Lines and other types) */}
+			{iconStyle === 'color' && svgType !== 'Shape' && (
+				<SvgStrokeWidthControl
+					{...getGroupAttributes(props, 'icon', isHover, prefix)}
+					{...(isHover && {
+						...{
+							...getGroupAttributes(
+								props,
+								'icon',
+								isHover,
+								prefix
+							),
+						},
+					})}
+					className='maxi-icon-control__stroke-width'
+					onChange={obj => onChange(obj)}
+					prefix={`${prefix}icon-`}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					content={props[`${prefix}icon-content`]}
+				/>
+			)}
+
+			{/* Inherit toggle: Allow icon to inherit colors from parent button */}
+			{iconStyle === 'color' && !disableIconInherit && !isHover && breakpoint === 'general' && (
+				<ToggleSwitch
+					label={__(
+						'Inherit stroke colour/background from button',
+						'maxi-blocks'
+					)}
+					className='maxi-icon-control__inherit'
+					selected={iconInherit}
+					onChange={val => {
+						// Update icon SVG with inherit state
+						const icon = getIconWithColor({
+							isInherit: val,
+							isHover,
+						});
+
+						onChange({
+							[`${prefix}icon-inherit`]: val,
+							[`${prefix}icon-content`]: icon,
+						});
+					}}
+				/>
+			)}
+
+			{/* OUTLINE TAB CONTENT: Border controls for icon outline */}
+			{iconStyle === 'border' && (
 				<BorderControl
 					{...getGroupAttributes(
 						props,
@@ -418,6 +496,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 					disableRTC
 				/>
 			)}
+
+			{/* FILL TAB CONTENT: Color control for icon fill */}
 			{iconStyle === 'fill' && svgType !== 'Line' && (
 				<ColorControl
 					label={__('Icon fill', 'maxi-blocks')}
@@ -463,6 +543,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 						paletteSCStatus,
 						paletteOpacity,
 					}) => {
+						// Apply fill color to icon SVG
 						const icon = getIconWithColor({
 							color,
 							paletteColor,
@@ -473,6 +554,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 							isHover,
 						});
 
+						// Save all fill color attributes
 						onChange({
 							[`${prefix}icon-fill-color${
 								isHover ? '-hover' : ''
@@ -500,8 +582,11 @@ const IconControlResponsiveSettings = withRTC(props => {
 					avoidBreakpointForDefault
 				/>
 			)}
+
+			{/* BACKGROUND CONTROLS: None, Color, or Gradient background for icon */}
 			{!disableBackground && (
 				<>
+					{/* Background type selector tabs */}
 					<SettingTabsControl
 						type='buttons'
 						fullWidthMode
@@ -519,6 +604,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 							});
 						}}
 					/>
+
+					{/* Color background controls */}
 					{iconBgActive === 'color' &&
 						(!iconInherit || disableIconInherit ? (
 							<ColorControl
@@ -574,6 +661,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 									paletteOpacity,
 									color,
 								}) => {
+									// Save all background color attributes
 									onChange(
 										{
 											[getAttributeKey(
@@ -613,6 +701,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 								isHover={isHover}
 							/>
 						) : (
+							// Info box shown when background is inheriting from button
 							<InfoBox
 								key='maxi-warning-box__icon-background'
 								message={__(
@@ -630,6 +719,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 								]}
 							/>
 						))}
+
+					{/* Gradient background controls */}
 					{iconBgActive === 'gradient' && (
 						<GradientControl
 							{...getGroupAttributes(
@@ -650,6 +741,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 					)}
 				</>
 			)}
+
+			{/* Icon padding controls */}
 			{!disablePadding && !isHover && (
 				<AxisControl
 					{...getGroupAttributes(props, 'iconPadding', false, prefix)}
@@ -669,9 +762,19 @@ const IconControlResponsiveSettings = withRTC(props => {
 });
 
 /**
- * Component
+ * IconControl Component (Main Export)
+ * 
+ * This is the main wrapper component that:
+ * 1. Renders the icon selection modal (MaxiModal)
+ * 2. Renders the IconControlResponsiveSettings when an icon is selected
+ * 
+ * The modal allows users to choose an icon from the library.
+ * Once selected, all the styling controls become available.
  */
 const IconControl = props => {
+	const { prefix = '' } = props;
+	const iconContentKey = `${prefix}icon-content`;
+
 	const {
 		className,
 		onChange,
@@ -683,12 +786,12 @@ const IconControl = props => {
 		disableHeightFitContent = false,
 		getIconWithColor,
 		ariaLabels,
-		type = 'button-icon',
-		prefix = '',
-		[`${prefix}icon-content`]: iconContent,
+		type = 'button-icon', // 'button-icon' or 'search-icon'
+		[iconContentKey]: iconContent, // The actual SVG content
 		disablePadding = false,
 	} = props;
 
+	// Build CSS classes for the wrapper
 	const classes = classnames(
 		'maxi-icon-control',
 		className,
@@ -699,6 +802,7 @@ const IconControl = props => {
 
 	return (
 		<div className={classes}>
+			{/* Icon selection modal: Only show on general breakpoint, not in hover/IB states */}
 			{!isIB && !disableModal && !isHover && breakpoint === 'general' && (
 				<MaxiModal
 					type={type}
@@ -706,6 +810,7 @@ const IconControl = props => {
 					onSelect={obj => {
 						const newSvgType = obj[`${prefix}svgType`];
 
+						// Apply colors to the selected icon based on its type
 						let icon = getIconWithColor({
 							rawIcon: obj[`${prefix}icon-content`],
 							type: [
@@ -714,6 +819,7 @@ const IconControl = props => {
 							].filter(Boolean),
 						});
 
+						// Set preserve aspect ratio if needed
 						if (
 							!disableHeightFitContent &&
 							shouldSetPreserveAspectRatio(
@@ -724,6 +830,7 @@ const IconControl = props => {
 							icon = togglePreserveAspectRatio(icon, true);
 						}
 
+						// Set ARIA labels for accessibility
 						if (type === 'button-icon') {
 							if (icon && ariaLabels?.icon) {
 								icon = setSVGAriaLabel(
@@ -752,6 +859,7 @@ const IconControl = props => {
 							}
 						}
 
+						// Save the selected icon and its attributes
 						onChange({
 							...obj,
 							[`${prefix}icon-content`]: icon,
@@ -762,6 +870,8 @@ const IconControl = props => {
 					prefix={prefix}
 				/>
 			)}
+
+			{/* Render all icon styling controls if an icon is selected */}
 			{iconContent && <IconControlResponsiveSettings {...props} />}
 		</div>
 	);

@@ -54,7 +54,13 @@ body.maxi-blocks--active .maxi-sidebar {
 
 	.maxi-icon-control__inherit .maxi-base-control__field {
 		column-gap: 10px;
-		padding-top: 20px !important;
+
+	}
+
+	.maxi-background-control--button- {
+		.components-custom-gradient-picker__ui-line {
+			margin-bottom: 8px !important;
+		}
 	}
 }
 

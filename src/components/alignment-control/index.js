@@ -91,6 +91,32 @@ const AlignmentControl = props => {
 	);
 
 	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
+	const selectedValue =
+		getLastBreakpointAttribute({
+			target,
+			breakpoint,
+			attributes: props,
+			isHover,
+		}) || getOptions()[0].value;
+
+	// Get the default value (first option)
+	const defaultValue = getOptions()[0]?.value;
+
+	// Generate all possible alignment attribute names (all breakpoints + hover states)
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const alignmentAttributes = [];
+	breakpoints.forEach(bp => {
+		alignmentAttributes.push(`${target}-${bp}`);
+		alignmentAttributes.push(`${target}-${bp}-hover`);
+	});
+
+	// Add ignoreIndicator to each item when the selected value is the default
+	const itemsWithIndicatorLogic = getOptions().map(option => ({
+		...option,
+		ignoreIndicator:
+			selectedValue === defaultValue ? alignmentAttributes : undefined,
+	}));
+
 	return (
 		<>
 			{showLabel && (
@@ -106,15 +132,8 @@ const AlignmentControl = props => {
 				fullWidthMode
 				className={classes}
 				hasBorder
-				items={getOptions()}
-				selected={
-					getLastBreakpointAttribute({
-						target,
-						breakpoint,
-						attributes: props,
-						isHover,
-					}) || getOptions()[0].value
-				}
+				items={itemsWithIndicatorLogic}
+				selected={selectedValue}
 				onChange={val =>
 					onChange({
 						[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]:

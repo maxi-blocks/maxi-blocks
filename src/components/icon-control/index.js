@@ -145,10 +145,10 @@ const IconControlResponsiveSettings = withRTC(props => {
 				});
 		}
 
-		// Outline tab: Always available unless explicitly disabled
+		// Border tab: Always available unless explicitly disabled
 		if (!disableBorder) {
 			options.push({
-				label: __('Outline', 'maxi-blocks'),
+				label: __('Border', 'maxi-blocks'),
 				value: 'border',
 			});
 		}
@@ -410,11 +410,11 @@ const IconControlResponsiveSettings = withRTC(props => {
 						/>
 					)
 				) : (
-					// Info box shown when stroke is inheriting from button
+					// Info box shown when stroke is inherited from button
 					<InfoBox
 						key='maxi-warning-box__icon-color'
 						message={__(
-							'Icon stroke colour is inheriting from button.',
+							'Icon stroke colour is inherited from button ',
 							'maxi-blocks'
 						)}
 						links={[
@@ -695,11 +695,11 @@ const IconControlResponsiveSettings = withRTC(props => {
 								isHover={isHover}
 							/>
 						) : (
-							// Info box shown when background is inheriting from button
+							// Info box shown when background is inherited from button
 							<InfoBox
 								key='maxi-warning-box__icon-background'
 								message={__(
-									'Icon background is inheriting from button.',
+									'Icon background is inherited from button ',
 									'maxi-blocks'
 								)}
 								links={[

@@ -5,6 +5,9 @@ const reducer = (
 		blockClientIds: [],
 		newBlocksUniqueIDs: [],
 		blockClientIdsWithUpdatedAttributes: [],
+		// Cache of all uniqueIDs for O(1) lookup (site-wide from DB + current editor)
+		uniqueIDCache: {},
+		uniqueIDCacheLoaded: false,
 	},
 	action
 ) => {
@@ -20,6 +23,11 @@ const reducer = (
 						clientId,
 						blockRoot,
 					},
+				},
+				// Also add to uniqueID cache for O(1) lookup
+				uniqueIDCache: {
+					...state.uniqueIDCache,
+					[uniqueID]: true,
 				},
 			};
 		}
@@ -101,6 +109,55 @@ const reducer = (
 			return {
 				...state,
 				blockClientIds,
+			};
+		}
+		case 'LOAD_UNIQUE_ID_CACHE': {
+			const { uniqueIDs } = action;
+			const cache = {};
+
+			// Convert array to object for O(1) lookup
+			uniqueIDs.forEach(id => {
+				cache[id] = true;
+			});
+
+			return {
+				...state,
+				uniqueIDCache: cache,
+				uniqueIDCacheLoaded: true,
+			};
+		}
+		case 'ADD_TO_UNIQUE_ID_CACHE': {
+			const { uniqueID } = action;
+
+			return {
+				...state,
+				uniqueIDCache: {
+					...state.uniqueIDCache,
+					[uniqueID]: true,
+				},
+			};
+		}
+		case 'REMOVE_FROM_UNIQUE_ID_CACHE': {
+			const { uniqueID } = action;
+			const newCache = { ...state.uniqueIDCache };
+			delete newCache[uniqueID];
+
+			return {
+				...state,
+				uniqueIDCache: newCache,
+			};
+		}
+		case 'ADD_MULTIPLE_TO_UNIQUE_ID_CACHE': {
+			const { uniqueIDs } = action;
+			const newCache = { ...state.uniqueIDCache };
+
+			uniqueIDs.forEach(id => {
+				newCache[id] = true;
+			});
+
+			return {
+				...state,
+				uniqueIDCache: newCache,
 			};
 		}
 		default:

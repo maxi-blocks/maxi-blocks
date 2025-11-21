@@ -252,6 +252,17 @@ if (!class_exists('MaxiBlocks_API')):
             );
             register_rest_route(
                 $this->namespace,
+                '/unique-ids/all',
+                [
+                    'methods' => 'GET',
+                    'callback' => [$this, 'get_all_maxi_blocks_unique_ids'],
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
+                ],
+            );
+            register_rest_route(
+                $this->namespace,
                 '/unique-id/remove/(?P<unique_id>[a-z0-9-]+)$',
                 [
                     'methods' => 'DELETE',
@@ -1143,6 +1154,28 @@ if (!class_exists('MaxiBlocks_API')):
                 $wpdb->query('ROLLBACK');
             }
             return true;
+        }
+
+        /**
+         * Get all unique IDs from the database for cache initialization
+         * Returns a flat array of all block_style_id values
+         */
+        public function get_all_maxi_blocks_unique_ids()
+        {
+            global $wpdb;
+
+            $db_css_table_name = $wpdb->prefix . 'maxi_blocks_styles_blocks';
+
+            // Get all block_style_id values in a single optimized query
+            $results = $wpdb->get_col(
+                "SELECT block_style_id FROM {$db_css_table_name} WHERE block_style_id != 'temporary'"
+            );
+
+            if (!$results) {
+                return [];
+            }
+
+            return $results;
         }
 
         public function get_active_integration_plugins()

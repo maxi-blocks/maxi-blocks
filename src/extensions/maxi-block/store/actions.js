@@ -61,6 +61,31 @@ const actions = {
 			blockClientIds,
 		};
 	},
+	// UniqueID cache actions for O(1) lookup performance
+	loadUniqueIDCache(uniqueIDs) {
+		return {
+			type: 'LOAD_UNIQUE_ID_CACHE',
+			uniqueIDs,
+		};
+	},
+	addToUniqueIDCache(uniqueID) {
+		return {
+			type: 'ADD_TO_UNIQUE_ID_CACHE',
+			uniqueID,
+		};
+	},
+	removeFromUniqueIDCache(uniqueID) {
+		return {
+			type: 'REMOVE_FROM_UNIQUE_ID_CACHE',
+			uniqueID,
+		};
+	},
+	addMultipleToUniqueIDCache(uniqueIDs) {
+		return {
+			type: 'ADD_MULTIPLE_TO_UNIQUE_ID_CACHE',
+			uniqueIDs,
+		};
+	},
 };
 
 export default actions;

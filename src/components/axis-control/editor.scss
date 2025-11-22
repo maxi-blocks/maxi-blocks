@@ -48,3 +48,11 @@
 		}
 	}
 }
+
+
+
+/* Optional: Ensure the flex container itself is tight */
+.maxi-axis-control__unit-header .maxi-base-control__field {
+    align-items: center; /* Ensures items align to center, not stretch */
+    margin-bottom: 6px !important;
+}

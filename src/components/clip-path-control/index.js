@@ -485,6 +485,7 @@ const ClipPathControl = props => {
 								onChange={value => onChangeType(value)}
 							/>
 							<SettingTabsControl
+							className='maxi-clip-path-mode-control'
 								fullWidthMode
 								type='buttons'
 								selected={customMode}

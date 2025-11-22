@@ -181,7 +181,7 @@
 			&.maxi-tabs-control__button-visual[aria-pressed='true'] {
 				background-color: var(--maxi-whisper-green) !important;
 				border-color: var(--maxi-primary-color) !important;
-				color: var(--maxi-black) !important;
+				color: var(--maxi-primary-color) !important;
 				font-weight: 700;
 				border-radius: 6px !important;
 			}

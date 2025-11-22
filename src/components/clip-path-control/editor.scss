@@ -19,6 +19,18 @@
 	padding: 0;
 }
 
+.maxi-clip-path-mode-control {
+    .maxi-tabs-control__button {
+        &:first-child {
+            margin-right: 4px;
+        }
+
+        &:last-child {
+            margin-left: 4px;
+        }
+    }
+}
+
 .maxi-clip-path-control {
 	.clip-path-defaults {
 		display: flex;

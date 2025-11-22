@@ -29,7 +29,7 @@ describe('StyleCards ColorPresets', () => {
 			input => input.value
 		);
 
-		expect(colorInput).toStrictEqual('#FF4A17');
+		expect(colorInput).toStrictEqual('#2c8a46');
 
 		// ColorControl check custom-color
 		await page.$eval(
@@ -65,7 +65,7 @@ describe('StyleCards ColorPresets', () => {
 		);
 
 		await page.waitForTimeout(150);
-		expect(colorInput2).toStrictEqual('#FF4A17');
+		expect(colorInput2).toStrictEqual('#2c8a46');
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
 	});

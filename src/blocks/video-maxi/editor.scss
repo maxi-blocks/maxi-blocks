@@ -1,7 +1,7 @@
 .maxi-accordion-control__item[data-name='popup settings'],
 .maxi-accordion-control__item[data-name='playback icon'] {
 	.maxi-library-modal__action-section__label {
-		margin-bottom: 10px;
+		margin: 10px;
 	}
 	.maxi-color-control__palette-label {
 		.maxi-base-control__label {
@@ -17,4 +17,11 @@
 			flex: 2;
 		}
 	}
+}
+.maxi-tabs-control__button-video {
+	margin-left: -8px;
+}
+
+.maxi-tabs-control__button-popup {
+	margin-right: -8px;
 }

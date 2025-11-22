@@ -37,10 +37,7 @@ body .maxi-background-control {
 		// 		// Selected state for "Video" button
 		// 	}
 		// }
-		
 	
-		
-		
 		// .maxi-tabs-control__button-svg {
 		// 	// Styles for "SVG" button
 			
@@ -50,10 +47,29 @@ body .maxi-background-control {
 		// }
 	}
 
-	&__image-layer .maxi-toggle-switch {
-		padding-top: 10px;
-		margin-bottom: 3px !important;
+	.maxi-background-control__tabs {
+		> .maxi-tabs-control {
+			margin: 10px -5px 0px !important;
+		}
 	}
+
+
+	
+	// Unique class for Enable parallax toggle
+	&__enable-parallax {
+		.maxi-toggle-switch {
+			padding-top: 10px;
+			margin-bottom: 3px !important;
+		}
+	}
+	
+	// // Unique class for hr separator
+	// &__separator {
+	// 	margin: 15px 0 !important;
+	// 	border: none;
+	// 	border-top: 1px solid var(--maxi-grey-light);
+	// }
+	
 	.parallax-direction {
 		.maxi-tabs-control__button {
 			border: 1px solid var(--maxi-grey-light);
@@ -253,10 +269,10 @@ body .maxi-background-control {
 		min-width: 22px;
 	}
 }
-.maxi-background-control__image-layer .maxi-toggle-switch {
-	padding-top: 10px;
-	margin-bottom: 10px !important;
-}
+// .maxi-background-control__image-layer .maxi-toggle-switch {
+// 	padding-top: 10px;
+// 	margin-bottom: 10px !important;
+// }
 .parallax-direction .maxi-tabs-control__button {
 	position: relative;
 	display: flex;
@@ -308,4 +324,15 @@ body.maxi-blocks--active .components-popover__fallback-container {
 			background: var(--maxi-mid-green);
 		}
 	}
+}
+.Settings-background-image {
+	margin-left: -8px !important;
+	
+}
+.Parallax-background-image {
+	margin-right: -8px !important;	
+
+}
+.maxi-tabs-control:has(.maxi-tabs-control__button-parallax[aria-pressed="true"]) {
+    margin-bottom: 8px; 
 }

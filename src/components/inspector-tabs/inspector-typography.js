@@ -61,13 +61,20 @@ const typography = ({
 		content: (
 			<>
 				{/* Font Level Control (Heading/Paragraph tags) */}
-				<div className='maxi-typography-control__font-level maxi-typography-panel__font-level'>
-					<FontLevelControl
-						{...getGroupAttributes(attributes, 'typography', true)}
-						value={textLevel || attributes.textLevel}
-						onChange={obj => maxiSetAttributes(obj)}
-					/>
-				</div>
+				{props.name !== 'maxi-blocks/search-maxi' &&
+					props.name !== 'maxi-blocks/button-maxi' && (
+						<div className='maxi-typography-control__font-level maxi-typography-panel__font-level'>
+							<FontLevelControl
+								{...getGroupAttributes(
+									attributes,
+									'typography',
+									true
+								)}
+								value={textLevel || attributes.textLevel}
+								onChange={obj => maxiSetAttributes(obj)}
+							/>
+						</div>
+					)}
 				{!hideAlignment && (
 					<div className='maxi-typography-control__alignment-buttons'>
 						<AlignmentControl

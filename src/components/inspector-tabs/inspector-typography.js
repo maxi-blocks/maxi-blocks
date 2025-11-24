@@ -62,7 +62,8 @@ const typography = ({
 			<>
 				{/* Font Level Control (Heading/Paragraph tags) */}
 				{props.name !== 'maxi-blocks/search-maxi' &&
-					props.name !== 'maxi-blocks/button-maxi' && (
+					props.name !== 'maxi-blocks/button-maxi' &&
+					props.name !== 'maxi-blocks/list-item-maxi' && (
 						<div className='maxi-typography-control__font-level maxi-typography-panel__font-level'>
 							<FontLevelControl
 								{...getGroupAttributes(

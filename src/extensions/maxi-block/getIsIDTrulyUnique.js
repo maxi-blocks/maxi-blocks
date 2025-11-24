@@ -33,13 +33,18 @@ const isCurrentPostDirty = () => {
  *
  * @param {string} id          - The uniqueID to check
  * @param {number} repeatCount - How many times this ID can appear (default 1 for existing blocks)
+ * @param {string} clientId    - Optional clientId to check if block is newly inserted
  * @returns {boolean}          - True if ID is unique (appears <= repeatCount times)
  */
-const getIsIDTrulyUnique = (id, repeatCount = 1) => {
+const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 	if (!id.endsWith('-u')) return false;
 
-	const { isUniqueIDCacheLoaded, isUniqueIDInCache, getBlocks } =
-		select('maxiBlocks/blocks');
+	const {
+		isUniqueIDCacheLoaded,
+		isUniqueIDInCache,
+		getBlocks,
+		getLastInsertedBlocks,
+	} = select('maxiBlocks/blocks');
 
 	// If cache is loaded, use O(1) lookup for site-wide check
 	if (isUniqueIDCacheLoaded()) {
@@ -57,14 +62,24 @@ const getIsIDTrulyUnique = (id, repeatCount = 1) => {
 
 		// Check if ID exists in DB but not in current editor
 		// This could mean:
-		// 1. Loading a saved block (post is clean) → Keep ID
-		// 2. Pasting from another page (post is dirty) → Regenerate
+		// 1. Loading a saved block (initial load) → Keep ID
+		// 2. Pasting from another page → Regenerate
+		//
+		// IMPROVED LOGIC: Use lastChangedBlocks to detect new insertions
+		// instead of relying solely on post dirty status
+		const lastChangedBlocks = getLastInsertedBlocks() || [];
+		const isNewInsertion = clientId && lastChangedBlocks.includes(clientId);
 		const postDirty = isCurrentPostDirty();
+
 		let isUnique = currentEditorCount <= repeatCount;
 
-		if (existsInDB && currentEditorCount === 0 && postDirty) {
-			// ID exists elsewhere and post is dirty = pasting from another page
-			isUnique = false;
+		if (existsInDB && currentEditorCount === 0) {
+			// ID exists in DB but not in current editor
+			if (isNewInsertion) {
+				// Block was just inserted/pasted = pasting from another page
+				isUnique = false;
+			}
+			// If NOT a new insertion, it means we're loading from DB = keep ID
 		}
 
 		// eslint-disable-next-line no-console
@@ -77,6 +92,8 @@ const getIsIDTrulyUnique = (id, repeatCount = 1) => {
 				currentEditorCount
 			)} | PostDirty: ${JSON.stringify(
 				postDirty
+			)} | IsNewInsertion: ${JSON.stringify(
+				isNewInsertion
 			)} | Unique: ${JSON.stringify(isUnique)}`
 		);
 

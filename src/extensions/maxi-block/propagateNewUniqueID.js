@@ -446,6 +446,29 @@ const propagateNewUniqueID = (
 	updateBGLayers();
 	updateGlobalRelations();
 
+	// Update relations store to keep it in sync with uniqueID changes
+	// This ensures the maxiBlocks/relations store (which tracks trigger→target mappings)
+	// stays synchronized when blocks are copied/pasted
+	try {
+		dispatch('maxiBlocks/relations').updateRelation(
+			oldUniqueID,
+			newUniqueID
+		);
+
+		// eslint-disable-next-line no-console
+		console.log(
+			`[Relations Store] ✅ Synced relations store: ${JSON.stringify(
+				oldUniqueID
+			)} → ${JSON.stringify(newUniqueID)}`
+		);
+	} catch (error) {
+		// eslint-disable-next-line no-console
+		console.warn(
+			'[Relations Store] ⚠️ Failed to update relations store:',
+			JSON.stringify(error)
+		);
+	}
+
 	if (!isEmpty(blockAttributesUpdate)) {
 		// Optimization 2: Block Existence Check & Update Batching
 		// Filter out non-existent blocks and empty attribute objects

@@ -1151,10 +1151,15 @@ class MaxiBlockComponent extends Component {
 				.getLastInsertedBlocks()
 				.includes(this.props.clientId);
 
-		const isUnique = getIsIDTrulyUnique(idToCheck);
+		const isUnique = getIsIDTrulyUnique(idToCheck, 1, clientId);
 
+		// eslint-disable-next-line no-console
 		console.log(
-			`[uniqueIDChecker] Checking ID: ${JSON.stringify(idToCheck)} | Block: ${JSON.stringify(blockName)} | Copied: ${JSON.stringify(isBlockCopied)} | Unique: ${JSON.stringify(isUnique)}`
+			`[uniqueIDChecker] Checking ID: ${JSON.stringify(
+				idToCheck
+			)} | Block: ${JSON.stringify(blockName)} | Copied: ${JSON.stringify(
+				isBlockCopied
+			)} | Unique: ${JSON.stringify(isUnique)}`
 		);
 
 		if (isBlockCopied || !isUnique) {
@@ -1162,13 +1167,25 @@ class MaxiBlockComponent extends Component {
 				blockName,
 			});
 
+			// eslint-disable-next-line no-console
 			console.log(
-				`[uniqueIDChecker] 🔄 REGENERATING: ${JSON.stringify(idToCheck)} → ${JSON.stringify(newUniqueID)} | Reason: ${JSON.stringify(isBlockCopied ? 'COPIED' : 'NOT_UNIQUE')}`
+				`[uniqueIDChecker] 🔄 REGENERATING: ${JSON.stringify(
+					idToCheck
+				)} → ${JSON.stringify(newUniqueID)} | Reason: ${JSON.stringify(
+					isBlockCopied ? 'COPIED' : 'NOT_UNIQUE'
+				)}`
 			);
 
 			// Immediately add to cache for batch paste optimization
 			// This ensures subsequent blocks in the same paste operation see this ID
 			dispatch('maxiBlocks/blocks').addToUniqueIDCache(newUniqueID);
+
+			// eslint-disable-next-line no-console
+			console.log(
+				`[UniqueID Cache] ➕ Added to cache: ${JSON.stringify(
+					newUniqueID
+				)} | Block: ${JSON.stringify(blockName)}`
+			);
 
 			propagateNewUniqueID(
 				idToCheck,
@@ -1548,13 +1565,16 @@ class MaxiBlockComponent extends Component {
 		loadFonts(getPageFonts(), true, iframeDocument);
 
 		// Collect fonts from both main document and FSE iframe
-		const fontSelector = 'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]';
-		let maxiFonts = Array.from(document.querySelectorAll(fontSelector));
+		const fontSelector =
+			'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]';
+		const maxiFonts = Array.from(document.querySelectorAll(fontSelector));
 
 		// Also check FSE iframe for SC fonts (for reusables/template parts)
 		const siteEditorDoc = getSiteEditorIframe();
 		if (siteEditorDoc) {
-			const fseFonts = Array.from(siteEditorDoc.querySelectorAll(fontSelector));
+			const fseFonts = Array.from(
+				siteEditorDoc.querySelectorAll(fontSelector)
+			);
 			// Merge fonts, avoiding duplicates by ID
 			const existingIds = new Set(maxiFonts.map(font => font.id));
 			fseFonts.forEach(font => {

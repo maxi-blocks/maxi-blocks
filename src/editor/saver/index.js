@@ -8,7 +8,12 @@ import {
 	select,
 	subscribe,
 } from '@wordpress/data';
-import { useEffect, createRoot, useLayoutEffect } from '@wordpress/element';
+import {
+	useEffect,
+	createRoot,
+	useLayoutEffect,
+	useState,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -72,6 +77,9 @@ const BlockStylesSaver = () => {
 		};
 	});
 
+	// Track previous isSaving state to detect save completion
+	const [prevIsSaving, setPrevIsSaving] = useState(false);
+
 	const { saveStyles } = useDispatch('maxiBlocks/styles');
 	const { saveCustomData } = useDispatch('maxiBlocks/customData');
 	const { saveSCStyles } = useDispatch('maxiBlocks/style-cards');
@@ -90,6 +98,38 @@ const BlockStylesSaver = () => {
 			}
 		}
 	});
+
+	// Update uniqueID cache after successful save
+	useEffect(() => {
+		if (prevIsSaving && !isSaving && !isCodeEditor) {
+			// Save just completed - update cache with current editor blocks
+			try {
+				const blocks = select('maxiBlocks/blocks').getBlocks();
+				if (blocks && Object.keys(blocks).length > 0) {
+					const uniqueIDs = Object.keys(blocks);
+					dispatch('maxiBlocks/blocks').addMultipleToUniqueIDCache(
+						uniqueIDs
+					);
+
+					// eslint-disable-next-line no-console
+					console.log(
+						`[UniqueID Cache] ✅ Updated cache after save: ${JSON.stringify(
+							uniqueIDs.length
+						)} IDs added`
+					);
+				}
+			} catch (error) {
+				// eslint-disable-next-line no-console
+				console.error(
+					'[UniqueID Cache] ❌ Failed to update cache after save:',
+					JSON.stringify(error)
+				);
+			}
+		}
+
+		// Update previous state
+		setPrevIsSaving(isSaving);
+	}, [isSaving, prevIsSaving, isCodeEditor]);
 
 	// When swapping to code editor, as all blocks are unmounted, we need to set the `isPageLoaded`
 	// to false to ensure a good UX when coming back to the visual editor.

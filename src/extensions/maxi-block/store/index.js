@@ -24,12 +24,29 @@ const store = createReduxStore('maxiBlocks/blocks', {
 register(store);
 
 /**
+ * Track cache load attempts for retry logic
+ */
+let cacheLoadAttempts = 0;
+const MAX_CACHE_LOAD_ATTEMPTS = 3;
+const CACHE_RETRY_DELAY = 5000; // 5 seconds
+
+/**
  * Preload uniqueID cache from database for O(1) lookup performance
  * This fetches all existing uniqueIDs site-wide on editor init
+ *
+ * Implements retry logic to handle transient network/API failures:
+ * - Retries up to MAX_CACHE_LOAD_ATTEMPTS times
+ * - Waits CACHE_RETRY_DELAY ms between retries
+ * - Falls back to tree traversal if all retries fail
  */
 const initUniqueIDCache = async () => {
 	try {
-		console.log('[initUniqueIDCache] 🔄 Loading uniqueID cache from DB...');
+		// eslint-disable-next-line no-console
+		console.log(
+			`[initUniqueIDCache] 🔄 Loading uniqueID cache from DB (attempt ${JSON.stringify(
+				cacheLoadAttempts + 1
+			)}/${JSON.stringify(MAX_CACHE_LOAD_ATTEMPTS)})...`
+		);
 		const startTime = performance.now();
 
 		const uniqueIDs = await apiFetch({
@@ -40,16 +57,48 @@ const initUniqueIDCache = async () => {
 		if (Array.isArray(uniqueIDs)) {
 			dispatch('maxiBlocks/blocks').loadUniqueIDCache(uniqueIDs);
 			const endTime = performance.now();
+			// eslint-disable-next-line no-console
 			console.log(
-				`[initUniqueIDCache] ✅ Cache loaded: ${JSON.stringify(uniqueIDs.length)} IDs in ${JSON.stringify(Math.round(endTime - startTime))}ms`
+				`[initUniqueIDCache] ✅ Cache loaded: ${JSON.stringify(
+					uniqueIDs.length
+				)} IDs in ${JSON.stringify(Math.round(endTime - startTime))}ms`
 			);
+
+			// Reset attempts counter on success
+			cacheLoadAttempts = 0;
 		}
 	} catch (error) {
-		// Silently fail - cache will just be empty and fallback to tree traversal
+		cacheLoadAttempts += 1;
+
+		// eslint-disable-next-line no-console
 		console.error(
-			'[initUniqueIDCache] ❌ Failed to preload uniqueID cache:',
+			`[initUniqueIDCache] ❌ Failed to preload uniqueID cache (attempt ${JSON.stringify(
+				cacheLoadAttempts
+			)}/${JSON.stringify(MAX_CACHE_LOAD_ATTEMPTS)}):`,
 			JSON.stringify(error)
 		);
+
+		// Retry if we haven't exceeded max attempts
+		if (cacheLoadAttempts < MAX_CACHE_LOAD_ATTEMPTS) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[initUniqueIDCache] ⏳ Retrying in ${JSON.stringify(
+					CACHE_RETRY_DELAY / 1000
+				)}s...`
+			);
+
+			setTimeout(() => {
+				initUniqueIDCache();
+			}, CACHE_RETRY_DELAY);
+		} else {
+			// eslint-disable-next-line no-console
+			console.warn(
+				'[initUniqueIDCache] ⚠️ Max retry attempts reached. Falling back to tree traversal for uniqueID checks.'
+			);
+
+			// Reset attempts counter for potential future manual retries
+			cacheLoadAttempts = 0;
+		}
 	}
 };
 

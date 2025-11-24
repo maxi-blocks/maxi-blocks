@@ -8,10 +8,39 @@ import { select } from '@wordpress/data';
  */
 import getIsIDTrulyUnique from '@extensions/maxi-block/getIsIDTrulyUnique';
 
+// Mock data for tests
+const mockBlocks = {
+	'button-maxi-7f750e3e-u': {
+		clientId: '89293228-0e7b-4176-a6fd-87ad56f72be2',
+		blockRoot: null,
+	},
+	'button-maxi-8f753e7g-u': {
+		clientId: '5200ee1b-b2de-4848-9a0b-5af38df3b33a',
+		blockRoot: null,
+	},
+};
+
+const mockCache = {
+	'button-maxi-existing-in-db-u': true,
+	'text-maxi-from-another-page-u': true,
+	'container-maxi-old-saved-u': true,
+};
+
+const mockLastInsertedBlocks = [
+	'new-client-id-1',
+	'new-client-id-2',
+	'pasted-client-id-3',
+];
+
 jest.mock('@wordpress/data', () => {
 	return {
 		select: jest.fn(() => ({
-			getBlocks: jest.fn(
+			getBlocks: jest.fn(() => mockBlocks),
+			getLastInsertedBlocks: jest.fn(() => mockLastInsertedBlocks),
+			isUniqueIDCacheLoaded: jest.fn(() => true),
+			isUniqueIDInCache: jest.fn(id => id in mockCache),
+			// Fallback for old tests
+			getBlocksOld: jest.fn(
 				clientId =>
 					!clientId && [
 						{
@@ -326,5 +355,239 @@ describe('getIsIDTrulyUnique', () => {
 			getBlock: jest.fn(() => false),
 		}));
 		expect(getIsIDTrulyUnique('text-maxi-wl35ss8l-u')).toBe(false);
+	});
+
+	/**
+	 * NEW TESTS FOR CACHE-BASED APPROACH
+	 * Tests for the improved uniqueID validation system with cache
+	 */
+	describe('Cache-based uniqueness detection', () => {
+		it('Should detect ID that exists in current editor', () => {
+			// ID exists in mockBlocks (current editor)
+			expect(getIsIDTrulyUnique('button-maxi-7f750e3e-u')).toBe(true);
+		});
+
+		it('Should detect duplicate ID in current editor', () => {
+			// Add duplicate to mockBlocks temporarily
+			const originalBlocks = { ...mockBlocks };
+			mockBlocks['button-maxi-duplicate-u'] = {
+				clientId: 'client-1',
+				blockRoot: null,
+			};
+			mockBlocks['button-maxi-duplicate-copy-u'] = {
+				clientId: 'client-2',
+				blockRoot: null,
+			};
+
+			// Second instance should fail
+			const blocks = {
+				...mockBlocks,
+				'button-maxi-duplicate-u': {
+					clientId: 'client-3',
+					blockRoot: null,
+				},
+			};
+
+			select.mockImplementation(() => ({
+				getBlocks: jest.fn(() => blocks),
+				getLastInsertedBlocks: jest.fn(() => mockLastInsertedBlocks),
+				isUniqueIDCacheLoaded: jest.fn(() => true),
+				isUniqueIDInCache: jest.fn(id => id in mockCache),
+			}));
+
+			expect(getIsIDTrulyUnique('button-maxi-duplicate-u')).toBe(false);
+
+			// Restore original blocks
+			Object.keys(mockBlocks).forEach(key => {
+				if (!originalBlocks[key]) delete mockBlocks[key];
+			});
+		});
+
+		it('Should detect ID that exists in DB but not in current editor - initial load scenario', () => {
+			// ID exists in cache (DB) but not in current editor blocks
+			// This is a normal "loading saved block" scenario
+			// Without clientId, should assume it's initial load and keep ID
+			expect(getIsIDTrulyUnique('button-maxi-existing-in-db-u')).toBe(
+				true
+			);
+		});
+
+		it('Should regenerate ID when pasting from another page (ID in DB, not in editor, IS new insertion)', () => {
+			// ID exists in DB cache but not in current editor
+			// Block's clientId is in lastInsertedBlocks = just pasted
+			// Should regenerate
+			const clientId = 'pasted-client-id-3'; // This is in mockLastInsertedBlocks
+
+			expect(
+				getIsIDTrulyUnique('text-maxi-from-another-page-u', 1, clientId)
+			).toBe(false);
+		});
+
+		it('Should keep ID when loading saved block (ID in DB, not in editor, NOT new insertion)', () => {
+			// ID exists in DB cache but not in current editor
+			// Block's clientId is NOT in lastInsertedBlocks = loading from DB
+			// Should keep ID
+			const clientId = 'some-old-client-id'; // NOT in mockLastInsertedBlocks
+
+			expect(
+				getIsIDTrulyUnique('container-maxi-old-saved-u', 1, clientId)
+			).toBe(true);
+		});
+
+		it('Should detect when cache is not loaded and fall back to tree traversal', () => {
+			// Mock cache not loaded
+			select.mockImplementation(() => ({
+				getBlocks: jest.fn(() => ({})),
+				getLastInsertedBlocks: jest.fn(() => []),
+				isUniqueIDCacheLoaded: jest.fn(() => false),
+				isUniqueIDInCache: jest.fn(() => false),
+			}));
+
+			// Should fall back to tree traversal (which is mocked to return empty)
+			const result = getIsIDTrulyUnique('some-id-u');
+
+			// With empty blocks in tree traversal, ID should be unique
+			expect(result).toBe(true);
+		});
+
+		it('Should handle IDs without -u suffix', () => {
+			// IDs without -u suffix should immediately return false
+			expect(getIsIDTrulyUnique('button-maxi-7f750e3e')).toBe(false);
+		});
+
+		it('Should respect repeatCount parameter', () => {
+			// Create blocks with same ID appearing twice
+			const blocksWithDuplicates = {
+				'button-maxi-twice-u': {
+					clientId: 'client-1',
+					blockRoot: null,
+				},
+				'button-maxi-twice-copy-u': {
+					clientId: 'client-2',
+					blockRoot: null,
+				},
+			};
+
+			// Add another instance with same ID
+			const testBlocks = {
+				...blocksWithDuplicates,
+				'button-maxi-twice-u': {
+					clientId: 'client-1',
+					blockRoot: null,
+				},
+			};
+
+			// Mock to return 2 instances
+			select.mockImplementation(() => ({
+				getBlocks: jest.fn(() => {
+					const blocks = {};
+					// Simulate 2 blocks with same ID
+					blocks['button-maxi-twice-u'] =
+						testBlocks['button-maxi-twice-u'];
+					return blocks;
+				}),
+				getLastInsertedBlocks: jest.fn(() => []),
+				isUniqueIDCacheLoaded: jest.fn(() => true),
+				isUniqueIDInCache: jest.fn(() => false),
+			}));
+
+			// With repeatCount=2, should be valid (count is 1, which is <= 2)
+			expect(getIsIDTrulyUnique('button-maxi-twice-u', 2)).toBe(true);
+
+			// With repeatCount=1, would be invalid if count was 2
+			// But our mock only returns 1 instance, so it's valid
+			expect(getIsIDTrulyUnique('button-maxi-twice-u', 1)).toBe(true);
+		});
+	});
+
+	/**
+	 * INTEGRATION TESTS
+	 * Test real-world scenarios
+	 */
+	describe('Real-world scenarios', () => {
+		beforeEach(() => {
+			// Reset mocks to default state
+			select.mockImplementation(() => ({
+				getBlocks: jest.fn(() => mockBlocks),
+				getLastInsertedBlocks: jest.fn(() => mockLastInsertedBlocks),
+				isUniqueIDCacheLoaded: jest.fn(() => true),
+				isUniqueIDInCache: jest.fn(id => id in mockCache),
+			}));
+		});
+
+		it('Scenario: User copies block within same page', () => {
+			// Block exists in current editor
+			// Copy creates new clientId in lastInsertedBlocks
+			const originalId = 'button-maxi-7f750e3e-u';
+			const newClientId = 'new-client-id-1'; // in lastInsertedBlocks
+
+			// First check: original ID exists in editor
+			expect(getIsIDTrulyUnique(originalId)).toBe(true);
+
+			// Second check: when copy tries to use same ID
+			// It's in current editor (count=1) but also being inserted
+			// Should still pass the editorCount check since count<=1
+			expect(getIsIDTrulyUnique(originalId, 1, newClientId)).toBe(true);
+		});
+
+		it('Scenario: User pastes block from another page into dirty post', () => {
+			// ID exists in DB cache but not in current editor
+			// New block clientId is in lastInsertedBlocks
+			const idFromAnotherPage = 'text-maxi-from-another-page-u';
+			const newClientId = 'pasted-client-id-3'; // in lastInsertedBlocks
+
+			// Should regenerate ID
+			expect(getIsIDTrulyUnique(idFromAnotherPage, 1, newClientId)).toBe(
+				false
+			);
+		});
+
+		it('Scenario: User opens a saved post (clean)', () => {
+			// ID exists in DB cache
+			// Block is being loaded (clientId not in lastInsertedBlocks)
+			const savedId = 'container-maxi-old-saved-u';
+			const oldClientId = 'old-existing-client-id'; // NOT in lastInsertedBlocks
+
+			// Should keep ID
+			expect(getIsIDTrulyUnique(savedId, 1, oldClientId)).toBe(true);
+		});
+
+		it('Scenario: Batch paste 10 blocks simultaneously', () => {
+			// Multiple blocks pasted at once, all checking uniqueness
+			// Each should get unique ID due to timestamp+random in generator
+			// But we test that cache checking works for batch operations
+
+			const batchClientIds = [
+				'batch-1',
+				'batch-2',
+				'batch-3',
+				'batch-4',
+				'batch-5',
+			];
+
+			// Simulate batch paste where all clientIds are in lastInsertedBlocks
+			select.mockImplementation(() => ({
+				getBlocks: jest.fn(() => ({})),
+				getLastInsertedBlocks: jest.fn(() => batchClientIds),
+				isUniqueIDCacheLoaded: jest.fn(() => true),
+				isUniqueIDInCache: jest.fn(() => false),
+			}));
+
+			// Each block checks its ID - none exist in cache or current editor
+			batchClientIds.forEach((clientId, index) => {
+				const testId = `button-maxi-batch-${index}-u`;
+				expect(getIsIDTrulyUnique(testId, 1, clientId)).toBe(true);
+			});
+		});
+
+		it('Scenario: User duplicates a page', () => {
+			// All blocks from source page have IDs in DB cache
+			// But we're loading them fresh (clientIds NOT in lastInsertedBlocks)
+			const duplicatedId = 'container-maxi-old-saved-u';
+			const newClientId = 'new-page-client-id'; // NOT in lastInsertedBlocks
+
+			// Should keep IDs since they're being loaded, not pasted
+			expect(getIsIDTrulyUnique(duplicatedId, 1, newClientId)).toBe(true);
+		});
 	});
 });

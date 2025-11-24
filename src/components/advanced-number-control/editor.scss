@@ -181,9 +181,10 @@
 		width: 100%;
 		margin: 8px 0 0;
 
-		&.maxi-advanced-number-control__range--small
+		&.maxi-advanced-number-control__range--small {
 			.components-simple-tooltip {
-			transform: none;
+				transform: none;
+			}
 		}
 		&.maxi-advanced-number-control__range--big .components-simple-tooltip {
 			transform: translateX(-90%);

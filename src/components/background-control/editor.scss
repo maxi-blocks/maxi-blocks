@@ -3,9 +3,8 @@ body .maxi-background-control {
 	.maxi-tabs-control__full-width {
 		column-gap: 5px;
 		.maxi-tabs-control__button {
-			
 		}
-		
+
 		// Unique classes for each background type button
 		.maxi-tabs-control__button-none,
 		.maxi-tabs-control__button-solid,
@@ -15,36 +14,13 @@ body .maxi-background-control {
 			color: var(--maxi-grey-dark);
 			background-color: var(--maxi-white);
 			padding: 8px;
-			
+
 			&.maxi-tabs-control__button--selected {
 				border: 1px solid var(--maxi-primary-color);
 				color: var(--maxi-primary-color);
 				background-color: var(--maxi-whisper-green);
 			}
 		}
-		// .maxi-tabs-control__button-image {
-		// 	// Styles for "Image" button
-			
-		// 	&.maxi-tabs-control__button--selected {
-		// 		// Selected state for "Image" button
-		// 	}
-		// }
-		
-		// .maxi-tabs-control__button-video {
-		// 	// Styles for "Video" button
-			
-		// 	&.maxi-tabs-control__button--selected {
-		// 		// Selected state for "Video" button
-		// 	}
-		// }
-	
-		// .maxi-tabs-control__button-svg {
-		// 	// Styles for "SVG" button
-			
-		// 	&.maxi-tabs-control__button--selected {
-		// 		// Selected state for "SVG" button
-		// 	}
-		// }
 	}
 
 	.maxi-background-control__tabs {
@@ -53,8 +29,6 @@ body .maxi-background-control {
 		}
 	}
 
-
-	
 	// Unique class for Enable parallax toggle
 	&__enable-parallax {
 		.maxi-toggle-switch {
@@ -62,14 +36,7 @@ body .maxi-background-control {
 			margin-bottom: 3px !important;
 		}
 	}
-	
-	// // Unique class for hr separator
-	// &__separator {
-	// 	margin: 15px 0 !important;
-	// 	border: none;
-	// 	border-top: 1px solid var(--maxi-grey-light);
-	// }
-	
+
 	.parallax-direction {
 		.maxi-tabs-control__button {
 			border: 1px solid var(--maxi-grey-light);
@@ -269,10 +236,7 @@ body .maxi-background-control {
 		min-width: 22px;
 	}
 }
-// .maxi-background-control__image-layer .maxi-toggle-switch {
-// 	padding-top: 10px;
-// 	margin-bottom: 10px !important;
-// }
+
 .parallax-direction .maxi-tabs-control__button {
 	position: relative;
 	display: flex;
@@ -325,14 +289,14 @@ body.maxi-blocks--active .components-popover__fallback-container {
 		}
 	}
 }
-.Settings-background-image {
+.settings-background-image {
 	margin-left: -8px !important;
-	
 }
-.Parallax-background-image {
-	margin-right: -8px !important;	
 
+.parallax-background-image {
+	margin-right: -8px !important;
 }
-.maxi-tabs-control:has(.maxi-tabs-control__button-parallax[aria-pressed="true"]) {
-    margin-bottom: 8px; 
+
+.maxi-tabs-control:has(.maxi-tabs-control__button-parallax[aria-pressed='true']) {
+	margin-bottom: 8px;
 }

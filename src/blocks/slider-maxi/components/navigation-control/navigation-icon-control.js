@@ -43,10 +43,7 @@ import {
 /**
  * Styles and icons
  */
-import {
-	iconBorder,
-	iconFill,
-} from '@maxi-icons';
+import { iconBorder, iconFill } from '@maxi-icons';
 
 /**
  * Component

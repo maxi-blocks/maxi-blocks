@@ -785,7 +785,7 @@ const ImageLayer = props => {
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),
-							className: 'Settings-background-image',
+							className: 'settings-background-image',
 							content: (
 								<ResponsiveTabsControl breakpoint={breakpoint}>
 									<ImageLayerSettings
@@ -799,7 +799,7 @@ const ImageLayer = props => {
 						},
 						...(!isHover && {
 							label: __('Parallax', 'maxi-blocks'),
-							className: 'Parallax-background-image',
+							className: 'parallax-background-image',
 							content: (
 								<>
 									<ToggleSwitch

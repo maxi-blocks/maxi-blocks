@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -13,6 +13,11 @@ import ToggleSwitch from '@components/toggle-switch';
 import DialogBox from '@components/dialog-box';
 import { getAttributeKey, getAttributeValue } from '@extensions/styles';
 import { validateRowColumnsStructure } from '@extensions/repeater';
+
+/**
+ * External dependencies
+ */
+import { isEqual } from 'lodash';
 
 const Repeater = ({
 	clientId,
@@ -25,15 +30,28 @@ const Repeater = ({
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
 	} = useDispatch('core/block-editor');
 
-	const [isModalHidden, setIsModalHidden] = useState(true);
-	const [resolveConfirmation, setResolveConfirmation] = useState(null);
+        const [isModalHidden, setIsModalHidden] = useState(true);
+        const [resolveConfirmation, setResolveConfirmation] = useState(null);
+        const [isValidating, setIsValidating] = useState(false);
 
-	const repeaterStatus = getAttributeValue({
-		target: 'repeater-status',
-		props: attributes,
-	});
+        const lastValidatedInnerBlocksPositions = useRef(null);
+        const precomputedInnerBlocksPositions = useRef(null);
 
-	const classes = 'maxi-repeater';
+        const repeaterStatus = getAttributeValue({
+                target: 'repeater-status',
+                props: attributes,
+        });
+
+        useEffect(() => {
+                if (isRepeaterInherited) {
+                        return;
+                }
+
+                precomputedInnerBlocksPositions.current =
+                        updateInnerBlocksPositions();
+        }, [isRepeaterInherited, updateInnerBlocksPositions]);
+
+        const classes = 'maxi-repeater';
 
 	return (
 		<div className={classes}>
@@ -42,19 +60,39 @@ const Repeater = ({
 					className={`${classes}__toggle`}
 					label={__('Enable repeater', 'maxi-blocks')}
 					selected={repeaterStatus}
+					disabled={isValidating}
 					onChange={async val => {
-						if (!val) {
-							onChange({
-								[getAttributeKey('repeater-status')]: val,
-							});
-							return;
-						}
+                                                setIsValidating(true);
+                                                
+                                                try {
+                                                        if (!val) {
+                                                                onChange({
+                                                                        [getAttributeKey('repeater-status')]: val,
+                                                                });
+                                                                return;
+                                                        }
 
-						const newInnerBlocksPositions =
-							updateInnerBlocksPositions();
+                                                        const newInnerBlocksPositions =
+                                                                updateInnerBlocksPositions();
 
-						const isStructureValidated =
-							await validateRowColumnsStructure(
+                                                        precomputedInnerBlocksPositions.current =
+                                                                newInnerBlocksPositions;
+
+                                                        if (
+                                                                isEqual(
+                                                                        lastValidatedInnerBlocksPositions.current,
+                                                                        newInnerBlocksPositions
+                                                                )
+                                                        ) {
+                                                                markNextChangeAsNotPersistent();
+                                                                onChange({
+                                                                        [getAttributeKey('repeater-status')]: val,
+                                                                });
+                                                                return;
+                                                        }
+
+                                                        const isStructureValidated =
+                                                                await validateRowColumnsStructure(
 								clientId,
 								newInnerBlocksPositions,
 								async () =>
@@ -64,16 +102,22 @@ const Repeater = ({
 									}),
 								undefined,
 								true
-							);
+                                                        );
 
-						if (isStructureValidated) {
-							markNextChangeAsNotPersistent();
-							onChange({
-								[getAttributeKey('repeater-status')]: val,
-							});
-						}
-					}}
-				/>
+                                                        if (isStructureValidated) {
+                                                                markNextChangeAsNotPersistent();
+                                                                onChange({
+                                                                        [getAttributeKey('repeater-status')]: val,
+                                                                });
+
+                                                                lastValidatedInnerBlocksPositions.current =
+                                                                        precomputedInnerBlocksPositions.current;
+                                                        }
+                                                } finally {
+                                                        setIsValidating(false);
+                                                }
+                                        }}
+                                />
 			)}
 			<DialogBox
 				message={__(

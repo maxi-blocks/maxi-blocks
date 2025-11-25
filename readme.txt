@@ -173,7 +173,7 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
-_Updates 25 Nov 2025_
+_Updates 26 Nov 2025_
 MaxiBlocks v2.1.7
 * Update: Implemented comprehensive UI/UX improvements across the Editor Experience, delivering a more intuitive interface.
 * Update: Rebuilt translation system architecture to ensure proper localization support on WordPress.org, enabling seamless multilingual functionality and improved plugin accessibility for international users.

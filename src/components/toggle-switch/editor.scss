@@ -28,6 +28,15 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	}
 	&--disabled {
 		opacity: 0.5;
+		pointer-events: none;
+	}
+	&--loading {
+		.maxi-toggle-switch__toggle__thumb {
+			animation: maxi-toggle-pulse 0.8s ease-in-out infinite;
+		}
+		.maxi-toggle-switch__toggle__track {
+			opacity: 0.7;
+		}
 	}
 	.maxi-base-control {
 		&__field {
@@ -100,3 +109,21 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		border-color: var(--maxi-grey) !important;
 	}
 }
+
+.maxi-toggle-switch__toggle:active {
+	.maxi-toggle-switch__toggle__thumb {
+		transform: scale(0.95);
+	}
+}
+
+@keyframes maxi-toggle-pulse {
+	0%, 100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(0.9);
+		opacity: 0.7;
+	}
+}
+

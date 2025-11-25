@@ -60,7 +60,7 @@ const Repeater = ({
 					className={`${classes}__toggle`}
 					label={__('Enable repeater', 'maxi-blocks')}
 					selected={repeaterStatus}
-					disabled={isValidating}
+					loading={isValidating}
 					onChange={async val => {
                                                 setIsValidating(true);
                                                 

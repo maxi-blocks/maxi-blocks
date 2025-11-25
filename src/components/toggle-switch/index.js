@@ -28,6 +28,7 @@ const ToggleSwitch = ({
 	help,
 	selected,
 	disabled,
+	loading,
 }) => {
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
@@ -37,6 +38,7 @@ const ToggleSwitch = ({
 		'maxi-toggle-switch',
 		checked && 'maxi-toggle-switch--is-checked',
 		disabled && 'maxi-toggle-switch--disabled',
+		loading && 'maxi-toggle-switch--loading',
 		className
 	);
 

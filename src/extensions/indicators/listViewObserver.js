@@ -31,6 +31,11 @@ const updateListViewItem = (item) => {
     if (!block) return;
 
     const hasInteraction = !isEmpty(block.attributes?.relations);
+    const hasBackgroundLayers = !isEmpty(
+        block.attributes?.['background-layers']?.filter(
+            (layer) => layer.type !== 'color'
+        )
+    );
 
     if (hasInteraction) {
         item.setAttribute(ATTR_NAME, 'true');
@@ -38,8 +43,21 @@ const updateListViewItem = (item) => {
         item.setAttribute('title', 'Interaction');
     } else {
         item.removeAttribute(ATTR_NAME);
-        item.removeAttribute('aria-label');
-        item.removeAttribute('title');
+        if (!hasBackgroundLayers) {
+            item.removeAttribute('aria-label');
+            item.removeAttribute('title');
+        }
+    }
+
+    if (hasBackgroundLayers) {
+        item.setAttribute('data-maxi-background', 'true');
+        // If interaction is also present, append to label/title
+        const currentLabel = item.getAttribute('aria-label');
+        const label = currentLabel ? `${currentLabel}, Background` : 'Background';
+        item.setAttribute('aria-label', label);
+        item.setAttribute('title', label);
+    } else {
+        item.removeAttribute('data-maxi-background');
     }
 };
 

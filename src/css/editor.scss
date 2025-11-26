@@ -481,6 +481,10 @@ svg path#styleCardBoat_b,
 		border-color: var(--maxi-interaction-pink);
 	}
 
+	&.maxi-block--background::after {
+		border-color: var(--maxi-background-yellow);
+	}
+
 	&.maxi-block--full-width::after {
 		width: calc(100% - 4px);
 	}
@@ -824,6 +828,82 @@ body.maxi-blocks--active
 	}
 	
 	// Blue text when selected
+	.block-editor-list-view-block-contents,
+	.block-editor-list-view-block-select-button__title,
+	.components-truncate {
+		color: var(--maxi-interaction-pink) !important;
+	}
+}
+
+// Interaction indicator in List View - yellow dot for blocks with background layers
+.block-editor-list-view-tree
+	[data-maxi-background='true']
+	> .block-editor-list-view-block__contents-cell::after {
+	content: '';
+	position: absolute;
+	right: 3px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background-color: var(--maxi-background-yellow);
+	pointer-events: none;
+}
+
+// Handle case where both interaction and background are present
+.block-editor-list-view-tree
+	[data-maxi-interaction='true'][data-maxi-background='true']
+	> .block-editor-list-view-block__contents-cell::after {
+	// Shift the background dot to the left of the interaction dot
+	right: 12px;
+}
+
+// Create a second pseudo-element for the interaction dot when both are present
+.block-editor-list-view-tree
+	[data-maxi-interaction='true'][data-maxi-background='true']
+	> .block-editor-list-view-block__contents-cell::before {
+	content: '';
+	position: absolute;
+	right: 3px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background-color: var(--maxi-interaction-pink);
+	pointer-events: none;
+}
+
+// When a block with background is selected, make the dot and text yellow
+.block-editor-list-view-leaf.is-selected[data-maxi-background='true'],
+.block-editor-list-view__block.is-selected[data-maxi-background='true'] {
+	// Yellow dot when selected
+	> .block-editor-list-view-block__contents-cell::after {
+		background-color: var(--maxi-background-yellow) !important;
+	}
+	
+	// Yellow text when selected
+	.block-editor-list-view-block-contents,
+	.block-editor-list-view-block-select-button__title,
+	.components-truncate {
+		color: var(--maxi-background-yellow) !important;
+	}
+}
+
+// When both are selected, prioritize interaction pink for text, but keep dots
+.block-editor-list-view-leaf.is-selected[data-maxi-interaction='true'][data-maxi-background='true'],
+.block-editor-list-view__block.is-selected[data-maxi-interaction='true'][data-maxi-background='true'] {
+	// Interaction dot (before)
+	> .block-editor-list-view-block__contents-cell::before {
+		background-color: var(--maxi-interaction-pink) !important;
+	}
+	// Background dot (after)
+	> .block-editor-list-view-block__contents-cell::after {
+		background-color: var(--maxi-background-yellow) !important;
+	}
+	
+	// Text color - prioritize pink as it's likely more important/visible
 	.block-editor-list-view-block-contents,
 	.block-editor-list-view-block-select-button__title,
 	.components-truncate {

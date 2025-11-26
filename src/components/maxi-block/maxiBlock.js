@@ -232,6 +232,13 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		(isDisabled || showLoader) && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width',
 		!isSave && !isEmpty(attributes?.relations) && 'maxi-block--interaction',
+		!isSave &&
+			!isEmpty(
+				background?.['background-layers']?.filter(
+					layer => layer.type !== 'color'
+				)
+			) &&
+			'maxi-block--background',
 		isSave && dcStatus && dcHide && '$class-to-replace'
 	);
 

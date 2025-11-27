@@ -3,7 +3,6 @@
  */
 import { createReduxStore, register, dispatch } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
-import { addAction } from '@wordpress/hooks';
 
 /**
  * Internal dependencies
@@ -80,13 +79,13 @@ const initUniqueIDCache = async () => {
 	}
 };
 
-// Initialize cache when editor is ready
-addAction('editor.ready', 'maxiBlocks/initUniqueIDCache', initUniqueIDCache);
-
-// Also init on DOMContentLoaded as fallback for FSE and other contexts
-if (document.readyState === 'loading') {
-	document.addEventListener('DOMContentLoaded', initUniqueIDCache);
-} else {
-	// DOM already loaded
-	initUniqueIDCache();
+// Initialize cache on DOMContentLoaded for editor and FSE contexts
+// Skip initialization in test environment (process.env.NODE_ENV === 'test')
+if (process.env.NODE_ENV !== 'test') {
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initUniqueIDCache);
+	} else {
+		// DOM already loaded
+		initUniqueIDCache();
+	}
 }

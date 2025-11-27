@@ -9,25 +9,6 @@ import { select } from '@wordpress/data';
 import goThroughMaxiBlocks from './goThroughMaxiBlocks';
 
 /**
- * Check if current post is dirty (has unsaved changes)
- */
-const isCurrentPostDirty = () => {
-	try {
-		const { __experimentalGetDirtyEntityRecords: getDirtyEntityRecords } =
-			select('core');
-		const { getCurrentPostId } = select('core/editor');
-
-		if (!getDirtyEntityRecords || !getCurrentPostId) return false;
-
-		return getDirtyEntityRecords().some(
-			item => item.key === getCurrentPostId()
-		);
-	} catch {
-		return false;
-	}
-};
-
-/**
  * Check if a uniqueID is truly unique across the site and current editor
  * Uses O(1) cache lookup when available, falls back to tree traversal
  *
@@ -39,22 +20,18 @@ const isCurrentPostDirty = () => {
 const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 	if (!id.endsWith('-u')) return false;
 
-	const {
-		isUniqueIDCacheLoaded,
-		isUniqueIDInCache,
-		getBlocks,
-		getLastInsertedBlocks,
-	} = select('maxiBlocks/blocks');
+	const { isUniqueIDCacheLoaded, isUniqueIDInCache, getLastInsertedBlocks } =
+		select('maxiBlocks/blocks');
 
 	// If cache is loaded, use O(1) lookup for site-wide check
 	if (isUniqueIDCacheLoaded()) {
 		const existsInDB = isUniqueIDInCache(id);
 
-		// Quick check: count occurrences in current editor using Redux store
-		// This is O(n) but n is only blocks in THIS editor, not full tree
-		const currentBlocks = getBlocks() || {};
+		// Count occurrences in current editor by traversing the actual block tree
+		// Note: Redux store is keyed by uniqueID, so can't detect duplicates there
 		let currentEditorCount = 0;
-		Object.keys(currentBlocks).forEach(uniqueID => {
+		goThroughMaxiBlocks(block => {
+			const { uniqueID } = block.attributes;
 			if (uniqueID === id) {
 				currentEditorCount += 1;
 			}

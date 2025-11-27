@@ -107,11 +107,15 @@ const updateRelationHoverStatus = (blockName, blockAttributes) => {
 
 				if (!blockDataInfo?.interactionBuilderSettings) return relation;
 
-				const { hoverProp } = Object.values(
+				const settingMatch = Object.values(
 					blockDataInfo.interactionBuilderSettings
 				)
 					.flat()
 					.find(({ sid }) => sid === relationSettingID);
+
+				if (!settingMatch) return relation;
+
+				const { hoverProp } = settingMatch;
 
 				return {
 					...relation,

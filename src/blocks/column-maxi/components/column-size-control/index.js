@@ -139,6 +139,7 @@ const ColumnSizeControl = props => {
 						isReset: true,
 					});
 				}}
+				newStyle
 			/>
 		</>
 	);

@@ -401,6 +401,9 @@ class MaxiBlockComponent extends Component {
 				console.warn('MaxiBlocks: Force update error:', error);
 			}
 		}
+
+		// Step 9: Hide Gutenberg popover on initial mount
+		this.hideGutenbergPopover();
 	}
 
 	/**
@@ -1849,14 +1852,20 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview || this.templateModal) return;
 
 		if (this.props.isSelected && !this.popoverStyles) {
-			this.popoverStyles = document.createElement('style');
-			this.popoverStyles.innerHTML = `
-				.block-editor-block-popover {
-					display: none !important;
-				}
-			`;
-			this.popoverStyles.id = 'maxi-blocks-hide-popover-styles';
-			document.head.appendChild(this.popoverStyles);
+			// Use requestAnimationFrame to ensure the popover is in the DOM
+			// This handles timing changes in WordPress 6.9 RC2
+			requestAnimationFrame(() => {
+				if (!this.props.isSelected || this.popoverStyles) return;
+
+				this.popoverStyles = document.createElement('style');
+				this.popoverStyles.innerHTML = `
+					.block-editor-block-popover {
+						display: none !important;
+					}
+				`;
+				this.popoverStyles.id = 'maxi-blocks-hide-popover-styles';
+				document.head.appendChild(this.popoverStyles);
+			});
 		} else if (!this.props.isSelected && this.popoverStyles) {
 			this.popoverStyles.remove();
 			this.popoverStyles = null;

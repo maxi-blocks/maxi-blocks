@@ -1,13 +1,38 @@
 <?php
 /**
- * Generate combined JSON translation file for bundled JavaScript
+ * Generate combined JSON translation files for bundled JavaScript
+ *
+ * This script generates JSON translation files for MaxiBlocks bundled JS files:
+ * - build/index.min.js (editor)
+ * - build/admin.min.js (dashboard)
+ *
+ * Usage: php generate-translations.php [locale]
+ * Default locale: de_DE
  */
 
+// Get locale from command line argument, default to de_DE
+$locale = isset($argv[1]) ? $argv[1] : 'de_DE';
+
+// Define the bundled scripts that need translations
+$scripts = [
+    'index' => [
+        'path' => 'maxi-blocks/build/index.min.js',
+        'name' => 'Editor (index.min.js)'
+    ],
+    'admin' => [
+        'path' => 'maxi-blocks/build/admin.min.js',
+        'name' => 'Dashboard (admin.min.js)'
+    ]
+];
+
 // Read the PO file
-$poFile = file_get_contents('languages/maxi-blocks-de_DE.po');
+$poFile = file_get_contents("languages/maxi-blocks-{$locale}.po");
 if (!$poFile) {
-    die("Could not read PO file\n");
+    die("Could not read PO file: languages/maxi-blocks-{$locale}.po\n");
 }
+
+echo "Processing translations for locale: {$locale}\n";
+echo "Source file: languages/maxi-blocks-{$locale}.po\n\n";
 
 // Parse PO file
 $lines = explode("\n", $poFile);
@@ -85,44 +110,72 @@ if ($msgid !== null && $msgstr !== null && $msgstr !== '' && $msgid !== '' && $i
     $translations[$msgid] = [$msgstr];
 }
 
-echo "Found " . count($translations) . " JavaScript translations\n";
+$total_translations = count($translations);
+echo "Found {$total_translations} JavaScript translations\n\n";
 
-// Add the empty string with metadata FIRST
-// IMPORTANT: The domain field here must be empty string, not 'maxi-blocks'!
-$locale_data = [
-    '' => [
-        'domain' => '',
-        'lang' => 'de_DE',
-        'plural-forms' => 'nplurals=2; plural=n != 1;'
-    ]
-];
+if ($total_translations === 0) {
+    die("No translated JavaScript strings found. Please add translations in Loco Translate first.\n");
+}
 
-// Then add all translations
-$locale_data = array_merge($locale_data, $translations);
+// Generate JSON files for each bundled script
+$generated_files = [];
 
-// Create JSON structure matching JED format
-$json = [
-    'translation-revision-date' => date('Y-m-d H:i:sP'),
-    'generator' => 'MaxiBlocks Translation Script',
-    'source' => 'build/index.min.js',
-    'domain' => 'maxi-blocks',
-    'locale_data' => [
-        'maxi-blocks' => $locale_data
-    ]
-];
+foreach ($scripts as $key => $script) {
+    $script_path = $script['path'];
+    $script_name = $script['name'];
 
-// Save as JSON - use the FULL relative path that WordPress sees
-// The hash must match what WordPress calculates: md5('maxi-blocks/build/index.min.js')
-// This is the path relative to wp-content/plugins/
-$hash = md5('maxi-blocks/build/index.min.js');
-$filename = "languages/maxi-blocks-de_DE-{$hash}.json";
+    // Add the empty string with metadata FIRST
+    // IMPORTANT: The domain field here must be empty string, not 'maxi-blocks'!
+    $locale_data = [
+        '' => [
+            'domain' => '',
+            'lang' => $locale,
+            'plural-forms' => 'nplurals=2; plural=n != 1;'
+        ]
+    ];
 
-file_put_contents($filename, json_encode($json, JSON_UNESCAPED_UNICODE));
+    // Then add all translations
+    $locale_data = array_merge($locale_data, $translations);
 
-echo "Created: $filename\n";
-echo "File size: " . filesize($filename) . " bytes\n";
-echo "\nSample translations:\n";
+    // Create JSON structure matching JED format
+    $json = [
+        'translation-revision-date' => date('Y-m-d H:i:sP'),
+        'generator' => 'MaxiBlocks Translation Script',
+        'source' => str_replace('maxi-blocks/', '', $script_path),
+        'domain' => 'maxi-blocks',
+        'locale_data' => [
+            'maxi-blocks' => $locale_data
+        ]
+    ];
+
+    // Calculate hash from the full relative path (relative to wp-content/plugins/)
+    $hash = md5($script_path);
+    $filename = "languages/maxi-blocks-{$locale}-{$hash}.json";
+
+    file_put_contents($filename, json_encode($json, JSON_UNESCAPED_UNICODE));
+
+    $generated_files[] = [
+        'name' => $script_name,
+        'file' => $filename,
+        'hash' => $hash,
+        'size' => filesize($filename)
+    ];
+}
+
+// Display results
+echo "Successfully generated " . count($generated_files) . " translation files:\n\n";
+foreach ($generated_files as $file) {
+    echo "✓ {$file['name']}\n";
+    echo "  File: {$file['file']}\n";
+    echo "  Hash: {$file['hash']}\n";
+    echo "  Size: {$file['size']} bytes\n";
+    echo "  Translations: {$total_translations}\n\n";
+}
+
+// Show sample translations
+echo "Sample translations:\n";
 $sample = array_slice(array_keys($translations), 0, 3);
 foreach ($sample as $key) {
-    echo "  \"$key\" => \"{$translations[$key][0]}\"\n";
+    echo "  \"{$key}\" → \"{$translations[$key][0]}\"\n";
 }
+echo "\nDone!\n";

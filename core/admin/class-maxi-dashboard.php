@@ -179,6 +179,30 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 );
                 wp_enqueue_script('maxi-admin');
 
+                // Manually inject translations for the admin bundled script
+                $locale = get_locale();
+                $json_file = MAXI_PLUGIN_DIR_PATH . 'languages/maxi-blocks-' . $locale . '-' . md5('maxi-blocks/build/admin.min.js') . '.json';
+
+                if (file_exists($json_file)) {
+                    $translations_json = file_get_contents($json_file);
+                    $translations_data = json_decode($translations_json, true);
+
+                    if ($translations_data && isset($translations_data['locale_data'])) {
+                        wp_add_inline_script(
+                            'maxi-admin',
+                            sprintf(
+                                '( function( domain, translations ) {
+                                    var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+                                    localeData[""].domain = domain;
+                                    wp.i18n.setLocaleData( localeData, domain );
+                                } )( "maxi-blocks", %s );',
+                                $translations_json
+                            ),
+                            'before'
+                        );
+                    }
+                }
+
                 // Add status report styles
                 wp_register_style(
                     'maxi-status-report',

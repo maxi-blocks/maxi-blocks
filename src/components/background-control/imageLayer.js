@@ -618,7 +618,7 @@ const ImageLayerSettings = props => {
 					)}
 				</>
 			)}
-			<hr />
+			<hr className='maxi-background-control__separator' />
 			{!disableClipPath && (
 				<ClipPathControl
 					onChange={onChange}
@@ -785,6 +785,7 @@ const ImageLayer = props => {
 					items={[
 						{
 							label: __('Settings', 'maxi-blocks'),
+							className: 'settings-background-image',
 							content: (
 								<ResponsiveTabsControl breakpoint={breakpoint}>
 									<ImageLayerSettings
@@ -798,6 +799,7 @@ const ImageLayer = props => {
 						},
 						...(!isHover && {
 							label: __('Parallax', 'maxi-blocks'),
+							className: 'parallax-background-image',
 							content: (
 								<>
 									<ToggleSwitch

@@ -173,6 +173,17 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 
 == Changelog ==
 
+_Updates 26 Nov 2025_
+MaxiBlocks v2.1.7
+* Update: Implemented comprehensive UI/UX improvements across the Editor Experience, delivering a more intuitive interface.
+* Update: Rebuilt translation system architecture to ensure proper localization support on WordPress.org, enabling seamless multilingual functionality and improved plugin accessibility for international users.
+* Update: Updated npm packages and dependencies to latest versions for enhanced security measures and improved stability across all plugin features.
+* Fix: Resolved styling inconsistencies with synced blocks and template parts in the Editor Experience for proper visual presentation and consistent design rendering across all editing contexts.
+* Fix: Corrected Starter Sites functionality to properly overwrite existing templates and template parts on block themes instead of creating duplicates, maintaining a cleaner template structure and preventing conflicts.
+* Fix: Enhanced Interaction Builder reliability for Show/Hide actions with consistent behaviour and proper execution of visibility toggles across all interactive elements.
+* Fix: Resolved frontend pagination issues when displaying posts from child taxonomies with accurate post filtering and proper navigation through hierarchical taxonomy structures.
+* Fix: Corrected Scroll Effects functionality on smaller screens when using anchor links for proper navigation across all responsive breakpoints.
+
 _Updates 5 Nov 2025_
 MaxiBlocks v2.1.6
 * Update: Rebranded Pro features to Cloud, providing clearer terminology and improved user understanding of cloud-based functionality.
@@ -193,14 +204,6 @@ MaxiBlocks v2.1.5
 * Fix: Resolved Dynamic Content rendering issues when displaying Advanced Custom Fields data, ensuring proper field values are shown on both backend and frontend.
 * Fix: Corrected border line properties resetting to default values when specific styling configurations were applied, maintaining consistent border appearance.
 * Fix: Addressed compatibility issues with certain clip-path CSS options that were causing block rendering failures.
-
-_Updates 15 Sep 2025_
-MaxiBlocks v2.1.4
-* Update: Enhanced Pro authentication system by implementing new server middleware for improved security and reliability.
-* Update: Expanded AI model support with full GPT-5 integration, providing access to the latest OpenAI capabilities for enhanced content generation and editing assistance.
-* Fix: Restored MaxiBlocks toolbar functionality in synced blocks editor, ensuring consistent editing experience across all block types and maintaining proper toolbar accessibility.
-* Fix: Resolved toolbar conflicts by returning native Gutenberg toolbar for standard WordPress blocks nested inside Maxi blocks, preventing interface inconsistencies and ensuring proper block functionality.
-* Security: Fixed Broken Access Control vulnerability in MaxiBlocks plugin settings affecting Contributor-level users and above. Thanks to Abu Hurayra for the responsible disclosure.
 
 == Upgrade Notice ==
 

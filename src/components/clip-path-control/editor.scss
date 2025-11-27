@@ -1,3 +1,36 @@
+// Target the responsive tabs control that appears before the clip-path control
+.maxi-settingstab-control.maxi-responsive-tabs-control + .maxi-clip-path-control__wrapper {
+	// Add your spacing adjustments here if needed
+}
+
+// Disable inherited styles for clip-path control
+.maxi-clip-path-control__wrapper {
+	.maxi-tabs-control__button {
+		// Reset any unwanted inherited button styles
+		// Add specific properties you want to disable, for example:
+		// border: none;
+		// padding: initial;
+		// margin: initial;
+	}
+}
+
+// Remove padding from accordion panel for clip-path control
+.maxi-accordion-control__item__panel:not(.maxi-accordion-control__item__panel--disable-padding):has(.maxi-clip-path-control__wrapper) {
+	padding: 0;
+}
+
+.maxi-clip-path-mode-control {
+    .maxi-tabs-control__button {
+        &:first-child {
+            margin-right: 4px;
+        }
+
+        &:last-child {
+            margin-left: 4px;
+        }
+    }
+}
+
 .maxi-clip-path-control {
 	.clip-path-defaults {
 		display: flex;

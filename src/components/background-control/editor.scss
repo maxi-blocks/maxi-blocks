@@ -3,9 +3,8 @@ body .maxi-background-control {
 	.maxi-tabs-control__full-width {
 		column-gap: 5px;
 		.maxi-tabs-control__button {
-			
 		}
-		
+
 		// Unique classes for each background type button
 		.maxi-tabs-control__button-none,
 		.maxi-tabs-control__button-solid,
@@ -15,45 +14,29 @@ body .maxi-background-control {
 			color: var(--maxi-grey-dark);
 			background-color: var(--maxi-white);
 			padding: 8px;
-			
+
 			&.maxi-tabs-control__button--selected {
 				border: 1px solid var(--maxi-primary-color);
 				color: var(--maxi-primary-color);
 				background-color: var(--maxi-whisper-green);
 			}
 		}
-		// .maxi-tabs-control__button-image {
-		// 	// Styles for "Image" button
-			
-		// 	&.maxi-tabs-control__button--selected {
-		// 		// Selected state for "Image" button
-		// 	}
-		// }
-		
-		// .maxi-tabs-control__button-video {
-		// 	// Styles for "Video" button
-			
-		// 	&.maxi-tabs-control__button--selected {
-		// 		// Selected state for "Video" button
-		// 	}
-		// }
-		
-	
-		
-		
-		// .maxi-tabs-control__button-svg {
-		// 	// Styles for "SVG" button
-			
-		// 	&.maxi-tabs-control__button--selected {
-		// 		// Selected state for "SVG" button
-		// 	}
-		// }
 	}
 
-	&__image-layer .maxi-toggle-switch {
-		padding-top: 10px;
-		margin-bottom: 3px !important;
+	.maxi-background-control__tabs {
+		> .maxi-tabs-control {
+			margin: 10px -5px 0px !important;
+		}
 	}
+
+	// Unique class for Enable parallax toggle
+	&__enable-parallax {
+		.maxi-toggle-switch {
+			padding-top: 10px;
+			margin-bottom: 3px !important;
+		}
+	}
+
 	.parallax-direction {
 		.maxi-tabs-control__button {
 			border: 1px solid var(--maxi-grey-light);
@@ -82,7 +65,7 @@ body .maxi-background-control {
 	.maxi-background-control__add-layer {
 		margin-top: 0 !important;
 		.maxi-base-control__field {
-			margin-bottom: 3px !important;
+			margin-bottom: 8px !important;
 			border: 1px solid var(--maxi-grey-light);
 			border-radius: 4px;
 		}
@@ -253,10 +236,7 @@ body .maxi-background-control {
 		min-width: 22px;
 	}
 }
-.maxi-background-control__image-layer .maxi-toggle-switch {
-	padding-top: 10px;
-	margin-bottom: 10px !important;
-}
+
 .parallax-direction .maxi-tabs-control__button {
 	position: relative;
 	display: flex;
@@ -308,4 +288,15 @@ body.maxi-blocks--active .components-popover__fallback-container {
 			background: var(--maxi-mid-green);
 		}
 	}
+}
+.settings-background-image {
+	margin-left: -8px !important;
+}
+
+.parallax-background-image {
+	margin-right: -8px !important;
+}
+
+.maxi-tabs-control:has(.maxi-tabs-control__button-parallax[aria-pressed='true']) {
+	margin-bottom: 8px;
 }

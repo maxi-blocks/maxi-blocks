@@ -26,6 +26,7 @@ const AxisPositionControl = ({
 	className,
 	disableY = false,
 	enableCenter = false,
+	buttonClasses = {},
 }) => {
 	const classes = classnames('maxi-axis-position-control', className);
 
@@ -41,23 +42,28 @@ const AxisPositionControl = ({
 						{
 							label: __('Top', 'maxi-blocks'),
 							value: 'top',
+							className: buttonClasses.top,
 						},
 						{
 							label: __('Bottom', 'maxi-blocks'),
 							value: 'bottom',
+							className: buttonClasses.bottom,
 						},
 					]),
 					{
 						label: __('Left', 'maxi-blocks'),
 						value: 'left',
+						className: buttonClasses.left,
 					},
 					enableCenter && {
 						label: __('Center', 'maxi-blocks'),
 						value: 'center',
+						className: buttonClasses.center,
 					},
 					{
 						label: __('Right', 'maxi-blocks'),
 						value: 'right',
+						className: buttonClasses.right,
 					},
 				]}
 				onChange={onChange}

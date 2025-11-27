@@ -110,13 +110,6 @@ const BlockStylesSaver = () => {
 					dispatch('maxiBlocks/blocks').addMultipleToUniqueIDCache(
 						uniqueIDs
 					);
-
-					// eslint-disable-next-line no-console
-					console.log(
-						`[UniqueID Cache] ✅ Updated cache after save: ${JSON.stringify(
-							uniqueIDs.length
-						)} IDs added`
-					);
 				}
 			} catch (error) {
 				// eslint-disable-next-line no-console

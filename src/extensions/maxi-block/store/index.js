@@ -41,14 +41,6 @@ const CACHE_RETRY_DELAY = 5000; // 5 seconds
  */
 const initUniqueIDCache = async () => {
 	try {
-		// eslint-disable-next-line no-console
-		console.log(
-			`[initUniqueIDCache] 🔄 Loading uniqueID cache from DB (attempt ${JSON.stringify(
-				cacheLoadAttempts + 1
-			)}/${JSON.stringify(MAX_CACHE_LOAD_ATTEMPTS)})...`
-		);
-		const startTime = performance.now();
-
 		const uniqueIDs = await apiFetch({
 			path: '/maxi-blocks/v1.0/unique-ids/all',
 			method: 'GET',
@@ -56,13 +48,6 @@ const initUniqueIDCache = async () => {
 
 		if (Array.isArray(uniqueIDs)) {
 			dispatch('maxiBlocks/blocks').loadUniqueIDCache(uniqueIDs);
-			const endTime = performance.now();
-			// eslint-disable-next-line no-console
-			console.log(
-				`[initUniqueIDCache] ✅ Cache loaded: ${JSON.stringify(
-					uniqueIDs.length
-				)} IDs in ${JSON.stringify(Math.round(endTime - startTime))}ms`
-			);
 
 			// Reset attempts counter on success
 			cacheLoadAttempts = 0;
@@ -80,13 +65,6 @@ const initUniqueIDCache = async () => {
 
 		// Retry if we haven't exceeded max attempts
 		if (cacheLoadAttempts < MAX_CACHE_LOAD_ATTEMPTS) {
-			// eslint-disable-next-line no-console
-			console.log(
-				`[initUniqueIDCache] ⏳ Retrying in ${JSON.stringify(
-					CACHE_RETRY_DELAY / 1000
-				)}s...`
-			);
-
 			setTimeout(() => {
 				initUniqueIDCache();
 			}, CACHE_RETRY_DELAY);

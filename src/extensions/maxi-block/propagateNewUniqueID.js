@@ -454,13 +454,6 @@ const propagateNewUniqueID = (
 			oldUniqueID,
 			newUniqueID
 		);
-
-		// eslint-disable-next-line no-console
-		console.log(
-			`[Relations Store] ✅ Synced relations store: ${JSON.stringify(
-				oldUniqueID
-			)} → ${JSON.stringify(newUniqueID)}`
-		);
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.warn(

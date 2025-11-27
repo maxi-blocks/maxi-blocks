@@ -2,7 +2,7 @@
 
 ## Overview
 
-MaxiBlocks uses a custom solution for JavaScript translations because the bundled files are too large for WordPress's standard `wp i18n make-json` command to process.
+MaxiBlocks uses a streamlined approach to handle JavaScript translations for bundled files. This custom solution enables seamless integration with translation plugins like Loco Translate, extracting JS translations from `.po` files and injecting them directly into the block editor and dashboard scripts.
 
 ## How It Works
 
@@ -37,9 +37,12 @@ Run this command from the plugin directory:
 php languages/generate-translations.php
 ```
 
-Or specify a different locale:
+This will automatically process all available `.po` files in the languages folder.
+
+Or specify one or more specific locales:
 ```bash
 php languages/generate-translations.php es_ES
+php languages/generate-translations.php es_ES de_DE fr_FR
 ```
 
 This will:
@@ -201,12 +204,15 @@ md5('maxi-blocks/build/admin.min.js')
 
 ## For Other Languages
 
-The script supports multiple languages via command-line argument:
+The script automatically processes all available translation files by default:
 
 ```bash
+# Process all available locales
+php languages/generate-translations.php
+
+# Process specific locale(s)
 php languages/generate-translations.php de_DE
-php languages/generate-translations.php es_ES
-php languages/generate-translations.php fr_FR
+php languages/generate-translations.php es_ES fr_FR it_IT
 ```
 
-Default is `de_DE` if no argument provided.
+The script will auto-detect all `maxi-blocks-*.po` files when run without arguments.

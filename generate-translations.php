@@ -26,13 +26,13 @@ $scripts = [
 ];
 
 // Read the PO file
-$poFile = file_get_contents("languages/maxi-blocks-{$locale}.po");
+$poFile = file_get_contents("maxi-blocks-{$locale}.po");
 if (!$poFile) {
-    die("Could not read PO file: languages/maxi-blocks-{$locale}.po\n");
+    die("Could not read PO file: maxi-blocks-{$locale}.po\n");
 }
 
 echo "Processing translations for locale: {$locale}\n";
-echo "Source file: languages/maxi-blocks-{$locale}.po\n\n";
+echo "Source file: maxi-blocks-{$locale}.po\n\n";
 
 // Parse PO file
 $lines = explode("\n", $poFile);
@@ -150,7 +150,7 @@ foreach ($scripts as $key => $script) {
 
     // Calculate hash from the full relative path (relative to wp-content/plugins/)
     $hash = md5($script_path);
-    $filename = "languages/maxi-blocks-{$locale}-{$hash}.json";
+    $filename = "maxi-blocks-{$locale}-{$hash}.json";
 
     file_put_contents($filename, json_encode($json, JSON_UNESCAPED_UNICODE));
 

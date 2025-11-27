@@ -575,18 +575,6 @@ describe('getIsIDTrulyUnique', () => {
 		});
 
 		it('Should detect duplicate ID in current editor', () => {
-			// Create blocks object with duplicate
-			const blocks = {
-				'button-maxi-duplicate-u': {
-					clientId: 'client-1',
-					blockRoot: null,
-				},
-				'button-maxi-duplicate-2-u': {
-					clientId: 'client-2',
-					blockRoot: null,
-				},
-			};
-
 			// Mock to count duplicates - manually add second occurrence
 			select.mockImplementation(storeName => {
 				if (storeName === 'maxiBlocks/blocks') {

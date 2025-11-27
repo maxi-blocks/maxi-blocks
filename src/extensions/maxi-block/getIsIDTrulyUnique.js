@@ -69,7 +69,6 @@ const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 		// instead of relying solely on post dirty status
 		const lastChangedBlocks = getLastInsertedBlocks() || [];
 		const isNewInsertion = clientId && lastChangedBlocks.includes(clientId);
-		const postDirty = isCurrentPostDirty();
 
 		let isUnique = currentEditorCount <= repeatCount;
 

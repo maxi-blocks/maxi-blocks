@@ -73,7 +73,7 @@ const LinkOptions = props => {
 				[`${prefix}link-palette-sc-status`]: undefined,
 				[`${prefix}link-palette-opacity`]: undefined,
 			},
-			undefined,
+			{ isReset: true },
 			true
 		);
 	};
@@ -1285,7 +1285,7 @@ const TypographyControl = props => {
 														[`${prefix}palette-opacity`]:
 															undefined,
 													},
-													undefined,
+													{ isReset: true },
 													true
 												);
 											},

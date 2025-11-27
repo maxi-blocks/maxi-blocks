@@ -151,45 +151,44 @@ const DimensionTab = props => {
 						}
 					/>
 					{!useInitSize && (
-						<RangeControl
-							className='maxi-image-inspector__dimension-width'
+						<AdvancedNumberControl
 							label={__('Width', 'maxi-blocks')}
+							className='maxi-image-inspector__dimension-width'
+							placeholder={getLastBreakpointAttribute({
+								target: 'img-width',
+								breakpoint: deviceType,
+								attributes,
+							})}
 							value={attributes[`img-width-${deviceType}`]}
-							onChange={val => {
-								if (!isNil(val)) {
-									maxiSetAttributes({
-										[`img-width-${deviceType}`]: val,
+							onChangeValue={val => {
+								maxiSetAttributes({
+									[`img-width-${deviceType}`]: val,
+								});
+
+								resizableObject &&
+									resizableObject.updateSize({
+										width: `${val}%`,
 									});
-
-									resizableObject &&
-										resizableObject.updateSize({
-											width: `${val}%`,
-										});
-								} else {
-									const defaultAttribute =
-										getDefaultAttribute(
-											`img-width-${deviceType}`,
-											clientId
-										);
-
-									maxiSetAttributes({
-										[`img-width-${deviceType}`]:
-											defaultAttribute,
-									});
-
-									resizableObject &&
-										resizableObject.updateSize({
-											width: `${defaultAttribute}%`,
-										});
-								}
 							}}
+							onReset={() => {
+								const defaultAttribute = getDefaultAttribute(
+									`img-width-${deviceType}`,
+									clientId
+								);
+
+								maxiSetAttributes({
+									[`img-width-${deviceType}`]:
+										defaultAttribute,
+									isReset: true,
+								});
+
+								resizableObject &&
+									resizableObject.updateSize({
+										width: `${defaultAttribute}%`,
+									});
+							}}
+							min={0}
 							max={100}
-							allowReset
-							initialPosition={getDefaultAttribute(
-								`img-width-${deviceType}`,
-								clientId
-							)}
-							__nextHasNoMarginBottom
 						/>
 					)}
 					<AspectRatioControl

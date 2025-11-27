@@ -30,6 +30,22 @@ describe('Advanced Number Control', () => {
 		);
 
 		await changeResponsive(page, 'm');
+		await page.waitForTimeout(300);
+
+		// click on the typography advanced settings if it's not open
+		const isAdvancedSettingsOpen = await page.evaluate(
+			() =>
+				!!document.querySelector(
+					'.maxi-typography-control__text-indent'
+				)
+		);
+		if (!isAdvancedSettingsOpen) {
+			const advancedSettingsSelector = await page.$(
+				'.maxi-typography-control__advanced-toggle button.maxi-typography-control-button'
+			);
+			if (advancedSettingsSelector)
+				await advancedSettingsSelector.click();
+		}
 
 		// Max value
 		await editAdvancedNumberControl({

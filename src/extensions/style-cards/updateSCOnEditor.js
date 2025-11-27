@@ -123,7 +123,7 @@ const updateSCOnEditor = (
 	const SCVariableString = createSCStyleString(SCObject);
 	const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
 
-	// FSE editor patterns previews
+	// FSE editor patterns previews - handle white overlay
 	if (siteEditorPreviewIframes.length > 0) {
 		siteEditorPreviewIframes.forEach(iframe => {
 			const iframeDocument = iframe?.contentDocument;
@@ -139,49 +139,48 @@ const updateSCOnEditor = (
 				overlayEl = iframeDocument.createElement('style');
 				overlayEl.id = 'maxi-blocks-fse-white-overlay-remove-styles';
 				overlayEl.innerHTML =
-					'body{background-color: transparent; !important;}.is-focus-mode .block-editor-block-list__block:not(.has-child-selected){opacity: 1 !important;}';
+					'body{background-color: transparent: !important;}.is-focus-mode .block-editor-block-list__block:not(.has-child-selected){opacity: 1 !important;}';
 				const overlayHead = iframeDocument.head;
 				if (overlayHead) {
 					overlayHead.appendChild(overlayEl);
 				}
 			}
 		});
-	} else {
-		const elements = isArray(rawElements) ? rawElements : [rawElements];
-
-		elements.forEach(element => {
-			if (!element) return;
-
-			let SCVarEl = element.getElementById(
-				'maxi-blocks-sc-vars-inline-css'
-			);
-
-			if (!SCVarEl) {
-				SCVarEl = element.createElement('style');
-				SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
-				SCVarEl.innerHTML = SCVariableString;
-
-				// Iframe on creation generates head, then gutenberg generates their own head
-				// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
-				const elementHead = Array.from(
-					element.querySelectorAll('head')
-				).pop();
-				elementHead?.appendChild(SCVarEl);
-			} else {
-				SCVarEl.innerHTML = SCVariableString;
-
-				updateSCStyles(
-					element,
-					SCObject,
-					styleCards.gutenberg_blocks_status
-				);
-			}
-
-			if (!isEmpty(allSCFonts)) {
-				loadFonts(allSCFonts, false, element);
-			}
-		});
 	}
+
+	// Always update SC variables in the main elements (even if preview iframes exist)
+	const elements = isArray(rawElements) ? rawElements : [rawElements];
+
+	elements.forEach(element => {
+		if (!element) return;
+
+		let SCVarEl = element.getElementById('maxi-blocks-sc-vars-inline-css');
+
+		if (!SCVarEl) {
+			SCVarEl = element.createElement('style');
+			SCVarEl.id = 'maxi-blocks-sc-vars-inline-css';
+			SCVarEl.innerHTML = SCVariableString;
+
+			// Iframe on creation generates head, then gutenberg generates their own head
+			// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
+			const elementHead = Array.from(
+				element.querySelectorAll('head')
+			).pop();
+			elementHead?.appendChild(SCVarEl);
+		} else {
+			SCVarEl.innerHTML = SCVariableString;
+
+			updateSCStyles(
+				element,
+				SCObject,
+				styleCards.gutenberg_blocks_status
+			);
+		}
+
+		if (!isEmpty(allSCFonts)) {
+			loadFonts(allSCFonts, false, element);
+		}
+	});
 };
 
 export default updateSCOnEditor;

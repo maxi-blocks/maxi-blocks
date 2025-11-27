@@ -721,6 +721,30 @@ body .maxi-style-cards__popover {
 		+ span {
 		z-index: 0;
 	}
+
+	.maxi-advanced-number-control
+		.maxi-dimensions-control__units
+		select.maxi-select-control__input {
+		min-width: 78px !important;
+	}
+	.maxi-typography-control
+		.maxi-typography-control__weight
+		.maxi-select-control__input {
+		font-size: 13px !important;
+	}
+	.maxi-advanced-number-control__input-wrapper {
+		width: 63px !important;
+	}
+	.maxi-typography-control .maxi-typography-control__weight-size-row {
+		gap: 12px !important;
+	}
+	.maxi-typography-control__weight-size-row > div:first-child {
+		width: 158px !important;
+	}
+	.maxi-typography-control__weight .maxi-components-button.maxi-reset-button {
+		margin-left: -1px !important;
+		margin-right: 4px !important;
+	}
 }
 
 @media only screen and (min-width: 2500px) {

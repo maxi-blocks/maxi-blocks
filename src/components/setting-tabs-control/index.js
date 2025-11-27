@@ -53,6 +53,11 @@ const SettingTabsControl = props => {
 		depth,
 		hasBorder = false,
 		showTooltip = false,
+		/**
+		 * Optional class name to be appended to the content wrapper (`.maxi-tabs-content`).
+		 * Useful for one-off styling or visual debugging without affecting other instances.
+		 */
+		contentClassName,
 	} = props;
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
@@ -88,7 +93,8 @@ const SettingTabsControl = props => {
 	const classesContent = classnames(
 		'maxi-tabs-content',
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null,
-		isNestedAccordion && 'maxi-tabs-content--nested'
+		isNestedAccordion && 'maxi-tabs-content--nested',
+		contentClassName
 	);
 
 	const setActiveTab = (tab, name) => {
@@ -153,7 +159,8 @@ const SettingTabsControl = props => {
 										item.extraIndicators,
 										item.extraIndicatorsResponsive,
 										item.ignoreIndicator
-									) && 'maxi-tabs-control__button--active'
+									) && 'maxi-tabs-control__button--active',
+									item.className
 								)}
 								onClick={() => {
 									setActiveTab(i, item.label || item.value);

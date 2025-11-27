@@ -43,13 +43,7 @@ import {
 /**
  * Styles and icons
  */
-import {
-	iconBorder,
-	iconFill,
-	backgroundColor,
-	backgroundGradient,
-	styleNone,
-} from '@maxi-icons';
+import { iconBorder, iconFill } from '@maxi-icons';
 
 /**
  * Component
@@ -84,17 +78,17 @@ const NavigationIconControl = props => {
 		const options = [];
 
 		options.push({
-			icon: <Icon icon={styleNone} />,
+			label: __('None', 'maxi-blocks'),
 			value: 'none',
 		});
 
 		options.push({
-			icon: <Icon icon={backgroundColor} />,
+			label: __('Solid', 'maxi-blocks'),
 			value: 'color',
 		});
 
 		options.push({
-			icon: <Icon icon={backgroundGradient} />,
+			label: __('Gradient', 'maxi-blocks'),
 			value: 'gradient',
 		});
 

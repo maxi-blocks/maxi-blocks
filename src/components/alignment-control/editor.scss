@@ -2,8 +2,8 @@ body .maxi-alignment-control {
 	.maxi-tabs-control__button {
 		height: 32px;
 		padding: 8px;
-		width: 22.5%;
-		margin-right: 9px;
+		width: 23%;
+		margin-right: 7px;
 		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 4px;
 		transition: background-color 0.4s ease, border-color 0.4s ease;
@@ -24,6 +24,9 @@ body .maxi-alignment-control {
 
 		&--selected svg path {
 			fill: var(--maxi-secondary-color);
+		}
+
+		&:first-child {
 		}
 
 		&:last-child {
@@ -54,3 +57,9 @@ body .maxi-alignment-control {
 		}
 	}
 }
+
+.maxi-alignment-control__label {
+	margin-bottom: 5px;
+	margin-top: -3px;
+}
+

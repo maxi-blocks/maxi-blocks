@@ -8,6 +8,34 @@ const videoBg = () => {
 			const videoEnd = videoPlayerElement.getAttribute('data-end');
 			const videoType = videoPlayerElement.getAttribute('data-type');
 
+			// Recreate iframe with correct referrer policy for restrictive sites
+			if (videoType === 'youtube' || videoType === 'vimeo') {
+				const iframe = videoPlayerElement.querySelector('iframe');
+				if (iframe && !iframe.getAttribute('data-maxi-fixed')) {
+					const iframeWrapper = iframe.parentElement;
+					const originalSrc = iframe.src;
+					const originalTitle = iframe.title;
+					const originalStyle = iframe.getAttribute('style');
+
+					// Create new iframe with referrerPolicy set before src
+					const newIframe = document.createElement('iframe');
+					newIframe.title = originalTitle;
+					newIframe.frameBorder = '0';
+					newIframe.allow = 'autoplay';
+					newIframe.allowFullscreen = true;
+					newIframe.referrerPolicy =
+						'strict-origin-when-cross-origin';
+					newIframe.setAttribute('data-maxi-fixed', 'true');
+					if (originalStyle)
+						newIframe.setAttribute('style', originalStyle);
+
+					// Replace old iframe
+					iframeWrapper.replaceChild(newIframe, iframe);
+					// Set src after referrerPolicy is set
+					newIframe.src = originalSrc;
+				}
+			}
+
 			// Make youtube & vimeo videos cover the container
 			if (videoType === 'youtube' || videoType === 'vimeo') {
 				const setVideoSize = () => {

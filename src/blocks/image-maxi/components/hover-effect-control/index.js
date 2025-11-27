@@ -77,6 +77,7 @@ const HoverEffectControl = props => {
 	return (
 		<div className={classes}>
 			<SettingTabsControl
+				className='maxi-hover-effect-control__tabs'
 				label={__('Hover animation', 'maxi-blocks')}
 				type='buttons'
 				selected={props['hover-type']}
@@ -393,6 +394,7 @@ const HoverEffectControl = props => {
 					<SettingTabsControl
 						type='buttons'
 						fullWidthMode
+						target='hover-text-preset'
 						selected={props['hover-text-preset']}
 						items={[
 							{
@@ -459,6 +461,7 @@ const HoverEffectControl = props => {
 							showBottomGap
 							blockStyle={blockStyle}
 							clientId={clientId}
+							tabsClassName='mb-hover-bg'
 							globalProps={{
 								target: '',
 								type: 'h4',
@@ -526,6 +529,7 @@ const HoverEffectControl = props => {
 							onChangeInline(obj, '.maxi-hover-details__content')
 						}
 						onChange={onChange}
+						tabsClassName='mb-hover-bg'
 						disableClipPath
 						disableImage
 						disableVideo

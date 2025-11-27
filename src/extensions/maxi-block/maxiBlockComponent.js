@@ -1153,39 +1153,14 @@ class MaxiBlockComponent extends Component {
 
 		const isUnique = getIsIDTrulyUnique(idToCheck, 1, clientId);
 
-		// eslint-disable-next-line no-console
-		console.log(
-			`[uniqueIDChecker] Checking ID: ${JSON.stringify(
-				idToCheck
-			)} | Block: ${JSON.stringify(blockName)} | Copied: ${JSON.stringify(
-				isBlockCopied
-			)} | Unique: ${JSON.stringify(isUnique)}`
-		);
-
 		if (isBlockCopied || !isUnique) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});
 
-			// eslint-disable-next-line no-console
-			console.log(
-				`[uniqueIDChecker] 🔄 REGENERATING: ${JSON.stringify(
-					idToCheck
-				)} → ${JSON.stringify(newUniqueID)} | Reason: ${JSON.stringify(
-					isBlockCopied ? 'COPIED' : 'NOT_UNIQUE'
-				)}`
-			);
-
 			// Immediately add to cache for batch paste optimization
 			// This ensures subsequent blocks in the same paste operation see this ID
 			dispatch('maxiBlocks/blocks').addToUniqueIDCache(newUniqueID);
-
-			// eslint-disable-next-line no-console
-			console.log(
-				`[UniqueID Cache] ➕ Added to cache: ${JSON.stringify(
-					newUniqueID
-				)} | Block: ${JSON.stringify(blockName)}`
-			);
 
 			propagateNewUniqueID(
 				idToCheck,

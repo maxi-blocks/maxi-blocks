@@ -1,3 +1,16 @@
 .toolbar-item__size__popover {
 	min-width: 230px;
+
+	.maxi-select-control {
+		select[id^='inspector-select-control']:not(:has(+ button.maxi-reset-button)) {
+			background-image: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(224, 224, 224, 1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+			background-size: 8px 8px !important;
+			background-position: right 6px center !important;
+			&:hover,
+			&:focus,
+			&:active {
+				background-image: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(99, 186, 121, 1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+			}
+		}
+	}
 }

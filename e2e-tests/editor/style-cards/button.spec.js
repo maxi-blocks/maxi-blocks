@@ -41,6 +41,21 @@ describe('StyleCards, Buttons', () => {
 			...generalTypographyOptions,
 		});
 
+		// click on the typography advanced settings
+		const isAdvancedSettingsOpen = await page.evaluate(
+			() =>
+				!!document.querySelector(
+					'.maxi-typography-control__text-indent'
+				)
+		);
+		if (!isAdvancedSettingsOpen) {
+			const advancedSettingsSelector = await page.$(
+				'.maxi-typography-control__advanced-toggle button.maxi-typography-control-button'
+			);
+			if (advancedSettingsSelector)
+				await advancedSettingsSelector.click();
+		}
+
 		// Weight, Transform, Style, Decoration
 		await page.waitForTimeout(100);
 

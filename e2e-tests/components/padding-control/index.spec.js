@@ -56,9 +56,10 @@ describe('Padding control', () => {
 
 		const resetExpect = await resettingAttributes({
 			page,
-			instance: 'maxi-axis-control__content__item__margin',
+			instance: 'maxi-axis-control__content__item__padding',
 			expectValue: '',
 		});
+
 		expect(resetExpect).toBeTruthy();
 	});
 

@@ -8,10 +8,8 @@ import { InspectorControls } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import AccordionControl from '@components/accordion-control';
-import FontLevelControl from '@components/font-level-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import ListOptionsControl from './components/list-options-control';
-import { getGroupAttributes } from '@extensions/styles';
 import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '@extensions/inspector';
@@ -20,13 +18,7 @@ import { withMaxiInspector } from '@extensions/inspector';
  * Inspector
  */
 const Inspector = props => {
-	const {
-		attributes,
-		deviceType,
-		maxiSetAttributes,
-		context,
-		disableCustomFormats,
-	} = props;
+	const { attributes, deviceType, context, disableCustomFormats } = props;
 	const { isList, textLevel } = attributes;
 	const { selectors, categories } = customCss;
 
@@ -53,58 +45,21 @@ const Inspector = props => {
 										props,
 									}),
 									deviceType === 'general' &&
-										!isList && {
+										isList && {
 											label: __(
-												'Heading / Paragraph tag',
+												'List options',
 												'maxi-blocks'
 											),
 											content: (
-												<FontLevelControl
-													{...getGroupAttributes(
-														attributes,
-														'typography',
-														true
-													)}
-													value={textLevel}
-													onChange={obj => {
-														const filteredObj =
-															Object.fromEntries(
-																Object.entries(
-																	obj
-																).filter(
-																	([
-																		key,
-																		value,
-																	]) =>
-																		value !==
-																		undefined
-																)
-															);
-														maxiSetAttributes(
-															filteredObj
-														);
-													}}
+												<ListOptionsControl
+													{...props}
 												/>
 											),
-											indicatorProps: ['textLevel'],
 										},
-									isList && {
-										label: __(
-											'List options',
-											'maxi-blocks'
-										),
-										content: (
-											<ListOptionsControl {...props} />
-										),
-									},
-									...inspectorTabs.alignment({
-										props,
-										isTextAlignment: true,
-									}),
 									...inspectorTabs.typography({
 										props,
 										styleCardPrefix: '',
-										hideAlignment: true,
+										hideAlignment: false,
 										showBottomGap: !isList,
 										allowLink: true,
 										globalProps: {

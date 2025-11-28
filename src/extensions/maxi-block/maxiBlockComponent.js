@@ -1143,14 +1143,38 @@ class MaxiBlockComponent extends Component {
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		const isBlockCopied =
-			!select('maxiBlocks/blocks').getIsNewBlock(
-				this.props.attributes.uniqueID
-			) &&
-			select('maxiBlocks/blocks')
-				.getLastInsertedBlocks()
-				.includes(this.props.clientId);
+		const lastInsertedBlocks =
+			select('maxiBlocks/blocks').getLastInsertedBlocks();
+		const isNewBlock = select('maxiBlocks/blocks').getIsNewBlock(
+			this.props.attributes.uniqueID
+		);
 
+		const isBlockCopied =
+			!isNewBlock && lastInsertedBlocks.includes(this.props.clientId);
+
+		// OPTIMIZATION: Skip expensive uniqueID check if block is being loaded from DB
+		// Only check uniqueID in these scenarios:
+		// 1. Block was just copied/pasted (isBlockCopied = true)
+		// 2. Block is in lastInsertedBlocks (new insertion, pattern, or template)
+		// 3. Block is marked as new (first-time creation)
+		const needsUniqueIDCheck =
+			isBlockCopied ||
+			(lastInsertedBlocks && lastInsertedBlocks.includes(clientId)) ||
+			isNewBlock;
+
+		// Fast path: Block is being loaded from saved content, trust the ID
+		if (!needsUniqueIDCheck) {
+			// Still check custom label even if we skip uniqueID check
+			if (getIsUniqueCustomLabelRepeated(customLabel)) {
+				this.props.attributes.customLabel = getCustomLabel(
+					this.props.attributes.customLabel,
+					this.props.attributes.uniqueID
+				);
+			}
+			return idToCheck;
+		}
+
+		// Slow path: Actually check if uniqueID is unique (only for copy/paste/new blocks)
 		const isUnique = getIsIDTrulyUnique(idToCheck, 1, clientId);
 
 		if (isBlockCopied || !isUnique) {

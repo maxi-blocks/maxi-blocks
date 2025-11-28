@@ -35,13 +35,6 @@ class BatchBlockDispatcher {
 				this.flush();
 			}, this.BATCH_DELAY);
 		}
-
-		// Performance monitoring (dev mode only)
-		if (process.env.NODE_ENV !== 'production') {
-			if (this.pendingBlocks.length === 1) {
-				this.batchStartTime = performance.now();
-			}
-		}
 	}
 
 	/**

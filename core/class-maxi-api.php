@@ -53,7 +53,8 @@ if (!class_exists('MaxiBlocks_API')):
             add_action('before_delete_post', [$this, 'mb_delete_register']);
 
             // Cache invalidation hooks for uniqueIDs cache optimization
-            add_action('save_post', [$this, 'invalidate_unique_ids_cache']);
+            // Use lower priority (20) to run after post is fully saved
+            add_action('save_post', [$this, 'invalidate_unique_ids_cache_on_save'], 20, 2);
             add_action('deleted_post', [$this, 'invalidate_unique_ids_cache']);
         }
 
@@ -1195,7 +1196,34 @@ if (!class_exists('MaxiBlocks_API')):
         }
 
         /**
-         * Invalidate the uniqueIDs cache when posts are saved or deleted
+         * Invalidate the uniqueIDs cache when posts are saved (optimized)
+         * Only invalidates if the post could contain Maxi blocks
+         *
+         * @param int $post_id The post ID
+         * @param WP_Post $post The post object
+         */
+        public function invalidate_unique_ids_cache_on_save($post_id, $post)
+        {
+            // Skip autosaves and revisions - they don't affect published content
+            if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+                return;
+            }
+
+            // Only invalidate if post actually contains blocks
+            // This prevents cache invalidation on non-Gutenberg posts
+            if (!has_blocks($post->post_content)) {
+                return;
+            }
+
+            // Check if post contains Maxi blocks specifically
+            // This is more efficient than invalidating for all block-based posts
+            if (strpos($post->post_content, 'wp:maxi-blocks/') !== false) {
+                $this->invalidate_unique_ids_cache();
+            }
+        }
+
+        /**
+         * Invalidate the uniqueIDs cache when posts are deleted
          * This ensures the cache stays in sync with the database
          */
         public function invalidate_unique_ids_cache()

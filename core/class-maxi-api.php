@@ -51,6 +51,10 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Handlers
             add_action('before_delete_post', [$this, 'mb_delete_register']);
+
+            // Cache invalidation hooks for uniqueIDs cache optimization
+            add_action('save_post', [$this, 'invalidate_unique_ids_cache']);
+            add_action('deleted_post', [$this, 'invalidate_unique_ids_cache']);
         }
 
         /**
@@ -1162,6 +1166,15 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public function get_all_maxi_blocks_unique_ids()
         {
+            // OPTIMIZATION: Use WordPress transient caching to reduce DB queries
+            // Cache expires after 1 hour or when invalidated on post save/delete
+            $cache_key = 'maxi_blocks_unique_ids_cache';
+            $cached_results = get_transient($cache_key);
+
+            if ($cached_results !== false) {
+                return $cached_results;
+            }
+
             global $wpdb;
 
             $db_css_table_name = $wpdb->prefix . 'maxi_blocks_styles_blocks';
@@ -1172,10 +1185,22 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             if (!$results) {
-                return [];
+                $results = [];
             }
 
+            // Cache for 1 hour (3600 seconds)
+            set_transient($cache_key, $results, 3600);
+
             return $results;
+        }
+
+        /**
+         * Invalidate the uniqueIDs cache when posts are saved or deleted
+         * This ensures the cache stays in sync with the database
+         */
+        public function invalidate_unique_ids_cache()
+        {
+            delete_transient('maxi_blocks_unique_ids_cache');
         }
 
         public function get_active_integration_plugins()

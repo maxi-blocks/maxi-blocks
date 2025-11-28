@@ -182,54 +182,15 @@ class MaxiBlockComponent extends Component {
 		}
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
-		// Performance monitoring (dev mode only)
-		const perfStart =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
-		const perfTimings = {};
-
 		// Init
-		const t1 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		this.updateLastInsertedBlocks();
-		if (process.env.NODE_ENV !== 'production') {
-			perfTimings.updateLastInsertedBlocks = performance.now() - t1;
-		}
-
-		const t2 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		if (process.env.NODE_ENV !== 'production') {
-			perfTimings.uniqueIDChecker = performance.now() - t2;
-		}
-
-		const t3 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		this.getCurrentBlockStyle();
-		if (process.env.NODE_ENV !== 'production') {
-			perfTimings.getCurrentBlockStyle = performance.now() - t3;
-		}
-
-		const t4 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		this.setMaxiAttributes();
-		if (process.env.NODE_ENV !== 'production') {
-			perfTimings.setMaxiAttributes = performance.now() - t4;
-		}
-
-		const t5 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		this.setRelations();
-		if (process.env.NODE_ENV !== 'production') {
-			perfTimings.setRelations = performance.now() - t5;
-		}
 
 		// Add block to store (batched for performance)
-		const t6 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		batchBlockDispatcher.addBlock(newUniqueID, clientId, this.rootSlot);
-		if (process.env.NODE_ENV !== 'production') {
-			perfTimings.addBlockToStore = performance.now() - t6;
-		}
 
 		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
 		// 1. Adding again the root and having a React error
@@ -243,23 +204,6 @@ class MaxiBlockComponent extends Component {
 		// MINIMAL tracking - only essential timeouts
 		this.settingsTimeout = null;
 		this.fseIframeTimeout = null;
-
-		// Log performance metrics (dev mode only)
-		if (process.env.NODE_ENV !== 'production') {
-			const totalTime = performance.now() - perfStart;
-			const blockType =
-				this.props.name?.replace('maxi-blocks/', '') || 'unknown';
-
-			// eslint-disable-next-line no-console
-			console.log(
-				`[MaxiBlock Constructor] ${JSON.stringify(
-					blockType
-				)} (${JSON.stringify(newUniqueID)}) - ${JSON.stringify(
-					totalTime.toFixed(2)
-				)}ms`,
-				JSON.stringify(perfTimings)
-			);
-		}
 	}
 
 	updateDOMReferences() {
@@ -281,18 +225,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		// Performance monitoring (dev mode only)
-		const mountStart =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
-		const mountTimings = {};
-
 		// Step 1: DOM references
-		const mt1 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		this.updateDOMReferences();
-		if (process.env.NODE_ENV !== 'production') {
-			mountTimings.updateDOMReferences = performance.now() - mt1;
-		}
 
 		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
 
@@ -303,19 +237,12 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Step 2: FSE iframe styles and observer
-		const mt2 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		if (getIsSiteEditor()) {
 			this.addMaxiFSEIframeStyles();
 			this.setupFSEIframeObserver();
 		}
-		if (process.env.NODE_ENV !== 'production') {
-			mountTimings.fseSetup = performance.now() - mt2;
-		}
 
 		// Step 3: Relations processing
-		const mt3 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		const blocksIBRelations = select(
 			'maxiBlocks/relations'
 		).receiveBlockUnderRelationClientIDs(this.props.attributes.uniqueID);
@@ -444,46 +371,25 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		if (process.env.NODE_ENV !== 'production') {
-			mountTimings.relationsProcessing = performance.now() - mt3;
-		}
-
 		// Step 4: Block setup and reusable check
-		const mt4 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
 		if (this.maxiBlockDidMount) {
 			this.maxiBlockDidMount();
 		}
-		if (process.env.NODE_ENV !== 'production') {
-			mountTimings.blockSetup = performance.now() - mt4;
-		}
 
 		// Step 6: Font loading
-		const mt5 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		this.loadFonts();
-		if (process.env.NODE_ENV !== 'production') {
-			mountTimings.loadFonts = performance.now() - mt5;
-		}
 
 		// Step 7: Display styles
-		const mt6 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		try {
 			// Call directly without debouncing to avoid memory accumulation
 			this?.displayStyles(!!this?.rootSlot);
 		} catch (error) {
 			console.warn('MaxiBlocks: Display styles error:', error);
 		}
-		if (process.env.NODE_ENV !== 'production') {
-			mountTimings.displayStyles = performance.now() - mt6;
-		}
 
 		// Step 8: Force update if needed
-		const mt7 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		if (!this.getBreakpoints.xxl) {
 			try {
 				this.forceUpdate();
@@ -491,35 +397,9 @@ class MaxiBlockComponent extends Component {
 				console.warn('MaxiBlocks: Force update error:', error);
 			}
 		}
-		if (process.env.NODE_ENV !== 'production') {
-			mountTimings.forceUpdate = performance.now() - mt7;
-		}
 
 		// Step 9: Hide Gutenberg popover on initial mount
-		const mt8 =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
 		this.hideGutenbergPopover();
-		if (process.env.NODE_ENV !== 'production') {
-			mountTimings.hidePopover = performance.now() - mt8;
-		}
-
-		// Log performance metrics (dev mode only)
-		if (process.env.NODE_ENV !== 'production') {
-			const totalMountTime = performance.now() - mountStart;
-			const blockType =
-				this.props.name?.replace('maxi-blocks/', '') || 'unknown';
-			const { uniqueID } = this.props.attributes;
-
-			// eslint-disable-next-line no-console
-			console.log(
-				`[MaxiBlock Mount] ${JSON.stringify(
-					blockType
-				)} (${JSON.stringify(uniqueID)}) - ${JSON.stringify(
-					totalMountTime.toFixed(2)
-				)}ms`,
-				JSON.stringify(mountTimings)
-			);
-		}
 	}
 
 	/**

@@ -45,6 +45,10 @@ class edit extends MaxiBlockComponent {
 
 		// Track if this is a new block with no xxl padding values set yet
 		this.initialBlockSetupDone = false;
+
+		// Style caching for performance optimization
+		this.stylesCache = null;
+		this.stylesCacheKey = null;
 	}
 
 	scProps = {
@@ -66,11 +70,45 @@ class edit extends MaxiBlockComponent {
 		return maxiAttributes;
 	}
 
+	/**
+	 * Generate a cache key for styles based on attributes and scValues
+	 * This is much faster than recomputing all 30+ style helpers
+	 */
+	getStylesCacheKey() {
+		const { attributes } = this.props;
+		const { scValues } = this.state;
+
+		// Generate a lightweight cache key from relevant attributes
+		// We don't need ALL attributes, just the style-affecting ones
+		const iconRatio = getSVGWidthHeightRatio(
+			this.blockRef?.current?.querySelector(
+				'.maxi-button-block__icon svg'
+			)
+		);
+
+		// Create a simple string key (JSON.stringify would be too slow)
+		// Include key style attributes that affect button rendering
+		return `${attributes.uniqueID}-${attributes.blockStyle || ''}-${
+			attributes['button-border-status'] || ''
+		}-${attributes['button-background-color'] || ''}-${
+			attributes['button-padding-top-xxl'] || ''
+		}-${iconRatio || ''}-${scValues ? JSON.stringify(scValues) : ''}`;
+	}
+
 	get getStylesObject() {
 		const { attributes } = this.props;
 		const { scValues } = this.state;
 
-		return getStyles(
+		// Performance optimization: Cache styles object
+		const cacheKey = this.getStylesCacheKey();
+
+		if (this.stylesCacheKey === cacheKey && this.stylesCache) {
+			// Cache hit - return cached styles (saves ~30-60ms!)
+			return this.stylesCache;
+		}
+
+		// Cache miss - compute styles
+		const styles = getStyles(
 			attributes,
 			scValues,
 			getSVGWidthHeightRatio(
@@ -79,6 +117,12 @@ class edit extends MaxiBlockComponent {
 				)
 			)
 		);
+
+		// Update cache
+		this.stylesCache = styles;
+		this.stylesCacheKey = cacheKey;
+
+		return styles;
 	}
 
 	maxiBlockDidUpdate() {

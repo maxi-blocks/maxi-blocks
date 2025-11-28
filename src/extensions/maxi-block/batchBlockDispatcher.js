@@ -63,10 +63,6 @@ class BatchBlockDispatcher {
 		const blocksToAdd = [...this.pendingBlocks];
 		this.pendingBlocks = [];
 
-		// Performance monitoring (dev mode only)
-		const flushStart =
-			process.env.NODE_ENV !== 'production' ? performance.now() : 0;
-
 		// Dispatch batched action
 		if (blocksToAdd.length === 1) {
 			// Single block - use regular action (no overhead)
@@ -79,25 +75,6 @@ class BatchBlockDispatcher {
 		} else {
 			// Multiple blocks - use batch action
 			dispatch('maxiBlocks/blocks').addMultipleBlocks(blocksToAdd);
-		}
-
-		// Performance monitoring (dev mode only)
-		if (process.env.NODE_ENV !== 'production') {
-			const flushTime = performance.now() - flushStart;
-			const totalBatchTime = performance.now() - this.batchStartTime;
-			const avgTimePerBlock = flushTime / blocksToAdd.length;
-
-			console.log(
-				`[BatchBlockDispatcher] Flushed ${JSON.stringify(
-					blocksToAdd.length
-				)} blocks in ${JSON.stringify(
-					flushTime.toFixed(2)
-				)}ms (${JSON.stringify(
-					avgTimePerBlock.toFixed(2)
-				)}ms/block, total batch time: ${JSON.stringify(
-					totalBatchTime.toFixed(2)
-				)}ms)`
-			);
 		}
 
 		this.isProcessing = false;

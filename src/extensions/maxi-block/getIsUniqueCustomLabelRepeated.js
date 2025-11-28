@@ -15,33 +15,9 @@ const getIsUniqueCustomLabelRepeated = (
 ) => {
 	let currentRepeatCount = 0;
 
-	// Optimization: Use Redux store to iterate through known blocks first
-	const maxiBlocks = select('maxiBlocks/blocks').getBlocks();
-	const blockEditorStore = select('core/block-editor');
-
-	if (maxiBlocks && Object.keys(maxiBlocks).length > 0) {
-		// Fast path: iterate through Redux store
-		for (const [uniqueID, blockData] of Object.entries(maxiBlocks)) {
-			if (uniqueID !== uniqueIDToIgnore) {
-				const { clientId } = blockData;
-				const block = blockEditorStore.getBlock(clientId);
-
-				if (block) {
-					const { customLabel } = block.attributes;
-					if (customLabel === uniqueCustomLabelToCompare) {
-						currentRepeatCount += 1;
-
-						if (currentRepeatCount > repeatCount) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return currentRepeatCount > repeatCount;
-	}
-
-	// Fallback: use tree traversal for edge cases
+	// ALWAYS use tree traversal to check the actual block editor state
+	// This is crucial for batch block creation (like column templates)
+	// where Redux store hasn't been updated yet but blocks are in the editor
 	goThroughMaxiBlocks(block => {
 		const { customLabel, uniqueID } = block.attributes;
 		if (

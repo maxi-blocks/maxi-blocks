@@ -160,6 +160,27 @@ const reducer = (
 				uniqueIDCache: newCache,
 			};
 		}
+		case 'ADD_MULTIPLE_BLOCKS': {
+			const { blocks } = action;
+
+			// Batch add multiple blocks in a single state update (performance optimization)
+			const newBlocks = { ...state.blocks };
+			const newUniqueIDCache = { ...state.uniqueIDCache };
+
+			blocks.forEach(({ uniqueID, clientId, blockRoot }) => {
+				newBlocks[uniqueID] = {
+					clientId,
+					blockRoot,
+				};
+				newUniqueIDCache[uniqueID] = true;
+			});
+
+			return {
+				...state,
+				blocks: newBlocks,
+				uniqueIDCache: newUniqueIDCache,
+			};
+		}
 		default:
 			return state;
 	}

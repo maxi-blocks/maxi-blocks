@@ -86,6 +86,13 @@ const actions = {
 			uniqueIDs,
 		};
 	},
+	// Batch action for adding multiple blocks at once (performance optimization)
+	addMultipleBlocks(blocks) {
+		return {
+			type: 'ADD_MULTIPLE_BLOCKS',
+			blocks, // Array of { uniqueID, clientId, blockRoot }
+		};
+	},
 };
 
 export default actions;

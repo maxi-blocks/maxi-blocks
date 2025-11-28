@@ -98,6 +98,8 @@ const AdvancedNumberControl = props => {
 		enableAuto = false,
 		autoLabel,
 		onReset,
+		resetButtonClassName,
+		resetButtonSize = 'default', // 'small', 'default', 'large'
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
@@ -260,112 +262,243 @@ const AdvancedNumberControl = props => {
 					onChange={val => (val ? onChangeValue('auto') : onReset())}
 				/>
 			)}
-			{value !== 'auto' && (
-				<BaseControl
-					__nextHasNoMarginBottom
-					id={advancedNumberControlId}
-					label={label}
-					className={classes}
-				>
-					{showHelp && (
-						<div
-							className='maxi-info__help-icon'
-							onClick={handleToggleHelpContent}
-						>
-							<span className='maxi-info__help-icon-span'>i</span>
-						</div>
-					)}
-					{showHelpContent && helpContent}
-					<input
-						id={advancedNumberControlId}
-						type={
-							!enableAuto || value !== 'auto'
-								? inputType
-								: 'hidden'
-						}
-						className='maxi-advanced-number-control__value'
-						value={latestValueRef.current ?? currentValue}
-						onChange={handleInputChange}
-						onKeyDown={e => {
-							validateNumberInput(e, customValidationRegex);
-							if (
-								e.key === '-' &&
-								(enableUnit ? minValue : min) >= 0
-							) {
-								e.preventDefault();
-							}
-						}}
-						min={enableUnit ? minValue : min}
-						max={enableUnit ? maxValue : max}
-						step={stepValue}
-						placeholder={placeholder}
-					/>
-					{enableUnit && (
-						<SelectControl
-							__nextHasNoMarginBottom
-							hideLabelFromVision
-							className='maxi-dimensions-control__units'
-							options={getOptions()}
-							value={unit}
-							onChange={val => {
-								if (value > minMaxSettings[val]?.max) {
-									onChangeValue(
-										optionType === 'string'
-											? minMaxSettings[
-													val
-											  ]?.max.toString()
-											: minMaxSettings[val]?.max,
-										val
-									);
+			<BaseControl
+				__nextHasNoMarginBottom
+				id={advancedNumberControlId}
+				label={typeof label === 'string' ? label : ''}
+				className={classes}
+			>
+				{showHelp && (
+					<div
+						className='maxi-info__help-icon'
+						onClick={handleToggleHelpContent}
+					>
+						<span className='maxi-info__help-icon-span'>i</span>
+					</div>
+				)}
+				{showHelpContent && helpContent}
+				{value !== 'auto' && (
+					<div className='maxi-advanced-number-control__controls-group'>
+						<div className='maxi-advanced-number-control__input-wrapper'>
+							<input
+								id={advancedNumberControlId}
+								type={
+									!enableAuto || value !== 'auto'
+										? inputType
+										: 'hidden'
 								}
-								onChangeUnit(val);
-							}}
-						/>
-					)}
-					{!disableReset && (
-						<ResetButton
-							onReset={() => {
-								setCurrentValue(defaultValue);
-								latestValueRef.current = defaultValue;
-								onChangeValue(defaultValue);
-								onReset();
-							}}
-							isSmall
-						/>
-					)}
+								className='maxi-advanced-number-control__value'
+								value={latestValueRef.current || currentValue}
+								onChange={handleInputChange}
+								onKeyDown={e => {
+									validateNumberInput(
+										e,
+										customValidationRegex
+									);
+									if (
+										e.key === '-' &&
+										(enableUnit ? minValue : min) >= 0
+									) {
+										e.preventDefault();
+									}
+								}}
+								min={enableUnit ? minValue : min}
+								max={enableUnit ? maxValue : max}
+								step={stepValue}
+								placeholder={placeholder}
+							/>
+							<div className='maxi-advanced-number-control__spinner-container'>
+								<button
+									type='button'
+									className='maxi-advanced-number-control__spinner-button maxi-advanced-number-control__spinner-button--up'
+									disabled={(() => {
+										const currentVal =
+											parseFloat(
+												latestValueRef.current
+											) ||
+											parseFloat(placeholder) ||
+											0;
+										const maxVal = enableUnit
+											? maxValue
+											: max;
+										return currentVal >= maxVal;
+									})()}
+									onClick={e => {
+										e.preventDefault();
+										const hasRealValue =
+											latestValueRef.current !== '' &&
+											latestValueRef.current !==
+												undefined &&
+											latestValueRef.current !== null;
+										const currentVal = hasRealValue
+											? parseFloat(latestValueRef.current)
+											: parseFloat(placeholder) || 0;
+										const newVal =
+											currentVal + (stepValue || 1);
+										const maxVal = enableUnit
+											? maxValue
+											: max;
+										if (newVal <= maxVal) {
+											latestValueRef.current =
+												newVal.toString();
+											setCurrentValue(newVal);
+											onChangeValue(newVal);
+										}
+									}}
+									title='Increase value'
+									aria-label='Increase value'
+								>
+									<svg
+										width='8'
+										height='5'
+										viewBox='0 0 8 5'
+										fill='none'
+										xmlns='http://www.w3.org/2000/svg'
+									>
+										<path
+											d='M1 4L4 1L7 4'
+											stroke='currentColor'
+											strokeWidth='1.5'
+											strokeLinecap='round'
+											strokeLinejoin='round'
+										/>
+									</svg>
+								</button>
+								<button
+									type='button'
+									className='maxi-advanced-number-control__spinner-button maxi-advanced-number-control__spinner-button--down'
+									disabled={(() => {
+										const currentVal =
+											parseFloat(
+												latestValueRef.current
+											) ||
+											parseFloat(placeholder) ||
+											0;
+										const minVal = enableUnit
+											? minValue
+											: min;
+										return currentVal <= minVal;
+									})()}
+									onClick={e => {
+										e.preventDefault();
+										const hasRealValue =
+											latestValueRef.current !== '' &&
+											latestValueRef.current !==
+												undefined &&
+											latestValueRef.current !== null;
+										const currentVal = hasRealValue
+											? parseFloat(latestValueRef.current)
+											: parseFloat(placeholder) || 0;
+										const newVal =
+											currentVal - (stepValue || 1);
+										const minVal = enableUnit
+											? minValue
+											: min;
+										if (newVal >= minVal) {
+											latestValueRef.current =
+												newVal.toString();
+											setCurrentValue(newVal);
+											onChangeValue(newVal);
+										}
+									}}
+									title='Decrease value'
+									aria-label='Decrease value'
+								>
+									<svg
+										width='8'
+										height='5'
+										viewBox='0 0 8 5'
+										fill='none'
+										xmlns='http://www.w3.org/2000/svg'
+									>
+										<path
+											d='M7 1L4 4L1 1'
+											stroke='currentColor'
+											strokeWidth='1.5'
+											strokeLinecap='round'
+											strokeLinejoin='round'
+										/>
+									</svg>
+								</button>
+							</div>
+						</div>
+						{enableUnit && (
+							<SelectControl
+								__nextHasNoMarginBottom
+								hideLabelFromVision
+								className='maxi-dimensions-control__units'
+								options={getOptions()}
+								value={unit}
+								onChange={val => {
+									if (
+										Number(value) > minMaxSettings[val]?.max
+									) {
+										onChangeValue(
+											optionType === 'string'
+												? minMaxSettings[
+														val
+												  ]?.max.toString()
+												: minMaxSettings[val]?.max,
+											val
+										);
+									}
+									onChangeUnit(val);
+								}}
+							/>
+						)}
+						{!disableReset && (
+							<ResetButton
+								className={
+									resetButtonClassName
+										? `${resetButtonClassName} maxi-reset-button--typography`
+										: 'maxi-reset-button--typography'
+								}
+								onReset={() => {
+									setCurrentValue(defaultValue);
+									latestValueRef.current = defaultValue;
+									onChangeValue(defaultValue);
+									onReset();
+								}}
+								isSmall={resetButtonSize === 'small'}
+								isLarge={resetButtonSize === 'large'}
+								isAbsolute={
+									resetButtonClassName ===
+									'maxi-reset-button--absolute'
+								}
+							/>
+						)}
+					</div>
+				)}
 
-					{!disableRange && (
-						<RangeControl
-							label={label}
-							className={`maxi-advanced-number-control__range${
-								value > 11111
-									? (value / max) * 100 <= 10
-										? '--small'
-										: (value / max) * 100 >= 90
-										? '--big'
-										: ''
+				{!disableRange && (
+					<RangeControl
+						label={label}
+						className={`maxi-advanced-number-control__range${
+							value > 11111
+								? (value / max) * 100 <= 10
+									? '--small'
+									: (value / max) * 100 >= 90
+									? '--big'
 									: ''
-							}`}
-							value={rangeValue ?? placeholder ?? 0}
-							onChange={val => {
-								const result =
-									optionType === 'string'
-										? val.toString()
-										: +val;
-								setCurrentValue(result);
-								latestValueRef.current = result;
-								onChangeValue(result);
-							}}
-							min={enableUnit ? minValueRange : min}
-							max={maxRange || (enableUnit ? maxValueRange : max)}
-							step={stepValue}
-							withInputField={false}
-							initialPosition={value ?? initial}
-							__nextHasNoMarginBottom
-						/>
-					)}
-				</BaseControl>
-			)}
+								: ''
+						}`}
+						value={rangeValue ?? placeholder ?? 0}
+						onChange={val => {
+							const result =
+								optionType === 'string' ? val.toString() : +val;
+							setCurrentValue(result);
+							latestValueRef.current = result;
+							onChangeValue(result);
+						}}
+						min={enableUnit ? minValueRange : min}
+						max={maxRange || (enableUnit ? maxValueRange : max)}
+						step={stepValue}
+						withInputField={false}
+						initialPosition={value ?? initial}
+						__nextHasNoMarginBottom
+					/>
+				)}
+			</BaseControl>
 		</>
 	);
 };

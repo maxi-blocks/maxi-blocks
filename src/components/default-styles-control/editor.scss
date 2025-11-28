@@ -9,12 +9,13 @@
 		justify-content: center;
 		height: 32px;
 		width: 22.5%;
-		border: 1.5px solid var(--maxi-mid-green);
+		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 4px;
 		transition: all 0.5s;
 
 		&--active {
 			background-color: var(--maxi-whisper-green);
+			border-color: var(--maxi-secondary-color);
 
 			path {
 				fill: var(--maxi-secondary-color);

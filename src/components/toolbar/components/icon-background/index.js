@@ -58,7 +58,7 @@ const IconBackground = props => {
 				{props['icon-inherit'] ? (
 					<p className='toolbar-item__icon-background__popover__warning'>
 						{__(
-							'Icon background is inheriting from button.',
+							'Icon background is inherited from button ',
 							'maxi-button'
 						)}
 					</p>

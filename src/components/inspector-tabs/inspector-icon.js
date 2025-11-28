@@ -138,7 +138,7 @@ const icon = ({
 										})
 									}
 								/>
-								{hoverStatus && deviceType === 'general' && (
+								{hoverStatus && (
 									<>
 										<ToggleSwitch
 											label={__(

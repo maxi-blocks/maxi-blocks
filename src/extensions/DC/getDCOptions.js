@@ -192,41 +192,33 @@ const paginatedEntityFetch = async (
 				return allData;
 			}
 
-			// Create requests for remaining pages
-			const remainingRequests = [];
+			// Fetch remaining pages sequentially to avoid 400 errors for non-existent pages
+			// This prevents console errors when requesting pages that don't exist
 			for (let page = 3; page <= maxPages; page += 1) {
-				remainingRequests.push(
-					getEntityRecords(entityType, entityName, {
-						...optimizedArgs,
-						page,
-					}).catch(error => {
-						return [];
-					})
-				);
-			}
+				try {
+					const pageData = await getEntityRecords(
+						entityType,
+						entityName,
+						{
+							...optimizedArgs,
+							page,
+						}
+					);
 
-			// Wait for all remaining requests to complete
-			const remainingResults = await Promise.allSettled(
-				remainingRequests
-			);
-
-			// Process the results
-			for (let i = 0; i < remainingResults.length; i += 1) {
-				const result = remainingResults[i];
-				if (
-					result.status === 'fulfilled' &&
-					Array.isArray(result.value)
-				) {
-					// Add the data
-					allData.push(...result.value);
-
-					// If this page has less than 100 items, we've found the last page
-					// and can stop checking further pages
-					if (result.value.length < 100) {
+					// If page doesn't exist or is empty, we're done
+					if (!pageData || pageData.length === 0) {
 						break;
 					}
-				} else {
-					// Stop on first error
+
+					// Add the data
+					allData.push(...pageData);
+
+					// If this page has less than 100 items, we've found the last page
+					if (pageData.length < 100) {
+						break;
+					}
+				} catch (error) {
+					// Stop on error (page doesn't exist or API error)
 					break;
 				}
 			}

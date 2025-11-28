@@ -60,6 +60,7 @@ const BackgroundControl = props => {
 		globalProps,
 		inlineTarget = '',
 		getBounds,
+		tabsClassName,
 	} = props;
 
 	const backgroundActiveMedia = getLastBreakpointAttribute({
@@ -76,13 +77,13 @@ const BackgroundControl = props => {
 
 		!disableNoneStyle &&
 			options.push({
-				icon: <Icon icon={styleNone} />,
+				label: 'None',
 				value: 'none',
 			});
 
 		!disableColor &&
 			options.push({
-				icon: <Icon icon={backgroundColor} />,
+				label: 'Solid',
 				value: 'color',
 			});
 
@@ -100,7 +101,7 @@ const BackgroundControl = props => {
 
 		!disableGradient &&
 			options.push({
-				icon: <Icon icon={backgroundGradient()} />,
+				label: 'Gradient',
 				value: 'gradient',
 			});
 
@@ -119,7 +120,10 @@ const BackgroundControl = props => {
 				<SettingTabsControl
 					label={__('Background', 'maxi-blocks')}
 					type='buttons'
-					className='maxi-background-control__simple'
+					className={classnames(
+						'maxi-background-control__simple',
+						tabsClassName
+					)}
 					fullWidthMode
 					selected={backgroundActiveMedia || 'none'}
 					items={getOptions()}

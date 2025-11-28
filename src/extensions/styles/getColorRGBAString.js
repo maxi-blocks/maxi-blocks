@@ -20,8 +20,13 @@ const getVarWithColor = ({ blockStyle, variable }) => {
 		color: colorPart,
 	})?.replace(/ /g, '');
 
-	// Use color in the return value only if it's truthy
-	return `var(--maxi-${blockStyle}-${variable}${color ? `,${color}` : ''})`;
+	// Guard: Only add color fallback if it's valid (not empty, not undefined)
+	// This prevents generating broken CSS like var(--maxi-light-color-123,)
+	if (!color || color === '') {
+		return `var(--maxi-${blockStyle}-${variable})`;
+	}
+
+	return `var(--maxi-${blockStyle}-${variable},${color})`;
 };
 
 const getColorRGBAString = ({

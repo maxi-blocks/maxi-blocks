@@ -12,8 +12,7 @@ import {
 	BoxShadowControl,
 	FullSizeControl,
 	InfoBox,
-	MarginControl,
-	PaddingControl,
+	SpacingControl,
 } from '@components';
 import {
 	getBlockBackgroundStyles,
@@ -213,8 +212,7 @@ const getCanvasSettings = ({ name }) => [
 		attrGroupName: ['margin', 'padding'],
 		component: props => (
 			<>
-				<MarginControl {...props} />
-				<PaddingControl {...props} />
+				<SpacingControl {...props} />
 			</>
 		),
 		helper: props => getMarginPaddingStyles(props),

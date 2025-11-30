@@ -21,8 +21,7 @@ import BorderControl from '@components/border-control';
 import BoxShadowControl from '@components/box-shadow-control';
 import IconControl from '@components/icon-control';
 import InfoBox from '@components/info-box';
-import MarginControl from '@components/margin-control';
-import PaddingControl from '@components/padding-control';
+import SpacingControl from '@components/spacing-control';
 import TypographyControl from '@components/typography-control';
 
 import {
@@ -364,8 +363,7 @@ const interactionBuilderSettings = {
 			prefix: 'button-',
 			component: props => (
 				<>
-					<MarginControl {...props} />
-					<PaddingControl {...props} />
+					<SpacingControl {...props} />
 				</>
 			),
 			helper: props => getMarginPaddingStyles(props),

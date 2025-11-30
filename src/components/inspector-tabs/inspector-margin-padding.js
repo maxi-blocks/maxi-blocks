@@ -6,12 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import MarginControl from '@components/margin-control';
-import PaddingControl from '@components/padding-control';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '@extensions/styles';
+import SpacingControl from '@components/spacing-control';
+import { getGroupAttributes, getLastBreakpointAttribute } from '@extensions/styles';
 
 /**
  * Component
@@ -34,30 +30,18 @@ const marginPadding = ({
 		label: customLabel ?? __('Margin / Padding', 'maxi-blocks'),
 		content: (
 			<>
-				{!disableMargin && (
-					<MarginControl
-						{...getGroupAttributes(
-							attributes,
-							'margin',
-							false,
-							prefix
-						)}
-						prefix={prefix}
-						onChange={obj => maxiSetAttributes(obj)}
-						breakpoint={deviceType}
-						fullWidth={fullWidth}
-					/>
-				)}
-				<PaddingControl
+				<SpacingControl
 					{...getGroupAttributes(
 						attributes,
-						'padding',
+						['margin', 'padding'],
 						false,
 						prefix
 					)}
+					attributes={attributes}
 					prefix={prefix}
-					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
+					onChange={obj => maxiSetAttributes(obj)}
+					disableMargin={disableMargin}
 				/>
 			</>
 		),

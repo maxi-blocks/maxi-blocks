@@ -30,25 +30,37 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 18.x
-            - name: Install dependencies
-              run: npm install --legacy-peer-deps
+            - name: Install Aikido Safe Chain
+              run: npm install -g @aikidosec/safe-chain
+            - name: Setup Aikido Safe Chain and Install dependencies
+              run: |
+                  safe-chain setup
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npm install --legacy-peer-deps
             - name: Install Playwright browsers
-              run: npx playwright install --with-deps
+              run: |
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npx playwright install --with-deps
             - name: Create .env file
               run: |
                   touch .env
                   echo "REACT_APP_TYPESENSE_API_KEY=${{ secrets.REACT_APP_TYPESENSE_API_KEY }}" >> .env
                   echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
             - name: Build
-              run: npm run build
+              run: |
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npm run build
             - name: reset package-lock.json
               run: git checkout package-lock.json
             - name: Install WordPress
               run: |
+                  source ~/.bashrc || source ~/.zshrc || true
                   chmod -R 767 ./
                   npm run wp-env start
             - name: Running the tests
-              run: npm run test:playwright
+              run: |
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npm run test:playwright
             - name: Upload Playwright Report
               uses: actions/upload-artifact@v4
               if: failure()

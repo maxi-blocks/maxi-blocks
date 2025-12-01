@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-01T13:21:07+00:00\n"
+"POT-Creation-Date: 2025-12-01T14:40:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -80,7 +80,7 @@ msgstr ""
 #: core/admin/class-maxi-dashboard.php:300
 #: core/admin/class-maxi-dashboard.php:3107
 #: core/admin/starter-sites/src/library/toolbar.js:490
-#: src/editor/library/toolbar.js:815
+#: src/editor/library/toolbar.js:817
 msgid "The email is not valid"
 msgstr ""
 
@@ -106,13 +106,13 @@ msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:325
 #: core/admin/starter-sites/src/library/toolbar.js:335
-#: src/editor/library/toolbar.js:683
+#: src/editor/library/toolbar.js:685
 msgid "Click to show"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:329
 #: core/admin/starter-sites/src/library/toolbar.js:331
-#: src/editor/library/toolbar.js:682
+#: src/editor/library/toolbar.js:684
 msgid "Click to hide"
 msgstr ""
 
@@ -818,10 +818,10 @@ msgstr ""
 #: core/admin/starter-sites/src/library/toolbar.js:399
 #: core/admin/starter-sites/src/library/toolbar.js:439
 #: core/admin/starter-sites/src/library/toolbar.js:448
-#: src/editor/library/toolbar.js:729
-#: src/editor/library/toolbar.js:735
-#: src/editor/library/toolbar.js:771
-#: src/editor/library/toolbar.js:774
+#: src/editor/library/toolbar.js:731
+#: src/editor/library/toolbar.js:737
+#: src/editor/library/toolbar.js:773
+#: src/editor/library/toolbar.js:776
 msgid "Deactivate Cloud"
 msgstr ""
 
@@ -893,10 +893,10 @@ msgstr ""
 #: core/admin/starter-sites/src/library/toolbar.js:425
 #: core/admin/starter-sites/src/library/toolbar.js:517
 #: core/admin/starter-sites/src/library/toolbar.js:527
-#: src/editor/library/toolbar.js:752
-#: src/editor/library/toolbar.js:759
-#: src/editor/library/toolbar.js:840
-#: src/editor/library/toolbar.js:847
+#: src/editor/library/toolbar.js:754
+#: src/editor/library/toolbar.js:761
+#: src/editor/library/toolbar.js:842
+#: src/editor/library/toolbar.js:849
 msgid "Activate Cloud"
 msgstr ""
 
@@ -1163,7 +1163,7 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:1015
 #: core/admin/quick-start/class-maxi-quick-start.php:1156
 #: core/admin/starter-sites/src/library/toolbar.js:309
-#: src/editor/library/toolbar.js:610
+#: src/editor/library/toolbar.js:612
 msgid "Back"
 msgstr ""
 
@@ -2215,7 +2215,7 @@ msgstr ""
 #: src/editor/library/container.js:190
 #: src/editor/library/MasonryItem.js:140
 #: src/editor/library/toolbar.js:146
-#: src/editor/library/toolbar.js:616
+#: src/editor/library/toolbar.js:618
 msgid "Cloud"
 msgstr ""
 
@@ -2310,6 +2310,7 @@ msgstr ""
 
 #: core/admin/starter-sites/src/library/maxiImportPopUp.js:790
 #: src/editor/library/container.js:1513
+#: src/editor/library/toolbar.js:233
 msgid "Pages"
 msgstr ""
 
@@ -2380,7 +2381,7 @@ msgid "Loading..."
 msgstr ""
 
 #: core/admin/starter-sites/src/library/toolbar.js:325
-#: src/editor/library/toolbar.js:676
+#: src/editor/library/toolbar.js:678
 msgid "✓ Active: "
 msgstr ""
 
@@ -2390,7 +2391,7 @@ msgid "Please wait..."
 msgstr ""
 
 #: core/admin/starter-sites/src/library/toolbar.js:407
-#: src/editor/library/toolbar.js:743
+#: src/editor/library/toolbar.js:745
 msgid "Expired: "
 msgstr ""
 
@@ -2398,26 +2399,26 @@ msgstr ""
 #: core/admin/starter-sites/src/library/toolbar.js:424
 #: core/admin/starter-sites/src/library/toolbar.js:513
 #: core/admin/starter-sites/src/library/toolbar.js:526
-#: src/editor/library/toolbar.js:751
-#: src/editor/library/toolbar.js:758
-#: src/editor/library/toolbar.js:839
-#: src/editor/library/toolbar.js:846
+#: src/editor/library/toolbar.js:753
+#: src/editor/library/toolbar.js:760
+#: src/editor/library/toolbar.js:841
+#: src/editor/library/toolbar.js:848
 msgid "Verifying…"
 msgstr ""
 
 #: core/admin/starter-sites/src/library/toolbar.js:457
-#: src/editor/library/toolbar.js:783
+#: src/editor/library/toolbar.js:785
 msgid "✓ Active: Network License"
 msgstr ""
 
 #: core/admin/starter-sites/src/library/toolbar.js:498
-#: src/editor/library/toolbar.js:823
+#: src/editor/library/toolbar.js:825
 msgid "Authentication failed. Please check your credentials."
 msgstr ""
 
 #: core/admin/starter-sites/src/library/toolbar.js:543
 #: src/components/toolbar/components/help/index.js:48
-#: src/editor/library/toolbar.js:862
+#: src/editor/library/toolbar.js:864
 #: src/editor/responsive-selector/index.js:426
 msgid "Help"
 msgstr ""
@@ -2577,10 +2578,13 @@ msgstr ""
 #: src/blocks/map-maxi/data.js:71
 #: src/blocks/number-counter-maxi/data.js:51
 #: src/blocks/pane-maxi/data.js:38
+#: src/blocks/pane-maxi/data.js:421
+#: src/blocks/pane-maxi/data.js:450
 #: src/blocks/row-maxi/data.js:30
 #: src/blocks/slide-maxi/data.js:18
 #: src/blocks/slider-maxi/data.js:71
 #: src/blocks/svg-icon-maxi/data.js:115
+#: src/blocks/svg-icon-maxi/data.js:175
 #: src/blocks/text-maxi/data.js:106
 #: src/components/background-control/colorLayer.js:192
 #: src/components/background-control/index.js:121
@@ -2591,12 +2595,14 @@ msgstr ""
 #: src/blocks/accordion-maxi/data.js:49
 #: src/blocks/button-maxi/data.js:104
 #: src/blocks/button-maxi/data.js:128
+#: src/blocks/button-maxi/data.js:188
 #: src/blocks/column-maxi/data.js:39
 #: src/blocks/container-maxi/data.js:75
 #: src/blocks/divider-maxi/data.js:80
 #: src/blocks/group-maxi/data.js:30
 #: src/blocks/image-maxi/data.js:132
 #: src/blocks/image-maxi/data.js:157
+#: src/blocks/image-maxi/data.js:195
 #: src/blocks/image-maxi/data.js:293
 #: src/blocks/list-item-maxi/data.js:43
 #: src/blocks/map-maxi/data.js:81
@@ -2604,16 +2610,23 @@ msgstr ""
 #: src/blocks/number-counter-maxi/data.js:54
 #: src/blocks/pane-maxi/data.js:21
 #: src/blocks/pane-maxi/data.js:41
+#: src/blocks/pane-maxi/data.js:403
+#: src/blocks/pane-maxi/data.js:432
 #: src/blocks/row-maxi/data.js:33
 #: src/blocks/search-maxi/data.js:38
 #: src/blocks/search-maxi/data.js:75
 #: src/blocks/search-maxi/data.js:97
+#: src/blocks/search-maxi/data.js:228
+#: src/blocks/search-maxi/data.js:268
+#: src/blocks/search-maxi/data.js:288
 #: src/blocks/slide-maxi/data.js:21
 #: src/blocks/slider-maxi/data.js:74
 #: src/blocks/svg-icon-maxi/data.js:94
 #: src/blocks/svg-icon-maxi/data.js:118
+#: src/blocks/svg-icon-maxi/data.js:156
 #: src/blocks/text-maxi/data.js:109
 #: src/blocks/video-maxi/data.js:89
+#: src/blocks/video-maxi/data.js:136
 #: src/components/background-control/imageLayer.js:535
 #: src/components/background-control/imageLayer.js:582
 #: src/components/border-control/index.js:78
@@ -2622,6 +2635,7 @@ msgstr ""
 #: src/components/toolbar/components/border/index.js:69
 #: src/editor/style-cards/maxiStyleCardsTab.js:611
 #: src/extensions/relations/getCanvasSettings.js:141
+#: src/extensions/styles/transitions/transitionDefault.js:6
 msgid "Border"
 msgstr ""
 
@@ -2632,28 +2646,38 @@ msgstr ""
 #: src/blocks/container-maxi/data.js:78
 #: src/blocks/divider-maxi/data.js:68
 #: src/blocks/divider-maxi/data.js:83
+#: src/blocks/divider-maxi/data.js:120
 #: src/blocks/group-maxi/data.js:33
 #: src/blocks/image-maxi/data.js:136
 #: src/blocks/image-maxi/data.js:160
+#: src/blocks/image-maxi/data.js:201
 #: src/blocks/list-item-maxi/data.js:46
 #: src/blocks/map-maxi/components/map-popup-control/index.js:37
 #: src/blocks/map-maxi/data.js:75
 #: src/blocks/map-maxi/data.js:84
 #: src/blocks/number-counter-maxi/data.js:38
 #: src/blocks/number-counter-maxi/data.js:57
+#: src/blocks/number-counter-maxi/data.js:107
 #: src/blocks/pane-maxi/data.js:24
 #: src/blocks/pane-maxi/data.js:44
+#: src/blocks/pane-maxi/data.js:412
+#: src/blocks/pane-maxi/data.js:441
 #: src/blocks/row-maxi/data.js:36
 #: src/blocks/search-maxi/data.js:41
+#: src/blocks/search-maxi/data.js:234
 #: src/blocks/slide-maxi/data.js:24
 #: src/blocks/slider-maxi/data.js:77
 #: src/blocks/svg-icon-maxi/data.js:98
 #: src/blocks/svg-icon-maxi/data.js:121
+#: src/blocks/svg-icon-maxi/data.js:162
 #: src/blocks/text-maxi/data.js:112
 #: src/blocks/video-maxi/data.js:93
+#: src/blocks/video-maxi/data.js:142
+#: src/components/box-shadow-control/index.js:150
 #: src/components/inspector-tabs/inspector-box-shadow.js:40
 #: src/components/toolbar/components/box-shadow/index.js:66
 #: src/extensions/relations/getCanvasSettings.js:160
+#: src/extensions/styles/transitions/transitionDefault.js:12
 msgid "Box shadow"
 msgstr ""
 
@@ -2710,6 +2734,355 @@ msgstr ""
 msgid "Margin/Padding"
 msgstr ""
 
+#: src/blocks/accordion-maxi/data.js:76
+msgid "before"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:80
+msgid "::before on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:86
+msgid "after"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:90
+msgid "::after on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:96
+#: src/blocks/pane-maxi/data.js:71
+msgid "pane"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:100
+#: src/blocks/pane-maxi/data.js:75
+msgid "pane on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:104
+#: src/blocks/pane-maxi/data.js:79
+msgid "pane on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:110
+#: src/blocks/pane-maxi/data.js:85
+msgid "pane ::before"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:114
+#: src/blocks/pane-maxi/data.js:89
+msgid "pane ::before on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:118
+#: src/blocks/pane-maxi/data.js:93
+msgid "pane ::before on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:124
+#: src/blocks/pane-maxi/data.js:99
+msgid "pane ::after"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:128
+#: src/blocks/pane-maxi/data.js:103
+msgid "pane ::after on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:132
+#: src/blocks/pane-maxi/data.js:107
+msgid "pane ::after on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:138
+#: src/blocks/pane-maxi/data.js:113
+msgid "pane header"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:142
+#: src/blocks/pane-maxi/data.js:117
+msgid "pane header on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:146
+#: src/blocks/pane-maxi/data.js:121
+msgid "pane header on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:152
+#: src/blocks/pane-maxi/data.js:127
+msgid "pane header ::before"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:156
+#: src/blocks/pane-maxi/data.js:131
+msgid "pane header ::before on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:160
+#: src/blocks/pane-maxi/data.js:135
+msgid "pane header ::before on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:169
+#: src/blocks/pane-maxi/data.js:144
+msgid "pane header ::after"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:173
+#: src/blocks/pane-maxi/data.js:148
+msgid "pane header ::after on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:177
+#: src/blocks/pane-maxi/data.js:152
+msgid "pane header ::after on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:183
+msgid "pane header content::before"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:187
+msgid "pane header content::before on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:194
+msgid "pane header content::before on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:203
+msgid "pane header content::after"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:207
+#: src/blocks/pane-maxi/data.js:230
+msgid "pane header content::after on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:211
+#: src/blocks/pane-maxi/data.js:234
+msgid "pane header content::after on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:220
+#: src/blocks/pane-maxi/data.js:243
+#: src/blocks/search-maxi/data.js:136
+#: src/blocks/search-maxi/data.js:173
+msgid "icon"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:224
+#: src/blocks/pane-maxi/data.js:247
+#: src/blocks/search-maxi/data.js:140
+#: src/blocks/search-maxi/data.js:177
+msgid "icon's svg"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:228
+#: src/blocks/pane-maxi/data.js:251
+#: src/blocks/search-maxi/data.js:144
+#: src/blocks/search-maxi/data.js:181
+#: src/extensions/styles/custom-css/createIconSelectors.js:30
+msgid "everything inside svg (svg > *)"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:232
+#: src/blocks/pane-maxi/data.js:255
+#: src/blocks/search-maxi/data.js:148
+#: src/blocks/search-maxi/data.js:185
+#: src/extensions/styles/custom-css/createIconSelectors.js:48
+msgid "svg's path"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:236
+#: src/blocks/pane-maxi/data.js:259
+#: src/blocks/search-maxi/data.js:152
+#: src/blocks/search-maxi/data.js:189
+msgid "icon on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:240
+#: src/blocks/pane-maxi/data.js:263
+#: src/blocks/search-maxi/data.js:156
+#: src/blocks/search-maxi/data.js:193
+msgid "icon's svg on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:244
+#: src/blocks/pane-maxi/data.js:267
+#: src/blocks/search-maxi/data.js:160
+#: src/blocks/search-maxi/data.js:197
+#: src/extensions/styles/custom-css/createIconSelectors.js:34
+msgid "everything inside svg on hover (:hover svg > *)"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:251
+#: src/blocks/pane-maxi/data.js:274
+#: src/blocks/search-maxi/data.js:167
+#: src/blocks/search-maxi/data.js:204
+#: src/extensions/styles/custom-css/createIconSelectors.js:52
+msgid "svg's path on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:255
+#: src/blocks/pane-maxi/data.js:278
+msgid "active icon"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:259
+#: src/blocks/pane-maxi/data.js:282
+msgid "active icon's svg"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:263
+#: src/blocks/pane-maxi/data.js:286
+msgid "everything inside active svg (svg > *)"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:270
+#: src/blocks/pane-maxi/data.js:293
+msgid "active svg's path"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:276
+#: src/blocks/pane-maxi/data.js:299
+msgid "icon ::before"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:280
+#: src/blocks/pane-maxi/data.js:303
+msgid "icon ::before on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:284
+#: src/blocks/pane-maxi/data.js:307
+msgid "icon ::before on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:290
+#: src/blocks/pane-maxi/data.js:313
+msgid "icon ::after"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:294
+#: src/blocks/pane-maxi/data.js:317
+msgid "icon ::after on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:298
+#: src/blocks/pane-maxi/data.js:321
+msgid "icon ::after on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:304
+#: src/blocks/pane-maxi/data.js:327
+msgid "pane content"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:308
+#: src/blocks/pane-maxi/data.js:331
+msgid "pane content on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:312
+msgid "pane content active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:318
+#: src/blocks/pane-maxi/data.js:341
+msgid "pane content ::before"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:322
+#: src/blocks/pane-maxi/data.js:345
+msgid "pane content ::before on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:326
+#: src/blocks/pane-maxi/data.js:349
+msgid "pane content ::before on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:335
+#: src/blocks/pane-maxi/data.js:358
+msgid "pane content ::after"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:339
+#: src/blocks/pane-maxi/data.js:362
+msgid "pane content ::after on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:343
+#: src/blocks/pane-maxi/data.js:366
+msgid "pane content ::after on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:352
+#: src/blocks/pane-maxi/data.js:158
+msgid "header content"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:356
+#: src/blocks/pane-maxi/data.js:162
+msgid "header content on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:360
+#: src/blocks/pane-maxi/data.js:166
+msgid "header content on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:366
+#: src/blocks/pane-maxi/data.js:172
+msgid "header line"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:370
+#: src/blocks/pane-maxi/data.js:176
+msgid "header line on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:374
+#: src/blocks/pane-maxi/data.js:180
+msgid "header line on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:380
+#: src/blocks/pane-maxi/data.js:186
+msgid "content line"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:384
+#: src/blocks/pane-maxi/data.js:190
+msgid "content line on hover"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:388
+#: src/blocks/pane-maxi/data.js:194
+msgid "content line on active state"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:423
+#: src/blocks/accordion-maxi/inspector.js:171
+msgid "Header line"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:429
+#: src/blocks/accordion-maxi/inspector.js:183
+msgid "Content line"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:435
+msgid "Pane title"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:444
+msgid "Pane title background"
+msgstr ""
+
 #: src/blocks/accordion-maxi/inspector.js:114
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:39
 #: src/blocks/map-maxi/components/markers/index.js:99
@@ -2725,14 +3098,6 @@ msgstr ""
 #: src/blocks/divider-maxi/data.js:165
 #: src/blocks/divider-maxi/inspector.js:238
 msgid "Line settings"
-msgstr ""
-
-#: src/blocks/accordion-maxi/inspector.js:171
-msgid "Header line"
-msgstr ""
-
-#: src/blocks/accordion-maxi/inspector.js:183
-msgid "Content line"
 msgstr ""
 
 #: src/blocks/accordion-maxi/inspector.js:224
@@ -2756,6 +3121,10 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
+#: src/blocks/accordion-maxi/styles.js:177
+msgid "Pane transition"
+msgstr ""
+
 #: src/blocks/button-maxi/data.js:56
 #: src/blocks/button-maxi/edit.js:232
 #: src/blocks/search-maxi/components/button-control/index.js:46
@@ -2764,15 +3133,16 @@ msgid "Button text"
 msgstr ""
 
 #: src/blocks/button-maxi/data.js:62
-#: src/blocks/svg-icon-maxi/data.js:273
+#: src/blocks/svg-icon-maxi/data.js:249
 msgid "Icon border"
 msgstr ""
 
 #: src/blocks/button-maxi/data.js:72
 #: src/blocks/svg-icon-maxi/data.js:74
-#: src/blocks/svg-icon-maxi/data.js:245
+#: src/blocks/svg-icon-maxi/data.js:221
 #: src/components/icon-control/index.js:610
 #: src/components/toolbar/components/icon-background/index.js:67
+#: src/extensions/styles/helpers/getBackgroundStyles.js:695
 msgid "Icon background"
 msgstr ""
 
@@ -2803,18 +3173,23 @@ msgid "Text alignment"
 msgstr ""
 
 #: src/blocks/button-maxi/data.js:97
+#: src/blocks/button-maxi/data.js:176
 #: src/blocks/image-maxi/data.js:83
 #: src/blocks/list-item-maxi/data.js:37
 #: src/blocks/list-item-maxi/data.js:115
 #: src/blocks/search-maxi/data.js:67
 #: src/blocks/search-maxi/data.js:85
+#: src/blocks/search-maxi/data.js:262
+#: src/blocks/search-maxi/data.js:282
 #: src/blocks/text-maxi/data.js:103
+#: src/blocks/text-maxi/data.js:161
 #: src/blocks/text-maxi/data.js:185
 #: src/components/inspector-tabs/inspector-typography.js:59
 msgid "Typography"
 msgstr ""
 
 #: src/blocks/button-maxi/data.js:100
+#: src/blocks/button-maxi/data.js:182
 #: src/blocks/button-maxi/data.js:307
 #: src/blocks/search-maxi/data.js:71
 msgid "Button background"
@@ -2830,12 +3205,14 @@ msgstr ""
 #: src/blocks/pane-maxi/data.js:47
 #: src/blocks/row-maxi/data.js:48
 #: src/blocks/search-maxi/data.js:112
+#: src/blocks/search-maxi/data.js:240
 #: src/blocks/svg-icon-maxi/data.js:124
 #: src/blocks/text-maxi/data.js:124
 #: src/blocks/video-maxi/data.js:104
 #: src/components/inspector-tabs/inspector-opacity.js:33
 #: src/components/opacity-control/index.js:56
 #: src/extensions/relations/getAdvancedSettings.js:79
+#: src/extensions/styles/transitions/transitionDefault.js:27
 msgid "Opacity"
 msgstr ""
 
@@ -3419,6 +3796,7 @@ msgid "Caption gap unit"
 msgstr ""
 
 #: src/blocks/image-maxi/data.js:89
+#: src/blocks/text-maxi/data.js:167
 #: src/components/inspector-tabs/inspector-link-settings.js:39
 #: src/components/toolbar/components/link/index.js:128
 #: src/components/toolbar/components/text-link/index.js:293
@@ -3475,6 +3853,7 @@ msgid "Hover title typography"
 msgstr ""
 
 #: src/blocks/image-maxi/data.js:129
+#: src/blocks/image-maxi/data.js:207
 msgid "Clip path"
 msgstr ""
 
@@ -3633,6 +4012,7 @@ msgstr ""
 
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:74
 #: src/blocks/map-maxi/components/markers/index.js:110
+#: src/components/prompt-control/utils.js:27
 #: src/extensions/DC/constants.js:152
 #: src/extensions/DC/constants.js:161
 #: src/extensions/DC/constants.js:185
@@ -3746,6 +4126,7 @@ msgstr ""
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:120
 #: src/editor/library/MasonryItem.js:128
 #: src/editor/library/modal.js:423
+#: src/editor/library/toolbar.js:237
 msgid "Preview"
 msgstr ""
 
@@ -3835,6 +4216,26 @@ msgstr ""
 msgid "Counter"
 msgstr ""
 
+#: src/blocks/pane-maxi/data.js:200
+msgid "accordion pane header content::before"
+msgstr ""
+
+#: src/blocks/pane-maxi/data.js:207
+msgid "accordion pane header content::before on hover"
+msgstr ""
+
+#: src/blocks/pane-maxi/data.js:214
+msgid "accordion pane header content::before on active state"
+msgstr ""
+
+#: src/blocks/pane-maxi/data.js:223
+msgid "accordion pane header content::after"
+msgstr ""
+
+#: src/blocks/pane-maxi/data.js:335
+msgid "pane content on active state"
+msgstr ""
+
 #: src/blocks/pane-maxi/inspector.js:77
 msgid "Pane settings"
 msgstr ""
@@ -3852,6 +4253,10 @@ msgstr ""
 
 #: src/blocks/row-maxi/components/column-pattern/index.js:177
 msgid "Number of columns"
+msgstr ""
+
+#: src/blocks/row-maxi/components/column-pattern/index.js:290
+msgid "Apply Setting"
 msgstr ""
 
 #: src/blocks/row-maxi/components/row-block-template/index.js:91
@@ -3958,7 +4363,24 @@ msgid "Placeholder colour"
 msgstr ""
 
 #: src/blocks/search-maxi/data.js:101
+#: src/blocks/search-maxi/data.js:294
 msgid "Input background"
+msgstr ""
+
+#: src/blocks/search-maxi/data.js:126
+msgid "input ::placeholder"
+msgstr ""
+
+#: src/blocks/search-maxi/data.js:130
+msgid "input ::placeholder on hover"
+msgstr ""
+
+#: src/blocks/search-maxi/data.js:274
+msgid "button background"
+msgstr ""
+
+#: src/blocks/search-maxi/data.js:300
+msgid "Icon reveal appear"
 msgstr ""
 
 #: src/blocks/search-maxi/inspector.js:159
@@ -4144,6 +4566,36 @@ msgstr ""
 msgid "Dot icons - active"
 msgstr ""
 
+#: src/blocks/slider-maxi/data.js:107
+msgid "first arrow icon"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:111
+msgid "first arrow icon on hover"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:117
+msgid "second arrow icon"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:121
+msgid "second arrow icon on hover"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:127
+msgid "Each dot icon"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:131
+msgid "Each dot icon on hover"
+msgstr ""
+
+#: src/blocks/slider-maxi/styles.js:276
+#: src/blocks/slider-maxi/styles.js:323
+#: src/extensions/styles/helpers/getButtonIconStyles.js:90
+msgid "Icon responsive"
+msgstr ""
+
 #: src/blocks/svg-icon-maxi/components/svg-alt-control/index.js:16
 #: src/blocks/svg-icon-maxi/data.js:43
 msgid "Alt title"
@@ -4253,6 +4705,7 @@ msgstr ""
 #: src/components/background-control/backgroundLayersControl.js:322
 #: src/components/background-control/backgroundLayersControl.js:588
 #: src/components/background-control/gradientLayer.js:42
+#: src/extensions/styles/helpers/getBackgroundStyles.js:218
 msgid "Background gradient"
 msgstr ""
 
@@ -4599,6 +5052,10 @@ msgstr ""
 
 #: src/blocks/video-maxi/data.js:86
 msgid "Image source"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:148
+msgid "Overlay colour"
 msgstr ""
 
 #: src/blocks/video-maxi/inspector.js:130
@@ -5199,6 +5656,27 @@ msgstr ""
 
 #: src/components/divider-control/index.js:308
 msgid "Line radius"
+msgstr ""
+
+#: src/components/dynamic-content/acf-settings-control/utils.js:84
+msgid "No groups found"
+msgstr ""
+
+#: src/components/dynamic-content/acf-settings-control/utils.js:106
+msgid "Static Text"
+msgstr ""
+
+#: src/components/dynamic-content/acf-settings-control/utils.js:113
+#: src/extensions/DC/constants.js:330
+msgid "Static"
+msgstr ""
+
+#: src/components/dynamic-content/acf-settings-control/utils.js:121
+msgid "No suitable fields found"
+msgstr ""
+
+#: src/components/dynamic-content/acf-settings-control/utils.js:126
+msgid "No fields found"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:12
@@ -5808,6 +6286,7 @@ msgid "(UTC+13:00) Nuku'alofa"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:685
+#: src/components/prompt-control/constants.js:190
 msgid "Afrikaans"
 msgstr ""
 
@@ -5916,18 +6395,22 @@ msgid "Greek"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:793
+#: src/components/prompt-control/constants.js:215
 msgid "English"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:797
+#: src/components/prompt-control/constants.js:216
 msgid "English (Australia)"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:801
+#: src/components/prompt-control/constants.js:217
 msgid "English (Canada)"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:805
+#: src/components/prompt-control/constants.js:189
 msgid "English (United Kingdom)"
 msgstr ""
 
@@ -5940,10 +6423,12 @@ msgid "English (Israel)"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:817
+#: src/components/prompt-control/constants.js:218
 msgid "English (India)"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:821
+#: src/components/prompt-control/constants.js:219
 msgid "English (New Zealand)"
 msgstr ""
 
@@ -5988,6 +6473,7 @@ msgid "Finnish"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:865
+#: src/components/prompt-control/constants.js:225
 msgid "Filipino"
 msgstr ""
 
@@ -6008,10 +6494,12 @@ msgid "French"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:885
+#: src/components/prompt-control/constants.js:323
 msgid "Western Frisian"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:889
+#: src/components/prompt-control/constants.js:290
 msgid "Scottish Gaelic"
 msgstr ""
 
@@ -6200,6 +6688,7 @@ msgid "Russian"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:1077
+#: src/components/prompt-control/constants.js:294
 msgid "Sindhi"
 msgstr ""
 
@@ -6264,6 +6753,7 @@ msgid "Thai"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:1141
+#: src/components/prompt-control/constants.js:314
 msgid "Turkmen"
 msgstr ""
 
@@ -6691,6 +7181,7 @@ msgstr ""
 
 #: src/components/inspector-tabs/inspector-block-background.js:40
 #: src/extensions/relations/getCanvasSettings.js:41
+#: src/extensions/styles/transitions/transitionDefault.js:18
 msgid "Background / Layer"
 msgstr ""
 
@@ -6970,6 +7461,696 @@ msgstr ""
 msgid "Translate to"
 msgstr ""
 
+#: src/components/prompt-control/constants.js:140
+msgid "Formal"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:141
+msgid "Friendly"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:142
+msgid "Emotional"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:143
+msgid "Analytical"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:144
+#: src/components/prompt-control/constants.js:169
+#: src/components/prompt-control/tabs/generate-tab/index.js:170
+msgid "Creative"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:145
+msgid "Playful"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:146
+msgid "Encouraging"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:147
+msgid "Enthusiastic"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:148
+msgid "Calm"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:149
+msgid "Persuasive"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:150
+msgid "Dramatic"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:151
+msgid "Informative"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:152
+msgid "Collaborative"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:153
+msgid "Imaginative"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:154
+msgid "Inspirational"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:155
+msgid "Passionate"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:156
+msgid "Humorous"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:157
+msgid "Poetic"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:158
+msgid "Objective"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:159
+msgid "Celebratory"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:163
+msgid "Business"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:164
+msgid "Narrative"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:165
+msgid "Descriptive"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:166
+msgid "Expository Technical"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:167
+msgid "Academic"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:168
+msgid "Journalistic"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:170
+msgid "Satirical"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:171
+msgid "Analytical Personal"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:172
+msgid "Reflective"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:173
+msgid "Historical"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:174
+msgid "Autobiographical"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:175
+msgid "Biographical"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:176
+msgid "Scientific"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:177
+msgid "Medical"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:178
+msgid "Legal"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:179
+msgid "Financial"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:180
+msgid "Instructional Educational"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:181
+msgid "Spiritual"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:182
+msgid "Gothic"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:183
+msgid "Romantic"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:184
+msgid "Surrealist"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:188
+msgid "Language of the prompt"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:191
+msgid "Albanian - shqip"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:192
+msgid "Amharic - አማርኛ"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:193
+msgid "Arabic - العربية"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:194
+msgid "Aragonese - aragonés"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:195
+msgid "Armenian - հայերեն"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:196
+msgid "Asturian - asturianu"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:197
+msgid "Azerbaijani - azərbaycan dili"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:198
+msgid "Basque - euskara"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:199
+msgid "Belarusian - беларуская"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:200
+msgid "Bengali - বাংলা"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:201
+msgid "Bosnian - bosanski"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:202
+msgid "Breton - brezhoneg"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:203
+msgid "Bulgarian - български"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:204
+msgid "Catalan - català"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:205
+msgid "Central Kurdish - کوردی (دەستنوسی عەرەبی)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:206
+msgid "Chinese - 中文"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:207
+msgid "Chinese (Hong Kong) - 中文（香港）"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:208
+msgid "Chinese (Simplified) - 中文（简体）"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:209
+msgid "Chinese (Traditional) - 中文（繁體）"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:210
+msgid "Corsican"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:211
+msgid "Croatian - hrvatski"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:212
+msgid "Czech - čeština"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:213
+msgid "Danish - dansk"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:214
+msgid "Dutch - Nederlands"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:220
+msgid "English (South Africa)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:221
+msgid "English (United States)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:222
+msgid "Esperanto - esperanto"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:223
+msgid "Estonian - eesti"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:224
+msgid "Faroese - føroyskt"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:226
+msgid "Finnish - suomi"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:227
+msgid "French - français"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:228
+msgid "French (Canada) - français (Canada)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:229
+msgid "French (France) - français (France)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:230
+msgid "French (Switzerland) - français (Suisse)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:231
+msgid "Galician - galego"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:232
+msgid "Georgian - ქართული"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:233
+msgid "German - Deutsch"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:234
+msgid "German (Austria) - Deutsch (Österreich)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:235
+msgid "German (Germany) - Deutsch (Deutschland)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:236
+msgid "German (Liechtenstein) - Deutsch (Liechtenstein)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:237
+msgid "German (Switzerland) - Deutsch (Schweiz)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:238
+msgid "Greek - Ελληνικά"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:239
+msgid "Guarani"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:240
+msgid "Gujarati - ગુજરાતી"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:241
+msgid "Hausa"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:242
+msgid "Hawaiian - ʻŌlelo Hawaiʻi"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:243
+msgid "Hebrew - עברית"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:244
+msgid "Hindi - हिन्दी"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:245
+msgid "Hungarian - magyar"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:246
+msgid "Icelandic - íslenska"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:247
+msgid "Indonesian - Indonesia"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:248
+msgid "Interlingua"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:249
+msgid "Irish - Gaeilge"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:250
+msgid "Italian - italiano"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:251
+msgid "Italian (Italy) - italiano (Italia)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:252
+msgid "Italian (Switzerland) - italiano (Svizzera)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:253
+msgid "Japanese - 日本語"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:254
+msgid "Kannada - ಕನ್ನಡ"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:255
+msgid "Kazakh - қазақ тілі"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:256
+msgid "Khmer - ខ្មែរ"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:257
+msgid "Korean - 한국어"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:258
+msgid "Kurdish - Kurdî"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:259
+msgid "Kyrgyz - кыргызча"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:260
+msgid "Lao - ລາວ"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:261
+msgid "Latin"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:262
+msgid "Latvian - latviešu"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:263
+msgid "Lingala - lingála"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:264
+msgid "Lithuanian - lietuvių"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:265
+msgid "Macedonian - македонски"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:266
+msgid "Malay - Bahasa Melayu"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:267
+msgid "Malayalam - മലയാളം"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:268
+msgid "Maltese - Malti"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:269
+msgid "Marathi - मराठी"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:270
+msgid "Mongolian - монгол"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:271
+msgid "Nepali - नेपाली"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:272
+msgid "Norwegian - norsk"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:273
+msgid "Norwegian Bokmål - norsk bokmål"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:274
+msgid "Norwegian Nynorsk - nynorsk"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:275
+msgid "Occitan"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:276
+msgid "Oriya - ଓଡ଼ିଆ"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:277
+msgid "Oromo - Oromoo"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:278
+msgid "Pashto - پښتو"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:279
+msgid "Persian - فارسی"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:280
+msgid "Polish - polski"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:281
+msgid "Portuguese - português"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:282
+msgid "Portuguese (Brazil) - português (Brasil)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:283
+msgid "Portuguese (Portugal) - português (Portugal)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:284
+msgid "Punjabi - ਪੰਜਾਬੀ"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:285
+msgid "Quechua"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:286
+msgid "Romanian - română"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:287
+msgid "Romanian (Moldova) - română (Moldova)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:288
+msgid "Romansh - rumantsch"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:289
+msgid "Russian - русский"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:291
+msgid "Serbian - српски"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:292
+msgid "Serbo - Croatian"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:293
+msgid "Shona - chiShona"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:295
+msgid "Sinhala - සිංහල"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:296
+msgid "Slovak - slovenčina"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:297
+msgid "Slovenian - slovenščina"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:298
+msgid "Somali - Soomaali"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:299
+msgid "Southern Sotho"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:300
+msgid "Spanish - español"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:301
+msgid "Spanish (Argentina) - español (Argentina)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:302
+msgid "Spanish (Latin America) - español (Latinoamérica)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:303
+msgid "Spanish (Mexico) - español (México)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:304
+msgid "Spanish (Spain) - español (España)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:305
+msgid "Spanish (United States) - español (Estados Unidos)"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:306
+msgid "Sundanese"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:307
+msgid "Swahili - Kiswahili"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:308
+msgid "Swedish - svenska"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:309
+msgid "Tajik - тоҷикӣ"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:310
+msgid "Tamil - தமிழ்"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:311
+msgid "Tigrinya - ትግርኛ"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:312
+msgid "Tongan - lea fakatonga"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:313
+msgid "Turkish - Türkçe"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:315
+msgid "Twi"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:316
+msgid "Ukrainian - українська"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:317
+msgid "Urdu - اردو"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:318
+msgid "Uyghur"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:319
+msgid "Uzbek - o‘zbek"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:320
+msgid "Vietnamese - Tiếng Việt"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:321
+msgid "Walloon - wa"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:322
+msgid "Welsh - Cymraeg"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:324
+msgid "Xhosa"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:325
+msgid "Yiddish"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:326
+msgid "Yoruba - Èdè Yorùbá"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:327
+msgid "Zulu - isiZulu"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:377
+msgid "No context"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:378
+msgid "This container"
+msgstr ""
+
+#: src/components/prompt-control/constants.js:379
+msgid "This page"
+msgstr ""
+
 #: src/components/prompt-control/index.js:118
 msgid "You have not set your OpenAI API key, please navigate to the Maxi AI Options and set it"
 msgstr ""
@@ -7028,10 +8209,6 @@ msgstr ""
 msgid "Neutral"
 msgstr ""
 
-#: src/components/prompt-control/tabs/generate-tab/index.js:170
-msgid "Creative"
-msgstr ""
-
 #: src/components/prompt-control/tabs/generate-tab/index.js:173
 msgid "Grab context"
 msgstr ""
@@ -7042,6 +8219,26 @@ msgstr ""
 
 #: src/components/prompt-control/tabs/results-tab/index.js:68
 msgid "Stop"
+msgstr ""
+
+#: src/components/prompt-control/utils.js:28
+msgid "Audience"
+msgstr ""
+
+#: src/components/prompt-control/utils.js:29
+msgid "Goal"
+msgstr ""
+
+#: src/components/prompt-control/utils.js:30
+msgid "Services Offered"
+msgstr ""
+
+#: src/components/prompt-control/utils.js:31
+msgid "Business Name"
+msgstr ""
+
+#: src/components/prompt-control/utils.js:32
+msgid "Business Info"
 msgstr ""
 
 #: src/components/relation-control/index.js:93
@@ -7564,7 +8761,7 @@ msgstr ""
 #: src/components/toolbar/components/media-upload/index.js:33
 #: src/editor/library/MasonryItem.js:105
 #: src/editor/library/MasonryItem.js:195
-#: src/editor/library/toolbar.js:869
+#: src/editor/library/toolbar.js:871
 msgid "Insert"
 msgstr ""
 
@@ -7633,6 +8830,7 @@ msgid "Add/Remove slides"
 msgstr ""
 
 #: src/components/toolbar/components/svg-width/index.js:30
+#: src/extensions/styles/helpers/getSVGStyles.js:28
 msgid "Icon size"
 msgstr ""
 
@@ -7889,42 +9087,52 @@ msgstr ""
 msgid "Break spaces"
 msgstr ""
 
+#: src/components/typography-control/utils.js:10
 #: src/components/typography-control/utils.js:36
 msgid "Hairline (100)"
 msgstr ""
 
+#: src/components/typography-control/utils.js:11
 #: src/components/typography-control/utils.js:38
 msgid "Extra light (200)"
 msgstr ""
 
+#: src/components/typography-control/utils.js:12
 #: src/components/typography-control/utils.js:41
 msgid "Light (300)"
 msgstr ""
 
+#: src/components/typography-control/utils.js:13
 #: src/components/typography-control/utils.js:43
 msgid "Regular (400)"
 msgstr ""
 
+#: src/components/typography-control/utils.js:14
 #: src/components/typography-control/utils.js:46
 msgid "Medium (500)"
 msgstr ""
 
+#: src/components/typography-control/utils.js:15
 #: src/components/typography-control/utils.js:48
 msgid "Semi bold (600)"
 msgstr ""
 
+#: src/components/typography-control/utils.js:16
 #: src/components/typography-control/utils.js:51
 msgid "Bold (700)"
 msgstr ""
 
+#: src/components/typography-control/utils.js:17
 #: src/components/typography-control/utils.js:53
 msgid "Extra bold (800)"
 msgstr ""
 
+#: src/components/typography-control/utils.js:18
 #: src/components/typography-control/utils.js:56
 msgid "Heavy (900)"
 msgstr ""
 
+#: src/components/typography-control/utils.js:19
 #: src/components/typography-control/utils.js:58
 msgid "Extra heavy (950)"
 msgstr ""
@@ -7999,6 +9207,7 @@ msgid "Clear"
 msgstr ""
 
 #: src/editor/library/container.js:1507
+#: src/editor/library/toolbar.js:236
 msgid "Blocks"
 msgstr ""
 
@@ -8060,27 +9269,43 @@ msgstr ""
 msgid "Load icon library"
 msgstr ""
 
-#: src/editor/library/toolbar.js:623
+#: src/editor/library/toolbar.js:187
+msgid "Authentication failed"
+msgstr ""
+
+#: src/editor/library/toolbar.js:232
+msgid "Style Cards"
+msgstr ""
+
+#: src/editor/library/toolbar.js:234
+msgid "Block Patterns"
+msgstr ""
+
+#: src/editor/library/toolbar.js:235
+msgid "Global"
+msgstr ""
+
+#: src/editor/library/toolbar.js:625
 msgid "Switch tone"
 msgstr ""
 
-#: src/editor/library/toolbar.js:632
+#: src/editor/library/toolbar.js:634
 msgid "Full screen"
 msgstr ""
 
-#: src/editor/library/toolbar.js:640
+#: src/editor/library/toolbar.js:642
 msgid "Desktop"
 msgstr ""
 
-#: src/editor/library/toolbar.js:648
+#: src/editor/library/toolbar.js:650
 msgid "Tablet"
 msgstr ""
 
-#: src/editor/library/toolbar.js:656
+#: src/editor/library/toolbar.js:658
 msgid "Mobile"
 msgstr ""
 
-#: src/editor/library/toolbar.js:802
+#: src/editor/library/toolbar.js:804
 msgid "Pro user email / purchase code / license key"
 msgstr ""
 
@@ -8471,10 +9696,6 @@ msgstr ""
 msgid "Total fees tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:330
-msgid "Static"
-msgstr ""
-
 #: src/extensions/DC/constants.js:403
 msgid "Add to cart"
 msgstr ""
@@ -8647,9 +9868,66 @@ msgstr ""
 msgid "No background layers added"
 msgstr ""
 
+#: src/extensions/styles/custom-css/createIconSelectors.js:10
+#: src/extensions/styles/custom-css/createIconSelectors.js:22
+msgid "on hover"
+msgstr ""
+
+#: src/extensions/styles/custom-css/createIconSelectors.js:14
+#: src/extensions/styles/custom-css/createIconSelectors.js:26
+msgid "on canvas hover"
+msgstr ""
+
+#: src/extensions/styles/custom-css/createIconSelectors.js:41
+msgid "everything inside svg on canvas hover (:hover svg > *)"
+msgstr ""
+
+#: src/extensions/styles/custom-css/createIconSelectors.js:56
+msgid "svg's path on canvas hover"
+msgstr ""
+
 #: src/extensions/styles/defaults/hover.js:154
 #: src/extensions/styles/defaults/hover.js:173
 msgid "Add your Hover Title here"
+msgstr ""
+
+#: src/extensions/styles/helpers/getArrowStyles.js:85
+msgid "Arrow Border"
+msgstr ""
+
+#: src/extensions/styles/helpers/getArrowStyles.js:124
+msgid "Arrow Color"
+msgstr ""
+
+#: src/extensions/styles/helpers/getBackgroundStyles.js:67
+msgid "Background Color"
+msgstr ""
+
+#: src/extensions/styles/helpers/getBackgroundStyles.js:345
+msgid "Background Image"
+msgstr ""
+
+#: src/extensions/styles/helpers/getIconPathStyles.js:17
+msgid "Icon path"
+msgstr ""
+
+#: src/extensions/styles/helpers/getNumberCounterStyles.js:16
+#: src/extensions/styles/helpers/getNumberCounterStyles.js:47
+#: src/extensions/styles/helpers/getNumberCounterStyles.js:70
+#: src/extensions/styles/helpers/getNumberCounterStyles.js:112
+msgid "Number Counter"
+msgstr ""
+
+#: src/extensions/styles/helpers/getSVGStyles.js:110
+msgid "SVG path"
+msgstr ""
+
+#: src/extensions/styles/helpers/getSVGStyles.js:154
+msgid "SVG path-fill"
+msgstr ""
+
+#: src/extensions/styles/helpers/getSVGStyles.js:193
+msgid "SVG Path stroke"
 msgstr ""
 
 #: src/extensions/text/formats/custom-hover/index.js:10
@@ -8660,177 +9938,213 @@ msgstr ""
 msgid "Text custom"
 msgstr ""
 
+#: build/blocks/accordion-maxi/block.json
 #: src/blocks/accordion-maxi/block.json
 msgctxt "block title"
 msgid "Accordion Maxi"
 msgstr ""
 
+#: build/blocks/accordion-maxi/block.json
+#: build/blocks/pane-maxi/block.json
 #: src/blocks/accordion-maxi/block.json
 #: src/blocks/pane-maxi/block.json
 msgctxt "block description"
 msgid "Expand or collapse content inside of a panel"
 msgstr ""
 
+#: build/blocks/button-maxi/block.json
 #: src/blocks/button-maxi/block.json
 msgctxt "block title"
 msgid "Button Maxi"
 msgstr ""
 
+#: build/blocks/button-maxi/block.json
 #: src/blocks/button-maxi/block.json
 msgctxt "block description"
 msgid "Insert, modify or style a button"
 msgstr ""
 
+#: build/blocks/column-maxi/block.json
 #: src/blocks/column-maxi/block.json
 msgctxt "block title"
 msgid "Column Maxi"
 msgstr ""
 
+#: build/blocks/column-maxi/block.json
 #: src/blocks/column-maxi/block.json
 msgctxt "block description"
 msgid "Stack blocks vertically inside a column"
 msgstr ""
 
+#: build/blocks/container-maxi/block.json
 #: src/blocks/container-maxi/block.json
 msgctxt "block title"
 msgid "Container Maxi"
 msgstr ""
 
+#: build/blocks/container-maxi/block.json
 #: src/blocks/container-maxi/block.json
 msgctxt "block description"
 msgid "Wrap blocks within a container"
 msgstr ""
 
+#: build/blocks/divider-maxi/block.json
 #: src/blocks/divider-maxi/block.json
 msgctxt "block title"
 msgid "Divider Maxi"
 msgstr ""
 
+#: build/blocks/divider-maxi/block.json
 #: src/blocks/divider-maxi/block.json
 msgctxt "block description"
 msgid "Create a divider between visual elements"
 msgstr ""
 
+#: build/blocks/group-maxi/block.json
 #: src/blocks/group-maxi/block.json
 msgctxt "block title"
 msgid "Group Maxi"
 msgstr ""
 
+#: build/blocks/group-maxi/block.json
 #: src/blocks/group-maxi/block.json
 msgctxt "block description"
 msgid "Combine a set of blocks in a group"
 msgstr ""
 
+#: build/blocks/image-maxi/block.json
 #: src/blocks/image-maxi/block.json
 msgctxt "block title"
 msgid "Image Maxi"
 msgstr ""
 
+#: build/blocks/image-maxi/block.json
 #: src/blocks/image-maxi/block.json
 msgctxt "block description"
 msgid "Insert, modify or style an image"
 msgstr ""
 
+#: build/blocks/list-item-maxi/block.json
 #: src/blocks/list-item-maxi/block.json
 msgctxt "block title"
 msgid "List Item Maxi"
 msgstr ""
 
+#: build/blocks/list-item-maxi/block.json
 #: src/blocks/list-item-maxi/block.json
 msgctxt "block description"
 msgid "Create list items with numbers, bullets or icons"
 msgstr ""
 
+#: build/blocks/map-maxi/block.json
 #: src/blocks/map-maxi/block.json
 msgctxt "block title"
 msgid "Map Maxi (beta)"
 msgstr ""
 
+#: build/blocks/map-maxi/block.json
 #: src/blocks/map-maxi/block.json
 msgctxt "block description"
 msgid "Create a map with marker and description"
 msgstr ""
 
+#: build/blocks/number-counter-maxi/block.json
 #: src/blocks/number-counter-maxi/block.json
 msgctxt "block title"
 msgid "Number Counter Maxi"
 msgstr ""
 
+#: build/blocks/number-counter-maxi/block.json
 #: src/blocks/number-counter-maxi/block.json
 msgctxt "block description"
 msgid "Create a number counter"
 msgstr ""
 
+#: build/blocks/pane-maxi/block.json
 #: src/blocks/pane-maxi/block.json
 msgctxt "block title"
 msgid "Pane Maxi"
 msgstr ""
 
+#: build/blocks/row-maxi/block.json
 #: src/blocks/row-maxi/block.json
 msgctxt "block title"
 msgid "Row Maxi"
 msgstr ""
 
+#: build/blocks/row-maxi/block.json
 #: src/blocks/row-maxi/block.json
 msgctxt "block description"
 msgid "Organise blocks horizontally inside a row"
 msgstr ""
 
+#: build/blocks/search-maxi/block.json
 #: src/blocks/search-maxi/block.json
 msgctxt "block title"
 msgid "Search Maxi"
 msgstr ""
 
+#: build/blocks/search-maxi/block.json
 #: src/blocks/search-maxi/block.json
 msgctxt "block description"
 msgid "Add a search bar with icon"
 msgstr ""
 
+#: build/blocks/slide-maxi/block.json
 #: src/blocks/slide-maxi/block.json
 msgctxt "block title"
 msgid "Slide Maxi"
 msgstr ""
 
+#: build/blocks/slide-maxi/block.json
 #: src/blocks/slide-maxi/block.json
 msgctxt "block description"
 msgid "Sliding component of Slider Maxi"
 msgstr ""
 
+#: build/blocks/slider-maxi/block.json
 #: src/blocks/slider-maxi/block.json
 msgctxt "block title"
 msgid "Slider Maxi (beta)"
 msgstr ""
 
+#: build/blocks/slider-maxi/block.json
 #: src/blocks/slider-maxi/block.json
 msgctxt "block description"
 msgid "Create slider with blocks, controls and animations"
 msgstr ""
 
+#: build/blocks/svg-icon-maxi/block.json
 #: src/blocks/svg-icon-maxi/block.json
 msgctxt "block title"
 msgid "Icon Maxi"
 msgstr ""
 
+#: build/blocks/svg-icon-maxi/block.json
 #: src/blocks/svg-icon-maxi/block.json
 msgctxt "block description"
 msgid "Add icon or shape and style it"
 msgstr ""
 
+#: build/blocks/text-maxi/block.json
 #: src/blocks/text-maxi/block.json
 msgctxt "block title"
 msgid "Text Maxi"
 msgstr ""
 
+#: build/blocks/text-maxi/block.json
 #: src/blocks/text-maxi/block.json
 msgctxt "block description"
 msgid "Insert, modify or style text"
 msgstr ""
 
+#: build/blocks/video-maxi/block.json
 #: src/blocks/video-maxi/block.json
 msgctxt "block title"
 msgid "Video Maxi"
 msgstr ""
 
+#: build/blocks/video-maxi/block.json
 #: src/blocks/video-maxi/block.json
 msgctxt "block description"
 msgid "Insert a video with controls or lightbox"

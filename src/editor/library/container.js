@@ -126,13 +126,13 @@ const MenuSC = ({ items, refine }) => (
 
 const MenuSelect = ({ items, currentRefinement, refine }) => {
 	const proElement = items.find(element => element.value === 'Pro') || {
-		label: 'Cloud',
+		label: __('Cloud', 'maxi-blocks'),
 		value: 'Pro',
 		count: 0,
 		isRefined: false,
 	};
 	const freeElement = items.find(element => element.value === 'Free') || {
-		label: 'Free',
+		label: __('Free', 'maxi-blocks'),
 		value: 'Free',
 		count: 0,
 		isRefined: false,
@@ -197,21 +197,26 @@ const SvgMenuSelect = ({ items, currentRefinement, refine }) => {
 	if (isEmpty(items)) return null;
 	const finalItems = [];
 
-	const createFinalItem = (name, index) => {
-		const found = items.find(item => item.label === name);
-		if (found) finalItems[index] = found;
-		else
+	const createFinalItem = (englishValue, translatedLabel, index) => {
+		const found = items.find(item => item.label === englishValue);
+		if (found) {
 			finalItems[index] = {
-				label: name,
-				value: name,
+				...found,
+				label: translatedLabel,
+			};
+		} else {
+			finalItems[index] = {
+				label: translatedLabel,
+				value: englishValue,
 				count: 0,
 				isRefined: false,
 			};
+		}
 	};
 
-	createFinalItem('Filled', 0);
-	createFinalItem('Shape', 1);
-	createFinalItem('Line', 2);
+	createFinalItem('Filled', __('Filled', 'maxi-blocks'), 0);
+	createFinalItem('Shape', __('Shape', 'maxi-blocks'), 1);
+	createFinalItem('Line', __('Line', 'maxi-blocks'), 2);
 
 	return (
 		<div className='top-Menu'>
@@ -1275,7 +1280,7 @@ const LibraryContainer = props => {
 								searchAsYouType
 								reset='X'
 								translations={{
-									resetTitle: 'Clear',
+									resetTitle: __('Clear', 'maxi-blocks'),
 								}}
 							/>
 							<CustomHierarchicalMenu
@@ -1309,7 +1314,7 @@ const LibraryContainer = props => {
 									searchAsYouType
 									reset='X'
 									translations={{
-										resetTitle: 'Clear',
+										resetTitle: __('Clear', 'maxi-blocks'),
 									}}
 								/>
 							)}
@@ -1408,7 +1413,7 @@ const LibraryContainer = props => {
 									searchAsYouType
 									reset='X'
 									translations={{
-										resetTitle: 'Clear',
+										resetTitle: __('Clear', 'maxi-blocks'),
 									}}
 								/>
 							)}
@@ -1422,7 +1427,7 @@ const LibraryContainer = props => {
 									searchAsYouType
 									reset='X'
 									translations={{
-										resetTitle: 'Clear',
+										resetTitle: __('Clear', 'maxi-blocks'),
 									}}
 								/>
 							)}
@@ -1464,33 +1469,62 @@ const LibraryContainer = props => {
 								attribute='gutenberg_type'
 								defaultRefinement='Patterns'
 								transformItems={items => {
-									const generateItem = name => {
+									const generateItem = (
+										englishValue,
+										translatedLabel
+									) => {
 										const item = items.find(
-											item => item.label === name
+											item => item.label === englishValue
 										);
-										if (item) return item;
+										if (item) {
+											return {
+												...item,
+												label: translatedLabel,
+											};
+										}
 										return {
-											label: name,
-											value: name,
+											label: translatedLabel,
+											value: englishValue,
 											count: 0,
 											isRefined: false,
 										};
 									};
 
 									const itemsReturn = [];
-									itemsReturn.push(generateItem('Patterns'));
+									itemsReturn.push(
+										generateItem(
+											'Patterns',
+											__('Patterns', 'maxi-blocks')
+										)
+									);
 									const itemBlocks = items.find(
 										item => item.label === 'Blocks'
 									);
 									if (itemBlocks)
 										itemsReturn.push(
-											generateItem('Blocks')
+											generateItem(
+												'Blocks',
+												__('Blocks', 'maxi-blocks')
+											)
 										);
-									itemsReturn.push(generateItem('Pages'));
 									itemsReturn.push(
-										generateItem('Playground')
+										generateItem(
+											'Pages',
+											__('Pages', 'maxi-blocks')
+										)
 									);
-									itemsReturn.push(generateItem('Theme'));
+									itemsReturn.push(
+										generateItem(
+											'Playground',
+											__('Playground', 'maxi-blocks')
+										)
+									);
+									itemsReturn.push(
+										generateItem(
+											'Theme',
+											__('Theme', 'maxi-blocks')
+										)
+									);
 
 									return itemsReturn;
 								}}
@@ -1504,24 +1538,39 @@ const LibraryContainer = props => {
 							<Menu
 								attribute='light_or_dark'
 								transformItems={items => {
-									const generateItem = name => {
+									const generateItem = (
+										englishValue,
+										translatedLabel
+									) => {
 										const item = items.find(
-											item => item.label === name
+											item => item.label === englishValue
 										);
 										if (item) {
-											item.label = name;
-											return item;
+											return {
+												...item,
+												label: translatedLabel,
+											};
 										}
 										return {
-											label: name,
-											value: name,
+											label: translatedLabel,
+											value: englishValue,
 											count: 0,
 											isRefined: false,
 										};
 									};
 									const itemsReturn = [];
-									itemsReturn.push(generateItem('Light'));
-									itemsReturn.push(generateItem('Dark'));
+									itemsReturn.push(
+										generateItem(
+											'Light',
+											__('Light', 'maxi-blocks')
+										)
+									);
+									itemsReturn.push(
+										generateItem(
+											'Dark',
+											__('Dark', 'maxi-blocks')
+										)
+									);
 									return itemsReturn;
 								}}
 							/>
@@ -1530,7 +1579,7 @@ const LibraryContainer = props => {
 								searchAsYouType
 								reset='X'
 								translations={{
-									resetTitle: 'Clear',
+									resetTitle: __('Clear', 'maxi-blocks'),
 								}}
 							/>
 							<PlaceholderCheckboxControl />
@@ -1595,7 +1644,7 @@ const LibraryContainer = props => {
 								searchAsYouType
 								reset='X'
 								translations={{
-									resetTitle: 'Clear',
+									resetTitle: __('Clear', 'maxi-blocks'),
 								}}
 							/>
 							<CustomMenuSC

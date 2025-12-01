@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import { createSelectors } from '@extensions/styles/custom-css';
@@ -20,79 +25,85 @@ const name = 'map-maxi';
 const copyPasteMapping = {
 	_exclude: ['map-markers'],
 	settings: {
-		'Configure map': {
+		[__('Configure map', 'maxi-blocks')]: {
 			group: {
-				'Map provider': 'map-provider',
-				'Minium zoom': 'map-min-zoom',
-				'Maximum zoom': 'map-max-zoom',
+				[__('Map provider', 'maxi-blocks')]: 'map-provider',
+				[__('Minium zoom', 'maxi-blocks')]: 'map-min-zoom',
+				[__('Maximum zoom', 'maxi-blocks')]: 'map-max-zoom',
 			},
 		},
-		'Map marker': {
+		[__('Map marker', 'maxi-blocks')]: {
 			group: {
-				Markers: 'map-markers',
-				'Marker icon': ['map-marker-icon', 'map-marker'],
-				'Marker fill colour': {
+				[__('Markers', 'maxi-blocks')]: 'map-markers',
+				[__('Marker icon', 'maxi-blocks')]: [
+					'map-marker-icon',
+					'map-marker',
+				],
+				[__('Marker fill colour', 'maxi-blocks')]: {
 					props: 'svg-fill',
 					isPalette: true,
 				},
-				'Marker line colour': {
+				[__('Marker line colour', 'maxi-blocks')]: {
 					props: 'svg-line',
 					isPalette: true,
 				},
-				'Marker size': {
+				[__('Marker size', 'maxi-blocks')]: {
 					props: 'svg-width',
 					hasBreakpoints: true,
 				},
 			},
 		},
-		'Map popup text': {
+		[__('Map popup text', 'maxi-blocks')]: {
 			group: {
-				'Title text level': 'map-marker-heading-level',
-				'Title typography': {
+				[__('Title text level', 'maxi-blocks')]:
+					'map-marker-heading-level',
+				[__('Title typography', 'maxi-blocks')]: {
 					groupAttributes: 'typography',
 				},
-				'Description typography': {
+				[__('Description typography', 'maxi-blocks')]: {
 					groupAttributes: 'typography',
 					prefix: 'description-',
 				},
 			},
 		},
-		'Map popup': {
+		[__('Map popup', 'maxi-blocks')]: {
 			group: {
-				Background: {
+				[__('Background', 'maxi-blocks')]: {
 					groupAttributes: ['background', 'backgroundColor'],
 					prefix: 'popup-',
 				},
-				'Box shadow': {
+				[__('Box shadow', 'maxi-blocks')]: {
 					groupAttributes: 'boxShadow',
 					prefix: 'popup-',
 				},
 			},
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
-		'Map interaction': {
+		[__('Map interaction', 'maxi-blocks')]: {
 			group: {
-				'Map dragging': 'map-dragging',
-				'Map touch zoom': 'map-touch-zoom',
-				'Map double click zoom': 'map-double-click-zoom',
-				'Map scroll wheel zoom': 'map-scroll-wheel-zoom',
+				[__('Map dragging', 'maxi-blocks')]: 'map-dragging',
+				[__('Map touch zoom', 'maxi-blocks')]: 'map-touch-zoom',
+				[__('Map double click zoom', 'maxi-blocks')]:
+					'map-double-click-zoom',
+				[__('Map scroll wheel zoom', 'maxi-blocks')]:
+					'map-scroll-wheel-zoom',
 			},
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},

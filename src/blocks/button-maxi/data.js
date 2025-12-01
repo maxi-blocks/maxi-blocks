@@ -33,10 +33,7 @@ import {
 	getMarginPaddingStyles,
 	getTypographyStyles,
 } from '@extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
@@ -56,11 +53,13 @@ const name = 'button-maxi';
 const copyPasteMapping = {
 	_exclude: ['buttonContent', 'icon-content'],
 	settings: {
-		'Button text': 'buttonContent',
-		Icon: {
+		[__('Button text', 'maxi-blocks')]: 'buttonContent',
+		[__('Icon', 'maxi-blocks')]: {
 			group: {
-				Icon: { groupAttributes: ['icon', 'iconHover'] },
-				'Icon border': {
+				[__('Icon', 'maxi-blocks')]: {
+					groupAttributes: ['icon', 'iconHover'],
+				},
+				[__('Icon border', 'maxi-blocks')]: {
 					groupAttributes: [
 						'iconBorder',
 						'iconBorderWidth',
@@ -70,7 +69,7 @@ const copyPasteMapping = {
 						'iconBorderRadiusHover',
 					],
 				},
-				'Icon background': {
+				[__('Icon background', 'maxi-blocks')]: {
 					groupAttributes: [
 						'iconBackground',
 						'iconBackgroundColor',
@@ -80,58 +79,62 @@ const copyPasteMapping = {
 						'iconBackgroundGradientHover',
 					],
 				},
-				'Icon padding': {
+				[__('Icon padding', 'maxi-blocks')]: {
 					groupAttributes: 'Icon padding',
 				},
 			},
 		},
-		Alignment: {
+		[__('Alignment', 'maxi-blocks')]: {
 			group: {
-				Alignment: { groupAttributes: 'alignment' },
-				'Text alignment': { groupAttributes: 'textAlignment' },
+				[__('Alignment', 'maxi-blocks')]: {
+					groupAttributes: 'alignment',
+				},
+				[__('Text alignment', 'maxi-blocks')]: {
+					groupAttributes: 'textAlignment',
+				},
 			},
 		},
-		Typography: {
+		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 		},
-		'Button background': {
+		[__('Button background', 'maxi-blocks')]: {
 			template: 'background',
 			prefix,
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 			prefix,
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 			prefix,
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 			prefix,
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 			prefix,
 		},
 	},
 	canvas: {
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},

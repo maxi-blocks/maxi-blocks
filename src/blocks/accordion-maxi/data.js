@@ -1,12 +1,14 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import { createSelectors } from '@extensions/styles/custom-css';
 import { createIconTransitions } from '@extensions/styles';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 import { targets as paneTargets } from '@blocks/pane-maxi/data';
 
@@ -17,35 +19,43 @@ const name = 'accordion-maxi';
 const copyPasteMapping = {
 	_exclude: ['icon-content', 'active-icon-content'],
 	settings: {
-		'Accordion settings': {
+		[__('Accordion settings', 'maxi-blocks')]: {
 			group: {
-				'Accordion layout': 'accordionLayout',
-				Collapsible: 'isCollapsible',
-				'Pane closes when another opens': 'autoPaneClose',
-				'Pane spacing': {
+				[__('Accordion layout', 'maxi-blocks')]: 'accordionLayout',
+				[__('Collapsible', 'maxi-blocks')]: 'isCollapsible',
+				[__('Pane closes when another opens', 'maxi-blocks')]:
+					'autoPaneClose',
+				[__('Pane spacing', 'maxi-blocks')]: {
 					props: ['pane-spacing', 'pane-spacing-unit'],
 					hasBreakpoints: true,
 				},
-				'Animation duration': 'animationDuration',
+				[__('Animation duration', 'maxi-blocks')]: 'animationDuration',
 			},
 		},
-		'Accordion line': { groupAttributes: 'accordionLine' },
-		'Accordion title': { groupAttributes: 'accordionTitle' },
-		Icon: { groupAttributes: 'accordionIcon' },
-		'Active icon': { groupAttributes: 'accordionIcon', prefix: 'active-' },
-		Background: {
+		[__('Accordion line', 'maxi-blocks')]: {
+			groupAttributes: 'accordionLine',
+		},
+		[__('Accordion title', 'maxi-blocks')]: {
+			groupAttributes: 'accordionTitle',
+		},
+		[__('Icon', 'maxi-blocks')]: { groupAttributes: 'accordionIcon' },
+		[__('Active icon', 'maxi-blocks')]: {
+			groupAttributes: 'accordionIcon',
+			prefix: 'active-',
+		},
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},

@@ -1,12 +1,14 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import { createSelectors } from '@extensions/styles/custom-css';
 import { createIconTransitions } from '@extensions/styles';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 
 /**
  * Classnames
@@ -33,81 +35,81 @@ const prefixes = {
 const copyPasteMapping = {
 	_exclude: ['icon-content', 'close-icon-content', 'placeholder'],
 	block: {
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	button: {
-		Skin: 'skin',
-		Button: {
+		[__('Skin', 'maxi-blocks')]: 'skin',
+		[__('Button', 'maxi-blocks')]: {
 			group: {
-				Skin: 'buttonSkin',
-				'Button text': 'buttonContent',
-				'Button text close': 'buttonContentClose',
+				[__('Skin', 'maxi-blocks')]: 'buttonSkin',
+				[__('Button text', 'maxi-blocks')]: 'buttonContent',
+				[__('Button text close', 'maxi-blocks')]: 'buttonContentClose',
 			},
 		},
-		Icon: {
+		[__('Icon', 'maxi-blocks')]: {
 			groupAttributes: ['icon', 'iconHover'],
 		},
-		'Close icon': {
+		[__('Close icon', 'maxi-blocks')]: {
 			groupAttributes: ['icon', 'iconHover'],
 			prefix: closeIconPrefix,
 		},
-		Typography: {
+		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 			prefix: buttonPrefix,
 		},
-		'Button background': {
+		[__('Button background', 'maxi-blocks')]: {
 			template: 'background',
 			prefix: buttonPrefix,
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 			prefix: buttonPrefix,
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 			prefix: buttonPrefix,
 		},
 	},
 	input: {
-		Typography: {
+		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 			prefix: inputPrefix,
 		},
-		Placeholder: {
+		[__('Placeholder', 'maxi-blocks')]: {
 			group: {
-				'Placeholder text': 'placeholder',
-				'Placeholder colour': {
+				[__('Placeholder text', 'maxi-blocks')]: 'placeholder',
+				[__('Placeholder colour', 'maxi-blocks')]: {
 					groupAttributes: 'placeholderColor',
 				},
 			},
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 			prefix: inputPrefix,
 		},
-		'Input background': {
+		[__('Input background', 'maxi-blocks')]: {
 			template: 'background',
 			prefix: inputPrefix,
 		},
-		Padding: {
+		[__('Padding', 'maxi-blocks')]: {
 			groupAttributes: 'padding',
 			prefix: inputPrefix,
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},

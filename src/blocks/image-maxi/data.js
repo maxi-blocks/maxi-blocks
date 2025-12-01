@@ -19,10 +19,7 @@ import {
 	getImageShapeStyles,
 } from '@extensions/styles/helpers';
 import { getGroupAttributes } from '@extensions/styles';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 import { getEditorWrapper } from '@extensions/dom';
 
@@ -50,7 +47,7 @@ const copyPasteMapping = {
 		'captionContent',
 	],
 	settings: {
-		Image: [
+		[__('Image', 'maxi-blocks')]: [
 			'mediaID',
 			'isImageUrl',
 			'mediaURL',
@@ -58,115 +55,115 @@ const copyPasteMapping = {
 			'mediaHeight',
 			'mediaAlt',
 		],
-		Dimension: {
+		[__('Dimension', 'maxi-blocks')]: {
 			group: {
-				'Image size': 'imageSize',
-				'Use original size': 'useInitSize',
-				'Image width': 'img-width-general',
-				'Image ratio': 'imageRatio',
+				[__('Image size', 'maxi-blocks')]: 'imageSize',
+				[__('Use original size', 'maxi-blocks')]: 'useInitSize',
+				[__('Image width', 'maxi-blocks')]: 'img-width-general',
+				[__('Image ratio', 'maxi-blocks')]: 'imageRatio',
 			},
 		},
-		Alignment: {
+		[__('Alignment', 'maxi-blocks')]: {
 			groupAttributes: 'alignment',
 		},
-		'Alt tag': ['mediaAlt', 'altSelector'],
-		Caption: {
+		[__('Alt tag', 'maxi-blocks')]: ['mediaAlt', 'altSelector'],
+		[__('Caption', 'maxi-blocks')]: {
 			group: {
-				'Caption type': 'captionType',
-				'Caption content': 'captionContent',
-				'Caption position': 'captionPosition',
-				'Caption gap': {
+				[__('Caption type', 'maxi-blocks')]: 'captionType',
+				[__('Caption content', 'maxi-blocks')]: 'captionContent',
+				[__('Caption position', 'maxi-blocks')]: 'captionPosition',
+				[__('Caption gap', 'maxi-blocks')]: {
 					props: 'caption-gap',
 					hasBreakpoints: true,
 				},
-				'Caption gap unit': {
+				[__('Caption gap unit', 'maxi-blocks')]: {
 					props: 'caption-gap-unit',
 					hasBreakpoints: true,
 				},
-				Typography: {
+				[__('Typography', 'maxi-blocks')]: {
 					groupAttributes: 'typography',
 				},
-				'Text alignment': {
+				[__('Text alignment', 'maxi-blocks')]: {
 					groupAttributes: 'textAlignment',
 				},
-				Link: { groupAttributes: 'link' },
+				[__('Link', 'maxi-blocks')]: { groupAttributes: 'link' },
 			},
 		},
-		'Hover effects': {
+		[__('Hover effects', 'maxi-blocks')]: {
 			group: {
-				Hover: {
+				[__('Hover', 'maxi-blocks')]: {
 					groupAttributes: 'hover',
 				},
-				'Hover background': {
+				[__('Hover background', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBackground',
 				},
-				'Hover background color': {
+				[__('Hover background color', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBackgroundColor',
 				},
-				'Hover background gradient': {
+				[__('Hover background gradient', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBackgroundGradient',
 				},
-				'Hover border': {
+				[__('Hover border', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBorder',
 				},
-				'Hover border radius': {
+				[__('Hover border radius', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBorderRadius',
 				},
-				'Hover border width': {
+				[__('Hover border width', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBorderWidth',
 				},
-				'Hover content typography': {
+				[__('Hover content typography', 'maxi-blocks')]: {
 					groupAttributes: 'hoverContentTypography',
 				},
-				'Hover margin': {
+				[__('Hover margin', 'maxi-blocks')]: {
 					groupAttributes: 'hoverMargin',
 				},
-				'Hover padding': {
+				[__('Hover padding', 'maxi-blocks')]: {
 					groupAttributes: 'hoverPadding',
 				},
-				'Hover title typography': {
+				[__('Hover title typography', 'maxi-blocks')]: {
 					groupAttributes: 'hoverTitleTypography',
 				},
 			},
 		},
-		'Clip path': {
+		[__('Clip path', 'maxi-blocks')]: {
 			groupAttributes: 'clipPath',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 			prefix,
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 			prefix,
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 			prefix,
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	canvas: {
 		blockSpecific: {
-			Size: {
+			[__('Size', 'maxi-blocks')]: {
 				template: 'size',
 			},
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},

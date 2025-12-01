@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-25T13:37:17+00:00\n"
+"POT-Creation-Date: 2025-12-01T13:21:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: plugin.php
-#: core/class-maxi-blocks.php:395
+#: core/class-maxi-blocks.php:427
 msgid "MaxiBlocks"
 msgstr ""
 
@@ -36,184 +36,184 @@ msgstr ""
 msgid "https://maxiblocks.com/go/plugin-author"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:230
-#: core/admin/class-maxi-dashboard.php:272
+#: core/admin/class-maxi-dashboard.php:254
+#: core/admin/class-maxi-dashboard.php:296
 msgid "Validating..."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:234
+#: core/admin/class-maxi-dashboard.php:258
 msgid "Please add your API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:238
+#: core/admin/class-maxi-dashboard.php:262
 msgid "Invalid API Key, please check your key and try again"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:242
+#: core/admin/class-maxi-dashboard.php:266
 msgid "Referer not allowed, please allow your domain for that key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:246
+#: core/admin/class-maxi-dashboard.php:270
 msgid "Only alphabet, number, \"_\", \"$\", \".\", \"[\", and \"]\" are allowed in the API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:250
+#: core/admin/class-maxi-dashboard.php:274
 msgid "Error validating API Key, please try again later"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:255
+#: core/admin/class-maxi-dashboard.php:279
 msgid "Loading available models..."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:259
+#: core/admin/class-maxi-dashboard.php:283
 msgid "No models available - check API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:263
+#: core/admin/class-maxi-dashboard.php:287
 msgid "Error loading models"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:268
+#: core/admin/class-maxi-dashboard.php:292
 msgid "Please enter an email or purchase code"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:276
-#: core/admin/class-maxi-dashboard.php:3083
+#: core/admin/class-maxi-dashboard.php:300
+#: core/admin/class-maxi-dashboard.php:3107
 #: core/admin/starter-sites/src/library/toolbar.js:490
 #: src/editor/library/toolbar.js:815
 msgid "The email is not valid"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:280
+#: core/admin/class-maxi-dashboard.php:304
 msgid "Email authentication started. Please complete login in the new tab."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:284
+#: core/admin/class-maxi-dashboard.php:308
 msgid "Failed to initiate email authentication"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:288
+#: core/admin/class-maxi-dashboard.php:312
 msgid "Failed to validate license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:292
+#: core/admin/class-maxi-dashboard.php:316
 msgid "Successfully authenticated with MaxiBlocks account!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:296
+#: core/admin/class-maxi-dashboard.php:320
 msgid "Please log into your MaxiBlocks account to complete activation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:301
+#: core/admin/class-maxi-dashboard.php:325
 #: core/admin/starter-sites/src/library/toolbar.js:335
 #: src/editor/library/toolbar.js:683
 msgid "Click to show"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:305
+#: core/admin/class-maxi-dashboard.php:329
 #: core/admin/starter-sites/src/library/toolbar.js:331
 #: src/editor/library/toolbar.js:682
 msgid "Click to hide"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:310
+#: core/admin/class-maxi-dashboard.php:334
 msgid "Signing out..."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:314
+#: core/admin/class-maxi-dashboard.php:338
 msgid "Sign out"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:318
+#: core/admin/class-maxi-dashboard.php:342
 msgid "Activating…"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:322
+#: core/admin/class-maxi-dashboard.php:346
 msgid "Deactivating…"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:326
+#: core/admin/class-maxi-dashboard.php:350
 #: src/editor/style-cards/maxiStyleCardsEditor.js:839
 msgid "Activate"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:331
+#: core/admin/class-maxi-dashboard.php:355
 msgid "Are you sure you want to deactivate the network license? This will affect all sites in the network."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:335
+#: core/admin/class-maxi-dashboard.php:359
 msgid "Only email authentication is allowed when a network license is active."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:339
+#: core/admin/class-maxi-dashboard.php:363
 msgid "Activate network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:343
+#: core/admin/class-maxi-dashboard.php:367
 msgid "Deactivate network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:347
+#: core/admin/class-maxi-dashboard.php:371
 msgid "Failed to sign out"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:351
+#: core/admin/class-maxi-dashboard.php:375
 msgid "Please enter a purchase code"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:355
+#: core/admin/class-maxi-dashboard.php:379
 msgid "Network error occurred"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:412
-#: core/admin/class-maxi-dashboard.php:577
+#: core/admin/class-maxi-dashboard.php:436
+#: core/admin/class-maxi-dashboard.php:601
 msgid "Welcome"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:420
-#: core/admin/class-maxi-dashboard.php:421
-#: core/admin/class-maxi-dashboard.php:579
-#: core/admin/class-maxi-dashboard.php:962
+#: core/admin/class-maxi-dashboard.php:444
+#: core/admin/class-maxi-dashboard.php:445
+#: core/admin/class-maxi-dashboard.php:603
+#: core/admin/class-maxi-dashboard.php:986
 #: core/admin/quick-start/class-maxi-quick-start.php:93
 #: core/admin/quick-start/class-maxi-quick-start.php:345
 msgid "Quick start"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:429
-#: core/admin/class-maxi-dashboard.php:430
-#: core/admin/class-maxi-dashboard.php:584
-#: core/admin/class-maxi-dashboard.php:1814
+#: core/admin/class-maxi-dashboard.php:453
+#: core/admin/class-maxi-dashboard.php:454
+#: core/admin/class-maxi-dashboard.php:608
+#: core/admin/class-maxi-dashboard.php:1838
 #: core/admin/starter-sites/src/library/toolbar.js:302
 msgid "Starter sites"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:440
-#: core/admin/class-maxi-dashboard.php:441
-#: core/admin/class-maxi-dashboard.php:588
-#: core/admin/class-maxi-dashboard.php:1526
+#: core/admin/class-maxi-dashboard.php:464
+#: core/admin/class-maxi-dashboard.php:465
+#: core/admin/class-maxi-dashboard.php:612
+#: core/admin/class-maxi-dashboard.php:1550
 msgid "Maxi AI"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:451
-#: core/admin/class-maxi-dashboard.php:452
-#: core/admin/class-maxi-dashboard.php:589
+#: core/admin/class-maxi-dashboard.php:475
+#: core/admin/class-maxi-dashboard.php:476
+#: core/admin/class-maxi-dashboard.php:613
 #: core/admin/status-report/maxi-system-status-report.php:104
 msgid "System status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:462
-#: core/admin/class-maxi-dashboard.php:463
-#: core/admin/class-maxi-dashboard.php:502
-#: core/admin/class-maxi-dashboard.php:593
-#: core/admin/class-maxi-dashboard.php:740
+#: core/admin/class-maxi-dashboard.php:486
+#: core/admin/class-maxi-dashboard.php:487
+#: core/admin/class-maxi-dashboard.php:526
+#: core/admin/class-maxi-dashboard.php:617
+#: core/admin/class-maxi-dashboard.php:764
 #: core/admin/quick-start/class-maxi-quick-start.php:105
 msgid "License"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:473
-#: core/admin/class-maxi-dashboard.php:474
-#: core/admin/class-maxi-dashboard.php:594
-#: core/admin/class-maxi-dashboard.php:1210
+#: core/admin/class-maxi-dashboard.php:497
+#: core/admin/class-maxi-dashboard.php:498
+#: core/admin/class-maxi-dashboard.php:618
+#: core/admin/class-maxi-dashboard.php:1234
 #: src/blocks/accordion-maxi/inspector.js:88
 #: src/blocks/button-maxi/inspector.js:207
 #: src/blocks/column-maxi/inspector.js:40
@@ -239,13 +239,13 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:612
-#: core/admin/class-maxi-dashboard.php:737
+#: core/admin/class-maxi-dashboard.php:636
+#: core/admin/class-maxi-dashboard.php:761
 msgid "MaxiBlocks Logo"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:657
-#: core/admin/class-maxi-dashboard.php:749
+#: core/admin/class-maxi-dashboard.php:681
+#: core/admin/class-maxi-dashboard.php:773
 #: core/admin/quick-start/class-maxi-quick-start.php:328
 #: core/admin/starter-sites/src/library/container.js:485
 #: core/admin/starter-sites/src/library/modal.js:152
@@ -253,566 +253,566 @@ msgstr ""
 msgid "Get Cloud"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:800
+#: core/admin/class-maxi-dashboard.php:824
 msgid "Network Cloud license active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:801
+#: core/admin/class-maxi-dashboard.php:825
 msgid "Cloud access is active network-wide. All sites in the network have access to Cloud features."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:803
-#: core/admin/class-maxi-dashboard.php:855
+#: core/admin/class-maxi-dashboard.php:827
+#: core/admin/class-maxi-dashboard.php:879
 msgid "Activate network Cloud license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:804
-#: core/admin/class-maxi-dashboard.php:850
+#: core/admin/class-maxi-dashboard.php:828
+#: core/admin/class-maxi-dashboard.php:874
 msgid "Enter a purchase code to activate Cloud access for the entire network."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:813
+#: core/admin/class-maxi-dashboard.php:837
 msgid "Network license status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:813
+#: core/admin/class-maxi-dashboard.php:837
 msgid "Network license activation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:820
-#: core/admin/class-maxi-dashboard.php:2410
+#: core/admin/class-maxi-dashboard.php:844
+#: core/admin/class-maxi-dashboard.php:2434
 #: core/admin/quick-start/class-maxi-quick-start.php:906
 msgid "Status:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:821
-#: core/admin/class-maxi-dashboard.php:2411
+#: core/admin/class-maxi-dashboard.php:845
+#: core/admin/class-maxi-dashboard.php:2435
 #: core/admin/quick-start/class-maxi-quick-start.php:907
 msgid "Licensed to:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:822
+#: core/admin/class-maxi-dashboard.php:846
 msgid "Main domain:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:823
-#: core/admin/class-maxi-dashboard.php:2459
+#: core/admin/class-maxi-dashboard.php:847
+#: core/admin/class-maxi-dashboard.php:2483
 msgid "License type:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:828
+#: core/admin/class-maxi-dashboard.php:852
 msgid "Deactivate network Cloud license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:833
+#: core/admin/class-maxi-dashboard.php:857
 msgid "How network licensing works:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:835
+#: core/admin/class-maxi-dashboard.php:859
 msgid "All sites in the network have Cloud access automatically"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:836
+#: core/admin/class-maxi-dashboard.php:860
 msgid "Individual site license tabs will show network license status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:837
+#: core/admin/class-maxi-dashboard.php:861
 msgid "Purchase codes cannot be activated on individual sites when network license is active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:843
-#: core/admin/class-maxi-dashboard.php:2486
+#: core/admin/class-maxi-dashboard.php:867
+#: core/admin/class-maxi-dashboard.php:2510
 #: core/admin/quick-start/class-maxi-quick-start.php:927
 msgid "Current status:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:849
+#: core/admin/class-maxi-dashboard.php:873
 msgid "Network purchase code"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:851
+#: core/admin/class-maxi-dashboard.php:875
 msgid "Note: Network licensing only supports purchase codes from marketplaces. MaxiBlocks email accounts and MaxiBlocks license keys must be activated on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:864
+#: core/admin/class-maxi-dashboard.php:888
 msgid "Network licensing benefits:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:866
+#: core/admin/class-maxi-dashboard.php:890
 msgid "One purchase code activates Cloud for all sites in the network"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:867
+#: core/admin/class-maxi-dashboard.php:891
 msgid "No need to activate individual sites separately"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:868
+#: core/admin/class-maxi-dashboard.php:892
 msgid "Centralized license management from the network admin"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:935
+#: core/admin/class-maxi-dashboard.php:959
 msgid "Hello, "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:937
+#: core/admin/class-maxi-dashboard.php:961
 msgid "Hello, friend"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:943
+#: core/admin/class-maxi-dashboard.php:967
 msgid "Let's get set up so you can start designing straight away."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:950
+#: core/admin/class-maxi-dashboard.php:974
 msgid "Just a few quick steps, and you're ready to go!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:968
+#: core/admin/class-maxi-dashboard.php:992
 msgid "Create new page"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:989
+#: core/admin/class-maxi-dashboard.php:1013
 msgid "Learn by watching"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:992
+#: core/admin/class-maxi-dashboard.php:1016
 msgid "Watch quick tutorials to get the most out of MaxiBlocks. Learn tips, tricks and best practices to build faster and smarter."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1004
+#: core/admin/class-maxi-dashboard.php:1028
 msgid "Understanding full site editing in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1008
+#: core/admin/class-maxi-dashboard.php:1032
 msgid "Learn what full site editing (FSE) is in WordPress and how it changes the way you design and customize your website using blocks."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1019
+#: core/admin/class-maxi-dashboard.php:1043
 msgid "Step-by-step: how to add a new page in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1023
+#: core/admin/class-maxi-dashboard.php:1047
 msgid "A quick guide to creating and managing new pages in WordPress, perfect for beginners looking to build their site."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1034
+#: core/admin/class-maxi-dashboard.php:1058
 msgid "How to set a page as your homepage in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1038
+#: core/admin/class-maxi-dashboard.php:1062
 msgid "Want a custom homepage? This tutorial shows you how to set any page as your homepage in just a few clicks."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1049
+#: core/admin/class-maxi-dashboard.php:1073
 msgid "How to edit and customise the footer in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1053
+#: core/admin/class-maxi-dashboard.php:1077
 msgid "Need to change the footer? This guide helps you through the steps to edit and personalize your footer section."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1064
+#: core/admin/class-maxi-dashboard.php:1088
 msgid "How to create and manage navigation menus in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1068
+#: core/admin/class-maxi-dashboard.php:1092
 msgid "Design your site's main navigation. Learn how to create and organize your WordPress for a better user experience."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1079
+#: core/admin/class-maxi-dashboard.php:1103
 msgid "How to add and format content in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1083
+#: core/admin/class-maxi-dashboard.php:1107
 msgid "Learn how to add text, images, and other content to your WordPress pages and posts. A guide to create engaging layouts."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1118
+#: core/admin/class-maxi-dashboard.php:1142
 msgid "More videos"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1133
+#: core/admin/class-maxi-dashboard.php:1157
 msgid "Need Help"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1135
+#: core/admin/class-maxi-dashboard.php:1159
 msgid "Need help?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1138
+#: core/admin/class-maxi-dashboard.php:1162
 msgid "We're here for you. Get the support you need!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1145
+#: core/admin/class-maxi-dashboard.php:1169
 msgid "Read the blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1155
+#: core/admin/class-maxi-dashboard.php:1179
 msgid "Never Miss an Update"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1158
+#: core/admin/class-maxi-dashboard.php:1182
 msgid "Never miss an update"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1161
+#: core/admin/class-maxi-dashboard.php:1185
 msgid "Get new patterns, tips, and updates—no spam."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1168
+#: core/admin/class-maxi-dashboard.php:1192
 msgid "Notify me"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1180
+#: core/admin/class-maxi-dashboard.php:1204
 msgid "Share Your Thoughts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1183
+#: core/admin/class-maxi-dashboard.php:1207
 msgid "Share your thoughts!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1186
+#: core/admin/class-maxi-dashboard.php:1210
 msgid "Love us? Leave a review and help others discover it."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1193
+#: core/admin/class-maxi-dashboard.php:1217
 msgid "Give a review"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1213
+#: core/admin/class-maxi-dashboard.php:1237
 msgid "Customise MaxiBlocks, manage fonts, APIs, and access support."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1231
+#: core/admin/class-maxi-dashboard.php:1255
 msgid "Editor preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1236
+#: core/admin/class-maxi-dashboard.php:1260
 msgid "Hide interface tooltips"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1239
+#: core/admin/class-maxi-dashboard.php:1263
 msgid "Hide tooltips on mouse-hover."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1244
+#: core/admin/class-maxi-dashboard.php:1268
 msgid "Hide resizable handles in Site Editor"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1247
+#: core/admin/class-maxi-dashboard.php:1271
 msgid "Hide resizable handles in Site Editor for templates part editor and patterns editor."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1252
+#: core/admin/class-maxi-dashboard.php:1276
 msgid "Hide Gutenberg native responsive preview"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1255
+#: core/admin/class-maxi-dashboard.php:1279
 msgid "Hide the native Gutenberg responsive preview dropdown in the editor."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1259
-#: core/admin/class-maxi-dashboard.php:1335
-#: core/admin/class-maxi-dashboard.php:1445
+#: core/admin/class-maxi-dashboard.php:1283
+#: core/admin/class-maxi-dashboard.php:1359
+#: core/admin/class-maxi-dashboard.php:1469
 #: src/editor/style-cards/maxiStyleCardsEditor.js:830
 msgid "Save changes"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1266
+#: core/admin/class-maxi-dashboard.php:1290
 msgid "Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1272
+#: core/admin/class-maxi-dashboard.php:1296
 msgid "Create Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1276
+#: core/admin/class-maxi-dashboard.php:1300
 msgid "To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1283
+#: core/admin/class-maxi-dashboard.php:1307
 msgid "To create an API key, you will need to do the following:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1291
+#: core/admin/class-maxi-dashboard.php:1315
 msgid "Create a Google Cloud Platform account, if you don't already have one."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1298
+#: core/admin/class-maxi-dashboard.php:1322
 msgid "Create a new Google Cloud Platform project."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1305
+#: core/admin/class-maxi-dashboard.php:1329
 msgid "Enable Google Maps Platform APIs."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1308
+#: core/admin/class-maxi-dashboard.php:1332
 msgid "Generate an API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1312
+#: core/admin/class-maxi-dashboard.php:1336
 msgid "To make this process easy, launch"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1316
+#: core/admin/class-maxi-dashboard.php:1340
 msgid "Google Maps API Quickstart"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1319
+#: core/admin/class-maxi-dashboard.php:1343
 msgid "which will handle the setup of your account and generate the API key that you can insert below."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1326
+#: core/admin/class-maxi-dashboard.php:1350
 msgid "Insert Google Maps API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1341
+#: core/admin/class-maxi-dashboard.php:1365
 msgid "Fonts and files"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1351
+#: core/admin/class-maxi-dashboard.php:1375
 msgid "Use Bunny Fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1354
+#: core/admin/class-maxi-dashboard.php:1378
 #, php-format
 msgid "You are currently using: %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1358
+#: core/admin/class-maxi-dashboard.php:1382
 msgid "Bunny Fonts: Privacy-friendly, GDPR compliant. Global CDN for fast loading. Wide selection of fonts available."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1365
+#: core/admin/class-maxi-dashboard.php:1389
 msgid "Google Fonts: Extensive font selection. Potential privacy concerns when using Google's CDN."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1375
+#: core/admin/class-maxi-dashboard.php:1399
 msgid "Serve Bunny Fonts locally"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1379
+#: core/admin/class-maxi-dashboard.php:1403
 msgid "Serve Bunny Fonts from CDN: Fastest option. Uses external CDN. No local storage required."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1386
+#: core/admin/class-maxi-dashboard.php:1410
 msgid "Serve Bunny Fonts locally: Privacy-focused. May impact server performance. Requires local storage."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1399
+#: core/admin/class-maxi-dashboard.php:1423
 msgid "Serve Google Fonts locally"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1403
+#: core/admin/class-maxi-dashboard.php:1427
 msgid "Serve from Google CDN: Fastest option. Uses Google's CDN. Potential privacy (GDPR) implications."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1410
+#: core/admin/class-maxi-dashboard.php:1434
 msgid "Serve Google Fonts locally: Blocks Google tracking. May impact server performance. Requires local storage."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1425
+#: core/admin/class-maxi-dashboard.php:1449
 msgid "Size of the local fonts:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1428
+#: core/admin/class-maxi-dashboard.php:1452
 msgid "MB"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1435
+#: core/admin/class-maxi-dashboard.php:1459
 msgid "Remove local fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1452
+#: core/admin/class-maxi-dashboard.php:1476
 msgid "Documentation & support"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1456
+#: core/admin/class-maxi-dashboard.php:1480
 msgid "Read the "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1459
+#: core/admin/class-maxi-dashboard.php:1483
 msgid "help center documentation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1461
+#: core/admin/class-maxi-dashboard.php:1485
 msgid " for self-service."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1467
+#: core/admin/class-maxi-dashboard.php:1491
 msgid "Troubleshooting"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1472
+#: core/admin/class-maxi-dashboard.php:1496
 msgid "Site health info report"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1475
+#: core/admin/class-maxi-dashboard.php:1499
 msgid "The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1482
+#: core/admin/class-maxi-dashboard.php:1506
 msgid "Go to site health info"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1489
+#: core/admin/class-maxi-dashboard.php:1513
 msgid "Experimental preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1495
+#: core/admin/class-maxi-dashboard.php:1519
 msgid "Enable settings indicators"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1499
+#: core/admin/class-maxi-dashboard.php:1523
 msgid "Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1529
+#: core/admin/class-maxi-dashboard.php:1553
 msgid "General setting for Maxi AI writer"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1538
+#: core/admin/class-maxi-dashboard.php:1562
 msgid "Integrations"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1544
+#: core/admin/class-maxi-dashboard.php:1568
 msgid "Insert OpenAI API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1554
+#: core/admin/class-maxi-dashboard.php:1578
 msgid "ChatGPT AI Model"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1570
+#: core/admin/class-maxi-dashboard.php:1594
 msgid "Website identity"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1577
+#: core/admin/class-maxi-dashboard.php:1601
 msgid "Tell us about your site"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1580
+#: core/admin/class-maxi-dashboard.php:1604
 msgid ""
 "What is the primary goal of your website? (e.g. shopping platform, offering\n"
 "\t\t\t\tservices, showcasing work, journaling)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1592
+#: core/admin/class-maxi-dashboard.php:1616
 msgid "Example: Hairdresser, Plumber, Marketing agency"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1602
+#: core/admin/class-maxi-dashboard.php:1626
 msgid "Who is your target audience?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1605
+#: core/admin/class-maxi-dashboard.php:1629
 msgid "Group of people you want to connect with or offer services to."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1616
+#: core/admin/class-maxi-dashboard.php:1640
 msgid "Example: Ladies who need haircuts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1626
+#: core/admin/class-maxi-dashboard.php:1650
 msgid "What is the goal of the website?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1629
 #: core/admin/class-maxi-dashboard.php:1653
+#: core/admin/class-maxi-dashboard.php:1677
 msgid "Enter as many as you like. Separate with commas."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1640
-#: core/admin/class-maxi-dashboard.php:1712
+#: core/admin/class-maxi-dashboard.php:1664
+#: core/admin/class-maxi-dashboard.php:1736
 msgid "Example: Get bookings, write a blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1650
+#: core/admin/class-maxi-dashboard.php:1674
 msgid "What services do you offer?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1664
+#: core/admin/class-maxi-dashboard.php:1688
 msgid "Example: Hair cuts, blow dries, beard shave"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1674
+#: core/admin/class-maxi-dashboard.php:1698
 msgid "What is your website or business name?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1677
+#: core/admin/class-maxi-dashboard.php:1701
 msgid "The name will be used for writing content. Optional. Takes WordPress Site Title by default"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1688
+#: core/admin/class-maxi-dashboard.php:1712
 msgid "Example: Mary's fabulous hair studio"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1698
+#: core/admin/class-maxi-dashboard.php:1722
 msgid "Anything else we should know?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1701
+#: core/admin/class-maxi-dashboard.php:1725
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1817
+#: core/admin/class-maxi-dashboard.php:1841
 msgid "Get started with a pre-built website"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2369
+#: core/admin/class-maxi-dashboard.php:2393
 msgid "MaxiBlocks dashboard - Key NOT found in stored keys"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2372
+#: core/admin/class-maxi-dashboard.php:2396
 msgid "MaxiBlocks dashboard - Email not found or status not yes"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2375
+#: core/admin/class-maxi-dashboard.php:2399
 msgid "MaxiBlocks dashboard - Failed to parse cookie"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2386
+#: core/admin/class-maxi-dashboard.php:2410
 msgid "Cloud access active via network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2387
+#: core/admin/class-maxi-dashboard.php:2411
 msgid "Your Cloud access is active through a network-wide license."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2389
+#: core/admin/class-maxi-dashboard.php:2413
 msgid "Cloud access active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2390
+#: core/admin/class-maxi-dashboard.php:2414
 msgid "Your Cloud access is active and ready to use."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2393
+#: core/admin/class-maxi-dashboard.php:2417
 msgid "Activate Cloud access"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2394
+#: core/admin/class-maxi-dashboard.php:2418
 msgid "Enter your email or purchase code to access premium items"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2403
+#: core/admin/class-maxi-dashboard.php:2427
 msgid "Current status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2403
+#: core/admin/class-maxi-dashboard.php:2427
 msgid "License activation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2455
+#: core/admin/class-maxi-dashboard.php:2479
 #, php-format
 msgid "Multisite detected. If you require additional licences, email %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2461
-#: core/admin/class-maxi-dashboard.php:2496
+#: core/admin/class-maxi-dashboard.php:2485
+#: core/admin/class-maxi-dashboard.php:2520
 msgid "Manage network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2470
+#: core/admin/class-maxi-dashboard.php:2494
 #: core/admin/quick-start/class-maxi-quick-start.php:921
 #: core/admin/starter-sites/src/library/toolbar.js:387
 #: core/admin/starter-sites/src/library/toolbar.js:399
@@ -825,69 +825,69 @@ msgstr ""
 msgid "Deactivate Cloud"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2475
+#: core/admin/class-maxi-dashboard.php:2499
 msgid "This site is using a network-wide license. Purchase codes cannot be activated on individual sites when a network license is active."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2477
+#: core/admin/class-maxi-dashboard.php:2501
 msgid "To manage the network license, visit the"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2477
+#: core/admin/class-maxi-dashboard.php:2501
 msgid "network admin license page"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2479
+#: core/admin/class-maxi-dashboard.php:2503
 msgid "To manage the network license, contact your network administrator."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2493
+#: core/admin/class-maxi-dashboard.php:2517
 msgid "Network license is active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2494
+#: core/admin/class-maxi-dashboard.php:2518
 msgid "A network-wide license is already active. Purchase codes cannot be activated on individual sites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2501
+#: core/admin/class-maxi-dashboard.php:2525
 msgid "Individual email authentication"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2502
+#: core/admin/class-maxi-dashboard.php:2526
 msgid "You can still authenticate with your individual Cloud email account for user-specific features."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2504
+#: core/admin/class-maxi-dashboard.php:2528
 msgid "Cloud user email address"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2505
+#: core/admin/class-maxi-dashboard.php:2529
 #, php-format
 msgid "Enter your Cloud user email. Find your account details at %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2508
+#: core/admin/class-maxi-dashboard.php:2532
 msgid "Authenticate Email"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2517
+#: core/admin/class-maxi-dashboard.php:2541
 #: core/admin/quick-start/class-maxi-quick-start.php:933
 #: core/admin/starter-sites/src/library/toolbar.js:479
 msgid "Cloud user email / purchase code / license key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2518
+#: core/admin/class-maxi-dashboard.php:2542
 #: core/admin/quick-start/class-maxi-quick-start.php:934
 #, php-format
 msgid "Find your code or key in your account, inbox or %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2522
+#: core/admin/class-maxi-dashboard.php:2546
 #, php-format
 msgid "Multisite detected. If using MaxiBlocks email or license key and you require additional licences, email %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2528
+#: core/admin/class-maxi-dashboard.php:2552
 #: core/admin/quick-start/class-maxi-quick-start.php:939
 #: core/admin/starter-sites/src/library/toolbar.js:418
 #: core/admin/starter-sites/src/library/toolbar.js:425
@@ -900,146 +900,146 @@ msgstr ""
 msgid "Activate Cloud"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2710
+#: core/admin/class-maxi-dashboard.php:2734
 #: core/admin/status-report/frontend-assets.php:91
 msgid "No CSS files found"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2713
+#: core/admin/class-maxi-dashboard.php:2737
 #: core/admin/status-report/frontend-assets.php:92
 msgid "No JavaScript files found"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2973
+#: core/admin/class-maxi-dashboard.php:2997
 msgid "MaxiBlocks: Network domain migration failed for purchase code: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3022
+#: core/admin/class-maxi-dashboard.php:3046
 msgid "MaxiBlocks: Site domain migration failed for purchase code: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3036
-#: core/admin/class-maxi-dashboard.php:3255
-#: core/admin/class-maxi-dashboard.php:3931
-#: core/admin/class-maxi-dashboard.php:3975
-#: core/admin/class-maxi-dashboard.php:4118
+#: core/admin/class-maxi-dashboard.php:3060
+#: core/admin/class-maxi-dashboard.php:3279
+#: core/admin/class-maxi-dashboard.php:3955
+#: core/admin/class-maxi-dashboard.php:3999
+#: core/admin/class-maxi-dashboard.php:4142
 msgid "Security check failed"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3042
-#: core/admin/class-maxi-dashboard.php:3937
-#: core/admin/class-maxi-dashboard.php:3981
+#: core/admin/class-maxi-dashboard.php:3066
+#: core/admin/class-maxi-dashboard.php:3961
+#: core/admin/class-maxi-dashboard.php:4005
 msgid "Insufficient permissions"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3056
+#: core/admin/class-maxi-dashboard.php:3080
 msgid "Email or purchase code is required"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3119
+#: core/admin/class-maxi-dashboard.php:3143
 msgid "Email authentication initiated"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3163
+#: core/admin/class-maxi-dashboard.php:3187
 msgid "A network license is already active. Purchase codes cannot be activated on individual sites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3177
-#: core/admin/class-maxi-dashboard.php:3225
-#: core/admin/class-maxi-dashboard.php:3243
+#: core/admin/class-maxi-dashboard.php:3201
+#: core/admin/class-maxi-dashboard.php:3249
+#: core/admin/class-maxi-dashboard.php:3267
 msgid "Invalid purchase code / key. Please check your code and try again."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3208
+#: core/admin/class-maxi-dashboard.php:3232
 msgid "License activated successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3232
+#: core/admin/class-maxi-dashboard.php:3256
 msgid "This code / key has already been activated on another domain. Contact support if you need help."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3237
+#: core/admin/class-maxi-dashboard.php:3261
 msgid "This purchase code / key has expired. Please check your subscription status or contact support."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3240
+#: core/admin/class-maxi-dashboard.php:3264
 msgid "Seats limit reached. Please log out from another device or upgrade your subscription."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3254
+#: core/admin/class-maxi-dashboard.php:3278
 msgid "MaxiBlocks Email Auth STATUS: Nonce verification failed"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3346
+#: core/admin/class-maxi-dashboard.php:3370
 msgid "MaxiBlocks Email Auth STATUS: Auth timeout - authentication window has expired (>10 minutes)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3576
+#: core/admin/class-maxi-dashboard.php:3600
 msgid "MaxiBlocks: Missing middleware configuration for email authentication"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3642
+#: core/admin/class-maxi-dashboard.php:3666
 msgid "MaxiBlocks Email Auth: ERROR - "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3690
+#: core/admin/class-maxi-dashboard.php:3714
 msgid "MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3778
-#: core/admin/class-maxi-dashboard.php:3821
+#: core/admin/class-maxi-dashboard.php:3802
+#: core/admin/class-maxi-dashboard.php:3845
 msgid "Signed out successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3810
+#: core/admin/class-maxi-dashboard.php:3834
 msgid "MaxiBlocks: Purchase code deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3841
+#: core/admin/class-maxi-dashboard.php:3865
 msgid "MaxiBlocks: Missing middleware configuration for email session logout"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3864
+#: core/admin/class-maxi-dashboard.php:3888
 msgid "MaxiBlocks Email Session Logout: API call failed - "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3874
+#: core/admin/class-maxi-dashboard.php:3898
 msgid "MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3947
+#: core/admin/class-maxi-dashboard.php:3971
 msgid "Missing required parameters"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3955
+#: core/admin/class-maxi-dashboard.php:3979
 msgid "License data saved successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3995
+#: core/admin/class-maxi-dashboard.php:4019
 msgid "Network purchase code is required"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4003
+#: core/admin/class-maxi-dashboard.php:4027
 msgid "Multisite detected. Please activate your MaxiBlocks email on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4006
+#: core/admin/class-maxi-dashboard.php:4030
 msgid "Multisite detected. Please activate your MaxiBlocks license key on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4030
+#: core/admin/class-maxi-dashboard.php:4054
 msgid "Invalid purchase code. Please check your code and try again."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4060
+#: core/admin/class-maxi-dashboard.php:4084
 msgid "Network license activated successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4096
+#: core/admin/class-maxi-dashboard.php:4120
 msgid "MaxiBlocks: Network license deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4104
+#: core/admin/class-maxi-dashboard.php:4128
 msgid "Network license deactivated successfully"
 msgstr ""
 
@@ -1054,6 +1054,7 @@ msgid "Status"
 msgstr ""
 
 #: core/admin/quick-start/class-maxi-quick-start.php:97
+#: src/editor/library/container.js:1525
 msgid "Theme"
 msgstr ""
 
@@ -2046,44 +2047,44 @@ msgstr ""
 msgid "WordPress Importer has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-blocks.php:342
+#: core/class-maxi-blocks.php:374
 msgid "Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:343
+#: core/class-maxi-blocks.php:375
 msgid "maxi-image-type"
 msgstr ""
 
-#: core/class-maxi-blocks.php:344
+#: core/class-maxi-blocks.php:376
 msgid "Search Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:345
+#: core/class-maxi-blocks.php:377
 msgid "All Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:346
+#: core/class-maxi-blocks.php:378
 msgid "Edit Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:347
+#: core/class-maxi-blocks.php:379
 msgid "Update Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:348
+#: core/class-maxi-blocks.php:380
 msgid "Add New Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:349
+#: core/class-maxi-blocks.php:381
 msgid "New Maxi Image Name"
 msgstr ""
 
-#: core/class-maxi-blocks.php:373
-#: core/class-maxi-blocks.php:376
+#: core/class-maxi-blocks.php:405
+#: core/class-maxi-blocks.php:408
 msgid "Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:379
+#: core/class-maxi-blocks.php:411
 msgid "Images added by MaxiBlocks plugin"
 msgstr ""
 
@@ -2158,13 +2159,13 @@ msgstr ""
 
 #: core/admin/starter-sites/src/library/container.js:127
 #: src/editor/library/container.js:156
-#: src/editor/library/container.js:253
+#: src/editor/library/container.js:258
 msgid "All"
 msgstr ""
 
 #: core/admin/starter-sites/src/library/container.js:204
-#: src/editor/library/container.js:389
-#: src/editor/library/container.js:1574
+#: src/editor/library/container.js:394
+#: src/editor/library/container.js:1623
 msgid "Clear filters"
 msgstr ""
 
@@ -2203,12 +2204,14 @@ msgid "Import"
 msgstr ""
 
 #: core/admin/starter-sites/src/library/MasonryItem.js:94
+#: src/editor/library/container.js:135
 #: src/editor/library/container.js:173
 #: src/editor/library/MasonryItem.js:135
 msgid "Free"
 msgstr ""
 
 #: core/admin/starter-sites/src/library/MasonryItem.js:99
+#: src/editor/library/container.js:129
 #: src/editor/library/container.js:190
 #: src/editor/library/MasonryItem.js:140
 #: src/editor/library/toolbar.js:146
@@ -2306,6 +2309,7 @@ msgid " theme, which is optimized for MaxiBlocks."
 msgstr ""
 
 #: core/admin/starter-sites/src/library/maxiImportPopUp.js:790
+#: src/editor/library/container.js:1513
 msgid "Pages"
 msgstr ""
 
@@ -2314,6 +2318,7 @@ msgid "The Pages section allows you to import predefined pages included in the s
 msgstr ""
 
 #: core/admin/starter-sites/src/library/maxiImportPopUp.js:823
+#: src/editor/library/container.js:1497
 msgid "Patterns"
 msgstr ""
 
@@ -2418,8 +2423,12 @@ msgid "Help"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:23
+#: src/blocks/accordion-maxi/data.js:41
+#: src/blocks/button-maxi/data.js:57
+#: src/blocks/button-maxi/data.js:59
 #: src/blocks/button-maxi/utils.js:7
 #: src/blocks/search-maxi/components/button-control/index.js:29
+#: src/blocks/search-maxi/data.js:60
 #: src/blocks/text-maxi/components/list-options-control/index.js:840
 #: src/components/inspector-tabs/inspector-icon.js:22
 msgid "Icon"
@@ -2439,6 +2448,7 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:71
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:74
 #: src/blocks/accordion-maxi/components/accordion-title-control/index.js:160
+#: src/blocks/image-maxi/data.js:94
 #: src/blocks/search-maxi/components/skin-control/index.js:115
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:75
 #: src/components/inspector-tabs/inspector-background.js:103
@@ -2454,6 +2464,7 @@ msgid "Enable Icon Hover"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:27
+#: src/blocks/divider-maxi/data.js:43
 #: src/blocks/divider-maxi/inspector.js:173
 msgid "Line horizontal position"
 msgstr ""
@@ -2500,14 +2511,17 @@ msgid "Enable active"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-settings-control/index.js:57
+#: src/blocks/accordion-maxi/data.js:24
 msgid "Accordion layout"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-settings-control/index.js:66
+#: src/blocks/accordion-maxi/data.js:25
 msgid "Collapsible"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-settings-control/index.js:75
+#: src/blocks/accordion-maxi/data.js:26
 msgid "Pane closes when another opens"
 msgstr ""
 
@@ -2518,6 +2532,7 @@ msgid "Spacing"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-settings-control/index.js:126
+#: src/blocks/accordion-maxi/data.js:32
 msgid "Animation duration"
 msgstr ""
 
@@ -2529,8 +2544,170 @@ msgstr ""
 msgid "Title background"
 msgstr ""
 
+#: src/blocks/accordion-maxi/data.js:22
 #: src/blocks/accordion-maxi/inspector.js:95
 msgid "Accordion settings"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:28
+msgid "Pane spacing"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:35
+msgid "Accordion line"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:38
+msgid "Accordion title"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:42
+#: src/blocks/accordion-maxi/inspector.js:152
+msgid "Active icon"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:46
+#: src/blocks/button-maxi/data.js:125
+#: src/blocks/column-maxi/data.js:36
+#: src/blocks/container-maxi/data.js:72
+#: src/blocks/divider-maxi/data.js:77
+#: src/blocks/group-maxi/data.js:27
+#: src/blocks/image-maxi/data.js:154
+#: src/blocks/list-item-maxi/data.js:40
+#: src/blocks/map-maxi/data.js:71
+#: src/blocks/number-counter-maxi/data.js:51
+#: src/blocks/pane-maxi/data.js:38
+#: src/blocks/row-maxi/data.js:30
+#: src/blocks/slide-maxi/data.js:18
+#: src/blocks/slider-maxi/data.js:71
+#: src/blocks/svg-icon-maxi/data.js:115
+#: src/blocks/text-maxi/data.js:106
+#: src/components/background-control/colorLayer.js:192
+#: src/components/background-control/index.js:121
+#: src/editor/style-cards/maxiStyleCardsTab.js:594
+msgid "Background"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:49
+#: src/blocks/button-maxi/data.js:104
+#: src/blocks/button-maxi/data.js:128
+#: src/blocks/column-maxi/data.js:39
+#: src/blocks/container-maxi/data.js:75
+#: src/blocks/divider-maxi/data.js:80
+#: src/blocks/group-maxi/data.js:30
+#: src/blocks/image-maxi/data.js:132
+#: src/blocks/image-maxi/data.js:157
+#: src/blocks/image-maxi/data.js:293
+#: src/blocks/list-item-maxi/data.js:43
+#: src/blocks/map-maxi/data.js:81
+#: src/blocks/number-counter-maxi/data.js:34
+#: src/blocks/number-counter-maxi/data.js:54
+#: src/blocks/pane-maxi/data.js:21
+#: src/blocks/pane-maxi/data.js:41
+#: src/blocks/row-maxi/data.js:33
+#: src/blocks/search-maxi/data.js:38
+#: src/blocks/search-maxi/data.js:75
+#: src/blocks/search-maxi/data.js:97
+#: src/blocks/slide-maxi/data.js:21
+#: src/blocks/slider-maxi/data.js:74
+#: src/blocks/svg-icon-maxi/data.js:94
+#: src/blocks/svg-icon-maxi/data.js:118
+#: src/blocks/text-maxi/data.js:109
+#: src/blocks/video-maxi/data.js:89
+#: src/components/background-control/imageLayer.js:535
+#: src/components/background-control/imageLayer.js:582
+#: src/components/border-control/index.js:78
+#: src/components/icon-control/index.js:155
+#: src/components/inspector-tabs/inspector-border.js:55
+#: src/components/toolbar/components/border/index.js:69
+#: src/editor/style-cards/maxiStyleCardsTab.js:611
+#: src/extensions/relations/getCanvasSettings.js:141
+msgid "Border"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:52
+#: src/blocks/button-maxi/data.js:108
+#: src/blocks/button-maxi/data.js:131
+#: src/blocks/column-maxi/data.js:42
+#: src/blocks/container-maxi/data.js:78
+#: src/blocks/divider-maxi/data.js:68
+#: src/blocks/divider-maxi/data.js:83
+#: src/blocks/group-maxi/data.js:33
+#: src/blocks/image-maxi/data.js:136
+#: src/blocks/image-maxi/data.js:160
+#: src/blocks/list-item-maxi/data.js:46
+#: src/blocks/map-maxi/components/map-popup-control/index.js:37
+#: src/blocks/map-maxi/data.js:75
+#: src/blocks/map-maxi/data.js:84
+#: src/blocks/number-counter-maxi/data.js:38
+#: src/blocks/number-counter-maxi/data.js:57
+#: src/blocks/pane-maxi/data.js:24
+#: src/blocks/pane-maxi/data.js:44
+#: src/blocks/row-maxi/data.js:36
+#: src/blocks/search-maxi/data.js:41
+#: src/blocks/slide-maxi/data.js:24
+#: src/blocks/slider-maxi/data.js:77
+#: src/blocks/svg-icon-maxi/data.js:98
+#: src/blocks/svg-icon-maxi/data.js:121
+#: src/blocks/text-maxi/data.js:112
+#: src/blocks/video-maxi/data.js:93
+#: src/components/inspector-tabs/inspector-box-shadow.js:40
+#: src/components/toolbar/components/box-shadow/index.js:66
+#: src/extensions/relations/getCanvasSettings.js:160
+msgid "Box shadow"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:55
+#: src/blocks/button-maxi/data.js:112
+#: src/blocks/button-maxi/data.js:122
+#: src/blocks/column-maxi/data.js:45
+#: src/blocks/container-maxi/data.js:81
+#: src/blocks/divider-maxi/data.js:74
+#: src/blocks/group-maxi/data.js:36
+#: src/blocks/image-maxi/data.js:140
+#: src/blocks/image-maxi/data.js:150
+#: src/blocks/list-item-maxi/data.js:49
+#: src/blocks/map-maxi/data.js:87
+#: src/blocks/number-counter-maxi/data.js:48
+#: src/blocks/pane-maxi/data.js:27
+#: src/blocks/pane-maxi/data.js:35
+#: src/blocks/row-maxi/data.js:39
+#: src/blocks/search-maxi/data.js:44
+#: src/blocks/slide-maxi/data.js:27
+#: src/blocks/slider-maxi/data.js:80
+#: src/blocks/svg-icon-maxi/data.js:102
+#: src/blocks/svg-icon-maxi/data.js:112
+#: src/blocks/text-maxi/data.js:115
+#: src/components/toolbar/components/divider-line/index.js:205
+#: src/components/toolbar/components/size/index.js:56
+msgid "Size"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:58
+#: src/blocks/button-maxi/data.js:116
+#: src/blocks/button-maxi/data.js:137
+#: src/blocks/column-maxi/data.js:48
+#: src/blocks/container-maxi/data.js:84
+#: src/blocks/divider-maxi/data.js:89
+#: src/blocks/group-maxi/data.js:39
+#: src/blocks/image-maxi/data.js:144
+#: src/blocks/image-maxi/data.js:166
+#: src/blocks/list-item-maxi/data.js:52
+#: src/blocks/map-maxi/data.js:90
+#: src/blocks/number-counter-maxi/data.js:42
+#: src/blocks/number-counter-maxi/data.js:63
+#: src/blocks/pane-maxi/data.js:30
+#: src/blocks/pane-maxi/data.js:50
+#: src/blocks/row-maxi/data.js:42
+#: src/blocks/search-maxi/data.js:47
+#: src/blocks/search-maxi/data.js:79
+#: src/blocks/slide-maxi/data.js:30
+#: src/blocks/slider-maxi/data.js:83
+#: src/blocks/svg-icon-maxi/data.js:106
+#: src/blocks/svg-icon-maxi/data.js:127
+#: src/blocks/text-maxi/data.js:118
+#: src/blocks/video-maxi/data.js:97
+msgid "Margin/Padding"
 msgstr ""
 
 #: src/blocks/accordion-maxi/inspector.js:114
@@ -2543,12 +2720,9 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:152
-msgid "Active icon"
-msgstr ""
-
 #: src/blocks/accordion-maxi/inspector.js:159
-#: src/blocks/divider-maxi/data.js:164
+#: src/blocks/divider-maxi/data.js:48
+#: src/blocks/divider-maxi/data.js:165
 #: src/blocks/divider-maxi/inspector.js:238
 msgid "Line settings"
 msgstr ""
@@ -2582,36 +2756,111 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:207
-msgid "Button icon"
-msgstr ""
-
-#: src/blocks/button-maxi/data.js:258
-msgid "Button typography"
-msgstr ""
-
-#: src/blocks/button-maxi/data.js:280
-msgid "Button border"
-msgstr ""
-
-#: src/blocks/button-maxi/data.js:304
-msgid "Button background"
-msgstr ""
-
-#: src/blocks/button-maxi/data.js:336
-msgid "Button box shadow"
-msgstr ""
-
-#: src/blocks/button-maxi/data.js:362
-msgid "Button margin/padding"
-msgstr ""
-
+#: src/blocks/button-maxi/data.js:56
 #: src/blocks/button-maxi/edit.js:232
 #: src/blocks/search-maxi/components/button-control/index.js:46
+#: src/blocks/search-maxi/data.js:56
 msgid "Button text"
 msgstr ""
 
+#: src/blocks/button-maxi/data.js:62
+#: src/blocks/svg-icon-maxi/data.js:273
+msgid "Icon border"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:72
+#: src/blocks/svg-icon-maxi/data.js:74
+#: src/blocks/svg-icon-maxi/data.js:245
+#: src/components/icon-control/index.js:610
+#: src/components/toolbar/components/icon-background/index.js:67
+msgid "Icon background"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:82
+#: src/components/icon-control/index.js:748
+msgid "Icon padding"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:87
+#: src/blocks/button-maxi/data.js:89
+#: src/blocks/divider-maxi/data.js:39
+#: src/blocks/divider-maxi/inspector.js:57
+#: src/blocks/image-maxi/data.js:66
+#: src/blocks/image-maxi/data.js:218
+#: src/blocks/list-item-maxi/data.js:107
+#: src/blocks/number-counter-maxi/data.js:28
+#: src/blocks/svg-icon-maxi/data.js:38
+#: src/blocks/text-maxi/data.js:177
+#: src/components/inspector-tabs/inspector-alignment.js:33
+msgid "Alignment"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:92
+#: src/blocks/image-maxi/data.js:86
+#: src/blocks/list-item-maxi/data.js:34
+#: src/blocks/text-maxi/data.js:100
+msgid "Text alignment"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:97
+#: src/blocks/image-maxi/data.js:83
+#: src/blocks/list-item-maxi/data.js:37
+#: src/blocks/list-item-maxi/data.js:115
+#: src/blocks/search-maxi/data.js:67
+#: src/blocks/search-maxi/data.js:85
+#: src/blocks/text-maxi/data.js:103
+#: src/blocks/text-maxi/data.js:185
+#: src/components/inspector-tabs/inspector-typography.js:59
+msgid "Typography"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:100
+#: src/blocks/button-maxi/data.js:307
+#: src/blocks/search-maxi/data.js:71
+msgid "Button background"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:134
+#: src/blocks/divider-maxi/data.js:86
+#: src/blocks/group-maxi/data.js:45
+#: src/blocks/image-maxi/data.js:163
+#: src/blocks/list-item-maxi/data.js:58
+#: src/blocks/map-maxi/data.js:106
+#: src/blocks/number-counter-maxi/data.js:60
+#: src/blocks/pane-maxi/data.js:47
+#: src/blocks/row-maxi/data.js:48
+#: src/blocks/search-maxi/data.js:112
+#: src/blocks/svg-icon-maxi/data.js:124
+#: src/blocks/text-maxi/data.js:124
+#: src/blocks/video-maxi/data.js:104
+#: src/components/inspector-tabs/inspector-opacity.js:33
+#: src/components/opacity-control/index.js:56
+#: src/extensions/relations/getAdvancedSettings.js:79
+msgid "Opacity"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:210
+msgid "Button icon"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:261
+msgid "Button typography"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:283
+msgid "Button border"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:339
+msgid "Button box shadow"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:365
+msgid "Button margin/padding"
+msgstr ""
+
 #: src/blocks/button-maxi/inspector.js:151
+#: src/blocks/search-maxi/data.js:53
 #: src/blocks/search-maxi/inspector.js:171
 msgid "Button"
 msgstr ""
@@ -2659,6 +2908,7 @@ msgid "block"
 msgstr ""
 
 #: src/blocks/column-maxi/components/column-size-control/index.js:30
+#: src/blocks/column-maxi/data.js:30
 msgid "Fit content"
 msgstr ""
 
@@ -2668,6 +2918,7 @@ msgid "Column size (%)"
 msgstr ""
 
 #: src/blocks/column-maxi/components/column-size-control/index.js:88
+#: src/blocks/column-maxi/data.js:32
 #: src/components/toolbar/components/vertical-align/index.js:30
 #: src/components/toolbar/components/vertical-align/index.js:37
 msgid "Vertical align"
@@ -2708,12 +2959,18 @@ msgstr ""
 msgid "Space around"
 msgstr ""
 
-#: src/blocks/column-maxi/data.js:79
+#: src/blocks/column-maxi/data.js:28
+#: src/blocks/column-maxi/data.js:73
 #: src/blocks/column-maxi/inspector.js:46
 msgid "Column settings"
 msgstr ""
 
+#: src/blocks/column-maxi/data.js:31
+msgid "Column size"
+msgstr ""
+
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:209
+#: src/blocks/container-maxi/data.js:25
 #: src/components/toolbar/components/divider-line/index.js:72
 msgid "Divider style"
 msgstr ""
@@ -2743,6 +3000,7 @@ msgstr ""
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:355
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:571
+#: src/blocks/container-maxi/data.js:38
 msgid "Divider height"
 msgstr ""
 
@@ -2759,25 +3017,93 @@ msgstr ""
 msgid "Enable bottom shape divider"
 msgstr ""
 
+#: src/blocks/container-maxi/data.js:21
+msgid "Divider status"
+msgstr ""
+
+#: src/blocks/container-maxi/data.js:29
+msgid "Divider opacity"
+msgstr ""
+
+#: src/blocks/container-maxi/data.js:33
+msgid "Divider color"
+msgstr ""
+
+#: src/blocks/container-maxi/data.js:42
+msgid "Divider height unit"
+msgstr ""
+
+#: src/blocks/container-maxi/data.js:46
+msgid "Divider scroll effect"
+msgstr ""
+
+#: src/blocks/container-maxi/data.js:61
+#: src/blocks/group-maxi/data.js:18
+#: src/components/inspector-tabs/inspector-callout-arrow.js:29
+msgid "Callout arrow"
+msgstr ""
+
+#: src/blocks/container-maxi/data.js:63
+#: src/blocks/group-maxi/data.js:20
+msgid "Show arrow"
+msgstr ""
+
+#: src/blocks/container-maxi/data.js:64
+#: src/blocks/group-maxi/data.js:21
+msgid "Arrow side"
+msgstr ""
+
+#: src/blocks/container-maxi/data.js:65
+#: src/blocks/group-maxi/data.js:22
+#: src/blocks/slider-maxi/components/navigation-control/index.js:64
+msgid "Arrow position"
+msgstr ""
+
+#: src/blocks/container-maxi/data.js:66
+#: src/blocks/group-maxi/data.js:23
+#: src/components/arrow-control/index.js:176
+msgid "Arrow size"
+msgstr ""
+
 #: src/blocks/container-maxi/inspector.js:72
 msgid "Shape divider"
 msgstr ""
 
-#: src/blocks/divider-maxi/data.js:130
-msgid "Divider box shadow"
-msgstr ""
-
-#: src/blocks/divider-maxi/inspector.js:57
-#: src/blocks/image-maxi/data.js:221
-#: src/blocks/list-item-maxi/data.js:110
-#: src/blocks/text-maxi/data.js:180
-#: src/components/inspector-tabs/inspector-alignment.js:33
-msgid "Alignment"
-msgstr ""
-
+#: src/blocks/divider-maxi/data.js:41
 #: src/blocks/divider-maxi/inspector.js:65
 #: src/components/toolbar/components/divider-alignment/index.js:86
 msgid "Line orientation"
+msgstr ""
+
+#: src/blocks/divider-maxi/data.js:42
+#: src/blocks/divider-maxi/inspector.js:116
+msgid "Line vertical position"
+msgstr ""
+
+#: src/blocks/divider-maxi/data.js:50
+msgid "Line style"
+msgstr ""
+
+#: src/blocks/divider-maxi/data.js:51
+#: src/blocks/svg-icon-maxi/data.js:54
+msgid "Line colour"
+msgstr ""
+
+#: src/blocks/divider-maxi/data.js:55
+#: src/components/divider-control/index.js:411
+#: src/components/divider-control/index.js:486
+#: src/components/toolbar/components/divider-line/index.js:131
+msgid "Line size"
+msgstr ""
+
+#: src/blocks/divider-maxi/data.js:59
+#: src/components/divider-control/index.js:469
+#: src/components/divider-control/index.js:526
+msgid "Line weight"
+msgstr ""
+
+#: src/blocks/divider-maxi/data.js:131
+msgid "Divider box shadow"
 msgstr ""
 
 #: src/blocks/divider-maxi/inspector.js:84
@@ -2790,15 +3116,13 @@ msgstr ""
 msgid "Vertical"
 msgstr ""
 
-#: src/blocks/divider-maxi/inspector.js:116
-msgid "Line vertical position"
-msgstr ""
-
 #: src/blocks/image-maxi/components/dimension-tab/index.js:99
+#: src/blocks/image-maxi/data.js:60
 msgid "Image size"
 msgstr ""
 
 #: src/blocks/image-maxi/components/dimension-tab/index.js:144
+#: src/blocks/image-maxi/data.js:61
 msgid "Use original size"
 msgstr ""
 
@@ -2811,6 +3135,7 @@ msgid "Width"
 msgstr ""
 
 #: src/blocks/image-maxi/components/dimension-tab/index.js:196
+#: src/blocks/image-maxi/data.js:63
 #: src/components/image-shape/index.js:157
 msgid "Image ratio"
 msgstr ""
@@ -3021,6 +3346,7 @@ msgid "Custom padding"
 msgstr ""
 
 #: src/blocks/image-maxi/components/hover-effect-control/index.js:578
+#: src/blocks/search-maxi/data.js:105
 #: src/blocks/search-maxi/inspector.js:379
 #: src/blocks/video-maxi/inspector.js:219
 #: src/components/background-control/imageLayer.js:531
@@ -3039,26 +3365,127 @@ msgstr ""
 msgid "Margin"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:230
+#: src/blocks/image-maxi/data.js:50
+#: src/blocks/video-maxi/data.js:79
+#: src/blocks/video-maxi/inspector.js:170
+#: src/components/media-uploader-control/index.js:114
+#: src/components/media-uploader-control/index.js:155
+#: src/extensions/DC/constants.js:242
+msgid "Image"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:58
+#: src/blocks/image-maxi/inspector.js:149
+msgid "Dimension"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:62
+#: src/blocks/video-maxi/components/video-overlay-control/index.js:222
+msgid "Image width"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:69
+#: src/blocks/image-maxi/inspector.js:171
+msgid "Alt tag"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:70
+#: src/blocks/image-maxi/inspector.js:184
+#: src/components/toolbar/components/more-settings/index.js:122
+#: src/extensions/DC/constants.js:160
+msgid "Caption"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:72
+msgid "Caption type"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:73
+msgid "Caption content"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:74
+#: src/blocks/image-maxi/inspector.js:218
+msgid "Caption position"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:75
+#: src/blocks/image-maxi/inspector.js:251
+msgid "Caption gap"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:79
+msgid "Caption gap unit"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:89
+#: src/components/inspector-tabs/inspector-link-settings.js:39
+#: src/components/toolbar/components/link/index.js:128
+#: src/components/toolbar/components/text-link/index.js:293
+#: src/components/typography-control/index.js:91
+#: src/extensions/DC/constants.js:163
+#: src/extensions/DC/constants.js:178
+#: src/extensions/DC/constants.js:189
+#: src/extensions/text/formats/link/index.js:10
+msgid "Link"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:92
+msgid "Hover effects"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:97
+msgid "Hover background"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:100
+msgid "Hover background color"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:103
+msgid "Hover background gradient"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:106
+msgid "Hover border"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:109
+msgid "Hover border radius"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:112
+msgid "Hover border width"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:115
+msgid "Hover content typography"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:118
+msgid "Hover margin"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:121
+msgid "Hover padding"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:124
+msgid "Hover title typography"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:129
+msgid "Clip path"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:227
 #: src/blocks/image-maxi/inspector.js:413
 msgid "Shape mask"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:270
+#: src/blocks/image-maxi/data.js:267
 #: src/components/inspector-tabs/inspector-clip-path.js:32
 msgid "Clip-path"
-msgstr ""
-
-#: src/blocks/image-maxi/data.js:296
-#: src/components/background-control/imageLayer.js:535
-#: src/components/background-control/imageLayer.js:582
-#: src/components/border-control/index.js:78
-#: src/components/icon-control/index.js:155
-#: src/components/inspector-tabs/inspector-border.js:55
-#: src/components/toolbar/components/border/index.js:69
-#: src/editor/style-cards/maxiStyleCardsTab.js:611
-#: src/extensions/relations/getCanvasSettings.js:141
-msgid "Border"
 msgstr ""
 
 #: src/blocks/image-maxi/edit.js:380
@@ -3082,36 +3509,13 @@ msgstr ""
 msgid "Placeholder image"
 msgstr ""
 
-#: src/blocks/image-maxi/inspector.js:149
-msgid "Dimension"
-msgstr ""
-
-#: src/blocks/image-maxi/inspector.js:171
-msgid "Alt tag"
-msgstr ""
-
-#: src/blocks/image-maxi/inspector.js:184
-#: src/components/toolbar/components/more-settings/index.js:122
-#: src/extensions/DC/constants.js:160
-msgid "Caption"
-msgstr ""
-
-#: src/blocks/image-maxi/inspector.js:218
-msgid "Caption position"
-msgstr ""
-
-#: src/blocks/image-maxi/inspector.js:251
-msgid "Caption gap"
-msgstr ""
-
 #: src/blocks/image-maxi/inspector.js:377
 msgid "Hover effect"
 msgstr ""
 
-#: src/blocks/list-item-maxi/data.js:118
-#: src/blocks/text-maxi/data.js:188
-#: src/components/inspector-tabs/inspector-typography.js:59
-msgid "Typography"
+#: src/blocks/list-item-maxi/data.js:33
+#: src/blocks/text-maxi/data.js:33
+msgid "Text content"
 msgstr ""
 
 #: src/blocks/map-maxi/components/drop-marker-alert/index.js:9
@@ -3187,10 +3591,12 @@ msgid "Minimum zoom"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-control/index.js:186
+#: src/blocks/map-maxi/data.js:32
 msgid "Maximum zoom"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-interaction-control/index.js:14
+#: src/blocks/map-maxi/data.js:95
 msgid "Map dragging"
 msgstr ""
 
@@ -3207,7 +3613,9 @@ msgid "Scroll wheel zoom"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-markers-control/index.js:29
+#: src/blocks/map-maxi/data.js:50
 #: src/blocks/text-maxi/components/list-options-control/index.js:356
+#: src/blocks/text-maxi/data.js:61
 msgid "Marker size"
 msgstr ""
 
@@ -3217,13 +3625,6 @@ msgstr ""
 
 #: src/blocks/map-maxi/components/map-markers-control/index.js:107
 msgid "Marker stroke"
-msgstr ""
-
-#: src/blocks/map-maxi/components/map-popup-control/index.js:37
-#: src/components/inspector-tabs/inspector-box-shadow.js:40
-#: src/components/toolbar/components/box-shadow/index.js:66
-#: src/extensions/relations/getCanvasSettings.js:160
-msgid "Box shadow"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:43
@@ -3259,12 +3660,75 @@ msgstr ""
 msgid "Find locations"
 msgstr ""
 
+#: src/blocks/map-maxi/data.js:28
 #: src/blocks/map-maxi/inspector.js:65
 msgid "Configure map"
 msgstr ""
 
+#: src/blocks/map-maxi/data.js:30
+msgid "Map provider"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:31
+msgid "Minium zoom"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:35
 #: src/blocks/map-maxi/inspector.js:95
 msgid "Map marker"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:37
+msgid "Markers"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:38
+msgid "Marker icon"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:42
+msgid "Marker fill colour"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:46
+msgid "Marker line colour"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:56
+msgid "Map popup text"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:58
+msgid "Title text level"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:60
+msgid "Title typography"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:63
+msgid "Description typography"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:69
+msgid "Map popup"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:93
+#: src/blocks/map-maxi/inspector.js:185
+msgid "Map interaction"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:96
+msgid "Map touch zoom"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:97
+msgid "Map double click zoom"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:99
+msgid "Map scroll wheel zoom"
 msgstr ""
 
 #: src/blocks/map-maxi/inspector.js:119
@@ -3275,17 +3739,13 @@ msgstr ""
 msgid "Marker pop-up"
 msgstr ""
 
-#: src/blocks/map-maxi/inspector.js:185
-msgid "Map interaction"
-msgstr ""
-
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:65
 msgid "Auto width"
 msgstr ""
 
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:120
 #: src/editor/library/MasonryItem.js:128
-#: src/editor/library/modal.js:417
+#: src/editor/library/modal.js:423
 msgid "Preview"
 msgstr ""
 
@@ -3366,12 +3826,13 @@ msgstr ""
 msgid "Circle bar"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/inspector.js:56
-msgid "Counter"
-msgstr ""
-
+#: src/blocks/number-counter-maxi/data.js:31
 #: src/blocks/number-counter-maxi/inspector.js:63
 msgid "Number"
+msgstr ""
+
+#: src/blocks/number-counter-maxi/inspector.js:56
+msgid "Counter"
 msgstr ""
 
 #: src/blocks/pane-maxi/inspector.js:77
@@ -3399,7 +3860,30 @@ msgstr ""
 msgid "Column picker"
 msgstr ""
 
+#: src/blocks/row-maxi/data.js:18
+msgid "Row settings"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:20
+msgid "Row pattern"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:21
+msgid "Row gap"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:22
+msgid "Column gap"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:26
+#: src/components/flex-settings-control/flex-wrap-control.js:51
+msgid "Flex wrap"
+msgstr ""
+
 #: src/blocks/search-maxi/components/button-control/index.js:24
+#: src/blocks/search-maxi/data.js:52
+#: src/blocks/search-maxi/data.js:55
 #: src/blocks/search-maxi/inspector.js:147
 msgid "Skin"
 msgstr ""
@@ -3409,6 +3893,7 @@ msgid "Button close text"
 msgstr ""
 
 #: src/blocks/search-maxi/components/placeholder-color-control/index.js:25
+#: src/blocks/search-maxi/data.js:91
 msgid "Placeholder text"
 msgstr ""
 
@@ -3454,16 +3939,34 @@ msgstr ""
 msgid "Click"
 msgstr ""
 
+#: src/blocks/search-maxi/data.js:57
+msgid "Button text close"
+msgstr ""
+
+#: src/blocks/search-maxi/data.js:63
+#: src/blocks/search-maxi/inspector.js:231
+msgid "Close icon"
+msgstr ""
+
+#: src/blocks/search-maxi/data.js:89
+#: src/blocks/search-maxi/inspector.js:326
+msgid "Placeholder"
+msgstr ""
+
+#: src/blocks/search-maxi/data.js:92
+msgid "Placeholder colour"
+msgstr ""
+
+#: src/blocks/search-maxi/data.js:101
+msgid "Input background"
+msgstr ""
+
 #: src/blocks/search-maxi/inspector.js:159
 msgid "Search settings"
 msgstr ""
 
 #: src/blocks/search-maxi/inspector.js:180
 msgid "Shortcut"
-msgstr ""
-
-#: src/blocks/search-maxi/inspector.js:231
-msgid "Close icon"
 msgstr ""
 
 #: src/blocks/search-maxi/inspector.js:242
@@ -3479,20 +3982,14 @@ msgstr ""
 msgid "Input"
 msgstr ""
 
-#: src/blocks/search-maxi/inspector.js:326
-msgid "Placeholder"
-msgstr ""
-
 #: src/blocks/slider-maxi/components/navigation-control/index.js:46
+#: src/blocks/slider-maxi/data.js:39
 msgid "Enable arrows"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:55
+#: src/blocks/slider-maxi/data.js:41
 msgid "Enable dots"
-msgstr ""
-
-#: src/blocks/slider-maxi/components/navigation-control/index.js:64
-msgid "Arrow position"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:68
@@ -3508,6 +4005,7 @@ msgid "Outside"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:98
+#: src/blocks/slider-maxi/data.js:44
 msgid "Dots position"
 msgstr ""
 
@@ -3538,21 +4036,26 @@ msgid "Spacing between dots"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:36
+#: src/blocks/slider-maxi/data.js:25
 msgid "Edit view"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:43
+#: src/blocks/slider-maxi/data.js:27
 #: src/blocks/video-maxi/components/video-options-control/index.js:30
+#: src/blocks/video-maxi/data.js:42
 #: src/components/toolbar/components/slider-settings/index.js:46
 msgid "Autoplay"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:52
+#: src/blocks/slider-maxi/data.js:28
 #: src/components/toolbar/components/slider-settings/index.js:55
 msgid "Pause on hover"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:59
+#: src/blocks/slider-maxi/data.js:29
 #: src/components/toolbar/components/slider-settings/index.js:62
 msgid "Pause on interaction"
 msgstr ""
@@ -3577,28 +4080,77 @@ msgstr ""
 msgid "Transition speed (ms)"
 msgstr ""
 
+#: src/blocks/slider-maxi/data.js:23
 #: src/blocks/slider-maxi/inspector.js:74
 #: src/components/toolbar/components/slider-settings/index.js:40
 msgid "Slider settings"
 msgstr ""
 
+#: src/blocks/slider-maxi/data.js:26
+#: src/blocks/video-maxi/components/video-options-control/index.js:51
+#: src/blocks/video-maxi/data.js:44
+#: src/components/background-control/videoLayer.js:238
+msgid "Loop"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:31
+msgid "Autoplay speed"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:32
+msgid "Transition type"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:33
+msgid "Transition speed"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:37
 #: src/blocks/slider-maxi/inspector.js:93
 msgid "Navigation"
 msgstr ""
 
+#: src/blocks/slider-maxi/data.js:42
+msgid "Arrows position"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:48
 #: src/blocks/slider-maxi/inspector.js:109
 msgid "Arrows"
 msgstr ""
 
+#: src/blocks/slider-maxi/data.js:50
+msgid "Arrow icons"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:53
+msgid "Arrow icons - hover"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:58
 #: src/blocks/slider-maxi/inspector.js:139
 msgid "Dots"
 msgstr ""
 
+#: src/blocks/slider-maxi/data.js:60
+msgid "Dot icons"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:63
+msgid "Dot icons - hover"
+msgstr ""
+
+#: src/blocks/slider-maxi/data.js:66
+msgid "Dot icons - active"
+msgstr ""
+
 #: src/blocks/svg-icon-maxi/components/svg-alt-control/index.js:16
+#: src/blocks/svg-icon-maxi/data.js:43
 msgid "Alt title"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/components/svg-alt-control/index.js:22
+#: src/blocks/svg-icon-maxi/data.js:44
 msgid "Alt description"
 msgstr ""
 
@@ -3648,27 +4200,64 @@ msgstr ""
 msgid "Icon line hover"
 msgstr ""
 
-#: src/blocks/svg-icon-maxi/data.js:183
-#: src/blocks/svg-icon-maxi/inspector.js:178
-msgid "Icon colour"
+#: src/blocks/svg-icon-maxi/data.js:37
+msgid "Icon content"
 msgstr ""
 
-#: src/blocks/svg-icon-maxi/data.js:242
-#: src/components/icon-control/index.js:610
-#: src/components/toolbar/components/icon-background/index.js:67
-msgid "Icon background"
-msgstr ""
-
-#: src/blocks/svg-icon-maxi/data.js:270
-msgid "Icon border"
-msgstr ""
-
+#: src/blocks/svg-icon-maxi/data.js:41
 #: src/blocks/svg-icon-maxi/inspector.js:164
 msgid "Icon alt"
 msgstr ""
 
+#: src/blocks/svg-icon-maxi/data.js:47
+#: src/blocks/svg-icon-maxi/data.js:186
+#: src/blocks/svg-icon-maxi/inspector.js:178
+msgid "Icon colour"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:49
+msgid "Icon hover status"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:50
+msgid "Fill colour"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:58
+msgid "Fill hover colour"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:63
+msgid "Line hover colour"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:70
 #: src/blocks/svg-icon-maxi/inspector.js:218
 msgid "Icon line width"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:76
+#: src/components/arrow-control/index.js:96
+#: src/components/background-control/backgroundLayersControl.js:316
+#: src/components/background-control/backgroundLayersControl.js:576
+#: src/components/toolbar/components/background-color/background-color.js:63
+#: src/components/toolbar/components/background-color/block-background-color.js:77
+msgid "Background colour"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:79
+msgid "Background color hover"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:82
+#: src/components/background-control/backgroundLayersControl.js:322
+#: src/components/background-control/backgroundLayersControl.js:588
+#: src/components/background-control/gradientLayer.js:42
+msgid "Background gradient"
+msgstr ""
+
+#: src/blocks/svg-icon-maxi/data.js:85
+msgid "Background gradient hover"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/inspector.js:268
@@ -3687,6 +4276,7 @@ msgid "Text indent"
 msgstr ""
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:233
+#: src/blocks/text-maxi/data.js:45
 msgid "List gap"
 msgstr ""
 
@@ -3785,11 +4375,85 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
+#: src/blocks/text-maxi/data.js:34
+msgid "Heading / Paragraph tag"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:35
 #: src/blocks/text-maxi/inspector.js:49
 msgid "List options"
 msgstr ""
 
+#: src/blocks/text-maxi/data.js:37
+msgid "List indent"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:41
+msgid "List indent unit"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:49
+msgid "List gap unit"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:53
+msgid "List paragraph spacing"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:57
+msgid "List paragraph spacing unit"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:65
+msgid "Marker size unit"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:69
+msgid "List marker indent"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:73
+msgid "List marker indent unit"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:77
+msgid "List marker line height"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:81
+msgid "List marker line height unit"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:85
+msgid "List colour"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:89
+msgid "List text position"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:93
+msgid "List type"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:94
+msgid "List style"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:95
+msgid "List style custom"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:96
+msgid "List start"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:97
+msgid "List reversed"
+msgstr ""
+
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:34
+#: src/blocks/video-maxi/data.js:68
 msgid "Lightbox background"
 msgstr ""
 
@@ -3798,6 +4462,7 @@ msgid "Video aspect ratio"
 msgstr ""
 
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:123
+#: src/blocks/video-maxi/data.js:76
 msgid "Pop animation"
 msgstr ""
 
@@ -3806,6 +4471,7 @@ msgid "Lightbox close button"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-control/index.js:42
+#: src/blocks/video-maxi/data.js:31
 #: src/blocks/video-maxi/inspector.js:63
 #: src/components/media-uploader-control/index.js:156
 msgid "Video"
@@ -3832,6 +4498,7 @@ msgid "End time (s)"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-control/index.js:137
+#: src/blocks/video-maxi/data.js:37
 msgid "Aspect ratio"
 msgstr ""
 
@@ -3848,32 +4515,27 @@ msgid "Icon spacing"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-options-control/index.js:41
+#: src/blocks/video-maxi/data.js:43
 msgid "Mute"
 msgstr ""
 
-#: src/blocks/video-maxi/components/video-options-control/index.js:51
-#: src/components/background-control/videoLayer.js:238
-msgid "Loop"
-msgstr ""
-
 #: src/blocks/video-maxi/components/video-options-control/index.js:61
+#: src/blocks/video-maxi/data.js:45
 msgid "Player controls"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:36
+#: src/blocks/video-maxi/data.js:82
 msgid "Overlay background"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:185
+#: src/blocks/video-maxi/data.js:81
 msgid "Hide image(icon only)"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:195
 msgid "Image overlay"
-msgstr ""
-
-#: src/blocks/video-maxi/components/video-overlay-control/index.js:222
-msgid "Image width"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:266
@@ -3884,12 +4546,59 @@ msgstr ""
 msgid "Image opacity"
 msgstr ""
 
+#: src/blocks/video-maxi/data.js:33
+msgid "Url"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:34
+msgid "Video type"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:35
+msgid "Start time"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:36
+msgid "End time"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:40
 #: src/blocks/video-maxi/inspector.js:77
 msgid "Video options"
 msgstr ""
 
+#: src/blocks/video-maxi/data.js:46
+#: src/components/background-control/videoLayer.js:263
+msgid "Reduce black borders"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:47
+msgid "Lightbox background colour"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:55
+msgid "Video overlay"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:57
+msgid "Overlay background colour"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:60
+msgid "Play button"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:66
 #: src/blocks/video-maxi/inspector.js:107
 msgid "Popup settings"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:72
+msgid "Close button"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:86
+msgid "Image source"
 msgstr ""
 
 #: src/blocks/video-maxi/inspector.js:130
@@ -3898,13 +4607,6 @@ msgstr ""
 
 #: src/blocks/video-maxi/inspector.js:138
 msgid "Play icon"
-msgstr ""
-
-#: src/blocks/video-maxi/inspector.js:170
-#: src/components/media-uploader-control/index.js:114
-#: src/components/media-uploader-control/index.js:155
-#: src/extensions/DC/constants.js:242
-msgid "Image"
 msgstr ""
 
 #: src/components/advanced-css-control/index.js:55
@@ -3928,24 +4630,12 @@ msgstr ""
 msgid "Please set a background colour layer to see the arrow."
 msgstr ""
 
-#: src/components/arrow-control/index.js:96
-#: src/components/background-control/backgroundLayersControl.js:316
-#: src/components/background-control/backgroundLayersControl.js:576
-#: src/components/toolbar/components/background-color/background-color.js:63
-#: src/components/toolbar/components/background-color/block-background-color.js:77
-msgid "Background colour"
-msgstr ""
-
 #: src/components/arrow-control/index.js:109
 msgid "Please ensure that the background colour is not the same as the page background colour."
 msgstr ""
 
 #: src/components/arrow-control/index.js:117
 msgid "Show arrow on boundary"
-msgstr ""
-
-#: src/components/arrow-control/index.js:176
-msgid "Arrow size"
 msgstr ""
 
 #: src/components/aspect-ratio-control/index.js:28
@@ -4008,12 +4698,6 @@ msgstr ""
 msgid "Background video"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:322
-#: src/components/background-control/backgroundLayersControl.js:588
-#: src/components/background-control/gradientLayer.js:42
-msgid "Background gradient"
-msgstr ""
-
 #: src/components/background-control/backgroundLayersControl.js:324
 #: src/components/background-control/backgroundLayersControl.js:592
 msgid "Background shape"
@@ -4021,12 +4705,6 @@ msgstr ""
 
 #: src/components/background-control/backgroundLayersControl.js:572
 msgid "Add new layer"
-msgstr ""
-
-#: src/components/background-control/colorLayer.js:192
-#: src/components/background-control/index.js:121
-#: src/editor/style-cards/maxiStyleCardsTab.js:594
-msgid "Background"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:69
@@ -4211,19 +4889,17 @@ msgstr ""
 msgid "Background fallback"
 msgstr ""
 
-#: src/components/background-control/videoLayer.js:263
-msgid "Reduce black borders"
-msgstr ""
-
 #: src/components/block-inserter/index.js:71
 msgid "Add block"
 msgstr ""
 
 #: src/components/block-styles-control/index.js:39
+#: src/editor/library/container.js:1571
 msgid "Dark"
 msgstr ""
 
 #: src/components/block-styles-control/index.js:40
+#: src/editor/library/container.js:1565
 msgid "Light"
 msgstr ""
 
@@ -4523,17 +5199,6 @@ msgstr ""
 
 #: src/components/divider-control/index.js:308
 msgid "Line radius"
-msgstr ""
-
-#: src/components/divider-control/index.js:411
-#: src/components/divider-control/index.js:486
-#: src/components/toolbar/components/divider-line/index.js:131
-msgid "Line size"
-msgstr ""
-
-#: src/components/divider-control/index.js:469
-#: src/components/divider-control/index.js:526
-msgid "Line weight"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:12
@@ -5782,10 +6447,6 @@ msgstr ""
 msgid "Flex direction"
 msgstr ""
 
-#: src/components/flex-settings-control/flex-wrap-control.js:51
-msgid "Flex wrap"
-msgstr ""
-
 #: src/components/flex-settings-control/index.js:77
 msgid "Flex-parent"
 msgstr ""
@@ -5929,10 +6590,6 @@ msgstr ""
 msgid "Icon background gradient"
 msgstr ""
 
-#: src/components/icon-control/index.js:748
-msgid "Icon padding"
-msgstr ""
-
 #: src/components/image-alt-control/index.js:47
 #: src/components/inspector-tabs/inspector-dc.js:20
 msgid "Dynamic content"
@@ -6053,10 +6710,6 @@ msgstr ""
 msgid "Enable box shadow active"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-callout-arrow.js:29
-msgid "Callout arrow"
-msgstr ""
-
 #: src/components/inspector-tabs/inspector-context-loop.js:19
 #: src/components/toolbar/components/context-loop/index.js:52
 msgid "Context loop"
@@ -6096,26 +6749,9 @@ msgstr ""
 msgid "Switch hover target to canvas"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-link-settings.js:39
-#: src/components/toolbar/components/link/index.js:128
-#: src/components/toolbar/components/text-link/index.js:293
-#: src/components/typography-control/index.js:91
-#: src/extensions/DC/constants.js:163
-#: src/extensions/DC/constants.js:178
-#: src/extensions/DC/constants.js:189
-#: src/extensions/text/formats/link/index.js:10
-msgid "Link"
-msgstr ""
-
 #: src/components/inspector-tabs/inspector-margin-padding.js:34
 #: src/extensions/relations/getCanvasSettings.js:212
 msgid "Margin / Padding"
-msgstr ""
-
-#: src/components/inspector-tabs/inspector-opacity.js:33
-#: src/components/opacity-control/index.js:56
-#: src/extensions/relations/getAdvancedSettings.js:79
-msgid "Opacity"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-opacity.js:54
@@ -6357,6 +6993,23 @@ msgstr ""
 
 #: src/components/prompt-control/tabs/generate-tab/index.js:79
 msgid " AI model"
+msgstr ""
+
+#: src/components/prompt-control/tabs/generate-tab/index.js:96
+msgid "Content type"
+msgstr ""
+
+#: src/components/prompt-control/tabs/generate-tab/index.js:102
+msgid "Tone"
+msgstr ""
+
+#: src/components/prompt-control/tabs/generate-tab/index.js:108
+msgid "Writing style"
+msgstr ""
+
+#: src/components/prompt-control/tabs/generate-tab/index.js:114
+#: src/extensions/DC/constants.js:155
+msgid "Language"
 msgstr ""
 
 #: src/components/prompt-control/tabs/generate-tab/index.js:142
@@ -6867,11 +7520,6 @@ msgstr ""
 msgid "Divider line"
 msgstr ""
 
-#: src/components/toolbar/components/divider-line/index.js:205
-#: src/components/toolbar/components/size/index.js:56
-msgid "Size"
-msgstr ""
-
 #: src/components/toolbar/components/duplicate/index.js:65
 msgid "Duplicate"
 msgstr ""
@@ -7281,6 +7929,18 @@ msgstr ""
 msgid "Extra heavy (950)"
 msgstr ""
 
+#: src/editor/auth/index.js:799
+msgid "MaxiBlocks Auth: Invalid email format provided"
+msgstr ""
+
+#: src/editor/auth/index.js:809
+msgid "Invalid email format"
+msgstr ""
+
+#: src/editor/auth/index.js:1188
+msgid "MaxiBlocks Toolbar Email Logout: Exception"
+msgstr ""
+
 #: src/editor/export/MaxiExportPopUp.js:320
 msgid "Export current page"
 msgstr ""
@@ -7289,31 +7949,61 @@ msgstr ""
 msgid "Download as JSON"
 msgstr ""
 
-#: src/editor/library/container.js:1181
+#: src/editor/library/container.js:217
+msgid "Filled"
+msgstr ""
+
+#: src/editor/library/container.js:218
+msgid "Shape"
+msgstr ""
+
+#: src/editor/library/container.js:219
+#: src/editor/style-cards/maxiStyleCardsTab.js:687
+msgid "Line"
+msgstr ""
+
+#: src/editor/library/container.js:1186
 msgid "Swap stock images for placeholders to save disk space"
 msgstr ""
 
-#: src/editor/library/container.js:1210
+#: src/editor/library/container.js:1215
 msgid "Tablet / iPad simulator | Viewport 768px x 1024px"
 msgstr ""
 
-#: src/editor/library/container.js:1219
+#: src/editor/library/container.js:1224
 msgid "Mobile / iPhone simulator | Viewport 390px x 844px"
 msgstr ""
 
-#: src/editor/library/container.js:1263
-#: src/editor/library/container.js:1382
-#: src/editor/library/container.js:1395
+#: src/editor/library/container.js:1268
+#: src/editor/library/container.js:1387
+#: src/editor/library/container.js:1400
 msgid "All icons"
 msgstr ""
 
-#: src/editor/library/container.js:1273
-#: src/editor/library/container.js:1307
-#: src/editor/library/container.js:1318
-#: src/editor/library/container.js:1327
-#: src/editor/library/container.js:1406
-#: src/editor/library/container.js:1417
+#: src/editor/library/container.js:1278
+#: src/editor/library/container.js:1312
+#: src/editor/library/container.js:1323
+#: src/editor/library/container.js:1332
+#: src/editor/library/container.js:1411
+#: src/editor/library/container.js:1422
 msgid "Find"
+msgstr ""
+
+#: src/editor/library/container.js:1283
+#: src/editor/library/container.js:1317
+#: src/editor/library/container.js:1416
+#: src/editor/library/container.js:1430
+#: src/editor/library/container.js:1582
+#: src/editor/library/container.js:1647
+msgid "Clear"
+msgstr ""
+
+#: src/editor/library/container.js:1507
+msgid "Blocks"
+msgstr ""
+
+#: src/editor/library/container.js:1519
+msgid "Playground"
 msgstr ""
 
 #: src/editor/library/MasonryItem.js:129
@@ -7330,31 +8020,43 @@ msgstr ""
 msgid "Select icon"
 msgstr ""
 
-#: src/editor/library/modal.js:334
+#: src/editor/library/modal.js:267
+msgid "Purchase code verification failed"
+msgstr ""
+
+#: src/editor/library/modal.js:274
+msgid "Unknown error"
+msgstr ""
+
+#: src/editor/library/modal.js:282
+msgid "Purchase code authentication error"
+msgstr ""
+
+#: src/editor/library/modal.js:340
 msgid "Browse style cards"
 msgstr ""
 
-#: src/editor/library/modal.js:358
+#: src/editor/library/modal.js:364
 msgid "Load shape library"
 msgstr ""
 
-#: src/editor/library/modal.js:369
+#: src/editor/library/modal.js:375
 msgid "Add Icon"
 msgstr ""
 
-#: src/editor/library/modal.js:370
+#: src/editor/library/modal.js:376
 msgid "Replace Icon"
 msgstr ""
 
-#: src/editor/library/modal.js:379
+#: src/editor/library/modal.js:385
 msgid "Add icon"
 msgstr ""
 
-#: src/editor/library/modal.js:380
+#: src/editor/library/modal.js:386
 msgid "Replace icon"
 msgstr ""
 
-#: src/editor/library/modal.js:390
+#: src/editor/library/modal.js:396
 msgid "Load icon library"
 msgstr ""
 
@@ -7521,10 +8223,6 @@ msgstr ""
 msgid "Icon globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:687
-msgid "Line"
-msgstr ""
-
 #: src/editor/style-cards/maxiStyleCardsTab.js:695
 msgid "Line hover"
 msgstr ""
@@ -7634,10 +8332,6 @@ msgstr ""
 
 #: src/extensions/DC/constants.js:154
 msgid "Admin email"
-msgstr ""
-
-#: src/extensions/DC/constants.js:155
-msgid "Language"
 msgstr ""
 
 #: src/extensions/DC/constants.js:162
@@ -7966,213 +8660,177 @@ msgstr ""
 msgid "Text custom"
 msgstr ""
 
-#: build/blocks/accordion-maxi/block.json
 #: src/blocks/accordion-maxi/block.json
 msgctxt "block title"
 msgid "Accordion Maxi"
 msgstr ""
 
-#: build/blocks/accordion-maxi/block.json
-#: build/blocks/pane-maxi/block.json
 #: src/blocks/accordion-maxi/block.json
 #: src/blocks/pane-maxi/block.json
 msgctxt "block description"
 msgid "Expand or collapse content inside of a panel"
 msgstr ""
 
-#: build/blocks/button-maxi/block.json
 #: src/blocks/button-maxi/block.json
 msgctxt "block title"
 msgid "Button Maxi"
 msgstr ""
 
-#: build/blocks/button-maxi/block.json
 #: src/blocks/button-maxi/block.json
 msgctxt "block description"
 msgid "Insert, modify or style a button"
 msgstr ""
 
-#: build/blocks/column-maxi/block.json
 #: src/blocks/column-maxi/block.json
 msgctxt "block title"
 msgid "Column Maxi"
 msgstr ""
 
-#: build/blocks/column-maxi/block.json
 #: src/blocks/column-maxi/block.json
 msgctxt "block description"
 msgid "Stack blocks vertically inside a column"
 msgstr ""
 
-#: build/blocks/container-maxi/block.json
 #: src/blocks/container-maxi/block.json
 msgctxt "block title"
 msgid "Container Maxi"
 msgstr ""
 
-#: build/blocks/container-maxi/block.json
 #: src/blocks/container-maxi/block.json
 msgctxt "block description"
 msgid "Wrap blocks within a container"
 msgstr ""
 
-#: build/blocks/divider-maxi/block.json
 #: src/blocks/divider-maxi/block.json
 msgctxt "block title"
 msgid "Divider Maxi"
 msgstr ""
 
-#: build/blocks/divider-maxi/block.json
 #: src/blocks/divider-maxi/block.json
 msgctxt "block description"
 msgid "Create a divider between visual elements"
 msgstr ""
 
-#: build/blocks/group-maxi/block.json
 #: src/blocks/group-maxi/block.json
 msgctxt "block title"
 msgid "Group Maxi"
 msgstr ""
 
-#: build/blocks/group-maxi/block.json
 #: src/blocks/group-maxi/block.json
 msgctxt "block description"
 msgid "Combine a set of blocks in a group"
 msgstr ""
 
-#: build/blocks/image-maxi/block.json
 #: src/blocks/image-maxi/block.json
 msgctxt "block title"
 msgid "Image Maxi"
 msgstr ""
 
-#: build/blocks/image-maxi/block.json
 #: src/blocks/image-maxi/block.json
 msgctxt "block description"
 msgid "Insert, modify or style an image"
 msgstr ""
 
-#: build/blocks/list-item-maxi/block.json
 #: src/blocks/list-item-maxi/block.json
 msgctxt "block title"
 msgid "List Item Maxi"
 msgstr ""
 
-#: build/blocks/list-item-maxi/block.json
 #: src/blocks/list-item-maxi/block.json
 msgctxt "block description"
 msgid "Create list items with numbers, bullets or icons"
 msgstr ""
 
-#: build/blocks/map-maxi/block.json
 #: src/blocks/map-maxi/block.json
 msgctxt "block title"
 msgid "Map Maxi (beta)"
 msgstr ""
 
-#: build/blocks/map-maxi/block.json
 #: src/blocks/map-maxi/block.json
 msgctxt "block description"
 msgid "Create a map with marker and description"
 msgstr ""
 
-#: build/blocks/number-counter-maxi/block.json
 #: src/blocks/number-counter-maxi/block.json
 msgctxt "block title"
 msgid "Number Counter Maxi"
 msgstr ""
 
-#: build/blocks/number-counter-maxi/block.json
 #: src/blocks/number-counter-maxi/block.json
 msgctxt "block description"
 msgid "Create a number counter"
 msgstr ""
 
-#: build/blocks/pane-maxi/block.json
 #: src/blocks/pane-maxi/block.json
 msgctxt "block title"
 msgid "Pane Maxi"
 msgstr ""
 
-#: build/blocks/row-maxi/block.json
 #: src/blocks/row-maxi/block.json
 msgctxt "block title"
 msgid "Row Maxi"
 msgstr ""
 
-#: build/blocks/row-maxi/block.json
 #: src/blocks/row-maxi/block.json
 msgctxt "block description"
 msgid "Organise blocks horizontally inside a row"
 msgstr ""
 
-#: build/blocks/search-maxi/block.json
 #: src/blocks/search-maxi/block.json
 msgctxt "block title"
 msgid "Search Maxi"
 msgstr ""
 
-#: build/blocks/search-maxi/block.json
 #: src/blocks/search-maxi/block.json
 msgctxt "block description"
 msgid "Add a search bar with icon"
 msgstr ""
 
-#: build/blocks/slide-maxi/block.json
 #: src/blocks/slide-maxi/block.json
 msgctxt "block title"
 msgid "Slide Maxi"
 msgstr ""
 
-#: build/blocks/slide-maxi/block.json
 #: src/blocks/slide-maxi/block.json
 msgctxt "block description"
 msgid "Sliding component of Slider Maxi"
 msgstr ""
 
-#: build/blocks/slider-maxi/block.json
 #: src/blocks/slider-maxi/block.json
 msgctxt "block title"
 msgid "Slider Maxi (beta)"
 msgstr ""
 
-#: build/blocks/slider-maxi/block.json
 #: src/blocks/slider-maxi/block.json
 msgctxt "block description"
 msgid "Create slider with blocks, controls and animations"
 msgstr ""
 
-#: build/blocks/svg-icon-maxi/block.json
 #: src/blocks/svg-icon-maxi/block.json
 msgctxt "block title"
 msgid "Icon Maxi"
 msgstr ""
 
-#: build/blocks/svg-icon-maxi/block.json
 #: src/blocks/svg-icon-maxi/block.json
 msgctxt "block description"
 msgid "Add icon or shape and style it"
 msgstr ""
 
-#: build/blocks/text-maxi/block.json
 #: src/blocks/text-maxi/block.json
 msgctxt "block title"
 msgid "Text Maxi"
 msgstr ""
 
-#: build/blocks/text-maxi/block.json
 #: src/blocks/text-maxi/block.json
 msgctxt "block description"
 msgid "Insert, modify or style text"
 msgstr ""
 
-#: build/blocks/video-maxi/block.json
 #: src/blocks/video-maxi/block.json
 msgctxt "block title"
 msgid "Video Maxi"
 msgstr ""
 
-#: build/blocks/video-maxi/block.json
 #: src/blocks/video-maxi/block.json
 msgctxt "block description"
 msgid "Insert a video with controls or lightbox"

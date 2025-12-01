@@ -133,19 +133,19 @@ const transition = {
 	...transitionDefault,
 	block: {
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: [overlayClass, videoClass],
 			property: ['border', 'border-radius'],
 			hoverProp: 'border-status-hover',
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: [overlayClass, videoClass],
 			property: 'box-shadow',
 			hoverProp: 'box-shadow-status-hover',
 		},
 		'overlay colour': {
-			title: 'Overlay colour',
+			title: __('Overlay colour', 'maxi-blocks'),
 			target: `${overlayClass}-background`,
 			property: 'background-color',
 			hoverProp: 'overlay-background-status-hover',

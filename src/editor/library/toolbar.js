@@ -183,7 +183,9 @@ const LibraryToolbar = props => {
 	// Listen for authentication events
 	useEffect(() => {
 		const handleAuthError = event => {
-			setAuthErrorMessage(event.detail.error || 'Authentication failed');
+			setAuthErrorMessage(
+				event.detail.error || __('Authentication failed', 'maxi-blocks')
+			);
 			setAuthMessage('');
 			setIsVerifying(false);
 		};
@@ -227,12 +229,12 @@ const LibraryToolbar = props => {
 	});
 
 	const buttons = [
-		{ label: 'Style Cards', value: 'styleCards' },
-		{ label: 'Pages', value: 'pages' },
-		{ label: 'Block Patterns', value: 'patterns' },
-		{ label: 'Global', value: 'global' },
-		{ label: 'Blocks', value: 'blocks' },
-		{ label: 'Preview', value: 'preview' },
+		{ label: __('Style Cards', 'maxi-blocks'), value: 'styleCards' },
+		{ label: __('Pages', 'maxi-blocks'), value: 'pages' },
+		{ label: __('Block Patterns', 'maxi-blocks'), value: 'patterns' },
+		{ label: __('Global', 'maxi-blocks'), value: 'global' },
+		{ label: __('Blocks', 'maxi-blocks'), value: 'blocks' },
+		{ label: __('Preview', 'maxi-blocks'), value: 'preview' },
 	];
 
 	function addClass(elements, className) {

@@ -192,19 +192,19 @@ const transition = {
 	...transitionDefault,
 	block: {
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
 		'clip path': {
-			title: 'Clip path',
+			title: __('Clip path', 'maxi-blocks'),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'clip-path',
 			hoverProp: 'clip-path-status-hover',

@@ -173,19 +173,19 @@ const transition = {
 	...transitionDefault,
 	block: {
 		typography: {
-			title: 'Typography',
+			title: __('Typography', 'maxi-blocks'),
 			target: contentClass,
 			property: false,
 			hoverProp: 'typography-status-hover',
 		},
 		'button background': {
-			title: 'Button background',
+			title: __('Button background', 'maxi-blocks'),
 			target: buttonClass,
 			property: 'background',
 			hoverProp: `${prefix}background-status-hover`,
 		},
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: buttonClass,
 			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,

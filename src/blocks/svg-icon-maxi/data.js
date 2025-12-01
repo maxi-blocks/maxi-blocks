@@ -153,13 +153,13 @@ const transition = {
 	...transitionDefault,
 	block: {
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: iconClass,
 			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: iconClass,
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,
@@ -172,7 +172,7 @@ const transition = {
 			disableWidth: true,
 		}),
 		background: {
-			title: 'Background',
+			title: __('Background', 'maxi-blocks'),
 			target: iconClass,
 			property: 'background',
 			hoverProp: `${prefix}background-status-hover`,
@@ -216,30 +216,6 @@ const interactionBuilderSettings = {
 					prefix: 'svg-',
 				}),
 		},
-		// TODO: fix #3619
-		// {
-		//  sid: 'ilw',
-		// 	label: __('Icon line width', 'maxi-blocks'),
-		// 	attrGroupName: 'svg',
-		// 	component: props => {
-		// 		const { attributes } = props;
-		// 		const { content } = attributes;
-
-		// 		return (
-		// 			<SvgStrokeWidthControl
-		// 				{...props}
-		// 				content={content}
-		// 				prefix='svg-'
-		// 			/>
-		// 		);
-		// 	},
-		// 	helper: props =>
-		// 		getSVGStyles({
-		// 			...props,
-		// 			target: ' .maxi-svg-icon-block__icon',
-		// 			prefix: 'svg-',
-		// 		}),
-		// },
 		{
 			sid: 'ibg',
 			label: __('Icon background', 'maxi-blocks'),

@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 
@@ -23,12 +24,12 @@ import { isEmpty } from 'lodash';
 
 export const getSiteInformation = AISettings => {
 	const AISettingsKeysToLabels = {
-		siteDescription: 'Description',
-		audience: 'Audience',
-		siteGoal: 'Goal',
-		services: 'Services Offered',
-		businessName: 'Business Name',
-		businessInfo: 'Business Info',
+		siteDescription: __('Description', 'maxi-blocks'),
+		audience: __('Audience', 'maxi-blocks'),
+		siteGoal: __('Goal', 'maxi-blocks'),
+		services: __('Services Offered', 'maxi-blocks'),
+		businessName: __('Business Name', 'maxi-blocks'),
+		businessInfo: __('Business Info', 'maxi-blocks'),
 	};
 
 	const siteInformation = Object.keys(AISettingsKeysToLabels)
@@ -36,7 +37,9 @@ export const getSiteInformation = AISettings => {
 		.map(key => `- ${AISettingsKeysToLabels[key]}: ${AISettings[key]}`)
 		.join('\n');
 
-	return siteInformation ? `Site Details:\n${siteInformation}` : '';
+	return siteInformation
+		? __(`Site Details:\n${siteInformation}`, 'maxi-blocks')
+		: '';
 };
 
 export const getContentAttributesSection = (

@@ -158,13 +158,13 @@ const transition = {
 	canvas: {
 		...transitionDefault.canvas,
 		typography: {
-			title: 'Typography',
+			title: __('Typography', 'maxi-blocks'),
 			target: [contentClass, `${contentClass} li`, `${contentClass} ol`],
 			property: false,
 			hoverProp: 'typography-status-hover',
 		},
 		link: {
-			title: 'Link',
+			title: __('Link', 'maxi-blocks'),
 			target: [linkClass, `${linkClass} span`],
 			property: 'color',
 		},

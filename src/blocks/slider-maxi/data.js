@@ -104,31 +104,31 @@ const customCss = {
 		),
 		'first arrow icon': {
 			normal: {
-				label: 'first arrow icon',
+				label: __('first arrow icon', 'maxi-blocks'),
 				target: ' .maxi-slider-block__arrow--prev svg',
 			},
 			hover: {
-				label: 'first arrow icon on hover',
+				label: __('first arrow icon on hover', 'maxi-blocks'),
 				target: ' .maxi-slider-block__arrow--prev:hover svg',
 			},
 		},
 		'second arrow icon': {
 			normal: {
-				label: 'second arrow icon',
+				label: __('second arrow icon', 'maxi-blocks'),
 				target: ' .maxi-slider-block__arrow--next svg',
 			},
 			hover: {
-				label: 'second arrow icon on hover',
+				label: __('second arrow icon on hover', 'maxi-blocks'),
 				target: ' .maxi-slider-block__arrow--next:hover svg',
 			},
 		},
 		'dot icon': {
 			normal: {
-				label: 'Each dot icon',
+				label: __('Each dot icon', 'maxi-blocks'),
 				target: ' .maxi-slider-block__dot svg',
 			},
 			hover: {
-				label: 'Each dot icon on hover',
+				label: __('Each dot icon on hover', 'maxi-blocks'),
 				target: ' .maxi-slider-block__dot:hover svg',
 			},
 		},

@@ -104,7 +104,7 @@ const transition = {
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: boxClass,
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,

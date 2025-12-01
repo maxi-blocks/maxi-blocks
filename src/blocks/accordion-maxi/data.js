@@ -73,295 +73,319 @@ const customCss = {
 		}),
 		'before accordion': {
 			normal: {
-				label: 'before',
+				label: __('before', 'maxi-blocks'),
 				target: '.maxi-accordion-block::before',
 			},
 			hover: {
-				label: '::before on hover',
+				label: __('::before on hover', 'maxi-blocks'),
 				target: '.maxi-accordion-block:hover::before',
 			},
 		},
 		'after accordion': {
 			normal: {
-				label: 'after',
+				label: __('after', 'maxi-blocks'),
 				target: '.maxi-accordion-block::after',
 			},
 			hover: {
-				label: '::after on hover',
+				label: __('::after on hover', 'maxi-blocks'),
 				target: '.maxi-accordion-block:hover::after',
 			},
 		},
 		pane: {
 			normal: {
-				label: 'pane',
+				label: __('pane', 'maxi-blocks'),
 				target: ' .maxi-pane-block',
 			},
 			hover: {
-				label: 'pane on hover',
+				label: __('pane on hover', 'maxi-blocks'),
 				target: ' .maxi-pane-block:hover',
 			},
 			active: {
-				label: 'pane on active state',
+				label: __('pane on active state', 'maxi-blocks'),
 				target: ` ${activePaneTarget}`,
 			},
 		},
 		'before pane': {
 			normal: {
-				label: 'pane ::before',
+				label: __('pane ::before', 'maxi-blocks'),
 				target: ' .maxi-pane-block::before',
 			},
 			hover: {
-				label: 'pane ::before on hover',
+				label: __('pane ::before on hover', 'maxi-blocks'),
 				target: ' .maxi-pane-block:hover::before',
 			},
 			active: {
-				label: 'pane ::before on active state',
+				label: __('pane ::before on active state', 'maxi-blocks'),
 				target: ` ${activePaneTarget}::before`,
 			},
 		},
 		'after pane': {
 			normal: {
-				label: 'pane ::after',
+				label: __('pane ::after', 'maxi-blocks'),
 				target: ' .maxi-pane-block::after',
 			},
 			hover: {
-				label: 'pane ::after on hover',
+				label: __('pane ::after on hover', 'maxi-blocks'),
 				target: ' .maxi-pane-block:hover::after',
 			},
 			active: {
-				label: 'pane ::after on active state',
+				label: __('pane ::after on active state', 'maxi-blocks'),
 				target: ` ${activePaneTarget}::after`,
 			},
 		},
 		'pane header': {
 			normal: {
-				label: 'pane header',
+				label: __('pane header', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header`,
 			},
 			hover: {
-				label: 'pane header on hover',
+				label: __('pane header on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header:hover`,
 			},
 			active: {
-				label: 'pane header on active state',
+				label: __('pane header on active state', 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__header`,
 			},
 		},
 		'before header': {
 			normal: {
-				label: 'pane header ::before',
+				label: __('pane header ::before', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header::before`,
 			},
 			hover: {
-				label: 'pane header ::before on hover',
+				label: __('pane header ::before on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header:hover::before`,
 			},
 			active: {
-				label: 'pane header ::before on active state',
+				label: __(
+					'pane header ::before on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget} .maxi-pane-block__header::before`,
 			},
 		},
 		'after header': {
 			normal: {
-				label: 'pane header ::after',
+				label: __('pane header ::after', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header::after`,
 			},
 			hover: {
-				label: 'pane header ::after on hover',
+				label: __('pane header ::after on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header:hover::after`,
 			},
 			active: {
-				label: 'pane header ::after on active state',
+				label: __('pane header ::after on active state', 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__header::after`,
 			},
 		},
 		'before header content': {
 			normal: {
-				label: 'pane header content::before',
+				label: __('pane header content::before', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header-content::before`,
 			},
 			hover: {
-				label: 'pane header content::before on hover',
+				label: __(
+					'pane header content::before on hover',
+					'maxi-blocks'
+				),
 				target: `${normalPaneTarget} .maxi-pane-block__header-content:hover::before`,
 			},
 			active: {
-				label: 'pane header content::before on active state',
+				label: __(
+					'pane header content::before on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget} .maxi-pane-block__header-content::before`,
 			},
 		},
 		'after header content': {
 			normal: {
-				label: 'pane header content::after',
+				label: __('pane header content::after', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header-content::after`,
 			},
 			hover: {
-				label: 'pane header content::after on hover',
+				label: __('pane header content::after on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header-content:hover::after`,
 			},
 			active: {
-				label: 'pane header content::after on active state',
+				label: __(
+					'pane header content::after on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget} .maxi-pane-block__header-content::after`,
 			},
 		},
 		'pane icon': {
 			normal: {
-				label: 'icon',
+				label: __('icon', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon`,
 			},
 			svg: {
-				label: "icon's svg",
+				label: __("icon's svg", 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon svg`,
 			},
 			insideSvg: {
-				label: 'everything inside svg (svg > *)',
+				label: __('everything inside svg (svg > *)', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon svg > *`,
 			},
 			path: {
-				label: "svg's path",
+				label: __("svg's path", 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon svg path`,
 			},
 			hover: {
-				label: 'icon on hover',
+				label: __('icon on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon:hover`,
 			},
 			hoverSvg: {
-				label: "icon's svg on hover",
+				label: __("icon's svg on hover", 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon:hover svg`,
 			},
 			hoverInsideSvg: {
-				label: 'everything inside svg on hover (:hover svg > *)',
+				label: __(
+					'everything inside svg on hover (:hover svg > *)',
+					'maxi-blocks'
+				),
 				target: `${normalPaneTarget} .maxi-pane-block__icon:hover svg > *`,
 			},
 			hoverPath: {
-				label: "svg's path on hover",
+				label: __("svg's path on hover", 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon:hover svg path`,
 			},
 			active: {
-				label: 'active icon',
+				label: __('active icon', 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__icon`,
 			},
 			activeSvg: {
-				label: "active icon's svg",
+				label: __("active icon's svg", 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__icon svg`,
 			},
 			activeInsideSvg: {
-				label: 'everything inside active svg (svg > *)',
+				label: __(
+					'everything inside active svg (svg > *)',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget} .maxi-pane-block__icon svg > *`,
 			},
 			activePath: {
-				label: "active svg's path",
+				label: __("active svg's path", 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__icon svg path`,
 			},
 		},
 		'before icon': {
 			normal: {
-				label: 'icon ::before',
+				label: __('icon ::before', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon::before`,
 			},
 			hover: {
-				label: 'icon ::before on hover',
+				label: __('icon ::before on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon:hover::before`,
 			},
 			active: {
-				label: 'icon ::before on active state',
+				label: __('icon ::before on active state', 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__icon::before`,
 			},
 		},
 		'after icon': {
 			normal: {
-				label: 'icon ::after',
+				label: __('icon ::after', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon::after`,
 			},
 			hover: {
-				label: 'icon ::after on hover',
+				label: __('icon ::after on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__icon:hover::after`,
 			},
 			active: {
-				label: 'icon ::after on active state',
+				label: __('icon ::after on active state', 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__icon::after`,
 			},
 		},
 		'pane content': {
 			normal: {
-				label: 'pane content',
+				label: __('pane content', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__content`,
 			},
 			hover: {
-				label: 'pane content on hover',
+				label: __('pane content on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__content:hover`,
 			},
 			active: {
-				label: 'pane content active state',
+				label: __('pane content active state', 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__content`,
 			},
 		},
 		'before content': {
 			normal: {
-				label: 'pane content ::before',
+				label: __('pane content ::before', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__content::before`,
 			},
 			hover: {
-				label: 'pane content ::before on hover',
+				label: __('pane content ::before on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__content:hover::before`,
 			},
 			active: {
-				label: 'pane content ::before on active state',
+				label: __(
+					'pane content ::before on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget} .maxi-pane-block__content::before`,
 			},
 		},
 		'after content': {
 			normal: {
-				label: 'pane content ::after',
+				label: __('pane content ::after', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__content::after`,
 			},
 			hover: {
-				label: 'pane content ::after on hover',
+				label: __('pane content ::after on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__content:hover::after`,
 			},
 			active: {
-				label: 'pane content ::after on active state',
+				label: __(
+					'pane content ::after on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget} .maxi-pane-block__content::after`,
 			},
 		},
 		'pane header content': {
 			normal: {
-				label: 'header content',
+				label: __('header content', 'maxi-blocks'),
 				target: ` ${normalPaneTarget} .maxi-pane-block__header-content`,
 			},
 			hover: {
-				label: 'header content on hover',
+				label: __('header content on hover', 'maxi-blocks'),
 				target: ` ${normalPaneTarget} .maxi-pane-block__header-content:hover`,
 			},
 			active: {
-				label: 'header content on active state',
+				label: __('header content on active state', 'maxi-blocks'),
 				target: ` ${activePaneTarget} .maxi-pane-block__header-content`,
 			},
 		},
 		'pane header line': {
 			normal: {
-				label: 'header line',
+				label: __('header line', 'maxi-blocks'),
 				target: ` ${normalPaneTarget} .maxi-pane-block__header-line`,
 			},
 			hover: {
-				label: 'header line on hover',
+				label: __('header line on hover', 'maxi-blocks'),
 				target: ` ${normalPaneTarget} .maxi-pane-block__header-line:hover`,
 			},
 			active: {
-				label: 'header line on active state',
+				label: __('header line on active state', 'maxi-blocks'),
 				target: ` ${activePaneTarget} .maxi-pane-block__header-line`,
 			},
 		},
 		'pane content line': {
 			normal: {
-				label: 'content line',
+				label: __('content line', 'maxi-blocks'),
 				target: ` ${normalPaneTarget} .maxi-pane-block__content-line`,
 			},
 			hover: {
-				label: 'content line on hover',
+				label: __('content line on hover', 'maxi-blocks'),
 				target: ` ${normalPaneTarget} .maxi-pane-block__content-line:hover`,
 			},
 			active: {
-				label: 'content line on active state',
+				label: __('content line on active state', 'maxi-blocks'),
 				target: ` ${activePaneTarget} .maxi-pane-block__content-line`,
 			},
 		},
@@ -396,19 +420,19 @@ const transition = {
 	...transitionDefault,
 	block: {
 		'header line': {
-			title: 'Header line',
+			title: __('Header line', 'maxi-blocks'),
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__line',
 			hoverProp: 'header-line-status-hover',
 			limitless: true,
 		},
 		'content line': {
-			title: 'Content line',
+			title: __('Content line', 'maxi-blocks'),
 			target: ' > .maxi-pane-block > .maxi-pane-block__content-wrapper > .maxi-pane-block__line-container .maxi-pane-block__line',
 			hoverProp: 'content-line-status-hover',
 			limitless: true,
 		},
 		'pane title': {
-			title: 'Pane title',
+			title: __('Pane title', 'maxi-blocks'),
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__title',
 			property: false,
 			hoverProp: [
@@ -417,7 +441,7 @@ const transition = {
 			],
 		},
 		'pane title background': {
-			title: 'Pane title background',
+			title: __('Pane title background', 'maxi-blocks'),
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__header-content',
 			property: 'background-color',
 			hoverProp: 'title-background-status-hover',

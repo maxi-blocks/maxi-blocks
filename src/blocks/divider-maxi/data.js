@@ -117,7 +117,7 @@ const transition = {
 	...transitionDefault,
 	block: {
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: dividerClass,
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,

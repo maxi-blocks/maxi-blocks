@@ -145,11 +145,6 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 true,
             );
 
-            // Enqueue the script in admin (block editor) - MUST be before wp_set_script_translations
-            if (is_admin()) {
-                wp_enqueue_script('maxi-blocks-block-editor');
-            }
-
             // Manually inject translations for the bundled script
             // WordPress's wp_set_script_translations() doesn't work with large bundled files,
             // so we inject the translations directly using the same method WordPress uses

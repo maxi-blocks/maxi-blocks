@@ -99,28 +99,33 @@ if (file_exists($json_file)) {
 }
 ```
 
-**For the dashboard** (`admin.min.js`) in `core/admin/class-maxi-dashboard.php` (lines 182-204):
+**For the dashboard** (`admin.min.js`) in `core/admin/class-maxi-dashboard.php` (lines 182-209):
 ```php
 $locale = get_locale();
-$json_file = plugin_dir_path(dirname(__FILE__)) . 'languages/maxi-blocks-' . $locale . '-' . md5('maxi-blocks/build/index.min.js') . '.json';
+$json_file = MAXI_PLUGIN_DIR_PATH . 'languages/maxi-blocks-' . $locale . '-' . md5('maxi-blocks/build/admin.min.js') . '.json';
 
 if (file_exists($json_file)) {
     $translations_json = file_get_contents($json_file);
     $translations_data = json_decode($translations_json, true);
 
     if ($translations_data && isset($translations_data['locale_data'])) {
-        wp_add_inline_script(
-            'maxi-blocks-block-editor',
-            sprintf(
-                '( function( domain, translations ) {
+        // Safely re-encode the JSON to prevent injection attacks
+        $safe_json = wp_json_encode($translations_data);
+
+        if ($safe_json !== false) {
+            // Build inline script by concatenation instead of sprintf to avoid corruption
+            $inline_script = '( function( domain, translations ) {
                     var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
                     localeData[""].domain = domain;
                     wp.i18n.setLocaleData( localeData, domain );
-                } )( "maxi-blocks", %s );',
-                $translations_json
-            ),
-            'before'
-        );
+                } )( "maxi-blocks", ' . $safe_json . ' );';
+
+            wp_add_inline_script(
+                'maxi-admin',
+                $inline_script,
+                'before'
+            );
+        }
     }
 }
 ```

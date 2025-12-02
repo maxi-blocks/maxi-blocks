@@ -38,7 +38,7 @@ export const getSiteInformation = AISettings => {
 		.join('\n');
 
 	return siteInformation
-		? __(`Site Details:\n${siteInformation}`, 'maxi-blocks')
+		? __('Site Details:', 'maxi-blocks') + '\n' + siteInformation
 		: '';
 };
 

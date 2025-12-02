@@ -2,7 +2,6 @@
 let activePollingEmail = null;
 
 document.addEventListener('DOMContentLoaded', function maxiAdmin() {
-	const __ = window.wp?.i18n?.__ ? window.wp.i18n.__ : text => text;
 	// &panel=documentation-support will open the tab in the accordion
 	const urlStr = window.location.href;
 	const url = new URL(urlStr);
@@ -579,7 +578,6 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 // License page functionality
 document.addEventListener('DOMContentLoaded', function () {
-	const __ = window.wp?.i18n?.__ ? window.wp.i18n.__ : text => text;
 	// Handle license validation (email or purchase code)
 	const validateButton = document.getElementById('maxi-validate-license');
 	const licenseInput = document.getElementById('maxi-license-input');
@@ -1269,338 +1267,221 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 	}
+});
 
-	const customFontsManager = document.getElementById(
-		'maxi-custom-fonts-manager'
+// Custom Fonts Manager with AJAX
+document.addEventListener('DOMContentLoaded', () => {
+	const submitBtn = document.getElementById('maxi-custom-font-submit');
+
+	if (!submitBtn) {
+		return;
+	}
+
+	// Check if wp.apiFetch is available
+	if (!window.wp || !window.wp.apiFetch) {
+		console.error('wp.apiFetch is not available');
+		return;
+	}
+
+	const noticeContainer = document.getElementById('maxi-custom-fonts-notice');
+	const fontsListContainer = document.querySelector(
+		'.maxi-custom-fonts-list'
 	);
 
-	// Lazy accessors to always read latest wp.* after it loads
-	const getApiFetch = () => window.wp?.apiFetch;
-	const getMediaLibrary = () => window.wp?.media;
+	const showNotice = (message, type = 'success') => {
+		if (!noticeContainer) {
+			return;
+		}
+		const noticeClass =
+			type === 'success'
+				? 'notice notice-success'
+				: 'notice notice-error';
+		noticeContainer.innerHTML = `<div class="${noticeClass} is-dismissible"><p>${message}</p></div>`;
+	};
 
-	if (customFontsManager) {
-		console.log(
-			JSON.stringify({
-				message: 'MaxiBlocks Custom Fonts: Initializing',
-				hasWp: !!window.wp,
-				hasMedia: !!window.wp?.media,
-				hasApiFetch: !!window.wp?.apiFetch,
-			})
-		);
+	const refreshFontsList = async () => {
+		if (!fontsListContainer) {
+			return;
+		}
 
-		const familyInput = document.getElementById('maxi-custom-fonts-family');
-		const weightInput = document.getElementById('maxi-custom-fonts-weight');
-		const styleSelect = document.getElementById('maxi-custom-fonts-style');
-		const selectButton = document.getElementById(
-			'maxi-custom-fonts-select-file'
-		);
-		const saveButton = document.getElementById('maxi-custom-fonts-save');
-		const selectedFile = document.getElementById(
-			'maxi-custom-fonts-selected-file'
-		);
-		const listElement = document.getElementById('maxi-custom-fonts-list');
-		const statusElement = document.getElementById(
-			'maxi-custom-fonts-status'
-		);
-
-		console.log(
-			JSON.stringify({
-				message: 'MaxiBlocks Custom Fonts: Elements found',
-				hasSelectButton: !!selectButton,
-				hasSaveButton: !!saveButton,
-				hasListElement: !!listElement,
-			})
-		);
-
-		let selectedAttachment = null;
-		let mediaFrame = null;
-
-		const setStatus = (message = '', type = '') => {
-			if (!statusElement) return;
-
-			statusElement.textContent = message;
-			statusElement.className = 'maxi-custom-fonts-status';
-			if (type) statusElement.classList.add(`is-${type}`);
-		};
-
-		const renderFonts = fonts => {
-			if (!listElement) return;
-
-			listElement.innerHTML = '';
-			const fontEntries = fonts ? Object.values(fonts) : [];
-			if (!fontEntries.length) {
-				const emptyItem = document.createElement('li');
-				emptyItem.className = 'maxi-custom-fonts-list__empty';
-				emptyItem.textContent = __(
-					'No custom fonts added yet.',
-					'maxi-blocks'
-				);
-				listElement.appendChild(emptyItem);
-				return;
-			}
-
-			fontEntries.forEach(font => {
-				const item = document.createElement('li');
-				item.className = 'maxi-custom-fonts-list__item';
-
-				const title = document.createElement('div');
-				title.className = 'maxi-custom-fonts-list__title';
-				title.textContent = font?.value ?? '';
-				item.appendChild(title);
-
-				if (Array.isArray(font?.variants) && font.variants.length) {
-					const variantsList = document.createElement('ul');
-					variantsList.className = 'maxi-custom-fonts-list__variants';
-
-					font.variants.forEach(variant => {
-						const variantItem = document.createElement('li');
-						const weight = variant?.weight ?? '400';
-						const style = variant?.style ?? 'normal';
-						variantItem.textContent = `${weight} / ${style}`;
-						variantsList.appendChild(variantItem);
-					});
-
-					item.appendChild(variantsList);
-				}
-
-				const actions = document.createElement('div');
-				actions.className = 'maxi-custom-fonts-list__actions';
-
-				const deleteButton = document.createElement('button');
-				deleteButton.type = 'button';
-				deleteButton.className = 'button-link-delete';
-				deleteButton.dataset.fontId = font?.id ?? '';
-				deleteButton.textContent = __('Remove', 'maxi-blocks');
-				actions.appendChild(deleteButton);
-
-				item.appendChild(actions);
-				listElement.appendChild(item);
+		try {
+			const fonts = await wp.apiFetch({
+				path: '/maxi-blocks/v1.0/fonts/custom',
 			});
-		};
 
-		const fetchCustomFonts = async () => {
-			const apiFetch = getApiFetch();
-			if (!apiFetch) {
-				setStatus(__('Initializing…', 'maxi-blocks'), 'loading');
-				setTimeout(fetchCustomFonts, 500);
-				return;
-			}
-			try {
-				setStatus(
-					__('Loading custom fonts…', 'maxi-blocks'),
-					'loading'
-				);
-				const fonts = await apiFetch({
-					path: 'maxi-blocks/v1.0/fonts/custom',
-				});
-				renderFonts(fonts);
-				setStatus('');
-			} catch (error) {
-				setStatus(
-					error?.message ||
-						__('Unable to load custom fonts.', 'maxi-blocks'),
-					'error'
-				);
-			}
-		};
+			const fontsArray = Object.values(fonts);
 
-		const resetForm = () => {
-			if (familyInput) familyInput.value = '';
-			if (weightInput) weightInput.value = '400';
-			if (styleSelect) styleSelect.value = 'normal';
-			if (selectedFile) selectedFile.textContent = '';
-			selectedAttachment = null;
-		};
-
-		const handleSelectFile = event => {
-			console.log(
-				JSON.stringify({
-					message: 'MaxiBlocks Custom Fonts: Button clicked',
-					hasEvent: !!event,
-				})
+			// Find or create the container element
+			let container = document.querySelector(
+				'.maxi-custom-fonts-list-container'
 			);
+			if (!container) {
+				container = fontsListContainer.parentElement;
+			}
 
-			event.preventDefault();
-
-			const mediaLibrary = getMediaLibrary();
-			console.log(
-				JSON.stringify({
-					message: 'MaxiBlocks Custom Fonts: Checking media library',
-					hasMediaLibrary: !!mediaLibrary,
-					hasWpMedia: !!window.wp?.media,
-					wpKeys: window.wp ? Object.keys(window.wp) : [],
-				})
-			);
-
-			if (!mediaLibrary) {
-				setStatus(
-					__('Media library is not available.', 'maxi-blocks'),
-					'error'
-				);
+			if (!fontsArray.length) {
+				container.innerHTML =
+					'<p>No custom fonts have been uploaded yet.</p>';
 				return;
 			}
 
-			if (mediaFrame) {
-				mediaFrame.open();
-				return;
-			}
+			let html = '';
 
-			mediaFrame = mediaLibrary({
-				title: __('Select font file', 'maxi-blocks'),
-				button: { text: __('Use this font', 'maxi-blocks') },
-				multiple: false,
-				library: {
-					type: [
-						'application/font-woff',
-						'application/font-woff2',
-						'font/ttf',
-						'application/x-font-ttf',
-						'font/otf',
-						'application/x-font-otf',
-					],
-				},
-			});
+			fontsArray.forEach(font => {
+				const family = font.value || '';
+				const variants = font.variants || [];
 
-			mediaFrame.on('select', () => {
-				const attachment = mediaFrame
-					.state()
-					.get('selection')
-					.first()
-					?.toJSON();
+				const variantRows = variants
+					.map(v => {
+						const weight = v.weight || '-';
+						const style = v.style || '-';
+						return `${weight} / ${style}`;
+					})
+					.join('<br>');
 
-				if (!attachment) return;
-
-				selectedAttachment = attachment;
-				if (selectedFile) {
-					selectedFile.textContent = attachment?.filename ?? '';
+				html += '<tr>';
+				html += `<td><strong>${family}</strong></td>`;
+				html += `<td>${variantRows || '—'}</td>`;
+				html += '<td>';
+				if (font.id) {
+					html += `<button type="button" class="button-link-delete maxi-delete-custom-font" data-font-id="${font.id}">Remove</button>`;
 				}
+				html += '</td></tr>';
 			});
 
-			mediaFrame.open();
-		};
-
-		const handleSave = async event => {
-			event.preventDefault();
-
-			if (!familyInput || !weightInput || !styleSelect) return;
-
-			const family = familyInput.value.trim();
-			const weight = weightInput.value.trim() || '400';
-			const style = styleSelect.value || 'normal';
-
-			const apiFetch = getApiFetch();
-			if (!apiFetch) {
-				setStatus(__('Initializing API…', 'maxi-blocks'), 'loading');
-				return;
+			// Only update tbody to preserve event listeners on delete buttons
+			const tbody = fontsListContainer.querySelector('tbody');
+			if (tbody) {
+				tbody.innerHTML = html;
+			} else {
+				// If table doesn't exist yet, create it
+				container.innerHTML = `
+					<table class="widefat striped maxi-custom-fonts-list">
+						<thead>
+							<tr>
+								<th>Font family</th>
+								<th>Variants</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>${html}</tbody>
+					</table>
+				`;
 			}
 
-			if (!family) {
-				setStatus(
-					__('Please provide a font family name.', 'maxi-blocks'),
-					'error'
-				);
-				return;
-			}
+			// Reattach handlers to new buttons
+			attachDeleteHandlers();
+		} catch (error) {
+			console.error('Error refreshing fonts list:', error);
+		}
+	};
 
-			if (!selectedAttachment?.id) {
-				setStatus(
-					__('Please choose a font file to upload.', 'maxi-blocks'),
-					'error'
-				);
-				return;
-			}
+	const handleDelete = async event => {
+		const { target: btn } = event;
+		const { fontId } = btn.dataset;
 
-			setStatus(__('Saving font…', 'maxi-blocks'), 'loading');
-			if (saveButton) saveButton.disabled = true;
+		if (!fontId) {
+			return;
+		}
 
+		// eslint-disable-next-line no-alert
+		if (!window.confirm('Are you sure you want to remove this font?')) {
+			return;
+		}
+
+		btn.disabled = true;
+		btn.textContent = 'Removing...';
+
+		try {
+			await wp.apiFetch({
+				path: `/maxi-blocks/v1.0/fonts/custom/${fontId}`,
+				method: 'DELETE',
+			});
+
+			showNotice('Custom font removed successfully.', 'success');
+			await refreshFontsList();
+		} catch (error) {
+			showNotice(error.message || 'Failed to remove font.', 'error');
+			btn.disabled = false;
+			btn.textContent = 'Remove';
+		}
+	};
+
+	function attachDeleteHandlers() {
+		document.querySelectorAll('.maxi-delete-custom-font').forEach(btn => {
+			btn.addEventListener('click', handleDelete);
+		});
+	}
+
+	// Handle button click
+	submitBtn.addEventListener('click', async () => {
+		const familyInput = document.getElementById('maxi-custom-font-family');
+		const fileInput = document.getElementById('maxi-custom-font-file');
+
+		if (!familyInput || !fileInput || !fileInput.files[0]) {
+			showNotice('Please fill in all required fields.', 'error');
+			return;
+		}
+
+		const family = familyInput.value.trim();
+		const file = fileInput.files[0];
+
+		if (!family) {
+			showNotice('Font family name is required.', 'error');
+			return;
+		}
+
+		// Disable submit button
+		submitBtn.disabled = true;
+		submitBtn.textContent = 'Uploading...';
+
+		try {
+			// First upload the file to media library
+			const formData = new FormData();
+			formData.append('file', file);
+
+			const attachment = await wp.apiFetch({
+				path: '/wp/v2/media',
+				method: 'POST',
+				body: formData,
+			});
+
+			// Then add it as a custom font
 			try {
-				await apiFetch({
-					path: 'maxi-blocks/v1.0/fonts/custom',
+				await wp.apiFetch({
+					path: '/maxi-blocks/v1.0/fonts/custom',
 					method: 'POST',
 					data: {
 						family,
-						variants: [
-							{
-								weight,
-								style,
-								attachment_id: selectedAttachment.id,
-							},
-						],
+						attachment_id: attachment.id,
 					},
 				});
 
-				setStatus(
-					__('Font added successfully.', 'maxi-blocks'),
-					'success'
-				);
-				resetForm();
-				await fetchCustomFonts();
-			} catch (error) {
-				const message =
-					error?.message ||
-					error?.data?.message ||
-					__('Unable to save the font.', 'maxi-blocks');
-				setStatus(message, 'error');
-			} finally {
-				if (saveButton) saveButton.disabled = false;
-			}
-		};
+				showNotice('Custom font added successfully!', 'success');
 
-		const handleDelete = async event => {
-			const target = event.target;
-			if (!target?.dataset?.fontId) return;
-			event.preventDefault();
+				// Clear inputs
+				familyInput.value = '';
+				fileInput.value = '';
 
-			const confirmed = window.confirm(
-				__('Are you sure you want to remove this font?', 'maxi-blocks')
-			);
-			if (!confirmed) return;
-
-			const fontId = target.dataset.fontId;
-			const apiFetch = getApiFetch();
-			if (!apiFetch) {
-				setStatus(__('Initializing API…', 'maxi-blocks'), 'loading');
-				return;
-			}
-			try {
-				setStatus(__('Removing font…', 'maxi-blocks'), 'loading');
-				await apiFetch({
-					path: `maxi-blocks/v1.0/fonts/custom/${fontId}`,
+				await refreshFontsList();
+			} catch (fontError) {
+				// Delete the uploaded attachment if font creation fails
+				await wp.apiFetch({
+					path: `/wp/v2/media/${attachment.id}`,
 					method: 'DELETE',
 				});
-				setStatus(__('Font removed.', 'maxi-blocks'), 'success');
-				await fetchCustomFonts();
-			} catch (error) {
-				const message =
-					error?.message ||
-					error?.data?.message ||
-					__('Unable to remove the font.', 'maxi-blocks');
-				setStatus(message, 'error');
+				throw fontError;
 			}
-		};
-
-		if (selectButton) {
-			selectButton.addEventListener('click', handleSelectFile);
-			console.log(
-				JSON.stringify({
-					message:
-						'MaxiBlocks Custom Fonts: Select button listener attached',
-				})
-			);
-		} else {
-			console.log(
-				JSON.stringify({
-					message:
-						'MaxiBlocks Custom Fonts: Select button not found!',
-				})
-			);
+		} catch (error) {
+			showNotice(error.message || 'Failed to upload font.', 'error');
+		} finally {
+			submitBtn.disabled = false;
+			submitBtn.textContent = 'Add custom font';
 		}
+	});
 
-		saveButton?.addEventListener('click', handleSave);
-		listElement?.addEventListener('click', handleDelete);
-
-		fetchCustomFonts();
-	}
+	// Initial attachment of delete handlers
+	attachDeleteHandlers();
 });
 
 // Network License Management for Multisite

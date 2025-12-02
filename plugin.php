@@ -322,6 +322,11 @@ if (class_exists('MaxiBlocks_StyleCards')) {
 }
 
 //======================================================================
+// MaxiBlocks Custom Fonts
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-custom-fonts.php';
+
+//======================================================================
 // MaxiBlocks Image Crop
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-image-crop.php';

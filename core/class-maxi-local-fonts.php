@@ -631,11 +631,10 @@ class MaxiBlocks_Local_Fonts
 
     /**
      * Detect font attributes for a given attachment.
+     * Returns an array of variants found in the font file.
      *
-     * @param int         $attachment_id
-     * @param string|int  $weight
-     * @param string|null $style
-     * @return array{weight:string,style:string}
+     * @param int $attachment_id
+     * @return array<int,array{weight:string,style:string}>|WP_Error Array of variants with weight/style
      */
     public function detect_font_attributes_from_attachment($attachment_id)
     {
@@ -648,15 +647,12 @@ class MaxiBlocks_Local_Fonts
             );
         }
 
-        $parsed = $this->parse_font_file_attributes($file_path);
-        if (is_wp_error($parsed)) {
-            return $parsed;
+        $variants = $this->parse_font_file_variants($file_path);
+        if (is_wp_error($variants)) {
+            return $variants;
         }
 
-        $weight = isset($parsed['weight']) ? $parsed['weight'] : '';
-        $style = isset($parsed['style']) ? $parsed['style'] : '';
-
-        if (!$weight || !$style) {
+        if (empty($variants)) {
             return new WP_Error(
                 'font_metadata_missing',
                 __('Unable to read required font metadata (weight/style).', 'maxi-blocks'),
@@ -664,10 +660,301 @@ class MaxiBlocks_Local_Fonts
             );
         }
 
-        return [
-            'weight' => $weight,
-            'style' => $style,
-        ];
+        return $variants;
+    }
+
+    /**
+     * Parse font file and extract all variants.
+     * Supports TrueType Collections (.ttc) and variable fonts.
+     *
+     * @param string $file_path
+     * @return array<int,array{weight:string,style:string}>|WP_Error
+     */
+    private function parse_font_file_variants($file_path)
+    {
+        if (!class_exists('\FontLib\Font')) {
+            return new WP_Error(
+                'font_parser_unavailable',
+                __('Font parsing library is not available.', 'maxi-blocks'),
+                ['status' => 500],
+            );
+        }
+
+        try {
+            $font = \FontLib\Font::load($file_path);
+
+            if (!$font) {
+                return new WP_Error(
+                    'font_load_failed',
+                    __('Unable to load the font file.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            // Check if this is a TrueType Collection (TTC file)
+            // Collection implements Iterator and Countable
+            if (is_a($font, 'FontLib\TrueType\Collection')) {
+                $font->parse();
+                $variants = [];
+                $font_count = $font->count();
+
+                for ($i = 0; $i < $font_count; $i++) {
+                    $sub_font = $font->getFont($i);
+                    if ($sub_font) {
+                        $sub_font->parse();
+                        $variant = $this->extract_variant_from_font($sub_font);
+                        if ($variant) {
+                            // Avoid duplicate weight/style combinations
+                            $key = $variant['weight'] . '_' . $variant['style'];
+                            if (!isset($variants[$key])) {
+                                $variants[$key] = $variant;
+                            }
+                        }
+                    }
+                }
+
+                return array_values($variants);
+            }
+
+            // Single font file (TrueType, OpenType, WOFF)
+            $font->parse();
+
+            // Check if it's a variable font and parse its axes
+            $variable_axes = $this->parse_variable_font_axes($file_path);
+
+            $variant = $this->extract_variant_from_font($font);
+
+            if (!$variant) {
+                return new WP_Error(
+                    'font_metadata_missing',
+                    __('Required font metadata is missing.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            // If it's a variable font, generate variants based on available axes
+            if (!empty($variable_axes)) {
+                return $this->generate_variable_font_variants_from_axes($variable_axes, $variant['style']);
+            }
+
+            return [$variant];
+        } catch (\Throwable $e) {
+            return new WP_Error(
+                'font_parser_failed',
+                __('Unable to parse the uploaded font file.', 'maxi-blocks'),
+                ['status' => 400],
+            );
+        }
+    }
+
+    /**
+     * Extract weight and style from a parsed font object.
+     *
+     * @param \FontLib\TrueType\File $font FontLib font object (must be parsed)
+     * @return array{weight:string,style:string}|null
+     */
+    private function extract_variant_from_font($font)
+    {
+        try {
+            $os2 = $font->getData('OS/2');
+
+            if (!is_array($os2) || empty($os2)) {
+                return null;
+            }
+
+            $weight_value = isset($os2['usWeightClass']) ? $os2['usWeightClass'] : null;
+            if (!$weight_value) {
+                return null;
+            }
+
+            $fs_selection = isset($os2['fsSelection']) ? (int) $os2['fsSelection'] : 0;
+            $style = 'normal';
+            if ($fs_selection & (1 << 9)) {
+                $style = 'oblique';
+            } elseif ($fs_selection & 1) {
+                $style = 'italic';
+            }
+
+            return [
+                'weight' => $this->normalize_font_weight_value($weight_value),
+                'style' => $this->normalize_font_style_value($style, false),
+            ];
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Parse the fvar table from a font file to detect variable axes.
+     *
+     * @param string $file_path
+     * @return array Associative array of axes with their min/max values, or empty if not variable
+     */
+    private function parse_variable_font_axes($file_path)
+    {
+        $axes = [];
+
+        try {
+            $handle = fopen($file_path, 'rb');
+            if (!$handle) {
+                return $axes;
+            }
+
+            // Read the first 4 bytes to check font type
+            $header = fread($handle, 4);
+
+            // For WOFF files, we can't easily read the fvar table
+            // Return empty and fall back to non-variable handling
+            if ($header === 'wOFF') {
+                fclose($handle);
+                return $axes;
+            }
+
+            // Skip TTC files for now (handled separately)
+            if ($header === 'ttcf') {
+                fclose($handle);
+                return $axes;
+            }
+
+            // Read number of tables (at offset 4)
+            fseek($handle, 4);
+            $num_tables = unpack('n', fread($handle, 2))[1];
+
+            // Skip to table directory (offset 12)
+            fseek($handle, 12);
+
+            // Find fvar table
+            $fvar_offset = 0;
+
+            for ($i = 0; $i < $num_tables; $i++) {
+                $tag = fread($handle, 4);
+                fread($handle, 4); // checksum
+                $offset = unpack('N', fread($handle, 4))[1];
+                fread($handle, 4); // length
+
+                if ($tag === 'fvar') {
+                    $fvar_offset = $offset;
+                    break;
+                }
+            }
+
+            if ($fvar_offset === 0) {
+                fclose($handle);
+                return $axes;
+            }
+
+            // Read fvar table header
+            fseek($handle, $fvar_offset);
+            fread($handle, 2); // majorVersion
+            fread($handle, 2); // minorVersion
+            $axes_offset = unpack('n', fread($handle, 2))[1];
+            fread($handle, 2); // reserved
+            $axis_count = unpack('n', fread($handle, 2))[1];
+            $axis_size = unpack('n', fread($handle, 2))[1];
+
+            // Read each axis
+            for ($i = 0; $i < $axis_count; $i++) {
+                $axis_start = $fvar_offset + $axes_offset + ($i * $axis_size);
+                fseek($handle, $axis_start);
+
+                $axis_tag = fread($handle, 4);
+                $min_value = $this->read_fixed($handle);
+                $default_value = $this->read_fixed($handle);
+                $max_value = $this->read_fixed($handle);
+
+                $axes[$axis_tag] = [
+                    'min' => $min_value,
+                    'default' => $default_value,
+                    'max' => $max_value,
+                ];
+            }
+
+            fclose($handle);
+        } catch (\Throwable $e) {
+            // Error parsing fvar, return empty axes
+        }
+
+        return $axes;
+    }
+
+    /**
+     * Read a Fixed (16.16) value from file handle.
+     *
+     * @param resource $handle
+     * @return float
+     */
+    private function read_fixed($handle)
+    {
+        $data = fread($handle, 4);
+        if (strlen($data) < 4) {
+            return 0;
+        }
+        $int_part = unpack('n', substr($data, 0, 2))[1];
+        $frac_part = unpack('n', substr($data, 2, 2))[1];
+
+        // Handle signed integer part
+        if ($int_part >= 32768) {
+            $int_part -= 65536;
+        }
+
+        return $int_part + ($frac_part / 65536);
+    }
+
+    /**
+     * Generate variants based on variable font axes.
+     *
+     * @param array  $axes Variable font axes with min/max values
+     * @param string $base_style The base style from OS/2 table
+     * @return array<int,array{weight:string,style:string}>
+     */
+    private function generate_variable_font_variants_from_axes($axes, $base_style)
+    {
+        $variants = [];
+        $weights = [];
+        $styles = [];
+
+        // Check for weight axis (wght)
+        if (isset($axes['wght'])) {
+            $min_weight = max(100, (int) round($axes['wght']['min'] / 100) * 100);
+            $max_weight = min(900, (int) round($axes['wght']['max'] / 100) * 100);
+
+            // Generate weights in increments of 100 within the range
+            for ($w = $min_weight; $w <= $max_weight; $w += 100) {
+                $weights[] = (string) $w;
+            }
+        }
+
+        // If no weight axis or empty, use default weight
+        if (empty($weights)) {
+            $weights[] = '400';
+        }
+
+        // Check for italic axis (ital)
+        if (isset($axes['ital']) && $axes['ital']['max'] >= 1) {
+            $styles[] = 'normal';
+            $styles[] = 'italic';
+        }
+        // Check for slant axis (slnt) - indicates oblique support
+        elseif (isset($axes['slnt']) && $axes['slnt']['min'] < 0) {
+            $styles[] = 'normal';
+            $styles[] = 'oblique';
+        }
+        // No style axis, use base style
+        else {
+            $styles[] = $base_style;
+        }
+
+        // Generate all combinations
+        foreach ($styles as $style) {
+            foreach ($weights as $weight) {
+                $variants[] = [
+                    'weight' => $weight,
+                    'style' => $style,
+                ];
+            }
+        }
+
+        return $variants;
     }
 
     /**

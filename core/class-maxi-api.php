@@ -4,6 +4,8 @@ require_once ABSPATH . 'wp-admin/includes/file.php';
 require_once ABSPATH . 'wp-admin/includes/media.php';
 require_once ABSPATH . 'wp-admin/includes/image.php';
 require_once plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-custom-fonts.php';
+
 /**
  * MaxiBlocks styles API
  */
@@ -466,46 +468,15 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function get_custom_fonts($request)
         {
-            $fonts = $this->get_custom_fonts_option();
-
-            $response = [];
-
-            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
-
-            foreach ($fonts as $font) {
-                $font_value = isset($font['value']) ? $font['value'] : '';
-
-                if (empty($font_value)) {
-                    continue;
-                }
-
-                $response[$font_value] = [
-                    'id' => $font['id'],
-                    'value' => $font_value,
-                    'files' => isset($font['files']) ? $font['files'] : [],
-                    'variants' => isset($font['variants'])
-                        ? $font['variants']
-                        : [],
-                    'source' => 'custom',
-                ];
-
-                $stylesheet = $local_fonts->get_or_create_custom_font_stylesheet_url(
-                    $font_value,
-                    $font
-                );
-
-                if ($stylesheet) {
-                    $response[$font_value]['stylesheet'] = $stylesheet;
-                }
-            }
-
-            return rest_ensure_response($response);
+            return rest_ensure_response(
+                MaxiBlocks_Custom_Fonts::get_fonts_indexed_by_value(),
+            );
         }
 
         public function create_custom_font($request)
         {
             $family = sanitize_text_field($request->get_param('family'));
-            $variants_param = $request->get_param('variants');
+            $attachment_id = $request->get_param('attachment_id');
 
             if (empty($family)) {
                 return new WP_Error(
@@ -515,81 +486,54 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }
 
-            if (!is_array($variants_param) || empty($variants_param)) {
+            if (empty($attachment_id) || !is_numeric($attachment_id)) {
                 return new WP_Error(
-                    'invalid_font_variants',
-                    __('At least one font file is required.', 'maxi-blocks'),
+                    'invalid_attachment_id',
+                    __('A valid font file attachment ID is required.', 'maxi-blocks'),
                     ['status' => 400],
                 );
             }
 
-            $fonts = $this->get_custom_fonts_option();
+            // Detect all font variants from uploaded attachment
+            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+            $detected_variants = $local_fonts->detect_font_attributes_from_attachment(
+                (int) $attachment_id,
+            );
 
-            $normalized_variants = [];
-            $files = [];
+            if (is_wp_error($detected_variants)) {
+                return $detected_variants;
+            }
 
-            foreach ($variants_param as $variant) {
-                $normalized = $this->normalize_font_variant($variant);
+            $attachment_url = wp_get_attachment_url($attachment_id);
+            if (!$attachment_url) {
+                return new WP_Error(
+                    'attachment_url_missing',
+                    __('Unable to retrieve attachment URL.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
 
-                if (is_wp_error($normalized)) {
-                    return $normalized;
-                }
-
-                if (empty($normalized)) {
-                    continue;
-                }
-
-                $files[$normalized['key']] = esc_url_raw($normalized['url']);
-                $normalized_variants[] = [
-                    'weight' => $normalized['weight'],
-                    'style' => $normalized['style'],
-                    'attachment_id' => $normalized['attachment_id'],
-                    'mime_type' => $normalized['mime_type'],
-                    'url' => $normalized['url'],
+            // Build variants array with all detected variants
+            $variants = [];
+            foreach ($detected_variants as $variant) {
+                $variants[] = [
+                    'weight' => $variant['weight'],
+                    'style' => $variant['style'],
+                    'url' => $attachment_url,
+                    'attachment_id' => (int) $attachment_id,
                 ];
             }
 
-            if (empty($files)) {
-                return new WP_Error(
-                    'invalid_font_files',
-                    __('No valid font files were provided.', 'maxi-blocks'),
-                    ['status' => 400],
-                );
-            }
-
-            $id = sanitize_title($family);
-            $original_id = $id;
-            $suffix = 2;
-
-            while (
-                isset($fonts[$id]) &&
-                strtolower($fonts[$id]['value']) !== strtolower($family)
-            ) {
-                $id = $original_id . '-' . $suffix;
-                $suffix++;
-            }
-
-            $fonts[$id] = [
-                'id' => $id,
-                'value' => $family,
-                'files' => $files,
-                'variants' => $normalized_variants,
-                'source' => 'custom',
-            ];
-
-            $this->persist_custom_fonts($fonts);
-
-            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
-            $stylesheet_url = $local_fonts->regenerate_custom_font_stylesheet(
+            $result = MaxiBlocks_Custom_Fonts::add_font_with_variants(
                 $family,
-                $fonts[$id]
+                $variants,
             );
 
-            if ($stylesheet_url) {
-                $fonts[$id]['stylesheet'] = $stylesheet_url;
+            if (is_wp_error($result)) {
+                return $result;
             }
 
-            return rest_ensure_response($fonts[$id]);
+            return rest_ensure_response($result);
         }
 
         public function delete_custom_font($request)
@@ -604,154 +548,13 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }
 
-            $fonts = $this->get_custom_fonts_option();
+            $result = MaxiBlocks_Custom_Fonts::delete_font($id);
 
-            if (!isset($fonts[$id])) {
-                return new WP_Error(
-                    'font_not_found',
-                    __('The requested font does not exist.', 'maxi-blocks'),
-                    ['status' => 404],
-                );
-            }
-
-            $font = $fonts[$id];
-
-            if (!empty($font['variants']) && is_array($font['variants'])) {
-                foreach ($font['variants'] as $variant) {
-                    if (!empty($variant['attachment_id'])) {
-                        wp_delete_attachment(
-                            (int) $variant['attachment_id'],
-                            true,
-                        );
-                    }
-                }
-            }
-
-            unset($fonts[$id]);
-            $this->persist_custom_fonts($fonts);
-
-            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
-            if (isset($font['value'])) {
-                $local_fonts->remove_custom_font_stylesheet($font['value']);
+            if (is_wp_error($result)) {
+                return $result;
             }
 
             return rest_ensure_response(['deleted' => $id]);
-        }
-
-        private function get_custom_fonts_option()
-        {
-            $fonts = get_option('maxi_blocks_custom_fonts', []);
-
-            if (!is_array($fonts)) {
-                $fonts = [];
-            }
-
-            return $fonts;
-        }
-
-        private function persist_custom_fonts(array $fonts)
-        {
-            update_option('maxi_blocks_custom_fonts', $fonts, false);
-        }
-
-        private function normalize_font_variant($variant)
-        {
-            if (!is_array($variant)) {
-                return [];
-            }
-
-            $attachment_id = isset($variant['attachment_id'])
-                ? absint($variant['attachment_id'])
-                : 0;
-
-            if (!$attachment_id) {
-                return [];
-            }
-
-            $attachment = get_post($attachment_id);
-
-            if (!$attachment || 'attachment' !== $attachment->post_type) {
-                return new WP_Error(
-                    'invalid_attachment',
-                    __('Invalid font attachment provided.', 'maxi-blocks'),
-                    ['status' => 400],
-                );
-            }
-
-            $mime_type = get_post_mime_type($attachment_id);
-
-            if (!$this->is_allowed_font_mime($mime_type)) {
-                return new WP_Error(
-                    'invalid_font_mime',
-                    __('Unsupported font file type.', 'maxi-blocks'),
-                    ['status' => 400],
-                );
-            }
-
-            $url = wp_get_attachment_url($attachment_id);
-
-            if (!$url) {
-                return new WP_Error(
-                    'missing_font_url',
-                    __('Unable to determine the font file URL.', 'maxi-blocks'),
-                    ['status' => 400],
-                );
-            }
-
-            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
-            $detected_attributes = $local_fonts->detect_font_attributes_from_attachment(
-                $attachment_id
-            );
-
-            if (is_wp_error($detected_attributes)) {
-                return $detected_attributes;
-            }
-
-            $weight = $detected_attributes['weight'];
-            $style = $detected_attributes['style'];
-
-            $key = $this->build_variant_key($weight, $style);
-
-            return [
-                'weight' => $weight,
-                'style' => $style,
-                'key' => $key,
-                'attachment_id' => $attachment_id,
-                'mime_type' => $mime_type,
-                'url' => $url,
-            ];
-        }
-
-        private function build_variant_key($weight, $style)
-        {
-            $weight = (string) $weight;
-            $style = strtolower($style);
-
-            if ('italic' === $style) {
-                return '400' === $weight || 'normal' === $weight
-                    ? 'italic'
-                    : $weight . 'italic';
-            }
-
-            return $weight ?: '400';
-        }
-
-        private function is_allowed_font_mime($mime_type)
-        {
-            $allowed_mimes = [
-                'font/ttf',
-                'font/otf',
-                'font/woff',
-                'font/woff2',
-                'application/font-sfnt',
-                'application/x-font-ttf',
-                'application/x-font-otf',
-                'application/font-woff',
-                'application/x-font-woff',
-                'application/x-font-woff2',
-            ];
-
-            return in_array($mime_type, $allowed_mimes, true);
         }
 
         /**

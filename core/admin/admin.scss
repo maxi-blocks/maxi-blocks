@@ -1571,70 +1571,108 @@ p.maxi-license-help-text {
 
 .maxi-custom-fonts-manager {
 	margin-top: 24px;
-	padding: 16px;
-	background: #fff;
-	border: 1px solid #e2e4e7;
-	border-radius: 8px;
+	// padding: 20px;
+	// background: #f8f9fa;
+	// border: 1px solid #e2e4e7;
+	// border-radius: 8px;
 
 	h4 {
 		margin-top: 0;
 		margin-bottom: 8px;
+		font-size: 15px;
+		font-weight: 600;
+		color: #1e1e1e;
 	}
 
-	p {
+	> p {
 		margin-top: 0;
+		margin-bottom: 16px;
+		color: #50575e;
+	}
+
+	#maxi-custom-fonts-notice {
+		margin-bottom: 12px;
+
+		.notice {
+			margin: 0;
+		}
 	}
 
 	.maxi-custom-fonts-form {
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
-		margin-bottom: 16px;
+		gap: 16px;
+		margin-bottom: 20px;
+		padding: 16px;
+		background: #fff;
+		border: 1px solid #e2e4e7;
+		border-radius: 6px;
+	}
 
-		&__field {
-			display: flex;
-			flex-direction: column;
-			gap: 4px;
+	.maxi-custom-fonts-field {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
 
-			span {
-				font-weight: 500;
-			}
-
-			input,
-			select {
-				max-width: 260px;
-			}
-
-			&--small input,
-			&--small select {
-				max-width: 120px;
-			}
+		label {
+			font-weight: 600;
+			font-size: 13px;
+			color: #1e1e1e;
 		}
 
-		&__group {
-			display: flex;
-			gap: 16px;
-			flex-wrap: wrap;
-		}
+		input[type='text'] {
+			width: 100%;
+			max-width: 400px;
+			padding: 8px 12px;
+			border: 1px solid #8c8f94;
+			border-radius: 4px;
+			font-size: 14px;
+			transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
-		&__actions {
-			display: flex;
-			align-items: center;
-			gap: 12px;
-			flex-wrap: wrap;
+			&:focus {
+				border-color: #3858e9;
+				box-shadow: 0 0 0 1px #3858e9;
+				outline: none;
+			}
 
-			.maxi-custom-fonts-selected-file {
-				font-style: italic;
-				color: #3c434a;
+			&::placeholder {
+				color: #a7aaad;
 			}
 		}
 
-		&__submit {
-			display: flex;
-			align-items: center;
-			gap: 12px;
-			flex-wrap: wrap;
+		input[type='file'] {
+			padding: 8px 0;
+			font-size: 13px;
+			cursor: pointer;
+
+			&::file-selector-button {
+				padding: 6px 12px;
+				margin-right: 12px;
+				background: #f0f0f1;
+				border: 1px solid #8c8f94;
+				border-radius: 4px;
+				font-size: 13px;
+				cursor: pointer;
+				transition: background 0.15s ease, border-color 0.15s ease;
+
+				&:hover {
+					background: #e0e0e0;
+					border-color: #50575e;
+				}
+			}
 		}
+
+		.description {
+			margin: 4px 0 0;
+			font-size: 12px;
+			color: #646970;
+		}
+	}
+
+	#maxi-custom-font-submit {
+		align-self: flex-start;
+		padding: 8px 16px;
+		font-size: 13px;
 	}
 
 	.maxi-custom-fonts-status {
@@ -1653,45 +1691,89 @@ p.maxi-license-help-text {
 		}
 	}
 
-	.maxi-custom-fonts-list {
-		list-style: none;
+	.maxi-custom-fonts-empty {
+		color: #646970;
+		font-style: italic;
 		margin: 0;
-		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
+		padding: 16px;
+		background: #fff;
+		border: 1px dashed #c3c4c7;
+		border-radius: 6px;
+		text-align: center;
+	}
 
-		&__empty {
-			color: #3c434a;
-			font-style: italic;
-		}
+	.maxi-custom-fonts-list {
+		margin-top: 16px;
+		border-radius: 6px;
+		overflow: hidden;
+		table-layout: fixed;
+		width: 100%;
 
-		&__item {
-			border: 1px solid #e2e4e7;
-			border-radius: 6px;
-			padding: 12px;
-			background: #f6f7f7;
-		}
-
-		&__title {
+		thead th {
+			background: #f0f0f1;
 			font-weight: 600;
-			margin-bottom: 6px;
-		}
+			font-size: 13px;
+			padding: 10px 12px;
+			text-align: left;
 
-		&__variants {
-			list-style: disc;
-			margin: 0 0 8px 20px;
-			padding: 0;
+			&:nth-child(1) {
+				width: 35%;
+			}
 
-			li {
-				margin: 0;
-				padding: 0;
+			&:nth-child(2),
+			&:nth-child(3) {
+				width: 22%;
+			}
+
+			&:nth-child(4) {
+				width: 21%;
 			}
 		}
 
-		&__actions {
-			display: flex;
-			justify-content: flex-end;
+		tbody td {
+			padding: 12px;
+			font-size: 13px;
+			vertical-align: middle;
+
+			&:first-child {
+				max-width: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+
+				strong {
+					display: block;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+			}
+		}
+
+		.maxi-font-weights,
+		.maxi-font-styles {
+			display: inline-block;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+				sans-serif;
+		}
+
+		.button-link-delete {
+			color: #d63638;
+			text-decoration: none;
+			cursor: pointer;
+			background: none;
+			border: none;
+			padding: 4px 8px;
+			font-size: 13px;
+			transition: color 0.15s ease;
+
+			&:hover {
+				color: #a81f21;
+			}
+
+			&:disabled {
+				color: #a7aaad;
+				cursor: not-allowed;
+			}
 		}
 	}
 }

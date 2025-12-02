@@ -1331,17 +1331,40 @@ document.addEventListener('DOMContentLoaded', () => {
 				const family = font.value || '';
 				const variants = font.variants || [];
 
-				const variantRows = variants
-					.map(v => {
-						const weight = v.weight || '-';
-						const style = v.style || '-';
-						return `${weight} / ${style}`;
-					})
-					.join('<br>');
+				// Collect unique weights and styles
+				const weights = [];
+				const styles = [];
+
+				variants.forEach(v => {
+					const weight = v.weight || '';
+					const style = v.style || '';
+
+					if (weight && !weights.includes(weight)) {
+						weights.push(weight);
+					}
+					if (style && !styles.includes(style)) {
+						styles.push(style);
+					}
+				});
+
+				// Sort weights numerically
+				weights.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+
+				const weightsHtml = weights.length
+					? `<span class="maxi-font-weights">${weights.join(
+							', '
+					  )}</span>`
+					: '—';
+				const stylesHtml = styles.length
+					? `<span class="maxi-font-styles">${styles.join(
+							', '
+					  )}</span>`
+					: '—';
 
 				html += '<tr>';
 				html += `<td><strong>${family}</strong></td>`;
-				html += `<td>${variantRows || '—'}</td>`;
+				html += `<td>${weightsHtml}</td>`;
+				html += `<td>${stylesHtml}</td>`;
 				html += '<td>';
 				if (font.id) {
 					html += `<button type="button" class="button-link-delete maxi-delete-custom-font" data-font-id="${font.id}">Remove</button>`;
@@ -1360,7 +1383,8 @@ document.addEventListener('DOMContentLoaded', () => {
 						<thead>
 							<tr>
 								<th>Font family</th>
-								<th>Variants</th>
+								<th>Weights</th>
+								<th>Styles</th>
 								<th>Actions</th>
 							</tr>
 						</thead>

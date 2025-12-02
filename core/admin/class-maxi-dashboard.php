@@ -1500,11 +1500,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
             }
 
-            $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
-            $this->add_hidden_api_fields();
-
-            $content .= '</form>'; // Close main settings form before custom fonts
-
             $content .=
                 '<div class="maxi-custom-fonts-manager" id="maxi-custom-fonts-manager">';
             $content .= '<h4>' . __('Custom fonts', 'maxi-blocks') . '</h4>';
@@ -1521,37 +1516,44 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<div class="maxi-custom-fonts-form">';
             $content .= '<div class="maxi-custom-fonts-field">';
             $content .=
-                '<label for="maxi-custom-font-family"><strong>' .
+                '<label for="maxi-custom-font-family">' .
                 esc_html__('Font family name', 'maxi-blocks') .
-                '</strong></label>';
+                '</label>';
             $content .=
-                '<input type="text" id="maxi-custom-font-family" name="maxi_custom_font_family" class="regular-text">';
+                '<input type="text" id="maxi-custom-font-family" name="maxi_custom_font_family" class="regular-text" placeholder="' .
+                esc_attr__('Enter font family name', 'maxi-blocks') .
+                '">';
             $content .= '</div>';
 
             $content .= '<div class="maxi-custom-fonts-field">';
             $content .=
-                '<label for="maxi-custom-font-file"><strong>' .
+                '<label for="maxi-custom-font-file">' .
                 esc_html__('Font file', 'maxi-blocks') .
-                '</strong></label>';
+                '</label>';
             $content .=
                 '<input type="file" id="maxi-custom-font-file" name="maxi_custom_font_file" accept=".ttf,.otf,.woff,.woff2">';
             $content .=
                 '<p class="description">' .
                 __(
-                    'Supported file types: TTF, OTF, WOFF and WOFF2.',
+                    'Supported file types: TTF, OTF, WOFF.',
                     'maxi-blocks',
                 ) .
                 '</p>';
             $content .= '</div>';
 
             $content .=
-                '<p><button type="button" class="button button-primary" id="maxi-custom-font-submit">' .
+                '<button type="button" class="button button-primary" id="maxi-custom-font-submit">' .
                 esc_html__('Add custom font', 'maxi-blocks') .
-                '</button></p>';
+                '</button>';
             $content .= '</div>';
 
             $content .= $this->get_custom_fonts_list_markup();
             $content .= '</div>';
+
+            $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
+            $this->add_hidden_api_fields();
+
+            $content .= '</form>';
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -1630,7 +1632,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             $fonts = MaxiBlocks_Custom_Fonts::get_fonts_indexed_by_value();
             if (!is_array($fonts) || empty($fonts)) {
-                return '<p>' .
+                return '<p class="maxi-custom-fonts-empty">' .
                     esc_html__(
                         'No custom fonts have been uploaded yet.',
                         'maxi-blocks',
@@ -1644,7 +1646,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '<th>' .
                 esc_html__('Font family', 'maxi-blocks') .
                 '</th><th>' .
-                esc_html__('Variants', 'maxi-blocks') .
+                esc_html__('Weights', 'maxi-blocks') .
+                '</th><th>' .
+                esc_html__('Styles', 'maxi-blocks') .
                 '</th><th>' .
                 esc_html__('Actions', 'maxi-blocks') .
                 '</th></tr></thead><tbody>';
@@ -1655,22 +1659,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     ? $font['variants']
                     : [];
 
-                $variant_rows = [];
+                $weights = [];
+                $styles = [];
+
                 foreach ($variants as $variant) {
                     $weight = isset($variant['weight']) ? $variant['weight'] : '';
                     $style = isset($variant['style']) ? $variant['style'] : '';
-                    if (!$weight && !$style) {
-                        continue;
-                    }
 
-                    $variant_rows[] =
-                        esc_html($weight ?: '-') .
-                        ' / ' .
-                        esc_html($style ?: '-');
+                    if ($weight && !in_array($weight, $weights, true)) {
+                        $weights[] = $weight;
+                    }
+                    if ($style && !in_array($style, $styles, true)) {
+                        $styles[] = $style;
+                    }
                 }
 
-                $variants_html = $variant_rows
-                    ? implode('<br>', $variant_rows)
+                // Sort weights numerically
+                usort($weights, function ($a, $b) {
+                    return intval($a) - intval($b);
+                });
+
+                $weights_html = !empty($weights)
+                    ? '<span class="maxi-font-weights">' . esc_html(implode(', ', $weights)) . '</span>'
+                    : esc_html__('—', 'maxi-blocks');
+
+                $styles_html = !empty($styles)
+                    ? '<span class="maxi-font-styles">' . esc_html(implode(', ', $styles)) . '</span>'
                     : esc_html__('—', 'maxi-blocks');
 
                 $html .= '<tr>';
@@ -1678,11 +1692,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     '<td><strong>' .
                     esc_html($family) .
                     '</strong></td><td>' .
-                    $variants_html .
+                    $weights_html .
+                    '</td><td>' .
+                    $styles_html .
                     '</td><td>';
 
                 if (!empty($font['id'])) {
-                    var_dump('data-font-id="' . esc_attr($font['id']) . '">');
                     $html .=
                         '<button type="button" class="button-link-delete maxi-delete-custom-font" data-font-id="' . esc_attr($font['id']) . '">' .
                         esc_html__('Remove', 'maxi-blocks') .

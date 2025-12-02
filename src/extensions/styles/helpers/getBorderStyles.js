@@ -33,12 +33,6 @@ const getBorderStyles = ({
 }) => {
 	const response = {};
 
-	// Clean `palette-sc-status` traces on obj. This is an MVP, considering future implementation of
-	// #4679 will implement a new border style helper.
-	Object.keys(obj).forEach(key => {
-		if (key.includes('palette-sc-status')) delete obj[key];
-	});
-
 	const hoverStatus = obj[`${prefix}border-status-hover`];
 	const {
 		'hover-border-color-global': isActive,
@@ -97,6 +91,14 @@ const getBorderStyles = ({
 			blockStyle,
 		});
 	};
+	// Pre-compute regex patterns and object entries once
+	// Filter out palette-sc-status keys to avoid them appearing in CSS
+	const hoverSuffix = isHover ? '-hover' : '';
+	const replacerCache = {};
+	const objEntries = Object.entries(obj).filter(
+		([key]) => !key.includes('palette-sc-status')
+	);
+
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
@@ -109,18 +111,21 @@ const getBorderStyles = ({
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 		omitBorderStyle = omitBorderStyle ? isBorderNone : false;
 
-		const replacer = new RegExp(
-			`\\b-${breakpoint}${
-				isHover ? '-hover' : ''
-			}\\b(?!.*\\b-${breakpoint}${isHover ? '-hover' : ''}\\b)`,
-			'gm'
-		);
+		// Cache regex per breakpoint
+		if (!replacerCache[breakpoint]) {
+			replacerCache[breakpoint] = new RegExp(
+				`\\b-${breakpoint}${hoverSuffix}\\b(?!.*\\b-${breakpoint}${hoverSuffix}\\b)`,
+				'gm'
+			);
+		}
+		const replacer = replacerCache[breakpoint];
 
-		Object.entries(obj).forEach(([key, rawValue]) => {
+		objEntries.forEach(([key, rawValue]) => {
 			const newKey = prefix ? key.replace(prefix, '') : key;
+			const breakpointSuffix = `-${breakpoint}${hoverSuffix}`;
 			const includesBreakpoint =
-				newKey.lastIndexOf(`-${breakpoint}${isHover ? '-hover' : ''}`) +
-					`-${breakpoint}${isHover ? '-hover' : ''}`.length ===
+				newKey.lastIndexOf(breakpointSuffix) +
+					breakpointSuffix.length ===
 				newKey.length;
 			const newLabel = newKey.replace(replacer, '');
 			const value = getLastBreakpointAttribute({

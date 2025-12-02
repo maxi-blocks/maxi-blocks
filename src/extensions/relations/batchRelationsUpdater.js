@@ -57,10 +57,8 @@ class BatchRelationsUpdater {
 		const editor = dispatch('core/block-editor');
 		const blockEditor = select('core/block-editor');
 
-		// Mark all updates as non-persistent upfront
-		editor.__unstableMarkNextChangeAsNotPersistent();
-
 		// Process all updates in sequence (they'll be batched by React)
+		// Mark each update as non-persistent to exclude from undo history
 		for (const [
 			blockTriggerClientId,
 			{ newRelations },
@@ -70,6 +68,8 @@ class BatchRelationsUpdater {
 				const blockAttributes =
 					blockEditor.getBlockAttributes(blockTriggerClientId);
 				if (blockAttributes) {
+					// Mark this specific update as non-persistent
+					editor.__unstableMarkNextChangeAsNotPersistent();
 					editor.updateBlockAttributes(blockTriggerClientId, {
 						relations: newRelations,
 					});

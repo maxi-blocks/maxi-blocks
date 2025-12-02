@@ -6,7 +6,8 @@
  * - build/index.min.js (editor)
  * - build/admin.min.js (dashboard)
  *
- * Usage:
+ * Usage (must be run from the languages directory):
+ *   cd languages
  *   php generate-translations.php           # Process all available locales
  *   php generate-translations.php es_ES     # Process only Spanish
  *   php generate-translations.php es_ES de_DE fr_FR  # Process multiple specific locales

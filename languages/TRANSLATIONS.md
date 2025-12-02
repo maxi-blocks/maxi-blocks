@@ -32,17 +32,19 @@ MaxiBlocks uses a streamlined approach to handle JavaScript translations for bun
 - Click "Save"
 
 ### 2. Regenerate the JavaScript JSON files
-Run this command from the plugin directory:
+Run this command from the `languages` directory:
 ```bash
-php languages/generate-translations.php
+cd languages
+php generate-translations.php
 ```
 
 This will automatically process all available `.po` files in the languages folder.
 
 Or specify one or more specific locales:
 ```bash
-php languages/generate-translations.php es_ES
-php languages/generate-translations.php es_ES de_DE fr_FR
+cd languages
+php generate-translations.php es_ES
+php generate-translations.php es_ES de_DE fr_FR
 ```
 
 This will:
@@ -213,11 +215,13 @@ The script automatically processes all available translation files by default:
 
 ```bash
 # Process all available locales
-php languages/generate-translations.php
+cd languages
+php generate-translations.php
 
 # Process specific locale(s)
-php languages/generate-translations.php de_DE
-php languages/generate-translations.php es_ES fr_FR it_IT
+cd languages
+php generate-translations.php de_DE
+php generate-translations.php es_ES fr_FR it_IT
 ```
 
 The script will auto-detect all `maxi-blocks-*.po` files when run without arguments.

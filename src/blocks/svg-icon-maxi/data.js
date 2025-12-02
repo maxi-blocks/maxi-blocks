@@ -52,7 +52,7 @@ const copyPasteMapping = {
 					isPalette: true,
 				},
 				[__('Line colour', 'maxi-blocks')]: {
-					label: 'svg-line',
+					props: 'svg-line',
 					isPalette: true,
 				},
 				[__('Fill hover colour', 'maxi-blocks')]: {

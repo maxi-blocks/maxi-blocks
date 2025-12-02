@@ -28,7 +28,7 @@ const copyPasteMapping = {
 		[__('Configure map', 'maxi-blocks')]: {
 			group: {
 				[__('Map provider', 'maxi-blocks')]: 'map-provider',
-				[__('Minium zoom', 'maxi-blocks')]: 'map-min-zoom',
+				[__('Minimum zoom', 'maxi-blocks')]: 'map-min-zoom',
 				[__('Maximum zoom', 'maxi-blocks')]: 'map-max-zoom',
 			},
 		},

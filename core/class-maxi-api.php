@@ -33,6 +33,11 @@ if (!class_exists('MaxiBlocks_API')):
         }
 
         /**
+         * Cache key for unique IDs transient
+         */
+        private const UNIQUE_IDS_CACHE_KEY = 'maxi_blocks_unique_ids_cache';
+
+        /**
          * Variables
          */
         private $version;
@@ -1169,8 +1174,7 @@ if (!class_exists('MaxiBlocks_API')):
         {
             // OPTIMIZATION: Use WordPress transient caching to reduce DB queries
             // Cache expires after 1 hour or when invalidated on post save/delete
-            $cache_key = 'maxi_blocks_unique_ids_cache';
-            $cached_results = get_transient($cache_key);
+            $cached_results = get_transient(self::UNIQUE_IDS_CACHE_KEY);
 
             if ($cached_results !== false) {
                 return $cached_results;
@@ -1181,8 +1185,12 @@ if (!class_exists('MaxiBlocks_API')):
             $db_css_table_name = $wpdb->prefix . 'maxi_blocks_styles_blocks';
 
             // Get all block_style_id values in a single optimized query
+            // Using $wpdb->prepare() to prevent SQL injection
             $results = $wpdb->get_col(
-                "SELECT block_style_id FROM {$db_css_table_name} WHERE block_style_id != 'temporary'"
+                $wpdb->prepare(
+                    "SELECT block_style_id FROM {$db_css_table_name} WHERE block_style_id != %s",
+                    'temporary'
+                )
             );
 
             if (!$results) {
@@ -1190,7 +1198,7 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             // Cache for 1 hour (3600 seconds)
-            set_transient($cache_key, $results, 3600);
+            set_transient(self::UNIQUE_IDS_CACHE_KEY, $results, 3600);
 
             return $results;
         }
@@ -1228,7 +1236,7 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public function invalidate_unique_ids_cache()
         {
-            delete_transient('maxi_blocks_unique_ids_cache');
+            delete_transient(self::UNIQUE_IDS_CACHE_KEY);
         }
 
         public function get_active_integration_plugins()

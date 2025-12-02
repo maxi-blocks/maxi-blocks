@@ -638,12 +638,12 @@ class MaxiBlocks_QuickStart
 					</div>
 				</div>
 			</div>
-		<?php
-		    /* translators: %s: current theme name */ else: ?>
+		<?php else: ?>
 			<h3 class="description">
 				<?php printf(
+				    /* translators: %s: Current theme name */
 				    esc_html__('Your current theme: %s', 'maxi-blocks'),
-				    esc_html($current_theme->get('Name')),
+				    esc_html($current_theme->get('Name'))
 				); ?>
 			</h3>
 			<p class="description">

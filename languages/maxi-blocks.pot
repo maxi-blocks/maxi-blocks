@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-01T14:40:48+00:00\n"
+"POT-Creation-Date: 2025-12-02T17:10:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: plugin.php
-#: core/class-maxi-blocks.php:427
+#: core/class-maxi-blocks.php:422
 msgid "MaxiBlocks"
 msgstr ""
 
@@ -36,184 +36,184 @@ msgstr ""
 msgid "https://maxiblocks.com/go/plugin-author"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:254
-#: core/admin/class-maxi-dashboard.php:296
+#: core/admin/class-maxi-dashboard.php:259
+#: core/admin/class-maxi-dashboard.php:301
 msgid "Validating..."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:258
+#: core/admin/class-maxi-dashboard.php:263
 msgid "Please add your API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:262
+#: core/admin/class-maxi-dashboard.php:267
 msgid "Invalid API Key, please check your key and try again"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:266
+#: core/admin/class-maxi-dashboard.php:271
 msgid "Referer not allowed, please allow your domain for that key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:270
+#: core/admin/class-maxi-dashboard.php:275
 msgid "Only alphabet, number, \"_\", \"$\", \".\", \"[\", and \"]\" are allowed in the API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:274
+#: core/admin/class-maxi-dashboard.php:279
 msgid "Error validating API Key, please try again later"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:279
+#: core/admin/class-maxi-dashboard.php:284
 msgid "Loading available models..."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:283
+#: core/admin/class-maxi-dashboard.php:288
 msgid "No models available - check API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:287
+#: core/admin/class-maxi-dashboard.php:292
 msgid "Error loading models"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:292
+#: core/admin/class-maxi-dashboard.php:297
 msgid "Please enter an email or purchase code"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:300
-#: core/admin/class-maxi-dashboard.php:3107
+#: core/admin/class-maxi-dashboard.php:305
+#: core/admin/class-maxi-dashboard.php:3132
 #: core/admin/starter-sites/src/library/toolbar.js:490
 #: src/editor/library/toolbar.js:817
 msgid "The email is not valid"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:304
+#: core/admin/class-maxi-dashboard.php:309
 msgid "Email authentication started. Please complete login in the new tab."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:308
+#: core/admin/class-maxi-dashboard.php:313
 msgid "Failed to initiate email authentication"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:312
+#: core/admin/class-maxi-dashboard.php:317
 msgid "Failed to validate license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:316
+#: core/admin/class-maxi-dashboard.php:321
 msgid "Successfully authenticated with MaxiBlocks account!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:320
+#: core/admin/class-maxi-dashboard.php:325
 msgid "Please log into your MaxiBlocks account to complete activation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:325
+#: core/admin/class-maxi-dashboard.php:330
 #: core/admin/starter-sites/src/library/toolbar.js:335
 #: src/editor/library/toolbar.js:685
 msgid "Click to show"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:329
+#: core/admin/class-maxi-dashboard.php:334
 #: core/admin/starter-sites/src/library/toolbar.js:331
 #: src/editor/library/toolbar.js:684
 msgid "Click to hide"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:334
+#: core/admin/class-maxi-dashboard.php:339
 msgid "Signing out..."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:338
+#: core/admin/class-maxi-dashboard.php:343
 msgid "Sign out"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:342
+#: core/admin/class-maxi-dashboard.php:347
 msgid "Activating…"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:346
+#: core/admin/class-maxi-dashboard.php:351
 msgid "Deactivating…"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:350
+#: core/admin/class-maxi-dashboard.php:355
 #: src/editor/style-cards/maxiStyleCardsEditor.js:839
 msgid "Activate"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:355
+#: core/admin/class-maxi-dashboard.php:360
 msgid "Are you sure you want to deactivate the network license? This will affect all sites in the network."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:359
+#: core/admin/class-maxi-dashboard.php:364
 msgid "Only email authentication is allowed when a network license is active."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:363
+#: core/admin/class-maxi-dashboard.php:368
 msgid "Activate network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:367
+#: core/admin/class-maxi-dashboard.php:372
 msgid "Deactivate network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:371
+#: core/admin/class-maxi-dashboard.php:376
 msgid "Failed to sign out"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:375
+#: core/admin/class-maxi-dashboard.php:380
 msgid "Please enter a purchase code"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:379
+#: core/admin/class-maxi-dashboard.php:384
 msgid "Network error occurred"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:436
-#: core/admin/class-maxi-dashboard.php:601
+#: core/admin/class-maxi-dashboard.php:441
+#: core/admin/class-maxi-dashboard.php:606
 msgid "Welcome"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:444
-#: core/admin/class-maxi-dashboard.php:445
-#: core/admin/class-maxi-dashboard.php:603
-#: core/admin/class-maxi-dashboard.php:986
+#: core/admin/class-maxi-dashboard.php:449
+#: core/admin/class-maxi-dashboard.php:450
+#: core/admin/class-maxi-dashboard.php:608
+#: core/admin/class-maxi-dashboard.php:991
 #: core/admin/quick-start/class-maxi-quick-start.php:93
 #: core/admin/quick-start/class-maxi-quick-start.php:345
 msgid "Quick start"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:453
-#: core/admin/class-maxi-dashboard.php:454
-#: core/admin/class-maxi-dashboard.php:608
-#: core/admin/class-maxi-dashboard.php:1838
+#: core/admin/class-maxi-dashboard.php:458
+#: core/admin/class-maxi-dashboard.php:459
+#: core/admin/class-maxi-dashboard.php:613
+#: core/admin/class-maxi-dashboard.php:1847
 #: core/admin/starter-sites/src/library/toolbar.js:302
 msgid "Starter sites"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:464
-#: core/admin/class-maxi-dashboard.php:465
-#: core/admin/class-maxi-dashboard.php:612
-#: core/admin/class-maxi-dashboard.php:1550
+#: core/admin/class-maxi-dashboard.php:469
+#: core/admin/class-maxi-dashboard.php:470
+#: core/admin/class-maxi-dashboard.php:617
+#: core/admin/class-maxi-dashboard.php:1559
 msgid "Maxi AI"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:475
-#: core/admin/class-maxi-dashboard.php:476
-#: core/admin/class-maxi-dashboard.php:613
+#: core/admin/class-maxi-dashboard.php:480
+#: core/admin/class-maxi-dashboard.php:481
+#: core/admin/class-maxi-dashboard.php:618
 #: core/admin/status-report/maxi-system-status-report.php:104
 msgid "System status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:486
-#: core/admin/class-maxi-dashboard.php:487
-#: core/admin/class-maxi-dashboard.php:526
-#: core/admin/class-maxi-dashboard.php:617
-#: core/admin/class-maxi-dashboard.php:764
+#: core/admin/class-maxi-dashboard.php:491
+#: core/admin/class-maxi-dashboard.php:492
+#: core/admin/class-maxi-dashboard.php:531
+#: core/admin/class-maxi-dashboard.php:622
+#: core/admin/class-maxi-dashboard.php:769
 #: core/admin/quick-start/class-maxi-quick-start.php:105
 msgid "License"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:497
-#: core/admin/class-maxi-dashboard.php:498
-#: core/admin/class-maxi-dashboard.php:618
-#: core/admin/class-maxi-dashboard.php:1234
+#: core/admin/class-maxi-dashboard.php:502
+#: core/admin/class-maxi-dashboard.php:503
+#: core/admin/class-maxi-dashboard.php:623
+#: core/admin/class-maxi-dashboard.php:1239
 #: src/blocks/accordion-maxi/inspector.js:88
 #: src/blocks/button-maxi/inspector.js:207
 #: src/blocks/column-maxi/inspector.js:40
@@ -239,13 +239,13 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:636
-#: core/admin/class-maxi-dashboard.php:761
+#: core/admin/class-maxi-dashboard.php:641
+#: core/admin/class-maxi-dashboard.php:766
 msgid "MaxiBlocks Logo"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:681
-#: core/admin/class-maxi-dashboard.php:773
+#: core/admin/class-maxi-dashboard.php:686
+#: core/admin/class-maxi-dashboard.php:778
 #: core/admin/quick-start/class-maxi-quick-start.php:328
 #: core/admin/starter-sites/src/library/container.js:485
 #: core/admin/starter-sites/src/library/modal.js:152
@@ -253,566 +253,568 @@ msgstr ""
 msgid "Get Cloud"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:824
+#: core/admin/class-maxi-dashboard.php:829
 msgid "Network Cloud license active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:825
+#: core/admin/class-maxi-dashboard.php:830
 msgid "Cloud access is active network-wide. All sites in the network have access to Cloud features."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:827
-#: core/admin/class-maxi-dashboard.php:879
+#: core/admin/class-maxi-dashboard.php:832
+#: core/admin/class-maxi-dashboard.php:884
 msgid "Activate network Cloud license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:828
-#: core/admin/class-maxi-dashboard.php:874
+#: core/admin/class-maxi-dashboard.php:833
+#: core/admin/class-maxi-dashboard.php:879
 msgid "Enter a purchase code to activate Cloud access for the entire network."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:837
+#: core/admin/class-maxi-dashboard.php:842
 msgid "Network license status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:837
+#: core/admin/class-maxi-dashboard.php:842
 msgid "Network license activation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:844
-#: core/admin/class-maxi-dashboard.php:2434
+#: core/admin/class-maxi-dashboard.php:849
+#: core/admin/class-maxi-dashboard.php:2443
 #: core/admin/quick-start/class-maxi-quick-start.php:906
 msgid "Status:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:845
-#: core/admin/class-maxi-dashboard.php:2435
+#: core/admin/class-maxi-dashboard.php:850
+#: core/admin/class-maxi-dashboard.php:2444
 #: core/admin/quick-start/class-maxi-quick-start.php:907
 msgid "Licensed to:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:846
+#: core/admin/class-maxi-dashboard.php:851
 msgid "Main domain:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:847
-#: core/admin/class-maxi-dashboard.php:2483
+#: core/admin/class-maxi-dashboard.php:852
+#: core/admin/class-maxi-dashboard.php:2496
 msgid "License type:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:852
+#: core/admin/class-maxi-dashboard.php:857
 msgid "Deactivate network Cloud license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:857
+#: core/admin/class-maxi-dashboard.php:862
 msgid "How network licensing works:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:859
+#: core/admin/class-maxi-dashboard.php:864
 msgid "All sites in the network have Cloud access automatically"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:860
+#: core/admin/class-maxi-dashboard.php:865
 msgid "Individual site license tabs will show network license status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:861
+#: core/admin/class-maxi-dashboard.php:866
 msgid "Purchase codes cannot be activated on individual sites when network license is active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:867
-#: core/admin/class-maxi-dashboard.php:2510
+#: core/admin/class-maxi-dashboard.php:872
+#: core/admin/class-maxi-dashboard.php:2523
 #: core/admin/quick-start/class-maxi-quick-start.php:927
 msgid "Current status:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:873
+#: core/admin/class-maxi-dashboard.php:878
 msgid "Network purchase code"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:875
+#: core/admin/class-maxi-dashboard.php:880
 msgid "Note: Network licensing only supports purchase codes from marketplaces. MaxiBlocks email accounts and MaxiBlocks license keys must be activated on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:888
+#: core/admin/class-maxi-dashboard.php:893
 msgid "Network licensing benefits:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:890
+#: core/admin/class-maxi-dashboard.php:895
 msgid "One purchase code activates Cloud for all sites in the network"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:891
+#: core/admin/class-maxi-dashboard.php:896
 msgid "No need to activate individual sites separately"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:892
+#: core/admin/class-maxi-dashboard.php:897
 msgid "Centralized license management from the network admin"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:959
+#: core/admin/class-maxi-dashboard.php:964
 msgid "Hello, "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:961
+#: core/admin/class-maxi-dashboard.php:966
 msgid "Hello, friend"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:967
+#: core/admin/class-maxi-dashboard.php:972
 msgid "Let's get set up so you can start designing straight away."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:974
+#: core/admin/class-maxi-dashboard.php:979
 msgid "Just a few quick steps, and you're ready to go!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:992
+#: core/admin/class-maxi-dashboard.php:997
 msgid "Create new page"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1013
+#: core/admin/class-maxi-dashboard.php:1018
 msgid "Learn by watching"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1016
+#: core/admin/class-maxi-dashboard.php:1021
 msgid "Watch quick tutorials to get the most out of MaxiBlocks. Learn tips, tricks and best practices to build faster and smarter."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1028
+#: core/admin/class-maxi-dashboard.php:1033
 msgid "Understanding full site editing in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1032
+#: core/admin/class-maxi-dashboard.php:1037
 msgid "Learn what full site editing (FSE) is in WordPress and how it changes the way you design and customize your website using blocks."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1043
+#: core/admin/class-maxi-dashboard.php:1048
 msgid "Step-by-step: how to add a new page in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1047
+#: core/admin/class-maxi-dashboard.php:1052
 msgid "A quick guide to creating and managing new pages in WordPress, perfect for beginners looking to build their site."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1058
+#: core/admin/class-maxi-dashboard.php:1063
 msgid "How to set a page as your homepage in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1062
+#: core/admin/class-maxi-dashboard.php:1067
 msgid "Want a custom homepage? This tutorial shows you how to set any page as your homepage in just a few clicks."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1073
+#: core/admin/class-maxi-dashboard.php:1078
 msgid "How to edit and customise the footer in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1077
+#: core/admin/class-maxi-dashboard.php:1082
 msgid "Need to change the footer? This guide helps you through the steps to edit and personalize your footer section."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1088
+#: core/admin/class-maxi-dashboard.php:1093
 msgid "How to create and manage navigation menus in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1092
+#: core/admin/class-maxi-dashboard.php:1097
 msgid "Design your site's main navigation. Learn how to create and organize your WordPress for a better user experience."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1103
+#: core/admin/class-maxi-dashboard.php:1108
 msgid "How to add and format content in WordPress"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1107
+#: core/admin/class-maxi-dashboard.php:1112
 msgid "Learn how to add text, images, and other content to your WordPress pages and posts. A guide to create engaging layouts."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1142
+#: core/admin/class-maxi-dashboard.php:1147
 msgid "More videos"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1157
+#: core/admin/class-maxi-dashboard.php:1162
 msgid "Need Help"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1159
+#: core/admin/class-maxi-dashboard.php:1164
 msgid "Need help?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1162
+#: core/admin/class-maxi-dashboard.php:1167
 msgid "We're here for you. Get the support you need!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1169
+#: core/admin/class-maxi-dashboard.php:1174
 msgid "Read the blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1179
+#: core/admin/class-maxi-dashboard.php:1184
 msgid "Never Miss an Update"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1182
+#: core/admin/class-maxi-dashboard.php:1187
 msgid "Never miss an update"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1185
+#: core/admin/class-maxi-dashboard.php:1190
 msgid "Get new patterns, tips, and updates—no spam."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1192
+#: core/admin/class-maxi-dashboard.php:1197
 msgid "Notify me"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1204
+#: core/admin/class-maxi-dashboard.php:1209
 msgid "Share Your Thoughts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1207
+#: core/admin/class-maxi-dashboard.php:1212
 msgid "Share your thoughts!"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1210
+#: core/admin/class-maxi-dashboard.php:1215
 msgid "Love us? Leave a review and help others discover it."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1217
+#: core/admin/class-maxi-dashboard.php:1222
 msgid "Give a review"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1237
+#: core/admin/class-maxi-dashboard.php:1242
 msgid "Customise MaxiBlocks, manage fonts, APIs, and access support."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1255
+#: core/admin/class-maxi-dashboard.php:1260
 msgid "Editor preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1260
+#: core/admin/class-maxi-dashboard.php:1265
 msgid "Hide interface tooltips"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1263
+#: core/admin/class-maxi-dashboard.php:1268
 msgid "Hide tooltips on mouse-hover."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1268
+#: core/admin/class-maxi-dashboard.php:1273
 msgid "Hide resizable handles in Site Editor"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1271
+#: core/admin/class-maxi-dashboard.php:1276
 msgid "Hide resizable handles in Site Editor for templates part editor and patterns editor."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1276
+#: core/admin/class-maxi-dashboard.php:1281
 msgid "Hide Gutenberg native responsive preview"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1279
+#: core/admin/class-maxi-dashboard.php:1284
 msgid "Hide the native Gutenberg responsive preview dropdown in the editor."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1283
-#: core/admin/class-maxi-dashboard.php:1359
-#: core/admin/class-maxi-dashboard.php:1469
+#: core/admin/class-maxi-dashboard.php:1288
+#: core/admin/class-maxi-dashboard.php:1364
+#: core/admin/class-maxi-dashboard.php:1478
 #: src/editor/style-cards/maxiStyleCardsEditor.js:830
 msgid "Save changes"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1290
+#: core/admin/class-maxi-dashboard.php:1295
 msgid "Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1296
+#: core/admin/class-maxi-dashboard.php:1301
 msgid "Create Google Maps API key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1300
+#: core/admin/class-maxi-dashboard.php:1305
 msgid "To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1307
+#: core/admin/class-maxi-dashboard.php:1312
 msgid "To create an API key, you will need to do the following:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1315
+#: core/admin/class-maxi-dashboard.php:1320
 msgid "Create a Google Cloud Platform account, if you don't already have one."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1322
+#: core/admin/class-maxi-dashboard.php:1327
 msgid "Create a new Google Cloud Platform project."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1329
+#: core/admin/class-maxi-dashboard.php:1334
 msgid "Enable Google Maps Platform APIs."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1332
+#: core/admin/class-maxi-dashboard.php:1337
 msgid "Generate an API key."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1336
+#: core/admin/class-maxi-dashboard.php:1341
 msgid "To make this process easy, launch"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1340
+#: core/admin/class-maxi-dashboard.php:1345
 msgid "Google Maps API Quickstart"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1343
+#: core/admin/class-maxi-dashboard.php:1348
 msgid "which will handle the setup of your account and generate the API key that you can insert below."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1350
+#: core/admin/class-maxi-dashboard.php:1355
 msgid "Insert Google Maps API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1365
+#: core/admin/class-maxi-dashboard.php:1370
 msgid "Fonts and files"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1375
+#: core/admin/class-maxi-dashboard.php:1380
 msgid "Use Bunny Fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1378
+#. translators: %s: Font provider name (e.g., Bunny Fonts or Google Fonts)
+#: core/admin/class-maxi-dashboard.php:1385
 #, php-format
 msgid "You are currently using: %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1382
+#: core/admin/class-maxi-dashboard.php:1391
 msgid "Bunny Fonts: Privacy-friendly, GDPR compliant. Global CDN for fast loading. Wide selection of fonts available."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1389
+#: core/admin/class-maxi-dashboard.php:1398
 msgid "Google Fonts: Extensive font selection. Potential privacy concerns when using Google's CDN."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1399
+#: core/admin/class-maxi-dashboard.php:1408
 msgid "Serve Bunny Fonts locally"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1403
+#: core/admin/class-maxi-dashboard.php:1412
 msgid "Serve Bunny Fonts from CDN: Fastest option. Uses external CDN. No local storage required."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1410
+#: core/admin/class-maxi-dashboard.php:1419
 msgid "Serve Bunny Fonts locally: Privacy-focused. May impact server performance. Requires local storage."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1423
+#: core/admin/class-maxi-dashboard.php:1432
 msgid "Serve Google Fonts locally"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1427
+#: core/admin/class-maxi-dashboard.php:1436
 msgid "Serve from Google CDN: Fastest option. Uses Google's CDN. Potential privacy (GDPR) implications."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1434
+#: core/admin/class-maxi-dashboard.php:1443
 msgid "Serve Google Fonts locally: Blocks Google tracking. May impact server performance. Requires local storage."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1449
+#: core/admin/class-maxi-dashboard.php:1458
 msgid "Size of the local fonts:"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1452
+#: core/admin/class-maxi-dashboard.php:1461
 msgid "MB"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1459
+#: core/admin/class-maxi-dashboard.php:1468
 msgid "Remove local fonts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1476
+#: core/admin/class-maxi-dashboard.php:1485
 msgid "Documentation & support"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1480
+#: core/admin/class-maxi-dashboard.php:1489
 msgid "Read the "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1483
+#: core/admin/class-maxi-dashboard.php:1492
 msgid "help center documentation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1485
+#: core/admin/class-maxi-dashboard.php:1494
 msgid " for self-service."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1491
+#: core/admin/class-maxi-dashboard.php:1500
 msgid "Troubleshooting"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1496
+#: core/admin/class-maxi-dashboard.php:1505
 msgid "Site health info report"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1499
+#: core/admin/class-maxi-dashboard.php:1508
 msgid "The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1506
+#: core/admin/class-maxi-dashboard.php:1515
 msgid "Go to site health info"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1513
+#: core/admin/class-maxi-dashboard.php:1522
 msgid "Experimental preferences"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1519
+#: core/admin/class-maxi-dashboard.php:1528
 msgid "Enable settings indicators"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1523
+#: core/admin/class-maxi-dashboard.php:1532
 msgid "Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1553
+#: core/admin/class-maxi-dashboard.php:1562
 msgid "General setting for Maxi AI writer"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1562
+#: core/admin/class-maxi-dashboard.php:1571
 msgid "Integrations"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1568
+#: core/admin/class-maxi-dashboard.php:1577
 msgid "Insert OpenAI API Key here"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1578
+#: core/admin/class-maxi-dashboard.php:1587
 msgid "ChatGPT AI Model"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1594
+#: core/admin/class-maxi-dashboard.php:1603
 msgid "Website identity"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1601
+#: core/admin/class-maxi-dashboard.php:1610
 msgid "Tell us about your site"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1604
+#: core/admin/class-maxi-dashboard.php:1613
 msgid ""
 "What is the primary goal of your website? (e.g. shopping platform, offering\n"
 "\t\t\t\tservices, showcasing work, journaling)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1616
+#: core/admin/class-maxi-dashboard.php:1625
 msgid "Example: Hairdresser, Plumber, Marketing agency"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1626
+#: core/admin/class-maxi-dashboard.php:1635
 msgid "Who is your target audience?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1629
+#: core/admin/class-maxi-dashboard.php:1638
 msgid "Group of people you want to connect with or offer services to."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1640
+#: core/admin/class-maxi-dashboard.php:1649
 msgid "Example: Ladies who need haircuts"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1650
+#: core/admin/class-maxi-dashboard.php:1659
 msgid "What is the goal of the website?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1653
-#: core/admin/class-maxi-dashboard.php:1677
+#: core/admin/class-maxi-dashboard.php:1662
+#: core/admin/class-maxi-dashboard.php:1686
 msgid "Enter as many as you like. Separate with commas."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1664
-#: core/admin/class-maxi-dashboard.php:1736
+#: core/admin/class-maxi-dashboard.php:1673
+#: core/admin/class-maxi-dashboard.php:1745
 msgid "Example: Get bookings, write a blog"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1674
+#: core/admin/class-maxi-dashboard.php:1683
 msgid "What services do you offer?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1688
+#: core/admin/class-maxi-dashboard.php:1697
 msgid "Example: Hair cuts, blow dries, beard shave"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1698
+#: core/admin/class-maxi-dashboard.php:1707
 msgid "What is your website or business name?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1701
+#: core/admin/class-maxi-dashboard.php:1710
 msgid "The name will be used for writing content. Optional. Takes WordPress Site Title by default"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1712
+#: core/admin/class-maxi-dashboard.php:1721
 msgid "Example: Mary's fabulous hair studio"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1722
+#: core/admin/class-maxi-dashboard.php:1731
 msgid "Anything else we should know?"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1725
+#: core/admin/class-maxi-dashboard.php:1734
 msgid "Outline your business operations, share the origins of your venture, detail your offerings, and highlight the unique value you add to your audience."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:1841
+#: core/admin/class-maxi-dashboard.php:1850
 msgid "Get started with a pre-built website"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2393
+#: core/admin/class-maxi-dashboard.php:2402
 msgid "MaxiBlocks dashboard - Key NOT found in stored keys"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2396
+#: core/admin/class-maxi-dashboard.php:2405
 msgid "MaxiBlocks dashboard - Email not found or status not yes"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2399
+#: core/admin/class-maxi-dashboard.php:2408
 msgid "MaxiBlocks dashboard - Failed to parse cookie"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2410
+#: core/admin/class-maxi-dashboard.php:2419
 msgid "Cloud access active via network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2411
+#: core/admin/class-maxi-dashboard.php:2420
 msgid "Your Cloud access is active through a network-wide license."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2413
+#: core/admin/class-maxi-dashboard.php:2422
 msgid "Cloud access active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2414
+#: core/admin/class-maxi-dashboard.php:2423
 msgid "Your Cloud access is active and ready to use."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2417
+#: core/admin/class-maxi-dashboard.php:2426
 msgid "Activate Cloud access"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2418
+#: core/admin/class-maxi-dashboard.php:2427
 msgid "Enter your email or purchase code to access premium items"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2427
+#: core/admin/class-maxi-dashboard.php:2436
 msgid "Current status"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2427
+#: core/admin/class-maxi-dashboard.php:2436
 msgid "License activation"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2479
+#. translators: %s: Support email address link
+#: core/admin/class-maxi-dashboard.php:2490
 #, php-format
 msgid "Multisite detected. If you require additional licences, email %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2485
-#: core/admin/class-maxi-dashboard.php:2520
+#: core/admin/class-maxi-dashboard.php:2498
+#: core/admin/class-maxi-dashboard.php:2533
 msgid "Manage network license"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2494
+#: core/admin/class-maxi-dashboard.php:2507
 #: core/admin/quick-start/class-maxi-quick-start.php:921
 #: core/admin/starter-sites/src/library/toolbar.js:387
 #: core/admin/starter-sites/src/library/toolbar.js:399
@@ -825,69 +827,72 @@ msgstr ""
 msgid "Deactivate Cloud"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2499
+#: core/admin/class-maxi-dashboard.php:2512
 msgid "This site is using a network-wide license. Purchase codes cannot be activated on individual sites when a network license is active."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2501
+#: core/admin/class-maxi-dashboard.php:2514
 msgid "To manage the network license, visit the"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2501
+#: core/admin/class-maxi-dashboard.php:2514
 msgid "network admin license page"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2503
+#: core/admin/class-maxi-dashboard.php:2516
 msgid "To manage the network license, contact your network administrator."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2517
+#: core/admin/class-maxi-dashboard.php:2530
 msgid "Network license is active"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2518
+#: core/admin/class-maxi-dashboard.php:2531
 msgid "A network-wide license is already active. Purchase codes cannot be activated on individual sites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2525
+#: core/admin/class-maxi-dashboard.php:2538
 msgid "Individual email authentication"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2526
+#: core/admin/class-maxi-dashboard.php:2539
 msgid "You can still authenticate with your individual Cloud email account for user-specific features."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2528
+#: core/admin/class-maxi-dashboard.php:2541
 msgid "Cloud user email address"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2529
+#. translators: %s: Link to MaxiBlocks account page
+#: core/admin/class-maxi-dashboard.php:2544
 #, php-format
 msgid "Enter your Cloud user email. Find your account details at %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2532
+#: core/admin/class-maxi-dashboard.php:2549
 msgid "Authenticate Email"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2541
+#: core/admin/class-maxi-dashboard.php:2558
 #: core/admin/quick-start/class-maxi-quick-start.php:933
 #: core/admin/starter-sites/src/library/toolbar.js:479
 msgid "Cloud user email / purchase code / license key"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2542
+#. translators: %s: Link to MaxiBlocks account page
+#: core/admin/class-maxi-dashboard.php:2561
 #: core/admin/quick-start/class-maxi-quick-start.php:934
 #, php-format
 msgid "Find your code or key in your account, inbox or %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2546
+#. translators: %s: Support email address link
+#: core/admin/class-maxi-dashboard.php:2569
 #, php-format
 msgid "Multisite detected. If using MaxiBlocks email or license key and you require additional licences, email %s"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2552
+#: core/admin/class-maxi-dashboard.php:2577
 #: core/admin/quick-start/class-maxi-quick-start.php:939
 #: core/admin/starter-sites/src/library/toolbar.js:418
 #: core/admin/starter-sites/src/library/toolbar.js:425
@@ -900,146 +905,146 @@ msgstr ""
 msgid "Activate Cloud"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2734
+#: core/admin/class-maxi-dashboard.php:2759
 #: core/admin/status-report/frontend-assets.php:91
 msgid "No CSS files found"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2737
+#: core/admin/class-maxi-dashboard.php:2762
 #: core/admin/status-report/frontend-assets.php:92
 msgid "No JavaScript files found"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:2997
+#: core/admin/class-maxi-dashboard.php:3022
 msgid "MaxiBlocks: Network domain migration failed for purchase code: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3046
+#: core/admin/class-maxi-dashboard.php:3071
 msgid "MaxiBlocks: Site domain migration failed for purchase code: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3060
-#: core/admin/class-maxi-dashboard.php:3279
-#: core/admin/class-maxi-dashboard.php:3955
-#: core/admin/class-maxi-dashboard.php:3999
-#: core/admin/class-maxi-dashboard.php:4142
+#: core/admin/class-maxi-dashboard.php:3085
+#: core/admin/class-maxi-dashboard.php:3304
+#: core/admin/class-maxi-dashboard.php:3980
+#: core/admin/class-maxi-dashboard.php:4024
+#: core/admin/class-maxi-dashboard.php:4167
 msgid "Security check failed"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3066
-#: core/admin/class-maxi-dashboard.php:3961
-#: core/admin/class-maxi-dashboard.php:4005
+#: core/admin/class-maxi-dashboard.php:3091
+#: core/admin/class-maxi-dashboard.php:3986
+#: core/admin/class-maxi-dashboard.php:4030
 msgid "Insufficient permissions"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3080
+#: core/admin/class-maxi-dashboard.php:3105
 msgid "Email or purchase code is required"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3143
+#: core/admin/class-maxi-dashboard.php:3168
 msgid "Email authentication initiated"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3187
+#: core/admin/class-maxi-dashboard.php:3212
 msgid "A network license is already active. Purchase codes cannot be activated on individual sites."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3201
-#: core/admin/class-maxi-dashboard.php:3249
-#: core/admin/class-maxi-dashboard.php:3267
+#: core/admin/class-maxi-dashboard.php:3226
+#: core/admin/class-maxi-dashboard.php:3274
+#: core/admin/class-maxi-dashboard.php:3292
 msgid "Invalid purchase code / key. Please check your code and try again."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3232
+#: core/admin/class-maxi-dashboard.php:3257
 msgid "License activated successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3256
+#: core/admin/class-maxi-dashboard.php:3281
 msgid "This code / key has already been activated on another domain. Contact support if you need help."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3261
+#: core/admin/class-maxi-dashboard.php:3286
 msgid "This purchase code / key has expired. Please check your subscription status or contact support."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3264
+#: core/admin/class-maxi-dashboard.php:3289
 msgid "Seats limit reached. Please log out from another device or upgrade your subscription."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3278
+#: core/admin/class-maxi-dashboard.php:3303
 msgid "MaxiBlocks Email Auth STATUS: Nonce verification failed"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3370
+#: core/admin/class-maxi-dashboard.php:3395
 msgid "MaxiBlocks Email Auth STATUS: Auth timeout - authentication window has expired (>10 minutes)"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3600
+#: core/admin/class-maxi-dashboard.php:3625
 msgid "MaxiBlocks: Missing middleware configuration for email authentication"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3666
+#: core/admin/class-maxi-dashboard.php:3691
 msgid "MaxiBlocks Email Auth: ERROR - "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3714
+#: core/admin/class-maxi-dashboard.php:3739
 msgid "MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3802
-#: core/admin/class-maxi-dashboard.php:3845
+#: core/admin/class-maxi-dashboard.php:3827
+#: core/admin/class-maxi-dashboard.php:3870
 msgid "Signed out successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3834
+#: core/admin/class-maxi-dashboard.php:3859
 msgid "MaxiBlocks: Purchase code deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3865
+#: core/admin/class-maxi-dashboard.php:3890
 msgid "MaxiBlocks: Missing middleware configuration for email session logout"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3888
+#: core/admin/class-maxi-dashboard.php:3913
 msgid "MaxiBlocks Email Session Logout: API call failed - "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3898
+#: core/admin/class-maxi-dashboard.php:3923
 msgid "MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3971
+#: core/admin/class-maxi-dashboard.php:3996
 msgid "Missing required parameters"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:3979
+#: core/admin/class-maxi-dashboard.php:4004
 msgid "License data saved successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4019
+#: core/admin/class-maxi-dashboard.php:4044
 msgid "Network purchase code is required"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4027
+#: core/admin/class-maxi-dashboard.php:4052
 msgid "Multisite detected. Please activate your MaxiBlocks email on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4030
+#: core/admin/class-maxi-dashboard.php:4055
 msgid "Multisite detected. Please activate your MaxiBlocks license key on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4054
+#: core/admin/class-maxi-dashboard.php:4079
 msgid "Invalid purchase code. Please check your code and try again."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4084
+#: core/admin/class-maxi-dashboard.php:4109
 msgid "Network license activated successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4120
+#: core/admin/class-maxi-dashboard.php:4145
 msgid "MaxiBlocks: Network license deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4128
+#: core/admin/class-maxi-dashboard.php:4153
 msgid "Network license deactivated successfully"
 msgstr ""
 
@@ -1048,8 +1053,8 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:1387
 #: core/admin/status-report/maxi-system-status-report.php:327
 #: core/admin/status-report/maxi-system-status-report.php:495
-#: core/admin/status-report/maxi-system-status-report.php:884
-#: core/admin/status-report/maxi-system-status-report.php:966
+#: core/admin/status-report/maxi-system-status-report.php:886
+#: core/admin/status-report/maxi-system-status-report.php:968
 msgid "Status"
 msgstr ""
 
@@ -1243,7 +1248,7 @@ msgid "Post name (default)"
 msgstr ""
 
 #: core/admin/quick-start/class-maxi-quick-start.php:521
-#: core/admin/status-report/maxi-system-status-report.php:590
+#: core/admin/status-report/maxi-system-status-report.php:591
 msgid "Plain"
 msgstr ""
 
@@ -1294,6 +1299,7 @@ msgstr ""
 msgid "You're all set! Click Continue to customise your design and layout."
 msgstr ""
 
+#. translators: %s: Current theme name
 #: core/admin/quick-start/class-maxi-quick-start.php:645
 #, php-format
 msgid "Your current theme: %s"
@@ -1415,8 +1421,8 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:1384
 #: core/admin/status-report/maxi-system-status-report.php:324
 #: core/admin/status-report/maxi-system-status-report.php:492
-#: core/admin/status-report/maxi-system-status-report.php:881
-#: core/admin/status-report/maxi-system-status-report.php:963
+#: core/admin/status-report/maxi-system-status-report.php:883
+#: core/admin/status-report/maxi-system-status-report.php:965
 msgid "Setting"
 msgstr ""
 
@@ -1424,7 +1430,7 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:1385
 #: core/admin/status-report/maxi-system-status-report.php:325
 #: core/admin/status-report/maxi-system-status-report.php:493
-#: core/admin/status-report/maxi-system-status-report.php:882
+#: core/admin/status-report/maxi-system-status-report.php:884
 msgid "Recommended"
 msgstr ""
 
@@ -1530,12 +1536,12 @@ msgid "Continue to Setup"
 msgstr ""
 
 #: core/admin/status-report/maxi-system-status-report.php:47
-#: core/admin/status-report/maxi-system-status-report.php:1029
+#: core/admin/status-report/maxi-system-status-report.php:1031
 msgid "You do not have permission to access this information."
 msgstr ""
 
 #: core/admin/status-report/maxi-system-status-report.php:66
-#: core/admin/status-report/maxi-system-status-report.php:927
+#: core/admin/status-report/maxi-system-status-report.php:929
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:75
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:99
 #: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:81
@@ -1553,15 +1559,15 @@ msgstr ""
 
 #: core/admin/status-report/maxi-system-status-report.php:70
 #: core/admin/status-report/maxi-system-status-report.php:73
-#: core/admin/status-report/maxi-system-status-report.php:934
 #: core/admin/status-report/maxi-system-status-report.php:936
+#: core/admin/status-report/maxi-system-status-report.php:938
 #: src/extensions/DC/constants.js:671
 msgid "Yes"
 msgstr ""
 
 #: core/admin/status-report/maxi-system-status-report.php:71
 #: core/admin/status-report/maxi-system-status-report.php:74
-#: core/admin/status-report/maxi-system-status-report.php:937
+#: core/admin/status-report/maxi-system-status-report.php:939
 #: src/extensions/DC/constants.js:670
 msgid "No"
 msgstr ""
@@ -1570,15 +1576,15 @@ msgstr ""
 #: core/admin/status-report/maxi-system-status-report.php:395
 #: core/admin/status-report/maxi-system-status-report.php:397
 #: core/admin/status-report/maxi-system-status-report.php:456
-#: core/admin/status-report/maxi-system-status-report.php:1147
+#: core/admin/status-report/maxi-system-status-report.php:1149
 msgid "Enabled"
 msgstr ""
 
 #: core/admin/status-report/maxi-system-status-report.php:78
 #: core/admin/status-report/maxi-system-status-report.php:398
-#: core/admin/status-report/maxi-system-status-report.php:523
-#: core/admin/status-report/maxi-system-status-report.php:681
-#: core/admin/status-report/maxi-system-status-report.php:1148
+#: core/admin/status-report/maxi-system-status-report.php:524
+#: core/admin/status-report/maxi-system-status-report.php:683
+#: core/admin/status-report/maxi-system-status-report.php:1150
 msgid "Disabled"
 msgstr ""
 
@@ -1656,8 +1662,8 @@ msgstr ""
 
 #: core/admin/status-report/maxi-system-status-report.php:326
 #: core/admin/status-report/maxi-system-status-report.php:494
-#: core/admin/status-report/maxi-system-status-report.php:883
-#: core/admin/status-report/maxi-system-status-report.php:965
+#: core/admin/status-report/maxi-system-status-report.php:885
+#: core/admin/status-report/maxi-system-status-report.php:967
 msgid "Actual"
 msgstr ""
 
@@ -1746,345 +1752,356 @@ msgstr ""
 msgid "Multisite"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:520
+#. translators: %s: Multisite type (Subdomain or Subfolder)
+#: core/admin/status-report/maxi-system-status-report.php:521
 #, php-format
 msgid "Enabled (%s)"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:529
+#: core/admin/status-report/maxi-system-status-report.php:530
 #: src/extensions/DC/constants.js:153
 msgid "Site URL"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:537
+#: core/admin/status-report/maxi-system-status-report.php:538
 msgid "Home URL"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:547
+#: core/admin/status-report/maxi-system-status-report.php:548
 msgid "Blog URL"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:556
+#: core/admin/status-report/maxi-system-status-report.php:557
 msgid "Site Language"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:564
+#: core/admin/status-report/maxi-system-status-report.php:565
 msgid "Site Charset"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:573
+#: core/admin/status-report/maxi-system-status-report.php:574
 msgid "Timezone"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:581
+#: core/admin/status-report/maxi-system-status-report.php:582
 msgid "Text Direction"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:592
+#. translators: %s: Permalink structure format
+#: core/admin/status-report/maxi-system-status-report.php:594
 #, php-format
 msgid "Pretty Permalinks (%s)"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:596
+#: core/admin/status-report/maxi-system-status-report.php:598
 msgid "Permalinks"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:597
+#: core/admin/status-report/maxi-system-status-report.php:599
 msgid "Pretty Permalinks"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:621
+#: core/admin/status-report/maxi-system-status-report.php:623
 msgid "Allowed Media Types"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:622
+#: core/admin/status-report/maxi-system-status-report.php:624
 msgid "Common media formats"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:629
+#: core/admin/status-report/maxi-system-status-report.php:631
 msgid "jQuery Version"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:639
+#: core/admin/status-report/maxi-system-status-report.php:641
 msgid "Not Found"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:641
+#: core/admin/status-report/maxi-system-status-report.php:643
 msgid "React Version"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:649
+#: core/admin/status-report/maxi-system-status-report.php:651
 msgid "WordPress AJAX"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:650
 #: core/admin/status-report/maxi-system-status-report.php:652
+#: core/admin/status-report/maxi-system-status-report.php:654
 msgid "Working"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:653
+#: core/admin/status-report/maxi-system-status-report.php:655
 msgid "Not Working"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:660
+#: core/admin/status-report/maxi-system-status-report.php:662
 msgid "WP Memory Limit"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:680
+#: core/admin/status-report/maxi-system-status-report.php:682
 msgid "WP Debug Mode"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:688
+#: core/admin/status-report/maxi-system-status-report.php:690
 msgid "WP Directory"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:689
-#: core/admin/status-report/maxi-system-status-report.php:1334
+#: core/admin/status-report/maxi-system-status-report.php:691
+#: core/admin/status-report/maxi-system-status-report.php:1336
 msgid "Readable"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:699
+#: core/admin/status-report/maxi-system-status-report.php:701
 msgid "WP Content Directory"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:700
-#: core/admin/status-report/maxi-system-status-report.php:711
-#: core/admin/status-report/maxi-system-status-report.php:722
-#: core/admin/status-report/maxi-system-status-report.php:736
+#: core/admin/status-report/maxi-system-status-report.php:702
+#: core/admin/status-report/maxi-system-status-report.php:713
+#: core/admin/status-report/maxi-system-status-report.php:724
+#: core/admin/status-report/maxi-system-status-report.php:738
 msgid "Readable/Writable"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:710
+#: core/admin/status-report/maxi-system-status-report.php:712
 msgid "WP Plugin Directory"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:721
+#: core/admin/status-report/maxi-system-status-report.php:723
 msgid "WP Themes Directory"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:735
+#: core/admin/status-report/maxi-system-status-report.php:737
 msgid "WP Uploads Directory"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:750
+#: core/admin/status-report/maxi-system-status-report.php:752
 msgid "Plugin Status"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:758
-#: core/admin/status-report/maxi-system-status-report.php:832
+#: core/admin/status-report/maxi-system-status-report.php:760
+#: core/admin/status-report/maxi-system-status-report.php:834
 msgid "Active Plugins"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:779
-#: core/admin/status-report/maxi-system-status-report.php:850
+#: core/admin/status-report/maxi-system-status-report.php:781
+#: core/admin/status-report/maxi-system-status-report.php:852
 msgid "Inactive Plugins"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:805
+#: core/admin/status-report/maxi-system-status-report.php:807
 msgid "Plugin Information"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:813
+#: core/admin/status-report/maxi-system-status-report.php:815
 msgid "Must-Use Plugins"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:878
+#: core/admin/status-report/maxi-system-status-report.php:880
 msgid "Theme Information"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:889
+#: core/admin/status-report/maxi-system-status-report.php:891
 msgid "Theme Name"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:897
+#: core/admin/status-report/maxi-system-status-report.php:899
 msgid "Version"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:905
+#: core/admin/status-report/maxi-system-status-report.php:907
 #: src/extensions/DC/constants.js:139
 #: src/extensions/DC/constants.js:167
 #: src/extensions/DC/store/initConstants.js:21
 msgid "Author"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:913
+#: core/admin/status-report/maxi-system-status-report.php:915
 msgid "Author Website"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:921
+#: core/admin/status-report/maxi-system-status-report.php:923
 msgid "Parent Theme"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:933
+#: core/admin/status-report/maxi-system-status-report.php:935
 msgid "Block Theme"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:943
+#: core/admin/status-report/maxi-system-status-report.php:945
 msgid "Theme Directory"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:960
+#: core/admin/status-report/maxi-system-status-report.php:962
 msgid "MaxiBlocks Plugin"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:964
+#: core/admin/status-report/maxi-system-status-report.php:966
 msgid "Required"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:974
+#: core/admin/status-report/maxi-system-status-report.php:976
 msgid "General Table"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:975
 #: core/admin/status-report/maxi-system-status-report.php:977
-#: core/admin/status-report/maxi-system-status-report.php:988
+#: core/admin/status-report/maxi-system-status-report.php:979
 #: core/admin/status-report/maxi-system-status-report.php:990
-#: core/admin/status-report/maxi-system-status-report.php:1001
+#: core/admin/status-report/maxi-system-status-report.php:992
 #: core/admin/status-report/maxi-system-status-report.php:1003
+#: core/admin/status-report/maxi-system-status-report.php:1005
 msgid "Exists"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:978
-#: core/admin/status-report/maxi-system-status-report.php:991
-#: core/admin/status-report/maxi-system-status-report.php:1004
+#: core/admin/status-report/maxi-system-status-report.php:980
+#: core/admin/status-report/maxi-system-status-report.php:993
+#: core/admin/status-report/maxi-system-status-report.php:1006
 msgid "Missing"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:987
+#: core/admin/status-report/maxi-system-status-report.php:989
 msgid "Styles Table"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:1000
+#: core/admin/status-report/maxi-system-status-report.php:1002
 msgid "Custom Data Table"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:1329
+#: core/admin/status-report/maxi-system-status-report.php:1331
 msgid "Directory does not exist"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:1335
+#: core/admin/status-report/maxi-system-status-report.php:1337
 msgid "Not Readable"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:1337
+#: core/admin/status-report/maxi-system-status-report.php:1339
 msgid "Writable"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:1338
+#: core/admin/status-report/maxi-system-status-report.php:1340
 msgid "Not Writable"
 msgstr ""
 
-#: core/admin/status-report/maxi-system-status-report.php:1392
+#: core/admin/status-report/maxi-system-status-report.php:1394
 msgid "Debug log too large to display. Download it manually."
 msgstr ""
 
-#: core/class-maxi-api.php:1321
+#. translators: %s: URL of the template content
+#: core/class-maxi-api.php:1322
 #, php-format
 msgid "Failed to fetch template content from %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1332
+#: core/class-maxi-api.php:1333
 msgid "Invalid template JSON content"
 msgstr ""
 
-#: core/class-maxi-api.php:1358
+#. translators: %s: URL of the page content
+#: core/class-maxi-api.php:1360
 #, php-format
 msgid "Failed to fetch page content from %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1369
+#: core/class-maxi-api.php:1371
 msgid "Invalid page JSON content"
 msgstr ""
 
-#: core/class-maxi-api.php:1395
+#. translators: %s: URL of the pattern content
+#: core/class-maxi-api.php:1398
 #, php-format
 msgid "Failed to fetch pattern content from %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1406
+#: core/class-maxi-api.php:1409
 msgid "Invalid pattern JSON content"
 msgstr ""
 
-#: core/class-maxi-api.php:1512
+#. translators: %s: Title of the imported entity
+#: core/class-maxi-api.php:1516
 #, php-format
 msgid "Successfully imported %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1541
+#: core/class-maxi-api.php:1545
 msgid "Created Blog page"
 msgstr ""
 
-#: core/class-maxi-api.php:1593
+#. translators: %s: The invalid entity type
+#: core/class-maxi-api.php:1598
 #, php-format
 msgid "Invalid entity type: %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1721
+#. translators: %s: Title of the template part
+#: core/class-maxi-api.php:1727
 #, php-format
 msgid "Successfully imported %s template part"
 msgstr ""
 
-#: core/class-maxi-api.php:1788
+#. translators: %s: The invalid template slug
+#: core/class-maxi-api.php:1795
 #, php-format
 msgid "Invalid template slug: %s"
 msgstr ""
 
-#: core/class-maxi-api.php:1890
+#. translators: %s: Title of the template
+#: core/class-maxi-api.php:1898
 #, php-format
 msgid "Successfully imported %s template"
 msgstr ""
 
-#: core/class-maxi-api.php:2252
+#. translators: %s: Title of the pattern
+#: core/class-maxi-api.php:2261
 #, php-format
 msgid "Successfully imported %s pattern"
 msgstr ""
 
-#: core/class-maxi-api.php:2487
+#: core/class-maxi-api.php:2496
 msgid "MaxiBlocks Go theme has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-api.php:2539
+#: core/class-maxi-api.php:2548
 msgid "WordPress Importer has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-blocks.php:374
+#: core/class-maxi-blocks.php:369
 msgid "Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:375
+#: core/class-maxi-blocks.php:370
 msgid "maxi-image-type"
 msgstr ""
 
-#: core/class-maxi-blocks.php:376
+#: core/class-maxi-blocks.php:371
 msgid "Search Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:377
+#: core/class-maxi-blocks.php:372
 msgid "All Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:378
+#: core/class-maxi-blocks.php:373
 msgid "Edit Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:379
+#: core/class-maxi-blocks.php:374
 msgid "Update Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:380
+#: core/class-maxi-blocks.php:375
 msgid "Add New Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:381
+#: core/class-maxi-blocks.php:376
 msgid "New Maxi Image Name"
 msgstr ""
 
-#: core/class-maxi-blocks.php:405
-#: core/class-maxi-blocks.php:408
+#: core/class-maxi-blocks.php:400
+#: core/class-maxi-blocks.php:403
 msgid "Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:411
+#: core/class-maxi-blocks.php:406
 msgid "Images added by MaxiBlocks plugin"
 msgstr ""
 
@@ -2127,7 +2144,8 @@ msgstr ""
 msgid "Delete old file: invalid file path"
 msgstr ""
 
-#: core/class-maxi-style-cards.php:1449
+#. translators: %s: Name of the imported style card
+#: core/class-maxi-style-cards.php:1450
 #, php-format
 msgid "Style Card imported successfully as \"%s\""
 msgstr ""
@@ -2196,7 +2214,7 @@ msgid "Reset"
 msgstr ""
 
 #: core/admin/starter-sites/src/library/container.js:497
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:962
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:963
 #: core/admin/starter-sites/src/library/modal.js:162
 #: src/components/prompt-control/components/history-buttons/index.js:70
 #: src/editor/style-cards/maxiStyleCardsEditor.js:722
@@ -2291,80 +2309,81 @@ msgstr ""
 msgid "Templates"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:718
+#. translators: %s: Name of the current classic theme
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:719
 #, js-format
 msgid "Templates cannot be imported because you are using a classic theme (%s). To import templates, you need a block theme. We recommend "
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:730
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:731
 msgid "activating"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:734
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:735
 msgid "installing"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:740
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:741
 msgid " theme, which is optimized for MaxiBlocks."
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:790
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:791
 #: src/editor/library/container.js:1513
 #: src/editor/library/toolbar.js:233
 msgid "Pages"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:793
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:794
 msgid "The Pages section allows you to import predefined pages included in the starter site. Toggle the options on or off depending on whether you want to include them in your site."
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:823
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:824
 #: src/editor/library/container.js:1497
 msgid "Patterns"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:825
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:826
 msgid "The Patterns section provides pre-designed block layouts or reusable elements that can be added to your website. Toggle the options on or off depending on whether you want to include them in your site."
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:859
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:860
 msgid "Import completed. You can "
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:896
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:897
 msgid "continue to wizard"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:901
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:935
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:902
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:936
 msgid ", or "
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:911
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:912
 msgid "choose another starter site"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:919
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:920
 msgid "Import completed. "
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:925
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:926
 msgid "Browse your pages"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:927
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:928
 msgid ", "
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:933
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:934
 msgid "change templates"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:941
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:942
 msgid "close this window"
 msgstr ""
 
-#: core/admin/starter-sites/src/library/maxiImportPopUp.js:961
+#: core/admin/starter-sites/src/library/maxiImportPopUp.js:962
 msgid "Importing..."
 msgstr ""
 
@@ -3966,6 +3985,7 @@ msgid "Map type"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-control/index.js:170
+#: src/blocks/map-maxi/data.js:31
 msgid "Minimum zoom"
 msgstr ""
 
@@ -4047,10 +4067,6 @@ msgstr ""
 
 #: src/blocks/map-maxi/data.js:30
 msgid "Map provider"
-msgstr ""
-
-#: src/blocks/map-maxi/data.js:31
-msgid "Minium zoom"
 msgstr ""
 
 #: src/blocks/map-maxi/data.js:35
@@ -6286,7 +6302,6 @@ msgid "(UTC+13:00) Nuku'alofa"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:685
-#: src/components/prompt-control/constants.js:190
 msgid "Afrikaans"
 msgstr ""
 
@@ -6395,22 +6410,18 @@ msgid "Greek"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:793
-#: src/components/prompt-control/constants.js:215
 msgid "English"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:797
-#: src/components/prompt-control/constants.js:216
 msgid "English (Australia)"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:801
-#: src/components/prompt-control/constants.js:217
 msgid "English (Canada)"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:805
-#: src/components/prompt-control/constants.js:189
 msgid "English (United Kingdom)"
 msgstr ""
 
@@ -6423,12 +6434,10 @@ msgid "English (Israel)"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:817
-#: src/components/prompt-control/constants.js:218
 msgid "English (India)"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:821
-#: src/components/prompt-control/constants.js:219
 msgid "English (New Zealand)"
 msgstr ""
 
@@ -6473,7 +6482,6 @@ msgid "Finnish"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:865
-#: src/components/prompt-control/constants.js:225
 msgid "Filipino"
 msgstr ""
 
@@ -6494,12 +6502,10 @@ msgid "French"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:885
-#: src/components/prompt-control/constants.js:323
 msgid "Western Frisian"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:889
-#: src/components/prompt-control/constants.js:290
 msgid "Scottish Gaelic"
 msgstr ""
 
@@ -6688,7 +6694,6 @@ msgid "Russian"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:1077
-#: src/components/prompt-control/constants.js:294
 msgid "Sindhi"
 msgstr ""
 
@@ -6753,7 +6758,6 @@ msgid "Thai"
 msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:1141
-#: src/components/prompt-control/constants.js:314
 msgid "Turkmen"
 msgstr ""
 
@@ -7461,696 +7465,6 @@ msgstr ""
 msgid "Translate to"
 msgstr ""
 
-#: src/components/prompt-control/constants.js:140
-msgid "Formal"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:141
-msgid "Friendly"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:142
-msgid "Emotional"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:143
-msgid "Analytical"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:144
-#: src/components/prompt-control/constants.js:169
-#: src/components/prompt-control/tabs/generate-tab/index.js:170
-msgid "Creative"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:145
-msgid "Playful"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:146
-msgid "Encouraging"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:147
-msgid "Enthusiastic"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:148
-msgid "Calm"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:149
-msgid "Persuasive"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:150
-msgid "Dramatic"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:151
-msgid "Informative"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:152
-msgid "Collaborative"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:153
-msgid "Imaginative"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:154
-msgid "Inspirational"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:155
-msgid "Passionate"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:156
-msgid "Humorous"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:157
-msgid "Poetic"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:158
-msgid "Objective"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:159
-msgid "Celebratory"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:163
-msgid "Business"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:164
-msgid "Narrative"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:165
-msgid "Descriptive"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:166
-msgid "Expository Technical"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:167
-msgid "Academic"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:168
-msgid "Journalistic"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:170
-msgid "Satirical"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:171
-msgid "Analytical Personal"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:172
-msgid "Reflective"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:173
-msgid "Historical"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:174
-msgid "Autobiographical"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:175
-msgid "Biographical"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:176
-msgid "Scientific"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:177
-msgid "Medical"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:178
-msgid "Legal"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:179
-msgid "Financial"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:180
-msgid "Instructional Educational"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:181
-msgid "Spiritual"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:182
-msgid "Gothic"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:183
-msgid "Romantic"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:184
-msgid "Surrealist"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:188
-msgid "Language of the prompt"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:191
-msgid "Albanian - shqip"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:192
-msgid "Amharic - አማርኛ"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:193
-msgid "Arabic - العربية"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:194
-msgid "Aragonese - aragonés"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:195
-msgid "Armenian - հայերեն"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:196
-msgid "Asturian - asturianu"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:197
-msgid "Azerbaijani - azərbaycan dili"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:198
-msgid "Basque - euskara"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:199
-msgid "Belarusian - беларуская"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:200
-msgid "Bengali - বাংলা"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:201
-msgid "Bosnian - bosanski"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:202
-msgid "Breton - brezhoneg"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:203
-msgid "Bulgarian - български"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:204
-msgid "Catalan - català"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:205
-msgid "Central Kurdish - کوردی (دەستنوسی عەرەبی)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:206
-msgid "Chinese - 中文"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:207
-msgid "Chinese (Hong Kong) - 中文（香港）"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:208
-msgid "Chinese (Simplified) - 中文（简体）"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:209
-msgid "Chinese (Traditional) - 中文（繁體）"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:210
-msgid "Corsican"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:211
-msgid "Croatian - hrvatski"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:212
-msgid "Czech - čeština"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:213
-msgid "Danish - dansk"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:214
-msgid "Dutch - Nederlands"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:220
-msgid "English (South Africa)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:221
-msgid "English (United States)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:222
-msgid "Esperanto - esperanto"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:223
-msgid "Estonian - eesti"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:224
-msgid "Faroese - føroyskt"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:226
-msgid "Finnish - suomi"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:227
-msgid "French - français"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:228
-msgid "French (Canada) - français (Canada)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:229
-msgid "French (France) - français (France)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:230
-msgid "French (Switzerland) - français (Suisse)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:231
-msgid "Galician - galego"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:232
-msgid "Georgian - ქართული"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:233
-msgid "German - Deutsch"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:234
-msgid "German (Austria) - Deutsch (Österreich)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:235
-msgid "German (Germany) - Deutsch (Deutschland)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:236
-msgid "German (Liechtenstein) - Deutsch (Liechtenstein)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:237
-msgid "German (Switzerland) - Deutsch (Schweiz)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:238
-msgid "Greek - Ελληνικά"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:239
-msgid "Guarani"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:240
-msgid "Gujarati - ગુજરાતી"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:241
-msgid "Hausa"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:242
-msgid "Hawaiian - ʻŌlelo Hawaiʻi"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:243
-msgid "Hebrew - עברית"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:244
-msgid "Hindi - हिन्दी"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:245
-msgid "Hungarian - magyar"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:246
-msgid "Icelandic - íslenska"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:247
-msgid "Indonesian - Indonesia"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:248
-msgid "Interlingua"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:249
-msgid "Irish - Gaeilge"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:250
-msgid "Italian - italiano"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:251
-msgid "Italian (Italy) - italiano (Italia)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:252
-msgid "Italian (Switzerland) - italiano (Svizzera)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:253
-msgid "Japanese - 日本語"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:254
-msgid "Kannada - ಕನ್ನಡ"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:255
-msgid "Kazakh - қазақ тілі"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:256
-msgid "Khmer - ខ្មែរ"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:257
-msgid "Korean - 한국어"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:258
-msgid "Kurdish - Kurdî"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:259
-msgid "Kyrgyz - кыргызча"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:260
-msgid "Lao - ລາວ"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:261
-msgid "Latin"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:262
-msgid "Latvian - latviešu"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:263
-msgid "Lingala - lingála"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:264
-msgid "Lithuanian - lietuvių"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:265
-msgid "Macedonian - македонски"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:266
-msgid "Malay - Bahasa Melayu"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:267
-msgid "Malayalam - മലയാളം"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:268
-msgid "Maltese - Malti"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:269
-msgid "Marathi - मराठी"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:270
-msgid "Mongolian - монгол"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:271
-msgid "Nepali - नेपाली"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:272
-msgid "Norwegian - norsk"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:273
-msgid "Norwegian Bokmål - norsk bokmål"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:274
-msgid "Norwegian Nynorsk - nynorsk"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:275
-msgid "Occitan"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:276
-msgid "Oriya - ଓଡ଼ିଆ"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:277
-msgid "Oromo - Oromoo"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:278
-msgid "Pashto - پښتو"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:279
-msgid "Persian - فارسی"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:280
-msgid "Polish - polski"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:281
-msgid "Portuguese - português"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:282
-msgid "Portuguese (Brazil) - português (Brasil)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:283
-msgid "Portuguese (Portugal) - português (Portugal)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:284
-msgid "Punjabi - ਪੰਜਾਬੀ"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:285
-msgid "Quechua"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:286
-msgid "Romanian - română"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:287
-msgid "Romanian (Moldova) - română (Moldova)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:288
-msgid "Romansh - rumantsch"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:289
-msgid "Russian - русский"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:291
-msgid "Serbian - српски"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:292
-msgid "Serbo - Croatian"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:293
-msgid "Shona - chiShona"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:295
-msgid "Sinhala - සිංහල"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:296
-msgid "Slovak - slovenčina"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:297
-msgid "Slovenian - slovenščina"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:298
-msgid "Somali - Soomaali"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:299
-msgid "Southern Sotho"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:300
-msgid "Spanish - español"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:301
-msgid "Spanish (Argentina) - español (Argentina)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:302
-msgid "Spanish (Latin America) - español (Latinoamérica)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:303
-msgid "Spanish (Mexico) - español (México)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:304
-msgid "Spanish (Spain) - español (España)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:305
-msgid "Spanish (United States) - español (Estados Unidos)"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:306
-msgid "Sundanese"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:307
-msgid "Swahili - Kiswahili"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:308
-msgid "Swedish - svenska"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:309
-msgid "Tajik - тоҷикӣ"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:310
-msgid "Tamil - தமிழ்"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:311
-msgid "Tigrinya - ትግርኛ"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:312
-msgid "Tongan - lea fakatonga"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:313
-msgid "Turkish - Türkçe"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:315
-msgid "Twi"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:316
-msgid "Ukrainian - українська"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:317
-msgid "Urdu - اردو"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:318
-msgid "Uyghur"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:319
-msgid "Uzbek - o‘zbek"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:320
-msgid "Vietnamese - Tiếng Việt"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:321
-msgid "Walloon - wa"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:322
-msgid "Welsh - Cymraeg"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:324
-msgid "Xhosa"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:325
-msgid "Yiddish"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:326
-msgid "Yoruba - Èdè Yorùbá"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:327
-msgid "Zulu - isiZulu"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:377
-msgid "No context"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:378
-msgid "This container"
-msgstr ""
-
-#: src/components/prompt-control/constants.js:379
-msgid "This page"
-msgstr ""
-
 #: src/components/prompt-control/index.js:118
 msgid "You have not set your OpenAI API key, please navigate to the Maxi AI Options and set it"
 msgstr ""
@@ -8209,6 +7523,10 @@ msgstr ""
 msgid "Neutral"
 msgstr ""
 
+#: src/components/prompt-control/tabs/generate-tab/index.js:170
+msgid "Creative"
+msgstr ""
+
 #: src/components/prompt-control/tabs/generate-tab/index.js:173
 msgid "Grab context"
 msgstr ""
@@ -8239,6 +7557,10 @@ msgstr ""
 
 #: src/components/prompt-control/utils.js:32
 msgid "Business Info"
+msgstr ""
+
+#: src/components/prompt-control/utils.js:41
+msgid "Site Details:"
 msgstr ""
 
 #: src/components/relation-control/index.js:93

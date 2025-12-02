@@ -78,6 +78,14 @@ class MaxiBlockComponent extends Component {
 		const { attributes } = args[0] || {};
 		const { uniqueID } = attributes || {};
 
+		// Performance tracking - Constructor start
+		this.performanceTimers = {
+			constructor: performance.now(),
+			mount: null,
+			update: null,
+			unmount: null,
+		};
+
 		this.state = {
 			oldSC: {},
 			scValues: {},
@@ -180,17 +188,43 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview) {
 			return;
 		}
+
+		const initStartTime = performance.now();
+
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
 		this.updateLastInsertedBlocks();
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
+		
+		const uniqueIDCheckDuration = performance.now() - initStartTime;
+		if (uniqueIDCheckDuration > 20) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Constructor - uniqueIDChecker SLOW for ${newUniqueID}`,
+				JSON.stringify({
+					duration: `${uniqueIDCheckDuration.toFixed(2)}ms`,
+				})
+			);
+		}
+
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
 		this.setRelations();
 
 		// Add block to store (batched for performance)
+		const batchStartTime = performance.now();
 		batchBlockDispatcher.addBlock(newUniqueID, clientId, this.rootSlot);
+		const batchDuration = performance.now() - batchStartTime;
+		if (batchDuration > 20) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Constructor - batchBlockDispatcher SLOW for ${newUniqueID}`,
+				JSON.stringify({
+					duration: `${batchDuration.toFixed(2)}ms`,
+				})
+			);
+		}
 
 		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
 		// 1. Adding again the root and having a React error
@@ -204,6 +238,19 @@ class MaxiBlockComponent extends Component {
 		// MINIMAL tracking - only essential timeouts
 		this.settingsTimeout = null;
 		this.fseIframeTimeout = null;
+
+		const constructorDuration =
+			performance.now() - this.performanceTimers.constructor;
+		if (constructorDuration > 20) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Constructor SLOW for ${newUniqueID}`,
+				JSON.stringify({
+					totalDuration: `${constructorDuration.toFixed(2)}ms`,
+					clientId,
+				})
+			);
+		}
 	}
 
 	updateDOMReferences() {
@@ -225,12 +272,14 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		// Performance tracking - Mount start
+		this.performanceTimers.mount = performance.now();
+		const { uniqueID } = this.props.attributes;
+
 		// Step 1: DOM references
 		this.updateDOMReferences();
 
 		const { isFirstOnHierarchy, legacyUniqueID } = this.props.attributes;
-
-		// Block mounted successfully
 
 		if (this.isPatternsPreview || this.templateModal) {
 			return;
@@ -238,14 +287,35 @@ class MaxiBlockComponent extends Component {
 
 		// Step 2: FSE iframe styles and observer
 		if (getIsSiteEditor()) {
+			const fseStartTime = performance.now();
 			this.addMaxiFSEIframeStyles();
 			this.setupFSEIframeObserver();
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] FSE iframe setup completed for ${uniqueID}`,
+				JSON.stringify({
+					duration: `${(performance.now() - fseStartTime).toFixed(
+						2
+					)}ms`,
+				})
+			);
 		}
 
 		// Step 3: Relations processing
+		const relationsStartTime = performance.now();
 		const blocksIBRelations = select(
 			'maxiBlocks/relations'
 		).receiveBlockUnderRelationClientIDs(this.props.attributes.uniqueID);
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] Relations check completed for ${uniqueID}`,
+			JSON.stringify({
+				duration: `${(performance.now() - relationsStartTime).toFixed(
+					2
+				)}ms`,
+				relationsCount: blocksIBRelations?.length || 0,
+			})
+		);
 
 		if (!isEmpty(blocksIBRelations)) {
 			const { getBlockAttributes } = select('core/block-editor');
@@ -372,27 +442,68 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Step 4: Block setup and reusable check
+		const blockSetupStartTime = performance.now();
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
 		if (this.maxiBlockDidMount) {
 			this.maxiBlockDidMount();
 		}
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] Block setup completed for ${uniqueID}`,
+			JSON.stringify({
+				duration: `${(performance.now() - blockSetupStartTime).toFixed(
+					2
+				)}ms`,
+				isReusable: this.isReusable,
+			})
+		);
 
 		// Step 6: Font loading
+		const fontLoadStartTime = performance.now();
 		this.loadFonts();
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] Font loading completed for ${uniqueID}`,
+			JSON.stringify({
+				duration: `${(performance.now() - fontLoadStartTime).toFixed(
+					2
+				)}ms`,
+			})
+		);
 
 		// Step 7: Display styles
+		const displayStylesStartTime = performance.now();
 		try {
 			// Call directly without debouncing to avoid memory accumulation
 			this?.displayStyles(!!this?.rootSlot);
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Display styles completed for ${uniqueID}`,
+				JSON.stringify({
+					duration: `${(
+						performance.now() - displayStylesStartTime
+					).toFixed(2)}ms`,
+				})
+			);
 		} catch (error) {
 			console.warn('MaxiBlocks: Display styles error:', error);
 		}
 
 		// Step 8: Force update if needed
 		if (!this.getBreakpoints.xxl) {
+			const forceUpdateStartTime = performance.now();
 			try {
 				this.forceUpdate();
+				// eslint-disable-next-line no-console
+				console.log(
+					`[MaxiBlocks Performance] Force update completed for ${uniqueID}`,
+					JSON.stringify({
+						duration: `${(
+							performance.now() - forceUpdateStartTime
+						).toFixed(2)}ms`,
+					})
+				);
 			} catch (error) {
 				console.warn('MaxiBlocks: Force update error:', error);
 			}
@@ -400,6 +511,13 @@ class MaxiBlockComponent extends Component {
 
 		// Step 9: Hide Gutenberg popover on initial mount
 		this.hideGutenbergPopover();
+
+		const mountDuration = performance.now() - this.performanceTimers.mount;
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] componentDidMount completed for ${uniqueID}`,
+			JSON.stringify({ totalDuration: `${mountDuration.toFixed(2)}ms` })
+		);
 	}
 
 	/**
@@ -525,17 +643,55 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
+		// Performance tracking - Update start
+		this.performanceTimers.update = performance.now();
+		const { uniqueID } = this.props.attributes;
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] componentDidUpdate started for ${uniqueID}`,
+			JSON.stringify({
+				timestamp: this.performanceTimers.update,
+				shouldDisplayStyles,
+			})
+		);
+
+		const domUpdateStartTime = performance.now();
 		this.updateDOMReferences();
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] DOM references updated in componentDidUpdate for ${uniqueID}`,
+			JSON.stringify({
+				duration: `${(performance.now() - domUpdateStartTime).toFixed(
+					2
+				)}ms`,
+			})
+		);
 
 		// Update FSE iframe styles even for template parts
 		if (getIsSiteEditor()) {
+			const fseUpdateStartTime = performance.now();
 			this.addMaxiFSEIframeStyles();
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] FSE iframe styles updated for ${uniqueID}`,
+				JSON.stringify({
+					duration: `${(
+						performance.now() - fseUpdateStartTime
+					).toFixed(2)}ms`,
+				})
+			);
 		}
 
-		if (this.isPatternsPreview || this.templateModal) return;
-		const { uniqueID } = this.props.attributes;
+		if (this.isPatternsPreview || this.templateModal) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] componentDidUpdate - Pattern preview or template modal for ${uniqueID}, returning early`
+			);
+			return;
+		}
 
 		if (!shouldDisplayStyles) {
+			const displayStylesUpdateStartTime = performance.now();
 			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
@@ -548,6 +704,16 @@ class MaxiBlockComponent extends Component {
 				);
 			// For reusable blocks, also call directly
 			this.isReusable && this.displayStyles();
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Display styles in componentDidUpdate for ${uniqueID}`,
+				JSON.stringify({
+					duration: `${(
+						performance.now() - displayStylesUpdateStartTime
+					).toFixed(2)}ms`,
+					isReusable: this.isReusable,
+				})
+			);
 		}
 
 		// Gets the differences between the previous and current attributes
@@ -591,15 +757,11 @@ class MaxiBlockComponent extends Component {
 
 			// If there's a relation affecting this concrete block, check if is necessary
 			// to update it's content to keep the coherence and the good UX
-			const relationsLookupStartTime = performance.now();
 			const blocksIBRelations = select(
 				'maxiBlocks/relations'
 			).receiveBlockUnderRelationClientIDs(uniqueID);
-			const relationsLookupDuration =
-				performance.now() - relationsLookupStartTime;
 
-			if (!isEmpty(blocksIBRelations)) {
-				const relationsUpdateStartTime = performance.now();
+			if (!isEmpty(blocksIBRelations))
 				blocksIBRelations.forEach(({ clientId }) =>
 					updateRelationsRemotely({
 						blockTriggerClientId: clientId,
@@ -608,23 +770,6 @@ class MaxiBlockComponent extends Component {
 						breakpoint: this.props.deviceType,
 					})
 				);
-				const relationsUpdateDuration =
-					performance.now() - relationsUpdateStartTime;
-
-				if (relationsUpdateDuration > 20) {
-					// eslint-disable-next-line no-console
-					console.log(
-						`[MaxiBlocks Relations] SLOW relations batch update for ${uniqueID}`,
-						JSON.stringify({
-							duration: `${relationsUpdateDuration.toFixed(2)}ms`,
-							lookupDuration: `${relationsLookupDuration.toFixed(
-								2
-							)}ms`,
-							relationsCount: blocksIBRelations.length,
-						})
-					);
-				}
-			}
 		}
 
 		this.hideGutenbergPopover();
@@ -633,40 +778,66 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockDidUpdate) {
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 		}
+
+		const updateDuration =
+			performance.now() - this.performanceTimers.update;
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] componentDidUpdate completed for ${uniqueID}`,
+			JSON.stringify({ totalDuration: `${updateDuration.toFixed(2)}ms` })
+		);
 	}
 
 	componentWillUnmount() {
 		const { uniqueID } = this.props.attributes;
 
-		// Block cleanup initiated
+		// Performance tracking - Unmount start
+		this.performanceTimers.unmount = performance.now();
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] componentWillUnmount started for ${uniqueID}`,
+			JSON.stringify({ timestamp: this.performanceTimers.unmount })
+		);
 
 		// Return early checks
 		if (
 			this.isTemplatePartPreview ||
 			this.isPatternsPreview ||
 			this.templateModal
-		)
+		) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] componentWillUnmount - Template/Pattern preview for ${uniqueID}, returning early`
+			);
 			return;
+		}
 
 		// Clear all timeouts to prevent memory leaks (more comprehensive)
+		const cleanupStartTime = performance.now();
+		let timeoutsCleared = 0;
+
 		if (this.settingsTimeout) {
 			clearTimeout(this.settingsTimeout);
 			this.settingsTimeout = null;
+			timeoutsCleared += 1;
 		}
 
 		if (this.fseIframeTimeout) {
 			clearTimeout(this.fseIframeTimeout);
 			this.fseIframeTimeout = null;
+			timeoutsCleared += 1;
 		}
 
 		if (this.fontLoadTimeout) {
 			clearTimeout(this.fontLoadTimeout);
 			this.fontLoadTimeout = null;
+			timeoutsCleared += 1;
 		}
 
 		// MINIMAL cleanup - only clear essential timeouts
 		if (this.previewTimeouts) {
 			this.previewTimeouts.forEach(timeout => clearTimeout(timeout));
+			timeoutsCleared += this.previewTimeouts.size || 0;
 			this.previewTimeouts = null;
 		}
 
@@ -696,6 +867,17 @@ class MaxiBlockComponent extends Component {
 		if (this.areFontsLoaded) {
 			this.areFontsLoaded.current = false;
 		}
+
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] Cleanup completed for ${uniqueID}`,
+			JSON.stringify({
+				duration: `${(performance.now() - cleanupStartTime).toFixed(
+					2
+				)}ms`,
+				timeoutsCleared,
+			})
+		);
 
 		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
 			this.props.clientId
@@ -749,6 +931,40 @@ class MaxiBlockComponent extends Component {
 
 		if (this.maxiBlockWillUnmount) {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
+		}
+
+		const unmountDuration =
+			performance.now() - this.performanceTimers.unmount;
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] componentWillUnmount completed for ${uniqueID}`,
+			JSON.stringify({
+				totalDuration: `${unmountDuration.toFixed(2)}ms`,
+				isBlockBeingRemoved,
+			})
+		);
+
+		// Log complete lifecycle summary
+		if (this.performanceTimers.constructor) {
+			const totalLifecycleDuration =
+				performance.now() - this.performanceTimers.constructor;
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Complete lifecycle summary for ${uniqueID}`,
+				JSON.stringify({
+					totalLifecycle: `${totalLifecycleDuration.toFixed(2)}ms`,
+					constructor: this.performanceTimers.constructor
+						? 'completed'
+						: 'skipped',
+					mount: this.performanceTimers.mount
+						? 'completed'
+						: 'skipped',
+					updates: this.performanceTimers.update
+						? 'occurred'
+						: 'none',
+					unmount: `${unmountDuration.toFixed(2)}ms`,
+				})
+			);
 		}
 	}
 
@@ -1253,14 +1469,31 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
+		const { uniqueID } = this.props.attributes;
+
 		if (this.isPatternsPreview || this.templateModal) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] loadFonts - Pattern preview/template modal for ${uniqueID}, returning early`
+			);
 			return;
 		}
 
 		// Early return if fonts are already loaded
 		if (this.areFontsLoaded.current) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] loadFonts - Fonts already loaded for ${uniqueID}, skipping`
+			);
 			return;
 		}
+
+		const loadFontsStartTime = performance.now();
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] loadFonts started for ${uniqueID}`,
+			JSON.stringify({ timestamp: loadFontsStartTime })
+		);
 
 		const typographyToCheck = Object.fromEntries(
 			Object.entries(this.typography || {}).filter(
@@ -1316,23 +1549,57 @@ class MaxiBlockComponent extends Component {
 
 		// Load fonts with error handling
 		try {
+			const fontLoadCallStartTime = performance.now();
 			loadFonts(response, true, target);
 			this.areFontsLoaded.current = true;
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Font loading call completed for ${uniqueID}`,
+				JSON.stringify({
+					duration: `${(
+						performance.now() - fontLoadCallStartTime
+					).toFixed(2)}ms`,
+					fontCount: Object.keys(response).length,
+				})
+			);
 		} catch (error) {
 			console.warn('MaxiBlocks: Font loading failed:', error);
 			// Still mark as loaded to prevent infinite retries
 			this.areFontsLoaded.current = true;
 		}
+
+		const loadFontsDuration = performance.now() - loadFontsStartTime;
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] loadFonts completed for ${uniqueID}`,
+			JSON.stringify({
+				totalDuration: `${loadFontsDuration.toFixed(2)}ms`,
+			})
+		);
 	}
 
 	/**
 	 * Refresh the styles on the Editor
 	 */
 	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
+		const displayStylesStartTime = performance.now();
 		const { uniqueID } = this.props.attributes;
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] displayStyles started for ${uniqueID}`,
+			JSON.stringify({
+				isBreakpointChange,
+				isBlockStyleChange,
+				timestamp: displayStylesStartTime,
+			})
+		);
 
 		// Early return for invalid states
 		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] displayStyles - Invalid state for ${uniqueID}, returning early`
+			);
 			return;
 		}
 
@@ -1350,6 +1617,7 @@ class MaxiBlockComponent extends Component {
 			!isBreakpointChange || this.props.deviceType === 'xxl';
 
 		if (shouldGenerateNewStyles) {
+			const styleGenStartTime = performance.now();
 			obj = this.getStylesObject || {};
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1367,8 +1635,18 @@ class MaxiBlockComponent extends Component {
 				dispatch('maxiBlocks/customData').updateCustomData(customData);
 				customDataRelations = customData[uniqueID]?.relations;
 			}
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Style generation for ${uniqueID}`,
+				JSON.stringify({
+					duration: `${(
+						performance.now() - styleGenStartTime
+					).toFixed(2)}ms`,
+				})
+			);
 		}
 
+		const injectStartTime = performance.now();
 		this.injectStyles(
 			uniqueID,
 			obj,
@@ -1378,6 +1656,15 @@ class MaxiBlockComponent extends Component {
 			isBreakpointChange,
 			isBlockStyleChange,
 			this.editorIframe
+		);
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] Style injection for ${uniqueID}`,
+			JSON.stringify({
+				duration: `${(performance.now() - injectStartTime).toFixed(
+					2
+				)}ms`,
+			})
 		);
 
 		// Update responsive classes for non-XXL breakpoint changes
@@ -1488,6 +1775,16 @@ class MaxiBlockComponent extends Component {
 
 			this.previousRelationInstances = this.relationInstances;
 		}
+
+		const displayStylesDuration =
+			performance.now() - displayStylesStartTime;
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] displayStyles completed for ${uniqueID}`,
+			JSON.stringify({
+				totalDuration: `${displayStylesDuration.toFixed(2)}ms`,
+			})
+		);
 	}
 
 	injectStyles(
@@ -1500,14 +1797,37 @@ class MaxiBlockComponent extends Component {
 		isBlockStyleChange,
 		iframe
 	) {
+		const injectStylesStartTime = performance.now();
+		// eslint-disable-next-line no-console
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] injectStyles started for ${uniqueID}`,
+			JSON.stringify({
+				currentBreakpoint,
+				isBreakpointChange,
+				isBlockStyleChange,
+			})
+		);
+
 		if (iframe?.contentDocument?.body) {
+			const iframeStylesStartTime = performance.now();
 			this.handleIframeStyles(iframe, currentBreakpoint);
+			const iframeStylesDuration =
+				performance.now() - iframeStylesStartTime;
+			const iframeStylesMs = `${iframeStylesDuration.toFixed(2)}ms`;
+			// eslint-disable-next-line no-console
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Iframe styles handled for ${uniqueID}`,
+				JSON.stringify({ duration: iframeStylesMs })
+			);
 		}
 
 		const target = this.getStyleTarget(isSiteEditor, iframe);
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
 		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
+			const contentGenStartTime = performance.now();
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,
@@ -1518,10 +1838,39 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
+			const contentGenDuration = performance.now() - contentGenStartTime;
+			const contentGenMs = `${contentGenDuration.toFixed(2)}ms`;
+			// eslint-disable-next-line no-console
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Style content generated for ${uniqueID}`,
+				JSON.stringify({
+					duration: contentGenMs,
+					contentLength: styleContent?.length || 0,
+				})
+			);
 
 			// Use batched style injection instead of individual style elements
+			const addStylesStartTime = performance.now();
 			addBlockStyles(uniqueID, styleContent, target);
+			const addStylesDuration = performance.now() - addStylesStartTime;
+			const addStylesMs = `${addStylesDuration.toFixed(2)}ms`;
+			// eslint-disable-next-line no-console
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Performance] Styles added to DOM for ${uniqueID}`,
+				JSON.stringify({ duration: addStylesMs })
+			);
 		}
+
+		const injectStylesDuration = performance.now() - injectStylesStartTime;
+		const injectStylesMs = `${injectStylesDuration.toFixed(2)}ms`;
+		// eslint-disable-next-line no-console
+		// eslint-disable-next-line no-console
+		console.log(
+			`[MaxiBlocks Performance] injectStyles completed for ${uniqueID}`,
+			JSON.stringify({ totalDuration: injectStylesMs })
+		);
 	}
 
 	// eslint-disable-next-line class-methods-use-this

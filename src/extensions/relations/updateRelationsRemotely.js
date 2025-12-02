@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select, dispatch } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -10,6 +10,7 @@ import getCleanResponseIBAttributes from './getCleanResponseIBAttributes';
 import { getSelectedIBSettings } from './utils';
 import getIBStyles from './getIBStyles';
 import getIBStylesObj from './getIBStylesObj';
+import batchRelationsUpdater from './batchRelationsUpdater';
 
 /**
  * External dependencies
@@ -35,8 +36,23 @@ const updateRelationsRemotely = ({
 		blockEditor?.getBlockAttributes(blockTriggerClientId)?.relations;
 	if (!relations) return;
 
+	const totalStartTime = performance.now();
+
 	const { uniqueID } = blockAttributes;
+	const targetUniqueID =
+		blockEditor.getBlockAttributes(blockTargetClientId)?.uniqueID;
+	const triggerUniqueID =
+		blockEditor.getBlockAttributes(blockTriggerClientId)?.uniqueID;
 	const newRelations = [];
+
+	// Performance tracking for each phase
+	let cleanAttributesTime = 0;
+	let stylesObjTime = 0;
+	let stylesGenTime = 0;
+	let bgLayersTime = 0;
+	let processedRelations = 0;
+
+	const loopStartTime = performance.now();
 
 	for (const item of Object.values(relations)) {
 		if (isEmpty(item.attributes)) {
@@ -44,10 +60,14 @@ const updateRelationsRemotely = ({
 		} else if (item.uniqueID !== uniqueID) {
 			newRelations.push(item);
 		} else {
+			processedRelations += 1;
+
+			const settingsStartTime = performance.now();
 			const selectedSettings = getSelectedIBSettings(
 				blockTargetClientId,
 				item.sid
 			);
+			const settingsDuration = performance.now() - settingsStartTime;
 
 			// Skip if selectedSettings is undefined (no matching option found)
 			if (!selectedSettings) {
@@ -64,6 +84,7 @@ const updateRelationsRemotely = ({
 
 			// Handle background layers special case
 			if (item.sid === BGL_SID) {
+				const bgStartTime = performance.now();
 				const relationBGLayers =
 					relationsAttributes['background-layers'];
 				const blockBGLayers = blockAttributes['background-layers'];
@@ -86,8 +107,10 @@ const updateRelationsRemotely = ({
 							);
 					}
 				}
+				bgLayersTime += performance.now() - bgStartTime;
 			}
 
+			const cleanStartTime = performance.now();
 			const { cleanAttributesObject, tempAttributes } =
 				getCleanResponseIBAttributes(
 					item.attributes,
@@ -99,12 +122,17 @@ const updateRelationsRemotely = ({
 					item.sid,
 					blockTriggerClientId
 				);
+			cleanAttributesTime += performance.now() - cleanStartTime;
 
+			const mergeStartTime = performance.now();
 			const mergedAttributes = merge(
 				{},
 				cleanAttributesObject,
 				tempAttributes
 			);
+			const mergeDuration = performance.now() - mergeStartTime;
+
+			const stylesObjStartTime = performance.now();
 			const stylesObj = getIBStylesObj({
 				clientId: blockTargetClientId,
 				sid: item.sid,
@@ -112,12 +140,15 @@ const updateRelationsRemotely = ({
 				blockAttributes,
 				breakpoint,
 			});
+			stylesObjTime += performance.now() - stylesObjStartTime;
 
+			const stylesStartTime = performance.now();
 			const styles = getIBStyles({
 				stylesObj,
 				blockAttributes,
 				isFirst: true,
 			});
+			stylesGenTime += performance.now() - stylesStartTime;
 
 			const newItem = {
 				...item,
@@ -134,28 +165,76 @@ const updateRelationsRemotely = ({
 			}
 
 			newRelations.push(newItem);
+
+			// Log individual relation processing if it's slow
+			const itemTotalTime = performance.now() - settingsStartTime;
+			if (itemTotalTime > 20) {
+				// eslint-disable-next-line no-console
+				console.log(
+					`[MaxiBlocks Relations] SLOW relation processing for ${triggerUniqueID} (sid: ${item.sid})`,
+					JSON.stringify({
+						duration: `${itemTotalTime.toFixed(2)}ms`,
+						settingsDuration: `${settingsDuration.toFixed(2)}ms`,
+						mergeDuration: `${mergeDuration.toFixed(2)}ms`,
+						sid: item.sid,
+					})
+				);
+			}
 		}
 	}
 
-	if (!isEmpty(diff(relations, newRelations))) {
-		const editor = dispatch(BLOCK_EDITOR);
-		editor.__unstableMarkNextChangeAsNotPersistent();
-		editor.updateBlockAttributes(blockTriggerClientId, {
-			relations: newRelations,
-		});
+	const loopDuration = performance.now() - loopStartTime;
 
-		const getUniqueID = clientID =>
-			blockEditor.getBlockAttributes(clientID).uniqueID;
+	const diffStartTime = performance.now();
+	const hasDiff = !isEmpty(diff(relations, newRelations));
+	const diffDuration = performance.now() - diffStartTime;
 
-		// eslint-disable-next-line no-console
-		console.log(
-			`Relations updated for ${getUniqueID(
-				blockTriggerClientId
-			)} as a result of ${getUniqueID(
-				blockTargetClientId
-			)} change. The new 'relations' attribute is: `,
-			newRelations
+	if (hasDiff) {
+		const totalDuration = performance.now() - totalStartTime;
+
+		// Collect performance data for batch logging
+		const performanceData = {
+			totalDuration,
+			loopDuration,
+			cleanAttributesTime,
+			stylesObjTime,
+			stylesGenTime,
+			bgLayersTime,
+			diffDuration,
+			processedRelations,
+			totalRelations: Object.values(relations).length,
+			newRelationsSize: JSON.stringify(newRelations).length,
+			triggerUniqueID,
+			targetUniqueID,
+		};
+
+		// Add to batch queue instead of immediate update
+		batchRelationsUpdater.addUpdate(
+			blockTriggerClientId,
+			newRelations,
+			performanceData
 		);
+
+		// Log individual processing if it was slow (before batching)
+		if (totalDuration > 20) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`[MaxiBlocks Relations] Queued for batch: ${triggerUniqueID} ← ${targetUniqueID}`,
+				JSON.stringify({
+					processingTime: `${totalDuration.toFixed(2)}ms`,
+					loopDuration: `${loopDuration.toFixed(2)}ms`,
+					cleanAttributesTime: `${cleanAttributesTime.toFixed(2)}ms`,
+					stylesObjTime: `${stylesObjTime.toFixed(2)}ms`,
+					stylesGenTime: `${stylesGenTime.toFixed(2)}ms`,
+					bgLayersTime: `${bgLayersTime.toFixed(2)}ms`,
+					diffDuration: `${diffDuration.toFixed(2)}ms`,
+					processedRelations,
+					totalRelations: Object.values(relations).length,
+					newRelationsSize: JSON.stringify(newRelations).length,
+					batchQueueSize: batchRelationsUpdater.getPendingCount(),
+				})
+			);
+		}
 	}
 };
 

@@ -95,6 +95,7 @@ const getBorderStyles = ({
 	// Filter out palette-sc-status keys to avoid them appearing in CSS
 	const hoverSuffix = isHover ? '-hover' : '';
 	const replacerCache = {};
+	const colorStringCache = {}; // Cache color strings per breakpoint
 	const objEntries = Object.entries(obj).filter(
 		([key]) => !key.includes('palette-sc-status')
 	);
@@ -119,14 +120,26 @@ const getBorderStyles = ({
 			);
 		}
 		const replacer = replacerCache[breakpoint];
+		const breakpointSuffix = `-${breakpoint}${hoverSuffix}`;
 
 		objEntries.forEach(([key, rawValue]) => {
 			const newKey = prefix ? key.replace(prefix, '') : key;
-			const breakpointSuffix = `-${breakpoint}${hoverSuffix}`;
+
+			// Early exit: check if this entry is for the current breakpoint BEFORE doing expensive operations
 			const includesBreakpoint =
 				newKey.lastIndexOf(breakpointSuffix) +
 					breakpointSuffix.length ===
 				newKey.length;
+
+			// Skip early if not for this breakpoint, or if it's a sync/unit key
+			if (
+				!includesBreakpoint ||
+				newKey.includes('sync') ||
+				newKey.includes('unit')
+			) {
+				return;
+			}
+
 			const newLabel = newKey.replace(replacer, '');
 			const value = getLastBreakpointAttribute({
 				target: `${prefix}${newLabel}`,
@@ -136,24 +149,30 @@ const getBorderStyles = ({
 			});
 
 			if (
-				(getIsValid(value, true) ||
-					(isHover && globalHoverStatus && key.includes('color')) ||
-					key === `${prefix}border-palette-color-${breakpoint}`) &&
-				includesBreakpoint &&
-				!newKey.includes('sync') &&
-				!newKey.includes('unit')
+				getIsValid(value, true) ||
+				(isHover && globalHoverStatus && key.includes('color')) ||
+				key === `${prefix}border-palette-color-${breakpoint}`
 			) {
-				const unitKey = keyWords.filter(key =>
-					newLabel.includes(key)
-				)[0];
+				// More efficient: find unitKey only if needed
+				let unitKey;
+				for (let i = 0; i < keyWords.length; i += 1) {
+					if (newLabel.includes(keyWords[i])) {
+						unitKey = keyWords[i];
+						break;
+					}
+				}
 
-				const unit =
-					getLastBreakpointAttribute({
-						target: `${prefix}${newLabel.replace(unitKey, 'unit')}`,
-						breakpoint,
-						attributes: obj,
-						isHover,
-					}) || 'px';
+				const unit = unitKey
+					? getLastBreakpointAttribute({
+							target: `${prefix}${newLabel.replace(
+								unitKey,
+								'unit'
+							)}`,
+							breakpoint,
+							attributes: obj,
+							isHover,
+					  }) || 'px'
+					: 'px';
 
 				if (key.includes('style')) {
 					if (!omitBorderStyle)
@@ -161,13 +180,19 @@ const getBorderStyles = ({
 							response[breakpoint].border = 'none';
 						} else
 							response[breakpoint]['border-style'] = borderStyle;
-				} else if (!keyWords.some(key => newKey.includes(key))) {
+				} else if (!unitKey) {
+					// If unitKey wasn't found, none of the keywords match
 					if (
 						(key.includes('color') || key.includes('opacity')) &&
 						(!isBorderNone || (isHover && globalHoverStatus))
 					) {
+						// Cache color string per breakpoint
+						if (!colorStringCache[breakpoint]) {
+							colorStringCache[breakpoint] =
+								getColorString(breakpoint);
+						}
 						response[breakpoint][borderColorProperty] =
-							getColorString(breakpoint);
+							colorStringCache[breakpoint];
 					} else if (
 						![
 							'border-palette-status',

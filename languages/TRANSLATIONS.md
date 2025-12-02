@@ -2,7 +2,7 @@
 
 ## Overview
 
-MaxiBlocks uses a streamlined approach to handle JavaScript translations for bundled files. This custom solution enables seamless integration with translation plugins like Loco Translate, extracting JS translations from `.po` files and injecting them directly into the block editor and dashboard scripts.
+This custom solution enables integration with translation plugins like Loco Translate, extracting JS translations from `.po` files and injecting them directly into the block editor and dashboard scripts.
 
 ## How It Works
 
@@ -85,18 +85,23 @@ if (file_exists($json_file)) {
     $translations_data = json_decode($translations_json, true);
 
     if ($translations_data && isset($translations_data['locale_data'])) {
-        wp_add_inline_script(
-            'maxi-blocks-block-editor',
-            sprintf(
-                '( function( domain, translations ) {
-                    var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
-                    localeData[""].domain = domain;
-                    wp.i18n.setLocaleData( localeData, domain );
-                } )( "maxi-blocks", %s );',
-                $translations_json
-            ),
-            'before'
-        );
+        // Safely re-encode the JSON to prevent injection attacks
+        $safe_json = wp_json_encode($translations_data, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES);
+
+        if ($safe_json !== false) {
+            wp_add_inline_script(
+                'maxi-blocks-block-editor',
+                sprintf(
+                    '( function( domain, translations ) {
+                        var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+                        localeData[""].domain = domain;
+                        wp.i18n.setLocaleData( localeData, domain );
+                    } )( "maxi-blocks", %s );',
+                    $safe_json
+                ),
+                'before'
+            );
+        }
     }
 }
 ```
@@ -205,9 +210,11 @@ md5('maxi-blocks/build/admin.min.js')
 
 1. Create the language in Loco Translate
 2. Translate strings
-3. Modify `generate-translations.php` to support the new locale:
-   - Update the filename to use the new locale code
-   - Or make it accept a parameter for different locales
+3. Run the generation script (no code changes needed - the script auto-detects all available locales):
+   ```bash
+   cd languages
+   php generate-translations.php
+   ```
 
 ## For Other Languages
 

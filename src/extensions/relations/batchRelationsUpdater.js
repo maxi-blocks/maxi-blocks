@@ -25,14 +25,10 @@ class BatchRelationsUpdater {
 	 *
 	 * @param {string} blockTriggerClientId - The block whose relations need updating
 	 * @param {Array}  newRelations         - The new relations array
-	 * @param {Object} performanceData      - Performance metrics for logging
 	 */
-	addUpdate(blockTriggerClientId, newRelations, performanceData) {
+	addUpdate(blockTriggerClientId, newRelations) {
 		// Store the update (will overwrite if same block is updated multiple times)
-		this.pendingUpdates.set(blockTriggerClientId, {
-			newRelations,
-			performanceData,
-		});
+		this.pendingUpdates.set(blockTriggerClientId, { newRelations });
 
 		// Schedule flush if not already scheduled
 		if (!this.flushScheduled) {
@@ -54,7 +50,6 @@ class BatchRelationsUpdater {
 			return;
 		}
 
-		const batchStartTime = performance.now();
 		const updatesToProcess = Array.from(this.pendingUpdates.entries());
 		this.pendingUpdates.clear();
 		this.flushScheduled = false;
@@ -66,34 +61,18 @@ class BatchRelationsUpdater {
 		editor.__unstableMarkNextChangeAsNotPersistent();
 
 		// Process all updates in sequence (they'll be batched by React)
-		let totalProcessingTime = 0;
-		let successCount = 0;
-		const updateTimes = [];
-
 		for (const [
 			blockTriggerClientId,
 			{ newRelations },
 		] of updatesToProcess) {
-			const updateStart = performance.now();
-
 			try {
 				// Verify the block still exists
 				const blockAttributes =
 					blockEditor.getBlockAttributes(blockTriggerClientId);
 				if (blockAttributes) {
-					const attrUpdateStart = performance.now();
 					editor.updateBlockAttributes(blockTriggerClientId, {
 						relations: newRelations,
 					});
-					const attrUpdateDuration =
-						performance.now() - attrUpdateStart;
-
-					updateTimes.push({
-						clientId: blockTriggerClientId,
-						duration: attrUpdateDuration,
-					});
-
-					successCount += 1;
 				}
 			} catch (error) {
 				// eslint-disable-next-line no-console
@@ -102,35 +81,6 @@ class BatchRelationsUpdater {
 					error
 				);
 			}
-
-			totalProcessingTime += performance.now() - updateStart;
-		}
-
-		const batchTotalTime = performance.now() - batchStartTime;
-
-		// Log batch performance if it was slow
-		if (batchTotalTime > 20) {
-			const slowUpdates = updateTimes.filter(u => u.duration > 20);
-
-			// eslint-disable-next-line no-console
-			console.log(
-				'[MaxiBlocks Relations] Batched relation updates',
-				JSON.stringify({
-					batchTotalTime: `${batchTotalTime.toFixed(2)}ms`,
-					updatesProcessed: successCount,
-					totalUpdates: updatesToProcess.length,
-					avgTimePerUpdate: `${(
-						totalProcessingTime / updatesToProcess.length
-					).toFixed(2)}ms`,
-					slowUpdatesCount: slowUpdates.length,
-					...(slowUpdates.length > 0 && {
-						slowUpdates: slowUpdates.map(u => ({
-							clientId: u.clientId,
-							duration: `${u.duration.toFixed(2)}ms`,
-						})),
-					}),
-				})
-			);
 		}
 	}
 

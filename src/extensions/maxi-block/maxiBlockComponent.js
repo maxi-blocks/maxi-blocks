@@ -535,7 +535,18 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { uniqueID } = this.props.attributes;
 
-		if (!shouldDisplayStyles) {
+		// Check if only relations changed (to skip unnecessary style recalculation)
+		const diffAttributes = diff(
+			prevProps.attributes,
+			this.props.attributes
+		);
+
+		const onlyRelationsChanged =
+			!isEmpty(diffAttributes) &&
+			Object.keys(diffAttributes).length === 1 &&
+			Object.keys(diffAttributes)[0] === 'relations';
+
+		if (!shouldDisplayStyles && !onlyRelationsChanged) {
 			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
@@ -550,11 +561,7 @@ class MaxiBlockComponent extends Component {
 			this.isReusable && this.displayStyles();
 		}
 
-		// Gets the differences between the previous and current attributes
-		const diffAttributes = diff(
-			prevProps.attributes,
-			this.props.attributes
-		);
+		// Note: diffAttributes already calculated above to check onlyRelationsChanged
 
 		if (!isEmpty(diffAttributes)) {
 			// Check if the modified attribute is related with hover status,
@@ -589,38 +596,26 @@ class MaxiBlockComponent extends Component {
 				}
 			}
 
+			// Skip relation updates if only 'relations' changed (prevents cascade)
+			// Only update relations when actual content/style attributes change
+			const hasNonRelationChanges = Object.keys(diffAttributes).some(
+				key => key !== 'relations'
+			);
+
 			// If there's a relation affecting this concrete block, check if is necessary
 			// to update it's content to keep the coherence and the good UX
-			const relationsLookupStartTime = performance.now();
-			const blocksIBRelations = select(
-				'maxiBlocks/relations'
-			).receiveBlockUnderRelationClientIDs(uniqueID);
-			const relationsLookupDuration =
-				performance.now() - relationsLookupStartTime;
+			if (hasNonRelationChanges) {
+				const blocksIBRelations = select(
+					'maxiBlocks/relations'
+				).receiveBlockUnderRelationClientIDs(uniqueID);
 
-			if (!isEmpty(blocksIBRelations)) {
-				const relationsUpdateStartTime = performance.now();
-				blocksIBRelations.forEach(({ clientId }) =>
-					updateRelationsRemotely({
-						blockTriggerClientId: clientId,
-						blockTargetClientId: this.props.clientId,
-						blockAttributes: this.props.attributes,
-						breakpoint: this.props.deviceType,
-					})
-				);
-				const relationsUpdateDuration =
-					performance.now() - relationsUpdateStartTime;
-
-				if (relationsUpdateDuration > 20) {
-					// eslint-disable-next-line no-console
-					console.log(
-						`[MaxiBlocks Relations] SLOW relations batch update for ${uniqueID}`,
-						JSON.stringify({
-							duration: `${relationsUpdateDuration.toFixed(2)}ms`,
-							lookupDuration: `${relationsLookupDuration.toFixed(
-								2
-							)}ms`,
-							relationsCount: blocksIBRelations.length,
+				if (!isEmpty(blocksIBRelations)) {
+					blocksIBRelations.forEach(({ clientId }) =>
+						updateRelationsRemotely({
+							blockTriggerClientId: clientId,
+							blockTargetClientId: this.props.clientId,
+							blockAttributes: this.props.attributes,
+							breakpoint: this.props.deviceType,
 						})
 					);
 				}

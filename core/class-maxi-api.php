@@ -184,6 +184,14 @@ if (!class_exists('MaxiBlocks_API')):
             register_rest_route($this->namespace, '/style-cards', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_current_style_cards'],
+                'args' => [
+                    'client_hash' => [
+                        'default' => '',
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
                 },
@@ -908,10 +916,17 @@ if (!class_exists('MaxiBlocks_API')):
             return trim($font_url, '"\'');
         }
 
-        public function get_maxi_blocks_current_style_cards()
+        /**
+         * Get current style cards with hash-based cache validation
+         *
+         * @param WP_REST_Request $request Request object with optional client_hash
+         * @return array Response with style cards data and cache metadata
+         */
+        public function get_maxi_blocks_current_style_cards($request = null)
         {
             global $wpdb;
 
+            $client_hash = $request ? $request->get_param('client_hash') : '';
             $table_name = $wpdb->prefix . 'maxi_blocks_general';
 
             $style_cards = $wpdb->get_var(
@@ -921,14 +936,12 @@ if (!class_exists('MaxiBlocks_API')):
                 ),
             );
 
-            if ($style_cards && !empty($style_cards)) {
-                return $style_cards;
-            } else {
+            if (!$style_cards || empty($style_cards)) {
                 if (class_exists('MaxiBlocks_StyleCards')) {
                     $default_style_card = MaxiBlocks_StyleCards::get_default_style_card();
                 } else {
                     return false;
-                } // Should return an error
+                }
 
                 $wpdb->replace($table_name, [
                     'id' => 'style_cards_current',
@@ -941,8 +954,26 @@ if (!class_exists('MaxiBlocks_API')):
                         'style_cards_current',
                     ),
                 );
-                return $style_cards;
             }
+
+            // Generate hash for cache validation
+            $server_hash = md5($style_cards . get_option('maxi_blocks_version', '1.0'));
+
+            // If client hash matches, return not_modified response
+            if ($client_hash !== '' && $client_hash === $server_hash) {
+                return [
+                    'status' => 'not_modified',
+                    'message' => 'Style cards cache is up to date',
+                    'hash' => $server_hash,
+                ];
+            }
+
+            // Return style cards with hash for caching
+            // Note: We wrap in an array for consistent response format
+            return [
+                'data' => $style_cards,
+                'hash' => $server_hash,
+            ];
         }
 
         public function reset_maxi_blocks_style_cards()

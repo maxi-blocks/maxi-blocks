@@ -1,6 +1,6 @@
 /**
- * IndexedDB wrapper for uniqueID cache persistence
- * Provides fast, versioned caching of uniqueID data in the browser
+ * IndexedDB wrapper for style cards cache persistence
+ * Provides fast, versioned caching of style cards data in the browser
  *
  * Benefits:
  * - Survives page reloads and browser sessions
@@ -10,8 +10,8 @@
  */
 
 const DB_NAME = 'maxiBlocksCache';
-const DB_VERSION = 2; // Incremented to add styleCards store
-const STORE_NAME = 'uniqueIDs';
+const DB_VERSION = 2; // Same version as uniqueIDs cache
+const STORE_NAME = 'styleCards';
 
 /**
  * Open IndexedDB connection
@@ -24,7 +24,7 @@ const openDB = () => {
 		if (!window.indexedDB) {
 			// eslint-disable-next-line no-console
 			console.warn(
-				'[uniqueIDCacheDB] IndexedDB not available, falling back to memory cache'
+				'[styleCardsCacheDB] IndexedDB not available, falling back to memory cache'
 			);
 			reject(new Error('IndexedDB not available'));
 			return;
@@ -35,7 +35,7 @@ const openDB = () => {
 		request.onerror = () => {
 			// eslint-disable-next-line no-console
 			console.warn(
-				'[uniqueIDCacheDB] Failed to open database:',
+				'[styleCardsCacheDB] Failed to open database:',
 				JSON.stringify(request.error)
 			);
 			reject(request.error);
@@ -49,34 +49,34 @@ const openDB = () => {
 			const db = event.target.result;
 
 			// Create uniqueIDs object store if it doesn't exist
-			if (!db.objectStoreNames.contains(STORE_NAME)) {
-				db.createObjectStore(STORE_NAME, { keyPath: 'key' });
+			if (!db.objectStoreNames.contains('uniqueIDs')) {
+				db.createObjectStore('uniqueIDs', { keyPath: 'key' });
 			}
 
-			// Create styleCards object store if it doesn't exist (version 2+)
-			if (!db.objectStoreNames.contains('styleCards')) {
-				db.createObjectStore('styleCards', { keyPath: 'key' });
+			// Create styleCards object store if it doesn't exist
+			if (!db.objectStoreNames.contains(STORE_NAME)) {
+				db.createObjectStore(STORE_NAME, { keyPath: 'key' });
 			}
 		};
 	});
 };
 
 /**
- * Save uniqueID cache to IndexedDB
+ * Save style cards cache to IndexedDB
  *
- * @param {Array<string>} uniqueIDs Array of unique IDs
- * @param {string}        hash      Server hash for cache validation
+ * @param {Object} styleCards Style cards object
+ * @param {string} hash       Server hash for cache validation
  * @returns {Promise<void>}
  */
-export const saveToIndexedDB = async (uniqueIDs, hash) => {
+export const saveToIndexedDB = async (styleCards, hash) => {
 	try {
 		const db = await openDB();
 		const transaction = db.transaction([STORE_NAME], 'readwrite');
 		const store = transaction.objectStore(STORE_NAME);
 
 		const data = {
-			key: 'uniqueIDCache',
-			uniqueIDs,
+			key: 'styleCardsCache',
+			styleCards,
 			hash,
 			timestamp: Date.now(),
 		};
@@ -93,7 +93,7 @@ export const saveToIndexedDB = async (uniqueIDs, hash) => {
 				db.close();
 				// eslint-disable-next-line no-console
 				console.warn(
-					'[uniqueIDCacheDB] Failed to save cache:',
+					'[styleCardsCacheDB] Failed to save cache:',
 					JSON.stringify(transaction.error)
 				);
 				reject(transaction.error);
@@ -102,7 +102,7 @@ export const saveToIndexedDB = async (uniqueIDs, hash) => {
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.warn(
-			'[uniqueIDCacheDB] Error saving to IndexedDB:',
+			'[styleCardsCacheDB] Error saving to IndexedDB:',
 			JSON.stringify(error)
 		);
 		throw error;
@@ -110,16 +110,16 @@ export const saveToIndexedDB = async (uniqueIDs, hash) => {
 };
 
 /**
- * Load uniqueID cache from IndexedDB
+ * Load style cards cache from IndexedDB
  *
- * @returns {Promise<{uniqueIDs: Array<string>, hash: string, timestamp: number}|null>} Cached data or null
+ * @returns {Promise<{styleCards: Object, hash: string, timestamp: number}|null>} Cached data or null
  */
 export const loadFromIndexedDB = async () => {
 	try {
 		const db = await openDB();
 		const transaction = db.transaction([STORE_NAME], 'readonly');
 		const store = transaction.objectStore(STORE_NAME);
-		const request = store.get('uniqueIDCache');
+		const request = store.get('styleCardsCache');
 
 		return new Promise((resolve, reject) => {
 			request.onsuccess = () => {
@@ -133,7 +133,7 @@ export const loadFromIndexedDB = async () => {
 				db.close();
 				// eslint-disable-next-line no-console
 				console.warn(
-					'[uniqueIDCacheDB] Failed to load cache:',
+					'[styleCardsCacheDB] Failed to load cache:',
 					JSON.stringify(request.error)
 				);
 				reject(request.error);
@@ -142,7 +142,7 @@ export const loadFromIndexedDB = async () => {
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.warn(
-			'[uniqueIDCacheDB] Error loading from IndexedDB:',
+			'[styleCardsCacheDB] Error loading from IndexedDB:',
 			JSON.stringify(error)
 		);
 		return null;
@@ -150,7 +150,7 @@ export const loadFromIndexedDB = async () => {
 };
 
 /**
- * Clear uniqueID cache from IndexedDB
+ * Clear style cards cache from IndexedDB
  * Useful for manual cache invalidation or debugging
  *
  * @returns {Promise<void>}
@@ -161,7 +161,7 @@ export const clearIndexedDB = async () => {
 		const transaction = db.transaction([STORE_NAME], 'readwrite');
 		const store = transaction.objectStore(STORE_NAME);
 
-		store.delete('uniqueIDCache');
+		store.delete('styleCardsCache');
 
 		return new Promise((resolve, reject) => {
 			transaction.oncomplete = () => {
@@ -173,7 +173,7 @@ export const clearIndexedDB = async () => {
 				db.close();
 				// eslint-disable-next-line no-console
 				console.warn(
-					'[uniqueIDCacheDB] Failed to clear cache:',
+					'[styleCardsCacheDB] Failed to clear cache:',
 					JSON.stringify(transaction.error)
 				);
 				reject(transaction.error);
@@ -182,7 +182,7 @@ export const clearIndexedDB = async () => {
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.warn(
-			'[uniqueIDCacheDB] Error clearing IndexedDB:',
+			'[styleCardsCacheDB] Error clearing IndexedDB:',
 			JSON.stringify(error)
 		);
 		throw error;

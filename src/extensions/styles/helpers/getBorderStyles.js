@@ -91,10 +91,9 @@ const getBorderStyles = ({
 			blockStyle,
 		});
 	};
-	// Pre-compute regex patterns and object entries once
+	// Pre-compute object entries once
 	// Filter out palette-sc-status keys to avoid them appearing in CSS
 	const hoverSuffix = isHover ? '-hover' : '';
-	const replacerCache = {};
 	const colorStringCache = {}; // Cache color strings per breakpoint
 	const objEntries = Object.entries(obj).filter(
 		([key]) => !key.includes('palette-sc-status')
@@ -112,15 +111,11 @@ const getBorderStyles = ({
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 		omitBorderStyle = omitBorderStyle ? isBorderNone : false;
 
-		// Cache regex per breakpoint
-		if (!replacerCache[breakpoint]) {
-			replacerCache[breakpoint] = new RegExp(
-				`\\b-${breakpoint}${hoverSuffix}\\b(?!.*\\b-${breakpoint}${hoverSuffix}\\b)`,
-				'gm'
-			);
-		}
-		const replacer = replacerCache[breakpoint];
 		const breakpointSuffix = `-${breakpoint}${hoverSuffix}`;
+		const replacer = new RegExp(
+			`\\b-${breakpoint}${hoverSuffix}\\b(?!.*\\b-${breakpoint}${hoverSuffix}\\b)`,
+			'gm'
+		);
 
 		objEntries.forEach(([key, rawValue]) => {
 			const newKey = prefix ? key.replace(prefix, '') : key;

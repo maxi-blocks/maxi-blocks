@@ -126,10 +126,7 @@ const getBorderStyles = ({
 			const newKey = prefix ? key.replace(prefix, '') : key;
 
 			// Early exit: check if this entry is for the current breakpoint BEFORE doing expensive operations
-			const includesBreakpoint =
-				newKey.lastIndexOf(breakpointSuffix) +
-					breakpointSuffix.length ===
-				newKey.length;
+			const includesBreakpoint = newKey.endsWith(breakpointSuffix);
 
 			// Skip early if not for this breakpoint, or if it's a sync/unit key
 			if (

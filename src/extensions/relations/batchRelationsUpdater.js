@@ -17,7 +17,6 @@ class BatchRelationsUpdater {
 	constructor() {
 		this.pendingUpdates = new Map(); // Map<triggerClientId, updateData>
 		this.flushScheduled = false;
-		this.BATCH_DELAY = 0; // Use microtask (immediate) to batch within same event loop
 	}
 
 	/**

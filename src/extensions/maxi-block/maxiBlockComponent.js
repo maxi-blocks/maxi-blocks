@@ -669,6 +669,18 @@ class MaxiBlockComponent extends Component {
 		if (this.fseIframeObserver) {
 			this.fseIframeObserver.disconnect();
 			this.fseIframeObserver = null;
+
+			// Performance tracking: Track MutationObserver removal
+			if (
+				window.maxiDebugPerformance &&
+				window.listenerTracker &&
+				this.fseObserverId
+			) {
+				window.listenerTracker.removeMutationObserver(
+					this.fseObserverId
+				);
+				this.fseObserverId = null;
+			}
 		}
 
 		// Remove temporary popover-hiding styles if still injected
@@ -2106,6 +2118,16 @@ class MaxiBlockComponent extends Component {
 	setupFSEIframeObserver() {
 		// Only create observer if it doesn't exist yet
 		if (!this.fseIframeObserver) {
+			// Performance tracking: Track MutationObserver creation
+			let observerId = null;
+			if (window.maxiDebugPerformance && window.listenerTracker) {
+				observerId = window.listenerTracker.trackMutationObserver(
+					'document.body (FSE iframe)',
+					{ childList: true, subtree: true },
+					`MaxiBlockComponent-${this.props.name}-${this.props.attributes.uniqueID}`
+				);
+			}
+
 			this.fseIframeObserver = new MutationObserver(mutations => {
 				for (const mutation of mutations) {
 					if (mutation.type === 'childList') {
@@ -2127,6 +2149,9 @@ class MaxiBlockComponent extends Component {
 					}
 				}
 			});
+
+			// Store observer ID for cleanup
+			this.fseObserverId = observerId;
 
 			// Observe the document body for when iframes get added/removed
 			this.fseIframeObserver.observe(document.body, {

@@ -152,6 +152,28 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'apiRoot' => esc_url_raw(rest_url()),
             ]);
 
+            // Add performance monitoring configuration
+            $debug_performance = false;
+
+            // Check if debug mode should be enabled
+            // Priority: URL param > constant > option
+            if (isset($_GET['maxiDebugPerformance']) && $_GET['maxiDebugPerformance'] === 'true') { //phpcs:ignore
+                $debug_performance = true;
+            } elseif (defined('MAXI_DEBUG_PERFORMANCE') && constant('MAXI_DEBUG_PERFORMANCE')) {
+                $debug_performance = true;
+            } elseif (get_option('maxi_debug_performance', false)) {
+                $debug_performance = true;
+            }
+
+            // Inject debug flag before the main script
+            if ($debug_performance) {
+                wp_add_inline_script(
+                    'maxi-blocks-block-editor',
+                    'window.maxiDebugPerformanceEnabled = true;',
+                    'before'
+                );
+            }
+
             // Inject MaxiBlocks settings directly to avoid API calls
             if (class_exists('MaxiBlocks_API')) {
                 $api = new MaxiBlocks_API();

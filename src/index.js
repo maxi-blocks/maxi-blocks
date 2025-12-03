@@ -9,6 +9,59 @@
  * Webpack is compiling as the input file.
  */
 
+// Performance Monitor - Initialize early if debug mode enabled
+/* eslint-disable no-console */
+import {
+	isDebugEnabled,
+	initDebugControl,
+} from './extensions/performance-monitor/debugControl';
+import performanceMonitor from './extensions/performance-monitor/index';
+import listenerTracker from './extensions/performance-monitor/listenerTracker';
+import storeMonitor from './extensions/performance-monitor/storeMonitor';
+import domTracker from './extensions/performance-monitor/domTracker';
+import apiTracker from './extensions/performance-monitor/apiTracker';
+import leakDetector from './extensions/performance-monitor/leakDetector';
+
+// Initialize debug control (always available)
+initDebugControl();
+
+// Initialize performance monitoring if debug mode is enabled
+if (isDebugEnabled()) {
+	// Set global flag
+	window.maxiDebugPerformance = true;
+
+	// Initialize core monitor
+	performanceMonitor.init();
+
+	// Initialize all trackers
+	listenerTracker.report(); // Just to expose it
+	storeMonitor.init();
+	domTracker.init();
+	apiTracker.init();
+	leakDetector.init();
+
+	// Expose trackers globally for debugging
+	window.listenerTracker = listenerTracker;
+	window.storeMonitor = storeMonitor;
+	window.domTracker = domTracker;
+	window.apiTracker = apiTracker;
+	window.leakDetector = leakDetector;
+
+	console.log(
+		'%c[MaxiBlocks] Performance monitoring active',
+		'background: #4CAF50; color: white; font-weight: bold; padding: 4px 8px; font-size: 12px;',
+		'\nAvailable commands:',
+		'\n  maxiPerformance.report() - Full performance report',
+		'\n  maxiPerformance.export() - Export report as JSON',
+		'\n  listenerTracker.report() - Listener tracking report',
+		'\n  storeMonitor.report() - Redux store report',
+		'\n  domTracker.report() - DOM operations report',
+		'\n  apiTracker.report() - API calls report',
+		'\n  leakDetector.report() - Memory leak detection report'
+	);
+}
+/* eslint-enable no-console */
+
 // Extensions
 import './extensions';
 

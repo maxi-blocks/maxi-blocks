@@ -61,6 +61,9 @@ if (!class_exists('MaxiBlocks_API')):
             // Use lower priority (20) to run after post is fully saved
             add_action('save_post', [$this, 'invalidate_unique_ids_cache_on_save'], 20, 2);
             add_action('deleted_post', [$this, 'invalidate_unique_ids_cache']);
+
+            // Enable gzip compression for MaxiBlocks API responses
+            add_filter('rest_pre_serve_request', [$this, 'enable_rest_compression'], 10, 4);
         }
 
         /**
@@ -266,6 +269,26 @@ if (!class_exists('MaxiBlocks_API')):
                 [
                     'methods' => 'GET',
                     'callback' => [$this, 'get_all_maxi_blocks_unique_ids'],
+                    'args' => [
+                        'page' => [
+                            'default' => 1,
+                            'validate_callback' => function ($param) {
+                                return is_numeric($param) && $param > 0;
+                            },
+                        ],
+                        'per_page' => [
+                            'default' => 1000,
+                            'validate_callback' => function ($param) {
+                                return is_numeric($param) && $param > 0 && $param <= 5000;
+                            },
+                        ],
+                        'client_hash' => [
+                            'default' => '',
+                            'validate_callback' => function ($param) {
+                                return is_string($param);
+                            },
+                        ],
+                    ],
                     'permission_callback' => function () {
                         return current_user_can('edit_posts');
                     },
@@ -1168,28 +1191,82 @@ if (!class_exists('MaxiBlocks_API')):
 
         /**
          * Get all unique IDs from the database for cache initialization
-         * Returns a flat array of all block_style_id values
+         * Returns a flat array of all block_style_id values with pagination support
+         *
+         * @param WP_REST_Request $request Request object with pagination params
+         * @return WP_REST_Response|array Response with unique IDs and metadata
          */
-        public function get_all_maxi_blocks_unique_ids()
+        public function get_all_maxi_blocks_unique_ids($request = null)
         {
-            // OPTIMIZATION: Use WordPress transient caching to reduce DB queries
-            // Cache expires after 1 hour or when invalidated on post save/delete
-            $cached_results = get_transient(self::UNIQUE_IDS_CACHE_KEY);
-
-            if ($cached_results !== false) {
-                return $cached_results;
-            }
-
             global $wpdb;
+
+            // Extract pagination params from request
+            $page = $request ? (int) $request->get_param('page') : 1;
+            $per_page = $request ? (int) $request->get_param('per_page') : 1000;
+            $client_hash = $request ? $request->get_param('client_hash') : '';
 
             $db_css_table_name = $wpdb->prefix . 'maxi_blocks_styles_blocks';
 
-            // Get all block_style_id values in a single optimized query
+            // OPTIMIZATION: Use WordPress transient caching to reduce DB queries
+            // Cache key includes pagination params for proper cache segregation
+            $cache_key = self::UNIQUE_IDS_CACHE_KEY . "_page_{$page}_per_{$per_page}";
+            $cached_results = get_transient($cache_key);
+
+            // Also cache total count separately
+            $total_count_cache_key = self::UNIQUE_IDS_CACHE_KEY . '_total_count';
+            $total_count = get_transient($total_count_cache_key);
+
+            // Generate server hash from total count for cache validation
+            if ($total_count === false) {
+                $total_count = (int) $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT COUNT(*) FROM {$db_css_table_name} WHERE block_style_id != %s",
+                        'temporary'
+                    )
+                );
+                set_transient($total_count_cache_key, $total_count, 3600);
+            }
+
+            $server_hash = md5($total_count . get_option('maxi_blocks_version', '1.0'));
+
+            // If client hash matches server hash, return not_modified response
+            // Note: We use 200 status instead of 304 because WordPress REST API doesn't
+            // properly handle 304 responses with apiFetch
+            if ($client_hash !== '' && $client_hash === $server_hash) {
+                return [
+                    'status' => 'not_modified',
+                    'message' => 'Cache is up to date',
+                    'hash' => $server_hash,
+                ];
+            }
+
+            // Return cached results if available
+            if ($cached_results !== false) {
+                return [
+                    'data' => $cached_results,
+                    'page' => $page,
+                    'per_page' => $per_page,
+                    'total' => $total_count,
+                    'total_pages' => (int) ceil($total_count / $per_page),
+                    'hash' => $server_hash,
+                    'cache' => 'HIT',
+                ];
+            }
+
+            // Calculate offset for pagination
+            $offset = ($page - 1) * $per_page;
+
+            // Get paginated block_style_id values with optimized query
             // Using $wpdb->prepare() to prevent SQL injection
             $results = $wpdb->get_col(
                 $wpdb->prepare(
-                    "SELECT block_style_id FROM {$db_css_table_name} WHERE block_style_id != %s",
-                    'temporary'
+                    "SELECT block_style_id FROM {$db_css_table_name}
+                     WHERE block_style_id != %s
+                     ORDER BY id ASC
+                     LIMIT %d OFFSET %d",
+                    'temporary',
+                    $per_page,
+                    $offset
                 )
             );
 
@@ -1198,9 +1275,18 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             // Cache for 1 hour (3600 seconds)
-            set_transient(self::UNIQUE_IDS_CACHE_KEY, $results, 3600);
+            set_transient($cache_key, $results, 3600);
 
-            return $results;
+            // Return response with metadata
+            return [
+                'data' => $results,
+                'page' => $page,
+                'per_page' => $per_page,
+                'total' => $total_count,
+                'total_pages' => (int) ceil($total_count / $per_page),
+                'hash' => $server_hash,
+                'cache' => 'MISS',
+            ];
         }
 
         /**
@@ -1233,10 +1319,83 @@ if (!class_exists('MaxiBlocks_API')):
         /**
          * Invalidate the uniqueIDs cache when posts are deleted
          * This ensures the cache stays in sync with the database
+         * Clears all pagination-related caches
          */
         public function invalidate_unique_ids_cache()
         {
+            global $wpdb;
+
+            // Delete the legacy non-paginated cache
             delete_transient(self::UNIQUE_IDS_CACHE_KEY);
+
+            // Delete total count cache
+            delete_transient(self::UNIQUE_IDS_CACHE_KEY . '_total_count');
+
+            // Delete all paginated caches using SQL pattern matching
+            // This is more efficient than tracking individual cache keys
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                    '_transient_' . self::UNIQUE_IDS_CACHE_KEY . '_page_%'
+                )
+            );
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                    '_transient_timeout_' . self::UNIQUE_IDS_CACHE_KEY . '_page_%'
+                )
+            );
+        }
+
+        /**
+         * Enable gzip compression for MaxiBlocks REST API responses
+         * This significantly reduces payload size for large responses
+         *
+         * @param bool $served Whether the request has already been served
+         * @param WP_HTTP_Response $result Result to send to the client
+         * @param WP_REST_Request $request Request used to generate the response
+         * @param WP_REST_Server $server Server instance
+         * @return bool Whether the request has been served
+         */
+        public function enable_rest_compression($served, $result, $request, $server)
+        {
+            // Only apply to MaxiBlocks API routes
+            if (strpos($request->get_route(), '/maxi-blocks/') === false) {
+                return $served;
+            }
+
+            // Check if client accepts gzip encoding
+            $accept_encoding = isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '';
+
+            if (strpos($accept_encoding, 'gzip') !== false && function_exists('gzencode')) {
+                // Get the response data
+                $data = $result->get_data();
+                $json = wp_json_encode($data);
+
+                // Only compress if response is larger than 1KB
+                if (strlen($json) > 1024) {
+                    $compressed = gzencode($json, 6); // Compression level 6 is a good balance
+
+                    if ($compressed !== false) {
+                        // Set compression headers
+                        header('Content-Encoding: gzip');
+                        header('Content-Length: ' . strlen($compressed));
+                        header('Content-Type: application/json; charset=UTF-8');
+                        header('Vary: Accept-Encoding');
+
+                        // Add cache headers for better performance
+                        $max_age = 3600; // 1 hour
+                        header('Cache-Control: public, max-age=' . $max_age);
+                        header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $max_age) . ' GMT');
+
+                        // Output compressed data
+                        echo $compressed;
+                        return true;
+                    }
+                }
+            }
+
+            return $served;
         }
 
         public function get_active_integration_plugins()

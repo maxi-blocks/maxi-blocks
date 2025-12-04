@@ -160,6 +160,20 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// YouTube Content Security Policy violations
+		if (
+			text.includes('Refused to load the script') &&
+			text.includes('youtube.com')
+		) {
+			return;
+		}
+		if (
+			text.includes('Content Security Policy directive') &&
+			text.includes('youtube.com')
+		) {
+			return;
+		}
+
 		// CustomCSS validator returns connection errors sometimes
 		if (text.includes('Error validating css: TypeError: Failed to fetch')) {
 			return;

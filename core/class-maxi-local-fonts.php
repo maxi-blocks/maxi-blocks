@@ -957,66 +957,6 @@ class MaxiBlocks_Local_Fonts
         return $variants;
     }
 
-    /**
-     * Attempt to read OS/2 table data from the provided font file using php-font-lib.
-     *
-     * @param string $file_path
-     * @return array<string,string>|WP_Error
-     */
-    private function parse_font_file_attributes($file_path)
-    {
-        if (!class_exists('\FontLib\Font')) {
-            return new WP_Error(
-                'font_parser_unavailable',
-                __('Font parsing library is not available.', 'maxi-blocks'),
-                ['status' => 500],
-            );
-        }
-
-        try {
-            $font = \FontLib\Font::load($file_path);
-            $font->parse();
-            $os2 = $font->getData('OS/2');
-            $font->close();
-        } catch (\Throwable $e) {
-            return new WP_Error(
-                'font_parser_failed',
-                __('Unable to parse the uploaded font file.', 'maxi-blocks'),
-                ['status' => 400],
-            );
-        }
-
-        if (!is_array($os2) || empty($os2)) {
-            return new WP_Error(
-                'font_metadata_missing',
-                __('Required font metadata is missing.', 'maxi-blocks'),
-                ['status' => 400],
-            );
-        }
-
-        $weight_value = isset($os2['usWeightClass']) ? $os2['usWeightClass'] : null;
-        if (!$weight_value) {
-            return new WP_Error(
-                'font_weight_missing',
-                __('Font weight metadata is missing.', 'maxi-blocks'),
-                ['status' => 400],
-            );
-        }
-
-        $fs_selection = isset($os2['fsSelection']) ? (int) $os2['fsSelection'] : 0;
-        $style = 'normal';
-        if ($fs_selection & (1 << 9)) {
-            $style = 'oblique';
-        } elseif ($fs_selection & 1) {
-            $style = 'italic';
-        }
-
-        return [
-            'weight' => $this->normalize_font_weight_value($weight_value),
-            'style' => $this->normalize_font_style_value($style, false),
-        ];
-    }
-
     private function normalize_font_weight_value($weight, $allow_empty = true)
     {
         if ($weight === '' || null === $weight) {

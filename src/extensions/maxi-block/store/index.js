@@ -49,7 +49,7 @@ const fetchAllUniqueIDs = async (clientHash = '') => {
 	const perPage = 1000;
 
 	try {
-		let totalPages = 1;
+		let totalPages;
 		let serverHash = '';
 		// Fetch first page to get total count and hash
 		const firstPage = await apiFetch({

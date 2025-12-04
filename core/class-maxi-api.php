@@ -1414,10 +1414,23 @@ if (!class_exists('MaxiBlocks_API')):
                         header('Content-Type: application/json; charset=UTF-8');
                         header('Vary: Accept-Encoding');
 
-                        // Add cache headers for better performance
-                        $max_age = 3600; // 1 hour
-                        header('Cache-Control: public, max-age=' . $max_age);
-                        header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $max_age) . ' GMT');
+                        // Determine if this is an authenticated/privileged endpoint
+                        // Most MaxiBlocks endpoints require edit_posts capability except /breakpoints
+                        $is_public_endpoint = strpos($request->get_route(), '/breakpoints') !== false;
+                        $is_authenticated = is_user_logged_in() && current_user_can('edit_posts');
+
+                        // Set appropriate cache headers based on authentication and endpoint type
+                        if ($is_public_endpoint && !$is_authenticated) {
+                            // Public endpoint accessed without authentication: allow shared caching
+                            $max_age = 3600; // 1 hour
+                            header('Cache-Control: public, max-age=' . $max_age);
+                            header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $max_age) . ' GMT');
+                        } elseif ($is_authenticated || !$is_public_endpoint) {
+                            // Authenticated request or privileged endpoint: prevent shared caching
+                            // Use private cache to allow browser caching but prevent proxy/CDN caching
+                            header('Cache-Control: private, no-cache, must-revalidate');
+                            header('Expires: 0');
+                        }
 
                         // Output compressed data
                         echo $compressed;

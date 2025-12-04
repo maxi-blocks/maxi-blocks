@@ -120,7 +120,7 @@ export const saveToCache = async (entityType, entityName, args, data) => {
 
 		store.put(cacheData);
 
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			transaction.oncomplete = () => {
 				db.close();
 				resolve();
@@ -128,7 +128,8 @@ export const saveToCache = async (entityType, entityName, args, data) => {
 
 			transaction.onerror = () => {
 				db.close();
-				reject(transaction.error);
+				// Silently fail - resolve instead of reject to keep cache best-effort
+				resolve();
 			};
 		});
 	} catch (error) {
@@ -154,7 +155,7 @@ export const loadFromCache = async (entityType, entityName, args) => {
 		const cacheKey = generateCacheKey(entityType, entityName, args);
 		const request = store.get(cacheKey);
 
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			request.onsuccess = () => {
 				db.close();
 				const { result } = request;
@@ -176,7 +177,8 @@ export const loadFromCache = async (entityType, entityName, args) => {
 
 			request.onerror = () => {
 				db.close();
-				reject(request.error);
+				// Silently fail - resolve null instead of reject to keep cache best-effort
+				resolve(null);
 			};
 		});
 	} catch (error) {
@@ -215,7 +217,7 @@ export const clearCache = async (entityType = null) => {
 			store.clear();
 		}
 
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			transaction.oncomplete = () => {
 				db.close();
 				resolve();
@@ -223,7 +225,8 @@ export const clearCache = async (entityType = null) => {
 
 			transaction.onerror = () => {
 				db.close();
-				reject(transaction.error);
+				// Silently fail - resolve instead of reject to keep cache best-effort
+				resolve();
 			};
 		});
 	} catch (error) {
@@ -258,7 +261,7 @@ export const cleanupExpiredCache = async () => {
 			}
 		};
 
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			transaction.oncomplete = () => {
 				db.close();
 				resolve();
@@ -266,7 +269,8 @@ export const cleanupExpiredCache = async () => {
 
 			transaction.onerror = () => {
 				db.close();
-				reject(transaction.error);
+				// Silently fail - resolve instead of reject to keep cache best-effort
+				resolve();
 			};
 		});
 	} catch (error) {

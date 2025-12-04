@@ -50,7 +50,7 @@ const IconColor = props => {
 				{props['icon-inherit'] ? (
 					<p className='toolbar-item__icon-color__popover__warning'>
 						{__(
-							'Icon colour is inheriting from button.',
+							'Icon colour is inherited from button.',
 							'maxi-button'
 						)}
 					</p>

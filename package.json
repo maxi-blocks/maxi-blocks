@@ -89,21 +89,21 @@
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.28.4",
 		"@babel/plugin-proposal-class-properties": "latest",
-		"@babel/traverse": "latest",
 		"@babel/plugin-proposal-object-rest-spread": "latest",
 		"@babel/plugin-syntax-object-rest-spread": "latest",
 		"@babel/plugin-transform-spread": "latest",
+		"@babel/traverse": "latest",
 		"@limegrass/eslint-plugin-import-alias": "^1.5.0",
 		"@playwright/test": "^1.53.0",
-		"@wordpress/babel-preset-default": "^7.35.1",
-		"caniuse-lite": "^1.0.30001726",
 		"@prettier/plugin-php": "latest",
+		"@wordpress/babel-preset-default": "^7.35.1",
 		"@wordpress/base-styles": "latest",
 		"@wordpress/e2e-test-utils": "10.13.13",
 		"@wordpress/e2e-test-utils-playwright": "^1.25.0",
 		"@wordpress/env": "latest",
 		"@wordpress/jest-preset-default": "latest",
 		"@wordpress/scripts": "27.9.0",
+		"caniuse-lite": "^1.0.30001757",
 		"css-minimizer-webpack-plugin": "latest",
 		"dotenv": "^16.4.5",
 		"dotenv-webpack": "latest",
@@ -140,6 +140,11 @@
 		"ws": "^8.18.0",
 		"tar-fs": "^3.0.9",
 		"cross-spawn": "^7.0.6",
-		"webpack-dev-server": "^5.2.2"
+		"webpack-dev-server": "^5.2.2",
+		"glob": "^11.1.0",
+		"js-yaml": "^4.1.1",
+		"del": "^6.1.1",
+		"node-forge": "^1.3.2",
+		"express": "^4.22.0"
 	}
 }

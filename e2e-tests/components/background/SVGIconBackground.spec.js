@@ -40,7 +40,7 @@ describe('Icon background', () => {
 			'icon background'
 		);
 
-		await page.$eval('.maxi-tabs-control__button-color', button =>
+		await page.$eval('.maxi-tabs-control__button-solid', button =>
 			button.click()
 		);
 
@@ -67,7 +67,7 @@ describe('Icon background', () => {
 			input => input.click()
 		);
 
-		await page.$eval('.maxi-tabs-control__button-color', button =>
+		await page.$eval('.maxi-tabs-control__button-solid', button =>
 			button.click()
 		);
 

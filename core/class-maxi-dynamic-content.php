@@ -178,7 +178,7 @@ class MaxiBlocks_DynamicContent
 
             switch ($archive_info['type']) {
                 case 'category':
-                    $args['category__in'] = [$archive_info['id']]; // Array of category IDs
+                    $args['cat'] = $archive_info['id']; // Array of category IDs
                     break;
                 case 'tag':
                     $args['tag__in'] = [$archive_info['id']]; // Array of tag IDs
@@ -219,7 +219,7 @@ class MaxiBlocks_DynamicContent
                             ],
                         ];
                     } elseif ($type === 'post') {
-                        $args['category__in'] = [$id]; // Array of category IDs
+                        $args['cat'] = $id; // Array of category IDs
                     } else {
                         error_log(
                             __('Categories are not associated with this post type.', 'maxi-blocks'),
@@ -311,7 +311,7 @@ class MaxiBlocks_DynamicContent
                             ];
                         } else {
                             // For regular posts, use category constraint
-                            $additional_constraints['category__in'] = [$current_archive_info['id']];
+                            $additional_constraints['cat'] = $current_archive_info['id'];
                         }
                         break;
                     case 'tag':

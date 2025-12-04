@@ -21,7 +21,7 @@ body .toolbar-item__popover {
 	.block-editor-url-input__input {
 		background-color: transparent;
 		color: var(--maxi-white);
-		border: 2px solid var(--maxi-grey-dark) !important;
+		border: 1.5px solid var(--maxi-grey) !important;
 
 		&::placeholder {
 			color: var(--maxi-grey-dark);

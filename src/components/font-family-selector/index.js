@@ -107,37 +107,43 @@ const FontFamilySelector = props => {
 	const classes = classnames('maxi-font-family-selector', className);
 
 	return (
-		<BaseControl __nextHasNoMarginBottom>
-			<Select
-				className={classes}
-				classNamePrefix='maxi-font-family-selector__control'
-				options={options}
-				value={value}
-				placeholder={__('Search…', 'maxi-blocks')}
-				onChange={(value, clear) =>
-					clear.action === 'select-option'
-						? onFontChange(value)
-						: onFontChange({
+		<BaseControl
+			__nextHasNoMarginBottom
+			className='maxi-font-family-selector-control'
+		>
+			<div className='maxi-font-family-selector__container'>
+				<Select
+					className={classes}
+					classNamePrefix='maxi-font-family-selector__control'
+					options={options}
+					value={value}
+					placeholder={__('Search…', 'maxi-blocks')}
+					onChange={(value, clear) =>
+						clear.action === 'select-option'
+							? onFontChange(value)
+							: onFontChange({
+									label: defaultValue,
+									value: defaultValue,
+							  })
+					}
+					isLoading={isNil(options)}
+					isClearable
+					onMenuOpen={() => setValue({})}
+					onMenuClose={e => setValue({ label: font, value: font })}
+				/>
+
+				{!disableFontFamilyReset && (
+					<ResetButton
+						isInline
+						onReset={e => {
+							onFontChange({
 								label: defaultValue,
 								value: defaultValue,
-						  })
-				}
-				isLoading={isNil(options)}
-				isClearable
-				onMenuOpen={() => setValue({})}
-				onMenuClose={e => setValue({ label: font, value: font })}
-			/>
-
-			{!disableFontFamilyReset && (
-				<ResetButton
-					onReset={e => {
-						onFontChange({
-							label: defaultValue,
-							value: defaultValue,
-						});
-					}}
-				/>
-			)}
+							});
+						}}
+					/>
+				)}
+			</div>
 		</BaseControl>
 	);
 };

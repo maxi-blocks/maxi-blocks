@@ -39,37 +39,46 @@ const controls = {
 
 			if (cachedData && cachedData.styleCards && cachedData.hash) {
 				// We have cached data, verify if it's still valid
-				const response = await apiFetch({
-					path: `/maxi-blocks/v1.0/style-cards/?client_hash=${encodeURIComponent(
-						cachedData.hash
-					)}`,
-				});
+				try {
+					const response = await apiFetch({
+						path: `/maxi-blocks/v1.0/style-cards/?client_hash=${encodeURIComponent(
+							cachedData.hash
+						)}`,
+					});
 
-				// Check if cache is still valid
-				if (response && response.status === 'not_modified') {
-					// Cache is valid, use cached data
-					return cachedData.styleCards;
-				}
-
-				// Cache is stale, update with new data
-				if (response && response.data) {
-					const styleCards =
-						typeof response.data === 'string'
-							? JSON.parse(response.data)
-							: response.data;
-
-					// Save to IndexedDB for next time
-					try {
-						await saveToIndexedDB(styleCards, response.hash);
-					} catch (cacheError) {
-						// eslint-disable-next-line no-console
-						console.warn(
-							'[RECEIVE_STYLE_CARDS] IndexedDB save failed (non-fatal):',
-							JSON.stringify(cacheError)
-						);
+					// Check if cache is still valid
+					if (response && response.status === 'not_modified') {
+						// Cache is valid, use cached data
+						return cachedData.styleCards;
 					}
 
-					return styleCards;
+					// Cache is stale, update with new data
+					if (response && response.data) {
+						const styleCards =
+							typeof response.data === 'string'
+								? JSON.parse(response.data)
+								: response.data;
+
+						// Save to IndexedDB for next time
+						try {
+							await saveToIndexedDB(styleCards, response.hash);
+						} catch (cacheError) {
+							// eslint-disable-next-line no-console
+							console.warn(
+								'[RECEIVE_STYLE_CARDS] IndexedDB save failed (non-fatal):',
+								JSON.stringify(cacheError)
+							);
+						}
+
+						return styleCards;
+					}
+				} catch (validationError) {
+					// eslint-disable-next-line no-console
+					console.warn(
+						'[RECEIVE_STYLE_CARDS] Cache validation failed (non-fatal), fetching fresh data:',
+						JSON.stringify(validationError)
+					);
+					// Fall through to fresh fetch below
 				}
 			}
 

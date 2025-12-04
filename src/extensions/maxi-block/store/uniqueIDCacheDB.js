@@ -48,14 +48,15 @@ const openDB = () => {
 		request.onupgradeneeded = event => {
 			const db = event.target.result;
 
-			// Create uniqueIDs object store if it doesn't exist
+			// Create all required object stores (shared database with other cache modules)
 			if (!db.objectStoreNames.contains(STORE_NAME)) {
 				db.createObjectStore(STORE_NAME, { keyPath: 'key' });
 			}
-
-			// Create styleCards object store if it doesn't exist (version 2+)
 			if (!db.objectStoreNames.contains('styleCards')) {
 				db.createObjectStore('styleCards', { keyPath: 'key' });
+			}
+			if (!db.objectStoreNames.contains('wordPressAPI')) {
+				db.createObjectStore('wordPressAPI', { keyPath: 'key' });
 			}
 		};
 	});

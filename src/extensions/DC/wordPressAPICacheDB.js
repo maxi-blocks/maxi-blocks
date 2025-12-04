@@ -50,7 +50,7 @@ const openDB = () => {
 		request.onupgradeneeded = event => {
 			const db = event.target.result;
 
-			// Create all required object stores
+			// Create all required object stores (shared database with other cache modules)
 			if (!db.objectStoreNames.contains('uniqueIDs')) {
 				db.createObjectStore('uniqueIDs', { keyPath: 'key' });
 			}

@@ -25,7 +25,17 @@ const controls = {
 	async RECEIVE_STYLE_CARDS() {
 		try {
 			// Step 1: Try to load from IndexedDB cache first
-			const cachedData = await loadFromIndexedDB();
+			let cachedData = null;
+			try {
+				cachedData = await loadFromIndexedDB();
+			} catch (cacheError) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					'[RECEIVE_STYLE_CARDS] IndexedDB load failed, continuing with network fetch:',
+					JSON.stringify(cacheError)
+				);
+				cachedData = null;
+			}
 
 			if (cachedData && cachedData.styleCards && cachedData.hash) {
 				// We have cached data, verify if it's still valid
@@ -49,7 +59,15 @@ const controls = {
 							: response.data;
 
 					// Save to IndexedDB for next time
-					await saveToIndexedDB(styleCards, response.hash);
+					try {
+						await saveToIndexedDB(styleCards, response.hash);
+					} catch (cacheError) {
+						// eslint-disable-next-line no-console
+						console.warn(
+							'[RECEIVE_STYLE_CARDS] IndexedDB save failed (non-fatal):',
+							JSON.stringify(cacheError)
+						);
+					}
 
 					return styleCards;
 				}
@@ -68,7 +86,15 @@ const controls = {
 
 				// Save to IndexedDB for next time
 				if (response.hash) {
-					await saveToIndexedDB(styleCards, response.hash);
+					try {
+						await saveToIndexedDB(styleCards, response.hash);
+					} catch (cacheError) {
+						// eslint-disable-next-line no-console
+						console.warn(
+							'[RECEIVE_STYLE_CARDS] IndexedDB save failed (non-fatal):',
+							JSON.stringify(cacheError)
+						);
+					}
 				}
 
 				return styleCards;
@@ -82,7 +108,7 @@ const controls = {
 			// eslint-disable-next-line no-console
 			console.warn(
 				'[RECEIVE_STYLE_CARDS] Error fetching style cards:',
-				error
+				JSON.stringify(error)
 			);
 			throw error;
 		}

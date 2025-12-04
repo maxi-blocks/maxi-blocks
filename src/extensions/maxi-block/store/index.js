@@ -27,8 +27,10 @@ const store = createReduxStore('maxiBlocks/blocks', {
 
 register(store);
 
-// Expose cache clearing function for debugging
-window.maxiBlocksClearCache = clearIndexedDB;
+// Expose cache clearing function for debugging (development/test only)
+if (process.env.NODE_ENV !== 'production') {
+	window.maxiBlocksClearCache = clearIndexedDB;
+}
 
 /**
  * Track cache load attempts for retry logic

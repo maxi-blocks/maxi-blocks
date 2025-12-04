@@ -9,9 +9,14 @@
  * - Configurable TTL per entity type
  */
 
-const DB_NAME = 'maxiBlocksCache';
-const DB_VERSION = 2; // Same version as other caches
-const STORE_NAME = 'wordPressAPI';
+import {
+	openDB,
+	executeTransaction,
+	STORE_NAMES,
+} from '@extensions/common/indexedDBManager';
+
+const STORE_NAME = STORE_NAMES.wordPressAPI;
+const CALLER_NAME = 'wordPressAPICacheDB';
 
 // Cache TTL (Time To Live) per entity type
 const CACHE_TTL = {
@@ -23,45 +28,6 @@ const CACHE_TTL = {
 	media: 10 * 60 * 1000, // 10 minutes
 	taxonomies: 30 * 60 * 1000, // 30 minutes
 	default: 5 * 60 * 1000, // 5 minutes default
-};
-
-/**
- * Open IndexedDB connection
- *
- * @returns {Promise<IDBDatabase>} Database connection
- */
-const openDB = () => {
-	return new Promise((resolve, reject) => {
-		if (!window.indexedDB) {
-			reject(new Error('IndexedDB not available'));
-			return;
-		}
-
-		const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-		request.onerror = () => {
-			reject(request.error);
-		};
-
-		request.onsuccess = () => {
-			resolve(request.result);
-		};
-
-		request.onupgradeneeded = event => {
-			const db = event.target.result;
-
-			// Create all required object stores (shared database with other cache modules)
-			if (!db.objectStoreNames.contains('uniqueIDs')) {
-				db.createObjectStore('uniqueIDs', { keyPath: 'key' });
-			}
-			if (!db.objectStoreNames.contains('styleCards')) {
-				db.createObjectStore('styleCards', { keyPath: 'key' });
-			}
-			if (!db.objectStoreNames.contains(STORE_NAME)) {
-				db.createObjectStore(STORE_NAME, { keyPath: 'key' });
-			}
-		};
-	});
 };
 
 /**
@@ -103,7 +69,7 @@ const getTTL = entityName => {
  */
 export const saveToCache = async (entityType, entityName, args, data) => {
 	try {
-		const db = await openDB();
+		const db = await openDB(CALLER_NAME);
 		const transaction = db.transaction([STORE_NAME], 'readwrite');
 		const store = transaction.objectStore(STORE_NAME);
 
@@ -120,17 +86,15 @@ export const saveToCache = async (entityType, entityName, args, data) => {
 
 		store.put(cacheData);
 
-		return new Promise(resolve => {
-			transaction.oncomplete = () => {
-				db.close();
-				resolve();
-			};
-
-			transaction.onerror = () => {
-				db.close();
-				// Silently fail - resolve instead of reject to keep cache best-effort
-				resolve();
-			};
+		// Use executeTransaction but resolve even on error (silent fail for optional cache)
+		return executeTransaction(
+			transaction,
+			db,
+			CALLER_NAME,
+			'save cache'
+		).catch(() => {
+			// Silently fail - caching is optional
+			return null;
 		});
 	} catch (error) {
 		// Silently fail - caching is optional
@@ -148,7 +112,7 @@ export const saveToCache = async (entityType, entityName, args, data) => {
  */
 export const loadFromCache = async (entityType, entityName, args) => {
 	try {
-		const db = await openDB();
+		const db = await openDB(CALLER_NAME);
 		const transaction = db.transaction([STORE_NAME], 'readonly');
 		const store = transaction.objectStore(STORE_NAME);
 
@@ -195,7 +159,7 @@ export const loadFromCache = async (entityType, entityName, args) => {
  */
 export const clearCache = async (entityType = null) => {
 	try {
-		const db = await openDB();
+		const db = await openDB(CALLER_NAME);
 		const transaction = db.transaction([STORE_NAME], 'readwrite');
 		const store = transaction.objectStore(STORE_NAME);
 
@@ -217,17 +181,15 @@ export const clearCache = async (entityType = null) => {
 			store.clear();
 		}
 
-		return new Promise(resolve => {
-			transaction.oncomplete = () => {
-				db.close();
-				resolve();
-			};
-
-			transaction.onerror = () => {
-				db.close();
-				// Silently fail - resolve instead of reject to keep cache best-effort
-				resolve();
-			};
+		// Use executeTransaction but resolve even on error (silent fail)
+		return executeTransaction(
+			transaction,
+			db,
+			CALLER_NAME,
+			'clear cache'
+		).catch(() => {
+			// Silently fail
+			return null;
 		});
 	} catch (error) {
 		// Silently fail
@@ -243,7 +205,7 @@ export const clearCache = async (entityType = null) => {
  */
 export const cleanupExpiredCache = async () => {
 	try {
-		const db = await openDB();
+		const db = await openDB(CALLER_NAME);
 		const transaction = db.transaction([STORE_NAME], 'readwrite');
 		const store = transaction.objectStore(STORE_NAME);
 		const request = store.openCursor();
@@ -261,17 +223,15 @@ export const cleanupExpiredCache = async () => {
 			}
 		};
 
-		return new Promise(resolve => {
-			transaction.oncomplete = () => {
-				db.close();
-				resolve();
-			};
-
-			transaction.onerror = () => {
-				db.close();
-				// Silently fail - resolve instead of reject to keep cache best-effort
-				resolve();
-			};
+		// Use executeTransaction but resolve even on error (silent fail)
+		return executeTransaction(
+			transaction,
+			db,
+			CALLER_NAME,
+			'cleanup expired cache'
+		).catch(() => {
+			// Silently fail
+			return null;
 		});
 	} catch (error) {
 		// Silently fail
@@ -279,6 +239,8 @@ export const cleanupExpiredCache = async () => {
 	}
 };
 
-// Expose for debugging
-window.maxiBlocksClearWPAPICache = clearCache;
-window.maxiBlocksCleanupWPAPICache = cleanupExpiredCache;
+// Expose for debugging (development/test only)
+if (process.env.NODE_ENV !== 'production') {
+	window.maxiBlocksClearWPAPICache = clearCache;
+	window.maxiBlocksCleanupWPAPICache = cleanupExpiredCache;
+}

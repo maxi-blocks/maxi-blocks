@@ -9,58 +9,15 @@
  * - Automatic cache invalidation via hash comparison
  */
 
-const DB_NAME = 'maxiBlocksCache';
-const DB_VERSION = 2; // Same version as uniqueIDs cache
-const STORE_NAME = 'styleCards';
+import {
+	openDB,
+	executeTransaction,
+	executeRequest,
+	STORE_NAMES,
+} from '@extensions/common/indexedDBManager';
 
-/**
- * Open IndexedDB connection
- *
- * @returns {Promise<IDBDatabase>} Database connection
- */
-const openDB = () => {
-	return new Promise((resolve, reject) => {
-		// Check if IndexedDB is available
-		if (!window.indexedDB) {
-			// eslint-disable-next-line no-console
-			console.warn(
-				'[styleCardsCacheDB] IndexedDB not available, falling back to memory cache'
-			);
-			reject(new Error('IndexedDB not available'));
-			return;
-		}
-
-		const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-		request.onerror = () => {
-			// eslint-disable-next-line no-console
-			console.warn(
-				'[styleCardsCacheDB] Failed to open database:',
-				JSON.stringify(request.error)
-			);
-			reject(request.error);
-		};
-
-		request.onsuccess = () => {
-			resolve(request.result);
-		};
-
-		request.onupgradeneeded = event => {
-			const db = event.target.result;
-
-			// Create all required object stores (shared database with other cache modules)
-			if (!db.objectStoreNames.contains('uniqueIDs')) {
-				db.createObjectStore('uniqueIDs', { keyPath: 'key' });
-			}
-			if (!db.objectStoreNames.contains(STORE_NAME)) {
-				db.createObjectStore(STORE_NAME, { keyPath: 'key' });
-			}
-			if (!db.objectStoreNames.contains('wordPressAPI')) {
-				db.createObjectStore('wordPressAPI', { keyPath: 'key' });
-			}
-		};
-	});
-};
+const STORE_NAME = STORE_NAMES.styleCards;
+const CALLER_NAME = 'styleCardsCacheDB';
 
 /**
  * Save style cards cache to IndexedDB
@@ -71,7 +28,7 @@ const openDB = () => {
  */
 export const saveToIndexedDB = async (styleCards, hash) => {
 	try {
-		const db = await openDB();
+		const db = await openDB(CALLER_NAME);
 		const transaction = db.transaction([STORE_NAME], 'readwrite');
 		const store = transaction.objectStore(STORE_NAME);
 
@@ -84,26 +41,11 @@ export const saveToIndexedDB = async (styleCards, hash) => {
 
 		store.put(data);
 
-		return new Promise((resolve, reject) => {
-			transaction.oncomplete = () => {
-				db.close();
-				resolve();
-			};
-
-			transaction.onerror = () => {
-				db.close();
-				// eslint-disable-next-line no-console
-				console.warn(
-					'[styleCardsCacheDB] Failed to save cache:',
-					JSON.stringify(transaction.error)
-				);
-				reject(transaction.error);
-			};
-		});
+		return executeTransaction(transaction, db, CALLER_NAME, 'save cache');
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.warn(
-			'[styleCardsCacheDB] Error saving to IndexedDB:',
+			`[${CALLER_NAME}] Error saving to IndexedDB:`,
 			JSON.stringify(error)
 		);
 		throw error;
@@ -117,33 +59,22 @@ export const saveToIndexedDB = async (styleCards, hash) => {
  */
 export const loadFromIndexedDB = async () => {
 	try {
-		const db = await openDB();
+		const db = await openDB(CALLER_NAME);
 		const transaction = db.transaction([STORE_NAME], 'readonly');
 		const store = transaction.objectStore(STORE_NAME);
 		const request = store.get('styleCardsCache');
 
-		return new Promise((resolve, reject) => {
-			request.onsuccess = () => {
-				db.close();
-				const { result } = request;
-
-				resolve(result || null);
-			};
-
-			request.onerror = () => {
-				db.close();
-				// eslint-disable-next-line no-console
-				console.warn(
-					'[styleCardsCacheDB] Failed to load cache:',
-					JSON.stringify(request.error)
-				);
-				reject(request.error);
-			};
-		});
+		const result = await executeRequest(
+			request,
+			db,
+			CALLER_NAME,
+			'load cache'
+		);
+		return result || null;
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.warn(
-			'[styleCardsCacheDB] Error loading from IndexedDB:',
+			`[${CALLER_NAME}] Error loading from IndexedDB:`,
 			JSON.stringify(error)
 		);
 		return null;
@@ -158,32 +89,17 @@ export const loadFromIndexedDB = async () => {
  */
 export const clearIndexedDB = async () => {
 	try {
-		const db = await openDB();
+		const db = await openDB(CALLER_NAME);
 		const transaction = db.transaction([STORE_NAME], 'readwrite');
 		const store = transaction.objectStore(STORE_NAME);
 
 		store.delete('styleCardsCache');
 
-		return new Promise((resolve, reject) => {
-			transaction.oncomplete = () => {
-				db.close();
-				resolve();
-			};
-
-			transaction.onerror = () => {
-				db.close();
-				// eslint-disable-next-line no-console
-				console.warn(
-					'[styleCardsCacheDB] Failed to clear cache:',
-					JSON.stringify(transaction.error)
-				);
-				reject(transaction.error);
-			};
-		});
+		return executeTransaction(transaction, db, CALLER_NAME, 'clear cache');
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.warn(
-			'[styleCardsCacheDB] Error clearing IndexedDB:',
+			`[${CALLER_NAME}] Error clearing IndexedDB:`,
 			JSON.stringify(error)
 		);
 		throw error;

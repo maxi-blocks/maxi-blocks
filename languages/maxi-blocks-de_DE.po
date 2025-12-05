@@ -750,7 +750,7 @@ msgstr "Akkordeon-Einstellungen"
 
 #: src/blocks/accordion-maxi/data.js:38
 msgid "Accordion title"
-msgstr "Fett anwenden"
+msgstr "Akkordeon-Titel"
 
 #: src/components/context-loop/index.js:601
 #: src/components/context-loop/index.js:934
@@ -1141,11 +1141,11 @@ msgstr ""
 
 #: src/components/typography-control/index.js:1048
 msgid "Apply bold"
-msgstr "Kursiv anwende"
+msgstr "Fett anwenden"
 
 #: src/components/typography-control/index.js:1087
 msgid "Apply italic"
-msgstr "Durchstreichen anwenden"
+msgstr "Kursiv anwenden"
 
 #: src/components/toolbar/components/link/index.js:241
 msgid "Apply link on"
@@ -1157,11 +1157,11 @@ msgstr "Einstellung anwenden"
 
 #: src/components/typography-control/index.js:1158
 msgid "Apply strikethrough"
-msgstr "Unterstreichen anwenden"
+msgstr "Durchstreichen anwenden"
 
 #: src/components/typography-control/index.js:1121
 msgid "Apply underline"
-msgstr "Pfeil-Icons"
+msgstr "Unterstreichen anwenden"
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:713
 msgid "Arabic"

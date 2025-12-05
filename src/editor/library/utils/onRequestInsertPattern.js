@@ -199,14 +199,15 @@ const stripCustomStyles = (content, useSCStyles) => {
 
 	// Unwrap text inside spans with maxi-text-block--has-custom-format class
 	// In Gutenberg serialized format within JSON attributes, special chars are Unicode-escaped
-	// Use a simpler pattern that matches more broadly
+	// Pattern: \u003cspan class=\u0022...maxi-text-block\u002d\u002dhas-custom-format...\u0022\u003etext\u003c/span\u003e
+	// Match everything between class=" and the closing " using lazy match with anything except the closing quote sequence
 	const unicodePattern =
-		/\\u003cspan[^>]*maxi-text-block\\u002d\\u002dhas-custom-format[^>]*\\u003e(.*?)\\u003c\/span\\u003e/gi;
+		/\\u003cspan\s+class=\\u0022((?:(?!\\u0022).)*?maxi-text-block\\u002d\\u002dhas-custom-format(?:(?!\\u0022).)*?)\\u0022(?:(?!\\u003e).)*?\\u003e(.*?)\\u003c\/span\\u003e/gi;
 	let unicodeMatchCount = 0;
 
 	modifiedContent = modifiedContent.replace(
 		unicodePattern,
-		(match, textContent) => {
+		(match, className, textContent) => {
 			unicodeMatchCount += 1;
 			// eslint-disable-next-line no-console
 			console.log(

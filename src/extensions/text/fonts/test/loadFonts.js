@@ -24,9 +24,9 @@ jest.mock('@extensions/text/fonts/fontCacheUtils', () => ({
 	cleanUrl: jest.fn(url => url),
 }));
 
-jest.mock('@extensions/text/fonts/loadFontUtils', () => ({
-	buildFontUrl: jest.fn(() => Promise.resolve('')),
-}));
+jest.mock('@extensions/text/fonts/loadFontUtils', () =>
+	jest.fn(() => Promise.resolve(''))
+);
 
 describe('getFontUrl', () => {
 	beforeEach(() => {

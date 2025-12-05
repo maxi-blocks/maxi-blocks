@@ -1177,6 +1177,37 @@ class MaxiBlocks_QuickStart
             true,
         );
 
+        // Load translations for starter sites - must be right after script registration
+        $locale = get_locale();
+        $json_file = MAXI_PLUGIN_DIR_PATH . 'languages/maxi-blocks-' . $locale . '-' . md5('maxi-blocks/core/admin/starter-sites/build/js/main.js') . '.json';
+
+        if (file_exists($json_file)) {
+            $translations_json = file_get_contents($json_file);
+            $translations_data = json_decode($translations_json, true);
+
+            if ($translations_data && isset($translations_data['locale_data'])) {
+                // Safely re-encode the JSON to prevent injection attacks
+                $safe_json = wp_json_encode($translations_data, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_UNESCAPED_SLASHES);
+
+                if ($safe_json !== false) {
+                    // Build inline script - add console log to verify it's loading
+                    $inline_script = 'console.log("[MaxiBlocks QS] Loading starter sites translations for locale: ' . $locale . '");
+                        ( function( domain, translations ) {
+                            var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+                            localeData[""].domain = domain;
+                            wp.i18n.setLocaleData( localeData, domain );
+                            console.log("[MaxiBlocks QS] Starter sites translations loaded:", Object.keys(localeData).length, "strings");
+                        } )( "maxi-blocks", ' . $safe_json . ' );';
+
+                    wp_add_inline_script(
+                        'maxi-blocks-starter-sites',
+                        $inline_script,
+                        'before'
+                    );
+                }
+            }
+        }
+
         // Register the starter sites style
         wp_register_style(
             'maxi-blocks-starter-sites',

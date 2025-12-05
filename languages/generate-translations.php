@@ -58,6 +58,10 @@ $scripts = [
     'admin' => [
         'path' => 'maxi-blocks/build/admin.min.js',
         'name' => 'Dashboard (admin.min.js)'
+    ],
+    'starter-sites' => [
+        'path' => 'maxi-blocks/core/admin/starter-sites/build/js/main.js',
+        'name' => 'Starter Sites (main.js)'
     ]
 ];
 

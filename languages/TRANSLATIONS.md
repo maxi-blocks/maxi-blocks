@@ -14,6 +14,7 @@ This custom solution enables integration with translation plugins like Loco Tran
 
 - **`build/index.min.js`** (4.6MB) - Block editor scripts
 - **`build/admin.min.js`** (18KB) - Dashboard/admin scripts
+- **`core/admin/starter-sites/build/js/main.js`** - Starter Sites library scripts
 
 ## Files Involved
 
@@ -21,6 +22,7 @@ This custom solution enables integration with translation plugins like Loco Tran
 - `languages/maxi-blocks-de_DE.mo` - Compiled PHP translations (auto-generated)
 - `languages/maxi-blocks-de_DE-2f2df17011b16d4ca25e596e0409fe72.json` - Editor JS translations
 - `languages/maxi-blocks-de_DE-45dd5f3bbfc23f9c617e432aa6578d60.json` - Dashboard JS translations
+- `languages/maxi-blocks-de_DE-a547bf49c483076522aa4a89cde6391f.json` - Starter Sites JS translations
 - `generate-translations.php` - Script to generate the JSON files
 
 ## Adding/Updating Translations
@@ -50,7 +52,7 @@ php generate-translations.php es_ES de_DE fr_FR
 This will:
 - Parse the `.po` file
 - Extract all JavaScript strings (from `.js` files)
-- Create/update JSON files for both `index.min.js` and `admin.min.js` with the correct hashes
+- Create/update JSON files for `index.min.js`, `admin.min.js`, and `starter-sites/main.js` with the correct hashes
 - Only include translated strings (empty translations are skipped)
 
 ### 3. Clear caches
@@ -107,6 +109,10 @@ if (file_exists($json_file)) {
 ```
 
 **For the dashboard** (`admin.min.js`) in `core/admin/class-maxi-dashboard.php` (lines 182-209):
+
+(Same pattern as editor - loads translation JSON and injects via `wp_add_inline_script`)
+
+**For the starter sites** (`main.js`) in `core/admin/class-maxi-dashboard.php` (after line 1833) and `core/admin/quick-start/class-maxi-quick-start.php` (after line 1213):
 ```php
 $locale = get_locale();
 $json_file = MAXI_PLUGIN_DIR_PATH . 'languages/maxi-blocks-' . $locale . '-' . md5('maxi-blocks/build/admin.min.js') . '.json';
@@ -178,18 +184,25 @@ md5('maxi-blocks/build/admin.min.js')
 // Result: 45dd5f3bbfc23f9c617e432aa6578d60
 ```
 
+**Starter Sites script:**
+```php
+md5('maxi-blocks/core/admin/starter-sites/build/js/main.js')
+// Result: a547bf49c483076522aa4a89cde6391f
+```
+
 **Important:** Use the full path including `maxi-blocks/`, not just `build/index.min.js`.
 
 ## Troubleshooting
 
 ### Translations not showing in JavaScript
 
-1. Check both JSON files exist:
+1. Check all three JSON files exist:
    ```bash
    ls languages/maxi-blocks-de_DE-*.json
-   # Should show 2 files:
+   # Should show 3 files:
    # - maxi-blocks-de_DE-2f2df17011b16d4ca25e596e0409fe72.json (editor)
    # - maxi-blocks-de_DE-45dd5f3bbfc23f9c617e432aa6578d60.json (admin)
+   # - maxi-blocks-de_DE-a547bf49c483076522aa4a89cde6391f.json (starter sites)
    ```
 
 2. Verify the JSON is valid:

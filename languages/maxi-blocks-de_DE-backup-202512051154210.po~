@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: MaxiBlocks 2.1.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "POT-Creation-Date: 2025-12-01T13:21:07+00:00\n"
-"PO-Revision-Date: 2025-12-05 12:22+0000\n"
+"PO-Revision-Date: 2025-12-05 11:52+0000\n"
 "Last-Translator: \n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: maxi-blocks\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Loco-Version: 2.8.0; wp-6.9; php-8.3.28"
+"X-Loco-Version: 2.8.0; wp-6.8.2; php-8.3.17\n"
 
 #: src/components/prompt-control/tabs/generate-tab/index.js:79
 msgid " AI model"
@@ -724,8 +724,9 @@ msgid "Accordion layout"
 msgstr "Akkordeon-Layout"
 
 #: src/blocks/accordion-maxi/data.js:35
+#, fuzzy
 msgid "Accordion line"
-msgstr "Akkordeonlinie"
+msgstr "Akkordeon Maxi"
 
 #: src/blocks/pane-maxi/data.js:223
 msgid "accordion pane header content::after"
@@ -749,8 +750,9 @@ msgid "Accordion settings"
 msgstr "Akkordeon-Einstellungen"
 
 #: src/blocks/accordion-maxi/data.js:38
+#, fuzzy
 msgid "Accordion title"
-msgstr "Fett anwenden"
+msgstr "Akkordeon Maxi"
 
 #: src/components/context-loop/index.js:601
 #: src/components/context-loop/index.js:934
@@ -1140,12 +1142,14 @@ msgstr ""
 "transparentes PNG mit mindestens 250 × 100 px."
 
 #: src/components/typography-control/index.js:1048
+#, fuzzy
 msgid "Apply bold"
-msgstr "Kursiv anwende"
+msgstr "Link anwenden auf"
 
 #: src/components/typography-control/index.js:1087
+#, fuzzy
 msgid "Apply italic"
-msgstr "Durchstreichen anwenden"
+msgstr "Link anwenden auf"
 
 #: src/components/toolbar/components/link/index.js:241
 msgid "Apply link on"
@@ -1156,12 +1160,14 @@ msgid "Apply Setting"
 msgstr "Einstellung anwenden"
 
 #: src/components/typography-control/index.js:1158
+#, fuzzy
 msgid "Apply strikethrough"
-msgstr "Unterstreichen anwenden"
+msgstr "Durchgestrichen"
 
 #: src/components/typography-control/index.js:1121
+#, fuzzy
 msgid "Apply underline"
-msgstr "Pfeil-Icons"
+msgstr "Unterstreichen"
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:713
 msgid "Arabic"
@@ -1236,12 +1242,14 @@ msgid "Arrow Color"
 msgstr "Pfeilfarbe"
 
 #: src/blocks/slider-maxi/data.js:50
+#, fuzzy
 msgid "Arrow icons"
-msgstr "Pfeil-Icons"
+msgstr "Pfeilposition"
 
 #: src/blocks/slider-maxi/data.js:53
+#, fuzzy
 msgid "Arrow icons - hover"
-msgstr "Pfeil-Icons Hover"
+msgstr "Icon-Hover aktivieren"
 
 #: src/blocks/container-maxi/data.js:65 src/blocks/group-maxi/data.js:22
 #: src/blocks/slider-maxi/components/navigation-control/index.js:64
@@ -1249,8 +1257,9 @@ msgid "Arrow position"
 msgstr "Pfeilposition"
 
 #: src/blocks/container-maxi/data.js:64 src/blocks/group-maxi/data.js:21
+#, fuzzy
 msgid "Arrow side"
-msgstr "Pfeilseite"
+msgstr "Pfeilgröße"
 
 #: src/blocks/container-maxi/data.js:66 src/blocks/group-maxi/data.js:23
 #: src/components/arrow-control/index.js:176
@@ -1262,6 +1271,7 @@ msgid "Arrows"
 msgstr "Pfeile"
 
 #: src/blocks/slider-maxi/data.js:42
+#, fuzzy
 msgid "Arrows position"
 msgstr "Pfeilposition"
 
@@ -1348,8 +1358,9 @@ msgid "Autoplay"
 msgstr "Automatische Wiedergabe"
 
 #: src/blocks/slider-maxi/data.js:31
+#, fuzzy
 msgid "Autoplay speed"
-msgstr "Autoplay-Geschwindigkeit"
+msgstr "Geschwindigkeit der automatischen Wiedergabe (ms)"
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:66
 #: src/components/toolbar/components/slider-settings/index.js:69
@@ -1414,8 +1425,9 @@ msgid "Background Color"
 msgstr "Hintergrundfarbe"
 
 #: src/blocks/svg-icon-maxi/data.js:79
+#, fuzzy
 msgid "Background color hover"
-msgstr "Hintergrundfarbe Hover"
+msgstr "Hintergrund-Hover"
 
 #: src/blocks/svg-icon-maxi/data.js:76 src/components/arrow-control/index.js:96
 #: src/components/background-control/backgroundLayersControl.js:316
@@ -1443,8 +1455,9 @@ msgid "Background gradient"
 msgstr "Hintergrundverlauf"
 
 #: src/blocks/svg-icon-maxi/data.js:85
+#, fuzzy
 msgid "Background gradient hover"
-msgstr "Hintergrundverlauf Hover"
+msgstr "Hintergrundverlauf"
 
 #: src/editor/style-cards/maxiStyleCardsTab.js:602
 msgid "Background hover"
@@ -1750,8 +1763,9 @@ msgid "Block tone"
 msgstr "Block-Ton"
 
 #: src/editor/library/container.js:1507 src/editor/library/toolbar.js:236
+#, fuzzy
 msgid "Blocks"
-msgstr "Blöcke"
+msgstr "MaxiBlocks"
 
 #: core/admin/status-report/maxi-system-status-report.php:548
 msgid "Blog URL"
@@ -1838,8 +1852,9 @@ msgid "Bottom of screen"
 msgstr "Unterer Bildschirmrand"
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:432
+#, fuzzy
 msgid "Bottom shape"
-msgstr "Untere Form"
+msgstr "Unterer Abstand"
 
 #: src/blocks/accordion-maxi/data.js:52 src/blocks/button-maxi/data.js:108
 #: src/blocks/button-maxi/data.js:131 src/blocks/column-maxi/data.js:42
@@ -1979,8 +1994,9 @@ msgid "Button text"
 msgstr "Button-Text"
 
 #: src/blocks/search-maxi/data.js:57
+#, fuzzy
 msgid "Button text close"
-msgstr "Schaltflächentext Schliessen"
+msgstr "Button-Text"
 
 #: src/blocks/button-maxi/data.js:261
 msgid "Button typography"
@@ -2032,24 +2048,27 @@ msgid "Caption"
 msgstr "Bildunterschrift"
 
 #: src/blocks/image-maxi/data.js:73
+#, fuzzy
 msgid "Caption content"
-msgstr "Beschriftungsinhalt"
+msgstr "Inhalt ausrichten"
 
 #: src/blocks/image-maxi/data.js:75 src/blocks/image-maxi/inspector.js:251
 msgid "Caption gap"
 msgstr "Abstand der Bildunterschrift"
 
 #: src/blocks/image-maxi/data.js:79
+#, fuzzy
 msgid "Caption gap unit"
-msgstr "Beschriftungsabstand Einheit"
+msgstr "Abstand der Bildunterschrift"
 
 #: src/blocks/image-maxi/data.js:74 src/blocks/image-maxi/inspector.js:218
 msgid "Caption position"
 msgstr "Position der Bildunterschrift"
 
 #: src/blocks/image-maxi/data.js:72
+#, fuzzy
 msgid "Caption type"
-msgstr "Beschriftungstyp"
+msgstr "Abstand der Bildunterschrift"
 
 #: src/extensions/DC/store/initConstants.js:36
 msgid "Cart"
@@ -2255,8 +2274,9 @@ msgstr "Bereinigen"
 #: src/editor/library/container.js:1283 src/editor/library/container.js:1317
 #: src/editor/library/container.js:1416 src/editor/library/container.js:1430
 #: src/editor/library/container.js:1582 src/editor/library/container.js:1647
+#, fuzzy
 msgid "Clear"
-msgstr "Löschen"
+msgstr "Bereinigen"
 
 #: core/admin/starter-sites/src/library/container.js:204
 #: src/editor/library/container.js:394 src/editor/library/container.js:1623
@@ -2296,8 +2316,9 @@ msgid "Click to show"
 msgstr "Klicken, um anzuzeigen"
 
 #: src/blocks/image-maxi/data.js:129 src/blocks/image-maxi/data.js:207
+#, fuzzy
 msgid "Clip path"
-msgstr "Pfad zuschneiden"
+msgstr "Clip-Path"
 
 #: src/blocks/image-maxi/data.js:267
 #: src/components/inspector-tabs/inspector-clip-path.js:32
@@ -2311,8 +2332,9 @@ msgid "Close"
 msgstr "Schließen"
 
 #: src/blocks/video-maxi/data.js:72
+#, fuzzy
 msgid "Close button"
-msgstr "Schliessen-Schaltfläche"
+msgstr "Schließen-Icon"
 
 #: src/blocks/search-maxi/data.js:63 src/blocks/search-maxi/inspector.js:231
 msgid "Close icon"
@@ -2396,8 +2418,9 @@ msgid "Colour palette"
 msgstr "Farbpalette"
 
 #: src/blocks/row-maxi/data.js:22
+#, fuzzy
 msgid "Column gap"
-msgstr "Spaltenabstand"
+msgstr "Spalte Maxi"
 
 #: src/blocks/row-maxi/components/row-block-template/index.js:91
 #: src/blocks/row-maxi/inspector.js:85
@@ -2411,8 +2434,9 @@ msgid "Column settings"
 msgstr "Spalteneinstellungen"
 
 #: src/blocks/column-maxi/data.js:31
+#, fuzzy
 msgid "Column size"
-msgstr "Spaltengrösse"
+msgstr "Spaltengröße"
 
 #: src/blocks/column-maxi/components/column-size-control/index.js:49
 #: src/components/toolbar/components/column-size/index.js:41
@@ -2483,8 +2507,9 @@ msgid "content line on hover"
 msgstr "Inhaltslinie bei Hover"
 
 #: src/components/prompt-control/tabs/generate-tab/index.js:96
+#, fuzzy
 msgid "Content type"
-msgstr "Inhaltstyp"
+msgstr "Inhaltslinie"
 
 #: core/admin/starter-sites/src/library/maxiImportPopUp.js:680
 msgid "Content XML"
@@ -2861,8 +2886,9 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: src/blocks/map-maxi/data.js:63
+#, fuzzy
 msgid "Description typography"
-msgstr "Beschreibungstypografie"
+msgstr "Button-Typografie"
 
 #: core/admin/class-maxi-dashboard.php:1097
 msgid ""
@@ -2937,8 +2963,9 @@ msgid "Divider box shadow"
 msgstr "Trennlinien-Box-Schatten"
 
 #: src/blocks/container-maxi/data.js:33
+#, fuzzy
 msgid "Divider color"
-msgstr "Trennerfarbe"
+msgstr "Trennlinienfarbe"
 
 #: src/editor/style-cards/maxiStyleCardsTab.js:723
 msgid "Divider globals"
@@ -2951,8 +2978,9 @@ msgid "Divider height"
 msgstr "Trennlinien-Höhe"
 
 #: src/blocks/container-maxi/data.js:42
+#, fuzzy
 msgid "Divider height unit"
-msgstr "Trennerhöhe Einheit"
+msgstr "Trennlinien-Höhe"
 
 #: src/components/toolbar/components/divider-color/index.js:44
 msgid "Divider line"
@@ -2963,16 +2991,19 @@ msgid "Divider line colour"
 msgstr "Trennlinienfarbe"
 
 #: src/blocks/container-maxi/data.js:29
+#, fuzzy
 msgid "Divider opacity"
-msgstr "Trennersichtbarkeit"
+msgstr "Video-Deckkraft"
 
 #: src/blocks/container-maxi/data.js:46
+#, fuzzy
 msgid "Divider scroll effect"
-msgstr "Trenner-Scrolleffekt"
+msgstr "Scroll-Effekt aktivieren"
 
 #: src/blocks/container-maxi/data.js:21
+#, fuzzy
 msgid "Divider status"
-msgstr "Trennerstatus"
+msgstr "Trennlinien-Stil"
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:209
 #: src/blocks/container-maxi/data.js:25
@@ -2989,16 +3020,19 @@ msgid "Does not support cURL."
 msgstr "Unterstützt cURL nicht."
 
 #: src/blocks/slider-maxi/data.js:60
+#, fuzzy
 msgid "Dot icons"
-msgstr "Punkt-Icons"
+msgstr "Punkt-Icon hinzufügen"
 
 #: src/blocks/slider-maxi/data.js:66
+#, fuzzy
 msgid "Dot icons - active"
-msgstr "Punkt-Icons Aktiv"
+msgstr "Netzwerklizenz ist aktiv"
 
 #: src/blocks/slider-maxi/data.js:63
+#, fuzzy
 msgid "Dot icons - hover"
-msgstr "Punkt-Icons Hover"
+msgstr "Icon-Hover aktivieren"
 
 #: src/blocks/slider-maxi/data.js:58 src/blocks/slider-maxi/inspector.js:139
 msgid "Dots"
@@ -3338,8 +3372,9 @@ msgstr ""
 "Die Endnummer darf nicht größer als 100 sein, wenn der Kreis aktiviert ist"
 
 #: src/blocks/video-maxi/data.js:36
+#, fuzzy
 msgid "End time"
-msgstr "Endzeit"
+msgstr "Endzeit (s)"
 
 #: src/blocks/video-maxi/components/video-control/index.js:113
 #: src/components/background-control/videoLayer.js:208
@@ -3687,8 +3722,9 @@ msgid "Fill"
 msgstr "Füllung"
 
 #: src/blocks/svg-icon-maxi/data.js:50
+#, fuzzy
 msgid "Fill colour"
-msgstr "Füllfarbe"
+msgstr "Farbe"
 
 #: src/editor/style-cards/maxiStyleCardsTab.js:712
 msgid "Fill hover"
@@ -3699,8 +3735,9 @@ msgid "Fill hover colour"
 msgstr "Hover-Füllfarbe"
 
 #: src/editor/library/container.js:217
+#, fuzzy
 msgid "Filled"
-msgstr "Gefüllt"
+msgstr "Füllung"
 
 #: src/editor/library/container.js:1278 src/editor/library/container.js:1312
 #: src/editor/library/container.js:1323 src/editor/library/container.js:1332
@@ -4043,8 +4080,9 @@ msgid "Grab context"
 msgstr "Kontext erfassen"
 
 #: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:91
+#, fuzzy
 msgid "Gradient"
-msgstr "Verlauf"
+msgstr "Verlauf-Deckkraft"
 
 #: src/components/gradient-control/index.js:67
 msgid "Gradient opacity"
@@ -4271,32 +4309,38 @@ msgid "Hover animation"
 msgstr "Hover-Animation"
 
 #: src/blocks/image-maxi/data.js:97
+#, fuzzy
 msgid "Hover background"
-msgstr "Hover-Hintergrund"
+msgstr "Overlay-Hintergrund"
 
 #: src/blocks/image-maxi/data.js:100
 msgid "Hover background color"
 msgstr "Hover-Hintergrundfarbe"
 
 #: src/blocks/image-maxi/data.js:103
+#, fuzzy
 msgid "Hover background gradient"
-msgstr "Hover-Hintergrundverlauf"
+msgstr "Icon-Hintergrundverlauf"
 
 #: src/blocks/image-maxi/data.js:106
+#, fuzzy
 msgid "Hover border"
-msgstr "Hover-Rahmen"
+msgstr "Reihenfolge umkehren"
 
 #: src/blocks/image-maxi/data.js:109
+#, fuzzy
 msgid "Hover border radius"
-msgstr "Hover-Rahmenradius"
+msgstr "Rahmenradius"
 
 #: src/blocks/image-maxi/data.js:112
+#, fuzzy
 msgid "Hover border width"
-msgstr "Hover-Rahmenbreite"
+msgstr "Rahmenbreite"
 
 #: src/blocks/image-maxi/data.js:115
+#, fuzzy
 msgid "Hover content typography"
-msgstr "Hover-Inhaltstypografie"
+msgstr "Button-Typografie"
 
 #: src/blocks/image-maxi/inspector.js:377
 msgid "Hover effect"
@@ -4442,8 +4486,9 @@ msgid "Icon background gradient"
 msgstr "Icon-Hintergrundverlauf"
 
 #: src/components/icon-control/index.js:705
+#, fuzzy
 msgid "Icon background is inherited from button "
-msgstr "Symbolhintergrund wird von Schaltfläche vererbt"
+msgstr "Icon-Hintergrund wird vom Button geerbt."
 
 #: src/blocks/button-maxi/data.js:62 src/blocks/svg-icon-maxi/data.js:249
 msgid "Icon border"
@@ -4459,8 +4504,9 @@ msgid "Icon colour"
 msgstr "Icon-Farbe"
 
 #: src/blocks/svg-icon-maxi/data.js:37
+#, fuzzy
 msgid "Icon content"
-msgstr "Symbolinhalt"
+msgstr "Inhalt ausrichten"
 
 #: src/blocks/svg-icon-maxi/components/svg-color-control/index.js:51
 #: src/components/icon-control/index.js:501
@@ -4542,8 +4588,9 @@ msgid "Icon stroke"
 msgstr "Icon-Kontur"
 
 #: src/components/icon-control/index.js:443
+#, fuzzy
 msgid "Icon stroke colour is inherited from button "
-msgstr "Symbolkonturfarbe wird von Schaltfläche vererbt"
+msgstr "Icon-Konturfarbe wird vom Button geerbt."
 
 #: src/blocks/accordion-maxi/data.js:224 src/blocks/pane-maxi/data.js:247
 #: src/blocks/search-maxi/data.js:140 src/blocks/search-maxi/data.js:177
@@ -4602,8 +4649,9 @@ msgid "Image size"
 msgstr "Bildgröße"
 
 #: src/blocks/video-maxi/data.js:86
+#, fuzzy
 msgid "Image source"
-msgstr "Bildquelle"
+msgstr "Bildgröße"
 
 #: src/components/image-alt-control/index.js:69
 msgid "Image title"
@@ -4745,15 +4793,16 @@ msgstr "Eingabe"
 
 #: src/blocks/search-maxi/data.js:126
 msgid "input ::placeholder"
-msgstr "Eingabe ::placeholder"
+msgstr ""
 
 #: src/blocks/search-maxi/data.js:130
 msgid "input ::placeholder on hover"
-msgstr "Eingabe ::placeholder bei Hover"
+msgstr ""
 
 #: src/blocks/search-maxi/data.js:101 src/blocks/search-maxi/data.js:294
+#, fuzzy
 msgid "Input background"
-msgstr "Eingabehintergrund"
+msgstr "Icon-Hintergrund"
 
 #: src/components/inspector-tabs/inspector-custom-classes.js:23
 msgid "Input CSS classes to target this block"
@@ -4838,7 +4887,7 @@ msgstr ""
 
 #: src/editor/auth/index.js:809
 msgid "Invalid email format"
-msgstr "Ungültiges E-Mail-Format"
+msgstr ""
 
 #. translators: %s: The invalid entity type
 #: core/class-maxi-api.php:1598
@@ -5132,8 +5181,9 @@ msgid "Lightbox background"
 msgstr "Lightbox-Hintergrund"
 
 #: src/blocks/video-maxi/data.js:47
+#, fuzzy
 msgid "Lightbox background colour"
-msgstr "Lightbox-Hintergrundfarbe"
+msgstr "Lightbox-Hintergrund"
 
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:150
 msgid "Lightbox close button"
@@ -5154,8 +5204,9 @@ msgid "line"
 msgstr "Zeile"
 
 #: src/blocks/divider-maxi/data.js:51 src/blocks/svg-icon-maxi/data.js:54
+#, fuzzy
 msgid "Line colour"
-msgstr "Linienfarbe"
+msgstr "Icon-Farbe"
 
 #: src/components/typography-control/index.js:856
 msgid "Line height"
@@ -5197,8 +5248,9 @@ msgid "Line size"
 msgstr "Liniengröße"
 
 #: src/blocks/divider-maxi/data.js:50
+#, fuzzy
 msgid "Line style"
-msgstr "Linienstil"
+msgstr "Listenstile"
 
 #: src/components/typography-control/index.js:1680
 msgid "Line through"
@@ -5244,8 +5296,9 @@ msgid "links"
 msgstr "Links"
 
 #: src/blocks/text-maxi/data.js:85
+#, fuzzy
 msgid "List colour"
-msgstr "Listenfarbe"
+msgstr "Farbe"
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:233
 #: src/blocks/text-maxi/data.js:45
@@ -5253,60 +5306,72 @@ msgid "List gap"
 msgstr "Listenabstand"
 
 #: src/blocks/text-maxi/data.js:49
+#, fuzzy
 msgid "List gap unit"
-msgstr "Listenabstand Einheit"
+msgstr "Listenabstand"
 
 #: src/blocks/text-maxi/data.js:37
+#, fuzzy
 msgid "List indent"
-msgstr "Listeneinzug"
+msgstr "Texteinzug"
 
 #: src/blocks/text-maxi/data.js:41
+#, fuzzy
 msgid "List indent unit"
-msgstr "Listeneinzug Einheit"
+msgstr "Website-Identität"
 
 #: src/blocks/text-maxi/data.js:69
+#, fuzzy
 msgid "List marker indent"
-msgstr "Listenmarkereinzug"
+msgstr "Markierungs-Einzug"
 
 #: src/blocks/text-maxi/data.js:73
+#, fuzzy
 msgid "List marker indent unit"
-msgstr "Listenmarkereinzug Einheit"
+msgstr "Markierungs-Einzug"
 
 #: src/blocks/text-maxi/data.js:77
+#, fuzzy
 msgid "List marker line height"
-msgstr "Listenmarke Zeilenhöhe"
+msgstr "Markierungs-Zeilenhöhe"
 
 #: src/blocks/text-maxi/data.js:81
+#, fuzzy
 msgid "List marker line height unit"
-msgstr "Listenmarke Zeilenhöhe Einheit"
+msgstr "Markierungs-Zeilenhöhe"
 
 #: src/blocks/text-maxi/data.js:35 src/blocks/text-maxi/inspector.js:49
 msgid "List options"
 msgstr "Listenoptionen"
 
 #: src/blocks/text-maxi/data.js:53
+#, fuzzy
 msgid "List paragraph spacing"
-msgstr "Listenabsatzabstand"
+msgstr "Absatzabstand"
 
 #: src/blocks/text-maxi/data.js:57
+#, fuzzy
 msgid "List paragraph spacing unit"
-msgstr "Listenabsatzabstand Einheit"
+msgstr "Absatzabstand"
 
 #: src/blocks/text-maxi/data.js:97
 msgid "List reversed"
-msgstr "Liste umgekehrt"
+msgstr ""
 
 #: src/blocks/text-maxi/data.js:96
+#, fuzzy
 msgid "List start"
-msgstr "Listenbeginn"
+msgstr "Listenstile"
 
 #: src/blocks/text-maxi/data.js:94
+#, fuzzy
 msgid "List style"
-msgstr "Listenstil"
+msgstr "Listenstile"
 
 #: src/blocks/text-maxi/data.js:95
+#, fuzzy
 msgid "List style custom"
-msgstr "Listenstil benutzerdefiniert"
+msgstr "Listenstile"
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:142
 msgid "List style position"
@@ -5317,12 +5382,14 @@ msgid "List styles"
 msgstr "Listenstile"
 
 #: src/blocks/text-maxi/data.js:89
+#, fuzzy
 msgid "List text position"
-msgstr "Listen-Textposition"
+msgstr "Listenstil-Position"
 
 #: src/blocks/text-maxi/data.js:93
+#, fuzzy
 msgid "List type"
-msgstr "Listentyp"
+msgstr "Listenstile"
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:985
 msgid "Lithuanian"
@@ -5431,8 +5498,9 @@ msgid "Maori"
 msgstr "Maori"
 
 #: src/blocks/map-maxi/data.js:97
+#, fuzzy
 msgid "Map double click zoom"
-msgstr "Karten-Doppelklickzoom"
+msgstr "Doppelklick-Zoom"
 
 #: src/blocks/map-maxi/components/map-interaction-control/index.js:14
 #: src/blocks/map-maxi/data.js:95
@@ -5448,28 +5516,33 @@ msgid "Map marker"
 msgstr "Karten-Markierung"
 
 #: src/blocks/map-maxi/data.js:69
+#, fuzzy
 msgid "Map popup"
-msgstr "Karten-Popup"
+msgstr "Markierungs-Pop-up"
 
 #: src/blocks/map-maxi/data.js:56
+#, fuzzy
 msgid "Map popup text"
-msgstr "Karten-Popup-Text"
+msgstr "Markierungs-Pop-up-Text"
 
 #: src/blocks/map-maxi/data.js:30
+#, fuzzy
 msgid "Map provider"
-msgstr "Kartenanbieter"
+msgstr "Karten-Dienstanbieter"
 
 #: src/blocks/map-maxi/data.js:99
+#, fuzzy
 msgid "Map scroll wheel zoom"
-msgstr "Karten-Scrollradzoom"
+msgstr "Mausrad-Zoom"
 
 #: src/blocks/map-maxi/components/map-control/index.js:145
 msgid "Map service provider"
 msgstr "Karten-Dienstanbieter"
 
 #: src/blocks/map-maxi/data.js:96
+#, fuzzy
 msgid "Map touch zoom"
-msgstr "Karten-Touchzoom"
+msgstr "Touch-Zoom"
 
 #: src/blocks/map-maxi/components/map-control/index.js:162
 msgid "Map type"
@@ -5502,8 +5575,9 @@ msgstr "Außenabstand / Innenabstand"
 #: src/blocks/slide-maxi/data.js:30 src/blocks/slider-maxi/data.js:83
 #: src/blocks/svg-icon-maxi/data.js:106 src/blocks/svg-icon-maxi/data.js:127
 #: src/blocks/text-maxi/data.js:118 src/blocks/video-maxi/data.js:97
+#, fuzzy
 msgid "Margin/Padding"
-msgstr "Rand/Innenabstand"
+msgstr "Außenabstand / Innenabstand"
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:612
 msgid "Marker"
@@ -5518,24 +5592,27 @@ msgid "Marker fill"
 msgstr "Markierungs-Füllung"
 
 #: src/blocks/map-maxi/data.js:42
+#, fuzzy
 msgid "Marker fill colour"
-msgstr "Markierungsfüllfarbe"
+msgstr "Markierungs-Füllung"
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:415
 msgid "Marker height"
 msgstr "Markierungshöhe"
 
 #: src/blocks/map-maxi/data.js:38
+#, fuzzy
 msgid "Marker icon"
-msgstr "Markierungsicon"
+msgstr "Markierungs-Einzug"
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:553
 msgid "Marker indent"
 msgstr "Markierungs-Einzug"
 
 #: src/blocks/map-maxi/data.js:46
+#, fuzzy
 msgid "Marker line colour"
-msgstr "Markierungslinienfarbe"
+msgstr "Trennlinienfarbe"
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:456
 msgid "Marker line-height"
@@ -5557,8 +5634,9 @@ msgid "Marker size"
 msgstr "Markierungsgröße"
 
 #: src/blocks/text-maxi/data.js:65
+#, fuzzy
 msgid "Marker size unit"
-msgstr "Markierungsgrösse Einheit"
+msgstr "Markierungsgröße"
 
 #: src/blocks/map-maxi/components/map-markers-control/index.js:107
 msgid "Marker stroke"
@@ -5577,8 +5655,9 @@ msgid "Marker width"
 msgstr "Markierungsbreite"
 
 #: src/blocks/map-maxi/data.js:37
+#, fuzzy
 msgid "Markers"
-msgstr "Markierungen"
+msgstr "Markierung"
 
 #: core/admin/status-report/maxi-system-status-report.php:422
 msgid "Max Execution Time"
@@ -5637,7 +5716,7 @@ msgstr "MaxiBlocks"
 
 #: src/editor/auth/index.js:799
 msgid "MaxiBlocks Auth: Invalid email format provided"
-msgstr "MaxiBlocks Auth: Ungültiges E-Mail-Format angegeben"
+msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:2405
 msgid "MaxiBlocks dashboard - Email not found or status not yes"
@@ -5723,8 +5802,9 @@ msgid "MaxiBlocks Setup"
 msgstr "MaxiBlocks Einrichtung"
 
 #: src/editor/auth/index.js:1188
+#, fuzzy
 msgid "MaxiBlocks Toolbar Email Logout: Exception"
-msgstr "MaxiBlocks-Toolbar-E-Mail-Logout: Ausnahmefehler"
+msgstr "MaxiBlocks E-Mail-Authentifizierung: FEHLER - "
 
 #: core/admin/class-maxi-dashboard.php:3625
 msgid "MaxiBlocks: Missing middleware configuration for email authentication"
@@ -6089,11 +6169,11 @@ msgstr "Keine CSS-Dateien gefunden"
 
 #: src/components/dynamic-content/acf-settings-control/utils.js:126
 msgid "No fields found"
-msgstr "Keine Felder gefunden"
+msgstr ""
 
 #: src/components/dynamic-content/acf-settings-control/utils.js:84
 msgid "No groups found"
-msgstr "Keine Gruppen gefunde"
+msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:2762
 #: core/admin/status-report/frontend-assets.php:92
@@ -6118,7 +6198,7 @@ msgstr "Nicht wiederholen"
 
 #: src/components/dynamic-content/acf-settings-control/utils.js:121
 msgid "No suitable fields found"
-msgstr "Keine passenden Felder gefunden"
+msgstr ""
 
 #: core/admin/quick-start/class-maxi-quick-start.php:1236
 msgid "No theme specified."
@@ -6259,7 +6339,7 @@ msgstr "Zahl"
 #: src/extensions/styles/helpers/getNumberCounterStyles.js:70
 #: src/extensions/styles/helpers/getNumberCounterStyles.js:112
 msgid "Number Counter"
-msgstr "Zahlenzähler"
+msgstr ""
 
 #: src/blocks/row-maxi/components/column-pattern/index.js:177
 msgid "Number of columns"
@@ -6301,7 +6381,7 @@ msgstr "An"
 #: src/extensions/styles/custom-css/createIconSelectors.js:14
 #: src/extensions/styles/custom-css/createIconSelectors.js:26
 msgid "on canvas hover"
-msgstr "bei Canvas-Hover"
+msgstr ""
 
 #: src/components/relation-control/index.js:483
 msgid "On click"
@@ -6314,7 +6394,7 @@ msgstr "Beim Darüberfahren (Hover)"
 #: src/extensions/styles/custom-css/createIconSelectors.js:10
 #: src/extensions/styles/custom-css/createIconSelectors.js:22
 msgid "on hover"
-msgstr "bei Hover"
+msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:895
 msgid "One purchase code activates Cloud for all sites in the network"
@@ -6462,12 +6542,13 @@ msgid "Overlay background"
 msgstr "Overlay-Hintergrund"
 
 #: src/blocks/video-maxi/data.js:57
+#, fuzzy
 msgid "Overlay background colour"
-msgstr "Overlay-Hintergrundfarbe"
+msgstr "Overlay-Hintergrund"
 
 #: src/blocks/video-maxi/data.js:148
 msgid "Overlay colour"
-msgstr "Überlagerungsfarbe"
+msgstr ""
 
 #: src/components/toolbar/components/text-format-overline/index.js:111
 #: src/components/typography-control/index.js:1673
@@ -6533,31 +6614,31 @@ msgstr "Palettenfeld Farbe %s"
 
 #: src/blocks/accordion-maxi/data.js:96 src/blocks/pane-maxi/data.js:71
 msgid "pane"
-msgstr "Bereich"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:124 src/blocks/pane-maxi/data.js:99
 msgid "pane ::after"
-msgstr "Bereich ::after"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:132 src/blocks/pane-maxi/data.js:107
 msgid "pane ::after on active state"
-msgstr "Bereich ::after im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:128 src/blocks/pane-maxi/data.js:103
 msgid "pane ::after on hover"
-msgstr "Bereich ::after bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:110 src/blocks/pane-maxi/data.js:85
 msgid "pane ::before"
-msgstr "Bereich ::before"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:118 src/blocks/pane-maxi/data.js:93
 msgid "pane ::before on active state"
-msgstr "Bereich ::before im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:114 src/blocks/pane-maxi/data.js:89
 msgid "pane ::before on hover"
-msgstr "Bereich ::before bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-settings-control/index.js:75
 #: src/blocks/accordion-maxi/data.js:26
@@ -6566,131 +6647,132 @@ msgstr "Fenster schließt, wenn ein anderes geöffnet wird"
 
 #: src/blocks/accordion-maxi/data.js:304 src/blocks/pane-maxi/data.js:327
 msgid "pane content"
-msgstr "Bereichsinhalt"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:335 src/blocks/pane-maxi/data.js:358
 msgid "pane content ::after"
-msgstr "Bereichsinhalt ::after"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:343 src/blocks/pane-maxi/data.js:366
 msgid "pane content ::after on active state"
-msgstr "Bereichsinhalt ::after im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:339 src/blocks/pane-maxi/data.js:362
 msgid "pane content ::after on hover"
-msgstr "Bereichsinhalt ::after bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:318 src/blocks/pane-maxi/data.js:341
 msgid "pane content ::before"
-msgstr "Bereichsinhalt ::before"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:326 src/blocks/pane-maxi/data.js:349
 msgid "pane content ::before on active state"
-msgstr "Bereichsinhalt ::before im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:322 src/blocks/pane-maxi/data.js:345
 msgid "pane content ::before on hover"
-msgstr "Bereichsinhalt ::before bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:312
 msgid "pane content active state"
-msgstr "Bereichsinhalt aktiver Zustand"
+msgstr ""
 
 #: src/blocks/pane-maxi/data.js:335
 msgid "pane content on active state"
-msgstr "Bereichsinhalt im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:308 src/blocks/pane-maxi/data.js:331
 msgid "pane content on hover"
-msgstr "Bereichsinhalt bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:138 src/blocks/pane-maxi/data.js:113
 msgid "pane header"
-msgstr "Bereichsheader"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:169 src/blocks/pane-maxi/data.js:144
 msgid "pane header ::after"
-msgstr "Bereichsheader ::after"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:177 src/blocks/pane-maxi/data.js:152
 msgid "pane header ::after on active state"
-msgstr "Bereichsheader ::after im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:173 src/blocks/pane-maxi/data.js:148
 msgid "pane header ::after on hover"
-msgstr "Bereichsheader ::after bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:152 src/blocks/pane-maxi/data.js:127
 msgid "pane header ::before"
-msgstr "Bereichsheader ::before"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:160 src/blocks/pane-maxi/data.js:135
 msgid "pane header ::before on active state"
-msgstr "Bereichsheader ::before im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:156 src/blocks/pane-maxi/data.js:131
 msgid "pane header ::before on hover"
-msgstr "Bereichsheader ::before bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:203
 msgid "pane header content::after"
-msgstr "Bereichsheaderinhalt ::after"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:211 src/blocks/pane-maxi/data.js:234
 msgid "pane header content::after on active state"
-msgstr "Bereichsheaderinhalt ::after im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:207 src/blocks/pane-maxi/data.js:230
 msgid "pane header content::after on hover"
-msgstr "Bereichsheaderinhalt ::after bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:183
 msgid "pane header content::before"
-msgstr "Bereichsheaderinhalt ::before"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:194
 msgid "pane header content::before on active state"
-msgstr "Bereichsheaderinhalt ::before im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:187
 msgid "pane header content::before on hover"
-msgstr "Bereichsheaderinhalt ::before bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:146 src/blocks/pane-maxi/data.js:121
 msgid "pane header on active state"
-msgstr "Bereichsheader im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:142 src/blocks/pane-maxi/data.js:117
 msgid "pane header on hover"
-msgstr "Bereichsheader bei Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:104 src/blocks/pane-maxi/data.js:79
 msgid "pane on active state"
-msgstr "Bereich im aktiven Zustand"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:100 src/blocks/pane-maxi/data.js:75
 msgid "pane on hover"
-msgstr "Bereich bei Hover"
+msgstr ""
 
 #: src/blocks/pane-maxi/inspector.js:77
 msgid "Pane settings"
 msgstr "Fenster-Einstellungen"
 
 #: src/blocks/accordion-maxi/data.js:28
+#, fuzzy
 msgid "Pane spacing"
-msgstr "Bereichsabstand"
+msgstr "Icon-Abstand"
 
 #: src/blocks/accordion-maxi/data.js:435
 msgid "Pane title"
-msgstr "Bereichstitel"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:444
 msgid "Pane title background"
-msgstr "Bereichstitelhintergrund"
+msgstr ""
 
 #: src/blocks/accordion-maxi/styles.js:177
 msgid "Pane transition"
-msgstr "Bereichsübergang"
+msgstr ""
 
 #: src/editor/style-cards/maxiStyleCardsTab.js:634
 msgid "Paragraph"
@@ -6787,8 +6869,9 @@ msgid "Placeholder"
 msgstr "Platzhalter"
 
 #: src/blocks/search-maxi/data.js:92
+#, fuzzy
 msgid "Placeholder colour"
-msgstr "Platzhalterfarbe"
+msgstr "Platzhalter"
 
 #: src/components/scroll-effects-control/options.js:481
 msgid "Placeholder effect"
@@ -6813,8 +6896,9 @@ msgid "Plain"
 msgstr "Einfach"
 
 #: src/blocks/video-maxi/data.js:60
+#, fuzzy
 msgid "Play button"
-msgstr "Wiedergabetaste"
+msgstr "Wiedergabe-Icon"
 
 #: src/blocks/video-maxi/inspector.js:138
 msgid "Play icon"
@@ -7034,11 +7118,12 @@ msgstr "Punjabi (Indien)"
 
 #: src/editor/library/modal.js:282
 msgid "Purchase code authentication error"
-msgstr "Authentifizierungsfehler beim Kaufcode"
+msgstr ""
 
 #: src/editor/library/modal.js:267
+#, fuzzy
 msgid "Purchase code verification failed"
-msgstr "Kaufcode-Verifizierung fehlgeschlagen"
+msgstr "MaxiBlocks: Deaktivierung des Kaufcodes fehlgeschlagen: "
 
 #: core/admin/class-maxi-dashboard.php:866
 msgid ""
@@ -7164,12 +7249,14 @@ msgid "Remove block"
 msgstr "Block entfernen"
 
 #: src/components/typography-control/index.js:1047
+#, fuzzy
 msgid "Remove bold"
-msgstr "Fett entfernen"
+msgstr "Block entfernen"
 
 #: src/components/typography-control/index.js:1086
+#, fuzzy
 msgid "Remove italic"
-msgstr "Kursiv entfernen"
+msgstr "Link entfernen"
 
 #: src/editor/style-cards/maxiStyleCardsTab.js:320
 msgid "Remove item underline on hover"
@@ -7184,16 +7271,18 @@ msgid "Remove local fonts"
 msgstr "Lokale Schriftarten entfernen"
 
 #: src/components/typography-control/index.js:1154
+#, fuzzy
 msgid "Remove strikethrough"
-msgstr "Durchstreichen entfernen"
+msgstr "Durchgestrichen"
 
 #: src/blocks/map-maxi/components/markers/index.js:117
 msgid "Remove this marker"
 msgstr "Diese Markierung entfernen"
 
 #: src/components/typography-control/index.js:1117
+#, fuzzy
 msgid "Remove underline"
-msgstr "Unterstreichen entfernen"
+msgstr "Link entfernen"
 
 #: src/components/background-control/imageLayer.js:212
 msgid "Repeat"
@@ -7415,16 +7504,19 @@ msgid "Rounded bar"
 msgstr "Abgerundeter Balken"
 
 #: src/blocks/row-maxi/data.js:21
+#, fuzzy
 msgid "Row gap"
-msgstr "Zeilenabstand"
+msgstr "Zeile Maxi"
 
 #: src/blocks/row-maxi/data.js:20
+#, fuzzy
 msgid "Row pattern"
-msgstr "Zeilenmuster"
+msgstr "Muster"
 
 #: src/blocks/row-maxi/data.js:18
+#, fuzzy
 msgid "Row settings"
-msgstr "Zeileneinstellungen"
+msgstr "Weitere Einstellungen"
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:1073
 msgid "Russian"
@@ -7546,11 +7638,11 @@ msgstr ""
 
 #: src/blocks/slider-maxi/data.js:117
 msgid "second arrow icon"
-msgstr "Zweiter Pfeil-Icon"
+msgstr ""
 
 #: src/blocks/slider-maxi/data.js:121
 msgid "second arrow icon on hover"
-msgstr "Zweiter Pfeil-Icon bei Hover"
+msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:3085
 #: core/admin/class-maxi-dashboard.php:3304
@@ -7679,7 +7771,7 @@ msgstr "Server-Software"
 
 #: src/components/prompt-control/utils.js:30
 msgid "Services Offered"
-msgstr "Angebotene Dienstleistungen"
+msgstr ""
 
 #: src/components/full-size-control/index.js:88
 #: src/components/full-size-control/index.js:99
@@ -7765,8 +7857,9 @@ msgid "Setup complete!"
 msgstr "Einrichtung abgeschlossen!"
 
 #: src/editor/library/container.js:218
+#, fuzzy
 msgid "Shape"
-msgstr "Form"
+msgstr "Formmaske"
 
 #: src/blocks/container-maxi/inspector.js:72
 msgid "Shape divider"
@@ -7813,8 +7906,9 @@ msgid "Show"
 msgstr "Anzeigen"
 
 #: src/blocks/container-maxi/data.js:63 src/blocks/group-maxi/data.js:20
+#, fuzzy
 msgid "Show arrow"
-msgstr "Pfeil anzeigen"
+msgstr "Pfeil an der Grenze anzeigen"
 
 #: src/components/arrow-control/index.js:117
 msgid "Show arrow on boundary"
@@ -7834,7 +7928,7 @@ msgstr "Mobiles Menü für Bildschirmgrößen ab (px) abwärts anzeigen"
 
 #: src/components/typography-control/index.js:1314
 msgid "Show more text options"
-msgstr "Weitere Textoptionen anzeigen"
+msgstr ""
 
 #: src/components/display-control/index.js:91
 msgid "Show or hide by breakpoint"
@@ -7888,7 +7982,7 @@ msgstr "Website-Zeichensatz"
 
 #: src/components/prompt-control/utils.js:41
 msgid "Site Details:"
-msgstr "Seitendetails"
+msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:1505
 msgid "Site health info report"
@@ -8132,8 +8226,9 @@ msgid "Start Number "
 msgstr "Startnummer "
 
 #: src/blocks/video-maxi/data.js:35
+#, fuzzy
 msgid "Start time"
-msgstr "Startzeit"
+msgstr "Startzeit (s)"
 
 #: src/blocks/video-maxi/components/video-control/index.js:89
 #: src/components/background-control/videoLayer.js:178
@@ -8163,7 +8258,7 @@ msgstr "Statisch"
 
 #: src/components/dynamic-content/acf-settings-control/utils.js:106
 msgid "Static Text"
-msgstr "Statischer Text"
+msgstr ""
 
 #: src/extensions/DC/constants.js:140 src/extensions/DC/constants.js:180
 #: src/extensions/DC/constants.js:200 src/extensions/DC/constants.js:207
@@ -8231,7 +8326,7 @@ msgstr "Style Card erfolgreich als „%s“ importiert"
 
 #: src/editor/library/toolbar.js:232
 msgid "Style Cards"
-msgstr "Stil-Karten"
+msgstr ""
 
 #: src/editor/style-cards/index.js:37 src/editor/style-cards/index.js:41
 msgid "Style cards"
@@ -8307,31 +8402,31 @@ msgstr "Unterstützt cURL."
 
 #: src/extensions/styles/helpers/getSVGStyles.js:110
 msgid "SVG path"
-msgstr "VG-Pfad"
+msgstr ""
 
 #: src/extensions/styles/helpers/getSVGStyles.js:193
 msgid "SVG Path stroke"
-msgstr "SVG-Pfadkontur"
+msgstr ""
 
 #: src/extensions/styles/helpers/getSVGStyles.js:154
 msgid "SVG path-fill"
-msgstr "SVG-Füllpfad"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:232 src/blocks/pane-maxi/data.js:255
 #: src/blocks/search-maxi/data.js:148 src/blocks/search-maxi/data.js:185
 #: src/extensions/styles/custom-css/createIconSelectors.js:48
 msgid "svg's path"
-msgstr "Pfad des SVG"
+msgstr ""
 
 #: src/extensions/styles/custom-css/createIconSelectors.js:56
 msgid "svg's path on canvas hover"
-msgstr "Pfad des SVG bei Canvas-Hover"
+msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:251 src/blocks/pane-maxi/data.js:274
 #: src/blocks/search-maxi/data.js:167 src/blocks/search-maxi/data.js:204
 #: src/extensions/styles/custom-css/createIconSelectors.js:52
 msgid "svg's path on hover"
-msgstr "Pfad des SVG bei Hover"
+msgstr ""
 
 #: src/components/dynamic-content/custom-date-formatting/constants.js:1117
 msgid "Swahili"
@@ -8477,12 +8572,14 @@ msgstr "Text"
 
 #: src/blocks/button-maxi/data.js:92 src/blocks/image-maxi/data.js:86
 #: src/blocks/list-item-maxi/data.js:34 src/blocks/text-maxi/data.js:100
+#, fuzzy
 msgid "Text alignment"
-msgstr "Textausrichtung"
+msgstr "Texteinzug"
 
 #: src/blocks/list-item-maxi/data.js:33 src/blocks/text-maxi/data.js:33
+#, fuzzy
 msgid "Text content"
-msgstr "Textinhalt"
+msgstr "Inhalt anpassen"
 
 #: src/extensions/text/formats/custom/index.js:10
 msgid "Text custom"
@@ -8538,8 +8635,9 @@ msgid "Text shadow"
 msgstr "Textschatten"
 
 #: src/components/typography-control/index.js:795
+#, fuzzy
 msgid "Text size"
-msgstr "Textgrösse"
+msgstr "Texteinzug"
 
 #: src/components/typography-control/index.js:1575
 msgid "Text transform"
@@ -8747,12 +8845,14 @@ msgid "Title font size"
 msgstr "Titel-Schriftgröße"
 
 #: src/blocks/map-maxi/data.js:58
+#, fuzzy
 msgid "Title text level"
-msgstr "Titeltextebene"
+msgstr "Textebene"
 
 #: src/blocks/map-maxi/data.js:60
+#, fuzzy
 msgid "Title typography"
-msgstr "Titelschrift"
+msgstr "Typografie"
 
 #: core/admin/class-maxi-dashboard.php:1312
 msgid "To create an API key, you will need to do the following:"
@@ -8798,7 +8898,7 @@ msgstr "Alle ein-/ausschalten"
 
 #: src/components/prompt-control/tabs/generate-tab/index.js:102
 msgid "Tone"
-msgstr "Ton"
+msgstr ""
 
 #: src/blocks/column-maxi/components/column-size-control/index.js:99
 #: src/blocks/divider-maxi/inspector.js:133
@@ -8826,8 +8926,9 @@ msgid "Top screen right"
 msgstr "Oben rechts auf dem Bildschirm"
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:218
+#, fuzzy
 msgid "Top shape"
-msgstr "Obere Form"
+msgstr "Obere Form-Trennlinie"
 
 #. translators: Top and left values of the clip path point
 #: src/components/clip-path-control/doublePoint.js:21
@@ -8909,8 +9010,9 @@ msgid "Transition duration"
 msgstr "Übergangsdauer"
 
 #: src/blocks/slider-maxi/data.js:33
+#, fuzzy
 msgid "Transition speed"
-msgstr "Übergangsgeschwindigkeit"
+msgstr "Übergangsgeschwindigkeit (ms)"
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:116
 #: src/components/toolbar/components/slider-settings/index.js:124
@@ -8918,8 +9020,9 @@ msgid "Transition speed (ms)"
 msgstr "Übergangsgeschwindigkeit (ms)"
 
 #: src/blocks/slider-maxi/data.js:32
+#, fuzzy
 msgid "Transition type"
-msgstr "Übergangstyp"
+msgstr "Übergang"
 
 #: src/components/transform-control/index.js:242
 msgid "Translate"
@@ -9007,7 +9110,7 @@ msgstr "Einheiten"
 
 #: src/editor/library/modal.js:274
 msgid "Unknown error"
-msgstr "Unbekannter Fehler"
+msgstr ""
 
 #: core/admin/quick-start/class-maxi-quick-start.php:898
 msgid ""
@@ -9096,7 +9199,7 @@ msgstr "URL"
 
 #: src/blocks/video-maxi/data.js:33
 msgid "Url"
-msgstr "URL"
+msgstr ""
 
 #: core/admin/quick-start/class-maxi-quick-start.php:248
 msgid "Use as site icon"
@@ -9231,12 +9334,14 @@ msgid "Video options"
 msgstr "Video-Optionen"
 
 #: src/blocks/video-maxi/data.js:55
+#, fuzzy
 msgid "Video overlay"
-msgstr "Video-Overlay"
+msgstr "Bild-Overlay"
 
 #: src/blocks/video-maxi/data.js:34
+#, fuzzy
 msgid "Video type"
-msgstr "Videotyp"
+msgstr "Mime-Typ"
 
 #: src/components/toolbar/components/video-url/index.js:32
 msgid "Video URL"
@@ -9460,8 +9565,9 @@ msgid "Writable"
 msgstr "Schreibbar"
 
 #: src/components/prompt-control/tabs/generate-tab/index.js:108
+#, fuzzy
 msgid "Writing style"
-msgstr "Schreibstil"
+msgstr "Listenstile"
 
 #: src/components/text-shadow-control/index.js:296
 #: src/components/transform-control/rotate-control.js:30

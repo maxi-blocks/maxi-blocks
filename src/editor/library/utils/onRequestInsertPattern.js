@@ -50,48 +50,6 @@ const insertCode = async (content, clientId) => {
 const stripCustomStyles = (content, useSCStyles) => {
 	if (!useSCStyles) return content;
 
-	// eslint-disable-next-line no-console
-	console.log(
-		JSON.stringify({
-			message: 'Stripping custom styles to use SC defaults',
-			useSCStyles,
-		})
-	);
-
-	// Debug: Search for custom format spans in both formats
-	if (content.includes('maxi-text-block--has-custom-format')) {
-		const spanIndex = content.indexOf('maxi-text-block--has-custom-format');
-		const contextStart = Math.max(0, spanIndex - 200);
-		const contextEnd = Math.min(content.length, spanIndex + 300);
-		const context = content.substring(contextStart, contextEnd);
-
-		// eslint-disable-next-line no-console
-		console.log(
-			JSON.stringify({
-				message: 'BEFORE: Found unescaped custom format span',
-				context,
-			})
-		);
-	}
-
-	// Also check for Unicode-escaped version
-	if (content.includes('maxi-text-block\\u002d\\u002dhas-custom-format')) {
-		const spanIndex = content.indexOf(
-			'maxi-text-block\\u002d\\u002dhas-custom-format'
-		);
-		const contextStart = Math.max(0, spanIndex - 200);
-		const contextEnd = Math.min(content.length, spanIndex + 300);
-		const context = content.substring(contextStart, contextEnd);
-
-		// eslint-disable-next-line no-console
-		console.log(
-			JSON.stringify({
-				message: 'BEFORE: Found Unicode-escaped custom format span',
-				context,
-			})
-		);
-	}
-
 	// Pattern to match JSON values: strings, numbers, booleans, null, but not objects/arrays
 	// This ensures we don't break nested structures
 	const jsonValue =
@@ -149,29 +107,7 @@ const stripCustomStyles = (content, useSCStyles) => {
 	const customFormatsPattern =
 		/"custom-formats(?:-hover)?":(\{(?:[^{}]|\{[^{}]*\})*\}),?/g;
 
-	// Log what we're finding and removing
-	const customFormatsMatches = modifiedContent.match(customFormatsPattern);
-	if (customFormatsMatches) {
-		// eslint-disable-next-line no-console
-		console.log(
-			JSON.stringify({
-				message: 'Found custom-formats attributes',
-				count: customFormatsMatches.length,
-				matches: customFormatsMatches,
-			})
-		);
-	}
-
-	modifiedContent = modifiedContent.replace(customFormatsPattern, match => {
-		// eslint-disable-next-line no-console
-		console.log(
-			JSON.stringify({
-				message: 'Removing custom-formats attribute',
-				removed: match,
-			})
-		);
-		return '';
-	});
+	modifiedContent = modifiedContent.replace(customFormatsPattern, '');
 
 	// Clean up any double commas or trailing commas that might result
 	modifiedContent = modifiedContent.replace(/,\s*,/g, ',');
@@ -179,80 +115,22 @@ const stripCustomStyles = (content, useSCStyles) => {
 	modifiedContent = modifiedContent.replace(/\{\s*,/g, '{');
 	modifiedContent = modifiedContent.replace(/,\s*]/g, ']');
 
-	// Debug: Check if content field still has custom format spans AFTER replacements
-	const contentFieldPatternAfter = /"content":"([^"\\]|\\.)*"/g;
-	const contentMatchesAfter = modifiedContent.match(contentFieldPatternAfter);
-	if (contentMatchesAfter) {
-		contentMatchesAfter.forEach(contentMatch => {
-			if (contentMatch.includes('maxi-text-block--has-custom-format')) {
-				// eslint-disable-next-line no-console
-				console.log(
-					JSON.stringify({
-						message:
-							'WARNING: content field still contains custom format span',
-						content: contentMatch.substring(0, 500),
-					})
-				);
-			}
-		});
-	}
-
 	// Unwrap text inside spans with maxi-text-block--has-custom-format class
 	// In Gutenberg serialized format within JSON attributes, special chars are Unicode-escaped
 	// Pattern: \u003cspan class=\u0022...maxi-text-block\u002d\u002dhas-custom-format...\u0022\u003etext\u003c/span\u003e
 	// Match everything between class=" and the closing " using lazy match with anything except the closing quote sequence
 	const unicodePattern =
 		/\\u003cspan\s+class=\\u0022((?:(?!\\u0022).)*?maxi-text-block\\u002d\\u002dhas-custom-format(?:(?!\\u0022).)*?)\\u0022(?:(?!\\u003e).)*?\\u003e(.*?)\\u003c\/span\\u003e/gi;
-	let unicodeMatchCount = 0;
 
 	modifiedContent = modifiedContent.replace(
 		unicodePattern,
-		(match, className, textContent) => {
-			unicodeMatchCount += 1;
-			// eslint-disable-next-line no-console
-			console.log(
-				JSON.stringify({
-					message: `Unwrapping custom format span (Unicode escaped) - match ${unicodeMatchCount}`,
-					originalSpan: match.substring(0, 200),
-					extractedText: textContent,
-				})
-			);
-			return textContent;
-		}
+		(match, className, textContent) => textContent
 	);
-
-	if (unicodeMatchCount === 0) {
-		// eslint-disable-next-line no-console
-		console.log(
-			JSON.stringify({
-				message: 'WARNING: Unicode pattern did not match any spans',
-			})
-		);
-	}
 
 	// Also handle regular HTML spans (unescaped) in case they appear elsewhere
 	modifiedContent = modifiedContent.replace(
 		/<span\s+class="[^"]*maxi-text-block--has-custom-format[^"]*"[^>]*>(.*?)<\/span>/gi,
-		(match, textContent) => {
-			// eslint-disable-next-line no-console
-			console.log(
-				JSON.stringify({
-					message: 'Unwrapping custom format span (unescaped HTML)',
-					originalSpan: match,
-					extractedText: textContent,
-				})
-			);
-			return textContent;
-		}
-	);
-
-	// eslint-disable-next-line no-console
-	console.log(
-		JSON.stringify({
-			message: 'Custom styles stripped successfully',
-			originalLength: content.length,
-			modifiedLength: modifiedContent.length,
-		})
+		(match, textContent) => textContent
 	);
 
 	return modifiedContent;

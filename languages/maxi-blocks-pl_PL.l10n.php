@@ -1,0 +1,3 @@
+<?php
+return ['project-id-version'=>'MaxiBlocks 2.1.7','report-msgid-bugs-to'=>'https://wordpress.org/support/plugin/maxi-blocks','last-translator'=>'','language-team'=>'Polish','mime-version'=>'1.0','content-type'=>'text/plain; charset=UTF-8','content-transfer-encoding'=>'8bit','pot-creation-date'=>'2025-12-02T17:10:56+00:00','po-revision-date'=>'2025-12-06 06:41+0000','x-generator'=>'Loco https://localise.biz/','x-domain'=>'maxi-blocks
+','language'=>'pl_PL','plural-forms'=>'nplurals=3; plural=(n==1 ? 0 : n%10 >= 2 && n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);','x-loco-version'=>'2.8.0; wp-6.9; php-8.3.28','messages'=>[]];

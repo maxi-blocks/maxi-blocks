@@ -2038,7 +2038,7 @@ msgstr "Płótno"
 
 #: src/components/typography-control/index.js:1586
 msgid "Capitalize"
-msgstr "Z dużej litery\"  "
+msgstr "Z dużej litery"
 
 #: src/blocks/image-maxi/data.js:70 src/blocks/image-maxi/inspector.js:184
 #: src/components/toolbar/components/more-settings/index.js:122

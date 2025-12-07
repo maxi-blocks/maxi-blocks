@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const locale = 'pl_PL';
+const locale = 'ja';
 const poFile = path.join(__dirname, `maxi-blocks-${locale}.po`);
 
 // Scripts config matching PHP generator

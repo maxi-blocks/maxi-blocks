@@ -26,6 +26,7 @@ if (!class_exists('MaxiBlocks_Custom_Fonts')):
             $response = [];
             $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
 
+            // Add legacy custom fonts
             foreach ($fonts as $font) {
                 $value = isset($font['value']) ? $font['value'] : '';
 
@@ -50,6 +51,83 @@ if (!class_exists('MaxiBlocks_Custom_Fonts')):
 
                 if ($stylesheet) {
                     $response[$value]['stylesheet'] = $stylesheet;
+                }
+            }
+
+            // Add fonts from WordPress Font Library (WP 6.5+)
+            if (post_type_exists('wp_font_family')) {
+                $wp_fonts = get_posts([
+                    'post_type' => 'wp_font_family',
+                    'posts_per_page' => -1,
+                    'post_status' => 'publish',
+                ]);
+
+                foreach ($wp_fonts as $font_post) {
+                    $font_data = json_decode($font_post->post_content, true);
+                    $font_family = isset($font_data['fontFamily'])
+                        ? $font_data['fontFamily']
+                        : $font_post->post_title;
+
+                    // WordPress stores fontFamily with quotes like "\"Publico Banner\""
+                    // Strip these extra quotes for clean family name
+                    $font_family = trim($font_family, '"\'');
+
+                    // Skip if already exists from legacy custom fonts
+                    if (isset($response[$font_family])) {
+                        continue;
+                    }
+
+                    $variants = [];
+                    $files = [];
+
+                    // Get font faces for this font family
+                    $font_faces = get_posts([
+                        'post_type' => 'wp_font_face',
+                        'posts_per_page' => -1,
+                        'post_parent' => $font_post->ID,
+                        'post_status' => 'publish',
+                    ]);
+
+                    foreach ($font_faces as $face_post) {
+                        $face_data = json_decode($face_post->post_content, true);
+                        $weight = isset($face_data['fontWeight']) ? $face_data['fontWeight'] : '400';
+                        $style = isset($face_data['fontStyle']) ? $face_data['fontStyle'] : 'normal';
+                        $src = isset($face_data['src']) ? $face_data['src'] : '';
+
+                        // Handle src as array or string
+                        if (is_array($src) && !empty($src)) {
+                            $src = $src[0];
+                        }
+
+                        $variants[] = [
+                            'weight' => $weight,
+                            'style' => $style,
+                            'url' => $src,
+                        ];
+
+                        $variant_key = $weight . ($style === 'italic' ? 'italic' : '');
+                        $files[$variant_key] = $src;
+                    }
+
+                    $font_entry = [
+                        'id' => 'wp-' . $font_post->ID,
+                        'value' => $font_family,
+                        'files' => $files,
+                        'variants' => $variants,
+                        'source' => 'wordpress',
+                    ];
+
+                    // Generate stylesheet for WordPress fonts
+                    $stylesheet = $local_fonts->get_or_create_custom_font_stylesheet_url(
+                        $font_family,
+                        $font_entry,
+                    );
+
+                    if ($stylesheet) {
+                        $font_entry['stylesheet'] = $stylesheet;
+                    }
+
+                    $response[$font_family] = $font_entry;
                 }
             }
 

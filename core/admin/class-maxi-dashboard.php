@@ -1623,7 +1623,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<p>' .
                 __(
-                    'Upload additional font files and make them available inside MaxiBlocks.',
+                    'Custom fonts are managed through WordPress Font Library. Fonts you add there will automatically be available in MaxiBlocks.',
                     'maxi-blocks',
                 ) .
                 '</p>';
@@ -1631,45 +1631,44 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<div class="maxi-custom-fonts-manager" id="maxi-custom-fonts-manager">';
 
-            $content .= '<div id="maxi-custom-fonts-notice"></div>';
+            // Get fonts from WordPress Font Library
+            $wp_fonts = $this->get_wordpress_font_families();
 
-            $content .= '<div class="maxi-custom-fonts-form">';
-            $content .= '<div class="maxi-custom-fonts-field">';
-            $content .=
-                '<label for="maxi-custom-font-family">' .
-                esc_html__('Font family name', 'maxi-blocks') .
-                '</label>';
-            $content .=
-                '<input type="text" id="maxi-custom-font-family" name="maxi_custom_font_family" class="regular-text" placeholder="' .
-                esc_attr__('Enter font family name', 'maxi-blocks') .
-                '">';
-            $content .= '</div>';
+            if (!empty($wp_fonts)) {
+                $content .= '<h4>' . __('Installed fonts', 'maxi-blocks') . '</h4>';
+                $content .= '<table class="widefat striped maxi-custom-fonts-list"><thead><tr>';
+                $content .= '<th>' . esc_html__('Font family', 'maxi-blocks') . '</th>';
+                $content .= '<th>' . esc_html__('Source', 'maxi-blocks') . '</th>';
+                $content .= '</tr></thead><tbody>';
 
-            $content .= '<div class="maxi-custom-fonts-field">';
-            $content .=
-                '<label for="maxi-custom-font-file">' .
-                esc_html__('Font file', 'maxi-blocks') .
-                '</label>';
-            $content .=
-                '<input type="file" id="maxi-custom-font-file" name="maxi_custom_font_file" accept=".ttf,.otf,.woff,.woff2">';
-            $content .=
-                '<p class="description">' .
-                __(
-                    'Supported file types: TTF, OTF, WOFF, WOFF2.',
-                    'maxi-blocks',
-                ) .
+                foreach ($wp_fonts as $font) {
+                    $font_name = isset($font['name']) ? $font['name'] : $font['slug'];
+                    $source = isset($font['source']) ? $font['source'] : __('WordPress', 'maxi-blocks');
+
+                    $content .= '<tr>';
+                    $content .= '<td><strong>' . esc_html($font_name) . '</strong></td>';
+                    $content .= '<td>' . esc_html($source) . '</td>';
+                    $content .= '</tr>';
+                }
+
+                $content .= '</tbody></table>';
+            } else {
+                $content .= '<p class="maxi-custom-fonts-empty">' .
+                    esc_html__('No custom fonts installed yet. Use the WordPress Font Library to add fonts.', 'maxi-blocks') .
+                    '</p>';
+            }
+
+            // Link to WordPress Font Library
+            $font_library_url = admin_url('site-editor.php?p=%2Fstyles&section=%2Ftypography');
+            $content .= '<div class="submit">';
+            $content .= '<a href="' . esc_url($font_library_url) . '" class="button button-primary" target="_blank">';
+            $content .= esc_html__('Manage fonts in WordPress', 'maxi-blocks');
+            $content .= '</a>';
+            $content .= '<p class="description" style="margin-top: 10px;">' .
+                __('Opens the WordPress Site Editor where you can upload and manage fonts.', 'maxi-blocks') .
                 '</p>';
             $content .= '</div>';
 
-            $content .= '<div class="submit">';
-            $content .=
-                '<button type="button" class="button button-primary" id="maxi-custom-font-submit">' .
-                esc_html__('Add custom font', 'maxi-blocks') .
-                '</button>';
-            $content .= '</div>';
-            $content .= '</div>'; // maxi-custom-fonts-form
-
-            $content .= $this->get_custom_fonts_list_markup();
             $content .= '</div>'; // maxi-custom-fonts-manager
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
@@ -1680,6 +1679,44 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content
 
             return $content;
+        }
+
+        /**
+         * Get font families from WordPress Font Library (WP 6.5+)
+         *
+         * @return array Array of font families with name, slug and source
+         */
+        private function get_wordpress_font_families()
+        {
+            $fonts = [];
+
+            // Check if WordPress Font Library is available (WP 6.5+)
+            if (!post_type_exists('wp_font_family')) {
+                return $fonts;
+            }
+
+            $font_families = get_posts([
+                'post_type' => 'wp_font_family',
+                'posts_per_page' => -1,
+                'post_status' => 'publish',
+            ]);
+
+            foreach ($font_families as $font_post) {
+                $font_data = json_decode($font_post->post_content, true);
+
+                $fonts[] = [
+                    'id' => $font_post->ID,
+                    'slug' => $font_post->post_name,
+                    'name' => isset($font_data['fontFamily'])
+                        ? $font_data['fontFamily']
+                        : $font_post->post_title,
+                    'source' => isset($font_data['source'])
+                        ? $font_data['source']
+                        : __('Custom', 'maxi-blocks'),
+                ];
+            }
+
+            return $fonts;
         }
 
         private function get_custom_fonts_list_markup()

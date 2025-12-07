@@ -1617,26 +1617,26 @@ p.maxi-license-help-text {
 		label {
 			font-weight: 600;
 			font-size: 13px;
-			color: #1e1e1e;
+			color: var(--maxi-admin-black);
 		}
 
 		input[type='text'] {
 			width: 100%;
 			max-width: 400px;
 			padding: 8px 12px;
-			border: 1px solid #8c8f94;
+			border: 1px solid var(--maxi-admin-grey);
 			border-radius: 4px;
 			font-size: 14px;
 			transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
 			&:focus {
-				border-color: #3858e9;
-				box-shadow: 0 0 0 1px #3858e9;
+				border-color: var(--maxi-admin-green);
+				box-shadow: 0 0 0 1px var(--maxi-admin-green);
 				outline: none;
 			}
 
 			&::placeholder {
-				color: #a7aaad;
+				color: var(--maxi-admin-grey);
 			}
 		}
 
@@ -1648,16 +1648,16 @@ p.maxi-license-help-text {
 			&::file-selector-button {
 				padding: 6px 12px;
 				margin-right: 12px;
-				background: #f0f0f1;
-				border: 1px solid #8c8f94;
+				background: var(--maxi-admin-light-grey);
+				border: 1px solid var(--maxi-admin-grey);
 				border-radius: 4px;
 				font-size: 13px;
 				cursor: pointer;
 				transition: background 0.15s ease, border-color 0.15s ease;
 
 				&:hover {
-					background: #e0e0e0;
-					border-color: #50575e;
+					background: var(--maxi-admin-mint-hover);
+					border-color: var(--maxi-admin-black-hover);
 				}
 			}
 		}
@@ -1665,7 +1665,7 @@ p.maxi-license-help-text {
 		.description {
 			margin: 4px 0 0;
 			font-size: 12px;
-			color: #646970;
+			color: var(--maxi-admin-grey);
 		}
 	}
 
@@ -1728,25 +1728,25 @@ p.maxi-license-help-text {
 		font-weight: 500;
 
 		&.is-success {
-			color: #008a20;
+			color: var(--maxi-admin-green);
 		}
 
 		&.is-error {
-			color: #d63638;
+			color: var(--maxi-admin-orange-hover);
 		}
 
 		&.is-loading {
-			color: #3858e9;
+			color: var(--maxi-admin-green);
 		}
 	}
 
 	.maxi-custom-fonts-empty {
-		color: #646970;
+		color: var(--maxi-admin-grey);
 		font-style: italic;
 		margin: 0;
 		padding: 16px;
-		background: #fff;
-		border: 1px dashed #c3c4c7;
+		background: var(--maxi-admin-white);
+		border: 1px dashed var(--maxi-admin-grey);
 		border-radius: 6px;
 		text-align: center;
 	}
@@ -1759,7 +1759,8 @@ p.maxi-license-help-text {
 		width: 100%;
 
 		thead th {
-			background: #f0f0f1;
+			background: var(--maxi-admin-green);
+			color: var(--maxi-admin-white);
 			font-weight: 600;
 			font-size: 13px;
 			padding: 10px 12px;
@@ -1806,7 +1807,7 @@ p.maxi-license-help-text {
 		}
 
 		.button-link-delete {
-			color: #d63638;
+			color: var(--maxi-admin-orange-hover);
 			text-decoration: none;
 			cursor: pointer;
 			background: none;
@@ -1816,11 +1817,11 @@ p.maxi-license-help-text {
 			transition: color 0.15s ease;
 
 			&:hover {
-				color: #a81f21;
+				color: var(--maxi-admin-orange);
 			}
 
 			&:disabled {
-				color: #a7aaad;
+				color: var(--maxi-admin-grey);
 				cursor: not-allowed;
 			}
 		}

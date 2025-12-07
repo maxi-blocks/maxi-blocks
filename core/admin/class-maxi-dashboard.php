@@ -491,6 +491,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '',
                 null,
             );
+            add_submenu_page(
+                self::$maxi_slug_dashboard,
+                __('Fonts and files', 'maxi-blocks'),
+                __('Fonts and files', 'maxi-blocks'),
+                'manage_options',
+                'admin.php?page=' .
+                    self::$maxi_slug_dashboard .
+                    '&tab=maxi_blocks_fonts_and_files',
+                '',
+                null,
+            );
         }
 
         /**
@@ -731,6 +742,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 } elseif ($tab === self::$maxi_prefix . 'license') {
                     echo wp_kses(
                         $this->maxi_blocks_license(),
+                        maxi_blocks_allowed_html(),
+                    );
+                } elseif ($tab === self::$maxi_prefix . 'fonts_and_files') {
+                    echo wp_kses(
+                        $this->maxi_blocks_fonts_and_files(),
                         maxi_blocks_allowed_html(),
                     );
                 }
@@ -1276,12 +1292,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '<div class="maxi-dashboard_main-content_accordion_wrapper">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
 
-            $font_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
-            $font_uploads_dir_size = round(
-                $this->get_folder_size($font_uploads_dir) / 1048576,
-                2,
-            );
-
             $content .= $this->generate_item_header(
                 __('Editor preferences', 'maxi-blocks'),
                 true,
@@ -1392,9 +1402,107 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
             $content .= $this->generate_item_header(
-                __('Fonts and files', 'maxi-blocks'),
+                __('Documentation & support', 'maxi-blocks'),
                 false,
+            );
+
+            $content .= '<p>' . __('Read the ', 'maxi-blocks');
+            $content .=
+                '<a href="https://maxiblocks.com/go/help-center" target="_blank"> ' .
+                __('help center documentation', 'maxi-blocks') .
+                '</a>';
+            $content .= __(' for self-service.', 'maxi-blocks') . '</p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header(
+                __('Troubleshooting', 'maxi-blocks'),
+                false,
+            );
+
+            $content .=
+                '<h4>' . __('Site health info report', 'maxi-blocks') . '</h4>';
+            $content .=
+                '<p>' .
+                __(
+                    'The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .=
+                '<p><a href="/wp-admin/site-health.php?tab=debug" target="_blank"> ' .
+                __('Go to site health info', 'maxi-blocks') .
+                '</a></p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header(
+                __('Experimental preferences', 'maxi-blocks'),
+                false,
+            );
+
+            $description =
+                '<h4>' .
+                __('Enable settings indicators', 'maxi-blocks') .
+                '</h4>';
+            $description .=
+                '<p>' .
+                __(
+                    'Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_show_indicators',
+            );
+
+            $content .= get_submit_button();
+            $this->add_hidden_api_fields();
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion
+            $content .= '</div>'; // maxi-dashboard_main-content
+
+            return $content;
+        }
+
+        public function maxi_blocks_fonts_and_files()
+        {
+            $content = '<div class="maxi-dashboard_main-content">';
+
+            // Add header section
+            $content .= '<div class="maxi-dashboard_main-content-settings">';
+            $content .= '<h1>' . __('Fonts and files', 'maxi-blocks') . '</h1>';
+            $content .=
+                '<p>' .
+                __(
+                    'Manage font providers, local font storage, and upload custom fonts.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '</div>';
+
+            $content .=
+                '<div class="maxi-dashboard_main-content_accordion_wrapper">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion">';
+
+            $font_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
+            $font_uploads_dir_size = round(
+                $this->get_folder_size($font_uploads_dir) / 1048576,
+                2,
+            );
+
+            // Font Provider Settings accordion
+            $content .= $this->generate_item_header(
+                __('Font provider settings', 'maxi-blocks'),
+                true,
             );
 
             $use_bunny_fonts = get_option('bunny_fonts');
@@ -1500,16 +1608,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 }
             }
 
-            $content .=
-                '<div class="maxi-custom-fonts-manager" id="maxi-custom-fonts-manager">';
-            $content .= '<h4>' . __('Custom fonts', 'maxi-blocks') . '</h4>';
+            $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
+            $this->add_hidden_api_fields();
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            // Custom Fonts accordion
+            $content .= $this->generate_item_header(
+                __('Custom fonts', 'maxi-blocks'),
+                false,
+            );
+
             $content .=
                 '<p>' .
                 __(
-                    'Upload additional font files and make them available inside Maxi Blocks.',
+                    'Upload additional font files and make them available inside MaxiBlocks.',
                     'maxi-blocks',
                 ) .
-            '</p>';
+                '</p>';
+
+            $content .=
+                '<div class="maxi-custom-fonts-manager" id="maxi-custom-fonts-manager">';
 
             $content .= '<div id="maxi-custom-fonts-notice"></div>';
 
@@ -1535,94 +1655,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<p class="description">' .
                 __(
-                    'Supported file types: TTF, OTF, WOFF.',
+                    'Supported file types: TTF, OTF, WOFF, WOFF2.',
                     'maxi-blocks',
                 ) .
                 '</p>';
             $content .= '</div>';
 
+            $content .= '<div class="submit">';
             $content .=
                 '<button type="button" class="button button-primary" id="maxi-custom-font-submit">' .
                 esc_html__('Add custom font', 'maxi-blocks') .
                 '</button>';
             $content .= '</div>';
+            $content .= '</div>'; // maxi-custom-fonts-form
 
             $content .= $this->get_custom_fonts_list_markup();
-            $content .= '</div>';
-
-            $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
-            $this->add_hidden_api_fields();
-
-            $content .= '</form>';
-
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
-
-            $content .= $this->generate_item_header(
-                __('Documentation & support', 'maxi-blocks'),
-                false,
-            );
-
-            $content .= '<p>' . __('Read the ', 'maxi-blocks');
-            $content .=
-                '<a href="https://maxiblocks.com/go/help-center" target="_blank"> ' .
-                __('help center documentation', 'maxi-blocks') .
-                '</a>';
-            $content .= __(' for self-service.', 'maxi-blocks') . '</p>';
-
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
-
-            $content .= $this->generate_item_header(
-                __('Troubleshooting', 'maxi-blocks'),
-                false,
-            );
-
-            $content .=
-                '<h4>' . __('Site health info report', 'maxi-blocks') . '</h4>';
-            $content .=
-                '<p>' .
-                __(
-                    'The site health report gives every detail about the configuration of your WordPress website. Helpful when troubleshooting issues. Use the copy-to-clipboard button and include it in a private email with your support assistant. Never share this information publicly.',
-                    'maxi-blocks',
-                ) .
-                '</p>';
-            $content .=
-                '<p><a href="/wp-admin/site-health.php?tab=debug" target="_blank"> ' .
-                __('Go to site health info', 'maxi-blocks') .
-                '</a></p>';
-
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
-
-            $content .= $this->generate_item_header(
-                __('Experimental preferences', 'maxi-blocks'),
-                false,
-            );
-
-            $description =
-                '<h4>' .
-                __('Enable settings indicators', 'maxi-blocks') .
-                '</h4>';
-            $description .=
-                '<p>' .
-                __(
-                    'Enables indicators that shows the modified settings on MaxiBlocks blocks inspector settings',
-                    'maxi-blocks',
-                ) .
-                '</p>';
-            $content .= $this->generate_setting(
-                $description,
-                'maxi_show_indicators',
-            );
-
-            $content .= get_submit_button();
-            $this->add_hidden_api_fields();
+            $content .= '</div>'; // maxi-custom-fonts-manager
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion
+            $content .= '</div>'; // accordion_wrapper
             $content .= '</div>'; // maxi-dashboard_main-content
 
             return $content;

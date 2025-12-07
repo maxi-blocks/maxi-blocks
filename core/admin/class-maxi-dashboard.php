@@ -1703,13 +1703,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             foreach ($font_families as $font_post) {
                 $font_data = json_decode($font_post->post_content, true);
+                $font_name = isset($font_data['fontFamily'])
+                    ? trim($font_data['fontFamily'], '"\'')
+                    : $font_post->post_title;
 
                 $fonts[] = [
                     'id' => $font_post->ID,
                     'slug' => $font_post->post_name,
-                    'name' => isset($font_data['fontFamily'])
-                        ? $font_data['fontFamily']
-                        : $font_post->post_title,
+                    'name' => $font_name,
                     'source' => isset($font_data['source'])
                         ? $font_data['source']
                         : __('Custom', 'maxi-blocks'),
@@ -1717,89 +1718,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             return $fonts;
-        }
-
-        private function get_custom_fonts_list_markup()
-        {
-            $fonts = MaxiBlocks_Custom_Fonts::get_fonts_indexed_by_value();
-            if (!is_array($fonts) || empty($fonts)) {
-                return '<p class="maxi-custom-fonts-empty">' .
-                    esc_html__(
-                        'No custom fonts have been uploaded yet.',
-                        'maxi-blocks',
-                    ) .
-                    '</p>';
-            }
-
-            $html =
-                '<table class="widefat striped maxi-custom-fonts-list"><thead><tr>';
-            $html .=
-                '<th>' .
-                esc_html__('Font family', 'maxi-blocks') .
-                '</th><th>' .
-                esc_html__('Weights', 'maxi-blocks') .
-                '</th><th>' .
-                esc_html__('Styles', 'maxi-blocks') .
-                '</th><th>' .
-                esc_html__('Actions', 'maxi-blocks') .
-                '</th></tr></thead><tbody>';
-
-            foreach ($fonts as $font) {
-                $family = isset($font['value']) ? $font['value'] : '';
-                $variants = isset($font['variants']) && is_array($font['variants'])
-                    ? $font['variants']
-                    : [];
-
-                $weights = [];
-                $styles = [];
-
-                foreach ($variants as $variant) {
-                    $weight = isset($variant['weight']) ? $variant['weight'] : '';
-                    $style = isset($variant['style']) ? $variant['style'] : '';
-
-                    if ($weight && !in_array($weight, $weights, true)) {
-                        $weights[] = $weight;
-                    }
-                    if ($style && !in_array($style, $styles, true)) {
-                        $styles[] = $style;
-                    }
-                }
-
-                // Sort weights numerically
-                usort($weights, function ($a, $b) {
-                    return intval($a) - intval($b);
-                });
-
-                $weights_html = !empty($weights)
-                    ? '<span class="maxi-font-weights">' . esc_html(implode(', ', $weights)) . '</span>'
-                    : esc_html__('—', 'maxi-blocks');
-
-                $styles_html = !empty($styles)
-                    ? '<span class="maxi-font-styles">' . esc_html(implode(', ', $styles)) . '</span>'
-                    : esc_html__('—', 'maxi-blocks');
-
-                $html .= '<tr>';
-                $html .=
-                    '<td><strong>' .
-                    esc_html($family) .
-                    '</strong></td><td>' .
-                    $weights_html .
-                    '</td><td>' .
-                    $styles_html .
-                    '</td><td>';
-
-                if (!empty($font['id'])) {
-                    $html .=
-                        '<button type="button" class="button-link-delete maxi-delete-custom-font" data-font-id="' . esc_attr($font['id']) . '">' .
-                        esc_html__('Remove', 'maxi-blocks') .
-                        '</button>';
-                }
-
-                $html .= '</td></tr>';
-            }
-
-            $html .= '</tbody></table>';
-            return $html;
         }
 
         public function maxi_blocks_maxi_ai()

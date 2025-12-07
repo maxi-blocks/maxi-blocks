@@ -1676,8 +1676,52 @@ p.maxi-license-help-text {
 	}
 
 	.submit {
-		padding: 0 !important;
-		margin: 0 !important;
+		margin-top: 5px;
+
+		.button-primary {
+			color: var(--maxi-admin-white) !important;
+			margin-bottom: 10px;
+		}
+	}
+
+	.maxi-custom-fonts-list {
+		border: 1px solid var(--maxi-admin-border-light);
+		border-radius: 8px;
+		overflow: hidden;
+
+		thead {
+			background-color: var(--maxi-admin-green);
+
+			th {
+				color: var(--maxi-admin-white);
+				font-weight: 600;
+				padding: 12px 15px;
+				border: none;
+			}
+		}
+
+		tbody {
+			tr {
+				&:nth-child(odd) {
+					background-color: var(--maxi-admin-light-grey);
+				}
+
+				&:nth-child(even) {
+					background-color: var(--maxi-admin-white);
+				}
+
+				&:hover {
+					background-color: var(--maxi-admin-mint-hover);
+				}
+
+				td {
+					padding: 10px 15px;
+					border: none;
+					border-bottom: 1px solid var(--maxi-admin-border-light);
+					color: var(--maxi-admin-black);
+				}
+			}
+		}
 	}
 
 	.maxi-custom-fonts-status {

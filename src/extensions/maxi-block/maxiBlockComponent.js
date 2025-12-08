@@ -665,6 +665,17 @@ class MaxiBlockComponent extends Component {
 			this.previewTimeouts = null;
 		}
 
+		// Disconnect all preview observers to prevent memory leaks
+		if (this.previewObservers) {
+			this.previewObservers.forEach(observer => {
+				if (observer && typeof observer.disconnect === 'function') {
+					observer.disconnect();
+				}
+			});
+			this.previewObservers.clear();
+			this.previewObservers = null;
+		}
+
 		// Disconnect FSE observer if present
 		if (this.fseIframeObserver) {
 			this.fseIframeObserver.disconnect();
@@ -1010,6 +1021,11 @@ class MaxiBlockComponent extends Component {
 			this.previewTimeouts = new Map();
 		}
 
+		// Track observers for proper cleanup to prevent memory leaks
+		if (!this.previewObservers) {
+			this.previewObservers = new Set();
+		}
+
 		const isSiteEditor = getIsSiteEditor();
 
 		const imageName = isSiteEditor
@@ -1067,6 +1083,10 @@ class MaxiBlockComponent extends Component {
 				const newTimeout = setTimeout(() => {
 					observer.disconnect();
 					this.previewTimeouts.delete(iframe);
+					// Remove observer from tracking when it disconnects
+					if (this.previewObservers) {
+						this.previewObservers.delete(observer);
+					}
 				}, disconnectTimeout);
 
 				this.previewTimeouts.set(iframe, newTimeout);
@@ -1113,6 +1133,10 @@ class MaxiBlockComponent extends Component {
 				iframe.style.display = 'none';
 
 				observer.disconnect();
+				// Remove observer from tracking when it disconnects
+				if (this.previewObservers) {
+					this.previewObservers.delete(observer);
+				}
 			};
 
 			const observer = new MutationObserver((mutationsList, observer) => {
@@ -1126,6 +1150,9 @@ class MaxiBlockComponent extends Component {
 				childList: true,
 				subtree: true,
 			});
+
+			// Track observer for cleanup to prevent memory leaks
+			this.previewObservers.add(observer);
 		});
 	}
 

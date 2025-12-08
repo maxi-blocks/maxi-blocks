@@ -1288,15 +1288,37 @@ document.addEventListener('DOMContentLoaded', () => {
 		'.maxi-custom-fonts-list'
 	);
 
+	/**
+	 * Display a notice message using DOM-safe element creation
+	 *
+	 * @param {string} message - The message to display (will be escaped)
+	 * @param {string} type    - Notice type: 'success' or 'error'
+	 */
 	const showNotice = (message, type = 'success') => {
 		if (!noticeContainer) {
 			return;
 		}
+
+		// Determine notice classes based on type
 		const noticeClass =
 			type === 'success'
 				? 'notice notice-success'
 				: 'notice notice-error';
-		noticeContainer.innerHTML = `<div class="${noticeClass} is-dismissible"><p>${message}</p></div>`;
+
+		// Create wrapper div with notice classes
+		const wrapperDiv = document.createElement('div');
+		wrapperDiv.className = `${noticeClass} is-dismissible`;
+
+		// Create paragraph element and set text content (XSS-safe)
+		const paragraph = document.createElement('p');
+		paragraph.textContent = message;
+
+		// Append paragraph to wrapper
+		wrapperDiv.appendChild(paragraph);
+
+		// Clear and update notice container
+		noticeContainer.innerHTML = '';
+		noticeContainer.appendChild(wrapperDiv);
 	};
 
 	const refreshFontsList = async () => {

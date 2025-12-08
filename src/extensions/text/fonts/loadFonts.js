@@ -228,11 +228,15 @@ const loadFonts = async (
 										style: styleValue,
 									});
 
-									if (
-										target.head.querySelector(
-											`#${customFontId}`
-										)
-									) {
+									// Check if font style already exists
+									// Use getElementById when target is a Document, otherwise use querySelector with CSS.escape
+									const existingFont = target.getElementById
+										? target.getElementById(customFontId)
+										: target.head.querySelector(
+												`#${CSS.escape(customFontId)}`
+										  );
+
+									if (existingFont) {
 										if (setIsLoading)
 											setIsLoading(false, customFontId);
 										return;

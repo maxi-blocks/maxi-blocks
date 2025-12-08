@@ -43,3 +43,6 @@ coverage
 # Ignore Claude files
 CLAUDE.md
 
+# Ignore PHP CS Fixer config
+**/.php-cs-fixer.dist.php
+

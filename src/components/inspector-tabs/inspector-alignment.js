@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AlignmentControl from '@components/alignment-control';
-import { getGroupAttributes, getLastBreakpointAttribute } from '@extensions/styles';
+import { getGroupAttributes, getDefaultAttribute } from '@extensions/styles';
 
 /**
  * External dependencies
@@ -33,7 +33,7 @@ const alignment = ({
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const alignmentAttributes = [];
 	const textAlignmentAttributes = [];
-	
+
 	// Generate all possible alignment attribute names
 	breakpoints.forEach(bp => {
 		if (isAlignment) {
@@ -46,31 +46,40 @@ const alignment = ({
 		}
 	});
 
-	// Check if current values are default (left)
-	const currentAlignment = isAlignment
-		? getLastBreakpointAttribute({
-				target: 'alignment',
-				breakpoint: deviceType,
-				attributes: getGroupAttributes(attributes, 'alignment'),
-		  })
-		: null;
+	// Get the actual default values from the block's attributes
+	// This handles different blocks having different defaults (e.g., button text-alignment is 'center')
+	const alignmentDefaultValue =
+		getDefaultAttribute('alignment-general', props.clientId) || 'center';
+	const textAlignmentDefaultValue =
+		getDefaultAttribute('text-alignment-general', props.clientId) || 'left';
 
-	const currentTextAlignment = isTextAlignment
-		? getLastBreakpointAttribute({
-				target: 'text-alignment',
-				breakpoint: deviceType,
-				attributes: getGroupAttributes(attributes, 'textAlignment'),
-		  })
-		: null;
+	// Check if any alignment attribute is set to a non-default value
+	const hasNonDefaultAlignment =
+		isAlignment &&
+		alignmentAttributes.some(attr => {
+			const value = attributes[attr];
+			return (
+				value !== undefined &&
+				value !== null &&
+				value !== alignmentDefaultValue
+			);
+		});
 
-	// Default is 'left' for both alignment types
-	const isDefaultAlignment = !currentAlignment || currentAlignment === 'left';
-	const isDefaultTextAlignment = !currentTextAlignment || currentTextAlignment === 'left';
+	const hasNonDefaultTextAlignment =
+		isTextAlignment &&
+		textAlignmentAttributes.some(attr => {
+			const value = attributes[attr];
+			return (
+				value !== undefined &&
+				value !== null &&
+				value !== textAlignmentDefaultValue
+			);
+		});
 
-	// Only ignore indicators if BOTH are default (or not present)
+	// Only ignore indicators if BOTH types (if present) have not been set to non-default values
 	const shouldIgnoreIndicators =
-		(!isAlignment || isDefaultAlignment) &&
-		(!isTextAlignment || isDefaultTextAlignment);
+		(!isAlignment || !hasNonDefaultAlignment) &&
+		(!isTextAlignment || !hasNonDefaultTextAlignment);
 
 	const ignoreIndicator = shouldIgnoreIndicators
 		? [...alignmentAttributes, ...textAlignmentAttributes]

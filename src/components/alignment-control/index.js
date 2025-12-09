@@ -91,16 +91,17 @@ const AlignmentControl = props => {
 	);
 
 	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
+
+	// Get the default value (first option)
+	const defaultValue = getOptions()[0]?.value ?? 'left';
+
 	const selectedValue =
 		getLastBreakpointAttribute({
 			target,
 			breakpoint,
 			attributes: props,
 			isHover,
-		}) || (getOptions()[0]?.value ?? 'left');
-
-	// Get the default value (first option)
-	const defaultValue = getOptions()[0]?.value ?? 'left';
+		}) || defaultValue;
 
 	// Generate all possible alignment attribute names (all breakpoints + hover states)
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -110,11 +111,20 @@ const AlignmentControl = props => {
 		alignmentAttributes.push(`${target}-${bp}-hover`);
 	});
 
-	// Add ignoreIndicator to each item when the selected value is the default
+	// Check if any alignment attribute has been explicitly set (not undefined/null)
+	// AND is different from the default value
+	const hasNonDefaultAlignment = alignmentAttributes.some(attr => {
+		const value = props[attr];
+		return value !== undefined && value !== null && value !== defaultValue;
+	});
+
+	// Only ignore indicators when no non-default alignment is set
+	// This hides the indicator dot when all alignments are at default or unset
 	const itemsWithIndicatorLogic = getOptions().map(option => ({
 		...option,
-		ignoreIndicator:
-			selectedValue === defaultValue ? alignmentAttributes : undefined,
+		ignoreIndicator: !hasNonDefaultAlignment
+			? alignmentAttributes
+			: undefined,
 	}));
 
 	return (

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.1.6\n"
+"Project-Id-Version: MaxiBlocks 2.1.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-13T17:30:05+00:00\n"
+"POT-Creation-Date: 2025-11-25T13:37:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -230,12 +230,12 @@ msgstr ""
 #: src/blocks/slide-maxi/inspector.js:36
 #: src/blocks/slider-maxi/inspector.js:68
 #: src/blocks/svg-icon-maxi/inspector.js:153
-#: src/blocks/text-maxi/inspector.js:47
+#: src/blocks/text-maxi/inspector.js:39
 #: src/blocks/video-maxi/inspector.js:57
 #: src/components/background-control/imageLayer.js:787
 #: src/components/inspector-tabs/inspector-transition.js:140
-#: src/components/relation-control/index.js:506
-#: src/components/relation-control/index.js:645
+#: src/components/relation-control/index.js:510
+#: src/components/relation-control/index.js:649
 msgid "Settings"
 msgstr ""
 
@@ -1285,7 +1285,7 @@ msgstr ""
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:105
 #: src/components/inspector-tabs/inspector-border.js:132
 #: src/components/inspector-tabs/inspector-box-shadow.js:114
-#: src/components/typography-control/index.js:110
+#: src/components/typography-control/index.js:111
 msgid "Active"
 msgstr ""
 
@@ -1537,6 +1537,7 @@ msgstr ""
 #: core/admin/status-report/maxi-system-status-report.php:927
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:75
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:99
+#: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:81
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:99
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:128
 #: src/blocks/video-maxi/components/video-control/index.js:142
@@ -1545,7 +1546,7 @@ msgstr ""
 #: src/components/dynamic-content/index.js:174
 #: src/components/image-alt-control/index.js:51
 #: src/components/image-alt-control/index.js:62
-#: src/components/typography-control/index.js:1122
+#: src/components/typography-control/index.js:1734
 msgid "None"
 msgstr ""
 
@@ -2189,7 +2190,7 @@ msgstr ""
 
 #: core/admin/starter-sites/src/library/container.js:496
 #: core/admin/starter-sites/src/library/modal.js:161
-#: src/components/reset-control/index.js:23
+#: src/components/reset-control/index.js:78
 msgid "Reset"
 msgstr ""
 
@@ -2428,10 +2429,10 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:70
 #: src/blocks/accordion-maxi/components/accordion-title-control/index.js:150
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:45
-#: src/components/inspector-tabs/inspector-background.js:78
+#: src/components/inspector-tabs/inspector-background.js:79
 #: src/components/inspector-tabs/inspector-border.js:60
 #: src/components/inspector-tabs/inspector-box-shadow.js:45
-#: src/components/typography-control/index.js:1287
+#: src/components/typography-control/index.js:1842
 msgid "Normal"
 msgstr ""
 
@@ -2440,10 +2441,10 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-title-control/index.js:160
 #: src/blocks/search-maxi/components/skin-control/index.js:115
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:75
-#: src/components/inspector-tabs/inspector-background.js:102
+#: src/components/inspector-tabs/inspector-background.js:103
 #: src/components/inspector-tabs/inspector-border.js:87
 #: src/components/inspector-tabs/inspector-box-shadow.js:73
-#: src/components/typography-control/index.js:100
+#: src/components/typography-control/index.js:101
 msgid "Hover"
 msgstr ""
 
@@ -2460,7 +2461,7 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:38
 #: src/blocks/divider-maxi/inspector.js:190
 #: src/components/arrow-control/index.js:53
-#: src/components/axis-position-control/index.js:51
+#: src/components/axis-position-control/index.js:54
 #: src/components/clip-path-control/index.js:131
 #: src/components/clip-path-control/index.js:143
 msgid "Left"
@@ -2470,7 +2471,7 @@ msgstr ""
 #: src/blocks/column-maxi/components/column-size-control/index.js:103
 #: src/blocks/divider-maxi/inspector.js:140
 #: src/blocks/divider-maxi/inspector.js:197
-#: src/components/axis-position-control/index.js:55
+#: src/components/axis-position-control/index.js:59
 #: src/components/clip-path-control/index.js:129
 #: src/components/toolbar/components/divider-alignment/index.js:53
 #: src/components/toolbar/components/vertical-align/index.js:57
@@ -2480,7 +2481,7 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:46
 #: src/blocks/divider-maxi/inspector.js:204
 #: src/components/arrow-control/index.js:52
-#: src/components/axis-position-control/index.js:59
+#: src/components/axis-position-control/index.js:64
 #: src/components/clip-path-control/index.js:139
 msgid "Right"
 msgstr ""
@@ -2511,7 +2512,7 @@ msgid "Pane closes when another opens"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-settings-control/index.js:90
-#: src/components/icon-control/index.js:226
+#: src/components/icon-control/index.js:289
 #: src/components/toolbar/components/icon-size/index.js:51
 msgid "Spacing"
 msgstr ""
@@ -2528,11 +2529,11 @@ msgstr ""
 msgid "Title background"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:93
+#: src/blocks/accordion-maxi/inspector.js:95
 msgid "Accordion settings"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:112
+#: src/blocks/accordion-maxi/inspector.js:114
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:39
 #: src/blocks/map-maxi/components/markers/index.js:99
 #: src/blocks/pane-maxi/edit.js:248
@@ -2542,25 +2543,25 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:150
+#: src/blocks/accordion-maxi/inspector.js:152
 msgid "Active icon"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:157
+#: src/blocks/accordion-maxi/inspector.js:159
 #: src/blocks/divider-maxi/data.js:164
 #: src/blocks/divider-maxi/inspector.js:238
 msgid "Line settings"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:169
+#: src/blocks/accordion-maxi/inspector.js:171
 msgid "Header line"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:181
+#: src/blocks/accordion-maxi/inspector.js:183
 msgid "Content line"
 msgstr ""
 
-#: src/blocks/accordion-maxi/inspector.js:222
+#: src/blocks/accordion-maxi/inspector.js:224
 #: src/blocks/button-maxi/inspector.js:325
 #: src/blocks/column-maxi/inspector.js:98
 #: src/blocks/container-maxi/inspector.js:122
@@ -2572,11 +2573,11 @@ msgstr ""
 #: src/blocks/number-counter-maxi/inspector.js:146
 #: src/blocks/pane-maxi/inspector.js:149
 #: src/blocks/row-maxi/inspector.js:135
-#: src/blocks/search-maxi/inspector.js:408
+#: src/blocks/search-maxi/inspector.js:412
 #: src/blocks/slide-maxi/inspector.js:69
 #: src/blocks/slider-maxi/inspector.js:197
 #: src/blocks/svg-icon-maxi/inspector.js:339
-#: src/blocks/text-maxi/inspector.js:150
+#: src/blocks/text-maxi/inspector.js:105
 #: src/blocks/video-maxi/inspector.js:256
 msgid "Advanced"
 msgstr ""
@@ -2619,7 +2620,6 @@ msgstr ""
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:392
 #: src/blocks/search-maxi/components/button-control/index.js:33
 #: src/blocks/text-maxi/components/list-options-control/index.js:832
-#: src/components/toolbar/components/text-color/index.js:153
 #: src/editor/style-cards/maxiStyleCardsTab.js:577
 msgid "Text"
 msgstr ""
@@ -2678,7 +2678,7 @@ msgstr ""
 #: src/blocks/image-maxi/inspector.js:228
 #: src/blocks/text-maxi/components/list-options-control/index.js:692
 #: src/components/arrow-control/index.js:46
-#: src/components/axis-position-control/index.js:42
+#: src/components/axis-position-control/index.js:43
 #: src/components/clip-path-control/index.js:132
 #: src/components/clip-path-control/index.js:137
 #: src/components/toolbar/components/divider-alignment/index.js:52
@@ -2691,7 +2691,7 @@ msgstr ""
 #: src/blocks/image-maxi/inspector.js:235
 #: src/blocks/text-maxi/components/list-options-control/index.js:702
 #: src/components/arrow-control/index.js:47
-#: src/components/axis-position-control/index.js:46
+#: src/components/axis-position-control/index.js:48
 #: src/components/clip-path-control/index.js:141
 #: src/components/toolbar/components/divider-alignment/index.js:54
 #: src/components/toolbar/components/vertical-align/index.js:61
@@ -2719,7 +2719,7 @@ msgid "Divider style"
 msgstr ""
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:218
-msgid "Top shape divider"
+msgid "Top shape"
 msgstr ""
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:223
@@ -2752,7 +2752,7 @@ msgid "Enable scroll effect"
 msgstr ""
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:432
-msgid "Bottom shape divider"
+msgid "Bottom shape"
 msgstr ""
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:437
@@ -2772,7 +2772,6 @@ msgstr ""
 #: src/blocks/list-item-maxi/data.js:110
 #: src/blocks/text-maxi/data.js:180
 #: src/components/inspector-tabs/inspector-alignment.js:33
-#: src/components/typography-control/index.js:808
 msgid "Alignment"
 msgstr ""
 
@@ -2803,7 +2802,7 @@ msgstr ""
 msgid "Use original size"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:156
+#: src/blocks/image-maxi/components/dimension-tab/index.js:155
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:76
 #: src/components/background-control/sizeAndPositionLayerControl.js:116
 #: src/components/full-size-control/index.js:135
@@ -2811,218 +2810,218 @@ msgstr ""
 msgid "Width"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:197
+#: src/blocks/image-maxi/components/dimension-tab/index.js:196
 #: src/components/image-shape/index.js:157
 msgid "Image ratio"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:202
+#: src/blocks/image-maxi/components/dimension-tab/index.js:201
 msgid "Original size"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:235
+#: src/blocks/image-maxi/components/dimension-tab/index.js:234
 msgid "Fit on wrapper"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:248
+#: src/blocks/image-maxi/components/dimension-tab/index.js:247
 msgid "Adjust size"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:276
+#: src/blocks/image-maxi/components/dimension-tab/index.js:275
 msgid "Image horizontal position"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:310
+#: src/blocks/image-maxi/components/dimension-tab/index.js:309
 msgid "Image vertical position"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:80
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:81
 msgid "Hover animation"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:101
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:102
 msgid "Show hover preview"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:110
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:111
 msgid "Extend outside boundary"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:129
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:130
 msgid "Duration(s)"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:169
-#: src/components/transition-control/index.js:176
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:170
+#: src/components/transition-control/index.js:182
 msgid "Easing"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:187
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:188
 #: src/components/scroll-effects-control/options.js:106
-#: src/components/transition-control/index.js:186
+#: src/components/transition-control/index.js:192
 msgid "Ease"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:191
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:192
 #: src/components/scroll-effects-control/options.js:110
-#: src/components/transition-control/index.js:200
+#: src/components/transition-control/index.js:206
 msgid "Linear"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:195
-#: src/components/transition-control/index.js:188
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:196
+#: src/components/transition-control/index.js:194
 msgid "Ease-in"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:199
-#: src/components/transition-control/index.js:192
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:200
+#: src/components/transition-control/index.js:198
 msgid "Ease-out"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:203
-#: src/components/transition-control/index.js:196
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:204
+#: src/components/transition-control/index.js:202
 msgid "Ease-in-out"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:207
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:208
 msgid "Cubic-bezier"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:227
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:228
 msgid "Effect type"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:245
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:246
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:132
 msgid "Zoom in"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:249
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:250
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:136
 msgid "Zoom out"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:253
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:254
 #: src/blocks/slider-maxi/components/slider-control/index.js:100
 #: src/components/toolbar/components/slider-settings/index.js:105
 msgid "Slide"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:257
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:258
 #: src/components/scroll-effects-control/options.js:70
 #: src/components/transform-control/index.js:247
 msgid "Rotate"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:261
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:262
 msgid "Flashing"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:264
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:265
 #: src/components/text-shadow-control/index.js:299
 msgid "Blur"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:266
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:267
 msgid "Sepia"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:270
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:271
 msgid "Clear sepia"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:274
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:275
 msgid "Gray scale"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:278
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:279
 msgid "Clear gray scale"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:282
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:283
 msgid "Shine"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:286
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:287
 msgid "Circle shine"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:298
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:299
 msgid "Amount"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:335
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:336
 msgid "Animation type"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:349
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:350
 #: src/blocks/slider-maxi/components/slider-control/index.js:104
 #: src/components/toolbar/components/slider-settings/index.js:109
 msgid "Fade"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:351
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:352
 msgid "Push up"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:355
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:356
 msgid "Push right"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:359
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:360
 msgid "Push down"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:363
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:364
 msgid "Push left"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:367
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:368
 msgid "Slide up"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:371
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:372
 msgid "Slide right"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:375
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:376
 msgid "Slide down"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:379
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:380
 msgid "Slide left"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:383
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:384
 msgid "Flip horizontal"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:420
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:422
 msgid "Add hover title text here"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:436
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:438
 msgid "Custom hover text"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:470
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:473
 msgid "Add hover content text here"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:486
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:489
 msgid "Custom content text"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:535
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:539
 msgid "Custom border"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:563
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:567
 msgid "Custom padding"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:574
-#: src/blocks/search-maxi/inspector.js:375
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:578
+#: src/blocks/search-maxi/inspector.js:379
 #: src/blocks/video-maxi/inspector.js:219
 #: src/components/background-control/imageLayer.js:531
 #: src/components/background-control/imageLayer.js:586
@@ -3030,13 +3029,13 @@ msgstr ""
 msgid "Padding"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:582
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:586
 msgid "Custom margin"
 msgstr ""
 
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:593
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:597
 #: src/components/margin-control/index.js:19
-#: src/components/toolbar/components/text-margin/index.js:33
+#: src/components/toolbar/components/text-margin/index.js:59
 msgid "Margin"
 msgstr ""
 
@@ -3053,9 +3052,10 @@ msgstr ""
 #: src/blocks/image-maxi/data.js:296
 #: src/components/background-control/imageLayer.js:535
 #: src/components/background-control/imageLayer.js:582
-#: src/components/border-control/index.js:55
+#: src/components/border-control/index.js:78
+#: src/components/icon-control/index.js:155
 #: src/components/inspector-tabs/inspector-border.js:55
-#: src/components/toolbar/components/border/index.js:51
+#: src/components/toolbar/components/border/index.js:69
 #: src/editor/style-cards/maxiStyleCardsTab.js:611
 #: src/extensions/relations/getCanvasSettings.js:141
 msgid "Border"
@@ -3110,7 +3110,7 @@ msgstr ""
 
 #: src/blocks/list-item-maxi/data.js:118
 #: src/blocks/text-maxi/data.js:188
-#: src/components/inspector-tabs/inspector-typography.js:57
+#: src/components/inspector-tabs/inspector-typography.js:59
 msgid "Typography"
 msgstr ""
 
@@ -3221,7 +3221,7 @@ msgstr ""
 
 #: src/blocks/map-maxi/components/map-popup-control/index.js:37
 #: src/components/inspector-tabs/inspector-box-shadow.js:40
-#: src/components/toolbar/components/box-shadow/index.js:47
+#: src/components/toolbar/components/box-shadow/index.js:66
 #: src/extensions/relations/getCanvasSettings.js:160
 msgid "Box shadow"
 msgstr ""
@@ -3334,6 +3334,7 @@ msgid "Duration"
 msgstr ""
 
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:246
+#: src/components/icon-control/index.js:140
 msgid "Stroke"
 msgstr ""
 
@@ -3412,11 +3413,11 @@ msgid "Placeholder text"
 msgstr ""
 
 #: src/blocks/search-maxi/components/placeholder-color-control/index.js:35
-#: src/components/typography-control/index.js:134
-#: src/components/typography-control/index.js:177
-#: src/components/typography-control/index.js:222
-#: src/components/typography-control/index.js:270
-#: src/components/typography-control/index.js:741
+#: src/components/typography-control/index.js:135
+#: src/components/typography-control/index.js:178
+#: src/components/typography-control/index.js:223
+#: src/components/typography-control/index.js:271
+#: src/components/typography-control/index.js:1235
 msgid "Font"
 msgstr ""
 
@@ -3474,11 +3475,11 @@ msgstr ""
 msgid "Position"
 msgstr ""
 
-#: src/blocks/search-maxi/inspector.js:302
+#: src/blocks/search-maxi/inspector.js:306
 msgid "Input"
 msgstr ""
 
-#: src/blocks/search-maxi/inspector.js:322
+#: src/blocks/search-maxi/inspector.js:326
 msgid "Placeholder"
 msgstr ""
 
@@ -3519,11 +3520,20 @@ msgstr ""
 msgid "Enable active icon state"
 msgstr ""
 
-#: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:178
+#: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:86
+#: src/components/divider-control/index.js:263
+msgid "Solid"
+msgstr ""
+
+#: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:91
+msgid "Gradient"
+msgstr ""
+
+#: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:172
 msgid "Add dot icon"
 msgstr ""
 
-#: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:373
+#: src/blocks/slider-maxi/components/navigation-control/navigation-icon-control.js:367
 msgid "Spacing between dots"
 msgstr ""
 
@@ -3593,7 +3603,7 @@ msgid "Alt description"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/components/svg-color-control/index.js:51
-#: src/components/icon-control/index.js:422
+#: src/components/icon-control/index.js:501
 #: src/components/toolbar/components/icon-color/index.js:132
 msgid "Icon fill"
 msgstr ""
@@ -3609,7 +3619,7 @@ msgstr ""
 #: src/components/inspector-tabs/inspector-clip-path.js:37
 #: src/components/inspector-tabs/inspector-icon.js:95
 #: src/components/inspector-tabs/inspector-opacity.js:39
-#: src/components/inspector-tabs/inspector-typography.js:63
+#: src/components/inspector-tabs/inspector-typography.js:104
 #: src/components/transform-control/index.js:290
 msgid "Normal state"
 msgstr ""
@@ -3621,7 +3631,7 @@ msgstr ""
 #: src/components/inspector-tabs/inspector-clip-path.js:46
 #: src/components/inspector-tabs/inspector-icon.js:125
 #: src/components/inspector-tabs/inspector-opacity.js:49
-#: src/components/inspector-tabs/inspector-typography.js:105
+#: src/components/inspector-tabs/inspector-typography.js:148
 #: src/components/transform-control/index.js:297
 msgid "Hover state"
 msgstr ""
@@ -3644,7 +3654,7 @@ msgid "Icon colour"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/data.js:242
-#: src/components/icon-control/index.js:524
+#: src/components/icon-control/index.js:610
 #: src/components/toolbar/components/icon-background/index.js:67
 msgid "Icon background"
 msgstr ""
@@ -3672,7 +3682,7 @@ msgid "List style position"
 msgstr ""
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:178
-#: src/components/typography-control/index.js:1206
+#: src/components/typography-control/index.js:1332
 msgid "Text indent"
 msgstr ""
 
@@ -3749,7 +3759,7 @@ msgid "Ordered"
 msgstr ""
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:754
-#: src/components/typography-control/index.js:1025
+#: src/components/typography-control/index.js:1626
 msgid "Style"
 msgstr ""
 
@@ -3775,11 +3785,7 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: src/blocks/text-maxi/inspector.js:57
-msgid "Heading / Paragraph tag"
-msgstr ""
-
-#: src/blocks/text-maxi/inspector.js:92
+#: src/blocks/text-maxi/inspector.js:49
 msgid "List options"
 msgstr ""
 
@@ -3905,7 +3911,7 @@ msgstr ""
 msgid "Affects only current block, you can add selectors for inner elements."
 msgstr ""
 
-#: src/components/advanced-number-control/index.js:257
+#: src/components/advanced-number-control/index.js:259
 #: src/components/background-control/imageLayer.js:96
 msgid "Auto"
 msgstr ""
@@ -3975,19 +3981,19 @@ msgstr ""
 msgid "Examples:"
 msgstr ""
 
-#: src/components/axis-control/index.js:298
+#: src/components/axis-control/index.js:357
 msgid "Set equal"
 msgstr ""
 
-#: src/components/axis-control/index.js:302
+#: src/components/axis-control/index.js:361
 msgid "Set together"
 msgstr ""
 
-#: src/components/axis-control/index.js:307
+#: src/components/axis-control/index.js:366
 msgid "Set separate"
 msgstr ""
 
-#: src/components/axis-control/index.js:362
+#: src/components/axis-control/index.js:421
 msgid "Unit"
 msgstr ""
 
@@ -4018,7 +4024,7 @@ msgid "Add new layer"
 msgstr ""
 
 #: src/components/background-control/colorLayer.js:192
-#: src/components/background-control/index.js:120
+#: src/components/background-control/index.js:121
 #: src/editor/style-cards/maxiStyleCardsTab.js:594
 msgid "Background"
 msgstr ""
@@ -4040,6 +4046,7 @@ msgid "Contain"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:118
+#: src/components/icon-control/index.js:147
 #: src/components/image-shape/index.js:165
 #: src/components/svg-fill-control/index.js:43
 #: src/editor/style-cards/maxiStyleCardsTab.js:704
@@ -4163,27 +4170,27 @@ msgstr ""
 msgid "Background clip"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:800
+#: src/components/background-control/imageLayer.js:801
 msgid "Parallax"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:805
+#: src/components/background-control/imageLayer.js:807
 msgid "Enable parallax"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:828
+#: src/components/background-control/imageLayer.js:830
 msgid "Direction"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:839
+#: src/components/background-control/imageLayer.js:841
 msgid "Up"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:846
+#: src/components/background-control/imageLayer.js:848
 msgid "Down"
 msgstr ""
 
-#: src/components/background-control/imageLayer.js:861
+#: src/components/background-control/imageLayer.js:863
 msgid "Speed"
 msgstr ""
 
@@ -4229,16 +4236,16 @@ msgstr ""
 msgid "Parent"
 msgstr ""
 
-#: src/components/border-control/index.js:143
+#: src/components/border-control/index.js:188
 msgid "Border width"
 msgstr ""
 
-#: src/components/border-control/index.js:308
+#: src/components/border-control/index.js:367
 #: src/components/divider-control/index.js:251
 msgid "Add border line"
 msgstr ""
 
-#: src/components/border-control/index.js:384
+#: src/components/border-control/index.js:443
 msgid "Border radius"
 msgstr ""
 
@@ -4296,15 +4303,15 @@ msgstr ""
 msgid "Ellipse"
 msgstr ""
 
-#: src/components/clip-path-control/index.js:493
+#: src/components/clip-path-control/index.js:494
 msgid "Visual"
 msgstr ""
 
-#: src/components/clip-path-control/index.js:497
+#: src/components/clip-path-control/index.js:498
 msgid "Edit Points"
 msgstr ""
 
-#: src/components/clip-path-control/index.js:651
+#: src/components/clip-path-control/index.js:652
 msgid "Add new point"
 msgstr ""
 
@@ -4508,10 +4515,6 @@ msgstr ""
 
 #: src/components/divider-control/index.js:259
 msgid "Dashed"
-msgstr ""
-
-#: src/components/divider-control/index.js:263
-msgid "Solid"
 msgstr ""
 
 #: src/components/divider-control/index.js:267
@@ -5815,44 +5818,44 @@ msgstr ""
 msgid "The block should have a wrapper to use flex-child properties"
 msgstr ""
 
-#: src/components/font-family-selector/index.js:83
+#: src/components/font-family-selector/index.js:87
 msgid "Search…"
 msgstr ""
 
-#: src/components/font-level-control/index.js:108
+#: src/components/font-level-control/index.js:229
 #: src/components/toolbar/components/text-list-options/index.js:140
 msgid "P"
 msgstr ""
 
-#: src/components/font-level-control/index.js:115
+#: src/components/font-level-control/index.js:230
 msgid "H1"
 msgstr ""
 
-#: src/components/font-level-control/index.js:122
+#: src/components/font-level-control/index.js:231
 msgid "H2"
 msgstr ""
 
-#: src/components/font-level-control/index.js:129
+#: src/components/font-level-control/index.js:232
 msgid "H3"
 msgstr ""
 
-#: src/components/font-level-control/index.js:136
+#: src/components/font-level-control/index.js:233
 msgid "H4"
 msgstr ""
 
-#: src/components/font-level-control/index.js:143
+#: src/components/font-level-control/index.js:234
 msgid "H5"
 msgstr ""
 
-#: src/components/font-level-control/index.js:150
+#: src/components/font-level-control/index.js:235
 msgid "H6"
 msgstr ""
 
-#: src/components/font-weight-control/index.js:41
+#: src/components/font-weight-control/index.js:44
 msgid "Font weight"
 msgstr ""
 
-#: src/components/font-weight-control/index.js:56
+#: src/components/font-weight-control/index.js:60
 msgid "Current font weight is not available in the selected font and may not render correctly, please select a different font weight"
 msgstr ""
 
@@ -5893,40 +5896,40 @@ msgstr ""
 msgid "Gradient opacity"
 msgstr ""
 
-#: src/components/icon-control/index.js:174
+#: src/components/icon-control/index.js:230
 msgid "Icon only (remove text)"
 msgstr ""
 
-#: src/components/icon-control/index.js:271
-msgid "Inherit stroke colour/background from button"
-msgstr ""
-
-#: src/components/icon-control/index.js:304
+#: src/components/icon-control/index.js:353
 #: src/components/toolbar/components/icon-color/index.js:61
 msgid "Icon stroke"
 msgstr ""
 
-#: src/components/icon-control/index.js:391
-msgid "Icon stroke colour is inheriting from button."
+#: src/components/icon-control/index.js:443
+msgid "Icon stroke colour is inherited from button "
 msgstr ""
 
-#: src/components/icon-control/index.js:397
+#: src/components/icon-control/index.js:449
 msgid "Button colour"
 msgstr ""
 
-#: src/components/icon-control/index.js:617
-msgid "Icon background is inheriting from button."
+#: src/components/icon-control/index.js:459
+msgid "Inherit stroke colour/background from button"
 msgstr ""
 
-#: src/components/icon-control/index.js:623
+#: src/components/icon-control/index.js:705
+msgid "Icon background is inherited from button "
+msgstr ""
+
+#: src/components/icon-control/index.js:711
 msgid "Button Background colour"
 msgstr ""
 
-#: src/components/icon-control/index.js:640
+#: src/components/icon-control/index.js:730
 msgid "Icon background gradient"
 msgstr ""
 
-#: src/components/icon-control/index.js:656
+#: src/components/icon-control/index.js:748
 msgid "Icon padding"
 msgstr ""
 
@@ -6020,12 +6023,12 @@ msgstr ""
 msgid "Aria label"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-background.js:107
+#: src/components/inspector-tabs/inspector-background.js:108
 #: src/components/inspector-tabs/inspector-block-background.js:79
 msgid "Enable background hover"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-background.js:151
+#: src/components/inspector-tabs/inspector-background.js:152
 msgid "Enable background active"
 msgstr ""
 
@@ -6096,7 +6099,7 @@ msgstr ""
 #: src/components/inspector-tabs/inspector-link-settings.js:39
 #: src/components/toolbar/components/link/index.js:128
 #: src/components/toolbar/components/text-link/index.js:293
-#: src/components/typography-control/index.js:90
+#: src/components/typography-control/index.js:91
 #: src/extensions/DC/constants.js:163
 #: src/extensions/DC/constants.js:178
 #: src/extensions/DC/constants.js:189
@@ -6169,7 +6172,7 @@ msgstr ""
 msgid "Change all transitions"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-typography.js:111
+#: src/components/inspector-tabs/inspector-typography.js:154
 msgid "Enable typography hover"
 msgstr ""
 
@@ -6392,62 +6395,62 @@ msgstr ""
 msgid "Choose settings"
 msgstr ""
 
-#: src/components/relation-control/index.js:378
+#: src/components/relation-control/index.js:382
 msgid "Preview all interactions"
 msgstr ""
 
-#: src/components/relation-control/index.js:392
+#: src/components/relation-control/index.js:396
 msgid "Add new interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:402
+#: src/components/relation-control/index.js:406
 msgid "Untitled interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:407
+#: src/components/relation-control/index.js:411
 #: src/extensions/DC/constants.js:171
 #: src/extensions/DC/constants.js:184
 #: src/extensions/DC/constants.js:270
 msgid "Name"
 msgstr ""
 
-#: src/components/relation-control/index.js:409
+#: src/components/relation-control/index.js:413
 msgid "Give memorable name…"
 msgstr ""
 
-#: src/components/relation-control/index.js:427
+#: src/components/relation-control/index.js:431
 msgid "Add names to blocks which you want to be able to select them here."
 msgstr ""
 
-#: src/components/relation-control/index.js:435
+#: src/components/relation-control/index.js:439
 msgid "Block to affect"
 msgstr ""
 
-#: src/components/relation-control/index.js:443
+#: src/components/relation-control/index.js:447
 msgid "Select block…"
 msgstr ""
 
-#: src/components/relation-control/index.js:465
+#: src/components/relation-control/index.js:469
 msgid "Action"
 msgstr ""
 
-#: src/components/relation-control/index.js:472
+#: src/components/relation-control/index.js:476
 msgid "Choose action"
 msgstr ""
 
-#: src/components/relation-control/index.js:479
+#: src/components/relation-control/index.js:483
 msgid "On click"
 msgstr ""
 
-#: src/components/relation-control/index.js:486
+#: src/components/relation-control/index.js:490
 msgid "On hover"
 msgstr ""
 
-#: src/components/relation-control/index.js:628
+#: src/components/relation-control/index.js:632
 msgid "Open block settings"
 msgstr ""
 
-#: src/components/relation-control/index.js:655
+#: src/components/relation-control/index.js:659
 msgid "Effects"
 msgstr ""
 
@@ -6985,16 +6988,12 @@ msgstr ""
 msgid "Icon size"
 msgstr ""
 
-#: src/components/toolbar/components/text-bold/index.js:54
+#: src/components/toolbar/components/text-bold/index.js:57
 msgid "Bold"
 msgstr ""
 
-#: src/components/toolbar/components/text-color/index.js:129
-msgid "Text Colour"
-msgstr ""
-
 #: src/components/toolbar/components/text-format-overline/index.js:111
-#: src/components/typography-control/index.js:1072
+#: src/components/typography-control/index.js:1673
 msgid "Overline"
 msgstr ""
 
@@ -7010,8 +7009,8 @@ msgstr ""
 msgid "Superscript"
 msgstr ""
 
-#: src/components/toolbar/components/text-format-underline/index.js:74
-#: src/components/typography-control/index.js:1080
+#: src/components/toolbar/components/text-format-underline/index.js:77
+#: src/components/typography-control/index.js:1687
 msgid "Underline"
 msgstr ""
 
@@ -7031,8 +7030,8 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: src/components/toolbar/components/text-italic/index.js:58
-#: src/components/typography-control/index.js:1036
+#: src/components/toolbar/components/text-italic/index.js:57
+#: src/components/typography-control/index.js:1637
 msgid "Italic"
 msgstr ""
 
@@ -7044,11 +7043,7 @@ msgstr ""
 msgid "List styles"
 msgstr ""
 
-#: src/components/toolbar/components/text-options/index.js:309
-msgid "Edit text"
-msgstr ""
-
-#: src/components/toolbar/components/text-options/index.js:310
+#: src/components/toolbar/components/text-options/index.js:34
 msgid "Edit"
 msgstr ""
 
@@ -7072,142 +7067,178 @@ msgstr ""
 msgid "Transform settings is not compatible with parallax effect. Please disable parallax effect to use transform settings."
 msgstr ""
 
-#: src/components/transition-control/index.js:84
+#: src/components/transition-control/index.js:89
 msgid "Split in/out transitions"
 msgstr ""
 
-#: src/components/transition-control/index.js:94
+#: src/components/transition-control/index.js:99
 msgid "In"
 msgstr ""
 
-#: src/components/transition-control/index.js:98
+#: src/components/transition-control/index.js:103
 msgid "Out"
 msgstr ""
 
-#: src/components/transition-control/index.js:107
+#: src/components/transition-control/index.js:113
 msgid "Disable transition"
 msgstr ""
 
-#: src/components/transition-control/index.js:115
+#: src/components/transition-control/index.js:121
 msgid "Transition duration"
 msgstr ""
 
-#: src/components/transition-control/index.js:145
+#: src/components/transition-control/index.js:151
 msgid "Transition delay"
 msgstr ""
 
-#: src/components/typography-control/index.js:120
+#: src/components/typography-control/index.js:121
 msgid "Visited"
 msgstr ""
 
-#: src/components/typography-control/index.js:817
-msgid "Font size"
+#: src/components/typography-control/index.js:795
+msgid "Text size"
 msgstr ""
 
-#: src/components/typography-control/index.js:861
+#: src/components/typography-control/index.js:856
 msgid "Line height"
 msgstr ""
 
-#: src/components/typography-control/index.js:906
-msgid "Letter spacing"
+#: src/components/typography-control/index.js:912
+msgid "Bottom gap"
 msgstr ""
 
-#: src/components/typography-control/index.js:985
-msgid "Text transform"
+#: src/components/typography-control/index.js:1047
+msgid "Remove bold"
 msgstr ""
 
-#: src/components/typography-control/index.js:992
-#: src/components/typography-control/index.js:1032
-#: src/components/typography-control/index.js:1068
-msgid "Default"
+#: src/components/typography-control/index.js:1048
+msgid "Apply bold"
 msgstr ""
 
-#: src/components/typography-control/index.js:996
-msgid "Capitalize"
+#: src/components/typography-control/index.js:1086
+msgid "Remove italic"
 msgstr ""
 
-#: src/components/typography-control/index.js:1000
-msgid "Uppercase"
+#: src/components/typography-control/index.js:1087
+msgid "Apply italic"
 msgstr ""
 
-#: src/components/typography-control/index.js:1004
-msgid "Lowercase"
+#: src/components/typography-control/index.js:1117
+msgid "Remove underline"
 msgstr ""
 
-#: src/components/typography-control/index.js:1040
-msgid "Oblique"
+#: src/components/typography-control/index.js:1121
+msgid "Apply underline"
 msgstr ""
 
-#: src/components/typography-control/index.js:1061
-msgid "Text decoration"
+#: src/components/typography-control/index.js:1154
+msgid "Remove strikethrough"
 msgstr ""
 
-#: src/components/typography-control/index.js:1076
-msgid "Line through"
+#: src/components/typography-control/index.js:1158
+msgid "Apply strikethrough"
 msgstr ""
 
-#: src/components/typography-control/index.js:1084
-msgid "Underline overline"
+#: src/components/typography-control/index.js:1314
+msgid "Show more text options"
 msgstr ""
 
-#: src/components/typography-control/index.js:1110
-msgid "Text orientation"
-msgstr ""
-
-#: src/components/typography-control/index.js:1126
-msgid "Mixed"
-msgstr ""
-
-#: src/components/typography-control/index.js:1130
-msgid "Upright"
-msgstr ""
-
-#: src/components/typography-control/index.js:1134
-msgid "Sideways"
-msgstr ""
-
-#: src/components/typography-control/index.js:1164
-msgid "Text direction"
-msgstr ""
-
-#: src/components/typography-control/index.js:1171
-msgid "Left to right"
-msgstr ""
-
-#: src/components/typography-control/index.js:1178
-msgid "Right to left"
-msgstr ""
-
-#: src/components/typography-control/index.js:1280
-msgid "White space"
-msgstr ""
-
-#: src/components/typography-control/index.js:1291
-msgid "No wrap"
-msgstr ""
-
-#: src/components/typography-control/index.js:1295
-msgid "Pre"
-msgstr ""
-
-#: src/components/typography-control/index.js:1299
-msgid "Pre line"
-msgstr ""
-
-#: src/components/typography-control/index.js:1303
-msgid "Pre wrap"
-msgstr ""
-
-#: src/components/typography-control/index.js:1307
-msgid "Break spaces"
-msgstr ""
-
-#: src/components/typography-control/index.js:1328
+#: src/components/typography-control/index.js:1423
 msgid "Word Spacing"
 msgstr ""
 
-#: src/components/typography-control/index.js:1406
-msgid "Bottom gap"
+#: src/components/typography-control/index.js:1516
+msgid "Letter spacing"
+msgstr ""
+
+#: src/components/typography-control/index.js:1575
+msgid "Text transform"
+msgstr ""
+
+#: src/components/typography-control/index.js:1582
+#: src/components/typography-control/index.js:1633
+#: src/components/typography-control/index.js:1669
+msgid "Default"
+msgstr ""
+
+#: src/components/typography-control/index.js:1586
+msgid "Capitalize"
+msgstr ""
+
+#: src/components/typography-control/index.js:1593
+msgid "Uppercase"
+msgstr ""
+
+#: src/components/typography-control/index.js:1600
+msgid "Lowercase"
+msgstr ""
+
+#: src/components/typography-control/index.js:1641
+msgid "Oblique"
+msgstr ""
+
+#: src/components/typography-control/index.js:1662
+msgid "Text decoration"
+msgstr ""
+
+#: src/components/typography-control/index.js:1680
+msgid "Line through"
+msgstr ""
+
+#: src/components/typography-control/index.js:1694
+msgid "Underline overline"
+msgstr ""
+
+#: src/components/typography-control/index.js:1722
+msgid "Text orientation"
+msgstr ""
+
+#: src/components/typography-control/index.js:1741
+msgid "Mixed"
+msgstr ""
+
+#: src/components/typography-control/index.js:1748
+msgid "Upright"
+msgstr ""
+
+#: src/components/typography-control/index.js:1755
+msgid "Sideways"
+msgstr ""
+
+#: src/components/typography-control/index.js:1787
+msgid "Text direction"
+msgstr ""
+
+#: src/components/typography-control/index.js:1799
+msgid "Left to right"
+msgstr ""
+
+#: src/components/typography-control/index.js:1806
+msgid "Right to left"
+msgstr ""
+
+#: src/components/typography-control/index.js:1835
+msgid "White space"
+msgstr ""
+
+#: src/components/typography-control/index.js:1846
+msgid "No wrap"
+msgstr ""
+
+#: src/components/typography-control/index.js:1850
+msgid "Pre"
+msgstr ""
+
+#: src/components/typography-control/index.js:1854
+msgid "Pre line"
+msgstr ""
+
+#: src/components/typography-control/index.js:1861
+msgid "Pre wrap"
+msgstr ""
+
+#: src/components/typography-control/index.js:1868
+msgid "Break spaces"
 msgstr ""
 
 #: src/components/typography-control/utils.js:36
@@ -7914,7 +7945,7 @@ msgstr ""
 msgid "Unable to get the preview device type. The required method is not available."
 msgstr ""
 
-#: src/extensions/maxi-block/maxiBlockComponent.js:1089
+#: src/extensions/maxi-block/maxiBlockComponent.js:1092
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 

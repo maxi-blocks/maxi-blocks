@@ -6,7 +6,14 @@ class Relation {
 		this.uniqueID = item?.uniqueID;
 		this.css = item?.css;
 
-		if (!this.uniqueID || this.css.length === 0) return;
+		// Check if css is empty (either no length, or empty object)
+		const isCssEmpty = Array.isArray(this.css)
+			? this.css.length === 0
+			: !this.css ||
+			  (typeof this.css === 'object' &&
+					Object.keys(this.css).length === 0);
+
+		if (!this.uniqueID || isCssEmpty) return;
 
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);

@@ -56,10 +56,6 @@ const Inspector = props => {
 												/>
 											),
 										},
-									...inspectorTabs.alignment({
-										props,
-										isTextAlignment: true,
-									}),
 									...inspectorTabs.typography({
 										props,
 										styleCardPrefix: '',

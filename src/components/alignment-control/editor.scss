@@ -2,7 +2,7 @@ body .maxi-alignment-control {
 	.maxi-tabs-control__button {
 		height: 32px;
 		padding: 8px;
-		width: 22.5%;
+		width: 23%;
 		margin-right: 7px;
 		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 4px;
@@ -29,6 +29,10 @@ body .maxi-alignment-control {
 		&:first-child {
 		}
 
+		&:last-child {
+			margin-right: 0;
+		}
+
 		&[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green);
 			border-color: var(--maxi-secondary-color);
@@ -53,3 +57,9 @@ body .maxi-alignment-control {
 		}
 	}
 }
+
+.maxi-alignment-control__label {
+	margin-bottom: 5px;
+	margin-top: -3px;
+}
+

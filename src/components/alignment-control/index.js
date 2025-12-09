@@ -121,7 +121,7 @@ const AlignmentControl = props => {
 		<>
 			{showLabel && (
 				<label
-					className='maxi-base-control__label'
+					className='maxi-base-control__label maxi-alignment-control__label'
 					htmlFor={`${label}-alignment`}
 				>
 					{`${label} alignment`}

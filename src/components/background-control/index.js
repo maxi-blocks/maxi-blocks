@@ -77,13 +77,13 @@ const BackgroundControl = props => {
 
 		!disableNoneStyle &&
 			options.push({
-				icon: <Icon icon={styleNone} />,
+				label: 'None',
 				value: 'none',
 			});
 
 		!disableColor &&
 			options.push({
-				icon: <Icon icon={backgroundColor} />,
+				label: 'Solid',
 				value: 'color',
 			});
 
@@ -101,7 +101,7 @@ const BackgroundControl = props => {
 
 		!disableGradient &&
 			options.push({
-				icon: <Icon icon={backgroundGradient()} />,
+				label: 'Gradient',
 				value: 'gradient',
 			});
 

@@ -26,12 +26,14 @@ export default function SelectControl({
 	multiple = false,
 	onChange,
 	onReset,
+	resetButtonClassName,
 	options = [],
 	className,
 	hideLabelFromVision,
 	defaultValue,
 	value,
 	newStyle = false,
+	__nextHasNoMarginBottom, // extract so it doesn't get forwarded
 	...props
 }) {
 	const instanceId = useInstanceId(SelectControl);
@@ -75,41 +77,51 @@ export default function SelectControl({
 	return (
 		!isEmpty(options) && (
 			<BaseControl
-				__nextHasNoMarginBottom
+				__nextHasNoMarginBottom={__nextHasNoMarginBottom}
 				label={label}
 				hideLabelFromVision={hideLabelFromVision}
 				id={id}
 				help={help}
 				className={classes}
-				__nextHasNoMarginBottom
 			>
-				<select
-					id={id}
-					className='maxi-select-control__input'
-					value={value ?? defaultValue ?? options[0]?.value}
-					onChange={onChangeValue}
-					aria-describedby={help ? `${id}__help` : undefined}
-					multiple={multiple}
-					{...props}
-				>
-					{isPlainObject(options)
-						? Object.entries(options).map(
-								([groupLabel, groupOptions]) =>
-									groupLabel !== '' ? (
-										<optgroup
-											key={groupLabel}
-											label={groupLabel}
-											className='maxi-select-control__optgroup'
-										>
-											{getOptions(groupOptions)}
-										</optgroup>
-									) : (
-										getOptions(groupOptions)
-									)
-						  )
-						: getOptions(options)}
-				</select>
-				{onReset && <ResetButton onReset={() => onReset()} />}
+				{(() => {
+					// Prevent leaking unknown props to DOM
+					const { __nextHasNoMarginBottom, ...restProps } = props;
+					return (
+						<select
+							id={id}
+							className='maxi-select-control__input'
+							value={value ?? defaultValue ?? options[0]?.value}
+							onChange={onChangeValue}
+							aria-describedby={help ? `${id}__help` : undefined}
+							multiple={multiple}
+							{...restProps}
+						>
+							{isPlainObject(options)
+								? Object.entries(options).map(
+										([groupLabel, groupOptions]) =>
+											groupLabel !== '' ? (
+												<optgroup
+													key={groupLabel}
+													label={groupLabel}
+													className='maxi-select-control__optgroup'
+												>
+													{getOptions(groupOptions)}
+												</optgroup>
+											) : (
+												getOptions(groupOptions)
+											)
+								  )
+								: getOptions(options)}
+						</select>
+					);
+				})()}
+				{onReset && (
+					<ResetButton
+						className={resetButtonClassName}
+						onReset={() => onReset()}
+					/>
+				)}
 			</BaseControl>
 		)
 	);

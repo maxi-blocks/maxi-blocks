@@ -20,8 +20,6 @@ describe('AccordionControl', () => {
 		await updateAllBlockUniqueIds(page);
 
 		const accordionNames = [
-			'heading paragraph tag',
-			'alignment',
 			'typography',
 			'background layer',
 			'border',

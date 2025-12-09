@@ -11,7 +11,7 @@ import { isEmpty, isNumber, isBoolean, isObject, merge, isEqual } from 'lodash';
 /**
  * Internal dependencies
  */
-import { MemoCache } from '../maxi-block/memoizationHelper';
+import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
 
 /**
  * Styles resolver with LRU cache optimization
@@ -28,7 +28,7 @@ let cacheStats = {
 	hits: 0,
 	misses: 0,
 	totalRequests: 0,
-	lastCleared: Date.now()
+	lastCleared: Date.now(),
 };
 
 const cleanContent = content => {
@@ -38,11 +38,11 @@ const cleanContent = content => {
 	// Check cache first
 	const cached = cleanContentCache.get(cacheKey);
 	if (cached !== undefined) {
-		cacheStats.hits++;
+		cacheStats.hits += 1;
 		return cached;
 	}
 
-	cacheStats.misses++;
+	cacheStats.misses += 1;
 	let newContent = { ...content };
 
 	for (const prop in newContent) {
@@ -75,11 +75,11 @@ const getCleanContent = content => {
 	// Check cache first
 	const cached = getCleanContentCache.get(cacheKey);
 	if (cached !== undefined) {
-		cacheStats.hits++;
+		cacheStats.hits += 1;
 		return cached;
 	}
 
-	cacheStats.misses++;
+	cacheStats.misses += 1;
 	const newContent = { ...content };
 
 	// eslint-disable-next-line guard-for-in
@@ -102,16 +102,16 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 
 	// Generate cache key for the entire styleResolver operation
 	const cacheKey = JSON.stringify({ styles, remover, breakpoints, uniqueID });
-	cacheStats.totalRequests++;
+	cacheStats.totalRequests += 1;
 
 	// Check cache first for non-remover operations (removers shouldn't be cached as they have side effects)
 	if (!remover) {
 		const cached = styleCache.get(cacheKey);
 		if (cached !== undefined) {
-			cacheStats.hits++;
+			cacheStats.hits += 1;
 			return cached;
 		}
-		cacheStats.misses++;
+		cacheStats.misses += 1;
 	}
 
 	const response = (remover && []) || {};
@@ -155,9 +155,12 @@ export const styleCacheUtils = {
 	 * @returns {Object} Cache statistics including hit rate, size, etc.
 	 */
 	getStats() {
-		const hitRate = cacheStats.totalRequests > 0
-			? (cacheStats.hits / cacheStats.totalRequests * 100).toFixed(2)
-			: 0;
+		const hitRate =
+			cacheStats.totalRequests > 0
+				? ((cacheStats.hits / cacheStats.totalRequests) * 100).toFixed(
+						2
+				  )
+				: 0;
 
 		return {
 			...cacheStats,
@@ -165,7 +168,10 @@ export const styleCacheUtils = {
 			styleCacheSize: styleCache.size(),
 			cleanContentCacheSize: cleanContentCache.size(),
 			getCleanContentCacheSize: getCleanContentCache.size(),
-			totalCacheSize: styleCache.size() + cleanContentCache.size() + getCleanContentCache.size()
+			totalCacheSize:
+				styleCache.size() +
+				cleanContentCache.size() +
+				getCleanContentCache.size(),
 		};
 	},
 
@@ -180,7 +186,7 @@ export const styleCacheUtils = {
 			hits: 0,
 			misses: 0,
 			totalRequests: 0,
-			lastCleared: Date.now()
+			lastCleared: Date.now(),
 		};
 	},
 
@@ -209,14 +215,56 @@ export const styleCacheUtils = {
 	 * @param {number} maxSize - Maximum total cache size before clearing
 	 */
 	checkMemoryUsage(maxSize = 1000) {
-		const totalSize = styleCache.size() + cleanContentCache.size() + getCleanContentCache.size();
-		if (totalSize > maxSize) {
-			// Clear oldest cache first (cleanContent is most frequently regenerated)
-			cleanContentCache.clear();
-			getCleanContentCache.clear();
-			console.log(`MaxiBlocks StyleResolver: Cleared caches due to memory usage (${totalSize} > ${maxSize})`);
+		let totalSize =
+			styleCache.size() +
+			cleanContentCache.size() +
+			getCleanContentCache.size();
+		if (totalSize <= maxSize) return;
+
+		const initialSize = totalSize;
+		const cachesEvicted = [];
+
+		// First, evict oldest entries from styleCache until within limit or empty
+		let styleCacheEvicted = 0;
+		while (totalSize > maxSize && styleCache.size() > 0) {
+			// Get first (oldest) key from styleCache's underlying Map
+			const oldestKey = styleCache.cache.keys().next().value;
+			styleCache.cache.delete(oldestKey);
+			styleCacheEvicted += 1;
+			totalSize =
+				styleCache.size() +
+				cleanContentCache.size() +
+				getCleanContentCache.size();
 		}
-	}
+		if (styleCacheEvicted > 0) {
+			cachesEvicted.push(`styleCache (${styleCacheEvicted} entries)`);
+		}
+
+		// If still over threshold, clear cleanContentCache
+		if (totalSize > maxSize) {
+			cleanContentCache.clear();
+			cachesEvicted.push('cleanContentCache (all)');
+			totalSize =
+				styleCache.size() +
+				cleanContentCache.size() +
+				getCleanContentCache.size();
+		}
+
+		// If still over threshold, clear getCleanContentCache
+		if (totalSize > maxSize) {
+			getCleanContentCache.clear();
+			cachesEvicted.push('getCleanContentCache (all)');
+			totalSize =
+				styleCache.size() +
+				cleanContentCache.size() +
+				getCleanContentCache.size();
+		}
+
+		console.warn(
+			`MaxiBlocks StyleResolver: Trimmed caches due to memory usage (${initialSize} > ${maxSize}). ` +
+				`Evicted: ${cachesEvicted.join(', ')}. Final size: ${totalSize}`
+		);
+	},
 };
 
 export default styleResolver;

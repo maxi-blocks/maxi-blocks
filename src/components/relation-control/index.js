@@ -241,32 +241,36 @@ const RelationControl = props => {
 						clientId
 					);
 
-				const styles = getIBStyles({
-					stylesObj: getIBStylesObj({
-						clientId,
-						sid: item.sid,
-						attributes: omitBy(
-							{
-								...tempAttributes,
-								...cleanAttributesObject,
-							},
-							val => val === undefined
-						),
-						blockAttributes,
-						breakpoint: deviceType,
-					}),
-					blockAttributes,
-					isFirst: true,
-				});
-
-				onChangeRelation(relations, item.id, {
+				const stylesObj = getIBStylesObj({
+					clientId,
+					sid: item.sid,
 					attributes: omitBy(
 						{
-							...item.attributes,
+							...tempAttributes,
 							...cleanAttributesObject,
 						},
 						val => val === undefined
 					),
+					blockAttributes,
+					breakpoint: deviceType,
+				});
+
+				const styles = getIBStyles({
+					stylesObj,
+					blockAttributes,
+					isFirst: true,
+				});
+
+				const newAttributes = omitBy(
+					{
+						...item.attributes,
+						...cleanAttributesObject,
+					},
+					val => val === undefined
+				);
+
+				onChangeRelation(relations, item.id, {
+					attributes: newAttributes,
 					css: styles,
 					...(item.sid === 't' && {
 						effects: {

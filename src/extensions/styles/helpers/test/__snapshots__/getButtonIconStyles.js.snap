@@ -301,9 +301,9 @@ exports[`getButtonIconStyles Should work on hover 1`] = `
     },
   },
   " .maxi-button-block__button:hover .maxi-button-block__icon svg path": {
-    "iconPath": {
+    "SVGPath": {
       "general": {},
-      "label": "Icon path",
+      "label": "SVG path",
     },
   },
   " .maxi-button-block__button:hover .maxi-button-block__icon svg path[data-hover-stroke]": {

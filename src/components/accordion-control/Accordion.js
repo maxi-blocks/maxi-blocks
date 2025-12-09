@@ -127,7 +127,8 @@ const Accordion = props => {
 					'maxi-accordion-control__item__panel',
 					disablePadding || item.disablePadding
 						? 'maxi-accordion-control__item__panel--disable-padding'
-						: ''
+						: '',
+					item.classNamePanel
 				);
 
 				const accordionUid =

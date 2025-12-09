@@ -69,8 +69,15 @@ const ResponsiveButton = ({
 			<Button
 				className='maxi-responsive-selector__button-item'
 				onClick={() => {
-					if (getIsTemplatePart()) setScreenSize(target);
-					else setScreenSize(isBaseBreakpoint ? 'general' : target);
+					const targetSize = isBaseBreakpoint ? 'general' : target;
+
+					// Compute the actual applied screen size based on context
+					const appliedScreenSize = getIsTemplatePart()
+						? target
+						: targetSize;
+
+					// Apply the screen size to MaxiBlocks
+					setScreenSize(appliedScreenSize);
 				}}
 				aria-pressed={getIsPressed()}
 			>
@@ -101,7 +108,6 @@ const ResponsiveSelector = props => {
 	const settingsRef = useRef(null);
 
 	const { insertBlock } = useDispatch('core/block-editor');
-	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
 	const {
 		deviceType,
@@ -173,58 +179,46 @@ const ResponsiveSelector = props => {
 		});
 	});
 
+	// Track when native buttons are clicked to avoid conflicts
+	const lastNativeClickRef = useRef(0);
+
 	const onChangeNativeResponsive = useCallback(button => {
-		button.addEventListener('click', e => {
-			const responsiveDiv = document.querySelector(
-				'.editor-preview-dropdown'
-			);
-			if (!responsiveDiv) return;
+		button.addEventListener(
+			'click',
+			() => {
+				// Record that a native button was just clicked
+				lastNativeClickRef.current = Date.now();
 
-			setTimeout(() => {
-				const deviceClass = responsiveDiv.className.match(
-					/editor-preview-dropdown--(mobile|tablet|desktop)/i
+				// Get all responsive buttons in order: Desktop, Tablet, Mobile
+				const allButtons = Array.from(
+					document.querySelectorAll(
+						'button[role="menuitemradio"].components-menu-items-choice'
+					)
 				);
-				const value = deviceClass ? deviceClass[1] : 'desktop';
 
-				const maxiValue =
-					(value === 'desktop' && baseBreakpoint) ||
-					(value === 'tablet' && 's') ||
-					(value === 'mobile' && 'xs');
+				// Find which button was clicked by index
+				const buttonIndex = allButtons.indexOf(button);
 
-				const editorWrapper =
-					document.querySelector('.edit-post-visual-editor') ||
-					document.querySelector('.edit-site-visual-editor') ||
-					document.querySelector('.editor-visual-editor');
+				// Map button index to target size: 0=Desktop, 1=Tablet, 2=Mobile
+				const targetSizes = ['general', 's', 'xs'];
+				const targetSize = targetSizes[buttonIndex];
 
-				editorWrapper.setAttribute('maxi-blocks-responsive', maxiValue);
-				editorWrapper.removeAttribute('maxi-blocks-responsive-width');
-
-				if (value === 'desktop') {
-					const responsiveToolbar = document.querySelector(
-						'.maxi-responsive-selector'
-					);
-					if (responsiveToolbar) {
-						editorWrapper.style.width = '';
-						const baseButton = responsiveToolbar.querySelector(
-							'div.maxi-responsive-selector__base button'
-						);
-						if (baseButton) baseButton.click();
-					}
+				if (targetSize) {
+					// Just update MaxiBlocks state and let Gutenberg handle its own rendering
+					// Don't prevent default - let Gutenberg's React handle the click naturally
+					setScreenSize(targetSize);
 				}
-
-				setMaxiDeviceType({
-					deviceType: maxiValue,
-					isGutenbergButton: true,
-					changeSize: false,
-				});
-			}, 100);
-		});
-	});
+			},
+			false
+		);
+	}, []);
 
 	useEffect(() => {
 		const previewButton =
 			document.querySelector('.editor-preview-dropdown__toggle') ||
 			document.querySelector('.block-editor-post-preview__button-toggle');
+
+		let syncTimeout = null;
 
 		if (previewButton) {
 			const config = {
@@ -237,6 +231,16 @@ const ResponsiveSelector = props => {
 				mutationsList.forEach(mutation => {
 					if (mutation.type === 'attributes') {
 						if (mutation.attributeName === 'aria-expanded') {
+							const isExpanded =
+								previewButton.getAttribute('aria-expanded') ===
+								'true';
+
+							// Cancel any pending sync
+							if (syncTimeout) {
+								clearTimeout(syncTimeout);
+								syncTimeout = null;
+							}
+
 							const node =
 								document.querySelector(
 									'.components-dropdown-menu__menu'
@@ -245,7 +249,7 @@ const ResponsiveSelector = props => {
 									'.block-editor-post-preview__dropdown-content'
 								);
 
-							if (node) {
+							if (node && isExpanded) {
 								// Actions on default responsive values
 								const responsiveButtons =
 									Array.from(
@@ -259,6 +263,7 @@ const ResponsiveSelector = props => {
 										)
 									);
 
+								// Attach click handlers to native buttons
 								responsiveButtons.forEach(
 									onChangeNativeResponsive
 								);
@@ -270,11 +275,16 @@ const ResponsiveSelector = props => {
 
 			const observer = new MutationObserver(callback);
 			observer.observe(previewButton, config);
-			return () => observer.disconnect();
+			return () => {
+				observer.disconnect();
+				if (syncTimeout) {
+					clearTimeout(syncTimeout);
+				}
+			};
 		}
 
 		return () => {};
-	});
+	}, [deviceType, onChangeNativeResponsive]);
 
 	const addCloudLibrary = () => {
 		let rootClientId;

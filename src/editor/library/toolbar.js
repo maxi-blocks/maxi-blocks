@@ -81,7 +81,8 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
+	const pluginVersion =
+		licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {
@@ -142,7 +143,7 @@ const ToolbarButton = props => {
 			type='button'
 		>
 			{icon}
-			<span>{label}</span>
+			<span>{label === 'Pro' ? __('Cloud', 'maxi-blocks') : label}</span>
 		</button>
 	);
 };
@@ -611,7 +612,9 @@ const LibraryToolbar = props => {
 						/>
 						<h2>{title}</h2>
 						<span className='maxi-cloud-toolbar__line'>|</span>
-						<span>{cost}</span>
+						<span>
+							{cost === 'Pro' ? __('Cloud', 'maxi-blocks') : cost}
+						</span>
 						{!isNil(toneUrl) && !isEmpty(toneUrl) && (
 							<ToolbarButton
 								onClick={() => {
@@ -723,13 +726,13 @@ const LibraryToolbar = props => {
 						<Button
 							key='maxi-cloud-toolbar__button__sing-out'
 							className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-							label={__('Deactivate Pro', 'maxi-blocks')}
+							label={__('Deactivate Cloud', 'maxi-blocks')}
 							onClick={() => {
 								onLogOut(true);
 								onLogOut();
 							}}
 						>
-							{__('Deactivate Pro', 'maxi-blocks')}
+							{__('Deactivate Cloud', 'maxi-blocks')}
 						</Button>
 					)}
 				</div>
@@ -746,14 +749,14 @@ const LibraryToolbar = props => {
 						label={
 							isVerifying
 								? __('Verifying…', 'maxi-blocks')
-								: __('Activate Pro', 'maxi-blocks')
+								: __('Activate Cloud', 'maxi-blocks')
 						}
 						onClick={() => onClickAuth()}
 						disabled={isVerifying}
 					>
 						{isVerifying
 							? __('Verifying…', 'maxi-blocks')
-							: __('Activate Pro', 'maxi-blocks')}
+							: __('Activate Cloud', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
@@ -765,10 +768,10 @@ const LibraryToolbar = props => {
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-						label={__('Deactivate Pro', 'maxi-blocks')}
+						label={__('Deactivate Cloud', 'maxi-blocks')}
 						onClick={onLogOut}
 					>
-						{__('Deactivate Pro', 'maxi-blocks')}
+						{__('Deactivate Cloud', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
@@ -834,14 +837,14 @@ const LibraryToolbar = props => {
 								label={
 									isVerifying
 										? __('Verifying…', 'maxi-blocks')
-										: __('Activate Pro', 'maxi-blocks')
+										: __('Activate Cloud', 'maxi-blocks')
 								}
 								onClick={() => onClickAuth()}
 								disabled={isVerifying}
 							>
 								{isVerifying
 									? __('Verifying…', 'maxi-blocks')
-									: __('Activate Pro', 'maxi-blocks')}
+									: __('Activate Cloud', 'maxi-blocks')}
 							</Button>
 						</>
 					)}

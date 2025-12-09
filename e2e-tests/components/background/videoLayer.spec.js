@@ -237,7 +237,7 @@ describe('BackgroundControl', () => {
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
-		await page.waitForSelector('.maxi-background-displayer');
+		await previewPage.waitForSelector('.maxi-background-displayer');
 		const backgroundPreviewPage = await previewPage.$eval(
 			'.maxi-background-displayer',
 			el => el.innerHTML

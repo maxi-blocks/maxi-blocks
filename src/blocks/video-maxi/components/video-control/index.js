@@ -162,7 +162,9 @@ const VideoControl = props => {
 					});
 
 					onChange({
-						endTime: nextEndTime,
+						...(nextEndTime !== safeVal
+							? { endTime: nextEndTime }
+							: { endTime: safeVal }),
 						embedUrl,
 					});
 				}}

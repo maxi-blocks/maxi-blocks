@@ -285,12 +285,17 @@ export const getGlobalStyleManager = () => {
 		globalStyleManagerInstance = new GlobalStyleManager();
 
 		// Cleanup on page unload to prevent memory leaks
-		window.addEventListener('beforeunload', () => {
-			if (globalStyleManagerInstance) {
-				globalStyleManagerInstance.destroy();
-				globalStyleManagerInstance = null;
-			}
-		});
+		if (
+			typeof window !== 'undefined' &&
+			typeof window.addEventListener === 'function'
+		) {
+			window.addEventListener('beforeunload', () => {
+				if (globalStyleManagerInstance) {
+					globalStyleManagerInstance.destroy();
+					globalStyleManagerInstance = null;
+				}
+			});
+		}
 	}
 
 	return globalStyleManagerInstance;

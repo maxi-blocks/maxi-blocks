@@ -6,7 +6,7 @@ wp.domReady(() => {
 	let mainObserver = null;
 	let editorModeObserver = null;
 	let iframeCheckInterval = null;
-	const observedIframes = new WeakSet();
+	let observedIframes = new WeakSet();
 
 	// Apply event listeners to prevent default dragging behavior
 	const disableDefaultDragging = () => {
@@ -14,6 +14,9 @@ wp.domReady(() => {
 		if (mainObserver) {
 			mainObserver.disconnect();
 		}
+
+		// Reset iframe tracking when creating a new observer
+		observedIframes = new WeakSet();
 
 		mainObserver = new MutationObserver(mutations => {
 			const maxiBlocks = document.querySelectorAll('.maxi-block');

@@ -453,60 +453,6 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		// OPTIMIZATION: Fast-path checks before expensive propsObjectCleaner + isEqual
-		// 1. Check if attributes object reference is the same (immutability check)
-		if (this.props.attributes === nextProps.attributes) {
-			// Attributes haven't changed at all, but other props might have
-			// Use lightweight comparison for non-attribute props
-			// eslint-disable-next-line no-unused-vars
-			const { attributes: _prevAttr, ...prevRest } = this.props;
-			// eslint-disable-next-line no-unused-vars
-			const { attributes: _nextAttr, ...nextRest } = nextProps;
-			return !isEqual(prevRest, nextRest);
-		}
-
-		// 2. Fast shallow comparison of attributes
-		const prevAttrs = this.props.attributes;
-		const nextAttrs = nextProps.attributes;
-		const prevKeys = Object.keys(prevAttrs);
-		const nextKeys = Object.keys(nextAttrs);
-
-		// Different number of attributes = definitely changed
-		if (prevKeys.length !== nextKeys.length) {
-			return true;
-		}
-
-		// 3. Check for primitive value changes (fast)
-		let hasObjectChanges = false;
-		for (let i = 0; i < prevKeys.length; i += 1) {
-			const key = prevKeys[i];
-			const prevVal = prevAttrs[key];
-			const nextVal = nextAttrs[key];
-
-			if (prevVal !== nextVal) {
-				// For primitives and null, !== is sufficient
-				const prevType = typeof prevVal;
-				const nextType = typeof nextVal;
-
-				if (
-					prevType !== 'object' ||
-					nextType !== 'object' ||
-					prevVal === null ||
-					nextVal === null
-				) {
-					return true; // Primitive changed
-				}
-
-				hasObjectChanges = true;
-			}
-		}
-
-		// 4. No changes detected in fast checks
-		if (!hasObjectChanges) {
-			return false;
-		}
-
-		// 5. Fall back to expensive deep comparison only if we detected object changes
 		const result = !isEqual(
 			propsObjectCleaner(this.props),
 			propsObjectCleaner(nextProps)
@@ -591,17 +537,10 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
-		// OPTIMIZATION: Only update DOM references when selection changes or in FSE
-		// DOM references are expensive to update and rarely change between updates
-		const selectionChanged = this.props.isSelected !== prevProps.isSelected;
-		const isFSE = getIsSiteEditor();
-
-		if (selectionChanged || isFSE) {
-			this.updateDOMReferences();
-		}
+		this.updateDOMReferences();
 
 		// Update FSE iframe styles even for template parts
-		if (isFSE) {
+		if (getIsSiteEditor()) {
 			this.addMaxiFSEIframeStyles();
 		}
 
@@ -615,24 +554,12 @@ class MaxiBlockComponent extends Component {
 				? this.cachedDiffAttributes
 				: diff(prevProps.attributes, this.props.attributes);
 
-		// OPTIMIZATION: Calculate diffKeys once and reuse throughout the function
-		// Avoids multiple expensive Object.keys() and isEmpty() calls
-		const diffKeys = diffAttributes ? Object.keys(diffAttributes) : [];
-		const hasDiff = diffKeys.length > 0;
+		const onlyRelationsChanged =
+			!isEmpty(diffAttributes) &&
+			Object.keys(diffAttributes).length === 1 &&
+			Object.keys(diffAttributes)[0] === 'relations';
 
-		// OPTIMIZATION: Extended list of non-visual attributes that don't require style regeneration
-		// These attributes affect internal state, relations, or metadata but not block appearance
-		const nonVisualAttributes = [
-			'relations',
-			'customLabel',
-			'maxi-version-current',
-			'uniqueID',
-		];
-
-		const onlyNonVisualChanged =
-			hasDiff && diffKeys.every(key => nonVisualAttributes.includes(key));
-
-		if (!shouldDisplayStyles && !onlyNonVisualChanged) {
+		if (!shouldDisplayStyles && !onlyRelationsChanged) {
 			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
@@ -647,18 +574,18 @@ class MaxiBlockComponent extends Component {
 			this.isReusable && this.displayStyles();
 		}
 
-		// Note: diffAttributes and diffKeys already calculated above
+		// Note: diffAttributes already calculated above to check onlyRelationsChanged
 
-		if (hasDiff) {
+		if (!isEmpty(diffAttributes)) {
 			// Check if the modified attribute is related with hover status,
 			// and in that case update the other blocks IB relation
-			if (diffKeys.some(key => key.includes('hover')))
+			if (Object.keys(diffAttributes).some(key => key.includes('hover')))
 				updateRelationHoverStatus(
 					this.props.name,
 					this.props.attributes
 				);
 			// If relations is modified, update the relations store
-			if (diffKeys.includes('relations')) {
+			if (Object.keys(diffAttributes).some(key => key === 'relations')) {
 				const { relations } = this.props.attributes;
 
 				if (
@@ -684,7 +611,7 @@ class MaxiBlockComponent extends Component {
 
 			// Skip relation updates if only 'relations' changed (prevents cascade)
 			// Only update relations when actual content/style attributes change
-			const hasNonRelationChanges = diffKeys.some(
+			const hasNonRelationChanges = Object.keys(diffAttributes).some(
 				key => key !== 'relations'
 			);
 

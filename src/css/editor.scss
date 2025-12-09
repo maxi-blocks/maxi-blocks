@@ -28,7 +28,6 @@
 
 	&__content {
 		background-color: #e9e9e9 !important;
-
 	}
 }
 
@@ -827,7 +826,7 @@ body.maxi-blocks--active
 	> .block-editor-list-view-block__contents-cell::after {
 		background-color: var(--maxi-interaction-pink) !important;
 	}
-	
+
 	// Blue text when selected
 	.block-editor-list-view-block-contents,
 	.block-editor-list-view-block-select-button__title,
@@ -857,7 +856,8 @@ body.maxi-blocks--active
 	[data-maxi-interaction='true'][data-maxi-background='true']
 	> .block-editor-list-view-block__contents-cell::after {
 	// Shift the background dot to the left of the interaction dot
-	right: 12px;
+	top: 30%;
+	transform: translateY(-30%);
 }
 
 // Create a second pseudo-element for the interaction dot when both are present
@@ -867,8 +867,8 @@ body.maxi-blocks--active
 	content: '';
 	position: absolute;
 	right: 3px;
-	top: 50%;
-	transform: translateY(-50%);
+	top: 70%;
+	transform: translateY(-70%);
 	width: 6px;
 	height: 6px;
 	border-radius: 50%;
@@ -883,7 +883,7 @@ body.maxi-blocks--active
 	> .block-editor-list-view-block__contents-cell::after {
 		background-color: var(--maxi-background-yellow) !important;
 	}
-	
+
 	// Yellow text when selected
 	.block-editor-list-view-block-contents,
 	.block-editor-list-view-block-select-button__title,
@@ -903,7 +903,7 @@ body.maxi-blocks--active
 	> .block-editor-list-view-block__contents-cell::after {
 		background-color: var(--maxi-background-yellow) !important;
 	}
-	
+
 	// Text color - prioritize pink as it's likely more important/visible
 	.block-editor-list-view-block-contents,
 	.block-editor-list-view-block-select-button__title,

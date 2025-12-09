@@ -39,4 +39,3 @@ import './blocks/search-maxi';
 // Editor
 import './editor/saver';
 import './editor/toolbar-buttons';
-import './editor/hidden-blocks-notice';

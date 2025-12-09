@@ -54,26 +54,29 @@ const alignment = ({
 		getDefaultAttribute('text-alignment-general', props.clientId) || 'left';
 
 	// Check if any alignment attribute is set to a non-default value
+	// Treat both undefined/null AND values matching the default as "default"
 	const hasNonDefaultAlignment =
 		isAlignment &&
 		alignmentAttributes.some(attr => {
 			const value = attributes[attr];
-			return (
-				value !== undefined &&
-				value !== null &&
-				value !== alignmentDefaultValue
-			);
+			// If undefined/null, it's default
+			if (value === undefined || value === null) return false;
+			// If set to default value, it's default
+			if (value === alignmentDefaultValue) return false;
+			// Otherwise it's non-default
+			return true;
 		});
 
 	const hasNonDefaultTextAlignment =
 		isTextAlignment &&
 		textAlignmentAttributes.some(attr => {
 			const value = attributes[attr];
-			return (
-				value !== undefined &&
-				value !== null &&
-				value !== textAlignmentDefaultValue
-			);
+			// If undefined/null, it's default
+			if (value === undefined || value === null) return false;
+			// If set to default value, it's default
+			if (value === textAlignmentDefaultValue) return false;
+			// Otherwise it's non-default
+			return true;
 		});
 
 	// Only ignore indicators if BOTH types (if present) have not been set to non-default values

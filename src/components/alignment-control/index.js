@@ -111,11 +111,21 @@ const AlignmentControl = props => {
 		alignmentAttributes.push(`${target}-${bp}-hover`);
 	});
 
-	// Check if any alignment attribute has been explicitly set (not undefined/null)
-	// AND is different from the default value
+	// Check if any alignment attribute has a non-default value
+	// We need to check:
+	// 1. If attribute is set (not undefined/null) AND
+	// 2. If it's different from the default value
+	// This handles cases where:
+	// - Attributes are undefined (never set) -> treat as default
+	// - Attributes are set to default value (e.g., 'left' for text) -> treat as default
 	const hasNonDefaultAlignment = alignmentAttributes.some(attr => {
 		const value = props[attr];
-		return value !== undefined && value !== null && value !== defaultValue;
+		// If undefined/null, it's default
+		if (value === undefined || value === null) return false;
+		// If set to default value, it's default
+		if (value === defaultValue) return false;
+		// Otherwise it's non-default
+		return true;
 	});
 
 	// Only ignore indicators when no non-default alignment is set

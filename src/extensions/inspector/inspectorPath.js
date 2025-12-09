@@ -24,7 +24,15 @@ export const getActiveAccordion = depth => {
 	return receiveInspectorPath()?.[depth]?.value || 0;
 };
 
-export const openSidebarAccordion = (tab, accordionName) => {
+/**
+ * Opens the block sidebar, switches to the requested tab, and optionally
+ * scrolls to a specific control inside the accordion.
+ *
+ * @param {number} tab - Tab index to activate on the sidebar (depth: 0)
+ * @param {string} accordionName - Accordion name to open (e.g. 'typography')
+ * @param {string} [targetSelector] - Optional CSS selector to scroll to inside the accordion
+ */
+export const openSidebarAccordion = (tab, accordionName, targetSelector) => {
 	const { openGeneralSidebar } = dispatch('core/edit-post');
 	openGeneralSidebar('edit-post/block')
 		.then(() =>
@@ -33,7 +41,7 @@ export const openSidebarAccordion = (tab, accordionName) => {
 				value: tab,
 			})
 		)
-		.then(() => openSidebar(accordionName));
+		.then(() => openSidebar(accordionName, targetSelector));
 };
 
 export const openTransitions = () => {

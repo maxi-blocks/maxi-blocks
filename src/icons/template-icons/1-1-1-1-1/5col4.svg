@@ -1,1 +1,16 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112.03 38"><defs><style>.cls-1{fill:none;stroke:#323c47;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><rect class="cls-1" x="1.17" y="32.48" width="109.86" height="4.52"/><rect class="cls-1" x="1.17" y="24.61" width="109.86" height="4.52"/><rect class="cls-1" x="1" y="16.74" width="109.86" height="4.52"/><rect class="cls-1" x="1" y="8.87" width="109.86" height="4.52"/><rect class="cls-1" x="1" y="1" width="109.86" height="4.52"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 112.03 38">
+  <!-- Generator: Adobe Illustrator 29.8.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 2)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #323c47;
+      }
+    </style>
+  </defs>
+  <path class="st0" d="M109.03,34.48v.52H3.17v-.52h105.86M111.03,32.48H1.17v4.52h109.86v-4.52h0Z"/>
+  <path class="st0" d="M109.03,26.61v.52H3.17v-.52h105.86M111.03,24.61H1.17v4.52h109.86v-4.52h0Z"/>
+  <path class="st0" d="M108.86,18.74v.52H3v-.52h105.86M110.86,16.74H1v4.52h109.86v-4.52h0Z"/>
+  <path class="st0" d="M108.86,10.87v.52H3v-.52h105.86M110.86,8.87H1v4.52h109.86v-4.52h0Z"/>
+  <path class="st0" d="M108.86,3v.52H3v-.52h105.86M110.86,1H1v4.52h109.86V1h0Z"/>
+</svg>

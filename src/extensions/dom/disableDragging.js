@@ -62,7 +62,11 @@ wp.domReady(() => {
 			const iframe = document.querySelector(
 				'iframe[name="editor-canvas"]'
 			);
-			if (iframe && iframe.contentDocument) {
+			if (
+				iframe &&
+				iframe.contentDocument &&
+				iframe.contentDocument.body
+			) {
 				observer.observe(iframe.contentDocument.body, {
 					childList: true,
 					subtree: true,

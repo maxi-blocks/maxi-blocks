@@ -34,17 +34,42 @@ class ScrollEffects {
 
 		this.init();
 		this.oldValue = 0;
+		this.scrollEndTimer = null;
+		this.lastScrollY = 0;
 	}
 
 	init() {
 		this.startingEffect();
 
-		document.addEventListener('DOMContentLoaded', [
-			this.getElements.bind(this),
-			this.startingEffect.bind(this),
-		]);
+		// Use 'load' event instead of DOMContentLoaded because:
+		// 1. DOMContentLoaded already fired (this code runs on DOMContentLoaded)
+		// 2. Browser scrolls to anchor AFTER DOMContentLoaded
+		window.addEventListener('load', () => {
+			this.getElements();
+			this.startingEffect();
+		});
 
-		window.addEventListener('scroll', this.effectsOnScroll.bind(this));
+		// Recalculate positions when clicking anchor links on the same page
+		window.addEventListener('hashchange', () => {
+			requestAnimationFrame(() => {
+				this.startingEffect();
+			});
+		});
+
+		window.addEventListener('scroll', () => {
+			this.effectsOnScroll();
+
+			// Detect scroll end to recalculate positions after anchor jumps
+			clearTimeout(this.scrollEndTimer);
+			this.scrollEndTimer = setTimeout(() => {
+				const scrollDelta = Math.abs(window.scrollY - this.lastScrollY);
+				// If scroll jumped more than 100px, likely an anchor click
+				if (scrollDelta > 100) {
+					this.recalculatePositions();
+				}
+				this.lastScrollY = window.scrollY;
+			}, 150);
+		});
 
 		window.addEventListener('resize', this.handleResize.bind(this));
 	}
@@ -444,6 +469,20 @@ class ScrollEffects {
 		}
 
 		return transition;
+	}
+
+	// Only recalculate element positions without resetting transforms
+	recalculatePositions() {
+		Object.entries(this.scrollData).forEach(([id]) => {
+			const element = document.getElementById(id);
+			if (!element) return;
+
+			const rects = element.getBoundingClientRect();
+			this.startData[id] = {
+				top: Math.round(rects.top + window.scrollY),
+				height: Math.round(rects.height),
+			};
+		});
 	}
 
 	startingEffect() {

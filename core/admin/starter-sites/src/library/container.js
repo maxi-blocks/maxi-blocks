@@ -62,13 +62,13 @@ const resultsCount = {
  */
 const MenuSelect = ({ items, currentRefinement, refine }) => {
 	// Find Pro and Free elements from items array, or create defaults if not found
-	const proElement = items.find(element => element.label === 'Pro') || {
-		label: 'Pro',
+	const proElement = items.find(element => element.value === 'Pro') || {
+		label: 'Cloud',
 		value: 'Pro',
 		count: 0,
 		isRefined: false,
 	};
-	const freeElement = items.find(element => element.label === 'Free') || {
+	const freeElement = items.find(element => element.value === 'Free') || {
 		label: 'Free',
 		value: 'Free',
 		count: 0,
@@ -92,7 +92,7 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					proElement.isRefined = true;
 				}}
 			>
-				Pro
+				Cloud
 			</button>
 			<button
 				type='button'
@@ -311,7 +311,7 @@ const starterSitesResults = ({
  * Shows:
  * 1. Title "Acupuncture"
  * 2. Description text
- * 3. Action buttons (Live preview, Go Pro)
+ * 3. Action buttons (Live preview, Get Cloud)
  * 4. Pages preview grid (showing Home Page, Blog Page, About Page, etc.)
  */
 const MaxiDetailsPopUp = ({
@@ -482,7 +482,7 @@ const MaxiDetailsPopUp = ({
 										className='maxi-cloud-container__details-popup_button maxi-cloud-container__details-popup_button-preview maxi-cloud-container__details-popup_button-go-pro'
 										onClick={handleGoProClick}
 									>
-										{__('Go Pro', 'maxi-blocks')}
+										{__('Get Cloud', 'maxi-blocks')}
 									</button>
 								) : (
 									<button

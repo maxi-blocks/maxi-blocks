@@ -77,13 +77,13 @@ const BackgroundControl = props => {
 
 		!disableNoneStyle &&
 			options.push({
-				label: 'None',
+				label: __('None', 'maxi-blocks'),
 				value: 'none',
 			});
 
 		!disableColor &&
 			options.push({
-				label: 'Solid',
+				label: __('Solid', 'maxi-blocks'),
 				value: 'color',
 			});
 
@@ -101,7 +101,7 @@ const BackgroundControl = props => {
 
 		!disableGradient &&
 			options.push({
-				label: 'Gradient',
+				label: __('Gradient', 'maxi-blocks'),
 				value: 'gradient',
 			});
 

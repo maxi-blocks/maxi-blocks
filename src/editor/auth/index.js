@@ -3,6 +3,7 @@ import './store';
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { select, dispatch } from '@wordpress/data';
 
 /**
@@ -795,14 +796,17 @@ export async function authConnect(withRedirect = false, email = false) {
 	if (email && !isValidEmail(email)) {
 		console.error(
 			JSON.stringify({
-				message: 'MaxiBlocks Auth: Invalid email format provided',
+				message: __(
+					'MaxiBlocks Auth: Invalid email format provided',
+					'maxi-blocks'
+				),
 				email,
 			})
 		);
 		return {
 			success: false,
 			error: true,
-			error_message: 'Invalid email format',
+			error_message: __('Invalid email format', 'maxi-blocks'),
 			error_code: 'INVALID_EMAIL_FORMAT',
 		};
 	}
@@ -887,7 +891,8 @@ const deactivatePurchaseCode = async (
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
+	const pluginVersion =
+		licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	const requestBody = {
@@ -947,7 +952,8 @@ const migratePurchaseCodeDomain = async (
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
+	const pluginVersion =
+		licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {
@@ -1179,7 +1185,10 @@ export const logOut = async redirect => {
 		} catch (error) {
 			console.error(
 				JSON.stringify({
-					message: 'MaxiBlocks Toolbar Email Logout: Exception',
+					message: __(
+						'MaxiBlocks Toolbar Email Logout: Exception',
+						'maxi-blocks'
+					),
 					error: error.message,
 				})
 			);

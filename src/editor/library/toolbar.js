@@ -163,6 +163,7 @@ const LibraryToolbar = props => {
 		gutenbergCode,
 		onInsert,
 		isSwapChecked,
+		useSCStyles,
 		onChangeTone,
 		userName,
 		onLogOut,
@@ -873,6 +874,7 @@ const LibraryToolbar = props => {
 								await onRequestInsertPattern(
 									gutenbergCode,
 									isSwapChecked,
+									useSCStyles,
 									clientId
 								);
 							}}

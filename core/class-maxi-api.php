@@ -1318,6 +1318,7 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['templates'][] = [
                             'name' => $template['name'],
                             'success' => false,
+                            /* translators: %s: URL of the template content */
                             'message' => sprintf(__('Failed to fetch template content from %s', 'maxi-blocks'), $template['content'])
                         ];
                         continue;
@@ -1355,6 +1356,7 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['pages'][] = [
                             'name' => $page['name'],
                             'success' => false,
+                            /* translators: %s: URL of the page content */
                             'message' => sprintf(__('Failed to fetch page content from %s', 'maxi-blocks'), $page['content'])
                         ];
                         continue;
@@ -1392,6 +1394,7 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['patterns'][] = [
                             'name' => $pattern['name'],
                             'success' => false,
+                            /* translators: %s: URL of the pattern content */
                             'message' => sprintf(__('Failed to fetch pattern content from %s', 'maxi-blocks'), $pattern['content'])
                         ];
                         continue;
@@ -1509,6 +1512,7 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$page_name] = [
                     'success' => true,
                     'post_id' => $post_id,
+                    /* translators: %s: Title of the imported entity */
                     'message' => sprintf(__('Successfully imported %s', 'maxi-blocks'), $entity_title)
                 ];
             }
@@ -1590,6 +1594,7 @@ if (!class_exists('MaxiBlocks_API')):
                 if ($template_part_data['entityType'] !== 'template-part') {
                     $results[$template_name] = [
                         'success' => false,
+                        /* translators: %s: The invalid entity type */
                         'message' => sprintf(__('Invalid entity type: %s', 'maxi-blocks'), $template_part_data['entityType'])
                     ];
                     continue;
@@ -1718,6 +1723,7 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$template_name] = [
                     'success' => true,
                     'post_id' => $post_id,
+                    /* translators: %s: Title of the template part */
                     'message' => sprintf(__('Successfully imported %s template part', 'maxi-blocks'), $entity_title)
                 ];
             }
@@ -1785,6 +1791,7 @@ if (!class_exists('MaxiBlocks_API')):
                 if (!in_array($entity_slug, $valid_types)) {
                     $results[$template_name] = [
                         'success' => false,
+                        /* translators: %s: The invalid template slug */
                         'message' => sprintf(__('Invalid template slug: %s', 'maxi-blocks'), $entity_slug)
                     ];
                     continue;
@@ -1887,6 +1894,7 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$template_name] = [
                     'success' => true,
                     'post_id' => $post_id,
+                    /* translators: %s: Title of the template */
                     'message' => sprintf(__('Successfully imported %s template', 'maxi-blocks'), $entity_title)
                 ];
             }
@@ -2249,6 +2257,7 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$pattern_name] = [
                     'success' => true,
                     'post_id' => $post_id,
+                    /* translators: %s: Title of the pattern */
                     'message' => sprintf(__('Successfully imported %s pattern', 'maxi-blocks'), $entity_title)
                 ];
             }

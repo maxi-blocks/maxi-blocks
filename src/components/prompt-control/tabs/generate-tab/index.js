@@ -93,25 +93,25 @@ const GenerateTab = ({
 			{[
 				{
 					key: 'contentType',
-					label: 'Content type',
+					label: __('Content type', 'maxi-blocks'),
 					list: CONTENT_TYPES,
 					state: contentType,
 				},
 				{
 					key: 'tone',
-					label: 'Tone',
+					label: __('Tone', 'maxi-blocks'),
 					list: TONES,
 					state: tone,
 				},
 				{
 					key: 'writingStyle',
-					label: 'Writing style',
+					label: __('Writing style', 'maxi-blocks'),
 					list: WRITING_STYLES,
 					state: writingStyle,
 				},
 				{
 					key: 'language',
-					label: 'Language',
+					label: __('Language', 'maxi-blocks'),
 					list: LANGUAGES,
 					state: language,
 				},
@@ -119,7 +119,7 @@ const GenerateTab = ({
 				// eslint-disable-next-line react/no-array-index-key
 				<Fragment key={index}>
 					<ReactSelectControl
-						labelText={__(label, 'maxi-blocks')}
+						labelText={label}
 						value={{
 							label: __(state, 'maxi-blocks'),
 							value: state,

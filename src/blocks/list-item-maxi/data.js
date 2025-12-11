@@ -30,32 +30,32 @@ const name = 'list-item-maxi';
 const copyPasteMapping = {
 	_exclude: ['content', 'linkSettings', 'custom-formats'],
 	settings: {
-		'Text content': 'content',
-		'Text alignment': {
+		[__('Text content', 'maxi-blocks')]: 'content',
+		[__('Text alignment', 'maxi-blocks')]: {
 			groupAttributes: 'textAlignment',
 		},
-		Typography: {
+		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},

@@ -264,11 +264,14 @@ const MaxiModal = props => {
 				// Show authentication error for failed verification
 				console.error(
 					JSON.stringify({
-						message: 'Purchase code verification failed',
+						message: __(
+							'Purchase code verification failed',
+							'maxi-blocks'
+						),
 						error:
 							verificationResult?.error ||
 							verificationResult?.message ||
-							'Unknown error',
+							__('Unknown error', 'maxi-blocks'),
 					})
 				);
 				setShowAuthError(true);
@@ -276,7 +279,10 @@ const MaxiModal = props => {
 		} catch (error) {
 			console.error(
 				JSON.stringify({
-					message: 'Purchase code authentication error',
+					message: __(
+						'Purchase code authentication error',
+						'maxi-blocks'
+					),
 					error: error.message,
 				})
 			);

@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { isNil } from 'lodash';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -272,7 +273,7 @@ const getIconSpacing = (
 	};
 
 	const responsive = {
-		label: 'Icon responsive',
+		label: __('Icon responsive', 'maxi-blocks'),
 		general: {},
 	};
 
@@ -319,7 +320,7 @@ const getIconSpacingBetween = (
 	const response = {};
 
 	const responsive = {
-		label: 'Icon responsive',
+		label: __('Icon responsive', 'maxi-blocks'),
 		general: {},
 	};
 

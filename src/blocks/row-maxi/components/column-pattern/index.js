@@ -287,7 +287,7 @@ const ColumnPattern = props => {
 							}}
 						>
 							{template.isMoreThanEightColumns ? (
-								'Apply Setting'
+								__('Apply Setting', 'maxi-blocks')
 							) : (
 								<Icon
 									className='components-column-pattern__icon'

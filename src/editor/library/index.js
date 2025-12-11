@@ -44,6 +44,7 @@ const CloudLibrary = props => {
 		prefix = '',
 		gutenbergCode: rawGutenbergCode,
 		isSwapChecked,
+		useSCStyles,
 		isMaxiProActive,
 		isMaxiProExpired,
 		onClickConnect,
@@ -67,6 +68,39 @@ const CloudLibrary = props => {
 
 	const [isInserting, setIsInserting] = useState(false);
 	const onInsert = () => setIsInserting(true);
+
+	/**
+	 * Get SC styles option from cookie
+	 *
+	 * @returns {boolean} - The SC styles option value
+	 */
+	const getCookieSCStylesOption = () => {
+		const cookies = document.cookie.split('; ');
+		const scStylesCookie = cookies.find(cookie =>
+			cookie.startsWith('maxi_use_sc_styles=')
+		);
+		return scStylesCookie ? scStylesCookie.split('=')[1] === 'true' : false;
+	};
+
+	/**
+	 * Set SC styles option in cookie
+	 *
+	 * @param {boolean} value - The value to set
+	 */
+	const setCookieSCStylesOption = value => {
+		const expirationDate = new Date();
+		expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+		document.cookie = `maxi_use_sc_styles=${value}; expires=${expirationDate.toUTCString()}; path=/`;
+	};
+
+	const [localUseSCStyles, setLocalUseSCStyles] = useState(
+		useSCStyles ?? getCookieSCStylesOption()
+	);
+
+	const handleUseSCStylesChange = val => {
+		setLocalUseSCStyles(val);
+		setCookieSCStylesOption(val);
+	};
 
 	const classes = classnames('maxi-library-modal', className);
 
@@ -92,6 +126,7 @@ const CloudLibrary = props => {
 				onSelect={onSelect}
 				onInsert={onInsert}
 				isSwapChecked={isSwapChecked}
+				useSCStyles={localUseSCStyles}
 				isMaxiProActive={isMaxiProActive}
 				isMaxiProExpired={isMaxiProExpired}
 				onClickConnect={onClickConnect}
@@ -135,6 +170,8 @@ const CloudLibrary = props => {
 				layerOrder={layerOrder}
 				isInserting={isInserting}
 				onInsert={onInsert}
+				useSCStyles={localUseSCStyles}
+				onUseSCStylesChange={handleUseSCStylesChange}
 			/>
 		</Modal>
 	);

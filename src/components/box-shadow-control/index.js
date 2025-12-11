@@ -148,7 +148,7 @@ const BoxShadowControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
-		label = 'Box shadow',
+		label = __('Box shadow', 'maxi-blocks'),
 		dropShadow = false,
 		disableInset = false,
 	} = props;

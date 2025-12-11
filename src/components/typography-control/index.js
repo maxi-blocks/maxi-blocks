@@ -73,7 +73,7 @@ const LinkOptions = props => {
 				[`${prefix}link-palette-sc-status`]: undefined,
 				[`${prefix}link-palette-opacity`]: undefined,
 			},
-			undefined,
+			{ isReset: true },
 			true
 		);
 	};
@@ -624,7 +624,12 @@ const TypographyControl = props => {
 
 	const onChangeFormat = (
 		value,
-		{ forceDisableCustomFormats = false, tag = '', isReset = false } = {},
+		{
+			forceDisableCustomFormats = false,
+			tag = '',
+			isReset = false,
+			meta,
+		} = {},
 		disableFilter = false
 	) => {
 		if (forceIndividualChanges) {
@@ -634,7 +639,7 @@ const TypographyControl = props => {
 				return acc;
 			}, {});
 
-			onChange({ ...obj, isReset });
+			onChange({ ...obj, isReset, meta });
 			return;
 		}
 
@@ -673,9 +678,9 @@ const TypographyControl = props => {
 		}
 
 		if (!isReset) {
-			onChange(filteredObj, getInlineTarget(tag));
+			onChange({ ...filteredObj, meta }, getInlineTarget(tag));
 		} else {
-			onChange({ ...obj, isReset: true }, getInlineTarget(tag));
+			onChange({ ...obj, meta, isReset: true }, getInlineTarget(tag));
 		}
 	};
 
@@ -1280,7 +1285,7 @@ const TypographyControl = props => {
 														[`${prefix}palette-opacity`]:
 															undefined,
 													},
-													undefined,
+													{ isReset: true },
 													true
 												);
 											},
@@ -1295,7 +1300,6 @@ const TypographyControl = props => {
 								disablePalette={disablePalette}
 							/>
 						)}
-
 						{!disableFontFamily &&
 							!disableColor &&
 							!isStyleCards &&

@@ -35,10 +35,11 @@ const ZIndexControl = props => {
 				breakpoint,
 				attributes: props,
 			})}
-			onChangeValue={val => {
+			onChangeValue={(val, meta) => {
 				onChange({
 					[`z-index-${breakpoint}`]:
 						val !== undefined && val !== '' ? val : '',
+					meta,
 				});
 			}}
 			min={-9999}

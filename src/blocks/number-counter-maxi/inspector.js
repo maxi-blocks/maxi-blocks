@@ -87,9 +87,11 @@ const Inspector = props => {
 													}
 													onChange={(obj, target) => {
 														maxiSetAttributes(obj);
-														cleanInlineStyles(
-															target
-														);
+														if (!obj.meta?.inline) {
+															cleanInlineStyles(
+																target
+															);
+														}
 													}}
 													breakpoint={deviceType}
 													setShowLoader={

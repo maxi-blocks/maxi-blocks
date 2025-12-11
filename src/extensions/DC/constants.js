@@ -197,7 +197,6 @@ const buttonPostsPagesFields = [
 	...generalPostsPagesFields.filter(option =>
 		['title', 'author'].includes(option.value)
 	),
-	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
 ];
 
 const buttonPostsFields = [

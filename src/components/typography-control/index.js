@@ -64,14 +64,15 @@ const LinkOptions = props => {
 
 	const [linkStatus, setLinkStatus] = useState('normal_link');
 
-	const handleReset = () => {
+	const handleReset = (state = '') => {
+		const statePrefix = state ? `${state}-` : '';
 		onChangeFormat(
 			{
-				[`${prefix}link-color`]: undefined,
-				[`${prefix}link-palette-color`]: undefined,
-				[`${prefix}link-palette-status`]: undefined,
-				[`${prefix}link-palette-sc-status`]: undefined,
-				[`${prefix}link-palette-opacity`]: undefined,
+				[`${prefix}link-${statePrefix}color`]: undefined,
+				[`${prefix}link-${statePrefix}palette-color`]: undefined,
+				[`${prefix}link-${statePrefix}palette-status`]: undefined,
+				[`${prefix}link-${statePrefix}palette-sc-status`]: undefined,
+				[`${prefix}link-${statePrefix}palette-opacity`]: undefined,
 			},
 			undefined,
 			true
@@ -209,7 +210,7 @@ const LinkOptions = props => {
 						)
 					}
 					{...(isListItem && {
-						onReset: handleReset,
+						onReset: () => handleReset('hover'),
 					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}
@@ -257,7 +258,7 @@ const LinkOptions = props => {
 						)
 					}
 					{...(isListItem && {
-						onReset: handleReset,
+						onReset: () => handleReset('active'),
 					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}
@@ -305,7 +306,7 @@ const LinkOptions = props => {
 						)
 					}
 					{...(isListItem && {
-						onReset: handleReset,
+						onReset: () => handleReset('visited'),
 					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}

@@ -77,6 +77,7 @@ const typographyAttributesCreator = (
 				type: 'string',
 			},
 			'text-wrap': {
+				default: 'wrap',
 				type: 'string',
 			},
 			'white-space': {

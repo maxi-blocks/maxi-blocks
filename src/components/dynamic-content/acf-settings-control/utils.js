@@ -2,6 +2,7 @@
  * Wordpress dependencies
  */
 import { resolveSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * External dependencies
@@ -80,7 +81,7 @@ export const getACFOptions = async (
 		});
 	} else {
 		groupOptions.push({
-			label: 'No groups found',
+			label: __('No groups found', 'maxi-blocks'),
 			value: '',
 		});
 	}
@@ -102,14 +103,14 @@ export const getACFOptions = async (
 		});
 		if (showStaticOption) {
 			fieldOptions.push({
-				label: 'Static Text',
+				label: __('Static Text', 'maxi-blocks'),
 				value: 'static_text',
 				type: 'text',
 			});
 		}
 	} else if (showStaticOption) {
 		fieldOptions.push({
-			label: 'Static',
+			label: __('Static', 'maxi-blocks'),
 			value: 'static_text',
 			type: 'text',
 		});
@@ -117,12 +118,12 @@ export const getACFOptions = async (
 	// In case we receive fields but none of them are suitable for the current content type
 	else if (!isEmpty(fields)) {
 		fieldOptions.push({
-			label: 'No suitable fields found',
+			label: __('No suitable fields found', 'maxi-blocks'),
 			value: '',
 		});
 	} else {
 		fieldOptions.push({
-			label: 'No fields found',
+			label: __('No fields found', 'maxi-blocks'),
 			value: '',
 		});
 	}

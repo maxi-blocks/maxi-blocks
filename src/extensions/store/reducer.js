@@ -19,13 +19,7 @@ import getCurrentPreviewDeviceType from '@extensions/dom/getCurrentPreviewDevice
  */
 import { omit } from 'lodash';
 
-const breakpointResizer = ({
-	size,
-	breakpoints,
-	winSize = 0,
-	isGutenbergButton = false,
-	changeSize = true,
-}) => {
+const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 	const xxlSize = breakpoints.xl + 1;
 
 	const getEditorWrapper = () => {
@@ -64,47 +58,71 @@ const breakpointResizer = ({
 		);
 	});
 
-	if (changeSize) {
-		const winHeight = window.outerWidth;
-		const responsiveWidth =
-			(size === 'general' && 'none') ||
-			(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
-			breakpoints[size];
+	const winHeight = window.outerWidth;
 
-		editorWrapper.setAttribute(
-			'maxi-blocks-responsive-width',
-			responsiveWidth
-		);
+	// For template parts in 'general' mode, we need to calculate the width based on the base breakpoint
+	// For other contexts, 'general' means full width ('none')
+	let responsiveWidth;
+	if (size === 'general') {
+		if (getIsTemplatePart()) {
+			// Check if breakpoints are loaded
+			const hasBreakpoints =
+				breakpoints &&
+				typeof breakpoints === 'object' &&
+				Object.keys(breakpoints).length > 0;
 
-		if (!isGutenbergButton) {
-			editorWrapper.setAttribute('is-maxi-preview', true);
-			if (getIsSiteEditor()) {
-				document.querySelector(
-					'.edit-site-visual-editor__editor-canvas'
-				).style.width = null;
+			if (hasBreakpoints) {
+				const baseBreakpoint = getWinBreakpoint(winSize, breakpoints);
+				responsiveWidth = breakpoints[baseBreakpoint];
+			} else {
+				// Breakpoints not loaded yet, skip setting width for now
+				// This will be called again when breakpoints are loaded
+				return;
 			}
-		} else editorWrapper.removeAttribute('is-maxi-preview');
-
-		if (size === 'general') {
-			editorWrapper.style.width = '';
-			editorWrapper.style.margin = '';
-			editorWrapper.style.minWidth = '';
 		} else {
+			responsiveWidth = 'none';
+		}
+	} else if (size === 'xxl') {
+		responsiveWidth = xxlSize > winSize ? xxlSize : winSize;
+	} else {
+		responsiveWidth = breakpoints[size];
+	}
+
+	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
+	editorWrapper.setAttribute('is-maxi-preview', true);
+
+	if (getIsSiteEditor()) {
+		const canvas = document.querySelector(
+			'.edit-site-visual-editor__editor-canvas'
+		);
+		if (canvas) canvas.style.width = null;
+	}
+
+	if (size === 'general') {
+		// For template parts, 'general' should display at the base breakpoint width
+		// For other contexts, 'general' means full width (no constraint)
+		if (getIsTemplatePart()) {
 			editorWrapper.style.minWidth = 'auto';
 			editorWrapper.style.margin =
 				winHeight > responsiveWidth ? '0 auto' : '';
+			editorWrapper.style.width = `${responsiveWidth}px`;
+		} else {
+			editorWrapper.style.width = '';
+			editorWrapper.style.margin = '';
+			editorWrapper.style.minWidth = '';
+		}
+	} else {
+		editorWrapper.style.minWidth = 'auto';
+		editorWrapper.style.margin =
+			winHeight > responsiveWidth ? '0 auto' : '';
 
-			if (isGutenbergButton) {
-				editorWrapper.style = null;
-			} else if (['s', 'xs'].includes(size) && !getIsSiteEditor()) {
-				const gutenbergDeviceType = getCurrentPreviewDeviceType();
-
-				if (gutenbergDeviceType !== 'Desktop')
-					editorWrapper.style.width = 'fit-content';
-				else editorWrapper.style.width = `${responsiveWidth}px`;
-			} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
-				editorWrapper.style.width = `${responsiveWidth}px`;
-			}
+		if (['s', 'xs'].includes(size) && !getIsSiteEditor()) {
+			const gutenbergDeviceType = getCurrentPreviewDeviceType();
+			if (gutenbergDeviceType !== 'Desktop')
+				editorWrapper.style.width = 'fit-content';
+			else editorWrapper.style.width = `${responsiveWidth}px`;
+		} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
+			editorWrapper.style.width = `${responsiveWidth}px`;
 		}
 	}
 
@@ -155,8 +173,6 @@ const reducer = (
 				size: action.deviceType,
 				breakpoints: state.breakpoints,
 				winSize: state.settings.editorContent.width,
-				isGutenbergButton: action.isGutenbergButton,
-				changeSize: action.changeSize,
 			});
 
 			return {

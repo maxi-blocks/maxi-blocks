@@ -610,138 +610,152 @@ const getStyles = (props, getListItemsLength) => {
 	const element = isList ? typeOfList : textLevel;
 	const { isRTL } = select('core/editor').getEditorSettings();
 
-	return {
+	const normalObj = getNormalObject(props);
+	const hoverObj = getHoverObject(props);
+
+	let textTypography;
+	let textTypographyHover;
+	let listObj;
+	let listItems;
+	let listParagraph;
+	let listItemsHover;
+	let markerObj;
+
+	if (!isList) {
+		textTypography = getTypographyObject(props, isList);
+		textTypographyHover = getTypographyHoverObject(props);
+	}
+
+	if (isList) {
+		listObj = getListObject({ ...props, isRTL }, getListItemsLength);
+		listItems = {
+			...getTypographyObject(props),
+			...getListItemObject(props),
+		};
+		listParagraph = getListParagraphObject(props);
+		listItemsHover = getTypographyHoverObject(props);
+		markerObj = getMarkerObject({ ...props, isRTL });
+	}
+
+	const blockBgStyles = getBlockBackgroundStyles({
+		...getGroupAttributes(props, [
+			'blockBackground',
+			'border',
+			'borderWidth',
+			'borderRadius',
+		]),
+		blockStyle: props.blockStyle,
+	});
+
+	const blockBgHoverStyles = getBlockBackgroundStyles({
+		...getGroupAttributes(
+			props,
+			['blockBackground', 'border', 'borderWidth', 'borderRadius'],
+			true
+		),
+		isHover: true,
+		blockStyle: props.blockStyle,
+	});
+
+	const customFormats = getCustomFormatsStyles(
+		!isList ? ' .maxi-text-block__content' : ' .maxi-text-block__content li',
+		props['custom-formats'],
+		false,
+		{ ...getGroupAttributes(props, 'typography') },
+		props.textLevel,
+		props.blockStyle
+	);
+
+	const customFormatsHover = getCustomFormatsStyles(
+		!isList
+			? ':hover .maxi-text-block__content'
+			: ':hover .maxi-text-block__content li',
+		props['custom-formats-hover'],
+		true,
+		getGroupAttributes(props, ['typography', 'typographyHover']),
+		props.textLevel,
+		props.blockStyle
+	);
+
+	const linkStyles1 = getLinkStyles(
+		{
+			...getGroupAttributes(props, ['link', 'typography', 'typographyHover']),
+		},
+		[` a ${element}`],
+		props.blockStyle
+	);
+
+	const linkStyles2 = getLinkStyles(
+		{
+			...getGroupAttributes(props, ['link', 'typography', 'typographyHover']),
+		},
+		[` ${element} a`],
+		props.blockStyle
+	);
+
+	let dcLinkStyles1;
+	let dcLinkStyles2;
+	if (props['dc-status']) {
+		dcLinkStyles1 = getLinkStyles(
+			{
+				...getGroupAttributes(props, [
+					'link',
+					'typography',
+					'typographyHover',
+				]),
+			},
+			[`.maxi-block--has-link ${element}`],
+			props.blockStyle
+		);
+
+		dcLinkStyles2 = getLinkStyles(
+			{
+				...getGroupAttributes(props, [
+					'link',
+					'typography',
+					'typographyHover',
+				]),
+			},
+			[`${element} > .maxi-block--has-link`],
+			props.blockStyle
+		);
+	}
+
+	const result = {
 		[uniqueID]: styleProcessor(
 			{
-				'': getNormalObject(props),
-				':hover': getHoverObject(props),
+				'': normalObj,
+				':hover': hoverObj,
 				...(!isList && {
-					[` ${element}.maxi-text-block__content`]:
-						getTypographyObject(props, isList),
-					[` ${element}.maxi-text-block__content:hover`]:
-						getTypographyHoverObject(props),
+					[` ${element}.maxi-text-block__content`]: textTypography,
+					[` ${element}.maxi-text-block__content:hover`]: textTypographyHover,
 				}),
 				...(isList && {
-					[` ${element}`]: getListObject(
-						{
-							...props,
-							isRTL,
-						},
-						getListItemsLength
-					),
-					[` ${element} li`]: {
-						...getTypographyObject(props),
-						...getListItemObject(props),
-					},
-					[` ${element} li:not(:first-child)`]: {
-						...getListParagraphObject(props),
-					},
-					[` ${element} li:hover`]: getTypographyHoverObject(props),
-					[` ${element} li .maxi-list-item-block__content::before`]:
-						getMarkerObject({
-							...props,
-							isRTL,
-						}),
+					[` ${element}`]: listObj,
+					[` ${element} li`]: listItems,
+					[` ${element} li:not(:first-child)`]: listParagraph,
+					[` ${element} li:hover`]: listItemsHover,
+					[` ${element} li .maxi-list-item-block__content::before`]: markerObj,
 				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
-							'blockBackground',
-							'border',
-							'borderWidth',
-							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle: props.blockStyle,
-				}),
-				...getCustomFormatsStyles(
-					!isList
-						? ' .maxi-text-block__content'
-						: ' .maxi-text-block__content li',
-					props['custom-formats'],
-					false,
-					{ ...getGroupAttributes(props, 'typography') },
-					props.textLevel,
-					props.blockStyle
-				),
-				...getCustomFormatsStyles(
-					!isList
-						? ':hover .maxi-text-block__content'
-						: ':hover .maxi-text-block__content li',
-					props['custom-formats-hover'],
-					true,
-					getGroupAttributes(props, [
-						'typography',
-						'typographyHover',
-					]),
-					props.textLevel,
-					props.blockStyle
-				),
-				...getLinkStyles(
-					{
-						...getGroupAttributes(props, [
-							'link',
-							'typography',
-							'typographyHover',
-						]),
-					},
-					[` a ${element}`],
-					props.blockStyle
-				),
-				...getLinkStyles(
-					{
-						...getGroupAttributes(props, [
-							'link',
-							'typography',
-							'typographyHover',
-						]),
-					},
-					[` ${element} a`],
-					props.blockStyle
-				),
+				...blockBgStyles,
+				...blockBgHoverStyles,
+				...customFormats,
+				...customFormatsHover,
+				...linkStyles1,
+				...linkStyles2,
 				...(props['dc-status'] && {
-					...getLinkStyles(
-						{
-							...getGroupAttributes(props, [
-								'link',
-								'typography',
-								'typographyHover',
-							]),
-						},
-						[`.maxi-block--has-link ${element}`],
-						props.blockStyle
-					),
+					...dcLinkStyles1,
 				}),
 				...(props['dc-status'] && {
-					...getLinkStyles(
-						{
-							...getGroupAttributes(props, [
-								'link',
-								'typography',
-								'typographyHover',
-							]),
-						},
-						[`${element} > .maxi-block--has-link`],
-						props.blockStyle
-					),
+					...dcLinkStyles2,
 				}),
 			},
 			data,
 			props
 		),
 	};
+
+	return result;
 };
 
 export default getStyles;

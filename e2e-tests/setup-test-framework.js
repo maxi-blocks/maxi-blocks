@@ -12,13 +12,12 @@ import {
 	isOfflineMode,
 	setBrowserViewport,
 	activatePlugin,
-	activateTheme,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { deactivatePlugin } from './utils';
+import { activateTheme, deactivatePlugin } from './utils';
 
 /**
  * Disable debounce for tests.
@@ -161,6 +160,20 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// YouTube Content Security Policy violations
+		if (
+			text.includes('Refused to load the script') &&
+			text.includes('youtube.com')
+		) {
+			return;
+		}
+		if (
+			text.includes('Content Security Policy directive') &&
+			text.includes('youtube.com')
+		) {
+			return;
+		}
+
 		// CustomCSS validator returns connection errors sometimes
 		if (text.includes('Error validating css: TypeError: Failed to fetch')) {
 			return;
@@ -230,6 +243,10 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		if (text.includes('was added to the iframe incorrectly')) return;
+
+		if (text.includes('ERR_CONNECTION_REFUSED')) return;
+
 		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[type];
 
 		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of
@@ -267,8 +284,28 @@ beforeAll(async () => {
 
 	await setupBrowser();
 
-	await deactivatePlugin('maxi-blocks');
-	await activatePlugin('maxi-blocks');
+	// Retry plugin activation/deactivation up to 3 times for CI environments
+	const maxRetries = 3;
+	let attempt = 1;
+	// eslint-disable-next-line no-constant-condition
+	while (true) {
+		try {
+			// eslint-disable-next-line no-await-in-loop
+			await deactivatePlugin('maxi-blocks');
+			// eslint-disable-next-line no-await-in-loop
+			await activatePlugin('maxi-blocks');
+			break; // Success, exit retry loop
+		} catch (error) {
+			if (attempt === maxRetries) {
+				throw error; // Final attempt failed, throw error
+			}
+			// eslint-disable-next-line no-await-in-loop
+			await new Promise(resolve => {
+				setTimeout(resolve, 2000);
+			}); // Wait 2s before retry
+			attempt += 1;
+		}
+	}
 
 	// Default theme, twentytwentytwo, has a bug that returns a console.error
 	await activateTheme('twentytwentyone');

@@ -50,6 +50,8 @@ describe('FontLevelControl', () => {
 				if (!isSelected) el.click();
 			});
 
+			await page.waitForTimeout(300);
+
 			const attributes = await getBlockAttributes();
 			const text = attributes.textLevel;
 			const paletteColor = attributes['palette-color-general'];

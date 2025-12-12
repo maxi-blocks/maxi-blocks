@@ -22,11 +22,9 @@ const getDisplayStyles = (obj, isHover = false, isRelations = false) => {
 			response[breakpoint] = {
 				display: obj[attrKey],
 			};
-		else if (isRelations) {
-			response[breakpoint] = {
-				display: 'flex',
-			};
-		}
+		// Removed automatic 'display: flex' fallback for relations
+		// This was causing higher breakpoints (XXL) to override lower ones
+		// CSS cascade will handle inheritance properly
 	});
 
 	return response;

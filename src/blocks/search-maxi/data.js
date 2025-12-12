@@ -1,12 +1,14 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import { createSelectors } from '@extensions/styles/custom-css';
 import { createIconTransitions } from '@extensions/styles';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 
 /**
  * Classnames
@@ -33,81 +35,81 @@ const prefixes = {
 const copyPasteMapping = {
 	_exclude: ['icon-content', 'close-icon-content', 'placeholder'],
 	block: {
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	button: {
-		Skin: 'skin',
-		Button: {
+		[__('Skin', 'maxi-blocks')]: 'skin',
+		[__('Button', 'maxi-blocks')]: {
 			group: {
-				Skin: 'buttonSkin',
-				'Button text': 'buttonContent',
-				'Button text close': 'buttonContentClose',
+				[__('Skin', 'maxi-blocks')]: 'buttonSkin',
+				[__('Button text', 'maxi-blocks')]: 'buttonContent',
+				[__('Button text close', 'maxi-blocks')]: 'buttonContentClose',
 			},
 		},
-		Icon: {
+		[__('Icon', 'maxi-blocks')]: {
 			groupAttributes: ['icon', 'iconHover'],
 		},
-		'Close icon': {
+		[__('Close icon', 'maxi-blocks')]: {
 			groupAttributes: ['icon', 'iconHover'],
 			prefix: closeIconPrefix,
 		},
-		Typography: {
+		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 			prefix: buttonPrefix,
 		},
-		'Button background': {
+		[__('Button background', 'maxi-blocks')]: {
 			template: 'background',
 			prefix: buttonPrefix,
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 			prefix: buttonPrefix,
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 			prefix: buttonPrefix,
 		},
 	},
 	input: {
-		Typography: {
+		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 			prefix: inputPrefix,
 		},
-		Placeholder: {
+		[__('Placeholder', 'maxi-blocks')]: {
 			group: {
-				'Placeholder text': 'placeholder',
-				'Placeholder colour': {
+				[__('Placeholder text', 'maxi-blocks')]: 'placeholder',
+				[__('Placeholder colour', 'maxi-blocks')]: {
 					groupAttributes: 'placeholderColor',
 				},
 			},
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 			prefix: inputPrefix,
 		},
-		'Input background': {
+		[__('Input background', 'maxi-blocks')]: {
 			template: 'background',
 			prefix: inputPrefix,
 		},
-		Padding: {
+		[__('Padding', 'maxi-blocks')]: {
 			groupAttributes: 'padding',
 			prefix: inputPrefix,
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},
@@ -121,79 +123,85 @@ const customCss = {
 		}),
 		'placeholder input': {
 			normal: {
-				label: 'input ::placeholder',
+				label: __('input ::placeholder', 'maxi-blocks'),
 				target: ' .maxi-search-block__input::placeholder',
 			},
 			hover: {
-				label: 'input ::placeholder on hover',
+				label: __('input ::placeholder on hover', 'maxi-blocks'),
 				target: ' .maxi-search-block__input:hover::placeholder',
 			},
 		},
 		icon: {
 			normal: {
-				label: 'icon',
+				label: __('icon', 'maxi-blocks'),
 				target: ' .maxi-search-block__button__default-icon',
 			},
 			svg: {
-				label: "icon's svg",
+				label: __("icon's svg", 'maxi-blocks'),
 				target: ' .maxi-search-block__button__default-icon svg',
 			},
 			insideSvg: {
-				label: 'everything inside svg (svg > *)',
+				label: __('everything inside svg (svg > *)', 'maxi-blocks'),
 				target: ' .maxi-search-block__button__default-icon svg > *',
 			},
 			path: {
-				label: "svg's path",
+				label: __("svg's path", 'maxi-blocks'),
 				target: ' .maxi-search-block__button__default-icon svg path',
 			},
 			hover: {
-				label: 'icon on hover',
+				label: __('icon on hover', 'maxi-blocks'),
 				target: ' .maxi-search-block__button__default-icon:hover',
 			},
 			hoverSvg: {
-				label: "icon's svg on hover",
+				label: __("icon's svg on hover", 'maxi-blocks'),
 				target: ' .maxi-search-block__button__default-icon:hover svg',
 			},
 			hoverInsideSvg: {
-				label: 'everything inside svg on hover (:hover svg > *)',
+				label: __(
+					'everything inside svg on hover (:hover svg > *)',
+					'maxi-blocks'
+				),
 				target: ' .maxi-search-block__button__default-icon:hover svg > *',
 			},
 			hoverPath: {
-				label: "svg's path on hover",
+				label: __("svg's path on hover", 'maxi-blocks'),
 				target: ' .maxi-search-block__button__default-icon:hover svg path',
 			},
 		},
 		'close icon': {
 			normal: {
-				label: 'icon',
+				label: __('icon', 'maxi-blocks'),
 				target: ' .maxi-search-block__button__close-icon',
 			},
 			svg: {
-				label: "icon's svg",
+				label: __("icon's svg", 'maxi-blocks'),
 				target: ' .maxi-search-block__button__close-icon svg',
 			},
 			insideSvg: {
-				label: 'everything inside svg (svg > *)',
+				label: __('everything inside svg (svg > *)', 'maxi-blocks'),
 				target: ' .maxi-search-block__button__close-icon svg > *',
 			},
 			path: {
-				label: "svg's path",
+				label: __("svg's path", 'maxi-blocks'),
 				target: ' .maxi-search-block__button__close-icon svg path',
 			},
 			hover: {
-				label: 'icon on hover',
+				label: __('icon on hover', 'maxi-blocks'),
 				target: ' .maxi-search-block__button__close-icon:hover',
 			},
 			hoverSvg: {
-				label: "icon's svg on hover",
+				label: __("icon's svg on hover", 'maxi-blocks'),
 				target: ' .maxi-search-block__button__close-icon:hover svg',
 			},
 			hoverInsideSvg: {
-				label: 'everything inside svg on hover (:hover svg > *)',
+				label: __(
+					'everything inside svg on hover (:hover svg > *)',
+					'maxi-blocks'
+				),
 				target: ' .maxi-search-block__button__close-icon:hover svg > *',
 			},
 			hoverPath: {
-				label: "svg's path on hover",
+				label: __("svg's path on hover", 'maxi-blocks'),
 				target: ' .maxi-search-block__button__close-icon:hover svg path',
 			},
 		},
@@ -217,19 +225,19 @@ const ariaLabelsCategories = ['block', 'button', 'input', 'icon', 'close icon'];
 const transition = {
 	block: {
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: ['', ' > .maxi-background-displayer'],
 			property: ['border', 'top', 'left'],
 			hoverProp: 'border-status-hover',
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: '',
 			property: 'box-shadow',
 			hoverProp: 'box-shadow-status-hover',
 		},
 		opacity: {
-			title: 'Opacity',
+			title: __('Opacity', 'maxi-blocks'),
 			target: '',
 			property: 'opacity',
 			hoverProp: 'opacity-status-hover',
@@ -251,19 +259,19 @@ const transition = {
 			disableBorder: true,
 		}),
 		typography: {
-			title: 'Typography',
+			title: __('Typography', 'maxi-blocks'),
 			target: `${buttonClass}__content`,
 			property: false,
 			hoverProp: `${buttonPrefix}typography-status-hover`,
 		},
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: buttonClass,
 			property: ['border', 'border-radius'],
 			prefix: buttonPrefix,
 		},
 		'button background': {
-			title: 'button background',
+			title: __('button background', 'maxi-blocks'),
 			target: buttonClass,
 			property: 'background',
 			hoverProp: `${buttonPrefix}background-status-hover`,
@@ -271,25 +279,25 @@ const transition = {
 	},
 	input: {
 		typography: {
-			title: 'Typography',
+			title: __('Typography', 'maxi-blocks'),
 			target: inputClass,
 			property: false,
 			hoverProp: `${inputPrefix}typography-status-hover`,
 		},
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: inputClass,
 			property: ['border', 'border-radius'],
 			hoverProp: `${inputPrefix}border-status-hover`,
 		},
 		'input background': {
-			title: 'Input background',
+			title: __('Input background', 'maxi-blocks'),
 			target: inputClass,
 			property: 'background',
 			hoverProp: `${inputPrefix}background-status-hover`,
 		},
 		'icon reveal appear': {
-			title: 'Icon reveal appear',
+			title: __('Icon reveal appear', 'maxi-blocks'),
 			target: inputClass,
 			property: ['opacity', 'visibility', 'width'],
 		},

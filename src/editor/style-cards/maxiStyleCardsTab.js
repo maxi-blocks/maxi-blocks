@@ -20,7 +20,7 @@ import SettingTabsControl from '@components/setting-tabs-control';
 import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
-import PaddingControl from '@components/padding-control';
+import SpacingControl from '@components/spacing-control';
 import handleDeletedCustomColor from '@extensions/style-cards/customColorsUtils';
 import {
 	processSCAttribute,
@@ -306,15 +306,25 @@ const SCAccordion = props => {
 						/>
 					)
 				)}
-			{ifNavigationTab && (
-				<>
-					<PaddingControl
-						{...processSCAttributes(SC, 'padding', groupAttr)}
-						label={__('Item padding', 'maxi-blocks')}
-						onChange={obj => onChangeValue(obj, groupAttr)}
-						breakpoint={breakpoint}
-						disableAuto
-					/>
+			{ifNavigationTab &&
+				(() => {
+					const paddingAttributes = processSCAttributes(
+						SC,
+						'padding',
+						groupAttr
+					);
+
+					return (
+						<>
+							<SpacingControl
+								attributes={paddingAttributes}
+								label={__('Item padding', 'maxi-blocks')}
+								breakpoint={breakpoint}
+								onChange={obj =>
+									onChangeValue(obj, groupAttr)
+								}
+								disableMargin
+							/>
 					<ToggleSwitch
 						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 						label={__(
@@ -406,7 +416,9 @@ const SCAccordion = props => {
 						</>
 					)}
 				</>
-			)}
+					);
+				})()
+			}
 		</>
 	);
 };

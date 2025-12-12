@@ -76,6 +76,8 @@ export { default as SelectControl } from './select-control';
 export { default as SettingTabsControl } from './setting-tabs-control';
 export { default as ShapeDivider } from './shape-divider';
 export { default as Spinner } from './spinner';
+export { default as SpacingControl } from './spacing-control';
+export { default as SpacingField } from './spacing-field';
 export { default as SvgColor } from './svg-color';
 export { default as SVGFillControl } from './svg-fill-control';
 export { default as SvgStrokeWidthControl } from './svg-stroke-width-control';

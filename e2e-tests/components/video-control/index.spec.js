@@ -35,13 +35,14 @@ describe('Video maxi control', () => {
 
 		expect(await getAttributes('startTime')).toStrictEqual('31');
 
-		// End time
+		// End time - must be >= start time (31), so we append '0' to make '310'
 		await page.$eval('.maxi-video-end-time input', input => input.focus());
 
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('22', { delay: 350 });
+		await page.keyboard.press('End');
 
-		expect(await getAttributes('endTime')).toStrictEqual('22');
+		await page.keyboard.type('10', { delay: 350 });
+
+		expect(await getAttributes('endTime')).toStrictEqual('310');
 
 		// Change aspect ratio
 		const ratioSelector = await page.$('.maxi-video-control__ratio select');

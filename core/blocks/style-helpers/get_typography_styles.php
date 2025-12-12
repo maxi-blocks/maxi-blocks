@@ -138,6 +138,7 @@ function get_typography_styles($args)
             !is_null($get_value('text-orientation', $breakpoint)) ? ['text-orientation' => $get_value('text-orientation', $breakpoint)] : [],
             !is_null($get_value('text-direction', $breakpoint)) ? ['direction' => $get_value('text-direction', $breakpoint)] : [],
             !is_null($get_value('white-space', $breakpoint)) ? ['white-space' => $get_value('white-space', $breakpoint)] : [],
+            !is_null($get_value('text-wrap', $breakpoint)) ? ['text-wrap' => $get_value('text-wrap', $breakpoint)] : [],
             !is_null($get_value('word-spacing', $breakpoint)) ? ['word-spacing' => $get_value('word-spacing', $breakpoint) . $get_unit_value('word-spacing-unit', $breakpoint)] : [],
             !is_null($get_value('bottom-gap', $breakpoint)) ? ['margin-bottom' => $get_value('bottom-gap', $breakpoint) . $get_unit_value('bottom-gap-unit', $breakpoint)] : [],
             ...!$is_style_cards ? [

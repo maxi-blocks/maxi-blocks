@@ -81,16 +81,25 @@ class edit extends MaxiBlockComponent {
 		);
 	}
 
-	maxiBlockDidUpdate() {
+	removeGutenbergWhiteSpace() {
 		// Ensures white-space is applied from Maxi and not with inline styles
-		Array.from(this.blockRef.current.children[0].children).forEach(el => {
-			if (el.style.whiteSpace) el.style.whiteSpace = null;
-		});
+		if (this.blockRef?.current?.children?.[0]?.children)
+			Array.from(this.blockRef.current.children[0].children).forEach(
+				el => {
+					if (el.style.whiteSpace) el.style.whiteSpace = null;
+				}
+			);
+	}
+
+	maxiBlockDidUpdate() {
+		this.removeGutenbergWhiteSpace();
 	}
 
 	// Apply xxl padding only for new button blocks
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
+
+		this.removeGutenbergWhiteSpace();
 
 		// First check if this is a new button (empty content and empty icon)
 		const isNewButton =

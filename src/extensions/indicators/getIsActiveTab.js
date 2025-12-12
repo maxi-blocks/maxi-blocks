@@ -115,6 +115,15 @@ const getIsActiveTab = (
 				currentAttributes[attribute] !== defaultAttributes[attribute]
 			);
 		}
+
+		// Check if background layers have any non-color layer
+		if (attribute === 'background-layers') {
+			const hasNonColorLayer = currentAttributes[attribute].some(
+				layer => layer.type !== 'color'
+			);
+			if (!hasNonColorLayer) return true;
+		}
+
 		if (currentAttributes[attribute] === '') return true;
 
 		return currentAttributes[attribute] === defaultAttributes[attribute];

@@ -65,6 +65,7 @@ function maxi_blocks_allowed_html()
             'id'       => true,
             'class'    => true,
             'data-filename' => true,
+            'data-font-id' => true,
         ),
         'caption'    => array(
             'align' => true,

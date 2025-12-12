@@ -140,7 +140,6 @@ class MaxiBlocks_Styles
 
     public function enqueue_styles()
     {
-
         $post_id = $this->get_id();
         $post_content = $this->get_content(false, $post_id);
         $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
@@ -752,7 +751,6 @@ class MaxiBlocks_Styles
      */
     public function get_breakpoints($breakpoints)
     {
-
         // TODO: It may connect to the API to centralize the default values there
         return (object) [
             'xs' => 480,
@@ -857,6 +855,7 @@ class MaxiBlocks_Styles
 
         $consolidated_fonts = [];
 
+
         // First pass: consolidate fonts with multiple weights
         foreach ($fonts as $font => $font_data) {
             $is_sc_font = strpos($font, 'sc_font') !== false;
@@ -918,6 +917,22 @@ class MaxiBlocks_Styles
             $is_sc_font = $font_info['is_sc_font'];
             $weights = $font_info['weights'];
             $styles = $font_info['styles'];
+
+            // Handle custom uploaded fonts first (always local)
+            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+            $custom_font_data = $local_fonts->get_custom_font_data_by_family($font);
+            if ($custom_font_data) {
+                $custom_font_url = $local_fonts->get_or_create_custom_font_stylesheet_url($font, $custom_font_data);
+                if ($custom_font_url) {
+                    wp_enqueue_style(
+                        $name . '-font-' . sanitize_title_with_dashes($font),
+                        $custom_font_url,
+                        array(),
+                        MAXI_PLUGIN_VERSION
+                    );
+                }
+                continue;
+            }
 
             if (!$is_sc_font) {
                 // Create consolidated font data with multiple weights
@@ -1090,6 +1105,7 @@ class MaxiBlocks_Styles
         }
     }
 
+    // Custom font CSS generation moved to MaxiBlocks_Local_Fonts
 
     /**
      * Legacy function
@@ -2332,7 +2348,6 @@ class MaxiBlocks_Styles
      */
     private function get_parsed_reusable_blocks_frontend($blocks)
     {
-
         $reusable_block_ids = $this->get_reusable_blocks_ids($blocks);
 
         // Remove duplicates from the block IDs.
@@ -2778,5 +2793,4 @@ class MaxiBlocks_Styles
         }
         update_option('maxi_blocks_sc_fonts_migration_done', true);
     }
-
 }

@@ -1,32 +1,37 @@
 import { getFontUrl, loadFonts } from '@extensions/text/fonts/loadFonts';
-import { buildFontUrl } from '@extensions/text/fonts/loadFontUtils';
+import buildFontUrl from '@extensions/text/fonts/loadFontUtils';
+
+const defaultFontResponse = {
+	files: {
+		400: 'regular',
+		500: 'medium',
+		700: 'bold',
+		'400italic': 'italic',
+		'500italic': 'medium-italic',
+		'700italic': 'bold-italic',
+	},
+};
+
+const mockGetFont = jest.fn().mockReturnValue(defaultFontResponse);
 
 jest.mock('@wordpress/data', () => ({
-	select: jest.fn().mockReturnValue({
-		getFont: jest.fn().mockReturnValue({
-			files: {
-				400: 'regular',
-				500: 'medium',
-				700: 'bold',
-				'400italic': 'italic',
-				'500italic': 'medium-italic',
-				'700italic': 'bold-italic',
-			},
-		}),
-	}),
+	select: jest.fn(() => ({
+		getFont: mockGetFont,
+	})),
 }));
 
 jest.mock('@extensions/text/fonts/fontCacheUtils', () => ({
 	cleanUrl: jest.fn(url => url),
 }));
 
-jest.mock('@extensions/text/fonts/loadFontUtils', () => ({
-	buildFontUrl: jest.fn(() => Promise.resolve('')),
-}));
+jest.mock('@extensions/text/fonts/loadFontUtils', () =>
+	jest.fn(() => Promise.resolve(''))
+);
 
 describe('getFontUrl', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockGetFont.mockReturnValue(defaultFontResponse);
 	});
 
 	it('Should build and return font URL directly', async () => {
@@ -140,6 +145,8 @@ describe('loadFonts', () => {
 		appendChildSpy = jest
 			.spyOn(document.head, 'appendChild')
 			.mockImplementation(() => {});
+
+		mockGetFont.mockReturnValue(defaultFontResponse);
 
 		window.maxiBlocksMain = { local_fonts: false, bunny_fonts: false };
 	});
@@ -334,5 +341,27 @@ describe('loadFonts', () => {
 			weight: '400',
 			style: 'normal',
 		});
+	});
+
+	it('Should inject custom fonts using style elements', async () => {
+		const font = {
+			'Custom Font': {
+				weight: '400',
+				style: 'normal',
+			},
+		};
+
+		mockGetFont.mockReturnValue({
+			source: 'custom',
+			files: {
+				400: 'https://example.com/fonts/custom.woff2',
+			},
+		});
+
+		await loadFonts(font);
+
+		expect(createElementSpy).toHaveBeenCalledWith('style');
+		expect(buildFontUrl).not.toHaveBeenCalled();
+		expect(appendChildSpy).toHaveBeenCalled();
 	});
 });

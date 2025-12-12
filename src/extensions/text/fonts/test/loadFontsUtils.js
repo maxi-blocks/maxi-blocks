@@ -1,4 +1,4 @@
-import { buildFontUrl } from '@extensions/text/fonts/loadFontUtils';
+import buildFontUrl from '@extensions/text/fonts/loadFontUtils';
 import { cleanUrl } from '@extensions/text/fonts/fontCacheUtils';
 
 jest.mock('@extensions/text/fonts/fontCacheUtils', () => ({

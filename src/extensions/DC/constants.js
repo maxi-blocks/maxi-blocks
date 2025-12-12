@@ -197,7 +197,12 @@ const buttonPostsPagesFields = [
 	...generalPostsPagesFields.filter(option =>
 		['title', 'author'].includes(option.value)
 	),
-	{ label: __('Static text', 'maxi-blocks'), value: 'static_text' },
+];
+
+const buttonPostsFields = [
+	...generalPostsFields.filter(option =>
+		['title', 'author', 'categories', 'tags'].includes(option.value)
+	),
 ];
 
 const buttonSettingsFields = [
@@ -345,7 +350,7 @@ export const fieldOptions = {
 		product_tags: generalTagFields,
 	},
 	button: {
-		posts: buttonPostsPagesFields,
+		posts: buttonPostsFields,
 		pages: buttonPostsPagesFields,
 		settings: buttonSettingsFields,
 		media: buttonMediaFields,

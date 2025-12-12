@@ -63,13 +63,13 @@ const resultsCount = {
 const MenuSelect = ({ items, currentRefinement, refine }) => {
 	// Find Pro and Free elements from items array, or create defaults if not found
 	const proElement = items.find(element => element.value === 'Pro') || {
-		label: 'Cloud',
+		label: __('Cloud', 'maxi-blocks'),
 		value: 'Pro',
 		count: 0,
 		isRefined: false,
 	};
 	const freeElement = items.find(element => element.value === 'Free') || {
-		label: 'Free',
+		label: __('Free', 'maxi-blocks'),
 		value: 'Free',
 		count: 0,
 		isRefined: false,
@@ -92,7 +92,7 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					proElement.isRefined = true;
 				}}
 			>
-				Cloud
+				{__('Cloud', 'maxi-blocks')}
 			</button>
 			<button
 				type='button'
@@ -109,7 +109,7 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					freeElement.isRefined = true;
 				}}
 			>
-				Free
+				{__('Free', 'maxi-blocks')}
 			</button>
 			<button
 				type='button'

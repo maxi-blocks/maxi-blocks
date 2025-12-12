@@ -203,6 +203,35 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 );
                 wp_enqueue_script('maxi-admin');
 
+                // Manually inject translations for the admin bundled script
+                $locale = get_locale();
+                $json_file = MAXI_PLUGIN_DIR_PATH . 'languages/maxi-blocks-' . $locale . '-' . md5('maxi-blocks/build/admin.min.js') . '.json';
+
+                if (file_exists($json_file)) {
+                    $translations_json = file_get_contents($json_file);
+                    $translations_data = json_decode($translations_json, true);
+
+                    if ($translations_data && isset($translations_data['locale_data'])) {
+                        // Safely re-encode the JSON to prevent injection attacks
+                        $safe_json = wp_json_encode($translations_data);
+
+                        if ($safe_json !== false) {
+                            // Build inline script by concatenation instead of sprintf to avoid corruption
+                            $inline_script = '( function( domain, translations ) {
+                                    var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+                                    localeData[""].domain = domain;
+                                    wp.i18n.setLocaleData( localeData, domain );
+                                } )( "maxi-blocks", ' . $safe_json . ' );';
+
+                            wp_add_inline_script(
+                                'maxi-admin',
+                                $inline_script,
+                                'before'
+                            );
+                        }
+                    }
+                }
+
                 // Add status report styles
                 wp_register_style(
                     'maxi-status-report',
@@ -1515,6 +1544,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $description .=
                 '<p>' .
                 sprintf(
+                    /* translators: %s: Font provider name (e.g., Bunny Fonts or Google Fonts) */
                     __('You are currently using: %s', 'maxi-blocks'),
                     $font_provider_label,
                 ) .
@@ -1941,6 +1971,35 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 MAXI_PLUGIN_VERSION,
                 true,
             );
+
+            // Load translations for starter sites - must be right after script registration
+            $locale = get_locale();
+            $json_file = MAXI_PLUGIN_DIR_PATH . 'languages/maxi-blocks-' . $locale . '-' . md5('maxi-blocks/core/admin/starter-sites/build/js/main.js') . '.json';
+
+            if (file_exists($json_file)) {
+                $translations_json = file_get_contents($json_file);
+                $translations_data = json_decode($translations_json, true);
+
+                if ($translations_data && isset($translations_data['locale_data'])) {
+                    // Safely re-encode the JSON to prevent injection attacks
+                    $safe_json = wp_json_encode($translations_data, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_UNESCAPED_SLASHES);
+
+                    if ($safe_json !== false) {
+                        // Build inline script
+                        $inline_script = '( function( domain, translations ) {
+                                var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+                                localeData[""].domain = domain;
+                                wp.i18n.setLocaleData( localeData, domain );
+                            } )( "maxi-blocks", ' . $safe_json . ' );';
+
+                        wp_add_inline_script(
+                            'maxi-starter-sites',
+                            $inline_script,
+                            'before'
+                        );
+                    }
+                }
+            }
 
             wp_register_style(
                 'maxi-starter-sites',
@@ -2756,16 +2815,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 // Add multisite notice for MaxiBlocks licenses
                 if ($is_maxiblocks_license && is_multisite()) {
-                    $content .=
-                        '<p class="maxi-license-help-text maxi-license-multisite-notice">' .
-                        sprintf(
-                            __(
-                                'Multisite detected. If you require additional licences, email %s',
-                                'maxi-blocks',
-                            ),
-                            '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>',
-                        ) .
-                        '</p>';
+                    $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(
+                        /* translators: %s: Support email address link */
+                        __('Multisite detected. If you require additional licences, email %s', 'maxi-blocks'),
+                        '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>'
+                    ) . '</p>';
                 }
 
                 if ($license_source === 'network') {
@@ -2885,7 +2939,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $content .= '<p>' . __('You can still authenticate with your individual Cloud email account for user-specific features.', 'maxi-blocks') . '</p>';
                     $content .= '<div class="maxi-license-input-group">';
                     $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Cloud user email address', 'maxi-blocks') . '" />';
-                    $content .= '<p class="maxi-license-help-text">' . sprintf(__('Enter your Cloud user email. Find your account details at %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>') . '</p>';
+                    $content .= '<p class="maxi-license-help-text">' . sprintf(
+                        /* translators: %s: Link to MaxiBlocks account page */
+                        __('Enter your Cloud user email. Find your account details at %s', 'maxi-blocks'),
+                        '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>'
+                    ) . '</p>';
                     $content .= '</div>';
                     $content .= '<div class="maxi-license-actions">';
                     $content .=
@@ -2902,20 +2960,19 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $content .= '<div class="maxi-license-auth-form">';
                     $content .= '<div class="maxi-license-input-group">';
                     $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Cloud user email / purchase code / license key', 'maxi-blocks') . '" />';
-                    $content .= '<p class="maxi-license-help-text">' . sprintf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>') . '</p>';
+                    $content .= '<p class="maxi-license-help-text">' . sprintf(
+                        /* translators: %s: Link to MaxiBlocks account page */
+                        __('Find your code or key in your account, inbox or %s', 'maxi-blocks'),
+                        '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>'
+                    ) . '</p>';
 
                     // Add multisite notice for MaxiBlocks-specific license types only
                     if (is_multisite()) {
-                        $content .=
-                            '<p class="maxi-license-help-text maxi-license-multisite-notice">' .
-                            sprintf(
-                                __(
-                                    'Multisite detected. If using MaxiBlocks email or license key and you require additional licences, email %s',
-                                    'maxi-blocks',
-                                ),
-                                '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>',
-                            ) .
-                            '</p>';
+                        $content .= '<p class="maxi-license-help-text maxi-license-multisite-notice">' . sprintf(
+                            /* translators: %s: Support email address link */
+                            __('Multisite detected. If using MaxiBlocks email or license key and you require additional licences, email %s', 'maxi-blocks'),
+                            '<a href="mailto:support@maxiblocks.com">support@maxiblocks.com</a>'
+                        ) . '</p>';
                     }
 
                     $content .= '</div>';

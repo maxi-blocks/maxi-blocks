@@ -98,6 +98,10 @@ class MaxiBlocks_Styles
 
         // Register prefetch filter once for all enqueued scripts
         add_filter('wp_resource_hints', [$this, 'add_script_prefetch_hints'], 10, 2);
+
+        // Clear template cache when templates are saved/updated
+        add_action('save_post_wp_template', [$this, 'clear_template_cache']);
+        add_action('save_post_wp_template_part', [$this, 'clear_template_cache']);
     }
 
     private function should_apply_content_filter()
@@ -1656,6 +1660,32 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Clear template cache when templates are saved/updated
+     *
+     * @param int $post_id The post ID being saved
+     * @return void
+     */
+    public function clear_template_cache($post_id)
+    {
+        // Delete all maxi_blocks_template_* transients
+        global $wpdb;
+
+        // Delete transients and their timeout entries
+        $wpdb->query(
+            "DELETE FROM {$wpdb->options}
+            WHERE option_name LIKE '_transient_maxi_blocks_template_%'
+            OR option_name LIKE '_transient_timeout_maxi_blocks_template_%'"
+        );
+
+        // Also clear memory cache
+        foreach (array_keys(self::$blocks_cache) as $key) {
+            if (strpos($key, '//') !== false) {
+                unset(self::$blocks_cache[$key]);
+            }
+        }
+    }
+
+    /**
      * Check if block needs custom meta
      *
      * @param  string $unique_id
@@ -2014,9 +2044,18 @@ class MaxiBlocks_Styles
     */
     public function fetch_blocks_by_template_id($template_id)
     {
-        // Check cache first
+        // Check memory cache first
         if (isset(self::$blocks_cache[$template_id])) {
             return self::$blocks_cache[$template_id];
+        }
+
+        // Check transient cache
+        $transient_key = 'maxi_blocks_template_' . md5($template_id);
+        $cached_blocks = get_transient($transient_key);
+
+        if ($cached_blocks !== false) {
+            self::$blocks_cache[$template_id] = $cached_blocks;
+            return $cached_blocks;
         }
 
         global $wpdb;
@@ -2076,7 +2115,10 @@ class MaxiBlocks_Styles
             }
         }
 
-        // Cache the result before returning
+        // Cache the result in transient - 1 hour expiration
+        set_transient($transient_key, $all_blocks, HOUR_IN_SECONDS);
+
+        // Cache in memory
         self::$blocks_cache[$template_id] = $all_blocks;
         return $all_blocks;
     }

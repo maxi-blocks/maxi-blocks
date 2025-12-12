@@ -35,6 +35,11 @@ if (!class_exists('MaxiBlocks_API')):
         }
 
         /**
+         * Cache key for unique IDs transient
+         */
+        private const UNIQUE_IDS_CACHE_KEY = 'maxi_blocks_unique_ids_cache';
+
+        /**
          * Variables
          */
         private $version;
@@ -53,6 +58,14 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Handlers
             add_action('before_delete_post', [$this, 'mb_delete_register']);
+
+            // Cache invalidation hooks for uniqueIDs cache optimization
+            // Use lower priority (20) to run after post is fully saved
+            add_action('save_post', [$this, 'invalidate_unique_ids_cache_on_save'], 20, 2);
+            add_action('deleted_post', [$this, 'invalidate_unique_ids_cache']);
+
+            // Enable gzip compression for MaxiBlocks API responses
+            add_filter('rest_pre_serve_request', [$this, 'enable_rest_compression'], 10, 4);
         }
 
         /**
@@ -204,6 +217,14 @@ if (!class_exists('MaxiBlocks_API')):
             register_rest_route($this->namespace, '/style-cards', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_current_style_cards'],
+                'args' => [
+                    'client_hash' => [
+                        'default' => '',
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                ],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
                 },
@@ -273,6 +294,37 @@ if (!class_exists('MaxiBlocks_API')):
                     'callback' => [$this, 'create_maxi_blocks_unique_id'],
                     'args' => [
                         'block_name' => [
+                            'validate_callback' => function ($param) {
+                                return is_string($param);
+                            },
+                        ],
+                    ],
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
+                ],
+            );
+            register_rest_route(
+                $this->namespace,
+                '/unique-ids/all',
+                [
+                    'methods' => 'GET',
+                    'callback' => [$this, 'get_all_maxi_blocks_unique_ids'],
+                    'args' => [
+                        'page' => [
+                            'default' => 1,
+                            'validate_callback' => function ($param) {
+                                return is_numeric($param) && $param > 0;
+                            },
+                        ],
+                        'per_page' => [
+                            'default' => 1000,
+                            'validate_callback' => function ($param) {
+                                return is_numeric($param) && $param > 0 && $param <= 5000;
+                            },
+                        ],
+                        'client_hash' => [
+                            'default' => '',
                             'validate_callback' => function ($param) {
                                 return is_string($param);
                             },
@@ -997,10 +1049,17 @@ if (!class_exists('MaxiBlocks_API')):
             return trim($font_url, '"\'');
         }
 
-        public function get_maxi_blocks_current_style_cards()
+        /**
+         * Get current style cards with hash-based cache validation
+         *
+         * @param WP_REST_Request $request Request object with optional client_hash
+         * @return array Response with style cards data and cache metadata
+         */
+        public function get_maxi_blocks_current_style_cards($request = null)
         {
             global $wpdb;
 
+            $client_hash = $request ? $request->get_param('client_hash') : '';
             $table_name = $wpdb->prefix . 'maxi_blocks_general';
 
             $style_cards = $wpdb->get_var(
@@ -1010,14 +1069,12 @@ if (!class_exists('MaxiBlocks_API')):
                 ),
             );
 
-            if ($style_cards && !empty($style_cards)) {
-                return $style_cards;
-            } else {
+            if (!$style_cards || empty($style_cards)) {
                 if (class_exists('MaxiBlocks_StyleCards')) {
                     $default_style_card = MaxiBlocks_StyleCards::get_default_style_card();
                 } else {
                     return false;
-                } // Should return an error
+                }
 
                 $wpdb->replace($table_name, [
                     'id' => 'style_cards_current',
@@ -1030,8 +1087,26 @@ if (!class_exists('MaxiBlocks_API')):
                         'style_cards_current',
                     ),
                 );
-                return $style_cards;
             }
+
+            // Generate hash for cache validation
+            $server_hash = md5($style_cards . get_option('maxi_blocks_version', '1.0'));
+
+            // If client hash matches, return not_modified response
+            if ($client_hash !== '' && $client_hash === $server_hash) {
+                return [
+                    'status' => 'not_modified',
+                    'message' => 'Style cards cache is up to date',
+                    'hash' => $server_hash,
+                ];
+            }
+
+            // Return style cards with hash for caching
+            // Note: We wrap in an array for consistent response format
+            return [
+                'data' => $style_cards,
+                'hash' => $server_hash,
+            ];
         }
 
         public function reset_maxi_blocks_style_cards()
@@ -1278,6 +1353,228 @@ if (!class_exists('MaxiBlocks_API')):
             return true;
         }
 
+        /**
+         * Get all unique IDs from the database for cache initialization
+         * Returns a flat array of all block_style_id values with pagination support
+         *
+         * @param WP_REST_Request $request Request object with pagination params
+         * @return WP_REST_Response|array Response with unique IDs and metadata
+         */
+        public function get_all_maxi_blocks_unique_ids($request = null)
+        {
+            global $wpdb;
+
+            // Extract pagination params from request
+            $page = $request ? (int) $request->get_param('page') : 1;
+            $per_page = $request ? (int) $request->get_param('per_page') : 1000;
+            $client_hash = $request ? $request->get_param('client_hash') : '';
+
+            $db_css_table_name = $wpdb->prefix . 'maxi_blocks_styles_blocks';
+
+            // OPTIMIZATION: Use WordPress transient caching to reduce DB queries
+            // Cache key includes pagination params for proper cache segregation
+            $cache_key = self::UNIQUE_IDS_CACHE_KEY . "_page_{$page}_per_{$per_page}";
+            $cached_results = get_transient($cache_key);
+
+            // Also cache total count separately
+            $total_count_cache_key = self::UNIQUE_IDS_CACHE_KEY . '_total_count';
+            $total_count = get_transient($total_count_cache_key);
+
+            // Generate server hash from total count for cache validation
+            if ($total_count === false) {
+                $total_count = (int) $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT COUNT(*) FROM {$db_css_table_name} WHERE block_style_id != %s",
+                        'temporary'
+                    )
+                );
+                set_transient($total_count_cache_key, $total_count, 3600);
+            }
+
+            $server_hash = md5($total_count . get_option('maxi_blocks_version', '1.0'));
+
+            // If client hash matches server hash, return not_modified response
+            // Note: We use 200 status instead of 304 because WordPress REST API doesn't
+            // properly handle 304 responses with apiFetch
+            if ($client_hash !== '' && $client_hash === $server_hash) {
+                return [
+                    'status' => 'not_modified',
+                    'message' => 'Cache is up to date',
+                    'hash' => $server_hash,
+                ];
+            }
+
+            // Return cached results if available
+            if ($cached_results !== false) {
+                return [
+                    'data' => $cached_results,
+                    'page' => $page,
+                    'per_page' => $per_page,
+                    'total' => $total_count,
+                    'total_pages' => (int) ceil($total_count / $per_page),
+                    'hash' => $server_hash,
+                    'cache' => 'HIT',
+                ];
+            }
+
+            // Calculate offset for pagination
+            $offset = ($page - 1) * $per_page;
+
+            // Get paginated block_style_id values with optimized query
+            // Using $wpdb->prepare() to prevent SQL injection
+            $results = $wpdb->get_col(
+                $wpdb->prepare(
+                    "SELECT block_style_id FROM {$db_css_table_name}
+                     WHERE block_style_id != %s
+                     ORDER BY id ASC
+                     LIMIT %d OFFSET %d",
+                    'temporary',
+                    $per_page,
+                    $offset
+                )
+            );
+
+            if (!$results) {
+                $results = [];
+            }
+
+            // Cache for 1 hour (3600 seconds)
+            set_transient($cache_key, $results, 3600);
+
+            // Return response with metadata
+            return [
+                'data' => $results,
+                'page' => $page,
+                'per_page' => $per_page,
+                'total' => $total_count,
+                'total_pages' => (int) ceil($total_count / $per_page),
+                'hash' => $server_hash,
+                'cache' => 'MISS',
+            ];
+        }
+
+        /**
+         * Invalidate the uniqueIDs cache when posts are saved (optimized)
+         * Only invalidates if the post could contain Maxi blocks
+         *
+         * @param int $post_id The post ID
+         * @param WP_Post $post The post object
+         */
+        public function invalidate_unique_ids_cache_on_save($post_id, $post)
+        {
+            // Skip autosaves and revisions - they don't affect published content
+            if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+                return;
+            }
+
+            // Only invalidate if post actually contains blocks
+            // This prevents cache invalidation on non-Gutenberg posts
+            if (!has_blocks($post->post_content)) {
+                return;
+            }
+
+            // Check if post contains Maxi blocks specifically
+            // This is more efficient than invalidating for all block-based posts
+            if (strpos($post->post_content, 'wp:maxi-blocks/') !== false) {
+                $this->invalidate_unique_ids_cache();
+            }
+        }
+
+        /**
+         * Invalidate the uniqueIDs cache when posts are deleted
+         * This ensures the cache stays in sync with the database
+         * Clears all pagination-related caches
+         */
+        public function invalidate_unique_ids_cache()
+        {
+            global $wpdb;
+
+            // Delete the legacy non-paginated cache
+            delete_transient(self::UNIQUE_IDS_CACHE_KEY);
+
+            // Delete total count cache
+            delete_transient(self::UNIQUE_IDS_CACHE_KEY . '_total_count');
+
+            // Delete all paginated caches using SQL pattern matching
+            // This is more efficient than tracking individual cache keys
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                    '_transient_' . self::UNIQUE_IDS_CACHE_KEY . '_page_%'
+                )
+            );
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                    '_transient_timeout_' . self::UNIQUE_IDS_CACHE_KEY . '_page_%'
+                )
+            );
+        }
+
+        /**
+         * Enable gzip compression for MaxiBlocks REST API responses
+         * This significantly reduces payload size for large responses
+         *
+         * @param bool $served Whether the request has already been served
+         * @param WP_HTTP_Response $result Result to send to the client
+         * @param WP_REST_Request $request Request used to generate the response
+         * @param WP_REST_Server $server Server instance
+         * @return bool Whether the request has been served
+         */
+        public function enable_rest_compression($served, $result, $request, $server)
+        {
+            // Only apply to MaxiBlocks API routes
+            if (strpos($request->get_route(), '/maxi-blocks/') === false) {
+                return $served;
+            }
+
+            // Check if client accepts gzip encoding
+            $accept_encoding = isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '';
+
+            if (strpos($accept_encoding, 'gzip') !== false && function_exists('gzencode')) {
+                // Get the response data
+                $data = $result->get_data();
+                $json = wp_json_encode($data);
+
+                // Only compress if response is larger than 1KB
+                if (strlen($json) > 1024) {
+                    $compressed = gzencode($json, 6); // Compression level 6 is a good balance
+
+                    if ($compressed !== false) {
+                        // Set compression headers
+                        header('Content-Encoding: gzip');
+                        header('Content-Length: ' . strlen($compressed));
+                        header('Content-Type: application/json; charset=UTF-8');
+                        header('Vary: Accept-Encoding');
+
+                        // Determine if this is an authenticated/privileged endpoint
+                        // Most MaxiBlocks endpoints require edit_posts capability except /breakpoints
+                        $is_public_endpoint = strpos($request->get_route(), '/breakpoints') !== false;
+                        $is_authenticated = is_user_logged_in() && current_user_can('edit_posts');
+
+                        // Set appropriate cache headers based on authentication and endpoint type
+                        if ($is_public_endpoint && !$is_authenticated) {
+                            // Public endpoint accessed without authentication: allow shared caching
+                            $max_age = 3600; // 1 hour
+                            header('Cache-Control: public, max-age=' . $max_age);
+                            header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $max_age) . ' GMT');
+                        } elseif ($is_authenticated || !$is_public_endpoint) {
+                            // Authenticated request or privileged endpoint: prevent shared caching
+                            // Use private cache to allow browser caching but prevent proxy/CDN caching
+                            header('Cache-Control: private, no-cache, must-revalidate');
+                            header('Expires: 0');
+                        }
+
+                        // Output compressed data
+                        echo $compressed;
+                        return true;
+                    }
+                }
+            }
+
+            return $served;
+        }
+
         public function get_active_integration_plugins()
         {
             $active_integration_plugins = [];
@@ -1453,13 +1750,8 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['templates'][] = [
                             'name' => $template['name'],
                             'success' => false,
-                            'message' => sprintf(
-                                __(
-                                    'Failed to fetch template content from %s',
-                                    'maxi-blocks',
-                                ),
-                                $template['content'],
-                            ),
+                            /* translators: %s: URL of the template content */
+                            'message' => sprintf(__('Failed to fetch template content from %s', 'maxi-blocks'), $template['content'])
                         ];
                         continue;
                     }
@@ -1501,13 +1793,8 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['pages'][] = [
                             'name' => $page['name'],
                             'success' => false,
-                            'message' => sprintf(
-                                __(
-                                    'Failed to fetch page content from %s',
-                                    'maxi-blocks',
-                                ),
-                                $page['content'],
-                            ),
+                            /* translators: %s: URL of the page content */
+                            'message' => sprintf(__('Failed to fetch page content from %s', 'maxi-blocks'), $page['content'])
                         ];
                         continue;
                     }
@@ -1549,13 +1836,8 @@ if (!class_exists('MaxiBlocks_API')):
                         $results['patterns'][] = [
                             'name' => $pattern['name'],
                             'success' => false,
-                            'message' => sprintf(
-                                __(
-                                    'Failed to fetch pattern content from %s',
-                                    'maxi-blocks',
-                                ),
-                                $pattern['content'],
-                            ),
+                            /* translators: %s: URL of the pattern content */
+                            'message' => sprintf(__('Failed to fetch pattern content from %s', 'maxi-blocks'), $pattern['content'])
                         ];
                         continue;
                     }
@@ -1687,10 +1969,8 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$page_name] = [
                     'success' => true,
                     'post_id' => $post_id,
-                    'message' => sprintf(
-                        __('Successfully imported %s', 'maxi-blocks'),
-                        $entity_title,
-                    ),
+                    /* translators: %s: Title of the imported entity */
+                    'message' => sprintf(__('Successfully imported %s', 'maxi-blocks'), $entity_title)
                 ];
             }
 
@@ -1773,10 +2053,8 @@ if (!class_exists('MaxiBlocks_API')):
                 if ($template_part_data['entityType'] !== 'template-part') {
                     $results[$template_name] = [
                         'success' => false,
-                        'message' => sprintf(
-                            __('Invalid entity type: %s', 'maxi-blocks'),
-                            $template_part_data['entityType'],
-                        ),
+                        /* translators: %s: The invalid entity type */
+                        'message' => sprintf(__('Invalid entity type: %s', 'maxi-blocks'), $template_part_data['entityType'])
                     ];
                     continue;
                 }
@@ -1921,13 +2199,8 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$template_name] = [
                     'success' => true,
                     'post_id' => $post_id,
-                    'message' => sprintf(
-                        __(
-                            'Successfully imported %s template part',
-                            'maxi-blocks',
-                        ),
-                        $entity_title,
-                    ),
+                    /* translators: %s: Title of the template part */
+                    'message' => sprintf(__('Successfully imported %s template part', 'maxi-blocks'), $entity_title)
                 ];
             }
 
@@ -1998,10 +2271,8 @@ if (!class_exists('MaxiBlocks_API')):
                 if (!in_array($entity_slug, $valid_types)) {
                     $results[$template_name] = [
                         'success' => false,
-                        'message' => sprintf(
-                            __('Invalid template slug: %s', 'maxi-blocks'),
-                            $entity_slug,
-                        ),
+                        /* translators: %s: The invalid template slug */
+                        'message' => sprintf(__('Invalid template slug: %s', 'maxi-blocks'), $entity_slug)
                     ];
                     continue;
                 }
@@ -2107,10 +2378,8 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$template_name] = [
                     'success' => true,
                     'post_id' => $post_id,
-                    'message' => sprintf(
-                        __('Successfully imported %s template', 'maxi-blocks'),
-                        $entity_title,
-                    ),
+                    /* translators: %s: Title of the template */
+                    'message' => sprintf(__('Successfully imported %s template', 'maxi-blocks'), $entity_title)
                 ];
             }
 
@@ -2485,10 +2754,8 @@ if (!class_exists('MaxiBlocks_API')):
                 $results[$pattern_name] = [
                     'success' => true,
                     'post_id' => $post_id,
-                    'message' => sprintf(
-                        __('Successfully imported %s pattern', 'maxi-blocks'),
-                        $entity_title,
-                    ),
+                    /* translators: %s: Title of the pattern */
+                    'message' => sprintf(__('Successfully imported %s pattern', 'maxi-blocks'), $entity_title)
                 ];
             }
 

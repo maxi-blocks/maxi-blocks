@@ -1,11 +1,13 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import { createSelectors } from '@extensions/styles/custom-css';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 
 /**
  * External dependencies
@@ -16,17 +18,35 @@ const shapeDividerCopyPasteGenerator = position => {
 	return {
 		[`${capitalize(position)} shape divider`]: {
 			group: {
-				'Divider status': `shape-divider-${position}-status`,
-				'Divider style': `shape-divider-${position}-shape-style`,
-				'Divider opacity': `shape-divider-${position}-opacity`,
-				'Divider color': [
+				[__(
+					'Divider status',
+					'maxi-blocks'
+				)]: `shape-divider-${position}-status`,
+				[__(
+					'Divider style',
+					'maxi-blocks'
+				)]: `shape-divider-${position}-shape-style`,
+				[__(
+					'Divider opacity',
+					'maxi-blocks'
+				)]: `shape-divider-${position}-opacity`,
+				[__('Divider color', 'maxi-blocks')]: [
 					`shape-divider-${position}-palette-color`,
 					`shape-divider-${position}-color`,
 					`shape-divider-${position}-palette-status`,
 				],
-				'Divider height': `shape-divider-${position}-height`,
-				'Divider height unit': `shape-divider-${position}-height-unit`,
-				'Divider scroll effect': `shape-divider-${position}-effects-status`,
+				[__(
+					'Divider height',
+					'maxi-blocks'
+				)]: `shape-divider-${position}-height`,
+				[__(
+					'Divider height unit',
+					'maxi-blocks'
+				)]: `shape-divider-${position}-height-unit`,
+				[__(
+					'Divider scroll effect',
+					'maxi-blocks'
+				)]: `shape-divider-${position}-effects-status`,
 			},
 		},
 	};
@@ -38,30 +58,30 @@ const shapeDividerCopyPasteGenerator = position => {
 const name = 'container-maxi';
 const copyPasteMapping = {
 	settings: {
-		'Callout arrow': {
+		[__('Callout arrow', 'maxi-blocks')]: {
 			group: {
-				'Show arrow': 'arrow-status',
-				'Arrow side': 'arrow-side',
-				'Arrow position': 'arrow-position',
-				'Arrow size': 'arrow-width',
+				[__('Show arrow', 'maxi-blocks')]: 'arrow-status',
+				[__('Arrow side', 'maxi-blocks')]: 'arrow-side',
+				[__('Arrow position', 'maxi-blocks')]: 'arrow-position',
+				[__('Arrow size', 'maxi-blocks')]: 'arrow-width',
 			},
 			hasBreakpoints: true,
 		},
 		...shapeDividerCopyPasteGenerator('top'),
 		...shapeDividerCopyPasteGenerator('bottom'),
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},

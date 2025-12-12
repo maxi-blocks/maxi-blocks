@@ -7,12 +7,13 @@ import getPaletteAttributes from '@extensions/styles/getPaletteAttributes';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import { __ } from '@wordpress/i18n';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getCircleBarStyles = (obj, blockStyle) => {
 	const response = {
-		label: 'Number Counter',
+		label: __('Number Counter', 'maxi-blocks'),
 		general: {},
 	};
 
@@ -43,7 +44,7 @@ const getCircleBarStyles = (obj, blockStyle) => {
 
 const getCircleBackgroundStyles = (obj, blockStyle) => {
 	const response = {
-		label: 'Number Counter',
+		label: __('Number Counter', 'maxi-blocks'),
 		general: {},
 	};
 
@@ -66,7 +67,7 @@ const getCircleBackgroundStyles = (obj, blockStyle) => {
 
 const getTextStyles = (obj, blockStyle) => {
 	const response = {
-		label: 'Number Counter',
+		label: __('Number Counter', 'maxi-blocks'),
 		general: {},
 	};
 
@@ -108,7 +109,7 @@ const getTextStyles = (obj, blockStyle) => {
 
 const getSupStyles = obj => {
 	const response = {
-		label: 'Number Counter',
+		label: __('Number Counter', 'maxi-blocks'),
 		general: {},
 	};
 

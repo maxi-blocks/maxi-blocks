@@ -47,6 +47,18 @@ const selectors = {
 
 		return false;
 	},
+	// UniqueID cache selectors for O(1) lookup performance
+	isUniqueIDCacheLoaded(state) {
+		return state?.uniqueIDCacheLoaded ?? false;
+	},
+	isUniqueIDInCache(state, uniqueID) {
+		if (!state || !uniqueID) return false;
+		return uniqueID in state.uniqueIDCache;
+	},
+	getUniqueIDCache(state) {
+		if (state) return state.uniqueIDCache;
+		return {};
+	},
 };
 
 export default selectors;

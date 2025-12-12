@@ -1446,6 +1446,7 @@ class MaxiBlocks_StyleCards
             return [
                 'sc' => [
                     'success' => true,
+                    /* translators: %s: Name of the imported style card */
                     'message' => sprintf(__('Style Card imported successfully as "%s"', 'maxi-blocks'), $name),
                     'id' => $new_id
                 ]

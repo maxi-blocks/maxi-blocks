@@ -974,7 +974,10 @@ class Relation {
 
 	// Removes the observer added by the addRelationSubscriber method
 	removeRelationSubscriber() {
-		this.observer.disconnect();
+		if (this.observer && typeof this.observer.disconnect === 'function') {
+			this.observer.disconnect();
+			this.observer = null;
+		}
 	}
 
 	enableTransitions() {

@@ -1,7 +1,12 @@
-import {
-	getAdvancedSettings,
-	getCanvasSettings,
-} from '@extensions/relations';
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
+import { getAdvancedSettings, getCanvasSettings } from '@extensions/relations';
 import { createSelectors } from '@extensions/styles/custom-css';
 
 /**
@@ -15,63 +20,67 @@ const copyPasteMapping = {
 		'navigation-arrow-second-icon-content',
 	],
 	settings: {
-		'Slider settings': {
+		[__('Slider settings', 'maxi-blocks')]: {
 			group: {
-				'Edit view': 'isEditView',
-				Loop: 'isLoop',
-				Autoplay: 'isAutoplay',
-				'Pause on hover': 'pauseOnHover',
-				'Pause on interaction': 'pauseOnInteraction',
-				'Autoplay speed': 'slider-autoplay-speed',
-				'Transition type': 'slider-transition',
-				'Transition speed': 'slider-transition-speed',
+				[__('Edit view', 'maxi-blocks')]: 'isEditView',
+				[__('Loop', 'maxi-blocks')]: 'isLoop',
+				[__('Autoplay', 'maxi-blocks')]: 'isAutoplay',
+				[__('Pause on hover', 'maxi-blocks')]: 'pauseOnHover',
+				[__('Pause on interaction', 'maxi-blocks')]:
+					'pauseOnInteraction',
+				[__('Autoplay speed', 'maxi-blocks')]: 'slider-autoplay-speed',
+				[__('Transition type', 'maxi-blocks')]: 'slider-transition',
+				[__('Transition speed', 'maxi-blocks')]:
+					'slider-transition-speed',
 			},
 		},
-		Navigation: {
+		[__('Navigation', 'maxi-blocks')]: {
 			group: {
-				'Enable arrows': 'navigation-arrow-both-status',
-				'Enable dots': 'navigation-dot-status',
-				'Arrows position': 'navigation-arrow-position',
-				'Dots position': 'navigation-dot-position',
+				[__('Enable arrows', 'maxi-blocks')]:
+					'navigation-arrow-both-status',
+				[__('Enable dots', 'maxi-blocks')]: 'navigation-dot-status',
+				[__('Arrows position', 'maxi-blocks')]:
+					'navigation-arrow-position',
+				[__('Dots position', 'maxi-blocks')]: 'navigation-dot-position',
 			},
 			hasBreakpoints: true,
 		},
-		Arrows: {
+		[__('Arrows', 'maxi-blocks')]: {
 			group: {
-				'Arrow icons': {
+				[__('Arrow icons', 'maxi-blocks')]: {
 					groupAttributes: 'arrowIcon',
 				},
-				'Arrow icons - hover': {
+				[__('Arrow icons - hover', 'maxi-blocks')]: {
 					groupAttributes: 'arrowIconHover',
 				},
 			},
 		},
-		Dots: {
+		[__('Dots', 'maxi-blocks')]: {
 			group: {
-				'Dot icons': {
+				[__('Dot icons', 'maxi-blocks')]: {
 					groupAttributes: 'dotIcon',
 				},
-				'Dot icons - hover': {
+				[__('Dot icons - hover', 'maxi-blocks')]: {
 					groupAttributes: 'dotIconHover',
 				},
-				'Dot icons - active': {
+				[__('Dot icons - active', 'maxi-blocks')]: {
 					groupAttributes: 'dotIconActive',
 				},
 			},
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
@@ -95,31 +104,31 @@ const customCss = {
 		),
 		'first arrow icon': {
 			normal: {
-				label: 'first arrow icon',
+				label: __('first arrow icon', 'maxi-blocks'),
 				target: ' .maxi-slider-block__arrow--prev svg',
 			},
 			hover: {
-				label: 'first arrow icon on hover',
+				label: __('first arrow icon on hover', 'maxi-blocks'),
 				target: ' .maxi-slider-block__arrow--prev:hover svg',
 			},
 		},
 		'second arrow icon': {
 			normal: {
-				label: 'second arrow icon',
+				label: __('second arrow icon', 'maxi-blocks'),
 				target: ' .maxi-slider-block__arrow--next svg',
 			},
 			hover: {
-				label: 'second arrow icon on hover',
+				label: __('second arrow icon on hover', 'maxi-blocks'),
 				target: ' .maxi-slider-block__arrow--next:hover svg',
 			},
 		},
 		'dot icon': {
 			normal: {
-				label: 'Each dot icon',
+				label: __('Each dot icon', 'maxi-blocks'),
 				target: ' .maxi-slider-block__dot svg',
 			},
 			hover: {
-				label: 'Each dot icon on hover',
+				label: __('Each dot icon on hover', 'maxi-blocks'),
 				target: ' .maxi-slider-block__dot:hover svg',
 			},
 		},

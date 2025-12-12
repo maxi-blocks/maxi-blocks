@@ -69,7 +69,8 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.pluginVersion || '';
+	const pluginVersion =
+		licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {
@@ -383,7 +384,10 @@ const LibraryToolbar = ({
 								<Button
 									key='maxi-cloud-toolbar__button__sing-out'
 									className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-									label={__('Deactivate Pro', 'maxi-blocks')}
+									label={__(
+										'Deactivate Cloud',
+										'maxi-blocks'
+									)}
 									onClick={() => {
 										onLogOut(true);
 										onLogOut();
@@ -392,7 +396,7 @@ const LibraryToolbar = ({
 								>
 									{isLoading
 										? __('Please wait...', 'maxi-blocks')
-										: __('Deactivate Pro', 'maxi-blocks')}
+										: __('Deactivate Cloud', 'maxi-blocks')}
 								</Button>
 							)}
 						</div>
@@ -411,14 +415,14 @@ const LibraryToolbar = ({
 								label={
 									isVerifying
 										? __('Verifying…', 'maxi-blocks')
-										: __('Activate Pro', 'maxi-blocks')
+										: __('Activate Cloud', 'maxi-blocks')
 								}
 								onClick={() => onClickAuth()}
 								disabled={isVerifying}
 							>
 								{isVerifying
 									? __('Verifying…', 'maxi-blocks')
-									: __('Activate Pro', 'maxi-blocks')}
+									: __('Activate Cloud', 'maxi-blocks')}
 							</Button>
 						</div>
 					)}
@@ -432,7 +436,7 @@ const LibraryToolbar = ({
 							<Button
 								key='maxi-cloud-toolbar__button__sing-out'
 								className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-								label={__('Deactivate Pro', 'maxi-blocks')}
+								label={__('Deactivate Cloud', 'maxi-blocks')}
 								onClick={() => {
 									onLogOut(true);
 									onLogOut();
@@ -441,7 +445,7 @@ const LibraryToolbar = ({
 							>
 								{isLoading
 									? __('Please wait...', 'maxi-blocks')
-									: __('Deactivate Pro', 'maxi-blocks')}
+									: __('Deactivate Cloud', 'maxi-blocks')}
 							</Button>
 						</div>
 					)}
@@ -473,7 +477,7 @@ const LibraryToolbar = ({
 									<div className='maxi-cloud-container__patterns__top-menu__input'>
 										<TextControl
 											placeholder={__(
-												'Pro user email / purchase code / license key',
+												'Cloud user email / purchase code / license key',
 												'maxi-blocks'
 											)}
 											value={userEmail}
@@ -511,7 +515,7 @@ const LibraryToolbar = ({
 														'maxi-blocks'
 												  )
 												: __(
-														'Activate Pro',
+														'Activate Cloud',
 														'maxi-blocks'
 												  )
 										}
@@ -520,7 +524,10 @@ const LibraryToolbar = ({
 									>
 										{isVerifying
 											? __('Verifying…', 'maxi-blocks')
-											: __('Activate Pro', 'maxi-blocks')}
+											: __(
+													'Activate Cloud',
+													'maxi-blocks'
+											  )}
 									</Button>
 								</>
 							)}

@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	setClipboardData,
 	pressKeyWithModifier,
+	wpDataSelect,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -17,8 +18,34 @@ describe('Dynamic content', () => {
 	it('Should return categories DC content', async () => {
 		await createNewPost();
 
-		// Set code editor as clipboard data
-		const codeEditor = catCodeEditor;
+		// Fetch a category that has posts
+		// First call to set the results on the store
+		await wpDataSelect('core', 'getEntityRecords', 'taxonomy', 'category');
+		await page.waitForTimeout(1000);
+
+		// Second call to actually get the data
+		const categories = await wpDataSelect(
+			'core',
+			'getEntityRecords',
+			'taxonomy',
+			'category',
+			{ per_page: 10 }
+		);
+
+		// Find first category with count > 0, or fall back to first category
+		const category =
+			(categories && categories.find(cat => cat.count > 0)) ||
+			(categories && categories[0]);
+
+		if (!category) {
+			throw new Error('No categories found in WordPress');
+		}
+
+		// Set code editor as clipboard data with real category ID
+		const codeEditor = catCodeEditor.replaceAll(
+			'"dc-id":1',
+			`"dc-id":${category.id}`
+		);
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
@@ -33,14 +60,17 @@ describe('Dynamic content', () => {
 		});
 		await page.waitForTimeout(5000);
 
-		// Check backend
+		// Check backend - use actual category data
 		const expectedResults = {
-			title: 'Uncategorized',
-			description: 'No content found',
-			slug: 'uncategorized',
-			parent: 'No parent',
-			count: '1',
-			link: 'http://localhost:8889/?cat=1',
+			title: category.name,
+			description: category.description || 'No content found',
+			slug: category.slug,
+			parent: category.parent === 0 ? 'No parent' : 'Has parent',
+			count:
+				category.count > 0
+					? String(category.count)
+					: 'No content found',
+			link: category.link,
 		};
 
 		const titleBlocks = ['text-dc-title-1', 'text-dc-title-2'];

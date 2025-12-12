@@ -18,10 +18,7 @@ import {
 	getBoxShadowStyles,
 	getDividerStyles,
 } from '@extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 import { getPaletteAttributes } from '@extensions/styles';
 
@@ -39,23 +36,27 @@ const prefix = 'divider-';
 const name = 'divider-maxi';
 const copyPasteMapping = {
 	settings: {
-		Alignment: {
+		[__('Alignment', 'maxi-blocks')]: {
 			group: {
-				'Line orientation': 'line-orientation',
-				'Line vertical position': 'line-vertical',
-				'Line horizontal position': 'line-horizontal',
+				[__('Line orientation', 'maxi-blocks')]: 'line-orientation',
+				[__('Line vertical position', 'maxi-blocks')]: 'line-vertical',
+				[__('Line horizontal position', 'maxi-blocks')]:
+					'line-horizontal',
 			},
 			hasBreakpoints: true,
 		},
-		'Line settings': {
+		[__('Line settings', 'maxi-blocks')]: {
 			group: {
-				'Line style': 'divider-border-style',
-				'Line colour': {
+				[__('Line style', 'maxi-blocks')]: 'divider-border-style',
+				[__('Line colour', 'maxi-blocks')]: {
 					props: 'divider-border',
 					isPalette: true,
 				},
-				'Line size': ['divider-height', 'divider-width'],
-				'Line weight': [
+				[__('Line size', 'maxi-blocks')]: [
+					'divider-height',
+					'divider-width',
+				],
+				[__('Line weight', 'maxi-blocks')]: [
 					'divider-border-top-width',
 					'divider-border-top-unit',
 					'divider-border-right-width',
@@ -64,28 +65,28 @@ const copyPasteMapping = {
 			},
 			hasBreakpoints: true,
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 			prefix: 'divider-',
 		},
 	},
 	canvas: {
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
@@ -116,7 +117,7 @@ const transition = {
 	...transitionDefault,
 	block: {
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: dividerClass,
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,

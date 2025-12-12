@@ -81,7 +81,8 @@ const verifyPurchaseCode = async (purchaseCode, domain) => {
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.pluginVersion || '';
+	const pluginVersion =
+		licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {
@@ -142,7 +143,7 @@ const ToolbarButton = props => {
 			type='button'
 		>
 			{icon}
-			<span>{label}</span>
+			<span>{label === 'Pro' ? __('Cloud', 'maxi-blocks') : label}</span>
 		</button>
 	);
 };
@@ -162,6 +163,7 @@ const LibraryToolbar = props => {
 		gutenbergCode,
 		onInsert,
 		isSwapChecked,
+		useSCStyles,
 		onChangeTone,
 		userName,
 		onLogOut,
@@ -182,7 +184,9 @@ const LibraryToolbar = props => {
 	// Listen for authentication events
 	useEffect(() => {
 		const handleAuthError = event => {
-			setAuthErrorMessage(event.detail.error || 'Authentication failed');
+			setAuthErrorMessage(
+				event.detail.error || __('Authentication failed', 'maxi-blocks')
+			);
 			setAuthMessage('');
 			setIsVerifying(false);
 		};
@@ -226,12 +230,12 @@ const LibraryToolbar = props => {
 	});
 
 	const buttons = [
-		{ label: 'Style Cards', value: 'styleCards' },
-		{ label: 'Pages', value: 'pages' },
-		{ label: 'Block Patterns', value: 'patterns' },
-		{ label: 'Global', value: 'global' },
-		{ label: 'Blocks', value: 'blocks' },
-		{ label: 'Preview', value: 'preview' },
+		{ label: __('Style Cards', 'maxi-blocks'), value: 'styleCards' },
+		{ label: __('Pages', 'maxi-blocks'), value: 'pages' },
+		{ label: __('Block Patterns', 'maxi-blocks'), value: 'patterns' },
+		{ label: __('Global', 'maxi-blocks'), value: 'global' },
+		{ label: __('Blocks', 'maxi-blocks'), value: 'blocks' },
+		{ label: __('Preview', 'maxi-blocks'), value: 'preview' },
 	];
 
 	function addClass(elements, className) {
@@ -611,7 +615,9 @@ const LibraryToolbar = props => {
 						/>
 						<h2>{title}</h2>
 						<span className='maxi-cloud-toolbar__line'>|</span>
-						<span>{cost}</span>
+						<span>
+							{cost === 'Pro' ? __('Cloud', 'maxi-blocks') : cost}
+						</span>
 						{!isNil(toneUrl) && !isEmpty(toneUrl) && (
 							<ToolbarButton
 								onClick={() => {
@@ -723,13 +729,13 @@ const LibraryToolbar = props => {
 						<Button
 							key='maxi-cloud-toolbar__button__sing-out'
 							className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-							label={__('Deactivate Pro', 'maxi-blocks')}
+							label={__('Deactivate Cloud', 'maxi-blocks')}
 							onClick={() => {
 								onLogOut(true);
 								onLogOut();
 							}}
 						>
-							{__('Deactivate Pro', 'maxi-blocks')}
+							{__('Deactivate Cloud', 'maxi-blocks')}
 						</Button>
 					)}
 				</div>
@@ -746,14 +752,14 @@ const LibraryToolbar = props => {
 						label={
 							isVerifying
 								? __('Verifying…', 'maxi-blocks')
-								: __('Activate Pro', 'maxi-blocks')
+								: __('Activate Cloud', 'maxi-blocks')
 						}
 						onClick={() => onClickAuth()}
 						disabled={isVerifying}
 					>
 						{isVerifying
 							? __('Verifying…', 'maxi-blocks')
-							: __('Activate Pro', 'maxi-blocks')}
+							: __('Activate Cloud', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
@@ -765,10 +771,10 @@ const LibraryToolbar = props => {
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-						label={__('Deactivate Pro', 'maxi-blocks')}
+						label={__('Deactivate Cloud', 'maxi-blocks')}
 						onClick={onLogOut}
 					>
-						{__('Deactivate Pro', 'maxi-blocks')}
+						{__('Deactivate Cloud', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
@@ -834,14 +840,14 @@ const LibraryToolbar = props => {
 								label={
 									isVerifying
 										? __('Verifying…', 'maxi-blocks')
-										: __('Activate Pro', 'maxi-blocks')
+										: __('Activate Cloud', 'maxi-blocks')
 								}
 								onClick={() => onClickAuth()}
 								disabled={isVerifying}
 							>
 								{isVerifying
 									? __('Verifying…', 'maxi-blocks')
-									: __('Activate Pro', 'maxi-blocks')}
+									: __('Activate Cloud', 'maxi-blocks')}
 							</Button>
 						</>
 					)}
@@ -870,6 +876,7 @@ const LibraryToolbar = props => {
 								await onRequestInsertPattern(
 									gutenbergCode,
 									isSwapChecked,
+									useSCStyles,
 									clientId
 								);
 							}}

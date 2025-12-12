@@ -8,13 +8,19 @@ import {
 	select,
 	subscribe,
 } from '@wordpress/data';
-import { useEffect, createRoot, useLayoutEffect } from '@wordpress/element';
+import {
+	useEffect,
+	createRoot,
+	useLayoutEffect,
+	useState,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '@extensions/text/fonts';
 import { getIsSiteEditor, getIsTemplatePart } from '@extensions/fse';
+import MaxiBlocksSaveBlocker from '@editor/save-blocker';
 
 /**
  * Component
@@ -71,6 +77,9 @@ const BlockStylesSaver = () => {
 		};
 	});
 
+	// Track previous isSaving state to detect save completion
+	const [prevIsSaving, setPrevIsSaving] = useState(false);
+
 	const { saveStyles } = useDispatch('maxiBlocks/styles');
 	const { saveCustomData } = useDispatch('maxiBlocks/customData');
 	const { saveSCStyles } = useDispatch('maxiBlocks/style-cards');
@@ -90,18 +99,53 @@ const BlockStylesSaver = () => {
 		}
 	});
 
+	// Update uniqueID cache after successful save
+	useEffect(() => {
+		if (prevIsSaving && !isSaving && !isCodeEditor) {
+			// Save just completed - update cache with current editor blocks
+			try {
+				const blocks = select('maxiBlocks/blocks').getBlocks();
+				if (blocks && Object.keys(blocks).length > 0) {
+					const uniqueIDs = Object.keys(blocks);
+					dispatch('maxiBlocks/blocks').addMultipleToUniqueIDCache(
+						uniqueIDs
+					);
+				}
+			} catch (error) {
+				// eslint-disable-next-line no-console
+				console.error(
+					'[UniqueID Cache] ❌ Failed to update cache after save:',
+					JSON.stringify(error)
+				);
+			}
+		}
+
+		// Update previous state
+		setPrevIsSaving(isSaving);
+	}, [isSaving, prevIsSaving, isCodeEditor]);
+
 	// When swapping to code editor, as all blocks are unmounted, we need to set the `isPageLoaded`
 	// to false to ensure a good UX when coming back to the visual editor.
+	// CRITICAL: Clear blockClientIds so when returning to visual, updateLastInsertedBlocks()
+	// will detect ALL blocks as new insertions and trigger uniqueID regeneration correctly.
 	useEffect(() => {
-		if (isCodeEditor) dispatch('maxiBlocks').setIsPageLoaded(false);
+		if (isCodeEditor) {
+			dispatch('maxiBlocks').setIsPageLoaded(false);
+			// Clear blockClientIds so all blocks are treated as "new" when returning
+			dispatch('maxiBlocks/blocks').saveBlockClientIds([]);
+		}
 	}, [isCodeEditor]);
 
 	// In FSE, when the template part is changed, we need to set the `isPageLoaded` to false to ensure
 	// a good UX as with the `isPageLoaded` equal to false the load of the editor is smoother.
+	// However, we need to prevent infinite loops by only resetting when hasTemplateChanged actually changes
 	useEffect(() => {
-		if (getIsSiteEditor() && isPageLoaded)
+		// Only reset isPageLoaded if we're in FSE, page is loaded, AND hasTemplateChanged is true
+		// This prevents the infinite loop where setting isPageLoaded=false triggers this effect again
+		if (getIsSiteEditor() && isPageLoaded && hasTemplateChanged) {
 			dispatch('maxiBlocks').setIsPageLoaded(false);
-	}, [hasTemplateChanged]);
+		}
+	}, [hasTemplateChanged]); // Only depend on hasTemplateChanged, not isPageLoaded
 
 	useLayoutEffect(() => {
 		if (!isPageLoaded) {
@@ -117,19 +161,25 @@ const BlockStylesSaver = () => {
 
 			const { getBlocks } = select('core/block-editor');
 
-			// Waits one second before it checks if the page is a new page or has maxi blocks.
-			// In case it has maxi blocks, it will wait for them to load. If it doesn't, it will
-			// set the page as loaded so next added MaxiBlocks will be not pass the Suspense loading.
+			// OPTIMIZATION: Reduced delay from 1000ms to 100ms for faster code↔visual switching
+			// UniqueID regeneration is now reliable because blockClientIds is cleared on code editor switch
+			// This allows updateLastInsertedBlocks() to detect all blocks as new insertions
 			setTimeout(() => {
 				const blocks = getBlocks();
 				const hasMaxiBlocks = blocks.some(isMaxiBlock);
 
 				if (!hasMaxiBlocks) {
 					dispatch('maxiBlocks').setIsPageLoaded(true);
+				} else {
+					// Give blocks minimal time to register, then allow rendering
+					// Fast enough for good UX, slow enough for uniqueID regeneration
+					setTimeout(() => {
+						dispatch('maxiBlocks').setIsPageLoaded(true);
+					}, 50);
 				}
-			}, 1000);
+			}, 100);
 		}
-	}, []);
+	}, [isPageLoaded]);
 
 	useEffect(() => {
 		if (!allStylesAreSaved) {
@@ -179,7 +229,7 @@ const BlockStylesSaver = () => {
 		return () => {};
 	}, [allStylesAreSaved]);
 
-	return null;
+	return <MaxiBlocksSaveBlocker />;
 };
 
 wp.domReady(() => {

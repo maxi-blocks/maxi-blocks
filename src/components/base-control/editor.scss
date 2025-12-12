@@ -6,7 +6,7 @@
 	&__field {
 		display: flex !important;
 		align-items: center;
-		margin-bottom: 10px;
+		margin-bottom: 8px;
 		.maxi-base-control__field {
 			margin-bottom: 8px;
 		}
@@ -17,6 +17,7 @@
 		flex: 1;
 		min-height: 18px;
 		margin: 0;
+		color: var(--maxi-grey-dark);
 	}
 
 	&__help {

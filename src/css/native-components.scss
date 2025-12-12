@@ -10,8 +10,9 @@
 .maxi-popover,
 .toolbar-item__popover {
 	hr {
-		margin: 0 0 8px;
-		border-bottom: 1px solid var(--maxi-grey-light);
+		margin-top: 12px !important;
+		margin-bottom: 12px !important;
+		border: 1.5px solid var(--maxi-grey-light);
 	}
 	.block-editor-link-control {
 		.block-editor-url-input__input {
@@ -86,7 +87,8 @@
 		margin-bottom: 7px;
 
 		&:last-child {
-			margin-bottom: 0px !important;
+			margin-bottom: 5px !important;
+			margin-top: 0px;
 		}
 
 		.components-base-control__field {

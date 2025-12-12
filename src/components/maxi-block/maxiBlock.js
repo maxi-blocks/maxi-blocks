@@ -138,23 +138,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		attributes: extraProps.attributes,
 	});
 
-	if (isSelected) {
-		if (blockName === 'maxi-blocks/text-maxi') {
-			setDefaultBlockName('maxi-blocks/text-maxi');
-		} else {
-			setDefaultBlockName('core/paragraph');
-		}
-		// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
-		// } else if (blockName === 'maxi-blocks/container-maxi') {
-		// 	setDefaultBlockName('maxi-blocks/container-maxi');
-		// }
-		// } else if (isPostEditor()) {
-		// 	setDefaultBlockName('maxi-blocks/text-maxi');
-		// } else {
-		// 	setDefaultBlockName('maxi-blocks/container-maxi');
-		// }
-	}
-
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =
 		DISALLOWED_BREAKPOINTS.includes(extraProps.baseBreakpoint) &&

@@ -3,6 +3,7 @@ import './store';
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { select, dispatch } from '@wordpress/data';
 
 /**
@@ -768,6 +769,23 @@ export async function authConnect(withRedirect = false, email = false) {
 		// Check if we have existing authentication data stored locally
 		const existingAuth = checkExistingAuthentication();
 		if (existingAuth) {
+			// Even if we have local auth data, verify with server to ensure sync
+			const emailInfo = getProInfoByEmail();
+			if (emailInfo && emailInfo.email) {
+				// Verify with server and update local state if needed
+				const authResult = await checkEmailAuthenticationStatus(
+					emailInfo.email
+				);
+				if (authResult && authResult.success && authResult.user_name) {
+					// Update local storage with current user name from server
+					processLocalActivation(
+						emailInfo.email,
+						authResult.user_name,
+						'yes',
+						emailInfo.key
+					);
+				}
+			}
 			return true;
 		}
 		// No existing auth and no email provided
@@ -778,14 +796,17 @@ export async function authConnect(withRedirect = false, email = false) {
 	if (email && !isValidEmail(email)) {
 		console.error(
 			JSON.stringify({
-				message: 'MaxiBlocks Auth: Invalid email format provided',
+				message: __(
+					'MaxiBlocks Auth: Invalid email format provided',
+					'maxi-blocks'
+				),
 				email,
 			})
 		);
 		return {
 			success: false,
 			error: true,
-			error_message: 'Invalid email format',
+			error_message: __('Invalid email format', 'maxi-blocks'),
 			error_code: 'INVALID_EMAIL_FORMAT',
 		};
 	}
@@ -870,7 +891,8 @@ const deactivatePurchaseCode = async (
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.pluginVersion || '';
+	const pluginVersion =
+		licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	const requestBody = {
@@ -930,7 +952,8 @@ const migratePurchaseCodeDomain = async (
 
 	// Get plugin version and multisite info from global settings
 	const licenseSettings = window.maxiLicenseSettings || {};
-	const pluginVersion = licenseSettings.pluginVersion || '';
+	const pluginVersion =
+		licenseSettings.maxi_version || licenseSettings.pluginVersion || '';
 	const isMultisite = licenseSettings.isMultisite || false;
 
 	try {
@@ -1162,7 +1185,10 @@ export const logOut = async redirect => {
 		} catch (error) {
 			console.error(
 				JSON.stringify({
-					message: 'MaxiBlocks Toolbar Email Logout: Exception',
+					message: __(
+						'MaxiBlocks Toolbar Email Logout: Exception',
+						'maxi-blocks'
+					),
 					error: error.message,
 				})
 			);

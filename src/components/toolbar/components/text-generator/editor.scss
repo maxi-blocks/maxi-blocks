@@ -37,19 +37,6 @@
 			background-color: var(--maxi-grey-dark);
 		}
 	}
-	.maxi-advanced-number-control__value {
-		border: 1px solid var(--maxi-grey-light) !important;
-		color: var(--maxi-grey);
-		padding: 0 0 0 5px !important;
-		margin-top: 3px !important;
-		flex: none;
-		width: 70px;
-		border-radius: 0;
-		&::-webkit-inner-spin-button {
-			height: 31px;
-			opacity: 1;
-		}
-	}
 	.maxi-base-control__label {
 		margin-bottom: 0;
 	}

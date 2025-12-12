@@ -87,6 +87,8 @@ if (!class_exists('MaxiBlocks_Blocks')):
             // Register MaxiBlocks category
             add_filter('block_categories_all', [$this, 'maxi_block_category']);
 
+
+
             $style_cards = new MaxiBlocks_StyleCards();
             $current_style_cards = $style_cards->get_maxi_blocks_active_style_card();
 
@@ -126,14 +128,14 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
         public function enqueue_blocks_assets()
         {
-            $script_asset_path = MAXI_PLUGIN_DIR_PATH . 'build/index.asset.php';
+            $script_asset_path = MAXI_PLUGIN_DIR_PATH . 'build/index.min.asset.php';
             if (!file_exists($script_asset_path)) {
                 throw new Error( //phpcs:ignore
                     'You need to run `npm start` or `npm run build` for the "create-block/test-maxi-blocks" block first.',
                 );
             }
 
-            $index_js = 'build/index.js';
+            $index_js = 'build/index.min.js';
             $script_asset = require $script_asset_path;
             wp_register_script(
                 'maxi-blocks-block-editor',
@@ -143,12 +145,46 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 true,
             );
 
+            // Manually inject translations for the bundled script
+            // WordPress's wp_set_script_translations() doesn't work with large bundled files,
+            // so we inject the translations directly using the same method WordPress uses
+            $locale = get_locale();
+            $json_file = plugin_dir_path(dirname(__FILE__)) . 'languages/maxi-blocks-' . $locale . '-' . md5('maxi-blocks/build/index.min.js') . '.json';
+
+            if (file_exists($json_file)) {
+                $translations_json = file_get_contents($json_file);
+                $translations_data = json_decode($translations_json, true);
+
+                if ($translations_data && isset($translations_data['locale_data'])) {
+                    // Inject translations inline BEFORE the script loads
+                    wp_add_inline_script(
+                        'maxi-blocks-block-editor',
+                        sprintf(
+                            '( function( domain, translations ) {
+                                var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+                                localeData[""].domain = domain;
+                                wp.i18n.setLocaleData( localeData, domain );
+                            } )( "maxi-blocks", %s );',
+                            $translations_json
+                        ),
+                        'before'
+                    );
+                }
+            }
+
             // Localize the script with our data
             wp_localize_script('maxi-blocks-block-editor', 'maxiBlocksMain', [
                 'local_fonts' => get_option('local_fonts'),
                 'bunny_fonts' => get_option('bunny_fonts'),
                 'apiRoot' => esc_url_raw(rest_url()),
             ]);
+
+            // Inject MaxiBlocks settings directly to avoid API calls
+            if (class_exists('MaxiBlocks_API')) {
+                $api = new MaxiBlocks_API();
+                $settings = $api->get_maxi_blocks_options();
+                wp_localize_script('maxi-blocks-block-editor', 'maxiSettings', $settings);
+            }
 
             // Add license settings for authentication context
             // Only add license settings if we have a dashboard instance already
@@ -172,7 +208,126 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 }
             }
 
-            $editor_css = 'build/index.css';
+            // Add JavaScript to handle version updates on save
+            wp_add_inline_script(
+                'maxi-blocks-block-editor',
+                "
+                (function() {
+                    if (typeof wp === 'undefined' || !wp.data) return;
+
+                    const { select, dispatch } = wp.data;
+
+                    function getCurrentVersion() {
+                        if (window.maxiSettings?.maxi_version) {
+                            return window.maxiSettings.maxi_version;
+                        }
+                        return '" . MAXI_PLUGIN_VERSION . "';
+                    }
+
+                    function updateBlockVersions() {
+                        const currentVersion = getCurrentVersion();
+                        if (!currentVersion) return;
+
+                        const clientIds = select('core/block-editor').getClientIdsWithDescendants();
+
+                        clientIds.forEach(clientId => {
+                            const block = select('core/block-editor').getBlock(clientId);
+                            if (block && block.name && block.name.startsWith('maxi-blocks/')) {
+                                const attrs = block.attributes;
+                                const needsCurrentUpdate = !attrs['maxi-version-current'] || attrs['maxi-version-current'] !== currentVersion;
+                                const needsOriginUpdate = !attrs['maxi-version-origin'];
+
+                                if (needsCurrentUpdate || needsOriginUpdate) {
+                                    const newAttrs = {};
+                                    if (needsCurrentUpdate) {
+                                        newAttrs['maxi-version-current'] = currentVersion;
+                                    }
+                                    if (needsOriginUpdate) {
+                                        newAttrs['maxi-version-origin'] = currentVersion;
+                                    }
+                                    dispatch('core/block-editor').updateBlockAttributes(clientId, newAttrs);
+                                }
+                            }
+                        });
+                    }
+
+                    // Override savePost to update versions BEFORE the save happens
+                    function interceptSavePost() {
+                        // Get a reference to the editor dispatch object
+                        const editorDispatch = dispatch('core/editor');
+
+                        // Only proceed if savePost exists and hasn't been overridden yet
+                        if (!editorDispatch.savePost || editorDispatch.savePost._maxiIntercepted) {
+                            return;
+                        }
+
+                        // Store the original savePost function
+                        const originalSavePost = editorDispatch.savePost;
+
+                        // Create our intercepted version
+                        editorDispatch.savePost = function(options = {}) {
+                            // Check if all MaxiBlocks are fully rendered
+                            const maxiBlocksSelect = select('maxiBlocks');
+                            const allBlocksReady = maxiBlocksSelect.getAllBlocksFullyRendered();
+
+                            if (!allBlocksReady) {
+                                console.warn('%c[MaxiBlocks] Save prevented - blocks still rendering',
+                                    'background: #FF5722; color: white; font-weight: bold; padding: 2px 4px;',
+                                    JSON.stringify({
+                                        allBlocksReady
+                                    }, null, 2));
+
+                                // Show user notification
+                                dispatch('core/notices').createWarningNotice(
+                                    'Please wait for MaxiBlocks to finish rendering before saving.',
+                                    { id: 'maxi-blocks-rendering-warning', isDismissible: true }
+                                );
+
+                                return Promise.resolve(); // Return resolved promise to prevent save
+                            }
+
+                            // Update versions BEFORE calling the original save
+                            updateBlockVersions();
+
+                            // Remove any existing warning notices
+                            dispatch('core/notices').removeNotice('maxi-blocks-rendering-warning');
+
+                            // Call the original savePost with the same context and arguments
+                            return originalSavePost.call(this, options);
+                        };
+
+                        // Mark that we've intercepted this function
+                        editorDispatch.savePost._maxiIntercepted = true;
+                    }
+
+                    // Set up the intercept when the editor is ready
+                    wp.domReady(() => {
+                        // Use a longer delay to ensure the editor dispatch is fully set up
+                        setTimeout(() => {
+                            // Try multiple times in case the editor isn't ready yet
+                            let attempts = 0;
+                            const maxAttempts = 10;
+
+                            function tryIntercept() {
+                                attempts++;
+                                try {
+                                    interceptSavePost();
+                                } catch (error) {
+                                    console.warn('MaxiBlocks: Failed to intercept savePost, attempt', attempts, error);
+                                    if (attempts < maxAttempts) {
+                                        setTimeout(tryIntercept, 500);
+                                    }
+                                }
+                            }
+
+                            tryIntercept();
+                        }, 200);
+                    });
+                })();
+                "
+            );
+
+            $editor_css = 'build/index.min.css';
             wp_register_style(
                 'maxi-blocks-block-editor',
                 plugins_url($editor_css, dirname(__FILE__)),
@@ -185,7 +340,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'editor_style' => 'maxi-blocks-block-editor',
             ]);
 
-            $style_css = 'build/style-index.css';
+            $style_css = 'build/style-index.min.css';
             wp_register_style(
                 'maxi-blocks-block',
                 plugins_url($style_css, dirname(__FILE__)),
@@ -561,5 +716,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
             return $has_blocks;
         }
+
+
     }
 endif;

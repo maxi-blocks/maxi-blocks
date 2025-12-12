@@ -74,7 +74,7 @@ class edit extends MaxiBlockComponent {
 			attributes,
 			scValues,
 			getSVGWidthHeightRatio(
-				this.blockRef.current?.querySelector(
+				this.blockRef?.current?.querySelector(
 					'.maxi-button-block__icon svg'
 				)
 			)

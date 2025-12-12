@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
@@ -16,6 +21,13 @@ const getClientIdFromUniqueId = uniqueID => {
 		if (block) return block.getAttribute('data-block');
 	}
 
+	// O(1) lookup from Redux store
+	const blockData = select('maxiBlocks/blocks').getBlock(uniqueID);
+	if (blockData?.clientId) {
+		return blockData.clientId;
+	}
+
+	// Fallback to tree traversal if not in store (e.g., template parts)
 	let clientId = null;
 
 	goThroughMaxiBlocks(block => {

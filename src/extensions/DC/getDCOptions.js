@@ -9,11 +9,19 @@ import { store as coreStore } from '@wordpress/core-data';
  */
 import { getFields, limitString, getCurrentTemplateSlug } from './utils';
 import { idOptionByField, idTypes, orderByRelations } from './constants';
+import {
+	loadFromCache,
+	saveToCache,
+	cleanupExpiredCache,
+} from './wordPressAPICacheDB';
 
 /**
  * External dependencies
  */
 import { find, isEmpty, isEqual } from 'lodash';
+
+// Run cleanup on load to remove expired cache entries
+cleanupExpiredCache();
 
 let customPostTypesCache = null;
 let customTaxonomiesCache = null;
@@ -103,8 +111,6 @@ const paginatedEntityFetch = async (
 	args = {},
 	maxPages = 20
 ) => {
-	const { getEntityRecords } = resolveSelect(coreStore);
-
 	// Set optimized arguments with required fields only
 	const optimizedArgs = {
 		...args,
@@ -113,16 +119,29 @@ const paginatedEntityFetch = async (
 		per_page: 100, // Maximum allowed by WP REST API
 	};
 
-	// Check the cache for previous results as a fallback
+	// Check IndexedDB cache first
+	const cachedData = await loadFromCache(
+		entityType,
+		entityName,
+		optimizedArgs
+	);
+	if (cachedData) {
+		return cachedData;
+	}
+
+	const { getEntityRecords } = resolveSelect(coreStore);
+
+	// Check localStorage cache for emergency fallback
 	const cacheKey = `${entityType}_${entityName}`;
 	let cachedResults = null;
 
 	try {
-		// Retrieve from localStorage for emergency fallback
-		const cachedData = localStorage.getItem(`maxi_dc_cache_${cacheKey}`);
-		if (cachedData) {
+		const localStorageData = localStorage.getItem(
+			`maxi_dc_cache_${cacheKey}`
+		);
+		if (localStorageData) {
 			try {
-				cachedResults = JSON.parse(cachedData);
+				cachedResults = JSON.parse(localStorageData);
 			} catch (e) {
 				// Invalid JSON, ignore
 			}
@@ -160,6 +179,15 @@ const paginatedEntityFetch = async (
 
 		// If we don't have data or have less than 100 items, we're done
 		if (!initialData || initialData.length < 100) {
+			// Save to IndexedDB for faster future loads
+			if (initialData && initialData.length > 0) {
+				await saveToCache(
+					entityType,
+					entityName,
+					optimizedArgs,
+					initialData
+				);
+			}
 			return initialData || [];
 		}
 
@@ -194,8 +222,10 @@ const paginatedEntityFetch = async (
 
 			// Fetch remaining pages sequentially to avoid 400 errors for non-existent pages
 			// This prevents console errors when requesting pages that don't exist
+			// eslint-disable-next-line no-await-in-loop
 			for (let page = 3; page <= maxPages; page += 1) {
 				try {
+					// eslint-disable-next-line no-await-in-loop
 					const pageData = await getEntityRecords(
 						entityType,
 						entityName,
@@ -227,7 +257,14 @@ const paginatedEntityFetch = async (
 		};
 
 		// Execute the function to fetch additional pages
-		return await fetchAdditionalPages();
+		const result = await fetchAdditionalPages();
+
+		// Save the complete result to IndexedDB for faster future loads
+		if (result && result.length > 0) {
+			await saveToCache(entityType, entityName, optimizedArgs, result);
+		}
+
+		return result;
 	} catch (error) {
 		if (error.message === 'Timeout') {
 			// Return emergency cache if available rather than empty array

@@ -1,10 +1,12 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 const headerPrefix = 'header-';
@@ -16,36 +18,36 @@ const contentPrefix = 'content-';
 const name = 'pane-maxi';
 const copyPasteMapping = {
 	settings: {
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	canvas: {
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
@@ -66,275 +68,305 @@ const customCss = {
 	selectors: {
 		pane: {
 			normal: {
-				label: 'pane',
+				label: __('pane', 'maxi-blocks'),
 				target: `${normalPaneTarget}.maxi-block`,
 			},
 			hover: {
-				label: 'pane on hover',
+				label: __('pane on hover', 'maxi-blocks'),
 				target: `.maxi-block${normalPaneTarget}:hover`,
 			},
 			active: {
-				label: 'pane on active state',
+				label: __('pane on active state', 'maxi-blocks'),
 				target: `.maxi-block${activePaneTarget}`,
 			},
 		},
 		'before pane': {
 			normal: {
-				label: 'pane ::before',
+				label: __('pane ::before', 'maxi-blocks'),
 				target: `.wp-block-maxi-blocks-pane-maxi${normalPaneTarget}::before`,
 			},
 			hover: {
-				label: 'pane ::before on hover',
+				label: __('pane ::before on hover', 'maxi-blocks'),
 				target: `.wp-block-maxi-blocks-pane-maxi${normalPaneTarget}:hover::before`,
 			},
 			active: {
-				label: 'pane ::before on active state',
+				label: __('pane ::before on active state', 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block::before`,
 			},
 		},
 		'after pane': {
 			normal: {
-				label: 'pane ::after',
+				label: __('pane ::after', 'maxi-blocks'),
 				target: `.wp-block-maxi-blocks-pane-maxi${normalPaneTarget}::after`,
 			},
 			hover: {
-				label: 'pane ::after on hover',
+				label: __('pane ::after on hover', 'maxi-blocks'),
 				target: `.wp-block-maxi-blocks-pane-maxi${normalPaneTarget}:hover::after`,
 			},
 			active: {
-				label: 'pane ::after on active state',
+				label: __('pane ::after on active state', 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block::after`,
 			},
 		},
 		'pane header': {
 			normal: {
-				label: 'pane header',
+				label: __('pane header', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header`,
 			},
 			hover: {
-				label: 'pane header on hover',
+				label: __('pane header on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header:hover`,
 			},
 			active: {
-				label: 'pane header on active state',
+				label: __('pane header on active state', 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header`,
 			},
 		},
 		'before header': {
 			normal: {
-				label: 'pane header ::before',
+				label: __('pane header ::before', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::before`,
 			},
 			hover: {
-				label: 'pane header ::before on hover',
+				label: __('pane header ::before on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header:hover::before`,
 			},
 			active: {
-				label: 'pane header ::before on active state',
+				label: __(
+					'pane header ::before on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::before`,
 			},
 		},
 		'after header': {
 			normal: {
-				label: 'pane header ::after',
+				label: __('pane header ::after', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::after`,
 			},
 			hover: {
-				label: 'pane header ::after on hover',
+				label: __('pane header ::after on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header:hover::after`,
 			},
 			active: {
-				label: 'pane header ::after on active state',
+				label: __('pane header ::after on active state', 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__header::after`,
 			},
 		},
 		'header content': {
 			normal: {
-				label: 'header content',
+				label: __('header content', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header-content`,
 			},
 			hover: {
-				label: 'header content on hover',
+				label: __('header content on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header-content:hover`,
 			},
 			active: {
-				label: 'header content on active state',
+				label: __('header content on active state', 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__header-content`,
 			},
 		},
 		'header line': {
 			normal: {
-				label: 'header line',
+				label: __('header line', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header-line`,
 			},
 			hover: {
-				label: 'header line on hover',
+				label: __('header line on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__header-line:hover`,
 			},
 			active: {
-				label: 'header line on active state',
+				label: __('header line on active state', 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__header-line`,
 			},
 		},
 		'content line': {
 			normal: {
-				label: 'content line',
+				label: __('content line', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__content-line`,
 			},
 			hover: {
-				label: 'content line on hover',
+				label: __('content line on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget} .maxi-pane-block__content-line:hover`,
 			},
 			active: {
-				label: 'content line on active state',
+				label: __('content line on active state', 'maxi-blocks'),
 				target: `${activePaneTarget} .maxi-pane-block__content-line`,
 			},
 		},
 		'before header content': {
 			normal: {
-				label: 'accordion pane header content::before',
+				label: __(
+					'accordion pane header content::before',
+					'maxi-blocks'
+				),
 				target: `${normalPaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::before`,
 			},
 			hover: {
-				label: 'accordion pane header content::before on hover',
+				label: __(
+					'accordion pane header content::before on hover',
+					'maxi-blocks'
+				),
 				target: `${normalPaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content:hover::before`,
 			},
 			active: {
-				label: 'accordion pane header content::before on active state',
+				label: __(
+					'accordion pane header content::before on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::before`,
 			},
 		},
 		'after header content': {
 			normal: {
-				label: 'accordion pane header content::after',
+				label: __(
+					'accordion pane header content::after',
+					'maxi-blocks'
+				),
 				target: `${normalPaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::after`,
 			},
 			hover: {
-				label: 'pane header content::after on hover',
+				label: __('pane header content::after on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content:hover::after`,
 			},
 			active: {
-				label: 'pane header content::after on active state',
+				label: __(
+					'pane header content::after on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget}.maxi-block.wp-block-maxi-blocks-pane-maxi .maxi-pane-block__header .maxi-pane-block__header-content::after`,
 			},
 		},
 		'pane icon': {
 			normal: {
-				label: 'icon',
+				label: __('icon', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon`,
 			},
 			svg: {
-				label: "icon's svg",
+				label: __("icon's svg", 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg`,
 			},
 			insideSvg: {
-				label: 'everything inside svg (svg > *)',
+				label: __('everything inside svg (svg > *)', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg > *`,
 			},
 			path: {
-				label: "svg's path",
+				label: __("svg's path", 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg path`,
 			},
 			hover: {
-				label: 'icon on hover',
+				label: __('icon on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon:hover`,
 			},
 			hoverSvg: {
-				label: "icon's svg on hover",
+				label: __("icon's svg on hover", 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon:hover svg`,
 			},
 			hoverInsideSvg: {
-				label: 'everything inside svg on hover (:hover svg > *)',
+				label: __(
+					'everything inside svg on hover (:hover svg > *)',
+					'maxi-blocks'
+				),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon:hover svg > *`,
 			},
 			hoverPath: {
-				label: "svg's path on hover",
+				label: __("svg's path on hover", 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon:hover svg path`,
 			},
 			active: {
-				label: 'active icon',
+				label: __('active icon', 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon`,
 			},
 			activeSvg: {
-				label: "active icon's svg",
+				label: __("active icon's svg", 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg`,
 			},
 			activeInsideSvg: {
-				label: 'everything inside active svg (svg > *)',
+				label: __(
+					'everything inside active svg (svg > *)',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg > *`,
 			},
 			activePath: {
-				label: "active svg's path",
+				label: __("active svg's path", 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__icon svg path`,
 			},
 		},
 		'before icon': {
 			normal: {
-				label: 'icon ::before',
+				label: __('icon ::before', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::before`,
 			},
 			hover: {
-				label: 'icon ::before on hover',
+				label: __('icon ::before on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon:hover::before`,
 			},
 			active: {
-				label: 'icon ::before on active state',
+				label: __('icon ::before on active state', 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::before`,
 			},
 		},
 		'after icon': {
 			normal: {
-				label: 'icon ::after',
+				label: __('icon ::after', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::after`,
 			},
 			hover: {
-				label: 'icon ::after on hover',
+				label: __('icon ::after on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon:hover::after`,
 			},
 			active: {
-				label: 'icon ::after on active state',
+				label: __('icon ::after on active state', 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__icon::after`,
 			},
 		},
 		'pane content': {
 			normal: {
-				label: 'pane content',
+				label: __('pane content', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__content`,
 			},
 			hover: {
-				label: 'pane content on hover',
+				label: __('pane content on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__content:hover`,
 			},
 			active: {
-				label: 'pane content on active state',
+				label: __('pane content on active state', 'maxi-blocks'),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block  .maxi-pane-block__content`,
 			},
 		},
 		'before content': {
 			normal: {
-				label: 'pane content ::before',
+				label: __('pane content ::before', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::before`,
 			},
 			hover: {
-				label: 'pane content ::before on hover',
+				label: __('pane content ::before on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content:hover::before`,
 			},
 			active: {
-				label: 'pane content ::before on active state',
+				label: __(
+					'pane content ::before on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::before`,
 			},
 		},
 		'after content': {
 			normal: {
-				label: 'pane content ::after',
+				label: __('pane content ::after', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::after`,
 			},
 			hover: {
-				label: 'pane content ::after on hover',
+				label: __('pane content ::after on hover', 'maxi-blocks'),
 				target: `${normalPaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content:hover::after`,
 			},
 			active: {
-				label: 'pane content ::after on active state',
+				label: __(
+					'pane content ::after on active state',
+					'maxi-blocks'
+				),
 				target: `${activePaneTarget}.wp-block-maxi-blocks-pane-maxi.maxi-block.maxi-pane-block .maxi-pane-block__content::after`,
 			},
 		},
@@ -368,7 +400,7 @@ const transition = {
 	},
 	header: {
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: ' .maxi-pane-block__header',
 			property: 'border',
 			hoverProp: [
@@ -377,7 +409,7 @@ const transition = {
 			],
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: ' .maxi-pane-block__header',
 			property: 'box-shadow',
 			hoverProp: [
@@ -386,7 +418,7 @@ const transition = {
 			],
 		},
 		background: {
-			title: 'Background',
+			title: __('Background', 'maxi-blocks'),
 			target: ' .maxi-pane-block__header',
 			property: 'background',
 			hoverProp: [
@@ -397,7 +429,7 @@ const transition = {
 	},
 	content: {
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: ' .maxi-pane-block__content',
 			property: 'border',
 			hoverProp: [
@@ -406,7 +438,7 @@ const transition = {
 			],
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: ' .maxi-pane-block__content',
 			property: 'box-shadow',
 			hoverProp: [
@@ -415,7 +447,7 @@ const transition = {
 			],
 		},
 		background: {
-			title: 'Background',
+			title: __('Background', 'maxi-blocks'),
 			target: ' .maxi-pane-block__content',
 			property: 'background',
 			hoverProp: [

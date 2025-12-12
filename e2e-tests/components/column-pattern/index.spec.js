@@ -24,6 +24,9 @@ describe('ColumnPattern', () => {
 
 		await page.$eval('.maxi-row-block', row => row.focus());
 
+		// Wait for block to be properly selected and sidebar to update
+		await page.waitForTimeout(500);
+
 		const accordionControl = await openSidebarTab(
 			page,
 			'style',

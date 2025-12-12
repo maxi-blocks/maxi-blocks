@@ -1,10 +1,12 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import { createIconTransitions } from '@extensions/styles';
 import {
 	createIconSelectors,
@@ -26,23 +28,23 @@ const name = 'video-maxi';
 const copyPasteMapping = {
 	_exclude: ['url', 'embedUrl', 'videoType', 'overlay-mediaURL'],
 	settings: {
-		Video: {
+		[__('Video', 'maxi-blocks')]: {
 			group: {
-				Url: ['url', 'embedUrl', 'videoType'],
-				'Video type': 'playerType',
-				'Start time': 'startTime',
-				'End time': 'endTime',
-				'Aspect ratio': 'videoRatio',
+				[__('Url', 'maxi-blocks')]: ['url', 'embedUrl', 'videoType'],
+				[__('Video type', 'maxi-blocks')]: 'playerType',
+				[__('Start time', 'maxi-blocks')]: 'startTime',
+				[__('End time', 'maxi-blocks')]: 'endTime',
+				[__('Aspect ratio', 'maxi-blocks')]: 'videoRatio',
 			},
 		},
-		'Video options': {
+		[__('Video options', 'maxi-blocks')]: {
 			group: {
-				Autoplay: 'isAutoplay',
-				Mute: 'isMuted',
-				Loop: 'isLoop',
-				'Player controls': 'showPlayerControls',
-				'Reduce black borders': 'reduceBorders',
-				'Lightbox background colour': {
+				[__('Autoplay', 'maxi-blocks')]: 'isAutoplay',
+				[__('Mute', 'maxi-blocks')]: 'isMuted',
+				[__('Loop', 'maxi-blocks')]: 'isLoop',
+				[__('Player controls', 'maxi-blocks')]: 'showPlayerControls',
+				[__('Reduce black borders', 'maxi-blocks')]: 'reduceBorders',
+				[__('Lightbox background colour', 'maxi-blocks')]: {
 					groupAttributes: [
 						'lightboxBackground',
 						'lightboxBackgroundColor',
@@ -50,53 +52,56 @@ const copyPasteMapping = {
 				},
 			},
 		},
-		'Video overlay': {
+		[__('Video overlay', 'maxi-blocks')]: {
 			group: {
-				'Overlay background colour': {
+				[__('Overlay background colour', 'maxi-blocks')]: {
 					groupAttributes: ['background', 'backgroundColor'],
 				},
-				'Play button': { groupAttributes: 'icon', prefix: 'play-' },
+				[__('Play button', 'maxi-blocks')]: {
+					groupAttributes: 'icon',
+					prefix: 'play-',
+				},
 			},
 		},
-		'Popup settings': {
+		[__('Popup settings', 'maxi-blocks')]: {
 			group: {
-				'Lightbox background': {
+				[__('Lightbox background', 'maxi-blocks')]: {
 					groupAttributes: ['background', 'backgroundColor'],
 					prefix: 'lightbox-',
 				},
-				'Close button': {
+				[__('Close button', 'maxi-blocks')]: {
 					groupAttributes: 'icon',
 					prefix: 'close-',
 				},
-				'Pop animation': 'popAnimation',
+				[__('Pop animation', 'maxi-blocks')]: 'popAnimation',
 			},
 		},
-		Image: {
+		[__('Image', 'maxi-blocks')]: {
 			group: {
-				'Hide image(icon only)': 'hideImage',
-				'Overlay background': {
+				[__('Hide image(icon only)', 'maxi-blocks')]: 'hideImage',
+				[__('Overlay background', 'maxi-blocks')]: {
 					groupAttributes: ['background', 'backgroundColor'],
 					prefix: 'overlay-',
 				},
-				'Image source': 'overlay-mediaURL',
+				[__('Image source', 'maxi-blocks')]: 'overlay-mediaURL',
 			},
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 			prefix: 'overlay-',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 			prefix: 'overlay-',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 			prefix: 'overlay-',
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},
@@ -128,19 +133,19 @@ const transition = {
 	...transitionDefault,
 	block: {
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: [overlayClass, videoClass],
 			property: ['border', 'border-radius'],
 			hoverProp: 'border-status-hover',
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: [overlayClass, videoClass],
 			property: 'box-shadow',
 			hoverProp: 'box-shadow-status-hover',
 		},
 		'overlay colour': {
-			title: 'Overlay colour',
+			title: __('Overlay colour', 'maxi-blocks'),
 			target: `${overlayClass}-background`,
 			property: 'background-color',
 			hoverProp: 'overlay-background-status-hover',

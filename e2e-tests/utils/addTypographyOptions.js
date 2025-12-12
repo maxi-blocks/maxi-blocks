@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { pressKeyTimes, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
+import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 const addTypographyOptions = async ({
 	page,
@@ -10,6 +10,16 @@ const addTypographyOptions = async ({
 	lineHeight,
 	letterSpacing,
 }) => {
+	// click on the typography advanced settings if it's not open
+	const isAdvancedSettingsOpen = await page.evaluate(
+		() => !!document.querySelector('.maxi-typography-control__text-indent')
+	);
+	if (!isAdvancedSettingsOpen) {
+		const advancedSettingsSelector = await page.$(
+			'.maxi-typography-control__advanced-toggle button.maxi-typography-control-button'
+		);
+		if (advancedSettingsSelector) await advancedSettingsSelector.click();
+	}
 	// size
 	if (size) {
 		await page.waitForTimeout(500);

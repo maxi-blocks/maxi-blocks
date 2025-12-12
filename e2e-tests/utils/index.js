@@ -1,4 +1,5 @@
 export { checkSCResult, receiveSelectedMaxiStyleCard } from './checkSCResult';
+export { default as activateTheme } from './activateTheme';
 export { default as addBackgroundLayer } from './addBackgroundLayer';
 export { default as addBackgroundLayerCanvas } from './addBackgroundLayerCanvas';
 export { default as addCustomCSS } from './addCustomCSS';

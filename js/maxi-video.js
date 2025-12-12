@@ -5,6 +5,14 @@ window.addEventListener('load', videoEvents);
 function videoEvents() {
 	const videoBLocks = document.querySelectorAll('.maxi-video-block');
 	videoBLocks.forEach(video => {
+		// Set referrer policy on all iframes to fix restrictive site-level policies
+		const existingIframes = video.querySelectorAll('iframe');
+		existingIframes.forEach(iframe => {
+			if (!iframe.referrerPolicy) {
+				iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+			}
+		});
+
 		if (video.classList.contains('maxi-video-block--youtube')) {
 			if (!isScriptMounted('maxi-youtube-sdk')) insertYoutubeScript();
 			return;
@@ -70,6 +78,7 @@ function handleYoutubeVideos() {
 				: video.querySelector('iframe');
 
 		iframe.id = `${videoID}-iframe`;
+		iframe.referrerPolicy = 'strict-origin-when-cross-origin';
 		iframe.src = embedUrl;
 
 		const player = new window.YT.Player(iframe, {
@@ -107,6 +116,7 @@ function handleVimeoVideos() {
 				? popupContent.querySelector('iframe')
 				: video.querySelector('iframe');
 
+		player.referrerPolicy = 'strict-origin-when-cross-origin';
 		player.src = embedUrl;
 		const vimeoPlayer = new window.Vimeo.Player(player);
 

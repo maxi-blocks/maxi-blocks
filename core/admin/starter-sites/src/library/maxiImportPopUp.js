@@ -715,6 +715,7 @@ const MaxiImportPopUp = props => {
 								<div className='maxi-cloud-container__import-popup_warning-message'>
 									<p>
 										{sprintf(
+											/* translators: %s: Name of the current classic theme */
 											__(
 												'Templates cannot be imported because you are using a classic theme (%s). To import templates, you need a block theme. We recommend ',
 												'maxi-blocks'

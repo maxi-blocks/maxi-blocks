@@ -40,9 +40,106 @@ const insertCode = async (content, clientId) => {
 	replaceBlock(clientId, parsedContent);
 };
 
+/**
+ * Strips custom styling attributes from block content to use SC defaults
+ *
+ * @param {string}  content     - The gutenberg block content as string
+ * @param {boolean} useSCStyles - Whether to strip custom styles
+ * @returns {string} Modified content with custom styles removed
+ */
+const stripCustomStyles = (content, useSCStyles) => {
+	if (!useSCStyles) return content;
+
+	// Pattern to match JSON values: strings, numbers, booleans, null, but not objects/arrays
+	// This ensures we don't break nested structures
+	const jsonValue =
+		'(?:"(?:[^"\\\\]|\\\\.)*?"|true|false|null|-?\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?)';
+
+	// SC (Style Cards) only control typography and colors for text elements (h1-h6, p, button, link, etc.)
+	// We should ONLY strip attributes that SC provides defaults for:
+	// - Typography attributes (font-*, line-height, letter-spacing, text-*, word-spacing, etc.)
+	// - Color attributes (palette-color, color)
+	// - Text spacing (bottom-gap)
+	//
+	// We should NOT strip layout/container styles that SC doesn't control:
+	// - Margins/padding on containers
+	// - Borders, shadows, opacity
+	// - Width/height/size
+	// - Backgrounds (already preserved)
+	// - Custom formats (structural - tied to content HTML with format classes)
+	const styleAttributePatterns = [
+		// Typography - SC provides defaults for these
+		new RegExp(`"(font-family[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(font-size[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(font-weight[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(font-style[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(line-height[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(letter-spacing[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(text-decoration[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(text-transform[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(text-indent[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(text-shadow[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(word-spacing[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(white-space[^"]*?)":${jsonValue},`, 'g'),
+
+		// Colors - SC provides palette colors
+		new RegExp(`"(palette-color[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(palette-opacity[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(list-color[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(list-palette-color[^"]*?)":${jsonValue},`, 'g'),
+		new RegExp(`"(list-palette-opacity[^"]*?)":${jsonValue},`, 'g'),
+
+		// Text spacing - SC provides bottom-gap for text elements
+		new RegExp(`"(bottom-gap[^"]*?)":${jsonValue},`, 'g'),
+	];
+
+	let modifiedContent = content;
+
+	// Apply each pattern to strip the attributes
+	styleAttributePatterns.forEach(pattern => {
+		modifiedContent = modifiedContent.replace(pattern, '');
+	});
+
+	// Remove custom-formats attributes (and hover variants)
+	// These store the custom format styling data that is tied to the HTML spans
+	// We need to handle nested objects properly, so we match everything until we find
+	// the closing brace that matches the opening brace after "custom-formats"
+	const customFormatsPattern =
+		/"custom-formats(?:-hover)?":(\{(?:[^{}]|\{[^{}]*\})*\}),?/g;
+
+	modifiedContent = modifiedContent.replace(customFormatsPattern, '');
+
+	// Clean up any double commas or trailing commas that might result
+	modifiedContent = modifiedContent.replace(/,\s*,/g, ',');
+	modifiedContent = modifiedContent.replace(/,\s*\}/g, '}');
+	modifiedContent = modifiedContent.replace(/\{\s*,/g, '{');
+	modifiedContent = modifiedContent.replace(/,\s*]/g, ']');
+
+	// Unwrap text inside spans with maxi-text-block--has-custom-format class
+	// In Gutenberg serialized format within JSON attributes, special chars are Unicode-escaped
+	// Pattern: \u003cspan class=\u0022...maxi-text-block\u002d\u002dhas-custom-format...\u0022\u003etext\u003c/span\u003e
+	// Match everything between class=" and the closing " using lazy match with anything except the closing quote sequence
+	const unicodePattern =
+		/\\u003cspan\s+class=\\u0022((?:(?!\\u0022).)*?maxi-text-block\\u002d\\u002dhas-custom-format(?:(?!\\u0022).)*?)\\u0022(?:(?!\\u003e).)*?\\u003e(.*?)\\u003c\/span\\u003e/gi;
+
+	modifiedContent = modifiedContent.replace(
+		unicodePattern,
+		(match, className, textContent) => textContent
+	);
+
+	// Also handle regular HTML spans (unescaped) in case they appear elsewhere
+	modifiedContent = modifiedContent.replace(
+		/<span\s+class="[^"]*maxi-text-block--has-custom-format[^"]*"[^>]*>(.*?)<\/span>/gi,
+		(match, textContent) => textContent
+	);
+
+	return modifiedContent;
+};
+
 const onRequestInsertPattern = async (
 	parsedContent,
 	usePlaceholderImage,
+	useSCStyles,
 	clientId
 ) => {
 	const isValid = await resolveSelect('core/block-editor').isValidTemplate(
@@ -50,8 +147,14 @@ const onRequestInsertPattern = async (
 	);
 
 	if (isValid) {
+		// Strip custom styles if requested to use SC defaults
+		const contentWithSCStyles = stripCustomStyles(
+			parsedContent,
+			useSCStyles
+		);
+
 		// Replace all occurrences of \\u002d with - in a new variable
-		const modifiedContent = parsedContent.replace(/\\u002d/g, '-');
+		const modifiedContent = contentWithSCStyles.replace(/\\u002d/g, '-');
 
 		// Check and replace cl-relation value
 		const contentWithUpdatedRelation = modifiedContent.replace(
@@ -61,7 +164,10 @@ const onRequestInsertPattern = async (
 
 		const cleanedContent = contentWithUpdatedRelation
 			.replace(/,"dc-media-id":\d+,"dc-media-url":"[^"]+"/g, '')
-			.replace(/"dc-field":"author_avatar","dc-media-url":"[^"]+"/g, '"dc-field":"author_avatar"')
+			.replace(
+				/"dc-field":"author_avatar","dc-media-url":"[^"]+"/g,
+				'"dc-field":"author_avatar"'
+			)
 			.replace(/"cl-author":\d+,/g, '')
 			.replace(/"dc-content":"No content found",/g, '');
 

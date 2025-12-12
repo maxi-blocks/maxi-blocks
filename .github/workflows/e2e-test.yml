@@ -8,7 +8,7 @@ jobs:
     e2e-js:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
               with:
                   fetch-depth: 2
             - name: Cache node modules
@@ -26,12 +26,17 @@ jobs:
                       ${{ runner.os }}-
               env:
                   cache-name: cache-node-modules
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v1
+            - name: Use Node.js 18.x
+              uses: actions/setup-node@v4
               with:
-                  node-version: 16.x
-            - name: Install dependencies
-              run: npm install --legacy-peer-deps
+                  node-version: 18.x
+            - name: Install Aikido Safe Chain
+              run: npm install -g @aikidosec/safe-chain
+            - name: Setup Aikido Safe Chain and Install dependencies
+              run: |
+                  safe-chain setup
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npm install --legacy-peer-deps
             - name: Create .env file
               run: |
                   touch .env
@@ -39,11 +44,14 @@ jobs:
                   echo "REACT_APP_TYPESENSE_API_URL=${{ secrets.REACT_APP_TYPESENSE_API_URL }}" >> .env
                   echo "GITHUB_ENV_TEST=1" >> .env
             - name: Build
-              run: npm run build
+              run: |
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npm run build
             - name: reset package-lock.json
               run: git checkout package-lock.json
             - name: Install WordPress
               run: |
+                  source ~/.bashrc || source ~/.zshrc || true
                   chmod -R 767 ./
                   npm run wp-env start
             - name: Setup WordPress debug log
@@ -64,4 +72,6 @@ jobs:
                   WP_PATH="$(npm run wp-env install-path --silent)"
                   find "$WP_PATH" -name debug.log -type f -exec cat {} \; || echo "No debug logs found"
             - name: Running the tests
-              run: npm run test:e2e
+              run: |
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npm run test:e2e

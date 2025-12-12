@@ -1,7 +1,4 @@
-import {
-	buildFontUrl,
-	isCacheValid,
-} from '@extensions/text/fonts/loadFontUtils';
+import { buildFontUrl } from '@extensions/text/fonts/loadFontUtils';
 import { cleanUrl } from '@extensions/text/fonts/fontCacheUtils';
 
 jest.mock('@extensions/text/fonts/fontCacheUtils', () => ({
@@ -278,79 +275,5 @@ describe('buildFontUrl', () => {
 			'https://example.com/wp-json/maxi-blocks/v1.0/get-font-url/Open+Sans+Condensed',
 			expect.any(Object)
 		);
-	});
-});
-
-describe('isCacheValid', () => {
-	let originalWindow;
-	let mockFetch;
-	let originalLocation;
-	let originalAbortController;
-
-	beforeEach(() => {
-		originalWindow = { ...window };
-		originalLocation = { ...window.location };
-		originalAbortController = global.AbortController;
-		mockFetch = jest.fn();
-		global.fetch = mockFetch;
-
-		delete window.location;
-		window.location = {
-			origin: 'https://example.com',
-		};
-
-		window.maxiBlocksMain = {};
-	});
-
-	afterEach(() => {
-		window = originalWindow;
-		window.location = originalLocation;
-		global.AbortController = originalAbortController;
-
-		jest.clearAllMocks();
-	});
-
-	it('Should return false for null or empty URL', async () => {
-		expect(await isCacheValid(null)).toBe(false);
-		expect(await isCacheValid('')).toBe(false);
-		expect(await isCacheValid(undefined)).toBe(false);
-	});
-
-	it('Should return true for any valid URL string', async () => {
-		const testUrls = [
-			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap',
-			'https://fonts.bunny.net/css2?family=Roboto:wght@400&display=swap',
-			'https://example.com/wp-content/uploads/fonts/roboto.woff2',
-			'http://localhost/font.css',
-			'https://any-domain.com/any-path',
-		];
-
-		for (const url of testUrls) {
-			expect(await isCacheValid(url)).toBe(true);
-		}
-
-		// Ensure no network calls are made since validation is simplified
-		expect(mockFetch).not.toHaveBeenCalled();
-	});
-
-	it('Should return true regardless of font provider configuration', async () => {
-		const url =
-			'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap';
-
-		// Test with different configurations
-		const configs = [
-			{ local_fonts: false, bunny_fonts: false },
-			{ local_fonts: false, bunny_fonts: true },
-			{ local_fonts: true, bunny_fonts: false },
-			{ local_fonts: true, bunny_fonts: true },
-		];
-
-		for (const config of configs) {
-			window.maxiBlocksMain = config;
-			expect(await isCacheValid(url)).toBe(true);
-		}
-
-		// Ensure no network calls are made
-		expect(mockFetch).not.toHaveBeenCalled();
 	});
 });

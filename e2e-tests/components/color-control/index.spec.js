@@ -53,6 +53,12 @@ describe('ColorControl', () => {
 		expect(
 			await getAttributes('button-background-palette-color-general')
 		).toStrictEqual(4);
+
+		// click reset opacity button
+		await accordionPanel.$eval(
+			'.maxi-background-control .maxi-opacity-control button.maxi-reset-button',
+			resetButton => resetButton.click()
+		);
 	});
 
 	it('Checking the custom color control', async () => {

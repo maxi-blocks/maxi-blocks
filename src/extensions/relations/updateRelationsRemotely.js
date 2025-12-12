@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select, dispatch } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -10,6 +10,7 @@ import getCleanResponseIBAttributes from './getCleanResponseIBAttributes';
 import { getSelectedIBSettings } from './utils';
 import getIBStyles from './getIBStyles';
 import getIBStylesObj from './getIBStylesObj';
+import batchRelationsUpdater from './batchRelationsUpdater';
 
 /**
  * External dependencies
@@ -48,12 +49,24 @@ const updateRelationsRemotely = ({
 				blockTargetClientId,
 				item.sid
 			);
+
+			// Skip if selectedSettings is undefined (no matching option found)
+			if (!selectedSettings) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					`Skipping relation processing for sid: ${item.sid} - no matching settings found`
+				);
+				// eslint-disable-next-line no-continue
+				continue;
+			}
+
 			const prefix = selectedSettings?.prefix || '';
 			const relationsAttributes = item.attributes || {};
 
 			// Handle background layers special case
 			if (item.sid === BGL_SID) {
-				const relationBGLayers = relationsAttributes['background-layers'];
+				const relationBGLayers =
+					relationsAttributes['background-layers'];
 				const blockBGLayers = blockAttributes['background-layers'];
 
 				if (
@@ -93,14 +106,17 @@ const updateRelationsRemotely = ({
 				cleanAttributesObject,
 				tempAttributes
 			);
+
+			const stylesObj = getIBStylesObj({
+				clientId: blockTargetClientId,
+				sid: item.sid,
+				attributes: mergedAttributes,
+				blockAttributes,
+				breakpoint,
+			});
+
 			const styles = getIBStyles({
-				stylesObj: getIBStylesObj({
-					clientId: blockTargetClientId,
-					sid: item.sid,
-					attributes: mergedAttributes,
-					blockAttributes,
-					breakpoint,
-				}),
+				stylesObj,
 				blockAttributes,
 				isFirst: true,
 			});
@@ -123,25 +139,12 @@ const updateRelationsRemotely = ({
 		}
 	}
 
-	if (!isEmpty(diff(relations, newRelations))) {
-		const editor = dispatch(BLOCK_EDITOR);
-		editor.__unstableMarkNextChangeAsNotPersistent();
-		editor.updateBlockAttributes(blockTriggerClientId, {
-			relations: newRelations,
-		});
+	const diffResult = diff(relations, newRelations);
+	const hasDiff = !isEmpty(diffResult);
 
-		const getUniqueID = clientID =>
-			blockEditor.getBlockAttributes(clientID).uniqueID;
-
-		// eslint-disable-next-line no-console
-		console.log(
-			`Relations updated for ${getUniqueID(
-				blockTriggerClientId
-			)} as a result of ${getUniqueID(
-				blockTargetClientId
-			)} change. The new 'relations' attribute is: `,
-			newRelations
-		);
+	if (hasDiff) {
+		// Add to batch queue instead of immediate update
+		batchRelationsUpdater.addUpdate(blockTriggerClientId, newRelations);
 	}
 };
 

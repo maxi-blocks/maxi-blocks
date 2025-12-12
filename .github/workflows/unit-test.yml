@@ -26,15 +26,24 @@ jobs:
                       ${{ runner.os }}-build-v1.2-${{ env.cache-name }}-
                       ${{ runner.os }}-build-v1.2-
                       ${{ runner.os }}-
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v1
+            - name: Use Node.js 18.x
+              uses: actions/setup-node@v4
               with:
-                  node-version: 16.x
-            - name: Install dependencies
-              run: npm install --legacy-peer-deps
+                  node-version: 18.x
+            - name: Install Aikido Safe Chain
+              run: npm install -g @aikidosec/safe-chain
+            - name: Setup Aikido Safe Chain and Install dependencies
+              run: |
+                  safe-chain setup
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npm install --legacy-peer-deps
             - name: Build
-              run: npm run build
+              run: |
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npm run build
             - name: reset package-lock.json
               run: git checkout package-lock.json
             - name: Running the tests
-              run: npm test
+              run: |
+                  source ~/.bashrc || source ~/.zshrc || true
+                  npm test

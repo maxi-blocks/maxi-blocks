@@ -9,13 +9,11 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '@components/button';
-import Icon from '@components/icon';
 
 /**
- * Styles and icons
+ * Text glyph constant for toolbar formatting buttons
  */
-import './editor.scss';
-import { toolbarBold } from '@maxi-icons';
+const TEXT_GLYPH = 'B';
 
 /**
  * TextBold
@@ -44,7 +42,12 @@ const TextBold = props => {
 				}
 				aria-pressed={isActive}
 			>
-				<Icon className='toolbar-item__icon' icon={toolbarBold} />
+				<span
+					className='toolbar-item__text toolbar-item__text--bold'
+					aria-hidden='true'
+				>
+					{TEXT_GLYPH}
+				</span>
 			</Button>
 		);
 	};

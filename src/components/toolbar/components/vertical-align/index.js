@@ -75,6 +75,7 @@ const VerticalAlign = props => {
 							[`justify-content-${breakpoint}`]: verticalAlign,
 						})
 					}
+					newStyle
 				/>
 			</div>
 		</ToolbarPopover>

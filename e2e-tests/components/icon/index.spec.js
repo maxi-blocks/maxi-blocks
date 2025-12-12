@@ -57,7 +57,7 @@ describe('Svg Icon Maxi default size', () => {
 
 		// reset width
 		await page.$eval(
-			'.maxi-responsive-tabs-control .maxi-advanced-number-control button',
+			'.maxi-responsive-tabs-control .maxi-advanced-number-control button.maxi-reset-button',
 			button => button.click()
 		);
 

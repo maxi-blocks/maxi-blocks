@@ -380,7 +380,7 @@ const ClipPathControl = props => {
 	};
 
 	return (
-		<div className={classes}>
+		<div className={`${classes} maxi-clip-path-control__wrapper`}>
 			{(isLayer || !isHover) && (
 				<ToggleSwitch
 					label={__('Use clip-path', 'maxi-blocks')}
@@ -485,6 +485,7 @@ const ClipPathControl = props => {
 								onChange={value => onChangeType(value)}
 							/>
 							<SettingTabsControl
+							className='maxi-clip-path-mode-control'
 								fullWidthMode
 								type='buttons'
 								selected={customMode}

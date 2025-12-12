@@ -158,14 +158,24 @@ const ColorPaletteControl = props => {
 												'maxi-color-control__palette-box--active'
 										)}
 										data-item={color.id} // Use color.id (numeric) for data-item
-										onClick={e =>
+										onClick={e => {
+											const colorId = Number(
+												e.currentTarget.dataset.item
+											);
+
+											// Guard: Verify custom color exists in the array
+											const colorExists = customColors.find(
+												c => c.id === colorId
+											);
+											if (!colorExists) {
+												// Don't set invalid color ID
+												return;
+											}
+
 											onChange({
-												// Ensure paletteColor is passed as a number if it's a numeric ID from data-item
-												paletteColor: Number(
-													e.currentTarget.dataset.item
-												),
-											})
-										}
+												paletteColor: colorId,
+											});
+										}}
 									>
 										<span
 											className='maxi-color-control__palette-custom-item'

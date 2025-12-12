@@ -1,4 +1,4 @@
-/**
+﻿/**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -57,14 +57,18 @@ const getImageShapeStyles = (
 		});
 
 		if (isNumber(scale)) {
-			omitTransformScale = omitTransformScale ? scale === 100 : false;
+			if (!isHover)
+				omitTransformScale = omitTransformScale ? scale === 100 : false;
 			const calculationNumbers =
 				target === 'svg' ? [scale, 100] : [100, scale];
 
-			if (
-				(breakpoint === 'general' && ignoreGeneralOmit) ||
-				!(scale === 100 && omitTransformScale)
-			)
+			const shouldOmit =
+				!isHover &&
+				scale === 100 &&
+				omitTransformScale &&
+				!(breakpoint === 'general' && ignoreGeneralOmit);
+
+			if (!shouldOmit)
 				transformString += `scale(${
 					calculationNumbers[0] / calculationNumbers[1]
 				}) `;

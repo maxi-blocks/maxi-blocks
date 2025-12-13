@@ -49,32 +49,5 @@ document.addEventListener('DOMContentLoaded', function () {
 				})
 				.catch(error => console.error('Error:', error));
 		}
-
-		if (
-			event.target.closest('#maxi-plugin-update-notice .notice-dismiss')
-		) {
-			fetch(
-				maxiBlocks.rest_url.replace(
-					'dismiss-notice',
-					'dismiss-plugin-update-notice'
-				),
-				{
-					method: 'POST',
-					headers: {
-						'X-WP-Nonce': maxiBlocks.nonce,
-						'Content-Type': 'application/json',
-					},
-				}
-			)
-				.then(response => {
-					if (response.status === 204) {
-						// Successfully dismissed, hide the notice
-						document.querySelector(
-							'#maxi-plugin-update-notice'
-						).style.display = 'none';
-					}
-				})
-				.catch(error => console.error('Error:', error));
-		}
 	});
 });

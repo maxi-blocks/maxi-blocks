@@ -911,19 +911,66 @@ body.maxi-blocks--active
 		color: var(--maxi-interaction-pink) !important;
 	}
 }
-// 	height: 31px !important;
-// 	padding: 0 0 0 8px !important;
-// 	width: 55px !important;
 
-// 	&:hover {
-// 		border-color: var(--maxi-grey-dark) !important;
-// 	}
+// Ensure the secondary sidebar has position relative for the legend
+.interface-interface-skeleton__secondary-sidebar {
+	position: relative;
+}
 
-// 	&:focus {
-// 		border-color: var(--maxi-secondary-color) !important;
-// 		outline: none !important;
-// 	}
-// }
+// List View Legend - appears at bottom of list view panel
+.maxi-list-view-legend {
+	margin-top: 40px;
+	width: 350px;
+	padding: 12px 16px;
+	border-top: 1px solid var(--maxi-pastel-green);
+	z-index: 100;
+	box-sizing: border-box;
+
+	&__title {
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+		color: var(--maxi-grey-dark);
+		margin-bottom: 8px;
+		letter-spacing: 0.5px;
+	}
+
+	&__items {
+		display: flex;
+		flex-direction: row;
+		gap: 16px;
+	}
+
+	&__item {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	&__dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		flex-shrink: 0;
+
+		&--pink {
+			background-color: var(--maxi-interaction-pink);
+		}
+
+		&--orange {
+			background-color: var(--maxi-background-yellow);
+		}
+
+		&--grey {
+			background-color: var(--maxi-grey);
+		}
+	}
+
+	&__label {
+		font-size: 12px;
+		color: var(--maxi-grey-dark);
+	}
+}
 
 // Unit selector
 // .maxi-base-control.maxi-dimensions-control__units {

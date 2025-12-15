@@ -9,6 +9,7 @@ import { select, subscribe } from '@wordpress/data';
 import { isEmpty } from 'lodash';
 
 const ATTR_NAME = 'data-maxi-interaction';
+const LEGEND_ID = 'maxi-list-view-legend';
 
 /**
  * Updates a single List View item with the interaction attribute
@@ -61,6 +62,95 @@ const updateListViewItem = item => {
 };
 
 /**
+ * Create and append the legend to the list view panel
+ */
+const createLegend = () => {
+	// Check if legend already exists
+	if (document.getElementById(LEGEND_ID)) return;
+
+	// Try to find the list view panel - try multiple selectors for different WP versions
+	const listViewTree = document.querySelector('.block-editor-list-view-tree');
+	if (!listViewTree) {
+		return;
+	}
+
+	// Find the secondary sidebar container (full height panel)
+	let listViewPanel = listViewTree.closest('.interface-navigable-region.interface-interface-skeleton__secondary-sidebar');
+	if (!listViewPanel) {
+		listViewPanel = listViewTree.closest('.edit-post-editor__list-view-panel');
+	}
+	if (!listViewPanel) {
+		listViewPanel = listViewTree.closest('.interface-navigable-region');
+	}
+	if (!listViewPanel) {
+		listViewPanel = listViewTree.closest('.block-editor-list-view');
+	}
+	if (!listViewPanel) {
+		// Fallback: use the parent element
+		listViewPanel = listViewTree.parentElement;
+	}
+
+	if (!listViewPanel) {
+		return;
+	}
+
+	// Ensure the panel has position relative for absolute positioning of legend
+	listViewPanel.style.position = 'relative';
+
+	// Check if there are any Maxi blocks on the page
+	const blocks = select('core/block-editor').getBlocks();
+	const hasMaxiBlocks = checkForMaxiBlocks(blocks);
+
+	if (!hasMaxiBlocks) {
+		return;
+	}
+
+	const legend = document.createElement('div');
+	legend.id = LEGEND_ID;
+	legend.className = 'maxi-list-view-legend';
+	legend.innerHTML = `
+		<div class="maxi-list-view-legend__title">Legend</div>
+		<div class="maxi-list-view-legend__items">
+			<div class="maxi-list-view-legend__item">
+				<span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--pink"></span>
+				<span class="maxi-list-view-legend__label">Interaction</span>
+			</div>
+			<div class="maxi-list-view-legend__item">
+				<span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--orange"></span>
+				<span class="maxi-list-view-legend__label">Background layer</span>
+			</div>
+			<div class="maxi-list-view-legend__item">
+				<span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--grey"></span>
+				<span class="maxi-list-view-legend__label">Hidden layer</span>
+			</div>
+		</div>
+	`;
+
+	listViewPanel.appendChild(legend);
+};
+
+/**
+ * Recursively check for Maxi blocks in the block tree
+ */
+const checkForMaxiBlocks = blocks => {
+	for (const block of blocks) {
+		if (block.name?.startsWith('maxi-blocks/')) return true;
+		if (block.innerBlocks?.length && checkForMaxiBlocks(block.innerBlocks)) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Remove legend when list view is closed
+ */
+const removeLegend = () => {
+	const legend = document.getElementById(LEGEND_ID);
+	if (legend) legend.remove();
+};
+
+/**
  * Updates all visible List View items
  */
 const updateAllListViewItems = () => {
@@ -87,12 +177,14 @@ const initListViewObserver = () => {
 	// Observer for DOM changes (List View opening, expanding, scrolling)
 	const observer = new MutationObserver(mutations => {
 		let shouldUpdate = false;
+		let listViewAdded = false;
+		let listViewRemoved = false;
+		
 		for (const mutation of mutations) {
 			if (mutation.type === 'childList') {
 				// Check if nodes were added to the list view tree
 				if (mutation.target.closest('.block-editor-list-view-tree')) {
 					shouldUpdate = true;
-					break;
 				}
 				// Check if the list view tree itself was added
 				for (const node of mutation.addedNodes) {
@@ -106,15 +198,40 @@ const initListViewObserver = () => {
 							))
 					) {
 						shouldUpdate = true;
+						listViewAdded = true;
+						break;
+					}
+				}
+				// Check if list view was removed
+				for (const node of mutation.removedNodes) {
+					if (
+						node.nodeType === 1 &&
+						(node.classList?.contains(
+							'block-editor-list-view-tree'
+						) ||
+							node.querySelector?.(
+								'.block-editor-list-view-tree'
+							) ||
+							node.classList?.contains('block-editor-list-view'))
+					) {
+						listViewRemoved = true;
 						break;
 					}
 				}
 			}
-			if (shouldUpdate) break;
+		}
+
+		if (listViewRemoved) {
+			removeLegend();
 		}
 
 		if (shouldUpdate) {
-			setTimeout(updateAllListViewItems, 100);
+			setTimeout(() => {
+				updateAllListViewItems();
+				if (listViewAdded) {
+					createLegend();
+				}
+			}, 100);
 		}
 	});
 
@@ -125,7 +242,10 @@ const initListViewObserver = () => {
 	});
 
 	// Initial check
-	initialTimeout = setTimeout(updateAllListViewItems, 500);
+	initialTimeout = setTimeout(() => {
+		updateAllListViewItems();
+		createLegend();
+	}, 500);
 
 	// Subscribe to block editor changes to update when blocks are modified
 	unsubscribe = subscribe(() => {

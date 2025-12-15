@@ -1,12 +1,11 @@
-/**
- * WordPress dependencies
- */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import SettingTabsControl from '@components/setting-tabs-control';
+import InfoBox from '@components/info-box';
 
 /**
  * External dependencies
@@ -30,7 +29,12 @@ const DisplayControl = props => {
 		defaultDisplay = 'inherit',
 	} = props;
 
-	const classes = classnames('maxi-display-control', className);
+	// Subscribe to global "Reveal Hidden Blocks" flag from maxiBlocks settings
+	const isRevealModeActive = useSelect(select => {
+		const settings = select('maxiBlocks').receiveMaxiSettings();
+		// Expect a boolean settings flag. Default to false if missing.
+		return !!settings?.reveal_hidden_blocks;
+	}, []);
 
 	const isHide = () => {
 		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -85,18 +89,36 @@ const DisplayControl = props => {
 		];
 	};
 
+	// Determine effective hidden state for current breakpoint (accounts for inheritance)
+	const effectiveValue = getValue();
+	const shouldBeHidden =
+		isHide() || props[`display-${breakpoint}`] === 'none';
+
+	const classes = classnames('maxi-display-control', className, {
+		'is-temporarily-revealed': shouldBeHidden && isRevealModeActive,
+	});
+
 	return (
 		<div className={classes}>
+			{shouldBeHidden && !isRevealModeActive && (
+				<InfoBox
+					className='maxi-warning-box__hidden-reveal'
+					message={__(
+						'To view or edit a hidden block, open List View, select the block, then choose Show.',
+						'maxi-blocks'
+					)}
+				/>
+			)}
 			<SettingTabsControl
 				label={__('Show or hide by breakpoint', 'maxi-blocks')}
 				type='buttons'
-				selected={getValue()}
+				selected={effectiveValue}
 				items={getOptions()}
-				onChange={val =>
+				onChange={val => {
 					onChange({
 						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
-					})
-				}
+					});
+				}}
 				hasBorder
 			/>
 		</div>

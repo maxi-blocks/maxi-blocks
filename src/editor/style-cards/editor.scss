@@ -1,3 +1,9 @@
+// Fix z-index for font-family dropdown menu in style cards
+// React-select can portal menu to body, so we need a global rule
+[class*="menu"][class*="css-"] {
+	z-index: 999999 !important;
+}
+
 .has-tooltip {
 	.tooltip {
 		display: none;
@@ -713,7 +719,15 @@ body .maxi-style-cards__popover {
 		}
 	}
 	.maxi-font-family-selector {
-		z-index: 1;
+		z-index: 10;
+		position: relative;
+
+		// Ensure the dropdown menu appears above everything
+		.maxi-font-family-selector__control__menu {
+			position: absolute;
+			z-index: 99999 !important;
+			background: var(--maxi-white);
+		}
 	}
 	.components-range-control
 		.components-base-control__field
@@ -867,5 +881,56 @@ html[dir='rtl'] {
 
 	&:hover svg {
 		stroke: var(--maxi-primary-color) !important;
+	}
+}
+.maxi-style-cards-headings-tabs {
+	.maxi-tabs-control {
+		display: flex;
+		gap: 4px;
+		padding: 0;
+		margin-bottom: 8px;
+
+		.maxi-tabs-control__button {
+			flex: 1;
+			min-width: 32px;
+			max-width: 40px;
+			height: 28px;
+			padding: 4px 8px;
+			border: 1.5px solid var(--maxi-grey-light);
+			border-radius: 5px;
+			background-color: var(--maxi-white);
+			color: var(--maxi-grey-dark);
+			font-size: 12px;
+			font-weight: 400;
+			text-align: center;
+			cursor: pointer;
+			transition: all 0.3s ease;
+
+			&:hover {
+				background-color: var(--maxi-whisper-green);
+				border-color: var(--maxi-grey);
+				color: var(--maxi-black);
+			}
+
+			&[aria-pressed='true'] {
+				background-color: var(--maxi-pastel-green);
+				border-color: var(--maxi-primary-color);
+				color: var(--maxi-primary-color);
+				font-weight: 700;
+			}
+		}
+	}
+
+	.maxi-tabs-content {
+		padding: 0;
+		
+		.maxi-tab-content__box {
+			padding: 0;
+			border: none;
+			
+			&:after {
+				display: none;
+			}
+		}
 	}
 }

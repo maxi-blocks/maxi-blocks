@@ -81,6 +81,7 @@ body.maxi-blocks--active {
 				position: absolute;
 				top: -8px;
 				left: 8px;
+				z-index: 1 !important;
 				font-size: 10px !important;
 				color: var(--maxi-grey-dark);
 				font-style: normal;

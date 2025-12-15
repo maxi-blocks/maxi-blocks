@@ -289,6 +289,133 @@ body.maxi-blocks--active .components-popover__fallback-container {
 		}
 	}
 }
+
+// FocalPointPicker styling for background image layer
+.maxi-background-control__image-layer {
+	.maxi-focal-point-picker {
+		width: 100%;
+		margin-bottom: 8px;
+
+		// Force vertical stacking layout
+		display: flex;
+		flex-direction: column;
+
+		// Target the WordPress FocalPointPicker with unique class
+		.maxi-background-position-picker {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+		}
+
+		// The label/title should be on top
+		.components-base-control__field {
+			display: flex !important;
+			flex-direction: column !important;
+			align-items: stretch !important;
+			width: 100%;
+
+			// Label styling - order -1 ensures it's always first
+			.components-base-control__label {
+				margin-bottom: 8px !important;
+				order: -1;
+				font-size: 13px;
+				text-transform: none !important;
+			}
+
+			// Image picker container - stack in middle
+			.components-focal-point-picker {
+				order: 1;
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+
+				// The media preview with focal point
+				.components-focal-point-picker__icon_container {
+					width: 100%;
+					margin-bottom: 8px;
+				}
+			}
+		}
+
+		// Value fields container (LEFT/TOP inputs) - correct class from HTML
+		.focal-point-picker__controls {
+			display: flex;
+			flex-direction: row;
+			gap: 8px;
+			width: 100%;
+			margin-top: 0px;
+			margin-bottom: -20px;
+			
+
+			// Each input control (Left and Top)
+			.focal-point-picker__controls-position-unit-control {
+			
+
+				// Fix alignment - target the field wrapper
+				.components-base-control__field {
+			
+			
+				}
+
+				// The input base container - make it column layout
+				.components-input-base {
+					flex-direction: column !important;
+					align-items: flex-start !important;
+					gap: 0px;
+					width: 100%;
+					border-radius: 5px !important;
+
+					// Label container
+					.components-flex-item {
+						width: 100%;
+						margin-bottom: 2px;
+					}
+
+					// Style the LEFT/TOP labels
+					.components-input-control__label {
+						font-size: 13px !important;
+						text-transform: none !important;
+						line-height: 15px !important;
+						min-height: 20px;
+					}
+
+					// Input container should be full width
+					.components-input-control__container {
+						width: 100%;
+					
+					}
+				}
+			}
+		}
+
+		// Fallback targeting for different WordPress versions
+		.components-focal-point-picker__media {
+			width: 100%;
+			max-width: 100%;
+		}
+
+		// Fix the focal point circle indicator
+		.components-focal-point-picker__icon_container {
+			width: 30px !important;
+			height: 30px !important;
+			border-radius: 50% !important;
+			border: 2px solid #fff !important;
+			box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;
+			background: transparent !important;
+			cursor: grab;
+
+			&:active {
+				cursor: grabbing;
+			}
+
+			&::before,
+			&::after {
+				display: none !important;
+			}
+		}
+	}
+}
+
 .settings-background-image {
 	margin-left: -8px !important;
 }

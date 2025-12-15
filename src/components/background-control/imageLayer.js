@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
+import { FocalPointPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -251,204 +252,67 @@ const ImageLayerSettings = props => {
 					}
 				/>
 			)}
-			<SelectControl
-				__nextHasNoMarginBottom
+			<div className='maxi-focal-point-picker'>
+			<FocalPointPicker
+			className='maxi-background-position-picker'
 				label={__('Background position', 'maxi-blocks')}
-				className='maxi-background-control__image-layer__position-selector'
-				value={getLastBreakpointAttribute({
-					target: `${prefix}background-image-position`,
-					breakpoint,
-					attributes: imageOptions,
-					isHover,
+				url={getAttributeValue({
+					target: 'background-image-mediaURL',
+					props: imageOptions,
+					prefix,
 				})}
-				defaultValue={getDefaultAttr('background-image-position')}
-				newStyle
-				options={[
-					{
-						label: __('Left top', 'maxi-blocks'),
-						value: 'left top',
-					},
-					{
-						label: __('Left center', 'maxi-blocks'),
-						value: 'left center',
-					},
-					{
-						label: __('Left bottom', 'maxi-blocks'),
-						value: 'left bottom',
-					},
-					{
-						label: __('Right top', 'maxi-blocks'),
-						value: 'right top',
-					},
-					{
-						label: __('Right center', 'maxi-blocks'),
-						value: 'right center',
-					},
-					{
-						label: __('Right bottom', 'maxi-blocks'),
-						value: 'right bottom',
-					},
-					{
-						label: __('Center top', 'maxi-blocks'),
-						value: 'center top',
-					},
-					{
-						label: __('Center center', 'maxi-blocks'),
-						value: 'center center',
-					},
-					{
-						label: __('Center bottom', 'maxi-blocks'),
-						value: 'center bottom',
-					},
-					{
-						label: __('Custom', 'maxi-blocks'),
-						value: 'custom',
-					},
-				]}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-image-position',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
-				onReset={() =>
-					onChange({
-						[getAttributeKey(
-							'background-image-position',
-							isHover,
-							prefix,
-							breakpoint
-						)]: getDefaultAttr('background-image-position'),
-					})
-				}
-			/>
-			{getLastBreakpointAttribute({
-				target: `${prefix}background-image-position`,
-				breakpoint,
-				attributes: imageOptions,
-				isHover,
-			}) === 'custom' && (
-				<>
-					<AdvancedNumberControl
-						label={__('Y-axis', 'maxi-blocks')}
-						enableUnit
-						unit={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width-unit`,
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeUnit={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						value={getLastBreakpointAttribute({
+				value={{
+					x:
+						(getLastBreakpointAttribute({
 							target: `${prefix}background-image-position-width`,
 							breakpoint,
 							attributes: imageOptions,
 							isHover,
-						})}
-						onChangeValue={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width'
-								),
-								[getAttributeKey(
-									'background-image-position-width-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width-unit'
-								),
-								isReset: true,
-							})
-						}
-					/>
-					<AdvancedNumberControl
-						label={__('X-axis', 'maxi-blocks')}
-						enableUnit
-						unit={getLastBreakpointAttribute({
-							target: 'background-image-position-height-unit',
+						}) ?? 50) / 100,
+					y:
+						(getLastBreakpointAttribute({
+							target: `${prefix}background-image-position-height`,
 							breakpoint,
 							attributes: imageOptions,
 							isHover,
-						})}
-						onChangeUnit={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						value={getLastBreakpointAttribute({
-							target: 'background-image-position-height',
-							breakpoint,
-							attributes: imageOptions,
+						}) ?? 50) / 100,
+				}}
+				onChange={focalPoint =>
+					onChange({
+						[getAttributeKey(
+							'background-image-position',
 							isHover,
-						})}
-						onChangeValue={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height'
-								),
-								[getAttributeKey(
-									'background-image-position-height-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height-unit'
-								),
-								isReset: true,
-							})
-						}
-					/>
-				</>
-			)}
+							prefix,
+							breakpoint
+						)]: 'custom',
+						[getAttributeKey(
+							'background-image-position-width',
+							isHover,
+							prefix,
+							breakpoint
+						)]: Math.round(focalPoint.x * 100),
+						[getAttributeKey(
+							'background-image-position-width-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: '%',
+						[getAttributeKey(
+							'background-image-position-height',
+							isHover,
+							prefix,
+							breakpoint
+						)]: Math.round(focalPoint.y * 100),
+						[getAttributeKey(
+							'background-image-position-height-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: '%',
+					})
+				}
+			/>
+		</div>
 			{!parallaxStatus && (
 				<>
 					<SelectControl

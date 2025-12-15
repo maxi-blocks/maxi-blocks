@@ -892,15 +892,13 @@ html[dir='rtl'] {
 
 		.maxi-tabs-control__button {
 			flex: 1;
-			min-width: 32px;
-			max-width: 40px;
-			height: 28px;
-			padding: 4px 8px;
-			border: 1.5px solid var(--maxi-grey-light);
+			min-width: 52px;
+			padding:4px 8px;
+			border: 1.5px solid var(--maxi-grey-light) !important;
 			border-radius: 5px;
 			background-color: var(--maxi-white);
 			color: var(--maxi-grey-dark);
-			font-size: 12px;
+			font-size: 14px;
 			font-weight: 400;
 			text-align: center;
 			cursor: pointer;
@@ -908,13 +906,13 @@ html[dir='rtl'] {
 
 			&:hover {
 				background-color: var(--maxi-whisper-green);
-				border-color: var(--maxi-grey);
-				color: var(--maxi-black);
+				border: 1.5px solid var(--maxi-primary-color) !important;
+				color: var(--maxi-primary-color);
 			}
 
 			&[aria-pressed='true'] {
 				background-color: var(--maxi-pastel-green);
-				border-color: var(--maxi-primary-color);
+				border: 1.5px solid var(--maxi-primary-color) !important;
 				color: var(--maxi-primary-color);
 				font-weight: 700;
 			}

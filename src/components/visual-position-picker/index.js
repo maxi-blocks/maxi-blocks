@@ -23,6 +23,7 @@ const VisualPositionPicker = ({
 	disabled = false,
 }) => {
 	const containerRef = useRef(null);
+	const pointRef = useRef(null);
 	const [isDragging, setIsDragging] = useState(false);
 
 	// Convert percentage to position object for onChange
@@ -64,7 +65,10 @@ const VisualPositionPicker = ({
 			setIsDragging(true);
 
 			const pos = getPositionFromEvent(e);
-			if (pos) {
+			if (pos && pointRef.current) {
+				// Direct DOM update for instant feedback
+				pointRef.current.style.left = `${pos.x}%`;
+				pointRef.current.style.top = `${pos.y}%`;
 				handlePositionChange(pos.x, pos.y);
 			}
 		},
@@ -73,14 +77,17 @@ const VisualPositionPicker = ({
 
 	const handleMouseMove = useCallback(
 		e => {
-			if (!isDragging || disabled) return;
+			if (disabled) return;
 
 			const pos = getPositionFromEvent(e);
-			if (pos) {
+			if (pos && pointRef.current) {
+				// Direct DOM update for instant feedback - bypasses React render
+				pointRef.current.style.left = `${pos.x}%`;
+				pointRef.current.style.top = `${pos.y}%`;
 				handlePositionChange(pos.x, pos.y);
 			}
 		},
-		[isDragging, disabled, getPositionFromEvent, handlePositionChange]
+		[disabled, getPositionFromEvent, handlePositionChange]
 	);
 
 	const handleMouseUp = useCallback(() => {
@@ -135,6 +142,7 @@ const VisualPositionPicker = ({
 
 				{/* Draggable point */}
 				<div
+					ref={pointRef}
 					className='maxi-visual-position-picker__point'
 					style={{
 						left: `${left}%`,
@@ -157,3 +165,4 @@ const VisualPositionPicker = ({
 };
 
 export default VisualPositionPicker;
+

@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
+import { FocalPointPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -10,7 +11,6 @@ import { useState } from '@wordpress/element';
 import Button from '@components/button';
 import SelectControl from '@components/select-control';
 import AxisControl from '@components/axis-control';
-import VisualPositionPicker from '../visual-position-picker';
 import withRTC from '@extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
@@ -107,32 +107,39 @@ const PositionControl = props => {
 	// Reusable component for the position picker and advanced settings
 	const PositionPickerSection = (
 		<>
-			<VisualPositionPicker
-				top={
-					getLastBreakpointAttribute({
-						target: `${prefix}position-top`,
-						breakpoint,
-						attributes: props,
-					}) || 0
-				}
-				left={
-					getLastBreakpointAttribute({
-						target: `${prefix}position-left`,
-						breakpoint,
-						attributes: props,
-					}) || 0
-				}
-				onChange={pos => {
-					onChange({
-						[`${prefix}position-top-${breakpoint}`]: pos.y,
-						[`${prefix}position-top-unit-${breakpoint}`]: '%',
-						[`${prefix}position-left-${breakpoint}`]: pos.x,
-						[`${prefix}position-left-unit-${breakpoint}`]: '%',
-						[`${prefix}position-right-${breakpoint}`]: '',
-						[`${prefix}position-bottom-${breakpoint}`]: '',
-					});
-				}}
-			/>
+			<div className='maxi-position-control__focal-picker'>
+				<FocalPointPicker
+					label={__('Layer placement', 'maxi-blocks')}
+					value={{
+						x:
+							(getLastBreakpointAttribute({
+								target: `${prefix}position-left`,
+								breakpoint,
+								attributes: props,
+							}) || 0) / 100,
+						y:
+							(getLastBreakpointAttribute({
+								target: `${prefix}position-top`,
+								breakpoint,
+								attributes: props,
+							}) || 0) / 100,
+					}}
+					onChange={focalPoint => {
+						onChange({
+							[`${prefix}position-top-${breakpoint}`]: Math.round(
+								focalPoint.y * 100
+							),
+							[`${prefix}position-top-unit-${breakpoint}`]: '%',
+							[`${prefix}position-left-${breakpoint}`]: Math.round(
+								focalPoint.x * 100
+							),
+							[`${prefix}position-left-unit-${breakpoint}`]: '%',
+							[`${prefix}position-right-${breakpoint}`]: '',
+							[`${prefix}position-bottom-${breakpoint}`]: '',
+						});
+					}}
+				/>
+			</div>
 			<div className='maxi-position-control__advanced-toggle'>
 				<Button onClick={() => setShowAdvanced(!showAdvanced)}>
 					{__('Show more layer placement settings', 'maxi-blocks')}

@@ -15,12 +15,13 @@
 		position: relative;
 		width: 100%;
 		height: 150px;
-		background: var(--maxi-whisper-green);
-		border: 1px solid var(--maxi-grey);
-		border-radius: 4px;
+		background: var(--maxi-whisper-green) !important;
+		border: 1.5px solid var(--maxi-primary-color) !important;
+		border-radius: 4px !important;
 		cursor: crosshair;
 		overflow: hidden;
 		user-select: none;
+		box-shadow: none !important;
 
 		&:hover {
 			border-color: var(--maxi-primary-color);

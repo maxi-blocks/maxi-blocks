@@ -43,6 +43,8 @@ export { default as placeholderColor } from './placeholderColor';
 export { default as position } from './position';
 export { default as repeater } from './repeater';
 export { default as rowPattern } from './rowPattern';
+export { default as rowCarousel } from './rowCarousel';
+export { default as rowCarouselNavigation } from './rowCarouselNavigation';
 export { default as scroll } from './scroll';
 export { default as searchButton } from './searchButton';
 export { default as shape } from './shape';

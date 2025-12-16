@@ -36,7 +36,11 @@ import RepeaterContext from './repeaterContext';
 import RowContext from './rowContext';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { getMaxiBlockAttributes } from '@components/maxi-block';
-import { getAttributeValue, getGroupAttributes } from '@extensions/styles';
+import {
+	getAttributeValue,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '@extensions/styles';
 import { retrieveInnerBlocksPositions } from '@extensions/repeater';
 import getRowGapProps from '@extensions/attributes/getRowGapProps';
 import getStyles from './styles';
@@ -62,6 +66,8 @@ class edit extends MaxiBlockComponent {
 	state = {
 		displayHandlers: false,
 		innerBlocksPositions: {},
+		carouselCurrentSlide: 0,
+		carouselSlidesWidth: {},
 	};
 
 	columnsSize = {};
@@ -196,6 +202,30 @@ class edit extends MaxiBlockComponent {
 		return maxiAttributes;
 	}
 
+	/**
+	 * Get custom data for row carousel
+	 * @returns {object|null} Custom data object
+	 */
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
+		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+		// Check if carousel is enabled on any breakpoint
+		const carouselEnabled = breakpoints.some(
+			bp => attributes[`row-carousel-status-${bp}`] === true
+		);
+
+		if (carouselEnabled) {
+			// eslint-disable-next-line no-console
+			console.log('MaxiRow: Carousel enabled, adding custom data');
+			return {
+				row_carousel: true,
+			};
+		}
+
+		return null;
+	}
+
 	updateInnerBlocksPositions = () => {
 		const newInnerBlocksPositions = retrieveInnerBlocksPositions(
 			!isEmpty(this.columnsClientIds)
@@ -228,6 +258,15 @@ class edit extends MaxiBlockComponent {
 		}
 
 		return this.state.innerBlocksPositions;
+	};
+
+	isCarouselEnabled = () => {
+		const { attributes, deviceType } = this.props;
+		return getLastBreakpointAttribute({
+			target: 'row-carousel-status',
+			breakpoint: deviceType,
+			attributes,
+		});
 	};
 
 	render() {
@@ -329,6 +368,20 @@ class edit extends MaxiBlockComponent {
 						attributes,
 						'borderRadius'
 					),
+					// Carousel context
+					carouselEnabled: this.isCarouselEnabled(),
+					carouselCurrentSlide: this.state.carouselCurrentSlide,
+					setCarouselCurrentSlide: slide =>
+						this.setState({ carouselCurrentSlide: slide }),
+					carouselSlidesWidth: this.state.carouselSlidesWidth,
+					setCarouselSlideWidth: (clientId, width) => {
+						this.setState({
+							carouselSlidesWidth: {
+								...this.state.carouselSlidesWidth,
+								[clientId]: width,
+							},
+						});
+					},
 				}}
 			>
 				<RepeaterContext.Provider value={repeaterContext}>

@@ -163,6 +163,7 @@ class MaxiBlocks_Styles
                 'map',
                 'accordion',
                 'slider',
+                'row-carousel',
                 'email-obfuscate'
             ];
 
@@ -211,8 +212,8 @@ class MaxiBlocks_Styles
 
                         $result_decoded = $result[$js_var];
 
-                        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects and slider meta
-                        if (in_array($js_var, ['bg_video', 'scroll_effects', 'slider'])) {
+                        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects, slider and row_carousel meta
+                        if (in_array($js_var, ['bg_video', 'scroll_effects', 'slider', 'row_carousel'])) {
                             $template_parts_meta = array_merge($template_parts_meta, [true]);
                         } elseif (is_array($result_decoded) && !empty($result_decoded)) {
                             $template_parts_meta = array_merge($template_parts_meta, $result_decoded);
@@ -1126,8 +1127,8 @@ class MaxiBlocks_Styles
 
         $result_decoded = $result[$metaJs];
 
-        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects and slider meta
-        if (in_array($metaJs, ['bg_video', 'scroll_effects', 'slider'])) {
+        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects, slider and row_carousel meta
+        if (in_array($metaJs, ['bg_video', 'scroll_effects', 'slider', 'row_carousel'])) {
             return [ true ];
         }
 
@@ -1469,6 +1470,7 @@ class MaxiBlocks_Styles
                 'map',
                 'accordion',
                 'slider',
+                'row-carousel',
                 'navigation',
                 'email-obfuscate',
             ];
@@ -1481,6 +1483,7 @@ class MaxiBlocks_Styles
                 'relations' => true,
                 'navigation' => true,
                 'email-obfuscate' => true,
+                'row-carousel' => true,
             ];
 
             $script_configs = [];

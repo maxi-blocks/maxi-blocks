@@ -26,6 +26,7 @@ export { default as repeater } from './inspector-repeater';
 export { default as repeaterInfoBox } from './repeater-info-box';
 export { default as responsive } from './inspector-responsive';
 export { default as responsiveInfoBox } from './inspector-responsive-info-box';
+export { default as rowCarousel } from './inspector-row-carousel';
 export { default as scrollEffects } from './inspector-scroll-effects';
 export { default as size } from './inspector-size';
 export { default as transform } from './inspector-transform';

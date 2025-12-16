@@ -121,6 +121,9 @@ const Inspector = props => {
 										props,
 										contentType: 'row',
 									}),
+									...inspectorTabs.rowCarousel({
+										props,
+									}),
 									...inspectorTabs.repeater({
 										props,
 										isRepeaterInherited,

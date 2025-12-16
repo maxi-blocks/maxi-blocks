@@ -1,0 +1,225 @@
+// Row Carousel Frontend Styles
+
+body.maxi-blocks--active {
+	// Only apply carousel styles when carousel structure exists (added by JavaScript)
+	.maxi-row-block[data-carousel-initialized='true'] {
+		position: relative;
+
+		.maxi-row-carousel__tracker {
+			position: relative; // So navigation is positioned within tracker, not row
+			height: 100%;
+			display: block;
+			// Width is set by JavaScript based on slidesPerView
+		}
+
+		.maxi-row-carousel__wrapper {
+			display: flex;
+			width: 100%;
+			height: 100%;
+			flex-wrap: wrap; // Normal wrap by default
+		}
+
+		// Navigation hidden by default
+		.maxi-row-carousel__nav {
+			display: none;
+		}
+
+		// Column (slide) styles - normal by default
+		.maxi-column-block {
+			flex-shrink: 0;
+		}
+
+		// Fade transition
+		&[data-transition='fade'] {
+			.maxi-row-carousel__wrapper {
+				position: relative;
+
+				.maxi-column-block {
+					transition: opacity 0.5s ease, visibility 0.5s ease;
+
+					&:not([data-carousel-active='true']) {
+						opacity: 0;
+						visibility: hidden;
+						pointer-events: none;
+						position: absolute;
+						top: 0;
+						left: 0;
+						z-index: 0;
+					}
+
+					&[data-carousel-active='true'] {
+						opacity: 1;
+						visibility: visible;
+						pointer-events: auto;
+						position: relative;
+						z-index: 1;
+					}
+				}
+			}
+		}
+
+		// Navigation arrows
+		.maxi-row-carousel__arrow {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			cursor: pointer;
+			z-index: 10;
+			transition: opacity 0.3s ease;
+
+			&:hover {
+				opacity: 0.8;
+			}
+
+			&--next {
+				right: 0;
+			}
+
+			&--prev {
+				left: 0;
+			}
+		}
+
+		// Navigation dots
+		.maxi-row-carousel__dots {
+			display: flex;
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 10;
+
+			.maxi-row-carousel__dot {
+				cursor: pointer;
+				transition: opacity 0.3s ease;
+
+				&:hover {
+					opacity: 0.8;
+				}
+
+				&--active {
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	// Breakpoint-specific carousel activation - Apply carousel styles only when active
+	.maxi-row-block[data-carousel-initialized='true'][data-carousel-general='true'] {
+		.maxi-row-carousel__tracker {
+			overflow: hidden;
+		}
+		.maxi-row-carousel__wrapper {
+			flex-wrap: nowrap !important;
+			transition: transform 0.5s ease-out;
+
+			> .maxi-column-block {
+				flex-shrink: 0;
+				// Width will be set by JavaScript based on tracker width / slidesPerView
+			}
+		}
+		.maxi-row-carousel__nav {
+			display: block;
+		}
+	}
+
+	@media (max-width: 1919px) {
+		.maxi-row-block[data-carousel-initialized='true'][data-carousel-xxl='true'] {
+			.maxi-row-carousel__tracker {
+				overflow: hidden;
+			}
+			.maxi-row-carousel__wrapper {
+				flex-wrap: nowrap !important;
+				transition: transform 0.5s ease-out;
+			}
+			.maxi-row-carousel__nav {
+				display: block;
+			}
+		}
+	}
+
+	@media (max-width: 1535px) {
+		.maxi-row-block[data-carousel-initialized='true'][data-carousel-xl='true'] {
+			.maxi-row-carousel__tracker {
+				overflow: hidden;
+			}
+			.maxi-row-carousel__wrapper {
+				flex-wrap: nowrap !important;
+				transition: transform 0.5s ease-out;
+			}
+			.maxi-row-carousel__nav {
+				display: block;
+			}
+		}
+	}
+
+	@media (max-width: 1279px) {
+		.maxi-row-block[data-carousel-initialized='true'][data-carousel-l='true'] {
+			.maxi-row-carousel__tracker {
+				overflow: hidden;
+			}
+			.maxi-row-carousel__wrapper {
+				flex-wrap: nowrap !important;
+				transition: transform 0.5s ease-out;
+			}
+			.maxi-row-carousel__nav {
+				display: block;
+			}
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.maxi-row-block[data-carousel-initialized='true'][data-carousel-m='true'] {
+			.maxi-row-carousel__tracker {
+				overflow: hidden;
+			}
+			.maxi-row-carousel__wrapper {
+				flex-wrap: nowrap !important;
+				transition: transform 0.5s ease-out;
+			}
+			.maxi-row-carousel__nav {
+				display: block;
+			}
+		}
+	}
+
+	@media (max-width: 767px) {
+		.maxi-row-block[data-carousel-initialized='true'][data-carousel-s='true'] {
+			.maxi-row-carousel__tracker {
+				overflow: hidden;
+			}
+			.maxi-row-carousel__wrapper {
+				flex-wrap: nowrap !important;
+				transition: transform 0.5s ease-out;
+			}
+			.maxi-row-carousel__nav {
+				display: block;
+			}
+		}
+	}
+
+	@media (max-width: 479px) {
+		.maxi-row-block[data-carousel-initialized='true'][data-carousel-xs='true'] {
+			.maxi-row-carousel__tracker {
+				overflow: hidden;
+			}
+			.maxi-row-carousel__wrapper {
+				flex-wrap: nowrap !important;
+				transition: transform 0.5s ease-out;
+			}
+			.maxi-row-carousel__nav {
+				display: block;
+			}
+		}
+	}
+}
+
+// Fade animation
+@keyframes maxiRowCarouselFade {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

@@ -1,19 +1,130 @@
+.maxi-base-control__label-crop {
+    position: relative;
+    top: 8px;
+    left: 8px;
+    font-size: 10px !important;
+    z-index: 2;
+    background-color: white;
+    width: fit-content;
+	padding: 0 5px;
+}
+
 .maxi-image-crop-control {
 	margin-bottom: 8px;
 	.ReactCrop__crop-selection {
 		background: transparent;
 	}
+
 	&__options {
 		display: flex;
-		margin: 10px 0;
-		label {
-			width: 20%;
-			margin-right: 5px;
-			&:last-child {
+		flex-direction: column;
+
+
+		.maxi-image-crop-control__row {
+			display: flex;
+			gap: 5px;
+			width: 100%;
+
+			label {
 				margin-right: 0;
 			}
+
+			&--top label {
+				width: 50%;
+			}
+
+			&--bottom label {
+				width: 33.33%;
+			}
+		}
+
+		label {
+			display: flex;
+			flex-direction: column;
+			
+
+			.maxi-image-crop-control__input-wrapper {
+				position: relative;
+				width: 100%;
+			}
+
 			input[type='number'] {
 				width: 100%;
+				border-color: var(--maxi-grey-light);
+				-moz-appearance: textfield;
+				appearance: textfield;
+
+				&::-webkit-outer-spin-button,
+				&::-webkit-inner-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+			}
+
+			.maxi-image-crop-control__spinner-container {
+				position: absolute;
+				right: 2px;
+				top: 50%;
+				transform: translateY(-50%);
+				display: flex;
+				flex-direction: column;
+				gap: -1px;
+				z-index: 1;
+
+				// Divider line
+				&::before {
+					content: '';
+					position: absolute;
+					left: -3px;
+					top: 50%;
+					transform: translateY(-50%);
+					width: 1px;
+					height: 18px;
+					background-color: var(--maxi-grey-light);
+					pointer-events: none;
+				}
+			}
+
+			.maxi-image-crop-control__spinner-button {
+				width: 16px;
+				height: 12px;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				position: relative;
+
+				background: transparent;
+				border: none;
+				border-radius: 2px;
+				color: var(--maxi-grey);
+				cursor: pointer;
+				transition: all 200ms ease;
+
+				svg {
+					pointer-events: none;
+					transition: inherit;
+				}
+
+				&--down {
+					border-top: 1px solid var(--maxi-grey);
+				}
+
+				&:hover {
+					color: var(--maxi-primary-color);
+					background: var(--maxi-whisper-green);
+					svg {
+						color: var(--maxi-primary-color);
+					}
+				}
+
+				&:disabled {
+					color: var(--maxi-grey);
+					cursor: not-allowed;
+					&:hover {
+						background: transparent;
+					}
+				}
 			}
 		}
 	}

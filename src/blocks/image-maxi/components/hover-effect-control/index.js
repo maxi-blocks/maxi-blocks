@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import { useDebounce } from '@wordpress/compose';
 
 /**
@@ -611,7 +611,19 @@ const HoverEffectControl = props => {
 
 const DebouncedTextareaControl = ({ value, onChange, ...props }) => {
 	const [localValue, setLocalValue] = useState(value);
-	const debouncedOnChange = useDebounce(onChange, 300);
+	const onChangeRef = useRef(onChange);
+
+	useEffect(() => {
+		onChangeRef.current = onChange;
+	}, [onChange]);
+
+	const delayedChange = useCallback(val => {
+		if (onChangeRef.current) {
+			onChangeRef.current(val);
+		}
+	}, []);
+
+	const debouncedOnChange = useDebounce(delayedChange, 300);
 
 	useEffect(() => {
 		setLocalValue(value);

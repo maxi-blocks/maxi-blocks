@@ -79,12 +79,15 @@ class MaxiRowCarousel {
 		this.hoverPause = this._container.dataset.carouselHoverPause === 'true';
 		this.interactionPause =
 			this._container.dataset.carouselInteractionPause === 'true';
+		// Convert seconds to milliseconds
 		this.autoplaySpeed =
-			parseInt(this._container.dataset.carouselAutoplaySpeed, 10) || 2500;
+			(parseFloat(this._container.dataset.carouselAutoplaySpeed) || 2.5) *
+			1000;
 		this.transition = this._container.dataset.carouselTransition || 'slide';
+		// Convert seconds to milliseconds
 		this.transitionSpeed =
-			parseInt(this._container.dataset.carouselTransitionSpeed, 10) ||
-			500;
+			(parseFloat(this._container.dataset.carouselTransitionSpeed) ||
+				0.5) * 1000;
 
 		// eslint-disable-next-line no-console
 		console.log('MaxiRowCarousel: slidesPerView =', this.slidesPerView);

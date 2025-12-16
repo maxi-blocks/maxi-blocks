@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import SelectControl from '@components/select-control';
+import AlignmentControl from '@components/alignment-control';
 import NavigationIconsControl from '@blocks/slider-maxi/components/navigation-control/navigation-control';
 import {
 	getLastBreakpointAttribute,
@@ -95,6 +96,18 @@ const RowCarouselControl = ({ props }) => {
 							})
 						}
 					/>
+					<AlignmentControl
+						label={__('Alignment', 'maxi-blocks')}
+						{...getGroupAttributes(
+							attributes,
+							'rowCarouselAlignment'
+						)}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						prefix='row-carousel-'
+						disableJustify
+						disableRTC
+					/>
 					<AdvancedNumberControl
 						label={__('Gap between columns (px)', 'maxi-blocks')}
 						min={0}
@@ -137,7 +150,31 @@ const RowCarouselControl = ({ props }) => {
 						label={__('Autoplay', 'maxi-blocks')}
 						selected={isAutoplay}
 						onChange={val => {
-							onChange({ 'row-carousel-autoplay': val });
+							const updates = {
+								'row-carousel-autoplay': val,
+							};
+
+							// When enabling autoplay, also enable pause behaviors by default
+							if (val) {
+								if (
+									pauseOnHover === undefined ||
+									pauseOnHover === false
+								) {
+									updates[
+										'row-carousel-pause-on-hover'
+									] = true;
+								}
+								if (
+									pauseOnInteraction === undefined ||
+									pauseOnInteraction === false
+								) {
+									updates[
+										'row-carousel-pause-on-interaction'
+									] = true;
+								}
+							}
+
+							onChange(updates);
 						}}
 					/>
 					{isAutoplay && (
@@ -165,11 +202,11 @@ const RowCarouselControl = ({ props }) => {
 								}}
 							/>
 							<AdvancedNumberControl
-								label={__('Autoplay speed (ms)', 'maxi-blocks')}
-								min={500}
-								max={10000}
-								initial={2500}
-								step={100}
+								label={__('Autoplay speed (s)', 'maxi-blocks')}
+								min={0.5}
+								max={10}
+								initial={2.5}
+								step={0.1}
 								value={
 									attributes['row-carousel-autoplay-speed']
 								}
@@ -181,7 +218,7 @@ const RowCarouselControl = ({ props }) => {
 								}}
 								onReset={() =>
 									onChange({
-										'row-carousel-autoplay-speed': 2500,
+										'row-carousel-autoplay-speed': 2.5,
 									})
 								}
 							/>
@@ -214,11 +251,11 @@ const RowCarouselControl = ({ props }) => {
 						}
 					/>
 					<AdvancedNumberControl
-						label={__('Transition speed (ms)', 'maxi-blocks')}
+						label={__('Transition speed (s)', 'maxi-blocks')}
 						min={0}
-						max={10000}
-						initial={500}
-						step={100}
+						max={10}
+						initial={0.5}
+						step={0.1}
 						value={attributes['row-carousel-transition-speed']}
 						onChangeValue={val => {
 							onChange({
@@ -228,7 +265,7 @@ const RowCarouselControl = ({ props }) => {
 						}}
 						onReset={() =>
 							onChange({
-								'row-carousel-transition-speed': 500,
+								'row-carousel-transition-speed': 0.5,
 							})
 						}
 					/>

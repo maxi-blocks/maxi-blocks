@@ -40,6 +40,7 @@ const attributes = {
 	 */
 	...attributesData.contextLoop,
 	...attributesData.rowCarousel,
+	...attributesData.rowCarouselAlignment,
 	...attributesData.navigation,
 	...attributesData.arrowIcon,
 	...attributesData.arrowIconHover,

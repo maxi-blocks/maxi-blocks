@@ -19,6 +19,12 @@ const save = props => {
 		const status = attributes[`row-carousel-status-${bp}`];
 		if (status === true) {
 			carouselDataAttrs[`data-carousel-${bp}`] = true;
+
+			// Add breakpoint-specific alignment - only if explicitly set
+			const alignment = attributes[`row-carousel-alignment-${bp}`];
+			if (alignment) {
+				carouselDataAttrs[`data-carousel-alignment-${bp}`] = alignment;
+			}
 		}
 	});
 

@@ -34,7 +34,7 @@ const rowCarousel = {
 	},
 	'row-carousel-autoplay-speed': {
 		type: 'number',
-		default: 2500,
+		default: 2.5,
 	},
 	'row-carousel-transition': {
 		type: 'string',
@@ -42,7 +42,7 @@ const rowCarousel = {
 	},
 	'row-carousel-transition-speed': {
 		type: 'number',
-		default: 500,
+		default: 0.5,
 	},
 	'row-carousel-column-gap': {
 		type: 'number',

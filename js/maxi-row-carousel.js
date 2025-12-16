@@ -70,6 +70,10 @@ class MaxiRowCarousel {
 		// Configuration from data attributes
 		this.slidesPerView =
 			parseInt(this._container.dataset.carouselSlidesPerView, 10) || 1;
+		this.carouselColumnGap =
+			parseInt(this._container.dataset.carouselColumnGap, 10) || 0;
+		this.peekOffset =
+			parseInt(this._container.dataset.carouselPeekOffset, 10) || 0;
 		this.isLoop = this._container.dataset.carouselLoop === 'true';
 		this.isAutoplay = this._container.dataset.carouselAutoplay === 'true';
 		this.hoverPause = this._container.dataset.carouselHoverPause === 'true';
@@ -287,27 +291,54 @@ class MaxiRowCarousel {
 	setColumnWidths() {
 		if (this.numberOfColumns === 0) return;
 
-		// Get the actual width of the first column (they should all be the same)
-		// This preserves the original column widths from the row pattern
-		const firstColumnWidth =
-			this._columns[0]._column.getBoundingClientRect().width;
+		// Get the actual width of each column from the ORIGINAL row
+		// We measure before carousel modifies anything
+		const firstColumn = this._columns[0]._column;
+		const firstColumnWidth = firstColumn.getBoundingClientRect().width;
 
-		// Set tracker width to show exactly slidesPerView columns (this is the "viewport")
-		const trackerWidth = firstColumnWidth * this.slidesPerView;
-		this._tracker.style.width = `${trackerWidth}px`;
-
-		// Set wrapper width to contain ALL columns at their full size
-		// The wrapper will slide within the tracker
-		const wrapperWidth = firstColumnWidth * this.numberOfColumns;
-		this._wrapper.style.width = `${wrapperWidth}px`;
-
-		// Columns keep their original widths - no changes needed
+		// Use the carousel-specific gap (not the row's gap)
+		const carouselGap = this.carouselColumnGap;
 
 		// eslint-disable-next-line no-console
 		console.log(
-			'MaxiRowCarousel: Column width:',
-			`${firstColumnWidth}px`,
-			'Tracker (viewport) width:',
+			'MaxiRowCarousel: Column debug:',
+			'Original column width:',
+			firstColumnWidth,
+			'Carousel gap between columns:',
+			carouselGap,
+			'Peek offset:',
+			this.peekOffset
+		);
+
+		// Calculate tracker width (the visible viewport):
+		// - Show slidesPerView columns at their original width
+		// - Add gaps BETWEEN visible columns (slidesPerView - 1 gaps)
+		// - Add peek offset to show a bit of the next column
+		const trackerWidth =
+			firstColumnWidth * this.slidesPerView +
+			carouselGap * (this.slidesPerView - 1) +
+			this.peekOffset;
+		this._tracker.style.width = `${trackerWidth}px`;
+
+		// Set each column to its original width explicitly
+		this._columns.forEach(column => {
+			column._column.style.width = `${firstColumnWidth}px`;
+			column._column.style.minWidth = `${firstColumnWidth}px`;
+			column._column.style.flexBasis = `${firstColumnWidth}px`;
+		});
+
+		// Set wrapper gap to the carousel gap (overrides row's gap)
+		this._wrapper.style.columnGap = `${carouselGap}px`;
+
+		// Calculate wrapper width to contain all columns with gaps
+		const wrapperWidth =
+			firstColumnWidth * this.numberOfColumns +
+			carouselGap * (this.numberOfColumns - 1);
+		this._wrapper.style.width = `${wrapperWidth}px`;
+
+		// eslint-disable-next-line no-console
+		console.log(
+			'MaxiRowCarousel: Tracker (viewport) width:',
 			`${trackerWidth}px`,
 			'Wrapper (total) width:',
 			`${wrapperWidth}px`,

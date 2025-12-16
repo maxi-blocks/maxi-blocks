@@ -31,6 +31,10 @@ const save = props => {
 	if (carouselEnabled) {
 		carouselDataAttrs['data-carousel-slides-per-view'] =
 			attributes['row-carousel-slides-per-view'] || 1;
+		carouselDataAttrs['data-carousel-column-gap'] =
+			attributes['row-carousel-column-gap'] || 0;
+		carouselDataAttrs['data-carousel-peek-offset'] =
+			attributes['row-carousel-peek-offset'] || 0;
 		carouselDataAttrs['data-carousel-loop'] =
 			attributes['row-carousel-loop'];
 		carouselDataAttrs['data-carousel-autoplay'] =

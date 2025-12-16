@@ -44,6 +44,14 @@ const rowCarousel = {
 		type: 'number',
 		default: 500,
 	},
+	'row-carousel-column-gap': {
+		type: 'number',
+		default: 0,
+	},
+	'row-carousel-peek-offset': {
+		type: 'number',
+		default: 0,
+	},
 };
 
 export default rowCarousel;

@@ -95,6 +95,44 @@ const RowCarouselControl = ({ props }) => {
 							})
 						}
 					/>
+					<AdvancedNumberControl
+						label={__('Gap between columns (px)', 'maxi-blocks')}
+						min={0}
+						max={100}
+						initial={0}
+						step={1}
+						value={attributes['row-carousel-column-gap']}
+						onChangeValue={val => {
+							onChange({
+								'row-carousel-column-gap':
+									val !== undefined ? val : '',
+							});
+						}}
+						onReset={() =>
+							onChange({
+								'row-carousel-column-gap': 0,
+							})
+						}
+					/>
+					<AdvancedNumberControl
+						label={__('Peek offset (px)', 'maxi-blocks')}
+						min={0}
+						max={200}
+						initial={0}
+						step={1}
+						value={attributes['row-carousel-peek-offset']}
+						onChangeValue={val => {
+							onChange({
+								'row-carousel-peek-offset':
+									val !== undefined ? val : '',
+							});
+						}}
+						onReset={() =>
+							onChange({
+								'row-carousel-peek-offset': 0,
+							})
+						}
+					/>
 					<ToggleSwitch
 						label={__('Autoplay', 'maxi-blocks')}
 						selected={isAutoplay}

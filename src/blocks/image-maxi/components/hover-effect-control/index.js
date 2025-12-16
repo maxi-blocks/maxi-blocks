@@ -2,6 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState, useEffect } from '@wordpress/element';
+import { useDebounce } from '@wordpress/compose';
 
 /**
  * External dependencies
@@ -418,7 +420,7 @@ const HoverEffectControl = props => {
 						]}
 						onChange={val => onChange({ 'hover-text-preset': val })}
 					/>
-					<TextareaControl
+					<DebouncedTextareaControl
 						placeholder={__(
 							'Add hover title text here',
 							'maxi-blocks'
@@ -469,7 +471,7 @@ const HoverEffectControl = props => {
 						/>
 					)}
 					<hr />
-					<TextareaControl
+					<DebouncedTextareaControl
 						placeholder={__(
 							'Add hover content text here',
 							'maxi-blocks'
@@ -604,6 +606,28 @@ const HoverEffectControl = props => {
 				</>
 			)}
 		</div>
+	);
+};
+
+const DebouncedTextareaControl = ({ value, onChange, ...props }) => {
+	const [localValue, setLocalValue] = useState(value);
+	const debouncedOnChange = useDebounce(onChange, 300);
+
+	useEffect(() => {
+		setLocalValue(value);
+	}, [value]);
+
+	const handleChange = newValue => {
+		setLocalValue(newValue);
+		debouncedOnChange(newValue);
+	};
+
+	return (
+		<TextareaControl
+			value={localValue}
+			onChange={handleChange}
+			{...props}
+		/>
 	);
 };
 

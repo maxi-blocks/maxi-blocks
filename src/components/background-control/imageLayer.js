@@ -252,67 +252,6 @@ const ImageLayerSettings = props => {
 					}
 				/>
 			)}
-			<div className='maxi-focal-point-picker'>
-			<FocalPointPicker
-			className='maxi-background-position-picker'
-				label={__('Background position', 'maxi-blocks')}
-				url={getAttributeValue({
-					target: 'background-image-mediaURL',
-					props: imageOptions,
-					prefix,
-				})}
-				value={{
-					x:
-						(getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width`,
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						}) ?? 50) / 100,
-					y:
-						(getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-height`,
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						}) ?? 50) / 100,
-				}}
-				onChange={focalPoint =>
-					onChange({
-						[getAttributeKey(
-							'background-image-position',
-							isHover,
-							prefix,
-							breakpoint
-						)]: 'custom',
-						[getAttributeKey(
-							'background-image-position-width',
-							isHover,
-							prefix,
-							breakpoint
-						)]: Math.round(focalPoint.x * 100),
-						[getAttributeKey(
-							'background-image-position-width-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: '%',
-						[getAttributeKey(
-							'background-image-position-height',
-							isHover,
-							prefix,
-							breakpoint
-						)]: Math.round(focalPoint.y * 100),
-						[getAttributeKey(
-							'background-image-position-height-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: '%',
-					})
-				}
-			/>
-		</div>
 			{!parallaxStatus && (
 				<>
 					<SelectControl
@@ -570,6 +509,69 @@ const ImageLayer = props => {
 				<>
 					{!imageOptions['dc-status'] && (
 						<>
+							{mediaID && (
+								<div className='maxi-focal-point-picker'>
+									<FocalPointPicker
+										className='maxi-background-position-picker'
+										label={__('Image focus', 'maxi-blocks')}
+										url={getAttributeValue({
+											target: 'background-image-mediaURL',
+											props: imageOptions,
+											prefix,
+										})}
+										value={{
+											x:
+												(getLastBreakpointAttribute({
+													target: `${prefix}background-image-position-width`,
+													breakpoint,
+													attributes: imageOptions,
+													isHover,
+												}) ?? 50) / 100,
+											y:
+												(getLastBreakpointAttribute({
+													target: `${prefix}background-image-position-height`,
+													breakpoint,
+													attributes: imageOptions,
+													isHover,
+												}) ?? 50) / 100,
+										}}
+										onChange={focalPoint =>
+											onChange({
+												[getAttributeKey(
+													'background-image-position',
+													isHover,
+													prefix,
+													breakpoint
+												)]: 'custom',
+												[getAttributeKey(
+													'background-image-position-width',
+													isHover,
+													prefix,
+													breakpoint
+												)]: Math.round(focalPoint.x * 100),
+												[getAttributeKey(
+													'background-image-position-width-unit',
+													isHover,
+													prefix,
+													breakpoint
+												)]: '%',
+												[getAttributeKey(
+													'background-image-position-height',
+													isHover,
+													prefix,
+													breakpoint
+												)]: Math.round(focalPoint.y * 100),
+												[getAttributeKey(
+													'background-image-position-height-unit',
+													isHover,
+													prefix,
+													breakpoint
+												)]: '%',
+											})
+										}
+									/>
+								</div>
+							)}
 							<MediaUploaderControl
 								mediaID={mediaID}
 								isImageUrl={getAttributeValue({

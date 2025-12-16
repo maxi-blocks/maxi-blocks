@@ -648,6 +648,10 @@ const getWrapperObject = ({
 
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 
+	const transforms = [];
+	let hasLeftOrRight = false;
+	let hasTopOrBottom = false;
+
 	keyWords.forEach(keyWord => {
 		const positionValue = getLastBreakpointAttribute({
 			target: `${prefix}position-${keyWord}`,
@@ -671,8 +675,29 @@ const getWrapperObject = ({
 				positionValue === 'auto'
 					? 'auto'
 					: `${positionValue}${positionUnit}`;
+
+			// Track which axes have position values
+			if (keyWord === 'left' || keyWord === 'right') {
+				hasLeftOrRight = positionValue !== 'auto';
+			}
+			if (keyWord === 'top' || keyWord === 'bottom') {
+				hasTopOrBottom = positionValue !== 'auto';
+			}
 		}
 	});
+
+	// Apply -50% transforms to center the element at the specified position
+	// This makes the element's center align with the position coordinates
+	if (hasLeftOrRight) {
+		transforms.push('translateX(-50%)');
+	}
+	if (hasTopOrBottom) {
+		transforms.push('translateY(-50%)');
+	}
+
+	if (transforms.length > 0) {
+		response[breakpoint]['transform'] = transforms.join(' ');
+	}
 
 	return !isEmpty(response[breakpoint]) ? response : {};
 };

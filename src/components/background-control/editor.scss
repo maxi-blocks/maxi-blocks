@@ -1,5 +1,14 @@
 body .maxi-background-control {
 	padding-top: 8px;
+
+	// Hide MediaUploader preview when FocalPointPicker is present
+	.maxi-background-control__image-layer:has(.maxi-focal-point-picker) {
+		.maxi-mediauploader-control__preview,
+		.maxi-mediauploader-control__image__preview {
+			display: none;
+		}
+	}
+
 	.maxi-tabs-control__full-width {
 		column-gap: 5px;
 		.maxi-tabs-control__button {
@@ -344,7 +353,7 @@ body.maxi-blocks--active .components-popover__fallback-container {
 			gap: 8px;
 			width: 100%;
 			margin-top: 0px;
-			margin-bottom: -20px;
+			margin-bottom: -30px;
 			
 
 			// Each input control (Left and Top)

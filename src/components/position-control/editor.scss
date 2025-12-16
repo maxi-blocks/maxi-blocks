@@ -1,0 +1,61 @@
+// Position Control Toggle Styles
+.maxi-position-control {
+	&__advanced-toggle {
+		margin-top: 8px;
+		margin-bottom: 8px;
+
+		.components-button {
+			justify-content: space-between !important;
+			width: 100% !important;
+			padding: 8px 10px !important;
+			font-size: 13px !important;
+			color: var(--maxi-grey-dark) !important;
+			background: var(--maxi-white) !important;
+			border: 1px solid var(--maxi-grey-light) !important;
+			border-radius: 4px !important;
+			transition: all 0.3s ease;
+
+			&:hover {
+				border-color: var(--maxi-primary-color) !important;
+				background: var(--maxi-whisper-green) !important;
+			}
+		}
+	}
+
+	&__toggle-arrow {
+		display: inline-flex;
+		margin-left: 8px;
+		transition: transform 0.3s ease;
+
+		svg {
+			width: 12px;
+			height: 12px;
+			fill: currentColor;
+		}
+
+		&--expanded {
+			transform: rotate(180deg);
+
+			svg {
+				width: 12px;
+				height: 12px;
+				fill: currentColor;
+			}
+		}
+	}
+
+	&__advanced-options {
+		animation: maxi-position-slideDown 0.3s ease-out;
+	}
+}
+
+@keyframes maxi-position-slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

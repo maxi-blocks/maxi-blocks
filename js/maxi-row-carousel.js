@@ -170,6 +170,7 @@ class MaxiRowCarousel {
 				'maxi-row-carousel__arrow maxi-row-carousel__arrow--prev';
 			prevArrow.innerHTML = arrowFirstContent;
 			nav.appendChild(prevArrow);
+			this._prevArrow = prevArrow;
 		}
 
 		if (arrowSecondContent) {
@@ -178,6 +179,7 @@ class MaxiRowCarousel {
 				'maxi-row-carousel__arrow maxi-row-carousel__arrow--next';
 			nextArrow.innerHTML = arrowSecondContent;
 			nav.appendChild(nextArrow);
+			this._nextArrow = nextArrow;
 		}
 
 		// Create dots container
@@ -342,6 +344,9 @@ class MaxiRowCarousel {
 
 		// Set first column as active
 		this._columns[0].isActive = true;
+
+		// Update arrow states based on initial position
+		this.updateArrowStates();
 	}
 
 	get numberOfSlides() {
@@ -465,18 +470,54 @@ class MaxiRowCarousel {
 	}
 
 	columnNext() {
+		// If loop is disabled, prevent going beyond last slide
+		if (!this.isLoop) {
+			const maxColumn = this.numberOfColumns - this.slidesPerView;
+			if (this.currentColumn >= maxColumn) {
+				return; // Already at the end
+			}
+		}
 		this.currentColumn += this.slidesPerView;
 		this.columnAction();
+		this.updateArrowStates();
 	}
 
 	columnPrev() {
+		// If loop is disabled, prevent going before first slide
+		if (!this.isLoop) {
+			if (this.currentColumn <= 0) {
+				return; // Already at the beginning
+			}
+		}
 		this.currentColumn -= this.slidesPerView;
 		this.columnAction();
+		this.updateArrowStates();
 	}
 
 	exactColumn(column) {
 		this.currentColumn = column;
 		this.columnAction();
+		this.updateArrowStates();
+	}
+
+	updateArrowStates() {
+		if (this.isLoop) {
+			// If loop is enabled, always show both arrows
+			if (this._prevArrow) this._prevArrow.style.display = '';
+			if (this._nextArrow) this._nextArrow.style.display = '';
+			return;
+		}
+
+		// Hide/show arrows based on position
+		if (this._prevArrow) {
+			this._prevArrow.style.display =
+				this.currentColumn <= 0 ? 'none' : '';
+		}
+		if (this._nextArrow) {
+			const maxColumn = this.numberOfColumns - this.slidesPerView;
+			this._nextArrow.style.display =
+				this.currentColumn >= maxColumn ? 'none' : '';
+		}
 	}
 
 	loop() {

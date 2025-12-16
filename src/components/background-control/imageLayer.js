@@ -503,6 +503,41 @@ const ImageLayer = props => {
 		});
 	};
 
+	const handleFocalPointChange = focalPoint => {
+		onChange({
+			[getAttributeKey(
+				'background-image-position',
+				isHover,
+				prefix,
+				breakpoint
+			)]: 'custom',
+			[getAttributeKey(
+				'background-image-position-width',
+				isHover,
+				prefix,
+				breakpoint
+			)]: Math.round(focalPoint.x * 100),
+			[getAttributeKey(
+				'background-image-position-width-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: '%',
+			[getAttributeKey(
+				'background-image-position-height',
+				isHover,
+				prefix,
+				breakpoint
+			)]: Math.round(focalPoint.y * 100),
+			[getAttributeKey(
+				'background-image-position-height-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: '%',
+		});
+	};
+
 	return (
 		<div className='maxi-background-control__image-layer'>
 			{!disableUpload && (
@@ -535,40 +570,7 @@ const ImageLayer = props => {
 													isHover,
 												}) ?? 50) / 100,
 										}}
-										onChange={focalPoint =>
-											onChange({
-												[getAttributeKey(
-													'background-image-position',
-													isHover,
-													prefix,
-													breakpoint
-												)]: 'custom',
-												[getAttributeKey(
-													'background-image-position-width',
-													isHover,
-													prefix,
-													breakpoint
-												)]: Math.round(focalPoint.x * 100),
-												[getAttributeKey(
-													'background-image-position-width-unit',
-													isHover,
-													prefix,
-													breakpoint
-												)]: '%',
-												[getAttributeKey(
-													'background-image-position-height',
-													isHover,
-													prefix,
-													breakpoint
-												)]: Math.round(focalPoint.y * 100),
-												[getAttributeKey(
-													'background-image-position-height-unit',
-													isHover,
-													prefix,
-													breakpoint
-												)]: '%',
-											})
-										}
+										onChange={handleFocalPointChange}
 									/>
 								</div>
 							)}

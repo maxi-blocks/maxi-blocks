@@ -104,20 +104,65 @@ const PositionControl = props => {
 		};
 	};
 
-	const PositionAxisControl = (
-		<AxisControl
-			{...props}
-			target='position'
-			prefix={prefix}
-			onChange={obj => onChange(obj)}
-			breakpoint={breakpoint}
-			minMaxSettings={minMaxSettings}
-			optionType='string'
-			enableAxisUnits
-			allowedUnits={['px', 'em', 'vw', '%', '-']}
-			isHover={isHover}
-			defaultAttributes={defaultAttributes}
-		/>
+	// Reusable component for the position picker and advanced settings
+	const PositionPickerSection = (
+		<>
+			<VisualPositionPicker
+				top={
+					getLastBreakpointAttribute({
+						target: `${prefix}position-top`,
+						breakpoint,
+						attributes: props,
+					}) || 0
+				}
+				left={
+					getLastBreakpointAttribute({
+						target: `${prefix}position-left`,
+						breakpoint,
+						attributes: props,
+					}) || 0
+				}
+				onChange={pos => {
+					onChange({
+						[`${prefix}position-top-${breakpoint}`]: pos.y,
+						[`${prefix}position-top-unit-${breakpoint}`]: '%',
+						[`${prefix}position-left-${breakpoint}`]: pos.x,
+						[`${prefix}position-left-unit-${breakpoint}`]: '%',
+						[`${prefix}position-right-${breakpoint}`]: '',
+						[`${prefix}position-bottom-${breakpoint}`]: '',
+					});
+				}}
+			/>
+			<div className='maxi-position-control__advanced-toggle'>
+				<Button onClick={() => setShowAdvanced(!showAdvanced)}>
+					{__('Show more layer placement settings', 'maxi-blocks')}
+					<span
+						className={`maxi-position-control__toggle-arrow${
+							showAdvanced ? '--expanded' : ''
+						}`}
+					>
+						{arrowDownIcon}
+					</span>
+				</Button>
+			</div>
+			{showAdvanced && (
+				<div className='maxi-position-control__advanced-options'>
+					<AxisControl
+						{...props}
+						target='position'
+						prefix={prefix}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						minMaxSettings={minMaxSettings}
+						optionType='string'
+						enableAxisUnits
+						allowedUnits={['px', 'em', 'vw', '%', '-']}
+						isHover={isHover}
+						defaultAttributes={defaultAttributes}
+					/>
+				</div>
+			)}
+		</>
 	);
 
 	return (
@@ -180,96 +225,10 @@ const PositionControl = props => {
 						target: `${prefix}position`,
 						breakpoint,
 						attributes: props,
-					}) !== 'inherit' && (
-						<>
-							<VisualPositionPicker
-								top={
-									getLastBreakpointAttribute({
-										target: `${prefix}position-top`,
-										breakpoint,
-										attributes: props,
-									}) || 0
-								}
-								left={
-									getLastBreakpointAttribute({
-										target: `${prefix}position-left`,
-										breakpoint,
-										attributes: props,
-									}) || 0
-								}
-								onChange={pos => {
-									onChange({
-										[`${prefix}position-top-${breakpoint}`]: pos.y,
-										[`${prefix}position-top-unit-${breakpoint}`]: '%',
-										[`${prefix}position-left-${breakpoint}`]: pos.x,
-										[`${prefix}position-left-unit-${breakpoint}`]: '%',
-										[`${prefix}position-right-${breakpoint}`]: '',
-										[`${prefix}position-bottom-${breakpoint}`]: '',
-									});
-								}}
-							/>
-							<div className='maxi-position-control__advanced-toggle'>
-								<Button
-									onClick={() => setShowAdvanced(!showAdvanced)}
-								>
-									{__('Show more layer placement settings', 'maxi-blocks')}
-									<span className={`maxi-position-control__toggle-arrow${showAdvanced ? '--expanded' : ''}`}>
-										{arrowDownIcon}
-									</span>
-								</Button>
-							</div>
-							{showAdvanced && (
-								<div className='maxi-position-control__advanced-options'>
-									{PositionAxisControl}
-								</div>
-							)}
-						</>
-					)}
+					}) !== 'inherit' && PositionPickerSection}
 				</>
 			) : (
-				<>
-					<VisualPositionPicker
-						top={
-							getLastBreakpointAttribute({
-								target: `${prefix}position-top`,
-								breakpoint,
-								attributes: props,
-							}) || 0
-						}
-						left={
-							getLastBreakpointAttribute({
-								target: `${prefix}position-left`,
-								breakpoint,
-								attributes: props,
-							}) || 0
-						}
-						onChange={pos => {
-							onChange({
-								[`${prefix}position-top-${breakpoint}`]: pos.y,
-								[`${prefix}position-top-unit-${breakpoint}`]: '%',
-								[`${prefix}position-left-${breakpoint}`]: pos.x,
-								[`${prefix}position-left-unit-${breakpoint}`]: '%',
-								[`${prefix}position-right-${breakpoint}`]: '',
-								[`${prefix}position-bottom-${breakpoint}`]: '',
-							});
-						}}
-					/>
-					<div className='maxi-position-control__advanced-toggle'>
-						<Button
-							onClick={() => setShowAdvanced(!showAdvanced)}
-						>
-							{__('Show more layer placement settings', 'maxi-blocks')}
-							<span className={`maxi-position-control__toggle-arrow${showAdvanced ? '--expanded' : ''}`}>
-								{arrowDownIcon}
-							</span>
-						</Button>
-					</div>
-					{showAdvanced && (
-						<div className='maxi-position-control__advanced-options'>
-							{PositionAxisControl}
-						</div>
-					)}
-				</>
+				PositionPickerSection
 			)}
 		</div>
 	);

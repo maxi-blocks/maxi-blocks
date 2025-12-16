@@ -678,10 +678,10 @@ const getWrapperObject = ({
 
 			// Track which axes have position values
 			if (keyWord === 'left' || keyWord === 'right') {
-				hasLeftOrRight = positionValue !== 'auto';
+				hasLeftOrRight = hasLeftOrRight || positionValue !== 'auto';
 			}
 			if (keyWord === 'top' || keyWord === 'bottom') {
-				hasTopOrBottom = positionValue !== 'auto';
+				hasTopOrBottom = hasTopOrBottom || positionValue !== 'auto';
 			}
 		}
 	});

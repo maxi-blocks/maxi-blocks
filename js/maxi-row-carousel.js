@@ -308,37 +308,47 @@ class MaxiRowCarousel {
 	}
 
 	deactivateCarousel() {
+		// eslint-disable-next-line no-console
+		console.log(
+			'MaxiRowCarousel: deactivateCarousel - removing carousel structure'
+		);
+
 		this.carouselActive = false;
 		// Remove active class to disable carousel CSS
 		this._container.classList.remove('maxi-row-carousel--active');
-		// Hide navigation if it exists
-		const nav = this._container.querySelector('.maxi-row-carousel__nav');
-		if (nav) nav.style.display = 'none';
-		// Reset transform if wrapper exists
-		if (this._wrapper) {
-			this._wrapper.style.transform = '';
-			this._wrapper.style.transition = '';
-			this._wrapper.style.width = '';
-			this._wrapper.style.columnGap = '';
-		}
-		// Reset tracker width if it exists
-		if (this._tracker) {
-			this._tracker.style.width = '';
-		}
-		// Reset column widths to allow normal row behavior
-		this._columns.forEach(column => {
-			column._column.style.width = '';
-			column._column.style.minWidth = '';
-			column._column.style.flexBasis = '';
-		});
-		// Hide clones if they exist
-		if (this._wrapper) {
-			const clones = this._wrapper.querySelectorAll(
-				'.carousel-item-clone'
+		this._container.removeAttribute('data-carousel-initialized');
+
+		// Move columns back to container and remove carousel structure
+		if (this._wrapper && this._tracker) {
+			// Get all real columns (not clones)
+			const realColumns = Array.from(
+				this._wrapper.querySelectorAll(
+					':scope > .maxi-column-block:not(.carousel-item-clone)'
+				)
 			);
-			clones.forEach(clone => {
-				clone.style.display = 'none';
+
+			// Reset column styles
+			realColumns.forEach(column => {
+				column.style.width = '';
+				column.style.minWidth = '';
+				column.style.flexBasis = '';
 			});
+
+			// Move columns back to container
+			realColumns.forEach(column => {
+				this._container.appendChild(column);
+			});
+
+			// Remove the tracker (which contains wrapper, nav, etc.)
+			this._tracker.remove();
+
+			// Clear references
+			this._tracker = null;
+			this._wrapper = null;
+			this._arrowNext = null;
+			this._arrowPrev = null;
+			this._dotsContainer = null;
+			this._dots = null;
 		}
 	}
 

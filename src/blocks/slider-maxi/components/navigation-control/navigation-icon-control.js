@@ -146,6 +146,45 @@ const NavigationIconControl = props => {
 	}${isActive ? 'Active' : ''}${isHover ? 'Hover' : ''}`;
 	const label = shortPrefix.includes('dot') ? 'dots' : 'arrows';
 
+	const spacingMinMaxSettings = {
+		px: {
+			min: -1200,
+			max: 1200,
+			minRange: -1200,
+			maxRange: 1200,
+		},
+		'%': {
+			min: -200,
+			max: 200,
+			minRange: -200,
+			maxRange: 200,
+		},
+		em: {
+			min: -100,
+			max: 100,
+			minRange: -100,
+			maxRange: 100,
+		},
+		rem: {
+			min: -100,
+			max: 100,
+			minRange: -100,
+			maxRange: 100,
+		},
+		vw: {
+			min: -200,
+			max: 200,
+			minRange: -200,
+			maxRange: 200,
+		},
+		vh: {
+			min: -200,
+			max: 200,
+			minRange: -200,
+			maxRange: 200,
+		},
+	};
+
 	return (
 		<div className={classes}>
 			{!isHover &&
@@ -348,18 +387,20 @@ const NavigationIconControl = props => {
 											onChange(
 												{
 													...onChangeObj,
-													'navigation-dot-icon-content':
-														(isHover
-															? setSVGContentHover
-															: setSVGContent)(
-															props[
-																'navigation-dot-icon-content'
-															],
-															paletteStatus
-																? fillColorStr
-																: color,
-															'fill'
-														),
+													...(!isActive && {
+														'navigation-dot-icon-content':
+															(isHover
+																? setSVGContentHover
+																: setSVGContent)(
+																props[
+																	'navigation-dot-icon-content'
+																],
+																paletteStatus
+																	? fillColorStr
+																	: color,
+																'fill'
+															),
+													}),
 												},
 												'[data-fill]'
 											);
@@ -606,8 +647,8 @@ const NavigationIconControl = props => {
 											)} horizontal spacing`,
 											'maxi-blocks'
 										)}
-										min={-300}
-										max={300}
+										min={-1200}
+										max={1200}
 										initial={1}
 										step={1}
 										breakpoint={breakpoint}
@@ -617,6 +658,25 @@ const NavigationIconControl = props => {
 											attributes: props,
 											isHover,
 										})}
+										enableUnit
+										unit={getLastBreakpointAttribute({
+											target: `${prefix}spacing-horizontal-unit`,
+											breakpoint,
+											attributes: props,
+										})}
+										onChangeUnit={val =>
+											onChange({
+												[getAttributeKey(
+													'spacing-horizontal-unit',
+													isHover,
+													prefix,
+													breakpoint
+												)]: val,
+											})
+										}
+										minMaxSettings={
+											spacingMinMaxSettings
+										}
 										onChangeValue={val => {
 											onChange({
 												[getAttributeKey(
@@ -646,6 +706,19 @@ const NavigationIconControl = props => {
 														breakpoint
 													)
 												),
+												[getAttributeKey(
+													'spacing-horizontal-unit',
+													isHover,
+													prefix,
+													breakpoint
+												)]: getDefaultAttribute(
+													getAttributeKey(
+														'spacing-horizontal-unit',
+														isHover,
+														prefix,
+														breakpoint
+													)
+												),
 											})
 										}
 										isHover={isHover}
@@ -668,6 +741,25 @@ const NavigationIconControl = props => {
 											attributes: props,
 											isHover,
 										})}
+										enableUnit
+										unit={getLastBreakpointAttribute({
+											target: `${prefix}spacing-vertical-unit`,
+											breakpoint,
+											attributes: props,
+										})}
+										onChangeUnit={val =>
+											onChange({
+												[getAttributeKey(
+													'spacing-vertical-unit',
+													isHover,
+													prefix,
+													breakpoint
+												)]: val,
+											})
+										}
+										minMaxSettings={
+											spacingMinMaxSettings
+										}
 										onChangeValue={val => {
 											onChange({
 												[getAttributeKey(
@@ -697,6 +789,19 @@ const NavigationIconControl = props => {
 														breakpoint
 													)
 												),
+												[getAttributeKey(
+													'spacing-vertical-unit',
+													isHover,
+													prefix,
+													breakpoint
+												)]: getDefaultAttribute(
+													getAttributeKey(
+														'spacing-vertical-unit',
+														isHover,
+														prefix,
+														breakpoint
+													)
+												),
 											})
 										}
 										isHover={isHover}
@@ -718,6 +823,25 @@ const NavigationIconControl = props => {
 												attributes: props,
 												isHover,
 											})}
+											enableUnit
+											unit={getLastBreakpointAttribute({
+												target: `${prefix}spacing-between-unit`,
+												breakpoint,
+												attributes: props,
+											})}
+											onChangeUnit={val =>
+												onChange({
+													[getAttributeKey(
+														'spacing-between-unit',
+														isHover,
+														prefix,
+														breakpoint
+													)]: val,
+												})
+											}
+											minMaxSettings={
+												spacingMinMaxSettings
+											}
 											onChangeValue={val => {
 												onChange({
 													[getAttributeKey(
@@ -742,6 +866,19 @@ const NavigationIconControl = props => {
 													)]: getDefaultAttribute(
 														getAttributeKey(
 															'spacing-between',
+															isHover,
+															prefix,
+															breakpoint
+														)
+													),
+													[getAttributeKey(
+														'spacing-between-unit',
+														isHover,
+														prefix,
+														breakpoint
+													)]: getDefaultAttribute(
+														getAttributeKey(
+															'spacing-between-unit',
 															isHover,
 															prefix,
 															breakpoint

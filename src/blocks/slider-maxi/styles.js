@@ -297,8 +297,21 @@ const getIconSpacing = (
 			attributes: props,
 			isHover,
 		});
+		const horizontalSpacingUnit = getLastBreakpointAttribute({
+			target: `${prefix}icon-spacing-horizontal-unit`,
+			breakpoint,
+			attributes: props,
+			isHover,
+		});
+
 		const verticalSpacing = getLastBreakpointAttribute({
 			target: `${prefix}icon-spacing-vertical`,
+			breakpoint,
+			attributes: props,
+			isHover,
+		});
+		const verticalSpacingUnit = getLastBreakpointAttribute({
+			target: `${prefix}icon-spacing-vertical-unit`,
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -306,15 +319,15 @@ const getIconSpacing = (
 
 		if (!isNil(horizontalSpacing)) {
 			if (icon === 'prev')
-				responsive[breakpoint].left = `${-horizontalSpacing}px`;
+				responsive[breakpoint].left = `${-horizontalSpacing}${horizontalSpacingUnit}`;
 			if (icon === 'next')
-				responsive[breakpoint].right = `${-horizontalSpacing}px`;
+				responsive[breakpoint].right = `${-horizontalSpacing}${horizontalSpacingUnit}`;
 			if (icon === 'dots')
-				responsive[breakpoint].left = `${horizontalSpacing}%`;
+				responsive[breakpoint].left = `${horizontalSpacing}${horizontalSpacingUnit}`;
 		}
 
 		if (!isNil(verticalSpacing)) {
-			responsive[breakpoint].top = `${verticalSpacing}%`;
+			responsive[breakpoint].top = `${verticalSpacing}${verticalSpacingUnit}`;
 		}
 	});
 
@@ -354,7 +367,12 @@ const getIconSpacingBetween = (
 				breakpoint,
 				attributes: props,
 				isHover,
-			})}px`;
+			})}${getLastBreakpointAttribute({
+				target: `${prefix}icon-spacing-between-unit`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}`;
 		}
 	});
 

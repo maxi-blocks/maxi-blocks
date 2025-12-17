@@ -73,9 +73,17 @@ const arrowIcon = {
 				type: 'number',
 				default: -40,
 			},
+			'navigation-arrow-both-icon-spacing-horizontal-unit': {
+				type: 'string',
+				default: 'px',
+			},
 			'navigation-arrow-both-icon-spacing-vertical': {
 				type: 'number',
 				default: 50,
+			},
+			'navigation-arrow-both-icon-spacing-vertical-unit': {
+				type: 'string',
+				default: '%',
 			},
 		},
 	}),

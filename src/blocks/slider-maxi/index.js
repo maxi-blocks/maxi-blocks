@@ -26,7 +26,7 @@ import { sliderIcon } from '@maxi-icons';
  * Migrators
  */
 import { blockMigrator } from '@extensions/styles/migrators';
-import sliderTransitionMigrator from '@extensions/styles/migrators/sliderTransitionMigrator';
+
 
 /**
  * Block
@@ -47,7 +47,7 @@ registerBlockType(metadata, {
 		attributes,
 		save,
 		selectors: customCss.selectors,
-		migrators: [sliderTransitionMigrator],
+		migrators: [],
 	}),
 	customCss,
 });

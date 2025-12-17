@@ -625,6 +625,15 @@ const DebouncedTextareaControl = ({ value, onChange, ...props }) => {
 
 	const debouncedOnChange = useDebounce(delayedChange, 300);
 
+	useEffect(
+		() => () => {
+			if (debouncedOnChange?.flush) {
+				debouncedOnChange.flush();
+			}
+		},
+		[debouncedOnChange]
+	);
+
 	useEffect(() => {
 		setLocalValue(value);
 	}, [value]);

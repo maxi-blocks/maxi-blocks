@@ -198,7 +198,7 @@ const NavigationIconControl = props => {
 									disableHeightFitContent
 								/>
 							)}
-							{!isActive && iconStyle === 'fill' && svgType !== 'Line' && (
+							{iconStyle === 'fill' && svgType !== 'Line' && (
 								<ColorControl
 									label={__(
 										`${capitalize(label)} fill colour`,

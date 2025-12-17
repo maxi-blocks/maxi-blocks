@@ -30,7 +30,7 @@ import {
 	getIconSize,
 	getIconPathStyles,
 } from '@extensions/styles/helpers';
-import data, { customCss } from './data';
+import data from './data';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

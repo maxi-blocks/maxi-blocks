@@ -164,20 +164,31 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 				prefix: iconPrefix,
 				blockStyle: props.blockStyle,
 			}),
-		border:
-			props[`${iconPrefix}status-border`] &&
-			getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
-						false,
-						prefix
-					),
-				},
-				prefix: iconPrefix,
-				blockStyle: props.blockStyle,
-			}),
+		border: props[`${iconPrefix}status-border`]
+			? getBorderStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							[
+								'iconBorder',
+								'iconBorderWidth',
+								'iconBorderRadius',
+							],
+							false,
+							prefix
+						),
+					},
+					prefix: iconPrefix,
+					blockStyle: props.blockStyle,
+			  })
+			: {
+					general: {
+						border: 'none !important',
+						'border-style': 'none !important',
+						'border-width': '0 !important',
+						'border-radius': '0 !important',
+					},
+			  },
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'iconPadding', false, prefix),

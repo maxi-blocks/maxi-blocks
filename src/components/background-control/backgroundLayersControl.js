@@ -60,6 +60,7 @@ const getLayerCardContent = props => {
 		getBounds,
 		getBlockClipPath, // for IB
 		clientId,
+		blockAttributes, // for IB reset
 	} = props;
 
 	const handleGetBounds = () =>
@@ -68,6 +69,17 @@ const getLayerCardContent = props => {
 		);
 
 	const handleGetBlockClipPath = () => getBlockClipPath(layer.id);
+
+	// For IB, find the corresponding layer in the block's background-layers
+	const getBlockLayer = () => {
+		if (!isIB || !blockAttributes || !blockAttributes['background-layers']) {
+			return null;
+		}
+		// Match by order since layers should be in the same order
+		return blockAttributes['background-layers'].find(
+			l => l.order === layer.order && l.type === 'color'
+		);
+	};
 
 	switch (layer.type) {
 		case 'color':
@@ -85,10 +97,12 @@ const getLayerCardContent = props => {
 							);
 					}}
 					onChange={obj => {
+						const { isReset, ...restObj } = obj;
 						onChange(
 							{
 								...layer,
-								...handleOnChangeLayer(obj, layer, isHover),
+								...handleOnChangeLayer(restObj, layer, isHover),
+								...(isReset && { isReset: true }),
 							},
 							`.maxi-background-displayer__${layer.order}`
 						);
@@ -100,6 +114,7 @@ const getLayerCardContent = props => {
 					clientId={clientId}
 					getBounds={handleGetBounds}
 					getBlockClipPath={handleGetBlockClipPath}
+					blockAttributes={getBlockLayer()}
 				/>
 			);
 		case 'image':
@@ -406,6 +421,7 @@ const BackgroundLayersControl = ({
 	disableAddLayer,
 	getBounds,
 	getBlockClipPath, // for IB
+	blockAttributes, // for IB reset
 }) => {
 	const previewRef = useRef(null);
 
@@ -550,6 +566,7 @@ const BackgroundLayersControl = ({
 										getBounds,
 										getBlockClipPath, // for IB
 										clientId,
+										blockAttributes,
 									})}
 									id={layer.order}
 									onRemove={() => onRemoveLayer(layer)}

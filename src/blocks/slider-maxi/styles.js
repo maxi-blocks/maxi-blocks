@@ -30,7 +30,7 @@ import {
 	getIconSize,
 	getIconPathStyles,
 } from '@extensions/styles/helpers';
-import { customCss } from './data';
+import data, { customCss } from './data';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -520,7 +520,7 @@ const getStyles = props => {
 				}),
 				...getDotsIconObject(props),
 			},
-			customCss.selectorsSlider,
+			data,
 			props
 		),
 	};

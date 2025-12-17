@@ -3,7 +3,7 @@
  */
 import { transitionAttributesCreator } from '@extensions/styles';
 import * as attributesData from '@extensions/styles/defaults/index';
-import { customCss } from './data';
+import { customCss, transition } from './data';
 
 /**
  * Attributes
@@ -78,7 +78,10 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator({ selectors: customCss.selectors }),
+		...transitionAttributesCreator({
+			transition,
+			selectors: customCss.selectors,
+		}),
 	},
 	...attributesData.display,
 	...attributesData.opacity,

@@ -23,6 +23,12 @@ import './editor.scss';
 import { sliderIcon } from '@maxi-icons';
 
 /**
+ * Migrators
+ */
+import { blockMigrator } from '@extensions/styles/migrators';
+import sliderTransitionMigrator from '@extensions/styles/migrators/sliderTransitionMigrator';
+
+/**
  * Block
  */
 const { title, description, category, example, parent } = metadata;
@@ -37,5 +43,11 @@ registerBlockType(metadata, {
 	attributes,
 	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		selectors: customCss.selectors,
+		migrators: [sliderTransitionMigrator],
+	}),
 	customCss,
 });

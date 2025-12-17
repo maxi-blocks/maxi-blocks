@@ -289,6 +289,20 @@ class MaxiRowCarousel {
 			this.isInteracting = false;
 			this.isHovering = false;
 
+			// Bind methods if not already bound
+			if (!this.onDragStart) {
+				this.onDragStart = this.dragStart.bind(this);
+				this.onDragAction = this.dragAction.bind(this);
+				this.onDragEnd = this.dragEnd.bind(this);
+				this.onHoverEnd = this.onHover.bind(this, true);
+				this.onHover = this.onHover.bind(this, false);
+				this.exactColumn = this.exactColumn.bind(this);
+			}
+
+			// Set up hover event listeners
+			this._container.addEventListener('mouseenter', this.onHover);
+			this._container.addEventListener('mouseleave', this.onHoverEnd);
+
 			// Set up autoplay if enabled
 			const isPaused = () => {
 				if (this.hoverPause && this.isHovering) return true;
@@ -338,6 +352,12 @@ class MaxiRowCarousel {
 			console.log('MaxiRowCarousel: Clearing autoplay interval');
 			clearInterval(this.autoplayInterval);
 			this.autoplayInterval = null;
+		}
+
+		// Remove hover event listeners
+		if (this.onHover && this.onHoverEnd) {
+			this._container.removeEventListener('mouseenter', this.onHover);
+			this._container.removeEventListener('mouseleave', this.onHoverEnd);
 		}
 
 		// Remove active class to disable carousel CSS

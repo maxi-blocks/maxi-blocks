@@ -89,9 +89,6 @@ class MaxiRowCarousel {
 			(parseFloat(this._container.dataset.carouselTransitionSpeed) ||
 				0.5) * 1000;
 
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarousel: slidesPerView =', this.slidesPerView);
-
 		// Navigation
 		this._arrowNext = this._container.querySelector(
 			'.maxi-row-carousel__arrow--next'
@@ -223,24 +220,24 @@ class MaxiRowCarousel {
 			return this.realFirstElOffset;
 		}
 
-		// For slide transitions, calculate position
-		if (this._currentColumn < 0) {
-			return (
-				this.realFirstElOffset -
-				(this._columns
-					.slice(this.currentColumn)
-					.map(column => column.size.width)
-					?.reduce((acc, cur) => acc + cur) ?? 0)
-			);
+		if (this.currentColumn === 0) {
+			return this.realFirstElOffset;
 		}
 
-		return this.currentColumn === 0
-			? this.realFirstElOffset
-			: (this._columns
-					.slice(0, this.currentColumn)
-					.map(column => column.size.width)
-					?.reduce((acc, cur) => acc + cur) ?? 0) +
-					this.realFirstElOffset;
+		// Get the first column width for calculations
+		const firstColumnWidth = this._columns[0]?.size?.width || 0;
+
+		// For slide transitions, calculate position based on currentColumn
+		// Each column has the same width, and gaps between them
+		const columnsToScroll = Math.min(
+			this.currentColumn,
+			this.numberOfColumns
+		);
+		const columnsWidth = firstColumnWidth * columnsToScroll;
+		const totalGaps = this.carouselColumnGap * columnsToScroll;
+		const position = columnsWidth + totalGaps + this.realFirstElOffset;
+
+		return position;
 	}
 
 	get wrapperTranslate() {
@@ -279,15 +276,6 @@ class MaxiRowCarousel {
 		const attr = this._container.getAttribute(`data-carousel-${currentBP}`);
 		const isEnabled = attr === 'true' || attr === true;
 
-		console.log(
-			'MaxiRowCarousel: Checking breakpoint',
-			currentBP,
-			'width:',
-			width,
-			'enabled:',
-			isEnabled
-		);
-
 		return isEnabled;
 	}
 
@@ -295,23 +283,9 @@ class MaxiRowCarousel {
 		if (this.numberOfColumns === 0) return;
 
 		// Get the actual width of each column from the ORIGINAL row
-		// We measure before carousel modifies anything
 		const firstColumn = this._columns[0]._column;
 		const firstColumnWidth = firstColumn.getBoundingClientRect().width;
-
-		// Use the carousel-specific gap (not the row's gap)
 		const carouselGap = this.carouselColumnGap;
-
-		// eslint-disable-next-line no-console
-		console.log(
-			'MaxiRowCarousel: Column debug:',
-			'Original column width:',
-			firstColumnWidth,
-			'Carousel gap between columns:',
-			carouselGap,
-			'Peek offset:',
-			this.peekOffset
-		);
 
 		// Calculate tracker width (the visible viewport):
 		// - Show slidesPerView columns at their original width
@@ -330,33 +304,27 @@ class MaxiRowCarousel {
 			column._column.style.flexBasis = `${firstColumnWidth}px`;
 		});
 
+		// Also set widths for cloned columns
+		const clones = this._wrapper.querySelectorAll('.carousel-item-clone');
+		clones.forEach(clone => {
+			clone.style.width = `${firstColumnWidth}px`;
+			clone.style.minWidth = `${firstColumnWidth}px`;
+			clone.style.flexBasis = `${firstColumnWidth}px`;
+		});
+
 		// Set wrapper gap to the carousel gap (overrides row's gap)
 		this._wrapper.style.columnGap = `${carouselGap}px`;
 
-		// Calculate wrapper width to contain all columns with gaps
+		// Calculate wrapper width to contain all columns (real + clones) with gaps
+		const totalChildren = this._wrapper.children.length;
 		const wrapperWidth =
-			firstColumnWidth * this.numberOfColumns +
-			carouselGap * (this.numberOfColumns - 1);
+			firstColumnWidth * totalChildren +
+			carouselGap * (totalChildren - 1);
 		this._wrapper.style.width = `${wrapperWidth}px`;
-
-		// eslint-disable-next-line no-console
-		console.log(
-			'MaxiRowCarousel: Tracker (viewport) width:',
-			`${trackerWidth}px`,
-			'Wrapper (total) width:',
-			`${wrapperWidth}px`,
-			'slidesPerView:',
-			this.slidesPerView,
-			'Total columns:',
-			this.numberOfColumns
-		);
 	}
 
 	init() {
 		if (this.numberOfColumns === 0) return;
-
-		// Set column widths
-		this.setColumnWidths();
 
 		// Set transition attribute
 		this._container.setAttribute('data-transition', this.transition);
@@ -366,7 +334,18 @@ class MaxiRowCarousel {
 			this.generateDots();
 		}
 
-		if (this.isLoop) this.insertColumnClones(2);
+		// Create enough clones to support slidesPerView BEFORE setting widths
+		// Add extra clone if peek offset is set to ensure we always have content visible
+		if (this.isLoop) {
+			const numberOfClones =
+				this.peekOffset > 0
+					? this.slidesPerView + 1
+					: Math.max(this.slidesPerView, 1);
+			this.insertColumnClones(numberOfClones);
+		}
+
+		// Set column widths AFTER creating clones so clones get widths too
+		this.setColumnWidths();
 
 		// Init styles - but only set transform for slide transitions, not fade
 		if (this.transition !== 'fade') {
@@ -451,12 +430,17 @@ class MaxiRowCarousel {
 	}
 
 	insertColumnClones(numberOfClones) {
+		// Get original column width BEFORE adding clones
+		const firstColumn = this._columns[0]._column;
+		const columnWidth = firstColumn.getBoundingClientRect().width;
+
 		for (let i = 0; i < numberOfClones; i += 1) {
 			const frontClone = this.getColumnClone(i);
 			const backClone = this.getColumnClone(this.numberOfColumns - 1 - i);
 			this._wrapper.append(frontClone);
 			this._wrapper.prepend(backClone);
-			this.realFirstElOffset += backClone.getBoundingClientRect().width;
+			// Add the column width plus gap to offset
+			this.realFirstElOffset += columnWidth + this.carouselColumnGap;
 		}
 	}
 
@@ -464,13 +448,8 @@ class MaxiRowCarousel {
 		const columnClone = this._columns[index]._column.cloneNode(true);
 		columnClone.classList.add('carousel-item-clone');
 
-		// Remove IDs from clone and all its descendants to avoid duplicate IDs
-		if (columnClone.id) {
-			columnClone.removeAttribute('id');
-		}
-		columnClone.querySelectorAll('[id]').forEach(el => {
-			el.removeAttribute('id');
-		});
+		// Keep IDs on clones so they maintain their styles
+		// Duplicate IDs are acceptable for styling purposes
 
 		return columnClone;
 	}
@@ -555,14 +534,20 @@ class MaxiRowCarousel {
 	}
 
 	loop() {
+		// When we've scrolled past the last real column (into front clones)
 		if (this.currentColumn >= this.numberOfColumns) {
-			this.currentColumn = 0;
+			this.currentColumn %= this.numberOfColumns;
 			this.setActiveDot(this.currentColumn);
+			// Instantly jump back to the real first column without animation
 			this.columnAction(false);
 		}
+		// When we've scrolled before the first real column (into back clones)
 		if (this.currentColumn < 0) {
-			this.currentColumn = this.numberOfColumns - 1;
+			this.currentColumn =
+				this.numberOfColumns +
+				(this.currentColumn % this.numberOfColumns);
 			this.setActiveDot(this.currentColumn);
+			// Instantly jump to the real last column(s) without animation
 			this.columnAction(false);
 		}
 	}
@@ -647,13 +632,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		return hasCarousel;
 	});
 
-	console.log(
-		'MaxiRowCarousel: Found rows with carousel:',
-		carouselRows.length
-	);
-
 	carouselRows.forEach(row => {
-		console.log('MaxiRowCarousel: Initializing carousel for row', row);
 		new MaxiRowCarousel(row);
 	});
 });

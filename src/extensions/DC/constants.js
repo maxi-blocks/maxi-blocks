@@ -195,13 +195,15 @@ const generalTagFields = generalCategoryFields.filter(
 
 const buttonPostsPagesFields = [
 	...generalPostsPagesFields.filter(option =>
-		['title', 'author'].includes(option.value)
+		['title', 'author', 'static_text'].includes(option.value)
 	),
 ];
 
 const buttonPostsFields = [
 	...generalPostsFields.filter(option =>
-		['title', 'author', 'categories', 'tags'].includes(option.value)
+		['title', 'author', 'categories', 'tags', 'static_text'].includes(
+			option.value
+		)
 	),
 ];
 

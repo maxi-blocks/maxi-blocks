@@ -198,6 +198,175 @@ const NavigationIconControl = props => {
 									disableHeightFitContent
 								/>
 							)}
+							{!isActive && iconStyle === 'fill' && svgType !== 'Line' && (
+								<ColorControl
+									label={__(
+										`${capitalize(label)} fill colour`,
+										'maxi-blocks'
+									)}
+									color={
+										props[
+											getAttributeKey(
+												'fill-color',
+												isHover,
+												prefix
+											)
+										]
+									}
+									prefix={`${prefix}fill-`}
+									avoidBreakpointForDefault
+									paletteColor={
+										props[
+											getAttributeKey(
+												'fill-palette-color',
+												isHover,
+												prefix
+											)
+										]
+									}
+									paletteOpacity={
+										props[
+											getAttributeKey(
+												'fill-palette-opacity',
+												isHover,
+												prefix
+											)
+										]
+									}
+									paletteStatus={
+										props[
+											getAttributeKey(
+												'fill-palette-status',
+												isHover,
+												prefix
+											)
+										]
+									}
+									paletteSCStatus={
+										props[
+											getAttributeKey(
+												'fill-palette-sc-status',
+												isHover,
+												prefix
+											)
+										]
+									}
+									onChangeInline={({ color }) =>
+										onChangeInline &&
+										onChangeInline(
+											{ fill: color },
+											'[data-fill]',
+											true
+										)
+									}
+									onChange={({
+										color,
+										paletteColor,
+										paletteStatus,
+										paletteSCStatus,
+										paletteOpacity,
+									}) => {
+										const fillColorStr = getColorRGBAString(
+											paletteSCStatus
+												? {
+														firstVar: `color-${paletteColor}${
+															isHover ? '-hover' : ''
+														}`,
+														opacity: paletteOpacity,
+														blockStyle,
+												  }
+												: {
+														firstVar: getAttributeKey(
+															'fill',
+															isHover,
+															prefix
+														),
+														secondVar: `color-${paletteColor}${
+															isHover ? '-hover' : ''
+														}`,
+														opacity: paletteOpacity,
+														blockStyle,
+												  }
+										);
+										const onChangeObj = {
+											[getAttributeKey(
+												'fill-color',
+												isHover,
+												prefix
+											)]: color,
+											[getAttributeKey(
+												'fill-palette-color',
+												isHover,
+												prefix
+											)]: paletteColor,
+											[getAttributeKey(
+												'fill-palette-status',
+												isHover,
+												prefix
+											)]: paletteStatus,
+											[getAttributeKey(
+												'fill-palette-sc-status',
+												isHover,
+												prefix
+											)]: paletteSCStatus,
+											[getAttributeKey(
+												'fill-palette-opacity',
+												isHover,
+												prefix
+											)]: paletteOpacity,
+										};
+
+										shortPrefix === arrowShortPrefix &&
+											onChange(
+												{
+													...onChangeObj,
+													...['first', 'second'].reduce(
+														(prev, current) => {
+															return {
+																...prev,
+																[`navigation-arrow-${current}-icon-content`]:
+																	(isHover
+																		? setSVGContentHover
+																		: setSVGContent)(
+																		props[
+																			`navigation-arrow-${current}-icon-content`
+																		],
+																		paletteStatus
+																			? fillColorStr
+																			: color,
+																		'fill'
+																	),
+															};
+														},
+														{}
+													),
+												},
+												'[data-fill]'
+											);
+
+										shortPrefix === dotsShortPrefix &&
+											onChange(
+												{
+													...onChangeObj,
+													'navigation-dot-icon-content':
+														(isHover
+															? setSVGContentHover
+															: setSVGContent)(
+															props[
+																'navigation-dot-icon-content'
+															],
+															paletteStatus
+																? fillColorStr
+																: color,
+															'fill'
+														),
+												},
+												'[data-fill]'
+											);
+									}}
+									isHover={isHover}
+								/>
+							)}
 							{svgType !== 'Shape' && (
 								<SvgStrokeWidthControl
 									{...getGroupAttributes(
@@ -255,6 +424,176 @@ const NavigationIconControl = props => {
 										label
 									)} stroke width`}
 									breakpoint={breakpoint}
+									isHover={isHover}
+								/>
+							)}
+							{iconStyle === 'color' && svgType !== 'Shape' && (
+								<ColorControl
+									label={__(
+										`${capitalize(label)} line colour`,
+										'maxi-blocks'
+									)}
+									color={
+										props[
+											getAttributeKey(
+												'stroke-color',
+												isHover,
+												prefix
+											)
+										]
+									}
+									prefix={`${prefix}stroke-`}
+									avoidBreakpointForDefault
+									paletteColor={
+										props[
+											getAttributeKey(
+												'stroke-palette-color',
+												isHover,
+												prefix
+											)
+										]
+									}
+									paletteOpacity={
+										props[
+											getAttributeKey(
+												'stroke-palette-opacity',
+												isHover,
+												prefix
+											)
+										]
+									}
+									paletteStatus={
+										props[
+											getAttributeKey(
+												'stroke-palette-status',
+												isHover,
+												prefix
+											)
+										]
+									}
+									paletteSCStatus={
+										props[
+											getAttributeKey(
+												'stroke-palette-sc-status',
+												isHover,
+												prefix
+											)
+										]
+									}
+									onChangeInline={({ color }) =>
+										onChangeInline &&
+										onChangeInline(
+											{ stroke: color },
+											'[data-stroke]',
+											true
+										)
+									}
+									onChange={({
+										color,
+										paletteColor,
+										paletteStatus,
+										paletteSCStatus,
+										paletteOpacity,
+									}) => {
+										const strokeColorStr = getColorRGBAString(
+											paletteSCStatus
+												? {
+														firstVar: `color-${paletteColor}${
+															isHover ? '-hover' : ''
+														}`,
+														opacity: paletteOpacity,
+														blockStyle,
+												  }
+												: {
+														firstVar: getAttributeKey(
+															'stroke',
+															isHover,
+															prefix
+														),
+														secondVar: `color-${paletteColor}${
+															isHover ? '-hover' : ''
+														}`,
+														opacity: paletteOpacity,
+														blockStyle,
+												  }
+										);
+										const onChangeObj = {
+											[getAttributeKey(
+												'stroke-color',
+												isHover,
+												prefix
+											)]: color,
+											[getAttributeKey(
+												'stroke-palette-color',
+												isHover,
+												prefix
+											)]: paletteColor,
+											[getAttributeKey(
+												'stroke-palette-status',
+												isHover,
+												prefix
+											)]: paletteStatus,
+											[getAttributeKey(
+												'stroke-palette-sc-status',
+												isHover,
+												prefix
+											)]: paletteSCStatus,
+											[getAttributeKey(
+												'stroke-palette-opacity',
+												isHover,
+												prefix
+											)]: paletteOpacity,
+										};
+
+										shortPrefix === arrowShortPrefix &&
+											onChange(
+												{
+													...onChangeObj,
+													...['first', 'second'].reduce(
+														(prev, current) => {
+															return {
+																...prev,
+																[`navigation-arrow-${current}-icon-content`]:
+																	(isHover
+																		? setSVGContentHover
+																		: setSVGContent)(
+																		props[
+																			`navigation-arrow-${current}-icon-content`
+																		],
+																		paletteStatus
+																			? strokeColorStr
+																			: color,
+																		'stroke'
+																	),
+															};
+														},
+														{}
+													),
+												},
+												'[data-stroke]'
+											);
+										shortPrefix === dotsShortPrefix &&
+											onChange(
+												{
+													...onChangeObj,
+													...(!isActive && {
+														'navigation-dot-icon-content':
+															(isHover
+																? setSVGContentHover
+																: setSVGContent)(
+																props[
+																	'navigation-dot-icon-content'
+																],
+																paletteStatus
+																	? strokeColorStr
+																	: color,
+																'stroke'
+															),
+													}),
+												},
+												'[data-stroke]'
+											);
+									}}
 									isHover={isHover}
 								/>
 							)}
@@ -450,347 +789,7 @@ const NavigationIconControl = props => {
 							onChange={val => setIconStyle(val)}
 						/>
 					)}
-					{iconStyle === 'color' && svgType !== 'Shape' && (
-						<ColorControl
-							label={__(
-								`${capitalize(label)} line`,
-								'maxi-blocks'
-							)}
-							color={
-								props[
-									getAttributeKey(
-										'stroke-color',
-										isHover,
-										prefix
-									)
-								]
-							}
-							prefix={`${prefix}stroke-`}
-							avoidBreakpointForDefault
-							paletteColor={
-								props[
-									getAttributeKey(
-										'stroke-palette-color',
-										isHover,
-										prefix
-									)
-								]
-							}
-							paletteOpacity={
-								props[
-									getAttributeKey(
-										'stroke-palette-opacity',
-										isHover,
-										prefix
-									)
-								]
-							}
-							paletteStatus={
-								props[
-									getAttributeKey(
-										'stroke-palette-status',
-										isHover,
-										prefix
-									)
-								]
-							}
-							paletteSCStatus={
-								props[
-									getAttributeKey(
-										'stroke-palette-sc-status',
-										isHover,
-										prefix
-									)
-								]
-							}
-							onChangeInline={({ color }) =>
-								onChangeInline &&
-								onChangeInline(
-									{ stroke: color },
-									'[data-stroke]',
-									true
-								)
-							}
-							onChange={({
-								color,
-								paletteColor,
-								paletteStatus,
-								paletteSCStatus,
-								paletteOpacity,
-							}) => {
-								const strokeColorStr = getColorRGBAString(
-									paletteSCStatus
-										? {
-												firstVar: `color-${paletteColor}${
-													isHover ? '-hover' : ''
-												}`,
-												opacity: paletteOpacity,
-												blockStyle,
-										  }
-										: {
-												firstVar: getAttributeKey(
-													'stroke',
-													isHover,
-													prefix
-												),
-												secondVar: `color-${paletteColor}${
-													isHover ? '-hover' : ''
-												}`,
-												opacity: paletteOpacity,
-												blockStyle,
-										  }
-								);
-								const onChangeObj = {
-									[getAttributeKey(
-										'stroke-color',
-										isHover,
-										prefix
-									)]: color,
-									[getAttributeKey(
-										'stroke-palette-color',
-										isHover,
-										prefix
-									)]: paletteColor,
-									[getAttributeKey(
-										'stroke-palette-status',
-										isHover,
-										prefix
-									)]: paletteStatus,
-									[getAttributeKey(
-										'stroke-palette-sc-status',
-										isHover,
-										prefix
-									)]: paletteSCStatus,
-									[getAttributeKey(
-										'stroke-palette-opacity',
-										isHover,
-										prefix
-									)]: paletteOpacity,
-								};
 
-								shortPrefix === arrowShortPrefix &&
-									onChange(
-										{
-											...onChangeObj,
-											...['first', 'second'].reduce(
-												(prev, current) => {
-													return {
-														...prev,
-														[`navigation-arrow-${current}-icon-content`]:
-															(isHover
-																? setSVGContentHover
-																: setSVGContent)(
-																props[
-																	`navigation-arrow-${current}-icon-content`
-																],
-																paletteStatus
-																	? strokeColorStr
-																	: color,
-																'stroke'
-															),
-													};
-												},
-												{}
-											),
-										},
-										'[data-stroke]'
-									);
-								shortPrefix === dotsShortPrefix &&
-									onChange(
-										{
-											...onChangeObj,
-											...(!isActive && {
-												'navigation-dot-icon-content':
-													(isHover
-														? setSVGContentHover
-														: setSVGContent)(
-														props[
-															'navigation-dot-icon-content'
-														],
-														paletteStatus
-															? strokeColorStr
-															: color,
-														'stroke'
-													),
-											}),
-										},
-										'[data-stroke]'
-									);
-							}}
-							isHover={isHover}
-						/>
-					)}
-					{iconStyle === 'fill' && svgType !== 'Line' && (
-						<ColorControl
-							label={__(
-								`${capitalize(label)} fill`,
-								'maxi-blocks'
-							)}
-							color={
-								props[
-									getAttributeKey(
-										'fill-color',
-										isHover,
-										prefix
-									)
-								]
-							}
-							prefix={`${prefix}fill-`}
-							avoidBreakpointForDefault
-							paletteColor={
-								props[
-									getAttributeKey(
-										'fill-palette-color',
-										isHover,
-										prefix
-									)
-								]
-							}
-							paletteOpacity={
-								props[
-									getAttributeKey(
-										'fill-palette-opacity',
-										isHover,
-										prefix
-									)
-								]
-							}
-							paletteStatus={
-								props[
-									getAttributeKey(
-										'fill-palette-status',
-										isHover,
-										prefix
-									)
-								]
-							}
-							paletteSCStatus={
-								props[
-									getAttributeKey(
-										'fill-palette-sc-status',
-										isHover,
-										prefix
-									)
-								]
-							}
-							onChangeInline={({ color }) =>
-								onChangeInline &&
-								onChangeInline(
-									{ fill: color },
-									'[data-fill]',
-									true
-								)
-							}
-							onChange={({
-								color,
-								paletteColor,
-								paletteStatus,
-								paletteSCStatus,
-								paletteOpacity,
-							}) => {
-								const fillColorStr = getColorRGBAString(
-									paletteSCStatus
-										? {
-												firstVar: `color-${paletteColor}${
-													isHover ? '-hover' : ''
-												}`,
-												opacity: paletteOpacity,
-												blockStyle,
-										  }
-										: {
-												firstVar: getAttributeKey(
-													'fill',
-													isHover,
-													prefix
-												),
-												secondVar: `color-${paletteColor}${
-													isHover ? '-hover' : ''
-												}`,
-												opacity: paletteOpacity,
-												blockStyle,
-										  }
-								);
-								const onChangeObj = {
-									[getAttributeKey(
-										'fill-color',
-										isHover,
-										prefix
-									)]: color,
-									[getAttributeKey(
-										'fill-palette-color',
-										isHover,
-										prefix
-									)]: paletteColor,
-									[getAttributeKey(
-										'fill-palette-status',
-										isHover,
-										prefix
-									)]: paletteStatus,
-									[getAttributeKey(
-										'fill-palette-sc-status',
-										isHover,
-										prefix
-									)]: paletteSCStatus,
-									[getAttributeKey(
-										'fill-palette-opacity',
-										isHover,
-										prefix
-									)]: paletteOpacity,
-								};
-
-								shortPrefix === arrowShortPrefix &&
-									onChange(
-										{
-											...onChangeObj,
-											...['first', 'second'].reduce(
-												(prev, current) => {
-													return {
-														...prev,
-														[`navigation-arrow-${current}-icon-content`]:
-															(isHover
-																? setSVGContentHover
-																: setSVGContent)(
-																props[
-																	`navigation-arrow-${current}-icon-content`
-																],
-																paletteStatus
-																	? fillColorStr
-																	: color,
-																'fill'
-															),
-													};
-												},
-												{}
-											),
-										},
-										'[data-fill]'
-									);
-
-								shortPrefix === dotsShortPrefix &&
-									onChange(
-										{
-											...onChangeObj,
-											...(!isActive && {
-												'navigation-dot-icon-content':
-													(isHover
-														? setSVGContentHover
-														: setSVGContent)(
-														props[
-															'navigation-dot-icon-content'
-														],
-														paletteStatus
-															? fillColorStr
-															: color,
-														'fill'
-													),
-											}),
-										},
-										'[data-fill]'
-									);
-							}}
-							isHover={isHover}
-						/>
-					)}
 					<ToggleSwitch
 						label={__(
 							sprintf('Add %s border', label),

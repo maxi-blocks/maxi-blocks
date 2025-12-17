@@ -303,41 +303,6 @@ const RowCarouselControl = ({ props }) => {
 							})
 						}
 					/>
-					{arrowsEnabled && (
-						<SelectControl
-							__nextHasNoMarginBottom
-							label={__('Arrow position', 'maxi-blocks')}
-							newStyle
-							options={[
-								{
-									label: __('Inside', 'maxi-blocks'),
-									value: 'inside',
-								},
-								{
-									label: __('Outside', 'maxi-blocks'),
-									value: 'outside',
-								},
-							]}
-							value={getLastBreakpointAttribute({
-								target: `${arrowPrefix}position`,
-								breakpoint,
-								attributes,
-							})}
-							onChange={val => {
-								onChange({
-									[`${arrowPrefix}position-${breakpoint}`]:
-										val,
-									...(val === 'inside' && {
-										[`${arrowPrefix}both-icon-spacing-horizontal-${breakpoint}`]:
-											-40,
-									}),
-									...(val === 'outside' && {
-										[`${arrowPrefix}both-icon-spacing-horizontal-${breakpoint}`]: 10,
-									}),
-								});
-							}}
-						/>
-					)}
 
 					<ToggleSwitch
 						label={__('Enable dots', 'maxi-blocks')}
@@ -348,39 +313,6 @@ const RowCarouselControl = ({ props }) => {
 							})
 						}
 					/>
-					{dotsEnabled && (
-						<SelectControl
-							__nextHasNoMarginBottom
-							label={__('Dots position', 'maxi-blocks')}
-							newStyle
-							options={[
-								{
-									label: __('Inside', 'maxi-blocks'),
-									value: 'inside',
-								},
-								{
-									label: __('Outside', 'maxi-blocks'),
-									value: 'outside',
-								},
-							]}
-							value={getLastBreakpointAttribute({
-								target: `${dotPrefix}position`,
-								breakpoint,
-								attributes,
-							})}
-							onChange={val => {
-								onChange({
-									[`${dotPrefix}position-${breakpoint}`]: val,
-									...(val === 'inside' && {
-										[`${dotPrefix}icon-spacing-vertical-${breakpoint}`]: 85,
-									}),
-									...(val === 'outside' && {
-										[`${dotPrefix}icon-spacing-vertical-${breakpoint}`]: 110,
-									}),
-								});
-							}}
-						/>
-					)}
 
 					{/* Arrow Icon Controls */}
 					{arrowsEnabled && (

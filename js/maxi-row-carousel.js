@@ -37,8 +37,23 @@ class MaxiRowCarousel {
 	constructor(el) {
 		this._container = el;
 
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: Constructor called', {
+			windowWidth: window.innerWidth,
+		});
+
 		// Check if carousel should be active for current breakpoint
-		if (!this.isCarouselEnabledForCurrentBreakpoint()) {
+		const isEnabledForBP = this.isCarouselEnabledForCurrentBreakpoint();
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: Breakpoint check', {
+			isEnabledForBP,
+		});
+
+		if (!isEnabledForBP) {
+			// eslint-disable-next-line no-console
+			console.log(
+				'MaxiRowCarousel: Carousel disabled for this breakpoint, exiting'
+			);
 			return;
 		}
 
@@ -51,7 +66,43 @@ class MaxiRowCarousel {
 			return;
 		}
 
-		// Create carousel structure
+		// Read configuration from data attributes BEFORE checking trigger width
+		this.slidesPerView =
+			parseInt(this._container.dataset.carouselSlidesPerView, 10) || 1;
+		this.carouselColumnGap =
+			parseInt(this._container.dataset.carouselColumnGap, 10) || 0;
+		this.peekOffset =
+			parseInt(this._container.dataset.carouselPeekOffset, 10) || 0;
+		const triggerWidthAttr = this._container.dataset.carouselTriggerWidth;
+		this.triggerWidth =
+			triggerWidthAttr && triggerWidthAttr !== ''
+				? parseInt(triggerWidthAttr, 10)
+				: null;
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: Trigger width attr', {
+			raw: triggerWidthAttr,
+			parsed: this.triggerWidth,
+		});
+
+		// Check if carousel should be active based on trigger width
+		if (!this.shouldCarouselBeActive()) {
+			// eslint-disable-next-line no-console
+			console.log(
+				'MaxiRowCarousel: Not activating carousel on init, will wait for resize'
+			);
+			// Don't create carousel structure, just set up resize handler
+			this.carouselActive = false;
+			this.onResize = this.handleResize.bind(this);
+			window.addEventListener('resize', this.onResize);
+			// Store columns for later use
+			this._originalColumns = columns;
+			return;
+		}
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: Activating carousel on init');
+
+		// Create carousel structure only if carousel should be active
 		this.createCarouselStructure(columns);
 
 		// Now get the created elements
@@ -67,13 +118,6 @@ class MaxiRowCarousel {
 			this._wrapper.querySelectorAll(':scope > .maxi-column-block')
 		).map((column, i) => new RowCarouselColumn(column, i));
 
-		// Configuration from data attributes
-		this.slidesPerView =
-			parseInt(this._container.dataset.carouselSlidesPerView, 10) || 1;
-		this.carouselColumnGap =
-			parseInt(this._container.dataset.carouselColumnGap, 10) || 0;
-		this.peekOffset =
-			parseInt(this._container.dataset.carouselPeekOffset, 10) || 0;
 		this.isLoop = this._container.dataset.carouselLoop === 'true';
 		this.isAutoplay = this._container.dataset.carouselAutoplay === 'true';
 		this.hoverPause = this._container.dataset.carouselHoverPause === 'true';
@@ -121,10 +165,9 @@ class MaxiRowCarousel {
 		this._container.addEventListener('mouseenter', this.onHover);
 		this._container.addEventListener('mouseleave', this.onHoverEnd);
 
-		// Handle window resize to recalculate column widths
-		window.addEventListener('resize', () => {
-			this.setColumnWidths();
-		});
+		// Handle window resize to check trigger width and recalculate
+		this.onResize = this.handleResize.bind(this);
+		window.addEventListener('resize', this.onResize);
 
 		const isPaused = () => {
 			if (this.hoverPause && this.isHovering) return true;
@@ -140,6 +183,163 @@ class MaxiRowCarousel {
 		}
 
 		this.init();
+	}
+
+	shouldCarouselBeActive() {
+		// If no trigger width is set, carousel is always active
+		if (!this.triggerWidth) {
+			// eslint-disable-next-line no-console
+			console.log('MaxiRowCarousel: No trigger width, always active');
+			return true;
+		}
+
+		const shouldBeActive = window.innerWidth <= this.triggerWidth;
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: Trigger width check', {
+			triggerWidth: this.triggerWidth,
+			windowWidth: window.innerWidth,
+			shouldBeActive,
+		});
+
+		// Check if current screen width is at or below trigger width
+		return shouldBeActive;
+	}
+
+	handleResize() {
+		const shouldBeActive = this.shouldCarouselBeActive();
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: handleResize', {
+			shouldBeActive,
+			carouselActive: this.carouselActive,
+			hasTracker: !!this._tracker,
+			hasWrapper: !!this._wrapper,
+			hasColumns: !!this._columns,
+		});
+
+		if (shouldBeActive && !this.carouselActive) {
+			// eslint-disable-next-line no-console
+			console.log('MaxiRowCarousel: Activating carousel on resize');
+
+			// Need to activate carousel - create structure and initialize
+			const columns =
+				this._originalColumns ||
+				Array.from(
+					this._container.querySelectorAll(
+						':scope > .maxi-column-block'
+					)
+				);
+
+			if (columns.length === 0) {
+				// eslint-disable-next-line no-console
+				console.log('MaxiRowCarousel: No columns found!');
+				return;
+			}
+
+			// Create carousel structure
+			this.createCarouselStructure(columns);
+
+			// Get the created elements
+			this._tracker = this._container.querySelector(
+				'.maxi-row-carousel__tracker'
+			);
+			this._wrapper = this._container.querySelector(
+				'.maxi-row-carousel__wrapper'
+			);
+
+			// Columns (slides)
+			this._columns = Array.from(
+				this._wrapper.querySelectorAll(':scope > .maxi-column-block')
+			).map((column, i) => new RowCarouselColumn(column, i));
+
+			// Read additional config that wasn't read in constructor
+			this.isLoop = this._container.dataset.carouselLoop === 'true';
+			this.isAutoplay =
+				this._container.dataset.carouselAutoplay === 'true';
+			this.hoverPause =
+				this._container.dataset.carouselHoverPause === 'true';
+			this.interactionPause =
+				this._container.dataset.carouselInteractionPause === 'true';
+			this.autoplaySpeed =
+				(parseFloat(this._container.dataset.carouselAutoplaySpeed) ||
+					2.5) * 1000;
+			this.transition =
+				this._container.dataset.carouselTransition || 'slide';
+			this.transitionSpeed =
+				(parseFloat(this._container.dataset.carouselTransitionSpeed) ||
+					0.5) * 1000;
+
+			// Get navigation elements
+			this._arrowNext = this._container.querySelector(
+				'.maxi-row-carousel__arrow--next'
+			);
+			this._arrowPrev = this._container.querySelector(
+				'.maxi-row-carousel__arrow--prev'
+			);
+			this._dotsContainer = this._container.querySelector(
+				'.maxi-row-carousel__dots'
+			);
+
+			// Initialize states
+			this.currentColumn = 0;
+			this.initPosition = 0;
+			this.dragPosition = 0;
+			this.endPosition = 0;
+			this.realFirstElOffset = 0;
+			this.isInteracting = false;
+			this.isHovering = false;
+
+			// Initialize carousel (init() will call navEvents() and wrapperEvents())
+			this.init();
+		} else if (!shouldBeActive && this.carouselActive) {
+			// eslint-disable-next-line no-console
+			console.log('MaxiRowCarousel: Deactivating carousel on resize');
+			// Need to deactivate carousel
+			this.deactivateCarousel();
+		} else if (shouldBeActive && this.carouselActive) {
+			// eslint-disable-next-line no-console
+			console.log(
+				'MaxiRowCarousel: Recalculating carousel widths on resize'
+			);
+			// Carousel is active and should stay active, recalculate widths
+			this.setColumnWidths();
+			this.columnAction(false); // Update position without animation
+		}
+	}
+
+	deactivateCarousel() {
+		this.carouselActive = false;
+		// Remove active class to disable carousel CSS
+		this._container.classList.remove('maxi-row-carousel--active');
+		// Hide navigation if it exists
+		const nav = this._container.querySelector('.maxi-row-carousel__nav');
+		if (nav) nav.style.display = 'none';
+		// Reset transform if wrapper exists
+		if (this._wrapper) {
+			this._wrapper.style.transform = '';
+			this._wrapper.style.transition = '';
+			this._wrapper.style.width = '';
+			this._wrapper.style.columnGap = '';
+		}
+		// Reset tracker width if it exists
+		if (this._tracker) {
+			this._tracker.style.width = '';
+		}
+		// Reset column widths to allow normal row behavior
+		this._columns.forEach(column => {
+			column._column.style.width = '';
+			column._column.style.minWidth = '';
+			column._column.style.flexBasis = '';
+		});
+		// Hide clones if they exist
+		if (this._wrapper) {
+			const clones = this._wrapper.querySelectorAll(
+				'.carousel-item-clone'
+			);
+			clones.forEach(clone => {
+				clone.style.display = 'none';
+			});
+		}
 	}
 
 	createCarouselStructure(columns) {
@@ -273,8 +473,22 @@ class MaxiRowCarousel {
 		}
 
 		// Check if carousel enabled for this breakpoint
-		const attr = this._container.getAttribute(`data-carousel-${currentBP}`);
+		let attr = this._container.getAttribute(`data-carousel-${currentBP}`);
+
+		// If breakpoint-specific attribute doesn't exist, fall back to general
+		if (attr === null && currentBP !== 'general') {
+			attr = this._container.getAttribute('data-carousel-general');
+		}
+
 		const isEnabled = attr === 'true' || attr === true;
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: isCarouselEnabledForCurrentBreakpoint', {
+			width,
+			currentBP,
+			attr,
+			isEnabled,
+		});
 
 		return isEnabled;
 	}
@@ -326,8 +540,19 @@ class MaxiRowCarousel {
 	init() {
 		if (this.numberOfColumns === 0) return;
 
+		// Check if carousel should be active based on trigger width
+		this.carouselActive = this.shouldCarouselBeActive();
+
+		// Only initialize carousel if it should be active
+		if (!this.carouselActive) {
+			return; // Don't do anything, keep normal row layout
+		}
+
 		// Set transition attribute
 		this._container.setAttribute('data-transition', this.transition);
+
+		// Add active class to enable carousel CSS
+		this._container.classList.add('maxi-row-carousel--active');
 
 		// Generate dots if container exists
 		if (this._dotsContainer) {
@@ -352,14 +577,14 @@ class MaxiRowCarousel {
 			this.wrapperTranslate = this.realFirstElOffset;
 		}
 
-		this.navEvents();
-		this.wrapperEvents();
-
 		// Set first column as active
 		this._columns[0].isActive = true;
 
 		// Update arrow states based on initial position
 		this.updateArrowStates();
+
+		this.navEvents();
+		this.wrapperEvents();
 	}
 
 	get numberOfSlides() {
@@ -459,7 +684,15 @@ class MaxiRowCarousel {
 			? `all ${this.transitionSpeed}ms ease`
 			: 'none';
 
-		this.wrapperTranslate = this.activeColumnPosition;
+		const translateValue = this.activeColumnPosition;
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: columnAction', {
+			currentColumn: this.currentColumn,
+			translateValue,
+			withAnimation,
+		});
+
+		this.wrapperTranslate = translateValue;
 
 		this._columns.forEach(column => {
 			column.isActive = this.currentColumn;
@@ -483,26 +716,50 @@ class MaxiRowCarousel {
 	}
 
 	columnNext() {
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: columnNext', {
+			currentColumn: this.currentColumn,
+			numberOfColumns: this.numberOfColumns,
+			slidesPerView: this.slidesPerView,
+			isLoop: this.isLoop,
+		});
+
 		// If loop is disabled, prevent going beyond last slide
 		if (!this.isLoop) {
 			const maxColumn = this.numberOfColumns - this.slidesPerView;
 			if (this.currentColumn >= maxColumn) {
+				// eslint-disable-next-line no-console
+				console.log('MaxiRowCarousel: At end, not moving');
 				return; // Already at the end
 			}
 		}
 		this.currentColumn += this.slidesPerView;
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: New currentColumn:', this.currentColumn);
 		this.columnAction();
 		this.updateArrowStates();
 	}
 
 	columnPrev() {
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: columnPrev', {
+			currentColumn: this.currentColumn,
+			numberOfColumns: this.numberOfColumns,
+			slidesPerView: this.slidesPerView,
+			isLoop: this.isLoop,
+		});
+
 		// If loop is disabled, prevent going before first slide
 		if (!this.isLoop) {
 			if (this.currentColumn <= 0) {
+				// eslint-disable-next-line no-console
+				console.log('MaxiRowCarousel: At beginning, not moving');
 				return; // Already at the beginning
 			}
 		}
 		this.currentColumn -= this.slidesPerView;
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: New currentColumn:', this.currentColumn);
 		this.columnAction();
 		this.updateArrowStates();
 	}

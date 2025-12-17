@@ -146,6 +146,25 @@ const RowCarouselControl = ({ props }) => {
 							})
 						}
 					/>
+					<AdvancedNumberControl
+						label={__('Trigger width (px)', 'maxi-blocks')}
+						min={320}
+						max={3840}
+						initial={undefined}
+						step={1}
+						value={attributes['row-carousel-trigger-width']}
+						onChangeValue={val => {
+							onChange({
+								'row-carousel-trigger-width':
+									val !== undefined ? val : undefined,
+							});
+						}}
+						onReset={() =>
+							onChange({
+								'row-carousel-trigger-width': undefined,
+							})
+						}
+					/>
 					<ToggleSwitch
 						label={__('Autoplay', 'maxi-blocks')}
 						selected={isAutoplay}

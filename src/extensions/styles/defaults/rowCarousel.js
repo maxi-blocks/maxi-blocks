@@ -52,6 +52,10 @@ const rowCarousel = {
 		type: 'number',
 		default: 0,
 	},
+	'row-carousel-trigger-width': {
+		type: 'number',
+		default: undefined,
+	},
 };
 
 export default rowCarousel;

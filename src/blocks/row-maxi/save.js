@@ -41,6 +41,8 @@ const save = props => {
 			attributes['row-carousel-column-gap'] || 0;
 		carouselDataAttrs['data-carousel-peek-offset'] =
 			attributes['row-carousel-peek-offset'] || 0;
+		carouselDataAttrs['data-carousel-trigger-width'] =
+			attributes['row-carousel-trigger-width'] || '';
 		carouselDataAttrs['data-carousel-loop'] =
 			attributes['row-carousel-loop'];
 		carouselDataAttrs['data-carousel-autoplay'] =

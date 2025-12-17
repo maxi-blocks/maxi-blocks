@@ -177,7 +177,7 @@ class MaxiRowCarousel {
 		};
 
 		if (this.isAutoplay) {
-			setInterval(() => {
+			this.autoplayInterval = setInterval(() => {
 				if (!isPaused()) this.columnNext();
 			}, this.autoplaySpeed);
 		}
@@ -289,6 +289,23 @@ class MaxiRowCarousel {
 			this.isInteracting = false;
 			this.isHovering = false;
 
+			// Set up autoplay if enabled
+			const isPaused = () => {
+				if (this.hoverPause && this.isHovering) return true;
+				if (this.interactionPause && this.isInteracting) return true;
+				return false;
+			};
+
+			if (this.isAutoplay) {
+				// eslint-disable-next-line no-console
+				console.log(
+					'MaxiRowCarousel: Starting autoplay on resize activation'
+				);
+				this.autoplayInterval = setInterval(() => {
+					if (!isPaused()) this.columnNext();
+				}, this.autoplaySpeed);
+			}
+
 			// Initialize carousel (init() will call navEvents() and wrapperEvents())
 			this.init();
 		} else if (!shouldBeActive && this.carouselActive) {
@@ -314,6 +331,15 @@ class MaxiRowCarousel {
 		);
 
 		this.carouselActive = false;
+
+		// Stop autoplay if it's running
+		if (this.autoplayInterval) {
+			// eslint-disable-next-line no-console
+			console.log('MaxiRowCarousel: Clearing autoplay interval');
+			clearInterval(this.autoplayInterval);
+			this.autoplayInterval = null;
+		}
+
 		// Remove active class to disable carousel CSS
 		this._container.classList.remove('maxi-row-carousel--active');
 		this._container.removeAttribute('data-carousel-initialized');

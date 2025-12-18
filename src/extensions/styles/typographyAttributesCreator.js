@@ -28,6 +28,31 @@ const typographyAttributesCreator = (
 			'font-size': {
 				type: 'number',
 			},
+			'font-size-clamp-status': {
+				type: 'boolean',
+				default: false,
+			},
+			'font-size-min': {
+				type: 'number',
+			},
+			'font-size-min-unit': {
+				type: 'string',
+				default: 'rem',
+			},
+			'font-size-preferred': {
+				type: 'number',
+			},
+			'font-size-preferred-unit': {
+				type: 'string',
+				default: 'vw',
+			},
+			'font-size-max': {
+				type: 'number',
+			},
+			'font-size-max-unit': {
+				type: 'string',
+				default: 'rem',
+			},
 			'line-height-unit': {
 				type: 'string',
 				default: 'px',

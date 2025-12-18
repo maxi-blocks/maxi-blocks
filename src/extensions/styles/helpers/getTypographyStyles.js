@@ -5,6 +5,8 @@ import getColorRGBAString from '@extensions/styles/getColorRGBAString';
 import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 import getAttributeKey from '@extensions/styles/getAttributeKey';
 import getDefaultAttribute from '@extensions/styles/getDefaultAttribute';
+import getBreakpoints from '@extensions/styles/helpers/getBreakpoints';
+import calculateEditorFontSize from '@extensions/styles/helpers/calculateEditorFontSize';
 
 /**
  * External dependencies
@@ -202,18 +204,62 @@ const getTypographyStyles = ({
 		});
 	};
 
+	const breakpointWidths = getBreakpoints(obj);
 	breakpoints.forEach(breakpoint => {
 		const typography = {
 			...(!isNil(getValue('font-family', breakpoint)) && {
 				'font-family': `"${getValue('font-family', breakpoint)}"`,
 			}),
 			...getColorString(breakpoint),
-			...(!isNil(getValue('font-size', breakpoint)) && {
-				'font-size': `${getValue(
-					'font-size',
+			...((!isNil(getValue('font-size', breakpoint)) || getLastBreakpointValue('font-size-clamp-status', breakpoint)) && {
+			'font-size': (() => {
+				const fontSize = getValue('font-size', breakpoint);
+				const fontSizeUnit = getUnitValue('font-size-unit', breakpoint);
+				const clampEnabled = getLastBreakpointValue(
+					'font-size-clamp-status',
 					breakpoint
-				)}${getUnitValue('font-size-unit', breakpoint)}`,
-			}),
+				);
+
+				if (clampEnabled) {
+					const minSize = getLastBreakpointValue('font-size-min', breakpoint);
+					const preferredSize = getLastBreakpointValue(
+						'font-size-preferred',
+						breakpoint
+					);
+					const maxSize = getLastBreakpointValue('font-size-max', breakpoint);
+					const minUnit =
+						getUnitValue('font-size-min-unit', breakpoint) || 'rem';
+					const preferredUnit =
+						getUnitValue('font-size-preferred-unit', breakpoint) || 'vw';
+					const maxUnit =
+						getUnitValue('font-size-max-unit', breakpoint) || 'rem';
+
+					if (!isNil(minSize) && !isNil(preferredSize) && !isNil(maxSize)) {
+						if (breakpoint === 'general') {
+							return `clamp(${minSize}${minUnit}, ${preferredSize}${preferredUnit}, ${maxSize}${maxUnit})`;
+						}
+
+						const vw = breakpointWidths[breakpoint];
+
+						if (vw) {
+							const calculated = calculateEditorFontSize({
+								minSize,
+								preferredSize,
+								maxSize,
+								minUnit,
+								preferredUnit,
+								maxUnit,
+								viewportWidth: vw,
+							});
+							if (calculated) return calculated;
+						}
+						return `clamp(${minSize}${minUnit}, ${preferredSize}${preferredUnit}, ${maxSize}${maxUnit})`;
+					}
+				}
+
+				return `${fontSize}${fontSizeUnit}`;
+			})(),
+		}),
 			...(!isNil(getValue('line-height', breakpoint)) && {
 				'line-height': `${getValue('line-height', breakpoint)}${
 					getUnitValue('line-height-unit', breakpoint) || ''
@@ -249,16 +295,7 @@ const getTypographyStyles = ({
 			...(!isNil(getValue('vertical-align', breakpoint)) && {
 				'vertical-align': getValue('vertical-align', breakpoint),
 			}),
-			...(!isNil(getValue('text-orientation', breakpoint)) && {
-				'writing-mode':
-					getValue('text-orientation', breakpoint) !== 'unset'
-						? 'vertical-rl'
-						: 'unset',
-				'text-orientation': getValue('text-orientation', breakpoint),
-			}),
-			...(!isNil(getValue('text-direction', breakpoint)) && {
-				direction: getValue('text-direction', breakpoint),
-			}),
+
 			...(!isNil(getValue('white-space', breakpoint)) && {
 				'white-space': getValue('white-space', breakpoint),
 			}),

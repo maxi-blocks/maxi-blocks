@@ -197,6 +197,18 @@
 		min-height: 36px !important;
 		padding-right: 6px !important;
 	}
+
+	/*--- Disabled State ---*/
+	&--disabled {
+		opacity: 0.5;
+		pointer-events: none;
+
+		.maxi-advanced-number-control__value,
+		.maxi-advanced-number-control__spinner-button,
+		.maxi-select-control__input {
+			cursor: not-allowed;
+		}
+	}
 }
 
 /*===============================================

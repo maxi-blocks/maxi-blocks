@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+
 /**
  * WordPress dependencies
  */
@@ -18,6 +18,8 @@ import SelectControl from '@components/select-control';
 import TextShadowControl from '@components/text-shadow-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import FontWeightControl from '@components/font-weight-control';
+import ToggleSwitch from '@components/toggle-switch';
+import ClampInputGroup from './ClampInputGroup';
 import {
 	setFormat,
 	getTypographyValue,
@@ -45,6 +47,61 @@ import { isEmpty, isNil } from 'lodash';
  * Styles
  */
 import './editor.scss';
+
+const minMaxSettings = {
+	px: {
+		min: 0,
+		max: 999,
+	},
+	em: {
+		min: 0,
+		max: 100,
+	},
+	rem: {
+		min: 0,
+		max: 100,
+	},
+	vw: {
+		min: 0,
+		max: 100,
+	},
+	'%': {
+		min: 0,
+		max: 100,
+	},
+	'-': {
+		min: 0,
+		max: 16,
+	},
+};
+
+const minMaxSettingsLineHeight = {
+	...minMaxSettings,
+	'%': {
+		min: 0,
+		max: 300,
+		maxRange: 300,
+	},
+};
+
+const minMaxSettingsLetterSpacing = {
+	px: {
+		min: -10,
+		max: 30,
+	},
+	em: {
+		min: -3,
+		max: 10,
+	},
+	rem: {
+		min: -3,
+		max: 10,
+	},
+	vw: {
+		min: -3,
+		max: 10,
+	},
+};
 
 /**
  * Component
@@ -318,6 +375,8 @@ const LinkOptions = props => {
 	);
 };
 
+
+
 const TypographyControl = props => {
 	const {
 		className,
@@ -408,60 +467,7 @@ const TypographyControl = props => {
 
 	const classes = classnames('maxi-typography-control', className);
 
-	const minMaxSettings = {
-		px: {
-			min: 0,
-			max: 999,
-		},
-		em: {
-			min: 0,
-			max: 100,
-		},
-		rem: {
-			min: 0,
-			max: 100,
-		},
-		vw: {
-			min: 0,
-			max: 100,
-		},
-		'%': {
-			min: 0,
-			max: 100,
-		},
-		'-': {
-			min: 0,
-			max: 16,
-		},
-	};
 
-	const minMaxSettingsLineHeight = {
-		...minMaxSettings,
-		'%': {
-			min: 0,
-			max: 300,
-			maxRange: 300,
-		},
-	};
-
-	const minMaxSettingsLetterSpacing = {
-		px: {
-			min: -10,
-			max: 30,
-		},
-		em: {
-			min: -3,
-			max: 10,
-		},
-		rem: {
-			min: -3,
-			max: 10,
-		},
-		vw: {
-			min: -3,
-			max: 10,
-		},
-	};
 
 	const getSCValue = ({ SC, target, blockStyle, SCEntry }) => {
 		const styleCardEntry =
@@ -683,6 +689,52 @@ const TypographyControl = props => {
 		onChangeInline && onChangeInline(obj, getInlineTarget(tag), isList);
 	};
 
+	/* Clamp Control Helpers */
+	const getClampAttr = (property, fieldKey, suffix = '') => {
+		const baseKey = `${property}-${fieldKey}`;
+		const fullKey = `${baseKey}${suffix}`;
+		// For main value, we skip SC check if needed, consistent with original code
+		const isValue = suffix === '';
+		return (
+			getValue(fullKey, isValue ? !isStyleCards : false) || getDefault(fullKey)
+		);
+	};
+
+	const handleClampChange = (property, fieldKey, val, isUnit = false) => {
+		const baseKey = `${property}-${fieldKey}`;
+
+		if (isUnit) {
+			const currentValue = getValue(baseKey);
+			const { min, max } = minMaxSettings[val] || {};
+			const newValue =
+				max && currentValue > max
+					? max
+					: min && currentValue < min
+					? min
+					: currentValue;
+
+			onChangeFormat({
+				[`${prefix}${baseKey}-unit`]: val,
+				[`${prefix}${baseKey}`]: newValue,
+			});
+		} else {
+			onChangeFormat({
+				[`${prefix}${baseKey}`]: val,
+			});
+		}
+	};
+
+	const handleClampReset = (property, fieldKey) => {
+		const baseKey = `${property}-${fieldKey}`;
+		onChangeFormat(
+			{
+				[`${prefix}${baseKey}`]: getDefault(baseKey),
+				[`${prefix}${baseKey}-unit`]: getDefault(`${baseKey}-unit`),
+			},
+			{ isReset: true }
+		);
+	};
+
 	const getOpacityValue = label => {
 		const value = getValue(label);
 
@@ -794,6 +846,7 @@ const TypographyControl = props => {
 									className='maxi-typography-control__size'
 									label={__('Text size', 'maxi-blocks')}
 									enableUnit
+								disabled={!!getValue('font-size-clamp-status')}
 									unit={getValue('font-size-unit')}
 									defaultUnit={getDefault('font-size-unit')}
 									newStyle
@@ -849,6 +902,30 @@ const TypographyControl = props => {
 								/>
 							</div>
 						</div>
+
+					<div className='maxi-typography-control__clamp'>
+						<ToggleSwitch
+							className='maxi-typography-control__clamp-toggle'
+							label={__('Use clamp', 'maxi-blocks')}
+							selected={!!getValue('font-size-clamp-status')}
+							onChange={val =>
+								onChangeFormat({
+									[`${prefix}font-size-clamp-status`]: val,
+								})
+							}
+						/>
+
+						{!!getValue('font-size-clamp-status') && (
+							<ClampInputGroup
+								property='font-size'
+								getClampAttr={getClampAttr}
+								handleClampChange={handleClampChange}
+								handleClampReset={handleClampReset}
+								minMaxSettings={minMaxSettings}
+								getDefault={getDefault}
+							/>
+						)}
+					</div>
 
 						<div className='maxi-typography-control__spacing-controls'>
 							<AdvancedNumberControl

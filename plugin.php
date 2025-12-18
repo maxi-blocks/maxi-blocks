@@ -31,6 +31,12 @@ define(
 define('REQUIRED_MYSQL_VERSION', '8.0');
 define('REQUIRED_MARIADB_VERSION', '10.4');
 
+// Load Composer dependencies when available.
+$maxi_autoload_path = MAXI_PLUGIN_DIR_PATH . 'vendor/autoload.php';
+if (file_exists($maxi_autoload_path)) {
+    require_once $maxi_autoload_path;
+}
+
 //======================================================================
 // Translations
 //======================================================================
@@ -263,6 +269,11 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
 if (class_exists('MaxiBlocks_StyleCards')) {
     MaxiBlocks_StyleCards::register();
 }
+
+//======================================================================
+// MaxiBlocks Custom Fonts
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-custom-fonts.php';
 
 //======================================================================
 // MaxiBlocks Image Crop

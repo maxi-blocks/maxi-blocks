@@ -21,9 +21,6 @@ const carouselDots = ({ props }) => {
 		deviceType: breakpoint,
 	} = props;
 
-	// Get carousel status (NOT breakpoint-specific)
-	const carouselStatus = attributes['row-carousel-status'];
-
 	const dotPrefix = 'navigation-dot-';
 
 	const dotsEnabled = getLastBreakpointAttribute({
@@ -35,7 +32,7 @@ const carouselDots = ({ props }) => {
 
 	return {
 		label: __('Dots', 'maxi-blocks'),
-		content: carouselStatus && (
+		content: (
 			<>
 				<ToggleSwitch
 					label={__('Enable dots', 'maxi-blocks')}

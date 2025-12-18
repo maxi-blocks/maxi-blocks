@@ -58,9 +58,16 @@ function ColumnPicker(props) {
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, isRepeaterInherited, updateInnerBlocksPositions } =
-		props;
+	const {
+		deviceType,
+		isRepeaterInherited,
+		updateInnerBlocksPositions,
+		attributes,
+	} = props;
 	const { selectors, categories } = customCss;
+
+	// Get carousel status to conditionally show Arrows and Dots tabs
+	const carouselStatus = attributes['row-carousel-status'];
 
 	return (
 		<InspectorControls>
@@ -140,12 +147,18 @@ const Inspector = props => {
 									...inspectorTabs.carouselSlider({
 										props,
 									}),
-									...inspectorTabs.carouselArrows({
-										props,
-									}),
-									...inspectorTabs.carouselDots({
-										props,
-									}),
+									...(carouselStatus
+										? [
+												...inspectorTabs.carouselArrows(
+													{
+														props,
+													}
+												),
+												...inspectorTabs.carouselDots({
+													props,
+												}),
+										  ]
+										: []),
 								]}
 							/>
 						),

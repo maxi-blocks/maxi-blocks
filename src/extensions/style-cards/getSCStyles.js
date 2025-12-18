@@ -442,13 +442,21 @@ const getMaxiSCStyles = ({ organizedValues, styleCard, prefix, style, isBackend 
 
 		// Button Maxi - apply border-radius to __button element
 		const borderRadius = styleCard[`--maxi-${style}-button-border-radius`];
-		const borderRadiusGlobal = styleCard[`--maxi-${style}-button-border-radius-global`];
+		const isGlobal = styleCard[`--maxi-${style}-button-border-radius-global`];
+
 		if (borderRadius) {
-			const important = borderRadiusGlobal ? ' !important' : '';
-			[
-				`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-button-block .maxi-button-block__button`,
-				`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-button-block .maxi-button-block__button`,
-			].forEach(target => {
+			const important = isGlobal ? ' !important' : '';
+
+			// Define base selector parts once for maintainability
+			const baseClass = `.maxi-${style}.maxi-block`;
+			const btnClass = '.maxi-button-block .maxi-button-block__button';
+
+			const targets = [
+				`${prefix} ${secondPrefix} ${baseClass}.maxi-button-block ${btnClass}`,
+				`${prefix} ${secondPrefix} ${baseClass} ${btnClass}`,
+			];
+
+			targets.forEach(target => {
 				addedResponse += `${target} { border-radius: ${borderRadius}${important}; }`;
 			});
 		}

@@ -274,23 +274,16 @@ const getSCVariablesObject = (
 							`--maxi-${style}-${element}-border-color-hover`
 						] = getColorString(obj, 'hover-border', style);
 
-					if (
-						getIsValid(
-							getLastBreakpointAttribute({
-								target: 'border-radius',
-								breakpoint: 'general',
-								attributes: obj,
-							}),
-							true
-						)
-					) {
-						response[
-							`--maxi-${style}-${element}-border-radius`
-						] = `${getLastBreakpointAttribute({
-							target: 'border-radius',
-							breakpoint: 'general',
-							attributes: obj,
-						})}px`;
+					// Store border-radius value once to avoid redundant function calls
+					const borderRadiusValue = getLastBreakpointAttribute({
+						target: 'border-radius',
+						breakpoint: 'general',
+						attributes: obj,
+					});
+
+					if (getIsValid(borderRadiusValue, true)) {
+						response[`--maxi-${style}-${element}-border-radius`] =
+							`${borderRadiusValue}px`;
 					}
 
 					if (obj['border-radius-global'])

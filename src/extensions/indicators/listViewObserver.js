@@ -2,303 +2,179 @@
  * WordPress dependencies
  */
 import { select, subscribe } from '@wordpress/data';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
+import domReady from '@wordpress/dom-ready';
 
 const ATTR_NAME = 'data-maxi-interaction';
+const BG_ATTR_NAME = 'data-maxi-background';
 const LEGEND_ID = 'maxi-list-view-legend';
 
 /**
- * Updates a single List View item with the interaction attribute
- * @param {HTMLElement} item - The list view row element (tr or li)
+ * Helper to check block attributes
  */
-const updateListViewItem = item => {
-	// Find the link that contains the block clientId
-	const link = item.querySelector('a[href^="#block-"]');
-
-	if (!link) {
-		return;
-	}
-
-	const href = link.getAttribute('href');
-	if (!href) return;
-
-	const clientId = href.replace('#block-', '');
-	const block = select('core/block-editor').getBlock(clientId);
-
-	if (!block) return;
-
-	const hasInteraction = !isEmpty(block.attributes?.relations);
-	const hasBackgroundLayers = !isEmpty(
-		block.attributes?.['background-layers']?.filter(
-			layer => layer.type !== 'color'
-		)
-	);
-
-	if (hasInteraction) {
-		item.setAttribute(ATTR_NAME, 'true');
-		item.setAttribute('aria-label', 'Interaction');
-		item.setAttribute('title', 'Interaction');
-	} else {
-		item.removeAttribute(ATTR_NAME);
-		if (!hasBackgroundLayers) {
-			item.removeAttribute('aria-label');
-			item.removeAttribute('title');
-		}
-	}
-
-	if (hasBackgroundLayers) {
-		item.setAttribute('data-maxi-background', 'true');
-		// Build label based on current state, not previous label
-		const label = hasInteraction ? 'Interaction, Background' : 'Background';
-		item.setAttribute('aria-label', label);
-		item.setAttribute('title', label);
-	} else {
-		item.removeAttribute('data-maxi-background');
-	}
+const getBlockStatus = (block) => {
+    if (!block) return { hasInteraction: false, hasBackgroundLayers: false };
+    
+    const hasInteraction = !!(block.attributes?.relations && block.attributes.relations.length > 0);
+    const hasBackgroundLayers = !!(block.attributes?.['background-layers']?.some(
+        layer => layer.type !== 'color'
+    ));
+    
+    return { hasInteraction, hasBackgroundLayers };
 };
 
 /**
- * Create and append the legend to the list view panel
+ * Updates a single List View item with indicators and a11y labels
+ */
+const updateListViewItem = (item) => {
+    const link = item.querySelector('a[href^="#block-"]');
+    if (!link) return;
+
+    const clientId = link.getAttribute('href').replace('#block-', '');
+    const block = select('core/block-editor').getBlock(clientId);
+    if (!block) return;
+
+    const { hasInteraction, hasBackgroundLayers } = getBlockStatus(block);
+
+    // Apply Interaction Attributes
+    if (hasInteraction) {
+        item.setAttribute(ATTR_NAME, 'true');
+    } else {
+        item.removeAttribute(ATTR_NAME);
+    }
+
+    // Apply Background Attributes
+    if (hasBackgroundLayers) {
+        item.setAttribute(BG_ATTR_NAME, 'true');
+    } else {
+        item.removeAttribute(BG_ATTR_NAME);
+    }
+
+    // Combined Accessibility Label & Tooltip
+    if (hasInteraction || hasBackgroundLayers) {
+        const labelParts = [];
+        if (hasInteraction) labelParts.push('Interaction');
+        if (hasBackgroundLayers) labelParts.push('Background');
+        
+        const label = labelParts.join(', ');
+        item.setAttribute('aria-label', label);
+        item.setAttribute('title', label);
+    } else {
+        item.removeAttribute('aria-label');
+        item.removeAttribute('title');
+    }
+};
+
+/**
+ * Check if indicators exist anywhere in the block tree
+ */
+const hasActiveIndicators = (blocks) => {
+    const blockList = blocks || select('core/block-editor').getBlocks();
+    return blockList.some(block => {
+        const { hasInteraction, hasBackgroundLayers } = getBlockStatus(block);
+        if (hasInteraction || hasBackgroundLayers) return true;
+        if (block.innerBlocks?.length) return hasActiveIndicators(block.innerBlocks);
+        return false;
+    });
+};
+
+/**
+ * Create and inject the legend into the List View panel
  */
 const createLegend = () => {
-	// Check if legend already exists
-	if (document.getElementById(LEGEND_ID)) return;
+    if (document.getElementById(LEGEND_ID)) return;
+    if (!hasActiveIndicators()) return;
 
-	// Try to find the list view panel - try multiple selectors for different WP versions
-	const listViewTree = document.querySelector('.block-editor-list-view-tree');
-	if (!listViewTree) {
-		return;
-	}
+    const listViewTree = document.querySelector('.block-editor-list-view-tree');
+    if (!listViewTree) return;
 
-	// Find the secondary sidebar container (full height panel)
-	let listViewPanel = listViewTree.closest('.interface-navigable-region.interface-interface-skeleton__secondary-sidebar');
-	if (!listViewPanel) {
-		listViewPanel = listViewTree.closest('.edit-post-editor__list-view-panel');
-	}
-	if (!listViewPanel) {
-		listViewPanel = listViewTree.closest('.interface-navigable-region');
-	}
-	if (!listViewPanel) {
-		listViewPanel = listViewTree.closest('.block-editor-list-view');
-	}
-	if (!listViewPanel) {
-		// Fallback: use the parent element
-		listViewPanel = listViewTree.parentElement;
-	}
+    const listViewPanel = listViewTree.closest('.interface-navigable-region') || 
+                          listViewTree.closest('.block-editor-list-view') ||
+                          listViewTree.parentElement;
 
-	if (!listViewPanel) {
-		return;
-	}
+    if (!listViewPanel) return;
 
-	// Ensure the panel has position relative for absolute positioning of legend
-	listViewPanel.style.position = 'relative';
+    listViewPanel.style.position = 'relative';
 
-	// Check if there are any Maxi blocks on the page
-	const blocks = select('core/block-editor').getBlocks();
-	const hasMaxiBlocks = checkForMaxiBlocks(blocks);
+    const legend = document.createElement('div');
+    legend.id = LEGEND_ID;
+    legend.className = 'maxi-list-view-legend';
+    legend.innerHTML = `
+        <div class="maxi-list-view-legend__title">Legend</div>
+        <div class="maxi-list-view-legend__items">
+            <div class="maxi-list-view-legend__item">
+                <span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--pink"></span>
+                <span class="maxi-list-view-legend__label">Interaction</span>
+            </div>
+            <div class="maxi-list-view-legend__item">
+                <span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--orange"></span>
+                <span class="maxi-list-view-legend__label">Background layer</span>
+            </div>
+            <div class="maxi-list-view-legend__item">
+                <span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--grey"></span>
+                <span class="maxi-list-view-legend__label">Hidden layer</span>
+            </div>
+        </div>
+    `;
 
-	if (!hasMaxiBlocks) {
-		return;
-	}
-
-	const legend = document.createElement('div');
-	legend.id = LEGEND_ID;
-	legend.className = 'maxi-list-view-legend';
-	legend.innerHTML = `
-		<div class="maxi-list-view-legend__title">Legend</div>
-		<div class="maxi-list-view-legend__items">
-			<div class="maxi-list-view-legend__item">
-				<span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--pink"></span>
-				<span class="maxi-list-view-legend__label">Interaction</span>
-			</div>
-			<div class="maxi-list-view-legend__item">
-				<span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--orange"></span>
-				<span class="maxi-list-view-legend__label">Background layer</span>
-			</div>
-			<div class="maxi-list-view-legend__item">
-				<span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--grey"></span>
-				<span class="maxi-list-view-legend__label">Hidden layer</span>
-			</div>
-		</div>
-	`;
-
-	listViewPanel.appendChild(legend);
+    listViewPanel.appendChild(legend);
 };
 
 /**
- * Recursively check for Maxi blocks in the block tree
+ * Sync the UI state
  */
-const checkForMaxiBlocks = blocks => {
-	for (const block of blocks) {
-		if (block.name?.startsWith('maxi-blocks/')) return true;
-		if (block.innerBlocks?.length && checkForMaxiBlocks(block.innerBlocks)) {
-			return true;
-		}
-	}
-	return false;
+const updateAll = () => {
+    const items = document.querySelectorAll('.block-editor-list-view-leaf, .block-editor-list-view__block');
+    const legend = document.getElementById(LEGEND_ID);
+    
+    if (items.length > 0) {
+        items.forEach(updateListViewItem);
+        
+        // Check if any indicators exist - if not, remove legend
+        if (hasActiveIndicators()) {
+            createLegend();
+        } else if (legend) {
+            legend.remove();
+        }
+    } else if (legend) {
+        legend.remove();
+    }
 };
 
 /**
- * Remove legend when list view is closed
+ * Initialize Observer and Subscription
  */
-const removeLegend = () => {
-	const legend = document.getElementById(LEGEND_ID);
-	if (legend) legend.remove();
+export const initListViewObserver = () => {
+    let updateTimeout;
+
+    const observer = new MutationObserver(() => {
+        clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(updateAll, 150);
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    const unsubscribe = subscribe(() => {
+        clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(updateAll, 300);
+    }, 'core/block-editor');
+
+    updateAll(); // Run immediately
+
+    return () => {
+        observer.disconnect();
+        unsubscribe();
+        clearTimeout(updateTimeout);
+    };
 };
 
-/**
- * Updates all visible List View items
- */
-const updateAllListViewItems = () => {
-	// Target the actual row elements in the List View
-	const items = document.querySelectorAll(
-		'.block-editor-list-view-leaf, .block-editor-list-view__block'
-	);
-
-	if (items.length === 0) return;
-
-	items.forEach(updateListViewItem);
-};
-
-/**
- * Initialize the observer
- */
-const initListViewObserver = () => {
-	// Track resources for cleanup
-	let initialTimeout;
-	let updateTimeout;
-	let periodicInterval;
-	let unsubscribe;
-
-	// Observer for DOM changes (List View opening, expanding, scrolling)
-	const observer = new MutationObserver(mutations => {
-		let shouldUpdate = false;
-		let listViewAdded = false;
-		let listViewRemoved = false;
-		
-		for (const mutation of mutations) {
-			if (mutation.type === 'childList') {
-				// Check if nodes were added to the list view tree
-				if (mutation.target.closest('.block-editor-list-view-tree')) {
-					shouldUpdate = true;
-				}
-				// Check if the list view tree itself was added
-				for (const node of mutation.addedNodes) {
-					if (
-						node.nodeType === 1 &&
-						(node.classList?.contains(
-							'block-editor-list-view-tree'
-						) ||
-							node.querySelector?.(
-								'.block-editor-list-view-tree'
-							))
-					) {
-						shouldUpdate = true;
-						listViewAdded = true;
-						break;
-					}
-				}
-				// Check if list view was removed
-				for (const node of mutation.removedNodes) {
-					if (
-						node.nodeType === 1 &&
-						(node.classList?.contains(
-							'block-editor-list-view-tree'
-						) ||
-							node.querySelector?.(
-								'.block-editor-list-view-tree'
-							) ||
-							node.classList?.contains('block-editor-list-view'))
-					) {
-						listViewRemoved = true;
-						break;
-					}
-				}
-			}
-		}
-
-		if (listViewRemoved) {
-			removeLegend();
-		}
-
-		if (shouldUpdate) {
-			setTimeout(() => {
-				updateAllListViewItems();
-				if (listViewAdded) {
-					createLegend();
-				}
-			}, 100);
-		}
-	});
-
-	// Observe the body to catch sidebar opening/closing
-	observer.observe(document.body, {
-		childList: true,
-		subtree: true,
-	});
-
-	// Initial check
-	initialTimeout = setTimeout(() => {
-		updateAllListViewItems();
-		createLegend();
-	}, 500);
-
-	// Subscribe to block editor changes to update when blocks are modified
-	unsubscribe = subscribe(() => {
-		if (document.querySelector('.block-editor-list-view-tree')) {
-			clearTimeout(updateTimeout);
-			updateTimeout = setTimeout(updateAllListViewItems, 300);
-		}
-	}, 'core/block-editor');
-
-	// Periodic check as fallback
-	periodicInterval = setInterval(() => {
-		if (document.querySelector('.block-editor-list-view-tree')) {
-			updateAllListViewItems();
-		}
-	}, 2000);
-
-	// Return cleanup function
-	return () => {
-		// Disconnect MutationObserver
-		if (observer) {
-			observer.disconnect();
-		}
-
-		// Clear all timeouts
-		if (initialTimeout) {
-			clearTimeout(initialTimeout);
-		}
-		if (updateTimeout) {
-			clearTimeout(updateTimeout);
-		}
-
-		// Clear interval
-		if (periodicInterval) {
-			clearInterval(periodicInterval);
-		}
-
-		// Unsubscribe from block editor
-		if (unsubscribe) {
-			unsubscribe();
-		}
-	};
-};
-
-// Initialize on DOM ready and store cleanup function
 let cleanup;
-wp.domReady(() => {
-	cleanup = initListViewObserver();
+domReady(() => {
+    cleanup = initListViewObserver();
 });
 
-// Export cleanup function for manual teardown if needed
 export const cleanupListViewObserver = () => {
-	if (cleanup) {
-		cleanup();
-		cleanup = null;
-	}
+    if (cleanup) {
+        cleanup();
+        cleanup = null;
+    }
 };

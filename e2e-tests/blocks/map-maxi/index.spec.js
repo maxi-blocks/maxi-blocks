@@ -114,7 +114,10 @@ describe('Map Maxi', () => {
 
 		// Check frontend
 		try {
-			await page.waitForSelector('.editor-post-save-draft, .editor-post-publish-button', { timeout: 5000 });
+			await page.waitForSelector(
+				'.editor-post-save-draft, .editor-post-publish-button',
+				{ timeout: 5000 }
+			);
 			await saveDraft();
 		} catch (error) {
 			// If save button not found or save fails, proceed without saving
@@ -167,18 +170,69 @@ describe('Map Maxi', () => {
 		await searchBox.type('London', { delay: 200 });
 		await page.waitForTimeout(800);
 
-		// Click search with retry
+		// Click search and wait for network response
 		const searchButton = await searchBox.$(
 			'.maxi-map-block__search-box__button'
 		);
-		await searchButton.evaluate(button => button.click());
-		await page.waitForTimeout(1000);
 
-		// Wait for results with explicit visibility check
-		await page.waitForSelector('.maxi-map-block__search-box-results', {
-			visible: true,
-			timeout: 5000,
-		});
+		/**
+		 * Wait for the search API response with retry logic
+		 * OpenStreetMap Nominatim API can be slow in CI environments
+		 */
+		const waitForSearchResultsWithRetry = async (maxRetries = 3) => {
+			let attempt = 1;
+
+			const attemptSearch = async () => {
+				try {
+					// Set up network listener before clicking
+					const responsePromise = page.waitForResponse(
+						response =>
+							response
+								.url()
+								.includes(
+									'nominatim.openstreetmap.org/search'
+								) && response.status() === 200,
+						{ timeout: 15000 }
+					);
+
+					// Trigger search
+					await searchButton.evaluate(button => button.click());
+
+					// Wait for API response
+					await responsePromise;
+
+					// Give React time to render the results
+					await page.waitForTimeout(1000);
+
+					// Wait for results with explicit visibility check
+					await page.waitForSelector(
+						'.maxi-map-block__search-box-results',
+						{
+							visible: true,
+							timeout: 10000,
+						}
+					);
+
+					return true;
+				} catch (error) {
+					if (attempt === maxRetries) {
+						throw new Error(
+							`Failed to load search results after ${maxRetries} attempts. Last error: ${error.message}`
+						);
+					}
+
+					// Wait before retry with exponential backoff
+					await page.waitForTimeout(2000 * attempt);
+					attempt += 1;
+					return attemptSearch();
+				}
+			};
+
+			return attemptSearch();
+		};
+
+		// Execute search with retry logic
+		await waitForSearchResultsWithRetry();
 
 		const searchBoxResults = await map.$(
 			'.maxi-map-block__search-box-results'
@@ -186,6 +240,13 @@ describe('Map Maxi', () => {
 		const searchBoxResultsButton = await searchBoxResults.$(
 			'.maxi-map-block__search-box-results__button'
 		);
+
+		// Verify we have a results button
+		if (!searchBoxResultsButton) {
+			throw new Error(
+				'Search results button not found after successful API response'
+			);
+		}
 
 		// Add delay before clicking result
 		await page.waitForTimeout(500);
@@ -200,7 +261,7 @@ describe('Map Maxi', () => {
 		expect(Number(markers[0].longitude)).toBeCloseTo(0, 0);
 
 		await popupTest(map);
-	}, 30000);
+	}, 60000);
 
 	it('Map Maxi OpenStreetMap types work correctly', async () => {
 		const waitForTilesWithRetry = async (mapType, maxRetries = 3) => {

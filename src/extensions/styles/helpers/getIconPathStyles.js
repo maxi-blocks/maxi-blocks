@@ -7,13 +7,14 @@ import getAttributeKey from '@extensions/styles/getAttributeKey';
  * External dependencies
  */
 import { isNil, isEmpty } from 'lodash';
+import { __ } from '@wordpress/i18n';
 
 // Move breakpoints outside the function to avoid recreating it on each call
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getIconPathStyles = (obj, isHover = false, prefix = '') => {
 	const response = {
-		label: 'Icon path',
+		label: __('Icon path', 'maxi-blocks'),
 		general: {},
 	};
 

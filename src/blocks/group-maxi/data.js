@@ -1,11 +1,13 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import { createSelectors } from '@extensions/styles/custom-css';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 
 /**
  * Data object
@@ -13,34 +15,34 @@ import {
 const name = 'group-maxi';
 const copyPasteMapping = {
 	settings: {
-		'Callout arrow': {
+		[__('Callout arrow', 'maxi-blocks')]: {
 			group: {
-				'Show arrow': 'arrow-status',
-				'Arrow side': 'arrow-side',
-				'Arrow position': 'arrow-position',
-				'Arrow size': 'arrow-width',
+				[__('Show arrow', 'maxi-blocks')]: 'arrow-status',
+				[__('Arrow side', 'maxi-blocks')]: 'arrow-side',
+				[__('Arrow position', 'maxi-blocks')]: 'arrow-position',
+				[__('Arrow size', 'maxi-blocks')]: 'arrow-width',
 			},
 			hasBreakpoints: true,
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},

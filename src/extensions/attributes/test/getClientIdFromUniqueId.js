@@ -12,6 +12,19 @@ jest.mock('@extensions/fse', () => ({
 	getSiteEditorIframeBody: jest.fn(),
 }));
 
+// Mock @wordpress/data
+const mockGetBlock = jest.fn();
+jest.mock('@wordpress/data', () => ({
+	select: jest.fn(storeName => {
+		if (storeName === 'maxiBlocks/blocks') {
+			return {
+				getBlock: mockGetBlock,
+			};
+		}
+		return {};
+	}),
+}));
+
 describe('getClientIdFromUniqueId', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -27,7 +40,19 @@ describe('getClientIdFromUniqueId', () => {
 		expect(result).toBe(false);
 	});
 
-	it('Should find clientId from block attributes', () => {
+	it('Should find clientId from Redux store (fast path)', () => {
+		// Fast path: Redux store has the block
+		mockGetBlock.mockReturnValue({ clientId: 'client-123' });
+
+		const result = getClientIdFromUniqueId('text-maxi-123');
+		expect(result).toBe('client-123');
+		expect(mockGetBlock).toHaveBeenCalledWith('text-maxi-123');
+		expect(goThroughMaxiBlocks).not.toHaveBeenCalled();
+	});
+
+	it('Should find clientId from block attributes (fallback)', () => {
+		// Fallback: Redux store returns null, use tree traversal
+		mockGetBlock.mockReturnValue(null);
 		goThroughMaxiBlocks.mockImplementation(callback => {
 			const blocks = [
 				{
@@ -48,6 +73,7 @@ describe('getClientIdFromUniqueId', () => {
 	});
 
 	it('Should return null if no matching block found', () => {
+		mockGetBlock.mockReturnValue(null);
 		goThroughMaxiBlocks.mockImplementation(callback => {
 			const blocks = [
 				{
@@ -90,6 +116,8 @@ describe('getClientIdFromUniqueId', () => {
 			querySelector: mockQuerySelector,
 		};
 		getSiteEditorIframeBody.mockReturnValue(mockBody);
+		mockGetBlock.mockReturnValue(null);
+		goThroughMaxiBlocks.mockImplementation(() => {});
 
 		const result = getClientIdFromUniqueId('template-part-123');
 
@@ -102,16 +130,7 @@ describe('getClientIdFromUniqueId', () => {
 	it('Should skip DOM search for non-template parts', () => {
 		getIsTemplatePart.mockReturnValue(true);
 		getSiteEditorIframeBody.mockReturnValue({});
-
-		goThroughMaxiBlocks.mockImplementation(callback => {
-			const blocks = [
-				{
-					clientId: 'client-123',
-					attributes: { uniqueID: 'text-maxi-123' },
-				},
-			];
-			blocks.forEach(block => callback(block));
-		});
+		mockGetBlock.mockReturnValue({ clientId: 'client-123' });
 
 		const result = getClientIdFromUniqueId('text-maxi-123');
 

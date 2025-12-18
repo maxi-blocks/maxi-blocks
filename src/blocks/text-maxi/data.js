@@ -13,10 +13,7 @@ import {
 	getAlignmentTextStyles,
 	getTypographyStyles,
 } from '@extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
@@ -33,98 +30,98 @@ const name = 'text-maxi';
 const copyPasteMapping = {
 	_exclude: ['content', 'linkSettings', 'custom-formats'],
 	settings: {
-		'Text content': 'content',
-		'Heading / Paragraph tag': 'textLevel',
-		'List options': {
+		[__('Text content', 'maxi-blocks')]: 'content',
+		[__('Heading / Paragraph tag', 'maxi-blocks')]: 'textLevel',
+		[__('List options', 'maxi-blocks')]: {
 			group: {
-				'List indent': {
+				[__('List indent', 'maxi-blocks')]: {
 					props: 'list-indent',
 					hasBreakpoints: true,
 				},
-				'List indent unit': {
+				[__('List indent unit', 'maxi-blocks')]: {
 					props: 'list-indent-unit',
 					hasBreakpoints: true,
 				},
-				'List gap': {
+				[__('List gap', 'maxi-blocks')]: {
 					props: 'list-gap',
 					hasBreakpoints: true,
 				},
-				'List gap unit': {
+				[__('List gap unit', 'maxi-blocks')]: {
 					props: 'list-gap-unit',
 					hasBreakpoints: true,
 				},
-				'List paragraph spacing': {
+				[__('List paragraph spacing', 'maxi-blocks')]: {
 					props: 'list-paragraph-spacing',
 					hasBreakpoints: true,
 				},
-				'List paragraph spacing unit': {
+				[__('List paragraph spacing unit', 'maxi-blocks')]: {
 					props: 'list-paragraph-spacing-unit',
 					hasBreakpoints: true,
 				},
-				'Marker size': {
+				[__('Marker size', 'maxi-blocks')]: {
 					props: 'list-marker-size',
 					hasBreakpoints: true,
 				},
-				'Marker size unit': {
+				[__('Marker size unit', 'maxi-blocks')]: {
 					props: 'list-marker-size-unit',
 					hasBreakpoints: true,
 				},
-				'List marker indent': {
+				[__('List marker indent', 'maxi-blocks')]: {
 					props: 'list-marker-indent',
 					hasBreakpoints: true,
 				},
-				'List marker indent unit': {
+				[__('List marker indent unit', 'maxi-blocks')]: {
 					props: 'list-marker-indent-unit',
 					hasBreakpoints: true,
 				},
-				'List marker line height': {
+				[__('List marker line height', 'maxi-blocks')]: {
 					props: 'list-marker-line-height',
 					hasBreakpoints: true,
 				},
-				'List marker line height unit': {
+				[__('List marker line height unit', 'maxi-blocks')]: {
 					props: 'list-marker-line-height-unit',
 					hasBreakpoints: true,
 				},
-				'List colour': {
+				[__('List colour', 'maxi-blocks')]: {
 					props: 'list',
 					isPalette: true,
 				},
-				'List text position': {
+				[__('List text position', 'maxi-blocks')]: {
 					props: 'list-text-position',
 					hasBreakpoints: true,
 				},
-				'List type': 'typeOfList',
-				'List style': 'listStyle',
-				'List style custom': 'listStyleCustom',
-				'List start': 'listStart',
-				'List reversed': 'listReversed',
+				[__('List type', 'maxi-blocks')]: 'typeOfList',
+				[__('List style', 'maxi-blocks')]: 'listStyle',
+				[__('List style custom', 'maxi-blocks')]: 'listStyleCustom',
+				[__('List start', 'maxi-blocks')]: 'listStart',
+				[__('List reversed', 'maxi-blocks')]: 'listReversed',
 			},
 		},
-		'Text alignment': {
+		[__('Text alignment', 'maxi-blocks')]: {
 			groupAttributes: 'textAlignment',
 		},
-		Typography: {
+		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},
@@ -161,13 +158,13 @@ const transition = {
 	canvas: {
 		...transitionDefault.canvas,
 		typography: {
-			title: 'Typography',
+			title: __('Typography', 'maxi-blocks'),
 			target: [contentClass, `${contentClass} li`, `${contentClass} ol`],
 			property: false,
 			hoverProp: 'typography-status-hover',
 		},
 		link: {
-			title: 'Link',
+			title: __('Link', 'maxi-blocks'),
 			target: [linkClass, `${linkClass} span`],
 			property: 'color',
 		},

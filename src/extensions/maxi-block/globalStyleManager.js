@@ -283,6 +283,19 @@ let globalStyleManagerInstance = null;
 export const getGlobalStyleManager = () => {
 	if (!globalStyleManagerInstance) {
 		globalStyleManagerInstance = new GlobalStyleManager();
+
+		// Cleanup on page unload to prevent memory leaks
+		if (
+			typeof window !== 'undefined' &&
+			typeof window.addEventListener === 'function'
+		) {
+			window.addEventListener('beforeunload', () => {
+				if (globalStyleManagerInstance) {
+					globalStyleManagerInstance.destroy();
+					globalStyleManagerInstance = null;
+				}
+			});
+		}
 	}
 
 	return globalStyleManagerInstance;

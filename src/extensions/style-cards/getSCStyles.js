@@ -444,7 +444,7 @@ const getMaxiSCStyles = ({ organizedValues, styleCard, prefix, style, isBackend 
 		const borderRadius = styleCard[`--maxi-${style}-button-border-radius`];
 		const isGlobal = styleCard[`--maxi-${style}-button-border-radius-global`];
 
-		if (borderRadius) {
+		if (borderRadius != null && borderRadius !== '') {
 			const important = isGlobal ? ' !important' : '';
 
 			// Define base selector parts once for maintainability
@@ -762,7 +762,7 @@ const getWPNativeStyles = ({
 				1
 			);
 
-		if (styleCard[`--maxi-${style}-button-border-radius`]) {
+		if (styleCard[`--maxi-${style}-button-border-radius`] != null) {
 			const borderRadiusGlobal = styleCard[`--maxi-${style}-button-border-radius-global`];
 			const important = borderRadiusGlobal ? ' !important' : '';
 			buttonSentences?.push(

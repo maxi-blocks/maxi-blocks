@@ -252,7 +252,7 @@ const getSCVariablesObject = (
 					style
 				);
 			switch (element) {
-				case 'button':
+				case 'button': {
 					if (obj['background-color-global'])
 						response[
 							`--maxi-${style}-${element}-background-color`
@@ -292,6 +292,7 @@ const getSCVariablesObject = (
 						] = true;
 
 					break;
+				}
 
 				case 'icon':
 					if (obj['line-color-global'])

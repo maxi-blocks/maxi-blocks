@@ -504,10 +504,8 @@ const getDotsIconObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	// Check if carousel is enabled for any breakpoint
-	const isCarouselEnabled = breakpoints.some(
-		breakpoint => props[`row-carousel-status-${breakpoint}`]
-	);
+	// Check if carousel is enabled (single global attribute now)
+	const isCarouselEnabled = props['row-carousel-status'];
 
 	const arrowIconHoverStatus =
 		props['navigation-arrow-both-icon-status-hover'];

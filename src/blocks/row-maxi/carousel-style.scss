@@ -133,19 +133,8 @@ body.maxi-blocks--active {
 		}
 	}
 
-	// Breakpoint-specific carousel activation - Apply carousel styles only when active
-	.maxi-row-block[data-carousel-initialized='true'][data-carousel-general='true'] {
-		.maxi-row-carousel__tracker {
-			overflow: hidden;
-		}
-		.maxi-row-carousel__wrapper {
-			transition: transform 0.5s ease-out;
-
-			> .maxi-column-block {
-				flex-shrink: 0;
-				// Width will be set by JavaScript based on tracker width / slidesPerView
-			}
-		}
+	// Show navigation when carousel is initialized and active
+	.maxi-row-block[data-carousel-initialized='true'].maxi-row-carousel--active {
 		.maxi-row-carousel__nav {
 			display: block;
 		}
@@ -172,18 +161,6 @@ body.maxi-blocks--active {
 				margin-right: 0;
 			}
 		}
-
-		.maxi-row-block[data-carousel-initialized='true'][data-carousel-xxl='true'] {
-			.maxi-row-carousel__tracker {
-				overflow: hidden;
-			}
-			.maxi-row-carousel__wrapper {
-				transition: transform 0.5s ease-out;
-			}
-			.maxi-row-carousel__nav {
-				display: block;
-			}
-		}
 	}
 
 	@media (max-width: 1535px) {
@@ -205,18 +182,6 @@ body.maxi-blocks--active {
 			.maxi-row-carousel__tracker {
 				margin-left: auto;
 				margin-right: 0;
-			}
-		}
-
-		.maxi-row-block[data-carousel-initialized='true'][data-carousel-xl='true'] {
-			.maxi-row-carousel__tracker {
-				overflow: hidden;
-			}
-			.maxi-row-carousel__wrapper {
-				transition: transform 0.5s ease-out;
-			}
-			.maxi-row-carousel__nav {
-				display: block;
 			}
 		}
 	}
@@ -242,18 +207,6 @@ body.maxi-blocks--active {
 				margin-right: 0;
 			}
 		}
-
-		.maxi-row-block[data-carousel-initialized='true'][data-carousel-l='true'] {
-			.maxi-row-carousel__tracker {
-				overflow: hidden;
-			}
-			.maxi-row-carousel__wrapper {
-				transition: transform 0.5s ease-out;
-			}
-			.maxi-row-carousel__nav {
-				display: block;
-			}
-		}
 	}
 
 	@media (max-width: 1023px) {
@@ -275,18 +228,6 @@ body.maxi-blocks--active {
 			.maxi-row-carousel__tracker {
 				margin-left: auto;
 				margin-right: 0;
-			}
-		}
-
-		.maxi-row-block[data-carousel-initialized='true'][data-carousel-m='true'] {
-			.maxi-row-carousel__tracker {
-				overflow: hidden;
-			}
-			.maxi-row-carousel__wrapper {
-				transition: transform 0.5s ease-out;
-			}
-			.maxi-row-carousel__nav {
-				display: block;
 			}
 		}
 	}
@@ -312,18 +253,6 @@ body.maxi-blocks--active {
 				margin-right: 0;
 			}
 		}
-
-		.maxi-row-block[data-carousel-initialized='true'][data-carousel-s='true'] {
-			.maxi-row-carousel__tracker {
-				overflow: hidden;
-			}
-			.maxi-row-carousel__wrapper {
-				transition: transform 0.5s ease-out;
-			}
-			.maxi-row-carousel__nav {
-				display: block;
-			}
-		}
 	}
 
 	@media (max-width: 479px) {
@@ -345,18 +274,6 @@ body.maxi-blocks--active {
 			.maxi-row-carousel__tracker {
 				margin-left: auto;
 				margin-right: 0;
-			}
-		}
-
-		.maxi-row-block[data-carousel-initialized='true'][data-carousel-xs='true'] {
-			.maxi-row-carousel__tracker {
-				overflow: hidden;
-			}
-			.maxi-row-carousel__wrapper {
-				transition: transform 0.5s ease-out;
-			}
-			.maxi-row-carousel__nav {
-				display: block;
 			}
 		}
 	}

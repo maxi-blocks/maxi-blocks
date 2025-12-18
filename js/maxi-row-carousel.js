@@ -42,21 +42,6 @@ class MaxiRowCarousel {
 			windowWidth: window.innerWidth,
 		});
 
-		// Check if carousel should be active for current breakpoint
-		const isEnabledForBP = this.isCarouselEnabledForCurrentBreakpoint();
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarousel: Breakpoint check', {
-			isEnabledForBP,
-		});
-
-		if (!isEnabledForBP) {
-			// eslint-disable-next-line no-console
-			console.log(
-				'MaxiRowCarousel: Carousel disabled for this breakpoint, exiting'
-			);
-			return;
-		}
-
 		// Get all direct column children
 		const columns = Array.from(
 			this._container.querySelectorAll(':scope > .maxi-column-block')
@@ -66,13 +51,7 @@ class MaxiRowCarousel {
 			return;
 		}
 
-		// Read configuration from data attributes BEFORE checking trigger width
-		this.slidesPerView =
-			parseInt(this._container.dataset.carouselSlidesPerView, 10) || 1;
-		this.carouselColumnGap =
-			parseInt(this._container.dataset.carouselColumnGap, 10) || 0;
-		this.peekOffset =
-			parseInt(this._container.dataset.carouselPeekOffset, 10) || 0;
+		// Read trigger width (global, non-breakpoint setting)
 		const triggerWidthAttr = this._container.dataset.carouselTriggerWidth;
 		this.triggerWidth =
 			triggerWidthAttr && triggerWidthAttr !== ''
@@ -83,6 +62,12 @@ class MaxiRowCarousel {
 			raw: triggerWidthAttr,
 			parsed: this.triggerWidth,
 		});
+
+		// Track current breakpoint
+		this.lastBreakpoint = this.getCurrentBreakpoint();
+
+		// Read breakpoint-specific configuration
+		this.loadBreakpointSettings();
 
 		// Check if carousel should be active based on trigger width
 		if (!this.shouldCarouselBeActive()) {
@@ -117,21 +102,6 @@ class MaxiRowCarousel {
 		this._columns = Array.from(
 			this._wrapper.querySelectorAll(':scope > .maxi-column-block')
 		).map((column, i) => new RowCarouselColumn(column, i));
-
-		this.isLoop = this._container.dataset.carouselLoop === 'true';
-		this.isAutoplay = this._container.dataset.carouselAutoplay === 'true';
-		this.hoverPause = this._container.dataset.carouselHoverPause === 'true';
-		this.interactionPause =
-			this._container.dataset.carouselInteractionPause === 'true';
-		// Convert seconds to milliseconds
-		this.autoplaySpeed =
-			(parseFloat(this._container.dataset.carouselAutoplaySpeed) || 2.5) *
-			1000;
-		this.transition = this._container.dataset.carouselTransition || 'slide';
-		// Convert seconds to milliseconds
-		this.transitionSpeed =
-			(parseFloat(this._container.dataset.carouselTransitionSpeed) ||
-				0.5) * 1000;
 
 		// Navigation
 		this._arrowNext = this._container.querySelector(
@@ -185,6 +155,120 @@ class MaxiRowCarousel {
 		this.init();
 	}
 
+	getCurrentBreakpoint() {
+		const width = window.innerWidth;
+		const breakpoints = {
+			xs: 479,
+			s: 767,
+			m: 1023,
+			l: 1279,
+			xl: 1535,
+			xxl: 1919,
+		};
+
+		for (const [bp, maxWidth] of Object.entries(breakpoints)) {
+			if (width <= maxWidth) {
+				return bp;
+			}
+		}
+		return 'general';
+	}
+
+	getBreakpointSetting(settingName, defaultValue) {
+		const currentBP = this.getCurrentBreakpoint();
+		const breakpoints = [
+			currentBP,
+			'xxl',
+			'xl',
+			'l',
+			'm',
+			's',
+			'xs',
+			'general',
+		];
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: getBreakpointSetting START', {
+			settingName,
+			currentBP,
+			allDataset: this._container.dataset,
+		});
+
+		// Try current breakpoint first, then fall back through breakpoints
+		for (const bp of breakpoints) {
+			const attrName = `carousel${
+				settingName.charAt(0).toUpperCase() + settingName.slice(1)
+			}${bp.charAt(0).toUpperCase() + bp.slice(1)}`;
+			const value = this._container.dataset[attrName];
+
+			// eslint-disable-next-line no-console
+			console.log('MaxiRowCarousel: getBreakpointSetting CHECKING', {
+				settingName,
+				bp,
+				attrName,
+				value,
+				valueType: typeof value,
+			});
+
+			if (value !== undefined && value !== '') {
+				// eslint-disable-next-line no-console
+				console.log('MaxiRowCarousel: getBreakpointSetting FOUND', {
+					settingName,
+					bp,
+					value,
+				});
+				return value;
+			}
+		}
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: getBreakpointSetting FALLBACK', {
+			settingName,
+			defaultValue,
+		});
+		return defaultValue;
+	}
+
+	loadBreakpointSettings() {
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: loadBreakpointSettings', {
+			currentBreakpoint: this.getCurrentBreakpoint(),
+			windowWidth: window.innerWidth,
+		});
+
+		// Load breakpoint-specific settings
+		this.slidesPerView =
+			parseInt(this.getBreakpointSetting('slidesPerView', '1'), 10) || 1;
+		this.carouselColumnGap =
+			parseInt(this.getBreakpointSetting('columnGap', '0'), 10) || 0;
+		this.peekOffset =
+			parseInt(this.getBreakpointSetting('peekOffset', '0'), 10) || 0;
+		this.isLoop = this.getBreakpointSetting('loop', 'false') === 'true';
+		this.isAutoplay =
+			this.getBreakpointSetting('autoplay', 'false') === 'true';
+		this.hoverPause =
+			this.getBreakpointSetting('hoverPause', 'false') === 'true';
+		this.interactionPause =
+			this.getBreakpointSetting('interactionPause', 'false') === 'true';
+		this.autoplaySpeed =
+			(parseFloat(this.getBreakpointSetting('autoplaySpeed', '2.5')) ||
+				2.5) * 1000;
+		this.transition = this.getBreakpointSetting('transition', 'slide');
+		this.transitionSpeed =
+			(parseFloat(this.getBreakpointSetting('transitionSpeed', '0.5')) ||
+				0.5) * 1000;
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: Loaded settings', {
+			slidesPerView: this.slidesPerView,
+			carouselColumnGap: this.carouselColumnGap,
+			peekOffset: this.peekOffset,
+			isLoop: this.isLoop,
+			isAutoplay: this.isAutoplay,
+			transition: this.transition,
+		});
+	}
+
 	shouldCarouselBeActive() {
 		// If no trigger width is set, carousel is always active
 		if (!this.triggerWidth) {
@@ -207,6 +291,8 @@ class MaxiRowCarousel {
 
 	handleResize() {
 		const shouldBeActive = this.shouldCarouselBeActive();
+		const currentBP = this.getCurrentBreakpoint();
+		const breakpointChanged = this.lastBreakpoint !== currentBP;
 
 		// eslint-disable-next-line no-console
 		console.log('MaxiRowCarousel: handleResize', {
@@ -215,7 +301,13 @@ class MaxiRowCarousel {
 			hasTracker: !!this._tracker,
 			hasWrapper: !!this._wrapper,
 			hasColumns: !!this._columns,
+			currentBP,
+			lastBreakpoint: this.lastBreakpoint,
+			breakpointChanged,
 		});
+
+		// Update last breakpoint
+		this.lastBreakpoint = currentBP;
 
 		if (shouldBeActive && !this.carouselActive) {
 			// eslint-disable-next-line no-console
@@ -252,22 +344,8 @@ class MaxiRowCarousel {
 				this._wrapper.querySelectorAll(':scope > .maxi-column-block')
 			).map((column, i) => new RowCarouselColumn(column, i));
 
-			// Read additional config that wasn't read in constructor
-			this.isLoop = this._container.dataset.carouselLoop === 'true';
-			this.isAutoplay =
-				this._container.dataset.carouselAutoplay === 'true';
-			this.hoverPause =
-				this._container.dataset.carouselHoverPause === 'true';
-			this.interactionPause =
-				this._container.dataset.carouselInteractionPause === 'true';
-			this.autoplaySpeed =
-				(parseFloat(this._container.dataset.carouselAutoplaySpeed) ||
-					2.5) * 1000;
-			this.transition =
-				this._container.dataset.carouselTransition || 'slide';
-			this.transitionSpeed =
-				(parseFloat(this._container.dataset.carouselTransitionSpeed) ||
-					0.5) * 1000;
+			// Load breakpoint-specific settings
+			this.loadBreakpointSettings();
 
 			// Get navigation elements
 			this._arrowNext = this._container.querySelector(
@@ -332,9 +410,44 @@ class MaxiRowCarousel {
 			console.log(
 				'MaxiRowCarousel: Recalculating carousel widths on resize'
 			);
-			// Carousel is active and should stay active, recalculate widths
+			// Carousel is active and should stay active
+
+			// If breakpoint changed, reload settings and regenerate elements
+			if (breakpointChanged) {
+				// eslint-disable-next-line no-console
+				console.log(
+					'MaxiRowCarousel: Breakpoint changed, reloading settings'
+				);
+				this.loadBreakpointSettings();
+
+				// Regenerate dots based on new slidesPerView
+				if (this._dotsContainer) {
+					this.generateDots();
+				}
+
+				// Remove old clones and recreate them based on new settings
+				const existingClones = this._wrapper.querySelectorAll(
+					'.carousel-item-clone'
+				);
+				existingClones.forEach(clone => clone.remove());
+				this.realFirstElOffset = 0;
+
+				if (this.isLoop) {
+					const numberOfClones =
+						this.peekOffset > 0
+							? this.slidesPerView + 1
+							: Math.max(this.slidesPerView, 1);
+					this.insertColumnClones(numberOfClones);
+				}
+
+				// Reset to first slide
+				this.currentColumn = 0;
+			}
+
+			// Recalculate widths
 			this.setColumnWidths();
 			this.columnAction(false); // Update position without animation
+			this.updateArrowStates();
 		}
 	}
 
@@ -416,7 +529,15 @@ class MaxiRowCarousel {
 		const nav = document.createElement('div');
 		nav.className = 'maxi-row-carousel__nav';
 
-		// Create arrows if icon content exists
+		// Check if arrows should be shown for current breakpoint
+		const arrowStatus = this.getBreakpointSetting('arrowStatus', 'true');
+		const showArrows = arrowStatus === 'true' || arrowStatus === true;
+
+		// Check if dots should be shown for current breakpoint
+		const dotStatus = this.getBreakpointSetting('dotStatus', 'true');
+		const showDots = dotStatus === 'true' || dotStatus === true;
+
+		// Create arrows if enabled and icon content exists
 		const arrowFirstContent = this._container.getAttribute(
 			'data-arrow-first-icon'
 		);
@@ -424,7 +545,18 @@ class MaxiRowCarousel {
 			'data-arrow-second-icon'
 		);
 
-		if (arrowFirstContent) {
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: Creating navigation', {
+			showArrows,
+			showDots,
+			arrowFirstContent: arrowFirstContent ? 'exists' : 'missing',
+			arrowSecondContent: arrowSecondContent ? 'exists' : 'missing',
+			dotIcon: this._container.getAttribute('data-dot-icon')
+				? 'exists'
+				: 'missing',
+		});
+
+		if (showArrows && arrowFirstContent) {
 			const prevArrow = document.createElement('span');
 			prevArrow.className =
 				'maxi-row-carousel__arrow maxi-row-carousel__arrow--prev';
@@ -433,7 +565,7 @@ class MaxiRowCarousel {
 			this._prevArrow = prevArrow;
 		}
 
-		if (arrowSecondContent) {
+		if (showArrows && arrowSecondContent) {
 			const nextArrow = document.createElement('span');
 			nextArrow.className =
 				'maxi-row-carousel__arrow maxi-row-carousel__arrow--next';
@@ -442,10 +574,12 @@ class MaxiRowCarousel {
 			this._nextArrow = nextArrow;
 		}
 
-		// Create dots container
-		const dotsContainer = document.createElement('div');
-		dotsContainer.className = 'maxi-row-carousel__dots';
-		nav.appendChild(dotsContainer);
+		// Create dots container if enabled
+		if (showDots) {
+			const dotsContainer = document.createElement('div');
+			dotsContainer.className = 'maxi-row-carousel__dots';
+			nav.appendChild(dotsContainer);
+		}
 
 		// Assemble structure
 		tracker.appendChild(wrapper);
@@ -506,47 +640,6 @@ class MaxiRowCarousel {
 
 	set wrapperTranslate(translate) {
 		this._wrapper.style.transform = `translateX(-${translate}px)`;
-	}
-
-	isCarouselEnabledForCurrentBreakpoint() {
-		const width = window.innerWidth;
-		const breakpoints = {
-			xs: 479,
-			s: 767,
-			m: 1023,
-			l: 1279,
-			xl: 1535,
-			xxl: 1919,
-		};
-
-		// Determine current breakpoint
-		let currentBP = 'general';
-		for (const [bp, maxWidth] of Object.entries(breakpoints)) {
-			if (width <= maxWidth) {
-				currentBP = bp;
-				break;
-			}
-		}
-
-		// Check if carousel enabled for this breakpoint
-		let attr = this._container.getAttribute(`data-carousel-${currentBP}`);
-
-		// If breakpoint-specific attribute doesn't exist, fall back to general
-		if (attr === null && currentBP !== 'general') {
-			attr = this._container.getAttribute('data-carousel-general');
-		}
-
-		const isEnabled = attr === 'true' || attr === true;
-
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarousel: isCarouselEnabledForCurrentBreakpoint', {
-			width,
-			currentBP,
-			attr,
-			isEnabled,
-		});
-
-		return isEnabled;
 	}
 
 	setColumnWidths() {
@@ -936,16 +1029,20 @@ document.addEventListener('DOMContentLoaded', () => {
 	const carouselRows = Array.from(
 		document.querySelectorAll('.maxi-row-block')
 	).filter(row => {
-		// Check if any breakpoint has carousel enabled
-		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		const hasCarousel = breakpoints.some(bp => {
-			const attr = row.getAttribute(`data-carousel-${bp}`);
-			return attr === 'true' || attr === true;
-		});
-		return hasCarousel;
+		// Check if carousel is enabled (global status attribute)
+		const attr = row.getAttribute('data-carousel-status');
+		return attr === 'true' || attr === true;
 	});
 
+	// eslint-disable-next-line no-console
+	console.log(
+		'MaxiRowCarousel: Found rows with carousel:',
+		carouselRows.length
+	);
+
 	carouselRows.forEach(row => {
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: Initializing carousel for row', row);
 		new MaxiRowCarousel(row);
 	});
 });

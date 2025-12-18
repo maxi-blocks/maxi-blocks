@@ -208,12 +208,9 @@ class edit extends MaxiBlockComponent {
 	 */
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
-		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-		// Check if carousel is enabled on any breakpoint
-		const carouselEnabled = breakpoints.some(
-			bp => attributes[`row-carousel-status-${bp}`] === true
-		);
+		// Check if carousel is enabled (global, not breakpoint-specific)
+		const carouselEnabled = attributes['row-carousel-status'] === true;
 
 		if (carouselEnabled) {
 			// eslint-disable-next-line no-console

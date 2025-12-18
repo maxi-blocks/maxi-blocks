@@ -11,6 +11,7 @@ import AdvancedNumberControl from '@components/advanced-number-control';
 import SelectControl from '@components/select-control';
 import AlignmentControl from '@components/alignment-control';
 import NavigationIconsControl from '@blocks/slider-maxi/components/navigation-control/navigation-control';
+import { ResponsiveTabsControl } from '@components';
 import {
 	getLastBreakpointAttribute,
 	getGroupAttributes,
@@ -30,18 +31,67 @@ const RowCarouselControl = ({ props }) => {
 		className,
 	} = props;
 
-	const {
-		'row-carousel-autoplay': isAutoplay,
-		'row-carousel-pause-on-hover': pauseOnHover,
-		'row-carousel-pause-on-interaction': pauseOnInteraction,
-		'row-carousel-loop': isLoop,
-	} = attributes;
-
 	const classes = classnames('maxi-row-carousel-control', className);
 
-	// Get breakpoint-specific carousel status
-	const carouselStatus = getLastBreakpointAttribute({
-		target: 'row-carousel-status',
+	// Get carousel status (NOT breakpoint-specific)
+	const carouselStatus = attributes['row-carousel-status'];
+
+	const slidesPerView = getLastBreakpointAttribute({
+		target: 'row-carousel-slides-per-view',
+		breakpoint,
+		attributes,
+	});
+
+	const columnGap = getLastBreakpointAttribute({
+		target: 'row-carousel-column-gap',
+		breakpoint,
+		attributes,
+	});
+
+	const peekOffset = getLastBreakpointAttribute({
+		target: 'row-carousel-peek-offset',
+		breakpoint,
+		attributes,
+	});
+
+	const isLoop = getLastBreakpointAttribute({
+		target: 'row-carousel-loop',
+		breakpoint,
+		attributes,
+	});
+
+	const isAutoplay = getLastBreakpointAttribute({
+		target: 'row-carousel-autoplay',
+		breakpoint,
+		attributes,
+	});
+
+	const pauseOnHover = getLastBreakpointAttribute({
+		target: 'row-carousel-pause-on-hover',
+		breakpoint,
+		attributes,
+	});
+
+	const pauseOnInteraction = getLastBreakpointAttribute({
+		target: 'row-carousel-pause-on-interaction',
+		breakpoint,
+		attributes,
+	});
+
+	const autoplaySpeed = getLastBreakpointAttribute({
+		target: 'row-carousel-autoplay-speed',
+		breakpoint,
+		attributes,
+	});
+
+	const transition = getLastBreakpointAttribute({
+		target: 'row-carousel-transition',
+		breakpoint,
+		attributes,
+	});
+
+	const transitionSpeed = getLastBreakpointAttribute({
+		target: 'row-carousel-transition-speed',
 		breakpoint,
 		attributes,
 	});
@@ -71,28 +121,38 @@ const RowCarouselControl = ({ props }) => {
 				selected={carouselStatus}
 				onChange={val => {
 					onChange({
-						[`row-carousel-status-${breakpoint}`]: val,
+						'row-carousel-status': val,
 					});
 				}}
 			/>
 			{carouselStatus && (
 				<>
+					<ResponsiveTabsControl />
 					<AdvancedNumberControl
 						label={__('Columns per slide', 'maxi-blocks')}
 						min={1}
 						max={12}
 						initial={1}
 						step={1}
-						value={attributes['row-carousel-slides-per-view']}
+						value={slidesPerView}
 						onChangeValue={val => {
+							// eslint-disable-next-line no-console
+							console.log(
+								'Row Carousel: Slides per view onChange',
+								{
+									breakpoint,
+									val,
+									attributeName: `row-carousel-slides-per-view-${breakpoint}`,
+								}
+							);
 							onChange({
-								'row-carousel-slides-per-view':
+								[`row-carousel-slides-per-view-${breakpoint}`]:
 									val !== undefined ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								'row-carousel-slides-per-view': 1,
+								[`row-carousel-slides-per-view-${breakpoint}`]: 1,
 							})
 						}
 					/>
@@ -114,16 +174,16 @@ const RowCarouselControl = ({ props }) => {
 						max={100}
 						initial={0}
 						step={1}
-						value={attributes['row-carousel-column-gap']}
+						value={columnGap}
 						onChangeValue={val => {
 							onChange({
-								'row-carousel-column-gap':
+								[`row-carousel-column-gap-${breakpoint}`]:
 									val !== undefined ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								'row-carousel-column-gap': 0,
+								[`row-carousel-column-gap-${breakpoint}`]: 0,
 							})
 						}
 					/>
@@ -133,16 +193,16 @@ const RowCarouselControl = ({ props }) => {
 						max={200}
 						initial={0}
 						step={1}
-						value={attributes['row-carousel-peek-offset']}
+						value={peekOffset}
 						onChangeValue={val => {
 							onChange({
-								'row-carousel-peek-offset':
+								[`row-carousel-peek-offset-${breakpoint}`]:
 									val !== undefined ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								'row-carousel-peek-offset': 0,
+								[`row-carousel-peek-offset-${breakpoint}`]: 0,
 							})
 						}
 					/>
@@ -170,7 +230,7 @@ const RowCarouselControl = ({ props }) => {
 						selected={isAutoplay}
 						onChange={val => {
 							const updates = {
-								'row-carousel-autoplay': val,
+								[`row-carousel-autoplay-${breakpoint}`]: val,
 							};
 
 							// When enabling autoplay, also enable pause behaviors by default
@@ -180,7 +240,7 @@ const RowCarouselControl = ({ props }) => {
 									pauseOnHover === false
 								) {
 									updates[
-										'row-carousel-pause-on-hover'
+										`row-carousel-pause-on-hover-${breakpoint}`
 									] = true;
 								}
 								if (
@@ -188,7 +248,7 @@ const RowCarouselControl = ({ props }) => {
 									pauseOnInteraction === false
 								) {
 									updates[
-										'row-carousel-pause-on-interaction'
+										`row-carousel-pause-on-interaction-${breakpoint}`
 									] = true;
 								}
 							}
@@ -203,7 +263,8 @@ const RowCarouselControl = ({ props }) => {
 								selected={pauseOnHover}
 								onChange={val => {
 									onChange({
-										'row-carousel-pause-on-hover': val,
+										[`row-carousel-pause-on-hover-${breakpoint}`]:
+											val,
 									});
 								}}
 							/>
@@ -215,7 +276,7 @@ const RowCarouselControl = ({ props }) => {
 								selected={pauseOnInteraction}
 								onChange={val => {
 									onChange({
-										'row-carousel-pause-on-interaction':
+										[`row-carousel-pause-on-interaction-${breakpoint}`]:
 											val,
 									});
 								}}
@@ -226,18 +287,16 @@ const RowCarouselControl = ({ props }) => {
 								max={10}
 								initial={2.5}
 								step={0.1}
-								value={
-									attributes['row-carousel-autoplay-speed']
-								}
+								value={autoplaySpeed}
 								onChangeValue={val => {
 									onChange({
-										'row-carousel-autoplay-speed':
+										[`row-carousel-autoplay-speed-${breakpoint}`]:
 											val !== undefined ? val : '',
 									});
 								}}
 								onReset={() =>
 									onChange({
-										'row-carousel-autoplay-speed': 2.5,
+										[`row-carousel-autoplay-speed-${breakpoint}`]: 2.5,
 									})
 								}
 							/>
@@ -247,7 +306,9 @@ const RowCarouselControl = ({ props }) => {
 						label={__('Infinite loop', 'maxi-blocks')}
 						selected={isLoop}
 						onChange={val => {
-							onChange({ 'row-carousel-loop': val });
+							onChange({
+								[`row-carousel-loop-${breakpoint}`]: val,
+							});
 						}}
 					/>
 					<SelectControl
@@ -264,9 +325,11 @@ const RowCarouselControl = ({ props }) => {
 								value: 'fade',
 							},
 						]}
-						value={attributes['row-carousel-transition']}
+						value={transition}
 						onChange={val =>
-							onChange({ 'row-carousel-transition': val })
+							onChange({
+								[`row-carousel-transition-${breakpoint}`]: val,
+							})
 						}
 					/>
 					<AdvancedNumberControl
@@ -275,16 +338,16 @@ const RowCarouselControl = ({ props }) => {
 						max={10}
 						initial={0.5}
 						step={0.1}
-						value={attributes['row-carousel-transition-speed']}
+						value={transitionSpeed}
 						onChangeValue={val => {
 							onChange({
-								'row-carousel-transition-speed':
+								[`row-carousel-transition-speed-${breakpoint}`]:
 									val !== undefined ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								'row-carousel-transition-speed': 0.5,
+								[`row-carousel-transition-speed-${breakpoint}`]: 0.5,
 							})
 						}
 					/>

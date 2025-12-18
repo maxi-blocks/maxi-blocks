@@ -14,63 +14,114 @@ const save = props => {
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const carouselDataAttrs = {};
 
-	// Add breakpoint-specific carousel status - ONLY if true
-	breakpoints.forEach(bp => {
-		const status = attributes[`row-carousel-status-${bp}`];
-		if (status === true) {
-			carouselDataAttrs[`data-carousel-${bp}`] = true;
+	// Check if carousel is enabled (global, not breakpoint-specific)
+	const carouselEnabled = attributes['row-carousel-status'];
 
-			// Add breakpoint-specific alignment - only if explicitly set
+	// If carousel is enabled, save status and all breakpoint-specific settings
+	if (carouselEnabled) {
+		// Add global carousel status for JavaScript detection
+		carouselDataAttrs['data-carousel-status'] = true;
+		breakpoints.forEach(bp => {
+			// Add breakpoint-specific carousel settings
+			const slidesPerView =
+				attributes[`row-carousel-slides-per-view-${bp}`];
+			if (slidesPerView !== undefined) {
+				carouselDataAttrs[`data-carousel-slides-per-view-${bp}`] =
+					slidesPerView;
+			}
+
+			const columnGap = attributes[`row-carousel-column-gap-${bp}`];
+			if (columnGap !== undefined) {
+				carouselDataAttrs[`data-carousel-column-gap-${bp}`] = columnGap;
+			}
+
+			const peekOffset = attributes[`row-carousel-peek-offset-${bp}`];
+			if (peekOffset !== undefined) {
+				carouselDataAttrs[`data-carousel-peek-offset-${bp}`] =
+					peekOffset;
+			}
+
+			const loop = attributes[`row-carousel-loop-${bp}`];
+			if (loop !== undefined) {
+				carouselDataAttrs[`data-carousel-loop-${bp}`] = loop;
+			}
+
+			const autoplay = attributes[`row-carousel-autoplay-${bp}`];
+			if (autoplay !== undefined) {
+				carouselDataAttrs[`data-carousel-autoplay-${bp}`] = autoplay;
+			}
+
+			const autoplaySpeed =
+				attributes[`row-carousel-autoplay-speed-${bp}`];
+			if (autoplaySpeed !== undefined) {
+				carouselDataAttrs[`data-carousel-autoplay-speed-${bp}`] =
+					autoplaySpeed;
+			}
+
+			const pauseOnHover =
+				attributes[`row-carousel-pause-on-hover-${bp}`];
+			if (pauseOnHover !== undefined) {
+				carouselDataAttrs[`data-carousel-hover-pause-${bp}`] =
+					pauseOnHover;
+			}
+
+			const pauseOnInteraction =
+				attributes[`row-carousel-pause-on-interaction-${bp}`];
+			if (pauseOnInteraction !== undefined) {
+				carouselDataAttrs[`data-carousel-interaction-pause-${bp}`] =
+					pauseOnInteraction;
+			}
+
+			const transition = attributes[`row-carousel-transition-${bp}`];
+			if (transition !== undefined) {
+				carouselDataAttrs[`data-carousel-transition-${bp}`] =
+					transition;
+			}
+
+			const transitionSpeed =
+				attributes[`row-carousel-transition-speed-${bp}`];
+			if (transitionSpeed !== undefined) {
+				carouselDataAttrs[`data-carousel-transition-speed-${bp}`] =
+					transitionSpeed;
+			}
+
+			// Add breakpoint-specific alignment
 			const alignment = attributes[`row-carousel-alignment-${bp}`];
 			if (alignment) {
 				carouselDataAttrs[`data-carousel-alignment-${bp}`] = alignment;
 			}
-		}
-	});
+		});
 
-	// Check if any breakpoint has carousel enabled
-	const carouselEnabled = breakpoints.some(
-		bp => attributes[`row-carousel-status-${bp}`]
-	);
-
-	// Add carousel configuration if enabled
-	if (carouselEnabled) {
-		carouselDataAttrs['data-carousel-slides-per-view'] =
-			attributes['row-carousel-slides-per-view'] || 1;
-		carouselDataAttrs['data-carousel-column-gap'] =
-			attributes['row-carousel-column-gap'] || 0;
-		carouselDataAttrs['data-carousel-peek-offset'] =
-			attributes['row-carousel-peek-offset'] || 0;
+		// Add global carousel configuration
 		carouselDataAttrs['data-carousel-trigger-width'] =
 			attributes['row-carousel-trigger-width'] || '';
-		carouselDataAttrs['data-carousel-loop'] =
-			attributes['row-carousel-loop'];
-		carouselDataAttrs['data-carousel-autoplay'] =
-			attributes['row-carousel-autoplay'];
-		carouselDataAttrs['data-carousel-autoplay-speed'] =
-			attributes['row-carousel-autoplay-speed'];
-		carouselDataAttrs['data-carousel-hover-pause'] =
-			attributes['row-carousel-pause-on-hover'];
-		carouselDataAttrs['data-carousel-interaction-pause'] =
-			attributes['row-carousel-pause-on-interaction'];
-		carouselDataAttrs['data-carousel-transition'] =
-			attributes['row-carousel-transition'];
-		carouselDataAttrs['data-carousel-transition-speed'] =
-			attributes['row-carousel-transition-speed'];
 
-		// Add arrow/dot icon content for JavaScript to use
-		if (attributes['navigation-arrow-first-icon-content']) {
-			carouselDataAttrs['data-arrow-first-icon'] =
-				attributes['navigation-arrow-first-icon-content'];
-		}
-		if (attributes['navigation-arrow-second-icon-content']) {
-			carouselDataAttrs['data-arrow-second-icon'] =
-				attributes['navigation-arrow-second-icon-content'];
-		}
-		if (attributes['navigation-dot-icon-content']) {
-			carouselDataAttrs['data-dot-icon'] =
-				attributes['navigation-dot-icon-content'];
-		}
+		// Add arrow/dot status (breakpoint-specific)
+		breakpoints.forEach(bp => {
+			const arrowStatus =
+				attributes[`navigation-arrow-both-status-${bp}`];
+			if (arrowStatus !== undefined) {
+				carouselDataAttrs[`data-arrow-status-${bp}`] = arrowStatus;
+			}
+
+			const dotStatus = attributes[`navigation-dot-status-${bp}`];
+			if (dotStatus !== undefined) {
+				carouselDataAttrs[`data-dot-status-${bp}`] = dotStatus;
+			}
+		});
+
+		// Add arrow/dot icon content for JavaScript to use (with defaults)
+		carouselDataAttrs['data-arrow-first-icon'] =
+			attributes['navigation-arrow-first-icon-content'] ||
+			'<svg class="arrow-left-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24" fill="none" data-stroke stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M8.85 19l-7-7 7-7m-7 7h20.3"/></svg>';
+
+		carouselDataAttrs['data-arrow-second-icon'] =
+			attributes['navigation-arrow-second-icon-content'] ||
+			'<svg class="arrow-right-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24" fill="none" data-stroke stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M15.15 5l7 7-7 7m7-7H1.85"/></svg>';
+
+		carouselDataAttrs['data-dot-icon'] =
+			attributes['navigation-dot-icon-content'] ||
+			'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>';
 	}
 
 	return (

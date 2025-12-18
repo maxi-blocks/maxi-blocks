@@ -211,10 +211,10 @@ const getTypographyStyles = ({
 				'font-family': `"${getValue('font-family', breakpoint)}"`,
 			}),
 			...getColorString(breakpoint),
-			...((!isNil(getValue('font-size', breakpoint)) || getLastBreakpointValue('font-size-clamp-status', breakpoint)) && {
-			'font-size': (() => {
+			...(() => {
 				const fontSize = getValue('font-size', breakpoint);
-				const fontSizeUnit = getUnitValue('font-size-unit', breakpoint);
+				const fontSizeUnit =
+					getUnitValue('font-size-unit', breakpoint) || 'px';
 				const clampEnabled = getLastBreakpointValue(
 					'font-size-clamp-status',
 					breakpoint
@@ -236,7 +236,9 @@ const getTypographyStyles = ({
 
 					if (!isNil(minSize) && !isNil(preferredSize) && !isNil(maxSize)) {
 						if (breakpoint === 'general') {
-							return `clamp(${minSize}${minUnit}, ${preferredSize}${preferredUnit}, ${maxSize}${maxUnit})`;
+							return {
+								'font-size': `clamp(${minSize}${minUnit}, ${preferredSize}${preferredUnit}, ${maxSize}${maxUnit})`,
+							};
 						}
 
 						const vw = breakpointWidths[breakpoint];
@@ -251,15 +253,21 @@ const getTypographyStyles = ({
 								maxUnit,
 								viewportWidth: vw,
 							});
-							if (calculated) return calculated;
+							if (calculated) {
+								return { 'font-size': calculated };
+							}
 						}
-						return `clamp(${minSize}${minUnit}, ${preferredSize}${preferredUnit}, ${maxSize}${maxUnit})`;
+						return {
+							'font-size': `clamp(${minSize}${minUnit}, ${preferredSize}${preferredUnit}, ${maxSize}${maxUnit})`,
+						};
 					}
 				}
 
-				return `${fontSize}${fontSizeUnit}`;
+				if (!isNil(fontSize)) {
+					return { 'font-size': `${fontSize}${fontSizeUnit}` };
+				}
+				return {};
 			})(),
-		}),
 			...(!isNil(getValue('line-height', breakpoint)) && {
 				'line-height': `${getValue('line-height', breakpoint)}${
 					getUnitValue('line-height-unit', breakpoint) || ''

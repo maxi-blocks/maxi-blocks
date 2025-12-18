@@ -14,10 +14,12 @@ const ClampControl = ({
     onChangeFormat,
     prefix,
     className,
+    isClampEnabled,
+    isClampAutoEnabled,
     ...props
 }) => {
-    const clampStatus = getPlaceholder(`${valueKey}-clamp-status`);
-    const clampAutoStatus = getPlaceholder(`${valueKey}-clamp-auto-status`);
+    const clampStatus = isClampEnabled !== undefined ? !!isClampEnabled : !!getValue(`${valueKey}-clamp-status`);
+    const clampAutoStatus = isClampAutoEnabled !== undefined ? !!isClampAutoEnabled : !!getValue(`${valueKey}-clamp-auto-status`);
 
     // 1. Define the fields configuration to avoid JSX repetition
     const fields = [

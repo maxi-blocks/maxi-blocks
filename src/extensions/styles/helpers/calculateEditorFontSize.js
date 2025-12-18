@@ -28,14 +28,30 @@ const calculateEditorFontSize = ({
 	const preferred = parseFloat(preferredSize);
 	const max = parseFloat(maxSize);
 
-	const minPx = minUnit === 'rem' ? min * remToPx : min;
-	const maxPx = maxUnit === 'rem' ? max * remToPx : max;
+	const toPx = (val, unit) => {
+		if (unit === 'px') return val;
+		if (unit === 'rem' || unit === 'em') return val * remToPx;
+		return null;
+	};
 
-	let prefPx = preferred;
+	const minPx = toPx(min, minUnit);
+	const maxPx = toPx(max, maxUnit);
+
+	if (minPx === null || maxPx === null) {
+		console.warn('calculateEditorFontSize: Unsupported min/max unit', minUnit, maxUnit); 
+		return null;
+	}
+
+	let prefPx = null;
 	if (preferredUnit === 'vw') {
 		prefPx = (preferred * viewportWidth) / 100;
-	} else if (preferredUnit === 'rem') {
-		prefPx = preferred * remToPx;
+	} else {
+		prefPx = toPx(preferred, preferredUnit);
+	}
+
+	if (prefPx === null) {
+		console.warn('calculateEditorFontSize: Unsupported preferred unit', preferredUnit);
+		return null;
 	}
 
 	return `${Math.max(minPx, Math.min(prefPx, maxPx))}px`;

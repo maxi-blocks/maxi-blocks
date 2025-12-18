@@ -126,13 +126,29 @@ const Inspector = props => {
 										isRepeaterInherited,
 										updateInnerBlocksPositions,
 									}),
-									...inspectorTabs.rowCarousel({
+								]}
+							/>
+						),
+						ignoreIndicator: [`row-pattern-${deviceType}`],
+					},
+					{
+						label: __('Carousel', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.carouselSlider({
+										props,
+									}),
+									...inspectorTabs.carouselArrows({
+										props,
+									}),
+									...inspectorTabs.carouselDots({
 										props,
 									}),
 								]}
 							/>
 						),
-						ignoreIndicator: [`row-pattern-${deviceType}`],
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),

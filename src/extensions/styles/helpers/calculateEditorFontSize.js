@@ -22,11 +22,19 @@ const calculateEditorFontSize = ({
 	viewportWidth,
 	remToPx = 16,
 }) => {
-	if (!viewportWidth) return null;
+	if (!viewportWidth) {
+		console.warn('calculateEditorFontSize: Missing viewportWidth');
+		return null;
+	}
 
-	const min = parseFloat(minSize);
-	const preferred = parseFloat(preferredSize);
-	const max = parseFloat(maxSize);
+	let min = parseFloat(minSize);
+	if (!Number.isFinite(min)) min = 0;
+
+	let preferred = parseFloat(preferredSize);
+	if (!Number.isFinite(preferred)) preferred = 0;
+
+	let max = parseFloat(maxSize);
+	if (!Number.isFinite(max)) max = 9999;
 
 	const toPx = (val, unit) => {
 		if (unit === 'px') return val;

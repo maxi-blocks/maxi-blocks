@@ -1,4 +1,4 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
 import { lowerCase } from 'lodash';
@@ -23,9 +23,9 @@ const ClampControl = ({
 
     // 1. Define the fields configuration to avoid JSX repetition
     const fields = [
-        { id: 'min', suffix: '-clamp-min', label: `Minimum ${lowerCase(label)}` },
-        { id: 'pref', suffix: '', label: `Preferred ${lowerCase(label)}`, hide: clampAutoStatus },
-        { id: 'max', suffix: '-clamp-max', label: `Maximum ${lowerCase(label)}` },
+        { id: 'min', suffix: '-clamp-min', label: sprintf(__('Minimum %s', 'maxi-blocks'), lowerCase(label)) },
+        { id: 'pref', suffix: '', label: sprintf(__('Preferred %s', 'maxi-blocks'), lowerCase(label)), hide: clampAutoStatus },
+        { id: 'max', suffix: '-clamp-max', label: sprintf(__('Maximum %s', 'maxi-blocks'), lowerCase(label)) },
     ];
 
     // 2. Centralized update handler
@@ -95,7 +95,7 @@ const ClampControl = ({
             )}
 
             <ToggleSwitch
-                label={__(`Clamp ${lowerCase(label)}`, 'maxi-blocks')}
+                label={sprintf(__('Clamp %s', 'maxi-blocks'), lowerCase(label))}
                 selected={clampStatus}
                 onChange={val => onChangeFormat({ [`${prefix}${valueKey}-clamp-status`]: val })}
             />

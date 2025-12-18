@@ -31,6 +31,7 @@ const settings = [
 	'text-transform',
 	'letter-spacing',
 	'white-space',
+	'text-wrap',
 	'word-spacing',
 	'text-indent',
 	'margin-bottom',

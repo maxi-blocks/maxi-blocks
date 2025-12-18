@@ -1715,6 +1715,50 @@ const TypographyControl = props => {
 										)
 									}
 								/>
+								<SelectControl
+									__nextHasNoMarginBottom
+									label={__('Text wrap', 'maxi-blocks')}
+									className='maxi-typography-control__text-wrap'
+									value={getValue('text-wrap')}
+									defaultValue={getDefault('text-wrap')}
+									newStyle
+									options={[
+										{
+											label: __('Wrap', 'maxi-blocks'),
+											value: 'wrap',
+										},
+										{
+											label: __('No wrap', 'maxi-blocks'),
+											value: 'nowrap',
+										},
+										{
+											label: __('Balance', 'maxi-blocks'),
+											value: 'balance',
+										},
+										{
+											label: __('Pretty', 'maxi-blocks'),
+											value: 'pretty',
+										},
+										{
+											label: __('Stable', 'maxi-blocks'),
+											value: 'stable',
+										},
+									]}
+									onChange={val => {
+										onChangeFormat({
+											[`${prefix}text-wrap`]: val,
+										});
+									}}
+									onReset={() =>
+										onChangeFormat(
+											{
+												[`${prefix}text-wrap`]:
+													getDefault('text-wrap'),
+											},
+											{ isReset: true }
+										)
+									}
+								/>
 								{!isStyleCards && (
 									<>
 										<SelectControl

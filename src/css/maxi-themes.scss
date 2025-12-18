@@ -68,6 +68,9 @@ body.maxi-blocks--active {
 							white-space: var(
 								--maxi-#{$style}-#{$level}-white-space-#{$responsive_size}
 							);
+							text-wrap: var(
+								--maxi-#{$style}-#{$level}-text-wrap-#{$responsive_size}
+							);
 							word-spacing: var(
 								--maxi-#{$style}-#{$level}-word-spacing-#{$responsive_size}
 							);
@@ -110,6 +113,9 @@ body.maxi-blocks--active {
 					white-space: var(
 						--maxi-#{$style}-p-white-space-#{$responsive_size}
 					);
+					text-wrap: var(
+						--maxi-#{$style}-p-text-wrap-#{$responsive_size}
+					);
 					word-spacing: var(
 						--maxi-#{$style}-p-word-spacing-#{$responsive_size}
 					);
@@ -144,6 +150,9 @@ body.maxi-blocks--active {
 				);
 				white-space: var(
 					--maxi-#{$style}-button-white-space-#{$responsive_size}
+				);
+				text-wrap: var(
+					--maxi-#{$style}-button-text-wrap-#{$responsive_size}
 				);
 				word-spacing: var(
 					--maxi-#{$style}-button-word-spacing-#{$responsive_size}
@@ -183,6 +192,9 @@ body.maxi-blocks--active {
 					white-space: var(
 						--maxi-#{$style}-p-white-space-#{$responsive_size}
 					);
+					text-wrap: var(
+						--maxi-#{$style}-p-text-wrap-#{$responsive_size}
+					);
 					word-spacing: var(
 						--maxi-#{$style}-p-word-spacing-#{$responsive_size}
 					);
@@ -220,6 +232,9 @@ body.maxi-blocks--active {
 					);
 					white-space: var(
 						--maxi-#{$style}-h4-white-space-#{$responsive_size}
+					);
+					text-wrap: var(
+						--maxi-#{$style}-h4-text-wrap-#{$responsive_size}
 					);
 					word-spacing: var(
 						--maxi-#{$style}-h4-word-spacing-#{$responsive_size}
@@ -259,6 +274,9 @@ body.maxi-blocks--active {
 					);
 					white-space: var(
 						--maxi-#{$style}-p-white-space-#{$responsive_size}
+					);
+					text-wrap: var(
+						--maxi-#{$style}-p-text-wrap-#{$responsive_size}
 					);
 					word-spacing: var(
 						--maxi-#{$style}-p-word-spacing-#{$responsive_size}
@@ -302,6 +320,9 @@ body.maxi-blocks--active {
 					);
 					white-space: var(
 						--maxi-#{$style}-p-white-space-#{$responsive_size}
+					);
+					text-wrap: var(
+						--maxi-#{$style}-p-text-wrap-#{$responsive_size}
 					);
 					word-spacing: var(
 						--maxi-#{$style}-p-word-spacing-#{$responsive_size}

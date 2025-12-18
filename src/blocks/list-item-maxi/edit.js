@@ -49,12 +49,20 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	maxiBlockDidUpdate() {
+	removeGutenbergWhiteSpace() {
 		// Ensures white-space is applied from Maxi and not with inline styles
 		if (this.blockRef?.current?.children)
 			Array.from(this.blockRef.current.children).forEach(el => {
 				if (el.style.whiteSpace) el.style.whiteSpace = null;
 			});
+	}
+
+	maxiBlockDidMount() {
+		this.removeGutenbergWhiteSpace();
+	}
+
+	maxiBlockDidUpdate() {
+		this.removeGutenbergWhiteSpace();
 	}
 
 	render() {

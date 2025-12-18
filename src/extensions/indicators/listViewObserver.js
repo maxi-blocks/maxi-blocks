@@ -40,7 +40,6 @@ const updateListViewItem = item => {
 	if (hasInteraction) {
 		item.setAttribute(ATTR_NAME, 'true');
 		item.setAttribute('aria-label', 'Interaction');
-		item.setAttribute('title', 'Interaction');
 	} else {
 		item.removeAttribute(ATTR_NAME);
 		if (!hasBackgroundLayers) {
@@ -54,7 +53,6 @@ const updateListViewItem = item => {
 		// Build label based on current state, not previous label
 		const label = hasInteraction ? 'Interaction, Background' : 'Background';
 		item.setAttribute('aria-label', label);
-		item.setAttribute('title', label);
 	} else {
 		item.removeAttribute('data-maxi-background');
 	}

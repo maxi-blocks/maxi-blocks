@@ -159,23 +159,14 @@ export const limitString = (value, limit) => {
 	return str.length > limit ? `${str.substr(0, limit)}…` : str;
 };
 
-const isLinkTargetAllowed = (targetValue, contentType) => {
-	if (contentType === 'button') {
-		return !['categories', 'tags'].includes(targetValue);
-	}
-
-	return true;
-};
-
 /**
  * Retrieves the link targets based on selected DC type and field.
  *
- * @param {string} type        - DC type.
- * @param {string} field       - DC field.
- * @param {string} contentType - DC content type.
+ * @param {string} type  - DC type.
+ * @param {string} field - DC field.
  * @returns {Array} An array of link targets with label and value keys.
  */
-export const getLinkTargets = (type, field, contentType) => {
+export const getLinkTargets = (type, field) => {
 	const targets = [];
 
 	targets.push({
@@ -198,9 +189,7 @@ export const getLinkTargets = (type, field, contentType) => {
 		});
 	}
 
-	return targets.filter(target =>
-		isLinkTargetAllowed(target.value, contentType)
-	);
+	return targets;
 };
 
 // In case content is empty, show this text
@@ -536,11 +525,9 @@ export const validationsValues = (
 		currentTemplateType,
 		source
 	)?.map(item => item.value);
-	const linkTargetResult = getLinkTargets(
-		variableValue,
-		field,
-		contentType
-	).map(item => item.value);
+	const linkTargetResult = getLinkTargets(variableValue, field).map(
+		item => item.value
+	);
 
 	return {
 		...(!isCL &&
@@ -706,17 +693,4 @@ export const getPostBySlug = async slug => {
 	}
 
 	return null;
-};
-
-export const getContentType = blockName => {
-	switch (blockName) {
-		case 'maxi-blocks/button-maxi':
-			return 'button';
-		case 'maxi-blocks/image-maxi':
-			return 'image';
-		case 'maxi-blocks/divider-maxi':
-			return 'divider';
-		default:
-			return 'text';
-	}
 };

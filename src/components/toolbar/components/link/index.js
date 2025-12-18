@@ -20,7 +20,7 @@ import DC_LINK_BLOCKS from './dcLinkBlocks';
 import { toolbarLink } from '@maxi-icons';
 import { linkFields, multipleLinksTypes } from '@extensions/DC/constants';
 import SelectControl from '@components/select-control';
-import { getLinkTargets, getContentType } from '@extensions/DC/utils';
+import { getLinkTargets } from '@extensions/DC/utils';
 import InfoBox from '@components/info-box';
 import { getBlockData } from '@extensions/attributes';
 
@@ -81,15 +81,9 @@ const Link = props => {
 
 	useEffect(() => {
 		if (dcLinkStatus) {
-			setLinkTargetOptions(
-				getLinkTargets(
-					selectedDCType,
-					dcField,
-					getContentType(blockName)
-				)
-			);
+			setLinkTargetOptions(getLinkTargets(selectedDCType, dcField));
 		}
-	}, [selectedDCType, dcField, dcLinkStatus, blockName]);
+	}, [selectedDCType, dcField, dcLinkStatus]);
 
 	if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
 		return null;

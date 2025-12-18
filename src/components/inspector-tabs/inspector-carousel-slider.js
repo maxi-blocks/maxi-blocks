@@ -29,6 +29,7 @@ const carouselSlider = ({ props }) => {
 
 	// Get carousel status (NOT breakpoint-specific)
 	const carouselStatus = attributes['row-carousel-status'];
+	const carouselPreview = attributes['row-carousel-preview'];
 
 	const slidesPerView = getLastBreakpointAttribute({
 		target: 'row-carousel-slides-per-view',
@@ -105,6 +106,19 @@ const carouselSlider = ({ props }) => {
 				/>
 				{carouselStatus && (
 					<>
+						<ToggleSwitch
+							label={__('Preview', 'maxi-blocks')}
+							selected={carouselPreview}
+							onChange={val => {
+								// eslint-disable-next-line no-console
+								console.log('Row Carousel: Preview onChange', {
+									val,
+								});
+								onChange({
+									'row-carousel-preview': val,
+								});
+							}}
+						/>
 						<ResponsiveTabsControl />
 						<AdvancedNumberControl
 							label={__('Columns per slide', 'maxi-blocks')}

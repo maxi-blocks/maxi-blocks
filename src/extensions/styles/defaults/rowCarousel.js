@@ -6,6 +6,11 @@ const rowCarousel = {
 		type: 'boolean',
 		default: false,
 	},
+	// Global carousel preview status for editor (NOT breakpoint-specific)
+	'row-carousel-preview': {
+		type: 'boolean',
+		default: false,
+	},
 
 	// Breakpoint-specific carousel settings
 	...breakpointAttributesCreator({

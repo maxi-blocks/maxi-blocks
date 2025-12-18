@@ -31,6 +31,7 @@ import Inspector from './inspector';
 import Toolbar from '@components/toolbar';
 import MaxiBlock from '@components/maxi-block/maxiBlock';
 import RowBlockTemplate from './components/row-block-template';
+import RowCarouselPreview from './components/row-carousel-preview';
 
 import RepeaterContext from './repeaterContext';
 import RowContext from './rowContext';
@@ -293,6 +294,11 @@ class edit extends MaxiBlockComponent {
 			...(this.context?.repeaterStatus && this.context),
 		};
 
+		// Get carousel preview status
+		const carouselPreviewEnabled =
+			attributes['row-carousel-status'] &&
+			attributes['row-carousel-preview'];
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -420,6 +426,12 @@ class edit extends MaxiBlockComponent {
 					/>
 				</RepeaterContext.Provider>
 			</RowContext.Provider>,
+			<RowCarouselPreview
+				key={`row-carousel-preview-${uniqueID}`}
+				clientId={clientId}
+				attributes={attributes}
+				isPreviewEnabled={carouselPreviewEnabled}
+			/>,
 		];
 	}
 }

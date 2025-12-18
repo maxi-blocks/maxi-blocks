@@ -645,7 +645,11 @@ class MaxiRowCarousel {
 				i === 0 ? ' maxi-row-carousel__dot--active' : ''
 			}`;
 			if (dotIconContent) {
-				dot.innerHTML = dotIconContent;
+				// Create icon wrapper for styling
+				const iconWrapper = document.createElement('div');
+				iconWrapper.className = 'maxi-navigation-dot-icon-block__icon';
+				iconWrapper.innerHTML = dotIconContent;
+				dot.appendChild(iconWrapper);
 			}
 			// Click on dot navigates to that slide (index * slidesPerView)
 			dot.addEventListener('click', () =>
@@ -884,7 +888,98 @@ class MaxiRowCarousel {
 	onHover(isLeaving) {
 		this.isHovering = !isLeaving;
 	}
+
+	/**
+	 * Destroy carousel instance and clean up
+	 */
+	destroy() {
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: destroy() called');
+
+		// Stop autoplay
+		if (this.autoplayInterval) {
+			clearInterval(this.autoplayInterval);
+			this.autoplayInterval = null;
+		}
+
+		// Remove event listeners
+		if (this._wrapper) {
+			this._wrapper.removeEventListener('mousedown', this.onDragStart);
+			this._wrapper.removeEventListener('touchstart', this.onDragStart);
+			this._wrapper.removeEventListener('mousemove', this.onDragAction);
+			this._wrapper.removeEventListener('mouseup', this.onDragEnd);
+			this._wrapper.removeEventListener('mouseleave', this.onDragEnd);
+			this._wrapper.removeEventListener('touchmove', this.onDragAction);
+			this._wrapper.removeEventListener('touchend', this.onDragEnd);
+		}
+
+		if (this._container) {
+			this._container.removeEventListener('mouseenter', this.onHover);
+			this._container.removeEventListener('mouseleave', this.onHoverEnd);
+		}
+
+		if (this._arrowNext) {
+			this._arrowNext.removeEventListener('click', this.columnNext);
+		}
+
+		if (this._arrowPrev) {
+			this._arrowPrev.removeEventListener('click', this.columnPrev);
+		}
+
+		if (this.onResize) {
+			window.removeEventListener('resize', this.onResize);
+		}
+
+		// Remove carousel structure if it exists
+		if (this.carouselActive && this._container) {
+			// Find the wrapper
+			const wrapper = this._container.querySelector(
+				'.maxi-row-carousel__wrapper'
+			);
+			const tracker = this._container.querySelector(
+				'.maxi-row-carousel__tracker'
+			);
+			const arrows = this._container.querySelectorAll(
+				'.maxi-row-carousel__arrow'
+			);
+			const dots = this._container.querySelector(
+				'.maxi-row-carousel__dots'
+			);
+
+			// Move columns back to container
+			if (wrapper) {
+				const columns = Array.from(
+					wrapper.querySelectorAll(':scope > .maxi-column-block')
+				);
+				columns.forEach(column => {
+					// Remove carousel classes
+					column.classList.remove('carousel-item--active');
+					column.removeAttribute('data-carousel-active');
+					// Move back to container
+					this._container.appendChild(column);
+				});
+			}
+
+			// Remove carousel elements
+			if (wrapper) wrapper.remove();
+			if (tracker) tracker.remove();
+			arrows.forEach(arrow => arrow.remove());
+			if (dots) dots.remove();
+		}
+
+		// Clear references
+		this._container = null;
+		this._wrapper = null;
+		this._tracker = null;
+		this._columns = null;
+		this._arrowNext = null;
+		this._arrowPrev = null;
+		this._dotsContainer = null;
+	}
 }
+
+// Expose MaxiRowCarousel globally for editor preview
+window.MaxiRowCarousel = MaxiRowCarousel;
 
 // Initialize on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {

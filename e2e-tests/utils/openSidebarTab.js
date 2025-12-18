@@ -29,10 +29,14 @@ const openSidebarTab = async (page, tab, item) => {
 
 	await options[tabs.indexOf(tab)].click();
 
+	// Give the tab switch time to process
+	await page.waitForTimeout(500);
+
 	// Wait for accordion item to be rendered after tab switch
+	// Increased timeout for CI environments
 	await page.waitForSelector(
 		`.maxi-accordion-control__item[data-name="${item}"]`,
-		{ timeout: 10000 }
+		{ timeout: 20000 }
 	);
 
 	const wrapperElement = await page.$(

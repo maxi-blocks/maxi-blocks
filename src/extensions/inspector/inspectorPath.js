@@ -8,6 +8,7 @@ import { select, dispatch } from '@wordpress/data';
  */
 import { openSidebar } from '@extensions/dom';
 import { getBlockDataByUniqueID } from '@extensions/styles/migrators/utils';
+import { getIsSiteEditor } from '@extensions/fse';
 
 const { receiveInspectorPath } = select('maxiBlocks');
 
@@ -25,6 +26,23 @@ export const getActiveAccordion = depth => {
 };
 
 /**
+ * Helper to open the block sidebar in either the classic editor or FSE.
+ * Returns a Promise that resolves when sidebar is open.
+ */
+const openBlockSidebar = () => {
+	const isSiteEditor = getIsSiteEditor();
+
+	if (isSiteEditor) {
+		// Full Site Editor uses core/edit-site store
+		const { openGeneralSidebar } = dispatch('core/edit-site');
+		return openGeneralSidebar('edit-site/block-inspector');
+	}
+	// Classic editor uses core/edit-post store
+	const { openGeneralSidebar } = dispatch('core/edit-post');
+	return openGeneralSidebar('edit-post/block');
+};
+
+/**
  * Opens the block sidebar, switches to the requested tab, and optionally
  * scrolls to a specific control inside the accordion.
  *
@@ -33,8 +51,7 @@ export const getActiveAccordion = depth => {
  * @param {string} [targetSelector] - Optional CSS selector to scroll to inside the accordion
  */
 export const openSidebarAccordion = (tab, accordionName, targetSelector) => {
-	const { openGeneralSidebar } = dispatch('core/edit-post');
-	openGeneralSidebar('edit-post/block')
+	openBlockSidebar()
 		.then(() =>
 			dispatch('maxiBlocks').updateInspectorPath({
 				depth: 0,
@@ -55,8 +72,7 @@ export const openTransitions = () => {
 		return 1;
 	};
 
-	const { openGeneralSidebar } = dispatch('core/edit-post');
-	openGeneralSidebar('edit-post/block')
+	openBlockSidebar()
 		.then(() =>
 			dispatch('maxiBlocks').updateInspectorPath({
 				depth: 0,

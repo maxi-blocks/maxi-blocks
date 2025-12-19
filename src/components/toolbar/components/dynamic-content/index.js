@@ -38,11 +38,16 @@ const DC = props => {
 		'maxi-blocks/divider-maxi': 'divider',
 	};
 
+	// Text block has Advanced tab at index 1, others at index 2 (due to Canvas tab)
+	const advancedTab = blockName === 'maxi-blocks/text-maxi' ? 1 : 2;
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__dynamic-content'
 			tooltip={__('Dynamic Content', 'maxi-blocks')}
 			icon={toolbarDynamicContent}
+			advancedOptions='dynamic content'
+			tab={advancedTab}
 		>
 			<DynamicContent
 				className='toolbar-item__dynamic-content__popover toolbar-item__dynamic-content__popover'

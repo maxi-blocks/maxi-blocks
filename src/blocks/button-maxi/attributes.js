@@ -69,7 +69,13 @@ const attributes = {
 		},
 	},
 	...attributesData.typographyHover,
-	...attributesData.link,
+	...{
+		...attributesData.link,
+		'link-palette-color-general': {
+			type: 'number',
+			default: 1,
+		},
+	},
 	...prefixAttributesCreator({
 		obj: attributesData.background,
 		prefix,

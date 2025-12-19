@@ -33,9 +33,7 @@
 
 	// Shared flexbox center pattern
 	%flex-center-pattern {
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		@include flex-center;
 	}
 
 	// Shared button base styling
@@ -88,7 +86,7 @@
 			margin-right: 11px;
 			border-radius: 4px;
 			border: $bg;
-			transition: all 400ms ease !important;
+			@include transit(true);
 			@extend %tabs-interactive-states;
 		}
 	}

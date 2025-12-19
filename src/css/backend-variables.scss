@@ -25,8 +25,12 @@ $pr: relative;
 $ptr: pointer;
 $bg: 1.5px solid $gl; // border-grey
 
-@mixin transit {
-	transition: $t;
+@mixin transit($important: false) {
+	@if $important {
+		transition: $t !important;
+	} @else {
+		transition: $t;
+	}
 }
 
 @mixin flex-center($important: false) {

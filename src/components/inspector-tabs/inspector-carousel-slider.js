@@ -93,6 +93,7 @@ const carouselSlider = ({ props }) => {
 
 	return {
 		label: __('Carousel slider', 'maxi-blocks'),
+		extraIndicators: ['row-carousel-status'],
 		content: (
 			<>
 				<ToggleSwitch

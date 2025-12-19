@@ -91,6 +91,52 @@ const AlignmentControl = props => {
 	);
 
 	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
+
+	// Get the default value (first option)
+	const defaultValue = getOptions()[0]?.value ?? 'left';
+
+	const selectedValue =
+		getLastBreakpointAttribute({
+			target,
+			breakpoint,
+			attributes: props,
+			isHover,
+		}) || defaultValue;
+
+	// Generate all possible alignment attribute names (all breakpoints + hover states)
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const alignmentAttributes = [];
+	breakpoints.forEach(bp => {
+		alignmentAttributes.push(`${target}-${bp}`);
+		alignmentAttributes.push(`${target}-${bp}-hover`);
+	});
+
+	// Check if any alignment attribute has a non-default value
+	// We need to check:
+	// 1. If attribute is set (not undefined/null) AND
+	// 2. If it's different from the default value
+	// This handles cases where:
+	// - Attributes are undefined (never set) -> treat as default
+	// - Attributes are set to default value (e.g., 'left' for text) -> treat as default
+	const hasNonDefaultAlignment = alignmentAttributes.some(attr => {
+		const value = props[attr];
+		// If undefined/null, it's default
+		if (value === undefined || value === null) return false;
+		// If set to default value, it's default
+		if (value === defaultValue) return false;
+		// Otherwise it's non-default
+		return true;
+	});
+
+	// Only ignore indicators when no non-default alignment is set
+	// This hides the indicator dot when all alignments are at default or unset
+	const itemsWithIndicatorLogic = getOptions().map(option => ({
+		...option,
+		ignoreIndicator: !hasNonDefaultAlignment
+			? alignmentAttributes
+			: undefined,
+	}));
+
 	return (
 		<>
 			{showLabel && (
@@ -106,15 +152,8 @@ const AlignmentControl = props => {
 				fullWidthMode
 				className={classes}
 				hasBorder
-				items={getOptions()}
-				selected={
-					getLastBreakpointAttribute({
-						target,
-						breakpoint,
-						attributes: props,
-						isHover,
-					}) || getOptions()[0].value
-				}
+				items={itemsWithIndicatorLogic}
+				selected={selectedValue}
 				onChange={val =>
 					onChange({
 						[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]:

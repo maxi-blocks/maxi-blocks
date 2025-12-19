@@ -578,7 +578,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				img,
 				svg {
 					transform: scale(1);
-					transition: 0.3s ease-in-out;
+					@include transit;
 				}
 				&:hover {
 					img,
@@ -591,7 +591,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				img,
 				svg {
 					transform: scale(1.5);
-					transition: 0.3s ease-in-out;
+					@include transit;
 				}
 				&:hover {
 					img,
@@ -604,7 +604,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				img,
 				svg {
 					transform: translateX(0);
-					transition: 0.3s ease-in-out;
+					@include transit;
 				}
 				&:hover {
 					img,
@@ -617,7 +617,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				img,
 				svg {
 					transform: rotate(0);
-					transition: 0.3s ease-in-out;
+					@include transit;
 				}
 				&:hover {
 					img,
@@ -630,7 +630,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				img,
 				svg {
 					filter: blur(0);
-					transition: 0.3s ease-in-out;
+					@include transit;
 				}
 				&:hover {
 					img,
@@ -643,7 +643,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				img,
 				svg {
 					filter: grayscale(0);
-					transition: 0.3s ease-in-out;
+					@include transit;
 				}
 				&:hover {
 					img,
@@ -656,7 +656,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				img,
 				svg {
 					filter: grayscale(100%);
-					transition: 0.3s ease-in-out;
+					@include transit;
 				}
 				&:hover {
 					img,
@@ -669,7 +669,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				img,
 				svg {
 					filter: sepia(0);
-					transition: 0.3s ease-in-out;
+					@include transit;
 				}
 				&:hover {
 					img,
@@ -682,7 +682,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				img,
 				svg {
 					filter: sepia(100%);
-					transition: 0.3s ease-in-out;
+					@include transit;
 				}
 				&:hover {
 					img,

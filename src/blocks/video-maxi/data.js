@@ -136,13 +136,13 @@ const transition = {
 			title: __('Border', 'maxi-blocks'),
 			target: [overlayClass, videoClass],
 			property: ['border', 'border-radius'],
-			hoverProp: 'border-status-hover',
+			hoverProp: 'video-border-status-hover',
 		},
 		'box shadow': {
 			title: __('Box shadow', 'maxi-blocks'),
 			target: [overlayClass, videoClass],
 			property: 'box-shadow',
-			hoverProp: 'box-shadow-status-hover',
+			hoverProp: 'video-box-shadow-status-hover',
 		},
 		'overlay colour': {
 			title: __('Overlay colour', 'maxi-blocks'),

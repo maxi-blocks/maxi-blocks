@@ -21,7 +21,11 @@ const attributes = {
 	...attributesData.videoOverlay,
 	...attributesData.videoPopup,
 	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
-	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.borderHover,
+		prefix,
+		diffValAttr: { [`${prefix}border-status-hover`]: false },
+	}),
 	...prefixAttributesCreator({ obj: attributesData.borderRadius, prefix }),
 	...prefixAttributesCreator({
 		obj: attributesData.borderRadiusHover,
@@ -33,7 +37,11 @@ const attributes = {
 		prefix,
 	}),
 	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
-	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
+	...prefixAttributesCreator({
+		obj: attributesData.boxShadowHover,
+		prefix,
+		diffValAttr: { [`${prefix}box-shadow-status-hover`]: false },
+	}),
 	...prefixAttributesCreator({ obj: attributesData.size, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
 

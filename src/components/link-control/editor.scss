@@ -200,7 +200,7 @@
 				padding: 4px 17px;
 				height: 24px;
 				border-radius: 0;
-				transition: $t;
+				@include transit;
 				&:hover {
 					background-color: $pg !important;
 					color: $pc;
@@ -224,7 +224,7 @@
 			overflow-x: hidden;
 			max-width: 100%;
 			.block-editor-link-control__search-item-type {
-				transition: $t;
+				@include transit;
 			}
 			&:hover {
 				.block-editor-link-control__search-item-type {
@@ -273,7 +273,7 @@
 		text-align: center;
 		color: $w;
 		display: block;
-		transition: $t !important;
+		@include transit(true);
 		&:hover {
 			color: $w !important;
 			background-color: $sc !important;

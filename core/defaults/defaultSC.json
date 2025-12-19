@@ -405,6 +405,8 @@
 					"hover-background-palette-color": 6,
 					"hover-background-palette-opacity": 1,
 					"hover-background-color": "",
+					"border-radius-general": 10,
+					"border-radius-global": false,
 					"text-indent-general": 0,
 					"text-indent-unit-general": "px"
 				},
@@ -977,6 +979,8 @@
 					"hover-background-palette-color": 6,
 					"hover-background-palette-opacity": 1,
 					"hover-background-color": "",
+					"border-radius-general": 10,
+					"border-radius-global": false,
 					"text-indent-general": 0,
 					"text-indent-unit-general": "px"
 				},

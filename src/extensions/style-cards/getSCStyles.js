@@ -186,7 +186,7 @@ const getSentencesByBreakpoint = ({
 	return sentences;
 };
 
-const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
+const getMaxiSCStyles = ({ organizedValues, styleCard, prefix, style, isBackend }) => {
 	let response = '';
 
 	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
@@ -439,6 +439,27 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 				}
 			}
 		});
+
+		// Button Maxi - apply border-radius to __button element
+		const borderRadius = styleCard[`--maxi-${style}-button-border-radius`];
+		const isGlobal = styleCard[`--maxi-${style}-button-border-radius-global`];
+
+		if (borderRadius != null && borderRadius !== '') {
+			const important = isGlobal ? ' !important' : '';
+
+			// Define base selector parts once for maintainability
+			const baseClass = `.maxi-${style}.maxi-block`;
+			const btnClass = '.maxi-button-block .maxi-button-block__button';
+
+			const targets = [
+				`${prefix} ${secondPrefix} ${baseClass}.maxi-button-block ${btnClass}`,
+				`${prefix} ${secondPrefix} ${baseClass} ${btnClass}`,
+			];
+
+			targets.forEach(target => {
+				addedResponse += `${target} { border-radius: ${borderRadius}${important}; }`;
+			});
+		}
 
 		// Navigation inside Maxi Container
 		const navigationSentences = getSentencesByBreakpoint({
@@ -741,6 +762,14 @@ const getWPNativeStyles = ({
 				1
 			);
 
+		if (styleCard[`--maxi-${style}-button-border-radius`] != null) {
+			const borderRadiusGlobal = styleCard[`--maxi-${style}-button-border-radius-global`];
+			const important = borderRadiusGlobal ? ' !important' : '';
+			buttonSentences?.push(
+				`border-radius: ${styleCard[`--maxi-${style}-button-border-radius`]}${important};`
+			);
+		}
+
 		if (buttonSentences?.length > 0) {
 			const styles = buttonSentences?.join(' ').trim();
 			if (styles) {
@@ -851,6 +880,7 @@ const getSCStyles = (
 		// Maxi styles
 		response += getMaxiSCStyles({
 			organizedValues,
+			styleCard,
 			prefix,
 			style,
 			isBackend,

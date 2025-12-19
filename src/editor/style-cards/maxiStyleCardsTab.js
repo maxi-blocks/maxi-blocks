@@ -238,6 +238,7 @@ const SCAccordion = props => {
 	);
 
 	const ifNavigationTab = ['navigation'].some(tag => groupAttr === tag);
+	const ifButtonTab = groupAttr === 'button';
 
 	const overwriteMobile = ifNavigationTab
 		? processSCAttribute(SC, 'overwrite-mobile', groupAttr)
@@ -250,6 +251,10 @@ const SCAccordion = props => {
 	const removeHoverUnderline = ifNavigationTab
 		? processSCAttribute(SC, 'remove-hover-underline', groupAttr)
 		: false;
+
+	const buttonBorderRadius = ifButtonTab
+		? processSCAttribute(SC, `border-radius-${breakpoint}`, groupAttr)
+		: null;
 
 	const showMobileFrom = ifNavigationTab
 		? processSCAttribute(SC, 'show-mobile-down-from', groupAttr)
@@ -404,6 +409,54 @@ const SCAccordion = props => {
 								/>
 							)}
 						</>
+					)}
+					</>
+			)}
+			{ifButtonTab && (
+				<>
+					<ToggleSwitch
+						label={__('Border radius', 'maxi-blocks')}
+						className='maxi-style-cards-control__toggle-border-radius-global'
+						selected={
+							processSCAttribute(SC, 'border-radius-global', groupAttr) || false
+						}
+						onChange={val =>
+							onChangeValue(
+								{
+									'border-radius-global': val,
+								},
+								groupAttr
+							)
+						}
+					/>
+					{processSCAttribute(SC, 'border-radius-global', groupAttr) && (
+						<AdvancedNumberControl
+							label={__('Border radius value', 'maxi-blocks')}
+							value={buttonBorderRadius}
+							onChangeValue={val =>
+								onChangeValue(
+									{
+										[`border-radius-${breakpoint}`]: val,
+									},
+									groupAttr
+								)
+							}
+							min={0}
+							allowReset
+							onReset={() =>
+								onChangeValue(
+									{
+										[`border-radius-${breakpoint}`]: getDefaultSCValue({
+											target: `border-radius-${breakpoint}`,
+											SC,
+											SCStyle,
+											groupAttr,
+										}),
+									},
+									groupAttr
+								)
+							}
+						/>
 					)}
 				</>
 			)}

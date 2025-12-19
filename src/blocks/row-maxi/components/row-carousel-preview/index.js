@@ -155,7 +155,12 @@ const addCarouselDataAttributes = (rowBlock, attributes) => {
 const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 	const carouselInstanceRef = useRef(null);
 	const containerRef = useRef(null);
+	const attributesRef = useRef(attributes);
 
+	// Update attributes ref when they change
+	attributesRef.current = attributes;
+
+	// Main effect for mounting/unmounting carousel
 	useEffect(() => {
 		// eslint-disable-next-line no-console
 		console.log('RowCarouselPreview: useEffect triggered', {
@@ -182,9 +187,8 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 			return;
 		}
 
-		// Initialize carousel instance
-		// Small delay to ensure DOM is ready
-		setTimeout(() => {
+		// Initialize carousel with fade transition
+		const initializeCarousel = () => {
 			// Find the row block element in the editor
 			const blockElement = document.querySelector(
 				`[data-block="${clientId}"]`
@@ -223,7 +227,7 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 			containerRef.current = rowBlock;
 
 			// Add carousel data attributes to the row block
-			addCarouselDataAttributes(rowBlock, attributes);
+			addCarouselDataAttributes(rowBlock, attributesRef.current);
 
 			// Check if MaxiRowCarouselEditor class is available
 			if (typeof window.MaxiRowCarouselEditor === 'undefined') {
@@ -234,38 +238,92 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 				return;
 			}
 
-			// Clean up existing instance
+			// Function to create carousel after cleanup
+			const createCarousel = () => {
+				try {
+					// eslint-disable-next-line no-console
+					console.log(
+						'RowCarouselPreview: Creating carousel instance'
+					);
+					carouselInstanceRef.current =
+						new window.MaxiRowCarouselEditor(rowBlock);
+
+					// Fade back in
+					setTimeout(() => {
+						// eslint-disable-next-line no-console
+						console.log('RowCarouselPreview: Fading back in');
+						rowBlock.style.setProperty('opacity', '1', 'important');
+					}, 50);
+
+					// Remove transition after fade in completes
+					setTimeout(() => {
+						rowBlock.style.removeProperty('transition');
+						rowBlock.style.removeProperty('opacity');
+					}, 350);
+
+					// eslint-disable-next-line no-console
+					console.log(
+						'RowCarouselPreview: Carousel instance created successfully'
+					);
+				} catch (error) {
+					// Reset opacity on error
+					rowBlock.style.removeProperty('transition');
+					rowBlock.style.removeProperty('opacity');
+
+					// eslint-disable-next-line no-console
+					console.error(
+						'RowCarouselPreview: Error creating carousel instance',
+						error
+					);
+				}
+			};
+
+			// If there's an existing instance, fade out before destroying
 			if (carouselInstanceRef.current) {
 				// eslint-disable-next-line no-console
 				console.log(
-					'RowCarouselPreview: Cleaning up existing instance'
+					'RowCarouselPreview: Fading out and cleaning up existing instance'
 				);
 
-				if (typeof carouselInstanceRef.current.destroy === 'function') {
-					carouselInstanceRef.current.destroy();
-				}
-				carouselInstanceRef.current = null;
-			}
+				// Add transition and fade out with !important to override any other styles
+				rowBlock.style.setProperty(
+					'transition',
+					'opacity 0.3s ease-in-out',
+					'important'
+				);
+				rowBlock.style.setProperty('opacity', '0.3', 'important');
 
-			// Create new carousel instance using editor-specific class
-			try {
 				// eslint-disable-next-line no-console
-				console.log('RowCarouselPreview: Creating carousel instance');
-				carouselInstanceRef.current = new window.MaxiRowCarouselEditor(
-					rowBlock
-				);
-				// eslint-disable-next-line no-console
-				console.log(
-					'RowCarouselPreview: Carousel instance created successfully'
-				);
-			} catch (error) {
-				// eslint-disable-next-line no-console
-				console.error(
-					'RowCarouselPreview: Error creating carousel instance',
-					error
-				);
+				console.log('RowCarouselPreview: Opacity set to', {
+					opacity: rowBlock.style.opacity,
+					transition: rowBlock.style.transition,
+				});
+
+				// Wait for fade out, then destroy and recreate
+				setTimeout(() => {
+					// eslint-disable-next-line no-console
+					console.log('RowCarouselPreview: Destroying old instance');
+
+					if (
+						carouselInstanceRef.current &&
+						typeof carouselInstanceRef.current.destroy ===
+							'function'
+					) {
+						carouselInstanceRef.current.destroy();
+					}
+					carouselInstanceRef.current = null;
+
+					// Create new instance
+					createCarousel();
+				}, 300);
+			} else {
+				// No existing instance, just create
+				createCarousel();
 			}
-		}, 100);
+		};
+
+		// Small delay to ensure DOM is ready
+		setTimeout(initializeCarousel, 100);
 
 		// Cleanup on unmount
 		// eslint-disable-next-line consistent-return
@@ -282,7 +340,68 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 				carouselInstanceRef.current = null;
 			}
 		};
-	}, [isPreviewEnabled, clientId, attributes]);
+	}, [isPreviewEnabled, clientId]);
+
+	// Separate effect to handle attribute updates with fade transition
+	useEffect(() => {
+		// Only update if carousel is already initialized and preview is enabled
+		if (
+			!isPreviewEnabled ||
+			!carouselInstanceRef.current ||
+			!containerRef.current
+		) {
+			return;
+		}
+
+		// eslint-disable-next-line no-console
+		console.log(
+			'RowCarouselPreview: Attributes changed, updating carousel with fade'
+		);
+
+		const rowBlock = containerRef.current;
+
+		// Fade out
+		rowBlock.style.setProperty(
+			'transition',
+			'opacity 0.3s ease-in-out',
+			'important'
+		);
+		rowBlock.style.setProperty('opacity', '0.3', 'important');
+
+		// After fade out, update and fade in
+		setTimeout(() => {
+			// Update data attributes
+			addCarouselDataAttributes(rowBlock, attributesRef.current);
+
+			// Destroy and recreate carousel
+			if (typeof carouselInstanceRef.current.destroy === 'function') {
+				carouselInstanceRef.current.destroy();
+			}
+
+			try {
+				carouselInstanceRef.current = new window.MaxiRowCarouselEditor(
+					rowBlock
+				);
+			} catch (error) {
+				// eslint-disable-next-line no-console
+				console.error(
+					'RowCarouselPreview: Error recreating carousel',
+					error
+				);
+			}
+
+			// Fade back in
+			setTimeout(() => {
+				rowBlock.style.setProperty('opacity', '1', 'important');
+
+				// Clean up styles after fade in
+				setTimeout(() => {
+					rowBlock.style.removeProperty('transition');
+					rowBlock.style.removeProperty('opacity');
+				}, 300);
+			}, 50);
+		}, 300);
+	}, [attributes, isPreviewEnabled]);
 
 	// This component doesn't render anything visible
 	return null;

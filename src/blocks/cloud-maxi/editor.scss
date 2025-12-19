@@ -297,20 +297,28 @@ $white: var(--maxi-white);
 		font-weight: 800;
 		padding: 22px 22px 22px 20px;
 		border: 1px solid var(--maxi-grey-light);
-		transition: all 0.1s;
 		border-radius: 30px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		transition: all 0.3s ease;
 
 		svg {
 			margin-right: 8px;
+
+			path {
+				transition: fill 0.3s ease;
+			}
 		}
 
 		&:hover {
 			background: var(--maxi-white) !important;
 			color: var(--maxi-cloud-primary-contrast) !important;
 			border-color: var(--maxi-tertiary-color);
+
+			svg path {
+				fill: var(--maxi-cloud-primary) !important;
+			}
 		}
 
 		&--small {

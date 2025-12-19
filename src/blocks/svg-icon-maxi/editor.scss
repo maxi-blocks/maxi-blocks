@@ -22,12 +22,11 @@
 			font-weight: 800;
 			padding: 22px 22px 22px 10px;
 			border: 1px solid var(--maxi-grey-light);
-			transition: all 0.1s;
 			border-radius: 30px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			transition: all 0.4s ease;
+			transition: all 0.3s ease;
 
 			svg {
 				width: 36px;
@@ -36,6 +35,7 @@
 
 				path {
 					fill: var(--maxi-white);
+					transition: fill 0.3s ease;
 				}
 			}
 

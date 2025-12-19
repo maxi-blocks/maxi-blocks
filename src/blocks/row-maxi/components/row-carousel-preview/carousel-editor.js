@@ -483,6 +483,12 @@ class MaxiRowCarouselEditor {
 		this.columnAction();
 		this.updateDots();
 
+		// Update arrow states based on initial position
+		this.updateArrowStates();
+
+		// Set up navigation events
+		this.navEvents();
+
 		if (this.autoplay) {
 			this.startAutoplay();
 		}
@@ -605,6 +611,7 @@ class MaxiRowCarouselEditor {
 		}
 
 		this.columnAction();
+		this.updateArrowStates();
 
 		if (this.pauseOnInteraction && this.autoplay) {
 			this.stopAutoplay();
@@ -619,6 +626,7 @@ class MaxiRowCarouselEditor {
 		}
 
 		this.columnAction();
+		this.updateArrowStates();
 
 		if (this.pauseOnInteraction && this.autoplay) {
 			this.stopAutoplay();
@@ -628,6 +636,7 @@ class MaxiRowCarouselEditor {
 	exactColumn(index) {
 		this.currentColumn = index;
 		this.columnAction();
+		this.updateArrowStates();
 
 		if (this.pauseOnInteraction && this.autoplay) {
 			this.stopAutoplay();
@@ -663,6 +672,47 @@ class MaxiRowCarouselEditor {
 			dot.addEventListener('click', () => this.exactColumn(index));
 			this._dotsContainer.appendChild(dot);
 		});
+	}
+
+	/**
+	 * Set up navigation arrow event listeners
+	 */
+	navEvents() {
+		if (this._arrowNext) {
+			this._arrowNext.addEventListener(
+				'click',
+				this.columnNext.bind(this)
+			);
+		}
+		if (this._arrowPrev) {
+			this._arrowPrev.addEventListener(
+				'click',
+				this.columnPrev.bind(this)
+			);
+		}
+	}
+
+	/**
+	 * Update arrow visibility based on current position and loop setting
+	 */
+	updateArrowStates() {
+		if (this.loop) {
+			// If loop is enabled, always show both arrows
+			if (this._arrowPrev) this._arrowPrev.style.display = '';
+			if (this._arrowNext) this._arrowNext.style.display = '';
+			return;
+		}
+
+		// Hide/show arrows based on position
+		if (this._arrowPrev) {
+			this._arrowPrev.style.display =
+				this.currentColumn <= 0 ? 'none' : '';
+		}
+		if (this._arrowNext) {
+			const maxColumn = this._columns.length - this.slidesPerView;
+			this._arrowNext.style.display =
+				this.currentColumn >= maxColumn ? 'none' : '';
+		}
 	}
 
 	startAutoplay() {

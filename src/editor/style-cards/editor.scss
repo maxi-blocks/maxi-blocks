@@ -1,4 +1,21 @@
 @import '../../../src/css/backend-variables.scss';
+
+@mixin transit {
+	transition: $t;
+}
+
+@mixin flex-center($important: false) {
+	@if $important {
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+	} @else {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
 .has-tooltip {
 	.tooltip {
 		display: none;
@@ -352,7 +369,7 @@ body .maxi-style-cards__popover {
 			color: $gd;
 			border: 1px solid $g !important;
 			background-color: $w;
-			transition: $t;
+			@include transit;
 
 			&:hover {
 				color: $w !important;
@@ -362,7 +379,7 @@ body .maxi-style-cards__popover {
 		}
 		.maxi-style-cards__custom-color-presets__box:hover {
 			.maxi-style-cards__custom-color-presets__remove-button {
-				transition: $t;
+				@include transit;
 				display: flex;
 			}
 		}
@@ -516,9 +533,7 @@ body .maxi-style-cards__popover {
 			}
 
 			&--add-more {
-				display: flex;
-				justify-content: center;
-				align-items: center;
+				@include flex-center;
 				border: $bg;
 				border-radius: 20px;
 				margin-right: 8px;

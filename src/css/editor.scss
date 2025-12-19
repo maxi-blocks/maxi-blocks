@@ -1,4 +1,21 @@
 @import '../../src/css/backend-variables.scss';
+
+@mixin transit {
+	transition: $t;
+}
+
+@mixin flex-center($important: false) {
+	@if $important {
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+	} @else {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
 /**
  * #.# Common SCSS
  *
@@ -53,7 +70,7 @@ h2.gx_error {
 		*):not([class*='maxi-transform-control']):not([class*='maxi-transform-control']
 		*):not(.w-tc-editor-text):not(.maxi-css-code-editor__code-editor *),
 .maxi-popover *:not(i) {
-	transition: $t;
+	@include transit;
 	color: $gd;
 	font-family: $f !important;
 	font-weight: normal;
@@ -76,14 +93,14 @@ h2.gx_error {
 }
 
 .block-editor-inserter {
-	transition: $t;
+	@include transit;
 	color: $w !important;
 	height: 100%;
 
 	&__toggle {
-		transition: $t;
+		@include transit;
 		svg {
-			transition: $t;
+			@include transit;
 			fill: $w !important;
 		}
 	}
@@ -126,16 +143,16 @@ body {
 	}
 }
 .maxi-block {
-	transition: $t;
+	@include transit;
 
 	.block-editor-block-list__layout {
-		transition: $t;
+		@include transit;
 		&:focus:after {
 			box-shadow: none !important;
 		}
 	}
 	&:hover {
-		transition: $t;
+		@include transit;
 		& > .block-editor-block-list__layout {
 			& > .block-list-appender {
 				.block-editor-button-block-appender {
@@ -259,7 +276,7 @@ body .toolbar-item__popover {
 	input[type='number'],
 	textarea:not(.w-tc-editor-text),
 	select {
-		transition: $t;
+		@include transit;
 		flex: 1;
 		max-height: unset !important;
 		min-height: unset;
@@ -277,7 +294,7 @@ body .toolbar-item__popover {
 		// &:hover:not(#inspector-select-control-0):not([id^='inspector-input-control']):not([id^='url-input-control']):not(.w-tc-editor-text):not(.maxi-css-code-editor__code-editor) {
 		// 	color: $gd !important;
 		// 	border: 1.5px solid $pc !important;
-		// 	transition: $t;
+		// 	@include transit;
 		// }
 		&:active {
 			color: $gd;
@@ -311,7 +328,7 @@ body .toolbar-item__popover {
 			color: $gd;
 		}
 		&:hover {
-			transition: $t;
+			@include transit;
 			&:before {
 				content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.34 11.5" role="img" aria-hidden="true" focusable="false"><path fill="rgba(99,186,121, 0.8)" d="M11.32.75a.74.74 0 0 0-.75-.75.76.76 0 0 0-.75.75v1.49A5.6 5.6 0 1 0 5.6 11.5a5.44 5.44 0 0 0 1.48-.2.74.74 0 0 0 .52-.92.76.76 0 0 0-.92-.53A4.1 4.1 0 1 1 9.22 4H6.57a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 .53-.22.77.77 0 0 0 .22-.54Z"></path></svg>') !important;
 			}
@@ -461,7 +478,7 @@ svg path#styleCardBoat_b,
 
 .maxi-block {
 	&::after {
-		transition: $t;
+		@include transit;
 		content: '';
 		position: $pa;
 		pointer-events: none;
@@ -485,7 +502,7 @@ svg path#styleCardBoat_b,
 
 	&:not(.is-selected) {
 		&:hover {
-			transition: $t;
+			@include transit;
 			&::after {
 				content: '';
 				position: $pa;
@@ -793,7 +810,7 @@ body.maxi-blocks--active
 // Number input field
 // input.maxi-advanced-number-control_value,
 // input.maxi-advanced-number-control__value {
-// 	transition: $t;
+// 	@include transit;
 // 	border: $bg !important;
 // 	border-radius: 5px 0 0 5px !important;
 // 	height: 31px !important;
@@ -813,7 +830,7 @@ body.maxi-blocks--active
 // Unit selector
 // .maxi-base-control.maxi-dimensions-control__units {
 // 	select {
-// 		transition: $t;
+// 		@include transit;
 // 		border: $bg !important;
 // 		border-radius: 0 5px 5px 0px !important;
 // 		height: 31px !important;
@@ -834,7 +851,7 @@ body.maxi-blocks--active
 
 // Reset button
 .maxi-components-button.maxi-reset-button {
-	transition: $t;
+	@include transit;
 	width: 9px !important;
 	height: 31px !important;
 	padding: 0 !important;
@@ -876,7 +893,7 @@ body {
 	.maxi-settingstab-control {
 		button,
 		input {
-			transition: $t;
+			@include transit;
 		}
 	}
 }

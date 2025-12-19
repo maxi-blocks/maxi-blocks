@@ -39,6 +39,7 @@ const carouselArrows = ({ props }) => {
 			<>
 				<ToggleSwitch
 					label={__('Enable arrows', 'maxi-blocks')}
+					className='maxi-carousel-arrows__toggle'
 					selected={arrowsEnabled}
 					onChange={val =>
 						onChange({

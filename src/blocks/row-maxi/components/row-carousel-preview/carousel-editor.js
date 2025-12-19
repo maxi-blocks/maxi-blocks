@@ -604,6 +604,14 @@ class MaxiRowCarouselEditor {
 	}
 
 	columnNext() {
+		// If loop is disabled, prevent going beyond last valid position
+		if (!this.loop) {
+			const maxColumn = this._columns.length - this.slidesPerView;
+			if (this.currentColumn >= maxColumn) {
+				return; // Already at the end
+			}
+		}
+
 		if (this.currentColumn < this._columns.length - 1) {
 			this.currentColumn += 1;
 		} else if (this.loop) {
@@ -619,6 +627,13 @@ class MaxiRowCarouselEditor {
 	}
 
 	columnPrev() {
+		// If loop is disabled, prevent going before first slide
+		if (!this.loop) {
+			if (this.currentColumn <= 0) {
+				return; // Already at the beginning
+			}
+		}
+
 		if (this.currentColumn > 0) {
 			this.currentColumn -= 1;
 		} else if (this.loop) {
@@ -810,7 +825,17 @@ class MaxiRowCarouselEditor {
 
 		const movement = this.initPosition - this.dragPosition;
 		const currentOffset = this.calculateOffset(this.currentColumn);
-		const newOffset = currentOffset + movement;
+		let newOffset = currentOffset + movement;
+
+		// If loop is disabled, constrain offset to valid boundaries
+		if (!this.loop) {
+			const minOffset = 0;
+			const maxColumn = this._columns.length - this.slidesPerView;
+			const maxOffset = this.calculateOffset(maxColumn);
+
+			// Constrain the offset
+			newOffset = Math.max(minOffset, Math.min(newOffset, maxOffset));
+		}
 
 		this._wrapper.style.transform = `translateX(-${newOffset}px)`;
 	}

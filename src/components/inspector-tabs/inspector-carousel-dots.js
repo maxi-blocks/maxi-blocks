@@ -36,6 +36,7 @@ const carouselDots = ({ props }) => {
 			<>
 				<ToggleSwitch
 					label={__('Enable dots', 'maxi-blocks')}
+					className='maxi-carousel-dots__toggle'
 					selected={dotsEnabled}
 					onChange={val =>
 						onChange({

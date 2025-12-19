@@ -850,7 +850,30 @@ class MaxiRowCarousel {
 		const movement = this.initPosition - this.dragPosition;
 
 		this._wrapper.style.transition = 'none';
-		this.wrapperTranslate = this.activeColumnPosition + movement;
+
+		// Calculate new position
+		let newPosition = this.activeColumnPosition + movement;
+
+		// If loop is disabled, constrain position to valid boundaries
+		if (!this.isLoop) {
+			const minPosition = this.realFirstElOffset;
+			const maxColumn = this.numberOfColumns - this.slidesPerView;
+
+			// Calculate max position based on maxColumn
+			const firstColumnWidth = this._columns[0]?.size?.width || 0;
+			const columnsWidth = firstColumnWidth * maxColumn;
+			const totalGaps = this.carouselColumnGap * maxColumn;
+			const maxPosition =
+				columnsWidth + totalGaps + this.realFirstElOffset;
+
+			// Constrain the position
+			newPosition = Math.max(
+				minPosition,
+				Math.min(newPosition, maxPosition)
+			);
+		}
+
+		this.wrapperTranslate = newPosition;
 
 		this.isInteracting = true;
 	}

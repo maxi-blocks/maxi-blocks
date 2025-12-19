@@ -26,7 +26,6 @@ export { default as repeater } from './inspector-repeater';
 export { default as repeaterInfoBox } from './repeater-info-box';
 export { default as responsive } from './inspector-responsive';
 export { default as responsiveInfoBox } from './inspector-responsive-info-box';
-// export { default as rowCarousel } from './inspector-row-carousel'; // Deprecated: causes circular dependency, use carouselSlider, carouselArrows, carouselDots instead
 export { default as carouselSlider } from './inspector-carousel-slider';
 export { default as carouselArrows } from './inspector-carousel-arrows';
 export { default as carouselDots } from './inspector-carousel-dots';

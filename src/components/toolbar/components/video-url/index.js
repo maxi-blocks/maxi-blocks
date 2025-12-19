@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
+import { useInstanceId } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -23,6 +24,8 @@ const VideoUrl = props => {
 	const { url, onChange } = props;
 
 	const [validationText, setValidationText] = useState(null);
+	const instanceId = useInstanceId(VideoUrl);
+	const inputId = `toolbar-video-url-${instanceId}`;
 
 	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
 
@@ -34,10 +37,11 @@ const VideoUrl = props => {
 			icon={toolbarVideo}
 		>
 			<div className='toolbar-item__video-url__popover'>
-				<label className='maxi-base-control__label' htmlFor='URL'>
+				<label className='maxi-base-control__label' htmlFor={inputId}>
 					{__('URL', 'maxi-blocks')}
 				</label>
 				<TextInput
+					id={inputId}
 					type='url'
 					placeholder={defaultURL}
 					value={url}

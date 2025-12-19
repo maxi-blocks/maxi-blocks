@@ -156,6 +156,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 				align-items: center;
 				justify-content: center;
 				height: 100%;
+
+				svg {
+					width: 24px;
+					height: 24px;
+				}
 			}
 		}
 	}

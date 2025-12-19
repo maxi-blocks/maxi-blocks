@@ -74,6 +74,9 @@ export default function SelectControl({
 		className
 	);
 
+	// Filter out private/react-unsafe props so they are not forwarded to the DOM
+	const { __nextHasNoMarginBottom: _noMarginBottom, ...domProps } = props;
+
 	return (
 		!isEmpty(options) && (
 			<BaseControl

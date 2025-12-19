@@ -168,6 +168,7 @@ function popupEvents(video, popupContent, embedUrl, pauseVideo = null) {
 
 	const openVideo = () => {
 		popupContent.style.display = 'flex';
+		triggerPopupAnimation(popupContent);
 		if (!pauseVideo) player.src = embedUrl;
 	};
 
@@ -187,6 +188,30 @@ function popupEvents(video, popupContent, embedUrl, pauseVideo = null) {
 
 	overlay.addEventListener('click', openVideo);
 	popupContent.addEventListener('click', closeVideo);
+}
+
+function triggerPopupAnimation(popupContent) {
+	const popupContainer = popupContent.querySelector(
+		'.maxi-video-block__video-container'
+	);
+
+	if (!popupContainer) return;
+
+	const animationClass = Array.from(popupContainer.classList).find(
+		className =>
+			className.startsWith(
+				'maxi-video-block__video-container--popup--zoom-'
+			)
+	);
+
+	if (!animationClass) return;
+
+	popupContainer.classList.remove(animationClass);
+
+	// Force reflow to allow the animation class to be reapplied and replay the animation
+	void popupContainer.offsetWidth;
+
+	popupContainer.classList.add(animationClass);
 }
 
 function isScriptMounted(id) {
